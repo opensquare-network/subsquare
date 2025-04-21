@@ -37,34 +37,34 @@ const useQuickStartItems = () => {
     ];
     if (treasuryProposalTracks && usdxTreasuryProposal) {
       items.push({
-        name: "USDx treasury proposal",
-        description: "Create a treasury spend with assets on AssetHub",
+        name: "Spend USDx on Asset Hub",
+        description: "Create a treasury spend with assets on Asset Hub",
         buttonSuffix: <InfoPopoular className="w-4 h-4 ml-2" />,
         content: NewUSDxTreasuryReferendumInnerPopupContent,
       });
     }
     if (treasuryProposalTracks && spendDotOnAssetHubProposal) {
       items.push({
-        name: "Spend DOT on AssetHub",
+        name: "Spend DOT on Asset Hub",
         description: "Create a treasury spend with DOT asset on AssetHub",
         content: SpendDotOnAssetHubReferendumInnerPopupContent,
       });
     }
     items.push({
-      name: "Remark",
+      name: "New Remark Proposal",
       description: "Create a remark proposal",
       content: NewRemarkReferendumInnerPopupContent,
     });
     if (cancelReferendum) {
       items.push({
-        name: "Cancel a referendum",
+        name: "Cancel a Referendum",
         description: "Cancel an ongoing referendum and returning the deposit",
         content: CancelReferendumInnerPopupContent,
       });
     }
     if (killReferendum) {
       items.push({
-        name: "Kill a referendum",
+        name: "Kill a Referendum",
         description:
           "Kill an ongoing referendum and the submission & decision deposits will be slashed",
         content: KillReferendumInnerPopupContent,

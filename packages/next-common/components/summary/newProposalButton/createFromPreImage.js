@@ -7,6 +7,8 @@ import CircleStepper from "next-common/components/step";
 import { useTxSubmissionButton } from "next-common/components/common/tx/txSubmissionButton";
 import Button from "next-common/lib/button";
 import { useNewProposalInnerPopupContent } from "../newProposalPopup";
+import { usePopupOnClose } from "next-common/context/popup";
+
 const useCreatePrimage = () => {
   const {
     encodedHash,
@@ -37,6 +39,7 @@ const useCreatePrimage = () => {
 };
 
 const useCreateProposal = ({ track, preimageHash, preimageLength }) => {
+  const onClose = usePopupOnClose();
   const { getTxFunc, disabled, onInBlock, component } =
     useNewProposalInnerPopupContent({ track, preimageHash, preimageLength });
   const { isLoading, component: button } = useTxSubmissionButton({
@@ -44,6 +47,7 @@ const useCreateProposal = ({ track, preimageHash, preimageLength }) => {
     getTxFunc,
     disabled,
     onInBlock,
+    onSubmitted: onClose,
   });
 
   return {
@@ -166,7 +170,7 @@ export default function CreateFormPreImage() {
       <NewProposalFromPreimageButton
         onClick={() => {
           goNext({
-            title: "New Preimage",
+            title: "I Already Have a Preimage",
             component: NewProposalContent,
           });
         }}

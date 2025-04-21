@@ -22,7 +22,7 @@ export default function CircleStepper({ steps, currentStep = 0, loading }) {
                 ) : (
                   <SystemTinyCircle
                     className={` ${
-                      index <= currentStep
+                      index < currentStep
                         ? "text-theme500"
                         : "text-textTertiary"
                     }`}
