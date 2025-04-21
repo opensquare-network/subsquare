@@ -1,4 +1,4 @@
-import Popup from "next-common/components/popup/wrapper/Popup";
+import Popup, { PopupSize } from "next-common/components/popup/wrapper/Popup";
 import { cn } from "next-common/utils";
 import React, { useState, useEffect } from "react";
 import ReminderInput from "next-common/components/header/search/popup/reminderInput";
@@ -61,12 +61,14 @@ function SearchPopup({ onClose, isMobile }) {
   }, [searchValue, clearResults, debouncedSearch]);
 
   const mobilesStyles = "w-[calc(100vw-48px)] h-[80vh]";
-  const desktopStyles = "w-[960px] h-[640px]";
 
   return (
     <Popup
-      className={`p-0 ${isMobile ? mobilesStyles : desktopStyles}`}
+      className="p-0"
+      size={PopupSize.LARGE}
       onClose={onClose}
+      mobileClassName={mobilesStyles}
+      computerClassName="h-[640px]"
     >
       <div className="flex flex-col w-full">
         <Wrapper className="border-b border-neutral300 h-[56px] py-2">
