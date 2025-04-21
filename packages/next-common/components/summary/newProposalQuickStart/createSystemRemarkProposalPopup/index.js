@@ -91,12 +91,10 @@ export function NewRemarkReferendumInnerPopupContent() {
         {enactmentField}
         {submissionDepositField}
       </AdvanceSettings>
-      {notePreimageTx ? (
-        <div className="bg-neutral200 rounded-lg px-4 py-2.5 text14Medium">
-          After submitting the transaction, you&apos;ll be redirected to the
-          referendum detail page to edit content.
-        </div>
-      ) : null}
+      <div className="bg-neutral200 rounded-lg px-4 py-2.5 text14Medium">
+        After submitting the transaction, you&apos;ll be redirected to the
+        referendum detail page to edit content.
+      </div>
       <div className="flex justify-between">
         <Button
           className={`border-neutral400 hover:border-neutral500 ${

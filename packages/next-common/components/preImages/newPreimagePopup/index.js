@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { blake2AsHex } from "@polkadot/util-crypto";
 import { BN_ZERO } from "@polkadot/util";
 import Extrinsic from "next-common/components/extrinsic";
@@ -143,29 +143,33 @@ export function useNewPrerimageForm() {
     [api],
   );
 
-  let extrinsicComponent = null;
+  const extrinsicComponent = useMemo(() => {
+    let extrinsicComponent = null;
 
-  if (!api) {
-    extrinsicComponent = <ExtrinsicLoading />;
-  } else {
-    extrinsicComponent = (
-      <>
-        <SignerWithBalance />
-        <div>
-          <PopupLabel text="Prepropose" />
-          <Extrinsic
-            defaultSectionName="system"
-            defaultMethodName="setCode"
-            setValue={setProposal}
+    if (!api) {
+      extrinsicComponent = <ExtrinsicLoading />;
+    } else {
+      extrinsicComponent = (
+        <>
+          <SignerWithBalance />
+          <div>
+            <PopupLabel text="Prepropose" />
+            <Extrinsic
+              defaultSectionName="system"
+              defaultMethodName="setCode"
+              setValue={setProposal}
+            />
+          </div>
+          <ExtrinsicInfo
+            preimageHash={encodedHash}
+            preimageLength={encodedLength || 0}
           />
-        </div>
-        <ExtrinsicInfo
-          preimageHash={encodedHash}
-          preimageLength={encodedLength || 0}
-        />
-      </>
-    );
-  }
+        </>
+      );
+    }
+
+    return extrinsicComponent;
+  }, [api, encodedHash, encodedLength, setProposal]);
 
   return {
     encodedHash,

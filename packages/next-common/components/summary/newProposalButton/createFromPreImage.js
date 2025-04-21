@@ -32,6 +32,7 @@ const useCreatePrimage = () => {
     preimageData: preimage,
     form: newPreimageForm,
     button: component,
+    clearPreimageData: () => setPreimage(null),
   };
 };
 
@@ -56,7 +57,8 @@ const useCreateProposal = ({ track, preimageHash, preimageLength }) => {
 function NewPreimageContent() {
   const { period } = usePageProps();
   const { goBack } = useStepContainer();
-  const { isLoading, preimageData, form, button } = useCreatePrimage();
+  const { isLoading, preimageData, form, button, clearPreimageData } =
+    useCreatePrimage();
   const {
     isLoading: proposalLoading,
     form: proposalForm,
@@ -81,12 +83,6 @@ function NewPreimageContent() {
         loading={isLoading || proposalLoading}
       />
       {!preimageData ? form : proposalForm}
-      {preimageData ? (
-        <div className="bg-neutral200 rounded-lg px-4 py-2.5 text14Medium">
-          After submitting the transaction, you&apos;ll be redirected to the
-          referendum detail page to edit content.
-        </div>
-      ) : null}
       <div className="flex justify-between">
         <Button
           className={`border-neutral400 hover:border-neutral500 ${
@@ -95,7 +91,9 @@ function NewPreimageContent() {
               : ""
           }`}
           disabled={proposalLoading || isLoading}
-          onClick={goBack}
+          onClick={() => {
+            preimageData ? clearPreimageData() : goBack();
+          }}
         >
           Previous
         </Button>
@@ -112,7 +110,6 @@ const NewProposalContent = () => {
     isLoading: proposalLoading,
     form: proposalForm,
     button: proposalButton,
-    disabled,
   } = useCreateProposal({
     track: period,
   });
@@ -131,12 +128,10 @@ const NewProposalContent = () => {
         loading={proposalLoading}
       />
       <>{proposalForm}</>
-      {!disabled ? (
-        <div className="bg-neutral200 rounded-lg px-4 py-2.5 text14Medium">
-          After submitting the transaction, you&apos;ll be redirected to the
-          referendum detail page to edit content.
-        </div>
-      ) : null}
+      <div className="bg-neutral200 rounded-lg px-4 py-2.5 text14Medium">
+        After submitting the transaction, you&apos;ll be redirected to the
+        referendum detail page to edit content.
+      </div>
       <div className="flex justify-between">
         <Button
           className={`border-neutral400 hover:border-neutral500 ${
