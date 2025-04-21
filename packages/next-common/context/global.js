@@ -13,7 +13,6 @@ import ReactQueryClientProvider from "./reactQuery";
 import UserAccountProvider from "./user/account";
 import PageLoadingProvider from "./pageLoading";
 import WalletConnectProvider from "./walletconnect";
-import { PeopleIdentityProvider } from "./people/identity";
 
 export default function GlobalProvider({
   user,
@@ -49,9 +48,7 @@ export default function GlobalProvider({
                           <WalletConnectProvider>
                             <UserAccountProvider>
                               <SignetContextProvider>
-                                <PeopleIdentityProvider>
-                                  {children}
-                                </PeopleIdentityProvider>
+                                {children}
                               </SignetContextProvider>
                             </UserAccountProvider>
                           </WalletConnectProvider>

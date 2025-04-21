@@ -10,7 +10,10 @@ import Tabs from "next-common/components/tabs";
 import DirectIdentityImpl from "./overview/directIdentity";
 import { useRouter } from "next/router";
 import UserAccountProvider from "next-common/context/user/account";
-import { usePeopleIdentityContext } from "next-common/context/people/identity";
+import {
+  usePeopleIdentityContext,
+  PeopleIdentityProvider,
+} from "next-common/context/people/identity";
 
 export default function PeopleOverviewPageImpl() {
   const { description } = useChainSettings();
@@ -20,9 +23,11 @@ export default function PeopleOverviewPageImpl() {
     return <NoWalletConnected />;
   }
   return (
-    <BaseLayout title="Identities" description={description}>
-      <PeopleOverviewContent />
-    </BaseLayout>
+    <PeopleIdentityProvider>
+      <BaseLayout title="Identities" description={description}>
+        <PeopleOverviewContent />
+      </BaseLayout>
+    </PeopleIdentityProvider>
   );
 }
 
