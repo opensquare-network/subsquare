@@ -1,4 +1,3 @@
-import useSubMyIdentityInfo from "next-common/hooks/people/useSubMyIdentityInfo";
 import tw from "tailwind-styled-components";
 import RightWrapper from "next-common/components/rightWraper";
 import PrimaryButton from "next-common/lib/button/primary";
@@ -35,15 +34,11 @@ const RequestJudgementPopup = dynamicPopup(
   },
 );
 
-export default function DirectIdentityImpl() {
-  const { result: subMyIdentityInfo } = useSubMyIdentityInfo();
-
-  const isEmpty =
-    Object.values(subMyIdentityInfo ?? {}).filter(Boolean).length === 0;
+export default function DirectIdentityImpl({ isEmpty, identityInfo }) {
   if (!isEmpty) {
     return (
       <SignerPopupWrapper>
-        <DirectIdentity subMyIdentityInfo={subMyIdentityInfo} />
+        <DirectIdentity subMyIdentityInfo={identityInfo} />
       </SignerPopupWrapper>
     );
   }

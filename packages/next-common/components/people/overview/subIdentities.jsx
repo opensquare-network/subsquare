@@ -14,10 +14,14 @@ const SetSubsPopup = dynamicPopup(
   },
 );
 
-export default function SubIdentitiesImpl() {
+export default function SubIdentitiesImpl({ isEmpty }) {
   const [showSetSubsPopup, setShowSetSubsPopup] = useState(false);
   const { type, parent } = useMyIdentityType();
   const isSubIdentity = type === "sub";
+
+  if (isEmpty) {
+    return <SubIdentityEmpty />;
+  }
 
   return (
     <>

@@ -10,6 +10,7 @@ import Tabs from "next-common/components/tabs";
 import DirectIdentityImpl from "./overview/directIdentity";
 import SubIdentitiesImpl from "./overview/subIdentities";
 import { useRouter } from "next/router";
+import useSubMyIdentityInfo from "next-common/hooks/people/useSubMyIdentityInfo";
 export default function PeopleOverviewPageImpl() {
   const { description } = useChainSettings();
   const realAddress = useRealAddress();
@@ -29,16 +30,26 @@ function PeopleOverviewContent() {
   const [activeTabValue, setActiveTabValue] = useState(
     router.query.tab || "direct-identity",
   );
+  const { result: subMyIdentityInfo } = useSubMyIdentityInfo();
+
+  const isEmpty =
+    Object.values(subMyIdentityInfo ?? {}).filter(Boolean).length === 0;
+
   const tabs = [
     {
       value: "direct-identity",
       label: "Direct Identity",
-      content: <DirectIdentityImpl />,
+      content: (
+        <DirectIdentityImpl
+          isEmpty={isEmpty}
+          identityInfo={subMyIdentityInfo}
+        />
+      ),
     },
     {
       value: "sub-identities",
       label: "Sub Identities",
-      content: <SubIdentitiesImpl />,
+      content: <SubIdentitiesImpl isEmpty={isEmpty} />,
     },
   ];
 
