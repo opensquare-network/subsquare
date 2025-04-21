@@ -1,4 +1,3 @@
-import Signer from "next-common/components/popup/fields/signerField";
 import RadioOptionGroup, {
   RadioOptionGroupType,
 } from "next-common/components/radioOptionGroup";
@@ -12,6 +11,7 @@ import { useContextApi } from "next-common/context/api";
 import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { isEmpty } from "lodash-es";
+import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 
 export default function RequestJudgementPopupContent() {
   const [value, setValue] = useState();
@@ -39,13 +39,7 @@ export default function RequestJudgementPopupContent() {
 
   return (
     <div className="flex flex-col gap-y-4">
-      <Signer
-        balance={0}
-        isBalanceLoading={false}
-        symbol={symbol}
-        className="[& .label-text]:text14Bold"
-      />
-
+      <SignerWithBalance />
       <div className="text14Bold text-textPrimary">Select a Registrar</div>
       <LoadableContent isLoading={isLoading}>
         <RadioOptionGroup

@@ -1,4 +1,3 @@
-import Signer from "next-common/components/popup/fields/signerField";
 import TextInputField from "next-common/components/popup/fields/textInputField";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import useSetIdentityDeposit from "next-common/hooks/people/useSetIdentityDeposit";
@@ -15,6 +14,7 @@ import { useContextApi } from "next-common/context/api";
 import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { formatIdentityInfo } from "next-common/components/people/common";
+import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 
 const fields = [
   {
@@ -48,7 +48,7 @@ const fields = [
 ];
 
 export default function SetIdentityPopupContent() {
-  const chainSettings = useChainSettings();
+  const { decimals, symbol } = useChainSettings();
   const [identityInfo, setIdentityInfo] = useState({});
   const { result: subMyIdentityInfo } = useSubMyIdentityInfo();
   const api = useContextApi();
@@ -82,11 +82,7 @@ export default function SetIdentityPopupContent() {
 
   return (
     <div className="space-y-4">
-      <Signer
-        balance={0}
-        isBalanceLoading={false}
-        symbol={chainSettings.symbol}
-      />
+      <SignerWithBalance />
       {fields.map((field) => (
         <TextInputField
           key={field.key}
@@ -100,11 +96,9 @@ export default function SetIdentityPopupContent() {
           <PopupLabel text="Deposit" />
           <CurrencyInput
             disabled
-            value={
-              isLoading ? "" : toPrecision(deposit || 0, chainSettings.decimals)
-            }
+            value={isLoading ? "" : toPrecision(deposit || 0, decimals)}
             prefix={<LoadableContent isLoading={isLoading} />}
-            symbol={chainSettings.symbol}
+            symbol={symbol}
           />
         </div>
       </AdvanceSettings>
