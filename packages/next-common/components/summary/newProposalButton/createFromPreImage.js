@@ -56,8 +56,7 @@ const useCreateProposal = ({ track, preimageHash, preimageLength }) => {
 function NewPreimageContent() {
   const { period } = usePageProps();
   const { goBack } = useStepContainer();
-  const { canSubmit, isLoading, preimageData, form, button } =
-    useCreatePrimage();
+  const { isLoading, preimageData, form, button } = useCreatePrimage();
   const {
     isLoading: proposalLoading,
     form: proposalForm,
@@ -72,16 +71,16 @@ function NewPreimageContent() {
       <CircleStepper
         steps={[
           {
-            id: "provideInfo",
-            label: "Provide the Info",
+            id: "templateSelect",
+            label: "Template Select",
           },
           { id: "newPreimage", label: "New Preimage" },
           { id: "newReferendum", label: "New Referendum" },
         ]}
-        currentStep={!canSubmit ? 0 : !preimageData ? 1 : 2}
+        currentStep={!preimageData ? 1 : 2}
         loading={isLoading || proposalLoading}
       />
-      <div>{!preimageData ? form : proposalForm}</div>
+      {!preimageData ? form : proposalForm}
       {preimageData ? (
         <div className="bg-neutral200 rounded-lg px-4 py-2.5 text14Medium">
           After submitting the transaction, you&apos;ll be redirected to the
@@ -123,15 +122,15 @@ const NewProposalContent = () => {
       <CircleStepper
         steps={[
           {
-            id: "provideInfo",
-            label: "Provide the Info",
+            id: "templateSelect",
+            label: "Template Select",
           },
           { id: "newReferendum", label: "New Referendum" },
         ]}
-        currentStep={disabled ? 0 : 1}
+        currentStep={1}
         loading={proposalLoading}
       />
-      <div>{proposalForm}</div>
+      <>{proposalForm}</>
       {!disabled ? (
         <div className="bg-neutral200 rounded-lg px-4 py-2.5 text14Medium">
           After submitting the transaction, you&apos;ll be redirected to the

@@ -134,12 +134,12 @@ export function CancelReferendumInnerPopupContent() {
       <CircleStepper
         steps={[
           {
-            id: "provideInfo",
-            label: "Provide the Info",
+            id: "templateSelect",
+            label: "Template Select",
           },
           { id: "newReferendum", label: "New Referendum" },
         ]}
-        currentStep={!referendumIndex ? 0 : 1}
+        currentStep={1}
         loading={isLoading}
       />
       <SignerWithBalance />

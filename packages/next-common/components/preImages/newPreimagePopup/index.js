@@ -15,6 +15,7 @@ import TxSubmissionButton from "next-common/components/common/tx/txSubmissionBut
 import { isEmptyFunc } from "next-common/utils/isEmptyFunc";
 import { ExtrinsicLoading } from "next-common/components/popup/fields/extrinsicField";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
+import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 
 const EMPTY_HASH = blake2AsHex("");
 
@@ -148,18 +149,21 @@ export function useNewPrerimageForm() {
     extrinsicComponent = <ExtrinsicLoading />;
   } else {
     extrinsicComponent = (
-      <div>
-        <PopupLabel text="Propose" />
-        <Extrinsic
-          defaultSectionName="system"
-          defaultMethodName="setCode"
-          setValue={setProposal}
-        />
+      <>
+        <SignerWithBalance />
+        <div>
+          <PopupLabel text="Prepropose" />
+          <Extrinsic
+            defaultSectionName="system"
+            defaultMethodName="setCode"
+            setValue={setProposal}
+          />
+        </div>
         <ExtrinsicInfo
           preimageHash={encodedHash}
           preimageLength={encodedLength || 0}
         />
-      </div>
+      </>
     );
   }
 
