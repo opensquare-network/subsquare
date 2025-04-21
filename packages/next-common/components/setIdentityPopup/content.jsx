@@ -91,7 +91,7 @@ export default function SetIdentityPopupContent() {
         <TextInputField
           key={field.key}
           title={field.title}
-          text={identityInfo[field.key]}
+          text={identityInfo[field.key] || ""}
           setText={(value) => updateIdentityInfo(field.key, value)}
         />
       ))}
