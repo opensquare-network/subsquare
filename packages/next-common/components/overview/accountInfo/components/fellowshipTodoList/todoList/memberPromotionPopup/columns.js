@@ -11,8 +11,9 @@ import Tooltip from "next-common/components/tooltip";
 import { useValueFromBatchResult } from "next-common/context/batch";
 import { usePageProps } from "next-common/context/page";
 import Loading from "next-common/components/loading";
-import VoteButtonsWithoutReferendum from "./voteButtons/voteButtonsWithoutReferendum";
 import ReferendumVoteButtons from "./voteButtons/referendumVoteButtons";
+import CreatePromotionReferendumAndVoteButtons from "./voteButtons/createPromotionReferendumAndVoteButtons";
+import CreateRetentionReferendumAndVoteButtons from "./voteButtons/createRetentionReferendumAndVoteButtons";
 
 const EvidenceDetailPopup = dynamicPopup(() =>
   import("next-common/components/collectives/core/member/evidence"),
@@ -96,6 +97,10 @@ function ReferendaTooltip({ referendumIndex, children }) {
     return <Tooltip content={<Loading size={16} />}>{children}</Tooltip>;
   }
 
+  if (!value) {
+    return children;
+  }
+
   return (
     <Tooltip
       content={
@@ -140,10 +145,10 @@ export const referendumColumn = {
 export const votePromoteColumn = {
   key: "vote",
   name: "Vote",
-  style: { width: "100px" },
+  style: { width: "100px", textAlign: "right" },
   render: (item) =>
     isNil(item.referendumIndex) ? (
-      <VoteButtonsWithoutReferendum who={item.who} action="promote" />
+      <CreatePromotionReferendumAndVoteButtons who={item.who} />
     ) : (
       <ReferendumVoteButtons referendumIndex={item.referendumIndex} />
     ),
@@ -152,10 +157,10 @@ export const votePromoteColumn = {
 export const voteRetainColumn = {
   key: "vote",
   name: "Vote",
-  style: { width: "100px" },
+  style: { width: "100px", textAlign: "right" },
   render: (item) =>
     isNil(item.referendumIndex) ? (
-      <VoteButtonsWithoutReferendum who={item.who} action="approve" />
+      <CreateRetentionReferendumAndVoteButtons who={item.who} />
     ) : (
       <ReferendumVoteButtons referendumIndex={item.referendumIndex} />
     ),

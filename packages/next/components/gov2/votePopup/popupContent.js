@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from "react";
 import { noop } from "lodash-es";
 import StandardVoteStatus from "components/referenda/popup/standardVoteStatus";
 import SplitVoteStatus from "components/referenda/popup/splitVoteStatus";
-import NoVoteRecord from "components/referenda/popup/noVoteRecord";
 import LoadingVoteStatus from "components/referenda/popup/loadingVoteStatus";
 import Delegating from "components/referenda/popup/delegating";
 import Signer from "next-common/components/popup/fields/signerField";
@@ -107,9 +106,6 @@ function VotePanel({
         <Delegating addressVoteDelegate={addressVote?.delegating} node={node} />
       )}
 
-      {!addressVoteIsLoading && !hasVote && !hasDelegatedVote && (
-        <NoVoteRecord />
-      )}
       {hasVote && (
         <VStack space={8}>
           {addressVote?.standard && <StandardVoteStatus votes={votes} />}

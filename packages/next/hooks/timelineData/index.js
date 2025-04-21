@@ -3,3 +3,6 @@ export { default as useAllianceAnnouncementTimelineData } from "./useAllianceAnn
 export { default as useDemocracyExternalProposalTimelineData } from "./useDemocracyExternalProposalTimelineData";
 export { default as useDemocracyPublicProposalTimelineData } from "./useDemocracyPublicProposalTimelineData";
 export { default as useDemocracyReferendaProposalTimelineData } from "./useDemocracyReferendaProposalTimelineData";
+export { default as useMotionTimelineData } from "./useMotionTimelineData";
+export { default as useTreasuryChildBountiesTimelineData } from "./useTreasuryChildBountiesTimelineData";
+export { default as useTreasuryTipsTimelineData } from "./useTreasuryTipsTimelineData";

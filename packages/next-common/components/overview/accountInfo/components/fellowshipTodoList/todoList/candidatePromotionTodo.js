@@ -2,7 +2,7 @@ import { useState } from "react";
 import ActionButton from "./actionButton";
 import { TodoContent, TodoTag, TodoWrapper } from "./styled";
 import pluralize from "pluralize";
-import { useMemberPromotionEvidences } from "../hooks/evidence";
+import { useCandidatePromotionEvidences } from "../hooks/evidence";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { useMyPromotionTaskCount } from "./myTaskCount";
 
@@ -10,17 +10,17 @@ const MemberPromotionPopup = dynamicPopup(() =>
   import("./memberPromotionPopup"),
 );
 
-export function MemberPromotionTodo() {
-  const memberPromotionEvidences = useMemberPromotionEvidences();
-  const myTaskCount = useMyPromotionTaskCount(memberPromotionEvidences);
+export function CandidatePromotionTodo() {
+  const candidatePromotionEvidences = useCandidatePromotionEvidences();
+  const myTaskCount = useMyPromotionTaskCount(candidatePromotionEvidences);
   const [showMemberPromotionPopup, setShowMemberPromotionPopup] =
     useState(false);
 
-  if (myTaskCount === 0) {
+  if (myTaskCount <= 0) {
     return null;
   }
 
-  const total = memberPromotionEvidences?.length || 0;
+  const total = candidatePromotionEvidences?.length || 0;
 
   return (
     <TodoWrapper>
@@ -31,9 +31,9 @@ export function MemberPromotionTodo() {
           className="text-theme500 cursor-pointer"
           target="_blank"
           rel="noreferrer"
-          href="/fellowship/members?evidence_only=true&wish=promotion"
+          href="/fellowship/members?tab=candidates&evidence_only=true&wish=promotion"
         >
-          {total} member promotion {pluralize("wish", total)}
+          {total} candidate promotion {pluralize("wish", total)}
         </a>
         &nbsp;{myTaskCount === 1 ? "needs" : "need"} your vote.&nbsp;
         <ActionButton onClick={() => setShowMemberPromotionPopup(true)}>
@@ -42,7 +42,8 @@ export function MemberPromotionTodo() {
       </TodoContent>
       {showMemberPromotionPopup && (
         <MemberPromotionPopup
-          promotions={memberPromotionEvidences}
+          title="Candidate Promotion"
+          promotions={candidatePromotionEvidences}
           onClose={() => setShowMemberPromotionPopup(false)}
         />
       )}

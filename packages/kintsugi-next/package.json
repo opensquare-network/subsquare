@@ -12,7 +12,7 @@
   "dependencies": {
     "@interlay/monetary-js": "^0.5.3",
     "@next/env": "15.3.0",
-    "@osn/icons": "latest",
+    "@osn/icons": "^1.188.0",
     "@polkadot/util-crypto": "13.4.3",
     "@svgr/webpack": "^7.0.0",
     "bignumber.js": "^9.0.2",

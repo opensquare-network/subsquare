@@ -9,6 +9,7 @@ import CollectivesMembersProvider from "./collectivesMember";
 import CollectivesReferendaVotesProvider from "./collectivesVotes";
 import { AllMemberEvidenceProvider } from "next-common/components/collectives/core/context/evidenceMemberContext";
 import { ReferendaTitleProvider } from "next-common/context/fellowshipReferenda";
+import MyVotesChangedProvider from "./myVotesChanged";
 
 export default function FellowshipTodoProviders({ children }) {
   const referendaPallet = useReferendaFellowshipPallet();
@@ -24,7 +25,9 @@ export default function FellowshipTodoProviders({ children }) {
                   <SalaryStatsProvider>
                     <MySalaryClaimantProvider>
                       <CollectivesReferendaVotesProvider>
-                        {children}
+                        <MyVotesChangedProvider>
+                          {children}
+                        </MyVotesChangedProvider>
                       </CollectivesReferendaVotesProvider>
                     </MySalaryClaimantProvider>
                   </SalaryStatsProvider>

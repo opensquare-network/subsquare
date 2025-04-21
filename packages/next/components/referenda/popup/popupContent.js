@@ -3,7 +3,6 @@ import { useAddressVotingBalance } from "next-common/utils/hooks/useAddressVotin
 import { noop } from "lodash-es";
 import StandardVoteStatus from "./standardVoteStatus";
 import SplitVoteStatus from "./splitVoteStatus";
-import NoVoteRecord from "./noVoteRecord";
 import LoadingVoteStatus from "./loadingVoteStatus";
 import Delegating from "./delegating";
 import Signer from "next-common/components/popup/fields/signerField";
@@ -104,9 +103,6 @@ function VotePanel({
         <Delegating addressVoteDelegate={addressVote?.delegating} />
       )}
 
-      {!addressVoteIsLoading && !hasVote && !hasDelegatedVote && (
-        <NoVoteRecord />
-      )}
       {hasVote && (
         <VStack space={8}>
           {addressVote?.standard && <StandardVoteStatus votes={votes} />}
