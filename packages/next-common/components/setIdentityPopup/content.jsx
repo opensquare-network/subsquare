@@ -1,8 +1,8 @@
-import TextInputField from "next-common/components/popup/fields/textInputField";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import useSetIdentityDeposit from "next-common/hooks/people/useSetIdentityDeposit";
 import RightWrapper from "next-common/components/rightWraper";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
+import Input from "next-common/lib/input";
 import { toPrecision } from "next-common/utils";
 import PopupLabel from "next-common/components/popup/label";
 import CurrencyInput from "next-common/components/currencyInput";
@@ -14,6 +14,7 @@ import { useContextApi } from "next-common/context/api";
 import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { formatIdentityInfo } from "next-common/components/people/common";
+import { Label } from "../popup/styled";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 
 const fields = [
@@ -28,10 +29,12 @@ const fields = [
   {
     title: "Email",
     key: "email",
+    type: "email",
   },
   {
     title: "Web",
     key: "web",
+    type: "url",
   },
   {
     title: "Twitter",
@@ -50,6 +53,7 @@ const fields = [
 export default function SetIdentityPopupContent() {
   const { decimals, symbol } = useChainSettings();
   const [identityInfo, setIdentityInfo] = useState({});
+  const [errors, setErrors] = useState({});
   const { result: subMyIdentityInfo } = useSubMyIdentityInfo();
   const api = useContextApi();
   const dispatch = useDispatch();
@@ -80,15 +84,22 @@ export default function SetIdentityPopupContent() {
     dispatch(newSuccessToast("Set identity successfully"));
   }, [dispatch]);
 
+  const hasErrors = Object.values(errors).some((error) => !!error);
+  const isEmpty = Object.values(identityInfo).every((value) => !value);
+
+  const isDisabled = hasErrors || isEmpty;
+
   return (
     <div className="space-y-4">
       <SignerWithBalance />
       {fields.map((field) => (
-        <TextInputField
+        <InputField
           key={field.key}
-          title={field.title}
-          text={identityInfo[field.key] || ""}
-          setText={(value) => updateIdentityInfo(field.key, value)}
+          field={field}
+          errors={errors}
+          setErrors={setErrors}
+          identityInfo={identityInfo}
+          onFieldChange={updateIdentityInfo}
         />
       ))}
       <AdvanceSettings>
@@ -107,8 +118,41 @@ export default function SetIdentityPopupContent() {
           title="Set Identity"
           getTxFunc={getTxFunc}
           onInBlock={onInBlock}
+          disabled={isDisabled}
         />
       </RightWrapper>
+    </div>
+  );
+}
+
+function InputField({ field, identityInfo, onFieldChange, errors, setErrors }) {
+  const inputRef = useRef(null);
+
+  return (
+    <div>
+      <Label>{field.title}</Label>
+      <Input
+        ref={inputRef}
+        name={field.key}
+        value={identityInfo[field.key] || ""}
+        type={field.type || "text"}
+        onChange={(e) => {
+          setErrors((prev) => ({
+            ...prev,
+            [field.key]: null,
+          }));
+          onFieldChange(field.key, e.target.value);
+        }}
+        onBlur={() => {
+          setErrors((prev) => ({
+            ...prev,
+            [field.key]: inputRef.current.checkValidity?.()
+              ? null
+              : `Invalid ${field.title}`,
+          }));
+        }}
+        error={errors[field.key]}
+      />
     </div>
   );
 }

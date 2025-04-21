@@ -3,7 +3,6 @@ import RadioOptionGroup, {
 } from "next-common/components/radioOptionGroup";
 import useRegistrars from "next-common/hooks/people/useRegistrars";
 import { useState, useCallback } from "react";
-import LoadableContent from "../common/loadableContent";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
@@ -12,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { isEmpty } from "lodash-es";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
+import Loading from "../loading";
 
 export default function RequestJudgementPopupContent() {
   const [value, setValue] = useState();
@@ -41,7 +41,12 @@ export default function RequestJudgementPopupContent() {
     <div className="flex flex-col gap-y-4">
       <SignerWithBalance />
       <div className="text14Bold text-textPrimary">Select a Registrar</div>
-      <LoadableContent isLoading={isLoading}>
+
+      {isLoading ? (
+        <div className="flex justify-center items-center h-full">
+          <Loading size="24" />
+        </div>
+      ) : (
         <RadioOptionGroup
           type={RadioOptionGroupType.REQUEST_JUDGEMENT}
           className="gap-y-3"
@@ -56,7 +61,7 @@ export default function RequestJudgementPopupContent() {
           selected={value}
           setSelected={setValue}
         />
-      </LoadableContent>
+      )}
       <TxSubmissionButton
         disabled={!value}
         getTxFunc={getTxFunc}
