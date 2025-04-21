@@ -10,6 +10,7 @@ import Tabs from "next-common/components/tabs";
 import DirectIdentityImpl from "./overview/directIdentity";
 import { useRouter } from "next/router";
 import useSubMyIdentityInfo from "next-common/hooks/people/useSubMyIdentityInfo";
+import UserAccountProvider from "next-common/context/user/account";
 export default function PeopleOverviewPageImpl() {
   const { description } = useChainSettings();
   const realAddress = useRealAddress();
@@ -26,6 +27,7 @@ export default function PeopleOverviewPageImpl() {
 
 function PeopleOverviewContent() {
   const router = useRouter();
+  const realAddress = useRealAddress();
   const [activeTabValue, setActiveTabValue] = useState(
     router.query.tab || "direct-identity",
   );
@@ -68,16 +70,18 @@ function PeopleOverviewContent() {
 
   return (
     <div className="space-y-6">
-      <AccountImpl>
-        <TitleContainer className="mb-4">Identity</TitleContainer>
-        <SecondaryCardDetail>
-          <Tabs
-            activeTabValue={activeTabValue}
-            onTabClick={handleTabClick}
-            tabs={tabs}
-          />
-        </SecondaryCardDetail>
-      </AccountImpl>
+      <UserAccountProvider address={realAddress}>
+        <AccountImpl>
+          <TitleContainer className="mb-4">Identity</TitleContainer>
+          <SecondaryCardDetail>
+            <Tabs
+              activeTabValue={activeTabValue}
+              onTabClick={handleTabClick}
+              tabs={tabs}
+            />
+          </SecondaryCardDetail>
+        </AccountImpl>
+      </UserAccountProvider>
     </div>
   );
 }
