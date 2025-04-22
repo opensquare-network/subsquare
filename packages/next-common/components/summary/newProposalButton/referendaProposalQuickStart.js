@@ -30,41 +30,42 @@ const useQuickStartItems = () => {
   return useMemo(() => {
     const items = [
       {
-        name: "Spend DOT",
-        description: "Create a treasury spend of DOT that is locally available",
+        name: "Treasury proposal local",
+        description:
+          "Create a treasury spend of native token that is locally available",
         content: NewTreasuryReferendumInnerPopupContent,
       },
     ];
     if (treasuryProposalTracks && usdxTreasuryProposal) {
       items.push({
-        name: "Spend USDx on Asset Hub",
-        description: "Create a treasury spend with assets on Asset Hub",
+        name: "USDx treasury proposal",
+        description: "Create a treasury spend with assets on AssetHub",
         buttonSuffix: <InfoPopoular className="w-4 h-4 ml-2" />,
         content: NewUSDxTreasuryReferendumInnerPopupContent,
       });
     }
     if (treasuryProposalTracks && spendDotOnAssetHubProposal) {
       items.push({
-        name: "Spend DOT on Asset Hub",
+        name: "Spend DOT on AssetHub",
         description: "Create a treasury spend with DOT asset on AssetHub",
         content: SpendDotOnAssetHubReferendumInnerPopupContent,
       });
     }
     items.push({
-      name: "New Remark Proposal",
+      name: "Remark",
       description: "Create a remark proposal",
       content: NewRemarkReferendumInnerPopupContent,
     });
     if (cancelReferendum) {
       items.push({
-        name: "Cancel a Referendum",
+        name: "Cancel a referendum",
         description: "Cancel an ongoing referendum and returning the deposit",
         content: CancelReferendumInnerPopupContent,
       });
     }
     if (killReferendum) {
       items.push({
-        name: "Kill a Referendum",
+        name: "Kill a referendum",
         description:
           "Kill an ongoing referendum and the submission & decision deposits will be slashed",
         content: KillReferendumInnerPopupContent,

@@ -35,8 +35,8 @@ export function NewPreimageButton({ onClick }) {
   return (
     <ChoiceButton
       icon={<SystemNewPreimage className="text-textTertiary mr-1" />}
-      name="New Preimage"
-      description="Create a new preimage"
+      name="New preimage"
+      description="Proposals can be submitted with preimage hash-only"
       onClick={onClick}
     />
   );
@@ -46,7 +46,7 @@ export function NewProposalFromPreimageButton({ onClick }) {
   return (
     <ChoiceButton
       icon={<SystemCopyPreimage className="text-textTertiary mr-1" />}
-      name="I Already Have a Preimage"
+      name="I already have a preimage"
       description="Copy preimage hash to continue submitting a proposal"
       onClick={onClick}
     />
