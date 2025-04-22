@@ -10,6 +10,8 @@ import useSubMyIdentityInfo from "next-common/hooks/people/useSubMyIdentityInfo"
 import { isPeopleChain } from "next-common/utils/chain";
 import { cloneDeep } from "lodash-es";
 import { isNil } from "lodash-es";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { isSameAddress } from "next-common/utils";
 
 export function useChainAddressIdentityInfo(chain, address) {
   const { identity: identityChain } = getChainSettings(chain);
@@ -19,8 +21,8 @@ export function useChainAddressIdentityInfo(chain, address) {
   const cachedIdentity = getCachedIdentity(identityChain, encodedAddress);
   const [identity, setIdentity] = useState(cachedIdentity);
   const [isLoading, setIsLoading] = useState(true);
-  const { result: myIdentityInfo, isLoading: isMyIdentityLoading } =
-    useSubMyIdentityInfo(address);
+  const { result: myIdentityInfo } = useSubMyIdentityInfo();
+  const realAddress = useRealAddress();
 
   useEffect(() => {
     setIdentity(null);
@@ -28,7 +30,7 @@ export function useChainAddressIdentityInfo(chain, address) {
       setIsLoading(true);
       fetchIdentity(identityChain, encodeAddressToChain(address, identityChain))
         .then((identity) => {
-          if (!isPeopleChain(chain)) {
+          if (!isPeopleChain(chain) || !isSameAddress(realAddress, address)) {
             setIdentity(identity);
             return;
           }
@@ -52,15 +54,13 @@ export function useChainAddressIdentityInfo(chain, address) {
                 status: "NOT_VERIFIED",
               },
             };
-          } else if (isNil(peopleIdentityName) && !isNil(peopleIdentity)) {
-            peopleIdentity = null;
           }
 
           setIdentity(peopleIdentity);
         })
         .finally(() => setIsLoading(false));
     }
-  }, [address, identityChain, myIdentityInfo, isMyIdentityLoading, chain]);
+  }, [address, identityChain, myIdentityInfo, chain, realAddress]);
 
   return {
     identity,

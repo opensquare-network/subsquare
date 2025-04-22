@@ -38,12 +38,12 @@ function convertIdentityInfo(identity) {
   };
 }
 
-export default function useSubMyIdentityInfo(add) {
+export default function useSubMyIdentityInfo() {
   const address = useRealAddress();
   const { result, loading: isLoading } = useSubStorage(
     "identity",
     "identityOf",
-    [add ?? address],
+    [address],
   );
 
   const identity = useMemo(() => {
