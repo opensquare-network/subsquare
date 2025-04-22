@@ -19,6 +19,7 @@ import getChainSettings from "../settings";
 import { getMoreMenu } from "./more";
 import { coretimeMenu } from "./coretime";
 import Data from "./data";
+import getAdvancedMenu from "next-common/utils/consts/menu/advanced";
 
 export function getHomeMenu({
   summary = {},
@@ -46,11 +47,10 @@ export function getHomeMenu({
     modules?.advisoryCommittee && getAdvisoryCommitteeMenu(summary),
     modules?.alliance && getAllianceMenu(summary),
     modules?.communityCouncil && getCommunityCouncilMenu(summary),
-    modules?.preimages && preImages,
+    getAdvancedMenu(
+      [modules?.preimages && preImages, ...integrationsMenu].filter(Boolean),
+    ),
     (modules?.proxy || modules?.vesting || hasMultisig) && Data,
-    ...(integrationsMenu.length
-      ? [{ type: "divider" }, ...integrationsMenu]
-      : []),
   ].filter(Boolean);
 }
 
