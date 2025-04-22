@@ -125,7 +125,7 @@ function VotePanel({
         // Address is not allow to vote directly when it is in delegate mode
         <div style={{ textAlign: "right" }}>
           <PrimaryButton loading={isLoading} onClick={doSubmit}>
-            Confirm
+            Submit
           </PrimaryButton>
         </div>
       )}
@@ -192,7 +192,7 @@ export default function PopupContent() {
   return (
     <>
       <Signer
-        balanceName="Voting balance"
+        balanceName="Voting Balance"
         balance={votingBalance}
         isBalanceLoading={votingIsLoading}
       />
