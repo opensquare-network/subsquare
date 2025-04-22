@@ -32,7 +32,11 @@ export function SpendDotOnAssetHubReferendumInnerPopupContent() {
     useSpendDotOnAssetHubPreimageTx(inputBalance, beneficiary, validFrom);
   const { goBack } = useStepContainer();
 
-  const { isLoading, component: submitButton } = useCreateProposalSubmitButton({
+  const {
+    isLoading,
+    component: submitButton,
+    loadingTip,
+  } = useCreateProposalSubmitButton({
     trackId,
     enactment,
     encodedHash,
@@ -67,10 +71,7 @@ export function SpendDotOnAssetHubReferendumInnerPopupContent() {
         {enactmentField}
         <SubmissionDeposit />
       </AdvanceSettings>
-      <div className="bg-neutral200 rounded-lg px-4 py-2.5 text14Medium">
-        After submitting the transaction, you&apos;ll be redirected to the
-        referendum detail page to edit content.
-      </div>
+      {loadingTip}
       <div className="flex justify-between">
         <Button
           className={`border-neutral400 hover:border-neutral500 ${

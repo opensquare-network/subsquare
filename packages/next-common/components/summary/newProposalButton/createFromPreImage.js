@@ -42,7 +42,11 @@ const useCreateProposal = ({ track, preimageHash, preimageLength }) => {
   const onClose = usePopupOnClose();
   const { getTxFunc, disabled, onInBlock, component } =
     useNewProposalInnerPopupContent({ track, preimageHash, preimageLength });
-  const { isLoading, component: button } = useTxSubmissionButton({
+  const {
+    isLoading,
+    component: button,
+    loadingTip,
+  } = useTxSubmissionButton({
     loadingText: "Submit",
     getTxFunc,
     disabled,
@@ -53,6 +57,7 @@ const useCreateProposal = ({ track, preimageHash, preimageLength }) => {
   return {
     disabled,
     isLoading,
+    loadingTip,
     form: component,
     button: button,
   };
@@ -67,6 +72,7 @@ function NewPreimageContent() {
     isLoading: proposalLoading,
     form: proposalForm,
     button: proposalButton,
+    loadingTip,
   } = useCreateProposal({
     track: period,
     preimageHash: preimageData?.encodedHash,
@@ -87,6 +93,7 @@ function NewPreimageContent() {
         loading={isLoading || proposalLoading}
       />
       {!preimageData ? form : proposalForm}
+      {loadingTip}
       <div className="flex justify-between">
         <Button
           className={`border-neutral400 hover:border-neutral500 ${
@@ -114,6 +121,7 @@ const NewProposalContent = () => {
     isLoading: proposalLoading,
     form: proposalForm,
     button: proposalButton,
+    loadingTip,
   } = useCreateProposal({
     track: period,
   });
@@ -132,10 +140,7 @@ const NewProposalContent = () => {
         loading={proposalLoading}
       />
       <>{proposalForm}</>
-      <div className="bg-neutral200 rounded-lg px-4 py-2.5 text14Medium">
-        After submitting the transaction, you&apos;ll be redirected to the
-        referendum detail page to edit content.
-      </div>
+      {loadingTip}
       <div className="flex justify-between">
         <Button
           className={`border-neutral400 hover:border-neutral500 ${

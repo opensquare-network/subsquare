@@ -4,6 +4,7 @@ import PrimaryButton from "next-common/lib/button/primary";
 import LoadingButton from "next-common/lib/button/loading";
 import useTxSubmission from "./useTxSubmission";
 import { usePopupOnClose } from "next-common/context/popup";
+import SigningTip from "next-common/components/summary/newProposalQuickStart/common/signingTip";
 
 export default function TxSubmissionButton({
   loading = false,
@@ -66,6 +67,7 @@ export function useTxSubmissionButton({
 
   return {
     isLoading: isSubmitting,
+    loadingTip: isSubmitting ? <SigningTip /> : null,
     component: (
       <div className="flex justify-end">
         {isSubmitting && loadingText ? (
