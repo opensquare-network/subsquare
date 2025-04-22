@@ -128,6 +128,7 @@ export function useNewPrerimageForm() {
   const api = useContextApi();
   const [{ encodedHash, encodedLength, notePreimageTx }, setState] =
     useState(EMPTY_PROPOSAL);
+  const [callState, setCallState] = useState();
 
   const setProposal = useCallback(
     ({ isValid, data: tx }) => {
@@ -153,8 +154,10 @@ export function useNewPrerimageForm() {
         <>
           <SignerWithBalance />
           <div>
-            <PopupLabel text="Prepropose" />
+            <PopupLabel text="Pre-Propose" />
             <Extrinsic
+              defalueCallState={callState}
+              onCallStateChange={setCallState}
               defaultSectionName="system"
               defaultMethodName="setCode"
               setValue={setProposal}
@@ -169,7 +172,7 @@ export function useNewPrerimageForm() {
     }
 
     return extrinsicComponent;
-  }, [api, encodedHash, encodedLength, setProposal]);
+  }, [api, callState, encodedHash, encodedLength, setProposal]);
 
   return {
     encodedHash,
