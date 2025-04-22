@@ -21,23 +21,27 @@ const fields = [
     title: "Display Name",
     key: "display",
     placeholder: "My On-Chain Name",
+    maxLength: 32,
   },
   {
     title: "Legal Name",
     key: "legal",
     placeholder: "Full Legal Name",
+    maxLength: 32,
   },
   {
     title: "Email",
     key: "email",
     type: "email",
     placeholder: "somebody@example.col",
+    maxLength: 32,
   },
   {
     title: "Web",
     key: "web",
     type: "url",
     placeholder: "https://example.com",
+    maxLength: 32,
   },
   {
     title: "Twitter",
@@ -53,11 +57,13 @@ const fields = [
     title: "Matrix Name",
     key: "matrix",
     placeholder: "@yourname:matrix.org",
+    maxLength: 32,
   },
   {
     title: "Github",
     key: "github",
     placeholder: "YourGithubHandle",
+    maxLength: 32,
   },
 ];
 
@@ -147,6 +153,7 @@ function InputField({ field, identityInfo, onFieldChange, errors, setErrors }) {
         value={identityInfo[field.key] || ""}
         type={field.type || "text"}
         placeholder={field.placeholder || ""}
+        maxLength={field.maxLength || ""}
         onChange={(e) => {
           setErrors((prev) => ({
             ...prev,
