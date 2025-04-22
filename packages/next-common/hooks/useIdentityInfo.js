@@ -20,7 +20,7 @@ export function useChainAddressIdentityInfo(chain, address) {
   const [identity, setIdentity] = useState(cachedIdentity);
   const [isLoading, setIsLoading] = useState(true);
   const { result: myIdentityInfo, isLoading: isMyIdentityLoading } =
-    useSubMyIdentityInfo();
+    useSubMyIdentityInfo(address);
 
   useEffect(() => {
     setIdentity(null);
