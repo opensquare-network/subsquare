@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import Link from "next/link";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
 import CoreFellowshipMemberInfoWrapper from "./infoWrapper";
@@ -81,6 +82,28 @@ export function ReferendumVoteButtons({ referendumIndex }) {
   );
 }
 
+function ReferendaList({ relatedReferenda }) {
+  return relatedReferenda.map(({ referendumIndex }, index) => (
+    <Fragment key={index}>
+      {index !== 0 && <span className="text-textTertiary">·</span>}
+      <ReferendumIndex referendumIndex={referendumIndex} />
+    </Fragment>
+  ));
+}
+
+function ReferendaListWithActions({ relatedReferenda }) {
+  return relatedReferenda.map(({ referendumIndex }, index) => (
+    <div key={index} className="flex items-center gap-[8px]">
+      <div className="flex items-center gap-[4px]">
+        <ReferendumIndex referendumIndex={referendumIndex} />
+        <MyVote referendumIndex={referendumIndex} />
+      </div>
+      <span className="text-textTertiary">·</span>
+      <ReferendumVoteButtons referendumIndex={referendumIndex} />
+    </div>
+  ));
+}
+
 export function CoreFellowshipMemberRelatedReferendaContent({
   relatedReferenda,
   isLoading,
@@ -92,20 +115,11 @@ export function CoreFellowshipMemberRelatedReferendaContent({
   }
 
   if (relatedReferenda.length > 0) {
-    return relatedReferenda.map(({ referendumIndex }, index) => (
-      <div key={index} className="flex items-center gap-[8px]">
-        <div className="flex items-center gap-[4px]">
-          <ReferendumIndex referendumIndex={referendumIndex} />
-          {realAddress && <MyVote referendumIndex={referendumIndex} />}
-        </div>
-        {realAddress && (
-          <>
-            <span className="text-textTertiary">·</span>
-            <ReferendumVoteButtons referendumIndex={referendumIndex} />
-          </>
-        )}
-      </div>
-    ));
+    return realAddress ? (
+      <ReferendaListWithActions relatedReferenda={relatedReferenda} />
+    ) : (
+      <ReferendaList relatedReferenda={relatedReferenda} />
+    );
   }
 
   return <span className="text-textDisabled">-</span>;
