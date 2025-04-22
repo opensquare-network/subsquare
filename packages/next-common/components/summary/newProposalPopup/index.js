@@ -16,6 +16,9 @@ import Popup from "next-common/components/popup/wrapper/Popup";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { useListPageType } from "next-common/context/page";
 import { listPageCategory } from "next-common/utils/consts/business/category";
+import AdvanceSettings from "../newProposalQuickStart/common/advanceSettings";
+import { usePreimageWithHash } from "next-common/hooks/usePreimageHashes";
+import CallTree from "next-common/components/proposal/callTree";
 
 export function useProposalOrigin(trackId) {
   const track = useTrackDetail(trackId);
@@ -138,6 +141,7 @@ export function useNewProposalInnerPopupContent({
   const [enactment, setEnactment] = useState();
   const [preimageHash, setPreimageHash] = useState(_preimageHash || "");
   const [preimageLength, setPreimageLength] = useState(_preimageLength || "");
+  const [info] = usePreimageWithHash(preimageHash);
 
   useEffect(() => {
     setTrackId(_track?.id);
@@ -198,8 +202,11 @@ export function useNewProposalInnerPopupContent({
           setPreimageHash={setPreimageHash}
           setPreimageLength={setPreimageLength}
         />
-        <EnactmentBlocks track={track} setEnactment={setEnactment} />
-        <SubmissionDeposit />
+        {info?.proposal ? <CallTree call={info?.proposal} /> : null}
+        <AdvanceSettings>
+          <EnactmentBlocks track={track} setEnactment={setEnactment} />
+          <SubmissionDeposit />
+        </AdvanceSettings>
       </>
     ),
   };
