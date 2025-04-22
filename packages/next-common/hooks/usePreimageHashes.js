@@ -76,7 +76,7 @@ export function usePreimageWithHash(hash) {
     [api, hash],
   );
 
-  const { value: optStatus, loaded: isStatusLoaded } = useCall(
+  const { value: optStatus, loading: optLoading } = useCall(
     !inlineData && paramsStatus && api?.query.preimage?.requestStatusFor,
     paramsStatus ? paramsStatus : [undefined],
   );
@@ -90,7 +90,7 @@ export function usePreimageWithHash(hash) {
     [optStatus, resultPreimageHash],
   );
 
-  const { value: optBytes, loaded: isBytesLoaded } = useCall(
+  const { value: optBytes, loading: bytesLoading } = useCall(
     paramsBytes && api?.query.preimage?.preimageFor,
     paramsBytes ? paramsBytes : [undefined],
     { cacheKey: `usePreimage/preimageFor/${hash}` },
@@ -108,16 +108,15 @@ export function usePreimageWithHash(hash) {
           ? createResult(resultPreimageHash, inlineData)
           : resultPreimageHash
         : undefined,
-      isStatusLoaded,
-      isBytesLoaded,
+      bytesLoading || optLoading,
     ],
     [
-      inlineData,
+      resultPreimageFor,
       optBytes,
       resultPreimageHash,
-      resultPreimageFor,
-      isStatusLoaded,
-      isBytesLoaded,
+      inlineData,
+      bytesLoading,
+      optLoading,
     ],
   );
 }

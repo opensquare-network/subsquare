@@ -19,6 +19,7 @@ import { listPageCategory } from "next-common/utils/consts/business/category";
 import AdvanceSettings from "../newProposalQuickStart/common/advanceSettings";
 import { usePreimageWithHash } from "next-common/hooks/usePreimageHashes";
 import CallTree from "next-common/components/proposal/callTree";
+import Loading from "next-common/components/loading";
 
 export function useProposalOrigin(trackId) {
   const track = useTrackDetail(trackId);
@@ -141,7 +142,7 @@ export function useNewProposalInnerPopupContent({
   const [enactment, setEnactment] = useState();
   const [preimageHash, setPreimageHash] = useState(_preimageHash || "");
   const [preimageLength, setPreimageLength] = useState(_preimageLength || "");
-  const [info] = usePreimageWithHash(preimageHash);
+  const [info, loading] = usePreimageWithHash(preimageHash);
 
   useEffect(() => {
     setTrackId(_track?.id);
@@ -202,7 +203,13 @@ export function useNewProposalInnerPopupContent({
           setPreimageHash={setPreimageHash}
           setPreimageLength={setPreimageLength}
         />
-        {info?.proposal ? <CallTree call={info?.proposal} /> : null}
+        {loading ? (
+          <div className="flex justify-center py-[12px]">
+            <Loading size={20} />
+          </div>
+        ) : info?.proposal ? (
+          <CallTree call={info?.proposal} />
+        ) : null}
         <AdvanceSettings>
           <EnactmentBlocks track={track} setEnactment={setEnactment} />
           <SubmissionDeposit />
