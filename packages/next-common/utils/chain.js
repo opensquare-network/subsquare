@@ -92,6 +92,10 @@ export function isPaseoAssetHubChain(chain) {
   return [Chains.paseoAssetHub].includes(chain);
 }
 
+export function isPaseoPeopleChain(chain) {
+  return [Chains.paseoPeople].includes(chain);
+}
+
 export function isLaosChain(chain) {
   return [Chains.laos].includes(chain);
 }
@@ -134,6 +138,8 @@ export function getRelayChain(chain) {
     return Chains.polkadot;
   } else if (isKusamaPeopleChain(chain)) {
     return Chains.kusama;
+  } else if (isPaseoPeopleChain(chain)) {
+    return Chains.paseo;
   }
 
   throw new Error("Unsupported relay chain");
