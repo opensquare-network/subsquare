@@ -42,7 +42,6 @@ export const nodes = [
   polkadot,
   polkadotAssetHub,
   polkadotPeople,
-  paseoPeople,
   kusama,
   kusamaAssetHub,
   kusamaPeople,
@@ -76,6 +75,7 @@ export const nodes = [
   zkverifyTestnet,
   paseo,
   paseoAssetHub,
+  paseoPeople,
   ...optionalNodes,
 ];
 
