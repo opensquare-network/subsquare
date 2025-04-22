@@ -1,4 +1,3 @@
-import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import useSetIdentityDeposit from "next-common/hooks/people/useSetIdentityDeposit";
 import RightWrapper from "next-common/components/rightWraper";
 import { useState, useCallback, useEffect, useRef } from "react";
@@ -21,32 +20,44 @@ const fields = [
   {
     title: "Display Name",
     key: "display",
+    placeholder: "My On-Chain Name",
   },
   {
     title: "Legal Name",
     key: "legal",
+    placeholder: "Full Legal Name",
   },
   {
     title: "Email",
     key: "email",
     type: "email",
+    placeholder: "somebody@example.col",
   },
   {
     title: "Web",
     key: "web",
     type: "url",
+    placeholder: "https://example.com",
   },
   {
     title: "Twitter",
     key: "twitter",
+    placeholder: "@YourTwitterName",
   },
   {
     title: "Discord",
     key: "discord",
+    placeholder: "YourDiscordHandle",
+  },
+  {
+    title: "Matrix Name",
+    key: "matrix",
+    placeholder: "@yourname:matrix.org",
   },
   {
     title: "Github",
     key: "github",
+    placeholder: "YourGithubHandle",
   },
 ];
 
@@ -87,7 +98,7 @@ export default function SetIdentityPopupContent() {
   const hasErrors = Object.values(errors).some((error) => !!error);
   const isEmpty = Object.values(identityInfo).every((value) => !value);
 
-  const isDisabled = hasErrors || isEmpty;
+  const isDisabled = hasErrors || isEmpty || !identityInfo?.display;
 
   return (
     <div className="space-y-4">
@@ -102,17 +113,15 @@ export default function SetIdentityPopupContent() {
           onFieldChange={updateIdentityInfo}
         />
       ))}
-      <AdvanceSettings>
-        <div>
-          <PopupLabel text="Deposit" />
-          <CurrencyInput
-            disabled
-            value={isLoading ? "" : toPrecision(deposit || 0, decimals)}
-            prefix={<LoadableContent isLoading={isLoading} />}
-            symbol={symbol}
-          />
-        </div>
-      </AdvanceSettings>
+      <div>
+        <PopupLabel text="Deposit" />
+        <CurrencyInput
+          disabled
+          value={isLoading ? "" : toPrecision(deposit || 0, decimals)}
+          prefix={<LoadableContent isLoading={isLoading} />}
+          symbol={symbol}
+        />
+      </div>
       <RightWrapper>
         <TxSubmissionButton
           title="Set Identity"
@@ -134,8 +143,10 @@ function InputField({ field, identityInfo, onFieldChange, errors, setErrors }) {
       <Input
         ref={inputRef}
         name={field.key}
+        errorClassName="leading-none"
         value={identityInfo[field.key] || ""}
         type={field.type || "text"}
+        placeholder={field.placeholder || ""}
         onChange={(e) => {
           setErrors((prev) => ({
             ...prev,
