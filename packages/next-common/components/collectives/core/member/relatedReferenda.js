@@ -8,6 +8,13 @@ import Tooltip from "next-common/components/tooltip";
 import { getGov2ReferendumTitle } from "next-common/utils/gov2/title";
 import useRelatedReferenda from "next-common/hooks/fellowship/useRelatedReferenda";
 import FieldLoading from "next-common/components/icons/fieldLoading";
+import { MyVote } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/todoList/memberPromotionPopup/voteButtons/referendumVoteButtons";
+import VoteButton from "next-common/components/overview/accountInfo/components/fellowshipTodoList/todoList/memberPromotionPopup/voteButtons/voteButton";
+import { SystemVoteAye, SystemVoteNay } from "@osn/icons/subsquare";
+import { cn } from "next-common/utils";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
+import { useDispatch } from "react-redux";
 
 const methods = ["bump", "approve", "promote", "promoteFast"];
 
@@ -27,29 +34,109 @@ function ReferendumTooltip({ referendumIndex, children }) {
   );
 }
 
+function ReferendumIndex({ referendumIndex }) {
+  const { section } = useCollectivesContext();
+
+  return (
+    <ReferendumTooltip referendumIndex={referendumIndex}>
+      <Link href={`/${section}/referenda/${referendumIndex}`}>
+        <span className="cursor-pointer text-sapphire500">
+          #{referendumIndex}
+        </span>
+      </Link>
+    </ReferendumTooltip>
+  );
+}
+
+function SimpleButton({ disabled, onClick, children }) {
+  return (
+    <div
+      role="button"
+      className={cn(
+        disabled && "pointer-events-none [&_svg_path]:stroke-textDisabled",
+      )}
+      onClick={onClick}
+    >
+      {children}
+    </div>
+  );
+}
+
+export function ReferendumVoteButtons({ referendumIndex }) {
+  const dispatch = useDispatch();
+  return (
+    <div className="flex gap-[12px] items-center justify-end">
+      <VoteButton
+        referendumIndex={referendumIndex}
+        voteAye={true}
+        ButtonComponent={SimpleButton}
+        callbacks={{
+          onInBlock: () => {
+            dispatch(newSuccessToast("Vote successfully"));
+          },
+        }}
+      >
+        <SystemVoteAye className="w-[16px] h-[16px]" />
+      </VoteButton>
+
+      <VoteButton
+        referendumIndex={referendumIndex}
+        voteAye={false}
+        ButtonComponent={SimpleButton}
+        callbacks={{
+          onInBlock: () => {
+            dispatch(newSuccessToast("Vote successfully"));
+          },
+        }}
+      >
+        <SystemVoteNay className="w-[16px] h-[16px]" />
+      </VoteButton>
+    </div>
+  );
+}
+
+function ReferendaList({ relatedReferenda }) {
+  return relatedReferenda.map(({ referendumIndex }, index) => (
+    <Fragment key={index}>
+      {index !== 0 && <span className="text-textTertiary">·</span>}
+      <ReferendumIndex referendumIndex={referendumIndex} />
+    </Fragment>
+  ));
+}
+
+function ReferendaListWithActions({ relatedReferenda }) {
+  return (
+    <div className="flex flex-col">
+      {relatedReferenda.map(({ referendumIndex }, index) => (
+        <div key={index} className="flex items-center gap-[8px]">
+          <div className="flex items-center gap-[4px]">
+            <ReferendumIndex referendumIndex={referendumIndex} />
+            <MyVote referendumIndex={referendumIndex} />
+          </div>
+          <span className="text-textTertiary">·</span>
+          <ReferendumVoteButtons referendumIndex={referendumIndex} />
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export function CoreFellowshipMemberRelatedReferendaContent({
   relatedReferenda,
   isLoading,
 }) {
-  const { section } = useCollectivesContext();
+  const realAddress = useRealAddress();
 
   if (isLoading) {
     return <FieldLoading size={16} />;
   }
 
   if (relatedReferenda.length > 0) {
-    return relatedReferenda.map(({ referendumIndex }, index) => (
-      <Fragment key={index}>
-        {index !== 0 && <span className="text-textTertiary">·</span>}
-        <ReferendumTooltip referendumIndex={referendumIndex}>
-          <Link href={`/${section}/referenda/${referendumIndex}`}>
-            <span className="cursor-pointer text-sapphire500">
-              #{referendumIndex}
-            </span>
-          </Link>
-        </ReferendumTooltip>
-      </Fragment>
-    ));
+    return realAddress ? (
+      <ReferendaListWithActions relatedReferenda={relatedReferenda} />
+    ) : (
+      <ReferendaList relatedReferenda={relatedReferenda} />
+    );
   }
 
   return <span className="text-textDisabled">-</span>;
