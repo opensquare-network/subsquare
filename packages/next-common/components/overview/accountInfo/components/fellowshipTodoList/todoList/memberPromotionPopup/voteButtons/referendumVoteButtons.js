@@ -17,7 +17,7 @@ export function MyVote({ referendumIndex }) {
 
   const tooltipContent = (
     <ul>
-      <li>Vote: {"aye" in vote ? "Aye" : "Nay"}</li>
+      <li>My Vote: {"aye" in vote ? "Aye" : "Nay"}</li>
       <li>Votes: {"aye" in vote ? vote.aye : vote.nay}</li>
     </ul>
   );
