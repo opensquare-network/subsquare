@@ -52,7 +52,9 @@ function ProfileHeaderWithBannerInContext() {
           {(isSelf || isProxyAccount) && <EditAvatarIconButton />}
         </div>
         <SecondaryButton
-          className="self-start -mt-[56px]"
+          className={cn("self-start -mt-[56px]", {
+            "absolute right-3": isMobile,
+          })}
           onClick={() => setIsEditBannerPopupOpen(true)}
         >
           Edit Banner
