@@ -11,6 +11,7 @@ import { MyVote } from "next-common/components/overview/accountInfo/components/f
 import VoteButton from "next-common/components/overview/accountInfo/components/fellowshipTodoList/todoList/memberPromotionPopup/voteButtons/voteButton";
 import { SystemVoteAye, SystemVoteNay } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 const methods = ["bump", "approve", "promote", "promoteFast"];
 
@@ -60,21 +61,21 @@ function SimpleButton({ disabled, onClick, children }) {
 
 export function ReferendumVoteButtons({ referendumIndex }) {
   return (
-    <div className="flex gap-[12px] h-[31px] items-center justify-end">
-      <VoteButton
-        referendumIndex={referendumIndex}
-        voteAye={false}
-        ButtonComponent={SimpleButton}
-      >
-        <SystemVoteNay className="w-[16px]" />
-      </VoteButton>
-
+    <div className="flex gap-[12px] items-center justify-end">
       <VoteButton
         referendumIndex={referendumIndex}
         voteAye={true}
         ButtonComponent={SimpleButton}
       >
-        <SystemVoteAye className="w-[16px]" />
+        <SystemVoteAye className="w-[16px] h-[16px]" />
+      </VoteButton>
+
+      <VoteButton
+        referendumIndex={referendumIndex}
+        voteAye={false}
+        ButtonComponent={SimpleButton}
+      >
+        <SystemVoteNay className="w-[16px] h-[16px]" />
       </VoteButton>
     </div>
   );
@@ -84,6 +85,8 @@ export function CoreFellowshipMemberRelatedReferendaContent({
   relatedReferenda,
   isLoading,
 }) {
+  const realAddress = useRealAddress();
+
   if (isLoading) {
     return <FieldLoading size={16} />;
   }
@@ -93,12 +96,14 @@ export function CoreFellowshipMemberRelatedReferendaContent({
       <div key={index} className="flex items-center gap-[8px]">
         <div className="flex items-center gap-[4px]">
           <ReferendumIndex referendumIndex={referendumIndex} />
-          <MyVote referendumIndex={referendumIndex} />
+          {realAddress && <MyVote referendumIndex={referendumIndex} />}
         </div>
-
-        <span className="text-textTertiary">·</span>
-
-        <ReferendumVoteButtons referendumIndex={referendumIndex} />
+        {realAddress && (
+          <>
+            <span className="text-textTertiary">·</span>
+            <ReferendumVoteButtons referendumIndex={referendumIndex} />
+          </>
+        )}
       </div>
     ));
   }

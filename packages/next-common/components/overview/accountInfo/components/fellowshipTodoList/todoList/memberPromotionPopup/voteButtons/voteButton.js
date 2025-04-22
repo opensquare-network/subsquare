@@ -42,7 +42,7 @@ function VoteButtonImpl({
   });
 
   let disabled = false;
-  let tooltipContent = "";
+  let tooltipContent = voteAye ? "Vote Aye" : "Vote Nay";
   if (!isReferendumInfoLoading && referendumInfo) {
     try {
       const track = referendumInfo.unwrap()?.asOngoing?.track;
