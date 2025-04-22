@@ -5,6 +5,7 @@ import { cn } from "next-common/utils";
 import { useSubFellowshipVote } from "next-common/utils/hooks/fellowship/useFellowshipVote";
 import VoteButton from "./voteButton";
 import SecondaryButton from "next-common/lib/button/secondary";
+import { useMyVotesChangedContext } from "../../../context/myVotesChanged";
 
 export function MyVote({ referendumIndex }) {
   const realAddress = useRealAddress();
@@ -50,6 +51,8 @@ function SecondaryButtonWrapper({ disabled, onClick, children }) {
 }
 
 export default function ReferendumVoteButtons({ referendumIndex }) {
+  const { triggerMyVotesChanged } = useMyVotesChangedContext();
+
   return (
     <div className="flex gap-[12px] h-[31px] items-center justify-end">
       <MyVote referendumIndex={referendumIndex} />
@@ -58,6 +61,9 @@ export default function ReferendumVoteButtons({ referendumIndex }) {
         referendumIndex={referendumIndex}
         voteAye={false}
         ButtonComponent={SecondaryButtonWrapper}
+        callbacks={{
+          onInBlock: () => triggerMyVotesChanged(),
+        }}
       >
         <SystemVoteNay className="w-[16px]" />
       </VoteButton>
@@ -66,6 +72,9 @@ export default function ReferendumVoteButtons({ referendumIndex }) {
         referendumIndex={referendumIndex}
         voteAye={true}
         ButtonComponent={SecondaryButtonWrapper}
+        callbacks={{
+          onInBlock: () => triggerMyVotesChanged(),
+        }}
       >
         <SystemVoteAye className="w-[16px]" />
       </VoteButton>

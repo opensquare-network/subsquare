@@ -11,14 +11,14 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useSubFellowshipReferendum from "next-common/hooks/collectives/useSubFellowshipReferendum";
 import Tooltip from "next-common/components/tooltip";
 import { getMinRankOfClass } from "next-common/context/post/fellowship/useMaxVoters";
-import { isNil } from "lodash-es";
-import { useMyVotesChangedContext } from "../../../context/myVotesChanged";
+import { isNil, noop } from "lodash-es";
 
 function VoteButtonImpl({
   referendumIndex,
   voteAye,
   children,
   ButtonComponent = SecondaryButton,
+  callbacks,
 }) {
   const dispatch = useDispatch();
   const api = useContextApi();
@@ -27,7 +27,7 @@ function VoteButtonImpl({
   const rank = useFellowshipMemberRank(realAddress, collectivePallet);
   const { result: referendumInfo, loading: isReferendumInfoLoading } =
     useSubFellowshipReferendum(referendumIndex);
-  const { triggerMyVotesChanged } = useMyVotesChangedContext();
+  const { onInBlock = noop } = callbacks || {};
 
   const voteTxFunc = useCallback(() => {
     return api.tx[collectivePallet].vote(referendumIndex, voteAye);
@@ -37,7 +37,7 @@ function VoteButtonImpl({
     getTxFunc: voteTxFunc,
     onInBlock: () => {
       dispatch(newSuccessToast("Vote successfully"));
-      triggerMyVotesChanged();
+      onInBlock();
     },
   });
 
