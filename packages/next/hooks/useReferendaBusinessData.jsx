@@ -23,7 +23,6 @@ function extractReferendaLink(call = {}) {
       <Link
         key="referendum-link"
         href={`/referenda/${referendumId}`}
-        legacyBehavior
       >{`Referendum #${referendumId}`}</Link>,
     ],
   ];
@@ -43,7 +42,6 @@ function extractTreasury(call = {}) {
         <Link
           key="proposal-link"
           href={`/treasury/proposals/${proposalId}`}
-          legacyBehavior
         >{`Treasury Proposal #${proposalId}`}</Link>,
       ],
     ];
@@ -66,7 +64,6 @@ function extractBounty(call = {}, chainSettings = {}) {
         <Link
           key="bounty-link"
           href={`/treasury/bounties/${bountyId}`}
-          legacyBehavior
         >{`Bounty #${bountyId}`}</Link>,
       ],
     ];
@@ -86,7 +83,6 @@ function extractBounty(call = {}, chainSettings = {}) {
         <Link
           key="bounty-link"
           href={`/treasury/bounties/${bountyId}`}
-          legacyBehavior
         >{`Bounty #${bountyId}`}</Link>,
       ],
       [
