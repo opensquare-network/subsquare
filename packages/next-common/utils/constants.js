@@ -33,6 +33,7 @@ import paseo from "./consts/settings/paseo";
 import ajuna from "./consts/settings/ajuna";
 import laos from "./consts/settings/laos";
 import paseoAssetHub from "./consts/settings/paseoAssetHub";
+import paseoPeople from "./consts/settings/paseoPeople";
 
 const optionalNodes =
   process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? [development] : [];
@@ -74,6 +75,7 @@ export const nodes = [
   zkverifyTestnet,
   paseo,
   paseoAssetHub,
+  paseoPeople,
   ...optionalNodes,
 ];
 
