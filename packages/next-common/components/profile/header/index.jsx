@@ -9,6 +9,16 @@ import EditAvatarIconButton from "next-common/components/editAvatarIconButton";
 import AvatarPermissionsProvider, {
   useAvatarPermissionsContext,
 } from "next-common/components/profile/header/context/avatarPermissionsContext";
+import SecondaryButton from "next-common/lib/button/secondary";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+import { useState } from "react";
+
+const ProfileBannerEditPopup = dynamicPopup(
+  () => import("next-common/components/profileBannerEditPopup"),
+  {
+    ssr: false,
+  },
+);
 
 export function useProfileBannerUrl() {
   const { isDark } = useTheme();
@@ -20,6 +30,7 @@ export function useProfileBannerUrl() {
 function ProfileHeaderWithBannerInContext() {
   const isMobile = useIsMobile();
   const { user, id } = usePageProps();
+  const [isEditBannerPopupOpen, setIsEditBannerPopupOpen] = useState(false);
   const { isSelf, isProxyAccount } = useAvatarPermissionsContext();
   const address =
     isPolkadotAddress(id) || isEthereumAddress(id) ? id : user?.address;
@@ -32,7 +43,7 @@ function ProfileHeaderWithBannerInContext() {
     >
       <div
         className={cn(
-          "px-12 mx-auto max-w-[1200px] max-sm:px-6 relative top-[72px]",
+          "px-12 mx-auto max-w-[1200px] max-sm:px-6 relative top-[72px] flex justify-between",
           isMobile && "flex justify-center",
         )}
       >
@@ -40,7 +51,18 @@ function ProfileHeaderWithBannerInContext() {
           <DisplayUserAvatar address={address} size={94} />
           {(isSelf || isProxyAccount) && <EditAvatarIconButton />}
         </div>
+        <SecondaryButton
+          className="self-start -mt-[56px]"
+          onClick={() => setIsEditBannerPopupOpen(true)}
+        >
+          Edit Banner
+        </SecondaryButton>
       </div>
+      {isEditBannerPopupOpen && (
+        <ProfileBannerEditPopup
+          onClose={() => setIsEditBannerPopupOpen(false)}
+        />
+      )}
     </div>
   );
 }
