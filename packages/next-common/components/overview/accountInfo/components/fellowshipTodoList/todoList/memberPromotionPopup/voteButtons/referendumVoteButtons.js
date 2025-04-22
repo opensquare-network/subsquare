@@ -4,8 +4,9 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { cn } from "next-common/utils";
 import { useSubFellowshipVote } from "next-common/utils/hooks/fellowship/useFellowshipVote";
 import VoteButton from "./voteButton";
+import SecondaryButton from "next-common/lib/button/secondary";
 
-function MyVote({ referendumIndex }) {
+export function MyVote({ referendumIndex }) {
   const realAddress = useRealAddress();
   const { result: myVote } = useSubFellowshipVote(referendumIndex, realAddress);
   const vote = myVote?.toJSON();
@@ -35,16 +36,37 @@ function MyVote({ referendumIndex }) {
   );
 }
 
+function SecondaryButtonWrapper({ disabled, onClick, children }) {
+  return (
+    <SecondaryButton
+      disabled={disabled}
+      className={cn("p-[6px]", disabled && "[&_svg_path]:stroke-textDisabled")}
+      size="small"
+      onClick={onClick}
+    >
+      {children}
+    </SecondaryButton>
+  );
+}
+
 export default function ReferendumVoteButtons({ referendumIndex }) {
   return (
     <div className="flex gap-[12px] h-[31px] items-center justify-end">
       <MyVote referendumIndex={referendumIndex} />
 
-      <VoteButton referendumIndex={referendumIndex} voteAye={false}>
+      <VoteButton
+        referendumIndex={referendumIndex}
+        voteAye={false}
+        ButtonComponent={SecondaryButtonWrapper}
+      >
         <SystemVoteNay className="w-[16px]" />
       </VoteButton>
 
-      <VoteButton referendumIndex={referendumIndex} voteAye={true}>
+      <VoteButton
+        referendumIndex={referendumIndex}
+        voteAye={true}
+        ButtonComponent={SecondaryButtonWrapper}
+      >
         <SystemVoteAye className="w-[16px]" />
       </VoteButton>
     </div>

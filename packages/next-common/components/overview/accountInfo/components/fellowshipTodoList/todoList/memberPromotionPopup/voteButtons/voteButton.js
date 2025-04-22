@@ -1,6 +1,5 @@
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { cn } from "next-common/utils";
 import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 import SecondaryButton from "next-common/lib/button/secondary";
@@ -15,7 +14,12 @@ import { getMinRankOfClass } from "next-common/context/post/fellowship/useMaxVot
 import { isNil } from "lodash-es";
 import { useMyVotesChangedContext } from "../../../context/myVotesChanged";
 
-function VoteButtonImpl({ referendumIndex, voteAye, children }) {
+function VoteButtonImpl({
+  referendumIndex,
+  voteAye,
+  children,
+  ButtonComponent = SecondaryButton,
+}) {
   const dispatch = useDispatch();
   const api = useContextApi();
   const collectivePallet = useRankedCollectivePallet();
@@ -56,17 +60,9 @@ function VoteButtonImpl({ referendumIndex, voteAye, children }) {
 
   return (
     <Tooltip content={tooltipContent}>
-      <SecondaryButton
-        disabled={disabled}
-        className={cn(
-          "p-[6px]",
-          disabled && "[&_svg_path]:stroke-textDisabled",
-        )}
-        size="small"
-        onClick={doSubmitVote}
-      >
+      <ButtonComponent disabled={disabled} onClick={doSubmitVote}>
         {children}
-      </SecondaryButton>
+      </ButtonComponent>
     </Tooltip>
   );
 }
