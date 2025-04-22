@@ -2,11 +2,14 @@ import { useState, useCallback } from "react";
 import { useContextApi } from "next-common/context/api";
 import { useDeepCompareEffect } from "react-use";
 import { TypeRegistry, createType } from "@polkadot/types";
+import { isNil } from "lodash-es";
 
 export default function useSetIdentityDeposit(identityInfo = {}) {
   const api = useContextApi();
   const [deposit, setDeposit] = useState("0");
   const [isLoading, setIsLoading] = useState(false);
+
+  const isEmpty = Object.values(identityInfo).every((value) => isNil(value));
 
   const calculateTotalDeposit = useCallback(
     (basicDeposit, byteDeposit, info) => {
@@ -39,7 +42,8 @@ export default function useSetIdentityDeposit(identityInfo = {}) {
           "IdentityInfo",
           formattedInfo,
         ).toU8a();
-        const byteSize = encoded?.length;
+
+        const byteSize = encoded?.length + 1;
 
         const totalDeposit =
           BigInt(basicDeposit) + BigInt(byteSize) * BigInt(byteDeposit);
@@ -63,6 +67,12 @@ export default function useSetIdentityDeposit(identityInfo = {}) {
     try {
       const basicDeposit = api.consts.identity.basicDeposit?.toString();
       const byteDeposit = api.consts.identity.byteDeposit?.toString();
+
+      if (isEmpty) {
+        setDeposit(basicDeposit);
+        return;
+      }
+
       const totalDeposit = calculateTotalDeposit(
         basicDeposit,
         byteDeposit,
@@ -75,7 +85,7 @@ export default function useSetIdentityDeposit(identityInfo = {}) {
     } finally {
       setIsLoading(false);
     }
-  }, [api, calculateTotalDeposit, identityInfo]);
+  }, [api, calculateTotalDeposit, identityInfo, isEmpty]);
 
   useDeepCompareEffect(() => {
     fetchDeposits();
