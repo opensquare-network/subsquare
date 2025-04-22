@@ -8,6 +8,7 @@ import { useTxSubmissionButton } from "next-common/components/common/tx/txSubmis
 import Button from "next-common/lib/button";
 import { useNewProposalInnerPopupContent } from "../newProposalPopup";
 import { usePopupOnClose } from "next-common/context/popup";
+import SigningTip from "next-common/components/summary/newProposalQuickStart/common/signingTip";
 
 const useCreatePrimage = () => {
   const {
@@ -42,11 +43,7 @@ const useCreateProposal = ({ track, preimageHash, preimageLength }) => {
   const onClose = usePopupOnClose();
   const { getTxFunc, disabled, onInBlock, component } =
     useNewProposalInnerPopupContent({ track, preimageHash, preimageLength });
-  const {
-    isLoading,
-    component: button,
-    loadingTip,
-  } = useTxSubmissionButton({
+  const { isLoading, component: button } = useTxSubmissionButton({
     loadingText: "Submit",
     getTxFunc,
     disabled,
@@ -57,7 +54,6 @@ const useCreateProposal = ({ track, preimageHash, preimageLength }) => {
   return {
     disabled,
     isLoading,
-    loadingTip,
     form: component,
     button: button,
   };
@@ -72,7 +68,6 @@ function NewPreimageContent() {
     isLoading: proposalLoading,
     form: proposalForm,
     button: proposalButton,
-    loadingTip,
   } = useCreateProposal({
     track: period,
     preimageHash: preimageData?.encodedHash,
@@ -93,7 +88,6 @@ function NewPreimageContent() {
         loading={isLoading || proposalLoading}
       />
       {!preimageData ? form : proposalForm}
-      {loadingTip}
       <div className="flex justify-between">
         <Button
           className={`border-neutral400 hover:border-neutral500 ${
@@ -121,7 +115,6 @@ const NewProposalContent = () => {
     isLoading: proposalLoading,
     form: proposalForm,
     button: proposalButton,
-    loadingTip,
   } = useCreateProposal({
     track: period,
   });
@@ -140,7 +133,7 @@ const NewProposalContent = () => {
         loading={proposalLoading}
       />
       <>{proposalForm}</>
-      {loadingTip}
+      <SigningTip />
       <div className="flex justify-between">
         <Button
           className={`border-neutral400 hover:border-neutral500 ${

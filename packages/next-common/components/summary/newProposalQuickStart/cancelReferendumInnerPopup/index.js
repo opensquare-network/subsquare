@@ -19,6 +19,8 @@ import { usePageProps } from "next-common/context/page";
 import { useStepContainer } from "next-common/context/stepContainer";
 import Button from "next-common/lib/button";
 import CircleStepper from "next-common/components/step";
+import SigningTip from "../common/signingTip";
+
 function useReferendumCancellerTrackID() {
   const { tracks } = usePageProps();
   const track = tracks.find((item) => item.name === "referendum_canceller");
@@ -117,11 +119,7 @@ export function CancelReferendumInnerPopupContent() {
     );
   }, [api, referendumIndex, proposalOrigin, enactment]);
   const { goBack } = useStepContainer();
-  const {
-    isLoading,
-    component: submitButton,
-    loadingTip,
-  } = useTxSubmissionButton({
+  const { isLoading, component: submitButton } = useTxSubmissionButton({
     getTxFunc,
     onInBlock: ({ events }) => {
       const eventData = getEventData(events, "referenda", "Submitted");
@@ -153,7 +151,7 @@ export function CancelReferendumInnerPopupContent() {
         {enactmentField}
         <SubmissionDeposit />
       </AdvanceSettings>
-      {loadingTip}
+      <SigningTip />
       <div className="flex justify-between">
         <Button
           className={`border-neutral400 hover:border-neutral500 ${

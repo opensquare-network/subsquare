@@ -14,6 +14,7 @@ import useEnactmentBlocksField from "../common/useEnactmentBlocksField";
 import { useStepContainer } from "next-common/context/stepContainer";
 import Button from "next-common/lib/button";
 import CircleStepper from "next-common/components/step";
+import SigningTip from "../common/signingTip";
 
 export function NewTreasuryReferendumInnerPopup() {
   const { onClose } = usePopupParams();
@@ -63,11 +64,7 @@ export function NewTreasuryReferendumInnerPopupContent() {
 
   const { encodedHash, encodedLength, notePreimageTx } =
     useLocalTreasuryNotePreimageTx(inputBalance, beneficiary);
-  const {
-    isLoading,
-    component: submitButton,
-    loadingTip,
-  } = useCreateProposalSubmitButton({
+  const { isLoading, component: submitButton } = useCreateProposalSubmitButton({
     trackId,
     enactment,
     encodedHash,
@@ -96,7 +93,7 @@ export function NewTreasuryReferendumInnerPopupContent() {
         {enactmentField}
         <SubmissionDeposit />
       </AdvanceSettings>
-      {loadingTip}
+      <SigningTip />
       <div className="flex justify-between">
         <Button
           className={`border-neutral400 hover:border-neutral500 ${

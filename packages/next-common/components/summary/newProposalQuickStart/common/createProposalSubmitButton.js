@@ -13,7 +13,6 @@ import LoadingPrimaryButton from "next-common/lib/button/loadingPrimary";
 import { usePopupOnClose } from "next-common/context/popup";
 import { useListPageType } from "next-common/context/page";
 import { listPageCategory } from "next-common/utils/consts/business/category";
-import SigningTip from "./signingTip";
 
 export default function CreateProposalSubmitButton({
   trackId,
@@ -138,6 +137,5 @@ export function useCreateProposalSubmitButton({
     component,
     preimageExists,
     notePreimageTx,
-    loadingTip: isLoading ? <SigningTip /> : null,
   };
 }
