@@ -47,6 +47,7 @@ const fields = [
     title: "Twitter",
     key: "twitter",
     placeholder: "@YourTwitterName",
+    pattern: "^@.*",
   },
   {
     title: "Discord",
@@ -58,6 +59,7 @@ const fields = [
     key: "matrix",
     placeholder: "@yourname:matrix.org",
     maxLength: 32,
+    pattern: "^@.+:.+$",
   },
   {
     title: "Github",
@@ -154,6 +156,7 @@ function InputField({ field, identityInfo, onFieldChange, errors, setErrors }) {
         type={field.type || "text"}
         placeholder={field.placeholder || ""}
         maxLength={field.maxLength || ""}
+        pattern={field.pattern || undefined}
         onChange={(e) => {
           setErrors((prev) => ({
             ...prev,
