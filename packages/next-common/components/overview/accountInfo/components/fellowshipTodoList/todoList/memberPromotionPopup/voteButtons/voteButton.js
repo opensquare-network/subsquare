@@ -50,7 +50,7 @@ function VoteButtonImpl({
         const requiredRank = getMinRankOfClass(track, collectivePallet);
         disabled = requiredRank > rank;
         if (disabled) {
-          tooltipContent = `Only rank >= ${requiredRank} can vote`;
+          tooltipContent = `Only members with rank >= ${requiredRank} can vote`;
         }
       }
     } catch (e) {
