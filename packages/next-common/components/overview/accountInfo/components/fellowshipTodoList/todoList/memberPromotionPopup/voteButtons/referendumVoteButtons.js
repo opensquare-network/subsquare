@@ -6,6 +6,8 @@ import { useSubFellowshipVote } from "next-common/utils/hooks/fellowship/useFell
 import VoteButton from "./voteButton";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { useMyVotesChangedContext } from "../../../context/myVotesChanged";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
+import { useDispatch } from "react-redux";
 
 export function MyVote({ referendumIndex }) {
   const realAddress = useRealAddress();
@@ -51,6 +53,7 @@ function SecondaryButtonWrapper({ disabled, onClick, children }) {
 }
 
 export default function ReferendumVoteButtons({ referendumIndex }) {
+  const dispatch = useDispatch();
   const { triggerMyVotesChanged } = useMyVotesChangedContext();
 
   return (
@@ -62,7 +65,13 @@ export default function ReferendumVoteButtons({ referendumIndex }) {
         voteAye={false}
         ButtonComponent={SecondaryButtonWrapper}
         callbacks={{
-          onInBlock: () => triggerMyVotesChanged(),
+          onInBlock: () => {
+            dispatch(newSuccessToast("Vote successfully"));
+            triggerMyVotesChanged();
+          },
+          onFinalized: () => {
+            triggerMyVotesChanged();
+          },
         }}
       >
         <SystemVoteNay className="w-[16px]" />
@@ -73,7 +82,13 @@ export default function ReferendumVoteButtons({ referendumIndex }) {
         voteAye={true}
         ButtonComponent={SecondaryButtonWrapper}
         callbacks={{
-          onInBlock: () => triggerMyVotesChanged(),
+          onInBlock: () => {
+            dispatch(newSuccessToast("Vote successfully"));
+            triggerMyVotesChanged();
+          },
+          onFinalized: () => {
+            triggerMyVotesChanged();
+          },
         }}
       >
         <SystemVoteAye className="w-[16px]" />

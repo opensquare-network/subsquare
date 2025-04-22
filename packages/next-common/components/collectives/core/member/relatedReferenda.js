@@ -13,6 +13,8 @@ import VoteButton from "next-common/components/overview/accountInfo/components/f
 import { SystemVoteAye, SystemVoteNay } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
+import { useDispatch } from "react-redux";
 
 const methods = ["bump", "approve", "promote", "promoteFast"];
 
@@ -61,12 +63,18 @@ function SimpleButton({ disabled, onClick, children }) {
 }
 
 export function ReferendumVoteButtons({ referendumIndex }) {
+  const dispatch = useDispatch();
   return (
     <div className="flex gap-[12px] items-center justify-end">
       <VoteButton
         referendumIndex={referendumIndex}
         voteAye={true}
         ButtonComponent={SimpleButton}
+        callbacks={{
+          onInBlock: () => {
+            dispatch(newSuccessToast("Vote successfully"));
+          },
+        }}
       >
         <SystemVoteAye className="w-[16px] h-[16px]" />
       </VoteButton>
@@ -75,6 +83,11 @@ export function ReferendumVoteButtons({ referendumIndex }) {
         referendumIndex={referendumIndex}
         voteAye={false}
         ButtonComponent={SimpleButton}
+        callbacks={{
+          onInBlock: () => {
+            dispatch(newSuccessToast("Vote successfully"));
+          },
+        }}
       >
         <SystemVoteNay className="w-[16px] h-[16px]" />
       </VoteButton>

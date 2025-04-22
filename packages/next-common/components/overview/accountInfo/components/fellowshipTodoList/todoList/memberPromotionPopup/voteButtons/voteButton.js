@@ -1,11 +1,9 @@
 import { useCallback } from "react";
-import { useDispatch } from "react-redux";
 import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { useContextApi } from "next-common/context/api";
 import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
-import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useFellowshipMemberRank } from "next-common/hooks/fellowship/useFellowshipMemberRank";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useSubFellowshipReferendum from "next-common/hooks/collectives/useSubFellowshipReferendum";
@@ -20,14 +18,13 @@ function VoteButtonImpl({
   ButtonComponent = SecondaryButton,
   callbacks,
 }) {
-  const dispatch = useDispatch();
   const api = useContextApi();
   const collectivePallet = useRankedCollectivePallet();
   const realAddress = useRealAddress();
   const rank = useFellowshipMemberRank(realAddress, collectivePallet);
   const { result: referendumInfo, loading: isReferendumInfoLoading } =
     useSubFellowshipReferendum(referendumIndex);
-  const { onInBlock = noop } = callbacks || {};
+  const { onInBlock = noop, onFinalized = noop } = callbacks || {};
 
   const voteTxFunc = useCallback(() => {
     return api.tx[collectivePallet].vote(referendumIndex, voteAye);
@@ -35,10 +32,8 @@ function VoteButtonImpl({
 
   const { doSubmit: doSubmitVote } = useTxSubmission({
     getTxFunc: voteTxFunc,
-    onInBlock: () => {
-      dispatch(newSuccessToast("Vote successfully"));
-      onInBlock();
-    },
+    onInBlock,
+    onFinalized,
   });
 
   let disabled = false;
