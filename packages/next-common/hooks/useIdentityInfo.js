@@ -33,6 +33,14 @@ export function useChainAddressIdentityInfo(chain, address) {
             return;
           }
 
+          const myIdentityIsEmpty = Object.values(myIdentityInfo).every(
+            (item) => isNil(item),
+          );
+          if (myIdentityIsEmpty) {
+            setIdentity(null);
+            return;
+          }
+
           let peopleIdentity = cloneDeep(identity);
           const peopleIdentityName = myIdentityInfo?.display;
           if (peopleIdentity?.info && peopleIdentity?.info?.display) {
