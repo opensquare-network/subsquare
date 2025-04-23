@@ -14,7 +14,7 @@ import {
 } from "next-common/context/collectives/collectives";
 import { CoreFellowshipMemberEvidenceContent } from "next-common/components/collectives/core/member/evidence";
 import {
-  CoreFellowshipMemberRelatedReferendaContent,
+  CoreFellowshipMemberRelatedReferendaActionsContent,
   useFellowshipCoreRelatedReferenda,
 } from "next-common/components/collectives/core/member/relatedReferenda";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
@@ -123,7 +123,8 @@ function EvidenceAndReferenda({ member }) {
       </div>
       {relatedReferenda?.length > 0 && (
         <div className="text14Medium">
-          <CoreFellowshipMemberRelatedReferendaContent
+          <CoreFellowshipMemberRelatedReferendaActionsContent
+            who={address}
             relatedReferenda={relatedReferenda}
             isLoading={isLoadingRelatedReferenda}
           />
