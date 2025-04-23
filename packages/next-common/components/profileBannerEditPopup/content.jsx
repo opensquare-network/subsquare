@@ -120,7 +120,7 @@ function BannerContent({ className, src }) {
   const bannerUrl = useProfileBannerUrl();
   return (
     <div
-      className={cn("bg-gray-200 h-24 w-full", className)}
+      className={cn("bg-gray-200 h-24 w-full bg-cover bg-no-repeat", className)}
       style={{ backgroundImage: `url(${src ?? bannerUrl})` }}
     ></div>
   );
