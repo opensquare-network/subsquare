@@ -62,7 +62,7 @@ export default function ProfileBannerEditPopupContent({ closePopup = noop }) {
     <>
       {isProxy && (
         <GreyPanel className="text14Medium text-purple500 py-2.5 px-4 max-w-full bg-purple100 !block">
-          You are editing banner for
+          You are setting banner for
           <AddressUser
             showAvatar={false}
             add={address}
