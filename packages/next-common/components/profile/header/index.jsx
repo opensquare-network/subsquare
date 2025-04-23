@@ -24,8 +24,8 @@ const ProfileBannerEditPopup = dynamicPopup(
 
 export function useProfileBannerUrl() {
   const { isDark } = useTheme();
-  const user = useUser();
   const filename = `imgBannerProfile${isDark ? "Dark" : "Light"}.webp`;
+  const { user } = usePageProps();
 
   let bannerUrl = `https://cdn.jsdelivr.net/gh/opensquare-network/subsquare-static/banner/${filename}`;
 
