@@ -34,7 +34,7 @@ export default function NavMenuItemItem({
         collapsed={collapsed}
         onClick={() => {
           setNavMenuType({
-            type: NAV_MENU_TYPE.archived,
+            type: item.type,
             menu: item?.items,
           });
         }}

@@ -20,6 +20,7 @@ import { getMoreMenu } from "./more";
 import { coretimeMenu } from "./coretime";
 import Data from "./data";
 import getAdvancedMenu from "next-common/utils/consts/menu/advanced";
+import { NAV_MENU_TYPE } from "next-common/utils/constants";
 
 export function getHomeMenu({
   summary = {},
@@ -116,4 +117,38 @@ export function getMainMenu({
     { type: "divider" },
     moreMenu,
   ];
+}
+
+const findedMenu = (menu, pathname) => {
+  for (const menuItem of menu) {
+    const matched = menuItem.pathname === pathname;
+    if (menuItem?.items?.length) {
+      const findItem = findedMenu(menuItem.items, pathname);
+      if (findItem) {
+        return menuItem;
+      }
+    }
+    if (matched) {
+      return menuItem;
+    }
+  }
+};
+const isSubSpaceNavMenu = (type) => type === NAV_MENU_TYPE.subspace;
+export function matchNewMenu(menu, pathname) {
+  for (const menuItem of menu) {
+    if (isSubSpaceNavMenu(menuItem.type) || menuItem.type === "archived") {
+      const findMenu = findedMenu(menuItem.items, pathname);
+      if (findMenu) {
+        return {
+          type: menuItem.type,
+          menu: menuItem.items,
+        };
+      }
+    } else if (menuItem?.items?.length) {
+      const metchMenu = matchNewMenu(menuItem.items, pathname);
+      if (metchMenu) {
+        return metchMenu;
+      }
+    }
+  }
 }
