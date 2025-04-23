@@ -16,12 +16,16 @@ import useBannerSubmission from "next-common/hooks/profile/banner/useBannerSubmi
 export default function ProfileBannerEditPopupContent() {
   const { isProxyAccount: isProxy } = useAvatarPermissionsContext();
   const address = useProfileAddress();
+  const proxyAddress = isProxy ? address : null;
 
   const user = useUser();
 
   const [imageFile, setImageFile] = useState(null);
   const [imageDataUrl, setImageDataUrl] = useState(null);
-  const { setBanner, isLoading, uploading } = useBannerSubmission(imageFile);
+  const { setBanner, isLoading, uploading } = useBannerSubmission(
+    imageFile,
+    proxyAddress,
+  );
 
   useEffect(() => {
     setImageFile(null);
