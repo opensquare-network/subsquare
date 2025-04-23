@@ -6,10 +6,18 @@ import PopupListWrapper from "../../../styled/popupListWrapper";
 import CapitalListItem from "next-common/components/dataList/capitalListItem";
 import AddressUser from "next-common/components/user/addressUser";
 import DataList from "next-common/components/dataList";
+import BigNumber from "bignumber.js";
 
 function DelegationList({ items, loading = false }) {
   const node = useChainSettings();
   const symbol = node.voteSymbol || node.symbol;
+
+  const sortedItems = (items || [])?.sort((a, b) => {
+    const bnA = new BigNumber(a?.votes);
+    const bnB = new BigNumber(b?.votes);
+
+    return bnB.comparedTo(bnA);
+  });
 
   const colWidths = {
     address: 266,
@@ -43,7 +51,7 @@ function DelegationList({ items, loading = false }) {
     },
   ];
 
-  const rows = items?.map?.((item) => {
+  const rows = sortedItems?.map?.((item) => {
     const row = [
       <AddressUser
         key="user"
