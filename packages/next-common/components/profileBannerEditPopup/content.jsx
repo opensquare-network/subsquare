@@ -7,29 +7,31 @@ import useProfileAddress from "next-common/components/profile/useProfileAddress"
 import { EditAvatar as EditBanner } from "next-common/components/setting/profile";
 import { useEffect, useState } from "react";
 import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
-import useAvatarInfo from "next-common/hooks/useAvatarInfo";
 import { useAvatarPermissionsContext } from "next-common/components/profile/header/context/avatarPermissionsContext";
 import { cn } from "next-common/utils";
 import { useProfileBannerUrl } from "../profile/header";
+import { useUser } from "next-common/context/user";
+import useBannerSubmission from "next-common/hooks/profile/banner/useBannerSubmission";
 
 export default function ProfileBannerEditPopupContent() {
   const { isProxyAccount: isProxy } = useAvatarPermissionsContext();
   const address = useProfileAddress();
 
-  const [avatarCid] = useAvatarInfo(address);
+  const user = useUser();
 
   const [imageFile, setImageFile] = useState(null);
   const [imageDataUrl, setImageDataUrl] = useState(null);
+  const { setBanner, isLoading, uploading } = useBannerSubmission(imageFile);
 
   useEffect(() => {
     setImageFile(null);
     setImageDataUrl(null);
-  }, [avatarCid]);
-
-  const { uploading, isLoading } = {};
+  }, [user?.bannerCid]);
 
   const { isLoading: unsetLoading } = {};
-  const save = () => {};
+  const save = () => {
+    setBanner();
+  };
 
   const reset = () => {};
 
@@ -48,10 +50,10 @@ export default function ProfileBannerEditPopupContent() {
       )}
       <div className="flex flex-col items-center gap-y-4">
         <h5 className="text14Bold text-textPrimary self-start">Banner</h5>
-        {imageDataUrl || avatarCid ? (
+        {imageDataUrl || user?.bannerCid ? (
           <BannerDefault
             className="w-full h-24"
-            src={imageDataUrl || getIpfsLink(avatarCid)}
+            src={imageDataUrl || getIpfsLink(user?.bannerCid)}
           />
         ) : (
           <BannerDefault className="w-full h-24" />
@@ -77,7 +79,7 @@ export default function ProfileBannerEditPopupContent() {
       <div className="flex justify-end gap-x-2">
         <SecondaryButton
           onClick={reset}
-          disabled={unsetLoading || !avatarCid}
+          disabled={unsetLoading || !user?.bannerCid}
           loading={unsetLoading}
         >
           Reset
