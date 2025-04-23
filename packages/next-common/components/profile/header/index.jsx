@@ -11,7 +11,9 @@ import AvatarPermissionsProvider, {
 } from "next-common/components/profile/header/context/avatarPermissionsContext";
 import SecondaryButton from "next-common/lib/button/secondary";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import { useUser } from "next-common/context/user";
 import { useState } from "react";
+import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
 
 const ProfileBannerEditPopup = dynamicPopup(
   () => import("next-common/components/profileBannerEditPopup"),
@@ -22,9 +24,16 @@ const ProfileBannerEditPopup = dynamicPopup(
 
 export function useProfileBannerUrl() {
   const { isDark } = useTheme();
+  const user = useUser();
   const filename = `imgBannerProfile${isDark ? "Dark" : "Light"}.webp`;
 
-  return `https://cdn.jsdelivr.net/gh/opensquare-network/subsquare-static/banner/${filename}`;
+  let defaultBannerUrl = `https://cdn.jsdelivr.net/gh/opensquare-network/subsquare-static/banner/${filename}`;
+
+  if (user?.bannerCid) {
+    defaultBannerUrl = getIpfsLink(user.bannerCid);
+  }
+
+  return defaultBannerUrl;
 }
 
 function ProfileHeaderWithBannerInContext() {
