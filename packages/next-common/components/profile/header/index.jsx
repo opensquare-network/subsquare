@@ -51,7 +51,10 @@ function ProfileHeaderWithBannerInContext() {
 
   return (
     <div
-      className={cn("bg-no-repeat bg-cover", "w-full h-[120px] relative")}
+      className={cn(
+        "bg-no-repeat bg-cover bg-center",
+        "w-full h-[120px] relative",
+      )}
       style={{ backgroundImage: `url(${bannerUrl})` }}
     >
       <div
