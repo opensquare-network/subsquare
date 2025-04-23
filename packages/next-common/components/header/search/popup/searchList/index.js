@@ -10,9 +10,10 @@ import {
   MenuChildBounties,
 } from "@osn/icons/subsquare";
 import Link from "next/link";
+import { ItemType } from "next-common/components/header/hooks/useSearchResults";
 
 const SearchItem = memo(function ItemContent({ row, onClose }) {
-  const { index, title, content, type } = row;
+  const { index, title, content, type, proposalType } = row;
   const { path, category } = getPathAndCategoryByItemData(row);
 
   return (
@@ -24,7 +25,7 @@ const SearchItem = memo(function ItemContent({ row, onClose }) {
         onClose?.();
       }}
     >
-      {index === -Infinity ? (
+      {type === ItemType.CATEGORY ? (
         <div className="h-9 px-4 py-2.5 rounded-[6px] flex items-center text12Medium text-textTertiary">
           {category}
         </div>
@@ -35,16 +36,16 @@ const SearchItem = memo(function ItemContent({ row, onClose }) {
           }`}
         >
           <p>
-            {type === SearchType.REFERENDA && (
+            {proposalType === SearchType.REFERENDA && (
               <MenuReferenda className="w-6 h-6 [&_path]:fill-textTertiary" />
             )}
-            {type === SearchType.DEMOCRACY_REFERENDA && (
+            {proposalType === SearchType.DEMOCRACY_REFERENDA && (
               <MenuDemocracy className="w-6 h-6 [&_path]:fill-textTertiary" />
             )}
-            {type === SearchType.BOUNTIES && (
+            {proposalType === SearchType.BOUNTIES && (
               <MenuBounties className="w-6 h-6 [&_path]:fill-textTertiary" />
             )}
-            {type === SearchType.CHILD_BOUNTIES && (
+            {proposalType === SearchType.CHILD_BOUNTIES && (
               <MenuChildBounties className="w-6 h-6 [&_path]:fill-textTertiary" />
             )}
           </p>

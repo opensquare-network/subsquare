@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import DataList from "next-common/components/dataList";
+import { ItemType } from "next-common/components/header/hooks/useSearchResults";
 
 export const SearchType = {
   REFERENDA: "Referenda",
@@ -13,33 +14,35 @@ export const getPathAndCategoryByItemData = (item) => {
   const typeToPathAndCategoryMap = {
     [SearchType.REFERENDA]: {
       path:
-        item.index !== -Infinity ? `/referenda/${item.index}` : "/referenda",
+        item.type !== ItemType.CATEGORY
+          ? `/referenda/${item.index}`
+          : "/referenda",
       category: "Referenda",
     },
     [SearchType.DEMOCRACY_REFERENDA]: {
       path:
-        item.index !== -Infinity
+        item.type !== ItemType.CATEGORY
           ? `/democracy/referenda/${item.index}`
           : "/democracy/referenda",
       category: "Democracy Referenda",
     },
     [SearchType.BOUNTIES]: {
       path:
-        item.index !== -Infinity
+        item.type !== ItemType.CATEGORY
           ? `/treasury/bounties/${item.index}`
           : "/treasury/bounties",
       category: "Bounties",
     },
     [SearchType.CHILD_BOUNTIES]: {
       path:
-        item.index !== -Infinity
+        item.type !== ItemType.CATEGORY
           ? `/treasury/child-bounties/${item.index}`
           : "/treasury/child-bounties",
       category: "Child Bounties",
     },
   };
 
-  const { path, category } = typeToPathAndCategoryMap[item.type] || {};
+  const { path, category } = typeToPathAndCategoryMap[item.proposalType] || {};
   return { path, category };
 };
 

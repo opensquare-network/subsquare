@@ -3,6 +3,11 @@ import nextApi from "next-common/services/nextApi";
 import useRefCallback from "next-common/hooks/useRefCallback";
 import { markdownToText } from "next-common/components/header/search/utils";
 
+export const ItemType = {
+  CATEGORY: "category",
+  ITEM: "item",
+};
+
 function useSearchResults() {
   const [results, setResults] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -53,14 +58,15 @@ function useSearchResults() {
     }
   }, []);
 
-  const formatItems = useRefCallback((type, items, getIndex) =>
+  const formatItems = useRefCallback((proposalType, items, getIndex) =>
     items?.length > 0
       ? [
           {
-            index: -Infinity,
-            title: type,
+            index: null,
+            title: proposalType,
             content: "-",
-            type,
+            proposalType,
+            type: ItemType.CATEGORY,
           },
           ...items.map((item) => ({
             index: item[getIndex] ?? 0,
@@ -68,7 +74,8 @@ function useSearchResults() {
             content: item.contentSummary?.summary
               ? markdownToText(item.contentSummary.summary)
               : "-",
-            type,
+            proposalType,
+            type: ItemType.ITEM,
           })),
         ]
       : [],
