@@ -3,7 +3,7 @@ import nextApi from "next-common/services/nextApi";
 import useRefCallback from "next-common/hooks/useRefCallback";
 import { markdownToText } from "next-common/components/header/search/utils";
 
-function useReferendaSearchResults() {
+function useSearchResults() {
   const [results, setResults] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const abortControllerRef = useRef(null);
@@ -34,7 +34,7 @@ function useReferendaSearchResults() {
       );
 
       if (!signal.aborted) {
-        setResults(result?.openGovReferenda || []);
+        setResults(result ?? {});
       }
     } finally {
       if (searchValue === lastSearchValueRef.current) {
@@ -53,25 +53,53 @@ function useReferendaSearchResults() {
     }
   }, []);
 
-  const referenda = useMemo(() => {
-    return (
-      results?.map((item) => ({
-        index: item?.referendumIndex ?? 0,
-        title: item?.title ?? "-",
-        content: item?.contentSummary?.summary
-          ? markdownToText(item?.contentSummary?.summary)
-          : "-",
-      })) ?? null
-    );
-  }, [results]);
+  const formatItems = useRefCallback((type, items, getIndex) =>
+    items?.length > 0
+      ? [
+          {
+            index: -Infinity,
+            title: type,
+            content: "-",
+            type,
+          },
+          ...items.map((item) => ({
+            index: item[getIndex] ?? 0,
+            title: item.title ?? "-",
+            content: item.contentSummary?.summary
+              ? markdownToText(item.contentSummary.summary)
+              : "-",
+            type,
+          })),
+        ]
+      : [],
+  );
+
+  const totalList = useMemo(() => {
+    if (!results) return null;
+
+    return Object.entries(results).flatMap(([key, value]) => {
+      switch (key) {
+        case "openGovReferenda":
+          return formatItems("Referenda", value, "referendumIndex");
+        case "democracyReferenda":
+          return formatItems("DemocracyReferenda", value, "referendumIndex");
+        case "bounties":
+          return formatItems("Bounties", value, "bountyIndex");
+        case "childBounties":
+          return formatItems("ChildBounties", value, "index");
+        default:
+          return [];
+      }
+    });
+  }, [formatItems, results]);
 
   return {
-    referenda,
+    totalList,
     fetch,
     isLoading,
-    setReferenda: setResults,
+    setResults,
     clearResults,
   };
 }
 
-export default useReferendaSearchResults;
+export default useSearchResults;
