@@ -27,13 +27,13 @@ export function useProfileBannerUrl() {
   const user = useUser();
   const filename = `imgBannerProfile${isDark ? "Dark" : "Light"}.webp`;
 
-  let defaultBannerUrl = `https://cdn.jsdelivr.net/gh/opensquare-network/subsquare-static/banner/${filename}`;
+  let bannerUrl = `https://cdn.jsdelivr.net/gh/opensquare-network/subsquare-static/banner/${filename}`;
 
   if (user?.bannerCid) {
-    defaultBannerUrl = getIpfsLink(user.bannerCid);
+    bannerUrl = getIpfsLink(user.bannerCid);
   }
 
-  return defaultBannerUrl;
+  return bannerUrl;
 }
 
 function ProfileHeaderWithBannerInContext() {
