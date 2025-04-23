@@ -1,11 +1,11 @@
-import { MenuMore } from "@osn/icons/subsquare";
+import { MenuAdvanced } from "@osn/icons/subsquare";
 
 export default function getAdvancedMenu(advanceMenu = []) {
   return {
     name: "Advanced",
     value: "advanced",
     type: "advanced",
-    icon: <MenuMore />,
+    icon: <MenuAdvanced />,
     items: advanceMenu,
   };
 }
