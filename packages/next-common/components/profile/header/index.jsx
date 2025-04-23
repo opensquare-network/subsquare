@@ -51,15 +51,18 @@ function ProfileHeaderWithBannerInContext() {
           <DisplayUserAvatar address={address} size={94} />
           {(isSelf || isProxyAccount) && <EditAvatarIconButton />}
         </div>
-        <SecondaryButton
-          className={cn("self-start -mt-[56px]", {
-            "absolute right-6": isMobile,
-          })}
-          size={isMobile ? "small" : "medium"}
-          onClick={() => setIsEditBannerPopupOpen(true)}
-        >
-          Edit Banner
-        </SecondaryButton>
+
+        {(isSelf || isProxyAccount) && (
+          <SecondaryButton
+            className={cn("self-start -mt-[56px]", {
+              "absolute right-6": isMobile,
+            })}
+            size={isMobile ? "small" : "medium"}
+            onClick={() => setIsEditBannerPopupOpen(true)}
+          >
+            Edit Banner
+          </SecondaryButton>
+        )}
       </div>
       {isEditBannerPopupOpen && (
         <ProfileBannerEditPopup
