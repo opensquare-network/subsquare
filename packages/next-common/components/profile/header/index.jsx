@@ -53,8 +53,9 @@ function ProfileHeaderWithBannerInContext() {
         </div>
         <SecondaryButton
           className={cn("self-start -mt-[56px]", {
-            "absolute right-3": isMobile,
+            "absolute right-6": isMobile,
           })}
+          size={isMobile ? "small" : "medium"}
           onClick={() => setIsEditBannerPopupOpen(true)}
         >
           Edit Banner
