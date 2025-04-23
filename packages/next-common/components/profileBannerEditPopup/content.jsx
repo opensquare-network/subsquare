@@ -10,22 +10,17 @@ import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
 import { useAvatarPermissionsContext } from "next-common/components/profile/header/context/avatarPermissionsContext";
 import { cn } from "next-common/utils";
 import { useProfileBannerUrl } from "../profile/header";
-import {
-  fetchAndUpdateUser,
-  useUser,
-  useUserContext,
-} from "next-common/context/user";
 import useBannerSubmission from "next-common/hooks/profile/banner/useBannerSubmission";
 import useBannerReset from "next-common/hooks/profile/banner/useBannerReset";
 import { noop } from "lodash-es";
+import { useProfileUserInfoContext } from "next-common/components/profile/header/context/profileUserInfoContext";
 
 export default function ProfileBannerEditPopupContent({ closePopup = noop }) {
   const { isProxyAccount: isProxy } = useAvatarPermissionsContext();
   const address = useProfileAddress();
   const proxyAddress = isProxy ? address : null;
+  const { fetch, user } = useProfileUserInfoContext();
 
-  const user = useUser();
-  const userContext = useUserContext();
   const [bannerCid, setBannerCid] = useState(user?.bannerCid);
 
   const [imageFile, setImageFile] = useState(null);
@@ -45,7 +40,7 @@ export default function ProfileBannerEditPopupContent({ closePopup = noop }) {
   const save = async () => {
     try {
       await setBanner();
-      fetchAndUpdateUser(userContext);
+      fetch();
       closePopup();
     } catch (error) {
       /** empty */
@@ -56,7 +51,7 @@ export default function ProfileBannerEditPopupContent({ closePopup = noop }) {
     try {
       await resetBanner();
       setBannerCid(null);
-      fetchAndUpdateUser(userContext);
+      fetch();
       closePopup();
     } catch (error) {
       /** empty */

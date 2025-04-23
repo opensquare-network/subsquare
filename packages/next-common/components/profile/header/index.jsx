@@ -11,8 +11,11 @@ import AvatarPermissionsProvider, {
 } from "next-common/components/profile/header/context/avatarPermissionsContext";
 import SecondaryButton from "next-common/lib/button/secondary";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
+import ProfileUserInfoProvider, {
+  useProfileUserInfoContext,
+} from "next-common/components/profile/header/context/profileUserInfoContext";
 
 const ProfileBannerEditPopup = dynamicPopup(
   () => import("next-common/components/profileBannerEditPopup"),
@@ -24,13 +27,15 @@ const ProfileBannerEditPopup = dynamicPopup(
 export function useProfileBannerUrl() {
   const { isDark } = useTheme();
   const filename = `imgBannerProfile${isDark ? "Dark" : "Light"}.webp`;
-  const { user } = usePageProps();
+  const { user } = useProfileUserInfoContext();
 
-  let bannerUrl = `https://cdn.jsdelivr.net/gh/opensquare-network/subsquare-static/banner/${filename}`;
+  const bannerUrl = useMemo(() => {
+    if (!user?.bannerCid) {
+      return `https://cdn.jsdelivr.net/gh/opensquare-network/subsquare-static/banner/${filename}`;
+    }
 
-  if (user?.bannerCid) {
-    bannerUrl = getIpfsLink(user.bannerCid);
-  }
+    return getIpfsLink(user.bannerCid);
+  }, [filename, user]);
 
   return bannerUrl;
 }
@@ -84,7 +89,9 @@ function ProfileHeaderWithBannerInContext() {
 export default function ProfileHeaderWithBanner() {
   return (
     <AvatarPermissionsProvider>
-      <ProfileHeaderWithBannerInContext />
+      <ProfileUserInfoProvider>
+        <ProfileHeaderWithBannerInContext />
+      </ProfileUserInfoProvider>
     </AvatarPermissionsProvider>
   );
 }
