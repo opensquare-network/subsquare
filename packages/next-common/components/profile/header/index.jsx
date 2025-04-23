@@ -11,7 +11,6 @@ import AvatarPermissionsProvider, {
 } from "next-common/components/profile/header/context/avatarPermissionsContext";
 import SecondaryButton from "next-common/lib/button/secondary";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import { useUser } from "next-common/context/user";
 import { useState } from "react";
 import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
 
