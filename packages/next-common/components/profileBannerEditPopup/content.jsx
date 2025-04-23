@@ -10,18 +10,28 @@ import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
 import { useAvatarPermissionsContext } from "next-common/components/profile/header/context/avatarPermissionsContext";
 import { cn } from "next-common/utils";
 import { useProfileBannerUrl } from "../profile/header";
-import { useUser } from "next-common/context/user";
+import {
+  fetchAndUpdateUser,
+  useUser,
+  useUserContext,
+} from "next-common/context/user";
 import useBannerSubmission from "next-common/hooks/profile/banner/useBannerSubmission";
+import useBannerReset from "next-common/hooks/profile/banner/useBannerReset";
+import { noop } from "lodash-es";
 
-export default function ProfileBannerEditPopupContent() {
+export default function ProfileBannerEditPopupContent({ closePopup = noop }) {
   const { isProxyAccount: isProxy } = useAvatarPermissionsContext();
   const address = useProfileAddress();
   const proxyAddress = isProxy ? address : null;
 
   const user = useUser();
+  const userContext = useUserContext();
+  const [bannerCid, setBannerCid] = useState(user?.bannerCid);
 
   const [imageFile, setImageFile] = useState(null);
   const [imageDataUrl, setImageDataUrl] = useState(null);
+  const { reset: resetBanner, isResetting: unsetLoading } =
+    useBannerReset(proxyAddress);
   const { setBanner, isLoading, uploading } = useBannerSubmission(
     imageFile,
     proxyAddress,
@@ -30,14 +40,28 @@ export default function ProfileBannerEditPopupContent() {
   useEffect(() => {
     setImageFile(null);
     setImageDataUrl(null);
-  }, [user?.bannerCid]);
+  }, [bannerCid]);
 
-  const { isLoading: unsetLoading } = {};
-  const save = () => {
-    setBanner();
+  const save = async () => {
+    try {
+      await setBanner();
+      fetchAndUpdateUser(userContext);
+      closePopup();
+    } catch (error) {
+      /** empty */
+    }
   };
 
-  const reset = () => {};
+  const reset = async () => {
+    try {
+      await resetBanner();
+      setBannerCid(null);
+      fetchAndUpdateUser(userContext);
+      closePopup();
+    } catch (error) {
+      /** empty */
+    }
+  };
 
   return (
     <>
@@ -54,13 +78,10 @@ export default function ProfileBannerEditPopupContent() {
       )}
       <div className="flex flex-col items-center gap-y-4">
         <h5 className="text14Bold text-textPrimary self-start">Banner</h5>
-        {imageDataUrl || user?.bannerCid ? (
-          <BannerDefault
-            className="w-full h-24"
-            src={imageDataUrl || getIpfsLink(user?.bannerCid)}
-          />
+        {imageDataUrl || bannerCid ? (
+          <BannerContent src={imageDataUrl || getIpfsLink(bannerCid)} />
         ) : (
-          <BannerDefault className="w-full h-24" />
+          <BannerContent />
         )}
         <EditBanner
           setImageDataUrl={setImageDataUrl}
@@ -83,7 +104,7 @@ export default function ProfileBannerEditPopupContent() {
       <div className="flex justify-end gap-x-2">
         <SecondaryButton
           onClick={reset}
-          disabled={unsetLoading || !user?.bannerCid}
+          disabled={unsetLoading || !bannerCid}
           loading={unsetLoading}
         >
           Reset
@@ -100,11 +121,11 @@ export default function ProfileBannerEditPopupContent() {
   );
 }
 
-function BannerDefault({ className, src }) {
+function BannerContent({ className, src }) {
   const bannerUrl = useProfileBannerUrl();
   return (
     <div
-      className={cn("bg-gray-200 h-24", className)}
+      className={cn("bg-gray-200 h-24 w-full", className)}
       style={{ backgroundImage: `url(${src ?? bannerUrl})` }}
     ></div>
   );
