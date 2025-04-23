@@ -6,7 +6,7 @@ import { useAvatarPermissionsContext } from "next-common/components/profile/head
 
 export default function ProfileBannerEditPopup({ onClose = noop }) {
   const { isProxyAccount } = useAvatarPermissionsContext();
-  const title = `Set Banner${isProxyAccount ? " As Proxy" : ""}`;
+  const title = `Edit Banner${isProxyAccount ? " As Proxy" : ""}`;
 
   return (
     <SignerPopupWrapper>
