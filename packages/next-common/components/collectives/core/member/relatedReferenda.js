@@ -232,30 +232,6 @@ export function CoreFellowshipMemberRelatedReferendaActionsContent({
   return <span className="text-textDisabled">-</span>;
 }
 
-export default function CoreFellowshipMemberRelatedReferenda({
-  address,
-  pallet,
-}) {
-  const { relatedReferenda, isLoading } = useFellowshipCoreRelatedReferenda(
-    address,
-    pallet,
-  );
-
-  return (
-    <CoreFellowshipMemberInfoWrapper>
-      <CoreFellowshipMemberInfoTitle className="mb-0.5">
-        Referenda
-      </CoreFellowshipMemberInfoTitle>
-      <div className="flex text12Medium gap-[4px] items-center truncate">
-        <CoreFellowshipMemberRelatedReferendaContent
-          relatedReferenda={relatedReferenda}
-          isLoading={isLoading}
-        />
-      </div>
-    </CoreFellowshipMemberInfoWrapper>
-  );
-}
-
 export function CoreFellowshipMemberRelatedReferendaActions({
   address,
   pallet,

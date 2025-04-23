@@ -8,13 +8,10 @@ import CoreFellowshipMemberDemotionPeriod from "next-common/components/collectiv
 import CoreFellowshipMemberPromotionPeriod from "next-common/components/collectives/core/member/promotionPeriod";
 import { CoreFellowshipMemberEvidence } from "next-common/components/collectives/core/member/evidence";
 import CoreFellowshipMemberSalary from "./salary";
-import CoreFellowshipMemberRelatedReferenda, {
-  CoreFellowshipMemberRelatedReferendaActions,
-} from "./relatedReferenda";
+import { CoreFellowshipMemberRelatedReferendaActions } from "./relatedReferenda";
 import MineTag from "next-common/components/delegation/delegate/common/mineTag";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { isSameAddress } from "next-common/utils";
-import useSubCoreFellowshipEvidence from "next-common/hooks/collectives/useSubCoreFellowshipEvidence";
 
 export default function CoreFellowshipMemberCard({
   member,
@@ -25,7 +22,6 @@ export default function CoreFellowshipMemberCard({
   const realAddress = useRealAddress();
   const { address, rank } = member;
   const { isActive, lastPromotion, lastProof } = member.status;
-  const { wish } = useSubCoreFellowshipEvidence(address, pallet);
 
   return (
     <SecondaryCard className="relative">
@@ -59,17 +55,10 @@ export default function CoreFellowshipMemberCard({
         </CoreFellowshipMemberInfoLine>
         <CoreFellowshipMemberInfoLine>
           <CoreFellowshipMemberEvidence member={member} pallet={pallet} />
-          {wish ? (
-            <CoreFellowshipMemberRelatedReferendaActions
-              address={address}
-              pallet={pallet}
-            />
-          ) : (
-            <CoreFellowshipMemberRelatedReferenda
-              address={address}
-              pallet={pallet}
-            />
-          )}
+          <CoreFellowshipMemberRelatedReferendaActions
+            address={address}
+            pallet={pallet}
+          />
         </CoreFellowshipMemberInfoLine>
       </div>
 

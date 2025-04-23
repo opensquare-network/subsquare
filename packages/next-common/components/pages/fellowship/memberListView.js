@@ -121,15 +121,14 @@ function EvidenceAndReferenda({ member }) {
           />
         )}
       </div>
-      {relatedReferenda?.length > 0 && (
-        <div className="text14Medium">
-          <CoreFellowshipMemberRelatedReferendaActionsContent
-            who={address}
-            relatedReferenda={relatedReferenda}
-            isLoading={isLoadingRelatedReferenda}
-          />
-        </div>
-      )}
+      <div className="text14Medium">
+        <CoreFellowshipMemberRelatedReferendaActionsContent
+          pallet={pallet}
+          who={address}
+          relatedReferenda={relatedReferenda}
+          isLoading={isLoadingRelatedReferenda}
+        />
+      </div>
     </div>
   );
 }
