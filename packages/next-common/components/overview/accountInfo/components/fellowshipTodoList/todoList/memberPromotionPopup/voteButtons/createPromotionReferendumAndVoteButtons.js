@@ -17,9 +17,9 @@ export function usePromotionButtonState(who) {
 
   let tooltipContent = "Create a new referendum and vote";
   let disabled = false;
-  if (currentRank >= 6) {
+  if (currentRank >= 7) {
     tooltipContent =
-      "There are no corresponding tracks to promote members with rank >= 6";
+      "There are no corresponding tracks to promote members with rank >= 7";
     disabled = true;
   } else if (isNil(myRank) || myRank < 3) {
     tooltipContent = "Only rank >= 3 can create a referendum and then vote";
