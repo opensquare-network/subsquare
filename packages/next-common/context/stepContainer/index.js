@@ -1,4 +1,10 @@
-import { useState, useMemo, createContext, useContext } from "react";
+import {
+  useState,
+  useMemo,
+  createContext,
+  useContext,
+  useCallback,
+} from "react";
 
 const StepContainerContext = createContext();
 
@@ -11,22 +17,18 @@ export function StepContainerProvider({ children, list = [] }) {
     return steps.length > 0 ? steps[steps.length - 1] : null;
   }, [steps]);
 
-  const goBack = () => {
-    if (steps.length <= 1) {
-      closeAll();
-      return;
-    }
+  const goBack = useCallback(() => {
     setSteps((prevSteps) => prevSteps.slice(0, -1));
-  };
+  }, []);
 
-  const goNext = (step) => {
+  const goNext = useCallback((step) => {
     if (!step) return;
     setSteps((prevSteps) => [...prevSteps, step]);
-  };
+  }, []);
 
-  const closeAll = () => {
+  const closeAll = useCallback(() => {
     setSteps([]);
-  };
+  }, []);
 
   return (
     <StepContainerContext.Provider

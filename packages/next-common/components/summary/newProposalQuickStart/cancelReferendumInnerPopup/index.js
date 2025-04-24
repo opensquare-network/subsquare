@@ -120,6 +120,7 @@ export function CancelReferendumInnerPopupContent() {
   }, [api, referendumIndex, proposalOrigin, enactment]);
   const { goBack } = useStepContainer();
   const { isLoading, component: submitButton } = useTxSubmissionButton({
+    loadingText: "Submit",
     getTxFunc,
     onInBlock: ({ events }) => {
       const eventData = getEventData(events, "referenda", "Submitted");

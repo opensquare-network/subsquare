@@ -156,7 +156,7 @@ export function useNewPrerimageForm() {
           <div>
             <PopupLabel text="Pre-Propose" />
             <Extrinsic
-              defalueCallState={callState}
+              defaultCallState={callState}
               onCallStateChange={setCallState}
               defaultSectionName="system"
               defaultMethodName="setCode"
