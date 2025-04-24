@@ -7,6 +7,8 @@ import UserAccountProvider from "next-common/context/user/account";
 import usePeopleOverviewTabs from "./overview/hooks/usePeopleOverviewTabs";
 import Tabs from "next-common/components/tabs";
 import useTabNavigation from "./overview/hooks/useTabNavigation";
+import RegistrarProvider from "next-common/context/people/registrarContext";
+import IdentityInfoProvider from "next-common/context/people/identityInfoContext";
 
 export default function PeopleOverviewPageImpl() {
   const { description } = useChainSettings();
@@ -30,14 +32,19 @@ function PeopleOverviewContent() {
   return (
     <div className="space-y-6">
       <UserAccountProvider address={realAddress}>
-        <AccountImpl>
-          <Tabs
-            tabs={tabs}
-            activeTabValue={activeTabValue}
-            onTabClick={handleTabClick}
-            tabsListDivider={false}
-          />
-        </AccountImpl>
+        <IdentityInfoProvider>
+          <RegistrarProvider>
+            <AccountImpl>
+              <Tabs
+                tabs={tabs}
+                activeTabValue={activeTabValue}
+                onTabClick={handleTabClick}
+                tabsListDivider={false}
+                tabsListClassName="px-6"
+              />
+            </AccountImpl>
+          </RegistrarProvider>
+        </IdentityInfoProvider>
       </UserAccountProvider>
     </div>
   );

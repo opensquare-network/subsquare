@@ -13,6 +13,8 @@ const InitIdentityInfo = {
   discord: null,
 };
 
+const InitIdentityJudgements = [];
+
 const extractRaw = (field) => {
   if (!field || field === "None") {
     return null;
@@ -21,9 +23,29 @@ const extractRaw = (field) => {
   return field?.Raw || field || null;
 };
 
-function convertIdentityInfo(identity) {
-  const unwrapped = identity.unwrap();
-  const identityOf = Array.isArray(unwrapped) ? unwrapped[0] : unwrapped;
+function convertJudgements(identityOf) {
+  const judgements = identityOf?.judgements?.toHuman() || [];
+  if (!judgements || judgements.length === 0) {
+    return [];
+  }
+
+  return judgements?.map((judgement) => {
+    const [index, statusField] = judgement;
+    const isFeePaid =
+      typeof statusField === "object" &&
+      Object.entries(statusField)?.[0]?.[0] === "FeePaid";
+    const status = isFeePaid ? "FeePaid" : statusField;
+    const fee = isFeePaid ? Object.entries(statusField)?.[0]?.[1] : null;
+
+    return {
+      index,
+      status,
+      fee,
+    };
+  });
+}
+
+function convertIdentityInfo(identityOf) {
   const info = identityOf?.info?.toHuman() || {};
 
   return {
@@ -38,6 +60,19 @@ function convertIdentityInfo(identity) {
   };
 }
 
+function convertIdentity(identity) {
+  const unwrapped = identity.unwrap();
+  const identityOf = Array.isArray(unwrapped) ? unwrapped[0] : unwrapped;
+
+  const identityInfo = convertIdentityInfo(identityOf);
+  const judgements = convertJudgements(identityOf);
+
+  return {
+    info: identityInfo,
+    judgements,
+  };
+}
+
 export default function useSubMyIdentityInfo() {
   const address = useRealAddress();
   const { result, loading: isLoading } = useSubStorage(
@@ -48,14 +83,17 @@ export default function useSubMyIdentityInfo() {
 
   const identity = useMemo(() => {
     if (!result || result?.isNone) {
-      return InitIdentityInfo;
+      return {
+        info: InitIdentityInfo,
+        judgements: InitIdentityJudgements,
+      };
     }
 
-    return convertIdentityInfo(result);
+    return convertIdentity(result);
   }, [result]);
 
   return {
     isLoading,
-    result: identity,
+    ...identity,
   };
 }
