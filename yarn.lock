@@ -2824,6 +2824,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@next/env@npm:^13.3.0":
+  version: 13.5.11
+  resolution: "@next/env@npm:13.5.11"
+  checksum: 1d19fb97ecdda14d2ea91b251e01b5e38046e42b161572c17abe55c1b77b329067fd3a5d120c35e22d84661f09d80bd2479ca355150cefc17c9a8120998f784a
+  languageName: node
+  linkType: hard
+
 "@next/eslint-plugin-next@npm:15.3.0":
   version: 15.3.0
   resolution: "@next/eslint-plugin-next@npm:15.3.0"
@@ -5674,7 +5681,7 @@ __metadata:
   resolution: "@subsquare/kintsugi-next@workspace:packages/kintsugi-next"
   dependencies:
     "@interlay/monetary-js": ^0.5.3
-    "@next/env": 15.3.0
+    "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
     "@osn/icons": ^1.203.0
     "@polkadot/util-crypto": 13.4.3
@@ -5710,7 +5717,7 @@ __metadata:
   resolution: "@subsquare/next@workspace:packages/next"
   dependencies:
     "@next/bundle-analyzer": 15.3.0
-    "@next/env": 15.3.0
+    "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
     "@osn/icons": ^1.203.0
     "@svgr/webpack": ^7.0.0
