@@ -15,8 +15,8 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",
-    "eslint": "latest",
-    "eslint-plugin-react": "latest",
+    "eslint": "^8.44.0",
+    "eslint-plugin-react": "^7.31.11",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.3",
     "postcss": "^8.4.31",

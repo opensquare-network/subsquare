@@ -7,10 +7,7 @@ import { isNil } from "lodash-es";
 
 export function CommunityTreasuryProposalLink({ proposalIndex }) {
   return (
-    <Link
-      href={`/community-treasury/proposals/${proposalIndex}`}
-      legacyBehavior
-    >
+    <Link href={`/community-treasury/proposals/${proposalIndex}`}>
       {`Treasury Proposal #${proposalIndex}`}
     </Link>
   );
