@@ -15,6 +15,7 @@ export function TabTitle({ active, children }) {
         "text16Bold",
         active ? "text-textPrimary" : "text-textTertiary",
       )}
+      role="button"
     >
       {children}
     </div>
