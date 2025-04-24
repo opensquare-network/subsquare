@@ -1,6 +1,10 @@
 import { peopleIdentityClient } from "next-common/hooks/apollo";
 import { defaultPageSize } from "next-common/utils/constants";
-import { GET_IDENTITIES, GET_IDENTITIES_COUNT } from "./consts";
+import {
+  GET_IDENTITIES,
+  GET_IDENTITIES_COUNT,
+  GET_IDENTITIES_REGISTRARS,
+} from "./consts";
 
 export async function queryPeopleIdentities(
   search = "",
@@ -33,4 +37,13 @@ export async function queryPeopleIdentitiesInfo(params = {}) {
     })) || {};
 
   return { data: data?.identities };
+}
+
+export async function queryPeopleIdentitiesRegistrars() {
+  const { data } =
+    (await peopleIdentityClient?.query?.({
+      query: GET_IDENTITIES_REGISTRARS,
+    })) || {};
+
+  return { data: data?.identityRegistrars };
 }

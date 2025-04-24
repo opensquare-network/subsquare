@@ -2,7 +2,13 @@ import useMyRelatedSwitch from "next-common/components/data/common/useMyRelatedS
 import useSearchComponent from "next-common/components/data/common/useSearchComponent";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 
-export default function TableHeader({ total, loading, showMyRelated = true }) {
+export default function TableHeader({
+  title = "List",
+  total,
+  loading,
+  showMyRelated = true,
+  showSearch = true,
+}) {
   const { component: MyRelatedSwitchComponent } = useMyRelatedSwitch();
   const { component: SearchBoxComponent } = useSearchComponent();
 
@@ -10,14 +16,14 @@ export default function TableHeader({ total, loading, showMyRelated = true }) {
     <div>
       <TitleContainer>
         <span>
-          List
+          {title}
           <span className="text-textTertiary text16Medium ml-1">
             {!loading && total}
           </span>
         </span>
         {showMyRelated && MyRelatedSwitchComponent}
       </TitleContainer>
-      {SearchBoxComponent}
+      {showSearch && SearchBoxComponent}
     </div>
   );
 }
