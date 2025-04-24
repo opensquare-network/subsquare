@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+# 4.6.3
+
+date: 2025-04-20
+
+- [Big] Support walletconnect. Only enabled for Paseo and Westend in this release.
+- Fellowship
+    - Show how many wish evidences need a member to vote on the todos panel.
+    - Disable vote buttons and show tooltip if a member is not eligible to vote a wish evidence on todos popup.
+    - Refactor code to separate fellowship member's todos with that of ambassadors.
+    - Not show all tracks on ambassador referenda menu.
+- Support avatar setting on profile page. We can set it directly or through a proxy account.
+- Upgrade dependency of vite to 5.4.18.
+- Show pure property on account panel on profile page relationship card.
+- Update polkadot/kusama DV members cohort 4.
+- Not show account menu when no address connected or only web2 account login.
+- Improve and fix profile layout.
+- Not show the empty vote panel on vote popup.
+- Refactor TabSwitch component and apply it to timeline components.
+- Refactor multi tabs component on various detail page.
+- Fix styles.
+
 # 4.6.2
 
 date: 2025-04-11

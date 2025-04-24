@@ -27,13 +27,13 @@ function MemberPromotionContent({ promotions }) {
   );
 }
 
-export default function MemberPromotionPopup({ promotions, onClose }) {
+export default function MemberPromotionPopup({
+  title = "Member Promotion",
+  promotions,
+  onClose,
+}) {
   return (
-    <PopupWithSigner
-      className="w-[800px]"
-      title="Member Promotion"
-      onClose={onClose}
-    >
+    <PopupWithSigner className="w-[800px]" title={title} onClose={onClose}>
       <ExtensionUpdatePrompt isWithCache={false} />
       <MemberPromotionContent promotions={promotions} />
     </PopupWithSigner>
