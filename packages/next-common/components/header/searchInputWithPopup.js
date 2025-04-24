@@ -5,12 +5,14 @@ import { SystemSearch } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
 import useRefCallback from "next-common/hooks/useRefCallback";
 import SearchPopup from "next-common/components/header/search/popup";
+import useInsideSearchSupportCategories from "next-common/components/header/hooks/useInsideSearchSupportCategories";
 
 function SearchInputWithPopup({ shortcut = true, type }) {
   const [value, setValue] = useState("");
   const [showSearchPopup, setShowSearchPopup] = useState(false);
   const inputRef = useRef();
   const [focus, setFocus] = useState(false);
+  const { categoryString } = useInsideSearchSupportCategories();
 
   const handleSearch = useRefCallback(() => {
     setShowSearchPopup(true);
@@ -26,7 +28,7 @@ function SearchInputWithPopup({ shortcut = true, type }) {
         ref={inputRef}
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        placeholder="Search Referenda on SubSquare"
+        placeholder={`Search ${categoryString} on SubSquare`}
         onKeyDown={(event) => {
           if (event.code === "Enter" || event.keyCode === 13) {
             event.preventDefault();
