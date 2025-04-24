@@ -60,13 +60,13 @@ export default function RegistrarsTable({
                 key={`request-${index}`}
                 className="text-textPrimary text14Medium text-right"
               >
-                {item?.statistics?.request}
+                {item?.statistics?.request || "-"}
               </div>,
               <div
                 key={`given-${index}`}
                 className="text-textPrimary text14Medium text-right"
               >
-                {item?.statistics?.given}
+                {item?.statistics?.given || "-"}
               </div>,
               <div
                 key={`fee-${index}`}
