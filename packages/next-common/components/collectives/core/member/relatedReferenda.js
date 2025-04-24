@@ -15,6 +15,11 @@ import { cn } from "next-common/utils";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
+import CreatePromotionReferendumAndVoteButton from "next-common/components/overview/accountInfo/components/fellowshipTodoList/todoList/memberPromotionPopup/voteButtons/createPromotionReferendumAndVoteButton";
+import { usePromotionButtonState } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/todoList/memberPromotionPopup/voteButtons/createPromotionReferendumAndVoteButtons";
+import { useRetentionButtonState } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/todoList/memberPromotionPopup/voteButtons/createRetentionReferendumAndVoteButtons";
+import useSubCoreFellowshipEvidence from "next-common/hooks/collectives/useSubCoreFellowshipEvidence";
+import CreateRetentionReferendumAndVoteButton from "next-common/components/overview/accountInfo/components/fellowshipTodoList/todoList/memberPromotionPopup/voteButtons/createRetentionReferendumAndVoteButton";
 
 const methods = ["bump", "approve", "promote", "promoteFast"];
 
@@ -121,7 +126,92 @@ function ReferendaListWithActions({ relatedReferenda }) {
   );
 }
 
+function CreatePromotionReferendumAndVoteButtons({ who }) {
+  const { tooltipContent, disabled } = usePromotionButtonState(who);
+
+  return (
+    <div className="flex gap-[12px] items-center">
+      <CreatePromotionReferendumAndVoteButton
+        who={who}
+        voteAye={true}
+        disabled={disabled}
+        tooltip={tooltipContent}
+        ButtonComponent={SimpleButton}
+      >
+        <SystemVoteAye className="w-[16px] h-[16px]" />
+      </CreatePromotionReferendumAndVoteButton>
+
+      <CreatePromotionReferendumAndVoteButton
+        who={who}
+        voteAye={false}
+        disabled={disabled}
+        tooltip={tooltipContent}
+        ButtonComponent={SimpleButton}
+      >
+        <SystemVoteNay className="w-[16px] h-[16px]" />
+      </CreatePromotionReferendumAndVoteButton>
+    </div>
+  );
+}
+
+export function CreateRetentionReferendumAndVoteButtons({ who }) {
+  const { tooltipContent, disabled } = useRetentionButtonState(who);
+
+  return (
+    <div className="flex gap-[12px] items-center">
+      <CreateRetentionReferendumAndVoteButton
+        who={who}
+        voteAye={true}
+        disabled={disabled}
+        tooltip={tooltipContent}
+        ButtonComponent={SimpleButton}
+      >
+        <SystemVoteAye className="w-[16px] h-[16px]" />
+      </CreateRetentionReferendumAndVoteButton>
+
+      <CreateRetentionReferendumAndVoteButton
+        who={who}
+        voteAye={false}
+        disabled={disabled}
+        tooltip={tooltipContent}
+        ButtonComponent={SimpleButton}
+      >
+        <SystemVoteNay className="w-[16px] h-[16px]" />
+      </CreateRetentionReferendumAndVoteButton>
+    </div>
+  );
+}
+
+function CreateReferendumAndVote({ who, pallet }) {
+  const { wish } = useSubCoreFellowshipEvidence(who, pallet);
+
+  if (wish.toLowerCase() === "promotion") {
+    return <CreatePromotionReferendumAndVoteButtons who={who} />;
+  } else if (wish.toLowerCase() === "retention") {
+    return <CreateRetentionReferendumAndVoteButtons who={who} />;
+  }
+
+  return <span className="text-textDisabled">-</span>;
+}
+
 export function CoreFellowshipMemberRelatedReferendaContent({
+  relatedReferenda,
+  isLoading,
+}) {
+  if (isLoading) {
+    return <FieldLoading size={16} />;
+  }
+
+  if (relatedReferenda.length > 0) {
+    return <ReferendaList relatedReferenda={relatedReferenda} />;
+  }
+
+  return <span className="text-textDisabled">-</span>;
+}
+
+export function CoreFellowshipMemberRelatedReferendaActionsContent({
+  pallet,
+  who,
   relatedReferenda,
   isLoading,
 }) {
@@ -131,18 +221,20 @@ export function CoreFellowshipMemberRelatedReferendaContent({
     return <FieldLoading size={16} />;
   }
 
-  if (relatedReferenda.length > 0) {
-    return realAddress ? (
-      <ReferendaListWithActions relatedReferenda={relatedReferenda} />
-    ) : (
-      <ReferendaList relatedReferenda={relatedReferenda} />
-    );
+  if (realAddress) {
+    if (relatedReferenda.length > 0) {
+      return <ReferendaListWithActions relatedReferenda={relatedReferenda} />;
+    }
+    return <CreateReferendumAndVote who={who} pallet={pallet} />;
   }
 
+  if (relatedReferenda.length > 0) {
+    return <ReferendaList relatedReferenda={relatedReferenda} />;
+  }
   return <span className="text-textDisabled">-</span>;
 }
 
-export default function CoreFellowshipMemberRelatedReferenda({
+export function CoreFellowshipMemberRelatedReferendaActions({
   address,
   pallet,
 }) {
@@ -157,7 +249,9 @@ export default function CoreFellowshipMemberRelatedReferenda({
         Referenda
       </CoreFellowshipMemberInfoTitle>
       <div className="flex text12Medium gap-[4px] items-center truncate">
-        <CoreFellowshipMemberRelatedReferendaContent
+        <CoreFellowshipMemberRelatedReferendaActionsContent
+          pallet={pallet}
+          who={address}
           relatedReferenda={relatedReferenda}
           isLoading={isLoading}
         />

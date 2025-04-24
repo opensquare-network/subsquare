@@ -15,6 +15,7 @@ import getFastPromoteTrackNameFromRank from "../memberPromotionPopup/voteButtons
 import useRequiredRankToPromoteMember from "./useRequiredRankToPromoteMember";
 import RankField from "./rankField";
 import useMemberRank from "../memberPromotionPopup/voteButtons/useMemberRank";
+import { isNil } from "lodash-es";
 
 export default function CreatePromotionReferendaAndVotePopup({
   who,
@@ -66,7 +67,7 @@ export default function CreatePromotionReferendaAndVotePopup({
 
   let disabled = !who || !toRank;
   let tooltipContent = "";
-  if (requiredRank > myRank) {
+  if (isNil(myRank) || requiredRank > myRank) {
     disabled = true;
     tooltipContent = `Only rank >= ${requiredRank} can create a referendum and then vote`;
   }

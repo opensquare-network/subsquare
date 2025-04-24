@@ -1,9 +1,7 @@
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
-import { cn } from "next-common/utils";
 import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
-import SecondaryButton from "next-common/lib/button/secondary";
 import { useFellowshipProposalSubmissionTxFunc } from "next-common/hooks/fellowship/core/useFellowshipCoreMemberProposalSubmitTx";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useActiveReferendaContext } from "next-common/context/activeReferenda";
@@ -24,6 +22,7 @@ function CreateReferendumAndVoteButtonImpl({
   disabled,
   tooltip,
   children,
+  ButtonComponent,
 }) {
   const [showMaybeFastPromotePopup, setShowMaybeFastPromotePopup] =
     useState(false);
@@ -68,17 +67,9 @@ function CreateReferendumAndVoteButtonImpl({
   return (
     <>
       <Tooltip content={tooltip}>
-        <SecondaryButton
-          disabled={disabled}
-          className={cn(
-            "p-[6px]",
-            disabled && "[&_svg_path]:stroke-textDisabled",
-          )}
-          size="small"
-          onClick={createReferendaAndVote}
-        >
+        <ButtonComponent disabled={disabled} onClick={createReferendaAndVote}>
           {children}
-        </SecondaryButton>
+        </ButtonComponent>
       </Tooltip>
       {showMaybeFastPromotePopup && (
         <CreatePromotionReferendaAndVotePopup
