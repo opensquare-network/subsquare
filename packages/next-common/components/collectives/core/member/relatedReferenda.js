@@ -67,7 +67,7 @@ function SimpleButton({ disabled, onClick, children }) {
   );
 }
 
-export function ReferendumVoteButtons({ referendumIndex }) {
+export function ReferendumVoteButtons({ referendumIndex, size = 16 }) {
   const dispatch = useDispatch();
   return (
     <div className="flex gap-[12px] items-center justify-end">
@@ -81,7 +81,7 @@ export function ReferendumVoteButtons({ referendumIndex }) {
           },
         }}
       >
-        <SystemVoteAye className="w-[16px] h-[16px]" />
+        <SystemVoteAye style={{ width: size, height: size }} />
       </VoteButton>
 
       <VoteButton
@@ -94,7 +94,7 @@ export function ReferendumVoteButtons({ referendumIndex }) {
           },
         }}
       >
-        <SystemVoteNay className="w-[16px] h-[16px]" />
+        <SystemVoteNay style={{ width: size, height: size }} />
       </VoteButton>
     </div>
   );
@@ -109,7 +109,7 @@ function ReferendaList({ relatedReferenda }) {
   ));
 }
 
-function ReferendaListWithActions({ relatedReferenda }) {
+function ReferendaListWithActions({ relatedReferenda, size }) {
   return (
     <div className="flex flex-col">
       {relatedReferenda.map(({ referendumIndex }, index) => (
@@ -119,14 +119,17 @@ function ReferendaListWithActions({ relatedReferenda }) {
             <MyVote referendumIndex={referendumIndex} />
           </div>
           <span className="text-textTertiary">·</span>
-          <ReferendumVoteButtons referendumIndex={referendumIndex} />
+          <ReferendumVoteButtons
+            referendumIndex={referendumIndex}
+            size={size}
+          />
         </div>
       ))}
     </div>
   );
 }
 
-function CreatePromotionReferendumAndVoteButtons({ who }) {
+function CreatePromotionReferendumAndVoteButtons({ who, size = 16 }) {
   const { tooltipContent, disabled } = usePromotionButtonState(who);
 
   return (
@@ -138,7 +141,7 @@ function CreatePromotionReferendumAndVoteButtons({ who }) {
         tooltip={tooltipContent}
         ButtonComponent={SimpleButton}
       >
-        <SystemVoteAye className="w-[16px] h-[16px]" />
+        <SystemVoteAye style={{ width: size, height: size }} />
       </CreatePromotionReferendumAndVoteButton>
 
       <CreatePromotionReferendumAndVoteButton
@@ -148,13 +151,13 @@ function CreatePromotionReferendumAndVoteButtons({ who }) {
         tooltip={tooltipContent}
         ButtonComponent={SimpleButton}
       >
-        <SystemVoteNay className="w-[16px] h-[16px]" />
+        <SystemVoteNay style={{ width: size, height: size }} />
       </CreatePromotionReferendumAndVoteButton>
     </div>
   );
 }
 
-export function CreateRetentionReferendumAndVoteButtons({ who }) {
+export function CreateRetentionReferendumAndVoteButtons({ who, size = 16 }) {
   const { tooltipContent, disabled } = useRetentionButtonState(who);
 
   return (
@@ -166,7 +169,7 @@ export function CreateRetentionReferendumAndVoteButtons({ who }) {
         tooltip={tooltipContent}
         ButtonComponent={SimpleButton}
       >
-        <SystemVoteAye className="w-[16px] h-[16px]" />
+        <SystemVoteAye style={{ width: size, height: size }} />
       </CreateRetentionReferendumAndVoteButton>
 
       <CreateRetentionReferendumAndVoteButton
@@ -176,34 +179,19 @@ export function CreateRetentionReferendumAndVoteButtons({ who }) {
         tooltip={tooltipContent}
         ButtonComponent={SimpleButton}
       >
-        <SystemVoteNay className="w-[16px] h-[16px]" />
+        <SystemVoteNay style={{ width: size, height: size }} />
       </CreateRetentionReferendumAndVoteButton>
     </div>
   );
 }
 
-function CreateReferendumAndVote({ who, pallet }) {
+function CreateReferendumAndVote({ who, pallet, size }) {
   const { wish } = useSubCoreFellowshipEvidence(who, pallet);
 
   if (wish.toLowerCase() === "promotion") {
-    return <CreatePromotionReferendumAndVoteButtons who={who} />;
+    return <CreatePromotionReferendumAndVoteButtons who={who} size={size} />;
   } else if (wish.toLowerCase() === "retention") {
-    return <CreateRetentionReferendumAndVoteButtons who={who} />;
-  }
-
-  return <span className="text-textDisabled">-</span>;
-}
-
-export function CoreFellowshipMemberRelatedReferendaContent({
-  relatedReferenda,
-  isLoading,
-}) {
-  if (isLoading) {
-    return <FieldLoading size={16} />;
-  }
-
-  if (relatedReferenda.length > 0) {
-    return <ReferendaList relatedReferenda={relatedReferenda} />;
+    return <CreateRetentionReferendumAndVoteButtons who={who} size={size} />;
   }
 
   return <span className="text-textDisabled">-</span>;
@@ -214,18 +202,24 @@ export function CoreFellowshipMemberRelatedReferendaActionsContent({
   who,
   relatedReferenda,
   isLoading,
+  size = 16,
 }) {
   const realAddress = useRealAddress();
 
   if (isLoading) {
-    return <FieldLoading size={16} />;
+    return <FieldLoading size={size} />;
   }
 
   if (realAddress) {
     if (relatedReferenda.length > 0) {
-      return <ReferendaListWithActions relatedReferenda={relatedReferenda} />;
+      return (
+        <ReferendaListWithActions
+          relatedReferenda={relatedReferenda}
+          size={size}
+        />
+      );
     }
-    return <CreateReferendumAndVote who={who} pallet={pallet} />;
+    return <CreateReferendumAndVote who={who} pallet={pallet} size={size} />;
   }
 
   if (relatedReferenda.length > 0) {
