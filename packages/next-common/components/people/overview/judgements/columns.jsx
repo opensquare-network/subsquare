@@ -1,9 +1,8 @@
-import RemoveButton from "next-common/components/removeButton";
-import Tooltip from "next-common/components/tooltip";
 import AddressUser from "next-common/components/user/addressUser";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import { cn } from "next-common/utils";
+import CancelRequestJudgement from "./cancelRequestJudgement";
 
 const STATUS_THEME_MAP = {
   FeePaid: "text-theme500",
@@ -44,16 +43,12 @@ function Status({ status, fee }) {
   );
 }
 
-function Action({ status }) {
+function Action({ index, status }) {
   if (status !== "FeePaid") {
     return null;
   }
 
-  return (
-    <Tooltip content="Cancel">
-      <RemoveButton />
-    </Tooltip>
-  );
+  return <CancelRequestJudgement registrarIndex={index} />;
 }
 
 const colRegistrar = {
@@ -71,7 +66,7 @@ const colStatus = {
 const colAction = {
   name: "",
   style: { textAlign: "right", width: "80px", minWidth: "80px" },
-  render: ({ status }) => <Action status={status} />,
+  render: ({ index, status }) => <Action index={index} status={status} />,
 };
 
 export default [colRegistrar, colStatus, colAction];

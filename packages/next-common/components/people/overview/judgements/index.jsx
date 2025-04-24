@@ -7,6 +7,7 @@ import { useState } from "react";
 import RightWrapper from "next-common/components/rightWraper";
 import PrimaryButton from "next-common/lib/button/primary";
 import useJudgementsData from "../hooks/useJudgementsData";
+import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 
 const RequestJudgementPopup = dynamicPopup(
   () => import("next-common/components/requestJudgementPopup"),
@@ -37,12 +38,14 @@ function JudgementsTable() {
 
   return (
     <ScrollerX>
-      <MapDataList
-        columnsDef={columnsDef}
-        data={data}
-        loading={isLoading}
-        noDataText="No current judgements"
-      />
+      <SignerPopupWrapper>
+        <MapDataList
+          columnsDef={columnsDef}
+          data={data}
+          loading={isLoading}
+          noDataText="No current judgements"
+        />
+      </SignerPopupWrapper>
     </ScrollerX>
   );
 }

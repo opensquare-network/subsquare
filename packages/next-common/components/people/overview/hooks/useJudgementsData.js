@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useMemo } from "react";
 import { useRegistrarContext } from "next-common/context/people/registrarContext";
 import { useIdentityInfoContext } from "next-common/context/people/identityInfoContext";
 
@@ -11,8 +11,8 @@ function matchArraysByIndex(judgements, registrars) {
   });
 
   return judgements
-    .filter((item) => item && typeof item.index === "string")
-    .map((item) => {
+    ?.filter((item) => item && typeof item.index === "string")
+    ?.map((item) => {
       const index = parseInt(item.index, 10);
       const registrar = registrarMap.get(index);
 
@@ -35,30 +35,15 @@ export default function useJudgementsData() {
   const { judgements, isLoading: isIdentityInfoLoading } =
     useIdentityInfoContext();
   const { registrars, isLoading: isRegistrarLoading } = useRegistrarContext();
-  const [isLoading, setIsLoading] = useState(false);
-  const [data, setData] = useState(null);
+  const isLoading = isIdentityInfoLoading || isRegistrarLoading;
 
-  useEffect(() => {
-    if (isIdentityInfoLoading || isRegistrarLoading) {
-      setIsLoading(true);
-      return;
+  const data = useMemo(() => {
+    if (isLoading) {
+      return null;
     }
 
-    if (
-      !Array.isArray(judgements) ||
-      !Array.isArray(registrars) ||
-      judgements?.length === 0 ||
-      registrars?.length === 0
-    ) {
-      setIsLoading(false);
-      setData(null);
-      return;
-    }
-
-    const matchedJudgements = matchArraysByIndex(judgements, registrars);
-    setData(matchedJudgements);
-    setIsLoading(false);
-  }, [isIdentityInfoLoading, isRegistrarLoading, judgements, registrars]);
+    return matchArraysByIndex(judgements, registrars);
+  }, [judgements, registrars, isLoading]);
 
   return {
     data,
