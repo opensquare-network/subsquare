@@ -1,4 +1,4 @@
-import { noop } from "lodash-es";
+import { isNil, noop } from "lodash-es";
 import CommonSelectField from "next-common/components/popup/fields/commonSelectField";
 import Tooltip from "next-common/components/tooltip";
 import useMyRank from "../memberPromotionPopup/voteButtons/useMyRank";
@@ -7,7 +7,7 @@ import useRequiredRankToPromoteMember from "./useRequiredRankToPromoteMember";
 function RankOption({ currentRank, optionRank }) {
   const myRank = useMyRank();
   const requiredRank = useRequiredRankToPromoteMember(currentRank, optionRank);
-  if (requiredRank <= myRank) {
+  if (!isNil(myRank) && requiredRank <= myRank) {
     return optionRank;
   }
 

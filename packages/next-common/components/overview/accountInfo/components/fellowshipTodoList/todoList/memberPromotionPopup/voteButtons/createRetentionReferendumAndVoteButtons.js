@@ -7,8 +7,10 @@ import {
 import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
 import useMyRank from "./useMyRank";
 import useMemberRank from "./useMemberRank";
+import { isNil } from "lodash-es";
+import { SecondaryButtonWrapper } from "./referendumVoteButtons";
 
-export default function CreateRetentionReferendumAndVoteButtons({ who }) {
+export function useRetentionButtonState(who) {
   const collectivePallet = useRankedCollectivePallet();
   const myRank = useMyRank();
   const currentRank = useMemberRank(who);
@@ -18,7 +20,7 @@ export default function CreateRetentionReferendumAndVoteButtons({ who }) {
   if (currentRank <= 0) {
     tooltipContent = "Rank retention is not allowed for candidates";
     disabled = true;
-  } else if (myRank < 3) {
+  } else if (isNil(myRank) || myRank < 3) {
     tooltipContent = "Only rank >= 3 can create a referendum and then vote";
     disabled = true;
   } else {
@@ -30,6 +32,15 @@ export default function CreateRetentionReferendumAndVoteButtons({ who }) {
     }
   }
 
+  return {
+    tooltipContent,
+    disabled,
+  };
+}
+
+export default function CreateRetentionReferendumAndVoteButtons({ who }) {
+  const { tooltipContent, disabled } = useRetentionButtonState(who);
+
   return (
     <div className="flex gap-[12px] h-[31px] items-center justify-end">
       <CreateRetentionReferendumAndVoteButton
@@ -37,6 +48,7 @@ export default function CreateRetentionReferendumAndVoteButtons({ who }) {
         voteAye={false}
         disabled={disabled}
         tooltip={tooltipContent}
+        ButtonComponent={SecondaryButtonWrapper}
       >
         <SystemVoteNay className="w-[16px]" />
       </CreateRetentionReferendumAndVoteButton>
@@ -46,6 +58,7 @@ export default function CreateRetentionReferendumAndVoteButtons({ who }) {
         voteAye={true}
         disabled={disabled}
         tooltip={tooltipContent}
+        ButtonComponent={SecondaryButtonWrapper}
       >
         <SystemVoteAye className="w-[16px]" />
       </CreateRetentionReferendumAndVoteButton>
