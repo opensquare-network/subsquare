@@ -151,6 +151,15 @@ export const estimateBlocksTime = (blocks, blockTime) => {
   return formatTimeDuration(value, { withUnitSpace: true });
 };
 
+export const estimateBlocksTimeInDate = (blocks, blockTime) => {
+  if (!blockTime) {
+    return null;
+  }
+
+  const value = new BigNumber(blockTime).multipliedBy(blocks).toNumber();
+  return dayjs().add(value, "millisecond").format("YYYY-MM-DD");
+};
+
 export const estimateBlocksTimeInDays = (blocks, blockTime) => {
   if (!blockTime) {
     return null;

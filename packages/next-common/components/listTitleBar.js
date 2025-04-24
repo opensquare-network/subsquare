@@ -19,7 +19,7 @@ export default function ListTitleBar({
     <TitleContainer className="max-sm:flex-col max-sm:!items-start max-sm:gap-[8px]">
       <div className={className}>
         {link ? (
-          <Link href={link || ""} passHref legacyBehavior>
+          <Link href={link || ""} passHref>
             <TitleLink>{title}</TitleLink>
           </Link>
         ) : (
