@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Router from "next/router";
 import NProgress from "nprogress";
 import { Provider } from "react-redux";
@@ -16,6 +16,8 @@ import SystemVersionUpgrade from "next-common/components/systemVersionUpgrade";
 import "@osn/previewer/styles.css";
 import "next-common/styles/markdown.css";
 import useInitMimir from "next-common/hooks/useInitMimir";
+import HybridRender from "next-common/components/hybridRender";
+import dynamic from "next/dynamic";
 
 NProgress.configure({
   minimum: 0.3,
@@ -37,21 +39,20 @@ Router.events.on(
   (url, { shallow }) => !shallow && NProgress.done(),
 );
 
+//convert the read and write operations of localStorage to client-side rendering
+const ClientOnlySystemUpgrade = dynamic(
+  () => Promise.resolve(SystemVersionUpgrade),
+  {
+    ssr: false,
+  },
+);
+
 function MyApp({ Component, pageProps }) {
   if (!process.env.NEXT_PUBLIC_CHAIN) {
     throw new Error("NEXT_PUBLIC_CHAIN env not set");
   }
 
   useInitMimir();
-
-  const [showChild, setShowChild] = useState(false);
-
-  useEffect(() => {
-    setShowChild(true);
-  }, []);
-  if (!showChild || typeof window === "undefined") {
-    return <></>;
-  }
 
   const {
     connectedAccount,
@@ -66,6 +67,7 @@ function MyApp({ Component, pageProps }) {
     scanHeight,
     ...otherProps
   } = pageProps;
+
   return (
     <>
       <Head>
@@ -84,9 +86,12 @@ function MyApp({ Component, pageProps }) {
           navSubmenuVisible={navSubmenuVisible}
           pathname={pathname}
         >
-          <SystemVersionUpgrade />
+          <ClientOnlySystemUpgrade />
+
           <ScanStatusComponent scanHeight={scanHeight}>
-            <Component {...otherProps} />
+            <HybridRender>
+              <Component {...otherProps} />
+            </HybridRender>
           </ScanStatusComponent>
         </GlobalProvider>
       </Provider>
