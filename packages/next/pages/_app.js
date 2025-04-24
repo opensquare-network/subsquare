@@ -16,7 +16,6 @@ import SystemVersionUpgrade from "next-common/components/systemVersionUpgrade";
 import "@osn/previewer/styles.css";
 import "next-common/styles/markdown.css";
 import useInitMimir from "next-common/hooks/useInitMimir";
-import HybridRender from "next-common/components/hybridRender";
 import dynamic from "next/dynamic";
 
 NProgress.configure({
@@ -89,9 +88,7 @@ function MyApp({ Component, pageProps }) {
           <ClientOnlySystemUpgrade />
 
           <ScanStatusComponent scanHeight={scanHeight}>
-            <HybridRender>
-              <Component {...otherProps} />
-            </HybridRender>
+            <Component {...otherProps} />
           </ScanStatusComponent>
         </GlobalProvider>
       </Provider>
