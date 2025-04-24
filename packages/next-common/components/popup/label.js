@@ -39,7 +39,12 @@ const TooltipDiv = styled.div`
   height: 12px;
 `;
 
-export default function PopupLabel({ text, status, tooltip }) {
+export default function PopupLabel({
+  text,
+  status,
+  tooltip,
+  tooltipContentClassName,
+}) {
   return (
     <TooltipWrapper>
       <Label className="text-textPrimary">{text}</Label>
@@ -51,7 +56,10 @@ export default function PopupLabel({ text, status, tooltip }) {
       ) : (
         tooltip && (
           <TooltipDiv>
-            <Tooltip content={tooltip} />
+            <Tooltip
+              content={tooltip}
+              contentClassName={tooltipContentClassName}
+            />
           </TooltipDiv>
         )
       )}

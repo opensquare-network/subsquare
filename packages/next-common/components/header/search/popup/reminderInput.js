@@ -2,12 +2,14 @@ import { cn } from "next-common/utils";
 import React from "react";
 import { ImgSearchLight, ImgSearchDark } from "@osn/icons/subsquare";
 import { useTheme } from "styled-components";
+import useInsideSearchSupportCategories from "next-common/components/header/hooks/useInsideSearchSupportCategories";
 
 const ReminderInput = React.memo(function ReminderInput({
   className = "",
   isMobile,
 }) {
   const { isDark } = useTheme();
+  const { categoryString } = useInsideSearchSupportCategories();
   return (
     <div
       className={cn(
@@ -32,7 +34,7 @@ const ReminderInput = React.memo(function ReminderInput({
           Type your search item in the box
         </span>
         <span className="px-2 h-5 text14Medium  text-center text-textTertiary">
-          Search for proposals of referenda, treasury, and more
+          {`Search ${categoryString} on SubSquare`}
         </span>
       </p>
     </div>
