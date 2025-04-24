@@ -133,22 +133,22 @@ function CreatePromotionReferendumAndVoteButtons({ who }) {
     <div className="flex gap-[12px] items-center">
       <CreatePromotionReferendumAndVoteButton
         who={who}
-        voteAye={false}
-        disabled={disabled}
-        tooltip={tooltipContent}
-        ButtonComponent={SimpleButton}
-      >
-        <SystemVoteNay className="w-[16px] h-[16px]" />
-      </CreatePromotionReferendumAndVoteButton>
-
-      <CreatePromotionReferendumAndVoteButton
-        who={who}
         voteAye={true}
         disabled={disabled}
         tooltip={tooltipContent}
         ButtonComponent={SimpleButton}
       >
         <SystemVoteAye className="w-[16px] h-[16px]" />
+      </CreatePromotionReferendumAndVoteButton>
+
+      <CreatePromotionReferendumAndVoteButton
+        who={who}
+        voteAye={false}
+        disabled={disabled}
+        tooltip={tooltipContent}
+        ButtonComponent={SimpleButton}
+      >
+        <SystemVoteNay className="w-[16px] h-[16px]" />
       </CreatePromotionReferendumAndVoteButton>
     </div>
   );
@@ -161,22 +161,22 @@ export function CreateRetentionReferendumAndVoteButtons({ who }) {
     <div className="flex gap-[12px] items-center">
       <CreateRetentionReferendumAndVoteButton
         who={who}
-        voteAye={false}
-        disabled={disabled}
-        tooltip={tooltipContent}
-        ButtonComponent={SimpleButton}
-      >
-        <SystemVoteNay className="w-[16px] h-[16px]" />
-      </CreateRetentionReferendumAndVoteButton>
-
-      <CreateRetentionReferendumAndVoteButton
-        who={who}
         voteAye={true}
         disabled={disabled}
         tooltip={tooltipContent}
         ButtonComponent={SimpleButton}
       >
         <SystemVoteAye className="w-[16px] h-[16px]" />
+      </CreateRetentionReferendumAndVoteButton>
+
+      <CreateRetentionReferendumAndVoteButton
+        who={who}
+        voteAye={false}
+        disabled={disabled}
+        tooltip={tooltipContent}
+        ButtonComponent={SimpleButton}
+      >
+        <SystemVoteNay className="w-[16px] h-[16px]" />
       </CreateRetentionReferendumAndVoteButton>
     </div>
   );
@@ -190,6 +190,8 @@ function CreateReferendumAndVote({ who, pallet }) {
   } else if (wish.toLowerCase() === "retention") {
     return <CreateRetentionReferendumAndVoteButtons who={who} />;
   }
+
+  return <span className="text-textDisabled">-</span>;
 }
 
 export function CoreFellowshipMemberRelatedReferendaContent({
