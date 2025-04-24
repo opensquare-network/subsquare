@@ -21,6 +21,7 @@ import { coretimeMenu } from "./coretime";
 import Data from "./data";
 import getAdvancedMenu from "next-common/utils/consts/menu/advanced";
 import { NAV_MENU_TYPE } from "next-common/utils/constants";
+import { isArray } from "lodash-es";
 
 export function getHomeMenu({
   summary = {},
@@ -119,11 +120,11 @@ export function getMainMenu({
   ];
 }
 
-const findedMenu = (menu, pathname) => {
+const matchedMenuItem = (menu, pathname) => {
   for (const menuItem of menu) {
     const matched = menuItem.pathname === pathname;
     if (menuItem?.items?.length) {
-      const findItem = findedMenu(menuItem.items, pathname);
+      const findItem = matchedMenuItem(menuItem.items, pathname);
       if (findItem) {
         return menuItem;
       }
@@ -135,9 +136,12 @@ const findedMenu = (menu, pathname) => {
 };
 const isSubSpaceNavMenu = (type) => type === NAV_MENU_TYPE.subspace;
 export function matchNewMenu(menu, pathname) {
+  if (!isArray(menu)) {
+    return null;
+  }
   for (const menuItem of menu) {
     if (isSubSpaceNavMenu(menuItem.type) || menuItem.type === "archived") {
-      const findMenu = findedMenu(menuItem.items, pathname);
+      const findMenu = matchedMenuItem(menuItem.items, pathname);
       if (findMenu) {
         return {
           type: menuItem.type,
@@ -151,4 +155,5 @@ export function matchNewMenu(menu, pathname) {
       }
     }
   }
+  return null;
 }
