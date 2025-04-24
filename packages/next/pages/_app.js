@@ -2,7 +2,6 @@ import React from "react";
 import Router from "next/router";
 import NProgress from "nprogress";
 import { Provider } from "react-redux";
-
 import "nprogress/nprogress.css";
 import "next-common/styles/globals.css";
 import "next-common/styles/tailwind.css";
@@ -17,6 +16,7 @@ import SystemVersionUpgrade from "next-common/components/systemVersionUpgrade";
 import "@osn/previewer/styles.css";
 import "next-common/styles/markdown.css";
 import useInitMimir from "next-common/hooks/useInitMimir";
+import dynamic from "next/dynamic";
 
 NProgress.configure({
   minimum: 0.3,
@@ -36,6 +36,14 @@ Router.events.on(
 Router.events.on(
   "routeChangeError",
   (url, { shallow }) => !shallow && NProgress.done(),
+);
+
+//convert the read and write operations of localStorage to client-side rendering
+const ClientOnlySystemUpgrade = dynamic(
+  () => Promise.resolve(SystemVersionUpgrade),
+  {
+    ssr: false,
+  },
 );
 
 function MyApp({ Component, pageProps }) {
@@ -58,6 +66,7 @@ function MyApp({ Component, pageProps }) {
     scanHeight,
     ...otherProps
   } = pageProps;
+
   return (
     <>
       <Head>
@@ -76,7 +85,8 @@ function MyApp({ Component, pageProps }) {
           navSubmenuVisible={navSubmenuVisible}
           pathname={pathname}
         >
-          <SystemVersionUpgrade />
+          <ClientOnlySystemUpgrade />
+
           <ScanStatusComponent scanHeight={scanHeight}>
             <Component {...otherProps} />
           </ScanStatusComponent>

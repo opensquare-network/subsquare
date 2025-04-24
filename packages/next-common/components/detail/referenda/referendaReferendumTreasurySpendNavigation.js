@@ -7,9 +7,7 @@ import TriangleRight from "next-common/assets/imgs/icons/arrow-triangle-right.sv
 
 export function TreasurySpendLink({ index }) {
   return (
-    <Link href={`/treasury/spends/${index}`} legacyBehavior>
-      {`Treasury Spend #${index}`}
-    </Link>
+    <Link href={`/treasury/spends/${index}`}>{`Treasury Spend #${index}`}</Link>
   );
 }
 
