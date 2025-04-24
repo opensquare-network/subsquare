@@ -5681,7 +5681,7 @@ __metadata:
   resolution: "@subsquare/kintsugi-next@workspace:packages/kintsugi-next"
   dependencies:
     "@interlay/monetary-js": ^0.5.3
-    "@next/env": 15.3.0
+    "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
     "@osn/icons": ^1.203.0
     "@polkadot/util-crypto": 13.4.3
