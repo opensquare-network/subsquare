@@ -62,7 +62,7 @@ function SelfNode({ data }) {
   return (
     <div className="flex flex-col items-center justify-center">
       <div
-        className="bg-no-repeat bg-cover w-60 h-[40px] rounded-t-[12px]"
+        className="bg-no-repeat bg-cover w-60 h-[40px] rounded-t-[12px] bg-center"
         style={{ backgroundImage: `url(${bannerUrl})` }}
       >
         {data?.pure}
