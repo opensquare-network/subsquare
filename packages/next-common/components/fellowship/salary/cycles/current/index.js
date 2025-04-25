@@ -6,7 +6,7 @@ import FellowshipSalaryRegister from "next-common/components/fellowship/salary/a
 import FellowshipSalaryPayout from "next-common/components/fellowship/salary/actions/payout";
 import FellowshipSalaryMyStatus from "../myStatus";
 import { useFellowshipSalaryStats } from "next-common/hooks/fellowship/salary/useFellowshipSalaryStats";
-import LoadingSkeleton from "next-common/components/header/search/popup/loadingSkeleton";
+import LoadingSkeleton from "./loadingSkeleton";
 
 export default function FellowshipSalaryActiveCycle() {
   const stats = useFellowshipSalaryStats();
