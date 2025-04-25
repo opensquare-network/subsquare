@@ -2,9 +2,9 @@ import { useScreenRect } from "./useScreenRect";
 
 const { useEffect, useState } = require("react");
 
-export default function useIsElementInLowerHalf(elementRef) {
+export default function useIsElementInLeftHalf(elementRef) {
   const containerRect = useScreenRect();
-  const [isInLowerHalf, setIsInLowerHalf] = useState(false);
+  const [isInLeftHalf, setIsInLeftHalf] = useState(false);
 
   useEffect(() => {
     const checkPosition = () => {
@@ -13,10 +13,10 @@ export default function useIsElementInLowerHalf(elementRef) {
         return;
       }
       const innerRect = element.getBoundingClientRect();
-      const containerCenterY = containerRect.height / 2;
-      const innerCenterY = innerRect.top + innerRect.height / 2;
-      const isInLowerHalf = innerCenterY > containerCenterY;
-      setIsInLowerHalf(isInLowerHalf);
+      const containerCenterY = containerRect.width / 2;
+      const innerCenterY = innerRect.left + innerRect.width / 2;
+      const isInLeftHalf = innerCenterY < containerCenterY;
+      setIsInLeftHalf(isInLeftHalf);
     };
 
     checkPosition();
@@ -28,5 +28,5 @@ export default function useIsElementInLowerHalf(elementRef) {
     };
   }, [containerRect, elementRef]);
 
-  return isInLowerHalf;
+  return isInLeftHalf;
 }
