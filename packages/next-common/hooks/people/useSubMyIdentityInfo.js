@@ -74,8 +74,9 @@ function useSuperOfIdentityDisplayName(identity) {
             return convertIdentityInfo(parentResult);
           }
         });
-
-      setSubDisplay(`${identityResult.display}/${superOfResult.subDisplay}`);
+      if (identityResult.display && superOfResult.subDisplay) {
+        setSubDisplay(`${identityResult.display}/${superOfResult.subDisplay}`);
+      }
     }
 
     try {
