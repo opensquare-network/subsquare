@@ -23,5 +23,9 @@ export default function useRegistrarsList() {
     });
   }, [storgeRegistrars, chainRegistrars]);
 
-  return { registrars, isLoading };
+  return {
+    registrars,
+    isLoading,
+    total: storgeRegistrars?.length ?? 0,
+  };
 }
