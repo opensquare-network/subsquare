@@ -56,7 +56,11 @@ export function useChainAddressIdentityInfo(chain, address) {
             };
           }
 
-          if (!peopleIdentity?.info?.display && displayName) {
+          if (
+            !peopleIdentity?.info?.display &&
+            displayName &&
+            peopleIdentity?.info
+          ) {
             peopleIdentity.info.display = displayName;
           }
 
