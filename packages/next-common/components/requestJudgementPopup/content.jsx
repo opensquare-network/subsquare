@@ -13,6 +13,7 @@ import SignerWithBalance from "next-common/components/signerPopup/signerWithBala
 import Loading from "../loading";
 import styled from "styled-components";
 import { useRegistrarContext } from "next-common/context/people/registrarContext";
+import useJudgementsData from "next-common/components/people/overview/hooks/useJudgementsData";
 
 const StyledSignerWithBalance = styled.div`
   > div {
@@ -31,6 +32,10 @@ export default function RequestJudgementPopupContent() {
   const { registrars, isLoading } = useRegistrarContext();
   const api = useContextApi();
   const dispatch = useDispatch();
+  const { data = [] } = useJudgementsData();
+
+  const isSelected = (address) =>
+    data?.some((registrar) => registrar?.account === address);
 
   const getTxFunc = useCallback(() => {
     if (!api || !api?.tx?.identity || isEmpty(registrars) || !value) {
@@ -71,6 +76,7 @@ export default function RequestJudgementPopupContent() {
               fee: toPrecision(registrar.fee, decimals),
               symbol,
             },
+            disabled: isSelected(registrar.account),
           }))}
           selected={value}
           setSelected={setValue}
