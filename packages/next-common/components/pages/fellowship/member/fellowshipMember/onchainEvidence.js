@@ -6,6 +6,7 @@ import { useState } from "react";
 import { cn } from "next-common/utils";
 import EvidenceWish from "next-common/components/pages/fellowship/member/fellowshipMember/evidenceWish";
 import EvidenceHistory from "next-common/components/pages/fellowship/member/fellowshipMember/evidenceHistory";
+import CollectivesMembersProvider from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/collectivesMember";
 
 export default function OnchainEvidence() {
   const { fellowshipParams } = usePageProps();
@@ -13,9 +14,11 @@ export default function OnchainEvidence() {
   return (
     <ActiveReferendaProvider pallet="fellowshipReferenda">
       <CollectivesProvider params={fellowshipParams} section="fellowship">
-        <div>
-          <OnchainEvidenceTabs />
-        </div>
+        <CollectivesMembersProvider>
+          <div>
+            <OnchainEvidenceTabs />
+          </div>
+        </CollectivesMembersProvider>
       </CollectivesProvider>
     </ActiveReferendaProvider>
   );
