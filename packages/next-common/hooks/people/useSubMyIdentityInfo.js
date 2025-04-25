@@ -39,13 +39,13 @@ function convertIdentityInfo(identity) {
   };
 }
 
-function useSuperOfIdentityInfo(parentResult) {
+function useSuperOfIdentityDisplayName(identity) {
   const address = useRealAddress();
   const api = useContextApi();
   const [subDisplay, setSubDisplay] = useState(null);
 
   useEffect(() => {
-    if (!api || !parentResult || parentResult?.isNone) {
+    if (!api || !identity || identity?.display) {
       return;
     }
 
@@ -75,11 +75,15 @@ function useSuperOfIdentityInfo(parentResult) {
           }
         });
 
-      setSubDisplay(`${superOfResult.subDisplay}/${identityResult.display}`);
+      setSubDisplay(`${identityResult.display}/${superOfResult.subDisplay}`);
     }
 
-    fetchIdentityInfo();
-  }, [api, parentResult, address]);
+    try {
+      fetchIdentityInfo();
+    } catch (error) {
+      console.error(error);
+    }
+  }, [api, identity, address]);
 
   return {
     result: subDisplay,
@@ -111,7 +115,7 @@ function useAddressIdentityInfo(address) {
 export default function useSubMyIdentityInfo() {
   const address = useRealAddress();
   const { result, isLoading } = useAddressIdentityInfo(address);
-  const { result: superResult } = useSuperOfIdentityInfo(result);
+  const { result: superResult } = useSuperOfIdentityDisplayName(result);
 
   return {
     isLoading,
