@@ -11,6 +11,7 @@ import { useState, useEffect } from "react";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { StatisticsTitle } from "next-common/components/statistics/styled.js";
+import { isNil } from "lodash-es";
 
 function handleClaimantsData(originalMembers, members) {
   // Pre-processing membersRank map.
@@ -21,7 +22,7 @@ function handleClaimantsData(originalMembers, members) {
 
   return originalMembers.map((item) => ({
     ...item,
-    rank: membersRank[item.who] || "",
+    rank: !isNil(membersRank[item.who]) ? membersRank[item.who] : null,
   }));
 }
 
