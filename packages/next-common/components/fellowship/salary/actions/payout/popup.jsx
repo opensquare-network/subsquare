@@ -8,15 +8,16 @@ import TxSubmissionButton from "next-common/components/common/tx/txSubmissionBut
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useSalaryFellowshipPallet } from "next-common/context/collectives/collectives";
+import CurrencyInput from "next-common/components/currencyInput";
 
 const tabs = [
   {
     tabId: "myself",
-    tabTitle: "Myself",
+    tabTitle: "Fellowship Account",
   },
   {
     tabId: "other",
-    tabTitle: "Other",
+    tabTitle: "Other Account",
   },
 ];
 
@@ -33,8 +34,9 @@ function SelfPayout() {
 
   return (
     <>
-      <Signer />
-      <TxSubmissionButton title="Confirm" getTxFunc={getTxFunc} />
+      <Signer showCollectiveStatus />
+      <CurrencyInput disabled value={0} placeholder="0" symbol="USDT" />
+      <TxSubmissionButton title="Submit" getTxFunc={getTxFunc} />
     </>
   );
 }
@@ -58,9 +60,10 @@ function OtherPayout() {
 
   return (
     <>
-      <Signer />
+      <Signer showCollectiveStatus />
       <Beneficiary setAddress={setBeneficiary} />
-      <TxSubmissionButton title="Confirm" getTxFunc={getTxFunc} />
+      <CurrencyInput disabled value={0} placeholder="0" symbol="USDT" />
+      <TxSubmissionButton title="Submit" getTxFunc={getTxFunc} />
     </>
   );
 }
@@ -69,7 +72,11 @@ export default function FellowshipSalaryPayoutPopup({ onClose }) {
   const [tabId, setTabId] = useState("myself");
 
   return (
-    <PopupWithSigner title="Payout to" onClose={onClose}>
+    <PopupWithSigner
+      title="Payout to"
+      onClose={onClose}
+      className="max-w-[calc(100%-54px)]"
+    >
       <Tab selectedTabId={tabId} setSelectedTabId={setTabId} tabs={tabs} />
       {tabId === "myself" ? <SelfPayout /> : <OtherPayout />}
     </PopupWithSigner>

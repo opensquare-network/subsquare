@@ -14,6 +14,7 @@ export default function Signer({
   balance,
   isBalanceLoading,
   noSwitchSigner = false,
+  showCollectiveStatus,
 }) {
   const node = useChainSettings();
   const noBalance = isNil(balance) && isNil(isBalanceLoading);
@@ -33,7 +34,10 @@ export default function Signer({
           symbol={symbol || node.symbol}
         />
       )}
-      <MaybeProxySigner noSwitch={noSwitchSigner} />
+      <MaybeProxySigner
+        showCollectiveStatus={showCollectiveStatus}
+        noSwitch={noSwitchSigner}
+      />
     </div>
   );
 }

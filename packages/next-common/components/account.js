@@ -10,6 +10,14 @@ import { useConnectors } from "wagmi";
 import AddressAvatar from "./user/addressAvatar";
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 import AddressInfoLoading from "./addressInfo";
+import FellowshipRank from "next-common/components/fellowship/rank";
+import { useSingleMemberStatus } from "./fellowship/collective/hook/useFellowshipCoreMembersFilter";
+import Tooltip from "next-common/components/tooltip";
+import SignalIndicator from "next-common/components/icons/signalIndicator";
+import { useChain } from "next-common/context/chain";
+import { isCollectivesChain } from "next-common/utils/chain";
+import { usePageProps } from "next-common/context/page";
+import { useMemo } from "react";
 
 function WalletIcon({ wallet: walletName }) {
   const wallet = find(allWallets, { extensionName: walletName });
@@ -55,7 +63,11 @@ const NameWrapper = styled.div`
   }
 `;
 
-export default function Account({ account, showFullAddress = false }) {
+export default function Account({
+  account,
+  showCollectiveStatus = false,
+  showFullAddress = false,
+}) {
   const { identity, hasIdentity, isLoading } = useIdentityInfo(
     account?.address,
   );
@@ -99,6 +111,43 @@ export default function Account({ account, showFullAddress = false }) {
           </>
         )}
       </NameWrapper>
+      {showCollectiveStatus && <StatusAndRank address={account?.address} />}
     </>
   );
+}
+
+const useAccountCollective = (address) => {
+  const { status } = useSingleMemberStatus({ address });
+  const { fellowshipMembers } = usePageProps();
+
+  const rank = useMemo(() => {
+    return fellowshipMembers.find((member) => member.address === address);
+  }, [address, fellowshipMembers]);
+
+  return {
+    ...status,
+    ...rank,
+  };
+};
+
+function StatusAndRank({ address }) {
+  const chain = useChain();
+  const isCollectives = isCollectivesChain(chain);
+  const status = useAccountCollective(address);
+
+  if (!isCollectives) {
+    return null;
+  }
+
+  return status ? (
+    <>
+      <Tooltip content={status.isActive ? "Active" : "Inactive"}>
+        <SignalIndicator
+          className="w-[16px] h-[16px]"
+          active={status.isActive}
+        />
+      </Tooltip>
+      <FellowshipRank rank={status.rank || 0} />
+    </>
+  ) : null;
 }

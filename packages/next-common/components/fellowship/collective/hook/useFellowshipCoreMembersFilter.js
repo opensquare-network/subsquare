@@ -22,7 +22,7 @@ import {
 } from "next-common/components/pages/fellowship/periodFilters";
 import { useContextApi } from "next-common/context/api";
 
-function useSingleMemberStatus(item) {
+export function useSingleMemberStatus(item) {
   const { member, isLoading } = useSubCoreCollectivesMember(
     item.address,
     "fellowshipCore",
