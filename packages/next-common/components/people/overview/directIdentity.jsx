@@ -115,14 +115,18 @@ export function DirectIdentity({ subMyIdentityInfo }) {
     onInBlock,
   });
 
-  const clearIdentity = useCallback(() => {
-    doSubmit();
-    clearCachedIdentitys(
-      extensionAccounts.map(({ address }) => ({
-        chain: identityChain,
-        address,
-      })),
-    );
+  const clearIdentity = useCallback(async () => {
+    try {
+      await doSubmit();
+      clearCachedIdentitys(
+        extensionAccounts.map(({ address }) => ({
+          chain: identityChain,
+          address,
+        })),
+      );
+    } catch (error) {
+      console.error(error);
+    }
   }, [extensionAccounts, identityChain, doSubmit]);
 
   const isSubIdentity = type === "sub";
