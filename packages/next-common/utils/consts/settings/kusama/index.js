@@ -5,6 +5,7 @@ import kusamaTreasuryTracks from "next-common/utils/consts/settings/kusama/track
 import { defaultPostLabels } from "../common";
 import MenuGroups from "../menuGroups";
 import { mergeChainModules } from "../common/modules";
+import kusamaCommonCfg from "next-common/utils/consts/settings/kusama/common";
 
 const ProjectIconKusamaDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconKusamaDark"),
@@ -12,24 +13,16 @@ const ProjectIconKusamaDark = dynamic(() =>
 const ProjectIconKusamaLight = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconKusamaLight"),
 );
-const ProjectLogoKusamaDark = dynamic(() =>
-  import("@osn/icons/subsquare/ProjectLogoKusamaDark"),
-);
 
 const kusama = {
   value: "kusama",
   name: "Kusama",
-  identity: "kusama",
-  symbol: "KSM",
-  decimals: 12,
+  ...kusamaCommonCfg,
   hasElections: true,
-  ss58Format: 2,
   blockTime: 6000,
   endpoints: defaultKusamaNodes,
   avatar: ProjectIconKusamaLight,
   darkAvatar: ProjectIconKusamaDark,
-  navLogo: ProjectLogoKusamaDark,
-  navLogoDark: ProjectLogoKusamaDark,
   navPreferDark: true,
   group: MenuGroups.KusamaAndParachains,
   links: kusamaLinks,
@@ -74,25 +67,6 @@ const kusama = {
     polkassembly: {
       discussions: true,
     },
-  },
-  cssVarsLight: {
-    theme100: "rgba(230,0,122,0.10)",
-    theme300: "rgba(230,0,122,0.40)",
-    theme500: "rgba(230,0,122,1)",
-    navigationBg: "rgba(0,0,0,1)",
-    navigationActive: "rgba(255,255,255,0.10)",
-    navigationBorder: "rgba(255,255,255,0.12)",
-    navigationText: "var(--textPrimaryContrast)",
-    navigationTextTertiary: "var(--textTertiaryContrast)",
-    navigationIcon: "var(--textSecondaryContrast)",
-  },
-  cssVarsDark: {
-    theme100: "rgba(230,0,122,0.10)",
-    theme300: "rgba(230,0,122,0.40)",
-    theme500: "rgba(230,0,122,1)",
-    navigationBg: "rgba(33,36,51,1)",
-    navigationActive: "rgba(38,41,56,1)",
-    navigationBorder: "var(--neutral300)",
   },
   multisigWallets: {
     signet: true,
