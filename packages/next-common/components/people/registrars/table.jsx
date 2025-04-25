@@ -1,6 +1,6 @@
 import DataList from "next-common/components/dataList";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import TableHeader from "next-common/components/data/common/tableHeader";
+import { TableName } from "next-common/components/data/common/tableHeader";
 import AddressUser from "next-common/components/user/addressUser";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
@@ -35,13 +35,7 @@ export default function RegistrarsTable({
 
   return (
     <div className="flex flex-col gap-y-4">
-      <TableHeader
-        title="Registrars"
-        showMyRelated={false}
-        showSearch={false}
-        total={total}
-        loading={isLoading}
-      />
+      <TableName title="Registrars" total={total} loading={isLoading} />
       <SecondaryCard className="space-y-2">
         <DataList
           columns={columns}

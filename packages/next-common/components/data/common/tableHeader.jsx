@@ -7,23 +7,38 @@ export default function TableHeader({
   total,
   loading,
   showMyRelated = true,
-  showSearch = true,
 }) {
-  const { component: MyRelatedSwitchComponent } = useMyRelatedSwitch();
   const { component: SearchBoxComponent } = useSearchComponent();
+
+  const HeaderContent = showMyRelated ? TableNameSwitch : TableName;
 
   return (
     <div>
-      <TitleContainer>
-        <span>
-          {title}
-          <span className="text-textTertiary text16Medium ml-1">
-            {!loading && total}
-          </span>
-        </span>
-        {showMyRelated && MyRelatedSwitchComponent}
-      </TitleContainer>
-      {showSearch && SearchBoxComponent}
+      <HeaderContent title={title} total={total} loading={loading} />
+      {SearchBoxComponent}
     </div>
+  );
+}
+
+export function TableName({ title, total, loading }) {
+  return (
+    <TitleContainer>
+      <span className="inline-flex items-center">
+        {title}
+        <span className="text-textTertiary text16Medium ml-1">
+          {!loading && total}
+        </span>
+      </span>
+    </TitleContainer>
+  );
+}
+
+export function TableNameSwitch({ title, total, loading }) {
+  const { component: MyRelatedSwitchComponent } = useMyRelatedSwitch();
+  return (
+    <TitleContainer>
+      <TableName title={title} total={total} loading={loading} />
+      {MyRelatedSwitchComponent}
+    </TitleContainer>
   );
 }
