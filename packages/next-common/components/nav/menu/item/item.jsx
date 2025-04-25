@@ -4,6 +4,7 @@ import Tooltip from "next-common/components/tooltip";
 import NavMenuItemGroup from "./group";
 import { useNavMenuType, useNavSubmenuVisible } from "next-common/context/nav";
 import NavMenuItemTemplate from "./itemTemplate";
+import { useRouter } from "next/router";
 import { NAV_MENU_TYPE } from "next-common/utils/constants";
 
 export default function NavMenuItemItem({
@@ -19,6 +20,7 @@ export default function NavMenuItemItem({
   const isExternal = isExternalLink(item?.pathname);
   const [navSubmenuVisible, setNavSubmenuVisible] = useNavSubmenuVisible();
   const [, setNavMenuType] = useNavMenuType();
+  const router = useRouter();
 
   if (
     item?.type === NAV_MENU_TYPE.subspace ||
@@ -33,10 +35,14 @@ export default function NavMenuItemItem({
         extra={item?.extra || extra}
         collapsed={collapsed}
         onClick={() => {
-          setNavMenuType({
-            type: item?.type,
-            menu: item?.items,
-          });
+          if (item?.type === NAV_MENU_TYPE.archived) {
+            setNavMenuType({
+              type: NAV_MENU_TYPE.archived,
+              menu: item?.items,
+            });
+          } else if (item?.type === NAV_MENU_TYPE.subspace) {
+            router.push(item?.pathname);
+          }
         }}
       />
     );
