@@ -15,10 +15,10 @@ import {
 import PromoteFellowshipMemberPopup from "next-common/components/fellowship/core/members/actions/promote/popup";
 import { OptionItem } from "next-common/components/internalDropdown/styled";
 import Tooltip from "next-common/components/tooltip";
-import { useContainerRef } from "next-common/context/containerRef";
-import useEnsureElementInRect from "next-common/hooks/useEnsureElementInRect";
+import { useElementRect } from "next-common/hooks/useElementRect";
 import useIsElementInLeftHalf from "next-common/hooks/useIsElementInLeftHalf";
 import useIsElementInLowerHalf from "next-common/hooks/useIsElementInLowerHalf";
+import { useScreenRect } from "next-common/hooks/useScreenRect";
 import Button from "next-common/lib/button";
 import { cn, isSameAddress } from "next-common/utils";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
@@ -168,19 +168,18 @@ export function ActivationMenuItem({ member, setShowActivationPopup }) {
 
 export function MoreActionsWrapper({ children }) {
   const [showContextMenu, setShowContextMenu] = useState(false);
-  const ref = useRef();
-  const [menuEl, setMenuEl] = useState(null);
-  useClickAway(ref, () => setShowContextMenu(false));
-  const dataListRef = useContainerRef();
-  const isInLowerHalf = useIsElementInLowerHalf(ref, dataListRef);
-  const isInLeftHalf = useIsElementInLeftHalf(ref, dataListRef);
-  useEnsureElementInRect(menuEl, dataListRef);
+  const btnRef = useRef();
+  useClickAway(btnRef, () => setShowContextMenu(false));
+  const isInLowerHalf = useIsElementInLowerHalf(btnRef);
+  const isInLeftHalf = useIsElementInLeftHalf(btnRef);
+  const btnRect = useElementRect(btnRef);
+  const screenRect = useScreenRect();
 
   return (
     <ContextMenuStateContext.Provider
       value={{ showContextMenu, setShowContextMenu }}
     >
-      <div className="relative" ref={ref}>
+      <div ref={btnRef}>
         <div
           role="button"
           className={cn(
@@ -193,14 +192,27 @@ export function MoreActionsWrapper({ children }) {
         </div>
         {showContextMenu && (
           <div
-            ref={setMenuEl}
             className={cn(
-              "z-10 absolute p-[4px] w-[160px]",
-              isInLeftHalf ? "left-[calc(100%+6px)]" : "right-[calc(100%+6px)]",
-              isInLowerHalf ? "bottom-0" : "top-0",
+              "z-10 fixed p-[4px] w-[160px]",
               "rounded-[6px] border border-neutral200",
               "bg-neutral100 shadow-200",
             )}
+            style={{
+              ...(isInLowerHalf
+                ? {
+                    bottom: screenRect.height - btnRect.top + 6,
+                  }
+                : {
+                    top: btnRect.bottom + 6,
+                  }),
+              ...(isInLeftHalf
+                ? {
+                    left: btnRect.left,
+                  }
+                : {
+                    right: screenRect.width - btnRect.right,
+                  }),
+            }}
           >
             {children}
           </div>
