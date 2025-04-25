@@ -17,6 +17,11 @@ const FellowshipFinanceOverview = dynamic(
   { ssr: false },
 );
 
+const FellowshipApplicationGuide = dynamic(
+  () => import("./fellowship/fellowshipApplicationGuide"),
+  { ssr: false },
+);
+
 function ConditionTreasuryStats() {
   const chain = useChain();
   if (isPolkadotChain(chain)) {
@@ -44,6 +49,8 @@ export default function Overview() {
       <WithPallet pallet="treasury">
         <ConditionTreasuryStats />
       </WithPallet>
+
+      <FellowshipApplicationGuide />
 
       <WithPallet pallet="fellowshipTreasury">
         <WithPallet pallet="fellowshipSalary">

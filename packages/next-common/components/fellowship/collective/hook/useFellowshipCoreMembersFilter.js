@@ -1,4 +1,4 @@
-import { isNil } from "lodash-es";
+import { isNil, filter, partition } from "lodash-es";
 import { useEffect, useMemo, useState } from "react";
 import useFellowshipCoreOnlySwitch from "./useFellowshipCoreOnlySwitch";
 import useSubCoreCollectivesMember from "next-common/hooks/collectives/useSubCoreCollectivesMember";
@@ -21,6 +21,8 @@ import {
   filterPromotableFn,
 } from "next-common/components/pages/fellowship/periodFilters";
 import { useContextApi } from "next-common/context/api";
+import nextApi from "next-common/services/nextApi";
+import { fellowshipMembersApiUri } from "next-common/services/url";
 
 function useSingleMemberStatus(item) {
   const { member, isLoading } = useSubCoreCollectivesMember(
@@ -165,5 +167,90 @@ export default function useFellowshipCoreMembersFilter(membersWithStatus) {
   return {
     filteredMembers,
     component,
+  };
+}
+
+function useFellowshipCoreMembers() {
+  const [members, setMembers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    setLoading(true);
+    nextApi
+      .fetch(fellowshipMembersApiUri)
+      .then((res) => {
+        setMembers(res.result);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+
+  return {
+    isLoading: loading,
+    members,
+  };
+}
+
+const pallet = "fellowshipCore";
+function useFellowshipCoreWithStatus(members) {
+  const api = useContextApi();
+  const [membersWithStatus, setMembersWithStatus] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    if (!members || !members.length) {
+      setMembersWithStatus([]);
+      setIsLoading(false);
+      return;
+    }
+
+    setIsLoading(true);
+    api.query[pallet].member
+      .multi(members.map((m) => m.address))
+      .then((result) => {
+        const membersWithStatus = members.map((item, index) => {
+          const status = result[index]?.toJSON();
+          return {
+            ...item,
+            status,
+            isFellowshipCoreMember: !isNil(status),
+          };
+        });
+        setMembersWithStatus(membersWithStatus);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [api, members]);
+
+  return {
+    isLoading,
+    membersWithStatus,
+  };
+}
+export function useFellowshipCoreMembersCount() {
+  const { members: memberList, isLoading: membersLoading } =
+    useFellowshipCoreMembers();
+  const { membersWithStatus, isLoading: memberStatusLoading } =
+    useFellowshipCoreWithStatus(memberList);
+
+  const [members, candidates] = partition(membersWithStatus, (m) => m.rank > 0);
+
+  const coreMembersCount = filter(members, {
+    isFellowshipCoreMember: true,
+  }).length;
+  const coreCandidatesCount = filter(candidates, {
+    isFellowshipCoreMember: true,
+  }).length;
+
+  return {
+    isLoading: membersLoading || memberStatusLoading,
+    coreMembersCount,
+    coreCandidatesCount,
+    members: memberList,
+    membersWithStatus,
   };
 }
