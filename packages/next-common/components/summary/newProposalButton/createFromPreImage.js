@@ -88,6 +88,7 @@ function NewPreimageContent() {
         loading={isLoading || proposalLoading}
       />
       {!preimageData ? form : proposalForm}
+      <SigningTip />
       <div className="flex justify-between">
         <Button
           className={`border-neutral400 hover:border-neutral500 ${
