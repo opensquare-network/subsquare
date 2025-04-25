@@ -4,11 +4,11 @@ import React, { useState, useEffect } from "react";
 import ReminderInput from "next-common/components/header/search/popup/reminderInput";
 import InputInSearchPopup from "next-common/components/header/search/popup/input";
 import LoadingSkeleton from "next-common/components/header/search/popup/loadingSkeleton";
-import ReferendaList from "next-common/components/header/search/popup/referenda/index";
+import SearchList from "next-common/components/header/search/popup/searchList";
 import useRefCallback from "next-common/hooks/useRefCallback";
 import { isNil } from "lodash-es";
 import NoResult from "next-common/components/header/search/popup/noResult";
-import useReferendaSearchResults from "next-common/components/header/hooks/useReferendaSearchResults";
+import useSearchResults from "next-common/components/header/hooks/useSearchResults";
 
 function Wrapper({ children, className = "" }) {
   return (
@@ -22,8 +22,7 @@ function Wrapper({ children, className = "" }) {
 
 function SearchPopup({ onClose, isMobile }) {
   const [searchValue, setSearchValue] = useState("");
-  const { referenda, fetch, isLoading, clearResults } =
-    useReferendaSearchResults();
+  const { totalList, fetch, isLoading, clearResults } = useSearchResults();
 
   const handleSearch = useRefCallback(() => {
     if (!searchValue) return;
@@ -81,7 +80,7 @@ function SearchPopup({ onClose, isMobile }) {
             }}
           />
         </Wrapper>
-        {isNil(referenda) && !isLoading && searchValue.length === 0 && (
+        {isNil(totalList) && !isLoading && searchValue.length === 0 && (
           <Wrapper>
             <ReminderInput isMobile={isMobile} />
           </Wrapper>
@@ -91,15 +90,11 @@ function SearchPopup({ onClose, isMobile }) {
             <LoadingSkeleton />
           </Wrapper>
         )}
-        {Array.isArray(referenda) && referenda.length > 0 && !isLoading && (
-          <ReferendaList
-            data={referenda}
-            onClose={onClose}
-            isMobile={isMobile}
-          />
+        {Array.isArray(totalList) && totalList.length > 0 && !isLoading && (
+          <SearchList data={totalList} onClose={onClose} isMobile={isMobile} />
         )}
-        {Array.isArray(referenda) &&
-          referenda.length === 0 &&
+        {Array.isArray(totalList) &&
+          totalList.length === 0 &&
           !isLoading &&
           searchValue.length > 2 && <NoResult isMobile={isMobile} />}
       </div>

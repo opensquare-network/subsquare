@@ -5,8 +5,9 @@ import { last } from "lodash-es";
 import { isNil } from "lodash-es";
 import { useNavCollapsed } from "next-common/context/nav";
 import useIsNarrowView from "next-common/hooks/useIsNarrowView";
+import { ClientOnly } from "next-common/components/hybridRender";
 
-export default function DataListItem({
+function ResponsiveDataListItem({
   columns,
   row,
   columnClassNames,
@@ -56,6 +57,14 @@ export default function DataListItem({
         />
       )}
     </div>
+  );
+}
+
+export default function DataListItem(props) {
+  return (
+    <ClientOnly>
+      <ResponsiveDataListItem {...props} />
+    </ClientOnly>
   );
 }
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { blockTimeSelector } from "../../store/reducers/chainSlice";
-import { estimateBlocksTimeInDays } from "..";
+import { estimateBlocksTimeInDays, estimateBlocksTimeInDate } from "..";
 import { useContextApi } from "next-common/context/api";
 
 export default function useVoteLockTime(
@@ -10,6 +10,7 @@ export default function useVoteLockTime(
 ) {
   const api = useContextApi();
   const [time, setTime] = useState();
+  const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const blockTime = useSelector(blockTimeSelector);
 
@@ -29,10 +30,12 @@ export default function useVoteLockTime(
     const multiplier = Math.pow(2, conviction - 1);
     const blocks = (api.consts?.[module]?.voteLockingPeriod || 0) * multiplier;
     const time = estimateBlocksTimeInDays(blocks, blockTime);
+    const data = estimateBlocksTimeInDate(blocks, blockTime);
     setTime(time);
+    setData(data);
 
     setIsLoading(false);
   }, [api, module, conviction, blockTime]);
 
-  return [time, isLoading];
+  return [time, isLoading, data];
 }

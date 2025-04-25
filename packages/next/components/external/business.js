@@ -18,7 +18,6 @@ export default function Business({ external }) {
           <Link
             key="motion-link"
             href={`/council/motions/${motion.indexer.blockHeight}_${motion.hash}`}
-            legacyBehavior
           >{`Council Motion #${shortMotionId(motion)}`}</Link>,
         ],
         ["Hash", <Copyable key="hash">{motion.hash}</Copyable>],
