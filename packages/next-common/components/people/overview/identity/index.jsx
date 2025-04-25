@@ -1,12 +1,11 @@
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import Tabs from "next-common/components/tabs";
 import DirectIdentityImpl from "./directIdentity";
-import useTabNavigation from "../hooks/useTabNavigation";
 import { useIdentityInfoContext } from "next-common/context/people/identityInfoContext";
+import { useState } from "react";
 
 export default function PeopleOverviewIdentity() {
-  const { activeTabValue, handleTabClick } =
-    useTabNavigation("direct-identity");
+  const [activeTabValue, setActiveTabValue] = useState("direct-identity");
   const { info: subMyIdentityInfo, isLoading } = useIdentityInfoContext();
 
   const isEmpty =
@@ -30,6 +29,10 @@ export default function PeopleOverviewIdentity() {
     //   content: <SubIdentitiesImpl isEmpty={isEmpty} />,
     // },
   ];
+
+  const handleTabClick = (tab) => {
+    setActiveTabValue(tab.value);
+  };
 
   return (
     <SecondaryCardDetail>
