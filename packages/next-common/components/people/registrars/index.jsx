@@ -2,7 +2,7 @@ import LoadableContent from "next-common/components/common/loadableContent";
 import ListLayout from "next-common/components/layout/ListLayout";
 import SummaryItem from "next-common/components/summary/layout/item";
 import SummaryLayout from "next-common/components/summary/layout/layout";
-import useRegistrarsList from "next-common/utils/hooks/useRegistrars";
+import useRegistrarsList from "next-common/utils/hooks/useRegistrarsList";
 import RegistrarsTable from "./table";
 
 export default function PeopleRegistrarsPage() {

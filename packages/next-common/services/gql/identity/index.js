@@ -39,7 +39,7 @@ export async function queryPeopleIdentitiesInfo(params = {}) {
   return { data: data?.identities };
 }
 
-export async function queryPeopleIdentitiesRegistrars() {
+export async function queryPeopleRegistrarsFromApi() {
   const { data } =
     (await peopleIdentityClient?.query?.({
       query: GET_IDENTITIES_REGISTRARS,
