@@ -1,4 +1,3 @@
-import Signer from "next-common/components/popup/fields/signerField";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import RightWrapper from "next-common/components/rightWraper";
 import { useCallback, useMemo } from "react";
@@ -15,6 +14,7 @@ import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import AddressComboField from "../popup/fields/addressComboField";
 import TextInputField from "../popup/fields/textInputField";
 import { noop } from "lodash-es";
+import SignerWithBalance from "../signerPopup/signerWithBalance";
 
 export default function RemoveSubPopupContent({ selectedSub }) {
   const api = useContextApi();
@@ -49,11 +49,7 @@ export default function RemoveSubPopupContent({ selectedSub }) {
 
   return (
     <div className="space-y-4">
-      <Signer
-        balance={0}
-        isBalanceLoading={false}
-        symbol={chainSettings.symbol}
-      />
+      <SignerWithBalance />
 
       <div className="flex gap-x-4">
         <AddressComboField

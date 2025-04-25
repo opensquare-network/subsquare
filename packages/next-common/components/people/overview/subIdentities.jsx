@@ -6,7 +6,7 @@ import { useState } from "react";
 import SubIdentitiesTable from "../subTable";
 import { AddressUser } from "next-common/components/user";
 import useMyIdentityType from "next-common/hooks/people/useMyIdentityType";
-
+import Loading from "next-common/components/loading";
 const SetSubsPopup = dynamicPopup(
   () => import("next-common/components/setSubsPopup"),
   {
@@ -14,10 +14,18 @@ const SetSubsPopup = dynamicPopup(
   },
 );
 
-export default function SubIdentitiesImpl({ isEmpty }) {
+export default function SubIdentitiesImpl({ isEmpty, isLoading }) {
   const [showSetSubsPopup, setShowSetSubsPopup] = useState(false);
   const { type, parent } = useMyIdentityType();
   const isSubIdentity = type === "sub";
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-full">
+        <Loading size="24" />
+      </div>
+    );
+  }
 
   if (isEmpty) {
     return <SubIdentityEmpty />;
