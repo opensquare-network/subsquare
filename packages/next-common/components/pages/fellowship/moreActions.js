@@ -16,6 +16,8 @@ import PromoteFellowshipMemberPopup from "next-common/components/fellowship/core
 import { OptionItem } from "next-common/components/internalDropdown/styled";
 import Tooltip from "next-common/components/tooltip";
 import { useContainerRef } from "next-common/context/containerRef";
+import useEnsureElementInRect from "next-common/hooks/useEnsureElementInRect";
+import useIsElementInLeftHalf from "next-common/hooks/useIsElementInLeftHalf";
 import useIsElementInLowerHalf from "next-common/hooks/useIsElementInLowerHalf";
 import Button from "next-common/lib/button";
 import { cn, isSameAddress } from "next-common/utils";
@@ -167,9 +169,12 @@ export function ActivationMenuItem({ member, setShowActivationPopup }) {
 export function MoreActionsWrapper({ children }) {
   const [showContextMenu, setShowContextMenu] = useState(false);
   const ref = useRef();
+  const [menuEl, setMenuEl] = useState(null);
   useClickAway(ref, () => setShowContextMenu(false));
   const dataListRef = useContainerRef();
   const isInLowerHalf = useIsElementInLowerHalf(ref, dataListRef);
+  const isInLeftHalf = useIsElementInLeftHalf(ref, dataListRef);
+  useEnsureElementInRect(menuEl, dataListRef);
 
   return (
     <ContextMenuStateContext.Provider
@@ -188,11 +193,11 @@ export function MoreActionsWrapper({ children }) {
         </div>
         {showContextMenu && (
           <div
+            ref={setMenuEl}
             className={cn(
-              "z-10 absolute right-0 p-[4px] w-[160px]",
-              isInLowerHalf
-                ? "bottom-[calc(100%+6px)]"
-                : "top-[calc(100%+6px)]",
+              "z-10 absolute p-[4px] w-[160px]",
+              isInLeftHalf ? "left-[calc(100%+6px)]" : "right-[calc(100%+6px)]",
+              isInLowerHalf ? "bottom-0" : "top-0",
               "rounded-[6px] border border-neutral200",
               "bg-neutral100 shadow-200",
             )}
