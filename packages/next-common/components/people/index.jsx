@@ -11,6 +11,7 @@ import DirectIdentityImpl from "./overview/directIdentity";
 import { useRouter } from "next/router";
 import useSubMyIdentityInfo from "next-common/hooks/people/useSubMyIdentityInfo";
 import UserAccountProvider from "next-common/context/user/account";
+import SubIdentitiesImpl from "./overview/subIdentities";
 export default function PeopleOverviewPageImpl() {
   const { description } = useChainSettings();
   const realAddress = useRealAddress();
@@ -48,11 +49,11 @@ function PeopleOverviewContent() {
         />
       ),
     },
-    // {
-    //   value: "sub-identities",
-    //   label: "Sub Identities",
-    //   content: <SubIdentitiesImpl isEmpty={isEmpty} />,
-    // },
+    {
+      value: "sub-identities",
+      label: "Sub Identities",
+      content: <SubIdentitiesImpl isLoading={isLoading} isEmpty={isEmpty} />,
+    },
   ];
 
   function handleTabClick(tab) {
