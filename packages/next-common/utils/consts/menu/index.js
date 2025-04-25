@@ -19,6 +19,9 @@ import getChainSettings from "../settings";
 import { getMoreMenu } from "./more";
 import { coretimeMenu } from "./coretime";
 import Data from "./data";
+import getAdvancedMenu from "next-common/utils/consts/menu/advanced";
+import { NAV_MENU_TYPE } from "next-common/utils/constants";
+import { isArray } from "lodash-es";
 
 export function getHomeMenu({
   summary = {},
@@ -46,11 +49,10 @@ export function getHomeMenu({
     modules?.advisoryCommittee && getAdvisoryCommitteeMenu(summary),
     modules?.alliance && getAllianceMenu(summary),
     modules?.communityCouncil && getCommunityCouncilMenu(summary),
-    modules?.preimages && preImages,
+    getAdvancedMenu(
+      [modules?.preimages && preImages, ...integrationsMenu].filter(Boolean),
+    ),
     (modules?.proxy || modules?.vesting || hasMultisig) && Data,
-    ...(integrationsMenu.length
-      ? [{ type: "divider" }, ...integrationsMenu]
-      : []),
   ].filter(Boolean);
 }
 
@@ -116,4 +118,42 @@ export function getMainMenu({
     { type: "divider" },
     moreMenu,
   ];
+}
+
+const matchedMenuItem = (menu, pathname) => {
+  for (const menuItem of menu) {
+    const matched = menuItem.pathname === pathname;
+    if (menuItem?.items?.length) {
+      const findItem = matchedMenuItem(menuItem.items, pathname);
+      if (findItem) {
+        return menuItem;
+      }
+    }
+    if (matched) {
+      return menuItem;
+    }
+  }
+};
+const isSubSpaceNavMenu = (type) => type === NAV_MENU_TYPE.subspace;
+export function matchNewMenu(menu, pathname) {
+  if (!isArray(menu)) {
+    return null;
+  }
+  for (const menuItem of menu) {
+    if (isSubSpaceNavMenu(menuItem.type) || menuItem.type === "archived") {
+      const findMenu = matchedMenuItem(menuItem.items, pathname);
+      if (findMenu) {
+        return {
+          type: menuItem.type,
+          menu: menuItem.items,
+        };
+      }
+    } else if (menuItem?.items?.length) {
+      const metchMenu = matchNewMenu(menuItem.items, pathname);
+      if (metchMenu) {
+        return metchMenu;
+      }
+    }
+  }
+  return null;
 }

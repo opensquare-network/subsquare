@@ -10,6 +10,17 @@ import NavMenuItemItem from "./item";
 import NavMenuDivider from "../../divider";
 import { sumBy } from "lodash-es";
 
+const childActived = (menu = [], pathname) => {
+  for (const menuItem of menu) {
+    if (menuItem?.items?.length) {
+      if (childActived(menuItem.items, pathname)) {
+        return true;
+      }
+    }
+    return menuItem.pathname === pathname;
+  }
+};
+
 export default function NavMenuItemGroup({
   menu = {},
   collapsed,
@@ -76,7 +87,8 @@ export default function NavMenuItemGroup({
                 firstPath === menu.pathname ||
                 menu.extraMatchNavMenuActivePathnames?.includes?.(
                   router.pathname,
-                )
+                ) ||
+                childActived(menu?.items, router.pathname)
               }
               extra={
                 <span>
