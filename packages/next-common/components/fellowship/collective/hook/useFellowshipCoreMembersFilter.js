@@ -1,4 +1,4 @@
-import { isNil, partition } from "lodash-es";
+import { isNil } from "lodash-es";
 import { useEffect, useMemo, useState } from "react";
 import useFellowshipCoreOnlySwitch from "./useFellowshipCoreOnlySwitch";
 import useSubCoreCollectivesMember from "next-common/hooks/collectives/useSubCoreCollectivesMember";
@@ -170,7 +170,7 @@ export default function useFellowshipCoreMembersFilter(membersWithStatus) {
   };
 }
 
-function useFetchFellowshipCoreMembers() {
+export function useFetchFellowshipCoreMembers() {
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -188,71 +188,5 @@ function useFetchFellowshipCoreMembers() {
   return {
     isLoading: loading,
     members,
-  };
-}
-
-const pallet = "fellowshipCore";
-function useFellowshipCoreWithStatus(members) {
-  const api = useContextApi();
-  const [membersWithStatus, setMembersWithStatus] = useState();
-  const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-    if (!api) {
-      return;
-    }
-
-    if (!members || !members.length) {
-      setMembersWithStatus([]);
-      setIsLoading(false);
-      return;
-    }
-
-    setIsLoading(true);
-    api.query[pallet].member
-      .multi(members.map((m) => m.address))
-      .then((result) => {
-        const membersWithStatus = members.map((item, index) => {
-          const status = result[index]?.toJSON();
-          return {
-            ...item,
-            status,
-            isFellowshipCoreMember: !isNil(status),
-          };
-        });
-        setMembersWithStatus(membersWithStatus);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [api, members]);
-
-  return {
-    isLoading,
-    membersWithStatus,
-  };
-}
-export function useFellowshipCoreMembersCount() {
-  const { members: sourseMembers, isLoading: membersLoading } =
-    useFetchFellowshipCoreMembers();
-  const { membersWithStatus, isLoading: memberStatusLoading } =
-    useFellowshipCoreWithStatus(sourseMembers);
-
-  const [members, candidates] = useMemo(
-    () =>
-      partition(
-        membersWithStatus?.filter(
-          ({ isFellowshipCoreMember }) => isFellowshipCoreMember,
-        ),
-        (m) => m.rank > 0,
-      ),
-    [membersWithStatus],
-  );
-
-  return {
-    isLoading: membersLoading || memberStatusLoading,
-    coreMembersCount: members.length,
-    coreCandidatesCount: candidates.length,
-    sourseMembers,
-    membersWithStatus,
   };
 }

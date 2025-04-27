@@ -2,13 +2,17 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import PrimaryButton from "next-common/lib/button/primary";
 import { SystemLoadingDots, MenuFellowship } from "@osn/icons/subsquare";
 import Divider from "next-common/components/styled/layout/divider";
-import { useFellowshipCoreMembersCount } from "next-common/components/fellowship/collective/hook/useFellowshipCoreMembersFilter";
+import {
+  useFetchFellowshipCoreMembers,
+  useMembersWithStatus,
+} from "next-common/components/fellowship/collective/hook/useFellowshipCoreMembersFilter";
 import { useChain } from "next-common/context/chain";
 import { isCollectivesChain } from "next-common/utils/chain";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Link from "next/link";
 import { isAddressInGroup } from "next-common/utils";
 import { useMemo } from "react";
+import { partition } from "lodash-es";
 
 export default function FellowshipApplicationGuide() {
   const chain = useChain();
@@ -17,8 +21,24 @@ export default function FellowshipApplicationGuide() {
 
 function ApplicationGuide() {
   const realAddress = useRealAddress();
-  const { isLoading, coreMembersCount, coreCandidatesCount, sourseMembers } =
-    useFellowshipCoreMembersCount();
+  const { members: sourseMembers, isLoading: sourseMembersLoading } =
+    useFetchFellowshipCoreMembers();
+  const { membersWithStatus, isLoading: memberStatusLoading } =
+    useMembersWithStatus(sourseMembers);
+  const isLoading = sourseMembersLoading || memberStatusLoading;
+
+  const { coreMembersCount, coreCandidatesCount } = useMemo(() => {
+    const [members, candidates] = partition(
+      membersWithStatus?.filter(
+        ({ isFellowshipCoreMember }) => isFellowshipCoreMember,
+      ),
+      (m) => m.rank > 0,
+    );
+    return {
+      coreMembersCount: members.length,
+      coreCandidatesCount: candidates.length,
+    };
+  }, [membersWithStatus]);
 
   const isFellowshipMember = useMemo(
     () =>
