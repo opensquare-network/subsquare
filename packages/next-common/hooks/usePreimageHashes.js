@@ -3,6 +3,9 @@ import useCall from "next-common/utils/hooks/useCall";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { useContextApi } from "next-common/context/api";
+import { isValidPreimageHash } from "next-common/utils";
+import { createResult, getPreimageHash } from "./useOldPreimage";
+import { getBytesParams } from "./usePreimage";
 
 function usePreimageHashesCommon(method) {
   const trigger = useSelector(preImagesTriggerSelector);
@@ -62,4 +65,58 @@ export function useCombinedPreimageHashes() {
   }, [oldHashes, newHashes]);
 
   return { hashes, loading: combinedLoading };
+}
+
+export function usePreimageWithHash(hash) {
+  const api = useContextApi();
+
+  // retrieve the status using only the hash of the image
+  const { inlineData, paramsStatus, resultPreimageHash } = useMemo(
+    () => (isValidPreimageHash(hash) ? getPreimageHash(api, hash) : {}),
+    [api, hash],
+  );
+
+  const { value: optStatus, loading: optLoading } = useCall(
+    !inlineData && paramsStatus && api?.query.preimage?.requestStatusFor,
+    paramsStatus ? paramsStatus : [undefined],
+  );
+
+  // from the retrieved status (if any), get the on-chain stored bytes
+  const { paramsBytes, resultPreimageFor } = useMemo(
+    () =>
+      resultPreimageHash && optStatus
+        ? getBytesParams(resultPreimageHash, optStatus)
+        : {},
+    [optStatus, resultPreimageHash],
+  );
+
+  const { value: optBytes, loading: bytesLoading } = useCall(
+    paramsBytes && api?.query.preimage?.preimageFor,
+    paramsBytes ? paramsBytes : [undefined],
+    { cacheKey: `usePreimage/preimageFor/${hash}` },
+  );
+
+  // extract all the preimage info we have retrieved
+  return useMemo(
+    () => [
+      resultPreimageFor
+        ? optBytes
+          ? createResult(resultPreimageFor, optBytes)
+          : resultPreimageFor
+        : resultPreimageHash
+        ? inlineData
+          ? createResult(resultPreimageHash, inlineData)
+          : resultPreimageHash
+        : undefined,
+      bytesLoading || optLoading,
+    ],
+    [
+      resultPreimageFor,
+      optBytes,
+      resultPreimageHash,
+      inlineData,
+      bytesLoading,
+      optLoading,
+    ],
+  );
 }

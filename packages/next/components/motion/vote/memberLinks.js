@@ -44,7 +44,7 @@ function MemberLinks() {
   }
 
   return (
-    <Link href={obj.url} passHref legacyBehavior>
+    <Link href={obj.url} passHref>
       <Anchor>Check all {obj.name}</Anchor>
     </Link>
   );

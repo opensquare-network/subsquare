@@ -1,13 +1,13 @@
 import dynamic from "next/dynamic";
 import Chains from "../../chains";
-import polkadot from "../polkadot";
+import polkadotCommonCfg from "next-common/utils/consts/settings/polkadot/common";
 
 const ProjectIconPolkadotCoretime = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconPolkadotCoretime"),
 );
 
 const polkadotCoretime = {
-  ...polkadot,
+  ...polkadotCommonCfg,
   value: Chains.polkadotCoretime,
   description:
     "A revolutionary approach to accessing the right amount of blockspace for every stage of growth.",

@@ -6,33 +6,35 @@ import FellowshipSalaryRegister from "next-common/components/fellowship/salary/a
 import FellowshipSalaryPayout from "next-common/components/fellowship/salary/actions/payout";
 import FellowshipSalaryMyStatus from "../myStatus";
 import { useFellowshipSalaryStats } from "next-common/hooks/fellowship/salary/useFellowshipSalaryStats";
-import { isNil } from "lodash-es";
+import LoadingSkeleton from "./loadingSkeleton";
 
 export default function FellowshipSalaryActiveCycle() {
   const stats = useFellowshipSalaryStats();
-
-  if (isNil(stats)) {
-    return null;
-  }
 
   return (
     <>
       <TitleContainer className="mb-4">Current Cycle</TitleContainer>
 
       <SecondaryCard>
-        <FellowshipSalaryStats />
+        {!stats ? (
+          <LoadingSkeleton />
+        ) : (
+          <>
+            <FellowshipSalaryStats />
 
-        <hr className="my-4" />
+            <hr className="my-4" />
 
-        <div className="space-y-2">
-          <FellowshipSalaryMyStatus />
+            <div className="space-y-2">
+              <FellowshipSalaryMyStatus />
 
-          <div className="flex flex-wrap items-center justify-end gap-x-4 gap-y-2">
-            <FellowshipSalaryStatsActiveCycleDetailLink />
-            <FellowshipSalaryRegister />
-            <FellowshipSalaryPayout />
-          </div>
-        </div>
+              <div className="flex flex-wrap items-center justify-end gap-x-4 gap-y-2">
+                <FellowshipSalaryStatsActiveCycleDetailLink />
+                <FellowshipSalaryRegister />
+                <FellowshipSalaryPayout />
+              </div>
+            </div>
+          </>
+        )}
       </SecondaryCard>
     </>
   );

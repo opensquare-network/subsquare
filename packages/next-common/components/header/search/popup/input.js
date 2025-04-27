@@ -3,6 +3,7 @@ import Input from "next-common/lib/input";
 import React, { useEffect } from "react";
 import { SystemSearch, SystemClose } from "@osn/icons/subsquare";
 import SecondaryButton from "next-common/lib/button/secondary";
+import useInsideSearchSupportCategories from "next-common/components/header/hooks/useInsideSearchSupportCategories";
 
 const InputInSearchPopup = React.memo(function InputInSearchPopup({
   className = "",
@@ -11,6 +12,7 @@ const InputInSearchPopup = React.memo(function InputInSearchPopup({
   setSearchValue,
 }) {
   const inputRef = React.useRef(null);
+  const { categoryString } = useInsideSearchSupportCategories();
 
   useEffect(() => {
     if (inputRef.current) {
@@ -32,7 +34,7 @@ const InputInSearchPopup = React.memo(function InputInSearchPopup({
       onChange={(e) => {
         setSearchValue(e.target.value);
       }}
-      placeholder="Search Referenda on SubSquare"
+      placeholder={`Search ${categoryString} on SubSquare`}
       prefix={<SystemSearch className="[&_path]:fill-textTertiary" />}
       suffix={
         <SecondaryButton

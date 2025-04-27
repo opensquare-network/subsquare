@@ -39,7 +39,7 @@ export function MyVote({ referendumIndex }) {
   );
 }
 
-function SecondaryButtonWrapper({ disabled, onClick, children }) {
+export function SecondaryButtonWrapper({ disabled, onClick, children }) {
   return (
     <SecondaryButton
       disabled={disabled}

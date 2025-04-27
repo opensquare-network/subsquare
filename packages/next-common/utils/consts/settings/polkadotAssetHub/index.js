@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import polkadotLinks from "next-common/utils/consts/settings/polkadot/links";
 import MenuGroups from "next-common/utils/consts/settings/menuGroups";
 import { polkadotAssetHubThemeVars } from "next-common/utils/consts/settings/polkadotAssetHub/theme";
-import polkadot from "../polkadot";
+import polkadotCommonCfg from "next-common/utils/consts/settings/polkadot/common";
 
 const ProjectIconPolkadotAssetHub = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconPolkadotAssethub"),
@@ -19,16 +19,11 @@ const name = Chains.polkadotAssetHub;
 const polkadotAssetHub = {
   value: name,
   name: "Asset Hub",
-  identity: Chains.polkadot,
-  symbol: "DOT",
-  decimals: 10,
-  ss58Format: 0,
+  ...polkadotCommonCfg,
   blockTime: 12000,
   endpoints: polkadotAssetHubNodes,
   avatar: ProjectIconPolkadotAssetHub,
   darkAvatar: ProjectIconPolkadotAssetHub,
-  navLogo: polkadot.navLogo,
-  navLogoDark: polkadot.navLogoDark,
   networkIcon: NetworkIconPolkadotAssetHub,
   group: MenuGroups.PolkadotAndParachains,
   links: polkadotLinks,

@@ -45,7 +45,6 @@ export function useCouncilMotionBusinessData() {
           <Link
             key="proposal-link"
             href={getTreasuryProposalLink(type, proposal.proposalIndex)}
-            legacyBehavior
           >{`Treasury Proposal #${proposal.proposalIndex}`}</Link>,
         ],
         [
@@ -73,7 +72,6 @@ export function useCouncilMotionBusinessData() {
         <Link
           key="bounty-link"
           href={`/treasury/bounties/${bounty.bountyIndex}`}
-          legacyBehavior
         >{`Treasury Bounty #${bounty.bountyIndex}`}</Link>,
       ]);
 
@@ -115,7 +113,6 @@ export function useCouncilMotionBusinessData() {
           <Link
             key="external-link"
             href={`/democracy/externals/${external?.indexer?.blockHeight}_${external?.proposalHash}`}
-            legacyBehavior
           >{`Democracy External #${external?.proposalHash?.slice(
             0,
             6,
@@ -147,7 +144,6 @@ export function useCouncilMotionBusinessData() {
           <Link
             key="external-link"
             href={`/democracy/externals/${external?.indexer?.blockHeight}_${external?.proposalHash}`}
-            legacyBehavior
           >{`Democracy External #${external?.proposalHash?.slice(
             0,
             6,

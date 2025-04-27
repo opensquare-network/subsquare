@@ -4,6 +4,7 @@ import Link from "next/link";
 import {
   PolkadotTreasuryOnHydrationAccount1,
   PolkadotTreasuryOnHydrationAccount2,
+  PolkadotTreasuryOnHydrationAccount3,
 } from "../hook/useQueryHydrationTreasuryBalances";
 import NativeTokenSymbolAsset from "../common/nativeTokenSymbolAsset";
 import FiatPriceLabel from "../common/fiatPriceLabel";
@@ -13,31 +14,28 @@ import { toPrecision } from "next-common/utils";
 import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 import Tooltip from "next-common/components/tooltip";
 
+function AddressLink({ account, index }) {
+  return (
+    <Link
+      className="text12Medium"
+      href={`https://hydration.subscan.io/account/${account}`}
+      target="_blank"
+      rel="noreferrer"
+    >
+      <Tooltip content={`Treasury stablecoin acquisition #${index}`}>
+        <span className="text-textTertiary hover:underline">Addr #{index}</span>
+        <i className="text-textTertiary">&nbsp;↗</i>
+      </Tooltip>
+    </Link>
+  );
+}
+
 function AddressLinks() {
   return (
     <div className="inline-flex gap-x-1">
-      <Link
-        className="text12Medium"
-        href={`https://hydration.subscan.io/account/${PolkadotTreasuryOnHydrationAccount1}`}
-        target="_blank"
-        rel="noreferrer"
-      >
-        <Tooltip content="Treasury stablecoin acquisition #1">
-          <span className="text-textTertiary hover:underline">Addr #1</span>
-          <i className="text-textTertiary">&nbsp;↗</i>
-        </Tooltip>
-      </Link>
-      <Link
-        className="text12Medium"
-        href={`https://hydration.subscan.io/account/${PolkadotTreasuryOnHydrationAccount2}`}
-        target="_blank"
-        rel="noreferrer"
-      >
-        <Tooltip content="Treasury stablecoin acquisition #2">
-          <span className="text-textTertiary hover:underline">Addr #2</span>
-          <i className="text-textTertiary">&nbsp;↗</i>
-        </Tooltip>
-      </Link>
+      <AddressLink account={PolkadotTreasuryOnHydrationAccount1} index={1} />
+      <AddressLink account={PolkadotTreasuryOnHydrationAccount2} index={2} />
+      <AddressLink account={PolkadotTreasuryOnHydrationAccount3} index={3} />
     </div>
   );
 }
