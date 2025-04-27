@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
-import { toPrecision } from "next-common/utils";
-import { abbreviateBigNumber } from "next-common/utils/viewfuncs";
 import { usePageProps } from "next-common/context/page";
 import rankToIndex from "next-common/utils/fellowship/rankToIndex";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
@@ -43,9 +41,6 @@ export function useMyAccountSalaryWithSymbol() {
   useEffect(() => {
     setMySalary({
       value: salaryValue,
-      formatted: salaryValue
-        ? abbreviateBigNumber(toPrecision(salaryValue, decimals), 2)
-        : "0",
       decimals,
       symbol,
     });
