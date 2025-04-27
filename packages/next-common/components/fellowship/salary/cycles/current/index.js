@@ -7,6 +7,7 @@ import FellowshipSalaryPayout from "next-common/components/fellowship/salary/act
 import FellowshipSalaryMyStatus from "../myStatus";
 import { useFellowshipSalaryStats } from "next-common/hooks/fellowship/salary/useFellowshipSalaryStats";
 import LoadingSkeleton from "./loadingSkeleton";
+import FellowshipSalaryBump from "../../actions/bump";
 
 export default function FellowshipSalaryActiveCycle() {
   const stats = useFellowshipSalaryStats();
@@ -31,6 +32,7 @@ export default function FellowshipSalaryActiveCycle() {
                 <FellowshipSalaryStatsActiveCycleDetailLink />
                 <FellowshipSalaryRegister />
                 <FellowshipSalaryPayout />
+                <FellowshipSalaryBump />
               </div>
             </div>
           </>
