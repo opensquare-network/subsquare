@@ -38,7 +38,7 @@ export function useChainAddressIdentityInfo(chain, address) {
           const myIdentityIsEmpty = Object.values(myIdentityInfo).every(
             (item) => isNil(item),
           );
-          if (myIdentityIsEmpty) {
+          if (myIdentityIsEmpty && !displayName) {
             setIdentity(null);
             return;
           }
@@ -56,11 +56,19 @@ export function useChainAddressIdentityInfo(chain, address) {
             };
           }
 
+          if (
+            !peopleIdentity?.info?.display &&
+            displayName &&
+            peopleIdentity?.info
+          ) {
+            peopleIdentity.info.display = displayName;
+          }
+
           setIdentity(peopleIdentity);
         })
         .finally(() => setIsLoading(false));
     }
-  }, [address, identityChain, myIdentityInfo, chain, realAddress]);
+  }, [address, identityChain, myIdentityInfo, displayName, chain, realAddress]);
 
   return {
     identity,

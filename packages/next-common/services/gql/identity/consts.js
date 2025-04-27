@@ -37,3 +37,16 @@ export const GET_IDENTITIES_COUNT = gql`
     }
   }
 `;
+
+export const GET_IDENTITIES_REGISTRARS = gql`
+  query GetRegistrars {
+    identityRegistrars {
+      account
+      statistics {
+        given
+        request
+        __typename
+      }
+    }
+  }
+`;

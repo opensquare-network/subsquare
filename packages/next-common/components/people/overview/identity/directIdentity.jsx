@@ -19,6 +19,10 @@ import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPop
 import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
 import RemoveButton from "next-common/components/removeButton";
 import Tooltip from "next-common/components/tooltip";
+import { clearCachedIdentitys } from "next-common/services/identity";
+import { useChain } from "next-common/context/chain";
+import { useExtensionAccounts } from "next-common/components/popupWithSigner/context";
+import getChainSettings from "next-common/utils/consts/settings";
 
 const SetIdentityPopup = dynamicPopup(
   () => import("next-common/components/setIdentityPopup"),
@@ -74,7 +78,10 @@ export function DirectIdentityEmpty() {
 }
 
 export function DirectIdentity({ subMyIdentityInfo }) {
+  const chain = useChain();
+  const { identity: identityChain } = getChainSettings(chain);
   const [showSetIdentityPopup, setShowSetIdentityPopup] = useState(false);
+  const extensionAccounts = useExtensionAccounts();
 
   const { type, parent } = useMyIdentityType();
   const api = useContextApi();
@@ -97,6 +104,20 @@ export function DirectIdentity({ subMyIdentityInfo }) {
     getTxFunc,
     onInBlock,
   });
+
+  const clearIdentity = useCallback(async () => {
+    try {
+      await doSubmit();
+      clearCachedIdentitys(
+        extensionAccounts.map(({ address }) => ({
+          chain: identityChain,
+          address,
+        })),
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  }, [extensionAccounts, identityChain, doSubmit]);
 
   const isSubIdentity = type === "sub";
 
@@ -124,7 +145,7 @@ export function DirectIdentity({ subMyIdentityInfo }) {
             </Tooltip>
           </div>
           <Tooltip content="Clear">
-            <RemoveButton disabled={isSubmitting} onClick={doSubmit} />
+            <RemoveButton disabled={isSubmitting} onClick={clearIdentity} />
           </Tooltip>
         </div>
       </div>
