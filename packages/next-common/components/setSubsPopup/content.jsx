@@ -17,14 +17,14 @@ import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import SignerWithBalance from "../signerPopup/signerWithBalance";
 import { Label } from "../popup/styled";
+import { noop } from "lodash-es";
 
 export default function SetSubsPopupContent() {
-  const { subs } = usePopupParams();
+  const { subs, retry = noop } = usePopupParams();
   const api = useContextApi();
   const dispatch = useDispatch();
   const [subsMap, setSubsMap] = useState({});
   const [subsOrder, setSubsOrder] = useState([]);
-  // const { subs, isLoading } = useSubscribeMySubIdentities();
   const extensionAccounts = useExtensionAccounts();
 
   useEffect(() => {
@@ -95,7 +95,8 @@ export default function SetSubsPopupContent() {
 
   const onInBlock = useCallback(() => {
     dispatch(newSuccessToast("Submit subs successfully"));
-  }, [dispatch]);
+    retry?.();
+  }, [dispatch, retry]);
 
   return (
     <div className="space-y-4">

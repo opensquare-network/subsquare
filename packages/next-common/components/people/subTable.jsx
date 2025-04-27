@@ -43,7 +43,7 @@ export default function SubIdentitiesTable() {
   const chain = useChain();
   const { identity: identityChain } = getChainSettings(chain);
   const extensionAccounts = useExtensionAccounts();
-  const { subs, isLoading } = useSubscribeMySubIdentities();
+  const { subs, isLoading, retry: retrySubs } = useSubscribeMySubIdentities();
   const [showSetSubsPopup, setShowSetSubsPopup] = useState(false);
   const [showRemoveSubPopup, setShowRemoveSubPopup] = useState(false);
   const [selectedSub, setSelectedSub] = useState(null);
@@ -112,6 +112,7 @@ export default function SubIdentitiesTable() {
           onClose={() => setShowSetSubsPopup(false)}
           onSubmit={() => setShowSetSubsPopup(false)}
           subs={subs}
+          retry={retrySubs}
         />
       )}
       {showRemoveSubPopup && (
