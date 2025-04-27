@@ -99,9 +99,9 @@ export default function SetIdentityPopupContent() {
       <SignerWithBalance />
 
       <LoadableContent isLoading={isLoading}>
-        {subsOrder.map((id) => (
+        {subsOrder.map((id, index) => (
           <SubItem
-            key={id}
+            key={`${id}-${index}`}
             subId={id}
             sub={subsMap[id]}
             selectedList={selectedList}
@@ -134,29 +134,14 @@ function hasEmptySub(subsMap) {
   );
 }
 
-function AddSubsButton({ addSub, selectedList }) {
-  const extensionAccounts = useExtensionAccounts();
-
-  const isAddSubDisabled = useMemo(() => {
-    return selectedList.length >= extensionAccounts.length;
-  }, [selectedList, extensionAccounts]);
-
-  const onCreateSub = useCallback(() => {
-    if (isAddSubDisabled) {
-      return;
-    }
-
-    addSub();
-  }, [addSub, isAddSubDisabled]);
-
+function AddSubsButton({ addSub }) {
   return (
     <RightWrapper className="text-theme500">
       <div
         className={cn(
           "inline-flex gap-x-1 items-center cursor-pointer text14Medium",
-          isAddSubDisabled && "opacity-50",
         )}
-        onClick={onCreateSub}
+        onClick={addSub}
       >
         <SystemPlus className="w-4 h-4" />
         <span>Add Sub</span>

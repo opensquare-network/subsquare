@@ -40,6 +40,8 @@ export default function SubIdentitiesTable() {
   const [showSetSubsPopup, setShowSetSubsPopup] = useState(false);
   const [showRemoveSubPopup, setShowRemoveSubPopup] = useState(false);
   const [selectedSub, setSelectedSub] = useState(null);
+  const [selectedSubIndex, setSelectedSubIndex] = useState(-1);
+
   return (
     <div className="flex flex-col gap-y-4">
       <DataList
@@ -70,6 +72,7 @@ export default function SubIdentitiesTable() {
                   className="w-7 h-7 !px-0 rounded"
                   onClick={() => {
                     setSelectedSub({ address, subName });
+                    setSelectedSubIndex(index);
                     setShowRemoveSubPopup(true);
                   }}
                 >
@@ -93,6 +96,8 @@ export default function SubIdentitiesTable() {
           onClose={() => setShowRemoveSubPopup(false)}
           onSubmit={() => setShowRemoveSubPopup(false)}
           selectedSub={selectedSub}
+          selectedSubIndex={selectedSubIndex}
+          subs={subs}
         />
       )}
     </div>

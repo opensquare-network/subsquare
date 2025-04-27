@@ -1,6 +1,9 @@
 import RightWrapper from "next-common/components/rightWraper";
 import { useCallback, useMemo } from "react";
-import { useExtensionAccounts } from "../popupWithSigner/context";
+import {
+  useExtensionAccounts,
+  usePopupParams,
+} from "../popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 import TxSubmissionButton from "../common/tx/txSubmissionButton";
 import { useDispatch } from "react-redux";
@@ -12,7 +15,8 @@ import { Label } from "../popup/styled";
 import Input from "next-common/lib/input";
 import { SubsDeposit } from "./content";
 
-export default function RemoveSubPopupContent({ selectedSub }) {
+export default function RemoveSubPopupContent() {
+  const { selectedSub, selectedSubIndex, subs } = usePopupParams();
   const api = useContextApi();
   const dispatch = useDispatch();
   const extensionAccounts = useExtensionAccounts();
@@ -26,8 +30,12 @@ export default function RemoveSubPopupContent({ selectedSub }) {
       return;
     }
 
-    return api.tx.identity.removeSub(selectedSub.address);
-  }, [api, selectedSub]);
+    return api.tx.identity.setSubs(
+      subs
+        .filter((sub, index) => index !== selectedSubIndex)
+        .map(([address, name]) => [address, { Raw: name }]),
+    );
+  }, [api, selectedSubIndex, subs]);
 
   const onInBlock = useCallback(() => {
     dispatch(newSuccessToast("Submit subs successfully"));
