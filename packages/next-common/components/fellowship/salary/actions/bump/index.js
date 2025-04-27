@@ -11,9 +11,9 @@ import Tooltip from "next-common/components/tooltip";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const FellowshipSalaryBumpPopup = dynamicPopup(() => import("./popup"));
+const FellowshipSalaryNextCyclePopup = dynamicPopup(() => import("./popup"));
 
-export default function FellowshipSalaryBump() {
+export default function FellowshipSalaryNextCycle() {
   const router = useRouter();
   const [showPopup, setShowPopup] = useState(false);
   const address = useRealAddress();
@@ -57,7 +57,7 @@ export default function FellowshipSalaryBump() {
         Start Next Cycle
       </PrimaryButton>
       {showPopup && (
-        <FellowshipSalaryBumpPopup
+        <FellowshipSalaryNextCyclePopup
           onClose={() => setShowPopup(false)}
           onFinalized={onBump}
         />

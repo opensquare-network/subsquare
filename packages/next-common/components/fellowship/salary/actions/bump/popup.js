@@ -30,7 +30,10 @@ function Content() {
   );
 }
 
-export default function FellowshipSalaryBumpPopup({ onClose, onFinalized }) {
+export default function FellowshipSalaryNextCyclePopup({
+  onClose,
+  onFinalized,
+}) {
   return (
     <PopupWithSigner
       title="Start Next Cycle"
