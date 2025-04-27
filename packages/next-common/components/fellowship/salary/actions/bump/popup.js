@@ -22,7 +22,7 @@ function Content() {
     <>
       <Signer />
       <TxSubmissionButton
-        title="Confirm"
+        title="Submit"
         getTxFunc={getTxFunc}
         onFinalized={onFinalized}
       />
@@ -32,7 +32,11 @@ function Content() {
 
 export default function FellowshipSalaryBumpPopup({ onClose, onFinalized }) {
   return (
-    <PopupWithSigner title="Bump" onClose={onClose} onFinalized={onFinalized}>
+    <PopupWithSigner
+      title="Start Next Cycle"
+      onClose={onClose}
+      onFinalized={onFinalized}
+    >
       <Content />
     </PopupWithSigner>
   );
