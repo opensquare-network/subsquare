@@ -14,6 +14,7 @@ import TxSubmissionButton from "../common/tx/txSubmissionButton";
 import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import SignerWithBalance from "../signerPopup/signerWithBalance";
+import { Label } from "../popup/styled";
 
 export default function SetIdentityPopupContent() {
   const api = useContextApi();
@@ -118,6 +119,7 @@ export default function SetIdentityPopupContent() {
         </div>
       </RightWrapper>
 
+      <Label>Deposit</Label>
       <CurrencyInput
         disabled
         value={

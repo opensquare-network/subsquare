@@ -55,7 +55,7 @@ export default function SubIdentitiesTable() {
             </div>,
             <div
               key={`Address-${index}`}
-              className="text-textTertiary text14Medium flex justify-between"
+              className="text-textTertiary text14Medium flex justify-between gap-x-2 items-start"
             >
               <AddressDisplay address={address} />
 

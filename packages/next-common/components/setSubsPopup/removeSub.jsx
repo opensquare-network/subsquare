@@ -1,4 +1,3 @@
-import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import RightWrapper from "next-common/components/rightWraper";
 import { useCallback, useMemo } from "react";
 import LoadableContent from "../common/loadableContent";
@@ -12,9 +11,10 @@ import TxSubmissionButton from "../common/tx/txSubmissionButton";
 import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import AddressComboField from "../popup/fields/addressComboField";
-import TextInputField from "../popup/fields/textInputField";
 import { noop } from "lodash-es";
 import SignerWithBalance from "../signerPopup/signerWithBalance";
+import { Label } from "../popup/styled";
+import Input from "next-common/lib/input";
 
 export default function RemoveSubPopupContent({ selectedSub }) {
   const api = useContextApi();
@@ -60,26 +60,23 @@ export default function RemoveSubPopupContent({ selectedSub }) {
           setAddress={noop}
           readOnly
         />
-        <TextInputField
-          className="flex-1"
-          title="Sub Name"
-          text={selectedSub.subName}
-          disabled
-        />
+        <div className="flex flex-col flex-1">
+          <Label>Sub Name</Label>
+          <Input className="flex-1" value={selectedSub.subName} readOnly />
+        </div>
       </div>
 
-      <AdvanceSettings>
-        <CurrencyInput
-          disabled
-          value={
-            isDepositLoading
-              ? ""
-              : toPrecision(deposit || 0, chainSettings.decimals)
-          }
-          prefix={<LoadableContent isLoading={isDepositLoading} />}
-          symbol={chainSettings.symbol}
-        />
-      </AdvanceSettings>
+      <Label>Deposit</Label>
+      <CurrencyInput
+        disabled
+        value={
+          isDepositLoading
+            ? ""
+            : toPrecision(deposit || 0, chainSettings.decimals)
+        }
+        prefix={<LoadableContent isLoading={isDepositLoading} />}
+        symbol={chainSettings.symbol}
+      />
 
       <RightWrapper>
         <TxSubmissionButton

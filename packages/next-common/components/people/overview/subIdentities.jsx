@@ -7,6 +7,7 @@ import SubIdentitiesTable from "../subTable";
 import { AddressUser } from "next-common/components/user";
 import useMyIdentityType from "next-common/hooks/people/useMyIdentityType";
 import Loading from "next-common/components/loading";
+
 const SetSubsPopup = dynamicPopup(
   () => import("next-common/components/setSubsPopup"),
   {
@@ -27,36 +28,43 @@ export default function SubIdentitiesImpl({ isEmpty, isLoading }) {
     );
   }
 
+  if (isSubIdentity) {
+    return <SubIdentityParent parent={parent} />;
+  }
+
   if (isEmpty) {
     return <SubIdentityEmpty />;
   }
 
   return (
     <>
-      {isSubIdentity ? (
-        <GreyPanel className="px-4 py-2.5 text14Medium text-textSecondary mb-4">
-          Currently displayed as the sub identity of{" "}
-          <AddressUser className="mx-1.5" add={parent} showAvatar={false} />
-          and can not create its own sub identities.
-        </GreyPanel>
-      ) : (
-        <>
-          <SubIdentitiesTable />
-          <RightWrapper className="mt-4">
-            <PrimaryButton
-              className="w-auto"
-              onClick={() => setShowSetSubsPopup(true)}
-            >
-              Set Subs
-            </PrimaryButton>
-          </RightWrapper>
-        </>
-      )}
+      <SubIdentitiesTable />
+      <RightWrapper className="mt-4">
+        <PrimaryButton
+          className="w-auto"
+          onClick={() => setShowSetSubsPopup(true)}
+        >
+          Set Subs
+        </PrimaryButton>
+      </RightWrapper>
 
       {showSetSubsPopup && (
         <SetSubsPopup onClose={() => setShowSetSubsPopup(false)} />
       )}
     </>
+  );
+}
+
+export function SubIdentityParent({ parent }) {
+  if (!parent) {
+    return null;
+  }
+  return (
+    <GreyPanel className="px-4 py-2.5 text14Medium text-textSecondary mb-4">
+      Currently displayed as the sub identity of{" "}
+      <AddressUser className="mx-1.5" add={parent} showAvatar={false} />
+      and can not create its own sub identities.
+    </GreyPanel>
   );
 }
 
