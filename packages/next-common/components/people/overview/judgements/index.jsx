@@ -8,6 +8,8 @@ import RightWrapper from "next-common/components/rightWraper";
 import PrimaryButton from "next-common/lib/button/primary";
 import useJudgementsData from "../hooks/useJudgementsData";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
+import { useIdentityInfoContext } from "next-common/context/people/identityInfoContext";
+import { isIdentityEmpty } from "next-common/components/people/common";
 
 const RequestJudgementPopup = dynamicPopup(
   () => import("next-common/components/requestJudgementPopup"),
@@ -18,6 +20,12 @@ const RequestJudgementPopup = dynamicPopup(
 
 function RequestJudgements() {
   const [showPopup, setShowPopup] = useState(false);
+  const { info, isLoading } = useIdentityInfoContext();
+  const isEmpty = isIdentityEmpty(info);
+
+  if (isLoading || isEmpty) {
+    return null;
+  }
 
   return (
     <div className="my-4">

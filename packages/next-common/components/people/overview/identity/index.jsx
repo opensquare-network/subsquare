@@ -3,13 +3,13 @@ import Tabs from "next-common/components/tabs";
 import DirectIdentityImpl from "./directIdentity";
 import { useIdentityInfoContext } from "next-common/context/people/identityInfoContext";
 import { useState } from "react";
+import { isIdentityEmpty } from "next-common/components/people/common";
 
 export default function PeopleOverviewIdentity() {
   const [activeTabValue, setActiveTabValue] = useState("direct-identity");
   const { info: subMyIdentityInfo, isLoading } = useIdentityInfoContext();
 
-  const isEmpty =
-    Object.values(subMyIdentityInfo ?? {}).filter(Boolean).length === 0;
+  const isEmpty = isIdentityEmpty(subMyIdentityInfo);
 
   const tabs = [
     {
