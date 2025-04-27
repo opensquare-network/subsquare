@@ -10,6 +10,7 @@ import useJudgementsData from "../hooks/useJudgementsData";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 import { useIdentityInfoContext } from "next-common/context/people/identityInfoContext";
 import { isIdentityEmpty } from "next-common/components/people/common";
+import Divider from "next-common/components/styled/layout/divider";
 
 const RequestJudgementPopup = dynamicPopup(
   () => import("next-common/components/requestJudgementPopup"),
@@ -28,7 +29,7 @@ function RequestJudgements() {
   }
 
   return (
-    <div className="my-4">
+    <div className="mt-4">
       <RightWrapper>
         <PrimaryButton className="w-auto" onClick={() => setShowPopup(true)}>
           Request Judgement
@@ -45,16 +46,19 @@ function JudgementsTable() {
   const { data, isLoading } = useJudgementsData();
 
   return (
-    <ScrollerX>
-      <SignerPopupWrapper>
-        <MapDataList
-          columnsDef={columnsDef}
-          data={data}
-          loading={isLoading}
-          noDataText="No current judgements"
-        />
-      </SignerPopupWrapper>
-    </ScrollerX>
+    <>
+      <ScrollerX>
+        <SignerPopupWrapper>
+          <MapDataList
+            columnsDef={columnsDef}
+            data={data}
+            loading={isLoading}
+            noDataText="No current judgements"
+          />
+        </SignerPopupWrapper>
+      </ScrollerX>
+      {!isLoading && data?.length === 0 && <Divider className="mb-4" />}
+    </>
   );
 }
 
