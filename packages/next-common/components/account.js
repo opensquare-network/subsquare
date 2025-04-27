@@ -11,13 +11,11 @@ import AddressAvatar from "./user/addressAvatar";
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 import AddressInfoLoading from "./addressInfo";
 import FellowshipRank from "next-common/components/fellowship/rank";
-import { useSingleMemberStatus } from "./fellowship/collective/hook/useFellowshipCoreMembersFilter";
 import Tooltip from "next-common/components/tooltip";
 import SignalIndicator from "next-common/components/icons/signalIndicator";
 import { useChain } from "next-common/context/chain";
 import { isCollectivesChain } from "next-common/utils/chain";
-import { usePageProps } from "next-common/context/page";
-import { useMemo } from "react";
+import useFellowshipMemberInfo from "next-common/components/fellowship/salary/actions/hooks/useFellowshipMemberInfo";
 
 function WalletIcon({ wallet: walletName }) {
   const wallet = find(allWallets, { extensionName: walletName });
@@ -116,38 +114,23 @@ export default function Account({
   );
 }
 
-const useAccountCollective = (address) => {
-  const { status } = useSingleMemberStatus({ address });
-  const { fellowshipMembers } = usePageProps();
-
-  const rank = useMemo(() => {
-    return fellowshipMembers.find((member) => member.address === address);
-  }, [address, fellowshipMembers]);
-
-  return {
-    ...status,
-    ...rank,
-  };
-};
-
 function StatusAndRank({ address }) {
   const chain = useChain();
   const isCollectives = isCollectivesChain(chain);
-  const status = useAccountCollective(address);
-
-  if (!isCollectives) {
+  const memberInfo = useFellowshipMemberInfo(address);
+  if (!isCollectives || !memberInfo) {
     return null;
   }
 
-  return status ? (
+  return (
     <>
-      <Tooltip content={status.isActive ? "Active" : "Inactive"}>
+      <Tooltip content={memberInfo.isActive ? "Active" : "Inactive"}>
         <SignalIndicator
           className="w-[16px] h-[16px]"
-          active={status.isActive}
+          active={memberInfo.isActive}
         />
       </Tooltip>
-      <FellowshipRank rank={status.rank || 0} />
+      <FellowshipRank rank={memberInfo.rank || 0} />
     </>
-  ) : null;
+  );
 }

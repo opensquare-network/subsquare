@@ -8,7 +8,8 @@ import TxSubmissionButton from "next-common/components/common/tx/txSubmissionBut
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useSalaryFellowshipPallet } from "next-common/context/collectives/collectives";
-import CurrencyInput from "next-common/components/currencyInput";
+import { useMyAccountSalaryWithSymbol } from "next-common/components/fellowship/salary/actions/hooks/useMyAccountSalaryWithSymbol";
+import SalaryDisplay from "next-common/components/fellowship/salary/actions/payout/salaryDisplay";
 
 const tabs = [
   {
@@ -24,6 +25,7 @@ const tabs = [
 function SelfPayout() {
   const api = useContextApi();
   const pallet = useSalaryFellowshipPallet();
+  const { value: salary, symbol, decimals } = useMyAccountSalaryWithSymbol();
 
   const getTxFunc = useCallback(async () => {
     if (!api) {
@@ -35,7 +37,7 @@ function SelfPayout() {
   return (
     <>
       <Signer showCollectiveStatus />
-      <CurrencyInput disabled value={0} placeholder="0" symbol="USDT" />
+      <SalaryDisplay value={salary} decimals={decimals} symbol={symbol} />
       <TxSubmissionButton title="Submit" getTxFunc={getTxFunc} />
     </>
   );
@@ -46,6 +48,7 @@ function OtherPayout() {
   const [beneficiary, setBeneficiary] = useState("");
   const api = useContextApi();
   const pallet = useSalaryFellowshipPallet();
+  const { value: salary, symbol, decimals } = useMyAccountSalaryWithSymbol();
 
   const getTxFunc = useCallback(async () => {
     if (!api) {
@@ -61,8 +64,8 @@ function OtherPayout() {
   return (
     <>
       <Signer showCollectiveStatus />
+      <SalaryDisplay value={salary} decimals={decimals} symbol={symbol} />
       <Beneficiary setAddress={setBeneficiary} />
-      <CurrencyInput disabled value={0} placeholder="0" symbol="USDT" />
       <TxSubmissionButton title="Submit" getTxFunc={getTxFunc} />
     </>
   );
