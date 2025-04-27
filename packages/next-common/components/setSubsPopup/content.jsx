@@ -6,7 +6,7 @@ import useSubscribeMySubIdentities from "next-common/hooks/people/useSubscribeMy
 import LoadableContent from "../common/loadableContent";
 import { useExtensionAccounts } from "../popupWithSigner/context";
 import CurrencyInput from "../currencyInput";
-import { toPrecision } from "next-common/utils";
+import { cn, toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import useSetSubsDeposit from "next-common/hooks/people/useSetSubsDeposit";
 import { useContextApi } from "next-common/context/api";
@@ -19,12 +19,10 @@ import { Label } from "../popup/styled";
 export default function SetIdentityPopupContent() {
   const api = useContextApi();
   const dispatch = useDispatch();
-  const chainSettings = useChainSettings();
   const [subsMap, setSubsMap] = useState({});
   const [subsOrder, setSubsOrder] = useState([]);
   const { subs, isLoading } = useSubscribeMySubIdentities();
   const extensionAccounts = useExtensionAccounts();
-  const { deposit, isLoading: isDepositLoading } = useSetSubsDeposit();
 
   useEffect(() => {
     if (subs) {
@@ -37,6 +35,10 @@ export default function SetIdentityPopupContent() {
       setSubsOrder(subs.map(([address]) => address));
     }
   }, [subs]);
+
+  const selectedList = useMemo(() => {
+    return Object.values(subsMap).map((sub) => sub.address);
+  }, [subsMap]);
 
   const addSub = useCallback(() => {
     const id = Date.now().toString();
@@ -102,6 +104,7 @@ export default function SetIdentityPopupContent() {
             key={id}
             subId={id}
             sub={subsMap[id]}
+            selectedList={selectedList}
             updateSubField={updateSubField}
             onRemove={removeSub}
             extensionAccounts={extensionAccounts}
@@ -109,27 +112,9 @@ export default function SetIdentityPopupContent() {
         ))}
       </LoadableContent>
 
-      <RightWrapper className="text-theme500">
-        <div
-          className="inline-flex gap-x-1 items-center cursor-pointer text14Medium"
-          onClick={addSub}
-        >
-          <SystemPlus className="w-4 h-4" />
-          <span>Add Sub</span>
-        </div>
-      </RightWrapper>
+      <AddSubsButton selectedList={selectedList} addSub={addSub} />
 
-      <Label>Deposit</Label>
-      <CurrencyInput
-        disabled
-        value={
-          isDepositLoading
-            ? ""
-            : toPrecision(deposit || 0, chainSettings.decimals)
-        }
-        prefix={<LoadableContent isLoading={isDepositLoading} />}
-        symbol={chainSettings.symbol}
-      />
+      <SubsDeposit selectedList={selectedList} />
 
       <RightWrapper>
         <TxSubmissionButton
@@ -146,5 +131,57 @@ export default function SetIdentityPopupContent() {
 function hasEmptySub(subsMap) {
   return Object.values(subsMap).some(
     (sub) => sub.address === "" || sub.name === "",
+  );
+}
+
+function AddSubsButton({ addSub, selectedList }) {
+  const extensionAccounts = useExtensionAccounts();
+
+  const isAddSubDisabled = useMemo(() => {
+    return selectedList.length >= extensionAccounts.length;
+  }, [selectedList, extensionAccounts]);
+
+  const onCreateSub = useCallback(() => {
+    if (isAddSubDisabled) {
+      return;
+    }
+
+    addSub();
+  }, [addSub, isAddSubDisabled]);
+
+  return (
+    <RightWrapper className="text-theme500">
+      <div
+        className={cn(
+          "inline-flex gap-x-1 items-center cursor-pointer text14Medium",
+          isAddSubDisabled && "opacity-50",
+        )}
+        onClick={onCreateSub}
+      >
+        <SystemPlus className="w-4 h-4" />
+        <span>Add Sub</span>
+      </div>
+    </RightWrapper>
+  );
+}
+
+export function SubsDeposit({ selectedList }) {
+  const chainSettings = useChainSettings();
+  const { deposit, isLoading: isDepositLoading } =
+    useSetSubsDeposit(selectedList);
+  return (
+    <>
+      <Label>Deposit</Label>
+      <CurrencyInput
+        disabled
+        value={
+          isDepositLoading
+            ? ""
+            : toPrecision(deposit || 0, chainSettings.decimals)
+        }
+        prefix={<LoadableContent isLoading={isDepositLoading} />}
+        symbol={chainSettings.symbol}
+      />
+    </>
   );
 }

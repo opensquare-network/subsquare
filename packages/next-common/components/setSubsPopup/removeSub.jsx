@@ -1,11 +1,6 @@
 import RightWrapper from "next-common/components/rightWraper";
 import { useCallback, useMemo } from "react";
-import LoadableContent from "../common/loadableContent";
 import { useExtensionAccounts } from "../popupWithSigner/context";
-import CurrencyInput from "../currencyInput";
-import { toPrecision } from "next-common/utils";
-import { useChainSettings } from "next-common/context/chain";
-import useSetSubsDeposit from "next-common/hooks/people/useSetSubsDeposit";
 import { useContextApi } from "next-common/context/api";
 import TxSubmissionButton from "../common/tx/txSubmissionButton";
 import { useDispatch } from "react-redux";
@@ -15,13 +10,12 @@ import { noop } from "lodash-es";
 import SignerWithBalance from "../signerPopup/signerWithBalance";
 import { Label } from "../popup/styled";
 import Input from "next-common/lib/input";
+import { SubsDeposit } from "./content";
 
 export default function RemoveSubPopupContent({ selectedSub }) {
   const api = useContextApi();
   const dispatch = useDispatch();
-  const chainSettings = useChainSettings();
   const extensionAccounts = useExtensionAccounts();
-  const { deposit, isLoading: isDepositLoading } = useSetSubsDeposit();
 
   const submitIsDisabled = useMemo(() => {
     return !selectedSub;
@@ -66,17 +60,7 @@ export default function RemoveSubPopupContent({ selectedSub }) {
         </div>
       </div>
 
-      <Label>Deposit</Label>
-      <CurrencyInput
-        disabled
-        value={
-          isDepositLoading
-            ? ""
-            : toPrecision(deposit || 0, chainSettings.decimals)
-        }
-        prefix={<LoadableContent isLoading={isDepositLoading} />}
-        symbol={chainSettings.symbol}
-      />
+      <SubsDeposit selectedList={[selectedSub.address]} />
 
       <RightWrapper>
         <TxSubmissionButton
