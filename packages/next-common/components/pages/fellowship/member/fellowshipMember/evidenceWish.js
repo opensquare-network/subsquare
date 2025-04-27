@@ -4,8 +4,6 @@ import { CardTitle } from "./styled";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
 import LoadableContent from "next-common/components/common/loadableContent";
-import FellowshipRank from "next-common/components/fellowship/rank";
-import { AddressUser } from "next-common/components/user";
 import Divider from "next-common/components/styled/layout/divider";
 import useSubCoreFellowshipEvidence from "next-common/hooks/collectives/useSubCoreFellowshipEvidence";
 import { usePageProps } from "next-common/context/page";
@@ -24,6 +22,7 @@ import {
 import { getCidByEvidence } from "next-common/utils/collective/getCidByEvidence";
 import { useIpfsContent } from "next-common/hooks/useIpfsContent";
 import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
+import { WishBar } from "./wishBar";
 
 export default function EvidenceWish() {
   const { id: address, fellowshipMembers } = usePageProps();
@@ -82,30 +81,6 @@ function OnchainEvidenceStatisticsInfoImpl({ wish, address }) {
         </LoadableContent>
       </SummaryItem>
     </SummaryLayout>
-  );
-}
-
-function WishBar({ wish, activeMember, address }) {
-  if (!["Promotion", "Retention"].includes(wish)) {
-    return null;
-  }
-
-  return (
-    <GreyPanel className="px-4 py-[0.675rem] flex items-center justify-center">
-      <AddressUser add={address} />
-      {"Promotion" === wish ? (
-        <span className="text14Medium text-textSecondary inline-block mx-2 whitespace-nowrap">
-          wishes to get promoted
-        </span>
-      ) : (
-        <>
-          <span className="text14Medium text-textSecondary inline-block mx-2 whitespace-nowrap">
-            wishes to retain at rank
-          </span>
-          <FellowshipRank rank={activeMember?.rank} />
-        </>
-      )}
-    </GreyPanel>
   );
 }
 
