@@ -29,7 +29,7 @@ function ApplicationGuide() {
     [realAddress, sourseMembers],
   );
 
-  if (isFellowshipMember || isLoading) {
+  if (isFellowshipMember || isLoading || !realAddress) {
     return null;
   }
 
