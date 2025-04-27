@@ -17,6 +17,7 @@ import "@osn/previewer/styles.css";
 import "next-common/styles/markdown.css";
 import useInitMimir from "next-common/hooks/useInitMimir";
 import dynamic from "next/dynamic";
+// import ErrorBoundary from "next-common/components/errorBoundary";
 
 NProgress.configure({
   minimum: 0.3,
@@ -50,6 +51,9 @@ function MyApp({ Component, pageProps }) {
   if (!process.env.NEXT_PUBLIC_CHAIN) {
     throw new Error("NEXT_PUBLIC_CHAIN env not set");
   }
+
+  // const [resetKey, setResetKey] = React.useState(0);
+  // const handleErrorReset = () => setResetKey((prev) => prev + 1);
 
   useInitMimir();
 
@@ -88,6 +92,15 @@ function MyApp({ Component, pageProps }) {
           <ClientOnlySystemUpgrade />
 
           <ScanStatusComponent scanHeight={scanHeight}>
+            {/* The error boundary is not in use temporarily */}
+            {/* <ErrorBoundary
+              key={resetKey}
+              user={user}
+              onReset={handleErrorReset}
+              isPartialComponent={false}
+            >
+              <Component {...otherProps} />
+            </ErrorBoundary> */}
             <Component {...otherProps} />
           </ScanStatusComponent>
         </GlobalProvider>
