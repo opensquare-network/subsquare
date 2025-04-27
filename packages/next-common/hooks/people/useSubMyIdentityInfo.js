@@ -155,12 +155,12 @@ function useAddressIdentityInfo(address) {
 export default function useSubMyIdentityInfo() {
   const address = useRealAddress();
   const { info, judgements, isLoading } = useAddressIdentityInfo(address);
-  const { result: superResult } = useSuperOfIdentityDisplayName(result);
+  const { result: superResult } = useSuperOfIdentityDisplayName(info);
 
   return {
     isLoading,
     info,
     judgements,
-    displayName: (result.display || superResult) ?? null,
+    displayName: (info?.display || superResult) ?? null,
   };
 }

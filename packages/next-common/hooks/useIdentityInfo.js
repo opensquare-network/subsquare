@@ -21,7 +21,7 @@ export function useChainAddressIdentityInfo(chain, address) {
   const cachedIdentity = getCachedIdentity(identityChain, encodedAddress);
   const [identity, setIdentity] = useState(cachedIdentity);
   const [isLoading, setIsLoading] = useState(true);
-  const { info: myIdentityInfo } = useSubMyIdentityInfo();
+  const { info: myIdentityInfo, displayName } = useSubMyIdentityInfo();
   const realAddress = useRealAddress();
 
   useEffect(() => {
