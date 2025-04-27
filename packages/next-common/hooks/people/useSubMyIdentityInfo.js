@@ -45,7 +45,7 @@ function useSuperOfIdentityDisplayName(identity) {
   const [subDisplay, setSubDisplay] = useState(null);
 
   useEffect(() => {
-    if (!api || !identity || identity?.display) {
+    if (!api || !identity || identity?.display || !address) {
       return;
     }
 
