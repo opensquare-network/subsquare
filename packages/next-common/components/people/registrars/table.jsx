@@ -57,7 +57,7 @@ export default function RegistrarsTable({
                 <AddressUser add={item.account} />
               </div>,
               <div
-                key={`judgement-${index}`}
+                key={`last-judgement-${index}`}
                 className="text-textTertiary text14Medium"
               >
                 {time ? formatTimeAgo(time) : "-"}
