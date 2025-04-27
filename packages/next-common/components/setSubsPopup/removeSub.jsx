@@ -25,23 +25,25 @@ export default function RemoveSubPopupContent() {
     return !selectedSub;
   }, [selectedSub]);
 
+  const submitSubsList = useMemo(() => {
+    return subs
+      .filter((sub, index) => index !== selectedSubIndex)
+      .map(([address, name]) => [address, { Raw: name }]);
+  }, [subs, selectedSubIndex]);
+
   const getTxFunc = useCallback(() => {
     if (!api || !api?.tx?.identity) {
       return;
     }
 
-    return api.tx.identity.setSubs(
-      subs
-        .filter((sub, index) => index !== selectedSubIndex)
-        .map(([address, name]) => [address, { Raw: name }]),
-    );
-  }, [api, selectedSubIndex, subs]);
+    return api.tx.identity.setSubs(submitSubsList);
+  }, [api, submitSubsList]);
 
   const onInBlock = useCallback(() => {
     dispatch(newSuccessToast("Submit subs successfully"));
   }, [dispatch]);
 
-  if (!selectedSub) {
+  if (!selectedSub || selectedSubIndex < 0) {
     return (
       <div className="text-textTertiary text14Medium">
         Please select a sub identity to remove
@@ -68,7 +70,7 @@ export default function RemoveSubPopupContent() {
         </div>
       </div>
 
-      <SubsDeposit selectedList={[selectedSub.address]} />
+      <SubsDeposit selectedList={submitSubsList} />
 
       <RightWrapper>
         <TxSubmissionButton

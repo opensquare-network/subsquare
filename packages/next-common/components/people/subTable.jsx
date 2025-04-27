@@ -5,7 +5,11 @@ import useSubscribeMySubIdentities from "next-common/hooks/people/useSubscribeMy
 import SecondaryButton from "next-common/lib/button/secondary";
 import { SystemEdit2, SystemSubtract } from "@osn/icons/subsquare";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useChain } from "next-common/context/chain";
+import getChainSettings from "next-common/utils/consts/settings";
+import { clearCachedIdentitys } from "next-common/services/identity";
+import { useExtensionAccounts } from "../popupWithSigner/context";
 
 const SetSubsPopup = dynamicPopup(
   () => import("next-common/components/setSubsPopup"),
@@ -36,17 +40,35 @@ const columns = [
 ];
 
 export default function SubIdentitiesTable() {
+  const chain = useChain();
+  const { identity: identityChain } = getChainSettings(chain);
+  const extensionAccounts = useExtensionAccounts();
   const { subs, isLoading } = useSubscribeMySubIdentities();
   const [showSetSubsPopup, setShowSetSubsPopup] = useState(false);
   const [showRemoveSubPopup, setShowRemoveSubPopup] = useState(false);
   const [selectedSub, setSelectedSub] = useState(null);
   const [selectedSubIndex, setSelectedSubIndex] = useState(-1);
+  const [renderSubs, setRenderSubs] = useState([]);
+
+  useEffect(() => {
+    if (extensionAccounts?.length) {
+      clearCachedIdentitys(
+        extensionAccounts.map(({ address }) => ({
+          chain: identityChain,
+          address,
+        })),
+        true,
+      );
+    }
+
+    setRenderSubs(subs);
+  }, [identityChain, extensionAccounts, subs]);
 
   return (
     <div className="flex flex-col gap-y-4">
       <DataList
         columns={columns}
-        rows={(subs ?? []).map(([address, subName], index) => {
+        rows={(renderSubs ?? []).map(([address, subName], index) => {
           return [
             <AddressUser key={`Identity-${index}`} add={address} />,
             <div
@@ -89,6 +111,7 @@ export default function SubIdentitiesTable() {
         <SetSubsPopup
           onClose={() => setShowSetSubsPopup(false)}
           onSubmit={() => setShowSetSubsPopup(false)}
+          subs={subs}
         />
       )}
       {showRemoveSubPopup && (

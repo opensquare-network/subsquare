@@ -30,6 +30,7 @@ export function SubItem({
         <Input
           className="flex-1"
           value={sub.name}
+          placeholder="Sub Name"
           onChange={(evt) => {
             const value = evt.target.value;
             if (value !== sub.name) {

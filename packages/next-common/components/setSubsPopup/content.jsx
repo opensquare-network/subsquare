@@ -2,9 +2,11 @@ import RightWrapper from "next-common/components/rightWraper";
 import { SystemPlus } from "@osn/icons/subsquare";
 import { useState, useCallback, useMemo, useEffect } from "react";
 import { SubItem } from "./subItem";
-import useSubscribeMySubIdentities from "next-common/hooks/people/useSubscribeMySubIdentities";
 import LoadableContent from "../common/loadableContent";
-import { useExtensionAccounts } from "../popupWithSigner/context";
+import {
+  useExtensionAccounts,
+  usePopupParams,
+} from "../popupWithSigner/context";
 import CurrencyInput from "../currencyInput";
 import { cn, toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
@@ -16,12 +18,13 @@ import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import SignerWithBalance from "../signerPopup/signerWithBalance";
 import { Label } from "../popup/styled";
 
-export default function SetIdentityPopupContent() {
+export default function SetSubsPopupContent() {
+  const { subs } = usePopupParams();
   const api = useContextApi();
   const dispatch = useDispatch();
   const [subsMap, setSubsMap] = useState({});
   const [subsOrder, setSubsOrder] = useState([]);
-  const { subs, isLoading } = useSubscribeMySubIdentities();
+  // const { subs, isLoading } = useSubscribeMySubIdentities();
   const extensionAccounts = useExtensionAccounts();
 
   useEffect(() => {
@@ -98,19 +101,17 @@ export default function SetIdentityPopupContent() {
     <div className="space-y-4">
       <SignerWithBalance />
 
-      <LoadableContent isLoading={isLoading}>
-        {subsOrder.map((id, index) => (
-          <SubItem
-            key={`${id}-${index}`}
-            subId={id}
-            sub={subsMap[id]}
-            selectedList={selectedList}
-            updateSubField={updateSubField}
-            onRemove={removeSub}
-            extensionAccounts={extensionAccounts}
-          />
-        ))}
-      </LoadableContent>
+      {subsOrder.map((id, index) => (
+        <SubItem
+          key={`${id}-${index}`}
+          subId={id}
+          sub={subsMap[id]}
+          selectedList={selectedList}
+          updateSubField={updateSubField}
+          onRemove={removeSub}
+          extensionAccounts={extensionAccounts}
+        />
+      ))}
 
       <AddSubsButton selectedList={selectedList} addSub={addSub} />
 

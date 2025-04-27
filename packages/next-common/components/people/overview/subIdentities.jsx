@@ -7,6 +7,8 @@ import SubIdentitiesTable from "../subTable";
 import { AddressUser } from "next-common/components/user";
 import useMyIdentityType from "next-common/hooks/people/useMyIdentityType";
 import Loading from "next-common/components/loading";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 
 const SetSubsPopup = dynamicPopup(
   () => import("next-common/components/setSubsPopup"),
@@ -18,7 +20,9 @@ const SetSubsPopup = dynamicPopup(
 export default function SubIdentitiesImpl({ isEmpty, isLoading }) {
   const [showSetSubsPopup, setShowSetSubsPopup] = useState(false);
   const { type, parent } = useMyIdentityType();
+  const address = useRealAddress();
   const isSubIdentity = type === "sub";
+  const parentIsSelf = parent === address;
 
   if (isLoading) {
     return (
@@ -28,7 +32,7 @@ export default function SubIdentitiesImpl({ isEmpty, isLoading }) {
     );
   }
 
-  if (isSubIdentity) {
+  if (isSubIdentity && !parentIsSelf) {
     return <SubIdentityParent parent={parent} />;
   }
 
@@ -37,7 +41,7 @@ export default function SubIdentitiesImpl({ isEmpty, isLoading }) {
   }
 
   return (
-    <>
+    <SignerPopupWrapper>
       <SubIdentitiesTable />
       <RightWrapper className="mt-4">
         <PrimaryButton
@@ -51,7 +55,7 @@ export default function SubIdentitiesImpl({ isEmpty, isLoading }) {
       {showSetSubsPopup && (
         <SetSubsPopup onClose={() => setShowSetSubsPopup(false)} />
       )}
-    </>
+    </SignerPopupWrapper>
   );
 }
 
