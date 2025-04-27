@@ -8,6 +8,7 @@ import { isCollectivesChain } from "next-common/utils/chain";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Link from "next/link";
 import { isAddressInGroup } from "next-common/utils";
+import { useMemo } from "react";
 
 export default function FellowshipApplicationGuide() {
   const chain = useChain();
@@ -16,13 +17,21 @@ export default function FellowshipApplicationGuide() {
 
 function ApplicationGuide() {
   const realAddress = useRealAddress();
-  const { isLoading, coreMembersCount, coreCandidatesCount, members } =
+  const { isLoading, coreMembersCount, coreCandidatesCount, sourseMembers } =
     useFellowshipCoreMembersCount();
 
-  const isFellowshipMember = isAddressInGroup(
-    realAddress,
-    members.map(({ address }) => address),
+  const isFellowshipMember = useMemo(
+    () =>
+      isAddressInGroup(
+        realAddress,
+        sourseMembers.map(({ address }) => address),
+      ),
+    [realAddress, sourseMembers],
   );
+
+  if (isFellowshipMember || isLoading) {
+    return null;
+  }
 
   return (
     <SecondaryCard>
@@ -67,7 +76,7 @@ function ApplicationGuide() {
           </div>
         </div>
         {!isFellowshipMember ? (
-          <Link href="/fellowship/applications" target="_blank">
+          <Link href="/fellowship/applications/create" target="_blank">
             <PrimaryButton>Apply</PrimaryButton>
           </Link>
         ) : null}

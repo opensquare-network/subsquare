@@ -1,4 +1,4 @@
-import { isNil, filter, partition } from "lodash-es";
+import { isNil, partition } from "lodash-es";
 import { useEffect, useMemo, useState } from "react";
 import useFellowshipCoreOnlySwitch from "./useFellowshipCoreOnlySwitch";
 import useSubCoreCollectivesMember from "next-common/hooks/collectives/useSubCoreCollectivesMember";
@@ -170,7 +170,7 @@ export default function useFellowshipCoreMembersFilter(membersWithStatus) {
   };
 }
 
-function useFellowshipCoreMembers() {
+function useFetchFellowshipCoreMembers() {
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -232,25 +232,27 @@ function useFellowshipCoreWithStatus(members) {
   };
 }
 export function useFellowshipCoreMembersCount() {
-  const { members: memberList, isLoading: membersLoading } =
-    useFellowshipCoreMembers();
+  const { members: sourseMembers, isLoading: membersLoading } =
+    useFetchFellowshipCoreMembers();
   const { membersWithStatus, isLoading: memberStatusLoading } =
-    useFellowshipCoreWithStatus(memberList);
+    useFellowshipCoreWithStatus(sourseMembers);
 
-  const [members, candidates] = partition(membersWithStatus, (m) => m.rank > 0);
-
-  const coreMembersCount = filter(members, {
-    isFellowshipCoreMember: true,
-  }).length;
-  const coreCandidatesCount = filter(candidates, {
-    isFellowshipCoreMember: true,
-  }).length;
+  const [members, candidates] = useMemo(
+    () =>
+      partition(
+        membersWithStatus?.filter(
+          ({ isFellowshipCoreMember }) => isFellowshipCoreMember,
+        ),
+        (m) => m.rank > 0,
+      ),
+    [membersWithStatus],
+  );
 
   return {
     isLoading: membersLoading || memberStatusLoading,
-    coreMembersCount,
-    coreCandidatesCount,
-    members: memberList,
+    coreMembersCount: members.length,
+    coreCandidatesCount: candidates.length,
+    sourseMembers,
     membersWithStatus,
   };
 }
