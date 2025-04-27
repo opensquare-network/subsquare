@@ -14,6 +14,8 @@ const InitIdentityInfo = {
   discord: null,
 };
 
+const InitIdentityJudgements = [];
+
 const extractRaw = (field) => {
   if (!field || field === "None") {
     return null;
@@ -22,9 +24,29 @@ const extractRaw = (field) => {
   return field?.Raw || field || null;
 };
 
-function convertIdentityInfo(identity) {
-  const unwrapped = identity.unwrap();
-  const identityOf = Array.isArray(unwrapped) ? unwrapped[0] : unwrapped;
+function convertJudgements(identityOf) {
+  const judgements = identityOf?.judgements?.toHuman() || [];
+  if (!judgements || judgements.length === 0) {
+    return [];
+  }
+
+  return judgements?.map((judgement) => {
+    const [index, statusField] = judgement;
+    const isFeePaid =
+      typeof statusField === "object" &&
+      Object.entries(statusField)?.[0]?.[0] === "FeePaid";
+    const status = isFeePaid ? "FeePaid" : statusField;
+    const fee = isFeePaid ? Object.entries(statusField)?.[0]?.[1] : null;
+
+    return {
+      index,
+      status,
+      fee,
+    };
+  });
+}
+
+function convertIdentityInfo(identityOf) {
   const info = identityOf?.info?.toHuman() || {};
 
   return {
@@ -36,6 +58,19 @@ function convertIdentityInfo(identity) {
     twitter: extractRaw(info?.twitter),
     github: extractRaw(info?.github),
     discord: extractRaw(info?.discord),
+  };
+}
+
+function convertIdentity(identity) {
+  const unwrapped = identity.unwrap();
+  const identityOf = Array.isArray(unwrapped) ? unwrapped[0] : unwrapped;
+
+  const identityInfo = convertIdentityInfo(identityOf);
+  const judgements = convertJudgements(identityOf);
+
+  return {
+    info: identityInfo,
+    judgements,
   };
 }
 
@@ -71,7 +106,8 @@ function useSuperOfIdentityDisplayName(identity) {
         ?.identityOf(superOfResult.parentAddress)
         .then((parentResult) => {
           if (!parentResult?.isNone) {
-            return convertIdentityInfo(parentResult);
+            const result = convertIdentity(parentResult);
+            return result?.info || InitIdentityInfo;
           }
         });
       if (identityResult.display && superOfResult.subDisplay) {
@@ -101,26 +137,30 @@ function useAddressIdentityInfo(address) {
 
   const identity = useMemo(() => {
     if (!result || result?.isNone) {
-      return InitIdentityInfo;
+      return {
+        info: InitIdentityInfo,
+        judgements: InitIdentityJudgements,
+      };
     }
 
-    return convertIdentityInfo(result);
+    return convertIdentity(result);
   }, [result]);
 
   return {
-    result: identity,
+    ...identity,
     isLoading,
   };
 }
 
 export default function useSubMyIdentityInfo() {
   const address = useRealAddress();
-  const { result, isLoading } = useAddressIdentityInfo(address);
-  const { result: superResult } = useSuperOfIdentityDisplayName(result);
+  const { info, judgements, isLoading } = useAddressIdentityInfo(address);
+  const { result: superResult } = useSuperOfIdentityDisplayName(info);
 
   return {
     isLoading,
-    result: result,
-    displayName: (result.display || superResult) ?? null,
+    info,
+    judgements,
+    displayName: (info?.display || superResult) ?? null,
   };
 }

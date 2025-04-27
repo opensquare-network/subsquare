@@ -1,7 +1,6 @@
 import tw from "tailwind-styled-components";
 import RightWrapper from "next-common/components/rightWraper";
 import PrimaryButton from "next-common/lib/button/primary";
-// import SecondaryButton from "next-common/lib/button/secondary";
 import { Account } from "next-common/components/overview/accountInfo/accountInfoPanel";
 import { cn } from "next-common/utils";
 import Loading from "next-common/components/loading";
@@ -31,13 +30,6 @@ const SetIdentityPopup = dynamicPopup(
     ssr: false,
   },
 );
-
-// const RequestJudgementPopup = dynamicPopup(
-//   () => import("next-common/components/requestJudgementPopup"),
-//   {
-//     ssr: false,
-//   },
-// );
 
 export default function DirectIdentityImpl({
   isEmpty,
@@ -90,8 +82,6 @@ export function DirectIdentity({ subMyIdentityInfo }) {
   const { identity: identityChain } = getChainSettings(chain);
   const [showSetIdentityPopup, setShowSetIdentityPopup] = useState(false);
   const extensionAccounts = useExtensionAccounts();
-  // const [showRequestJudgementPopup, setShowRequestJudgementPopup] =
-  //   useState(false);
 
   const { type, parent } = useMyIdentityType();
   const api = useContextApi();
@@ -165,7 +155,6 @@ export function DirectIdentity({ subMyIdentityInfo }) {
       )}
       <Divider className="my-4" />
       <PropList subMyIdentityInfo={subMyIdentityInfo} />
-      {/* <Divider className="my-4" /> */}
       {isSubIdentity && (
         <>
           <PropListWrapper className="space-y-2 ml-14">
@@ -180,22 +169,8 @@ export function DirectIdentity({ subMyIdentityInfo }) {
               </PropListValue>
             </div>
           </PropListWrapper>
-          {/* <Divider className="my-4" /> */}
         </>
       )}
-      {/* <RightWrapper>
-        <SecondaryButton
-          className="w-auto"
-          onClick={() => setShowRequestJudgementPopup(true)}
-        >
-          Request Judgement
-        </SecondaryButton>
-      </RightWrapper> */}
-      {/* {showRequestJudgementPopup && (
-        <RequestJudgementPopup
-          onClose={() => setShowRequestJudgementPopup(false)}
-        />
-      )} */}
     </>
   );
 }
