@@ -95,3 +95,14 @@ export function getCachedIdentity(chain, address) {
 }
 
 export const getIdentity = getCachedIdentity;
+
+export const clearCachedIdentitys = (list) => {
+  list.forEach((item) => {
+    if (!item.chain || !item.address) {
+      return;
+    }
+
+    const idName = `${item.chain}/${item.address}`;
+    cachedIdentities.delete(idName);
+  });
+};
