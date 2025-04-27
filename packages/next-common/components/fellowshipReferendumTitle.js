@@ -47,7 +47,7 @@ export default function FellowshipReferendumTitle({
       </a>
       <span className="text-textTertiary">·</span>
       {loading ? (
-        <FieldLoading />
+        <FieldLoading size={14} />
       ) : (
         <span className="text-textPrimary">{title}</span>
       )}
