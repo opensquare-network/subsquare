@@ -17,8 +17,9 @@ export function SubItem({
       <AddressComboField
         comboClassName="w-[290px] !rounded-lg"
         size="small"
+        canEdit={false}
         extensionAccounts={extensionAccounts}
-        defaultAddress={sub.address}
+        defaultAddress={sub.address || extensionAccounts[0]?.address}
         setAddress={(value) => {
           if (value !== sub.address) {
             updateSubField("address", value);

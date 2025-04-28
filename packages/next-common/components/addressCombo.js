@@ -297,6 +297,7 @@ export default function AddressCombo({
   setAddress,
   allowInvalidAddress = false,
   readOnly = false,
+  canEdit = true,
   size = "default",
   placeholder = "Please fill the address or select another one...",
 }) {
@@ -372,7 +373,7 @@ export default function AddressCombo({
           placeholder={placeholder}
           accounts={accounts}
           address={address}
-          edit={edit}
+          edit={edit && canEdit}
           size={size}
         />
         {(accounts || []).length > 0 && !readOnly && (

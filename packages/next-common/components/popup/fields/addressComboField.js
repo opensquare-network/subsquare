@@ -10,6 +10,7 @@ export default function AddressComboField({
   title = "Address",
   placeholder,
   readOnly = false,
+  canEdit = true,
   comboClassName = "",
   size = "default",
 }) {
@@ -35,6 +36,7 @@ export default function AddressComboField({
         placeholder={placeholder}
         className={comboClassName}
         size={size}
+        canEdit={canEdit}
       />
     </div>
   );
