@@ -19,7 +19,7 @@ export function SubItem({
         size="small"
         canEdit={false}
         extensionAccounts={extensionAccounts}
-        defaultAddress={sub.address || extensionAccounts[0]?.address}
+        defaultAddress={sub.address}
         setAddress={(value) => {
           if (value !== sub.address) {
             updateSubField("address", value);

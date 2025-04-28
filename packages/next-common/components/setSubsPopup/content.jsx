@@ -31,15 +31,22 @@ export default function SetSubsPopupContent() {
   const extensionAccounts = useExtensionAccounts();
   const [subsList, setSubsList] = useState([]);
 
+  const defaultAddress = useMemo(() => {
+    const defaultSelectAccount = extensionAccounts
+      .map((item) => item.address)
+      .find((ext) => !subsList.map((sub) => sub.address).includes(ext));
+    return defaultSelectAccount || extensionAccounts?.[0]?.address || "";
+  }, [subsList, extensionAccounts]);
+
   useEffect(() => {
     if (subs) {
       setSubsList(
         subs.length
           ? subs.map(([address, subName]) => ({ address, name: subName }))
-          : [defaultSub],
+          : [{ ...defaultSub, address: extensionAccounts?.[0]?.address || "" }],
       );
     }
-  }, [subs]);
+  }, [subs, extensionAccounts]);
 
   const addressList = useMemo(
     () => subsList.map((sub) => sub.address),
@@ -47,8 +54,8 @@ export default function SetSubsPopupContent() {
   );
 
   const addSub = useCallback(() => {
-    setSubsList((prev) => [...prev, { address: "", name: "" }]);
-  }, []);
+    setSubsList((prev) => [...prev, { address: defaultAddress, name: "" }]);
+  }, [defaultAddress]);
 
   const removeSub = useCallback((index) => {
     setSubsList((prev) => prev.filter((_, i) => i !== index));
@@ -61,29 +68,23 @@ export default function SetSubsPopupContent() {
   }, []);
 
   const submitIsDisabled = useMemo(() => {
-    return (
-      subsList.some((sub) => !sub.address || !sub.name) || !addressList.length
-    );
-  }, [subsList, addressList]);
+    return subsList.some((sub) => !sub.address || !sub.name);
+  }, [subsList]);
 
   const getTxFunc = useCallback(() => {
     if (!api?.tx?.identity) return;
 
     const validSubs = subsList.filter((sub) => sub.address && sub.name);
-    if (!validSubs.length) return;
 
     return api.tx.identity.setSubs(
       validSubs.map((sub) => [sub.address, { Raw: sub.name }]),
     );
   }, [api, subsList]);
 
-  const onInBlock = useCallback(() => {
-    dispatch(newSuccessToast("Submit subs successfully"));
-  }, [dispatch]);
-
   const onFinalized = useCallback(() => {
+    dispatch(newSuccessToast("Finalized subs successfully"));
     retry?.();
-  }, [retry]);
+  }, [dispatch, retry]);
 
   return (
     <div className="space-y-4">
@@ -110,7 +111,6 @@ export default function SetSubsPopupContent() {
           disabled={submitIsDisabled}
           title="Submit"
           getTxFunc={getTxFunc}
-          onInBlock={onInBlock}
           onFinalized={onFinalized}
         />
       </RightWrapper>
