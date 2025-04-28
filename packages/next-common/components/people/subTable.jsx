@@ -10,6 +10,7 @@ import getChainSettings from "next-common/utils/consts/settings";
 import { clearCachedIdentitys } from "next-common/services/identity";
 import { useExtensionAccounts } from "../popupWithSigner/context";
 import { noop } from "lodash-es";
+import { cn } from "next-common/utils";
 
 const SetSubsPopup = dynamicPopup(
   () => import("next-common/components/setSubsPopup"),
@@ -68,7 +69,11 @@ export default function SubIdentitiesTable({
   }, [identityChain, extensionAccounts, subs]);
 
   return (
-    <div className="flex flex-col gap-y-4">
+    <div
+      className={cn("flex flex-col gap-y-4", {
+        "border-b border-neutral300": renderSubs?.length === 0,
+      })}
+    >
       <DataList
         columns={columns}
         rows={(renderSubs ?? []).map(([address, subName], index) => {
