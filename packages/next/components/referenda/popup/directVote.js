@@ -21,18 +21,20 @@ export default function DirectVote({
       {delegationsVotes ? (
         <Delegations delegationsVotes={delegationsVotes} />
       ) : null}
-      <VoteValue
-        title={isAye ? "Aye Vote Value" : "Nay Vote Value"}
-        isLoading={isLoading}
-        inputVoteBalance={inputVoteBalance}
-        setInputVoteBalance={setInputVoteBalance}
-      />
-      {showReUseLocks && (
-        <ReUseLocks
-          reUseGovLocks={setInputVoteBalance}
-          reUseAllLocks={setInputVoteBalance}
+      <div className="space-y-2">
+        <VoteValue
+          title={isAye ? "Aye Vote Value" : "Nay Vote Value"}
+          isLoading={isLoading}
+          inputVoteBalance={inputVoteBalance}
+          setInputVoteBalance={setInputVoteBalance}
         />
-      )}
+        {showReUseLocks && (
+          <ReUseLocks
+            reUseGovLocks={setInputVoteBalance}
+            reUseAllLocks={setInputVoteBalance}
+          />
+        )}
+      </div>
       <Conviction
         balance={inputVoteBalance}
         module={module}
