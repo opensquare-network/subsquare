@@ -21,7 +21,7 @@ export function SubItem({
         defaultAddress={sub.address}
         setAddress={(value) => {
           if (value !== sub.address) {
-            updateSubField(subId, "address", value);
+            updateSubField("address", value);
           }
         }}
       />
@@ -34,7 +34,7 @@ export function SubItem({
           onChange={(evt) => {
             const value = evt.target.value;
             if (value !== sub.name) {
-              updateSubField(subId, "name", value);
+              updateSubField("name", value);
             }
           }}
         />

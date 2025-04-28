@@ -21,7 +21,12 @@ export default function AddressInfoLoading({ address, size = "default" }) {
         <Skeleton
           className={cn("h-[12px] w-[80px]", size === "small" && "hidden")}
         />
-        <Skeleton className="h-[12px] w-[240px] max-w-full" />
+        <Skeleton
+          className={cn(
+            "h-[12px] max-w-full",
+            size === "default" ? "w-[240px]" : "w-auto",
+          )}
+        />
       </div>
     </>
   );

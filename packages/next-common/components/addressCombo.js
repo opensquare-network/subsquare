@@ -169,12 +169,12 @@ export function AddressComboListItemAccount({ account, size }) {
     <>
       <Avatar address={account.address} size={size === "default" ? 40 : 24} />
       <NameWrapper>
+        <IdentityDisplay address={account.address} name={account?.name} />
         {size === "default" && (
-          <IdentityDisplay address={account.address} name={account?.name} />
+          <div className="flex-1 w-full overflow-hidden whitespace-nowrap overflow-ellipsis">
+            {address}
+          </div>
         )}
-        <div className="flex-1 w-full overflow-hidden whitespace-nowrap overflow-ellipsis">
-          {address}
-        </div>
       </NameWrapper>
     </>
   );
@@ -259,7 +259,9 @@ function AddressComboHeader({
   }
 
   if (selectedAccount) {
-    return <AddressComboListItemAccount account={selectedAccount} size={size} />;
+    return (
+      <AddressComboListItemAccount account={selectedAccount} size={size} />
+    );
   }
 
   if (size !== "default") {

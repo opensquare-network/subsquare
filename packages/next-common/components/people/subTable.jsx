@@ -1,7 +1,6 @@
 import DataList from "next-common/components/dataList";
 import AddressUser from "next-common/components/user/addressUser";
 import AddressDisplay from "next-common/components/user/addressDisplay";
-import useSubscribeMySubIdentities from "next-common/hooks/people/useSubscribeMySubIdentities";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { SystemEdit2, SystemSubtract } from "@osn/icons/subsquare";
 import dynamicPopup from "next-common/lib/dynamic/popup";
@@ -10,6 +9,7 @@ import { useChain } from "next-common/context/chain";
 import getChainSettings from "next-common/utils/consts/settings";
 import { clearCachedIdentitys } from "next-common/services/identity";
 import { useExtensionAccounts } from "../popupWithSigner/context";
+import { noop } from "lodash-es";
 
 const SetSubsPopup = dynamicPopup(
   () => import("next-common/components/setSubsPopup"),
@@ -39,11 +39,14 @@ const columns = [
   },
 ];
 
-export default function SubIdentitiesTable() {
+export default function SubIdentitiesTable({
+  subs = [],
+  retry = noop,
+  isLoading,
+}) {
   const chain = useChain();
   const { identity: identityChain } = getChainSettings(chain);
   const extensionAccounts = useExtensionAccounts();
-  const { subs, isLoading, retry: retrySubs } = useSubscribeMySubIdentities();
   const [showSetSubsPopup, setShowSetSubsPopup] = useState(false);
   const [showRemoveSubPopup, setShowRemoveSubPopup] = useState(false);
   const [selectedSub, setSelectedSub] = useState(null);
@@ -61,7 +64,7 @@ export default function SubIdentitiesTable() {
       );
     }
 
-    setRenderSubs(subs);
+    setRenderSubs([...subs]);
   }, [identityChain, extensionAccounts, subs]);
 
   return (
@@ -112,7 +115,7 @@ export default function SubIdentitiesTable() {
           onClose={() => setShowSetSubsPopup(false)}
           onSubmit={() => setShowSetSubsPopup(false)}
           subs={subs}
-          retry={retrySubs}
+          retry={retry}
         />
       )}
       {showRemoveSubPopup && (

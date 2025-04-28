@@ -2,6 +2,7 @@ import { SecondaryCardDetail } from "next-common/components/styled/containers/se
 import Tabs from "next-common/components/tabs";
 import DirectIdentityImpl from "./directIdentity";
 import { useIdentityInfoContext } from "next-common/context/people/identityInfoContext";
+import SubIdentitiesImpl from "./subIdentities";
 import { useState } from "react";
 import { isIdentityEmpty } from "next-common/components/people/common";
 
@@ -23,11 +24,14 @@ export default function PeopleOverviewIdentity() {
         />
       ),
     },
-    // {
-    //   value: "sub-identities",
-    //   label: "Sub Identities",
-    //   content: <SubIdentitiesImpl isEmpty={isEmpty} />,
-    // },
+    {
+      value: "sub-identities",
+      label: "Sub Identities",
+      content:
+        activeTabValue === "sub-identities" ? (
+          <SubIdentitiesImpl isEmpty={isEmpty} isLoading={isLoading} />
+        ) : null,
+    },
   ];
 
   const handleTabClick = (tab) => {

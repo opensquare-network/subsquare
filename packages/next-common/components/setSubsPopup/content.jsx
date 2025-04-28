@@ -19,104 +19,91 @@ import SignerWithBalance from "../signerPopup/signerWithBalance";
 import { Label } from "../popup/styled";
 import { noop } from "lodash-es";
 
+const defaultSub = {
+  address: "",
+  name: "",
+};
+
 export default function SetSubsPopupContent() {
   const { subs, retry = noop } = usePopupParams();
   const api = useContextApi();
   const dispatch = useDispatch();
-  const [subsMap, setSubsMap] = useState({});
-  const [subsOrder, setSubsOrder] = useState([]);
   const extensionAccounts = useExtensionAccounts();
+  const [subsList, setSubsList] = useState([]);
 
   useEffect(() => {
     if (subs) {
-      setSubsMap(
-        subs.reduce((acc, [address, subName]) => {
-          acc[address] = { address, name: subName };
-          return acc;
-        }, {}),
+      setSubsList(
+        subs.length
+          ? subs.map(([address, subName]) => ({ address, name: subName }))
+          : [defaultSub],
       );
-      setSubsOrder(subs.map(([address]) => address));
     }
   }, [subs]);
 
-  const selectedList = useMemo(() => {
-    return Object.values(subsMap).map((sub) => sub.address);
-  }, [subsMap]);
+  const addressList = useMemo(
+    () => subsList.map((sub) => sub.address),
+    [subsList],
+  );
 
   const addSub = useCallback(() => {
-    const id = Date.now().toString();
-    setSubsMap((prev) => ({
-      ...prev,
-      [id]: { address: "", name: "" },
-    }));
-    setSubsOrder((prev) => [...prev, id]);
+    setSubsList((prev) => [...prev, { address: "", name: "" }]);
   }, []);
 
-  const removeSub = useCallback((id) => {
-    setSubsMap((prev) => {
-      const newMap = { ...prev };
-      delete newMap[id];
-      return newMap;
-    });
-    setSubsOrder((prev) => prev.filter((item) => item !== id));
+  const removeSub = useCallback((index) => {
+    setSubsList((prev) => prev.filter((_, i) => i !== index));
   }, []);
 
-  const updateSubField = useCallback((id, field, value) => {
-    setSubsMap((prev) => ({
-      ...prev,
-      [id]: {
-        ...prev[id],
-        [field]: value,
-      },
-    }));
+  const updateSubField = useCallback((index, field, value) => {
+    setSubsList((prev) =>
+      prev.map((sub, i) => (i === index ? { ...sub, [field]: value } : sub)),
+    );
   }, []);
 
   const submitIsDisabled = useMemo(() => {
-    return hasEmptySub(subsMap);
-  }, [subsMap]);
+    return (
+      subsList.some((sub) => !sub.address || !sub.name) || !addressList.length
+    );
+  }, [subsList, addressList]);
 
   const getTxFunc = useCallback(() => {
-    if (!api || !api?.tx?.identity) {
-      return;
-    }
+    if (!api?.tx?.identity) return;
 
-    const subs = Object.values(subsMap).filter(
-      (sub) => sub.address && sub.name,
-    );
-
-    if (!subs.length) {
-      return;
-    }
+    const validSubs = subsList.filter((sub) => sub.address && sub.name);
+    if (!validSubs.length) return;
 
     return api.tx.identity.setSubs(
-      subs.map((sub) => [sub.address, { Raw: sub.name }]),
+      validSubs.map((sub) => [sub.address, { Raw: sub.name }]),
     );
-  }, [api, subsMap]);
+  }, [api, subsList]);
 
   const onInBlock = useCallback(() => {
     dispatch(newSuccessToast("Submit subs successfully"));
+  }, [dispatch]);
+
+  const onFinalized = useCallback(() => {
     retry?.();
-  }, [dispatch, retry]);
+  }, [retry]);
 
   return (
     <div className="space-y-4">
       <SignerWithBalance />
 
-      {subsOrder.map((id, index) => (
+      {subsList.map((sub, index) => (
         <SubItem
-          key={`${id}-${index}`}
-          subId={id}
-          sub={subsMap[id]}
-          selectedList={selectedList}
-          updateSubField={updateSubField}
-          onRemove={removeSub}
+          key={index}
+          subId={index}
+          sub={sub}
+          selectedList={addressList}
+          updateSubField={(field, value) => updateSubField(index, field, value)}
+          onRemove={() => removeSub(index)}
           extensionAccounts={extensionAccounts}
         />
       ))}
 
-      <AddSubsButton selectedList={selectedList} addSub={addSub} />
+      <AddSubsButton addSub={addSub} />
 
-      <SubsDeposit selectedList={selectedList} />
+      <SubsDeposit selectedList={addressList} />
 
       <RightWrapper>
         <TxSubmissionButton
@@ -124,15 +111,10 @@ export default function SetSubsPopupContent() {
           title="Submit"
           getTxFunc={getTxFunc}
           onInBlock={onInBlock}
+          onFinalized={onFinalized}
         />
       </RightWrapper>
     </div>
-  );
-}
-
-function hasEmptySub(subsMap) {
-  return Object.values(subsMap).some(
-    (sub) => sub.address === "" || sub.name === "",
   );
 }
 
@@ -156,6 +138,7 @@ export function SubsDeposit({ selectedList }) {
   const chainSettings = useChainSettings();
   const { deposit, isLoading: isDepositLoading } =
     useSetSubsDeposit(selectedList);
+
   return (
     <>
       <Label>Deposit</Label>

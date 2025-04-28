@@ -85,33 +85,39 @@ function useSuperOfIdentityDisplayName(identity) {
     }
 
     async function fetchIdentityInfo() {
-      const superOfResult = await api.query.identity
-        ?.superOf(address)
-        .then((superOf) => {
-          if (superOf?.isSome) {
-            const [parentAddress, subDisplay] =
-              superOf.unwrap()?.toHuman() || [];
-            return {
-              subDisplay: subDisplay?.Raw,
-              parentAddress,
-            };
-          }
-        });
+      try {
+        const superOfResult = await api.query.identity
+          ?.superOf(address)
+          .then((superOf) => {
+            if (superOf?.isSome) {
+              const [parentAddress, subDisplay] =
+                superOf.unwrap()?.toHuman() || [];
+              return {
+                subDisplay: subDisplay?.Raw,
+                parentAddress,
+              };
+            }
+          });
 
-      if (superOfResult?.isNone || !superOfResult?.parentAddress) {
-        return;
-      }
+        if (superOfResult?.isNone || !superOfResult?.parentAddress) {
+          return;
+        }
 
-      const identityResult = await api.query.identity
-        ?.identityOf(superOfResult.parentAddress)
-        .then((parentResult) => {
-          if (!parentResult?.isNone) {
-            const result = convertIdentity(parentResult);
-            return result?.info || InitIdentityInfo;
-          }
-        });
-      if (identityResult.display && superOfResult.subDisplay) {
-        setSubDisplay(`${identityResult.display}/${superOfResult.subDisplay}`);
+        const identityResult = await api.query.identity
+          ?.identityOf(superOfResult.parentAddress)
+          .then((parentResult) => {
+            if (!parentResult?.isNone) {
+              const result = convertIdentity(parentResult);
+              return result?.info || InitIdentityInfo;
+            }
+          });
+        if (identityResult.display && superOfResult.subDisplay) {
+          setSubDisplay(
+            `${identityResult.display}/${superOfResult.subDisplay}`,
+          );
+        }
+      } catch (error) {
+        console.error(error);
       }
     }
 
