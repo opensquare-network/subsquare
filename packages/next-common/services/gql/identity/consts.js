@@ -53,3 +53,22 @@ export const GET_IDENTITIES_REGISTRARS = gql`
     }
   }
 `;
+
+export const GET_IDENTITIE_TIMELINE = gql`
+  query GetIdentityTimeline($account: String!) {
+    identityTimeline(account: $account) {
+      name
+      args
+      indexer {
+        chain
+        blockHeight
+        blockHash
+        blockTime
+        extrinsicIndex
+        eventIndex
+        __typename
+      }
+      __typename
+    }
+  }
+`;

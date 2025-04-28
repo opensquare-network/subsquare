@@ -1,6 +1,7 @@
 import { TabTitle } from "next-common/components/profile/tabs";
 import PeopleOverviewIdentity from "../identity";
 import PeopleOverviewJudgements from "../judgements";
+import PeopleOverviewTimeline from "../timeline";
 
 export default function usePeopleOverviewTabs() {
   const tabs = [
@@ -18,6 +19,14 @@ export default function usePeopleOverviewTabs() {
       },
       value: "judgements",
       content: <PeopleOverviewJudgements />,
+      exactMatch: false,
+    },
+    {
+      label({ active }) {
+        return <TabTitle active={active}>Timeline</TabTitle>;
+      },
+      value: "timeline",
+      content: <PeopleOverviewTimeline />,
       exactMatch: false,
     },
   ];

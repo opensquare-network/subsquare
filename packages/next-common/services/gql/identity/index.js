@@ -4,6 +4,7 @@ import {
   GET_IDENTITIES,
   GET_IDENTITIES_COUNT,
   GET_IDENTITIES_REGISTRARS,
+  GET_IDENTITIE_TIMELINE,
 } from "./consts";
 
 export async function queryPeopleIdentities(
@@ -46,4 +47,16 @@ export async function queryPeopleRegistrarsFromApi() {
     })) || {};
 
   return { data: data?.identityRegistrars };
+}
+
+export async function queryPeopleIdentityTimeline(account) {
+  const { data } =
+    (await peopleIdentityClient?.query?.({
+      query: GET_IDENTITIE_TIMELINE,
+      variables: {
+        account,
+      },
+    })) || {};
+
+  return { data: data?.identityTimeline };
 }
