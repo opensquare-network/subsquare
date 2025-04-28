@@ -38,12 +38,12 @@ export default function SubIdentitiesImpl({ isEmpty, isLoading }) {
     );
   }
 
-  if (isSubIdentity && !parentIsSelf) {
-    return <SubIdentityParent parent={parent} />;
-  }
-
   if (isEmpty) {
     return <SubIdentityEmpty />;
+  }
+
+  if (isSubIdentity && !parentIsSelf) {
+    return <SubIdentityParent parent={parent} />;
   }
 
   return (
