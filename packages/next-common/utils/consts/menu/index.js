@@ -50,9 +50,12 @@ export function getHomeMenu({
     modules?.alliance && getAllianceMenu(summary),
     modules?.communityCouncil && getCommunityCouncilMenu(summary),
     getAdvancedMenu(
-      [modules?.preimages && preImages, ...integrationsMenu].filter(Boolean),
+      [
+        modules?.preimages && preImages,
+        ...integrationsMenu,
+        (modules?.proxy || modules?.vesting || hasMultisig) && Data,
+      ].filter(Boolean),
     ),
-    (modules?.proxy || modules?.vesting || hasMultisig) && Data,
   ].filter(Boolean);
 }
 
