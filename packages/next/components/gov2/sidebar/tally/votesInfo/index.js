@@ -8,8 +8,9 @@ import {
   VotesInfoLine,
 } from "./styled";
 import WindowSizeProvider from "next-common/context/windowSize";
+import { memo } from "react";
 
-export default function VotesInfo() {
+function VotesInfo() {
   return (
     <WindowSizeProvider>
       <VotesGroup>
@@ -25,3 +26,5 @@ export default function VotesInfo() {
     </WindowSizeProvider>
   );
 }
+
+export default memo(VotesInfo);
