@@ -1,7 +1,3 @@
 {
-  "framework": null,
-  "buildCommand": "yarn build",
-  "outputDirectory": "dist",
-  "installCommand": "yarn install",
-  "startCommand": "yarn start"
+  "framework": null
 }
