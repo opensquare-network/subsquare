@@ -7,7 +7,6 @@ import PopupLabel from "next-common/components/popup/label";
 import CurrencyInput from "next-common/components/currencyInput";
 import LoadableContent from "next-common/components/common/loadableContent";
 import { useChainSettings } from "next-common/context/chain";
-import useSubMyIdentityInfo from "next-common/hooks/people/useSubMyIdentityInfo";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { useContextApi } from "next-common/context/api";
 import { useDispatch } from "react-redux";
@@ -15,6 +14,7 @@ import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { formatIdentityInfo } from "next-common/components/people/common";
 import { Label } from "../popup/styled";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
+import { useIdentityInfoContext } from "next-common/context/people/identityInfoContext";
 
 const fields = [
   {
@@ -73,7 +73,7 @@ export default function SetIdentityPopupContent() {
   const { decimals, symbol } = useChainSettings();
   const [identityInfo, setIdentityInfo] = useState({});
   const [errors, setErrors] = useState({});
-  const { result: subMyIdentityInfo } = useSubMyIdentityInfo();
+  const { info: subMyIdentityInfo } = useIdentityInfoContext();
   const api = useContextApi();
   const dispatch = useDispatch();
 

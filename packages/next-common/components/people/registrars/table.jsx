@@ -4,10 +4,15 @@ import { TableName } from "next-common/components/data/common/tableHeader";
 import AddressUser from "next-common/components/user/addressUser";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
+import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 
 const columns = [
   {
     name: "Registrar",
+  },
+  {
+    name: "Latest Judgement",
+    width: 160,
   },
   {
     name: "Received Request",
@@ -40,6 +45,7 @@ export default function RegistrarsTable({
         <DataList
           columns={columns}
           rows={(registrars || []).map((item, index) => {
+            const time = item?.statistics?.lastGivenIndexer?.blockTime;
             return [
               <div
                 className="flex items-center gap-x-2"
@@ -49,6 +55,12 @@ export default function RegistrarsTable({
                   #{index + 1}
                 </span>
                 <AddressUser add={item.account} />
+              </div>,
+              <div
+                key={`last-judgement-${index}`}
+                className="text-textTertiary text14Medium"
+              >
+                {time ? formatTimeAgo(time) : "-"}
               </div>,
               <div
                 key={`request-${index}`}

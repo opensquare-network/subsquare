@@ -18,11 +18,12 @@ import { cn } from "next-common/utils";
 import { useTheme } from "styled-components";
 import { IpfsEvidenceRawContent } from "next-common/components/collectives/core/evidenceContent";
 import {
-  CoreFellowshipMemberRelatedReferendaContent,
+  CoreFellowshipMemberRelatedReferendaActionsContent,
   useFellowshipCoreRelatedReferenda,
 } from "next-common/components/collectives/core/member/relatedReferenda";
 import { getCidByEvidence } from "next-common/utils/collective/getCidByEvidence";
 import { useIpfsContent } from "next-common/hooks/useIpfsContent";
+import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
 
 export default function EvidenceWish() {
   const { id: address, fellowshipMembers } = usePageProps();
@@ -50,10 +51,7 @@ export default function EvidenceWish() {
 function BlockEvidenceOrEmpty({ wish, evidence, address, activeMember }) {
   return wish && evidence ? (
     <>
-      <OnchainEvidenceRetentionBar
-        activeMember={activeMember}
-        address={address}
-      />
+      <WishBar wish={wish} activeMember={activeMember} address={address} />
       <OnchainEvidenceStatisticsInfoImpl wish={wish} address={address} />
       <OnchainEvidenceContent evidence={evidence} wish={wish} />
     </>
@@ -63,6 +61,7 @@ function BlockEvidenceOrEmpty({ wish, evidence, address, activeMember }) {
 }
 
 function OnchainEvidenceStatisticsInfoImpl({ wish, address }) {
+  const pallet = useCoreFellowshipPallet();
   const { relatedReferenda, isLoading } =
     useFellowshipCoreRelatedReferenda(address);
 
@@ -73,27 +72,39 @@ function OnchainEvidenceStatisticsInfoImpl({ wish, address }) {
       </SummaryItem>
       <SummaryItem title="Related Referendum">
         <LoadableContent>
-          <CoreFellowshipMemberRelatedReferendaContent
+          <CoreFellowshipMemberRelatedReferendaActionsContent
+            pallet={pallet}
+            who={address}
             relatedReferenda={relatedReferenda}
             isLoading={isLoading}
+            size={20}
           />
         </LoadableContent>
       </SummaryItem>
-      {/* <SummaryItem title="My Votes">
-        <LoadableContent>-</LoadableContent>
-      </SummaryItem> */}
     </SummaryLayout>
   );
 }
 
-function OnchainEvidenceRetentionBar({ activeMember, address }) {
+function WishBar({ wish, activeMember, address }) {
+  if (!["Promotion", "Retention"].includes(wish)) {
+    return null;
+  }
+
   return (
     <GreyPanel className="px-4 py-[0.675rem] flex items-center justify-center">
       <AddressUser add={address} />
-      <span className="text14Medium text-textSecondary inline-block mx-2 whitespace-nowrap">
-        is wishing for retention at
-      </span>
-      <FellowshipRank rank={activeMember?.rank} />
+      {"Promotion" === wish ? (
+        <span className="text14Medium text-textSecondary inline-block mx-2 whitespace-nowrap">
+          wishes to get promoted
+        </span>
+      ) : (
+        <>
+          <span className="text14Medium text-textSecondary inline-block mx-2 whitespace-nowrap">
+            wishes to retain at rank
+          </span>
+          <FellowshipRank rank={activeMember?.rank} />
+        </>
+      )}
     </GreyPanel>
   );
 }

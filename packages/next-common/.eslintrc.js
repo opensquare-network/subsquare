@@ -9,6 +9,7 @@ module.exports = {
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
     "@osn",
+    "../../.eslintrc.js",
   ],
   overrides: [],
   parserOptions: {

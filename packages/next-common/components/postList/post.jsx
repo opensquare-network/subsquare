@@ -364,7 +364,7 @@ export default function Post({ data, href, type }) {
             <PostUser data={data} type={type} />
             {data.trackName && (
               <MobileHiddenInfo>
-                <Link href={trackTagLink} passHref legacyBehavior>
+                <Link href={trackTagLink} passHref>
                   <LinkInfo>
                     <Gov2TrackTag name={data.trackName} />
                   </LinkInfo>

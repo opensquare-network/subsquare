@@ -3,6 +3,8 @@ import AddressUser from "next-common/components/user/addressUser";
 import RadioButton from "./radioButton";
 import Divider from "next-common/components/styled/layout/divider";
 import tw from "tailwind-styled-components";
+import { cn } from "next-common/utils";
+import Tooltip from "next-common/components/tooltip";
 
 export default function RadioOption({ checked, label, onClick = noop }) {
   return (
@@ -37,32 +39,50 @@ const RadioOptionValue = tw.span`
 text-textPrimary
 `;
 
+function DisabledTooltipWrapper({ children, disabled }) {
+  if (!disabled) {
+    return children;
+  }
+
+  return (
+    <Tooltip content="Currently in the judgement request process">
+      {children}
+    </Tooltip>
+  );
+}
+
 export function RequestJudgementRadioOption({
   checked,
   judgement,
+  disabled,
   onClick = noop,
 }) {
   if (!judgement) {
     return null;
   }
   return (
-    <RadioOptionWrapper onClick={onClick}>
-      <RadioOptionHeader>
-        <div className="flex items-center flex-1">
-          <RadioOptionIndex>#{judgement.index}</RadioOptionIndex>
-          <AddressUser add={judgement.account} size={20} user={{}} />
-        </div>
-        <RadioButton checked={checked} />
-      </RadioOptionHeader>
-      <Divider className="my-3" />
-      <RadioOptionFooter>
-        <RadioOptionItem>
-          <span>Fee</span>
-          <RadioOptionValue>
-            {judgement.fee} {judgement.symbol}
-          </RadioOptionValue>
-        </RadioOptionItem>
-      </RadioOptionFooter>
-    </RadioOptionWrapper>
+    <DisabledTooltipWrapper disabled={disabled}>
+      <RadioOptionWrapper
+        onClick={onClick}
+        className={cn(disabled ? "bg-neutral200 border-neutral300" : "")}
+      >
+        <RadioOptionHeader>
+          <div className="flex items-center flex-1">
+            <RadioOptionIndex>#{judgement.index}</RadioOptionIndex>
+            <AddressUser add={judgement.account} size={20} user={{}} />
+          </div>
+          <RadioButton checked={checked} disabled={disabled} />
+        </RadioOptionHeader>
+        <Divider className="my-3" />
+        <RadioOptionFooter>
+          <RadioOptionItem>
+            <span>Fee</span>
+            <RadioOptionValue>
+              {judgement.fee} {judgement.symbol}
+            </RadioOptionValue>
+          </RadioOptionItem>
+        </RadioOptionFooter>
+      </RadioOptionWrapper>
+    </DisabledTooltipWrapper>
   );
 }

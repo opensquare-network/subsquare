@@ -19,6 +19,7 @@ import { useEffect, useState } from "react";
 import { useTheme } from "styled-components";
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
 import { useRelationshipNodes } from "next-common/context/relationship";
+import ProfileUserInfoProvider from "next-common/components/profile/header/context/profileUserInfoContext";
 
 const nodeTypes = {
   user: UserNode,
@@ -58,12 +59,14 @@ export default function Relationship() {
 
   return (
     <ReactFlowProvider>
-      <RelationshipWraper>
-        <RelationshipFlow
-          calculatedNodes={calculatedNodes}
-          initialEdges={initialEdges}
-        />
-      </RelationshipWraper>
+      <ProfileUserInfoProvider>
+        <RelationshipWraper>
+          <RelationshipFlow
+            calculatedNodes={calculatedNodes}
+            initialEdges={initialEdges}
+          />
+        </RelationshipWraper>
+      </ProfileUserInfoProvider>
     </ReactFlowProvider>
   );
 }

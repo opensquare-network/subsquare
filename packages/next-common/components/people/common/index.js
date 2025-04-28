@@ -11,3 +11,7 @@ export function formatIdentityInfo(identityInfo) {
 
   return result;
 }
+
+export const isIdentityEmpty = (identityInfo) => {
+  return Object.values(identityInfo ?? {}).filter(Boolean).length === 0;
+};

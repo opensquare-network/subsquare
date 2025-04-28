@@ -28,7 +28,13 @@ export default function RadioOptionGroup({
           key={item.value}
           {...item}
           checked={selected === item.value}
-          onClick={() => setSelected(item.value)}
+          onClick={() => {
+            if (item?.disabled) {
+              return;
+            }
+
+            setSelected(item.value);
+          }}
         />
       ))}
     </div>

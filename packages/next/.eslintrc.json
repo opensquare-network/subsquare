@@ -1,8 +1,5 @@
 {
-  "extends": [
-    "next/core-web-vitals",
-    "@osn"
-  ],
+  "extends": ["next/core-web-vitals", "@osn", "../../.eslintrc.js"],
   "rules": {
     "@next/next/no-img-element": "off",
     "no-unused-vars": [

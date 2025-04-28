@@ -1,9 +1,9 @@
-import { find, some } from "lodash-es";
 import { CACHE_KEY, NAV_MENU_TYPE } from "next-common/utils/constants";
 import { getMainMenu } from "next-common/utils/consts/menu";
 import { useCookieValue } from "next-common/utils/hooks/useCookieValue";
-import { createContext, useCallback, useContext, useState } from "react";
+import { createContext, useContext, useMemo, useState } from "react";
 import { useIsomorphicLayoutEffect } from "react-use";
+import { matchNewMenu } from "next-common/utils/consts/menu";
 
 const NavCollapsedContext = createContext([]);
 const NavSubmenuVisibleContext = createContext([]);
@@ -71,48 +71,24 @@ function NavSubmenuVisibleProvider({ children, value }) {
   );
 }
 
-const isSubSpaceNavMenu = (type) => type === NAV_MENU_TYPE.subspace;
-
 const menu = getMainMenu();
 export function useNavMenuType() {
   return useContext(NavMenuTypeContext);
 }
 function NavMenuTypeProvider({ pathname, children }) {
-  const firstPath = "/" + pathname?.split("/").filter(Boolean)[0];
-
-  const getMatchedMenuType = useCallback(
-    (p) => {
-      const matchedMenu = find(menu, (m) => {
-        let matched = m.pathname === p;
-        if (!matched && m?.items?.length) {
-          matched = some(m?.items, { pathname: p });
-
-          if (isSubSpaceNavMenu(m?.type) && m.pathname === firstPath) {
-            matched = true;
-          }
-        }
-
-        return matched;
-      });
-      if (isSubSpaceNavMenu(matchedMenu?.type)) {
-        return {
-          type: NAV_MENU_TYPE.subspace,
-          menu: matchedMenu.items,
-        };
+  const matchMenu = useMemo(() => {
+    return (
+      matchNewMenu(menu, pathname) || {
+        type: NAV_MENU_TYPE.main,
+        menu: null,
       }
-
-      return { type: NAV_MENU_TYPE.main, menu: null };
-    },
-    [firstPath],
-  );
-
-  const [navMenuType, setNavMenuType] = useState(getMatchedMenuType(pathname));
+    );
+  }, [pathname]);
+  const [navMenuType, setNavMenuType] = useState(matchMenu);
 
   useIsomorphicLayoutEffect(() => {
-    if (navMenuType.type !== NAV_MENU_TYPE.archived) {
-      setNavMenuType(getMatchedMenuType(pathname));
-    }
-  }, [getMatchedMenuType, pathname]);
+    setNavMenuType(matchMenu);
+  }, [matchMenu]);
 
   return (
     <NavMenuTypeContext.Provider value={[navMenuType, setNavMenuType]}>
