@@ -1,7 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useContextApi } from "next-common/context/api";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import useSubStorage from "next-common/hooks/common/useSubStorage";
 
 const InitIdentityInfo = {
   display: null,
@@ -15,6 +14,11 @@ const InitIdentityInfo = {
 };
 
 const InitIdentityJudgements = [];
+
+const initIdentityInfoAndJudgements = {
+  info: InitIdentityInfo,
+  judgements: InitIdentityJudgements,
+};
 
 const extractRaw = (field) => {
   if (!field || field === "None") {
@@ -135,23 +139,33 @@ function useSuperOfIdentityDisplayName(identity) {
 }
 
 function useAddressIdentityInfo(address) {
-  const { result, loading: isLoading } = useSubStorage(
-    "identity",
-    "identityOf",
-    [address],
-  );
+  const api = useContextApi();
+  const [identity, setIdentity] = useState({
+    ...initIdentityInfoAndJudgements,
+  });
+  const [isLoading, setIsLoading] = useState(true);
 
-  const identity = useMemo(() => {
-    if (!result || result?.isNone) {
-      return {
-        info: InitIdentityInfo,
-        judgements: InitIdentityJudgements,
-      };
+  useEffect(() => {
+    if (!api || !address) {
+      return;
     }
 
-    return convertIdentity(result);
-  }, [result]);
+    async function fetchIdentityInfo() {
+      setIsLoading(true);
+      try {
+        const result = await api.query.identity?.identityOf(address);
+        if (!result || result?.isNone) {
+          setIdentity({ ...initIdentityInfoAndJudgements });
+          return;
+        }
+        setIdentity(convertIdentity(result));
+      } finally {
+        setIsLoading(false);
+      }
+    }
 
+    fetchIdentityInfo();
+  }, [api, address]);
   return {
     ...identity,
     isLoading,
