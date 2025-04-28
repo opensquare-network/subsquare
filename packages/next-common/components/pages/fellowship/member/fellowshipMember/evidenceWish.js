@@ -10,21 +10,19 @@ import { usePageProps } from "next-common/context/page";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import CoretimeSalePanelChartSkeleton from "next-common/components/coretime/salePanel/chart/skeleton";
 import Button from "next-common/lib/button";
-import { Fragment, useState } from "react";
+import { useState } from "react";
 import WishDetail from "next-common/components/pages/fellowship/member/fellowshipMember/wishDetail";
 import { cn } from "next-common/utils";
 import { useTheme } from "styled-components";
 import { IpfsEvidenceRawContent } from "next-common/components/collectives/core/evidenceContent";
 import {
-  ReferendumIndex,
-  ReferendumIndexAndMyVote,
+  CoreFellowshipMemberRelatedReferendaActionsContent,
   useFellowshipCoreRelatedReferenda,
 } from "next-common/components/collectives/core/member/relatedReferenda";
 import { getCidByEvidence } from "next-common/utils/collective/getCidByEvidence";
 import { useIpfsContent } from "next-common/hooks/useIpfsContent";
 import { WishBar } from "./wishBar";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import FieldLoading from "next-common/components/icons/fieldLoading";
+import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
 
 export default function EvidenceWish() {
   const { id: address, fellowshipMembers } = usePageProps();
@@ -61,54 +59,8 @@ function BlockEvidenceOrEmpty({ wish, evidence, address, activeMember }) {
   );
 }
 
-function ReferendaList({ relatedReferenda }) {
-  return (
-    <div className="flex gap-[4px]">
-      {relatedReferenda.map(({ referendumIndex }, index) => (
-        <Fragment key={index}>
-          {index !== 0 && <span className="text-textTertiary">,</span>}
-          <ReferendumIndex referendumIndex={referendumIndex} />
-        </Fragment>
-      ))}
-    </div>
-  );
-}
-
-function ReferendaAndMyVoteList({ relatedReferenda }) {
-  return (
-    <div className="flex gap-[4px]">
-      {relatedReferenda.map(({ referendumIndex }, index) => (
-        <Fragment key={index}>
-          {index !== 0 && <span className="text-textPrimary">,</span>}
-          <ReferendumIndexAndMyVote referendumIndex={referendumIndex} />
-        </Fragment>
-      ))}
-    </div>
-  );
-}
-
-export function CoreFellowshipMemberRelatedReferendaContent({
-  relatedReferenda,
-  isLoading,
-}) {
-  const realAddress = useRealAddress();
-
-  if (isLoading) {
-    return <FieldLoading size={20} />;
-  }
-
-  if (relatedReferenda.length > 0) {
-    if (realAddress) {
-      return <ReferendaAndMyVoteList relatedReferenda={relatedReferenda} />;
-    } else {
-      return <ReferendaList relatedReferenda={relatedReferenda} />;
-    }
-  }
-
-  return <span className="text-textDisabled">-</span>;
-}
-
 function OnchainEvidenceStatisticsInfoImpl({ wish, address }) {
+  const pallet = useCoreFellowshipPallet();
   const { relatedReferenda, isLoading } =
     useFellowshipCoreRelatedReferenda(address);
 
@@ -119,9 +71,12 @@ function OnchainEvidenceStatisticsInfoImpl({ wish, address }) {
       </SummaryItem>
       <SummaryItem title="Related Referendum">
         <LoadableContent>
-          <CoreFellowshipMemberRelatedReferendaContent
+          <CoreFellowshipMemberRelatedReferendaActionsContent
+            pallet={pallet}
+            who={address}
             relatedReferenda={relatedReferenda}
             isLoading={isLoading}
+            size={20}
           />
         </LoadableContent>
       </SummaryItem>
