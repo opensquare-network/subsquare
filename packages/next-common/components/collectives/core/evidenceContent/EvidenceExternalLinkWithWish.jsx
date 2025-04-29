@@ -13,7 +13,7 @@ function EvidenceExternalLinkWithWish({ className = "", wish = "", cid = "" }) {
   return (
     <div className={cn(className)}>
       <p className="flex items-center flex-grow-0 pr-4  text14Bold">
-        <span>{`Evidence for ${wish}`}</span>
+        <span className="text-textPrimary">{`Evidence for ${wish}`}</span>
         <span className="border-r-[1px] border-neutral400 h-4 w-4"></span>
         <span className="p-0 pl-4 h-full flex items-center">
           <Tooltip content="IPFS Link" className="w-5 h-5">
