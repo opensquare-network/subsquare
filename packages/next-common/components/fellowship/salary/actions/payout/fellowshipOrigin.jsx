@@ -63,7 +63,7 @@ function FellowshipOrigin({ className = "" }) {
   return (
     <div className={cn(className)}>
       <p className="flex items-center pb-2 text-textPrimary text14Medium font-bold">
-        origin
+        Origin
       </p>
       <div className="flex flex-1 p-3 rounded-[8px] bg-neutral200 items-center">
         <AccountInfo account={account} />
