@@ -9,7 +9,7 @@ function SalaryDisplay({ className = "", value = 0, decimals, symbol }) {
       <p className="flex items-center pb-2 text-textPrimary text14Medium font-bold">
         salary
       </p>
-      <p
+      <div
         className={cn(
           "flex",
           "items-center",
@@ -29,7 +29,7 @@ function SalaryDisplay({ className = "", value = 0, decimals, symbol }) {
           value={toPrecision(value, decimals)}
         />
         <span className="px-4 py-2.5 border-l border-neutral300">{symbol}</span>
-      </p>
+      </div>
     </div>
   );
 }

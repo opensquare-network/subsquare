@@ -19,7 +19,7 @@ const Wrapper = styled(GreyPanel)`
   gap: 16px;
 `;
 
-function useOriginAccount() {
+export function useOriginAccount() {
   const signerAccount = useSignerAccount();
   const extensionAccounts = useExtensionAccounts();
 
@@ -106,7 +106,7 @@ function ProxyHintForAddress({ address }) {
   return <ProxyHint proxyType={proxyType} />;
 }
 
-export default function MaybeProxySigner({ noSwitch, showCollectiveStatus }) {
+export default function MaybeProxySigner({ noSwitch }) {
   const signerAccount = useSignerAccount();
   const originAccount = useOriginAccount();
 
@@ -115,10 +115,7 @@ export default function MaybeProxySigner({ noSwitch, showCollectiveStatus }) {
       <div className="w-full">
         <div className="flex justify-between items-center gap-[12px] w-full">
           {originAccount ? (
-            <Account
-              showCollectiveStatus={showCollectiveStatus}
-              account={originAccount}
-            />
+            <Account account={originAccount} />
           ) : (
             <EmptyAccount />
           )}

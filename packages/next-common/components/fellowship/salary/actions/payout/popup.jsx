@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from "react";
 import Tab from "next-common/components/tab";
-import Signer from "next-common/components/popup/fields/signerField";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import Beneficiary from "next-common/components/popupWithSigner/fields/beneficiary";
 import { useContextApi } from "next-common/context/api";
@@ -10,6 +9,7 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useSalaryFellowshipPallet } from "next-common/context/collectives/collectives";
 import { useMyAccountSalaryWithSymbol } from "next-common/components/fellowship/salary/actions/hooks/useMyAccountSalaryWithSymbol";
 import SalaryDisplay from "next-common/components/fellowship/salary/actions/payout/salaryDisplay";
+import FellowshipOrigin from "next-common/components/fellowship/salary/actions/payout/fellowshipOrigin";
 
 const tabs = [
   {
@@ -36,7 +36,7 @@ function SelfPayout() {
 
   return (
     <>
-      <Signer showCollectiveStatus />
+      <FellowshipOrigin />
       <SalaryDisplay value={salary} decimals={decimals} symbol={symbol} />
       <TxSubmissionButton title="Submit" getTxFunc={getTxFunc} />
     </>
@@ -63,7 +63,7 @@ function OtherPayout() {
 
   return (
     <>
-      <Signer showCollectiveStatus />
+      <FellowshipOrigin />
       <SalaryDisplay value={salary} decimals={decimals} symbol={symbol} />
       <Beneficiary setAddress={setBeneficiary} />
       <TxSubmissionButton title="Submit" getTxFunc={getTxFunc} />
