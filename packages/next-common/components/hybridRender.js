@@ -1,3 +1,4 @@
+import { IS_SERVER } from "next-common/utils/constants";
 import React, { useState, useEffect } from "react";
 
 //solve the hydration problem on a side basis and it has not been cited for the time being
@@ -12,15 +13,5 @@ export default function HybridRender({ children }) {
 }
 
 export function ClientOnly({ children, fallback = null }) {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
-    return fallback;
-  }
-
-  return <>{children}</>;
+  return IS_SERVER ? fallback : children;
 }

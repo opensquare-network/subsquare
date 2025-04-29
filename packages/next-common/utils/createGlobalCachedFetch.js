@@ -54,8 +54,8 @@ export default function createGlobalCachedFetch() {
       }
     }, [key, setResult, fetchDataFunc]);
 
+    // Manage references
     useEffect(() => {
-      // Manage references
       let ref = refs[key];
       if (!ref) {
         ref = refs[key] = { count: 1 };
@@ -97,5 +97,5 @@ export default function createGlobalCachedFetch() {
     };
   }
 
-  return { useGlobalCachedFetch, useCachedResult };
+  return { useGlobalCachedFetch };
 }
