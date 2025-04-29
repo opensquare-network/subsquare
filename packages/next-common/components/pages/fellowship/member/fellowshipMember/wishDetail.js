@@ -4,8 +4,15 @@ import FellowshipRank from "next-common/components/fellowship/rank";
 import Divider from "next-common/components/styled/layout/divider";
 import { IpfsEvidenceRawContent } from "next-common/components/collectives/core/evidenceContent";
 import Avatar from "next-common/components/avatar";
+import EvidenceExternalLinkWithWish from "next-common/components/collectives/core/evidenceContent/EvidenceExternalLinkWithWish";
 
-export default function WishDetail({ activeMember, address, ifpsContent }) {
+export default function WishDetail({
+  activeMember,
+  address,
+  ifpsContent,
+  wish,
+  cid,
+}) {
   return (
     <div className="gap-y-4 flex flex-col">
       <SecondaryCard className="flex items-center !p-4 ">
@@ -22,6 +29,7 @@ export default function WishDetail({ activeMember, address, ifpsContent }) {
 
       <Divider />
 
+      <EvidenceExternalLinkWithWish wish={wish} cid={cid} />
       <IpfsEvidenceRawContent key="detail-content" value={ifpsContent} />
     </div>
   );
