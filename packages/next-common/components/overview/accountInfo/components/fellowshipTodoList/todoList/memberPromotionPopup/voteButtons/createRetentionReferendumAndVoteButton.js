@@ -10,6 +10,7 @@ import { useChain } from "next-common/context/chain";
 import { getRetainTrackNameFromRank } from "next-common/components/fellowship/core/members/actions/approve/popup";
 import useMemberRank from "./useMemberRank";
 import { useMyVotesChangedContext } from "../../../context/myVotesChanged";
+import SecondaryButton from "next-common/lib/button/secondary";
 
 function CreateReferendumAndVoteButtonImpl({
   who,
@@ -17,7 +18,7 @@ function CreateReferendumAndVoteButtonImpl({
   disabled,
   tooltip,
   children,
-  ButtonComponent,
+  ButtonComponent = SecondaryButton,
 }) {
   const dispatch = useDispatch();
   const currentRank = useMemberRank(who);
@@ -61,8 +62,9 @@ export default function CreateRetentionReferendumAndVoteButton({
   children,
   ...props
 }) {
+  const ButtonComponent = props.ButtonComponent || SecondaryButton;
   return (
-    <SignerPopupWrapper>
+    <SignerPopupWrapper loadingContent={<ButtonComponent disabled={true} />}>
       <CreateReferendumAndVoteButtonImpl {...props}>
         {children}
       </CreateReferendumAndVoteButtonImpl>
