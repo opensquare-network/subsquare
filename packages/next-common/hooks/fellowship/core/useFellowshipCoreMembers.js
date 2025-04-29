@@ -6,9 +6,39 @@ import {
   useRankedCollectivePallet,
 } from "next-common/context/collectives/collectives";
 import { isSameAddress } from "next-common/utils";
+import createGlobalCachedHook from "next-common/utils/createGlobalCachedHook";
 import { normalizeRankedCollectiveEntries } from "next-common/utils/rankedCollective/normalize";
 import { useCallback, useEffect } from "react";
 import { createGlobalState } from "react-use";
+
+const useGlobalCachedHook = createGlobalCachedHook();
+
+export function useGlobalFellowshipCoreMembers() {
+  const api = useContextApi();
+  const { section } = useCollectivesContext();
+  const corePallet = useCoreFellowshipPallet();
+  const collectivePallet = useRankedCollectivePallet();
+
+  const fetchData = useCallback(() => {
+    if (!api) {
+      throw new Error("api is not connected");
+    }
+    if (
+      !api.query[corePallet]?.member ||
+      !api.query[collectivePallet]?.members
+    ) {
+      throw new Error("api method not found");
+    }
+  }, [api, corePallet, collectivePallet]);
+
+  const {
+    result: members,
+    fetch,
+    loading,
+  } = useGlobalCachedHook(fetchData, section);
+
+  return { members, fetch, loading };
+}
 
 // A flag to ensure only one fetch operation runs at a time.
 const useCachedMembers = createGlobalState({});
