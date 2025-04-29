@@ -5,6 +5,7 @@ import { useChain } from "next-common/context/chain";
 import { isCollectivesChain } from "next-common/utils/chain";
 import useFellowshipMemberInfo from "next-common/components/fellowship/salary/actions/hooks/useFellowshipMemberInfo";
 import { memo } from "react";
+import { isNil } from "lodash-es";
 
 function StatusAndRank({ address }) {
   const chain = useChain();
@@ -16,13 +17,15 @@ function StatusAndRank({ address }) {
 
   return (
     <div className="flex items-center gap-x-4">
-      <Tooltip content={memberInfo.isActive ? "Active" : "Inactive"}>
-        <SignalIndicator
-          className="w-[16px] h-[16px]"
-          active={memberInfo.isActive}
-        />
-      </Tooltip>
-      <FellowshipRank rank={memberInfo.rank || 0} />
+      {!isNil(memberInfo?.isActive) && (
+        <Tooltip content={memberInfo?.isActive ? "Active" : "Inactive"}>
+          <SignalIndicator
+            className="w-[16px] h-[16px]"
+            active={memberInfo.isActive}
+          />
+        </Tooltip>
+      )}
+      {!isNil(memberInfo?.rank) && <FellowshipRank rank={memberInfo.rank} />}
     </div>
   );
 }

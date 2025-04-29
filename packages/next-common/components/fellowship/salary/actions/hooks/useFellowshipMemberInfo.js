@@ -10,11 +10,10 @@ const useFellowshipMemberInfo = (address) => {
 
   const memberInfo = useMemo(() => {
     const member = fellowshipMembers?.find((m) => m.address === address);
-    if (!member || !isStatusLoading) return null;
-
+    if (!member || isStatusLoading) return null;
     return {
-      ...status,
-      rank: member.rank,
+      isActive: status?.isActive,
+      rank: member?.rank,
     };
   }, [address, fellowshipMembers, isStatusLoading, status]);
 

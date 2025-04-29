@@ -59,6 +59,7 @@ function AccountInfo({ account }) {
 
 function FellowshipOrigin({ className = "" }) {
   const account = useOriginAccount();
+
   return (
     <div className={cn(className)}>
       <p className="flex items-center pb-2 text-textPrimary text14Medium font-bold">
@@ -66,7 +67,7 @@ function FellowshipOrigin({ className = "" }) {
       </p>
       <div className="flex flex-1 p-3 rounded-[8px] bg-neutral200 items-center">
         <AccountInfo account={account} />
-        <StatusAndRank />
+        <StatusAndRank address={account?.address} />
       </div>
     </div>
   );
