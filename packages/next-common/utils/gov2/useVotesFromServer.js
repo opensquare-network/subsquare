@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setAllVotes } from "next-common/store/reducers/referenda/votes";
 import { allVotesSelector } from "next-common/store/reducers/referenda/votes/selectors";
 import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
+import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import { createGlobalState } from "react-use";
 
 function extractSplitVotes(vote = {}) {
