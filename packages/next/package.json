@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 7001",
     "build": "next build",
     "analyze": "ANALYZE=true next build",
-    "start": "NODE_ENV=production next start",
+    "start": "NODE_ENV=production next start -p 7001",
     "lint": "next lint --dir ."
   },
   "dependencies": {
