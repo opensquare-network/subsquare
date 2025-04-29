@@ -10,6 +10,7 @@ import {
   ReferendumVoteButtons,
 } from "./voteButtons";
 import { Skeleton } from "next-common/components/skeleton";
+import EvidenceExternalLinkWithWish from "next-common/components/collectives/core/evidenceContent/EvidenceExternalLinkWithWish";
 
 function ReferendumVote({ referendumIndex, referendum }) {
   const trackId = referendum?.track?.toNumber();
@@ -93,11 +94,14 @@ export default function WishDetail({
   address,
   ifpsContent,
   wish,
+  cid,
 }) {
   return (
     <div className="gap-y-4 flex flex-col">
       <WishPanel address={address} activeMember={activeMember} wish={wish} />
       <Divider />
+
+      <EvidenceExternalLinkWithWish wish={wish} cid={cid} />
       <IpfsEvidenceRawContent key="detail-content" value={ifpsContent} />
     </div>
   );

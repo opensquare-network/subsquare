@@ -130,6 +130,7 @@ function OnchainEvidenceContent({ evidence, wish }) {
             onClose={() => setDetailVisible(false)}
             ifpsContent={ifpsContent}
             wish={wish}
+            cid={cid}
           />
         )}
       </GreyPanel>
@@ -147,7 +148,7 @@ function OnchainEvidenceLoading() {
   );
 }
 
-function WishDetailPopup({ onClose, ifpsContent, wish }) {
+function WishDetailPopup({ onClose, ifpsContent, wish, cid }) {
   const { id: address, fellowshipMembers } = usePageProps();
 
   const activeMember = fellowshipMembers.find(
@@ -155,16 +156,13 @@ function WishDetailPopup({ onClose, ifpsContent, wish }) {
   );
 
   return (
-    <Popup
-      title={"Evidence For " + (wish || "")}
-      className="w-[800px]"
-      onClose={onClose}
-    >
+    <Popup title={"Evidence Detail"} className="w-[800px]" onClose={onClose}>
       <WishDetail
         wish={wish}
         address={address}
         activeMember={activeMember}
         ifpsContent={ifpsContent}
+        cid={cid}
       />
     </Popup>
   );
