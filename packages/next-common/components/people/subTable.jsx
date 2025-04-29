@@ -38,6 +38,10 @@ const columns = [
   {
     name: "Address",
   },
+  {
+    name: "",
+    width: 80,
+  },
 ];
 
 export default function SubIdentitiesTable({
@@ -87,11 +91,12 @@ export default function SubIdentitiesTable({
             </div>,
             <div
               key={`Address-${index}`}
-              className="text-textTertiary text14Medium flex justify-between gap-x-2 items-start"
+              className="text-textTertiary text14Medium flex justify-between gap-x-2 items-center sm:ml-0 ml-4"
             >
               <AddressDisplay address={address} />
-
-              <div className="flex items-center gap-x-2">
+            </div>,
+            <>
+              <div className="flex items-center justify-end gap-x-2">
                 <SecondaryButton className="w-7 h-7 !px-0 rounded">
                   <SystemEdit2
                     className="w-4 h-4"
@@ -109,7 +114,7 @@ export default function SubIdentitiesTable({
                   <SystemSubtract className="w-4 h-4" />
                 </SecondaryButton>
               </div>
-            </div>,
+            </>,
           ];
         })}
         loading={isLoading}

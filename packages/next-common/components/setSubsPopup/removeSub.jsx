@@ -14,8 +14,11 @@ import SignerWithBalance from "../signerPopup/signerWithBalance";
 import { Label } from "../popup/styled";
 import Input from "next-common/lib/input";
 import { SubsDeposit } from "./content";
+import { cn } from "next-common/utils";
+import { useIsMobile } from "../overview/accountInfo/components/accountBalances";
 
 export default function RemoveSubPopupContent() {
+  const isMobile = useIsMobile();
   const { selectedSub, selectedSubIndex, subs } = usePopupParams();
   const api = useContextApi();
   const dispatch = useDispatch();
@@ -55,9 +58,11 @@ export default function RemoveSubPopupContent() {
     <div className="space-y-4">
       <SignerWithBalance />
 
-      <div className="flex gap-x-4">
+      <div
+        className={cn("flex gap-x-4 flex-row", isMobile && "gap-y-4 flex-col")}
+      >
         <AddressComboField
-          comboClassName="w-[290px] !rounded-lg"
+          comboClassName={cn("w-[290px] !rounded-lg", isMobile && "w-full")}
           size="small"
           extensionAccounts={extensionAccounts}
           defaultAddress={selectedSub.address}

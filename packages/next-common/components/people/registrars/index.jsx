@@ -4,21 +4,8 @@ import SummaryItem from "next-common/components/summary/layout/item";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import useRegistrarsList from "next-common/utils/hooks/useRegistrarsList";
 import RegistrarsTable from "./table";
-import UserAccountProvider from "next-common/context/user/account";
-import IdentityInfoProvider from "next-common/context/people/identityInfoContext";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
-export default function PeopleRegistrarsPage() {
-  const realAddress = useRealAddress();
-  return (
-    <UserAccountProvider address={realAddress}>
-      <IdentityInfoProvider>
-        <PeopleRegistrarsPageImpl />
-      </IdentityInfoProvider>
-    </UserAccountProvider>
-  );
-}
 
-export function PeopleRegistrarsPageImpl() {
+export default function PeopleRegistrarsPage() {
   const { registrars = [], isLoading, total = 3 } = useRegistrarsList();
   return (
     <ListLayout
