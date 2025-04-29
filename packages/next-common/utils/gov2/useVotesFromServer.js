@@ -98,6 +98,7 @@ const useGlobalVotesLoadedMark = createGlobalState(false);
 
 export function useFetchVotesFromServer(referendumIndex) {
   const votingFinishedHeight = useReferendumVotingFinishHeight();
+  const height = useSelector(latestHeightSelector);
   const [loaded, setLoaded] = useGlobalVotesLoadedMark();
   const dispatch = useDispatch();
 
@@ -133,7 +134,7 @@ export function useFetchVotesFromServer(referendumIndex) {
       setLoaded(false);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [votingFinishedHeight, referendumIndex, dispatch, setLoaded]);
+  }, [votingFinishedHeight, height, referendumIndex, dispatch, setLoaded]);
 }
 
 export default function useVotesFromServer(referendumIndex) {
