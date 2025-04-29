@@ -161,6 +161,7 @@ function WishDetailPopup({ onClose, ifpsContent, wish }) {
       onClose={onClose}
     >
       <WishDetail
+        wish={wish}
         address={address}
         activeMember={activeMember}
         ifpsContent={ifpsContent}

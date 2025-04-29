@@ -1,6 +1,5 @@
 import Divider from "next-common/components/styled/layout/divider";
 import { IpfsEvidenceRawContent } from "next-common/components/collectives/core/evidenceContent";
-import useSubCoreFellowshipEvidence from "next-common/hooks/collectives/useSubCoreFellowshipEvidence";
 import { WishBar } from "./wishBar";
 import { useFellowshipCoreRelatedReferenda } from "next-common/components/collectives/core/member/relatedReferenda";
 import FellowshipReferendumTitle from "next-common/components/fellowshipReferendumTitle";
@@ -10,6 +9,7 @@ import {
   CreateRetentionReferendumAndVoteButtons,
   ReferendumVoteButtons,
 } from "./voteButtons";
+import { Skeleton } from "next-common/components/skeleton";
 
 function ReferendumVote({ referendumIndex, referendum }) {
   const trackId = referendum?.track?.toNumber();
@@ -46,12 +46,24 @@ function CreateReferendumAndVote({ who, wish }) {
   return null;
 }
 
+function LoadingVoteBar() {
+  return (
+    <div className="flex items-center justify-between">
+      <Skeleton className="rounded-[4px] h-[20px] w-[276px]"></Skeleton>
+      <div className="flex gap-[8px]">
+        <Skeleton className="rounded-[4px] h-[40px] w-[60px]"></Skeleton>
+        <Skeleton className="rounded-[4px] h-[40px] w-[60px]"></Skeleton>
+      </div>
+    </div>
+  );
+}
+
 function VoteBar({ address, wish }) {
   const { relatedReferenda, isLoading } =
     useFellowshipCoreRelatedReferenda(address);
 
   if (isLoading) {
-    return null;
+    return <LoadingVoteBar />;
   }
 
   if (relatedReferenda.length > 0) {
@@ -67,13 +79,7 @@ function VoteBar({ address, wish }) {
   return <CreateReferendumAndVote who={address} wish={wish} />;
 }
 
-function WishPanel({ address, activeMember }) {
-  const { loading, wish } = useSubCoreFellowshipEvidence(address);
-
-  if (loading) {
-    return null;
-  }
-
+function WishPanel({ address, activeMember, wish }) {
   return (
     <div className="flex flex-col gap-[16px]">
       <WishBar wish={wish} activeMember={activeMember} address={address} />
@@ -82,10 +88,15 @@ function WishPanel({ address, activeMember }) {
   );
 }
 
-export default function WishDetail({ activeMember, address, ifpsContent }) {
+export default function WishDetail({
+  activeMember,
+  address,
+  ifpsContent,
+  wish,
+}) {
   return (
     <div className="gap-y-4 flex flex-col">
-      <WishPanel address={address} activeMember={activeMember} />
+      <WishPanel address={address} activeMember={activeMember} wish={wish} />
       <Divider />
       <IpfsEvidenceRawContent key="detail-content" value={ifpsContent} />
     </div>
