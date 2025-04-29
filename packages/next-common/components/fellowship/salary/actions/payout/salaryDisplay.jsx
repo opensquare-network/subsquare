@@ -1,13 +1,12 @@
-import { cn } from "next-common/utils";
+import { cn, toPrecision } from "next-common/utils";
 import React from "react";
 import ValueDisplay from "next-common/components/valueDisplay";
-import { toPrecision } from "next-common/utils";
 
 function SalaryDisplay({ className = "", value = 0, decimals, symbol }) {
   return (
     <div>
       <p className="flex items-center pb-2 text-textPrimary text14Medium font-bold">
-        salary
+        Salary
       </p>
       <div
         className={cn(
