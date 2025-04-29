@@ -9,7 +9,7 @@ function EvidenceExternalLinkWithWish({ className = "", wish = "", cid = "" }) {
   return (
     <div className={cn(className)}>
       {wish && (
-        <p className="flex items-center flex-grow-0 pr-4  text14Medium">
+        <p className="flex items-center flex-grow-0 pr-4  text14Bold">
           <span>{`Evidence for ${wish}`}</span>
           <span className="border-r-[1px] border-neutral400 h-[12px] w-4"></span>
           <span className="p-0 pl-4 h-full flex items-center">
