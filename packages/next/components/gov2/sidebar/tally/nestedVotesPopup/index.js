@@ -12,11 +12,10 @@ import SearchBtn from "next-common/components/voteSearch/searchBtn";
 import useSearchVotes from "next-common/hooks/useSearchVotes";
 import voteTabs from "../common/voteTabs";
 import filterTabs from "../common/filterTabs";
-import VirtualList from "next-common/components/dataList/virtualList";
 import AccountCell from "./accountCell";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import usePopupItemHeight from "next-common/components/democracy/democracyCallsVotesPopup/usePopupItemHeight";
 import { isEqual } from "lodash-es";
+import DataList from "next-common/components/dataList";
 
 const NestedPopupDelegatedDetailPopup = dynamicPopup(() =>
   import("next-common/components/popup/nestedVotesPopup/delegatedDetail"),
@@ -109,7 +108,6 @@ function CachedVotesList({ items, loading }) {
 
   const [showDetail, setShowDetail] = useState(false);
   const [detailData, setDetailData] = useState();
-  const itemHeight = usePopupItemHeight();
 
   const columns = [
     {
@@ -154,13 +152,11 @@ function CachedVotesList({ items, loading }) {
   return (
     <>
       <PopupListWrapper>
-        <VirtualList
-          scrollToFirstRowOnChange
+        <DataList
           columns={columns}
           rows={rows}
           loading={loading}
-          itemHeight={itemHeight}
-          listHeight={395}
+          scrollToFirstRowOnChange
         />
       </PopupListWrapper>
 
