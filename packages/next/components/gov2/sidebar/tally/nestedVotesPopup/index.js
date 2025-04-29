@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, memo } from "react";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
@@ -16,6 +16,7 @@ import VirtualList from "next-common/components/dataList/virtualList";
 import AccountCell from "./accountCell";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import usePopupItemHeight from "next-common/components/democracy/democracyCallsVotesPopup/usePopupItemHeight";
+import { isEqual } from "lodash-es";
 
 const NestedPopupDelegatedDetailPopup = dynamicPopup(() =>
   import("next-common/components/popup/nestedVotesPopup/delegatedDetail"),
@@ -55,6 +56,22 @@ export default function NestedVotesPopup({
     votes = filteredAbstain;
   }
 
+  const [cachedVotes, setCachedVotes] = useState([]);
+  const [cachedVotesLoading, setCachedVotesLoading] = useState(true);
+
+  useEffect(() => {
+    if (cachedVotesLoading) {
+      setCachedVotesLoading(isLoadingVotes);
+      setCachedVotes(votes);
+    }
+    if (isEqual(cachedVotes, votes)) {
+      return;
+    }
+
+    setCachedVotes(votes);
+    setCachedVotesLoading(false);
+  }, [votes, cachedVotesLoading, cachedVotes, isLoadingVotes]);
+
   const searchBtn = (
     <SearchBtn
       showSearch={showSearch}
@@ -80,13 +97,13 @@ export default function NestedVotesPopup({
           abstainsCount={filteredAbstain?.length || 0}
         />
 
-        <VotesList items={votes} loading={isLoadingVotes} tab={tabIndex} />
+        <VotesList items={cachedVotes} loading={cachedVotesLoading} />
       </BaseVotesPopup>
     </>
   );
 }
 
-function VotesList({ items = [], loading }) {
+function CachedVotesList({ items, loading }) {
   const chainSettings = useChainSettings();
   const symbol = chainSettings.voteSymbol || chainSettings.symbol;
 
@@ -156,3 +173,5 @@ function VotesList({ items = [], loading }) {
     </>
   );
 }
+
+const VotesList = memo(CachedVotesList);
