@@ -2,7 +2,7 @@ import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import RightWrapper from "next-common/components/rightWraper";
 import PrimaryButton from "next-common/lib/button/primary";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import SubIdentitiesTable from "../../subTable";
 import { AddressUser } from "next-common/components/user";
 import useMyIdentityType from "next-common/hooks/people/useMyIdentityType";
@@ -30,6 +30,10 @@ export default function SubIdentitiesImpl({ isEmpty, isLoading }) {
   const isSubIdentity = type === "sub";
   const parentIsSelf = parent === address;
 
+  const openSetSubsPopup = useCallback(() => {
+    setShowSetSubsPopup(true);
+  }, []);
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-full">
@@ -50,16 +54,11 @@ export default function SubIdentitiesImpl({ isEmpty, isLoading }) {
     <SignerPopupWrapper>
       <SubIdentitiesTable
         subs={subs}
-        retry={retrySubs}
         isLoading={isSubsLoading}
+        openSetSubsPopup={openSetSubsPopup}
       />
       <RightWrapper className="mt-4">
-        <PrimaryButton
-          className="w-auto"
-          onClick={() => {
-            setShowSetSubsPopup(true);
-          }}
-        >
+        <PrimaryButton className="w-auto" onClick={openSetSubsPopup}>
           Set Subs
         </PrimaryButton>
       </RightWrapper>

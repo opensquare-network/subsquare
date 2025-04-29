@@ -12,13 +12,6 @@ import { useExtensionAccounts } from "../popupWithSigner/context";
 import { noop } from "lodash-es";
 import { cn } from "next-common/utils";
 
-const SetSubsPopup = dynamicPopup(
-  () => import("next-common/components/setSubsPopup"),
-  {
-    ssr: false,
-  },
-);
-
 const RemoveSubPopup = dynamicPopup(
   () => import("next-common/components/setSubsPopup/removePopup"),
   {
@@ -46,17 +39,16 @@ const columns = [
 
 export default function SubIdentitiesTable({
   subs = [],
-  retry = noop,
+  openSetSubsPopup = noop,
   isLoading,
 }) {
   const chain = useChain();
   const { identity: identityChain } = getChainSettings(chain);
   const extensionAccounts = useExtensionAccounts();
-  const [showSetSubsPopup, setShowSetSubsPopup] = useState(false);
+
   const [showRemoveSubPopup, setShowRemoveSubPopup] = useState(false);
   const [selectedSub, setSelectedSub] = useState(null);
   const [selectedSubIndex, setSelectedSubIndex] = useState(-1);
-  const [renderSubs, setRenderSubs] = useState([]);
 
   useEffect(() => {
     if (extensionAccounts?.length) {
@@ -68,21 +60,20 @@ export default function SubIdentitiesTable({
         true,
       );
     }
-
-    setRenderSubs([...subs]);
+    console.log("subs", subs);
   }, [identityChain, extensionAccounts, subs]);
 
   return (
     <div
       className={cn("flex flex-col gap-y-4", {
-        "border-b border-neutral300": renderSubs?.length === 0,
+        "border-b border-neutral300": subs?.length === 0,
       })}
     >
       <DataList
         columns={columns}
-        rows={(renderSubs ?? []).map(([address, subName], index) => {
+        rows={(subs ?? []).map(([address, subName], index) => {
           return [
-            <AddressUser key={`Identity-${index}`} add={address} />,
+            <AddressUser key={`Identity-${address}`} add={address} />,
             <div
               key={`Name-${index}`}
               className="text-textPrimary text14Medium"
@@ -90,7 +81,7 @@ export default function SubIdentitiesTable({
               {subName}
             </div>,
             <div
-              key={`Address-${index}`}
+              key={`Address-${address}`}
               className="text-textTertiary text14Medium flex justify-between gap-x-2 items-center sm:ml-0 ml-4"
             >
               <AddressDisplay address={address} />
@@ -98,10 +89,7 @@ export default function SubIdentitiesTable({
             <>
               <div className="flex items-center justify-end gap-x-2">
                 <SecondaryButton className="w-7 h-7 !px-0 rounded">
-                  <SystemEdit2
-                    className="w-4 h-4"
-                    onClick={() => setShowSetSubsPopup(true)}
-                  />
+                  <SystemEdit2 className="w-4 h-4" onClick={openSetSubsPopup} />
                 </SecondaryButton>
                 <SecondaryButton
                   className="w-7 h-7 !px-0 rounded"
@@ -117,17 +105,9 @@ export default function SubIdentitiesTable({
             </>,
           ];
         })}
-        loading={isLoading}
+        loading={isLoading && subs.length <= 0}
         noDataText="No sub identities"
       />
-      {showSetSubsPopup && (
-        <SetSubsPopup
-          onClose={() => setShowSetSubsPopup(false)}
-          onSubmit={() => setShowSetSubsPopup(false)}
-          subs={subs}
-          retry={retry}
-        />
-      )}
       {showRemoveSubPopup && (
         <RemoveSubPopup
           onClose={() => setShowRemoveSubPopup(false)}
