@@ -1,4 +1,4 @@
-import { find, set } from "lodash-es";
+import { find } from "lodash-es";
 import { useContextApi } from "next-common/context/api";
 import {
   useCollectivesContext,
@@ -6,122 +6,63 @@ import {
   useRankedCollectivePallet,
 } from "next-common/context/collectives/collectives";
 import { isSameAddress } from "next-common/utils";
-import createGlobalCachedHook from "next-common/utils/createGlobalCachedHook";
+import createGlobalCachedFetch from "next-common/utils/createGlobalCachedFetch";
 import { normalizeRankedCollectiveEntries } from "next-common/utils/rankedCollective/normalize";
-import { useCallback, useEffect } from "react";
-import { createGlobalState } from "react-use";
+import { useCallback } from "react";
 
-const useGlobalCachedHook = createGlobalCachedHook();
+const { useGlobalCachedFetch } = createGlobalCachedFetch();
 
-export function useGlobalFellowshipCoreMembers() {
+export default function useFellowshipCoreMembers() {
   const api = useContextApi();
   const { section } = useCollectivesContext();
   const corePallet = useCoreFellowshipPallet();
   const collectivePallet = useRankedCollectivePallet();
 
-  const fetchData = useCallback(() => {
-    if (!api) {
-      throw new Error("api is not connected");
-    }
-    if (
-      !api.query[corePallet]?.member ||
-      !api.query[collectivePallet]?.members
-    ) {
-      throw new Error("api method not found");
-    }
-  }, [api, corePallet, collectivePallet]);
+  const fetchDataFunc = useCallback(
+    async (setResult) => {
+      if (
+        !api ||
+        !api.query[corePallet]?.member ||
+        !api.query[collectivePallet]?.members
+      ) {
+        return;
+      }
+
+      try {
+        const [collectiveEntries, coreEntries] = await Promise.all([
+          api.query[collectivePallet]?.members.entries(),
+          api.query[corePallet].member.entries(),
+        ]);
+
+        const collectiveMembers =
+          normalizeRankedCollectiveEntries(collectiveEntries);
+
+        const data = coreEntries.map(([storageKey, memberStatus]) => {
+          const address = storageKey.args[0].toString();
+          const rank = find(collectiveMembers, (m) =>
+            isSameAddress(m.address, address),
+          )?.rank;
+
+          return {
+            address,
+            rank,
+            status: memberStatus.toJSON(),
+          };
+        });
+
+        setResult(data);
+      } catch (e) {
+        setResult();
+      }
+    },
+    [api, corePallet, collectivePallet],
+  );
 
   const {
     result: members,
     fetch,
     loading,
-  } = useGlobalCachedHook(fetchData, section);
-
-  return { members, fetch, loading };
-}
-
-// A flag to ensure only one fetch operation runs at a time.
-const useCachedMembers = createGlobalState({});
-
-export default function useFellowshipCoreMembers() {
-  const { section } = useCollectivesContext();
-  const corePallet = useCoreFellowshipPallet();
-  const collectivePallet = useRankedCollectivePallet();
-
-  const api = useContextApi();
-  const [cachedMembers, setCachedMembers] = useCachedMembers();
-
-  const {
-    members,
-    loading = true,
-    fetching = false,
-  } = cachedMembers?.[section] || {};
-
-  const fetch = useCallback(async () => {
-    if (
-      fetching ||
-      !api ||
-      !api.query[corePallet]?.member ||
-      !api.query[collectivePallet]?.members
-    ) {
-      return;
-    }
-
-    setCachedMembers((val) => {
-      set(val, section, {
-        ...val?.[section],
-        fetching: true,
-      });
-      return val;
-    });
-
-    try {
-      const [collectiveEntries, coreEntries] = await Promise.all([
-        api.query[collectivePallet]?.members.entries(),
-        api.query[corePallet].member.entries(),
-      ]);
-
-      const collectiveMembers =
-        normalizeRankedCollectiveEntries(collectiveEntries);
-
-      const data = coreEntries.map(([storageKey, memberStatus]) => {
-        const address = storageKey.args[0].toString();
-        const rank = find(collectiveMembers, (m) =>
-          isSameAddress(m.address, address),
-        )?.rank;
-
-        return {
-          address,
-          rank,
-          status: memberStatus.toJSON(),
-        };
-      });
-
-      setCachedMembers((val) => {
-        set(val, section, {
-          members: data,
-          loading: false,
-          fetching: false,
-        });
-        return val;
-      });
-    } finally {
-      setCachedMembers((val) => {
-        set(val, section, {
-          ...val?.[section],
-          fetching: false,
-          loading: false,
-        });
-        return val;
-      });
-    }
-  }, [api, corePallet, collectivePallet, section, setCachedMembers, fetching]);
-
-  useEffect(() => {
-    if (!members) {
-      fetch();
-    }
-  }, [members, fetch]);
+  } = useGlobalCachedFetch(fetchDataFunc, section);
 
   return { members, fetch, loading };
 }
