@@ -11,9 +11,6 @@ import { useCallback, useEffect } from "react";
 import { createGlobalState } from "react-use";
 
 // A flag to ensure only one fetch operation runs at a time.
-let fetching = false;
-
-const useLoading = createGlobalState(fetching);
 const useCachedMembers = createGlobalState({});
 
 export default function useFellowshipCoreMembers() {
@@ -23,9 +20,12 @@ export default function useFellowshipCoreMembers() {
 
   const api = useContextApi();
   const [cachedMembers, setCachedMembers] = useCachedMembers();
-  const [loading, setLoading] = useLoading();
 
-  const members = cachedMembers?.[section];
+  const {
+    members,
+    loading = true,
+    fetching = false,
+  } = cachedMembers?.[section] || {};
 
   const fetch = useCallback(async () => {
     if (
@@ -37,8 +37,13 @@ export default function useFellowshipCoreMembers() {
       return;
     }
 
-    fetching = true;
-    setLoading(fetching);
+    setCachedMembers((val) => {
+      set(val, section, {
+        ...val?.[section],
+        fetching: true,
+      });
+      return val;
+    });
 
     try {
       const [collectiveEntries, coreEntries] = await Promise.all([
@@ -63,15 +68,24 @@ export default function useFellowshipCoreMembers() {
       });
 
       setCachedMembers((val) => {
-        set(val, section, data);
+        set(val, section, {
+          members: data,
+          loading: false,
+          fetching: false,
+        });
         return val;
       });
     } finally {
-      fetching = false;
-      setLoading(fetching);
+      setCachedMembers((val) => {
+        set(val, section, {
+          ...val?.[section],
+          fetching: false,
+          loading: false,
+        });
+        return val;
+      });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [api, corePallet, collectivePallet, section]);
+  }, [api, corePallet, collectivePallet, section, setCachedMembers, fetching]);
 
   useEffect(() => {
     if (!members) {

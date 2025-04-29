@@ -21,6 +21,8 @@ import {
   filterPromotableFn,
 } from "next-common/components/pages/fellowship/periodFilters";
 import { useContextApi } from "next-common/context/api";
+import { isSameAddress } from "next-common/utils";
+import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
 
 function useSingleMemberStatus(item) {
   const { member, isLoading } = useSubCoreCollectivesMember(
@@ -32,6 +34,41 @@ function useSingleMemberStatus(item) {
     status: member,
     isLoading,
   };
+}
+
+export function useMembersWithStatusFromContext(members) {
+  const { members: coreMembers, loading } = useFellowshipCoreMembers();
+  return useMemo(() => {
+    if (!members || !members.length) {
+      return {
+        membersWithStatus: [],
+        isLoading: false,
+      };
+    }
+
+    if (loading) {
+      return {
+        membersWithStatus: null,
+        isLoading: true,
+      };
+    }
+
+    const membersWithStatus = members.map((item) => {
+      const member = (coreMembers || []).find((m) =>
+        isSameAddress(m.address, item.address),
+      );
+      return {
+        ...item,
+        status: member?.status,
+        isFellowshipCoreMember: !isNil(member?.status),
+      };
+    });
+
+    return {
+      membersWithStatus,
+      isLoading: false,
+    };
+  }, [members, coreMembers, loading]);
 }
 
 export function useMembersWithStatus(members) {
