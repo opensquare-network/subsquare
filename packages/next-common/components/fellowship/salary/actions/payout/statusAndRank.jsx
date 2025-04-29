@@ -1,17 +1,13 @@
 import FellowshipRank from "next-common/components/fellowship/rank";
 import Tooltip from "next-common/components/tooltip";
 import SignalIndicator from "next-common/components/icons/signalIndicator";
-import { useChain } from "next-common/context/chain";
-import { isCollectivesChain } from "next-common/utils/chain";
 import useFellowshipMemberInfo from "next-common/components/fellowship/salary/actions/hooks/useFellowshipMemberInfo";
 import { memo } from "react";
 import { isNil } from "lodash-es";
 
 function StatusAndRank({ address }) {
-  const chain = useChain();
-  const isCollectives = isCollectivesChain(chain);
   const memberInfo = useFellowshipMemberInfo(address);
-  if (!isCollectives || !memberInfo) {
+  if (!memberInfo) {
     return null;
   }
 
@@ -29,4 +25,5 @@ function StatusAndRank({ address }) {
     </div>
   );
 }
+
 export default memo(StatusAndRank);

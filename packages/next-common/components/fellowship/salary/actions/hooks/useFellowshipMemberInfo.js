@@ -1,25 +1,23 @@
 import { useMemo } from "react";
 import { usePageProps } from "next-common/context/page";
-import { useSingleMemberStatus } from "next-common/components/fellowship/collective/hook/useFellowshipCoreMembersFilter";
+import useSubFellowshipCoreMember from "next-common/hooks/fellowship/core/useSubFellowshipCoreMember";
 
-const useFellowshipMemberInfo = (address) => {
-  const { status, isLoading: isStatusLoading } = useSingleMemberStatus({
-    address,
-  });
+export default function useFellowshipMemberInfo(address) {
+  const { member: coreStatus, isLoading: isStatusLoading } =
+    useSubFellowshipCoreMember(address);
   const { fellowshipMembers } = usePageProps();
 
-  const memberInfo = useMemo(() => {
+  return useMemo(() => {
+    if (isStatusLoading || !coreStatus) {
+      return null;
+    }
+
     const member = fellowshipMembers?.find((m) => m.address === address);
-    if (!member || isStatusLoading) return null;
-    return {
-      isActive: status?.isActive,
-      rank: member?.rank,
-    };
-  }, [address, fellowshipMembers, isStatusLoading, status]);
-
-  return {
-    ...memberInfo,
-  };
-};
-
-export default useFellowshipMemberInfo;
+    return member
+      ? {
+          isActive: coreStatus?.isActive,
+          rank: member?.rank,
+        }
+      : null;
+  }, [address, fellowshipMembers, isStatusLoading, coreStatus]);
+}
