@@ -37,19 +37,19 @@ export default function FellowshipReferendumTitle({
 
   return (
     <div className="flex items-center gap-[8px]">
-      <a
-        className="cursor-pointer text-sapphire500"
-        href={`/${section}/referenda/${referendumIndex}`}
-        target="_blank"
-        rel="noreferrer"
-      >
-        #{referendumIndex}
-      </a>
+      <span className="text-textPrimary">#{referendumIndex}</span>
       <span className="text-textTertiary">·</span>
       {loading ? (
         <FieldLoading size={14} />
       ) : (
-        <span className="text-textPrimary">{title}</span>
+        <a
+          className="cursor-pointer text-textPrimary hover:underline"
+          href={`/${section}/referenda/${referendumIndex}`}
+          target="_blank"
+          rel="noreferrer"
+        >
+          {title}
+        </a>
       )}
     </div>
   );
