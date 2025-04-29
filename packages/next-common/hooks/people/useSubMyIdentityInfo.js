@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useContextApi } from "next-common/context/api";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
@@ -135,22 +135,49 @@ function useSuperOfIdentityDisplayName(identity) {
 }
 
 function useAddressIdentityInfo(address) {
+  const api = useContextApi();
   const { result, loading: isLoading } = useSubStorage(
     "identity",
     "identityOf",
     [address],
   );
 
-  const identity = useMemo(() => {
-    if (!result || result?.isNone) {
-      return {
-        info: InitIdentityInfo,
-        judgements: InitIdentityJudgements,
-      };
+  const [identity, setIdentity] = useState({
+    info: InitIdentityInfo,
+    judgements: InitIdentityJudgements,
+  });
+
+  useEffect(() => {
+    if (!api || !address) {
+      return;
     }
 
-    return convertIdentity(result);
-  }, [result]);
+    async function fetchIdentity() {
+      if (!result || result.isNone) {
+        try {
+          const apiResult = await api.query?.identity.identityOf(address);
+          if (apiResult && !apiResult.isNone) {
+            setIdentity(convertIdentity(apiResult));
+          } else {
+            setIdentity({
+              info: InitIdentityInfo,
+              judgements: InitIdentityJudgements,
+            });
+          }
+        } catch (error) {
+          console.error(error);
+          setIdentity({
+            info: InitIdentityInfo,
+            judgements: InitIdentityJudgements,
+          });
+        }
+      } else {
+        setIdentity(convertIdentity(result));
+      }
+    }
+
+    fetchIdentity();
+  }, [address, api, result]);
 
   return {
     ...identity,
