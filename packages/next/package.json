@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "node server.mjs --turbo",
+    "dev": "node server.mjs",
     "build": "next build",
     "analyze": "ANALYZE=true next build",
     "start": "NODE_ENV=production node server.mjs",
