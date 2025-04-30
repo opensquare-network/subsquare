@@ -1,7 +1,14 @@
 import { useState, useEffect } from "react";
 
 export function useElementRect(elementRef) {
-  const [rect, setRect] = useState(null);
+  const [rect, setRect] = useState({
+    top: 0,
+    left: 0,
+    width: 0,
+    height: 0,
+    right: 0,
+    bottom: 0,
+  });
 
   useEffect(() => {
     if (!elementRef.current) return;

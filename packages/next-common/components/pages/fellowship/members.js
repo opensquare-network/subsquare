@@ -21,6 +21,7 @@ import SimpleFellowshipMembersPage from "./simpleMembers";
 import useCandidatesFilter from "./useCandidatesFilter";
 import MemberCandidatesWarnings from "next-common/components/fellowship/core/memberWarnings/candidates";
 import { filter, partition } from "lodash-es";
+import { useSortedFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
 
 function FellowshipMembers({
   viewMode,
@@ -181,7 +182,7 @@ function FellowshipCandidatesPageInContext({
 }
 
 function FellowshipMembersInContext() {
-  const { fellowshipMembers } = usePageProps();
+  const { members: fellowshipMembers } = useSortedFellowshipCollectiveMembers();
   const { membersWithStatus, isLoading } =
     useMembersWithStatus(fellowshipMembers);
 
