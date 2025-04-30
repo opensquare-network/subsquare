@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, memo } from "react";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import VotesTab, { tabs } from "./tab";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
@@ -13,8 +13,8 @@ import useSearchVotes from "next-common/hooks/useSearchVotes";
 import filterTabs from "../common/filterTabs";
 import voteTabs from "../common/voteTabs";
 import AddressUser from "next-common/components/user/addressUser";
-import VirtualList from "next-common/components/dataList/virtualList";
-import usePopupItemHeight from "next-common/components/democracy/democracyCallsVotesPopup/usePopupItemHeight";
+import { isEqual } from "lodash-es";
+import DataList from "next-common/components/dataList";
 
 export default function VotesPopup({
   setShowVoteList,
@@ -50,6 +50,22 @@ export default function VotesPopup({
     votes = filteredAbstain;
   }
 
+  const [cachedVotes, setCachedVotes] = useState([]);
+  const [cachedVotesLoading, setCachedVotesLoading] = useState(true);
+
+  useEffect(() => {
+    if (cachedVotesLoading) {
+      setCachedVotesLoading(isLoadingVotes);
+      setCachedVotes(votes);
+    }
+    if (isEqual(cachedVotes, votes)) {
+      return;
+    }
+
+    setCachedVotes(votes);
+    setCachedVotesLoading(false);
+  }, [votes, cachedVotesLoading, cachedVotes, isLoadingVotes]);
+
   const searchBtn = (
     <SearchBtn
       showSearch={showSearch}
@@ -72,14 +88,17 @@ export default function VotesPopup({
         naysCount={filteredNay?.length || 0}
         abstainsCount={filteredAbstain?.length || 0}
       />
-      <VotesList items={votes} loading={isLoadingVotes} tab={tabIndex} />
+      <VotesList
+        items={cachedVotes}
+        loading={cachedVotesLoading}
+        tab={tabIndex}
+      />
     </BaseVotesPopup>
   );
 }
 
-function VotesList({ items = [], loading, tab }) {
+function CachedVotesList({ items = [], loading, tab }) {
   const chainSettings = useChainSettings();
-  const itemHeight = usePopupItemHeight();
   const symbol = chainSettings.voteSymbol || chainSettings.symbol;
 
   const columns = [
@@ -125,13 +144,11 @@ function VotesList({ items = [], loading, tab }) {
   return (
     <>
       <PopupListWrapper>
-        <VirtualList
-          scrollToFirstRowOnChange
+        <DataList
           columns={columns}
           rows={rows}
           loading={loading}
-          itemHeight={itemHeight}
-          listHeight={395}
+          scrollToFirstRowOnChange
         />
       </PopupListWrapper>
 
@@ -139,3 +156,5 @@ function VotesList({ items = [], loading, tab }) {
     </>
   );
 }
+
+const VotesList = memo(CachedVotesList);
