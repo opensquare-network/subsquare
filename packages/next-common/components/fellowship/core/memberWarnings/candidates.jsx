@@ -1,4 +1,4 @@
-import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
+import useFellowshipCoreMembersWithRank from "next-common/hooks/fellowship/core/useFellowshipCoreMembersWithRank";
 import {
   MemberWarningsPanel,
   PromptButton,
@@ -18,7 +18,7 @@ import pluralize from "pluralize";
 export default function MemberCandidatesWarnings({ className }) {
   const { section } = useCollectivesContext();
   const { members: coreMembers, loading: isMembersLoading } =
-    useFellowshipCoreMembers();
+    useFellowshipCoreMembersWithRank();
   const members = coreMembers?.filter((m) => m.rank <= 0);
 
   const expiredMembersCount = useDemotionExpiredCount(members);

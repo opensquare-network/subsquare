@@ -4,13 +4,13 @@ import PopupContent from "./popupContent";
 import TitleSuffix from "next-common/components/titleSuffix";
 import { useCallback } from "react";
 import fetchFellowshipCoreMembers2Times from "./fetchFellowshipCoreMembers2Times";
-import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
+import useFellowshipCoreMembersWithRank from "next-common/hooks/fellowship/core/useFellowshipCoreMembersWithRank";
 
 export default function BatchBumpPopup({ isCandidate, ...props }) {
   const { expiredMembers = [], isLoading } = useDemotionExpiredMembers({
     isCandidate,
   });
-  const { fetch } = useFellowshipCoreMembers();
+  const { fetch } = useFellowshipCoreMembersWithRank();
 
   const onInBlock = useCallback(async () => {
     try {

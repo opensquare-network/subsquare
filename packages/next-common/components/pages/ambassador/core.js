@@ -8,7 +8,7 @@ import { AllMemberEvidenceProvider } from "next-common/components/collectives/co
 import { DropdownUrlFilterProvider } from "next-common/components/dropdownFilter/context";
 import useMembersWithMeAtFirst from "../useMembersWithMeAtFirst";
 import FellowshipMemberListView from "../fellowship/memberListView";
-import { useMembersWithStatusFromContext } from "next-common/components/fellowship/collective/hook/useFellowshipCoreMembersFilter";
+import { useMembersWithStatus2 } from "next-common/components/fellowship/collective/hook/useFellowshipCoreMembersFilter";
 import { useRouter } from "next/router";
 import FellowshipCoreMemberCardListContainer from "next-common/components/fellowship/core/members/listContainer";
 import { SystemLoading } from "@osn/icons/subsquare";
@@ -172,7 +172,7 @@ function AmbassadorMembersPageInContext() {
   const router = useRouter();
   const { ambassadorMembers } = usePageProps();
   const { membersWithStatus, isLoading } =
-    useMembersWithStatusFromContext(ambassadorMembers);
+    useMembersWithStatus2(ambassadorMembers);
   const regularMembers = useMemo(
     () => (membersWithStatus || []).filter((member) => member.rank > 0),
     [membersWithStatus],

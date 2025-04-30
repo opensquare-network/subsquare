@@ -1,10 +1,10 @@
 import CollectivesCoreSummary from "next-common/components/collectives/core/summary";
-import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
+import useFellowshipCoreMembersWithRank from "next-common/hooks/fellowship/core/useFellowshipCoreMembersWithRank";
 import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
 
 export default function FellowshipCoreMembersSummary() {
   const { members: collectiveMembers } = useFellowshipCollectiveMembers();
-  const { members: coreMembers } = useFellowshipCoreMembers();
+  const { members: coreMembers } = useFellowshipCoreMembersWithRank();
 
   return (
     <CollectivesCoreSummary

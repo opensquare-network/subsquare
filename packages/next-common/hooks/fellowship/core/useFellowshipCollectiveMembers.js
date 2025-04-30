@@ -1,18 +1,14 @@
-import { set } from "lodash-es";
 import { useContextApi } from "next-common/context/api";
 import {
   useCollectivesContext,
   useRankedCollectivePallet,
 } from "next-common/context/collectives/collectives";
 import { usePageProps } from "next-common/context/page";
+import createGlobalCachedFetch from "next-common/utils/createGlobalCachedFetch";
 import { normalizeRankedCollectiveEntries } from "next-common/utils/rankedCollective/normalize";
-import { useCallback, useEffect } from "react";
-import { createGlobalState } from "react-use";
+import { useCallback } from "react";
 
-let fetching = false;
-
-const useLoading = createGlobalState(fetching);
-const useCachedMembers = createGlobalState({});
+const { useGlobalCachedFetch } = createGlobalCachedFetch();
 
 export function useFellowshipCollectiveMembers() {
   const { section } = useCollectivesContext();
@@ -25,48 +21,39 @@ export function useFellowshipCollectiveMembers() {
     membersFromServer = ambassadorMembers;
   }
 
-  const [loading, setLoading] = useLoading();
   const collectivePallet = useRankedCollectivePallet();
   const api = useContextApi();
-  const [cachedMembers, setCachedMembers] = useCachedMembers();
 
-  const members = cachedMembers?.[section];
+  const fetchDataFunc = useCallback(
+    async (setResult) => {
+      if (!api || !api.query[collectivePallet]?.members) {
+        return;
+      }
 
-  const fetch = useCallback(async () => {
-    if (fetching || !api || !api.query[collectivePallet]?.members) {
-      return;
-    }
+      try {
+        const collectiveEntries = await api.query[
+          collectivePallet
+        ].members.entries();
 
-    fetching = true;
-    setLoading(fetching);
+        const data = normalizeRankedCollectiveEntries(collectiveEntries);
 
-    try {
-      const collectiveEntries = await api.query[
-        collectivePallet
-      ].members.entries();
+        setResult(data);
+      } catch (e) {
+        // ignore
+      }
+    },
+    [api, collectivePallet],
+  );
 
-      const data = normalizeRankedCollectiveEntries(collectiveEntries);
-
-      setCachedMembers((val) => {
-        set(val, section, data);
-        return val;
-      });
-    } finally {
-      fetching = false;
-      setLoading(fetching);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [api, collectivePallet, section]);
-
-  useEffect(() => {
-    if (!members) {
-      fetch();
-    }
-  }, [members, fetch]);
+  const {
+    result: members,
+    fetch,
+    loading,
+  } = useGlobalCachedFetch(fetchDataFunc, section);
 
   return {
     members: members || membersFromServer,
     fetch,
-    loading,
+    loading: !membersFromServer && loading,
   };
 }

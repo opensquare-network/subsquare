@@ -22,7 +22,7 @@ import {
 } from "next-common/components/pages/fellowship/periodFilters";
 import { useContextApi } from "next-common/context/api";
 import { isSameAddress } from "next-common/utils";
-import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
+import { useFellowshipCoreMembers } from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
 
 function useSingleMemberStatus(item) {
   const { member, isLoading } = useSubCoreCollectivesMember(
@@ -36,7 +36,7 @@ function useSingleMemberStatus(item) {
   };
 }
 
-export function useMembersWithStatusFromContext(members) {
+export function useMembersWithStatus2(members) {
   const { members: coreMembers, loading } = useFellowshipCoreMembers();
   return useMemo(() => {
     if (!members || !members.length) {

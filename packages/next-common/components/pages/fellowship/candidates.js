@@ -9,8 +9,8 @@ import { usePageProps } from "next-common/context/page";
 import CollectivesProvider, {
   useCollectivesContext,
 } from "next-common/context/collectives/collectives";
-import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
-import { useMembersWithStatusFromContext } from "next-common/components/fellowship/collective/hook/useFellowshipCoreMembersFilter";
+import useFellowshipCoreMembersWithRank from "next-common/hooks/fellowship/core/useFellowshipCoreMembersWithRank";
+import { useMembersWithStatus2 } from "next-common/components/fellowship/collective/hook/useFellowshipCoreMembersFilter";
 
 export default function FellowshipCandidatesPage() {
   const { fellowshipParams } = usePageProps();
@@ -24,8 +24,7 @@ export default function FellowshipCandidatesPage() {
 
 function useFellowshipMembersData() {
   const { fellowshipMembers } = usePageProps();
-  const { membersWithStatus } =
-    useMembersWithStatusFromContext(fellowshipMembers);
+  const { membersWithStatus } = useMembersWithStatus2(fellowshipMembers);
 
   const membersCount = useMemo(
     () =>
@@ -48,7 +47,7 @@ function useFellowshipMembersData() {
 
 function FellowshipCandidatesPageImpl() {
   const { params } = useCollectivesContext();
-  const { members } = useFellowshipCoreMembers();
+  const { members } = useFellowshipCoreMembersWithRank();
   const pageMembers = useMemo(
     () => (members || []).filter((member) => member.rank <= 0),
     [members],

@@ -12,7 +12,7 @@ import ViewModeSwitch from "./viewModeSwitch";
 import useMembersFilter from "./useMemberFilter";
 import FellowshipMemberCardView from "./memberCardView";
 import FellowshipMemberListView from "./memberListView";
-import { useMembersWithStatusFromContext } from "next-common/components/fellowship/collective/hook/useFellowshipCoreMembersFilter";
+import { useMembersWithStatus2 } from "next-common/components/fellowship/collective/hook/useFellowshipCoreMembersFilter";
 import { useRouter } from "next/router";
 import MoreActions from "./moreActions";
 import { useChain } from "next-common/context/chain";
@@ -21,6 +21,7 @@ import SimpleFellowshipMembersPage from "./simpleMembers";
 import useCandidatesFilter from "./useCandidatesFilter";
 import MemberCandidatesWarnings from "next-common/components/fellowship/core/memberWarnings/candidates";
 import { filter, partition } from "lodash-es";
+import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
 
 function FellowshipMembers({
   viewMode,
@@ -181,9 +182,9 @@ function FellowshipCandidatesPageInContext({
 }
 
 function FellowshipMembersInContext() {
-  const { fellowshipMembers } = usePageProps();
+  const { members: fellowshipMembers } = useFellowshipCollectiveMembers();
   const { membersWithStatus, isLoading } =
-    useMembersWithStatusFromContext(fellowshipMembers);
+    useMembersWithStatus2(fellowshipMembers);
 
   const router = useRouter();
   const isCandidatesPage = router.query.tab === "candidates";
