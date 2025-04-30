@@ -21,8 +21,6 @@ import {
   filterPromotableFn,
 } from "next-common/components/pages/fellowship/periodFilters";
 import { useContextApi } from "next-common/context/api";
-import nextApi from "next-common/services/nextApi";
-import { fellowshipMembersApiUri } from "next-common/services/url";
 
 function useSingleMemberStatus(item) {
   const { member, isLoading } = useSubCoreCollectivesMember(
@@ -167,26 +165,5 @@ export default function useFellowshipCoreMembersFilter(membersWithStatus) {
   return {
     filteredMembers,
     component,
-  };
-}
-
-export function useFetchFellowshipCoreMembers() {
-  const [members, setMembers] = useState([]);
-  const [loading, setLoading] = useState(false);
-  useEffect(() => {
-    setLoading(true);
-    nextApi
-      .fetch(fellowshipMembersApiUri)
-      .then((res) => {
-        setMembers(res.result);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
-
-  return {
-    isLoading: loading,
-    members,
   };
 }

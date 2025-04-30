@@ -47,16 +47,16 @@ export default function Overview() {
         <ConditionTreasuryStats />
       </WithPallet>
 
-      <WithPallet pallet="fellowshipCore">
-        <CollectivesProvider section="fellowship">
-          <FellowshipApplicationGuide />
-        </CollectivesProvider>
-      </WithPallet>
-
       <WithPallet pallet="fellowshipTreasury">
         <WithPallet pallet="fellowshipSalary">
           <FellowshipFinanceOverview />
         </WithPallet>
+      </WithPallet>
+
+      <WithPallet pallet="fellowshipCore">
+        <CollectivesProvider section="fellowship">
+          <FellowshipApplicationGuide />
+        </CollectivesProvider>
       </WithPallet>
 
       {/* <WithPallet pallet="fellowshipSalary">
