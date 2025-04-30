@@ -8,8 +8,8 @@ import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/cor
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { useMySalaryClaimantFromContext } from "next-common/context/fellowship/myClaimant";
 
-const FellowshipSalaryPayoutPopup = dynamicPopup(
-  () => import("next-common/components/fellowship/salary/actions/payout/popup"),
+const FellowshipSalaryPayoutPopup = dynamicPopup(() =>
+  import("next-common/components/fellowship/salary/actions/payout/popup"),
 );
 
 export default function FellowshipSalaryPayout() {

@@ -67,11 +67,16 @@ export default function Extrinsic({
   defaultMethodName,
   // value,
   setValue,
+  defaultCallState,
+  onCallStateChange,
 }) {
   const api = useContextApi();
   const [sectionName, setSectionName] = useState(defaultSectionName);
   const [methodName, setMethodName] = useState(defaultMethodName);
-  const [callState, setCallState] = useState();
+  const [callState, setCallState] = useState(defaultCallState);
+  useEffect(() => {
+    onCallStateChange?.(callState);
+  }, [callState, onCallStateChange]);
 
   const [callValues, setCallValues] = useObjectItemState({
     items: callState,

@@ -3,8 +3,10 @@ import { useConnectedAccountContext } from "next-common/context/connectedAccount
 import { useSubstrateAccounts } from "next-common/hooks/connect/useSubstrateAccounts";
 import { find } from "lodash-es";
 import { allWallets } from "next-common/utils/consts/connect";
+import { usePopupParams } from "./context";
 
 export default function MaybePolkadotSigner({ children }) {
+  const { loadingContent = null } = usePopupParams();
   const { lastConnectedAccount } = useConnectedAccountContext();
   const wallet = find(allWallets, {
     extensionName: lastConnectedAccount?.wallet,
@@ -16,7 +18,7 @@ export default function MaybePolkadotSigner({ children }) {
   });
 
   if (loading) {
-    return null;
+    return loadingContent;
   }
 
   return (

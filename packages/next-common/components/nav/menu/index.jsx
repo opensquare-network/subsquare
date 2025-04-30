@@ -7,7 +7,6 @@ import useMainMenuData from "next-common/hooks/useMainMenuData";
 
 export default function NavMenu({ collapsed }) {
   const [navMenuType, setNavMenuType] = useNavMenuType();
-
   const router = useRouter();
   const mainMenu = useMainMenuData();
 

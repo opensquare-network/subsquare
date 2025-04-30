@@ -11,6 +11,7 @@ import { useChain } from "next-common/context/chain";
 import { getPromoteTrackNameFromRank } from "next-common/components/fellowship/core/members/actions/promote/popup";
 import useMemberRank from "./useMemberRank";
 import { useMyVotesChangedContext } from "../../../context/myVotesChanged";
+import SecondaryButton from "next-common/lib/button/secondary";
 
 const CreatePromotionReferendaAndVotePopup = dynamicPopup(() =>
   import("../../createPromotionReferendaAndVotePopup"),
@@ -22,7 +23,7 @@ function CreateReferendumAndVoteButtonImpl({
   disabled,
   tooltip,
   children,
-  ButtonComponent,
+  ButtonComponent = SecondaryButton,
 }) {
   const [showMaybeFastPromotePopup, setShowMaybeFastPromotePopup] =
     useState(false);
@@ -86,8 +87,9 @@ export default function CreatePromotionReferendumAndVoteButton({
   children,
   ...props
 }) {
+  const ButtonComponent = props.ButtonComponent || SecondaryButton;
   return (
-    <SignerPopupWrapper>
+    <SignerPopupWrapper loadingContent={<ButtonComponent disabled={true} />}>
       <CreateReferendumAndVoteButtonImpl {...props}>
         {children}
       </CreateReferendumAndVoteButtonImpl>
