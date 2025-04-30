@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "node server.mjs --turbo",
     "build": "next build",
     "analyze": "ANALYZE=true next build",
-    "start": "NODE_ENV=production next start",
+    "start": "NODE_ENV=production node server.mjs",
     "lint": "next lint --dir ."
   },
   "dependencies": {
