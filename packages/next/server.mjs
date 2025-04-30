@@ -1,7 +1,7 @@
-import { createServer } from "http";
 import { parse } from "url";
 import next from "next";
 import nextEnv from "@next/env";
+import { createServer } from "http";
 
 // Load next env
 const projectDir = process.cwd();
@@ -17,7 +17,6 @@ if (!PORT) {
   process.exit();
 }
 
-// Start production server
 app.prepare().then(() => {
   createServer((req, res) => {
     const parsedUrl = parse(req.url, true);
