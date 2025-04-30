@@ -58,7 +58,8 @@ export default function createGlobalCachedFetch() {
     useEffect(() => {
       let ref = refs[key];
       if (!ref) {
-        ref = refs[key] = { count: 1 };
+        refs[key] = { count: 1 };
+        ref = refs[key];
       } else {
         ref.count++;
         if (ref.cleanupTimeout) {

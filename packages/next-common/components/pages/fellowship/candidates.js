@@ -11,7 +11,7 @@ import CollectivesProvider, {
 } from "next-common/context/collectives/collectives";
 import useFellowshipCoreMembersWithRank from "next-common/hooks/fellowship/core/useFellowshipCoreMembersWithRank";
 import { useMembersWithStatus } from "next-common/components/fellowship/collective/hook/useFellowshipCoreMembersFilter";
-import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
+import { useSortedFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
 
 export default function FellowshipCandidatesPage() {
   const { fellowshipParams } = usePageProps();
@@ -24,7 +24,7 @@ export default function FellowshipCandidatesPage() {
 }
 
 function useFellowshipMembersData() {
-  const { members: fellowshipMembers } = useFellowshipCollectiveMembers();
+  const { members: fellowshipMembers } = useSortedFellowshipCollectiveMembers();
   const { membersWithStatus } = useMembersWithStatus(fellowshipMembers);
 
   const membersCount = useMemo(

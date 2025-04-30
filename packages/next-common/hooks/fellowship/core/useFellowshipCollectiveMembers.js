@@ -6,7 +6,7 @@ import {
 import { usePageProps } from "next-common/context/page";
 import createGlobalCachedFetch from "next-common/utils/createGlobalCachedFetch";
 import { normalizeRankedCollectiveEntries } from "next-common/utils/rankedCollective/normalize";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 
 const { useGlobalCachedFetch } = createGlobalCachedFetch();
 
@@ -55,5 +55,35 @@ export function useFellowshipCollectiveMembers() {
     members: members || membersFromServer,
     fetch,
     loading: !membersFromServer && loading,
+  };
+}
+
+export function useSortedFellowshipCollectiveMembers() {
+  const { members, fetch, loading } = useFellowshipCollectiveMembers();
+
+  const sortedMembers = useMemo(() => {
+    if (!members) {
+      return null;
+    }
+    const membersToSort = [...members];
+    membersToSort.sort((a, b) => {
+      if (a.rank !== b.rank) {
+        return b.rank - a.rank;
+      }
+      if (a.address < b.address) {
+        return -1;
+      }
+      if (a.address > b.address) {
+        return 1;
+      }
+      return 0;
+    });
+    return membersToSort;
+  }, [members]);
+
+  return {
+    members: sortedMembers,
+    fetch,
+    loading,
   };
 }

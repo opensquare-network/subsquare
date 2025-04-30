@@ -20,7 +20,7 @@ import AmbassadorMemberCommon from "./common";
 import { useCoreFellowshipParams } from "next-common/context/collectives/collectives";
 import { useEffect } from "react";
 import MoreActions from "./moreActions";
-import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
+import { useSortedFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
 
 function AmbassadorMemberCardView({
   members: _members,
@@ -171,7 +171,7 @@ function AmbassadorCandidatesTabPage({ members, candidates, isLoading }) {
 
 function AmbassadorMembersPageInContext() {
   const router = useRouter();
-  const { members: ambassadorMembers } = useFellowshipCollectiveMembers();
+  const { members: ambassadorMembers } = useSortedFellowshipCollectiveMembers();
   const { membersWithStatus, isLoading } =
     useMembersWithStatus(ambassadorMembers);
   const regularMembers = useMemo(
