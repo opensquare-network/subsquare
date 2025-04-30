@@ -68,11 +68,9 @@ function ApplicationGuide() {
             </div>
           </div>
         </div>
-        {!isFellowshipMember ? (
-          <Link href="/fellowship/applications/create">
-            <PrimaryButton>Apply</PrimaryButton>
-          </Link>
-        ) : null}
+        <Link href="/fellowship/applications/create">
+          <PrimaryButton>Apply</PrimaryButton>
+        </Link>
       </div>
     </SecondaryCard>
   );
