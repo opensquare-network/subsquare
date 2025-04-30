@@ -1,4 +1,4 @@
-import { useEffect, useState, memo } from "react";
+import { useEffect, useState, memo, useMemo } from "react";
 import VotesTab, { tabs } from "./tab";
 import { useSelector } from "react-redux";
 import { isLoadingVoteCallsSelector } from "next-common/store/reducers/gov2ReferendumSlice";
@@ -60,30 +60,33 @@ export default function OpenGovCallsVotesPopup({ setShowVoteList }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
 
-  let votes;
-  if (tabIndex === voteTabs.Aye) {
-    votes = filteredAye;
-  } else if (tabIndex === voteTabs.Nay) {
-    votes = filteredNay;
-  } else {
-    votes = filteredAbstain;
-  }
-
   const [cachedVotes, setCachedVotes] = useState([]);
   const [cachedVotesLoading, setCachedVotesLoading] = useState(true);
+  const [cachedTabIndex, setCachedTabIndex] = useState(tabs[0].tabId);
+
+  const votes = useMemo(() => {
+    if (tabIndex === voteTabs.Aye) {
+      return filteredAye;
+    } else if (tabIndex === voteTabs.Nay) {
+      return filteredNay;
+    } else {
+      return filteredAbstain;
+    }
+  }, [tabIndex, filteredAye, filteredNay, filteredAbstain]);
 
   useEffect(() => {
-    if (cachedVotesLoading) {
-      setCachedVotesLoading(isLoading);
-      setCachedVotes(votes);
-    }
-    if (isEqual(cachedVotes, votes)) {
+    if (isEqual(cachedVotes, votes) && isEqual(cachedTabIndex, tabIndex)) {
       return;
     }
+    setCachedVotesLoading(true);
 
+    setCachedTabIndex(tabIndex);
     setCachedVotes(votes);
-    setCachedVotesLoading(false);
-  }, [votes, cachedVotesLoading, cachedVotes, isLoading]);
+
+    setTimeout(() => {
+      setCachedVotesLoading(false);
+    }, 500);
+  }, [votes, cachedVotes, isLoading, tabIndex, cachedTabIndex]);
 
   const searchBtn = (
     <SearchBtn
