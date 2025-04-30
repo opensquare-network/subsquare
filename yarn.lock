@@ -2635,12 +2635,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mimirdev/apps-inject@npm:^3.1.1":
-  version: 3.1.1
-  resolution: "@mimirdev/apps-inject@npm:3.1.1"
+"@mimirdev/apps-inject@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "@mimirdev/apps-inject@npm:3.2.0"
   dependencies:
     "@mimirdev/apps-sdk": ^3.1.0
-  checksum: 2a448655daf2ddf7dc8129200282b46e1d9cf640758f4f59f2ab0c3cc89b89d070df522464d105e11abe08ce0e30afdb6e4f45db5c736f3c78c53664f3f981f2
+  checksum: 51a201ef602d8c2236cefda6b9172cdd376db3bc956f94bc537a878c7e6dbc5e56531647014fec49c4dd954a82c4c63e9dc6b9e3b878f10df2aa785ee21a1b90
   languageName: node
   linkType: hard
 
@@ -13473,7 +13473,7 @@ __metadata:
   dependencies:
     "@apollo/client": ^3.8.8
     "@interlay/monetary-js": 0.5.4
-    "@mimirdev/apps-inject": ^3.1.1
+    "@mimirdev/apps-inject": ^3.2.0
     "@mimirdev/apps-sdk": ^3.1.0
     "@osn/eslint-config": ^1.0.2
     "@osn/icons": ^1.204.0
