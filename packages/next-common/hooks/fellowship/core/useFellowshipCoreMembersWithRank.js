@@ -52,7 +52,7 @@ export default function useFellowshipCoreMembersWithRank() {
 
         setResult(data);
       } catch (e) {
-        setResult();
+        // ignore
       }
     },
     [api, corePallet, collectivePallet],
