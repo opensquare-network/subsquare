@@ -1,5 +1,5 @@
 import { isNil } from "lodash-es";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import useFellowshipCoreOnlySwitch from "./useFellowshipCoreOnlySwitch";
 import useSubCoreCollectivesMember from "next-common/hooks/collectives/useSubCoreCollectivesMember";
 import usePeriodSelect, {
@@ -20,7 +20,6 @@ import {
   filterDemotionExpiredFn,
   filterPromotableFn,
 } from "next-common/components/pages/fellowship/periodFilters";
-import { useContextApi } from "next-common/context/api";
 import { isSameAddress } from "next-common/utils";
 import { useFellowshipCoreMembers } from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
 
@@ -36,7 +35,7 @@ function useSingleMemberStatus(item) {
   };
 }
 
-export function useMembersWithStatus2(members) {
+export function useMembersWithStatus(members) {
   const { members: coreMembers, loading } = useFellowshipCoreMembers();
   return useMemo(() => {
     if (!members || !members.length) {
@@ -71,44 +70,26 @@ export function useMembersWithStatus2(members) {
   }, [members, coreMembers, loading]);
 }
 
-export function useMembersWithStatus(members) {
-  const api = useContextApi();
+export function useMemberWithStatus(member) {
   const pallet = useCoreFellowshipPallet();
-  const [membersWithStatus, setMembersWithStatus] = useState();
-  const [isLoading, setIsLoading] = useState(true);
+  const { member: coreMember, isLoading } = useSubCoreCollectivesMember(
+    member?.address,
+    pallet,
+  );
 
-  useEffect(() => {
-    if (!api) {
-      return;
+  const memberWithStatus = useMemo(() => {
+    if (isLoading || !coreMember) {
+      return member;
     }
-
-    if (!members || !members.length) {
-      setMembersWithStatus([]);
-      setIsLoading(false);
-      return;
-    }
-
-    setIsLoading(true);
-    api.query[pallet].member
-      .multi(members.map((m) => m.address))
-      .then((result) => {
-        const membersWithStatus = members.map((item, index) => {
-          const status = result[index]?.toJSON();
-          return {
-            ...item,
-            status,
-            isFellowshipCoreMember: !isNil(status),
-          };
-        });
-        setMembersWithStatus(membersWithStatus);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [api, members, pallet]);
+    return {
+      ...member,
+      status: coreMember,
+      isFellowshipCoreMember: !isNil(coreMember),
+    };
+  }, [isLoading, member, coreMember]);
 
   return {
-    membersWithStatus,
+    memberWithStatus,
     isLoading,
   };
 }

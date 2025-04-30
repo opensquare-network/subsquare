@@ -8,7 +8,7 @@ import { AllMemberEvidenceProvider } from "next-common/components/collectives/co
 import { DropdownUrlFilterProvider } from "next-common/components/dropdownFilter/context";
 import useMembersWithMeAtFirst from "../useMembersWithMeAtFirst";
 import FellowshipMemberListView from "../fellowship/memberListView";
-import { useMembersWithStatus2 } from "next-common/components/fellowship/collective/hook/useFellowshipCoreMembersFilter";
+import { useMembersWithStatus } from "next-common/components/fellowship/collective/hook/useFellowshipCoreMembersFilter";
 import { useRouter } from "next/router";
 import FellowshipCoreMemberCardListContainer from "next-common/components/fellowship/core/members/listContainer";
 import { SystemLoading } from "@osn/icons/subsquare";
@@ -20,6 +20,7 @@ import AmbassadorMemberCommon from "./common";
 import { useCoreFellowshipParams } from "next-common/context/collectives/collectives";
 import { useEffect } from "react";
 import MoreActions from "./moreActions";
+import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
 
 function AmbassadorMemberCardView({
   members: _members,
@@ -170,9 +171,9 @@ function AmbassadorCandidatesTabPage({ members, candidates, isLoading }) {
 
 function AmbassadorMembersPageInContext() {
   const router = useRouter();
-  const { ambassadorMembers } = usePageProps();
+  const { members: ambassadorMembers } = useFellowshipCollectiveMembers();
   const { membersWithStatus, isLoading } =
-    useMembersWithStatus2(ambassadorMembers);
+    useMembersWithStatus(ambassadorMembers);
   const regularMembers = useMemo(
     () => (membersWithStatus || []).filter((member) => member.rank > 0),
     [membersWithStatus],

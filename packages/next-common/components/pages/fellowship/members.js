@@ -12,7 +12,7 @@ import ViewModeSwitch from "./viewModeSwitch";
 import useMembersFilter from "./useMemberFilter";
 import FellowshipMemberCardView from "./memberCardView";
 import FellowshipMemberListView from "./memberListView";
-import { useMembersWithStatus2 } from "next-common/components/fellowship/collective/hook/useFellowshipCoreMembersFilter";
+import { useMembersWithStatus } from "next-common/components/fellowship/collective/hook/useFellowshipCoreMembersFilter";
 import { useRouter } from "next/router";
 import MoreActions from "./moreActions";
 import { useChain } from "next-common/context/chain";
@@ -184,7 +184,7 @@ function FellowshipCandidatesPageInContext({
 function FellowshipMembersInContext() {
   const { members: fellowshipMembers } = useFellowshipCollectiveMembers();
   const { membersWithStatus, isLoading } =
-    useMembersWithStatus2(fellowshipMembers);
+    useMembersWithStatus(fellowshipMembers);
 
   const router = useRouter();
   const isCandidatesPage = router.query.tab === "candidates";
