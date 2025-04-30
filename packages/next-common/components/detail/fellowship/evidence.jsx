@@ -19,10 +19,6 @@ function FellowshipReferendaDetailEvidenceImpl() {
     <div className="mt-4 space-y-4">
       <hr />
 
-      <h4 className="text14Bold text-textPrimary">
-        Evidence{wish && ` for ${wish}`}
-      </h4>
-
       {!isFinished && (
         <FellowshipEvidenceMemberStatusCard
           isLoading={isLoading}

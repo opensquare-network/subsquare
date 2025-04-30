@@ -7,7 +7,10 @@ export default function getAdvancedMenu(advanceMenu = []) {
         value: "advanced",
         type: "advanced",
         icon: <MenuAdvanced />,
-        items: advanceMenu,
+        items: advanceMenu.map((item) => {
+          delete item.icon;
+          return item;
+        }),
       }
     : null;
 }

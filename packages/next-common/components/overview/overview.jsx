@@ -9,12 +9,14 @@ import PolkadotTreasuryStats from "./polkadotTreasuryStats";
 // import FellowshipTreasuryStats from "./fellowship/fellowshipTreasuryStats";
 import { isPolkadotChain, isKusamaChain } from "next-common/utils/chain";
 import KusamaTreasuryStats from "./kusamaTreasuryStats";
-import dynamic from "next/dynamic";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
-const AccountInfo = dynamic(() => import("./accountInfo"), { ssr: false });
-const FellowshipFinanceOverview = dynamic(
-  () => import("./fellowship/finance"),
-  { ssr: false },
+const AccountInfo = dynamicClientOnly(() => import("./accountInfo"));
+const FellowshipFinanceOverview = dynamicClientOnly(() =>
+  import("./fellowship/finance"),
+);
+const FellowshipApplicationGuide = dynamicClientOnly(() =>
+  import("./fellowship/fellowshipApplicationGuide"),
 );
 
 function ConditionTreasuryStats() {
@@ -49,6 +51,12 @@ export default function Overview() {
         <WithPallet pallet="fellowshipSalary">
           <FellowshipFinanceOverview />
         </WithPallet>
+      </WithPallet>
+
+      <WithPallet pallet="fellowshipCore">
+        <CollectivesProvider section="fellowship">
+          <FellowshipApplicationGuide />
+        </CollectivesProvider>
       </WithPallet>
 
       {/* <WithPallet pallet="fellowshipSalary">

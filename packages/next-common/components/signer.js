@@ -19,7 +19,7 @@ const Wrapper = styled(GreyPanel)`
   gap: 16px;
 `;
 
-function useOriginAccount() {
+export function useOriginAccount() {
   const signerAccount = useSignerAccount();
   const extensionAccounts = useExtensionAccounts();
 
