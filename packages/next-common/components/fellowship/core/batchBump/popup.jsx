@@ -5,20 +5,29 @@ import TitleSuffix from "next-common/components/titleSuffix";
 import { useCallback } from "react";
 import fetchFellowshipCoreMembers2Times from "./fetchFellowshipCoreMembers2Times";
 import useFellowshipCoreMembersWithRank from "next-common/hooks/fellowship/core/useFellowshipCoreMembersWithRank";
+import { useFellowshipCoreMembers } from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
+import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
 
 export default function BatchBumpPopup({ isCandidate, ...props }) {
   const { expiredMembers = [], isLoading } = useDemotionExpiredMembers({
     isCandidate,
   });
-  const { fetch } = useFellowshipCoreMembersWithRank();
+  const { fetch: fetchCoreMembersWithRank } =
+    useFellowshipCoreMembersWithRank();
+  const { fetch: fetchCoreMembers } = useFellowshipCoreMembers();
+  const { fetch: fetchRankMembers } = useFellowshipCollectiveMembers();
 
   const onInBlock = useCallback(async () => {
     try {
-      await fetchFellowshipCoreMembers2Times(fetch);
+      await fetchFellowshipCoreMembers2Times(async () => {
+        await fetchCoreMembersWithRank();
+        await fetchCoreMembers();
+        await fetchRankMembers();
+      });
     } catch (error) {
       throw new Error("Failed to update fellowship core members:", error);
     }
-  }, [fetch]);
+  }, [fetchCoreMembersWithRank, fetchCoreMembers, fetchRankMembers]);
 
   return (
     <PopupWithSigner

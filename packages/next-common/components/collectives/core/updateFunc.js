@@ -4,11 +4,13 @@ import { defaultBlockTime } from "next-common/utils/constants";
 import { sleep } from "next-common/utils";
 import useFellowshipCoreMembersWithRank from "next-common/hooks/fellowship/core/useFellowshipCoreMembersWithRank";
 import { useFellowshipCoreMembers } from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
+import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
 
 export default function useCoreFellowshipUpdateFunc() {
   const { fetch: fetchCoreMembersWithRank } =
     useFellowshipCoreMembersWithRank();
   const { fetch: fetchCoreMembers } = useFellowshipCoreMembers();
+  const { fetch: fetchRankMembers } = useFellowshipCollectiveMembers();
 
   return useCallback(async () => {
     const blockTime =
@@ -20,7 +22,8 @@ export default function useCoreFellowshipUpdateFunc() {
     for (const timer of timers) {
       await fetchCoreMembersWithRank();
       await fetchCoreMembers();
+      await fetchRankMembers();
       await sleep(blockTime);
     }
-  }, [fetchCoreMembersWithRank, fetchCoreMembers]);
+  }, [fetchCoreMembersWithRank, fetchCoreMembers, fetchRankMembers]);
 }
