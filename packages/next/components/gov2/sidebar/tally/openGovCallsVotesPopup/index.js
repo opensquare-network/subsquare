@@ -19,7 +19,8 @@ import filterTabs from "../common/filterTabs";
 import voteTabs from "../common/voteTabs";
 import AddressUser from "next-common/components/user/addressUser";
 import { isEqual } from "lodash-es";
-import DataList from "next-common/components/dataList";
+import usePopupItemHeight from "next-common/components/democracy/democracyCallsVotesPopup/usePopupItemHeight";
+import VirtualList from "next-common/components/dataList/virtualList";
 
 const VoteTime = styled.div`
   font-style: normal;
@@ -118,6 +119,7 @@ export default function OpenGovCallsVotesPopup({ setShowVoteList }) {
 
 function CachedVotesList({ items = [], loading }) {
   const chainSettings = useChainSettings();
+  const itemHeight = usePopupItemHeight();
 
   const columns = [
     {
@@ -159,11 +161,13 @@ function CachedVotesList({ items = [], loading }) {
 
   return (
     <PopupListWrapper>
-      <DataList
+      <VirtualList
         columns={columns}
         rows={rows}
         loading={loading}
         scrollToFirstRowOnChange
+        itemHeight={itemHeight}
+        listHeight={395}
       />
     </PopupListWrapper>
   );
