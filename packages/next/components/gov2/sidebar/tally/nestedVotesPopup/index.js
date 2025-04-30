@@ -1,4 +1,4 @@
-import { useEffect, useState, memo } from "react";
+import { useEffect, useState, memo, useMemo } from "react";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
@@ -46,30 +46,33 @@ export default function NestedVotesPopup({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
 
-  let votes;
-  if (tabIndex === voteTabs.Aye) {
-    votes = filteredAye;
-  } else if (tabIndex === voteTabs.Nay) {
-    votes = filteredNay;
-  } else {
-    votes = filteredAbstain;
-  }
-
   const [cachedVotes, setCachedVotes] = useState([]);
   const [cachedVotesLoading, setCachedVotesLoading] = useState(true);
+  const [cachedTabIndex, setCachedTabIndex] = useState(tabs[0].tabId);
+
+  const votes = useMemo(() => {
+    if (tabIndex === voteTabs.Aye) {
+      return filteredAye;
+    } else if (tabIndex === voteTabs.Nay) {
+      return filteredNay;
+    } else {
+      return filteredAbstain;
+    }
+  }, [tabIndex, filteredAye, filteredNay, filteredAbstain]);
 
   useEffect(() => {
-    if (cachedVotesLoading) {
-      setCachedVotesLoading(isLoadingVotes);
-      setCachedVotes(votes);
-    }
-    if (isEqual(cachedVotes, votes)) {
+    if (isEqual(cachedVotes, votes) && isEqual(cachedTabIndex, tabIndex)) {
       return;
     }
+    setCachedVotesLoading(true);
 
+    setCachedTabIndex(tabIndex);
     setCachedVotes(votes);
-    setCachedVotesLoading(false);
-  }, [votes, cachedVotesLoading, cachedVotes, isLoadingVotes]);
+
+    setTimeout(() => {
+      setCachedVotesLoading(false);
+    }, 500);
+  }, [votes, cachedVotes, isLoadingVotes, tabIndex, cachedTabIndex]);
 
   const searchBtn = (
     <SearchBtn
