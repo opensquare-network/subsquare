@@ -5,6 +5,7 @@ import bigAdd from "next-common/utils/math/bigAdd";
 const DotTokenId = 5;
 const UsdtTokenIdFromAssetHub = 10;
 const UsdcTokenIdFromAssetHub = 22;
+const aDotTokenId = 1001;
 
 export const PolkadotTreasuryOnHydrationAccount1 =
   "7LcF8b5GSvajXkSChhoMFcGDxF9Yn9unRDceZj1Q6NYox8HY";
@@ -39,11 +40,18 @@ function useHydrationTreasuryBalanceForAccount(address) {
     api?.query.tokens?.accounts,
     [address, DotTokenId],
   );
+  const { loaded: isADotLoaded, value: accountADot } = useCall(
+    api?.query.tokens?.accounts,
+    [address, aDotTokenId],
+  );
 
-  const isLoading = !isUsdtLoaded || !isUsdcLoaded || !isDotLoaded;
+  const isLoading =
+    !isUsdtLoaded || !isUsdcLoaded || !isDotLoaded || !isADotLoaded;
+
+  const totalDot = bigAdd(getTotal(accountDot), getTotal(accountADot));
 
   return {
-    dot: getTotal(accountDot),
+    dot: totalDot,
     usdt: getTotal(accountUsdt),
     usdc: getTotal(accountUsdc),
     isLoading,
@@ -89,7 +97,6 @@ export function useQueryHydrationTreasuryBalances() {
 
   const isLoading = isLoading1 || isLoading2 || isLoading3 || isLoading4;
 
-  // TODO: aDot
   const dot = bigAdd(dot1, dot2, dot3, dot4);
   const usdt = bigAdd(usdt1, usdt2, usdt3, usdt4);
   const usdc = bigAdd(usdc1, usdc2, usdc3, usdc4);
