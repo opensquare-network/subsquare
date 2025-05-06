@@ -63,8 +63,9 @@ function VoteButtonImpl({
 }
 
 export default function VoteButton({ children, ...props }) {
+  const ButtonComponent = props.ButtonComponent || SecondaryButton;
   return (
-    <SignerPopupWrapper>
+    <SignerPopupWrapper loadingContent={<ButtonComponent disabled={true} />}>
       <VoteButtonImpl {...props}>{children}</VoteButtonImpl>
     </SignerPopupWrapper>
   );

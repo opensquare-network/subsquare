@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, memo, useMemo } from "react";
 import VotesTab, { tabs } from "./tab";
 import { useSelector } from "react-redux";
 import { isLoadingVoteCallsSelector } from "next-common/store/reducers/gov2ReferendumSlice";
@@ -18,8 +18,9 @@ import useSearchVotes from "next-common/hooks/useSearchVotes";
 import filterTabs from "../common/filterTabs";
 import voteTabs from "../common/voteTabs";
 import AddressUser from "next-common/components/user/addressUser";
-import VirtualList from "next-common/components/dataList/virtualList";
+import { isEqual } from "lodash-es";
 import usePopupItemHeight from "next-common/components/democracy/democracyCallsVotesPopup/usePopupItemHeight";
+import VirtualList from "next-common/components/dataList/virtualList";
 
 const VoteTime = styled.div`
   font-style: normal;
@@ -60,14 +61,33 @@ export default function OpenGovCallsVotesPopup({ setShowVoteList }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
 
-  let votes;
-  if (tabIndex === voteTabs.Aye) {
-    votes = filteredAye;
-  } else if (tabIndex === voteTabs.Nay) {
-    votes = filteredNay;
-  } else {
-    votes = filteredAbstain;
-  }
+  const [cachedVotes, setCachedVotes] = useState([]);
+  const [cachedVotesLoading, setCachedVotesLoading] = useState(true);
+  const [cachedTabIndex, setCachedTabIndex] = useState(tabs[0].tabId);
+
+  const votes = useMemo(() => {
+    if (tabIndex === voteTabs.Aye) {
+      return filteredAye;
+    } else if (tabIndex === voteTabs.Nay) {
+      return filteredNay;
+    } else {
+      return filteredAbstain;
+    }
+  }, [tabIndex, filteredAye, filteredNay, filteredAbstain]);
+
+  useEffect(() => {
+    if (isEqual(cachedVotes, votes) && isEqual(cachedTabIndex, tabIndex)) {
+      return;
+    }
+    setCachedVotesLoading(true);
+
+    setCachedTabIndex(tabIndex);
+    setCachedVotes(votes);
+
+    setTimeout(() => {
+      setCachedVotesLoading(false);
+    }, 500);
+  }, [votes, cachedVotes, isLoading, tabIndex, cachedTabIndex]);
 
   const searchBtn = (
     <SearchBtn
@@ -92,12 +112,12 @@ export default function OpenGovCallsVotesPopup({ setShowVoteList }) {
         naysCount={filteredNay?.length || 0}
         abstainCount={filteredAbstain?.length || 0}
       />
-      <VotesList items={votes} loading={isLoading} />
+      <VotesList items={cachedVotes} loading={cachedVotesLoading} />
     </BaseVotesPopup>
   );
 }
 
-function VotesList({ items = [], loading }) {
+function CachedVotesList({ items = [], loading }) {
   const chainSettings = useChainSettings();
   const itemHeight = usePopupItemHeight();
 
@@ -142,13 +162,15 @@ function VotesList({ items = [], loading }) {
   return (
     <PopupListWrapper>
       <VirtualList
-        scrollToFirstRowOnChange
-        loading={loading}
         columns={columns}
         rows={rows}
+        loading={loading}
+        scrollToFirstRowOnChange
         itemHeight={itemHeight}
         listHeight={395}
       />
     </PopupListWrapper>
   );
 }
+
+const VotesList = memo(CachedVotesList);

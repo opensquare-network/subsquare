@@ -17,9 +17,9 @@ export const TooltipWrapper = styled.div`
 `;
 
 export const Label = styled.div`
-  font-weight: bold;
-  font-size: 12px;
-  line-height: 100%;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 20px;
   margin-bottom: 8px;
   color: var(--textPrimary);
 `;
@@ -145,8 +145,8 @@ export const ButtonWrapper = styled.div`
 
 export const BalanceWrapper = styled.div`
   display: flex;
-  font-size: 12px;
-  line-height: 100%;
+  font-size: 14px;
+  line-height: 20px;
   color: var(--textSecondary);
   > :nth-child(2) {
     color: var(--textPrimary);
