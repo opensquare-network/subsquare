@@ -2,15 +2,15 @@ import { Doughnut } from "react-chartjs-2";
 import { cn } from "next-common/utils";
 import { useEffect, useState } from "react";
 import { useAsync } from "react-use";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { fellowshipStatisticsRanksApi } from "next-common/services/url";
 import { LoadingContent } from "next-common/components/fellowship/statistics/common";
 import BigNumber from "bignumber.js";
 import {
-  useDoughnutChartOptions,
-  expenditureDoughnutChartOptions,
   doughnutChartColors as colors,
+  expenditureDoughnutChartOptions,
   getUniqueRanks,
+  useDoughnutChartOptions,
 } from "next-common/components/fellowship/statistics/common.js";
 import DoughnutChartLabels from "./labels";
 import { useNavCollapsed } from "next-common/context/nav";
@@ -82,7 +82,7 @@ export default function RankDoughnutChart({ members = [] }) {
       return [];
     }
     try {
-      const resp = await nextApi.fetch(ranksApi);
+      const resp = await backendApi.fetch(ranksApi);
       return resp?.result || [];
     } catch (error) {
       setContentLoading(false);

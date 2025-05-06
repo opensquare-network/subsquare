@@ -2,12 +2,12 @@ import FellowshipSalaryCycleLayout from "next-common/components/fellowship/salar
 import FellowshipSalaryCycleDetailTabsList from "next-common/components/fellowship/salary/cycles/tabsList";
 import FellowshipSalaryCycleDetailInfo from "next-common/components/fellowship/salary/cycles/info";
 import FellowshipSalaryCycleDetailNotFound from "next-common/components/fellowship/salary/cycles/notFound";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import {
   fellowshipSalaryCycleApi,
   fellowshipSalaryCycleFeedsApi,
-  fellowshipSalaryCycleRegistrationsApi,
   fellowshipSalaryCycleRegisteredPaymentsApi,
+  fellowshipSalaryCycleRegistrationsApi,
   fellowshipSalaryCycleUnregisteredPaymentsApi,
 } from "next-common/services/url";
 import { withFellowshipSalaryCommonProps } from "next-common/services/serverSide/fellowship/common";
@@ -41,7 +41,9 @@ export const getServerSideProps = withFellowshipSalaryCommonProps(
       page,
     } = context.query;
 
-    const { result: cycle } = await nextApi.fetch(fellowshipSalaryCycleApi(id));
+    const { result: cycle } = await backendApi.fetch(
+      fellowshipSalaryCycleApi(id),
+    );
 
     let registrations;
     let registeredPayments;
@@ -55,19 +57,19 @@ export const getServerSideProps = withFellowshipSalaryCommonProps(
         { result: unRegisteredPaymentsResult },
         { result: feedsResult },
       ] = await Promise.all([
-        nextApi.fetch(fellowshipSalaryCycleRegistrationsApi(id), {
+        backendApi.fetch(fellowshipSalaryCycleRegistrationsApi(id), {
           page,
           pageSize: defaultPageSize,
         }),
-        nextApi.fetch(fellowshipSalaryCycleRegisteredPaymentsApi(id), {
+        backendApi.fetch(fellowshipSalaryCycleRegisteredPaymentsApi(id), {
           page,
           pageSize: defaultPageSize,
         }),
-        nextApi.fetch(fellowshipSalaryCycleUnregisteredPaymentsApi(id), {
+        backendApi.fetch(fellowshipSalaryCycleUnregisteredPaymentsApi(id), {
           page,
           pageSize: defaultPageSize,
         }),
-        nextApi.fetch(fellowshipSalaryCycleFeedsApi(id), {
+        backendApi.fetch(fellowshipSalaryCycleFeedsApi(id), {
           page,
           pageSize: defaultPageSize,
         }),
