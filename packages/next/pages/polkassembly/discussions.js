@@ -1,7 +1,7 @@
 import PostList from "next-common/components/postList";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { withCommonProps } from "next-common/lib";
-import nextApi, { backendApi } from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizePolkassemblyDiscussionListItem from "next-common/utils/viewfuncs/discussion/normalizePaListItem";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";

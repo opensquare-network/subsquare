@@ -2,7 +2,7 @@ import { PostProvider, usePost } from "next-common/context/post";
 import { withCommonProps } from "next-common/lib";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
-import nextApi, { backendApi } from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import {
   gov2ReferendumsCommentApi,
   gov2ReferendumsDetailApi,
