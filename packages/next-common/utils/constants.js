@@ -31,6 +31,7 @@ import paseo from "./consts/settings/paseo";
 import ajuna from "./consts/settings/ajuna";
 import laos from "./consts/settings/laos";
 import paseoAssetHub from "./consts/settings/paseoAssetHub";
+import westendAssetHubNext from "./consts/settings/westendAssetHubNext";
 
 const optionalNodes =
   process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? [development] : [];
@@ -52,6 +53,7 @@ export const nodes = [
   // crab,
   westend,
   westendAssetHub,
+  westendAssetHubNext,
   crust,
   hydradx,
   interlay,
