@@ -7,7 +7,7 @@ import CurrencyInput from "next-common/components/currencyInput";
 function TransferrableBalance({ value, isLoading, decimals }) {
   return (
     <div className="flex gap-[8px] items-center mb-[8px]">
-      <span className="text12Medium text-textTertiary leading-none">
+      <span className="text14Medium text-textTertiary leading-none">
         Transferrable
       </span>
       {isLoading ? (

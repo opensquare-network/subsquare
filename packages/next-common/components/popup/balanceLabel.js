@@ -15,7 +15,7 @@ export default function PopupLabelWithBalance({
     <LabelWrapper>
       <Label>{text}</Label>
       <BalanceWrapper>
-        <div className="text-textTertiary">{balanceName}</div>
+        <div className="text-textTertiary text14Medium">{balanceName}</div>
         {!isLoading && (
           <div>
             <NumberWithComma

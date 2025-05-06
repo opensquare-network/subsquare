@@ -5,24 +5,27 @@ import Tooltip from "next-common/components/tooltip";
 
 const TooltipWrapper = styled.div`
   display: flex;
-  align-items: flex-start;
+  align-items: center;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 20px;
+  margin-bottom: 8px;
   > :not(:first-child) {
     margin-left: 4px;
   }
 `;
 
 const Label = styled.div`
-  font-weight: bold;
-  font-size: 12px;
-  line-height: 100%;
-  margin-bottom: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 20px;
   color: var(--textPrimary);
 `;
 
 const StatusWrapper = styled.div`
-  font-weight: bold;
-  font-size: 12px;
-  line-height: 100%;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
   color: var(--textTertiary);
   margin-left: auto !important;
   display: flex;
@@ -35,8 +38,8 @@ const TooltipDiv = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 12px;
-  height: 12px;
+  width: 16px;
+  height: 16px;
 `;
 
 export default function PopupLabel({
