@@ -5,6 +5,7 @@ import {
   PolkadotTreasuryOnHydrationAccount1,
   PolkadotTreasuryOnHydrationAccount2,
   PolkadotTreasuryOnHydrationAccount3,
+  PolkadotTreasuryOnHydrationAccount4,
 } from "../hook/useQueryHydrationTreasuryBalances";
 import NativeTokenSymbolAsset from "../common/nativeTokenSymbolAsset";
 import FiatPriceLabel from "../common/fiatPriceLabel";
@@ -22,7 +23,10 @@ function AddressLink({ account, index }) {
       target="_blank"
       rel="noreferrer"
     >
-      <Tooltip content={`Treasury stablecoin acquisition #${index}`}>
+      <Tooltip
+        content={`Treasury stablecoin acquisition #${index}`}
+        className="flex flex-nowrap whitespace-nowrap"
+      >
         <span className="text-textTertiary hover:underline">Addr #{index}</span>
         <i className="text-textTertiary">&nbsp;↗</i>
       </Tooltip>
@@ -32,10 +36,11 @@ function AddressLink({ account, index }) {
 
 function AddressLinks() {
   return (
-    <div className="inline-flex gap-x-1">
+    <div className="gap-x-1 grid grid-cols-2">
       <AddressLink account={PolkadotTreasuryOnHydrationAccount1} index={1} />
       <AddressLink account={PolkadotTreasuryOnHydrationAccount2} index={2} />
       <AddressLink account={PolkadotTreasuryOnHydrationAccount3} index={3} />
+      <AddressLink account={PolkadotTreasuryOnHydrationAccount4} index={4} />
     </div>
   );
 }
