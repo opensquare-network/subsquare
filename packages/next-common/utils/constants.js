@@ -34,6 +34,7 @@ import ajuna from "./consts/settings/ajuna";
 import laos from "./consts/settings/laos";
 import paseoAssetHub from "./consts/settings/paseoAssetHub";
 import paseoPeople from "./consts/settings/paseoPeople";
+import westendPeople from "./consts/settings/westendPeople";
 
 const optionalNodes =
   process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? [development] : [];
@@ -57,6 +58,7 @@ export const nodes = [
   // crab,
   westend,
   westendAssetHub,
+  westendPeople,
   crust,
   hydradx,
   interlay,

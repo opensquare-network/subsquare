@@ -17,7 +17,7 @@ const kusamaPeople = {
   endpoints: [
     {
       name: "Dwellir",
-      url: "wss://people-kusama-rpc.n.dwellir.com'",
+      url: "wss://people-kusama-rpc.n.dwellir.com",
     },
     {
       name: "IBP1",

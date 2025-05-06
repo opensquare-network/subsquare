@@ -47,6 +47,7 @@ import laosTestnet from "./laosTestnet";
 import polkadotPeople from "./polkadotPeople";
 import kusamaPeople from "./kusamaPeople";
 import paseoPeople from "./paseoPeople";
+import westendPeople from "./westendPeople";
 
 const settingsMap = {
   polkadot,
@@ -96,6 +97,7 @@ const settingsMap = {
   [kusamaCoretime.value]: kusamaCoretime,
   [kusamaPeople.value]: kusamaPeople,
   [paseoPeople.value]: paseoPeople,
+  [westendPeople.value]: westendPeople,
   ...(process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? { development } : {}),
 };
 
