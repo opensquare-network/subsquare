@@ -1,6 +1,6 @@
 import { EmptyList } from "next-common/utils/constants";
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import ReferendaLayout from "next-common/components/layout/referendaLayout";
 import { gov2ReferendumsSummaryApi } from "next-common/services/url";
 import { Header } from "next-common/components/statistics/styled";
@@ -59,13 +59,13 @@ export const getServerSideProps = withCommonProps(async () => {
     { result: gov2ReferendaSummary },
     tracksProps,
   ] = await Promise.all([
-    nextApi.fetch("referenda/tracks"),
-    nextApi.fetch("referenda/delegatee", {
+    backendApi.fetch("referenda/tracks"),
+    backendApi.fetch("referenda/delegatee", {
       sort: JSON.stringify(["votes", "desc"]),
       pageSize: 25,
     }),
-    nextApi.fetch("referenda/summary"),
-    nextApi.fetch(gov2ReferendumsSummaryApi),
+    backendApi.fetch("referenda/summary"),
+    backendApi.fetch(gov2ReferendumsSummaryApi),
     fetchOpenGovTracksProps(),
   ]);
 

@@ -1,5 +1,5 @@
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { EmptyList } from "next-common/utils/constants";
 import { getBannerUrl } from "next-common/utils/banner";
@@ -75,7 +75,7 @@ export default function MotionPage({ motion }) {
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
-  const { result: motion } = await nextApi.fetch(
+  const { result: motion } = await backendApi.fetch(
     `community-council/motions/${id}`,
   );
   if (!motion) {

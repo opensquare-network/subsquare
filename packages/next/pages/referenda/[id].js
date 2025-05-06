@@ -2,7 +2,7 @@ import { PostProvider, usePost } from "next-common/context/post";
 import { withCommonProps } from "next-common/lib";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import {
   gov2ReferendumsCommentApi,
   gov2ReferendumsDetailApi,
@@ -100,7 +100,9 @@ export default function ReferendumPage({ detail }) {
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
 
-  const { result: detail } = await nextApi.fetch(gov2ReferendumsDetailApi(id));
+  const { result: detail } = await backendApi.fetch(
+    gov2ReferendumsDetailApi(id),
+  );
   if (!detail) {
     return getNullDetailProps(id, { voteStats: {} });
   }
@@ -110,10 +112,10 @@ export const getServerSideProps = withCommonProps(async (context) => {
     context,
   );
 
-  const { result: voteStats } = await nextApi.fetch(
+  const { result: voteStats } = await backendApi.fetch(
     gov2ReferendumsVoteStatsApi(id),
   );
-  const { result: tracksDetail } = await nextApi.fetch(gov2TracksApi);
+  const { result: tracksDetail } = await backendApi.fetch(gov2TracksApi);
 
   const tracksProps = await fetchOpenGovTracksProps();
 

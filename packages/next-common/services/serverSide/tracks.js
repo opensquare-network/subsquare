@@ -1,4 +1,4 @@
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import {
   ambassadorTracksSummaryApi,
   fellowshipTracksSummaryApi,
@@ -7,7 +7,7 @@ import {
 import getChainSettings from "next-common/utils/consts/settings";
 
 export async function fetchOpenGovTracksProps() {
-  const { result: summary = {} } = await nextApi.fetch("overview/summary");
+  const { result: summary = {} } = await backendApi.fetch("overview/summary");
 
   const {
     modules: {
@@ -20,19 +20,19 @@ export async function fetchOpenGovTracksProps() {
   let fellowshipTracks = [];
   let ambassadorTracks = [];
   if (hasReferenda) {
-    const { result: referendaTracks } = await nextApi.fetch(
+    const { result: referendaTracks } = await backendApi.fetch(
       gov2TracksSummaryApi,
     );
     tracks = referendaTracks;
   }
   if (hasFellowship) {
-    const { result: fellowshipTracksResult } = await nextApi.fetch(
+    const { result: fellowshipTracksResult } = await backendApi.fetch(
       fellowshipTracksSummaryApi,
     );
     fellowshipTracks = fellowshipTracksResult;
   }
   if (hasAmbassador) {
-    const { result: ambassadorTracksResult } = await nextApi.fetch(
+    const { result: ambassadorTracksResult } = await backendApi.fetch(
       ambassadorTracksSummaryApi,
     );
     ambassadorTracks = ambassadorTracksResult;

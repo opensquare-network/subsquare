@@ -1,10 +1,14 @@
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
 import ChildBountySidebar from "components/childBounty/sidebar";
-import { PostProvider, usePost } from "next-common/context/post";
+import {
+  PostProvider,
+  useOnchainData,
+  usePost,
+} from "next-common/context/post";
 import CheckUnFinalized from "components/childBounty/checkUnFinalized";
 import ChildBountyDetail from "next-common/components/detail/treasury/childBounty";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
@@ -17,7 +21,6 @@ import { usePageProps } from "next-common/context/page";
 import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
 import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 import { TreasuryProvider } from "next-common/context/treasury";
-import { useOnchainData } from "next-common/context/post";
 import TreasuryChildBountiesDetailMultiTabs from "components/tabs/treasuryChildBountiesDetailMultiTabs";
 
 function ChildBountyContent() {
@@ -84,7 +87,7 @@ export default function ChildBountyPage({ detail }) {
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
 
-  const { result: detail } = await nextApi.fetch(
+  const { result: detail } = await backendApi.fetch(
     `treasury/child-bounties/${id}`,
   );
 

@@ -1,6 +1,6 @@
 import DetailItem from "components/detailItem";
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Timeline from "components/publicProposal/timeline";
 import Business from "components/publicProposal/business";
@@ -128,7 +128,9 @@ export default function DemocracyProposalPage({ detail }) {
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
 
-  const { result: detail } = await nextApi.fetch(`democracy/proposals/${id}`);
+  const { result: detail } = await backendApi.fetch(
+    `democracy/proposals/${id}`,
+  );
 
   if (!detail) {
     return getNullDetailProps(id, { referendum: null });
@@ -136,7 +138,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
 
   let referendum;
   if (!isNil(detail.referendumIndex)) {
-    const { result } = await nextApi.fetch(
+    const { result } = await backendApi.fetch(
       `democracy/referendums/${detail.referendumIndex}`,
     );
     referendum = result;
@@ -147,7 +149,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
     context,
   );
 
-  const { result: summary } = await nextApi.fetch("overview/summary");
+  const { result: summary } = await backendApi.fetch("overview/summary");
 
   return {
     props: {
