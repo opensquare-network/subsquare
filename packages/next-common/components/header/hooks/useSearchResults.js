@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef, useCallback } from "react";
+import { useState, useMemo, useRef } from "react";
 import nextApi from "next-common/services/nextApi";
 import useRefCallback from "next-common/hooks/useRefCallback";
 import { markdownToText } from "next-common/components/header/search/utils";
@@ -41,10 +41,24 @@ function useSearchResults() {
 
         return identitiesResult;
       } catch (e) {
-        console.error("Failed to obtain identities", e);
+        Promise.reject(e);
       }
     },
   );
+
+  const baseSearchDataRequest = useRefCallback(async (searchValue, signal) => {
+    try {
+      return await nextApi.fetch(
+        "search",
+        {
+          text: searchValue,
+        },
+        { signal },
+      );
+    } catch (e) {
+      Promise.reject(e);
+    }
+  });
 
   const fetch = useRefCallback(async (searchValue) => {
     if (searchValue === lastSearchValueRef.current && results !== null) {
@@ -63,13 +77,7 @@ function useSearchResults() {
       lastSearchValueRef.current = searchValue;
 
       const trackResults = await trackPromises([
-        nextApi.fetch(
-          "search",
-          {
-            text: searchValue,
-          },
-          { signal },
-        ),
+        baseSearchDataRequest(searchValue, signal),
         combineIdentitiesRequest(searchValue, identityChain),
       ]);
 
@@ -108,7 +116,7 @@ function useSearchResults() {
     }
   });
 
-  const clearResults = useCallback(() => {
+  const clearResults = useRefCallback(() => {
     setResults(null);
     lastSearchValueRef.current = "";
 
@@ -116,7 +124,7 @@ function useSearchResults() {
       abortControllerRef.current.abort();
       abortControllerRef.current = null;
     }
-  }, []);
+  });
 
   const formatItems = useRefCallback((proposalType, items, getIndex) =>
     items?.length > 0
