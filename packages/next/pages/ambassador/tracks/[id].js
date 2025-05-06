@@ -1,5 +1,5 @@
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import {
   ambassadorTrackApi,
   ambassadorTrackReferendaApi,
@@ -61,7 +61,9 @@ export default function AmbassadorTrackPage({
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const { page = 1, page_size: pageSize = 50, id } = context.query;
-  const { result: detailedTracks } = await nextApi.fetch(ambassadorTracksApi);
+  const { result: detailedTracks } = await backendApi.fetch(
+    ambassadorTracksApi,
+  );
   const track = detailedTracks.find(
     (item) => item.id === parseInt(id) || item.name === id,
   );
@@ -76,13 +78,13 @@ export const getServerSideProps = withCommonProps(async (context) => {
     { result: ambassadorTracksDetail },
   ] = await Promise.all([
     fetchOpenGovTracksProps(),
-    nextApi.fetch(ambassadorTrackReferendaApi(track?.id), {
+    backendApi.fetch(ambassadorTrackReferendaApi(track?.id), {
       page,
       pageSize,
       simple: true,
     }),
-    nextApi.fetch(ambassadorTrackReferendaSummaryApi(track?.id)),
-    nextApi.fetch(ambassadorTrackApi(track?.id)),
+    backendApi.fetch(ambassadorTrackReferendaSummaryApi(track?.id)),
+    backendApi.fetch(ambassadorTrackApi(track?.id)),
   ]);
 
   return {

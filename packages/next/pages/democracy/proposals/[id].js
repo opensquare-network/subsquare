@@ -1,6 +1,6 @@
 import DetailItem from "components/detailItem";
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import Second from "next-common/components/publicProposal/second";
@@ -93,7 +93,9 @@ export default function DemocracyProposalPage({ detail }) {
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
-  const { result: detail } = await nextApi.fetch(`democracy/proposals/${id}`);
+  const { result: detail } = await backendApi.fetch(
+    `democracy/proposals/${id}`,
+  );
 
   if (!detail) {
     return getNullDetailProps(id);
