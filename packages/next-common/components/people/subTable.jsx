@@ -60,7 +60,6 @@ export default function SubIdentitiesTable({
         true,
       );
     }
-    console.log("subs", subs);
   }, [identityChain, extensionAccounts, subs]);
 
   return (
@@ -73,7 +72,7 @@ export default function SubIdentitiesTable({
         columns={columns}
         rows={(subs ?? []).map(([address, subName], index) => {
           return [
-            <AddressUser key={`Identity-${address}`} add={address} />,
+            <AddressUser key={`Identity-${index}`} add={address} />,
             <div
               key={`Name-${index}`}
               className="text-textPrimary text14Medium"
@@ -81,15 +80,18 @@ export default function SubIdentitiesTable({
               {subName}
             </div>,
             <div
-              key={`Address-${address}`}
+              key={`Address-${index}`}
               className="text-textTertiary text14Medium flex justify-between gap-x-2 items-center sm:ml-0 ml-4"
             >
               <AddressDisplay address={address} />
             </div>,
             <>
               <div className="flex items-center justify-end gap-x-2">
-                <SecondaryButton className="w-7 h-7 !px-0 rounded">
-                  <SystemEdit2 className="w-4 h-4" onClick={openSetSubsPopup} />
+                <SecondaryButton
+                  className="w-7 h-7 !px-0 rounded"
+                  onClick={openSetSubsPopup}
+                >
+                  <SystemEdit2 className="w-4 h-4" />
                 </SecondaryButton>
                 <SecondaryButton
                   className="w-7 h-7 !px-0 rounded"
