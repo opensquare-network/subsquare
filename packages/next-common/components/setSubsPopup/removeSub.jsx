@@ -1,45 +1,52 @@
-import Signer from "next-common/components/popup/fields/signerField";
-import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import RightWrapper from "next-common/components/rightWraper";
 import { useCallback, useMemo } from "react";
-import LoadableContent from "../common/loadableContent";
-import { useExtensionAccounts } from "../popupWithSigner/context";
-import CurrencyInput from "../currencyInput";
-import { toPrecision } from "next-common/utils";
-import { useChainSettings } from "next-common/context/chain";
-import useSetSubsDeposit from "next-common/hooks/people/useSetSubsDeposit";
+import {
+  useExtensionAccounts,
+  usePopupParams,
+} from "../popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 import TxSubmissionButton from "../common/tx/txSubmissionButton";
 import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import AddressComboField from "../popup/fields/addressComboField";
-import TextInputField from "../popup/fields/textInputField";
 import { noop } from "lodash-es";
+import SignerWithBalance from "../signerPopup/signerWithBalance";
+import { Label } from "../popup/styled";
+import Input from "next-common/lib/input";
+import { SubsDeposit } from "./content";
+import { cn } from "next-common/utils";
+import { useIsMobile } from "../overview/accountInfo/components/accountBalances";
 
-export default function RemoveSubPopupContent({ selectedSub }) {
+export default function RemoveSubPopupContent() {
+  const isMobile = useIsMobile();
+  const { selectedSub, selectedSubIndex, subs } = usePopupParams();
   const api = useContextApi();
   const dispatch = useDispatch();
-  const chainSettings = useChainSettings();
   const extensionAccounts = useExtensionAccounts();
-  const { deposit, isLoading: isDepositLoading } = useSetSubsDeposit();
 
   const submitIsDisabled = useMemo(() => {
     return !selectedSub;
   }, [selectedSub]);
+
+  const submitSubsList = useMemo(() => {
+    return subs
+      .filter((sub, index) => index !== selectedSubIndex)
+      .map(([address, name]) => [address, { Raw: name }]);
+  }, [subs, selectedSubIndex]);
 
   const getTxFunc = useCallback(() => {
     if (!api || !api?.tx?.identity) {
       return;
     }
 
-    return api.tx.identity.removeSub(selectedSub.address);
-  }, [api, selectedSub]);
+    return api.tx.identity.setSubs(submitSubsList);
+  }, [api, submitSubsList]);
 
   const onInBlock = useCallback(() => {
     dispatch(newSuccessToast("Submit subs successfully"));
   }, [dispatch]);
 
-  if (!selectedSub) {
+  if (!selectedSub || selectedSubIndex < 0) {
     return (
       <div className="text-textTertiary text14Medium">
         Please select a sub identity to remove
@@ -49,41 +56,26 @@ export default function RemoveSubPopupContent({ selectedSub }) {
 
   return (
     <div className="space-y-4">
-      <Signer
-        balance={0}
-        isBalanceLoading={false}
-        symbol={chainSettings.symbol}
-      />
+      <SignerWithBalance />
 
-      <div className="flex gap-x-4">
+      <div
+        className={cn("flex gap-x-4 flex-row", isMobile && "gap-y-4 flex-col")}
+      >
         <AddressComboField
-          comboClassName="w-[290px] !rounded-lg"
+          comboClassName={cn("w-[290px] !rounded-lg", isMobile && "w-full")}
           size="small"
           extensionAccounts={extensionAccounts}
           defaultAddress={selectedSub.address}
           setAddress={noop}
           readOnly
         />
-        <TextInputField
-          className="flex-1"
-          title="Sub Name"
-          text={selectedSub.subName}
-          disabled
-        />
+        <div className="flex flex-col flex-1">
+          <Label>Sub Name</Label>
+          <Input className="flex-1" value={selectedSub.subName} readOnly />
+        </div>
       </div>
 
-      <AdvanceSettings>
-        <CurrencyInput
-          disabled
-          value={
-            isDepositLoading
-              ? ""
-              : toPrecision(deposit || 0, chainSettings.decimals)
-          }
-          prefix={<LoadableContent isLoading={isDepositLoading} />}
-          symbol={chainSettings.symbol}
-        />
-      </AdvanceSettings>
+      <SubsDeposit selectedList={submitSubsList} />
 
       <RightWrapper>
         <TxSubmissionButton

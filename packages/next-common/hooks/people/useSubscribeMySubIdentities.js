@@ -8,6 +8,7 @@ export default function useSubscribeMySubIdentities() {
   const [subsDeposit, setSubsDeposit] = useState(null);
   const [subs, setSubs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [timemap, setTimemap] = useState();
 
   useEffect(() => {
     if (!api || !address || !api.query.identity?.subsOf) {
@@ -59,11 +60,16 @@ export default function useSubscribeMySubIdentities() {
         unsub();
       }
     };
-  }, [api, address]);
+  }, [api, address, timemap]);
+
+  const retry = () => {
+    setTimemap(Date.now());
+  };
 
   return {
     subsDeposit,
     subs,
     isLoading,
+    retry,
   };
 }

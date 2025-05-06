@@ -47,17 +47,13 @@ export default function RegistrarsTable({
           rows={(registrars || []).map((item, index) => {
             const time = item?.statistics?.lastGivenIndexer?.blockTime;
             return [
+              <RegistrarUserAddress
+                key={`account-${item.account}`}
+                item={item}
+                index={index}
+              />,
               <div
-                className="flex items-center gap-x-2"
-                key={`account-${index}`}
-              >
-                <span className="text-textPrimary text14Medium inline-block w-6">
-                  #{index + 1}
-                </span>
-                <AddressUser add={item.account} />
-              </div>,
-              <div
-                key={`last-judgement-${index}`}
+                key={`last-judgement-${item.account}`}
                 className="text-textTertiary text14Medium"
               >
                 {time ? formatTimeAgo(time) : "-"}
@@ -86,6 +82,17 @@ export default function RegistrarsTable({
           noDataText="No registrars"
         />
       </SecondaryCard>
+    </div>
+  );
+}
+
+function RegistrarUserAddress({ item, index }) {
+  return (
+    <div className="flex items-center gap-x-2">
+      <span className="text-textPrimary text14Medium inline-block w-6">
+        #{index + 1}
+      </span>
+      <AddressUser key={`account-${item.account}`} add={item.account} />
     </div>
   );
 }

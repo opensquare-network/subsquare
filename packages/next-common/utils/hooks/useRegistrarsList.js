@@ -1,10 +1,50 @@
 import { useState, useEffect, useMemo } from "react";
 import { queryPeopleRegistrarsFromApi } from "next-common/services/gql/identity";
-import useRegistrars from "next-common/hooks/people/useRegistrars";
+import { useContextApi } from "next-common/context/api";
 
 export default function useRegistrarsList() {
-  const { registrars: storageRegistrars, isLoading } = useRegistrars();
+  const api = useContextApi();
+  const [storageRegistrarsResult, setStorageRegistrarsResult] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [chainRegistrars, setChainRegistrars] = useState([]);
+
+  useEffect(() => {
+    async function fetchStorageRegistrars() {
+      setIsLoading(true);
+      try {
+        const res = await api?.query?.identity?.registrars();
+        setStorageRegistrarsResult(res);
+      } catch (error) {
+        console.error(error);
+      }
+      setIsLoading(false);
+    }
+
+    fetchStorageRegistrars();
+  }, [api]);
+
+  const storageRegistrars = useMemo(() => {
+    if (!storageRegistrarsResult) {
+      return [];
+    }
+
+    return (storageRegistrarsResult || [])
+      .map((registrar, index) => {
+        if (registrar?.isNone) {
+          return null;
+        }
+
+        const { account, fee, fields } = registrar.unwrap();
+
+        return {
+          index,
+          account: account?.toJSON(),
+          fee: fee?.toString(),
+          fields: fields?.toString(),
+        };
+      })
+      .filter((registrar) => registrar !== null);
+  }, [storageRegistrarsResult]);
 
   useEffect(() => {
     const fetchRegistrars = async () => {

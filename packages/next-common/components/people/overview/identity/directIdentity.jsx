@@ -157,6 +157,7 @@ export function DirectIdentity({ subMyIdentityInfo }) {
       <PropList subMyIdentityInfo={subMyIdentityInfo} />
       {isSubIdentity && (
         <>
+          <Divider className="my-4" />
           <PropListWrapper className="space-y-2 ml-14">
             <div className="flex">
               <PropListLabel>Parent</PropListLabel>
@@ -169,6 +170,7 @@ export function DirectIdentity({ subMyIdentityInfo }) {
               </PropListValue>
             </div>
           </PropListWrapper>
+          <Divider className="my-4" />
         </>
       )}
     </>

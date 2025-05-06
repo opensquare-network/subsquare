@@ -6,7 +6,7 @@ import useRegistrarsList from "next-common/utils/hooks/useRegistrarsList";
 import RegistrarsTable from "./table";
 
 export default function PeopleRegistrarsPage() {
-  const { registrars = [], isLoading = false, total } = useRegistrarsList();
+  const { registrars = [], isLoading, total = 3 } = useRegistrarsList();
   return (
     <ListLayout
       title="Registrars"

@@ -96,7 +96,7 @@ export function getCachedIdentity(chain, address) {
 
 export const getIdentity = getCachedIdentity;
 
-export const clearCachedIdentitys = (list) => {
+export const clearCachedIdentitys = (list, clearPending = false) => {
   list.forEach((item) => {
     if (!item.chain || !item.address) {
       return;
@@ -104,5 +104,8 @@ export const clearCachedIdentitys = (list) => {
 
     const idName = `${item.chain}/${item.address}`;
     cachedIdentities.delete(idName);
+    if (clearPending) {
+      pendingQueries.delete(idName);
+    }
   });
 };
