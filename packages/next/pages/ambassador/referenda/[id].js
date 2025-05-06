@@ -1,5 +1,5 @@
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import nextApi, { backendApi } from "next-common/services/nextApi";
 import {
   ambassadorParamsApi,
   getAmbassadorReferendumCommentsUrl,
@@ -119,7 +119,7 @@ export default function ReferendumPage({ detail }) {
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
-  const { result: detail } = await nextApi.fetch(
+  const { result: detail } = await backendApi.fetch(
     getAmbassadorReferendumUrl(id),
   );
   const tracksProps = await fetchOpenGovTracksProps();
@@ -132,7 +132,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
     context,
   );
 
-  const { result: ambassadorParams = {} } = await nextApi.fetch(
+  const { result: ambassadorParams = {} } = await backendApi.fetch(
     ambassadorParamsApi,
   );
 
