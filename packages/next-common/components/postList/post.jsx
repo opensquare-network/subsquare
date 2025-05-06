@@ -285,6 +285,7 @@ export default function Post({ data, href, type }) {
   }
 
   const timeAgo = formatTimeAgo(data.time);
+  const createAgo = formatTimeAgo(data.createdAt);
 
   let elapseIcon = null;
   if (
@@ -385,13 +386,28 @@ export default function Post({ data, href, type }) {
             {data.time && (
               <Info>
                 <SystemActivity className="w-4 h-4 stroke-textTertiary [&_path]:stroke-2" />
-                <span>{timeAgo}</span>
+                <Tooltip
+                  className="flex"
+                  content={
+                    <div className="text12Medium">
+                      <ul className=" list-disc list-inside ">
+                        <li>Created at {createAgo}</li>
+                        <li>Latest activity at {timeAgo}</li>
+                      </ul>
+                    </div>
+                  }
+                >
+                  <span className="cursor-pointer">{timeAgo}</span>
+                </Tooltip>
                 <Flex className="elapseIcon">{elapseIcon}</Flex>
               </Info>
             )}
             {commentsCount > -1 && (
               <MobileHiddenInfo>
-                <Tooltip content={`${commentsCount} comments`} className="flex">
+                <Tooltip
+                  content={`${commentsCount} comments`}
+                  className="flex cursor-pointer"
+                >
                   <SystemComment className="w-4 h-4 stroke-textTertiary [&_path]:stroke-2" />
                   {`${commentsCount}`}
                 </Tooltip>
