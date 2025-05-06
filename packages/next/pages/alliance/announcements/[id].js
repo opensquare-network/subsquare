@@ -1,5 +1,5 @@
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import { PostProvider, usePost } from "next-common/context/post";
 import DetailLayout from "next-common/components/layout/DetailLayout";
@@ -61,7 +61,7 @@ export default function AnnouncementPage({ announcement }) {
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
-  const { result: announcement } = await nextApi.fetch(
+  const { result: announcement } = await backendApi.fetch(
     `alliance/announcements/${id}`,
   );
   if (!announcement) {

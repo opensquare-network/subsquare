@@ -1,5 +1,5 @@
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
@@ -105,9 +105,9 @@ export const getServerSideProps = withCommonProps(async (context) => {
     { result: childBounties },
     { result: tracksDetail },
   ] = await Promise.all([
-    nextApi.fetch(`treasury/bounties/${id}`),
-    nextApi.fetch(`treasury/bounties/${id}/child-bounties`, { pageSize: 5 }),
-    nextApi.fetch(gov2TracksApi),
+    backendApi.fetch(`treasury/bounties/${id}`),
+    backendApi.fetch(`treasury/bounties/${id}/child-bounties`, { pageSize: 5 }),
+    backendApi.fetch(gov2TracksApi),
   ]);
 
   if (!detail) {

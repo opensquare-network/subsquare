@@ -1,7 +1,7 @@
 import PostList from "next-common/components/postList";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import nextApi, { backendApi } from "next-common/services/nextApi";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizePolkassemblyDiscussionListItem from "next-common/utils/viewfuncs/discussion/normalizePaListItem";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
@@ -37,7 +37,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
   const { page, page_size: pageSize } = context.query;
 
   const [{ result: posts }] = await Promise.all([
-    nextApi.fetch("polkassembly-discussions", {
+    backendApi.fetch("polkassembly-discussions", {
       page: page ?? 1,
       pageSize: pageSize ?? defaultPageSize,
     }),

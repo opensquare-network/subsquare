@@ -1,8 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import nextApi from "../../../services/nextApi";
-import {
-  getFellowshipReferendumVoteCallsApi,
-} from "../../../services/url";
+import { backendApi } from "../../../services/nextApi";
+import { getFellowshipReferendumVoteCallsApi } from "../../../services/url";
 import { emptyVotes } from "../../../utils/democracy/votes/passed/common";
 
 const fellowshipVoteCallSlice = createSlice({
@@ -21,15 +19,12 @@ const fellowshipVoteCallSlice = createSlice({
   },
 });
 
-export const {
-  setVoteCalls,
-  setIsLoadingVoteCalls,
-} = fellowshipVoteCallSlice.actions;
+export const { setVoteCalls, setIsLoadingVoteCalls } =
+  fellowshipVoteCallSlice.actions;
 
 export const isLoadingVoteCallsSelector = (state) =>
   state.fellowshipVoteCalls.isLoadingVoteCalls;
-export const voteCallsSelector = (state) =>
-  state.fellowshipVoteCalls.voteCalls;
+export const voteCallsSelector = (state) => state.fellowshipVoteCalls.voteCalls;
 
 export const clearVoteCalls = () => async (dispatch) => {
   dispatch(setVoteCalls(emptyVotes));
@@ -54,7 +49,7 @@ export const fetchVoteCalls = (referendumIndex) => async (dispatch) => {
   dispatch(clearVoteCalls());
   dispatch(setIsLoadingVoteCalls(true));
   try {
-    const { result } = await nextApi.fetch(
+    const { result } = await backendApi.fetch(
       getFellowshipReferendumVoteCallsApi(referendumIndex),
     );
 
