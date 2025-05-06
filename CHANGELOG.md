@@ -2,6 +2,39 @@
 
 All notable changes to this project will be documented in this file.
 
+# 4.7.0
+
+date: 2025-05-02
+
+- Fellowship
+    - Add vote buttons on fellowship members table wish column.
+    - Enable members to vote a wish evidence directly on evidence detail page.
+    - Add skeleton loading for the ongoing cycle on the salary list.
+    - Fix wish bar to show promotion wish on fellowship member page.
+    - Fix rank view on fellowship statistics page.
+    - Improve the IPFS link with an icon instead of showing all the CID.
+    - Fix the action popup hidden by table border style issue on members page.
+    - Improve the summary and description on members page.
+    - Add a panel on overview page to guid users to join fellowship.
+    - Fix members refresh after demotion actions on members page.
+    - Show salary info and activeness status on the salary claim popup.
+- Add wizards in the process to create a new OpenGov referendum.
+- Support searching OpenGov/Democracy referenda, bounties and child bounties by title.
+- Support banner setting on the user profile page.
+- Sort delegations by votes on the user profile page.
+- Add an advanced menu and put preimages, data and system para chains menu in it.
+- Fix received delegation summary on my delegation page.
+- Implement an ErrorBoundary component to increase page robustness.
+- Update polkadot treasury by adding the 3rd stable coin acquisition address on hydration.
+- Refactor polkadot/kusama chain configs.
+- Add more tooltips on the referenda voting popup to for better user understanding.
+- Support deployment by [vercel](https://vercel.com). We did this because some community members tell us in their
+  locations current deployment is super slow sometimes.
+- Upgrade mimir SDK to support their latest features and release.
+- Add a cache and wrap components with `React#memo` to stop voters flicker on votes popup. There are still performance
+  issues with votes popup, and we may try other ways to improve it.
+- Fix styles.
+
 # 4.6.3
 
 date: 2025-04-20

@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
+import useFellowshipCoreMembersWithRank from "next-common/hooks/fellowship/core/useFellowshipCoreMembersWithRank";
 import { partition } from "lodash-es";
 import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import { useSelector } from "react-redux";
@@ -37,7 +37,7 @@ export default function useDemotionExpiredMembers({
   isCandidate = false,
 } = {}) {
   const { members: coreMembers, loading: isMembersLoading } =
-    useFellowshipCoreMembers();
+    useFellowshipCoreMembersWithRank();
 
   const [members] = useMemo(
     () =>

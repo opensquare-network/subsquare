@@ -16,7 +16,7 @@ import {
 import dynamic from "next/dynamic";
 import BillBoardPanel from "next-common/components/billBoardPanel";
 import ShallowLink from "next-common/components/shallowLink";
-import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
+import useFellowshipCoreMembersWithRank from "next-common/hooks/fellowship/core/useFellowshipCoreMembersWithRank";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { SystemFilter } from "@osn/icons/subsquare";
 import { useRouter } from "next/router";
@@ -29,7 +29,7 @@ const MenuHorn = dynamic(() => import("@osn/icons/subsquare/MenuHorn"));
 function useAvailablePromotionCount() {
   const latestHeight = useSelector(chainOrScanHeightSelector);
   const { members: coreMembers, loading: isLoading } =
-    useFellowshipCoreMembers();
+    useFellowshipCoreMembersWithRank();
   const params = useCoreFellowshipParams();
 
   const availablePromotionCount = useMemo(() => {
@@ -118,7 +118,7 @@ function useMemberDemotionExpirationCounts(members) {
 
 export function useEligibleFellowshipCoreMembers() {
   const { members: coreMembers, loading: isLoading } =
-    useFellowshipCoreMembers();
+    useFellowshipCoreMembersWithRank();
   const [members] = useMemo(
     () => partition(coreMembers, (m) => m.rank > 0),
     [coreMembers],

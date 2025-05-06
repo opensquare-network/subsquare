@@ -7,7 +7,7 @@ import SummaryItem from "next-common/components/summary/layout/item";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { usePageProps } from "next-common/context/page";
-import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
+import useFellowshipCoreMembersWithRank from "next-common/hooks/fellowship/core/useFellowshipCoreMembersWithRank";
 import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import nextApi from "next-common/services/nextApi";
 import {
@@ -36,7 +36,7 @@ export default function ProfileFellowshipMemberInfo({
 }
 
 function ProfileFellowshipMemberInfoImpl({ address }) {
-  const { members } = useFellowshipCoreMembers();
+  const { members } = useFellowshipCoreMembersWithRank();
   const member = find(members, { address });
 
   if (!member) {
@@ -52,7 +52,7 @@ function ProfileFellowshipMemberInfoImpl({ address }) {
 }
 
 function ProfileFellowshipAmbassadorMemberInfoImpl({ address }) {
-  const { members } = useFellowshipCoreMembers();
+  const { members } = useFellowshipCoreMembersWithRank();
   const member = find(members, { address });
 
   if (!member) {

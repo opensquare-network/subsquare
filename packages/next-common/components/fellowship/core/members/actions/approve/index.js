@@ -2,7 +2,7 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Tooltip from "next-common/components/tooltip";
 import { useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
+import useFellowshipCoreMembersWithRank from "next-common/hooks/fellowship/core/useFellowshipCoreMembersWithRank";
 import { find } from "lodash-es";
 import { CollectivesRetainTracks } from "next-common/components/fellowship/core/members/actions/approve/constants";
 import useRelatedRetentionReferenda from "next-common/hooks/fellowship/useRelatedRetentionReferenda";
@@ -26,7 +26,7 @@ export function useCanApprove(member) {
   const { address: memberAddress } = member;
   const { relatedReferenda } = useRelatedRetentionReferenda(memberAddress);
 
-  const { members } = useFellowshipCoreMembers();
+  const { members } = useFellowshipCoreMembersWithRank();
   const me = find(members, { address });
 
   const myRankOk = me && me.rank >= 3;
