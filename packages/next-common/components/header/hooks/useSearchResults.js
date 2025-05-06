@@ -24,8 +24,9 @@ function useSearchResults() {
     async (searchValue, identityChain) => {
       try {
         const { identities } = (await fetchIdentities(searchValue)) ?? {};
+        if (!identities) return null;
 
-        const accounts = (Object?.entries(identities) ?? []).flatMap(
+        const accounts = (Object.entries(identities) ?? []).flatMap(
           ([key, value]) => {
             if (key === "identities") {
               return value.map((item) => item.account);
@@ -164,8 +165,8 @@ function useSearchResults() {
           return formatItems("Bounties", value, "bountyIndex");
         case "childBounties":
           return formatItems("ChildBounties", value, "index");
-        // case "identities":
-        //   return formatItems("Identities", value, "index");
+        case "identities":
+          return formatItems("Identities", value, "index");
         default:
           return [];
       }
