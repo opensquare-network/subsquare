@@ -60,6 +60,14 @@ export default async function newApi(chain, endpoint) {
   return await apiMap.get(endpoint);
 }
 
+export async function newOriginApi(chain, endpoint) {
+  if (!Object.values(Chains).includes(chain)) {
+    throw new Error(`Invalid chain: ${chain} to construct api`);
+  }
+
+  return await newApiPromise(chain, endpoint);
+}
+
 export function getApiMap() {
   return apiMap;
 }
