@@ -19,3 +19,4 @@ export const GET_IDENTITIES = gql`
 `;
 
 export const LIMIT = 100;
+export const OFFSET = 0;

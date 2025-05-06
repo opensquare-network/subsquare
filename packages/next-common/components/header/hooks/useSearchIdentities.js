@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
   GET_IDENTITIES,
   LIMIT,
+  OFFSET,
 } from "next-common/components/header/search/constant/index";
 import useRefCallback from "next-common/hooks/useRefCallback";
 import { useChain } from "next-common/context/chain";
@@ -20,7 +21,7 @@ export default function useSearchIdentities() {
           query: GET_IDENTITIES,
           variables: {
             limit: LIMIT,
-            offset: 0,
+            offset: OFFSET,
             search: searchValue,
           },
         })) ?? {};

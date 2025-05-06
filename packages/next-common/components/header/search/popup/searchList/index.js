@@ -31,7 +31,7 @@ const SearchItem = memo(function ItemContent({ row, onClose }) {
       }}
     >
       {type === ItemType.CATEGORY ? (
-        <div className="h-9 px-4 py-2.5 rounded-[6px] flex items-center text12Medium text-textTertiary">
+        <div className="h-9 px-2 py-2.5 rounded-[6px] flex items-center text12Medium text-textTertiary">
           {category}
         </div>
       ) : (
