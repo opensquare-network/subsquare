@@ -391,8 +391,10 @@ export default function Post({ data, href, type }) {
             )}
             {commentsCount > -1 && (
               <MobileHiddenInfo>
-                <SystemComment className="w-4 h-4 stroke-textTertiary [&_path]:stroke-2" />
-                {`${commentsCount}`}
+                <Tooltip content={`${commentsCount} comments`} className="flex">
+                  <SystemComment className="w-4 h-4 stroke-textTertiary [&_path]:stroke-2" />
+                  {`${commentsCount}`}
+                </Tooltip>
               </MobileHiddenInfo>
             )}
             {showTally && hasTally && (
