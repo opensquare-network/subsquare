@@ -1,10 +1,22 @@
-import { LinkElement, LinkEmail, LinkTelegram } from "@osn/icons/subsquare";
+import {
+  LinkElement,
+  LinkEmail,
+  LinkTelegram,
+  LinkGithub,
+} from "@osn/icons/subsquare";
 import ThemeModeProvider from "next-common/context/theme";
 import SecondaryButton from "next-common/lib/button/secondary";
 import Link from "next/link";
 import ExternalLink from "../externalLink";
+import { memo } from "react";
+import { cn } from "next-common/utils";
 
 const contactLinks = [
+  {
+    name: "Github",
+    link: "https://github.com/opensquare-network/subsquare/issues",
+    icon: LinkGithub,
+  },
   {
     name: "Telegram",
     link: "https://t.me/opensquare",
@@ -21,6 +33,22 @@ const contactLinks = [
     icon: LinkEmail,
   },
 ];
+
+export const ContactWithUs = memo(function ContactWithUs({ className = "" }) {
+  return (
+    <div className={cn("flex", "items-center", "gap-x-2", className)}>
+      {contactLinks.map((contact) => (
+        <ExternalLink
+          externalIcon={false}
+          href={contact.link}
+          key={contact.name}
+        >
+          <contact.icon className="w-5 h-5 text-textTertiary" />
+        </ExternalLink>
+      ))}
+    </div>
+  );
+});
 
 export default function ErrorLayout({ icon, title, description }) {
   return (
@@ -39,17 +67,7 @@ export default function ErrorLayout({ icon, title, description }) {
 
         <div className="flex flex-col items-center gap-y-2">
           <div className="text-textSecondary">Contact Support</div>
-          <div className="flex items-center gap-x-2">
-            {contactLinks.map((contact) => (
-              <ExternalLink
-                externalIcon={false}
-                href={contact.link}
-                key={contact.name}
-              >
-                <contact.icon className="w-5 h-5 text-textTertiary" />
-              </ExternalLink>
-            ))}
-          </div>
+          <ContactWithUs />
         </div>
       </div>
     </ThemeModeProvider>

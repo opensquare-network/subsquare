@@ -33,6 +33,7 @@ export default function DVDelegateCard({ data }) {
 
   const aye = data?.aye;
   const nay = data?.aye === false;
+  const split = data?.isSplit;
   const abstain = data?.isAbstain || data?.isSplitAbstain;
   const totalVotes = data?.totalVotes;
   const noVoted = isNil(totalVotes);
@@ -46,7 +47,9 @@ export default function DVDelegateCard({ data }) {
   ).toFixed(2)}%`;
 
   let voteStats;
-  if (abstain) {
+  if (split) {
+    voteStats = `split (${percentage})`;
+  } else if (abstain) {
     voteStats = `abstain (${percentage})`;
   } else if (aye) {
     voteStats = `aye (${percentage})`;
@@ -62,6 +65,7 @@ export default function DVDelegateCard({ data }) {
         aye && "bg-green100 text-green500",
         nay && "bg-red100 text-red500",
         abstain && "bg-neutral200 text-textSecondary",
+        split && "bg-neutral200 text-textSecondary",
         noVoted && "bg-neutral200 text-textDisabled",
       )}
     >
