@@ -4,39 +4,36 @@ import { defaultPageSize } from "next-common/utils/constants";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import TableHeader from "next-common/components/data/common/tableHeader";
-import usePeopleChainIdentityList from "next-common/hooks/people/usePeopleChainIdentityList";
+import { useOnchainPeopleChainIdentityList } from "next-common/hooks/people/usePeopleChainIdentityList";
 import AddressUser from "next-common/components/user/addressUser";
-import dayjs from "dayjs";
-import { useDebounce } from "react-use";
-import columns from "./columns";
+import columns from "../columns";
 
-export default function IdentitiesTable() {
+export default function OnchainIdentitiesTable() {
   const router = useRouter();
-  const [debouncedSearchValue, setDebouncedSearchValue] = useState("");
   const [total, setTotal] = useState(0);
   const {
     page,
     component: pageComponent,
     setPage,
   } = usePaginationComponent(total, defaultPageSize);
-  const { data, isLoading } = usePeopleChainIdentityList({
-    page,
-    search: debouncedSearchValue,
-  });
-  const identitieList = useMemo(() => data?.identities ?? [], [data]);
 
-  useDebounce(
-    () => {
-      setDebouncedSearchValue(router.query.search);
-    },
-    500,
-    [router.query.search],
-  );
+  const { data: identitieList, isLoading } =
+    useOnchainPeopleChainIdentityList();
+
+  const currentPageData = useMemo(() => {
+    if (!identitieList) {
+      return [];
+    }
+
+    const startIndex = (page - 1) * defaultPageSize;
+    const endIndex = startIndex + defaultPageSize;
+
+    return identitieList.slice(startIndex, endIndex);
+  }, [identitieList, page]);
 
   useEffect(() => {
-    setTotal(data?.total || 0);
-  }, [data]);
+    setTotal(identitieList?.length || 0);
+  }, [identitieList]);
 
   useEffect(() => {
     if (router.query) {
@@ -46,24 +43,23 @@ export default function IdentitiesTable() {
 
   return (
     <div className="flex flex-col gap-y-4">
-      <TableHeader showMyRelated={false} total={total} loading={isLoading} />
       <SecondaryCard className="space-y-2">
         <DataList
           columns={columns}
-          rows={identitieList.map((item, index) => {
+          rows={(currentPageData || [])?.map((item, index) => {
             return [
-              <AddressUser key={`account-${index}`} add={item.account} />,
+              <AddressUser key={`account-${index}`} add={item.address} />,
               <div
                 key={`subsCount-${index}`}
                 className="text-textPrimary text14Medium"
               >
-                {item.subsCount}
+                -
               </div>,
               <div
                 key={`latestUpdate-${index}`}
                 className="text-textTertiary text14Medium"
               >
-                {dayjs(item.latestUpdate).format("YYYY-MM-DD HH:mm:ss")}
+                -
               </div>,
             ];
           })}

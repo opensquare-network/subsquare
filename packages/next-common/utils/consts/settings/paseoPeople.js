@@ -30,7 +30,7 @@ const paseoPeople = {
   ],
   noScan: true,
   integrations: {
-    statescan: true,
+    statescan: false,
     subscan: {
       domain: "people-paseo",
     },

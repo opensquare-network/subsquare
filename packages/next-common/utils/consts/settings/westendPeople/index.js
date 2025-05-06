@@ -34,7 +34,7 @@ const westendPeople = {
   ],
   noScan: true,
   integrations: {
-    statescan: true,
+    statescan: false,
     subscan: {
       domain: "people-westend",
     },
