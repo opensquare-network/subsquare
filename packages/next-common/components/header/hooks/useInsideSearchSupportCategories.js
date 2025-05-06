@@ -14,6 +14,10 @@ export default function useInsideSearchSupportCategories() {
     categories.push("Bounties");
   }
 
+  if (modules?.identity) {
+    categories.push("Identity");
+  }
+
   const categoryString =
     categories.length > 0
       ? categories.length > 3

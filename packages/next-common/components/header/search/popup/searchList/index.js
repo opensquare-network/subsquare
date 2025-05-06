@@ -8,13 +8,18 @@ import {
   MenuDemocracy,
   MenuBounties,
   MenuChildBounties,
+  MenuUser,
 } from "@osn/icons/subsquare";
 import Link from "next/link";
 import { ItemType } from "next-common/components/header/hooks/useSearchResults";
+import IdentityIcon from "next-common/components/Identity/identityIcon";
+import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 
 const SearchItem = memo(function ItemContent({ row, onClose }) {
   const { index, title, content, type, proposalType } = row;
   const { path, category } = getPathAndCategoryByItemData(row);
+  const address = proposalType === SearchType.IDENTITIES ? content : "";
+  const { identity } = useIdentityInfo(address);
 
   return (
     <Link
@@ -48,6 +53,9 @@ const SearchItem = memo(function ItemContent({ row, onClose }) {
             {proposalType === SearchType.CHILD_BOUNTIES && (
               <MenuChildBounties className="w-6 h-6 [&_path]:fill-textTertiary" />
             )}
+            {proposalType === SearchType.IDENTITIES && (
+              <MenuUser className="w-6 h-6 [&_path]:fill-textTertiary" />
+            )}
           </p>
           <p className="pl-2 flex flex-col justify-between min-w-0 flex-1">
             <span
@@ -60,7 +68,12 @@ const SearchItem = memo(function ItemContent({ row, onClose }) {
                 textOverflow: "ellipsis",
               }}
             >
-              {`#${index}`}&nbsp;·&nbsp;{title}
+              {proposalType !== SearchType.IDENTITIES && `#${index} · ${title}`}
+              {proposalType === SearchType.IDENTITIES && (
+                <span className="flex">
+                  <IdentityIcon identity={identity} /> &nbsp;{title}
+                </span>
+              )}
             </span>
             {content !== "-" && (
               <span
