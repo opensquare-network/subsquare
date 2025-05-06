@@ -1,7 +1,7 @@
-import nextApi from "./nextApi";
+import { backendApi } from "./nextApi";
 
 export function fetchScanHeight() {
-  return nextApi.fetch("inspect/scan-height").then((resp) => {
+  return backendApi.fetch("inspect/scan-height").then((resp) => {
     return resp?.result?.value;
   });
 }

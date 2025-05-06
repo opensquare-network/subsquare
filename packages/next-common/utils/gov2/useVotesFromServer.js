@@ -1,4 +1,4 @@
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { useEffect, useState } from "react";
 import { sortVotes } from "next-common/utils/democracy/votes/passed/common";
 import { useDispatch, useSelector } from "react-redux";
@@ -107,8 +107,7 @@ export function useFetchVotesFromServer(referendumIndex) {
     if (votingFinishedHeight && loaded) {
       return;
     }
-
-    nextApi
+    backendApi
       .fetch(`gov2/referenda/${referendumIndex}/votes`)
       .then(({ result: votes }) => {
         const allVotes = (votes || []).reduce((result, vote) => {
@@ -145,7 +144,7 @@ export default function useVotesFromServer(referendumIndex) {
 
   useEffect(() => {
     if (!reduxVotes) {
-      nextApi
+      backendApi
         .fetch(`gov2/referenda/${referendumIndex}/votes`)
         .then(({ result: votes }) => setVotes(votes));
     }
