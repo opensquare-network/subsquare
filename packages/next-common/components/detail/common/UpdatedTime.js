@@ -23,7 +23,7 @@ export default function UpdatedTime() {
         className="flex cursor-pointer"
         content={
           <div className="text12Medium">
-            <ul className=" list-disc list-inside ">
+            <ul className="list-disc list-inside">
               <li>Created at {createAgo}</li>
               <li>Latest activity at {timeAgo}</li>
             </ul>

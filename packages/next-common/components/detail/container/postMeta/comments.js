@@ -21,7 +21,7 @@ export default function CommentsMeta() {
         className="flex cursor-pointer"
       >
         <SystemComment className="w-4 h-4 stroke-textTertiary [&_path]:stroke-2" />
-        {`${commentsCount}`}
+        {commentsCount}
       </Tooltip>
     </Info>
   );

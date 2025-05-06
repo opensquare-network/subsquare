@@ -390,7 +390,7 @@ export default function Post({ data, href, type }) {
                   className="flex"
                   content={
                     <div className="text12Medium">
-                      <ul className=" list-disc list-inside ">
+                      <ul className="list-disc list-inside">
                         <li>Created at {createAgo}</li>
                         <li>Latest activity at {timeAgo}</li>
                       </ul>
@@ -409,7 +409,7 @@ export default function Post({ data, href, type }) {
                   className="flex cursor-pointer"
                 >
                   <SystemComment className="w-4 h-4 stroke-textTertiary [&_path]:stroke-2" />
-                  {`${commentsCount}`}
+                  {commentsCount}
                 </Tooltip>
               </MobileHiddenInfo>
             )}
