@@ -29,6 +29,15 @@ function matchJudgementStatus(storageValue) {
   }
 }
 
+function isDepositZero(storageValue) {
+  const jsonValue = storageValue?.toJSON() || [];
+  const deposit = Array.isArray(jsonValue)
+    ? jsonValue[0]?.deposit
+    : jsonValue?.deposit;
+
+  return deposit === 0;
+}
+
 export default function useOnchainPeopleIdentityList() {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState(null);
@@ -43,16 +52,22 @@ export default function useOnchainPeopleIdentityList() {
       return;
     }
 
-    const results = (value || []).map(([storageKey, storageValue]) => {
-      const address = storageKey?.args[0]?.toString();
-      const status = matchJudgementStatus(storageValue);
+    const results = (value || [])
+      .map(([storageKey, storageValue]) => {
+        if (isDepositZero(storageValue)) {
+          return null;
+        }
 
-      return {
-        address,
-        ...storageValue?.toJSON(),
-        status,
-      };
-    });
+        const address = storageKey?.args[0]?.toString();
+        const status = matchJudgementStatus(storageValue);
+
+        return {
+          address,
+          ...storageValue?.toJSON(),
+          status,
+        };
+      })
+      ?.filter(Boolean);
 
     setData(results);
     setIsLoading(false);
