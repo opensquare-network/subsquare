@@ -37,12 +37,12 @@ export default function NetworkOptionGroup({ groupName, activeNode, setShow }) {
             if (chain === nodeChain) {
               url = "/";
             } else {
-              url = `https://${node.domain || node.value}.subsquare.io`;
+              url = `https://${node.domain || node.value}.subsquare.io/`;
             }
           }
 
           if (url && isAssetHubNode) {
-            url = `${url}/assethub`;
+            url = `${url}./assethub`;
           }
 
           return (
