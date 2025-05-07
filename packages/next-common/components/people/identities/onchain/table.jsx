@@ -4,11 +4,10 @@ import { defaultPageSize } from "next-common/utils/constants";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import { useOnchainPeopleChainIdentityList } from "next-common/hooks/people/usePeopleChainIdentityList";
 import AddressUser from "next-common/components/user/addressUser";
 import columns from "../columns";
 
-export default function OnchainIdentitiesTable() {
+export default function OnchainIdentitiesTable({ identitieList, isLoading }) {
   const router = useRouter();
   const [total, setTotal] = useState(0);
   const {
@@ -16,9 +15,6 @@ export default function OnchainIdentitiesTable() {
     component: pageComponent,
     setPage,
   } = usePaginationComponent(total, defaultPageSize);
-
-  const { data: identitieList, isLoading } =
-    useOnchainPeopleChainIdentityList();
 
   const currentPageData = useMemo(() => {
     if (!identitieList) {
