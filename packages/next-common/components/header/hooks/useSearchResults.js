@@ -38,7 +38,7 @@ function useSearchResults() {
 
         return await fetchBatchIdentities(identityChain, accounts);
       } catch (e) {
-        Promise.reject(e);
+        return Promise.reject(e);
       }
     },
   );
@@ -53,7 +53,7 @@ function useSearchResults() {
         { signal },
       );
     } catch (e) {
-      Promise.reject(e);
+      return Promise.reject(e);
     }
   });
 
