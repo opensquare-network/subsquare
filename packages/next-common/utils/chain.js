@@ -42,6 +42,10 @@ export function isKusamaPeopleChain(chain) {
   return [Chains.kusamaPeople].includes(chain);
 }
 
+export function isWestendPeopleChain(chain) {
+  return [Chains.westendPeople].includes(chain);
+}
+
 export function isKusamaChain(chain) {
   return [Chains.kusama].includes(chain);
 }
@@ -81,6 +85,7 @@ export function isPeopleChain(chain) {
     Chains.polkadotPeople,
     Chains.kusamaPeople,
     Chains.paseoPeople,
+    Chains.westendPeople,
   ].includes(chain);
 }
 
@@ -140,6 +145,8 @@ export function getRelayChain(chain) {
     return Chains.kusama;
   } else if (isPaseoPeopleChain(chain)) {
     return Chains.paseo;
+  } else if (isWestendPeopleChain(chain)) {
+    return Chains.westend;
   }
 
   throw new Error("Unsupported relay chain");

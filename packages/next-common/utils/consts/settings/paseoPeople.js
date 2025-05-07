@@ -3,7 +3,7 @@ import Chains from "../chains";
 import paseo from "./paseo";
 
 const ProjectIconPolkadotPeople = dynamic(() =>
-  import("@osn/icons/subsquare/ProjectIconPolkadotPeople"),
+  import("@osn/icons/subsquare/ProjectIconPaseoPeople"),
 );
 
 const paseoPeople = {
@@ -30,7 +30,7 @@ const paseoPeople = {
   ],
   noScan: true,
   integrations: {
-    statescan: true,
+    statescan: false,
     subscan: {
       domain: "people-paseo",
     },

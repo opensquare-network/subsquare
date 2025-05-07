@@ -1,12 +1,14 @@
 import { useState, useEffect, useMemo } from "react";
 import { queryPeopleRegistrarsFromApi } from "next-common/services/gql/identity";
 import { useContextApi } from "next-common/context/api";
+import { useChainSettings } from "next-common/context/chain";
 
 export default function useRegistrarsList() {
   const api = useContextApi();
   const [storageRegistrarsResult, setStorageRegistrarsResult] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [chainRegistrars, setChainRegistrars] = useState([]);
+  const { integrations } = useChainSettings();
 
   useEffect(() => {
     async function fetchStorageRegistrars() {
@@ -47,12 +49,16 @@ export default function useRegistrarsList() {
   }, [storageRegistrarsResult]);
 
   useEffect(() => {
+    if (!integrations?.statescan) {
+      return;
+    }
+
     const fetchRegistrars = async () => {
       const { data } = await queryPeopleRegistrarsFromApi();
       setChainRegistrars(data);
     };
     fetchRegistrars();
-  }, []);
+  }, [integrations?.statescan]);
 
   const registrars = useMemo(() => {
     return storageRegistrars.map((item) => {
