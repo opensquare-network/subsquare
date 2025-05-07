@@ -124,15 +124,15 @@ function CachedVotesList({ items = [], loading }) {
   const columns = [
     {
       name: "VOTES",
-      style: { minWidth: 240, textAlign: "left" },
+      style: { minWidth: "40%", textAlign: "left" },
     },
     {
       name: "DATE",
-      style: { width: 160, textAlign: "left" },
+      style: { width: "30%", textAlign: "left" },
     },
     {
       name: "CAPITAL",
-      style: { width: 160, textAlign: "right" },
+      style: { width: "30%", textAlign: "right" },
     },
   ];
 
@@ -142,12 +142,14 @@ function CachedVotesList({ items = [], loading }) {
         key="user"
         add={item.voter}
         noTooltip
-        maxWidth={264}
+        className="flex-1"
         link="/votes"
       />,
       <VoteTime key="date">
         <ExplorerLink indexer={item.indexer}>
-          {formatTime(item.indexer.blockTime)}
+          <span className="text14Medium">
+            {formatTime(item.indexer.blockTime)}
+          </span>
         </ExplorerLink>
       </VoteTime>,
       <CapitalListItem
