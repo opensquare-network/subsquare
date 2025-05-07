@@ -1,7 +1,8 @@
 import { useChainSettings } from "next-common/context/chain";
 
 export default function useInsideSearchSupportCategories() {
-  const { modules = {} } = useChainSettings() || {};
+  const node = useChainSettings();
+  const { modules = {} } = node ?? {};
   const { referenda, democracy = {}, treasury = {} } = modules;
 
   const categories = [];
@@ -14,7 +15,7 @@ export default function useInsideSearchSupportCategories() {
     categories.push("Bounties");
   }
 
-  if (modules?.identity) {
+  if (node?.graphql?.identity) {
     categories.push("Identity");
   }
 

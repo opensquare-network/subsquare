@@ -1,15 +1,10 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
-import { isKusamaChain, isPolkadotChain } from "next-common/utils/chain";
 import getChainSettings from "next-common/utils/consts/settings";
 
 function getSearchIdentityApiUrl(chain) {
-  const settings = getChainSettings(chain);
+  const { graphql } = getChainSettings(chain);
 
-  if (isPolkadotChain(chain) || isKusamaChain(chain)) {
-    return `https://${settings.graphqlApiSubDomain}.statescan.io/graphql`;
-  }
-
-  return null;
+  return `https://${graphql.domain}.statescan.io/graphql`;
 }
 
 function getDefaultOptions() {
@@ -26,16 +21,15 @@ function getDefaultOptions() {
 }
 
 export default function getIdentitySearchClient(chain) {
-  const chainSettings = getChainSettings(chain);
+  const { graphql } = getChainSettings(chain);
 
-  let searchIdentityClient;
-  if (chainSettings?.graphqlApiSubDomain) {
-    searchIdentityClient = new ApolloClient({
-      uri: getSearchIdentityApiUrl(chain),
-      cache: new InMemoryCache(),
-      defaultOptions: getDefaultOptions(),
-    });
+  if (!graphql || !graphql.identity || !graphql.domain) {
+    return null;
   }
 
-  return searchIdentityClient;
+  return new ApolloClient({
+    uri: getSearchIdentityApiUrl(chain),
+    cache: new InMemoryCache(),
+    defaultOptions: getDefaultOptions(),
+  });
 }

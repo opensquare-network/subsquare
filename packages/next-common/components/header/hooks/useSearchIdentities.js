@@ -7,14 +7,17 @@ import {
 import useRefCallback from "next-common/hooks/useRefCallback";
 import { useChain } from "next-common/context/chain";
 import { getIdentitySearchClient } from "next-common/components/header/search/utils/index";
+import { isNil } from "lodash-es";
 
 export default function useSearchIdentities() {
   const [isIdentitiesLoading, setIsIdentitiesLoading] = useState(false);
   const chain = useChain();
-  const identityClient = getIdentitySearchClient(chain);
 
   const fetchIdentities = useRefCallback(async (searchValue) => {
     try {
+      const identityClient = getIdentitySearchClient(chain);
+      if (isNil(identityClient)) return null;
+
       setIsIdentitiesLoading(true);
       const { data } =
         (await identityClient?.query?.({
@@ -25,6 +28,7 @@ export default function useSearchIdentities() {
             search: searchValue,
           },
         })) ?? {};
+
       return data;
     } finally {
       setIsIdentitiesLoading(false);

@@ -27,6 +27,11 @@ const kusama = {
   group: MenuGroups.KusamaAndParachains,
   links: kusamaLinks,
   graphqlApiSubDomain: "ksm-gh-api",
+  graphql: {
+    domain: "ksm-gh-api",
+    identity: true,
+    multisig: false,
+  },
   postLabels: defaultPostLabels,
   useVoteCall: true,
   hasMultisig: true,
