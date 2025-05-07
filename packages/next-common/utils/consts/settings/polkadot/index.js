@@ -37,6 +37,11 @@ const polkadot = {
   postLabels: defaultPostLabels,
   hasIdentityTimeline: true,
   graphqlApiSubDomain: "dot-gh-api",
+  graphql: {
+    domain: "dot-gh-api",
+    identity: true,
+    multisig: false,
+  },
   hasMultisig: true,
   multisigApiPrefix: "dot",
   useVoteCall: true,

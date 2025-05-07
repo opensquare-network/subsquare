@@ -8,6 +8,7 @@ export const SearchType = {
   DEMOCRACY_REFERENDA: "DemocracyReferenda",
   BOUNTIES: "Bounties",
   CHILD_BOUNTIES: "ChildBounties",
+  IDENTITIES: "Identities",
 };
 
 export const getPathAndCategoryByItemData = (item) => {
@@ -39,6 +40,13 @@ export const getPathAndCategoryByItemData = (item) => {
           ? `/treasury/child-bounties/${item.index}`
           : "/treasury/child-bounties",
       category: "Child Bounties",
+    },
+    [SearchType.IDENTITIES]: {
+      path:
+        item.type !== ItemType.IDENTITIES && item.content !== "-"
+          ? `/user/${item.content}`
+          : "/",
+      category: "Identities",
     },
   };
 
