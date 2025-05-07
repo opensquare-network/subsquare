@@ -3,7 +3,7 @@ import {
   GET_IDENTITIES,
   LIMIT,
   OFFSET,
-} from "next-common/components/header/search/constant/index";
+} from "next-common/components/header/search/constant";
 import useRefCallback from "next-common/hooks/useRefCallback";
 import { useChain } from "next-common/context/chain";
 import { getIdentitySearchClient } from "next-common/components/header/search/utils/index";

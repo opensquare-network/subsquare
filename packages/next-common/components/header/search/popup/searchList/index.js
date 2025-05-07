@@ -40,7 +40,7 @@ const SearchItem = memo(function ItemContent({ row, onClose }) {
             content === "-" ? "h-[40px] items-center" : "h-[60px]"
           }`}
         >
-          <p>
+          <div>
             {proposalType === SearchType.REFERENDA && (
               <MenuReferenda className="w-6 h-6 [&_path]:fill-textTertiary" />
             )}
@@ -56,8 +56,8 @@ const SearchItem = memo(function ItemContent({ row, onClose }) {
             {proposalType === SearchType.IDENTITIES && (
               <MenuUser className="w-6 h-6 [&_path]:fill-textTertiary" />
             )}
-          </p>
-          <p className="pl-2 flex flex-col justify-between min-w-0 flex-1">
+          </div>
+          <div className="pl-2 flex flex-col justify-between min-w-0 flex-1">
             <span
               className="text14Medium text-textPrimary"
               style={{
@@ -89,7 +89,7 @@ const SearchItem = memo(function ItemContent({ row, onClose }) {
                 {content}
               </span>
             )}
-          </p>
+          </div>
         </div>
       )}
     </Link>

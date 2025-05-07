@@ -35,12 +35,8 @@ function useSearchResults() {
             }
           },
         );
-        const identitiesResult = await fetchBatchIdentities(
-          identityChain,
-          accounts,
-        );
 
-        return identitiesResult;
+        return await fetchBatchIdentities(identityChain, accounts);
       } catch (e) {
         Promise.reject(e);
       }
