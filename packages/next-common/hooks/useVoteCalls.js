@@ -16,14 +16,17 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 export default function useVoteCalls(referendumIndex) {
   const { useVoteCall } = useChainSettings();
   const [result, setResult] = useState(emptyVotes);
+  const [apiResult, setApiResult] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const voteCallsStorage = useMemo(
     () =>
       getOrCreateStorage(
-        useVoteCall ? STORAGE_NAMES.CALLS : STORAGE_NAMES.EXTRINSICS,
+        `${
+          useVoteCall ? STORAGE_NAMES.CALLS : STORAGE_NAMES.EXTRINSICS
+        }-${referendumIndex}`,
       ),
-    [useVoteCall],
+    [useVoteCall, referendumIndex],
   );
 
   const fetchApi = useMemo(
@@ -34,44 +37,62 @@ export default function useVoteCalls(referendumIndex) {
     [useVoteCall],
   );
 
-  const getVoteCalls = useCallback(
+  const getVoteCallsFromSetorage = useCallback(
     async function () {
       const keys = await voteCallsStorage?.keys();
-      if (keys?.length) {
-        return {
-          allAye: await voteCallsStorage.getItem(STORAGE_ITEM_KEY.ALLAYE),
-          allNay: await voteCallsStorage.getItem(STORAGE_ITEM_KEY.ALLNAY),
-          allAbstain: await voteCallsStorage.getItem(
-            STORAGE_ITEM_KEY.ALLABSTAIN,
-          ),
-        };
-      } else {
-        return nextApi
-          .fetch(fetchApi(referendumIndex))
-          .then(({ result: apiResult }) => {
-            if (!apiResult) {
-              return emptyVotes;
-            }
-
-            const { allAye, allNay, allAbstain } = classifyVoteCalls(apiResult);
-
-            voteCallsStorage.setItem(STORAGE_ITEM_KEY.ALLAYE, allAye);
-            voteCallsStorage.setItem(STORAGE_ITEM_KEY.ALLNAY, allNay);
-            voteCallsStorage.setItem(STORAGE_ITEM_KEY.ALLABSTAIN, allAbstain);
-            return { allAye, allNay, allAbstain };
-          });
+      if (!voteCallsStorage || !keys?.length) {
+        return emptyVotes;
       }
+      return {
+        allAye: await voteCallsStorage.getItem(STORAGE_ITEM_KEY.ALLAYE),
+        allNay: await voteCallsStorage.getItem(STORAGE_ITEM_KEY.ALLNAY),
+        allAbstain: await voteCallsStorage.getItem(STORAGE_ITEM_KEY.ALLABSTAIN),
+      };
+    },
+    [voteCallsStorage],
+  );
+
+  const getVoteCallsFromApi = useCallback(
+    async function () {
+      return nextApi
+        .fetch(fetchApi(referendumIndex))
+        .then(({ result: apiResult }) => {
+          if (!apiResult) {
+            return emptyVotes;
+          }
+
+          const { allAye, allNay, allAbstain } = classifyVoteCalls(apiResult);
+
+          voteCallsStorage.setItem(STORAGE_ITEM_KEY.ALLAYE, allAye);
+          voteCallsStorage.setItem(STORAGE_ITEM_KEY.ALLNAY, allNay);
+          voteCallsStorage.setItem(STORAGE_ITEM_KEY.ALLABSTAIN, allAbstain);
+          return { allAye, allNay, allAbstain };
+        });
     },
     [referendumIndex, voteCallsStorage, fetchApi],
   );
 
   useEffect(() => {
+    if (apiResult) {
+      return;
+    }
+    getVoteCallsFromSetorage().then((result) => {
+      if (!apiResult) {
+        setResult(result);
+      }
+    });
+  }, [getVoteCallsFromSetorage, apiResult]);
+
+  useEffect(() => {
     setIsLoading(true);
 
-    getVoteCalls()
-      .then((res) => setResult(res))
+    getVoteCallsFromApi()
+      .then((res) => {
+        setResult(res);
+        setApiResult(res);
+      })
       .finally(() => setIsLoading(false));
-  }, [getVoteCalls]);
+  }, [getVoteCallsFromApi]);
 
   return { isLoading, result };
 }
