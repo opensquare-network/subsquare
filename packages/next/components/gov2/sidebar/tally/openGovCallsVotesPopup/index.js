@@ -1,7 +1,5 @@
 import { useEffect, useState, memo, useMemo } from "react";
 import VotesTab, { tabs } from "./tab";
-import { useSelector } from "react-redux";
-import { isLoadingVoteCallsSelector } from "next-common/store/reducers/gov2ReferendumSlice";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import ExplorerLink from "next-common/components/links/explorerLink";
@@ -38,11 +36,9 @@ const getVoter = (vote) => vote.voter;
 export default function OpenGovCallsVotesPopup({ setShowVoteList }) {
   const { referendumIndex } = useOnchainData();
   const {
-    allAye = [],
-    allNay = [],
-    allAbstain = [],
+    result: { allAye = [], allNay = [], allAbstain = [] },
+    isLoading,
   } = useOpenGovFetchVoteCalls(referendumIndex);
-  const isLoading = useSelector(isLoadingVoteCallsSelector);
   const [tabIndex, setTabIndex] = useState(tabs[0].tabId);
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(false);

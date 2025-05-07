@@ -1,27 +1,9 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchVoteCalls,
-  fetchVoteExtrinsics,
-  voteCallsSelector,
-} from "next-common/store/reducers/gov2ReferendumSlice";
-import { useChainSettings } from "next-common/context/chain";
 import { useOnchainData } from "next-common/context/post";
+import useVoteCalls from "next-common/hooks/useVoteCalls";
 
 export default function useOpenGovFetchVoteCalls() {
   const { referendumIndex } = useOnchainData();
-  const { useVoteCall } = useChainSettings();
-  const { allAye = [], allNay = [], allAbstain = [] } = useSelector(voteCallsSelector);
+  const { result, isLoading } = useVoteCalls(referendumIndex);
 
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (useVoteCall) {
-      dispatch(fetchVoteCalls(referendumIndex));
-    } else {
-      dispatch(fetchVoteExtrinsics(referendumIndex));
-    }
-  }, [dispatch, referendumIndex, useVoteCall]);
-
-  return { allAye, allNay, allAbstain };
+  return { result, isLoading };
 }
