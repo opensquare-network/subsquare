@@ -147,7 +147,9 @@ function CachedVotesList({ items = [], loading }) {
       />,
       <VoteTime key="date">
         <ExplorerLink indexer={item.indexer}>
-          {formatTime(item.indexer.blockTime)}
+          <span className="text14Medium">
+            {formatTime(item.indexer.blockTime)}
+          </span>
         </ExplorerLink>
       </VoteTime>,
       <CapitalListItem
