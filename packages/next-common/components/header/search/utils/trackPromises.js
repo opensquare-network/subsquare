@@ -6,35 +6,16 @@ export default async function trackPromises(promises) {
     return null;
   }
 
-  const completionOrder = [];
-  const indexedPromises = promises.map((p, originalIndex) => ({
-    promise: p,
-    originalIndex,
-  }));
+  const results = await Promise.allSettled(
+    promises.map((promise, originalIndex) =>
+      promise.then((data) => ({ data, originalIndex })),
+    ),
+  );
 
-  while (indexedPromises.length > 0) {
-    const result = await Promise.race(
-      indexedPromises.map(({ promise, originalIndex }) =>
-        promise
-          .then((res) => ({ data: res, originalIndex, status: "fulfilled" }))
-          .catch((err) => ({ error: err, originalIndex, status: "rejected" })),
-      ),
-    );
-
-    completionOrder.push(result);
-
-    const foundIndex = indexedPromises.findIndex(
-      (item) => item.originalIndex === result.originalIndex,
-    );
-    if (foundIndex !== -1) {
-      indexedPromises.splice(foundIndex, 1);
-    }
-  }
-
-  return completionOrder
-    .filter((item) => item.status === "fulfilled")
-    .map(({ data, originalIndex }) => ({
-      data,
-      index: originalIndex,
+  return results
+    .filter((result) => result.status === "fulfilled")
+    .map((result) => ({
+      data: result.value.data,
+      index: result.value.originalIndex,
     }));
 }
