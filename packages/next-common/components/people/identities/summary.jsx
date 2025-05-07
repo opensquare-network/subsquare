@@ -14,7 +14,7 @@ export function CommonIdentitiesSummaryCard({
         {
           identity: { info: { status: "VERIFIED" } },
           lanel: "Verified",
-          count: identityDetail?.directCount,
+          count: identityDetail?.verifiedCount,
         },
         {
           identity: { info: { status: "NOT_VERIFIED" } },
