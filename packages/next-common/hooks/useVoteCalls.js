@@ -1,9 +1,5 @@
-import { useChainSettings } from "next-common/context/chain";
 import nextApi from "next-common/services/nextApi";
-import {
-  gov2ReferendumsVoteCallsApi,
-  gov2ReferendumsVoteExtrinsicsApi,
-} from "next-common/services/url";
+import { gov2ReferendumsVoteCallsApi } from "next-common/services/url";
 import { classifyVoteCalls } from "next-common/store/reducers/gov2ReferendumSlice";
 import { openGovEmptyVotes as emptyVotes } from "next-common/utils/democracy/votes/passed/common";
 import {
@@ -14,27 +10,14 @@ import {
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 export default function useVoteCalls(referendumIndex) {
-  const { useVoteCall } = useChainSettings();
   const [result, setResult] = useState(emptyVotes);
   const [apiResult, setApiResult] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const voteCallsStorage = useMemo(
     () =>
-      getOrCreateStorage(
-        `${
-          useVoteCall ? STORAGE_NAMES.CALLS : STORAGE_NAMES.EXTRINSICS
-        }-${referendumIndex}`,
-      ),
-    [useVoteCall, referendumIndex],
-  );
-
-  const fetchApi = useMemo(
-    () =>
-      useVoteCall
-        ? gov2ReferendumsVoteCallsApi
-        : gov2ReferendumsVoteExtrinsicsApi,
-    [useVoteCall],
+      getOrCreateStorage(`${STORAGE_NAMES.REFERENDA_CALLS}-${referendumIndex}`),
+    [referendumIndex],
   );
 
   const getVoteCallsFromSetorage = useCallback(
@@ -63,7 +46,7 @@ export default function useVoteCalls(referendumIndex) {
   const getVoteCallsFromApi = useCallback(
     async function () {
       return nextApi
-        .fetch(fetchApi(referendumIndex))
+        .fetch(gov2ReferendumsVoteCallsApi(referendumIndex))
         .then(({ result: apiResult }) => {
           if (!apiResult) {
             return emptyVotes;
@@ -81,7 +64,7 @@ export default function useVoteCalls(referendumIndex) {
           return { allAye, allNay, allAbstain };
         });
     },
-    [referendumIndex, voteCallsStorage, fetchApi],
+    [referendumIndex, voteCallsStorage],
   );
 
   useEffect(() => {
