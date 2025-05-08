@@ -1,11 +1,10 @@
-import { useSelector } from "react-redux";
 import useSalaryFellowshipPeriods from "./useSalaryFellowshipPeriods";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import useChainOrScanHeight from "next-common/hooks/height";
 import { isNil } from "lodash-es";
 
 export function useIsInSalaryPayoutPeriod(status) {
   const { registrationPeriod, payoutPeriod } = useSalaryFellowshipPeriods();
-  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const latestHeight = useChainOrScanHeight();
 
   if (isNil(latestHeight) || isNil(status) || isNil(registrationPeriod)) {
     return false;

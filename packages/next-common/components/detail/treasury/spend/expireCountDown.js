@@ -1,6 +1,5 @@
 import { useOnchainData, usePostState } from "next-common/context/post";
-import { useSelector } from "react-redux";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import useChainOrScanHeight from "next-common/hooks/height";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import { isNil } from "lodash-es";
 import { CountDownWrapper } from "next-common/components/detail/common/styled";
@@ -12,7 +11,7 @@ import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 export default function TreasurySpendExpireCountdown() {
   const { meta, indexer } = useOnchainData() || {};
   const { expireAt, validFrom } = meta || {};
-  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const latestHeight = useChainOrScanHeight();
   const estimatedBlocksTime = useEstimateBlocksTime(expireAt - latestHeight);
   const { timestamp } = useBlockTimestamp(expireAt);
   const state = usePostState();

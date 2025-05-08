@@ -1,11 +1,10 @@
-import { useSelector } from "react-redux";
 import { useSubmittedAt } from "next-common/context/post/gov2/referendum";
 import { usePreparation } from "next-common/context/post/gov2/track";
 import { isNil } from "lodash-es";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import useChainOrScanHeight from "next-common/hooks/height";
 
 export function usePrepareRemaining() {
-  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const latestHeight = useChainOrScanHeight();
   const submittedAt = useSubmittedAt();
   const prepareBlocks = usePreparation();
 

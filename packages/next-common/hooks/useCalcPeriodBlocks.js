@@ -1,11 +1,10 @@
 import { isNil } from "lodash-es";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import useChainOrScanHeight from "next-common/hooks/height";
 import { toPercentage } from "next-common/utils";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
-import { useSelector } from "react-redux";
 
 export function useCalcPeriodBlocks(period, startAt) {
-  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const latestHeight = useChainOrScanHeight();
 
   const endAt = startAt + period || null;
   const isStarted =

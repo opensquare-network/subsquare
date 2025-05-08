@@ -1,7 +1,7 @@
 import { isNil, partition } from "lodash-es";
 import useEvidencesCombineReferenda from "next-common/hooks/useEvidencesCombineReferenda";
 import { useEffect, useMemo, useState } from "react";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import useChainOrScanHeight from "next-common/hooks/height";
 import { useSelector } from "react-redux";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import {
@@ -27,7 +27,7 @@ import pluralize from "pluralize";
 const MenuHorn = dynamic(() => import("@osn/icons/subsquare/MenuHorn"));
 
 function useAvailablePromotionCount() {
-  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const latestHeight = useChainOrScanHeight();
   const { members: coreMembers, loading: isLoading } =
     useFellowshipCoreMembersWithRank();
   const params = useCoreFellowshipParams();
@@ -51,7 +51,7 @@ function useAvailablePromotionCount() {
 }
 
 export function useDemotionExpiringCount(members) {
-  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const latestHeight = useChainOrScanHeight();
   const blockTime = useSelector(blockTimeSelector);
   const params = useCoreFellowshipParams();
 
@@ -101,7 +101,7 @@ export function getDemotionExpiredCount({ members, latestHeight, params }) {
 }
 
 export function useDemotionExpiredCount(members) {
-  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const latestHeight = useChainOrScanHeight();
   const params = useCoreFellowshipParams();
 
   return useMemo(

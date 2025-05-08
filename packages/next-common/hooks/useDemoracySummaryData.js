@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { blockTimeSelector } from "../store/reducers/chainSlice";
 import { useChain } from "../context/chain";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import useChainOrScanHeight from "next-common/hooks/height";
 import { useContextApi } from "next-common/context/api";
 
 async function referendumsActive(api) {
@@ -24,7 +24,7 @@ export function useDemocracySummaryData(defaultSummaryData = {}) {
   const [summary, setSummary] = useState(defaultSummaryData || {});
   const api = useContextApi();
   const blockTime = useSelector(blockTimeSelector);
-  const blockHeight = useSelector(chainOrScanHeightSelector);
+  const blockHeight = useChainOrScanHeight();
 
   useEffect(() => {
     if (!api) {

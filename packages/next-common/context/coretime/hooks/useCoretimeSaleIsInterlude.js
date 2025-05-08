@@ -1,10 +1,9 @@
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import useChainOrScanHeight from "next-common/hooks/height";
 import useCoretimeSale from "next-common/context/coretime/sale/provider";
-import { useSelector } from "react-redux";
 import { isNil } from "lodash-es";
 
 export default function useCoretimeSaleIsInterlude() {
-  const chainHeight = useSelector(chainOrScanHeightSelector);
+  const chainHeight = useChainOrScanHeight();
   const sale = useCoretimeSale() || {};
   const {
     initIndexer: { blockHeight: initBlockHeight } = {},

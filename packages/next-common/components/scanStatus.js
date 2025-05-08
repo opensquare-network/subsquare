@@ -1,21 +1,20 @@
 import { useEffect, useState } from "react";
-import { setNodeBlockHeight } from "../store/reducers/nodeSlice";
 import { useChainSettings } from "next-common/context/chain";
-import { useDispatch } from "react-redux";
 import { sleep } from "next-common/utils";
+import { useSetScanHeight } from "next-common/hooks/scanHeight";
 
 export default function ScanStatusComponent({ children, scanHeight }) {
   const { blockTime } = useChainSettings();
-  const dispatch = useDispatch();
   const [reconnect, setReconnect] = useState(0);
+  const setScanHeight = useSetScanHeight();
 
   const interval = parseInt(blockTime) || 12000;
 
   useEffect(() => {
     if (scanHeight) {
-      dispatch(setNodeBlockHeight(scanHeight));
+      setScanHeight(scanHeight);
     }
-  }, [dispatch, scanHeight]);
+  }, [setScanHeight, scanHeight]);
 
   useEffect(() => {
     let aborted = false;
@@ -57,7 +56,7 @@ export default function ScanStatusComponent({ children, scanHeight }) {
             const data = JSON.parse(decoder.decode(value));
             const scanHeight = data?.value;
             if (scanHeight) {
-              dispatch(setNodeBlockHeight(scanHeight));
+              setScanHeight(scanHeight);
             }
           } catch (e) {
             console.error("Error parsing scan height data:", e);
@@ -73,7 +72,7 @@ export default function ScanStatusComponent({ children, scanHeight }) {
     return () => {
       aborted = true;
     };
-  }, [reconnect, interval, dispatch]);
+  }, [reconnect, interval, setScanHeight]);
 
   return children;
 }

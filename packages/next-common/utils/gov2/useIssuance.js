@@ -5,13 +5,13 @@ import {
   gov2IssuanceSelector,
 } from "../../store/reducers/gov2ReferendumSlice";
 import useReferendumVotingFinishHeight from "../../context/post/referenda/useReferendumVotingFinishHeight";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import useChainOrScanHeight from "next-common/hooks/height";
 import { useContextApi } from "next-common/context/api";
 
 export default function useIssuance() {
   const api = useContextApi();
   const dispatch = useDispatch();
-  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const latestHeight = useChainOrScanHeight();
   const votingFinishHeight = useReferendumVotingFinishHeight();
   const issuance = useSelector(gov2IssuanceSelector);
 

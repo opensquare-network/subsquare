@@ -4,13 +4,13 @@ import { useEffect, useState } from "react";
 import { useMountedState } from "react-use";
 import BigNumber from "bignumber.js";
 import { estimateBlocksTime } from "next-common/utils";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import useChainOrScanHeight from "next-common/hooks/height";
 import { useContextApi } from "next-common/context/api";
 import { useTreasuryPallet } from "next-common/context/treasury";
 
 export default function useSpendPeriodSummary() {
   const api = useContextApi();
-  const blockHeight = useSelector(chainOrScanHeightSelector);
+  const blockHeight = useChainOrScanHeight();
   const [summary, setSummary] = useState({});
   const isMounted = useMountedState();
   const blockTime = useSelector(blockTimeSelector);

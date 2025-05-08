@@ -1,11 +1,10 @@
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import useChainOrScanHeight from "next-common/hooks/height";
 import { createContext, useContext } from "react";
-import { useSelector } from "react-redux";
 
 const RelayInfoContext = createContext({});
 
 export default function RelayInfoProvider({ children }) {
-  const height = useSelector(chainOrScanHeightSelector);
+  const height = useChainOrScanHeight();
 
   return (
     <RelayInfoContext.Provider
