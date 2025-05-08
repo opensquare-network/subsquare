@@ -32,6 +32,7 @@ const westendPeople = {
       url: "wss://westend-people-rpc.polkadot.io",
     },
   ],
+  group: null,
   noScan: true,
   integrations: {
     statescan: false,

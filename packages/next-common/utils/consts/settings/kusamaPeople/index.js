@@ -40,6 +40,7 @@ const kusamaPeople = {
       url: "wss://ksm-rpc.stakeworld.io/people",
     },
   ],
+  group: null,
   noScan: true,
   integrations: {
     statescan: true,
