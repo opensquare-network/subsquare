@@ -7,9 +7,9 @@ function useIsEnhancementSearch() {
   } = chainSettings;
   const { referenda: hasDemocracyReferenda } = democracy;
   const { bounties: hasBounties, childBounties: hasChildBounties } = treasury;
-  if (hasReferenda) return true;
-
-  return hasDemocracyReferenda || hasBounties || hasChildBounties;
+  return (
+    hasReferenda || hasDemocracyReferenda || hasBounties || hasChildBounties
+  );
 }
 
 export default useIsEnhancementSearch;
