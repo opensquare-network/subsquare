@@ -25,6 +25,8 @@
     "next-common": "workspace:*",
     "nprogress": "^0.2.0",
     "pluralize": "^8.0.0",
+    "posthog-js": "^1.240.1",
+    "posthog-node": "^4.17.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.5",
