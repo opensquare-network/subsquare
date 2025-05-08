@@ -178,8 +178,12 @@ export default function WalletConnectProvider({ children }) {
         return address;
       });
 
+    if (!filteredAccounts.length) {
+      disconnectCombination();
+    }
+
     return filteredAccounts;
-  }, [provider, session, caip]);
+  }, [provider, session, caip, disconnectCombination]);
 
   // Attempt to sign a message and receive a signature
   const signWcMessage = useCallback(
