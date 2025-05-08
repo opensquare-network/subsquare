@@ -1,11 +1,10 @@
 import { backendApi } from "next-common/services/nextApi";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { sortVotes } from "next-common/utils/democracy/votes/passed/common";
 import { useDispatch, useSelector } from "react-redux";
 import { setAllVotes } from "next-common/store/reducers/referenda/votes";
 import { allVotesSelector } from "next-common/store/reducers/referenda/votes/selectors";
 import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
-import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import { createGlobalState } from "react-use";
 
 function extractSplitVotes(vote = {}) {
@@ -99,15 +98,15 @@ const useGlobalVotesLoadedMark = createGlobalState(false);
 
 export function useFetchVotesFromServer(referendumIndex) {
   const votingFinishedHeight = useReferendumVotingFinishHeight();
-  const height = useSelector(latestHeightSelector);
   const [loaded, setLoaded] = useGlobalVotesLoadedMark();
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  const fetch = useCallback(() => {
     if (votingFinishedHeight && loaded) {
       return;
     }
-    backendApi
+
+    return backendApi
       .fetch(`gov2/referenda/${referendumIndex}/votes`)
       .then(({ result: votes }) => {
         const allVotes = (votes || []).reduce((result, vote) => {
@@ -128,13 +127,18 @@ export function useFetchVotesFromServer(referendumIndex) {
         if (!loaded) {
           setLoaded(true);
         }
-      });
 
+        return filteredVotes;
+      });
+  }, [votingFinishedHeight, referendumIndex, dispatch, setLoaded, loaded]);
+
+  useEffect(() => {
     return () => {
       setLoaded(false);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [votingFinishedHeight, height, referendumIndex, dispatch, setLoaded]);
+  }, [setLoaded]);
+
+  return { fetch };
 }
 
 export default function useVotesFromServer(referendumIndex) {
