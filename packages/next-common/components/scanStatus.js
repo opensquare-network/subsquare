@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { setNodeBlockHeight } from "../store/reducers/nodeSlice";
 import { useChainSettings } from "next-common/context/chain";
 import { useDispatch } from "react-redux";
-import { sleep } from "@walletconnect/utils";
+import { sleep } from "next-common/utils";
 
 export default function ScanStatusComponent({ children, scanHeight }) {
   const { blockTime } = useChainSettings();
