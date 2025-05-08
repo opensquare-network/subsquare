@@ -22,6 +22,9 @@ export default function ScanStatusComponent({ children, scanHeight }) {
 
     fetch(`/api/stream/scan-height?interval=${interval}`)
       .then(async (response) => {
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
         const decoder = new TextDecoder();
         const reader = response.body.getReader();
         // eslint-disable-next-line no-constant-condition
