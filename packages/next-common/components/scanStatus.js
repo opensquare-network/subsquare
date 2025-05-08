@@ -35,7 +35,7 @@ export default function ScanStatusComponent({ children, scanHeight }) {
         // eslint-disable-next-line no-constant-condition
         while (true) {
           if (aborted) {
-            reader.close();
+            reader.cancel();
             break;
           }
           const { value, done } = await Promise.race([
