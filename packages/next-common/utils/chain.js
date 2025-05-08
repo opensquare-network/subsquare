@@ -118,7 +118,3 @@ export function getRelayChain(chain) {
 
   throw new Error("Unsupported relay chain");
 }
-
-export function isSupportWalletconnectChain(chain) {
-  return [Chains.westend, Chains.paseo, Chains.kusama].includes(chain);
-}
