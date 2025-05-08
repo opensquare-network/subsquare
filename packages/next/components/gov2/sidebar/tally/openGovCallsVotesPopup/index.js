@@ -9,7 +9,6 @@ import { toPrecision } from "next-common/utils";
 import styled from "styled-components";
 import { useChainSettings } from "next-common/context/chain";
 import { useOnchainData } from "next-common/context/post";
-import useOpenGovFetchVoteCalls from "./useOpenGovFetchVoteCalls";
 import SearchBar from "next-common/components/voteSearch/searchBar";
 import SearchBtn from "next-common/components/voteSearch/searchBtn";
 import useSearchVotes from "next-common/hooks/useSearchVotes";
@@ -19,6 +18,7 @@ import AddressUser from "next-common/components/user/addressUser";
 import { isEqual } from "lodash-es";
 import DataList from "next-common/components/dataList";
 import Pagination from "next-common/components/pagination";
+import useVoteCalls from "next-common/hooks/useVoteCalls";
 
 const VoteTime = styled.div`
   font-style: normal;
@@ -38,7 +38,7 @@ export default function OpenGovCallsVotesPopup({ setShowVoteList }) {
   const {
     result: { allAye = [], allNay = [], allAbstain = [] },
     isLoading,
-  } = useOpenGovFetchVoteCalls(referendumIndex);
+  } = useVoteCalls(referendumIndex);
   const [tabIndex, setTabIndex] = useState(tabs[0].tabId);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);

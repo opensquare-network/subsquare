@@ -43,12 +43,19 @@ export default function useVoteCalls(referendumIndex) {
       if (!voteCallsStorage || !keys?.length) {
         return emptyVotes;
       }
-      return {
-        allAye: (await voteCallsStorage.getItem(STORAGE_ITEM_KEY.ALLAYE)) || [],
-        allNay: (await voteCallsStorage.getItem(STORAGE_ITEM_KEY.ALLNAY)) || [],
-        allAbstain:
-          (await voteCallsStorage.getItem(STORAGE_ITEM_KEY.ALLABSTAIN)) || [],
-      };
+      try {
+        return {
+          allAye:
+            (await voteCallsStorage.getItem(STORAGE_ITEM_KEY.ALLAYE)) || [],
+          allNay:
+            (await voteCallsStorage.getItem(STORAGE_ITEM_KEY.ALLNAY)) || [],
+          allAbstain:
+            (await voteCallsStorage.getItem(STORAGE_ITEM_KEY.ALLABSTAIN)) || [],
+        };
+      } catch (error) {
+        console.error(error);
+        return emptyVotes;
+      }
     },
     [voteCallsStorage],
   );
@@ -64,9 +71,13 @@ export default function useVoteCalls(referendumIndex) {
 
           const { allAye, allNay, allAbstain } = classifyVoteCalls(apiResult);
 
-          voteCallsStorage.setItem(STORAGE_ITEM_KEY.ALLAYE, allAye);
-          voteCallsStorage.setItem(STORAGE_ITEM_KEY.ALLNAY, allNay);
-          voteCallsStorage.setItem(STORAGE_ITEM_KEY.ALLABSTAIN, allAbstain);
+          try {
+            voteCallsStorage.setItem(STORAGE_ITEM_KEY.ALLAYE, allAye);
+            voteCallsStorage.setItem(STORAGE_ITEM_KEY.ALLNAY, allNay);
+            voteCallsStorage.setItem(STORAGE_ITEM_KEY.ALLABSTAIN, allAbstain);
+          } catch (error) {
+            console.error(error);
+          }
           return { allAye, allNay, allAbstain };
         });
     },
@@ -87,7 +98,11 @@ export default function useVoteCalls(referendumIndex) {
   useEffect(() => {
     setIsLoading(true);
 
-    voteCallsStorage?.clear();
+    try {
+      voteCallsStorage?.clear();
+    } catch (error) {
+      console.error(error);
+    }
     getVoteCallsFromApi()
       .then((res) => {
         setResult(res);
