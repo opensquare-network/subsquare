@@ -9,7 +9,7 @@ const ReUseLocks = ({ reUseGovLocks, reUseAllLocks }) => {
   const address = useRealAddress();
   const { balance: governanceLockBalance, isLoading } =
     useQueryGovernanceLock(address);
-  const { info, isLoading: isLoading1 } = useUserAccountInfo();
+  const { info, isLoading: isUserAccountInfoLoading } = useUserAccountInfo();
   const allLockedBalance = info?.data?.lockedBalance;
 
   if (
@@ -24,7 +24,7 @@ const ReUseLocks = ({ reUseGovLocks, reUseAllLocks }) => {
           reUseGovLocks={reUseGovLocks}
         />
         <AllLocks
-          isloading={isLoading1}
+          isloading={isUserAccountInfoLoading}
           balance={allLockedBalance}
           reUseAllLocks={reUseAllLocks}
         />
