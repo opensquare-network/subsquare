@@ -19,8 +19,6 @@ export default function useVoteCalls(referendumIndex) {
     [referendumIndex],
   );
 
-  const fetchApi = useMemo(() => gov2ReferendumsVoteCallsApi, []);
-
   const getVoteCallsFromSetorage = useCallback(
     async function () {
       const keys = await voteCallsStorage?.keys();
@@ -47,7 +45,7 @@ export default function useVoteCalls(referendumIndex) {
   const getVoteCallsFromApi = useCallback(
     async function () {
       return nextApi
-        .fetch(fetchApi(referendumIndex))
+        .fetch(gov2ReferendumsVoteCallsApi(referendumIndex))
         .then(({ result: apiResult }) => {
           if (!apiResult) {
             return emptyVotes;
@@ -65,7 +63,7 @@ export default function useVoteCalls(referendumIndex) {
           return { allAye, allNay, allAbstain };
         });
     },
-    [referendumIndex, voteCallsStorage, fetchApi],
+    [referendumIndex, voteCallsStorage],
   );
 
   useEffect(() => {
