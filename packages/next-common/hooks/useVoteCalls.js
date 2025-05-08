@@ -15,7 +15,8 @@ export default function useVoteCalls(referendumIndex) {
   const [isLoading, setIsLoading] = useState(false);
 
   const voteCallsStorage = useMemo(
-    () => getOrCreateStorage(`${STORAGE_NAMES.CALLS}-${referendumIndex}`),
+    () =>
+      getOrCreateStorage(`${STORAGE_NAMES.REFERENDA_CALLS}-${referendumIndex}`),
     [referendumIndex],
   );
 
