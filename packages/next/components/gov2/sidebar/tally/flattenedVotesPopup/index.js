@@ -58,6 +58,7 @@ export default function VotesPopup({
 
   useEffect(() => {
     if (isEqual(cachedVotes, votes) && isEqual(cachedTabIndex, tabIndex)) {
+      setCachedVotesLoading(false);
       return;
     }
     setCachedVotesLoading(true);
