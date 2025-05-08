@@ -44,9 +44,10 @@ export default function useVoteCalls(referendumIndex) {
         return emptyVotes;
       }
       return {
-        allAye: await voteCallsStorage.getItem(STORAGE_ITEM_KEY.ALLAYE),
-        allNay: await voteCallsStorage.getItem(STORAGE_ITEM_KEY.ALLNAY),
-        allAbstain: await voteCallsStorage.getItem(STORAGE_ITEM_KEY.ALLABSTAIN),
+        allAye: (await voteCallsStorage.getItem(STORAGE_ITEM_KEY.ALLAYE)) || [],
+        allNay: (await voteCallsStorage.getItem(STORAGE_ITEM_KEY.ALLNAY)) || [],
+        allAbstain:
+          (await voteCallsStorage.getItem(STORAGE_ITEM_KEY.ALLABSTAIN)) || [],
       };
     },
     [voteCallsStorage],
@@ -86,13 +87,14 @@ export default function useVoteCalls(referendumIndex) {
   useEffect(() => {
     setIsLoading(true);
 
+    voteCallsStorage?.clear();
     getVoteCallsFromApi()
       .then((res) => {
         setResult(res);
         setApiResult(res);
       })
       .finally(() => setIsLoading(false));
-  }, [getVoteCallsFromApi]);
+  }, [getVoteCallsFromApi, voteCallsStorage]);
 
   return { isLoading, result };
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState, memo, useMemo, useCallback } from "react";
+import { useEffect, useState, memo, useMemo } from "react";
 import VotesTab, { tabs } from "./tab";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
@@ -59,7 +59,6 @@ export default function OpenGovCallsVotesPopup({ setShowVoteList }) {
   }, [search]);
 
   const [cachedVotes, setCachedVotes] = useState([]);
-  const [cachedVotesLoading, setCachedVotesLoading] = useState(true);
   const [cachedTabIndex, setCachedTabIndex] = useState(tabs[0].tabId);
 
   useEffect(() => {
@@ -99,31 +98,14 @@ export default function OpenGovCallsVotesPopup({ setShowVoteList }) {
     }
   }, [tabIndex, filteredAye, filteredNay, filteredAbstain]);
 
-  const delayHideLoading = useCallback(() => {
-    setTimeout(() => {
-      setCachedVotesLoading(false);
-    }, 500);
-  }, []);
-
   useEffect(() => {
     if (isEqual(cachedVotes, votes) && isEqual(cachedTabIndex, tabIndex)) {
-      delayHideLoading();
       return;
     }
-    setCachedVotesLoading(true);
 
     setCachedTabIndex(tabIndex);
     setCachedVotes(votes);
-
-    delayHideLoading();
-  }, [
-    votes,
-    cachedVotes,
-    isLoading,
-    tabIndex,
-    cachedTabIndex,
-    delayHideLoading,
-  ]);
+  }, [votes, cachedVotes, tabIndex, cachedTabIndex]);
 
   const pageItems = useMemo(() => {
     return cachedVotes.slice(sliceFrom, sliceTo);
@@ -152,7 +134,7 @@ export default function OpenGovCallsVotesPopup({ setShowVoteList }) {
         naysCount={filteredNay?.length || 0}
         abstainCount={filteredAbstain?.length || 0}
       />
-      <VotesList items={pageItems} loading={cachedVotesLoading} />
+      <VotesList items={pageItems} loading={isLoading} />
       <Pagination {...pagination} />
     </BaseVotesPopup>
   );

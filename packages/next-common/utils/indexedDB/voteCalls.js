@@ -8,9 +8,9 @@ export const STORAGE_NAMES = {
 };
 
 export const STORAGE_ITEM_KEY = {
-  ALLAYE: "allAye",
-  ALLNAY: "allNay",
-  ALLABSTAIN: "allAbstain",
+  ALLAYE: "Aye",
+  ALLNAY: "Nay",
+  ALLABSTAIN: "Abstain",
 };
 
 /**
