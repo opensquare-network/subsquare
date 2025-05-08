@@ -22,7 +22,7 @@ export default function ScanStatusComponent({ children, scanHeight }) {
 
     fetch(
       new URL(
-        `/stream/scan-height?interval=${interval}`,
+        `stream/scan-height?interval=${interval}`,
         process.env.NEXT_PUBLIC_BACKEND_API_END_POINT,
       ),
     )

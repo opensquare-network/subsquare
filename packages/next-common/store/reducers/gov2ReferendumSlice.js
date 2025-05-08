@@ -83,7 +83,7 @@ function extractVoteElementsFromOneExtrinsic(voteExtrinsic) {
   return {};
 }
 
-function classifyVoteCalls(voteCalls) {
+export function classifyVoteCalls(voteCalls) {
   const allAye = [];
   const allNay = [];
   const allAbstain = [];
