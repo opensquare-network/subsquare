@@ -1,5 +1,5 @@
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import MotionDetail from "components/motion/motionDetail";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { EmptyList } from "next-common/utils/constants";
@@ -75,7 +75,9 @@ export default function MotionPage({ motion }) {
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
-  const { result: motion } = await nextApi.fetch(`open-techcomm/motions/${id}`);
+  const { result: motion } = await backendApi.fetch(
+    `open-techcomm/motions/${id}`,
+  );
   if (!motion) {
     return getNullDetailProps(id, { motion: null });
   }

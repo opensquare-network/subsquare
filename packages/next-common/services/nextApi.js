@@ -5,10 +5,10 @@ const clientNextApi = new Api(
   new URL("/api/", process.env.NEXT_PUBLIC_API_END_POINT).href,
 );
 
-const ssrNextApi = new Api(
+export const backendApi = new Api(
   new URL(process.env.NEXT_PUBLIC_BACKEND_API_END_POINT).href,
 );
 
-export const nextApi = IS_SERVER ? ssrNextApi : clientNextApi;
+export const nextApi = IS_SERVER ? backendApi : clientNextApi;
 
 export default nextApi;

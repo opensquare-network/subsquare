@@ -1,6 +1,6 @@
 import React from "react";
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchDetailComments } from "next-common/services/detail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
@@ -38,7 +38,7 @@ export default function SpendPage({ detail }) {
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
-  const { result: detail } = await nextApi.fetch(
+  const { result: detail } = await backendApi.fetch(
     `fellowship/treasury/spends/${id}`,
   );
 

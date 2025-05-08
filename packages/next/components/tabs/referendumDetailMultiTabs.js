@@ -104,11 +104,6 @@ export default function ReferendumDetailMultiTabs() {
               value: "report",
               label: "Report",
               lazy: true,
-              activeCount: (
-                <span className="ml-1 rounded-full py-0.5 px-2 text12Medium text-theme500 bg-theme100">
-                  new
-                </span>
-              ),
               content: (
                 <div className="space-y-4">
                   <ReferendumReport

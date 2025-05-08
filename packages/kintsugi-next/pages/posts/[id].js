@@ -1,5 +1,5 @@
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import { to404 } from "next-common/utils/serverSideUtil";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
@@ -33,7 +33,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
   const chain = process.env.CHAIN;
   const { id } = context.query;
   const [{ result: detail }] = await Promise.all([
-    nextApi.fetch(`posts/${id}`),
+    backendApi.fetch(`posts/${id}`),
   ]);
 
   if (!detail) {
@@ -42,7 +42,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
 
   const { votes, myVote } = await getPostVotesAndMine(detail, context);
 
-  const { result: summary } = await nextApi.fetch("overview/summary");
+  const { result: summary } = await backendApi.fetch("overview/summary");
 
   const comments = await fetchDetailComments(
     `posts/${detail._id}/comments`,

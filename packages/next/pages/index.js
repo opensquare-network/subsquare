@@ -1,9 +1,9 @@
 import { withCommonProps } from "next-common/lib";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import {
+  isAssetHubChain,
   isCentrifugeChain,
   isCollectivesChain,
-  isAssetHubChain,
 } from "next-common/utils/chain";
 import ListLayout from "next-common/components/layout/ListLayout";
 import OverviewSummary from "next-common/components/summary/overviewSummary";
@@ -27,7 +27,7 @@ import {
 import { BasicDataProvider } from "next-common/context/centrifuge/basicData";
 import { DailyExtrinsicsProvider } from "next-common/context/centrifuge/DailyExtrinsics";
 import { TokenPricesProvider } from "next-common/context/centrifuge/tokenPrices";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 
 function DefaultOverviewPage() {
   const chain = useChain();
@@ -118,7 +118,7 @@ export const getServerSideProps = withCommonProps(async () => {
   const tracksProps = await fetchOpenGovTracksProps();
 
   const overviewSummary = tracksProps.summary || {};
-  const { result: recentSummary = {} } = await nextApi.fetch(
+  const { result: recentSummary = {} } = await backendApi.fetch(
     "overview/recent/summary",
   );
   const recentProposals = await fetchRecentProposalsProps(recentSummary);

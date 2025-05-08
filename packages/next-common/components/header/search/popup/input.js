@@ -35,7 +35,9 @@ const InputInSearchPopup = React.memo(function InputInSearchPopup({
         setSearchValue(e.target.value);
       }}
       placeholder={`Search ${categoryString} on SubSquare`}
-      prefix={<SystemSearch className="[&_path]:fill-textTertiary" />}
+      prefix={
+        <SystemSearch className="ml-2 w-6 h-6 [&_path]:fill-textTertiary" />
+      }
       suffix={
         <SecondaryButton
           size="small"

@@ -1,11 +1,8 @@
-import { useUserAccountInfo } from "next-common/context/user/account";
 import LockButton from "./lockButton";
 import Tooltip from "next-common/components/tooltip";
 import { useChainSettings } from "next-common/context/chain";
 
-const AllLocks = ({ reUseAllLocks }) => {
-  const { info, isLoading } = useUserAccountInfo();
-  const lockedBalance = info?.data?.lockedBalance;
+const AllLocks = ({ reUseAllLocks, balance, isLoading }) => {
   const chainSettings = useChainSettings();
 
   return (
@@ -15,7 +12,7 @@ const AllLocks = ({ reUseAllLocks }) => {
     >
       <LockButton
         isLoading={isLoading}
-        balance={lockedBalance}
+        balance={balance}
         label="Reuse All Locks"
         onClick={reUseAllLocks}
       />

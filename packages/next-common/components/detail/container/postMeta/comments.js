@@ -1,7 +1,8 @@
 import { isNil } from "lodash-es";
 import { usePost } from "../../../../context/post";
 import Info from "../../../styled/info";
-import React from "react";
+import { SystemComment } from "@osn/icons/subsquare";
+import Tooltip from "next-common/components/tooltip";
 
 export default function CommentsMeta() {
   const post = usePost();
@@ -13,6 +14,15 @@ export default function CommentsMeta() {
   if (noCommentsCount || commentsCount < 0) {
     return null;
   }
-
-  return <Info>{`${commentsCount} Comments`}</Info>;
+  return (
+    <Info>
+      <Tooltip
+        content={`${commentsCount} comments`}
+        className="flex cursor-pointer"
+      >
+        <SystemComment className="w-4 h-4 stroke-textTertiary [&_path]:stroke-2" />
+        {commentsCount}
+      </Tooltip>
+    </Info>
+  );
 }

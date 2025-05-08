@@ -3065,10 +3065,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/icons@npm:^1.204.0":
-  version: 1.204.0
-  resolution: "@osn/icons@npm:1.204.0"
-  checksum: 044a1da0d413dbe544feb33d201d02b2588a268e5d1f3b06a7ae7bc7086938ec18abdac8c1e5e2c4331ccf9b78c69a2c8582b9cb1dbb6e76dbb7ec8031998330
+"@osn/icons@npm:^1.206.0":
+  version: 1.206.0
+  resolution: "@osn/icons@npm:1.206.0"
+  checksum: cd6affebf6575e6e23c0f9521051bc3ff02e9950658d428aeac2ec57396fa27b1008e5f0f5066842bf536a507ac2b16968d3c49bc4ea4f458543f9be89e03d11
   languageName: node
   linkType: hard
 
@@ -5679,7 +5679,7 @@ __metadata:
     "@interlay/monetary-js": ^0.5.3
     "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.204.0
+    "@osn/icons": ^1.206.0
     "@polkadot/util-crypto": 13.4.3
     "@svgr/webpack": ^7.0.0
     "@types/lodash-es": ^4.17.12
@@ -5715,7 +5715,7 @@ __metadata:
     "@next/bundle-analyzer": 15.3.0
     "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.204.0
+    "@osn/icons": ^1.206.0
     "@svgr/webpack": ^7.0.0
     "@types/lodash-es": ^4.17.12
     bignumber.js: ^9.0.2
@@ -13476,7 +13476,7 @@ __metadata:
     "@mimirdev/apps-inject": ^3.2.0
     "@mimirdev/apps-sdk": ^3.1.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.204.0
+    "@osn/icons": ^1.206.0
     "@osn/polkadot-react-identicon": ^1.0.10
     "@osn/previewer": ^2.0.0
     "@osn/provider-options": 1.1.0
@@ -17884,8 +17884,8 @@ __metadata:
   linkType: hard
 
 "vite@npm:^5.0.0":
-  version: 5.4.18
-  resolution: "vite@npm:5.4.18"
+  version: 5.4.19
+  resolution: "vite@npm:5.4.19"
   dependencies:
     esbuild: ^0.21.3
     fsevents: ~2.3.3
@@ -17922,7 +17922,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: b61bab8c74b7a1a626e26ae2802734d666818b2a1856217b330ea7522e24a619f3d7f690f0466ea844d96549da44409075289cbc0fa8cb0245d40017c8455f74
+  checksum: c15af65f2370b59e674c5fab22d8e05ec5c7f8f0345ed99ffec155c77feb5636b4e0680dbd096a6f06d7c386b259dc0b9c67c4f1ec08486a2f2a677c9ea6971b
   languageName: node
   linkType: hard
 
