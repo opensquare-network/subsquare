@@ -1,5 +1,5 @@
 import { useChain, useChainSettings } from "next-common/context/chain";
-import { isPaseoChain, isWestendChain } from "next-common/utils/chain";
+import { isSupportWalletconnectChain } from "next-common/utils/chain";
 import {
   polkadotJs,
   subWallet,
@@ -14,6 +14,7 @@ import {
 import isEvmChain, {
   isSupportSubstrateThroughEthereumAddress,
 } from "next-common/utils/isEvmChain";
+import isHydradx from "next-common/utils/isHydradx";
 
 export function useSubstrateWallets() {
   const chain = useChain();
@@ -28,7 +29,7 @@ export function useSubstrateWallets() {
     !isSubstrateThroughEvm && polkagate,
     !isSubstrateThroughEvm && polkagateSnap,
     !isSubstrateThroughEvm && nova,
-    (isWestendChain(chain) || isPaseoChain(chain)) && walletConnect,
+    (isSupportWalletconnectChain(chain) || isHydradx()) && walletConnect,
   ].filter(Boolean);
   let multiSigWallets = [];
 
