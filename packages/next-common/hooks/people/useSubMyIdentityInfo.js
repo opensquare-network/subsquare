@@ -152,31 +152,14 @@ function useAddressIdentityInfo(address) {
       return;
     }
 
-    async function fetchIdentity() {
-      if (!result || result.isNone) {
-        try {
-          const apiResult = await api.query?.identity.identityOf(address);
-          if (apiResult && !apiResult.isNone) {
-            setIdentity(convertIdentity(apiResult));
-          } else {
-            setIdentity({
-              info: InitIdentityInfo,
-              judgements: InitIdentityJudgements,
-            });
-          }
-        } catch (error) {
-          console.error(error);
-          setIdentity({
-            info: InitIdentityInfo,
-            judgements: InitIdentityJudgements,
-          });
-        }
-      } else {
-        setIdentity(convertIdentity(result));
-      }
+    if (!result || result.isNone) {
+      setIdentity({
+        info: InitIdentityInfo,
+        judgements: InitIdentityJudgements,
+      });
+    } else {
+      setIdentity(convertIdentity(result));
     }
-
-    fetchIdentity();
   }, [address, api, result]);
 
   return {
