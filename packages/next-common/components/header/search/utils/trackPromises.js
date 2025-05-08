@@ -1,3 +1,5 @@
+import { isNil } from "lodash-es";
+
 export default async function trackPromises(promises) {
   if (
     !Array.isArray(promises) ||
@@ -13,7 +15,10 @@ export default async function trackPromises(promises) {
   );
 
   return results
-    .filter((result) => result.status === "fulfilled")
+    .filter(
+      (result) =>
+        result.status === "fulfilled" && isNil(result?.value?.data?.error),
+    )
     .map((result) => ({
       data: result.value.data,
       index: result.value.originalIndex,
