@@ -32,6 +32,9 @@ export default function ScanStatusComponent({ children, scanHeight }) {
         }
         const decoder = new TextDecoder();
         const reader = response.body.getReader();
+        if (!reader) {
+          throw new Error("Reader is null");
+        }
         // eslint-disable-next-line no-constant-condition
         while (true) {
           if (aborted) {
