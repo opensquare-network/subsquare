@@ -100,7 +100,6 @@ export default function OpenGovCallsVotesPopup({ setShowVoteList }) {
 
   useEffect(() => {
     if (isEqual(cachedVotes, votes) && isEqual(cachedTabIndex, tabIndex)) {
-      setCachedVotesLoading(false);
       return;
     }
 
