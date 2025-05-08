@@ -138,6 +138,7 @@ export function useFetchVotesFromServer(referendumIndex) {
     };
   }, [setLoaded]);
 
+  // TODO: update votes?
   return { fetch };
 }
 

@@ -27,6 +27,7 @@ import useSplitVote from "components/referenda/popup/voteHooks/useSplitVote";
 import useSplitAbstainVote from "./voteHooks/useSplitAbstainVote";
 import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
 import useReferendaVotingBalance from "next-common/hooks/referenda/useReferendaVotingBalance";
+import { useFetchVotesFromServer } from "next-common/utils/gov2/useVotesFromServer";
 
 function VotePanel({
   referendumIndex,
@@ -137,6 +138,8 @@ export default function PopupContent() {
   const { referendumIndex, trackId, onClose } = usePopupParams();
   const showVoteSuccessful = useShowVoteSuccessful();
   const signerAccount = useSignerAccount();
+  const { fetch: fetchVotesFromServer } =
+    useFetchVotesFromServer(referendumIndex);
 
   const api = useContextApi();
   const { isLoading: votingIsLoading, balance: votingBalance } =
@@ -180,6 +183,7 @@ export default function PopupContent() {
         referendumIndex={referendumIndex}
         onInBlock={() => {
           getMyVoteAndShowSuccessful();
+          fetchVotesFromServer();
         }}
         onClose={onClose}
         votingBalance={votingBalance}
