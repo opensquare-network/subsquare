@@ -20,7 +20,12 @@ export default function ScanStatusComponent({ children, scanHeight }) {
   useEffect(() => {
     let aborted = false;
 
-    fetch(`/api/stream/scan-height?interval=${interval}`)
+    fetch(
+      new URL(
+        `/stream/scan-height?interval=${interval}`,
+        process.env.NEXT_PUBLIC_BACKEND_API_END_POINT,
+      ),
+    )
       .then(async (response) => {
         if (!response.ok) {
           throw new Error(response.statusText);
@@ -57,9 +62,9 @@ export default function ScanStatusComponent({ children, scanHeight }) {
         }
       })
       .catch(async (e) => {
+        console.error("Error fetching scan height:", e);
         await sleep(5000);
         setReconnect((prev) => prev + 1);
-        console.error("Error fetching scan height:", e);
       });
 
     return () => {
