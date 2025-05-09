@@ -8,7 +8,7 @@ import {
   democracyVotesLengthSelector,
 } from "next-common/store/reducers/myOnChainData/democracy/selectors/myVoting";
 import { useDemocracyLockRequired } from "next-common/hooks/myOnChainData/democracy/lockRequired";
-import useDemocracyVoteExpiredReferenda from "next-common/store/reducers/myOnChainData/democracy/selectors/expiredReferenda";
+import useDemocracyVoteExpiredReferenda from "next-common/hooks/myOnChainData/democracy/expiredReferenda";
 import myDemocracyDelegatedSelector from "next-common/store/reducers/myOnChainData/democracy/selectors/delegated";
 import { myDemocracyVotingSelector } from "next-common/store/reducers/myOnChainData/democracy/myDemocracyVoting";
 import myDemocracyPriorLockSelector from "next-common/store/reducers/myOnChainData/democracy/selectors/prior";
