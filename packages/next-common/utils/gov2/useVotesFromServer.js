@@ -6,6 +6,9 @@ import { setAllVotes } from "next-common/store/reducers/referenda/votes";
 import { allVotesSelector } from "next-common/store/reducers/referenda/votes/selectors";
 import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import { createGlobalState } from "react-use";
+import getChainSettings from "next-common/utils/consts/settings";
+import { defaultBlockTime } from "next-common/utils/constants";
+import { sleep } from "next-common/utils";
 
 function extractSplitVotes(vote = {}) {
   const {
@@ -103,7 +106,7 @@ export function useFetchVotesFromServer(referendumIndex) {
 
   const fetch = useCallback(() => {
     if (votingFinishedHeight && loaded) {
-      return;
+      return Promise.resolve();
     }
 
     return backendApi
@@ -129,6 +132,13 @@ export function useFetchVotesFromServer(referendumIndex) {
         }
 
         return filteredVotes;
+      })
+      .catch((error) => {
+        console.error(
+          "Error fetching votes for referendum:",
+          referendumIndex,
+          error,
+        );
       });
   }, [votingFinishedHeight, referendumIndex, dispatch, setLoaded, loaded]);
 
@@ -138,8 +148,36 @@ export function useFetchVotesFromServer(referendumIndex) {
     };
   }, [setLoaded]);
 
-  // TODO: update votes?
   return { fetch };
+}
+
+export function useUpdateVotesFromServer(referendumIndex) {
+  const { fetch } = useFetchVotesFromServer(referendumIndex);
+
+  const update = useCallback(async () => {
+    const times = 10;
+    const blockTime =
+      getChainSettings(process.env.NEXT_PUBLIC_CHAIN).blockTime ||
+      defaultBlockTime;
+
+    for (let i = 0; i < times; i++) {
+      try {
+        await fetch();
+      } catch (error) {
+        console.error(
+          "Error updating votes for referendum:",
+          referendumIndex,
+          error,
+        );
+      }
+
+      if (i < times - 1) {
+        await sleep(blockTime);
+      }
+    }
+  }, [fetch, referendumIndex]);
+
+  return { update };
 }
 
 export default function useVotesFromServer(referendumIndex) {
