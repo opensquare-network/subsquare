@@ -13,6 +13,7 @@ export default Input;
 function InputImpl(
   {
     className = "",
+    errorClassName = "",
     prefix,
     suffix,
     pre,
@@ -133,7 +134,7 @@ function InputImpl(
         {symbol && <Addon className="border-l">{symbol}</Addon>}
       </div>
 
-      {error && <ErrorText>{error}</ErrorText>}
+      {error && <ErrorText className={errorClassName}>{error}</ErrorText>}
     </div>
   );
 }

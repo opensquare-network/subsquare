@@ -22,14 +22,19 @@ import bifrostPolkadot from "./consts/settings/bifrostPolkadot";
 import vara from "./consts/settings/vara";
 import westend from "./consts/settings/westend";
 import polkadotAssetHub from "next-common/utils/consts/settings/polkadotAssetHub";
+import polkadotPeople from "next-common/utils/consts/settings/polkadotPeople";
 import westendAssetHub from "next-common/utils/consts/settings/westendAssetHub";
 import kusamaAssetHub from "next-common/utils/consts/settings/kusamaAssetHub";
+import kusamaPeople from "next-common/utils/consts/settings/kusamaPeople";
+// import shibuya from "next-common/utils/consts/settings/shibuya";
 import astar from "next-common/utils/consts/settings/astar";
 import zkverifyTestnet from "./consts/settings/zkverifyTestnet";
 import paseo from "./consts/settings/paseo";
 import ajuna from "./consts/settings/ajuna";
 import laos from "./consts/settings/laos";
 import paseoAssetHub from "./consts/settings/paseoAssetHub";
+import paseoPeople from "./consts/settings/paseoPeople";
+import westendPeople from "./consts/settings/westendPeople";
 
 const optionalNodes =
   process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? [development] : [];
@@ -37,8 +42,10 @@ const optionalNodes =
 export const nodes = [
   polkadot,
   polkadotAssetHub,
+  polkadotPeople,
   kusama,
   kusamaAssetHub,
+  kusamaPeople,
   acala,
   ajuna,
   astar,
@@ -51,6 +58,7 @@ export const nodes = [
   // crab,
   westend,
   westendAssetHub,
+  westendPeople,
   crust,
   hydradx,
   interlay,
@@ -69,6 +77,7 @@ export const nodes = [
   zkverifyTestnet,
   paseo,
   paseoAssetHub,
+  paseoPeople,
   ...optionalNodes,
 ];
 

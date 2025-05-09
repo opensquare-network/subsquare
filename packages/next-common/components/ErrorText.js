@@ -7,6 +7,6 @@ const Wrapper = styled.div`
   margin-top: 8px;
 `;
 
-export default function ErrorText({ children }) {
-  return <Wrapper>{children}</Wrapper>;
+export default function ErrorText({ children, className }) {
+  return <Wrapper className={className}>{children}</Wrapper>;
 }

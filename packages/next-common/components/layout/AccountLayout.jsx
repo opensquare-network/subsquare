@@ -30,7 +30,7 @@ export default function AccountLayout(props) {
   );
 }
 
-function AccountImpl(props) {
+export function AccountImpl(props) {
   return (
     <div className="flex-1">
       <div className={cn("px-6 py-6 mx-auto max-w-[1200px]", "max-sm:px-0")}>

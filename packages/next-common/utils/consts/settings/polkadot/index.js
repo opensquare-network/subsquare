@@ -68,6 +68,7 @@ const polkadot = {
     },
     coretime: true,
     assethub: true,
+    people: true,
     vesting: true,
   }),
   integrations: {

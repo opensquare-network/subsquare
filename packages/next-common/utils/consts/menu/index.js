@@ -18,6 +18,7 @@ import { getCommunityTreasuryMenu } from "./communityTreasury";
 import getChainSettings from "../settings";
 import { getMoreMenu } from "./more";
 import { coretimeMenu } from "./coretime";
+import { peopleMenu } from "./people";
 import Data from "./data";
 import getAdvancedMenu from "next-common/utils/consts/menu/advanced";
 import { NAV_MENU_TYPE } from "next-common/utils/constants";
@@ -34,6 +35,7 @@ export function getHomeMenu({
   const integrationsMenu = [
     modules?.assethub && assetHubMenu,
     modules?.coretime && coretimeMenu,
+    modules?.people && peopleMenu,
   ].filter(Boolean);
 
   return [

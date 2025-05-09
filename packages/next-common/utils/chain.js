@@ -22,6 +22,10 @@ export function isPolkadotAssetHubChain(chain) {
   return [Chains.polkadotAssetHub].includes(chain);
 }
 
+export function isPolkadotPeopleChain(chain) {
+  return [Chains.polkadotPeople].includes(chain);
+}
+
 export function isWestendAssetHubChain(chain) {
   return [Chains.westendAssetHub].includes(chain);
 }
@@ -32,6 +36,14 @@ export function isWestendChain(chain) {
 
 export function isKusamaAssetHubChain(chain) {
   return [Chains.kusamaAssetHub].includes(chain);
+}
+
+export function isKusamaPeopleChain(chain) {
+  return [Chains.kusamaPeople].includes(chain);
+}
+
+export function isWestendPeopleChain(chain) {
+  return [Chains.westendPeople].includes(chain);
 }
 
 export function isKusamaChain(chain) {
@@ -68,12 +80,25 @@ export function isRelayChain(chain) {
   ].includes(chain);
 }
 
+export function isPeopleChain(chain) {
+  return [
+    Chains.polkadotPeople,
+    Chains.kusamaPeople,
+    Chains.paseoPeople,
+    Chains.westendPeople,
+  ].includes(chain);
+}
+
 export function isPaseoChain(chain) {
   return [Chains.paseo].includes(chain);
 }
 
 export function isPaseoAssetHubChain(chain) {
   return [Chains.paseoAssetHub].includes(chain);
+}
+
+export function isPaseoPeopleChain(chain) {
+  return [Chains.paseoPeople].includes(chain);
 }
 
 export function isLaosChain(chain) {
@@ -114,6 +139,14 @@ export function getRelayChain(chain) {
     return Chains.paseo;
   } else if (isCollectivesChain(chain)) {
     return Chains.polkadot;
+  } else if (isPolkadotPeopleChain(chain)) {
+    return Chains.polkadot;
+  } else if (isKusamaPeopleChain(chain)) {
+    return Chains.kusama;
+  } else if (isPaseoPeopleChain(chain)) {
+    return Chains.paseo;
+  } else if (isWestendPeopleChain(chain)) {
+    return Chains.westend;
   }
 
   throw new Error("Unsupported relay chain");
