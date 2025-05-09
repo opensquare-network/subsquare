@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Router from "next/router";
 import NProgress from "nprogress";
 import { Provider } from "react-redux";
@@ -17,6 +17,8 @@ import "@osn/previewer/styles.css";
 import "next-common/styles/markdown.css";
 import useInitMimir from "next-common/hooks/useInitMimir";
 import dynamic from "next/dynamic";
+import posthog from "posthog-js";
+import { PostHogProvider } from "posthog-js/react";
 // import ErrorBoundary from "next-common/components/errorBoundary";
 
 NProgress.configure({
@@ -52,8 +54,29 @@ function MyApp({ Component, pageProps }) {
     throw new Error("NEXT_PUBLIC_CHAIN env not set");
   }
 
-  // const [resetKey, setResetKey] = React.useState(0);
-  // const handleErrorReset = () => setResetKey((prev) => prev + 1);
+  useEffect(() => {
+    posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY, {
+      api_host: "/ingest",
+      ui_host: "https://us.posthog.com",
+      loaded: (posthog) => {
+        if (process.env.NODE_ENV === "development") posthog.debug();
+      },
+      debug: process.env.NODE_ENV === "development",
+      capture_pageleave: true,
+      autocapture: {
+        dom_event_capture: ["click"],
+        exceptions: true,
+      },
+      // autocapture: false,
+    });
+
+    const handleRouteChange = () => posthog.capture("$pageview");
+    Router.events.on("routeChangeComplete", handleRouteChange);
+
+    return () => {
+      Router.events.off("routeChangeComplete", handleRouteChange);
+    };
+  }, []);
 
   useInitMimir();
 
@@ -72,40 +95,44 @@ function MyApp({ Component, pageProps }) {
   } = pageProps;
 
   return (
-    <>
-      <Head>
-        <meta name="viewport" content="width=device-width, user-scalable=no" />
-      </Head>
-      <Provider store={store}>
-        <GlobalProvider
-          connectedAccount={connectedAccount}
-          user={user}
-          userStatus={userStatus}
-          admins={admins}
-          chain={process.env.NEXT_PUBLIC_CHAIN}
-          themeMode={themeMode}
-          pageProperties={pageProperties}
-          navCollapsed={navCollapsed}
-          navSubmenuVisible={navSubmenuVisible}
-          pathname={pathname}
-        >
-          <ClientOnlySystemUpgrade />
+    <PostHogProvider client={posthog}>
+      <>
+        <Head>
+          <meta
+            name="viewport"
+            content="width=device-width, user-scalable=no"
+          />
+        </Head>
+        <Provider store={store}>
+          <GlobalProvider
+            connectedAccount={connectedAccount}
+            user={user}
+            userStatus={userStatus}
+            admins={admins}
+            chain={process.env.NEXT_PUBLIC_CHAIN}
+            themeMode={themeMode}
+            pageProperties={pageProperties}
+            navCollapsed={navCollapsed}
+            navSubmenuVisible={navSubmenuVisible}
+            pathname={pathname}
+          >
+            <ClientOnlySystemUpgrade />
 
-          <ScanStatusComponent scanHeight={scanHeight}>
-            {/* The error boundary is not in use temporarily */}
-            {/* <ErrorBoundary
-              key={resetKey}
-              user={user}
-              onReset={handleErrorReset}
-              isPartialComponent={false}
-            >
+            <ScanStatusComponent scanHeight={scanHeight}>
+              {/* The error boundary is not in use temporarily */}
+              {/* <ErrorBoundary
+                key={resetKey}
+                user={user}
+                onReset={handleErrorReset}
+                isPartialComponent={false}
+              > */}
               <Component {...otherProps} />
-            </ErrorBoundary> */}
-            <Component {...otherProps} />
-          </ScanStatusComponent>
-        </GlobalProvider>
-      </Provider>
-    </>
+              {/* </ErrorBoundary> */}
+            </ScanStatusComponent>
+          </GlobalProvider>
+        </Provider>
+      </>
+    </PostHogProvider>
   );
 }
 
