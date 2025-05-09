@@ -1,17 +1,14 @@
-import { createSelector } from "@reduxjs/toolkit";
+import { useSelector } from "react-redux";
 import { myReferendaPriorLocksSelector } from "next-common/store/reducers/myOnChainData/referenda/myReferendaVoting";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
 import BigNumber from "bignumber.js";
+import useChainOrScanHeight from "next-common/hooks/height";
 
-const myFilteredReferendaPriorLocksSelector = createSelector(
-  myReferendaPriorLocksSelector,
-  chainOrScanHeightSelector,
-  (priors, latestHeight) => {
-    return (priors || []).filter((prior) => {
-      const { unlockAt, balance } = prior;
-      return unlockAt > latestHeight && new BigNumber(balance).gt(0);
-    });
-  },
-);
+export function useMyFilteredReferendaPriorLocks() {
+  const priors = useSelector(myReferendaPriorLocksSelector);
+  const latestHeight = useChainOrScanHeight();
 
-export default myFilteredReferendaPriorLocksSelector;
+  return (priors || []).filter((prior) => {
+    const { unlockAt, balance } = prior;
+    return unlockAt > latestHeight && new BigNumber(balance).gt(0);
+  });
+}

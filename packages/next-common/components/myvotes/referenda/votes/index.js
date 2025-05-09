@@ -3,7 +3,7 @@ import myReferendaVotesSelector from "next-common/store/reducers/myOnChainData/r
 import ResponsiveReferendaVotes from "./responsive";
 import { useState } from "react";
 import { Title } from "../../styled";
-import myFilteredReferendaPriorLocksSelector from "next-common/store/reducers/myOnChainData/referenda/selectors/priors";
+import { useMyFilteredReferendaPriorLocks } from "next-common/store/reducers/myOnChainData/referenda/selectors/priors";
 import PriorLocks from "./priors";
 import WithAllVotesLink from "../../common/withAllVotesLink";
 import VotesListTitle from "../../common/votesListTitle";
@@ -15,7 +15,7 @@ const tabs = Object.freeze({
 });
 
 function PriorLocksTitle({ disabled }) {
-  const filteredLocks = useSelector(myFilteredReferendaPriorLocksSelector);
+  const filteredLocks = useMyFilteredReferendaPriorLocks();
 
   return (
     <div className="flex gap-[8px]" role="button">

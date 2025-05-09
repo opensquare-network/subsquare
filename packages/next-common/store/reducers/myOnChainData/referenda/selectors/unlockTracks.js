@@ -1,4 +1,4 @@
-import { createSelector } from "@reduxjs/toolkit";
+import { useSelector } from "react-redux";
 import {
   myReferendaTrackLocksSelector,
   myReferendaVotingSelector,
@@ -7,7 +7,7 @@ import { referendaLockingPeriodSelector } from "next-common/store/reducers/refer
 import getTrackRequiredLock from "./utils/getTrackRequiredLock";
 import BigNumber from "bignumber.js";
 import { orderBy } from "lodash-es";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import useChainOrScanHeight from "next-common/hooks/height";
 
 function shouldUnlockTrack(trackData, latestHeight, lockingPeriod) {
   const { trackLock, voting } = trackData;
@@ -23,32 +23,27 @@ function shouldUnlockTrack(trackData, latestHeight, lockingPeriod) {
   return new BigNumber(trackLock).gt(requiredLock);
 }
 
-const unlockTracksSelector = createSelector(
-  myReferendaTrackLocksSelector,
-  myReferendaVotingSelector,
-  chainOrScanHeightSelector,
-  referendaLockingPeriodSelector,
-  (trackLocks, trackVotingArr, latestHeight, lockingPeriod) => {
-    const sorted = orderBy(trackLocks, ["trackId"]);
-    const tracksData = sorted.map((trackLock) => {
-      const { trackId, locked } = trackLock;
-      const voting = trackVotingArr.find(
-        (voting) => voting.trackId === trackId,
-      );
+export function useUnlockTracks() {
+  const trackLocks = useSelector(myReferendaTrackLocksSelector);
+  const trackVotingArr = useSelector(myReferendaVotingSelector);
+  const latestHeight = useChainOrScanHeight();
+  const lockingPeriod = useSelector(referendaLockingPeriodSelector);
 
-      return {
-        trackId,
-        trackLock: locked,
-        voting,
-      };
-    });
+  const sorted = orderBy(trackLocks, ["trackId"]);
+  const tracksData = sorted.map((trackLock) => {
+    const { trackId, locked } = trackLock;
+    const voting = trackVotingArr.find((voting) => voting.trackId === trackId);
 
-    return tracksData
-      .filter((trackData) =>
-        shouldUnlockTrack(trackData, latestHeight, lockingPeriod),
-      )
-      .map((trackData) => trackData.trackId);
-  },
-);
+    return {
+      trackId,
+      trackLock: locked,
+      voting,
+    };
+  });
 
-export default unlockTracksSelector;
+  return tracksData
+    .filter((trackData) =>
+      shouldUnlockTrack(trackData, latestHeight, lockingPeriod),
+    )
+    .map((trackData) => trackData.trackId);
+}

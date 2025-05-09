@@ -1,9 +1,9 @@
-import { createSelector } from "@reduxjs/toolkit";
+import { useSelector } from "react-redux";
 import { myReferendaVotingSelector } from "next-common/store/reducers/myOnChainData/referenda/myReferendaVoting";
 import { referendaLockingPeriodSelector } from "next-common/store/reducers/referenda/meta";
 import { flatten } from "lodash-es";
 import { orderBy } from "lodash-es";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import useChainOrScanHeight from "next-common/hooks/height";
 
 function getVoteExpiredReferendaByTrack(voting, latestHeight, lockingPeriod) {
   const { isDelegating, votes = [] } = voting;
@@ -42,15 +42,14 @@ function getVoteExpiredReferendaByTrack(voting, latestHeight, lockingPeriod) {
   }, []);
 }
 
-export const voteExpiredReferendaSelector = createSelector(
-  myReferendaVotingSelector,
-  chainOrScanHeightSelector,
-  referendaLockingPeriodSelector,
-  (votingArr, latestHeight, lockingPeriod) => {
-    const ordered = orderBy(votingArr, ["trackId"]);
-    const referendaByTracks = ordered.map((voting) =>
-      getVoteExpiredReferendaByTrack(voting, latestHeight, lockingPeriod),
-    );
-    return orderBy(flatten(referendaByTracks), ["referendumIndex"]);
-  },
-);
+export function useVoteExpiredReferenda() {
+  const votingArr = useSelector(myReferendaVotingSelector);
+  const latestHeight = useChainOrScanHeight();
+  const lockingPeriod = useSelector(referendaLockingPeriodSelector);
+
+  const ordered = orderBy(votingArr, ["trackId"]);
+  const referendaByTracks = ordered.map((voting) =>
+    getVoteExpiredReferendaByTrack(voting, latestHeight, lockingPeriod),
+  );
+  return orderBy(flatten(referendaByTracks), ["referendumIndex"]);
+}
