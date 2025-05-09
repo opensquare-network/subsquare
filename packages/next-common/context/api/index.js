@@ -1,4 +1,10 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+} from "react";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import {
   currentNodeSelector,
@@ -7,7 +13,7 @@ import {
 } from "next-common/store/reducers/nodeSlice";
 import { useDispatch, useSelector } from "react-redux";
 import useCandidateNodes from "next-common/services/chain/apis/useCandidateNodes";
-import getOriginApiInSeconds from "next-common/services/chain/api";
+import getApiInSeconds, { getApi } from "next-common/services/chain/api";
 
 export const ApiContext = createContext(null);
 
@@ -19,47 +25,64 @@ export default function ApiProvider({ children }) {
   const candidateNodes = useCandidateNodes();
   const [nowApi, setNowApi] = useState(null);
 
-  const selectedEndpoint = useMemo(() => {
-    if (currentEndpoint) return currentEndpoint;
-    if (candidateNodes.length === 0) return null;
-    const randomIndex = Math.floor(Math.random() * candidateNodes.length);
-    return candidateNodes[randomIndex];
-  }, [currentEndpoint, candidateNodes]);
+  const disconnect = useCallback(
+    async (api) => {
+      try {
+        const apiEndpoint = api?._options?.provider?.endpoint;
+        await api?.disconnect();
+        if (candidateNodes.includes(apiEndpoint)) {
+          getApi(chain, apiEndpoint);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    [candidateNodes, chain],
+  );
 
   useEffect(() => {
-    if (!selectedEndpoint) return;
+    if (
+      nowApi &&
+      currentEndpoint &&
+      nowApi?._options.provider.endpoint === currentEndpoint
+    ) {
+      return;
+    }
 
-    let isMounted = true;
-    let oldApi = nowApi;
-
-    dispatch(
-      setCurrentNode({ url: selectedEndpoint, saveLocalStorage: false }),
-    );
-
-    getOriginApiInSeconds(chain, selectedEndpoint)
-      .then((api) => {
-        if (isMounted) {
-          setNowApi(api);
-          if (oldApi && oldApi.disconnect) {
-            oldApi.disconnect();
+    if (currentEndpoint) {
+      getApiInSeconds(chain, currentEndpoint)
+        .then((api) => {
+          setNowApi((oldApi) => {
+            disconnect(oldApi);
+            return api;
+          });
+        })
+        .catch(() => {
+          if (endpoints.length > 1) {
+            dispatch(removeCurrentNode()); // remove current node to trigger the best node selection
           }
-        } else {
-          if (api && api.disconnect) {
-            api.disconnect();
-          }
-        }
-      })
-      .catch(() => {
-        if (endpoints.length > 1) {
-          dispatch(removeCurrentNode());
-        }
+        });
+    } else {
+      Promise.any(
+        candidateNodes.map((endpoint) => getApi(chain, endpoint)),
+      ).then((api) => {
+        setNowApi((oldApi) => {
+          disconnect(oldApi);
+          return api;
+        });
+        const endpoint = api._options.provider.endpoint;
+        dispatch(setCurrentNode({ url: endpoint, saveLocalStorage: false }));
       });
-
-    return () => {
-      isMounted = false;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedEndpoint, dispatch, endpoints, chain]);
+    }
+  }, [
+    currentEndpoint,
+    chain,
+    dispatch,
+    endpoints,
+    candidateNodes,
+    nowApi,
+    disconnect,
+  ]);
 
   return <ApiProviderWithApi api={nowApi}>{children}</ApiProviderWithApi>;
 }
