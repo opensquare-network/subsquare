@@ -2,22 +2,15 @@ import { useChainSettings } from "next-common/context/chain";
 
 export default function useInsideSearchSupportCategories() {
   const node = useChainSettings();
-  const { modules = {} } = node ?? {};
-  const { referenda, democracy = {}, treasury = {} } = modules;
+  const { referenda, democracy = {}, treasury = {} } = node?.modules ?? {};
 
-  const categories = [];
-
-  if (referenda || democracy.referenda) {
-    categories.push("Referenda");
-  }
-
-  if (treasury.bounties || treasury.childBounties) {
-    categories.push("Bounties");
-  }
-
-  if (node?.graphql?.identity) {
-    categories.push("Identity");
-  }
+  const categories = [
+    ...(referenda || democracy?.referenda ? ["Referenda"] : []),
+    ...(treasury?.bounties || treasury?.childBounties ? ["Bounties"] : []),
+    ...(node?.graphql?.identity ? ["Identity"] : []),
+    ...(treasury?.proposals ? ["Treasury Proposals"] : []),
+    ...(treasury?.spends ? ["Treasury Spends"] : []),
+  ];
 
   const categoryString =
     categories.length > 0
