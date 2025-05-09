@@ -1,6 +1,6 @@
 import { createGlobalState } from "react-use";
 
-const useScanHeightState = createGlobalState(0);
+const useScanHeightState = createGlobalState(null);
 
 export function useScanHeight() {
   const [scanHeight] = useScanHeightState();
