@@ -134,6 +134,7 @@ const hydradx = {
     signet: true,
     mimir: true,
   },
+  supportWalletconnect: true,
 };
 
 export default hydradx;

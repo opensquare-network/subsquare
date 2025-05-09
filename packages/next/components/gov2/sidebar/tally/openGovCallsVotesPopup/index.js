@@ -1,7 +1,5 @@
 import { useEffect, useState, memo, useMemo } from "react";
 import VotesTab, { tabs } from "./tab";
-import { useSelector } from "react-redux";
-import { isLoadingVoteCallsSelector } from "next-common/store/reducers/gov2ReferendumSlice";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import ExplorerLink from "next-common/components/links/explorerLink";
@@ -11,7 +9,6 @@ import { toPrecision } from "next-common/utils";
 import styled from "styled-components";
 import { useChainSettings } from "next-common/context/chain";
 import { useOnchainData } from "next-common/context/post";
-import useOpenGovFetchVoteCalls from "./useOpenGovFetchVoteCalls";
 import SearchBar from "next-common/components/voteSearch/searchBar";
 import SearchBtn from "next-common/components/voteSearch/searchBtn";
 import useSearchVotes from "next-common/hooks/useSearchVotes";
@@ -19,8 +16,9 @@ import filterTabs from "../common/filterTabs";
 import voteTabs from "../common/voteTabs";
 import AddressUser from "next-common/components/user/addressUser";
 import { isEqual } from "lodash-es";
-import usePopupItemHeight from "next-common/components/democracy/democracyCallsVotesPopup/usePopupItemHeight";
-import VirtualList from "next-common/components/dataList/virtualList";
+import DataList from "next-common/components/dataList";
+import Pagination from "next-common/components/pagination";
+import useVoteCalls from "next-common/hooks/useVoteCalls";
 
 const VoteTime = styled.div`
   font-style: normal;
@@ -38,13 +36,12 @@ const getVoter = (vote) => vote.voter;
 export default function OpenGovCallsVotesPopup({ setShowVoteList }) {
   const { referendumIndex } = useOnchainData();
   const {
-    allAye = [],
-    allNay = [],
-    allAbstain = [],
-  } = useOpenGovFetchVoteCalls(referendumIndex);
-  const isLoading = useSelector(isLoadingVoteCallsSelector);
+    result: { allAye = [], allNay = [], allAbstain = [] },
+    isLoading,
+  } = useVoteCalls(referendumIndex);
   const [tabIndex, setTabIndex] = useState(tabs[0].tabId);
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
   const [showSearch, setShowSearch] = useState(false);
 
   const filteredAye = useSearchVotes(search, allAye, getVoter);
@@ -62,8 +59,34 @@ export default function OpenGovCallsVotesPopup({ setShowVoteList }) {
   }, [search]);
 
   const [cachedVotes, setCachedVotes] = useState([]);
-  const [cachedVotesLoading, setCachedVotesLoading] = useState(true);
   const [cachedTabIndex, setCachedTabIndex] = useState(tabs[0].tabId);
+
+  useEffect(() => {
+    setPage(1);
+  }, [cachedVotes]);
+
+  let pageSize = 10;
+
+  const pagination = useMemo(
+    () => ({
+      page,
+      pageSize,
+      total: cachedVotes?.length || 0,
+      onPageChange,
+    }),
+    [page, pageSize, cachedVotes?.length],
+  );
+
+  function onPageChange(e, target) {
+    e.preventDefault();
+    setPage(target);
+  }
+
+  const sliceFrom = useMemo(
+    () => (pagination.page - 1) * pageSize,
+    [pageSize, pagination.page],
+  );
+  const sliceTo = sliceFrom + pageSize;
 
   const votes = useMemo(() => {
     if (tabIndex === voteTabs.Aye) {
@@ -77,18 +100,16 @@ export default function OpenGovCallsVotesPopup({ setShowVoteList }) {
 
   useEffect(() => {
     if (isEqual(cachedVotes, votes) && isEqual(cachedTabIndex, tabIndex)) {
-      setCachedVotesLoading(false);
       return;
     }
-    setCachedVotesLoading(true);
 
     setCachedTabIndex(tabIndex);
     setCachedVotes(votes);
+  }, [votes, cachedVotes, tabIndex, cachedTabIndex]);
 
-    setTimeout(() => {
-      setCachedVotesLoading(false);
-    }, 500);
-  }, [votes, cachedVotes, isLoading, tabIndex, cachedTabIndex]);
+  const pageItems = useMemo(() => {
+    return cachedVotes.slice(sliceFrom, sliceTo);
+  }, [cachedVotes, sliceFrom, sliceTo]);
 
   const searchBtn = (
     <SearchBtn
@@ -113,14 +134,14 @@ export default function OpenGovCallsVotesPopup({ setShowVoteList }) {
         naysCount={filteredNay?.length || 0}
         abstainCount={filteredAbstain?.length || 0}
       />
-      <VotesList items={cachedVotes} loading={cachedVotesLoading} />
+      <VotesList items={pageItems} loading={isLoading} />
+      <Pagination {...pagination} />
     </BaseVotesPopup>
   );
 }
 
 function CachedVotesList({ items = [], loading }) {
   const chainSettings = useChainSettings();
-  const itemHeight = usePopupItemHeight();
 
   const columns = [
     {
@@ -164,13 +185,12 @@ function CachedVotesList({ items = [], loading }) {
 
   return (
     <PopupListWrapper>
-      <VirtualList
+      <DataList
+        contentClassName="!max-h-max"
         columns={columns}
         rows={rows}
         loading={loading}
         scrollToFirstRowOnChange
-        itemHeight={itemHeight}
-        listHeight={395}
       />
     </PopupListWrapper>
   );
