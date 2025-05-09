@@ -5,6 +5,7 @@ import QuickLRU from "quick-lru";
 const cachedAvatars = new QuickLRU({ maxSize: 1000 });
 let pendingQueries = new Map();
 
+// TODO: cachedAddresses
 const delayQuery = debounce(async () => {
   const pending = pendingQueries;
   if (pending.size < 1) {
@@ -12,6 +13,11 @@ const delayQuery = debounce(async () => {
   }
 
   const addresses = Array.from(pending.keys());
+
+  const addressesToQuery = addresses.filter((address) => {
+    return !getCachedAvatar(address);
+  });
+
   const headers = {
     accept: "application/json, text/plain, */*",
     "content-type": "application/json;charset=UTF-8",
@@ -21,7 +27,7 @@ const delayQuery = debounce(async () => {
     const res = await fetch("/api/avatars", {
       headers,
       method: "POST",
-      body: JSON.stringify({ addresses }),
+      body: JSON.stringify({ addresses: addressesToQuery }),
     });
     if (!res.ok) {
       return;
@@ -29,13 +35,13 @@ const delayQuery = debounce(async () => {
     const data = await res.json();
     const avatars = new Map(data.map((item) => [item.address, item.avatarCid]));
 
-    for (const address of addresses) {
+    for (const address of addressesToQuery) {
       if (!pending.has(address)) {
         continue;
       }
 
       const { resolve } = pending.get(address);
-      pending.delete(address);
+      // pending.delete(address);
 
       const avatar = avatars.get(address) || null;
       cachedAvatars.set(address, avatar);
