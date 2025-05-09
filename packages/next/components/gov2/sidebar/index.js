@@ -1,5 +1,5 @@
 import { gov2VotingState } from "next-common/utils/consts/state";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Gov2Status from "./status";
 import Gov2Tally from "./tally";
 import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarWrapper";
@@ -28,7 +28,10 @@ export default function Gov2Sidebar() {
   const { hideActionButtons } = useChainSettings();
   const { fetch: fetchVotesFromServer } =
     useFetchVotesFromServer(referendumIndex);
-  fetchVotesFromServer();
+
+  useEffect(() => {
+    fetchVotesFromServer();
+  }, [fetchVotesFromServer]);
 
   return (
     <RightBarWrapper>
