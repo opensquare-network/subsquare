@@ -5,11 +5,11 @@ export default function useInsideSearchSupportCategories() {
   const { referenda, democracy = {}, treasury = {} } = node?.modules ?? {};
 
   const categories = [
-    ...(referenda || democracy?.referenda ? ["Referenda"] : []),
-    ...(treasury?.bounties || treasury?.childBounties ? ["Bounties"] : []),
-    ...(node?.graphql?.identity ? ["Identity"] : []),
-    ...(treasury?.proposals ? ["Treasury Proposals"] : []),
-    ...(treasury?.spends ? ["Treasury Spends"] : []),
+    ...(referenda || democracy?.referenda ? ["referenda"] : []),
+    ...(treasury?.bounties || treasury?.childBounties ? ["bounties"] : []),
+    ...(node?.graphql?.identity ? ["identity"] : []),
+    ...(treasury?.proposals ? ["treasury proposals"] : []),
+    ...(treasury?.spends ? ["treasury spends"] : []),
   ];
 
   const categoryString =
