@@ -52,14 +52,10 @@ export default function SubIdentitiesImpl({ isEmpty, isLoading }) {
 
   return (
     <SignerPopupWrapper>
-      <SubIdentitiesTable
-        subs={subs}
-        isLoading={isSubsLoading}
-        openSetSubsPopup={openSetSubsPopup}
-      />
+      <SubIdentitiesTable subs={subs} isLoading={isSubsLoading} />
       <RightWrapper className="mt-4">
         <PrimaryButton className="w-auto" onClick={openSetSubsPopup}>
-          Set Subs
+          Edit
         </PrimaryButton>
       </RightWrapper>
 

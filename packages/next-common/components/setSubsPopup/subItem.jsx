@@ -47,16 +47,18 @@ export function SubItem({
             }}
           />
         </div>
-        <Tooltip content="Remove" className="mt-5">
-          <SecondaryButton
-            className="w-10 h-10 !px-0"
-            onClick={() => {
-              onRemove(subId);
-            }}
-          >
-            <SystemSubtract className="w-6 h-6" />
-          </SecondaryButton>
-        </Tooltip>
+        <div className="flex items-end">
+          <Tooltip content="Remove">
+            <SecondaryButton
+              className="w-10 h-10 !px-0"
+              onClick={() => {
+                onRemove(subId);
+              }}
+            >
+              <SystemSubtract className="w-6 h-6" />
+            </SecondaryButton>
+          </Tooltip>
+        </div>
       </div>
       <Divider className={cn("my-2 hidden", isMobile && "block")} />
     </div>

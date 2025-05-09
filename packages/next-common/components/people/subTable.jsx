@@ -1,23 +1,12 @@
 import DataList from "next-common/components/dataList";
 import AddressUser from "next-common/components/user/addressUser";
 import AddressDisplay from "next-common/components/user/addressDisplay";
-import SecondaryButton from "next-common/lib/button/secondary";
-import { SystemEdit2, SystemSubtract } from "@osn/icons/subsquare";
-import dynamicPopup from "next-common/lib/dynamic/popup";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useChain } from "next-common/context/chain";
 import getChainSettings from "next-common/utils/consts/settings";
 import { clearCachedIdentitys } from "next-common/services/identity";
 import { useExtensionAccounts } from "../popupWithSigner/context";
-import { noop } from "lodash-es";
 import { cn } from "next-common/utils";
-
-const RemoveSubPopup = dynamicPopup(
-  () => import("next-common/components/setSubsPopup/removePopup"),
-  {
-    ssr: false,
-  },
-);
 
 const columns = [
   {
@@ -31,24 +20,12 @@ const columns = [
   {
     name: "Address",
   },
-  {
-    name: "",
-    width: 80,
-  },
 ];
 
-export default function SubIdentitiesTable({
-  subs = [],
-  openSetSubsPopup = noop,
-  isLoading,
-}) {
+export default function SubIdentitiesTable({ subs = [], isLoading }) {
   const chain = useChain();
   const { identity: identityChain } = getChainSettings(chain);
   const extensionAccounts = useExtensionAccounts();
-
-  const [showRemoveSubPopup, setShowRemoveSubPopup] = useState(false);
-  const [selectedSub, setSelectedSub] = useState(null);
-  const [selectedSubIndex, setSelectedSubIndex] = useState(-1);
 
   useEffect(() => {
     if (extensionAccounts?.length) {
@@ -85,40 +62,11 @@ export default function SubIdentitiesTable({
             >
               <AddressDisplay address={address} />
             </div>,
-            <>
-              <div className="flex items-center justify-end gap-x-2">
-                <SecondaryButton
-                  className="w-7 h-7 !px-0 rounded"
-                  onClick={openSetSubsPopup}
-                >
-                  <SystemEdit2 className="w-4 h-4" />
-                </SecondaryButton>
-                <SecondaryButton
-                  className="w-7 h-7 !px-0 rounded"
-                  onClick={() => {
-                    setSelectedSub({ address, subName });
-                    setSelectedSubIndex(index);
-                    setShowRemoveSubPopup(true);
-                  }}
-                >
-                  <SystemSubtract className="w-4 h-4" />
-                </SecondaryButton>
-              </div>
-            </>,
           ];
         })}
         loading={isLoading && subs.length <= 0}
         noDataText="No sub identities"
       />
-      {showRemoveSubPopup && (
-        <RemoveSubPopup
-          onClose={() => setShowRemoveSubPopup(false)}
-          onSubmit={() => setShowRemoveSubPopup(false)}
-          selectedSub={selectedSub}
-          selectedSubIndex={selectedSubIndex}
-          subs={subs}
-        />
-      )}
     </div>
   );
 }
