@@ -139,6 +139,7 @@ export function useFetchVotesFromServer(referendumIndex) {
           referendumIndex,
           error,
         );
+        throw new Error("Error fetching votes for referendum");
       });
   }, [votingFinishedHeight, referendumIndex, dispatch, setLoaded, loaded]);
 
