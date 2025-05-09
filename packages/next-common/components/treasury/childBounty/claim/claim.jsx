@@ -1,8 +1,7 @@
 import { useOnchainData } from "next-common/context/post";
 import { useState } from "react";
 import PrimaryButton from "next-common/lib/button/primary";
-import { useSelector } from "react-redux";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import useChainOrScanHeight from "next-common/hooks/height";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
 
@@ -11,7 +10,7 @@ const Popup = dynamicPopup(() => import("./popup"));
 export default function Claim() {
   const onChain = useOnchainData();
   const [showPopup, setShowPopup] = useState(false);
-  const chainHeight = useSelector(chainOrScanHeightSelector);
+  const chainHeight = useChainOrScanHeight();
   const { parentBountyId, index } = useOnchainData();
 
   const { loading, result: onChainStorage } = useSubStorage(

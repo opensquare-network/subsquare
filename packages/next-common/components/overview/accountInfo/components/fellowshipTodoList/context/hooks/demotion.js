@@ -3,8 +3,7 @@ import {
   getDemotionPeriod,
   getRemainingBlocks,
 } from "next-common/utils/collective/demotionAndPromotion";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
-import { useSelector } from "react-redux";
+import useChainOrScanHeight from "next-common/hooks/height";
 import { FELLOWSHIP_DEMOTION_WARNING_BLOCKS } from "next-common/utils/consts/fellowship/demotion";
 import { useContextMyCoreMember } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/hooks/mine";
 
@@ -22,7 +21,7 @@ export function useDemotionCommonData() {
 
 export function useIsDemotionExpired() {
   const { demotionPeriod, lastProof } = useDemotionCommonData();
-  const nowHeight = useSelector(chainOrScanHeightSelector);
+  const nowHeight = useChainOrScanHeight();
   if (demotionPeriod <= 0) {
     return false;
   }
@@ -33,7 +32,7 @@ export function useIsDemotionExpired() {
 
 export function useIsDemotionClosing() {
   const { demotionPeriod, lastProof } = useDemotionCommonData();
-  const nowHeight = useSelector(chainOrScanHeightSelector);
+  const nowHeight = useChainOrScanHeight();
   if (demotionPeriod <= 0) {
     return false;
   }

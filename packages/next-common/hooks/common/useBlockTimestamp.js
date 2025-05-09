@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import useChainOrScanHeight from "next-common/hooks/height";
 import { useContextApi } from "next-common/context/api";
 import { useEffect, useState } from "react";
 import { getBlockTimeByHeight } from "next-common/utils/blockTime";
@@ -9,7 +9,7 @@ import BigNumber from "bignumber.js";
 export default function useBlockTimestamp(height) {
   const api = useContextApi();
   const oneBlockTime = useSelector(blockTimeSelector);
-  const chainHeight = useSelector(chainOrScanHeightSelector);
+  const chainHeight = useChainOrScanHeight();
   const [timestamp, setTimestamp] = useState(null);
   const [isEstimated, setIsEstimated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

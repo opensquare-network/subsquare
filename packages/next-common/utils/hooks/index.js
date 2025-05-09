@@ -8,9 +8,9 @@ import {
   setLatestHeight,
 } from "../../store/reducers/chainSlice";
 import BigNumber from "bignumber.js";
-import { nodesHeightSelector } from "next-common/store/reducers/nodeSlice";
 import useCurrentBlockHeightAndTime from "./useCurrentBlockHeightAndTime";
 import { estimateBlocksTime } from "..";
+import { useScanHeight } from "next-common/hooks/scanHeight";
 
 const DEFAULT_TIME = new BN(6_000);
 
@@ -77,7 +77,7 @@ export function useEstimateTimestampAtBlockHeight(blockHeight) {
 }
 
 export function useEstimateTimeFromNowToBlockHeight(blockHeight) {
-  const currentHeight = useSelector(nodesHeightSelector);
+  const currentHeight = useScanHeight();
   const result = useEstimateBlocksTime(blockHeight - currentHeight);
   if (!currentHeight) {
     return "";

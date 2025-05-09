@@ -1,12 +1,11 @@
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import useChainOrScanHeight from "next-common/hooks/height";
 import {
   useCoretimeSaleInitHeight,
   useCoretimeSaleStart,
 } from "next-common/context/coretime/sale/provider";
-import { useSelector } from "react-redux";
 
 export function useIsCoretimeSaleInterludePhase() {
-  const chainHeight = useSelector(chainOrScanHeightSelector);
+  const chainHeight = useChainOrScanHeight();
   const saleStartHeight = useCoretimeSaleStart();
   const initHeight = useCoretimeSaleInitHeight();
 

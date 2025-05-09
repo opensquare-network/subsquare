@@ -1,5 +1,4 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import getRemaining from "./common";
 import Wrapper from "./wrapper";
 import CountDown from "../../_CountDown";
@@ -7,10 +6,10 @@ import TimeDuration from "../../TimeDuration";
 import usePercentage from "./usePercentage";
 import FellowshipTimeoutCountdown from "next-common/components/gov2/postList/timeoutCountdown/fellowshipTimeoutCountdown";
 import ReferendaTimeoutCountdown from "next-common/components/gov2/postList/timeoutCountdown/referendaTimeoutCountdown";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import useChainOrScanHeight from "next-common/hooks/height";
 
 export default function PreparingCountdown({ detail, isFellowship = false }) {
-  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const latestHeight = useChainOrScanHeight();
   const onchain = detail?.onchainData;
   const trackInfo = onchain?.trackInfo;
 

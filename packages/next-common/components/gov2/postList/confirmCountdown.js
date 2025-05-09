@@ -1,14 +1,13 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import TimeDuration from "../../TimeDuration";
 import CountDown from "../../_CountDown";
 import Wrapper from "./wrapper";
 import getRemaining from "./common";
 import usePercentage from "./usePercentage";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import useChainOrScanHeight from "next-common/hooks/height";
 
 export default function ConfirmCountdown({ detail }) {
-  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const latestHeight = useChainOrScanHeight();
   const onchain = detail?.onchainData;
   const trackInfo = onchain?.trackInfo;
 

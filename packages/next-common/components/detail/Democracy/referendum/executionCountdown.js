@@ -1,18 +1,17 @@
 import { useOnchainData } from "next-common/context/post";
 import { CountDownWrapper } from "next-common/components/detail/common/styled";
-import { useSelector } from "react-redux";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import { bigNumber2Locale } from "next-common/utils";
 import BigNumber from "bignumber.js";
 import CountDown from "next-common/components/_CountDown";
 import React from "react";
 import useDemocracyVoteFinishedHeight from "next-common/context/post/democracy/referendum/voteFinishedHeight";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import useChainOrScanHeight from "next-common/hooks/height";
 
 export default function ExecutionCountdown() {
   const onchain = useOnchainData();
   const { willExecuteAt } = onchain;
-  const blockHeight = useSelector(chainOrScanHeightSelector);
+  const blockHeight = useChainOrScanHeight();
   const estimatedBlocksTime = useEstimateBlocksTime(
     willExecuteAt - blockHeight,
   );

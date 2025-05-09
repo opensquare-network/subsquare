@@ -1,7 +1,6 @@
 import { useMemo } from "react";
-import { useSelector } from "react-redux";
 import { isNil } from "lodash-es";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import useChainOrScanHeight from "next-common/hooks/height";
 import CoreFellowshipMemberInfoWrapper from "next-common/components/collectives/core/member/infoWrapper";
 import CoreFellowshipMemberInfoTitle from "next-common/components/collectives/core/member/title";
 import Tooltip from "next-common/components/tooltip";
@@ -47,7 +46,7 @@ export function getDemotionPeriodProgress({
 }
 
 export function useDemotionPeriod({ rank, lastProof, params }) {
-  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const latestHeight = useChainOrScanHeight();
   return useMemo(
     () => getDemotionPeriodProgress({ rank, lastProof, params, latestHeight }),
     [rank, lastProof, params, latestHeight],

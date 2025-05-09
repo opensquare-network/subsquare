@@ -8,7 +8,7 @@ import { useMemo } from "react";
 import { useDecidingEndHeight } from "next-common/context/post/gov2/decidingPercentage";
 import { referendaTallyHistorySelector } from "next-common/store/reducers/referenda/tallyHistory";
 import { isEmpty } from "lodash-es";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import useChainOrScanHeight from "next-common/hooks/height";
 
 function calcFromOneTallyData(tally) {
   const { ayes, nays, support, issuance } = tally;
@@ -89,7 +89,7 @@ export default function useHistoryTallyValueData() {
   const blockTime = useSelector(blockTimeSelector);
   const tallyHistory = useSelector(referendaTallyHistorySelector);
   const decidingEndOrLatestHeight = useDecidingEndHeight();
-  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const latestHeight = useChainOrScanHeight();
 
   return useMemo(() => {
     return calcDataFromTallyHistory(

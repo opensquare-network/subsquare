@@ -2,9 +2,8 @@ import AddressUser from "next-common/components/user/addressUser";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import useChainOrScanHeight from "next-common/hooks/height";
 import Tooltip from "next-common/components/tooltip";
-import { useSelector } from "react-redux";
 import { isNil } from "lodash-es";
 
 function Balance({ value, className = "" }) {
@@ -21,7 +20,7 @@ function Balance({ value, className = "" }) {
 }
 
 function StartingBlock({ startingBlock }) {
-  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const latestHeight = useChainOrScanHeight();
   const content = startingBlock.toLocaleString();
 
   if (isNil(latestHeight) || startingBlock > latestHeight) {

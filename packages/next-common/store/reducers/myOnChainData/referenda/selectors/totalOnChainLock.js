@@ -1,6 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { myReferendaVotingSelector } from "../myReferendaVoting";
-import getOnChainVoteLock from "./utils/getOnChainVoteLock";
+import getOnChainVoteLock from "next-common/hooks/myOnChainData/referenda/utils/getOnChainVoteLock";
 import BigNumber from "bignumber.js";
 
 function getVotingLock(voting) {
