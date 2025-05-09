@@ -1,5 +1,5 @@
 import { gov2VotingState } from "next-common/utils/consts/state";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Gov2Status from "./status";
 import Gov2Tally from "./tally";
 import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarWrapper";
@@ -15,6 +15,7 @@ import VoteSuccessfulPopup from "../votePopup/voteSuccessful";
 import Request from "./request";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import AllSpendsRequest from "./request/allSpendsRequest";
+import { useFetchVotesFromServer } from "next-common/utils/gov2/useVotesFromServer";
 
 const VotePopup = dynamicPopup(() => import("../votePopup"));
 
@@ -25,6 +26,12 @@ export default function Gov2Sidebar() {
   const trackId = detail?.track;
   const isVoting = gov2VotingState.includes(detail?.state?.name);
   const { hideActionButtons } = useChainSettings();
+  const { fetch: fetchVotesFromServer } =
+    useFetchVotesFromServer(referendumIndex);
+
+  useEffect(() => {
+    fetchVotesFromServer();
+  }, [fetchVotesFromServer]);
 
   return (
     <RightBarWrapper>
