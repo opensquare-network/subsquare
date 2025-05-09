@@ -9,6 +9,8 @@ import {
   MenuBounties,
   MenuChildBounties,
   MenuUser,
+  MenuTreasurySpend,
+  MenuTreasuryProposal,
 } from "@osn/icons/subsquare";
 import Link from "next/link";
 import { ItemType } from "next-common/components/header/hooks/useSearchResults";
@@ -55,6 +57,12 @@ const SearchItem = memo(function ItemContent({ row, onClose }) {
             )}
             {proposalType === SearchType.IDENTITIES && (
               <MenuUser className="w-6 h-6 [&_path]:fill-textTertiary" />
+            )}
+            {proposalType === SearchType.TREASURY_PROPOSALS && (
+              <MenuTreasuryProposal className="w-6 h-6 [&_path]:fill-textTertiary" />
+            )}
+            {proposalType === SearchType.TREASURY_SPENDS && (
+              <MenuTreasurySpend className="w-6 h-6 [&_path]:fill-textTertiary" />
             )}
           </div>
           <div className="pl-2 flex flex-col justify-between min-w-0 flex-1">

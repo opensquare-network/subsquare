@@ -1,5 +1,5 @@
 import { useState, useMemo, useRef } from "react";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import useRefCallback from "next-common/hooks/useRefCallback";
 import { markdownToText } from "next-common/components/header/search/utils";
 import useSearchIdentities from "next-common/components/header/hooks/useSearchIdentities";
@@ -45,7 +45,7 @@ function useSearchResults() {
 
   const baseSearchDataRequest = useRefCallback(async (searchValue, signal) => {
     try {
-      return await nextApi.fetch(
+      return await backendApi.fetch(
         "search",
         {
           text: searchValue,
@@ -163,6 +163,10 @@ function useSearchResults() {
           return formatItems("ChildBounties", value, "index");
         case "identities":
           return formatItems("Identities", value, "index");
+        case "treasuryProposals":
+          return formatItems("TreasuryProposals", value, "proposalIndex");
+        case "treasurySpends":
+          return formatItems("TreasurySpends", value, "index");
         default:
           return [];
       }

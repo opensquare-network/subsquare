@@ -16,7 +16,7 @@
     "@interlay/monetary-js": "0.5.4",
     "@mimirdev/apps-inject": "^3.2.0",
     "@mimirdev/apps-sdk": "^3.1.0",
-    "@osn/icons": "^1.206.0",
+    "@osn/icons": "^1.207.0",
     "@osn/polkadot-react-identicon": "^1.0.10",
     "@osn/previewer": "^2.0.0",
     "@osn/provider-options": "1.1.0",
