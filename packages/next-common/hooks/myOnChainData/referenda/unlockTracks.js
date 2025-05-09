@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import {
   myReferendaTrackLocksSelector,
   myReferendaVotingSelector,
-} from "../myReferendaVoting";
+} from "next-common/store/reducers/myOnChainData/referenda/myReferendaVoting";
 import { referendaLockingPeriodSelector } from "next-common/store/reducers/referenda/meta";
 import getTrackRequiredLock from "./utils/getTrackRequiredLock";
 import BigNumber from "bignumber.js";
