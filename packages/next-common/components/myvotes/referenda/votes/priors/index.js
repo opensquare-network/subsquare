@@ -4,7 +4,7 @@ import DataList from "next-common/components/dataList";
 import { useSelector } from "react-redux";
 import { isLoadingReferendaVotingSelector } from "next-common/store/reducers/myOnChainData/referenda/myReferendaVoting";
 import priorColumns from "./columns";
-import { useMyFilteredReferendaPriorLocks } from "next-common/store/reducers/myOnChainData/referenda/selectors/priors";
+import { useMyFilteredReferendaPriorLocks } from "next-common/hooks/myOnChainData/referenda/priors";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";

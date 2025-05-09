@@ -3,7 +3,7 @@ import myReferendaVotesSelector from "next-common/store/reducers/myOnChainData/r
 import ResponsiveReferendaVotes from "./responsive";
 import { useState } from "react";
 import { Title } from "../../styled";
-import { useMyFilteredReferendaPriorLocks } from "next-common/store/reducers/myOnChainData/referenda/selectors/priors";
+import { useMyFilteredReferendaPriorLocks } from "next-common/hooks/myOnChainData/referenda/priors";
 import PriorLocks from "./priors";
 import WithAllVotesLink from "../../common/withAllVotesLink";
 import VotesListTitle from "../../common/votesListTitle";
