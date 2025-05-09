@@ -6,6 +6,7 @@ import { isSameAddress } from "next-common/utils";
 
 export const votesTriggerSelector = (state) => state[name].votesTrigger;
 export const allVotesSelector = (state) => state[name].allVotes;
+export const votesLoadingSelector = (state) => state[name].loading;
 
 export const showVotesNumberSelector = createSelector(
   allVotesSelector,

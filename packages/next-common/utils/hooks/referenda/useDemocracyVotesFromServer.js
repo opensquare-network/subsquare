@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import nextApi from "next-common/services/nextApi";
-import { setAllVotes } from "next-common/store/reducers/democracy/votes";
+import {
+  setAllVotes,
+  setLoading,
+} from "next-common/store/reducers/democracy/votes";
 import { useDispatch, useSelector } from "react-redux";
 import { sortVotes } from "next-common/utils/democracy/votes/passed/common";
 import { allVotesSelector } from "next-common/store/reducers/democracy/votes/selectors";
@@ -36,11 +39,13 @@ export default function useDemocracyVotesFromServer(referendumIndex) {
 
   useEffect(() => {
     if (!reduxVotes) {
+      dispatch(setLoading(true));
       nextApi
         .fetch(`democracy/referenda/${referendumIndex}/votes`)
-        .then(({ result: votes }) => setVotes(votes));
+        .then(({ result: votes }) => setVotes(votes))
+        .finally(() => setTimeout(() => dispatch(setLoading(false)), 1));
     }
-  }, [referendumIndex, reduxVotes]);
+  }, [referendumIndex, reduxVotes, dispatch]);
 
   useEffect(() => {
     if (!votes || reduxVotes) {
