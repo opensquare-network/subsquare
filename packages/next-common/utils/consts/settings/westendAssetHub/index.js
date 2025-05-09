@@ -46,6 +46,7 @@ const westendAssetHub = {
       provider: "chain",
     },
   },
+  supportWalletconnect: true,
 };
 
 export default westendAssetHub;

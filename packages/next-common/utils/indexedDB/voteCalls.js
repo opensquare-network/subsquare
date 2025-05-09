@@ -3,8 +3,7 @@ import localForage from "localforage";
 export const storageMap = new Map();
 
 export const STORAGE_NAMES = {
-  CALLS: "calls",
-  EXTRINSICS: "extrinsics",
+  REFERENDA_CALLS: "referenda-calls",
 };
 
 export const STORAGE_ITEM_KEY = {

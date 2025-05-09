@@ -58,6 +58,7 @@ const westend = {
     killReferendum: true,
   },
   sima: true,
+  supportWalletconnect: true,
 };
 
 export default westend;
