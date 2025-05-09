@@ -45,7 +45,7 @@ export default function ScanStatusComponent({ children, scanHeight }) {
             new Promise((_, reject) =>
               setTimeout(
                 () => reject(new Error("Read scan height timeout")),
-                5 * interval,
+                10 * interval,
               ),
             ),
           ]);
