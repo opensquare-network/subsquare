@@ -8,6 +8,11 @@ async function getOptions(chain, endpoint) {
   const WsProvider = (await import("@polkadot/api")).WsProvider;
 
   const provider = new WsProvider(endpoint, 1000);
+
+  provider.on("disconnected", () => {
+    delApiMapKey(provider.endpoint);
+  });
+
   let options = { provider };
 
   const allOptions = (await import("@osn/provider-options")).default;
@@ -60,14 +65,11 @@ export default async function newApi(chain, endpoint) {
   return await apiMap.get(endpoint);
 }
 
-export async function newOriginApi(chain, endpoint) {
-  if (!Object.values(Chains).includes(chain)) {
-    throw new Error(`Invalid chain: ${chain} to construct api`);
-  }
-
-  return await newApiPromise(chain, endpoint);
+export function getApiMap() {
+  return apiMap;
 }
 
-export function getApiMap() {
+export function delApiMapKey(endpoint) {
+  apiMap.delete(endpoint);
   return apiMap;
 }
