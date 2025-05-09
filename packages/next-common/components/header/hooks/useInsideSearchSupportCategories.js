@@ -15,7 +15,7 @@ export default function useInsideSearchSupportCategories() {
   const categoryString =
     categories.length > 0
       ? categories.length > 3
-        ? `${categories.slice(0, 3).join(", ")}, etc`
+        ? `${categories.slice(0, 3).join(", ")}, etc.`
         : categories.join(", ")
       : "";
 
