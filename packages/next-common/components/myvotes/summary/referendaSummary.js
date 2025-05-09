@@ -5,7 +5,7 @@ import VoteSummary from "./summary";
 import { maxTracksLockSelector } from "next-common/store/reducers/myOnChainData/referenda/selectors/classLocks";
 import { referendaLockFromOnChainDataSelector } from "next-common/store/reducers/myOnChainData/referenda/selectors/totalOnChainLock";
 import { useTotalReferendaLockRequired } from "next-common/hooks/myOnChainData/referenda/totalLockRequired";
-import { useVoteExpiredReferenda } from "next-common/store/reducers/myOnChainData/referenda/selectors/voteExpiredReferenda";
+import { useVoteExpiredReferenda } from "next-common/hooks/myOnChainData/referenda/voteExpiredReferenda";
 import { useUnlockTracks } from "next-common/store/reducers/myOnChainData/referenda/selectors/unlockTracks";
 import referendaVotesLengthSelector from "next-common/store/reducers/myOnChainData/referenda/selectors/votesLength";
 import myReferendaDelegatedSelector from "next-common/store/reducers/myOnChainData/referenda/selectors/delegated";
