@@ -163,6 +163,10 @@ function useSearchResults() {
           return formatItems("ChildBounties", value, "index");
         case "identities":
           return formatItems("Identities", value, "index");
+        case "treasuryProposals":
+          return formatItems("TreasuryProposals", value, "proposalIndex");
+        case "treasurySpends":
+          return formatItems("TreasurySpends", value, "index");
         default:
           return [];
       }

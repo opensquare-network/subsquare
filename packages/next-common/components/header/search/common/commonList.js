@@ -9,6 +9,8 @@ export const SearchType = {
   BOUNTIES: "Bounties",
   CHILD_BOUNTIES: "ChildBounties",
   IDENTITIES: "Identities",
+  TREASURY_PROPOSALS: "TreasuryProposals",
+  TREASURY_SPENDS: "TreasurySpends",
 };
 
 export const getPathAndCategoryByItemData = (item) => {
@@ -43,10 +45,24 @@ export const getPathAndCategoryByItemData = (item) => {
     },
     [SearchType.IDENTITIES]: {
       path:
-        item.type !== ItemType.IDENTITIES && item.content !== "-"
+        item.type !== ItemType.CATEGORY && item.content !== "-"
           ? `/user/${item.content}`
           : "/",
       category: "Identities",
+    },
+    [SearchType.TREASURY_PROPOSALS]: {
+      path:
+        item.type !== ItemType.CATEGORY
+          ? `/treasury/proposals/${item.index}`
+          : "/treasury/proposals",
+      category: "Treasury Proposals",
+    },
+    [SearchType.TREASURY_SPENDS]: {
+      path:
+        item.type !== ItemType.CATEGORY
+          ? `/treasury/spends/${item.index}`
+          : "/treasury/spends",
+      category: "Treasury Spends",
     },
   };
 
