@@ -1,6 +1,7 @@
 import {
   nestedVotesSelector,
   flattenVotesSelector,
+  votesLoadingSelector,
 } from "next-common/store/reducers/democracy/votes/selectors";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -10,6 +11,7 @@ import { useVotesBubbleView } from "next-common/components/detail/detailMultiTab
 export default function DemocracyReferendaVotesBubble() {
   const flattenVotes = useSelector(flattenVotesSelector);
   const nestedVotes = useSelector(nestedVotesSelector);
+  const loading = useSelector(votesLoadingSelector);
 
   const [votesObj, setVotesObj] = useState({});
   const [sizeField, setSizeField] = useState("votes");
@@ -31,6 +33,7 @@ export default function DemocracyReferendaVotesBubble() {
       allNay={votesObj.allNay}
       allAbstain={votesObj.allAbstain}
       sizeField={sizeField}
+      loading={loading}
     />
   );
 }
