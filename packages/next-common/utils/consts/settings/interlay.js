@@ -26,10 +26,6 @@ const DEFAULT_INTERLAY_NODES = [
     name: "LuckyFriday",
     url: "wss://rpc-interlay.luckyfriday.io/",
   },
-  {
-    name: "Dwellir",
-    url: "wss://interlay-rpc.dwellir.com",
-  },
 ];
 
 const links = [
