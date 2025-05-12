@@ -2,7 +2,10 @@ import { backendApi } from "next-common/services/nextApi";
 import { useEffect, useState, useCallback } from "react";
 import { sortVotes } from "next-common/utils/democracy/votes/passed/common";
 import { useDispatch, useSelector } from "react-redux";
-import { setAllVotes } from "next-common/store/reducers/referenda/votes";
+import {
+  setAllVotes,
+  setLoading,
+} from "next-common/store/reducers/referenda/votes";
 import { allVotesSelector } from "next-common/store/reducers/referenda/votes/selectors";
 import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import { createGlobalState } from "react-use";
@@ -108,6 +111,7 @@ export function useFetchVotesFromServer(referendumIndex) {
     if (votingFinishedHeight && loaded) {
       return Promise.resolve();
     }
+    dispatch(setLoading(true));
 
     return backendApi
       .fetch(`gov2/referenda/${referendumIndex}/votes`)
@@ -140,6 +144,9 @@ export function useFetchVotesFromServer(referendumIndex) {
           error,
         );
         throw new Error("Error fetching votes for referendum");
+      })
+      .finally(() => {
+        setTimeout(() => dispatch(setLoading(false)), 1);
       });
   }, [votingFinishedHeight, referendumIndex, dispatch, setLoaded, loaded]);
 
