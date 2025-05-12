@@ -4,6 +4,7 @@ import { name } from "../consts";
 import { isSameAddress } from "next-common/utils";
 
 export const allVotesSelector = (state) => state[name].allVotes;
+export const votesLoadingSelector = (state) => state[name].loading;
 export const showVotesNumberSelector = createSelector(
   allVotesSelector,
   (allVotes) => !!allVotes,
