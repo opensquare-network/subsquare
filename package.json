@@ -9,8 +9,8 @@
   "scripts": {
     "prepare": "husky install",
     "scan": "yarn workspace @subsquare/scan scan",
-    "lint": "yarn workspace @subsquare/kintsugi-next lint && yarn workspace @subsquare/next lint && yarn workspace next-common lint",
-    "lint-fix": "yarn workspace @subsquare/kintsugi-next lint --fix && yarn workspace @subsquare/next lint --fix && yarn workspace next-common lint --fix",
+    "lint": "yarn workspace @subsquare/collectives-next lint && @subsquare/kintsugi-next lint && yarn workspace @subsquare/next lint && yarn workspace next-common lint",
+    "lint-fix": "yarn workspace @subsquare/collectives-next lint --fix && @subsquare/kintsugi-next lint --fix && yarn workspace @subsquare/next lint --fix && yarn workspace next-common lint --fix",
     "test": "vitest"
   },
   "devDependencies": {
