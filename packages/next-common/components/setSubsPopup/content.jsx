@@ -75,8 +75,8 @@ export default function SetSubsPopupContent() {
     );
   }, [api, subsList]);
 
-  const onFinalized = useCallback(() => {
-    dispatch(newSuccessToast("Finalized subs successfully"));
+  const onInBlock = useCallback(() => {
+    dispatch(newSuccessToast("Submitted subs successfully"));
     retry?.();
   }, [dispatch, retry]);
 
@@ -108,7 +108,7 @@ export default function SetSubsPopupContent() {
             disabled={submitIsDisabled}
             title="Submit"
             getTxFunc={getTxFunc}
-            onFinalized={onFinalized}
+            onInBlock={onInBlock}
           />
         </RightWrapper>
       </div>
