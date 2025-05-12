@@ -15,8 +15,8 @@ import filterTabs from "../common/filterTabs";
 import AccountCell from "./accountCell";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { isEqual } from "lodash-es";
-import usePopupItemHeight from "next-common/components/democracy/democracyCallsVotesPopup/usePopupItemHeight";
-import VirtualList from "next-common/components/dataList/virtualList";
+import DataList from "next-common/components/dataList";
+import Pagination from "next-common/components/pagination";
 
 const NestedPopupDelegatedDetailPopup = dynamicPopup(() =>
   import("next-common/components/popup/nestedVotesPopup/delegatedDetail"),
@@ -36,6 +36,37 @@ export default function NestedVotesPopup({
   const filteredAye = useSearchVotes(search, allAye);
   const filteredNay = useSearchVotes(search, allNay);
   const filteredAbstain = useSearchVotes(search, allAbstain);
+  const [cachedVotes, setCachedVotes] = useState([]);
+  const [cachedVotesLoading, setCachedVotesLoading] = useState(true);
+  const [cachedTabIndex, setCachedTabIndex] = useState(tabs[0].tabId);
+  const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    setPage(1);
+  }, [cachedVotes]);
+
+  let pageSize = 10;
+
+  const pagination = useMemo(
+    () => ({
+      page,
+      pageSize,
+      total: cachedVotes?.length || 0,
+      onPageChange,
+    }),
+    [page, pageSize, cachedVotes?.length],
+  );
+
+  function onPageChange(e, target) {
+    e.preventDefault();
+    setPage(target);
+  }
+
+  const sliceFrom = useMemo(
+    () => (pagination.page - 1) * pageSize,
+    [pageSize, pagination.page],
+  );
+  const sliceTo = sliceFrom + pageSize;
 
   useEffect(() => {
     const tabs = filterTabs(filteredAye, filteredNay, filteredAbstain);
@@ -46,10 +77,6 @@ export default function NestedVotesPopup({
     setTabIndex(tabs[0]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
-
-  const [cachedVotes, setCachedVotes] = useState([]);
-  const [cachedVotesLoading, setCachedVotesLoading] = useState(true);
-  const [cachedTabIndex, setCachedTabIndex] = useState(tabs[0].tabId);
 
   const votes = useMemo(() => {
     if (tabIndex === voteTabs.Aye) {
@@ -76,6 +103,10 @@ export default function NestedVotesPopup({
     }, 500);
   }, [votes, cachedVotes, isLoadingVotes, tabIndex, cachedTabIndex]);
 
+  const pageItems = useMemo(() => {
+    return cachedVotes.slice(sliceFrom, sliceTo);
+  }, [cachedVotes, sliceFrom, sliceTo]);
+
   const searchBtn = (
     <SearchBtn
       showSearch={showSearch}
@@ -101,7 +132,8 @@ export default function NestedVotesPopup({
           abstainsCount={filteredAbstain?.length || 0}
         />
 
-        <VotesList items={cachedVotes} loading={cachedVotesLoading} />
+        <VotesList items={pageItems} loading={cachedVotesLoading} />
+        <Pagination {...pagination} />
       </BaseVotesPopup>
     </>
   );
@@ -113,7 +145,6 @@ function CachedVotesList({ items, loading }) {
 
   const [showDetail, setShowDetail] = useState(false);
   const [detailData, setDetailData] = useState();
-  const itemHeight = usePopupItemHeight();
 
   const columns = [
     {
@@ -158,13 +189,12 @@ function CachedVotesList({ items, loading }) {
   return (
     <>
       <PopupListWrapper>
-        <VirtualList
+        <DataList
+          contentClassName="!max-h-max"
           columns={columns}
           rows={rows}
           loading={loading}
           scrollToFirstRowOnChange
-          itemHeight={itemHeight}
-          listHeight={395}
         />
       </PopupListWrapper>
 

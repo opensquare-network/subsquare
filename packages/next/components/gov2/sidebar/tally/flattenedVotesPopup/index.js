@@ -14,8 +14,8 @@ import filterTabs from "../common/filterTabs";
 import voteTabs from "../common/voteTabs";
 import AddressUser from "next-common/components/user/addressUser";
 import { isEqual } from "lodash-es";
-import usePopupItemHeight from "next-common/components/democracy/democracyCallsVotesPopup/usePopupItemHeight";
-import VirtualList from "next-common/components/dataList/virtualList";
+import DataList from "next-common/components/dataList";
+import Pagination from "next-common/components/pagination";
 
 export default function VotesPopup({
   setShowVoteList,
@@ -31,6 +31,37 @@ export default function VotesPopup({
   const filteredAye = useSearchVotes(search, allAye);
   const filteredNay = useSearchVotes(search, allNay);
   const filteredAbstain = useSearchVotes(search, allAbstain);
+  const [cachedVotes, setCachedVotes] = useState([]);
+  const [cachedVotesLoading, setCachedVotesLoading] = useState(true);
+  const [cachedTabIndex, setCachedTabIndex] = useState(tabs[0].tabId);
+  const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    setPage(1);
+  }, [cachedVotes]);
+
+  let pageSize = 10;
+
+  const pagination = useMemo(
+    () => ({
+      page,
+      pageSize,
+      total: cachedVotes?.length || 0,
+      onPageChange,
+    }),
+    [page, pageSize, cachedVotes?.length],
+  );
+
+  function onPageChange(e, target) {
+    e.preventDefault();
+    setPage(target);
+  }
+
+  const sliceFrom = useMemo(
+    () => (pagination.page - 1) * pageSize,
+    [pageSize, pagination.page],
+  );
+  const sliceTo = sliceFrom + pageSize;
 
   useEffect(() => {
     const tabs = filterTabs(filteredAye, filteredNay, filteredAbstain);
@@ -41,10 +72,6 @@ export default function VotesPopup({
     setTabIndex(tabs[0]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
-
-  const [cachedVotes, setCachedVotes] = useState([]);
-  const [cachedVotesLoading, setCachedVotesLoading] = useState(true);
-  const [cachedTabIndex, setCachedTabIndex] = useState(tabs[0].tabId);
 
   const votes = useMemo(() => {
     if (tabIndex === voteTabs.Aye) {
@@ -71,6 +98,10 @@ export default function VotesPopup({
     }, 500);
   }, [votes, cachedVotes, isLoadingVotes, tabIndex, cachedTabIndex]);
 
+  const pageItems = useMemo(() => {
+    return cachedVotes.slice(sliceFrom, sliceTo);
+  }, [cachedVotes, sliceFrom, sliceTo]);
+
   const searchBtn = (
     <SearchBtn
       showSearch={showSearch}
@@ -94,10 +125,11 @@ export default function VotesPopup({
         abstainsCount={filteredAbstain?.length || 0}
       />
       <VotesList
-        items={cachedVotes}
+        items={pageItems}
         loading={cachedVotesLoading}
         tab={tabIndex}
       />
+      <Pagination {...pagination} />
     </BaseVotesPopup>
   );
 }
@@ -105,7 +137,6 @@ export default function VotesPopup({
 function CachedVotesList({ items = [], loading, tab }) {
   const chainSettings = useChainSettings();
   const symbol = chainSettings.voteSymbol || chainSettings.symbol;
-  const itemHeight = usePopupItemHeight();
 
   const columns = [
     {
@@ -150,13 +181,12 @@ function CachedVotesList({ items = [], loading, tab }) {
   return (
     <>
       <PopupListWrapper>
-        <VirtualList
+        <DataList
+          contentClassName="!max-h-max"
           columns={columns}
           rows={rows}
           loading={loading}
           scrollToFirstRowOnChange
-          itemHeight={itemHeight}
-          listHeight={395}
         />
       </PopupListWrapper>
 
