@@ -1,4 +1,3 @@
-import { ArrowExternalLinkWiki } from "@osn/icons/subsquare";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Input from "next-common/lib/input";
 import { useState } from "react";
@@ -17,7 +16,6 @@ function PageTitle() {
   return (
     <div className="flex gap-[8px] items-center">
       <h1 className="text16Bold text-textPrimary">New Application</h1>
-      <ArrowExternalLinkWiki className="w-[16px] h-[16px] [&_path]:fill-textTertiary" />
     </div>
   );
 }
