@@ -16,7 +16,6 @@ export default function AdvisoryCommitteeSubscription() {
   if (!hasAdvisoryCommittee) {
     return null;
   }
-  console.log("====", hasAdvisoryCommittee);
 
   return (
     <AccordionCard title="Advisory Committee" defaultOpen={true}>
