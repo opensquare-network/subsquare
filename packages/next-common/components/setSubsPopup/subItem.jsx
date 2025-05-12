@@ -23,7 +23,6 @@ export function SubItem({
       <AddressComboField
         comboClassName={cn("w-[290px] !rounded-lg", isMobile && "w-full")}
         size="small"
-        canEdit={false}
         extensionAccounts={extensionAccounts}
         defaultAddress={sub.address}
         setAddress={(value) => {

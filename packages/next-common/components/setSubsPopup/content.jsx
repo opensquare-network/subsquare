@@ -32,19 +32,12 @@ export default function SetSubsPopupContent() {
   const extensionAccounts = useExtensionAccounts();
   const [subsList, setSubsList] = useState([]);
 
-  const defaultAddress = useMemo(() => {
-    const defaultSelectAccount = extensionAccounts
-      .map((item) => item.address)
-      .find((ext) => !subsList.map((sub) => sub.address).includes(ext));
-    return defaultSelectAccount || extensionAccounts?.[0]?.address || "";
-  }, [subsList, extensionAccounts]);
-
   useEffect(() => {
     if (subs) {
       setSubsList(
         subs.length
           ? subs.map(([address, subName]) => ({ address, name: subName }))
-          : [{ ...defaultSub, address: extensionAccounts?.[0]?.address || "" }],
+          : [{ ...defaultSub }],
       );
     }
   }, [subs, extensionAccounts]);
@@ -55,8 +48,8 @@ export default function SetSubsPopupContent() {
   );
 
   const addSub = useCallback(() => {
-    setSubsList((prev) => [...prev, { address: defaultAddress, name: "" }]);
-  }, [defaultAddress]);
+    setSubsList((prev) => [...prev, { ...defaultSub }]);
+  }, []);
 
   const removeSub = useCallback((index) => {
     setSubsList((prev) => prev.filter((_, i) => i !== index));
