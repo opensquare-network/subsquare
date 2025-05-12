@@ -11,6 +11,7 @@ import extractFellowshipApprove from "next-common/components/common/call/fellows
 import EvmCallDecodeViewList, {
   extractEvmInputsWithContext,
 } from "next-common/components/gov2/referendum/call/evmCallDecode";
+import { useType } from "next-common/components/gov2/referendum/call/realChainCallDecode";
 import isHydradx from "next-common/utils/isHydradx";
 import { useAsync } from "react-use";
 
@@ -31,6 +32,12 @@ export default function Gov2ReferendumCall() {
       ? await extractEvmInputsWithContext(proposal?.call || inlineCall?.call)
       : [];
   });
+
+  useType(proposal?.call || inlineCall?.call);
+
+  // console.log(
+  //   extractRealChainInputsWithContext(proposal?.call || inlineCall?.call),
+  // );
 
   const data = [
     onchainData?.proposalHash
