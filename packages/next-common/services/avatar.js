@@ -3,20 +3,41 @@ import { Deferred } from "next-common/utils/deferred";
 import QuickLRU from "quick-lru";
 
 const cachedAvatars = new QuickLRU({ maxSize: 1000 });
+const sessionDataCache = new Map();
 let pendingQueries = new Map();
 
-// TODO: cachedAddresses
 const delayQuery = debounce(async () => {
-  const pending = pendingQueries;
-  if (pending.size < 1) {
+  const currentPendingSnapshot = pendingQueries;
+  pendingQueries = new Map();
+
+  if (currentPendingSnapshot.size === 0) {
     return;
   }
 
-  const addresses = Array.from(pending.keys());
+  const addressesInSnapshot = Array.from(currentPendingSnapshot.keys());
+  const addressesToQueryAPI = [];
+  const addressesToResolveFromSessionCache = [];
 
-  const addressesToQuery = addresses.filter((address) => {
-    return !getCachedAvatar(address);
-  });
+  for (const address of addressesInSnapshot) {
+    if (sessionDataCache.has(address)) {
+      addressesToResolveFromSessionCache.push(address);
+    } else {
+      addressesToQueryAPI.push(address);
+    }
+  }
+
+  for (const address of addressesToResolveFromSessionCache) {
+    const deferred = currentPendingSnapshot.get(address);
+    if (deferred) {
+      const avatarData = sessionDataCache.get(address);
+      cachedAvatars.set(address, avatarData);
+      deferred.resolve(avatarData);
+    }
+  }
+
+  if (addressesToQueryAPI.length === 0) {
+    return;
+  }
 
   const headers = {
     accept: "application/json, text/plain, */*",
@@ -27,27 +48,24 @@ const delayQuery = debounce(async () => {
     const res = await fetch("/api/avatars", {
       headers,
       method: "POST",
-      body: JSON.stringify({ addresses: addressesToQuery }),
+      body: JSON.stringify({ addresses: addressesToQueryAPI }),
     });
     if (!res.ok) {
       return;
     }
     const data = await res.json();
-    const avatars = new Map(data.map((item) => [item.address, item.avatarCid]));
+    const avatarsFromAPI = new Map(
+      data.map((item) => [item.address, item.avatarCid]),
+    );
 
-    for (const address of addressesToQuery) {
-      if (!pending.has(address)) {
-        continue;
-      }
+    for (const address of addressesToQueryAPI) {
+      const deferred = currentPendingSnapshot.get(address);
+      if (!deferred) continue;
 
-      const { resolve } = pending.get(address);
-      // pending.delete(address);
-
-      const avatar = avatars.get(address) || null;
+      const avatar = avatarsFromAPI.get(address) || null;
+      sessionDataCache.set(address, avatar);
       cachedAvatars.set(address, avatar);
-      if (resolve) {
-        resolve(avatar);
-      }
+      deferred.resolve(avatar);
     }
   } catch (e) {
     // ignore
@@ -63,14 +81,20 @@ export function fetchAvatar(address) {
     return Promise.resolve(cachedAvatars.get(address));
   }
 
-  const pending = pendingQueries;
-
-  if (!pending.has(address)) {
-    pending.set(address, new Deferred());
-    delayQuery();
+  if (sessionDataCache.has(address)) {
+    const avatarData = sessionDataCache.get(address);
+    cachedAvatars.set(address, avatarData);
+    return Promise.resolve(avatarData);
   }
 
-  return pending.get(address).promise;
+  if (pendingQueries.has(address)) {
+    return pendingQueries.get(address).promise;
+  }
+
+  const deferred = new Deferred();
+  pendingQueries.set(address, deferred);
+  delayQuery();
+  return deferred.promise;
 }
 
 /**
@@ -81,12 +105,15 @@ export function getCachedAvatar(address) {
     return null;
   }
 
-  return cachedAvatars.get(address) || null;
+  return cachedAvatars.get(address) ?? null;
 }
 
 export function removeCachedAvatar(address) {
   if (cachedAvatars.has(address)) {
     cachedAvatars.delete(address);
+  }
+  if (sessionDataCache.has(address)) {
+    sessionDataCache.delete(address);
   }
 }
 
