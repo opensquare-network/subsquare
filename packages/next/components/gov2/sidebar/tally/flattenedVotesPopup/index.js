@@ -129,7 +129,9 @@ export default function VotesPopup({
         loading={cachedVotesLoading}
         tab={tabIndex}
       />
-      <Pagination {...pagination} />
+      {!cachedVotesLoading && cachedVotes?.length > 0 && (
+        <Pagination {...pagination} />
+      )}
     </BaseVotesPopup>
   );
 }

@@ -135,7 +135,7 @@ export default function OpenGovCallsVotesPopup({ setShowVoteList }) {
         abstainCount={filteredAbstain?.length || 0}
       />
       <VotesList items={pageItems} loading={isLoading} />
-      <Pagination {...pagination} />
+      {!isLoading && cachedVotes?.length > 0 && <Pagination {...pagination} />}
     </BaseVotesPopup>
   );
 }

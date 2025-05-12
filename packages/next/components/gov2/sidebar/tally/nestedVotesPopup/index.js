@@ -133,7 +133,9 @@ export default function NestedVotesPopup({
         />
 
         <VotesList items={pageItems} loading={cachedVotesLoading} />
-        <Pagination {...pagination} />
+        {!cachedVotesLoading && cachedVotes?.length > 0 && (
+          <Pagination {...pagination} />
+        )}
       </BaseVotesPopup>
     </>
   );
