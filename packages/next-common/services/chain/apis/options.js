@@ -4,7 +4,7 @@ import getMetadata from "next-common/services/chain/apis/metadata";
 import getApiProvider from "next-common/services/chain/apis/providers";
 
 async function getOptions(chain, endpoint) {
-  const provider = getApiProvider(endpoint);
+  const provider = await getApiProvider(endpoint);
   let options = { provider };
 
   const allOptions = (await import("@osn/provider-options")).default;
