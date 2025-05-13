@@ -29,13 +29,17 @@ export default function useAvatarInfo(address) {
 
   useEffect(() => {
     if (address) {
-      fetchAvatar(address).then((result) => {
-        if (result === avatar) {
-          return;
-        }
+      fetchAvatar(address)
+        .then((result) => {
+          if (result === avatar) {
+            return;
+          }
 
-        setAvatar(result);
-      });
+          setAvatar(result);
+        })
+        .catch(() => {
+          setAvatar(null);
+        });
     }
   }, [address, avatar]);
 
