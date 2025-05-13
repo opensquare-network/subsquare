@@ -66,7 +66,7 @@ const nodeSlice = createSlice({
       }
 
       if (refresh) {
-        window.location.href = `https://${state.chain}.subsquare.io`;
+        window.location.reload();
       }
     },
     removeCurrentNode(state) {
