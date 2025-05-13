@@ -13,8 +13,6 @@ import { isObject } from "lodash-es";
 import { useContextApi } from "next-common/context/api";
 import { useAsync } from "react-use";
 import { hexToU8a } from "@polkadot/util";
-import { isCollectivesChain } from "next-common/utils/chain";
-import { useChain } from "next-common/context/chain";
 
 const CallDetailPopup = dynamicPopup(() => import("../../../callDetailPopup"));
 
@@ -136,12 +134,11 @@ export async function extractRelayChainInputsWithContext(data) {
 
 export function useRelayChainCallDecodeType(data) {
   const api = useContextApi();
-  const chain = useChain();
   const [decodes, setDecodes] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const { value } = useAsync(async () =>
-    isCollectivesChain(chain) ? extractRelayChainInputsWithContext(data) : [],
+    extractRelayChainInputsWithContext(data),
   );
 
   useEffect(() => {
