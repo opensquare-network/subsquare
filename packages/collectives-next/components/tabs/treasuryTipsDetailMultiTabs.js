@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useMemo } from "react";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { usePost } from "next-common/context/post";
-import { useTreasuryTipsTimelineData } from "hooks/timelineData";
+import { useTreasuryTipsTimelineData } from "next-common/hooks/pages/timelineData";
 import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
 
 const Metadata = dynamicClientOnly(() => import("components/tip/metadata"));

@@ -11,7 +11,7 @@ import { useChain } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
 import VotesBubbleViewTabs from "next-common/components/detail/detailMultiTabs/votesBubbleViewTabs";
 import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
-import { useDemocracyReferendaProposalTimelineData } from "hooks/timelineData";
+import { useDemocracyReferendaProposalTimelineData } from "next-common/hooks/pages/timelineData";
 
 const Timeline = dynamicClientOnly(() =>
   import("next-common/components/timeline"),

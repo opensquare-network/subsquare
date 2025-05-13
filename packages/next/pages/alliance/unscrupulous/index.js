@@ -1,5 +1,5 @@
-import { useUnscrupulousAccounts } from "hooks/useUnscrupulousAccounts";
-import { useUnscrupulousWebsites } from "hooks/useUnscrupulousWebsites";
+import { useUnscrupulousAccounts } from "next-common/hooks/pages/useUnscrupulousAccounts";
+import { useUnscrupulousWebsites } from "next-common/hooks/pages/useUnscrupulousWebsites";
 import UnscrupulousAccounts from "components/alliance/unscrupulousAccounts";
 import UnscrupulousLayout from "components/alliance/unscrupulousLayout";
 import { getServerSidePropsWithTracks } from "next-common/services/serverSide";

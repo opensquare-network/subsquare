@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { usePost } from "next-common/context/post";
 import { useCouncilMotionBusinessData } from "next-common/hooks/useCouncilMotionBusinessData";
-import { useMotionTimelineData } from "hooks/timelineData";
+import { useMotionTimelineData } from "next-common/hooks/pages/timelineData";
 import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
 
 const Metadata = dynamicClientOnly(() => import("../motion/metadata"));

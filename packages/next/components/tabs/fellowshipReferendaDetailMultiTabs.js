@@ -6,7 +6,7 @@ import { useOnchainData } from "next-common/context/post";
 import ReferendumCallProvider from "next-common/context/referenda/call";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
-import { useReferendumTimelineData } from "hooks/timelineData";
+import { useReferendumTimelineData } from "next-common/hooks/pages/timelineData";
 
 const Gov2ReferendumMetadata = dynamicClientOnly(() =>
   import("next-common/components/gov2/referendum/metadata"),

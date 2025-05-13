@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import { useRouter } from "next/router";
 import Tabs from "next-common/components/tabs";
 import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
-import { useDemocracyExternalProposalTimelineData } from "hooks/timelineData";
+import { useDemocracyExternalProposalTimelineData } from "next-common/hooks/pages/timelineData";
 
 const Business = dynamicClientOnly(() =>
   import("components/external/business"),

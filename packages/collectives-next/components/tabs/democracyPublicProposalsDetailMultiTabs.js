@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import Tabs from "next-common/components/tabs";
 import { useRouter } from "next/router";
 import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
-import { useDemocracyPublicProposalTimelineData } from "hooks/timelineData";
+import { useDemocracyPublicProposalTimelineData } from "next-common/hooks/pages/timelineData";
 
 const Metadata = dynamicClientOnly(() =>
   import("next-common/components/publicProposal/metadata"),

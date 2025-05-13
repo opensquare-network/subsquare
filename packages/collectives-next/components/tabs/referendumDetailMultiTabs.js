@@ -11,7 +11,7 @@ import { useChain } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
 import { useRouter } from "next/router";
 import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
-import { useReferendumTimelineData } from "hooks/timelineData";
+import { useReferendumTimelineData } from "next-common/hooks/pages/timelineData";
 
 const Gov2ReferendumCall = dynamicClientOnly(() =>
   import("next-common/components/gov2/referendum/call"),

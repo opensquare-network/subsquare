@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { usePost } from "next-common/context/post";
 import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
-import { useAllianceAnnouncementTimelineData } from "hooks/timelineData";
+import { useAllianceAnnouncementTimelineData } from "next-common/hooks/pages/timelineData";
 
 const Timeline = dynamicClientOnly(() =>
   import("next-common/components/timeline"),

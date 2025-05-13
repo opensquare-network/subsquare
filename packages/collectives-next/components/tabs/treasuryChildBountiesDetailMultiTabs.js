@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { usePost } from "next-common/context/post";
 import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
-import { useTreasuryChildBountiesTimelineData } from "hooks/timelineData";
+import { useTreasuryChildBountiesTimelineData } from "next-common/hooks/pages/timelineData";
 
 const Metadata = dynamicClientOnly(() =>
   import("next-common/components/treasury/bounty/metadata"),
