@@ -1,12 +1,11 @@
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
-import { useSelector } from "react-redux";
+import useChainOrScanHeight from "next-common/hooks/height";
 import { isNil } from "lodash-es";
 import TooltipCountdown from "next-common/components/postList/common/tooltipCountdown";
 
 export default function TreasurySpendsCountDown({ data = {} }) {
   const { meta, state, indexer } = data || {};
   const { expireAt, validFrom } = meta || {};
-  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const latestHeight = useChainOrScanHeight();
 
   if (
     isNil(expireAt) ||

@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import useChainOrScanHeight from "next-common/hooks/height";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Tooltip from "next-common/components/tooltip";
 import { useState } from "react";
@@ -40,7 +40,7 @@ export function useCanPromote(member, params) {
 
   const { members } = useFellowshipCoreMembersWithRank();
 
-  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const latestHeight = useChainOrScanHeight();
   const blockTime = useSelector(blockTimeSelector);
 
   const me = find(members, { address });
