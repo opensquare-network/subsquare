@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { flatten } from "lodash-es";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
-import { getTimelineStatus } from "../../utils";
+import { getTimelineStatus } from "next-common/utils/pages";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
-import { createMotionTimelineData } from "../../utils/timeline/motion";
-import { createReferendumTimelineData } from "../../utils/timeline/referendum";
+import { createMotionTimelineData } from "next-common/utils/pages/timeline/motion";
+import { createReferendumTimelineData } from "next-common/utils/pages/timeline/referendum";
 import sortTimeline from "next-common/utils/timeline/sort";
 import SymbolBalance from "next-common/components/values/symbolBalance";
 import AddressUser from "next-common/components/user/addressUser";

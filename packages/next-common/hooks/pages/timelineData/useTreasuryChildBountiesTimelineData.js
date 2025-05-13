@@ -1,4 +1,4 @@
-import { getTimelineStatus } from "utils";
+import { getTimelineStatus } from "next-common/utils/pages";
 import sortTimeline from "next-common/utils/timeline/sort";
 import Anchor from "next-common/components/styled/anchor";
 import { detailPageCategory } from "next-common/utils/consts/business/category";

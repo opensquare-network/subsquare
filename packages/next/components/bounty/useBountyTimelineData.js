@@ -1,9 +1,9 @@
 import SymbolBalance from "next-common/components/values/symbolBalance";
 import { useEffect, useState } from "react";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
-import { getTimelineStatus } from "../../utils";
+import { getTimelineStatus } from "next-common/utils/pages";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
-import { createMotionTimelineData } from "../../utils/timeline/motion";
+import { createMotionTimelineData } from "next-common/utils/pages/timeline/motion";
 import sortTimeline from "next-common/utils/timeline/sort";
 import AddressUser from "next-common/components/user/addressUser";
 

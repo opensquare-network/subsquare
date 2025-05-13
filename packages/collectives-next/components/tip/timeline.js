@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { findLastIndex } from "lodash-es";
-import { getTimelineStatus } from "utils";
+import { getTimelineStatus } from "next-common/utils/pages";
 import Timeline from "next-common/components/timeline";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import SymbolBalance from "next-common/components/values/symbolBalance";

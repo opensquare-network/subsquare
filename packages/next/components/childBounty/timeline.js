@@ -1,4 +1,4 @@
-import { getTimelineStatus } from "utils";
+import { getTimelineStatus } from "next-common/utils/pages";
 import Timeline from "next-common/components/timeline";
 import sortTimeline from "next-common/utils/timeline/sort";
 import Anchor from "next-common/components/styled/anchor";

@@ -1,6 +1,6 @@
-import { getTimelineStatus } from "utils";
+import { getTimelineStatus } from "next-common/utils/pages";
 import Timeline from "next-common/components/timeline";
-import { createMotionTimelineData } from "utils/timeline/motion";
+import { createMotionTimelineData } from "next-common/utils/pages/timeline/motion";
 import sortTimeline from "next-common/utils/timeline/sort";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import SymbolBalance from "next-common/components/values/symbolBalance";

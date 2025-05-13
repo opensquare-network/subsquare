@@ -1,6 +1,6 @@
 import { usePost } from "next-common/context/post";
 import { useDetailType } from "next-common/context/page";
-import { createMotionTimelineData } from "@subsquare/next/utils/timeline/motion";
+import { createMotionTimelineData } from "next-common/utils/pages/timeline/motion";
 import { useMemo } from "react";
 import IpfsCidWithLink from "next-common/components/alliance/ipfsCidWithLink";
 import formatTime from "next-common/utils/viewfuncs/formatDate";

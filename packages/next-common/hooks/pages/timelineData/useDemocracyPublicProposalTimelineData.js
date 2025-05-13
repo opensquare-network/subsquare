@@ -1,4 +1,4 @@
-import { getTimelineStatus } from "next-common/utils/index";
+import { getTimelineStatus } from "next-common/utils/pages";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { useTimelineData } from "next-common/context/post";
 import formatTime from "next-common/utils/viewfuncs/formatDate";

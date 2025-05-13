@@ -1,4 +1,4 @@
-import { getTimelineStatus } from "utils/index";
+import { getTimelineStatus } from "next-common/utils/pages";
 import Timeline from "next-common/components/timeline";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { useTimelineData } from "next-common/context/post";

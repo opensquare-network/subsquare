@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { findLastIndex } from "lodash-es";
-import { createMotionTimelineData } from "../../utils/timeline/motion";
+import { createMotionTimelineData } from "next-common/utils/pages/timeline/motion";
 import useShowMotionEnd from "./useShowMotionEnd";
 import MotionEnd from "next-common/components/motionEnd";
 import Timeline from "next-common/components/timeline";

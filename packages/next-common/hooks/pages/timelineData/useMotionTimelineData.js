@@ -1,5 +1,5 @@
 import { findLastIndex } from "lodash-es";
-import { createMotionTimelineData } from "utils/timeline/motion";
+import { createMotionTimelineData } from "next-common/utils/pages/timeline/motion";
 import { usePostOnChainData } from "next-common/context/post";
 
 const isClosed = (timeline) => {
