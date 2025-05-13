@@ -5,7 +5,6 @@ import { CommonTag } from "next-common/components/tags/state/styled";
 import Tooltip from "next-common/components/tooltip";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { cn } from "next-common/utils";
-import { contractAddressMap } from "next-common/utils/evm/importAbi";
 import { useState, useEffect } from "react";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 import WindowSizeProvider from "next-common/context/windowSize";
@@ -14,6 +13,8 @@ import { isObject } from "lodash-es";
 import { useContextApi } from "next-common/context/api";
 import { useAsync } from "react-use";
 import { hexToU8a } from "@polkadot/util";
+import { isCollectivesChain } from "next-common/utils/chain";
+import { useChain } from "next-common/context/chain";
 
 const CallDetailPopup = dynamicPopup(() => import("../../../callDetailPopup"));
 
@@ -25,30 +26,28 @@ const NameTag = styled(CommonTag)`
   white-space: nowrap;
 `;
 
-export default function RealChainCallDecodeViewList({ evmCallDecodes }) {
+export default function RelayChainCallDecodeViewList({ relayChainDecodes }) {
   const [showMore, setShowMore] = useState(false);
-  const shouldCollapsed = evmCallDecodes?.length > separateNumber;
+  const shouldCollapsed = relayChainDecodes?.length > separateNumber;
 
   return (
     <WindowSizeProvider>
       <div className="flex flex-col">
         <div className="flex flex-col gap-y-2">
-          {evmCallDecodes.slice(0, separateNumber).map((item, index) => (
-            <EvmCallDecodeViewItem
+          {relayChainDecodes.slice(0, separateNumber).map((item, index) => (
+            <RelayChainCallDecodeViewItem
               key={"always" + index}
-              decode={item.decodeResult}
-              contractAddress={item.contractAddress}
+              decode={item}
             />
           ))}
           {showMore &&
             shouldCollapsed &&
-            evmCallDecodes
+            relayChainDecodes
               ?.slice(separateNumber)
               .map((item, index) => (
-                <EvmCallDecodeViewItem
+                <RelayChainCallDecodeViewItem
                   key={"sometimes" + index}
-                  decode={item.decodeResult}
-                  contractAddress={item.contractAddress}
+                  decode={item}
                 />
               ))}
         </div>
@@ -70,10 +69,9 @@ export default function RealChainCallDecodeViewList({ evmCallDecodes }) {
   );
 }
 
-function EvmCallDecodeViewItem({ decode, contractAddress }) {
+function RelayChainCallDecodeViewItem({ decode }) {
   const isMobile = useIsMobile();
   const [detailPopupVisible, setDetailPopupVisible] = useState(false);
-  const contractName = contractAddressMap[contractAddress]?.name;
 
   if (!decode) {
     return null;
@@ -85,7 +83,7 @@ function EvmCallDecodeViewItem({ decode, contractAddress }) {
         "flex-wrap": isMobile,
       })}
     >
-      <NameTag>{contractName}</NameTag>
+      <NameTag>{decode?.section}</NameTag>
       <span className="text-textTertiary text14Medium">·</span>
       <div className="flex gap-2">
         <NameTag>{decode?.method}</NameTag>
@@ -112,55 +110,62 @@ function EvmCallDecodeViewItem({ decode, contractAddress }) {
     </div>
   );
 }
+export async function extractRelayChainInputsWithContext(data) {
+  const encodedResults = [];
 
-export async function extractRealChainInputsWithContext(data) {
-  const decodeResults = [];
-
-  async function findEvmInputs(item) {
+  async function findEncoded(item) {
     if (!isObject(item)) {
       return;
     }
 
     if (Array.isArray(item)) {
-      item.forEach(findEvmInputs);
+      await Promise.all(item.map(findEncoded));
       return;
     }
 
-    if (isEvmSection(item)) {
-      const result = await extractTargetAndInput(item);
-      if (result) {
-        decodeResults.push(result);
-      }
+    if (item.encoded && typeof item.encoded === "string") {
+      encodedResults.push(item.encoded);
     }
 
-    Object.values(item).forEach(findEvmInputs);
+    await Promise.all(Object.values(item).map(findEncoded));
   }
 
-  function isEvmSection(item) {
-    return item.originKind === "Xcm" && item.call;
-  }
-
-  async function extractTargetAndInput(item) {
-    if (!item?.call?.encoded) {
-      return null;
-    }
-    return item.call.encoded;
-  }
-
-  await findEvmInputs(data);
-  return decodeResults;
+  await findEncoded(data);
+  return encodedResults;
 }
 
-export function useType(data) {
+export function useRelayChainCallDecodeType(data) {
   const api = useContextApi();
+  const chain = useChain();
+  const [decodes, setDecodes] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const { value } = useAsync(async () =>
-    extractRealChainInputsWithContext(data),
+    isCollectivesChain(chain) ? extractRelayChainInputsWithContext(data) : [],
   );
 
   useEffect(() => {
+    const decodes = [];
+    setLoading(true);
     if (api && value?.length) {
-      api?.createType("call", hexToU8a[0]);
+      for (const encode of value) {
+        try {
+          const result = api?.createType("Call", hexToU8a[encode]);
+          const json = result?.toHuman();
+          if (json) {
+            decodes.push(json);
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      }
     }
+    setDecodes(decodes);
+    setLoading(false);
   }, [api, value]);
+
+  return {
+    value: decodes,
+    loading,
+  };
 }

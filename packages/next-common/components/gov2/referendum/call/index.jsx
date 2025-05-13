@@ -11,7 +11,9 @@ import extractFellowshipApprove from "next-common/components/common/call/fellows
 import EvmCallDecodeViewList, {
   extractEvmInputsWithContext,
 } from "next-common/components/gov2/referendum/call/evmCallDecode";
-import { useType } from "next-common/components/gov2/referendum/call/realChainCallDecode";
+import RelayChainCallDecodeViewList, {
+  useRelayChainCallDecodeType,
+} from "next-common/components/gov2/referendum/call/realChainCallDecode";
 import isHydradx from "next-common/utils/isHydradx";
 import { useAsync } from "react-use";
 
@@ -33,11 +35,9 @@ export default function Gov2ReferendumCall() {
       : [];
   });
 
-  useType(proposal?.call || inlineCall?.call);
-
-  // console.log(
-  //   extractRealChainInputsWithContext(proposal?.call || inlineCall?.call),
-  // );
+  const { value: relayChainDecodes } = useRelayChainCallDecodeType(
+    proposal?.call || inlineCall?.call,
+  );
 
   const data = [
     onchainData?.proposalHash
@@ -71,6 +71,15 @@ export default function Gov2ReferendumCall() {
           <EvmCallDecodeViewList
             key="EVM Calls"
             evmCallDecodes={evmCallDecodes}
+          />,
+        ]
+      : null,
+    relayChainDecodes.length > 0
+      ? [
+          "Relay chain call",
+          <RelayChainCallDecodeViewList
+            key="Relay chain call"
+            relayChainDecodes={relayChainDecodes}
           />,
         ]
       : null,
