@@ -6,7 +6,7 @@ import {
   getOrCreateStorage,
   STORAGE_ITEM_KEY,
   STORAGE_NAMES,
-} from "next-common/utils/indexedDB/voteCalls";
+} from "next-common/utils/indexedDB/votes";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 export default function useVoteCalls(referendumIndex) {
