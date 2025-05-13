@@ -19,6 +19,7 @@ import AddressUser from "next-common/components/user/addressUser";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import VirtualList from "next-common/components/dataList/virtualList";
 import usePopupItemHeight from "next-common/components/democracy/democracyCallsVotesPopup/usePopupItemHeight";
+import WindowSizeProvider from "next-common/context/windowSize";
 
 const BaseVotesPopup = dynamicPopup(() =>
   import("next-common/components/popup/baseVotesPopup"),
@@ -75,21 +76,23 @@ export default function DemocracyCallsVotesPopup({ setShowVoteList }) {
   );
 
   return (
-    <BaseVotesPopup
-      title="Calls"
-      onClose={() => setShowVoteList(false)}
-      extra={searchBtn}
-    >
-      {showSearch && <SearchBar setSearch={setSearch} />}
+    <WindowSizeProvider>
+      <BaseVotesPopup
+        title="Calls"
+        onClose={() => setShowVoteList(false)}
+        extra={searchBtn}
+      >
+        {showSearch && <SearchBar setSearch={setSearch} />}
 
-      <VotesTab
-        tabIndex={tabIndex}
-        setTabIndex={setTabIndex}
-        ayesCount={filteredAye?.length || 0}
-        naysCount={filteredNay?.length || 0}
-      />
-      <VotesList items={votes} loading={isLoading} />
-    </BaseVotesPopup>
+        <VotesTab
+          tabIndex={tabIndex}
+          setTabIndex={setTabIndex}
+          ayesCount={filteredAye?.length || 0}
+          naysCount={filteredNay?.length || 0}
+        />
+        <VotesList items={votes} loading={isLoading} />
+      </BaseVotesPopup>
+    </WindowSizeProvider>
   );
 }
 
