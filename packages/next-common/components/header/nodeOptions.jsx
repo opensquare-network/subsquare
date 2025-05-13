@@ -48,12 +48,12 @@ export default function NodeOptions({
             )}
             onClick={() => {
               if (!active) {
-                dispatch(setCurrentNode({ url: node.url }));
+                dispatch(setCurrentNode({ url: node.url, refresh: true }));
               }
               setShow(false);
             }}
           >
-            <div className="flex items-center gap-x-2"> 
+            <div className="flex items-center gap-x-2">
               <NodeSignalIcon delay={node?.delay} />
               <div>{node?.name}</div>
               <div className="text-textPrimary text12Medium text-textTertiary">
