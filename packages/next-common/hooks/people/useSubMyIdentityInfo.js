@@ -135,7 +135,6 @@ function useSuperOfIdentityDisplayName(identity) {
 }
 
 function useAddressIdentityInfo(address) {
-  const api = useContextApi();
   const { result, loading: isLoading } = useSubStorage(
     "identity",
     "identityOf",
@@ -148,7 +147,7 @@ function useAddressIdentityInfo(address) {
   });
 
   useEffect(() => {
-    if (!api || !address) {
+    if (!address) {
       return;
     }
 
@@ -160,7 +159,7 @@ function useAddressIdentityInfo(address) {
     } else {
       setIdentity(convertIdentity(result));
     }
-  }, [address, api, result]);
+  }, [address, result]);
 
   return {
     ...identity,

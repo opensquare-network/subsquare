@@ -4,6 +4,7 @@ import ChainSocialLinks from "next-common/components/chain/socialLinks";
 import IdentitiesTable from "./table";
 import OnchainPeopleIdentitiesPage from "./onchain";
 import IdentitiesSummary from "./summary";
+import PeopleCommonProvider from "../common/commonProvider";
 
 export const tabs = [
   {
@@ -18,20 +19,26 @@ export default function PeopleIdentitiesPageImpl() {
   const { description, integrations } = useChainSettings();
 
   if (!integrations?.statescan) {
-    return <OnchainPeopleIdentitiesPage />;
+    return (
+      <PeopleCommonProvider>
+        <OnchainPeopleIdentitiesPage />
+      </PeopleCommonProvider>
+    );
   }
 
   return (
-    <ListLayout
-      title="Identities"
-      description={description}
-      headContent={<ChainSocialLinks />}
-      summary={<IdentitiesSummary />}
-      tabs={tabs}
-    >
-      <div className="space-y-6">
-        <IdentitiesTable />
-      </div>
-    </ListLayout>
+    <PeopleCommonProvider>
+      <ListLayout
+        title="Identities"
+        description={description}
+        headContent={<ChainSocialLinks />}
+        summary={<IdentitiesSummary />}
+        tabs={tabs}
+      >
+        <div className="space-y-6">
+          <IdentitiesTable />
+        </div>
+      </ListLayout>
+    </PeopleCommonProvider>
   );
 }

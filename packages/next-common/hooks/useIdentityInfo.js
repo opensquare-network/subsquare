@@ -6,23 +6,25 @@ import {
   getCachedIdentity,
 } from "next-common/services/identity";
 import getChainSettings from "next-common/utils/consts/settings";
-import useSubMyIdentityInfo from "next-common/hooks/people/useSubMyIdentityInfo";
 import { isPeopleChain } from "next-common/utils/chain";
 import { cloneDeep } from "lodash-es";
 import { isNil } from "lodash-es";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { isSameAddress } from "next-common/utils";
+import { useIdentityInfoContext } from "next-common/context/people/identityInfoContext";
 
 export function useChainAddressIdentityInfo(chain, address) {
   const { identity: identityChain } = getChainSettings(chain);
+  const realAddress = useRealAddress();
+
+  const { displayName, info: myIdentityInfo = {} } =
+    useIdentityInfoContext() || {};
 
   // Render the identity immediately if it's already in cache
   const encodedAddress = encodeAddressToChain(address, identityChain);
   const cachedIdentity = getCachedIdentity(identityChain, encodedAddress);
   const [identity, setIdentity] = useState(cachedIdentity);
   const [isLoading, setIsLoading] = useState(true);
-  const { info: myIdentityInfo, displayName } = useSubMyIdentityInfo();
-  const realAddress = useRealAddress();
 
   useEffect(() => {
     setIdentity(null);
