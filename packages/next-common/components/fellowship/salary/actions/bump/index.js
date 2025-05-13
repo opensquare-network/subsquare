@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { isNil } from "lodash-es";
-import SecondaryButton from "next-common/lib/button/secondary";
+import PrimaryButton from "next-common/lib/button/primary";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useFellowshipSalaryStats } from "next-common/hooks/fellowship/salary/useFellowshipSalaryStats";
 import useSalaryFellowshipPeriods from "next-common/hooks/fellowship/salary/useSalaryFellowshipPeriods";
@@ -10,9 +10,9 @@ import Tooltip from "next-common/components/tooltip";
 import useWaitSyncBlock from "next-common/utils/hooks/useWaitSyncBlock";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const FellowshipSalaryBumpPopup = dynamicPopup(() => import("./popup"));
+const FellowshipSalaryNextCyclePopup = dynamicPopup(() => import("./popup"));
 
-export default function FellowshipSalaryBump() {
+export default function FellowshipSalaryNextCycle() {
   const router = useRouter();
   const [showPopup, setShowPopup] = useState(false);
   const address = useRealAddress();
@@ -43,20 +43,20 @@ export default function FellowshipSalaryBump() {
   if (disabled) {
     return (
       <Tooltip content={tooltipText}>
-        <SecondaryButton size="small" disabled>
-          Bump
-        </SecondaryButton>
+        <PrimaryButton size="small" disabled>
+          Start Next Cycle
+        </PrimaryButton>
       </Tooltip>
     );
   }
 
   return (
     <>
-      <SecondaryButton size="small" onClick={() => setShowPopup(true)}>
-        Bump
-      </SecondaryButton>
+      <PrimaryButton size="small" onClick={() => setShowPopup(true)}>
+        Start Next Cycle
+      </PrimaryButton>
       {showPopup && (
-        <FellowshipSalaryBumpPopup
+        <FellowshipSalaryNextCyclePopup
           onClose={() => setShowPopup(false)}
           onFinalized={onBump}
         />
