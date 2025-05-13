@@ -13,7 +13,7 @@ import EvmCallDecodeViewList, {
 } from "next-common/components/gov2/referendum/call/evmCallDecode";
 import RelayChainCallDecodeViewList, {
   useRelayChainCallDecodeType,
-} from "next-common/components/gov2/referendum/call/realChainCallDecode";
+} from "next-common/components/gov2/referendum/call/relayChainCallDecode";
 import isHydradx from "next-common/utils/isHydradx";
 import { useAsync } from "react-use";
 
