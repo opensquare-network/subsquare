@@ -3,8 +3,8 @@ import { Deferred } from "next-common/utils/deferred";
 import QuickLRU from "quick-lru";
 
 const cachedAvatars = new QuickLRU({ maxSize: 1000 });
-let pendingQueries = new Map();
-let processingQueries = new Map();
+const pendingQueries = new Map();
+const processingQueries = new Map();
 
 const delayQuery = debounce(async () => {
   if (pendingQueries.size < 1) {
@@ -15,7 +15,7 @@ const delayQuery = debounce(async () => {
   for (const [address, deferred] of pendingQueries) {
     if (processingQueries.has(address)) {
       // Should not happen
-      console.error("Duplicate identity query:", address);
+      console.error("Duplicate avatar query:", address);
       continue;
     }
     addresses.push(address);
@@ -43,7 +43,7 @@ const delayQuery = debounce(async () => {
     for (const address of addresses) {
       if (!processingQueries.has(address)) {
         // Should not happen
-        console.error("Identity query deferred not found:", address);
+        console.error("Avatar query deferred not found:", address);
         continue;
       }
 
