@@ -1,9 +1,8 @@
-import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setNodesDelay } from "../../store/reducers/nodeSlice";
 import { sleep } from "../index";
-import { useChain } from "../../context/chain";
 import { getApiProviderMap } from "next-common/services/chain/apis/providers";
+import { useInterval } from "react-use";
 
 const TIMEOUT = 10000;
 let count = 0;
@@ -46,28 +45,21 @@ async function updateUrlDelay(url, dispatch) {
 }
 
 function useUpdateNodesDelay() {
-  const chain = useChain();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const intervalId = setInterval(async () => {
-      const providerMap = getApiProviderMap();
-      const endpoints = Object.keys(providerMap);
-      if (count++ === 0) {
-        // update delay for all endpoints at the first time
-        await Promise.all(
-          endpoints.map((url) => updateUrlDelay(url, dispatch)),
-        );
-      } else if (endpoints && endpoints.length > 0) {
-        const url = endpoints[count % endpoints.length];
-        const provider = await providerMap[url];
-        const delay = await getNodeDelay(provider);
-        dispatch(setNodesDelay([{ url, delay }]));
-      }
-    }, 5000);
-
-    return () => clearInterval(intervalId);
-  }, [dispatch, chain]);
+  useInterval(async () => {
+    const providerMap = getApiProviderMap();
+    const endpoints = Object.keys(providerMap);
+    if (count++ === 0) {
+      // update delay for all endpoints at the first time
+      await Promise.all(endpoints.map((url) => updateUrlDelay(url, dispatch)));
+    } else if (endpoints && endpoints.length > 0) {
+      const url = endpoints[count % endpoints.length];
+      const provider = await providerMap[url];
+      const delay = await getNodeDelay(provider);
+      dispatch(setNodesDelay([{ url, delay }]));
+    }
+  }, 6000);
 }
 
 export default useUpdateNodesDelay;
