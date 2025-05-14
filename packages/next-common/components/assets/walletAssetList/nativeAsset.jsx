@@ -1,5 +1,6 @@
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import NativeAssetList from "./nativeAssetList";
+import { ParaChainTeleportPopupProvider } from "../paraChainTeleportContextButton";
 
 export default function NativeAsset() {
   return (
@@ -11,7 +12,9 @@ export default function NativeAsset() {
       </div>
       <div className="mt-4">
         <SecondaryCard>
-          <NativeAssetList />
+          <ParaChainTeleportPopupProvider>
+            <NativeAssetList />
+          </ParaChainTeleportPopupProvider>
         </SecondaryCard>
       </div>
     </div>
