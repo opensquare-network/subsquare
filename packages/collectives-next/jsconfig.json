@@ -2,10 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "next-common/*": ["../next-common/*"],
-      "next-common/store/reducers/selectors/height": [
-        "../next-common/store/reducers/selectors/height.js"
-      ]
+      "next-common/*": ["../next-common/*"]
     },
     "jsx": "react-jsx"
   },

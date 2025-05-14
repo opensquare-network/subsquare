@@ -20,7 +20,7 @@ import { useChainSettings } from "next-common/context/chain";
 import { SimaProposalCommentActionsProvider } from "next-common/sima/components/common/context/commentActionsProvider";
 import { SimaProposalArticleActionsProvider } from "next-common/sima/components/common/context/articleActionsProvider";
 import { TreasuryProvider } from "next-common/context/treasury";
-import CommunityTreasuryProposalsDetailMultiTabs from "components/tabs/communityTreasuryProposalsDetailMultiTabs";
+import CommunityTreasuryProposalsDetailMultiTabs from "next-common/components/pages/components/tabs/communityTreasuryProposalsDetailMultiTabs";
 
 function TreasuryProposalContent() {
   const detail = usePost();

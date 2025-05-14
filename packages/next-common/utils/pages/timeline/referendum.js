@@ -1,5 +1,5 @@
 import businessCategory from "next-common/utils/consts/business/category";
-import TimelineReferendumVote from "components/timelineReferendumVote";
+import TimelineReferendumVote from "next-common/components/pages/components/timelineReferendumVote";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
 
 // used in treasury proposal timeline

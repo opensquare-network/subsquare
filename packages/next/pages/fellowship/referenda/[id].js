@@ -10,8 +10,8 @@ import { PostProvider, usePost } from "next-common/context/post";
 import { getBannerUrl } from "next-common/utils/banner";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import FellowshipBreadcrumb from "next-common/components/fellowship/breadcrumb";
-import FellowshipReferendumSideBar from "../../../components/fellowship/referendum/sidebar";
-import CheckUnFinalized from "components/fellowship/checkUnFinalized";
+import FellowshipReferendumSideBar from "next-common/components/pages/components/fellowship/referendum/sidebar";
+import CheckUnFinalized from "next-common/components/pages/components/fellowship/checkUnFinalized";
 import BreadcrumbWrapper, {
   BreadcrumbHideOnMobileText,
 } from "next-common/components/detail/common/BreadcrumbWrapper";
@@ -28,7 +28,7 @@ import CollectivesProvider from "next-common/context/collectives/collectives";
 import { ReferendaPalletProvider } from "next-common/context/referenda/pallet";
 import useSubReferendumInfo from "next-common/hooks/referenda/useSubReferendumInfo";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
-import FellowshipReferendaDetailMultiTabs from "components/tabs/fellowshipReferendaDetailMultiTabs";
+import FellowshipReferendaDetailMultiTabs from "next-common/components/pages/components/tabs/fellowshipReferendaDetailMultiTabs";
 
 function FellowshipContent() {
   const post = usePost();

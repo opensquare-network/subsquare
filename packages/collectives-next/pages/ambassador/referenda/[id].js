@@ -19,14 +19,14 @@ import { useTrack } from "next-common/context/post/gov2/track";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import CheckUnFinalizedBase from "next-common/components/checkUnFinalizedBase";
 import AmbassadorReferendaDetail from "next-common/components/detail/ambassador";
-import FellowshipReferendumSideBar from "../../../components/fellowship/referendum/sidebar";
+import FellowshipReferendumSideBar from "next-common/components/pages/components/fellowship/referendum/sidebar";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
 import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 import { ReferendaPalletProvider } from "next-common/context/referenda/pallet";
 import useSubReferendumInfo from "next-common/hooks/referenda/useSubReferendumInfo";
-import AmbassadorReferendaDetailMultiTabs from "components/tabs/ambassadorReferendaDetailMultiTabs";
+import AmbassadorReferendaDetailMultiTabs from "next-common/components/pages/components/tabs/ambassadorReferendaDetailMultiTabs";
 
 function AmbassadorContent() {
   const post = usePost();

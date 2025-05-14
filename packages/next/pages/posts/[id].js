@@ -11,7 +11,7 @@ import {
   getPostVotesAndMine,
 } from "next-common/services/detail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import PostDetail from "components/postDetail";
+import PostDetail from "next-common/components/pages/components/postDetail";
 
 export default function PostDetailPage({ detail }) {
   const desc = getMetaDesc(detail);

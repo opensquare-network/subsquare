@@ -5,7 +5,7 @@ import {
   Header,
   Value,
 } from "next-common/components/referenda/tally/styled";
-import SymbolValue from "components/gov2/sidebar/tally/values/symbolValue";
+import SymbolValue from "next-common/components/pages/components/gov2/sidebar/tally/values/symbolValue";
 import { useOnchainData } from "next-common/context/post";
 import { usePageProps } from "next-common/context/page";
 import useSubAddressBalance from "next-common/utils/hooks/useSubAddressBalance";

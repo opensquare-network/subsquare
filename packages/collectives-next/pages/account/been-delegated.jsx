@@ -1,7 +1,7 @@
 import { withCommonProps } from "next-common/lib";
 import AccountLayout from "next-common/components/layout/AccountLayout";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import MyReceivedDelegations from "components/myDelegation/myReceivedDelegations";
+import MyReceivedDelegations from "next-common/components/pages/components/myDelegation/myReceivedDelegations";
 
 export default function AccountMyReceivedDelegationsPage() {
   return (

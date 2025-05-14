@@ -1,7 +1,7 @@
 import { useUnscrupulousAccounts } from "next-common/hooks/pages/useUnscrupulousAccounts";
 import { useUnscrupulousWebsites } from "next-common/hooks/pages/useUnscrupulousWebsites";
-import UnscrupulousAccounts from "components/alliance/unscrupulousAccounts";
-import UnscrupulousLayout from "components/alliance/unscrupulousLayout";
+import UnscrupulousAccounts from "next-common/components/pages/components/alliance/unscrupulousAccounts";
+import UnscrupulousLayout from "next-common/components/pages/components/alliance/unscrupulousLayout";
 import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
 
 export default function UnscrupulousAccountsPage() {

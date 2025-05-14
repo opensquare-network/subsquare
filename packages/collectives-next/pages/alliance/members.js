@@ -1,5 +1,5 @@
-import MembersList from "components/alliance/membersList";
-import MemberSummary from "components/alliance/memberSummary";
+import MembersList from "next-common/components/pages/components/alliance/membersList";
+import MemberSummary from "next-common/components/pages/components/alliance/memberSummary";
 import { useAllianceMembers } from "next-common/hooks/pages/useAllianceMembers";
 import ListLayout from "next-common/components/layout/ListLayout";
 import { getServerSidePropsWithTracks } from "next-common/services/serverSide";

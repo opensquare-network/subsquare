@@ -1,4 +1,4 @@
-import DetailItem from "components/detailItem";
+import DetailItem from "next-common/components/pages/components/detailItem";
 import { withCommonProps } from "next-common/lib";
 import { backendApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
@@ -17,7 +17,7 @@ import ContentWithComment from "next-common/components/detail/common/contentWith
 import { usePageProps } from "next-common/context/page";
 import useIsDemocracyProposalFinished from "next-common/hooks/democracy/proposal/useIsDemocracyProposalFinished";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
-import DemocracyPublicProposalsDetailMultiTabs from "components/tabs/democracyPublicProposalsDetailMultiTabs";
+import DemocracyPublicProposalsDetailMultiTabs from "next-common/components/pages/components/tabs/democracyPublicProposalsDetailMultiTabs";
 
 function PublicProposalContent() {
   const post = usePost();

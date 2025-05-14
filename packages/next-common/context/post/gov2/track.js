@@ -1,5 +1,5 @@
 import { usePostOnChainData } from "../index";
-import { useDecisionBlocks } from "@subsquare/next/components/gov2/sidebar/status/useDecisionPercentage";
+import { useDecisionBlocks } from "next-common/components/pages/components/gov2/sidebar/status/useDecisionPercentage";
 
 export function useTrack() {
   const { trackInfo } = usePostOnChainData();

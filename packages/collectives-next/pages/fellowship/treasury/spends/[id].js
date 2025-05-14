@@ -10,7 +10,7 @@ import FellowshipTreasurySpendDetail from "next-common/components/detail/fellows
 import TreasurySpendPayout from "next-common/components/detail/treasury/spend/payout";
 import { CommonSpendPageWrapper } from "pages/treasury/spends/[id]";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
-import FellowshipTreasurySpeedsDetailMultiTabs from "components/tabs/fellowshipTreasurySpeedsDetailMultiTabs";
+import FellowshipTreasurySpeedsDetailMultiTabs from "next-common/components/pages/components/tabs/fellowshipTreasurySpeedsDetailMultiTabs";
 
 function TreasurySpendContent() {
   return (

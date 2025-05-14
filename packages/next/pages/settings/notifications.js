@@ -2,7 +2,7 @@ import { withCommonProps } from "next-common/lib";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchUserSubscription } from "next-common/services/serverSide/subscription";
 import Notification from "next-common/components/setting/pages/notification";
-import OnChainEventsSubscription from "components/settings/subscription/onchainEventsSubscription";
+import OnChainEventsSubscription from "next-common/components/pages/components/settings/subscription/onchainEventsSubscription";
 import { usePageProps } from "next-common/context/page";
 
 export default function NotificationPage() {

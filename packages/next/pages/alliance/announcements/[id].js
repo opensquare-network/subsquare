@@ -6,7 +6,7 @@ import DetailLayout from "next-common/components/layout/DetailLayout";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
 import NonNullPost from "next-common/components/nonNullPost";
-import DetailItem from "../../../components/detailItem";
+import DetailItem from "next-common/components/pages/components/detailItem";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
@@ -14,7 +14,7 @@ import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
 import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
-import AllianceAnnouncementsDetailMultiTabs from "components/tabs/allianceAnnouncementsDetailMultiTabs";
+import AllianceAnnouncementsDetailMultiTabs from "next-common/components/pages/components/tabs/allianceAnnouncementsDetailMultiTabs";
 
 function AnnouncementContent() {
   const detail = usePost();

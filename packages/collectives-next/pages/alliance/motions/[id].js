@@ -4,7 +4,7 @@ import { EmptyList } from "next-common/utils/constants";
 import { PostProvider, usePost } from "next-common/context/post";
 import { getBannerUrl } from "next-common/utils/banner";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
-import MotionContent from "../../../components/motion/motionContent";
+import MotionContent from "next-common/components/pages/components/motion/motionContent";
 import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { fetchDetailComments } from "next-common/services/detail";

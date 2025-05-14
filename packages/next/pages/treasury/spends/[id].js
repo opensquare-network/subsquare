@@ -19,7 +19,7 @@ import {
   useTreasuryPallet,
 } from "next-common/context/treasury";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
-import TreasurySpeedsDetailMultiTabs from "components/tabs/treasurySpeedsDetailMultiTabs";
+import TreasurySpeedsDetailMultiTabs from "next-common/components/pages/components/tabs/treasurySpeedsDetailMultiTabs";
 
 function TreasurySpendContent() {
   const detail = usePost();
