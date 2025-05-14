@@ -11,30 +11,37 @@ const Tag = styled.span`
 `;
 
 const tooltipTextMap = {
-  root: "The most powertul track. Changes here affect the entire network and need the highest trust and support.",
+  root: "Origin with the highest level of privileges: The most powertul track. Changes here affect the entire network and need the highest trust and support.",
   whitelisted_caller:
-    "Used for proposals pre-approved by trusted experts (the Fellowship). These are fast-tracked and low risk.",
+    "Origin able to dispatch a whitelisted call: Used for proposals pre-approved by trusted experts (the Fellowship). These are fast-tracked and low risk.",
+  wish_for_change:
+    "Origin for signaling that the network wishes for some change: A public suggestion box. Anyone can propose improvements. Votes show community sentiment, but results arent enforced.",
   staking_admin:
-    "Handles settings for staking - like how rewards work or how much DOT is needed to stake.",
+    "Origin able to cancel slashes and manage minimum commission: Handles settings for staking - like how rewards work or how much DOT is needed to stake.",
   treasurer:
-    "Used to approve how the Polkadot treasury (community funds) is spent.",
+    "Origin for spending up to 10,000,000 DOT from the treasury as well as generally administering it: Used to approve how the Polkadot treasury (community funds) is spent.",
   lease_admin:
-    "Manages technical details related to parachain slots and their lease periods.",
+    "Origin able to force slot leases: Manages technical details related to parachain slots and their lease periods.",
   fellowship_admin:
-    "Controls the inner workings of the Fellowship - a group of trusted technical experts.",
+    "Origin for managing the composition of the fellowship: Controls the inner workings of the Fellowship - a group of trusted technical experts.",
   general_admin:
-    "Used to change general settings in the network that don't fit other categories.",
+    "Origin for managing the registrar and permissioned HRMP channel operations.",
   auction_admin:
-    "Updates the rules for how parachain slot auctions work - like timing and participation.",
+    "Origin for starting auctions: Updates the rules for how parachain slot auctions work - like timing and participation.",
   referendum_canceller:
-    "This track is designed to cancel an already ongoing referendum.",
+    "Origin able to cancel referenda: Cancels an already ongoing referendum.",
   referendum_killer:
-    "This track aims to instantly terminate an ongoing referendum, resulting in the slashing of both the Submission and Decision Deposits.",
-  small_tipper: "Small, quick tips to contributors.",
-  big_tipper: "Larger tips requiring broader support.",
-  small_spender: "Smaller treasury spends with quicker turnaround.",
-  medium_spender: "Moderate-size treasury proposals. Balanced review.",
-  big_spender: "Large treasury spends. Requires strong support and review.",
+    "Origin able to kill referenda; Aims to instantly terminate an ongoing referendum, resulting in the slashing of both the Submission and Decision Deposits.",
+  small_tipper:
+    "Small, quick tips to contributors, spend around 250 DOT from the treasury at once.",
+  big_tipper:
+    "Larger tips requiring broader support, spend around 1,000 DOT from the treasury at once.",
+  small_spender:
+    "Smaller treasury spends with quicker turnaround, spend around 10,000 DOT from the treasury at once.",
+  medium_spender:
+    "Moderate-size treasury proposals. Balanced review, spend around 100,000 DOT from the treasury at once.",
+  big_spender:
+    "Large treasury spends. Requires strong support and review, spend up to 1,000,000 DOT from the treasury at once.",
 };
 
 export default function Gov2TrackTag({ name = "" }) {
