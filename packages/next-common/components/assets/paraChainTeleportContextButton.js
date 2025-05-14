@@ -1,12 +1,6 @@
 import { createContext, useContext, useState } from "react";
-import Tooltip from "../tooltip";
-import ListButton from "../styled/listButton";
-import dynamic from "next/dynamic";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-
-const SystemCrosschain = dynamic(() =>
-  import("@osn/icons/subsquare/SystemCrosschain"),
-);
+import { TeleportButton } from "./paraChainTeleportButton";
 
 const ParaChainTeleportPopup = dynamicPopup(() =>
   import("./paraChainTeleportPopup"),
@@ -36,16 +30,10 @@ export default function ParaChainTeleportButton() {
     ParaChainTeleportPopupContext,
   );
   return (
-    <>
-      <Tooltip content="Cross-chain">
-        <ListButton
-          onClick={() => {
-            setShowParaChainTeleportPopup(true);
-          }}
-        >
-          <SystemCrosschain width={16} height={16} />
-        </ListButton>
-      </Tooltip>
-    </>
+    <TeleportButton
+      onClick={() => {
+        setShowParaChainTeleportPopup(true);
+      }}
+    />
   );
 }
