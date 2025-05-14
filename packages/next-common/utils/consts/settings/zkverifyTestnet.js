@@ -74,9 +74,7 @@ const zkverifyTestnet = {
     technicalCommittee: false,
   }),
   integrations: {
-    polkascan: {
-      link: "https://testnet-explorer.zkverify.io",
-    },
+    subscan: true,
   },
   cssVarsLight: {
     theme100: "rgba(38,219,141,0.10)",
