@@ -47,6 +47,7 @@ const westend = {
     council: false,
     technicalCommittee: false,
     assethub: true,
+    people: true,
     vesting: true,
   }),
   integrations: {

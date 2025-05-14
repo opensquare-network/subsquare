@@ -67,6 +67,7 @@ const paseo = {
     democracy: false,
     technicalCommittee: false,
     assethub: true,
+    people: true,
     vesting: true,
   }),
   integrations: {
