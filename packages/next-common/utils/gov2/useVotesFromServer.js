@@ -1,5 +1,5 @@
 import { backendApi } from "next-common/services/nextApi";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { sortVotes } from "next-common/utils/democracy/votes/passed/common";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -12,6 +12,11 @@ import { createGlobalState } from "react-use";
 import getChainSettings from "next-common/utils/consts/settings";
 import { defaultBlockTime } from "next-common/utils/constants";
 import { sleep } from "next-common/utils";
+import {
+  getOrCreateStorage,
+  STORAGE_ITEM_KEY,
+  STORAGE_NAMES,
+} from "next-common/utils/indexedDB/votes";
 
 function extractSplitVotes(vote = {}) {
   const {
@@ -102,6 +107,103 @@ function extractSplitAbstainVotes(vote = {}) {
 
 const useGlobalVotesLoadedMark = createGlobalState(false);
 
+export function useAllReferendaVotes(referendumIndex) {
+  const [result, setResult] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [apiResult, setApiResult] = useState(null);
+
+  const allVotesStorage = useMemo(
+    () =>
+      getOrCreateStorage(
+        `${STORAGE_NAMES.REFERENDA_ALL_VOTES}-${referendumIndex}`,
+      ),
+    [referendumIndex],
+  );
+
+  const getVotesFromStorage = useCallback(async () => {
+    if (!allVotesStorage) {
+      return [];
+    }
+    try {
+      const storedVotes = await allVotesStorage.getItem(
+        STORAGE_ITEM_KEY.ALLVOTES,
+      );
+      return storedVotes || [];
+    } catch (error) {
+      console.error("Error reading votes from IndexedDB:", error);
+      return [];
+    }
+  }, [allVotesStorage]);
+
+  const getVotesFromApi = useCallback(async () => {
+    const { result: votes } = await backendApi.fetch(
+      `gov2/referenda/${referendumIndex}/votes`,
+    );
+
+    if (!votes) {
+      return [];
+    }
+
+    const allVotesRaw = (votes || []).reduce((acc, vote) => {
+      if (vote.isSplit) {
+        return [...acc, ...extractSplitVotes(vote)];
+      } else if (vote.isSplitAbstain) {
+        return [...acc, ...extractSplitAbstainVotes(vote)];
+      }
+      return [...acc, vote];
+    }, []);
+
+    const filteredVotes = allVotesRaw.filter(
+      (vote) =>
+        BigInt(vote.votes) > 0 || BigInt(vote?.delegations?.votes || 0) > 0,
+    );
+
+    const sortedFilteredVotes = sortVotes(filteredVotes);
+
+    try {
+      await allVotesStorage?.setItem(
+        STORAGE_ITEM_KEY.ALLVOTES,
+        sortedFilteredVotes,
+      );
+    } catch (error) {
+      console.error("Error saving votes to IndexedDB:", error);
+    }
+
+    return sortedFilteredVotes;
+  }, [referendumIndex, allVotesStorage]);
+
+  useEffect(() => {
+    if (apiResult) {
+      return;
+    }
+    getVotesFromStorage().then((storedResult) => {
+      if (!apiResult) {
+        setResult(storedResult);
+      }
+    });
+  }, [getVotesFromStorage, apiResult]);
+
+  useEffect(() => {
+    setIsLoading(true);
+    allVotesStorage
+      ?.removeItem(STORAGE_ITEM_KEY.ALLVOTES)
+      .catch((error) =>
+        console.error("Error removing item from IndexedDB:", error),
+      )
+      .then(() => getVotesFromApi())
+      .then((apiVotes) => {
+        setResult(apiVotes);
+        setApiResult(apiVotes);
+      })
+      .catch((error) => {
+        console.error("Error fetching votes from API:", error);
+      })
+      .finally(() => setIsLoading(false));
+  }, [getVotesFromApi, allVotesStorage]);
+
+  return { isLoading, result };
+}
+
 export function useFetchVotesFromServer(referendumIndex) {
   const votingFinishedHeight = useReferendumVotingFinishHeight();
   const [loaded, setLoaded] = useGlobalVotesLoadedMark();
@@ -129,6 +231,7 @@ export function useFetchVotesFromServer(referendumIndex) {
           (vote) =>
             BigInt(vote.votes) > 0 || BigInt(vote?.delegations?.votes || 0) > 0,
         );
+
         dispatch(setAllVotes(sortVotes(filteredVotes)));
 
         if (!loaded) {
