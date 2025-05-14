@@ -23,35 +23,42 @@ export default function Gov2ReferendumCall() {
   const whitelistCallHashes =
     whitelistDispatchedHashes?.concat(whitelistHashes);
 
-  const data = [
-    onchainData?.proposalHash
-      ? [
-          "Proposal Hash",
-          <Copyable key="hash">{onchainData?.proposalHash}</Copyable>,
-        ]
-      : null,
-    inlineCall?.call
-      ? [
-          <Proposal
-            key={"call"}
-            call={inlineCall?.call}
-            preImageHash={preImageHash}
-          />,
-        ]
-      : null,
-    proposal?.call && !inlineCall?.call
-      ? [
-          <Proposal
-            key={"call"}
-            call={proposal?.call}
-            shorten={proposal?.shorten}
-            preImageHash={preImageHash}
-          />,
-        ]
-      : null,
+  const decodeCalls = [
     <EvmCall key="EvmCall" />,
     <RelayChainCall key="RelayChainCall" />,
-  ].filter(Boolean);
+  ];
+
+  const data = [];
+
+  if (onchainData?.proposalHash) {
+    data.push([
+      "Proposal Hash",
+      <Copyable key="hash">{onchainData?.proposalHash}</Copyable>,
+    ]);
+  }
+
+  if (inlineCall?.call) {
+    data.push([
+      <Proposal
+        key={"call"}
+        call={inlineCall?.call}
+        preImageHash={preImageHash}
+      />,
+    ]);
+  }
+
+  if (proposal?.call && !inlineCall?.call) {
+    data.push([
+      <Proposal
+        key={"call"}
+        call={proposal?.call}
+        shorten={proposal?.shorten}
+        preImageHash={preImageHash}
+      />,
+    ]);
+  }
+
+  data.push(...decodeCalls);
 
   const businessData = useReferendaBusinessData();
   if (businessData) {
