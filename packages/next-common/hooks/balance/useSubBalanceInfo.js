@@ -3,7 +3,12 @@ import useSubStorage from "../common/useSubStorage";
 import calcTransferable from "next-common/utils/account/transferable";
 import bigAdd from "next-common/utils/math/bigAdd";
 
-export function getBalanceInfo(info, existentialDeposit, loading) {
+export function useSubBalanceInfo(address) {
+  const existentialDeposit = useQueryExistentialDeposit();
+
+  const { result, loading } = useSubStorage("system", "account", [address]);
+  const info = result?.data?.toJSON();
+
   if (!info) {
     return {
       value: null,
@@ -22,12 +27,4 @@ export function getBalanceInfo(info, existentialDeposit, loading) {
     },
     loading,
   };
-}
-
-export function useSubBalanceInfo(address) {
-  const existentialDeposit = useQueryExistentialDeposit();
-
-  const { result, loading } = useSubStorage("system", "account", [address]);
-  const info = result?.data?.toJSON();
-  return getBalanceInfo(info, existentialDeposit, loading);
 }
