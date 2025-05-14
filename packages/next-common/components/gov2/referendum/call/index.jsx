@@ -8,16 +8,20 @@ import extractRemarkMetaFields from "next-common/components/common/call/remarks"
 import extractWhitelistCallHash from "next-common/components/common/call/whitelist";
 import extractFellowshipPromote from "next-common/components/common/call/fellowshipPromote";
 import extractFellowshipApprove from "next-common/components/common/call/fellowshipApprove";
-import EvmCallDecodeViewList, {
-  extractEvmInputsWithContext,
-} from "next-common/components/gov2/referendum/call/evmCallDecode";
-import RelayChainCallDecodeViewList, {
-  useRelayChainCallDecodeType,
-} from "next-common/components/gov2/referendum/call/relayChainCallDecode";
+import dynamic from "next/dynamic";
 import isHydradx from "next-common/utils/isHydradx";
-import { useAsync } from "react-use";
+import { useChain } from "next-common/context/chain";
+import { isCollectivesChain } from "next-common/utils/chain";
+
+const EvmCall = dynamic(() => import("./evmCallDecode"), {
+  ssr: false,
+});
+const RelayChainCall = dynamic(() => import("./relayChainCallDecode"), {
+  ssr: false,
+});
 
 export default function Gov2ReferendumCall() {
+  const chain = useChain();
   const onchainData = useOnchainData();
   const proposal = onchainData?.proposal ?? {};
   const inlineCall = onchainData?.inlineCall || {};
@@ -29,61 +33,45 @@ export default function Gov2ReferendumCall() {
   const whitelistCallHashes =
     whitelistDispatchedHashes?.concat(whitelistHashes);
 
-  const { value: evmCallDecodes = [] } = useAsync(async () => {
-    return isHydradx()
-      ? await extractEvmInputsWithContext(proposal?.call || inlineCall?.call)
-      : [];
-  });
+  const data = [];
 
-  const { value: relayChainDecodes } = useRelayChainCallDecodeType(
-    proposal?.call || inlineCall?.call,
-  );
+  const callData = proposal?.call || inlineCall?.call;
 
-  const data = [
-    onchainData?.proposalHash
-      ? [
-          "Proposal Hash",
-          <Copyable key="hash">{onchainData?.proposalHash}</Copyable>,
-        ]
-      : null,
-    inlineCall?.call
-      ? [
-          <Proposal
-            key={"call"}
-            call={inlineCall?.call}
-            preImageHash={preImageHash}
-          />,
-        ]
-      : null,
-    proposal?.call && !inlineCall?.call
-      ? [
-          <Proposal
-            key={"call"}
-            call={proposal?.call}
-            shorten={proposal?.shorten}
-            preImageHash={preImageHash}
-          />,
-        ]
-      : null,
-    evmCallDecodes.length > 0
-      ? [
-          "EVM Calls",
-          <EvmCallDecodeViewList
-            key="EVM Calls"
-            evmCallDecodes={evmCallDecodes}
-          />,
-        ]
-      : null,
-    relayChainDecodes.length > 0
-      ? [
-          "Relay chain call",
-          <RelayChainCallDecodeViewList
-            key="Relay chain call"
-            relayChainDecodes={relayChainDecodes}
-          />,
-        ]
-      : null,
-  ].filter(Boolean);
+  if (onchainData?.proposalHash) {
+    data.push([
+      "Proposal Hash",
+      <Copyable key="hash">{onchainData?.proposalHash}</Copyable>,
+    ]);
+  }
+
+  if (inlineCall?.call) {
+    data.push([
+      <Proposal
+        key={"call"}
+        call={inlineCall?.call}
+        preImageHash={preImageHash}
+      />,
+    ]);
+  }
+
+  if (proposal?.call && !inlineCall?.call) {
+    data.push([
+      <Proposal
+        key={"call"}
+        call={proposal?.call}
+        shorten={proposal?.shorten}
+        preImageHash={preImageHash}
+      />,
+    ]);
+  }
+
+  if (isHydradx(chain) && callData) {
+    data.push(<EvmCall key="EvmCall" call={callData} />);
+  }
+
+  if (isCollectivesChain(chain) && callData) {
+    data.push(<RelayChainCall key="RelayChainCall" call={callData} />);
+  }
 
   const businessData = useReferendaBusinessData();
   if (businessData) {
