@@ -1,31 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { isObject } from "lodash-es";
-import { useAsync } from "react-use";
-import { isCollectivesChain } from "next-common/utils/chain";
-import { useChain } from "next-common/context/chain";
 import { DecodeCallItem } from "./decodeItem";
-import { useOnchainData } from "next-common/context/post";
 import Row from "next-common/components/listInfo/row";
 import DecodeCallList from "./decodeList";
-import { useContextApi } from "next-common/context/api";
 
-export function RelayChainCall() {
-  const chain = useChain();
-  const onchainData = useOnchainData();
-  const proposal = onchainData?.proposal ?? {};
-  const inlineCall = onchainData?.inlineCall || {};
-  const call = proposal?.call || inlineCall?.call;
-
-  if (!isCollectivesChain(chain) || !call) {
-    return null;
-  }
-
-  return <RelayChainCallDecodeViewList call={call} />;
-}
-
-export default function RelayChainCallDecodeViewList({ call }) {
+export default function RelayChainCall({ call }) {
   const { value: relayChaindecodes } = useRelayChainCallDecodeType(call);
 
   if (!relayChaindecodes?.length) {
@@ -77,38 +57,9 @@ export async function extractRelayChainInputsWithContext(data) {
   return encodedResults;
 }
 
-export function useRelayChainCallDecodeType(data) {
-  const api = useContextApi();
-  const [decodes, setDecodes] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  const { value } = useAsync(async () =>
-    extractRelayChainInputsWithContext(data),
-  );
-
-  useEffect(() => {
-    const decodes = [];
-    setLoading(true);
-    if (api && value?.length) {
-      for (const encode of value) {
-        try {
-          const result = api?.registry?.createType("Call", encode);
-          const json = result?.toHuman();
-          if (json) {
-            decodes.push(json);
-          }
-        } catch (error) {
-          console.error(error);
-        }
-      }
-    }
-    setDecodes(decodes);
-
-    setLoading(false);
-  }, [value, api]);
-
+export function useRelayChainCallDecodeType() {
   return {
-    value: decodes,
-    loading,
+    value: [],
+    loading: false,
   };
 }

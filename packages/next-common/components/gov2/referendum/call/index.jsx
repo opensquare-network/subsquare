@@ -8,10 +8,20 @@ import extractRemarkMetaFields from "next-common/components/common/call/remarks"
 import extractWhitelistCallHash from "next-common/components/common/call/whitelist";
 import extractFellowshipPromote from "next-common/components/common/call/fellowshipPromote";
 import extractFellowshipApprove from "next-common/components/common/call/fellowshipApprove";
-import { EvmCall } from "./evmCallDecode";
-import { RelayChainCall } from "./relayChainCallDecode";
+import dynamic from "next/dynamic";
+import isHydradx from "next-common/utils/isHydradx";
+import { useChain } from "next-common/context/chain";
+import { isCollectivesChain } from "next-common/utils/chain";
+
+const EvmCall = dynamic(() => import("./evmCallDecode"), {
+  ssr: false,
+});
+const RelayChainCall = dynamic(() => import("./relayChainCallDecode"), {
+  ssr: false,
+});
 
 export default function Gov2ReferendumCall() {
+  const chain = useChain();
   const onchainData = useOnchainData();
   const proposal = onchainData?.proposal ?? {};
   const inlineCall = onchainData?.inlineCall || {};
@@ -23,12 +33,9 @@ export default function Gov2ReferendumCall() {
   const whitelistCallHashes =
     whitelistDispatchedHashes?.concat(whitelistHashes);
 
-  const decodeCalls = [
-    <EvmCall key="EvmCall" />,
-    <RelayChainCall key="RelayChainCall" />,
-  ];
-
   const data = [];
+
+  const callData = proposal?.call || inlineCall?.call;
 
   if (onchainData?.proposalHash) {
     data.push([
@@ -58,7 +65,13 @@ export default function Gov2ReferendumCall() {
     ]);
   }
 
-  data.push(...decodeCalls);
+  if (isHydradx(chain) && callData) {
+    data.push(<EvmCall key="EvmCall" call={callData} />);
+  }
+
+  if (isCollectivesChain(chain) && callData) {
+    data.push(<RelayChainCall key="RelayChainCall" call={callData} />);
+  }
 
   const businessData = useReferendaBusinessData();
   if (businessData) {

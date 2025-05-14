@@ -3,26 +3,12 @@
 import { decodeInput } from "next-common/utils/evm/decodeInput";
 import { contractAddressMap } from "next-common/utils/evm/importAbi";
 import { isObject } from "lodash-es";
-import isHydradx from "next-common/utils/isHydradx";
 import { useAsync } from "react-use";
-import { useOnchainData } from "next-common/context/post";
 import Row from "next-common/components/listInfo/row";
 import { DecodeCallItem } from "./decodeItem";
 import DecodeCallList from "./decodeList";
 
-export function EvmCall() {
-  const onchainData = useOnchainData();
-  const proposal = onchainData?.proposal ?? {};
-  const inlineCall = onchainData?.inlineCall || {};
-  const call = proposal?.call || inlineCall?.call;
-  if (!isHydradx() || !call) {
-    return null;
-  }
-
-  return <EvmCallDecodeViewRow />;
-}
-
-export default function EvmCallDecodeViewRow({ call }) {
+export default function EvmCall({ call }) {
   const { value: evmCallDecodes = [] } = useAsync(async () =>
     extractEvmInputsWithContext(call),
   );
