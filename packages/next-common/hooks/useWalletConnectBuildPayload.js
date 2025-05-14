@@ -2,17 +2,25 @@ import { useSignerAccount } from "next-common/components/popupWithSigner/context
 import { useContextApi } from "next-common/context/api";
 import { useSubAccount } from "./account/useSubAccount";
 import { useCallback } from "react";
+import useSubKintsugiAccount from "./account/useSubKintsugiAccount";
+import { isKintsugiChain } from "next-common/utils/chain";
+import { useChain } from "next-common/context/chain";
 
 /**
  * @file https://github.com/polkadot-cloud/polkadot-developer-console/blob/main/packages/app/src/hooks/useBuildPayload/index.tsx
  * @link https://docs.reown.com/advanced/multichain/polkadot/dapp-integration-guide#example-namespace-and-sign-client-connect-call
  */
 export function useWalletConnectBuildPayload() {
+  const chain = useChain();
   const api = useContextApi();
   const signerAccount = useSignerAccount();
   const from = signerAccount?.address;
 
-  const { data } = useSubAccount(from);
+  const useSubAccountHook = isKintsugiChain(chain)
+    ? useSubKintsugiAccount
+    : useSubAccount;
+
+  const { data } = useSubAccountHook(from);
 
   const nonceRaw = data?.account?.nonce?.toNumber() || 0;
 

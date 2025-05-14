@@ -2,6 +2,41 @@
 
 All notable changes to this project will be documented in this file.
 
+# 4.7.1
+
+date: 2025-05-13
+
+- Fix split vote view on votes bubble panel.
+- Add `aDOT` asset calculation on the hydration acquisition address.
+- Apply more use cases for `backendApi`. It's due to deployment migration to vercel, and we will call backend API by a
+  domain.
+- Improve the way to init API instances and use websocket providers to measure RPC delay.
+- Fix redundant identity queries.
+- UI fix and improvements
+    - Add more tooltips for referenda proposal card.
+    - Fix horizontal scroll bar on referenda vote calls popup.
+    - Add tooltips for referenda state tags.
+    - Add tooltips for referenda track tags.
+    - Add tooltips for state tag of collective motions.
+    - Fix votes bubble loading.
+    - Fix virtual list avatar flickering.
+    - Fix vote calls popup responsive issue.
+- Search enhancements
+    - Support searching addresses by identity.
+    - Enable search for chains with only democracy and bounties.
+    - Enable treasury spends, proposals search.
+- Remove new tag for report tab on referendum detail page.
+- Disable vote calls for laos network.
+- Turn on walletconnect for hydration and kusama.
+- Remove Dwellir nodes from interlay/kintsugi.
+- Performance enhancement
+    - Store referenda vote calls data to IndexedDB.
+    - Update scan height by new developed stream API.
+    - Take place of redux with global state for scan height data.
+    - Query votes info from backend once when open referendum detail page, and refresh it after vote actions.
+- Remove Dwellir nodes from interlay/kintsugi.
+- Upgrade dependencies and code refactor.
+
 # 4.7.0
 
 date: 2025-05-02

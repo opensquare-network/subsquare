@@ -17,6 +17,7 @@ export default function VotesBubble({
   allNay,
   allAbstain,
   sizeField,
+  loading,
   ...props
 }) {
   const hasVotes = !![
@@ -65,44 +66,48 @@ export default function VotesBubble({
     children: votes,
   };
 
-  if (!hasVotes) {
+  if (!hasVotes && !loading) {
     return <NoData text="No votes data" />;
   }
 
+  const showLoading = loading && isFirst;
+
   return (
     <>
-      {isFirst && (
+      {showLoading && (
         <div className="py-4">
           <SystemLoading className="[&_path]:stroke-textTertiary mx-auto" />
         </div>
       )}
 
-      <div className={cn(isFirst && "h-0 opacity-0 overflow-hidden")}>
+      <div className={cn(showLoading && "h-0 opacity-0 overflow-hidden")}>
         <div
           className={cn(props.className, "w-full h-[480px] max-sm:h-80")}
           {...props}
           ref={ref}
         >
-          <CirclePacking
-            data={chartData}
-            keyField="account"
-            sizeField={sizeField}
-            width={size.width}
-            height={size.height}
-            bubbleClassName={(node) =>
-              cn(
-                node.data.aye && "fill-green300 stroke-green500",
-                node.data.aye === false && "fill-red300 stroke-red500",
-                node.data.isAbstain && "fill-neutral400 stroke-neutral500",
-              )
-            }
-            renderBubbleContent={(node) => (
-              <VoteBubbleContent node={node} sizeField={sizeField} />
-            )}
-            onReady={() => {
-              setIsFirst(false);
-            }}
-          />
+          {hasVotes && (
+            <CirclePacking
+              data={chartData}
+              keyField="account"
+              sizeField={sizeField}
+              width={size.width}
+              height={size.height}
+              bubbleClassName={(node) =>
+                cn(
+                  node.data.aye && "fill-green300 stroke-green500",
+                  node.data.aye === false && "fill-red300 stroke-red500",
+                  node.data.isAbstain && "fill-neutral400 stroke-neutral500",
+                )
+              }
+              renderBubbleContent={(node) => (
+                <VoteBubbleContent node={node} sizeField={sizeField} />
+              )}
+              onReady={() => {
+                setIsFirst(false);
+              }}
+            />
+          )}
         </div>
 
         <VotesBubbleLegend

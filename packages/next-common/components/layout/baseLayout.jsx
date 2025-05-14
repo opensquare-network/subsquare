@@ -13,10 +13,10 @@ import { useNavCollapsed } from "next-common/context/nav";
 import LoginGlobalPopup from "../login/globalPopup";
 import useStoreDemocracyLockPeriod from "next-common/hooks/democracy/useStoreDemocracyLockPeriod";
 import useStoreConvictionVotingLockPeriod from "next-common/hooks/referenda/useStoreConvictionVotingLockPeriod";
-import useConnectApis from "next-common/services/chain/apis/useConnectApis";
 import { useContextApi } from "next-common/context/api";
 import useExistentialDeposit from "next-common/utils/hooks/chain/useExistentialDeposit";
 import GlobalNotification from "next-common/components/globalNotification";
+import useInitApiProviders from "next-common/services/chain/apis/useInitApiProviders";
 
 /**
  * @description a base layout includes nav, header and footer
@@ -28,7 +28,7 @@ export default function BaseLayout({
 }) {
   const { sm } = useScreenSize();
   const [navCollapsed] = useNavCollapsed();
-  useConnectApis();
+  useInitApiProviders();
   useUpdateNodesDelay();
 
   const api = useContextApi();
