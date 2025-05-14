@@ -18,7 +18,6 @@ export default function useRegistrarsList() {
         setStorageRegistrarsResult(res);
       } catch (error) {
         console.error(error);
-      } finally {
         setIsLoading(false);
       }
     }
@@ -30,6 +29,8 @@ export default function useRegistrarsList() {
     if (!storageRegistrarsResult) {
       return [];
     }
+
+    setIsLoading(false);
 
     return (storageRegistrarsResult || [])
       .map((registrar, index) => {
@@ -62,13 +63,17 @@ export default function useRegistrarsList() {
   }, [integrations?.statescan]);
 
   const registrars = useMemo(() => {
+    if (!integrations?.statescan) {
+      return storageRegistrars;
+    }
+
     return storageRegistrars.map((item) => {
       const chainItem = chainRegistrars?.find(
         (chainItem) => chainItem.account === item.account,
       );
       return { ...item, ...chainItem };
     });
-  }, [storageRegistrars, chainRegistrars]);
+  }, [storageRegistrars, chainRegistrars, integrations?.statescan]);
 
   return {
     registrars,

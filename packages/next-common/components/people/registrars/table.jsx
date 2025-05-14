@@ -33,7 +33,7 @@ const columns = [
 
 export default function RegistrarsTable({
   registrars = [],
-  isLoading = false,
+  isLoading,
   total = 0,
 }) {
   const { decimals, symbol } = useChainSettings();
