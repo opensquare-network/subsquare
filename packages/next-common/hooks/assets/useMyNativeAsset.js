@@ -1,12 +1,12 @@
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useSubBalanceInfo } from "../balance/useSubBalanceInfo";
 import { useChainSettings } from "next-common/context/chain";
+import { useAccountBalanceInfo } from "../balance/useAccountBalanceInfo";
 
 export function useMyNativeAsset() {
   const { decimals, symbol, name } = useChainSettings();
 
   const address = useRealAddress();
-  const { value: balance, loading } = useSubBalanceInfo(address);
+  const { value: balance, loading } = useAccountBalanceInfo(address);
 
   return {
     loading,
