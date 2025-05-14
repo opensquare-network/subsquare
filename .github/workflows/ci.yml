@@ -55,10 +55,6 @@ jobs:
           CHAIN: kintsugi
           NEXT_PUBLIC_CHAIN: kintsugi
 
-      # Build collectives next with cache clearing
-      - name: Clear Webpack Cache
-        run: rm -rf .next/cache
-
       - name: Build collectives next
         uses: borales/actions-yarn@v4
         with:
