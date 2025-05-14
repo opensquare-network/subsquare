@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import { isObject } from "lodash-es";
 import { useAsync } from "react-use";
-import { isCollectivesChain } from "next-common/utils/chain";
+import { getApi } from "next-common/services/chain/api";
+import { getRelayChain, isCollectivesChain } from "next-common/utils/chain";
 import { useChain } from "next-common/context/chain";
 import { DecodeCallItem } from "./decodeItem";
 import { useOnchainData } from "next-common/context/post";
@@ -78,6 +79,8 @@ export async function extractRelayChainInputsWithContext(data) {
 }
 
 export function useRelayChainCallDecodeType(data) {
+  const chain = useChain();
+  const relayChain = getRelayChain(chain);
   const api = useContextApi();
   const [decodes, setDecodes] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -87,25 +90,35 @@ export function useRelayChainCallDecodeType(data) {
   );
 
   useEffect(() => {
+    const relayApi = getApi(relayChain, "wss://rpc.polkadot.io");
     const decodes = [];
     setLoading(true);
-    if (api && value?.length) {
-      for (const encode of value) {
-        try {
-          const result = api?.registry?.createType("Call", encode);
-          const json = result?.toHuman();
-          if (json) {
-            decodes.push(json);
+    relayApi
+      .then(async (api) => {
+        // await api.at(
+        //   "0x8e4038ef30250aefb0d7349ae2c24434c5a24c7e67da5d3c9fd6bb668a22cb91",
+        // );
+        return api;
+      })
+      .then((api) => {
+        if (api && value?.length) {
+          for (const encode of value) {
+            try {
+              const result = api?.registry?.createType("Call", encode);
+              const json = result?.toHuman();
+              if (json) {
+                decodes.push(json);
+              }
+            } catch (error) {
+              console.error(error);
+            }
           }
-        } catch (error) {
-          console.error(error);
         }
-      }
-    }
-    setDecodes(decodes);
+        setDecodes(decodes);
+      });
 
     setLoading(false);
-  }, [value, api]);
+  }, [value, relayChain]);
 
   return {
     value: decodes,

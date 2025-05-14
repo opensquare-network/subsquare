@@ -8,10 +8,8 @@ import extractRemarkMetaFields from "next-common/components/common/call/remarks"
 import extractWhitelistCallHash from "next-common/components/common/call/whitelist";
 import extractFellowshipPromote from "next-common/components/common/call/fellowshipPromote";
 import extractFellowshipApprove from "next-common/components/common/call/fellowshipApprove";
-import RelayChainCallDecodeViewList, {
-  useRelayChainCallDecodeType,
-} from "next-common/components/gov2/referendum/call/relayChainCallDecode";
-import { useCallList } from "next-common/hooks/useCallList";
+import { EvmCall } from "./evmCallDecode";
+import { RelayChainCall } from "./relayChainCallDecode";
 
 export default function Gov2ReferendumCall() {
   const onchainData = useOnchainData();
@@ -24,12 +22,6 @@ export default function Gov2ReferendumCall() {
   const whitelistHashes = onchainData?.whitelistedHashes || [];
   const whitelistCallHashes =
     whitelistDispatchedHashes?.concat(whitelistHashes);
-
-  const { calls } = useCallList();
-
-  const { value: relayChainDecodes } = useRelayChainCallDecodeType(
-    proposal?.call || inlineCall?.call,
-  );
 
   const data = [
     onchainData?.proposalHash
@@ -57,16 +49,8 @@ export default function Gov2ReferendumCall() {
           />,
         ]
       : null,
-    relayChainDecodes.length > 0
-      ? [
-          "Relay chain call",
-          <RelayChainCallDecodeViewList
-            key="Relay chain call"
-            relayChainDecodes={relayChainDecodes}
-          />,
-        ]
-      : null,
-    ...calls,
+    <EvmCall key="EvmCall" />,
+    <RelayChainCall key="RelayChainCall" />,
   ].filter(Boolean);
 
   const businessData = useReferendaBusinessData();
