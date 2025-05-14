@@ -2,9 +2,8 @@ import { SystemQuestion } from "@osn/icons/subsquare";
 import ExternalLink from "next-common/components/externalLink";
 import Progress from "next-common/components/progress";
 import Tooltip from "next-common/components/tooltip";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import useChainOrScanHeight from "next-common/hooks/height";
 import { cn, toPercentage } from "next-common/utils";
-import { useSelector } from "react-redux";
 import CoretimeSalePanelChartSkeleton from "./skeleton";
 
 export default function CoretimeSalePanelChartPeriodProgress({
@@ -79,7 +78,7 @@ function RenewalPeriodProgress({
   initBlockHeight,
   coretimeSale,
 }) {
-  const chainHeight = useSelector(chainOrScanHeightSelector);
+  const chainHeight = useChainOrScanHeight();
 
   let percentage = 0;
   if (coretimeSale?.isFinal || chainHeight >= saleStart) {
@@ -120,7 +119,7 @@ function SalePeriodProgress({
   endBlockHeight,
   coretimeSale,
 }) {
-  const chainHeight = useSelector(chainOrScanHeightSelector);
+  const chainHeight = useChainOrScanHeight();
   const fixedPosition = toPercentage((fixedStart - saleStart) / saleBlocks, 3);
 
   let percentage = 0;

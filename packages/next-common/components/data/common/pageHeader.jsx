@@ -11,7 +11,7 @@ function PolkadotWikiLink({ href }) {
         <ArrowExternalLinkWiki
           width={16}
           height={16}
-          className="[&_path]:stroke-textTertiary"
+          className="[&_path]:stroke-textTertiary [&_path]:hover:stroke-textSecondary"
         />
       </Link>
     </Tooltip>

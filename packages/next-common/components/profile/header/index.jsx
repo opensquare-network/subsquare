@@ -73,7 +73,7 @@ function ProfileHeaderWithBannerInContext() {
             className={cn("self-start -mt-[56px]", {
               "absolute right-6": isMobile,
             })}
-            size={isMobile ? "small" : "medium"}
+            size="small"
             onClick={() => setIsEditBannerPopupOpen(true)}
           >
             Edit Banner

@@ -2,8 +2,7 @@ import useCoretimeConfiguration from "next-common/context/coretime/configuration
 import { CORETIME_TIMESLICE_PERIOD } from "next-common/utils/consts/coretime";
 import useCoretimeSale from "next-common/context/coretime/sale/provider";
 import { useRelayHeight } from "next-common/context/relayInfo";
-import { useSelector } from "react-redux";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import useChainOrScanHeight from "next-common/hooks/height";
 import { isNil } from "lodash-es";
 
 function toEven(num) {
@@ -16,7 +15,7 @@ export default function useCoretimeSaleEnd() {
   const sale = useCoretimeSale();
   const configuration = useCoretimeConfiguration();
   const { info: { regionBegin } = {}, isFinal, endIndexer } = sale;
-  const coretimeHeight = useSelector(chainOrScanHeightSelector);
+  const coretimeHeight = useChainOrScanHeight();
   if (isFinal && endIndexer) {
     return {
       isLoading: false,
