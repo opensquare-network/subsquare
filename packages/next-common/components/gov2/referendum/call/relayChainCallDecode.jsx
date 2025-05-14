@@ -6,9 +6,9 @@ import Row from "next-common/components/listInfo/row";
 import DecodeCallList from "./decodeList";
 
 export default function RelayChainCall({ call }) {
-  const { value: relayChaindecodes } = useRelayChainCallDecodeType(call);
+  const { value: relayChainDecodes } = useRelayChainCallDecodeType(call);
 
-  if (!relayChaindecodes?.length) {
+  if (!relayChainDecodes?.length) {
     return null;
   }
 
@@ -18,7 +18,7 @@ export default function RelayChainCall({ call }) {
         "Relay chain call",
         <DecodeCallList
           key="element"
-          list={relayChaindecodes}
+          list={relayChainDecodes}
           renderItem={(item, index) => (
             <DecodeCallItem
               key={`RelayChainCallDecode-${index}`}
