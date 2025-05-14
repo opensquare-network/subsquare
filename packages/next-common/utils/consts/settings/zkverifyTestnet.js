@@ -50,7 +50,7 @@ const zkverifyTestnet = {
   value: Chains.zkverifyTestnet,
   name: "ZKVerify Testnet",
   identity: Chains.zkverifyTestnet,
-  symbol: "ACME",
+  symbol: "tVFY",
   decimals: 18,
   hasElections: false,
   ss58Format: 251,
