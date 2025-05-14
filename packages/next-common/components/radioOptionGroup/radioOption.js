@@ -5,6 +5,7 @@ import Divider from "next-common/components/styled/layout/divider";
 import tw from "tailwind-styled-components";
 import { cn } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
+import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 
 export default function RadioOption({ checked, label, onClick = noop }) {
   return (
@@ -79,6 +80,14 @@ export function RequestJudgementRadioOption({
             <span>Fee</span>
             <RadioOptionValue>
               {judgement.fee} {judgement.symbol}
+            </RadioOptionValue>
+          </RadioOptionItem>
+          <RadioOptionItem>
+            <span>Latest Judgement</span>
+            <RadioOptionValue>
+              {judgement?.lastestJudgement
+                ? formatTimeAgo(judgement?.lastestJudgement)
+                : "-"}
             </RadioOptionValue>
           </RadioOptionItem>
         </RadioOptionFooter>

@@ -6,7 +6,7 @@ import { useChainSettings } from "next-common/context/chain";
 export default function useRegistrarsList() {
   const api = useContextApi();
   const [storageRegistrarsResult, setStorageRegistrarsResult] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [chainRegistrars, setChainRegistrars] = useState([]);
   const { integrations } = useChainSettings();
 
@@ -18,8 +18,9 @@ export default function useRegistrarsList() {
         setStorageRegistrarsResult(res);
       } catch (error) {
         console.error(error);
+      } finally {
+        setIsLoading(false);
       }
-      setIsLoading(false);
     }
 
     fetchStorageRegistrars();

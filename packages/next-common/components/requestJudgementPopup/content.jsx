@@ -75,6 +75,8 @@ export default function RequestJudgementPopupContent() {
               ...registrar,
               fee: toPrecision(registrar.fee, decimals),
               symbol,
+              lastestJudgement:
+                registrar?.statistics?.lastGivenIndexer?.blockTime,
             },
             disabled: isSelected(registrar.account),
           }))}
