@@ -18,7 +18,19 @@ import { useOnchainData } from "next-common/context/post";
 const apiMap = new Map();
 
 export default function RelayChainCall({ call }) {
-  const { value: relayChainDecodes } = useRelayChainCallDecodeType(call);
+  const { value: encodeCalls } = useAsync(async () => {
+    return (await extractXcmContext(call)) || {};
+  });
+
+  if (!encodeCalls?.length) {
+    return null;
+  }
+
+  return <RelayChainCallImpl encodeCalls={encodeCalls} />;
+}
+
+function RelayChainCallImpl({ encodeCalls }) {
+  const { value: relayChainDecodes } = useRelayChainCallDecodeType(encodeCalls);
 
   if (!relayChainDecodes?.length) {
     return null;
@@ -59,6 +71,8 @@ function useRealyChainBlockNumber() {
   const isActived = useReferendaIsActived();
   const [relayChainBlockNumber, setRelayChainBlockNumber] = useState();
 
+  console.log(api);
+
   useEffect(() => {
     if (!isActived && api) {
       const confirmedTl = onchainData.timeline.find(
@@ -81,32 +95,35 @@ function useRealyChainBlockNumber() {
   };
 }
 
-export function useRelayChainCallDecodeType(call) {
-  const { value: encodeCalls } = useAsync(() => extractXcmContext(call));
+export function useRelayChainCallDecodeType(encodeCalls) {
   const [results, setResults] = useState([]);
   const { relayChainBlockNumber } = useRealyChainBlockNumber();
 
+  console.log("relayChainBlockNumber", relayChainBlockNumber);
+
   useEffect(() => {
     const decodeResults = [];
-    if (encodeCalls?.length && relayChainBlockNumber) {
+    async function decode() {
       for (const { destChainId, encodedCalls: calls } of encodeCalls) {
-        getDestApi(destChainId)
-          ?.then((api) => {
-            return getBlockApiByHeight(api, relayChainBlockNumber);
-          })
-          .then((apiAt) => {
-            if (apiAt && calls?.length) {
-              for (const call of calls) {
-                const result = apiAt?.registry?.createType("Call", call);
-                if (result) {
-                  decodeResults.push(result.toHuman?.());
-                }
-              }
-              setResults(decodeResults);
-              clearDestApi();
+        if (calls.length) {
+          const destApi = await getDestApi(destChainId);
+          const destApiAt = await getBlockApiByHeight(
+            destApi,
+            relayChainBlockNumber,
+          );
+          for (const call of calls) {
+            const result = destApiAt?.registry?.createType("Call", call);
+            if (result) {
+              decodeResults.push(result.toHuman?.());
             }
-          });
+          }
+          setResults(decodeResults);
+        }
       }
+      clearDestApi();
+    }
+    if (encodeCalls?.length && relayChainBlockNumber) {
+      decode();
     }
   }, [encodeCalls, relayChainBlockNumber]);
 
@@ -118,7 +135,7 @@ export function useRelayChainCallDecodeType(call) {
 
 export async function extractXcmContext(data) {
   if (!data || data.section !== "polkadotXcm") {
-    return { error: "Invalid polkadotXcm.send JSON" };
+    return null;
   }
 
   const dest = data.args[0]?.value;
