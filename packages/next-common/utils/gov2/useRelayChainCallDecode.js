@@ -1,38 +1,23 @@
 import { getBlockApiByHeight } from "next-common/services/chain/api";
 import { useCallback, useEffect, useState } from "react";
-import { useContextApi } from "next-common/context/api";
 import { getXcmLocationApi } from "next-common/utils/gov2/relayChainCall";
 import useReferendumVotingFinishHeight, {
   useReferendaIsVoting,
 } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
-
-function useRealyChainBlockNumber() {
-  const api = useContextApi();
-  const isVoting = useReferendaIsVoting();
-  const [relayChainBlockNumber, setRelayChainBlockNumber] = useState();
-  const blockHeight = useReferendumVotingFinishHeight();
-
-  useEffect(() => {
-    if (!isVoting && api && blockHeight) {
-      getBlockApiByHeight(api, blockHeight)
-        .then((atApi) =>
-          atApi?.query?.parachainSystem.lastRelayChainBlockNumber(),
-        )
-        .then((res) => res.toNumber())
-        .then((relayNumber) => setRelayChainBlockNumber(relayNumber))
-        .catch(console.error);
-    }
-  }, [api, isVoting, blockHeight]);
-
-  return {
-    relayChainBlockNumber,
-  };
-}
+import { useRealyChainBlockNumberExecute } from "./useRealyChainBlockNumber";
 
 export function useRelayChainCallDecode(encodeds) {
   const [results, setResults] = useState([]);
-  const { relayChainBlockNumber } = useRealyChainBlockNumber();
+  const blockHeight = useReferendumVotingFinishHeight();
+  const { relayChainBlockNumber, execute: executeRelayChainBlockNumber } =
+    useRealyChainBlockNumberExecute(blockHeight);
   const isVoting = useReferendaIsVoting();
+
+  useEffect(() => {
+    if (!isVoting && !relayChainBlockNumber) {
+      executeRelayChainBlockNumber();
+    }
+  }, [isVoting, relayChainBlockNumber, executeRelayChainBlockNumber]);
 
   const getRelayChainApi = useCallback(async () => {
     try {
