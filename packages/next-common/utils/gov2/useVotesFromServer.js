@@ -1,14 +1,13 @@
 import { backendApi } from "next-common/services/nextApi";
 import { useEffect, useState, useMemo, useCallback } from "react";
 import { sortVotes } from "next-common/utils/democracy/votes/passed/common";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  setAllVotes,
-  setLoading,
-} from "next-common/store/reducers/referenda/votes";
-import { allVotesSelector } from "next-common/store/reducers/referenda/votes/selectors";
-import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
-import { createGlobalState } from "react-use";
+// import { useDispatch } from "react-redux";
+// import {
+//   setAllVotes,
+//   setLoading,
+// } from "next-common/store/reducers/referenda/votes";
+// import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
+// import { createGlobalState } from "react-use";
 import getChainSettings from "next-common/utils/consts/settings";
 import { defaultBlockTime } from "next-common/utils/constants";
 import { sleep } from "next-common/utils";
@@ -17,6 +16,9 @@ import {
   STORAGE_ITEM_KEY,
   STORAGE_NAMES,
 } from "next-common/utils/indexedDB/votes";
+import { flatten } from "lodash-es";
+import BigNumber from "bignumber.js";
+import { isSameAddress } from "next-common/utils";
 
 function extractSplitVotes(vote = {}) {
   const {
@@ -105,12 +107,11 @@ function extractSplitAbstainVotes(vote = {}) {
   return result;
 }
 
-const useGlobalVotesLoadedMark = createGlobalState(false);
+// const useGlobalVotesLoadedMark = createGlobalState(false);
 
-export function useAllReferendaVotes(referendumIndex) {
+export function useReferendaVotes(referendumIndex) {
   const [result, setResult] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [apiResult, setApiResult] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const allVotesStorage = useMemo(
     () =>
@@ -135,11 +136,125 @@ export function useAllReferendaVotes(referendumIndex) {
     }
   }, [allVotesStorage]);
 
-  const getVotesFromApi = useCallback(async () => {
-    const { result: votes } = await backendApi.fetch(
-      `gov2/referenda/${referendumIndex}/votes`,
-    );
+  useEffect(() => {
+    setIsLoading(true);
+    getVotesFromStorage()
+      .then((storedResult) => {
+        setResult(storedResult);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [getVotesFromStorage]);
 
+  const allVotes = result;
+
+  const showVotesNumber = !!allVotes;
+
+  const allAye = (allVotes || []).filter((v) => v.aye);
+  const allAyeDelegationVotes = allAye.filter((v) => v.isDelegating);
+  const allAyeDirectVotes = allAye.filter((v) => !v.isDelegating);
+
+  const allNay = (allVotes || []).filter((v) => v.aye === false);
+  const allNayDelegationVotes = allNay.filter((v) => v.isDelegating);
+  const allNayDirectVotes = allNay.filter((v) => !v.isDelegating);
+
+  const allAbstain = (allVotes || []).filter((v) => v.isAbstain);
+  const allAbstainDelegationVotes = allAbstain.filter((v) => v.isDelegating);
+  const allAbstainDirectVotes = allAbstain.filter((v) => !v.isDelegating);
+
+  const allDirectVotes = (allVotes || []).filter((v) => !v.isDelegating);
+  const allDelegationVotes = (allVotes || []).filter((v) => v.isDelegating);
+
+  const normalizedNestedVote = (vote, delegations) => {
+    if (!vote.isStandard) {
+      return {
+        ...vote,
+        directVoterDelegations: [],
+        totalVotes: vote.votes,
+        totalDelegatedVotes: 0,
+        totalDelegatedCapital: 0,
+      };
+    }
+
+    let directVoterDelegations = delegations.filter((delegationVote) =>
+      isSameAddress(delegationVote.target, vote.account),
+    );
+    const allDelegationVotes = directVoterDelegations.reduce((result, d) => {
+      return new BigNumber(result).plus(d.votes).toString();
+    }, 0);
+    const totalVotes = new BigNumber(vote.votes)
+      .plus(allDelegationVotes)
+      .toString();
+    const totalDelegatedVotes = directVoterDelegations.reduce((result, d) => {
+      return BigNumber(result).plus(d.votes).toString();
+    }, 0);
+    const totalDelegatedCapital = directVoterDelegations.reduce((result, d) => {
+      return BigNumber(result).plus(d.balance).toString();
+    }, 0);
+
+    return {
+      ...vote,
+      directVoterDelegations,
+      totalVotes,
+      totalDelegatedVotes,
+      totalDelegatedCapital,
+    };
+  };
+
+  const directVotesWithNested = allDirectVotes.map((v) =>
+    normalizedNestedVote(v, allDelegationVotes),
+  );
+
+  const nestedVotes = {
+    allAye: directVotesWithNested.filter((v) => v.aye),
+    allNay: directVotesWithNested.filter((v) => v.aye === false),
+    allAbstain: directVotesWithNested.filter((v) => v.isAbstain),
+  };
+
+  const allNestedVotes = flatten([
+    nestedVotes.allAye,
+    nestedVotes.allNay,
+    nestedVotes.allAbstain,
+  ]);
+
+  const flattenVotes = {
+    allAye,
+    allNay,
+    allAbstain,
+  };
+
+  return {
+    isLoading,
+    result: allVotes,
+    showVotesNum: showVotesNumber,
+    allAye,
+    allAyeDelegationVotes,
+    allAyeDirectVotes,
+    allNay,
+    allNayDelegationVotes,
+    allNayDirectVotes,
+    allAbstain,
+    allAbstainDelegationVotes,
+    allAbstainDirectVotes,
+    allDirectVotes,
+    allDelegationVotes,
+    nestedVotes,
+    allNestedVotes,
+    flattenVotes,
+  };
+}
+
+export function useReferendaVotesActions(referendumIndex) {
+  const allVotesStorage = useMemo(
+    () =>
+      getOrCreateStorage(
+        `${STORAGE_NAMES.REFERENDA_ALL_VOTES}-${referendumIndex}`,
+      ),
+    [referendumIndex],
+  );
+
+  const processVotes = useCallback((votes) => {
     if (!votes) {
       return [];
     }
@@ -158,168 +273,175 @@ export function useAllReferendaVotes(referendumIndex) {
         BigInt(vote.votes) > 0 || BigInt(vote?.delegations?.votes || 0) > 0,
     );
 
-    const sortedFilteredVotes = sortVotes(filteredVotes);
+    return sortVotes(filteredVotes);
+  }, []);
 
+  const fetch = useCallback(async () => {
     try {
-      await allVotesStorage?.setItem(
-        STORAGE_ITEM_KEY.ALLVOTES,
-        sortedFilteredVotes,
+      const { result: votes } = await backendApi.fetch(
+        `gov2/referenda/${referendumIndex}/votes`,
       );
-    } catch (error) {
-      console.error("Error saving votes to IndexedDB:", error);
-    }
 
-    return sortedFilteredVotes;
-  }, [referendumIndex, allVotesStorage]);
+      const processedVotes = processVotes(votes);
 
-  useEffect(() => {
-    if (apiResult) {
-      return;
-    }
-    getVotesFromStorage().then((storedResult) => {
-      if (!apiResult) {
-        setResult(storedResult);
-      }
-    });
-  }, [getVotesFromStorage, apiResult]);
-
-  useEffect(() => {
-    setIsLoading(true);
-    allVotesStorage
-      ?.removeItem(STORAGE_ITEM_KEY.ALLVOTES)
-      .catch((error) =>
-        console.error("Error removing item from IndexedDB:", error),
-      )
-      .then(() => getVotesFromApi())
-      .then((apiVotes) => {
-        setResult(apiVotes);
-        setApiResult(apiVotes);
-      })
-      .catch((error) => {
-        console.error("Error fetching votes from API:", error);
-      })
-      .finally(() => setIsLoading(false));
-  }, [getVotesFromApi, allVotesStorage]);
-
-  return { isLoading, result };
-}
-
-export function useFetchVotesFromServer(referendumIndex) {
-  const votingFinishedHeight = useReferendumVotingFinishHeight();
-  const [loaded, setLoaded] = useGlobalVotesLoadedMark();
-  const dispatch = useDispatch();
-
-  const fetch = useCallback(() => {
-    if (votingFinishedHeight && loaded) {
-      return Promise.resolve();
-    }
-    dispatch(setLoading(true));
-
-    return backendApi
-      .fetch(`gov2/referenda/${referendumIndex}/votes`)
-      .then(({ result: votes }) => {
-        const allVotes = (votes || []).reduce((result, vote) => {
-          if (vote.isSplit) {
-            return [...result, ...extractSplitVotes(vote)];
-          } else if (vote.isSplitAbstain) {
-            return [...result, ...extractSplitAbstainVotes(vote)];
-          }
-          return [...result, vote];
-        }, []);
-
-        const filteredVotes = allVotes.filter(
-          (vote) =>
-            BigInt(vote.votes) > 0 || BigInt(vote?.delegations?.votes || 0) > 0,
+      try {
+        await allVotesStorage?.setItem(
+          STORAGE_ITEM_KEY.ALLVOTES,
+          processedVotes,
         );
+      } catch (error) {
+        console.error("Error saving votes to IndexedDB:", error);
+      }
 
-        dispatch(setAllVotes(sortVotes(filteredVotes)));
+      return processedVotes;
+    } catch (error) {
+      console.error(
+        "Error fetching votes for referendum:",
+        referendumIndex,
+        error,
+      );
+      throw new Error("Error fetching votes for referendum");
+    }
+  }, [referendumIndex, allVotesStorage, processVotes]);
 
-        if (!loaded) {
-          setLoaded(true);
+  const update = useCallback(
+    async (times = 10) => {
+      const blockTime =
+        getChainSettings(process.env.NEXT_PUBLIC_CHAIN).blockTime ||
+        defaultBlockTime;
+
+      for (let i = 0; i < times; i++) {
+        try {
+          await fetch();
+        } catch (error) {
+          console.error(
+            "Error updating votes for referendum:",
+            referendumIndex,
+            error,
+          );
         }
 
-        return filteredVotes;
-      })
-      .catch((error) => {
-        console.error(
-          "Error fetching votes for referendum:",
-          referendumIndex,
-          error,
-        );
-        throw new Error("Error fetching votes for referendum");
-      })
-      .finally(() => {
-        setTimeout(() => dispatch(setLoading(false)), 1);
-      });
-  }, [votingFinishedHeight, referendumIndex, dispatch, setLoaded, loaded]);
+        if (i < times - 1) {
+          await sleep(blockTime);
+        }
+      }
+    },
+    [fetch, referendumIndex],
+  );
 
-  useEffect(() => {
-    return () => {
-      setLoaded(false);
-    };
-  }, [setLoaded]);
+  const clearStorage = useCallback(async () => {
+    try {
+      await allVotesStorage?.removeItem(STORAGE_ITEM_KEY.ALLVOTES);
+    } catch (error) {
+      console.error("Error removing item from IndexedDB:", error);
+    }
+  }, [allVotesStorage]);
 
-  return { fetch };
+  return { fetch, update, clearStorage };
 }
 
-export function useUpdateVotesFromServer(referendumIndex) {
-  const { fetch } = useFetchVotesFromServer(referendumIndex);
+// export function useFetchVotesFromServer(referendumIndex) {
+//   const votingFinishedHeight = useReferendumVotingFinishHeight();
+//   const [loaded, setLoaded] = useGlobalVotesLoadedMark();
+//   const dispatch = useDispatch();
 
-  const update = useCallback(async () => {
-    const times = 10;
-    const blockTime =
-      getChainSettings(process.env.NEXT_PUBLIC_CHAIN).blockTime ||
-      defaultBlockTime;
+//   const fetch = useCallback(() => {
+//     if (votingFinishedHeight && loaded) {
+//       return Promise.resolve();
+//     }
+//     dispatch(setLoading(true));
 
-    for (let i = 0; i < times; i++) {
-      try {
-        await fetch();
-      } catch (error) {
-        console.error(
-          "Error updating votes for referendum:",
-          referendumIndex,
-          error,
-        );
-      }
+//     return backendApi
+//       .fetch(`gov2/referenda/${referendumIndex}/votes`)
+//       .then(({ result: votes }) => {
+//         const allVotes = (votes || []).reduce((result, vote) => {
+//           if (vote.isSplit) {
+//             return [...result, ...extractSplitVotes(vote)];
+//           } else if (vote.isSplitAbstain) {
+//             return [...result, ...extractSplitAbstainVotes(vote)];
+//           }
+//           return [...result, vote];
+//         }, []);
 
-      if (i < times - 1) {
-        await sleep(blockTime);
-      }
-    }
-  }, [fetch, referendumIndex]);
+//         const filteredVotes = allVotes.filter(
+//           (vote) =>
+//             BigInt(vote.votes) > 0 || BigInt(vote?.delegations?.votes || 0) > 0,
+//         );
 
-  return { update };
-}
+//         dispatch(setAllVotes(sortVotes(filteredVotes)));
 
-export default function useVotesFromServer(referendumIndex) {
-  const [votes, setVotes] = useState();
-  const dispatch = useDispatch();
-  const reduxVotes = useSelector(allVotesSelector);
+//         if (!loaded) {
+//           setLoaded(true);
+//         }
 
-  useEffect(() => {
-    if (!reduxVotes) {
-      backendApi
-        .fetch(`gov2/referenda/${referendumIndex}/votes`)
-        .then(({ result: votes }) => setVotes(votes));
-    }
-  }, [referendumIndex, reduxVotes]);
+//         return filteredVotes;
+//       })
+//       .catch((error) => {
+//         console.error(
+//           "Error fetching votes for referendum:",
+//           referendumIndex,
+//           error,
+//         );
+//         throw new Error("Error fetching votes for referendum");
+//       })
+//       .finally(() => {
+//         setTimeout(() => dispatch(setLoading(false)), 1);
+//       });
+//   }, [votingFinishedHeight, referendumIndex, dispatch, setLoaded, loaded]);
 
-  useEffect(() => {
-    if (!votes || reduxVotes) {
-      return;
-    }
+//   useEffect(() => {
+//     return () => {
+//       setLoaded(false);
+//     };
+//   }, [setLoaded]);
 
-    const allVotes = (votes || []).reduce((result, vote) => {
-      if (vote.isSplit) {
-        return [...result, ...extractSplitVotes(vote)];
-      } else if (vote.isSplitAbstain) {
-        return [...result, ...extractSplitAbstainVotes(vote)];
-      }
-      return [...result, vote];
-    }, []);
-    const filteredVotes = allVotes.filter(
-      (vote) => BigInt(vote.votes) > 0 || BigInt(vote?.delegations?.votes) > 0,
-    );
-    dispatch(setAllVotes(sortVotes(filteredVotes)));
-  }, [votes, reduxVotes, dispatch]);
-}
+//   return { fetch };
+// }
+
+// export function useUpdateVotesFromServer(referendumIndex) {
+//   const { fetch } = useFetchVotesFromServer(referendumIndex);
+
+//   const update = useCallback(async () => {
+//     const times = 10;
+//     const blockTime =
+//       getChainSettings(process.env.NEXT_PUBLIC_CHAIN).blockTime ||
+//       defaultBlockTime;
+
+//     for (let i = 0; i < times; i++) {
+//       try {
+//         await fetch();
+//       } catch (error) {
+//         console.error(
+//           "Error updating votes for referendum:",
+//           referendumIndex,
+//           error,
+//         );
+//       }
+
+//       if (i < times - 1) {
+//         await sleep(blockTime);
+//       }
+//     }
+//   }, [fetch, referendumIndex]);
+
+//   return { update };
+// }
+
+// export default function useVotesFromServer(referendumIndex) {
+//   const [votes, setVotes] = useState();
+//   const { result } = useAllReferendaVotes(referendumIndex);
+//   const dispatch = useDispatch();
+//   const reduxVotes = useSelector(allVotesSelector);
+
+//   useEffect(() => {
+//     if (!reduxVotes && result.length === 0) {
+//       fetch().then((processedVotes) => {
+//         dispatch(setAllVotes(processedVotes));
+//       });
+//     } else if (!reduxVotes && result.length > 0) {
+//       dispatch(setAllVotes(result));
+//     }
+//   }, [referendumIndex, reduxVotes, result, dispatch, fetch]);
+
+//   return result;
+// }
