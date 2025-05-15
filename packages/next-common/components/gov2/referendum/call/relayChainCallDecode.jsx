@@ -3,24 +3,39 @@
 import { DecodeCallItem } from "./decodeItem";
 import Row from "next-common/components/listInfo/row";
 import DecodeCallList from "./decodeList";
-import { useAsync } from "react-use";
-import { extractXcmContext } from "next-common/utils/gov2/relayChainCall";
+import {
+  isXcmCall,
+  isFromParaToRelayChain,
+  getXcmEncodeds,
+} from "next-common/utils/gov2/relayChainCall";
 import { useRelayChainCallDecode } from "next-common/utils/gov2/useRelayChainCallDecode";
 
 export default function RelayChainCall({ call }) {
-  const { value: xcmContext } = useAsync(async () => {
-    return extractXcmContext(call) || {};
-  });
-
-  if (!xcmContext) {
+  if (!isXcmCall(call)) {
     return null;
   }
 
-  return <RelayChainCallImpl xcmContext={xcmContext} />;
+  const locationArg = call?.args?.[0];
+  if (!locationArg || !isFromParaToRelayChain(locationArg)) {
+    return null;
+  }
+
+  const messageArg = call?.args?.[1];
+  if (!messageArg) {
+    return null;
+  }
+
+  const encodeds = getXcmEncodeds(messageArg);
+
+  if (!encodeds?.length) {
+    return null;
+  }
+
+  return <RelayChainCallImpl encodeds={encodeds} />;
 }
 
-function RelayChainCallImpl({ xcmContext }) {
-  const { value: relayChainDecodes } = useRelayChainCallDecode(xcmContext);
+function RelayChainCallImpl({ encodeds }) {
+  const { value: relayChainDecodes } = useRelayChainCallDecode(encodeds);
 
   if (!relayChainDecodes?.length) {
     return null;

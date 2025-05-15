@@ -1,97 +1,79 @@
 import { getBlockApiByHeight } from "next-common/services/chain/api";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useContextApi } from "next-common/context/api";
-import { useOnchainData } from "next-common/context/post";
-import {
-  getXcmLocationApi,
-  clearXcmLocationApi,
-} from "next-common/utils/gov2/relayChainCall";
-
-export function useReferendaIsActived() {
-  const onchainData = useOnchainData();
-  return useMemo(() => {
-    const name = onchainData?.state?.name;
-    return ["Submitted", "DecisionDepositPlaced", "DecisionStarted"].includes(
-      name,
-    );
-  }, [onchainData]);
-}
+import { getXcmLocationApi } from "next-common/utils/gov2/relayChainCall";
+import useReferendumVotingFinishHeight, {
+  useReferendaIsVoting,
+} from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 
 function useRealyChainBlockNumber() {
   const api = useContextApi();
-  const onchainData = useOnchainData();
-  const isActived = useReferendaIsActived();
+  const isVoting = useReferendaIsVoting();
   const [relayChainBlockNumber, setRelayChainBlockNumber] = useState();
+  const blockHeight = useReferendumVotingFinishHeight();
 
   useEffect(() => {
-    if (!isActived && api) {
-      const decisionStartedTimeLine = onchainData.timeline.find(
-        (tl) => tl.name === "DecisionStarted",
-      );
-      const blockHeight = decisionStartedTimeLine?.indexer?.blockHeight;
-      if (blockHeight) {
-        getBlockApiByHeight(api, blockHeight)
-          .then((atApi) =>
-            atApi?.query?.parachainSystem.lastRelayChainBlockNumber(),
-          )
-          .then((res) => res.toNumber())
-          .then((relayNumber) => setRelayChainBlockNumber(relayNumber));
-      }
+    if (!isVoting && api && blockHeight) {
+      getBlockApiByHeight(api, blockHeight)
+        .then((atApi) =>
+          atApi?.query?.parachainSystem.lastRelayChainBlockNumber(),
+        )
+        .then((res) => res.toNumber())
+        .then((relayNumber) => setRelayChainBlockNumber(relayNumber))
+        .catch(console.error);
     }
-  }, [api, isActived, onchainData]);
+  }, [api, isVoting, blockHeight]);
 
   return {
     relayChainBlockNumber,
   };
 }
 
-export function useRelayChainCallDecode(xcmContext) {
+export function useRelayChainCallDecode(encodeds) {
   const [results, setResults] = useState([]);
   const { relayChainBlockNumber } = useRealyChainBlockNumber();
-  const isActived = useReferendaIsActived();
+  const isVoting = useReferendaIsVoting();
 
-  const getRelayChainApi = useCallback(
-    async (xcmLocation) => {
-      if (isActived && !relayChainBlockNumber) {
+  const getRelayChainApi = useCallback(async () => {
+    try {
+      if (isVoting && !relayChainBlockNumber) {
         return null;
       }
-      const destApi = await getXcmLocationApi(xcmLocation);
-      if (!isActived) {
-        return destApi;
+      const api = await getXcmLocationApi();
+      if (!isVoting) {
+        return api;
       }
-      const destApiAt = await getBlockApiByHeight(
-        destApi,
-        relayChainBlockNumber,
-      );
-      return destApiAt;
-    },
-    [isActived, relayChainBlockNumber],
-  );
+      const apiAt = await getBlockApiByHeight(api, relayChainBlockNumber);
+      return apiAt;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }, [isVoting, relayChainBlockNumber]);
 
   useEffect(() => {
     const decodeResults = [];
     async function decode() {
       try {
-        const destApi = await getRelayChainApi(xcmContext.xcmLocation);
-        for (const call of xcmContext.encodeds) {
-          const result = destApi?.registry?.createType("Call", call);
+        const relayChainApi = await getRelayChainApi();
+        for (const call of encodeds) {
+          const result = relayChainApi?.registry?.createType("Call", call);
           if (result) {
             decodeResults.push(result.toHuman?.());
           }
         }
+        relayChainApi?.disconnect();
         setResults(decodeResults);
       } catch (error) {
         console.error(error);
       }
-      clearXcmLocationApi();
     }
-    if (xcmContext && !results.length) {
+    if (encodeds?.length && !results.length) {
       decode();
     }
-  }, [xcmContext, getRelayChainApi, results]);
+  }, [encodeds, getRelayChainApi, results]);
 
   return {
     value: results,
-    loading: false,
   };
 }
