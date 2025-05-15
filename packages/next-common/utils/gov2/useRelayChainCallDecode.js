@@ -5,6 +5,7 @@ import useReferendumVotingFinishHeight, {
   useReferendaIsVoting,
 } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import { useRealyChainBlockNumberExecute } from "./useRealyChainBlockNumber";
+import { noop } from "@polkadot/util";
 
 export function useRelayChainCallDecode(encodeds) {
   const [results, setResults] = useState([]);
@@ -19,39 +20,53 @@ export function useRelayChainCallDecode(encodeds) {
     }
   }, [isVoting, relayChainBlockNumber, executeRelayChainBlockNumber]);
 
-  const api = useMemo(async () => {
-    if (!isVoting && !relayChainBlockNumber) {
+  const apiAndDisconnectPromise = useMemo(async () => {
+    try {
+      if (!isVoting && !relayChainBlockNumber) {
+        return null;
+      }
+      let disconnect = noop;
+      let resultApi = await getXcmLocationApi();
+      disconnect = resultApi?.disconnect?.bind(resultApi);
+      if (!isVoting) {
+        resultApi = await getBlockApiByHeight(resultApi, relayChainBlockNumber);
+      }
+
+      return {
+        api: resultApi,
+        disconnect,
+      };
+    } catch (error) {
+      console.error(error);
       return null;
     }
-    return getXcmLocationApi().then((api) => {
-      if (isVoting) {
-        return api;
-      }
-      return getBlockApiByHeight(api, relayChainBlockNumber);
-    });
   }, [isVoting, relayChainBlockNumber]);
 
   useEffect(() => {
     const decodeResults = [];
     async function decode() {
       try {
-        const relayChainApi = await api;
+        const apiAndDisconnect = await apiAndDisconnectPromise;
+        if (!apiAndDisconnect) {
+          return;
+        }
+        const readyApi = await apiAndDisconnect.api;
         for (const call of encodeds) {
-          const result = relayChainApi?.registry?.createType("Call", call);
+          const result = readyApi?.registry?.createType("Call", call);
           if (result) {
             decodeResults.push(result.toHuman?.());
           }
         }
-        relayChainApi?.disconnect();
+        apiAndDisconnect.disconnect?.();
         setResults(decodeResults);
       } catch (error) {
         console.error(error);
       }
     }
-    if (encodeds?.length && !results.length) {
+    if (encodeds?.length) {
       decode();
     }
-  }, [encodeds, api, results]);
+  }, [encodeds, apiAndDisconnectPromise]);
 
   return {
     value: results,
