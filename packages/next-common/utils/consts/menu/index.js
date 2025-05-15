@@ -39,7 +39,7 @@ export function getHomeMenu({
   ].filter(Boolean);
 
   return [
-    modules?.referenda && getReferendaMenu(tracks, currentTrackId),
+    modules?.referenda && getReferendaMenu(tracks),
     modules?.fellowship && getFellowshipMenu(summary, currentTrackId),
     modules?.ambassador && getAmbassadorMenu(ambassadorTracks, currentTrackId),
     modules?.democracy && getDemocracyMenu(summary),
