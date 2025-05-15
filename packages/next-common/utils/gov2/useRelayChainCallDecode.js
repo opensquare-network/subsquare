@@ -1,5 +1,5 @@
 import { getBlockApiByHeight } from "next-common/services/chain/api";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useContextApi } from "next-common/context/api";
 import { useOnchainData } from "next-common/context/post";
 import {
@@ -11,7 +11,9 @@ export function useReferendaIsActived() {
   const onchainData = useOnchainData();
   return useMemo(() => {
     const name = onchainData?.state?.name;
-    return ["DecisionDepositPlaced", "DecisionStarted"].includes(name);
+    return ["Submitted", "DecisionDepositPlaced", "DecisionStarted"].includes(
+      name,
+    );
   }, [onchainData]);
 }
 
@@ -24,7 +26,7 @@ function useRealyChainBlockNumber() {
   useEffect(() => {
     if (!isActived && api) {
       const confirmedTl = onchainData.timeline.find(
-        (tl) => tl.name === "Submitted",
+        (tl) => tl.name === "DecisionStarted",
       );
       const blockHeight = confirmedTl.indexer.blockHeight;
       if (blockHeight) {
@@ -46,32 +48,54 @@ function useRealyChainBlockNumber() {
 export function useRelayChainCallDecode(encodeCalls) {
   const [results, setResults] = useState([]);
   const { relayChainBlockNumber } = useRealyChainBlockNumber();
+  const isActived = useReferendaIsActived();
+
+  const getRelayChainApi = useCallback(
+    async (destChainId) => {
+      if (isActived && !relayChainBlockNumber) {
+        return null;
+      }
+      const destApi = await getDestApi(destChainId);
+      if (!isActived) {
+        return destApi;
+      }
+      const destApiAt = await getBlockApiByHeight(
+        destApi,
+        relayChainBlockNumber,
+      );
+      return destApiAt;
+    },
+    [isActived, relayChainBlockNumber],
+  );
 
   useEffect(() => {
     const decodeResults = [];
     async function decode() {
       for (const { destChainId, encodedCalls: calls } of encodeCalls) {
         if (calls.length) {
-          const destApi = await getDestApi(destChainId);
-          const destApiAt = await getBlockApiByHeight(
-            destApi,
-            relayChainBlockNumber,
-          );
-          for (const call of calls) {
-            const result = destApiAt?.registry?.createType("Call", call);
-            if (result) {
-              decodeResults.push(result.toHuman?.());
+          try {
+            const destApi = await getRelayChainApi(destChainId);
+            if (!destApi) {
+              continue;
             }
+            for (const call of calls) {
+              const result = destApi?.registry?.createType("Call", call);
+              if (result) {
+                decodeResults.push(result.toHuman?.());
+              }
+            }
+            setResults(decodeResults);
+          } catch (error) {
+            console.error(error);
           }
-          setResults(decodeResults);
         }
       }
       clearDestApi();
     }
-    if (encodeCalls?.length && relayChainBlockNumber) {
+    if (encodeCalls?.length) {
       decode();
     }
-  }, [encodeCalls, relayChainBlockNumber]);
+  }, [encodeCalls, getRelayChainApi]);
 
   return {
     value: results,
