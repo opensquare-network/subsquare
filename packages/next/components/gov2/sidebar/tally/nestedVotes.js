@@ -2,7 +2,10 @@ import { useMemo, useState } from "react";
 import { Button } from "./styled";
 import { sortTotalVotes } from "next-common/utils/democracy/votes/passed/common";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import { useReferendaVotes } from "next-common/utils/gov2/useVotesFromServer";
+import {
+  useReferendaNestedVotes,
+  useReferendaShowVotesNum,
+} from "next-common/utils/gov2/useVotesFromServer";
 import { useOnchainData } from "next-common/context/post";
 
 const NestedVotesPopup = dynamicPopup(() => import("./nestedVotesPopup"));
@@ -10,9 +13,12 @@ const NestedVotesPopup = dynamicPopup(() => import("./nestedVotesPopup"));
 export default function NestedVotes() {
   const [showNestedVotes, setShowNestedVotes] = useState(false);
   const { referendumIndex } = useOnchainData();
-  const { nestedVotes, showVotesNum } = useReferendaVotes(referendumIndex);
-
-  const { allAye = [], allNay = [], allAbstain = [] } = nestedVotes;
+  const showVotesNum = useReferendaShowVotesNum(referendumIndex);
+  const {
+    allAye = [],
+    allNay = [],
+    allAbstain = [],
+  } = useReferendaNestedVotes(referendumIndex);
 
   const directAyes = useMemo(
     () => sortTotalVotes(allAye.filter((v) => !v.isDelegating)),
