@@ -25,10 +25,10 @@ function useRealyChainBlockNumber() {
 
   useEffect(() => {
     if (!isActived && api) {
-      const confirmedTl = onchainData.timeline.find(
+      const decisionStartedTimeLine = onchainData.timeline.find(
         (tl) => tl.name === "DecisionStarted",
       );
-      const blockHeight = confirmedTl.indexer.blockHeight;
+      const blockHeight = decisionStartedTimeLine?.indexer?.blockHeight;
       if (blockHeight) {
         getBlockApiByHeight(api, blockHeight)
           .then((atApi) =>
