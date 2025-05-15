@@ -44,27 +44,24 @@ export function useRelayChainCallDecode(encodeds) {
 
   useEffect(() => {
     const decodeResults = [];
-    async function decode() {
+    async function decode(readyApi) {
       try {
-        const apiAndDisconnect = await apiAndDisconnectPromise;
-        if (!apiAndDisconnect) {
-          return;
-        }
-        const readyApi = await apiAndDisconnect.api;
         for (const call of encodeds) {
           const result = readyApi?.registry?.createType("Call", call);
           if (result) {
             decodeResults.push(result.toHuman?.());
           }
         }
-        apiAndDisconnect.disconnect?.();
+        readyApi?.disconnect?.();
         setResults(decodeResults);
       } catch (error) {
         console.error(error);
       }
     }
     if (encodeds?.length) {
-      decode();
+      apiAndDisconnectPromise
+        .then((api) => api && decode(api))
+        .catch(console.error);
     }
   }, [encodeds, apiAndDisconnectPromise]);
 
