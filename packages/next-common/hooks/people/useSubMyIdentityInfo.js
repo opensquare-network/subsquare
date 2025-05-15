@@ -155,6 +155,7 @@ function useAddressIdentityInfo(address) {
     async function fetchIdentity() {
       if (!result || result.isNone) {
         try {
+          // Subscription may have data returned as isNone. Here, to avoid errors, we need to get the data again.
           const apiResult = await api.query?.identity.identityOf(address);
           if (apiResult && !apiResult.isNone) {
             setIdentity(convertIdentity(apiResult));
