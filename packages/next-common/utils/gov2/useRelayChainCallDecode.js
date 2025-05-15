@@ -51,11 +51,11 @@ export function useRelayChainCallDecode(xcmContext) {
   const isActived = useReferendaIsActived();
 
   const getRelayChainApi = useCallback(
-    async (destChainId) => {
+    async (xcmLocation) => {
       if (isActived && !relayChainBlockNumber) {
         return null;
       }
-      const destApi = await getXcmLocationApi(destChainId);
+      const destApi = await getXcmLocationApi(xcmLocation);
       if (!isActived) {
         return destApi;
       }

@@ -66,11 +66,11 @@ function findAllEncoded(message) {
   return result;
 }
 
-export function getXcmLocationApi(destChainId) {
+export function getXcmLocationApi(xcmLocation) {
   const chainMap = {
     0: getRelayChain(CHAIN),
   };
-  const chain = chainMap[destChainId];
+  const chain = chainMap[xcmLocation];
   if (!chain) {
     return null;
   }
