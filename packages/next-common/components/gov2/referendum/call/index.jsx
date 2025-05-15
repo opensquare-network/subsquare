@@ -16,9 +16,12 @@ import { isCollectivesChain } from "next-common/utils/chain";
 const EvmCall = dynamic(() => import("./evmCallDecode"), {
   ssr: false,
 });
-const RelayChainCall = dynamic(() => import("./relayChainCallDecode"), {
-  ssr: false,
-});
+const RelayChainCall = dynamic(
+  () => import("./parachain/relayChainCallDecode"),
+  {
+    ssr: false,
+  },
+);
 
 export default function Gov2ReferendumCall() {
   const chain = useChain();
@@ -70,7 +73,7 @@ export default function Gov2ReferendumCall() {
   }
 
   if (isCollectivesChain(chain) && callData) {
-    data.push(<RelayChainCall key="relay-chain-call" call={callData} />);
+    data.push(<RelayChainCall key="relay-chain-call" />);
   }
 
   const businessData = useReferendaBusinessData();

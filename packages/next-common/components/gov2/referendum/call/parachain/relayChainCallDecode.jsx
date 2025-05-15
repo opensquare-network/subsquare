@@ -1,17 +1,20 @@
 "use client";
 
-import { DecodeCallItem } from "./decodeItem";
+import { DecodeCallItem } from "../decodeItem";
 import Row from "next-common/components/listInfo/row";
-import DecodeCallList from "./decodeList";
+import DecodeCallList from "../decodeList";
 import {
   isXcmCall,
   isFromParaToRelayChain,
-  getXcmEncodeds,
+  extractTransactCallBytesArr,
 } from "next-common/utils/gov2/relayChainCall";
 import { useRelayChainCallDecode } from "next-common/utils/gov2/useRelayChainCallDecode";
+import { RawCallContext } from "next-common/context/call/raw";
+import { useContext } from "react";
 
-export default function RelayChainCall({ call }) {
-  if (!isXcmCall(call)) {
+export default function RelayChainCall() {
+  const { call, isLoading } = useContext(RawCallContext);
+  if (isLoading || !isXcmCall(call)) {
     return null;
   }
 
@@ -25,13 +28,8 @@ export default function RelayChainCall({ call }) {
     return null;
   }
 
-  const encodeds = getXcmEncodeds(messageArg);
-
-  if (!encodeds?.length) {
-    return null;
-  }
-
-  return <RelayChainCallImpl encodeds={encodeds} />;
+  const relayChainCallBytesArr = extractTransactCallBytesArr(messageArg);
+  return <RelayChainCallImpl encodeds={relayChainCallBytesArr} />;
 }
 
 function RelayChainCallImpl({ encodeds }) {

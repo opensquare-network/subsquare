@@ -2,7 +2,7 @@ import { useContextApi } from "next-common/context/api";
 import { getBlockApiByHeight } from "next-common/services/chain/api";
 import { useCallback, useEffect, useState } from "react";
 
-export function useRealyChainBlockNumberExecute(blockHeight) {
+export function useRelayChainBlockNumberExecute(blockHeight) {
   const api = useContextApi();
   const [isLoading, setIsLoading] = useState(false);
   const [relayChainBlockNumber, setRelayChainBlockNumber] = useState();
@@ -28,9 +28,9 @@ export function useRealyChainBlockNumberExecute(blockHeight) {
   };
 }
 
-export function useRealyChainBlockNumber(blockHeight) {
+export function useRelayChainBlockNumber(blockHeight) {
   const { relayChainBlockNumber, isLoading, execute } =
-    useRealyChainBlockNumberExecute(blockHeight);
+    useRelayChainBlockNumberExecute(blockHeight);
 
   useEffect(() => {
     execute();

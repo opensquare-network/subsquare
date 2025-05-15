@@ -4,14 +4,13 @@ import { getXcmLocationApi } from "next-common/utils/gov2/relayChainCall";
 import useReferendumVotingFinishHeight, {
   useReferendaIsVoting,
 } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
-import { useRealyChainBlockNumberExecute } from "./useRealyChainBlockNumber";
-import { noop } from "@polkadot/util";
+import { useRelayChainBlockNumberExecute } from "./useRealyChainBlockNumber";
 
-export function useRelayChainCallDecode(encodeds) {
+export function useRelayChainCallDecode(bytesArr) {
   const [results, setResults] = useState([]);
   const blockHeight = useReferendumVotingFinishHeight();
   const { relayChainBlockNumber, execute: executeRelayChainBlockNumber } =
-    useRealyChainBlockNumberExecute(blockHeight);
+    useRelayChainBlockNumberExecute(blockHeight);
   const isVoting = useReferendaIsVoting();
 
   useEffect(() => {
@@ -25,7 +24,8 @@ export function useRelayChainCallDecode(encodeds) {
       if (!isVoting && !relayChainBlockNumber) {
         return null;
       }
-      let disconnect = noop;
+
+      let disconnect;
       let resultApi = await getXcmLocationApi();
       disconnect = resultApi?.disconnect?.bind(resultApi);
       if (!isVoting) {
@@ -46,8 +46,8 @@ export function useRelayChainCallDecode(encodeds) {
     const decodeResults = [];
     async function decode({ api, disconnect }) {
       try {
-        for (const encoded of encodeds) {
-          const result = api?.registry?.createType("Call", encoded);
+        for (const bytes of bytesArr) {
+          const result = api?.registry?.createType("Call", bytes);
           if (result) {
             decodeResults.push(result.toHuman?.());
           }
@@ -58,12 +58,12 @@ export function useRelayChainCallDecode(encodeds) {
         console.error(error);
       }
     }
-    if (encodeds?.length) {
+    if (bytesArr?.length) {
       apiAndDisconnectPromise
         .then((result) => result && decode(result))
         .catch(console.error);
     }
-  }, [encodeds, apiAndDisconnectPromise]);
+  }, [bytesArr, apiAndDisconnectPromise]);
 
   return {
     value: results,

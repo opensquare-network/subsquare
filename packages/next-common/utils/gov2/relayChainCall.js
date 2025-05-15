@@ -19,18 +19,34 @@ export function isXcmCall(call) {
 }
 
 export function isFromParaToRelayChain(xcmLocation) {
-  if (!xcmLocation?.value?.v4) return false;
-  const { parents, interior } = xcmLocation.value.v4 || {};
-  return parents === 1 && interior?.here === null;
+  if (!xcmLocation?.isV4) {
+    // todo: currently we only support xcm v4, but we need to support more versions
+    return false;
+  }
+
+  const v4Location = xcmLocation.asV4;
+  return v4Location.parents.toNumber() === 1 && v4Location.interior.isHere;
 }
 
-function isCrossChainMessage(instruction) {
-  return instruction?.transact && instruction.transact.originKind === "Xcm";
-}
+// `messageArg` are a group of XCM instructions
+export function extractTransactCallBytesArr(messageArg) {
+  if (!messageArg?.isV4) {
+    return [];
+  }
 
-export function getXcmEncodeds(messageArg) {
-  const instructions = messageArg?.value?.v4 || [];
-  return instructions.filter(isCrossChainMessage).map((instruction) => {
-    return instruction.transact?.call?.encoded;
-  });
+  const instructionsV4 = messageArg?.asV4;
+  if (!Array.isArray(instructionsV4)) {
+    return [];
+  }
+
+  return instructionsV4.reduce((acc, instruction) => {
+    if (!instruction.isTransact) {
+      return acc;
+    }
+    const transact = instruction.asTransact;
+    if (transact.originKind?.toString() !== "Xcm") {
+      return acc;
+    }
+    return [...acc, transact.call.encoded];
+  }, []);
 }
