@@ -85,10 +85,10 @@ export function useRelayChainCallDecode(xcmContext) {
       }
       clearXcmLocationApi();
     }
-    if (xcmContext) {
+    if (xcmContext && !results.length) {
       decode();
     }
-  }, [xcmContext, getRelayChainApi]);
+  }, [xcmContext, getRelayChainApi, results]);
 
   return {
     value: results,

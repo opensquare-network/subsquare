@@ -44,22 +44,22 @@ function parseXcmLocation(dest) {
   return null;
 }
 
-function findAllEncoded(obj) {
+function findAllEncoded(message) {
   const result = [];
 
-  function recurse(o) {
-    if (typeof o !== "object" || o === null) return;
+  function recurse(item) {
+    if (typeof item !== "object" || item === null) return;
 
-    if ("encoded" in o && typeof o.encoded === "string") {
-      result.push(o.encoded);
+    if ("encoded" in item && typeof item.encoded === "string") {
+      result.push(item.encoded);
     }
 
-    for (const value of Object.values(o)) {
+    for (const value of Object.values(item)) {
       recurse(value);
     }
   }
 
-  recurse(obj);
+  recurse(message);
   return result;
 }
 
