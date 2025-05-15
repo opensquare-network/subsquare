@@ -20,11 +20,11 @@ export function useRelayChainCallDecode(encodeds) {
   }, [isVoting, relayChainBlockNumber, executeRelayChainBlockNumber]);
 
   const api = useMemo(async () => {
-    if (isVoting && !relayChainBlockNumber) {
+    if (!isVoting && !relayChainBlockNumber) {
       return null;
     }
     return getXcmLocationApi().then((api) => {
-      if (!isVoting) {
+      if (isVoting) {
         return api;
       }
       return getBlockApiByHeight(api, relayChainBlockNumber);
