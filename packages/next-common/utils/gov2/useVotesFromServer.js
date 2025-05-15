@@ -6,7 +6,7 @@ import { defaultBlockTime } from "next-common/utils/constants";
 import { sleep } from "next-common/utils";
 import {
   getOrCreateStorage,
-  STORAGE_ITEM_KEY,
+  VOTES_STORAGE_ITEM_KEY,
   STORAGE_NAMES,
 } from "next-common/utils/indexedDB/votes";
 import { flatten } from "lodash-es";
@@ -118,7 +118,7 @@ export function useReferendaVotes(referendumIndex) {
     }
     try {
       const storedVotes = await allVotesStorage.getItem(
-        STORAGE_ITEM_KEY.ALL_VOTES,
+        VOTES_STORAGE_ITEM_KEY.ALL_VOTES,
       );
       return storedVotes || [];
     } catch (error) {
@@ -277,7 +277,7 @@ export function useReferendaVotesActions(referendumIndex) {
 
       try {
         await allVotesStorage?.setItem(
-          STORAGE_ITEM_KEY.ALL_VOTES,
+          VOTES_STORAGE_ITEM_KEY.ALL_VOTES,
           processedVotes,
         );
       } catch (error) {
@@ -322,7 +322,7 @@ export function useReferendaVotesActions(referendumIndex) {
 
   const clearStorage = useCallback(async () => {
     try {
-      await allVotesStorage?.removeItem(STORAGE_ITEM_KEY.ALL_VOTES);
+      await allVotesStorage?.removeItem(VOTES_STORAGE_ITEM_KEY.ALL_VOTES);
     } catch (error) {
       console.error("Error removing item from IndexedDB:", error);
     }

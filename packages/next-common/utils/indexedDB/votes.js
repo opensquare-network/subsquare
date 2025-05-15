@@ -7,10 +7,13 @@ export const STORAGE_NAMES = {
   REFERENDA_ALL_VOTES: "referenda-all-votes",
 };
 
-export const STORAGE_ITEM_KEY = {
-  ALL_AYE_CALLS: "AllAyeCalls",
-  ALL_NAY_CALLS: "AllNayCalls",
-  ALL_ABSTAIN_CALLS: "AllAbstainCalls",
+export const CALLS_STORAGE_ITEM_KEY = {
+  ALL_AYE: "AllAye",
+  ALL_NAY: "AllNay",
+  ALL_ABSTAIN: "AllAbstain",
+};
+
+export const VOTES_STORAGE_ITEM_KEY = {
   ALL_VOTES: "AllVotes",
 };
 

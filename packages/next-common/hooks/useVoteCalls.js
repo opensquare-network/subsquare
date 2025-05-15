@@ -4,7 +4,7 @@ import { classifyVoteCalls } from "next-common/store/reducers/gov2ReferendumSlic
 import { openGovEmptyVotes as emptyVotes } from "next-common/utils/democracy/votes/passed/common";
 import {
   getOrCreateStorage,
-  STORAGE_ITEM_KEY,
+  CALLS_STORAGE_ITEM_KEY,
   STORAGE_NAMES,
 } from "next-common/utils/indexedDB/votes";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -29,11 +29,11 @@ export default function useVoteCalls(referendumIndex) {
       try {
         return {
           allAye:
-            (await voteCallsStorage.getItem(STORAGE_ITEM_KEY.ALL_AYE_CALLS)) || [],
+            (await voteCallsStorage.getItem(CALLS_STORAGE_ITEM_KEY.ALL_AYE)) || [],
           allNay:
-            (await voteCallsStorage.getItem(STORAGE_ITEM_KEY.ALL_NAY_CALLS)) || [],
+            (await voteCallsStorage.getItem(CALLS_STORAGE_ITEM_KEY.ALL_NAY)) || [],
           allAbstain:
-            (await voteCallsStorage.getItem(STORAGE_ITEM_KEY.ALL_ABSTAIN_CALLS)) || [],
+            (await voteCallsStorage.getItem(CALLS_STORAGE_ITEM_KEY.ALL_ABSTAIN)) || [],
         };
       } catch (error) {
         console.error(error);
@@ -55,9 +55,9 @@ export default function useVoteCalls(referendumIndex) {
           const { allAye, allNay, allAbstain } = classifyVoteCalls(apiResult);
 
           try {
-            voteCallsStorage.setItem(STORAGE_ITEM_KEY.ALL_AYE, allAye);
-            voteCallsStorage.setItem(STORAGE_ITEM_KEY.ALL_NAY_CALLS, allNay);
-            voteCallsStorage.setItem(STORAGE_ITEM_KEY.ALL_ABSTAIN_CALLS, allAbstain);
+            voteCallsStorage.setItem(CALLS_STORAGE_ITEM_KEY.ALL_AYE, allAye);
+            voteCallsStorage.setItem(CALLS_STORAGE_ITEM_KEY.ALL_NAY, allNay);
+            voteCallsStorage.setItem(CALLS_STORAGE_ITEM_KEY.ALL_ABSTAIN, allAbstain);
           } catch (error) {
             console.error(error);
           }
