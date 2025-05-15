@@ -15,7 +15,7 @@ import VoteSuccessfulPopup from "../votePopup/voteSuccessful";
 import Request from "./request";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import AllSpendsRequest from "./request/allSpendsRequest";
-import { useReferendaVotesActions } from "next-common/utils/gov2/useVotesFromServer";
+import { useReferendaVotesFuncs } from "next-common/utils/gov2/useVotesFromServer";
 
 const VotePopup = dynamicPopup(() => import("../votePopup"));
 
@@ -26,7 +26,7 @@ export default function Gov2Sidebar() {
   const trackId = detail?.track;
   const isVoting = gov2VotingState.includes(detail?.state?.name);
   const { hideActionButtons } = useChainSettings();
-  const { fetch } = useReferendaVotesActions(referendumIndex);
+  const { fetch } = useReferendaVotesFuncs(referendumIndex);
 
   useEffect(() => {
     fetch();

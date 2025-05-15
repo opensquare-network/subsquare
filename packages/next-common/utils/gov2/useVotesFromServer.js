@@ -236,7 +236,7 @@ export function useReferendaVotes(referendumIndex) {
   };
 }
 
-export function useReferendaVotesActions(referendumIndex) {
+export function useReferendaVotesFuncs(referendumIndex) {
   const allVotesStorage = useMemo(
     () =>
       getOrCreateStorage(
@@ -320,13 +320,5 @@ export function useReferendaVotesActions(referendumIndex) {
     [fetch, referendumIndex],
   );
 
-  const clearStorage = useCallback(async () => {
-    try {
-      await allVotesStorage?.removeItem(VOTES_STORAGE_ITEM_KEY.ALL_VOTES);
-    } catch (error) {
-      console.error("Error removing item from IndexedDB:", error);
-    }
-  }, [allVotesStorage]);
-
-  return { fetch, update, clearStorage };
+  return { fetch, update };
 }

@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import SimpleTxPopup from "next-common/components/simpleTxPopup";
 import { useContextApi } from "next-common/context/api";
-import { useReferendaVotesActions } from "next-common/utils/gov2/useVotesFromServer";
+import { useReferendaVotesFuncs } from "next-common/utils/gov2/useVotesFromServer";
 
 export default function RemoveReferendaVotePopup({
   trackId,
@@ -9,7 +9,7 @@ export default function RemoveReferendaVotePopup({
   onClose,
 }) {
   const api = useContextApi();
-  const { update } = useReferendaVotesActions(referendumIndex);
+  const { update } = useReferendaVotesFuncs(referendumIndex);
 
   const getTxFunc = useCallback(async () => {
     return api.tx.convictionVoting.removeVote(trackId, referendumIndex);
