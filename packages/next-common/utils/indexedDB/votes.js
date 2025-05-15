@@ -8,10 +8,10 @@ export const STORAGE_NAMES = {
 };
 
 export const STORAGE_ITEM_KEY = {
-  ALLAYE: "Aye",
-  ALLNAY: "Nay",
-  ALLABSTAIN: "Abstain",
-  ALLVOTES: "AllVotes",
+  ALL_AYE_CALLS: "AllAyeCalls",
+  ALL_NAY_CALLS: "AllNayCalls",
+  ALL_ABSTAIN_CALLS: "AllAbstainCalls",
+  ALL_VOTES: "AllVotes",
 };
 
 /**

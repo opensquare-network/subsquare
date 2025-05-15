@@ -29,11 +29,11 @@ export default function useVoteCalls(referendumIndex) {
       try {
         return {
           allAye:
-            (await voteCallsStorage.getItem(STORAGE_ITEM_KEY.ALLAYE)) || [],
+            (await voteCallsStorage.getItem(STORAGE_ITEM_KEY.ALL_AYE_CALLS)) || [],
           allNay:
-            (await voteCallsStorage.getItem(STORAGE_ITEM_KEY.ALLNAY)) || [],
+            (await voteCallsStorage.getItem(STORAGE_ITEM_KEY.ALL_NAY_CALLS)) || [],
           allAbstain:
-            (await voteCallsStorage.getItem(STORAGE_ITEM_KEY.ALLABSTAIN)) || [],
+            (await voteCallsStorage.getItem(STORAGE_ITEM_KEY.ALL_ABSTAIN_CALLS)) || [],
         };
       } catch (error) {
         console.error(error);
@@ -55,9 +55,9 @@ export default function useVoteCalls(referendumIndex) {
           const { allAye, allNay, allAbstain } = classifyVoteCalls(apiResult);
 
           try {
-            voteCallsStorage.setItem(STORAGE_ITEM_KEY.ALLAYE, allAye);
-            voteCallsStorage.setItem(STORAGE_ITEM_KEY.ALLNAY, allNay);
-            voteCallsStorage.setItem(STORAGE_ITEM_KEY.ALLABSTAIN, allAbstain);
+            voteCallsStorage.setItem(STORAGE_ITEM_KEY.ALL_AYE, allAye);
+            voteCallsStorage.setItem(STORAGE_ITEM_KEY.ALL_NAY_CALLS, allNay);
+            voteCallsStorage.setItem(STORAGE_ITEM_KEY.ALL_ABSTAIN_CALLS, allAbstain);
           } catch (error) {
             console.error(error);
           }
