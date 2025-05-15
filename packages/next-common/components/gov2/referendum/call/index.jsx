@@ -66,11 +66,11 @@ export default function Gov2ReferendumCall() {
   }
 
   if (isHydradx(chain) && callData) {
-    data.push(<EvmCall key="EvmCall" call={callData} />);
+    data.push(<EvmCall key="evm-call" call={callData} />);
   }
 
   if (isCollectivesChain(chain) && callData) {
-    data.push(<RelayChainCall key="RelayChainCall" call={callData} />);
+    data.push(<RelayChainCall key="relay-chain-call" call={callData} />);
   }
 
   const businessData = useReferendaBusinessData();

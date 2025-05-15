@@ -26,7 +26,7 @@ export default function EvmCall({ call }) {
           list={evmCallDecodes}
           renderItem={(item, index) => (
             <DecodeCallItem
-              key={`EvmCallDecode-${index}`}
+              key={`evm-call-decode-${index}`}
               decode={item.decodeResult}
               method={item.decodeResult?.method}
               section={contractAddressMap[item.contractAddress]?.name}

@@ -35,7 +35,7 @@ function RelayChainCallImpl({ encodeCalls }) {
           list={relayChainDecodes}
           renderItem={(item, index) => (
             <DecodeCallItem
-              key={`RelayChainCallDecode-${index}`}
+              key={`relay-chain-call-decode-${index}`}
               decode={item}
               method={item?.method}
               section={item?.section}
