@@ -8,19 +8,19 @@ import { extractXcmContext } from "next-common/utils/gov2/relayChainCall";
 import { useRelayChainCallDecode } from "next-common/utils/gov2/useRelayChainCallDecode";
 
 export default function RelayChainCall({ call }) {
-  const { value: encodeCalls } = useAsync(async () => {
-    return (await extractXcmContext(call)) || {};
+  const { value: xcmContext } = useAsync(async () => {
+    return extractXcmContext(call) || {};
   });
 
-  if (!encodeCalls?.length) {
+  if (!xcmContext) {
     return null;
   }
 
-  return <RelayChainCallImpl encodeCalls={encodeCalls} />;
+  return <RelayChainCallImpl xcmContext={xcmContext} />;
 }
 
-function RelayChainCallImpl({ encodeCalls }) {
-  const { value: relayChainDecodes } = useRelayChainCallDecode(encodeCalls);
+function RelayChainCallImpl({ xcmContext }) {
+  const { value: relayChainDecodes } = useRelayChainCallDecode(xcmContext);
 
   if (!relayChainDecodes?.length) {
     return null;

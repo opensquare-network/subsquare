@@ -3,8 +3,8 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useContextApi } from "next-common/context/api";
 import { useOnchainData } from "next-common/context/post";
 import {
-  getDestApi,
-  clearDestApi,
+  getXcmLocationApi,
+  clearXcmLocationApi,
 } from "next-common/utils/gov2/relayChainCall";
 
 export function useReferendaIsActived() {
@@ -45,7 +45,7 @@ function useRealyChainBlockNumber() {
   };
 }
 
-export function useRelayChainCallDecode(encodeCalls) {
+export function useRelayChainCallDecode(xcmContext) {
   const [results, setResults] = useState([]);
   const { relayChainBlockNumber } = useRealyChainBlockNumber();
   const isActived = useReferendaIsActived();
@@ -55,7 +55,7 @@ export function useRelayChainCallDecode(encodeCalls) {
       if (isActived && !relayChainBlockNumber) {
         return null;
       }
-      const destApi = await getDestApi(destChainId);
+      const destApi = await getXcmLocationApi(destChainId);
       if (!isActived) {
         return destApi;
       }
@@ -71,31 +71,24 @@ export function useRelayChainCallDecode(encodeCalls) {
   useEffect(() => {
     const decodeResults = [];
     async function decode() {
-      for (const { destChainId, encodedCalls: calls } of encodeCalls) {
-        if (calls.length) {
-          try {
-            const destApi = await getRelayChainApi(destChainId);
-            if (!destApi) {
-              continue;
-            }
-            for (const call of calls) {
-              const result = destApi?.registry?.createType("Call", call);
-              if (result) {
-                decodeResults.push(result.toHuman?.());
-              }
-            }
-            setResults(decodeResults);
-          } catch (error) {
-            console.error(error);
+      try {
+        const destApi = await getRelayChainApi(xcmContext.xcmLocation);
+        for (const call of xcmContext.encodeds) {
+          const result = destApi?.registry?.createType("Call", call);
+          if (result) {
+            decodeResults.push(result.toHuman?.());
           }
         }
+        setResults(decodeResults);
+      } catch (error) {
+        console.error(error);
       }
-      clearDestApi();
+      clearXcmLocationApi();
     }
-    if (encodeCalls?.length) {
+    if (xcmContext) {
       decode();
     }
-  }, [encodeCalls, getRelayChainApi]);
+  }, [xcmContext, getRelayChainApi]);
 
   return {
     value: results,
