@@ -1,5 +1,5 @@
 import { getBlockApiByHeight } from "next-common/services/chain/api";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { getXcmLocationApi } from "next-common/utils/gov2/relayChainCall";
 import useReferendumVotingFinishHeight, {
   useReferendaIsVoting,
@@ -19,12 +19,14 @@ export function useRelayChainCallDecode(encodeds) {
     }
   }, [isVoting, relayChainBlockNumber, executeRelayChainBlockNumber]);
 
+  const apiPromise = useMemo(() => getXcmLocationApi(), []);
+
   const getRelayChainApi = useCallback(async () => {
+    if (isVoting && !relayChainBlockNumber) {
+      return null;
+    }
     try {
-      if (isVoting && !relayChainBlockNumber) {
-        return null;
-      }
-      const api = await getXcmLocationApi();
+      const api = await apiPromise;
       if (!isVoting) {
         return api;
       }
@@ -34,7 +36,7 @@ export function useRelayChainCallDecode(encodeds) {
       console.error(error);
       return null;
     }
-  }, [isVoting, relayChainBlockNumber]);
+  }, [isVoting, relayChainBlockNumber, apiPromise]);
 
   useEffect(() => {
     const decodeResults = [];
