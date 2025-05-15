@@ -135,6 +135,7 @@ function useSuperOfIdentityDisplayName(identity) {
 }
 
 function useAddressIdentityInfo(address) {
+  const api = useContextApi();
   const { result, loading: isLoading } = useSubStorage(
     "identity",
     "identityOf",
@@ -147,19 +148,37 @@ function useAddressIdentityInfo(address) {
   });
 
   useEffect(() => {
-    if (!address) {
+    if (!api || !address) {
       return;
     }
 
-    if (!result || result.isNone) {
-      setIdentity({
-        info: InitIdentityInfo,
-        judgements: InitIdentityJudgements,
-      });
-    } else {
-      setIdentity(convertIdentity(result));
+    async function fetchIdentity() {
+      if (!result || result.isNone) {
+        try {
+          // Subscription may have data returned as isNone. Here, to avoid errors, we need to get the data again.
+          const apiResult = await api.query?.identity.identityOf(address);
+          if (apiResult && !apiResult.isNone) {
+            setIdentity(convertIdentity(apiResult));
+          } else {
+            setIdentity({
+              info: InitIdentityInfo,
+              judgements: InitIdentityJudgements,
+            });
+          }
+        } catch (error) {
+          console.error(error);
+          setIdentity({
+            info: InitIdentityInfo,
+            judgements: InitIdentityJudgements,
+          });
+        }
+      } else {
+        setIdentity(convertIdentity(result));
+      }
     }
-  }, [address, result]);
+
+    fetchIdentity();
+  }, [address, api, result]);
 
   return {
     ...identity,
