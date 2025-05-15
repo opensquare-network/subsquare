@@ -2,6 +2,7 @@ import getChainSettings from "next-common/utils/consts/settings";
 import { CHAIN } from "next-common/utils/constants";
 import { getRelayChain } from "next-common/utils/chain";
 import { getOriginApi } from "next-common/services/chain/api";
+import { isObject } from "lodash-es";
 
 const apiMap = new Map();
 
@@ -48,9 +49,11 @@ function findAllEncoded(message) {
   const result = [];
 
   function recurse(item) {
-    if (typeof item !== "object" || item === null) return;
+    if (!isObject(item)) {
+      return null;
+    }
 
-    if ("encoded" in item && typeof item.encoded === "string") {
+    if (typeof item.encoded === "string" && item.encoded.startsWith("0x")) {
       result.push(item.encoded);
     }
 
