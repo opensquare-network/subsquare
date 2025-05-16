@@ -5,7 +5,7 @@ import { MenuTracks } from "@osn/icons/subsquare";
 import { startCase, isNil } from "lodash-es";
 import { trackCategoryMap, categoryIconMap } from "./consts";
 import Link from "next/link";
-// import TrackTooltip from "./trackTooltip";
+import TrackTooltip from "./trackTooltip";
 import { useTrackList } from "next-common/components/summary/newProposalPopup/useTrackDetail";
 import { useListPageType } from "next-common/context/page";
 import { listPageCategory } from "next-common/utils/consts/business/category";
@@ -83,24 +83,25 @@ function TrackPanel({ headerTitle = "", className = "" }) {
                     className="text12Medium text-textSecondary py-1.5 "
                   >
                     {/* DOING */}
-                    {/* <TrackTooltip trackId={item.id}> */}
-                    <span className="leading-4 px-2 bg-neutral200 rounded-[8px]">
-                      <Link
-                        href={item.path}
-                        className="hover:underline hover:decoration-neutral500"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                        }}
-                      >
-                        {item.name}
-                      </Link>
-                    </span>
-                    {/* </TrackTooltip> */}
-                    {!isNil(item.activeCount) && item.activeCount > 0 && (
-                      <span className="text-textTertiary">
-                        {` · ${item.activeCount}`}
+                    <TrackTooltip trackId={item.id}>
+                      <span className="leading-4 px-2 bg-neutral200 rounded-[8px]">
+                        <Link
+                          href={item.path}
+                          className="hover:underline hover:decoration-neutral500"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                          }}
+                        >
+                          {item.name}
+                        </Link>
                       </span>
-                    )}
+
+                      {!isNil(item.activeCount) && item.activeCount > 0 && (
+                        <span className="text-textTertiary">
+                          {` · ${item.activeCount}`}
+                        </span>
+                      )}
+                    </TrackTooltip>
                   </li>
                 ))}
               </ul>
