@@ -108,6 +108,7 @@ const basilisk = {
     cancelReferendum: true,
     killReferendum: true,
   },
+  allowWeb2Login: false,
 };
 
 export default basilisk;

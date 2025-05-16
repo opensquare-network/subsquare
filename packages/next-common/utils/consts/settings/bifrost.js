@@ -142,6 +142,7 @@ const bifrost = {
     cancelReferendum: true,
     killReferendum: true,
   },
+  allowWeb2Login: false,
 };
 
 export default bifrost;

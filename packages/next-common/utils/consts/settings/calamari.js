@@ -38,6 +38,7 @@ const calamari = {
   integrations: {
     subscan: true,
   },
+  allowWeb2Login: true,
 };
 
 export default calamari;

@@ -123,6 +123,7 @@ const karura = {
     signet: true,
     mimir: true,
   },
+  allowWeb2Login: true,
 };
 
 export default karura;
