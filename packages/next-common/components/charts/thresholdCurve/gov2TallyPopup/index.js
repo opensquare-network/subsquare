@@ -12,7 +12,7 @@ import ThresholdApprovalCard from "../thresholdCards/approval";
 import ReferendaCurveChart from "next-common/components/charts/thresholdCurve/referendaCurveChart";
 import FellowshipCurveChart from "next-common/components/charts/thresholdCurve/fellowshipCurveChart";
 import Flex from "next-common/components/styled/flex";
-import HowOpenGovWorks from "next-common/components/howOpenGovWorks";
+import DelegationGuide from "next-common/components/delegationGuide";
 import ConfirmationEstimation from "next-common/components/charts/thresholdCurve/gov2TallyPopup/confirmationEstimation";
 import ThresholdVotesCard from "../thresholdCards/votes";
 
@@ -60,7 +60,7 @@ export default function ThresholdCurvesGov2TallyPopup({
       />
 
       <div className="mt-[16px]">
-        <HowOpenGovWorks anchor="referenda" />
+        <DelegationGuide anchor="referenda" />
       </div>
     </Popup>
   );

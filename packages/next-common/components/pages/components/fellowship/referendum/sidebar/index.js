@@ -7,7 +7,7 @@ import { gov2VotingState } from "next-common/utils/consts/state";
 import { InlineWrapper } from "next-common/components/detail/sidebar/styled";
 import Popup from "../votePopup";
 import PrimaryButton from "next-common/lib/button/primary";
-import HowOpenGovWorks from "next-common/components/howOpenGovWorks";
+import DelegationGuide from "next-common/components/delegationGuide";
 import { VoteSuccessfulProvider } from "next-common/components/vote";
 import VoteSuccessfulPopup from "../votePopup/voteSuccessful";
 import { isNil, isUndefined, noop } from "lodash-es";
@@ -104,7 +104,7 @@ export default function FellowshipReferendumSideBar() {
       </VoteSuccessfulProvider>
       <FellowshipReferendumCleanupPoll />
       <InlineWrapper>
-        <HowOpenGovWorks />
+        <DelegationGuide />
       </InlineWrapper>
     </RightBarWrapper>
   );

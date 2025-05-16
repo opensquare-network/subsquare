@@ -2,7 +2,7 @@ import ExternalLink from "./externalLink";
 import { Link } from "./detail/sidebar/styled";
 import supportsDelegation from "next-common/utils/consts/menu/supportsDelegation";
 
-export default function HowOpenGovWorks({ anchor }) {
+export default function DelegationGuide({ anchor }) {
   const isDelegationEnabled = supportsDelegation();
 
   if (!isDelegationEnabled) {
