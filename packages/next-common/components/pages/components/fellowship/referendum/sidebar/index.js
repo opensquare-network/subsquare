@@ -104,7 +104,7 @@ export default function FellowshipReferendumSideBar() {
       </VoteSuccessfulProvider>
       <FellowshipReferendumCleanupPoll />
       <InlineWrapper>
-        <HowOpenGovWorks anchor="polkadot-fellowship" />
+        <HowOpenGovWorks />
       </InlineWrapper>
     </RightBarWrapper>
   );
