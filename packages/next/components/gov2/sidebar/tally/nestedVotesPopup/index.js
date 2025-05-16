@@ -30,8 +30,7 @@ const NestedPopupDelegatedDetailPopup = dynamicPopup(() =>
 
 export default function NestedVotesPopup({ setShowVoteList }) {
   const { referendumIndex } = useOnchainData();
-  const { allVotes, isLoading: isLoadingVotes } =
-    useReferendaVotes(referendumIndex);
+  const { allVotes, isLoading } = useReferendaVotes(referendumIndex);
   const {
     allAye = [],
     allNay = [],
@@ -53,7 +52,7 @@ export default function NestedVotesPopup({ setShowVoteList }) {
       directAyes={directAyes}
       directNays={directNays}
       allAbstain={allAbstain}
-      isLoadingVotes={isLoadingVotes}
+      isLoading={isLoading}
     />
   );
 }
@@ -63,7 +62,7 @@ function NestedVotesPopupContent({
   directAyes,
   directNays,
   allAbstain,
-  isLoadingVotes,
+  isLoading,
 }) {
   const [tabIndex, setTabIndex] = useState(tabs[0].tabId);
   const [search, setSearch] = useState("");
@@ -110,7 +109,7 @@ function NestedVotesPopupContent({
     setTimeout(() => {
       setCachedVotesLoading(false);
     }, 500);
-  }, [votes, cachedVotes, isLoadingVotes, tabIndex, cachedTabIndex]);
+  }, [votes, cachedVotes, isLoading, tabIndex, cachedTabIndex]);
 
   const searchBtn = (
     <SearchBtn

@@ -24,8 +24,7 @@ import { useOnchainData } from "next-common/context/post";
 
 export default function FlattenedVotesPopup({ setShowVoteList }) {
   const { referendumIndex } = useOnchainData();
-  const { allVotes, isLoading: isLoadingVotes } =
-    useReferendaVotes(referendumIndex);
+  const { allVotes, isLoading } = useReferendaVotes(referendumIndex);
   const { allAye, allNay, allAbstain } = useReferendaFlattenVotes(allVotes);
 
   return (
@@ -33,7 +32,7 @@ export default function FlattenedVotesPopup({ setShowVoteList }) {
       allAye={allAye}
       allNay={allNay}
       allAbstain={allAbstain}
-      isLoadingVotes={isLoadingVotes}
+      isLoading={isLoading}
       setShowVoteList={setShowVoteList}
     />
   );
@@ -44,7 +43,7 @@ function FlattenedVotesPopupContent({
   allAye,
   allNay,
   allAbstain,
-  isLoadingVotes,
+  isLoading,
 }) {
   const [tabIndex, setTabIndex] = useState(tabs[0].tabId);
   const [search, setSearch] = useState("");
@@ -91,7 +90,7 @@ function FlattenedVotesPopupContent({
     setTimeout(() => {
       setCachedVotesLoading(false);
     }, 500);
-  }, [votes, cachedVotes, isLoadingVotes, tabIndex, cachedTabIndex]);
+  }, [votes, cachedVotes, isLoading, tabIndex, cachedTabIndex]);
 
   const searchBtn = (
     <SearchBtn
