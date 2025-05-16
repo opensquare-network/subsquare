@@ -112,6 +112,7 @@ const interlay = {
   multisigWallets: {
     signet: true,
   },
+  allowWeb2Login: true,
 };
 
 export default interlay;

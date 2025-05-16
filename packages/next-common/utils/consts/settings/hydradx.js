@@ -135,7 +135,7 @@ const hydradx = {
     mimir: true,
   },
   supportWalletconnect: true,
-  hideAccountLogin: true,
+  allowWeb2Login: false,
 };
 
 export default hydradx;

@@ -21,7 +21,7 @@ export default function LoginWeb3({ setIsWeb3 = noop }) {
 
       {isWalletConnectView && <LoginWeb3WalletConnect />}
 
-      {!chainSettings?.hideAccountLogin && (
+      {chainSettings?.allowWeb2Login && (
         <div className="text-center text14Medium text-textSecondary">
           Login with{" "}
           <span

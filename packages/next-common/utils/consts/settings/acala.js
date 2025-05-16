@@ -124,6 +124,7 @@ const acala = {
     signet: true,
     mimir: true,
   },
+  allowWeb2Login: true,
 };
 
 export default acala;

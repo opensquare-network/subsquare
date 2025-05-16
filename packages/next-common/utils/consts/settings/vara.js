@@ -128,7 +128,7 @@ const vara = {
     signet: true,
     mimir: true,
   },
-  hideAccountLogin: true,
+  allowWeb2Login: false,
 };
 
 export default vara;

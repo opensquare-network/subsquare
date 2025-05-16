@@ -110,7 +110,7 @@ const bifrostPolkadot = {
     cancelReferendum: true,
     killReferendum: true,
   },
-  hideAccountLogin: true,
+  allowWeb2Login: false,
 };
 
 export default bifrostPolkadot;

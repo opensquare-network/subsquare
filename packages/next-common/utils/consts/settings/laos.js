@@ -124,7 +124,7 @@ const laos = {
   substrateThroughEthereumAddress: true,
   disableEvmWallet: true,
   ethereumNetwork,
-  hideAccountLogin: true,
+  allowWeb2Login: false,
 };
 
 export default laos;

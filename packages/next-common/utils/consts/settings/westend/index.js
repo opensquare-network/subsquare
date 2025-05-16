@@ -59,6 +59,7 @@ const westend = {
   },
   sima: true,
   supportWalletconnect: true,
+  allowWeb2Login: true,
 };
 
 export default westend;
