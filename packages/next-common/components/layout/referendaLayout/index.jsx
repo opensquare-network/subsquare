@@ -38,12 +38,12 @@ export default function ReferendaLayout({ summaryData, ...props }) {
       tabs={[
         {
           value: "referenda",
-          label: "Overview",
+          label: "Referenda",
           url: "/referenda",
         },
         {
           value: "tracks",
-          label: "Tracks",
+          label: "Tracks Stats",
           url: "/referenda/tracks",
         },
         user?.address && {
