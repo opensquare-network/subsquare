@@ -43,7 +43,7 @@ export default function FellowshipSalaryPayout() {
   } else if (isLoadingClaimant) {
     tooltipText = "Checking your payment status";
   } else if (!claimant) {
-    return "Please import yourself first";
+    tooltipText = "Please import yourself first";
   } else if (paid) {
     tooltipText = "Your salary has been paid";
   }
