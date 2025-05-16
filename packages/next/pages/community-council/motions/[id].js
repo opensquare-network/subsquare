@@ -16,7 +16,7 @@ import { OffChainCommentActionsProvider } from "next-common/noSima/context/comme
 import CollectiveProvider, {
   collectivePallets,
 } from "next-common/context/collective";
-import AstarMotionDetail from "components/motion/astar/astarMotionDetail";
+import AstarMotionDetail from "next-common/components/pages/components/motion/astar/astarMotionDetail";
 
 function CommunityCouncilMotionContent() {
   const motion = usePost();

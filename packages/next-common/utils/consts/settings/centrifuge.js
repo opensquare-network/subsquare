@@ -127,6 +127,7 @@ const centrifuge = {
   },
   chainType: ChainTypes.MIXED,
   ethereumNetwork,
+  allowWeb2Login: true,
 };
 
 export default centrifuge;

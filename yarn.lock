@@ -5672,6 +5672,44 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@subsquare/collectives-next@workspace:packages/collectives-next":
+  version: 0.0.0-use.local
+  resolution: "@subsquare/collectives-next@workspace:packages/collectives-next"
+  dependencies:
+    "@next/bundle-analyzer": 15.3.0
+    "@next/env": ^13.3.0
+    "@osn/eslint-config": ^1.0.2
+    "@osn/icons": ^1.208.0
+    "@svgr/webpack": ^7.0.0
+    "@types/lodash-es": ^4.17.12
+    bignumber.js: ^9.0.2
+    chartjs-plugin-gradient: ^0.6.1
+    clsx: ^1.2.1
+    cookies: ^0.8.0
+    dayjs: ^1.10.7
+    eslint: ^8.44.0
+    eslint-config-next: 15.3.0
+    http-proxy: ^1.18.1
+    localforage: ^1.10.0
+    lodash-es: ^4.17.21
+    next: 15.3.0
+    next-common: "workspace:*"
+    nprogress: ^0.2.0
+    pluralize: ^8.0.0
+    raw-loader: ^4.0.2
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    react-redux: ^8.0.5
+    sass: ^1.38.0
+    sharp: ^0.34.1
+    sonner: ^1.0.3
+    styled-components: ^5.3.9
+    tailwind-merge: ^1.14.0
+    tailwind-styled-components: ^2.2.0
+    use-deep-compare-effect: ^1.8.1
+  languageName: unknown
+  linkType: soft
+
 "@subsquare/kintsugi-next@workspace:packages/kintsugi-next":
   version: 0.0.0-use.local
   resolution: "@subsquare/kintsugi-next@workspace:packages/kintsugi-next"
@@ -17440,11 +17478,11 @@ __metadata:
   linkType: hard
 
 "undici@npm:^5.12.0":
-  version: 5.28.5
-  resolution: "undici@npm:5.28.5"
+  version: 5.29.0
+  resolution: "undici@npm:5.29.0"
   dependencies:
     "@fastify/busboy": ^2.0.0
-  checksum: a402d699a602a8feee1c0f78267467c8ffcbd7682267fec7a1307fd11554a32976a2307bf1cc8bf6ef7a667654336592fbd66d675df20ce28357536fb55a3a7d
+  checksum: a25b5462c1b6ffb974f5ffc492ffd64146a9983aad0cbda6fde65e2b22f6f1acd43f09beacc66cc47624a113bd0c684ffc60366102b6a21b038fbfafb7d75195
   languageName: node
   linkType: hard
 

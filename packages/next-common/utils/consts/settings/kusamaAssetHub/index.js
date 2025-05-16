@@ -42,6 +42,7 @@ const kusamaAssetHub = {
       provider: "chain",
     },
   },
+  allowWeb2Login: true,
 };
 
 export default kusamaAssetHub;

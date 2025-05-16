@@ -77,6 +77,7 @@ const shibuya = {
   },
   showNewTreasuryProposalButton: true,
   sima: true,
+  allowWeb2Login: true,
   ...astarThemeVars,
 };
 

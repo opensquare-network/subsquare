@@ -118,6 +118,7 @@ const litentry = {
     navigationBorder: "var(--neutral300)",
   },
   blockHeightSettings: litentryBlockHeightSettings,
+  allowWeb2Login: true,
 };
 
 export default litentry;

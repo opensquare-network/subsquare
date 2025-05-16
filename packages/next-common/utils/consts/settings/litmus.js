@@ -97,6 +97,7 @@ const litmus = {
     navigationBorder: "var(--neutral300)",
   },
   blockHeightSettings: litmusBlockHeightSettings,
+  allowWeb2Login: true,
 };
 
 export default litmus;
