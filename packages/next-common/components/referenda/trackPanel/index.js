@@ -57,9 +57,9 @@ function TrackPanel({ headerTitle = "", className = "" }) {
           return result;
         },
         {
+          system: [],
           treasury: [],
           governance: [],
-          main_agenda: [],
           fellowship: [],
           others: [],
         },
