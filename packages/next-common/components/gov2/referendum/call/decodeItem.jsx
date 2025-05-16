@@ -1,5 +1,6 @@
 import { InfoDocs } from "@osn/icons/subsquare";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
+import CallTree from "next-common/components/proposal/callTree";
 import { CommonTag } from "next-common/components/tags/state/styled";
 import Tooltip from "next-common/components/tooltip";
 import dynamicPopup from "next-common/lib/dynamic/popup";
@@ -15,7 +16,7 @@ const NameTag = styled(CommonTag)`
   white-space: nowrap;
 `;
 
-export function DecodeCallItem({ section, method, decode }) {
+export function DecodeCallItem({ section, method, decode, rawCall = null }) {
   const isMobile = useIsMobile();
   const [detailPopupVisible, setDetailPopupVisible] = useState(false);
 
@@ -49,8 +50,11 @@ export function DecodeCallItem({ section, method, decode }) {
         <CallDetailPopup
           tableViewData={decode}
           jsonViewData={decode}
-          hasTreeViewData={false}
+          hasTreeViewData={!!rawCall}
           setShow={setDetailPopupVisible}
+          customCallTree={
+            rawCall ? () => <CallTree call={rawCall} isLoading={false} /> : null
+          }
         />
       )}
     </div>
