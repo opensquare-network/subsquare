@@ -120,6 +120,7 @@ const ajuna = {
     subscan: true,
   },
   sima: true,
+  hideAccountLogin: true,
   ...themeVars,
 };
 

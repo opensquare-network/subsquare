@@ -101,6 +101,7 @@ const collectives = {
     mimir: true,
   },
   sima: true,
+  hideAccountLogin: true,
   ...polkadotThemeVars,
 };
 
