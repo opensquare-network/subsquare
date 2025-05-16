@@ -22,6 +22,7 @@ export default function CallDetailPopup({
   jsonViewData,
   hasTreeViewData = true,
   setShow,
+  customCallTree = null,
 }) {
   const hasTableData = !!tableViewData;
   const hasJsonData = !!jsonViewData;
@@ -52,6 +53,8 @@ export default function CallDetailPopup({
     tabs.find((item) => item.tabId === storageTabId)?.tabId || tabs[0].tabId;
   const setSelectedTabId = setStorageTabId;
 
+  const CallTreeComponent = customCallTree || CallTreeOnReferendum;
+
   return (
     <Popup title="Call Detail" onClose={() => setShow(false)}>
       <Tab
@@ -59,7 +62,7 @@ export default function CallDetailPopup({
         selectedTabId={selectedTabId}
         setSelectedTabId={setSelectedTabId}
       />
-      {selectedTabId === "tree" && <CallTreeOnReferendum />}
+      {selectedTabId === "tree" && CallTreeComponent && <CallTreeComponent />}
       {selectedTabId === "table" && (
         <ArgsWrapper className="wrapper text-textPrimary">
           <InnerDataTable data={tableViewData} />

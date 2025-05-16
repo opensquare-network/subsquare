@@ -11,8 +11,7 @@ export async function getChainApi(endpoints) {
   });
 }
 
-export async function getChainApiAt(endpoints, blockHeightOrHash) {
-  const api = await getChainApi(endpoints);
+export async function getChainApiAt(api, blockHeightOrHash) {
   if (!blockHeightOrHash) {
     return api;
   } else if (/^\d+$/.test(blockHeightOrHash)) {

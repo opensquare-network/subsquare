@@ -11,6 +11,8 @@ import {
 import { useRelayChainCallDecode } from "next-common/utils/gov2/useRelayChainCallDecode";
 import { RawCallContext } from "next-common/context/call/raw";
 import { useContext } from "react";
+import { RelayChainBlockApiProvider } from "next-common/context/relayChain/blockApi";
+import { useRelayChainBlockState } from "next-common/utils/gov2/useRelayChainBlockState";
 
 export default function RelayChainCall() {
   const { call, isLoading } = useContext(RawCallContext);
@@ -29,11 +31,30 @@ export default function RelayChainCall() {
   }
 
   const relayChainCallBytesArr = extractTransactCallBytesArr(messageArg);
-  return <RelayChainCallImpl encodeds={relayChainCallBytesArr} />;
+
+  return (
+    <RelayChainBlockLoader>
+      <RelayChainCallDecoder bytesArr={relayChainCallBytesArr} />
+    </RelayChainBlockLoader>
+  );
 }
 
-function RelayChainCallImpl({ encodeds }) {
-  const { value: relayChainDecodes } = useRelayChainCallDecode(encodeds);
+function RelayChainBlockLoader({ children }) {
+  const { isVoting, relayChainBlockNumber } = useRelayChainBlockState();
+
+  if (!isVoting && !relayChainBlockNumber) {
+    return null;
+  }
+
+  return (
+    <RelayChainBlockApiProvider blockHeightOrHash={relayChainBlockNumber}>
+      {children}
+    </RelayChainBlockApiProvider>
+  );
+}
+
+function RelayChainCallDecoder({ bytesArr }) {
+  const { value: relayChainDecodes } = useRelayChainCallDecode(bytesArr);
 
   if (!relayChainDecodes?.length) {
     return null;
@@ -46,12 +67,13 @@ function RelayChainCallImpl({ encodeds }) {
         <DecodeCallList
           key="element"
           list={relayChainDecodes}
-          renderItem={(item, index) => (
+          renderItem={({ json, raw }, index) => (
             <DecodeCallItem
               key={`relay-chain-call-decode-${index}`}
-              decode={item}
-              method={item?.method}
-              section={item?.section}
+              decode={json}
+              rawCall={raw}
+              method={raw?.method}
+              section={raw?.section}
             />
           )}
         />,
