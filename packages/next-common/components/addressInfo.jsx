@@ -5,8 +5,8 @@ const Skeleton = styled.div`
   border-radius: 4px;
   background: linear-gradient(
     90deg,
-    rgba(235, 238, 244, 0.8) 0%,
-    rgba(235, 238, 244, 0.2) 100%
+    var(--neutral300-80) 0%,
+    var(--neutral300-20) 100%
   );
 `;
 
