@@ -7,6 +7,7 @@ export function useRelayChainCallDecode(bytesArr) {
 
   useEffect(() => {
     const decodeResults = [];
+
     async function decode(api) {
       try {
         for (const bytes of bytesArr) {
@@ -23,8 +24,11 @@ export function useRelayChainCallDecode(bytesArr) {
         console.error(error);
       }
     }
+
     if (bytesArr?.length) {
-      decode(api);
+      decode(api).then(() => {
+        // ignore
+      });
     }
   }, [bytesArr, api]);
 
