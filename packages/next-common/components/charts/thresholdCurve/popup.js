@@ -14,7 +14,7 @@ import {
 } from "../../styled/table";
 import Loading from "../../loading";
 import { noop, range } from "lodash-es";
-import DelegationGuide from "next-common/components/delegationGuide";
+import HowOpenGovWorks from "next-common/components/howOpenGovWorks";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 
 const Center = styled(Flex)`
@@ -127,7 +127,7 @@ export default function ThresholdCurvesPopup({
       </Table>
 
       <div className="mt-[16px]">
-        <DelegationGuide anchor="referenda" />
+        <HowOpenGovWorks anchor="referenda" />
       </div>
     </Popup>
   );
