@@ -12,7 +12,10 @@ import { useRelayChainCallDecode } from "next-common/utils/gov2/useRelayChainCal
 import { RawCallContext } from "next-common/context/call/raw";
 import { useContext } from "react";
 import { RelayChainBlockApiProvider } from "next-common/context/relayChain/blockApi";
-import { useRelayChainBlockState } from "next-common/utils/gov2/useRelayChainBlockState";
+import useReferendumVotingFinishHeight, {
+  useReferendaIsVoting,
+} from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
+import { useRelayChainBlockNumber } from "next-common/utils/gov2/useRealyChainBlockNumber";
 
 export default function RelayChainCall() {
   const { call, isLoading } = useContext(RawCallContext);
@@ -40,7 +43,9 @@ export default function RelayChainCall() {
 }
 
 function RelayChainBlockLoader({ children }) {
-  const { isVoting, relayChainBlockNumber } = useRelayChainBlockState();
+  const blockHeight = useReferendumVotingFinishHeight();
+  const isVoting = useReferendaIsVoting();
+  const { relayChainBlockNumber } = useRelayChainBlockNumber(blockHeight);
 
   if (!isVoting && !relayChainBlockNumber) {
     return null;
