@@ -5,7 +5,12 @@ import { getChainApi, getChainApiAt } from "next-common/utils/getChainApi";
 
 const RelayChainBlockApiContext = createContext(null);
 
-function useRelayChainApi(endpointUrls) {
+function useRelayChainApi() {
+  const relayChain = useRelayChain();
+  const endpointUrls = useMemo(() => {
+    const relayChainSettings = getChainSettings(relayChain);
+    return relayChainSettings?.endpoints?.map?.((item) => item.url);
+  }, [relayChain]);
   const [relayChainApi, setRelayChainApi] = useState(null);
 
   useEffect(() => {
@@ -30,13 +35,7 @@ function useBlockHeightOrHashApi(relayChainApi, blockHeightOrHash) {
 }
 
 export function RelayChainBlockApiProvider({ children, blockHeightOrHash }) {
-  const relayChain = useRelayChain();
-  const endpointUrls = useMemo(() => {
-    const relayChainSettings = getChainSettings(relayChain);
-    return relayChainSettings?.endpoints?.map?.((item) => item.url);
-  }, [relayChain]);
-
-  const relayChainApi = useRelayChainApi(endpointUrls);
+  const relayChainApi = useRelayChainApi();
   const api = useBlockHeightOrHashApi(relayChainApi, blockHeightOrHash);
 
   useEffect(() => {
