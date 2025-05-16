@@ -3065,6 +3065,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@osn/icons@npm:^1.208.0":
+  version: 1.211.0
+  resolution: "@osn/icons@npm:1.211.0"
+  checksum: 4af8580520648405721fa2c0a0be696611b16a84e69fd077b5cb1b7f8fefe81dd63d30858433f2dacfcc83fbde7c8c710c834363136115d2aa49c0809371210f
+  languageName: node
+  linkType: hard
+
 "@osn/icons@npm:^1.209.0":
   version: 1.209.0
   resolution: "@osn/icons@npm:1.209.0"
