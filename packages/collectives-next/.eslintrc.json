@@ -1,0 +1,13 @@
+{
+  "extends": ["next/core-web-vitals", "@osn", "../../.eslintrc.js"],
+  "rules": {
+    "@next/next/no-img-element": "off",
+    "no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "(^_|^req|^context)"
+      }
+    ],
+    "react-hooks/exhaustive-deps": "error"
+  }
+}

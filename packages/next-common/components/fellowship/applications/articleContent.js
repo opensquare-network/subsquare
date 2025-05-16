@@ -105,7 +105,7 @@ function Applicant({ address }) {
   const post = usePost();
   return (
     <div className="flex flex-col gap-[16px]">
-      <span className="text14Bold">Applicant</span>
+      <span className="text14Bold text-textPrimary">Applicant</span>
       {post.status === "inducted" ? (
         <InductedApplicant address={address} />
       ) : (

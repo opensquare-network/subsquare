@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "next-common/*": ["../next-common/*"]
+    },
+    "jsx": "react-jsx"
+  },
+  "include": ["./"]
+}

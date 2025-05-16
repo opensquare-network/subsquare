@@ -2,7 +2,7 @@ import React, { memo } from "react";
 import { StatisticsItemDiv } from "./style";
 import Divider from "next-common/components/styled/layout/divider";
 import { cn, formatNum, toPrecision } from "next-common/utils";
-import SymbolValue from "@subsquare/next/components/gov2/sidebar/tally/values/symbolValue";
+import SymbolValue from "next-common/components/pages/components/gov2/sidebar/tally/values/symbolValue";
 import VoteChart from "./voteChart";
 import { useTheme } from "styled-components";
 import { useChainSettings } from "next-common/context/chain";

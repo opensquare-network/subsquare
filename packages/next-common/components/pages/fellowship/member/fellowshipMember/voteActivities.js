@@ -64,7 +64,7 @@ export default function VoteActivities() {
     api?.query?.[referendaPallet]?.referendumCount,
     [],
   );
-  const { value: { result: heatmap } = {}, loading: isHeatmapLoading } =
+  const { value: { result: heatmap = [] } = {}, loading: isHeatmapLoading } =
     useAsync(async () => {
       return await nextApi.fetch(fellowshipMemberHeatmapApi(address));
     }, [address]);

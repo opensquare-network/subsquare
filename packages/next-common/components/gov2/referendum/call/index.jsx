@@ -2,7 +2,7 @@ import React from "react";
 import KvList from "next-common/components/listInfo/kvList";
 import Proposal from "next-common/components/proposal";
 import { useOnchainData } from "next-common/context/post";
-import useReferendaBusinessData from "@subsquare/next/hooks/useReferendaBusinessData";
+import useReferendaBusinessData from "next-common/hooks/pages/useReferendaBusinessData";
 import Copyable from "next-common/components/copyable";
 import extractRemarkMetaFields from "next-common/components/common/call/remarks";
 import extractWhitelistCallHash from "next-common/components/common/call/whitelist";

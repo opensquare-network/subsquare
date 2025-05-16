@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { withCommonProps } from "next-common/lib";
 import nextApi from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
-import Vote from "components/referenda/vote";
+import Vote from "next-common/components/pages/components/referenda/vote";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import useMaybeFetchElectorate from "next-common/utils/hooks/referenda/useMaybeFetchElectorate";
 import useFetchVotes from "next-common/utils/hooks/referenda/useFetchVotes";
@@ -24,7 +24,7 @@ import useSubDemocracyReferendumStatus from "next-common/hooks/democracy/useSubD
 import useSetReferendumStatus from "next-common/hooks/democracy/useSetReferendumStatus";
 import { useContextApi } from "next-common/context/api";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
-import DemocracyReferendaDetailMultiTabs from "components/tabs/democracyReferendaDetailMultiTabs";
+import DemocracyReferendaDetailMultiTabs from "next-common/components/pages/components/tabs/democracyReferendaDetailMultiTabs";
 
 function ReferendumContent() {
   const post = usePost();
