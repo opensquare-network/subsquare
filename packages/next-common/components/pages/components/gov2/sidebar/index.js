@@ -8,7 +8,7 @@ import PrimaryButton from "next-common/lib/button/primary";
 import { InlineWrapper } from "next-common/components/detail/sidebar/styled";
 import { useChainSettings } from "next-common/context/chain";
 import MyVote from "./tally/myVote";
-import HowOpenGovWorks from "next-common/components/howOpenGovWorks";
+import DelegationGuide from "next-common/components/delegationGuide";
 import WithAddress from "next-common/components/common/withAddress";
 import { VoteSuccessfulProvider } from "next-common/components/vote";
 import VoteSuccessfulPopup from "../votePopup/voteSuccessful";
@@ -66,7 +66,7 @@ export default function Gov2Sidebar() {
       </VoteSuccessfulProvider>
 
       <InlineWrapper>
-        <HowOpenGovWorks anchor="referenda" />
+        <DelegationGuide anchor="referenda" />
       </InlineWrapper>
     </RightBarWrapper>
   );
