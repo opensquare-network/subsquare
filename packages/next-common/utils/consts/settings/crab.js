@@ -36,6 +36,7 @@ const crab = {
   integrations: {
     subscan: true,
   },
+  allowWeb2Login: true,
 };
 
 export default crab;

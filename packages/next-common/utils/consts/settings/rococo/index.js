@@ -86,6 +86,7 @@ const rococo = {
     killReferendum: true,
   },
   sima: true,
+  allowWeb2Login: true,
 };
 
 export default rococo;

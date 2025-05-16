@@ -84,6 +84,7 @@ const kusama = {
     killReferendum: true,
   },
   sima: true,
+  allowWeb2Login: true,
 };
 
 export default kusama;

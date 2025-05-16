@@ -39,6 +39,7 @@ const paseoPeople = {
   multisigWallets: {
     mimir: true,
   },
+  allowWeb2Login: true,
 };
 
 export default paseoPeople;
