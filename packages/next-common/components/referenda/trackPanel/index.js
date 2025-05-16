@@ -37,8 +37,6 @@ function TrackPanel({ className = "" }) {
           );
           if (category) {
             result[category].push(item);
-          } else {
-            result.others.push(item);
           }
           return result;
         },
