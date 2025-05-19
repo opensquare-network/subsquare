@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+# 4.7.2
+
+date: 2025-05-19
+
+- [Big] Support people/identity business for relay chains.
+- Fellowship:
+    - [Big] Move collectives related code to a separated package.
+    - Show relay chain call for a whitelist referendum.
+    - New style for retention/promotion call info on referendum detail page.
+- Improve referendum votes UX by introducing skeleton loading.
+- Improve track tag tooltip copywriting.
+- Fix cross chain transport popup close unexpectedly.
+- Correct symbol and explorer link for zkverify testnet.
+- Fix hydration treasury stable coin symbol.
+- Upgrade dependencies and fix styles.
+
 # 4.7.1
 
 date: 2025-05-13
