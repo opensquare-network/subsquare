@@ -136,7 +136,7 @@ function CachedVotesList({ items, loading }) {
 
   const rows = items.map((item) => {
     const row = [
-      <DelayLoaderContent key={item.account} delay={100}>
+      <DelayLoaderContent key={item.account}>
         <AccountCell item={item} />
       </DelayLoaderContent>,
       (item.directVoterDelegations || []).length,

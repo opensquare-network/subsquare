@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Skeleton } from "./skeleton";
 
-export default function DelayLoaderContent({ children, delay = 200 }) {
+export default function DelayLoaderContent({ children, delay = 100 }) {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
