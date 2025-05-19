@@ -1,5 +1,5 @@
 import Chains from "next-common/utils/consts/chains";
-import westendAssetHubNodes from "next-common/utils/consts/settings/westendAssetHub/endpoints";
+import { westendAssetHubNodes } from "next-common/utils/consts/settings/westend/nodes";
 import dynamic from "next/dynamic";
 import polkadotLinks from "next-common/utils/consts/settings/polkadot/links";
 import MenuGroups from "next-common/utils/consts/settings/menuGroups";
