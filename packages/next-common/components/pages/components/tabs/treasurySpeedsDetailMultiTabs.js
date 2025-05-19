@@ -5,6 +5,7 @@ import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { usePost } from "next-common/context/post";
 import useTreasurySpendTimelineData from "next-common/hooks/treasury/spend/useTreasurySpendTimelineData";
 import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
+import tabsTooltipContentMap from "./tabsTooltipContentMap";
 
 const TreasurySpendMetadata = dynamicClientOnly(() =>
   import("next-common/components/detail/treasury/spend/metadata"),
@@ -25,6 +26,7 @@ export default function TreasurySpeedsDetailMultiTabs() {
       {
         value: "metadata",
         label: "Metadata",
+        tooltip: tabsTooltipContentMap.metadata,
         content: <TreasurySpendMetadata spend={detail?.onchainData} />,
       },
       {

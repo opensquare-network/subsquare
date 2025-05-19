@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import Tabs from "next-common/components/tabs";
 import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
 import { useDemocracyExternalProposalTimelineData } from "next-common/hooks/pages/timelineData";
+import tabsTooltipContentMap from "./tabsTooltipContentMap";
 
 const Business = dynamicClientOnly(() =>
   import("next-common/components/pages/components/external/business"),
@@ -44,6 +45,7 @@ export default function DemocracyExternalsProposalsDetailMultiTabs() {
             {
               value: "call",
               label: "Call",
+              tooltip: tabsTooltipContentMap.call,
               content: (
                 <DemocracyReferendumCallProvider>
                   <DemocracyExternalProposalCall
@@ -60,6 +62,7 @@ export default function DemocracyExternalsProposalsDetailMultiTabs() {
       {
         value: "metadata",
         label: "Metadata",
+        tooltip: tabsTooltipContentMap.metadata,
         content: <Metadata external={detail?.onchainData} />,
       },
       {

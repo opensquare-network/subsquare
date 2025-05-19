@@ -6,6 +6,7 @@ import { usePost } from "next-common/context/post";
 import { usePageProps } from "next-common/context/page";
 import useBountyTimelineData from "next-common/components/pages/components/bounty/useBountyTimelineData";
 import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
+import tabsTooltipContentMap from "./tabsTooltipContentMap";
 
 const Metadata = dynamicClientOnly(() =>
   import("next-common/components/treasury/bounty/metadata"),
@@ -38,6 +39,7 @@ export default function TreasuryBountiesDetailMultiTabs() {
       {
         value: "metadata",
         label: "Metadata",
+        tooltip: tabsTooltipContentMap.metadata,
         content: (
           <Metadata
             id={detail?.bountyIndex}
