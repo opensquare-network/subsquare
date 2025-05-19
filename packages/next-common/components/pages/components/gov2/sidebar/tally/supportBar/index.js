@@ -51,6 +51,7 @@ const Wrapper = styled.div`
 
 const Mark = styled(ThresholdComponent)`
   top: 0;
+  pointer-events: none;
 `;
 
 const Tooltip = styled(TooltipOrigin)`
@@ -126,13 +127,21 @@ export default function SupportBar({ supportPerbill }) {
       <ul className="text12Medium">
         <li>0.0%</li>
         <li>
-          <Percentage perbill={threshold} />
+          <TooltipOrigin
+            className="cursor-pointer"
+            contentClassName="max-w-[240px]"
+            content="The minimum percentage of support needed for the proposal to pass."
+          >
+            <div className=" flex flex-col">
+              <Percentage perbill={threshold} />
+              <p className="text12Medium">Threshold</p>
+            </div>
+          </TooltipOrigin>
         </li>
         <li>
           <Percentage perbill={progressMax} />
         </li>
       </ul>
-      <p className="text12Medium">Threshold</p>
     </Wrapper>
   );
 }

@@ -72,7 +72,13 @@ export default function ConfirmAttempts() {
 
   return (
     <div className="flex justify-between">
-      <span>Attempts</span>
+      <Tooltip
+        className="cursor-pointer"
+        contentClassName="max-w-[240px]"
+        content="The number of times this referendum has been submitted for voting. Sometimes a proposal needs multiple tries due to failure or cancellation."
+      >
+        <span>Attempts</span>
+      </Tooltip>
       <div className="flex items-center gap-[4px]">
         <span>{attempts?.length || 0}</span>
         {attempts?.length > 0 && (
