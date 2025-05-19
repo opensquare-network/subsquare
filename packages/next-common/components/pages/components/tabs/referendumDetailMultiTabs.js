@@ -84,6 +84,7 @@ export default function ReferendumDetailMultiTabs() {
         lazy: true,
         value: "votes_bubble",
         label: "Votes Bubble",
+        tooltip: tabsTooltipContentMap.votesBubble,
         content: (
           <div className="space-y-4">
             {hasVotesViewTabs && <VotesBubbleViewTabs />}
