@@ -7,6 +7,9 @@ import {
   colTransferrable,
 } from "next-common/components/assets/assetsList";
 import { useMyNativeAsset } from "next-common/hooks/assets/useMyNativeAsset";
+import { isWestendAssetHubChain } from "next-common/utils/chain";
+import { useChain } from "next-common/context/chain";
+import { useMemo } from "react";
 
 function TokenSymbol({ symbol }) {
   const NativeAssetIcon = useNativeTokenIcon();
@@ -29,10 +32,22 @@ const teleport = {
   render: () => <ParaChainTeleportButton />,
 };
 
-const columnsDef = [colToken, colTotal, colTransferrable, teleport];
+function useColumnsDef() {
+  const chain = useChain();
+
+  return useMemo(() => {
+    if (isWestendAssetHubChain(chain)) {
+      return [colToken, colTotal, colTransferrable];
+    }
+
+    return [colToken, colTotal, colTransferrable, teleport];
+  }, [chain]);
+}
 
 export default function NativeAssetList() {
   const { loading, value } = useMyNativeAsset();
+  const columnsDef = useColumnsDef();
+
   return (
     <ScrollerX>
       <MapDataList
