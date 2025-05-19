@@ -16,6 +16,7 @@ import AddressUser from "next-common/components/user/addressUser";
 import { isEqual } from "lodash-es";
 import usePopupItemHeight from "next-common/components/democracy/democracyCallsVotesPopup/usePopupItemHeight";
 import VirtualList from "next-common/components/dataList/virtualList";
+import DelayLoaderContent from "next-common/components/delayLoaderContent";
 
 export default function VotesPopup({
   setShowVoteList,
@@ -126,13 +127,14 @@ function CachedVotesList({ items = [], loading, tab }) {
     const votes = item.votes;
 
     return [
-      <AddressUser
-        key={item.account}
-        add={item.account}
-        noTooltip
-        maxWidth={276}
-        link="/votes"
-      />,
+      <DelayLoaderContent key={item.account}>
+        <AddressUser
+          add={item.account}
+          noTooltip
+          maxWidth={276}
+          link="/votes"
+        />
+      </DelayLoaderContent>,
       <CapitalListItem
         key="capital"
         item={item}
@@ -157,6 +159,7 @@ function CachedVotesList({ items = [], loading, tab }) {
           scrollToFirstRowOnChange
           itemHeight={itemHeight}
           listHeight={395}
+          overscanCount={3}
         />
       </PopupListWrapper>
 

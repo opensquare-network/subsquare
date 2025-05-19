@@ -19,6 +19,7 @@ export default function VirtualList({
   highlightedIndexes = [],
   itemHeight = 50,
   listHeight = 400,
+  overscanCount = 20,
 }) {
   const listRef = useRef();
   const [navCollapsed] = useNavCollapsed();
@@ -84,6 +85,7 @@ export default function VirtualList({
         itemHeight={itemHeight}
         listHeight={calculatedListHeight}
         scrollToFirstRowOnChange={scrollToFirstRowOnChange}
+        overscanCount={overscanCount}
       />
     );
   }

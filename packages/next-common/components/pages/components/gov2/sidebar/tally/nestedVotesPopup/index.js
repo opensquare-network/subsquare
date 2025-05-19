@@ -17,6 +17,7 @@ import dynamicPopup from "next-common/lib/dynamic/popup";
 import { isEqual } from "lodash-es";
 import usePopupItemHeight from "next-common/components/democracy/democracyCallsVotesPopup/usePopupItemHeight";
 import VirtualList from "next-common/components/dataList/virtualList";
+import DelayLoaderContent from "next-common/components/delayLoaderContent";
 
 const NestedPopupDelegatedDetailPopup = dynamicPopup(() =>
   import("next-common/components/popup/nestedVotesPopup/delegatedDetail"),
@@ -135,7 +136,9 @@ function CachedVotesList({ items, loading }) {
 
   const rows = items.map((item) => {
     const row = [
-      <AccountCell key={item.account} item={item} />,
+      <DelayLoaderContent key={item.account}>
+        <AccountCell item={item} />
+      </DelayLoaderContent>,
       (item.directVoterDelegations || []).length,
       <ValueDisplay
         key="value"
@@ -165,6 +168,7 @@ function CachedVotesList({ items, loading }) {
           scrollToFirstRowOnChange
           itemHeight={itemHeight}
           listHeight={395}
+          overscanCount={3}
         />
       </PopupListWrapper>
 
