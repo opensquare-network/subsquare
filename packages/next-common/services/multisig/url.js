@@ -3,7 +3,12 @@ import Chains from "next-common/utils/consts/chains";
 
 export default function getMultisigApiUrl(chain) {
   const settings = getChainSettings(chain);
-  if ([Chains.kusama, Chains.polkadot, Chains.paseo].includes(chain)) {
+
+  if (
+    [Chains.kusama, Chains.polkadot, Chains.paseo].includes(
+      settings?.identity || chain,
+    )
+  ) {
     return `https://${settings.graphqlApiSubDomain}.statescan.io/graphql`;
   }
   if (!settings?.multisigApiPrefix) {

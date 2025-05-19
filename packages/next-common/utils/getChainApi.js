@@ -10,3 +10,14 @@ export async function getChainApi(endpoints) {
     metadata: { [id]: metadata },
   });
 }
+
+export async function getChainApiAt(api, blockHeightOrHash) {
+  if (!blockHeightOrHash) {
+    return api;
+  } else if (/^\d+$/.test(blockHeightOrHash)) {
+    const blockHash = await api.rpc.chain.getBlockHash(blockHeightOrHash);
+    return api.at(blockHash);
+  } else {
+    return api.at(blockHeightOrHash);
+  }
+}

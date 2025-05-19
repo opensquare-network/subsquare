@@ -1,6 +1,6 @@
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import { MapDataList } from "next-common/components/dataList";
-import ParaChainTeleportButton from "../paraChainTeleportButton";
+import ParaChainTeleportButton from "../paraChainTeleportContextButton";
 import { useNativeTokenIcon } from "next-common/components/assets/known";
 import {
   colTotal,

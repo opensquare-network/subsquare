@@ -97,6 +97,7 @@ const altair = {
     cancelReferendum: true,
     killReferendum: true,
   },
+  allowWeb2Login: true,
 };
 
 export default altair;

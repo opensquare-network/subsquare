@@ -36,6 +36,7 @@ const development = {
     council: false,
     technicalCommittee: false,
   }),
+  allowWeb2Login: true,
 };
 
 export default development;

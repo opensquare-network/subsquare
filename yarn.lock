@@ -3065,10 +3065,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/icons@npm:^1.207.0":
-  version: 1.207.0
-  resolution: "@osn/icons@npm:1.207.0"
-  checksum: da5775238f13817240b41483ad9a85a5ecb88a8855b263c64d628bcd2b1d22e0c6a9ffa42d77d27830efdc28a15402ff52d71d61fb6e628e72a84a97c4a6ecb9
+"@osn/icons@npm:^1.208.0":
+  version: 1.208.0
+  resolution: "@osn/icons@npm:1.208.0"
+  checksum: e35154d096014e75b70b8f3f0eb2517441836a686597bf66884e011ce77787dba28b432966209de88ff31a79abc66a22585ab612309ce7b6886292d3c6eb2606
   languageName: node
   linkType: hard
 
@@ -5672,6 +5672,44 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@subsquare/collectives-next@workspace:packages/collectives-next":
+  version: 0.0.0-use.local
+  resolution: "@subsquare/collectives-next@workspace:packages/collectives-next"
+  dependencies:
+    "@next/bundle-analyzer": 15.3.0
+    "@next/env": ^13.3.0
+    "@osn/eslint-config": ^1.0.2
+    "@osn/icons": ^1.208.0
+    "@svgr/webpack": ^7.0.0
+    "@types/lodash-es": ^4.17.12
+    bignumber.js: ^9.0.2
+    chartjs-plugin-gradient: ^0.6.1
+    clsx: ^1.2.1
+    cookies: ^0.8.0
+    dayjs: ^1.10.7
+    eslint: ^8.44.0
+    eslint-config-next: 15.3.0
+    http-proxy: ^1.18.1
+    localforage: ^1.10.0
+    lodash-es: ^4.17.21
+    next: 15.3.0
+    next-common: "workspace:*"
+    nprogress: ^0.2.0
+    pluralize: ^8.0.0
+    raw-loader: ^4.0.2
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    react-redux: ^8.0.5
+    sass: ^1.38.0
+    sharp: ^0.34.1
+    sonner: ^1.0.3
+    styled-components: ^5.3.9
+    tailwind-merge: ^1.14.0
+    tailwind-styled-components: ^2.2.0
+    use-deep-compare-effect: ^1.8.1
+  languageName: unknown
+  linkType: soft
+
 "@subsquare/kintsugi-next@workspace:packages/kintsugi-next":
   version: 0.0.0-use.local
   resolution: "@subsquare/kintsugi-next@workspace:packages/kintsugi-next"
@@ -5679,7 +5717,7 @@ __metadata:
     "@interlay/monetary-js": ^0.5.3
     "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.207.0
+    "@osn/icons": ^1.208.0
     "@polkadot/util-crypto": 13.4.3
     "@svgr/webpack": ^7.0.0
     "@types/lodash-es": ^4.17.12
@@ -5715,7 +5753,7 @@ __metadata:
     "@next/bundle-analyzer": 15.3.0
     "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.207.0
+    "@osn/icons": ^1.208.0
     "@svgr/webpack": ^7.0.0
     "@types/lodash-es": ^4.17.12
     bignumber.js: ^9.0.2
@@ -13476,7 +13514,7 @@ __metadata:
     "@mimirdev/apps-inject": ^3.2.0
     "@mimirdev/apps-sdk": ^3.1.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.207.0
+    "@osn/icons": ^1.208.0
     "@osn/polkadot-react-identicon": ^1.0.10
     "@osn/previewer": ^2.0.0
     "@osn/provider-options": 1.1.0
@@ -17440,11 +17478,11 @@ __metadata:
   linkType: hard
 
 "undici@npm:^5.12.0":
-  version: 5.28.5
-  resolution: "undici@npm:5.28.5"
+  version: 5.29.0
+  resolution: "undici@npm:5.29.0"
   dependencies:
     "@fastify/busboy": ^2.0.0
-  checksum: a402d699a602a8feee1c0f78267467c8ffcbd7682267fec7a1307fd11554a32976a2307bf1cc8bf6ef7a667654336592fbd66d675df20ce28357536fb55a3a7d
+  checksum: a25b5462c1b6ffb974f5ffc492ffd64146a9983aad0cbda6fde65e2b22f6f1acd43f09beacc66cc47624a113bd0c684ffc60366102b6a21b038fbfafb7d75195
   languageName: node
   linkType: hard
 

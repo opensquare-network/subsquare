@@ -60,6 +60,7 @@ const kusama = {
     },
     coretime: true,
     assethub: true,
+    people: true,
     vesting: true,
   }),
   integrations: {
@@ -83,6 +84,7 @@ const kusama = {
     killReferendum: true,
   },
   sima: true,
+  allowWeb2Login: true,
 };
 
 export default kusama;

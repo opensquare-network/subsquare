@@ -97,6 +97,7 @@ const khala = {
     signet: true,
     mimir: true,
   },
+  allowWeb2Login: true,
 };
 
 export default khala;

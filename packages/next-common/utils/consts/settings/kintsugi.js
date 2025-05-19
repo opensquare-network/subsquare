@@ -112,6 +112,7 @@ const kintsugi = {
   multisigWallets: {
     signet: true,
   },
+  allowWeb2Login: true,
 };
 
 export default kintsugi;

@@ -68,6 +68,7 @@ const polkadot = {
     },
     coretime: true,
     assethub: true,
+    people: true,
     vesting: true,
   }),
   integrations: {
@@ -93,6 +94,7 @@ const polkadot = {
     killReferendum: true,
   },
   sima: true,
+  allowWeb2Login: true,
 };
 
 export default polkadot;
