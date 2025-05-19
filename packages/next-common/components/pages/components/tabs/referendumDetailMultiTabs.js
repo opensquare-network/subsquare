@@ -108,6 +108,7 @@ export default function ReferendumDetailMultiTabs() {
               value: "report",
               label: "Report",
               lazy: true,
+              tooltip: tabsTooltipContentMap.report,
               content: (
                 <div className="space-y-4">
                   <ReferendumReport
