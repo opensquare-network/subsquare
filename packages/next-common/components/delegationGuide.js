@@ -1,21 +1,20 @@
 import ExternalLink from "./externalLink";
 import { Link } from "./detail/sidebar/styled";
 import supportsDelegation from "next-common/utils/consts/menu/supportsDelegation";
+import { HowReferendaWorks } from "next-common/components/howOpenGovWorks";
+import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 
 export default function DelegationGuide({ anchor }) {
   const isDelegationEnabled = supportsDelegation();
+  const votingFinishHeight = useReferendumVotingFinishHeight();
 
-  if (!isDelegationEnabled) {
-    return (
-      <span className="text14Medium text-textSecondary">
-        Learn how it works, <WikiLink anchor={anchor} />.
-      </span>
-    );
+  if (!isDelegationEnabled || votingFinishHeight) {
+    return <HowReferendaWorks />;
   }
 
   return (
     <span className="text14Medium text-textSecondary">
-      Delegate your votes to experts{" "}
+      Or do delegation&nbsp;
       <Link
         className="text14Medium font-bold text-theme500"
         externalIcon={false}
@@ -24,7 +23,7 @@ export default function DelegationGuide({ anchor }) {
       >
         here
       </Link>
-      , <WikiLink anchor={anchor} />.
+      , check <WikiLink anchor={anchor} />.
     </span>
   );
 }
