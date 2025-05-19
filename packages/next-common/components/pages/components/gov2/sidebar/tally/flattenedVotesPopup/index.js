@@ -127,7 +127,7 @@ function CachedVotesList({ items = [], loading, tab }) {
     const votes = item.votes;
 
     return [
-      <DelayLoaderContent key={item.account} delay={80}>
+      <DelayLoaderContent key={item.account} delay={100}>
         <AddressUser
           key={item.account}
           add={item.account}
