@@ -13,6 +13,7 @@ export default function VirtualListBody({
   scrollToFirstRowOnChange,
   itemHeight = 50,
   listHeight = 400,
+  overscanCount = 20,
 }) {
   const bodyRef = useRef();
 
@@ -62,7 +63,7 @@ export default function VirtualListBody({
         itemSize={itemHeight}
         className="scrollbar-pretty"
         width="100%"
-        overscanCount={20}
+        overscanCount={overscanCount}
       >
         {renderRow}
       </FixedSizeList>
