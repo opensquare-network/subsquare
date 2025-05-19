@@ -45,6 +45,7 @@ export default function AmbassadorReferendaDetailMultiTabs() {
       {
         value: "metadata",
         label: "Metadata",
+        tooltip: tabsTooltipContentMap.metadata,
         content: (
           <Gov2ReferendumMetadata info={info} pallet="fellowshipReferenda" />
         ),

@@ -65,6 +65,7 @@ export default function ReferendumDetailMultiTabs() {
       {
         value: "metadata",
         label: "Metadata",
+        tooltip: tabsTooltipContentMap.metadata,
         content: <Gov2ReferendumMetadata info={info} />,
       },
       {

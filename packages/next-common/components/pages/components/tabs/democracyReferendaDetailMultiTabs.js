@@ -63,6 +63,7 @@ export default function DemocracyReferendaDetailMultiTabs() {
       {
         value: "metadata",
         label: "Metadata",
+        tooltip: tabsTooltipContentMap.metadata,
         content: (
           <ReferendumMetadata
             proposer={post?.proposer}

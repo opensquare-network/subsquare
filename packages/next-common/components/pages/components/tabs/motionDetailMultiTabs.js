@@ -44,7 +44,13 @@ export default function MotionDetailMultiTabs() {
             },
           ]
         : []),
-      { value: "metadata", label: "Metadata", content: <Metadata /> },
+      {
+        value: "metadata",
+        label: "Metadata",
+        tooltip: tabsTooltipContentMap.metadata,
+
+        content: <Metadata />,
+      },
       {
         value: "timeline",
         label: "Timeline",

@@ -62,6 +62,7 @@ export default function DemocracyExternalsProposalsDetailMultiTabs() {
       {
         value: "metadata",
         label: "Metadata",
+        tooltip: tabsTooltipContentMap.metadata,
         content: <Metadata external={detail?.onchainData} />,
       },
       {
