@@ -4,6 +4,7 @@ import { createGlobalState } from "react-use";
 const VIEWS = {
   SUBSTRATE: "substrate",
   EVM: "evm",
+  WALLETCONNECT: "walletconnect",
 };
 const DEFAULT_VIEW = shouldEnableSubstrateWallets()
   ? VIEWS.SUBSTRATE
@@ -16,6 +17,7 @@ export function useWeb3WalletView() {
 
   const isSubstrateView = view === VIEWS.SUBSTRATE;
   const isEVMView = view === VIEWS.EVM;
+  const isWalletConnectView = view === VIEWS.WALLETCONNECT;
 
   function resetView() {
     setView(DEFAULT_VIEW);
@@ -24,6 +26,7 @@ export function useWeb3WalletView() {
   return {
     isSubstrateView,
     isEVMView,
+    isWalletConnectView,
     setView,
     resetView,
   };

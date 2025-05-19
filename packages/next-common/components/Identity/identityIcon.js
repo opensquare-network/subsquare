@@ -11,7 +11,11 @@ import {
   IdentityUnauthorizedError,
 } from "@osn/icons/subsquare";
 
-export default function IdentityIcon({ identity, className = "" }) {
+export default function IdentityIcon({
+  identity,
+  className = "",
+  iconClassName = "",
+}) {
   const statusIconMap = {
     NOT_VERIFIED: (
       <>
@@ -51,7 +55,9 @@ export default function IdentityIcon({ identity, className = "" }) {
 
   return (
     <Flex className={cn(identity?.info?.status, className)}>
-      <div className="w-3 h-3 min-w-[12px] min-h-[12px]">{icon}</div>
+      <div className={cn("w-3 h-3 min-w-[12px] min-h-[12px]", iconClassName)}>
+        {icon}
+      </div>
     </Flex>
   );
 }

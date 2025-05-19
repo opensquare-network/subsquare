@@ -2,7 +2,13 @@ import { TodoContent, TodoTag, TodoWrapper } from "./styled";
 import { useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import ActionButton from "./actionButton";
-import { useHasSalaryRegistrationTodo } from "../hooks/useHasTodo";
+import { useContextSalaryStats } from "../context/salaryStats";
+import { useIsInSalaryRegistrationPeriod } from "next-common/hooks/fellowship/salary/useIsInSalaryRegistrationPeriod";
+import {
+  useIsImported,
+  useIsSalaryRegistered,
+  useMySalary,
+} from "../context/hooks/mine";
 
 const FellowshipSalaryRegisterPopup = dynamicPopup(() =>
   import("next-common/components/fellowship/salary/actions/register/popup"),
@@ -10,8 +16,19 @@ const FellowshipSalaryRegisterPopup = dynamicPopup(() =>
 
 export default function SalaryRegistrationTodo() {
   const [showRegisterPopup, setShowRegisterPopup] = useState(false);
-  const hasTodo = useHasSalaryRegistrationTodo();
-  if (!hasTodo) {
+
+  const salaryStats = useContextSalaryStats();
+  const isInRegistrationPeriod = useIsInSalaryRegistrationPeriod(salaryStats);
+  const isImported = useIsImported();
+  const isSalaryRegistered = useIsSalaryRegistered();
+  const mySalary = useMySalary();
+
+  if (
+    !isInRegistrationPeriod ||
+    !isImported ||
+    isSalaryRegistered ||
+    !mySalary
+  ) {
     return null;
   }
 

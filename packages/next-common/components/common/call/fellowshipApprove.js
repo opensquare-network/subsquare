@@ -1,5 +1,6 @@
 import AddressUser from "next-common/components/user/addressUser";
 import React from "react";
+import FellowshipRank from "next-common/components/fellowship/rank";
 
 export default function extractFellowshipApprove(call = {}) {
   const { section, method, args = [] } = call;
@@ -10,7 +11,13 @@ export default function extractFellowshipApprove(call = {}) {
   const who = args[0].value;
   const atRank = args[1].value;
   return [
-    ["Who", <AddressUser key="promotee" add={who} />],
-    ["At Rank", atRank],
+    [
+      "Retention",
+      <>
+        <AddressUser key="promotee" add={who} />
+        <span className="mx-2">at</span>
+        <FellowshipRank rank={atRank} />
+      </>,
+    ],
   ];
 }

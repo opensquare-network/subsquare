@@ -6,8 +6,18 @@ import UserAccountProvider from "next-common/context/user/account";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 import { cn } from "next-common/utils";
 import VotesPowerPanel from "./votesPower";
-import { AccountInfoPanel } from "next-common/components/profile/OpenGovBio";
-import AssetInfo from "next-common/components/profile/OpenGovBio/openGovAssetInfo";
+import RightPanelContainer from "next-common/components/profile/bio/rightPanelContainer";
+import AssetInfo from "next-common/components/profile/bio/assetInfo";
+import DelegationGuideProvider from "next-common/components/profile/delegationGuide/context/delegationGuideContext";
+import dynamic from "next/dynamic";
+import AccountInfoPanel from "next-common/components/profile/bio/accountInfoPanel";
+
+const DelegationGuide = dynamic(
+  () => import("next-common/components/profile/delegationGuide"),
+  {
+    ssr: false,
+  },
+);
 
 function DemocracyBioContent() {
   const isMobile = useIsMobile();
@@ -16,18 +26,25 @@ function DemocracyBioContent() {
     isPolkadotAddress(id) || isEthereumAddress(id) ? id : user?.address;
 
   return (
-    <UserAccountProvider address={address}>
+    <>
       <div
         className={cn(
-          "grid gap-[16px]",
+          "px-6 grid gap-[16px]",
           isMobile ? "grid-cols-1" : "grid-cols-2",
         )}
       >
         <AccountInfoPanel address={address} id={id} user={user} />
-        <VotesPowerPanel address={address} />
+        <RightPanelContainer>
+          <UserAccountProvider address={address}>
+            <AssetInfo address={address} />
+            <VotesPowerPanel address={address} />
+          </UserAccountProvider>
+        </RightPanelContainer>
       </div>
-      <AssetInfo address={address} />
-    </UserAccountProvider>
+      <DelegationGuideProvider pallet="democracy">
+        <DelegationGuide />
+      </DelegationGuideProvider>
+    </>
   );
 }
 

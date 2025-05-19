@@ -23,10 +23,6 @@ const DEFAULT_KINTSUGI_NODES = [
     name: "OnFinality",
     url: "wss://kintsugi.api.onfinality.io/public-ws",
   },
-  {
-    name: "Dwellir",
-    url: "wss://kintsugi-rpc.dwellir.com",
-  },
 ];
 
 const links = [
@@ -110,9 +106,13 @@ const kintsugi = {
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",
   },
+  wallets: {
+    walletconnect: false,
+  },
   multisigWallets: {
     signet: true,
   },
+  allowWeb2Login: true,
 };
 
 export default kintsugi;

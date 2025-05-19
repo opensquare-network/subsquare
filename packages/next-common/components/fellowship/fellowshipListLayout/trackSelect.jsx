@@ -30,6 +30,7 @@ export default function FellowshipTrackSelect({ className = "" }) {
       search
       small
       value={id}
+      maxDisplayItem={15}
       optionsPadding="right"
       onChange={(item) => {
         router.push(

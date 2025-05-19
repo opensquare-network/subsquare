@@ -2,11 +2,10 @@ import BigNumber from "bignumber.js";
 import { maxBy, range } from "lodash-es";
 import "next-common/components/charts/globalConfig";
 import { useThemeSetting } from "next-common/context/theme";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import useChainOrScanHeight from "next-common/hooks/height";
 import { cn } from "next-common/utils";
 import { useMemo, useState } from "react";
 import { Line } from "react-chartjs-2";
-import { useSelector } from "react-redux";
 import CoretimeSalePanelChartSkeleton from "../skeleton";
 import {
   useCoretimeStatisticsPriceDataset,
@@ -51,7 +50,7 @@ function StatisticsImpl({
   saleStart,
   fixedStart,
 }) {
-  const chainHeight = useSelector(chainOrScanHeightSelector);
+  const chainHeight = useChainOrScanHeight();
 
   const totalBlocksIndex = toIndex(totalBlocks);
   const initBlockHeightIndex = toIndex(initBlockHeight);

@@ -2,6 +2,151 @@
 
 All notable changes to this project will be documented in this file.
 
+# 4.7.2
+
+date: 2025-05-19
+
+- [Big] Support people/identity business for relay chains.
+- Fellowship:
+    - [Big] Move collectives related code to a separated package.
+    - Show relay chain call for a whitelist referendum.
+    - New style for retention/promotion call info on referendum detail page.
+- Improve referendum votes UX by introducing skeleton loading.
+- Improve track tag tooltip copywriting.
+- Fix cross chain transport popup close unexpectedly.
+- Correct symbol and explorer link for zkverify testnet.
+- Fix hydration treasury stable coin symbol.
+- Upgrade dependencies and fix styles.
+
+# 4.7.1
+
+date: 2025-05-13
+
+- Fix split vote view on votes bubble panel.
+- Add `aDOT` asset calculation on the hydration acquisition address.
+- Apply more use cases for `backendApi`. It's due to deployment migration to vercel, and we will call backend API by a
+  domain.
+- Improve the way to init API instances and use websocket providers to measure RPC delay.
+- Fix redundant identity queries.
+- UI fix and improvements
+    - Add more tooltips for referenda proposal card.
+    - Fix horizontal scroll bar on referenda vote calls popup.
+    - Add tooltips for referenda state tags.
+    - Add tooltips for referenda track tags.
+    - Add tooltips for state tag of collective motions.
+    - Fix votes bubble loading.
+    - Fix virtual list avatar flickering.
+    - Fix vote calls popup responsive issue.
+- Search enhancements
+    - Support searching addresses by identity.
+    - Enable search for chains with only democracy and bounties.
+    - Enable treasury spends, proposals search.
+- Remove new tag for report tab on referendum detail page.
+- Disable vote calls for laos network.
+- Turn on walletconnect for hydration and kusama.
+- Remove Dwellir nodes from interlay/kintsugi.
+- Performance enhancement
+    - Store referenda vote calls data to IndexedDB.
+    - Update scan height by new developed stream API.
+    - Take place of redux with global state for scan height data.
+    - Query votes info from backend once when open referendum detail page, and refresh it after vote actions.
+- Remove Dwellir nodes from interlay/kintsugi.
+- Upgrade dependencies and code refactor.
+
+# 4.7.0
+
+date: 2025-05-02
+
+- Fellowship
+    - Add vote buttons on fellowship members table wish column.
+    - Enable members to vote a wish evidence directly on evidence detail page.
+    - Add skeleton loading for the ongoing cycle on the salary list.
+    - Fix wish bar to show promotion wish on fellowship member page.
+    - Fix rank view on fellowship statistics page.
+    - Improve the IPFS link with an icon instead of showing all the CID.
+    - Fix the action popup hidden by table border style issue on members page.
+    - Improve the summary and description on members page.
+    - Add a panel on overview page to guid users to join fellowship.
+    - Fix members refresh after demotion actions on members page.
+    - Show salary info and activeness status on the salary claim popup.
+- Add wizards in the process to create a new OpenGov referendum.
+- Support searching OpenGov/Democracy referenda, bounties and child bounties by title.
+- Support banner setting on the user profile page.
+- Sort delegations by votes on the user profile page.
+- Add an advanced menu and put preimages, data and system para chains menu in it.
+- Fix received delegation summary on my delegation page.
+- Implement an ErrorBoundary component to increase page robustness.
+- Update polkadot treasury by adding the 3rd stable coin acquisition address on hydration.
+- Refactor polkadot/kusama chain configs.
+- Add more tooltips on the referenda voting popup to for better user understanding.
+- Support deployment by [vercel](https://vercel.com). We did this because some community members tell us in their
+  locations current deployment is super slow sometimes.
+- Upgrade mimir SDK to support their latest features and release.
+- Add a cache and wrap components with `React#memo` to stop voters flicker on votes popup. There are still performance
+  issues with votes popup, and we may try other ways to improve it.
+- Fix styles.
+
+# 4.6.3
+
+date: 2025-04-20
+
+- [Big] Support walletconnect. Only enabled for Paseo and Westend in this release.
+- Fellowship
+    - Show how many wish evidences need a member to vote on the todos panel.
+    - Disable vote buttons and show tooltip if a member is not eligible to vote a wish evidence on todos popup.
+    - Refactor code to separate fellowship member's todos with that of ambassadors.
+    - Not show all tracks on ambassador referenda menu.
+- Support avatar setting on profile page. We can set it directly or through a proxy account.
+- Upgrade dependency of vite to 5.4.18.
+- Show pure property on account panel on profile page relationship card.
+- Update polkadot/kusama DV members cohort 4.
+- Not show account menu when no address connected or only web2 account login.
+- Improve and fix profile layout.
+- Not show the empty vote panel on vote popup.
+- Refactor TabSwitch component and apply it to timeline components.
+- Refactor multi tabs component on various detail page.
+- Fix styles.
+
+# 4.6.2
+
+date: 2025-04-11
+
+- [Big] Enable users to use profile page as their landing page
+    - Show relationships(proxy, multisig, identity) of the profile address with a flow chart.
+    - Show delegation panel on profile page for users who have delegation announcement.
+    - Profile page components redesign and layout refactor.
+- Fellowship
+    - [Medium] Add promotion/retention wishes todo for members and candidates.
+    - Implement salary register and payout on fellowship member detail page.
+- Add attributes to make profile posted tabs recognized by vimium.
+- Dynamic import some components that don't need SSR.
+- Add a new tab on referendum detail page to show report from OG tracker.
+- Enable comments filtering by on-chain identity.
+- Add HDX icon for hydration asset.
+- Decode EVM call for hydration.
+- Update zkverify testnet.
+- Upgrade dependency to @polkadot/api.
+- Upgrade dependency to vite.
+- Set global font weight to 500.
+- Code refactor and other style fixes.
+
+# 4.6.1
+
+date: 2025-04-01
+
+- Fellowship
+    - [Medium] Support fellowship new member application.
+    - Improve fellowship members filter text.
+- [Medium] Show delegation panel on user profile page if this user has delegation announcement.
+- Refactor user identity component for easier style customization.
+- Refactor chain settings in backend and the related APIs.
+- Add tooltip for disabled tracks on delegation popup.
+- Refactor scope for `PolkadotTreasuryProvider`.
+- Archive democracy, council and technical committee for bifrost.
+- Remove inactive networks from menu.
+- Upgrade dependencies.
+- Fix styles and bug fixes.
+
 # 4.6.0
 
 date: 2025-03-24

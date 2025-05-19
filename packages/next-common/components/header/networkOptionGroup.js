@@ -1,6 +1,10 @@
 import ChainIcon from "./chainIcon";
 import { nodes } from "../../utils/constants";
-import { getRelayChain, isAssetHubChain } from "next-common/utils/chain";
+import {
+  getRelayChain,
+  isAssetHubChain,
+  isPeopleChain,
+} from "next-common/utils/chain";
 import { find } from "lodash-es";
 import Link from "next/link";
 import { cn } from "next-common/utils";
@@ -26,7 +30,8 @@ export default function NetworkOptionGroup({ groupName, activeNode, setShow }) {
 
           let nodeChain = item.value;
           const isAssetHubNode = isAssetHubChain(nodeChain);
-          if (isAssetHubNode) {
+          const isPeopleNode = isPeopleChain(nodeChain);
+          if (isAssetHubNode || isPeopleNode) {
             nodeChain = getRelayChain(nodeChain);
           }
 
@@ -37,12 +42,16 @@ export default function NetworkOptionGroup({ groupName, activeNode, setShow }) {
             if (chain === nodeChain) {
               url = "/";
             } else {
-              url = `https://${node.domain || node.value}.subsquare.io`;
+              url = `https://${node.domain || node.value}.subsquare.io/`;
             }
           }
 
           if (url && isAssetHubNode) {
-            url = `${url}/assethub`;
+            url = `${url}./assethub`;
+          }
+
+          if (url && isPeopleNode) {
+            url = `${url}/people`;
           }
 
           return (

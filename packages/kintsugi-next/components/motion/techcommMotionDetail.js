@@ -25,7 +25,7 @@ import { useIsTimelineCompact } from "next-common/components/detail/detailMultiT
 import TechcommMotionDetailHeader from "components/motion/techcommMotionDetailHeader";
 import Copyable from "next-common/components/copyable";
 import AddressUser from "next-common/components/user/addressUser";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import useChainOrScanHeight from "next-common/hooks/height";
 
 const TimelineMotionEnd = styled.div`
   display: flex;
@@ -43,7 +43,6 @@ function createMotionBusinessData(motion) {
       <Link
         key="link-to"
         href={`/democracy/externals/${height}_${motion.proposalHash}`}
-        legacyBehavior
       >{`External proposal ${motion.proposalHash.slice(0, 8)}`}</Link>,
     ],
   ];
@@ -104,7 +103,7 @@ export default function TechcommMotionDetail({ motion }) {
   const isEdit = useSelector(isEditingPostSelector);
   const setIsEdit = useSetEdit();
   const motionEndHeight = motion.onchainData?.voting?.end;
-  const blockHeight = useSelector(chainOrScanHeightSelector);
+  const blockHeight = useChainOrScanHeight();
   const estimatedBlocksTime = useEstimateBlocksTime(
     blockHeight - motionEndHeight,
   );
@@ -154,7 +153,6 @@ export default function TechcommMotionDetail({ motion }) {
         <Link
           key="treasury-link-to"
           href={`/treasury/proposals/${motion.treasuryProposalIndex}`}
-          legacyBehavior
         >{`Treasury Proposal #${motion.treasuryProposalIndex}`}</Link>,
       ],
       [
@@ -180,7 +178,6 @@ export default function TechcommMotionDetail({ motion }) {
           <Link
             key="link-to"
             href={`/democracy/proposals/${proposal?.proposalIndex}`}
-            legacyBehavior
           >{`Democracy Public Proposal #${proposal?.proposalIndex}`}</Link>,
         ],
         ["Hash", <Copyable key="hash">{proposal.hash}</Copyable>],

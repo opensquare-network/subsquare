@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import DetailItem from "components/detailItem";
 import Vote from "components/referenda/vote";
@@ -153,7 +153,9 @@ export default function DemocracyReferendumPage({ detail }) {
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
 
-  const { result: detail } = await nextApi.fetch(`democracy/referendums/${id}`);
+  const { result: detail } = await backendApi.fetch(
+    `democracy/referendums/${id}`,
+  );
 
   if (!detail) {
     return getNullDetailProps(id, { publicProposal: null });
@@ -161,7 +163,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
 
   let publicProposal;
   if (!isNil(detail.proposalIndex)) {
-    const { result } = await nextApi.fetch(
+    const { result } = await backendApi.fetch(
       `democracy/proposals/${detail.proposalIndex}`,
     );
     publicProposal = result;
@@ -172,7 +174,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
     context,
   );
 
-  const { result: summary } = await nextApi.fetch("overview/summary");
+  const { result: summary } = await backendApi.fetch("overview/summary");
 
   return {
     props: {

@@ -19,6 +19,10 @@ export const optionItems = [
     name: "Show DV delegates only",
   },
   {
+    key: "show_on_chain_identities_only",
+    name: "Show on-chain identities only",
+  },
+  {
     key: "hide_deleted",
     name: "Hide [Deleted] comments",
   },

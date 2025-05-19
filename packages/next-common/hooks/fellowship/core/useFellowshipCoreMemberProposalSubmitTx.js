@@ -1,3 +1,4 @@
+import { isNil } from "lodash-es";
 import { useContextApi } from "next-common/context/api";
 import {
   useCoreFellowshipPallet,
@@ -6,7 +7,7 @@ import {
 } from "next-common/context/collectives/collectives";
 import { useCallback } from "react";
 
-export function useFellowshipCoreMemberProposalSubmitTx({
+export function useFellowshipProposalSubmissionTxFunc({
   rank,
   who,
   action,
@@ -14,6 +15,7 @@ export function useFellowshipCoreMemberProposalSubmitTx({
   enactment,
   checkDecisionDeposit = false,
   checkVoteAye = false,
+  voteAye = true,
 } = {}) {
   const api = useContextApi();
 
@@ -21,8 +23,8 @@ export function useFellowshipCoreMemberProposalSubmitTx({
   const referendaPallet = useReferendaFellowshipPallet();
   const collectivePallet = useRankedCollectivePallet();
 
-  const getTxFunc = useCallback(async () => {
-    if (!api || !action || !who || !rank) {
+  return useCallback(async () => {
+    if (!api || !action || !who || isNil(rank)) {
       return;
     }
 
@@ -43,7 +45,7 @@ export function useFellowshipCoreMemberProposalSubmitTx({
         checkDecisionDeposit &&
           api.tx[referendaPallet].placeDecisionDeposit(targetReferendumIndex),
         checkVoteAye &&
-          api.tx[collectivePallet].vote(targetReferendumIndex, true),
+          api.tx[collectivePallet].vote(targetReferendumIndex, voteAye),
       ].filter(Boolean);
 
       return api.tx.utility.batch([submitTx, ...optionsTxs]);
@@ -61,8 +63,7 @@ export function useFellowshipCoreMemberProposalSubmitTx({
     enactment,
     checkDecisionDeposit,
     checkVoteAye,
+    voteAye,
     collectivePallet,
   ]);
-
-  return getTxFunc();
 }

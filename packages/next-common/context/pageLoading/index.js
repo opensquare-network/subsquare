@@ -13,7 +13,7 @@ export default function PageLoadingProvider({ children }) {
   return (
     <PageLoadingContext.Provider value={{ setPageLoading }}>
       {children}
-      <PageLoading isLoading={isLoading} />;
+      <PageLoading isLoading={isLoading} />
     </PageLoadingContext.Provider>
   );
 }

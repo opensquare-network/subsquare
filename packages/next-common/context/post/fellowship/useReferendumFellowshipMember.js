@@ -2,12 +2,13 @@ import { useCoreFellowshipPallet } from "next-common/context/collectives/collect
 import { useOnchainData } from "..";
 import useSubFellowshipCoreMember from "next-common/hooks/fellowship/core/useSubFellowshipCoreMember";
 import { find } from "lodash-es";
-import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
+import useFellowshipCoreMembersWithRank from "next-common/hooks/fellowship/core/useFellowshipCoreMembersWithRank";
 import { useMemo } from "react";
 
 export function useReferendumFellowshipMember() {
   const pallet = useCoreFellowshipPallet();
-  const { members, loading: isMembersLoading } = useFellowshipCoreMembers();
+  const { members, loading: isMembersLoading } =
+    useFellowshipCoreMembersWithRank();
 
   const onchainData = useOnchainData();
 

@@ -33,6 +33,9 @@ const SmallSelect = styled.div`
     width: 24px;
     height: 24px;
   }
+  &:hover {
+    border-color: var(--neutral500);
+  }
 `;
 
 const Select = styled.div`

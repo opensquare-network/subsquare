@@ -121,10 +121,11 @@ export function AddressComboInput({
   setInputAddress,
   onBlur,
   placeholder,
+  avatarSize = 40,
 }) {
   return (
     <>
-      <Avatar address={inputAddress} size={40} />
+      <Avatar address={inputAddress} size={avatarSize} />
       <Input
         value={inputAddress}
         onChange={(e) => setInputAddress(e.target.value)}
@@ -156,31 +157,33 @@ export function IdentityDisplay({ address, name }) {
   );
 }
 
-export function AddressComboListItemAccount({ account }) {
+export function AddressComboListItemAccount({ account, size }) {
   const { isLoading } = useIdentityInfo(account.address);
   const address = normalizeAddress(account.address);
 
   if (isLoading) {
-    return <AddressInfoLoading address={address} />;
+    return <AddressInfoLoading address={address} size={size} />;
   }
 
   return (
     <>
-      <Avatar address={account.address} size={40} />
+      <Avatar address={account.address} size={size === "default" ? 40 : 24} />
       <NameWrapper>
         <IdentityDisplay address={account.address} name={account?.name} />
-        <div className="flex-1 w-full overflow-hidden whitespace-nowrap overflow-ellipsis">
-          {address}
-        </div>
+        {size === "default" && (
+          <div className="flex-1 w-full overflow-hidden whitespace-nowrap overflow-ellipsis">
+            {address}
+          </div>
+        )}
       </NameWrapper>
     </>
   );
 }
 
-function AvatarNameWrapper({ address, children }) {
+function AvatarNameWrapper({ address, children, avatarSize = 40 }) {
   return (
     <>
-      <Avatar address={address} size={40} />
+      <Avatar address={address} size={avatarSize} />
       <NameWrapper className="truncate">{children}</NameWrapper>
     </>
   );
@@ -211,11 +214,15 @@ function NoIdentity({ address }) {
   );
 }
 
-export function AddressComboCustomAddress({ address }) {
+export function AddressComboCustomAddress({ address, size = "default" }) {
   const { identity, isLoading, hasIdentity } = useIdentityInfo(address);
 
   if (isLoading) {
-    return <AddressInfoLoading address={address} />;
+    return <AddressInfoLoading address={address} size={size} />;
+  }
+
+  if (size !== "default") {
+    return <AddressComboListItemAccount account={{ address }} size={size} />;
   }
 
   if (hasIdentity) {
@@ -233,6 +240,7 @@ function AddressComboHeader({
   accounts,
   address,
   edit,
+  size = "default",
 }) {
   const selectedAccount = accounts.find((item) =>
     isSameAddress(normalizeAddress(item.address), address),
@@ -245,18 +253,25 @@ function AddressComboHeader({
         setInputAddress={setInputAddress}
         onBlur={onBlur}
         placeholder={placeholder}
+        avatarSize={size === "default" ? 40 : 24}
       />
     );
   }
 
   if (selectedAccount) {
-    return <AddressComboListItemAccount account={selectedAccount} />;
+    return (
+      <AddressComboListItemAccount account={selectedAccount} size={size} />
+    );
   }
 
-  return <AddressComboCustomAddress address={address} />;
+  if (size !== "default") {
+    return <AddressComboListItemAccount account={{ address }} size={size} />;
+  }
+
+  return <AddressComboCustomAddress address={address} size={size} />;
 }
 
-function AddressComboListOptions({ accounts, address, onSelect }) {
+function AddressComboListOptions({ accounts, address, onSelect, size }) {
   return (
     <Options className="scrollbar-pretty">
       {(accounts || []).map((item, index) => {
@@ -265,8 +280,9 @@ function AddressComboListOptions({ accounts, address, onSelect }) {
             key={index}
             onClick={() => onSelect(item)}
             selected={isSameAddress(item.address, address)}
+            className={cn(size === "small" && "!h-10")}
           >
-            <AddressComboListItemAccount account={item} />
+            <AddressComboListItemAccount account={item} size={size} />
           </Item>
         );
       })}
@@ -275,11 +291,14 @@ function AddressComboListOptions({ accounts, address, onSelect }) {
 }
 
 export default function AddressCombo({
+  className,
   accounts,
   address,
   setAddress,
   allowInvalidAddress = false,
   readOnly = false,
+  canEdit = true,
+  size = "default",
   placeholder = "Please fill the address or select another one...",
 }) {
   const [show, setShow] = useState(false);
@@ -336,7 +355,11 @@ export default function AddressCombo({
   return (
     <Wrapper ref={ref}>
       <Select
-        className={cn(readOnly && "pointer-events-none")}
+        className={cn(
+          className,
+          readOnly && "pointer-events-none",
+          size === "small" && "!h-10",
+        )}
         onClick={() => {
           setShow(true);
           setEdit(true);
@@ -350,7 +373,8 @@ export default function AddressCombo({
           placeholder={placeholder}
           accounts={accounts}
           address={address}
-          edit={edit}
+          edit={edit && canEdit}
+          size={size}
         />
         {(accounts || []).length > 0 && !readOnly && (
           <span
@@ -368,6 +392,7 @@ export default function AddressCombo({
           accounts={accounts}
           address={address}
           onSelect={onSelect}
+          size={size}
         />
       )}
 

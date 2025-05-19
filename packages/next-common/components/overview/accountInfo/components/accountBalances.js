@@ -18,7 +18,7 @@ export function useIsMobile() {
   return (navCollapsed && width < 768) || (!navCollapsed && width < 1024);
 }
 
-function AccountBalanceFiatValue({ value, className }) {
+export function AccountBalanceFiatValue({ value, className }) {
   const { price, loading } = useFiatPriceSnapshot();
   const { decimals } = useChainSettings();
   const isMobile = useIsMobile();
@@ -46,7 +46,7 @@ function AccountBalanceFiatValue({ value, className }) {
   );
 }
 
-export function AccountBalanceItem({ value, title, isLoading }) {
+export function AccountBalanceItem({ value, title, isLoading, className }) {
   const isMobile = useIsMobile();
 
   if (!isLoading && isNaN(value)) {
@@ -60,6 +60,7 @@ export function AccountBalanceItem({ value, title, isLoading }) {
         "[&:not(:last-child)]:mb-1",
         "flex items-center",
         isMobile && "w-full inline-flex flex-col",
+        className,
       )}
     >
       <div className="inline-flex items-center w-full gap-4">

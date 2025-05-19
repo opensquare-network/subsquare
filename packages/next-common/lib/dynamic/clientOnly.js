@@ -8,7 +8,7 @@ const defaultOptions = {
 /**
  * @type {dynamic}
  */
-export default function dynamicClientOnly(dynamicOptions, options) {
+export default function dynamicClientOnly(dynamicOptions, options = {}) {
   if (isPlainObject(dynamicOptions)) {
     dynamicOptions = merge(defaultOptions, dynamicOptions);
   }

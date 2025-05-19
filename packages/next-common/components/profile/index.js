@@ -1,8 +1,6 @@
 import { useEffect } from "react";
-import ListLayout from "next-common/components/layout/ListLayout";
 import Bio from "./bio";
 import useProfileTabs from "next-common/components/profile/tabs";
-import ProfileBreadcrumbs from "next-common/components/profile/breadcrumbs";
 import useProfileTabContent from "next-common/components/profile/tabs/content";
 import useFetchProfileData from "next-common/components/profile/useFetchProfileData";
 import { useDispatch } from "react-redux";
@@ -11,6 +9,9 @@ import { setProfileIdentityTimeline } from "next-common/store/reducers/profile/i
 import useProfileAddress from "./useProfileAddress";
 import useSubFellowshipCoreMember from "next-common/hooks/fellowship/core/useSubFellowshipCoreMember";
 import CollectivesMemberProvider from "next-common/context/collectives/member";
+import ProfileHeaderWithBanner from "./header";
+import ProfileLayout from "next-common/components/layout/ProfileLayout";
+import WindowSizeProvider from "next-common/context/windowSize";
 
 function ProfilePageImpl() {
   useFetchProfileData();
@@ -19,17 +20,17 @@ function ProfilePageImpl() {
   const tabContent = useProfileTabContent();
 
   return (
-    <ListLayout
+    <ProfileLayout
+      pageHeader={<ProfileHeaderWithBanner />}
       header={
         <>
-          <ProfileBreadcrumbs />
           <Bio />
         </>
       }
       tabs={tabs}
     >
       {tabContent}
-    </ListLayout>
+    </ProfileLayout>
   );
 }
 
@@ -50,7 +51,9 @@ export default function ProfilePage() {
 
   return (
     <CollectivesMemberProvider member={member}>
-      <ProfilePageImpl />
+      <WindowSizeProvider>
+        <ProfilePageImpl />
+      </WindowSizeProvider>
     </CollectivesMemberProvider>
   );
 }

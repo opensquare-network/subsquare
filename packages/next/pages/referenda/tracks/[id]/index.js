@@ -1,5 +1,5 @@
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import {
   gov2ReferendumsTrackApi,
   gov2ReferendumsTracksApi,
@@ -7,11 +7,10 @@ import {
   gov2TracksApi,
 } from "next-common/services/url";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
-import { startCase } from "lodash-es";
+import { camelCase, snakeCase, startCase, upperFirst } from "lodash-es";
 import { to404 } from "next-common/utils/serverSideUtil";
 import ReferendaStatusSelectField from "next-common/components/popup/fields/referendaStatusSelectField";
 import { useRouter } from "next/router";
-import { camelCase, snakeCase, upperFirst } from "lodash-es";
 import ReferendaTrackLayout from "next-common/components/layout/referendaLayout/track";
 import PostList from "next-common/components/postList";
 import normalizeGov2ReferendaListItem from "next-common/utils/gov2/list/normalizeReferendaListItem";
@@ -108,15 +107,15 @@ export const getServerSideProps = withCommonProps(async (context) => {
     { result: period },
     { result: tracksDetail },
   ] = await Promise.all([
-    nextApi.fetch(gov2ReferendumsTrackApi(track?.id), {
+    backendApi.fetch(gov2ReferendumsTrackApi(track?.id), {
       page,
       pageSize,
       status,
       simple: true,
     }),
-    nextApi.fetch(gov2ReferendumsTracksSummaryApi(track?.id)),
-    nextApi.fetch(gov2ReferendumsTracksApi(track?.id)),
-    nextApi.fetch(gov2TracksApi),
+    backendApi.fetch(gov2ReferendumsTracksSummaryApi(track?.id)),
+    backendApi.fetch(gov2ReferendumsTracksApi(track?.id)),
+    backendApi.fetch(gov2TracksApi),
   ]);
 
   return {

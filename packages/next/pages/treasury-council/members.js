@@ -1,4 +1,4 @@
-import MembersNoElections from "components/council/membersNoElections";
+import MembersNoElections from "next-common/components/pages/components/council/membersNoElections";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import ListLayout from "next-common/components/layout/ListLayout";
 import { getServerSidePropsWithTracks } from "next-common/services/serverSide";

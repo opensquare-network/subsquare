@@ -20,11 +20,18 @@ function extractKintAccountInfo(accountData) {
 }
 
 export default function useKintAccountInfo(address) {
-  const accountData = useKintOnChainAccountData(address);
-  return useMemo(() => {
-    if (!accountData) {
+  const { data, isLoading } = useKintOnChainAccountData(address);
+
+  const info = useMemo(() => {
+    if (!data) {
       return null;
     }
-    return extractKintAccountInfo(accountData);
-  }, [accountData]);
+
+    return extractKintAccountInfo(data);
+  }, [data]);
+
+  return {
+    info,
+    isLoading,
+  };
 }

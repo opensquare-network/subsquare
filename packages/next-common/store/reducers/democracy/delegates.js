@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 
 const name = "democracyDelegates";
 
@@ -42,11 +42,14 @@ export const fetchDemocracyDelegates = (sort, page = 1, pageSize = 18) => {
   return async (dispatch) => {
     try {
       dispatch(setDemocracyDelegatesLoading(true));
-      const { result } = await nextApi.fetch("delegation/democracy/delegates", {
-        sort,
-        page,
-        pageSize,
-      });
+      const { result } = await backendApi.fetch(
+        "delegation/democracy/delegates",
+        {
+          sort,
+          page,
+          pageSize,
+        },
+      );
       dispatch(setDemocracyDelegates(result));
     } finally {
       dispatch(setDemocracyDelegatesLoading(false));

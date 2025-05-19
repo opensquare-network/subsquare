@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export function ReferendumLink({ referendumIndex }) {
   return (
-    <Link href={`/referenda/${referendumIndex}`} legacyBehavior>
+    <Link href={`/referenda/${referendumIndex}`}>
       {`Referenda #${referendumIndex}`}
     </Link>
   );

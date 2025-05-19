@@ -17,7 +17,7 @@ function convertTicket(ticket) {
 }
 
 /** @internal Returns the parameters required for a call to bytes */
-function getBytesParams(interimResult, optStatus) {
+export function getBytesParams(interimResult, optStatus) {
   const result = objectSpread({}, interimResult, {
     status: optStatus.unwrapOr(null),
   });

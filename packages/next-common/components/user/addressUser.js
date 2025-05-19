@@ -13,6 +13,7 @@ import { useChain } from "next-common/context/chain";
 import { isAssetHubChain } from "next-common/utils/chain";
 import { isExternalLink } from "next-common/utils";
 import ExternalLink from "../externalLink";
+import { cn } from "next-common/utils";
 
 export function AddressUserImpl({
   className,
@@ -26,6 +27,7 @@ export function AddressUserImpl({
   noTooltip = false,
   ellipsis = true,
   link = "",
+  identityIconClassName = "",
 }) {
   const chain = useChain();
   const displayAddress = tryConvertToEvmAddress(address);
@@ -35,6 +37,7 @@ export function AddressUserImpl({
       identity={identity}
       maxWidth={maxWidth}
       ellipsis={ellipsis}
+      identityIconClassName={identityIconClassName}
     />
   ) : (
     <AddressDisplay
@@ -87,7 +90,7 @@ export function AddressUserImpl({
 }
 
 function AddressUserComp({
-  className = "text14Medium text-textPrimary",
+  className = "",
   add,
   showAvatar = true,
   noEvent = false,
@@ -95,11 +98,12 @@ function AddressUserComp({
   noTooltip = false,
   ellipsis = true,
   link = "",
+  identityIconClassName = "",
 }) {
   const address = add;
   const { identity, hasIdentity } = useIdentityInfo(address);
   const [avatar] = useAvatarInfo(address);
-
+  const inlineClassName = "text14Medium text-textPrimary";
   const maxWidth = useWidth(showAvatar, identity, propMaxWidth);
 
   if (!address) {
@@ -108,7 +112,6 @@ function AddressUserComp({
 
   return (
     <AddressUserImpl
-      className={className}
       address={address}
       identity={identity}
       hasIdentity={hasIdentity}
@@ -119,6 +122,8 @@ function AddressUserComp({
       noTooltip={noTooltip}
       ellipsis={ellipsis}
       link={link}
+      identityIconClassName={identityIconClassName}
+      className={cn(inlineClassName, className)}
     />
   );
 }

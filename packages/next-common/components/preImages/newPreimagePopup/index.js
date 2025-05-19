@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { blake2AsHex } from "@polkadot/util-crypto";
 import { BN_ZERO } from "@polkadot/util";
 import Extrinsic from "next-common/components/extrinsic";
@@ -15,6 +15,7 @@ import TxSubmissionButton from "next-common/components/common/tx/txSubmissionBut
 import { isEmptyFunc } from "next-common/utils/isEmptyFunc";
 import { ExtrinsicLoading } from "next-common/components/popup/fields/extrinsicField";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
+import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 
 const EMPTY_HASH = blake2AsHex("");
 
@@ -121,4 +122,62 @@ export default function NewPreimagePopup({ onClose, onCreated = noop }) {
       <NewPreimageInnerPopup onClose={onClose} onCreated={onCreated} />
     </SignerPopupWrapper>
   );
+}
+
+export function useNewPrerimageForm() {
+  const api = useContextApi();
+  const [{ encodedHash, encodedLength, notePreimageTx }, setState] =
+    useState(EMPTY_PROPOSAL);
+  const [callState, setCallState] = useState();
+
+  const setProposal = useCallback(
+    ({ isValid, data: tx }) => {
+      if (!api) {
+        return;
+      }
+      if (!isValid) {
+        return setState(EMPTY_PROPOSAL);
+      }
+      const state = getState(api, tx);
+      setState(state);
+    },
+    [api],
+  );
+
+  const extrinsicComponent = useMemo(() => {
+    let extrinsicComponent = null;
+
+    if (!api) {
+      extrinsicComponent = <ExtrinsicLoading />;
+    } else {
+      extrinsicComponent = (
+        <>
+          <SignerWithBalance />
+          <div>
+            <PopupLabel text="Pre-Propose" />
+            <Extrinsic
+              defaultCallState={callState}
+              onCallStateChange={setCallState}
+              defaultSectionName="system"
+              defaultMethodName="setCode"
+              setValue={setProposal}
+            />
+          </div>
+          <ExtrinsicInfo
+            preimageHash={encodedHash}
+            preimageLength={encodedLength || 0}
+          />
+        </>
+      );
+    }
+
+    return extrinsicComponent;
+  }, [api, callState, encodedHash, encodedLength, setProposal]);
+
+  return {
+    encodedHash,
+    encodedLength,
+    notePreimageTx,
+    component: extrinsicComponent,
+  };
 }

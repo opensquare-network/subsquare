@@ -5,7 +5,7 @@ import polkadotLinks from "next-common/utils/consts/settings/polkadot/links";
 import { westendThemeVars } from "next-common/utils/consts/settings/westend/theme";
 import capitalize from "../../../capitalize";
 import Chains from "../../chains";
-import defaultWestendNodes from "./nodes";
+import { westendRelayChainNodes, westendAssetHubNodes } from "./nodes";
 import { mergeChainModules } from "../common/modules";
 
 const ProjectIconWestendDark = dynamic(() =>
@@ -31,7 +31,8 @@ const westend = {
   decimals: 12,
   ss58Format: 42,
   blockTime: 6000,
-  endpoints: defaultWestendNodes,
+  endpoints: westendAssetHubNodes,
+  relayChainEndpoints: westendRelayChainNodes,
   avatar: ProjectIconWestendLight,
   darkAvatar: ProjectIconWestendDark,
   navLogo: ProjectLogoWestendLight,
@@ -47,6 +48,7 @@ const westend = {
     council: false,
     technicalCommittee: false,
     assethub: true,
+    people: true,
     vesting: true,
   }),
   integrations: {
@@ -57,6 +59,8 @@ const westend = {
     killReferendum: true,
   },
   sima: true,
+  supportWalletconnect: true,
+  allowWeb2Login: true,
 };
 
 export default westend;

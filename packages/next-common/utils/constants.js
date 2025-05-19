@@ -6,14 +6,11 @@ import bifrost from "./consts/settings/bifrost";
 import acala from "./consts/settings/acala";
 import interlay from "./consts/settings/interlay";
 import kintsugi from "./consts/settings/kintsugi";
-import khala from "./consts/settings/khala";
 import phala from "./consts/settings/phala";
 import centrifuge from "./consts/settings/centrifuge";
 // import kabocha from "./consts/settings/kabocha";
 import crust from "./consts/settings/crust";
 import litentry from "./consts/settings/litentry";
-import zeitgeist from "./consts/settings/zeitgeist";
-import altair from "./consts/settings/altair";
 import basilisk from "./consts/settings/basilisk";
 import hydradx from "./consts/settings/hydradx";
 import development from "./consts/settings/development";
@@ -25,9 +22,11 @@ import bifrostPolkadot from "./consts/settings/bifrostPolkadot";
 import vara from "./consts/settings/vara";
 import westend from "./consts/settings/westend";
 import polkadotAssetHub from "next-common/utils/consts/settings/polkadotAssetHub";
+import polkadotPeople from "next-common/utils/consts/settings/polkadotPeople";
 import westendAssetHub from "next-common/utils/consts/settings/westendAssetHub";
 import kusamaAssetHub from "next-common/utils/consts/settings/kusamaAssetHub";
-import shibuya from "next-common/utils/consts/settings/shibuya";
+import kusamaPeople from "next-common/utils/consts/settings/kusamaPeople";
+// import shibuya from "next-common/utils/consts/settings/shibuya";
 import astar from "next-common/utils/consts/settings/astar";
 import zkverifyTestnet from "./consts/settings/zkverifyTestnet";
 import paseo from "./consts/settings/paseo";
@@ -35,6 +34,8 @@ import ajuna from "./consts/settings/ajuna";
 import laos from "./consts/settings/laos";
 import paseoAssetHub from "./consts/settings/paseoAssetHub";
 import westendAssetHubNext from "./consts/settings/westendAssetHubNext";
+import paseoPeople from "./consts/settings/paseoPeople";
+import westendPeople from "./consts/settings/westendPeople";
 
 const optionalNodes =
   process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? [development] : [];
@@ -42,11 +43,12 @@ const optionalNodes =
 export const nodes = [
   polkadot,
   polkadotAssetHub,
+  polkadotPeople,
   kusama,
   kusamaAssetHub,
+  kusamaPeople,
   acala,
   ajuna,
-  altair,
   astar,
   basilisk,
   bifrost,
@@ -58,12 +60,12 @@ export const nodes = [
   westend,
   westendAssetHub,
   westendAssetHubNext,
+  westendPeople,
   crust,
   hydradx,
   interlay,
   // kabocha,
   karura,
-  khala,
   kintsugi,
   laos,
   litentry,
@@ -72,12 +74,12 @@ export const nodes = [
   phala,
   // polkadex,
   // rococo,
-  shibuya,
-  zeitgeist,
+  // shibuya,
   vara,
   zkverifyTestnet,
   paseo,
   paseoAssetHub,
+  paseoPeople,
   ...optionalNodes,
 ];
 
@@ -128,6 +130,8 @@ export const CACHE_KEY = {
   extensionUpdateMetadata: "extensionUpdateMetadata",
   assetHubPromptVisible: "asset-hub-management-prompt-visible",
   multisigPromptVisible: "multisig-management-prompt-visible",
+
+  walletConnectSession: "walletconnect-session",
 };
 
 export const ADDRESS_CACHE_KEYS = [
@@ -173,4 +177,10 @@ export const NAV_MENU_TYPE = {
   main: "main",
   subspace: "subspace",
   archived: "archived",
+};
+
+export const RELATIONSHIP_NODE_TYPE = {
+  Multisig: "Multisig",
+  Proxy: "Proxy",
+  Identity: "Identity",
 };

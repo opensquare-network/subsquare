@@ -1,5 +1,5 @@
 import ListLayout from "next-common/components/layout/ListLayout";
-import MembersNoElections from "components/council/membersNoElections";
+import MembersNoElections from "next-common/components/pages/components/council/membersNoElections";
 import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
 import CollectiveProvider, {
   collectivePallets,

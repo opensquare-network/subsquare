@@ -7,7 +7,7 @@ import Link from "next/link";
 
 export function TreasuryProposalLink({ proposalIndex }) {
   return (
-    <Link href={`/treasury/proposals/${proposalIndex}`} legacyBehavior>
+    <Link href={`/treasury/proposals/${proposalIndex}`}>
       {`Treasury #${proposalIndex}`}
     </Link>
   );

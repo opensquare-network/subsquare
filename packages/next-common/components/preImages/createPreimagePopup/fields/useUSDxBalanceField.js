@@ -7,8 +7,8 @@ import { toPrecision } from "next-common/utils";
 
 export function TreasuryBalance({ symbol, isLoading, treasuryBalance }) {
   return (
-    <div className="flex items-center gap-[8px] text12Bold text-textPrimary [&_.value-display-symbol]:text-textPrimary">
-      <span className="text12Medium text-textTertiary">Treasury Balance</span>
+    <div className="flex items-center gap-[8px] text14Medium text-textPrimary [&_.value-display-symbol]:text-textPrimary">
+      <span className="text14Medium text-textTertiary">Treasury Balance</span>
       {isLoading ? (
         <Loading size={16} />
       ) : (

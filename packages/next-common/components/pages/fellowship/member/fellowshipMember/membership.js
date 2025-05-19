@@ -8,7 +8,7 @@ import SummaryItem from "next-common/components/summary/layout/item";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import nextApi from "next-common/services/nextApi";
 import { fellowshipStatisticsUsersApi } from "next-common/services/url";
-import { useMembersWithStatus } from "next-common/components/fellowship/collective/hook/useFellowshipCoreMembersFilter";
+import { useMemberWithStatus } from "next-common/components/fellowship/collective/hook/useFellowshipCoreMembersFilter";
 import CoreFellowshipMemberDemotionPeriod from "next-common/components/collectives/core/member/demotionPeriod";
 import CoreFellowshipMemberPromotionPeriod from "next-common/components/collectives/core/member/promotionPeriod";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
@@ -20,16 +20,18 @@ import Period from "next-common/components/fellowship/params/period";
 import { cn } from "next-common/utils";
 import WindowSizeProvider from "next-common/context/windowSize";
 import CoretimeSalePanelChartSkeleton from "next-common/components/coretime/salePanel/chart/skeleton";
+import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
 
 export default function Membership() {
-  const { fellowshipMembers, id, fellowshipParams } = usePageProps();
-  const filterMember = useMemo(() => {
-    return fellowshipMembers.filter((member) => member.address === id);
-  }, [fellowshipMembers, id]);
+  const { id, fellowshipParams } = usePageProps();
+  const { members: fellowshipMembers } = useFellowshipCollectiveMembers();
+  const member = useMemo(
+    () => fellowshipMembers.find((member) => member.address === id),
+    [fellowshipMembers, id],
+  );
 
-  const { membersWithStatus, isLoading } = useMembersWithStatus(filterMember);
-
-  const activeMember = membersWithStatus?.[0];
+  const { memberWithStatus: activeMember, isLoading } =
+    useMemberWithStatus(member);
 
   return (
     <WindowSizeProvider>

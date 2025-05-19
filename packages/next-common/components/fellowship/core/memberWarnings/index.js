@@ -1,7 +1,7 @@
 import { isNil, partition } from "lodash-es";
 import useEvidencesCombineReferenda from "next-common/hooks/useEvidencesCombineReferenda";
 import { useEffect, useMemo, useState } from "react";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import useChainOrScanHeight from "next-common/hooks/height";
 import { useSelector } from "react-redux";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import {
@@ -16,7 +16,7 @@ import {
 import dynamic from "next/dynamic";
 import BillBoardPanel from "next-common/components/billBoardPanel";
 import ShallowLink from "next-common/components/shallowLink";
-import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
+import useFellowshipCoreMembersWithRank from "next-common/hooks/fellowship/core/useFellowshipCoreMembersWithRank";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { SystemFilter } from "@osn/icons/subsquare";
 import { useRouter } from "next/router";
@@ -27,9 +27,9 @@ import pluralize from "pluralize";
 const MenuHorn = dynamic(() => import("@osn/icons/subsquare/MenuHorn"));
 
 function useAvailablePromotionCount() {
-  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const latestHeight = useChainOrScanHeight();
   const { members: coreMembers, loading: isLoading } =
-    useFellowshipCoreMembers();
+    useFellowshipCoreMembersWithRank();
   const params = useCoreFellowshipParams();
 
   const availablePromotionCount = useMemo(() => {
@@ -51,7 +51,7 @@ function useAvailablePromotionCount() {
 }
 
 export function useDemotionExpiringCount(members) {
-  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const latestHeight = useChainOrScanHeight();
   const blockTime = useSelector(blockTimeSelector);
   const params = useCoreFellowshipParams();
 
@@ -101,7 +101,7 @@ export function getDemotionExpiredCount({ members, latestHeight, params }) {
 }
 
 export function useDemotionExpiredCount(members) {
-  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const latestHeight = useChainOrScanHeight();
   const params = useCoreFellowshipParams();
 
   return useMemo(
@@ -118,7 +118,7 @@ function useMemberDemotionExpirationCounts(members) {
 
 export function useEligibleFellowshipCoreMembers() {
   const { members: coreMembers, loading: isLoading } =
-    useFellowshipCoreMembers();
+    useFellowshipCoreMembersWithRank();
   const [members] = useMemo(
     () => partition(coreMembers, (m) => m.rank > 0),
     [coreMembers],

@@ -56,6 +56,7 @@ const paseoAssetHub = {
       domain: "assethub-paseo",
     },
   },
+  allowWeb2Login: true,
 };
 
 export default paseoAssetHub;

@@ -6,19 +6,20 @@ import useFellowshipMemberFiled from "next-common/components/preImages/createPre
 import AdvanceSettings from "../common/advanceSettings";
 import useEnactmentBlocksField from "../common/useEnactmentBlocksField";
 import CreateFellowshipCoreMemberProposalSubmitButton from "./createFellowshipCoreMemberProposalSubmitButton";
-import { getTrackNameFromRank } from "next-common/components/fellowship/core/members/actions/promote/popup";
+import { getPromoteTrackNameFromRank } from "next-common/components/fellowship/core/members/actions/promote/popup";
 import { useReferendaFellowshipPallet } from "next-common/context/collectives/collectives";
 import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 import useRelatedPromotionReferenda from "next-common/hooks/fellowship/useRelatedPromotionReferenda";
 import { ReferendaWarningMessage, ReferendaActionMessage } from "./common";
 import ErrorInfoPanel from "next-common/components/summary/styled/errorInfoPanel";
-import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
+import useFellowshipCoreMembersWithRank from "next-common/hooks/fellowship/core/useFellowshipCoreMembersWithRank";
 import { find } from "lodash-es";
 import { CollectivesPromoteTracks } from "next-common/components/fellowship/core/members/actions/promote/constants";
 import { isNil } from "lodash-es";
 import { rankToPromoteTrack } from "next-common/utils/fellowship/rankToTrack";
 import { useFellowshipTrackDecisionDeposit } from "next-common/hooks/fellowship/useFellowshipTrackDecisionDeposit";
 import { useReferendaOptionsField } from "next-common/components/preImages/createPreimagePopup/fields/useReferendaOptionsField";
+import { useChain } from "next-common/context/chain";
 
 export function NotAvailableMemberPrompt() {
   return (
@@ -29,7 +30,7 @@ export function NotAvailableMemberPrompt() {
 }
 
 function NewFellowshipCoreMemberPromoteReferendumInnerPopupImpl() {
-  const { members, loading } = useFellowshipCoreMembers();
+  const { members, loading } = useFellowshipCoreMembersWithRank();
   const filteredMembers = useMemo(() => {
     if (loading || !members) {
       return [];
@@ -56,7 +57,8 @@ function NewFellowshipCoreMemberPromoteReferendumInnerPopupImpl() {
   const targetMember = find(members, { address: who });
   const toRank = !isNil(targetMember?.rank) ? targetMember?.rank + 1 : "";
 
-  const trackName = getTrackNameFromRank(toRank);
+  const chain = useChain();
+  const trackName = getPromoteTrackNameFromRank(chain, toRank);
 
   const { relatedReferenda, isLoading } = useRelatedPromotionReferenda(who);
   const isReferendaExisted = relatedReferenda.length > 0;

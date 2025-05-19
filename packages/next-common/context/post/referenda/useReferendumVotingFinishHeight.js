@@ -1,5 +1,6 @@
-import { useTimelineData } from "../index";
-import { gov2State } from "../../../utils/consts/state";
+import { useOnchainData, useTimelineData } from "../index";
+import { gov2State, gov2VotingState } from "../../../utils/consts/state";
+import { useMemo } from "react";
 
 export function useReferendumVotingFinishIndexer() {
   const timeline = useTimelineData();
@@ -21,4 +22,12 @@ export function useReferendumVotingFinishIndexer() {
 export default function useReferendumVotingFinishHeight() {
   const indexer = useReferendumVotingFinishIndexer();
   return indexer?.blockHeight;
+}
+
+export function useReferendaIsVoting() {
+  const onchainData = useOnchainData();
+  return useMemo(() => {
+    const name = onchainData?.state?.name;
+    return gov2VotingState.includes(name);
+  }, [onchainData]);
 }

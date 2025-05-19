@@ -275,6 +275,8 @@ export function PostContextMenu({ isAuthor, editable, setIsEdit }) {
   const isOpenGovReferendumPost =
     postType === detailPageCategory.GOV2_REFERENDUM;
   const isDiscussionPost = postType === detailPageCategory.POST;
+  const isFellowshipApplicationPost =
+    postType === detailPageCategory.FELLOWSHIP_APPLICATION;
   const isSimaDiscussion = post.sima;
   const canDelete =
     (editable || isAdmin) && isDiscussionPost && !isSimaDiscussion;
@@ -312,7 +314,10 @@ export function PostContextMenu({ isAuthor, editable, setIsEdit }) {
         <OptionWrapper>
           {editable && (
             <>
-              {isAuthor && !isDiscussionPost && linkOrUnlinkMenuItem}
+              {isAuthor &&
+                !isDiscussionPost &&
+                !isFellowshipApplicationPost &&
+                linkOrUnlinkMenuItem}
               <EditMenuItem setIsEdit={setIsEdit} setShow={setShow} />
             </>
           )}

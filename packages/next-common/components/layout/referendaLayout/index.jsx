@@ -1,10 +1,15 @@
 import { SubscribeTip, TitleExtra } from "next-common/components/overview";
 import ListLayout from "../ListLayout";
-import Gov2Summary from "next-common/components/summary/gov2Summary";
 import Gov2SummaryFooter from "next-common/components/summary/gov2SummaryFooter";
 import { useUser } from "next-common/context/user";
 import { useRouter } from "next/router";
 import { useChainSettings } from "next-common/context/chain";
+import dynamic from "next/dynamic";
+
+const Gov2Summary = dynamic(
+  () => import("next-common/components/summary/gov2Summary"),
+  { ssr: false },
+);
 
 function HeadContent() {
   return (

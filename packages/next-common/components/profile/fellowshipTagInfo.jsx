@@ -3,7 +3,6 @@ import { useChainSettings } from "next-common/context/chain";
 import { useFellowshipMemberRank } from "next-common/hooks/fellowship/useFellowshipMemberRank";
 import { CommonTag } from "../tags/state/styled";
 import { getRankColor } from "next-common/utils/fellowship/getRankColor";
-import tw from "tailwind-styled-components";
 
 function FellowshipTagInfoImpl({ address, pallet, type }) {
   const rank = useFellowshipMemberRank(address, pallet);
@@ -24,10 +23,6 @@ function FellowshipTagInfoImpl({ address, pallet, type }) {
     </CommonTag>
   );
 }
-
-export const FellowshipTagInfoWrapper = tw.div`
-  flex items-center mb-2 mt-4
-`;
 
 export default function FellowshipTagInfo({
   address,

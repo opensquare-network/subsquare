@@ -3,10 +3,10 @@ import ActionButton from "./actionButton";
 import { useContextMyEvidence } from "../context/hooks/evidence";
 import { useContext, useState } from "react";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useHasMemberReferendaTodo } from "../hooks/useHasTodo";
 import { useContextMyCoreMember } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/hooks/mine";
 import { CoreMembersContext } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/coreMembers";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import { useContextMyMembershipReferenda } from "../context/myMembershipReferenda";
 
 const UserListPopup = dynamicPopup(() => import("./userListPopup"));
 const EvidenceDetailPopup = dynamicPopup(() =>
@@ -45,8 +45,20 @@ export default function MemberReferendaTodo() {
   const [showEvidenceDetailPopup, setShowEvidenceDetailPopup] = useState(false);
   const [showEligibleMembersPopup, setShowEligibleMembersPopup] =
     useState(false);
-  const hasTodo = useHasMemberReferendaTodo();
-  if (!hasTodo) {
+
+  const { evidence } = useContextMyEvidence();
+  const { myMembershipReferenda } = useContextMyMembershipReferenda();
+  const member = useContextMyCoreMember();
+
+  if (!member || !evidence) {
+    return null;
+  }
+
+  const { rank } = member;
+  const noMembershipReferenda = !myMembershipReferenda?.length;
+  const canNotCreateReferenda = rank < 3;
+
+  if (!noMembershipReferenda || !canNotCreateReferenda) {
     return null;
   }
 

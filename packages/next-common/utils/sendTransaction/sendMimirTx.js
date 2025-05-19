@@ -1,5 +1,4 @@
 import { inject, isMimirReady, MIMIR_REGEXP } from "@mimirdev/apps-inject";
-import { checkCall } from "@mimirdev/apps-sdk";
 import { noop } from "lodash-es";
 import { createSendTxEventHandler } from "./sendSubstrateTx";
 import getOriginForExtension from "next-common/utils/extension/origin";
@@ -32,7 +31,6 @@ export async function tryInitMimir() {
 }
 
 export async function maybeSendMimirTx({
-  api,
   tx,
   onStarted = noop,
   onFinalized = noop,
@@ -56,24 +54,9 @@ export async function maybeSendMimirTx({
   onStarted();
 
   try {
-    const result = await injected.signer.signPayload({
-      address: signerAddress,
-      method: tx.method.toHex(),
-    });
-
-    // Retrieve the method returned by Mimir.
-    const method = api.registry.createType("Call", result.payload.method);
-
-    // check the final call is the expect call
-    if (!checkCall(api, method, tx.method)) {
-      throw new Error("not an safe method");
-    }
-
-    // Reconstruct a new tx.
-    const multisigTx = api.tx[method.section][method.method](...method.args);
-    multisigTx.addSignature(result.signer, result.signature, result.payload);
-
-    const unsub = await multisigTx.send(
+    const unsub = await tx.signAndSend(
+      signerAddress,
+      { signer: injected.signer, withSignedTransaction: true },
       createSendTxEventHandler({
         onFinalized,
         onInBlock,

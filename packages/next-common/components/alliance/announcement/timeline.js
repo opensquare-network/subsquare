@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDetailType } from "../../../context/page";
 import sortTimeline from "../../../utils/timeline/sort";
 import Timeline from "../../timeline";
-import { createMotionTimelineData } from "@subsquare/next/utils/timeline/motion";
+import { createMotionTimelineData } from "next-common/utils/pages/timeline/motion";
 import IpfsCidWithLink from "../ipfsCidWithLink";
 import formatTime from "../../../utils/viewfuncs/formatDate";
 import { useIsTimelineCompact } from "next-common/components/detail/detailMultiTabs/timelineModeTabs";

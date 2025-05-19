@@ -28,11 +28,20 @@ export default function useAvatarInfo(address) {
   }, [cachedAvatar, trigger]);
 
   useEffect(() => {
-    setAvatar(null);
     if (address) {
-      fetchAvatar(address).then((avatar) => setAvatar(avatar));
+      fetchAvatar(address)
+        .then((result) => {
+          if (result === avatar) {
+            return;
+          }
+
+          setAvatar(result);
+        })
+        .catch(() => {
+          setAvatar(null);
+        });
     }
-  }, [address]);
+  }, [address, avatar]);
 
   return [avatar, !isNil(avatar)];
 }

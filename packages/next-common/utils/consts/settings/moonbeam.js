@@ -95,6 +95,7 @@ const moonbeam = {
   multisigWallets: {
     signet: true,
   },
+  allowWeb2Login: true,
 };
 
 export default moonbeam;

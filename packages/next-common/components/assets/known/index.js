@@ -6,6 +6,7 @@ import {
   AssetIconWnd,
   AssetIconKsm,
   AssetIconPas,
+  AssetIconHdx,
   AssetIconPlaceholder,
   AssetIconBwnd,
 } from "@osn/icons/subsquare";
@@ -34,6 +35,7 @@ const assetHubChainNativeTokenIconMap = {
   [Chains.kusama]: AssetIconKsm,
   [Chains.paseoAssetHub]: AssetIconPas,
   [Chains.paseo]: AssetIconPas,
+  [Chains.hydradx]: AssetIconHdx,
 };
 
 export function useNativeTokenIcon() {

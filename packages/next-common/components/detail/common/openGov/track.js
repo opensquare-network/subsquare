@@ -11,7 +11,7 @@ export default function ReferendaTrack({ section = "referenda" }) {
 
   return (
     <div>
-      <Link href={href} passHref legacyBehavior>
+      <Link href={href} passHref>
         <LinkInfo>
           <Gov2TrackTag name={trackName} />
         </LinkInfo>

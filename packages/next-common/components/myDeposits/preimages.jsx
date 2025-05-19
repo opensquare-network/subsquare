@@ -64,7 +64,7 @@ function createPreimageRow(
       <FieldLoading />
     ),
     isStatusLoaded ? (
-      preimage.proposalLength?.toJSON()?.toLocaleString()
+      preimage.proposalLength?.toNumber()?.toLocaleString()
     ) : (
       <FieldLoading />
     ),
@@ -168,7 +168,7 @@ function DesktopList({ data, setShowArgumentsDetail }) {
       className: "text-left min-w-[360px]",
     },
     {
-      name: "Balance",
+      name: "Deposit",
       className: "text-right w-40 min-w-[160px]",
     },
     {
@@ -347,7 +347,7 @@ function MobileListItem({
       length={
         isStatusLoaded ? (
           <span className="text-textPrimary">
-            {preimage.proposalLength?.toJSON()?.toLocaleString()}
+            {preimage.proposalLength?.toNumber()?.toLocaleString()}
           </span>
         ) : (
           <FieldLoading />

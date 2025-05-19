@@ -13,18 +13,22 @@ import { useNavCollapsed } from "next-common/context/nav";
 import LoginGlobalPopup from "../login/globalPopup";
 import useStoreDemocracyLockPeriod from "next-common/hooks/democracy/useStoreDemocracyLockPeriod";
 import useStoreConvictionVotingLockPeriod from "next-common/hooks/referenda/useStoreConvictionVotingLockPeriod";
-import useConnectApis from "next-common/services/chain/apis/useConnectApis";
 import { useContextApi } from "next-common/context/api";
 import useExistentialDeposit from "next-common/utils/hooks/chain/useExistentialDeposit";
 import GlobalNotification from "next-common/components/globalNotification";
+import useInitApiProviders from "next-common/services/chain/apis/useInitApiProviders";
 
 /**
  * @description a base layout includes nav, header and footer
  */
-export default function BaseLayout({ children, seoInfo = {} }) {
+export default function BaseLayout({
+  children,
+  seoInfo = {},
+  contentStyle = {},
+}) {
   const { sm } = useScreenSize();
   const [navCollapsed] = useNavCollapsed();
-  useConnectApis();
+  useInitApiProviders();
   useUpdateNodesDelay();
 
   const api = useContextApi();
@@ -61,7 +65,9 @@ export default function BaseLayout({ children, seoInfo = {} }) {
 
           <GlobalNotification />
 
-          <section className="flex flex-col flex-1">{children}</section>
+          <section className="flex flex-col flex-1" style={contentStyle}>
+            {children}
+          </section>
 
           <footer>
             <Footer />
