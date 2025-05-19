@@ -97,8 +97,11 @@ function NestedVotesPopupContent({
   }, [tabIndex, filteredAye, filteredNay, filteredAbstain]);
 
   useEffect(() => {
-    if (isEqual(cachedVotes, votes) && isEqual(cachedTabIndex, tabIndex)) {
-      setCachedVotesLoading(false);
+    if (
+      isEqual(cachedVotes, votes) &&
+      isEqual(cachedTabIndex, tabIndex) &&
+      isLoading
+    ) {
       return;
     }
     setCachedVotesLoading(true);
