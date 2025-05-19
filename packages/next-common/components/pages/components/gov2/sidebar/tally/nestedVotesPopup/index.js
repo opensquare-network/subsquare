@@ -1,4 +1,4 @@
-import { useEffect, useState, memo, useMemo } from "react";
+import { useEffect, useState, memo, useMemo, useCallback } from "react";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
@@ -109,68 +109,19 @@ export default function NestedVotesPopup({
 }
 
 function CachedVotesList({ items, loading }) {
-  const chainSettings = useChainSettings();
-  const symbol = chainSettings.voteSymbol || chainSettings.symbol;
-
   const [showDetail, setShowDetail] = useState(false);
   const [detailData, setDetailData] = useState();
-  const itemHeight = usePopupItemHeight();
 
-  const columns = [
-    {
-      name: "ACCOUNT",
-    },
-    {
-      name: "DELEGATORS",
-      className: "w-[128px] text-right",
-    },
-    {
-      name: "VOTES",
-      className: "w-[128px] text-right",
-    },
-    {
-      name: "",
-      className: "w-10 text-right",
-    },
-  ];
-
-  const rows = items.map((item) => {
-    const row = [
-      <DelayLoaderContent key={item.account}>
-        <AccountCell item={item} />
-      </DelayLoaderContent>,
-      (item.directVoterDelegations || []).length,
-      <ValueDisplay
-        key="value"
-        value={toPrecision(item.totalVotes, chainSettings.decimals)}
-        symbol={symbol}
-      />,
-      <Flex key="enter" style={{ padding: "0 0 0 24px" }}>
-        <EnterSVG />
-      </Flex>,
-    ];
-
-    row.onClick = () => {
+  const rowClick = useCallback((item) => {
+    return () => {
       setDetailData(item);
       setShowDetail(true);
     };
-
-    return row;
-  });
+  }, []);
 
   return (
     <>
-      <PopupListWrapper>
-        <VirtualList
-          columns={columns}
-          rows={rows}
-          loading={loading}
-          scrollToFirstRowOnChange
-          itemHeight={itemHeight}
-          listHeight={395}
-          overscanCount={3}
-        />
-      </PopupListWrapper>
+      <VotesListView items={items} loading={loading} rowClick={rowClick} />
 
       {showDetail && (
         <NestedPopupDelegatedDetailPopup
@@ -183,3 +134,70 @@ function CachedVotesList({ items, loading }) {
 }
 
 const VotesList = memo(CachedVotesList);
+
+const VotesListView = memo(function VotesListView({
+  items,
+  loading,
+  rowClick,
+}) {
+  const chainSettings = useChainSettings();
+  const itemHeight = usePopupItemHeight();
+  const symbol = chainSettings.voteSymbol || chainSettings.symbol;
+
+  const columns = useMemo(() => {
+    return [
+      {
+        name: "ACCOUNT",
+      },
+      {
+        name: "DELEGATORS",
+        className: "w-[128px] text-right",
+      },
+      {
+        name: "VOTES",
+        className: "w-[128px] text-right",
+      },
+      {
+        name: "",
+        className: "w-10 text-right",
+      },
+    ];
+  }, []);
+
+  const rows = useMemo(() => {
+    return items.map((item) => {
+      const row = [
+        <DelayLoaderContent key={item.account}>
+          <AccountCell item={item} />
+        </DelayLoaderContent>,
+        (item.directVoterDelegations || []).length,
+        <ValueDisplay
+          key="value"
+          value={toPrecision(item.totalVotes, chainSettings.decimals)}
+          symbol={symbol}
+        />,
+        <Flex key="enter" style={{ padding: "0 0 0 24px" }}>
+          <EnterSVG />
+        </Flex>,
+      ];
+
+      row.onClick = rowClick(item);
+
+      return row;
+    });
+  }, [items, chainSettings.decimals, symbol, rowClick]);
+
+  return (
+    <PopupListWrapper>
+      <VirtualList
+        columns={columns}
+        rows={rows}
+        loading={loading}
+        scrollToFirstRowOnChange
+        itemHeight={itemHeight}
+        listHeight={395}
+        overscanCount={3}
+      />
+    </PopupListWrapper>
+  );
+});
