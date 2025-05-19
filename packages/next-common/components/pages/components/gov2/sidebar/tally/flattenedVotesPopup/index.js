@@ -16,13 +16,34 @@ import AddressUser from "next-common/components/user/addressUser";
 import { isEqual } from "lodash-es";
 import usePopupItemHeight from "next-common/components/democracy/democracyCallsVotesPopup/usePopupItemHeight";
 import VirtualList from "next-common/components/dataList/virtualList";
+import {
+  useReferendaFlattenVotes,
+  useReferendaVotes,
+} from "next-common/utils/gov2/useReferendaVotesData";
+import { useOnchainData } from "next-common/context/post";
 
-export default function VotesPopup({
+export default function FlattenedVotesPopup({ setShowVoteList }) {
+  const { referendumIndex } = useOnchainData();
+  const { allVotes, isLoading } = useReferendaVotes(referendumIndex);
+  const { allAye, allNay, allAbstain } = useReferendaFlattenVotes(allVotes);
+
+  return (
+    <FlattenedVotesPopupContent
+      allAye={allAye}
+      allNay={allNay}
+      allAbstain={allAbstain}
+      isLoading={isLoading}
+      setShowVoteList={setShowVoteList}
+    />
+  );
+}
+
+function FlattenedVotesPopupContent({
   setShowVoteList,
   allAye,
   allNay,
   allAbstain,
-  isLoadingVotes,
+  isLoading,
 }) {
   const [tabIndex, setTabIndex] = useState(tabs[0].tabId);
   const [search, setSearch] = useState("");
@@ -57,8 +78,11 @@ export default function VotesPopup({
   }, [tabIndex, filteredAye, filteredNay, filteredAbstain]);
 
   useEffect(() => {
-    if (isEqual(cachedVotes, votes) && isEqual(cachedTabIndex, tabIndex)) {
-      setCachedVotesLoading(false);
+    if (
+      isEqual(cachedVotes, votes) &&
+      isEqual(cachedTabIndex, tabIndex) &&
+      isLoading
+    ) {
       return;
     }
     setCachedVotesLoading(true);
@@ -69,7 +93,7 @@ export default function VotesPopup({
     setTimeout(() => {
       setCachedVotesLoading(false);
     }, 500);
-  }, [votes, cachedVotes, isLoadingVotes, tabIndex, cachedTabIndex]);
+  }, [votes, cachedVotes, isLoading, tabIndex, cachedTabIndex]);
 
   const searchBtn = (
     <SearchBtn

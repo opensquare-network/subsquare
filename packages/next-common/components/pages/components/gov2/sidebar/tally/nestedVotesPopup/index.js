@@ -17,24 +17,59 @@ import dynamicPopup from "next-common/lib/dynamic/popup";
 import { isEqual } from "lodash-es";
 import usePopupItemHeight from "next-common/components/democracy/democracyCallsVotesPopup/usePopupItemHeight";
 import VirtualList from "next-common/components/dataList/virtualList";
+import {
+  useReferendaNestedVotes,
+  useReferendaVotes,
+} from "next-common/utils/gov2/useReferendaVotesData";
+import { useOnchainData } from "next-common/context/post";
+import { sortTotalVotes } from "next-common/utils/democracy/votes/passed/common";
 
 const NestedPopupDelegatedDetailPopup = dynamicPopup(() =>
   import("next-common/components/popup/nestedVotesPopup/delegatedDetail"),
 );
 
-export default function NestedVotesPopup({
+export default function NestedVotesPopup({ setShowVoteList }) {
+  const { referendumIndex } = useOnchainData();
+  const { allVotes, isLoading } = useReferendaVotes(referendumIndex);
+  const {
+    allAye = [],
+    allNay = [],
+    allAbstain = [],
+  } = useReferendaNestedVotes(allVotes);
+
+  const directAyes = useMemo(
+    () => sortTotalVotes(allAye.filter((v) => !v.isDelegating)),
+    [allAye],
+  );
+  const directNays = useMemo(
+    () => sortTotalVotes(allNay.filter((v) => !v.isDelegating)),
+    [allNay],
+  );
+
+  return (
+    <NestedVotesPopupContent
+      setShowVoteList={setShowVoteList}
+      directAyes={directAyes}
+      directNays={directNays}
+      allAbstain={allAbstain}
+      isLoading={isLoading}
+    />
+  );
+}
+
+function NestedVotesPopupContent({
   setShowVoteList,
-  allAye,
-  allNay,
+  directAyes,
+  directNays,
   allAbstain,
-  isLoadingVotes,
+  isLoading,
 }) {
   const [tabIndex, setTabIndex] = useState(tabs[0].tabId);
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(false);
 
-  const filteredAye = useSearchVotes(search, allAye);
-  const filteredNay = useSearchVotes(search, allNay);
+  const filteredAye = useSearchVotes(search, directAyes);
+  const filteredNay = useSearchVotes(search, directNays);
   const filteredAbstain = useSearchVotes(search, allAbstain);
 
   useEffect(() => {
@@ -62,8 +97,11 @@ export default function NestedVotesPopup({
   }, [tabIndex, filteredAye, filteredNay, filteredAbstain]);
 
   useEffect(() => {
-    if (isEqual(cachedVotes, votes) && isEqual(cachedTabIndex, tabIndex)) {
-      setCachedVotesLoading(false);
+    if (
+      isEqual(cachedVotes, votes) &&
+      isEqual(cachedTabIndex, tabIndex) &&
+      isLoading
+    ) {
       return;
     }
     setCachedVotesLoading(true);
@@ -74,7 +112,7 @@ export default function NestedVotesPopup({
     setTimeout(() => {
       setCachedVotesLoading(false);
     }, 500);
-  }, [votes, cachedVotes, isLoadingVotes, tabIndex, cachedTabIndex]);
+  }, [votes, cachedVotes, isLoading, tabIndex, cachedTabIndex]);
 
   const searchBtn = (
     <SearchBtn

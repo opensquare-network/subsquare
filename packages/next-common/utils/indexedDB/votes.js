@@ -4,12 +4,17 @@ export const storageMap = new Map();
 
 export const STORAGE_NAMES = {
   REFERENDA_CALLS: "referenda-calls",
+  REFERENDA_ALL_VOTES: "referenda-all-votes",
 };
 
-export const STORAGE_ITEM_KEY = {
-  ALLAYE: "Aye",
-  ALLNAY: "Nay",
-  ALLABSTAIN: "Abstain",
+export const CALLS_STORAGE_ITEM_KEY = {
+  ALL_AYE: "AllAye",
+  ALL_NAY: "AllNay",
+  ALL_ABSTAIN: "AllAbstain",
+};
+
+export const VOTES_STORAGE_ITEM_KEY = {
+  ALL_VOTES: "AllVotes",
 };
 
 /**

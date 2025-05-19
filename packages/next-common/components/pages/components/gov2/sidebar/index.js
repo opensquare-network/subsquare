@@ -26,12 +26,11 @@ export default function Gov2Sidebar() {
   const trackId = detail?.track;
   const isVoting = gov2VotingState.includes(detail?.state?.name);
   const { hideActionButtons } = useChainSettings();
-  const { fetch: fetchVotesFromServer } =
-    useFetchVotesFromServer(referendumIndex);
+  const { fetch } = useFetchVotesFromServer(referendumIndex);
 
   useEffect(() => {
-    fetchVotesFromServer();
-  }, [fetchVotesFromServer]);
+    fetch();
+  }, [fetch]);
 
   return (
     <RightBarWrapper>
