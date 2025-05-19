@@ -16,7 +16,6 @@ import crust from "./crust";
 import centrifuge from "./centrifuge";
 import litmus from "./litmus";
 import zeitgeist from "./zeitgeist";
-import altair from "./altair";
 import hydradx from "./hydradx";
 import hydradxTestnet from "./hydradxTestnet";
 import development from "./development";
@@ -53,7 +52,6 @@ const settingsMap = {
   polkadot,
   kusama,
   acala,
-  altair,
   astar,
   basilisk,
   bifrost,
