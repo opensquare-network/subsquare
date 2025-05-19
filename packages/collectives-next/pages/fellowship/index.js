@@ -22,6 +22,7 @@ import {
   useUnVotedOnlyContext,
 } from "next-common/components/referenda/list/unVotedContext";
 import FellowshipListLayout from "next-common/components/fellowship/fellowshipListLayout";
+import TrackPanel from "next-common/components/referenda/trackPanel";
 
 function useMyUnVotedReferendaPosts() {
   const [posts, setPosts] = useState();
@@ -182,6 +183,7 @@ export default function FellowshipPage({ fellowshipSummary }) {
   return (
     <CollectivesProvider section="fellowship">
       <FellowshipListLayout fellowshipSummary={fellowshipSummary}>
+        <TrackPanel className="mb-4" />
         <ReferendaList />
       </FellowshipListLayout>
     </CollectivesProvider>

@@ -26,7 +26,7 @@ export default function ReferendaPage({ title, gov2ReferendaSummary }) {
       summaryData={gov2ReferendaSummary}
     >
       <ActiveReferendaProvider pallet="referenda">
-        <TrackPanel headerTitle="OpenGov Tracks" className="mb-4" />
+        <TrackPanel className="mb-4" />
         <ReferendaList />
       </ActiveReferendaProvider>
     </ReferendaLayout>
