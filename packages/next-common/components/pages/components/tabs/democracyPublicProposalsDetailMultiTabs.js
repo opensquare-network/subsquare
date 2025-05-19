@@ -6,6 +6,7 @@ import Tabs from "next-common/components/tabs";
 import { useRouter } from "next/router";
 import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
 import { useDemocracyPublicProposalTimelineData } from "next-common/hooks/pages/timelineData";
+import tabsTooltipContentMap from "./tabsTooltipContentMap";
 
 const Metadata = dynamicClientOnly(() =>
   import("next-common/components/publicProposal/metadata"),
@@ -34,6 +35,7 @@ export default function DemocracyPublicProposalsDetailMultiTabs() {
             {
               value: "call",
               label: "Call",
+              tooltip: tabsTooltipContentMap.call,
               content: (
                 <DemocracyReferendumCallProvider>
                   <DemocracyPublicProposalCall

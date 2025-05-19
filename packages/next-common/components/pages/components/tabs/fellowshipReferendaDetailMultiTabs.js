@@ -7,6 +7,7 @@ import ReferendumCallProvider from "next-common/context/referenda/call";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
 import { useReferendumTimelineData } from "next-common/hooks/pages/timelineData";
+import tabsTooltipContentMap from "./tabsTooltipContentMap";
 
 const Gov2ReferendumMetadata = dynamicClientOnly(() =>
   import("next-common/components/gov2/referendum/metadata"),
@@ -37,6 +38,7 @@ export default function FellowshipReferendaDetailMultiTabs() {
             {
               value: "call",
               label: "Call",
+              tooltip: tabsTooltipContentMap.call,
               content: (
                 <ReferendumCallProvider>
                   <Gov2ReferendumCall />

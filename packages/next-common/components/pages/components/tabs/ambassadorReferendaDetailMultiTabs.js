@@ -6,6 +6,7 @@ import { useOnchainData } from "next-common/context/post";
 import { useReferendumInfo } from "next-common/hooks/referenda/useReferendumInfo";
 import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
 import { useReferendumTimelineData } from "next-common/hooks/pages/timelineData";
+import tabsTooltipContentMap from "./tabsTooltipContentMap";
 
 const Gov2ReferendumMetadata = dynamicClientOnly(() =>
   import("next-common/components/gov2/referendum/metadata"),
@@ -35,6 +36,7 @@ export default function AmbassadorReferendaDetailMultiTabs() {
             {
               value: "call",
               label: "Call",
+              tooltip: tabsTooltipContentMap.call,
               content: <Gov2ReferendumCall />,
             },
           ]

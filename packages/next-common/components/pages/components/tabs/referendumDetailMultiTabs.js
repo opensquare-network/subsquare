@@ -12,6 +12,7 @@ import Chains from "next-common/utils/consts/chains";
 import { useRouter } from "next/router";
 import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
 import { useReferendumTimelineData } from "next-common/hooks/pages/timelineData";
+import tabsTooltipContentMap from "./tabsTooltipContentMap";
 
 const Gov2ReferendumCall = dynamicClientOnly(() =>
   import("next-common/components/gov2/referendum/call"),
@@ -50,6 +51,7 @@ export default function ReferendumDetailMultiTabs() {
             {
               value: "call",
               label: "Call",
+              tooltip: tabsTooltipContentMap.call,
               content: (
                 <>
                   <ReferendumCallProvider>

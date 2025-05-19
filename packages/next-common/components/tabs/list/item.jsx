@@ -61,5 +61,9 @@ export default function TabsListItem({
     );
   }
 
-  return <Tooltip content={tooltip}>{content}</Tooltip>;
+  return (
+    <Tooltip contentClassName="max-w-[240px]" content={tooltip}>
+      {content}
+    </Tooltip>
+  );
 }

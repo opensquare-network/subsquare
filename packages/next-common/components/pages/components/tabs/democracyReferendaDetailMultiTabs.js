@@ -12,6 +12,7 @@ import Chains from "next-common/utils/consts/chains";
 import VotesBubbleViewTabs from "next-common/components/detail/detailMultiTabs/votesBubbleViewTabs";
 import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
 import { useDemocracyReferendaProposalTimelineData } from "next-common/hooks/pages/timelineData";
+import tabsTooltipContentMap from "./tabsTooltipContentMap";
 
 const Timeline = dynamicClientOnly(() =>
   import("next-common/components/timeline"),
@@ -48,6 +49,7 @@ export default function DemocracyReferendaDetailMultiTabs() {
       {
         value: "call",
         label: "Call",
+        tooltip: tabsTooltipContentMap.call,
         content: (
           <DemocracyReferendumCallProvider>
             <ReferendumCall
