@@ -69,7 +69,7 @@ function TrackPanel({ headerTitle = "", className = "" }) {
   return (
     <div className={cn(className)}>
       <AccordionCard title={title} defaultOpen={false}>
-        <div className="grid grid-cols-5 gap-x-2">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-2">
           {Object.keys(tracksDisplay).map((category, index) => (
             <div key={index + category} className="">
               <p className="ml-2">{categoryIconMap[category]}</p>
@@ -80,9 +80,8 @@ function TrackPanel({ headerTitle = "", className = "" }) {
                 {tracksDisplay[category].map((item, idx) => (
                   <li
                     key={idx}
-                    className="text12Medium text-textSecondary py-1.5 "
+                    className="text12Medium text-textSecondary py-1.5"
                   >
-                    {/* DOING */}
                     <TrackTooltip trackId={item.id}>
                       <span className="leading-4 px-2 bg-neutral200 rounded-[8px]">
                         <Link

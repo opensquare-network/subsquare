@@ -18,7 +18,7 @@ function TrackTooltip({ trackId, children, className = "", style = {} }) {
 
   return (
     <DesktopOnly>
-      <div className="flex items-center max-sm:hidden">
+      <div className="flex items-center">
         <HoverCard.Root>
           <HoverCard.Trigger asChild>{tooltipTrigger}</HoverCard.Trigger>
 

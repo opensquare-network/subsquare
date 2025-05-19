@@ -4,7 +4,7 @@ import { listPageCategory } from "next-common/utils/consts/business/category";
 import useRefCallback from "next-common/hooks/useRefCallback";
 import { backendApi } from "next-common/services/nextApi";
 import {
-  ambassadorTrackReferendaSummaryApi,
+  // ambassadorTrackReferendaSummaryApi,
   fellowshipReferendumsTracksSummaryApi,
   gov2ReferendumsTracksSummaryApi,
 } from "next-common/services/url";
@@ -18,7 +18,8 @@ function useTrackSummary() {
     [listPageCategory.REFERENDA]: gov2ReferendumsTracksSummaryApi,
     [listPageCategory.FELLOWSHIP_REFERENDA]:
       fellowshipReferendumsTracksSummaryApi,
-    [listPageCategory.AMBASSADOR_REFERENDA]: ambassadorTrackReferendaSummaryApi,
+    //TODO: provide support if we need to
+    // [listPageCategory.AMBASSADOR_REFERENDA]: ambassadorTrackReferendaSummaryApi,
   };
 
   const fetchTrackSummary = useRefCallback(async (trackId) => {
