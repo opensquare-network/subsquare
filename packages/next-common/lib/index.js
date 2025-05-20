@@ -81,12 +81,12 @@ export function withCommonProps(
         navSubmenuVisible: navSubmenuVisible || "{}",
         ...listPageProperties,
         ...detailPageProperties,
-        scanHeight: scanHeight ?? null,
-        relayScanHeight: relayScanHeight ?? null,
         pageProperties: {
           ...listPageProperties,
           ...detailPageProperties,
           userAgent,
+          scanHeight: scanHeight ?? null,
+          relayScanHeight: relayScanHeight ?? null,
           props: {
             ...getIdProperty(context),
             ...(props?.props || {}),

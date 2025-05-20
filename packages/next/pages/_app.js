@@ -11,13 +11,10 @@ import "next-common/styles/cmdk.css";
 import "next-common/styles/react-datepicker.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import Head from "next/head";
-import MaybeSubRelayScanStatus from "next-common/components/maybeSubRelayScanStatus";
 import SystemVersionUpgrade from "next-common/components/systemVersionUpgrade";
 import "@osn/previewer/styles.css";
 import "next-common/styles/markdown.css";
-import useInitMimir from "next-common/hooks/useInitMimir";
 import dynamic from "next/dynamic";
-import { useSubScanHeight } from "next-common/hooks/scanHeight";
 
 NProgress.configure({
   minimum: 0.3,
@@ -58,14 +55,8 @@ function AppImpl({ Component, pageProps }) {
     navCollapsed,
     navSubmenuVisible,
     pathname,
-    scanHeight,
-    relayScanHeight,
     ...otherProps
   } = pageProps;
-
-  useSubScanHeight(scanHeight);
-
-  useInitMimir();
 
   return (
     <>
@@ -86,9 +77,7 @@ function AppImpl({ Component, pageProps }) {
           pathname={pathname}
         >
           <ClientOnlySystemUpgrade />
-          <MaybeSubRelayScanStatus relayScanHeight={relayScanHeight}>
-            <Component {...otherProps} />
-          </MaybeSubRelayScanStatus>
+          <Component {...otherProps} />
         </GlobalProvider>
       </Provider>
     </>
