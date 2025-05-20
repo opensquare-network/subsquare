@@ -137,3 +137,5 @@ export const fellowshipInitialObj = {
   promotion: [],
   fast_promotion: [],
 };
+
+export const otherCategoryMaxCount = 10;
