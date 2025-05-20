@@ -1,12 +1,12 @@
 import TrackCategoryItem from "./trackCategoryItem";
 import { startCase } from "lodash-es";
 import React from "react";
-import CategoryIconDisplay from "./categoryIconDisplay";
+import CategoryIcon from "./categoryIcon";
 
 function NormalCategoryDisplay({ category, tracksDisplay }) {
   return (
     <div>
-      <CategoryIconDisplay category={category} />
+      <CategoryIcon category={category} />
       <p className="text14Bold text-textPrimary p-2">{startCase(category)}</p>
       <ul className="mb-3">
         {tracksDisplay?.[category].map((item, idx) => (

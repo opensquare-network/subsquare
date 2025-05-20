@@ -3,7 +3,7 @@ import { gov2CategoryIconMap, fellowshipCategoryIconMap } from "./consts";
 import { useListPageType } from "next-common/context/page";
 import { listPageCategory } from "next-common/utils/consts/business/category";
 
-function CategoryIconDisplay({ category }) {
+function CategoryIcon({ category }) {
   const listPageType = useListPageType();
   const iconsDisplay = useMemo(() => {
     if (listPageType === listPageCategory.REFERENDA) {
@@ -17,4 +17,4 @@ function CategoryIconDisplay({ category }) {
   return <p className="ml-2 mt-3">{iconsDisplay?.[category]}</p>;
 }
 
-export default React.memo(CategoryIconDisplay);
+export default React.memo(CategoryIcon);

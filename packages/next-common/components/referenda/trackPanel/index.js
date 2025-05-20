@@ -34,20 +34,27 @@ function TrackPanel({ className = "" }) {
     }
   });
 
+  const getTrackCategoryAndInitialObj = useRefCallback(() => {
+    const map = {
+      [listPageCategory.REFERENDA]: {
+        trackCategoryMap: gov2TrackCategoryMap,
+        initialObj: gov2InitialObj,
+      },
+      [listPageCategory.FELLOWSHIP_REFERENDA]: {
+        trackCategoryMap: fellowshipTrackCategoryMap,
+        initialObj: fellowshipInitialObj,
+      },
+    };
+    const { trackCategoryMap, initialObj: initialObjRaw } =
+      map[listPageType] || {};
+    const initialObj = JSON.parse(JSON.stringify(initialObjRaw));
+    return { trackCategoryMap, initialObj };
+  });
+
   const tracksDisplay = useMemo(() => {
     if (!tracks) return {};
-
-    let trackCategoryMap, initialObj;
-    if (listPageType === listPageCategory.REFERENDA) {
-      trackCategoryMap = gov2TrackCategoryMap;
-      initialObj = JSON.parse(JSON.stringify(gov2InitialObj));
-    }
-    if (listPageType === listPageCategory.FELLOWSHIP_REFERENDA) {
-      trackCategoryMap = fellowshipTrackCategoryMap;
-      initialObj = JSON.parse(JSON.stringify(fellowshipInitialObj));
-    }
-
-    const category_tracks = tracks
+    const { trackCategoryMap, initialObj } = getTrackCategoryAndInitialObj();
+    const categorizedTracks = tracks
       .map(({ id, name, activeCount }) => ({
         id,
         name: startCase(name),
@@ -68,17 +75,16 @@ function TrackPanel({ className = "" }) {
 
     if (listPageType === listPageCategory.REFERENDA) {
       if (
-        isOthersExceedMax(category_tracks) ||
-        isOnlyOthersCategory(category_tracks, otherCategoryMaxCount)
+        isOthersExceedMax(categorizedTracks) ||
+        isOnlyOthersCategory(categorizedTracks, otherCategoryMaxCount)
       ) {
-        const allCategories = Object.values(category_tracks).flat();
-        category_tracks.others = allCategories;
+        categorizedTracks.others = Object.values(categorizedTracks).flat();
         setIsOthersExceeding(true);
       }
     }
 
-    return category_tracks ?? {};
-  }, [combinePathWithId, listPageType, tracks]);
+    return categorizedTracks ?? {};
+  }, [combinePathWithId, getTrackCategoryAndInitialObj, listPageType, tracks]);
 
   return (
     <div className={cn(className)}>
