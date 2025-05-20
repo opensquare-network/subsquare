@@ -1,10 +1,10 @@
-import nextApi from "../nextApi";
+import { backendApi } from "../nextApi";
 import BigNumber from "bignumber.js";
 
 const apiUrl = "escrow/stats";
 
 export async function fetchEscrow(decimals) {
-  const { result: resp } = await nextApi.fetch(apiUrl);
+  const { result: resp } = await backendApi.fetch(apiUrl);
   const totalSupply = resp.map((i) => ({
     time: i?.indexer?.blockTime,
     count: new BigNumber(i.totalSupply).div(Math.pow(10, decimals)),

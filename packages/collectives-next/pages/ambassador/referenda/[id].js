@@ -1,5 +1,5 @@
 import { withCommonProps } from "next-common/lib";
-import nextApi, { backendApi } from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import {
   ambassadorParamsApi,
   getAmbassadorReferendumCommentsUrl,
@@ -96,7 +96,7 @@ function ReferendumPageImpl() {
               api.query.ambassadorReferenda?.referendumInfoFor(id)
             }
             serverPostFetcher={() =>
-              nextApi.fetch(getAmbassadorReferendumUrl(id))
+              backendApi.fetch(getAmbassadorReferendumUrl(id))
             }
           />
         }

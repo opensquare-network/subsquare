@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import {
   setAllVotes,
   setLoading,
@@ -40,7 +40,7 @@ export default function useDemocracyVotesFromServer(referendumIndex) {
   useEffect(() => {
     if (!reduxVotes) {
       dispatch(setLoading(true));
-      nextApi
+      backendApi
         .fetch(`democracy/referenda/${referendumIndex}/votes`)
         .then(({ result: votes }) => setVotes(votes))
         .finally(() => setTimeout(() => dispatch(setLoading(false)), 1));
