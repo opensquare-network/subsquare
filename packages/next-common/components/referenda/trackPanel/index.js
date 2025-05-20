@@ -1,66 +1,27 @@
 import React, { useMemo, useState } from "react";
 import { cn } from "next-common/utils";
 import AccordionCard from "next-common/components/styled/containers/accordionCard";
-import { MenuTracks } from "@osn/icons/subsquare";
-import { startCase, isNil } from "lodash-es";
+import { startCase } from "lodash-es";
 import {
   gov2TrackCategoryMap,
-  gov2CategoryIconMap,
   gov2InitialObj,
   fellowshipTrackCategoryMap,
-  fellowshipCategoryIconMap,
   fellowshipInitialObj,
   otherCategoryMaxCount,
 } from "./consts";
-import Link from "next/link";
-import TrackTooltip from "./trackTooltip";
 import { useTrackList } from "next-common/components/summary/newProposalPopup/useTrackDetail";
 import { useListPageType } from "next-common/context/page";
 import { listPageCategory } from "next-common/utils/consts/business/category";
 import useRefCallback from "next-common/hooks/useRefCallback";
 import { isOnlyOthersCategory, isOthersExceedMax } from "./utils";
-
-function TrackCategoryItem({ item }) {
-  return (
-    <TrackTooltip trackId={item.id}>
-      <span className="leading-4 px-2 py-[2px] bg-neutral200 rounded-[8px]">
-        <Link
-          href={item.path}
-          className="hover:underline hover:decoration-neutral500"
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-        >
-          {item.name}
-        </Link>
-      </span>
-
-      {!isNil(item.activeCount) && item.activeCount > 0 && (
-        <span>
-          <span className="px-2">·</span>
-          <span className="text-textTertiary">{item.activeCount}</span>
-        </span>
-      )}
-    </TrackTooltip>
-  );
-}
+import NormalCategoryDisplay from "./normalCategoryDisplay";
+import OthersExceedingDisplay from "./otherExceedingDisplay";
+import TrackPanelTitle from "./trackPanelTitle";
 
 function TrackPanel({ className = "" }) {
   const tracks = useTrackList();
   const listPageType = useListPageType();
   const [isOthersExceeding, setIsOthersExceeding] = useState(false);
-
-  let title = (
-    <div
-      className={cn(
-        "flex items-center",
-        "text14Bold text-textPrimary capitalize",
-      )}
-    >
-      <MenuTracks className="mr-2 w-6 h-6 [&_path]:fill-textSecondary" />
-      <span className="group-hover/title:underline">Referenda Tracks</span>
-    </div>
-  );
 
   const combinePathWithId = useRefCallback((id) => {
     switch (listPageType) {
@@ -119,66 +80,31 @@ function TrackPanel({ className = "" }) {
     return category_tracks ?? {};
   }, [combinePathWithId, listPageType, tracks]);
 
-  const iconsDisplay = useMemo(() => {
-    if (listPageType === listPageCategory.REFERENDA) {
-      return gov2CategoryIconMap;
-    }
-    if (listPageType === listPageCategory.FELLOWSHIP_REFERENDA) {
-      return fellowshipCategoryIconMap;
-    }
-  }, [listPageType]);
-
   return (
     <div className={cn(className)}>
-      <AccordionCard title={title} defaultOpen={false} className="px-4">
+      <AccordionCard
+        title={<TrackPanelTitle />}
+        defaultOpen={false}
+        className="px-4"
+      >
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-2">
           {Object.keys(tracksDisplay).map((category, index) => {
             if (!isOthersExceeding) {
               return (
-                <div key={category + index}>
-                  <p className="ml-2 mt-3">{iconsDisplay?.[category]}</p>
-                  <p className="text14Bold text-textPrimary p-2">
-                    {startCase(category)}
-                  </p>
-                  <ul className="mb-3">
-                    {tracksDisplay?.[category].map((item, idx) => (
-                      <li
-                        key={idx}
-                        className="text12Medium text-textSecondary py-1.5"
-                      >
-                        <TrackCategoryItem item={item} />
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                <NormalCategoryDisplay
+                  category={category}
+                  key={category + index}
+                  tracksDisplay={tracksDisplay}
+                />
               );
             } else {
-              if (category === "others") {
-                const chunkSize = 8;
-                const chunks = [];
-                for (
-                  let i = 0;
-                  i < tracksDisplay[category].length;
-                  i += chunkSize
-                ) {
-                  chunks.push(tracksDisplay[category].slice(i, i + chunkSize));
-                }
-
-                return chunks.map((chunk, chunkIndex) => (
-                  <div key={`${chunk}-${chunkIndex}`}>
-                    <ul className="my-3">
-                      {chunk.map((item, idx) => (
-                        <li
-                          key={idx}
-                          className="text12Medium text-textSecondary py-1.5"
-                        >
-                          <TrackCategoryItem item={item} />
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ));
-              }
+              return (
+                <OthersExceedingDisplay
+                  category={category}
+                  tracksDisplay={tracksDisplay}
+                  key={category}
+                />
+              );
             }
           })}
         </div>
