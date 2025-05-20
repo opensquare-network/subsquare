@@ -56,6 +56,7 @@ export default function RecentProposalTemplate({
     return {
       value: m.name,
       label: m.name,
+      tooltip: m.tooltip,
       activeCount: m.activeCount,
       content: (
         <TableTemplate tabTableLoaded={tabTableLoaded} label={m.name} {...m} />
