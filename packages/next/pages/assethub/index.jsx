@@ -33,29 +33,23 @@ if (isAssetHubSupported) {
 }
 
 function ConditionAssetHubPage({ children }) {
-  const BaseComponent = () => (
-    <Provider store={store}>
-      <ChainProvider chain={chain}>
-        <ApiProvider>{children}</ApiProvider>
-      </ChainProvider>
-    </Provider>
-  );
-
   if (isAssetHubMigrated) {
-    return <BaseComponent />;
+    return children;
   }
 
-  return (
-    <RelayInfoProvider>
-      <BaseComponent />
-    </RelayInfoProvider>
-  );
+  return <RelayInfoProvider>{children}</RelayInfoProvider>;
 }
 
 export default function AssetHubPage() {
   return (
     <ConditionAssetHubPage>
-      <AssetHubOverviewPageImpl />
+      <Provider store={store}>
+        <ChainProvider chain={chain}>
+          <ApiProvider>
+            <AssetHubOverviewPageImpl />
+          </ApiProvider>
+        </ChainProvider>
+      </Provider>
     </ConditionAssetHubPage>
   );
 }
