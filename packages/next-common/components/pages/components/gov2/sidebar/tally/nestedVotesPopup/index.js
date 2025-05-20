@@ -135,11 +135,9 @@ function CachedVotesList({ items, loading }) {
 
 const VotesList = memo(CachedVotesList);
 
-const VotesListView = memo(function VotesListView({
-  items,
-  loading,
-  rowClick,
-}) {
+const VotesListView = memo(CachedVotesListView);
+
+function CachedVotesListView({ items, loading, rowClick }) {
   const chainSettings = useChainSettings();
   const itemHeight = usePopupItemHeight();
   const symbol = chainSettings.voteSymbol || chainSettings.symbol;
@@ -200,4 +198,4 @@ const VotesListView = memo(function VotesListView({
       />
     </PopupListWrapper>
   );
-});
+}
