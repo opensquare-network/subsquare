@@ -12,12 +12,13 @@ import "next-common/styles/react-datepicker.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import Head from "next/head";
 import ScanStatusComponent from "next-common/components/scanStatus";
+import RelayScanStatusComponent from "next-common/components/relayScanStatus";
 import SystemVersionUpgrade from "next-common/components/systemVersionUpgrade";
 import "@osn/previewer/styles.css";
 import "next-common/styles/markdown.css";
 import useInitMimir from "next-common/hooks/useInitMimir";
 import dynamic from "next/dynamic";
-// import ErrorBoundary from "next-common/components/errorBoundary";
+import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated";
 
 NProgress.configure({
   minimum: 0.3,
@@ -47,6 +48,18 @@ const ClientOnlySystemUpgrade = dynamic(
   },
 );
 
+function MaybeRelayScanStatus({ relayScanHeight, children }) {
+  if (isAssetHubMigrated()) {
+    return (
+      <RelayScanStatusComponent relayScanHeight={relayScanHeight}>
+        {children}
+      </RelayScanStatusComponent>
+    );
+  }
+
+  return children;
+}
+
 function MyApp({ Component, pageProps }) {
   if (!process.env.NEXT_PUBLIC_CHAIN) {
     throw new Error("NEXT_PUBLIC_CHAIN env not set");
@@ -68,6 +81,7 @@ function MyApp({ Component, pageProps }) {
     navSubmenuVisible,
     pathname,
     scanHeight,
+    relayScanHeight,
     ...otherProps
   } = pageProps;
 
@@ -92,16 +106,9 @@ function MyApp({ Component, pageProps }) {
           <ClientOnlySystemUpgrade />
 
           <ScanStatusComponent scanHeight={scanHeight}>
-            {/* The error boundary is not in use temporarily */}
-            {/* <ErrorBoundary
-              key={resetKey}
-              user={user}
-              onReset={handleErrorReset}
-              isPartialComponent={false}
-            >
+            <MaybeRelayScanStatus relayScanHeight={relayScanHeight}>
               <Component {...otherProps} />
-            </ErrorBoundary> */}
-            <Component {...otherProps} />
+            </MaybeRelayScanStatus>
           </ScanStatusComponent>
         </GlobalProvider>
       </Provider>

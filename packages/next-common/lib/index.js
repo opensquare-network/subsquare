@@ -12,7 +12,11 @@ import fetchUserStatus from "next-common/lib/fetchUserStatus";
 import { adminsApi } from "next-common/services/url";
 import nextApi from "next-common/services/nextApi";
 import { getConnectedAccount } from "next-common/services/serverSide/getConnectedAccount";
-import { fetchScanHeight } from "next-common/services/fetchScanHeight";
+import {
+  fetchRelayScanHeight,
+  fetchScanHeight,
+} from "next-common/services/fetchScanHeight";
+import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated";
 
 async function defaultGetServerSideProps() {
   return { props: {} };
@@ -49,6 +53,11 @@ export function withCommonProps(
       fetchScanHeight(),
     ]);
 
+    let relayScanHeight = null;
+    if (isAssetHubMigrated()) {
+      relayScanHeight = await fetchRelayScanHeight();
+    }
+
     if (context.resolvedUrl?.startsWith("/settings/") && !user) {
       const { unsubscribe } = context.query;
       if (!unsubscribe) {
@@ -73,6 +82,7 @@ export function withCommonProps(
         ...listPageProperties,
         ...detailPageProperties,
         scanHeight: scanHeight ?? null,
+        relayScanHeight: relayScanHeight ?? null,
         pageProperties: {
           ...listPageProperties,
           ...detailPageProperties,

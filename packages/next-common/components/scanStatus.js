@@ -3,28 +3,13 @@ import { useChainSettings } from "next-common/context/chain";
 import { sleep } from "next-common/utils";
 import { useSetScanHeight } from "next-common/hooks/scanHeight";
 
-export default function ScanStatusComponent({ children, scanHeight }) {
-  const { blockTime } = useChainSettings();
+export function useSubScanHeight({ url, timeout, setScanHeight }) {
   const [reconnect, setReconnect] = useState(0);
-  const setScanHeight = useSetScanHeight();
-
-  const interval = parseInt(blockTime) || 12000;
-
-  useEffect(() => {
-    if (scanHeight) {
-      setScanHeight(scanHeight);
-    }
-  }, [setScanHeight, scanHeight]);
 
   useEffect(() => {
     let aborted = false;
 
-    fetch(
-      new URL(
-        `stream/scan-height?interval=${interval}`,
-        process.env.NEXT_PUBLIC_BACKEND_API_END_POINT,
-      ),
-    )
+    fetch(new URL(url, process.env.NEXT_PUBLIC_BACKEND_API_END_POINT))
       .then(async (response) => {
         if (!response.ok) {
           throw new Error(response.statusText);
@@ -45,7 +30,7 @@ export default function ScanStatusComponent({ children, scanHeight }) {
             new Promise((_, reject) =>
               setTimeout(
                 () => reject(new Error("Read scan height timeout")),
-                10 * interval,
+                timeout,
               ),
             ),
           ]);
@@ -72,7 +57,26 @@ export default function ScanStatusComponent({ children, scanHeight }) {
     return () => {
       aborted = true;
     };
-  }, [reconnect, interval, setScanHeight]);
+  }, [reconnect, url, timeout, setScanHeight]);
+}
+
+export default function ScanStatusComponent({ children, scanHeight }) {
+  const { blockTime } = useChainSettings();
+  const setScanHeight = useSetScanHeight();
+
+  const interval = parseInt(blockTime) || 12000;
+
+  useSubScanHeight({
+    url: `stream/scan-height?interval=${interval}`,
+    timeout: 10 * interval,
+    setScanHeight,
+  });
+
+  useEffect(() => {
+    if (scanHeight) {
+      setScanHeight(scanHeight);
+    }
+  }, [setScanHeight, scanHeight]);
 
   return children;
 }
