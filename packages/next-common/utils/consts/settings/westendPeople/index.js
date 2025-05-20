@@ -1,15 +1,15 @@
 import dynamic from "next/dynamic";
 import Chains from "../../chains";
-import westend from "../westend";
+import westendCommonCfg from "next-common/utils/consts/settings/westend/common";
 
 const ProjectIconWestendPeople = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconWestendPeople"),
 );
 
 const westendPeople = {
-  ...westend,
-  name: "People",
   value: Chains.westendPeople,
+  name: "People",
+  ...westendCommonCfg,
   description:
     "A comprehensive view of identity management and social interaction activities within the ecosystem.",
   avatar: ProjectIconWestendPeople,

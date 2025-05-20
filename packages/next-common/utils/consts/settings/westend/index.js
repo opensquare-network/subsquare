@@ -2,11 +2,11 @@ import dynamic from "next/dynamic";
 import { defaultPostLabels } from "next-common/utils/consts/settings/common";
 import MenuGroups from "next-common/utils/consts/settings/menuGroups";
 import polkadotLinks from "next-common/utils/consts/settings/polkadot/links";
-import { westendThemeVars } from "next-common/utils/consts/settings/westend/theme";
 import capitalize from "../../../capitalize";
 import Chains from "../../chains";
 import { westendRelayChainNodes, westendAssetHubNodes } from "./nodes";
 import { mergeChainModules } from "../common/modules";
+import westendCommonCfg from "next-common/utils/consts/settings/westend/common";
 
 const ProjectIconWestendDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconWestendDark"),
@@ -14,34 +14,23 @@ const ProjectIconWestendDark = dynamic(() =>
 const ProjectIconWestendLight = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconWestendLight"),
 );
-const ProjectLogoWestendDark = dynamic(() =>
-  import("@osn/icons/subsquare/ProjectLogoWestendDark"),
-);
-const ProjectLogoWestendLight = dynamic(() =>
-  import("@osn/icons/subsquare/ProjectLogoWestendLight"),
-);
 
 const name = Chains.westend;
 
 const westend = {
   value: name,
   name: capitalize(name),
-  identity: name,
-  symbol: "WND",
-  decimals: 12,
-  ss58Format: 42,
+  ...westendCommonCfg,
   blockTime: 6000,
+  assetHubMigrated: true,
   endpoints: westendAssetHubNodes,
   relayChainEndpoints: westendRelayChainNodes,
   avatar: ProjectIconWestendLight,
   darkAvatar: ProjectIconWestendDark,
-  navLogo: ProjectLogoWestendLight,
-  navLogoDark: ProjectLogoWestendDark,
   group: MenuGroups.WestendAndParachains,
   links: polkadotLinks,
   postLabels: defaultPostLabels,
   description: "Westend is the primary test network of Polkadot.",
-  ...westendThemeVars,
   modules: mergeChainModules({
     referenda: true,
     democracy: false,

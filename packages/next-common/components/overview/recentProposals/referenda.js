@@ -10,6 +10,7 @@ import {
 } from "./columns";
 import { overviewApi } from "next-common/services/url";
 import { usePageProps } from "next-common/context/page";
+import { trackTooltipTextMap } from "next-common/components/gov2/trackTag";
 
 export function useRecentProposalReferenda() {
   const { recentSummary, recentProposals } = usePageProps();
@@ -38,6 +39,7 @@ export function useRecentProposalReferenda() {
 
     return {
       ...item,
+      tooltip: trackTooltipTextMap[item.value],
       api,
       formatter: (data) => normalizeGov2ReferendaListItem(data, tracks),
       columns: [

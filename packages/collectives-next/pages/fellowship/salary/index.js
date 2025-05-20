@@ -1,4 +1,4 @@
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import FellowshipSalaryCommon from "next-common/components/fellowship/salary/common";
 import FellowshipHistoryCyclesSection from "next-common/components/fellowship/salary/cycles/section";
 import FellowshipSalaryActiveCycle from "next-common/components/fellowship/salary/cycles/current";
@@ -14,7 +14,7 @@ export default function FellowshipSalaryPage() {
 }
 
 export const getServerSideProps = withFellowshipSalaryCommonProps(async () => {
-  const { result: historyCycles = {} } = await nextApi.fetch(
+  const { result: historyCycles = {} } = await backendApi.fetch(
     "fellowship/salary/history_cycles",
   );
 

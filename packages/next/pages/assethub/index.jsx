@@ -31,9 +31,19 @@ if (isAssetHubSupported) {
   });
 }
 
+export function ConditionRelayInfoProvider({ children }) {
+  const isAssetHubMigrated = getChainSettings(CHAIN)?.assetHubMigrated;
+
+  if (isAssetHubMigrated) {
+    return children;
+  }
+
+  return <RelayInfoProvider>{children}</RelayInfoProvider>;
+}
+
 export default function AssetHubPage() {
   return (
-    <RelayInfoProvider>
+    <ConditionRelayInfoProvider>
       <Provider store={store}>
         <ChainProvider chain={chain}>
           <ApiProvider>
@@ -41,7 +51,7 @@ export default function AssetHubPage() {
           </ApiProvider>
         </ChainProvider>
       </Provider>
-    </RelayInfoProvider>
+    </ConditionRelayInfoProvider>
   );
 }
 

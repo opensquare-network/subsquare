@@ -5,9 +5,8 @@ import {
   toPolkassemblyCommentListItem,
 } from "next-common/utils/polkassembly";
 import { useChain } from "next-common/context/chain";
-import { isNil } from "lodash-es";
-import nextApi from "next-common/services/nextApi";
-import { uniqBy } from "lodash-es";
+import { isNil, uniqBy } from "lodash-es";
+import { backendApi } from "next-common/services/nextApi";
 import QuickLRU from "quick-lru";
 
 const dataCache = new QuickLRU({ maxSize: 100 });
@@ -38,7 +37,7 @@ export function usePolkassemblyPostData({
     }
 
     setLoadingComments(true);
-    nextApi
+    backendApi
       .fetch("polkassembly-comments", {
         postId: polkassemblyId,
         postType: polkassemblyPostType,

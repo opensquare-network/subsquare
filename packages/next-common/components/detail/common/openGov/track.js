@@ -13,7 +13,7 @@ export default function ReferendaTrack({ section = "referenda" }) {
     <div>
       <Link href={href} passHref>
         <LinkInfo>
-          <Gov2TrackTag name={trackName} />
+          <Gov2TrackTag name={trackName} id={trackId} />
         </LinkInfo>
       </Link>
     </div>

@@ -1,7 +1,5 @@
 import BigNumber from "bignumber.js";
-import { groupBy } from "lodash-es";
-import { isNil } from "lodash-es";
-import { sumBy } from "lodash-es";
+import { groupBy, isNil, sumBy } from "lodash-es";
 import { calcVotes } from "next-common/utils/democracy/votes/passed/common";
 import { Conviction } from "next-common/utils/referendumCommon";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -10,12 +8,12 @@ import { getGov2BeenDelegatedListByAddress } from "../../gov2/gov2ReferendumVote
 import { useAsync, useMountedState } from "react-use";
 import useRealAddress from "../useRealAddress";
 import { useContextApi } from "next-common/context/api";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 
 export function useServerAllBeenDelegatedList(address) {
   const { tracks = [] } = usePageProps();
   const { value, loading } = useAsync(async () => {
-    const { result } = await nextApi.fetch(
+    const { result } = await backendApi.fetch(
       `users/${address}/referenda/delegators`,
     );
     return result || [];
