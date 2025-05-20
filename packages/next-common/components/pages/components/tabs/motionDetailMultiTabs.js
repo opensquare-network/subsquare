@@ -6,6 +6,7 @@ import { usePost } from "next-common/context/post";
 import { useCouncilMotionBusinessData } from "next-common/hooks/useCouncilMotionBusinessData";
 import { useMotionTimelineData } from "next-common/hooks/pages/timelineData";
 import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
+import tabsTooltipContentMap from "./tabsTooltipContentMap";
 
 const Metadata = dynamicClientOnly(() => import("../motion/metadata"));
 const Timeline = dynamicClientOnly(() =>
@@ -38,11 +39,18 @@ export default function MotionDetailMultiTabs() {
             {
               value: "call",
               label: "Call",
+              tooltip: tabsTooltipContentMap.call,
               content: <CollectiveCall call={post.onchainData.proposal} />,
             },
           ]
         : []),
-      { value: "metadata", label: "Metadata", content: <Metadata /> },
+      {
+        value: "metadata",
+        label: "Metadata",
+        tooltip: tabsTooltipContentMap.metadata,
+
+        content: <Metadata />,
+      },
       {
         value: "timeline",
         label: "Timeline",

@@ -4,13 +4,20 @@ import {
   Header,
   BorderedRow,
 } from "next-common/components/referenda/tally/styled";
+import Tooltip from "next-common/components/tooltip";
 
 export default function Issuance({ issuance }) {
   return (
     <BorderedRow>
       <Header>
         <TurnoutIcon />
-        Issuance
+        <Tooltip
+          className="cursor-pointer"
+          contentClassName="max-w-[240px]"
+          content="The total supply of tokens in circulation. Used to calculate voting power percentages like support and approval thresholds."
+        >
+          Issuance
+        </Tooltip>
       </Header>
       <SymbolValue value={issuance} />
     </BorderedRow>

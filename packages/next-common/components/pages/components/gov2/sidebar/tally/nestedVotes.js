@@ -7,6 +7,7 @@ import {
   showVotesNumberSelector,
 } from "next-common/store/reducers/referenda/votes/selectors";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import Tooltip from "next-common/components/tooltip";
 
 const NestedVotesPopup = dynamicPopup(() => import("./nestedVotesPopup"));
 
@@ -31,7 +32,12 @@ export default function NestedVotes() {
 
   return (
     <>
-      <Button onClick={() => setShowNestedVotes(true)}>Nested</Button>
+      <Tooltip
+        contentClassName="max-w-[240px]"
+        content="Groups votes by delegate or multisig, showing hierarchy."
+      >
+        <Button onClick={() => setShowNestedVotes(true)}>Nested</Button>
+      </Tooltip>
 
       {showNestedVotes && (
         <NestedVotesPopup

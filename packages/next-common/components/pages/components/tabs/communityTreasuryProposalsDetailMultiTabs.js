@@ -5,6 +5,7 @@ import useTreasuryTimelineData from "next-common/components/pages/components/tre
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { usePost } from "next-common/context/post";
 import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
+import tabsTooltipContentMap from "./tabsTooltipContentMap";
 
 const Metadata = dynamicClientOnly(() =>
   import("next-common/components/treasury/proposal/metadata"),
@@ -27,6 +28,7 @@ export default function CommunityTreasuryProposalsDetailMultiTabs() {
       {
         value: "metadata",
         label: "Metadata",
+        tooltip: tabsTooltipContentMap.metadata,
         content: <Metadata treasuryProposal={detail?.onchainData} />,
       },
       {

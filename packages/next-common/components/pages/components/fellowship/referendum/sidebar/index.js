@@ -7,7 +7,6 @@ import { gov2VotingState } from "next-common/utils/consts/state";
 import { InlineWrapper } from "next-common/components/detail/sidebar/styled";
 import Popup from "../votePopup";
 import PrimaryButton from "next-common/lib/button/primary";
-import HowOpenGovWorks from "next-common/components/howOpenGovWorks";
 import { VoteSuccessfulProvider } from "next-common/components/vote";
 import VoteSuccessfulPopup from "../votePopup/voteSuccessful";
 import { isNil, isUndefined, noop } from "lodash-es";
@@ -19,6 +18,7 @@ import dynamic from "next/dynamic";
 import AllSpendsRequest from "./request/allSpendsRequest";
 import useRankedCollectiveMinRank from "next-common/hooks/collectives/useRankedCollectiveMinRank";
 import FellowshipReferendumCleanupPoll from "next-common/components/fellowship/referenda/cleanupPoll";
+import { HowReferendaWorks } from "next-common/components/howOpenGovWorks";
 
 const MyCollectiveVote = dynamic(
   () => import("next-common/components/collectives/referenda/myCollectiveVote"),
@@ -104,7 +104,7 @@ export default function FellowshipReferendumSideBar() {
       </VoteSuccessfulProvider>
       <FellowshipReferendumCleanupPoll />
       <InlineWrapper>
-        <HowOpenGovWorks anchor="polkadot-fellowship" />
+        <HowReferendaWorks />
       </InlineWrapper>
     </RightBarWrapper>
   );
