@@ -25,7 +25,7 @@ function Divider({ className = "" }) {
 
 function LineBox({ className = "", children }) {
   return (
-    <p
+    <div
       className={cn(
         "flex",
         "flex-1",
@@ -37,7 +37,7 @@ function LineBox({ className = "", children }) {
       )}
     >
       {React.Children.map(children, (child) => React.cloneElement(child))}
-    </p>
+    </div>
   );
 }
 
