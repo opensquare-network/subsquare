@@ -115,7 +115,7 @@ export function getTrackColumn({ hrefPrefix = "", ...props }) {
           href={`${hrefPrefix}/${data.track}`}
           {...props}
         >
-          <Gov2TrackTag name={data.trackName} />
+          <Gov2TrackTag name={data.trackName} id={data.track} />
         </Link>
       );
     },

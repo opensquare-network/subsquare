@@ -42,7 +42,7 @@ export default function TypeTag({ type }) {
     tag = (
       <Link href={href} passHref>
         <LinkInfo>
-          <Gov2TrackTag name={trackName} />
+          <Gov2TrackTag name={trackName} id={trackId} />
         </LinkInfo>
       </Link>
     );
