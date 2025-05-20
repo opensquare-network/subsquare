@@ -117,7 +117,7 @@ const ajuna = {
     },
   }),
   integrations: {
-    subscan: true,
+    statescan: true,
   },
   sima: true,
   allowWeb2Login: false,
