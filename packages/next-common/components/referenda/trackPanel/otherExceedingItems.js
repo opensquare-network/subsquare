@@ -1,13 +1,13 @@
 import TrackCategoryItem from "./trackCategoryItem";
 import React from "react";
 
-function OthersExceedingDisplay({ category, tracksDisplay }) {
+function OthersExceedingItems({ category, trackList }) {
   if (category !== "others") return null;
 
   const chunkSize = 8;
   const chunks = [];
-  for (let i = 0; i < tracksDisplay[category].length; i += chunkSize) {
-    chunks.push(tracksDisplay[category].slice(i, i + chunkSize));
+  for (let i = 0; i < trackList[category].length; i += chunkSize) {
+    chunks.push(trackList[category].slice(i, i + chunkSize));
   }
 
   return chunks.map((chunk, chunkIndex) => (
@@ -23,4 +23,4 @@ function OthersExceedingDisplay({ category, tracksDisplay }) {
   ));
 }
 
-export default React.memo(OthersExceedingDisplay);
+export default React.memo(OthersExceedingItems);

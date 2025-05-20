@@ -14,8 +14,8 @@ import { useListPageType } from "next-common/context/page";
 import { listPageCategory } from "next-common/utils/consts/business/category";
 import useRefCallback from "next-common/hooks/useRefCallback";
 import { isOnlyOthersCategory, isOthersExceedMax } from "./utils";
-import NormalCategoryDisplay from "./normalCategoryDisplay";
-import OthersExceedingDisplay from "./otherExceedingDisplay";
+import NormalCategoryItems from "./normalCategoryItems";
+import OthersExceedingItems from "./otherExceedingItems";
 import TrackPanelTitle from "./trackPanelTitle";
 
 function TrackPanel({ className = "" }) {
@@ -51,7 +51,7 @@ function TrackPanel({ className = "" }) {
     return { trackCategoryMap, initialObj };
   });
 
-  const tracksDisplay = useMemo(() => {
+  const trackList = useMemo(() => {
     if (!tracks) return {};
     const { trackCategoryMap, initialObj } = getTrackCategoryAndInitialObj();
     const categorizedTracks = tracks
@@ -94,20 +94,20 @@ function TrackPanel({ className = "" }) {
         className="px-4"
       >
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-2">
-          {Object.keys(tracksDisplay).map((category, index) => {
+          {Object.keys(trackList).map((category, index) => {
             if (!isOthersExceeding) {
               return (
-                <NormalCategoryDisplay
+                <NormalCategoryItems
                   category={category}
                   key={category + index}
-                  tracksDisplay={tracksDisplay}
+                  trackList={trackList}
                 />
               );
             } else {
               return (
-                <OthersExceedingDisplay
+                <OthersExceedingItems
                   category={category}
-                  tracksDisplay={tracksDisplay}
+                  trackList={trackList}
                   key={category}
                 />
               );
