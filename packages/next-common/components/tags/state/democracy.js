@@ -14,16 +14,22 @@ const proposalTagMap = {
   FastTracked: PositiveTag,
 };
 
+const proposedTooltip = "Submitted and waiting to enter voting";
+const canceledRoolrip = "Proposal was canceled before voting started";
+const removedTooltip = "Proposal has been removed from the process";
+const tabledTooltip = "Proposal has been scheduled for voting";
+const fastTrackedTooltip = "Proposal has been marked for expedited processing";
+
 const proposalTooltipMap = {
-  Proposed: "Submitted and waiting to enter voting",
-  Tabled: "Proposal has been scheduled for voting",
-  Canceled: "Proposal was canceled before voting started",
+  Proposed: proposedTooltip,
+  Tabled: tabledTooltip,
+  Canceled: canceledRoolrip,
   Cleared: "Proposal has been cleared for the next step",
-  ProposalCanceled: "Proposal was canceled before voting started",
-  Removed: "Proposal has been removed from the process",
+  ProposalCanceled: canceledRoolrip,
+  Removed: removedTooltip,
 
   // In timeline
-  FastTracked: "Proposal has been marked for expedited processing",
+  FastTracked: fastTrackedTooltip,
 };
 
 export function DemocracyProposalTag({ state }) {
@@ -53,17 +59,17 @@ const externalTagMap = {
 };
 
 const externalTooltipMap = {
-  Proposed: "Submitted and waiting to enter voting",
+  Proposed: proposedTooltip,
   Tabled: "Proposal has been scheduled for decision",
   Overwritten: "Proposal was replaced by a new submission",
   Vetoed: "Proposal was rejected by a veto authority",
-  Removed: "Proposal has been removed from the process",
+  Removed: removedTooltip,
 
   // In timeline
   externalProposeMajority:
     "External proposal submitted, awaiting majority decision",
   ExternalTabled: "External proposal has been scheduled for decision",
-  fastTrack: "Proposal has been marked for expedited processing",
+  fastTrack: fastTrackedTooltip,
 };
 
 export function DemocracyExternalTag({ state }) {
@@ -92,8 +98,8 @@ const referendumTagMap = {
 };
 
 const referendumTooltipMap = {
-  Tabled: "Proposal has been scheduled for voting",
-  FastTrack: "Proposal has been marked for expedited processing",
+  Tabled: tabledTooltip,
+  FastTrack: fastTrackedTooltip,
 
   Started: "Voting process has officially begun",
   Ongoing: "Process is active and awaiting next stage",
@@ -104,7 +110,7 @@ const referendumTooltipMap = {
   PreimageMissing: "Required preimage data is missing",
   PreimageInvalid: "Provided preimage data is invalid",
 
-  Removed: "Proposal has been removed from the process",
+  Removed: removedTooltip,
 };
 
 export function DemocracyReferendumTag({ state, args }) {

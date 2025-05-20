@@ -17,13 +17,25 @@ const stateTagMap = {
   RejectVoting: NegativeTag,
 };
 
+const proposedTooltip = "Submitted and waiting to enter voting";
+const awardedTooltip = "Proposal has been granted a reward";
+const approvedTooltip = "Vote passed but action not yet executed";
+const rejectedTooltip = "Vote failed and proposal not pass";
+const approveVotingTooltip =
+  "Voting process has started to approve the proposal";
+const rejectVotingTooltip = "Voting process has started to reject the proposal";
+const pendingPayoutTooltip = "Awaiting payout after approval";
+const canceledTooltip = "Proposal was canceled before voting started";
+const acceptCuratorTooltip = "Curator has accepted the responsibility";
+const proposeCuratorTooltip = "A curator candidate has been nominated";
+
 const treasuryTooltipMap = {
-  Proposed: "Submitted and waiting to enter voting",
-  Awarded: "Proposal has been granted a reward",
-  Approved: "Vote passed but action not yet executed",
-  Rejected: "Vote failed and proposal not pass",
-  ApproveVoting: "Voting process has started to approve the proposal",
-  RejectVoting: "Voting process has started to reject the proposal",
+  Proposed: proposedTooltip,
+  Awarded: awardedTooltip,
+  Approved: approvedTooltip,
+  Rejected: rejectedTooltip,
+  ApproveVoting: approveVotingTooltip,
+  RejectVoting: rejectVotingTooltip,
 };
 
 const tipStateTagMap = {
@@ -81,30 +93,30 @@ const bountyStateTagMap = {
 };
 
 const bountyTooltipMap = {
-  Proposed: "Submitted and waiting to enter voting",
-  Approved: "Vote passed but action not yet executed",
+  Proposed: proposedTooltip,
+  Approved: approvedTooltip,
   Funded: "Proposal has been granted funding",
   Active: "Funding has been approved and is currently in use",
-  PendingPayout: "Awaiting payout after approval",
-  Rejected: "Vote failed and proposal not pass",
-  Canceled: "Proposal was canceled before voting started",
+  PendingPayout: pendingPayoutTooltip,
+  Rejected: rejectedTooltip,
+  Canceled: canceledTooltip,
   Claimed: "Funds have been claimed by the recipient",
 
   "Propose Bounty": "Bounty has been proposed and awaits approval",
   BountyBecameActive: "Bounty has been approved and is now active",
-  acceptCurator: "Curator has accepted the responsibility",
+  acceptCurator: acceptCuratorTooltip,
   BountyExtended: "Bounty duration or scope has been extended",
   BountyAwarded: "Bounty has been granted to a contributor",
   BountyClaimed: "Bounty reward has been claimed",
   BountyRejected: "Bounty has been rejected",
   BountyApproved: "Bounty has been approved",
   CuratorUnassigned: "Curator role has been revoked or declined",
-  CuratorProposed: "A curator candidate has been nominated",
+  CuratorProposed: proposeCuratorTooltip,
 
   // in timeline
   CloseVoting: "Voting period has ended",
-  ApproveVoting: "Voting process has started to approve the proposal",
-  RejectVoting: "Voting process has started to reject the proposal",
+  ApproveVoting: approveVotingTooltip,
+  RejectVoting: rejectVotingTooltip,
 };
 
 const childBountyStateTagMap = {
@@ -126,15 +138,15 @@ const childBountyTooltipMap = {
   Added: "Child bounty has been added to the bounty",
   CuratorProposed: "A curator has been proposed for a child bounty",
   Active: "Child bounty has been approved and is now active",
-  PendingPayout: "Awaiting payout after approval",
+  PendingPayout: pendingPayoutTooltip,
   Rejected: "Child Bounty has been rejected",
-  Canceled: "Proposal was canceled before voting started",
+  Canceled: canceledTooltip,
   Claimed: "Child bounty reward has been claimed",
 
   // in timeline
-  proposeCurator: "A curator candidate has been nominated",
-  acceptCurator: "Curator has accepted the responsibility",
-  Awarded: "Proposal has been granted a reward",
+  proposeCurator: proposeCuratorTooltip,
+  acceptCurator: acceptCuratorTooltip,
+  Awarded: awardedTooltip,
 };
 
 const spendStateTagMap = {
@@ -145,7 +157,7 @@ const spendStateTagMap = {
 };
 
 const spendTooltipMap = {
-  Approved: "Vote passed but action not yet executed",
+  Approved: approvedTooltip,
   Paid: "Funds have been disbursed",
   Processed: "Proposal or transaction has been fully processed",
   Voided: "Proposal or payment has been voided and invalidated",
