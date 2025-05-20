@@ -63,29 +63,37 @@ function TrackStreamlinedDetails({ trackId, activeCount }) {
       <LineBox>
         <LineTitle title="Confirm Period" />
         <LineValue>
-          <span>{confirmPeriodBlockTime?.[0] || 0}</span>
-          <SummaryGreyText> {confirmPeriodBlockTime[1]}</SummaryGreyText>
+          <span>
+            {confirmPeriodBlockTime?.[0] || 0}
+            {confirmPeriodBlockTime[1]}
+          </span>
         </LineValue>
       </LineBox>
       <LineBox>
         <LineTitle title="Prepare Period" />
         <LineValue>
-          <span>{preparePeriodBlockTime?.[0] || 0}</span>
-          <SummaryGreyText> {preparePeriodBlockTime[1]}</SummaryGreyText>
+          <span>
+            {preparePeriodBlockTime?.[0] || 0}
+            {preparePeriodBlockTime[1]}
+          </span>
         </LineValue>
       </LineBox>
       <LineBox>
         <LineTitle title="Decision Period" />
         <LineValue>
-          <span>{decisionPeriodBlockTime?.[0] || 0}</span>
-          <SummaryGreyText> {decisionPeriodBlockTime[1]}</SummaryGreyText>
+          <span>
+            {decisionPeriodBlockTime?.[0] || 0}
+            {decisionPeriodBlockTime[1]}
+          </span>
         </LineValue>
       </LineBox>
       <LineBox>
         <LineTitle title="Min Enact Period" />
         <LineValue>
-          <span>{minEnactPeriodBlockTime?.[0] || 0}</span>
-          <SummaryGreyText> {minEnactPeriodBlockTime[1]}</SummaryGreyText>
+          <span>
+            {minEnactPeriodBlockTime?.[0] || 0}
+            {minEnactPeriodBlockTime[1]}
+          </span>
         </LineValue>
       </LineBox>
       <LineBox>
