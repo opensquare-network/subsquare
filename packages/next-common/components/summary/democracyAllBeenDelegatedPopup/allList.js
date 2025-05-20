@@ -37,7 +37,7 @@ export default function AllBeenDelegatedPopupAllList({
   const rows = beenDelegatedList?.map?.((item) => {
     const row = [
       <TrackItemWrapper key="track" onClick={() => onTrackClick(item.track.id)}>
-        <Gov2TrackTag name={item.track.name}></Gov2TrackTag>
+        <Gov2TrackTag name={item.track.name} id={item.track.id}></Gov2TrackTag>
       </TrackItemWrapper>,
       <ValueDisplay
         key="votes"

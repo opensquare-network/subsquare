@@ -367,7 +367,7 @@ export default function Post({ data, href, type }) {
               <MobileHiddenInfo>
                 <Link href={trackTagLink} passHref>
                   <LinkInfo>
-                    <Gov2TrackTag name={data.trackName} />
+                    <Gov2TrackTag name={data.trackName} id={data.track} />
                   </LinkInfo>
                 </Link>
               </MobileHiddenInfo>
