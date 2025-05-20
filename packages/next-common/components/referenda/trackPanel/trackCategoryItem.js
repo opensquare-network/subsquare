@@ -5,7 +5,7 @@ import Link from "next/link";
 
 function TrackCategoryItem({ item }) {
   return (
-    <TrackTooltip trackId={item.id}>
+    <TrackTooltip trackId={item.id} activeCount={item.activeCount}>
       <span className="leading-4 px-2 py-[2px] bg-neutral200 rounded-[8px]">
         <Link
           href={item.path}

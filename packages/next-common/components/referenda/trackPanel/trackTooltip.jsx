@@ -5,7 +5,13 @@ import DesktopOnly from "next-common/components/responsive/desktopOnly";
 import TrackStreamlinedDetails from "./trackStreamlinedDetails";
 import { isNil } from "lodash-es";
 
-function TrackTooltip({ trackId, children, className = "", style = {} }) {
+function TrackTooltip({
+  trackId,
+  children,
+  className = "",
+  style = {},
+  activeCount = 0,
+}) {
   if (isNil(trackId) || !children) {
     return null;
   }
@@ -29,7 +35,10 @@ function TrackTooltip({ trackId, children, className = "", style = {} }) {
               align="end"
               className="pl-2 z-50"
             >
-              <TrackStreamlinedDetails trackId={trackId} />
+              <TrackStreamlinedDetails
+                trackId={trackId}
+                activeCount={activeCount}
+              />
             </HoverCard.Content>
           </HoverCard.Portal>
         </HoverCard.Root>

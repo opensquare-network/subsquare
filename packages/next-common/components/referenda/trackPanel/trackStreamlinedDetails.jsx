@@ -2,8 +2,6 @@ import React, { memo } from "react";
 import useTrackDetail from "next-common/components/summary/newProposalPopup/useTrackDetail";
 import { startCase } from "lodash-es";
 import { Wrapper, LineBox, LineTitle, LineValue, Divider } from "./lineItem";
-import useTrackSummary from "./hooks/useTrackSummary";
-import { useAsync } from "react-use";
 import { isNil } from "lodash-es";
 import { useChainSettings } from "next-common/context/chain";
 import { useSelector } from "react-redux";
@@ -12,14 +10,11 @@ import { estimateBlocksTime, toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { SummaryGreyText } from "next-common/components/summary/styled";
 
-function TrackStreamlinedDetails({ trackId }) {
+function TrackStreamlinedDetails({ trackId, activeCount }) {
   const trackDetails = useTrackDetail(trackId);
-  const { summary, fetchTrackSummary } = useTrackSummary();
   const { decimals, symbol } = useChainSettings();
   const blockTime = useSelector(blockTimeSelector);
-  useAsync(async () => {
-    fetchTrackSummary(trackId);
-  }, []);
+
   if (isNil(trackDetails)) return null;
 
   const {
@@ -61,9 +56,7 @@ function TrackStreamlinedDetails({ trackId }) {
       <LineBox>
         <LineTitle title="Capacity" />
         <LineValue>
-          <span>
-            {(summary?.decidingCount || 0) + (summary?.confirmingCount || 0)}
-          </span>
+          <span>{activeCount}</span>
           <SummaryGreyText> / {maxDeciding}</SummaryGreyText>
         </LineValue>
       </LineBox>
