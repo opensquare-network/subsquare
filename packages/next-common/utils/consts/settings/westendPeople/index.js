@@ -10,6 +10,7 @@ const westendPeople = {
   ...westend,
   name: "People",
   value: Chains.westendPeople,
+  assetHubMigrated: false,
   description:
     "A comprehensive view of identity management and social interaction activities within the ecosystem.",
   avatar: ProjectIconWestendPeople,

@@ -31,6 +31,7 @@ const westend = {
   decimals: 12,
   ss58Format: 42,
   blockTime: 6000,
+  assetHubMigrated: true,
   endpoints: westendAssetHubNodes,
   relayChainEndpoints: westendRelayChainNodes,
   avatar: ProjectIconWestendLight,

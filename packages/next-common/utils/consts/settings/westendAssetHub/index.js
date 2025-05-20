@@ -20,6 +20,7 @@ const westendAssetHub = {
   decimals: 12,
   ss58Format: 42,
   blockTime: 12000,
+  assetHubMigrated: true,
   endpoints: westendAssetHubNodes,
   avatar: ProjectIconWestendAssethub,
   darkAvatar: ProjectIconWestendAssethub,

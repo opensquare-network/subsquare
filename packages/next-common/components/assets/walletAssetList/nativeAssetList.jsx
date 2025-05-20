@@ -7,9 +7,8 @@ import {
   colTransferrable,
 } from "next-common/components/assets/assetsList";
 import { useMyNativeAsset } from "next-common/hooks/assets/useMyNativeAsset";
-import { isWestendAssetHubChain } from "next-common/utils/chain";
-import { useChain } from "next-common/context/chain";
 import { useMemo } from "react";
+import { useChainSettings } from "next-common/context/chain";
 
 function TokenSymbol({ symbol }) {
   const NativeAssetIcon = useNativeTokenIcon();
@@ -33,15 +32,15 @@ const teleport = {
 };
 
 function useColumnsDef() {
-  const chain = useChain();
+  const { assetHubMigrated } = useChainSettings();
 
   return useMemo(() => {
-    if (isWestendAssetHubChain(chain)) {
+    if (assetHubMigrated) {
       return [colToken, colTotal, colTransferrable];
     }
 
     return [colToken, colTotal, colTransferrable, teleport];
-  }, [chain]);
+  }, [assetHubMigrated]);
 }
 
 export default function NativeAssetList() {
