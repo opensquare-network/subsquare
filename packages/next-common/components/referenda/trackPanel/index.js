@@ -17,6 +17,10 @@ import { isOnlyOthersCategory, isOthersExceedMax } from "./utils";
 import NormalCategoryItems from "./normalCategoryItems";
 import OthersExceedingItems from "./otherExceedingItems";
 import TrackPanelTitle from "./trackPanelTitle";
+import { isKusamaChain } from "next-common/utils/chain";
+import { CHAIN } from "next-common/utils/constants";
+
+const isKusama = isKusamaChain(CHAIN);
 
 function TrackPanel({ className = "" }) {
   const tracks = useTrackList();
@@ -81,6 +85,23 @@ function TrackPanel({ className = "" }) {
         categorizedTracks.others = Object.values(categorizedTracks).flat();
         setIsOthersExceeding(true);
       }
+    }
+
+    //support kusama fellowship
+    if (isKusama && listPageType === listPageCategory.FELLOWSHIP_REFERENDA) {
+      setIsOthersExceeding(true);
+      return (
+        {
+          others: [
+            ...tracks.map(({ id, name, activeCount }) => ({
+              id,
+              name: startCase(name),
+              activeCount,
+              path: combinePathWithId(id),
+            })),
+          ],
+        } ?? {}
+      );
     }
 
     return categorizedTracks ?? {};
