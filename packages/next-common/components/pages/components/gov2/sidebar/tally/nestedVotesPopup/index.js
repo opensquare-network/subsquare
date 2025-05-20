@@ -1,4 +1,4 @@
-import { useEffect, useState, memo, useMemo, useCallback } from "react";
+import { useEffect, useState, memo, useMemo } from "react";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
@@ -112,16 +112,14 @@ function CachedVotesList({ items, loading }) {
   const [showDetail, setShowDetail] = useState(false);
   const [detailData, setDetailData] = useState();
 
-  const rowClick = useCallback((item) => {
-    return () => {
-      setDetailData(item);
-      setShowDetail(true);
-    };
-  }, []);
-
   return (
     <>
-      <VotesListView items={items} loading={loading} rowClick={rowClick} />
+      <VotesListView
+        items={items}
+        loading={loading}
+        setShowDetail={setShowDetail}
+        setDetailData={setDetailData}
+      />
 
       {showDetail && (
         <NestedPopupDelegatedDetailPopup
@@ -137,7 +135,7 @@ const VotesList = memo(CachedVotesList);
 
 const VotesListView = memo(CachedVotesListView);
 
-function CachedVotesListView({ items, loading, rowClick }) {
+function CachedVotesListView({ items, loading, setDetailData, setShowDetail }) {
   const chainSettings = useChainSettings();
   const itemHeight = usePopupItemHeight();
   const symbol = chainSettings.voteSymbol || chainSettings.symbol;
@@ -179,11 +177,14 @@ function CachedVotesListView({ items, loading, rowClick }) {
         </Flex>,
       ];
 
-      row.onClick = rowClick(item);
+      row.onClick = () => {
+        setDetailData(item);
+        setShowDetail(true);
+      };
 
       return row;
     });
-  }, [items, chainSettings.decimals, symbol, rowClick]);
+  }, [items, chainSettings.decimals, symbol, setDetailData, setShowDetail]);
 
   return (
     <PopupListWrapper>
