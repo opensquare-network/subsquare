@@ -1,9 +1,9 @@
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { useAsync } from "react-use";
 
 export default function useAllServerProxies() {
   const { value: proxies = [], loading } = useAsync(async () => {
-    const { result } = await nextApi.fetch("proxies");
+    const { result } = await backendApi.fetch("proxies");
 
     return result || [];
   }, []);

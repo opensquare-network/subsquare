@@ -1,6 +1,6 @@
 import { isNil } from "lodash-es";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import {
   ambassadorSalaryCycleApi,
   fellowshipSalaryCycleApi,
@@ -23,7 +23,7 @@ export function useFellowshipSalaryCycleData(index) {
       return;
     }
 
-    nextApi.fetch(apiUrl).then((resp) => {
+    backendApi.fetch(apiUrl).then((resp) => {
       setData(resp.result);
     });
   }, [apiUrl, index]);
