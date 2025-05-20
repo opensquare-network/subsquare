@@ -11,14 +11,13 @@ import "next-common/styles/cmdk.css";
 import "next-common/styles/react-datepicker.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import Head from "next/head";
-import ScanStatusComponent from "next-common/components/scanStatus";
-import RelayScanStatusComponent from "next-common/components/relayScanStatus";
+import MaybeSubRelayScanStatus from "next-common/components/maybeSubRelayScanStatus";
 import SystemVersionUpgrade from "next-common/components/systemVersionUpgrade";
 import "@osn/previewer/styles.css";
 import "next-common/styles/markdown.css";
 import useInitMimir from "next-common/hooks/useInitMimir";
 import dynamic from "next/dynamic";
-import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated";
+import { useSubScanHeight } from "next-common/hooks/scanHeight";
 
 NProgress.configure({
   minimum: 0.3,
@@ -48,28 +47,7 @@ const ClientOnlySystemUpgrade = dynamic(
   },
 );
 
-function MaybeRelayScanStatus({ relayScanHeight, children }) {
-  if (isAssetHubMigrated()) {
-    return (
-      <RelayScanStatusComponent relayScanHeight={relayScanHeight}>
-        {children}
-      </RelayScanStatusComponent>
-    );
-  }
-
-  return children;
-}
-
-function MyApp({ Component, pageProps }) {
-  if (!process.env.NEXT_PUBLIC_CHAIN) {
-    throw new Error("NEXT_PUBLIC_CHAIN env not set");
-  }
-
-  // const [resetKey, setResetKey] = React.useState(0);
-  // const handleErrorReset = () => setResetKey((prev) => prev + 1);
-
-  useInitMimir();
-
+function AppImpl({ Component, pageProps }) {
   const {
     connectedAccount,
     user,
@@ -84,6 +62,10 @@ function MyApp({ Component, pageProps }) {
     relayScanHeight,
     ...otherProps
   } = pageProps;
+
+  useSubScanHeight(scanHeight);
+
+  useInitMimir();
 
   return (
     <>
@@ -104,16 +86,20 @@ function MyApp({ Component, pageProps }) {
           pathname={pathname}
         >
           <ClientOnlySystemUpgrade />
-
-          <ScanStatusComponent scanHeight={scanHeight}>
-            <MaybeRelayScanStatus relayScanHeight={relayScanHeight}>
-              <Component {...otherProps} />
-            </MaybeRelayScanStatus>
-          </ScanStatusComponent>
+          <MaybeSubRelayScanStatus relayScanHeight={relayScanHeight}>
+            <Component {...otherProps} />
+          </MaybeSubRelayScanStatus>
         </GlobalProvider>
       </Provider>
     </>
   );
+}
+
+function MyApp({ Component, pageProps }) {
+  if (!process.env.NEXT_PUBLIC_CHAIN) {
+    throw new Error("NEXT_PUBLIC_CHAIN env not set");
+  }
+  return <AppImpl Component={Component} pageProps={pageProps} />;
 }
 
 export default MyApp;
