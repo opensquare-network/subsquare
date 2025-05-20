@@ -52,7 +52,7 @@ function TrackStreamlinedDetails({ trackId }) {
   ).split(" ");
 
   return (
-    <Wrapper className="max-w-[320px]">
+    <Wrapper className="w-[320px] shadow-200">
       <p className="text16Bold text-textPrimary leading-6">{`[${
         id ?? "-"
       }] Origin: ${startCase(name) ?? "-"}`}</p>

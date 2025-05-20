@@ -23,7 +23,7 @@ import { isOnlyOthersCategory, isOthersExceedMax } from "./utils";
 function TrackCategoryItem({ item }) {
   return (
     <TrackTooltip trackId={item.id}>
-      <span className="leading-4 px-2 bg-neutral200 rounded-[8px]">
+      <span className="leading-4 px-2 py-[2px] bg-neutral200 rounded-[8px]">
         <Link
           href={item.path}
           className="hover:underline hover:decoration-neutral500"
@@ -36,7 +36,10 @@ function TrackCategoryItem({ item }) {
       </span>
 
       {!isNil(item.activeCount) && item.activeCount > 0 && (
-        <span className="text-textTertiary">{` · ${item.activeCount}`}</span>
+        <span>
+          <span className="px-2">·</span>
+          <span className="text-textTertiary">{item.activeCount}</span>
+        </span>
       )}
     </TrackTooltip>
   );
@@ -127,17 +130,17 @@ function TrackPanel({ className = "" }) {
 
   return (
     <div className={cn(className)}>
-      <AccordionCard title={title} defaultOpen={false}>
+      <AccordionCard title={title} defaultOpen={false} className="px-4">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-2">
           {Object.keys(tracksDisplay).map((category, index) => {
             if (!isOthersExceeding) {
               return (
                 <div key={category + index}>
-                  <p className="ml-2 mt-4">{iconsDisplay?.[category]}</p>
+                  <p className="ml-2 mt-3">{iconsDisplay?.[category]}</p>
                   <p className="text14Bold text-textPrimary p-2">
                     {startCase(category)}
                   </p>
-                  <ul className="mb-4">
+                  <ul className="mb-3">
                     {tracksDisplay?.[category].map((item, idx) => (
                       <li
                         key={idx}
@@ -163,7 +166,7 @@ function TrackPanel({ className = "" }) {
 
                 return chunks.map((chunk, chunkIndex) => (
                   <div key={`${chunk}-${chunkIndex}`}>
-                    <ul className="my-4">
+                    <ul className="my-3">
                       {chunk.map((item, idx) => (
                         <li
                           key={idx}

@@ -23,6 +23,8 @@ const gov2TrackPanelData = {
       "Small Spender",
       "Medium Spender",
       "Big Spender",
+      "Spender",
+      "Tipper",
     ],
     icon: <TrackTreasury className="w-6 h-6 [&_path]:fill-textSecondary" />,
   },
