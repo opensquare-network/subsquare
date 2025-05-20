@@ -3,7 +3,6 @@ import Bio from "next-common/components/profile/bio";
 import { useProfileAssetHubTabs } from "next-common/components/profile/tabs/useProfileAssetHubTabs";
 import ApiProvider from "next-common/context/api";
 import ChainProvider from "next-common/context/chain";
-import RelayInfoProvider from "next-common/context/relayInfo";
 import { createStore } from "next-common/store";
 import { commonReducers } from "next-common/store/reducers";
 import multiAccountsSlice from "next-common/store/reducers/multiAccountsSlice";
@@ -12,6 +11,7 @@ import getChainSettings from "next-common/utils/consts/settings";
 import { Provider } from "react-redux";
 import ProfileHeaderWithBanner from "next-common/components/profile/header";
 import ProfileLayout from "next-common/components/layout/ProfileLayout";
+import { ConditionRelayInfoProvider } from "../";
 
 const isAssetHubSupported = !!getChainSettings(CHAIN).modules?.assethub;
 
@@ -33,7 +33,7 @@ export { getServerSideProps } from "../../user/[...params]";
 
 export default function AssetHubUserPage() {
   return (
-    <RelayInfoProvider>
+    <ConditionRelayInfoProvider>
       <Provider store={store}>
         <ChainProvider chain={chain}>
           <ApiProvider>
@@ -41,7 +41,7 @@ export default function AssetHubUserPage() {
           </ApiProvider>
         </ChainProvider>
       </Provider>
-    </RelayInfoProvider>
+    </ConditionRelayInfoProvider>
   );
 }
 
