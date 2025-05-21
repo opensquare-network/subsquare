@@ -29,11 +29,14 @@ const delayQuery = debounce(async () => {
   };
 
   try {
-    const res = await fetch("/api/avatars", {
-      headers,
-      method: "POST",
-      body: JSON.stringify({ addresses }),
-    });
+    const res = await fetch(
+      new URL("avatars", process.env.NEXT_PUBLIC_BACKEND_API_END_POINT),
+      {
+        headers,
+        method: "POST",
+        body: JSON.stringify({ addresses }),
+      },
+    );
     if (!res.ok) {
       return;
     }
@@ -58,7 +61,7 @@ const delayQuery = debounce(async () => {
   } catch (e) {
     // ignore
   }
-}, 0);
+}, 500);
 
 export function fetchAvatar(address) {
   if (!address) {
