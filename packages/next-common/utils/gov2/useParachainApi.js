@@ -18,12 +18,9 @@ export function useParachainApi(parachainId, blockHeightOrHash) {
     if (parachainId && endpointsUrls?.length) {
       getChainApi(endpointsUrls).then((api) => {
         setParachainsApi(api);
-        if (!blockHeightOrHash) {
-          setApi(api);
-        }
       });
     }
-  }, [parachainId, endpointsUrls, blockHeightOrHash]);
+  }, [parachainId, endpointsUrls]);
 
   useEffect(() => {
     if (parachainsApi && blockHeightOrHash) {
@@ -31,11 +28,16 @@ export function useParachainApi(parachainId, blockHeightOrHash) {
         setApi(api);
       });
     }
+    if (parachainsApi && !blockHeightOrHash) {
+      setApi(parachainsApi);
+    }
   }, [parachainsApi, blockHeightOrHash]);
 
   useEffect(() => {
     return () => {
-      parachainsApi?.disconnect();
+      if (parachainsApi) {
+        parachainsApi.disconnect();
+      }
     };
   }, [parachainsApi]);
 
