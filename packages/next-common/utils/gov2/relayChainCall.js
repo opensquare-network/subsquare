@@ -12,12 +12,6 @@ export function isFromParaToRelayChain(xcmLocation) {
   return v4Location.parents.toNumber() === 1 && v4Location.interior.isHere;
 }
 
-const isXcmOrCrossOriginKind = (originKind) => {
-  return (
-    originKind?.toString() === "Xcm" || originKind?.toString() === "Superuser"
-  );
-};
-
 // `messageArg` are a group of XCM instructions
 export function extractTransactCallBytesArr(messageArg) {
   if (!messageArg?.isV4) {
@@ -34,9 +28,6 @@ export function extractTransactCallBytesArr(messageArg) {
       return acc;
     }
     const transact = instruction.asTransact;
-    if (!isXcmOrCrossOriginKind(transact.originKind)) {
-      return acc;
-    }
     return [...acc, transact.call.encoded];
   }, []);
 }
