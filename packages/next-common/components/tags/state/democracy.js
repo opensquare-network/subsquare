@@ -15,7 +15,7 @@ const proposalTagMap = {
 };
 
 const proposedTooltip = "Submitted and waiting to enter voting";
-const canceledToolrip = "Proposal was canceled";
+const canceledTooltip = "Proposal was canceled";
 const removedTooltip = "Proposal has been removed from the process";
 const tabledTooltip = "Proposal has been scheduled for voting";
 const fastTrackedTooltip = "Proposal has been marked for expedited processing";
@@ -23,9 +23,9 @@ const fastTrackedTooltip = "Proposal has been marked for expedited processing";
 const proposalTooltipMap = {
   Proposed: proposedTooltip,
   Tabled: tabledTooltip,
-  Canceled: canceledToolrip,
+  Canceled: canceledTooltip,
   Cleared: "Proposal has been cleared for the next step",
-  ProposalCanceled: canceledToolrip,
+  ProposalCanceled: canceledTooltip,
   Removed: removedTooltip,
 
   // In timeline
