@@ -1,19 +1,16 @@
 import React, { useMemo, useState } from "react";
 import { cn } from "next-common/utils";
 import AccordionCard from "next-common/components/styled/containers/accordionCard";
-import { startCase } from "lodash-es";
-import {
-  gov2TrackCategoryMap,
-  gov2InitialObj,
-  fellowshipTrackCategoryMap,
-  fellowshipInitialObj,
-  otherCategoryMaxCount,
-} from "./consts";
+import { otherCategoryMaxCount } from "./consts";
 import { useTrackList } from "next-common/components/summary/newProposalPopup/useTrackDetail";
 import { useListPageType } from "next-common/context/page";
 import { listPageCategory } from "next-common/utils/consts/business/category";
-import useRefCallback from "next-common/hooks/useRefCallback";
-import { isOnlyOthersCategory, isOthersExceedMax } from "./utils";
+import {
+  isOnlyOthersCategory,
+  isOthersExceedMax,
+  flattenKusamaFellowshipReferenda,
+  getCategorizedTracks,
+} from "./utils";
 import NormalCategoryItems from "./normalCategoryItems";
 import OthersExceedingItems from "./otherExceedingItems";
 import TrackPanelTitle from "./trackPanelTitle";
@@ -27,85 +24,34 @@ function TrackPanel({ className = "" }) {
   const listPageType = useListPageType();
   const [isOthersExceeding, setIsOthersExceeding] = useState(false);
 
-  const combinePathWithId = useRefCallback((id) => {
-    switch (listPageType) {
-      case listPageCategory.FELLOWSHIP_REFERENDA:
-        return `/fellowship/tracks/${id}`;
-      case listPageCategory.AMBASSADOR_REFERENDA:
-        return `/ambassador/tracks/${id}`;
-      default:
-        return `/referenda/tracks/${id}`;
-    }
-  });
-
-  const getTrackCategoryAndInitialObj = useRefCallback(() => {
-    const map = {
-      [listPageCategory.REFERENDA]: {
-        trackCategoryMap: gov2TrackCategoryMap,
-        initialObj: gov2InitialObj,
-      },
-      [listPageCategory.FELLOWSHIP_REFERENDA]: {
-        trackCategoryMap: fellowshipTrackCategoryMap,
-        initialObj: fellowshipInitialObj,
-      },
-    };
-    const { trackCategoryMap, initialObj: initialObjRaw } =
-      map[listPageType] || {};
-    const initialObj = JSON.parse(JSON.stringify(initialObjRaw));
-    return { trackCategoryMap, initialObj };
-  });
-
   const trackList = useMemo(() => {
     if (!tracks) return {};
-    const { trackCategoryMap, initialObj } = getTrackCategoryAndInitialObj();
-    const categorizedTracks = tracks
-      .map(({ id, name, activeCount }) => ({
-        id,
-        name: startCase(name),
-        activeCount,
-        path: combinePathWithId(id),
-      }))
-      .reduce((result, item) => {
-        const category = Object.keys(trackCategoryMap ?? {}).find((key) =>
-          trackCategoryMap[key].includes(item.name),
-        );
-        if (category) {
-          result[category].push(item);
-        } else if (result?.["others"]) {
-          result["others"].push(item);
-        }
-        return result;
-      }, initialObj);
+    const categorizedTracks = getCategorizedTracks(
+      listPageType,
+      listPageCategory,
+      tracks,
+    );
 
-    if (listPageType === listPageCategory.REFERENDA) {
-      if (
-        isOthersExceedMax(categorizedTracks) ||
-        isOnlyOthersCategory(categorizedTracks, otherCategoryMaxCount)
-      ) {
-        categorizedTracks.others = Object.values(categorizedTracks).flat();
-        setIsOthersExceeding(true);
-      }
+    if (
+      listPageType === listPageCategory.REFERENDA &&
+      (isOthersExceedMax(categorizedTracks) ||
+        isOnlyOthersCategory(categorizedTracks, otherCategoryMaxCount))
+    ) {
+      categorizedTracks.others = Object.values(categorizedTracks).flat();
+      setIsOthersExceeding(true);
     }
 
-    //support kusama fellowship
     if (isKusama && listPageType === listPageCategory.FELLOWSHIP_REFERENDA) {
       setIsOthersExceeding(true);
-      return (
-        {
-          others: [
-            ...tracks.map(({ id, name, activeCount }) => ({
-              id,
-              name: startCase(name),
-              activeCount,
-              path: combinePathWithId(id),
-            })),
-          ],
-        } ?? {}
+      return flattenKusamaFellowshipReferenda(
+        listPageType,
+        listPageCategory,
+        tracks,
       );
     }
 
     return categorizedTracks ?? {};
-  }, [combinePathWithId, getTrackCategoryAndInitialObj, listPageType, tracks]);
+  }, [listPageType, tracks]);
 
   return (
     <div className={cn(className)}>
