@@ -1,5 +1,5 @@
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import ListLayout from "next-common/components/layout/ListLayout";
 import { useChainSettings } from "next-common/context/chain";
 import OverviewSummary from "next-common/components/summary/overviewSummary";
@@ -52,8 +52,10 @@ export default function Home() {
 }
 
 export const getServerSideProps = withCommonProps(async () => {
-  const { result: overviewSummary } = await nextApi.fetch("overview/summary");
-  const { result: recentSummary = {} } = await nextApi.fetch(
+  const { result: overviewSummary } = await backendApi.fetch(
+    "overview/summary",
+  );
+  const { result: recentSummary = {} } = await backendApi.fetch(
     "overview/recent/summary",
   );
   const recentProposals = await fetchRecentProposalsProps(overviewSummary);
