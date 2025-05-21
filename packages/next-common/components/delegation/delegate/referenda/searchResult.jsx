@@ -1,6 +1,6 @@
 import NoData from "next-common/components/noData";
 import NewDelegateButton from "next-common/components/summary/allDelegation/newDelegateButton";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { delegationReferendaDelegatesAddressApi } from "next-common/services/url";
 import React, { useMemo, useState } from "react";
 import { useDebounce } from "react-use";
@@ -20,7 +20,7 @@ export default function ReferendaDelegationSearchResult({
       setIsLoading(true);
       setResult(null);
 
-      nextApi
+      backendApi
         .fetch(delegationReferendaDelegatesAddressApi(searchAddress))
         .then((resp) => {
           if (resp.result) {
