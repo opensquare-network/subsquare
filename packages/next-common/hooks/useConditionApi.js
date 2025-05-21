@@ -4,10 +4,10 @@ import { useMemo, useEffect, useState } from "react";
 import { getChainApi, getChainApiAt } from "next-common/utils/getChainApi";
 import { useChain } from "next-common/context/chain";
 
-function isUseRelayChainHistoryApi(indexer, relayChainSettings) {
+function isUseRelayChainHistoryApi(indexer, assetHubMigrated = false) {
   // TODO: judgement by indexer
   const isMigaratedIndexer = indexer?.blockHeight > 0;
-  return isMigaratedIndexer && relayChainSettings?.assetHubMigrated;
+  return isMigaratedIndexer && assetHubMigrated;
 }
 
 export default function useConditionApi(indexer) {
