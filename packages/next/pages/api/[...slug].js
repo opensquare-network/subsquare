@@ -1,4 +1,5 @@
 import httpProxy from "http-proxy";
+import { isApiDisabled } from "next-common/api/disabledApi";
 
 const ssrUrl = new URL(process.env.NEXT_PUBLIC_BACKEND_API_END_POINT);
 const proxy = httpProxy.createProxyServer({
@@ -18,6 +19,10 @@ export const config = {
 };
 
 export default function handler(req, res) {
+  if (isApiDisabled(req.url)) {
+    res.status(404).send("Not found");
+    return;
+  }
   req.url = req.url.replace(/^\/api\//, ssrUrl.pathname);
   proxy.web(req, res, { autoRewrite: false });
 }
