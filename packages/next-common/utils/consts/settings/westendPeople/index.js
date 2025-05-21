@@ -16,20 +16,20 @@ const westendPeople = {
   darkAvatar: ProjectIconWestendPeople,
   endpoints: [
     {
-      name: "Dwellir",
-      url: "wss://people-westend-rpc.n.dwellir.com",
+      name: "Parity",
+      url: "wss://westend-people-rpc.polkadot.io",
     },
     {
       name: "IBP1",
       url: "wss://sys.ibp.network/people-westend",
     },
     {
-      name: "IBP2",
-      url: "wss://people-westend.dotters.network",
+      name: "Dwellir",
+      url: "wss://people-westend-rpc.n.dwellir.com",
     },
     {
-      name: "Parity",
-      url: "wss://westend-people-rpc.polkadot.io",
+      name: "IBP2",
+      url: "wss://people-westend.dotters.network",
     },
   ],
   group: null,
