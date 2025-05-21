@@ -13,6 +13,15 @@ export function getParaChainId(chain) {
   throw new Error("Unsupported para chain");
 }
 
+export function getParaChain(paraChainId) {
+  if (paraChainId === AssetHubParaId) {
+    return Chains.assetHub;
+  } else if (paraChainId === CollectivesParaId) {
+    return Chains.collectives;
+  }
+  throw new Error("Unsupported para chain");
+}
+
 function getTeleportParamsFromRelayChainToParaChain({
   api,
   transferToAddress,

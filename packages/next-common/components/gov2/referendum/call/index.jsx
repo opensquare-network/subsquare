@@ -11,13 +11,20 @@ import extractFellowshipApprove from "next-common/components/common/call/fellows
 import dynamic from "next/dynamic";
 import isHydradx from "next-common/utils/isHydradx";
 import { useChain } from "next-common/context/chain";
-import { isCollectivesChain } from "next-common/utils/chain";
+import { isCollectivesChain, isPolkadotChain } from "next-common/utils/chain";
 
 const EvmCall = dynamic(() => import("./evmCallDecode"), {
   ssr: false,
 });
 const RelayChainCall = dynamic(
   () => import("./parachain/relayChainCallDecode"),
+  {
+    ssr: false,
+  },
+);
+
+const CrossChainCall = dynamic(
+  () => import("./parachain/crossChainDecodeCall"),
   {
     ssr: false,
   },
@@ -74,6 +81,10 @@ export default function Gov2ReferendumCall() {
 
   if (isCollectivesChain(chain) && callData) {
     data.push(<RelayChainCall key="relay-chain-call" />);
+  }
+
+  if (isPolkadotChain(chain) && callData) {
+    data.push(<CrossChainCall key="cross-chain-call" />);
   }
 
   const businessData = useReferendaBusinessData();
