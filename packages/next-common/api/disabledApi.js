@@ -5,9 +5,7 @@ function trimEndSlash(url) {
 }
 
 export function isApiDisabled(req) {
-  const isDisabledApi = !disabledApiRoutes.every(
-    (route) => !req.url.match(route),
-  );
+  const isDisabledApi = disabledApiRoutes.some((route) => req.url.match(route));
   if (!isDisabledApi) {
     return false;
   }
