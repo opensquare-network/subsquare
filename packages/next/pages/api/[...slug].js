@@ -19,7 +19,7 @@ export const config = {
 };
 
 export default function handler(req, res) {
-  if (isApiDisabled(req.url)) {
+  if (isApiDisabled(req)) {
     res.status(404).send("Not found");
     return;
   }
