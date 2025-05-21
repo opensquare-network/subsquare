@@ -1,6 +1,6 @@
 import { EmptyList } from "next-common/utils/constants";
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import BigNumber from "bignumber.js";
 import { useChainSettings } from "next-common/context/chain";
 import DemocracyReferendaLayout from "next-common/components/layout/democracyLayout/referenda";
@@ -85,16 +85,16 @@ export const getServerSideProps = withCommonProps(async (context) => {
     { result: democracySummary },
     { result: turnout },
   ] = await Promise.all([
-    nextApi.fetch("democracy/delegatee", {
+    backendApi.fetch("democracy/delegatee", {
       sort: JSON.stringify(["delegatedVotes", "desc"]),
       pageSize: 25,
     }),
-    nextApi.fetch("democracy/delegators", {
+    backendApi.fetch("democracy/delegators", {
       sort: JSON.stringify(["votes", "desc"]),
       pageSize: 25,
     }),
-    nextApi.fetch("democracy/summary"),
-    nextApi.fetch("democracy/referenda/turnout"),
+    backendApi.fetch("democracy/summary"),
+    backendApi.fetch("democracy/referenda/turnout"),
   ]);
 
   const normailizedTurnout = turnout?.map((item) => ({

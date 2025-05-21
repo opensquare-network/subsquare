@@ -1,7 +1,7 @@
 import PostList from "next-common/components/postList";
 import { EmptyList } from "next-common/utils/constants";
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import DemocracyReferendaLayout from "next-common/components/layout/democracyLayout/referenda";
 import KintsugiDemocracyStaking from "components/summary/kintsugiDemocracyStaking";
 import normalizeReferendaListItem from "next-common/utils/viewfuncs/democracy/normalizeReferendaListItem";
@@ -44,12 +44,12 @@ export const getServerSideProps = withCommonProps(async (context) => {
   const { page, page_size: pageSize } = context.query;
 
   const [{ result: posts }, { result: summary }] = await Promise.all([
-    nextApi.fetch("democracy/referendums", {
+    backendApi.fetch("democracy/referendums", {
       page: page ?? 1,
       pageSize: pageSize ?? 50,
       simple: true,
     }),
-    nextApi.fetch("overview/summary"),
+    backendApi.fetch("overview/summary"),
   ]);
 
   return {
