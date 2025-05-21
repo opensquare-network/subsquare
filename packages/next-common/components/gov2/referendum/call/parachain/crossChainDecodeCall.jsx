@@ -1,18 +1,14 @@
 import { RawCallContext } from "next-common/context/call/raw";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { findAllCollectivesCalls } from "next-common/utils/gov2/crossChainCall";
 import Row from "next-common/components/listInfo/row";
 import DecodeCallList from "../decodeList";
 import { DecodeCallItem } from "../decodeItem";
-import { convertDecodedCallToViewData } from "next-common/utils/gov2/useRelayChainCallDecode";
 import ChainIcon from "next-common/components/header/chainIcon";
 import { getParaChain } from "next-common/components/assets/paraChainTeleportPopup/teleportFromRelayChainToParaChain";
 import Tooltip from "next-common/components/tooltip";
-import useReferendumVotingFinishHeight, {
-  useReferendaIsVoting,
-} from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
-import { useParachainApi } from "next-common/utils/gov2/useParachainApi";
-import { useParachainsBlockNumber } from "next-common/utils/gov2/useParachainsBlockNumber";
+import { useCrossChainCallDecode } from "next-common/utils/gov2/useCrossChainCallDecode";
+import getChainSettings from "next-common/utils/consts/settings";
 
 export default function CrossChainCall() {
   const { call } = useContext(RawCallContext);
@@ -25,61 +21,12 @@ export default function CrossChainCall() {
   if (!collectivesCalls.length) {
     return null;
   }
-  return <CrossChainDecodeCallList calls={collectivesCalls} />;
+  return <CrossChainDecodeCall calls={collectivesCalls} />;
 }
 
-function CrossChainDecodeCallList({ calls }) {
-  const blockHeight = useReferendumVotingFinishHeight();
-  if (!blockHeight || !calls?.length) {
-    return null;
-  }
-  return calls.map((call, index) => (
-    <CrossChainDecodeCall
-      key={index}
-      parachainId={call.parachainId}
-      bytesArr={call.bytesArr}
-      blockHeight={blockHeight}
-    />
-  ));
-}
-
-function CrossChainDecodeCall({ parachainId, bytesArr, blockHeight }) {
-  const isVoting = useReferendaIsVoting();
-  const parachainIdNumber = parachainId.toNumber();
-  const { parachainsBlockNumber } = useParachainsBlockNumber(
-    parachainIdNumber,
-    !isVoting ? blockHeight : null,
-  );
-
-  const api = useParachainApi(parachainIdNumber, parachainsBlockNumber);
-  const [decodes, setDecodes] = useState([]);
-
-  useEffect(() => {
-    async function decode() {
-      const decodes = [];
-      for (const bytes of bytesArr) {
-        try {
-          const result = api?.registry?.createType("Call", bytes);
-          if (result) {
-            const json = convertDecodedCallToViewData(result);
-            decodes.push({
-              json,
-              raw: result,
-            });
-          }
-        } catch (error) {
-          console.error(error);
-        }
-      }
-      setDecodes(decodes);
-    }
-    if ((!isVoting && !parachainsBlockNumber) || !api || !bytesArr.length) {
-      return;
-    }
-    decode();
-  }, [api, bytesArr, isVoting, parachainsBlockNumber]);
-
-  if (!decodes.length) {
+function CrossChainDecodeCall({ calls }) {
+  const { value: decodes } = useCrossChainCallDecode(calls);
+  if (!decodes?.length) {
     return null;
   }
 
@@ -90,9 +37,11 @@ function CrossChainDecodeCall({ parachainId, bytesArr, blockHeight }) {
         <DecodeCallList
           key="decode-call-list"
           list={decodes}
-          renderItem={({ json, raw }, index) => {
-            const chain = getParaChain(parachainIdNumber);
-            const content = `Chain Name: ${chain}\nChain ID: ${parachainId.toHuman()}`;
+          renderItem={({ json, raw, parachainId }, index) => {
+            const chain = getParaChain(parachainId.toNumber());
+            const chainSettings = getChainSettings(chain);
+            const chainName = chainSettings?.name || chain;
+            const content = `Chain Name: ${chainName}\nChain ID: ${parachainId.toHuman()}`;
             return (
               <DecodeCallItem
                 key={`cross-chain-call-decode-${index}`}

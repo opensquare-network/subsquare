@@ -1,4 +1,7 @@
-import { CollectivesParaId } from "next-common/components/assets/paraChainTeleportPopup/teleportFromRelayChainToParaChain";
+import {
+  CollectivesParaId,
+  AssetHubParaId,
+} from "next-common/components/assets/paraChainTeleportPopup/teleportFromRelayChainToParaChain";
 import { extractTransactCallBytesArr } from "./relayChainCall";
 
 export function isXcmPallet(call) {
@@ -15,6 +18,10 @@ export function isCall(call) {
 
 export function isCollectivesCall(xcmLocation) {
   return xcmLocation?.toNumber() === CollectivesParaId;
+}
+
+export function isPolkadotAssetHubCall(xcmLocation) {
+  return xcmLocation?.toNumber() === AssetHubParaId;
 }
 
 export function isCrossChainCall(xcmLocation) {
@@ -62,9 +69,6 @@ export function convertCrossChainCalls(xcmPallet) {
 
 export function findAllCollectivesCalls(call) {
   const xcmPallets = findAllXcmPallets(call);
-  if (!xcmPallets) {
-    return [];
-  }
   const calls = xcmPallets
     .map((item) => convertCrossChainCalls(item))
     .filter(Boolean);
