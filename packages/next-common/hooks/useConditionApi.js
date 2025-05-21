@@ -1,32 +1,45 @@
 import { isNil } from "lodash-es";
-import getChainSettings from "next-common/utils/consts/settings";
 import { useMemo, useEffect, useState } from "react";
 import { getChainApi, getChainApiAt } from "next-common/utils/getChainApi";
-import { useChain } from "next-common/context/chain";
+import { useChain, useChainSettings } from "next-common/context/chain";
+import BigNumber from "bignumber.js";
 
-function isUseRelayChainHistoryApi(indexer, assetHubMigrated = false) {
-  // TODO: judgement by indexer
-  const isMigaratedIndexer = indexer?.blockHeight > 0;
-  return isMigaratedIndexer && assetHubMigrated;
-}
+const MIGRATION_BLOCK_TIME_MAP = {
+  westend: "1747307424000",
+};
 
 export default function useConditionApi(indexer) {
   const [conditionApi, setConditionApi] = useState(null);
   const chain = useChain();
 
+  const {
+    assetHubMigrated = false,
+    relayChainEndpoints = [],
+    endpoints = [],
+  } = useChainSettings();
+
   const endpointUrls = useMemo(() => {
-    if (isNil(indexer)) {
+    if (isNil(indexer) || !indexer?.blockTime) {
       return [];
     }
 
-    const { assetHubMigrated, relayChainEndpoints, endpoints } =
-      getChainSettings(chain);
-    const targetEndpoints = isUseRelayChainHistoryApi(indexer, assetHubMigrated)
-      ? relayChainEndpoints
-      : endpoints;
+    const migrationBlockTime = MIGRATION_BLOCK_TIME_MAP[chain] || 0;
+    const indexerBlockTime = new BigNumber(indexer?.blockTime || 0);
+    const migrationBlockTimeBN = new BigNumber(migrationBlockTime);
 
-    return targetEndpoints?.map?.((item) => item.url) || [];
-  }, [chain, indexer]);
+    if (
+      !assetHubMigrated ||
+      indexerBlockTime.isGreaterThanOrEqualTo(migrationBlockTimeBN)
+    ) {
+      return endpoints?.map?.((item) => item.url) || [];
+    }
+
+    if (indexerBlockTime.isLessThan(migrationBlockTimeBN)) {
+      return relayChainEndpoints?.map?.((item) => item.url) || [];
+    }
+
+    return [];
+  }, [assetHubMigrated, chain, endpoints, indexer, relayChainEndpoints]);
 
   useEffect(() => {
     if (!endpointUrls || endpointUrls?.length === 0) {
@@ -34,25 +47,21 @@ export default function useConditionApi(indexer) {
     }
 
     getChainApi(endpointUrls).then(setConditionApi);
-
-    return () => {
-      if (conditionApi) {
-        conditionApi.disconnect?.();
-      }
-    };
   }, [conditionApi, endpointUrls]);
 
   return conditionApi;
 }
 
-export function useConditionBlockApi(condition, blockHeightOrHash) {
+export function useConditionBlockApi(conditionApi, blockHeightOrHash) {
   const [api, setApi] = useState(null);
 
   useEffect(() => {
-    if (condition) {
-      getChainApiAt(condition, blockHeightOrHash).then(setApi);
+    if (!conditionApi || isNil(blockHeightOrHash)) {
+      return;
     }
-  }, [blockHeightOrHash, condition]);
+
+    getChainApiAt(conditionApi, blockHeightOrHash).then(setApi);
+  }, [blockHeightOrHash, conditionApi]);
 
   return api;
 }
