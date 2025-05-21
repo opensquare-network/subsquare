@@ -1,7 +1,7 @@
 import PostList from "next-common/components/postList";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeReferendaListItem from "next-common/utils/viewfuncs/democracy/normalizeReferendaListItem";
 import DemocracyReferendaLayout from "next-common/components/layout/democracyLayout/referenda";
@@ -46,7 +46,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
 
   const { page, page_size: pageSize } = context.query;
 
-  const { result: posts } = await nextApi.fetch("democracy/referendums", {
+  const { result: posts } = await backendApi.fetch("democracy/referendums", {
     page: page ?? 1,
     pageSize: pageSize ?? defaultPageSize,
     simple: true,
