@@ -15,7 +15,7 @@ export function getParaChainId(chain) {
 
 export function getParaChain(paraChainId) {
   if (paraChainId === AssetHubParaId) {
-    return Chains.assetHub;
+    return Chains.polkadotAssetHub;
   } else if (paraChainId === CollectivesParaId) {
     return Chains.collectives;
   }

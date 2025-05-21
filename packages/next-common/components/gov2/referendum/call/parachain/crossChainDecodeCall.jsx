@@ -1,6 +1,6 @@
 import { RawCallContext } from "next-common/context/call/raw";
 import { useContext, useEffect, useState } from "react";
-import { findAllCollectivesCalls } from "next-common/utils/gov2/corssChainCall";
+import { findAllCollectivesCalls } from "next-common/utils/gov2/crossChainCall";
 import Row from "next-common/components/listInfo/row";
 import DecodeCallList from "../decodeList";
 import { DecodeCallItem } from "../decodeItem";
