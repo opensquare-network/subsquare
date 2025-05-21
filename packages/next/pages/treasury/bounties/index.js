@@ -66,6 +66,7 @@ export default function BountiesPage({ bounties, chain }) {
 }
 
 export const getServerSideProps = withCommonProps(async (context) => {
+  //TODO: init
   const bounties = await fetchList("treasury/bounties", context);
   const tracksProps = await fetchOpenGovTracksProps();
 
