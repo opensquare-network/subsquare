@@ -38,8 +38,8 @@ export function getHomeMenu({
     modules?.people && peopleMenu,
   ].filter(Boolean);
 
-  return [
-    modules?.referenda && getReferendaMenu(tracks),
+  const menuItems = [
+    modules?.referenda && getReferendaMenu(tracks, currentTrackId),
     modules?.fellowship && getFellowshipMenu(summary, currentTrackId),
     modules?.ambassador && getAmbassadorMenu(ambassadorTracks, currentTrackId),
     modules?.democracy && getDemocracyMenu(summary),
@@ -59,6 +59,16 @@ export function getHomeMenu({
       ].filter(Boolean),
     ),
   ].filter(Boolean);
+
+  return menuItems.map((menuItem) => {
+    if (menuItem.hideItemsOnMenu === true && menuItem.items) {
+      return {
+        ...menuItem,
+        items: [],
+      };
+    }
+    return menuItem;
+  });
 }
 
 export function getMainMenu({
