@@ -37,19 +37,27 @@ export function parseParachain(xcmLocation) {
     return null;
   }
   const v4Location = xcmLocation.asV4;
+  if (!v4Location.interior.isX1) {
+    return null;
+  }
   const parachain = v4Location.interior.asX1.find((item) => item.isParachain);
   return parachain?.asParachain;
 }
 
 export function convertCrossChainCalls(xcmPallet) {
-  const crossChainCalls = [];
   const xcmLocation = xcmPallet?.args?.[0];
   const xcmMessage = xcmPallet.args[1];
-  crossChainCalls.push({
-    parachainId: parseParachain(xcmLocation),
+  if (!xcmLocation || !xcmMessage) {
+    return null;
+  }
+  const parachainId = parseParachain(xcmLocation);
+  if (!parachainId) {
+    return null;
+  }
+  return {
+    parachainId,
     bytesArr: extractTransactCallBytesArr(xcmMessage),
-  });
-  return crossChainCalls;
+  };
 }
 
 export function findAllCollectivesCalls(call) {
@@ -57,7 +65,9 @@ export function findAllCollectivesCalls(call) {
   if (!xcmPallets) {
     return [];
   }
-  const calls = xcmPallets.map((item) => convertCrossChainCalls(item)).flat();
+  const calls = xcmPallets
+    .map((item) => convertCrossChainCalls(item))
+    .filter(Boolean);
   return calls.filter((item) => isCollectivesCall(item.parachainId));
 }
 

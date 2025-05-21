@@ -58,13 +58,17 @@ function CrossChainDecodeCall({ parachainId, bytesArr, blockHeight }) {
     async function decode() {
       const decodes = [];
       for (const bytes of bytesArr) {
-        const result = api?.registry?.createType("Call", bytes);
-        if (result) {
-          const json = convertDecodedCallToViewData(result);
-          decodes.push({
-            json,
-            raw: result,
-          });
+        try {
+          const result = api?.registry?.createType("Call", bytes);
+          if (result) {
+            const json = convertDecodedCallToViewData(result);
+            decodes.push({
+              json,
+              raw: result,
+            });
+          }
+        } catch (error) {
+          console.error(error);
         }
       }
       setDecodes(decodes);

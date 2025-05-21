@@ -24,6 +24,7 @@ export function useParachainApi(parachainId, blockHeightOrHash) {
 
   useEffect(() => {
     if (parachainsApi && blockHeightOrHash) {
+      setApi(null);
       getChainApiAt(parachainsApi, blockHeightOrHash).then((api) => {
         setApi(api);
       });
