@@ -25,7 +25,7 @@ const approveVotingTooltip =
   "Voting process has started to approve the proposal";
 const rejectVotingTooltip = "Voting process has started to reject the proposal";
 const pendingPayoutTooltip = "Awaiting payout after approval";
-const canceledTooltip = "Proposal was canceled before voting started";
+const canceledTooltip = "Proposal was canceled";
 const acceptCuratorTooltip = "Curator has accepted the responsibility";
 const proposeCuratorTooltip = "A curator candidate has been nominated";
 
