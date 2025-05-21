@@ -62,12 +62,14 @@ function MultisigButton() {
 
 function IdentityButton() {
   const chainSettings = useChainSettings();
-  if (!chainSettings.modules?.people) {
+  const router = useRouter();
+
+  if (!chainSettings.modules?.people || router.pathname === "/people") {
     return null;
   }
 
   return (
-    <Link href="/people/identities">
+    <Link href="/people">
       <SecondaryButton
         size="small"
         iconLeft={<MenuIdentity className="w-4 h-4 text-textTertiary" />}
