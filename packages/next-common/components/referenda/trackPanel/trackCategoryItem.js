@@ -20,7 +20,7 @@ function TrackCategoryItem({ item }) {
 
       {!isNil(item.activeCount) && item.activeCount > 0 && (
         <span>
-          <span className="px-2">·</span>
+          <span className="px-2 text-textTertiary">·</span>
           <span className="text-textTertiary">{item.activeCount}</span>
         </span>
       )}

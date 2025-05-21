@@ -53,6 +53,10 @@ function TrackPanel({ className = "" }) {
     return categorizedTracks ?? {};
   }, [listPageType, tracks]);
 
+  const inlineClassName = isOthersExceeding
+    ? "flex"
+    : "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-2";
+
   return (
     <div className={cn(className)}>
       <AccordionCard
@@ -60,7 +64,7 @@ function TrackPanel({ className = "" }) {
         defaultOpen={false}
         className="px-4"
       >
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-2">
+        <div className={inlineClassName}>
           {Object.keys(trackList).map((category, index) => {
             if (!isOthersExceeding) {
               return (
