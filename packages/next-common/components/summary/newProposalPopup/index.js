@@ -20,6 +20,7 @@ import AdvanceSettings from "../newProposalQuickStart/common/advanceSettings";
 import { usePreimageWithHash } from "next-common/hooks/usePreimageHashes";
 import CallTree from "next-common/components/proposal/callTree";
 import Loading from "next-common/components/loading";
+import InsufficientBalanceTips from "../newProposalQuickStart/common/insufficientBalanceTips";
 
 export function useProposalOrigin(trackId) {
   const track = useTrackDetail(trackId);
@@ -214,6 +215,7 @@ export function useNewProposalInnerPopupContent({
           <EnactmentBlocks track={track} setEnactment={setEnactment} />
           <SubmissionDeposit />
         </AdvanceSettings>
+        <InsufficientBalanceTips encodedLength={preimageLength} />
       </>
     ),
   };

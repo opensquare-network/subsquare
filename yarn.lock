@@ -3072,6 +3072,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@osn/icons@npm:^1.214.0":
+  version: 1.214.0
+  resolution: "@osn/icons@npm:1.214.0"
+  checksum: 5280fad5d015cbbc0ada625ba5c9f94cc4ec8eaf5b35f1a4c670c52f1629528ef420e96d1cc9cc6416627b495661d282e33d18493743a35c9b7a50520e2b2532
+  languageName: node
+  linkType: hard
+
 "@osn/polkadot-react-identicon@npm:^1.0.10":
   version: 1.0.10
   resolution: "@osn/polkadot-react-identicon@npm:1.0.10"
@@ -16795,6 +16802,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "subsquare@workspace:."
   dependencies:
+    "@osn/icons": ^1.214.0
     autoprefixer: ^10.4.14
     eslint: ^8.44.0
     eslint-plugin-react: ^7.31.11
