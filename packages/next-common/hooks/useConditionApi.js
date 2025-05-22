@@ -7,8 +7,15 @@ const MIGRATION_BLOCK_TIME_MAP = {
   westend: 1747307424000,
 };
 
-export default function useConditionApi(indexer) {
+/**
+ * Get conditional API
+ * @param {Object} indexer - Indexer object
+ * @param {number|string} [finishHeightOrHash] - Optional block height or hash
+ * @returns {Object} Conditional API object
+ */
+export default function useConditionApi(indexer, finishHeightOrHash) {
   const [conditionApi, setConditionApi] = useState(null);
+  const [blockApi, setBlockApi] = useState(null);
   const chain = useChain();
 
   const {
@@ -43,21 +50,15 @@ export default function useConditionApi(indexer) {
     }
 
     getChainApi(endpointUrls).then(setConditionApi);
-  }, [conditionApi, endpointUrls]);
-
-  return conditionApi;
-}
-
-export function useConditionBlockApi(conditionApi, blockHeightOrHash) {
-  const [api, setApi] = useState(null);
+  }, [endpointUrls]);
 
   useEffect(() => {
-    if (!conditionApi || isNil(blockHeightOrHash)) {
+    if (!conditionApi || isNil(finishHeightOrHash)) {
       return;
     }
 
-    getChainApiAt(conditionApi, blockHeightOrHash).then(setApi);
-  }, [blockHeightOrHash, conditionApi]);
+    getChainApiAt(conditionApi, finishHeightOrHash).then(setBlockApi);
+  }, [conditionApi, finishHeightOrHash]);
 
-  return api;
+  return isNil(finishHeightOrHash) ? conditionApi : blockApi;
 }
