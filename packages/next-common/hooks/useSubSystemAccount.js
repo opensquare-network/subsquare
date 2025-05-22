@@ -1,25 +1,27 @@
 import { useEffect, useState } from "react";
 
 export default function useSubSystemAccount(api, address) {
-  const [account, setAccount] = useState();
+  const [account, setAccount] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     if (!api || !address) {
       return;
     }
 
-    api.query.system.account(address, (account) => {
-      setAccount(account);
-      setIsLoading(false);
-    });
-  }, [api, address]);
+    let unsub;
+    api.query.system
+      .account(address, (account) => {
+        setAccount(account);
+        setIsLoading(false);
+      })
+      .then((result) => (unsub = result));
 
-  if (!api) {
-    return {
-      account: null,
-      isLoading: true,
+    return () => {
+      if (unsub) {
+        unsub();
+      }
     };
-  }
+  }, [api, address]);
 
   return {
     account,
