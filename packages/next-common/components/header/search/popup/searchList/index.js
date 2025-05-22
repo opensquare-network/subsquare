@@ -14,12 +14,14 @@ import {
 } from "@osn/icons/subsquare";
 import Link from "next/link";
 import { ItemType } from "next-common/components/header/hooks/useSearchResults";
-import { IdentityDisplay } from "next-common/components/addressCombo";
+import IdentityIcon from "next-common/components/Identity/identityIcon";
+import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 
 const SearchItem = memo(function ItemContent({ row, onClose }) {
   const { index, title, content, type, proposalType } = row;
   const { path, category } = getPathAndCategoryByItemData(row);
   const address = proposalType === SearchType.IDENTITIES ? content : "";
+  const { identity, hasIdentity } = useIdentityInfo(address);
 
   return (
     <Link
@@ -77,7 +79,13 @@ const SearchItem = memo(function ItemContent({ row, onClose }) {
               {proposalType !== SearchType.IDENTITIES && `#${index} · ${title}`}
               {proposalType === SearchType.IDENTITIES && (
                 <span className="flex">
-                  <IdentityDisplay name={title} address={address} />
+                  {hasIdentity && (
+                    <>
+                      <IdentityIcon identity={identity} />
+                      &nbsp;
+                    </>
+                  )}
+                  {title}
                 </span>
               )}
             </span>
