@@ -2,10 +2,9 @@ import { isNil } from "lodash-es";
 import { useMemo, useEffect, useState } from "react";
 import { getChainApi, getChainApiAt } from "next-common/utils/getChainApi";
 import { useChain, useChainSettings } from "next-common/context/chain";
-import BigNumber from "bignumber.js";
 
 const MIGRATION_BLOCK_TIME_MAP = {
-  westend: "1747307424000",
+  westend: 1747307424000,
 };
 
 export default function useConditionApi(indexer) {
@@ -24,17 +23,14 @@ export default function useConditionApi(indexer) {
     }
 
     const migrationBlockTime = MIGRATION_BLOCK_TIME_MAP[chain] || 0;
-    const indexerBlockTime = new BigNumber(indexer?.blockTime || 0);
-    const migrationBlockTimeBN = new BigNumber(migrationBlockTime);
+    const indexerBlockTime = BigInt(indexer?.blockTime || 0);
+    const migrationBlockTimeBN = BigInt(migrationBlockTime);
 
-    if (
-      !assetHubMigrated ||
-      indexerBlockTime.isGreaterThanOrEqualTo(migrationBlockTimeBN)
-    ) {
+    if (!assetHubMigrated || indexerBlockTime >= migrationBlockTimeBN) {
       return endpoints?.map?.((item) => item.url) || [];
     }
 
-    if (indexerBlockTime.isLessThan(migrationBlockTimeBN)) {
+    if (indexerBlockTime < migrationBlockTimeBN) {
       return relayChainEndpoints?.map?.((item) => item.url) || [];
     }
 
