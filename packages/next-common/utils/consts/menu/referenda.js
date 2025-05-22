@@ -1,5 +1,4 @@
-import { sumBy } from "lodash-es";
-import { startCase } from "lodash-es";
+import { sumBy, capitalize, startCase } from "lodash-es";
 import { MenuReferenda } from "@osn/icons/subsquare";
 
 export const name = "REFERENDA";
@@ -13,16 +12,18 @@ export function getReferendaMenu(tracks = [], currentTrackId) {
   const totalActiveCount = sumBy(tracks, (t) => t.activeCount || 0);
 
   const menu = {
-    name: Names.referenda,
+    name: capitalize(Names.referenda),
     activeCount: totalActiveCount,
     icon: <MenuReferenda />,
     pathname: "/referenda",
+    hideItemsOnMenu: true,
     items: [
       {
         value: "all",
         name: Names.all,
         pathname: "/referenda",
         activeCount: totalActiveCount,
+
         extraMatchNavMenuActivePathnames: [
           "/referenda/statistics",
           "/referenda/whales",

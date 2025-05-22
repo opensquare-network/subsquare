@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 
 const name = "referendaDelegates";
 
@@ -42,11 +42,14 @@ export const fetchReferendaDelegates = (sort, page = 1, pageSize = 18) => {
   return async (dispatch) => {
     try {
       dispatch(setReferendaDelegatesLoading(true));
-      const { result } = await nextApi.fetch("delegation/referenda/delegates", {
-        sort,
-        page,
-        pageSize,
-      });
+      const { result } = await backendApi.fetch(
+        "delegation/referenda/delegates",
+        {
+          sort,
+          page,
+          pageSize,
+        },
+      );
       dispatch(setReferendaDelegates(result));
     } finally {
       dispatch(setReferendaDelegatesLoading(false));

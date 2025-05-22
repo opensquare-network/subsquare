@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import useColumns from "next-common/components/styledList/useColumns";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import Pagination from "next-common/components/pagination";
 import useStateChanged from "next-common/hooks/useStateChanged";
 import Flex from "next-common/components/styled/flex";
@@ -82,7 +82,7 @@ export default function DemocracyDelegatee({
 
   const fetchData = useCallback(
     (page, pageSize) => {
-      nextApi
+      backendApi
         .fetch(`${apiRoot}/delegatee`, {
           ...getSortParams(sortedColumn),
           page,

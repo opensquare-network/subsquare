@@ -1,7 +1,7 @@
 import FellowshipSalaryCycleLayout from "next-common/components/fellowship/salary/cycles/layout";
 import FellowshipSalaryCycleDetailNotFound from "next-common/components/fellowship/salary/cycles/notFound";
 import FellowshipSalaryCycleDetailTabsList from "next-common/components/fellowship/salary/cycles/tabsList";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { withAmbassadorSalaryCommonProps } from "next-common/services/serverSide/ambassador/common";
 import {
   ambassadorSalaryCycleApi,
@@ -46,7 +46,9 @@ export const getServerSideProps = withAmbassadorSalaryCommonProps(
       page,
     } = context.query;
 
-    const { result: cycle } = await nextApi.fetch(ambassadorSalaryCycleApi(id));
+    const { result: cycle } = await backendApi.fetch(
+      ambassadorSalaryCycleApi(id),
+    );
 
     let registrations;
     let registeredPayments;
@@ -60,14 +62,14 @@ export const getServerSideProps = withAmbassadorSalaryCommonProps(
         { result: unRegisteredPaymentsResult },
         { result: feedsResult },
       ] = await Promise.all([
-        nextApi.fetch(ambassadorSalaryCycleRegistrationsApi(id), { page }),
-        nextApi.fetch(ambassadorSalaryCycleRegisteredPaymentsApi(id), {
+        backendApi.fetch(ambassadorSalaryCycleRegistrationsApi(id), { page }),
+        backendApi.fetch(ambassadorSalaryCycleRegisteredPaymentsApi(id), {
           page,
         }),
-        nextApi.fetch(ambassadorSalaryCycleUnregisteredPaymentsApi(id), {
+        backendApi.fetch(ambassadorSalaryCycleUnregisteredPaymentsApi(id), {
           page,
         }),
-        nextApi.fetch(ambassadorSalaryCycleFeedsApi(id), {
+        backendApi.fetch(ambassadorSalaryCycleFeedsApi(id), {
           page,
         }),
       ]);

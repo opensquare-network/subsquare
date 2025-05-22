@@ -1,6 +1,6 @@
 import { withCommonProps } from "next-common/lib";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import {
   ambassadorMembersApiUri,
   ambassadorParamsApi,
@@ -13,8 +13,8 @@ const getAmbassadorMembersServerSideProps = withCommonProps(async () => {
     { result: ambassadorParams = {} },
   ] = await Promise.all([
     fetchOpenGovTracksProps(),
-    nextApi.fetch(ambassadorMembersApiUri),
-    nextApi.fetch(ambassadorParamsApi),
+    backendApi.fetch(ambassadorMembersApiUri),
+    backendApi.fetch(ambassadorParamsApi),
   ]);
 
   return {

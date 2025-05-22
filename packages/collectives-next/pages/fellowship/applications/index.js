@@ -1,5 +1,5 @@
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import ListLayout from "next-common/components/layout/ListLayout";
 import PostList from "next-common/components/postList";
@@ -69,7 +69,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
 
   const tracksProps = await fetchOpenGovTracksProps();
 
-  const { result: posts } = await nextApi.fetch("fellowship/applications", {
+  const { result: posts } = await backendApi.fetch("fellowship/applications", {
     page,
     pageSize,
   });

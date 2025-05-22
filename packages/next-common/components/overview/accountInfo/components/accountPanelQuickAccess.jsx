@@ -14,6 +14,10 @@ const ArrowRight = dynamic(
   import("@osn/icons/subsquare").then((mod) => mod.ArrowRight),
 );
 
+const MenuIdentity = dynamic(
+  import("@osn/icons/subsquare").then((mod) => mod.MenuIdentity),
+);
+
 function ProxyButton() {
   const {
     modules: { proxy },
@@ -56,6 +60,27 @@ function MultisigButton() {
   );
 }
 
+function IdentityButton() {
+  const chainSettings = useChainSettings();
+  const router = useRouter();
+
+  if (!chainSettings.modules?.people || router.pathname === "/people") {
+    return null;
+  }
+
+  return (
+    <Link href="/people">
+      <SecondaryButton
+        size="small"
+        iconLeft={<MenuIdentity className="w-4 h-4 text-textTertiary" />}
+        iconRight={<ArrowRight className="w-4 h-4 text-textTertiary" />}
+      >
+        Identity
+      </SecondaryButton>
+    </Link>
+  );
+}
+
 export default function AccountPanelQuickAccess() {
   const router = useRouter();
 
@@ -65,6 +90,7 @@ export default function AccountPanelQuickAccess() {
 
   return (
     <div className="flex items-center space-x-2 ml-[52px]">
+      <IdentityButton />
       <ProxyButton />
       <MultisigButton />
     </div>

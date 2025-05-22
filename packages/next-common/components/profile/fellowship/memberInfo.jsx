@@ -9,7 +9,7 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { usePageProps } from "next-common/context/page";
 import useFellowshipCoreMembersWithRank from "next-common/hooks/fellowship/core/useFellowshipCoreMembersWithRank";
 import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import {
   ambassadorParamsApi,
   fellowshipParamsApi,
@@ -69,7 +69,7 @@ function ProfileFellowshipAmbassadorMemberInfoImpl({ address }) {
 
 function ProfileFellowshipMemberInfoPanel({ member, paramsApi }) {
   const { value: params = {}, loading } = useAsync(async () => {
-    const resp = await nextApi.fetch(paramsApi);
+    const resp = await backendApi.fetch(paramsApi);
     if (resp.result) {
       return resp.result;
     }

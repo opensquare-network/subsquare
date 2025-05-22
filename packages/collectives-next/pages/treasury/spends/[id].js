@@ -1,6 +1,6 @@
 import React from "react";
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchDetailComments } from "next-common/services/detail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
@@ -47,7 +47,7 @@ function ProposalContentWithNullGuard({ detailApiPath, children }) {
         onChainDataFetcher={async (api) =>
           api.query[treasuryPallet]?.spends(id)
         }
-        serverPostFetcher={() => nextApi.fetch(`${detailApiPath}/${id}`)}
+        serverPostFetcher={() => backendApi.fetch(`${detailApiPath}/${id}`)}
       />
     );
   }
@@ -96,7 +96,7 @@ export default function SpendPage({ detail }) {
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
-  const { result: detail } = await nextApi.fetch(`treasury/spends/${id}`);
+  const { result: detail } = await backendApi.fetch(`treasury/spends/${id}`);
 
   if (!detail) {
     return getNullDetailProps(id);
