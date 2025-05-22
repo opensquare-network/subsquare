@@ -5760,7 +5760,7 @@ __metadata:
     "@next/bundle-analyzer": 15.3.0
     "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.208.0
+    "@osn/icons": ^1.214.0
     "@svgr/webpack": ^7.0.0
     "@types/lodash-es": ^4.17.12
     bignumber.js: ^9.0.2
@@ -13521,7 +13521,7 @@ __metadata:
     "@mimirdev/apps-inject": ^3.2.0
     "@mimirdev/apps-sdk": ^3.1.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.208.0
+    "@osn/icons": ^1.214.0
     "@osn/polkadot-react-identicon": ^1.0.10
     "@osn/previewer": ^2.0.0
     "@osn/provider-options": 1.1.0
@@ -16802,7 +16802,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "subsquare@workspace:."
   dependencies:
-    "@osn/icons": ^1.214.0
     autoprefixer: ^10.4.14
     eslint: ^8.44.0
     eslint-plugin-react: ^7.31.11
