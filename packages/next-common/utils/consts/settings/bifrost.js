@@ -142,6 +142,7 @@ const bifrost = {
     cancelReferendum: true,
     killReferendum: true,
   },
+  supportWalletconnect: true,
   allowWeb2Login: false,
 };
 
