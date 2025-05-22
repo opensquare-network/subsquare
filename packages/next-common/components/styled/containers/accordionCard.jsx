@@ -7,6 +7,7 @@ export default function AccordionCard({
   extra,
   title = "",
   defaultOpen,
+  className = "",
 }) {
   const [open, setOpen] = useState(defaultOpen);
 
@@ -39,7 +40,9 @@ export default function AccordionCard({
         </div>
       </div>
 
-      <div className={cn(!open && "hidden", "p-6 pt-0")}>{children}</div>
+      <div className={cn(!open && "hidden", "p-6 pt-0", className)}>
+        {children}
+      </div>
     </div>
   );
 }

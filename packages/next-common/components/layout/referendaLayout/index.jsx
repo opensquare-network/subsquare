@@ -43,7 +43,7 @@ export default function ReferendaLayout({ summaryData, ...props }) {
         },
         {
           value: "tracks",
-          label: "Tracks",
+          label: "Tracks Stats",
           url: "/referenda/tracks",
         },
         user?.address && {
