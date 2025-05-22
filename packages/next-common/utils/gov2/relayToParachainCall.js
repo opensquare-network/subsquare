@@ -50,7 +50,7 @@ export function isSupportedParachainCall(xcmLocation) {
   );
 }
 
-export function isCrossChainCall(xcmLocation) {
+export function isParachainCall(xcmLocation) {
   if (!xcmLocation?.isV4) {
     // todo: currently we only support xcm v4, but we need to support more versions
     return false;
@@ -77,7 +77,7 @@ export function parseParachain(xcmLocation) {
   return parachain?.asParachain;
 }
 
-export function convertCrossChainCalls(xcmPallet) {
+export function convertParachainCalls(xcmPallet) {
   const xcmLocation = xcmPallet?.args?.[0];
   const xcmMessage = xcmPallet.args[1];
   if (!xcmLocation || !xcmMessage) {
@@ -96,7 +96,7 @@ export function convertCrossChainCalls(xcmPallet) {
 export function findAllSupportedParachainCalls(call) {
   const xcmPallets = findAllXcmPallets(call);
   const calls = xcmPallets
-    .map((item) => convertCrossChainCalls(item))
+    .map((item) => convertParachainCalls(item))
     .filter(Boolean);
   return calls.filter((item) => isSupportedParachainCall(item.parachainId));
 }

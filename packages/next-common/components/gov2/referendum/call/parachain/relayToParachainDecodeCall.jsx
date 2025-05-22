@@ -46,7 +46,7 @@ function ParachainChainDecodeCall({ calls }) {
             const content = `Chain Name: ${chainName}\nChain ID: ${parachainId.toHuman()}`;
             return (
               <DecodeCallItem
-                key={`cross-chain-call-decode-${index}`}
+                key={`parachain-chain-decode-call-${index}`}
                 beforeElement={
                   <Tooltip
                     className="!h-6 block"
