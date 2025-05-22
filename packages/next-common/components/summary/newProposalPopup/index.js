@@ -215,7 +215,7 @@ export function useNewProposalInnerPopupContent({
           <EnactmentBlocks track={track} setEnactment={setEnactment} />
           <SubmissionDeposit />
         </AdvanceSettings>
-        <InsufficientBalanceTips encodedLength={preimageLength} />
+        <InsufficientBalanceTips byteLength={preimageLength} />
       </>
     ),
   };

@@ -80,7 +80,7 @@ export function NewUSDxTreasuryReferendumInnerPopupContent() {
         {enactmentField}
         <SubmissionDeposit />
       </AdvanceSettings>
-      <InsufficientBalanceTips encodedLength={encodedLength} />
+      <InsufficientBalanceTips byteLength={encodedLength} />
       <SigningTip />
       <div className="flex justify-between">
         <Button

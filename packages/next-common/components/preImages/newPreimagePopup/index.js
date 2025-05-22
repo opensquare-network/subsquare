@@ -168,7 +168,7 @@ export function useNewPrerimageForm() {
             preimageHash={encodedHash}
             preimageLength={encodedLength || 0}
           />
-          <InsufficientBalanceTips encodedLength={encodedLength} />
+          <InsufficientBalanceTips byteLength={encodedLength} />
         </>
       );
     }

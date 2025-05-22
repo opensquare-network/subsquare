@@ -93,7 +93,7 @@ export function NewRemarkReferendumInnerPopupContent() {
         {enactmentField}
         {submissionDepositField}
       </AdvanceSettings>
-      <InsufficientBalanceTips encodedLength={encodedLength} />
+      <InsufficientBalanceTips byteLength={encodedLength} />
       <SigningTip />
       <div className="flex justify-between">
         <Button

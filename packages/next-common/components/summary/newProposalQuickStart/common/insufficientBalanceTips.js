@@ -9,7 +9,7 @@ import usePreimageDeposit, {
   getPreimageDeposit,
 } from "next-common/hooks/useChainPreimageDeposit";
 
-export default function InsufficientBalanceTips({ encodedLength }) {
+export default function InsufficientBalanceTips({ byteLength }) {
   const api = useContextApi();
   const node = useChainSettings();
   const signerAccount = useSignerAccount();
@@ -17,10 +17,10 @@ export default function InsufficientBalanceTips({ encodedLength }) {
   const preimage = usePreimageDeposit();
 
   const preimageDeposit = useMemo(() => {
-    return preimage && encodedLength
-      ? getPreimageDeposit(preimage, encodedLength).toString()
+    return preimage && byteLength
+      ? getPreimageDeposit(preimage, byteLength).toString()
       : 0;
-  }, [encodedLength, preimage]);
+  }, [byteLength, preimage]);
 
   const submissionDeposit = useMemo(() => {
     if (api) {
