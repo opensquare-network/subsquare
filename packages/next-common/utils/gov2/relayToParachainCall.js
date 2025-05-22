@@ -3,11 +3,7 @@ import {
   AssetHubParaId,
 } from "next-common/components/assets/paraChainTeleportPopup/teleportFromRelayChainToParaChain";
 import { extractTransactCallBytesArr } from "./relayChainCall";
-import {
-  BridgeParaId,
-  CoretimeParaId,
-  PeopleParaId,
-} from "./relayToParachainDecodeSupport";
+import { CoretimeParaId, PeopleParaId } from "./relayToParachainDecodeSupport";
 
 export function isXcmPallet(call) {
   return call.section === "xcmPallet" && call.method === "send";
@@ -37,10 +33,6 @@ export function isPolkadotAssetHubCall(xcmLocation) {
   return xcmLocation?.toNumber() === AssetHubParaId;
 }
 
-export function isBridgeCall(xcmLocation) {
-  return xcmLocation?.toNumber() === BridgeParaId;
-}
-
 export function isPeopleCall(xcmLocation) {
   return xcmLocation?.toNumber() === PeopleParaId;
 }
@@ -53,7 +45,6 @@ export function isSupportedParachainCall(xcmLocation) {
   return (
     isCollectivesCall(xcmLocation) ||
     isPolkadotAssetHubCall(xcmLocation) ||
-    isBridgeCall(xcmLocation) ||
     isPeopleCall(xcmLocation) ||
     isCoretimeCall(xcmLocation)
   );
