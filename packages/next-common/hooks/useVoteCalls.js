@@ -1,4 +1,4 @@
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { gov2ReferendumsVoteCallsApi } from "next-common/services/url";
 import { classifyVoteCalls } from "next-common/store/reducers/gov2ReferendumSlice";
 import { openGovEmptyVotes as emptyVotes } from "next-common/utils/democracy/votes/passed/common";
@@ -45,7 +45,7 @@ export default function useVoteCalls(referendumIndex) {
 
   const getVoteCallsFromApi = useCallback(
     async function () {
-      return nextApi
+      return backendApi
         .fetch(gov2ReferendumsVoteCallsApi(referendumIndex))
         .then(({ result: apiResult }) => {
           if (!apiResult) {

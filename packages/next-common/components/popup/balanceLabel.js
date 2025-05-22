@@ -1,6 +1,6 @@
 import React from "react";
 import { LabelWrapper, Label, BalanceWrapper } from "./styled";
-import Loading from "../loading";
+import { SystemLoadingDots } from "@osn/icons/subsquare";
 import { formatBalance } from "../../utils/viewfuncs";
 import NumberWithComma from "../numberWithComma";
 
@@ -16,7 +16,9 @@ export default function PopupLabelWithBalance({
       <Label>{text}</Label>
       <BalanceWrapper>
         <div className="text-textTertiary text14Medium">{balanceName}</div>
-        {!isLoading && (
+        {isLoading ? (
+          <SystemLoadingDots width={20} height={20} />
+        ) : (
           <div>
             <NumberWithComma
               value={formatBalance(balance, symbol)}
@@ -24,7 +26,6 @@ export default function PopupLabelWithBalance({
             />
           </div>
         )}
-        {isLoading && <Loading />}
       </BalanceWrapper>
     </LabelWrapper>
   );

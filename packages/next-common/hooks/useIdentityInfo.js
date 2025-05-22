@@ -13,9 +13,8 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { isSameAddress } from "next-common/utils";
 import { useIdentityInfoContext } from "next-common/context/people/identityInfoContext";
 
-export function useChainAddressIdentityInfo(chain, address) {
+export function useChainAddressIdentityInfo(chain, address, realAddress = "") {
   const { identity: identityChain } = getChainSettings(chain);
-  const realAddress = useRealAddress();
 
   const { displayName, info: myIdentityInfo = {} } =
     useIdentityInfoContext() || {};
@@ -81,5 +80,6 @@ export function useChainAddressIdentityInfo(chain, address) {
 
 export default function useIdentityInfo(address) {
   const chain = useChain();
-  return useChainAddressIdentityInfo(chain, address);
+  const realAddress = useRealAddress();
+  return useChainAddressIdentityInfo(chain, address, realAddress);
 }

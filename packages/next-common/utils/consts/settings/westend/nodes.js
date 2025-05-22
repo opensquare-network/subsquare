@@ -27,10 +27,10 @@ const westendRelayChainNodes = [
     name: "RadiumBlock",
     url: "wss://westend.public.curie.radiumblock.co/ws",
   },
-  {
-    name: "light client",
-    url: "light://substrate-connect/westend",
-  },
+  // {
+  //   name: "light client",
+  //   url: "light://substrate-connect/westend",
+  // },
 ];
 
 const westendAssetHubNodes = [

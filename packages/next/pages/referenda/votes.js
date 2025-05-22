@@ -1,5 +1,5 @@
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { gov2ReferendumsSummaryApi } from "next-common/services/url";
 import ReferendaLayout from "next-common/components/layout/referendaLayout";
 import {
@@ -64,7 +64,7 @@ export default function ReferendaVotesPage({ referendaSummary }) {
 export const getServerSideProps = withCommonProps(async () => {
   const [tracksProps, { result: referendaSummary }] = await Promise.all([
     fetchOpenGovTracksProps(),
-    nextApi.fetch(gov2ReferendumsSummaryApi),
+    backendApi.fetch(gov2ReferendumsSummaryApi),
   ]);
 
   return {
