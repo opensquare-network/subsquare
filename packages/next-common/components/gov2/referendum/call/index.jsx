@@ -27,7 +27,7 @@ const RelayChainCall = dynamic(
   },
 );
 
-const RelayToParaChainCall = dynamic(
+const RelayToParachainCall = dynamic(
   () => import("./parachain/relayToParachainDecodeCall"),
   {
     ssr: false,
@@ -101,7 +101,7 @@ export default function Gov2ReferendumCall() {
   }
 
   if ((isPolkadotChain(chain) || isKusamaChain(chain)) && callData) {
-    data.push(<RelayToParaChainCall key="relay-to-para-chain-call" />);
+    data.push(<RelayToParachainCall key="relay-to-parachain-call" />);
   }
 
   return <KvList data={data} />;

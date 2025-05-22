@@ -20,10 +20,10 @@ export default function RelayToParaChainCall() {
   if (!supportedParachainCalls.length) {
     return null;
   }
-  return <CrossChainDecodeCall calls={supportedParachainCalls} />;
+  return <ParachainChainDecodeCall calls={supportedParachainCalls} />;
 }
 
-function CrossChainDecodeCall({ calls }) {
+function ParachainChainDecodeCall({ calls }) {
   const { value: decodes } = useRelayToParachainDecode(calls);
   if (!decodes?.length) {
     return null;
