@@ -3,6 +3,11 @@ import {
   AssetHubParaId,
 } from "next-common/components/assets/paraChainTeleportPopup/teleportFromRelayChainToParaChain";
 import { extractTransactCallBytesArr } from "./relayChainCall";
+import {
+  BridgeParaId,
+  CoretimeParaId,
+  PeopleParaId,
+} from "./relayToParachainDecodeSupport";
 
 export function isXcmPallet(call) {
   return call.section === "xcmPallet" && call.method === "send";
@@ -10,6 +15,14 @@ export function isXcmPallet(call) {
 
 export function isForceBatch(call) {
   return call.section === "utility" && call.method === "forceBatch";
+}
+
+export function isBatch(call) {
+  return call.section === "utility" && call.method === "batch";
+}
+
+export function isBatchAll(call) {
+  return call.section === "utility" && call.method === "batchAll";
 }
 
 export function isCall(call) {
@@ -22,6 +35,28 @@ export function isCollectivesCall(xcmLocation) {
 
 export function isPolkadotAssetHubCall(xcmLocation) {
   return xcmLocation?.toNumber() === AssetHubParaId;
+}
+
+export function isBridgeCall(xcmLocation) {
+  return xcmLocation?.toNumber() === BridgeParaId;
+}
+
+export function isPeopleCall(xcmLocation) {
+  return xcmLocation?.toNumber() === PeopleParaId;
+}
+
+export function isCoretimeCall(xcmLocation) {
+  return xcmLocation?.toNumber() === CoretimeParaId;
+}
+
+export function isSupportedParachainCall(xcmLocation) {
+  return (
+    isCollectivesCall(xcmLocation) ||
+    isPolkadotAssetHubCall(xcmLocation) ||
+    isBridgeCall(xcmLocation) ||
+    isPeopleCall(xcmLocation) ||
+    isCoretimeCall(xcmLocation)
+  );
 }
 
 export function isCrossChainCall(xcmLocation) {
@@ -67,12 +102,12 @@ export function convertCrossChainCalls(xcmPallet) {
   };
 }
 
-export function findAllCollectivesCalls(call) {
+export function findAllSupportedParachainCalls(call) {
   const xcmPallets = findAllXcmPallets(call);
   const calls = xcmPallets
     .map((item) => convertCrossChainCalls(item))
     .filter(Boolean);
-  return calls.filter((item) => isCollectivesCall(item.parachainId));
+  return calls.filter((item) => isSupportedParachainCall(item.parachainId));
 }
 
 function findAllXcmPallets(call) {
@@ -90,7 +125,7 @@ function findAllXcmPallets(call) {
     return results;
   }
 
-  if (isForceBatch(call)) {
+  if (isForceBatch(call) || isBatch(call) || isBatchAll(call)) {
     const batchCalls = call.args?.[0] || [];
     batchCalls.forEach((item) => {
       results.push(...findAllXcmPallets(item));

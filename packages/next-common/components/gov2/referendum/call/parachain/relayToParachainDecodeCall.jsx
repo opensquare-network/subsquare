@@ -1,31 +1,30 @@
 import { RawCallContext } from "next-common/context/call/raw";
 import { useContext } from "react";
-import { findAllCollectivesCalls } from "next-common/utils/gov2/crossChainCall";
+import { findAllSupportedParachainCalls } from "next-common/utils/gov2/relayToParachainCall";
 import Row from "next-common/components/listInfo/row";
 import DecodeCallList from "../decodeList";
 import { DecodeCallItem } from "../decodeItem";
 import ChainIcon from "next-common/components/header/chainIcon";
-import { getParaChain } from "next-common/components/assets/paraChainTeleportPopup/teleportFromRelayChainToParaChain";
 import Tooltip from "next-common/components/tooltip";
-import { useCrossChainCallDecode } from "next-common/utils/gov2/useCrossChainCallDecode";
+import { useRelayToParachainDecode } from "next-common/utils/gov2/useRelayToParachainDecode";
 import getChainSettings from "next-common/utils/consts/settings";
+import { getParachain } from "next-common/utils/gov2/relayToParachainDecodeSupport";
 
-export default function CrossChainCall() {
+export default function RelayToParaChainCall() {
   const { call } = useContext(RawCallContext);
 
   if (!call) {
     return null;
   }
-  // todo: currently we only support collectives call
-  const collectivesCalls = findAllCollectivesCalls(call);
-  if (!collectivesCalls.length) {
+  const supportedParachainCalls = findAllSupportedParachainCalls(call);
+  if (!supportedParachainCalls.length) {
     return null;
   }
-  return <CrossChainDecodeCall calls={collectivesCalls} />;
+  return <CrossChainDecodeCall calls={supportedParachainCalls} />;
 }
 
 function CrossChainDecodeCall({ calls }) {
-  const { value: decodes } = useCrossChainCallDecode(calls);
+  const { value: decodes } = useRelayToParachainDecode(calls);
   if (!decodes?.length) {
     return null;
   }
@@ -38,7 +37,10 @@ function CrossChainDecodeCall({ calls }) {
           key="decode-call-list"
           list={decodes}
           renderItem={({ json, raw, parachainId }, index) => {
-            const chain = getParaChain(parachainId.toNumber());
+            const chain = getParachain(parachainId.toNumber());
+            if (!chain) {
+              return null;
+            }
             const chainSettings = getChainSettings(chain);
             const chainName = chainSettings?.name || chain;
             const content = `Chain Name: ${chainName}\nChain ID: ${parachainId.toHuman()}`;

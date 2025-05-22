@@ -9,15 +9,15 @@ import { convertDecodedCallToViewData } from "./useRelayChainCallDecode";
 
 const parachainApiMap = new Map();
 
-const cacheParachainApi = (parachainId, blockHeight) => {
-  if (!parachainApiMap.has(parachainId)) {
-    const parachainApi = getParachainApi(parachainId, blockHeight);
-    parachainApiMap.set(parachainId, parachainApi);
+const cacheParachainApi = (parachainIdNumber, blockHeight) => {
+  if (!parachainApiMap.has(parachainIdNumber)) {
+    const parachainApi = getParachainApi(parachainIdNumber, blockHeight);
+    parachainApiMap.set(parachainIdNumber, parachainApi);
   }
-  return parachainApiMap.get(parachainId);
+  return parachainApiMap.get(parachainIdNumber);
 };
 
-export function useCrossChainCallDecode(calls) {
+export function useRelayToParachainDecode(calls) {
   const [results, setResults] = useState([]);
   const api = useContextApi();
   const blockHeight = useReferendumVotingFinishHeight();

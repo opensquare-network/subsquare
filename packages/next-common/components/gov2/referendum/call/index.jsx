@@ -11,7 +11,11 @@ import extractFellowshipApprove from "next-common/components/common/call/fellows
 import dynamic from "next/dynamic";
 import isHydradx from "next-common/utils/isHydradx";
 import { useChain } from "next-common/context/chain";
-import { isCollectivesChain, isPolkadotChain } from "next-common/utils/chain";
+import {
+  isCollectivesChain,
+  isKusamaChain,
+  isPolkadotChain,
+} from "next-common/utils/chain";
 
 const EvmCall = dynamic(() => import("./evmCallDecode"), {
   ssr: false,
@@ -23,8 +27,8 @@ const RelayChainCall = dynamic(
   },
 );
 
-const CrossChainCall = dynamic(
-  () => import("./parachain/crossChainDecodeCall"),
+const RelayToParaChainCall = dynamic(
+  () => import("./parachain/relayToParachainDecodeCall"),
   {
     ssr: false,
   },
@@ -75,18 +79,6 @@ export default function Gov2ReferendumCall() {
     ]);
   }
 
-  if (isHydradx(chain) && callData) {
-    data.push(<EvmCall key="evm-call" call={callData} />);
-  }
-
-  if (isCollectivesChain(chain) && callData) {
-    data.push(<RelayChainCall key="relay-chain-call" />);
-  }
-
-  if (isPolkadotChain(chain) && callData) {
-    data.push(<CrossChainCall key="cross-chain-call" />);
-  }
-
   const businessData = useReferendaBusinessData();
   if (businessData) {
     data.push(...businessData);
@@ -99,6 +91,18 @@ export default function Gov2ReferendumCall() {
       ...extractFellowshipApprove(proposal?.call || inlineCall?.call),
     ],
   );
+
+  if (isHydradx(chain) && callData) {
+    data.push(<EvmCall key="evm-call" call={callData} />);
+  }
+
+  if (isCollectivesChain(chain) && callData) {
+    data.push(<RelayChainCall key="relay-chain-call" />);
+  }
+
+  if ((isPolkadotChain(chain) || isKusamaChain(chain)) && callData) {
+    data.push(<RelayToParaChainCall key="relay-to-para-chain-call" />);
+  }
 
   return <KvList data={data} />;
 }

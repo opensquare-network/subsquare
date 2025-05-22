@@ -89,6 +89,10 @@ export function isPeopleChain(chain) {
   ].includes(chain);
 }
 
+export function isCoretimeChain(chain) {
+  return [Chains.polkadotCoretime, Chains.kusamaCoretime].includes(chain);
+}
+
 export function isPaseoChain(chain) {
   return [Chains.paseo].includes(chain);
 }

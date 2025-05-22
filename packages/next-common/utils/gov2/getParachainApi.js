@@ -1,13 +1,18 @@
 import { getChainApi, getChainApiAt } from "../getChainApi";
 import getChainSettings from "../consts/settings";
-import { getParaChain } from "next-common/components/assets/paraChainTeleportPopup/teleportFromRelayChainToParaChain";
+import { getParachain } from "./relayToParachainDecodeSupport";
 
-export async function getParachainApi(parachainId, blockHeightOrHash) {
-  if (!parachainId) {
+export async function getParachainApi(parachainIdNumber, blockHeightOrHash) {
+  if (!parachainIdNumber) {
     return null;
   }
 
-  const endpointsUrls = getChainSettings(getParaChain(parachainId))
+  const parachain = getParachain(parachainIdNumber);
+  if (!parachain) {
+    return null;
+  }
+
+  const endpointsUrls = getChainSettings(parachain)
     ?.endpoints?.map((item) => item.url)
     .filter(Boolean);
 
