@@ -1,11 +1,10 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import Header from "./header";
 import Options from "./options";
 import VoteButton from "./voteButton";
-import nextApi from "../../services/nextApi";
+import { backendApi } from "../../services/nextApi";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
 import { usePageProps } from "next-common/context/page";
@@ -43,7 +42,7 @@ export default function Poll() {
         return;
       }
 
-      const { result, error } = await nextApi.put(`polls/${poll._id}/vote`, {
+      const { result, error } = await backendApi.put(`polls/${poll._id}/vote`, {
         option: selectedOption,
       });
       if (result) {

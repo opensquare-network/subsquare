@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Pagination from "next-common/components/pagination";
 import VStack from "next-common/components/styled/vStack";
 import styled from "styled-components";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import useColumns from "next-common/components/styledList/useColumns";
 import Flex from "next-common/components/styled/flex";
@@ -87,7 +87,7 @@ export default function DelegationTabList({
   );
 
   useEffect(() => {
-    nextApi
+    backendApi
       .fetch(`${apiRoot}/delegatee/${delegatee}/delegators`, {
         ...getSortParams(sortedColumn),
         page,

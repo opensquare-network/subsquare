@@ -1,6 +1,6 @@
 import useCall from "next-common/utils/hooks/useCall";
-import { useEffect, useState, useCallback } from "react";
-import nextApi from "next-common/services/nextApi";
+import { useCallback, useEffect, useState } from "react";
+import { backendApi } from "next-common/services/nextApi";
 import BigNumber from "bignumber.js";
 import { querySystemAccountBalance } from "next-common/utils/hooks/useAddressBalance";
 import bigAdd from "next-common/utils/math/bigAdd";
@@ -48,7 +48,7 @@ export function useBountiesTotalBalance(bounties, api) {
           if (!id) return new BigNumber(0);
 
           try {
-            const response = await nextApi.fetch(`treasury/bounties/${id}`);
+            const response = await backendApi.fetch(`treasury/bounties/${id}`);
             const address = response?.result?.onchainData?.address;
 
             if (!address) {

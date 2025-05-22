@@ -28,9 +28,6 @@ export function extractTransactCallBytesArr(messageArg) {
       return acc;
     }
     const transact = instruction.asTransact;
-    if (transact.originKind?.toString() !== "Xcm") {
-      return acc;
-    }
     return [...acc, transact.call.encoded];
   }, []);
 }

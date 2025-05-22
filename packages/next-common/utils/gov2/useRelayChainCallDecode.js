@@ -14,7 +14,7 @@ export function useRelayChainCallDecode(bytesArr) {
           const result = api?.registry?.createType("Call", bytes);
           if (result) {
             decodeResults.push({
-              json: convertRelayChainCallToViewData(result),
+              json: convertDecodedCallToViewData(result),
               raw: result,
             });
           }
@@ -37,7 +37,7 @@ export function useRelayChainCallDecode(bytesArr) {
   };
 }
 
-function convertRelayChainCallToViewData(call) {
+export function convertDecodedCallToViewData(call) {
   const { section, method, ...rest } = call.toHuman?.() || {};
   return {
     section,

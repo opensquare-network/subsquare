@@ -1,7 +1,7 @@
 import PostList from "next-common/components/postList";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeProposalListItem from "next-common/utils/viewfuncs/democracy/normalizeProposalListItem";
 import ListLayout from "next-common/components/layout/ListLayout";
@@ -56,7 +56,7 @@ export default function DemocracyProposalsPage({ proposals, summary }) {
 export const getServerSideProps = withCommonProps(async (context) => {
   const { page, page_size: pageSize } = context.query;
 
-  const { result: proposals } = await nextApi.fetch("democracy/proposals", {
+  const { result: proposals } = await backendApi.fetch("democracy/proposals", {
     page: page ?? 1,
     pageSize: pageSize ?? defaultPageSize,
     simple: true,
