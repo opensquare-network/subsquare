@@ -3,6 +3,7 @@ import { createContext, useContext, useMemo, useEffect, useState } from "react";
 import { getChainApi, getChainApiAt } from "next-common/utils/getChainApi";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import { useContextApi } from "next-common/context/api";
+import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated";
 
 const MIGRATION_BLOCK_TIME_MAP = {
   westend: 1747307424000,
@@ -98,9 +99,7 @@ export function MigrationConditionalApiProvider({
   finishHeightOrHash = null,
   children,
 }) {
-  const { assetHubMigrated = false } = useChainSettings();
-
-  if (assetHubMigrated) {
+  if (isAssetHubMigrated()) {
     return (
       <ConditionalContextApiProvider
         indexer={indexer}
