@@ -1,5 +1,4 @@
 import { useContextApi } from "next-common/context/api";
-import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import { SystemNo, SystemYes } from "@osn/icons/subsquare";
 import { useMemo } from "react";
@@ -8,29 +7,36 @@ import { useChainSettings } from "next-common/context/chain";
 import usePreimageDeposit, {
   getPreimageDeposit,
 } from "next-common/hooks/useChainPreimageDeposit";
+import useAccountTransferrable from "next-common/hooks/useAccountTransferrable";
+import { BN, BN_ZERO } from "@polkadot/util";
 
 export default function InsufficientBalanceTips({ byteLength }) {
   const api = useContextApi();
-  const node = useChainSettings();
   const signerAccount = useSignerAccount();
-  const [balance] = useAddressBalance(api, signerAccount?.realAddress);
+  const node = useChainSettings();
   const preimage = usePreimageDeposit();
+
+  const { transferrable } = useAccountTransferrable(
+    api,
+    signerAccount?.realAddress,
+  );
+  const transferrableBalance = new BN(transferrable);
 
   const preimageDeposit = useMemo(() => {
     return preimage && byteLength
-      ? getPreimageDeposit(preimage, byteLength).toString()
-      : 0;
+      ? getPreimageDeposit(preimage, byteLength)
+      : BN_ZERO;
   }, [byteLength, preimage]);
 
-  const submissionDeposit = useMemo(() => {
-    if (api) {
-      return api.consts.referenda?.submissionDeposit.toString();
-    }
-    return "";
-  }, [api]);
+  const submissionDeposit = useMemo(
+    () => (api ? api.consts.referenda?.submissionDeposit : BN_ZERO),
+    [api],
+  );
 
-  const isPreimageDepositSufficient = balance > preimageDeposit;
-  const isSubmissionDepositSufficient = balance > submissionDeposit;
+  const isPreimageDepositSufficient = preimageDeposit.lt(transferrableBalance);
+  const isSubmissionDepositSufficient = submissionDeposit
+    .add(preimageDeposit)
+    .lt(transferrableBalance);
 
   return (
     preimage && (
