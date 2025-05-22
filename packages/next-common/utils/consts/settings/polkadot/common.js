@@ -16,6 +16,7 @@ const polkadotCommonCfg = {
   ss58Format: 0,
   navLogo: ProjectLogoPolkadotLight,
   navLogoDark: ProjectLogoPolkadotDark,
+  supportWalletconnect: true,
   ...polkadotThemeVars,
 };
 
