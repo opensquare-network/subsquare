@@ -19,7 +19,7 @@ const ColorLoadingIcon = styled(SystemLoading)`
 
 export default function Loading({ size = 12, color }) {
   return (
-    <div className="inline-flex [&_svg_path]:!fill-none">
+    <div className="inline-flex items-center [&_svg_path]:!fill-none">
       <ColorLoadingIcon width={size} height={size} color={color} />
     </div>
   );

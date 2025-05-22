@@ -12,6 +12,7 @@ import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import useFetchMyReferendaVoting from "next-common/components/myvotes/referenda/useFetchMyReferendaVoting";
 import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 import { ReferendaList } from "next-common/components/referenda/list";
+import TrackPanel from "next-common/components/referenda/trackPanel";
 
 export default function ReferendaPage({ title, gov2ReferendaSummary }) {
   useFetchMyReferendaVoting();
@@ -24,6 +25,7 @@ export default function ReferendaPage({ title, gov2ReferendaSummary }) {
       title={title}
       summaryData={gov2ReferendaSummary}
     >
+      <TrackPanel className="mb-4" />
       <ActiveReferendaProvider pallet="referenda">
         <ReferendaList />
       </ActiveReferendaProvider>

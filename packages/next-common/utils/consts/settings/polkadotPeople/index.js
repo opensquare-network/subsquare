@@ -16,8 +16,16 @@ const polkadotPeople = {
   darkAvatar: ProjectIconPolkadotPeople,
   endpoints: [
     {
+      name: "Parity",
+      url: "wss://polkadot-people-rpc.polkadot.io",
+    },
+    {
       name: "IBP1",
       url: "wss://sys.ibp.network/people-polkadot",
+    },
+    {
+      name: "OnFinality",
+      url: "wss://people-polkadot.api.onfinality.io/public-ws",
     },
     {
       name: "IBP2",
@@ -26,10 +34,6 @@ const polkadotPeople = {
     {
       name: "LuckyFriday",
       url: "wss://rpc-people-polkadot.luckyfriday.io",
-    },
-    {
-      name: "Parity",
-      url: "wss://polkadot-people-rpc.polkadot.io",
     },
     {
       name: "RadiumBlock",
