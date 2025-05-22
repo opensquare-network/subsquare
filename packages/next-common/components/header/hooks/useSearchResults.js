@@ -3,8 +3,6 @@ import { backendApi } from "next-common/services/nextApi";
 import useRefCallback from "next-common/hooks/useRefCallback";
 import { markdownToText } from "next-common/components/header/search/utils";
 import useSearchIdentities from "next-common/components/header/hooks/useSearchIdentities";
-import fetchBatchIdentities from "next-common/components/data/common/fetchBatchIdentities";
-import { useChainSettings } from "next-common/context/chain";
 import { trackPromises } from "next-common/components/header/search/utils";
 
 export const ItemType = {
@@ -18,30 +16,23 @@ function useSearchResults() {
   const abortControllerRef = useRef(null);
   const lastSearchValueRef = useRef("");
   const [fetchIdentities, isIdentitiesLoading] = useSearchIdentities();
-  const { identity: identityChain } = useChainSettings();
 
-  const combineIdentitiesRequest = useRefCallback(
-    async (searchValue, identityChain) => {
-      try {
-        const { identities } = (await fetchIdentities(searchValue)) ?? {};
-        if (!identities) return null;
+  const combineIdentitiesRequest = useRefCallback(async (searchValue) => {
+    try {
+      const { identities } = (await fetchIdentities(searchValue)) ?? {};
+      if (!identities) return null;
 
-        const accounts = (Object.entries(identities) ?? []).flatMap(
-          ([key, value]) => {
-            if (key === "identities") {
-              return value.map((item) => item.account);
-            } else {
-              return [];
-            }
-          },
-        );
-
-        return await fetchBatchIdentities(identityChain, accounts);
-      } catch (e) {
-        return Promise.reject(e);
-      }
-    },
-  );
+      return (Object.entries(identities) ?? []).flatMap(([key, value]) => {
+        if (key === "identities") {
+          return value;
+        } else {
+          return [];
+        }
+      });
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  });
 
   const baseSearchDataRequest = useRefCallback(async (searchValue, signal) => {
     try {
@@ -75,7 +66,7 @@ function useSearchResults() {
 
       const trackResults = await trackPromises([
         baseSearchDataRequest(searchValue, signal),
-        combineIdentitiesRequest(searchValue, identityChain),
+        combineIdentitiesRequest(searchValue),
       ]);
 
       const [apiResult, identitiesResult] = trackResults.reduce(
@@ -90,13 +81,11 @@ function useSearchResults() {
         [{}, {}],
       );
 
-      const endIdentities = Object.entries(identitiesResult || {}).map(
-        ([key, value], index) => ({
-          index,
-          content: key,
-          title: value,
-        }),
-      );
+      const endIdentities = identitiesResult.map((item, index) => ({
+        index,
+        content: item?.account,
+        title: item?.fullDisplay ?? "-",
+      }));
 
       if (!signal.aborted) {
         setResults(
