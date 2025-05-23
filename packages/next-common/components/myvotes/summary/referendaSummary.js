@@ -26,7 +26,8 @@ export default function ReferendaSummary() {
   const votesCount = useSelector(referendaVotesLengthSelector);
   const delegated = useSelector(myReferendaDelegatedSelector);
   const loadingSummary = useSelector(isLoadingReferendaSummarySelector);
-  const { unlockBalance: unLockable, lockedBalance: locked } = useVoteBalance();
+  const { unlockBalance, lockedBalance: locked } = useVoteBalance();
+  const unLockable = unlockBalance.toString();
 
   let actionComponent = null;
   if (voteExpiredReferenda.length > 0 || tracksToUnlock.length > 0) {

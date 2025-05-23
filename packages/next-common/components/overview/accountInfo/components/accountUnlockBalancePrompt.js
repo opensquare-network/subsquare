@@ -14,7 +14,7 @@ export default function AccountUnlockBalancePrompt() {
   useFetchMyReferendaVoting();
   const { unlockBalance } = useVoteBalance();
   const { symbol, decimals } = useChainSettings();
-  if (unlockBalance === "0" || visible) return null;
+  if (unlockBalance.isZero() || !visible) return null;
 
   return (
     <GreyPanel
@@ -22,8 +22,8 @@ export default function AccountUnlockBalancePrompt() {
       style={colorStyle[PromptTypes]}
     >
       <div className="text-textSecondary">
-        You have {toPrecision(unlockBalance, decimals)} expired {symbol}{" "}
-        available to unlock, manage{" "}
+        You have {toPrecision(unlockBalance.toString(), decimals)} expired{" "}
+        {symbol} available to unlock, manage{" "}
         <Link
           className="underline text14Medium font-[700]"
           href={"/account/votes"}

@@ -11,6 +11,6 @@ export default function useVoteBalance() {
   const locked = BigNumber.max(lockFromOnChainData, maxTracksLock);
   return {
     lockedBalance: locked,
-    unlockBalance: BigNumber(locked).minus(lockRequired).toString(),
+    unlockBalance: BigNumber(locked).minus(lockRequired),
   };
 }
