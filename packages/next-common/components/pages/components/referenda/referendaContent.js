@@ -8,8 +8,20 @@ import { clearVotes } from "next-common/store/reducers/referenda/votes";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
 import ReferendumDetailMultiTabs from "../tabs/referendumDetailMultiTabs";
+import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
+import { useReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 
 export function ReferendumContent() {
+  const indexer = useReferendumVotingFinishIndexer();
+
+  return (
+    <MigrationConditionalApiProvider indexer={indexer}>
+      <ReferendumContentInContext />
+    </MigrationConditionalApiProvider>
+  );
+}
+
+function ReferendumContentInContext() {
   const dispatch = useDispatch();
   useSubReferendumInfo();
   // const onchainData = useOnchainData();
