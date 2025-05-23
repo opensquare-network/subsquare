@@ -25,7 +25,7 @@ import TreasuryChildBountiesDetailMultiTabs from "next-common/components/pages/c
 
 function ChildBountyContent() {
   const post = usePost();
-  useSubscribePostDetail(post?.index);
+  useSubscribePostDetail(`${post?.parentBountyId}_${post?.index}`);
 
   return (
     <OffChainArticleActionsProvider>
