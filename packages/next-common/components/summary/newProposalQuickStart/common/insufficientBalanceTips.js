@@ -29,7 +29,7 @@ export default function InsufficientBalanceTips({ byteLength }) {
   }, [byteLength, preimage]);
 
   const submissionDeposit = useMemo(
-    () => (api ? api.consts.referenda?.submissionDeposit : BN_ZERO),
+    () => api.consts?.referenda?.submissionDeposit || BN_ZERO,
     [api],
   );
 
