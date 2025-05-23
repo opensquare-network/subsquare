@@ -24,10 +24,7 @@ export default function AccountUnlockBalancePrompt() {
       <div className="text-textSecondary">
         You have {toPrecision(unlockBalance.toString(), decimals)} expired{" "}
         {symbol} available to unlock, manage{" "}
-        <Link
-          className="underline text14Medium font-[700]"
-          href={"/account/votes"}
-        >
+        <Link className="underline text14Bold " href={"/account/votes"}>
           here
         </Link>
         .
