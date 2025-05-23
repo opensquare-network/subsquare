@@ -22,10 +22,6 @@ export default function AyeNaySplitTab({ tabIndex, setTabIndex }) {
   ];
 
   return (
-    <Tab
-      tabs={tabs}
-      selectedTabId={tabIndex}
-      setSelectedTabId={setTabIndex}
-    />
+    <Tab tabs={tabs} selectedTabId={tabIndex} setSelectedTabId={setTabIndex} />
   );
 }

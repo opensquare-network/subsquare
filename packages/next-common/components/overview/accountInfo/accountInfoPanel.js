@@ -237,6 +237,7 @@ const transferEnabledChains = [
   Chains.kusama,
   Chains.westend,
   Chains.rococo,
+  Chains.westendAssetHubNext,
 ];
 
 const relayChainTeleportEnabledChains = [Chains.polkadot, Chains.kusama];

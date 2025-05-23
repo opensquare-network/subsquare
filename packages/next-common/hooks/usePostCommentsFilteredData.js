@@ -38,7 +38,7 @@ export function usePostCommentsFilteredData() {
 
   const accountList = useMemo(() => {
     let accounts = commentsData?.items.map(({ author }) => author?.address);
-    
+
     return Array.isArray(accounts) ? Array.from(accounts) : [];
   }, [commentsData]);
 
