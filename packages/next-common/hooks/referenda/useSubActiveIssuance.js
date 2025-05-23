@@ -4,10 +4,10 @@ import {
   setReferendaInActive,
   setReferendaIssuance,
 } from "../../store/reducers/referenda/issuance";
-import { useContextApi } from "next-common/context/api";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
 export default function useSubActiveIssuance() {
-  const api = useContextApi();
+  const api = useConditionalContextApi();
   const dispatch = useDispatch();
 
   useEffect(() => {
