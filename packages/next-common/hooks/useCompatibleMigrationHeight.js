@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { createGlobalState } from "react-use";
 import { useReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
-import { isContentMigrated } from "next-common/context/migration/conditionalApi";
+import { isHistoricalContent } from "next-common/context/migration/conditionalApi";
 import useChainOrScanHeight from "./height";
 import { useContextApi } from "next-common/context/api";
 
@@ -13,10 +13,10 @@ export function useCompatibleMigrationHeight() {
   const api = useContextApi();
   const height = useChainOrScanHeight();
   const indexer = useReferendumVotingFinishIndexer();
-  const isMigrated = isContentMigrated(indexer);
+  const isHistorical = isHistoricalContent(indexer);
 
   useEffect(() => {
-    if (!api || !isMigrated) {
+    if (!api || !isHistorical) {
       return;
     }
     api?.query?.parachainSystem
@@ -24,9 +24,9 @@ export function useCompatibleMigrationHeight() {
       .then((relayParent) => {
         setCompatibleMigrationHeight(relayParent.toNumber());
       });
-  }, [api, isMigrated, height, setCompatibleMigrationHeight]);
+  }, [api, isHistorical, height, setCompatibleMigrationHeight]);
 
-  if (isMigrated) {
+  if (isHistorical) {
     return compatibleMigrationHeight;
   }
 

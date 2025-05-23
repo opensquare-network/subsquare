@@ -10,7 +10,7 @@ export const MIGRATION_BLOCK_TIME_MAP = {
   westend: 1747307424000,
 };
 
-export function isContentMigrated(indexer) {
+export function isHistoricalContent(indexer) {
   if (!indexer || !isAssetHubMigrated()) {
     return false;
   }
@@ -27,7 +27,7 @@ function useConditionalApi(indexer) {
   const { relayChainEndpoints = [], endpoints = [] } = useChainSettings();
 
   const endpointUrls = useMemo(() => {
-    if (isContentMigrated(indexer)) {
+    if (isHistoricalContent(indexer)) {
       return relayChainEndpoints?.map?.((item) => item.url) || [];
     }
 
