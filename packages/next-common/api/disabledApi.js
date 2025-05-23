@@ -1,4 +1,8 @@
-const disabledApiRoutes = [/^\/api\/gov2\/referendums/, /^\/api\/democracy/];
+const disabledApiRoutes = [
+  /^\/api\/gov2\/referendums/,
+  /^\/api\/democracy/,
+  /^\/treasury\/bounties/,
+];
 
 function trimEndSlash(url) {
   return url.replace(/\/+$/, "");
