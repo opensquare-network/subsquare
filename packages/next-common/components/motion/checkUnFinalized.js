@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import CheckUnFinalizedBase from "next-common/components/checkUnFinalizedBase";
 import { useDetailType } from "next-common/context/page";
 import { toApiType } from "next-common/utils/viewfuncs";
@@ -39,7 +39,7 @@ export default function CheckUnFinalized({ id }) {
   return (
     <CheckUnFinalizedBase
       onChainDataFetcher={findMotion}
-      serverPostFetcher={() => nextApi.fetch(`${toApiType(type)}/${id}`)}
+      serverPostFetcher={() => backendApi.fetch(`${toApiType(type)}/${id}`)}
     />
   );
 }

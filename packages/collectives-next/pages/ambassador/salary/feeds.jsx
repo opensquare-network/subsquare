@@ -1,6 +1,6 @@
 import FellowshipSalaryCommon from "next-common/components/fellowship/salary/common";
 import FellowshipSalaryFeedsContainer from "next-common/components/fellowship/salary/feeds/container";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { withAmbassadorSalaryCommonProps } from "next-common/services/serverSide/ambassador/common";
 import { ambassadorSalaryFeedsApi } from "next-common/services/url";
 import { defaultPageSize } from "next-common/utils/constants";
@@ -29,7 +29,7 @@ export const getServerSideProps = withAmbassadorSalaryCommonProps(
       Object.assign(query, { who });
     }
 
-    const { result: ambassadorSalaryFeeds } = await nextApi.fetch(
+    const { result: ambassadorSalaryFeeds } = await backendApi.fetch(
       ambassadorSalaryFeedsApi,
       query,
     );

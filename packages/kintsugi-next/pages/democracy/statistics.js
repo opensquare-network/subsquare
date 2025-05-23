@@ -1,5 +1,5 @@
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import DemocracyReferendaLayout from "next-common/components/layout/democracyLayout/referenda";
 import KintsugiDemocracyStaking from "components/summary/kintsugiDemocracyStaking";
 import { useNavCollapsed } from "next-common/context/nav";
@@ -50,8 +50,8 @@ export default function DemocracyStatisticsPage({ turnout, summary }) {
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const [{ result: turnout }, { result: summary }] = await Promise.all([
-    nextApi.fetch("democracy/referenda/turnout"),
-    nextApi.fetch("overview/summary"),
+    backendApi.fetch("democracy/referenda/turnout"),
+    backendApi.fetch("overview/summary"),
   ]);
 
   return {

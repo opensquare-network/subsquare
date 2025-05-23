@@ -3,7 +3,7 @@ import StatisticsExpenditureSummary from "./summary";
 import StatisticsCycles from "./cycles";
 import StatisticsClaimants from "./claimants";
 import { useAsync } from "react-use";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { fellowshipStatisticsCyclesApi } from "next-common/services/url";
 import StatisticsExpenditureByRank from "./rank";
 import { cn } from "next-common/utils";
@@ -17,7 +17,7 @@ export default function StatisticsExpenditure({ members = [] }) {
     if (!cyclesApi) {
       return;
     }
-    const resp = await nextApi.fetch(cyclesApi);
+    const resp = await backendApi.fetch(cyclesApi);
     return resp?.result;
   }, [cyclesApi]);
 

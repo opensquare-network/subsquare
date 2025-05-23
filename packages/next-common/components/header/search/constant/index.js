@@ -7,6 +7,7 @@ export const GET_IDENTITIES = gql`
       offset
       total
       identities {
+        fullDisplay
         subsCount
         account
         isSub

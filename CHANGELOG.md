@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+# 4.7.3
+
+date: 2025-05-21
+
+- Remove OpenGov tracks menu and add a tracks panel on referenda page.
+- Bug fix: add back fellowship referenda and members page for kusama.
+- Governance asset hub migration
+    - Switch to asset hub scan after a preset height on relay chain.
+    - Return assethub latest height from backend by config.
+    - Add config and use asset hub RPCs by config in fronted.
+    - Improve the config for the previous asset hub pages. We need to improve some context like relay chain related data
+      provider and some component status like hiding the cross chain components after asset hub migrated.
+- UX enhancements
+    - Add tooltips for referendum tally panel elements and referendum tabs.
+    - Add a delegation redirection under referendum vote button.
+    - Add tooltips for tabs of recent proposals.
+    - Add tooltips for democracy and treasury proposal states.
+- Remove altair from networks menu.
+- Fix votes popup list flicker after nested delegation popup open.
+- Correct interlay and ajuna explorer from subscan to statescan.
+- Disable next API access to OpenGov referenda.
+- Code refactor and UI/bug fixes.
+
 # 4.7.2
 
 date: 2025-05-19

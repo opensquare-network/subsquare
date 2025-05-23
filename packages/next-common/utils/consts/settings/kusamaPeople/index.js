@@ -16,28 +16,36 @@ const kusamaPeople = {
   darkAvatar: ProjectIconkusamaPeople,
   endpoints: [
     {
-      name: "Dwellir",
-      url: "wss://people-kusama-rpc.n.dwellir.com",
+      name: "Parity",
+      url: "wss://kusama-people-rpc.polkadot.io",
     },
     {
       name: "IBP1",
       url: "wss://sys.ibp.network/people-kusama",
     },
     {
+      name: "OnFinality",
+      url: "wss://people-kusama.api.onfinality.io/public-ws",
+    },
+    {
       name: "IBP2",
       url: "wss://people-kusama.dotters.network",
+    },
+    {
+      name: "Dwellir",
+      url: "wss://people-kusama-rpc.n.dwellir.com",
     },
     {
       name: "LuckyFriday",
       url: "wss://rpc-people-kusama.luckyfriday.io",
     },
     {
-      name: "Parity",
-      url: "wss://kusama-people-rpc.polkadot.io",
-    },
-    {
       name: "Stakeworld",
       url: "wss://ksm-rpc.stakeworld.io/people",
+    },
+    {
+      name: "Helixstreet",
+      url: "wss://rpc-people-kusama.helixstreet.io",
     },
   ],
   group: null,

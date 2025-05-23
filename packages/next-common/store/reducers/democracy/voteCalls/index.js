@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { isKintsugiChain } from "next-common/utils/chain";
 import { emptyVotes } from "next-common/utils/democracy/votes/passed/common";
 
@@ -85,7 +85,7 @@ export const fetchVoteCalls = (referendumIndex) => async (dispatch) => {
   dispatch(clearVoteCalls());
   dispatch(setIsLoadingVoteCalls(true));
   try {
-    const { result } = await nextApi.fetch(
+    const { result } = await backendApi.fetch(
       `democracy/referendums/${referendumIndex}/vote-calls`,
     );
 

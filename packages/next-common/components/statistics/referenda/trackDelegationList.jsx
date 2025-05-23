@@ -1,4 +1,4 @@
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { useEffect, useState } from "react";
 import DemocracyStatistics from "../democracy";
 import Loading from "next-common/components/loading";
@@ -15,15 +15,15 @@ export default function TrackDelegationList({ trackId }) {
   useEffect(() => {
     setIsLoading(true);
     Promise.all([
-      nextApi.fetch(`referenda/tracks/${trackId}/delegatee`, {
+      backendApi.fetch(`referenda/tracks/${trackId}/delegatee`, {
         sort: JSON.stringify(["delegatedVotes", "desc"]),
         pageSize: 25,
       }),
-      nextApi.fetch(`referenda/tracks/${trackId}/delegators`, {
+      backendApi.fetch(`referenda/tracks/${trackId}/delegators`, {
         sort: JSON.stringify(["votes", "desc"]),
         pageSize: 25,
       }),
-      nextApi.fetch(`referenda/tracks/${trackId}/summary`),
+      backendApi.fetch(`referenda/tracks/${trackId}/summary`),
     ])
       .then(
         ([

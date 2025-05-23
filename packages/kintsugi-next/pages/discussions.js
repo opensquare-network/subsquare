@@ -1,6 +1,6 @@
 import { EmptyList } from "next-common/utils/constants";
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import DiscussionsPage from "@subsquare/next/pages/discussions";
 
 export default DiscussionsPage;
@@ -12,9 +12,9 @@ export const getServerSideProps = withCommonProps(async (context) => {
   if (label) {
     q = { label, ...q };
   }
-  const { result: posts } = await nextApi.fetch("posts", q);
+  const { result: posts } = await backendApi.fetch("posts", q);
 
-  const { result: summary } = await nextApi.fetch("overview/summary");
+  const { result: summary } = await backendApi.fetch("overview/summary");
 
   return {
     props: {

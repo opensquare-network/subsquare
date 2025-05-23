@@ -1,6 +1,6 @@
 import NoData from "next-common/components/noData";
 import DemocracyNewDelegation from "next-common/components/summary/democracySummaryDelegation/newDelegation";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { delegationDemocracyDelegatesAddressApi } from "next-common/services/url";
 import { useMemo, useState } from "react";
 import { useDebounce } from "react-use";
@@ -20,7 +20,7 @@ export default function DemocracyDelegationSearchResult({
       setIsLoading(true);
       setResult(null);
 
-      nextApi
+      backendApi
         .fetch(delegationDemocracyDelegatesAddressApi(searchAddress))
         .then((resp) => {
           if (resp.result) {

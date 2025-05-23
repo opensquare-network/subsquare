@@ -16,7 +16,13 @@ const NameTag = styled(CommonTag)`
   white-space: nowrap;
 `;
 
-export function DecodeCallItem({ section, method, decode, rawCall = null }) {
+export function DecodeCallItem({
+  section,
+  method,
+  decode,
+  rawCall = null,
+  beforeElement = null,
+}) {
   const isMobile = useIsMobile();
   const [detailPopupVisible, setDetailPopupVisible] = useState(false);
 
@@ -24,15 +30,25 @@ export function DecodeCallItem({ section, method, decode, rawCall = null }) {
     return null;
   }
 
+  const Dot = () => <span className="text-textTertiary text14Medium">·</span>;
+
+  const beforeContent = beforeElement ? (
+    <div className="flex gap-2 items-center">
+      {beforeElement}
+      <Dot />
+    </div>
+  ) : null;
+
   return (
     <div
-      className={cn("flex gap-2", {
+      className={cn("flex gap-2 items-center", {
         "flex-wrap": isMobile,
       })}
     >
+      {beforeContent}
       <NameTag>{section}</NameTag>
-      <span className="text-textTertiary text14Medium">·</span>
-      <div className="flex gap-2">
+      <Dot />
+      <div className="flex items-center gap-2">
         <NameTag>{method}</NameTag>
         <Tooltip content="Call Detail">
           <InfoDocs

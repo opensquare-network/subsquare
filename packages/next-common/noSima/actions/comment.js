@@ -1,12 +1,12 @@
 import { useDetailType } from "next-common/context/page";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { prettyHTML, toApiType } from "next-common/utils/viewfuncs";
 import { useCallback } from "react";
 
 export function useGetComment() {
   return useCallback(async (comment) => {
-    return await nextApi.fetch(`comments/${comment._id}`);
+    return await backendApi.fetch(`comments/${comment._id}`);
   }, []);
 }
 
@@ -19,7 +19,7 @@ export function useUpdateOffChainComment() {
         throw new Error("Cancelled");
       }
 
-      return await nextApi.patch(`comments/${comment._id}`, {
+      return await backendApi.patch(`comments/${comment._id}`, {
         content: contentType === "html" ? prettyHTML(content) : content,
         contentType,
       });
@@ -38,7 +38,7 @@ export function useCreateOffChainComment() {
         throw new Error("Cancelled");
       }
 
-      return await nextApi.post(
+      return await backendApi.post(
         `${toApiType(type)}/${post._id}/comments`,
         {
           content: contentType === "html" ? prettyHTML(content) : content,
@@ -61,7 +61,7 @@ export function useCreateOffChainCommentReply() {
         throw new Error("Cancelled");
       }
 
-      return await nextApi.post(
+      return await backendApi.post(
         `${toApiType(type)}/${post._id}/comments/${comment._id}/replies`,
         {
           content: contentType === "html" ? prettyHTML(content) : content,

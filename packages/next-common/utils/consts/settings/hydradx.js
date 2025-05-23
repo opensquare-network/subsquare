@@ -21,20 +21,20 @@ const endpoints = [
     url: "wss://rpc.hydradx.cloud",
   },
   {
-    name: "Dwellir",
-    url: "wss://hydradx-rpc.dwellir.com",
+    name: "IBP1",
+    url: "wss://hydradx.paras.ibp.network",
   },
   {
     name: "Helikon",
     url: "wss://rpc.helikon.io/hydradx",
   },
   {
-    name: "IBP1",
-    url: "wss://hydradx.paras.ibp.network",
-  },
-  {
     name: "IBP2",
     url: "wss://hydration.dotters.network/",
+  },
+  {
+    name: "Dwellir",
+    url: "wss://hydradx-rpc.dwellir.com",
   },
 ];
 
@@ -85,7 +85,7 @@ const hydradx = {
   decimals: 12,
   blockTime: 12000,
   hasElections: true,
-  ss58Format: 63,
+  ss58Format: 0,
   avatar: ProjectIconHydrationLight,
   darkAvatar: ProjectIconHydrationDark,
   navLogo: ProjectLogoHydrationDark,

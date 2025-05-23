@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import Popup from "../../popup/wrapper/Popup";
-import nextApi from "../../../services/nextApi";
+import { backendApi } from "../../../services/nextApi";
 import { useDispatch } from "react-redux";
 import { addToast } from "../../../store/reducers/toastSlice";
 import { toApiType } from "../../../utils/viewfuncs";
@@ -116,7 +116,7 @@ export default function PostLinkPopup({ setShow = noop }) {
         return;
       }
 
-      const { error } = await nextApi.post(
+      const { error } = await backendApi.post(
         `${toApiType(postType)}/${post?._id}/bind`,
         {
           discussionId: selectedDiscussion._id,

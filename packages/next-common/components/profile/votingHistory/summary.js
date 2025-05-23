@@ -4,10 +4,10 @@ import { Title } from "./styled";
 import {
   ModuleTab,
   useAvailableModuleTabs,
-  useModuleName,
   useIsFellowship,
+  useModuleName,
 } from "./common";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { usePageProps } from "next-common/context/page";
 import { useChainSettings } from "next-common/context/chain";
 import SummaryLayout from "next-common/components/summary/layout/layout";
@@ -30,7 +30,7 @@ export default function VotingHistorySummary() {
   const isFellowship = useIsFellowship();
 
   useEffect(() => {
-    nextApi.fetch(`users/${id}/${module}/vote-stats`).then(({ result }) => {
+    backendApi.fetch(`users/${id}/${module}/vote-stats`).then(({ result }) => {
       if (result) {
         setData(result);
       }
