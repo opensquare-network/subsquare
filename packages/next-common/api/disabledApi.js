@@ -9,6 +9,9 @@ function trimEndSlash(url) {
 }
 
 export function isApiDisabled(req) {
+  if (req.method !== "GET") {
+    return false;
+  }
   const isDisabledApi = disabledApiRoutes.some((route) =>
     req.url?.match?.(route),
   );
