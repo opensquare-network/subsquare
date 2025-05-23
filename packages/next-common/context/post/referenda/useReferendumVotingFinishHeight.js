@@ -24,6 +24,16 @@ export default function useReferendumVotingFinishHeight() {
   return indexer?.blockHeight;
 }
 
+export function useReferendumVotingConditionalIndexer() {
+  const finishHeight = useReferendumVotingFinishHeight();
+  const onchain = useOnchainData();
+  const { indexer } = onchain;
+  return {
+    ...indexer,
+    finishHeight,
+  };
+}
+
 export function useReferendaIsVoting() {
   const onchainData = useOnchainData();
   return useMemo(() => {

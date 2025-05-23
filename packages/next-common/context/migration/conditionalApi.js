@@ -9,13 +9,7 @@ const MIGRATION_BLOCK_TIME_MAP = {
   westend: 1747307424000,
 };
 
-/**
- * Get conditional API
- * @param {Object} indexer - Indexer object
- * @param {number|string} [finishHeightOrHash] - Optional block height or hash
- * @returns {Object} Conditional API object
- */
-function useConditionalApi(indexer, finishHeightOrHash) {
+function useConditionalApi(indexer) {
   const [conditionalApi, setConditionalApi] = useState(null);
   const [blockApi, setBlockApi] = useState(null);
   const chain = useChain();
@@ -47,45 +41,31 @@ function useConditionalApi(indexer, finishHeightOrHash) {
   }, [endpointUrls]);
 
   useEffect(() => {
-    if (!conditionalApi || isNil(finishHeightOrHash)) {
+    if (!conditionalApi || isNil(indexer?.finishHeight)) {
       return;
     }
 
-    getChainApiAt(conditionalApi, finishHeightOrHash).then(setBlockApi);
-  }, [conditionalApi, finishHeightOrHash]);
+    getChainApiAt(conditionalApi, indexer?.finishHeight).then(setBlockApi);
+  }, [conditionalApi, indexer?.finishHeight]);
 
-  return isNil(finishHeightOrHash) ? conditionalApi : blockApi;
+  return isNil(indexer?.finishHeight) ? conditionalApi : blockApi;
 }
 
 const ConditionalApiContext = createContext(null);
 
-function DefaultContextApiProvider({ finishHeightOrHash, children }) {
+function DefaultContextApiProvider({ indexer, children }) {
   const [blockApi, setBlockApi] = useState(null);
   const contextApi = useContextApi();
 
   useEffect(() => {
-    if (!contextApi || isNil(finishHeightOrHash)) {
+    if (!contextApi || isNil(indexer?.finishHeight)) {
       return;
     }
 
-    getChainApiAt(contextApi, finishHeightOrHash).then(setBlockApi);
-  }, [contextApi, finishHeightOrHash]);
+    getChainApiAt(contextApi, indexer?.finishHeight).then(setBlockApi);
+  }, [contextApi, indexer?.finishHeight]);
 
-  const api = isNil(finishHeightOrHash) ? contextApi : blockApi;
-
-  return (
-    <ConditionalApiContext.Provider value={api}>
-      {children}
-    </ConditionalApiContext.Provider>
-  );
-}
-
-function ConditionalContextApiProvider({
-  indexer,
-  finishHeightOrHash,
-  children,
-}) {
-  const api = useConditionalApi(indexer, finishHeightOrHash);
+  const api = isNil(indexer?.finishHeight) ? contextApi : blockApi;
 
   return (
     <ConditionalApiContext.Provider value={api}>
@@ -94,24 +74,27 @@ function ConditionalContextApiProvider({
   );
 }
 
-export function MigrationConditionalApiProvider({
-  indexer,
-  finishHeightOrHash = null,
-  children,
-}) {
+function ConditionalContextApiProvider({ indexer, children }) {
+  const api = useConditionalApi(indexer);
+
+  return (
+    <ConditionalApiContext.Provider value={api}>
+      {children}
+    </ConditionalApiContext.Provider>
+  );
+}
+
+export function MigrationConditionalApiProvider({ indexer, children }) {
   if (isAssetHubMigrated()) {
     return (
-      <ConditionalContextApiProvider
-        indexer={indexer}
-        finishHeightOrHash={finishHeightOrHash}
-      >
+      <ConditionalContextApiProvider indexer={indexer}>
         {children}
       </ConditionalContextApiProvider>
     );
   }
 
   return (
-    <DefaultContextApiProvider finishHeightOrHash={finishHeightOrHash}>
+    <DefaultContextApiProvider indexer={indexer}>
       {children}
     </DefaultContextApiProvider>
   );
