@@ -1,4 +1,3 @@
-import useChainOrScanHeight from "next-common/hooks/height";
 import { useDecidingSince } from "next-common/context/post/gov2/referendum";
 import { useDecision } from "next-common/context/post/gov2/track";
 import { useDecisionBlocks, useDecisionEnd } from "./useDecisionPercentage";
@@ -8,6 +7,7 @@ import BigNumber from "bignumber.js";
 import { toPrecision } from "next-common/utils";
 import { useDecimals } from "next-common/context/chain";
 import ValueDisplay from "next-common/components/valueDisplay";
+import { useCompatibleMigrationHeight } from "next-common/hooks/useCompatibleMigrationHeight";
 
 function WarningText() {
   const approvalThreshold = useApprovalThreshold();
@@ -43,7 +43,7 @@ function WarningText() {
 }
 
 export default function DecisionWarning() {
-  const latestHeight = useChainOrScanHeight();
+  const latestHeight = useCompatibleMigrationHeight();
   const decidingSince = useDecidingSince();
   const decisionPeriod = useDecision();
   const decisionBlocks = useDecisionBlocks();
