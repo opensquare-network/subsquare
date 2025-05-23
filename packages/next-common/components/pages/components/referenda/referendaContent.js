@@ -9,10 +9,11 @@ import ContentWithComment from "next-common/components/detail/common/contentWith
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
 import ReferendumDetailMultiTabs from "../tabs/referendumDetailMultiTabs";
 import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
-import { useReferendumVotingConditionalIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
+import { useReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 
 export function ReferendumContent() {
-  const indexer = useReferendumVotingConditionalIndexer();
+  const indexer = useReferendumVotingFinishIndexer();
+
   return (
     <MigrationConditionalApiProvider indexer={indexer}>
       <ReferendumContentInContext />

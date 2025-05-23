@@ -13,23 +13,18 @@ function useConditionalApi(indexer) {
   const [conditionalApi, setConditionalApi] = useState(null);
   const [blockApi, setBlockApi] = useState(null);
   const chain = useChain();
-
   const { relayChainEndpoints = [], endpoints = [] } = useChainSettings();
 
   const endpointUrls = useMemo(() => {
-    if (isNil(indexer) || !indexer?.blockTime) {
-      return [];
-    }
-
     const migrationBlockTime = MIGRATION_BLOCK_TIME_MAP[chain] || 0;
-    const indexerBlockTime = BigInt(indexer?.blockTime || 0);
-    const migrationBlockTimeBN = BigInt(migrationBlockTime);
-
-    if (indexerBlockTime >= migrationBlockTimeBN) {
-      return endpoints?.map?.((item) => item.url) || [];
+    if (
+      !isNil(indexer) &&
+      BigInt(indexer?.blockTime || 0) < BigInt(migrationBlockTime)
+    ) {
+      return relayChainEndpoints?.map?.((item) => item.url) || [];
     }
 
-    return relayChainEndpoints?.map?.((item) => item.url) || [];
+    return endpoints?.map?.((item) => item.url) || [];
   }, [chain, endpoints, indexer, relayChainEndpoints]);
 
   useEffect(() => {
@@ -41,14 +36,14 @@ function useConditionalApi(indexer) {
   }, [endpointUrls]);
 
   useEffect(() => {
-    if (!conditionalApi || isNil(indexer?.finishHeight)) {
+    if (!conditionalApi || isNil(indexer)) {
       return;
     }
 
-    getChainApiAt(conditionalApi, indexer?.finishHeight).then(setBlockApi);
-  }, [conditionalApi, indexer?.finishHeight]);
+    getChainApiAt(conditionalApi, indexer?.blockHeight).then(setBlockApi);
+  }, [conditionalApi, indexer]);
 
-  return isNil(indexer?.finishHeight) ? conditionalApi : blockApi;
+  return isNil(indexer) ? conditionalApi : blockApi;
 }
 
 const ConditionalApiContext = createContext(null);
@@ -58,14 +53,14 @@ function DefaultContextApiProvider({ indexer, children }) {
   const contextApi = useContextApi();
 
   useEffect(() => {
-    if (!contextApi || isNil(indexer?.finishHeight)) {
+    if (!contextApi || isNil(indexer)) {
       return;
     }
 
-    getChainApiAt(contextApi, indexer?.finishHeight).then(setBlockApi);
-  }, [contextApi, indexer?.finishHeight]);
+    getChainApiAt(contextApi, indexer?.blockHeight).then(setBlockApi);
+  }, [contextApi, indexer]);
 
-  const api = isNil(indexer?.finishHeight) ? contextApi : blockApi;
+  const api = isNil(indexer) ? contextApi : blockApi;
 
   return (
     <ConditionalApiContext.Provider value={api}>
