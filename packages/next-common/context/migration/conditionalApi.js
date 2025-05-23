@@ -117,7 +117,7 @@ export function MigrationConditionalApiProvider({
   );
 }
 
-export function useConditionalApiContext() {
+export function useConditionalContextApi() {
   const context = useContext(ConditionalApiContext);
   return context;
 }
