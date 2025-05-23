@@ -14,32 +14,31 @@ export default function AccountUnlockBalancePrompt() {
   useFetchMyReferendaVoting();
   const { unlockBalance } = useVoteBalance();
   const { symbol, decimals } = useChainSettings();
+  if (unlockBalance === "0" || visible) return null;
+
   return (
-    unlockBalance !== "0" &&
-    visible && (
-      <GreyPanel
-        className="text14Medium py-2.5 px-4 justify-between"
-        style={colorStyle[PromptTypes]}
-      >
-        <div className="text-textSecondary">
-          You have {toPrecision(unlockBalance, decimals)} expired {symbol}{" "}
-          available to unlock, manage{" "}
-          <Link
-            className="underline text14Medium font-[700]"
-            href={"/account/votes"}
-          >
-            here
-          </Link>
-          .
-        </div>
-        <SystemClose
-          className="w-5 h-5 text-textSecondary"
-          role="button"
-          onClick={() => {
-            setVisible(false);
-          }}
-        />
-      </GreyPanel>
-    )
+    <GreyPanel
+      className="text14Medium py-2.5 px-4 justify-between"
+      style={colorStyle[PromptTypes]}
+    >
+      <div className="text-textSecondary">
+        You have {toPrecision(unlockBalance, decimals)} expired {symbol}{" "}
+        available to unlock, manage{" "}
+        <Link
+          className="underline text14Medium font-[700]"
+          href={"/account/votes"}
+        >
+          here
+        </Link>
+        .
+      </div>
+      <SystemClose
+        className="w-5 h-5 text-textSecondary"
+        role="button"
+        onClick={() => {
+          setVisible(false);
+        }}
+      />
+    </GreyPanel>
   );
 }
