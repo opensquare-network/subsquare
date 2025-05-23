@@ -74,7 +74,7 @@ export function getCategorizedTracks(listPageType, listPageCategory, tracks) {
     listPageType,
     listPageCategory,
   );
-  return tracks
+  const categorizedTracks = tracks
     .map(({ id, name, activeCount }) => ({
       id,
       name: startCase(name),
@@ -92,4 +92,10 @@ export function getCategorizedTracks(listPageType, listPageCategory, tracks) {
       }
       return result;
     }, initialObj);
+
+  return Object.fromEntries(
+    Object.entries(categorizedTracks)
+      .filter(([category, value]) => category && value.length > 0)
+      .map(([category, value]) => [category, value]),
+  );
 }
