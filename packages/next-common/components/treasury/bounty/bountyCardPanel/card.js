@@ -1,0 +1,42 @@
+import React from "react";
+import { cn } from "next-common/utils";
+import useBountyDetailsData from "./hooks/useBountyDetailsData";
+import Tooltip from "next-common/components/tooltip";
+import Divider from "next-common/components/styled/layout/divider";
+import CardBalanceAndCurator from "./cardBalanceAndCurator";
+import CardChildBounties from "./cardChildBounties";
+import CardHeaderLabel from "./cardHeaderLabel";
+import CardTitleLabel from "./cardTitleLabel";
+
+function Card({ item, className = "" }) {
+  const data = useBountyDetailsData(item.bountyIndex);
+
+  return (
+    <div
+      className={cn(
+        "bg-neutral100",
+        "p-6",
+        "shadow-100",
+        "rounded-[12px]",
+        "border",
+        "border-neutral300",
+        className,
+      )}
+    >
+      <CardHeaderLabel />
+      <Tooltip content={item.title}>
+        <CardTitleLabel bountyIndex={item.bountyIndex} title={item.title} />
+      </Tooltip>
+      <Divider />
+      <CardBalanceAndCurator item={item} />
+      <Divider />
+      <CardChildBounties
+        childBounties={data?.bountyData?.childBounties ?? {}}
+        bountyIndex={item.bountyIndex}
+        item={item}
+      />
+    </div>
+  );
+}
+
+export default React.memo(Card);
