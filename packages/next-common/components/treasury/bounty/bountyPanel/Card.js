@@ -7,6 +7,7 @@ import Divider from "next-common/components/styled/layout/divider";
 import ActiveLabel from "./ActiveLabel";
 import Balance from "./Balance";
 import Curator from "./Curator";
+import ChildBountyItem from "./ChildBountyItem";
 
 function Card({ item, className = "" }) {
   return (
@@ -33,10 +34,12 @@ function Card({ item, className = "" }) {
         </span>
       </Tooltip>
       <Divider />
-      <span className="mt-4 flex">
+      <span className="mt-4 mb-3 flex">
         <Balance />
         <Curator item={item} />
       </span>
+      <Divider />
+      <ChildBountyItem />
     </div>
   );
 }
