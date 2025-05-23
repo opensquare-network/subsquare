@@ -12,4 +12,4 @@ function ActiveLabel() {
   );
 }
 
-export default ActiveLabel;
+export default React.memo(ActiveLabel);

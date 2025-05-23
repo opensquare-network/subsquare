@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { SystemMenu } from "@osn/icons/subsquare";
+import BountyDetailPopup from "./bountyDetailPopup";
 
-function ChildBountyItem({ childBounties }) {
+function CardChildBounties({ childBounties, bountyIndex, item }) {
+  const [isOpen, setIsOpen] = useState(false);
   const total = childBounties?.total ?? 0;
   const disabled = total === 0;
   return (
@@ -14,7 +16,9 @@ function ChildBountyItem({ childBounties }) {
         disabled={disabled}
         size="small"
         className="ml-2 p-[6px]"
-        onClick={() => {}}
+        onClick={() => {
+          setIsOpen(true);
+        }}
       >
         <SystemMenu
           className={`w-4 h-4 ${
@@ -24,8 +28,16 @@ function ChildBountyItem({ childBounties }) {
           } `}
         />
       </SecondaryButton>
+      {isOpen && (
+        <BountyDetailPopup
+          childBounties={childBounties}
+          bountyIndex={bountyIndex}
+          item={item}
+          onClose={() => setIsOpen(false)}
+        />
+      )}
     </span>
   );
 }
 
-export default React.memo(ChildBountyItem);
+export default React.memo(CardChildBounties);

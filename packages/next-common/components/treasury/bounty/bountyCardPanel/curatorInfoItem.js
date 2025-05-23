@@ -3,8 +3,9 @@ import AddressUser from "next-common/components/user/addressUser";
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 import React from "react";
 import { CuratorBadge } from "next-common/components/treasury/bounty/curator";
+import MultisigTooltip from "./multisigTooltip";
 
-function CuratorInfoItem({ data, badge }) {
+function CuratorInfoItem({ data, badge, showBadge = true }) {
   const { sm } = useScreenSize();
   const userMaxWidth = sm ? 160 : 240;
   if (!data) return null;
@@ -16,10 +17,12 @@ function CuratorInfoItem({ data, badge }) {
           className="text12Medium text-textPrimary"
           maxWidth={userMaxWidth}
         />
-        {badge && (
-          <span className="ml-2">
-            <CuratorBadge badge={badge} />
-          </span>
+        {badge && showBadge && (
+          <MultisigTooltip>
+            <span className="ml-2">
+              <CuratorBadge badge={badge} />
+            </span>
+          </MultisigTooltip>
         )}
       </span>
     );

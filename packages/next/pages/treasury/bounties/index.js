@@ -11,7 +11,7 @@ import { isPolkadotChain } from "next-common/utils/chain";
 import PolkadotTreasuryStatsOnProposal from "next-common/components/treasury/common/polkadotTreasuryStatsOnProposal";
 import NewBountyButton from "next-common/components/treasury/bounty/newBountyButton";
 import { backendApi } from "next-common/services/nextApi";
-import BountyPanel from "next-common/components/treasury/bounty/bountyPanel";
+import BountyCardPanel from "next-common/components/treasury/bounty/bountyCardPanel";
 
 export default function BountiesPage({
   activeBounties,
@@ -54,7 +54,10 @@ export default function BountiesPage({
         ].filter(Boolean)}
       >
         {activeBounties && activeBounties.length > 0 && (
-          <BountyPanel category={category} activeBounties={activeBounties} />
+          <BountyCardPanel
+            category={category}
+            activeBounties={activeBounties}
+          />
         )}
         <PostList
           category={category}

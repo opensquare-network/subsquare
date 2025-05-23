@@ -9,15 +9,16 @@ function useBountyDetailsData(id) {
     bountyDetail: {},
     childBounties: {},
   });
+  const pageSize = 5;
 
-  const fetchData = useRefCallback(async (id) => {
+  const fetchInitData = useRefCallback(async (id) => {
     try {
       setIsLoading(true);
       const [{ result: bountyDetail }, { result: childBounties }] =
         await Promise.all([
           backendApi.fetch(`treasury/bounties/${id}`),
           backendApi.fetch(`treasury/bounties/${id}/child-bounties`, {
-            pageSize: 5,
+            pageSize,
           }),
         ]);
 
@@ -33,7 +34,7 @@ function useBountyDetailsData(id) {
   });
 
   useAsync(async () => {
-    fetchData(id);
+    fetchInitData(id);
   }, []);
 
   return { isLoading, bountyData };
