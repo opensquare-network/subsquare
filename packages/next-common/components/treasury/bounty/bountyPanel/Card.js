@@ -1,6 +1,6 @@
 import React from "react";
 import { cn } from "next-common/utils";
-// import useBountyDetailsData from "./hooks/useBountyDetailsData";
+import useBountyDetailsData from "./hooks/useBountyDetailsData";
 import { MenuBounties } from "@osn/icons/subsquare";
 import Tooltip from "next-common/components/tooltip";
 import Divider from "next-common/components/styled/layout/divider";
@@ -10,6 +10,7 @@ import Curator from "./Curator";
 import ChildBountyItem from "./ChildBountyItem";
 
 function Card({ item, className = "" }) {
+  const data = useBountyDetailsData(item.bountyIndex);
   return (
     <div
       className={cn(
@@ -39,7 +40,7 @@ function Card({ item, className = "" }) {
         <Curator item={item} />
       </span>
       <Divider />
-      <ChildBountyItem />
+      <ChildBountyItem childBounties={data?.bountyData?.childBounties ?? {}} />
     </div>
   );
 }
