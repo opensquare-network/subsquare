@@ -20,13 +20,13 @@ const ProjectLogoLitentryLight = dynamic(() =>
 );
 
 const DEFAULT_LITENTRY_NODES = [
+   {
+    name: "Heima",
+    url: "wss://rpc.heima-parachain.heima.network/",
+  },
   {
     name: "Dwellir",
     url: "wss://heima-rpc.n.dwellir.com/",
-  },
-  {
-    name: "Litentry",
-    url: "wss://rpc.heima-parachain.heima.network/",
   },
   // {
   //   name: "OnFinality",
