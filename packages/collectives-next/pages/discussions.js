@@ -1,37 +1,10 @@
-import PostList from "next-common/components/postList";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { withCommonProps } from "next-common/lib";
 import { backendApi } from "next-common/services/nextApi";
-import DiscussionsLayout from "next-common/components/layout/DiscussionsLayout";
-import { useChain } from "next-common/context/chain";
-import normalizeDiscussionListItem from "next-common/utils/viewfuncs/discussion/normalizeDiscussionListItem";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import DiscussionsPage from "@subsquare/next/pages/discussions";
 
-export default function DiscussionsPage({ posts }) {
-  const chain = useChain();
-  const items = (posts.items || []).map((item) =>
-    normalizeDiscussionListItem(chain, item),
-  );
-
-  const category = "Discussions";
-  const seoInfo = { title: category, desc: category };
-
-  return (
-    <DiscussionsLayout seoInfo={seoInfo} title={category}>
-      <PostList
-        category={category}
-        title="List"
-        titleCount={posts.total}
-        items={items}
-        pagination={{
-          page: posts.page,
-          pageSize: posts.pageSize,
-          total: posts.total,
-        }}
-      />
-    </DiscussionsLayout>
-  );
-}
+export default DiscussionsPage;
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const { page, page_size: pageSize, label } = context.query;
