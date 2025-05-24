@@ -25,12 +25,12 @@ const DEFAULT_NODES = [
     url: "wss://eu.bifrost-polkadot-rpc.liebi.com/ws",
   },
   {
-    name: "Dwellir",
-    url: "wss://bifrost-polkadot-rpc.dwellir.com",
+    name: "IBP1",
+    url: "wss://bifrost-polkadot.ibp.network",
   },
   {
-    name: "OnFinality",
-    url: "wss://bifrost-polkadot.api.onfinality.io/public-ws",
+    name: "IBP2",
+    url: "wss://bifrost-polkadot.dotters.network",
   },
 ];
 
