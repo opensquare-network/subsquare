@@ -79,7 +79,7 @@ const litentry = {
   links,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: defaultPostLabels,
-  useVoteCall: true,
+  // useVoteCall: true,
   description:
     "Heima Network is a chain abstraction infrastructure designed to enable users to unify all blockchains through a single account.",
   modules: mergeChainModules({
