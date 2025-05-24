@@ -20,13 +20,9 @@ const ProjectLogoLitentryLight = dynamic(() =>
 );
 
 const DEFAULT_LITENTRY_NODES = [
-   {
+  {
     name: "Heima",
     url: "wss://rpc.heima-parachain.heima.network/",
-  },
-  {
-    name: "Dwellir",
-    url: "wss://heima-rpc.n.dwellir.com/",
   },
   // {
   //   name: "OnFinality",
@@ -84,8 +80,6 @@ const litentry = {
   group: MenuGroups.PolkadotAndParachains,
   postLabels: defaultPostLabels,
   useVoteCall: true,
-  hasMultisig: true,
-  multisigApiPrefix: "litentry",
   description:
     "Heima Network is a chain abstraction infrastructure designed to enable users to unify all blockchains through a single account.",
   modules: mergeChainModules({
