@@ -7,7 +7,7 @@ export default function useMainMenuData() {
   const user = useUser();
   const { tracks, fellowshipTracks, summary, detail, ambassadorTracks } =
     usePageProps();
-  const mainMenu = useMemo(() => {
+  return useMemo(() => {
     return getMainMenu({
       tracks,
       fellowshipTracks,
@@ -29,6 +29,4 @@ export default function useMainMenuData() {
     tracks,
     user?.address,
   ]);
-
-  return mainMenu;
 }
