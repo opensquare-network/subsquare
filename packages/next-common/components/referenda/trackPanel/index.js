@@ -6,22 +6,21 @@ import { useTrackList } from "next-common/components/summary/newProposalPopup/us
 import { useListPageType } from "next-common/context/page";
 import { listPageCategory } from "next-common/utils/consts/business/category";
 import {
-  isOnlyOthersCategory,
-  isOthersExceedMax,
   flattenKusamaFellowshipReferenda,
   getCategorizedTracks,
+  isOnlyOthersCategory,
+  isOthersExceedMax,
 } from "./utils";
 import NormalCategoryItems from "./normalCategoryItems";
 import OthersExceedingItems from "./otherExceedingItems";
 import TrackPanelTitle from "./trackPanelTitle";
-import { isKusamaChain } from "next-common/utils/chain";
-import { CHAIN } from "next-common/utils/constants";
-
-const isKusama = isKusamaChain(CHAIN);
+import { useChain } from "next-common/context/chain";
+import Chains from "next-common/utils/consts/chains";
 
 function TrackPanel({ className = "" }) {
   const tracks = useTrackList();
   const listPageType = useListPageType();
+  const chain = useChain();
   const [isOthersExceeding, setIsOthersExceeding] = useState(false);
 
   const trackList = useMemo(() => {
@@ -41,7 +40,10 @@ function TrackPanel({ className = "" }) {
       setIsOthersExceeding(true);
     }
 
-    if (isKusama && listPageType === listPageCategory.FELLOWSHIP_REFERENDA) {
+    if (
+      ![Chains.collectives].includes(chain) &&
+      listPageType === listPageCategory.FELLOWSHIP_REFERENDA
+    ) {
       setIsOthersExceeding(true);
       return flattenKusamaFellowshipReferenda(
         listPageType,
@@ -51,7 +53,7 @@ function TrackPanel({ className = "" }) {
     }
 
     return categorizedTracks ?? {};
-  }, [listPageType, tracks]);
+  }, [listPageType, tracks, chain]);
 
   const inlineClassName = isOthersExceeding
     ? "flex"
