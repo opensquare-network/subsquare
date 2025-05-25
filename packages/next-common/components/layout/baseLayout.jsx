@@ -20,7 +20,7 @@ import useInitApiProviders from "next-common/services/chain/apis/useInitApiProvi
 import useInitMimir from "next-common/hooks/useInitMimir";
 import { usePageProperties } from "next-common/context/page";
 import { useSubScanHeight } from "next-common/hooks/scanHeight";
-import MaybeSubRelayScanStatus from "../maybeSubRelayScanStatus";
+import MaybeSubRelayStatus from "../maybeSubRelayStatus";
 
 /**
  * @description a base layout includes nav, header and footer
@@ -49,7 +49,7 @@ export default function BaseLayout({
   useStoreConvictionVotingLockPeriod();
 
   return (
-    <MaybeSubRelayScanStatus relayScanHeight={relayScanHeight}>
+    <MaybeSubRelayStatus relayScanHeight={relayScanHeight}>
       <SEO {...seoInfo} />
 
       <div className="min-h-screen flex bg-pageBg max-sm:flex-col">
@@ -88,6 +88,6 @@ export default function BaseLayout({
       <Toast />
       <CookiesConsent />
       <LoginGlobalPopup />
-    </MaybeSubRelayScanStatus>
+    </MaybeSubRelayStatus>
   );
 }

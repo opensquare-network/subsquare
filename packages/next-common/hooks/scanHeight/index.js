@@ -24,7 +24,7 @@ export function useSubScanHeight(scanHeight) {
   useSubScanHeightStream({
     url: `stream/scan-height?interval=${interval}`,
     timeout: 10 * interval,
-    setScanHeight,
+    callback: setScanHeight,
   });
 
   useEffect(() => {
