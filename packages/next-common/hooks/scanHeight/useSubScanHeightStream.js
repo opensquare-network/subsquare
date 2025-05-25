@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { sleep } from "next-common/utils";
+import { noop } from "lodash-es";
 
-export function useSubScanHeightStream({ url, timeout, setScanHeight }) {
+export function useSubScanHeightStream({ url, timeout, callback = noop }) {
   const [reconnect, setReconnect] = useState(0);
 
   useEffect(() => {
@@ -37,9 +38,9 @@ export function useSubScanHeightStream({ url, timeout, setScanHeight }) {
           }
           try {
             const data = JSON.parse(decoder.decode(value));
-            const scanHeight = data?.value;
-            if (scanHeight) {
-              setScanHeight(scanHeight);
+            const possibleValue = data?.value;
+            if (possibleValue) {
+              callback(possibleValue);
             }
           } catch (e) {
             console.error("Error parsing scan height data:", e);
@@ -55,5 +56,5 @@ export function useSubScanHeightStream({ url, timeout, setScanHeight }) {
     return () => {
       aborted = true;
     };
-  }, [reconnect, url, timeout, setScanHeight]);
+  }, [reconnect, url, timeout, callback]);
 }
