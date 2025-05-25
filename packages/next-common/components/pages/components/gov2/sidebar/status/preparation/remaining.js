@@ -1,7 +1,7 @@
 import { useSubmittedAt } from "next-common/context/post/gov2/referendum";
 import { usePreparation } from "next-common/context/post/gov2/track";
 import { isNil } from "lodash-es";
-import { useAhmLatestHeight } from "next-common/hooks/useCompatibleMigrationHeight";
+import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
 
 export function usePrepareRemaining() {
   const latestHeight = useAhmLatestHeight();

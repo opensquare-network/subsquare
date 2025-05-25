@@ -12,7 +12,7 @@ import Progress from "next-common/components/progress";
 import { usePrepareRemaining } from "./remaining";
 import Remaining from "next-common/components/remaining";
 import TimeDuration from "next-common/components/TimeDuration";
-import { useAhmLatestHeight } from "next-common/hooks/useCompatibleMigrationHeight";
+import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
 
 export default function PreparationProgress() {
   const latestHeight = useAhmLatestHeight();

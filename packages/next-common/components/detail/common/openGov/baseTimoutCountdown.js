@@ -3,7 +3,7 @@ import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import { CountDownWrapper } from "next-common/components/detail/common/styled";
 import CountDown from "next-common/components/_CountDown";
 import React from "react";
-import { useAhmLatestHeight } from "next-common/hooks/useCompatibleMigrationHeight";
+import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
 
 export default function BaseTimeoutCountdown({ timeout }) {
   const now = useAhmLatestHeight();
