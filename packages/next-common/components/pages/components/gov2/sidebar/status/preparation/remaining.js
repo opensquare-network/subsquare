@@ -1,10 +1,10 @@
 import { useSubmittedAt } from "next-common/context/post/gov2/referendum";
 import { usePreparation } from "next-common/context/post/gov2/track";
 import { isNil } from "lodash-es";
-import useChainOrScanHeight from "next-common/hooks/height";
+import { useAhmLatestHeight } from "next-common/hooks/useCompatibleMigrationHeight";
 
 export function usePrepareRemaining() {
-  const latestHeight = useChainOrScanHeight();
+  const latestHeight = useAhmLatestHeight();
   const submittedAt = useSubmittedAt();
   const prepareBlocks = usePreparation();
 

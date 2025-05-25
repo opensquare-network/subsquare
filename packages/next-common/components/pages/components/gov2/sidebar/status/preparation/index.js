@@ -12,10 +12,10 @@ import Progress from "next-common/components/progress";
 import { usePrepareRemaining } from "./remaining";
 import Remaining from "next-common/components/remaining";
 import TimeDuration from "next-common/components/TimeDuration";
-import useChainOrScanHeight from "next-common/hooks/height";
+import { useAhmLatestHeight } from "next-common/hooks/useCompatibleMigrationHeight";
 
 export default function PreparationProgress() {
-  const latestHeight = useChainOrScanHeight();
+  const latestHeight = useAhmLatestHeight();
   const submittedAt = useSubmittedAt();
   const prepareBlocks = usePreparation();
   const remaining = usePrepareRemaining();
