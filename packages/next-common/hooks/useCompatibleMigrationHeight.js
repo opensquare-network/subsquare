@@ -1,17 +1,11 @@
 import { useReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
-import { isHistoricalContent } from "next-common/context/migration/conditionalApi";
+import { isBeforeAhm } from "next-common/context/migration/conditionalApi";
 import useChainOrScanHeight from "./height";
-import { usePageProperties } from "next-common/context/page";
+import { useRelayScanHeight } from "next-common/hooks/relayScanHeight";
 
 export function useCompatibleMigrationHeight() {
-  const { relayScanHeight } = usePageProperties();
-  const height = useChainOrScanHeight();
+  const relayChainHeight = useRelayScanHeight();
+  const localHeight = useChainOrScanHeight();
   const indexer = useReferendumVotingFinishIndexer();
-  const isHistorical = isHistoricalContent(indexer);
-
-  if (isHistorical) {
-    return relayScanHeight;
-  }
-
-  return height;
+  return isBeforeAhm(indexer) ? relayChainHeight : localHeight;
 }

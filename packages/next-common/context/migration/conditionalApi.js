@@ -10,7 +10,8 @@ export const MIGRATION_BLOCK_TIME_MAP = {
   westend: 1747307424000,
 };
 
-export function isHistoricalContent(indexer) {
+// check whether a time point is before asset hub migration. AHM = asset hub migration.
+export function isBeforeAhm(indexer) {
   if (!indexer || !isAssetHubMigrated()) {
     return false;
   }
@@ -27,7 +28,7 @@ function useConditionalApi(indexer) {
   const { relayChainEndpoints = [], endpoints = [] } = useChainSettings();
 
   const endpointUrls = useMemo(() => {
-    if (isHistoricalContent(indexer)) {
+    if (isBeforeAhm(indexer)) {
       return relayChainEndpoints?.map?.((item) => item.url) || [];
     }
 
