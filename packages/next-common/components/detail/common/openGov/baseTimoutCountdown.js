@@ -3,10 +3,10 @@ import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import { CountDownWrapper } from "next-common/components/detail/common/styled";
 import CountDown from "next-common/components/_CountDown";
 import React from "react";
-import useChainOrScanHeight from "next-common/hooks/height";
+import { useAhmLatestHeight } from "next-common/hooks/useCompatibleMigrationHeight";
 
 export default function BaseTimeoutCountdown({ timeout }) {
-  const now = useChainOrScanHeight();
+  const now = useAhmLatestHeight();
   const onchain = useOnchainData();
   const submitted = onchain.info?.submitted;
   const timeoutAt = submitted + timeout || 0;
