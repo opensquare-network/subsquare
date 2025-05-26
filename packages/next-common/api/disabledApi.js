@@ -4,6 +4,7 @@ const disabledApiRoutes = [
   /^\/treasury\/bounties/,
   /^\/treasury\/tips/,
   /^\/treasury\/spends/,
+  /^\/treasury\/proposals/,
 ];
 
 function trimEndSlash(url) {
