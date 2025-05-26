@@ -2,8 +2,11 @@ import React from "react";
 import CardWrapper from "./cardWrapper";
 import Card from "./card";
 import BountyPanelTitle from "./bountyPanelTitle";
+import { isNil } from "lodash-es";
 
 function BountyCardPanel({ activeBounties }) {
+  if (isNil(activeBounties)) return null;
+
   return (
     <div>
       <BountyPanelTitle activeCount={activeBounties.length} />

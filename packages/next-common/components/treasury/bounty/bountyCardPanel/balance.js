@@ -1,19 +1,35 @@
 import React from "react";
 import useSubAddressBalance from "next-common/utils/hooks/useSubAddressBalance";
-import SymbolValue from "next-common/components/pages/components/gov2/sidebar/tally/values/symbolValue";
 import FiatPriceLabel from "next-common/components/summary/polkadotTreasurySummary/common/fiatPriceLabel";
+import LoadableContent from "next-common/components/common/loadableContent";
+import { isNil } from "lodash-es";
+import ValueDisplay from "next-common/components/valueDisplay";
+import { toPrecision } from "next-common/utils";
+import { useChainSettings } from "next-common/context/chain";
 
-function Balance({ address, value }) {
-  const { balance } = useSubAddressBalance(address);
+function Balance({ address }) {
+  const { balance, isLoading } = useSubAddressBalance(address);
+  const { symbol, decimals } = useChainSettings();
+
+  if (isNil(balance)) return null;
 
   return (
     <span className="flex-1">
       <span className="flex flex-col">
         <span className="text-textTertiary text12Medium">Balance</span>
-        <SymbolValue value={balance} />
-        <span className="mt-1 text12Medium text-textTertiary">
-          <FiatPriceLabel free={value} />
-        </span>
+        <LoadableContent isLoading={isLoading}>
+          <span className="mt-1">
+            <ValueDisplay
+              className="text16Bold leading-5"
+              value={toPrecision(balance, decimals)}
+              symbol={symbol}
+            />
+          </span>
+
+          <span className="leading-4 text12Medium text-textTertiary">
+            <FiatPriceLabel free={balance} />
+          </span>
+        </LoadableContent>
       </span>
     </span>
   );

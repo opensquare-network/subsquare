@@ -5,7 +5,10 @@ import Pagination from "next-common/components/pagination";
 import { isNil } from "lodash-es";
 import { cn } from "next-common/utils";
 import { useAsync } from "react-use";
-//TODO: show data
+import RowTitle from "./rowTitle";
+import RowValue from "./rowValue";
+import RowStatus from "./rowStatus";
+
 function ChildBountyList({ childBounties, bountyIndex, className = "" }) {
   const [data, setData] = useState(childBounties);
   const { isLoading, childBountiesPageData, fetchChildBountiesWithPage } =
@@ -59,9 +62,16 @@ function ChildBountyList({ childBounties, bountyIndex, className = "" }) {
 
   const rows = data?.items?.map((item, index) => {
     return [
-      <span key={index + "referenda"}> title </span>,
-      <span key={index + "value"}> value</span>,
-      <span key={index + "status"}> status</span>,
+      <RowTitle
+        key={index + "referenda"}
+        index={item.index}
+        title={item.title}
+      />,
+      <RowValue key={index + "value"} value={item?.onchainData?.value} />,
+      <RowStatus
+        key={index + "status"}
+        state={item.onchainData?.state?.state}
+      />,
     ];
   });
 

@@ -1,7 +1,10 @@
 import React from "react";
 import { cn } from "next-common/utils";
+import { isNil } from "lodash-es";
 
 function CardTitleLabel({ bountyIndex, title, className = "" }) {
+  if (isNil(bountyIndex) || isNil(title)) return null;
+
   return (
     <span
       className={cn(

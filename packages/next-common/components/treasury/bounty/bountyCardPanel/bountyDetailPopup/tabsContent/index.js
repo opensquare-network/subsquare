@@ -3,6 +3,7 @@ import { useState } from "react";
 import React from "react";
 import TabLabel from "./tabLabel";
 import ChildBountyList from "./childBountyList";
+import { isNil } from "lodash-es";
 
 function BountyDetailPopupTabs({ childBounties, bountyIndex }) {
   const tabs = [
@@ -22,6 +23,7 @@ function BountyDetailPopupTabs({ childBounties, bountyIndex }) {
   ];
 
   const [activeTabValue, setActiveTabValue] = useState(tabs[0].value);
+  if (isNil(childBounties) || isNil(bountyIndex)) return null;
 
   return (
     <Tabs

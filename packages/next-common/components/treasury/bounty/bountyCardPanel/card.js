@@ -7,9 +7,11 @@ import CardBalanceAndCurator from "./cardBalanceAndCurator";
 import CardChildBounties from "./cardChildBounties";
 import CardHeaderLabel from "./cardHeaderLabel";
 import CardTitleLabel from "./cardTitleLabel";
+import { isNil } from "lodash-es";
 
 function Card({ item, className = "" }) {
-  const data = useBountyDetailsData(item.bountyIndex);
+  const childBountiesData = useBountyDetailsData(item.bountyIndex);
+  if (isNil(childBountiesData)) return null;
 
   return (
     <div
@@ -31,7 +33,8 @@ function Card({ item, className = "" }) {
       <CardBalanceAndCurator item={item} />
       <Divider />
       <CardChildBounties
-        childBounties={data?.bountyData?.childBounties ?? {}}
+        isChildBountiesLoading={childBountiesData.isLoading}
+        childBounties={childBountiesData?.bountyData?.childBounties ?? {}}
         bountyIndex={item.bountyIndex}
         item={item}
       />

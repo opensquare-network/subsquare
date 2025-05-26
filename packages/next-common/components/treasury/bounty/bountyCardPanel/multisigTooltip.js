@@ -3,7 +3,12 @@ import * as HoverCard from "@radix-ui/react-hover-card";
 import { cn } from "next-common/utils";
 import PartnerList from "./partnerList";
 
-function MultisigTooltip({ children, className = "", style = {} }) {
+function MultisigTooltip({
+  children,
+  className = "",
+  style = {},
+  signatories = [],
+}) {
   if (!children) {
     return null;
   }
@@ -25,7 +30,7 @@ function MultisigTooltip({ children, className = "", style = {} }) {
             align="end"
             className="pl-2 z-50"
           >
-            <PartnerList />
+            <PartnerList addresses={signatories} />
           </HoverCard.Content>
         </HoverCard.Portal>
       </HoverCard.Root>
