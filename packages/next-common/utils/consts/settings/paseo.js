@@ -8,6 +8,7 @@ import {
   paseoThemeVars,
   paseoCommonSettings,
 } from "./common/paseo";
+import polkadotPreimageSettings from "next-common/utils/consts/settings/common/preimage/polkadot";
 
 const ProjectIconPaseoDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconPaseoDark"),
@@ -79,6 +80,7 @@ const paseo = {
     mimir: true,
   },
   allowWeb2Login: true,
+  preimage: polkadotPreimageSettings,
 };
 
 export default paseo;
