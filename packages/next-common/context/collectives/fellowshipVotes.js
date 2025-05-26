@@ -4,10 +4,10 @@ import { useReferendumVotingFinishIndexer } from "next-common/context/post/refer
 import { useOnchainData } from "next-common/context/post";
 import { isNil } from "lodash-es";
 import { partition } from "lodash-es";
-import { useContextApi } from "next-common/context/api";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
-function useSubFellowshipVotes(pollIndex, indexer) {
-  const api = useContextApi();
+function useSubFellowshipVotes(pollIndex) {
+  const api = useConditionalContextApi();
   const [fellowshipVotes, setFellowshipVotes] = useState({
     allAye: [],
     allNay: [],
@@ -19,7 +19,7 @@ function useSubFellowshipVotes(pollIndex, indexer) {
       return;
     }
 
-    query(api, pollIndex, indexer?.blockHash)
+    query(api, pollIndex)
       .then((votes) => {
         const [allAye = [], allNay = []] = partition(votes, (v) => v.isAye);
         setFellowshipVotes({ allAye, allNay });
@@ -27,7 +27,7 @@ function useSubFellowshipVotes(pollIndex, indexer) {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [api, pollIndex, indexer]);
+  }, [api, pollIndex]);
 
   return { votes: fellowshipVotes, isLoading };
 }
