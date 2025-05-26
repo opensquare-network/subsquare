@@ -85,6 +85,9 @@ const kusama = {
   },
   sima: true,
   allowWeb2Login: true,
+  hotMenu: {
+    referenda: true,
+  },
 };
 
 export default kusama;

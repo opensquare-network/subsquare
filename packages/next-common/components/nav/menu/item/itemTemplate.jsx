@@ -1,6 +1,7 @@
 import { noop } from "lodash-es";
 import { ThemedTag } from "next-common/components/tags/state/styled";
 import { cn } from "next-common/utils";
+import { InfoPopoular } from "@osn/icons/subsquare";
 
 export default function NavMenuItemTemplate({
   icon,
@@ -13,6 +14,7 @@ export default function NavMenuItemTemplate({
   onClick = noop,
   className = "",
   isNew = false,
+  isHot = false,
 }) {
   return (
     <div
@@ -45,7 +47,7 @@ export default function NavMenuItemTemplate({
           collapsed && "hidden",
         )}
       >
-        <span className="w-full">
+        <span className="w-full text14Medium">
           {name}{" "}
           {!!activeCount && (
             <span className="ml-1 text-navigationTextTertiary">
@@ -53,6 +55,13 @@ export default function NavMenuItemTemplate({
             </span>
           )}
           {isNew && <ThemedTag className="ml-1 rounded-full">New</ThemedTag>}
+          {isHot && (
+            <InfoPopoular
+              className="ml-2 inline-block"
+              height={16}
+              width="16"
+            />
+          )}
           {isExternal && (
             <span className="ml-1 text-navigationTextTertiary">↗</span>
           )}

@@ -120,8 +120,10 @@ export default function NewChildBountyPopup({ bountyIndex, onClose }) {
         if (!eventData) {
           return;
         }
-        const [, childBountyIndex] = eventData;
-        router.push(`/treasury/child-bounties/${childBountyIndex}`);
+        const [parentBountyIndex, childBountyIndex] = eventData;
+        router.push(
+          `/treasury/child-bounties/${parentBountyIndex}_${childBountyIndex}`,
+        );
       }}
     >
       {balanceField}

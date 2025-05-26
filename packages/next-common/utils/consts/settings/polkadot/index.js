@@ -97,6 +97,9 @@ const polkadot = {
   sima: true,
   allowWeb2Login: true,
   preimage,
+  hotMenu: {
+    referenda: true,
+  },
 };
 
 export default polkadot;
