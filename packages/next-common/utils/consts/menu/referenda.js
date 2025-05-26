@@ -14,6 +14,7 @@ export function getReferendaMenu(tracks = [], currentTrackId) {
   const menu = {
     name: capitalize(Names.referenda),
     activeCount: totalActiveCount,
+    isHot: true,
     icon: <MenuReferenda />,
     pathname: "/referenda",
     hideItemsOnMenu: true,
