@@ -1,7 +1,7 @@
 import { withCommonProps } from "next-common/lib";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import {
   ambassadorReferendumsApi,
   ambassadorReferendumsSummaryApi,
@@ -65,13 +65,13 @@ export const getServerSideProps = withCommonProps(async (context) => {
     { result: ambassadorTracksDetail },
   ] = await Promise.all([
     fetchOpenGovTracksProps(),
-    nextApi.fetch(ambassadorReferendumsApi, {
+    backendApi.fetch(ambassadorReferendumsApi, {
       page,
       pageSize,
       simple: true,
     }),
-    nextApi.fetch(ambassadorReferendumsSummaryApi),
-    nextApi.fetch(ambassadorTracksApi),
+    backendApi.fetch(ambassadorReferendumsSummaryApi),
+    backendApi.fetch(ambassadorTracksApi),
   ]);
 
   return {

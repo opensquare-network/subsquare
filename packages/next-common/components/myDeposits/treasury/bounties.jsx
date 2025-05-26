@@ -8,7 +8,7 @@ import { getBondBalanceColumn } from "../columns";
 import normalizeBountyListItem from "next-common/utils/viewfuncs/treasury/normalizeBountyListItem";
 import { useEffect, useState } from "react";
 import { EmptyList } from "next-common/utils/constants";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { useShallowCompareEffect } from "react-use";
 import { isNil } from "lodash-es";
 import { sum } from "lodash-es";
@@ -53,7 +53,7 @@ export function useDepositTreasuryBountiesTab(
   useEffect(() => {
     if (bountyBonds?.length) {
       const fetchers = bountyBonds.map((deposit) =>
-        nextApi.fetch(`treasury/bounties/${deposit.proposalIndex}`),
+        backendApi.fetch(`treasury/bounties/${deposit.proposalIndex}`),
       );
 
       Promise.all(fetchers).then((resps) => {
@@ -77,7 +77,7 @@ export function useDepositTreasuryBountiesTab(
 
     if (bountyCuratorDeposits?.length) {
       const fetchers = bountyCuratorDeposits.map((deposit) =>
-        nextApi.fetch(`treasury/bounties/${deposit.proposalIndex}`),
+        backendApi.fetch(`treasury/bounties/${deposit.proposalIndex}`),
       );
 
       Promise.all(fetchers).then((resps) => {

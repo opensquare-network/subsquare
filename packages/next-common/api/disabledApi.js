@@ -1,10 +1,17 @@
-const disabledApiRoutes = [/^\/api\/gov2\/referendums/];
+const disabledApiRoutes = [
+  /^\/api\/gov2\/referendums/,
+  /^\/api\/democracy/,
+  /^\/treasury\/bounties/,
+];
 
 function trimEndSlash(url) {
   return url.replace(/\/+$/, "");
 }
 
 export function isApiDisabled(req) {
+  if (req.method !== "GET") {
+    return false;
+  }
   const isDisabledApi = disabledApiRoutes.some((route) =>
     req.url?.match?.(route),
   );
