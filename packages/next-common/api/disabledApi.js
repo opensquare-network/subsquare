@@ -1,11 +1,7 @@
 const disabledApiRoutes = [
   /^\/api\/gov2\/referendums/,
   /^\/api\/democracy/,
-  /^\/treasury\/bounties/,
-  /^\/treasury\/tips/,
-  /^\/treasury\/spends/,
-  /^\/treasury\/proposals/,
-  /^\/treasury\/child-bounties/,
+  /^\/api\/treasury/,
 ];
 
 function trimEndSlash(url) {
