@@ -10,6 +10,14 @@ import usePreimageDeposit, {
 import useAccountTransferrable from "next-common/hooks/useAccountTransferrable";
 import { BN, BN_ZERO } from "@polkadot/util";
 
+function YesOrNo({ yes = true }) {
+  if (yes) {
+    return <SystemYes height={20} width={20} />;
+  } else {
+    return <SystemNo height={20} width={20} />;
+  }
+}
+
 export default function InsufficientBalanceTips({ byteLength }) {
   const api = useContextApi();
   const signerAccount = useSignerAccount();
@@ -48,11 +56,7 @@ export default function InsufficientBalanceTips({ byteLength }) {
               {toPrecision(preimageDeposit, node.decimals)} {node.symbol}
             </span>
           </div>
-          {isPreimageDepositSufficient ? (
-            <SystemYes height={20} width={20} />
-          ) : (
-            <SystemNo height={20} width={20} />
-          )}
+          <YesOrNo yes={isPreimageDepositSufficient} />
         </div>
         <div className="flex items-center justify-between">
           <div>
@@ -61,11 +65,7 @@ export default function InsufficientBalanceTips({ byteLength }) {
               {toPrecision(submissionDeposit, node.decimals)} {node.symbol}
             </span>
           </div>
-          {isSubmissionDepositSufficient ? (
-            <SystemYes height={20} width={20} />
-          ) : (
-            <SystemNo height={20} width={20} />
-          )}
+          <YesOrNo yes={isSubmissionDepositSufficient} />
         </div>
       </div>
     )
