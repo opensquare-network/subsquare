@@ -30,7 +30,11 @@ export function getHomeMenu({
   ambassadorTracks = [],
   currentTrackId,
 } = {}) {
-  const { modules, hasMultisig = false } = getChainSettings(CHAIN);
+  const {
+    modules,
+    hasMultisig = false,
+    hotMenu = {},
+  } = getChainSettings(CHAIN);
 
   const integrationsMenu = [
     modules?.assethub && assetHubMenu,
@@ -39,7 +43,8 @@ export function getHomeMenu({
   ].filter(Boolean);
 
   const menuItems = [
-    modules?.referenda && getReferendaMenu(tracks, currentTrackId),
+    modules?.referenda &&
+      getReferendaMenu(tracks, currentTrackId, hotMenu.referenda),
     modules?.fellowship && getFellowshipMenu(summary, currentTrackId),
     modules?.ambassador && getAmbassadorMenu(ambassadorTracks, currentTrackId),
     modules?.democracy && getDemocracyMenu(summary),

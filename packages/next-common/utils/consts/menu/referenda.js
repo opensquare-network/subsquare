@@ -8,13 +8,13 @@ export const Names = {
   all: "All",
 };
 
-export function getReferendaMenu(tracks = [], currentTrackId) {
+export function getReferendaMenu(tracks = [], currentTrackId, hotMenu = false) {
   const totalActiveCount = sumBy(tracks, (t) => t.activeCount || 0);
 
   const menu = {
     name: capitalize(Names.referenda),
     activeCount: totalActiveCount,
-    isHot: true,
+    isHot: hotMenu,
     icon: <MenuReferenda />,
     pathname: "/referenda",
     hideItemsOnMenu: true,
