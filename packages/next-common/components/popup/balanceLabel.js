@@ -19,9 +19,9 @@ export default function PopupLabelWithBalance({
   );
   if (showTransferableBalance && transferrable) {
     content = (
-      <TransferableBalanceContent symbol={symbol} transferrable={transferrable}>
+      <TransferableContent symbol={symbol} transferrable={transferrable}>
         {content}
-      </TransferableBalanceContent>
+      </TransferableContent>
     );
   }
 
@@ -40,17 +40,16 @@ export default function PopupLabelWithBalance({
   );
 }
 
-function TransferableBalanceContent({ children, symbol, transferrable }) {
-  const TransferableBalance = (
-    <NumberWithComma
-      value={formatBalance(transferrable, symbol)}
-      symbol={symbol}
-    />
+function TransferableContent({ children, symbol, transferrable }) {
+  const tooltipContent = (
+    <>
+      Transferable:{" "}
+      <NumberWithComma
+        value={formatBalance(transferrable, symbol)}
+        symbol={symbol}
+      />
+    </>
   );
 
-  return (
-    <Tooltip content={<>Transferable: {TransferableBalance}</>}>
-      {children}
-    </Tooltip>
-  );
+  return <Tooltip content={tooltipContent}>{children}</Tooltip>;
 }
