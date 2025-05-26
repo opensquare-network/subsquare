@@ -112,6 +112,9 @@ const bifrostPolkadot = {
   },
   supportWalletconnect: true,
   allowWeb2Login: false,
+  hotMenu: {
+    referenda: true,
+  },
 };
 
 export default bifrostPolkadot;
