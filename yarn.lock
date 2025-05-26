@@ -3072,6 +3072,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@osn/icons@npm:^1.214.0":
+  version: 1.214.0
+  resolution: "@osn/icons@npm:1.214.0"
+  checksum: 5280fad5d015cbbc0ada625ba5c9f94cc4ec8eaf5b35f1a4c670c52f1629528ef420e96d1cc9cc6416627b495661d282e33d18493743a35c9b7a50520e2b2532
+  languageName: node
+  linkType: hard
+
 "@osn/polkadot-react-identicon@npm:^1.0.10":
   version: 1.0.10
   resolution: "@osn/polkadot-react-identicon@npm:1.0.10"
@@ -5753,7 +5760,7 @@ __metadata:
     "@next/bundle-analyzer": 15.3.0
     "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.211.0
+    "@osn/icons": ^1.214.0
     "@svgr/webpack": ^7.0.0
     "@types/lodash-es": ^4.17.12
     bignumber.js: ^9.0.2
@@ -13514,7 +13521,7 @@ __metadata:
     "@mimirdev/apps-inject": ^3.2.0
     "@mimirdev/apps-sdk": ^3.1.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.211.0
+    "@osn/icons": ^1.214.0
     "@osn/polkadot-react-identicon": ^1.0.10
     "@osn/previewer": ^2.0.0
     "@osn/provider-options": 1.1.0

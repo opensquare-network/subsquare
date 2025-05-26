@@ -15,6 +15,7 @@ import { useStepContainer } from "next-common/context/stepContainer";
 import Button from "next-common/lib/button";
 import CircleStepper from "next-common/components/step";
 import SigningTip from "../common/signingTip";
+import InsufficientBalanceTips from "../common/insufficientBalanceTips";
 
 export function NewRemarkReferendumInnerPopup() {
   const defaultTrackId = useDefaultTrackId();
@@ -92,6 +93,7 @@ export function NewRemarkReferendumInnerPopupContent() {
         {enactmentField}
         {submissionDepositField}
       </AdvanceSettings>
+      <InsufficientBalanceTips byteLength={encodedLength} />
       <SigningTip />
       <div className="flex justify-between">
         <Button

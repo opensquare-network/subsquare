@@ -133,7 +133,7 @@ const NewProposalContent = () => {
         currentStep={1}
         loading={proposalLoading}
       />
-      <>{proposalForm}</>
+      {proposalForm}
       <SigningTip />
       <div className="flex justify-between">
         <Button
