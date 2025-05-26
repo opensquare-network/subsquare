@@ -9,7 +9,7 @@ export function useSubBalanceInfo(address) {
 
   const [balance, loading, resultJsonInfo] = useAddressBalance(api, address);
 
-  if (!resultJsonInfo) {
+  if (!balance || !resultJsonInfo) {
     return {
       value: null,
       loading,
