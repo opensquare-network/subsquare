@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { StatisticTitleContainer } from "next-common/components/styled/containers/titleContainer";
 import Flex from "next-common/components/styled/flex";
-import { useOnchainData } from "next-common/context/post";
+import { useOnchainData, usePostState } from "next-common/context/post";
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 import { useMemo } from "react";
 import ValueDisplay from "next-common/components/valueDisplay";
@@ -15,6 +15,7 @@ import {
   SideInfoItemName,
   SideInfoItemValue,
 } from "next-common/components/detail/common/sidebar";
+import useSubStorage from "next-common/hooks/common/useSubStorage";
 
 const Info = styled.div`
   display: flex;
@@ -24,7 +25,29 @@ const Info = styled.div`
 
 const WRAPPER_WIDTH = 300;
 
-export default function Meta() {
+function MetaGuard({ children }) {
+  const state = usePostState();
+  const { parentBountyId, index: childBountyId } = useOnchainData();
+  const { result } = useSubStorage("childBounties", "childBounties", [
+    parentBountyId,
+    childBountyId,
+  ]);
+
+  const shouldShow = useMemo(() => {
+    if (result?.isSome) {
+      const unwrapped = result.unwrap();
+      if (unwrapped.status.isPendingPayout) {
+        return true;
+      }
+    } else {
+      return ["PendingPayout", "Claimed"].includes(state);
+    }
+  }, [state, result]);
+
+  return shouldShow ? children : null;
+}
+
+function Meta() {
   const onChain = useOnchainData();
   const { decimals, symbol } = useChainSettings();
   const { lg, sm } = useScreenSize();
@@ -80,5 +103,13 @@ export default function Meta() {
         </SideInfoItem>
       </Info>
     </SecondaryCardDetail>
+  );
+}
+
+export default function ChildBountyMeta() {
+  return (
+    <MetaGuard>
+      <Meta />
+    </MetaGuard>
   );
 }
