@@ -1,8 +1,8 @@
 import { useOnchainData, usePostStateInfo } from "next-common/context/post";
 import { useEffect, useState } from "react";
 import { isNil } from "lodash-es";
-import useChainOrScanHeight from "next-common/hooks/height";
 import { useTrack } from "next-common/context/post/gov2/track";
+import { useCompatibleMigrationHeight } from "next-common/hooks/useCompatibleMigrationHeight";
 
 function useEnactmentHeight(confirmedAt) {
   const trackInfo = useTrack();
@@ -30,7 +30,7 @@ function useEnactmentHeight(confirmedAt) {
 }
 
 export default function useEnactmentPercentage() {
-  const latestHeight = useChainOrScanHeight();
+  const latestHeight = useCompatibleMigrationHeight();
   const stateInfo = usePostStateInfo();
   const { indexer: { blockHeight: confirmedAt = 0 } = {} } = stateInfo || {};
   const when = useEnactmentHeight(confirmedAt);

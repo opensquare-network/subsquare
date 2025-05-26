@@ -1,4 +1,3 @@
-import useChainOrScanHeight from "next-common/hooks/height";
 import { useDecidingSince } from "next-common/context/post/gov2/referendum";
 import { useSelector } from "react-redux";
 import { useDecisionBlocks, useDecisionEnd } from "../useDecisionPercentage";
@@ -8,9 +7,10 @@ import { useDecision } from "next-common/context/post/gov2/track";
 import { useMemo } from "react";
 import { isNil } from "lodash-es";
 import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
+import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
 
 export default function DecisionTooltip() {
-  const latestHeight = useChainOrScanHeight();
+  const latestHeight = useAhmLatestHeight();
   const decidingSince = useDecidingSince();
   const decisionPeriod = useDecision();
   const decisionBlocks = useDecisionBlocks();
