@@ -49,7 +49,7 @@ function TransferableBalanceContent({ children, symbol, transferrable }) {
   );
 
   return (
-    <Tooltip content={<>Transferable balance: {TransferableBalance}</>}>
+    <Tooltip content={<>Transferable: {TransferableBalance}</>}>
       {children}
     </Tooltip>
   );
