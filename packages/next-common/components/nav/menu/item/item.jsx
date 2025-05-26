@@ -32,6 +32,7 @@ export default function NavMenuItemItem({
         icon={item?.icon}
         name={item?.name}
         isNew={item?.isNew}
+        isHot={item?.isHot}
         extra={item?.extra || extra}
         collapsed={collapsed}
         onClick={() => {
@@ -65,6 +66,7 @@ export default function NavMenuItemItem({
       icon={item?.icon}
       name={item?.name}
       isNew={item?.isNew}
+      isHot={item?.isHot}
       activeCount={item?.activeCount}
       extra={item?.extra || extra}
       collapsed={collapsed}

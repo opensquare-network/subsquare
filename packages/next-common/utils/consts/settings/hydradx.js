@@ -136,6 +136,9 @@ const hydradx = {
   },
   supportWalletconnect: true,
   allowWeb2Login: false,
+  hotMenu: {
+    referenda: true,
+  },
 };
 
 export default hydradx;
