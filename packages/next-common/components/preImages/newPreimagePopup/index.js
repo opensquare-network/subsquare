@@ -152,7 +152,7 @@ export function useNewPrerimageForm() {
     } else {
       extrinsicComponent = (
         <>
-          <SignerWithBalance />
+          <SignerWithBalance showTransferableBalance />
           <div>
             <PopupLabel text="Pre-Propose" />
             <Extrinsic
