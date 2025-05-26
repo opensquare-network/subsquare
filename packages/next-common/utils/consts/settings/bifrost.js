@@ -15,10 +15,6 @@ const ProjectLogoBifrostKusamaDark = dynamic(() =>
 
 const DEFAULT_BIFROST_NODES = [
   {
-    name: "Dwellir",
-    url: "wss://bifrost-rpc.dwellir.com",
-  },
-  {
     name: "Liebi",
     url: "wss://bifrost-rpc.liebi.com/ws",
   },
@@ -27,8 +23,8 @@ const DEFAULT_BIFROST_NODES = [
     url: "wss://us.bifrost-rpc.liebi.com/ws",
   },
   {
-    name: "OnFinality",
-    url: "wss://bifrost-parachain.api.onfinality.io/public-ws",
+    name: "RadiumBlock",
+    url: "wss://bifrost.public.curie.radiumblock.co/ws",
   },
 ];
 
@@ -144,6 +140,9 @@ const bifrost = {
   },
   supportWalletconnect: true,
   allowWeb2Login: false,
+  hotMenu: {
+    referenda: true,
+  },
 };
 
 export default bifrost;

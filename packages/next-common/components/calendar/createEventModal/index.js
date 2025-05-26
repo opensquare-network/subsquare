@@ -5,7 +5,7 @@ import Title from "./title";
 import Link from "./link";
 import Description from "./description";
 import PrimaryButton from "next-common/lib/button/primary";
-import { backendApi } from "../../../services/nextApi";
+import nextApi from "../../../services/nextApi";
 import { useDispatch } from "react-redux";
 import {
   newErrorToast,
@@ -74,7 +74,7 @@ function PopupContent() {
         return;
       }
 
-      const { result, error } = await backendApi.post(
+      const { result, error } = await nextApi.post(
         calendarUserEventsApi,
         {
           title,
