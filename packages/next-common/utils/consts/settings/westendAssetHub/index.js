@@ -16,6 +16,7 @@ const westendAssetHub = {
   name: "Asset Hub",
   ...westendCommonCfg,
   blockTime: 12000,
+  relayBlockTime: 6000,
   assetHubMigrated: true,
   endpoints: westendAssetHubNodes,
   avatar: ProjectIconWestendAssethub,
