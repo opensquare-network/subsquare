@@ -7,7 +7,7 @@ import BigNumber from "bignumber.js";
 import { toPrecision } from "next-common/utils";
 import { useDecimals } from "next-common/context/chain";
 import ValueDisplay from "next-common/components/valueDisplay";
-import { useCompatibleMigrationHeight } from "next-common/hooks/useCompatibleMigrationHeight";
+import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
 
 function WarningText() {
   const approvalThreshold = useApprovalThreshold();
@@ -43,7 +43,7 @@ function WarningText() {
 }
 
 export default function DecisionWarning() {
-  const latestHeight = useCompatibleMigrationHeight();
+  const latestHeight = useAhmLatestHeight();
   const decidingSince = useDecidingSince();
   const decisionPeriod = useDecision();
   const decisionBlocks = useDecisionBlocks();

@@ -7,11 +7,11 @@ import { useConfirm } from "next-common/context/post/gov2/track";
 import { isNil } from "lodash-es";
 import { useDecisionBlocks } from "./useDecisionPercentage";
 import { useMemo } from "react";
-import { useCompatibleMigrationHeight } from "next-common/hooks/useCompatibleMigrationHeight";
+import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
 
 // get confirm remaining blocks
 export function useConfirmRemaining() {
-  const latestHeight = useCompatibleMigrationHeight();
+  const latestHeight = useAhmLatestHeight();
   const confirmingAt = useConfirmingStarted();
   const confirmPeriod = useConfirm();
   if (isNil(latestHeight) || latestHeight <= confirmingAt) {
@@ -58,7 +58,7 @@ export function calcConfirmStartPercentage(
 }
 
 export function useConfirmPercentage() {
-  const latestHeight = useCompatibleMigrationHeight();
+  const latestHeight = useAhmLatestHeight();
 
   const confirmPeriod = useConfirm();
   const confirmStart = useConfirmingStarted();

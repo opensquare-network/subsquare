@@ -7,10 +7,10 @@ import { useDecision } from "next-common/context/post/gov2/track";
 import { useMemo } from "react";
 import { isNil } from "lodash-es";
 import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
-import { useCompatibleMigrationHeight } from "next-common/hooks/useCompatibleMigrationHeight";
+import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
 
 export default function DecisionTooltip() {
-  const latestHeight = useCompatibleMigrationHeight();
+  const latestHeight = useAhmLatestHeight();
   const decidingSince = useDecidingSince();
   const decisionPeriod = useDecision();
   const decisionBlocks = useDecisionBlocks();
