@@ -193,7 +193,7 @@ export const toTreasuryChildBountyListItem = (item) => ({
   status: item.state ?? "Unknown",
   time: getPostLastActivityAt(item),
   value: item.onchainData.value,
-  detailLink: `${childBountyBaseUrl}/${item.index}`,
+  detailLink: `${childBountyBaseUrl}/${item.parentBountyId}_${item.index}`,
   parentIndex: item.parentBountyId,
 });
 

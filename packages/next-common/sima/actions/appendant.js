@@ -1,4 +1,4 @@
-import { backendApi } from "next-common/services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import useSignSimaMessage from "next-common/utils/sima/useSignSimaMessage";
 import { getContentField } from "next-common/utils/sima/utils";
 import { useCallback } from "react";
@@ -16,10 +16,7 @@ export function useAddDiscussionAppendant() {
         real,
       };
       const data = await signSimaMessage(entity);
-      return await backendApi.post(
-        `sima/discussions/${postCid}/appendants`,
-        data,
-      );
+      return await nextApi.post(`sima/discussions/${postCid}/appendants`, data);
     },
     [signSimaMessage],
   );

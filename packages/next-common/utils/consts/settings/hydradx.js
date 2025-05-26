@@ -85,7 +85,7 @@ const hydradx = {
   decimals: 12,
   blockTime: 12000,
   hasElections: true,
-  ss58Format: 63,
+  ss58Format: 0,
   avatar: ProjectIconHydrationLight,
   darkAvatar: ProjectIconHydrationDark,
   navLogo: ProjectLogoHydrationDark,
@@ -136,6 +136,9 @@ const hydradx = {
   },
   supportWalletconnect: true,
   allowWeb2Login: false,
+  hotMenu: {
+    referenda: true,
+  },
 };
 
 export default hydradx;

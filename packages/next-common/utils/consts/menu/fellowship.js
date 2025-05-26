@@ -3,10 +3,6 @@ import { MenuFellowship } from "@osn/icons/subsquare";
 import getChainSettings from "../settings";
 import { collectivesCommonNames } from "next-common/utils/consts/menu/common/collectives";
 import { isCollectivesChain } from "next-common/utils/chain";
-import { isKusamaChain } from "next-common/utils/chain";
-import { CHAIN } from "next-common/utils/constants";
-
-const isKusama = isKusamaChain(CHAIN);
 
 export const Names = {
   fellowship: "FELLOWSHIP",
@@ -103,8 +99,7 @@ function getFellowshipReferendaMenu(
     ],
     activeCount: totalActiveCount,
     pathname: "/fellowship",
-    hideItemsOnMenu:
-      isCollectivesChain(process.env.NEXT_PUBLIC_CHAIN) || isKusama,
+    hideItemsOnMenu: true,
     items: [
       {
         value: "all",

@@ -1,4 +1,4 @@
 export {
   default,
   getServerSideProps,
-} from "next-common/pages/fellowship/members";
+} from "next-common/pages/fellowship/referenda/[id]";
