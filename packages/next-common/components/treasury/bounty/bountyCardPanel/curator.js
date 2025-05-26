@@ -1,10 +1,8 @@
 import CuratorInfoItem from "./curatorInfoItem";
 import React from "react";
-import useBountyCurator from "./hooks/useBountyCurator";
 import { useCuratorMultisigAddress } from "next-common/hooks/treasury/bounty/useCuratorMultisigAddress";
 
-function Curator({ item, showBadge = true }) {
-  const curator = useBountyCurator(item?.bountyIndex);
+function Curator({ item, showBadge = true, curator }) {
   const { badge } = useCuratorMultisigAddress(curator);
   return (
     <span className="flex-1 items-center">
