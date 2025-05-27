@@ -1,14 +1,13 @@
 // todo: we should handle proposal inline type
 
 import useInlineCall from "next-common/components/democracy/metadata/useInlineCall";
-import { usePost, useTimelineData } from "next-common/context/post";
+import { usePost } from "next-common/context/post";
 import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { referendumStatusSelector } from "next-common/store/reducers/referendumSlice";
 
 export function useDemocracyReferendumHash() {
   const post = usePost();
-  const timeline = useTimelineData();
   const onchainData = post?.onchainData;
   const referendumStatus = useSelector(referendumStatusSelector);
   const proposal = referendumStatus?.proposal;

@@ -36,7 +36,7 @@ export default function DemocracyReferendaDetailMultiTabs() {
 
   const onchainData = post?.onchainData;
 
-  const { timeline = [], preImage } = onchainData;
+  const { preImage } = onchainData;
   const referendumStatus = useSelector(referendumStatusSelector);
   const proposal = referendumStatus?.proposal;
 
