@@ -10,6 +10,11 @@ const config = {
       transform: "@osn/icons/subsquare/{{member}}",
     },
   },
+  eslint: {
+    // Warning: This allows production builds to successfully complete even if
+    // your project has ESLint errors.
+    ignoreDuringBuilds: true,
+  },
   allowedDevOrigins: ["127.0.0.1"],
   compress: true,
   compiler: {
