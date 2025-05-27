@@ -35,9 +35,9 @@ import { referendumStatusSelector } from "next-common/store/reducers/referendumS
 import { useContextApi } from "next-common/context/api";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
 import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
-import { useReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
+import { useDemocracyReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 
-function ReferendumContent() {
+function ReferendumContent({ timelineData, setTimelineData }) {
   const dispatch = useDispatch();
   const post = usePost();
   const { publicProposal } = usePageProps();
@@ -58,7 +58,6 @@ function ReferendumContent() {
     return () => dispatch(clearVotes());
   }, [dispatch]);
 
-  const [timelineData, setTimelineData] = useState([]);
   useEffect(() => {
     const proposalTimeline = publicProposal?.onchainData?.timeline || [];
     const referendumTimeline = post?.onchainData?.timeline || [];
@@ -72,7 +71,7 @@ function ReferendumContent() {
         detailPageCategory.DEMOCRACY_REFERENDUM,
       ),
     ]);
-  }, [publicProposal, post]);
+  }, [publicProposal, post, setTimelineData]);
 
   const { call: inlineCall } = useInlineCall(proposal);
   const call = post?.onchainData?.preImage?.call || inlineCall;
@@ -120,7 +119,9 @@ function ReferendumContent() {
 function ReferendumContentWithNullGuard() {
   const post = usePost();
   const { id } = usePageProps();
-  const indexer = useReferendumVotingFinishIndexer();
+  const [timelineData, setTimelineData] = useState([]);
+
+  const indexer = useDemocracyReferendumVotingFinishIndexer(timelineData);
 
   if (!post) {
     return <CheckUnFinalized id={id} />;
@@ -128,7 +129,10 @@ function ReferendumContentWithNullGuard() {
 
   return (
     <MigrationConditionalApiProvider indexer={indexer}>
-      <ReferendumContent />
+      <ReferendumContent
+        timelineData={timelineData}
+        setTimelineData={setTimelineData}
+      />
     </MigrationConditionalApiProvider>
   );
 }

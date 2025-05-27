@@ -26,7 +26,7 @@ import { useContextApi } from "next-common/context/api";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
 import DemocracyReferendaDetailMultiTabs from "next-common/components/pages/components/tabs/democracyReferendaDetailMultiTabs";
 import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
-import { useReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
+import { useDemocracyReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 
 function ReferendumContent() {
   const post = usePost();
@@ -40,7 +40,9 @@ function ReferendumContent() {
   useMaybeFetchElectorate(post?.onchainData, api);
   useDemocracyVotesFromServer(post.referendumIndex);
   useFetchVotes(post?.onchainData);
-  const indexer = useReferendumVotingFinishIndexer();
+  const indexer = useDemocracyReferendumVotingFinishIndexer(
+    post?.onchainData?.timeline,
+  );
 
   useEffect(() => {
     return () => {
