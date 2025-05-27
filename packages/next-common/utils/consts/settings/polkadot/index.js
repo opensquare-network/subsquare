@@ -8,7 +8,7 @@ import polkadotLinks from "next-common/utils/consts/settings/polkadot/links";
 import polkadotTreasuryTracks from "next-common/utils/consts/settings/polkadot/tracks";
 import { mergeChainModules } from "../common/modules";
 import polkadotCommonCfg from "next-common/utils/consts/settings/polkadot/common";
-import preimage from "./preimage";
+import polkadotPreimageSettings from "next-common/utils/consts/settings/common/preimage/polkadot";
 
 const ProjectIconPolkadotDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconPolkadotDark"),
@@ -96,7 +96,7 @@ const polkadot = {
   },
   sima: true,
   allowWeb2Login: true,
-  preimage,
+  preimage: polkadotPreimageSettings,
   hotMenu: {
     referenda: true,
   },

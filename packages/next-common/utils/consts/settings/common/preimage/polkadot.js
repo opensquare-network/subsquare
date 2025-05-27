@@ -1,4 +1,4 @@
-const BigNumber = require("bignumber.js");
+import BigNumber from "bignumber.js";
 
 const DOLLARS = 10_000_000_000;
 const CENTS = DOLLARS / 100; // 100_000_000
@@ -13,7 +13,9 @@ function deposit(items, bytes) {
 const preimageBaseDeposit = deposit(2, 64);
 const preimageByteDeposit = deposit(0, 1);
 
-module.exports = {
+const polkadotPreimageSettings = {
   baseDeposit: preimageBaseDeposit,
   byteDeposit: preimageByteDeposit,
 };
+
+export default polkadotPreimageSettings;
