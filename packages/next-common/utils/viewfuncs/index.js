@@ -187,7 +187,9 @@ export const toCommunityMotionsListItem = (item) => ({
 
 export const toTreasuryChildBountyListItem = (item) => ({
   ...item,
-  index: `${item?.parentBountyId}-${item?.index}`,
+  index: item?.parentBountyId
+    ? `${item.parentBountyId}-${item?.index}`
+    : `${item?.index}`,
   title: getTitle(item),
   author: item.author,
   address: item.proposer,
