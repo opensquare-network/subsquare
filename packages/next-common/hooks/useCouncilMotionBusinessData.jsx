@@ -130,10 +130,7 @@ export function useCouncilMotionBusinessData() {
               key="call"
               indexer={external.indexer}
             >
-              <ExternalCall
-                preimage={external?.preImage}
-                blockHash={external?.indexer?.blockHash}
-              />
+              <ExternalCall preimage={external?.preImage} />
             </MigrationConditionalApiProvider>,
           ],
         ]);
