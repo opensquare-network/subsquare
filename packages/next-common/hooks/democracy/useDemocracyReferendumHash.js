@@ -29,7 +29,7 @@ export function useDemocracyReferendumHash() {
   }, [statusHash, onchainDataHash]);
   const preImage = onchainData?.preImage;
 
-  const { hash: inlineHash } = useInlineCall(timeline, proposal);
+  const { hash: inlineHash } = useInlineCall(proposal);
   const [hash, setHash] = useState(proposalHash);
 
   useEffect(() => {

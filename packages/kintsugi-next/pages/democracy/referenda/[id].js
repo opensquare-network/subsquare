@@ -34,6 +34,8 @@ import useSetReferendumStatus from "next-common/hooks/democracy/useSetReferendum
 import { referendumStatusSelector } from "next-common/store/reducers/referendumSlice";
 import { useContextApi } from "next-common/context/api";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
+import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
+import { useReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 
 function ReferendumContent() {
   const dispatch = useDispatch();
@@ -72,7 +74,7 @@ function ReferendumContent() {
     ]);
   }, [publicProposal, post]);
 
-  const { call: inlineCall } = useInlineCall(timelineData, proposal);
+  const { call: inlineCall } = useInlineCall(proposal);
   const call = post?.onchainData?.preImage?.call || inlineCall;
 
   const isTimelineCompact = useIsTimelineCompact();
@@ -118,12 +120,17 @@ function ReferendumContent() {
 function ReferendumContentWithNullGuard() {
   const post = usePost();
   const { id } = usePageProps();
+  const indexer = useReferendumVotingFinishIndexer();
 
   if (!post) {
     return <CheckUnFinalized id={id} />;
   }
 
-  return <ReferendumContent />;
+  return (
+    <MigrationConditionalApiProvider indexer={indexer}>
+      <ReferendumContent />
+    </MigrationConditionalApiProvider>
+  );
 }
 
 function DemocracyReferendumPageImpl() {
