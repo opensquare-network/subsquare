@@ -9,6 +9,7 @@ import { useDetailType } from "next-common/context/page";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import useBlockPreimage from "next-common/hooks/preimages/useBlockPreimage";
 import RawCallProvider from "next-common/context/call/raw";
+import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 
 function getTreasuryProposalLink(type, proposalIndex) {
   if (type === detailPageCategory.COMMUNITY_MOTION) {
@@ -17,9 +18,9 @@ function getTreasuryProposalLink(type, proposalIndex) {
   return `/treasury/proposals/${proposalIndex}`;
 }
 
-function ExternalCall({ preimage, blockHash }) {
+function ExternalCall({ preimage }) {
   const { hash } = preimage || {};
-  const { preimage: call, isLoading } = useBlockPreimage(hash, blockHash);
+  const { preimage: call, isLoading } = useBlockPreimage(hash);
 
   return (
     <RawCallProvider call={call} isLoading={isLoading}>
@@ -125,11 +126,15 @@ export function useCouncilMotionBusinessData() {
       if (external.preImage && business.length > 0) {
         business[0].push([
           [
-            <ExternalCall
+            <MigrationConditionalApiProvider
               key="call"
-              preimage={external?.preImage}
-              blockHash={external?.indexer?.blockHash}
-            />,
+              indexer={external.indexer}
+            >
+              <ExternalCall
+                preimage={external?.preImage}
+                blockHash={external?.indexer?.blockHash}
+              />
+            </MigrationConditionalApiProvider>,
           ],
         ]);
       }

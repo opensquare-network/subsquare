@@ -1,13 +1,13 @@
-import useBlockApi from "next-common/utils/hooks/useBlockApi";
 import { useEffect, useState } from "react";
 import { createGlobalState } from "react-use";
 import queryPreimageAtBlock from "next-common/hooks/preimages/query";
 import { isNil } from "lodash-es";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
 const useCachedResult = createGlobalState({});
 
-export default function useBlockPreimage(hash, blockHash) {
-  const api = useBlockApi(blockHash);
+export default function useBlockPreimage(hash) {
+  const api = useConditionalContextApi();
   const [cachedResult, setCachedResult] = useCachedResult({});
   const result = cachedResult[hash] || null;
   const [loading, setLoading] = useState(isNil(result));
