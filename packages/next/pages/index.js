@@ -33,7 +33,6 @@ function DefaultOverviewPage() {
   const chain = useChain();
   const chainSettings = useChainSettings();
   const a = null;
-  console.log(a.b);
 
   const tabs = [
     {
@@ -41,6 +40,7 @@ function DefaultOverviewPage() {
       label: "Overview",
       url: "/",
       exactMatch: false,
+      v: a.b,
     },
   ];
 
