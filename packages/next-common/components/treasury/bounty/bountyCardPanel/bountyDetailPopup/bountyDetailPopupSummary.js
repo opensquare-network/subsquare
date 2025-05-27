@@ -17,7 +17,6 @@ function BountyDetailPopupSummary({ item }) {
       <CardBalanceAndCurator
         item={item}
         className="grid grid-cols-4 gap-3 mt-4"
-        showBadge={false}
       />
     </div>
   );

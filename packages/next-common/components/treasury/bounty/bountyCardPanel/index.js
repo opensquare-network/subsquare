@@ -1,15 +1,19 @@
 import React from "react";
 import CardWrapper from "./cardWrapper";
 import Card from "./card";
-import BountyPanelTitle from "./bountyPanelTitle";
 import { isNil } from "lodash-es";
+import ListTitleBar from "next-common/components/listTitleBar";
 
 function BountyCardPanel({ activeBounties }) {
   if (isNil(activeBounties)) return null;
 
   return (
     <div>
-      <BountyPanelTitle activeCount={activeBounties.length} />
+      <ListTitleBar
+        className="mb-4"
+        title="Active"
+        titleCount={activeBounties.length}
+      />
       <CardWrapper>
         {activeBounties.map((item, index) => (
           <Card key={index} item={item} />

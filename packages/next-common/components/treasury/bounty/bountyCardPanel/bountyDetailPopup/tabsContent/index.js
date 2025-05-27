@@ -1,7 +1,6 @@
 import Tabs from "next-common/components/tabs";
 import { useState } from "react";
 import React from "react";
-import TabLabel from "./tabLabel";
 import ChildBountyList from "./childBountyList";
 import { isNil } from "lodash-es";
 
@@ -9,8 +8,11 @@ function BountyDetailPopupTabs({ childBounties, bountyIndex }) {
   const tabs = [
     {
       value: "childBounties",
-      label: (
-        <TabLabel label="Child Bounties" count={childBounties?.total ?? 0} />
+      label: "Child Bounties",
+      labelExtra: (
+        <span className="text14Medium text-textTertiary ml-1 flex">
+          {childBounties?.total ?? 0}
+        </span>
       ),
       content: (
         <ChildBountyList

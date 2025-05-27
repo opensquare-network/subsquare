@@ -3,14 +3,15 @@ import AddressUser from "next-common/components/user/addressUser";
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 import React from "react";
 import { CuratorBadge } from "next-common/components/treasury/bounty/curator";
-import MultisigTooltip from "./multisigTooltip";
+import Tooltip from "next-common/components/tooltip";
+import { AddressesTooltip } from "next-common/components/multisigs/fields";
 
 function CuratorInfoItem({ data, badge, showBadge = true, signatories = [] }) {
   const { sm } = useScreenSize();
   const userMaxWidth = sm ? 121 : 196;
 
   return (
-    <span className="inline-block flex items-center flex-1 h-5">
+    <span className="flex items-center flex-1 h-5">
       {data?.author ? (
         <SystemUser
           user={data?.author}
@@ -26,11 +27,18 @@ function CuratorInfoItem({ data, badge, showBadge = true, signatories = [] }) {
       )}
 
       {badge && showBadge && (
-        <MultisigTooltip signatories={signatories}>
-          <span className="pl-2 h-5 flex items-center">
-            <CuratorBadge badge={badge} />
-          </span>
-        </MultisigTooltip>
+        <Tooltip
+          className="pl-2"
+          content={
+            <AddressesTooltip
+              className="gap-y-1 flex flex-col"
+              addresses={signatories}
+              addressMaxWidth={140}
+            />
+          }
+        >
+          <CuratorBadge className="h-5 flex items-center" badge={badge} />
+        </Tooltip>
       )}
     </span>
   );

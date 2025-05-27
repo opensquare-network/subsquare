@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { SystemMenu } from "@osn/icons/subsquare";
-import BountyDetailPopup from "./bountyDetailPopup";
 import { isNil } from "lodash-es";
 import LoadableContent from "next-common/components/common/loadableContent";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const BountyDetailPopup = dynamicPopup(() => import("./bountyDetailPopup"), {
+  ssr: false,
+});
 
 function CardChildBounties({
   childBounties,
