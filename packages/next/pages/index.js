@@ -32,6 +32,8 @@ import { backendApi } from "next-common/services/nextApi";
 function DefaultOverviewPage() {
   const chain = useChain();
   const chainSettings = useChainSettings();
+  const a = null;
+  console.log(a.b);
 
   const tabs = [
     {

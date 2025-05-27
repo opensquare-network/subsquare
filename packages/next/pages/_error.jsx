@@ -24,6 +24,7 @@ function getErrorReason(statusCode) {
 }
 
 function ErrorPage({ statusCode, err, isServerError, reqUrl, user }) {
+  console.log("ErrorPage", err.message);
   useEffect(() => {
     if (err) {
       const errorData = {
