@@ -3132,9 +3132,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/rich-text-editor@npm:^0.7.2":
-  version: 0.7.2
-  resolution: "@osn/rich-text-editor@npm:0.7.2"
+"@osn/rich-text-editor@npm:^0.7.3":
+  version: 0.7.3
+  resolution: "@osn/rich-text-editor@npm:0.7.3"
   dependencies:
     lodash: ^4.17.21
     marked: ^11.1.1
@@ -3144,7 +3144,7 @@ __metadata:
   peerDependencies:
     "@osn/previewer": ^1.3.7
     react: ^18.2.0
-  checksum: 10caf4181f74ba5a1ef27dd59353e7291d229077de49cecfdde0b36de609b8fb12d714af6d1a4c081666d060830ec5a1e1fa470e53f0ef5bf8718fdafd235df6
+  checksum: 807c108cf61694501b3e90495190414fcf1f889090e9f2cd201cddba6375f6f2ef453ddbf14616ef5029efe7275e75950bc3fc275b602bfdb8c25a2b94f054c4
   languageName: node
   linkType: hard
 
@@ -13526,7 +13526,7 @@ __metadata:
     "@osn/previewer": ^2.0.0
     "@osn/provider-options": 1.1.0
     "@osn/react-cmdk": ^1.2.1
-    "@osn/rich-text-editor": ^0.7.2
+    "@osn/rich-text-editor": ^0.7.3
     "@polkadot/api": 15.9.1
     "@polkadot/extension-dapp": 0.58.6
     "@polkadot/util": 13.4.3
