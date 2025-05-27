@@ -12,9 +12,10 @@ import useTrackField from "../common/useTrackField";
 import { useDefaultTrackId } from "../../newProposalPopup/useTrackDetail";
 import { useSubmissionDeposit } from "../common/useSubmissionDeposit";
 import { useStepContainer } from "next-common/context/stepContainer";
-import Button from "next-common/lib/button";
 import CircleStepper from "next-common/components/step";
 import SigningTip from "../common/signingTip";
+import InsufficientBalanceTips from "../common/insufficientBalanceTips";
+import PreviousButton from "../../newProposalButton/previousButton";
 
 export function NewRemarkReferendumInnerPopup() {
   const defaultTrackId = useDefaultTrackId();
@@ -92,19 +93,10 @@ export function NewRemarkReferendumInnerPopupContent() {
         {enactmentField}
         {submissionDepositField}
       </AdvanceSettings>
+      <InsufficientBalanceTips byteLength={encodedLength} />
       <SigningTip />
       <div className="flex justify-between">
-        <Button
-          className={`border-neutral400 hover:border-neutral500 ${
-            isLoading
-              ? " cursor-not-allowed text-textDisabled border-neutral300"
-              : ""
-          }`}
-          disabled={isLoading}
-          onClick={goBack}
-        >
-          Previous
-        </Button>
+        <PreviousButton isLoading={isLoading} onClick={goBack} />
         {submitButton}
       </div>
     </>

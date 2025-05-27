@@ -1,4 +1,4 @@
-import { backendApi } from "next-common/services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import useSignSimaMessage from "next-common/utils/sima/useSignSimaMessage";
 import { getContentField } from "next-common/utils/sima/utils";
 import { useCallback } from "react";
@@ -30,10 +30,7 @@ export function useCreateDiscussionComment() {
         real,
       };
       const data = await signSimaMessage(entity);
-      return await backendApi.post(
-        `sima/discussions/${post.cid}/comments`,
-        data,
-      );
+      return await nextApi.post(`sima/discussions/${post.cid}/comments`, data);
     },
     [signSimaMessage],
   );
@@ -70,7 +67,7 @@ export function useCreateProposalComment() {
       const data = await signSimaMessage(entity);
 
       const type = getDetailPageCategory(post);
-      return await backendApi.post(`sima/${type}/${indexer.id}/comments`, data);
+      return await nextApi.post(`sima/${type}/${indexer.id}/comments`, data);
     },
     [signSimaMessage, createDiscussionComment, createOffChainComment],
   );
@@ -91,7 +88,7 @@ export function useCreateDiscussionCommentReply() {
         real,
       };
       const data = await signSimaMessage(entity);
-      return await backendApi.post(
+      return await nextApi.post(
         `sima/discussions/${post.cid}/comments/${comment.cid}/replies`,
         data,
       );
@@ -147,7 +144,7 @@ export function useCreateProposalCommentReply() {
 
       const type = getDetailPageCategory(post);
 
-      return await backendApi.post(
+      return await nextApi.post(
         `sima/${type}/${indexer.id}/comments/${comment.cid}/replies`,
         data,
       );
@@ -188,7 +185,7 @@ function useReplaceComment() {
       };
       const data = await signSimaMessage(entity);
 
-      return await backendApi.patch(
+      return await nextApi.patch(
         `sima/${type}/${post.cid}/comments/${comment.cid}`,
         data,
       );

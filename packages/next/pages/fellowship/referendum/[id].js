@@ -1,9 +1,9 @@
 import { getRedirectServerSideProps } from "next-common/services/serverSide";
 
-export default function Proposal() {
-  return "Please visit `/treasury/proposals/[id]`";
+export default function Referendum() {
+  return "Please visit `/fellowship/referenda/[id]`";
 }
 
 export const getServerSideProps = getRedirectServerSideProps(
-  (id) => `/treasury/proposals/${id}`,
+  (id) => `/fellowship/referenda/${id}`,
 );

@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+# 4.7.4
+
+date: 2025-05-26
+
+- Support the new child bounties index. In the new code, child bounty index grow only under a parent bounty.
+- Add warning tips on new referendum popup to check whether users have enough balance for preimage and referendum
+  submission deposits.
+- Extract, decode and show system para chain call on a relay chain referendum when it proposes a cross chain call.
+- Support hydration address format change, from 63 to 0.
+- Add a prompt on overview page account panel to warn user there are expired vote locks.
+- Governance asset hub migration: support it in `slow-scan` for vote calls.
+- Support walletconnect for polkadot and bifrost.
+- Add an identity redirect button on overview page account panel.
+- Improve identity search result display.
+- Adjust hydration nodes order.
+- Update heima(litentry) network endpoints.
+- Add more use cases for backend API endpoint and improve next API check.
+- Call unsub for useSubSystemAccount.
+- Fix kusama fellowship referendum detail page missing by the `collectives-next` package extraction.
+- Add a fire icon besides referenda menu.
+- Code refactor and UI/bug fixes.
+
 # 4.7.3
 
 date: 2025-05-21

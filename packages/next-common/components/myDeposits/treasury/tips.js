@@ -1,7 +1,7 @@
 import { useChain, useChainSettings } from "next-common/context/chain";
 import { getStatusTagColumn } from "next-common/components/overview/recentProposals/columns";
 import businessCategory from "next-common/utils/consts/business/category";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import { getReasonPostTitleColumn } from "../columns";
 import normalizeTipListItem from "next-common/utils/viewfuncs/treasury/normalizeTipListItem";
@@ -42,7 +42,7 @@ export function useDepositTreasuryTipsTab(deposits = []) {
       async fetchData() {
         if (deposits?.length) {
           const fetchers = deposits.map((deposit) =>
-            nextApi.fetch(`treasury/tips/${deposit.hash}`),
+            backendApi.fetch(`treasury/tips/${deposit.hash}`),
           );
 
           const resps = await Promise.all(fetchers);

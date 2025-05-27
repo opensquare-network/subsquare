@@ -16,6 +16,7 @@ import { isEmptyFunc } from "next-common/utils/isEmptyFunc";
 import { ExtrinsicLoading } from "next-common/components/popup/fields/extrinsicField";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
+import InsufficientBalanceTips from "next-common/components/summary/newProposalQuickStart/common/insufficientBalanceTips";
 
 const EMPTY_HASH = blake2AsHex("");
 
@@ -167,6 +168,7 @@ export function useNewPrerimageForm() {
             preimageHash={encodedHash}
             preimageLength={encodedLength || 0}
           />
+          <InsufficientBalanceTips byteLength={encodedLength} />
         </>
       );
     }
