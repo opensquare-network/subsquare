@@ -12,18 +12,23 @@ export function isFromParaToRelayChain(xcmLocation) {
   return v4Location.parents.toNumber() === 1 && v4Location.interior.isHere;
 }
 
-// `messageArg` are a group of XCM instructions
+// `messageArg` are a group of XCM instructions in v3 and v4
 export function extractTransactCallBytesArr(messageArg) {
-  if (!messageArg?.isV4) {
+  let instructions;
+
+  if (messageArg?.isV3) {
+    instructions = messageArg?.asV3;
+  }
+
+  if (messageArg?.isV4) {
+    instructions = messageArg?.asV4;
+  }
+
+  if (!Array.isArray(instructions)) {
     return [];
   }
 
-  const instructionsV4 = messageArg?.asV4;
-  if (!Array.isArray(instructionsV4)) {
-    return [];
-  }
-
-  return instructionsV4.reduce((acc, instruction) => {
+  return instructions.reduce((acc, instruction) => {
     if (!instruction.isTransact) {
       return acc;
     }
