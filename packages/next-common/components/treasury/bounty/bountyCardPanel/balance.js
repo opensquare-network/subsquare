@@ -14,24 +14,19 @@ function Balance({ address }) {
   if (isNil(balance)) return null;
 
   return (
-    <span className="flex-1">
-      <span className="flex flex-col">
-        <span className="text-textTertiary text12Medium">Balance</span>
-        <LoadableContent isLoading={isLoading}>
-          <span className="mt-1">
-            <ValueDisplay
-              className="text16Bold leading-5"
-              value={toPrecision(balance, decimals)}
-              symbol={symbol}
-            />
-          </span>
-
-          <span className="leading-4 text12Medium text-textTertiary">
-            <FiatPriceLabel free={balance} />
-          </span>
-        </LoadableContent>
+    <LoadableContent isLoading={isLoading}>
+      <span className="mt-1">
+        <ValueDisplay
+          className="text16Bold leading-5"
+          value={toPrecision(balance, decimals)}
+          symbol={symbol}
+        />
       </span>
-    </span>
+
+      <span className="leading-4 text12Medium text-textTertiary">
+        <FiatPriceLabel free={balance} />
+      </span>
+    </LoadableContent>
   );
 }
 

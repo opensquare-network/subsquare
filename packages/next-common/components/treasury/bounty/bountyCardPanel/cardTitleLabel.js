@@ -1,21 +1,24 @@
 import React from "react";
 import { cn } from "next-common/utils";
 import { isNil } from "lodash-es";
+import Tooltip from "next-common/components/tooltip";
 
 function CardTitleLabel({ bountyIndex, title, className = "" }) {
   if (isNil(bountyIndex) || isNil(title)) return null;
 
   return (
-    <span
-      className={cn(
-        "my-3 w-full  line-clamp-1 text16Medium text-textPrimary",
-        className,
-      )}
-    >
-      {`#${bountyIndex}`}
-      <span className="text-textTertiary">{" · "}</span>
-      {title}
-    </span>
+    <Tooltip content={title} className="my-3">
+      <span
+        className={cn(
+          "w-full line-clamp-1 text16Medium text-textPrimary",
+          className,
+        )}
+      >
+        {`#${bountyIndex}`}
+        <span className="text-textTertiary">{" · "}</span>
+        {title}
+      </span>
+    </Tooltip>
   );
 }
 

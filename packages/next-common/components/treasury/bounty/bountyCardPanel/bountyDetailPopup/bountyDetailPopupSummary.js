@@ -11,7 +11,7 @@ function BountyDetailPopupSummary({ item }) {
 
   return (
     <div>
-      <CardHeaderLabel className="p-0 m-0" />
+      <CardHeaderLabel data={item} className="p-0 m-0" />
       <CardTitleLabel bountyIndex={bountyIndex} title={title} />
       <Divider className="mt-4" />
       <CardBalanceAndCurator

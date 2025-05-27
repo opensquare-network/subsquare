@@ -4,6 +4,7 @@ import { SystemMenu } from "@osn/icons/subsquare";
 import BountyDetailPopup from "./bountyDetailPopup";
 import { isNil } from "lodash-es";
 import LoadableContent from "next-common/components/common/loadableContent";
+import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 
 function CardChildBounties({
   childBounties,
@@ -18,27 +19,21 @@ function CardChildBounties({
 
   return (
     <span className="mt-4 flex items-center">
-      <span className="flex-1 py-[6px] px-3 bg-neutral200 text-textTertiary text12Medium flex items-center">
-        <span>Child Bounties</span>&nbsp;
+      <GreyPanel className="flex-1 h-7 leading-7 px-3 text-textTertiary text12Medium flex items-center">
+        Child Bounties&nbsp;
         <LoadableContent isLoading={isChildBountiesLoading}>
           <span className="text12Medium text-textSecondary">{total}</span>
         </LoadableContent>
-      </span>
+      </GreyPanel>
       <SecondaryButton
         disabled={disabled}
         size="small"
-        className="ml-2 p-[6px] w-7"
+        className="ml-2 p-0 h-7 w-7"
         onClick={() => {
           setIsOpen(true);
         }}
       >
-        <SystemMenu
-          className={`w-4 h-4 ${
-            disabled
-              ? "[&_path]:fill-textTertiary"
-              : "[&_path]:fill-textPrimary"
-          } `}
-        />
+        <SystemMenu className={"w-4 h-4"} />
       </SecondaryButton>
       {isOpen && (
         <BountyDetailPopup

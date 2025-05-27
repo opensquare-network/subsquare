@@ -8,21 +8,14 @@ function Curator({ item, showBadge = true, curator }) {
   const { badge, signatories, loading } = useCuratorMultisigAddress(curator);
 
   return (
-    <span className="flex-1 items-center">
-      <span className="flex flex-col">
-        <span className="text-textTertiary text12Medium">Curator</span>
-        <span className="mt-1">
-          <LoadableContent isLoading={loading && isNil(badge)}>
-            <CuratorInfoItem
-              signatories={signatories}
-              data={item}
-              badge={badge}
-              showBadge={showBadge}
-            />
-          </LoadableContent>
-        </span>
-      </span>
-    </span>
+    <LoadableContent isLoading={loading && isNil(badge)}>
+      <CuratorInfoItem
+        signatories={signatories}
+        data={item}
+        badge={badge}
+        showBadge={showBadge}
+      />
+    </LoadableContent>
   );
 }
 

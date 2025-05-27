@@ -1,7 +1,6 @@
 import React from "react";
 import { cn } from "next-common/utils";
 import useBountyDetailsData from "./hooks/useBountyDetailsData";
-import Tooltip from "next-common/components/tooltip";
 import Divider from "next-common/components/styled/layout/divider";
 import CardBalanceAndCurator from "./cardBalanceAndCurator";
 import CardChildBounties from "./cardChildBounties";
@@ -25,10 +24,8 @@ function Card({ item, className = "" }) {
         className,
       )}
     >
-      <CardHeaderLabel />
-      <Tooltip content={item.title}>
-        <CardTitleLabel bountyIndex={item.bountyIndex} title={item.title} />
-      </Tooltip>
+      <CardHeaderLabel data={item} />
+      <CardTitleLabel bountyIndex={item.bountyIndex} title={item.title} />
       <Divider />
       <CardBalanceAndCurator item={item} />
       <Divider />
