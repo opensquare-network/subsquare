@@ -12,10 +12,10 @@ import useAddressComboField from "next-common/components/preImages/createPreimag
 import useAutoSelectTreasuryTrackField from "../common/useAutoSelectTreasuryTrackField";
 import useEnactmentBlocksField from "../common/useEnactmentBlocksField";
 import { useStepContainer } from "next-common/context/stepContainer";
+import Button from "next-common/lib/button";
 import CircleStepper from "next-common/components/step";
 import SigningTip from "../common/signingTip";
 import InsufficientBalanceTips from "../common/insufficientBalanceTips";
-import PreviousButton from "../../newProposalButton/previousButton";
 
 export function NewTreasuryReferendumInnerPopup() {
   const { onClose } = usePopupParams();
@@ -97,7 +97,17 @@ export function NewTreasuryReferendumInnerPopupContent() {
       <InsufficientBalanceTips byteLength={encodedLength} />
       <SigningTip />
       <div className="flex justify-between">
-        <PreviousButton isLoading={isLoading} onClick={goBack} />
+        <Button
+          className={`border-neutral400 hover:border-neutral500 ${
+            isLoading
+              ? " cursor-not-allowed text-textDisabled border-neutral300"
+              : ""
+          }`}
+          disabled={isLoading}
+          onClick={goBack}
+        >
+          Previous
+        </Button>
         {submitButton}
       </div>
     </>

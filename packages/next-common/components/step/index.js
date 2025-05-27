@@ -6,7 +6,7 @@ export default function CircleStepper({ steps, currentStep = 0, loading }) {
       {steps.map((item, index) => {
         return (
           <div key={item.id} className="flex-1">
-            <div className="flex items-center gap-1 py-3">
+            <div className="flex  items-center gap-1 py-3">
               <hr
                 className={`flex-1 border-[2px] ${
                   index === 0
@@ -39,9 +39,7 @@ export default function CircleStepper({ steps, currentStep = 0, loading }) {
                 }`}
               />
             </div>
-            <div className="px-4 text12Medium text-center text-textPrimary">
-              {item.label}
-            </div>
+            <div className="px-4 text12Medium text-center">{item.label}</div>
           </div>
         );
       })}
