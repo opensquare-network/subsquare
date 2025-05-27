@@ -9,7 +9,6 @@ import SupportBar from "../../../../gov2/sidebar/tally/supportBar";
 import { useApprovalThreshold } from "next-common/context/post/gov2/threshold";
 import VoteBar from "next-common/components/referenda/voteBar";
 import useFellowshipVotes from "next-common/utils/hooks/fellowship/useFellowshipVotes";
-import { useReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import { useOnchainData } from "next-common/context/post";
 import useFellowshipPerbill from "next-common/utils/hooks/fellowship/useFellowshipPerbill";
 import CurvePopupOpener from "next-common/components/gov2/referendum/curvePopup";
@@ -40,9 +39,8 @@ export default function FellowshipTally() {
   const approvalThreshold = useApprovalThreshold();
   const { useVoteCall } = useChainSettings();
 
-  const votingFinishIndexer = useReferendumVotingFinishIndexer();
   const { referendumIndex } = useOnchainData();
-  useFellowshipVotes(referendumIndex, votingFinishIndexer);
+  useFellowshipVotes(referendumIndex);
   const supportPerbill = useFellowshipPerbill();
 
   const approvalPercentage = useApprovalPercentage(tally);
