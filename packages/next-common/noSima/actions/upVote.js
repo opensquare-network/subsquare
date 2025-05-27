@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useDetailType } from "next-common/context/page";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
-import nextApi from "next-common/services/nextApi";
+import nextApi, { backendApi } from "next-common/services/nextApi";
 import { toApiType } from "next-common/utils/viewfuncs";
 
 export function useOffChainPostUpVote() {
@@ -14,7 +14,7 @@ export function useOffChainPostUpVote() {
         throw new Error("Cancelled");
       }
 
-      return await nextApi.put(
+      return await backendApi.put(
         `${toApiType(type)}/${post._id}/reaction`,
         { reaction: 1 },
         { credentials: "include" },
