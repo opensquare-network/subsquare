@@ -8,6 +8,7 @@ import useChainPreimageDepositSettings, {
   usePreimageDeposit,
 } from "next-common/hooks/useChainPreimageDeposit";
 import useAccountTransferrable from "next-common/hooks/useAccountTransferrable";
+import Divider from "next-common/components/styled/layout/divider";
 
 function YesOrNo({ yes = true }) {
   if (yes) {
@@ -29,6 +30,22 @@ function DepositItem({ text, deposit, yes }) {
         </span>
       </div>
       <YesOrNo yes={yes} />
+    </div>
+  );
+}
+
+function DepositCheckTip({ pass }) {
+  return (
+    <div className="flex items-center justify-between text12Medium">
+      {pass ? (
+        <span className="text-green500">
+          Your free balance is enough to pay deposits.
+        </span>
+      ) : (
+        <span className="text-orange500">
+          Your free balance is not enough to pay deposits.
+        </span>
+      )}
     </div>
   );
 }
@@ -59,16 +76,20 @@ export function InsufficientBalanceTipsInner({ byteLength }) {
 
   return (
     <div className="bg-neutral200 rounded-lg px-4 py-2.5 text14Medium text-textSecondary space-y-2">
-      <DepositItem
-        text="Preimage Deposit:"
-        deposit={preimageDeposit}
-        yes={isPreimageDepositSufficient}
-      />
-      <DepositItem
-        text="Submission Deposit:"
-        deposit={submissionDeposit}
-        yes={isSubmissionDepositSufficient}
-      />
+      <div className="space-y-1">
+        <DepositItem
+          text="Preimage Deposit:"
+          deposit={preimageDeposit}
+          yes={isPreimageDepositSufficient}
+        />
+        <DepositItem
+          text="Submission Deposit:"
+          deposit={submissionDeposit}
+          yes={isSubmissionDepositSufficient}
+        />
+      </div>
+      <Divider />
+      <DepositCheckTip pass={isSubmissionDepositSufficient} />
     </div>
   );
 }
