@@ -11,6 +11,7 @@ import {
 } from "next-common/utils/postBaseUrl";
 import { getPostLastActivityAt } from "next-common/utils/viewfuncs/postUpdatedTime";
 import { isAddress } from "@polkadot/util-crypto";
+import { isNil } from "lodash-es";
 
 export function toApiType(type) {
   // Open Gov
@@ -187,9 +188,9 @@ export const toCommunityMotionsListItem = (item) => ({
 
 export const toTreasuryChildBountyListItem = (item) => ({
   ...item,
-  index: item?.parentBountyId
-    ? `${item.parentBountyId}-${item?.index}`
-    : `${item?.index}`,
+  index: isNil(item?.parentBountyId)
+    ? item?.index
+    : `${item.parentBountyId}-${item?.index}`,
   title: getTitle(item),
   author: item.author,
   address: item.proposer,
