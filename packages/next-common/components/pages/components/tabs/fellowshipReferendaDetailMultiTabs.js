@@ -79,8 +79,6 @@ export default function FellowshipReferendaDetailMultiTabs() {
     timelineData,
   ]);
 
-  // console.log(tabs);
-
   function handleTabClick(tab) {
     router.replace(
       {

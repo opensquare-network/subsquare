@@ -6,6 +6,9 @@ const disabledApiRoutes = [
   /^\/api\/ambassador/, // Ambassador
   /^\/api\/tech-comm/, // Technical Committee
   /^\/api\/alliance/, // Alliance
+  /^\/api\/inancial-motions/,
+  /^\/api\/advisory-motions/,
+  /^\/api\/polkassembly-discussions/,
 ];
 
 function trimEndSlash(url) {
