@@ -36,11 +36,11 @@ export default function DemocracyReferendaDetailMultiTabs() {
 
   const onchainData = post?.onchainData;
 
-  const { timeline = [], preImage } = onchainData;
+  const { preImage } = onchainData;
   const referendumStatus = useSelector(referendumStatusSelector);
   const proposal = referendumStatus?.proposal;
 
-  const { call: inlineCall } = useInlineCall(timeline, proposal);
+  const { call: inlineCall } = useInlineCall(proposal);
   const call = preImage?.call || inlineCall;
   const { component: timeLineTabSwitch, isCompact } = useTimelineTabSwitch();
 
