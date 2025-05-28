@@ -1,12 +1,7 @@
-import { isSupportedCallVersion } from "./relayToParachainCall";
-
 export function isXcmCall(call) {
   return call?.section === "polkadotXcm" && call?.method === "send";
 }
 export function isFromParaToRelayChain(xcmLocation) {
-  if (!isSupportedCallVersion(xcmLocation)) {
-    return false;
-  }
   if (xcmLocation.isV4) {
     const V4Location = xcmLocation.asV4;
     return V4Location?.parents.toNumber() === 1 && V4Location?.interior.isHere;
