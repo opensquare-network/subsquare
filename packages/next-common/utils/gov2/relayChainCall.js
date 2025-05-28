@@ -8,16 +8,11 @@ export function isFromParaToRelayChain(xcmLocation) {
     return null;
   }
   if (xcmLocation.isV4) {
-    return (
-      xcmLocation.asV4.parents.toNumber() === 1 &&
-      xcmLocation.asV4.interior.isHere
-    );
-  }
-  if (xcmLocation.isV3) {
-    return (
-      xcmLocation.asV3.parents.toNumber() === 1 &&
-      xcmLocation.asV3.interior.isHere
-    );
+    const V4Location = xcmLocation.asV4;
+    return V4Location?.parents.toNumber() === 1 && V4Location?.interior.isHere;
+  } else if (xcmLocation.isV3) {
+    const V3Location = xcmLocation.asV3;
+    return V3Location?.parents.toNumber() === 1 && V3Location?.interior.isHere;
   }
   return null;
 }
@@ -28,9 +23,7 @@ export function extractTransactCallBytesArr(messageArg) {
 
   if (messageArg?.isV3) {
     instructions = messageArg?.asV3;
-  }
-
-  if (messageArg?.isV4) {
+  } else if (messageArg?.isV4) {
     instructions = messageArg?.asV4;
   }
 

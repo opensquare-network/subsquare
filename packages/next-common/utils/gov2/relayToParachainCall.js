@@ -58,8 +58,7 @@ export function isSupportedCallVersion(xcmLocation) {
 function getLocation(xcmLocation) {
   if (xcmLocation?.isV4) {
     return xcmLocation.asV4;
-  }
-  if (xcmLocation?.isV3) {
+  } else if (xcmLocation?.isV3) {
     return xcmLocation.asV3;
   }
   return null;
@@ -75,8 +74,7 @@ export function parseParachain(xcmLocation) {
   }
   if (xcmLocation.isV4) {
     return location.interior.asX1.find((item) => item.isParachain);
-  }
-  if (xcmLocation.isV3) {
+  } else if (xcmLocation.isV3) {
     return location.interior.asX1.asParachain;
   }
   return null;
