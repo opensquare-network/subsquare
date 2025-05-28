@@ -6,7 +6,7 @@ import { useSubBalanceInfo } from "next-common/hooks/balance/useSubBalanceInfo";
 export default function SignerWithBalance({
   title,
   noSwitchSigner,
-  showTransferableBalance = false,
+  showTransferable = false,
 }) {
   const signerAccount = useSignerAccount();
 
@@ -16,7 +16,7 @@ export default function SignerWithBalance({
 
   const { balance, transferrable } = value || {};
 
-  const displayBalance = showTransferableBalance ? transferrable : balance;
+  const displayBalance = showTransferable ? transferrable : balance;
 
   return (
     <Signer
@@ -24,7 +24,7 @@ export default function SignerWithBalance({
       balance={displayBalance}
       isBalanceLoading={loadingBalance}
       noSwitchSigner={noSwitchSigner}
-      showTransferableBalance={showTransferableBalance}
+      showTransferable={showTransferable}
     />
   );
 }

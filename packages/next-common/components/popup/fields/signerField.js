@@ -14,7 +14,7 @@ export default function Signer({
   balance,
   isBalanceLoading,
   noSwitchSigner = false,
-  showTransferableBalance = false,
+  showTransferable = false,
 }) {
   const node = useChainSettings();
   const noBalance = isNil(balance) && isNil(isBalanceLoading);
@@ -32,7 +32,7 @@ export default function Signer({
           balanceName={balanceName}
           balance={toPrecision(balance ?? 0, node.decimals)}
           symbol={symbol || node.symbol}
-          showTransferableBalance={showTransferableBalance}
+          showTransferable={showTransferable}
         />
       )}
       <MaybeProxySigner noSwitch={noSwitchSigner} />

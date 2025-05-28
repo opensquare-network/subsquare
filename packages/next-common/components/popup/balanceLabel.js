@@ -11,12 +11,12 @@ export default function PopupLabelWithBalance({
   isLoading,
   balance,
   symbol,
-  showTransferableBalance = false,
+  showTransferable = false,
 }) {
   let content = (
     <NumberWithComma value={formatBalance(balance, symbol)} symbol={symbol} />
   );
-  if (showTransferableBalance) {
+  if (showTransferable) {
     content = <Tooltip content="Transferable balance">{content}</Tooltip>;
   }
 

@@ -145,7 +145,7 @@ export function CancelReferendumInnerPopupContent() {
         currentStep={1}
         loading={isLoading}
       />
-      <SignerWithBalance showTransferableBalance />
+      <SignerWithBalance showTransferable />
       {referendumIndexField}
       {trackField}
       <AdvanceSettings>
