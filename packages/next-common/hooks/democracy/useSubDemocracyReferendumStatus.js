@@ -11,7 +11,7 @@ import {
 import getChainSettings from "next-common/utils/consts/settings";
 import { defaultBlockTime } from "next-common/utils/constants";
 import { sleep } from "next-common/utils";
-import { useContextApi } from "next-common/context/api";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
 async function fetchDemocracyVotes10Times(api, dispatch, referendumIndex) {
   const blockTime =
@@ -28,7 +28,7 @@ async function fetchDemocracyVotes10Times(api, dispatch, referendumIndex) {
 export default function useSubDemocracyReferendumStatus(referendumIndex) {
   const isVoteFinished = useIsDemocracyVoteFinished();
   const isMounted = useMountedState();
-  const api = useContextApi();
+  const api = useConditionalContextApi();
   const dispatch = useDispatch();
 
   useEffect(() => {

@@ -30,6 +30,18 @@ import { useDemocracyReferendumVotingFinishIndexer } from "next-common/context/p
 
 function ReferendumContent() {
   const post = usePost();
+  const indexer = useDemocracyReferendumVotingFinishIndexer(
+    post?.onchainData?.timeline,
+  );
+
+  return (
+    <MigrationConditionalApiProvider indexer={indexer}>
+      <ReferendumContentContentInContext post={post} />
+    </MigrationConditionalApiProvider>
+  );
+}
+
+function ReferendumContentContentInContext({ post }) {
   const api = useContextApi();
   const dispatch = useDispatch();
 
@@ -40,9 +52,6 @@ function ReferendumContent() {
   useMaybeFetchElectorate(post?.onchainData, api);
   useDemocracyVotesFromServer(post.referendumIndex);
   useFetchVotes(post?.onchainData);
-  const indexer = useDemocracyReferendumVotingFinishIndexer(
-    post?.onchainData?.timeline,
-  );
 
   useEffect(() => {
     return () => {
@@ -51,15 +60,13 @@ function ReferendumContent() {
   }, [dispatch]);
 
   return (
-    <MigrationConditionalApiProvider indexer={indexer}>
-      <MaybeSimaContent>
-        <ContentWithComment>
-          <DemocracyReferendaDetail />
-          <Vote referendumIndex={post?.referendumIndex} />
-          <DemocracyReferendaDetailMultiTabs />
-        </ContentWithComment>
-      </MaybeSimaContent>
-    </MigrationConditionalApiProvider>
+    <MaybeSimaContent>
+      <ContentWithComment>
+        <DemocracyReferendaDetail />
+        <Vote referendumIndex={post?.referendumIndex} />
+        <DemocracyReferendaDetailMultiTabs />
+      </ContentWithComment>
+    </MaybeSimaContent>
   );
 }
 
