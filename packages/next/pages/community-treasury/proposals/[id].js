@@ -16,9 +16,6 @@ import { usePageProps } from "next-common/context/page";
 import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
 import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 
-import { useChainSettings } from "next-common/context/chain";
-import { SimaProposalCommentActionsProvider } from "next-common/sima/components/common/context/commentActionsProvider";
-import { SimaProposalArticleActionsProvider } from "next-common/sima/components/common/context/articleActionsProvider";
 import { TreasuryProvider } from "next-common/context/treasury";
 import CommunityTreasuryProposalsDetailMultiTabs from "next-common/components/pages/components/tabs/communityTreasuryProposalsDetailMultiTabs";
 
@@ -45,30 +42,15 @@ function NonSimaTreasuryProposalContent() {
   );
 }
 
-function SimaTreasuryProposalContent() {
-  return (
-    <SimaProposalArticleActionsProvider>
-      <SimaProposalCommentActionsProvider>
-        <TreasuryProposalContent />
-      </SimaProposalCommentActionsProvider>
-    </SimaProposalArticleActionsProvider>
-  );
-}
-
 function ProposalContentWithNullGuard() {
   const { id } = usePageProps();
   const detail = usePost();
-  const { sima } = useChainSettings();
 
   if (!detail) {
     return <CheckUnFinalized id={id} />;
   }
 
-  return sima ? (
-    <SimaTreasuryProposalContent />
-  ) : (
-    <NonSimaTreasuryProposalContent />
-  );
+  return <NonSimaTreasuryProposalContent />;
 }
 
 function ProposalPageImpl() {
