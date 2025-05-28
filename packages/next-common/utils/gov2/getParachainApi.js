@@ -1,5 +1,5 @@
+import { getChainSettingsPolyfill } from "../consts/settingsPolyfill";
 import { getChainApi, getChainApiAt } from "../getChainApi";
-import getChainSettings from "../consts/settings";
 import { getParachain } from "./relayToParachainDecodeSupport";
 
 export async function getParachainApi(parachainIdNumber, blockHeightOrHash) {
@@ -12,7 +12,7 @@ export async function getParachainApi(parachainIdNumber, blockHeightOrHash) {
     return null;
   }
 
-  const endpointsUrls = getChainSettings(parachain)
+  const endpointsUrls = getChainSettingsPolyfill(parachain)
     ?.endpoints?.map((item) => item.url)
     .filter(Boolean);
 
