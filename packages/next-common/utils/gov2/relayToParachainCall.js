@@ -50,7 +50,8 @@ export function isSupportedParachainCall(xcmLocation) {
   );
 }
 
-function isSupportedCallVersion(xcmLocation) {
+export function isSupportedCallVersion(xcmLocation) {
+  // todo: currently we only support xcm v4 and v3, but we need to support more versions
   return xcmLocation?.isV4 || xcmLocation?.isV3;
 }
 

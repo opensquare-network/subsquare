@@ -1,15 +1,25 @@
+import { isSupportedCallVersion } from "./relayToParachainCall";
+
 export function isXcmCall(call) {
   return call?.section === "polkadotXcm" && call?.method === "send";
 }
-
 export function isFromParaToRelayChain(xcmLocation) {
-  if (!xcmLocation?.isV4) {
-    // todo: currently we only support xcm v4, but we need to support more versions
-    return false;
+  if (!isSupportedCallVersion(xcmLocation)) {
+    return null;
   }
-
-  const v4Location = xcmLocation.asV4;
-  return v4Location.parents.toNumber() === 1 && v4Location.interior.isHere;
+  if (xcmLocation.isV4) {
+    return (
+      xcmLocation.asV4.parents.toNumber() === 1 &&
+      xcmLocation.asV4.interior.isHere
+    );
+  }
+  if (xcmLocation.isV3) {
+    return (
+      xcmLocation.asV3.parents.toNumber() === 1 &&
+      xcmLocation.asV3.interior.isHere
+    );
+  }
+  return null;
 }
 
 // `messageArg` are a group of XCM instructions in v3 and v4
