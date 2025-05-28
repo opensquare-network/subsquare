@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useDetailType } from "next-common/context/page";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
-import { backendApi } from "next-common/services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import { toApiType } from "next-common/utils/viewfuncs";
 
 export function useOffChainPostCancelUpVote() {
@@ -14,7 +14,7 @@ export function useOffChainPostCancelUpVote() {
         throw new Error("Cancelled");
       }
 
-      return await backendApi.delete(`${toApiType(type)}/${post._id}/reaction`);
+      return await nextApi.delete(`${toApiType(type)}/${post._id}/reaction`);
     },
     [type, ensureLogin],
   );
@@ -30,7 +30,7 @@ export function useOffChainCommentCancelUpVote() {
         throw new Error("Cancelled");
       }
 
-      return await await backendApi.delete(`comments/${comment._id}/reaction`);
+      return await await nextApi.delete(`comments/${comment._id}/reaction`);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [type, ensureLogin],

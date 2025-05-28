@@ -38,7 +38,7 @@ export function useCreateOffChainComment() {
         throw new Error("Cancelled");
       }
 
-      return await backendApi.post(
+      return await nextApi.post(
         `${toApiType(type)}/${post._id}/comments`,
         {
           content: contentType === "html" ? prettyHTML(content) : content,
@@ -61,7 +61,7 @@ export function useCreateOffChainCommentReply() {
         throw new Error("Cancelled");
       }
 
-      return await backendApi.post(
+      return await nextApi.post(
         `${toApiType(type)}/${post._id}/comments/${comment._id}/replies`,
         {
           content: contentType === "html" ? prettyHTML(content) : content,
