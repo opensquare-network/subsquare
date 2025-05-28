@@ -25,28 +25,28 @@ export function isCall(call) {
   return call.call && call.Type?.call === "call";
 }
 
-export function isCollectivesCall(xcmLocation) {
-  return xcmLocation?.toNumber() === CollectivesParaId;
+export function isCollectivesCall(parachainId) {
+  return parachainId?.toNumber() === CollectivesParaId;
 }
 
-export function isPolkadotAssetHubCall(xcmLocation) {
-  return xcmLocation?.toNumber() === AssetHubParaId;
+export function isPolkadotAssetHubCall(parachainId) {
+  return parachainId?.toNumber() === AssetHubParaId;
 }
 
-export function isPeopleCall(xcmLocation) {
-  return xcmLocation?.toNumber() === PeopleParaId;
+export function isPeopleCall(parachainId) {
+  return parachainId?.toNumber() === PeopleParaId;
 }
 
-export function isCoretimeCall(xcmLocation) {
-  return xcmLocation?.toNumber() === CoretimeParaId;
+export function isCoretimeCall(parachainId) {
+  return parachainId?.toNumber() === CoretimeParaId;
 }
 
-export function isSupportedParachainCall(xcmLocation) {
+export function isSupportedParachainCall(parachainId) {
   return (
-    isCollectivesCall(xcmLocation) ||
-    isPolkadotAssetHubCall(xcmLocation) ||
-    isPeopleCall(xcmLocation) ||
-    isCoretimeCall(xcmLocation)
+    isCollectivesCall(parachainId) ||
+    isPolkadotAssetHubCall(parachainId) ||
+    isPeopleCall(parachainId) ||
+    isCoretimeCall(parachainId)
   );
 }
 
@@ -73,7 +73,7 @@ export function parseParachain(xcmLocation) {
     return null;
   }
   if (xcmLocation.isV4) {
-    return location.interior.asX1.find((item) => item.isParachain);
+    return location.interior.asX1.find((item) => item.isParachain)?.asParachain;
   } else if (xcmLocation.isV3) {
     return location.interior.asX1.asParachain;
   }
