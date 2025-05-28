@@ -14,6 +14,7 @@ import getChainSettings from "next-common/utils/consts/settings";
 import useExistentialDeposit from "next-common/utils/hooks/chain/useExistentialDeposit";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { Provider } from "react-redux";
+import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated";
 
 const isAssetHubSupported = !!getChainSettings(CHAIN).modules?.assethub;
 
@@ -32,9 +33,7 @@ if (isAssetHubSupported) {
 }
 
 export function ConditionRelayInfoProvider({ children }) {
-  const isAssetHubMigrated = getChainSettings(CHAIN)?.assetHubMigrated;
-
-  if (isAssetHubMigrated) {
+  if (isAssetHubMigrated()) {
     return children;
   }
 
