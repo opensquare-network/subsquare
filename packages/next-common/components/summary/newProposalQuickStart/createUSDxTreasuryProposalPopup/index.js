@@ -66,7 +66,7 @@ export function NewUSDxTreasuryReferendumInnerPopupContent() {
         currentStep={1}
         loading={isLoading}
       />
-      <SignerWithBalance />
+      <SignerWithBalance showTransferable />
       {usdxBalanceField}
       <div className="flex flex-col gap-[8px]">
         {beneficiaryField}

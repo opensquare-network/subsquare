@@ -86,7 +86,7 @@ export function NewRemarkReferendumInnerPopupContent() {
         currentStep={1}
         loading={isLoading}
       />
-      <SignerWithBalance />
+      <SignerWithBalance showTransferable />
       {remarkField}
       {trackField}
       <AdvanceSettings>

@@ -86,7 +86,7 @@ export function NewTreasuryReferendumInnerPopupContent() {
         currentStep={1}
         loading={isLoading}
       />
-      <SignerWithBalance />
+      <SignerWithBalance showTransferable />
       {balanceField}
       {beneficiaryField}
       {trackField}

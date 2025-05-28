@@ -55,7 +55,7 @@ export function SpendDotOnAssetHubReferendumInnerPopupContent() {
         currentStep={1}
         loading={isLoading}
       />
-      <SignerWithBalance />
+      <SignerWithBalance showTransferable />
       {balanceField}
       <div className="flex flex-col gap-[8px]">
         {beneficiaryField}

@@ -1,24 +1,30 @@
 import React from "react";
 import Signer from "next-common/components/popup/fields/signerField";
-import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
 import { useSignerAccount } from "../popupWithSigner/context";
-import { useContextApi } from "next-common/context/api";
+import { useSubBalanceInfo } from "next-common/hooks/balance/useSubBalanceInfo";
 
-export default function SignerWithBalance({ title, noSwitchSigner }) {
-  const api = useContextApi();
+export default function SignerWithBalance({
+  title,
+  noSwitchSigner,
+  showTransferable = false,
+}) {
   const signerAccount = useSignerAccount();
 
-  const [balance, loadingBalance] = useAddressBalance(
-    api,
+  const { value, loading: loadingBalance } = useSubBalanceInfo(
     signerAccount?.realAddress,
   );
+
+  const { balance, transferrable } = value || {};
+
+  const displayBalance = showTransferable ? transferrable : balance;
 
   return (
     <Signer
       title={title}
-      balance={balance}
+      balance={displayBalance}
       isBalanceLoading={loadingBalance}
       noSwitchSigner={noSwitchSigner}
+      showTransferable={showTransferable}
     />
   );
 }
