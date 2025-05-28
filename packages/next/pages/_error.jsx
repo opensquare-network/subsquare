@@ -24,7 +24,6 @@ function getErrorReason(statusCode) {
 }
 
 function ErrorPage({ statusCode, err, isServerError, reqUrl, user }) {
-  console.log("ErrorPage", err.message);
   useEffect(() => {
     if (err) {
       const errorData = {
@@ -58,8 +57,23 @@ function ErrorPage({ statusCode, err, isServerError, reqUrl, user }) {
 }
 
 ErrorPage.getInitialProps = async ({ req, res, err }) => {
-  const { result: user } = await fetchProfile(req);
+  const { result: user } = req ? await fetchProfile(req) : {};
   const statusCode = res?.statusCode || err?.statusCode;
+
+  if (res) {
+    // server report
+    const errorData = {
+      chain: CHAIN,
+      url: req?.url,
+      address: user?.address,
+      code: statusCode,
+      error: err.message,
+      source: "server",
+      stack: err.stack,
+    };
+
+    reportClientError(errorData);
+  }
 
   return {
     statusCode,
