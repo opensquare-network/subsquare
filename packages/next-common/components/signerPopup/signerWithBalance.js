@@ -16,14 +16,15 @@ export default function SignerWithBalance({
 
   const { balance, transferrable } = value || {};
 
+  const displayBalance = showTransferableBalance ? transferrable : balance;
+
   return (
     <Signer
       title={title}
-      balance={balance}
+      balance={displayBalance}
       isBalanceLoading={loadingBalance}
       noSwitchSigner={noSwitchSigner}
       showTransferableBalance={showTransferableBalance}
-      transferrable={transferrable}
     />
   );
 }
