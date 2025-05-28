@@ -5,16 +5,19 @@ import Pagination from "next-common/components/pagination";
 import { isNil } from "lodash-es";
 import { cn } from "next-common/utils";
 import { useAsync } from "react-use";
-import RowTitle from "./rowTitle";
-import RowValue from "./rowValue";
-import RowStatus from "./rowStatus";
+import ListPostTitle from "next-common/components/postList/postTitle";
+import { toTreasuryChildBountyListItem } from "next-common/utils/viewfuncs";
+import Tag from "next-common/components/tags/state/tag";
+import businessCategory from "next-common/utils/consts/business/category";
+import { PostValueTitle } from "next-common/components/postList/post";
+
+let pageSize = 25;
 
 function ChildBountyList({ childBounties, bountyIndex, className = "" }) {
   const [data, setData] = useState(childBounties);
   const { isLoading, childBountiesPageData, fetchChildBountiesWithPage } =
     useChildBountiesWithPage(bountyIndex);
   const [page, setPage] = useState(1);
-  let pageSize = 5;
   const total = childBounties.total;
 
   useEffect(() => {
@@ -23,11 +26,7 @@ function ChildBountyList({ childBounties, bountyIndex, className = "" }) {
   }, [childBountiesPageData]);
 
   useAsync(async () => {
-    if (page === 1) {
-      setData(childBounties);
-    } else {
-      fetchChildBountiesWithPage(page);
-    }
+    fetchChildBountiesWithPage(page, pageSize);
   }, [page]);
 
   const pagination = useMemo(
@@ -37,7 +36,7 @@ function ChildBountyList({ childBounties, bountyIndex, className = "" }) {
       total: total ?? 0,
       onPageChange,
     }),
-    [page, pageSize, total],
+    [page, total],
   );
 
   function onPageChange(e, target) {
@@ -47,7 +46,7 @@ function ChildBountyList({ childBounties, bountyIndex, className = "" }) {
 
   const columns = [
     {
-      name: "Referendum",
+      name: "Title",
       style: { minWidth: "50%", textAlign: "left" },
     },
     {
@@ -61,16 +60,23 @@ function ChildBountyList({ childBounties, bountyIndex, className = "" }) {
   ];
 
   const rows = data?.items?.map((item, index) => {
+    const formatItem = toTreasuryChildBountyListItem(item);
     return [
-      <RowTitle
-        key={index + "referenda"}
-        index={item.index}
-        title={item.title}
+      <ListPostTitle
+        className="text14Medium"
+        key={index + "title"}
+        data={formatItem}
+        href={formatItem.detailLink}
       />,
-      <RowValue key={index + "value"} value={item?.onchainData?.value} />,
-      <RowStatus
+      <PostValueTitle
+        key={index + "value"}
+        data={formatItem}
+        type={businessCategory.treasuryChildBounties}
+      />,
+      <Tag
         key={index + "status"}
-        state={item.onchainData?.state?.state}
+        state={formatItem.state}
+        category={businessCategory.treasuryChildBounties}
       />,
     ];
   });

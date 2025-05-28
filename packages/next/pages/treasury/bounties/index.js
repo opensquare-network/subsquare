@@ -56,7 +56,9 @@ export default function BountiesPage({
         {activeBounties && activeBounties.length > 0 && (
           <BountyCardPanel
             category={category}
-            activeBounties={activeBounties}
+            activeBounties={activeBounties?.map((item) =>
+              normalizeBountyListItem(chain, item),
+            )}
           />
         )}
         <PostList

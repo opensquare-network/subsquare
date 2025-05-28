@@ -1,18 +1,19 @@
 import React from "react";
 import CardHeaderLabel from "../cardHeaderLabel";
-import CardTitleLabel from "../cardTitleLabel";
 import Divider from "next-common/components/styled/layout/divider";
 import CardBalanceAndCurator from "../cardBalanceAndCurator";
 import { isNil } from "lodash-es";
+import ListPostTitle from "next-common/components/postList/postTitle";
+import Tooltip from "next-common/components/tooltip";
 
 function BountyDetailPopupSummary({ item }) {
   if (isNil(item)) return null;
-  const { bountyIndex, title } = item;
-
   return (
     <div>
       <CardHeaderLabel data={item} className="p-0 m-0" />
-      <CardTitleLabel bountyIndex={bountyIndex} title={title} />
+      <Tooltip content={item.title} className="my-3">
+        <ListPostTitle data={item} href={item.detailLink} ellipsis />
+      </Tooltip>
       <Divider className="mt-4" />
       <CardBalanceAndCurator
         item={item}
