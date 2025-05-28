@@ -11,14 +11,8 @@ const statescanDomainMap = {
 
 export default function StatescanLink({ indexer, children }) {
   const chain = useChain();
-  const {
-    integrations,
-    assethubMigration: {
-      migrated,
-      timestamp: migrationTimestamp,
-      statescanAssethubDomain,
-    },
-  } = useChainSettings();
+  const { integrations, assethubMigration = {} } = useChainSettings();
+
   const { blockHeight, extrinsicIndex, index, eventIndex } = indexer;
   if (
     isNil(extrinsicIndex) &&
@@ -29,8 +23,11 @@ export default function StatescanLink({ indexer, children }) {
     return null;
   }
   let domain = null;
-  if (migrated && indexer.blockTime >= migrationTimestamp) {
-    domain = statescanAssethubDomain || null;
+  if (
+    assethubMigration?.migrated &&
+    BigInt(indexer.blockTime) >= BigInt(assethubMigration?.timestamp || 0)
+  ) {
+    domain = assethubMigration?.statescanAssethubDomain || null;
   } else if (integrations?.statescan) {
     domain = statescanDomainMap[chain] || chain;
   }
