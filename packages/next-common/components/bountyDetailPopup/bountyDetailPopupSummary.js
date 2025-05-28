@@ -1,7 +1,7 @@
 import React from "react";
 import CardHeaderLabel from "../treasury/bounty/bountyCardSection/cardHeaderLabel";
 import Divider from "next-common/components/styled/layout/divider";
-import CardBalanceAndCurator from "../cardBalanceAndCurator";
+import CardBalanceAndCurator from "../treasury/bounty/bountyCardSection/cardBalanceAndCurator";
 import { isNil } from "lodash-es";
 import ListPostTitle from "next-common/components/postList/postTitle";
 import Tooltip from "next-common/components/tooltip";
