@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect } from "react";
-import useChildBountiesWithPage from "next-common/components/treasury/bounty/bountyCardPanel/hooks/useChildBountiesWithPage";
+import useChildBountiesWithPage from "next-common/hooks/useChildBountiesWithPage";
 import DataList from "next-common/components/dataList";
 import Pagination from "next-common/components/pagination";
 import { isNil } from "lodash-es";

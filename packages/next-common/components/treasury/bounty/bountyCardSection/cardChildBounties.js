@@ -5,11 +5,14 @@ import { isNil } from "lodash-es";
 import LoadableContent from "next-common/components/common/loadableContent";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import useChildBountiesWithPage from "./hooks/useChildBountiesWithPage";
+import useChildBountiesWithPage from "next-common/hooks/useChildBountiesWithPage";
 
-const BountyDetailPopup = dynamicPopup(() => import("./bountyDetailPopup"), {
-  ssr: false,
-});
+const BountyDetailPopup = dynamicPopup(
+  () => import("next-common/components/bountyDetailPopup"),
+  {
+    ssr: false,
+  },
+);
 
 function CardChildBounties({ bountyIndex, item }) {
   const {

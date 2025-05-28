@@ -4,7 +4,7 @@ import Card from "./card";
 import { isNil } from "lodash-es";
 import ListTitleBar from "next-common/components/listTitleBar";
 
-function BountyCardPanel({ activeBounties }) {
+function BountyCardSection({ activeBounties }) {
   if (isNil(activeBounties)) return null;
 
   return (
@@ -22,4 +22,4 @@ function BountyCardPanel({ activeBounties }) {
     </div>
   );
 }
-export default BountyCardPanel;
+export default BountyCardSection;

@@ -1,5 +1,5 @@
 import React from "react";
-import CardHeaderLabel from "../cardHeaderLabel";
+import CardHeaderLabel from "../treasury/bounty/bountyCardSection/cardHeaderLabel";
 import Divider from "next-common/components/styled/layout/divider";
 import CardBalanceAndCurator from "../cardBalanceAndCurator";
 import { isNil } from "lodash-es";
