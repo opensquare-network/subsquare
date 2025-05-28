@@ -3,7 +3,11 @@ import {
   AssetHubParaId,
 } from "next-common/components/assets/paraChainTeleportPopup/teleportFromRelayChainToParaChain";
 import { extractTransactCallBytesArr } from "./relayChainCall";
-import { CoretimeParaId, PeopleParaId } from "./relayToParachainDecodeSupport";
+import {
+  BridgeParaId,
+  CoretimeParaId,
+  PeopleParaId,
+} from "./relayToParachainDecodeSupport";
 
 export function isXcmPallet(call) {
   return call.section === "xcmPallet" && call.method === "send";
@@ -25,56 +29,64 @@ export function isCall(call) {
   return call.call && call.Type?.call === "call";
 }
 
-export function isCollectivesCall(xcmLocation) {
-  return xcmLocation?.toNumber() === CollectivesParaId;
+export function isCollectivesCall(parachainId) {
+  return parachainId?.toNumber() === CollectivesParaId;
 }
 
-export function isPolkadotAssetHubCall(xcmLocation) {
-  return xcmLocation?.toNumber() === AssetHubParaId;
+export function isPolkadotAssetHubCall(parachainId) {
+  return parachainId?.toNumber() === AssetHubParaId;
 }
 
-export function isPeopleCall(xcmLocation) {
-  return xcmLocation?.toNumber() === PeopleParaId;
+export function isPeopleCall(parachainId) {
+  return parachainId?.toNumber() === PeopleParaId;
 }
 
-export function isCoretimeCall(xcmLocation) {
-  return xcmLocation?.toNumber() === CoretimeParaId;
+export function isCoretimeCall(parachainId) {
+  return parachainId?.toNumber() === CoretimeParaId;
 }
 
-export function isSupportedParachainCall(xcmLocation) {
+export function isBridgeCall(parachainId) {
+  return parachainId?.toNumber() === BridgeParaId;
+}
+
+export function isSupportedParachainCall(parachainId) {
   return (
-    isCollectivesCall(xcmLocation) ||
-    isPolkadotAssetHubCall(xcmLocation) ||
-    isPeopleCall(xcmLocation) ||
-    isCoretimeCall(xcmLocation)
+    isCollectivesCall(parachainId) ||
+    isPolkadotAssetHubCall(parachainId) ||
+    isPeopleCall(parachainId) ||
+    isCoretimeCall(parachainId) ||
+    isBridgeCall(parachainId)
   );
 }
 
-export function isParachainCall(xcmLocation) {
-  if (!xcmLocation?.isV4) {
-    // todo: currently we only support xcm v4, but we need to support more versions
-    return false;
-  }
+export function isSupportedCallVersion(xcmLocation) {
+  // todo: currently we only support xcm v4 and v3, but we need to support more versions
+  return xcmLocation?.isV4 || xcmLocation?.isV3;
+}
 
-  const v4Location = xcmLocation.asV4;
-  const isX1 = v4Location.parents.toNumber() === 0 && v4Location.interior.isX1;
-  if (!isX1) {
-    // todo: currently we only support x1
-    return false;
+function getLocation(xcmLocation) {
+  if (xcmLocation?.isV4) {
+    return xcmLocation.asV4;
+  } else if (xcmLocation?.isV3) {
+    return xcmLocation.asV3;
   }
-  return !!v4Location.interior.asX1.find((item) => item.isParachain);
+  return null;
 }
 
 export function parseParachain(xcmLocation) {
-  if (!xcmLocation?.isV4) {
+  if (!isSupportedCallVersion(xcmLocation)) {
     return null;
   }
-  const v4Location = xcmLocation.asV4;
-  if (!v4Location.interior.isX1) {
+  const location = getLocation(xcmLocation);
+  if (!location?.interior?.isX1) {
     return null;
   }
-  const parachain = v4Location.interior.asX1.find((item) => item.isParachain);
-  return parachain?.asParachain;
+  if (xcmLocation.isV4) {
+    return location.interior.asX1.find((item) => item.isParachain)?.asParachain;
+  } else if (xcmLocation.isV3) {
+    return location.interior.asX1.asParachain;
+  }
+  return null;
 }
 
 export function convertParachainCalls(xcmPallet) {
