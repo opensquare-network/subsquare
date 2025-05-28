@@ -10,16 +10,16 @@ export default {
   darkAvatar: ProjectIconPolkadotBridge,
   endpoints: [
     {
+      name: "Parity",
+      url: "wss://polkadot-bridge-hub-rpc.polkadot.io/",
+    },
+    {
       name: "IBP1",
       url: "wss://sys.ibp.network/bridgehub-polkadot",
     },
     {
       name: "IBP2",
       url: "wss://bridge-hub-polkadot.dotters.network/",
-    },
-    {
-      name: "Parity",
-      url: "wss://polkadot-bridge-hub-rpc.polkadot.io/",
     },
   ],
 };
