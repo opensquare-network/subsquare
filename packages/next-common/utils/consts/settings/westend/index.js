@@ -24,7 +24,6 @@ const westend = {
   name: capitalize(name),
   ...westendCommonCfg,
   blockTime: 6000,
-  assetHubMigrated: true,
   assethubMigration: westendAssethubMigration,
   endpoints: westendAssetHubNodes,
   relayChainEndpoints: westendRelayChainNodes,
