@@ -1,22 +1,21 @@
 import { isNil } from "lodash-es";
 import { createContext, useContext, useMemo, useEffect, useState } from "react";
 import { getChainApi, getChainApiAt } from "next-common/utils/getChainApi";
-import { useChain, useChainSettings } from "next-common/context/chain";
+import { useChainSettings } from "next-common/context/chain";
 import { useContextApi } from "next-common/context/api";
 import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated";
-
-const MIGRATION_BLOCK_TIME_MAP = {
-  westend: 1747307424000,
-};
 
 function useConditionalApi(indexer) {
   const [conditionalApi, setConditionalApi] = useState(null);
   const [blockApi, setBlockApi] = useState(null);
-  const chain = useChain();
-  const { relayChainEndpoints = [], endpoints = [] } = useChainSettings();
+  const {
+    relayChainEndpoints = [],
+    endpoints = [],
+    assethubMigration = {},
+  } = useChainSettings();
 
   const endpointUrls = useMemo(() => {
-    const migrationBlockTime = MIGRATION_BLOCK_TIME_MAP[chain] || 0;
+    const migrationBlockTime = assethubMigration?.timestamp || 0;
     if (
       !isNil(indexer) &&
       BigInt(indexer?.blockTime || 0) < BigInt(migrationBlockTime)
@@ -25,7 +24,7 @@ function useConditionalApi(indexer) {
     }
 
     return endpoints?.map?.((item) => item.url) || [];
-  }, [chain, endpoints, indexer, relayChainEndpoints]);
+  }, [assethubMigration?.timestamp, endpoints, indexer, relayChainEndpoints]);
 
   useEffect(() => {
     if (!endpointUrls || endpointUrls?.length === 0) {
