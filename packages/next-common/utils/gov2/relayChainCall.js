@@ -5,7 +5,7 @@ export function isXcmCall(call) {
 }
 export function isFromParaToRelayChain(xcmLocation) {
   if (!isSupportedCallVersion(xcmLocation)) {
-    return null;
+    return false;
   }
   if (xcmLocation.isV4) {
     const V4Location = xcmLocation.asV4;
@@ -14,7 +14,7 @@ export function isFromParaToRelayChain(xcmLocation) {
     const V3Location = xcmLocation.asV3;
     return V3Location?.parents.toNumber() === 1 && V3Location?.interior.isHere;
   }
-  return null;
+  return false;
 }
 
 // `messageArg` are a group of XCM instructions in v3 and v4
