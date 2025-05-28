@@ -43,11 +43,7 @@ export const fetchVotes =
 
     let votes;
     if ([Chains.kintsugi, Chains.interlay].includes(chain)) {
-      votes = await getKintsugiReferendumVotes(
-        api,
-        referendumIndex,
-        passedHeight,
-      );
+      votes = await getKintsugiReferendumVotes(api, referendumIndex);
     } else {
       votes = await getReferendumVotes(api, referendumIndex, passedHeight);
     }
