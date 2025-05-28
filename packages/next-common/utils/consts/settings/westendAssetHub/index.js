@@ -3,7 +3,9 @@ import { westendAssetHubNodes } from "next-common/utils/consts/settings/westend/
 import dynamic from "next/dynamic";
 import polkadotLinks from "next-common/utils/consts/settings/polkadot/links";
 import MenuGroups from "next-common/utils/consts/settings/menuGroups";
-import westendCommonCfg from "next-common/utils/consts/settings/westend/common";
+import westendCommonCfg, {
+  westendAssethubMigration,
+} from "next-common/utils/consts/settings/westend/common";
 
 const ProjectIconWestendAssethub = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconWestendAssethub"),
@@ -17,6 +19,7 @@ const westendAssetHub = {
   ...westendCommonCfg,
   blockTime: 12000,
   assetHubMigrated: true,
+  assethubMigration: westendAssethubMigration,
   endpoints: westendAssetHubNodes,
   avatar: ProjectIconWestendAssethub,
   darkAvatar: ProjectIconWestendAssethub,

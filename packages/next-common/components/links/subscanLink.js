@@ -6,12 +6,25 @@ import IconLink from "./iconLink";
 
 export default function SubScanLink({ indexer = {}, children }) {
   const chain = useChain();
-  const { integrations } = useChainSettings();
-  if (!integrations?.subscan) {
-    return null;
+  const {
+    integrations,
+    assethubMigration: {
+      migrated,
+      timestamp: migrationTimestamp,
+      subscanAssethubDomain,
+    },
+  } = useChainSettings();
+
+  let domain = null;
+  if (migrated && indexer.blockTime >= migrationTimestamp) {
+    domain = subscanAssethubDomain || null;
+  } else if (integrations?.subscan) {
+    domain = integrations.subscan.domain || chain;
   }
 
-  const domain = integrations.subscan.domain || chain;
+  if (!domain) {
+    return null;
+  }
 
   const { blockHeight, extrinsicIndex, index, eventIndex } = indexer;
   let url = `https://${domain}.subscan.io`;

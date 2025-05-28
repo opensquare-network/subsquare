@@ -6,7 +6,9 @@ import capitalize from "../../../capitalize";
 import Chains from "../../chains";
 import { westendRelayChainNodes, westendAssetHubNodes } from "./nodes";
 import { mergeChainModules } from "../common/modules";
-import westendCommonCfg from "next-common/utils/consts/settings/westend/common";
+import westendCommonCfg, {
+  westendAssethubMigration,
+} from "next-common/utils/consts/settings/westend/common";
 
 const ProjectIconWestendDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconWestendDark"),
@@ -23,6 +25,7 @@ const westend = {
   ...westendCommonCfg,
   blockTime: 6000,
   assetHubMigrated: true,
+  assethubMigration: westendAssethubMigration,
   endpoints: westendAssetHubNodes,
   relayChainEndpoints: westendRelayChainNodes,
   avatar: ProjectIconWestendLight,
@@ -41,6 +44,7 @@ const westend = {
     vesting: true,
   }),
   integrations: {
+    statescan: true,
     subscan: true,
   },
   newProposalQuickStart: {
