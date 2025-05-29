@@ -68,11 +68,13 @@ function ChildBountyList({ childBounties, bountyIndex, className = "" }) {
         data={formatItem}
         href={formatItem.detailLink}
       />,
-      <PostValueTitle
-        key={index + "value"}
-        data={formatItem}
-        type={businessCategory.treasuryChildBounties}
-      />,
+      <div key={index + "value"} className="flex justify-end">
+        <PostValueTitle
+          className="items-end"
+          data={formatItem}
+          type={businessCategory.treasuryChildBounties}
+        />
+      </div>,
       <Tag
         key={index + "status"}
         state={formatItem.state}
