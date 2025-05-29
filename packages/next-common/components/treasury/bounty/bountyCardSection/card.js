@@ -7,6 +7,8 @@ import CardHeaderLabel from "./cardHeaderLabel";
 import { isNil } from "lodash-es";
 import ListPostTitle from "next-common/components/postList/postTitle";
 import Tooltip from "next-common/components/tooltip";
+import { CuratorProvider } from "next-common/context/treasury/bounties";
+import { useCuratorMultisigAddress } from "next-common/hooks/treasury/bounty/useCuratorMultisigAddress";
 
 function Card({ item, className = "" }) {
   if (isNil(item)) return null;
@@ -23,6 +25,18 @@ function Card({ item, className = "" }) {
         className,
       )}
     >
+      <BountyCard item={item} />
+    </div>
+  );
+}
+
+function BountyCard({ item }) {
+  const { meta } = item?.onchainData ?? {};
+  const curator = meta?.status?.active?.curator;
+  const curatorParams = useCuratorMultisigAddress(curator);
+
+  return (
+    <CuratorProvider curator={curator} params={curatorParams}>
       <CardHeaderLabel data={item} />
       <Tooltip content={item.title} className="my-3">
         <ListPostTitle data={item} href={item.detailLink} ellipsis />
@@ -31,7 +45,7 @@ function Card({ item, className = "" }) {
       <CardBalanceAndCurator item={item} />
       <Divider />
       <CardChildBounties bountyIndex={item.bountyIndex} item={item} />
-    </div>
+    </CuratorProvider>
   );
 }
 

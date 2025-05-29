@@ -17,7 +17,7 @@ function CardBalanceAndCurator({ item, className = "", showBadge = true }) {
         <Balance address={address} />
       </SummaryItem>
       <SummaryItem title="Curator">
-        <Curator showBadge={showBadge} curator={curator} />
+        <Curator showBadge={showBadge} />
       </SummaryItem>
     </SummaryLayout>
   );
