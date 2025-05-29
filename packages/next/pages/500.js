@@ -1,4 +1,4 @@
-import { Img404Dark, Img404Light } from "@osn/icons/subsquare";
+import { ImgErrorDark, ImgErrorLight } from "@osn/icons/subsquare";
 import ErrorLayout from "next-common/components/layout/errorLayout";
 
 export default function Page505() {
@@ -6,8 +6,8 @@ export default function Page505() {
     <ErrorLayout
       icon={
         <>
-          <Img404Light className="dark:hidden" />
-          <Img404Dark className="hidden dark:block" />
+          <ImgErrorLight className="dark:hidden" />
+          <ImgErrorDark className="hidden dark:block" />
         </>
       }
       title="500 Internal Server Error"
