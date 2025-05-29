@@ -5,11 +5,12 @@ import { cn } from "next-common/utils";
 import { isNil } from "lodash-es";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
+import { useCurator } from "next-common/context/treasury/bounties";
 
-function CardBalanceAndCurator({ item, className = "", showBadge = true }) {
-  const { meta, address } = item?.onchainData ?? {};
-  const curator = meta?.status?.active?.curator;
-  if (isNil(meta) || isNil(address) || isNil(curator)) return null;
+function CardBalanceAndCurator({ item, className = "" }) {
+  const { address } = item?.onchainData ?? {};
+  const curator = useCurator();
+  if (isNil(address) || isNil(curator)) return null;
 
   return (
     <SummaryLayout className={cn("mt-4 mb-3 flex", className)}>
@@ -17,7 +18,7 @@ function CardBalanceAndCurator({ item, className = "", showBadge = true }) {
         <Balance address={address} />
       </SummaryItem>
       <SummaryItem title="Curator">
-        <Curator showBadge={showBadge} />
+        <Curator />
       </SummaryItem>
     </SummaryLayout>
   );

@@ -9,7 +9,7 @@ import {
   useCuratorParams,
 } from "next-common/context/treasury/bounties";
 
-function CuratorInfoItem({ showBadge = true }) {
+function CuratorInfoItem() {
   const { sm } = useScreenSize();
   const userMaxWidth = sm ? 121 : 196;
 
@@ -28,7 +28,7 @@ function CuratorInfoItem({ showBadge = true }) {
         maxWidth={userMaxWidth}
       />
 
-      {badge && showBadge && signatories.length > 0 && (
+      {badge && signatories.length > 0 && (
         <Tooltip
           className="pl-2"
           content={

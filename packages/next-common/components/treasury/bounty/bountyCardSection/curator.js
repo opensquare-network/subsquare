@@ -4,12 +4,12 @@ import LoadableContent from "next-common/components/common/loadableContent";
 import { isNil } from "lodash-es";
 import { useCuratorParams } from "next-common/context/treasury/bounties";
 
-function Curator({ showBadge = true }) {
+function Curator() {
   const { badge, loading } = useCuratorParams() ?? {};
 
   return (
     <LoadableContent isLoading={loading && isNil(badge)}>
-      <CuratorInfoItem showBadge={showBadge} />
+      <CuratorInfoItem />
     </LoadableContent>
   );
 }
