@@ -9,6 +9,7 @@ import useChainPreimageDepositSettings, {
 } from "next-common/hooks/useChainPreimageDeposit";
 import useAccountTransferrable from "next-common/hooks/useAccountTransferrable";
 import Divider from "next-common/components/styled/layout/divider";
+import WithApi from "next-common/components/common/withApi";
 
 function YesOrNo({ yes = true }) {
   if (yes) {
@@ -96,8 +97,10 @@ export function InsufficientBalanceTipsInner({ byteLength }) {
 
 export default function InsufficientBalanceTips({ byteLength }) {
   return (
-    <PreimageDepositSettingGuard>
-      <InsufficientBalanceTipsInner byteLength={byteLength} />
-    </PreimageDepositSettingGuard>
+    <WithApi>
+      <PreimageDepositSettingGuard>
+        <InsufficientBalanceTipsInner byteLength={byteLength} />
+      </PreimageDepositSettingGuard>
+    </WithApi>
   );
 }
