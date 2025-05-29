@@ -168,7 +168,7 @@ function DesktopList({ data, setShowArgumentsDetail }) {
       className: "text-left min-w-[360px]",
     },
     {
-      name: "Balance",
+      name: "Deposit",
       className: "text-right w-40 min-w-[160px]",
     },
     {

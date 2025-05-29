@@ -5,46 +5,38 @@ import { isNil } from "lodash-es";
 import { useChain } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
 
+function getDomain(chain, indexer) {
+  const { blockTime } = indexer || {};
+  let prefix = chain;
+  if ([Chains.polkadot, Chains.polkadotPeople].includes(chain)) {
+    prefix = blockTime >= 1722256998000 ? "people-polkadot" : "polkadot";
+  } else if ([Chains.kusama, Chains.kusamaPeople].includes(chain)) {
+    prefix = blockTime >= 1716111336000 ? "people-kusama" : "kusama";
+  }
+  return `https://${prefix}.statescan.io/#`;
+}
+
 function ExtrinsicAndEvent({ indexer }) {
   const currentChain = useChain();
   const { blockHeight, extrinsicIndex, eventIndex, chain } = indexer;
-  if (currentChain === Chains.polkadot && chain === "people") {
-    const domain = "https://people-polkadot.subscan.io";
-    return (<>
-      <Link
-        href={`${domain}/extrinsic/${blockHeight}-${extrinsicIndex}`}
-      >
-        Extrinsic
-      </Link>
-      {!isNil(eventIndex) && (
-        <Link
-          href={`${domain}/block/${blockHeight}?tab=event&event=${blockHeight}-${eventIndex}`}
-        >
-          Event
-        </Link>
-      )}
-    </>);
-  }
 
-  let domain = `https://${currentChain}.statescan.io/#`;
+  let domain = getDomain(currentChain, indexer);
   if (chain === "people" && currentChain === Chains.kusama) {
     domain = "https://people-kusama.statescan.io/#";
   }
 
-  return (<>
-    <Link
-      href={`${domain}/extrinsics/${blockHeight}-${extrinsicIndex}`}
-    >
-      Extrinsic
-    </Link>
-    {!isNil(eventIndex) && (
-      <Link
-        href={`${domain}/events/${blockHeight}-${eventIndex}`}
-      >
-        Event
+  return (
+    <>
+      <Link href={`${domain}/extrinsics/${blockHeight}-${extrinsicIndex}`}>
+        Extrinsic
       </Link>
-    )}
-  </>);
+      {!isNil(eventIndex) && (
+        <Link href={`${domain}/events/${blockHeight}-${eventIndex}`}>
+          Event
+        </Link>
+      )}
+    </>
+  );
 }
 
 export default function TimelineItemInfoHeader({ item }) {

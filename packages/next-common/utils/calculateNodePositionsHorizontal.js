@@ -69,6 +69,7 @@ function positionNodes(
 
     nodeIds.forEach((nodeId, index) => {
       const node = nodeMap.get(nodeId);
+      if (!node) return;
       node.position = {
         x: level * (nodeWidth + horizontalGap),
         y: startY + index * (nodeHeight + verticalGap),

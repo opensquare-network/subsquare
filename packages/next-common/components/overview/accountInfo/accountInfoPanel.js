@@ -28,6 +28,8 @@ import { isNil } from "lodash-es";
 import Link from "next/link";
 import Button from "next-common/lib/button";
 import AccountPanelQuickAccess from "./components/accountPanelQuickAccess";
+import AccountUnlockBalancePrompt from "./components/accountUnlockBalancePrompt";
+import WithPallet from "next-common/components/common/withPallet";
 
 const RelayChainTeleportPopup = dynamic(
   import("./relayChainTeleportPopup").then((mod) => mod.default),
@@ -79,7 +81,7 @@ const DisplayUser = () => {
   return <div className="text-textPrimary text14Bold">{user?.username}</div>;
 };
 
-function Account() {
+export function Account() {
   const user = useUser();
   const maybeEvmAddress = tryConvertToEvmAddress(user?.address);
 
@@ -301,6 +303,9 @@ export function CommonAccountInfoPanel() {
       <Divider />
       <AccountBalances />
       <ExtensionUpdatePrompt />
+      <WithPallet pallet="referenda">
+        <AccountUnlockBalancePrompt />
+      </WithPallet>
       <AssetHubManagePrompt />
       <AccountPanelScrollPrompt />
     </NeutralPanel>

@@ -93,6 +93,7 @@ const astar = {
   },
   showNewTreasuryProposalButton: true,
   sima: true,
+  allowWeb2Login: false,
   ...astarThemeVars,
 };
 

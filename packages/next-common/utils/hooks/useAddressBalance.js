@@ -30,15 +30,18 @@ export default function useAddressBalance(api, address) {
   const { result, loading } = useSubStorage(pallet, storage, params, { api });
 
   let balance = 0;
+  let resultJson;
   if (isKintsugiChain(chain)) {
     balance = new BigNumber(result?.free?.toJSON() || 0)
       .plus(result?.reserved?.toJSON() || 0)
       .toString();
+    resultJson = result?.toJSON();
   } else {
     balance = new BigNumber(result?.data?.free?.toJSON() || 0)
       .plus(result?.data?.reserved?.toJSON() || 0)
       .toString();
+    resultJson = result?.data?.toJSON();
   }
 
-  return [balance, loading];
+  return [balance, loading, resultJson];
 }

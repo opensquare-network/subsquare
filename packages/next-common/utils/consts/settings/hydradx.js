@@ -4,6 +4,7 @@ import Chains from "../chains";
 import { defaultPostLabels } from "./common";
 import MenuGroups from "./menuGroups";
 import { mergeChainModules } from "./common/modules";
+import hydrationPreimageSettings from "next-common/utils/consts/settings/common/preimage/hydration";
 
 const ProjectIconHydrationDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconHydrationDark"),
@@ -21,20 +22,20 @@ const endpoints = [
     url: "wss://rpc.hydradx.cloud",
   },
   {
-    name: "Dwellir",
-    url: "wss://hydradx-rpc.dwellir.com",
+    name: "IBP1",
+    url: "wss://hydradx.paras.ibp.network",
   },
   {
     name: "Helikon",
     url: "wss://rpc.helikon.io/hydradx",
   },
   {
-    name: "IBP1",
-    url: "wss://hydradx.paras.ibp.network",
-  },
-  {
     name: "IBP2",
     url: "wss://hydration.dotters.network/",
+  },
+  {
+    name: "Dwellir",
+    url: "wss://hydradx-rpc.dwellir.com",
   },
 ];
 
@@ -85,7 +86,7 @@ const hydradx = {
   decimals: 12,
   blockTime: 12000,
   hasElections: true,
-  ss58Format: 63,
+  ss58Format: 0,
   avatar: ProjectIconHydrationLight,
   darkAvatar: ProjectIconHydrationDark,
   navLogo: ProjectLogoHydrationDark,
@@ -134,6 +135,12 @@ const hydradx = {
     signet: true,
     mimir: true,
   },
+  supportWalletconnect: true,
+  allowWeb2Login: false,
+  hotMenu: {
+    referenda: true,
+  },
+  preimage: hydrationPreimageSettings,
 };
 
 export default hydradx;

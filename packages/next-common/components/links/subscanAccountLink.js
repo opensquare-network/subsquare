@@ -14,7 +14,7 @@ export default function SubScanAccountLink({ address }) {
   return (
     <IconLink
       href={`https://${domain}.subscan.io/account/${address}`}
-      icon={<LinkSubscan />}
+      icon={<LinkSubscan className="w-5 h-5" />}
     />
   );
 }

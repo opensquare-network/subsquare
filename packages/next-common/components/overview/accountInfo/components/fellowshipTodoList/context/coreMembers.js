@@ -11,7 +11,7 @@ import { useCoreFellowshipPallet } from "next-common/context/collectives/collect
 
 export const CoreMembersContext = createContext({});
 
-function useFellowshipCoreMembers() {
+function useFellowshipCoreMembersWithRank() {
   const api = useContextApi();
   const corePallet = useCoreFellowshipPallet();
   const [trigger, setTrigger] = useState(0);
@@ -37,7 +37,7 @@ function useFellowshipCoreMembers() {
 }
 
 export default function CoreMembersProvider({ children }) {
-  const { members, isLoading, fetch } = useFellowshipCoreMembers();
+  const { members, isLoading, fetch } = useFellowshipCoreMembersWithRank();
 
   return (
     <CoreMembersContext.Provider

@@ -88,7 +88,7 @@ export default function LoginAccount({ setIsWeb3 = noop }) {
               setIsWeb3(true);
             }}
           >
-            Connect with address
+            Connect with wallet
           </SecondaryButton>
         </div>
       </form>

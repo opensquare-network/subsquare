@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { CachedBatchProvider } from "next-common/context/batch";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { isEmpty } from "lodash-es";
 
 export async function getFellowshipReferendaPosts(indexes = []) {
@@ -8,7 +8,7 @@ export async function getFellowshipReferendaPosts(indexes = []) {
     return [];
   }
   const q = indexes.join(",");
-  const { result } = await nextApi.fetch(
+  const { result } = await backendApi.fetch(
     `fellowship/referenda?simple=1&referendum_index=${q}`,
   );
   return result || [];

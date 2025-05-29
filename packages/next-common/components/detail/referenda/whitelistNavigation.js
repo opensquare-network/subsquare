@@ -5,7 +5,7 @@ import { NavigationWrapper } from "../navigation/navigators";
 
 export function FellowshipReferendumLink({ referendumIndex }) {
   return (
-    <Link href={`/fellowship/referenda/${referendumIndex}`} legacyBehavior>
+    <Link href={`/fellowship/referenda/${referendumIndex}`}>
       {`Fellowship #${referendumIndex}`}
     </Link>
   );

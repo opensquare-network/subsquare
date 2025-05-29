@@ -9,14 +9,14 @@
   "scripts": {
     "prepare": "husky install",
     "scan": "yarn workspace @subsquare/scan scan",
-    "lint": "yarn workspace @subsquare/kintsugi-next lint && yarn workspace @subsquare/next lint && yarn workspace next-common lint",
-    "lint-fix": "yarn workspace @subsquare/kintsugi-next lint --fix && yarn workspace @subsquare/next lint --fix && yarn workspace next-common lint --fix",
+    "lint": "yarn workspace @subsquare/kintsugi-next lint && yarn workspace @subsquare/next lint && yarn workspace next-common lint && yarn workspace @subsquare/collectives-next lint",
+    "lint-fix": "yarn workspace @subsquare/kintsugi-next lint --fix && yarn workspace @subsquare/next lint --fix && yarn workspace next-common lint --fix && yarn workspace @subsquare/collectives-next lint --fix",
     "test": "vitest"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",
-    "eslint": "latest",
-    "eslint-plugin-react": "latest",
+    "eslint": "^8.44.0",
+    "eslint-plugin-react": "^7.31.11",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.3",
     "postcss": "^8.4.31",

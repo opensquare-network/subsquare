@@ -3,26 +3,40 @@ import { Deferred } from "next-common/utils/deferred";
 import QuickLRU from "quick-lru";
 
 const cachedAvatars = new QuickLRU({ maxSize: 1000 });
-let pendingQueries = new Map();
+const pendingQueries = new Map();
+const processingQueries = new Map();
 
 const delayQuery = debounce(async () => {
-  const pending = pendingQueries;
-  if (pending.size < 1) {
+  if (pendingQueries.size < 1) {
     return;
   }
 
-  const addresses = Array.from(pending.keys());
+  const addresses = [];
+  for (const [address, deferred] of pendingQueries) {
+    if (processingQueries.has(address)) {
+      // Should not happen
+      console.error("Duplicate avatar query:", address);
+      continue;
+    }
+    addresses.push(address);
+    processingQueries.set(address, deferred);
+    pendingQueries.delete(address);
+  }
+
   const headers = {
     accept: "application/json, text/plain, */*",
     "content-type": "application/json;charset=UTF-8",
   };
 
   try {
-    const res = await fetch("/api/avatars", {
-      headers,
-      method: "POST",
-      body: JSON.stringify({ addresses }),
-    });
+    const res = await fetch(
+      new URL("avatars", process.env.NEXT_PUBLIC_BACKEND_API_END_POINT),
+      {
+        headers,
+        method: "POST",
+        body: JSON.stringify({ addresses }),
+      },
+    );
     if (!res.ok) {
       return;
     }
@@ -30,13 +44,14 @@ const delayQuery = debounce(async () => {
     const avatars = new Map(data.map((item) => [item.address, item.avatarCid]));
 
     for (const address of addresses) {
-      if (!pending.has(address)) {
+      if (!processingQueries.has(address)) {
+        // Should not happen
+        console.error("Avatar query deferred not found:", address);
         continue;
       }
 
-      const { resolve } = pending.get(address);
-      pending.delete(address);
-
+      const { resolve } = processingQueries.get(address);
+      processingQueries.delete(address);
       const avatar = avatars.get(address) || null;
       cachedAvatars.set(address, avatar);
       if (resolve) {
@@ -46,7 +61,7 @@ const delayQuery = debounce(async () => {
   } catch (e) {
     // ignore
   }
-}, 0);
+}, 500);
 
 export function fetchAvatar(address) {
   if (!address) {
@@ -57,14 +72,18 @@ export function fetchAvatar(address) {
     return Promise.resolve(cachedAvatars.get(address));
   }
 
-  const pending = pendingQueries;
-
-  if (!pending.has(address)) {
-    pending.set(address, new Deferred());
-    delayQuery();
+  if (processingQueries.has(address)) {
+    return processingQueries.get(address).promise;
   }
 
-  return pending.get(address).promise;
+  if (pendingQueries.has(address)) {
+    return pendingQueries.get(address).promise;
+  }
+
+  const deferred = new Deferred();
+  pendingQueries.set(address, deferred);
+  delayQuery();
+  return deferred.promise;
 }
 
 /**

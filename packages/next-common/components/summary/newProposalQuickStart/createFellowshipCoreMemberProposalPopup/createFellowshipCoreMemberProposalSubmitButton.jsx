@@ -1,7 +1,7 @@
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { getEventData } from "next-common/utils/sendTransaction";
 import { useRouter } from "next/router";
-import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
+import useFellowshipCoreMembersWithRank from "next-common/hooks/fellowship/core/useFellowshipCoreMembersWithRank";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import { find } from "lodash-es";
 import Tooltip from "next-common/components/tooltip";
@@ -21,7 +21,7 @@ export default function CreateFellowshipCoreMemberProposalSubmitButton({
   checkDecisionDeposit = false,
   checkVoteAye = false,
 }) {
-  const { members } = useFellowshipCoreMembers();
+  const { members } = useFellowshipCoreMembersWithRank();
   const signerAccount = useSignerAccount();
   const realAddress = signerAccount?.realAddress;
   const me = find(members, { address: realAddress });

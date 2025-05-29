@@ -8,7 +8,7 @@ const SystemFocus = dynamic(
 
 const ControlsStyled = styled(Controls)`
   row-gap: 8px;
-  box-shadow: none;
+  box-shadow: none !important;
   button {
     border-radius: 6px;
     background-color: var(--neutral100);

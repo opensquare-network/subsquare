@@ -1,12 +1,12 @@
 import { useDetailType } from "next-common/context/page";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
-import nextApi from "next-common/services/nextApi";
+import nextApi, { backendApi } from "next-common/services/nextApi";
 import { prettyHTML, toApiType } from "next-common/utils/viewfuncs";
 import { useCallback } from "react";
 
 export function useGetComment() {
   return useCallback(async (comment) => {
-    return await nextApi.fetch(`comments/${comment._id}`);
+    return await backendApi.fetch(`comments/${comment._id}`);
   }, []);
 }
 

@@ -4,7 +4,7 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { isAddressInGroup } from "next-common/utils";
 import { SystemImportMember } from "@osn/icons/subsquare";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
+import useFellowshipCoreMembersWithRank from "next-common/hooks/fellowship/core/useFellowshipCoreMembersWithRank";
 import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
 
 const FellowshipCoreImportPopup = dynamicPopup(() =>
@@ -14,7 +14,7 @@ const FellowshipCoreImportPopup = dynamicPopup(() =>
 export default function Import() {
   const [showPopup, setShowPopup] = useState(false);
   const { members: collectiveMembers } = useFellowshipCollectiveMembers();
-  const { members: coreMembers } = useFellowshipCoreMembers();
+  const { members: coreMembers } = useFellowshipCoreMembersWithRank();
   const realAddress = useRealAddress();
 
   const canImport = useMemo(() => {

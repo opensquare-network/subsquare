@@ -63,6 +63,7 @@ export const DisplayUser = ({ id, className = "" }) => {
         add={id}
         showAvatar={false}
         className={cn("text16Bold text-textPrimary", className)}
+        identityIconClassName="w-4 h-4"
       />
     );
   }
@@ -108,7 +109,7 @@ function NormalBio() {
   return (
     <div
       className={cn(
-        "grid gap-[16px] grid-cols-1",
+        "px-6 grid gap-[16px] grid-cols-1",
         isMobile ? "grid-cols-1" : "grid-cols-2",
       )}
     >

@@ -16,7 +16,6 @@ import crust from "./crust";
 import centrifuge from "./centrifuge";
 import litmus from "./litmus";
 import zeitgeist from "./zeitgeist";
-import altair from "./altair";
 import hydradx from "./hydradx";
 import hydradxTestnet from "./hydradxTestnet";
 import development from "./development";
@@ -44,12 +43,15 @@ import kusamaCoretime from "./kusamaCoretime";
 import polkadotCoretime from "./polkadotCoretime";
 import laos from "./laos";
 import laosTestnet from "./laosTestnet";
+import polkadotPeople from "./polkadotPeople";
+import kusamaPeople from "./kusamaPeople";
+import paseoPeople from "./paseoPeople";
+import westendPeople from "./westendPeople";
 
 const settingsMap = {
   polkadot,
   kusama,
   acala,
-  altair,
   astar,
   basilisk,
   bifrost,
@@ -89,7 +91,11 @@ const settingsMap = {
   [paseoAssetHub.value]: paseoAssetHub,
   ajuna,
   [polkadotCoretime.value]: polkadotCoretime,
+  [polkadotPeople.value]: polkadotPeople,
   [kusamaCoretime.value]: kusamaCoretime,
+  [kusamaPeople.value]: kusamaPeople,
+  [paseoPeople.value]: paseoPeople,
+  [westendPeople.value]: westendPeople,
   ...(process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? { development } : {}),
 };
 

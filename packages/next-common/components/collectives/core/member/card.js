@@ -8,7 +8,7 @@ import CoreFellowshipMemberDemotionPeriod from "next-common/components/collectiv
 import CoreFellowshipMemberPromotionPeriod from "next-common/components/collectives/core/member/promotionPeriod";
 import { CoreFellowshipMemberEvidence } from "next-common/components/collectives/core/member/evidence";
 import CoreFellowshipMemberSalary from "./salary";
-import CoreFellowshipMemberRelatedReferenda from "./relatedReferenda";
+import { CoreFellowshipMemberRelatedReferendaActions } from "./relatedReferenda";
 import MineTag from "next-common/components/delegation/delegate/common/mineTag";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { isSameAddress } from "next-common/utils";
@@ -55,7 +55,7 @@ export default function CoreFellowshipMemberCard({
         </CoreFellowshipMemberInfoLine>
         <CoreFellowshipMemberInfoLine>
           <CoreFellowshipMemberEvidence member={member} pallet={pallet} />
-          <CoreFellowshipMemberRelatedReferenda
+          <CoreFellowshipMemberRelatedReferendaActions
             address={address}
             pallet={pallet}
           />

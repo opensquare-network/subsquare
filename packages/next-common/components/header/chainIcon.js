@@ -1,12 +1,12 @@
 import { cn } from "next-common/utils";
-import getChainSettings from "../../utils/consts/settings";
+import { getChainSettingsPolyfill } from "next-common/utils/consts/settingsPolyfill";
 
 function Img({ src, className = "" }) {
   return <img src={src} alt="" className={cn("logo", className)} />;
 }
 
 export default function ChainIcon({ className, chain }) {
-  const chainSetting = getChainSettings(chain);
+  const chainSetting = getChainSettingsPolyfill(chain);
   let { avatar, darkAvatar } = chainSetting;
   darkAvatar = darkAvatar ?? avatar;
 

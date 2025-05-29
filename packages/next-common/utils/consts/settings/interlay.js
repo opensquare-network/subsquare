@@ -26,10 +26,6 @@ const DEFAULT_INTERLAY_NODES = [
     name: "LuckyFriday",
     url: "wss://rpc-interlay.luckyfriday.io/",
   },
-  {
-    name: "Dwellir",
-    url: "wss://interlay-rpc.dwellir.com",
-  },
 ];
 
 const links = [
@@ -92,7 +88,7 @@ const interlay = {
     council: false,
   }),
   integrations: {
-    subscan: true,
+    statescan: true,
   },
   cssVarsLight: {
     theme100: "rgba(7,90,188,0.10)",
@@ -110,9 +106,13 @@ const interlay = {
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",
   },
+  wallets: {
+    walletconnect: false,
+  },
   multisigWallets: {
     signet: true,
   },
+  allowWeb2Login: true,
 };
 
 export default interlay;

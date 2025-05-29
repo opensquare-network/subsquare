@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import styled, { css } from "styled-components";
 
-const Item = styled.a`
+const Item = styled.span`
   padding: 0 8px;
   cursor: pointer;
   min-width: 28px;
@@ -48,7 +48,6 @@ export default function PageItem({
       key={page}
       href={`${url}?${urlParams}`}
       passHref
-      legacyBehavior
     >
       <Item
         active={now === page}

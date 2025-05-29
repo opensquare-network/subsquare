@@ -12,7 +12,7 @@ export default function ListPostTitle({
   let title = data.title?.trim() || "--";
 
   return (
-    <div
+    <p
       title={title}
       className={cn(
         "flex-1 overflow-hidden text-textPrimary text16Medium",
@@ -36,6 +36,6 @@ export default function ListPostTitle({
         {title}
       </Link>
       <ReasonLink text={data.title} hideText={true} />
-    </div>
+    </p>
   );
 }

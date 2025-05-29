@@ -6,6 +6,7 @@ import ConvictionSlider from "next-common/components/convictionSlider";
 import { useChainSettings } from "next-common/context/chain";
 import { calcVotes } from "next-common/utils/democracy/votes/passed/common";
 import NumberWithComma from "next-common/components/numberWithComma";
+import Tooltip from "next-common/components/tooltip";
 
 export default function ConvictionField({
   balance = 0,
@@ -15,7 +16,7 @@ export default function ConvictionField({
   titleTooltip = "",
   module,
 }) {
-  const [time, isLoading] = useVoteLockTime(conviction, module);
+  const [time, isLoading, date] = useVoteLockTime(conviction, module);
   const chainSettings = useChainSettings();
   const symbol = chainSettings.voteSymbol || chainSettings.symbol;
 
@@ -36,7 +37,7 @@ export default function ConvictionField({
       <StatusWrapper className="flex-col gap-y-1">
         <div className="flex justify-between w-full">
           <div className="text-textSecondary">
-            <span>Votes</span>
+            <span>Total Votes</span>
           </div>
           <div className="result">
             <NumberWithComma
@@ -47,17 +48,23 @@ export default function ConvictionField({
         </div>
         <div className="flex justify-between w-full">
           <div className="text-textSecondary">
-            <span>Locked For</span>
+            <span>Lock Duration</span>
           </div>
-          <div className="result">{time ? "≈ " + time : 0}</div>
+          <div className="result">
+            {time ? (
+              <Tooltip content={`End on ${date}`}>{"≈ " + time}</Tooltip>
+            ) : (
+              0
+            )}
+          </div>
         </div>
 
         <hr className="w-full my-2" />
 
         <div className="text12Medium text-textTertiary">
-          Your voted {chainSettings.voteSymbol || chainSettings.symbol} will be
-          locked during the whole voting period of this referendum. The
-          conviction lock will start counting down when the voting period ends.
+          Your {chainSettings.voteSymbol || chainSettings.symbol} will stay
+          locked for the entire voting period. After the vote ends, it remains
+          locked for an additional period based on your selected multiplier.
         </div>
       </StatusWrapper>
     );
@@ -65,7 +72,11 @@ export default function ConvictionField({
 
   return (
     <div>
-      <PopupLabel text={title} titleTooltip={titleTooltip} />
+      <PopupLabel
+        text={title}
+        tooltip={titleTooltip}
+        tooltipContentClassName="max-w-[240px]"
+      />
       <ConvictionSlider value={conviction} setValue={setConviction} />
       {lockingPeriod && <div className="mt-2">{lockingPeriod}</div>}
     </div>

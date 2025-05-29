@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { SystemLoading } from "@osn/icons/subsquare";
 import { useAsync } from "react-use";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
 import {
   ambassadorCoreEvidencesApiUri,
@@ -37,7 +37,7 @@ const ProfileFellowshipCoreEvidence = ({
       return;
     }
 
-    const resp = await nextApi.fetch(evidencesApi, {
+    const resp = await backendApi.fetch(evidencesApi, {
       who: address,
       page,
       pageSize: DEFAULT_PAGE_SIZE,

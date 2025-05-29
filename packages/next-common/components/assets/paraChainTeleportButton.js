@@ -12,20 +12,26 @@ const ParaChainTeleportPopup = dynamicPopup(() =>
   import("./paraChainTeleportPopup"),
 );
 
+export function TeleportButton({ onClick }) {
+  return (
+    <Tooltip content="Cross-chain">
+      <ListButton onClick={onClick}>
+        <SystemCrosschain width={16} height={16} />
+      </ListButton>
+    </Tooltip>
+  );
+}
+
 export default function ParaChainTeleportButton() {
   const [showPopup, setShowPopup] = useState(false);
 
   return (
     <>
-      <Tooltip content="Cross-chain">
-        <ListButton
-          onClick={() => {
-            setShowPopup(true);
-          }}
-        >
-          <SystemCrosschain width={16} height={16} />
-        </ListButton>
-      </Tooltip>
+      <TeleportButton
+        onClick={() => {
+          setShowPopup(true);
+        }}
+      />
       {showPopup && (
         <ParaChainTeleportPopup onClose={() => setShowPopup(false)} />
       )}

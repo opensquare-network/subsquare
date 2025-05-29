@@ -6,8 +6,8 @@ import {
 } from "@osn/icons/subsquare";
 import getChainSettings from "../settings";
 import { CHAIN } from "next-common/utils/constants";
-import { isKintsugiChain } from "next-common/utils/chain";
 import { getAccountUrl } from "next-common/hooks/account/useAccountUrl";
+import supportsDelegation from "./supportsDelegation";
 
 const chainSettings = getChainSettings(CHAIN);
 
@@ -52,12 +52,7 @@ if (chainSettings.modules.discussions) {
   commonMenus.items.push(discussionsMenu);
 }
 
-const {
-  modules: { referenda: hasReferenda, democracy },
-} = chainSettings;
-const hasDemocracy = democracy && !democracy?.archived;
-
-if ((hasReferenda || hasDemocracy) && !isKintsugiChain(CHAIN)) {
+if (supportsDelegation()) {
   commonMenus.items.push({
     value: "delegation",
     name: "Delegation",

@@ -175,7 +175,7 @@ export default function DelegationGuidePanel() {
       className={cn(
         "max-w-full p-6",
         "text14Medium text-textSecondary flex flex-col",
-        "bg-neutral100 border border-neutral300 rounded-lg shadow-100 outline-theme500",
+        "bg-neutral100 border border-neutral300 rounded-[12px] shadow-100 outline-theme500",
       )}
     >
       <div

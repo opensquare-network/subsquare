@@ -30,7 +30,7 @@ function OpenGovBioContent() {
     <>
       <div
         className={cn(
-          "grid grid-cols-2",
+          "px-6 grid grid-cols-2",
           isMobile ? "max-lg:grid-cols-1" : "max-md:grid-cols-1",
           address && "gap-[16px]",
         )}
@@ -39,8 +39,8 @@ function OpenGovBioContent() {
         <RightPanelContainer>
           <UserAccountProvider address={address}>
             <AssetInfo address={address} />
+            <VotesPowerPanel address={address} />
           </UserAccountProvider>
-          <VotesPowerPanel address={address} />
         </RightPanelContainer>
       </div>
       {address && (

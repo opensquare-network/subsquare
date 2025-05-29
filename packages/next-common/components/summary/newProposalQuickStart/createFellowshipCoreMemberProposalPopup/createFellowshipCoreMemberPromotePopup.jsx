@@ -12,7 +12,7 @@ import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 import useRelatedPromotionReferenda from "next-common/hooks/fellowship/useRelatedPromotionReferenda";
 import { ReferendaWarningMessage, ReferendaActionMessage } from "./common";
 import ErrorInfoPanel from "next-common/components/summary/styled/errorInfoPanel";
-import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
+import useFellowshipCoreMembersWithRank from "next-common/hooks/fellowship/core/useFellowshipCoreMembersWithRank";
 import { find } from "lodash-es";
 import { CollectivesPromoteTracks } from "next-common/components/fellowship/core/members/actions/promote/constants";
 import { isNil } from "lodash-es";
@@ -30,7 +30,7 @@ export function NotAvailableMemberPrompt() {
 }
 
 function NewFellowshipCoreMemberPromoteReferendumInnerPopupImpl() {
-  const { members, loading } = useFellowshipCoreMembers();
+  const { members, loading } = useFellowshipCoreMembersWithRank();
   const filteredMembers = useMemo(() => {
     if (loading || !members) {
       return [];

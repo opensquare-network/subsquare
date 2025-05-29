@@ -5,13 +5,15 @@ import {
   tryConvertToEvmAddress,
 } from "next-common/utils/mixedChainUtil";
 import { useSignMessage as useEVMSignMessage } from "wagmi";
-import { metamask } from "next-common/utils/consts/connect";
+import { metamask, walletConnect } from "next-common/utils/consts/connect";
 import { findInjectedExtension } from "next-common/hooks/connect/useInjectedWeb3Extension";
 import useInjectedWeb3 from "./connect/useInjectedWeb3";
+import { useWalletConnect } from "next-common/context/walletconnect";
 
 export function useSignMessage() {
   const { injectedWeb3 } = useInjectedWeb3();
   const { signMessage } = useEVMSignMessage();
+  const { signWcMessage } = useWalletConnect();
 
   return useCallback(
     async (message, address, walletName) => {
@@ -25,6 +27,16 @@ export function useSignMessage() {
             { onSuccess: resolve, onError: reject },
           );
         });
+      }
+
+      if (walletName === walletConnect.extensionName) {
+        const { signature } = await signWcMessage({
+          type: "bytes",
+          address,
+          message: stringToHex(message),
+        });
+
+        return signature;
       }
 
       const extension = findInjectedExtension(walletName, injectedWeb3);
@@ -42,6 +54,6 @@ export function useSignMessage() {
 
       return signature;
     },
-    [signMessage, injectedWeb3],
+    [injectedWeb3, signMessage, signWcMessage],
   );
 }

@@ -1,9 +1,9 @@
 import { isNil, orderBy } from "lodash-es";
 import { useMemo } from "react";
-import useFellowshipCoreMembers from "./useFellowshipCoreMembers";
+import useFellowshipCoreMembersWithRank from "./useFellowshipCoreMembersWithRank";
 
 export default function useFellowshipSortedCoreMembers() {
-  const { members } = useFellowshipCoreMembers();
+  const { members } = useFellowshipCoreMembersWithRank();
 
   return useMemo(() => {
     if (isNil(members)) {

@@ -44,6 +44,8 @@ const light = {
   neutral200: "rgba(246,247,250,1)",
   neutral200alpha: "rgba(246,247,250,0.5)",
   neutral300: "rgba(235,238,244,1)",
+  "neutral300-80": "rgba(235,238,244,0.8)",
+  "neutral300-20": "rgba(235,238,244,0.2)",
   neutral400: "rgba(224,228,235,1)",
   neutral500: "rgba(194,200,212,1)",
   tooltipBg: "rgba(0,0,0,0.800)",

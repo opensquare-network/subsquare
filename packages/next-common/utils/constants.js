@@ -22,15 +22,19 @@ import bifrostPolkadot from "./consts/settings/bifrostPolkadot";
 import vara from "./consts/settings/vara";
 import westend from "./consts/settings/westend";
 import polkadotAssetHub from "next-common/utils/consts/settings/polkadotAssetHub";
+import polkadotPeople from "next-common/utils/consts/settings/polkadotPeople";
 import westendAssetHub from "next-common/utils/consts/settings/westendAssetHub";
 import kusamaAssetHub from "next-common/utils/consts/settings/kusamaAssetHub";
-import shibuya from "next-common/utils/consts/settings/shibuya";
+import kusamaPeople from "next-common/utils/consts/settings/kusamaPeople";
+// import shibuya from "next-common/utils/consts/settings/shibuya";
 import astar from "next-common/utils/consts/settings/astar";
 import zkverifyTestnet from "./consts/settings/zkverifyTestnet";
 import paseo from "./consts/settings/paseo";
 import ajuna from "./consts/settings/ajuna";
 import laos from "./consts/settings/laos";
 import paseoAssetHub from "./consts/settings/paseoAssetHub";
+import paseoPeople from "./consts/settings/paseoPeople";
+import westendPeople from "./consts/settings/westendPeople";
 
 const optionalNodes =
   process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? [development] : [];
@@ -38,8 +42,10 @@ const optionalNodes =
 export const nodes = [
   polkadot,
   polkadotAssetHub,
+  polkadotPeople,
   kusama,
   kusamaAssetHub,
+  kusamaPeople,
   acala,
   ajuna,
   astar,
@@ -52,6 +58,7 @@ export const nodes = [
   // crab,
   westend,
   westendAssetHub,
+  westendPeople,
   crust,
   hydradx,
   interlay,
@@ -65,11 +72,12 @@ export const nodes = [
   phala,
   // polkadex,
   // rococo,
-  shibuya,
+  // shibuya,
   vara,
   zkverifyTestnet,
   paseo,
   paseoAssetHub,
+  paseoPeople,
   ...optionalNodes,
 ];
 
@@ -120,6 +128,8 @@ export const CACHE_KEY = {
   extensionUpdateMetadata: "extensionUpdateMetadata",
   assetHubPromptVisible: "asset-hub-management-prompt-visible",
   multisigPromptVisible: "multisig-management-prompt-visible",
+
+  walletConnectSession: "walletconnect-session",
 };
 
 export const ADDRESS_CACHE_KEYS = [
@@ -168,7 +178,7 @@ export const NAV_MENU_TYPE = {
 };
 
 export const RELATIONSHIP_NODE_TYPE = {
-  Signatory: "Signatory",
-  Proxied: "Proxied",
-  Received: "Received",
+  Multisig: "Multisig",
+  Proxy: "Proxy",
+  Identity: "Identity",
 };

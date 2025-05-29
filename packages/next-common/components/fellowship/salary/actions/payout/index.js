@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 import PrimaryButton from "next-common/lib/button/primary";
 import Tooltip from "next-common/components/tooltip";
-import { useSelector } from "react-redux";
 import { useFellowshipSalaryStats } from "next-common/hooks/fellowship/salary/useFellowshipSalaryStats";
-import useSalaryFellowshipPeriods from "next-common/hooks/fellowship/salary/useSalaryFellowshipPeriods";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
-import { isNil } from "lodash-es";
+import { useIsSalaryPayoutPeriod } from "next-common/hooks/fellowship/salary/useIsInSalaryRegistrationPeriod";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
 import dynamicPopup from "next-common/lib/dynamic/popup";
@@ -23,14 +20,9 @@ export default function FellowshipSalaryPayout() {
   const isCollectiveMember = memberAddrs.includes(address);
   const { isLoading: isLoadingClaimant, claimant } =
     useMySalaryClaimantFromContext();
-
-  const { cycleStart, cycleIndex } = useFellowshipSalaryStats() || {};
-
-  const { registrationPeriod } = useSalaryFellowshipPeriods();
-  const payoutStart = cycleStart + registrationPeriod || null;
-  const latestHeight = useSelector(chainOrScanHeightSelector);
-  const isStarted =
-    !isNil(latestHeight) && !isNil(payoutStart) && latestHeight >= payoutStart;
+  const status = useFellowshipSalaryStats() || {};
+  const isStarted = useIsSalaryPayoutPeriod(status);
+  const { cycleIndex } = status;
 
   const paid =
     claimant && claimant.status?.attempted && claimant.lastActive >= cycleIndex;
@@ -51,7 +43,7 @@ export default function FellowshipSalaryPayout() {
   } else if (isLoadingClaimant) {
     tooltipText = "Checking your payment status";
   } else if (!claimant) {
-    return "Please import yourself first";
+    tooltipText = "Please import yourself first";
   } else if (paid) {
     tooltipText = "Your salary has been paid";
   }

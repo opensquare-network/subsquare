@@ -4,7 +4,7 @@ import { createFellowshipSalaryFeedsRows } from "next-common/components/fellowsh
 import Pagination from "next-common/components/pagination";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
 import { usePageProps } from "next-common/context/page";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import {
   ambassadorSalaryFeedsApi,
   fellowshipSalaryFeedsApi,
@@ -32,7 +32,7 @@ export default function ProfileFellowshipSalaryFeeds() {
       return;
     }
 
-    const resp = await nextApi.fetch(feedsApi, {
+    const resp = await backendApi.fetch(feedsApi, {
       who: address,
       page,
       pageSize: defaultPageSize,

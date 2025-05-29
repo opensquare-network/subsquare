@@ -11,7 +11,7 @@ import AddressAvatar from "./user/addressAvatar";
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 import AddressInfoLoading from "./addressInfo";
 
-function WalletIcon({ wallet: walletName }) {
+export function WalletIcon({ wallet: walletName }) {
   const wallet = find(allWallets, { extensionName: walletName });
 
   return (
@@ -21,7 +21,7 @@ function WalletIcon({ wallet: walletName }) {
   );
 }
 
-function EvmWalletIcon({ id, wallet }) {
+export function EvmWalletIcon({ id, wallet }) {
   const connectors = useConnectors();
   let connector = find(connectors, { id });
   // mixed chain talisman

@@ -1,10 +1,10 @@
 import { isNil } from "lodash-es";
 import FellowshipCoreCommon from "next-common/components/fellowship/core/common";
 import { SystemLoading } from "@osn/icons/subsquare";
-import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
+import useFellowshipCoreMembersWithRank from "next-common/hooks/fellowship/core/useFellowshipCoreMembersWithRank";
 
 export default function FellowshipMembersLoadable({ children }) {
-  const { members, loading } = useFellowshipCoreMembers();
+  const { members, loading } = useFellowshipCoreMembersWithRank();
 
   if (loading || isNil(members)) {
     return (

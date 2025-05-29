@@ -7,7 +7,7 @@ import { isNil } from "lodash-es";
 
 export function CommunityMotionLink({ index }) {
   return (
-    <Link href={`/community-council/motions/${index}`} legacyBehavior>
+    <Link href={`/community-council/motions/${index}`}>
       {`Motion #${index}`}
     </Link>
   );

@@ -29,7 +29,7 @@ function DemocracyBioContent() {
     <>
       <div
         className={cn(
-          "grid gap-[16px]",
+          "px-6 grid gap-[16px]",
           isMobile ? "grid-cols-1" : "grid-cols-2",
         )}
       >
@@ -37,8 +37,8 @@ function DemocracyBioContent() {
         <RightPanelContainer>
           <UserAccountProvider address={address}>
             <AssetInfo address={address} />
+            <VotesPowerPanel address={address} />
           </UserAccountProvider>
-          <VotesPowerPanel address={address} />
         </RightPanelContainer>
       </div>
       <DelegationGuideProvider pallet="democracy">

@@ -191,7 +191,7 @@ export function ProxiedAccounts({ selected, onSelect = noop }) {
 
   return (
     <div className="flex flex-col gap-[12px]">
-      <div className="text14Bold text-textPrimary">
+      <div className="text14Bold text-textPrimary flex items-center gap-1">
         Proxied Accounts{" "}
         <Tooltip content="Delegators who set proxies to the connected account"></Tooltip>
       </div>

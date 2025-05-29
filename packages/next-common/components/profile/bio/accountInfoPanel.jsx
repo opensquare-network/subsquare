@@ -35,7 +35,7 @@ export default function AccountInfoPanel({ address, id }) {
         <DisplayUser
           id={id}
           className={cn(
-            "flex text14Medium",
+            "flex text20Bold",
             shouldAlignCenter ? "justify-center" : "",
           )}
         />

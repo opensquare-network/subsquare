@@ -1,4 +1,4 @@
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import {
@@ -10,7 +10,7 @@ export default function useFetchReferendaTallyHistory(referendumIndex) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    nextApi
+    backendApi
       .fetch(`gov2/referenda/${referendumIndex}/tally-history`)
       .then(({ result }) => {
         if (!result) return;

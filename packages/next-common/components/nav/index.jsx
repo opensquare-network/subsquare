@@ -12,12 +12,21 @@ import { useEffect } from "react";
 import ChainLogo from "./logo";
 import Chains from "next-common/utils/consts/chains";
 import { useThemeSetting } from "next-common/context/theme";
+import useDetectDevice from "next-common/components/header/hooks/useDetectDevice";
 
 export default function Nav() {
+  const isMobileDevice = useDetectDevice();
+
   return (
     <>
-      <NavDesktop />
-      <NavMobile />
+      {isMobileDevice ? (
+        <NavMobile />
+      ) : (
+        <>
+          <NavDesktop />
+          <NavMobile />
+        </>
+      )}
     </>
   );
 }

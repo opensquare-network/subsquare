@@ -22,6 +22,8 @@ function DataList(
     tree = false,
     treeKey = "children",
     treeData = [],
+    titleClassName = "",
+    contentClassName = "",
   },
   ref,
 ) {
@@ -125,6 +127,7 @@ function DataList(
         treeData={treeData}
         expandedRows={expandedRows}
         toggleRowExpansion={toggleRowExpansion}
+        contentClassName={contentClassName}
       />
     );
   }
@@ -155,6 +158,7 @@ function DataList(
             "border-b border-neutral300",
             navCollapsed ? "max-sm:hidden" : "max-md:hidden",
             tree && "pl-[54px]",
+            titleClassName,
           )}
         >
           {columns.map((column, idx) => (
@@ -180,7 +184,7 @@ function DataList(
 
 const ForwardRefDataList = forwardRef(DataList);
 
-export function MapDataList({ data, columnsDef, getRowKey, ...props }) {
+export function MapDataList({ data, columnsDef = [], getRowKey, ...props }) {
   const rows = (data || []).map((item, index) => {
     const row = columnsDef.map(({ render }) => render(item));
     row.key = getRowKey ? getRowKey(item) : index;

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import DataList from "next-common/components/dataList";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import {
   PostTitle,
   Referenda,
-  VoteItem,
   useModuleTab,
+  VoteItem,
 } from "next-common/components/profile/votingHistory/common";
 
 export default function ReferendaDelegateeDetailPopupRecentVotes({ delegate }) {
@@ -16,7 +16,7 @@ export default function ReferendaDelegateeDetailPopupRecentVotes({ delegate }) {
 
   useEffect(() => {
     setIsLoading(true);
-    nextApi
+    backendApi
       .fetch(`users/${delegate.address}/${module}/votes`, {
         page: 0,
         pageSize: 10,

@@ -1,83 +1,43 @@
-import { find, set } from "lodash-es";
 import { useContextApi } from "next-common/context/api";
 import {
   useCollectivesContext,
   useCoreFellowshipPallet,
-  useRankedCollectivePallet,
 } from "next-common/context/collectives/collectives";
-import { isSameAddress } from "next-common/utils";
-import { normalizeRankedCollectiveEntries } from "next-common/utils/rankedCollective/normalize";
-import { useCallback, useEffect } from "react";
-import { createGlobalState } from "react-use";
+import { normalizeCoreCollectiveEntries } from "next-common/utils/coreCollective/normalize";
+import createGlobalCachedFetch from "next-common/utils/createGlobalCachedFetch";
+import { useCallback } from "react";
 
-// A flag to ensure only one fetch operation runs at a time.
-let fetching = false;
+const { useGlobalCachedFetch } = createGlobalCachedFetch();
 
-const useLoading = createGlobalState(fetching);
-const useCachedMembers = createGlobalState({});
-
-export default function useFellowshipCoreMembers() {
+export function useFellowshipCoreMembers() {
   const { section } = useCollectivesContext();
   const corePallet = useCoreFellowshipPallet();
-  const collectivePallet = useRankedCollectivePallet();
-
   const api = useContextApi();
-  const [cachedMembers, setCachedMembers] = useCachedMembers();
-  const [loading, setLoading] = useLoading();
 
-  const members = cachedMembers?.[section];
+  const fetchDataFunc = useCallback(
+    async (setResult) => {
+      if (!api || !api.query[corePallet]?.member) {
+        return;
+      }
 
-  const fetch = useCallback(async () => {
-    if (
-      fetching ||
-      !api ||
-      !api.query[corePallet]?.member ||
-      !api.query[collectivePallet]?.members
-    ) {
-      return;
-    }
+      try {
+        const coreEntries = await api.query[corePallet]?.member.entries();
 
-    fetching = true;
-    setLoading(fetching);
+        const data = normalizeCoreCollectiveEntries(coreEntries);
 
-    try {
-      const [collectiveEntries, coreEntries] = await Promise.all([
-        api.query[collectivePallet]?.members.entries(),
-        api.query[corePallet].member.entries(),
-      ]);
+        setResult(data);
+      } catch (e) {
+        // ignore
+      }
+    },
+    [api, corePallet],
+  );
 
-      const collectiveMembers =
-        normalizeRankedCollectiveEntries(collectiveEntries);
-
-      const data = coreEntries.map(([storageKey, memberStatus]) => {
-        const address = storageKey.args[0].toString();
-        const rank = find(collectiveMembers, (m) =>
-          isSameAddress(m.address, address),
-        )?.rank;
-
-        return {
-          address,
-          rank,
-          status: memberStatus.toJSON(),
-        };
-      });
-
-      setCachedMembers((val) => {
-        set(val, section, data);
-        return val;
-      });
-    } finally {
-      fetching = false;
-      setLoading(fetching);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [api, corePallet, collectivePallet, section]);
-
-  useEffect(() => {
-    if (!members) {
-      fetch();
-    }
-  }, [members, fetch]);
+  const {
+    result: members,
+    fetch,
+    loading,
+  } = useGlobalCachedFetch(fetchDataFunc, section);
 
   return { members, fetch, loading };
 }

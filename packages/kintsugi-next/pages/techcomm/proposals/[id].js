@@ -1,5 +1,5 @@
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import TechcommMotionDetail from "components/motion/techcommMotionDetail";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { EmptyList } from "next-common/utils/constants";
@@ -71,7 +71,7 @@ export default function TechCommProposalPage({ motion }) {
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
-  const { result: motion } = await nextApi.fetch(`tech-comm/motions/${id}`);
+  const { result: motion } = await backendApi.fetch(`tech-comm/motions/${id}`);
 
   if (!motion) {
     return getNullDetailProps(id, { motion: null });
@@ -82,7 +82,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
     context,
   );
 
-  const { result: summary } = await nextApi.fetch("overview/summary");
+  const { result: summary } = await backendApi.fetch("overview/summary");
 
   return {
     props: {

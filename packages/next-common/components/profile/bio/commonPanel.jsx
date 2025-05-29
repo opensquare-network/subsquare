@@ -22,6 +22,7 @@ export default function CommonPanel({
         className,
       )}
       style={{
+        background: "none",
         backgroundImage,
       }}
     >

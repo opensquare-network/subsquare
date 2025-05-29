@@ -1,6 +1,6 @@
 import { withCommonProps } from "next-common/lib";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import {
   gov2ReferendumsApi,
   gov2ReferendumsSummaryApi,
@@ -12,6 +12,7 @@ import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import useFetchMyReferendaVoting from "next-common/components/myvotes/referenda/useFetchMyReferendaVoting";
 import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 import { ReferendaList } from "next-common/components/referenda/list";
+import TrackPanel from "next-common/components/referenda/trackPanel";
 
 export default function ReferendaPage({ title, gov2ReferendaSummary }) {
   useFetchMyReferendaVoting();
@@ -24,6 +25,7 @@ export default function ReferendaPage({ title, gov2ReferendaSummary }) {
       title={title}
       summaryData={gov2ReferendaSummary}
     >
+      <TrackPanel className="mb-4" />
       <ActiveReferendaProvider pallet="referenda">
         <ReferendaList />
       </ActiveReferendaProvider>
@@ -48,15 +50,15 @@ export const getServerSideProps = withCommonProps(async (context) => {
     { result: tracksDetail },
   ] = await Promise.all([
     fetchOpenGovTracksProps(),
-    nextApi.fetch(gov2ReferendumsApi, {
+    backendApi.fetch(gov2ReferendumsApi, {
       page,
       pageSize,
       is_treasury,
       status,
       simple: true,
     }),
-    nextApi.fetch(gov2ReferendumsSummaryApi),
-    nextApi.fetch(gov2TracksApi),
+    backendApi.fetch(gov2ReferendumsSummaryApi),
+    backendApi.fetch(gov2TracksApi),
   ]);
 
   return {

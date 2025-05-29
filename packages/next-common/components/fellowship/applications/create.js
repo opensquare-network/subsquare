@@ -1,4 +1,3 @@
-import { ArrowExternalLinkWiki } from "@osn/icons/subsquare";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Input from "next-common/lib/input";
 import { useState } from "react";
@@ -17,7 +16,6 @@ function PageTitle() {
   return (
     <div className="flex gap-[8px] items-center">
       <h1 className="text16Bold text-textPrimary">New Application</h1>
-      <ArrowExternalLinkWiki className="w-[16px] h-[16px] [&_path]:fill-textTertiary" />
     </div>
   );
 }
@@ -54,7 +52,7 @@ function Applicant({ address, setAddress }) {
 
   return (
     <div className="flex flex-col gap-[8px]">
-      <h2 className="text14Bold">Applicant</h2>
+      <h2 className="text14Bold text-textPrimary">Applicant</h2>
       <AddressCombo
         className="!p-[12px] !h-auto !rounded-[8px]"
         address={address}
@@ -68,7 +66,7 @@ function Applicant({ address, setAddress }) {
 function ApplicationTitle({ creating, title, setTitle }) {
   return (
     <div className="flex flex-col gap-[8px]">
-      <h2 className="text14Bold">Title</h2>
+      <h2 className="text14Bold text-textPrimary">Title</h2>
       <Input
         disabled={creating}
         placeholder="Please fill the title"
@@ -87,7 +85,7 @@ function ApplicationContent({
 }) {
   return (
     <div className="flex flex-col gap-[8px]">
-      <h2 className="text14Bold">Content</h2>
+      <h2 className="text14Bold text-textPrimary">Content</h2>
       <Editor
         value={content}
         onChange={setContent}

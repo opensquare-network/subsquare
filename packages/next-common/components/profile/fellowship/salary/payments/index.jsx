@@ -1,7 +1,7 @@
 import DataList from "next-common/components/dataList";
 import Pagination from "next-common/components/pagination";
 import { usePageProps } from "next-common/context/page";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import {
   ambassadorSalaryPaymentsApi,
   fellowshipSalaryPaymentsApi,
@@ -36,7 +36,7 @@ export function FellowshipSalaryPayments({ setPaymentsCount, columns }) {
       return;
     }
 
-    const resp = await nextApi.fetch(paymentsApi, {
+    const resp = await backendApi.fetch(paymentsApi, {
       who: address,
       page,
       pageSize: defaultPageSize,

@@ -208,7 +208,7 @@ export function TreasurySpendAmount({ meta }) {
   );
 }
 
-function PostValueTitle({ data, type }) {
+export function PostValueTitle({ data, type }) {
   const { decimals, symbol } = useChainSettings(data.indexer?.blockHeight);
   const { onchainData, value } = data;
   const localTreasurySpendAmount = onchainData?.isTreasury
@@ -285,6 +285,7 @@ export default function Post({ data, href, type }) {
   }
 
   const timeAgo = formatTimeAgo(data.time);
+  const createAgo = formatTimeAgo(data.createdAt);
 
   let elapseIcon = null;
   if (
@@ -364,9 +365,9 @@ export default function Post({ data, href, type }) {
             <PostUser data={data} type={type} />
             {data.trackName && (
               <MobileHiddenInfo>
-                <Link href={trackTagLink} passHref legacyBehavior>
+                <Link href={trackTagLink} passHref>
                   <LinkInfo>
-                    <Gov2TrackTag name={data.trackName} />
+                    <Gov2TrackTag name={data.trackName} id={data.track} />
                   </LinkInfo>
                 </Link>
               </MobileHiddenInfo>
@@ -385,14 +386,31 @@ export default function Post({ data, href, type }) {
             {data.time && (
               <Info>
                 <SystemActivity className="w-4 h-4 stroke-textTertiary [&_path]:stroke-2" />
-                <span>{timeAgo}</span>
+                <Tooltip
+                  className="flex"
+                  content={
+                    <div className="text12Medium">
+                      <ul className="list-disc list-inside">
+                        <li>Created at {createAgo}</li>
+                        <li>Latest activity at {timeAgo}</li>
+                      </ul>
+                    </div>
+                  }
+                >
+                  <span className="cursor-pointer">{timeAgo}</span>
+                </Tooltip>
                 <Flex className="elapseIcon">{elapseIcon}</Flex>
               </Info>
             )}
             {commentsCount > -1 && (
               <MobileHiddenInfo>
-                <SystemComment className="w-4 h-4 stroke-textTertiary [&_path]:stroke-2" />
-                {`${commentsCount}`}
+                <Tooltip
+                  content={`${commentsCount} comments`}
+                  className="flex cursor-pointer"
+                >
+                  <SystemComment className="w-4 h-4 stroke-textTertiary [&_path]:stroke-2" />
+                  {commentsCount}
+                </Tooltip>
               </MobileHiddenInfo>
             )}
             {showTally && hasTally && (

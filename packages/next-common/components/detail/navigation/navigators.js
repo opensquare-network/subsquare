@@ -8,7 +8,7 @@ import { NoticeWrapper } from "../../styled/containers/titleContainer";
 
 export function ReferendumLink({ referendumIndex }) {
   return (
-    <Link href={`/democracy/referenda/${referendumIndex}`} legacyBehavior>
+    <Link href={`/democracy/referenda/${referendumIndex}`}>
       {`Referendum #${referendumIndex}`}
     </Link>
   );
@@ -42,7 +42,7 @@ export function DemocracyProposalNavigator({ proposalIndex, isLink = true }) {
   }
 
   return (
-    <Link href={`/democracy/proposals/${proposalIndex}`} legacyBehavior>
+    <Link href={`/democracy/proposals/${proposalIndex}`}>
       {`Proposal #${proposalIndex}`}
     </Link>
   );
@@ -78,7 +78,7 @@ export function CouncilMotionNavigator({
   hasTriangle = true,
 }) {
   let link = (
-    <Link href={`/council/motions/${getMotionId(motion)}`} legacyBehavior>
+    <Link href={`/council/motions/${getMotionId(motion)}`}>
       {`Council #${shortMotionId(motion)}`}
     </Link>
   );
@@ -101,7 +101,7 @@ export function TechCommMotionNavigator({
   hasTriangle = true,
 }) {
   let link = (
-    <Link href={`/techcomm/proposals/${getMotionId(motion)}`} legacyBehavior>
+    <Link href={`/techcomm/proposals/${getMotionId(motion)}`}>
       {`Tech. Comm. #${shortMotionId(motion)}`}
     </Link>
   );
@@ -127,7 +127,7 @@ export function TreasurySpendNavigator({
 
   if (isLink) {
     link = (
-      <Link href={`/treasury/spends/${index}`} legacyBehavior>
+      <Link href={`/treasury/spends/${index}`}>
         {`Treasury Spend #${index}`}
       </Link>
     );

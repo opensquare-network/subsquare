@@ -22,6 +22,30 @@ export default function CreateProposalSubmitButton({
   notePreimageTx,
   disabled,
 }) {
+  const { component } = useCreateProposalSubmitButton({
+    trackId,
+    enactment,
+    encodedHash,
+    encodedLength,
+    notePreimageTx,
+    disabled,
+    buttonText: {
+      submitProposal: "Submit Proposal",
+      createPreimage: "Create Preimage",
+    },
+  });
+  return component;
+}
+
+export function useCreateProposalSubmitButton({
+  trackId,
+  enactment,
+  encodedHash,
+  encodedLength,
+  notePreimageTx,
+  disabled,
+  buttonText,
+}) {
   const listPageType = useListPageType();
 
   let pallet = "referenda";
@@ -90,26 +114,28 @@ export default function CreateProposalSubmitButton({
     });
 
   const isLoading = isPreimageTxSubmitting || isReferendaTxSubmitting;
+  const component = preimageExists ? (
+    <LoadingPrimaryButton
+      loading={isLoading}
+      disabled={disabled}
+      onClick={submitReferendaTx}
+    >
+      {buttonText?.submitProposal || "Submit"}
+    </LoadingPrimaryButton>
+  ) : (
+    <LoadingPrimaryButton
+      loading={isLoading}
+      disabled={disabled || !notePreimageTx}
+      onClick={submitPreimageTx}
+    >
+      {buttonText?.createPreimage || "Submit"}
+    </LoadingPrimaryButton>
+  );
 
-  if (preimageExists) {
-    return (
-      <LoadingPrimaryButton
-        loading={isLoading}
-        disabled={disabled}
-        onClick={submitReferendaTx}
-      >
-        Submit Proposal
-      </LoadingPrimaryButton>
-    );
-  } else {
-    return (
-      <LoadingPrimaryButton
-        loading={isLoading}
-        disabled={disabled || !notePreimageTx}
-        onClick={submitPreimageTx}
-      >
-        Create Preimage
-      </LoadingPrimaryButton>
-    );
-  }
+  return {
+    isLoading,
+    component,
+    preimageExists,
+    notePreimageTx,
+  };
 }

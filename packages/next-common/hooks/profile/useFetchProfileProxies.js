@@ -91,3 +91,39 @@ export function useFetchReceivedProfileProxies() {
     data,
   };
 }
+
+export function useIsPureProxy(address) {
+  const [isPure, setIsPure] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function checkIsPure() {
+      if (!address) {
+        setIsPure(false);
+        setIsLoading(false);
+        return;
+      }
+
+      setIsLoading(true);
+      try {
+        const result = await queryProxies(
+          { delegator: address, isActive: true },
+          1,
+          100,
+        );
+
+        const isPureProxy =
+          result?.data?.items?.some((item) => item.isPure) || false;
+        setIsPure(isPureProxy);
+      } catch (error) {
+        setIsPure(false);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    checkIsPure();
+  }, [address]);
+
+  return { isPure, isLoading };
+}

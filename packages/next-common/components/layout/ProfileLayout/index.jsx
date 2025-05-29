@@ -99,7 +99,7 @@ export default function ProfileLayout({
       <div>
         <div
           className={cn(
-            "px-12 py-4 pb-6 mt-[48px] mx-auto max-w-[1200px]",
+            "px-6 py-4 pb-6 mt-[48px] mx-auto max-w-[1200px]",
             "max-sm:px-6",
           )}
         >

@@ -6,7 +6,7 @@ import {
   calendarUserEventsSummaryApi,
 } from "../services/url";
 import { useMountedState } from "react-use";
-import nextApi from "../services/nextApi";
+import { backendApi } from "../services/nextApi";
 import dayjs from "dayjs";
 
 /**
@@ -23,7 +23,10 @@ function useFetchCalendarEvents(endpoint, date, unit) {
   const cachedKey = `${endpoint}_${begin_time}_${end_time}_${unit}`;
 
   const refresh = useCallback(async () => {
-    const { result } = await nextApi.fetch(endpoint, { begin_time, end_time });
+    const { result } = await backendApi.fetch(endpoint, {
+      begin_time,
+      end_time,
+    });
     if (result) {
       setCachedEvents((events) => {
         return {

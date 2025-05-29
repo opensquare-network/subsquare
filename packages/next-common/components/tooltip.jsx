@@ -20,6 +20,7 @@ export default function Tooltip({
   label,
   className,
   style,
+  contentClassName,
   side,
   sideOffset = 2,
   keepTooltipOpenAfterClick,
@@ -46,6 +47,7 @@ export default function Tooltip({
           "text12Normal text-textPrimaryContrast break-words",
           "bg-tooltipBg",
           "[&_.value-display-symbol]:text-inherit",
+          contentClassName,
         )}
       >
         {content}

@@ -23,7 +23,7 @@ export default function StatescanAccountLink({ address }) {
       href={`https://${
         statescanDomainMap[chain] || chain
       }.statescan.io/#/accounts/${address}`}
-      icon={<StatescanSVG />}
+      icon={<StatescanSVG className="w-5 h-5" />}
     />
   );
 }

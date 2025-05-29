@@ -3,7 +3,7 @@ import PopupLabel from "../label";
 import Input from "next-common/lib/input";
 import { startCase } from "lodash-es";
 import { useAsync } from "react-use";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { StatusWrapper } from "../styled";
 import Loading from "next-common/components/loading";
 import { WarningMessage } from "next-common/components/setting/styled";
@@ -44,7 +44,7 @@ function useReferendumTitle(referendumIndex, trackId) {
     if (!isValidIntegerIndex(referendumIndex)) {
       return;
     }
-    return await nextApi.fetch(`gov2/referendums/${referendumIndex}`);
+    return await backendApi.fetch(`gov2/referendums/${referendumIndex}`);
   }, [referendumIndex]);
 
   const referendumDetail = fetchReferendumResult?.result;

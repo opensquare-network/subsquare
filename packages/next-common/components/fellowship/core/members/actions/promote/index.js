@@ -1,11 +1,11 @@
 import { useSelector } from "react-redux";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import useChainOrScanHeight from "next-common/hooks/height";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Tooltip from "next-common/components/tooltip";
 import { useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import rankToIndex from "next-common/utils/fellowship/rankToIndex";
-import useFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
+import useFellowshipCoreMembersWithRank from "next-common/hooks/fellowship/core/useFellowshipCoreMembersWithRank";
 import { find, noop } from "lodash-es";
 import { CollectivesPromoteTracks } from "next-common/components/fellowship/core/members/actions/promote/constants";
 import useRelatedPromotionReferenda from "next-common/hooks/fellowship/useRelatedPromotionReferenda";
@@ -38,9 +38,9 @@ export function useCanPromote(member, params) {
   } = member;
   const { relatedReferenda } = useRelatedPromotionReferenda(memberAddress);
 
-  const { members } = useFellowshipCoreMembers();
+  const { members } = useFellowshipCoreMembersWithRank();
 
-  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const latestHeight = useChainOrScanHeight();
   const blockTime = useSelector(blockTimeSelector);
 
   const me = find(members, { address });

@@ -1,5 +1,5 @@
 import { isNil } from "lodash-es";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import useFellowshipCoreOnlySwitch from "./useFellowshipCoreOnlySwitch";
 import useSubCoreCollectivesMember from "next-common/hooks/collectives/useSubCoreCollectivesMember";
 import usePeriodSelect, {
@@ -20,7 +20,8 @@ import {
   filterDemotionExpiredFn,
   filterPromotableFn,
 } from "next-common/components/pages/fellowship/periodFilters";
-import { useContextApi } from "next-common/context/api";
+import { isSameAddress } from "next-common/utils";
+import { useFellowshipCoreMembers } from "next-common/hooks/fellowship/core/useFellowshipCoreMembers";
 
 function useSingleMemberStatus(item) {
   const { member, isLoading } = useSubCoreCollectivesMember(
@@ -35,43 +36,60 @@ function useSingleMemberStatus(item) {
 }
 
 export function useMembersWithStatus(members) {
-  const api = useContextApi();
-  const pallet = useCoreFellowshipPallet();
-  const [membersWithStatus, setMembersWithStatus] = useState();
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    if (!api) {
-      return;
-    }
-
+  const { members: coreMembers, loading } = useFellowshipCoreMembers();
+  return useMemo(() => {
     if (!members || !members.length) {
-      setMembersWithStatus([]);
-      setIsLoading(false);
-      return;
+      return {
+        membersWithStatus: [],
+        isLoading: false,
+      };
     }
 
-    setIsLoading(true);
-    api.query[pallet].member
-      .multi(members.map((m) => m.address))
-      .then((result) => {
-        const membersWithStatus = members.map((item, index) => {
-          const status = result[index]?.toJSON();
-          return {
-            ...item,
-            status,
-            isFellowshipCoreMember: !isNil(status),
-          };
-        });
-        setMembersWithStatus(membersWithStatus);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [api, members, pallet]);
+    if (loading) {
+      return {
+        membersWithStatus: null,
+        isLoading: true,
+      };
+    }
+
+    const membersWithStatus = members.map((item) => {
+      const member = (coreMembers || []).find((m) =>
+        isSameAddress(m.address, item.address),
+      );
+      return {
+        ...item,
+        status: member?.status,
+        isFellowshipCoreMember: !isNil(member?.status),
+      };
+    });
+
+    return {
+      membersWithStatus,
+      isLoading: false,
+    };
+  }, [members, coreMembers, loading]);
+}
+
+export function useMemberWithStatus(member) {
+  const pallet = useCoreFellowshipPallet();
+  const { member: coreMember, isLoading } = useSubCoreCollectivesMember(
+    member?.address,
+    pallet,
+  );
+
+  const memberWithStatus = useMemo(() => {
+    if (isLoading || !coreMember) {
+      return member;
+    }
+    return {
+      ...member,
+      status: coreMember,
+      isFellowshipCoreMember: !isNil(coreMember),
+    };
+  }, [isLoading, member, coreMember]);
 
   return {
-    membersWithStatus,
+    memberWithStatus,
     isLoading,
   };
 }

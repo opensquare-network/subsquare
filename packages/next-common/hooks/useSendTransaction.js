@@ -30,6 +30,9 @@ import { useSignetSdk } from "next-common/context/signet";
 import { isEmptyFunc } from "next-common/utils/isEmptyFunc";
 import isHydradx from "next-common/utils/isHydradx";
 import { HydradxAssets } from "next-common/utils/hydradx";
+import { useWalletConnect } from "next-common/context/walletconnect";
+import { sendWalletConnectTx } from "next-common/utils/sendTransaction/sendWalletConnectTx";
+import { useWalletConnectBuildPayload } from "next-common/hooks/useWalletConnectBuildPayload";
 
 function shouldSendEvmTx(signerAccount) {
   const isWalletMetamask = signerAccount?.meta?.source === WalletTypes.METAMASK;
@@ -49,6 +52,10 @@ function shouldSendSignetTx(signerAccount) {
 
 function shouldSendMimirTx(signerAccount) {
   return signerAccount?.meta?.source === WalletTypes.MIMIR;
+}
+
+function shouldSendWalletConnectTx(signerAccount) {
+  return signerAccount?.meta?.source === WalletTypes.WALLETCONNECT;
 }
 
 async function shouldSendHydraDXMultiFeeTx(api, signerAccount) {
@@ -81,6 +88,9 @@ export function useSendTransaction() {
   const signerAccount = useSignerAccount();
   const setSigner = useSetSigner();
   const { sdk: signetSdk } = useSignetSdk();
+
+  const { signWcTx } = useWalletConnect();
+  const buildPayload = useWalletConnectBuildPayload();
 
   const sendTxFunc = useCallback(
     async ({
@@ -232,6 +242,23 @@ export function useSendTransaction() {
           return;
         }
 
+        if (shouldSendWalletConnectTx(signerAccount)) {
+          await sendWalletConnectTx({
+            api,
+            tx,
+            signerAddress: signerAccount?.address,
+            buildPayload,
+            signWcTx,
+            onStarted,
+            onInBlock: _onInBlock,
+            onSubmitted: _onSubmitted,
+            onFinalized: _onFinalized,
+            onError,
+          });
+
+          return;
+        }
+
         await sendSubstrateTx({
           api,
           tx,
@@ -244,10 +271,11 @@ export function useSendTransaction() {
         });
       } catch (e) {
         dispatch(newErrorToast(e.message));
+      } finally {
         setIsSubmitting(false);
       }
     },
-    [dispatch, signerAccount, signetSdk, setSigner],
+    [buildPayload, dispatch, signWcTx, signerAccount, signetSdk, setSigner],
   );
 
   return {

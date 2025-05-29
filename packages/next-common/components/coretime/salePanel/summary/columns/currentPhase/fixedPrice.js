@@ -3,15 +3,14 @@ import {
   useCoretimeSaleLeadinLength,
 } from "next-common/context/coretime/sale/phases/leadin";
 import { useCoretimeSaleStart } from "next-common/context/coretime/sale/provider";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
-import { useSelector } from "react-redux";
+import useChainOrScanHeight from "next-common/hooks/height";
 import CurrentPhaseEnd from "next-common/components/coretime/salePanel/summary/columns/currentPhase/common";
 import useCoretimeSaleEnd from "next-common/context/coretime/hooks/useCoretimeSaleEnd";
 
 function FixPricePhaseGuard({ children }) {
   const saleStartHeight = useCoretimeSaleStart();
   const leadinLength = useCoretimeSaleLeadinLength();
-  const chainHeight = useSelector(chainOrScanHeightSelector);
+  const chainHeight = useChainOrScanHeight();
 
   if (chainHeight < saleStartHeight + leadinLength) {
     return null;
