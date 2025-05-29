@@ -36,10 +36,7 @@ export default function useSetIdentityPrompt() {
       message: (
         <div>
           Set your personalized on-chain identity! Manage it{" "}
-          <Link
-            className="underline text14Medium font-bold"
-            href={identityPage}
-          >
+          <Link className="underline text14Medium" href={identityPage}>
             here
           </Link>
           .

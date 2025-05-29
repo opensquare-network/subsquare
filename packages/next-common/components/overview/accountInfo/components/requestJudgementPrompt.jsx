@@ -4,13 +4,16 @@ import Link from "next/link";
 import { PromptTypes } from "next-common/components/scrollPrompt";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";
+import { useRouter } from "next/router";
 
 const judgementPage = "/people?tab=judgements";
 
 export default function RequestJudgementPrompt() {
+  const router = useRouter();
   const address = useRealAddress();
   const { hasIdentity, identity } = useIdentityInfo(address);
-  if (!hasIdentity || !identity) {
+  const isJudgementPage = router.asPath?.startsWith(judgementPage);
+  if (!hasIdentity || !identity || isJudgementPage) {
     return null;
   }
 
@@ -27,7 +30,7 @@ export default function RequestJudgementPrompt() {
       <div>
         Your on-chain identity has not been verified yet, request registrar to
         judge it{" "}
-        <Link className="underline text14Medium font-bold" href={judgementPage}>
+        <Link className="underline text14Medium" href={judgementPage}>
           here
         </Link>
         .
