@@ -3,7 +3,7 @@ import { noop } from "lodash-es";
 import DataList from "next-common/components/dataList";
 import Pagination from "next-common/components/pagination";
 import Tabs from "next-common/components/tabs";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { useState } from "react";
 import { useUpdateEffect } from "react-use";
 
@@ -53,7 +53,7 @@ export function FellowshipSalaryCycleDetailListTemplateTable({
 
   function fetchData() {
     if (api?.path) {
-      nextApi
+      backendApi
         .fetch(api?.path, { ...api.params, page, pageSize: result?.pageSize })
         .then((resp) => {
           if (resp.result) {
