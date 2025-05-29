@@ -9,31 +9,50 @@ import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 const identityPage = "/people";
+const judgementPage = "/people?tab=judgements";
 
 export default function useSetIdentityPrompt() {
   const router = useRouter();
   const chainSettings = useChainSettings();
   const address = useRealAddress();
-  const { hasIdentity } = useIdentityInfo(address);
+  const { hasIdentity, identity } = useIdentityInfo(address);
   const pathName = router.pathname;
   const { modules } = chainSettings;
   const supportedPeople = modules?.people;
 
   const isPeoplePage = pathName?.startsWith(identityPage);
+  const isJudgementPage = router.asPath?.startsWith(judgementPage);
+
+  const isNotVerified = useMemo(() => {
+    return identity?.info?.status === "NOT_VERIFIED";
+  }, [identity?.info?.status]);
 
   const [visible, setVisible] = useCookieValue(
-    CACHE_KEY.setIdentityPromptVisible,
+    isNotVerified
+      ? CACHE_KEY.requestJudgementPrompt
+      : CACHE_KEY.setIdentityPromptVisible,
     true,
   );
 
   return useMemo(() => {
-    if (!visible || !supportedPeople || isPeoplePage || hasIdentity) {
+    if (!visible || !supportedPeople) {
       return {};
     }
-
-    return {
-      key: CACHE_KEY.setIdentityPromptVisible,
-      message: (
+    let message;
+    if (isNotVerified && !isJudgementPage) {
+      message = (
+        <div>
+          Your on-chain identity has not been verified yet, request registrar to
+          judge it{" "}
+          <Link className="underline text14Medium" href={judgementPage}>
+            here
+          </Link>
+          .
+        </div>
+      );
+    }
+    if (!isPeoplePage && !hasIdentity) {
+      message = (
         <div>
           Set your personalized on-chain identity! Manage it{" "}
           <Link className="underline text14Medium" href={identityPage}>
@@ -41,9 +60,26 @@ export default function useSetIdentityPrompt() {
           </Link>
           .
         </div>
-      ),
-      type: PromptTypes.INFO,
-      close: () => setVisible(false, { expires: 15 }),
-    };
-  }, [setVisible, visible, supportedPeople, isPeoplePage, hasIdentity]);
+      );
+    }
+
+    if (message) {
+      return {
+        key: CACHE_KEY.setIdentityPromptVisible,
+        message,
+        type: PromptTypes.INFO,
+        close: () => setVisible(false, { expires: 15 }),
+      };
+    }
+
+    return {};
+  }, [
+    hasIdentity,
+    isJudgementPage,
+    isNotVerified,
+    isPeoplePage,
+    setVisible,
+    supportedPeople,
+    visible,
+  ]);
 }
