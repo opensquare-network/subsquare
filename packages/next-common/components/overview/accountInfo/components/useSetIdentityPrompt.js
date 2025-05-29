@@ -41,12 +41,12 @@ export default function useSetIdentityPrompt() {
     if (!visible || !supportedPeople) {
       return {};
     }
+
     let message;
     if (hasIdentity && isNotVerified && !isJudgementPage) {
       message = (
         <div>
-          Your on-chain identity has not been verified yet, request registrar to
-          judge it{" "}
+          Your on-chain identity is not verified yet. Request judgements&nbsp;
           <Link className="underline text14Medium" href={judgementPage}>
             here
           </Link>
@@ -56,7 +56,7 @@ export default function useSetIdentityPrompt() {
     } else if (!hasIdentity && !isPeoplePage) {
       message = (
         <div>
-          Set your personalized on-chain identity! Manage it{" "}
+          Set your on-chain identity&nbsp;
           <Link className="underline text14Medium" href={identityPage}>
             here
           </Link>
