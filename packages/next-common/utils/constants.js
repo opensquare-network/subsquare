@@ -119,6 +119,7 @@ export const CACHE_KEY = {
   connectedAccount: "connected-account",
   delegationPromptVisible: "delegation-prompt-visible",
   setAvatarPromptVisible: "set-avatar-prompt-visible",
+  setIdentityPromptVisible: "set-identity-prompt-visible",
   fellowshipDemotionExpiredVisible: "fellowship-demotion-expired-visible",
   fellowshipDemotionExpireRemindVisible:
     "fellowship-demotion-expire-remind-visible",
