@@ -16,6 +16,7 @@ import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
 import ProfileUserInfoProvider, {
   useProfileUserInfoContext,
 } from "next-common/components/profile/header/context/profileUserInfoContext";
+import { STATICS_CDN_URL } from "next-common/utils/consts/statics";
 
 const ProfileBannerEditPopup = dynamicPopup(
   () => import("next-common/components/profileBannerEditPopup"),
@@ -31,7 +32,7 @@ export function useProfileBannerUrl() {
 
   const bannerUrl = useMemo(() => {
     if (!user?.bannerCid) {
-      return `https://cdn.jsdelivr.net/gh/opensquare-network/subsquare-static/banner/${filename}`;
+      return `${STATICS_CDN_URL}/banner/${filename}`;
     }
 
     return getIpfsLink(user.bannerCid);
