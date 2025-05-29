@@ -2,11 +2,31 @@
 
 All notable changes to this project will be documented in this file.
 
+# 4.7.5
+
+date: 2025-05-29
+
+- A new design of bounty list. We show active bounties at first.
+- Support XCM v3 for cross chain call decode.
+- Show transferable balance on the new referendum popups.
+- Remove referenda track tag tooltip temporarily.
+- New referenda popup:
+    - Add preimage settings for kusama, hydration, paseo and bifrost. So users can see deposit warnings when they are
+      creating new referenda.
+    - Fix dark mode style on the new referendum popups.
+    - Add copywriting to clearly show whether user balance is enough for deposits.
+- Improve walletconnect init code to prevent redundant initiation.
+- Add parent bounty id to child bounty index.
+- Remove useless component for collectives overview page.
+- Disable more API calls through next.js.
+- Fix the bug astar community treasury post can not be edited.
+- UI/bug fixes and code refactor.
+
 # 4.7.4
 
 date: 2025-05-26
 
-- Support the new child bounties index. In the new code, child bounty index grow only under a parent bounty.
+- Support the new child bounties index. By the new code, child bounty index grow only under a parent bounty.
 - Add warning tips on new referendum popup to check whether users have enough balance for preimage and referendum
   submission deposits.
 - Extract, decode and show system para chain call on a relay chain referendum when it proposes a cross chain call.
