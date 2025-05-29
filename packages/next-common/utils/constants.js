@@ -143,6 +143,8 @@ export const ADDRESS_CACHE_KEYS = [
   CACHE_KEY.extensionUpdateMetadata,
   CACHE_KEY.assetHubPromptVisible,
   CACHE_KEY.multisigPromptVisible,
+  CACHE_KEY.requestJudgementPrompt,
+  CACHE_KEY.setIdentityPromptVisible,
 ];
 
 export const CHAIN = process.env.NEXT_PUBLIC_CHAIN;
