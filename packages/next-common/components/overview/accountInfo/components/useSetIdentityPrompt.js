@@ -27,19 +27,22 @@ export default function useSetIdentityPrompt() {
     return identity?.info?.status === "NOT_VERIFIED";
   }, [identity?.info?.status]);
 
-  const [visible, setVisible] = useCookieValue(
-    isNotVerified
-      ? CACHE_KEY.requestJudgementPrompt
-      : CACHE_KEY.setIdentityPromptVisible,
-    true,
+  const cacheKey = useMemo(
+    () =>
+      isNotVerified
+        ? CACHE_KEY.requestJudgementPrompt
+        : CACHE_KEY.setIdentityPromptVisible,
+    [isNotVerified],
   );
+
+  const [visible, setVisible] = useCookieValue(cacheKey, true);
 
   return useMemo(() => {
     if (!visible || !supportedPeople) {
       return {};
     }
     let message;
-    if (isNotVerified && !isJudgementPage) {
+    if (hasIdentity && isNotVerified && !isJudgementPage) {
       message = (
         <div>
           Your on-chain identity has not been verified yet, request registrar to
@@ -50,8 +53,7 @@ export default function useSetIdentityPrompt() {
           .
         </div>
       );
-    }
-    if (!isPeoplePage && !hasIdentity) {
+    } else if (!hasIdentity && !isPeoplePage) {
       message = (
         <div>
           Set your personalized on-chain identity! Manage it{" "}
@@ -65,7 +67,7 @@ export default function useSetIdentityPrompt() {
 
     if (message) {
       return {
-        key: CACHE_KEY.setIdentityPromptVisible,
+        key: cacheKey,
         message,
         type: PromptTypes.INFO,
         close: () => setVisible(false, { expires: 15 }),
@@ -74,6 +76,7 @@ export default function useSetIdentityPrompt() {
 
     return {};
   }, [
+    cacheKey,
     hasIdentity,
     isJudgementPage,
     isNotVerified,
