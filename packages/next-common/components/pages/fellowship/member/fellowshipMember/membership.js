@@ -6,7 +6,7 @@ import { usePageProps } from "next-common/context/page";
 import rankToIndex from "next-common/utils/fellowship/rankToIndex";
 import SummaryItem from "next-common/components/summary/layout/item";
 import SummaryLayout from "next-common/components/summary/layout/layout";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { fellowshipStatisticsUsersApi } from "next-common/services/url";
 import { useMemberWithStatus } from "next-common/components/fellowship/collective/hook/useFellowshipCoreMembersFilter";
 import CoreFellowshipMemberDemotionPeriod from "next-common/components/collectives/core/member/demotionPeriod";
@@ -71,7 +71,7 @@ function useUserStatisticsData(address) {
       return;
     }
 
-    const resp = await nextApi.fetch(statisticsApi);
+    const resp = await backendApi.fetch(statisticsApi);
 
     return resp?.result;
   }, [address, statisticsApi]);
