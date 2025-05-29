@@ -30,6 +30,7 @@ import Button from "next-common/lib/button";
 import AccountPanelQuickAccess from "./components/accountPanelQuickAccess";
 import AccountUnlockBalancePrompt from "./components/accountUnlockBalancePrompt";
 import WithPallet from "next-common/components/common/withPallet";
+import RequestJudgementPrompt from "./components/requestJudgementPrompt";
 
 const RelayChainTeleportPopup = dynamic(
   import("./relayChainTeleportPopup").then((mod) => mod.default),
@@ -308,6 +309,7 @@ export function CommonAccountInfoPanel() {
       </WithPallet>
       <AssetHubManagePrompt />
       <AccountPanelScrollPrompt />
+      <RequestJudgementPrompt />
     </NeutralPanel>
   );
 }

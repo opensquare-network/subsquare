@@ -5,12 +5,16 @@ import { useCookieValue } from "next-common/utils/hooks/useCookieValue";
 import { useMemo } from "react";
 import { useChainSettings } from "next-common/context/chain";
 import { useRouter } from "next/router";
+import useIdentityInfo from "next-common/hooks/useIdentityInfo";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 const identityPage = "/people";
 
 export default function useSetIdentityPrompt() {
   const router = useRouter();
   const chainSettings = useChainSettings();
+  const address = useRealAddress();
+  const { hasIdentity } = useIdentityInfo(address);
   const pathName = router.pathname;
   const { modules } = chainSettings;
   const supportedPeople = modules?.people;
@@ -23,7 +27,7 @@ export default function useSetIdentityPrompt() {
   );
 
   return useMemo(() => {
-    if (!visible || !supportedPeople || isPeoplePage) {
+    if (!visible || !supportedPeople || isPeoplePage || hasIdentity) {
       return {};
     }
 
@@ -44,5 +48,5 @@ export default function useSetIdentityPrompt() {
       type: PromptTypes.INFO,
       close: () => setVisible(false, { expires: 15 }),
     };
-  }, [setVisible, visible, supportedPeople, isPeoplePage]);
+  }, [setVisible, visible, supportedPeople, isPeoplePage, hasIdentity]);
 }

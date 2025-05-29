@@ -129,7 +129,7 @@ export const CACHE_KEY = {
   extensionUpdateMetadata: "extensionUpdateMetadata",
   assetHubPromptVisible: "asset-hub-management-prompt-visible",
   multisigPromptVisible: "multisig-management-prompt-visible",
-
+  requestJudgementPrompt: "request-judgement-prompt",
   walletConnectSession: "walletconnect-session",
 };
 
