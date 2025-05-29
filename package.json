@@ -12,9 +12,9 @@
     "lint": "yarn workspace @subsquare/kintsugi-next lint && yarn workspace @subsquare/next lint && yarn workspace next-common lint && yarn workspace @subsquare/collectives-next lint",
     "lint-fix": "yarn workspace @subsquare/kintsugi-next lint --fix && yarn workspace @subsquare/next lint --fix && yarn workspace next-common lint --fix && yarn workspace @subsquare/collectives-next lint --fix",
     "test": "vitest",
-    "next":"yarn workspace @subsquare/next",
-    "collectives":"yarn workspace @subsquare/collectives-next",
-    "kintsugi":"yarn workspace @subsquare/kintsugi-next"
+    "next": "yarn workspace @subsquare/next",
+    "collectives": "yarn workspace @subsquare/collectives-next",
+    "kintsugi": "yarn workspace @subsquare/kintsugi-next"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",
