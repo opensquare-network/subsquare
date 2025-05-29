@@ -5,15 +5,11 @@ import { isNil } from "lodash-es";
 import { useCuratorParams } from "next-common/context/treasury/bounties";
 
 function Curator({ showBadge = true }) {
-  const { badge, signatories, loading } = useCuratorParams();
+  const { badge, loading } = useCuratorParams() ?? {};
 
   return (
     <LoadableContent isLoading={loading && isNil(badge)}>
-      <CuratorInfoItem
-        signatories={signatories}
-        badge={badge}
-        showBadge={showBadge}
-      />
+      <CuratorInfoItem showBadge={showBadge} />
     </LoadableContent>
   );
 }
