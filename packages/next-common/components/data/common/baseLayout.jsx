@@ -1,14 +1,14 @@
 import { useDataTabsContext } from "../context/tabs";
 import BaseLayout from "next-common/components/layout/baseLayout";
 import { cn } from "next-common/utils";
-import useStaticPublicImage from "next-common/hooks/usePublicStaticImage";
+import { STATICS_CDN_URL } from "next-common/utils/consts/statics";
 
 export default function DataBaseLayout({ children }) {
   const { title = "" } = useDataTabsContext();
   const seoInfo = { title, desc: title };
 
-  const lightBg = useStaticPublicImage("project-page-bg-data-light.svg");
-  const darkBg = useStaticPublicImage("project-page-bg-data-dark.svg");
+  const lightBg = `${STATICS_CDN_URL}/public/project-page-bg-data-light.svg`;
+  const darkBg = `${STATICS_CDN_URL}/public/project-page-bg-data-dark.svg`;
 
   return (
     <BaseLayout seoInfo={seoInfo}>
