@@ -14,7 +14,7 @@ function CuratorInfoItem({ showBadge = true }) {
   const userMaxWidth = sm ? 121 : 196;
 
   const curator = useCurator();
-  const { badge, signatories } = useCuratorParams();
+  const { badge, signatories = [] } = useCuratorParams() ?? {};
 
   if (!curator) {
     return null;
