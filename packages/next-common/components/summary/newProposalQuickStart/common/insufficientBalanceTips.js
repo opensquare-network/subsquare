@@ -65,7 +65,7 @@ export function InsufficientBalanceTipsInner({ byteLength }) {
   );
   const preimageDeposit = usePreimageDeposit(byteLength);
   const submissionDeposit = useMemo(
-    () => api.consts?.referenda?.submissionDeposit?.toString() || 0,
+    () => api?.consts?.referenda?.submissionDeposit?.toString() || 0,
     [api],
   );
 
