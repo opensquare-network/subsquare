@@ -119,6 +119,7 @@ export const CACHE_KEY = {
   connectedAccount: "connected-account",
   delegationPromptVisible: "delegation-prompt-visible",
   setAvatarPromptVisible: "set-avatar-prompt-visible",
+  setIdentityPromptVisible: "set-identity-prompt-visible",
   fellowshipDemotionExpiredVisible: "fellowship-demotion-expired-visible",
   fellowshipDemotionExpireRemindVisible:
     "fellowship-demotion-expire-remind-visible",
@@ -128,7 +129,7 @@ export const CACHE_KEY = {
   extensionUpdateMetadata: "extensionUpdateMetadata",
   assetHubPromptVisible: "asset-hub-management-prompt-visible",
   multisigPromptVisible: "multisig-management-prompt-visible",
-
+  requestJudgementPrompt: "request-judgement-prompt",
   walletConnectSession: "walletconnect-session",
 };
 
@@ -142,6 +143,8 @@ export const ADDRESS_CACHE_KEYS = [
   CACHE_KEY.extensionUpdateMetadata,
   CACHE_KEY.assetHubPromptVisible,
   CACHE_KEY.multisigPromptVisible,
+  CACHE_KEY.requestJudgementPrompt,
+  CACHE_KEY.setIdentityPromptVisible,
 ];
 
 export const CHAIN = process.env.NEXT_PUBLIC_CHAIN;

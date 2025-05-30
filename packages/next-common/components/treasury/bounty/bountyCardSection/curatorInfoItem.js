@@ -4,15 +4,17 @@ import React from "react";
 import { CuratorBadge } from "next-common/components/treasury/bounty/curator";
 import Tooltip from "next-common/components/tooltip";
 import { AddressesTooltip } from "next-common/components/multisigs/fields";
+import {
+  useCurator,
+  useCuratorParams,
+} from "next-common/context/treasury/bounties";
 
-function CuratorInfoItem({
-  badge,
-  showBadge = true,
-  signatories = [],
-  curator,
-}) {
+function CuratorInfoItem() {
   const { sm } = useScreenSize();
   const userMaxWidth = sm ? 121 : 196;
+
+  const curator = useCurator();
+  const { badge, signatories = [] } = useCuratorParams() ?? {};
 
   if (!curator) {
     return null;
@@ -26,7 +28,7 @@ function CuratorInfoItem({
         maxWidth={userMaxWidth}
       />
 
-      {badge && showBadge && (
+      {badge && signatories.length > 0 && (
         <Tooltip
           className="pl-2"
           content={

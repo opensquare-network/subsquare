@@ -23,7 +23,7 @@ const endpoints = [
   },
   {
     name: "IBP1",
-    url: "wss://hydradx.paras.ibp.network",
+    url: "wss://hydration.ibp.network/",
   },
   {
     name: "Helikon",
@@ -35,7 +35,7 @@ const endpoints = [
   },
   {
     name: "Dwellir",
-    url: "wss://hydradx-rpc.dwellir.com",
+    url: "wss://hydration-rpc.n.dwellir.com/",
   },
 ];
 
