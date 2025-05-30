@@ -6,6 +6,7 @@ import useSubTreasurySpend from "next-common/hooks/treasury/spend/useSubTreasury
 import { has } from "lodash-es";
 import { cn } from "next-common/utils";
 import useChainOrScanHeight from "next-common/hooks/height";
+import { noop } from "@polkadot/util";
 
 const Popup = dynamicPopup(() => import("./popup"));
 
@@ -25,7 +26,7 @@ export default function TreasurySpendPay() {
   );
 }
 
-function PayoutContent({ setShowPopup }) {
+function PayoutContent({ setShowPopup = noop }) {
   const { index, meta } = useOnchainData() || {};
   const latestHeight = useChainOrScanHeight();
   const onchainStatus = useSubTreasurySpend(index);
@@ -33,6 +34,13 @@ function PayoutContent({ setShowPopup }) {
   const disabled = useMemo(() => {
     return !has(onchainStatus?.status, "pending");
   }, [onchainStatus]);
+
+  const attemptPayout = () => {
+    if (disabled) {
+      return;
+    }
+    setShowPopup(true);
+  };
 
   if (expireAt && latestHeight >= expireAt) {
     return (
@@ -43,7 +51,7 @@ function PayoutContent({ setShowPopup }) {
             "text-theme500 cursor-pointer font-bold",
             disabled && "text-theme300 cursor-not-allowed",
           )}
-          onClick={() => setShowPopup(true)}
+          onClick={attemptPayout}
         >
           still payout.
         </span>
@@ -55,7 +63,7 @@ function PayoutContent({ setShowPopup }) {
     <PrimaryButton
       className="w-full"
       disabled={disabled}
-      onClick={() => setShowPopup(true)}
+      onClick={attemptPayout}
     >
       Payout
     </PrimaryButton>
