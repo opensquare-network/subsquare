@@ -8,8 +8,8 @@ import { useIsSalaryPayoutPeriod } from "next-common/hooks/fellowship/salary/use
 import useSalaryClaimant from "next-common/hooks/fellowship/salary/useSalaryClaimant";
 import useFellowshipMemberDetailAddr from "next-common/hooks/collectives/member/detail";
 
-const FellowshipSalaryPayoutPopup = dynamicPopup(
-  () => import("next-common/components/fellowship/salary/actions/payout/popup"),
+const FellowshipSalaryPayoutPopup = dynamicPopup(() =>
+  import("next-common/components/fellowship/salary/actions/payout/popup"),
 );
 
 function Payout({ className = "" }) {

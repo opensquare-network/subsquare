@@ -8,7 +8,6 @@ export default function useRefCallback(handler) {
   });
 
   return useCallback((...args) => {
-    
     return handlerRef.current(...args);
   }, []);
 }

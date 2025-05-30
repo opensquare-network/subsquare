@@ -31,6 +31,7 @@ import bifrostPolkadot from "./bifrostPolkadot";
 import vara from "./vara";
 import polkadotAssetHub from "./polkadotAssetHub";
 import westendAssetHub from "./westendAssetHub";
+import westendAssetHubNext from "./westendAssetHubNext";
 import kusamaAssetHub from "./kusamaAssetHub";
 import shibuya from "./shibuya";
 import astar from "./astar";
@@ -83,6 +84,7 @@ const settingsMap = {
   [bifrostPolkadot.value]: bifrostPolkadot,
   [polkadotAssetHub.value]: polkadotAssetHub,
   [westendAssetHub.value]: westendAssetHub,
+  [westendAssetHubNext.value]: westendAssetHubNext,
   [kusamaAssetHub.value]: kusamaAssetHub,
   vara,
   shibuya,
