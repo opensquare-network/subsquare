@@ -1,16 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
 import { useOnchainData } from "next-common/context/post";
-import useBlockApi from "next-common/utils/hooks/useBlockApi";
 import { createGlobalState } from "react-use";
 import { isNil } from "lodash-es";
 import getCallByPreimageHash from "next-common/services/preimages/call";
 import RawCallProvider from "next-common/context/call/raw";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
 const useCachedResult = createGlobalState({});
 
 function useDemocracyReferendumCall() {
   const onchainData = useOnchainData();
-  const { indexer } = onchainData;
   const hash = useMemo(() => {
     const { preimage, meta } = onchainData;
     if (preimage?.hash) {
@@ -30,7 +29,7 @@ function useDemocracyReferendumCall() {
       return hash.legacy.hash;
     }
   }, [onchainData]);
-  const api = useBlockApi(indexer?.blockHash);
+  const api = useConditionalContextApi();
 
   const [cachedResult, setCachedResult] = useCachedResult({});
   const result = cachedResult[hash] || null;
