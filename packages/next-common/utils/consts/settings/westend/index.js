@@ -39,6 +39,7 @@ const westend = {
     assethub: true,
     people: true,
     vesting: true,
+    parachain: true,
   }),
   integrations: {
     subscan: true,

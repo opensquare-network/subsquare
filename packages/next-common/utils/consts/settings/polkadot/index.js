@@ -71,6 +71,7 @@ const polkadot = {
     assethub: true,
     people: true,
     vesting: true,
+    parachain: true,
   }),
   integrations: {
     doTreasury: true,

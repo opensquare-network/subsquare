@@ -33,6 +33,14 @@ function generateTabs() {
     });
   }
 
+  if (modules?.parachain) {
+    TABS.push({
+      tabId: "/parachains",
+      tabTitle: "Parachains",
+      pageTitle: "Parachain Explorer",
+    });
+  }
+
   return TABS;
 }
 

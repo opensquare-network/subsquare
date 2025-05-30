@@ -70,6 +70,7 @@ const paseo = {
     assethub: true,
     people: true,
     vesting: true,
+    parachain: true,
   }),
   integrations: {
     subscan: true,
