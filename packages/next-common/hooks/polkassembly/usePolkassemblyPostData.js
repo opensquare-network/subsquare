@@ -45,7 +45,7 @@ export function usePolkassemblyPostData({
       .then(({ result }) => {
         if (isMounted()) {
           let comments = (result?.comments || [])
-            .filter((item) => item.comment_source !== "subsquare")
+            // .filter((item) => item.comment_source !== "subsquare")
             .map((item) => toPolkassemblyCommentListItem(chain, item));
           comments = uniqBy([...comments].reverse(), "id");
           comments?.sort(
