@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { isNil, startCase } from "lodash-es";
-import TrackDescriptionTooltip from "../referenda/trackPanel/trackDescriptionTooltip";
+import { startCase } from "lodash-es";
 
 const Tag = styled.span`
   padding: 2px 8px;
@@ -10,7 +9,7 @@ const Tag = styled.span`
   background-color: ${(p) => p.bg || "var(--neutral200)"};
 `;
 
-export default function Gov2TrackTag({ name = "", id }) {
+export default function Gov2TrackTag({ name = "" }) {
   const makeColorPair = (fg, bg) => ({ fg, bg });
 
   // NOTE: these colors support dark mode
@@ -18,7 +17,7 @@ export default function Gov2TrackTag({ name = "", id }) {
     root: makeColorPair("#4caf91", "rgba(76, 175, 145, 0.1)"),
   };
 
-  const tagContent = (
+  return (
     <Tag
       className="text12Medium"
       fg={trackColor[name]?.fg}
@@ -26,13 +25,5 @@ export default function Gov2TrackTag({ name = "", id }) {
     >
       {startCase(name)}
     </Tag>
-  );
-
-  if (isNil(id)) {
-    return tagContent;
-  }
-
-  return (
-    <TrackDescriptionTooltip trackId={id}>{tagContent}</TrackDescriptionTooltip>
   );
 }

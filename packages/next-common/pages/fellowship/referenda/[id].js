@@ -4,7 +4,6 @@ import {
   fellowshipParamsApi,
   getFellowshipReferendumCommentsUrl,
   getFellowshipReferendumUrl,
-  fellowshipTracksApi,
 } from "next-common/services/url";
 import { EmptyList } from "next-common/utils/constants";
 import { PostProvider, usePost } from "next-common/context/post";
@@ -141,20 +140,14 @@ export const getServerSideProps = withCommonProps(async (context) => {
     return getNullDetailProps(id);
   }
 
-  const [
-    comments,
-    tracksProps,
-    { result: fellowshipParams = {} },
-    { result: fellowshipTracksDetail = {} },
-  ] = await Promise.all([
-    fetchDetailComments(
-      getFellowshipReferendumCommentsUrl(detail?._id),
-      context,
-    ),
-    fetchOpenGovTracksProps(),
-    backendApi.fetch(fellowshipParamsApi),
-    backendApi.fetch(fellowshipTracksApi),
-  ]);
+  const comments = await fetchDetailComments(
+    getFellowshipReferendumCommentsUrl(detail?._id),
+    context,
+  );
+  const tracksProps = await fetchOpenGovTracksProps();
+  const { result: fellowshipParams = {} } = await backendApi.fetch(
+    fellowshipParamsApi,
+  );
 
   return {
     props: {
@@ -163,7 +156,6 @@ export const getServerSideProps = withCommonProps(async (context) => {
 
       ...tracksProps,
       fellowshipParams,
-      fellowshipTracksDetail,
     },
   };
 });
