@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { isNil, startCase } from "lodash-es";
-import TrackTooltip from "../referenda/trackPanel/trackTooltip";
+import TrackDescriptionTooltip from "../referenda/trackPanel/trackDescriptionTooltip";
 
 const Tag = styled.span`
   padding: 2px 8px;
@@ -32,5 +32,7 @@ export default function Gov2TrackTag({ name = "", id }) {
     return tagContent;
   }
 
-  return <TrackTooltip trackId={id}>{tagContent}</TrackTooltip>;
+  return (
+    <TrackDescriptionTooltip trackId={id}>{tagContent}</TrackDescriptionTooltip>
+  );
 }
