@@ -21,6 +21,8 @@ import {
 } from "next-common/context/post/gov2/percentage";
 import ConfirmationEstimation from "next-common/components/tally/confirmationEstimation";
 import EligibleVoters from "./eligibleVoters";
+import { useReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
+import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -35,6 +37,16 @@ const Footer = styled.div`
 `;
 
 export default function FellowshipTally() {
+  const indexer = useReferendumVotingFinishIndexer();
+
+  return (
+    <MigrationConditionalApiProvider indexer={indexer}>
+      <FellowshipTallyWithContext />
+    </MigrationConditionalApiProvider>
+  );
+}
+
+function FellowshipTallyWithContext() {
   const tally = useFellowshipReferendumTally();
   const approvalThreshold = useApprovalThreshold();
   const { useVoteCall } = useChainSettings();

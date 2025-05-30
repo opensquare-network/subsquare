@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 import { useOnchainData } from "next-common/context/post";
-import useBlockApi from "next-common/utils/hooks/useBlockApi";
 import { createGlobalState } from "react-use";
 import { isNil } from "lodash-es";
 import { parsePreImageCall } from "next-common/components/proposal/preImage";
 import getCallByPreimageHash from "next-common/services/preimages/call";
 import RawCallProvider from "next-common/context/call/raw";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
 const useCachedResult = createGlobalState({});
 
 function useReferendumCall() {
   const onchainData = useOnchainData();
-  const { inlineCall, proposalHash: hash, indexer } = onchainData || {};
-  const api = useBlockApi(indexer?.blockHash);
+  const { inlineCall, proposalHash: hash } = onchainData || {};
+  const api = useConditionalContextApi();
 
   const [cachedResult, setCachedResult] = useCachedResult({});
   const result = cachedResult[hash] || null;
