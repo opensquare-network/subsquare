@@ -7,7 +7,7 @@ import CommentsFilter from "./filter";
 import { Skeleton } from "../skeleton";
 import Divider from "../styled/layout/divider";
 
-const CommitSkeleton = () => {
+const CommentSkeleton = () => {
   const item = (
     <>
       <div className="py-4">
@@ -43,7 +43,7 @@ export default function Comments({ data: commentsData, loading }) {
 
   let content;
   if (loading) {
-    content = <CommitSkeleton />;
+    content = <CommentSkeleton />;
   } else if (items?.length > 0) {
     content = (
       <div>
