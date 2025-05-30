@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { isNil, startCase } from "lodash-es";
-import TrackDescriptionTooltip from "../referenda/trackPanel/trackDescriptionTooltip";
+import { MaybeTrackDescriptionTooltip } from "../referenda/trackPanel/trackDescriptionTooltip";
 
 const Tag = styled.span`
   padding: 2px 8px;
@@ -33,6 +33,8 @@ export default function Gov2TrackTag({ name = "", id }) {
   }
 
   return (
-    <TrackDescriptionTooltip trackId={id}>{tagContent}</TrackDescriptionTooltip>
+    <MaybeTrackDescriptionTooltip trackId={id}>
+      {tagContent}
+    </MaybeTrackDescriptionTooltip>
   );
 }
