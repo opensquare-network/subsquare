@@ -35,7 +35,7 @@ function PayoutContent({ setShowPopup = noop }) {
     return !has(onchainStatus?.status, "pending");
   }, [onchainStatus]);
 
-  const attemptPayout = () => {
+  const onAttemptPayout = () => {
     if (disabled) {
       return;
     }
@@ -51,7 +51,7 @@ function PayoutContent({ setShowPopup = noop }) {
             "text-theme500 cursor-pointer font-bold",
             disabled && "text-theme300 cursor-not-allowed",
           )}
-          onClick={attemptPayout}
+          onClick={onAttemptPayout}
         >
           still payout.
         </span>
@@ -63,7 +63,7 @@ function PayoutContent({ setShowPopup = noop }) {
     <PrimaryButton
       className="w-full"
       disabled={disabled}
-      onClick={attemptPayout}
+      onClick={onAttemptPayout}
     >
       Payout
     </PrimaryButton>
