@@ -7,7 +7,7 @@ import Link from "next/link";
 export default function ReferendaTrack({ section = "referenda" }) {
   const onchain = useOnchainData();
   const { name: trackName, id: trackId } = onchain?.trackInfo || {};
-  let href = `/${section}/track/${trackId}`;
+  let href = `/${section}/tracks/${trackId}`;
 
   return (
     <div>
