@@ -35,8 +35,8 @@ function generateTabs() {
 
   if (modules?.parachain) {
     TABS.push({
-      tabId: "/parachain",
-      tabTitle: "Parachain",
+      tabId: "/parachains",
+      tabTitle: "Parachains",
       pageTitle: "Parachain Explorer",
     });
   }
