@@ -12,16 +12,16 @@ const CommitSkeleton = () => {
     <>
       <div className="py-4">
         <div className="flex gap-2">
-          <Skeleton className=" w-5 h-5 rounded-full" />
+          <Skeleton className="w-5 h-5 rounded-full" />
           <div className="flex justify-between flex-1">
-            <Skeleton className=" w-20 h-5 rounded-[4px]" />
-            <Skeleton className=" w-20 h-5 rounded-[4px]" />
+            <Skeleton className="w-20 h-5 rounded-[4px]" />
+            <Skeleton className="w-20 h-5 rounded-[4px]" />
           </div>
         </div>
         <div className="pl-7 pt-4 space-y-2">
-          <Skeleton className=" w-full h-5 rounded-[4px]" />
-          <Skeleton className=" w-full h-5 rounded-[4px]" />
-          <Skeleton className=" w-20 h-5 rounded-[4px]" />
+          <Skeleton className="w-full h-5 rounded-[4px]" />
+          <Skeleton className="w-full h-5 rounded-[4px]" />
+          <Skeleton className="w-20 h-5 rounded-[4px]" />
         </div>
       </div>
       <div className="pl-7">
