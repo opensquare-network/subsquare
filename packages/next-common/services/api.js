@@ -6,36 +6,45 @@ class Api {
     this.endpoint = endpoint;
   }
 
-  fetch(path, params = {}, options) {
+  async fetch(path, params = {}, options) {
     const url = new URL(path, this.endpoint);
     for (const key of Object.keys(params)) {
       url.searchParams.set(paramsKeyConvert(key), params[key]);
     }
 
-    return new Promise((resolve) =>
-      fetch(url, options)
-        .then((resp) =>
-          resp.status !== 200
-            ? resp.json().then((data) =>
-                resolve({
-                  error: {
-                    status: resp.status,
-                    message: data.message,
-                    data: data.data,
-                  },
-                }),
-              )
-            : resp.json().then((result) => resolve({ result })),
-        )
-        .catch((e) =>
-          resolve({
-            error: {
-              status: 500,
-              message: e.message,
-            },
-          }),
-        ),
-    );
+    try {
+      const response = await fetch(url, options);
+      if (response.status === 200) {
+        const result = await response.json();
+        return { result };
+      }
+
+      const text = await response.text();
+      try {
+        const data = JSON.parse(text);
+        return {
+          error: {
+            status: response.status,
+            message: data.message,
+            data: data.data,
+          },
+        };
+      } catch {
+        return {
+          error: {
+            status: response.status,
+            message: text,
+          },
+        };
+      }
+    } catch (e) {
+      return {
+        error: {
+          status: 500,
+          message: e.message,
+        },
+      };
+    }
   }
 
   async post(path, body = null, options = null) {
