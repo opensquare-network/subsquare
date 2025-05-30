@@ -38,7 +38,7 @@ const Tips = styled.ul`
   li {
     color: var(--textTertiary);
     &::before {
-      content: "\\2022";
+      content: "•";
       padding: 0 8px;
     }
   }
