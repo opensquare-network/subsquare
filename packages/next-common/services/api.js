@@ -12,36 +12,58 @@ class Api {
       url.searchParams.set(paramsKeyConvert(key), params[key]);
     }
 
+    let response;
     try {
-      const response = await fetch(url, options);
-      if (response.status === 200) {
-        const result = await response.json();
-        return { result };
-      }
-
-      const text = await response.text();
-      try {
-        const data = JSON.parse(text);
-        return {
-          error: {
-            status: response.status,
-            message: data.message,
-            data: data.data,
-          },
-        };
-      } catch {
-        return {
-          error: {
-            status: response.status,
-            message: text,
-          },
-        };
-      }
+      response = await fetch(url, options);
     } catch (e) {
       return {
         error: {
           status: 500,
           message: e.message,
+        },
+      };
+    }
+
+    if (response.status === 200) {
+      try {
+        const result = await response.json();
+        return { result };
+      } catch (e) {
+        return {
+          error: {
+            status: 500,
+            message: e.message,
+          },
+        };
+      }
+    }
+
+    let text;
+    try {
+      text = await response.text();
+    } catch (e) {
+      return {
+        error: {
+          status: 500,
+          message: e.message,
+        },
+      };
+    }
+
+    try {
+      const data = JSON.parse(text);
+      return {
+        error: {
+          status: response.status,
+          message: data.message,
+          data: data.data,
+        },
+      };
+    } catch {
+      return {
+        error: {
+          status: response.status,
+          message: text,
         },
       };
     }
