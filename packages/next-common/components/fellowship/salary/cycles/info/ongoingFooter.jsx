@@ -1,4 +1,4 @@
-import FellowshipSalaryBump from "../../actions/bump";
+import FellowshipSalaryNextCycle from "../../actions/bump";
 import FellowshipSalaryPayout from "../../actions/payout";
 import FellowshipSalaryRegister from "../../actions/register";
 import FellowshipSalaryMyStatus from "../myStatus";
@@ -8,9 +8,9 @@ export default function FellowshipSalaryCycleDetailInfoOngoingFooter() {
     <div className="space-y-2">
       <FellowshipSalaryMyStatus />
       <div className="flex flex-wrap items-center justify-end gap-x-4 gap-y-2">
-        <FellowshipSalaryBump />
         <FellowshipSalaryRegister />
         <FellowshipSalaryPayout />
+        <FellowshipSalaryNextCycle />
       </div>
     </div>
   );
