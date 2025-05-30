@@ -1,6 +1,6 @@
 import { calcVotes, sortVotes } from "./common";
 
-async function getBalance(blockHash, blockApi, account) {
+async function getBalance(blockApi, account) {
   if (blockApi.query.system?.account) {
     const accountInfo = await blockApi.query.system.account(account);
     return accountInfo.data.free.toString();
@@ -18,7 +18,6 @@ async function getBalance(blockHash, blockApi, account) {
 
 export async function getReferendumVotesFromVotersFor(
   blockApi,
-  blockHash,
   referendumIndex,
 ) {
   const votersFor = await blockApi.query.democracy.votersFor(referendumIndex);
@@ -31,7 +30,7 @@ export async function getReferendumVotesFromVotersFor(
 
   const balancePromises = [];
   for (const voter of votersFor) {
-    balancePromises.push(await getBalance(blockHash, blockApi, voter));
+    balancePromises.push(await getBalance(blockApi, voter));
   }
   const balances = await Promise.all(balancePromises);
 

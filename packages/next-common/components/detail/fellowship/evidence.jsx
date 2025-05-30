@@ -8,6 +8,8 @@ import { useOnchainData } from "next-common/context/post";
 import { useReferendumFellowshipCoreEvidence } from "next-common/context/post/fellowship/useReferendumFellowshipCoreEvidence";
 import { useReferendumFellowshipMember } from "next-common/context/post/fellowship/useReferendumFellowshipMember";
 import useIsProposalFinished from "next-common/hooks/proposal/useIsProposalFinished";
+import { useReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
+import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 
 function FellowshipReferendaDetailEvidenceImpl() {
   const { isLoading, member } = useReferendumFellowshipMember();
@@ -40,12 +42,17 @@ export default function FellowshipReferendaDetailEvidence() {
   const pallet = useCoreFellowshipPallet();
   const onchainData = useOnchainData();
   const { call } = onchainData?.inlineCall || onchainData.proposal || {};
+  const indexer = useReferendumVotingFinishIndexer();
 
   if (
     call?.section === pallet &&
     ["approve", "promote", "promoteFast"].includes(call?.method)
   ) {
-    return <FellowshipReferendaDetailEvidenceImpl />;
+    return (
+      <MigrationConditionalApiProvider indexer={indexer}>
+        <FellowshipReferendaDetailEvidenceImpl />
+      </MigrationConditionalApiProvider>
+    );
   }
 
   return null;

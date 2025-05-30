@@ -5,7 +5,6 @@ import SubScanLink from "./subscanLink";
 import StatescanLink from "./statescanLink";
 import Flex from "../styled/flex";
 import { useChainSettings } from "next-common/context/chain";
-import PolkascanLink from "./polkascanLink";
 
 const Wrapper = styled(Flex)`
   height: 20px;
@@ -23,8 +22,6 @@ export default function ExplorerLink({ indexer = {}, style = {}, children }) {
     LinkComponent = StatescanLink;
   } else if (integrations?.subscan) {
     LinkComponent = SubScanLink;
-  } else if (integrations?.polkascan) {
-    LinkComponent = PolkascanLink;
   }
 
   return (

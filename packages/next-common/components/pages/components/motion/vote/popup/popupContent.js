@@ -18,7 +18,9 @@ import { useSendTransaction } from "next-common/hooks/useSendTransaction";
 import { wrapWithProxy } from "next-common/utils/sendTransaction";
 import useCollectiveMotionVotes from "next-common/hooks/collective/useCollectiveVotes";
 import { useCollectivePallet } from "next-common/context/collective";
-import { isSameAddress } from "next-common/utils";
+import { isSameAddress, isMotionEnded } from "next-common/utils";
+import { useOnchainData } from "next-common/context/post";
+import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 
 const SignerWrapper = styled.div`
   > :not(:first-child) {
@@ -27,6 +29,18 @@ const SignerWrapper = styled.div`
 `;
 
 export default function PopupContent() {
+  const onchainData = useOnchainData();
+  const motionEnd = isMotionEnded(onchainData);
+  const indexer = motionEnd ? onchainData?.state?.indexer : null;
+
+  return (
+    <MigrationConditionalApiProvider indexer={indexer}>
+      <PopupContentWithContext />
+    </MigrationConditionalApiProvider>
+  );
+}
+
+function PopupContentWithContext() {
   const { motionHash, motionIndex, onClose } = usePopupParams();
   const dispatch = useDispatch();
   const api = useContextApi();

@@ -20,7 +20,7 @@ export default function CollectiveCall({ call }) {
     [<Proposal key={"call"} call={call} />],
   ];
 
-  const preimage = useExternalPreimage(call, motion?.indexer?.blockHash);
+  const preimage = useExternalPreimage(call);
   if (preimage) {
     const { hex, normalized } = preimage;
     data.push([

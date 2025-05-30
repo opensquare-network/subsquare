@@ -1,22 +1,20 @@
 import { useOnchainData } from "../../context/post";
 import { useTrack } from "next-common/context/post/gov2/track";
-import { useReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
 import { useMemo } from "react";
 import { getMinRankOfClass } from "next-common/context/post/fellowship/useMaxVoters";
-import useBlockApi from "next-common/utils/hooks/useBlockApi";
 import useCall from "next-common/utils/hooks/useCall";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
 function useQueryMaxVoters() {
   const { id: trackId } = useTrack();
-  const indexer = useReferendumVotingFinishIndexer();
   const pallet = useRankedCollectivePallet();
 
   const rank = useMemo(() => {
     return getMinRankOfClass(trackId, pallet);
   }, [trackId, pallet]);
 
-  const blockApi = useBlockApi(indexer?.blockHash);
+  const blockApi = useConditionalContextApi();
   const { value } = useCall(blockApi?.query?.[pallet].memberCount, [rank], {
     cacheKey: `${pallet}-memberCount`,
   });

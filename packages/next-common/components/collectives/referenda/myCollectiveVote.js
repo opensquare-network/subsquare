@@ -1,15 +1,13 @@
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import { Title } from "next-common/components/myvotes/styled";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import { useEffect, useState } from "react";
-import { useContextApi } from "next-common/context/api";
-import { isNil } from "lodash-es";
 import { useOnchainData } from "next-common/context/post";
 import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
 import { Aye, Nay } from "next-common/components/profile/votingHistory/common";
 import ValueDisplay from "next-common/components/valueDisplay";
 import WithAddress from "next-common/components/common/withAddress";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
 function normalizeVote(unwrapped) {
   const isAye = unwrapped.isAye;
@@ -24,8 +22,7 @@ function normalizeVote(unwrapped) {
 
 function useMyVote() {
   const address = useRealAddress();
-  const finishedIndexer = useReferendumVotingFinishIndexer();
-  const api = useContextApi();
+  const api = useConditionalContextApi();
   const onchainData = useOnchainData();
   const referendumIndex = onchainData?.referendumIndex;
   const collectivePallet = useRankedCollectivePallet();
@@ -34,19 +31,6 @@ function useMyVote() {
   useEffect(() => {
     if (!api) {
       return;
-    }
-
-    if (!isNil(finishedIndexer)) {
-      api
-        .at(finishedIndexer.blockHash)
-        .then((blockApi) =>
-          blockApi.query[collectivePallet].voting(referendumIndex, address),
-        )
-        .then((optionalStorage) => {
-          if (optionalStorage.isSome) {
-            setVote(normalizeVote(optionalStorage.unwrap()));
-          }
-        });
     }
 
     let unsub;
@@ -63,7 +47,7 @@ function useMyVote() {
         unsub();
       }
     };
-  }, [address, finishedIndexer, api, referendumIndex, collectivePallet]);
+  }, [address, api, referendumIndex, collectivePallet]);
 
   return vote;
 }
