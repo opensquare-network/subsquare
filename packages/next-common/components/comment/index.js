@@ -3,8 +3,8 @@ import NoComment from "./noComment";
 import { TitleContainer } from "../styled/containers/titleContainer";
 import { cn } from "next-common/utils";
 import PolkassemblyCommentItem from "./polkassemblyCommentItem";
-import Loading from "../loading";
 import CommentsFilter from "./filter";
+import CommentSkeleton from "./commentSkeleton";
 
 export default function Comments({ data: commentsData, loading }) {
   const { items } = commentsData;
@@ -12,9 +12,10 @@ export default function Comments({ data: commentsData, loading }) {
   let content;
   if (loading) {
     content = (
-      <div className="flex justify-center py-5">
-        <Loading size={14} />
-      </div>
+      <>
+        <CommentSkeleton />
+        <CommentSkeleton />
+      </>
     );
   } else if (items?.length > 0) {
     content = (
