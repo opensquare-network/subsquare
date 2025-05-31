@@ -8,6 +8,10 @@ const defaultKusamaNodes = [
     url: "wss://rpc.ibp.network/kusama",
   },
   {
+    name: "Stakeworld",
+    url: "wss://ksm-rpc.stakeworld.io",
+  },
+  {
     name: "SubQuery",
     url: "wss://kusama.rpc.subquery.network/public/ws",
   },
@@ -42,10 +46,6 @@ const defaultKusamaNodes = [
   {
     name: "RockX",
     url: "wss://rockx-ksm.w3node.com/polka-public-ksm/ws",
-  },
-  {
-    name: "Stakeworld",
-    url: "wss://ksm-rpc.stakeworld.io",
   },
   {
     name: "LuckyFriday",
