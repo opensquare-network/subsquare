@@ -3,7 +3,7 @@ import {
   Referenda,
   useModuleTab,
 } from "next-common/components/profile/votingHistory/common";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import {
   delegationDemocracyDelegatesAddressApi,
   delegationReferendaDelegatesAddressApi,
@@ -20,8 +20,7 @@ import {
 } from "next-common/store/reducers/referenda/delegates";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useAsync } from "react-use";
 
 function useGetAddressDelegationApiPath(realAddress) {
@@ -61,7 +60,7 @@ export default function useAddressDelegation(address) {
     if (!address) {
       return null;
     }
-    return await nextApi.fetch(apiPath).then((resp) => {
+    return await backendApi.fetch(apiPath).then((resp) => {
       if (resp.result) {
         return resp.result;
       }
@@ -79,7 +78,7 @@ export function useMyReferendaDelegation() {
     if (!realAddress) {
       return;
     }
-    nextApi
+    backendApi
       .fetch(delegationReferendaDelegatesAddressApi(realAddress))
       .then((resp) => {
         if (resp.result) {
@@ -101,7 +100,7 @@ export function useMyDemocracyDelegation() {
     if (!realAddress) {
       return;
     }
-    nextApi
+    backendApi
       .fetch(delegationDemocracyDelegatesAddressApi(realAddress))
       .then((resp) => {
         if (resp.result) {
