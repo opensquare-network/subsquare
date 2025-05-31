@@ -1,5 +1,6 @@
 const disabledApiRoutes = [
   /^\/api\/gov2\/referendums/,
+  /^\/api\/gov2\/tracks/,
   /^\/api\/democracy/,
   /^\/api\/treasury/,
   /^\/api\/motions/, // Council Motions
