@@ -7,6 +7,10 @@ const defaultPolkadotNodes = [
     name: "IBP1",
     url: "wss://rpc.ibp.network/polkadot",
   },
+  {
+    name: "Stakeworld",
+    url: "wss://dot-rpc.stakeworld.io",
+  },
   // {
   //   name: "IBP2",
   //   url: "wss://polkadot.dotters.network",
@@ -54,10 +58,6 @@ const defaultPolkadotNodes = [
   {
     name: "RockX",
     url: "wss://rockx-dot.w3node.com/polka-public-dot/ws",
-  },
-  {
-    name: "Stakeworld",
-    url: "wss://dot-rpc.stakeworld.io",
   },
   {
     name: "LuckyFriday",
