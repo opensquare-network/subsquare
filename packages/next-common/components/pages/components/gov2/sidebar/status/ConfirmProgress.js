@@ -17,9 +17,8 @@ import MultiProgress from "next-common/components/progress/multiProgress";
 import { useMemo } from "react";
 import {
   useConfirmingStarted,
-  useConfirmTimelineFailPairs,
+  useConfirmTimelineFinishedPairs,
   useDecidingSince,
-  useConfirmingAborted,
 } from "next-common/context/post/gov2/referendum";
 import { isNil } from "lodash-es";
 import TimeDuration from "next-common/components/TimeDuration";
@@ -27,7 +26,6 @@ import { useDecisionBlocks } from "./useDecisionPercentage";
 import { useZoomMode, zoomModes } from "./context/zoomContext";
 import { usePostState } from "next-common/context/post";
 import { gov2State } from "next-common/utils/consts/state";
-import LastConfirmationProgress from "./confirmation/lastConfirmation";
 import ConfirmationInfo from "./confirmation/confirmationInfo";
 
 function Empty() {
@@ -79,42 +77,47 @@ function ConfirmSingleProgress() {
   );
 }
 
-function ConfirmMultiProgress() {
-  const confirmRemaining = useConfirmRemaining();
-  const confirmStart = useConfirmingStarted();
-  const confirmAbortedHeight = useConfirmingAborted();
-  const confirmStartPercentage = useConfirmStartPercentage();
-  const confirmEndPercentage = useConfirmEndPercentage();
+const activeColorSettings = {
+  fg: "var(--green500)",
+  bg: "var(--green300)",
+};
+
+const inactiveColorSettings = {
+  fg: "var(--neutral500)",
+};
+
+function useFinishedConfirmationProgressItems() {
   const decisionBlocks = useDecisionBlocks();
   const decisionSince = useDecidingSince();
-  const confirmFailPairs = useConfirmTimelineFailPairs();
-  const confirmPercentage = useConfirmPercentage();
+  const confirmFailPairs = useConfirmTimelineFinishedPairs();
 
-  const progressItems = useMemo(() => {
-    const items = confirmFailPairs.map((pair) => {
-      const [started, aborted] = pair ?? [];
+  return useMemo(() => {
+    return (confirmFailPairs || []).map((pair) => {
+      const [startedItem, abortedItem] = pair ?? [];
+      const startedHeight = startedItem?.indexer?.blockHeight;
+      const abortedHeight = abortedItem?.indexer?.blockHeight;
 
-      const startedHeight = started?.indexer?.blockHeight;
-      const abortedHeight = aborted?.indexer?.blockHeight;
-
-      const start = calcConfirmStartPercentage(
+      const startPer = calcConfirmStartPercentage(
         decisionSince,
         decisionBlocks,
         startedHeight,
       );
-      const abortedHeightStart = calcConfirmStartPercentage(
+      const abortedPer = calcConfirmStartPercentage(
         decisionSince,
         decisionBlocks,
-        startedHeight + abortedHeight - startedHeight,
+        abortedHeight,
       );
-
-      const end = abortedHeightStart - start;
+      const length = abortedPer - startPer;
+      const colorSettings =
+        abortedItem?.name === "Confirmed"
+          ? activeColorSettings
+          : inactiveColorSettings;
 
       return {
         percentage: 100,
-        start,
-        end: end < 1 ? 1 : end,
-        fg: "var(--neutral500)",
+        start: startPer,
+        length: length < 1 ? 1 : length,
+        ...colorSettings,
         tooltipContent: (
           <ProgressTooltipFailContent>
             <span>Started: {startedHeight?.toLocaleString?.()}</span>
@@ -125,35 +128,48 @@ function ConfirmMultiProgress() {
         ),
       };
     });
+  }, [confirmFailPairs, decisionBlocks, decisionSince]);
+}
 
-    if (
-      isNil(confirmAbortedHeight) || // means no aborted records
-      confirmAbortedHeight < confirmStart // mean has aborted records but not last confirmation aborted
-    ) {
-      items.push({
+function useOngoingConfirmationProgressItem() {
+  const state = usePostState();
+  const confirmStart = useConfirmingStarted();
+  const confirmStartPercentage = useConfirmStartPercentage();
+  const confirmEndPercentage = useConfirmEndPercentage();
+  const confirmPercentage = useConfirmPercentage();
+  const confirmRemaining = useConfirmRemaining();
+
+  return useMemo(() => {
+    if (isNil(confirmStart) || gov2State.Confirming !== state) {
+      return null;
+    } else {
+      return {
         percentage: confirmPercentage,
         start: confirmStartPercentage,
-        end: confirmEndPercentage < 1 ? 1 : confirmEndPercentage,
-        fg: "var(--green500)",
-        bg: "var(--green300)",
+        length: confirmEndPercentage < 1 ? 1 : confirmEndPercentage,
+        ...activeColorSettings,
         tooltipContent: confirmRemaining > 0 && (
           <Remaining blocks={confirmRemaining} />
         ),
-      });
+      };
     }
-
-    return items;
   }, [
     confirmStart,
-    confirmAbortedHeight,
     confirmPercentage,
-    confirmEndPercentage,
-    confirmFailPairs,
-    confirmRemaining,
     confirmStartPercentage,
-    decisionBlocks,
-    decisionSince,
+    confirmEndPercentage,
+    confirmRemaining,
+    state,
   ]);
+}
+
+function ConfirmMultiProgress() {
+  const finishedItems = useFinishedConfirmationProgressItems();
+  const ongoingItem = useOngoingConfirmationProgressItem();
+
+  const progressItems = useMemo(() => {
+    return [...finishedItems, ongoingItem].filter(Boolean);
+  }, [finishedItems, ongoingItem]);
 
   return (
     <ProgressGroup>
@@ -171,17 +187,13 @@ export default function ConfirmProgress() {
   const mode = useZoomMode();
   const state = usePostState();
 
-  if (!confirmStart) {
-    return <Empty />;
-  }
-
-  if (mode === zoomModes.out) {
-    return <ConfirmMultiProgress />;
-  }
-
   if (gov2State.Rejected === state) {
-    return <LastConfirmationProgress />;
+    return <ConfirmMultiProgress />;
+  } else if (!confirmStart) {
+    return <Empty />;
+  } else if (mode === zoomModes.out) {
+    return <ConfirmMultiProgress />;
+  } else {
+    return <ConfirmSingleProgress />;
   }
-
-  return <ConfirmSingleProgress />;
 }
