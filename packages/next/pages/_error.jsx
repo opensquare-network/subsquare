@@ -1,7 +1,7 @@
 import { ImgErrorDark, ImgErrorLight } from "@osn/icons/subsquare";
 import ErrorLayout from "next-common/components/layout/errorLayout";
 import { reportClientError } from "next-common/services/reportClientError";
-import { CHAIN } from "next-common/utils/constants";
+import { CHAIN, IS_PRODUCTION } from "next-common/utils/constants";
 import fetchProfile from "next-common/lib/fetchProfile";
 
 function getErrorReason(statusCode) {
@@ -62,7 +62,7 @@ ErrorPage.getInitialProps = async ({ req, res, err }) => {
     error: err.message,
     stack: err.stack,
   };
-  reportClientError(errorData);
+  IS_PRODUCTION && reportClientError(errorData);
 
   return {
     err,
