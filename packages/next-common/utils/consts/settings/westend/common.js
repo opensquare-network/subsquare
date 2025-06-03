@@ -27,6 +27,7 @@ export const westendAssethubMigration = {
   timestamp: 1747307424000,
   subscanAssethubDomain: subscanWestendAssethubDomain,
   statescanAssethubDomain: statescanWestendAssethubDomain,
+  relayBlockTime: 6000,
 };
 
 export default westendCommonCfg;
