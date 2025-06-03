@@ -4,11 +4,7 @@ import { EmptyList } from "next-common/utils/constants";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
 import ChildBountySidebar from "next-common/components/pages/components/childBounty/sidebar";
-import {
-  PostProvider,
-  useOnchainData,
-  usePost,
-} from "next-common/context/post";
+import { PostProvider, usePost } from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/pages/components/childBounty/checkUnFinalized";
 import ChildBountyDetail from "next-common/components/detail/treasury/childBounty";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
@@ -53,7 +49,7 @@ function ChildBountyContentWithNullGuard() {
 
 function ChildBountyPageImpl() {
   const post = usePost();
-  const { address } = useOnchainData();
+  const { address } = post?.onchainData || {};
 
   const desc = getMetaDesc(post);
   const showRightSidePanel =
