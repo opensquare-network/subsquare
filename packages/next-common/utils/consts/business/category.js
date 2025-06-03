@@ -35,12 +35,6 @@ export const listPageCategory = {
   TREASURY_BOUNTY: "treasury/bounties",
 };
 
-export const supportedTrackPageCategory = {
-  REFERENDA: "referenda",
-  FELLOWSHIP_REFERENDA: "fellowship",
-  AMBASSADOR_REFERENDA: "ambassador/referenda",
-};
-
 export const detailPageCategory = {
   POST: "posts",
   PA_POST: "polkassembly/posts",
