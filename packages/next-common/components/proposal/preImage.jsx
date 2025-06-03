@@ -13,16 +13,8 @@ function usePreImage(preImageHash) {
       return;
     }
 
-    const abortController = new AbortController();
-    setTimeout(() => {
-      abortController.abort();
-    }, 15 * 1000);
     nextApi
-      .fetch(
-        `preimages/${preImageHash}`,
-        {},
-        { signal: abortController.signal },
-      )
+      .fetch(`preimages/${preImageHash}`, {}, { timeout: 15 * 1000 })
       .then(({ result, error }) => {
         if (error) {
           return;
