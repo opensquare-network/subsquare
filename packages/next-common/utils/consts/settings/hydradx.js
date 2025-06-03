@@ -136,7 +136,7 @@ const hydradx = {
     mimir: true,
   },
   newProposalQuickStart: {
-    treasuryProposalSpend: true,
+    treasurySpendProposal: true,
   },
   supportWalletconnect: true,
   allowWeb2Login: false,

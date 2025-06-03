@@ -25,7 +25,7 @@ const useQuickStartItems = () => {
       spendDotOnAssetHubProposal,
       cancelReferendum,
       killReferendum,
-      treasuryProposalSpend,
+      treasurySpendProposal,
     } = {},
   } = useChainSettings();
 
@@ -38,9 +38,9 @@ const useQuickStartItems = () => {
         content: NewTreasuryReferendumInnerPopupContent,
       },
     ];
-    if (treasuryProposalSpend) {
+    if (treasurySpendProposal) {
       items.push({
-        name: "Treasury proposal spend",
+        name: "Treasury spend proposal",
         description: "Propose and approve a spend of treasury funds.",
         content: NewTreasurySpendReferendumInnerPopupContent,
       });
@@ -89,8 +89,8 @@ const useQuickStartItems = () => {
     cancelReferendum,
     killReferendum,
     spendDotOnAssetHubProposal,
-    treasuryProposalSpend,
     treasuryProposalTracks,
+    treasurySpendProposal,
     usdxTreasuryProposal,
   ]);
 };
