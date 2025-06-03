@@ -1,8 +1,6 @@
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import SubmissionDeposit from "../../newProposalPopup/submissionDeposit";
-import CreateProposalSubmitButton, {
-  useCreateProposalSubmitButton,
-} from "../common/createProposalSubmitButton";
+import { useCreateProposalSubmitButton } from "../common/createProposalSubmitButton";
 import { InfoMessage } from "next-common/components/setting/styled";
 import AdvanceSettings from "../common/advanceSettings";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
@@ -15,47 +13,7 @@ import SigningTip from "../common/signingTip";
 import InsufficientBalanceTips from "../common/insufficientBalanceTips";
 import PreviousButton from "../../newProposalButton/previousButton";
 import useBalanceField from "next-common/components/preImages/createPreimagePopup/fields/useBalanceField";
-import { useTreasurySpendNotePreimageTx } from "next-common/components/preImages/createPreimagePopup/templates/newTreasurySpendReferendumInnerPopup";
-import Popup from "next-common/components/popup/wrapper/Popup";
-import { usePopupParams } from "next-common/components/popupWithSigner/context";
-
-export function NewTreasurySpendReferendumInnerPopup() {
-  const { onClose } = usePopupParams();
-  const { value: inputBalance, component: balanceField } = useBalanceField();
-  const { value: beneficiary, component: beneficiaryField } =
-    useAddressComboField();
-  const { value: validFrom, component: validFromField } = useValidFromField();
-  const { value: trackId, component: trackField } =
-    useAutoSelectTreasuryTrackField(inputBalance);
-  const { value: enactment, component: enactmentField } =
-    useEnactmentBlocksField(trackId);
-
-  const { encodedHash, encodedLength, notePreimageTx } =
-    useTreasurySpendNotePreimageTx(inputBalance, beneficiary, validFrom);
-
-  return (
-    <Popup title="Create Treasury Spend Proposal" onClose={onClose}>
-      <SignerWithBalance />
-      {balanceField}
-      {beneficiaryField}
-      {trackField}
-      <AdvanceSettings>
-        {validFromField}
-        {enactmentField}
-        <SubmissionDeposit />
-      </AdvanceSettings>
-      <div className="flex justify-end">
-        <CreateProposalSubmitButton
-          trackId={trackId}
-          enactment={enactment}
-          encodedHash={encodedHash}
-          encodedLength={encodedLength}
-          notePreimageTx={notePreimageTx}
-        />
-      </div>
-    </Popup>
-  );
-}
+import { useTreasurySpendNotePreimageTx } from "next-common/hooks/useTreasurySpendNotePreimageTx";
 
 export function NewTreasurySpendReferendumInnerPopupContent() {
   const { goBack } = useStepContainer();
