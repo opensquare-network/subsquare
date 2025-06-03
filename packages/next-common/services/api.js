@@ -1,3 +1,4 @@
+import { isNumber } from "lodash-es";
 const paramsKeyConvert = (str = "") =>
   str.replace(/[A-Z]/g, ([s]) => `_${s.toLowerCase()}`);
 
@@ -6,22 +7,43 @@ class Api {
     this.endpoint = endpoint;
   }
 
-  async fetch(path, params = {}, options) {
+  async fetch(path, params = {}, options = {}) {
     const url = new URL(path, this.endpoint);
     for (const key of Object.keys(params)) {
       url.searchParams.set(paramsKeyConvert(key), params[key]);
     }
 
+    let { timeout, ...fetchOptions } = options;
+    let timeoutId;
+
+    if (isNumber(timeout) && timeout > 0) {
+      const controller = new AbortController();
+      timeoutId = setTimeout(() => controller.abort(), timeout);
+      fetchOptions.signal = controller.signal;
+    }
+
     let response;
     try {
-      response = await fetch(url, options);
+      response = await fetch(url, fetchOptions);
     } catch (e) {
+      if (e.name === "AbortError") {
+        return {
+          error: {
+            status: 408,
+            message: e.message,
+          },
+        };
+      }
       return {
         error: {
           status: 500,
           message: e.message,
         },
       };
+    } finally {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
     }
 
     if (response.status === 200) {
