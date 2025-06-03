@@ -38,10 +38,16 @@ export function usePolkassemblyPostData({
 
     setLoadingComments(true);
     backendApi
-      .fetch("polkassembly-comments", {
-        postId: polkassemblyId,
-        postType: polkassemblyPostType,
-      })
+      .fetch(
+        "polkassembly-comments",
+        {
+          postId: polkassemblyId,
+          postType: polkassemblyPostType,
+        },
+        {
+          timeout: 6 * 1000,
+        },
+      )
       .then(({ result }) => {
         if (isMounted()) {
           let comments = (result?.comments || [])
