@@ -15,6 +15,7 @@ import { KillReferendumInnerPopupContent } from "../newProposalQuickStart/killRe
 import { NewTreasuryReferendumInnerPopupContent } from "../newProposalQuickStart/createTreasuryProposalPopup";
 import { NewUSDxTreasuryReferendumInnerPopupContent } from "../newProposalQuickStart/createUSDxTreasuryProposalPopup";
 import { SpendDotOnAssetHubReferendumInnerPopupContent } from "../newProposalQuickStart/spendDotOnAssetHubPopup";
+import { NewTreasurySpendReferendumInnerPopupContent } from "../newProposalQuickStart/createTreasurySpendReferendumInnerPopupContent";
 
 const useQuickStartItems = () => {
   const {
@@ -24,6 +25,7 @@ const useQuickStartItems = () => {
       spendDotOnAssetHubProposal,
       cancelReferendum,
       killReferendum,
+      treasuryProposalSpend,
     } = {},
   } = useChainSettings();
 
@@ -36,6 +38,13 @@ const useQuickStartItems = () => {
         content: NewTreasuryReferendumInnerPopupContent,
       },
     ];
+    if (treasuryProposalSpend) {
+      items.push({
+        name: "Treasury proposal spend",
+        description: "Propose and approve a spend of treasury funds.",
+        content: NewTreasurySpendReferendumInnerPopupContent,
+      });
+    }
     if (treasuryProposalTracks && usdxTreasuryProposal) {
       items.push({
         name: "USDx treasury proposal",
@@ -80,6 +89,7 @@ const useQuickStartItems = () => {
     cancelReferendum,
     killReferendum,
     spendDotOnAssetHubProposal,
+    treasuryProposalSpend,
     treasuryProposalTracks,
     usdxTreasuryProposal,
   ]);
