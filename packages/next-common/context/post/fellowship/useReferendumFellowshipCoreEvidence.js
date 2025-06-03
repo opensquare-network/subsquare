@@ -1,16 +1,11 @@
 import { find } from "lodash-es";
 import { useEffect, useState } from "react";
 import { useOnchainData } from "..";
-import {
-  useReferendumVotingFinishIndexer,
-} from "../referenda/useReferendumVotingFinishHeight";
 import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
-import useBlockApi from "next-common/utils/hooks/useBlockApi";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
 export function useReferendumFellowshipCoreEvidence() {
   const pallet = useCoreFellowshipPallet();
-
-  const finishedIndexer = useReferendumVotingFinishIndexer();
 
   const onchainData = useOnchainData();
   const { call } = onchainData?.inlineCall || onchainData.proposal || {};
@@ -20,7 +15,7 @@ export function useReferendumFellowshipCoreEvidence() {
   const [evidence, setEvidence] = useState("");
   const [loading, setLoading] = useState(true);
 
-  const blockApi = useBlockApi(finishedIndexer?.blockHash);
+  const blockApi = useConditionalContextApi();
 
   useEffect(() => {
     if (!who || !pallet || !blockApi) {

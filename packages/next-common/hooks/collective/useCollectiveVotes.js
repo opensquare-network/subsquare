@@ -1,11 +1,10 @@
 import { useCollectivePallet } from "next-common/context/collective";
 import { useOnchainData } from "next-common/context/post";
-import { isMotionEnded } from "next-common/utils";
-import useBlockApi from "next-common/utils/hooks/useBlockApi";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
 import { useMemo } from "react";
 import { useChain } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
 export function useVotesFromDb() {
   const onchainData = useOnchainData();
@@ -38,10 +37,7 @@ export function useCollectiveMotionOnChainVotes() {
   const pallet = useCollectivePallet();
   const onchainData = useOnchainData();
   const { hash } = onchainData;
-
-  const motionEnd = isMotionEnded(onchainData);
-  const blockHash = motionEnd ? onchainData?.state?.indexer?.blockHash : null;
-  const api = useBlockApi(blockHash);
+  const api = useConditionalContextApi();
 
   const { loading, result } = useSubStorage(pallet, "voting", [hash], { api });
 

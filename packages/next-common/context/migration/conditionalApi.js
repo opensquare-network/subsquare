@@ -4,36 +4,27 @@ import { getChainApi, getChainApiAt } from "next-common/utils/getChainApi";
 import { useChainSettings } from "next-common/context/chain";
 import { useContextApi } from "next-common/context/api";
 import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated";
-import { CHAIN } from "next-common/utils/constants";
-
-export const MIGRATION_BLOCK_TIME_MAP = {
-  westend: 1747307424000,
-};
-
-// check whether a time point is before asset hub migration. AHM = asset hub migration.
-export function isBeforeAhm(indexer) {
-  if (!indexer || !isAssetHubMigrated()) {
-    return false;
-  }
-  const migrationBlockTime = MIGRATION_BLOCK_TIME_MAP[CHAIN] || 0;
-  return (
-    !isNil(indexer) &&
-    BigInt(indexer?.blockTime || 0) < BigInt(migrationBlockTime)
-  );
-}
 
 function useConditionalApi(indexer) {
   const [conditionalApi, setConditionalApi] = useState(null);
   const [blockApi, setBlockApi] = useState(null);
-  const { relayChainEndpoints = [], endpoints = [] } = useChainSettings();
+  const {
+    relayChainEndpoints = [],
+    endpoints = [],
+    assethubMigration = {},
+  } = useChainSettings();
 
   const endpointUrls = useMemo(() => {
-    if (isBeforeAhm(indexer)) {
+    const migrationBlockTime = assethubMigration?.timestamp || 0;
+    if (
+      !isNil(indexer) &&
+      BigInt(indexer?.blockTime || 0) < BigInt(migrationBlockTime)
+    ) {
       return relayChainEndpoints?.map?.((item) => item.url) || [];
     }
 
     return endpoints?.map?.((item) => item.url) || [];
-  }, [endpoints, indexer, relayChainEndpoints]);
+  }, [assethubMigration?.timestamp, endpoints, indexer, relayChainEndpoints]);
 
   useEffect(() => {
     if (!endpointUrls || endpointUrls?.length === 0) {

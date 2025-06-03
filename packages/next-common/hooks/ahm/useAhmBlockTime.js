@@ -5,6 +5,8 @@ import { useSelector } from "react-redux";
 export default function useAhmBlockTime() {
   const blockTime = useSelector(blockTimeSelector);
   const settings = useChainSettings();
-  const { relayBlockTime, assetHubMigrated } = settings || {};
-  return assetHubMigrated ? relayBlockTime : blockTime;
+  const { assethubMigration } = settings || {};
+  return assethubMigration?.migrated
+    ? assethubMigration?.relayBlockTime
+    : blockTime;
 }

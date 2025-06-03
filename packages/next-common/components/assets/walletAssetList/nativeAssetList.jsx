@@ -8,7 +8,7 @@ import {
 } from "next-common/components/assets/assetsList";
 import { useMyNativeAsset } from "next-common/hooks/assets/useMyNativeAsset";
 import { useMemo } from "react";
-import { useChainSettings } from "next-common/context/chain";
+import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated";
 
 function TokenSymbol({ symbol }) {
   const NativeAssetIcon = useNativeTokenIcon();
@@ -32,15 +32,15 @@ const teleport = {
 };
 
 function useColumnsDef() {
-  const { assetHubMigrated } = useChainSettings();
+  const isMigrated = isAssetHubMigrated();
 
   return useMemo(() => {
-    if (assetHubMigrated) {
+    if (isMigrated) {
       return [colToken, colTotal, colTransferrable];
     }
 
     return [colToken, colTotal, colTransferrable, teleport];
-  }, [assetHubMigrated]);
+  }, [isMigrated]);
 }
 
 export default function NativeAssetList() {

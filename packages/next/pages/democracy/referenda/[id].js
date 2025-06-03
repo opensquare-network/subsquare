@@ -25,9 +25,23 @@ import useSetReferendumStatus from "next-common/hooks/democracy/useSetReferendum
 import { useContextApi } from "next-common/context/api";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
 import DemocracyReferendaDetailMultiTabs from "next-common/components/pages/components/tabs/democracyReferendaDetailMultiTabs";
+import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
+import { useDemocracyReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 
 function ReferendumContent() {
   const post = usePost();
+  const indexer = useDemocracyReferendumVotingFinishIndexer(
+    post?.onchainData?.timeline,
+  );
+
+  return (
+    <MigrationConditionalApiProvider indexer={indexer}>
+      <ReferendumContentContentInContext post={post} />
+    </MigrationConditionalApiProvider>
+  );
+}
+
+function ReferendumContentContentInContext({ post }) {
   const api = useContextApi();
   const dispatch = useDispatch();
 

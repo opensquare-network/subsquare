@@ -13,6 +13,7 @@ import VotesBubbleViewTabs from "next-common/components/detail/detailMultiTabs/v
 import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
 import { useDemocracyReferendaProposalTimelineData } from "next-common/hooks/pages/timelineData";
 import tabsTooltipContentMap from "./tabsTooltipContentMap";
+import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 
 const Timeline = dynamicClientOnly(() =>
   import("next-common/components/timeline"),
@@ -36,11 +37,11 @@ export default function DemocracyReferendaDetailMultiTabs() {
 
   const onchainData = post?.onchainData;
 
-  const { timeline = [], preImage } = onchainData;
+  const { preImage, indexer } = onchainData;
   const referendumStatus = useSelector(referendumStatusSelector);
   const proposal = referendumStatus?.proposal;
 
-  const { call: inlineCall } = useInlineCall(timeline, proposal);
+  const { call: inlineCall } = useInlineCall(proposal);
   const call = preImage?.call || inlineCall;
   const { component: timeLineTabSwitch, isCompact } = useTimelineTabSwitch();
 
@@ -51,13 +52,15 @@ export default function DemocracyReferendaDetailMultiTabs() {
         label: "Call",
         tooltip: tabsTooltipContentMap.call,
         content: (
-          <DemocracyReferendumCallProvider>
-            <ReferendumCall
-              call={call || inlineCall}
-              shorten={post?.onchainData?.preImage?.shorten}
-              onchainData={post?.onchainData}
-            />
-          </DemocracyReferendumCallProvider>
+          <MigrationConditionalApiProvider indexer={indexer}>
+            <DemocracyReferendumCallProvider>
+              <ReferendumCall
+                call={call || inlineCall}
+                shorten={post?.onchainData?.preImage?.shorten}
+                onchainData={post?.onchainData}
+              />
+            </DemocracyReferendumCallProvider>
+          </MigrationConditionalApiProvider>
         ),
       },
       {
@@ -103,6 +106,7 @@ export default function DemocracyReferendaDetailMultiTabs() {
   }, [
     call,
     hasVotesViewTabs,
+    indexer,
     inlineCall,
     isCompact,
     post?.onchainData,
