@@ -28,7 +28,7 @@ export function useDecisionEnd() {
     } else {
       return normalCase;
     }
-  }, [onchain, state, decidingSince, trackDecision]);
+  }, [onchain, state, decidingSince, trackDecision, confirming]);
 }
 
 export function useDecisionBlocks() {
