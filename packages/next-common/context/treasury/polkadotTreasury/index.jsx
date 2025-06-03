@@ -85,7 +85,7 @@ export default function PolkadotTreasuryProvider({ children }) {
         usdcTreasuryBalanceOnAssetHub,
         isUsdcTreasuryBalanceOnAssetHubLoading,
         loanCentrifugeUsdcBalance: 1500000000000,
-        loanBifrostDotBalance: 5000000000000000,
+        loanBifrostDotBalance: 10000000000000000,
         loadPendulumDotBalance: 500000000000000,
         loanHydrationDotBalance: 10000000000000000,
         bountiesCount,
