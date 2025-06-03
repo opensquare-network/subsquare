@@ -18,7 +18,7 @@ export default function FellowshipCycleProgress({ cycle }) {
     {
       percentage: 100,
       start: 0,
-      end: registeredPaidPercentage,
+      length: registeredPaidPercentage,
       tooltipContent: `${registeredPaidPercentage.toFixed(2)}%`,
       fg: registreredPaidColor,
       bg,
@@ -26,7 +26,7 @@ export default function FellowshipCycleProgress({ cycle }) {
     {
       percentage: 100,
       start: registeredPaidPercentage,
-      end: unRegisteredPaidPercentage,
+      length: unRegisteredPaidPercentage,
       tooltipContent: `${unRegisteredPaidPercentage.toFixed(2)}%`,
       fg: unRegisteredPaidColor,
       bg,

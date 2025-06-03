@@ -25,7 +25,7 @@ export function useDecision() {
 }
 
 // return detail page track confirm blocks
-export function useConfirm() {
+export function useConfirmPeriod() {
   const track = useTrack();
   return track.confirmPeriod;
 }
