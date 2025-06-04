@@ -45,6 +45,7 @@ export const fetchElectorate = (api, height) => async (dispatch) => {
     if ([Chains.kintsugi, Chains.interlay].includes(chain)) {
       electorate = await getKintElectorate(api, height);
     } else {
+      // AssetHub migration, use block api instead of passing height
       electorate = await getElectorate(api);
     }
     dispatch(setElectorate(electorate));
