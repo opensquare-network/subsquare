@@ -19,6 +19,8 @@ import useIsDemocracyProposalFinished from "next-common/hooks/democracy/proposal
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
 import DemocracyPublicProposalsDetailMultiTabs from "next-common/components/pages/components/tabs/democracyPublicProposalsDetailMultiTabs";
 import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
+import { useSelector } from "react-redux";
+import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 
 function PublicProposalContent() {
   const post = usePost();
@@ -34,10 +36,11 @@ function PublicProposalContent() {
 
   const timeline = publicProposal?.timeline;
   const indexer = timeline?.[timeline?.length - 1]?.indexer || {};
+  const blockTime = useSelector(blockTimeSelector);
 
   const finishIndexer = isEnded
     ? {
-        ...indexer,
+        blockTime: indexer?.blockTime - blockTime,
         blockHeight: indexer?.blockHeight - 1,
       }
     : null;

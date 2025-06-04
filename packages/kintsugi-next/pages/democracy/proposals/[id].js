@@ -21,6 +21,8 @@ import ContentWithComment from "next-common/components/detail/common/contentWith
 import { usePageProps } from "next-common/context/page";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
 import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
+import { useSelector } from "react-redux";
+import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 
 function PublicProposalContent() {
   const post = usePost();
@@ -43,10 +45,11 @@ function PublicProposalContent() {
 
   const timeline = publicProposal?.timeline;
   const indexer = timeline?.[timeline?.length - 1]?.indexer || {};
+  const blockTime = useSelector(blockTimeSelector);
 
   const finishIndexer = isEnded
     ? {
-        ...indexer,
+        blockTime: indexer?.blockTime - blockTime,
         blockHeight: indexer?.blockHeight - 1,
       }
     : null;
