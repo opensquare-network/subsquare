@@ -42,14 +42,13 @@ function PublicProposalContent() {
   const hasCanceled = ["Canceled", "Cleared", "Removed"].includes(state);
 
   const timeline = publicProposal?.timeline;
-  const lastTimelineBlockHeight =
-    timeline?.[timeline?.length - 1]?.indexer.blockHeight;
-  const secondsAtBlockHeight = isEnded
-    ? lastTimelineBlockHeight - 1
-    : undefined;
+  const indexer = timeline?.[timeline?.length - 1]?.indexer || {};
 
-  const finishIndexer = secondsAtBlockHeight
-    ? { blockHeight: secondsAtBlockHeight }
+  const finishIndexer = isEnded
+    ? {
+        ...indexer,
+        blockHeight: indexer?.blockHeight - 1,
+      }
     : null;
 
   const treasuryProposals = publicProposal?.treasuryProposals;
