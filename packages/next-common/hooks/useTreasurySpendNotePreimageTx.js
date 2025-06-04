@@ -24,6 +24,10 @@ export function useTreasurySpendNotePreimageTx(
       return {};
     }
 
+    if (!api.tx?.treasury?.spend) {
+      throw new Error("api treasury spend tx is not supported");
+    }
+
     try {
       const proposal = api.tx.treasury.spend(
         // Hydration Use assets temporarily and use default native assets
