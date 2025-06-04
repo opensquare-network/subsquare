@@ -1,6 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
 import { blake2AsHex } from "@polkadot/util-crypto";
-import { BN_ZERO } from "@polkadot/util";
 import Extrinsic from "next-common/components/extrinsic";
 import PopupLabel from "next-common/components/popup/label";
 import ExtrinsicInfo from "./info";
@@ -25,7 +24,6 @@ const EMPTY_PROPOSAL = {
   encodedLength: 0,
   encodedProposal: null,
   notePreimageTx: null,
-  storageFee: BN_ZERO,
 };
 
 export function getState(api, proposal) {
@@ -33,18 +31,12 @@ export function getState(api, proposal) {
   let encodedProposal = null;
   let encodedLength = 0;
   let notePreimageTx = null;
-  let storageFee = BN_ZERO;
 
   if (proposal) {
     encodedProposal = proposal.method.toHex();
     encodedLength = Math.ceil((encodedProposal.length - 2) / 2);
     encodedHash = blake2AsHex(encodedProposal);
     notePreimageTx = api.tx.preimage.notePreimage(encodedProposal);
-
-    // we currently don't have a constant exposed, however match to Substrate
-    storageFee = (api.consts.preimage?.baseDeposit || BN_ZERO).add(
-      (api.consts.preimage?.byteDeposit || BN_ZERO).muln(encodedLength),
-    );
   }
 
   return {
@@ -52,7 +44,6 @@ export function getState(api, proposal) {
     encodedLength,
     encodedProposal,
     notePreimageTx,
-    storageFee,
   };
 }
 
