@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+# 4.7.6
+
+date: 2025-06-03
+
+- Asset hub migration: use on chain confirming data to calculate confirmation start height.
+- Fix the whole decision time for approved referenda.
+- Add 500 page to fix server/client error report.
+- Add an identity redirection button on overview page account panel.
+- Remove big images in public folder and use that from public CDN.
+- Add a `WithApi` component to guard components which need api instance.
+- Add skeleton loading for comments.
+- Add load more effects for comments.
+- Add timeout options for polkassembly comments loading.
+- Fix replies from polkassembly API, and filter out replies from subsquare.
+- Update loan to bifrost.
+- Correct tooltip for referenda tracks with track info got from backend API.
+- Fix the case democracy proposal preimage is missing.
+- Fix child bounty url on search popup.
+- Improve API error message handling.
+- Improve treasury spend payout button status, and show warning text when a payout is expired.
+- Adjust polkadot/kusama endpoints sort.
+- Code refactor and UI/bug fixes.
+
 # 4.7.5
 
 date: 2025-05-29
