@@ -20,6 +20,6 @@ export default function extractVoteInfo(timeline = []) {
   return {
     voteFinished,
     voteFinishedIndexer,
-    voteFinishedHeight: voteFinishedIndexer?.blockHeight || null,
+    voteFinishedHeight: voteFinishedIndexer?.blockHeight,
   };
 }
