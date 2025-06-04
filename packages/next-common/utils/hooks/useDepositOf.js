@@ -42,7 +42,7 @@ export default function useDepositOf(proposalIndex, triggerUpdate) {
           setIsLoadingSeconds(false);
         }
       });
-  }, [api, proposalIndex, atBlockHeight, triggerUpdate, isMounted]);
+  }, [api, proposalIndex, triggerUpdate, isMounted]);
 
   return [seconds, depositRequired, isLoadingSeconds];
 }
