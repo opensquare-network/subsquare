@@ -52,12 +52,7 @@ export function NewTreasurySpendReferendumInnerPopupContent() {
       />
       <SignerWithBalance showTransferable />
       {balanceField}
-      <div className="flex flex-col gap-[8px]">
-        {beneficiaryField}
-        <InfoMessage>
-          Please input an AssetHub address as the beneficiary
-        </InfoMessage>
-      </div>
+      <div className="flex flex-col gap-[8px]">{beneficiaryField}</div>
       {trackField}
       <AdvanceSettings>
         {validFromField}

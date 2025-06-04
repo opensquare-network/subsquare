@@ -25,8 +25,7 @@ export function useTreasurySpendNotePreimageTx(
     }
 
     try {
-      const spend = api.tx.treasury.spend;
-      const proposal = spend(
+      const proposal = api.tx.treasury.spend(
         // Hydration Use assets temporarily and use default native assets
         null,
         bnValue.toFixed(),
