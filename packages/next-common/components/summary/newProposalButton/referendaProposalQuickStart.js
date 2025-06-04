@@ -30,21 +30,20 @@ const useQuickStartItems = () => {
   } = useChainSettings();
 
   return useMemo(() => {
-    const items = [
-      {
-        name: "Treasury proposal local",
-        description:
-          "Create a treasury spend of native token that is locally available",
-        content: NewTreasuryReferendumInnerPopupContent,
-      },
-    ];
-    if (treasurySpendProposal) {
+    const items = [];
+    if (treasuryProposalTracks && treasurySpendProposal) {
       items.push({
         name: "Treasury spend proposal",
-        description: "Propose and approve a spend of treasury funds.",
+        description: "Approve a treasury spend which require a manual claim",
         content: NewTreasurySpendReferendumInnerPopupContent,
       });
     }
+    items.push({
+      name: "Treasury proposal local",
+      description:
+        "Approve a treasury proposal and funds will be paid out automatically by treasury award period",
+      content: NewTreasuryReferendumInnerPopupContent,
+    });
     if (treasuryProposalTracks && usdxTreasuryProposal) {
       items.push({
         name: "USDx treasury proposal",
