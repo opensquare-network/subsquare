@@ -1,7 +1,6 @@
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import SubmissionDeposit from "../../newProposalPopup/submissionDeposit";
 import { useCreateProposalSubmitButton } from "../common/createProposalSubmitButton";
-import { InfoMessage } from "next-common/components/setting/styled";
 import AdvanceSettings from "../common/advanceSettings";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import useValidFromField from "next-common/components/preImages/createPreimagePopup/fields/useValidFromField";
