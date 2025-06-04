@@ -7,6 +7,7 @@ import { createGlobalState } from "react-use";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { PromptTypes, colorStyle } from "next-common/components/scrollPrompt";
 import { SystemClose } from "@osn/icons/subsquare";
+import ValueDisplay from "next-common/components/valueDisplay";
 
 const useMode = createGlobalState(true);
 export default function AccountUnlockBalancePrompt() {
@@ -22,8 +23,15 @@ export default function AccountUnlockBalancePrompt() {
       style={colorStyle[PromptTypes]}
     >
       <div className="text-textSecondary">
-        You have {toPrecision(unlockBalance.toString(), decimals)} {symbol}{" "}
-        votes expired available to unlock, check it&nbsp;
+        You have&nbsp;
+        {
+          <ValueDisplay
+            className="text14Bold"
+            value={toPrecision(unlockBalance.toString(), decimals)}
+            decimals={decimals}
+          />
+        }
+        &nbsp;{symbol} votes expired available to unlock, check it&nbsp;
         <Link className="underline text14Bold " href={"/account/votes"}>
           here
         </Link>
