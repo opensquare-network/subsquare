@@ -17,10 +17,6 @@ export default function AyeNayTab({ tabIndex, setTabIndex }) {
   ];
 
   return (
-    <Tab
-      tabs={tabs}
-      selectedTabId={tabIndex}
-      setSelectedTabId={setTabIndex}
-    />
+    <Tab tabs={tabs} selectedTabId={tabIndex} setSelectedTabId={setTabIndex} />
   );
 }
