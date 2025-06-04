@@ -38,7 +38,7 @@ export default function CookiesConsent() {
         "bg-neutral100 shadow-100",
         "border border-neutral300",
         navCollapsed ? "max-w-[calc(100%-72px)]" : "max-w-[calc(100%-300px)]",
-        "max-sm:max-w-none",
+        "max-sm:max-w-none z-[1]",
       )}
     >
       <div

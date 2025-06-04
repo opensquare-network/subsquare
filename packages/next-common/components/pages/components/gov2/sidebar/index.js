@@ -22,7 +22,7 @@ import { useIsMobile } from "next-common/components/overview/accountInfo/compone
 const VotePopup = dynamicPopup(() => import("../votePopup"));
 
 export default function Gov2Sidebar() {
-  const isVisible = useIsScrolling(100, 1000);
+  const isScrolling = useIsScrolling(100, 1000);
   const isMobile = useIsMobile();
   const detail = usePost();
   const [showVote, setShowVote] = useState(false);
@@ -50,8 +50,8 @@ export default function Gov2Sidebar() {
       {isVoting && !hideActionButtons && (
         <InlineWrapper
           className={`${
-            isMobile ? (isVisible ? "translate-y-full" : "") : ""
-          } transition-transform fixed bottom-0 left-0 right-0 p-6 z-10 border-t border-neutral300 bg-neutral100 shadow-shadow200 rounded-t-xl sm:relative sm:p-0 sm:translate-y-0`}
+            isMobile ? (isScrolling ? "translate-y-full" : "") : ""
+          } transition-transform fixed bottom-0 left-0 right-0 p-6 z-[1] border-t border-neutral300 bg-neutral100 shadow-shadow200 rounded-t-xl sm:relative sm:p-0 sm:translate-y-0`}
         >
           <PrimaryButton
             style={{ width: "100%" }}
