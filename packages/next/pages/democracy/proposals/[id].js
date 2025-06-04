@@ -18,6 +18,7 @@ import { usePageProps } from "next-common/context/page";
 import useIsDemocracyProposalFinished from "next-common/hooks/democracy/proposal/useIsDemocracyProposalFinished";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
 import DemocracyPublicProposalsDetailMultiTabs from "next-common/components/pages/components/tabs/democracyPublicProposalsDetailMultiTabs";
+import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 
 function PublicProposalContent() {
   const post = usePost();
@@ -38,16 +39,21 @@ function PublicProposalContent() {
     ? lastTimelineBlockHeight - 1
     : undefined;
 
+  const finishIndexer = secondsAtBlockHeight
+    ? { blockHeight: secondsAtBlockHeight }
+    : null;
+
   return (
     <MaybeSimaContent>
       <ContentWithComment>
         <DetailItem />
-        <Second
-          proposalIndex={proposalIndex}
-          hasTurnIntoReferendum={hasTurnIntoReferendum}
-          hasCanceled={hasCanceled}
-          atBlockHeight={secondsAtBlockHeight}
-        />
+        <MigrationConditionalApiProvider indexer={finishIndexer}>
+          <Second
+            proposalIndex={proposalIndex}
+            hasTurnIntoReferendum={hasTurnIntoReferendum}
+            hasCanceled={hasCanceled}
+          />
+        </MigrationConditionalApiProvider>
         <DemocracyPublicProposalsDetailMultiTabs />
       </ContentWithComment>
     </MaybeSimaContent>

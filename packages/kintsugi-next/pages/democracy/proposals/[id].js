@@ -20,6 +20,7 @@ import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
+import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 
 function PublicProposalContent() {
   const post = usePost();
@@ -47,6 +48,10 @@ function PublicProposalContent() {
     ? lastTimelineBlockHeight - 1
     : undefined;
 
+  const finishIndexer = secondsAtBlockHeight
+    ? { blockHeight: secondsAtBlockHeight }
+    : null;
+
   const treasuryProposals = publicProposal?.treasuryProposals;
   const call = publicProposal?.preImage?.call || publicProposal?.call;
 
@@ -54,12 +59,13 @@ function PublicProposalContent() {
     <MaybeSimaContent>
       <ContentWithComment>
         <DetailItem />
-        <Second
-          proposalIndex={proposalIndex}
-          hasTurnIntoReferendum={hasTurnIntoReferendum}
-          hasCanceled={hasCanceled}
-          atBlockHeight={secondsAtBlockHeight}
-        />
+        <MigrationConditionalApiProvider indexer={finishIndexer}>
+          <Second
+            proposalIndex={proposalIndex}
+            hasTurnIntoReferendum={hasTurnIntoReferendum}
+            hasCanceled={hasCanceled}
+          />
+        </MigrationConditionalApiProvider>
         <DetailMultiTabs
           call={
             call && (
