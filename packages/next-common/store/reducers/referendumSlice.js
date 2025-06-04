@@ -38,25 +38,19 @@ export const electorateSelector = (state) => state.referendum.electorate;
 export const referendumStatusSelector = (state) =>
   state.referendum.referendumStatus;
 
-export const fetchElectorate =
-  (api, height, possibleElectorate) => async (dispatch) => {
-    if (possibleElectorate) {
-      dispatch(setElectorate(possibleElectorate));
-      return;
+export const fetchElectorate = (api, height) => async (dispatch) => {
+  let electorate;
+  dispatch(setIsLoadingElectorate(true));
+  try {
+    if ([Chains.kintsugi, Chains.interlay].includes(chain)) {
+      electorate = await getKintElectorate(api, height);
+    } else {
+      electorate = await getElectorate(api);
     }
-
-    let electorate;
-    dispatch(setIsLoadingElectorate(true));
-    try {
-      if ([Chains.kintsugi, Chains.interlay].includes(chain)) {
-        electorate = await getKintElectorate(api, height);
-      } else {
-        electorate = await getElectorate(api, height);
-      }
-      dispatch(setElectorate(electorate));
-    } finally {
-      dispatch(setIsLoadingElectorate(false));
-    }
-  };
+    dispatch(setElectorate(electorate));
+  } finally {
+    dispatch(setIsLoadingElectorate(false));
+  }
+};
 
 export default referendumSlice.reducer;

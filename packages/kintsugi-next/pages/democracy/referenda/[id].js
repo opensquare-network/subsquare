@@ -32,7 +32,6 @@ import { usePageProps } from "next-common/context/page";
 import useSubDemocracyReferendumStatus from "next-common/hooks/democracy/useSubDemocracyReferendumStatus";
 import useSetReferendumStatus from "next-common/hooks/democracy/useSetReferendumStatus";
 import { referendumStatusSelector } from "next-common/store/reducers/referendumSlice";
-import { useContextApi } from "next-common/context/api";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
 import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 import { useDemocracyReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
@@ -46,11 +45,10 @@ function ReferendumContent({ timelineData, setTimelineData }) {
   useSetReferendumStatus();
   useSubDemocracyReferendumStatus(post?.referendumIndex);
 
-  const api = useContextApi();
   const referendumStatus = useSelector(referendumStatusSelector);
   const proposal = referendumStatus?.proposal;
 
-  useMaybeFetchElectorate(post?.onchainData, api);
+  useMaybeFetchElectorate(post?.onchainData);
   useDemocracyVotesFromServer(post.referendumIndex);
   useFetchVotes(post?.onchainData);
 
