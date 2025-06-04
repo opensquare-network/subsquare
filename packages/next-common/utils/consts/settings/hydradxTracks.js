@@ -1,8 +1,8 @@
 const hydradxTreasuryTracks = [
   {
-    id: 5,
-    name: "Treasurer",
-    max: 50000000,
+    id: 7,
+    name: "Tipper",
+    max: 50000,
   },
   {
     id: 6,
@@ -10,9 +10,9 @@ const hydradxTreasuryTracks = [
     max: 2222222,
   },
   {
-    id: 7,
-    name: "Tipper",
-    max: 50000,
+    id: 5,
+    name: "Treasurer",
+    max: 50000000,
   },
 ];
 
