@@ -38,7 +38,7 @@ function PublicProposalContent() {
   const indexer = timeline?.[timeline?.length - 1]?.indexer || {};
   const blockTime = useSelector(blockTimeSelector);
 
-  const finishIndexer = isEnded
+  const lastIndexer = isEnded
     ? {
         blockTime: indexer?.blockTime - blockTime,
         blockHeight: indexer?.blockHeight - 1,
@@ -49,7 +49,7 @@ function PublicProposalContent() {
     <MaybeSimaContent>
       <ContentWithComment>
         <DetailItem />
-        <MigrationConditionalApiProvider indexer={finishIndexer}>
+        <MigrationConditionalApiProvider indexer={lastIndexer}>
           <Second
             proposalIndex={proposalIndex}
             hasTurnIntoReferendum={hasTurnIntoReferendum}
