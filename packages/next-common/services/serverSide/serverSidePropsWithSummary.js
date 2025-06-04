@@ -1,8 +1,8 @@
 import { withCommonProps } from "next-common/lib";
-import nextApi from "../nextApi";
+import { backendApi } from "../nextApi";
 
 export const serverSidePropsWithSummary = withCommonProps(async () => {
-  const { result: summary } = await nextApi.fetch("overview/summary");
+  const { result: summary } = await backendApi.fetch("overview/summary");
   return {
     props: {
       summary: summary ?? {},

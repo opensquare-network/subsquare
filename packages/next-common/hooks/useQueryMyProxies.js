@@ -1,5 +1,5 @@
 import { useUser } from "next-common/context/user";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { useAsync } from "react-use";
 
 export default function useQueryMyProxied() {
@@ -9,7 +9,7 @@ export default function useQueryMyProxied() {
       return [];
     }
 
-    const { result } = await nextApi.fetch("proxies", {
+    const { result } = await backendApi.fetch("proxies", {
       delegatee: user?.address,
       noDelay: true,
     });

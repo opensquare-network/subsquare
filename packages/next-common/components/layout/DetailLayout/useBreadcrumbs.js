@@ -113,16 +113,18 @@ export default function useBreadcrumbs() {
         content: "Bounties",
         path: "/treasury/bounties",
       },
-      {
-        content: `#${post?.parentBountyId}`,
-        path: `/treasury/bounties/${post?.parentBountyId}`,
-      },
+      post?.parentBountyId
+        ? {
+            content: `#${post?.parentBountyId}`,
+            path: `/treasury/bounties/${post?.parentBountyId}`,
+          }
+        : null,
       {
         content: "Child Bounties",
         path: "/treasury/child-bounties",
       },
       getIndexField(post?.index, id),
-    ];
+    ].filter(Boolean);
   } else if (detailPageCategory.TREASURY_TIP === type) {
     return [
       treasury,

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { hexToU8a } from "@polkadot/util";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { useContextApi } from "next-common/context/api";
 
 function usePreImage(preImageHash) {
@@ -13,16 +13,8 @@ function usePreImage(preImageHash) {
       return;
     }
 
-    const abortController = new AbortController();
-    setTimeout(() => {
-      abortController.abort();
-    }, 15 * 1000);
-    nextApi
-      .fetch(
-        `preimages/${preImageHash}`,
-        {},
-        { signal: abortController.signal },
-      )
+    backendApi
+      .fetch(`preimages/${preImageHash}`, {}, { timeout: 15 * 1000 })
       .then(({ result, error }) => {
         if (error) {
           return;

@@ -38,14 +38,20 @@ export function usePolkassemblyPostData({
 
     setLoadingComments(true);
     backendApi
-      .fetch("polkassembly-comments", {
-        postId: polkassemblyId,
-        postType: polkassemblyPostType,
-      })
+      .fetch(
+        "polkassembly-comments",
+        {
+          postId: polkassemblyId,
+          postType: polkassemblyPostType,
+        },
+        {
+          timeout: 6 * 1000,
+        },
+      )
       .then(({ result }) => {
         if (isMounted()) {
           let comments = (result?.comments || [])
-            .filter((item) => item.comment_source !== "subsquare")
+            // .filter((item) => item.comment_source !== "subsquare")
             .map((item) => toPolkassemblyCommentListItem(chain, item));
           comments = uniqBy([...comments].reverse(), "id");
           comments?.sort(

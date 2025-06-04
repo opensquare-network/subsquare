@@ -5,7 +5,7 @@ import { StatusWrapper } from "next-common/components/popup/styled";
 import Select from "next-common/components/select";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useContextApi } from "next-common/context/api";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { useCallback, useState } from "react";
 import { useAsync } from "react-use";
 import {
@@ -172,7 +172,7 @@ function useTreasuryProposalTitle(id) {
       return cachedTitle;
     }
 
-    const resp = await nextApi.fetch(
+    const resp = await backendApi.fetch(
       `${
         proposalListUrl.startsWith("/")
           ? proposalListUrl.slice(1)

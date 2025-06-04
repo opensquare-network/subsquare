@@ -14,7 +14,7 @@ import SignerPopupWrapper from "../popupWithSigner/signerPopupWrapper";
 import { useAvatarSubmission } from "../setting/publishAvatarPopup";
 import { useAvatarUnset } from "next-common/components/setting/unsetAvatarPopup";
 import { useAsync } from "react-use";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { noop } from "lodash-es";
 
 function SaveButton({ proxyAddress, imageFile, refresh }) {
@@ -62,7 +62,7 @@ function ProfileAvatar({ address }) {
   const [trigger, setTrigger] = useState(0);
   const refresh = useCallback(() => setTrigger((prev) => prev + 1), []);
   const { value } = useAsync(
-    () => nextApi.fetch(`users/${address}`),
+    () => backendApi.fetch(`users/${address}`),
     [address, trigger],
   );
   const proxyUser = value?.result;

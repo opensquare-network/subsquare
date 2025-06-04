@@ -112,18 +112,27 @@ function useSearchResults() {
     }
   });
 
-  const formatItems = useRefCallback((proposalType, items, getIndex) =>
-    items?.length > 0
-      ? [
-          {
-            index: null,
-            title: proposalType,
-            content: "-",
-            proposalType,
-            type: ItemType.CATEGORY,
-          },
-          ...items.map((item) => ({
-            index: item[getIndex] ?? 0,
+  const formatItems = useRefCallback(
+    (proposalType, items, indexKeyOrGetIndexFn) => {
+      if ((items?.length || []) <= 0) {
+        return [];
+      }
+
+      return [
+        {
+          index: null,
+          title: proposalType,
+          content: "-",
+          proposalType,
+          type: ItemType.CATEGORY,
+        },
+        ...items.map((item) => {
+          const index =
+            typeof indexKeyOrGetIndexFn === "string"
+              ? item[indexKeyOrGetIndexFn]
+              : indexKeyOrGetIndexFn(item);
+          return {
+            index: index ?? 0,
             title: item.title ?? "-",
             content: item.content
               ? item.content
@@ -132,9 +141,10 @@ function useSearchResults() {
               : "-",
             proposalType,
             type: ItemType.ITEM,
-          })),
-        ]
-      : [],
+          };
+        }),
+      ];
+    },
   );
 
   const totalList = useMemo(() => {
@@ -148,8 +158,11 @@ function useSearchResults() {
           return formatItems("DemocracyReferenda", value, "referendumIndex");
         case "bounties":
           return formatItems("Bounties", value, "bountyIndex");
-        case "childBounties":
-          return formatItems("ChildBounties", value, "index");
+        case "childBounties": {
+          return formatItems("ChildBounties", value, (item) => {
+            return `${item.parentBountyId}_${item.index}`;
+          });
+        }
         case "identities":
           return formatItems("Identities", value, "index");
         case "treasuryProposals":

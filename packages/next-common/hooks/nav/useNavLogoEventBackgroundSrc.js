@@ -7,6 +7,7 @@ import isBetween from "dayjs/plugin/isBetween";
 import { find } from "lodash-es";
 import { useChainSettings } from "next-common/context/chain";
 import solarlunar from "solarlunar";
+import { STATICS_CDN_URL } from "next-common/utils/consts/statics";
 
 dayjs.extend(isBetween);
 
@@ -28,11 +29,15 @@ export function useNavLogoEventBackgroundSrc() {
     return null;
   }
 
+  const light = `${STATICS_CDN_URL}/public/project-menu-bg-${event.name}-${
+    navPreferDark ? "dark" : "light"
+  }-light.${event.filetype}`;
+
+  const dark = `${STATICS_CDN_URL}/public/project-menu-bg-${event.name}-dark.${event.filetype}`;
+
   return {
-    light: `/project-menu-bg-${event.name}-${
-      navPreferDark ? "dark" : "light"
-    }-light.${event.filetype}`,
-    dark: `/project-menu-bg-${event.name}-dark.${event.filetype}`,
+    light,
+    dark,
   };
 }
 

@@ -39,7 +39,7 @@ export const getPathAndCategoryByItemData = (item) => {
     [SearchType.CHILD_BOUNTIES]: {
       path:
         item.type !== ItemType.CATEGORY
-          ? `/treasury/child-bounties/${item.parentBountyId}_${item.index}`
+          ? `/treasury/child-bounties/${item.index}`
           : "/treasury/child-bounties",
       category: "Child Bounties",
     },

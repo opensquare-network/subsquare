@@ -2,6 +2,7 @@ import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
 import dynamic from "next/dynamic";
 import { mergeChainModules } from "./common/modules";
+import bifrostPreimageSettings from "next-common/utils/consts/settings/common/preimage/bifrost";
 
 const ProjectIconBifrostKusamaDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconBifrostKusamaDark"),
@@ -143,6 +144,7 @@ const bifrost = {
   hotMenu: {
     referenda: true,
   },
+  preimage: bifrostPreimageSettings,
 };
 
 export default bifrost;

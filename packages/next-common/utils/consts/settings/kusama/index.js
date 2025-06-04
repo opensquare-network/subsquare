@@ -6,6 +6,7 @@ import { defaultPostLabels } from "../common";
 import MenuGroups from "../menuGroups";
 import { mergeChainModules } from "../common/modules";
 import kusamaCommonCfg from "next-common/utils/consts/settings/kusama/common";
+import kusamaPreimageSettings from "next-common/utils/consts/settings/common/preimage/kusama";
 
 const ProjectIconKusamaDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconKusamaDark"),
@@ -88,6 +89,7 @@ const kusama = {
   hotMenu: {
     referenda: true,
   },
+  preimage: kusamaPreimageSettings,
 };
 
 export default kusama;

@@ -7,8 +7,8 @@ import { DecodeCallItem } from "../decodeItem";
 import ChainIcon from "next-common/components/header/chainIcon";
 import Tooltip from "next-common/components/tooltip";
 import { useRelayToParachainDecode } from "next-common/utils/gov2/useRelayToParachainDecode";
-import getChainSettings from "next-common/utils/consts/settings";
 import { getParachain } from "next-common/utils/gov2/relayToParachainDecodeSupport";
+import { getChainSettingsPolyfill } from "next-common/utils/consts/settingsPolyfill";
 
 export default function RelayToParaChainCall() {
   const { call } = useContext(RawCallContext);
@@ -41,7 +41,7 @@ function ParachainChainDecodeCall({ calls }) {
             if (!chain) {
               return null;
             }
-            const chainSettings = getChainSettings(chain);
+            const chainSettings = getChainSettingsPolyfill(chain);
             const chainName = chainSettings?.name || chain;
             const content = `Chain Name: ${chainName}\nChain ID: ${parachainId.toHuman()}`;
             return (

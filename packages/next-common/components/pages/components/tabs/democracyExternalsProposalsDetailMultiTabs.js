@@ -53,7 +53,7 @@ export default function DemocracyExternalsProposalsDetailMultiTabs() {
                   <DemocracyReferendumCallProvider>
                     <DemocracyExternalProposalCall
                       call={call}
-                      shorten={external.preImage.shorten}
+                      shorten={external?.preImage?.shorten}
                       motionIndex={external.motionIndex}
                       referendumIndex={external.referendumIndex}
                     />
@@ -87,7 +87,7 @@ export default function DemocracyExternalsProposalsDetailMultiTabs() {
     call,
     detail?.onchainData,
     external.motionIndex,
-    external.preImage.shorten,
+    external?.preImage?.shorten,
     external.referendumIndex,
     indexer,
     isCompact,

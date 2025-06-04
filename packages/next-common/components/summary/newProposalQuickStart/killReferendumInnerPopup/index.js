@@ -17,9 +17,9 @@ import { useCallback } from "react";
 import { useContextApi } from "next-common/context/api";
 import { usePageProps } from "next-common/context/page";
 import { useStepContainer } from "next-common/context/stepContainer";
-import Button from "next-common/lib/button";
 import CircleStepper from "next-common/components/step";
 import SigningTip from "../common/signingTip";
+import PreviousButton from "../../newProposalButton/previousButton";
 
 function useReferendumKillerTrackID() {
   const { tracks } = usePageProps();
@@ -147,7 +147,7 @@ export function KillReferendumInnerPopupContent() {
         currentStep={1}
         loading={isLoading}
       />
-      <SignerWithBalance />
+      <SignerWithBalance showTransferable />
       {referendumIndexField}
       {trackField}
       <AdvanceSettings>
@@ -156,17 +156,7 @@ export function KillReferendumInnerPopupContent() {
       </AdvanceSettings>
       <SigningTip />
       <div className="flex justify-between">
-        <Button
-          className={`border-neutral400 hover:border-neutral500 ${
-            isLoading
-              ? " cursor-not-allowed text-textDisabled border-neutral300"
-              : ""
-          }`}
-          disabled={isLoading}
-          onClick={goBack}
-        >
-          Previous
-        </Button>
+        <PreviousButton isLoading={isLoading} onClick={goBack} />
         {submitButton}
       </div>
     </>

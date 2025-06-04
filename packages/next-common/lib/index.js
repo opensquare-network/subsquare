@@ -10,7 +10,7 @@ import getDetailPageProperties, { getIdProperty } from "./pages/detail";
 import fetchProfile from "next-common/lib/fetchProfile";
 import fetchUserStatus from "next-common/lib/fetchUserStatus";
 import { adminsApi } from "next-common/services/url";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { getConnectedAccount } from "next-common/services/serverSide/getConnectedAccount";
 import {
   fetchRelayScanHeight,
@@ -49,7 +49,7 @@ export function withCommonProps(
       getServerSideProps(context),
       fetchProfile(context?.req),
       fetchUserStatus(context),
-      nextApi.fetch(adminsApi),
+      backendApi.fetch(adminsApi),
       fetchScanHeight(),
     ]);
 

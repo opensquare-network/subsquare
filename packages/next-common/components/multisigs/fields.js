@@ -83,18 +83,23 @@ export function Call({ when, callHash, call, callHex, right = false }) {
   );
 }
 
-function AddressesTooltip({ addresses = [] }) {
+export function AddressesTooltip({
+  addresses = [],
+  className = "",
+  addressMaxWidth,
+}) {
   if (!addresses || addresses.length <= 0) {
     return null;
   }
 
   return (
-    <ul>
+    <ul className={cn(className)}>
       {(addresses || []).map((address, index) => (
         <li key={index} className="leading-5">
           <AddressUser
             add={address}
             ellipsis={false}
+            maxWidth={addressMaxWidth}
             className="text12Medium text-textPrimaryContrast"
           />
         </li>

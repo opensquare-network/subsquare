@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import useColumns from "next-common/components/styledList/useColumns";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import Pagination from "next-common/components/pagination";
 import useStateChanged from "next-common/hooks/useStateChanged";
 import Flex from "next-common/components/styled/flex";
@@ -103,7 +103,7 @@ export default function ReferendaDelegatee({ delegatee }) {
 
   const fetchData = useCallback(
     (page, pageSize) => {
-      nextApi
+      backendApi
         .fetch("referenda/delegatee", {
           ...getSortParams(sortedColumn),
           page,

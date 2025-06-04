@@ -2,7 +2,7 @@ import { useConfirmingStarted } from "next-common/context/post/gov2/referendum";
 import { useTimelineData } from "next-common/context/post";
 import { findLast } from "lodash-es";
 import { gov2State } from "next-common/utils/consts/state";
-import { useConfirm } from "next-common/context/post/gov2/track";
+import { useConfirmPeriod } from "next-common/context/post/gov2/track";
 import { ProgressBarWrapper, ProgressGroup, Tooltip } from "../styled";
 import Progress from "next-common/components/progress";
 import ConfirmationInfo from "./confirmationInfo";
@@ -29,7 +29,7 @@ export function useAbortedOrRejectedHeight(confirmStartedHeight) {
 export default function LastConfirmationProgress() {
   const startedHeight = useConfirmingStarted();
   const rejectedHeight = useAbortedOrRejectedHeight(startedHeight);
-  const confirmPeriod = useConfirm();
+  const confirmPeriod = useConfirmPeriod();
   const percentage = Number(
     ((rejectedHeight - startedHeight) / confirmPeriod) * 100,
   ).toFixed(2);

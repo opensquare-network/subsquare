@@ -84,8 +84,6 @@ export default function FellowshipReferendaDetailMultiTabs() {
     router.query.tab,
   ]);
 
-  // console.log(tabs);
-
   function handleTabClick(tab) {
     router.replace(
       {
