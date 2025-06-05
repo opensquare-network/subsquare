@@ -15,7 +15,7 @@ import { RelayChainBlockApiProvider } from "next-common/context/relayChain/block
 import useReferendumVotingFinishHeight, {
   useReferendaIsVoting,
 } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
-import { useRelayChainBlockNumber } from "next-common/utils/gov2/useRealyChainBlockNumber";
+import { useRelayChainBlockNumber } from "next-common/utils/gov2/useRelayChainBlockNumber";
 
 export default function RelayChainCall() {
   const { call, isLoading } = useContext(RawCallContext);
