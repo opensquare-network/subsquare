@@ -22,7 +22,6 @@ import ContentWithComment from "next-common/components/detail/common/contentWith
 import { usePageProps } from "next-common/context/page";
 import useSubDemocracyReferendumStatus from "next-common/hooks/democracy/useSubDemocracyReferendumStatus";
 import useSetReferendumStatus from "next-common/hooks/democracy/useSetReferendumStatus";
-import { useContextApi } from "next-common/context/api";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
 import DemocracyReferendaDetailMultiTabs from "next-common/components/pages/components/tabs/democracyReferendaDetailMultiTabs";
 import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
@@ -42,14 +41,13 @@ function ReferendumContent() {
 }
 
 function ReferendumContentContentInContext({ post }) {
-  const api = useContextApi();
   const dispatch = useDispatch();
 
   useSubscribePostDetail(post?.referendumIndex);
   useSetReferendumStatus();
   useSubDemocracyReferendumStatus(post?.referendumIndex);
 
-  useMaybeFetchElectorate(post?.onchainData, api);
+  useMaybeFetchElectorate(post?.onchainData);
   useDemocracyVotesFromServer(post.referendumIndex);
   useFetchVotes(post?.onchainData);
 

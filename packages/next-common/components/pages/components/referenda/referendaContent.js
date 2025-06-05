@@ -1,6 +1,5 @@
 import Gov2Sidebar from "next-common/components/pages/components/gov2/sidebar";
 import { useEffect } from "react";
-import { unsetIssuance } from "next-common/store/reducers/gov2ReferendumSlice";
 import { useDispatch } from "react-redux";
 import ReferendaDetail from "next-common/components/detail/referenda";
 import useSubReferendumInfo from "next-common/hooks/referenda/useSubReferendumInfo";
@@ -29,7 +28,6 @@ function ReferendumContentInContext() {
 
   useEffect(() => {
     return () => {
-      dispatch(unsetIssuance());
       dispatch(clearVotes());
     };
   }, [dispatch]);
