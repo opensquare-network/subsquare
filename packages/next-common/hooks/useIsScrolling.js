@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import { throttle } from "lodash-es";
+import { debounce } from "lodash-es";
+import { useWindowScroll } from "react-use";
 
 /**
  *
@@ -8,42 +9,26 @@ import { throttle } from "lodash-es";
  * @returns {boolean} - Whether the element should be visible
  */
 export default function useIsScrolling(threshold = 0, throttleTime = 200) {
-  const [isVisible, setIsVisible] = useState(false);
+  const { y: scrollY } = useWindowScroll();
+  const [isScrolling, setIsScrolling] = useState(false);
   const lastScrollY = useRef(0);
-  const isScrolling = useRef(false);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    lastScrollY.current = window.scrollY;
-
-    const handleScrollStart = () => {
-      if (!isScrolling.current) {
-        isScrolling.current = true;
-        setIsVisible(true);
-      }
-    };
-
-    const handleScrollEnd = throttle(() => {
-      isScrolling.current = false;
-      setIsVisible(false);
+    const handleScrollEnd = debounce(() => {
+      setIsScrolling(false);
+      lastScrollY.current = scrollY;
     }, throttleTime);
 
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      if (Math.abs(currentScrollY - lastScrollY.current) > threshold) {
-        handleScrollStart();
-        lastScrollY.current = currentScrollY;
-        handleScrollEnd();
-      }
-    };
+    if (!isScrolling && Math.abs(lastScrollY.current - scrollY) > threshold) {
+      setIsScrolling(true);
+    }
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScrollEnd();
+
     return () => {
-      window.removeEventListener("scroll", handleScroll);
       handleScrollEnd.cancel();
     };
-  }, [threshold, throttleTime]);
+  }, [isScrolling, scrollY, threshold, throttleTime]);
 
-  return isVisible;
+  return isScrolling;
 }
