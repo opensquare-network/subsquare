@@ -1,4 +1,3 @@
-import { useReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import { useEffect, useState } from "react";
 import { orderBy } from "lodash-es";
 import { normalizeRankedCollectiveEntries } from "next-common/utils/rankedCollective/normalize";
@@ -26,7 +25,6 @@ export default function useCollectiveEligibleVoters() {
   });
   const [loading, setLoading] = useState(true);
 
-  const votingFinishIndexer = useReferendumVotingFinishIndexer();
   const minRank = useRankedCollectiveMinRank();
 
   const {
@@ -81,7 +79,7 @@ export default function useCollectiveEligibleVoters() {
         setLoading(false);
       }
     })();
-  }, [api, votingFinishIndexer, isLoadingVotes, allAye, allNay, minRank]);
+  }, [api, isLoadingVotes, allAye, allNay, minRank]);
 
   return {
     ...voters,
