@@ -5,10 +5,10 @@ import { useWindowScroll } from "react-use";
 /**
  *
  * @param {number} threshold - Scroll distance
- * @param {number} throttleTime - throttle time for scroll end event, also used as hide delay (default: 200ms)
+ * @param {number} debounceTime - debounce time for scroll end event, also used as hide delay (default: 200ms)
  * @returns {boolean} - Whether the element should be visible
  */
-export default function useIsScrolling(threshold = 0, throttleTime = 200) {
+export default function useIsScrolling(threshold = 0, debounceTime = 200) {
   const { y: scrollY } = useWindowScroll();
   const [isScrolling, setIsScrolling] = useState(false);
   const lastScrollY = useRef(0);
@@ -17,7 +17,7 @@ export default function useIsScrolling(threshold = 0, throttleTime = 200) {
     const handleScrollEnd = debounce(() => {
       setIsScrolling(false);
       lastScrollY.current = scrollY;
-    }, throttleTime);
+    }, debounceTime);
 
     if (!isScrolling && Math.abs(lastScrollY.current - scrollY) > threshold) {
       setIsScrolling(true);
@@ -28,7 +28,7 @@ export default function useIsScrolling(threshold = 0, throttleTime = 200) {
     return () => {
       handleScrollEnd.cancel();
     };
-  }, [isScrolling, scrollY, threshold, throttleTime]);
+  }, [debounceTime, isScrolling, scrollY, threshold]);
 
   return isScrolling;
 }
