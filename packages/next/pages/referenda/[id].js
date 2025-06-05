@@ -21,6 +21,7 @@ import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { usePageProps } from "next-common/context/page";
 import { ReferendumContent } from "next-common/components/pages/components/referenda/referendaContent";
 import { ReferendaPalletProvider } from "next-common/context/referenda/pallet";
+import WindowSizeProvider from "next-common/context/windowSize";
 
 function UnFinalizedBreadcrumb({ id }) {
   return (
@@ -89,11 +90,13 @@ function ReferendumPageImpl() {
 
 export default function ReferendumPage({ detail }) {
   return (
-    <PostProvider post={detail}>
-      <ReferendaPalletProvider pallet="referenda">
-        <ReferendumPageImpl />
-      </ReferendaPalletProvider>
-    </PostProvider>
+    <WindowSizeProvider>
+      <PostProvider post={detail}>
+        <ReferendaPalletProvider pallet="referenda">
+          <ReferendumPageImpl />
+        </ReferendaPalletProvider>
+      </PostProvider>
+    </WindowSizeProvider>
   );
 }
 
