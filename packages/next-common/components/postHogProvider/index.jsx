@@ -5,24 +5,30 @@ import Router from "next/router";
 import posthog from "posthog-js";
 import { PostHogProvider as PHProvider } from "posthog-js/react";
 import { useChainSettings } from "next-common/context/chain";
+import { IS_DEVELOPMENT } from "next-common/utils/constants";
 
 function PostHogProviderImpl({ children }) {
-  if (!process.env.NEXT_PUBLIC_CHAIN) {
-    throw new Error("NEXT_PUBLIC_CHAIN env not set");
-  }
+  const NEXT_PUBLIC_POSTHOG_KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY;
 
   useEffect(() => {
-    posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY, {
+    if (!NEXT_PUBLIC_POSTHOG_KEY) {
+      return;
+    }
+
+    posthog.init(NEXT_PUBLIC_POSTHOG_KEY, {
       api_host: "/ingest",
       ui_host: "https://us.posthog.com",
       loaded: (posthog) => {
-        if (process.env.NODE_ENV === "development") posthog.debug();
+        if (IS_DEVELOPMENT) {
+          posthog.debug();
+        }
       },
-      debug: process.env.NODE_ENV === "development",
-      capture_pageleave: true,
+      debug: IS_DEVELOPMENT,
+      capture_pageleave: false,
+      session_recording: true,
       autocapture: {
-        dom_event_capture: ["click"],
-        exceptions: true,
+        dom_event_capture: ["click", "submit"],
+        exceptions: false,
       },
     });
 
@@ -32,7 +38,7 @@ function PostHogProviderImpl({ children }) {
     return () => {
       Router.events.off("routeChangeComplete", handleRouteChange);
     };
-  }, []);
+  }, [NEXT_PUBLIC_POSTHOG_KEY]);
 
   return <PHProvider client={posthog}>{children}</PHProvider>;
 }
