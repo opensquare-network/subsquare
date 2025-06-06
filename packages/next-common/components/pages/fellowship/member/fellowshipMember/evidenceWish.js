@@ -23,6 +23,7 @@ import { getCidByEvidence } from "next-common/utils/collective/getCidByEvidence"
 import { useIpfsContent } from "next-common/hooks/useIpfsContent";
 import { WishBar } from "./wishBar";
 import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
+import EvidenceDetailPopup from "next-common/components/collectives/core/member/evidence";
 
 export default function EvidenceWish() {
   const { id: address, fellowshipMembers } = usePageProps();
@@ -90,6 +91,10 @@ function OnchainEvidenceContent({ evidence, wish }) {
 
   const cid = getCidByEvidence(evidence);
   const { value: ifpsContent, loading, error } = useIpfsContent(cid);
+  const { id: address, fellowshipMembers } = usePageProps();
+  const activeMember = fellowshipMembers.find(
+    (member) => member.address === address,
+  );
 
   return (
     <>
@@ -126,13 +131,22 @@ function OnchainEvidenceContent({ evidence, wish }) {
           View Evidence
         </Button>
         {detailVisible && (
+          <EvidenceDetailPopup
+            address={address}
+            rank={activeMember.rank}
+            wish={wish}
+            evidence={evidence}
+            onClose={() => setDetailVisible(false)}
+          />
+        )}
+        {/* {detailVisible && (
           <WishDetailPopup
             onClose={() => setDetailVisible(false)}
             ifpsContent={ifpsContent}
             wish={wish}
             cid={cid}
           />
-        )}
+        )} */}
       </GreyPanel>
     </>
   );
