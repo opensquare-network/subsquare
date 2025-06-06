@@ -1,11 +1,11 @@
-import useChainOrScanHeight from "next-common/hooks/height";
+import useCoretimeChainOrScanHeight from "next-common/hooks/coretime/scanHeight";
 import {
   useCoretimeSaleInitHeight,
   useCoretimeSaleStart,
 } from "next-common/context/coretime/sale/provider";
 
 export function useIsCoretimeSaleInterludePhase() {
-  const chainHeight = useChainOrScanHeight();
+  const chainHeight = useCoretimeChainOrScanHeight();
   const saleStartHeight = useCoretimeSaleStart();
   const initHeight = useCoretimeSaleInitHeight();
 

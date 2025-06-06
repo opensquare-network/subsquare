@@ -1,4 +1,4 @@
-import useChainOrScanHeight from "next-common/hooks/height";
+import useCoretimeChainOrScanHeight from "next-common/hooks/coretime/scanHeight";
 import useCoretimeSale from "next-common/context/coretime/sale/provider";
 import { isNil } from "lodash-es";
 
@@ -9,7 +9,7 @@ export const Phases = Object.freeze({
 });
 
 export default function useCoretimeSalePhase() {
-  const chainHeight = useChainOrScanHeight();
+  const chainHeight = useCoretimeChainOrScanHeight();
   const sale = useCoretimeSale();
   const {
     initIndexer: { blockHeight: initBlockHeight } = {},
