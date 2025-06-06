@@ -59,7 +59,7 @@ function LoadingVoteBar() {
   );
 }
 
-function VoteBar({ address, wish }) {
+export function VoteBar({ address, wish }) {
   const { relatedReferenda, isLoading } =
     useFellowshipCoreRelatedReferenda(address);
 

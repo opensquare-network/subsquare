@@ -1,4 +1,3 @@
-import Popup from "next-common/components/popup/wrapper/Popup";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { CardTitle } from "./styled";
 import SummaryLayout from "next-common/components/summary/layout/layout";
@@ -11,7 +10,7 @@ import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import CoretimeSalePanelChartSkeleton from "next-common/components/coretime/salePanel/chart/skeleton";
 import Button from "next-common/lib/button";
 import { useState } from "react";
-import WishDetail from "next-common/components/pages/fellowship/member/fellowshipMember/wishDetail";
+
 import { cn } from "next-common/utils";
 import { useTheme } from "styled-components";
 import { IpfsEvidenceRawContent } from "next-common/components/collectives/core/evidenceContent";
@@ -139,14 +138,6 @@ function OnchainEvidenceContent({ evidence, wish }) {
             onClose={() => setDetailVisible(false)}
           />
         )}
-        {/* {detailVisible && (
-          <WishDetailPopup
-            onClose={() => setDetailVisible(false)}
-            ifpsContent={ifpsContent}
-            wish={wish}
-            cid={cid}
-          />
-        )} */}
       </GreyPanel>
     </>
   );
@@ -159,26 +150,6 @@ function OnchainEvidenceLoading() {
       <CoretimeSalePanelChartSkeleton className="h-5 mt-2" />
       <CoretimeSalePanelChartSkeleton className="h-5 w-1/2 mt-2" />
     </>
-  );
-}
-
-function WishDetailPopup({ onClose, ifpsContent, wish, cid }) {
-  const { id: address, fellowshipMembers } = usePageProps();
-
-  const activeMember = fellowshipMembers.find(
-    (member) => member.address === address,
-  );
-
-  return (
-    <Popup title={"Evidence Detail"} className="w-[800px]" onClose={onClose}>
-      <WishDetail
-        wish={wish}
-        address={address}
-        activeMember={activeMember}
-        ifpsContent={ifpsContent}
-        cid={cid}
-      />
-    </Popup>
   );
 }
 
