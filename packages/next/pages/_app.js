@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Router from "next/router";
 import NProgress from "nprogress";
 import { Provider } from "react-redux";
@@ -17,9 +17,8 @@ import "@osn/previewer/styles.css";
 import "next-common/styles/markdown.css";
 import useInitMimir from "next-common/hooks/useInitMimir";
 import dynamic from "next/dynamic";
-import posthog from "posthog-js";
-import { PostHogProvider } from "posthog-js/react";
 // import ErrorBoundary from "next-common/components/errorBoundary";
+import PostHogProvider from "next-common/components/postHogProvider";
 
 NProgress.configure({
   minimum: 0.3,
@@ -54,30 +53,6 @@ function MyApp({ Component, pageProps }) {
     throw new Error("NEXT_PUBLIC_CHAIN env not set");
   }
 
-  useEffect(() => {
-    posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY, {
-      api_host: "/ingest",
-      ui_host: "https://us.posthog.com",
-      loaded: (posthog) => {
-        if (process.env.NODE_ENV === "development") posthog.debug();
-      },
-      debug: process.env.NODE_ENV === "development",
-      capture_pageleave: true,
-      autocapture: {
-        dom_event_capture: ["click"],
-        exceptions: true,
-      },
-      // autocapture: false,
-    });
-
-    const handleRouteChange = () => posthog.capture("$pageview");
-    Router.events.on("routeChangeComplete", handleRouteChange);
-
-    return () => {
-      Router.events.off("routeChangeComplete", handleRouteChange);
-    };
-  }, []);
-
   useInitMimir();
 
   const {
@@ -95,7 +70,7 @@ function MyApp({ Component, pageProps }) {
   } = pageProps;
 
   return (
-    <PostHogProvider client={posthog}>
+    <PostHogProvider>
       <>
         <Head>
           <meta
