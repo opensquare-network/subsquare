@@ -38,9 +38,9 @@ function PostHogProviderImpl({ children }) {
 }
 
 export default function PostHogProvider({ children }) {
-  const { PostHog } = useChainSettings();
+  const { hasDataTracking = false } = useChainSettings();
 
-  if (!PostHog) {
+  if (!hasDataTracking) {
     return children;
   }
 
