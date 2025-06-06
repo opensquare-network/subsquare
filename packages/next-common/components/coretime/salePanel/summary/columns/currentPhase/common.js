@@ -1,5 +1,5 @@
 import { Item } from "next-common/components/coretime/salePanel/summary/common";
-import useChainOrScanHeight from "next-common/hooks/height";
+import useCoretimeChainOrScanHeight from "next-common/hooks/coretime/scanHeight";
 import { useSelector } from "react-redux";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import CountDown from "next-common/components/_CountDown";
@@ -29,7 +29,7 @@ export function getCountDownProgress(startHeight, currentHeight, endHeight) {
 }
 
 export default function CurrentPhaseEnd({ startHeight, endHeight }) {
-  const chainHeight = useChainOrScanHeight();
+  const chainHeight = useCoretimeChainOrScanHeight();
   const blockGap = endHeight - chainHeight;
   const estimatedBlocksTime = useEstimateBlocksTime(blockGap);
   const countDownTotal = useEstimateBlocksTime(endHeight - startHeight);
