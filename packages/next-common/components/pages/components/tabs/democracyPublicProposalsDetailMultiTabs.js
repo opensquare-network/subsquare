@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
 import { useDemocracyPublicProposalTimelineData } from "next-common/hooks/pages/timelineData";
 import tabsTooltipContentMap from "./tabsTooltipContentMap";
+import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 
 const Metadata = dynamicClientOnly(() =>
   import("next-common/components/publicProposal/metadata"),
@@ -27,6 +28,7 @@ export default function DemocracyPublicProposalsDetailMultiTabs() {
   const publicProposal = post?.onchainData;
   const call = publicProposal?.preImage?.call || publicProposal?.call;
   const { component: timeLineTabSwitch, isCompact } = useTimelineTabSwitch();
+  const indexer = publicProposal?.indexer;
 
   const { tabs, activeTabValue } = useMemo(() => {
     const tabs = [
@@ -37,14 +39,16 @@ export default function DemocracyPublicProposalsDetailMultiTabs() {
               label: "Call",
               tooltip: tabsTooltipContentMap.call,
               content: (
-                <DemocracyReferendumCallProvider>
-                  <DemocracyPublicProposalCall
-                    call={call}
-                    shorten={publicProposal.preImage?.shorten}
-                    proposalIndex={publicProposal.proposalIndex}
-                    referendumIndex={publicProposal.referendumIndex}
-                  />
-                </DemocracyReferendumCallProvider>
+                <MigrationConditionalApiProvider indexer={indexer}>
+                  <DemocracyReferendumCallProvider>
+                    <DemocracyPublicProposalCall
+                      call={call}
+                      shorten={publicProposal.preImage?.shorten}
+                      proposalIndex={publicProposal.proposalIndex}
+                      referendumIndex={publicProposal.referendumIndex}
+                    />
+                  </DemocracyReferendumCallProvider>
+                </MigrationConditionalApiProvider>
               ),
             },
           ]
@@ -71,6 +75,7 @@ export default function DemocracyPublicProposalsDetailMultiTabs() {
     return { tabs, activeTabValue: router.query.tab || defaultTab.value };
   }, [
     call,
+    indexer,
     isCompact,
     post?.onchainData,
     publicProposal.preImage?.shorten,

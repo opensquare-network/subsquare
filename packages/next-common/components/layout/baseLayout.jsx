@@ -17,6 +17,10 @@ import { useContextApi } from "next-common/context/api";
 import useExistentialDeposit from "next-common/utils/hooks/chain/useExistentialDeposit";
 import GlobalNotification from "next-common/components/globalNotification";
 import useInitApiProviders from "next-common/services/chain/apis/useInitApiProviders";
+import useInitMimir from "next-common/hooks/useInitMimir";
+import { usePageProperties } from "next-common/context/page";
+import { useSubScanHeight } from "next-common/hooks/scanHeight";
+import MaybeSubRelayStatus from "../maybeSubRelayStatus";
 
 /**
  * @description a base layout includes nav, header and footer
@@ -26,13 +30,18 @@ export default function BaseLayout({
   seoInfo = {},
   contentStyle = {},
 }) {
+  const { scanHeight, relayScanHeight } = usePageProperties();
   const { sm } = useScreenSize();
   const [navCollapsed] = useNavCollapsed();
+
+  useInitMimir();
   useInitApiProviders();
   useUpdateNodesDelay();
 
   const api = useContextApi();
   useBlockTime(api);
+
+  useSubScanHeight(scanHeight);
   useSubscribeChainHead(api);
   useExistentialDeposit();
 
@@ -40,7 +49,7 @@ export default function BaseLayout({
   useStoreConvictionVotingLockPeriod();
 
   return (
-    <>
+    <MaybeSubRelayStatus relayScanHeight={relayScanHeight}>
       <SEO {...seoInfo} />
 
       <div className="min-h-screen flex bg-pageBg max-sm:flex-col">
@@ -79,6 +88,6 @@ export default function BaseLayout({
       <Toast />
       <CookiesConsent />
       <LoginGlobalPopup />
-    </>
+    </MaybeSubRelayStatus>
   );
 }

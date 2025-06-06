@@ -26,6 +26,7 @@ import TechcommMotionDetailHeader from "components/motion/techcommMotionDetailHe
 import Copyable from "next-common/components/copyable";
 import AddressUser from "next-common/components/user/addressUser";
 import useChainOrScanHeight from "next-common/hooks/height";
+import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 
 const TimelineMotionEnd = styled.div`
   display: flex;
@@ -202,7 +203,9 @@ export default function TechcommMotionDetail({ motion }) {
       <DetailMultiTabs
         call={
           post?.onchainData?.proposal && (
-            <CollectiveCall call={post.onchainData.proposal} />
+            <MigrationConditionalApiProvider indexer={post.onchainData.indexer}>
+              <CollectiveCall call={post.onchainData.proposal} />
+            </MigrationConditionalApiProvider>
           )
         }
         business={

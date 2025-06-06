@@ -6,10 +6,10 @@ import TimeDuration from "../../TimeDuration";
 import usePercentage from "./usePercentage";
 import FellowshipTimeoutCountdown from "next-common/components/gov2/postList/timeoutCountdown/fellowshipTimeoutCountdown";
 import ReferendaTimeoutCountdown from "next-common/components/gov2/postList/timeoutCountdown/referendaTimeoutCountdown";
-import useChainOrScanHeight from "next-common/hooks/height";
+import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
 
 export default function PreparingCountdown({ detail, isFellowship = false }) {
-  const latestHeight = useChainOrScanHeight();
+  const latestHeight = useAhmLatestHeight();
   const onchain = detail?.onchainData;
   const trackInfo = onchain?.trackInfo;
 

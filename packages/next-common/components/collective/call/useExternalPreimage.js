@@ -1,16 +1,11 @@
-import { useContextApi } from "next-common/context/api";
 import { useEffect, useState } from "react";
 import normalizeCall from "next-common/components/democracy/metadata/normalize";
 import getExternalProposalHash from "next-common/components/collective/call/external";
 import { isNil } from "lodash-es";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
-async function queryPreimage(api, hash, len, blockHash) {
-  let blockApi = api;
-  if (blockHash) {
-    blockApi = await api.at(blockHash);
-  }
-
-  const raw = await blockApi.query.preimage.preimageFor([hash, len]);
+async function queryPreimage(api, hash, len) {
+  const raw = await api.query.preimage.preimageFor([hash, len]);
   if (!raw.isSome) {
     return null;
   }
@@ -24,8 +19,8 @@ async function queryPreimage(api, hash, len, blockHash) {
   };
 }
 
-export default function useExternalPreimage(call, blockHash) {
-  const api = useContextApi();
+export default function useExternalPreimage(call) {
+  const api = useConditionalContextApi();
   const [preimage, setPreimage] = useState(null);
 
   const { hash, len } = getExternalProposalHash(call) || {};
@@ -34,10 +29,10 @@ export default function useExternalPreimage(call, blockHash) {
       return;
     }
 
-    queryPreimage(api, hash, len, blockHash).then((preimage) => {
+    queryPreimage(api, hash, len).then((preimage) => {
       setPreimage(preimage);
     });
-  }, [api, hash, len, blockHash]);
+  }, [api, hash, len]);
 
   return preimage;
 }

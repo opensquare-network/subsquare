@@ -7,6 +7,7 @@ import Tabs from "next-common/components/tabs";
 import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
 import { useDemocracyExternalProposalTimelineData } from "next-common/hooks/pages/timelineData";
 import tabsTooltipContentMap from "./tabsTooltipContentMap";
+import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 
 const Business = dynamicClientOnly(() =>
   import("next-common/components/pages/components/external/business"),
@@ -32,6 +33,7 @@ export default function DemocracyExternalsProposalsDetailMultiTabs() {
   const external = detail?.onchainData || {};
   const call = external?.preImage?.call;
   const { component: timeLineTabSwitch, isCompact } = useTimelineTabSwitch();
+  const indexer = external?.indexer;
 
   const { tabs, activeTabValue } = useMemo(() => {
     const tabs = [
@@ -47,14 +49,16 @@ export default function DemocracyExternalsProposalsDetailMultiTabs() {
               label: "Call",
               tooltip: tabsTooltipContentMap.call,
               content: (
-                <DemocracyReferendumCallProvider>
-                  <DemocracyExternalProposalCall
-                    call={call}
-                    shorten={external?.preImage?.shorten}
-                    motionIndex={external.motionIndex}
-                    referendumIndex={external.referendumIndex}
-                  />
-                </DemocracyReferendumCallProvider>
+                <MigrationConditionalApiProvider indexer={indexer}>
+                  <DemocracyReferendumCallProvider>
+                    <DemocracyExternalProposalCall
+                      call={call}
+                      shorten={external?.preImage?.shorten}
+                      motionIndex={external.motionIndex}
+                      referendumIndex={external.referendumIndex}
+                    />
+                  </DemocracyReferendumCallProvider>
+                </MigrationConditionalApiProvider>
               ),
             },
           ]
@@ -85,6 +89,7 @@ export default function DemocracyExternalsProposalsDetailMultiTabs() {
     external.motionIndex,
     external?.preImage?.shorten,
     external.referendumIndex,
+    indexer,
     isCompact,
     router.query.tab,
     timeLineTabSwitch,

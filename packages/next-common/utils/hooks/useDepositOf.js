@@ -1,20 +1,17 @@
 import { useState, useEffect } from "react";
 import { useMountedState } from "react-use";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
 function isNewDepositors(depositors) {
   return Array.isArray(depositors[0]);
 }
 
-export default function useDepositOf(
-  api,
-  proposalIndex,
-  atBlockHeight,
-  triggerUpdate,
-) {
+export default function useDepositOf(proposalIndex, triggerUpdate) {
   const [seconds, setSeconds] = useState([]);
   const [depositRequired, setDepositRequired] = useState(0);
   const [isLoadingSeconds, setIsLoadingSeconds] = useState(true);
   const isMounted = useMountedState();
+  const api = useConditionalContextApi();
 
   useEffect(() => {
     if (!api) {
@@ -24,14 +21,6 @@ export default function useDepositOf(
     setIsLoadingSeconds(true);
 
     Promise.resolve(api)
-      .then((api) => {
-        if (atBlockHeight) {
-          return api.rpc.chain
-            .getBlockHash(atBlockHeight)
-            .then((blockHash) => api.at(blockHash));
-        }
-        return api;
-      })
       .then((api) => api.query.democracy.depositOf(proposalIndex))
       .then((res) => {
         if (isMounted()) {
@@ -53,7 +42,7 @@ export default function useDepositOf(
           setIsLoadingSeconds(false);
         }
       });
-  }, [api, proposalIndex, atBlockHeight, triggerUpdate, isMounted]);
+  }, [api, proposalIndex, triggerUpdate, isMounted]);
 
   return [seconds, depositRequired, isLoadingSeconds];
 }

@@ -8,6 +8,7 @@ import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
 import { useReferendumTimelineData } from "next-common/hooks/pages/timelineData";
 import tabsTooltipContentMap from "./tabsTooltipContentMap";
+import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 
 const Gov2ReferendumMetadata = dynamicClientOnly(() =>
   import("next-common/components/gov2/referendum/metadata"),
@@ -30,6 +31,7 @@ export default function FellowshipReferendaDetailMultiTabs() {
   const { component: timeLineTabSwitchComponent, isCompact } =
     useTimelineTabSwitch();
   const timelineData = useReferendumTimelineData();
+  const indexer = onchainData?.indexer;
 
   const { tabs, activeTabValue } = useMemo(() => {
     const tabs = [
@@ -40,9 +42,11 @@ export default function FellowshipReferendaDetailMultiTabs() {
               label: "Call",
               tooltip: tabsTooltipContentMap.call,
               content: (
-                <ReferendumCallProvider>
-                  <Gov2ReferendumCall />
-                </ReferendumCallProvider>
+                <MigrationConditionalApiProvider indexer={indexer}>
+                  <ReferendumCallProvider>
+                    <Gov2ReferendumCall />
+                  </ReferendumCallProvider>
+                </MigrationConditionalApiProvider>
               ),
             },
           ]
@@ -70,13 +74,14 @@ export default function FellowshipReferendaDetailMultiTabs() {
     const [defaultTab] = tabs;
     return { tabs, activeTabValue: router.query.tab || defaultTab.value };
   }, [
-    info,
     proposal?.call,
     proposal.inline,
-    router.query.tab,
+    indexer,
+    info,
+    timelineData,
     timeLineTabSwitchComponent,
     isCompact,
-    timelineData,
+    router.query.tab,
   ]);
 
   function handleTabClick(tab) {

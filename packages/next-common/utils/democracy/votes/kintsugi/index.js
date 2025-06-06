@@ -24,18 +24,8 @@ function extractVotes(mapped = [], targetReferendumIndex) {
   }, []);
 }
 
-export default async function getKintsugiReferendumVotes(
-  api,
-  referendumIndex,
-  height,
-) {
-  let blockApi = api;
-  if (height) {
-    const blockHash = await api.rpc.chain.getBlockHash(height);
-    blockApi = await api.at(blockHash);
-  }
-
-  const voting = await blockApi.query.democracy?.votingOf.entries();
+export default async function getKintsugiReferendumVotes(api, referendumIndex) {
+  const voting = await api.query.democracy?.votingOf.entries();
   const mapped = (voting || []).map((item) => normalizeVotingOfEntry(item));
   const filtered = extractVotes(mapped, referendumIndex);
   return sortVotesByBalance(filtered);

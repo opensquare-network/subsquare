@@ -9,7 +9,7 @@ import {
   setIsLoadingFellowshipVotes,
 } from "next-common/store/reducers/fellowship/votes";
 import { partition } from "lodash-es";
-import { useContextApi } from "next-common/context/api";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
 /**
  * // Fellowship voting storage: (pollIndex, address, VoteRecord)
@@ -45,13 +45,8 @@ export function normalizeVotingRecord(optionalRecord) {
   };
 }
 
-export async function query(api, targetPollIndex, blockHash) {
-  let blockApi = api;
-  if (blockHash) {
-    blockApi = await api.at(blockHash);
-  }
-
-  const voting = await blockApi.query.fellowshipCollective.voting.entries();
+export async function query(api, targetPollIndex) {
+  const voting = await api.query.fellowshipCollective.voting.entries();
 
   const normalized = [];
   for (const [storageKey, votingOf] of voting) {
@@ -73,8 +68,8 @@ export async function query(api, targetPollIndex, blockHash) {
   return normalized;
 }
 
-export default function useFellowshipVotes(pollIndex, indexer) {
-  const api = useContextApi();
+export default function useFellowshipVotes(pollIndex) {
+  const api = useConditionalContextApi();
   const dispatch = useDispatch();
   const votesTrigger = useSelector(fellowshipVotesTriggerSelector);
 
@@ -87,7 +82,7 @@ export default function useFellowshipVotes(pollIndex, indexer) {
       dispatch(setIsLoadingFellowshipVotes(true));
     }
 
-    query(api, pollIndex, indexer?.blockHash)
+    query(api, pollIndex)
       .then((votes) => {
         const [allAye = [], allNay = []] = partition(votes, (v) => v.isAye);
         dispatch(setFellowshipVotes({ allAye, allNay }));
@@ -98,5 +93,5 @@ export default function useFellowshipVotes(pollIndex, indexer) {
       dispatch(clearFellowshipVotes());
       dispatch(clearFellowshipVotesTrigger());
     };
-  }, [api, pollIndex, indexer, votesTrigger, dispatch]);
+  }, [api, pollIndex, votesTrigger, dispatch]);
 }
