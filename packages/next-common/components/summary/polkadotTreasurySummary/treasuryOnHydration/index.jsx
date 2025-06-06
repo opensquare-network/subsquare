@@ -70,11 +70,11 @@ export default function TreasuryOnHydration() {
           <div className="flex flex-col gap-y-1 !ml-0">
             <NativeTokenSymbolAsset free={dot} />
             <TokenSymbolAsset
-              amount={toPrecision(usdt, SYMBOL_DECIMALS.USDT)}
+              amount={toPrecision(usdc, SYMBOL_DECIMALS.USDC)}
               symbol="USDC"
             />
             <TokenSymbolAsset
-              amount={toPrecision(usdc, SYMBOL_DECIMALS.USDC)}
+              amount={toPrecision(usdt, SYMBOL_DECIMALS.USDT)}
               symbol="USDT"
             />
             <AddressLinks />

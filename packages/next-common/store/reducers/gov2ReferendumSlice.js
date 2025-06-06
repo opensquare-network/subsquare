@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import nextApi from "../../services/nextApi";
+import { backendApi } from "../../services/nextApi";
 import {
   gov2ReferendumsVoteCallsApi,
   gov2ReferendumsVoteExtrinsicsApi,
@@ -83,7 +83,7 @@ function extractVoteElementsFromOneExtrinsic(voteExtrinsic) {
   return {};
 }
 
-function classifyVoteCalls(voteCalls) {
+export function classifyVoteCalls(voteCalls) {
   const allAye = [];
   const allNay = [];
   const allAbstain = [];
@@ -103,7 +103,7 @@ export const fetchVoteExtrinsics = (referendumIndex) => async (dispatch) => {
   dispatch(clearVoteCalls());
   dispatch(setIsLoadingVoteCalls(true));
   try {
-    const { result } = await nextApi.fetch(
+    const { result } = await backendApi.fetch(
       gov2ReferendumsVoteExtrinsicsApi(referendumIndex),
     );
 
@@ -124,7 +124,7 @@ export const fetchVoteCalls = (referendumIndex) => async (dispatch) => {
   dispatch(clearVoteCalls());
   dispatch(setIsLoadingVoteCalls(true));
   try {
-    const { result } = await nextApi.fetch(
+    const { result } = await backendApi.fetch(
       gov2ReferendumsVoteCallsApi(referendumIndex),
     );
 

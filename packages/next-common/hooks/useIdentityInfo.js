@@ -6,9 +6,19 @@ import {
   getCachedIdentity,
 } from "next-common/services/identity";
 import getChainSettings from "next-common/utils/consts/settings";
+import { isPeopleChain } from "next-common/utils/chain";
+import { cloneDeep } from "lodash-es";
+import { isNil } from "lodash-es";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { isSameAddress } from "next-common/utils";
+import { useIdentityInfoContext } from "next-common/context/people/identityInfoContext";
 
-export function useChainAddressIdentityInfo(chain, address) {
+export function useChainAddressIdentityInfo(chain, address, realAddress = "") {
   const { identity: identityChain } = getChainSettings(chain);
+
+  const { displayName, info: myIdentityInfo = {} } =
+    useIdentityInfoContext() || {};
+
   // Render the identity immediately if it's already in cache
   const encodedAddress = encodeAddressToChain(address, identityChain);
   const cachedIdentity = getCachedIdentity(identityChain, encodedAddress);
@@ -20,10 +30,46 @@ export function useChainAddressIdentityInfo(chain, address) {
     if (address) {
       setIsLoading(true);
       fetchIdentity(identityChain, encodeAddressToChain(address, identityChain))
-        .then((identity) => setIdentity(identity))
+        .then((identity) => {
+          if (!isPeopleChain(chain) || !isSameAddress(realAddress, address)) {
+            setIdentity(identity);
+            return;
+          }
+
+          const myIdentityIsEmpty = Object.values(myIdentityInfo).every(
+            (item) => isNil(item),
+          );
+          if (myIdentityIsEmpty && !displayName) {
+            setIdentity(null);
+            return;
+          }
+
+          let peopleIdentity = cloneDeep(identity);
+          const peopleIdentityName = myIdentityInfo?.display;
+          if (peopleIdentity?.info && peopleIdentity?.info?.display) {
+            peopleIdentity.info.display = peopleIdentityName;
+          } else if (isNil(peopleIdentity) && peopleIdentityName) {
+            peopleIdentity = {
+              info: {
+                display: peopleIdentityName,
+                status: "NOT_VERIFIED",
+              },
+            };
+          }
+
+          if (
+            !peopleIdentity?.info?.display &&
+            displayName &&
+            peopleIdentity?.info
+          ) {
+            peopleIdentity.info.display = displayName;
+          }
+
+          setIdentity(peopleIdentity);
+        })
         .finally(() => setIsLoading(false));
     }
-  }, [address, identityChain]);
+  }, [address, identityChain, myIdentityInfo, displayName, chain, realAddress]);
 
   return {
     identity,
@@ -34,5 +80,6 @@ export function useChainAddressIdentityInfo(chain, address) {
 
 export default function useIdentityInfo(address) {
   const chain = useChain();
-  return useChainAddressIdentityInfo(chain, address);
+  const realAddress = useRealAddress();
+  return useChainAddressIdentityInfo(chain, address, realAddress);
 }

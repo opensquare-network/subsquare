@@ -6,6 +6,7 @@ import { defaultPostLabels } from "../common";
 import MenuGroups from "../menuGroups";
 import { mergeChainModules } from "../common/modules";
 import kusamaCommonCfg from "next-common/utils/consts/settings/kusama/common";
+import kusamaPreimageSettings from "next-common/utils/consts/settings/common/preimage/kusama";
 
 const ProjectIconKusamaDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconKusamaDark"),
@@ -60,6 +61,7 @@ const kusama = {
     },
     coretime: true,
     assethub: true,
+    people: true,
     vesting: true,
   }),
   integrations: {
@@ -83,6 +85,11 @@ const kusama = {
     killReferendum: true,
   },
   sima: true,
+  allowWeb2Login: true,
+  hotMenu: {
+    referenda: true,
+  },
+  preimage: kusamaPreimageSettings,
 };
 
 export default kusama;

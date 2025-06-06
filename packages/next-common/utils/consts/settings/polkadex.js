@@ -37,6 +37,7 @@ const polkadex = {
   integrations: {
     subscan: true,
   },
+  allowWeb2Login: true,
 };
 
 export default polkadex;

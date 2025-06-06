@@ -2,10 +2,10 @@ import { withCommonProps } from "next-common/lib";
 import { EmptyList } from "next-common/utils/constants";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { backendApi } from "next-common/services/nextApi";
-import Tipper from "components/tipper";
+import Tipper from "next-common/components/pages/components/tipper";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
-import CheckUnFinalized from "components/tip/checkUnFinalized";
+import CheckUnFinalized from "next-common/components/pages/components/tip/checkUnFinalized";
 import TipDetail from "next-common/components/detail/treasury/tip";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
@@ -23,7 +23,7 @@ import CollectiveProvider, {
 } from "next-common/context/collective";
 import { useChain } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
-import TreasuryTipsDetailMultiTabs from "components/tabs/treasuryTipsDetailMultiTabs";
+import TreasuryTipsDetailMultiTabs from "next-common/components/pages/components/tabs/treasuryTipsDetailMultiTabs";
 
 function TreasuryTipContent() {
   const post = usePost();

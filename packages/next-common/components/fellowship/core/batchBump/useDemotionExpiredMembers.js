@@ -1,8 +1,7 @@
 import { useMemo } from "react";
 import useFellowshipCoreMembersWithRank from "next-common/hooks/fellowship/core/useFellowshipCoreMembersWithRank";
 import { partition } from "lodash-es";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
-import { useSelector } from "react-redux";
+import useChainOrScanHeight from "next-common/hooks/height";
 import useCoreFellowshipParams from "next-common/hooks/fellowship/core/useCoreFellowshipParams";
 import { isDemotionExpired } from "next-common/utils/collective/demotionAndPromotion";
 import useObjectMemo from "next-common/hooks/useObjectMemo";
@@ -13,7 +12,7 @@ export function useFilterExpiredMembers({
   params,
   isParamsLoading,
 }) {
-  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const latestHeight = useChainOrScanHeight();
 
   const expiredMembers = useMemo(() => {
     if (isMembersLoading || isParamsLoading) {

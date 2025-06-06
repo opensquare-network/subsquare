@@ -1,8 +1,7 @@
 import { ImgErrorDark, ImgErrorLight } from "@osn/icons/subsquare";
 import ErrorLayout from "next-common/components/layout/errorLayout";
 import { reportClientError } from "next-common/services/reportClientError";
-import { CHAIN } from "next-common/utils/constants";
-import { useEffect } from "react";
+import { CHAIN, IS_PRODUCTION } from "next-common/utils/constants";
 import fetchProfile from "next-common/lib/fetchProfile";
 
 function getErrorReason(statusCode) {
@@ -23,23 +22,7 @@ function getErrorReason(statusCode) {
   );
 }
 
-function ErrorPage({ statusCode, err, isServerError, reqUrl, user }) {
-  useEffect(() => {
-    if (err) {
-      const errorData = {
-        chain: CHAIN,
-        url: typeof window !== "undefined" ? window.location.href : reqUrl,
-        address: user?.address,
-        code: statusCode,
-        error: err.message,
-        source: isServerError ? "server" : "client",
-        stack: err.stack,
-      };
-
-      reportClientError(errorData);
-    }
-  }, [err, isServerError, reqUrl, statusCode, user]);
-
+function ErrorPage({ statusCode }) {
   const { title, description } = getErrorReason(statusCode);
 
   return (
@@ -57,15 +40,34 @@ function ErrorPage({ statusCode, err, isServerError, reqUrl, user }) {
 }
 
 ErrorPage.getInitialProps = async ({ req, res, err }) => {
-  const { result: user } = await fetchProfile(req);
-  const statusCode = res?.statusCode || err?.statusCode;
+  const { result: user } =
+    (await fetchProfile(
+      req || {
+        headers: {
+          cookie: document?.cookie,
+        },
+      },
+    )) || {};
+
+  const statusCode = res?.statusCode || err?.statusCode || "";
+
+  const isServerError = !!req;
+
+  let errorData = {
+    chain: CHAIN,
+    url: req?.url || window?.location?.href,
+    address: user?.address,
+    code: statusCode,
+    source: isServerError ? "server" : "client",
+    error: err.message,
+    stack: err.stack,
+  };
+  IS_PRODUCTION && reportClientError(errorData);
 
   return {
-    statusCode,
     err,
-    isServerError: !!res,
-    reqUrl: req?.url,
-    user,
+    errorData,
+    statusCode,
   };
 };
 

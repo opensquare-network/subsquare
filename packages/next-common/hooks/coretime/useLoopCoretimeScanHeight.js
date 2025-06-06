@@ -1,17 +1,16 @@
-import { setNodeBlockHeight } from "next-common/store/reducers/nodeSlice";
-import { useDispatch } from "react-redux";
 import queryCoretimeScanHeight from "next-common/services/gql/coretime/scanHeight";
 import { useChainSettings } from "next-common/context/chain";
 import { useCallback, useEffect } from "react";
+import { useSetScanHeight } from "../scanHeight";
 
 export default function useLoopCoretimeScanHeight() {
-  const dispatch = useDispatch();
   const { blockTime } = useChainSettings();
+  const setScanHeight = useSetScanHeight();
 
   const fetchAndUpdateHeight = useCallback(async () => {
     const scanHeight = await queryCoretimeScanHeight();
-    dispatch(setNodeBlockHeight(scanHeight));
-  }, [dispatch]);
+    setScanHeight(scanHeight);
+  }, [setScanHeight]);
 
   useEffect(() => {
     const interval = setInterval(

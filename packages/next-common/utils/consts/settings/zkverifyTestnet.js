@@ -50,7 +50,7 @@ const zkverifyTestnet = {
   value: Chains.zkverifyTestnet,
   name: "ZKVerify Testnet",
   identity: Chains.zkverifyTestnet,
-  symbol: "ACME",
+  symbol: "tVFY",
   decimals: 18,
   hasElections: false,
   ss58Format: 251,
@@ -74,9 +74,7 @@ const zkverifyTestnet = {
     technicalCommittee: false,
   }),
   integrations: {
-    polkascan: {
-      link: "https://testnet-explorer.zkverify.io",
-    },
+    subscan: true,
   },
   cssVarsLight: {
     theme100: "rgba(38,219,141,0.10)",
@@ -97,6 +95,7 @@ const zkverifyTestnet = {
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",
   },
+  allowWeb2Login: true,
 };
 
 export default zkverifyTestnet;

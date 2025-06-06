@@ -46,6 +46,7 @@ const polkadotAssetHub = {
       provider: "chain",
     },
   },
+  allowWeb2Login: true,
 };
 
 export default polkadotAssetHub;

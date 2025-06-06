@@ -1,12 +1,17 @@
 import { backendApi } from "next-common/services/nextApi";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { sortVotes } from "next-common/utils/democracy/votes/passed/common";
 import { useDispatch, useSelector } from "react-redux";
-import { setAllVotes } from "next-common/store/reducers/referenda/votes";
+import {
+  setAllVotes,
+  setLoading,
+} from "next-common/store/reducers/referenda/votes";
 import { allVotesSelector } from "next-common/store/reducers/referenda/votes/selectors";
 import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
-import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import { createGlobalState } from "react-use";
+import getChainSettings from "next-common/utils/consts/settings";
+import { defaultBlockTime } from "next-common/utils/constants";
+import { sleep } from "next-common/utils";
 
 function extractSplitVotes(vote = {}) {
   const {
@@ -99,15 +104,16 @@ const useGlobalVotesLoadedMark = createGlobalState(false);
 
 export function useFetchVotesFromServer(referendumIndex) {
   const votingFinishedHeight = useReferendumVotingFinishHeight();
-  const height = useSelector(latestHeightSelector);
   const [loaded, setLoaded] = useGlobalVotesLoadedMark();
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  const fetch = useCallback(() => {
     if (votingFinishedHeight && loaded) {
-      return;
+      return Promise.resolve();
     }
-    backendApi
+    dispatch(setLoading(true));
+
+    return backendApi
       .fetch(`gov2/referenda/${referendumIndex}/votes`)
       .then(({ result: votes }) => {
         const allVotes = (votes || []).reduce((result, vote) => {
@@ -128,13 +134,58 @@ export function useFetchVotesFromServer(referendumIndex) {
         if (!loaded) {
           setLoaded(true);
         }
-      });
 
+        return filteredVotes;
+      })
+      .catch((error) => {
+        console.error(
+          "Error fetching votes for referendum:",
+          referendumIndex,
+          error,
+        );
+        throw new Error("Error fetching votes for referendum");
+      })
+      .finally(() => {
+        setTimeout(() => dispatch(setLoading(false)), 1);
+      });
+  }, [votingFinishedHeight, referendumIndex, dispatch, setLoaded, loaded]);
+
+  useEffect(() => {
     return () => {
       setLoaded(false);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [votingFinishedHeight, height, referendumIndex, dispatch, setLoaded]);
+  }, [setLoaded]);
+
+  return { fetch };
+}
+
+export function useUpdateVotesFromServer(referendumIndex) {
+  const { fetch } = useFetchVotesFromServer(referendumIndex);
+
+  const update = useCallback(async () => {
+    const times = 10;
+    const blockTime =
+      getChainSettings(process.env.NEXT_PUBLIC_CHAIN).blockTime ||
+      defaultBlockTime;
+
+    for (let i = 0; i < times; i++) {
+      try {
+        await fetch();
+      } catch (error) {
+        console.error(
+          "Error updating votes for referendum:",
+          referendumIndex,
+          error,
+        );
+      }
+
+      if (i < times - 1) {
+        await sleep(blockTime);
+      }
+    }
+  }, [fetch, referendumIndex]);
+
+  return { update };
 }
 
 export default function useVotesFromServer(referendumIndex) {

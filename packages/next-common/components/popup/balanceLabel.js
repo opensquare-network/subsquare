@@ -1,8 +1,9 @@
 import React from "react";
 import { LabelWrapper, Label, BalanceWrapper } from "./styled";
-import Loading from "../loading";
+import { SystemLoadingDots } from "@osn/icons/subsquare";
 import { formatBalance } from "../../utils/viewfuncs";
 import NumberWithComma from "../numberWithComma";
+import Tooltip from "../tooltip";
 
 export default function PopupLabelWithBalance({
   text,
@@ -10,21 +11,25 @@ export default function PopupLabelWithBalance({
   isLoading,
   balance,
   symbol,
+  showTransferable = false,
 }) {
+  let content = (
+    <NumberWithComma value={formatBalance(balance, symbol)} symbol={symbol} />
+  );
+  if (showTransferable) {
+    content = <Tooltip content="Transferable balance">{content}</Tooltip>;
+  }
+
   return (
     <LabelWrapper>
       <Label>{text}</Label>
       <BalanceWrapper>
         <div className="text-textTertiary text14Medium">{balanceName}</div>
-        {!isLoading && (
-          <div>
-            <NumberWithComma
-              value={formatBalance(balance, symbol)}
-              symbol={symbol}
-            />
-          </div>
+        {isLoading ? (
+          <SystemLoadingDots width={20} height={20} />
+        ) : (
+          <div>{content}</div>
         )}
-        {isLoading && <Loading />}
       </BalanceWrapper>
     </LabelWrapper>
   );

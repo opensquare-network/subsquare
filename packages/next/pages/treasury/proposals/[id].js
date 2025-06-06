@@ -15,7 +15,7 @@ import ContentWithComment from "next-common/components/detail/common/contentWith
 import { usePageProps } from "next-common/context/page";
 import { TreasuryProvider } from "next-common/context/treasury";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
-import TreasuryProposalsDetailMultiTabs from "components/tabs/treasuryProposalsDetailMultiTabs";
+import TreasuryProposalsDetailMultiTabs from "next-common/components/pages/components/tabs/treasuryProposalsDetailMultiTabs";
 
 function TreasuryProposalContent() {
   const detail = usePost();

@@ -4,7 +4,7 @@ import { EmptyList } from "next-common/utils/constants";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
-import CheckUnFinalized from "components/bounty/checkUnFinalized";
+import CheckUnFinalized from "next-common/components/pages/components/bounty/checkUnFinalized";
 import BountyDetail from "next-common/components/detail/treasury/bounty";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
@@ -13,7 +13,7 @@ import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
-import BountySidebar from "components/bounty/sidebar";
+import BountySidebar from "next-common/components/pages/components/bounty/sidebar";
 import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
 import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 import { CuratorProvider } from "next-common/context/treasury/bounties";
@@ -21,7 +21,7 @@ import { useBountyStatus } from "next-common/components/treasury/bounty/useBount
 import { useCuratorMultisigAddress } from "next-common/hooks/treasury/bounty/useCuratorMultisigAddress";
 import { TreasuryProvider } from "next-common/context/treasury";
 import { gov2TracksApi } from "next-common/services/url";
-import TreasuryBountiesDetailMultiTabs from "components/tabs/treasuryBountiesDetailMultiTabs";
+import TreasuryBountiesDetailMultiTabs from "next-common/components/pages/components/tabs/treasuryBountiesDetailMultiTabs";
 
 function useBountyCurator(bountyIndex) {
   const status = useBountyStatus(bountyIndex);

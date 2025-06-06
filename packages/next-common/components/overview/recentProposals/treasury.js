@@ -63,6 +63,14 @@ const itemOptions = {
   },
 };
 
+const treasuryTooltipContent = {
+  spends: "Approved proposals with funds already paid out.",
+  proposals: "Pending funding requests from the community.",
+  bounties: "Rewarded budget to achieve specific goals.",
+  "child-bounties": "Smaller spend sunder a bounty.",
+  tips: "One-time small rewards given for valuable contributions",
+};
+
 export function useRecentProposalTreasury() {
   const { recentSummary, recentProposals } = usePageProps();
   const summary = recentSummary;
@@ -85,6 +93,7 @@ export function useRecentProposalTreasury() {
         return {
           ...item,
           ...options,
+          tooltip: treasuryTooltipContent[item.value],
           api: {
             ...options.api,
             initData: recentProposals.treasury?.[item.value],

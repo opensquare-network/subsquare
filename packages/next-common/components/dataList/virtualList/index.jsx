@@ -1,7 +1,7 @@
 import { SystemLoading } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
 import NoData from "../../noData";
-import DataListBody, { defaultRenderItem } from "./body";
+import DataListBody from "./body";
 import { useUpdateEffect } from "react-use";
 import { useEffect, useRef, useState } from "react";
 import { useNavCollapsed } from "next-common/context/nav";
@@ -17,9 +17,9 @@ export default function VirtualList({
   noDataText = "No current votes",
   bordered = false,
   highlightedIndexes = [],
-  renderItem = defaultRenderItem,
   itemHeight = 50,
   listHeight = 400,
+  overscanCount = 20,
 }) {
   const listRef = useRef();
   const [navCollapsed] = useNavCollapsed();
@@ -78,7 +78,6 @@ export default function VirtualList({
     content = (
       <DataListBody
         rows={rows}
-        renderItem={renderItem}
         columnClassNames={columnClassNames}
         columnStyles={columnStyles}
         columns={columns}
@@ -86,6 +85,7 @@ export default function VirtualList({
         itemHeight={itemHeight}
         listHeight={calculatedListHeight}
         scrollToFirstRowOnChange={scrollToFirstRowOnChange}
+        overscanCount={overscanCount}
       />
     );
   }

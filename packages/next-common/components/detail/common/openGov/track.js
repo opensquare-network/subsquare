@@ -7,13 +7,13 @@ import Link from "next/link";
 export default function ReferendaTrack({ section = "referenda" }) {
   const onchain = useOnchainData();
   const { name: trackName, id: trackId } = onchain?.trackInfo || {};
-  let href = `/${section}/track/${trackId}`;
+  let href = `/${section}/tracks/${trackId}`;
 
   return (
     <div>
       <Link href={href} passHref>
         <LinkInfo>
-          <Gov2TrackTag name={trackName} />
+          <Gov2TrackTag name={trackName} id={trackId} />
         </LinkInfo>
       </Link>
     </div>

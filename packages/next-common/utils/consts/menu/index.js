@@ -18,6 +18,7 @@ import { getCommunityTreasuryMenu } from "./communityTreasury";
 import getChainSettings from "../settings";
 import { getMoreMenu } from "./more";
 import { coretimeMenu } from "./coretime";
+import { peopleMenu } from "./people";
 import Data from "./data";
 import getAdvancedMenu from "next-common/utils/consts/menu/advanced";
 import { NAV_MENU_TYPE } from "next-common/utils/constants";
@@ -29,15 +30,21 @@ export function getHomeMenu({
   ambassadorTracks = [],
   currentTrackId,
 } = {}) {
-  const { modules, hasMultisig = false } = getChainSettings(CHAIN);
+  const {
+    modules,
+    hasMultisig = false,
+    hotMenu = {},
+  } = getChainSettings(CHAIN);
 
   const integrationsMenu = [
     modules?.assethub && assetHubMenu,
     modules?.coretime && coretimeMenu,
+    modules?.people && peopleMenu,
   ].filter(Boolean);
 
-  return [
-    modules?.referenda && getReferendaMenu(tracks, currentTrackId),
+  const menuItems = [
+    modules?.referenda &&
+      getReferendaMenu(tracks, currentTrackId, hotMenu.referenda),
     modules?.fellowship && getFellowshipMenu(summary, currentTrackId),
     modules?.ambassador && getAmbassadorMenu(ambassadorTracks, currentTrackId),
     modules?.democracy && getDemocracyMenu(summary),
@@ -57,6 +64,16 @@ export function getHomeMenu({
       ].filter(Boolean),
     ),
   ].filter(Boolean);
+
+  return menuItems.map((menuItem) => {
+    if (menuItem.hideItemsOnMenu === true && menuItem.items) {
+      return {
+        ...menuItem,
+        items: [],
+      };
+    }
+    return menuItem;
+  });
 }
 
 export function getMainMenu({

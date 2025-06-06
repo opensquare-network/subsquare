@@ -83,6 +83,7 @@ const darwinia2 = {
     navigationBorder: "var(--neutral300)",
   },
   treasuryProposalTracks: darwiniaTreasuryTracks,
+  allowWeb2Login: true,
 };
 
 export default darwinia2;

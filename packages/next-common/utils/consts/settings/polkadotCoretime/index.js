@@ -31,6 +31,7 @@ const polkadotCoretime = {
   multisigWallets: {
     mimir: true,
   },
+  allowWeb2Login: true,
 };
 
 export default polkadotCoretime;

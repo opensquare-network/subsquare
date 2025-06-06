@@ -8,15 +8,15 @@ import {
   useEffect,
   useState,
 } from "react";
-import { useChain, useChainSettings } from "../chain";
 import { useConnectedAccountContext } from "../connectedAccount";
 import { useLocalStorage, useAsyncFn } from "react-use";
-import { CACHE_KEY } from "next-common/utils/constants";
+import { CACHE_KEY, CHAIN } from "next-common/utils/constants";
 import { useDispatch } from "react-redux";
 import {
   newErrorToast,
   newWarningToast,
 } from "next-common/store/reducers/toastSlice";
+import getChainSettings from "next-common/utils/consts/settings";
 
 const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID;
 
@@ -54,10 +54,27 @@ function useWalletConnectChainId() {
   return caip ? `polkadot:${caip}` : null;
 }
 
+async function initWalletConnectProvider() {
+  const { description, wallets } = getChainSettings(CHAIN);
+  if (wallets?.walletconnect === false) {
+    return defaultWalletConnect.provider;
+  }
+  const provider = await UniversalProvider.init({
+    projectId,
+    relayUrl,
+    metadata: {
+      name: "Subsquare",
+      description,
+      url: `https://${CHAIN}.subsquare.io`,
+      icons: [`https://${CHAIN}.subsquare.io/favicon.ico`],
+    },
+  });
+
+  return provider;
+}
+
 export default function WalletConnectProvider({ children }) {
   const dispatch = useDispatch();
-  const chain = useChain();
-  const { description, wallets } = useChainSettings();
   const { disconnect: disconnectAccount } = useConnectedAccountContext();
 
   const caip = useWalletConnectCaip();
@@ -85,27 +102,12 @@ export default function WalletConnectProvider({ children }) {
     await disconnectAccount();
   }, [clearSession, disconnectAccount]);
 
-  // Init WalletConnect provider
   useEffect(() => {
-    async function init() {
-      const provider = await UniversalProvider.init({
-        projectId,
-        relayUrl,
-        metadata: {
-          name: "Subsquare",
-          description,
-          url: `https://${chain}.subsquare.io`,
-          icons: [`https://${chain}.subsquare.io/favicon.ico`],
-        },
-      });
-
-      setProvider(provider);
+    if (provider) {
+      return;
     }
-
-    if (wallets?.walletconnect !== false) {
-      init();
-    }
-  }, [chain, description, wallets]);
+    initWalletConnectProvider().then(setProvider);
+  }, [provider]);
 
   const connect = useCallback(async () => {
     if (!provider) {
@@ -178,8 +180,12 @@ export default function WalletConnectProvider({ children }) {
         return address;
       });
 
+    if (!filteredAccounts.length) {
+      disconnectCombination();
+    }
+
     return filteredAccounts;
-  }, [provider, session, caip]);
+  }, [provider, session, caip, disconnectCombination]);
 
   // Attempt to sign a message and receive a signature
   const signWcMessage = useCallback(

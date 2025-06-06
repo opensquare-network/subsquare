@@ -110,11 +110,21 @@ export default function useBreadcrumbs() {
     return [
       treasury,
       {
+        content: "Bounties",
+        path: "/treasury/bounties",
+      },
+      post?.parentBountyId
+        ? {
+            content: `#${post?.parentBountyId}`,
+            path: `/treasury/bounties/${post?.parentBountyId}`,
+          }
+        : null,
+      {
         content: "Child Bounties",
         path: "/treasury/child-bounties",
       },
-      getIndexField(post?.bountyIndex, id),
-    ];
+      getIndexField(post?.index, id),
+    ].filter(Boolean);
   } else if (detailPageCategory.TREASURY_TIP === type) {
     return [
       treasury,

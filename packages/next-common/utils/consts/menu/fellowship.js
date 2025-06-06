@@ -99,7 +99,7 @@ function getFellowshipReferendaMenu(
     ],
     activeCount: totalActiveCount,
     pathname: "/fellowship",
-    hideItemsOnMenu: isCollectivesChain(process.env.NEXT_PUBLIC_CHAIN),
+    hideItemsOnMenu: true,
     items: [
       {
         value: "all",

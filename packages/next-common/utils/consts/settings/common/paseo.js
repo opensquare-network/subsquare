@@ -49,4 +49,5 @@ export const paseoCommonSettings = {
   navLogo: ProjectLogoPaseoLight,
   navLogoDark: ProjectLogoPaseoDark,
   group: MenuGroups.Paseo,
+  supportWalletconnect: true,
 };

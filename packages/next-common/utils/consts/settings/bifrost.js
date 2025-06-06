@@ -2,6 +2,7 @@ import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
 import dynamic from "next/dynamic";
 import { mergeChainModules } from "./common/modules";
+import bifrostPreimageSettings from "next-common/utils/consts/settings/common/preimage/bifrost";
 
 const ProjectIconBifrostKusamaDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconBifrostKusamaDark"),
@@ -15,10 +16,6 @@ const ProjectLogoBifrostKusamaDark = dynamic(() =>
 
 const DEFAULT_BIFROST_NODES = [
   {
-    name: "Dwellir",
-    url: "wss://bifrost-rpc.dwellir.com",
-  },
-  {
     name: "Liebi",
     url: "wss://bifrost-rpc.liebi.com/ws",
   },
@@ -27,8 +24,8 @@ const DEFAULT_BIFROST_NODES = [
     url: "wss://us.bifrost-rpc.liebi.com/ws",
   },
   {
-    name: "OnFinality",
-    url: "wss://bifrost-parachain.api.onfinality.io/public-ws",
+    name: "RadiumBlock",
+    url: "wss://bifrost.public.curie.radiumblock.co/ws",
   },
 ];
 
@@ -142,6 +139,12 @@ const bifrost = {
     cancelReferendum: true,
     killReferendum: true,
   },
+  supportWalletconnect: true,
+  allowWeb2Login: false,
+  hotMenu: {
+    referenda: true,
+  },
+  preimage: bifrostPreimageSettings,
 };
 
 export default bifrost;

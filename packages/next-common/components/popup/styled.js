@@ -20,7 +20,6 @@ export const Label = styled.div`
   font-weight: 700;
   font-size: 14px;
   line-height: 20px;
-  margin-bottom: 8px;
   color: var(--textPrimary);
 `;
 
@@ -157,4 +156,6 @@ export const BalanceWrapper = styled.div`
   }
 `;
 
-export const LabelWrapper = FlexBetween;
+export const LabelWrapper = styled(FlexBetween)`
+  margin-bottom: 8px;
+`;

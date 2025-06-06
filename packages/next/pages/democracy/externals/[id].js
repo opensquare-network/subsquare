@@ -1,11 +1,11 @@
-import DetailItem from "components/detailItem";
+import DetailItem from "next-common/components/pages/components/detailItem";
 import { withCommonProps } from "next-common/lib";
 import { backendApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
-import CheckUnFinalized from "components/external/checkUnFinalized";
+import CheckUnFinalized from "next-common/components/pages/components/external/checkUnFinalized";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { fetchDetailComments } from "next-common/services/detail";
@@ -14,7 +14,7 @@ import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
-import DemocracyExternalsProposalsDetailMultiTabs from "components/tabs/democracyExternalsProposalsDetailMultiTabs";
+import DemocracyExternalsProposalsDetailMultiTabs from "next-common/components/pages/components/tabs/democracyExternalsProposalsDetailMultiTabs";
 
 function DemocracyExternalContent() {
   const detail = usePost();

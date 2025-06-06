@@ -2,7 +2,6 @@ import AllAssetsList from "next-common/components/assets/allAssetsList";
 import { AssetMetadataProvider } from "next-common/components/assets/context/assetMetadata";
 import ApiProvider from "next-common/context/api";
 import ChainProvider from "next-common/context/chain";
-import RelayInfoProvider from "next-common/context/relayInfo";
 import { withCommonProps } from "next-common/lib";
 import { createStore } from "next-common/store";
 import { commonReducers } from "next-common/store/reducers";
@@ -10,6 +9,7 @@ import multiAccountsSlice from "next-common/store/reducers/multiAccountsSlice";
 import { CHAIN } from "next-common/utils/constants";
 import getChainSettings from "next-common/utils/consts/settings";
 import { Provider } from "react-redux";
+import { ConditionRelayInfoProvider } from "./";
 
 const isAssetHubSupported = !!getChainSettings(CHAIN).modules?.assethub;
 
@@ -29,7 +29,7 @@ if (isAssetHubSupported) {
 
 export default function AssetHubAssetsPage() {
   return (
-    <RelayInfoProvider>
+    <ConditionRelayInfoProvider>
       <Provider store={store}>
         <ChainProvider chain={chain}>
           <ApiProvider>
@@ -37,7 +37,7 @@ export default function AssetHubAssetsPage() {
           </ApiProvider>
         </ChainProvider>
       </Provider>
-    </RelayInfoProvider>
+    </ConditionRelayInfoProvider>
   );
 }
 

@@ -208,7 +208,7 @@ export function TreasurySpendAmount({ meta }) {
   );
 }
 
-function PostValueTitle({ data, type }) {
+export function PostValueTitle({ data, type }) {
   const { decimals, symbol } = useChainSettings(data.indexer?.blockHeight);
   const { onchainData, value } = data;
   const localTreasurySpendAmount = onchainData?.isTreasury
@@ -367,7 +367,7 @@ export default function Post({ data, href, type }) {
               <MobileHiddenInfo>
                 <Link href={trackTagLink} passHref>
                   <LinkInfo>
-                    <Gov2TrackTag name={data.trackName} />
+                    <Gov2TrackTag name={data.trackName} id={data.track} />
                   </LinkInfo>
                 </Link>
               </MobileHiddenInfo>

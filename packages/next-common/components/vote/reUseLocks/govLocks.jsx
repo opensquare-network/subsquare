@@ -1,12 +1,8 @@
-import useQueryGovernanceLock from "next-common/hooks/referenda/useQueryGovernanceLock";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import LockButton from "./lockButton";
 import Tooltip from "next-common/components/tooltip";
 import { useChainSettings } from "next-common/context/chain";
 
-const GovLocks = ({ reUseGovLocks }) => {
-  const address = useRealAddress();
-  const { balance, isLoading } = useQueryGovernanceLock(address);
+const GovLocks = ({ reUseGovLocks, balance, isLoading }) => {
   const chainSettings = useChainSettings();
 
   return (

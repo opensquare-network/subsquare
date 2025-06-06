@@ -1,13 +1,13 @@
 import { isNil } from "lodash-es";
 import { useCallback, useEffect, useState } from "react";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import MobileFellowshipVotesList from "./mobileFellowshipVotesList";
 import FellowshipVotesList from "next-common/components/profile/votingHistory/fellowshipVotesList";
 import { useCollectivesSection } from "next-common/context/collectives/collectives";
 import {
-  ModuleTabContext,
   Fellowship,
+  ModuleTabContext,
 } from "next-common/components/profile/votingHistory/common";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 
@@ -28,7 +28,7 @@ export default function FellowshipMemberVotes({ address }) {
         includesTitle: 1,
       };
 
-      nextApi
+      backendApi
         .fetch(`users/${address}/${section}/votes`, query)
         .then(({ result }) => {
           if (result) {

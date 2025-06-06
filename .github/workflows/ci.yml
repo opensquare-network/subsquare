@@ -29,7 +29,7 @@ jobs:
         uses: borales/actions-yarn@v4
         with:
           cmd: lint
-      
+
       - name: Run test
         uses: borales/actions-yarn@v4
         with:
@@ -54,3 +54,13 @@ jobs:
           NEXT_PUBLIC_BACKEND_API_END_POINT: http://127.0.0.1:7071/
           CHAIN: kintsugi
           NEXT_PUBLIC_CHAIN: kintsugi
+
+      - name: Build collectives next
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: workspace @subsquare/collectives-next build
+        env:
+          NEXT_PUBLIC_API_END_POINT: http://127.0.0.1:7001/
+          NEXT_PUBLIC_BACKEND_API_END_POINT: http://127.0.0.1:7071/
+          CHAIN: collectives
+          NEXT_PUBLIC_CHAIN: collectives

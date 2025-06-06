@@ -3,13 +3,9 @@ import { backendApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
-import ChildBountySidebar from "components/childBounty/sidebar";
-import {
-  PostProvider,
-  useOnchainData,
-  usePost,
-} from "next-common/context/post";
-import CheckUnFinalized from "components/childBounty/checkUnFinalized";
+import ChildBountySidebar from "next-common/components/pages/components/childBounty/sidebar";
+import { PostProvider, usePost } from "next-common/context/post";
+import CheckUnFinalized from "next-common/components/pages/components/childBounty/checkUnFinalized";
 import ChildBountyDetail from "next-common/components/detail/treasury/childBounty";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
@@ -21,11 +17,11 @@ import { usePageProps } from "next-common/context/page";
 import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
 import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 import { TreasuryProvider } from "next-common/context/treasury";
-import TreasuryChildBountiesDetailMultiTabs from "components/tabs/treasuryChildBountiesDetailMultiTabs";
+import TreasuryChildBountiesDetailMultiTabs from "next-common/components/pages/components/tabs/treasuryChildBountiesDetailMultiTabs";
 
 function ChildBountyContent() {
   const post = usePost();
-  useSubscribePostDetail(post?.index);
+  useSubscribePostDetail(`${post?.parentBountyId}_${post?.index}`);
 
   return (
     <OffChainArticleActionsProvider>
@@ -53,7 +49,7 @@ function ChildBountyContentWithNullGuard() {
 
 function ChildBountyPageImpl() {
   const post = usePost();
-  const { address } = useOnchainData();
+  const { address } = post?.onchainData || {};
 
   const desc = getMetaDesc(post);
   const showRightSidePanel =

@@ -15,6 +15,7 @@ import { KillReferendumInnerPopupContent } from "../newProposalQuickStart/killRe
 import { NewTreasuryReferendumInnerPopupContent } from "../newProposalQuickStart/createTreasuryProposalPopup";
 import { NewUSDxTreasuryReferendumInnerPopupContent } from "../newProposalQuickStart/createUSDxTreasuryProposalPopup";
 import { SpendDotOnAssetHubReferendumInnerPopupContent } from "../newProposalQuickStart/spendDotOnAssetHubPopup";
+import { NewTreasurySpendReferendumInnerPopupContent } from "../newProposalQuickStart/createTreasurySpendReferendumInnerPopupContent";
 
 const useQuickStartItems = () => {
   const {
@@ -24,18 +25,26 @@ const useQuickStartItems = () => {
       spendDotOnAssetHubProposal,
       cancelReferendum,
       killReferendum,
+      treasurySpendProposal,
     } = {},
   } = useChainSettings();
 
   return useMemo(() => {
-    const items = [
-      {
-        name: "Treasury proposal local",
+    const items = [];
+    if (treasuryProposalTracks && treasurySpendProposal) {
+      items.push({
+        name: "Treasury spend",
         description:
-          "Create a treasury spend of native token that is locally available",
-        content: NewTreasuryReferendumInnerPopupContent,
-      },
-    ];
+          "Approve a treasury spend which can be claimed immediately, without waiting for award period",
+        content: NewTreasurySpendReferendumInnerPopupContent,
+      });
+    }
+    items.push({
+      name: "Treasury proposal",
+      description:
+        "Approve a treasury proposal and funds will be paid out automatically by treasury award period",
+      content: NewTreasuryReferendumInnerPopupContent,
+    });
     if (treasuryProposalTracks && usdxTreasuryProposal) {
       items.push({
         name: "USDx treasury proposal",
@@ -81,6 +90,7 @@ const useQuickStartItems = () => {
     killReferendum,
     spendDotOnAssetHubProposal,
     treasuryProposalTracks,
+    treasurySpendProposal,
     usdxTreasuryProposal,
   ]);
 };

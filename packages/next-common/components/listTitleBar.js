@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { TitleContainer } from "./styled/containers/titleContainer";
 import Link from "next/link";
 
-const TitleLink = styled.a`
+const TitleLink = styled.span`
   &:hover {
     text-decoration: underline;
   }

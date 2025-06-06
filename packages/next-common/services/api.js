@@ -1,3 +1,4 @@
+import { isNumber } from "lodash-es";
 const paramsKeyConvert = (str = "") =>
   str.replace(/[A-Z]/g, ([s]) => `_${s.toLowerCase()}`);
 
@@ -6,36 +7,88 @@ class Api {
     this.endpoint = endpoint;
   }
 
-  fetch(path, params = {}, options) {
+  async fetch(path, params = {}, options = {}) {
     const url = new URL(path, this.endpoint);
     for (const key of Object.keys(params)) {
       url.searchParams.set(paramsKeyConvert(key), params[key]);
     }
 
-    return new Promise((resolve) =>
-      fetch(url, options)
-        .then((resp) =>
-          resp.status !== 200
-            ? resp.json().then((data) =>
-                resolve({
-                  error: {
-                    status: resp.status,
-                    message: data.message,
-                    data: data.data,
-                  },
-                }),
-              )
-            : resp.json().then((result) => resolve({ result })),
-        )
-        .catch((e) =>
-          resolve({
-            error: {
-              status: 500,
-              message: e.message,
-            },
-          }),
-        ),
-    );
+    let { timeout, ...fetchOptions } = options;
+    let timeoutId;
+
+    if (isNumber(timeout) && timeout > 0) {
+      const controller = new AbortController();
+      timeoutId = setTimeout(() => controller.abort(), timeout);
+      fetchOptions.signal = controller.signal;
+    }
+
+    let response;
+    try {
+      response = await fetch(url, fetchOptions);
+    } catch (e) {
+      if (e.name === "AbortError") {
+        return {
+          error: {
+            status: 408,
+            message: e.message,
+          },
+        };
+      }
+      return {
+        error: {
+          status: 500,
+          message: e.message,
+        },
+      };
+    } finally {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    }
+
+    if (response.status === 200) {
+      try {
+        const result = await response.json();
+        return { result };
+      } catch (e) {
+        return {
+          error: {
+            status: 500,
+            message: e.message,
+          },
+        };
+      }
+    }
+
+    let text;
+    try {
+      text = await response.text();
+    } catch (e) {
+      return {
+        error: {
+          status: 500,
+          message: e.message,
+        },
+      };
+    }
+
+    try {
+      const data = JSON.parse(text);
+      return {
+        error: {
+          status: response.status,
+          message: data.message,
+          data: data.data,
+        },
+      };
+    } catch {
+      return {
+        error: {
+          status: response.status,
+          message: text,
+        },
+      };
+    }
   }
 
   async post(path, body = null, options = null) {

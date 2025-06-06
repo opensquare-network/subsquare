@@ -1,5 +1,4 @@
-import { useSelector } from "react-redux";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import useChainOrScanHeight from "next-common/hooks/height";
 import { useMemo, useState } from "react";
 import BumpFellowshipMemberPopup from "./popup";
 import { useCoreFellowshipParams } from "next-common/context/collectives/collectives";
@@ -8,7 +7,7 @@ import Button from "next-common/lib/button";
 
 export function useCanBump(member) {
   const { rank, status: { lastProof } = {} } = member || {};
-  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const latestHeight = useChainOrScanHeight();
   const params = useCoreFellowshipParams();
   const demotionPeriod = useMemo(() => {
     return rank <= 0

@@ -6,7 +6,7 @@ import SummaryLayout from "next-common/components/summary/layout/layout";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { usePageProps } from "next-common/context/page";
 import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import {
   ambassadorStatisticsUsersApi,
   fellowshipStatisticsUsersApi,
@@ -27,7 +27,7 @@ function useUserStatisticsData(address, section) {
       return;
     }
 
-    const resp = await nextApi.fetch(statisticsApi);
+    const resp = await backendApi.fetch(statisticsApi);
 
     return resp?.result;
   }, [address, statisticsApi]);

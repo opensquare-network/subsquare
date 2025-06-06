@@ -4,6 +4,7 @@ import bifrost from "./bifrost";
 import { defaultPostLabels } from "./common";
 import MenuGroups from "./menuGroups";
 import { mergeChainModules } from "./common/modules";
+import bifrostPreimageSettings from "next-common/utils/consts/settings/common/preimage/bifrost";
 
 const ProjectIconBifrostPolkadotDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconBifrostPolkadotDark"),
@@ -25,12 +26,12 @@ const DEFAULT_NODES = [
     url: "wss://eu.bifrost-polkadot-rpc.liebi.com/ws",
   },
   {
-    name: "Dwellir",
-    url: "wss://bifrost-polkadot-rpc.dwellir.com",
+    name: "IBP1",
+    url: "wss://bifrost-polkadot.ibp.network",
   },
   {
-    name: "OnFinality",
-    url: "wss://bifrost-polkadot.api.onfinality.io/public-ws",
+    name: "IBP2",
+    url: "wss://bifrost-polkadot.dotters.network",
   },
 ];
 
@@ -110,6 +111,12 @@ const bifrostPolkadot = {
     cancelReferendum: true,
     killReferendum: true,
   },
+  supportWalletconnect: true,
+  allowWeb2Login: false,
+  hotMenu: {
+    referenda: true,
+  },
+  preimage: bifrostPreimageSettings,
 };
 
 export default bifrostPolkadot;

@@ -1,10 +1,8 @@
 import { useState, useMemo, useRef } from "react";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import useRefCallback from "next-common/hooks/useRefCallback";
 import { markdownToText } from "next-common/components/header/search/utils";
 import useSearchIdentities from "next-common/components/header/hooks/useSearchIdentities";
-import fetchBatchIdentities from "next-common/components/data/common/fetchBatchIdentities";
-import { useChainSettings } from "next-common/context/chain";
 import { trackPromises } from "next-common/components/header/search/utils";
 
 export const ItemType = {
@@ -18,34 +16,27 @@ function useSearchResults() {
   const abortControllerRef = useRef(null);
   const lastSearchValueRef = useRef("");
   const [fetchIdentities, isIdentitiesLoading] = useSearchIdentities();
-  const { identity: identityChain } = useChainSettings();
 
-  const combineIdentitiesRequest = useRefCallback(
-    async (searchValue, identityChain) => {
-      try {
-        const { identities } = (await fetchIdentities(searchValue)) ?? {};
-        if (!identities) return null;
+  const combineIdentitiesRequest = useRefCallback(async (searchValue) => {
+    try {
+      const { identities } = (await fetchIdentities(searchValue)) ?? {};
+      if (!identities) return null;
 
-        const accounts = (Object.entries(identities) ?? []).flatMap(
-          ([key, value]) => {
-            if (key === "identities") {
-              return value.map((item) => item.account);
-            } else {
-              return [];
-            }
-          },
-        );
-
-        return await fetchBatchIdentities(identityChain, accounts);
-      } catch (e) {
-        return Promise.reject(e);
-      }
-    },
-  );
+      return (Object.entries(identities) ?? []).flatMap(([key, value]) => {
+        if (key === "identities") {
+          return value;
+        } else {
+          return [];
+        }
+      });
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  });
 
   const baseSearchDataRequest = useRefCallback(async (searchValue, signal) => {
     try {
-      return await nextApi.fetch(
+      return await backendApi.fetch(
         "search",
         {
           text: searchValue,
@@ -75,7 +66,7 @@ function useSearchResults() {
 
       const trackResults = await trackPromises([
         baseSearchDataRequest(searchValue, signal),
-        combineIdentitiesRequest(searchValue, identityChain),
+        combineIdentitiesRequest(searchValue),
       ]);
 
       const [apiResult, identitiesResult] = trackResults.reduce(
@@ -90,13 +81,11 @@ function useSearchResults() {
         [{}, {}],
       );
 
-      const endIdentities = Object.entries(identitiesResult || {}).map(
-        ([key, value], index) => ({
-          index,
-          content: key,
-          title: value,
-        }),
-      );
+      const endIdentities = identitiesResult.map((item, index) => ({
+        index,
+        content: item?.account,
+        title: item?.fullDisplay ?? "-",
+      }));
 
       if (!signal.aborted) {
         setResults(
@@ -123,18 +112,27 @@ function useSearchResults() {
     }
   });
 
-  const formatItems = useRefCallback((proposalType, items, getIndex) =>
-    items?.length > 0
-      ? [
-          {
-            index: null,
-            title: proposalType,
-            content: "-",
-            proposalType,
-            type: ItemType.CATEGORY,
-          },
-          ...items.map((item) => ({
-            index: item[getIndex] ?? 0,
+  const formatItems = useRefCallback(
+    (proposalType, items, indexKeyOrGetIndexFn) => {
+      if ((items?.length || []) <= 0) {
+        return [];
+      }
+
+      return [
+        {
+          index: null,
+          title: proposalType,
+          content: "-",
+          proposalType,
+          type: ItemType.CATEGORY,
+        },
+        ...items.map((item) => {
+          const index =
+            typeof indexKeyOrGetIndexFn === "string"
+              ? item[indexKeyOrGetIndexFn]
+              : indexKeyOrGetIndexFn(item);
+          return {
+            index: index ?? 0,
             title: item.title ?? "-",
             content: item.content
               ? item.content
@@ -143,9 +141,10 @@ function useSearchResults() {
               : "-",
             proposalType,
             type: ItemType.ITEM,
-          })),
-        ]
-      : [],
+          };
+        }),
+      ];
+    },
   );
 
   const totalList = useMemo(() => {
@@ -159,10 +158,17 @@ function useSearchResults() {
           return formatItems("DemocracyReferenda", value, "referendumIndex");
         case "bounties":
           return formatItems("Bounties", value, "bountyIndex");
-        case "childBounties":
-          return formatItems("ChildBounties", value, "index");
+        case "childBounties": {
+          return formatItems("ChildBounties", value, (item) => {
+            return `${item.parentBountyId}_${item.index}`;
+          });
+        }
         case "identities":
           return formatItems("Identities", value, "index");
+        case "treasuryProposals":
+          return formatItems("TreasuryProposals", value, "proposalIndex");
+        case "treasurySpends":
+          return formatItems("TreasurySpends", value, "index");
         default:
           return [];
       }

@@ -10,6 +10,9 @@ export default function AddressComboField({
   title = "Address",
   placeholder,
   readOnly = false,
+  canEdit = true,
+  comboClassName = "",
+  size = "default",
 }) {
   const accounts = extensionAccounts.map((acc) => ({
     address: acc.address,
@@ -31,6 +34,9 @@ export default function AddressComboField({
         accounts={accounts}
         readOnly={readOnly}
         placeholder={placeholder}
+        className={comboClassName}
+        size={size}
+        canEdit={canEdit}
       />
     </div>
   );

@@ -1,5 +1,5 @@
 import DataList from "next-common/components/dataList";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { fellowshipStatisticsMembersApi } from "next-common/services/url";
 import { defaultPageSize } from "next-common/utils/constants";
 import { useAsync } from "react-use";
@@ -55,7 +55,7 @@ function StatisticsClaimantsTable({ members = [] }) {
       return [];
     }
     try {
-      const resp = await nextApi.fetch(membersApi, {
+      const resp = await backendApi.fetch(membersApi, {
         page,
         pageSize: defaultPageSize,
       });

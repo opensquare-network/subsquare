@@ -1,5 +1,5 @@
 import { EmptyList } from "next-common/utils/constants";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import {
   getFellowshipReferendumUrl,
   gov2ReferendumsDetailApi,
@@ -37,7 +37,7 @@ export async function fetchAndPopulateDetail(
     } else if (treasuryProposal === pallet) {
       url = `treasury/proposals/${deposit.proposalIndex}`;
     }
-    return nextApi.fetch(url);
+    return backendApi.fetch(url);
   });
   const resps = await Promise.all(fetchers);
   const items = resps.map((resp, idx) => {

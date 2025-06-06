@@ -9,6 +9,8 @@ import {
   MenuBounties,
   MenuChildBounties,
   MenuUser,
+  MenuTreasurySpend,
+  MenuTreasuryProposal,
 } from "@osn/icons/subsquare";
 import Link from "next/link";
 import { ItemType } from "next-common/components/header/hooks/useSearchResults";
@@ -19,7 +21,7 @@ const SearchItem = memo(function ItemContent({ row, onClose }) {
   const { index, title, content, type, proposalType } = row;
   const { path, category } = getPathAndCategoryByItemData(row);
   const address = proposalType === SearchType.IDENTITIES ? content : "";
-  const { identity } = useIdentityInfo(address);
+  const { identity, hasIdentity } = useIdentityInfo(address);
 
   return (
     <Link
@@ -56,6 +58,12 @@ const SearchItem = memo(function ItemContent({ row, onClose }) {
             {proposalType === SearchType.IDENTITIES && (
               <MenuUser className="w-6 h-6 [&_path]:fill-textTertiary" />
             )}
+            {proposalType === SearchType.TREASURY_PROPOSALS && (
+              <MenuTreasuryProposal className="w-6 h-6 [&_path]:fill-textTertiary" />
+            )}
+            {proposalType === SearchType.TREASURY_SPENDS && (
+              <MenuTreasurySpend className="w-6 h-6 [&_path]:fill-textTertiary" />
+            )}
           </div>
           <div className="pl-2 flex flex-col justify-between min-w-0 flex-1">
             <span
@@ -71,7 +79,13 @@ const SearchItem = memo(function ItemContent({ row, onClose }) {
               {proposalType !== SearchType.IDENTITIES && `#${index} · ${title}`}
               {proposalType === SearchType.IDENTITIES && (
                 <span className="flex">
-                  <IdentityIcon identity={identity} /> &nbsp;{title}
+                  {hasIdentity && (
+                    <>
+                      <IdentityIcon identity={identity} />
+                      &nbsp;
+                    </>
+                  )}
+                  {title}
                 </span>
               )}
             </span>

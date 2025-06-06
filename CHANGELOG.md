@@ -2,6 +2,146 @@
 
 All notable changes to this project will be documented in this file.
 
+# 4.7.6
+
+date: 2025-06-03
+
+- Asset hub migration: use on chain confirming data to calculate confirmation start height.
+- Fix the whole decision time for approved referenda.
+- Add 500 page to fix server/client error report.
+- Add an identity redirection button on overview page account panel.
+- Remove big images in public folder and use that from public CDN.
+- Add a `WithApi` component to guard components which need api instance.
+- Add skeleton loading for comments.
+- Add load more effects for comments.
+- Add timeout options for polkassembly comments loading.
+- Fix replies from polkassembly API, and filter out replies from subsquare.
+- Update loan to bifrost.
+- Correct tooltip for referenda tracks with track info got from backend API.
+- Fix the case democracy proposal preimage is missing.
+- Fix child bounty url on search popup.
+- Improve API error message handling.
+- Improve treasury spend payout button status, and show warning text when a payout is expired.
+- Adjust polkadot/kusama endpoints sort.
+- Code refactor and UI/bug fixes.
+
+# 4.7.5
+
+date: 2025-05-29
+
+- A new design of bounty list. We show active bounties at first.
+- Support XCM v3 for cross chain call decode.
+- Show transferable balance on the new referendum popups.
+- Remove referenda track tag tooltip temporarily.
+- New referenda popup:
+    - Add preimage settings for kusama, hydration, paseo and bifrost. So users can see deposit warnings when they are
+      creating new referenda.
+    - Fix dark mode style on the new referendum popups.
+    - Add copywriting to clearly show whether user balance is enough for deposits.
+- Improve walletconnect init code to prevent redundant initiation.
+- Add parent bounty id to child bounty index.
+- Remove useless component for collectives overview page.
+- Disable more API calls through next.js.
+- Fix the bug astar community treasury post can not be edited.
+- UI/bug fixes and code refactor.
+
+# 4.7.4
+
+date: 2025-05-26
+
+- Support the new child bounties index. By the new code, child bounty index grow only under a parent bounty.
+- Add warning tips on new referendum popup to check whether users have enough balance for preimage and referendum
+  submission deposits.
+- Extract, decode and show system para chain call on a relay chain referendum when it proposes a cross chain call.
+- Support hydration address format change, from 63 to 0.
+- Add a prompt on overview page account panel to warn user there are expired vote locks.
+- Governance asset hub migration: support it in `slow-scan` for vote calls.
+- Support walletconnect for polkadot and bifrost.
+- Add an identity redirect button on overview page account panel.
+- Improve identity search result display.
+- Adjust hydration nodes order.
+- Update heima(litentry) network endpoints.
+- Add more use cases for backend API endpoint and improve next API check.
+- Call unsub for useSubSystemAccount.
+- Fix kusama fellowship referendum detail page missing by the `collectives-next` package extraction.
+- Add a fire icon besides referenda menu.
+- Code refactor and UI/bug fixes.
+
+# 4.7.3
+
+date: 2025-05-21
+
+- Remove OpenGov tracks menu and add a tracks panel on referenda page.
+- Bug fix: add back fellowship referenda and members page for kusama.
+- Governance asset hub migration
+    - Switch to asset hub scan after a preset height on relay chain.
+    - Return assethub latest height from backend by config.
+    - Add config and use asset hub RPCs by config in fronted.
+    - Improve the config for the previous asset hub pages. We need to improve some context like relay chain related data
+      provider and some component status like hiding the cross chain components after asset hub migrated.
+- UX enhancements
+    - Add tooltips for referendum tally panel elements and referendum tabs.
+    - Add a delegation redirection under referendum vote button.
+    - Add tooltips for tabs of recent proposals.
+    - Add tooltips for democracy and treasury proposal states.
+- Remove altair from networks menu.
+- Fix votes popup list flicker after nested delegation popup open.
+- Correct interlay and ajuna explorer from subscan to statescan.
+- Disable next API access to OpenGov referenda.
+- Code refactor and UI/bug fixes.
+
+# 4.7.2
+
+date: 2025-05-19
+
+- [Big] Support people/identity business for relay chains.
+- Fellowship:
+    - [Big] Move collectives related code to a separated package.
+    - Show relay chain call for a whitelist referendum.
+    - New style for retention/promotion call info on referendum detail page.
+- Improve referendum votes UX by introducing skeleton loading.
+- Improve track tag tooltip copywriting.
+- Hide web2 login for some chains: astar, ajuna, basilisk, collectives, bifrost, vara, hydration, laos.
+- Fix cross chain transport popup close unexpectedly.
+- Correct symbol and explorer link for zkverify testnet.
+- Fix hydration treasury stable coin symbol.
+- Upgrade dependencies and fix styles.
+
+# 4.7.1
+
+date: 2025-05-13
+
+- Fix split vote view on votes bubble panel.
+- Add `aDOT` asset calculation on the hydration acquisition address.
+- Apply more use cases for `backendApi`. It's due to deployment migration to vercel, and we will call backend API by a
+  domain.
+- Improve the way to init API instances and use websocket providers to measure RPC delay.
+- Fix redundant identity queries.
+- UI fix and improvements
+    - Add more tooltips for referenda proposal card.
+    - Fix horizontal scroll bar on referenda vote calls popup.
+    - Add tooltips for referenda state tags.
+    - Add tooltips for referenda track tags.
+    - Add tooltips for state tag of collective motions.
+    - Fix votes bubble loading.
+    - Fix virtual list avatar flickering.
+    - Fix vote calls popup responsive issue.
+- Search enhancements
+    - Support searching addresses by identity.
+    - Enable search for chains with only democracy and bounties.
+    - Enable treasury spends, proposals search.
+- Remove new tag for report tab on referendum detail page.
+- Disable vote calls for laos network.
+- Turn on walletconnect for hydration and kusama.
+- Remove Dwellir nodes from interlay/kintsugi.
+- Performance enhancement
+    - Store referenda vote calls data to IndexedDB.
+    - Update scan height by new developed stream API.
+    - Take place of redux with global state for scan height data.
+    - Query votes info from backend once when open referendum detail page, and refresh it after vote actions.
+- Remove Dwellir nodes from interlay/kintsugi.
+- Upgrade dependencies and code refactor.
+
 # 4.7.0
 
 date: 2025-05-02

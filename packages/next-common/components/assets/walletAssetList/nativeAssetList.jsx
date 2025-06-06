@@ -1,12 +1,14 @@
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import { MapDataList } from "next-common/components/dataList";
-import ParaChainTeleportButton from "../paraChainTeleportButton";
+import ParaChainTeleportButton from "../paraChainTeleportContextButton";
 import { useNativeTokenIcon } from "next-common/components/assets/known";
 import {
   colTotal,
   colTransferrable,
 } from "next-common/components/assets/assetsList";
 import { useMyNativeAsset } from "next-common/hooks/assets/useMyNativeAsset";
+import { useMemo } from "react";
+import { useChainSettings } from "next-common/context/chain";
 
 function TokenSymbol({ symbol }) {
   const NativeAssetIcon = useNativeTokenIcon();
@@ -29,10 +31,22 @@ const teleport = {
   render: () => <ParaChainTeleportButton />,
 };
 
-const columnsDef = [colToken, colTotal, colTransferrable, teleport];
+function useColumnsDef() {
+  const { assetHubMigrated } = useChainSettings();
+
+  return useMemo(() => {
+    if (assetHubMigrated) {
+      return [colToken, colTotal, colTransferrable];
+    }
+
+    return [colToken, colTotal, colTransferrable, teleport];
+  }, [assetHubMigrated]);
+}
 
 export default function NativeAssetList() {
   const { loading, value } = useMyNativeAsset();
+  const columnsDef = useColumnsDef();
+
   return (
     <ScrollerX>
       <MapDataList

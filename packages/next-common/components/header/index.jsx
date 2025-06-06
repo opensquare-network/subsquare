@@ -4,16 +4,16 @@ import NetworkSwitch from "./networkSwitch";
 import NodeSwitch from "./nodeSwitch";
 import SearchInput from "./searchInput";
 import SearchInputWithPopup from "./searchInputWithPopup";
+import useIsEnhancementSearch from "next-common/components/header/hooks/useIsEnhancementSearch";
+
 export default function Header() {
   const chainSettings = useChainSettings();
-  const {
-    modules: { referenda: hasReferenda },
-  } = chainSettings;
+  const isEnhancementSearch = useIsEnhancementSearch();
 
   return (
     <header className="py-4 px-6 flex gap-x-6 border-b border-neutral300 bg-neutral100">
       <div className="flex-1">
-        {hasReferenda ? <SearchInputWithPopup /> : <SearchInput />}
+        {isEnhancementSearch ? <SearchInputWithPopup /> : <SearchInput />}
       </div>
 
       <div className="flex gap-x-2 relative">

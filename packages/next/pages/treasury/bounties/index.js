@@ -6,16 +6,21 @@ import { lowerCase } from "lodash-es";
 import ListLayout from "next-common/components/layout/ListLayout";
 import TreasurySummary from "next-common/components/summary/treasurySummary";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import { fetchList } from "next-common/services/list";
 import { TreasuryProvider } from "next-common/context/treasury";
 import { isPolkadotChain } from "next-common/utils/chain";
 import PolkadotTreasuryStatsOnProposal from "next-common/components/treasury/common/polkadotTreasuryStatsOnProposal";
 import NewBountyButton from "next-common/components/treasury/bounty/newBountyButton";
+import { backendApi } from "next-common/services/nextApi";
+import BountyCardSection from "next-common/components/treasury/bounty/bountyCardSection";
 
-export default function BountiesPage({ bounties, chain }) {
+export default function BountiesPage({
+  activeBounties,
+  inactiveBounties,
+  chain,
+}) {
   const chainSettings = useChainSettings();
 
-  const items = (bounties.items || []).map((item) =>
+  const items = (inactiveBounties.items || []).map((item) =>
     normalizeBountyListItem(chain, item),
   );
   const category = "Treasury Bounties";
@@ -48,16 +53,24 @@ export default function BountiesPage({ bounties, chain }) {
           },
         ].filter(Boolean)}
       >
+        {activeBounties && activeBounties.length > 0 && (
+          <BountyCardSection
+            category={category}
+            activeBounties={activeBounties?.map((item) =>
+              normalizeBountyListItem(chain, item),
+            )}
+          />
+        )}
         <PostList
           category={category}
           title="List"
-          titleCount={bounties.total}
+          titleCount={inactiveBounties.total}
           titleExtra={<NewBountyButton />}
           items={items}
           pagination={{
-            page: bounties.page,
-            pageSize: bounties.pageSize,
-            total: bounties.total,
+            page: inactiveBounties.page,
+            pageSize: inactiveBounties.pageSize,
+            total: inactiveBounties.total,
           }}
         />
       </ListLayout>
@@ -66,12 +79,20 @@ export default function BountiesPage({ bounties, chain }) {
 }
 
 export const getServerSideProps = withCommonProps(async (context) => {
-  const bounties = await fetchList("treasury/bounties", context);
-  const tracksProps = await fetchOpenGovTracksProps();
+  const [
+    tracksProps,
+    { result: activeBounties },
+    { result: inactiveBounties },
+  ] = await Promise.all([
+    fetchOpenGovTracksProps(),
+    backendApi.fetch("/treasury/bounties/active"),
+    backendApi.fetch("/treasury/bounties/inactive"),
+  ]);
 
   return {
     props: {
-      bounties,
+      activeBounties,
+      inactiveBounties,
       ...tracksProps,
     },
   };

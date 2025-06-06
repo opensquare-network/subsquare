@@ -17,7 +17,7 @@ function isRemark(section, method) {
 }
 
 function findRemarkCalls(call) {
-  const { section, method, args } = call;
+  const { section, method, args } = call || {};
   if (isRemark(section, method)) {
     return [call];
   }

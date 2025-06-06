@@ -1,0 +1,47 @@
+{
+  "name": "@subsquare/collectives-next",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "node server.mjs --turbo",
+    "build": "next build",
+    "analyze": "ANALYZE=true next build",
+    "start": "NODE_ENV=production node server.mjs",
+    "lint": "next lint --dir ."
+  },
+  "dependencies": {
+    "@next/env": "^13.3.0",
+    "@osn/icons": "^1.216.0",
+    "@svgr/webpack": "^7.0.0",
+    "bignumber.js": "^9.0.2",
+    "chartjs-plugin-gradient": "^0.6.1",
+    "clsx": "^1.2.1",
+    "cookies": "^0.8.0",
+    "dayjs": "^1.10.7",
+    "http-proxy": "^1.18.1",
+    "localforage": "^1.10.0",
+    "lodash-es": "^4.17.21",
+    "next": "15.3.0",
+    "next-common": "workspace:*",
+    "nprogress": "^0.2.0",
+    "pluralize": "^8.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-redux": "^8.0.5",
+    "sass": "^1.38.0",
+    "sharp": "^0.34.1",
+    "sonner": "^1.0.3",
+    "styled-components": "^5.3.9",
+    "tailwind-merge": "^1.14.0",
+    "tailwind-styled-components": "^2.2.0",
+    "use-deep-compare-effect": "^1.8.1"
+  },
+  "devDependencies": {
+    "@next/bundle-analyzer": "15.3.0",
+    "@osn/eslint-config": "^1.0.2",
+    "@types/lodash-es": "^4.17.12",
+    "eslint": "^8.44.0",
+    "eslint-config-next": "15.3.0",
+    "raw-loader": "^4.0.2"
+  }
+}

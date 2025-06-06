@@ -8,9 +8,9 @@ function KVList({ data = [] }) {
 
   return (
     <>
-      {data.map((row, index) => (
-        <Row row={row} key={index} />
-      ))}
+      {data.map((row, index) =>
+        Array.isArray(row) ? <Row row={row} key={index} /> : row,
+      )}
     </>
   );
 }

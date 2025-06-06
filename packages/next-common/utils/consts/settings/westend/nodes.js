@@ -1,4 +1,4 @@
-const defaultWestendNodes = [
+const westendRelayChainNodes = [
   {
     name: "Parity",
     url: "wss://westend-rpc.polkadot.io",
@@ -9,15 +9,11 @@ const defaultWestendNodes = [
   },
   {
     name: "IBP2",
-    url: "wss://rpc.dotters.network/westend",
+    url: "wss://westend.dotters.network",
   },
   {
     name: "OnFinality",
     url: "wss://westend.api.onfinality.io/public-ws",
-  },
-  {
-    name: "Blockops",
-    url: "wss://westend-rpc.blockops.network/ws",
   },
   {
     name: "Dwellir",
@@ -28,13 +24,25 @@ const defaultWestendNodes = [
     url: "wss://westend-rpc-tn.dwellir.com",
   },
   {
-    name: "LuckyFriday",
-    url: "wss://rpc-westend.luckyfriday.io",
-  },
-  {
     name: "RadiumBlock",
     url: "wss://westend.public.curie.radiumblock.co/ws",
   },
+  {
+    name: "light client",
+    url: "light://substrate-connect/westend",
+  },
 ];
 
-export default defaultWestendNodes;
+const westendAssetHubNodes = [
+  { name: "Parity", url: "wss://westend-asset-hub-rpc.polkadot.io" },
+  { name: "IBP1", url: "wss://sys.ibp.network/asset-hub-westend" },
+  { name: "IBP2", url: "wss://asset-hub-westend.dotters.network" },
+  { name: "Dwellir", url: "wss://asset-hub-westend-rpc.dwellir.com" },
+  { name: "Dwellir Tunisia", url: "wss://westmint-rpc-tn.dwellir.com" },
+  {
+    name: "Permanence DAO EU",
+    url: "wss://asset-hub-westend.rpc.permanence.io",
+  },
+];
+
+export { westendRelayChainNodes, westendAssetHubNodes };

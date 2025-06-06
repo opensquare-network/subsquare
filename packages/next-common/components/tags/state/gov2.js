@@ -69,9 +69,9 @@ export function Gov2ReferendaTag({ state, args }) {
     return tooltipTextMap[state];
   }, [state]);
 
-  if (tooltipTextMap) {
+  if (tooltipText) {
     return (
-      <Tooltip content={tooltipText} contentClassName="max-w-[240px]">
+      <Tooltip content={tooltipText}>
         <Tag className="cursor-pointer">{state}</Tag>
       </Tooltip>
     );

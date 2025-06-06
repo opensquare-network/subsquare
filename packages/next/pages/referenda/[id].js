@@ -12,15 +12,16 @@ import {
 import { EmptyList } from "next-common/utils/constants";
 import Breadcrumb from "next-common/components/_Breadcrumb";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
-import CheckUnFinalized from "components/gov2/checkUnFinalized";
+import CheckUnFinalized from "next-common/components/pages/components/gov2/checkUnFinalized";
 import ReferendaBreadcrumb from "next-common/components/referenda/breadcrumb";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { usePageProps } from "next-common/context/page";
-import { ReferendumContent } from "components/referenda/referendaContent";
+import { ReferendumContent } from "next-common/components/pages/components/referenda/referendaContent";
 import { ReferendaPalletProvider } from "next-common/context/referenda/pallet";
+import WindowSizeProvider from "next-common/context/windowSize";
 
 function UnFinalizedBreadcrumb({ id }) {
   return (
@@ -89,11 +90,13 @@ function ReferendumPageImpl() {
 
 export default function ReferendumPage({ detail }) {
   return (
-    <PostProvider post={detail}>
-      <ReferendaPalletProvider pallet="referenda">
-        <ReferendumPageImpl />
-      </ReferendaPalletProvider>
-    </PostProvider>
+    <WindowSizeProvider>
+      <PostProvider post={detail}>
+        <ReferendaPalletProvider pallet="referenda">
+          <ReferendumPageImpl />
+        </ReferendaPalletProvider>
+      </PostProvider>
+    </WindowSizeProvider>
   );
 }
 
