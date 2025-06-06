@@ -11,7 +11,7 @@ function PostHogProviderImpl({ children }) {
   const NEXT_PUBLIC_POSTHOG_KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY;
 
   useEffect(() => {
-    if (!NEXT_PUBLIC_POSTHOG_KEY) {
+    if (!NEXT_PUBLIC_POSTHOG_KEY || typeof window === "undefined") {
       return;
     }
 
@@ -25,7 +25,11 @@ function PostHogProviderImpl({ children }) {
       },
       debug: IS_DEVELOPMENT,
       capture_pageleave: false,
-      session_recording: true,
+      session_recording: {
+        recordCrossOriginIframes: true,
+        blockSelector: ".ph-block-image",
+        ignoreClass: "ph-ignore-image",
+      },
       autocapture: {
         dom_event_capture: ["click", "submit"],
         exceptions: false,
