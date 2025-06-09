@@ -1,14 +1,9 @@
-import CommentEditor from "next-common/components/comment/editor";
-import { useEffect, useMemo, useState, useRef, useCallback } from "react";
+import { useMemo, useCallback } from "react";
 import { getCidByEvidence } from "next-common/utils/collective/getCidByEvidence";
 import nextApi from "next-common/services/nextApi";
-import Comments from "next-common/components/comment";
-import { useUser } from "next-common/context/user";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
-import PrimaryButton from "next-common/lib/button/primary";
 import {
   CommentsProvider,
-  useComments,
   useSetComments,
 } from "next-common/context/post/comments";
 import CommentActionsContext from "next-common/sima/context/commentActions";
@@ -18,42 +13,16 @@ import { useOffChainCommentUpVote } from "next-common/noSima/actions/upVote";
 import { useOffChainCommentCancelUpVote } from "next-common/noSima/actions/cancelUpVote";
 import { fetchDetailComments } from "next-common/services/detail";
 
-const useCidByEvidence = (evidence) => {
-  return useMemo(() => getCidByEvidence(evidence), [evidence]);
-};
-
-const useEvdenceCommentsData = (cid) => {
-  const [loadingComments, setLoadingComments] = useState(true);
-  const [commentsData, setSommentsData] = useState({});
-
-  const getCommentData = useCallback(async () => {
-    setLoadingComments(true);
-    const result = await fetchDetailComments(
-      `fellowship/evidences/${cid}/comments`,
-      {},
-    );
-    setSommentsData(result);
-    setLoadingComments(false);
-  }, [cid]);
-
-  useEffect(() => {
-    getCommentData();
-  }, [getCommentData]);
-  return {
-    loading: loadingComments,
-    commentsData,
-  };
-};
-
-export default function EvidenceComment({ evidence }) {
-  const cid = useCidByEvidence(evidence);
-  const { commentsData, loading } = useEvdenceCommentsData(cid);
+export default function EvidenceCommentConfigProvider({
+  evidence,
+  commentsData,
+  children,
+}) {
+  const cid = useMemo(() => getCidByEvidence(evidence), [evidence]);
   return (
     <>
       <CommentsProvider comments={commentsData}>
-        <CommentConfigProvider cid={cid}>
-          <CommentsContent loading={loading} />
-        </CommentConfigProvider>
+        <CommentConfigProvider cid={cid}>{children}</CommentConfigProvider>
       </CommentsProvider>
     </>
   );
@@ -140,42 +109,3 @@ const CommentConfigProvider = ({ children, cid }) => {
     </CommentActionsContext.Provider>
   );
 };
-
-function CommentsContent({ loading }) {
-  const user = useUser();
-  const { ensureLogin } = useEnsureLogin();
-  const editorWrapperRef = useRef(null);
-  const [contentType, setContentType] = useState(
-    user?.preference?.editor || "markdown",
-  );
-  const [content, setContent] = useState("");
-  const commentsData = useComments();
-  return (
-    <>
-      <Comments title="Discussion" data={commentsData} loading={loading} />
-
-      {user ? (
-        <CommentEditor
-          ref={editorWrapperRef}
-          {...{
-            contentType,
-            setContentType,
-            content,
-            setContent,
-            users: [],
-          }}
-        />
-      ) : (
-        <div className="flex justify-end mt-4">
-          <PrimaryButton
-            onClick={() => {
-              ensureLogin();
-            }}
-          >
-            Login
-          </PrimaryButton>
-        </div>
-      )}
-    </>
-  );
-}
