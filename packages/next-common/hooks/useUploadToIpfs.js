@@ -1,4 +1,4 @@
-import backendApi from "next-common/services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
@@ -26,7 +26,7 @@ export function useUploadToIpfs() {
         const formData = new FormData();
         formData.append("file", file, file.name);
 
-        const response = await backendApi.postFormData("ipfs/files", formData);
+        const response = await nextApi.postFormData("ipfs/files", formData);
 
         if (response?.error) {
           dispatch(

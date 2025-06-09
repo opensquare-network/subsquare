@@ -1,7 +1,7 @@
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { CardTitle } from "./styled";
 import { useAsync } from "react-use";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { fellowshipMemberHeatmapApi } from "next-common/services/url";
 import { useMemo } from "react";
 import Loading from "next-common/components/loading";
@@ -66,7 +66,7 @@ export default function VoteActivities() {
   );
   const { value: { result: heatmap = [] } = {}, loading: isHeatmapLoading } =
     useAsync(async () => {
-      return await nextApi.fetch(fellowshipMemberHeatmapApi(address));
+      return await backendApi.fetch(fellowshipMemberHeatmapApi(address));
     }, [address]);
 
   if (!isReferendumCountLoaded || isHeatmapLoading) {
