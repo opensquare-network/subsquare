@@ -45,7 +45,7 @@ export function usePolkassemblyPostData({
           postType: polkassemblyPostType,
         },
         {
-          timeout: 6 * 1000,
+          timeout: 12 * 1000,
         },
       )
       .then(({ result }) => {
