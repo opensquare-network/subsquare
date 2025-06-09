@@ -9,6 +9,7 @@ const ProjectIconPolkadotCoretime = dynamic(() =>
 const polkadotCoretime = {
   ...polkadotCommonCfg,
   value: Chains.polkadotCoretime,
+  name: "Coretime",
   description:
     "A revolutionary approach to accessing the right amount of blockspace for every stage of growth.",
   avatar: ProjectIconPolkadotCoretime,
