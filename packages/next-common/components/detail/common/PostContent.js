@@ -50,7 +50,12 @@ export default function PostContent({ post = {} }) {
 
       postContent = ensurePolkassemblyRelativeLink(postContent, chain);
 
-      content = <HtmlPreviewer content={postContent} />;
+      content = (
+        <HtmlPreviewer
+          content={postContent}
+          plugins={[correctionIpfsEndpointPlugin()]}
+        />
+      );
     } else {
       content = (
         <MarkdownPreviewer

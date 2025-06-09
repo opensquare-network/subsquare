@@ -1,4 +1,3 @@
-import { noop } from "lodash";
 import getIpfsLink from "../env/ipfsEndpoint";
 
 export default function correctionIpfsEndpointPlugin() {
@@ -7,14 +6,13 @@ export default function correctionIpfsEndpointPlugin() {
   if (!endpoint) {
     return {
       name: pluginName,
-      onRenderedHtml: noop,
     };
   }
   return {
     name: pluginName,
     onRenderedHtml: (el) => {
-      el.querySelectorAll("img").forEach((img) => {
-        if (!img.src?.startsWith(endpoint)) {
+      el?.querySelectorAll("img")?.forEach((img) => {
+        if (!img?.src?.startsWith(endpoint) && img?.src?.startsWith("https://")) {
           const cid = extractIpfsCid(img.src);
           if (cid) {
             img.src = getIpfsLink(cid);
@@ -27,6 +25,9 @@ export default function correctionIpfsEndpointPlugin() {
 
 export function extractIpfsCid(rawUrl) {
   let cid;
+  if (!rawUrl) {
+    return;
+  }
   try {
     const url = new URL(rawUrl);
     const match = url.pathname.match(/^\/ipfs\/([^/?#]+)/);
