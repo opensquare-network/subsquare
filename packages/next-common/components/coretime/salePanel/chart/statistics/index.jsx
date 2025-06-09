@@ -2,7 +2,7 @@ import BigNumber from "bignumber.js";
 import { maxBy, range } from "lodash-es";
 import "next-common/components/charts/globalConfig";
 import { useThemeSetting } from "next-common/context/theme";
-import useChainOrScanHeight from "next-common/hooks/height";
+import useCoretimeChainOrScanHeight from "next-common/hooks/coretime/scanHeight";
 import { cn } from "next-common/utils";
 import { useMemo, useState } from "react";
 import { Line } from "react-chartjs-2";
@@ -50,7 +50,7 @@ function StatisticsImpl({
   saleStart,
   fixedStart,
 }) {
-  const chainHeight = useChainOrScanHeight();
+  const chainHeight = useCoretimeChainOrScanHeight();
 
   const totalBlocksIndex = toIndex(totalBlocks);
   const initBlockHeightIndex = toIndex(initBlockHeight);
