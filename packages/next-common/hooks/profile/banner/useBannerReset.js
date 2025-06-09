@@ -4,7 +4,7 @@ import {
   newErrorToast,
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
-import { backendApi } from "next-common/services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import { useSignMessage } from "next-common/hooks/useSignMessage";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import { getRealField } from "next-common/sima/actions/common";
@@ -37,7 +37,7 @@ export default function useBannerReset(proxyAddress) {
         signerWallet,
       };
 
-      const { error: resetUserBannerError } = await backendApi.post(
+      const { error: resetUserBannerError } = await nextApi.post(
         "user/banner/unset",
         data,
       );

@@ -4,7 +4,7 @@ import {
   newErrorToast,
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
-import { backendApi } from "next-common/services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import { useSignMessage } from "next-common/hooks/useSignMessage";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import { getRealField } from "next-common/sima/actions/common";
@@ -51,7 +51,7 @@ export default function useBannerSubmission(imageFile, proxyAddress) {
         signerWallet,
       };
 
-      const { error: setUserBannerError } = await backendApi.post(
+      const { error: setUserBannerError } = await nextApi.post(
         "user/banner",
         data,
       );

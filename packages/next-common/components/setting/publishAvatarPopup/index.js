@@ -7,7 +7,7 @@ import {
   newErrorToast,
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
-import { backendApi } from "next-common/services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import { useSignMessage } from "next-common/hooks/useSignMessage";
 import {
   usePopupParams,
@@ -61,7 +61,7 @@ export function useAvatarSubmission(imageFile, proxyAddress) {
         signerWallet,
       };
 
-      const { error: saveUserAvatarError } = await backendApi.post(
+      const { error: saveUserAvatarError } = await nextApi.post(
         "user/avatar",
         data,
       );

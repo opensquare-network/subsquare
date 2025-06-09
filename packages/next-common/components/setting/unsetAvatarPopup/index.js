@@ -6,7 +6,7 @@ import {
   newErrorToast,
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
-import { backendApi } from "next-common/services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import { useSignMessage } from "next-common/hooks/useSignMessage";
 import {
   usePopupParams,
@@ -47,7 +47,7 @@ export function useAvatarUnset(proxyAddress) {
         signerWallet,
       };
 
-      const { error: unsetUserAvatarError } = await backendApi.post(
+      const { error: unsetUserAvatarError } = await nextApi.post(
         "user/avatar/unset",
         data,
       );
