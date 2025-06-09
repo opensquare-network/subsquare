@@ -27,6 +27,7 @@ import { useClickAway } from "react-use";
 import CancelReferendumPopup from "./summary/newProposalQuickStart/cancelReferendumInnerPopup";
 import KillReferendumPopup from "./summary/newProposalQuickStart/killReferendumInnerPopup";
 import { useChainSettings } from "next-common/context/chain";
+import { useCommentActions } from "next-common/sima/context/commentActions";
 
 const DeletePopup = dynamicPopup(() => import("./deletePopup"));
 
@@ -205,6 +206,7 @@ export function CommentContextMenu({ editable, setIsEdit }) {
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const router = useRouter();
   const isAdmin = useIsAdmin();
+  const { preventPageRefresh, refreshData } = useCommentActions();
 
   useClickAway(ref, () => setShow(false));
 
@@ -220,8 +222,9 @@ export function CommentContextMenu({ editable, setIsEdit }) {
       dispatch(newErrorToast(error.message));
       return;
     }
-    router.replace(router.asPath);
-  }, [comment._id, dispatch, router]);
+    !preventPageRefresh && router.replace(router.asPath);
+    refreshData?.();
+  }, [comment._id, dispatch, preventPageRefresh, refreshData, router]);
 
   return (
     <Wrapper ref={ref}>

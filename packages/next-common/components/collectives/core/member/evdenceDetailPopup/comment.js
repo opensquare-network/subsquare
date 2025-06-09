@@ -1,21 +1,22 @@
 import CommentEditor from "next-common/components/comment/editor";
 import { useEffect, useMemo, useState, useRef, useCallback } from "react";
 import { getCidByEvidence } from "next-common/utils/collective/getCidByEvidence";
-import nextApi, { backendApi } from "next-common/services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import Comments from "next-common/components/comment";
-import { getFocusEditor } from "next-common/utils/post";
 import { useUser } from "next-common/context/user";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 import PrimaryButton from "next-common/lib/button/primary";
 import {
   CommentsProvider,
   useComments,
+  useSetComments,
 } from "next-common/context/post/comments";
 import CommentActionsContext from "next-common/sima/context/commentActions";
 import { useUpdateOffChainComment } from "next-common/noSima/actions/comment";
 import { useGetComment } from "next-common/noSima/actions/comment";
 import { useOffChainCommentUpVote } from "next-common/noSima/actions/upVote";
 import { useOffChainCommentCancelUpVote } from "next-common/noSima/actions/cancelUpVote";
+import { fetchDetailComments } from "next-common/services/detail";
 
 const useCidByEvidence = (evidence) => {
   return useMemo(() => getCidByEvidence(evidence), [evidence]);
@@ -25,17 +26,19 @@ const useEvdenceCommentsData = (cid) => {
   const [loadingComments, setLoadingComments] = useState(true);
   const [commentsData, setSommentsData] = useState({});
 
-  useEffect(() => {
+  const getCommentData = useCallback(async () => {
     setLoadingComments(true);
-    backendApi
-      .fetch(`fellowship/evidences/${cid}/comments`)
-      .then(({ result }) => {
-        setSommentsData(result);
-      })
-      .finally(() => {
-        setLoadingComments(false);
-      });
+    const result = await fetchDetailComments(
+      `fellowship/evidences/${cid}/comments`,
+      {},
+    );
+    setSommentsData(result);
+    setLoadingComments(false);
   }, [cid]);
+
+  useEffect(() => {
+    getCommentData();
+  }, [getCommentData]);
   return {
     loading: loadingComments,
     commentsData,
@@ -44,25 +47,59 @@ const useEvdenceCommentsData = (cid) => {
 
 export default function EvidenceComment({ evidence }) {
   const cid = useCidByEvidence(evidence);
+  const { commentsData, loading } = useEvdenceCommentsData(cid);
+  return (
+    <>
+      <CommentsProvider comments={commentsData}>
+        <CommentConfigProvider cid={cid}>
+          <CommentsContent loading={loading} />
+        </CommentConfigProvider>
+      </CommentsProvider>
+    </>
+  );
+}
+
+const CommentConfigProvider = ({ children, cid }) => {
   const { ensureLogin } = useEnsureLogin();
+
+  const getComment = useGetComment();
+  const updateComment = useUpdateOffChainComment();
+  const upVoteComment = useOffChainCommentUpVote();
+  const cancelUpVoteComment = useOffChainCommentCancelUpVote();
+
+  const setComments = useSetComments();
+
+  const refreshData = useCallback(async () => {
+    const result = await fetchDetailComments(
+      `fellowship/evidences/${cid}/comments`,
+      {},
+    );
+    setComments(result);
+  }, [cid, setComments]);
 
   const createPostComment = useCallback(
     async (post, content, contentType) => {
       if (!(await ensureLogin())) {
         throw new Error("Cancelled");
       }
-      return await nextApi.post(
-        `fellowship/evidences/${cid}/comments`,
-        {
-          content,
-          contentType,
-        },
-        {
-          credentials: "include",
-        },
-      );
+      return await nextApi
+        .post(
+          `fellowship/evidences/${cid}/comments`,
+          {
+            content,
+            contentType,
+          },
+          {
+            credentials: "include",
+          },
+        )
+        .then((res) => {
+          refreshData();
+
+          return res;
+        });
     },
-    [cid, ensureLogin],
+    [cid, ensureLogin, refreshData],
   );
 
   const createCommentReply = useCallback(
@@ -85,53 +122,41 @@ export default function EvidenceComment({ evidence }) {
     [cid, ensureLogin],
   );
 
-  const getComment = useGetComment();
-  const updateComment = useUpdateOffChainComment();
-  const upVoteComment = useOffChainCommentUpVote();
-  const cancelUpVoteComment = useOffChainCommentCancelUpVote();
-
   return (
-    <>
-      <CommentActionsContext.Provider
-        value={{
-          supportSima: false,
-          getComment,
-          createPostComment,
-          createCommentReply,
-          upVoteComment,
-          cancelUpVoteComment,
-          updateComment,
-        }}
-      >
-        <CommentsContent evidence={evidence} />
-      </CommentActionsContext.Provider>
-    </>
+    <CommentActionsContext.Provider
+      value={{
+        supportSima: false,
+        preventPageRefresh: true,
+        getComment,
+        createPostComment,
+        createCommentReply,
+        upVoteComment,
+        cancelUpVoteComment,
+        updateComment,
+        refreshData,
+      }}
+    >
+      {children}
+    </CommentActionsContext.Provider>
   );
-}
+};
 
-function CommentsContent({ evidence }) {
-  const cid = useCidByEvidence(evidence);
+function CommentsContent({ loading }) {
   const user = useUser();
   const { ensureLogin } = useEnsureLogin();
   const editorWrapperRef = useRef(null);
-  const [quillRef, setQuillRef] = useState(null);
   const [contentType, setContentType] = useState(
     user?.preference?.editor || "markdown",
   );
   const [content, setContent] = useState("");
-
-  const { commentsData, loading } = useEvdenceCommentsData(cid);
-  const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
-  focusEditor;
+  const commentsData = useComments();
   return (
     <>
-      <CommentsProvider comments={commentsData}>
-        <CommentItems loading={loading} />
-      </CommentsProvider>
+      <Comments title="Discussion" data={commentsData} loading={loading} />
+
       {user ? (
         <CommentEditor
           ref={editorWrapperRef}
-          setQuillRef={setQuillRef}
           {...{
             contentType,
             setContentType,
@@ -154,8 +179,3 @@ function CommentsContent({ evidence }) {
     </>
   );
 }
-
-const CommentItems = ({ loading }) => {
-  const commentsData = useComments();
-  return <Comments title="Discussion" data={commentsData} loading={loading} />;
-};

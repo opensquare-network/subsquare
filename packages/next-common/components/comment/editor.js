@@ -82,7 +82,8 @@ function CommentEditor(
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
   const isMounted = useMountedState();
-  const { createPostComment, createCommentReply } = useCommentActions();
+  const { createPostComment, createCommentReply, preventPageRefresh } =
+    useCommentActions();
 
   const shouldUseSima = useShouldUseSima(comment);
 
@@ -123,12 +124,14 @@ function CommentEditor(
         if (isReply) {
           onFinishedEdit(true);
         } else {
-          await router.replace(router.asPath);
-          setTimeout(() => {
-            if (isMounted()) {
-              window && window.scrollTo(0, document.body.scrollHeight);
-            }
-          }, 4);
+          if (!preventPageRefresh) {
+            await router.replace(router.asPath);
+            setTimeout(() => {
+              if (isMounted()) {
+                window && window.scrollTo(0, document.body.scrollHeight);
+              }
+            }, 4);
+          }
         }
       }
     } catch (e) {
