@@ -1,4 +1,4 @@
-import getIpfsLink from "../env/ipfsEndpoint";
+const cloudflareIpfsEndpoint = "https://cloudflare-ipfs.com/ipfs";
 
 export default function correctionIpfsEndpointPlugin() {
   const endpoint = process.env.NEXT_PUBLIC_PREVIEW_IMG_ENDPOINT;
@@ -12,36 +12,14 @@ export default function correctionIpfsEndpointPlugin() {
     name: pluginName,
     onRenderedHtml: (el) => {
       el?.querySelectorAll("img")?.forEach((img) => {
-        if (!img?.src?.startsWith(endpoint) && img?.src?.startsWith("https://")) {
-          const cid = extractIpfsCid(img.src);
-          if (cid) {
-            img.src = getIpfsLink(cid);
-          }
+        if (
+          img?.src &&
+          img?.src?.startsWith(cloudflareIpfsEndpoint) &&
+          endpoint
+        ) {
+          img.src = img.src.replace(cloudflareIpfsEndpoint, endpoint);
         }
       });
     },
   };
-}
-
-export function extractIpfsCid(rawUrl) {
-  let cid;
-  if (!rawUrl) {
-    return;
-  }
-  try {
-    const url = new URL(rawUrl);
-    const match = url.pathname.match(/^\/ipfs\/([^/?#]+)/);
-    if (match) {
-      cid = match[1];
-    }
-
-    const subdomainMatch = url.hostname.match(/^(.+)\.ipfs\./);
-    if (subdomainMatch) {
-      cid = subdomainMatch[1];
-    }
-  } catch (e) {
-    console.error(e);
-  }
-
-  return cid;
 }
