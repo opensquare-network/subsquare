@@ -10,7 +10,7 @@ export default function EvidenceContent({ address, rank, wish, evidence }) {
   const { section } = useCollectivesContext();
   return (
     <>
-      <div className="max-w-[826px] mx-auto  space-y-4">
+      <section className="max-w-[826px] mx-auto  space-y-4">
         <header className="p-2.5 bg-neutral200 flex justify-center items-center text14Medium space-x-1">
           <Avatar address={address} size={20} />
           <AddressUser
@@ -25,7 +25,7 @@ export default function EvidenceContent({ address, rank, wish, evidence }) {
         <VoteBar address={address} wish={wish} />
         <Divider />
         <FellowshipEvidenceContent wish={wish} evidence={evidence} />
-      </div>
+      </section>
     </>
   );
 }

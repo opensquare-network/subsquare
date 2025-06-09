@@ -9,12 +9,16 @@ import { useMemo, useState } from "react";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { IS_SERVER } from "next-common/utils/constants";
 
-export default function Comments({ data: commentsData, loading }) {
+export default function Comments({
+  data: commentsData,
+  loading,
+  title = "Comments",
+}) {
   return (
     <div>
       <div className="mb-4">
         <TitleContainer className={cn("w-full !px-0")}>
-          <div className="text14Bold">Comments </div>
+          <div className="text14Bold">{title} </div>
 
           <CommentsFilter />
         </TitleContainer>
