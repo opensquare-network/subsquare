@@ -7,7 +7,10 @@ import { getFocusEditor } from "next-common/utils/post";
 import { useUser } from "next-common/context/user";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 import PrimaryButton from "next-common/lib/button/primary";
-import { CommentsProvider } from "next-common/context/post/comments";
+import {
+  CommentsProvider,
+  useComments,
+} from "next-common/context/post/comments";
 import CommentActionsContext from "next-common/sima/context/commentActions";
 import { useUpdateOffChainComment } from "next-common/noSima/actions/comment";
 import { useGetComment } from "next-common/noSima/actions/comment";
@@ -48,7 +51,7 @@ export default function EvidenceComment({ evidence }) {
       if (!(await ensureLogin())) {
         throw new Error("Cancelled");
       }
-      return nextApi.post(
+      return await nextApi.post(
         `fellowship/evidences/${cid}/comments`,
         {
           content,
@@ -68,7 +71,7 @@ export default function EvidenceComment({ evidence }) {
         throw new Error("Cancelled");
       }
 
-      return nextApi.post(
+      return await nextApi.post(
         `fellowship/evidences/${cid}/comments/${comment._id}/replies`,
         {
           content,
@@ -122,8 +125,8 @@ function CommentsContent({ evidence }) {
   focusEditor;
   return (
     <>
-      <CommentsProvider comments={commentsData.items}>
-        <Comments title="Discussion" data={commentsData} loading={loading} />
+      <CommentsProvider comments={commentsData}>
+        <CommentItems loading={loading} />
       </CommentsProvider>
       {user ? (
         <CommentEditor
@@ -151,3 +154,8 @@ function CommentsContent({ evidence }) {
     </>
   );
 }
+
+const CommentItems = ({ loading }) => {
+  const commentsData = useComments();
+  return <Comments title="Discussion" data={commentsData} loading={loading} />;
+};
