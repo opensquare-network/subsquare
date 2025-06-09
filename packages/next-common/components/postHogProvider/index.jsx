@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import Router from "next/router";
 import posthog from "posthog-js";
 import { PostHogProvider as PHProvider } from "posthog-js/react";
-import { useChainSettings } from "next-common/context/chain";
 import { IS_DEVELOPMENT } from "next-common/utils/constants";
 
 function PostHogProviderImpl({ children, posthogKey }) {
@@ -46,15 +45,14 @@ function PostHogProviderImpl({ children, posthogKey }) {
 }
 
 export default function PostHogProvider({ children }) {
-  const { hasDataTracking = false } = useChainSettings();
-  const NEXT_PUBLIC_POSTHOG_KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY;
+  const posthogKey = process.env.NEXT_PUBLIC_POSTHOG_KEY;
 
-  if (!hasDataTracking || !NEXT_PUBLIC_POSTHOG_KEY) {
+  if (!posthogKey) {
     return children;
   }
 
   return (
-    <PostHogProviderImpl posthogKey={NEXT_PUBLIC_POSTHOG_KEY}>
+    <PostHogProviderImpl posthogKey={posthogKey}>
       {children}
     </PostHogProviderImpl>
   );
