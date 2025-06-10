@@ -5,7 +5,7 @@ import { SystemClose } from "@osn/icons/subsquare";
 import useConfirmingReferendaCount from "./useConfirmingReferendaCount";
 import { useChainSettings } from "next-common/context/chain";
 
-function Prompt({ setVisible, confirmingCount = 0 }) {
+function Prompt({ setVisible, confirmingCount }) {
   return (
     <GreyPanel className="bg-theme100 text-theme500 text14Medium py-2.5 px-4 justify-between">
       <p className="inline-flex">
@@ -36,7 +36,7 @@ function ConfirmingReferendaStatsPrompt() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    if (loading || !value) {
+    if (loading || value <= 0) {
       return;
     }
 
@@ -48,11 +48,7 @@ function ConfirmingReferendaStatsPrompt() {
   }
 
   return (
-    <Prompt
-      confirmingCount={value || 0}
-      setVisible={setVisible}
-      visible={visible}
-    />
+    <Prompt confirmingCount={value} setVisible={setVisible} visible={visible} />
   );
 }
 
