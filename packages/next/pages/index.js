@@ -28,7 +28,11 @@ import { BasicDataProvider } from "next-common/context/centrifuge/basicData";
 import { DailyExtrinsicsProvider } from "next-common/context/centrifuge/DailyExtrinsics";
 import { TokenPricesProvider } from "next-common/context/centrifuge/tokenPrices";
 import { backendApi } from "next-common/services/nextApi";
-import ConfirmingReferendaStats from "next-common/components/overview/confirmingReferendaStats";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+
+const ConfirmingReferendaStats = dynamicClientOnly(() =>
+  import("next-common/components/overview/confirmingReferendaStats"),
+);
 
 function DefaultOverviewPage() {
   const chain = useChain();
