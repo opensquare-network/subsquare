@@ -34,6 +34,10 @@ const ConfirmingReferendaStats = dynamicClientOnly(() =>
   import("next-common/components/overview/confirmingReferendaStats"),
 );
 
+const CoretimeStats = dynamicClientOnly(() =>
+  import("next-common/components/overview/coretimeStats"),
+);
+
 function DefaultOverviewPage() {
   const chain = useChain();
   const chainSettings = useChainSettings();
@@ -59,7 +63,8 @@ function DefaultOverviewPage() {
   if (
     hasDefinedOffChainVoting() ||
     hasDefinedBounties() ||
-    chainSettings?.modules?.referenda
+    chainSettings?.modules?.referenda ||
+    chainSettings?.modules?.coretime
   ) {
     externalInfo = (
       <div className="space-y-4">
@@ -68,6 +73,7 @@ function DefaultOverviewPage() {
           <Bounties />
         </div>
         <ConfirmingReferendaStats />
+        <CoretimeStats />
       </div>
     );
   }
