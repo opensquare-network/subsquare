@@ -38,6 +38,30 @@ const CoretimeStats = dynamicClientOnly(() =>
   import("next-common/components/overview/coretimeStats"),
 );
 
+function ExternalInfo() {
+  const { modules } = useChainSettings();
+
+  if (
+    !hasDefinedOffChainVoting() &&
+    !hasDefinedBounties() &&
+    !modules?.referenda &&
+    !modules?.coretime
+  ) {
+    return null;
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="grid grid-cols-2 gap-[16px] max-md:grid-cols-1">
+        <OffChainVoting />
+        <Bounties />
+      </div>
+      <ConfirmingReferendaStats />
+      <CoretimeStats />
+    </div>
+  );
+}
+
 function DefaultOverviewPage() {
   const chain = useChain();
   const chainSettings = useChainSettings();
@@ -59,25 +83,6 @@ function DefaultOverviewPage() {
     });
   }
 
-  let externalInfo = null;
-  if (
-    hasDefinedOffChainVoting() ||
-    hasDefinedBounties() ||
-    chainSettings?.modules?.referenda ||
-    chainSettings?.modules?.coretime
-  ) {
-    externalInfo = (
-      <div className="space-y-4">
-        <div className="grid grid-cols-2 gap-[16px] max-md:grid-cols-1">
-          <OffChainVoting />
-          <Bounties />
-        </div>
-        <ConfirmingReferendaStats />
-        <CoretimeStats />
-      </div>
-    );
-  }
-
   if (isCentrifugeChain(chain)) {
     return (
       <BasicDataProvider>
@@ -90,7 +95,7 @@ function DefaultOverviewPage() {
               description={chainSettings.description}
               headContent={<HeadContent />}
               summary={<CentrifugeOverviewSummary />}
-              summaryFooter={externalInfo}
+              summaryFooter={<ExternalInfo />}
               tabs={tabs}
             >
               <CentrifugeOverview />
@@ -115,7 +120,7 @@ function DefaultOverviewPage() {
           <OverviewSummary />
         )
       }
-      summaryFooter={externalInfo}
+      summaryFooter={<ExternalInfo />}
       tabs={tabs}
     >
       <Overview />
