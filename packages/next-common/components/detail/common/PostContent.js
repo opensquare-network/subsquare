@@ -10,6 +10,7 @@ import { sanitizeHtml } from "next-common/utils/post/sanitizeHtml";
 import { Marked } from "marked";
 import { useChain } from "next-common/context/chain";
 import { ensurePolkassemblyRelativeLink } from "next-common/utils/polkassembly/ensurePolkassemblyRelativeLink";
+import correctionIpfsEndpointPlugin from "next-common/utils/previewerPlugins/correctionIpfsEndpoint";
 
 const marked = new Marked();
 
@@ -49,7 +50,12 @@ export default function PostContent({ post = {} }) {
 
       postContent = ensurePolkassemblyRelativeLink(postContent, chain);
 
-      content = <HtmlPreviewer content={postContent} />;
+      content = (
+        <HtmlPreviewer
+          content={postContent}
+          plugins={[correctionIpfsEndpointPlugin()]}
+        />
+      );
     } else {
       content = (
         <MarkdownPreviewer
@@ -57,11 +63,17 @@ export default function PostContent({ post = {} }) {
           markedOptions={{
             breaks: true,
           }}
+          plugins={[correctionIpfsEndpointPlugin()]}
         />
       );
     }
   } else if (post.contentType === "html") {
-    content = <HtmlPreviewer content={sanitizeHtml(post.content || "")} />;
+    content = (
+      <HtmlPreviewer
+        content={sanitizeHtml(post.content || "")}
+        plugins={[correctionIpfsEndpointPlugin()]}
+      />
+    );
   }
 
   return (
