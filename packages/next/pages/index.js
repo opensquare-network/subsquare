@@ -6,7 +6,9 @@ import {
   isCollectivesChain,
 } from "next-common/utils/chain";
 import ListLayout from "next-common/components/layout/ListLayout";
-import OverviewSummary from "next-common/components/summary/overviewSummary";
+import OverviewSummary, {
+  useShowOverviewSummary,
+} from "next-common/components/summary/overviewSummary";
 import AllianceOverviewSummary from "next-common/components/summary/allianceOverviewSummary";
 import CentrifugeOverviewSummary from "next-common/components/summary/centrifugeOverviewSummary";
 import OffChainVoting from "next-common/components/summary/externalInfo/offChainVoting";
@@ -32,6 +34,7 @@ import { backendApi } from "next-common/services/nextApi";
 function DefaultOverviewPage() {
   const chain = useChain();
   const chainSettings = useChainSettings();
+  const showOverviewSummary = useShowOverviewSummary();
 
   const tabs = [
     {
@@ -91,11 +94,13 @@ function DefaultOverviewPage() {
       description={chainSettings.description}
       headContent={<HeadContent />}
       summary={
-        isCollectivesChain(chain) ? (
-          <AllianceOverviewSummary />
-        ) : (
-          <OverviewSummary />
-        )
+        showOverviewSummary ? (
+          isCollectivesChain(chain) ? (
+            <AllianceOverviewSummary />
+          ) : (
+            <OverviewSummary />
+          )
+        ) : null
       }
       summaryFooter={externalInfo}
       tabs={tabs}
