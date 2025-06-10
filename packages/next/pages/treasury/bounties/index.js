@@ -1,7 +1,6 @@
 import PostList from "next-common/components/postList";
 import { withCommonProps } from "next-common/lib";
 import normalizeBountyListItem from "next-common/utils/viewfuncs/treasury/normalizeBountyListItem";
-import { useChainSettings } from "next-common/context/chain";
 import ListLayout from "next-common/components/layout/ListLayout";
 import TreasurySummary from "next-common/components/summary/treasurySummary";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
@@ -17,8 +16,6 @@ export default function BountiesPage({
   inactiveBounties,
   chain,
 }) {
-  const chainSettings = useChainSettings();
-
   const items = (inactiveBounties.items || []).map((item) =>
     normalizeBountyListItem(chain, item),
   );
@@ -42,11 +39,6 @@ export default function BountiesPage({
             value: "bounties",
             label: "Bounties",
             url: "/treasury/bounties",
-          },
-          chainSettings.integrations?.doTreasury && {
-            value: "statistics",
-            label: "Statistics",
-            url: `https://${chain}.dotreasury.com`,
           },
         ].filter(Boolean)}
       >
