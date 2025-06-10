@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useChain } from "next-common/context/chain";
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { useAsync } from "react-use";
 import { isPolkadotChain, isKusamaChain } from "next-common/utils/chain";
 
@@ -34,7 +34,7 @@ export default function useFetchIdentityInfo() {
     }
 
     try {
-      const resp = await nextApi.fetch(identityApi);
+      const resp = await backendApi.fetch(identityApi);
       const { subs = [], info } = resp?.result || {};
 
       return {
