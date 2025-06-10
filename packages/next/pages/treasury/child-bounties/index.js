@@ -2,7 +2,7 @@ import PostList from "next-common/components/postList";
 import { withCommonProps } from "next-common/lib";
 import { toTreasuryChildBountyListItem } from "next-common/utils/viewfuncs";
 import { useChain, useChainSettings } from "next-common/context/chain";
-import { isNil, lowerCase } from "lodash-es";
+import { isNil } from "lodash-es";
 import ListLayout from "next-common/components/layout/ListLayout";
 import TreasurySummary from "next-common/components/summary/treasurySummary";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
@@ -42,9 +42,7 @@ export default function ChildBountiesPage({ bounties }) {
           chainSettings.integrations?.doTreasury && {
             value: "statistics",
             label: "Statistics",
-            url: `https://dotreasury.com/${lowerCase(
-              chainSettings.symbol,
-            )}/child-bounties`,
+            url: `https://${chain}.dotreasury.com`,
           },
         ].filter(Boolean)}
       >
