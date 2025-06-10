@@ -4,10 +4,14 @@ import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { SystemClose } from "@osn/icons/subsquare";
 import useConfirmingReferendaCount from "./useConfirmingReferendaCount";
 import { useChainSettings } from "next-common/context/chain";
+import { colorStyle, PromptTypes } from "next-common/components/scrollPrompt";
 
 function Prompt({ setVisible, confirmingCount }) {
   return (
-    <GreyPanel className="bg-theme100 text-theme500 text14Medium py-2.5 px-4 justify-between">
+    <GreyPanel
+      className="text14Medium py-2.5 px-4 justify-between"
+      style={colorStyle[PromptTypes.INFO]}
+    >
       <p className="inline-flex">
         <span>There&nbsp;{confirmingCount > 1 ? "are" : "is"}</span>
         <span className="text14Bold">&nbsp;{confirmingCount}&nbsp;</span>
