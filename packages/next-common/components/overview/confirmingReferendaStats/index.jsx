@@ -3,6 +3,7 @@ import Link from "next/link";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { SystemClose } from "@osn/icons/subsquare";
 import useConfirmingReferendaCount from "./useConfirmingReferendaCount";
+import { useChainSettings } from "next-common/context/chain";
 
 function Prompt({ setVisible, confirmingCount = 0 }) {
   return (
@@ -30,7 +31,7 @@ function Prompt({ setVisible, confirmingCount = 0 }) {
   );
 }
 
-export default function ConfirmingReferendaStats() {
+function ConfirmingReferendaStatsPrompt() {
   const { value, loading } = useConfirmingReferendaCount();
   const [visible, setVisible] = useState(false);
 
@@ -53,4 +54,13 @@ export default function ConfirmingReferendaStats() {
       visible={visible}
     />
   );
+}
+
+export default function ConfirmingReferendaStats() {
+  const { modules } = useChainSettings();
+  if (!modules?.referenda) {
+    return null;
+  }
+
+  return <ConfirmingReferendaStatsPrompt />;
 }
