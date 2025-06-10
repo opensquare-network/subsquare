@@ -47,9 +47,7 @@ export default function BountiesPage({
           chainSettings.integrations?.doTreasury && {
             value: "statistics",
             label: "Statistics",
-            url: `https://dotreasury.com/${lowerCase(
-              chainSettings.symbol,
-            )}/bounties`,
+            url: `https://${chain}.dotreasury.com`,
           },
         ].filter(Boolean)}
       >
