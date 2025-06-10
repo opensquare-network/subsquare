@@ -1,4 +1,4 @@
-import { backendApi } from "next-common/services/nextApi";
+import nextApi from "next-common/services/nextApi";
 
 export default async function fetchProfile(req) {
   let options = {};
@@ -10,5 +10,5 @@ export default async function fetchProfile(req) {
     };
   }
 
-  return backendApi.fetch("user/profile", {}, options);
+  return nextApi.fetch("user/profile", {}, options);
 }
