@@ -4,11 +4,7 @@ import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { SystemClose } from "@osn/icons/subsquare";
 import useConfirmingReferendaCount from "./useConfirmingReferendaCount";
 
-function Prompt({ visible, setVisible, confirmingCount = 0 }) {
-  if (!visible) {
-    return null;
-  }
-
+function Prompt({ setVisible, confirmingCount = 0 }) {
   return (
     <GreyPanel className="bg-theme100 text-theme500 text14Medium py-2.5 px-4 justify-between">
       <p className="inline-flex">
@@ -45,6 +41,10 @@ export default function ConfirmingReferendaStats() {
 
     setVisible(true);
   }, [loading, value]);
+
+  if (!visible) {
+    return null;
+  }
 
   return (
     <Prompt
