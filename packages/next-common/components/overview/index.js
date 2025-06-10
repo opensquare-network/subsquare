@@ -3,7 +3,6 @@ import { SystemTip } from "@osn/icons/subsquare";
 import ChainSocialLinks from "next-common/components/chain/socialLinks";
 import { useCallback } from "react";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
-import ConfirmingReferendaStats from "next-common/components/overview/confirmingReferendaStats";
 
 export function SubscribeTip() {
   const router = useRouter();
@@ -41,7 +40,6 @@ export const TitleExtra = () => (
 export const HeadContent = () => (
   <div className="flex flex-col gap-[16px]">
     <ChainSocialLinks />
-    <ConfirmingReferendaStats />
     <div className="md:hidden">
       <SubscribeTip />
     </div>

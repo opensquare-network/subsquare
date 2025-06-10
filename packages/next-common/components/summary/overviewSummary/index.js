@@ -2,17 +2,11 @@ import styled from "styled-components";
 import Flex from "../../styled/flex";
 import { SummaryGreyText } from "../styled";
 import ActiveValue from "./activeValue";
-import { useChain, useChainSettings } from "../../../context/chain";
+import { useChainSettings } from "../../../context/chain";
 import { usePageProps } from "next-common/context/page";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
 import DotSplitter from "next-common/components/dotSplitter";
-import {
-  isPolkadotChain,
-  isKusamaChain,
-  isWestendChain,
-  isPaseoChain,
-} from "next-common/utils/chain";
 
 const ContentWrapper = styled.div`
   display: flex;
@@ -230,19 +224,4 @@ export default function OverviewSummary() {
       )}
     </SummaryLayout>
   );
-}
-
-export function useShowOverviewSummary() {
-  const chain = useChain();
-
-  if (
-    isPolkadotChain(chain) ||
-    isKusamaChain(chain) ||
-    isWestendChain(chain) ||
-    isPaseoChain(chain)
-  ) {
-    return false;
-  }
-
-  return true;
 }

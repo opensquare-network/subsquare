@@ -6,9 +6,7 @@ import {
   isCollectivesChain,
 } from "next-common/utils/chain";
 import ListLayout from "next-common/components/layout/ListLayout";
-import OverviewSummary, {
-  useShowOverviewSummary,
-} from "next-common/components/summary/overviewSummary";
+import OverviewSummary from "next-common/components/summary/overviewSummary";
 import AllianceOverviewSummary from "next-common/components/summary/allianceOverviewSummary";
 import CentrifugeOverviewSummary from "next-common/components/summary/centrifugeOverviewSummary";
 import OffChainVoting from "next-common/components/summary/externalInfo/offChainVoting";
@@ -30,11 +28,11 @@ import { BasicDataProvider } from "next-common/context/centrifuge/basicData";
 import { DailyExtrinsicsProvider } from "next-common/context/centrifuge/DailyExtrinsics";
 import { TokenPricesProvider } from "next-common/context/centrifuge/tokenPrices";
 import { backendApi } from "next-common/services/nextApi";
+import ConfirmingReferendaStats from "next-common/components/overview/confirmingReferendaStats";
 
 function DefaultOverviewPage() {
   const chain = useChain();
   const chainSettings = useChainSettings();
-  const showOverviewSummary = useShowOverviewSummary();
 
   const tabs = [
     {
@@ -54,11 +52,18 @@ function DefaultOverviewPage() {
   }
 
   let externalInfo = null;
-  if (hasDefinedOffChainVoting() || hasDefinedBounties()) {
+  if (
+    hasDefinedOffChainVoting() ||
+    hasDefinedBounties() ||
+    chainSettings?.modules?.referenda
+  ) {
     externalInfo = (
-      <div className="grid grid-cols-2 gap-[16px] max-md:grid-cols-1">
-        <OffChainVoting />
-        <Bounties />
+      <div className="space-y-4">
+        <div className="grid grid-cols-2 gap-[16px] max-md:grid-cols-1">
+          <OffChainVoting />
+          <Bounties />
+        </div>
+        <ConfirmingReferendaStats />
       </div>
     );
   }
@@ -94,13 +99,11 @@ function DefaultOverviewPage() {
       description={chainSettings.description}
       headContent={<HeadContent />}
       summary={
-        showOverviewSummary ? (
-          isCollectivesChain(chain) ? (
-            <AllianceOverviewSummary />
-          ) : (
-            <OverviewSummary />
-          )
-        ) : null
+        isCollectivesChain(chain) ? (
+          <AllianceOverviewSummary />
+        ) : (
+          <OverviewSummary />
+        )
       }
       summaryFooter={externalInfo}
       tabs={tabs}

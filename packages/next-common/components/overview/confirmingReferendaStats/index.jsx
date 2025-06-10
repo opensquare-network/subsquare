@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
-import { useShowOverviewSummary } from "next-common/components/summary/overviewSummary";
 import Link from "next/link";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { SystemClose } from "@osn/icons/subsquare";
 import useConfirmingReferendaCount from "./useConfirmingReferendaCount";
 
-function Prompt({ confirmingCount = 0 }) {
-  const [visible, setVisible] = useState(true);
-
+function Prompt({ visible, setVisible, confirmingCount = 0 }) {
   if (!visible) {
     return null;
   }
@@ -38,21 +35,22 @@ function Prompt({ confirmingCount = 0 }) {
 }
 
 export default function ConfirmingReferendaStats() {
-  const showSummary = useShowOverviewSummary();
   const { value, loading } = useConfirmingReferendaCount();
-  const [showPrompt, setShowPrompt] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    if (showSummary || loading || !value) {
+    if (loading || !value) {
       return;
     }
 
-    setShowPrompt(true);
-  }, [showSummary, loading, value]);
+    setVisible(true);
+  }, [loading, value]);
 
-  if (!showPrompt) {
-    return null;
-  }
-
-  return <Prompt confirmingCount={value || 0} />;
+  return (
+    <Prompt
+      confirmingCount={value || 0}
+      setVisible={setVisible}
+      visible={visible}
+    />
+  );
 }
