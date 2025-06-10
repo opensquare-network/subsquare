@@ -8,37 +8,16 @@ import PrimaryButton from "next-common/lib/button/primary";
 import { useComments } from "next-common/context/post/comments";
 import { fetchDetailComments } from "next-common/services/detail";
 import EvidenceCommentConfigProvider from "./commentConfigProvider";
-
-const useCidByEvidence = (evidence) => {
-  return useMemo(() => getCidByEvidence(evidence), [evidence]);
-};
-
-const useEvdenceCommentsData = (cid) => {
-  const [loadingComments, setLoadingComments] = useState(true);
-  const [commentsData, setSommentsData] = useState({});
-
-  const getCommentData = useCallback(async () => {
-    setLoadingComments(true);
-    const result = await fetchDetailComments(
-      `fellowship/evidences/${cid}/comments`,
-      {},
-    );
-    setSommentsData(result);
-    setLoadingComments(false);
-  }, [cid]);
-
-  useEffect(() => {
-    getCommentData();
-  }, [getCommentData]);
-  return {
-    loading: loadingComments,
-    commentsData,
-  };
-};
+import { fellowshipMemberEvidenceCommentApi } from "next-common/services/url";
+import { getMentionList } from "next-common/utils/post";
+import { uniqBy } from "lodash-es";
+import { isKeyRegisteredUser } from "next-common/utils";
+import { getMentionName } from "next-common/utils/post";
+import { getMemberId } from "next-common/utils/post";
+import { useChain } from "next-common/context/chain";
 
 export default function EvidenceComment({ evidence }) {
-  const cid = useCidByEvidence(evidence);
-  const { commentsData, loading } = useEvdenceCommentsData(cid);
+  const { commentsData, loading } = useEvdenceCommentsData(evidence);
   return (
     <EvidenceCommentConfigProvider
       commentsData={commentsData}
@@ -58,6 +37,7 @@ function CommentsContent({ loading }) {
   );
   const [content, setContent] = useState("");
   const commentsData = useComments();
+  const users = useUserMentionList(commentsData);
   return (
     <>
       <Comments title="Discussion" data={commentsData} loading={loading} />
@@ -70,7 +50,7 @@ function CommentsContent({ loading }) {
             setContentType,
             content,
             setContent,
-            users: [],
+            users,
           }}
         />
       ) : (
@@ -87,3 +67,49 @@ function CommentsContent({ loading }) {
     </>
   );
 }
+
+const useEvdenceCommentsData = (evidence) => {
+  const cid = useMemo(() => getCidByEvidence(evidence), [evidence]);
+  const [loadingComments, setLoadingComments] = useState(true);
+  const [commentsData, setSommentsData] = useState({});
+
+  const getCommentData = useCallback(async () => {
+    setLoadingComments(true);
+    const result = await fetchDetailComments(
+      fellowshipMemberEvidenceCommentApi(cid),
+      {},
+    );
+    setSommentsData(result);
+    setLoadingComments(false);
+  }, [cid]);
+
+  useEffect(() => {
+    getCommentData();
+  }, [getCommentData]);
+  return {
+    loading: loadingComments,
+    commentsData,
+  };
+};
+
+const useUserMentionList = (commentsData) => {
+  const [users, setUsers] = useState([]);
+  const chain = useChain();
+  useEffect(() => {
+    const loadSuggestions = async (list) => {
+      return await Promise.all(
+        (list || []).map(async (user) => ({
+          name: await getMentionName(user, chain),
+          value: getMemberId(user, chain),
+          isKeyRegistered: isKeyRegisteredUser(user),
+        })),
+      );
+    };
+
+    loadSuggestions(
+      uniqBy(getMentionList(commentsData), (item) => item.username),
+    ).then((suggestions) => setUsers(suggestions));
+  }, [chain, commentsData]);
+
+  return users;
+};

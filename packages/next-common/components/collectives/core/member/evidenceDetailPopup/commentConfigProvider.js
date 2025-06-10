@@ -12,6 +12,10 @@ import { useGetComment } from "next-common/noSima/actions/comment";
 import { useOffChainCommentUpVote } from "next-common/noSima/actions/upVote";
 import { useOffChainCommentCancelUpVote } from "next-common/noSima/actions/cancelUpVote";
 import { fetchDetailComments } from "next-common/services/detail";
+import {
+  fellowshipMemberEvidenceCommentApi,
+  fellowshipMemberEvidenceCommentReplyApi,
+} from "next-common/services/url";
 
 export default function EvidenceCommentConfigProvider({
   evidence,
@@ -38,13 +42,12 @@ const CommentConfigProvider = ({ children, cid }) => {
 
   const setComments = useSetComments();
 
+  const evidenceCommentsApi = fellowshipMemberEvidenceCommentApi(cid);
+
   const refreshData = useCallback(async () => {
-    const result = await fetchDetailComments(
-      `fellowship/evidences/${cid}/comments`,
-      {},
-    );
+    const result = await fetchDetailComments(evidenceCommentsApi, {});
     setComments(result);
-  }, [cid, setComments]);
+  }, [evidenceCommentsApi, setComments]);
 
   const createPostComment = useCallback(
     async (post, content, contentType) => {
@@ -53,7 +56,7 @@ const CommentConfigProvider = ({ children, cid }) => {
       }
       return await nextApi
         .post(
-          `fellowship/evidences/${cid}/comments`,
+          evidenceCommentsApi,
           {
             content,
             contentType,
@@ -68,7 +71,7 @@ const CommentConfigProvider = ({ children, cid }) => {
           return res;
         });
     },
-    [cid, ensureLogin, refreshData],
+    [ensureLogin, evidenceCommentsApi, refreshData],
   );
 
   const createCommentReply = useCallback(
@@ -78,7 +81,7 @@ const CommentConfigProvider = ({ children, cid }) => {
       }
 
       return await nextApi.post(
-        `fellowship/evidences/${cid}/comments/${comment._id}/replies`,
+        fellowshipMemberEvidenceCommentReplyApi(cid, comment._id),
         {
           content,
           contentType,

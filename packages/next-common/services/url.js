@@ -96,9 +96,9 @@ export const fellowshipStatisticsUsersApi = (address) =>
 
 // fellowship member evidence
 export const fellowshipMemberEvidenceCommentApi = (cid) =>
-  `/fellowship/evidences/${cid}/comments`;
+  `fellowship/evidences/${cid}/comments`;
 export const fellowshipMemberEvidenceCommentReplyApi = (cid, commentId) =>
-  `/fellowship/evidences/${cid}/comments/${commentId}/replies`;
+  `fellowship/evidences/${cid}/comments/${commentId}/replies`;
 
 // ambassador
 export const ambassadorParamsApi = "ambassador/params";
