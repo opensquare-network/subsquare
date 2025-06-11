@@ -10,7 +10,7 @@ import useCoretimeCurrentSale from "./useCoretimeCurrentSale";
 import { isNil } from "lodash-es";
 
 function Separator() {
-  return <span>&nbsp;·&nbsp;</span>;
+  return <span className="mx-2">·</span>;
 }
 
 function Prompt({ setVisible, coresOffered, availableCores, totalRevenue }) {
@@ -21,9 +21,10 @@ function Prompt({ setVisible, coresOffered, availableCores, totalRevenue }) {
       key: "cores",
       content: (
         <>
-          <span>Coretime: Available cores for sale</span>
-          <span className="text14Bold">&nbsp;{availableCores}&nbsp;</span>
-          <span>/&nbsp;{coresOffered}</span>
+          <span>Available cores for sale</span>
+          <span className="text14Bold ml-1">{availableCores}</span>
+          <span className="mx-[2px]">/</span>
+          <span>{coresOffered}</span>
         </>
       ),
     },
@@ -31,11 +32,11 @@ function Prompt({ setVisible, coresOffered, availableCores, totalRevenue }) {
       key: "revenue",
       content: (
         <>
-          <span>Current revenue&nbsp;</span>
+          <span>Current revenue</span>
           <ValueDisplay
             value={toPrecision(totalRevenue, decimals)}
             symbol={symbol}
-            className="text-textSecondary text14Bold"
+            className="text-textSecondary text14Bold ml-1"
           />
         </>
       ),
@@ -60,6 +61,7 @@ function Prompt({ setVisible, coresOffered, availableCores, totalRevenue }) {
       style={colorStyle[PromptTypes.NEUTRAL]}
     >
       <div className="flex flex-wrap items-center gap-x-0">
+        <span className="mr-2">Coretime:</span>
         {contentItems.map((item, index) => (
           <div key={item.key} className="inline-flex items-center">
             {item.content}
