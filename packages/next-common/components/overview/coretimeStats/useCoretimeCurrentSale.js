@@ -5,13 +5,13 @@ import { useState } from "react";
 export default function useCoretimeCurrentSale() {
   const [loading, setLoading] = useState(true);
 
-  const { value: summaryData } = useAsync(async () => {
+  const { value } = useAsync(async () => {
     setLoading(true);
 
     try {
       const result = await queryCoretimeCurrentSale();
 
-      return result || {};
+      return result;
     } catch (error) {
       return null;
     } finally {
@@ -20,7 +20,7 @@ export default function useCoretimeCurrentSale() {
   }, []);
 
   return {
-    value: summaryData || {},
+    value,
     loading,
   };
 }

@@ -51,9 +51,7 @@ function ConfirmingReferendaStatsPrompt() {
     return null;
   }
 
-  return (
-    <Prompt confirmingCount={value} setVisible={setVisible} visible={visible} />
-  );
+  return <Prompt confirmingCount={value} setVisible={setVisible} />;
 }
 
 export default function ConfirmingReferendaStats() {
