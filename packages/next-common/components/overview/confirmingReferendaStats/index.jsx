@@ -15,6 +15,7 @@ function Prompt({ onClose, confirmingCount }) {
       style={colorStyle[PromptTypes.INFO]}
     >
       <p className="inline-flex">
+        <span className="mr-2">OpenGov:</span>
         <span>There&nbsp;{confirmingCount > 1 ? "are" : "is"}</span>
         <span className="text14Bold">&nbsp;{confirmingCount}&nbsp;</span>
         <span>
