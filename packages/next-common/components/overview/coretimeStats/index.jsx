@@ -1,19 +1,21 @@
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { useChainSettings } from "next-common/context/chain";
 import { colorStyle, PromptTypes } from "next-common/components/scrollPrompt";
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import { SystemClose } from "@osn/icons/subsquare";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import useCoretimeCurrentSale from "./useCoretimeCurrentSale";
 import { isNil } from "lodash-es";
+import { usePromptVisibility } from "next-common/hooks/usePromptVisibility";
+
+const STORAGE_KEY = "coretime-stats-closed";
 
 function Separator() {
   return <span className="mx-2">·</span>;
 }
 
-function Prompt({ setVisible, coresOffered, availableCores, totalRevenue }) {
+function Prompt({ onClose, coresOffered, availableCores, totalRevenue }) {
   const { decimals, symbol } = useChainSettings();
 
   const contentItems = [
@@ -72,28 +74,20 @@ function Prompt({ setVisible, coresOffered, availableCores, totalRevenue }) {
       <SystemClose
         className="w-5 h-5 flex-shrink-0 ml-2"
         role="button"
-        onClick={() => {
-          setVisible(false);
-        }}
+        onClick={onClose}
       />
     </GreyPanel>
   );
 }
 
 function CoretimeStatsPrompt() {
-  const [visible, setVisible] = useState(false);
   const { value, loading } = useCoretimeCurrentSale();
   const { totalRevenue = 0, info = {} } = value || {};
   const { coresOffered = 0, coresSold = 0 } = info;
   const availableCores = coresOffered - coresSold;
 
-  useEffect(() => {
-    if (loading || isNil(value)) {
-      return;
-    }
-
-    setVisible(true);
-  }, [loading, value]);
+  const shouldShow = !loading && !isNil(value);
+  const { visible, handleClose } = usePromptVisibility(STORAGE_KEY, shouldShow);
 
   if (!visible) {
     return null;
@@ -101,7 +95,7 @@ function CoretimeStatsPrompt() {
 
   return (
     <Prompt
-      setVisible={setVisible}
+      onClose={handleClose}
       coresOffered={coresOffered}
       availableCores={availableCores}
       totalRevenue={totalRevenue}
