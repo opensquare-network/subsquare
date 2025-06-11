@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export function usePromptVisibility(storageKey, shouldShow = false) {
+export default function usePromptVisibility(storageKey, shouldShow = false) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {

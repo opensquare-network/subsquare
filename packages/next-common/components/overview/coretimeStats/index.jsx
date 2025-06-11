@@ -7,7 +7,7 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import useCoretimeCurrentSale from "./useCoretimeCurrentSale";
 import { isNil } from "lodash-es";
-import { usePromptVisibility } from "next-common/hooks/usePromptVisibility";
+import usePromptVisibility from "next-common/hooks/usePromptVisibility";
 
 const STORAGE_KEY = "coretime-stats-closed";
 

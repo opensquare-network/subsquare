@@ -4,7 +4,7 @@ import { SystemClose } from "@osn/icons/subsquare";
 import useConfirmingReferendaCount from "./useConfirmingReferendaCount";
 import { useChainSettings } from "next-common/context/chain";
 import { colorStyle, PromptTypes } from "next-common/components/scrollPrompt";
-import { usePromptVisibility } from "next-common/hooks/usePromptVisibility";
+import usePromptVisibility from "next-common/hooks/usePromptVisibility";
 
 const STORAGE_KEY = "confirming-referenda-stats-closed";
 
