@@ -1,18 +1,21 @@
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { SystemClose } from "@osn/icons/subsquare";
 import useConfirmingReferendaCount from "./useConfirmingReferendaCount";
 import { useChainSettings } from "next-common/context/chain";
 import { colorStyle, PromptTypes } from "next-common/components/scrollPrompt";
+import usePromptVisibility from "next-common/hooks/usePromptVisibility";
 
-function Prompt({ setVisible, confirmingCount }) {
+const STORAGE_KEY = "confirming-referenda-stats-closed";
+
+function Prompt({ onClose, confirmingCount }) {
   return (
     <GreyPanel
       className="text14Medium py-2.5 px-4 justify-between"
       style={colorStyle[PromptTypes.INFO]}
     >
       <p className="inline-flex">
+        <span className="mr-2">OpenGov:</span>
         <span>There&nbsp;{confirmingCount > 1 ? "are" : "is"}</span>
         <span className="text14Bold">&nbsp;{confirmingCount}&nbsp;</span>
         <span>
@@ -27,9 +30,7 @@ function Prompt({ setVisible, confirmingCount }) {
       <SystemClose
         className="w-5 h-5 text-theme500"
         role="button"
-        onClick={() => {
-          setVisible(false);
-        }}
+        onClick={onClose}
       />
     </GreyPanel>
   );
@@ -37,23 +38,14 @@ function Prompt({ setVisible, confirmingCount }) {
 
 function ConfirmingReferendaStatsPrompt() {
   const { value, loading } = useConfirmingReferendaCount();
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    if (loading || value <= 0) {
-      return;
-    }
-
-    setVisible(true);
-  }, [loading, value]);
+  const shouldShow = !loading && value > 0;
+  const { visible, handleClose } = usePromptVisibility(STORAGE_KEY, shouldShow);
 
   if (!visible) {
     return null;
   }
 
-  return (
-    <Prompt confirmingCount={value} setVisible={setVisible} visible={visible} />
-  );
+  return <Prompt confirmingCount={value} onClose={handleClose} />;
 }
 
 export default function ConfirmingReferendaStats() {
