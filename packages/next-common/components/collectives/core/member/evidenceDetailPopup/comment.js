@@ -17,7 +17,7 @@ import { getMemberId } from "next-common/utils/post";
 import { useChain } from "next-common/context/chain";
 
 export default function EvidenceComment({ evidence }) {
-  const { commentsData, loading } = useEvdenceCommentsData(evidence);
+  const { commentsData, loading } = useEvidenceCommentsData(evidence);
   return (
     <EvidenceCommentConfigProvider
       commentsData={commentsData}
@@ -68,10 +68,10 @@ function CommentsContent({ loading }) {
   );
 }
 
-const useEvdenceCommentsData = (evidence) => {
+const useEvidenceCommentsData = (evidence) => {
   const cid = useMemo(() => getCidByEvidence(evidence), [evidence]);
   const [loadingComments, setLoadingComments] = useState(true);
-  const [commentsData, setSommentsData] = useState({});
+  const [commentsData, setCommentsData] = useState({});
 
   const getCommentData = useCallback(async () => {
     setLoadingComments(true);
@@ -79,7 +79,7 @@ const useEvdenceCommentsData = (evidence) => {
       fellowshipMemberEvidenceCommentApi(cid),
       {},
     );
-    setSommentsData(result);
+    setCommentsData(result);
     setLoadingComments(false);
   }, [cid]);
 

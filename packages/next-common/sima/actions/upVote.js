@@ -13,7 +13,7 @@ import {
 import getDetailPageCategory from "../utils/getDetailPageCategoryFromPostType";
 import getProposalIndexer from "../utils/getProposalIndexer";
 
-function getDiscussionUpVoteEntity(cid) {
+export function getDiscussionUpVoteEntity(cid) {
   return {
     action: "upvote",
     cid,
@@ -21,7 +21,7 @@ function getDiscussionUpVoteEntity(cid) {
   };
 }
 
-function getProposalUpVoteEntity(indexer) {
+export function getProposalUpVoteEntity(indexer) {
   return {
     action: "upvote_proposal",
     indexer,

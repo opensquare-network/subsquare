@@ -1,21 +1,20 @@
 import { useMemo, useCallback } from "react";
 import { getCidByEvidence } from "next-common/utils/collective/getCidByEvidence";
-import nextApi from "next-common/services/nextApi";
-import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 import {
   CommentsProvider,
   useSetComments,
 } from "next-common/context/post/comments";
 import CommentActionsContext from "next-common/sima/context/commentActions";
-import { useUpdateOffChainComment } from "next-common/noSima/actions/comment";
 import { useGetComment } from "next-common/noSima/actions/comment";
-import { useOffChainCommentUpVote } from "next-common/noSima/actions/upVote";
-import { useOffChainCommentCancelUpVote } from "next-common/noSima/actions/cancelUpVote";
 import { fetchDetailComments } from "next-common/services/detail";
+import { fellowshipMemberEvidenceCommentApi } from "next-common/services/url";
 import {
-  fellowshipMemberEvidenceCommentApi,
-  fellowshipMemberEvidenceCommentReplyApi,
-} from "next-common/services/url";
+  useCreateEvidenceComment,
+  useCreateEvidenceCommentReply,
+  useEvidenceCommentCancelUpVote,
+  useEvidenceCommentUpVote,
+  useReplaceEvidenceComment,
+} from "next-common/sima/actions/evidenceActions";
 
 export default function EvidenceCommentConfigProvider({
   evidence,
@@ -33,12 +32,12 @@ export default function EvidenceCommentConfigProvider({
 }
 
 const CommentConfigProvider = ({ children, cid }) => {
-  const { ensureLogin } = useEnsureLogin();
-
   const getComment = useGetComment();
-  const updateComment = useUpdateOffChainComment();
-  const upVoteComment = useOffChainCommentUpVote();
-  const cancelUpVoteComment = useOffChainCommentCancelUpVote();
+  const createEvidenceComment = useCreateEvidenceComment();
+  const createEvidenceCommentReply = useCreateEvidenceCommentReply();
+  const updateEvidenceComment = useReplaceEvidenceComment();
+  const upVoteEvidenceComment = useEvidenceCommentUpVote();
+  const cancelUpVoteEvidenceComment = useEvidenceCommentCancelUpVote();
 
   const setComments = useSetComments();
 
@@ -50,54 +49,74 @@ const CommentConfigProvider = ({ children, cid }) => {
   }, [evidenceCommentsApi, setComments]);
 
   const createPostComment = useCallback(
-    async (post, content, contentType) => {
-      if (!(await ensureLogin())) {
-        throw new Error("Cancelled");
+    async (post, content, contentType, real) => {
+      const { result, error } = await createEvidenceComment(
+        cid,
+        content,
+        contentType,
+        real,
+      );
+      if (result) {
+        await refreshData();
       }
-      return await nextApi
-        .post(
-          evidenceCommentsApi,
-          {
-            content,
-            contentType,
-          },
-          {
-            credentials: "include",
-          },
-        )
-        .then((res) => {
-          refreshData();
-
-          return res;
-        });
+      return { result, error };
     },
-    [ensureLogin, evidenceCommentsApi, refreshData],
+    [createEvidenceComment, refreshData, cid],
   );
 
   const createCommentReply = useCallback(
-    async (post, comment, content, contentType) => {
-      if (!(await ensureLogin())) {
-        throw new Error("Cancelled");
-      }
-
-      return await nextApi.post(
-        fellowshipMemberEvidenceCommentReplyApi(cid, comment._id),
-        {
-          content,
-          contentType,
-        },
-        {
-          credentials: "include",
-        },
+    async (post, comment, content, contentType, real) => {
+      const { result, error } = await createEvidenceCommentReply(
+        cid,
+        comment.cid,
+        content,
+        contentType,
+        real,
       );
+      if (result) {
+        await refreshData();
+      }
+      return { result, error };
     },
-    [cid, ensureLogin],
+    [createEvidenceCommentReply, refreshData, cid],
+  );
+
+  const updateComment = useCallback(
+    async (post, replyToComment, comment, content, contentType, real) => {
+      const { result, error } = await updateEvidenceComment(
+        cid,
+        replyToComment,
+        comment,
+        content,
+        contentType,
+        real,
+      );
+      if (result) {
+        await refreshData();
+      }
+      return { result, error };
+    },
+    [updateEvidenceComment, refreshData, cid],
+  );
+
+  const upVoteComment = useCallback(
+    async (post, comment) => {
+      return await upVoteEvidenceComment(cid, comment);
+    },
+    [upVoteEvidenceComment, cid],
+  );
+
+  const cancelUpVoteComment = useCallback(
+    async (post, comment) => {
+      return await cancelUpVoteEvidenceComment(cid, comment);
+    },
+    [cancelUpVoteEvidenceComment, cid],
   );
 
   return (
     <CommentActionsContext.Provider
       value={{
-        supportSima: false,
+        supportSima: true,
         preventPageRefresh: true,
         getComment,
         createPostComment,
