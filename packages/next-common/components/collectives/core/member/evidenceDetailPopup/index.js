@@ -2,6 +2,7 @@ import EvidenceContent from "./content";
 import EvidenceComment from "./comment";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import Divider from "next-common/components/styled/layout/divider";
+import EvidenceVoteBar from "./evidenctVoteBar";
 
 export default function EvidenceDetailPopup({
   address,
@@ -17,18 +18,21 @@ export default function EvidenceDetailPopup({
       headerClass="p-6 border-b border-neutral300"
       onClose={onClose}
     >
-      <main className=" w-full h-full overflow-y-auto sm:overflow-y-hidden  flex flex-col sm:flex-row ">
-        <section className="flex-1 flex-grow-[2] flex-shrink-0 md:min-w-[418px] p-6  sm:overflow-y-auto">
+      <div className="w-full h-full flex overflow-hidden flex-col">
+        <main className="flex-1 overflow-x-auto w-full h-full overflow-y-auto sm:overflow-y-hidden flex flex-col sm:flex-row">
           <EvidenceContent
             address={address}
             rank={rank}
             wish={wish}
             evidence={evidence}
           />
-        </section>
-        <Divider className="hidden sm:block !h-full w-[1px]" />
-        <EvidenceComment evidence={evidence} />
-      </main>
+          <Divider className="hidden sm:block !h-full w-[1px]" />
+          <EvidenceComment evidence={evidence} />
+        </main>
+        <footer className="sm:hidden bg-neutral100 border-neutral300 border-t p-6">
+          <EvidenceVoteBar address={address} wish={wish} />
+        </footer>
+      </div>
     </Popup>
   );
 }

@@ -33,12 +33,12 @@ function CommentsContent({ loading }) {
 
   return (
     <>
-      <aside className="flex-1 flex-shrink-0 sm:min-w-[470px] sm:overflow-y-auto px-6 pt-6 sm:flex sm:flex-col">
-        <section className="max-w-[910px] mx-auto flex flex-col flex-1 w-full">
+      <aside className="flex-1 flex-shrink-0 sm:min-w-[470px] sm:flex sm:flex-col">
+        <section className="sm:overflow-y-auto p-6 max-w-[910px] mx-auto flex flex-col flex-1 w-full">
           <Comments title="Discussion" data={commentsData} loading={loading} />
         </section>
 
-        <footer className="sm:sticky bottom-0 left-0 bg-neutral100 pb-6">
+        <footer className="px-6 bottom-0 left-0 bg-neutral100 pb-6">
           <CommentsEditor />
         </footer>
       </aside>
