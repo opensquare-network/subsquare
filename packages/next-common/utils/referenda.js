@@ -44,7 +44,7 @@ export class QueueingReferenda {
 
   toSortedReferendumIndexes() {
     // Sort queueing referenda by ayes, greater first
-    return this.referendumIndexes.toSorted((a, b) => {
+    return [...this.referendumIndexes].sort((a, b) => {
       const ayesA = this.ayes[a];
       const ayesB = this.ayes[b];
       const delta = ayesB - ayesA;
