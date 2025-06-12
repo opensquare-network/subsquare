@@ -4,6 +4,7 @@ import React from "react";
 import { MarkdownPreviewer } from "@osn/previewer";
 import styled from "styled-components";
 import { cn } from "next-common/utils";
+import ToggleCollapsed from "next-common/toggleCollapsed";
 
 const RemarkWrapper = styled.div`
   .markdown-body {
@@ -75,9 +76,11 @@ export default function extractRemarkMetaFields(call = {}) {
           Remark
         </div>
         <RemarkWrapper>
-          <MarkdownPreviewer
-            content={splitMarkdownBlockLevels(remarks[i] || "")}
-          />
+          <ToggleCollapsed collapsedHeight={300} moreLessHeightThreshold={800}>
+            <MarkdownPreviewer
+              content={splitMarkdownBlockLevels(remarks[i] || "")}
+            />
+          </ToggleCollapsed>
         </RemarkWrapper>
       </div>,
     ]);
