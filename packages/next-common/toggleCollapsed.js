@@ -2,10 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import SecondaryButton from "./lib/button/secondary";
 import { cn } from "./utils";
 
-const collapsedHeight = 640;
-const moreLessHeightThreshold = 2000;
-
-export default function ToggleCollapsed({ children }) {
+export default function ToggleCollapsed({
+  children,
+  collapsedHeight = 640,
+  moreLessHeightThreshold = 2000,
+}) {
   // assume is long content by default to AVOID flicker
   const [collapsed, setCollapsed] = useState(true);
   const ref = useRef(null);
@@ -18,7 +19,7 @@ export default function ToggleCollapsed({ children }) {
 
     setCollapsed(shouldCollapse);
     setShowToggleButton(shouldCollapse);
-  }, [ref]);
+  }, [ref, collapsedHeight, moreLessHeightThreshold]);
 
   return (
     <div
@@ -26,8 +27,11 @@ export default function ToggleCollapsed({ children }) {
       className={cn(
         "flex flex-col",
         "relative",
-        collapsed && "max-h-[640px] overflow-hidden",
+        collapsed && "overflow-hidden",
       )}
+      style={{
+        maxHeight: collapsed ? collapsedHeight : "none",
+      }}
     >
       {children}
 

@@ -76,7 +76,7 @@ export default function extractRemarkMetaFields(call = {}) {
           Remark
         </div>
         <RemarkWrapper>
-          <ToggleCollapsed>
+          <ToggleCollapsed collapsedHeight={300} moreLessHeightThreshold={800}>
             <MarkdownPreviewer
               content={splitMarkdownBlockLevels(remarks[i] || "")}
             />
