@@ -90,7 +90,11 @@ export function useIsUniversalPostComments() {
 
   const isUniversal =
     shouldReadPolkassemblyComments &&
-    ![detailPageCategory.POST, detailPageCategory.PA_POST].includes(detailType);
+    ![
+      detailPageCategory.POST,
+      detailPageCategory.PA_POST,
+      detailPageCategory.FELLOWSHIP_MEMBER,
+    ].includes(detailType);
 
   return isUniversal;
 }
