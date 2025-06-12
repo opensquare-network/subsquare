@@ -59,7 +59,7 @@ ErrorPage.getInitialProps = async ({ req, res, err }) => {
     address: user?.address,
     code: statusCode,
     source: isServerError ? "server" : "client",
-    userAgent: !isServerError && navigator.userAgent,
+    userAgent: isServerError ? "" : navigator?.navigator?.userAgent,
     error: err.message,
     stack: err.stack,
   };
