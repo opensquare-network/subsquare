@@ -4,7 +4,9 @@ import CoreFellowshipMemberInfoWrapper from "next-common/components/collectives/
 import CoreFellowshipMemberInfoTitle from "next-common/components/collectives/core/member/title";
 import useSubCoreFellowshipEvidence from "next-common/hooks/collectives/useSubCoreFellowshipEvidence";
 import { useState } from "react";
-import EvidenceDetailPopup from "./evidenceDetailPopup";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const EvidenceDetailPopup = dynamicPopup(() => import("./evidenceDetailPopup"));
 
 export function CoreFellowshipMemberEvidenceContent({
   member,

@@ -17,7 +17,7 @@ export default function EvidenceDetailPopup({
       headerClass="p-6 border-b border-neutral300"
       onClose={onClose}
     >
-      <main className=" w-full h-full overflow-y-auto md:overflow-y-hidden  flex flex-col sm:flex-row ">
+      <main className=" w-full h-full overflow-y-auto sm:overflow-y-hidden  flex flex-col sm:flex-row ">
         <section className="flex-1 flex-grow-[2] flex-shrink-0 md:min-w-[418px] p-6  sm:overflow-y-auto">
           <EvidenceContent
             address={address}

@@ -29,6 +29,25 @@ export default function EvidenceComment({ evidence }) {
 }
 
 function CommentsContent({ loading }) {
+  const commentsData = useComments();
+
+  return (
+    <>
+      <aside className="flex-1 flex-shrink-0 sm:min-w-[470px] sm:overflow-y-auto px-6 pt-6 sm:flex sm:flex-col">
+        <section className="max-w-[910px] mx-auto flex flex-col flex-1 w-full">
+          <Comments title="Discussion" data={commentsData} loading={loading} />
+        </section>
+
+        <footer className="sm:sticky bottom-0 left-0 bg-neutral100 pb-6">
+          <CommentsEditor />
+        </footer>
+      </aside>
+    </>
+  );
+}
+
+function CommentsEditor() {
+  const commentsData = useComments();
   const user = useUser();
   const { ensureLogin } = useEnsureLogin();
   const editorWrapperRef = useRef(null);
@@ -36,40 +55,34 @@ function CommentsContent({ loading }) {
     user?.preference?.editor || "markdown",
   );
   const [content, setContent] = useState("");
-  const commentsData = useComments();
   const users = useUserMentionList(commentsData);
+
+  if (!user) {
+    return (
+      <div className="flex justify-end mt-4">
+        <PrimaryButton
+          onClick={() => {
+            ensureLogin();
+          }}
+        >
+          Login
+        </PrimaryButton>
+      </div>
+    );
+  }
+
   return (
     <>
-      <aside className="flex-1 flex-shrink-0 md:min-w-[470px] sm:overflow-y-auto px-6 pt-6 sm:flex sm:flex-col">
-        <section className="max-w-[910px] mx-auto flex flex-col flex-1 w-full">
-          <Comments title="Discussion" data={commentsData} loading={loading} />
-        </section>
-
-        <footer className="sm:sticky bottom-0 left-0 bg-neutral100 pb-6">
-          {user ? (
-            <CommentEditor
-              ref={editorWrapperRef}
-              {...{
-                contentType,
-                setContentType,
-                content,
-                setContent,
-                users,
-              }}
-            />
-          ) : (
-            <div className="flex justify-end mt-4">
-              <PrimaryButton
-                onClick={() => {
-                  ensureLogin();
-                }}
-              >
-                Login
-              </PrimaryButton>
-            </div>
-          )}
-        </footer>
-      </aside>
+      <CommentEditor
+        ref={editorWrapperRef}
+        {...{
+          contentType,
+          setContentType,
+          content,
+          setContent,
+          users,
+        }}
+      />
     </>
   );
 }
