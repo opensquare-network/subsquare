@@ -49,7 +49,7 @@ function CommentsContent({ loading }) {
 function CommentsEditor() {
   const commentsData = useComments();
   const user = useUser();
-  const { ensureLogin } = useEnsureLogin();
+  const { ensureConnect } = useEnsureLogin();
   const editorWrapperRef = useRef(null);
   const [contentType, setContentType] = useState(
     user?.preference?.editor || "markdown",
@@ -62,10 +62,10 @@ function CommentsEditor() {
       <div className="flex justify-end mt-4">
         <PrimaryButton
           onClick={() => {
-            ensureLogin();
+            ensureConnect();
           }}
         >
-          Login
+          Connect
         </PrimaryButton>
       </div>
     );
