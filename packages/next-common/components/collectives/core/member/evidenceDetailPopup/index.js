@@ -27,11 +27,7 @@ export default function EvidenceDetailPopup({
           />
         </section>
         <Divider className="hidden sm:block !h-full w-[1px]" />
-        <aside className="flex-1 flex-shrink-0 md:min-w-[470px] sm:overflow-y-auto p-6 ">
-          <div className="max-w-[910px] mx-auto flex flex-col">
-            <EvidenceComment evidence={evidence} />
-          </div>
-        </aside>
+        <EvidenceComment evidence={evidence} />
       </main>
     </Popup>
   );

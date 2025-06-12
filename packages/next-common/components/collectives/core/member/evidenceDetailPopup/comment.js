@@ -40,30 +40,36 @@ function CommentsContent({ loading }) {
   const users = useUserMentionList(commentsData);
   return (
     <>
-      <Comments title="Discussion" data={commentsData} loading={loading} />
+      <aside className="flex-1 flex-shrink-0 md:min-w-[470px] sm:overflow-y-auto px-6 pt-6 sm:flex sm:flex-col">
+        <section className="max-w-[910px] mx-auto flex flex-col flex-1 w-full">
+          <Comments title="Discussion" data={commentsData} loading={loading} />
+        </section>
 
-      {user ? (
-        <CommentEditor
-          ref={editorWrapperRef}
-          {...{
-            contentType,
-            setContentType,
-            content,
-            setContent,
-            users,
-          }}
-        />
-      ) : (
-        <div className="flex justify-end mt-4">
-          <PrimaryButton
-            onClick={() => {
-              ensureLogin();
-            }}
-          >
-            Login
-          </PrimaryButton>
-        </div>
-      )}
+        <footer className="sm:sticky bottom-0 left-0 bg-neutral100 pb-6">
+          {user ? (
+            <CommentEditor
+              ref={editorWrapperRef}
+              {...{
+                contentType,
+                setContentType,
+                content,
+                setContent,
+                users,
+              }}
+            />
+          ) : (
+            <div className="flex justify-end mt-4">
+              <PrimaryButton
+                onClick={() => {
+                  ensureLogin();
+                }}
+              >
+                Login
+              </PrimaryButton>
+            </div>
+          )}
+        </footer>
+      </aside>
     </>
   );
 }
