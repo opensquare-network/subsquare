@@ -23,7 +23,6 @@ function PopupContent() {
   const api = useContextApi();
   const node = useChainSettings();
   const { referendumIndex, trackInfo: track } = usePostOnChainData();
-  const { transferrable, loading } = useBalanceContext() || {};
   const pallet = useReferendaPallet();
 
   const getTxFunc = useCallback(() => {
@@ -34,11 +33,7 @@ function PopupContent() {
 
   return (
     <>
-      <Signer
-        showTransferable
-        balance={transferrable}
-        isBalanceLoading={loading}
-      />
+      <SignerBalance />
       <div>
         <PopupLabel text={"Referendum ID"} />
         <Input value={referendumIndex} disabled={true} />
@@ -64,6 +59,17 @@ export default function DepositPopup(props) {
         <PopupContent />
       </BalanceProvider>
     </PopupWithSigner>
+  );
+}
+
+function SignerBalance() {
+  const { transferrable, loading } = useBalanceContext() || {};
+  return (
+    <Signer
+      showTransferable
+      balance={transferrable}
+      isBalanceLoading={loading}
+    />
   );
 }
 
