@@ -6,7 +6,7 @@ import { useAvatarPermissionsContext } from "next-common/components/profile/head
 
 export default function BioEditPopup({ onClose = noop }) {
   const { isProxyAccount } = useAvatarPermissionsContext();
-  const title = `Set Bio${isProxyAccount ? " As Proxy" : ""}`;
+  const title = `Edit Bio${isProxyAccount ? " As Proxy" : ""}`;
 
   return (
     <SignerPopupWrapper>
