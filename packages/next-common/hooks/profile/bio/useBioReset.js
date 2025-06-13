@@ -69,7 +69,7 @@ export default function useBioReset(proxyAddress) {
   ]);
 
   return {
-    isResetting,
+    isLoading: isResetting,
     reset,
   };
 }

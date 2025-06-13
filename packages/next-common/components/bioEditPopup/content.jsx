@@ -28,17 +28,21 @@ export default function BioEditPopupContent({ closePopup = noop }) {
   );
 
   const save = () => {
-    setBio().then(() => {
-      fetchUser();
-      closePopup();
-    });
+    setBio()
+      .then(() => {
+        fetchUser();
+        closePopup();
+      })
+      .catch(noop);
   };
 
   const reset = () => {
-    resetBio().then(() => {
-      fetchUser();
-      closePopup();
-    });
+    resetBio()
+      .then(() => {
+        fetchUser();
+        closePopup();
+      })
+      .catch(noop);
   };
 
   return (
@@ -78,7 +82,7 @@ export default function BioEditPopupContent({ closePopup = noop }) {
         <PrimaryButton
           onClick={save}
           disabled={!bioValue || bioValue?.length > MAX_BIO_LENGTH}
-          loading={isSetting || isResetting}
+          loading={isSetting}
         >
           Save Change
         </PrimaryButton>
