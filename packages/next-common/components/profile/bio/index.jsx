@@ -21,8 +21,7 @@ import RightPanelContainer from "next-common/components/profile/bio/rightPanelCo
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 import UserAccountProvider from "next-common/context/user/account";
 import AccountInfoPanel from "next-common/components/profile/bio/accountInfoPanel";
-import UserBio from "next-common/components/userBio";
-import Divider from "next-common/components/styled/layout/divider";
+import BioContainer from "./bioContainer";
 
 const Username = styled.span`
   font-weight: 700;
@@ -91,10 +90,7 @@ export const DisplayUserAddress = ({
       <Copyable copyText={maybeEvmAddress}>
         <Tertiary>{displayAddress}</Tertiary>
       </Copyable>
-      <div className="w-full gap-y-2 flex flex-col">
-        <Divider />
-        <UserBio />
-      </div>
+      <BioContainer />
       <div className={cn("inline-flex items-center", accountLinksClassName)}>
         {showLinks && <AccountLinks address={maybeEvmAddress} />}
         {extra}

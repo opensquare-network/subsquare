@@ -6,23 +6,43 @@ import useProfileAddress from "next-common/components/profile/useProfileAddress"
 import { useAvatarPermissionsContext } from "next-common/components/profile/header/context/avatarPermissionsContext";
 import LimitedTextInput from "../limitedTextInput";
 import { useState } from "react";
+import useBioSubmission from "next-common/hooks/profile/bio/useBioSubmission";
+import useBioReset from "next-common/hooks/profile/bio/useBioReset";
+import { useProfileUserInfoContext } from "../profile/header/context/profileUserInfoContext";
 
 const MAX_BIO_LENGTH = 240;
 
 export default function BioEditPopupContent() {
   const { isProxyAccount: isProxy } = useAvatarPermissionsContext();
+  const { fetch, user } = useProfileUserInfoContext();
   const address = useProfileAddress();
-  const [bio, setBio] = useState("");
+  const [bioValue, setBioValue] = useState(user?.bio || "");
 
-  const save = () => {};
+  const { setBio, isLoading: isSetting } = useBioSubmission(
+    bioValue,
+    isProxy ? address : null,
+  );
+  const { resetBio, isLoading: isResetting } = useBioReset(
+    isProxy ? address : null,
+  );
 
-  const reset = () => {};
+  const save = () => {
+    setBio().then(() => {
+      fetch();
+    });
+  };
+
+  const reset = () => {
+    resetBio().then(() => {
+      fetch();
+    });
+  };
 
   return (
     <>
       {isProxy && (
         <GreyPanel className="text14Medium text-purple500 py-2.5 px-4 max-w-full bg-purple100 !block">
-          You are setting avatar for
+          You are editing bio for
           <AddressUser
             showAvatar={false}
             add={address}
@@ -36,8 +56,8 @@ export default function BioEditPopupContent() {
         title="Short Bio"
         maxLength={MAX_BIO_LENGTH}
         placeholder={`Write a short bio to introduce yourself. This will appear on your profile page. Max ${MAX_BIO_LENGTH} characters.`}
-        value={bio}
-        setValue={setBio}
+        value={bioValue}
+        setValue={setBioValue}
       />
 
       <GreyPanel className="text14Medium text-textSecondary py-2.5 px-4 max-w-full">
@@ -46,10 +66,13 @@ export default function BioEditPopupContent() {
       </GreyPanel>
 
       <div className="flex justify-end gap-x-2">
-        <SecondaryButton onClick={reset}>Reset</SecondaryButton>
+        <SecondaryButton onClick={reset} disabled={isResetting}>
+          Reset
+        </SecondaryButton>
         <PrimaryButton
           onClick={save}
-          disabled={!bio || bio?.length > MAX_BIO_LENGTH}
+          disabled={!bioValue || bioValue?.length > MAX_BIO_LENGTH}
+          loading={isSetting || isResetting}
         >
           Save Change
         </PrimaryButton>
