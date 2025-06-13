@@ -33,7 +33,7 @@ function PopupContent() {
 
   return (
     <>
-      <SignerBalance />
+      <SignerTransferableBalance />
       <div>
         <PopupLabel text={"Referendum ID"} />
         <Input value={referendumIndex} disabled={true} />
@@ -62,7 +62,7 @@ export default function DepositPopup(props) {
   );
 }
 
-function SignerBalance() {
+function SignerTransferableBalance() {
   const { transferrable, loading } = useBalanceContext() || {};
   return (
     <Signer
