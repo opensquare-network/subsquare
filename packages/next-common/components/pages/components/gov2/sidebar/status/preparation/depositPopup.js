@@ -77,11 +77,12 @@ function AvailableBalance() {
 function BalanceTip() {
   const { transferrable, loading } = useBalanceContext() || {};
   const { trackInfo: track } = usePostOnChainData();
-  const isEnough = BigNumber(transferrable).gte(track.decisionDeposit);
 
-  if (loading) {
+  if (loading || !track) {
     return null;
   }
+
+  const isEnough = BigNumber(transferrable).gte(track.decisionDeposit);
 
   return (
     <GreyPanel
