@@ -28,6 +28,7 @@ export default function Popup({
   size = null,
   mobileClassName = "",
   computerClassName = "",
+  headerClass = "",
 }) {
   const [zOverlay] = useState(z);
   const [zContent] = useState(z + 1);
@@ -41,7 +42,12 @@ export default function Popup({
 
   return (
     <CommonPopupProvider onClose={onClose}>
-      <Dialog.Root open>
+      <Dialog.Root
+        open
+        onOpenChange={(open) => {
+          !open && onClose();
+        }}
+      >
         <Dialog.Portal container={container}>
           <Dialog.Overlay />
           <Dialog.Content asChild onOpenAutoFocus={(e) => e.preventDefault()}>
@@ -73,7 +79,9 @@ export default function Popup({
                 }}
               >
                 {title && (
-                  <div className="flex items-center justify-between">
+                  <div
+                    className={`flex items-center justify-between ${headerClass}`}
+                  >
                     <Dialog.Title asChild>
                       <h3 className="text16Bold text-textPrimary">{title}</h3>
                     </Dialog.Title>
