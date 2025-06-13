@@ -79,6 +79,7 @@ export const DisplayUserAddress = ({
   ellipsisAddress = false,
   extra = null,
   accountLinksClassName = "",
+  showBio = false,
 }) => {
   if (!address) {
     return null;
@@ -90,7 +91,7 @@ export const DisplayUserAddress = ({
       <Copyable copyText={maybeEvmAddress}>
         <Tertiary>{displayAddress}</Tertiary>
       </Copyable>
-      <BioContainer />
+      {showBio && <BioContainer />}
       <div className={cn("inline-flex items-center", accountLinksClassName)}>
         {showLinks && <AccountLinks address={maybeEvmAddress} />}
         {extra}
