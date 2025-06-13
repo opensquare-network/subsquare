@@ -20,7 +20,6 @@ import BigNumber from "bignumber.js";
 
 function PopupContent() {
   const { onClose } = usePopupParams();
-  const { transferrable, loading } = useBalanceContext() || {};
   const api = useContextApi();
   const node = useChainSettings();
   const { referendumIndex, trackInfo: track } = usePostOnChainData();
@@ -32,16 +31,9 @@ function PopupContent() {
     }
   }, [api, referendumIndex, pallet]);
 
-  const isEnough = BigNumber(transferrable).gte(track.decisionDeposit);
-
   return (
     <>
-      <Signer
-        showTransferable
-        balance={transferrable}
-        isBalanceLoading={loading}
-        balanceName="Available Balance"
-      />
+      <AvailableBalance />
       <div>
         <PopupLabel text={"Referendum ID"} />
         <Input value={referendumIndex} disabled={true} />
@@ -54,18 +46,7 @@ function PopupContent() {
           symbol={node?.symbol}
         />
       </div>
-      <GreyPanel
-        className="text14Medium px-4 py-[10px]"
-        style={
-          isEnough
-            ? colorStyle[PromptTypes.SUCCESS]
-            : colorStyle[PromptTypes.WARNING]
-        }
-      >
-        {isEnough
-          ? "Your free balance is enough to pay deposits."
-          : "Your free balance is not enough to pay deposits."}
-      </GreyPanel>
+      <BalanceTip />
       <TxSubmissionButton getTxFunc={getTxFunc} onClose={onClose} />
     </>
   );
@@ -78,5 +59,42 @@ export default function DepositPopup(props) {
         <PopupContent />
       </BalanceProvider>
     </PopupWithSigner>
+  );
+}
+
+function AvailableBalance() {
+  const { transferrable, loading } = useBalanceContext() || {};
+  return (
+    <Signer
+      showTransferable
+      balance={transferrable}
+      isBalanceLoading={loading}
+      balanceName="Available Balance"
+    />
+  );
+}
+
+function BalanceTip() {
+  const { transferrable, loading } = useBalanceContext() || {};
+  const { trackInfo: track } = usePostOnChainData();
+  const isEnough = BigNumber(transferrable).gte(track.decisionDeposit);
+
+  if (loading) {
+    return null;
+  }
+
+  return (
+    <GreyPanel
+      className="text14Medium px-4 py-[10px]"
+      style={
+        isEnough
+          ? colorStyle[PromptTypes.SUCCESS]
+          : colorStyle[PromptTypes.WARNING]
+      }
+    >
+      {isEnough
+        ? "Your free balance is enough to pay deposits."
+        : "Your free balance is not enough to pay deposits."}
+    </GreyPanel>
   );
 }
