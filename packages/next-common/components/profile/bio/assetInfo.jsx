@@ -5,7 +5,7 @@ import { ArrowUp, ArrowDown } from "@osn/icons/subsquare";
 import CommonPanel from "./commonPanel";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
-import { toPrecision } from "next-common/utils";
+import { cn, toPrecision } from "next-common/utils";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import useKintAccountInfo from "next-common/hooks/useKintAccountInfo";
 import BigNumber from "bignumber.js";
@@ -80,7 +80,7 @@ function CommonAssetInfo({ address, isLoading = false, info }) {
 
   return (
     <CommonPanel
-      className="relative"
+      className={cn("relative", !isCollapsed && "h-[116px]")}
       onExtraBtnClick={toggleCollapse}
       extra={<Icon className="w-5 h-5 [&_path]:stroke-textPrimary" />}
     >

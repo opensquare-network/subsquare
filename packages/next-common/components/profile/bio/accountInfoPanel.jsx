@@ -46,6 +46,7 @@ export default function AccountInfoPanel({ address, id }) {
               ? "!items-center text-center"
               : "flex-1 !items-start",
           )}
+          showBio
           extra={
             !isMobile && !isKintsugi ? (
               <>

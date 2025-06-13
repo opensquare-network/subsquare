@@ -12,6 +12,8 @@ import CollectivesMemberProvider from "next-common/context/collectives/member";
 import ProfileHeaderWithBanner from "./header";
 import ProfileLayout from "next-common/components/layout/ProfileLayout";
 import WindowSizeProvider from "next-common/context/windowSize";
+import AvatarPermissionsProvider from "./header/context/avatarPermissionsContext";
+import ProfileUserInfoProvider from "./header/context/profileUserInfoContext";
 
 function ProfilePageImpl() {
   useFetchProfileData();
@@ -20,17 +22,21 @@ function ProfilePageImpl() {
   const tabContent = useProfileTabContent();
 
   return (
-    <ProfileLayout
-      pageHeader={<ProfileHeaderWithBanner />}
-      header={
-        <>
-          <Bio />
-        </>
-      }
-      tabs={tabs}
-    >
-      {tabContent}
-    </ProfileLayout>
+    <AvatarPermissionsProvider>
+      <ProfileUserInfoProvider>
+        <ProfileLayout
+          pageHeader={<ProfileHeaderWithBanner />}
+          header={
+            <>
+              <Bio />
+            </>
+          }
+          tabs={tabs}
+        >
+          {tabContent}
+        </ProfileLayout>
+      </ProfileUserInfoProvider>
+    </AvatarPermissionsProvider>
   );
 }
 

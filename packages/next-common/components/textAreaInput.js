@@ -29,16 +29,19 @@ export default function TextAreaInput({
   disabled = false,
   value,
   setValue = () => {},
+  maxLength,
   placeholder = "",
+  className = "",
 }) {
   return (
-    <Wrapper>
+    <Wrapper className={className}>
       <TextArea
         disabled={disabled}
         type="text"
         placeholder={placeholder}
         value={value}
         onChange={(e) => setValue(e.target.value)}
+        maxLength={maxLength}
       />
     </Wrapper>
   );
