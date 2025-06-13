@@ -26,22 +26,26 @@ export default function EvidenceVoteBar({ address, wish }) {
     );
   }
 
-  return <CreateReferendumAndVote who={address} wish={wish} />;
+  return (
+    <div className="flex items-center justify-end text14Medium">
+      <CreateReferendumAndVote who={address} wish={wish} />
+    </div>
+  );
+}
+
+export function MobileVoteBar({ address, wish }) {
+  return (
+    <footer className="sm:hidden bg-neutral100 border-neutral300 border-t p-6">
+      <EvidenceVoteBar address={address} wish={wish} />
+    </footer>
+  );
 }
 
 function CreateReferendumAndVote({ who, wish }) {
   if (wish.toLowerCase() === "promotion") {
-    return (
-      <div className="flex items-center justify-end text14Medium">
-        <CreatePromotionReferendumAndVoteButtons who={who} />
-      </div>
-    );
+    return <CreatePromotionReferendumAndVoteButtons who={who} />;
   } else if (wish.toLowerCase() === "retention") {
-    return (
-      <div className="flex items-center justify-end text14Medium">
-        <CreateRetentionReferendumAndVoteButtons who={who} />
-      </div>
-    );
+    return <CreateRetentionReferendumAndVoteButtons who={who} />;
   }
 
   return null;

@@ -38,7 +38,7 @@ function CommentsContent({ loading }) {
           <Comments title="Discussion" data={commentsData} loading={loading} />
         </section>
 
-        <footer className="px-6 bottom-0 left-0 bg-neutral100 pb-6">
+        <footer className="px-6 bottom-0 left-0 bg-neutral100 pb-6 flex justify-end">
           <CommentsEditor />
         </footer>
       </aside>
@@ -58,32 +58,21 @@ function CommentsEditor() {
   const users = useUserMentionList(commentsData);
 
   if (!user) {
-    return (
-      <div className="flex justify-end mt-4">
-        <PrimaryButton
-          onClick={() => {
-            ensureConnect();
-          }}
-        >
-          Connect
-        </PrimaryButton>
-      </div>
-    );
+    return <PrimaryButton onClick={ensureConnect}>Connect</PrimaryButton>;
   }
 
   return (
-    <>
-      <CommentEditor
-        ref={editorWrapperRef}
-        {...{
-          contentType,
-          setContentType,
-          content,
-          setContent,
-          users,
-        }}
-      />
-    </>
+    <CommentEditor
+      wrapperClassName="mt-0 w-full"
+      ref={editorWrapperRef}
+      {...{
+        contentType,
+        setContentType,
+        content,
+        setContent,
+        users,
+      }}
+    />
   );
 }
 
