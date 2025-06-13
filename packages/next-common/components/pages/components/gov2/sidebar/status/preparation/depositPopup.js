@@ -88,7 +88,7 @@ function BalanceTip() {
     >
       {isEnough
         ? "Your balance is enough to pay the deposit."
-        : "Your balance is not enough to pay deposits."}
+        : "Your balance is not enough to pay the deposit."}
     </GreyPanel>
   );
 }
