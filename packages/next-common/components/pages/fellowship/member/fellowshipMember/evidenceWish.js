@@ -23,6 +23,7 @@ import { useIpfsContent } from "next-common/hooks/useIpfsContent";
 import { WishBar } from "./wishBar";
 import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
 import EvidenceDetailPopup from "next-common/components/collectives/core/member/evidence";
+import { useRouter } from "next/router";
 
 export default function EvidenceWish() {
   const { id: address, fellowshipMembers } = usePageProps();
@@ -85,7 +86,9 @@ function OnchainEvidenceStatisticsInfoImpl({ wish, address }) {
 }
 
 function OnchainEvidenceContent({ evidence, wish }) {
-  const [detailVisible, setDetailVisible] = useState(false);
+  const { query } = useRouter();
+  const isViewEvidence = query.view_evidence === "true";
+  const [detailVisible, setDetailVisible] = useState(isViewEvidence);
   const { isDark } = useTheme();
 
   const cid = getCidByEvidence(evidence);
