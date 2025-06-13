@@ -15,10 +15,10 @@ export default function UserBio({ bio, hasPermission }) {
           bio ? "text-textSecondary" : "text-textTertiary",
         )}
       >
-        {bio || "Add a bio to introduce yourself. "}{" "}
+        {bio || "Add a bio to introduce yourself."}
         {hasPermission && (
           <span
-            className="text-theme500 cursor-pointer"
+            className="text-theme500 cursor-pointer inline-block ml-1"
             onClick={() => setOpenBioEditPopup(true)}
           >
             Edit

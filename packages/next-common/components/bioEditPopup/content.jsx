@@ -9,12 +9,13 @@ import { useState } from "react";
 import useBioSubmission from "next-common/hooks/profile/bio/useBioSubmission";
 import useBioReset from "next-common/hooks/profile/bio/useBioReset";
 import { useProfileUserInfoContext } from "../profile/header/context/profileUserInfoContext";
+import { noop } from "lodash-es";
 
 const MAX_BIO_LENGTH = 240;
 
-export default function BioEditPopupContent() {
+export default function BioEditPopupContent({ closePopup = noop }) {
   const { isProxyAccount: isProxy } = useAvatarPermissionsContext();
-  const { fetch, user } = useProfileUserInfoContext();
+  const { fetch: fetchUser, user } = useProfileUserInfoContext();
   const address = useProfileAddress();
   const [bioValue, setBioValue] = useState(user?.bio || "");
 
@@ -22,19 +23,21 @@ export default function BioEditPopupContent() {
     bioValue,
     isProxy ? address : null,
   );
-  const { resetBio, isLoading: isResetting } = useBioReset(
+  const { reset: resetBio, isLoading: isResetting } = useBioReset(
     isProxy ? address : null,
   );
 
   const save = () => {
     setBio().then(() => {
-      fetch();
+      fetchUser();
+      closePopup();
     });
   };
 
   const reset = () => {
     resetBio().then(() => {
-      fetch();
+      fetchUser();
+      closePopup();
     });
   };
 
@@ -55,7 +58,6 @@ export default function BioEditPopupContent() {
         textAreaClassName="w-full h-[120px]"
         title="Short Bio"
         maxLength={MAX_BIO_LENGTH}
-        placeholder={`Write a short bio to introduce yourself. This will appear on your profile page. Max ${MAX_BIO_LENGTH} characters.`}
         value={bioValue}
         setValue={setBioValue}
       />
@@ -66,7 +68,11 @@ export default function BioEditPopupContent() {
       </GreyPanel>
 
       <div className="flex justify-end gap-x-2">
-        <SecondaryButton onClick={reset} disabled={isResetting}>
+        <SecondaryButton
+          onClick={reset}
+          disabled={isResetting || !user?.bio}
+          loading={isResetting}
+        >
           Reset
         </SecondaryButton>
         <PrimaryButton
