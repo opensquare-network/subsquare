@@ -72,30 +72,54 @@ export const DisplayUser = ({ id, className = "" }) => {
   return <Username>{id}</Username>;
 };
 
-export const DisplayUserAddress = ({
+export const CopyableAddress = ({ address, ellipsisAddress = false }) => {
+  if (!address) {
+    return null;
+  }
+  const maybeEvmAddress = tryConvertToEvmAddress(address);
+
+  const displayAddress = ellipsisAddress
+    ? addressEllipsis(maybeEvmAddress)
+    : maybeEvmAddress;
+  return (
+    <Copyable copyText={maybeEvmAddress}>
+      <Tertiary>{displayAddress}</Tertiary>
+    </Copyable>
+  );
+};
+
+export const AccountAdditional = ({
   address,
-  className = "",
   showLinks = true,
-  ellipsisAddress = false,
-  extra = null,
-  accountLinksClassName = "",
-  showBio = false,
+  children = null,
+  className = "",
 }) => {
   if (!address) {
     return null;
   }
   const maybeEvmAddress = tryConvertToEvmAddress(address);
-  const displayAddress = ellipsisAddress ? addressEllipsis(address) : address;
+  return (
+    <div className={cn("inline-flex items-center", className)}>
+      {showLinks && <AccountLinks address={maybeEvmAddress} />}
+      {children}
+    </div>
+  );
+};
+
+export const DisplayUserAddress = ({
+  address,
+  className = "",
+  ellipsisAddress = false,
+  children = null,
+}) => {
+  if (!address) {
+    return null;
+  }
   return (
     <AddressWrapper className={className}>
-      <Copyable copyText={maybeEvmAddress}>
-        <Tertiary>{displayAddress}</Tertiary>
-      </Copyable>
-      {showBio && <BioContainer />}
-      <div className={cn("inline-flex items-center", accountLinksClassName)}>
-        {showLinks && <AccountLinks address={maybeEvmAddress} />}
-        {extra}
-      </div>
+      <CopyableAddress address={address} ellipsisAddress={ellipsisAddress} />
+      <BioContainer />
+      {children}
     </AddressWrapper>
   );
 };

@@ -1,5 +1,5 @@
 import FellowshipTagInfo from "../fellowshipTagInfo";
-import { DisplayUser, DisplayUserAddress } from "../bio";
+import { AccountAdditional, DisplayUser, DisplayUserAddress } from "../bio";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 import { cn } from "next-common/utils";
 import dynamic from "next/dynamic";
@@ -46,22 +46,20 @@ export default function AccountInfoPanel({ address, id }) {
               ? "!items-center text-center"
               : "flex-1 !items-start",
           )}
-          showBio
-          extra={
-            !isMobile && !isKintsugi ? (
-              <>
-                <VerticalDivider height={13} margin={16} />
-                <Relatives />
-                <FellowshipTagInfo address={address} />
-                <FellowshipTagInfo
-                  address={address}
-                  pallet="ambassadorCollective"
-                  type="ambassador"
-                />
-              </>
-            ) : null
-          }
-        />
+        >
+          {!isMobile && !isKintsugi ? (
+            <AccountAdditional address={address}>
+              <VerticalDivider height={13} margin={16} />
+              <Relatives />
+              <FellowshipTagInfo address={address} />
+              <FellowshipTagInfo
+                address={address}
+                pallet="ambassadorCollective"
+                type="ambassador"
+              />
+            </AccountAdditional>
+          ) : null}
+        </DisplayUserAddress>
         {isMobile && address && (
           <div className="mt-4 mb-1">
             <Relatives />
