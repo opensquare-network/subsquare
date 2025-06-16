@@ -6,16 +6,12 @@ import { isEthereumAddress } from "@polkadot/util-crypto";
 import { usePageProps } from "next-common/context/page";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 import EditAvatarIconButton from "next-common/components/editAvatarIconButton";
-import AvatarPermissionsProvider, {
-  useAvatarPermissionsContext,
-} from "next-common/components/profile/header/context/avatarPermissionsContext";
+import { useAvatarPermissionsContext } from "next-common/components/profile/header/context/avatarPermissionsContext";
 import SecondaryButton from "next-common/lib/button/secondary";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { useState, useMemo } from "react";
 import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
-import ProfileUserInfoProvider, {
-  useProfileUserInfoContext,
-} from "next-common/components/profile/header/context/profileUserInfoContext";
+import { useProfileUserInfoContext } from "next-common/components/profile/header/context/profileUserInfoContext";
 import { STATICS_CDN_URL } from "next-common/utils/consts/statics";
 
 const ProfileBannerEditPopup = dynamicPopup(
@@ -41,7 +37,7 @@ export function useProfileBannerUrl() {
   return bannerUrl;
 }
 
-function ProfileHeaderWithBannerInContext() {
+export default function ProfileHeaderWithBanner() {
   const isMobile = useIsMobile();
   const { user, id } = usePageProps();
   const [isEditBannerPopupOpen, setIsEditBannerPopupOpen] = useState(false);
@@ -87,15 +83,5 @@ function ProfileHeaderWithBannerInContext() {
         />
       )}
     </div>
-  );
-}
-
-export default function ProfileHeaderWithBanner() {
-  return (
-    <AvatarPermissionsProvider>
-      <ProfileUserInfoProvider>
-        <ProfileHeaderWithBannerInContext />
-      </ProfileUserInfoProvider>
-    </AvatarPermissionsProvider>
   );
 }
