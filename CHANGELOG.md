@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+# 4.7.8
+
+date: 2025-06-16
+
+- Enable a user to edit a bio on the profile page. Proxy account can also set a bio for an user.
+- Use js Array sort function instead of toSorted to fix browser compatibility.
+- Add less/more effect for `system#remark` call content.
+- Add userAgent to client error report info.
+- Fix a cycle dependency error in `useSubStorage` hook.
+- Upgrade dependencies.
+
 # 4.7.7
 
 date: 2025-06-11
