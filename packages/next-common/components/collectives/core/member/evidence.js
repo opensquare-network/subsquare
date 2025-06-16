@@ -7,6 +7,7 @@ import { useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 
 const EvidenceDetailPopup = dynamicPopup(() => import("./evidenceDetailPopup"));
+export default EvidenceDetailPopup;
 
 export function CoreFellowshipMemberEvidenceContent({
   member,
@@ -57,8 +58,6 @@ export function CoreFellowshipMemberEvidenceContent({
     </>
   );
 }
-
-export default EvidenceDetailPopup;
 
 export function CoreFellowshipMemberEvidence({
   member,

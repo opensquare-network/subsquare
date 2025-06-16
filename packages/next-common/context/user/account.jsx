@@ -11,35 +11,37 @@ import { useChain } from "../chain";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 const Context = createContext();
+const defaultContentValue = { data: null, isLoading: false };
 
 export default function UserAccountProvider({ children, address = "" }) {
   const chain = useChain();
   const connectedAddress = useRealAddress();
   const realAddress = address || connectedAddress;
 
-  if (!realAddress) {
-    return (
-      <Context.Provider value={{ data: null, isLoading: false }}>
-        {children}
-      </Context.Provider>
-    );
-  }
-
-  const Provider = isKintsugiChain(chain)
-    ? KintsugiAccountProvider
-    : AccountProvider;
+  const Provider = useMemo(
+    () => (isKintsugiChain(chain) ? KintsugiAccountProvider : AccountProvider),
+    [chain],
+  );
 
   return <Provider address={realAddress}>{children}</Provider>;
 }
 
 function AccountProvider({ address, children }) {
   const data = useSubAccount(address);
-  return <Context.Provider value={data}>{children}</Context.Provider>;
+  return (
+    <Context.Provider value={address ? data : defaultContentValue}>
+      {children}
+    </Context.Provider>
+  );
 }
 
 function KintsugiAccountProvider({ address, children }) {
   const data = useSubKintsugiAccount(address);
-  return <Context.Provider value={data}>{children}</Context.Provider>;
+  return (
+    <Context.Provider value={address ? data : defaultContentValue}>
+      {children}
+    </Context.Provider>
+  );
 }
 
 export function useUserAccount() {
