@@ -1,9 +1,9 @@
 import { useState } from "react";
-import Popup from "./popup/wrapper/Popup";
-import SigningTip from "./summary/newProposalQuickStart/common/signingTip";
+import Popup from "next-common/components/popup/wrapper/Popup";
 import useNewReferendumCells from "next-common/hooks/useNewReferendumCells";
 import LoadingPrimaryButton from "next-common/lib/button/loadingPrimary";
-import { PreimageCell } from "next-common/components/newReferendumStatus";
+import { PreimageCell } from "next-common/components/preimageCell";
+import SigningTip from "next-common/components/summary/newProposalQuickStart/common/signingTip";
 
 export function useNewReferendumMultiStepButton({
   disabled,

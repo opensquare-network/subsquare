@@ -83,7 +83,7 @@ export default function useNewReferendumCells({
 
   const cells = useMemo(() => {
     const cells = [];
-    if (preimageExists) {
+    if (!preimageExists) {
       cells.push({
         getTxFunc: () => notePreimageTx,
         onInBlock: () => {

@@ -52,8 +52,8 @@ export function useCreateProposalSubmitButton({
     encodedHash,
     encodedLength,
     enactment,
-    buttonText: buttonText?.createPreimage || "Submit",
-    disabled: disabled || !notePreimageTx,
+    buttonText: buttonText?.submitProposal || "Submit",
+    disabled: disabled,
   });
 
   const {
@@ -66,14 +66,16 @@ export function useCreateProposalSubmitButton({
     enactment,
     notePreimageTx,
     preimageExists,
+    disabled: disabled || !notePreimageTx,
+    buttonText: buttonText?.createPreimage || "Submit",
   });
 
   const isLoading =
     isSubmittingNewReferendum || isLoadingNewReferendumMultiStep;
 
   const component = preimageExists
-    ? newReferendumMultiStepButton
-    : newReferendumButton;
+    ? newReferendumButton
+    : newReferendumMultiStepButton;
 
   return {
     isLoading,
