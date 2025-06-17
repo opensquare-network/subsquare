@@ -84,6 +84,7 @@ export function NewTreasuryReferendumInnerPopupContent() {
           { id: "newReferendum", label: "New Referendum" },
         ]}
         currentStep={1}
+        loading={isLoading}
       />
       <SignerWithBalance showTransferable />
       {balanceField}
