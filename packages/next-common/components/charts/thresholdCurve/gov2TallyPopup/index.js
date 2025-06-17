@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import Popup from "../../../popup/wrapper/Popup";
 import { noop } from "lodash-es";
 import "../../globalConfig";
@@ -15,12 +15,13 @@ import Flex from "next-common/components/styled/flex";
 import HowOpenGovWorks from "next-common/components/howOpenGovWorks";
 import ConfirmationEstimation from "next-common/components/charts/thresholdCurve/gov2TallyPopup/confirmationEstimation";
 import ThresholdVotesCard from "../thresholdCards/votes";
+import NayAyeSwitch from "./nayAyeSwitch";
 
-function PopupChartContent({ isFellowship = false }) {
+function PopupChartContent({ isFellowship = false, showAyeNay }) {
   if (isFellowship) {
     return <FellowshipCurveChart />;
   } else {
-    return <ReferendaCurveChart />;
+    return <ReferendaCurveChart showAyeNay={showAyeNay} />;
   }
 }
 
@@ -33,11 +34,24 @@ export default function ThresholdCurvesGov2TallyPopup({
 }) {
   const approvalThreshold = useApprovalThreshold();
   const supportThreshold = useSupportThreshold();
+  const [showAyeNay, setShowAyeNay] = useState(true);
 
   return (
-    <Popup title="Threshold Curves" className="w-[960px]" onClose={closeFunc}>
-      <PopupChartContent isFellowship={isFellowship} />
-      <ThresholdCurvesGov2TallyLegend isFellowship={isFellowship} />
+    <Popup
+      title="Threshold Curves"
+      className="w-[960px]"
+      onClose={closeFunc}
+      extra={
+        !isFellowship && (
+          <NayAyeSwitch isOn={showAyeNay} setIsOn={setShowAyeNay} />
+        )
+      }
+    >
+      <PopupChartContent isFellowship={isFellowship} showAyeNay={showAyeNay} />
+      <ThresholdCurvesGov2TallyLegend
+        isFellowship={isFellowship}
+        showAyeNay={showAyeNay}
+      />
 
       <Flex className="flex max-sm:flex-col grow gap-[16px]">
         <ThresholdApprovalCard

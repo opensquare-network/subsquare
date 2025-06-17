@@ -16,7 +16,7 @@ import useInnerPoints from "next-common/components/charts/thresholdCurve/hooks/u
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 
 // used for detail page curve chart
-export default function ReferendaCurveChart() {
+export default function ReferendaCurveChart({ showAyeNay }) {
   const { width } = useWindowSize();
   const { labels, supportData, approvalData } = useReferendumCurveData();
   const supportCurveConfig = useSupportThresholdDatasetConfig(supportData);
@@ -40,8 +40,8 @@ export default function ReferendaCurveChart() {
     supportCurveConfig,
     approvalHistoryConfig,
     supportHistoryConfig,
-    historyAyesData?.length && ayesHistoryConfig,
-    historyNaysData?.length && naysHistoryConfig,
+    historyAyesData?.length && showAyeNay && ayesHistoryConfig,
+    historyNaysData?.length && showAyeNay && naysHistoryConfig,
   ].filter(Boolean);
 
   const chartData = { labels, datasets };
