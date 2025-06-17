@@ -1,4 +1,3 @@
-import useNewReferendumButton from "next-common/hooks/useNewReferendumButton";
 import { usePreimageExists } from "next-common/hooks/useNewReferendumCells";
 import { useNewReferendumMultiStepButton } from "next-common/hooks/useNewReferendumMultiStepButton";
 
@@ -36,45 +35,21 @@ export function useCreateProposalSubmitButton({
 }) {
   const preimageExists = usePreimageExists({ encodedHash });
 
-  const commonProps = {
-    trackId,
-    encodedHash,
-    encodedLength,
-    enactment,
-  };
-
-  const {
-    isSubmitting: isSubmittingNewReferendum,
-    component: newReferendumButton,
-  } = useNewReferendumButton({
-    ...commonProps,
-    buttonText: buttonText?.submitProposal || "Submit",
-    disabled: disabled,
-  });
-
-  const {
-    component: newReferendumMultiStepButton,
-    isLoading: isLoadingNewReferendumMultiStep,
-  } = useNewReferendumMultiStepButton({
-    ...commonProps,
-    notePreimageTx,
-    preimageExists,
-    disabled: disabled || !notePreimageTx,
-    buttonText: buttonText?.createPreimage || "Submit",
-  });
-
-  const isLoading =
-    isSubmittingNewReferendum || isLoadingNewReferendumMultiStep;
-
-  const isNeedMultiStep = !preimageExists || notePreimageTx;
-
-  const component = isNeedMultiStep
-    ? newReferendumMultiStepButton
-    : newReferendumButton;
+  const { component: newReferendumMultiStepButton, isLoading } =
+    useNewReferendumMultiStepButton({
+      trackId,
+      encodedHash,
+      encodedLength,
+      enactment,
+      notePreimageTx,
+      preimageExists,
+      disabled: disabled || !notePreimageTx,
+      buttonText: buttonText?.createPreimage || "Submit",
+    });
 
   return {
     isLoading,
-    component,
+    component: newReferendumMultiStepButton,
     preimageExists,
     notePreimageTx,
   };

@@ -1,9 +1,14 @@
 import { useEffect, useState } from "react";
-import Popup from "next-common/components/popup/wrapper/Popup";
 import useNewReferendumCells from "next-common/hooks/useNewReferendumCells";
 import LoadingPrimaryButton from "next-common/lib/button/loadingPrimary";
-import { PreimageCell } from "next-common/components/preimageCell";
-import SigningTip from "next-common/components/summary/newProposalQuickStart/common/signingTip";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const NewReferendumMultiStepPopup = dynamicPopup(
+  () => import("next-common/components/newReferendumMultiStepPopup"),
+  {
+    ssr: false,
+  },
+);
 
 export function useNewReferendumMultiStepButton({
   disabled,
@@ -16,7 +21,7 @@ export function useNewReferendumMultiStepButton({
   preimageExists,
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [index, setIndex] = useState(0);
+  const [indexStep, setIndexStep] = useState(0);
 
   const { cells } = useNewReferendumCells({
     notePreimageTx,
@@ -30,7 +35,7 @@ export function useNewReferendumMultiStepButton({
   useEffect(() => {
     return () => {
       if (isOpen) {
-        setIndex(0);
+        setIndexStep(0);
       }
     };
   }, [isOpen]);
@@ -45,36 +50,18 @@ export function useNewReferendumMultiStepButton({
         {buttonText}
       </LoadingPrimaryButton>
       {isOpen && (
-        <Popup title="New Referendum" onClose={() => setIsOpen(false)}>
-          <div className="flex flex-col">
-            {cells.map((tx, i) => (
-              <PreimageCell
-                key={i}
-                isActiveStep={index === i}
-                {...tx}
-                onInBlock={(param) => {
-                  tx.onInBlock?.(param);
-                  setIndex(index + 1);
-                }}
-                onTxError={(e) => {
-                  tx.onTxError?.(e);
-                  setIsOpen(false);
-                }}
-                onTxSuccess={() => {
-                  tx.onTxSuccess?.();
-                  setIndex(index + 1);
-                }}
-              />
-            ))}
-          </div>
-          <SigningTip />
-        </Popup>
+        <NewReferendumMultiStepPopup
+          cells={cells}
+          indexStep={indexStep}
+          setIndexStep={setIndexStep}
+          onClose={() => setIsOpen(false)}
+        />
       )}
     </>
   );
 
   return {
     component,
-    isLoading: index < cells.length && isOpen,
+    isLoading: indexStep < cells.length && isOpen,
   };
 }

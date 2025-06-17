@@ -35,17 +35,15 @@ export default function useNewReferendumCells({
 
   const cells = useMemo(() => {
     const cells = [];
-    if (notePreimageTx) {
-      cells.push({
-        getTxFunc: () => notePreimageTx,
-        onInBlock: () => {
-          dispatch(newSuccessToast("Preimage created"));
-          dispatch(incPreImagesTrigger());
-        },
-        preimageExists,
-        label: "Signing to create a preimage",
-      });
-    }
+    cells.push({
+      getTxFunc: () => notePreimageTx,
+      onInBlock: () => {
+        dispatch(newSuccessToast("Preimage created"));
+        dispatch(incPreImagesTrigger());
+      },
+      preimageExists,
+      label: "Signing to create a preimage",
+    });
 
     cells.push(submitReferendaTx);
     return cells;
