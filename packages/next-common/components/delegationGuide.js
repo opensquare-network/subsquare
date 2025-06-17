@@ -16,7 +16,7 @@ export default function DelegationGuide({ anchor }) {
     <span className="text14Medium text-textSecondary">
       Or do delegation&nbsp;
       <Link
-        className="text14Medium font-bold text-theme500"
+        className="text14Medium font-bold text-theme500 max-md:mx-0"
         externalIcon={false}
         href="/delegation"
         target="_self"

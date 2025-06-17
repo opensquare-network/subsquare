@@ -3,8 +3,8 @@ import { useReferendaTracks } from "next-common/context/referenda/tracks";
 import { useMemo } from "react";
 
 function fillIdleTracks(allTracksIds, tracksWithReferenda) {
-  return allTracksIds
-    .toSorted((a, b) => a - b)
+  return [...allTracksIds]
+    .sort((a, b) => a - b)
     .map(
       (id) =>
         tracksWithReferenda.find(({ trackId }) => trackId === id) || {
@@ -20,7 +20,7 @@ function fillIdleTracks(allTracksIds, tracksWithReferenda) {
 }
 
 function sortTracksByOngoingCount(tracks) {
-  return tracks.toSorted((a, b) => {
+  return [...tracks].sort((a, b) => {
     const aOngoingCount =
       a.referenda.deciding.length + a.referenda.confirming.length;
     const bOngoingCount =

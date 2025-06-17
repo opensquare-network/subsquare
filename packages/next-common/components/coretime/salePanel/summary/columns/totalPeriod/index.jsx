@@ -3,7 +3,7 @@ import SummaryItem from "next-common/components/summary/layout/item";
 import { SummaryColumnGap } from "../../common";
 import TotalPeriodCountdown from "./countdown";
 import FieldLoading from "next-common/components/icons/fieldLoading";
-import useChainOrScanHeight from "next-common/hooks/height";
+import useCoretimeChainOrScanHeight from "next-common/hooks/coretime/scanHeight";
 import { useSelector } from "react-redux";
 import { getCountDownProgress } from "../currentPhase/common";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
@@ -44,7 +44,7 @@ export default function TotalPeriod() {
   const initHeight = initIndexer?.blockHeight;
   const { isLoading, indexer: endIndexer } = useCoretimeSaleEnd();
 
-  const chainHeight = useChainOrScanHeight();
+  const chainHeight = useCoretimeChainOrScanHeight();
   const blockTime = useSelector(blockTimeSelector);
 
   const endHeight = endIndexer?.blockHeight;

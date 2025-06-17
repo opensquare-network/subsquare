@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { usePageProps } from "next-common/context/page";
 import { ListCard } from "./styled";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
@@ -44,11 +44,13 @@ export default function ResponsiveVotes() {
         query.type = voteType;
       }
 
-      nextApi.fetch(`users/${id}/${module}/votes`, query).then(({ result }) => {
-        if (result) {
-          setData(result);
-        }
-      });
+      backendApi
+        .fetch(`users/${id}/${module}/votes`, query)
+        .then(({ result }) => {
+          if (result) {
+            setData(result);
+          }
+        });
     },
     [id, module, voteType],
   );

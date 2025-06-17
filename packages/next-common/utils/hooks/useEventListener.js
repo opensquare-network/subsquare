@@ -6,7 +6,7 @@ import { useEffect } from "react";
  * @param {(e: Event) => void} handler
  * @param {import("react").RefObject<HTMLElement> | Window} target
  */
-export function useEventListener(type, handler, target, opts, ...deps) {
+export function useEventListener(type, handler, target, opts = {}, ...deps) {
   useEffect(() => {
     if (!handler) {
       return;

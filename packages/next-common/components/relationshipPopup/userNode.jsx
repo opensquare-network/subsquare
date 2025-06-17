@@ -1,6 +1,6 @@
 import { Handle, Position, useNodeConnections } from "@xyflow/react";
 import {
-  DisplayUserAddress,
+  CopyableAddress,
   DisplayUserAvatar,
 } from "next-common/components/profile/bio";
 import AddressUser from "next-common/components/user/addressUser";
@@ -74,12 +74,7 @@ function SelfNode({ data }) {
         <div className="flex items-center justify-between h-5">
           <AddressLabel data={data} />
         </div>
-        <DisplayUserAddress
-          showLinks={false}
-          address={data?.address}
-          className="flex-1 items-center [&>*]:flex [&>*]:items-center"
-          ellipsisAddress
-        />
+        <CopyableAddress address={data?.address} ellipsisAddress />
       </div>
     </div>
   );
@@ -94,12 +89,7 @@ function RelativeUserNode({ data }) {
           <AddressLabel data={data} />
           {data?.pure}
         </div>
-        <DisplayUserAddress
-          showLinks={false}
-          address={data?.address}
-          className="flex-1 !items-start [&>*]:flex [&>*]:items-center"
-          ellipsisAddress
-        />
+        <CopyableAddress address={data?.address} ellipsisAddress />
       </div>
     </>
   );

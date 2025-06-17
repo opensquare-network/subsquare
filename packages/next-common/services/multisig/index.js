@@ -1,4 +1,4 @@
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import getMultisigApiUrl from "./url";
 import getMultisigsQuery, { getMultisigsCountQuery } from "./query";
 
@@ -9,7 +9,7 @@ export default async function fetchMultisigs(
   pageSize = 15,
 ) {
   // todo: use @apollo/client to query graphql data
-  return await nextApi.fetch(
+  return await backendApi.fetch(
     getMultisigApiUrl(chain),
     {},
     {
@@ -25,7 +25,7 @@ export default async function fetchMultisigs(
 }
 
 export async function fetchMultisigsCount(chain, address) {
-  return await nextApi.fetch(
+  return await backendApi.fetch(
     getMultisigApiUrl(chain),
     {},
     {

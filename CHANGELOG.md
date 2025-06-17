@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
+# 4.7.8
+
+date: 2025-06-16
+
+- Enable a user to edit a bio on the profile page. Proxy account can also set a bio for an user.
+- Use js Array sort function instead of toSorted to fix browser compatibility.
+- Add less/more effect for `system#remark` call content.
+- Add userAgent to client error report info.
+- Fix a cycle dependency error in `useSubStorage` hook.
+- Upgrade dependencies.
+
+# 4.7.7
+
+date: 2025-06-11
+
+- Add a OpenGov confirming prompt on overview page.
+- Add a coretime sale status prompt on overview page.
+- Fix 404 page for child bounties.
+- Add treasury spend template to spend local assets.
+- Always show vote button on a referendum detail page footer for mobile.
+- Fix scan height state when user switch to coretime subspace.
+- Add name setting for coretime.
+- Take place of cloudflare ipfs endpoint with subsquare infura endpoint in the markdown render process.
+- Adjust fellowship menu and show referenda before salary.
+- Use `backendAPI` instead of `nextAPI` in more cases.
+- Upgrade the dependency to @polkadot/api and small style fixes.
+
 # 4.7.6
 
 date: 2025-06-03
