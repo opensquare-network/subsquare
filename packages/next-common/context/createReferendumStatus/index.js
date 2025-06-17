@@ -32,7 +32,7 @@ export function usePopupActions() {
     openStatusPopup,
     createParams,
     setCreateParams,
-  } = useContext(CreateReferendumStatusContext);
+  } = useContext(CreateReferendumStatusContext) || {};
 
   return {
     closeInputPopup,

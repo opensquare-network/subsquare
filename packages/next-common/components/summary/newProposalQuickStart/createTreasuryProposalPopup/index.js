@@ -1,7 +1,9 @@
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import SubmissionDeposit from "../../newProposalPopup/submissionDeposit";
-import CreateProposalSubmitButton from "../common/createProposalSubmitButton";
+import CreateProposalSubmitButton, {
+  useCreateProposalSubmitButton,
+} from "../common/createProposalSubmitButton";
 import AdvanceSettings from "../common/advanceSettings";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import { useLocalTreasuryNotePreimageTx } from "next-common/components/preImages/createPreimagePopup/templates/newLocalTreasuryProposalPopup";
@@ -14,10 +16,6 @@ import CircleStepper from "next-common/components/step";
 import SigningTip from "../common/signingTip";
 import InsufficientBalanceTips from "../common/insufficientBalanceTips";
 import PreviousButton from "../../newProposalButton/previousButton";
-import LoadingPrimaryButton from "next-common/lib/button/loadingPrimary";
-import { usePopupActions } from "next-common/context/createReferendumStatus";
-import { useEffect } from "react";
-import { usePreimageExists } from "next-common/hooks/useCreateProposalSubmit";
 
 export function NewTreasuryReferendumInnerPopup() {
   const { onClose } = usePopupParams();
@@ -67,29 +65,13 @@ export function NewTreasuryReferendumInnerPopupContent() {
 
   const { encodedHash, encodedLength, notePreimageTx } =
     useLocalTreasuryNotePreimageTx(inputBalance, beneficiary);
-  const preimageExists = usePreimageExists({ encodedHash });
-  const isDisabled = preimageExists ? false : !notePreimageTx;
-
-  const { openStatusPopup, setCreateParams } = usePopupActions();
-
-  useEffect(() => {
-    setCreateParams?.({
-      trackId,
-      enactment,
-      encodedHash,
-      encodedLength,
-      notePreimageTx,
-      preimageExists,
-    });
-  }, [
+  const { component: submitButton } = useCreateProposalSubmitButton({
     trackId,
     enactment,
     encodedHash,
     encodedLength,
     notePreimageTx,
-    setCreateParams,
-    preimageExists,
-  ]);
+  });
 
   return (
     <>
@@ -115,9 +97,7 @@ export function NewTreasuryReferendumInnerPopupContent() {
       <SigningTip />
       <div className="flex justify-between">
         <PreviousButton onClick={goBack} />
-        <LoadingPrimaryButton onClick={openStatusPopup} disabled={isDisabled}>
-          Submit
-        </LoadingPrimaryButton>
+        {submitButton}
       </div>
     </>
   );
