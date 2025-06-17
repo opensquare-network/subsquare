@@ -46,19 +46,27 @@ export function useNewReferendumMultiStepButton({
       </LoadingPrimaryButton>
       {isOpen && (
         <Popup title="New Referendum" onClose={() => setIsOpen(false)}>
-          {cells.map((tx, i) => (
-            <PreimageCell
-              key={i}
-              isActiveStep={index === i}
-              {...tx}
-              onInBlock={() => {
-                tx.onInBlock();
-                setIndex(index + 1);
-              }}
-              onClose={() => setIsOpen(false)}
-              onTxSuccess={() => setIndex(index + 1)}
-            />
-          ))}
+          <div className="flex flex-col">
+            {cells.map((tx, i) => (
+              <PreimageCell
+                key={i}
+                isActiveStep={index === i}
+                {...tx}
+                onInBlock={(param) => {
+                  tx.onInBlock?.(param);
+                  setIndex(index + 1);
+                }}
+                onTxError={(e) => {
+                  tx.onTxError?.(e);
+                  setIsOpen(false);
+                }}
+                onTxSuccess={() => {
+                  tx.onTxSuccess?.();
+                  setIndex(index + 1);
+                }}
+              />
+            ))}
+          </div>
           <SigningTip />
         </Popup>
       )}

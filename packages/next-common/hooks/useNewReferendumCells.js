@@ -138,9 +138,7 @@ export function useNewReferendumButton({
   });
   const { isSubmitting, doSubmit } = useTxSubmission({
     getTxFunc,
-    onInBlock: () => {
-      onInBlock?.();
-    },
+    onInBlock,
     onSubmitted,
   });
 

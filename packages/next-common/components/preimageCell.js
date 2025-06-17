@@ -9,7 +9,7 @@ import Divider from "./styled/layout/divider";
 export function PreimageCell({
   getTxFunc,
   onInBlock = noop,
-  onClose = noop,
+  onTxError = noop,
   onSubmitted = noop,
   isActiveStep = false,
   onTxSuccess = noop,
@@ -25,9 +25,7 @@ export function PreimageCell({
       onInBlock(param);
       onTxSuccess?.();
     },
-    onTxError: () => {
-      onClose?.();
-    },
+    onTxError,
     onSubmitted,
   });
 
@@ -65,12 +63,12 @@ export function PreimageCell({
   }
 
   return (
-    <div className="flex flex-col gap-y-2.5 text-textPrimary">
+    <div className="flex flex-col h-11 justify-around text-textPrimary">
       <Flex className="items-center gap-2">
         <p className="text14Medium flex-1">{label}</p>
         {rightIcon}
       </Flex>
-      <Divider />
+      <Divider className="m-0" />
     </div>
   );
 }
