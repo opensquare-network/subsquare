@@ -26,6 +26,10 @@ export default function getDetailPageCategory(post) {
     } else if (!isNil(refToPost?.referendumIndex)) {
       return detailPageCategory.DEMOCRACY_REFERENDUM;
     }
+  } else if (postType === "communityMotion") {
+    return detailPageCategory.COMMUNITY_MOTION;
+  } else if (postType === "communityTreasuryProposal") {
+    return detailPageCategory.COMMUNITY_TREASURY_PROPOSAL;
   }
   throw new Error(`Unknown post type: ${postType}`);
 }
