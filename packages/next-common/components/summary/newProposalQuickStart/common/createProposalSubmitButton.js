@@ -1,7 +1,5 @@
-import {
-  useNewReferendumButton,
-  usePreimageExists,
-} from "next-common/hooks/useNewReferendumCells";
+import useNewReferendumButton from "next-common/hooks/useNewReferendumButton";
+import { usePreimageExists } from "next-common/hooks/useNewReferendumCells";
 import { useNewReferendumMultiStepButton } from "next-common/hooks/useNewReferendumMultiStepButton";
 
 export default function CreateProposalSubmitButton({
@@ -68,10 +66,11 @@ export function useCreateProposalSubmitButton({
   const isLoading =
     isSubmittingNewReferendum || isLoadingNewReferendumMultiStep;
 
-  const component =
-    !preimageExists || notePreimageTx
-      ? newReferendumMultiStepButton
-      : newReferendumButton;
+  const isNeedMultiStep = !preimageExists || notePreimageTx;
+
+  const component = isNeedMultiStep
+    ? newReferendumMultiStepButton
+    : newReferendumButton;
 
   return {
     isLoading,
