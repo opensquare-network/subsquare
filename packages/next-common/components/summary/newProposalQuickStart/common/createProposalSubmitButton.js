@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { isNil } from "lodash-es";
 import { useCombinedPreimageHashes } from "next-common/hooks/usePreimageHashes";
 import { useNewReferendumButton } from "next-common/hooks/useNewReferendumCells";
-import { useNewReferendumMultiStepButton } from "next-common/components/newReferendumStatus";
+import { useNewReferendumMultiStepButton } from "next-common/hooks/useNewReferendumMultiStepButton";
 
 export default function CreateProposalSubmitButton({
   trackId,

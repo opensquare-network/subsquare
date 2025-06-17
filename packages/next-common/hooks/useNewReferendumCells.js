@@ -140,27 +140,3 @@ export function useNewReferendumButton({
     ),
   };
 }
-
-// export function useNewReferendumMultiStepButton({
-//   disabled,
-//   buttonText = "Submit",
-//   trackId,
-//   encodedHash,
-//   encodedLength,
-//   enactment,
-// }) {
-
-//   return {
-//     component: (
-//       <>
-//         <LoadingPrimaryButton
-//           disabled={disabled}
-//           loading={isLoading}
-//           onClick={submitPreimageTx}
-//         >
-//           {buttonText?.submitProposal || "Submit"}
-//         </LoadingPrimaryButton>
-//       </>
-//     ),
-//   }
-// }
