@@ -65,7 +65,7 @@ export function NewTreasuryReferendumInnerPopupContent() {
 
   const { encodedHash, encodedLength, notePreimageTx } =
     useLocalTreasuryNotePreimageTx(inputBalance, beneficiary);
-  const { component: submitButton } = useCreateProposalSubmitButton({
+  const { isLoading, component: submitButton } = useCreateProposalSubmitButton({
     trackId,
     enactment,
     encodedHash,
@@ -96,7 +96,7 @@ export function NewTreasuryReferendumInnerPopupContent() {
       <InsufficientBalanceTips byteLength={encodedLength} />
       <SigningTip />
       <div className="flex justify-between">
-        <PreviousButton onClick={goBack} />
+        <PreviousButton isLoading={isLoading} onClick={goBack} />
         {submitButton}
       </div>
     </>

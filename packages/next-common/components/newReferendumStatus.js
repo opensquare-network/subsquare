@@ -8,16 +8,19 @@ import Loading from "./loading";
 import Flex from "./styled/flex";
 import Divider from "./styled/layout/divider";
 import useNewReferendumCells from "next-common/hooks/useNewReferendumCells";
+import LoadingPrimaryButton from "next-common/lib/button/loadingPrimary";
 
-export default function NewReferendumStatusPopup({
-  onClose,
-  notePreimageTx,
+export function useNewReferendumMultiStepButton({
+  disabled,
+  buttonText = "Submit",
   trackId,
   encodedHash,
   encodedLength,
   enactment,
+  notePreimageTx,
   preimageExists,
 }) {
+  const [isOpen, setIsOpen] = useState(false);
   const [index, setIndex] = useState(0);
 
   const { cells } = useNewReferendumCells({
@@ -29,31 +32,47 @@ export default function NewReferendumStatusPopup({
     preimageExists,
   });
 
-  return (
-    <Popup title="New Referendum" onClose={onClose}>
-      {cells.map((tx, i) => (
-        <PreimageCell
-          key={i}
-          needRun={index === i}
-          {...tx}
-          onInBlock={() => {
-            tx.onInBlock();
-            setIndex(index + 1);
-          }}
-          onClose={onClose}
-          onTxSuccess={() => setIndex(index + 1)}
-        />
-      ))}
-      <SigningTip />
-    </Popup>
+  const component = (
+    <>
+      <LoadingPrimaryButton
+        disabled={disabled}
+        loading={false}
+        onClick={() => setIsOpen(true)}
+      >
+        {buttonText}
+      </LoadingPrimaryButton>
+      {isOpen && (
+        <Popup title="New Referendum" onClose={() => setIsOpen(false)}>
+          {cells.map((tx, i) => (
+            <PreimageCell
+              key={i}
+              isActiveStep={index === i}
+              {...tx}
+              onInBlock={() => {
+                tx.onInBlock();
+                setIndex(index + 1);
+              }}
+              onClose={() => setIsOpen(false)}
+              onTxSuccess={() => setIndex(index + 1)}
+            />
+          ))}
+          <SigningTip />
+        </Popup>
+      )}
+    </>
   );
+
+  return {
+    component,
+    isLoading: index < cells.length && isOpen,
+  };
 }
 
 export function PreimageCell({
   getTxFunc,
   onInBlock = noop,
   onClose = noop,
-  needRun = false,
+  isActiveStep = false,
   onTxSuccess = noop,
   label,
 }) {
@@ -79,10 +98,10 @@ export function PreimageCell({
   }, [doSubmit, getTxFunc, isSubmitting]);
 
   useEffect(() => {
-    if (needRun) {
+    if (isActiveStep) {
       runSubmit();
     }
-  }, [runSubmit, needRun]);
+  }, [runSubmit, isActiveStep]);
 
   if (!getTxFunc) {
     return null;
@@ -93,7 +112,7 @@ export function PreimageCell({
   if (isSuccess) {
     rightIcon = <SystemYes className="[&>path]:stroke-theme500" />;
   }
-  if (needRun) {
+  if (isActiveStep) {
     rightIcon = <Loading size={20} />;
   }
 

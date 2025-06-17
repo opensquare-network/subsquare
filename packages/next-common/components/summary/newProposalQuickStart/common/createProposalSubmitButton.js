@@ -1,14 +1,8 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { isNil } from "lodash-es";
 import { useCombinedPreimageHashes } from "next-common/hooks/usePreimageHashes";
-import LoadingPrimaryButton from "next-common/lib/button/loadingPrimary";
-// import { NewReferendumStatusPopup } from "next-common/components/newReferendumStatus";
 import { useNewReferendumButton } from "next-common/hooks/useNewReferendumCells";
-import dynamicPopup from "next-common/lib/dynamic/popup";
-
-const NewReferendumStatusPopup = dynamicPopup(() =>
-  import("next-common/components/newReferendumStatus"),
-);
+import { useNewReferendumMultiStepButton } from "next-common/components/newReferendumStatus";
 
 export default function CreateProposalSubmitButton({
   trackId,
@@ -42,7 +36,6 @@ export function useCreateProposalSubmitButton({
   disabled,
   buttonText,
 }) {
-  const [isOpen, setIsOpen] = useState(false);
   const { hashes: preimages } = useCombinedPreimageHashes();
   const preimageExists = useMemo(() => {
     if (isNil(encodedHash) || !preimages) {
@@ -51,45 +44,39 @@ export function useCreateProposalSubmitButton({
     return preimages.some(({ data: [hash] }) => hash === encodedHash);
   }, [preimages, encodedHash]);
 
-  const { isSubmitting, component: newReferendumButton } =
-    useNewReferendumButton({
-      trackId,
-      encodedHash,
-      encodedLength,
-      enactment,
-      buttonText: buttonText?.createPreimage || "Submit",
-      disabled: disabled || !notePreimageTx,
-    });
+  const {
+    isSubmitting: isSubmittingNewReferendum,
+    component: newReferendumButton,
+  } = useNewReferendumButton({
+    trackId,
+    encodedHash,
+    encodedLength,
+    enactment,
+    buttonText: buttonText?.createPreimage || "Submit",
+    disabled: disabled || !notePreimageTx,
+  });
 
-  const component = (
-    <>
-      {preimageExists ? (
-        <LoadingPrimaryButton
-          disabled={disabled}
-          onClick={() => setIsOpen(true)}
-        >
-          {buttonText?.submitProposal || "Submit"}
-        </LoadingPrimaryButton>
-      ) : (
-        newReferendumButton
-      )}
+  const {
+    component: newReferendumMultiStepButton,
+    isLoading: isLoadingNewReferendumMultiStep,
+  } = useNewReferendumMultiStepButton({
+    trackId,
+    encodedHash,
+    encodedLength,
+    enactment,
+    notePreimageTx,
+    preimageExists,
+  });
 
-      {isOpen && (
-        <NewReferendumStatusPopup
-          onClose={() => setIsOpen(false)}
-          notePreimageTx={notePreimageTx}
-          trackId={trackId}
-          encodedHash={encodedHash}
-          encodedLength={encodedLength}
-          enactment={enactment}
-          preimageExists={preimageExists}
-        />
-      )}
-    </>
-  );
+  const isLoading =
+    isSubmittingNewReferendum || isLoadingNewReferendumMultiStep;
+
+  const component = preimageExists
+    ? newReferendumMultiStepButton
+    : newReferendumButton;
 
   return {
-    isLoading: isSubmitting,
+    isLoading,
     component,
     preimageExists,
     notePreimageTx,
