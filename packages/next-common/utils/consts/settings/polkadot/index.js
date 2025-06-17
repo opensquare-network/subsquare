@@ -100,6 +100,9 @@ const polkadot = {
   hotMenu: {
     referenda: true,
   },
+  referendaActions: {
+    startFrom: 1612,
+  },
 };
 
 export default polkadot;
