@@ -32,6 +32,8 @@ export function useNewReferendumMultiStepButton({
     preimageExists,
   });
 
+  const isLoading = indexStep < cells.length && isOpen;
+
   useEffect(() => {
     return () => {
       if (isOpen) {
@@ -44,7 +46,7 @@ export function useNewReferendumMultiStepButton({
     <>
       <LoadingPrimaryButton
         disabled={disabled || !notePreimageTx}
-        loading={false}
+        loading={isLoading}
         onClick={() => setIsOpen(true)}
       >
         {buttonText}
@@ -62,6 +64,6 @@ export function useNewReferendumMultiStepButton({
 
   return {
     component,
-    isLoading: indexStep < cells.length && isOpen,
+    isLoading,
   };
 }
