@@ -16,10 +16,6 @@ export default function CreateProposalSubmitButton({
     encodedLength,
     notePreimageTx,
     disabled,
-    buttonText: {
-      submitProposal: "Submit Proposal",
-      createPreimage: "Create Preimage",
-    },
   });
   return component;
 }
@@ -31,25 +27,23 @@ export function useCreateProposalSubmitButton({
   encodedLength,
   notePreimageTx,
   disabled,
-  buttonText,
 }) {
   const preimageExists = usePreimageExists({ encodedHash });
 
-  const { component: newReferendumMultiStepButton, isLoading } =
-    useNewReferendumMultiStepButton({
-      trackId,
-      encodedHash,
-      encodedLength,
-      enactment,
-      notePreimageTx,
-      preimageExists,
-      disabled: disabled || !notePreimageTx,
-      buttonText: buttonText?.createPreimage || "Submit",
-    });
+  const { component, isLoading } = useNewReferendumMultiStepButton({
+    trackId,
+    encodedHash,
+    encodedLength,
+    enactment,
+    notePreimageTx,
+    preimageExists,
+    disabled: disabled || !notePreimageTx,
+    buttonText: "Submit",
+  });
 
   return {
     isLoading,
-    component: newReferendumMultiStepButton,
+    component,
     preimageExists,
     notePreimageTx,
   };
