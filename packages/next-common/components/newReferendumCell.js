@@ -6,7 +6,7 @@ import Loading from "./loading";
 import Flex from "./styled/flex";
 import Divider from "./styled/layout/divider";
 
-export function PreimageCell({
+export default function NewReferendumCell({
   getTxFunc,
   onInBlock = noop,
   onTxError = noop,

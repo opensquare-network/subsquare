@@ -1,5 +1,5 @@
 import Popup from "next-common/components/popup/wrapper/Popup";
-import { PreimageCell } from "./preimageCell";
+import NewReferendumCell from "./newReferendumCell";
 import SigningTip from "./summary/newProposalQuickStart/common/signingTip";
 import { noop } from "lodash-es";
 import { useCallback } from "react";
@@ -18,7 +18,7 @@ export default function NewReferendumMultiStepPopup({
     <Popup title="New Referendum" onClose={onClose}>
       <div className="flex flex-col">
         {cells.map((tx, i) => (
-          <PreimageCell
+          <NewReferendumCell
             key={i}
             isActiveStep={indexStep === i}
             {...tx}
