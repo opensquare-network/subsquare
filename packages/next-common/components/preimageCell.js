@@ -10,36 +10,46 @@ export function PreimageCell({
   getTxFunc,
   onInBlock = noop,
   onClose = noop,
+  onSubmitted = noop,
   isActiveStep = false,
   onTxSuccess = noop,
   label,
+  preimageExists,
 }) {
   const isRunning = useRef(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const { isSubmitting, doSubmit } = useTxSubmission({
     getTxFunc,
-    onInBlock: () => {
+    onInBlock: (param) => {
       setIsSuccess(true);
-      onInBlock();
+      onInBlock(param);
       onTxSuccess?.();
     },
     onTxError: () => {
       onClose?.();
     },
+    onSubmitted,
   });
 
   const runSubmit = useCallback(async () => {
-    if (getTxFunc && !isSubmitting && !isRunning.current) {
+    if (!isSubmitting && !isRunning.current) {
       isRunning.current = true;
       await doSubmit();
     }
-  }, [doSubmit, getTxFunc, isSubmitting]);
+  }, [doSubmit, isSubmitting]);
 
   useEffect(() => {
-    if (isActiveStep) {
+    if (preimageExists && isActiveStep) {
+      setIsSuccess(true);
+      onTxSuccess?.();
+    }
+  }, [preimageExists, onTxSuccess, isActiveStep]);
+
+  useEffect(() => {
+    if (isActiveStep && !preimageExists && getTxFunc) {
       runSubmit();
     }
-  }, [runSubmit, isActiveStep]);
+  }, [runSubmit, isActiveStep, preimageExists, getTxFunc]);
 
   if (!getTxFunc) {
     return null;

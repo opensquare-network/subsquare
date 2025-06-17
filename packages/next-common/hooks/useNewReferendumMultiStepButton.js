@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import useNewReferendumCells from "next-common/hooks/useNewReferendumCells";
 import LoadingPrimaryButton from "next-common/lib/button/loadingPrimary";
@@ -27,10 +27,16 @@ export function useNewReferendumMultiStepButton({
     preimageExists,
   });
 
+  useEffect(() => {
+    if (isOpen) {
+      setIndex(0);
+    }
+  }, [isOpen]);
+
   const component = (
     <>
       <LoadingPrimaryButton
-        disabled={disabled}
+        disabled={disabled || !notePreimageTx}
         loading={false}
         onClick={() => setIsOpen(true)}
       >

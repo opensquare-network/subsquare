@@ -2,6 +2,7 @@ import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
 import { useReferendaProposalOrigin } from "next-common/components/summary/newProposalPopup";
 import { useContextApi } from "next-common/context/api";
 import { useListPageType } from "next-common/context/page";
+import { usePopupOnClose } from "next-common/context/popup";
 import LoadingPrimaryButton from "next-common/lib/button/loadingPrimary";
 import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
@@ -10,6 +11,19 @@ import { getEventData } from "next-common/utils/sendTransaction";
 import { useRouter } from "next/router";
 import { useCallback, useMemo } from "react";
 import { useDispatch } from "react-redux";
+
+import { useCombinedPreimageHashes } from "next-common/hooks/usePreimageHashes";
+import { isNil } from "lodash-es";
+
+export function usePreimageExists({ encodedHash }) {
+  const { hashes: preimages } = useCombinedPreimageHashes();
+  return useMemo(() => {
+    if (isNil(encodedHash) || !preimages) {
+      return false;
+    }
+    return preimages.some(({ data: [hash] }) => hash === encodedHash);
+  }, [preimages, encodedHash]);
+}
 
 export function useNewReferendumTx({
   trackId,
@@ -29,6 +43,7 @@ export function useNewReferendumTx({
     referendaUrl = "/ambassador/referenda";
   }
 
+  const closeNewReferendumPopup = usePopupOnClose();
   const router = useRouter();
   const api = useContextApi();
   const proposalOrigin = useReferendaProposalOrigin(trackId);
@@ -60,6 +75,9 @@ export function useNewReferendumTx({
       const [referendumIndex] = eventData;
       router.push(`${referendaUrl}/${referendumIndex}`);
     },
+    onSubmitted: () => {
+      closeNewReferendumPopup?.();
+    },
     label: "Signing to submit a OpenGov referendum",
   };
 }
@@ -83,20 +101,21 @@ export default function useNewReferendumCells({
 
   const cells = useMemo(() => {
     const cells = [];
-    if (!preimageExists) {
+    if (notePreimageTx) {
       cells.push({
         getTxFunc: () => notePreimageTx,
         onInBlock: () => {
           dispatch(newSuccessToast("Preimage created"));
           dispatch(incPreImagesTrigger());
         },
+        preimageExists,
         label: "Signing to create a preimage",
       });
     }
 
     cells.push(submitReferendaTx);
     return cells;
-  }, [preimageExists, submitReferendaTx, notePreimageTx, dispatch]);
+  }, [submitReferendaTx, notePreimageTx, dispatch, preimageExists]);
 
   return {
     cells,
@@ -111,7 +130,7 @@ export function useNewReferendumButton({
   encodedLength,
   enactment,
 }) {
-  const { getTxFunc, onInBlock } = useNewReferendumTx({
+  const { getTxFunc, onInBlock, onSubmitted } = useNewReferendumTx({
     trackId,
     encodedHash,
     encodedLength,
@@ -122,6 +141,7 @@ export function useNewReferendumButton({
     onInBlock: () => {
       onInBlock?.();
     },
+    onSubmitted,
   });
 
   return {
