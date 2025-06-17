@@ -28,9 +28,11 @@ export function useNewReferendumMultiStepButton({
   });
 
   useEffect(() => {
-    if (isOpen) {
-      setIndex(0);
-    }
+    return () => {
+      if (isOpen) {
+        setIndex(0);
+      }
+    };
   }, [isOpen]);
 
   const component = (
