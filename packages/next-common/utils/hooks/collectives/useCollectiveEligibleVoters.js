@@ -1,5 +1,3 @@
-import { useContextApi } from "next-common/context/api";
-import { useReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import { useEffect, useState } from "react";
 import { orderBy } from "lodash-es";
 import { normalizeRankedCollectiveEntries } from "next-common/utils/rankedCollective/normalize";
@@ -7,14 +5,7 @@ import useRankedCollectiveMinRank from "next-common/hooks/collectives/useRankedC
 import { isSameAddress } from "next-common/utils";
 import { encodeAddress } from "@polkadot/util-crypto";
 import { useFellowshipVotesContext } from "next-common/context/collectives/fellowshipVotes";
-
-async function queryFellowshipCollectiveMembers(api, blockHash) {
-  let blockApi = api;
-  if (blockHash) {
-    blockApi = await api.at(blockHash);
-  }
-  return await blockApi.query.fellowshipCollective.members.entries();
-}
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
 function getMemberVotes(rank, minRank) {
   if (rank < minRank) {
@@ -26,7 +17,7 @@ function getMemberVotes(rank, minRank) {
 }
 
 export default function useCollectiveEligibleVoters() {
-  const api = useContextApi();
+  const api = useConditionalContextApi();
 
   const [voters, setVoters] = useState({
     votedMembers: [],
@@ -34,7 +25,6 @@ export default function useCollectiveEligibleVoters() {
   });
   const [loading, setLoading] = useState(true);
 
-  const votingFinishIndexer = useReferendumVotingFinishIndexer();
   const minRank = useRankedCollectiveMinRank();
 
   const {
@@ -49,10 +39,8 @@ export default function useCollectiveEligibleVoters() {
 
     (async () => {
       try {
-        const memberEntries = await queryFellowshipCollectiveMembers(
-          api,
-          votingFinishIndexer?.blockHash,
-        );
+        const memberEntries =
+          await api.query.fellowshipCollective.members.entries();
         const normalizedMembers =
           normalizeRankedCollectiveEntries(memberEntries);
         const voters = normalizedMembers.filter(
@@ -91,7 +79,7 @@ export default function useCollectiveEligibleVoters() {
         setLoading(false);
       }
     })();
-  }, [api, votingFinishIndexer, isLoadingVotes, allAye, allNay, minRank]);
+  }, [api, isLoadingVotes, allAye, allNay, minRank]);
 
   return {
     ...voters,

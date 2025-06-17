@@ -20,6 +20,9 @@ import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
+import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
+import { useSelector } from "react-redux";
+import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 
 function PublicProposalContent() {
   const post = usePost();
@@ -41,11 +44,15 @@ function PublicProposalContent() {
   const hasCanceled = ["Canceled", "Cleared", "Removed"].includes(state);
 
   const timeline = publicProposal?.timeline;
-  const lastTimelineBlockHeight =
-    timeline?.[timeline?.length - 1]?.indexer.blockHeight;
-  const secondsAtBlockHeight = isEnded
-    ? lastTimelineBlockHeight - 1
-    : undefined;
+  const indexer = timeline?.[timeline?.length - 1]?.indexer || {};
+  const blockTime = useSelector(blockTimeSelector);
+
+  const lastIndexer = isEnded
+    ? {
+        blockTime: indexer?.blockTime - blockTime,
+        blockHeight: indexer?.blockHeight - 1,
+      }
+    : null;
 
   const treasuryProposals = publicProposal?.treasuryProposals;
   const call = publicProposal?.preImage?.call || publicProposal?.call;
@@ -54,12 +61,13 @@ function PublicProposalContent() {
     <MaybeSimaContent>
       <ContentWithComment>
         <DetailItem />
-        <Second
-          proposalIndex={proposalIndex}
-          hasTurnIntoReferendum={hasTurnIntoReferendum}
-          hasCanceled={hasCanceled}
-          atBlockHeight={secondsAtBlockHeight}
-        />
+        <MigrationConditionalApiProvider indexer={lastIndexer}>
+          <Second
+            proposalIndex={proposalIndex}
+            hasTurnIntoReferendum={hasTurnIntoReferendum}
+            hasCanceled={hasCanceled}
+          />
+        </MigrationConditionalApiProvider>
         <DetailMultiTabs
           call={
             call && (

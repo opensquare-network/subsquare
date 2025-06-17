@@ -20,8 +20,20 @@ import {
 } from "next-common/components/charts/thresholdCurve/annotations";
 import useFellowshipPerbill from "next-common/utils/hooks/fellowship/useFellowshipPerbill";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import { useReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
+import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 
 export default function FellowshipCurveChart() {
+  const indexer = useReferendumVotingFinishIndexer();
+
+  return (
+    <MigrationConditionalApiProvider indexer={indexer}>
+      <FellowshipCurveChartWithContext />
+    </MigrationConditionalApiProvider>
+  );
+}
+
+function FellowshipCurveChartWithContext() {
   const { width } = useWindowSize();
   const tally = useFellowshipReferendumTally();
   const approvalPercentage = useApprovalPercentage(tally);

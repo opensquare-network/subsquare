@@ -18,6 +18,14 @@ export function useReferendumVotingFinishIndexer() {
   return finishItem?.indexer;
 }
 
+export function useDemocracyReferendumVotingFinishIndexer(timeline) {
+  const finishItem = (timeline || []).find((item) =>
+    ["Passed", "NotPassed"].includes(item.method),
+  );
+
+  return finishItem?.indexer;
+}
+
 // return the voting finish height if the voting is finished, else `undefined`.
 export default function useReferendumVotingFinishHeight() {
   const indexer = useReferendumVotingFinishIndexer();

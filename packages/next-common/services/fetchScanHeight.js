@@ -5,3 +5,9 @@ export function fetchScanHeight() {
     return resp?.result?.value;
   });
 }
+
+export function fetchRelayScanHeight() {
+  return backendApi.fetch("inspect/relay-scan-height").then((resp) => {
+    return resp?.result?.value;
+  });
+}

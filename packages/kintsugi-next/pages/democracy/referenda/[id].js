@@ -32,10 +32,11 @@ import { usePageProps } from "next-common/context/page";
 import useSubDemocracyReferendumStatus from "next-common/hooks/democracy/useSubDemocracyReferendumStatus";
 import useSetReferendumStatus from "next-common/hooks/democracy/useSetReferendumStatus";
 import { referendumStatusSelector } from "next-common/store/reducers/referendumSlice";
-import { useContextApi } from "next-common/context/api";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
+import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
+import { useDemocracyReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 
-function ReferendumContent() {
+function ReferendumContent({ timelineData, setTimelineData }) {
   const dispatch = useDispatch();
   const post = usePost();
   const { publicProposal } = usePageProps();
@@ -44,11 +45,10 @@ function ReferendumContent() {
   useSetReferendumStatus();
   useSubDemocracyReferendumStatus(post?.referendumIndex);
 
-  const api = useContextApi();
   const referendumStatus = useSelector(referendumStatusSelector);
   const proposal = referendumStatus?.proposal;
 
-  useMaybeFetchElectorate(post?.onchainData, api);
+  useMaybeFetchElectorate(post?.onchainData);
   useDemocracyVotesFromServer(post.referendumIndex);
   useFetchVotes(post?.onchainData);
 
@@ -56,7 +56,6 @@ function ReferendumContent() {
     return () => dispatch(clearVotes());
   }, [dispatch]);
 
-  const [timelineData, setTimelineData] = useState([]);
   useEffect(() => {
     const proposalTimeline = publicProposal?.onchainData?.timeline || [];
     const referendumTimeline = post?.onchainData?.timeline || [];
@@ -70,9 +69,9 @@ function ReferendumContent() {
         detailPageCategory.DEMOCRACY_REFERENDUM,
       ),
     ]);
-  }, [publicProposal, post]);
+  }, [publicProposal, post, setTimelineData]);
 
-  const { call: inlineCall } = useInlineCall(timelineData, proposal);
+  const { call: inlineCall } = useInlineCall(proposal);
   const call = post?.onchainData?.preImage?.call || inlineCall;
 
   const isTimelineCompact = useIsTimelineCompact();
@@ -118,12 +117,22 @@ function ReferendumContent() {
 function ReferendumContentWithNullGuard() {
   const post = usePost();
   const { id } = usePageProps();
+  const [timelineData, setTimelineData] = useState([]);
+
+  const indexer = useDemocracyReferendumVotingFinishIndexer(timelineData);
 
   if (!post) {
     return <CheckUnFinalized id={id} />;
   }
 
-  return <ReferendumContent />;
+  return (
+    <MigrationConditionalApiProvider indexer={indexer}>
+      <ReferendumContent
+        timelineData={timelineData}
+        setTimelineData={setTimelineData}
+      />
+    </MigrationConditionalApiProvider>
+  );
 }
 
 function DemocracyReferendumPageImpl() {

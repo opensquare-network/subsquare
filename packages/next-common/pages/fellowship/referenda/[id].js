@@ -30,6 +30,8 @@ import { ReferendaPalletProvider } from "next-common/context/referenda/pallet";
 import useSubReferendumInfo from "next-common/hooks/referenda/useSubReferendumInfo";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
 import FellowshipReferendaDetailMultiTabs from "next-common/components/pages/components/tabs/fellowshipReferendaDetailMultiTabs";
+import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
+import { useReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 
 function FellowshipContent() {
   const post = usePost();
@@ -104,11 +106,15 @@ function ReferendumNullPage() {
 }
 
 function ReferendumPageWithPost() {
+  const indexer = useReferendumVotingFinishIndexer();
+
   return (
-    <ReferendumPageCommon
-      breadcrumbs={<FellowshipBreadcrumb />}
-      postContent={<FellowshipContent />}
-    />
+    <MigrationConditionalApiProvider indexer={indexer}>
+      <ReferendumPageCommon
+        breadcrumbs={<FellowshipBreadcrumb />}
+        postContent={<FellowshipContent />}
+      />
+    </MigrationConditionalApiProvider>
   );
 }
 
