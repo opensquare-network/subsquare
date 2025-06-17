@@ -17,11 +17,11 @@ import ConfirmationEstimation from "next-common/components/charts/thresholdCurve
 import ThresholdVotesCard from "../thresholdCards/votes";
 import NayAyeSwitch from "./nayAyeSwitch";
 
-function PopupChartContent({ isFellowship = false }) {
+function PopupChartContent({ isFellowship = false, showAyeNay }) {
   if (isFellowship) {
     return <FellowshipCurveChart />;
   } else {
-    return <ReferendaCurveChart />;
+    return <ReferendaCurveChart showAyeNay={showAyeNay} />;
   }
 }
 
@@ -47,8 +47,11 @@ export default function ThresholdCurvesGov2TallyPopup({
         )
       }
     >
-      <PopupChartContent isFellowship={isFellowship} />
-      <ThresholdCurvesGov2TallyLegend isFellowship={isFellowship} />
+      <PopupChartContent isFellowship={isFellowship} showAyeNay={showAyeNay} />
+      <ThresholdCurvesGov2TallyLegend
+        isFellowship={isFellowship}
+        showAyeNay={showAyeNay}
+      />
 
       <Flex className="flex max-sm:flex-col grow gap-[16px]">
         <ThresholdApprovalCard
