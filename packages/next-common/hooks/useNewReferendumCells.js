@@ -2,7 +2,6 @@ import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useMemo } from "react";
 import { useDispatch } from "react-redux";
-
 import { useCombinedPreimageHashes } from "next-common/hooks/usePreimageHashes";
 import { isNil } from "lodash-es";
 import { useNewReferendumTx } from "./useNewReferendumTx";

@@ -1,11 +1,11 @@
 import { useCallback } from "react";
-import { useListPageType } from "next-common/hooks/useListPageType";
-import { usePopupOnClose } from "next-common/hooks/usePopupOnClose";
+import { useListPageType } from "next-common/context/page";
 import { useRouter } from "next/router";
-import { useContextApi } from "next-common/contexts/Context";
-import { useReferendaProposalOrigin } from "next-common/hooks/useReferendaProposalOrigin";
-import { getEventData } from "next-common/lib/utils/getEventData";
+import { useReferendaProposalOrigin } from "next-common/components/summary/newProposalPopup";
+import { getEventData } from "next-common/utils/sendTransaction";
 import { listPageCategory } from "next-common/utils/consts/business/category";
+import { usePopupOnClose } from "next-common/context/popup";
+import { useContextApi } from "next-common/context/api";
 
 export function useNewReferendumTx({
   trackId,
