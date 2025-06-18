@@ -13,39 +13,51 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { isSameAddress } from "next-common/utils";
 import { useIdentityInfoContext } from "next-common/context/people/identityInfoContext";
 
-const emptyIdentityInfo = {};
-
-export function useChainAddressIdentityInfo(chain, address, realAddress = "") {
+export function useChainAddressIdentityInfo(chain, address) {
   const { identity: identityChain } = getChainSettings(chain);
-
-  const { displayName, info: myIdentityInfo = emptyIdentityInfo } =
-    useIdentityInfoContext() || {};
 
   // Render the identity immediately if it's already in cache
   const encodedAddress = encodeAddressToChain(address, identityChain);
   const cachedIdentity = getCachedIdentity(identityChain, encodedAddress);
   const [identity, setIdentity] = useState(cachedIdentity);
   const [isLoading, setIsLoading] = useState(true);
-  const [rpcIdentity, setRpcIdentity] = useState(null);
-  const [apiIdentity, setApiIdentity] = useState(null);
-
-  const isNeedRpcIdentity = useMemo(() => {
-    return isPeopleChain(chain) && isSameAddress(realAddress, address);
-  }, [chain, realAddress, address]);
 
   useEffect(() => {
-    if (!apiIdentity || !isNeedRpcIdentity) {
+    setIdentity(null);
+    if (address) {
+      setIdentity(true);
+      fetchIdentity(identityChain, encodeAddressToChain(address, identityChain))
+        .then((identity) => {
+          setIdentity(identity);
+        })
+        .finally(() => setIsLoading(false));
+    }
+  }, [address, identityChain]);
+
+  return formatIdentityInfo(identity, isLoading);
+}
+
+const emptyIdentityInfo = {};
+
+export function usePeopleIdentityInfo(identity) {
+  const [peopleIdentity, setPeopleIdentity] = useState(null);
+
+  const { displayName, info: myIdentityInfo = emptyIdentityInfo } =
+    useIdentityInfoContext() || {};
+
+  useEffect(() => {
+    if (!identity) {
       return;
     }
     const myIdentityIsEmpty = Object.values(myIdentityInfo).every((item) =>
       isNil(item),
     );
     if (myIdentityIsEmpty && !displayName) {
-      setRpcIdentity(null);
+      setPeopleIdentity(null);
       return;
     }
 
-    let peopleIdentity = cloneDeep(apiIdentity);
+    let peopleIdentity = cloneDeep(identity);
     const peopleIdentityName = myIdentityInfo?.display;
     if (peopleIdentity?.info && peopleIdentity?.info?.display) {
       peopleIdentity.info.display = peopleIdentityName;
@@ -62,39 +74,36 @@ export function useChainAddressIdentityInfo(chain, address, realAddress = "") {
       peopleIdentity.info.display = displayName;
     }
 
-    setRpcIdentity(peopleIdentity);
-  }, [myIdentityInfo, displayName, apiIdentity, isNeedRpcIdentity]);
+    setPeopleIdentity(peopleIdentity);
+  }, [myIdentityInfo, displayName, identity, setPeopleIdentity]);
 
-  useEffect(() => {
-    setApiIdentity(null);
-    if (address) {
-      setIsLoading(true);
-      fetchIdentity(identityChain, encodeAddressToChain(address, identityChain))
-        .then((identity) => {
-          setApiIdentity(identity);
-        })
-        .finally(() => setIsLoading(false));
-    }
-  }, [address, identityChain]);
-
-  useEffect(() => {
-    if (isNeedRpcIdentity) {
-      setIdentity(rpcIdentity);
-      return;
-    }
-
-    setIdentity(apiIdentity);
-  }, [apiIdentity, rpcIdentity, isNeedRpcIdentity]);
-
-  return {
-    identity,
-    hasIdentity: identity && identity?.info?.status !== "NO_ID",
-    isLoading,
-  };
+  return formatIdentityInfo(peopleIdentity);
 }
 
 export default function useIdentityInfo(address) {
   const chain = useChain();
   const realAddress = useRealAddress();
-  return useChainAddressIdentityInfo(chain, address, realAddress);
+
+  const isNeedPeopleIdentity = useMemo(() => {
+    return isPeopleChain(chain) && isSameAddress(realAddress, address);
+  }, [chain, realAddress, address]);
+
+  const identityInfo = useChainAddressIdentityInfo(chain, address);
+  const peopleIdentityInfo = usePeopleIdentityInfo(
+    isNeedPeopleIdentity ? identityInfo.identity : null,
+  );
+
+  if (isNeedPeopleIdentity) {
+    return peopleIdentityInfo;
+  }
+
+  return identityInfo;
+}
+
+function formatIdentityInfo(identity = null, isLoading = false) {
+  return {
+    identity,
+    hasIdentity: identity && identity?.info?.status !== "NO_ID",
+    isLoading,
+  };
 }
