@@ -11,15 +11,10 @@ import { useWeb3WalletView } from "next-common/hooks/connect/useWeb3WalletView";
 import { toDataURL as QrcodeToDataURL } from "qrcode";
 import { useEffect, useState } from "react";
 import { useInterval, useUnmount } from "react-use";
+import { Skeleton } from "next-common/components/skeleton";
 
 const SIZE = 200;
 const REFRESH_QRCODE_INTERVAL = 4 * 60 * 1000; // 4 minutes
-
-function Skeleton() {
-  return (
-    <div className="w-full h-full rounded-lg bg-gradient-to-r from-neutral300-80 to-neutral300-20 " />
-  );
-}
 
 export default function LoginWeb3WalletConnect() {
   const { setView } = useWeb3WalletView();
@@ -105,7 +100,11 @@ export default function LoginWeb3WalletConnect() {
       <div className="flex justify-center">
         <div className="rounded-xl border border-neutral300 overflow-hidden p-4">
           <div className="" style={{ width: SIZE, height: SIZE }}>
-            {qrCode ? <img src={qrCode} alt="qrcode" /> : <Skeleton />}
+            {qrCode ? (
+              <img src={qrCode} alt="qrcode" />
+            ) : (
+              <Skeleton className="w-full h-full rounded-lg" />
+            )}
           </div>
 
           {/* <div className="mt-4 inline-flex items-center gap-x-1">

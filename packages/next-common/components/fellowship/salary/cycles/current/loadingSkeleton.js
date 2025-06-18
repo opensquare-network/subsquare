@@ -1,31 +1,16 @@
 import React from "react";
 import { cn } from "next-common/utils";
+import { Skeleton } from "next-common/components/skeleton";
 
 const Wrapper = ({ children, className = "" }) => {
   return <div className={cn(className)}>{children}</div>;
 };
 
-const SkeletonItem = ({ className = "" }) => {
-  return (
-    <div
-      className={cn(
-        "h-5",
-        "rounded-[4px]",
-        "bg-gradient-to-r",
-        "from-neutral200",
-        "via-neutral200alpha",
-        "to-neutral200",
-        className,
-      )}
-    />
-  );
-};
-
 const SkeletonItemFull = () => {
   return (
     <Wrapper className="w-full space-y-1.5">
-      <SkeletonItem className="w-[28%] h-4" />
-      <SkeletonItem className="w-[50%] h-5" />
+      <Skeleton className="w-[28%] h-4" />
+      <Skeleton className="w-[50%] h-5" />
     </Wrapper>
   );
 };
