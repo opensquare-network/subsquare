@@ -9,7 +9,13 @@ import {
 import { cn } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
-import { toPrecision } from "next-common/utils";
+import { toPrecision, toPrecisionNumber } from "next-common/utils";
+import {
+  convictionToLockX,
+  convictionToLockXNumber,
+} from "next-common/utils/referendumCommon";
+import BigNumber from "bignumber.js";
+import { abbreviateBigNumber } from "next-common/utils/viewfuncs";
 
 const VOTE_ACTION_TYPES = {
   1: "Vote",
@@ -39,8 +45,8 @@ function DetailLabel({ className, children, width = "w-[120px]" }) {
 }
 
 const VOTE_TYPE_CONFIG = {
-  aye: { icon: SystemVoteAye, label: "Aye", color: "text-green-500" },
-  nay: { icon: SystemVoteNay, label: "Nay", color: "text-red-500" },
+  aye: { icon: SystemVoteAye, label: "Aye", color: "text-green500" },
+  nay: { icon: SystemVoteNay, label: "Nay", color: "text-red500" },
   abstain: {
     icon: SystemVoteAbstain,
     label: "Abstain",
@@ -75,7 +81,7 @@ function DetailVoteValue({ balance, conviction }) {
       <ValueDisplay value={toPrecision(balance, decimals)} symbol={symbol} />
       {conviction !== undefined && (
         <span className="text-textTertiary">
-          *{conviction === 0 ? "0.1" : conviction}x
+          *{convictionToLockX(conviction)}
         </span>
       )}
     </div>
@@ -213,16 +219,95 @@ function DelegationVoteDetail() {
   return null;
 }
 
-function VoteDetailField({ data, type }) {
-  const isDirectVote = type === 1 || type === 2;
-  const isDelegation = type === 3 || type === 4;
+const isDirectVote = (type) => type === 1 || type === 2;
+const isDelegation = (type) => type === 3 || type === 4;
 
-  if (isDirectVote) {
+function VoteDetailField({ data, type }) {
+  if (isDirectVote(type)) {
     return <DirectVoteDetail data={data} />;
   }
 
-  if (isDelegation) {
+  if (isDelegation(type)) {
     return <DelegationVoteDetail data={data} />;
+  }
+
+  return null;
+}
+
+const getImpactVotes = (data) => {
+  if (data?.isStandard) {
+    const balance = data?.vote?.balance.toString();
+    const conviction = data?.vote?.vote?.conviction;
+    const isAye = data?.vote?.vote?.isAye;
+    const delegationVotes = data?.delegations?.votes || 0;
+
+    const selfVotes = new BigNumber(balance)
+      .times(convictionToLockXNumber(conviction))
+      .toString();
+
+    const totalVotes = new BigNumber(selfVotes)
+      .plus(delegationVotes)
+      .toString();
+
+    return {
+      impact: isAye,
+      votes: totalVotes,
+    };
+  }
+
+  if (data?.isSplit || data?.isSplitAbstain) {
+    const ayeVotes = new BigNumber(data?.vote?.aye);
+    const nayVotes = new BigNumber(data?.vote?.nay);
+    const netVotes = ayeVotes.minus(nayVotes);
+
+    return {
+      impact: netVotes.gt(0),
+      votes: netVotes.abs().toString(),
+    };
+  }
+
+  return null;
+};
+
+function DirectImpactVotes({ data }) {
+  const impactVotes = getImpactVotes(data);
+  const { decimals } = useChainSettings();
+
+  if (!impactVotes || new BigNumber(impactVotes.votes).eq(0)) {
+    return (
+      <div className="text-textTertiary text14Medium">
+        0<span>&nbsp;VOTES</span>
+      </div>
+    );
+  }
+
+  const { color } = VOTE_TYPE_CONFIG[impactVotes.impact ? "aye" : "nay"];
+  const formattedVotes = abbreviateBigNumber(
+    toPrecisionNumber(impactVotes.votes, decimals),
+  );
+
+  return (
+    <div className="text-textTertiary text14Medium">
+      <span className={color}>
+        {impactVotes.impact ? "+" : "-"}
+        <span>{formattedVotes}</span>
+      </span>
+      <span>&nbsp;VOTES</span>
+    </div>
+  );
+}
+
+function DelegationImpactVotes() {
+  return null;
+}
+
+function ImpactVotesField({ data, type }) {
+  if (isDirectVote(type)) {
+    return <DirectImpactVotes data={data} />;
+  }
+
+  if (isDelegation(type)) {
+    return <DelegationImpactVotes data={data} />;
   }
 
   return null;
@@ -252,6 +337,6 @@ export const columns = [
     name: "Impact",
     width: 160,
     className: "text-right",
-    render: () => <div>+ 600 VOTES</div>, // TODO: implement impact calculation
+    render: ({ data, type }) => <ImpactVotesField data={data} type={type} />,
   },
 ];

@@ -101,7 +101,7 @@ const polkadot = {
     referenda: true,
   },
   referendaActions: {
-    startFrom: 1612,
+    startFrom: 1579,
   },
 };
 
