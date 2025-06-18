@@ -30,6 +30,16 @@ const VOTE_TYPES = {
   SPLIT_ABSTAIN: "SplitAbstain",
 };
 
+const VOTE_TYPE_CONFIG = {
+  aye: { icon: SystemVoteAye, label: "Aye", color: "text-green500" },
+  nay: { icon: SystemVoteNay, label: "Nay", color: "text-red500" },
+  abstain: {
+    icon: SystemVoteAbstain,
+    label: "Abstain",
+    color: "text-textTertiary",
+  },
+};
+
 function DetailLabel({ className, children, width = "w-[120px]" }) {
   return (
     <div
@@ -43,16 +53,6 @@ function DetailLabel({ className, children, width = "w-[120px]" }) {
     </div>
   );
 }
-
-const VOTE_TYPE_CONFIG = {
-  aye: { icon: SystemVoteAye, label: "Aye", color: "text-green500" },
-  nay: { icon: SystemVoteNay, label: "Nay", color: "text-red500" },
-  abstain: {
-    icon: SystemVoteAbstain,
-    label: "Abstain",
-    color: "text-textTertiary",
-  },
-};
 
 function VoteLabel({ type }) {
   const voteConfig = VOTE_TYPE_CONFIG[type];
@@ -72,7 +72,7 @@ function VoteLabel({ type }) {
 function DetailVoteValue({ balance, conviction }) {
   const { symbol, decimals } = useChainSettings();
 
-  if (balance === 0) {
+  if (new BigNumber(balance).eq(0)) {
     return <span>-</span>;
   }
 
@@ -91,7 +91,7 @@ function DetailVoteValue({ balance, conviction }) {
 function CurrencyValue({ value }) {
   const { symbol, decimals } = useChainSettings();
 
-  if (Number(value) === 0) {
+  if (new BigNumber(value).eq(0)) {
     return <span>-</span>;
   }
 
@@ -214,9 +214,20 @@ function DirectVoteDetail({ data }) {
   );
 }
 
-function DelegationVoteDetail() {
-  // TODO: delegation data
-  return null;
+function DelegationVoteDetail({ data, type }) {
+  return (
+    <div className="flex flex-col">
+      <VoteDetailRow label={<span>{type === 3 ? "to" : "from"}</span>}>
+        <AddressUser key="user" add={data?.delegation.target} />
+      </VoteDetailRow>
+      <VoteDetailRow label={<span>votes</span>}>
+        <DetailVoteValue
+          balance={data?.delegation?.balance}
+          conviction={data?.delegation?.conviction}
+        />
+      </VoteDetailRow>
+    </div>
+  );
 }
 
 const isDirectVote = (type) => type === 1 || type === 2;
@@ -228,7 +239,7 @@ function VoteDetailField({ data, type }) {
   }
 
   if (isDelegation(type)) {
-    return <DelegationVoteDetail data={data} />;
+    return <DelegationVoteDetail data={data} type={type} />;
   }
 
   return null;
