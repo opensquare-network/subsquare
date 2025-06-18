@@ -131,6 +131,7 @@ export const CACHE_KEY = {
   multisigPromptVisible: "multisig-management-prompt-visible",
   requestJudgementPrompt: "request-judgement-prompt",
   walletConnectSession: "walletconnect-session",
+  totalRequestingAssets: "total-requesting-assets",
 };
 
 export const ADDRESS_CACHE_KEYS = [
@@ -145,6 +146,7 @@ export const ADDRESS_CACHE_KEYS = [
   CACHE_KEY.multisigPromptVisible,
   CACHE_KEY.requestJudgementPrompt,
   CACHE_KEY.setIdentityPromptVisible,
+  CACHE_KEY.totalRequestingAssets,
 ];
 
 export const CHAIN = process.env.NEXT_PUBLIC_CHAIN;
