@@ -13,6 +13,7 @@ export default function useTxSubmission({
   onInBlock = noop,
   onSubmitted = noop,
   onCancelled = noop,
+  onTxError = noop,
 }) {
   const dispatch = useDispatch();
   const api = useContextApi();
@@ -53,6 +54,7 @@ export default function useTxSubmission({
       onInBlock,
       onFinalized,
       onCancelled,
+      onTxError,
     });
   }, [
     api,
@@ -64,6 +66,7 @@ export default function useTxSubmission({
     onInBlock,
     onFinalized,
     onCancelled,
+    onTxError,
   ]);
 
   return {

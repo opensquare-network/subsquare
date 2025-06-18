@@ -100,6 +100,7 @@ export function useSendTransaction() {
       onSubmitted = noop,
       onFinalized = noop,
       onCancelled = noop,
+      onTxError = noop,
     }) => {
       if (!api) {
         dispatch(newErrorToast("Chain api cannot be empty"));
@@ -167,6 +168,7 @@ export function useSendTransaction() {
         } else {
           dispatch(newErrorToast(e.message));
         }
+        onTxError?.(e);
       };
 
       setIsSubmitting(true);
