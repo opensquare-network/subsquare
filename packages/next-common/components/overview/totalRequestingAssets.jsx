@@ -77,7 +77,7 @@ function TotalRequestingAssetsContent({
     >
       <div className="flex flex-wrap items-center gap-x-2">
         <span>Treasury Requesting:</span>
-        <span>Confirming value</span>
+        <span>Confirming</span>
         <ValueDisplay
           className="font-bold"
           value={confirmingValue}
@@ -85,7 +85,7 @@ function TotalRequestingAssetsContent({
           prefix={"$"}
         />
         <span>·</span>
-        <span>Requesting value</span>
+        <span>Requesting</span>
         <ValueDisplay
           className="font-bold"
           value={requestingValue}
