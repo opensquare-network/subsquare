@@ -25,7 +25,6 @@ export function useChainAddressIdentityInfo(chain, address) {
   useEffect(() => {
     setIdentity(null);
     if (address) {
-      setIdentity(true);
       fetchIdentity(identityChain, encodeAddressToChain(address, identityChain))
         .then((identity) => {
           setIdentity(identity);
