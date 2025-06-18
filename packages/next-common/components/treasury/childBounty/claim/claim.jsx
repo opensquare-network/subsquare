@@ -3,7 +3,7 @@ import { useState } from "react";
 import PrimaryButton from "next-common/lib/button/primary";
 import useChainOrScanHeight from "next-common/hooks/height";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import useSubStorage from "next-common/hooks/common/useSubStorage";
+import useSubPalletStorage from "next-common/hooks/common/useSubPalletStorage";
 
 const Popup = dynamicPopup(() => import("./popup"));
 
@@ -13,7 +13,7 @@ export default function Claim() {
   const chainHeight = useChainOrScanHeight();
   const { parentBountyId, index } = useOnchainData();
 
-  const { loading, result: onChainStorage } = useSubStorage(
+  const { loading, result: onChainStorage } = useSubPalletStorage(
     "childBounties",
     "childBounties",
     [parentBountyId, index],

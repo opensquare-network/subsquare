@@ -7,12 +7,12 @@ import { useOnchainData } from "next-common/context/post";
 import ChildBountySidebarBalance from "next-common/components/treasury/childBounty/balance";
 import ProposeCurator from "next-common/components/treasury/childBounty/proposeCurator";
 import BountyAcceptCuratorButton from "next-common/components/treasury/bounty/acceptCurator/button";
-import useSubStorage from "next-common/hooks/common/useSubStorage";
 import BountySidebarActionTip from "next-common/components/treasury/common/bountySidebarActionTip";
+import useSubPalletStorage from "next-common/hooks/common/useSubPalletStorage";
 
 function ChildBountySidebarActionTip() {
   const { parentBountyId, index: childBountyId } = useOnchainData();
-  const { result } = useSubStorage("childBounties", "childBounties", [
+  const { result } = useSubPalletStorage("childBounties", "childBounties", [
     parentBountyId,
     childBountyId,
   ]);
