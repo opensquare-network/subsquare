@@ -3,18 +3,18 @@ import useTreasuryRequesting from "next-common/hooks/useTreasuryRequesting";
 import Prompt from "./prompt";
 
 export default function RequestingPrompt({ onClose, confirmingCount }) {
-  const { requestingValue, loading } = useTreasuryRequesting();
+  const { confirmingValue, loading } = useTreasuryRequesting();
 
   let requesting = null;
 
-  if (requestingValue?.gt(0)) {
+  if (confirmingValue?.gt(0)) {
     requesting = (
       <>
         <span>&nbsp;,&nbsp;</span>
         <span>requesting&nbsp;</span>
         <ValueDisplay
           className="font-bold"
-          value={requestingValue}
+          value={confirmingValue}
           symbol={""}
           prefix={"$"}
         />
