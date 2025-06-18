@@ -1,43 +1,28 @@
 import React from "react";
 import { cn } from "next-common/utils";
+import { Skeleton } from "next-common/components/skeleton";
 
 const Wrapper = ({ children, className = "" }) => {
   return <div className={cn("p-[10px]", className)}>{children}</div>;
-};
-
-const SkeletonItem = ({ className = "" }) => {
-  return (
-    <div
-      className={cn(
-        "h-5",
-        "rounded-[4px]",
-        "bg-gradient-to-r",
-        "from-neutral200",
-        "via-neutral200alpha",
-        "to-neutral200",
-        className,
-      )}
-    />
-  );
 };
 
 const LoadingSkeleton = React.memo(function LoadingSkeleton() {
   return (
     <div className="px-2 w-full animate-pulse">
       <Wrapper>
-        <SkeletonItem className="w-[20%]" />
+        <Skeleton className="w-[20%] h-5" />
       </Wrapper>
       <Wrapper>
-        <SkeletonItem className="w-[100%]" />
+        <Skeleton className="w-[100%] h-5" />
       </Wrapper>
       <Wrapper>
-        <SkeletonItem className="w-[50%]" />
+        <Skeleton className="w-[50%] h-5" />
       </Wrapper>
       <Wrapper>
-        <SkeletonItem className="w-[100%]" />
+        <Skeleton className="w-[100%] h-5" />
       </Wrapper>
       <Wrapper>
-        <SkeletonItem className="w-[50%]" />
+        <Skeleton className="w-[50%] h-5" />
       </Wrapper>
     </div>
   );
