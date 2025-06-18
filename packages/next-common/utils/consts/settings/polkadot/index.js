@@ -53,7 +53,9 @@ const polkadot = {
     democracy: {
       archived: true,
     },
-    referenda: true,
+    referenda: {
+      displayTreasuryRequesting: true,
+    },
     treasury: {
       spends: true,
       childBounties: true,
