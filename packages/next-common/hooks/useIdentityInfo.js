@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useChain } from "next-common/context/chain";
 import { encodeAddressToChain } from "next-common/services/address";
 import {
@@ -26,52 +26,65 @@ export function useChainAddressIdentityInfo(chain, address, realAddress = "") {
   const cachedIdentity = getCachedIdentity(identityChain, encodedAddress);
   const [identity, setIdentity] = useState(cachedIdentity);
   const [isLoading, setIsLoading] = useState(true);
+  const [rpcIdentity, setRpcIdentity] = useState(null);
+  const [apiIdentity, setApiIdentity] = useState(null);
+
+  const isNeedRpcIdentity = useMemo(() => {
+    return isPeopleChain(chain) && isSameAddress(realAddress, address);
+  }, [chain, realAddress, address]);
 
   useEffect(() => {
-    setIdentity(null);
+    if (!apiIdentity || !isNeedRpcIdentity) {
+      return;
+    }
+    const myIdentityIsEmpty = Object.values(myIdentityInfo).every((item) =>
+      isNil(item),
+    );
+    if (myIdentityIsEmpty && !displayName) {
+      setRpcIdentity(null);
+      return;
+    }
+
+    let peopleIdentity = cloneDeep(apiIdentity);
+    const peopleIdentityName = myIdentityInfo?.display;
+    if (peopleIdentity?.info && peopleIdentity?.info?.display) {
+      peopleIdentity.info.display = peopleIdentityName;
+    } else if (isNil(peopleIdentity) && peopleIdentityName) {
+      peopleIdentity = {
+        info: {
+          display: peopleIdentityName,
+          status: "NOT_VERIFIED",
+        },
+      };
+    }
+
+    if (!peopleIdentity?.info?.display && displayName && peopleIdentity?.info) {
+      peopleIdentity.info.display = displayName;
+    }
+
+    setRpcIdentity(peopleIdentity);
+  }, [myIdentityInfo, displayName, apiIdentity, isNeedRpcIdentity]);
+
+  useEffect(() => {
+    setApiIdentity(null);
     if (address) {
       setIsLoading(true);
       fetchIdentity(identityChain, encodeAddressToChain(address, identityChain))
         .then((identity) => {
-          if (!isPeopleChain(chain) || !isSameAddress(realAddress, address)) {
-            setIdentity(identity);
-            return;
-          }
-
-          const myIdentityIsEmpty = Object.values(myIdentityInfo).every(
-            (item) => isNil(item),
-          );
-          if (myIdentityIsEmpty && !displayName) {
-            setIdentity(null);
-            return;
-          }
-
-          let peopleIdentity = cloneDeep(identity);
-          const peopleIdentityName = myIdentityInfo?.display;
-          if (peopleIdentity?.info && peopleIdentity?.info?.display) {
-            peopleIdentity.info.display = peopleIdentityName;
-          } else if (isNil(peopleIdentity) && peopleIdentityName) {
-            peopleIdentity = {
-              info: {
-                display: peopleIdentityName,
-                status: "NOT_VERIFIED",
-              },
-            };
-          }
-
-          if (
-            !peopleIdentity?.info?.display &&
-            displayName &&
-            peopleIdentity?.info
-          ) {
-            peopleIdentity.info.display = displayName;
-          }
-
-          setIdentity(peopleIdentity);
+          setApiIdentity(identity);
         })
         .finally(() => setIsLoading(false));
     }
-  }, [address, identityChain, myIdentityInfo, displayName, chain, realAddress]);
+  }, [address, identityChain]);
+
+  useEffect(() => {
+    if (isNeedRpcIdentity) {
+      setIdentity(rpcIdentity);
+      return;
+    }
+
+    setIdentity(apiIdentity);
+  }, [apiIdentity, rpcIdentity, isNeedRpcIdentity]);
 
   return {
     identity,
