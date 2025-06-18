@@ -22,8 +22,8 @@ function DisplayTotalRequestingAssets({ onClose }) {
 
   useEffect(() => {
     if (price) {
-      setConfirmingValue(accumulatedAmount(confirming, price));
-      setRequestingValue(accumulatedAmount(requesting, price));
+      setConfirmingValue(cumulativeFiatAmount(confirming, price));
+      setRequestingValue(cumulativeFiatAmount(requesting, price));
     }
   }, [price, confirming, requesting]);
 
@@ -102,14 +102,17 @@ function TotalRequestingAssetsContent({
   );
 }
 
-function accumulatedAmount(amounts, price) {
+function cumulativeFiatAmount(amounts, price) {
   const { symbol, decimals } = getChainSettings(CHAIN);
-  const { USDC, USDT } = SYMBOL_DECIMALS;
+  const supportedSymbols = ["USDC", "USDT"];
   return amounts.reduce((acc, curr) => {
     if (curr.symbol === symbol) {
-      return acc.plus(toPrecision(curr.amount, decimals)).multipliedBy(price);
-    }
-    if ([USDC, USDT].includes(curr.symbol)) {
+      const amount = BigNumber(toPrecision(curr.amount, decimals));
+      return acc.plus(amount.multipliedBy(price));
+    } else if (
+      supportedSymbols.includes(curr.symbol) &&
+      SYMBOL_DECIMALS[curr.symbol]
+    ) {
       return acc.plus(toPrecision(curr.amount, SYMBOL_DECIMALS[curr.symbol]));
     }
     return acc;
