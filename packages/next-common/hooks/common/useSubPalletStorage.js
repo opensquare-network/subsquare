@@ -15,6 +15,7 @@ export default function useSubPalletStorage(
   useEffect(() => {
     if (!api || !api.query?.[pallet]?.[storage]) {
       setIsLoading(false);
+      return;
     }
 
     let unsub;
