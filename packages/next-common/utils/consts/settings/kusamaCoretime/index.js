@@ -25,6 +25,7 @@ const kusamaCoretime = {
     mimir: true,
   },
   allowWeb2Login: true,
+  supportWalletconnect: true,
 };
 
 export default kusamaCoretime;

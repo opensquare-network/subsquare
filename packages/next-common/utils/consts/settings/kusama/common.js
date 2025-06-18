@@ -29,7 +29,6 @@ const kusamaCommonCfg = {
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",
   },
-  supportWalletconnect: true,
 };
 
 export default kusamaCommonCfg;

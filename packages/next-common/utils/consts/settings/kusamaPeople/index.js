@@ -60,6 +60,7 @@ const kusamaPeople = {
     mimir: true,
   },
   allowWeb2Login: true,
+  supportWalletconnect: true,
 };
 
 export default kusamaPeople;

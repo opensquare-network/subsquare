@@ -102,6 +102,7 @@ const polkadot = {
   hotMenu: {
     referenda: true,
   },
+  supportWalletconnect: true,
 };
 
 export default polkadot;
