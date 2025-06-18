@@ -13,10 +13,12 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { isSameAddress } from "next-common/utils";
 import { useIdentityInfoContext } from "next-common/context/people/identityInfoContext";
 
+const emptyIdentityInfo = {};
+
 export function useChainAddressIdentityInfo(chain, address, realAddress = "") {
   const { identity: identityChain } = getChainSettings(chain);
 
-  const { displayName, info: myIdentityInfo = {} } =
+  const { displayName, info: myIdentityInfo = emptyIdentityInfo } =
     useIdentityInfoContext() || {};
 
   // Render the identity immediately if it's already in cache
