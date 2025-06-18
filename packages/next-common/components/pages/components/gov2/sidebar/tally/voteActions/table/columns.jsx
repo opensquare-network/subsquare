@@ -245,7 +245,19 @@ function VoteDetailField({ data, type }) {
   return null;
 }
 
-const getImpactVotes = (data) => {
+const getImpactVotes = (data, type) => {
+  if (isDirectVote(type)) {
+    return getDirectImpactVotes(data);
+  }
+
+  if (isDelegation(type)) {
+    return getDelegationImpactVotes(data);
+  }
+
+  return null;
+};
+
+const getDirectImpactVotes = (data) => {
   if (data?.isStandard) {
     const balance = data?.vote?.balance.toString();
     const conviction = data?.vote?.vote?.conviction;
@@ -280,10 +292,21 @@ const getImpactVotes = (data) => {
   return null;
 };
 
-function DirectImpactVotes({ data }) {
-  const impactVotes = getImpactVotes(data);
-  const { decimals } = useChainSettings();
+const getDelegationImpactVotes = (data) => {
+  const conviction = data?.delegation?.conviction;
+  const delegationVotes = new BigNumber(data?.delegation?.balance || 0)
+    .times(convictionToLockXNumber(conviction))
+    .toString();
 
+  return {
+    // TODO: data?.delegation?.isAye
+    // Mock data.
+    impact: false,
+    votes: delegationVotes,
+  };
+};
+
+function ImpactVotesDisplay({ impactVotes, decimals }) {
   if (!impactVotes || new BigNumber(impactVotes.votes).eq(0)) {
     return (
       <div className="text-textTertiary text14Medium">
@@ -308,20 +331,11 @@ function DirectImpactVotes({ data }) {
   );
 }
 
-function DelegationImpactVotes() {
-  return null;
-}
-
 function ImpactVotesField({ data, type }) {
-  if (isDirectVote(type)) {
-    return <DirectImpactVotes data={data} />;
-  }
+  const { decimals } = useChainSettings();
+  const impactVotes = getImpactVotes(data, type);
 
-  if (isDelegation(type)) {
-    return <DelegationImpactVotes data={data} />;
-  }
-
-  return null;
+  return <ImpactVotesDisplay impactVotes={impactVotes} decimals={decimals} />;
 }
 
 export const columns = [
