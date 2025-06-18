@@ -7,11 +7,11 @@ import NewChildBountyButton from "next-common/components/treasury/bounty/newChil
 import BountyProposeCuratorButton from "next-common/components/treasury/bounty/proposeCurator/button";
 import BountyAcceptCuratorButton from "next-common/components/treasury/bounty/acceptCurator/button";
 import BountySidebarActionTip from "next-common/components/treasury/common/bountySidebarActionTip";
-import useSubPalletStorage from "next-common/hooks/common/useSubPalletStorage";
+import useSubStorage from "next-common/hooks/common/useSubStorage";
 
 function BountySidebar() {
   const { address, bountyIndex } = useOnchainData();
-  const { result } = useSubPalletStorage("bounties", "bounties", [bountyIndex]);
+  const { result } = useSubStorage("bounties", "bounties", [bountyIndex]);
 
   if (!address) {
     return null;
