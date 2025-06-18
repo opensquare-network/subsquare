@@ -18,7 +18,6 @@ const polkadotCommonCfg = {
   navLogoDark: ProjectLogoPolkadotDark,
   supportWalletconnect: true,
   ...polkadotThemeVars,
-  displayTreasuryRequesting: true,
 };
 
 export default polkadotCommonCfg;

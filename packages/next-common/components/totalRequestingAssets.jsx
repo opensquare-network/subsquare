@@ -1,6 +1,6 @@
 import { SystemClose } from "@osn/icons/subsquare";
-import { colorStyle, PromptTypes } from "../scrollPrompt";
-import { GreyPanel } from "../styled/containers/greyPanel";
+import { colorStyle, PromptTypes } from "./scrollPrompt";
+import { GreyPanel } from "./styled/containers/greyPanel";
 import { CACHE_KEY, CHAIN } from "next-common/utils/constants";
 import { fetchTreasuryRequesting } from "next-common/services/fetchTreasuryRequesting";
 import { useEffect, useState } from "react";
@@ -9,9 +9,9 @@ import { useFiatPriceSnapshot } from "next-common/hooks/useFiatPrice";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
-import ValueDisplay from "../valueDisplay";
-import { useCookieValue } from "next-common/utils/hooks/useCookieValue";
+import ValueDisplay from "./valueDisplay";
 import getChainSettings from "next-common/utils/consts/settings";
+import usePromptVisibility from "next-common/hooks/usePromptVisibility";
 
 function DisplayTotalRequestingAssets({ onClose }) {
   const { price } = useFiatPriceSnapshot();
@@ -30,8 +30,8 @@ function DisplayTotalRequestingAssets({ onClose }) {
   useEffect(() => {
     fetchTreasuryRequesting()
       .then((data) => {
-        setConfirming(data.confirmingSpends);
-        setRequesting(data.requestingSpends);
+        setConfirming(data.confirmingSpends || []);
+        setRequesting(data.requestingSpends || []);
       })
       .catch((err) => {
         console.error("fetchTreasuryRequesting", err);
@@ -50,17 +50,13 @@ function DisplayTotalRequestingAssets({ onClose }) {
 }
 
 export default function TotalRequestingAssets() {
-  const { displayTreasuryRequesting } = useChainSettings();
-  const [visible, setVisible] = useCookieValue(
+  const { modules } = useChainSettings();
+  const { visible, handleClose } = usePromptVisibility(
     CACHE_KEY.totalRequestingAssets,
     true,
   );
 
-  const handleClose = () => {
-    setVisible(false);
-  };
-
-  if (!visible || !displayTreasuryRequesting) return null;
+  if (!visible || !modules?.referenda?.displayTreasuryRequesting) return null;
 
   return <DisplayTotalRequestingAssets onClose={handleClose} />;
 }

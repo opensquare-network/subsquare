@@ -146,7 +146,6 @@ export const ADDRESS_CACHE_KEYS = [
   CACHE_KEY.multisigPromptVisible,
   CACHE_KEY.requestJudgementPrompt,
   CACHE_KEY.setIdentityPromptVisible,
-  CACHE_KEY.totalRequestingAssets,
 ];
 
 export const CHAIN = process.env.NEXT_PUBLIC_CHAIN;

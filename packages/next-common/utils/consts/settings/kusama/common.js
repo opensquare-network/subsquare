@@ -30,7 +30,6 @@ const kusamaCommonCfg = {
     navigationBorder: "var(--neutral300)",
   },
   supportWalletconnect: true,
-  displayTreasuryRequesting: true,
 };
 
 export default kusamaCommonCfg;
