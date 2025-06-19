@@ -13,6 +13,7 @@ import {
   finalStateActionTextMap,
   finalStateMap,
 } from "next-common/utils/consts/fellowship/application";
+import Tooltip from "next-common/components/tooltip";
 
 export default function useTerminateAction({
   post = null,
@@ -51,7 +52,7 @@ export default function useTerminateAction({
           onClick={() => {
             setShow(false);
             setShowPopup(true);
-            setActionType(finalStateMap[type]);
+            setActionType(type);
           }}
           disabled={!canTerminate}
           type={type}
@@ -74,7 +75,7 @@ export default function useTerminateAction({
 }
 
 function TerminateMenuItem({ onClick, disabled, type }) {
-  return (
+  const content = (
     <OptionItem
       className={
         disabled
@@ -91,4 +92,14 @@ function TerminateMenuItem({ onClick, disabled, type }) {
       <span>{finalStateActionTextMap[type]}</span>
     </OptionItem>
   );
+  if (disabled) {
+    return (
+      <div className="hover:bg-neutral200">
+        <Tooltip content="Only available to the admins" className="w-full">
+          {content}
+        </Tooltip>
+      </div>
+    );
+  }
+  return content;
 }
