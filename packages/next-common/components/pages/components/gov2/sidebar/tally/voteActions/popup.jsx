@@ -7,7 +7,7 @@ export default function OpenGovVoteActionsPopup({ setShowVoteActions }) {
     <BaseVotesPopup
       title="Actions"
       onClose={() => setShowVoteActions(false)}
-      className="!w-[720px] max-sm:w-full"
+      className="!w-[960px] max-sm:w-full"
     >
       <PopupListWrapper>
         <VoteActionsTable />
