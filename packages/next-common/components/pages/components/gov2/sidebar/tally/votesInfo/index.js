@@ -27,8 +27,7 @@ function ConditionalVotes() {
       return false;
     }
 
-    const startFrom = referendaActions?.startFrom || 0;
-    return referendumIndex >= startFrom;
+    return referendumIndex >= referendaActions?.startFrom;
   }, [referendaActions, referendumIndex]);
 
   if (shouldUseVoteActions) {
