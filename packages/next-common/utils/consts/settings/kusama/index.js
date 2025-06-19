@@ -92,6 +92,7 @@ const kusama = {
     referenda: true,
   },
   preimage: kusamaPreimageSettings,
+  supportWalletconnect: true,
 };
 
 export default kusama;
