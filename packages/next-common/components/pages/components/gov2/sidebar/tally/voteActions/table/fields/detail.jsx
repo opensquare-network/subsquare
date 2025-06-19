@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import AddressUser from "next-common/components/user/addressUser";
 import { cn } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
@@ -41,11 +42,20 @@ function VoteLabel({ type }) {
   );
 }
 
+function ZeroValueDisplay() {
+  return <span>-</span>;
+}
+
+function useIsZeroValue(value) {
+  return useMemo(() => new BigNumber(value).eq(0), [value]);
+}
+
 function DetailVoteValue({ balance, conviction }) {
   const { symbol, decimals } = useChainSettings();
+  const isZero = useIsZeroValue(balance);
 
-  if (new BigNumber(balance).eq(0)) {
-    return <span>-</span>;
+  if (isZero) {
+    return <ZeroValueDisplay />;
   }
 
   return (
@@ -62,9 +72,10 @@ function DetailVoteValue({ balance, conviction }) {
 
 function CurrencyValue({ value }) {
   const { symbol, decimals } = useChainSettings();
+  const isZero = useIsZeroValue(value);
 
-  if (new BigNumber(value).eq(0)) {
-    return <span>-</span>;
+  if (isZero) {
+    return <ZeroValueDisplay />;
   }
 
   return <ValueDisplay value={toPrecision(value, decimals)} symbol={symbol} />;
@@ -80,8 +91,6 @@ function VoteDetailRow({ label, children, labelWidth }) {
 }
 
 function StandardVotesDetail({ data }) {
-  if (!data?.isStandard) return null;
-
   const voteType = data?.vote?.vote?.isAye ? "aye" : "nay";
 
   return (
@@ -101,8 +110,6 @@ function StandardVotesDetail({ data }) {
 }
 
 function SplitVotesDetail({ data }) {
-  if (!data?.isSplit) return null;
-
   return (
     <>
       <VoteDetailRow label={<VoteLabel type="aye" />}>
@@ -116,8 +123,6 @@ function SplitVotesDetail({ data }) {
 }
 
 function SplitAbstainVotesDetail({ data }) {
-  if (!data?.isSplitAbstain) return null;
-
   return (
     <>
       <VoteDetailRow label={<VoteLabel type="aye" />}>
@@ -134,13 +139,21 @@ function SplitAbstainVotesDetail({ data }) {
 }
 
 function VotesDetail({ data }) {
-  const components = [
-    <StandardVotesDetail key="standard" data={data} />,
-    <SplitVotesDetail key="split" data={data} />,
-    <SplitAbstainVotesDetail key="splitAbstain" data={data} />,
-  ];
+  if (!data) return null;
 
-  return <>{components.filter(Boolean)}</>;
+  if (data.isStandard) {
+    return <StandardVotesDetail data={data} />;
+  }
+
+  if (data.isSplit) {
+    return <SplitVotesDetail data={data} />;
+  }
+
+  if (data.isSplitAbstain) {
+    return <SplitAbstainVotesDetail data={data} />;
+  }
+
+  return null;
 }
 
 function DirectVoteDetail({ data }) {

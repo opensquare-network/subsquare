@@ -11,7 +11,7 @@ const ZERO_VOTES = {
 };
 
 const calculateVotesWithConviction = (balance, conviction) => {
-  return new BigNumber(balance || 0).times(convictionToLockXNumber(conviction));
+  return new BigNumber(balance).times(convictionToLockXNumber(conviction));
 };
 
 const getImpactVotes = (data, type) => {
