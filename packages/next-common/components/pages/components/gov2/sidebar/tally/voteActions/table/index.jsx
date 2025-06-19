@@ -1,10 +1,11 @@
 import { useState, useMemo, useEffect } from "react";
 import useQueryVoteActions from "../useQueryVoteActions";
 import { useOnchainData } from "next-common/context/post";
-import { columns } from "./columns";
+import { desktopColumns, mobileColumns } from "./columns";
 import { MapDataList } from "next-common/components/dataList";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import Pagination from "next-common/components/pagination";
+import { cn } from "next-common/utils";
 
 export default function VoteActionsTable() {
   const { referendumIndex } = useOnchainData();
@@ -45,7 +46,19 @@ export default function VoteActionsTable() {
     <>
       <ScrollerX>
         <MapDataList
-          columnsDef={columns}
+          className="max-md:hidden"
+          columnsDef={desktopColumns}
+          data={pageItems}
+          loading={loading}
+          noDataText="No data"
+        />
+        <MapDataList
+          className={cn(
+            "hidden max-md:block",
+            "[&_.datalist_.descriptions-item-label]:hidden",
+            "[&_.datalist_.descriptions-item-value]:w-full",
+          )}
+          columnsDef={mobileColumns}
           data={pageItems}
           loading={loading}
           noDataText="No data"

@@ -29,3 +29,19 @@ export const VOTE_TYPE_CONFIG = {
 
 export const isDirectVote = (type) => type === 1 || type === 2;
 export const isDelegation = (type) => type === 3 || type === 4;
+
+export function getVoteType(data) {
+  if (data?.isStandard) {
+    return VOTE_TYPES.STANDARD;
+  }
+
+  if (data?.isSplit) {
+    return VOTE_TYPES.SPLIT;
+  }
+
+  if (data?.isSplitAbstain) {
+    return VOTE_TYPES.SPLIT_ABSTAIN;
+  }
+
+  return null;
+}

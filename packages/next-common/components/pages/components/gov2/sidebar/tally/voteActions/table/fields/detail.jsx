@@ -6,10 +6,10 @@ import { toPrecision } from "next-common/utils";
 import { convictionToLockX } from "next-common/utils/referendumCommon";
 import BigNumber from "bignumber.js";
 import {
-  VOTE_TYPES,
   VOTE_TYPE_CONFIG,
   isDirectVote,
   isDelegation,
+  getVoteType,
 } from "../common";
 
 function DetailLabel({ className, children, width = "w-[120px]" }) {
@@ -72,27 +72,11 @@ function CurrencyValue({ value }) {
 
 function VoteDetailRow({ label, children, labelWidth }) {
   return (
-    <div className="flex flex-row">
+    <div className="flex flex-row max-md:justify-between">
       <DetailLabel width={labelWidth}>{label}</DetailLabel>
       {children}
     </div>
   );
-}
-
-function getVoteType(data) {
-  if (data?.isStandard) {
-    return VOTE_TYPES.STANDARD;
-  }
-
-  if (data?.isSplit) {
-    return VOTE_TYPES.SPLIT;
-  }
-
-  if (data?.isSplitAbstain) {
-    return VOTE_TYPES.SPLIT_ABSTAIN;
-  }
-
-  return null;
 }
 
 function StandardVotesDetail({ data }) {

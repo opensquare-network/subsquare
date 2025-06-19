@@ -1,10 +1,48 @@
 import AddressUser from "next-common/components/user/addressUser";
 import { ImpactVotesField, VoteDetailField, ActionField } from "./fields";
 
-export const columns = [
+function MobileRow({ label, children }) {
+  return (
+    <div className="flex flex-row justify-between">
+      {label && <span className="text14Medium text-textTertiary">{label}</span>}
+      {children}
+    </div>
+  );
+}
+
+export const mobileColumns = [
+  {
+    render: ({ who }) => <AddressUser key="user" add={who} />,
+  },
+  {
+    render: ({ type, indexer }) => (
+      <MobileRow label="Action">
+        <ActionField type={type} indexer={indexer} className="items-end" />
+      </MobileRow>
+    ),
+  },
+  {
+    render: ({ data, type }) => (
+      <VoteDetailField
+        data={data}
+        type={type}
+        className="w-full flex justify-between"
+      />
+    ),
+  },
+  {
+    render: ({ data, type }) => (
+      <MobileRow label="Impact">
+        <ImpactVotesField data={data} type={type} />
+      </MobileRow>
+    ),
+  },
+];
+
+export const desktopColumns = [
   {
     name: "Account",
-    width: 224,
+    width: 264,
     render: ({ who }) => <AddressUser key="user" add={who} />,
   },
   {
