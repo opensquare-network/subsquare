@@ -11,30 +11,7 @@ import { usePost } from "next-common/context/post";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 import Popup from "./popup/wrapper/Popup";
 import { useRouter } from "next/router";
-
-export const finalStateMap = {
-  Rejected: "rejected",
-  Invalid: "invalid",
-  Timeout: "timedOut",
-};
-
-const terminateApplicationInfo = {
-  [finalStateMap.Rejected]: {
-    title: "Reject Application",
-    confirmText:
-      "This will reject the application, and you will not be able to reverse this decision.",
-  },
-  [finalStateMap.Invalid]: {
-    title: "Invalidate Application",
-    confirmText:
-      "This will invalidate the application. You will not be able to restore it.",
-  },
-  [finalStateMap.Timeout]: {
-    title: "Time Out Application",
-    confirmText:
-      "This will time out the application. You will not be able to reopen it.",
-  },
-};
+import { terminateApplicationInfo } from "next-common/utils/consts/fellowship/application";
 
 export default function TerminateApplicationPopup({ onClose, finalState }) {
   const post = usePost();

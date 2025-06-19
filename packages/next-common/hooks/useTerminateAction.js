@@ -8,9 +8,11 @@ import {
 } from "@osn/icons/subsquare";
 import { useState } from "react";
 import { noop } from "lodash-es";
-import TerminateApplicationPopup, {
+import TerminateApplicationPopup from "next-common/components/terminateApplicationPopup";
+import {
+  finalStateActionTextMap,
   finalStateMap,
-} from "next-common/components/terminateApplicationPopup";
+} from "next-common/utils/consts/fellowship/application";
 
 export default function useTerminateAction({
   post = null,
@@ -24,41 +26,46 @@ export default function useTerminateAction({
   const isFellowshipApplicationPost =
     postType === detailPageCategory.FELLOWSHIP_APPLICATION;
 
-  const showTerminateAction = ["new"].includes(post?.status);
-  const canTerminate = isFellowshipApplicationPost && isAdmin;
+  const showTerminateAction =
+    isFellowshipApplicationPost && [finalStateMap.New].includes(post?.status);
+  const canTerminate = isAdmin;
 
   let actionsComponent = null;
   let popupComponent = null;
 
-  if (!post) {
+  if (!post || !showTerminateAction) {
     return null;
   }
 
-  if (showTerminateAction) {
-    actionsComponent = (
-      <>
-        {Object.entries(finalStateMap).map(([key, value]) => (
-          <TerminateMenuItem
-            key={key}
-            onClick={() => {
-              setShow(false);
-              setShowPopup(true);
-              setActionType(value);
-            }}
-            disabled={!canTerminate}
-            text={key}
-          />
-        ))}
-      </>
-    );
+  const supportedActions = [
+    finalStateMap.Rejected,
+    finalStateMap.Invalid,
+    finalStateMap.Timeout,
+  ];
 
-    popupComponent = showPopup && (
-      <TerminateApplicationPopup
-        finalState={actionType}
-        onClose={() => setShowPopup(false)}
-      />
-    );
-  }
+  actionsComponent = (
+    <>
+      {supportedActions.map((type) => (
+        <TerminateMenuItem
+          key={type}
+          onClick={() => {
+            setShow(false);
+            setShowPopup(true);
+            setActionType(finalStateMap[type]);
+          }}
+          disabled={!canTerminate}
+          type={type}
+        />
+      ))}
+    </>
+  );
+
+  popupComponent = showPopup && (
+    <TerminateApplicationPopup
+      finalState={actionType}
+      onClose={() => setShowPopup(false)}
+    />
+  );
 
   return {
     actionsComponent,
@@ -66,7 +73,7 @@ export default function useTerminateAction({
   };
 }
 
-function TerminateMenuItem({ onClick, disabled, text }) {
+function TerminateMenuItem({ onClick, disabled, type }) {
   return (
     <OptionItem
       className={
@@ -77,11 +84,11 @@ function TerminateMenuItem({ onClick, disabled, text }) {
       onClick={!disabled ? onClick : noop}
     >
       <div className="mr-2">
-        {text === "Rejected" && <SystemCancel />}
-        {text === "Invalid" && <SystemInvalid />}
-        {text === "Timeout" && <SystemTimeout />}
+        {type === finalStateMap.Rejected && <SystemCancel />}
+        {type === finalStateMap.Invalid && <SystemInvalid />}
+        {type === finalStateMap.Timeout && <SystemTimeout />}
       </div>
-      <span>{text}</span>
+      <span>{finalStateActionTextMap[type]}</span>
     </OptionItem>
   );
 }
