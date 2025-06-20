@@ -171,7 +171,7 @@ function DelegationVoteDetail({ data, type }) {
   return (
     <div className="flex flex-col">
       <VoteDetailRow label={<span>{type === 3 ? "to" : "from"}</span>}>
-        <AddressUser key="user" add={data?.target} />
+        <AddressUser key="user" add={data?.target} showAvatar={false} />
       </VoteDetailRow>
       <VoteDetailRow label={<span>votes</span>}>
         <DetailVoteValue

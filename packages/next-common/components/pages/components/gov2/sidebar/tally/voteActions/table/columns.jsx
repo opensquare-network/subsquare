@@ -55,7 +55,6 @@ export const desktopColumns = [
   },
   {
     name: "Detail",
-    width: 240,
     className: "text-left",
     render: ({ data, type }) => <VoteDetailField data={data} type={type} />,
   },
