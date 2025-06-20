@@ -6,7 +6,7 @@ import Nav from "../nav";
 import SEO from "../SEO";
 import Toast from "../toast";
 import Footer from "./footer";
-import { useBlockTime, useSubscribeChainHead } from "next-common/utils/hooks";
+import { useSubscribeChainHead } from "next-common/utils/hooks";
 import useUpdateNodesDelay from "next-common/utils/hooks/useUpdateNodesDelay";
 import { cn } from "next-common/utils";
 import { useNavCollapsed } from "next-common/context/nav";
@@ -39,8 +39,6 @@ export default function BaseLayout({
   useUpdateNodesDelay();
 
   const api = useContextApi();
-  useBlockTime(api);
-
   useSubScanHeight(scanHeight);
   useSubscribeChainHead(api);
   useExistentialDeposit();

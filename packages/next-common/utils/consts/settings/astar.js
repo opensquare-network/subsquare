@@ -64,7 +64,7 @@ const astar = {
   identity: Chains.astar,
   symbol: "ASTR",
   decimals: 18,
-  blockTime: 12000,
+  blockTime: 6000,
   ss58Format: 5,
   endpoints: nodes,
   avatar: ProjectIconAstarLight,

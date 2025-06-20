@@ -44,7 +44,7 @@ const bifrostPolkadot = {
   identity: Chains.bifrostPolkadot,
   symbol: "BNC",
   decimals: 12,
-  blockTime: 12000,
+  blockTime: 6000,
   hasElections: false,
   ss58Format: 0,
   endpoints: DEFAULT_NODES,

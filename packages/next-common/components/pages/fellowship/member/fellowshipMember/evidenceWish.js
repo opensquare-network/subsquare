@@ -8,7 +8,7 @@ import Divider from "next-common/components/styled/layout/divider";
 import useSubCoreFellowshipEvidence from "next-common/hooks/collectives/useSubCoreFellowshipEvidence";
 import { usePageProps } from "next-common/context/page";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
-import CoretimeSalePanelChartSkeleton from "next-common/components/coretime/salePanel/chart/skeleton";
+import { Skeleton } from "next-common/components/skeleton";
 import Button from "next-common/lib/button";
 import { useState } from "react";
 import WishDetail from "next-common/components/pages/fellowship/member/fellowshipMember/wishDetail";
@@ -141,9 +141,9 @@ function OnchainEvidenceContent({ evidence, wish }) {
 function OnchainEvidenceLoading() {
   return (
     <>
-      <CoretimeSalePanelChartSkeleton className="h-5" />
-      <CoretimeSalePanelChartSkeleton className="h-5 mt-2" />
-      <CoretimeSalePanelChartSkeleton className="h-5 w-1/2 mt-2" />
+      <Skeleton className="h-5" />
+      <Skeleton className="h-5 mt-2" />
+      <Skeleton className="h-5 w-1/2 mt-2" />
     </>
   );
 }

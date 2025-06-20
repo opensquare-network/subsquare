@@ -131,6 +131,7 @@ export const CACHE_KEY = {
   multisigPromptVisible: "multisig-management-prompt-visible",
   requestJudgementPrompt: "request-judgement-prompt",
   walletConnectSession: "walletconnect-session",
+  totalRequestingAssets: "total-requesting-assets",
 };
 
 export const ADDRESS_CACHE_KEYS = [

@@ -40,7 +40,9 @@ const kusama = {
   description:
     "Kusama is a scalable multi-chain network for radical innovation and early stage Polkadot deployments. Expect Chaos. No promises.",
   modules: mergeChainModules({
-    referenda: true,
+    referenda: {
+      displayTreasuryRequesting: true,
+    },
     fellowship: true,
     whales: true,
     democracy: {
@@ -90,6 +92,7 @@ const kusama = {
     referenda: true,
   },
   preimage: kusamaPreimageSettings,
+  supportWalletconnect: true,
 };
 
 export default kusama;

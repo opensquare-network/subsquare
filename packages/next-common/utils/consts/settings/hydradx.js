@@ -85,7 +85,7 @@ const hydradx = {
   identity: "hydradx",
   symbol: "HDX",
   decimals: 12,
-  blockTime: 12000,
+  blockTime: 6000,
   hasElections: true,
   ss58Format: 0,
   avatar: ProjectIconHydrationLight,
