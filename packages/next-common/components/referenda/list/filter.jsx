@@ -118,44 +118,46 @@ export default function ReferendaListFilter({ isUnVotedOnlyLoading }) {
             <div className="mb-4 text12Bold">Conditions</div>
 
             <div>
-              <ToggleOption
-                className="justify-between py-2"
-                label="Treasury related"
-                tooltip="Only show the referenda that requested treasury"
-                isOn={value?.isTreasury}
-                setIsOn={(isOn) => {
-                  setValue?.((val) => ({
-                    ...val,
-                    isTreasury: isOn,
-                  }));
-                }}
-              />
-
-              <ToggleOption
-                className="justify-between py-2"
-                label="Ongoing"
-                tooltip="Only show the ongoing referenda"
-                isOn={value?.ongoing}
-                setIsOn={(isOn) => {
-                  setValue?.((val) => ({
-                    ...val,
-                    ongoing: isOn,
-                  }));
-                }}
-              />
-
-              {address && (
-                <UnVotedOnlyOption
-                  className="justify-between py-2"
-                  isOn={value?.unVotedOnly}
+              <div className="py-3">
+                <ToggleOption
+                  className="justify-between"
+                  label="Treasury related"
+                  tooltip="Only show the referenda that requested treasury"
+                  isOn={value?.isTreasury}
                   setIsOn={(isOn) => {
                     setValue?.((val) => ({
                       ...val,
-                      unVotedOnly: isOn,
+                      isTreasury: isOn,
                     }));
                   }}
                 />
-              )}
+
+                <ToggleOption
+                  className="justify-between py-4"
+                  label="Ongoing"
+                  tooltip="Only show the ongoing referenda"
+                  isOn={value?.ongoing}
+                  setIsOn={(isOn) => {
+                    setValue?.((val) => ({
+                      ...val,
+                      ongoing: isOn,
+                    }));
+                  }}
+                />
+
+                {address && (
+                  <UnVotedOnlyOption
+                    className="justify-between"
+                    isOn={value?.unVotedOnly}
+                    setIsOn={(isOn) => {
+                      setValue?.((val) => ({
+                        ...val,
+                        unVotedOnly: isOn,
+                      }));
+                    }}
+                  />
+                )}
+              </div>
 
               <div className="flex items-center justify-between py-1.5">
                 <div>Status</div>
