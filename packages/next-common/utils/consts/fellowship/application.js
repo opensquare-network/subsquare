@@ -6,6 +6,14 @@ export const finalStateMap = {
   Timeout: "timedOut",
 };
 
+export const formattedViewMap = {
+  [finalStateMap.New]: "applying",
+  [finalStateMap.Inducted]: "inducted",
+  [finalStateMap.Rejected]: "rejected",
+  [finalStateMap.Invalid]: "invalid",
+  [finalStateMap.Timeout]: "timedOut",
+};
+
 export const finalStateActionTextMap = {
   [finalStateMap.Rejected]: "Reject",
   [finalStateMap.Invalid]: "Invalid",
