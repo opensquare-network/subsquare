@@ -43,7 +43,7 @@ export default function EstimatedGas({ getTxFunc }) {
   }
 
   return (
-    <div className="text14Medium text-textSecondary flex items-center gap-x-2">
+    <div className="text14Medium text-textSecondary flex items-center gap-x-2 justify-end">
       {isLoading && <Loading size={16} />}
       <span>Estimated Gas Fee:</span>
       {toPrecision(fee, decimals)} {symbol}

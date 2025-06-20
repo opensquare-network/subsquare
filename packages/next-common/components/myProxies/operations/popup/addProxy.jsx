@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
@@ -11,12 +11,11 @@ import { InfoMessage } from "next-common/components/setting/styled";
 import Link from "next/link";
 import { useProxyTypeOptions } from "../../hooks/useProxyTypeOptions";
 import { useDispatch } from "react-redux";
-import {
-  newErrorToast,
-  newSuccessToast,
-} from "next-common/store/reducers/toastSlice";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { isSameAddress } from "next-common/utils";
+import { useTxBuilder } from "next-common/hooks/useTxBuilder";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 export function DelayBlocksField({ value, setValue }) {
   const PROXY_WIKI_LINK =
@@ -88,28 +87,31 @@ function PopupContent() {
   // const [delay, setDelay] = useState(0);
   const delay = 0;
 
-  const getTxFunc = useCallback(() => {
-    if (!api || !address) {
-      return;
-    }
+  const { getTxFuncForSubmit, getTxFuncForFee } = useTxBuilder(
+    (toastError) => {
+      if (!api || !address) {
+        return;
+      }
 
-    if (!proxyType) {
-      dispatch(newErrorToast("The proxy type is required"));
-      return;
-    }
+      if (!proxyType) {
+        toastError("The proxy type is required");
+        return;
+      }
 
-    if (!proxyAccount) {
-      dispatch(newErrorToast("The proxy account is required"));
-      return;
-    }
+      if (!proxyAccount) {
+        toastError("The proxy account is required");
+        return;
+      }
 
-    if (isSameAddress(address, proxyAccount)) {
-      dispatch(newErrorToast("Cannot set yourself as proxy"));
-      return;
-    }
+      if (isSameAddress(address, proxyAccount)) {
+        toastError("Cannot set yourself as proxy");
+        return;
+      }
 
-    return api.tx.proxy.addProxy(proxyAccount, proxyType, delay);
-  }, [api, address, proxyAccount, proxyType, delay, dispatch]);
+      return api.tx.proxy.addProxy(proxyAccount, proxyType, delay);
+    },
+    [api, address, proxyType, proxyAccount, delay],
+  );
 
   const onFinalized = () => {
     dispatch(newSuccessToast("Added successfully"));
@@ -123,7 +125,11 @@ function PopupContent() {
       {/* <AdvanceSettings>
           <DelayBlocksField value={delay} setValue={setDelay} />
         </AdvanceSettings> */}
-      <TxSubmissionButton getTxFunc={getTxFunc} onFinalized={onFinalized} />
+      <TxSubmissionButton
+        getTxFunc={getTxFuncForSubmit}
+        onFinalized={onFinalized}
+      />
+      <EstimatedGas getTxFunc={getTxFuncForFee} />
     </div>
   );
 }
