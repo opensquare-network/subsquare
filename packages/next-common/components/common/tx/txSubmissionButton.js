@@ -79,9 +79,6 @@ export function useTxSubmissionButton({
             {title}
           </PrimaryButton>
         )}
-        <div className="text12Medium text-textTertiary">
-          Estimated Gas Fee: 0.024 DOT
-        </div>
       </div>
     ),
   };
