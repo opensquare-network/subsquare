@@ -1,7 +1,6 @@
 import { useChainSettings } from "next-common/context/chain";
 import { convictionToLockXNumber } from "next-common/utils/referendumCommon";
 import BigNumber from "bignumber.js";
-import { abbreviateBigNumber } from "next-common/utils/viewfuncs";
 import { VOTE_TYPE_CONFIG, isDirectVote, isDelegation } from "../common";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
