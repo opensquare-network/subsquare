@@ -16,12 +16,13 @@ import { getMentionName } from "next-common/utils/post";
 import { getMemberId } from "next-common/utils/post";
 import { useChain } from "next-common/context/chain";
 
-export default function EvidenceComment({ evidence }) {
+export default function EvidenceComment({ evidence, address }) {
   const { commentsData, loading } = useEvidenceCommentsData(evidence);
   return (
     <EvidenceCommentConfigProvider
       commentsData={commentsData}
       evidence={evidence}
+      address={address}
     >
       <CommentsContent loading={loading} />
     </EvidenceCommentConfigProvider>

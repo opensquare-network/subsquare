@@ -26,7 +26,7 @@ export default function EvidenceDetailPopup({
           evidence={evidence}
         />
         <Divider className="hidden sm:block !h-full w-[1px]" />
-        <EvidenceComment evidence={evidence} />
+        <EvidenceComment address={address} evidence={evidence} />
       </main>
       <MobileVoteBar address={address} wish={wish} />
     </Popup>

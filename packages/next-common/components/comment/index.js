@@ -5,7 +5,7 @@ import { cn } from "next-common/utils";
 import PolkassemblyCommentItem from "./polkassemblyCommentItem";
 import CommentsFilter from "./filter";
 import CommentSkeleton from "./commentSkeleton";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { IS_SERVER } from "next-common/utils/constants";
 
@@ -63,18 +63,7 @@ function CommentsContent({ loading, items = [] }) {
 
   return (
     <div>
-      {pageData.map((item) =>
-        item.comment_source === "polkassembly" ? (
-          <PolkassemblyCommentItem key={item.id} data={item} />
-        ) : (
-          <CommentItem
-            key={item._id}
-            data={item}
-            replyToCommentId={item._id}
-            replyToComment={item}
-          />
-        ),
-      )}
+      <CommentItems pageData={pageData} />
       {hasMore ? (
         <div className="pt-8 flex justify-center">
           <SecondaryButton
@@ -88,5 +77,35 @@ function CommentsContent({ loading, items = [] }) {
         </div>
       ) : null}
     </div>
+  );
+}
+
+function CommentItems({ pageData }) {
+  // scroll to #comment
+  useEffect(() => {
+    const anchorValue = window.location.hash.slice(1);
+    const targetElement = document.getElementById(anchorValue);
+    if (targetElement) {
+      setTimeout(() => {
+        targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 250);
+    }
+  }, []);
+
+  return (
+    <>
+      {pageData.map((item) =>
+        item.comment_source === "polkassembly" ? (
+          <PolkassemblyCommentItem key={item.id} data={item} />
+        ) : (
+          <CommentItem
+            key={item._id}
+            data={item}
+            replyToCommentId={item._id}
+            replyToComment={item}
+          />
+        ),
+      )}
+    </>
   );
 }

@@ -206,13 +206,15 @@ export function CommentContextMenu({ editable, setIsEdit }) {
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const router = useRouter();
   const isAdmin = useIsAdmin();
-  const { preventPageRefresh, refreshData } = useCommentActions();
+  const { preventPageRefresh, refreshData, getCopyLink } = useCommentActions();
 
   useClickAway(ref, () => setShow(false));
 
   const onCopy = () => {
     copy(
-      `${window.location.origin}${window.location.pathname}${window.location.search}#${comment.height}`,
+      getCopyLink
+        ? getCopyLink(comment)
+        : `${window.location.origin}${window.location.pathname}${window.location.search}#${comment.height}`,
     );
   };
 

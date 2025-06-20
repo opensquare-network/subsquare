@@ -19,19 +19,22 @@ import {
 export default function EvidenceCommentConfigProvider({
   evidence,
   commentsData,
+  address,
   children,
 }) {
   const cid = useMemo(() => getCidByEvidence(evidence), [evidence]);
   return (
     <>
       <CommentsProvider comments={commentsData}>
-        <CommentConfigProvider cid={cid}>{children}</CommentConfigProvider>
+        <CommentConfigProvider address={address} cid={cid}>
+          {children}
+        </CommentConfigProvider>
       </CommentsProvider>
     </>
   );
 }
 
-const CommentConfigProvider = ({ children, cid }) => {
+const CommentConfigProvider = ({ children, address, cid }) => {
   const getComment = useGetComment();
   const createEvidenceComment = useCreateEvidenceComment();
   const createEvidenceCommentReply = useCreateEvidenceCommentReply();
@@ -125,6 +128,12 @@ const CommentConfigProvider = ({ children, cid }) => {
         cancelUpVoteComment,
         updateComment,
         refreshData,
+        getCopyLink(comment) {
+          const search = new URLSearchParams();
+          search.set("view_evidence", true);
+
+          return `${window.location.origin}/fellowship/members/${address}?${search}#${comment.height}`;
+        },
       }}
     >
       {children}
