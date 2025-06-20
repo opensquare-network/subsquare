@@ -8,42 +8,48 @@ import SecondaryButton from "next-common/lib/button/secondary";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import UnVotedOnlyOption from "../unVotedOnlyOption";
-import { useIsTreasuryState } from ".";
+import { useIsTreasuryState, useIsOngoingState } from ".";
 import { useUnVotedOnlyContext } from "./unVotedContext";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import TreasuryOnlyOption from "../treasuryOnlyOption";
+import OngoingOnlyOption from "../ongoingOnlyOption";
 import { usePageProps } from "next-common/context/page";
 import { useUpdateEffect } from "react-use";
 
 export default function ReferendaListFilter({ isUnVotedOnlyLoading }) {
-  const { isTreasury: isTreasuryProp, status: statusProp } = usePageProps();
+  const { isTreasury: isTreasuryProp, status: statusProp, ongoing: ongoingProp } = usePageProps();
   const status = upperFirst(camelCase(statusProp));
   const router = useRouter();
 
   const address = useRealAddress();
   const { unVotedOnly, setUnVotedOnly } = useUnVotedOnlyContext();
   const [isTreasury, setIsTreasury] = useIsTreasuryState();
+  const [isOngoing, setIsOngoing] = useIsOngoingState();
 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState({
     status,
     unVotedOnly,
     isTreasury,
+    isOngoing,
   });
+  
   useUpdateEffect(() => {
     setValue((val) => {
       return {
         ...val,
         isTreasury,
         status,
+        isOngoing,
       };
     });
-  }, [isTreasury, status]);
+  }, [isTreasury, status, isOngoing]);
 
   const filterCount = Object.values({
     status,
     unVotedOnly,
     isTreasury: isTreasuryProp === "true",
+    isOngoing: ongoingProp === "true",
   }).filter(Boolean).length;
 
   async function handleApply() {
@@ -51,6 +57,7 @@ export default function ReferendaListFilter({ isUnVotedOnlyLoading }) {
       {
         status: value.status,
         is_treasury: value.isTreasury,
+        ongoing: value.isOngoing,
       },
       Boolean,
     );
@@ -59,12 +66,14 @@ export default function ReferendaListFilter({ isUnVotedOnlyLoading }) {
       {
         status: statusProp,
         is_treasury: isTreasuryProp === "true",
+        ongoing: ongoingProp === "true",
       },
       Boolean,
     );
 
     setIsTreasury(value?.isTreasury);
     setUnVotedOnly(value?.unVotedOnly);
+    setIsOngoing(value?.isOngoing);
 
     const shouldUpdateRoute = !isEqual(q, params);
     if (shouldUpdateRoute) {
@@ -82,6 +91,7 @@ export default function ReferendaListFilter({ isUnVotedOnlyLoading }) {
 
     setUnVotedOnly(false);
     setIsTreasury(false);
+    setIsOngoing(false);
     setOpen(false);
   }
 
@@ -113,6 +123,19 @@ export default function ReferendaListFilter({ isUnVotedOnlyLoading }) {
                     return {
                       ...val,
                       isTreasury: isOn,
+                    };
+                  });
+                }}
+              />
+
+              <OngoingOnlyOption
+                className="justify-between py-3"
+                isOn={value?.isOngoing}
+                setIsOn={(isOn) => {
+                  setValue?.((val) => {
+                    return {
+                      ...val,
+                      isOngoing: isOn,
                     };
                   });
                 }}

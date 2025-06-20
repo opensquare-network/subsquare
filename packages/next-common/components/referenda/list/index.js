@@ -12,7 +12,9 @@ import useMyReferendaVotes from "next-common/hooks/referenda/useMyReferendaVotes
 import { UnVotedOnlyProvider, useUnVotedOnlyContext } from "./unVotedContext";
 
 const [useIsTreasuryState, IsTreasuryStateProvider] = createStateContext(false);
-export { useIsTreasuryState };
+const [useIsOngoingState, IsOngoingStateProvider] = createStateContext(false);
+
+export { useIsTreasuryState, useIsOngoingState };
 
 function useUnVotedActiveReferenda() {
   const { activeReferenda, isLoadingActiveReferenda } =
@@ -46,6 +48,7 @@ function useMyUnVotedReferendaPosts() {
     useUnVotedActiveReferenda();
   const { status } = usePageProps();
   const [isTreasury] = useIsTreasuryState();
+  const [isOngoing] = useIsOngoingState();
 
   const { value: referenda, loading: isLoadingReferendaPosts } =
     useAsync(async () => {
@@ -55,12 +58,14 @@ function useMyUnVotedReferendaPosts() {
       return await getOpenGovReferendaPosts(unVotedActiveReferenda, {
         status,
         is_treasury: isTreasury,
+        ongoing: isOngoing,
       });
     }, [
       unVotedActiveReferenda,
       isLoadingUnVotedActiveReferenda,
       status,
       isTreasury,
+      isOngoing,
     ]);
 
   const isLoading = isLoadingReferendaPosts || isLoadingUnVotedActiveReferenda;
@@ -175,13 +180,15 @@ function ReferendaListImpl() {
 }
 
 export function ReferendaList() {
-  const { isTreasury } = usePageProps();
+  const { isTreasury, ongoing } = usePageProps();
 
   return (
     <IsTreasuryStateProvider initialValue={isTreasury === "true"}>
-      <UnVotedOnlyProvider>
-        <ReferendaListImpl />
-      </UnVotedOnlyProvider>
+      <IsOngoingStateProvider initialValue={ongoing === "true"}>
+        <UnVotedOnlyProvider>
+          <ReferendaListImpl />
+        </UnVotedOnlyProvider>
+      </IsOngoingStateProvider>
     </IsTreasuryStateProvider>
   );
 }
