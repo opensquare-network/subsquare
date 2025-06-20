@@ -7,14 +7,13 @@ import PrimaryButton from "next-common/lib/button/primary";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import UnVotedOnlyOption from "../unVotedOnlyOption";
+import ToggleOption from "next-common/components/toggleOption";
 import { useIsTreasuryState, useIsOngoingState } from ".";
 import { useUnVotedOnlyContext } from "./unVotedContext";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import TreasuryOnlyOption from "../treasuryOnlyOption";
-import OngoingOnlyOption from "../ongoingOnlyOption";
 import { usePageProps } from "next-common/context/page";
 import { useUpdateEffect } from "react-use";
+import UnVotedOnlyOption from "../unVotedOnlyOption";
 
 export default function ReferendaListFilter({ isUnVotedOnlyLoading }) {
   const {
@@ -119,29 +118,29 @@ export default function ReferendaListFilter({ isUnVotedOnlyLoading }) {
             <div className="mb-4 text12Bold">Conditions</div>
 
             <div>
-              <TreasuryOnlyOption
+              <ToggleOption
                 className="justify-between py-3"
+                label="Treasury related"
+                tooltip="Only show the referenda that requested treasury"
                 isOn={value?.isTreasury}
                 setIsOn={(isOn) => {
-                  setValue?.((val) => {
-                    return {
-                      ...val,
-                      isTreasury: isOn,
-                    };
-                  });
+                  setValue?.((val) => ({
+                    ...val,
+                    isTreasury: isOn,
+                  }));
                 }}
               />
 
-              <OngoingOnlyOption
+              <ToggleOption
                 className="justify-between py-3"
+                label="Ongoing"
+                tooltip="Only show the ongoing referenda"
                 isOn={value?.ongoing}
                 setIsOn={(isOn) => {
-                  setValue?.((val) => {
-                    return {
-                      ...val,
-                      ongoing: isOn,
-                    };
-                  });
+                  setValue?.((val) => ({
+                    ...val,
+                    ongoing: isOn,
+                  }));
                 }}
               />
 
@@ -150,12 +149,10 @@ export default function ReferendaListFilter({ isUnVotedOnlyLoading }) {
                   className="justify-between py-3"
                   isOn={value?.unVotedOnly}
                   setIsOn={(isOn) => {
-                    setValue?.((val) => {
-                      return {
-                        ...val,
-                        unVotedOnly: isOn,
-                      };
-                    });
+                    setValue?.((val) => ({
+                      ...val,
+                      unVotedOnly: isOn,
+                    }));
                   }}
                 />
               )}
