@@ -21,7 +21,6 @@ import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
 import useSubDemocracyReferendumStatus from "next-common/hooks/democracy/useSubDemocracyReferendumStatus";
-import useSetReferendumStatus from "next-common/hooks/democracy/useSetReferendumStatus";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
 import DemocracyReferendaDetailMultiTabs from "next-common/components/pages/components/tabs/democracyReferendaDetailMultiTabs";
 import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
@@ -44,7 +43,6 @@ function ReferendumContentContentInContext({ post }) {
   const dispatch = useDispatch();
 
   useSubscribePostDetail(post?.referendumIndex);
-  useSetReferendumStatus();
   useSubDemocracyReferendumStatus(post?.referendumIndex);
 
   useMaybeFetchElectorate(post?.onchainData);
