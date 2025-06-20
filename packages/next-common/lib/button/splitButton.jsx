@@ -49,6 +49,7 @@ export default function SplitButton({
               "whitespace-nowrap bg-neutral100 text-textPrimary",
             )}
             sideOffset={5}
+            collisionPadding={10}
           >
             <DropdownMenu.Item className="outline-none">
               {dropdownContent}
