@@ -14,22 +14,6 @@ const calculateVotesWithConviction = (balance, conviction) => {
   return new BigNumber(balance).times(convictionToLockXNumber(conviction));
 };
 
-const getImpactVotes = (data, type) => {
-  if (!data || !type) {
-    return ZERO_VOTES;
-  }
-
-  if (isDirectVote(type)) {
-    return getDirectImpactVotes(data);
-  }
-
-  if (isDelegation(type)) {
-    return getDelegationImpactVotes(data);
-  }
-
-  return ZERO_VOTES;
-};
-
 const getDirectImpactVotes = (data) => {
   if (data?.isStandard) {
     const {
@@ -92,6 +76,22 @@ const getDelegationImpactVotes = (data) => {
     impact: isAye,
     votes: delegationVotes.toString(),
   };
+};
+
+const getImpactVotes = (data, type) => {
+  if (!data || !type) {
+    return ZERO_VOTES;
+  }
+
+  if (isDirectVote(type)) {
+    return getDirectImpactVotes(data);
+  }
+
+  if (isDelegation(type)) {
+    return getDelegationImpactVotes(data);
+  }
+
+  return ZERO_VOTES;
 };
 
 function ImpactVotesDisplay({ data, type }) {

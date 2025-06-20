@@ -11,7 +11,7 @@ export default function VoteActionsTable() {
   const { referendumIndex } = useOnchainData();
   const { loading, voteActions } = useQueryVoteActions(referendumIndex);
   const [page, setPage] = useState(1);
-  const pageSize = 10;
+  const pageSize = 5;
 
   useEffect(() => {
     setPage(1);
@@ -51,6 +51,7 @@ export default function VoteActionsTable() {
           data={pageItems}
           loading={loading}
           noDataText="No data"
+          contentClassName="!max-h-max"
         />
         <MapDataList
           className={cn(
