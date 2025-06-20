@@ -48,7 +48,7 @@ function useMyUnVotedReferendaPosts() {
     useUnVotedActiveReferenda();
   const { status } = usePageProps();
   const [isTreasury] = useIsTreasuryState();
-  const [isOngoing] = useIsOngoingState();
+  const [ongoing] = useIsOngoingState();
 
   const { value: referenda, loading: isLoadingReferendaPosts } =
     useAsync(async () => {
@@ -58,14 +58,14 @@ function useMyUnVotedReferendaPosts() {
       return await getOpenGovReferendaPosts(unVotedActiveReferenda, {
         status,
         is_treasury: isTreasury,
-        ongoing: isOngoing,
+        ongoing,
       });
     }, [
       unVotedActiveReferenda,
       isLoadingUnVotedActiveReferenda,
       status,
       isTreasury,
-      isOngoing,
+      ongoing,
     ]);
 
   const isLoading = isLoadingReferendaPosts || isLoadingUnVotedActiveReferenda;

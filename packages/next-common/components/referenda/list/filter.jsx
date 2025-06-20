@@ -17,39 +17,43 @@ import { usePageProps } from "next-common/context/page";
 import { useUpdateEffect } from "react-use";
 
 export default function ReferendaListFilter({ isUnVotedOnlyLoading }) {
-  const { isTreasury: isTreasuryProp, status: statusProp, ongoing: ongoingProp } = usePageProps();
+  const {
+    isTreasury: isTreasuryProp,
+    status: statusProp,
+    ongoing: ongoingProp,
+  } = usePageProps();
   const status = upperFirst(camelCase(statusProp));
   const router = useRouter();
 
   const address = useRealAddress();
   const { unVotedOnly, setUnVotedOnly } = useUnVotedOnlyContext();
   const [isTreasury, setIsTreasury] = useIsTreasuryState();
-  const [isOngoing, setIsOngoing] = useIsOngoingState();
+  const [ongoing, setOngoing] = useIsOngoingState();
 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState({
     status,
     unVotedOnly,
     isTreasury,
-    isOngoing,
+    ongoing,
   });
-  
+
   useUpdateEffect(() => {
     setValue((val) => {
       return {
         ...val,
         isTreasury,
         status,
-        isOngoing,
+        ongoing,
       };
     });
-  }, [isTreasury, status, isOngoing]);
+  }, [isTreasury, status, ongoing]);
 
   const filterCount = Object.values({
     status,
     unVotedOnly,
     isTreasury: isTreasuryProp === "true",
-    isOngoing: ongoingProp === "true",
+    ongoing: ongoingProp === "true",
   }).filter(Boolean).length;
 
   async function handleApply() {
@@ -57,7 +61,7 @@ export default function ReferendaListFilter({ isUnVotedOnlyLoading }) {
       {
         status: value.status,
         is_treasury: value.isTreasury,
-        ongoing: value.isOngoing,
+        ongoing: value.ongoing,
       },
       Boolean,
     );
@@ -73,7 +77,7 @@ export default function ReferendaListFilter({ isUnVotedOnlyLoading }) {
 
     setIsTreasury(value?.isTreasury);
     setUnVotedOnly(value?.unVotedOnly);
-    setIsOngoing(value?.isOngoing);
+    setOngoing(value?.ongoing);
 
     const shouldUpdateRoute = !isEqual(q, params);
     if (shouldUpdateRoute) {
@@ -91,7 +95,7 @@ export default function ReferendaListFilter({ isUnVotedOnlyLoading }) {
 
     setUnVotedOnly(false);
     setIsTreasury(false);
-    setIsOngoing(false);
+    setOngoing(false);
     setOpen(false);
   }
 
@@ -130,12 +134,12 @@ export default function ReferendaListFilter({ isUnVotedOnlyLoading }) {
 
               <OngoingOnlyOption
                 className="justify-between py-3"
-                isOn={value?.isOngoing}
+                isOn={value?.ongoing}
                 setIsOn={(isOn) => {
                   setValue?.((val) => {
                     return {
                       ...val,
-                      isOngoing: isOn,
+                      ongoing: isOn,
                     };
                   });
                 }}
