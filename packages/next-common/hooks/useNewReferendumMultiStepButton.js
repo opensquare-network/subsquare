@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import useNewReferendumCells from "next-common/hooks/useNewReferendumCells";
 import LoadingPrimaryButton from "next-common/lib/button/loadingPrimary";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import EstimatedGas from "next-common/components/estimatedGas";
-import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 
 const NewReferendumMultiStepPopup = dynamicPopup(
   () => import("next-common/components/newReferendumMultiStepPopup"),
@@ -35,7 +33,6 @@ export function useNewReferendumMultiStepButton({
   });
 
   const isLoading = indexStep < cells.length && isOpen;
-  const signerAccount = useSignerAccount();
 
   useEffect(() => {
     return () => {
@@ -47,21 +44,13 @@ export function useNewReferendumMultiStepButton({
 
   const component = (
     <>
-      <div className="flex flex-col gap-y-2 items-end">
-        <div>
-          <LoadingPrimaryButton
-            disabled={disabled || !notePreimageTx}
-            loading={isLoading}
-            onClick={() => setIsOpen(true)}
-          >
-            {buttonText}
-          </LoadingPrimaryButton>
-        </div>
-        <EstimatedGas
-          tx={notePreimageTx}
-          address={signerAccount?.realAddress}
-        />
-      </div>
+      <LoadingPrimaryButton
+        disabled={disabled || !notePreimageTx}
+        loading={isLoading}
+        onClick={() => setIsOpen(true)}
+      >
+        {buttonText}
+      </LoadingPrimaryButton>
       {isOpen && (
         <NewReferendumMultiStepPopup
           cells={cells}
