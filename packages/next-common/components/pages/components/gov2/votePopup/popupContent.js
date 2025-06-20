@@ -28,6 +28,7 @@ import useSplitAbstainVote from "./voteHooks/useSplitAbstainVote";
 import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
 import useReferendaVotingBalance from "next-common/hooks/referenda/useReferendaVotingBalance";
 import { useUpdateVotesFromServer } from "next-common/utils/gov2/useVotesFromServer";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 function VotePanel({
   referendumIndex,
@@ -124,10 +125,11 @@ function VotePanel({
 
       {!isDelegated && (
         // Address is not allow to vote directly when it is in delegate mode
-        <div style={{ textAlign: "right" }}>
+        <div className="flex flex-col gap-y-2 items-end">
           <PrimaryButton loading={isLoading} onClick={doSubmit}>
             Submit
           </PrimaryButton>
+          <EstimatedGas getTxFunc={getVoteTx} />
         </div>
       )}
     </>
