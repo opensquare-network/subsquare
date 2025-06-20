@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 import AddressUser from "next-common/components/user/addressUser";
-import { cn } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
@@ -13,15 +12,9 @@ import {
   getVoteType,
 } from "../common";
 
-function DetailLabel({ className, children, width = "w-[120px]" }) {
+function DetailLabel({ children }) {
   return (
-    <div
-      className={cn(
-        "inline-flex items-center text14Medium text-textTertiary",
-        width,
-        className,
-      )}
-    >
+    <div className="inline-flex items-center text14Medium text-textTertiary w-[120px]">
       {children}
     </div>
   );
@@ -81,10 +74,10 @@ function CurrencyValue({ value }) {
   return <ValueDisplay value={toPrecision(value, decimals)} symbol={symbol} />;
 }
 
-function VoteDetailRow({ label, children, labelWidth }) {
+function VoteDetailRow({ label, children }) {
   return (
     <div className="flex flex-row max-md:justify-between">
-      <DetailLabel width={labelWidth}>{label}</DetailLabel>
+      <DetailLabel>{label}</DetailLabel>
       {children}
     </div>
   );
