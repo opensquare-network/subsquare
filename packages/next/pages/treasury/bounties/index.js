@@ -10,6 +10,7 @@ import PolkadotTreasuryStatsOnProposal from "next-common/components/treasury/com
 import NewBountyButton from "next-common/components/treasury/bounty/newBountyButton";
 import { backendApi } from "next-common/services/nextApi";
 import BountyCardSection from "next-common/components/treasury/bounty/bountyCardSection";
+import { fetchList } from "next-common/services/list";
 
 export default function BountiesPage({
   activeBounties,
@@ -68,15 +69,12 @@ export default function BountiesPage({
 }
 
 export const getServerSideProps = withCommonProps(async (context) => {
-  const [
-    tracksProps,
-    { result: activeBounties },
-    { result: inactiveBounties },
-  ] = await Promise.all([
-    fetchOpenGovTracksProps(),
-    backendApi.fetch("/treasury/bounties/active"),
-    backendApi.fetch("/treasury/bounties/inactive"),
-  ]);
+  const [tracksProps, { result: activeBounties }, inactiveBounties] =
+    await Promise.all([
+      fetchOpenGovTracksProps(),
+      backendApi.fetch("/treasury/bounties/active"),
+      fetchList("/treasury/bounties/inactive", context),
+    ]);
 
   return {
     props: {
