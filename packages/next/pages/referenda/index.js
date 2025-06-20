@@ -39,6 +39,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
     page_size: pageSize = defaultPageSize,
     status: statusQuery = "",
     is_treasury = "",
+    ongoing = "",
   } = context.query;
 
   const status = upperFirst(camelCase(statusQuery));
@@ -54,6 +55,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
       page,
       pageSize,
       is_treasury,
+      ongoing,
       status,
       simple: true,
     }),
@@ -69,6 +71,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
       gov2ReferendaSummary: gov2ReferendaSummary ?? {},
       status,
       isTreasury: is_treasury,
+      ongoing,
       ...tracksProps,
     },
   };

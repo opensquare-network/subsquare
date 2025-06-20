@@ -5,6 +5,7 @@ import styled from "styled-components";
 
 const StyledSelect = styled(Select)`
   width: 160px;
+  height: 28px;
 `;
 
 const options = [
