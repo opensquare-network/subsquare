@@ -12,6 +12,7 @@ import { Provider } from "react-redux";
 import ProfileHeaderWithBanner from "next-common/components/profile/header";
 import ProfileLayout from "next-common/components/layout/ProfileLayout";
 import { ConditionRelayInfoProvider } from "../";
+import ProfileUserInfoProvider from "next-common/components/profile/header/context/profileUserInfoContext";
 
 const isAssetHubSupported = !!getChainSettings(CHAIN).modules?.assethub;
 
@@ -37,7 +38,9 @@ export default function AssetHubUserPage() {
       <Provider store={store}>
         <ChainProvider chain={chain}>
           <ApiProvider>
-            <AssetHubUserPageImpl />
+            <ProfileUserInfoProvider>
+              <AssetHubUserPageImpl />
+            </ProfileUserInfoProvider>
           </ApiProvider>
         </ChainProvider>
       </Provider>
