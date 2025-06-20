@@ -271,9 +271,7 @@ export function PostContextMenu({ isAuthor, editable, setIsEdit }) {
   const isAdmin = useIsAdmin();
   const { actionsComponent, popupComponent } =
     useTerminateAction({
-      setShow: setShow,
-      post,
-      isAdmin,
+      onShowPopup: () => setShow(false),
     }) || {};
 
   const { newProposalQuickStart: { cancelReferendum, killReferendum } = {} } =

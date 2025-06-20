@@ -14,12 +14,12 @@ import {
   finalStateMap,
 } from "next-common/utils/consts/fellowship/application";
 import Tooltip from "next-common/components/tooltip";
+import { usePost } from "next-common/context/post";
+import useIsAdmin from "./useIsAdmin";
 
-export default function useTerminateAction({
-  post = null,
-  isAdmin = false,
-  setShow = noop,
-}) {
+export default function useTerminateAction({ onShowPopup = noop }) {
+  const isAdmin = useIsAdmin();
+  const post = usePost();
   const postType = useDetailType();
   const [showPopup, setShowPopup] = useState(false);
   const [actionType, setActionType] = useState(null);
@@ -50,7 +50,7 @@ export default function useTerminateAction({
         <TerminateMenuItem
           key={type}
           onClick={() => {
-            setShow(false);
+            onShowPopup();
             setShowPopup(true);
             setActionType(type);
           }}
