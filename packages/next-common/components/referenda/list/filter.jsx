@@ -91,12 +91,12 @@ export default function ReferendaListFilter({ isUnVotedOnlyLoading }) {
   }
 
   async function handleReset() {
-    await router.replace("");
-
     setUnVotedOnly(false);
     setIsTreasury(false);
     setOngoing(false);
     setOpen(false);
+
+    await router.replace("");
   }
 
   return (
