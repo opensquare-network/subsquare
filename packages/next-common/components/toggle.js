@@ -8,12 +8,14 @@ export default function Toggle({ disabled, isOn, onToggle, size }) {
       role="button"
       disabled={disabled}
       className={cn(
-        "relative",
-        "w-[38px] h-[22px]",
+        "relative flex items-center",
+        "w-10 h-6",
         "bg-neutral500",
         "rounded-full",
-        small && "w-8 h-5",
-        isOn && "bg-theme500",
+        "transition-colors duration-200",
+        small && "w-7 h-4",
+        isOn && "bg-theme500 justify-end",
+        !isOn && "justify-start",
         disabled && "bg-neutral300",
       )}
       onClick={() => {
@@ -22,12 +24,12 @@ export default function Toggle({ disabled, isOn, onToggle, size }) {
     >
       <div
         className={cn(
-          "w-[14px] h-[14px]",
-          "absolute top-1 left-1",
+          "w-4 h-4",
           "bg-neutral100",
           "rounded-full",
-          small && "w-3 h-3",
-          isOn && "left-auto right-1",
+          "mx-1",
+          "transition-all duration-200",
+          small && "w-3 h-3 mx-[2px]",
         )}
       />
     </div>
