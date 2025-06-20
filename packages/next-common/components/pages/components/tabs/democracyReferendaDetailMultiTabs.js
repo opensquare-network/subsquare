@@ -4,8 +4,6 @@ import Tabs from "next-common/components/tabs";
 import DemocracyReferendumCallProvider from "next-common/context/democracy/referenda/call";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { usePost } from "next-common/context/post";
-import { useSelector } from "react-redux";
-import { referendumStatusSelector } from "next-common/store/reducers/referendumSlice";
 import useInlineCall from "next-common/components/democracy/metadata/useInlineCall";
 import { useChain } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
@@ -14,6 +12,7 @@ import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
 import { useDemocracyReferendaProposalTimelineData } from "next-common/hooks/pages/timelineData";
 import tabsTooltipContentMap from "./tabsTooltipContentMap";
 import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
+import useDemocracyReferendumStatus from "next-common/hooks/democracy/useDemocracyReferendumStatus";
 
 const Timeline = dynamicClientOnly(() =>
   import("next-common/components/timeline"),
@@ -38,7 +37,7 @@ export default function DemocracyReferendaDetailMultiTabs() {
   const onchainData = post?.onchainData;
 
   const { preImage, indexer } = onchainData;
-  const referendumStatus = useSelector(referendumStatusSelector);
+  const referendumStatus = useDemocracyReferendumStatus();
   const proposal = referendumStatus?.proposal;
 
   const { call: inlineCall } = useInlineCall(proposal);

@@ -26,16 +26,16 @@ const nodes = [
     url: "wss://rpc.astar.network",
   },
   {
-    name: "Automata 1RPC",
-    url: "wss://1rpc.io/astr",
-  },
-  {
     name: "Blast",
     url: "wss://astar.public.blastapi.io",
   },
   {
     name: "Dwellir",
     url: "wss://astar-rpc.dwellir.com",
+  },
+  {
+    name: "Automata 1RPC",
+    url: "wss://1rpc.io/astr",
   },
   {
     name: "OnFinality",
