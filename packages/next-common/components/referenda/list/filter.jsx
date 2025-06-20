@@ -118,9 +118,8 @@ export default function ReferendaListFilter({ isUnVotedOnlyLoading }) {
             <div className="mb-4 text12Bold">Conditions</div>
 
             <div>
-              <div className="py-3">
+              <div className="py-3 space-y-4">
                 <ToggleOption
-                  className="justify-between"
                   label="Treasury related"
                   tooltip="Only show the referenda that requested treasury"
                   isOn={value?.isTreasury}
@@ -133,7 +132,6 @@ export default function ReferendaListFilter({ isUnVotedOnlyLoading }) {
                 />
 
                 <ToggleOption
-                  className="justify-between py-4"
                   label="Ongoing"
                   tooltip="Only show the ongoing referenda"
                   isOn={value?.ongoing}

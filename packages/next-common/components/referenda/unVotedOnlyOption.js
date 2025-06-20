@@ -5,11 +5,9 @@ export default function UnVotedOnlyOption({
   isLoading,
   isOn,
   setIsOn,
-  className = "",
 }) {
   return (
     <ToggleOption
-      className={className}
       label="Un-voted Only"
       tooltip={tooltip}
       isOn={isOn}
