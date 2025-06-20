@@ -1,9 +1,10 @@
 import { useChainSettings } from "next-common/context/chain";
-import { toPrecisionNumber } from "next-common/utils";
 import { convictionToLockXNumber } from "next-common/utils/referendumCommon";
 import BigNumber from "bignumber.js";
 import { abbreviateBigNumber } from "next-common/utils/viewfuncs";
 import { VOTE_TYPE_CONFIG, isDirectVote, isDelegation } from "../common";
+import ValueDisplay from "next-common/components/valueDisplay";
+import { toPrecision } from "next-common/utils";
 
 const ZERO_VOTES = {
   impact: false,
@@ -103,15 +104,15 @@ function ImpactVotesDisplay({ data, type }) {
   }
 
   const { color } = VOTE_TYPE_CONFIG[impactVotes.impact ? "aye" : "nay"];
-  const formattedVotes = abbreviateBigNumber(
-    toPrecisionNumber(impactVotes.votes, decimals),
-  );
 
   return (
     <>
       <span className={color}>
         {impactVotes.impact ? "+" : "-"}
-        <span>{formattedVotes}</span>
+        <ValueDisplay
+          value={toPrecision(impactVotes.votes, decimals)}
+          symbol={""}
+        />
       </span>
     </>
   );
