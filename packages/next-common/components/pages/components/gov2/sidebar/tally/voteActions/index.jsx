@@ -10,7 +10,10 @@ export default function VotesActions() {
 
   return (
     <>
-      <Tooltip contentClassName="max-w-[240px]">
+      <Tooltip
+        contentClassName="max-w-[240px]"
+        content="User actions that affected the tally"
+      >
         <Button onClick={() => setShowVoteActions(true)}>Actions</Button>
       </Tooltip>
       {showVoteActions && (

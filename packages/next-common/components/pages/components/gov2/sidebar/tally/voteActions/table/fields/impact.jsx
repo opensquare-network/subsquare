@@ -99,7 +99,7 @@ function ImpactVotesDisplay({ data, type }) {
   const impactVotes = getImpactVotes(data, type);
 
   if (!impactVotes || new BigNumber(impactVotes.votes).eq(0)) {
-    return 0;
+    return <span className="text-textPrimary">0</span>;
   }
 
   const { color } = VOTE_TYPE_CONFIG[impactVotes.impact ? "aye" : "nay"];
