@@ -1,7 +1,7 @@
 import { useChainSettings } from "next-common/context/chain";
 import { convictionToLockXNumber } from "next-common/utils/referendumCommon";
 import BigNumber from "bignumber.js";
-import { VOTE_TYPE_CONFIG, isDirectVote, isDelegation } from "../common";
+import { VOTE_TYPE_CONFIG, OPENGOV_ACTIONS } from "../common";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 
@@ -10,85 +10,124 @@ const ZERO_VOTES = {
   votes: 0,
 };
 
-const calculateVotesWithConviction = (balance, conviction) => {
-  return new BigNumber(balance).times(convictionToLockXNumber(conviction));
-};
+function getVotesWithConviction(balance, conviction) {
+  if (conviction <= 0) {
+    return BigInt(balance) / BigInt(10);
+  } else {
+    return BigInt(balance) * BigInt(convictionToLockXNumber(conviction));
+  }
+}
 
-const getDirectImpactVotes = (data) => {
-  if (data?.isStandard) {
-    const {
-      balance,
-      vote: { conviction, isAye },
-    } = data.vote;
-    const delegationVotes = data?.delegations?.votes || 0;
+function absBigInt(x) {
+  if (typeof x !== "bigint") {
+    throw new TypeError("Input must be a BigInt");
+  }
+  return x < 0n ? -x : x;
+}
 
-    const selfVotes = calculateVotesWithConviction(balance, conviction);
-    const totalVotes = selfVotes.plus(delegationVotes);
+function getSplitVotes(aye, nay) {
+  return BigInt(aye) - BigInt(nay);
+}
 
+function getVoteActionImpact(data) {
+  const { isSplit, isSplitAbstain } = data || {};
+  if (isSplit || isSplitAbstain) {
+    const { aye, nay } = data?.vote || {};
+    const votes = getSplitVotes(aye, nay);
     return {
-      impact: isAye,
-      votes: totalVotes.toString(),
+      impact: votes > 0,
+      votes: absBigInt(votes),
     };
   }
 
-  if (data?.isSplit || data?.isSplitAbstain) {
-    const ayeVotes = new BigNumber(data.vote.aye);
-    const nayVotes = new BigNumber(data.vote.nay);
-    const netVotes = ayeVotes.minus(nayVotes);
+  const {
+    vote: { balance, vote: { isAye, conviction } = {} },
+    delegations: { votes: delegationVotes } = {},
+  } = data || {};
+  const selfVotes = getVotesWithConviction(balance, conviction);
+  const totalVotes = selfVotes + BigInt(delegationVotes);
+  return {
+    impact: isAye,
+    votes: totalVotes,
+  };
+}
 
+function getRemoveVoteActionImpact(data) {
+  const { isSplit, isSplitAbstain } = data || {};
+  if (isSplit || isSplitAbstain) {
+    const { aye, nay } = data?.vote || {};
+    const votes = getSplitVotes(aye, nay);
     return {
-      impact: netVotes.gt(0),
-      votes: netVotes.abs().toString(),
+      impact: votes <= 0,
+      votes: absBigInt(votes),
     };
   }
 
-  return null;
-};
+  const {
+    vote: { balance, vote: { isAye, conviction } = {} },
+    delegations: { votes: delegationVotes } = {},
+  } = data || {};
+  const selfVotes = getVotesWithConviction(balance, conviction);
+  const totalVotes = selfVotes + BigInt(delegationVotes);
+  return {
+    impact: !isAye,
+    votes: totalVotes,
+  };
+}
 
-const getDelegationImpactVotes = (data) => {
-  if (!data?.vote?.isStandard) {
+function getDelegatedActionImpact(data) {
+  const {
+    vote: { isStandard, vote: { vote: { isAye } = {} } = {} } = {},
+    delegation: { balance, conviction } = {},
+    preDelegation,
+  } = data || {};
+  if (!isStandard) {
     return ZERO_VOTES;
   }
 
-  const delegationVotes = calculateVotesWithConviction(
-    data?.delegation?.balance,
-    data?.delegation?.conviction,
-  );
-
-  const isAye = data?.vote?.vote?.isAye;
-
-  if (data?.preDelegation) {
-    const preDelegationVotes = calculateVotesWithConviction(
-      data?.preDelegation?.balance,
-      data?.preDelegation?.conviction,
+  let votes = getVotesWithConviction(balance, conviction);
+  if (preDelegation) {
+    const preVotes = getVotesWithConviction(
+      preDelegation?.balance,
+      preDelegation?.conviction,
     );
+    votes -= preVotes;
+  }
+  return {
+    impact: isAye && votes > 0,
+    votes: absBigInt(votes),
+  };
+}
 
-    const votesDiff = delegationVotes.minus(preDelegationVotes);
-    const impact = votesDiff.isNegative() ? !isAye : isAye;
-
-    return {
-      impact,
-      votes: votesDiff.abs().toString(),
-    };
+function getUndelegatedActionImpact(data) {
+  const {
+    vote: { isStandard, vote: { vote: { isAye } = {} } = {} } = {},
+    delegation: { balance, conviction } = {},
+  } = data || {};
+  if (!isStandard) {
+    return ZERO_VOTES;
   }
 
+  const votes = getVotesWithConviction(balance, conviction);
   return {
-    impact: isAye,
-    votes: delegationVotes.toString(),
+    impact: !isAye,
+    votes,
   };
-};
+}
 
 const getImpactVotes = (data, type) => {
   if (!data || !type) {
     return ZERO_VOTES;
   }
 
-  if (isDirectVote(type)) {
-    return getDirectImpactVotes(data);
-  }
-
-  if (isDelegation(type)) {
-    return getDelegationImpactVotes(data);
+  if (OPENGOV_ACTIONS.VOTE === type) {
+    return getVoteActionImpact(data);
+  } else if (OPENGOV_ACTIONS.REMOVE_VOTE === type) {
+    return getRemoveVoteActionImpact(data);
+  } else if (OPENGOV_ACTIONS.DELEGATED === type) {
+    return getDelegatedActionImpact(data);
+  } else if (OPENGOV_ACTIONS.UNDELEGATED === type) {
+    return getUndelegatedActionImpact(data);
   }
 
   return ZERO_VOTES;

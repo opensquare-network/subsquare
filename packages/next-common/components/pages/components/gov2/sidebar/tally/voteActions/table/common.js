@@ -4,6 +4,13 @@ import {
   SystemVoteAbstain,
 } from "@osn/icons/subsquare";
 
+export const OPENGOV_ACTIONS = Object.freeze({
+  VOTE: 1,
+  REMOVE_VOTE: 2,
+  DELEGATED: 3,
+  UNDELEGATED: 4,
+});
+
 export const VOTE_ACTION_TYPES = {
   1: "Vote",
   2: "Remove Vote",
@@ -27,19 +34,17 @@ export const VOTE_TYPE_CONFIG = {
   },
 };
 
-export const isDirectVote = (type) => type === 1 || type === 2;
-export const isDelegation = (type) => type === 3 || type === 4;
+export const isDirectVote = (type) =>
+  type === OPENGOV_ACTIONS.VOTE || type === OPENGOV_ACTIONS.REMOVE_VOTE;
+export const isDelegation = (type) =>
+  type === OPENGOV_ACTIONS.DELEGATED || type === OPENGOV_ACTIONS.UNDELEGATED;
 
 export function getVoteType(data) {
   if (data?.isStandard) {
     return VOTE_TYPES.STANDARD;
-  }
-
-  if (data?.isSplit) {
+  } else if (data?.isSplit) {
     return VOTE_TYPES.SPLIT;
-  }
-
-  if (data?.isSplitAbstain) {
+  } else if (data?.isSplitAbstain) {
     return VOTE_TYPES.SPLIT_ABSTAIN;
   }
 
