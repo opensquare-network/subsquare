@@ -121,6 +121,7 @@ const getImpactVotes = (data, type) => {
   }
 
   if (OPENGOV_ACTIONS.VOTE === type) {
+    // fixme: vote impact should also consider preVote
     return getVoteActionImpact(data);
   } else if (OPENGOV_ACTIONS.REMOVE_VOTE === type) {
     return getRemoveVoteActionImpact(data);
