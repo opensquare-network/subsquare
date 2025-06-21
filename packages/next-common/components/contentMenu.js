@@ -27,6 +27,7 @@ import { useClickAway } from "react-use";
 import CancelReferendumPopup from "./summary/newProposalQuickStart/cancelReferendumInnerPopup";
 import KillReferendumPopup from "./summary/newProposalQuickStart/killReferendumInnerPopup";
 import { useChainSettings } from "next-common/context/chain";
+import useTerminateAction from "next-common/hooks/useTerminateAction";
 
 const DeletePopup = dynamicPopup(() => import("./deletePopup"));
 
@@ -268,6 +269,10 @@ export function PostContextMenu({ isAuthor, editable, setIsEdit }) {
     useState(false);
   const [showKillReferendumPopup, setShowKillReferendumPopup] = useState(false);
   const isAdmin = useIsAdmin();
+  const { actionsComponent, popupComponent } =
+    useTerminateAction({
+      onShowPopup: () => setShow(false),
+    }) || {};
 
   const { newProposalQuickStart: { cancelReferendum, killReferendum } = {} } =
     useChainSettings();
@@ -327,6 +332,7 @@ export function PostContextMenu({ isAuthor, editable, setIsEdit }) {
               setShow={setShow}
             />
           )}
+          {actionsComponent}
           <ReportMenuItem
             setShowReportPopup={setShowReportPopup}
             setShow={setShow}
@@ -371,6 +377,7 @@ export function PostContextMenu({ isAuthor, editable, setIsEdit }) {
           onClose={() => setShowKillReferendumPopup(false)}
         />
       )}
+      {popupComponent}
     </Wrapper>
   );
 }

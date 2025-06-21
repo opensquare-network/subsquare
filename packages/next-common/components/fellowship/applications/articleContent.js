@@ -33,7 +33,7 @@ const Wrapper = styled.div`
 function NotInductedApplicant({ address }) {
   return (
     <div className="flex justify-between items-center rounded-[8px] border border-neutral400 p-[16px]">
-      <div className="flex gap-[16px]">
+      <div className="flex flex-1 min-w-0 gap-[16px]">
         <AddressAvatar address={address} size={40} />
         <IdentityInfo address={address} />
       </div>
@@ -89,7 +89,7 @@ function InductedApplicant({ address }) {
 
   return (
     <div className="flex justify-between items-center rounded-[8px] border border-neutral400 p-[16px]">
-      <div className="flex items-center gap-[16px]">
+      <div className="flex items-center flex-1 min-w-0 gap-[16px]">
         <FellowshipRank rank={rank} />
         <div className="flex gap-[12px]">
           <AddressAvatar address={address} size={40} />

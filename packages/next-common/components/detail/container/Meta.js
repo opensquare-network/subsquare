@@ -12,6 +12,14 @@ import PostLabels from "../../postLabels";
 import { getDemocracyStateArgs } from "../../../utils/democracy/result";
 import PostMetaBase from "./postMeta/metaBase";
 import CommentsMeta from "./postMeta/comments";
+import dynamic from "next/dynamic";
+
+const FellowshipApplicationTag = dynamic(
+  () => import("next-common/components/tags/state/fellowshipApplication"),
+  {
+    ssr: false,
+  },
+);
 
 export default function PostMeta() {
   const postState = usePostState();
@@ -34,18 +42,35 @@ export default function PostMeta() {
   ) {
     stateArgs = getGov2ReferendumStateArgs(post.onchainData.state);
   } else if (detailPageCategory.DEMOCRACY_REFERENDUM === detailType) {
-    stateArgs = getDemocracyStateArgs(post.onchainData.state, post.onchainData.timeline);
+    stateArgs = getDemocracyStateArgs(
+      post.onchainData.state,
+      post.onchainData.timeline,
+    );
   }
 
-  return <PostMetaBase
-    state={ postState ? <Tag state={ postState } category={ detailType } args={ stateArgs } /> : null }
-  >
-    <TypeTag type={detailType} />
-    <UpdatedTime />
-    <CommentsMeta />
-    {detailPageCategory.ALLIANCE_ANNOUNCEMENT === detailType && (
-      <IpfsLink cid={post.cid} />
-    )}
-    <PostLabels labels={post.labels} />
-  </PostMetaBase>;
+  const isFellowshipApplication =
+    detailType === detailPageCategory.FELLOWSHIP_APPLICATION;
+
+  let mateState;
+  if (postState) {
+    mateState = (
+      <Tag state={postState} category={detailType} args={stateArgs} />
+    );
+  }
+
+  if (isFellowshipApplication && post) {
+    mateState = <FellowshipApplicationTag state={post.status} />;
+  }
+
+  return (
+    <PostMetaBase state={mateState}>
+      <TypeTag type={detailType} />
+      <UpdatedTime />
+      <CommentsMeta />
+      {detailPageCategory.ALLIANCE_ANNOUNCEMENT === detailType && (
+        <IpfsLink cid={post.cid} />
+      )}
+      <PostLabels labels={post.labels} />
+    </PostMetaBase>
+  );
 }
