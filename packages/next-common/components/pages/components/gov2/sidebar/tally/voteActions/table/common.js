@@ -1,0 +1,52 @@
+import {
+  SystemVoteAye,
+  SystemVoteNay,
+  SystemVoteAbstain,
+} from "@osn/icons/subsquare";
+
+export const OPENGOV_ACTIONS = Object.freeze({
+  VOTE: 1,
+  REMOVE_VOTE: 2,
+  DELEGATED: 3,
+  UNDELEGATED: 4,
+});
+
+export const VOTE_ACTION_TYPES = {
+  1: "Vote",
+  2: "Remove Vote",
+  3: "Delegate",
+  4: "Remove Delegation",
+};
+
+export const VOTE_TYPES = {
+  STANDARD: "Standard",
+  SPLIT: "Split",
+  SPLIT_ABSTAIN: "SplitAbstain",
+};
+
+export const VOTE_TYPE_CONFIG = {
+  aye: { icon: SystemVoteAye, label: "Aye", color: "text-green500" },
+  nay: { icon: SystemVoteNay, label: "Nay", color: "text-red500" },
+  abstain: {
+    icon: SystemVoteAbstain,
+    label: "Abstain",
+    color: "text-textTertiary",
+  },
+};
+
+export const isDirectVote = (type) =>
+  type === OPENGOV_ACTIONS.VOTE || type === OPENGOV_ACTIONS.REMOVE_VOTE;
+export const isDelegation = (type) =>
+  type === OPENGOV_ACTIONS.DELEGATED || type === OPENGOV_ACTIONS.UNDELEGATED;
+
+export function getVoteType(data) {
+  if (data?.isStandard) {
+    return VOTE_TYPES.STANDARD;
+  } else if (data?.isSplit) {
+    return VOTE_TYPES.SPLIT;
+  } else if (data?.isSplitAbstain) {
+    return VOTE_TYPES.SPLIT_ABSTAIN;
+  }
+
+  return null;
+}
