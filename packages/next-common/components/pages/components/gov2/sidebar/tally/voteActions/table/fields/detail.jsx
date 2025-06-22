@@ -35,10 +35,6 @@ function VoteLabel({ type }) {
   );
 }
 
-function ZeroValueDisplay() {
-  return <span>-</span>;
-}
-
 function useIsZeroValue(value) {
   return useMemo(() => new BigNumber(value).eq(0), [value]);
 }
@@ -48,7 +44,7 @@ function DetailVoteValue({ balance, conviction }) {
   const isZero = useIsZeroValue(balance);
 
   if (isZero) {
-    return <ZeroValueDisplay />;
+    return 0;
   }
 
   return (
@@ -68,7 +64,7 @@ function CurrencyValue({ value }) {
   const isZero = useIsZeroValue(value);
 
   if (isZero) {
-    return <ZeroValueDisplay />;
+    return 0;
   }
 
   return <ValueDisplay value={toPrecision(value, decimals)} symbol={symbol} />;
@@ -84,15 +80,15 @@ function VoteDetailRow({ label, children }) {
 }
 
 function StandardVotesDetail({ data }) {
-  const voteType = data?.vote?.vote?.isAye ? "aye" : "nay";
+  const voteType = data?.vote?.vote?.vote?.isAye ? "aye" : "nay";
 
   return (
     <>
       <VoteDetailRow label={<VoteLabel type={voteType} />} />
       <VoteDetailRow label="self vote">
         <DetailVoteValue
-          balance={data?.vote?.balance}
-          conviction={data?.vote?.vote?.conviction}
+          balance={data?.vote?.vote?.balance}
+          conviction={data?.vote?.vote?.vote?.conviction}
         />
       </VoteDetailRow>
       <VoteDetailRow label="delegation">
@@ -106,10 +102,10 @@ function SplitVotesDetail({ data }) {
   return (
     <>
       <VoteDetailRow label={<VoteLabel type="aye" />}>
-        <CurrencyValue value={data?.vote?.aye} />
+        <CurrencyValue value={data?.vote?.vote?.aye} />
       </VoteDetailRow>
       <VoteDetailRow label={<VoteLabel type="nay" />}>
-        <CurrencyValue value={data?.vote?.nay} />
+        <CurrencyValue value={data?.vote?.vote?.nay} />
       </VoteDetailRow>
     </>
   );
@@ -119,13 +115,13 @@ function SplitAbstainVotesDetail({ data }) {
   return (
     <>
       <VoteDetailRow label={<VoteLabel type="aye" />}>
-        <CurrencyValue value={data?.vote?.aye} />
+        <CurrencyValue value={data?.vote?.vote?.aye} />
       </VoteDetailRow>
       <VoteDetailRow label={<VoteLabel type="nay" />}>
-        <CurrencyValue value={data?.vote?.nay} />
+        <CurrencyValue value={data?.vote?.vote?.nay} />
       </VoteDetailRow>
       <VoteDetailRow label={<VoteLabel type="abstain" />}>
-        <CurrencyValue value={data?.vote?.abstain} />
+        <CurrencyValue value={data?.vote?.vote?.abstain} />
       </VoteDetailRow>
     </>
   );
@@ -134,15 +130,11 @@ function SplitAbstainVotesDetail({ data }) {
 function VotesDetail({ data }) {
   if (!data) return null;
 
-  if (data.isStandard) {
+  if (data.vote?.isStandard) {
     return <StandardVotesDetail data={data} />;
-  }
-
-  if (data.isSplit) {
+  } else if (data.vote?.isSplit) {
     return <SplitVotesDetail data={data} />;
-  }
-
-  if (data.isSplitAbstain) {
+  } else if (data.vote?.isSplitAbstain) {
     return <SplitAbstainVotesDetail data={data} />;
   }
 
@@ -179,9 +171,7 @@ function DelegationVoteDetail({ data, type }) {
 export default function VoteDetailField({ data, type }) {
   if (isDirectVote(type)) {
     return <DirectVoteDetail data={data} />;
-  }
-
-  if (isDelegation(type)) {
+  } else if (isDelegation(type)) {
     return <DelegationVoteDetail data={data} type={type} />;
   }
 

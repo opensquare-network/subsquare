@@ -30,9 +30,9 @@ function getSplitVotes(aye, nay) {
 }
 
 function getVoteActionImpact(data) {
-  const { isSplit, isSplitAbstain } = data || {};
+  const { isSplit, isSplitAbstain } = data.vote || {};
   if (isSplit || isSplitAbstain) {
-    const { aye, nay } = data?.vote || {};
+    const { aye, nay } = data?.vote?.vote || {};
     const votes = getSplitVotes(aye, nay);
     return {
       impact: votes > 0,
@@ -41,7 +41,7 @@ function getVoteActionImpact(data) {
   }
 
   const {
-    vote: { balance, vote: { isAye, conviction } = {} },
+    vote: { vote: { balance, vote: { isAye, conviction } = {} } } = {},
     delegations: { votes: delegationVotes } = {},
   } = data || {};
   const selfVotes = getVotesWithConviction(balance, conviction);
@@ -53,9 +53,9 @@ function getVoteActionImpact(data) {
 }
 
 function getRemoveVoteActionImpact(data) {
-  const { isSplit, isSplitAbstain } = data || {};
+  const { isSplit, isSplitAbstain } = data?.vote || {};
   if (isSplit || isSplitAbstain) {
-    const { aye, nay } = data?.vote || {};
+    const { aye, nay } = data?.vote?.vote || {};
     const votes = getSplitVotes(aye, nay);
     return {
       impact: votes <= 0,
@@ -64,7 +64,7 @@ function getRemoveVoteActionImpact(data) {
   }
 
   const {
-    vote: { balance, vote: { isAye, conviction } = {} },
+    vote: { vote: { balance, vote: { isAye, conviction } = {} } } = {},
     delegations: { votes: delegationVotes } = {},
   } = data || {};
   const selfVotes = getVotesWithConviction(balance, conviction);
