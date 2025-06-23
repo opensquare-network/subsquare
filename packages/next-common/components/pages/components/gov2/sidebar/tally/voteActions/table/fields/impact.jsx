@@ -29,26 +29,36 @@ function getSplitVotes(aye, nay) {
   return BigInt(aye) - BigInt(nay);
 }
 
-function getVoteActionImpact(data) {
-  const { isSplit, isSplitAbstain } = data.vote || {};
+function getDirectVotes(vote, delegations) {
+  if (!vote) {
+    return BigInt(0);
+  }
+
+  const { isSplit, isSplitAbstain, isStandard } = vote;
   if (isSplit || isSplitAbstain) {
-    const { aye, nay } = data?.vote?.vote || {};
-    const votes = getSplitVotes(aye, nay);
-    return {
-      impact: votes > 0,
-      votes: absBigInt(votes),
-    };
+    const { aye = 0, nay = 0 } = vote?.vote || {};
+    return getSplitVotes(aye, nay);
+  } else if (!isStandard) {
+    throw new Error("Unknown direct vote type");
   }
 
   const {
-    vote: { vote: { balance, vote: { isAye, conviction } = {} } } = {},
-    delegations: { votes: delegationVotes } = {},
-  } = data || {};
+    balance,
+    vote: { isAye, conviction },
+  } = vote?.vote || {};
+  const { votes: delegationVotes = 0 } = delegations;
   const selfVotes = getVotesWithConviction(balance, conviction);
   const totalVotes = selfVotes + BigInt(delegationVotes);
+  return isAye ? totalVotes : BigInt(0) - totalVotes;
+}
+
+function getVoteActionImpact(data = {}) {
+  const preImpactVotes = getDirectVotes(data.preVote, data.delegations);
+  const nowImpactVotes = getDirectVotes(data.vote, data.delegations);
+  const finalVotes = nowImpactVotes - preImpactVotes;
   return {
-    impact: isAye,
-    votes: totalVotes,
+    impact: finalVotes > 0,
+    votes: absBigInt(finalVotes),
   };
 }
 
@@ -121,7 +131,6 @@ const getImpactVotes = (data, type) => {
   }
 
   if (OPENGOV_ACTIONS.VOTE === type) {
-    // fixme: vote impact should also consider preVote
     return getVoteActionImpact(data);
   } else if (OPENGOV_ACTIONS.REMOVE_VOTE === type) {
     return getRemoveVoteActionImpact(data);
