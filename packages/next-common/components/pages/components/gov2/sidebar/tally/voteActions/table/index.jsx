@@ -3,7 +3,8 @@ import { useOnchainData } from "next-common/context/post";
 import { desktopColumns, mobileColumns } from "./columns";
 import { cn } from "next-common/utils";
 import VirtualList from "next-common/components/dataList/virtualList";
-import { useMemo } from "react";
+import { useMemo, useCallback } from "react";
+import useSearchVotes from "next-common/hooks/useSearchVotes";
 
 function DesktopTable({ voteActions, loading }) {
   const getItemSize = useMemo(() => {
@@ -96,18 +97,20 @@ function MobileTable({ voteActions, loading }) {
   );
 }
 
-// TODO: Mobile scroll & `getItemSize` after new style is ready
-export default function VoteActionsTable() {
+export default function VoteActionsTable({ search = "" }) {
   const { referendumIndex } = useOnchainData();
-  const { loading, voteActions } = useQueryVoteActions(referendumIndex);
+  const { loading, voteActions = [] } = useQueryVoteActions(referendumIndex);
+
+  const getVoter = useCallback((vote) => vote.who, []);
+  const filteredVoteActions = useSearchVotes(search, voteActions, getVoter);
 
   return (
     <>
       <div className="max-md:hidden">
-        <DesktopTable voteActions={voteActions} loading={loading} />
+        <DesktopTable voteActions={filteredVoteActions} loading={loading} />
       </div>
       <div className="hidden max-md:block">
-        <MobileTable voteActions={voteActions} loading={loading} />
+        <MobileTable voteActions={filteredVoteActions} loading={loading} />
       </div>
     </>
   );
