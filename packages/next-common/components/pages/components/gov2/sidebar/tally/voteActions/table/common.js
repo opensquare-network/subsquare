@@ -19,9 +19,9 @@ export const VOTE_ACTION_TYPES = {
 };
 
 export const VOTE_TYPES = {
-  STANDARD: "Standard",
-  SPLIT: "Split",
-  SPLIT_ABSTAIN: "SplitAbstain",
+  STANDARD: "standard",
+  SPLIT: "split",
+  SPLIT_ABSTAIN: "splitAbstain",
 };
 
 export const VOTE_TYPE_CONFIG = {

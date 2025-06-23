@@ -1,10 +1,8 @@
-import { useMemo } from "react";
 import AddressUser from "next-common/components/user/addressUser";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import { convictionToLockX } from "next-common/utils/referendumCommon";
-import BigNumber from "bignumber.js";
 import {
   VOTE_TYPE_CONFIG,
   isDirectVote,
@@ -14,8 +12,8 @@ import {
 
 function DetailLabel({ children }) {
   return (
-    <div className="inline-flex items-center text14Medium text-textTertiary w-[120px]">
-      {children}
+    <div className="inline-flex items-center text14Medium text-textTertiary">
+      {children}&nbsp;
     </div>
   );
 }
@@ -35,39 +33,27 @@ function VoteLabel({ type }) {
   );
 }
 
-function useIsZeroValue(value) {
-  return useMemo(() => new BigNumber(value).eq(0), [value]);
+function CurrencyValue({ balance }) {
+  const { symbol, decimals } = useChainSettings();
+
+  return (
+    <ValueDisplay value={toPrecision(balance, decimals)} symbol={symbol} />
+  );
 }
 
 function DetailVoteValue({ balance, conviction }) {
-  const { symbol, decimals } = useChainSettings();
-  const isZero = useIsZeroValue(balance);
-
-  if (isZero) {
-    return 0;
-  }
-
   return (
     <div>
-      <ValueDisplay value={toPrecision(balance, decimals)} symbol={symbol} />
+      <span>(</span>
+      <CurrencyValue balance={balance} />
       {conviction !== undefined && (
         <span className="text-textTertiary">
           *{convictionToLockX(conviction)}
         </span>
       )}
+      <span>)</span>
     </div>
   );
-}
-
-function CurrencyValue({ value }) {
-  const { symbol, decimals } = useChainSettings();
-  const isZero = useIsZeroValue(value);
-
-  if (isZero) {
-    return 0;
-  }
-
-  return <ValueDisplay value={toPrecision(value, decimals)} symbol={symbol} />;
 }
 
 function VoteDetailRow({ label, children }) {
@@ -84,15 +70,14 @@ function StandardVotesDetail({ data }) {
 
   return (
     <>
-      <VoteDetailRow label={<VoteLabel type={voteType} />} />
-      <VoteDetailRow label="self vote">
+      <VoteDetailRow label={<VoteLabel type={voteType} />}>
         <DetailVoteValue
           balance={data?.vote?.vote?.balance}
           conviction={data?.vote?.vote?.vote?.conviction}
         />
       </VoteDetailRow>
-      <VoteDetailRow label="delegation">
-        <CurrencyValue value={data?.delegations?.votes} />
+      <VoteDetailRow label="delegations:">
+        <CurrencyValue balance={data?.delegations?.votes} />
       </VoteDetailRow>
     </>
   );
@@ -102,10 +87,10 @@ function SplitVotesDetail({ data }) {
   return (
     <>
       <VoteDetailRow label={<VoteLabel type="aye" />}>
-        <CurrencyValue value={data?.vote?.vote?.aye} />
+        <DetailVoteValue balance={data?.vote?.vote?.aye} />
       </VoteDetailRow>
       <VoteDetailRow label={<VoteLabel type="nay" />}>
-        <CurrencyValue value={data?.vote?.vote?.nay} />
+        <DetailVoteValue balance={data?.vote?.vote?.nay} />
       </VoteDetailRow>
     </>
   );
@@ -115,13 +100,13 @@ function SplitAbstainVotesDetail({ data }) {
   return (
     <>
       <VoteDetailRow label={<VoteLabel type="aye" />}>
-        <CurrencyValue value={data?.vote?.vote?.aye} />
+        <DetailVoteValue balance={data?.vote?.vote?.aye} />
       </VoteDetailRow>
       <VoteDetailRow label={<VoteLabel type="nay" />}>
-        <CurrencyValue value={data?.vote?.vote?.nay} />
+        <DetailVoteValue balance={data?.vote?.vote?.nay} />
       </VoteDetailRow>
       <VoteDetailRow label={<VoteLabel type="abstain" />}>
-        <CurrencyValue value={data?.vote?.vote?.abstain} />
+        <DetailVoteValue balance={data?.vote?.vote?.abstain} />
       </VoteDetailRow>
     </>
   );
@@ -144,10 +129,10 @@ function VotesDetail({ data }) {
 function DirectVoteDetail({ data }) {
   return (
     <div className="flex flex-col">
-      <VoteDetailRow label="vote type">
-        <span>{getVoteType(data)}</span>
-      </VoteDetailRow>
       <VotesDetail data={data} />
+      <VoteDetailRow label="vote type:">
+        <span className="text-textTertiary">{getVoteType(data)}</span>
+      </VoteDetailRow>
     </div>
   );
 }
