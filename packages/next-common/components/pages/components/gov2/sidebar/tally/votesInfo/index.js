@@ -30,11 +30,7 @@ function ConditionalVotes() {
     return referendumIndex >= referendaActions?.startFrom;
   }, [referendaActions, referendumIndex]);
 
-  if (shouldUseVoteActions) {
-    return <VoteActions />;
-  }
-
-  return <CallsVotes />;
+  return shouldUseVoteActions ? <VoteActions /> : <CallsVotes />;
 }
 
 function VotesInfo() {
