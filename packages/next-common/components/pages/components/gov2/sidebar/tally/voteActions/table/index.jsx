@@ -6,6 +6,7 @@ import VirtualList from "next-common/components/dataList/virtualList";
 import { useMemo, useCallback } from "react";
 import useSearchVotes from "next-common/hooks/useSearchVotes";
 
+// TODO: item height
 function DesktopTable({ voteActions, loading }) {
   const getItemSize = useMemo(() => {
     return (index) => {
@@ -43,6 +44,7 @@ function DesktopTable({ voteActions, loading }) {
       listHeight={400}
       overscanCount={3}
       noDataText="No data"
+      className="scrollbar-hidden"
     />
   );
 }
@@ -84,6 +86,7 @@ function MobileTable({ voteActions, loading }) {
       className={cn(
         "[&_.datalist_.descriptions-item-label]:hidden",
         "[&_.datalist_.descriptions-item-value]:w-full",
+        "scrollbar-hidden",
       )}
       columns={virtualColumns}
       rows={virtualRows}

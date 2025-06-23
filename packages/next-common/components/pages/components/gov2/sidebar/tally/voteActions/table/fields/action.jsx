@@ -9,7 +9,7 @@ export default function ActionField({ type, indexer, className }) {
       <div className="text-textPrimary text14Medium">
         {VOTE_ACTION_TYPES[type]}
       </div>
-      <ExplorerLink indexer={indexer}>
+      <ExplorerLink indexer={indexer} style={{ fontSize: "12px" }}>
         <div className="text-textTertiary hover:underline">
           <span>{formatDateTime(indexer?.blockTime)}</span>
           <span>&nbsp;↗</span>
