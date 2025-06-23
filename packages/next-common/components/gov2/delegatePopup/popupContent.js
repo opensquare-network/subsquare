@@ -1,8 +1,6 @@
-import { useCallback, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useState } from "react";
 
 import { useAddressVotingBalance } from "next-common/utils/hooks/useAddressVotingBalance";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { checkInputValue, isSameAddress } from "next-common/utils";
 import Signer from "next-common/components/popup/fields/signerField";
 
@@ -20,10 +18,11 @@ import { useContextApi } from "next-common/context/api";
 import { normalizeAddress } from "next-common/utils/address";
 import { noop } from "lodash-es";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import EstimatedGas from "next-common/components/estimatedGas";
+import { useTxBuilder } from "next-common/hooks/useTxBuilder";
 
 export default function PopupContent({ defaultTargetAddress, targetDisabled }) {
   const { tracks, showTrackSelect = true, onInBlock = noop } = usePopupParams();
-  const dispatch = useDispatch();
 
   const signerAccount = useSignerAccount();
   const extensionAccounts = useExtensionAccounts();
@@ -42,74 +41,72 @@ export default function PopupContent({ defaultTargetAddress, targetDisabled }) {
   const [conviction, setConviction] = useState(0);
   const [selectedTracks, setSelectedTracks] = useState(tracks);
 
-  const showErrorToast = (message) => dispatch(newErrorToast(message));
+  const { getTxFuncForSubmit, getTxFuncForFee } = useTxBuilder(
+    (toastError) => {
+      if (selectedTracks?.length === 0) {
+        toastError("Please select at least one track");
+        return;
+      }
 
-  const getTxFunc = useCallback(async () => {
-    if (selectedTracks.length === 0) {
-      showErrorToast("Please select at least one track");
-      return;
-    }
+      let bnVoteBalance;
+      try {
+        bnVoteBalance = checkInputValue(
+          inputVoteBalance,
+          node.decimals,
+          "vote balance",
+        );
+      } catch (err) {
+        toastError(err.message);
+        return;
+      }
 
-    let bnVoteBalance;
-    try {
-      bnVoteBalance = checkInputValue(
-        inputVoteBalance,
-        node.decimals,
-        "vote balance",
-      );
-    } catch (err) {
-      showErrorToast(err.message);
-      return;
-    }
+      if (bnVoteBalance.gt(votingBalance)) {
+        toastError("Insufficient voting balance");
+        return;
+      }
 
-    if (bnVoteBalance.gt(votingBalance)) {
-      showErrorToast("Insufficient voting balance");
-      return;
-    }
+      if (!targetAddress) {
+        toastError("Please select a target address");
+        return;
+      }
 
-    if (!targetAddress) {
-      showErrorToast("Please select a target address");
-      return;
-    }
+      if (isSameAddress(targetAddress, signerAccount?.realAddress)) {
+        toastError("Target address cannot be same with the delegator address");
+        return;
+      }
 
-    if (isSameAddress(targetAddress, signerAccount?.realAddress)) {
-      showErrorToast(
-        "Target address cannot be same with the delegator address",
-      );
-      return;
-    }
-
-    let tx;
-    if (selectedTracks.length === 1) {
-      tx = api.tx.convictionVoting.delegate(
-        selectedTracks[0],
-        targetAddress,
-        conviction,
-        bnVoteBalance.toString(),
-      );
-    } else {
-      tx = api.tx.utility.batch(
-        selectedTracks.map((trackId) =>
-          api.tx.convictionVoting.delegate(
-            trackId,
-            targetAddress,
-            conviction,
-            bnVoteBalance.toString(),
+      let tx;
+      if (selectedTracks.length === 1) {
+        tx = api.tx.convictionVoting.delegate(
+          selectedTracks[0],
+          targetAddress,
+          conviction,
+          bnVoteBalance.toString(),
+        );
+      } else {
+        tx = api.tx.utility.batch(
+          selectedTracks.map((trackId) =>
+            api.tx.convictionVoting.delegate(
+              trackId,
+              targetAddress,
+              conviction,
+              bnVoteBalance.toString(),
+            ),
           ),
-        ),
-      );
-    }
+        );
+      }
 
-    return tx;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    api,
-    signerAccount,
-    targetAddress,
-    selectedTracks,
-    inputVoteBalance,
-    conviction,
-  ]);
+      return tx;
+    },
+    [
+      api,
+      signerAccount,
+      targetAddress,
+      selectedTracks,
+      inputVoteBalance,
+      conviction,
+    ],
+  );
 
   const disabled = !(selectedTracks?.length > 0);
 
@@ -146,10 +143,11 @@ export default function PopupContent({ defaultTargetAddress, targetDisabled }) {
         setConviction={setConviction}
       />
       <TxSubmissionButton
-        getTxFunc={getTxFunc}
+        getTxFunc={getTxFuncForSubmit}
         onInBlock={onInBlock}
         disabled={disabled}
       />
+      <EstimatedGas getTxFunc={getTxFuncForFee} />
     </>
   );
 }
