@@ -20,6 +20,8 @@ export default function VirtualList({
   itemHeight = 50,
   listHeight = 400,
   overscanCount = 20,
+  variableSize = false,
+  getItemSize,
 }) {
   const listRef = useRef();
   const [navCollapsed] = useNavCollapsed();
@@ -62,10 +64,18 @@ export default function VirtualList({
       : {}),
   }));
 
-  const minListHeight = Math.min(rows.length * itemHeight, listHeight);
-
-  const calculatedListHeight =
-    rows.length * itemHeight <= listHeight ? minListHeight : listHeight;
+  let calculatedListHeight;
+  if (variableSize && getItemSize) {
+    const totalHeight = rows.reduce(
+      (acc, _, index) => acc + getItemSize(index),
+      0,
+    );
+    calculatedListHeight = Math.min(totalHeight, listHeight);
+  } else {
+    const minListHeight = Math.min(rows.length * itemHeight, listHeight);
+    calculatedListHeight =
+      rows.length * itemHeight <= listHeight ? minListHeight : listHeight;
+  }
 
   let content;
   if (loading) {
@@ -86,6 +96,8 @@ export default function VirtualList({
         listHeight={calculatedListHeight}
         scrollToFirstRowOnChange={scrollToFirstRowOnChange}
         overscanCount={overscanCount}
+        variableSize={variableSize}
+        getItemSize={getItemSize}
       />
     );
   }
