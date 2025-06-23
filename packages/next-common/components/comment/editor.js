@@ -20,7 +20,6 @@ import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { getRealField } from "next-common/sima/actions/common";
 
 const Wrapper = styled.div`
-  margin-top: 48px;
   ${(p) =>
     p.isReply &&
     css`
@@ -72,6 +71,7 @@ function CommentEditor(
     setContentType,
     setQuillRef = () => {},
     users = [],
+    wrapperClassName = "mt-12",
   },
   ref,
 ) {
@@ -82,7 +82,8 @@ function CommentEditor(
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
   const isMounted = useMountedState();
-  const { createPostComment, createCommentReply } = useCommentActions();
+  const { createPostComment, createCommentReply, preventPageRefresh } =
+    useCommentActions();
 
   const shouldUseSima = useShouldUseSima(comment);
 
@@ -123,12 +124,14 @@ function CommentEditor(
         if (isReply) {
           onFinishedEdit(true);
         } else {
-          await router.replace(router.asPath);
-          setTimeout(() => {
-            if (isMounted()) {
-              window && window.scrollTo(0, document.body.scrollHeight);
-            }
-          }, 4);
+          if (!preventPageRefresh) {
+            await router.replace(router.asPath);
+            setTimeout(() => {
+              if (isMounted()) {
+                window && window.scrollTo(0, document.body.scrollHeight);
+              }
+            }, 4);
+          }
         }
       }
     } catch (e) {
@@ -159,7 +162,7 @@ function CommentEditor(
   };
 
   return (
-    <Wrapper isReply={isReply}>
+    <Wrapper className={wrapperClassName} isReply={isReply}>
       <Editor
         ref={ref}
         value={content}

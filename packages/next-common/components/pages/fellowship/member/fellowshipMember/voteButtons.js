@@ -13,7 +13,7 @@ import CreatePromotionReferendumAndVoteButton from "next-common/components/overv
 function AyeButton({ disabled, onClick }) {
   return (
     <PrimaryButton
-      className={cn("!bg-green500", disabled && "opacity-40")}
+      className={cn("!bg-green500", disabled && "opacity-40", "w-full")}
       disabled={disabled}
       onClick={onClick}
     >
@@ -25,7 +25,7 @@ function AyeButton({ disabled, onClick }) {
 function NayButton({ disabled, onClick }) {
   return (
     <PrimaryButton
-      className={cn("!bg-red500", disabled && "opacity-40")}
+      className={cn("!bg-red500", disabled && "opacity-40", "w-full")}
       disabled={disabled}
       onClick={onClick}
     >
@@ -34,13 +34,13 @@ function NayButton({ disabled, onClick }) {
   );
 }
 
-export function ReferendumVoteButtons({ referendumIndex }) {
+export function ReferendumVoteButtons({ referendumIndex, className }) {
   const dispatch = useDispatch();
   const realAddress = useRealAddress();
 
   if (!realAddress) {
     return (
-      <div className="flex gap-[8px] items-center justify-end">
+      <div className={cn("flex gap-[8px] items-center justify-end", className)}>
         <Tooltip content="Please connect your wallet to vote">
           <AyeButton disabled={true} />
         </Tooltip>
@@ -52,7 +52,7 @@ export function ReferendumVoteButtons({ referendumIndex }) {
   }
 
   return (
-    <div className="flex gap-[8px] items-center justify-end">
+    <div className={cn("flex gap-[8px] items-center justify-end", className)}>
       <VoteButton
         referendumIndex={referendumIndex}
         voteAye={true}
