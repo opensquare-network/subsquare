@@ -15,9 +15,14 @@ export const mobileColumns = [
     render: ({ who }) => <AddressUser key="user" add={who} />,
   },
   {
-    render: ({ type, indexer }) => (
+    render: ({ type, indexer, data }) => (
       <MobileRow label="Action">
-        <ActionField type={type} indexer={indexer} className="items-end" />
+        <ActionField
+          type={type}
+          indexer={indexer}
+          data={data}
+          className="items-end"
+        />
       </MobileRow>
     ),
   },
@@ -49,8 +54,8 @@ export const desktopColumns = [
     name: "Action",
     width: 200,
     className: "text-left",
-    render: ({ type, indexer }) => (
-      <ActionField type={type} indexer={indexer} />
+    render: ({ type, indexer, data }) => (
+      <ActionField type={type} indexer={indexer} data={data} />
     ),
   },
   {
