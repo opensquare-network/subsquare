@@ -7,7 +7,7 @@ export const finalStateMap = {
 };
 
 export const formattedViewMap = {
-  [finalStateMap.New]: "applying",
+  [finalStateMap.New]: "active",
   [finalStateMap.Inducted]: "inducted",
   [finalStateMap.Rejected]: "rejected",
   [finalStateMap.Invalid]: "invalid",
