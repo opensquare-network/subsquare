@@ -48,39 +48,48 @@ function VotePanel({
     addressVote?.delegating && addressVote?.delegating?.voted;
   const isDelegated = !!addressVote?.delegating;
 
-  const { StandardVoteComponent, getStandardVoteTx } = useStandardVote({
-    module: "convictionVoting",
-    referendumIndex,
-    isAye: tabIndex === Aye,
-    addressVoteDelegations: addressVote?.delegations,
-    isLoading,
-    votingBalance,
-    showReUseLocks: true,
-  });
-  const { SplitVoteComponent, getSplitVoteTx } = useSplitVote({
-    module: "convictionVoting",
-    referendumIndex,
-    isLoading,
-    votingBalance,
-  });
-  const { SplitAbstainVoteComponent, getSplitAbstainVoteTx } =
-    useSplitAbstainVote({
+  const { StandardVoteComponent, getStandardVoteTx, getStandardVoteFeeTx } =
+    useStandardVote({
+      module: "convictionVoting",
+      referendumIndex,
+      isAye: tabIndex === Aye,
+      addressVoteDelegations: addressVote?.delegations,
+      isLoading,
+      votingBalance,
+      showReUseLocks: true,
+    });
+  const { SplitVoteComponent, getSplitVoteTx, getSplitVoteFeeTx } =
+    useSplitVote({
+      module: "convictionVoting",
       referendumIndex,
       isLoading,
       votingBalance,
     });
+  const {
+    SplitAbstainVoteComponent,
+    getSplitAbstainVoteTx,
+    getSplitAbstainVoteFeeTx,
+  } = useSplitAbstainVote({
+    referendumIndex,
+    isLoading,
+    votingBalance,
+  });
 
   let voteComponent = null;
   let getVoteTx = null;
+  let getVoteFeeTx = null;
   if (tabIndex === Aye || tabIndex === Nay) {
     voteComponent = StandardVoteComponent;
     getVoteTx = getStandardVoteTx;
+    getVoteFeeTx = getStandardVoteFeeTx;
   } else if (tabIndex === Split) {
     voteComponent = SplitVoteComponent;
     getVoteTx = getSplitVoteTx;
+    getVoteFeeTx = getSplitVoteFeeTx;
   } else if (tabIndex === SplitAbstain) {
     voteComponent = SplitAbstainVoteComponent;
     getVoteTx = getSplitAbstainVoteTx;
+    getVoteFeeTx = getSplitAbstainVoteFeeTx;
   }
 
   const { doSubmit, isSubmitting } = useTxSubmission({
@@ -129,7 +138,7 @@ function VotePanel({
           <PrimaryButton loading={isLoading} onClick={doSubmit}>
             Submit
           </PrimaryButton>
-          <EstimatedGas getTxFunc={getVoteTx} />
+          <EstimatedGas getTxFunc={getVoteFeeTx} />
         </div>
       )}
     </>

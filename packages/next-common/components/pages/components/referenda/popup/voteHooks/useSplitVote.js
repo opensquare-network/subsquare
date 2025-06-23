@@ -1,10 +1,9 @@
-import { useCallback, useState } from "react";
-import { useDispatch } from "react-redux";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import { useState } from "react";
 import { checkInputValue } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import SplitVote from "../splitVote";
 import { useContextApi } from "next-common/context/api";
+import { useTxBuilder } from "next-common/hooks/useTxBuilder";
 
 export default function useSplitVote({
   module = "convictionVoting",
@@ -12,7 +11,6 @@ export default function useSplitVote({
   isLoading,
   votingBalance,
 }) {
-  const dispatch = useDispatch();
   const [ayeInputVoteBalance, setAyeInputVoteBalance] = useState("0");
   const [nayInputVoteBalance, setNayInputVoteBalance] = useState("0");
   const node = useChainSettings();
@@ -28,54 +26,60 @@ export default function useSplitVote({
     />
   );
 
-  const getSplitVoteTx = useCallback(() => {
-    let bnAyeVoteBalance;
-    try {
-      bnAyeVoteBalance = checkInputValue(
-        ayeInputVoteBalance,
-        node.decimals,
-        "aye vote balance",
-        true,
-      );
-    } catch (err) {
-      dispatch(newErrorToast(err.message));
-      return;
-    }
+  const { getTxFuncForSubmit, getTxFuncForFee } = useTxBuilder(
+    (toastError) => {
+      let bnAyeVoteBalance;
+      try {
+        bnAyeVoteBalance = checkInputValue(
+          ayeInputVoteBalance,
+          node.decimals,
+          "aye vote balance",
+          true,
+        );
+      } catch (err) {
+        toastError(err.message);
+        return;
+      }
 
-    let bnNayVoteBalance;
-    try {
-      bnNayVoteBalance = checkInputValue(
-        nayInputVoteBalance,
-        node.decimals,
-        "nay vote balance",
-        true,
-      );
-    } catch (err) {
-      dispatch(newErrorToast(err.message));
-      return;
-    }
+      let bnNayVoteBalance;
+      try {
+        bnNayVoteBalance = checkInputValue(
+          nayInputVoteBalance,
+          node.decimals,
+          "nay vote balance",
+          true,
+        );
+      } catch (err) {
+        toastError(err.message);
+        return;
+      }
 
-    if (bnAyeVoteBalance.plus(bnNayVoteBalance).gt(votingBalance)) {
-      dispatch(newErrorToast("Insufficient voting balance"));
-      return;
-    }
+      if (bnAyeVoteBalance.plus(bnNayVoteBalance).gt(votingBalance)) {
+        toastError("Insufficient voting balance");
+        return;
+      }
 
-    return api.tx[module].vote(referendumIndex, {
-      Split: {
-        aye: bnAyeVoteBalance.toString(),
-        nay: bnNayVoteBalance.toString(),
-      },
-    });
-  }, [
-    dispatch,
-    api,
-    ayeInputVoteBalance,
-    nayInputVoteBalance,
-    node.decimals,
-    votingBalance,
-    module,
-    referendumIndex,
-  ]);
+      return api.tx[module].vote(referendumIndex, {
+        Split: {
+          aye: bnAyeVoteBalance.toString(),
+          nay: bnNayVoteBalance.toString(),
+        },
+      });
+    },
+    [
+      api,
+      ayeInputVoteBalance,
+      nayInputVoteBalance,
+      node.decimals,
+      votingBalance,
+      module,
+      referendumIndex,
+    ],
+  );
 
-  return { SplitVoteComponent, getSplitVoteTx };
+  return {
+    SplitVoteComponent,
+    getSplitVoteTx: getTxFuncForSubmit,
+    getSplitVoteFeeTx: getTxFuncForFee,
+  };
 }
