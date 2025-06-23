@@ -1,6 +1,7 @@
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { useDetailType } from "next-common/context/page";
 import { OptionItem } from "next-common/components/internalDropdown/styled";
+import dayjs from "dayjs";
 import {
   SystemCancel,
   SystemInvalid,
@@ -23,6 +24,10 @@ export default function useTerminateAction({ onShowPopup = noop }) {
   const postType = useDetailType();
   const [showPopup, setShowPopup] = useState(false);
   const [actionType, setActionType] = useState(null);
+  const thirtyDaysInMs = 30 * 24 * 60 * 60 * 1000;
+
+  const timeoutDisabled =
+    dayjs().valueOf() - dayjs(post?.createdAt).valueOf() < thirtyDaysInMs;
 
   const isFellowshipApplicationPost =
     postType === detailPageCategory.FELLOWSHIP_APPLICATION;
@@ -55,6 +60,7 @@ export default function useTerminateAction({ onShowPopup = noop }) {
             setActionType(type);
           }}
           disabled={!canTerminate}
+          timeoutDisabled={timeoutDisabled}
           type={type}
         />
       ))}
@@ -74,7 +80,18 @@ export default function useTerminateAction({ onShowPopup = noop }) {
   };
 }
 
-function TerminateMenuItem({ onClick, disabled, type }) {
+function TerminateMenuItem({
+  onClick,
+  disabled: propDisabled,
+  type,
+  timeoutDisabled = false,
+}) {
+  let disabled = propDisabled;
+  let tip = "Only available to the admins";
+  if (timeoutDisabled && type === finalStateMap.Timeout) {
+    tip = "Can only be set timedout 30 days after creation";
+    disabled = true;
+  }
   const content = (
     <OptionItem
       className={
@@ -95,7 +112,7 @@ function TerminateMenuItem({ onClick, disabled, type }) {
   if (disabled) {
     return (
       <div className="hover:bg-neutral200">
-        <Tooltip content="Only available to the admins" className="w-full">
+        <Tooltip content={tip} className="w-full">
           {content}
         </Tooltip>
       </div>
