@@ -302,11 +302,10 @@ function DirectVoteDetail({ data, voteKey = "vote" }) {
   return (
     <div className="flex flex-col">
       <VoteRows data={data} voteKey={voteKey} />
-      <VoteDetailRow label="vote type:">
-        <span className="text-textTertiary">
-          {getVoteType(data?.[voteKey])}
-        </span>
-      </VoteDetailRow>
+      <p className="inline-flex max-md:justify-end text-textTertiary text12Medium">
+        <span>vote type:</span>
+        <span>{getVoteType(data?.[voteKey])}</span>
+      </p>
     </div>
   );
 }
