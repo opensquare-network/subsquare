@@ -28,11 +28,13 @@ export const mobileColumns = [
   },
   {
     render: ({ data, type }) => (
-      <VoteDetailField
-        data={data}
-        type={type}
-        className="w-full flex justify-between"
-      />
+      <MobileRow label="Detail">
+        <VoteDetailField
+          data={data}
+          type={type}
+          className="w-full flex justify-between"
+        />
+      </MobileRow>
     ),
   },
   {
@@ -52,7 +54,7 @@ export const desktopColumns = [
   },
   {
     name: "Action",
-    width: 180,
+    width: 176,
     className: "text-left",
     render: ({ type, indexer, data }) => (
       <ActionField type={type} indexer={indexer} data={data} />
@@ -61,7 +63,6 @@ export const desktopColumns = [
   {
     name: "Detail",
     className: "text-left",
-    width: 320,
     render: ({ data, type }) => <VoteDetailField data={data} type={type} />,
   },
   {

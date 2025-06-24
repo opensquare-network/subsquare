@@ -16,28 +16,24 @@ function DesktopTable({ voteActions, loading }) {
     };
   }, [voteActions]);
 
-  const virtualColumns = useMemo(() => {
+  const columns = useMemo(() => {
     return desktopColumns.map((col) => ({
       name: col.name,
-      className: col.className,
-      headClassName: col.headClassName,
-      style: col.style,
-      width: col.width,
+      className: col?.className,
+      width: col?.width,
     }));
   }, []);
 
-  const virtualRows = useMemo(() => {
-    return (
-      voteActions?.map((item) => {
-        return desktopColumns.map((col) => col.render(item));
-      }) || []
-    );
+  const row = useMemo(() => {
+    return voteActions?.map((item) => {
+      return desktopColumns.map((col) => col.render(item));
+    });
   }, [voteActions]);
 
   return (
     <VirtualList
-      columns={virtualColumns}
-      rows={virtualRows}
+      columns={columns}
+      rows={row}
       loading={loading}
       variableSize={true}
       getItemSize={getItemSize}
@@ -63,11 +59,11 @@ function MobileTable({ voteActions, loading }) {
     };
   }, [voteActions]);
 
-  const virtualColumns = useMemo(() => {
+  const columns = useMemo(() => {
     return [{ name: null }, { name: null }, { name: null }, { name: null }];
   }, []);
 
-  const virtualRows = useMemo(() => {
+  const rows = useMemo(() => {
     return (
       voteActions?.map((item) => {
         return [
@@ -88,8 +84,8 @@ function MobileTable({ voteActions, loading }) {
         "[&_.datalist_.descriptions-item-value]:w-full",
         "scrollbar-hidden h-full",
       )}
-      columns={virtualColumns}
-      rows={virtualRows}
+      columns={columns}
+      rows={rows}
       loading={loading}
       variableSize={true}
       getItemSize={getItemSize}

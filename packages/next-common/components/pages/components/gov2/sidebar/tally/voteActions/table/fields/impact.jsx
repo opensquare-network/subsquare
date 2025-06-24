@@ -207,6 +207,7 @@ function NoImpact() {
   return (
     <span className="text-textTertiary text14Medium">
       <span className="text-textPrimary text14Medium">0</span>
+      &nbsp;
       <span>{symbol}</span>
     </span>
   );
@@ -258,7 +259,7 @@ function SupportVotesDisplay({ data, type }) {
 
 export default function ImpactVotesField({ data, type }) {
   return (
-    <div className="text-textTertiary text14Medium">
+    <div className="text-textTertiary text14Medium max-md:flex max-md:flex-col max-md:items-end">
       <TallyVotesDisplay data={data} type={type} />
       <SupportVotesDisplay data={data} type={type} />
     </div>

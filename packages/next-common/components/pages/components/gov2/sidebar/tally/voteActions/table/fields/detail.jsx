@@ -58,7 +58,7 @@ function DetailVoteValue({ balance, conviction }) {
 
 function VoteDetailRow({ label, children }) {
   return (
-    <div className="flex flex-row max-md:justify-between">
+    <div className="flex flex-row max-md:justify-end">
       <DetailLabel>{label}</DetailLabel>
       {children}
     </div>
@@ -67,11 +67,11 @@ function VoteDetailRow({ label, children }) {
 
 function ChangeVoteWrapper({ pre, current }) {
   return (
-    <>
+    <div className="max-md:flex max-md:flex-col max-md:items-end">
       {pre}
       <span className="text14Medium text-textTertiary">→</span>
       {current}
-    </>
+    </div>
   );
 }
 
@@ -143,7 +143,7 @@ function VoteRows({ data, voteKey = "vote", showDelegations = false }) {
 
 function DelegationTargetRow({ data, type }) {
   return (
-    <VoteDetailRow label={<span>{type === 3 ? "to" : "from"}</span>}>
+    <VoteDetailRow label={<span>{type === 3 ? "to:" : "from:"}</span>}>
       <AddressUser key="user" add={data?.target} showAvatar={false} />
     </VoteDetailRow>
   );
@@ -162,20 +162,36 @@ function DelegationVotesRow({
   );
 
   if (!showChange || !preDelegationData) {
-    return <VoteDetailRow label={<span>votes</span>}>{current}</VoteDetailRow>;
+    return <VoteDetailRow label={<span>votes:</span>}>{current}</VoteDetailRow>;
   }
 
   const pre = (
-    <DetailVoteValue
-      balance={preDelegationData?.balance}
-      conviction={preDelegationData?.conviction}
-    />
+    <>
+      <DetailVoteValue
+        balance={preDelegationData?.balance}
+        conviction={preDelegationData?.conviction}
+      />
+    </>
   );
 
   return (
-    <VoteDetailRow label={<span>votes</span>}>
-      <ChangeVoteWrapper pre={pre} current={current} />
-    </VoteDetailRow>
+    <>
+      <ChangeVoteWrapper
+        pre={<VoteDetailRow label={<span>votes:</span>}>{pre}</VoteDetailRow>}
+        current={
+          <>
+            <div className="max-md:hidden">{current}</div>
+            <div className="hidden max-md:block">
+              <VoteDetailRow
+                label={<span className="max-md:block">votes:</span>}
+              >
+                {current}
+              </VoteDetailRow>
+            </div>
+          </>
+        }
+      />
+    </>
   );
 }
 
