@@ -1,6 +1,6 @@
 import ExplorerLink from "next-common/components/links/explorerLink";
 import { formatDateTime } from "next-common/components/coretime/sales/history/timeRange";
-import { VOTE_ACTION_TYPES, OPENGOV_ACTIONS } from "../common";
+import { VOTE_ACTION_TYPES, OPENGOV_ACTIONS } from "../../common";
 import { cn } from "next-common/utils";
 
 function getActionName(type, preVote, preDelegation) {

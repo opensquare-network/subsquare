@@ -8,7 +8,8 @@ import {
   isDirectVote,
   isDelegation,
   getVoteType,
-} from "../common";
+} from "../../common";
+import { cn } from "next-common/utils";
 
 function DetailLabel({ children }) {
   return (
@@ -65,9 +66,11 @@ function VoteDetailRow({ label, children }) {
   );
 }
 
-function ChangeVoteWrapper({ pre, current }) {
+function ChangeVoteWrapper({ pre, current, className }) {
   return (
-    <div className="max-md:flex max-md:flex-col max-md:items-end">
+    <div
+      className={cn("max-md:flex max-md:flex-col max-md:items-end", className)}
+    >
       {pre}
       <span className="text14Medium text-textTertiary">→</span>
       {current}
@@ -75,22 +78,21 @@ function ChangeVoteWrapper({ pre, current }) {
   );
 }
 
-function StandardVoteRow({ data, showDelegations = false }) {
-  const voteType = data?.vote?.vote?.vote?.isAye ? "aye" : "nay";
+function StandardVoteRow({ voteData, delegations }) {
+  const voteType = voteData?.vote?.vote?.isAye ? "aye" : "nay";
 
   return (
     <>
       <VoteDetailRow label={<VoteLabel type={voteType} />}>
         <DetailVoteValue
-          balance={data?.vote?.vote?.balance}
-          conviction={data?.vote?.vote?.vote?.conviction}
+          balance={voteData?.vote?.balance}
+          conviction={voteData?.vote?.vote?.conviction}
         />
       </VoteDetailRow>
-      {showDelegations && (
-        <VoteDetailRow label="delegations:">
-          <CurrencyValue balance={data?.delegations?.votes} />
-        </VoteDetailRow>
-      )}
+
+      <VoteDetailRow label="delegations:">
+        <CurrencyValue balance={delegations} />
+      </VoteDetailRow>
     </>
   );
 }
@@ -119,7 +121,7 @@ function SplitAbstainVoteRow({ voteData }) {
   );
 }
 
-function VoteRows({ data, voteKey = "vote", showDelegations = false }) {
+function VoteRows({ data, voteKey = "vote" }) {
   const voteData = data?.[voteKey];
 
   if (!voteData) {
@@ -127,7 +129,12 @@ function VoteRows({ data, voteKey = "vote", showDelegations = false }) {
   }
 
   if (voteData.isStandard) {
-    return <StandardVoteRow data={data} showDelegations={showDelegations} />;
+    return (
+      <StandardVoteRow
+        voteData={voteData}
+        delegations={data?.delegations?.votes}
+      />
+    );
   }
 
   if (voteData.isSplit) {
@@ -182,14 +189,13 @@ function DelegationVotesRow({
           <>
             <div className="max-md:hidden">{current}</div>
             <div className="hidden max-md:block">
-              <VoteDetailRow
-                label={<span className="max-md:block">votes:</span>}
-              >
+              <VoteDetailRow label={<span>votes:</span>}>
                 {current}
               </VoteDetailRow>
             </div>
           </>
         }
+        className="inline-flex"
       />
     </>
   );
@@ -292,22 +298,24 @@ function SplitAbstainVoteChangeRows({ data }) {
   );
 }
 
-function MixedVoteChangeRows({ data }) {
-  const pre = <VoteRows data={data} voteKey="preVote" />;
-  const current = <VoteRows data={data} voteKey="vote" />;
-
-  return <ChangeVoteWrapper pre={pre} current={current} />;
-}
-
-function DirectVoteDetail({ data }) {
+function DirectVoteDetail({ data, voteKey = "vote" }) {
   return (
     <div className="flex flex-col">
-      <VoteRows data={data} showDelegations={true} />
+      <VoteRows data={data} voteKey={voteKey} />
       <VoteDetailRow label="vote type:">
-        <span className="text-textTertiary">{getVoteType(data)}</span>
+        <span className="text-textTertiary">
+          {getVoteType(data?.[voteKey])}
+        </span>
       </VoteDetailRow>
     </div>
   );
+}
+
+function MixedVoteChangeRows({ data }) {
+  const pre = <DirectVoteDetail data={data} voteKey="preVote" />;
+  const current = <DirectVoteDetail data={data} voteKey="vote" />;
+
+  return <ChangeVoteWrapper pre={pre} current={current} />;
 }
 
 function DelegationDetail({ data, type }) {

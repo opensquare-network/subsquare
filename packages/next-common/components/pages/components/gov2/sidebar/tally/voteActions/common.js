@@ -39,12 +39,12 @@ export const isDirectVote = (type) =>
 export const isDelegation = (type) =>
   type === OPENGOV_ACTIONS.DELEGATED || type === OPENGOV_ACTIONS.UNDELEGATED;
 
-export function getVoteType(data) {
-  if (data?.vote?.isStandard) {
+export function getVoteType(vote) {
+  if (vote?.isStandard) {
     return VOTE_TYPES.STANDARD;
-  } else if (data?.vote?.isSplit) {
+  } else if (vote?.isSplit) {
     return VOTE_TYPES.SPLIT;
-  } else if (data?.vote?.isSplitAbstain) {
+  } else if (vote?.isSplitAbstain) {
     return VOTE_TYPES.SPLIT_ABSTAIN;
   }
 

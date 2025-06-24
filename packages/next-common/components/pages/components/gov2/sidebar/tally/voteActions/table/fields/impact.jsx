@@ -1,6 +1,6 @@
 import { useChainSettings } from "next-common/context/chain";
 import { convictionToLockXNumber } from "next-common/utils/referendumCommon";
-import { VOTE_TYPE_CONFIG, OPENGOV_ACTIONS } from "../common";
+import { VOTE_TYPE_CONFIG, OPENGOV_ACTIONS } from "../../common";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { cn } from "next-common/utils";

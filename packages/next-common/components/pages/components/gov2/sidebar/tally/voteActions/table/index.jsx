@@ -5,16 +5,10 @@ import { cn } from "next-common/utils";
 import VirtualList from "next-common/components/dataList/virtualList";
 import { useMemo, useCallback } from "react";
 import useSearchVotes from "next-common/hooks/useSearchVotes";
+import { useDesktopItemSize, useMobileItemSize } from "../useListItemSize";
 
-// TODO: item height
 function DesktopTable({ voteActions, loading }) {
-  const getItemSize = useMemo(() => {
-    return (index) => {
-      const item = voteActions?.[index];
-      if (!item) return 60;
-      return 100;
-    };
-  }, [voteActions]);
+  const getItemSize = useDesktopItemSize(voteActions);
 
   const columns = useMemo(() => {
     return desktopColumns.map((col) => ({
@@ -46,18 +40,7 @@ function DesktopTable({ voteActions, loading }) {
 }
 
 function MobileTable({ voteActions, loading }) {
-  const getItemSize = useMemo(() => {
-    return (index) => {
-      const item = voteActions?.[index];
-      if (!item) return 120;
-
-      let height = 240;
-      if (item.data && typeof item.data === "object") {
-        height += 30;
-      }
-      return height;
-    };
-  }, [voteActions]);
+  const getItemSize = useMobileItemSize(voteActions);
 
   const columns = useMemo(() => {
     return [{ name: null }, { name: null }, { name: null }, { name: null }];
