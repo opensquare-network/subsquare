@@ -65,7 +65,17 @@ function VoteDetailRow({ label, children }) {
   );
 }
 
-function StandardVotesDetail({ data }) {
+function ChangeVoteWrapper({ pre, current }) {
+  return (
+    <>
+      {pre}
+      <span className="text14Medium text-textTertiary">→</span>
+      {current}
+    </>
+  );
+}
+
+function StandardVoteRow({ data, showDelegations = false }) {
   const voteType = data?.vote?.vote?.vote?.isAye ? "aye" : "nay";
 
   return (
@@ -76,60 +86,207 @@ function StandardVotesDetail({ data }) {
           conviction={data?.vote?.vote?.vote?.conviction}
         />
       </VoteDetailRow>
-      <VoteDetailRow label="delegations:">
-        <CurrencyValue balance={data?.delegations?.votes} />
+      {showDelegations && (
+        <VoteDetailRow label="delegations:">
+          <CurrencyValue balance={data?.delegations?.votes} />
+        </VoteDetailRow>
+      )}
+    </>
+  );
+}
+
+function SplitVoteRow({ voteData }) {
+  return (
+    <>
+      <VoteDetailRow label={<VoteLabel type="aye" />}>
+        <DetailVoteValue balance={voteData?.vote?.aye} />
+      </VoteDetailRow>
+      <VoteDetailRow label={<VoteLabel type="nay" />}>
+        <DetailVoteValue balance={voteData?.vote?.nay} />
       </VoteDetailRow>
     </>
   );
 }
 
-function SplitVotesDetail({ data }) {
+function SplitAbstainVoteRow({ voteData }) {
   return (
     <>
-      <VoteDetailRow label={<VoteLabel type="aye" />}>
-        <DetailVoteValue balance={data?.vote?.vote?.aye} />
-      </VoteDetailRow>
-      <VoteDetailRow label={<VoteLabel type="nay" />}>
-        <DetailVoteValue balance={data?.vote?.vote?.nay} />
-      </VoteDetailRow>
-    </>
-  );
-}
-
-function SplitAbstainVotesDetail({ data }) {
-  return (
-    <>
-      <VoteDetailRow label={<VoteLabel type="aye" />}>
-        <DetailVoteValue balance={data?.vote?.vote?.aye} />
-      </VoteDetailRow>
-      <VoteDetailRow label={<VoteLabel type="nay" />}>
-        <DetailVoteValue balance={data?.vote?.vote?.nay} />
-      </VoteDetailRow>
+      <SplitVoteRow voteData={voteData} />
       <VoteDetailRow label={<VoteLabel type="abstain" />}>
-        <DetailVoteValue balance={data?.vote?.vote?.abstain} />
+        <DetailVoteValue balance={voteData?.vote?.abstain} />
       </VoteDetailRow>
     </>
   );
 }
 
-function VotesDetail({ data }) {
-  if (!data) return null;
+function VoteRows({ data, voteKey = "vote", showDelegations = false }) {
+  const voteData = data?.[voteKey];
 
-  if (data.vote?.isStandard) {
-    return <StandardVotesDetail data={data} />;
-  } else if (data.vote?.isSplit) {
-    return <SplitVotesDetail data={data} />;
-  } else if (data.vote?.isSplitAbstain) {
-    return <SplitAbstainVotesDetail data={data} />;
+  if (!voteData) {
+    return null;
+  }
+
+  if (voteData.isStandard) {
+    return <StandardVoteRow data={data} showDelegations={showDelegations} />;
+  }
+
+  if (voteData.isSplit) {
+    return <SplitVoteRow voteData={voteData} />;
+  }
+
+  if (voteData.isSplitAbstain) {
+    return <SplitAbstainVoteRow voteData={voteData} />;
   }
 
   return null;
 }
 
+function DelegationTargetRow({ data, type }) {
+  return (
+    <VoteDetailRow label={<span>{type === 3 ? "to" : "from"}</span>}>
+      <AddressUser key="user" add={data?.target} showAvatar={false} />
+    </VoteDetailRow>
+  );
+}
+
+function DelegationVotesRow({
+  delegationData,
+  showChange = false,
+  preDelegationData = null,
+}) {
+  const current = (
+    <DetailVoteValue
+      balance={delegationData?.balance}
+      conviction={delegationData?.conviction}
+    />
+  );
+
+  if (!showChange || !preDelegationData) {
+    return <VoteDetailRow label={<span>votes</span>}>{current}</VoteDetailRow>;
+  }
+
+  const pre = (
+    <DetailVoteValue
+      balance={preDelegationData?.balance}
+      conviction={preDelegationData?.conviction}
+    />
+  );
+
+  return (
+    <VoteDetailRow label={<span>votes</span>}>
+      <ChangeVoteWrapper pre={pre} current={current} />
+    </VoteDetailRow>
+  );
+}
+
+function VoteChangeRows({
+  data,
+  preVoteKey = "preVote",
+  currentVoteKey = "vote",
+}) {
+  const preVote = data?.[preVoteKey];
+  const currentVote = data?.[currentVoteKey];
+
+  if (!preVote || !currentVote) {
+    return null;
+  }
+
+  if (preVote.isStandard && currentVote.isStandard) {
+    return <StandardVoteChangeRows data={data} />;
+  }
+
+  if (preVote.isSplit && currentVote.isSplit) {
+    return <SplitVoteChangeRows data={data} />;
+  }
+
+  if (preVote.isSplitAbstain && currentVote.isSplitAbstain) {
+    return <SplitAbstainVoteChangeRows data={data} />;
+  }
+
+  return <MixedVoteChangeRows data={data} />;
+}
+
+function StandardVoteChangeRows({ data }) {
+  const preVoteType = data?.preVote?.vote?.vote?.isAye ? "aye" : "nay";
+  const currentVoteType = data?.vote?.vote?.vote?.isAye ? "aye" : "nay";
+
+  const pre = (
+    <VoteDetailRow label={<VoteLabel type={preVoteType} />}>
+      <DetailVoteValue
+        balance={data?.preVote?.vote?.balance}
+        conviction={data?.preVote?.vote?.vote?.conviction}
+      />
+    </VoteDetailRow>
+  );
+
+  const current = (
+    <VoteDetailRow label={<VoteLabel type={currentVoteType} />}>
+      <DetailVoteValue
+        balance={data?.vote?.vote?.balance}
+        conviction={data?.vote?.vote?.vote?.conviction}
+      />
+    </VoteDetailRow>
+  );
+
+  return <ChangeVoteWrapper pre={pre} current={current} />;
+}
+
+function SplitVoteChangeRows({ data }) {
+  const createVoteRow = (type, preBalance, currentBalance) => {
+    const pre = (
+      <VoteDetailRow label={<VoteLabel type={type} />}>
+        <DetailVoteValue balance={preBalance} />
+      </VoteDetailRow>
+    );
+
+    const current = (
+      <VoteDetailRow label={<VoteLabel type={type} />}>
+        <DetailVoteValue balance={currentBalance} />
+      </VoteDetailRow>
+    );
+
+    return <ChangeVoteWrapper pre={pre} current={current} />;
+  };
+
+  return (
+    <div>
+      {createVoteRow("aye", data?.preVote?.vote?.aye, data?.vote?.vote?.aye)}
+      {createVoteRow("nay", data?.preVote?.vote?.nay, data?.vote?.vote?.nay)}
+    </div>
+  );
+}
+
+function SplitAbstainVoteChangeRows({ data }) {
+  return (
+    <div>
+      <SplitVoteChangeRows data={data} />
+      <ChangeVoteWrapper
+        pre={
+          <VoteDetailRow label={<VoteLabel type="abstain" />}>
+            <DetailVoteValue balance={data?.preVote?.vote?.abstain} />
+          </VoteDetailRow>
+        }
+        current={
+          <VoteDetailRow label={<VoteLabel type="abstain" />}>
+            <DetailVoteValue balance={data?.vote?.vote?.abstain} />
+          </VoteDetailRow>
+        }
+      />
+    </div>
+  );
+}
+
+function MixedVoteChangeRows({ data }) {
+  const pre = <VoteRows data={data} voteKey="preVote" />;
+  const current = <VoteRows data={data} voteKey="vote" />;
+
+  return <ChangeVoteWrapper pre={pre} current={current} />;
+}
+
 function DirectVoteDetail({ data }) {
   return (
     <div className="flex flex-col">
-      <VotesDetail data={data} />
+      <VoteRows data={data} showDelegations={true} />
       <VoteDetailRow label="vote type:">
         <span className="text-textTertiary">{getVoteType(data)}</span>
       </VoteDetailRow>
@@ -137,27 +294,51 @@ function DirectVoteDetail({ data }) {
   );
 }
 
-function DelegationVoteDetail({ data, type }) {
+function DelegationDetail({ data, type }) {
   return (
     <div className="flex flex-col">
-      <VoteDetailRow label={<span>{type === 3 ? "to" : "from"}</span>}>
-        <AddressUser key="user" add={data?.target} showAvatar={false} />
-      </VoteDetailRow>
-      <VoteDetailRow label={<span>votes</span>}>
-        <DetailVoteValue
-          balance={data?.delegation?.balance}
-          conviction={data?.delegation?.conviction}
-        />
-      </VoteDetailRow>
+      <DelegationTargetRow data={data} type={type} />
+      <DelegationVotesRow delegationData={data?.delegation} />
+    </div>
+  );
+}
+
+function DirectVoteChangeDetail({ data }) {
+  return (
+    <div className="flex flex-col">
+      <VoteChangeRows data={data} />
+    </div>
+  );
+}
+
+function DelegationChangeDetail({ data, type }) {
+  return (
+    <div className="flex flex-col">
+      <DelegationTargetRow data={data} type={type} />
+      <DelegationVotesRow
+        delegationData={data?.delegation}
+        showChange={true}
+        preDelegationData={data?.preDelegation}
+      />
     </div>
   );
 }
 
 export default function VoteDetailField({ data, type }) {
   if (isDirectVote(type)) {
+    if (data?.preVote) {
+      return <DirectVoteChangeDetail data={data} />;
+    }
+
     return <DirectVoteDetail data={data} />;
-  } else if (isDelegation(type)) {
-    return <DelegationVoteDetail data={data} type={type} />;
+  }
+
+  if (isDelegation(type)) {
+    if (data?.preDelegation) {
+      return <DelegationChangeDetail data={data} type={type} />;
+    }
+
+    return <DelegationDetail data={data} type={type} />;
   }
 
   return null;

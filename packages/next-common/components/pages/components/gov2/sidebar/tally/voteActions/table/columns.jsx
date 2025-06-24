@@ -47,12 +47,12 @@ export const mobileColumns = [
 export const desktopColumns = [
   {
     name: "Account",
-    width: 264,
+    width: 240,
     render: ({ who }) => <AddressUser key="user" add={who} />,
   },
   {
     name: "Action",
-    width: 200,
+    width: 180,
     className: "text-left",
     render: ({ type, indexer, data }) => (
       <ActionField type={type} indexer={indexer} data={data} />
@@ -61,6 +61,7 @@ export const desktopColumns = [
   {
     name: "Detail",
     className: "text-left",
+    width: 320,
     render: ({ data, type }) => <VoteDetailField data={data} type={type} />,
   },
   {
