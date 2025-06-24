@@ -41,10 +41,10 @@ function DesktopTable({ voteActions, loading }) {
       loading={loading}
       variableSize={true}
       getItemSize={getItemSize}
-      listHeight={400}
+      listHeight={600}
       overscanCount={3}
       noDataText="No data"
-      className="scrollbar-hidden"
+      className="scrollbar-hidden h-full"
     />
   );
 }
@@ -86,14 +86,14 @@ function MobileTable({ voteActions, loading }) {
       className={cn(
         "[&_.datalist_.descriptions-item-label]:hidden",
         "[&_.datalist_.descriptions-item-value]:w-full",
-        "scrollbar-hidden",
+        "scrollbar-hidden h-full",
       )}
       columns={virtualColumns}
       rows={virtualRows}
       loading={loading}
       variableSize={true}
       getItemSize={getItemSize}
-      listHeight={400}
+      listHeight={600}
       overscanCount={3}
       noDataText="No data"
     />

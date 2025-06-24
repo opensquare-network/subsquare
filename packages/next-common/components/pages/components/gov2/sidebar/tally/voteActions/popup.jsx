@@ -1,5 +1,4 @@
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
-import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import VoteActionsTable from "./table";
 import { useState } from "react";
 import SearchBtn from "next-common/components/voteSearch/searchBtn";
@@ -25,9 +24,7 @@ export default function OpenGovVoteActionsPopup({ setShowVoteActions }) {
       extra={searchBtn}
     >
       {showSearch && <SearchBar setSearch={setSearch} />}
-      <PopupListWrapper>
-        <VoteActionsTable search={search} />
-      </PopupListWrapper>
+      <VoteActionsTable search={search} />
     </BaseVotesPopup>
   );
 }
