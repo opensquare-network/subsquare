@@ -1,73 +1,127 @@
 import { useMemo } from "react";
-import { isDirectVote } from "./common";
+import { isDirectVote, isDelegation } from "./common";
 
-export function useDesktopItemSize(data) {
-  return useMemo(() => {
-    if (!data || !data?.length) {
-      return null;
-    }
+function getVoteTypeInfo(item) {
+  const preVote = item?.data?.preVote;
+  const vote = item?.data?.vote;
 
-    return (index) => {
-      const item = data?.[index];
-      if (!item) {
-        return 72;
-      }
-
-      if (isDirectVote(item?.type)) {
-        if (!item?.data?.preVote) {
-          if (item?.data?.vote?.isSplitAbstain) {
-            return 108;
-          }
-
-          return 88;
-        }
-
-        if (item?.data?.preVote) {
-          if (
-            item?.data?.preVote?.isSplitAbstain &&
-            item?.data?.vote?.isSplitAbstain
-          ) {
-            return 108;
-          }
-
-          if (
-            (item?.data?.preVote?.isStandard && item?.data?.vote?.isStandard) ||
-            (item?.data?.preVote?.isSplit && item?.data?.vote?.isSplit)
-          ) {
-            return 88;
-          }
-
-          if (
-            (item?.data?.preVote?.isStandard || item?.data?.vote?.isStandard) &&
-            !item?.data?.preVote?.isSplitAbstain &&
-            !item?.data?.vote?.isSplitAbstain
-          ) {
-            return 164;
-          }
-
-          return 184;
-        }
-      }
-
-      return 72;
-    };
-  }, [data]);
+  return {
+    hasPreVote: !!preVote,
+    preVoteIsSplitAbstain: preVote?.isSplitAbstain,
+    preVoteIsStandard: preVote?.isStandard,
+    preVoteIsSplit: preVote?.isSplit,
+    voteIsSplitAbstain: vote?.isSplitAbstain,
+    voteIsStandard: vote?.isStandard,
+    voteIsSplit: vote?.isSplit,
+  };
 }
 
-// TODO
-export function useMobileItemSize(data) {
+function getDesktopDirectVoteHeight(voteInfo) {
+  const {
+    hasPreVote,
+    preVoteIsSplitAbstain,
+    preVoteIsStandard,
+    preVoteIsSplit,
+    voteIsSplitAbstain,
+    voteIsStandard,
+    voteIsSplit,
+  } = voteInfo;
+
+  if (!hasPreVote) {
+    return voteIsSplitAbstain ? 108 : 88;
+  }
+
+  if (preVoteIsSplitAbstain && voteIsSplitAbstain) {
+    return 108;
+  }
+
+  if (
+    (preVoteIsStandard && voteIsStandard) ||
+    (preVoteIsSplit && voteIsSplit)
+  ) {
+    return 88;
+  }
+
+  if (
+    (preVoteIsStandard || voteIsStandard) &&
+    !preVoteIsSplitAbstain &&
+    !voteIsSplitAbstain
+  ) {
+    return 164;
+  }
+
+  return 184;
+}
+
+function getMobileDirectVoteHeight(voteInfo) {
+  const {
+    hasPreVote,
+    preVoteIsSplitAbstain,
+    preVoteIsStandard,
+    preVoteIsSplit,
+    voteIsSplitAbstain,
+    voteIsStandard,
+    voteIsSplit,
+  } = voteInfo;
+
+  if (!hasPreVote) {
+    return voteIsSplitAbstain ? 252 : 228;
+  }
+
+  if (preVoteIsSplitAbstain && voteIsSplitAbstain) {
+    return 366;
+  }
+
+  if (
+    (preVoteIsStandard && voteIsStandard) ||
+    (preVoteIsSplit && voteIsSplit)
+  ) {
+    return 280;
+  }
+
+  if (
+    (preVoteIsStandard || voteIsStandard) &&
+    !preVoteIsSplitAbstain &&
+    !voteIsSplitAbstain
+  ) {
+    return 280;
+  }
+
+  return 342;
+}
+
+function useItemSize(data, defaultHeight, directVoteCalculator) {
   return useMemo(() => {
-    if (!data || !data?.length) {
+    if (!data?.length) {
       return null;
     }
 
     return (index) => {
-      const item = data?.[index];
+      const item = data[index];
       if (!item) {
-        return 60;
+        return defaultHeight;
       }
 
-      return 400;
+      if (isDirectVote(item.type)) {
+        const voteInfo = getVoteTypeInfo(item);
+        return directVoteCalculator(voteInfo);
+      }
+
+      if (isDelegation(item.type) && item?.data?.preDelegation) {
+        return directVoteCalculator === getMobileDirectVoteHeight
+          ? 244
+          : defaultHeight;
+      }
+
+      return defaultHeight;
     };
-  }, [data]);
+  }, [data, defaultHeight, directVoteCalculator]);
+}
+
+export function useDesktopItemSize(data) {
+  return useItemSize(data, 72, getDesktopDirectVoteHeight);
+}
+
+export function useMobileItemSize(data) {
+  return useItemSize(data, 200, getMobileDirectVoteHeight);
 }
