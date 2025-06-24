@@ -1,14 +1,11 @@
 import { useChainSettings } from "next-common/context/chain";
 import { convictionToLockXNumber } from "next-common/utils/referendumCommon";
-import BigNumber from "bignumber.js";
 import { VOTE_TYPE_CONFIG, OPENGOV_ACTIONS } from "../common";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
+import { cn } from "next-common/utils";
 
-const ZERO_VOTES = {
-  impact: false,
-  votes: 0,
-};
+const ZERO_VOTES = { votes: 0 };
 
 function getVotesWithConviction(balance, conviction) {
   if (conviction <= 0) {
@@ -16,6 +13,10 @@ function getVotesWithConviction(balance, conviction) {
   } else {
     return BigInt(balance) * BigInt(convictionToLockXNumber(conviction));
   }
+}
+
+function getRawVotes(balance) {
+  return BigInt(balance);
 }
 
 function absBigInt(x) {
@@ -52,37 +53,51 @@ function getDirectVotes(vote, delegations) {
   return isAye ? totalVotes : BigInt(0) - totalVotes;
 }
 
+function getDirectSupport(vote, delegations) {
+  if (!vote) {
+    return BigInt(0);
+  }
+
+  const { isSplit, isSplitAbstain, isStandard } = vote;
+  if (isSplit || isSplitAbstain) {
+    const { aye = 0, nay = 0 } = vote?.vote || {};
+    return getSplitVotes(aye, nay);
+  } else if (!isStandard) {
+    throw new Error("Unknown direct vote type");
+  }
+
+  const {
+    balance,
+    vote: { isAye },
+  } = vote?.vote || {};
+  const { votes: delegationVotes = 0 } = delegations;
+  const selfSupport = getRawVotes(balance);
+  const totalSupport = selfSupport + BigInt(delegationVotes);
+  return isAye ? totalSupport : BigInt(0) - totalSupport;
+}
+
 function getVoteActionImpact(data = {}) {
   const preImpactVotes = getDirectVotes(data.preVote, data.delegations);
   const nowImpactVotes = getDirectVotes(data.vote, data.delegations);
   const finalVotes = nowImpactVotes - preImpactVotes;
-  return {
-    impact: finalVotes > 0,
-    votes: absBigInt(finalVotes),
-  };
+  return { votes: finalVotes };
+}
+
+function getSupportVoteActionImpact(data = {}) {
+  const preImpactSupport = getDirectSupport(data.preVote, data.delegations);
+  const nowImpactSupport = getDirectSupport(data.vote, data.delegations);
+  const finalSupport = nowImpactSupport - preImpactSupport;
+  return { votes: finalSupport };
 }
 
 function getRemoveVoteActionImpact(data) {
-  const { isSplit, isSplitAbstain } = data?.vote || {};
-  if (isSplit || isSplitAbstain) {
-    const { aye, nay } = data?.vote?.vote || {};
-    const votes = getSplitVotes(aye, nay);
-    return {
-      impact: votes <= 0,
-      votes: absBigInt(votes),
-    };
-  }
+  const voteImpact = getDirectVotes(data.vote, data.delegations);
+  return { votes: -voteImpact };
+}
 
-  const {
-    vote: { vote: { balance, vote: { isAye, conviction } = {} } } = {},
-    delegations: { votes: delegationVotes } = {},
-  } = data || {};
-  const selfVotes = getVotesWithConviction(balance, conviction);
-  const totalVotes = selfVotes + BigInt(delegationVotes);
-  return {
-    impact: !isAye,
-    votes: totalVotes,
-  };
+function getSupportRemoveVoteActionImpact(data) {
+  const voteImpact = getDirectSupport(data.vote, data.delegations);
+  return { votes: -voteImpact };
 }
 
 function getDelegatedActionImpact(data) {
@@ -103,10 +118,25 @@ function getDelegatedActionImpact(data) {
     );
     votes -= preVotes;
   }
-  return {
-    impact: isAye && votes > 0,
-    votes: absBigInt(votes),
-  };
+  return { votes: isAye ? votes : -votes };
+}
+
+function getSupportDelegatedActionImpact(data) {
+  const {
+    vote: { isStandard, vote: { vote: { isAye } = {} } = {} } = {},
+    delegation: { balance } = {},
+    preDelegation,
+  } = data || {};
+  if (!isStandard) {
+    return ZERO_VOTES;
+  }
+
+  let support = getRawVotes(balance);
+  if (preDelegation) {
+    const preSupport = getRawVotes(preDelegation?.balance);
+    support -= preSupport;
+  }
+  return { votes: isAye ? support : -support };
 }
 
 function getUndelegatedActionImpact(data) {
@@ -119,10 +149,20 @@ function getUndelegatedActionImpact(data) {
   }
 
   const votes = getVotesWithConviction(balance, conviction);
-  return {
-    impact: !isAye,
-    votes,
-  };
+  return { votes: isAye ? -votes : votes };
+}
+
+function getSupportUndelegatedActionImpact(data) {
+  const {
+    vote: { isStandard, vote: { vote: { isAye } = {} } = {} } = {},
+    delegation: { balance } = {},
+  } = data || {};
+  if (!isStandard) {
+    return ZERO_VOTES;
+  }
+
+  const support = getRawVotes(balance);
+  return { votes: isAye ? -support : support };
 }
 
 const getImpactVotes = (data, type) => {
@@ -143,34 +183,84 @@ const getImpactVotes = (data, type) => {
   return ZERO_VOTES;
 };
 
-function ImpactVotesDisplay({ data, type }) {
-  const { decimals } = useChainSettings();
-  const impactVotes = getImpactVotes(data, type);
-
-  if (!impactVotes || new BigNumber(impactVotes.votes).eq(0)) {
-    return <span className="text-textPrimary">0</span>;
+const getSupportImpactVotes = (data, type) => {
+  if (!data || !type) {
+    return ZERO_VOTES;
   }
 
-  const { color } = VOTE_TYPE_CONFIG[impactVotes.impact ? "aye" : "nay"];
+  if (OPENGOV_ACTIONS.VOTE === type) {
+    return getSupportVoteActionImpact(data);
+  } else if (OPENGOV_ACTIONS.REMOVE_VOTE === type) {
+    return getSupportRemoveVoteActionImpact(data);
+  } else if (OPENGOV_ACTIONS.DELEGATED === type) {
+    return getSupportDelegatedActionImpact(data);
+  } else if (OPENGOV_ACTIONS.UNDELEGATED === type) {
+    return getSupportUndelegatedActionImpact(data);
+  }
+
+  return ZERO_VOTES;
+};
+
+function NoImpact() {
+  const { symbol } = useChainSettings();
+
+  return (
+    <span className="text-textTertiary text14Medium">
+      <span className="text-textPrimary text14Medium">0</span>
+      <span>{symbol}</span>
+    </span>
+  );
+}
+
+function ImpactVotesDisplay({ data, type, isSupport = false }) {
+  const { decimals, symbol } = useChainSettings();
+  const impactVotes = isSupport
+    ? getSupportImpactVotes(data, type)
+    : getImpactVotes(data, type);
+
+  if (!impactVotes || BigInt(impactVotes.votes) === BigInt(0)) {
+    return <NoImpact />;
+  }
+
+  const isAye = impactVotes.votes >= 0;
+  const { color } = VOTE_TYPE_CONFIG[isAye ? "aye" : "nay"];
 
   return (
     <>
-      <span className={color}>
-        {impactVotes.impact ? "+" : "-"}
+      <div className={cn(color, "inline-flex")}>
+        {isAye ? "+" : "-"}
         <ValueDisplay
-          value={toPrecision(impactVotes.votes, decimals)}
-          symbol={""}
+          value={toPrecision(absBigInt(impactVotes.votes), decimals)}
+          symbol={symbol}
         />
-      </span>
+      </div>
     </>
+  );
+}
+
+function TallyVotesDisplay({ data, type }) {
+  return (
+    <div>
+      <span>Tally: </span>
+      <ImpactVotesDisplay data={data} type={type} />
+    </div>
+  );
+}
+
+function SupportVotesDisplay({ data, type }) {
+  return (
+    <div>
+      <span>Support: </span>
+      <ImpactVotesDisplay data={data} type={type} isSupport={true} />
+    </div>
   );
 }
 
 export default function ImpactVotesField({ data, type }) {
   return (
     <div className="text-textTertiary text14Medium">
-      <ImpactVotesDisplay data={data} type={type} />
-      <span>&nbsp;VOTES</span>
+      <TallyVotesDisplay data={data} type={type} />
+      <SupportVotesDisplay data={data} type={type} />
     </div>
   );
 }

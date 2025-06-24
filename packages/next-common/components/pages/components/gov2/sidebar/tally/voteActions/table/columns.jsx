@@ -66,7 +66,7 @@ export const desktopColumns = [
   },
   {
     name: "Impact",
-    width: 160,
+    width: 176,
     className: "text-right",
     render: ({ data, type }) => <ImpactVotesField data={data} type={type} />,
   },
