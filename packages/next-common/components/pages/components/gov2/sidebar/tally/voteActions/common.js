@@ -50,3 +50,15 @@ export function getVoteType(vote) {
 
   return null;
 }
+
+export const getVoteBalance = (voteData) => voteData?.vote?.balance;
+export const getVoteConviction = (voteData) => voteData?.vote?.vote?.conviction;
+export const isAyeVote = (voteData) => voteData?.vote?.vote?.isAye;
+
+export const VOTE_LABELS = {
+  DELEGATIONS: "delegations:",
+  VOTES: "votes:",
+  VOTE_TYPE: "vote type:",
+  TO: "to:",
+  FROM: "from:",
+};

@@ -8,6 +8,10 @@ import {
   isDirectVote,
   isDelegation,
   getVoteType,
+  getVoteBalance,
+  getVoteConviction,
+  isAyeVote,
+  VOTE_LABELS,
 } from "../../common";
 import { cn } from "next-common/utils";
 
@@ -82,18 +86,6 @@ function ChangeVoteWrapper({ pre, current, className }) {
   );
 }
 
-const getVoteBalance = (voteData) => voteData?.vote?.balance;
-const getVoteConviction = (voteData) => voteData?.vote?.vote?.conviction;
-const isAyeVote = (voteData) => voteData?.vote?.vote?.isAye;
-
-const LABELS = {
-  DELEGATIONS: "delegations:",
-  VOTES: "votes:",
-  VOTE_TYPE: "vote type:",
-  TO: "to:",
-  FROM: "from:",
-};
-
 function StandardVoteRow({ voteData, delegations }) {
   const voteType = isAyeVote(voteData) ? "aye" : "nay";
 
@@ -105,7 +97,7 @@ function StandardVoteRow({ voteData, delegations }) {
           conviction={getVoteConviction(voteData)}
         />
       </VoteDetailRow>
-      <VoteDetailRow label={LABELS.DELEGATIONS}>
+      <VoteDetailRow label={VOTE_LABELS.DELEGATIONS}>
         <CurrencyValue balance={delegations} />
       </VoteDetailRow>
     </>
@@ -165,7 +157,9 @@ function VoteRows({ data, voteKey = "vote" }) {
 
 function DelegationTargetRow({ data, type }) {
   return (
-    <VoteDetailRow label={<span>{type === 3 ? LABELS.TO : LABELS.FROM}</span>}>
+    <VoteDetailRow
+      label={<span>{type === 3 ? VOTE_LABELS.TO : VOTE_LABELS.FROM}</span>}
+    >
       <AddressUser key="user" add={data?.target} showAvatar={false} />
     </VoteDetailRow>
   );
@@ -185,7 +179,7 @@ function DelegationVotesRow({
 
   if (!showChange || !preDelegationData) {
     return (
-      <VoteDetailRow label={<span>{LABELS.VOTES}</span>}>
+      <VoteDetailRow label={<span>{VOTE_LABELS.VOTES}</span>}>
         {current}
       </VoteDetailRow>
     );
@@ -201,13 +195,15 @@ function DelegationVotesRow({
   return (
     <ChangeVoteWrapper
       pre={
-        <VoteDetailRow label={<span>{LABELS.VOTES}</span>}>{pre}</VoteDetailRow>
+        <VoteDetailRow label={<span>{VOTE_LABELS.VOTES}</span>}>
+          {pre}
+        </VoteDetailRow>
       }
       current={
         <ResponsiveWrapper
           desktop={current}
           mobile={
-            <VoteDetailRow label={<span>{LABELS.VOTES}</span>}>
+            <VoteDetailRow label={<span>{VOTE_LABELS.VOTES}</span>}>
               {current}
             </VoteDetailRow>
           }
@@ -248,7 +244,7 @@ function VoteChangeRows({
 function VoteType({ type }) {
   return (
     <p className="inline-flex max-md:justify-end text-textTertiary text12Medium">
-      <span>{LABELS.VOTE_TYPE}</span>
+      <span>{VOTE_LABELS.VOTE_TYPE}</span>
       <span>{getVoteType(type)}</span>
     </p>
   );
@@ -279,7 +275,7 @@ function StandardVoteChangeRows({ data }) {
   return (
     <>
       <ChangeVoteWrapper pre={pre} current={current} />
-      <VoteDetailRow label={LABELS.DELEGATIONS}>
+      <VoteDetailRow label={VOTE_LABELS.DELEGATIONS}>
         <CurrencyValue balance={data?.delegations?.votes} />
       </VoteDetailRow>
       <VoteType type={data?.vote} />
