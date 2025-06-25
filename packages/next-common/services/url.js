@@ -23,6 +23,8 @@ export const gov2ReferendumsSummaryApi = "gov2/referendums/summary";
 
 export const gov2ReferendaWhalesApi = "gov2/referenda/whales";
 export const gov2ReferendaHistoryWhalesApi = "gov2/referenda/history-whales";
+export const gov2ReferendaVoteActionsApi = (index) =>
+  `gov2/referenda/${index}/actions`;
 
 // fellowship
 export const fellowshipReferenda = "fellowship/referenda/";

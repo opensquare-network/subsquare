@@ -92,6 +92,9 @@ const kusama = {
     referenda: true,
   },
   preimage: kusamaPreimageSettings,
+  referendaActions: {
+    startFrom: 538,
+  },
   supportWalletconnect: true,
 };
 
