@@ -21,7 +21,7 @@ export const VOTE_ACTION_TYPES = {
 export const VOTE_TYPES = {
   STANDARD: "standard",
   SPLIT: "split",
-  SPLIT_ABSTAIN: "splitAbstain",
+  SPLIT_ABSTAIN: "split abstain",
 };
 
 export const VOTE_TYPE_CONFIG = {
