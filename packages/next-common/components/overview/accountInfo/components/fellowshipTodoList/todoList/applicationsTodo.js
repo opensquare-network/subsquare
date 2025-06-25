@@ -3,6 +3,7 @@ import ActionButton from "./actionButton";
 import { TodoContent, TodoTag, TodoWrapper } from "./styled";
 import { usePageProps } from "next-common/context/page";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 export default function ApplicationsTodo() {
   const router = useRouter();
@@ -19,14 +20,9 @@ export default function ApplicationsTodo() {
     <TodoWrapper>
       <TodoTag>Membership</TodoTag>
       <TodoContent>
-        <a
-          className="text-theme500 cursor-pointer"
-          target="_blank"
-          rel="noreferrer"
-          href={ApplicationsPage}
-        >
+        <Link className="text-theme500 cursor-pointer" href={ApplicationsPage}>
           {active} applications
-        </a>
+        </Link>
         &nbsp;need your audit.&nbsp;
         <ActionButton onClick={() => router.push(ApplicationsPage)}>
           Check All
