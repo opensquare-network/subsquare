@@ -5,6 +5,7 @@ import { usePageProps } from "next-common/context/page";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useIsCollectivesMember } from "../context/hooks/mine";
+import pluralize from "pluralize";
 
 export default function ApplicationsTodo() {
   const router = useRouter();
@@ -24,9 +25,9 @@ export default function ApplicationsTodo() {
       <TodoTag>Membership</TodoTag>
       <TodoContent>
         <Link className="text-theme500 cursor-pointer" href={ApplicationsPage}>
-          {active} applications
+          {active} {pluralize("application", active)}
         </Link>
-        &nbsp;need your audit.&nbsp;
+        &nbsp;to join fellowship need your review.&nbsp;
         <ActionButton onClick={() => router.push(ApplicationsPage)}>
           Check All
         </ActionButton>
