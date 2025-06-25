@@ -311,7 +311,7 @@ function SplitVoteChangeRows({ data }) {
     <>
       {createSplitVoteRow(
         "aye",
-        data?.preVote?.vote?.vote?.aye,
+        data?.preVote?.vote?.aye,
         data?.vote?.vote?.aye,
       )}
       {createSplitVoteRow(
