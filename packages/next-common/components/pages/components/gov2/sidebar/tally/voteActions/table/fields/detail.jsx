@@ -38,7 +38,11 @@ function CurrencyValue({ balance }) {
   const { symbol, decimals } = useChainSettings();
 
   return (
-    <ValueDisplay value={toPrecision(balance, decimals)} symbol={symbol} />
+    <ValueDisplay
+      value={toPrecision(balance, decimals)}
+      symbol={symbol}
+      className="text14Medium"
+    />
   );
 }
 
