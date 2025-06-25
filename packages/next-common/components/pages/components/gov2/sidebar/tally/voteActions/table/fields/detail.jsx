@@ -82,19 +82,30 @@ function ChangeVoteWrapper({ pre, current, className }) {
   );
 }
 
+const getVoteBalance = (voteData) => voteData?.vote?.balance;
+const getVoteConviction = (voteData) => voteData?.vote?.vote?.conviction;
+const isAyeVote = (voteData) => voteData?.vote?.vote?.isAye;
+
+const LABELS = {
+  DELEGATIONS: "delegations:",
+  VOTES: "votes:",
+  VOTE_TYPE: "vote type:",
+  TO: "to:",
+  FROM: "from:",
+};
+
 function StandardVoteRow({ voteData, delegations }) {
-  const voteType = voteData?.vote?.vote?.isAye ? "aye" : "nay";
+  const voteType = isAyeVote(voteData) ? "aye" : "nay";
 
   return (
     <>
       <VoteDetailRow label={<VoteLabel type={voteType} />}>
         <DetailVoteValue
-          balance={voteData?.vote?.balance}
-          conviction={voteData?.vote?.vote?.conviction}
+          balance={getVoteBalance(voteData)}
+          conviction={getVoteConviction(voteData)}
         />
       </VoteDetailRow>
-
-      <VoteDetailRow label="delegations:">
+      <VoteDetailRow label={LABELS.DELEGATIONS}>
         <CurrencyValue balance={delegations} />
       </VoteDetailRow>
     </>
@@ -154,7 +165,7 @@ function VoteRows({ data, voteKey = "vote" }) {
 
 function DelegationTargetRow({ data, type }) {
   return (
-    <VoteDetailRow label={<span>{type === 3 ? "to:" : "from:"}</span>}>
+    <VoteDetailRow label={<span>{type === 3 ? LABELS.TO : LABELS.FROM}</span>}>
       <AddressUser key="user" add={data?.target} showAvatar={false} />
     </VoteDetailRow>
   );
@@ -173,35 +184,37 @@ function DelegationVotesRow({
   );
 
   if (!showChange || !preDelegationData) {
-    return <VoteDetailRow label={<span>votes:</span>}>{current}</VoteDetailRow>;
+    return (
+      <VoteDetailRow label={<span>{LABELS.VOTES}</span>}>
+        {current}
+      </VoteDetailRow>
+    );
   }
 
   const pre = (
-    <>
-      <DetailVoteValue
-        balance={preDelegationData?.balance}
-        conviction={preDelegationData?.conviction}
-      />
-    </>
+    <DetailVoteValue
+      balance={preDelegationData?.balance}
+      conviction={preDelegationData?.conviction}
+    />
   );
 
   return (
-    <>
-      <ChangeVoteWrapper
-        pre={<VoteDetailRow label={<span>votes:</span>}>{pre}</VoteDetailRow>}
-        current={
-          <>
-            <div className="max-md:hidden">{current}</div>
-            <div className="hidden max-md:block">
-              <VoteDetailRow label={<span>votes:</span>}>
-                {current}
-              </VoteDetailRow>
-            </div>
-          </>
-        }
-        className="inline-flex"
-      />
-    </>
+    <ChangeVoteWrapper
+      pre={
+        <VoteDetailRow label={<span>{LABELS.VOTES}</span>}>{pre}</VoteDetailRow>
+      }
+      current={
+        <ResponsiveWrapper
+          desktop={current}
+          mobile={
+            <VoteDetailRow label={<span>{LABELS.VOTES}</span>}>
+              {current}
+            </VoteDetailRow>
+          }
+        />
+      }
+      className="inline-flex"
+    />
   );
 }
 
@@ -235,7 +248,7 @@ function VoteChangeRows({
 function VoteType({ type }) {
   return (
     <p className="inline-flex max-md:justify-end text-textTertiary text12Medium">
-      <span>vote type:</span>
+      <span>{LABELS.VOTE_TYPE}</span>
       <span>{getVoteType(type)}</span>
     </p>
   );
@@ -266,7 +279,7 @@ function StandardVoteChangeRows({ data }) {
   return (
     <>
       <ChangeVoteWrapper pre={pre} current={current} />
-      <VoteDetailRow label="delegations:">
+      <VoteDetailRow label={LABELS.DELEGATIONS}>
         <CurrencyValue balance={data?.delegations?.votes} />
       </VoteDetailRow>
       <VoteType type={data?.vote} />
@@ -288,60 +301,79 @@ const createSplitVoteRow = (type, preBalance, currentBalance) => {
   );
 };
 
-function SplitVoteChangeRows({ data }) {
+function ResponsiveWrapper({ desktop, mobile }) {
   return (
     <>
-      <div className="flex flex-col max-md:hidden">
-        {createSplitVoteRow(
-          "aye",
-          data?.preVote?.vote?.aye,
-          data?.vote?.vote?.aye,
-        )}
-        {createSplitVoteRow(
-          "nay",
-          data?.preVote?.vote?.nay,
-          data?.vote?.vote?.nay,
-        )}
-      </div>
-      <div className="hidden max-md:flex flex-col">
-        <ChangeVoteWrapper
-          pre={<SplitVoteRow voteData={data?.preVote} />}
-          current={<SplitVoteRow voteData={data?.vote} />}
-          className="inline-flex"
-        />
-      </div>
+      <div className="flex flex-col max-md:hidden">{desktop}</div>
+      <div className="hidden max-md:flex flex-col">{mobile}</div>
+    </>
+  );
+}
+
+function SplitVoteChangeRows({ data }) {
+  const desktopContent = (
+    <>
+      {createSplitVoteRow(
+        "aye",
+        data?.preVote?.vote?.vote?.aye,
+        data?.vote?.vote?.aye,
+      )}
+      {createSplitVoteRow(
+        "nay",
+        data?.preVote?.vote?.nay,
+        data?.vote?.vote?.nay,
+      )}
+    </>
+  );
+
+  const mobileContent = (
+    <ChangeVoteWrapper
+      pre={<SplitVoteRow voteData={data?.preVote} />}
+      current={<SplitVoteRow voteData={data?.vote} />}
+      className="inline-flex"
+    />
+  );
+
+  return (
+    <>
+      <ResponsiveWrapper desktop={desktopContent} mobile={mobileContent} />
       <VoteType type={data?.vote} />
     </>
   );
 }
 
 function SplitAbstainVoteChangeRows({ data }) {
+  const desktopContent = (
+    <>
+      {createSplitVoteRow(
+        "aye",
+        data?.preVote?.vote?.aye,
+        data?.vote?.vote?.aye,
+      )}
+      {createSplitVoteRow(
+        "nay",
+        data?.preVote?.vote?.nay,
+        data?.vote?.vote?.nay,
+      )}
+      {createSplitVoteRow(
+        "abstain",
+        data?.preVote?.vote?.abstain,
+        data?.vote?.vote?.abstain,
+      )}
+    </>
+  );
+
+  const mobileContent = (
+    <ChangeVoteWrapper
+      pre={<SplitAbstainVoteRow voteData={data?.preVote} />}
+      current={<SplitAbstainVoteRow voteData={data?.vote} />}
+      className="inline-flex"
+    />
+  );
+
   return (
     <>
-      <div className="flex flex-col max-md:hidden">
-        {createSplitVoteRow(
-          "aye",
-          data?.preVote?.vote?.aye,
-          data?.vote?.vote?.aye,
-        )}
-        {createSplitVoteRow(
-          "nay",
-          data?.preVote?.vote?.nay,
-          data?.vote?.vote?.nay,
-        )}
-        {createSplitVoteRow(
-          "abstain",
-          data?.preVote?.vote?.abstain,
-          data?.vote?.vote?.abstain,
-        )}
-      </div>
-      <div className="hidden max-md:flex flex-col">
-        <ChangeVoteWrapper
-          pre={<SplitAbstainVoteRow voteData={data?.preVote} />}
-          current={<SplitAbstainVoteRow voteData={data?.vote} />}
-          className="inline-flex"
-        />
-      </div>
+      <ResponsiveWrapper desktop={desktopContent} mobile={mobileContent} />
       <VoteType type={data?.vote} />
     </>
   );
