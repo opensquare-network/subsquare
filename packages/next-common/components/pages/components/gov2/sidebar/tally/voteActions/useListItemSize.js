@@ -31,14 +31,15 @@ function getDesktopDirectVoteHeight(voteInfo) {
     return voteIsSplitAbstain ? 108 : 88;
   }
 
+  if (preVoteIsStandard && voteIsStandard) {
+    return 128;
+  }
+
   if (preVoteIsSplitAbstain && voteIsSplitAbstain) {
     return 108;
   }
 
-  if (
-    (preVoteIsStandard && voteIsStandard) ||
-    (preVoteIsSplit && voteIsSplit)
-  ) {
+  if (preVoteIsSplit && voteIsSplit) {
     return 88;
   }
 
@@ -68,14 +69,15 @@ function getMobileDirectVoteHeight(voteInfo) {
     return voteIsSplitAbstain ? 252 : 228;
   }
 
+  if (preVoteIsStandard && voteIsStandard) {
+    return 260;
+  }
+
   if (preVoteIsSplitAbstain && voteIsSplitAbstain) {
     return 366;
   }
 
-  if (
-    (preVoteIsStandard && voteIsStandard) ||
-    (preVoteIsSplit && voteIsSplit)
-  ) {
+  if (preVoteIsSplit && voteIsSplit) {
     return 280;
   }
 

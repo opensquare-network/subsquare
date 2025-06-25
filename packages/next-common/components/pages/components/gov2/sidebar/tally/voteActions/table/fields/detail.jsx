@@ -232,6 +232,15 @@ function VoteChangeRows({
   return <MixedVoteChangeRows data={data} />;
 }
 
+function VoteType({ type }) {
+  return (
+    <p className="inline-flex max-md:justify-end text-textTertiary text12Medium">
+      <span>vote type:</span>
+      <span>{getVoteType(type)}</span>
+    </p>
+  );
+}
+
 function StandardVoteChangeRows({ data }) {
   const preVoteType = data?.preVote?.vote?.vote?.isAye ? "aye" : "nay";
   const currentVoteType = data?.vote?.vote?.vote?.isAye ? "aye" : "nay";
@@ -254,7 +263,15 @@ function StandardVoteChangeRows({ data }) {
     </VoteDetailRow>
   );
 
-  return <ChangeVoteWrapper pre={pre} current={current} />;
+  return (
+    <>
+      <ChangeVoteWrapper pre={pre} current={current} />
+      <VoteDetailRow label="delegations:">
+        <CurrencyValue balance={data?.delegations?.votes} />
+      </VoteDetailRow>
+      <VoteType type={data?.vote} />
+    </>
+  );
 }
 
 function SplitVoteChangeRows({ data }) {
@@ -306,10 +323,7 @@ function DirectVoteDetail({ data, voteKey = "vote" }) {
   return (
     <div className="flex flex-col">
       <VoteRows data={data} voteKey={voteKey} />
-      <p className="inline-flex max-md:justify-end text-textTertiary text12Medium">
-        <span>vote type:</span>
-        <span>{getVoteType(data?.[voteKey])}</span>
-      </p>
+      <VoteType type={data?.[voteKey]} />
     </div>
   );
 }
