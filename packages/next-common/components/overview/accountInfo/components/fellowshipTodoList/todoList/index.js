@@ -17,6 +17,7 @@ import CandidateEvidencesTodo from "./candidateEvidencesTodo";
 import { CandidatePromotionTodo } from "./candidatePromotionTodo";
 import { MemberPromotionTodo } from "./memberPromotionTodo";
 import MemberRetentionTodo from "./memberRetentionTodo";
+import ApplicationsTodo from "./applicationsTodo";
 
 function MakeSureLoaded({ children }) {
   const isLoading = useTodoListLoading();
@@ -96,6 +97,7 @@ function TodoListWithDataLoaded() {
         <MemberReferendaTodo />
       </OnlyCoreMember>
       <DemotionExpirationTodo />
+      <ApplicationsTodo />
       <CandidateDemotionExpirationTodo />
     </div>
   );
