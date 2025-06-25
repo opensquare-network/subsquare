@@ -274,48 +274,76 @@ function StandardVoteChangeRows({ data }) {
   );
 }
 
-function SplitVoteChangeRows({ data }) {
-  const createVoteRow = (type, preBalance, currentBalance) => {
-    const pre = (
-      <VoteDetailRow label={<VoteLabel type={type} />}>
-        <DetailVoteValue balance={preBalance} />
-      </VoteDetailRow>
-    );
+const createSplitVoteRow = (type, preBalance, currentBalance) => {
+  const pre = (
+    <VoteDetailRow label={<VoteLabel type={type} />}>
+      <DetailVoteValue balance={preBalance} />
+    </VoteDetailRow>
+  );
 
-    const current = (
-      <VoteDetailRow label={<VoteLabel type={type} />}>
-        <DetailVoteValue balance={currentBalance} />
-      </VoteDetailRow>
-    );
-
-    return <ChangeVoteWrapper pre={pre} current={current} />;
-  };
+  const current = <DetailVoteValue balance={currentBalance} />;
 
   return (
-    <div>
-      {createVoteRow("aye", data?.preVote?.vote?.aye, data?.vote?.vote?.aye)}
-      {createVoteRow("nay", data?.preVote?.vote?.nay, data?.vote?.vote?.nay)}
-    </div>
+    <ChangeVoteWrapper pre={pre} current={current} className="inline-flex" />
+  );
+};
+
+function SplitVoteChangeRows({ data }) {
+  return (
+    <>
+      <div className="flex flex-col max-md:hidden">
+        {createSplitVoteRow(
+          "aye",
+          data?.preVote?.vote?.aye,
+          data?.vote?.vote?.aye,
+        )}
+        {createSplitVoteRow(
+          "nay",
+          data?.preVote?.vote?.nay,
+          data?.vote?.vote?.nay,
+        )}
+      </div>
+      <div className="hidden max-md:flex flex-col">
+        <ChangeVoteWrapper
+          pre={<SplitVoteRow voteData={data?.preVote} />}
+          current={<SplitVoteRow voteData={data?.vote} />}
+          className="inline-flex"
+        />
+      </div>
+      <VoteType type={data?.vote} />
+    </>
   );
 }
 
 function SplitAbstainVoteChangeRows({ data }) {
   return (
-    <div>
-      <SplitVoteChangeRows data={data} />
-      <ChangeVoteWrapper
-        pre={
-          <VoteDetailRow label={<VoteLabel type="abstain" />}>
-            <DetailVoteValue balance={data?.preVote?.vote?.abstain} />
-          </VoteDetailRow>
-        }
-        current={
-          <VoteDetailRow label={<VoteLabel type="abstain" />}>
-            <DetailVoteValue balance={data?.vote?.vote?.abstain} />
-          </VoteDetailRow>
-        }
-      />
-    </div>
+    <>
+      <div className="flex flex-col max-md:hidden">
+        {createSplitVoteRow(
+          "aye",
+          data?.preVote?.vote?.aye,
+          data?.vote?.vote?.aye,
+        )}
+        {createSplitVoteRow(
+          "nay",
+          data?.preVote?.vote?.nay,
+          data?.vote?.vote?.nay,
+        )}
+        {createSplitVoteRow(
+          "abstain",
+          data?.preVote?.vote?.abstain,
+          data?.vote?.vote?.abstain,
+        )}
+      </div>
+      <div className="hidden max-md:flex flex-col">
+        <ChangeVoteWrapper
+          pre={<SplitAbstainVoteRow voteData={data?.preVote} />}
+          current={<SplitAbstainVoteRow voteData={data?.vote} />}
+          className="inline-flex"
+        />
+      </div>
+      <VoteType type={data?.vote} />
+    </>
   );
 }
 
