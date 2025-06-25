@@ -25,6 +25,7 @@ const westend = {
   ...westendCommonCfg,
   blockTime: 6000,
   assethubMigration: westendAssethubMigration,
+  multisigApiPrefix: "westmint-gh-api",
   endpoints: westendAssetHubNodes,
   relayChainEndpoints: westendRelayChainNodes,
   avatar: ProjectIconWestendLight,
