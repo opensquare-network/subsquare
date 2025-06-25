@@ -1,98 +1,101 @@
 import { useMemo } from "react";
 import { isDirectVote, isDelegation } from "./common";
 
-function getVoteTypeInfo(item) {
+const HEIGHT_CONFIG = {
+  desktop: {
+    directVote: {
+      noPreVote: {
+        standard: 88,
+        split: 88,
+        splitAbstain: 108,
+      },
+      withPreVote: {
+        standardTostandard: 128,
+        splitAbstainTosplitAbstain: 108,
+        splitTosplit: 88,
+        standardTosplit: 164,
+        splitTostandard: 164,
+        default: 184,
+      },
+    },
+    delegation: {
+      withPreDelegation: 72,
+      default: 72,
+    },
+  },
+  mobile: {
+    directVote: {
+      noPreVote: {
+        standard: 228,
+        split: 228,
+        splitAbstain: 252,
+      },
+      withPreVote: {
+        standardTostandard: 260,
+        splitAbstainTosplitAbstain: 336,
+        splitTosplit: 288,
+        standardTosplit: 302,
+        splitTostandard: 302,
+        default: 342,
+      },
+    },
+    delegation: {
+      withPreDelegation: 244,
+      default: 200,
+    },
+  },
+};
+
+function getVoteType(vote) {
+  if (vote?.isSplitAbstain) {
+    return "splitAbstain";
+  }
+
+  if (vote?.isSplit) {
+    return "split";
+  }
+
+  if (vote?.isStandard) {
+    return "standard";
+  }
+
+  return null;
+}
+
+function getVoteInfo(item) {
   const preVote = item?.data?.preVote;
   const vote = item?.data?.vote;
-
   return {
-    hasPreVote: !!preVote,
-    preVoteIsSplitAbstain: preVote?.isSplitAbstain,
-    preVoteIsStandard: preVote?.isStandard,
-    preVoteIsSplit: preVote?.isSplit,
-    voteIsSplitAbstain: vote?.isSplitAbstain,
-    voteIsStandard: vote?.isStandard,
-    voteIsSplit: vote?.isSplit,
+    preVoteType: getVoteType(preVote),
+    voteType: getVoteType(vote),
   };
 }
 
-function getDesktopDirectVoteHeight(voteInfo) {
-  const {
-    hasPreVote,
-    preVoteIsSplitAbstain,
-    preVoteIsStandard,
-    preVoteIsSplit,
-    voteIsSplitAbstain,
-    voteIsStandard,
-    voteIsSplit,
-  } = voteInfo;
+function getItemHeight(item, deviceType) {
+  if (isDirectVote(item.type)) {
+    const { preVoteType, voteType } = getVoteInfo(item);
+    if (!preVoteType) {
+      return (
+        HEIGHT_CONFIG[deviceType].directVote.noPreVote[voteType] ||
+        HEIGHT_CONFIG[deviceType].directVote.noPreVote.standard
+      );
+    }
+    const key = voteType ? `${preVoteType}To${voteType}` : "default";
 
-  if (!hasPreVote) {
-    return voteIsSplitAbstain ? 108 : 88;
+    return (
+      HEIGHT_CONFIG[deviceType].directVote.withPreVote[key] ||
+      HEIGHT_CONFIG[deviceType].directVote.withPreVote.default
+    );
   }
 
-  if (preVoteIsStandard && voteIsStandard) {
-    return 128;
+  if (isDelegation(item.type) && item?.data?.preDelegation) {
+    return HEIGHT_CONFIG[deviceType].delegation.withPreDelegation;
   }
 
-  if (preVoteIsSplitAbstain && voteIsSplitAbstain) {
-    return 108;
-  }
-
-  if (preVoteIsSplit && voteIsSplit) {
-    return 88;
-  }
-
-  if (
-    preVoteIsStandard === !voteIsStandard &&
-    !preVoteIsSplitAbstain &&
-    !voteIsSplitAbstain
-  ) {
-    return 164;
-  }
-
-  return 184;
+  return HEIGHT_CONFIG[deviceType].delegation.default;
 }
 
-function getMobileDirectVoteHeight(voteInfo) {
-  const {
-    hasPreVote,
-    preVoteIsSplitAbstain,
-    preVoteIsStandard,
-    preVoteIsSplit,
-    voteIsSplitAbstain,
-    voteIsStandard,
-    voteIsSplit,
-  } = voteInfo;
-
-  if (!hasPreVote) {
-    return voteIsSplitAbstain ? 252 : 228;
-  }
-
-  if (preVoteIsStandard && voteIsStandard) {
-    return 260;
-  }
-
-  if (preVoteIsSplitAbstain && voteIsSplitAbstain) {
-    return 336;
-  }
-
-  if (preVoteIsSplit && voteIsSplit) {
-    return 288;
-  }
-
-  if (
-    preVoteIsStandard === !voteIsStandard &&
-    !preVoteIsSplitAbstain &&
-    !voteIsSplitAbstain
-  ) {
-    return 302;
-  }
-
-  return 342;
-}
-
-function useItemSize(data, defaultHeight, directVoteCalculator) {
+function useItemSize(data, deviceType) {
   return useMemo(() => {
     if (!data?.length) {
       return null;
@@ -100,30 +103,16 @@ function useItemSize(data, defaultHeight, directVoteCalculator) {
 
     return (index) => {
       const item = data[index];
-      if (!item) {
-        return defaultHeight;
-      }
 
-      if (isDirectVote(item.type)) {
-        const voteInfo = getVoteTypeInfo(item);
-        return directVoteCalculator(voteInfo);
-      }
-
-      if (isDelegation(item.type) && item?.data?.preDelegation) {
-        return directVoteCalculator === getMobileDirectVoteHeight
-          ? 244
-          : defaultHeight;
-      }
-
-      return defaultHeight;
+      return getItemHeight(item, deviceType);
     };
-  }, [data, defaultHeight, directVoteCalculator]);
+  }, [data, deviceType]);
 }
 
 export function useDesktopItemSize(data) {
-  return useItemSize(data, 72, getDesktopDirectVoteHeight);
+  return useItemSize(data, "desktop");
 }
 
 export function useMobileItemSize(data) {
-  return useItemSize(data, 200, getMobileDirectVoteHeight);
+  return useItemSize(data, "mobile");
 }
