@@ -20,7 +20,14 @@ import CollectivesProvider from "next-common/context/collectives/collectives";
 import FellowshipTrackSelect from "next-common/components/fellowship/fellowshipListLayout/trackSelect";
 import { isCollectivesChain } from "next-common/utils/chain";
 import { useChain } from "next-common/context/chain";
-import TrackPanel from "next-common/components/referenda/trackPanel";
+import dynamic from "next/dynamic";
+
+const TrackPanel = dynamic(
+  () => import("next-common/components/referenda/trackPanel"),
+  {
+    ssr: false,
+  },
+);
 
 export default function TrackPage({
   posts,
