@@ -41,7 +41,7 @@ function MaybeSimaPostContextMenu({ isAuthor, setIsEdit }) {
   );
 }
 
-export default function ArticleActions({ setIsEdit, extraActions }) {
+export function CommonArticleActions({ extraActions, contextMenu }) {
   const user = useUser();
   const post = usePost();
   const isAuthor = useIsPostAuthor();
@@ -104,12 +104,23 @@ export default function ArticleActions({ setIsEdit, extraActions }) {
           {extraActions}
         </Wrapper>
 
-        {user && (
-          <MaybeSimaPostContextMenu isAuthor={isAuthor} setIsEdit={setIsEdit} />
-        )}
+        {user && contextMenu}
       </div>
 
       {showThumbsUpList && <ThumbUpList reactions={post?.reactions} />}
     </div>
+  );
+}
+
+export default function ArticleActions({ setIsEdit, extraActions }) {
+  const isAuthor = useIsPostAuthor();
+
+  return (
+    <CommonArticleActions
+      extraActions={extraActions}
+      contextMenu={
+        <MaybeSimaPostContextMenu isAuthor={isAuthor} setIsEdit={setIsEdit} />
+      }
+    />
   );
 }
