@@ -9,9 +9,13 @@ import { isNil } from "lodash-es";
 
 const ZERO_BIGINT = BigInt(0);
 
+function getConvictionZeroVotes(balance = 0) {
+  return BigInt(balance) / BigInt(10);
+}
+
 function getVotesWithConviction(balance, conviction) {
   if (conviction <= 0) {
-    return BigInt(balance) / BigInt(10);
+    return getConvictionZeroVotes(balance);
   } else {
     return BigInt(balance) * BigInt(convictionToLockXNumber(conviction));
   }
@@ -25,7 +29,7 @@ function absBigInt(x) {
 }
 
 function getSplitVotes(aye, nay) {
-  return BigInt(aye) - BigInt(nay);
+  return getConvictionZeroVotes(aye) - getConvictionZeroVotes(nay);
 }
 
 function getDirectVotes(vote, delegations) {
