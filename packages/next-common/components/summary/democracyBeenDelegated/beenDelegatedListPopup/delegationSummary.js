@@ -21,6 +21,7 @@ export default function DelegationSummary({
   isLoading,
 }) {
   const node = useChainSettings();
+  const shouldLoading = isLoading || !delegations;
 
   const descriptionsItems = [
     {
@@ -35,14 +36,14 @@ export default function DelegationSummary({
     {
       label: (
         <Title>
-          <BalanceSVG />
-          Capital
+          <SupportSVG />
+          Votes
         </Title>
       ),
       value: (
-        <LoadableContent isLoading={isLoading}>
+        <LoadableContent isLoading={shouldLoading}>
           <ValueDisplay
-            value={toPrecision(delegations?.capital || 0, node.decimals)}
+            value={toPrecision(delegations?.votes || 0, node.decimals)}
             symbol={node.symbol}
           />
         </LoadableContent>
@@ -51,14 +52,14 @@ export default function DelegationSummary({
     {
       label: (
         <Title>
-          <SupportSVG />
-          Votes
+          <BalanceSVG />
+          Capital
         </Title>
       ),
       value: (
-        <LoadableContent isLoading={isLoading}>
+        <LoadableContent isLoading={shouldLoading}>
           <ValueDisplay
-            value={toPrecision(delegations?.votes || 0, node.decimals)}
+            value={toPrecision(delegations?.capital || 0, node.decimals)}
             symbol={node.symbol}
           />
         </LoadableContent>
