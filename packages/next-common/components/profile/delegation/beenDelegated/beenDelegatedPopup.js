@@ -22,11 +22,12 @@ function TrackBeenDelegatedPopupList({
   const profileAddress = useProfileAddress();
   const myAddress = useRealAddress();
   const realAddress = isMyDelegationPage ? myAddress : profileAddress;
-  const delegations = useTrackDelegations(track, realAddress);
+  const { delegations, isLoading } = useTrackDelegations(track, realAddress);
 
   return (
     <>
       <DelegationSummary
+        isLoading={isLoading}
         delegations={delegations}
         beenDelegatedList={trackBeenDelegatedList || []}
       />
