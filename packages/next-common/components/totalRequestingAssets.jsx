@@ -100,12 +100,11 @@ function RelatedReferenda() {
     <>
       <span>·</span>
       <span>
-        Check{" "}
         <Link
           className="font-bold underline"
           href={`/referenda?${queryString}`}
         >
-          related referenda
+          Check all
         </Link>
         .
       </span>
