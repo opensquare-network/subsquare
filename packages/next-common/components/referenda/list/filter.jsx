@@ -38,6 +38,11 @@ export default function ReferendaListFilter({ isUnVotedOnlyLoading }) {
   });
 
   useUpdateEffect(() => {
+    setIsTreasury(isTreasuryProp === "true");
+    setOngoing(ongoingProp === "true");
+  }, [isTreasuryProp, ongoingProp]);
+
+  useUpdateEffect(() => {
     setValue((val) => {
       return {
         ...val,

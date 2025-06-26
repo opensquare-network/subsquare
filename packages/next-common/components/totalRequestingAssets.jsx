@@ -6,6 +6,7 @@ import { useChainSettings } from "next-common/context/chain";
 import ValueDisplay from "./valueDisplay";
 import usePromptVisibility from "next-common/hooks/usePromptVisibility";
 import useTreasuryRequesting from "next-common/hooks/useTreasuryRequesting";
+import Link from "next/link";
 
 function DisplayTotalRequestingAssets({ onClose }) {
   const { requestingValue, confirmingValue } = useTreasuryRequesting();
@@ -56,18 +57,8 @@ function TotalRequestingAssetsContent({
           symbol={""}
           prefix={"$"}
         />
-        {requestingValue?.gt(0) && (
-          <>
-            <span>·</span>
-            <span>Requesting</span>
-            <ValueDisplay
-              className="font-bold"
-              value={requestingValue}
-              symbol={""}
-              prefix={"$"}
-            />
-          </>
-        )}
+        <RequestingContent requestingValue={requestingValue} />
+        <RelatedReferenda />
       </div>
       <SystemClose
         className="w-5 h-5 flex-shrink-0 ml-2"
@@ -75,5 +66,49 @@ function TotalRequestingAssetsContent({
         onClick={onClose}
       />
     </GreyPanel>
+  );
+}
+
+function RequestingContent({ requestingValue }) {
+  if (!requestingValue || requestingValue?.isZero()) {
+    return null;
+  }
+
+  return (
+    <>
+      <span>·</span>
+      <span>Requesting</span>
+      <ValueDisplay
+        className="font-bold"
+        value={requestingValue}
+        symbol={""}
+        prefix={"$"}
+      />
+    </>
+  );
+}
+
+function RelatedReferenda() {
+  const queryParams = {
+    is_treasury: true,
+    ongoing: true,
+  };
+
+  const queryString = new URLSearchParams(queryParams).toString();
+
+  return (
+    <>
+      <span>·</span>
+      <span>
+        Check{" "}
+        <Link
+          className="font-bold underline"
+          href={`/referenda?${queryString}`}
+        >
+          related referenda
+        </Link>
+        .
+      </span>
+    </>
   );
 }
