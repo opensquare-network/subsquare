@@ -3,7 +3,7 @@ import { useOnchainData } from "next-common/context/post";
 import { desktopColumns, mobileColumns } from "./columns";
 import { cn } from "next-common/utils";
 import VirtualList from "next-common/components/dataList/virtualList";
-import { useMemo, useCallback } from "react";
+import { useMemo, useCallback, memo } from "react";
 import useSearchVotes from "next-common/hooks/useSearchVotes";
 import { useDesktopItemSize, useMobileItemSize } from "../useListItemSize";
 
@@ -79,7 +79,7 @@ function MobileTable({ voteActions, loading, listHeight = 600 }) {
   );
 }
 
-export default function VoteActionsTable({ search = "", listHeight }) {
+function VoteActionsTable({ search = "", listHeight }) {
   const { referendumIndex } = useOnchainData();
   const { loading, voteActions = [] } = useQueryVoteActions(referendumIndex);
 
@@ -105,3 +105,5 @@ export default function VoteActionsTable({ search = "", listHeight }) {
     </>
   );
 }
+
+export default memo(VoteActionsTable);
