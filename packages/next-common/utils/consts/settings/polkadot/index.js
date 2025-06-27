@@ -103,7 +103,7 @@ const polkadot = {
     referenda: true,
   },
   referendaActions: {
-    startFrom: 1615,
+    startFrom: 1584,
   },
   supportWalletconnect: true,
 };
