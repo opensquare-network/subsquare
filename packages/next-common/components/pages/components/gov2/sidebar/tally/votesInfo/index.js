@@ -8,29 +8,14 @@ import {
   VotesInfoLine,
 } from "./styled";
 import WindowSizeProvider from "next-common/context/windowSize";
-import { memo, useMemo } from "react";
-import { useChainSettings } from "next-common/context/chain";
+import { memo } from "react";
 import VoteActions from "../voteActions";
-import { isNil } from "lodash-es";
-import { useOnchainData } from "next-common/context/post";
+import useShowVoteActions from "next-common/hooks/useShowVoteActions";
 
 function ConditionalVotes() {
-  const { referendumIndex } = useOnchainData();
-  const { referendaActions } = useChainSettings();
+  const showVoteActions = useShowVoteActions();
 
-  const shouldUseVoteActions = useMemo(() => {
-    if (
-      isNil(referendumIndex) ||
-      isNil(referendaActions) ||
-      isNil(referendaActions?.startFrom)
-    ) {
-      return false;
-    }
-
-    return referendumIndex >= referendaActions?.startFrom;
-  }, [referendaActions, referendumIndex]);
-
-  return shouldUseVoteActions ? <VoteActions /> : <CallsVotes />;
+  return showVoteActions ? <VoteActions /> : <CallsVotes />;
 }
 
 function VotesInfo() {

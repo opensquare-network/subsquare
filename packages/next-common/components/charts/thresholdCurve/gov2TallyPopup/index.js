@@ -16,6 +16,9 @@ import HowOpenGovWorks from "next-common/components/howOpenGovWorks";
 import ConfirmationEstimation from "next-common/components/charts/thresholdCurve/gov2TallyPopup/confirmationEstimation";
 import ThresholdVotesCard from "../thresholdCards/votes";
 import NayAyeSwitch from "./nayAyeSwitch";
+import VoteActionsList from "./voteActionsList";
+import useShowVoteActions from "next-common/hooks/useShowVoteActions";
+import { cn } from "next-common/utils";
 
 function PopupChartContent({ isFellowship = false, showAyeNay }) {
   if (isFellowship) {
@@ -35,11 +38,12 @@ export default function ThresholdCurvesGov2TallyPopup({
   const approvalThreshold = useApprovalThreshold();
   const supportThreshold = useSupportThreshold();
   const [showAyeNay, setShowAyeNay] = useState(true);
+  const showVoteActions = useShowVoteActions();
 
   return (
     <Popup
       title="Threshold Curves"
-      className="w-[960px]"
+      className={cn("w-[960px]", showVoteActions && "my-[4vh]")}
       onClose={closeFunc}
       extra={
         !isFellowship && (
@@ -72,6 +76,8 @@ export default function ThresholdCurvesGov2TallyPopup({
         approvePercentage={approvalPercentage}
         supportPercentage={supportPercentage}
       />
+
+      {!isFellowship && showVoteActions && <VoteActionsList />}
 
       <div className="mt-[16px]">
         <HowOpenGovWorks anchor="referenda" />

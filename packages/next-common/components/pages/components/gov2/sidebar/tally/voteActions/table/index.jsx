@@ -3,11 +3,17 @@ import { useOnchainData } from "next-common/context/post";
 import { desktopColumns, mobileColumns } from "./columns";
 import { cn } from "next-common/utils";
 import VirtualList from "next-common/components/dataList/virtualList";
-import { useMemo, useCallback } from "react";
+import { useMemo, useCallback, memo } from "react";
 import useSearchVotes from "next-common/hooks/useSearchVotes";
 import { useDesktopItemSize, useMobileItemSize } from "../useListItemSize";
+import useMaxImpactVotes from "../useMaxImpactVotes";
 
-function DesktopTable({ voteActions, loading }) {
+function DesktopTable({
+  voteActions,
+  loading,
+  listHeight = 600,
+  maxImpactVotes,
+}) {
   const getItemSize = useDesktopItemSize(voteActions);
 
   const columns = useMemo(() => {
@@ -20,9 +26,10 @@ function DesktopTable({ voteActions, loading }) {
 
   const row = useMemo(() => {
     return voteActions?.map((item) => {
-      return desktopColumns.map((col) => col.render(item));
+      const newItem = { ...item, maxImpactVotes };
+      return desktopColumns.map((col) => col.render(newItem));
     });
-  }, [voteActions]);
+  }, [voteActions, maxImpactVotes]);
 
   return (
     <VirtualList
@@ -31,7 +38,7 @@ function DesktopTable({ voteActions, loading }) {
       loading={loading}
       variableSize={true}
       getItemSize={getItemSize}
-      listHeight={600}
+      listHeight={listHeight}
       overscanCount={3}
       noDataText="No data"
       className="scrollbar-hidden h-full"
@@ -39,7 +46,12 @@ function DesktopTable({ voteActions, loading }) {
   );
 }
 
-function MobileTable({ voteActions, loading }) {
+function MobileTable({
+  voteActions,
+  loading,
+  listHeight = 600,
+  maxImpactVotes,
+}) {
   const getItemSize = useMobileItemSize(voteActions);
 
   const columns = useMemo(() => {
@@ -49,16 +61,17 @@ function MobileTable({ voteActions, loading }) {
   const rows = useMemo(() => {
     return (
       voteActions?.map((item) => {
+        const newItem = { ...item, maxImpactVotes };
         return [
           <div key={item.who} className="flex flex-col space-y-2 w-full">
             {mobileColumns.map((col, index) => (
-              <div key={index}>{col.render(item)}</div>
+              <div key={index}>{col.render(newItem)}</div>
             ))}
           </div>,
         ];
       }) || []
     );
-  }, [voteActions]);
+  }, [maxImpactVotes, voteActions]);
 
   return (
     <VirtualList
@@ -72,16 +85,17 @@ function MobileTable({ voteActions, loading }) {
       loading={loading}
       variableSize={true}
       getItemSize={getItemSize}
-      listHeight={600}
+      listHeight={listHeight}
       overscanCount={3}
       noDataText="No data"
     />
   );
 }
 
-export default function VoteActionsTable({ search = "" }) {
+function VoteActionsTable({ search = "", listHeight }) {
   const { referendumIndex } = useOnchainData();
   const { loading, voteActions = [] } = useQueryVoteActions(referendumIndex);
+  const maxImpactVotes = useMaxImpactVotes(voteActions);
 
   const getVoter = useCallback((vote) => vote.who, []);
   const filteredVoteActions = useSearchVotes(search, voteActions, getVoter);
@@ -89,11 +103,23 @@ export default function VoteActionsTable({ search = "" }) {
   return (
     <>
       <div className="max-md:hidden">
-        <DesktopTable voteActions={filteredVoteActions} loading={loading} />
+        <DesktopTable
+          voteActions={filteredVoteActions}
+          loading={loading}
+          listHeight={listHeight}
+          maxImpactVotes={maxImpactVotes}
+        />
       </div>
       <div className="hidden max-md:block">
-        <MobileTable voteActions={filteredVoteActions} loading={loading} />
+        <MobileTable
+          voteActions={filteredVoteActions}
+          loading={loading}
+          listHeight={listHeight}
+          maxImpactVotes={maxImpactVotes}
+        />
       </div>
     </>
   );
 }
+
+export default memo(VoteActionsTable);

@@ -14,6 +14,8 @@ import {
   VOTE_LABELS,
 } from "../../common";
 import { cn } from "next-common/utils";
+import Tooltip from "next-common/components/tooltip";
+import NumberWithComma from "next-common/components/numberWithComma";
 
 function DetailLabel({ children }) {
   return (
@@ -38,13 +40,14 @@ function VoteLabel({ type }) {
   );
 }
 
-function CurrencyValue({ balance }) {
+function CurrencyValue({ balance, showTooltip = true }) {
   const { symbol, decimals } = useChainSettings();
 
   return (
     <ValueDisplay
       value={toPrecision(balance, decimals)}
       symbol={symbol}
+      showTooltip={showTooltip}
       className="text14Medium"
     />
   );
@@ -86,6 +89,29 @@ function ChangeVoteWrapper({ pre, current, className }) {
   );
 }
 
+function DelegationsTooltipContent({ delegations }) {
+  const { symbol, decimals } = useChainSettings();
+
+  const fields = [
+    { label: "votes", value: delegations?.votes },
+    { label: "capital", value: delegations?.capital },
+  ];
+
+  return (
+    <div>
+      {fields.map(({ label, value }) => (
+        <p key={label}>
+          <span>{label}:&nbsp;</span>
+          <NumberWithComma
+            value={toPrecision(value, decimals)}
+            symbol={symbol}
+          />
+        </p>
+      ))}
+    </div>
+  );
+}
+
 function StandardVoteRow({ voteData, delegations }) {
   const voteType = isAyeVote(voteData) ? "aye" : "nay";
 
@@ -98,7 +124,11 @@ function StandardVoteRow({ voteData, delegations }) {
         />
       </VoteDetailRow>
       <VoteDetailRow label={VOTE_LABELS.DELEGATIONS}>
-        <CurrencyValue balance={delegations} />
+        <Tooltip
+          content={<DelegationsTooltipContent delegations={delegations} />}
+        >
+          <CurrencyValue balance={delegations?.votes} showTooltip={false} />
+        </Tooltip>
       </VoteDetailRow>
     </>
   );
@@ -137,10 +167,7 @@ function VoteRows({ data, voteKey = "vote" }) {
 
   if (voteData.isStandard) {
     return (
-      <StandardVoteRow
-        voteData={voteData}
-        delegations={data?.delegations?.votes}
-      />
+      <StandardVoteRow voteData={voteData} delegations={data?.delegations} />
     );
   }
 
@@ -276,7 +303,16 @@ function StandardVoteChangeRows({ data }) {
     <>
       <ChangeVoteWrapper pre={pre} current={current} />
       <VoteDetailRow label={VOTE_LABELS.DELEGATIONS}>
-        <CurrencyValue balance={data?.delegations?.votes} />
+        <Tooltip
+          content={
+            <DelegationsTooltipContent delegations={data?.delegations} />
+          }
+        >
+          <CurrencyValue
+            balance={data?.delegations?.votes}
+            showTooltip={false}
+          />
+        </Tooltip>
       </VoteDetailRow>
       <VoteType type={data?.vote} />
     </>

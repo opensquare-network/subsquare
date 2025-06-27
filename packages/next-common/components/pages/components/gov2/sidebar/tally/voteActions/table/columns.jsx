@@ -38,9 +38,13 @@ export const mobileColumns = [
     ),
   },
   {
-    render: ({ data, type }) => (
+    render: ({ data, type, maxImpactVotes }) => (
       <MobileRow label="Impact">
-        <ImpactVotesField data={data} type={type} />
+        <ImpactVotesField
+          data={data}
+          type={type}
+          maxImpactVotes={maxImpactVotes}
+        />
       </MobileRow>
     ),
   },
@@ -69,6 +73,12 @@ export const desktopColumns = [
     name: "Impact",
     width: 176,
     className: "text-right",
-    render: ({ data, type }) => <ImpactVotesField data={data} type={type} />,
+    render: ({ data, type, maxImpactVotes }) => (
+      <ImpactVotesField
+        data={data}
+        type={type}
+        maxImpactVotes={maxImpactVotes}
+      />
+    ),
   },
 ];
