@@ -17,7 +17,7 @@ export default function PolkadotTreasuryStats() {
   return (
     <div>
       <TitleContainer className="mb-4">Treasury Stats</TitleContainer>
-      <SecondaryCard className="flex flex-col gap-y-4">
+      <SecondaryCard className="flex flex-col gap-y-6">
         <TreasuryProvider>
           <PolkadotTreasuryProvider>
             <PolkadotTreasurySummary />

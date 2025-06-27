@@ -7,7 +7,6 @@ import ValueDisplay from "./valueDisplay";
 import usePromptVisibility from "next-common/hooks/usePromptVisibility";
 import useTreasuryRequesting from "next-common/hooks/useTreasuryRequesting";
 import Link from "next/link";
-import { cn } from "next-common/utils";
 
 function DisplayTotalRequestingAssets({ styleType, onClose }) {
   const { requestingValue, confirmingValue } = useTreasuryRequesting();
@@ -50,7 +49,7 @@ function TotalRequestingAssetsContent({
 }) {
   return (
     <GreyPanel
-      className={cn("text14Medium py-2.5 px-4 justify-between")}
+      className="text14Medium py-2.5 px-4 justify-between"
       style={colorStyle[styleType]}
     >
       <div className="flex flex-wrap items-center gap-x-2">
