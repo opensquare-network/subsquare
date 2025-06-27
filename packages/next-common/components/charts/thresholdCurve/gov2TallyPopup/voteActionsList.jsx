@@ -19,7 +19,7 @@ function VoteActionsListImpl() {
         {searchBtn}
       </div>
       {searchBar}
-      <VoteActionsTable search={search} />
+      <VoteActionsTable search={search} listHeight={300} />
     </div>
   );
 }

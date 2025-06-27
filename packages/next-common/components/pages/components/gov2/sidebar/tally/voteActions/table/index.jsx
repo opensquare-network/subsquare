@@ -7,7 +7,7 @@ import { useMemo, useCallback } from "react";
 import useSearchVotes from "next-common/hooks/useSearchVotes";
 import { useDesktopItemSize, useMobileItemSize } from "../useListItemSize";
 
-function DesktopTable({ voteActions, loading }) {
+function DesktopTable({ voteActions, loading, listHeight = 600 }) {
   const getItemSize = useDesktopItemSize(voteActions);
 
   const columns = useMemo(() => {
@@ -31,7 +31,7 @@ function DesktopTable({ voteActions, loading }) {
       loading={loading}
       variableSize={true}
       getItemSize={getItemSize}
-      listHeight={600}
+      listHeight={listHeight}
       overscanCount={3}
       noDataText="No data"
       className="scrollbar-hidden h-full"
@@ -39,7 +39,7 @@ function DesktopTable({ voteActions, loading }) {
   );
 }
 
-function MobileTable({ voteActions, loading }) {
+function MobileTable({ voteActions, loading, listHeight = 600 }) {
   const getItemSize = useMobileItemSize(voteActions);
 
   const columns = useMemo(() => {
@@ -72,14 +72,14 @@ function MobileTable({ voteActions, loading }) {
       loading={loading}
       variableSize={true}
       getItemSize={getItemSize}
-      listHeight={600}
+      listHeight={listHeight}
       overscanCount={3}
       noDataText="No data"
     />
   );
 }
 
-export default function VoteActionsTable({ search = "" }) {
+export default function VoteActionsTable({ search = "", listHeight }) {
   const { referendumIndex } = useOnchainData();
   const { loading, voteActions = [] } = useQueryVoteActions(referendumIndex);
 
@@ -89,10 +89,18 @@ export default function VoteActionsTable({ search = "" }) {
   return (
     <>
       <div className="max-md:hidden">
-        <DesktopTable voteActions={filteredVoteActions} loading={loading} />
+        <DesktopTable
+          voteActions={filteredVoteActions}
+          loading={loading}
+          listHeight={listHeight}
+        />
       </div>
       <div className="hidden max-md:block">
-        <MobileTable voteActions={filteredVoteActions} loading={loading} />
+        <MobileTable
+          voteActions={filteredVoteActions}
+          loading={loading}
+          listHeight={listHeight}
+        />
       </div>
     </>
   );
