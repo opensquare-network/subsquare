@@ -2,9 +2,16 @@ import { PromptTypes } from "next-common/components/scrollPrompt";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import KusamaTreasurySummary from "next-common/components/summary/kusamaTreasurySummary";
-import TotalRequestingAssets from "next-common/components/totalRequestingAssets";
 import { TreasuryProvider } from "next-common/context/treasury";
 import KusamaTreasuryProvider from "next-common/context/treasury/kusamaTreasury";
+import dynamic from "next/dynamic";
+
+const TotalRequestingAssets = dynamic(
+  () => import("next-common/components/totalRequestingAssets"),
+  {
+    ssr: false,
+  },
+);
 
 export default function KusamaTreasuryStats() {
   return (
