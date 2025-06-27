@@ -33,7 +33,14 @@ function PolkadotOpenGovReferendum({ referendumIndex }) {
   );
 }
 
-function FellowshipWhitelistBar(openGovReferenda) {
+function FellowshipWhitelistBar() {
+  const onchainData = useOnchainData();
+  const { openGovReferenda = [] } = onchainData;
+
+  if (!openGovReferenda || openGovReferenda.length === 0) {
+    return null;
+  }
+
   return (
     <NavigationWrapper>
       Executed by &nbsp;
@@ -99,14 +106,10 @@ function FellowshipWhitelistBarByXcm() {
 
 export default function FellowshipWhitelistNavigation() {
   const chain = useChain();
-  const onchainData = useOnchainData();
-  const { openGovReferenda = [] } = onchainData;
-
-  if (openGovReferenda.length > 0) {
-    return <FellowshipWhitelistBar openGovReferenda={openGovReferenda} />;
-  }
 
   if (chain === Chains.collectives) {
     return <FellowshipWhitelistBarByXcm />;
   }
+
+  return <FellowshipWhitelistBar />;
 }
