@@ -1,20 +1,9 @@
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import VoteActionsTable from "./table";
-import { useState } from "react";
-import SearchBtn from "next-common/components/voteSearch/searchBtn";
-import SearchBar from "next-common/components/voteSearch/searchBar";
+import useVoteSearch from "./useVoteSearch";
 
 export default function OpenGovVoteActionsPopup({ setShowVoteActions }) {
-  const [search, setSearch] = useState("");
-  const [showSearch, setShowSearch] = useState(false);
-
-  const searchBtn = (
-    <SearchBtn
-      showSearch={showSearch}
-      setShowSearch={setShowSearch}
-      setSearch={setSearch}
-    />
-  );
+  const { search, searchBtn, searchBar } = useVoteSearch();
 
   return (
     <BaseVotesPopup
@@ -23,7 +12,7 @@ export default function OpenGovVoteActionsPopup({ setShowVoteActions }) {
       className="!w-[960px] max-sm:w-full"
       extra={searchBtn}
     >
-      {showSearch && <SearchBar setSearch={setSearch} />}
+      {searchBar}
       <VoteActionsTable search={search} />
     </BaseVotesPopup>
   );
