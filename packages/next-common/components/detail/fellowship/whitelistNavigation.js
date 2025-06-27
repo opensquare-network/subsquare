@@ -43,7 +43,7 @@ function FellowshipWhitelistBar() {
 
   return (
     <NavigationWrapper>
-      Executed by &nbsp;
+      Execution &nbsp;
       {openGovReferenda.map((openGovIndex) => (
         <OpenGovReferendum key={openGovIndex} referendumIndex={openGovIndex} />
       ))}
@@ -93,7 +93,7 @@ function FellowshipWhitelistBarByXcm() {
 
   return (
     <NavigationWrapper>
-      Executed by &nbsp;
+      Execution &nbsp;
       {referenda.map((referendum) => (
         <PolkadotOpenGovReferendum
           key={referendum.referendumIndex}
