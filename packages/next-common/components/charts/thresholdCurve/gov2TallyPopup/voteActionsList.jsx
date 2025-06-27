@@ -1,11 +1,10 @@
 import { memo } from "react";
 import VoteActionsTable from "next-common/components/pages/components/gov2/sidebar/tally/voteActions/table";
-import useShowVoteActions from "next-common/hooks/useShowVoteActions";
 import useVoteSearch from "next-common/components/pages/components/gov2/sidebar/tally/voteActions/useVoteSearch";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { cn } from "next-common/utils";
 
-function VoteActionsListImpl() {
+function VoteActionsList() {
   const { search, searchBtn, searchBar, showSearch } = useVoteSearch();
 
   return (
@@ -22,15 +21,6 @@ function VoteActionsListImpl() {
       <VoteActionsTable search={search} listHeight={300} />
     </div>
   );
-}
-
-function VoteActionsList() {
-  const showVoteActions = useShowVoteActions();
-  if (!showVoteActions) {
-    return null;
-  }
-
-  return <VoteActionsListImpl />;
 }
 
 export default memo(VoteActionsList);
