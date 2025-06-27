@@ -9,27 +9,33 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { cn } from "next-common/utils";
 import { isNil } from "lodash-es";
+import Progress from "next-common/components/progress";
 
-function NoImpact() {
+function NoImpact({ className = "" }) {
   const { symbol } = useChainSettings();
 
   return (
-    <span className="text-textTertiary text14Medium">
-      <span className="text-textPrimary text14Medium">0</span>
+    <span className={cn("text-textTertiary text14Medium", className)}>
+      <span className="text-textPrimary">0</span>
       &nbsp;
       <span>{symbol}</span>
     </span>
   );
 }
 
-function ImpactVotesDisplay({ data, type, isSupport = false }) {
+function ImpactVotesDisplay({
+  data,
+  type,
+  isSupport = false,
+  valueClassName = "",
+}) {
   const { decimals, symbol } = useChainSettings();
   const impactVotes = isSupport
     ? getSupportImpactVotes(data, type)
     : getImpactVotes(data, type);
 
   if (isNil(impactVotes) || BigInt(impactVotes) === BigInt(0)) {
-    return <NoImpact />;
+    return <NoImpact className={valueClassName} />;
   }
 
   const isAye = impactVotes >= 0;
@@ -42,6 +48,7 @@ function ImpactVotesDisplay({ data, type, isSupport = false }) {
         <ValueDisplay
           value={toPrecision(absBigInt(impactVotes), decimals)}
           symbol={symbol}
+          className={valueClassName}
         />
       </div>
     </>
@@ -60,15 +67,54 @@ function TallyVotesDisplay({ data, type }) {
 function SupportVotesDisplay({ data, type }) {
   return (
     <div>
-      <span>Support: </span>
-      <ImpactVotesDisplay data={data} type={type} isSupport={true} />
+      <span className="text12Medium">Support: </span>
+      <ImpactVotesDisplay
+        data={data}
+        type={type}
+        isSupport={true}
+        valueClassName="text12Medium"
+      />
     </div>
   );
 }
 
-export default function ImpactVotesField({ data, type }) {
+function ProgressDisplay({ data, type, maxImpactVotes }) {
+  const impactVotes = getImpactVotes(data, type);
+
+  if (
+    isNil(impactVotes) ||
+    BigInt(impactVotes) === BigInt(0) ||
+    !maxImpactVotes ||
+    BigInt(maxImpactVotes) === BigInt(0)
+  ) {
+    return null;
+  }
+
+  const absImpactVotes = absBigInt(impactVotes);
+  const percentage = Number((absImpactVotes * BigInt(100)) / maxImpactVotes);
+  const isAye = impactVotes >= 0;
+
+  return (
+    <Progress
+      className="mb-2 h-1 w-full"
+      bg="#fff"
+      fg={isAye ? "var(--green300)" : "var(--red300)"}
+      minWidth="2"
+      rounded={false}
+      alignRight={true}
+      percentage={percentage}
+    />
+  );
+}
+
+export default function ImpactVotesField({ data, type, maxImpactVotes }) {
   return (
     <div className="text-textTertiary text14Medium max-md:flex max-md:flex-col max-md:items-end">
+      <ProgressDisplay
+        data={data}
+        type={type}
+        maxImpactVotes={maxImpactVotes}
+      />
       <TallyVotesDisplay data={data} type={type} />
       <SupportVotesDisplay data={data} type={type} />
     </div>

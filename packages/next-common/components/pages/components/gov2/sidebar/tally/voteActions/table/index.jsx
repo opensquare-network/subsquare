@@ -6,8 +6,14 @@ import VirtualList from "next-common/components/dataList/virtualList";
 import { useMemo, useCallback, memo } from "react";
 import useSearchVotes from "next-common/hooks/useSearchVotes";
 import { useDesktopItemSize, useMobileItemSize } from "../useListItemSize";
+import useMaxImpactVotes from "../useMaxImpactVotes";
 
-function DesktopTable({ voteActions, loading, listHeight = 600 }) {
+function DesktopTable({
+  voteActions,
+  loading,
+  listHeight = 600,
+  maxImpactVotes,
+}) {
   const getItemSize = useDesktopItemSize(voteActions);
 
   const columns = useMemo(() => {
@@ -20,9 +26,10 @@ function DesktopTable({ voteActions, loading, listHeight = 600 }) {
 
   const row = useMemo(() => {
     return voteActions?.map((item) => {
-      return desktopColumns.map((col) => col.render(item));
+      const newItem = { ...item, maxImpactVotes };
+      return desktopColumns.map((col) => col.render(newItem));
     });
-  }, [voteActions]);
+  }, [voteActions, maxImpactVotes]);
 
   return (
     <VirtualList
@@ -39,7 +46,12 @@ function DesktopTable({ voteActions, loading, listHeight = 600 }) {
   );
 }
 
-function MobileTable({ voteActions, loading, listHeight = 600 }) {
+function MobileTable({
+  voteActions,
+  loading,
+  listHeight = 600,
+  maxImpactVotes,
+}) {
   const getItemSize = useMobileItemSize(voteActions);
 
   const columns = useMemo(() => {
@@ -49,16 +61,17 @@ function MobileTable({ voteActions, loading, listHeight = 600 }) {
   const rows = useMemo(() => {
     return (
       voteActions?.map((item) => {
+        const newItem = { ...item, maxImpactVotes };
         return [
           <div key={item.who} className="flex flex-col space-y-2 w-full">
             {mobileColumns.map((col, index) => (
-              <div key={index}>{col.render(item)}</div>
+              <div key={index}>{col.render(newItem)}</div>
             ))}
           </div>,
         ];
       }) || []
     );
-  }, [voteActions]);
+  }, [maxImpactVotes, voteActions]);
 
   return (
     <VirtualList
@@ -82,6 +95,7 @@ function MobileTable({ voteActions, loading, listHeight = 600 }) {
 function VoteActionsTable({ search = "", listHeight }) {
   const { referendumIndex } = useOnchainData();
   const { loading, voteActions = [] } = useQueryVoteActions(referendumIndex);
+  const maxImpactVotes = useMaxImpactVotes(voteActions);
 
   const getVoter = useCallback((vote) => vote.who, []);
   const filteredVoteActions = useSearchVotes(search, voteActions, getVoter);
@@ -93,6 +107,7 @@ function VoteActionsTable({ search = "", listHeight }) {
           voteActions={filteredVoteActions}
           loading={loading}
           listHeight={listHeight}
+          maxImpactVotes={maxImpactVotes}
         />
       </div>
       <div className="hidden max-md:block">
@@ -100,6 +115,7 @@ function VoteActionsTable({ search = "", listHeight }) {
           voteActions={filteredVoteActions}
           loading={loading}
           listHeight={listHeight}
+          maxImpactVotes={maxImpactVotes}
         />
       </div>
     </>

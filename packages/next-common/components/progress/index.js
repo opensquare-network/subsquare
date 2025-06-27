@@ -9,6 +9,8 @@ export default function Progress({
   bg = "var(--blue100)",
   rounded = true,
   className = "",
+  minWidth = 0,
+  alignRight = false,
 }) {
   return (
     <div
@@ -20,7 +22,14 @@ export default function Progress({
     >
       <Bar className="bg-neutral200" />
       <Bar style={{ backgroundColor: bg }}>
-        <Bar style={{ backgroundColor: fg, width: `${percentage}%` }} />
+        <Bar
+          style={{
+            backgroundColor: fg,
+            width: `${percentage}%`,
+            minWidth: `${minWidth}px`,
+            marginLeft: alignRight ? "auto" : "0",
+          }}
+        />
       </Bar>
     </div>
   );
