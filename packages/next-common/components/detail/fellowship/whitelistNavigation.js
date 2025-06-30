@@ -3,10 +3,10 @@ import { useOnchainData } from "../../../context/post";
 import { NavigationWrapper } from "../navigation/navigators";
 import Link from "next/link";
 import { useAsync } from "react-use";
-import Loading from "next-common/components/loading";
 import { useChain } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
 import useObjectMemo from "next-common/hooks/useObjectMemo";
+import LoadingWhitelistNavigationBar from "../referenda/LoadingWhitelistNavigationBar";
 
 export function ReferendumLink({ referendumIndex }) {
   return (
@@ -51,15 +51,6 @@ function FellowshipWhitelistBar() {
     </NavigationWrapper>
   );
 }
-
-function LoadingNavigationWrapper() {
-  return (
-    <NavigationWrapper>
-      <Loading size={20} />
-    </NavigationWrapper>
-  );
-}
-
 function useWhitelistLinkedReferenda(whitelistedHashesByXcm) {
   const whitelistedHashesByXcmDep = useObjectMemo(whitelistedHashesByXcm);
 
@@ -92,7 +83,7 @@ function FellowshipWhitelistBarByXcm() {
   }
 
   if (loading && !referenda) {
-    return <LoadingNavigationWrapper />;
+    return <LoadingWhitelistNavigationBar />;
   }
 
   if (!referenda || referenda.length === 0) {
