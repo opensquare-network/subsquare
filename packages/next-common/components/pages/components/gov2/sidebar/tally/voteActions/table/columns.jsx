@@ -38,6 +38,7 @@ export const mobileColumns = [
     ),
   },
   {
+    sortable: true,
     render: ({ data, type, maxImpactVotes }) => (
       <MobileRow label="Impact">
         <ImpactVotesField
@@ -73,6 +74,7 @@ export const desktopColumns = [
     name: "Impact",
     width: 176,
     className: "text-right",
+    sortable: true,
     render: ({ data, type, maxImpactVotes }) => (
       <ImpactVotesField
         data={data}

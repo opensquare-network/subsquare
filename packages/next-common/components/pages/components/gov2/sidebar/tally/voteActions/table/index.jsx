@@ -7,6 +7,8 @@ import { useMemo, useCallback, memo } from "react";
 import useSearchVotes from "next-common/hooks/useSearchVotes";
 import { useDesktopItemSize, useMobileItemSize } from "../useListItemSize";
 import useMaxImpactVotes from "../useMaxImpactVotes";
+import useColumns from "next-common/components/styledList/useColumns";
+import useSortVoteActions from "../useSortVoteActions";
 
 function DesktopTable({
   voteActions,
@@ -16,20 +18,15 @@ function DesktopTable({
 }) {
   const getItemSize = useDesktopItemSize(voteActions);
 
-  const columns = useMemo(() => {
-    return desktopColumns.map((col) => ({
-      name: col.name,
-      className: col?.className,
-      width: col?.width,
-    }));
-  }, []);
+  const { sortedColumn, columns } = useColumns(desktopColumns);
+  const sortedVoteActions = useSortVoteActions(voteActions, sortedColumn);
 
   const row = useMemo(() => {
-    return voteActions?.map((item) => {
+    return sortedVoteActions?.map((item) => {
       const newItem = { ...item, maxImpactVotes };
       return desktopColumns.map((col) => col.render(newItem));
     });
-  }, [voteActions, maxImpactVotes]);
+  }, [sortedVoteActions, maxImpactVotes]);
 
   return (
     <VirtualList
