@@ -133,11 +133,8 @@ export default function PopupContent() {
   const signerAccount = useSignerAccount();
 
   const api = useContextApi();
-  const {
-    balance: votingBalance,
-    isLoading: votingIsLoading,
-    ready: votingReady,
-  } = useAddressVotingBalance(api, signerAccount?.realAddress);
+  const { balance: votingBalance, isLoading: votingIsLoading } =
+    useAddressVotingBalance(api, signerAccount?.realAddress);
   const {
     vote: addressVote,
     isLoading: addressVoteIsLoading,
@@ -180,7 +177,7 @@ export default function PopupContent() {
       <Signer
         balanceName="Voting balance"
         balance={votingBalance}
-        isBalanceLoading={votingIsLoading || !votingReady}
+        isBalanceLoading={votingIsLoading}
       />
       {content}
     </>

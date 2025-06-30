@@ -28,11 +28,10 @@ function PopupContent() {
 
   const [submitDisabled, setSubmitDisabled] = useState(false);
   const api = useContextApi();
-  const {
-    balance,
-    isLoading: loadingBalance,
-    ready: readyBalance,
-  } = useAddressVotingBalance(api, signerAccount?.realAddress);
+  const { balance, isLoading: loadingBalance } = useAddressVotingBalance(
+    api,
+    signerAccount?.realAddress,
+  );
   const isBalanceLoaded = useIsLoaded(loadingBalance);
   const {
     deposit,
@@ -70,7 +69,7 @@ function PopupContent() {
       <Signer
         balanceName="Voting balance"
         balance={balance}
-        isBalanceLoading={loadingBalance || !readyBalance}
+        isBalanceLoading={loadingBalance}
         symbol={node.voteSymbol}
       />
       <DepositRequired
