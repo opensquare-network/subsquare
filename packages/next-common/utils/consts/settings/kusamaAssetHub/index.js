@@ -43,6 +43,7 @@ const kusamaAssetHub = {
     },
   },
   allowWeb2Login: true,
+  supportWalletconnect: true,
 };
 
 export default kusamaAssetHub;

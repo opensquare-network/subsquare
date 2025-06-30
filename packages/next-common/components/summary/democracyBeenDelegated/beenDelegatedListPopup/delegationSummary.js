@@ -8,14 +8,20 @@ import Flex from "next-common/components/styled/flex";
 import ValueDisplay from "next-common/components/valueDisplay";
 import Descriptions from "next-common/components/Descriptions";
 import tw from "tailwind-styled-components";
+import LoadableContent from "next-common/components/common/loadableContent";
 
 const Title = tw(Flex)`
   gap-2
   text14Medium text-textPrimary
 `;
 
-export default function DelegationSummary({ delegations, beenDelegatedList }) {
+export default function DelegationSummary({
+  delegations,
+  beenDelegatedList,
+  isLoading,
+}) {
   const node = useChainSettings();
+  const shouldLoading = isLoading || !delegations;
 
   const descriptionsItems = [
     {
@@ -30,29 +36,33 @@ export default function DelegationSummary({ delegations, beenDelegatedList }) {
     {
       label: (
         <Title>
-          <BalanceSVG />
-          Capital
-        </Title>
-      ),
-      value: (
-        <ValueDisplay
-          value={toPrecision(delegations?.capital || 0, node.decimals)}
-          symbol={node.symbol}
-        />
-      ),
-    },
-    {
-      label: (
-        <Title>
           <SupportSVG />
           Votes
         </Title>
       ),
       value: (
-        <ValueDisplay
-          value={toPrecision(delegations?.votes || 0, node.decimals)}
-          symbol={node.symbol}
-        />
+        <LoadableContent isLoading={shouldLoading}>
+          <ValueDisplay
+            value={toPrecision(delegations?.votes || 0, node.decimals)}
+            symbol={node.symbol}
+          />
+        </LoadableContent>
+      ),
+    },
+    {
+      label: (
+        <Title>
+          <BalanceSVG />
+          Capital
+        </Title>
+      ),
+      value: (
+        <LoadableContent isLoading={shouldLoading}>
+          <ValueDisplay
+            value={toPrecision(delegations?.capital || 0, node.decimals)}
+            symbol={node.symbol}
+          />
+        </LoadableContent>
       ),
     },
   ];

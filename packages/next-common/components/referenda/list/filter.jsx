@@ -7,43 +7,57 @@ import PrimaryButton from "next-common/lib/button/primary";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import UnVotedOnlyOption from "../unVotedOnlyOption";
-import { useIsTreasuryState } from ".";
+import ToggleOption from "next-common/components/toggleOption";
+import { useIsTreasuryState, useIsOngoingState } from ".";
 import { useUnVotedOnlyContext } from "./unVotedContext";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import TreasuryOnlyOption from "../treasuryOnlyOption";
 import { usePageProps } from "next-common/context/page";
 import { useUpdateEffect } from "react-use";
+import UnVotedOnlyOption from "../unVotedOnlyOption";
 
 export default function ReferendaListFilter({ isUnVotedOnlyLoading }) {
-  const { isTreasury: isTreasuryProp, status: statusProp } = usePageProps();
+  const {
+    isTreasury: isTreasuryProp,
+    status: statusProp,
+    ongoing: ongoingProp,
+  } = usePageProps();
   const status = upperFirst(camelCase(statusProp));
   const router = useRouter();
 
   const address = useRealAddress();
   const { unVotedOnly, setUnVotedOnly } = useUnVotedOnlyContext();
   const [isTreasury, setIsTreasury] = useIsTreasuryState();
+  const [ongoing, setOngoing] = useIsOngoingState();
 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState({
     status,
     unVotedOnly,
     isTreasury,
+    ongoing,
   });
+
+  useUpdateEffect(() => {
+    setIsTreasury(isTreasuryProp === "true");
+    setOngoing(ongoingProp === "true");
+  }, [isTreasuryProp, ongoingProp]);
+
   useUpdateEffect(() => {
     setValue((val) => {
       return {
         ...val,
         isTreasury,
         status,
+        ongoing,
       };
     });
-  }, [isTreasury, status]);
+  }, [isTreasury, status, ongoing]);
 
   const filterCount = Object.values({
     status,
     unVotedOnly,
     isTreasury: isTreasuryProp === "true",
+    ongoing: ongoingProp === "true",
   }).filter(Boolean).length;
 
   async function handleApply() {
@@ -51,6 +65,7 @@ export default function ReferendaListFilter({ isUnVotedOnlyLoading }) {
       {
         status: value.status,
         is_treasury: value.isTreasury,
+        ongoing: value.ongoing,
       },
       Boolean,
     );
@@ -59,12 +74,14 @@ export default function ReferendaListFilter({ isUnVotedOnlyLoading }) {
       {
         status: statusProp,
         is_treasury: isTreasuryProp === "true",
+        ongoing: ongoingProp === "true",
       },
       Boolean,
     );
 
     setIsTreasury(value?.isTreasury);
     setUnVotedOnly(value?.unVotedOnly);
+    setOngoing(value?.ongoing);
 
     const shouldUpdateRoute = !isEqual(q, params);
     if (shouldUpdateRoute) {
@@ -78,11 +95,12 @@ export default function ReferendaListFilter({ isUnVotedOnlyLoading }) {
   }
 
   async function handleReset() {
-    await router.replace("");
-
     setUnVotedOnly(false);
     setIsTreasury(false);
+    setOngoing(false);
     setOpen(false);
+
+    await router.replace("");
   }
 
   return (
@@ -105,33 +123,44 @@ export default function ReferendaListFilter({ isUnVotedOnlyLoading }) {
             <div className="mb-4 text12Bold">Conditions</div>
 
             <div>
-              <TreasuryOnlyOption
-                className="justify-between py-3"
-                isOn={value?.isTreasury}
-                setIsOn={(isOn) => {
-                  setValue?.((val) => {
-                    return {
+              <div className="py-3 space-y-4">
+                <ToggleOption
+                  label="Treasury related"
+                  tooltip="Only show the referenda that requested treasury"
+                  isOn={value?.isTreasury}
+                  setIsOn={(isOn) => {
+                    setValue?.((val) => ({
                       ...val,
                       isTreasury: isOn,
-                    };
-                  });
-                }}
-              />
-
-              {address && (
-                <UnVotedOnlyOption
-                  className="justify-between py-3"
-                  isOn={value?.unVotedOnly}
-                  setIsOn={(isOn) => {
-                    setValue?.((val) => {
-                      return {
-                        ...val,
-                        unVotedOnly: isOn,
-                      };
-                    });
+                    }));
                   }}
                 />
-              )}
+
+                <ToggleOption
+                  label="Ongoing"
+                  tooltip="Only show the ongoing referenda"
+                  isOn={value?.ongoing}
+                  setIsOn={(isOn) => {
+                    setValue?.((val) => ({
+                      ...val,
+                      ongoing: isOn,
+                    }));
+                  }}
+                />
+
+                {address && (
+                  <UnVotedOnlyOption
+                    className="justify-between"
+                    isOn={value?.unVotedOnly}
+                    setIsOn={(isOn) => {
+                      setValue?.((val) => ({
+                        ...val,
+                        unVotedOnly: isOn,
+                      }));
+                    }}
+                  />
+                )}
+              </div>
 
               <div className="flex items-center justify-between py-1.5">
                 <div>Status</div>

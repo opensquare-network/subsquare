@@ -92,7 +92,7 @@ const ajuna = {
   identity: Chains.ajuna,
   symbol: "AJUN",
   decimals: 12,
-  blockTime: 12000,
+  blockTime: 6000,
   ss58Format: 1328,
   endpoints: nodes,
   avatar: ProjectIconAjunaLight,

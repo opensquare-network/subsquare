@@ -19,7 +19,7 @@ import Divider from "next-common/components/styled/layout/divider";
 import Period from "next-common/components/fellowship/params/period";
 import { cn } from "next-common/utils";
 import WindowSizeProvider from "next-common/context/windowSize";
-import CoretimeSalePanelChartSkeleton from "next-common/components/coretime/salePanel/chart/skeleton";
+import { Skeleton } from "next-common/components/skeleton";
 import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
 
 export default function Membership() {
@@ -179,9 +179,9 @@ function NotImported() {
 function MembershipLoading() {
   return (
     <>
-      <CoretimeSalePanelChartSkeleton className="h-5" />
-      <CoretimeSalePanelChartSkeleton className="h-5 mt-2" />
-      <CoretimeSalePanelChartSkeleton className="h-5 w-1/2 mt-2" />
+      <Skeleton className="h-5" />
+      <Skeleton className="h-5 mt-2" />
+      <Skeleton className="h-5 w-1/2 mt-2" />
     </>
   );
 }

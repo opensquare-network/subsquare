@@ -1,8 +1,8 @@
 import PostList from "next-common/components/postList";
 import { withCommonProps } from "next-common/lib";
 import { toTreasuryChildBountyListItem } from "next-common/utils/viewfuncs";
-import { useChain, useChainSettings } from "next-common/context/chain";
-import { isNil, lowerCase } from "lodash-es";
+import { useChain } from "next-common/context/chain";
+import { isNil } from "lodash-es";
 import ListLayout from "next-common/components/layout/ListLayout";
 import TreasurySummary from "next-common/components/summary/treasurySummary";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
@@ -12,7 +12,6 @@ import { isPolkadotChain } from "next-common/utils/chain";
 import PolkadotTreasuryStatsOnProposal from "next-common/components/treasury/common/polkadotTreasuryStatsOnProposal";
 
 export default function ChildBountiesPage({ bounties }) {
-  const chainSettings = useChainSettings();
   const chain = useChain();
 
   const items = (bounties.items || []).map((item) =>
@@ -38,13 +37,6 @@ export default function ChildBountiesPage({ bounties }) {
             value: "child_bounties",
             label: "Child Bounties",
             url: "/treasury/child-bounties",
-          },
-          chainSettings.integrations?.doTreasury && {
-            value: "statistics",
-            label: "Statistics",
-            url: `https://dotreasury.com/${lowerCase(
-              chainSettings.symbol,
-            )}/child-bounties`,
           },
         ].filter(Boolean)}
       >

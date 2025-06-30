@@ -27,6 +27,15 @@ export function getTreasuryProposalIndexer(post) {
   };
 }
 
+export function getCommunityTreasuryProposalIndexer(post) {
+  return {
+    pallet: "communityTreasury",
+    object: "proposals",
+    proposed_height: post.indexer.blockHeight,
+    id: post.proposalIndex,
+  };
+}
+
 export function getTreasurySpendIndexer(post) {
   return {
     pallet: "treasury",
@@ -90,6 +99,15 @@ export function getTechCommMotionIndexer(post) {
   };
 }
 
+export function getCommunityMotionProposalIndexer(post) {
+  return {
+    pallet: "communityCouncil",
+    object: "proposalOf",
+    proposed_height: post.indexer.blockHeight,
+    id: post.hash,
+  };
+}
+
 export default function getProposalIndexer(post) {
   const refToPost = post.refToPost;
   const type = refToPost?.postType;
@@ -115,6 +133,10 @@ export default function getProposalIndexer(post) {
     } else if (!isNil(refToPost?.referendumIndex)) {
       return getDemocracyReferendumIndexer(refToPost);
     }
+  } else if (type === "communityMotion") {
+    return getCommunityMotionProposalIndexer(refToPost);
+  } else if (type === "communityTreasuryProposal") {
+    return getCommunityTreasuryProposalIndexer(refToPost);
   }
   throw new Error(`Invalid post type for getProposalIndexer: ${type}`);
 }

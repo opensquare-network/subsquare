@@ -1,12 +1,12 @@
 import VoteBar from "next-common/components/referenda/voteBar";
 import useMaybeFetchReferendumStatus from "./useMaybeFetchReferendumStatus";
 import useMaybeFetchElectorate from "./useMaybeFetchElectorate";
-import { useContextApi } from "next-common/context/api";
+import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
+import extractVoteInfo from "next-common/utils/democracy/referendum";
 
-export default function TimelineReferendumVote({ referendum }) {
-  const api = useContextApi();
-  const referendumStatus = useMaybeFetchReferendumStatus(referendum, api);
-  const electorate = useMaybeFetchElectorate(referendum, referendumStatus, api);
+function TimelineReferendumVoteImpl({ referendum }) {
+  const referendumStatus = useMaybeFetchReferendumStatus(referendum);
+  const electorate = useMaybeFetchElectorate(referendumStatus);
 
   return (
     <VoteBar
@@ -15,5 +15,14 @@ export default function TimelineReferendumVote({ referendum }) {
       electorate={electorate}
       threshold={referendumStatus?.threshold}
     />
+  );
+}
+
+export default function TimelineReferendumVote({ referendum }) {
+  const { voteFinishedIndexer } = extractVoteInfo(referendum?.timeline);
+  return (
+    <MigrationConditionalApiProvider indexer={voteFinishedIndexer}>
+      <TimelineReferendumVoteImpl referendum={referendum} />
+    </MigrationConditionalApiProvider>
   );
 }

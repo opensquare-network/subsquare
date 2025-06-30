@@ -1,4 +1,3 @@
-import useDemocracyMeta from "../../../context/post/democracy/referendum/useDemocracyMeta";
 import { useOnchainData } from "../../../context/post";
 import useIsDemocracyVoteFinished from "../../../context/post/democracy/referendum/isVoteFinished";
 import CountDown from "../../_CountDown";
@@ -7,10 +6,11 @@ import { useEstimateBlocksTime } from "../../../utils/hooks";
 import { bigNumber2Locale } from "../../../utils";
 import { CountDownWrapper } from "next-common/components/detail/common/styled";
 import useChainOrScanHeight from "next-common/hooks/height";
+import useDemocracyReferendumStatus from "next-common/hooks/democracy/useDemocracyReferendumStatus";
 
 export default function ReferendumVoteEndCountDown() {
   const onchain = useOnchainData();
-  const { end } = useDemocracyMeta();
+  const { end } = useDemocracyReferendumStatus();
   const blockHeight = useChainOrScanHeight();
   const isVoteFinished = useIsDemocracyVoteFinished();
   const startHeight = onchain.indexer?.blockHeight;

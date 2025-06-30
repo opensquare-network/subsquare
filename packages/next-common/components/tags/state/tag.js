@@ -86,7 +86,7 @@ const categoryTagMap = {
   [businessCategory.fellowshipTreasurySpends]: SpendTag,
   [detailPageCategory.FELLOWSHIP_TREASURY_SPEND]: SpendTag,
 
-  [businessCategory.fellowshipApplications]: FellowshipApplicationTag,
+  [businessCategory.fellowshipApplication]: FellowshipApplicationTag,
   [detailPageCategory.FELLOWSHIP_APPLICATION]: FellowshipApplicationTag,
 };
 

@@ -72,7 +72,7 @@ const bifrost = {
   identity: "bifrost",
   symbol: "BNC",
   decimals: 12,
-  blockTime: 12000,
+  blockTime: 6000,
   hasElections: false,
   ss58Format: 0,
   endpoints: DEFAULT_BIFROST_NODES,

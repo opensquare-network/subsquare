@@ -11,10 +11,7 @@ const statescanDomainMap = {
 
 export default function StatescanLink({ indexer, children }) {
   const chain = useChain();
-  const { integrations } = useChainSettings();
-  if (!integrations?.statescan) {
-    return null;
-  }
+  const { integrations, assethubMigration = {} } = useChainSettings();
 
   const { blockHeight, extrinsicIndex, index, eventIndex } = indexer;
   if (
@@ -25,8 +22,20 @@ export default function StatescanLink({ indexer, children }) {
   ) {
     return null;
   }
+  let domain = null;
+  if (
+    assethubMigration?.migrated &&
+    BigInt(indexer.blockTime) >= BigInt(assethubMigration?.timestamp || 0)
+  ) {
+    domain = assethubMigration?.statescanAssethubDomain || null;
+  } else if (integrations?.statescan) {
+    domain = statescanDomainMap[chain] || chain;
+  }
+  if (!domain) {
+    return null;
+  }
 
-  let url = `https://${statescanDomainMap[chain] || chain}.statescan.io/#`;
+  let url = `https://${domain}.statescan.io/#`;
   if (!isNil(extrinsicIndex) || !isNil(index)) {
     url += `/extrinsics/${blockHeight}-${extrinsicIndex ?? index}`;
   } else if (!isNil(eventIndex)) {

@@ -2,12 +2,12 @@ import useCoretimeSaleEnd from "next-common/context/coretime/hooks/useCoretimeSa
 import useCoretimeSale from "next-common/context/coretime/sale/provider";
 import CoretimeSalePanelChartPeriodProgress from "./periodProgress";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
-import CoretimeSalePanelChartSkeleton from "./skeleton";
+import { Skeleton } from "next-common/components/skeleton";
 
 const CoretimeSalePanelChartStatistics = dynamicClientOnly(
   () => import("./statistics"),
   {
-    loading: () => <CoretimeSalePanelChartSkeleton className="h-52 mb-4" />,
+    loading: () => <Skeleton className="w-full rounded-lg h-52 mb-4" />,
   },
 );
 

@@ -13,7 +13,7 @@ import { getBannerUrl } from "../../utils/banner";
 import businessCategory from "../../utils/consts/business/category";
 import { getMotionStateArgs } from "../../utils/collective/result";
 import { getGov2ReferendumStateArgs } from "../../utils/gov2/result";
-import { useChainSettings } from "../../context/chain";
+import { useChain, useChainSettings } from "../../context/chain";
 import { smcss } from "../../utils/responsive";
 import Gov2TrackTag from "../gov2/trackTag";
 import DecisionCountdown from "../gov2/postList/decisionCountdown";
@@ -44,6 +44,7 @@ import PostListAISummary from "./aiSummary";
 import TreasurySpendsCountDown from "next-common/components/postList/treasury/spends/countdown";
 import PostListMyVoteMark from "./myVoteMark";
 import { referendumState } from "next-common/utils/consts/referendum";
+import Chains from "next-common/utils/consts/chains";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -256,6 +257,7 @@ export function PostValueTitle({ data, type }) {
 }
 
 export default function Post({ data, href, type }) {
+  const currentChain = useChain();
   const isDemocracyCollective = [
     businessCategory.councilMotions,
     businessCategory.collective,
@@ -323,8 +325,13 @@ export default function Post({ data, href, type }) {
     elapseIcon = <TreasurySpendsCountDown data={data} />;
   }
 
-  const commentsCount =
-    (data.commentsCount || 0) + (data.polkassemblyCommentsCount || 0);
+  let commentsCount = data.commentsCount || 0;
+  if (
+    [Chains.kusama, Chains.kusamaPeople].includes(currentChain) &&
+    data.polkassemblyCommentsCount
+  ) {
+    commentsCount = data.polkassemblyCommentsCount || 0;
+  }
 
   const bannerUrl = getBannerUrl(data.bannerCid);
 

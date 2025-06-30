@@ -181,12 +181,12 @@ export function getFellowshipMenu(overviewSummary, currentTrackId) {
     items: [
       getNonCoreFellowshipMembersMenu(),
       getFellowshipMembersMenu(),
-      getFellowshipSalaryMenu(),
       getFellowshipReferendaMenu(
         fellowshipTracks,
         currentTrackId,
         totalActiveCount,
       ),
+      getFellowshipSalaryMenu(),
       getFellowshipTreasuryMenu(overviewSummary),
       getFellowshipApplicationsMenu(overviewSummary),
       getFellowshipStatisticsMenu(),

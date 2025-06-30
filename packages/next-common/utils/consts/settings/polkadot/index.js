@@ -53,7 +53,9 @@ const polkadot = {
     democracy: {
       archived: true,
     },
-    referenda: true,
+    referenda: {
+      displayTreasuryRequesting: true,
+    },
     treasury: {
       spends: true,
       childBounties: true,
@@ -100,6 +102,10 @@ const polkadot = {
   hotMenu: {
     referenda: true,
   },
+  referendaActions: {
+    startFrom: 1584,
+  },
+  supportWalletconnect: true,
 };
 
 export default polkadot;

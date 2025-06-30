@@ -28,6 +28,7 @@ import CancelReferendumPopup from "./summary/newProposalQuickStart/cancelReferen
 import KillReferendumPopup from "./summary/newProposalQuickStart/killReferendumInnerPopup";
 import { useChainSettings } from "next-common/context/chain";
 import { useCommentActions } from "next-common/sima/context/commentActions";
+import useTerminateAction from "next-common/hooks/useTerminateAction";
 
 const DeletePopup = dynamicPopup(() => import("./deletePopup"));
 
@@ -273,6 +274,10 @@ export function PostContextMenu({ isAuthor, editable, setIsEdit }) {
     useState(false);
   const [showKillReferendumPopup, setShowKillReferendumPopup] = useState(false);
   const isAdmin = useIsAdmin();
+  const { actionsComponent, popupComponent } =
+    useTerminateAction({
+      onShowPopup: () => setShow(false),
+    }) || {};
 
   const { newProposalQuickStart: { cancelReferendum, killReferendum } = {} } =
     useChainSettings();
@@ -332,6 +337,7 @@ export function PostContextMenu({ isAuthor, editable, setIsEdit }) {
               setShow={setShow}
             />
           )}
+          {actionsComponent}
           <ReportMenuItem
             setShowReportPopup={setShowReportPopup}
             setShow={setShow}
@@ -376,6 +382,7 @@ export function PostContextMenu({ isAuthor, editable, setIsEdit }) {
           onClose={() => setShowKillReferendumPopup(false)}
         />
       )}
+      {popupComponent}
     </Wrapper>
   );
 }

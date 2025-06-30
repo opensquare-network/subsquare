@@ -28,6 +28,39 @@ import { BasicDataProvider } from "next-common/context/centrifuge/basicData";
 import { DailyExtrinsicsProvider } from "next-common/context/centrifuge/DailyExtrinsics";
 import { TokenPricesProvider } from "next-common/context/centrifuge/tokenPrices";
 import { backendApi } from "next-common/services/nextApi";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+
+const ConfirmingReferendaStats = dynamicClientOnly(() =>
+  import("next-common/components/overview/confirmingReferendaStats"),
+);
+
+const CoretimeStats = dynamicClientOnly(() =>
+  import("next-common/components/overview/coretimeStats"),
+);
+
+function ExternalInfo() {
+  const { modules } = useChainSettings();
+
+  if (
+    !hasDefinedOffChainVoting() &&
+    !hasDefinedBounties() &&
+    !modules?.referenda &&
+    !modules?.coretime
+  ) {
+    return null;
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="grid grid-cols-2 gap-[16px] max-md:grid-cols-1">
+        <OffChainVoting />
+        <Bounties />
+      </div>
+      <ConfirmingReferendaStats />
+      <CoretimeStats />
+    </div>
+  );
+}
 
 function DefaultOverviewPage() {
   const chain = useChain();
@@ -50,16 +83,6 @@ function DefaultOverviewPage() {
     });
   }
 
-  let externalInfo = null;
-  if (hasDefinedOffChainVoting() || hasDefinedBounties()) {
-    externalInfo = (
-      <div className="grid grid-cols-2 gap-[16px] max-md:grid-cols-1">
-        <OffChainVoting />
-        <Bounties />
-      </div>
-    );
-  }
-
   if (isCentrifugeChain(chain)) {
     return (
       <BasicDataProvider>
@@ -72,7 +95,7 @@ function DefaultOverviewPage() {
               description={chainSettings.description}
               headContent={<HeadContent />}
               summary={<CentrifugeOverviewSummary />}
-              summaryFooter={externalInfo}
+              summaryFooter={<ExternalInfo />}
               tabs={tabs}
             >
               <CentrifugeOverview />
@@ -97,7 +120,7 @@ function DefaultOverviewPage() {
           <OverviewSummary />
         )
       }
-      summaryFooter={externalInfo}
+      summaryFooter={<ExternalInfo />}
       tabs={tabs}
     >
       <Overview />

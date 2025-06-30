@@ -63,7 +63,7 @@ export default function MultisigExplorerTable() {
     }
 
     setTotalCount(total);
-    setDataList(data?.multisigs);
+    setDataList(data?.multisigs?.filter(Boolean));
     setLoading(false);
   }, [data, isLoading, total]);
 

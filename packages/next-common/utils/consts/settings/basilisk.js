@@ -57,7 +57,7 @@ const basilisk = {
   identity: "basilisk",
   symbol: "BSX",
   decimals: 12,
-  blockTime: 12000,
+  blockTime: 6000,
   hasElections: true,
   ss58Format: 10041,
   avatar: ProjectIconBasiliskLight,

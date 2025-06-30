@@ -20,6 +20,7 @@ function mergeComments(polkassemblyComments, subsquareComments) {
     const subsquareItem = newSubsquareComments.find(
       (item) => item._id === polkaItem.id,
     );
+
     if (subsquareItem) {
       subsquareItem.replies = subsquareItem.replies || [];
       subsquareItem.replies.push(
@@ -34,7 +35,10 @@ function mergeComments(polkassemblyComments, subsquareComments) {
         (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
       );
     } else {
-      filteredPolkassemblyComments.push(polkaItem);
+      filteredPolkassemblyComments.push({
+        ...polkaItem,
+        comment_source: "polkassembly",
+      });
     }
   }
 

@@ -8,10 +8,11 @@ export default function AllBeenDelegatedPopupTrackList({
   trackBeenDelegatedList,
   track,
 }) {
-  const delegations = useMyTrackDelegations(track);
+  const { delegations, isLoading } = useMyTrackDelegations(track);
   return (
     <>
       <DelegationSummary
+        isLoading={isLoading}
         delegations={delegations}
         beenDelegatedList={trackBeenDelegatedList || []}
       />

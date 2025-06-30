@@ -18,6 +18,14 @@ import businessCategory from "next-common/utils/consts/business/category";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import NewProposalButton from "next-common/components/summary/newProposalButton";
 import useFetchMyReferendaVoting from "next-common/components/myvotes/referenda/useFetchMyReferendaVoting";
+import dynamic from "next/dynamic";
+
+const TrackPanel = dynamic(
+  () => import("next-common/components/referenda/trackPanel"),
+  {
+    ssr: false,
+  },
+);
 
 export default function TrackPage({
   posts,
@@ -57,6 +65,7 @@ export default function TrackPage({
       periodData={period}
       summaryData={trackReferendaSummary}
     >
+      <TrackPanel className="mb-4" />
       <PostList
         title="List"
         titleCount={posts.total}

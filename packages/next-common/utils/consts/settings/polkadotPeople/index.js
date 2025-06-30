@@ -52,6 +52,7 @@ const polkadotPeople = {
     mimir: true,
   },
   allowWeb2Login: true,
+  supportWalletconnect: true,
 };
 
 export default polkadotPeople;

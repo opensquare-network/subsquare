@@ -18,18 +18,10 @@ function useCachedResult(key) {
     [key, setCachedState],
   );
 
-  const cleanup = useCallback(() => {
-    setCachedState((val) => {
-      delete val[key];
-      return val;
-    });
-  }, [key, setCachedState]);
-
   return {
     loading,
     result,
     setResult,
-    cleanup,
   };
 }
 
@@ -54,7 +46,7 @@ export default function useSubStorage(
       .join("-")}`;
   }, [chain, pallet, storage, filteredParams]);
 
-  const { loading, result, setResult, cleanup } = useCachedResult(key);
+  const { loading, result, setResult } = useCachedResult(key);
 
   const subscribe = useCallback(
     async () => {
@@ -98,20 +90,7 @@ export default function useSubStorage(
     }
 
     subscribe();
-
-    return () => {
-      if (subs[key]) {
-        subs[key].count--;
-
-        if (subs[key].count === 0) {
-          subs[key].unsub?.();
-          delete subs[key];
-
-          cleanup();
-        }
-      }
-    };
-  }, [api, key, subscribe, pallet, storage, cleanup]);
+  }, [api, key, subscribe, pallet, storage]);
 
   return { loading, result };
 }

@@ -10,11 +10,11 @@ import {
   ProgressInfo,
   Tooltip,
 } from "../styled";
-import useChainOrScanHeight from "next-common/hooks/height";
 import Threshold from "next-common/components/referenda/threshold";
 import { useDecision } from "next-common/context/post/gov2/track";
 import { toPercentage } from "next-common/utils";
 import DecisionTooltip from "./tooltip";
+import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
 
 function OverDecisionMarker({ allBlocks, normalCaseBlocks }) {
   if (normalCaseBlocks >= allBlocks) {
@@ -31,7 +31,7 @@ function OverDecisionMarker({ allBlocks, normalCaseBlocks }) {
 }
 
 export default function DecisionProgress() {
-  const latestHeight = useChainOrScanHeight();
+  const latestHeight = useAhmLatestHeight();
 
   const decisionBlocks = useDecisionBlocks();
   const period = useDecision();

@@ -3065,10 +3065,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/icons@npm:^1.216.0":
-  version: 1.216.0
-  resolution: "@osn/icons@npm:1.216.0"
-  checksum: 9dbed2c0258db8722004b7fbc99a342179ae33580ea3ed3d8ac854b4b74527a91f601cea09daacff72d8d03da3cad7c93b95639032ca2b52a53bb862c9e76f83
+"@osn/icons@npm:^1.221.0":
+  version: 1.221.0
+  resolution: "@osn/icons@npm:1.221.0"
+  checksum: 16728b8b0e473b4f2ea62aa3cc4ee0917ce3afb51df6a7e376429216632e174f1702dc3cad459683b4daa02fc9be1d071075b96c857f8aeb920f866d7cacd371
   languageName: node
   linkType: hard
 
@@ -3088,19 +3088,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/previewer@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "@osn/previewer@npm:2.0.0"
+"@osn/previewer@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "@osn/previewer@npm:2.0.2"
   dependencies:
     github-markdown-css: ^5.6.1
     marked: ^11.1.1
     marked-highlight: ^2.1.3
-    prismjs: ^1.28.0
-    sanitize-html: ^2.7.0
+    prismjs: ^1.30.0
+    sanitize-html: ^2.17.0
   peerDependencies:
     react: ^17.0.2
     react-dom: ^17.0.2
-  checksum: 231fb0a37b870c35e361fab7e2ee947633b7ae50ec62654dc47d339c3d96ea46665ba029fe82736311764becec9ae5d536b3c6ccb236637729e6b3fbb5af8a83
+  checksum: ff2c9ad4f77e73727a30fd22901a0b85f2c98a63f43eb4a6915140a7b656d89e2a10d9a5e703a9cb1f3c9167765e0dee4059bdec18bdb9402c147806da9effcf
   languageName: node
   linkType: hard
 
@@ -6137,7 +6137,7 @@ __metadata:
     "@next/bundle-analyzer": 15.3.0
     "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.216.0
+    "@osn/icons": ^1.221.0
     "@svgr/webpack": ^7.0.0
     "@types/lodash-es": ^4.17.12
     bignumber.js: ^9.0.2
@@ -6175,7 +6175,7 @@ __metadata:
     "@interlay/monetary-js": ^0.5.3
     "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.216.0
+    "@osn/icons": ^1.221.0
     "@polkadot/util-crypto": ^13.5.1
     "@svgr/webpack": ^7.0.0
     "@types/lodash-es": ^4.17.12
@@ -6211,7 +6211,7 @@ __metadata:
     "@next/bundle-analyzer": 15.3.0
     "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.216.0
+    "@osn/icons": ^1.221.0
     "@svgr/webpack": ^7.0.0
     "@types/lodash-es": ^4.17.12
     bignumber.js: ^9.0.2
@@ -8330,12 +8330,12 @@ __metadata:
   linkType: hard
 
 "brace-expansion@npm:^1.1.7":
-  version: 1.1.11
-  resolution: "brace-expansion@npm:1.1.11"
+  version: 1.1.12
+  resolution: "brace-expansion@npm:1.1.12"
   dependencies:
     balanced-match: ^1.0.0
     concat-map: 0.0.1
-  checksum: faf34a7bb0c3fcf4b59c7808bc5d2a96a40988addf2e7e09dfbb67a2251800e0d14cd2bfc1aa79174f2f5095c54ff27f46fb1289fe2d77dac755b5eb3434cc07
+  checksum: 12cb6d6310629e3048cadb003e1aca4d8c9bb5c67c3c321bafdd7e7a50155de081f78ea3e0ed92ecc75a9015e784f301efc8132383132f4f7904ad1ac529c562
   languageName: node
   linkType: hard
 
@@ -13981,9 +13981,9 @@ __metadata:
     "@mimirdev/apps-inject": ^3.2.0
     "@mimirdev/apps-sdk": ^3.1.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.216.0
+    "@osn/icons": ^1.221.0
     "@osn/polkadot-react-identicon": ^1.0.10
-    "@osn/previewer": ^2.0.0
+    "@osn/previewer": ^2.0.2
     "@osn/provider-options": 1.1.0
     "@osn/react-cmdk": ^1.2.1
     "@osn/rich-text-editor": ^0.7.3
@@ -15043,7 +15043,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prismjs@npm:^1.28.0":
+"prismjs@npm:^1.28.0, prismjs@npm:^1.30.0":
   version: 1.30.0
   resolution: "prismjs@npm:1.30.0"
   checksum: a68eddd4c5f1c506badb5434b0b28a7cc2479ed1df91bc4218e6833c7971ef40c50ec481ea49749ac964256acb78d8b66a6bd11554938e8998e46c18b5f9a580
@@ -16343,6 +16343,20 @@ __metadata:
   version: 2.1.2
   resolution: "safer-buffer@npm:2.1.2"
   checksum: cab8f25ae6f1434abee8d80023d7e72b598cf1327164ddab31003c51215526801e40b66c5e65d658a0af1e9d6478cadcb4c745f4bd6751f97d8644786c0978b0
+  languageName: node
+  linkType: hard
+
+"sanitize-html@npm:^2.17.0":
+  version: 2.17.0
+  resolution: "sanitize-html@npm:2.17.0"
+  dependencies:
+    deepmerge: ^4.2.2
+    escape-string-regexp: ^4.0.0
+    htmlparser2: ^8.0.0
+    is-plain-object: ^5.0.0
+    parse-srcset: ^1.0.2
+    postcss: ^8.3.11
+  checksum: 15de8f6dd1f093330fd156cfbb8f8fcee24073869ce55ab07c20c09e21e98619679566ff45670e1e8ef17acc761e7be8429add20b42c5d6208f997a6dcd25a6d
   languageName: node
   linkType: hard
 

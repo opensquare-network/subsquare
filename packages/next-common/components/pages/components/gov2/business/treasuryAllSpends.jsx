@@ -12,6 +12,7 @@ import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import TreasurySpendValueDisplay from "next-common/components/gov2/business/treasurySpendValueDisplay";
+import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 
 const separateNumber = 5;
 
@@ -69,6 +70,7 @@ function Spend({
   assetKind,
   amount,
   validFrom,
+  after,
   symbol,
   type,
   className = "",
@@ -105,7 +107,11 @@ function Spend({
         </div>
       </div>
 
-      <Time validFrom={validFrom} />
+      {!isNil(validFrom) ? (
+        <Time validFrom={validFrom} />
+      ) : (
+        <After after={after} />
+      )}
     </div>
   );
 }
@@ -137,6 +143,34 @@ function Time({ validFrom, className = "" }) {
   );
 }
 
+function After({ after, className = "" }) {
+  const votingFinishHeight = useReferendumVotingFinishHeight();
+  if (!isNil(votingFinishHeight) && after > 0) {
+    return (
+      <Time validFrom={votingFinishHeight + after} className={className} />
+    );
+  }
+
+  let content;
+  let tooltipContent;
+  if (isNil(after) || after === 0) {
+    content = "immediately";
+    tooltipContent = "Can be claimed immediately after approval";
+  } else {
+    content = <AfterTime after={after} futurePrefix="after" />;
+    tooltipContent = `After ${after} blocks`;
+  }
+
+  return (
+    <Tooltip
+      content={tooltipContent}
+      className={cn("text-textTertiary", className)}
+    >
+      {content}
+    </Tooltip>
+  );
+}
+
 function PassedTime({ validFrom }) {
   const { timestamp } = useBlockTimestamp(validFrom);
 
@@ -149,9 +183,13 @@ function PassedTime({ validFrom }) {
 
 function FutureTime({ validFrom }) {
   const currentHeight = useSelector(latestHeightSelector);
-  const { blockTime } = useChainSettings();
+  return <AfterTime after={validFrom - currentHeight} />;
+}
 
-  return formatTimeAgo(dayjs().add((validFrom - currentHeight) * blockTime), {
+function AfterTime({ after, futurePrefix }) {
+  const { blockTime } = useChainSettings();
+  return formatTimeAgo(dayjs().add(after * blockTime), {
+    futurePrefix,
     slice: 2,
   });
 }
