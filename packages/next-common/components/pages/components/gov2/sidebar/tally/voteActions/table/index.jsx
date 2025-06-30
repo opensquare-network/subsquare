@@ -18,7 +18,7 @@ function DesktopTable({
   setSortedColumn,
 }) {
   const getItemSize = useDesktopItemSize(voteActions);
-  const { sortedColumn, columns } = useColumns(desktopColumns);
+  const { sortedColumn, columns } = useColumns(desktopColumns, "", true);
   useEffect(() => {
     setSortedColumn(sortedColumn);
   }, [sortedColumn, setSortedColumn]);
