@@ -1,33 +1,32 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import useCall from "next-common/utils/hooks/useCall";
 import { useContextApi } from "next-common/context/api";
 
 export default function useReferendaVotingBalance(address) {
-  const [ready, setReady] = useState(false);
   const api = useContextApi();
   const { value: result, loading } = useCall(api?.query?.system?.account, [
     address,
   ]);
 
-  useEffect(() => {
-    setReady(api && address);
+  const isReady = useMemo(() => {
+    return api && address;
   }, [api, address]);
 
   return useMemo(() => {
-    if (loading || !result || !ready) {
+    if (loading || !result || !isReady) {
       return {
-        isLoading: loading,
+        isLoading: loading || !isReady,
         balance: null,
-        ready,
+        isReady,
       };
     }
 
     const balanceBig =
       result.data.free.toBigInt() + result.data.reserved.toBigInt();
     return {
-      isLoading: loading,
+      isLoading: loading || !isReady,
       balance: balanceBig.toString(),
-      ready,
+      isReady,
     };
-  }, [result, loading, ready]);
+  }, [result, loading, isReady]);
 }
