@@ -33,8 +33,11 @@ function PopupContent() {
   const node = useChainSettings();
   const [loadingState, setLoadingState] = useState();
   const api = useContextApi();
-  const { balance: votingBalance, isLoading: votingIsLoading } =
-    useAddressVotingBalance(api, signerAccount?.realAddress);
+  const {
+    balance: votingBalance,
+    isLoading: votingIsLoading,
+    ready: votingReady,
+  } = useAddressVotingBalance(api, signerAccount?.realAddress);
   const { vote: addressVote, isLoading: addressVoteIsLoading } =
     useSubMyDemocracyVote(referendumIndex, signerAccount?.realAddress);
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
@@ -129,7 +132,7 @@ function PopupContent() {
       <Signer
         balanceName="Voting balance"
         balance={votingBalance}
-        isBalanceLoading={votingIsLoading}
+        isBalanceLoading={votingIsLoading || !votingReady}
         symbol={node.voteSymbol}
       />
       <VoteBalance

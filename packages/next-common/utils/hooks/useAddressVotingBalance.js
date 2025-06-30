@@ -6,6 +6,7 @@ import { useChain } from "next-common/context/chain";
 export function useAddressVotingBalance(api, address) {
   const chain = useChain();
   const [balance, setBalance] = useState(null);
+  const [ready, setReady] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const isMounted = useMountedState();
 
@@ -14,6 +15,7 @@ export function useAddressVotingBalance(api, address) {
       return;
     }
 
+    setReady(true);
     setIsLoading(true);
     getAddressVotingBalance(chain, api, address)
       .then((value) => {
@@ -32,5 +34,5 @@ export function useAddressVotingBalance(api, address) {
     refresh();
   }, [refresh]);
 
-  return { balance, isLoading, refresh };
+  return { balance, isLoading, refresh, ready };
 }

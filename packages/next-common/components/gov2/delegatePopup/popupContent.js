@@ -34,8 +34,11 @@ export default function PopupContent({ defaultTargetAddress, targetDisabled }) {
   const api = useContextApi();
   const node = useChainSettings();
 
-  const { balance: votingBalance, isLoading: votingIsLoading } =
-    useAddressVotingBalance(api, signerAccount?.realAddress);
+  const {
+    balance: votingBalance,
+    isLoading: votingIsLoading,
+    ready: votingReady,
+  } = useAddressVotingBalance(api, signerAccount?.realAddress);
 
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
   const [conviction, setConviction] = useState(0);
@@ -115,7 +118,7 @@ export default function PopupContent({ defaultTargetAddress, targetDisabled }) {
       <Signer
         balanceName="Voting balance"
         balance={votingBalance}
-        isBalanceLoading={votingIsLoading}
+        isBalanceLoading={votingIsLoading || !votingReady}
       />
 
       <Target

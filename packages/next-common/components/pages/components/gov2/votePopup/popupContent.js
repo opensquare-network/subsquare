@@ -152,8 +152,11 @@ export default function PopupContent() {
   const { update } = useUpdateVotesFromServer(referendumIndex);
 
   const api = useContextApi();
-  const { isLoading: votingIsLoading, balance: votingBalance } =
-    useReferendaVotingBalance(signerAccount?.realAddress);
+  const {
+    isLoading: votingIsLoading,
+    balance: votingBalance,
+    ready: votingReady,
+  } = useReferendaVotingBalance(signerAccount?.realAddress);
 
   const {
     vote: addressVote,
@@ -208,7 +211,7 @@ export default function PopupContent() {
       <Signer
         balanceName="Voting Balance"
         balance={votingBalance}
-        isBalanceLoading={votingIsLoading}
+        isBalanceLoading={votingIsLoading || !votingReady}
       />
       {content}
     </>
