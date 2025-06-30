@@ -24,16 +24,6 @@ function OpenGovReferendum({ referendumIndex }) {
   );
 }
 
-function PolkadotOpenGovReferendum({ referendumIndex }) {
-  return (
-    <div>
-      <Link href={`https://polkadot.subsquare.io/referenda/${referendumIndex}`}>
-        {`Referenda #${referendumIndex}`}
-      </Link>
-    </div>
-  );
-}
-
 function FellowshipWhitelistBar() {
   const onchainData = useOnchainData();
   const { openGovReferenda = [] } = onchainData;
@@ -94,10 +84,15 @@ function FellowshipWhitelistBarByXcm() {
     <NavigationWrapper>
       Execution &nbsp;
       {referenda.map((referendum) => (
-        <PolkadotOpenGovReferendum
-          key={referendum.referendumIndex}
-          referendumIndex={referendum.referendumIndex}
-        />
+        <div key={referendum.referendumIndex}>
+          <a
+            href={`https://polkadot.subsquare.io/referenda/${referendum.referendumIndex}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {`Referenda #${referendum.referendumIndex}`}
+          </a>
+        </div>
       ))}
     </NavigationWrapper>
   );

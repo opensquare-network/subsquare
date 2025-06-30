@@ -60,14 +60,16 @@ export function ReferendaWhitelistBarByXcm() {
 
   return (
     <NavigationWrapper>
-      Whitelisted by &nbsp;
+      Whitelist &nbsp;
       {referenda.map((referendum) => (
         <div key={referendum.referendumIndex}>
-          <Link
+          <a
             href={`https://collectives.subsquare.io/fellowship/${referendum.referendumIndex}`}
+            target="_blank"
+            rel="noopener noreferrer"
           >
             {`Fellowship #${referendum.referendumIndex}`}
-          </Link>
+          </a>
         </div>
       ))}
     </NavigationWrapper>
@@ -86,7 +88,7 @@ export function ReferendaWhitelistBar() {
 
   return (
     <NavigationWrapper>
-      Whitelisted by &nbsp;
+      Whitelist &nbsp;
       <FellowshipReferendumLink referendumIndex={fellowshipReferendumIndex} />
     </NavigationWrapper>
   );
