@@ -9,6 +9,7 @@ import { useDesktopItemSize, useMobileItemSize } from "../useListItemSize";
 import useMaxImpactVotes from "../useMaxImpactVotes";
 import useColumns from "next-common/components/styledList/useColumns";
 import useSortVoteActions from "../useSortVoteActions";
+import useVoteActionsKey from "../useVoteActionsKey";
 
 function DesktopTable({
   voteActions,
@@ -30,8 +31,10 @@ function DesktopTable({
     });
   }, [voteActions, maxImpactVotes]);
 
+  const listKey = useVoteActionsKey(voteActions);
   return (
     <VirtualList
+      key={listKey}
       columns={columns}
       rows={row}
       loading={loading}
@@ -72,6 +75,7 @@ function MobileTable({
     );
   }, [maxImpactVotes, voteActions]);
 
+  const listKey = useVoteActionsKey(voteActions);
   return (
     <VirtualList
       className={cn(
@@ -79,6 +83,7 @@ function MobileTable({
         "[&_.datalist_.descriptions-item-value]:w-full",
         "scrollbar-hidden h-full",
       )}
+      key={listKey}
       columns={columns}
       rows={rows}
       loading={loading}
