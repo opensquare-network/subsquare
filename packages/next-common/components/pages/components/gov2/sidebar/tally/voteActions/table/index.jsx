@@ -3,7 +3,7 @@ import { useOnchainData } from "next-common/context/post";
 import { desktopColumns, mobileColumns } from "./columns";
 import { cn } from "next-common/utils";
 import VirtualList from "next-common/components/dataList/virtualList";
-import { useMemo, useCallback, memo } from "react";
+import { useMemo, useCallback, useState, useEffect, memo } from "react";
 import useSearchVotes from "next-common/hooks/useSearchVotes";
 import { useDesktopItemSize, useMobileItemSize } from "../useListItemSize";
 import useMaxImpactVotes from "../useMaxImpactVotes";
@@ -15,18 +15,20 @@ function DesktopTable({
   loading,
   listHeight = 600,
   maxImpactVotes,
+  setSortedColumn,
 }) {
   const getItemSize = useDesktopItemSize(voteActions);
-
   const { sortedColumn, columns } = useColumns(desktopColumns);
-  const sortedVoteActions = useSortVoteActions(voteActions, sortedColumn);
+  useEffect(() => {
+    setSortedColumn(sortedColumn);
+  }, [sortedColumn, setSortedColumn]);
 
   const row = useMemo(() => {
-    return sortedVoteActions?.map((item) => {
+    return voteActions?.map((item) => {
       const newItem = { ...item, maxImpactVotes };
       return desktopColumns.map((col) => col.render(newItem));
     });
-  }, [sortedVoteActions, maxImpactVotes]);
+  }, [voteActions, maxImpactVotes]);
 
   return (
     <VirtualList
@@ -90,26 +92,32 @@ function MobileTable({
 }
 
 function VoteActionsTable({ search = "", listHeight }) {
+  const [sortedColumn, setSortedColumn] = useState("");
   const { referendumIndex } = useOnchainData();
   const { loading, voteActions = [] } = useQueryVoteActions(referendumIndex);
   const maxImpactVotes = useMaxImpactVotes(voteActions);
 
   const getVoter = useCallback((vote) => vote.who, []);
   const filteredVoteActions = useSearchVotes(search, voteActions, getVoter);
+  const sortedVoteActions = useSortVoteActions(
+    filteredVoteActions,
+    sortedColumn,
+  );
 
   return (
     <>
       <div className="max-md:hidden">
         <DesktopTable
-          voteActions={filteredVoteActions}
+          voteActions={sortedVoteActions}
           loading={loading}
           listHeight={listHeight}
           maxImpactVotes={maxImpactVotes}
+          setSortedColumn={setSortedColumn}
         />
       </div>
       <div className="hidden max-md:block">
         <MobileTable
-          voteActions={filteredVoteActions}
+          voteActions={sortedVoteActions}
           loading={loading}
           listHeight={listHeight}
           maxImpactVotes={maxImpactVotes}

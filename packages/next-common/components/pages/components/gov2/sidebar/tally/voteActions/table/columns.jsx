@@ -38,7 +38,6 @@ export const mobileColumns = [
     ),
   },
   {
-    sortable: true,
     render: ({ data, type, maxImpactVotes }) => (
       <MobileRow label="Impact">
         <ImpactVotesField
