@@ -6,6 +6,7 @@ import { useAsync } from "react-use";
 import Loading from "next-common/components/loading";
 import { useChain } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
+import useObjectMemo from "next-common/hooks/useObjectMemo";
 
 export function ReferendumLink({ referendumIndex }) {
   return (
@@ -59,15 +60,14 @@ function LoadingNavigationWrapper() {
   );
 }
 
-function FellowshipWhitelistBarByXcm() {
-  const onchainData = useOnchainData();
-  const { whitelistedHashesByXcm } = onchainData;
+function useWhitelistLinkedReferenda(whitelistedHashesByXcm) {
+  const whitelistedHashesByXcmDep = useObjectMemo(whitelistedHashesByXcm);
 
-  const { value: referenda, loading } = useAsync(async () => {
-    if (!whitelistedHashesByXcm || whitelistedHashesByXcm.length === 0) {
+  return useAsync(async () => {
+    if (!whitelistedHashesByXcmDep || whitelistedHashesByXcmDep.length === 0) {
       return [];
     }
-    const queryParams = (whitelistedHashesByXcm || [])
+    const queryParams = (whitelistedHashesByXcmDep || [])
       .map((hash) => `hash=${hash}`)
       .join("&");
     const url = `https://polkadot-api.subsquare.io/gov2/referenda/whitelist-related?${queryParams}`;
@@ -77,13 +77,21 @@ function FellowshipWhitelistBarByXcm() {
       throw new Error("Failed to fetch whitelist-related referenda");
     }
     return responses.json();
-  }, [whitelistedHashesByXcm]);
+  }, [whitelistedHashesByXcmDep]);
+}
+
+function FellowshipWhitelistBarByXcm() {
+  const onchainData = useOnchainData();
+  const { whitelistedHashesByXcm } = onchainData;
+  const { value: referenda, loading } = useWhitelistLinkedReferenda(
+    whitelistedHashesByXcm,
+  );
 
   if (!whitelistedHashesByXcm || whitelistedHashesByXcm.length === 0) {
     return [];
   }
 
-  if (loading) {
+  if (loading && !referenda) {
     return <LoadingNavigationWrapper />;
   }
 
