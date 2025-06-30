@@ -9,7 +9,6 @@ import { useDesktopItemSize, useMobileItemSize } from "../useListItemSize";
 import useMaxImpactVotes from "../useMaxImpactVotes";
 import useColumns from "next-common/components/styledList/useColumns";
 import useSortVoteActions from "../useSortVoteActions";
-import useVoteActionsKey from "../useVoteActionsKey";
 
 function DesktopTable({
   voteActions,
@@ -17,6 +16,7 @@ function DesktopTable({
   listHeight = 600,
   maxImpactVotes,
   setSortedColumn,
+  listKey,
 }) {
   const getItemSize = useDesktopItemSize(voteActions);
   const { sortedColumn, columns } = useColumns(desktopColumns, "", true);
@@ -31,7 +31,6 @@ function DesktopTable({
     });
   }, [voteActions, maxImpactVotes]);
 
-  const listKey = useVoteActionsKey(voteActions);
   return (
     <VirtualList
       key={listKey}
@@ -53,6 +52,7 @@ function MobileTable({
   loading,
   listHeight = 600,
   maxImpactVotes,
+  listKey,
 }) {
   const getItemSize = useMobileItemSize(voteActions);
 
@@ -75,7 +75,6 @@ function MobileTable({
     );
   }, [maxImpactVotes, voteActions]);
 
-  const listKey = useVoteActionsKey(voteActions);
   return (
     <VirtualList
       className={cn(
@@ -118,6 +117,7 @@ function VoteActionsTable({ search = "", listHeight }) {
           listHeight={listHeight}
           maxImpactVotes={maxImpactVotes}
           setSortedColumn={setSortedColumn}
+          listKey={`desktop-${search}-${sortedColumn}`}
         />
       </div>
       <div className="hidden max-md:block">
@@ -126,6 +126,7 @@ function VoteActionsTable({ search = "", listHeight }) {
           loading={loading}
           listHeight={listHeight}
           maxImpactVotes={maxImpactVotes}
+          listKey={`mobile-${search}-${sortedColumn}`}
         />
       </div>
     </>
