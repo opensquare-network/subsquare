@@ -53,13 +53,12 @@ export const mobileColumns = [
 export const desktopColumns = [
   {
     name: "Account",
-    width: 240,
+    className: "w-[240px]",
     render: ({ who }) => <AddressUser key="user" add={who} />,
   },
   {
     name: "Action",
-    width: 176,
-    className: "text-left",
+    className: "w-[176px] text-left",
     render: ({ type, indexer, data }) => (
       <ActionField type={type} indexer={indexer} data={data} />
     ),
@@ -71,8 +70,7 @@ export const desktopColumns = [
   },
   {
     name: "Impact",
-    width: 176,
-    className: "text-right",
+    className: "w-[176px] text-right",
     sortable: true,
     render: ({ data, type, maxImpactVotes }) => (
       <ImpactVotesField

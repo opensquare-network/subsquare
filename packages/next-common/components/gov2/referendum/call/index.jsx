@@ -54,7 +54,9 @@ export default function Gov2ReferendumCall() {
   if (onchainData?.proposalHash) {
     data.push([
       "Proposal Hash",
-      <Copyable key="hash">{onchainData?.proposalHash}</Copyable>,
+      <Copyable key="hash" className="text14Medium">
+        {onchainData?.proposalHash}
+      </Copyable>,
     ]);
   }
 

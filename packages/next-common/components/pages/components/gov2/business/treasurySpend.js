@@ -22,6 +22,7 @@ function getTreasuryBusiness(onchain, decimals, symbol) {
         key="request"
         value={toPrecision(amount, decimals)}
         symbol={symbol}
+        className="text14Medium"
       />,
     ]);
   }
