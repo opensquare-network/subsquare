@@ -73,6 +73,7 @@ export const desktopColumns = [
     name: "Impact",
     width: 176,
     className: "text-right",
+    sortable: true,
     render: ({ data, type, maxImpactVotes }) => (
       <ImpactVotesField
         data={data}
