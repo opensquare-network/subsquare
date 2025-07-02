@@ -75,17 +75,20 @@ export function NewPreimageInnerPopup({ onCreated = noop }) {
     extrinsicComponent = <ExtrinsicLoading />;
   } else {
     extrinsicComponent = (
-      <div>
-        <PopupLabel text="Propose" />
-        <Extrinsic
-          defaultSectionName="system"
-          defaultMethodName="setCode"
-          setValue={setProposal}
-        />
-        <ExtrinsicInfo
-          preimageHash={encodedHash}
-          preimageLength={encodedLength || 0}
-        />
+      <div className="flex flex-col gap-4">
+        <div>
+          <PopupLabel text="Propose" />
+          <Extrinsic
+            defaultSectionName="system"
+            defaultMethodName="setCode"
+            setValue={setProposal}
+          />
+          <ExtrinsicInfo
+            preimageHash={encodedHash}
+            preimageLength={encodedLength || 0}
+          />
+        </div>
+        <InsufficientBalanceTips byteLength={encodedLength} onlyPreimage />
       </div>
     );
   }

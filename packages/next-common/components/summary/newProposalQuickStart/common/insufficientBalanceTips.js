@@ -57,7 +57,10 @@ function PreimageDepositSettingGuard({ children }) {
   return settings ? children : null;
 }
 
-export function InsufficientBalanceTipsInner({ byteLength }) {
+export function InsufficientBalanceTipsInner({
+  byteLength,
+  onlyPreimage = false,
+}) {
   const api = useContextApi();
   const signerAccount = useSignerAccount();
   const { transferrable } = useAccountTransferrable(
@@ -83,23 +86,37 @@ export function InsufficientBalanceTipsInner({ byteLength }) {
           deposit={preimageDeposit}
           yes={isPreimageDepositSufficient}
         />
-        <DepositItem
-          text="Submission Deposit:"
-          deposit={submissionDeposit}
-          yes={isSubmissionDepositSufficient}
-        />
+        {!onlyPreimage && (
+          <DepositItem
+            text="Submission Deposit:"
+            deposit={submissionDeposit}
+            yes={isSubmissionDepositSufficient}
+          />
+        )}
       </div>
       <Divider />
-      <DepositCheckTip pass={isSubmissionDepositSufficient} />
+      <DepositCheckTip
+        pass={
+          onlyPreimage
+            ? isPreimageDepositSufficient
+            : isSubmissionDepositSufficient
+        }
+      />
     </div>
   );
 }
 
-export default function InsufficientBalanceTips({ byteLength }) {
+export default function InsufficientBalanceTips({
+  byteLength,
+  onlyPreimage = false,
+}) {
   return (
     <WithApi>
       <PreimageDepositSettingGuard>
-        <InsufficientBalanceTipsInner byteLength={byteLength} />
+        <InsufficientBalanceTipsInner
+          byteLength={byteLength}
+          onlyPreimage={onlyPreimage}
+        />
       </PreimageDepositSettingGuard>
     </WithApi>
   );
