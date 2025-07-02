@@ -28,6 +28,8 @@ import CancelReferendumPopup from "./summary/newProposalQuickStart/cancelReferen
 import KillReferendumPopup from "./summary/newProposalQuickStart/killReferendumInnerPopup";
 import { useChainSettings } from "next-common/context/chain";
 import useTerminateAction from "next-common/hooks/useTerminateAction";
+import { AppendMenuItem } from "next-common/sima/components/contentMenu";
+import useCanAppendBountyPost from "next-common/hooks/useCanAppendBountyPost";
 
 const DeletePopup = dynamicPopup(() => import("./deletePopup"));
 
@@ -198,6 +200,15 @@ export function KillReferendumMenuItem({
   );
 }
 
+function BountyAppendMenuItem({ setIsAppend, setShow }) {
+  const canAppendBountyPost = useCanAppendBountyPost();
+  if (!canAppendBountyPost) {
+    return null;
+  }
+
+  return <AppendMenuItem setIsAppend={setIsAppend} setShow={setShow} />;
+}
+
 export function CommentContextMenu({ editable, setIsEdit }) {
   const dispatch = useDispatch();
   const comment = useComment();
@@ -254,7 +265,12 @@ export function CommentContextMenu({ editable, setIsEdit }) {
   );
 }
 
-export function PostContextMenu({ isAuthor, editable, setIsEdit }) {
+export function PostContextMenu({
+  isAuthor,
+  editable,
+  setIsEdit,
+  setIsAppend,
+}) {
   const dispatch = useDispatch();
   const router = useRouter();
   const post = usePost();
@@ -285,6 +301,8 @@ export function PostContextMenu({ isAuthor, editable, setIsEdit }) {
   const isSimaDiscussion = post.sima;
   const canDelete =
     (editable || isAdmin) && isDiscussionPost && !isSimaDiscussion;
+
+  const isTreasuryBountyPost = postType === detailPageCategory.TREASURY_BOUNTY;
 
   useClickAway(ref, () => setShow(false));
 
@@ -333,6 +351,9 @@ export function PostContextMenu({ isAuthor, editable, setIsEdit }) {
             />
           )}
           {actionsComponent}
+          {isTreasuryBountyPost && (
+            <BountyAppendMenuItem setIsAppend={setIsAppend} setShow={setShow} />
+          )}
           <ReportMenuItem
             setShowReportPopup={setShowReportPopup}
             setShow={setShow}
