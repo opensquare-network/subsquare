@@ -1,24 +1,24 @@
 import { useState, useMemo } from "react";
 import Editor, { useEditorUploading } from "next-common/components/editor";
-import { useUser } from "next-common/context/user";
 import ErrorText from "next-common/components/ErrorText";
 import PrimaryButton from "next-common/lib/button/primary";
 import SecondaryButton from "next-common/lib/button/secondary";
 import Tooltip from "next-common/components/tooltip";
-// import { useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
-// import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import { treasuryBountiesAppendantApi } from "next-common/services/url";
+import nextApi from "next-common/services/nextApi";
+import { useOnchainData } from "next-common/context/post";
 
 export default function AppendantEditor({ value = "", onChange, onCancel }) {
-  const user = useUser();
+  const { bountyIndex } = useOnchainData();
   const [content, setContent] = useState(value);
-  const [contentType, setContentType] = useState(
-    user?.preference?.editor || "markdown",
-  );
+  const [contentType, setContentType] = useState("markdown");
   const [errors, setErrors] = useState();
   const [editorUploading] = useEditorUploading();
   const [submitting, setSubmitting] = useState(false);
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const { ensureLogin } = useEnsureLogin();
 
   const handleContentChange = (newContent) => {
@@ -28,23 +28,29 @@ export default function AppendantEditor({ value = "", onChange, onCancel }) {
     }
   };
 
-  // TODO
+
   const handleSubmit = async () => {
     setSubmitting(true);
+    const api = treasuryBountiesAppendantApi(bountyIndex);
 
     try {
       if (!(await ensureLogin())) {
         return;
       }
 
-      // const { result, error } = await nextApi.post()
-      // if (error) {
-      //   if (error.data) {
-      //     setErrors(error);
-      //   } else {
-      //     dispatch(newErrorToast(error.message));
-      //   }
-      // }
+      const { result, error } = await nextApi.post(api, {
+        content,
+        contentType,
+      });
+      // TODO: feedback after submit
+      console.log(":::result", result);
+      if (error) {
+        if (error.data) {
+          setErrors(error);
+        } else {
+          dispatch(newErrorToast(error.message));
+        }
+      }
     } finally {
       setSubmitting(false);
     }
