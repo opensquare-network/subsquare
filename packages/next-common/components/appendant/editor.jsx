@@ -4,12 +4,12 @@ import { useUser } from "next-common/context/user";
 import ErrorText from "next-common/components/ErrorText";
 import PrimaryButton from "next-common/lib/button/primary";
 import SecondaryButton from "next-common/lib/button/secondary";
+import Tooltip from "next-common/components/tooltip";
 // import { useDispatch } from "react-redux";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 // import { newErrorToast } from "next-common/store/reducers/toastSlice";
 
-export default function AppendantEditor({ value = "", onChange }) {
-  const [isShow, setIsShow] = useState(true);
+export default function AppendantEditor({ value = "", onChange, onCancel }) {
   const user = useUser();
   const [content, setContent] = useState(value);
   const [contentType, setContentType] = useState(
@@ -56,10 +56,6 @@ export default function AppendantEditor({ value = "", onChange }) {
     return isEmpty || editorUploading || submitting;
   }, [isEmpty, editorUploading, submitting]);
 
-  if (!isShow) {
-    return null;
-  }
-
   return (
     <>
       <Editor
@@ -78,16 +74,19 @@ export default function AppendantEditor({ value = "", onChange }) {
       )}
 
       <div className="flex items-center justify-end mt-8 [&>:not(:first-child)]:ml-3">
-        <SecondaryButton loading={submitting} onClick={() => setIsShow(false)}>
+        <SecondaryButton disabled={submitting} onClick={onCancel}>
           Cancel
         </SecondaryButton>
-        <PrimaryButton
-          loading={submitting}
-          onClick={handleSubmit}
-          disabled={isDisableSubmit}
-        >
-          Submit
-        </PrimaryButton>
+
+        <Tooltip content={isEmpty ? "Cannot submit empty content" : ""}>
+          <PrimaryButton
+            loading={submitting}
+            onClick={handleSubmit}
+            disabled={isDisableSubmit}
+          >
+            Submit
+          </PrimaryButton>
+        </Tooltip>
       </div>
     </>
   );

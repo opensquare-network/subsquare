@@ -28,8 +28,7 @@ import CancelReferendumPopup from "./summary/newProposalQuickStart/cancelReferen
 import KillReferendumPopup from "./summary/newProposalQuickStart/killReferendumInnerPopup";
 import { useChainSettings } from "next-common/context/chain";
 import useTerminateAction from "next-common/hooks/useTerminateAction";
-import { AppendMenuItem } from "next-common/sima/components/contentMenu";
-import useCanAppendBountyPost from "next-common/hooks/useCanAppendBountyPost";
+import BountyAppendMenuItem from "next-common/components/appendant/bountyAppendMenuItem";
 
 const DeletePopup = dynamicPopup(() => import("./deletePopup"));
 
@@ -39,6 +38,10 @@ const PostLinkPopup = dynamicPopup(() => import("./linkPost/postLinkPopup"));
 
 const PostUnlinkPopup = dynamicPopup(() =>
   import("./linkPost/postUnlinkPopup"),
+);
+
+const AppendantPopup = dynamicPopup(() =>
+  import("next-common/components/appendant"),
 );
 
 const Wrapper = styled.div`
@@ -200,15 +203,6 @@ export function KillReferendumMenuItem({
   );
 }
 
-function BountyAppendMenuItem({ setIsAppend, setShow }) {
-  const canAppendBountyPost = useCanAppendBountyPost();
-  if (!canAppendBountyPost) {
-    return null;
-  }
-
-  return <AppendMenuItem setIsAppend={setIsAppend} setShow={setShow} />;
-}
-
 export function CommentContextMenu({ editable, setIsEdit }) {
   const dispatch = useDispatch();
   const comment = useComment();
@@ -265,12 +259,7 @@ export function CommentContextMenu({ editable, setIsEdit }) {
   );
 }
 
-export function PostContextMenu({
-  isAuthor,
-  editable,
-  setIsEdit,
-  setIsAppend,
-}) {
+export function PostContextMenu({ isAuthor, editable, setIsEdit }) {
   const dispatch = useDispatch();
   const router = useRouter();
   const post = usePost();
@@ -284,6 +273,7 @@ export function PostContextMenu({
   const [showCancelReferendumPopup, setShowCancelReferendumPopup] =
     useState(false);
   const [showKillReferendumPopup, setShowKillReferendumPopup] = useState(false);
+  const [showBountyAppendPopup, setShowBountyAppendPopup] = useState(false);
   const isAdmin = useIsAdmin();
   const { actionsComponent, popupComponent } =
     useTerminateAction({
@@ -352,7 +342,10 @@ export function PostContextMenu({
           )}
           {actionsComponent}
           {isTreasuryBountyPost && (
-            <BountyAppendMenuItem setIsAppend={setIsAppend} setShow={setShow} />
+            <BountyAppendMenuItem
+              setShow={setShow}
+              setIsAppend={setShowBountyAppendPopup}
+            />
           )}
           <ReportMenuItem
             setShowReportPopup={setShowReportPopup}
@@ -397,6 +390,9 @@ export function PostContextMenu({
           referendumIndex={post?.referendumIndex}
           onClose={() => setShowKillReferendumPopup(false)}
         />
+      )}
+      {showBountyAppendPopup && (
+        <AppendantPopup setIsAppend={setShowBountyAppendPopup} />
       )}
       {popupComponent}
     </Wrapper>
