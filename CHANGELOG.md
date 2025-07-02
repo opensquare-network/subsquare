@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+# 5.0.1
+
+date: 2025-07-02
+
+- Fellowship:
+    - show polkadot execution referenda link on fellowship referenda detail page.
+    - Show tooltip for candidate application state tag.
+- Extract treasury request info by XCM v5.
+- Support OpenGov actions sort by affected tally.
+- Index history OpenGov actions and start show actions data start from polkadot referenda #1584.
+- Show tally affected actions on the threshold curve chart.
+- Show time gap when hovering on the time component of OpenGov actions.
+- A11y: fix pagination on delegation page and a possible bug.
+- Improve balance loading status on vote popup. Show loading first on open, not 0.
+- Show treasury request status bar on overview page treasury panel.
+- Fix styles.
+
 # 5.0.0
 
 date: 2025-06-26
