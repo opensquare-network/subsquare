@@ -1,33 +1,31 @@
-import {
-  useCurator,
-  useCuratorParams,
-} from "next-common/context/treasury/bounties";
 import { useMemo } from "react";
 import { isSameAddress } from "next-common/utils";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { usePost } from "next-common/context/post";
+import { isNil } from "lodash-es";
 
 export default function useCanAppendBountyPost() {
   const address = useRealAddress();
-  const curator = useCurator();
-  const { signatories } = useCuratorParams();
+  const { proposer, onchainData } = usePost();
+  const { extractedCurators } = onchainData;
 
-  const isCurator = useMemo(() => {
-    return isSameAddress(address, curator);
-  }, [address, curator]);
-
-  const isSignatoryOfCurator = useMemo(() => {
-    if (!signatories || signatories?.length === 0) {
+  const isCuratorOrSignatories = useMemo(() => {
+    if (isNil(extractedCurators)) {
       return false;
     }
 
-    return signatories?.includes(address);
-  }, [address, signatories]);
+    return extractedCurators?.includes(address);
+  }, [extractedCurators, address]);
+
+  const isProposer = useMemo(() => {
+    return isSameAddress(address, proposer);
+  }, [address, proposer]);
 
   return useMemo(() => {
     if (!address) {
       return false;
     }
 
-    return isCurator || isSignatoryOfCurator;
-  }, [isCurator, isSignatoryOfCurator, address]);
+    return isProposer || isCuratorOrSignatories;
+  }, [isProposer, isCuratorOrSignatories, address]);
 }
