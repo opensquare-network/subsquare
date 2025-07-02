@@ -20,16 +20,8 @@ const westendPeople = {
       url: "wss://westend-people-rpc.polkadot.io",
     },
     {
-      name: "IBP1",
-      url: "wss://sys.ibp.network/people-westend",
-    },
-    {
       name: "Dwellir",
       url: "wss://people-westend-rpc.n.dwellir.com",
-    },
-    {
-      name: "IBP2",
-      url: "wss://people-westend.dotters.network",
     },
   ],
   group: null,
