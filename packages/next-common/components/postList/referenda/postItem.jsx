@@ -12,8 +12,6 @@ import {
   PostUser,
   PostTrack,
   PostTime,
-  PostTreasuryTag,
-  PostDemocracyTag,
   PostCommentCount,
   PostVotesSummaryImpl,
   PostMalicious,
@@ -22,11 +20,11 @@ import {
 } from "../common";
 import ListPostTitle from "../postTitle";
 import PostListAISummary from "../aiSummary";
-import Tag from "next-common/components/tags/state/tag";
+import { Gov2ReferendaTag } from "next-common/components/tags/state/gov2";
 import Divider from "next-common/components/styled/layout/divider";
-import businessCategory from "next-common/utils/consts/business/category";
 import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
 import PostListMyReferendaVoteMark from "next-common/components/postList/myVoteMark/referenda";
+import Flex from "next-common/components/styled/flex";
 
 function PostFooter({ data }) {
   let stateArgs = getGov2ReferendumStateArgs(data.onchainData?.state);
@@ -37,8 +35,6 @@ function PostFooter({ data }) {
       <Footer>
         <PostUser data={data} />
         <PostTrack data={data} href={`/referenda/tracks/${data.track}`} />
-        <PostTreasuryTag isTreasury={data?.isTreasury} />
-        <PostDemocracyTag isDemocracy={data?.isDemocracy} />
         <PostTime data={data} />
         <PostCommentCount commentsCount={commentsCount} />
         <PostVotesSummaryImpl data={data} />
@@ -48,15 +44,10 @@ function PostFooter({ data }) {
         <PostListAISummary data={data} />
       </Footer>
 
-      <div className="flex items-center gap-x-2">
+      <Flex className="gap-x-2">
         <PostListMyReferendaVoteMark data={data} />
-        <Tag
-          state={data.status}
-          category={businessCategory.openGovReferenda}
-          args={stateArgs}
-          data={data}
-        />
-      </div>
+        <Gov2ReferendaTag state={data.status} args={stateArgs} data={data} />
+      </Flex>
     </FooterWrapper>
   );
 }
