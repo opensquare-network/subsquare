@@ -10,6 +10,7 @@ import useChainPreimageDepositSettings, {
 import useAccountTransferrable from "next-common/hooks/useAccountTransferrable";
 import Divider from "next-common/components/styled/layout/divider";
 import WithApi from "next-common/components/common/withApi";
+import { BalanceTipsWrapper } from "./styled";
 
 function YesOrNo({ yes = true }) {
   if (yes) {
@@ -57,10 +58,56 @@ function PreimageDepositSettingGuard({ children }) {
   return settings ? children : null;
 }
 
-export function InsufficientBalanceTipsInner({
-  byteLength,
-  onlyPreimage = false,
-}) {
+export function PreImageBalanceTips({ preimageDeposit, transferrable }) {
+  const isPreimageDepositSufficient =
+    BigInt(preimageDeposit) < BigInt(transferrable);
+
+  return (
+    <BalanceTipsWrapper>
+      <div className="space-y-1">
+        <DepositItem
+          text="Preimage Deposit:"
+          deposit={preimageDeposit}
+          yes={isPreimageDepositSufficient}
+        />
+      </div>
+      <Divider />
+      <DepositCheckTip pass={isPreimageDepositSufficient} />
+    </BalanceTipsWrapper>
+  );
+}
+
+export function SubmissionBalanceTips({ api, preimageDeposit, transferrable }) {
+  const submissionDeposit = useMemo(
+    () => api?.consts?.referenda?.submissionDeposit?.toString() || 0,
+    [api],
+  );
+  const isPreimageDepositSufficient =
+    BigInt(preimageDeposit) < BigInt(transferrable);
+  const isSubmissionDepositSufficient =
+    BigInt(submissionDeposit) + BigInt(preimageDeposit) < BigInt(transferrable);
+
+  return (
+    <BalanceTipsWrapper>
+      <div className="space-y-1">
+        <DepositItem
+          text="Preimage Deposit:"
+          deposit={preimageDeposit}
+          yes={isPreimageDepositSufficient}
+        />
+        <DepositItem
+          text="Submission Deposit:"
+          deposit={submissionDeposit}
+          yes={isSubmissionDepositSufficient}
+        />
+      </div>
+      <Divider />
+      <DepositCheckTip pass={isSubmissionDepositSufficient} />
+    </BalanceTipsWrapper>
+  );
+}
+
+function MaybeBalanceTipsContent({ onlyPreimage = false, byteLength }) {
   const api = useContextApi();
   const signerAccount = useSignerAccount();
   const { transferrable } = useAccountTransferrable(
@@ -68,41 +115,21 @@ export function InsufficientBalanceTipsInner({
     signerAccount?.realAddress,
   );
   const preimageDeposit = usePreimageDeposit(byteLength);
-  const submissionDeposit = useMemo(
-    () => api?.consts?.referenda?.submissionDeposit?.toString() || 0,
-    [api],
-  );
 
-  const isPreimageDepositSufficient =
-    BigInt(preimageDeposit) < BigInt(transferrable);
-  const isSubmissionDepositSufficient =
-    BigInt(submissionDeposit) + BigInt(preimageDeposit) < BigInt(transferrable);
-
-  return (
-    <div className="bg-neutral200 rounded-lg px-4 py-2.5 text14Medium text-textSecondary space-y-2">
-      <div className="space-y-1">
-        <DepositItem
-          text="Preimage Deposit:"
-          deposit={preimageDeposit}
-          yes={isPreimageDepositSufficient}
-        />
-        {!onlyPreimage && (
-          <DepositItem
-            text="Submission Deposit:"
-            deposit={submissionDeposit}
-            yes={isSubmissionDepositSufficient}
-          />
-        )}
-      </div>
-      <Divider />
-      <DepositCheckTip
-        pass={
-          onlyPreimage
-            ? isPreimageDepositSufficient
-            : isSubmissionDepositSufficient
-        }
+  if (onlyPreimage) {
+    return (
+      <PreImageBalanceTips
+        preimageDeposit={preimageDeposit}
+        transferrable={transferrable}
       />
-    </div>
+    );
+  }
+  return (
+    <SubmissionBalanceTips
+      api={api}
+      preimageDeposit={preimageDeposit}
+      transferrable={transferrable}
+    />
   );
 }
 
@@ -113,7 +140,7 @@ export default function InsufficientBalanceTips({
   return (
     <WithApi>
       <PreimageDepositSettingGuard>
-        <InsufficientBalanceTipsInner
+        <MaybeBalanceTipsContent
           byteLength={byteLength}
           onlyPreimage={onlyPreimage}
         />
