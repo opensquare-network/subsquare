@@ -20,13 +20,18 @@ import {
 } from "next-common/components/contentMenu";
 import { useClickAway } from "react-use";
 import useIsAuthor from "./useIsAuthor";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const AppendantPopup = dynamicPopup(() =>
+  import("next-common/components/appendant"),
+);
 
 function SplitDot() {
   return <span className="text-textTertiary text12Medium mx-2">·</span>;
 }
 
-// TODO: edit、remove
-function MoreActions() {
+// TODO: remove
+function MoreActions({ data }) {
   const [show, setShow] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
@@ -35,23 +40,33 @@ function MoreActions() {
   useClickAway(ref, () => setShow(false));
 
   return (
-    <div ref={ref} className="relative">
-      <SystemMore
-        className="w-5 h-5 [&_path]:fill-textTertiary cursor-pointer"
-        onClick={() => {
-          setShow(!show);
-        }}
-      />
-      {show && (
-        <OptionWrapper>
-          <EditMenuItem setIsEdit={setIsEdit} setShow={setShow} />
-          <DeleteMenuItem
-            setShowReportPopup={setShowDeletePopup}
-            setShow={setShow}
-          />
-        </OptionWrapper>
+    <>
+      <div ref={ref} className="relative">
+        <SystemMore
+          className="w-5 h-5 [&_path]:fill-textTertiary cursor-pointer"
+          onClick={() => {
+            setShow(!show);
+          }}
+        />
+        {show && (
+          <OptionWrapper>
+            <EditMenuItem setIsEdit={setIsEdit} setShow={setShow} />
+            <DeleteMenuItem
+              setShowReportPopup={setShowDeletePopup}
+              setShow={setShow}
+            />
+          </OptionWrapper>
+        )}
+      </div>
+
+      {isEdit && (
+        <AppendantPopup
+          setIsAppend={setIsEdit}
+          editData={data}
+          isEditMode={true}
+        />
       )}
-    </div>
+    </>
   );
 }
 

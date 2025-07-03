@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Editor, { useEditorUploading } from "next-common/components/editor";
 import ErrorText from "next-common/components/ErrorText";
 import PrimaryButton from "next-common/lib/button/primary";
@@ -10,14 +10,22 @@ import {
   newErrorToast,
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
-import { treasuryBountiesAppendantApi } from "next-common/services/url";
+import {
+  treasuryBountiesAppendantApi,
+  appendantsApi,
+} from "next-common/services/url";
 import nextApi from "next-common/services/nextApi";
 import { useOnchainData } from "next-common/context/post";
 import { useRouter } from "next/router";
 
-export default function AppendantEditor({ value = "", onChange, onClose }) {
+export default function AppendantEditor({
+  onChange,
+  onClose,
+  editData = null,
+  isEditMode = false,
+}) {
   const { bountyIndex } = useOnchainData();
-  const [content, setContent] = useState(value);
+  const [content, setContent] = useState("");
   const [contentType, setContentType] = useState("markdown");
   const [errors, setErrors] = useState();
   const [editorUploading] = useEditorUploading();
@@ -25,6 +33,13 @@ export default function AppendantEditor({ value = "", onChange, onClose }) {
   const dispatch = useDispatch();
   const { ensureLogin } = useEnsureLogin();
   const router = useRouter();
+
+  useEffect(() => {
+    if (isEditMode && editData) {
+      setContent(editData.content || "");
+      setContentType(editData.contentType || "markdown");
+    }
+  }, [isEditMode, editData]);
 
   const handleContentChange = (newContent) => {
     setContent(newContent);
@@ -35,17 +50,29 @@ export default function AppendantEditor({ value = "", onChange, onClose }) {
 
   const handleSubmit = async () => {
     setSubmitting(true);
-    const api = treasuryBountiesAppendantApi(bountyIndex);
 
     try {
       if (!(await ensureLogin())) {
         return;
       }
 
-      const { result, error } = await nextApi.post(api, {
-        content,
-        contentType,
-      });
+      let result, error;
+
+      if (isEditMode && editData) {
+        const updateApi = appendantsApi(editData?._id);
+
+        ({ result, error } = await nextApi.patch(updateApi, {
+          content,
+          contentType,
+        }));
+      } else {
+        const createApi = treasuryBountiesAppendantApi(bountyIndex);
+
+        ({ result, error } = await nextApi.post(createApi, {
+          content,
+          contentType,
+        }));
+      }
 
       if (error) {
         if (error.data) {
@@ -56,7 +83,11 @@ export default function AppendantEditor({ value = "", onChange, onClose }) {
       }
 
       if (result) {
-        dispatch(newSuccessToast("Append successfully"));
+        const successMessage = `${
+          isEditMode ? "Update" : "Append"
+        } successfully`;
+
+        dispatch(newSuccessToast(successMessage));
         onClose();
         router.replace(router.asPath);
       }
@@ -70,6 +101,8 @@ export default function AppendantEditor({ value = "", onChange, onClose }) {
   const isDisableSubmit = useMemo(() => {
     return isEmpty || editorUploading || submitting;
   }, [isEmpty, editorUploading, submitting]);
+
+  const submitButtonText = isEditMode ? "Update" : "Submit";
 
   return (
     <>
@@ -99,7 +132,7 @@ export default function AppendantEditor({ value = "", onChange, onClose }) {
             onClick={handleSubmit}
             disabled={isDisableSubmit}
           >
-            Submit
+            {submitButtonText}
           </PrimaryButton>
         </Tooltip>
       </div>

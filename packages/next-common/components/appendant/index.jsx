@@ -22,10 +22,19 @@ function Wrapper({ children }) {
   );
 }
 
-export default function AppendantPopup({ setIsAppend }) {
+export default function AppendantPopup({
+  setIsAppend,
+  editData = null,
+  isEditMode = false,
+}) {
+  const title = isEditMode ? "Edit Appendant" : "Appendants";
+  const description = isEditMode
+    ? "You are adding an appendant (as proposer/curator/curator signatory)."
+    : "You are editing appendant (as proposer/curator/curator signatory).";
+
   return (
     <Popup
-      title="Appendants"
+      title={title}
       onClose={() => {
         setIsAppend(false);
       }}
@@ -33,7 +42,7 @@ export default function AppendantPopup({ setIsAppend }) {
     >
       <Wrapper>
         <GreyPanel className="text14Medium text-gray500 py-2.5 px-4 max-w-full !block">
-          You are editing appendants (as proposer/curator/curator signatory ).
+          {description}
         </GreyPanel>
         <LabelWrapper className="!my-4">
           <Label>Content</Label>
@@ -42,6 +51,8 @@ export default function AppendantPopup({ setIsAppend }) {
           onClose={() => {
             setIsAppend(false);
           }}
+          editData={editData}
+          isEditMode={isEditMode}
         />
       </Wrapper>
     </Popup>

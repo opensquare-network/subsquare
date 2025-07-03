@@ -143,6 +143,8 @@ export const ambassadorStatisticsUsersApi = (address) =>
 export const treasuryBountiesAppendantApi = (index) =>
   `treasury/bounties/${index}/appendants`;
 
+export const appendantsApi = (id) => `appendants/${id}`;
+
 // calender events
 /**
  * param `begin_time`, `end_time`
