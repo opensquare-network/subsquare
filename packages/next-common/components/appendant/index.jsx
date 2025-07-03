@@ -33,7 +33,7 @@ export default function AppendantPopup({ setIsAppend }) {
     >
       <Wrapper>
         <GreyPanel className="text14Medium text-gray500 py-2.5 px-4 max-w-full !block">
-          You are editing appendants (as curator/curator signatory).
+          You are editing appendants (as proposer/curator/curator signatory ).
         </GreyPanel>
         <LabelWrapper className="!my-4">
           <Label>Content</Label>
