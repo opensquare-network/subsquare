@@ -4,10 +4,10 @@ import CoreFellowshipMemberInfoWrapper from "next-common/components/collectives/
 import CoreFellowshipMemberInfoTitle from "next-common/components/collectives/core/member/title";
 import useSubCoreFellowshipEvidence from "next-common/hooks/collectives/useSubCoreFellowshipEvidence";
 import { useState } from "react";
-import Popup from "next-common/components/popup/wrapper/Popup";
-import AvatarAndAddress from "./avatarAndAddress";
-import FellowshipRank from "next-common/components/fellowship/rank";
-import FellowshipEvidenceContent from "../evidenceContent";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const EvidenceDetailPopup = dynamicPopup(() => import("./evidenceDetailPopup"));
+export default EvidenceDetailPopup;
 
 export function CoreFellowshipMemberEvidenceContent({
   member,
@@ -56,36 +56,6 @@ export function CoreFellowshipMemberEvidenceContent({
         />
       )}
     </>
-  );
-}
-
-export default function EvidenceDetailPopup({
-  address,
-  rank,
-  isActive,
-  wish,
-  evidence,
-  onClose,
-}) {
-  return (
-    <Popup
-      title="Evidence Detail"
-      className="w-[800px] max-w-full"
-      onClose={onClose}
-    >
-      <div>
-        <div className="mt-3">
-          <div className="flex justify-between">
-            <AvatarAndAddress address={address} isActive={isActive} />
-            <FellowshipRank rank={rank} />
-          </div>
-        </div>
-      </div>
-
-      <hr />
-
-      <FellowshipEvidenceContent wish={wish} evidence={evidence} />
-    </Popup>
   );
 }
 

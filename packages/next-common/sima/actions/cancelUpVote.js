@@ -14,7 +14,7 @@ import {
 import getProposalIndexer from "../utils/getProposalIndexer";
 import getDetailPageCategory from "../utils/getDetailPageCategoryFromPostType";
 
-function getCancelUpVoteEntity(reactionCid) {
+export function getCancelUpVoteEntity(reactionCid) {
   return {
     action: "cancel_upvote",
     cid: reactionCid,

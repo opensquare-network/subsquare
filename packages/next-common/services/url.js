@@ -96,6 +96,22 @@ export const fellowshipStatisticsMembershipApi =
 export const fellowshipStatisticsUsersApi = (address) =>
   `fellowship/statistics/users/${address}`;
 
+// fellowship member evidence
+export const fellowshipMemberEvidenceCommentApi = (cid) =>
+  `fellowship/evidences/${cid}/comments`;
+export const fellowshipMemberEvidenceCommentUpdateApi = (
+  evidenceCid,
+  commentCid,
+) => `fellowship/evidences/${evidenceCid}/comments/${commentCid}`;
+export const fellowshipMemberEvidenceCommentReplyApi = (
+  evidenceCid,
+  commentCid,
+) => `fellowship/evidences/${evidenceCid}/comments/${commentCid}/replies`;
+export const fellowshipMemberEvidenceCommentReactionApi = (
+  evidenceCid,
+  commentCid,
+) => `fellowship/evidences/${evidenceCid}/comments/${commentCid}/reactions`;
+
 // ambassador
 export const ambassadorParamsApi = "ambassador/params";
 export const ambassadorMembersApiUri = "ambassador/members";

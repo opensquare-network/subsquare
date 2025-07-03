@@ -91,7 +91,7 @@ function CommentItemImpl({
   const comments = useComments();
   const setComments = useSetComments();
   const isUniversalComments = useIsUniversalPostComments();
-  const { getComment, updateComment } = useCommentActions();
+  const { getComment, updateComment, preventPageRefresh } = useCommentActions();
 
   // Jump to comment when anchor is set
   useEffect(() => {
@@ -122,10 +122,11 @@ function CommentItemImpl({
         }),
       };
       setComments(newComments);
-
-      const scrollPosition = window.scrollY;
-      await router.replace(router.asPath);
-      window.scrollTo(0, scrollPosition);
+      if (!preventPageRefresh) {
+        const scrollPosition = window.scrollY;
+        await router.replace(router.asPath);
+        window.scrollTo(0, scrollPosition);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [comments, setComments, comment._id]);
