@@ -12,6 +12,8 @@ import {
   PostUser,
   PostTrack,
   PostTime,
+  PostTreasuryTag,
+  PostDemocracyTag,
   PostCommentCount,
   PostVotesSummaryImpl,
   PostMalicious,
@@ -35,6 +37,8 @@ function PostFooter({ data }) {
       <Footer>
         <PostUser data={data} />
         <PostTrack data={data} href={`/referenda/tracks/${data.track}`} />
+        <PostTreasuryTag isTreasury={data?.isTreasury} />
+        <PostDemocracyTag isDemocracy={data?.isDemocracy} />
         <PostTime data={data} />
         <PostCommentCount commentsCount={commentsCount} />
         <PostVotesSummaryImpl data={data} />
