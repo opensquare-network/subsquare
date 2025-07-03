@@ -39,7 +39,7 @@ export default function AppendantPopup({ setIsAppend }) {
           <Label>Content</Label>
         </LabelWrapper>
         <AppendantEditor
-          onCancel={() => {
+          onClose={() => {
             setIsAppend(false);
           }}
         />
