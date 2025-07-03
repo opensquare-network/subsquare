@@ -41,7 +41,7 @@ export default function MultiTrack({
           info: "Delegated",
           tooltipContent: disableTooltipContent,
         };
-      } else if (voting.isCasting && voting.asCasting.votes.length > 0) {
+      } else if (voting.isCasting && voting.asCasting?.votes?.length > 0) {
         result[trackId] = {
           disabled: true,
           info: "Voted",

@@ -2,6 +2,8 @@ import ExplorerLink from "next-common/components/links/explorerLink";
 import { formatDateTime } from "next-common/components/coretime/sales/history/timeRange";
 import { VOTE_ACTION_TYPES, OPENGOV_ACTIONS } from "../../common";
 import { cn } from "next-common/utils";
+import Tooltip from "next-common/components/tooltip";
+import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 
 function getActionName(type, preVote, preDelegation) {
   if (type === OPENGOV_ACTIONS.VOTE) {
@@ -20,10 +22,12 @@ export default function ActionField({ type, indexer, className, data }) {
         {getActionName(type, data?.preVote, data?.preDelegation)}
       </div>
       <ExplorerLink indexer={indexer} style={{ fontSize: "12px" }}>
-        <div className="text-textTertiary hover:underline">
-          <span>{formatDateTime(indexer?.blockTime)}</span>
-          <span>&nbsp;↗</span>
-        </div>
+        <Tooltip content={formatTimeAgo(indexer?.blockTime)}>
+          <div className="text-textTertiary hover:underline">
+            <span>{formatDateTime(indexer?.blockTime)}</span>
+            <span>&nbsp;↗</span>
+          </div>
+        </Tooltip>
       </ExplorerLink>
     </div>
   );

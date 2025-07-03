@@ -3,26 +3,26 @@ import { useOnchainData } from "next-common/context/post";
 import { desktopColumns, mobileColumns } from "./columns";
 import { cn } from "next-common/utils";
 import VirtualList from "next-common/components/dataList/virtualList";
-import { useMemo, useCallback, memo } from "react";
+import { useMemo, useCallback, useState, useEffect, memo } from "react";
 import useSearchVotes from "next-common/hooks/useSearchVotes";
 import { useDesktopItemSize, useMobileItemSize } from "../useListItemSize";
 import useMaxImpactVotes from "../useMaxImpactVotes";
+import useColumns from "next-common/components/styledList/useColumns";
+import useSortVoteActions from "../useSortVoteActions";
 
 function DesktopTable({
   voteActions,
   loading,
   listHeight = 600,
   maxImpactVotes,
+  setSortedColumn,
+  listKey,
 }) {
   const getItemSize = useDesktopItemSize(voteActions);
-
-  const columns = useMemo(() => {
-    return desktopColumns.map((col) => ({
-      name: col.name,
-      className: col?.className,
-      width: col?.width,
-    }));
-  }, []);
+  const { sortedColumn, columns } = useColumns(desktopColumns, "", true);
+  useEffect(() => {
+    setSortedColumn(sortedColumn);
+  }, [sortedColumn, setSortedColumn]);
 
   const row = useMemo(() => {
     return voteActions?.map((item) => {
@@ -33,6 +33,7 @@ function DesktopTable({
 
   return (
     <VirtualList
+      key={listKey}
       columns={columns}
       rows={row}
       loading={loading}
@@ -51,6 +52,7 @@ function MobileTable({
   loading,
   listHeight = 600,
   maxImpactVotes,
+  listKey,
 }) {
   const getItemSize = useMobileItemSize(voteActions);
 
@@ -80,6 +82,7 @@ function MobileTable({
         "[&_.datalist_.descriptions-item-value]:w-full",
         "scrollbar-hidden h-full",
       )}
+      key={listKey}
       columns={columns}
       rows={rows}
       loading={loading}
@@ -93,29 +96,37 @@ function MobileTable({
 }
 
 function VoteActionsTable({ search = "", listHeight }) {
+  const [sortedColumn, setSortedColumn] = useState("");
   const { referendumIndex } = useOnchainData();
   const { loading, voteActions = [] } = useQueryVoteActions(referendumIndex);
   const maxImpactVotes = useMaxImpactVotes(voteActions);
 
   const getVoter = useCallback((vote) => vote.who, []);
   const filteredVoteActions = useSearchVotes(search, voteActions, getVoter);
+  const sortedVoteActions = useSortVoteActions(
+    filteredVoteActions,
+    sortedColumn,
+  );
 
   return (
     <>
       <div className="max-md:hidden">
         <DesktopTable
-          voteActions={filteredVoteActions}
+          voteActions={sortedVoteActions}
           loading={loading}
           listHeight={listHeight}
           maxImpactVotes={maxImpactVotes}
+          setSortedColumn={setSortedColumn}
+          listKey={`desktop-${search}-${sortedColumn}`}
         />
       </div>
       <div className="hidden max-md:block">
         <MobileTable
-          voteActions={filteredVoteActions}
+          voteActions={sortedVoteActions}
           loading={loading}
           listHeight={listHeight}
           maxImpactVotes={maxImpactVotes}
+          listKey={`mobile-${search}-${sortedColumn}`}
         />
       </div>
     </>
