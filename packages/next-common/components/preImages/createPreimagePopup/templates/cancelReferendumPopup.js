@@ -7,6 +7,7 @@ import NotePreimageButton from "../notePreimageButton";
 import useReferendumIndexField from "../fields/useReferendumIndexField";
 import { isNil } from "lodash-es";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
+import InsufficientBalanceTips from "next-common/components/summary/newProposalQuickStart/common/insufficientBalanceTips";
 
 export function useCancelReferendumNotePreimageTx(referendumIndex) {
   const api = useContextApi();
@@ -30,12 +31,14 @@ export default function CancelReferendumPopup() {
   const { value: referendumIndex, component: referendumIndexField } =
     useReferendumIndexField();
 
-  const { notePreimageTx } = useCancelReferendumNotePreimageTx(referendumIndex);
+  const { notePreimageTx, encodedLength } =
+    useCancelReferendumNotePreimageTx(referendumIndex);
 
   return (
     <Popup title="Cancel a referendum" onClose={onClose}>
       <SignerWithBalance />
       {referendumIndexField}
+      <InsufficientBalanceTips byteLength={encodedLength} onlyPreimage />
       <div className="flex justify-end">
         <NotePreimageButton notePreimageTx={notePreimageTx} />
       </div>
