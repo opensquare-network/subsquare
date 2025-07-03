@@ -7,6 +7,7 @@ import { forwardRef, useEffect, useRef, useState } from "react";
 import { useNavCollapsed } from "next-common/context/nav";
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 import { isNil } from "lodash-es";
+import Tooltip from "../tooltip";
 
 function DataList(
   {
@@ -171,7 +172,13 @@ function DataList(
               )}
               style={columnStyles[idx]}
             >
-              {column.name}
+              {column.tooltip ? (
+                <Tooltip className="cursor-pointer" content={column.tooltip}>
+                  {column.name}
+                </Tooltip>
+              ) : (
+                column.name
+              )}
             </div>
           ))}
         </div>
