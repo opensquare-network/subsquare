@@ -107,7 +107,7 @@ export function SubmissionBalanceTips({ api, preimageDeposit, transferrable }) {
   );
 }
 
-function MaybeBalanceTipsContent({ onlyPreimage = false, byteLength }) {
+function BalanceTipsContent({ onlyPreimage = false, byteLength }) {
   const api = useContextApi();
   const signerAccount = useSignerAccount();
   const { transferrable } = useAccountTransferrable(
@@ -140,7 +140,7 @@ export default function InsufficientBalanceTips({
   return (
     <WithApi>
       <PreimageDepositSettingGuard>
-        <MaybeBalanceTipsContent
+        <BalanceTipsContent
           byteLength={byteLength}
           onlyPreimage={onlyPreimage}
         />
