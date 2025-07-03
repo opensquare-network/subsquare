@@ -6,8 +6,9 @@ import { isNil } from "lodash-es";
 
 export default function useCanAppendBountyPost() {
   const address = useRealAddress();
-  const { proposer, onchainData } = usePost();
+  const { proposer, onchainData, refToPost } = usePost();
   const { extractedCurators } = onchainData;
+  const postType = refToPost?.postType;
 
   const isCuratorOrSignatories = useMemo(() => {
     if (isNil(extractedCurators)) {
@@ -22,10 +23,10 @@ export default function useCanAppendBountyPost() {
   }, [address, proposer]);
 
   return useMemo(() => {
-    if (!address) {
+    if (!address || postType !== "bounty") {
       return false;
     }
 
     return isProposer || isCuratorOrSignatories;
-  }, [isProposer, isCuratorOrSignatories, address]);
+  }, [isProposer, isCuratorOrSignatories, address, postType]);
 }
