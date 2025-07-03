@@ -12,41 +12,17 @@ import { SystemActivity } from "@osn/icons/subsquare";
 import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 import Tooltip from "next-common/components/tooltip";
 import { SystemMore } from "@osn/icons/subsquare";
-import { useState, useMemo, useRef } from "react";
+import { useState, useRef } from "react";
 import { OptionWrapper } from "next-common/components/internalDropdown/styled";
 import {
   EditMenuItem,
   DeleteMenuItem,
 } from "next-common/components/contentMenu";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { isSameAddress } from "next-common/utils";
 import { useClickAway } from "react-use";
-import styled from "styled-components";
-
-const Wrapper = styled.div`
-  position: relative;
-
-  > img {
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
-  }
-`;
+import useIsAuthor from "./useIsAuthor";
 
 function SplitDot() {
   return <span className="text-textTertiary text12Medium mx-2">·</span>;
-}
-
-function useIsAuthor(data) {
-  const address = useRealAddress();
-
-  return useMemo(() => {
-    if (!address) {
-      return false;
-    }
-
-    return isSameAddress(address, data?.author?.address);
-  }, [address, data?.author?.address]);
 }
 
 // TODO: edit、remove
@@ -59,7 +35,7 @@ function MoreActions() {
   useClickAway(ref, () => setShow(false));
 
   return (
-    <Wrapper ref={ref}>
+    <div ref={ref} className="relative">
       <SystemMore
         className="w-5 h-5 [&_path]:fill-textTertiary cursor-pointer"
         onClick={() => {
@@ -75,7 +51,7 @@ function MoreActions() {
           />
         </OptionWrapper>
       )}
-    </Wrapper>
+    </div>
   );
 }
 
