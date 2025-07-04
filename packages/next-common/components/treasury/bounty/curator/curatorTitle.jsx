@@ -17,7 +17,7 @@ export default function CuratorTitle({ address }) {
       <Tooltip content="Check Relatives Detail">
         <SystemRelatives
           onClick={() => setShowRelationshipPopup(true)}
-          className="w-5 h-5 cursor-pointer"
+          className="w-5 h-5 cursor-pointer text-textTertiary"
         />
       </Tooltip>
       {showRelationshipPopup && (
