@@ -26,11 +26,12 @@ const AppendantPopup = dynamicPopup(() =>
   import("next-common/components/appendant"),
 );
 
+const DeletePopup = dynamicPopup(() => import("./delete"));
+
 function SplitDot() {
   return <span className="text-textTertiary text12Medium mx-2">·</span>;
 }
 
-// TODO: remove
 function MoreActions({ data }) {
   const [show, setShow] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -52,7 +53,7 @@ function MoreActions({ data }) {
           <OptionWrapper>
             <EditMenuItem setIsEdit={setIsEdit} setShow={setShow} />
             <DeleteMenuItem
-              setShowReportPopup={setShowDeletePopup}
+              setShowDeletePopup={setShowDeletePopup}
               setShow={setShow}
             />
           </OptionWrapper>
@@ -65,6 +66,10 @@ function MoreActions({ data }) {
           editData={data}
           isEditMode={true}
         />
+      )}
+
+      {showDeletePopup && (
+        <DeletePopup appendantData={data} setShow={setShowDeletePopup} />
       )}
     </>
   );
