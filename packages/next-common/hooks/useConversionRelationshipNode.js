@@ -7,6 +7,7 @@ import { RELATIONSHIP_NODE_TYPE } from "next-common/utils/constants";
 import useFetchIdentityInfo from "next-common/hooks/profile/useFetchIdentityInfo";
 import Tooltip from "next-common/components/tooltip";
 import Link from "next/link";
+import { useRootAddress } from "next-common/context/relationship";
 
 export const rootNodeId = "rootNode";
 const nodeInitialWidth = 240;
@@ -276,7 +277,8 @@ const EMPTY_RESULT = {
   edges: [],
 };
 
-export default function useConversionRelationshipNode(rootAddress = "") {
+export default function useConversionRelationshipNode() {
+  const rootAddress = useRootAddress();
   const proxies = useFetchProfileProxies({
     delegator: rootAddress,
     pageSize: 100,
@@ -287,7 +289,7 @@ export default function useConversionRelationshipNode(rootAddress = "") {
   });
   const multisigAddress = useMultisigAddress(rootAddress);
   const signatoryMultisig = useSignatoryMultisig(rootAddress);
-  const identityInfo = useFetchIdentityInfo(rootAddress);
+  const identityInfo = useFetchIdentityInfo();
 
   const isLoading =
     proxies.isLoading ||

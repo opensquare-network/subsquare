@@ -1,13 +1,12 @@
 import { useMemo, useState } from "react";
 import { useChain } from "next-common/context/chain";
-import useProfileAddress from "next-common/components/profile/useProfileAddress";
+import { useRootAddress } from "next-common/context/relationship";
 import { backendApi } from "next-common/services/nextApi";
 import { useAsync } from "react-use";
 import { isPolkadotChain, isKusamaChain } from "next-common/utils/chain";
 
-function useIdentityApi(add = null) {
-  const profileAddress = useProfileAddress();
-  const address = add || profileAddress;
+function useIdentityApi() {
+  const address = useRootAddress();
   const chain = useChain();
 
   return useMemo(() => {
@@ -24,8 +23,8 @@ function useIdentityApi(add = null) {
   }, [chain, address]);
 }
 
-export default function useFetchIdentityInfo(address = null) {
-  const identityApi = useIdentityApi(address);
+export default function useFetchIdentityInfo() {
+  const identityApi = useIdentityApi();
   const [isLoading, setIsLoading] = useState(true);
 
   const { value } = useAsync(async () => {
