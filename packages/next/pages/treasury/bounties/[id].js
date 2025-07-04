@@ -50,8 +50,8 @@ function BountyContent() {
         <CuratorProvider curator={curator} params={curatorParams}>
           <ContentWithComment>
             <BountyDetail />
-            <BountySidebar />
             <Appendants />
+            <BountySidebar />
             <TreasuryBountiesDetailMultiTabs />
           </ContentWithComment>
         </CuratorProvider>
