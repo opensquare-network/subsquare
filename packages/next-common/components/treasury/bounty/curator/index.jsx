@@ -2,13 +2,13 @@ import { SecondaryCardDetail } from "next-common/components/styled/containers/se
 import { useCurator } from "next-common/context/treasury/bounties";
 import { memo } from "react";
 import CuratorTitle from "./curatorTitle";
-import AccountDisplay from "./accountDisplay";
+import AccountSection from "./accountSection";
 
 const CuratorContent = memo(function CuratorContent({ address }) {
   return (
     <SecondaryCardDetail>
       <CuratorTitle address={address} />
-      <AccountDisplay address={address} borderBottom />
+      <AccountSection address={address} borderBottom />
     </SecondaryCardDetail>
   );
 });

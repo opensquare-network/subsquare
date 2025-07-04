@@ -1,7 +1,6 @@
 import useCuratorInfo from "next-common/hooks/treasury/bounty/useCuratorInfo";
 import AddressDisplay from "./addressDisplay";
-import ProxyAccounts from "./proxyAccounts";
-import MultisigAccounts from "./multisigAccounts";
+import IndentPanel from "next-common/components/callTreeView/indentPanel";
 
 const AddressWraper = ({ children, borderBottom = false }) => {
   if (!borderBottom) {
@@ -15,7 +14,7 @@ const AddressWraper = ({ children, borderBottom = false }) => {
   );
 };
 
-export default function AccountDisplay({
+export default function AccountSection({
   address,
   isProxy = false,
   borderBottom = false,
@@ -36,5 +35,39 @@ export default function AccountDisplay({
       <ProxyAccounts proxies={proxies} />
       <MultisigAccounts signatories={multisigData?.signatories} />
     </>
+  );
+}
+
+export function MultisigAccounts({ signatories = [] }) {
+  if (signatories.length === 0) {
+    return null;
+  }
+
+  return (
+    <div className="pl-[10px]">
+      <IndentPanel>
+        {signatories.map((address) => (
+          <AccountSection key={address} address={address} />
+        ))}
+      </IndentPanel>
+    </div>
+  );
+}
+
+export function ProxyAccounts({ proxies = [] }) {
+  if (!proxies || proxies.length === 0) {
+    return null;
+  }
+
+  return (
+    <div className="pl-[10px]">
+      <IndentPanel>
+        {proxies.map((proxy) => (
+          <div key={proxy.delegate}>
+            <AccountSection address={proxy.delegate} isProxy />
+          </div>
+        ))}
+      </IndentPanel>
+    </div>
   );
 }
