@@ -1,6 +1,6 @@
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import { useCurator } from "next-common/context/treasury/bounties";
-import { useCuratorAddress } from "next-common/hooks/treasury/bounty/useCuratorInfo";
+import useCuratorAddress from "next-common/hooks/treasury/bounty/useCuratorInfo";
 import { memo } from "react";
 import CuratorTitle from "./curatorTitle";
 import AccountDisplay from "./accountDisplay";
