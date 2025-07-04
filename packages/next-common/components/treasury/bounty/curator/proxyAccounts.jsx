@@ -1,7 +1,7 @@
 import IndentPanel from "next-common/components/callTreeView/indentPanel";
 import AccountDisplay from "./accountDisplay";
-import { AddressUser } from "next-common/components/user";
-import useCuratorAddress from "next-common/hooks/treasury/bounty/useCuratorInfo";
+import useCuratorInfo from "next-common/hooks/treasury/bounty/useCuratorInfo";
+import MultisigAccounts from "./multisigAccounts";
 
 export default function ProxyAccounts({ proxies = [] }) {
   if (!proxies || proxies.length === 0) {
@@ -22,7 +22,7 @@ export default function ProxyAccounts({ proxies = [] }) {
 }
 
 function CuratorMultisigAccounts({ address, isProxy = false }) {
-  const { isPure, multisigData, isLoading } = useCuratorAddress(address);
+  const { isPure, multisigData, isLoading } = useCuratorInfo(address);
 
   if (isLoading) {
     return null;
@@ -37,13 +37,7 @@ function CuratorMultisigAccounts({ address, isProxy = false }) {
         isProxy={isProxy}
         className="my-1"
       />
-      <div className="pl-[10px]">
-        <IndentPanel>
-          {multisigData?.signatories?.map((address) => (
-            <AddressUser key={address} add={address} className="my-1" />
-          ))}
-        </IndentPanel>
-      </div>
+      <MultisigAccounts signatories={multisigData?.signatories} />
     </>
   );
 }
