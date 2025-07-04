@@ -13,6 +13,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import TreasurySpendValueDisplay from "next-common/components/gov2/business/treasurySpendValueDisplay";
 import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
+import FieldLoading from "next-common/components/icons/fieldLoading";
 
 const separateNumber = 5;
 
@@ -172,9 +173,12 @@ function After({ after, className = "" }) {
 }
 
 function PassedTime({ validFrom }) {
-  const { timestamp } = useBlockTimestamp(validFrom);
+  const { timestamp, isLoading } = useBlockTimestamp(validFrom);
+  if (isLoading) {
+    return <FieldLoading size={14} />;
+  }
 
-  if (!timestamp) {
+  if (isNaN(timestamp)) {
     return null;
   }
 
@@ -183,6 +187,9 @@ function PassedTime({ validFrom }) {
 
 function FutureTime({ validFrom }) {
   const currentHeight = useSelector(latestHeightSelector);
+  if (isNaN(currentHeight)) {
+    return <FieldLoading size={14} />;
+  }
   return <AfterTime after={validFrom - currentHeight} />;
 }
 
