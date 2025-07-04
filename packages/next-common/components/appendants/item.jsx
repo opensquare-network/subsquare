@@ -84,7 +84,7 @@ function Activity({ data }) {
         content={
           <div className="text12Medium">
             <ul className="list-disc list-inside">
-              <li>Created at {formatTimeAgo(data?.createdAt)}</li>
+              <li>Appended at {formatTimeAgo(data?.createdAt)}</li>
               <li>Latest activity at {formatTimeAgo(data?.updatedAt)}</li>
             </ul>
           </div>
