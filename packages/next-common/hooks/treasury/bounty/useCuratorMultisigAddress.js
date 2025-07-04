@@ -75,50 +75,6 @@ export function useCuratorMultisigAddress(address) {
       return;
     }
 
-    async function fetchMultisigData(currentAddress) {
-      if (!graphqlApiSubDomain) {
-        setError(new Error("Unsupported chain"));
-        setLoading(false);
-        return { badge: "", signatories: [] };
-      }
-
-      try {
-        const url = `https://${graphqlApiSubDomain}.statescan.io/graphql`;
-        const response = await fetch(url, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            operationName: "GetMultisigAddress",
-            variables: { account: currentAddress },
-            query: `query GetMultisigAddress($account: String!) {
-                multisigAddress(account: $account) {
-                  signatories
-                  threshold
-                }
-              }`,
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error(response.statusText);
-        }
-
-        const result = await response.json();
-        const { multisigAddress = {} } = result?.data || {};
-        const signatoriesList = multisigAddress?.signatories || [];
-        const badgeCount = multisigAddress
-          ? `${multisigAddress.threshold}/${signatoriesList.length}`
-          : "";
-
-        return { badge: badgeCount, signatories: signatoriesList };
-      } catch (error) {
-        setError(error);
-        return { badge: "", signatories: [] };
-      }
-    }
-
     async function loadData() {
       setLoading(true);
       try {

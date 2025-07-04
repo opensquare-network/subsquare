@@ -22,7 +22,8 @@ export default function RelationshipPopup({
   onClose = noop,
   rootAddress = "",
 }) {
-  const { isLoading, nodes, edges } = useConversionRelationshipNode();
+  const { isLoading, nodes, edges } =
+    useConversionRelationshipNode(rootAddress);
 
   const showNoRelationshipsTip = useMemo(() => {
     if (isLoading) {
