@@ -1,9 +1,8 @@
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef, useCallback } from "react";
 import { backendApi } from "next-common/services/nextApi";
 import useRefCallback from "next-common/hooks/useRefCallback";
 import { markdownToText } from "next-common/components/header/search/utils";
 import useSearchIdentities from "next-common/components/header/hooks/useSearchIdentities";
-import { trackPromises } from "next-common/components/header/search/utils";
 
 export const ItemType = {
   CATEGORY: "category",
@@ -17,8 +16,8 @@ function useSearchResults() {
   const lastSearchValueRef = useRef("");
   const [fetchIdentities, isIdentitiesLoading] = useSearchIdentities();
 
-  const combineIdentitiesRequest = useRefCallback(async (searchValue) => {
-    try {
+  const combineIdentitiesRequest = useCallback(
+    async (searchValue) => {
       const { identities } = (await fetchIdentities(searchValue)) ?? {};
       if (!identities) return null;
 
@@ -29,24 +28,19 @@ function useSearchResults() {
           return [];
         }
       });
-    } catch (e) {
-      return Promise.reject(e);
-    }
-  });
+    },
+    [fetchIdentities],
+  );
 
-  const baseSearchDataRequest = useRefCallback(async (searchValue, signal) => {
-    try {
-      return await backendApi.fetch(
-        "search",
-        {
-          text: searchValue,
-        },
-        { signal },
-      );
-    } catch (e) {
-      return Promise.reject(e);
-    }
-  });
+  const baseSearchDataRequest = useCallback(async (searchValue, signal) => {
+    return await backendApi.fetch(
+      "search",
+      {
+        text: searchValue,
+      },
+      { signal },
+    );
+  }, []);
 
   const fetch = useRefCallback(async (searchValue) => {
     if (searchValue === lastSearchValueRef.current && results !== null) {
@@ -64,36 +58,23 @@ function useSearchResults() {
       setIsLoading(true);
       lastSearchValueRef.current = searchValue;
 
-      const trackResults = await trackPromises([
-        baseSearchDataRequest(searchValue, signal),
-        combineIdentitiesRequest(searchValue),
-      ]);
+      const [{ value: apiResult }, { value: identitiesResult }] =
+        await Promise.allSettled([
+          baseSearchDataRequest(searchValue, signal),
+          combineIdentitiesRequest(searchValue),
+        ]);
 
-      const [apiResult, identitiesResult] = trackResults.reduce(
-        (acc, item) => {
-          if (item?.data?.result) {
-            acc[0] = item.data.result;
-          } else if (item?.data) {
-            acc[1] = item.data;
-          }
-          return acc;
-        },
-        [{}, {}],
-      );
-
-      const endIdentities = identitiesResult.map((item, index) => ({
+      const endIdentities = (identitiesResult || []).map((item, index) => ({
         index,
         content: item?.account,
         title: item?.fullDisplay ?? "-",
       }));
 
       if (!signal.aborted) {
-        setResults(
-          {
-            ...apiResult,
-            identities: endIdentities,
-          } ?? {},
-        );
+        setResults({
+          ...apiResult?.result,
+          identities: endIdentities,
+        });
       }
     } finally {
       if (searchValue === lastSearchValueRef.current) {
