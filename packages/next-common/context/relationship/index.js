@@ -19,6 +19,7 @@ const defaultContext = {
 const RelationshipContext = createContext(defaultContext);
 
 export default function RelationshipProvider({
+  rootAddress,
   children,
   nodes,
   edges,
@@ -29,13 +30,21 @@ export default function RelationshipProvider({
   );
   const value = useMemo(
     () => ({
+      rootAddress,
       nodes,
       edges,
       isLoading,
       excludedIndications,
       setExcludedIndications,
     }),
-    [nodes, edges, isLoading, excludedIndications, setExcludedIndications],
+    [
+      rootAddress,
+      nodes,
+      edges,
+      isLoading,
+      excludedIndications,
+      setExcludedIndications,
+    ],
   );
 
   return (
@@ -139,4 +148,9 @@ export function useSwitchIndications() {
     setExcludedIndications,
     toggleIndication,
   };
+}
+
+export function useRootAddress() {
+  const context = useContext(RelationshipContext);
+  return context?.rootAddress || "";
 }
