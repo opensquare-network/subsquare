@@ -1,11 +1,9 @@
 import React from "react";
-import styled, { css } from "styled-components";
 import { toPrecision } from "next-common/utils";
 import Tag from "next-common/components/tags/state/tag";
 import Flex from "next-common/components/styled/flex";
 import MotionElapse from "next-common/components/motionElapse";
 import Anchor from "next-common/components/styled/anchor";
-import { HoverSecondaryCard } from "../styled/containers/secondaryCard";
 import Divider from "../styled/layout/divider";
 import { DemocracyTag, TreasuryTag } from "../tags/business";
 import { isNil } from "lodash-es";
@@ -14,7 +12,6 @@ import businessCategory from "../../utils/consts/business/category";
 import { getMotionStateArgs } from "../../utils/collective/result";
 import { getGov2ReferendumStateArgs } from "../../utils/gov2/result";
 import { useChain, useChainSettings } from "../../context/chain";
-import { smcss } from "../../utils/responsive";
 import Gov2TrackTag from "../gov2/trackTag";
 import DecisionCountdown from "../gov2/postList/decisionCountdown";
 import { gov2State, gov2VotingState } from "../../utils/consts/state";
@@ -33,7 +30,6 @@ import PostListCardVotesSummaryBar from "./votesSummaryBar";
 import SystemUser from "../user/systemUser";
 import AddressUser from "../user/addressUser";
 import PolkassemblyUser from "../user/polkassemblyUser";
-import tw from "tailwind-styled-components";
 import Tooltip from "next-common/components/tooltip";
 import WarningIcon from "next-common/assets/imgs/icons/warning.svg";
 import { getAssetByMeta } from "next-common/utils/treasury/spend/usdCheck";
@@ -46,108 +42,18 @@ import PostListMyVoteMark from "./myVoteMark";
 import { referendumState } from "next-common/utils/consts/referendum";
 import Chains from "next-common/utils/consts/chains";
 
-const Wrapper = styled(HoverSecondaryCard)`
-  display: flex;
-  align-items: flex-start;
-`;
-
-const DividerWrapper = styled(Flex)`
-  flex-wrap: wrap;
-  min-height: 20px;
-
-  > span {
-    display: inline-block;
-    height: 12px;
-  }
-
-  > :not(:first-child) {
-    ::before {
-      content: "·";
-      font-size: 12px;
-      color: var(--textTertiary);
-      margin: 0 8px;
-    }
-  }
-`;
-
-const Footer = styled(DividerWrapper)`
-  @media screen and (max-width: 768px) {
-    > :nth-child(3) {
-      display: none;
-    }
-  }
-
-  @media screen and (max-width: 375px) {
-    > :nth-child(2) {
-      display: none;
-    }
-  }
-`;
-
-const Info = styled.div`
-  display: flex;
-  align-items: center;
-  font-size: 12px;
-  color: var(--textSecondary);
-  svg {
-    margin-right: 4px;
-    path {
-      stroke: var(--textTertiary);
-    }
-  }
-  .elapseIcon > * {
-    margin-left: 8px;
-  }
-`;
-
-const MobileHiddenInfo = styled(Info)`
-  @media screen and (max-width: 768px) {
-    display: none;
-  }
-`;
-
-const FooterWrapper = styled(Flex)`
-  justify-content: space-between;
-  flex-wrap: nowrap;
-`;
-
-const TitleExtraValue = styled(Flex)`
-  color: var(--textPrimary);
-`;
-const TitleExtra = tw.div`
-  text14Medium
-  flex items-start
-  py-0.5 ml-2
-  text-textTertiary
-  max-sm:mt-2 max-sm:ml-0
-`;
-
-const HeadWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-
-  ${smcss(css`
-    display: block;
-  `)};
-`;
-
-const ContentWrapper = styled.div`
-  flex: 1;
-`;
-
-const BannerWrapper = styled.div`
-  margin-top: 0 !important;
-  margin-left: 16px;
-  width: 120px;
-  height: 67px;
-  img {
-    width: 100%;
-    height: 100%;
-    border-radius: 4px;
-    object-fit: cover;
-  }
-`;
+import {
+  Wrapper,
+  Footer,
+  Info,
+  MobileHiddenInfo,
+  FooterWrapper,
+  TitleExtraValue,
+  TitleExtra,
+  HeadWrapper,
+  ContentWrapper,
+  BannerWrapper,
+} from "./styled";
 
 function PostUser({ data, type }) {
   const { sm } = useScreenSize();
