@@ -6,14 +6,13 @@ import AddressUser from "next-common/components/user/addressUser";
 import { useChainSettings } from "next-common/context/chain";
 import { useNavCollapsed } from "next-common/context/nav";
 import useBlockTimestamp from "next-common/hooks/common/useBlockTimestamp";
-import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import { cn } from "next-common/utils";
 import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 import { useState } from "react";
-import { useSelector } from "react-redux";
 import TreasurySpendValueDisplay from "next-common/components/gov2/business/treasurySpendValueDisplay";
 import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import FieldLoading from "next-common/components/icons/fieldLoading";
+import { useScanHeight } from "next-common/hooks/scanHeight";
 
 const separateNumber = 5;
 
@@ -118,7 +117,7 @@ function Spend({
 }
 
 function Time({ validFrom, className = "" }) {
-  const currentHeight = useSelector(latestHeightSelector);
+  const currentHeight = useScanHeight();
 
   let content;
   let tooltipContent;
@@ -186,7 +185,7 @@ function PassedTime({ validFrom }) {
 }
 
 function FutureTime({ validFrom }) {
-  const currentHeight = useSelector(latestHeightSelector);
+  const currentHeight = useScanHeight();
   if (isNaN(currentHeight)) {
     return <FieldLoading size={14} />;
   }
