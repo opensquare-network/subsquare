@@ -12,7 +12,7 @@ import { useState } from "react";
 import TreasurySpendValueDisplay from "next-common/components/gov2/business/treasurySpendValueDisplay";
 import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import FieldLoading from "next-common/components/icons/fieldLoading";
-import { useScanHeight } from "next-common/hooks/scanHeight";
+import useChainOrScanHeight from "next-common/hooks/height";
 
 const separateNumber = 5;
 
@@ -117,7 +117,7 @@ function Spend({
 }
 
 function Time({ validFrom, className = "" }) {
-  const currentHeight = useScanHeight();
+  const currentHeight = useChainOrScanHeight();
 
   let content;
   let tooltipContent;
@@ -185,7 +185,7 @@ function PassedTime({ validFrom }) {
 }
 
 function FutureTime({ validFrom }) {
-  const currentHeight = useScanHeight();
+  const currentHeight = useChainOrScanHeight();
   if (isNaN(currentHeight)) {
     return <FieldLoading size={14} />;
   }
