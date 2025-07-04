@@ -27,10 +27,10 @@ export default function AppendantPopup({
   editData = null,
   isEditMode = false,
 }) {
-  const title = isEditMode ? "Edit Appendant" : "Appendants";
-  const description = isEditMode
-    ? "You are adding an appendant (as proposer/curator/curator signatory)."
-    : "You are editing appendant (as proposer/curator/curator signatory).";
+  const title = isEditMode ? "Edit Appendant" : "Appendant";
+  const description = `You are ${
+    isEditMode ? "editing" : "adding"
+  } an appendant as proposer/curator.`;
 
   return (
     <Popup
