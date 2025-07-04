@@ -7,8 +7,8 @@ import {
 } from "next-common/store/reducers/toastSlice";
 import { appendantsApi } from "next-common/services/url";
 import nextApi from "next-common/services/nextApi";
-import { useRouter } from "next/router";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import { useBountyAppendantsContext } from "next-common/context/bountyAppendants";
 
 const DeletePopup = dynamicPopup(() =>
   import("next-common/components/deletePopup"),
@@ -19,7 +19,7 @@ export default function DeleteAppendantPopup({
   setShow = noop,
 }) {
   const dispatch = useDispatch();
-  const router = useRouter();
+  const { update } = useBountyAppendantsContext();
 
   const deletePost = useCallback(async () => {
     try {
@@ -32,14 +32,14 @@ export default function DeleteAppendantPopup({
 
       if (result) {
         dispatch(newSuccessToast("Appendant deleted successfully"));
-        router.replace(router.asPath);
+        update();
       }
     } catch (e) {
       console.error(e);
       dispatch(newErrorToast("An error occurred while deleting"));
       throw e;
     }
-  }, [appendantData?._id, dispatch, router]);
+  }, [appendantData?._id, dispatch, update]);
 
   return (
     <DeletePopup

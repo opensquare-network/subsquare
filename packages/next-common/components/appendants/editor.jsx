@@ -16,7 +16,7 @@ import {
 } from "next-common/services/url";
 import nextApi from "next-common/services/nextApi";
 import { useOnchainData } from "next-common/context/post";
-import { useRouter } from "next/router";
+import { useBountyAppendantsContext } from "next-common/context/bountyAppendants";
 
 export default function AppendantEditor({
   onChange,
@@ -32,7 +32,7 @@ export default function AppendantEditor({
   const [submitting, setSubmitting] = useState(false);
   const dispatch = useDispatch();
   const { ensureLogin } = useEnsureLogin();
-  const router = useRouter();
+  const { update } = useBountyAppendantsContext();
 
   useEffect(() => {
     if (isEditMode && editData) {
@@ -89,7 +89,7 @@ export default function AppendantEditor({
 
         dispatch(newSuccessToast(successMessage));
         onClose();
-        router.replace(router.asPath);
+        update();
       }
     } finally {
       setSubmitting(false);

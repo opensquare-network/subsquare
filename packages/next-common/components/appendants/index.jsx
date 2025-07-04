@@ -1,9 +1,8 @@
 import AppendItem from "./item";
 import { ArrowTriangleDown } from "@osn/icons/subsquare";
-import { useState } from "react";
+import { useState, memo } from "react";
 import { cn } from "next-common/utils";
-import useBountyAppendants from "next-common/hooks/useBountyAppendants";
-import { useOnchainData } from "next-common/context/post";
+import { useBountyAppendantsContext } from "next-common/context/bountyAppendants";
 
 function CollapsePanel({ children }) {
   const [isCollapsed, setIsCollapsed] = useState(true);
@@ -28,9 +27,8 @@ function CollapsePanel({ children }) {
   );
 }
 
-export default function Appendants() {
-  const { bountyIndex } = useOnchainData();
-  const { value: appendants } = useBountyAppendants(bountyIndex);
+function Appendants() {
+  const { appendants } = useBountyAppendantsContext();
 
   if (!appendants || appendants?.length === 0) {
     return null;
@@ -44,3 +42,5 @@ export default function Appendants() {
     </CollapsePanel>
   );
 }
+
+export default memo(Appendants);

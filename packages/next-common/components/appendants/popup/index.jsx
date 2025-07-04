@@ -1,4 +1,4 @@
-import AppendantEditor from "./editor";
+import AppendantEditor from "../editor";
 import { Label, LabelWrapper } from "next-common/components/post/styled";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
 import { cn } from "next-common/utils";

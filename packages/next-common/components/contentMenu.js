@@ -28,7 +28,7 @@ import CancelReferendumPopup from "./summary/newProposalQuickStart/cancelReferen
 import KillReferendumPopup from "./summary/newProposalQuickStart/killReferendumInnerPopup";
 import { useChainSettings } from "next-common/context/chain";
 import useTerminateAction from "next-common/hooks/useTerminateAction";
-import BountyAppendMenuItem from "next-common/components/appendant/bountyAppendMenuItem";
+import BountyAppendMenuItem from "next-common/components/appendants/bountyAppendMenuItem";
 
 const DeletePopup = dynamicPopup(() => import("./deletePopup"));
 
@@ -41,7 +41,7 @@ const PostUnlinkPopup = dynamicPopup(() =>
 );
 
 const AppendantPopup = dynamicPopup(() =>
-  import("next-common/components/appendant"),
+  import("next-common/components/appendants/popup"),
 );
 
 const Wrapper = styled.div`

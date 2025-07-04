@@ -23,10 +23,10 @@ import useIsAuthor from "./useIsAuthor";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 
 const AppendantPopup = dynamicPopup(() =>
-  import("next-common/components/appendant"),
+  import("next-common/components/appendants/popup"),
 );
 
-const DeletePopup = dynamicPopup(() => import("./delete"));
+const DeletePopup = dynamicPopup(() => import("next-common/components/appendants/popup/delete"));
 
 function SplitDot() {
   return <span className="text-textTertiary text12Medium mx-2">·</span>;
