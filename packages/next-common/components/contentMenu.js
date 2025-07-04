@@ -29,6 +29,7 @@ import KillReferendumPopup from "./summary/newProposalQuickStart/killReferendumI
 import { useChainSettings } from "next-common/context/chain";
 import useTerminateAction from "next-common/hooks/useTerminateAction";
 import BountyAppendMenuItem from "next-common/components/appendants/bountyAppendMenuItem";
+import { useBountyAppendantsContext } from "next-common/context/bountyAppendants";
 
 const DeletePopup = dynamicPopup(() => import("./deletePopup"));
 
@@ -259,6 +260,32 @@ export function CommentContextMenu({ editable, setIsEdit }) {
   );
 }
 
+function ConditionalBountyLinkMenu({ menu }) {
+  const { appendants } = useBountyAppendantsContext();
+  if (appendants && appendants?.length > 0) {
+    return null;
+  }
+
+  return menu;
+}
+
+function ConditionalLinkMenu({
+  menu,
+  isTreasuryBountyPost,
+  isDiscussionPost,
+  isFellowshipApplicationPost,
+}) {
+  if (isDiscussionPost || isFellowshipApplicationPost) {
+    return null;
+  }
+
+  if (isTreasuryBountyPost) {
+    return <ConditionalBountyLinkMenu menu={menu} />;
+  }
+
+  return menu;
+}
+
 export function PostContextMenu({ isAuthor, editable, setIsEdit }) {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -327,10 +354,14 @@ export function PostContextMenu({ isAuthor, editable, setIsEdit }) {
         <OptionWrapper>
           {editable && (
             <>
-              {isAuthor &&
-                !isDiscussionPost &&
-                !isFellowshipApplicationPost &&
-                linkOrUnlinkMenuItem}
+              {isAuthor && (
+                <ConditionalLinkMenu
+                  menu={linkOrUnlinkMenuItem}
+                  isTreasuryBountyPost={isTreasuryBountyPost}
+                  isDiscussionPost={isDiscussionPost}
+                  isFellowshipApplicationPost={isFellowshipApplicationPost}
+                />
+              )}
               <EditMenuItem setIsEdit={setIsEdit} setShow={setShow} />
             </>
           )}
