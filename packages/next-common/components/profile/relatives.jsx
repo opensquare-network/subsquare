@@ -4,6 +4,7 @@ import { useState } from "react";
 import { isPolkadotChain, isKusamaChain } from "next-common/utils/chain";
 import { useChain } from "next-common/context/chain";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import useProfileAddress from "./useProfileAddress";
 
 const ArrowRight = dynamic(
   import("@osn/icons/subsquare").then((mod) => mod.ArrowRight),
@@ -24,6 +25,7 @@ function RelativesWithNullGuard({ children }) {
 }
 
 export default function Relatives() {
+  const address = useProfileAddress();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   return (
@@ -37,7 +39,12 @@ export default function Relatives() {
       >
         Relatives
       </Button>
-      {isPopupOpen && <RelativesPopup onClose={() => setIsPopupOpen(false)} />}
+      {isPopupOpen && (
+        <RelativesPopup
+          onClose={() => setIsPopupOpen(false)}
+          rootAddress={address}
+        />
+      )}
     </RelativesWithNullGuard>
   );
 }

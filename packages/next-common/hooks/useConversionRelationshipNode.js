@@ -1,12 +1,9 @@
-import {
-  useFetchMyProfileProxies,
-  useFetchReceivedProfileProxies,
+import useFetchProfileProxies, {
   useIsPureProxy,
 } from "next-common/hooks/profile/useFetchProfileProxies";
 import useMultisigAddress from "next-common/hooks/useMultisigAddress";
 import useSignatoryMultisig from "next-common/hooks/useSignatoryMultisig";
 import { RELATIONSHIP_NODE_TYPE } from "next-common/utils/constants";
-import useProfileAddress from "next-common/components/profile/useProfileAddress";
 import useFetchIdentityInfo from "next-common/hooks/profile/useFetchIdentityInfo";
 import Tooltip from "next-common/components/tooltip";
 import Link from "next/link";
@@ -273,13 +270,24 @@ function createRootNode(address, multisigAddress) {
   };
 }
 
-export default function useConversionRelationshipNode() {
-  const address = useProfileAddress();
-  const proxies = useFetchMyProfileProxies();
-  const receivedProxies = useFetchReceivedProfileProxies();
-  const multisigAddress = useMultisigAddress(address);
-  const signatoryMultisig = useSignatoryMultisig(address);
-  const identityInfo = useFetchIdentityInfo();
+const EMPTY_RESULT = {
+  isLoading: false,
+  nodes: [],
+  edges: [],
+};
+
+export default function useConversionRelationshipNode(rootAddress = "") {
+  const proxies = useFetchProfileProxies({
+    delegator: rootAddress,
+    pageSize: 100,
+  });
+  const receivedProxies = useFetchProfileProxies({
+    delegatee: rootAddress,
+    pageSize: 100,
+  });
+  const multisigAddress = useMultisigAddress(rootAddress);
+  const signatoryMultisig = useSignatoryMultisig(rootAddress);
+  const identityInfo = useFetchIdentityInfo(rootAddress);
 
   const isLoading =
     proxies.isLoading ||
@@ -288,7 +296,11 @@ export default function useConversionRelationshipNode() {
     signatoryMultisig.loading ||
     identityInfo.isLoading;
 
-  const rootNode = createRootNode(address, multisigAddress);
+  const rootNode = createRootNode(rootAddress, multisigAddress);
+
+  if (!rootAddress) {
+    return EMPTY_RESULT;
+  }
 
   const { nodes: proxiesNodes, edges: proxiesEdges } =
     createProxiesRelationship(rootNode, proxies.data?.items);

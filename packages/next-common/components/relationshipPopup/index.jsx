@@ -1,13 +1,12 @@
 import { noop } from "@polkadot/util";
 import { cn } from "next-common/utils";
-// import useConversionRelationshipNode from "next-common/hooks/useConversionRelationshipNode";
 import Popup from "../popup/wrapper/Popup";
 import Indications from "./indications";
 import Relationship from "./relationship";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { useMemo } from "react";
 import RelationshipProvider from "next-common/context/relationship";
-import useCuratorRelationshipNode from "next-common/hooks/useCuratorRelationshipNode";
+import useConversionRelationshipNode from "next-common/hooks/useConversionRelationshipNode";
 
 function NoRelationshipsTip() {
   return (
@@ -21,8 +20,10 @@ export default function RelationshipPopup({
   title = "Relatives",
   className = "",
   onClose = noop,
+  rootAddress = "",
 }) {
-  const { isLoading, nodes, edges } = useCuratorRelationshipNode();
+  const { isLoading, nodes, edges } =
+    useConversionRelationshipNode(rootAddress);
 
   const showNoRelationshipsTip = useMemo(() => {
     if (isLoading) {
@@ -38,9 +39,14 @@ export default function RelationshipPopup({
       title={title}
       onClose={onClose}
     >
-      <RelationshipProvider isLoading={isLoading} nodes={nodes} edges={edges}>
+      <RelationshipProvider
+        rootAddress={rootAddress}
+        isLoading={isLoading}
+        nodes={nodes}
+        edges={edges}
+      >
         {showNoRelationshipsTip && <NoRelationshipsTip />}
-        <Relationship />
+        <Relationship rootAddress={rootAddress} />
         <Indications />
       </RelationshipProvider>
     </Popup>

@@ -32,8 +32,9 @@ function MultisigAccounts({ signatories = [] }) {
   );
 }
 
-function CuratorTitle() {
+function CuratorTitle({ address }) {
   const [showRelationshipPopup, setShowRelationshipPopup] = useState(false);
+
   return (
     <TitleContainer className="mb-4 !px-0">
       <span>Curator</span>
@@ -44,7 +45,10 @@ function CuratorTitle() {
         />
       </Tooltip>
       {showRelationshipPopup && (
-        <RelationshipPopup onClose={() => setShowRelationshipPopup(false)} />
+        <RelationshipPopup
+          onClose={() => setShowRelationshipPopup(false)}
+          rootAddress={address}
+        />
       )}
     </TitleContainer>
   );
@@ -122,7 +126,7 @@ const CuratorContent = memo(function CuratorContent({ address }) {
   const { isPure, multisigData, proxies } = useCuratorAddress(address);
   return (
     <SecondaryCardDetail>
-      <CuratorTitle />
+      <CuratorTitle address={address} />
       <div className="flex items-center flex-wrap  space-x-2 h-[44px] mt-0 border-b border-neutral300">
         <AccountDisplay
           address={address}
