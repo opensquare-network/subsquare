@@ -8,7 +8,7 @@ import {
   useCurator,
   useCuratorParams,
 } from "next-common/context/treasury/bounties";
-import { CuratorBadge, CuratorProxyTag } from "./curator";
+import { CuratorBadge, CuratorProxyTag } from "./styled";
 import { upperFirst } from "lodash-es";
 
 function CuratorElement() {

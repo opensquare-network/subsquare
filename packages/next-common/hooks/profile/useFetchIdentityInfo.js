@@ -5,8 +5,9 @@ import { backendApi } from "next-common/services/nextApi";
 import { useAsync } from "react-use";
 import { isPolkadotChain, isKusamaChain } from "next-common/utils/chain";
 
-function useIdentityApi() {
-  const address = useProfileAddress();
+function useIdentityApi(add = null) {
+  const profileAddress = useProfileAddress();
+  const address = add || profileAddress;
   const chain = useChain();
 
   return useMemo(() => {
@@ -23,8 +24,8 @@ function useIdentityApi() {
   }, [chain, address]);
 }
 
-export default function useFetchIdentityInfo() {
-  const identityApi = useIdentityApi();
+export default function useFetchIdentityInfo(address = null) {
+  const identityApi = useIdentityApi(address);
   const [isLoading, setIsLoading] = useState(true);
 
   const { value } = useAsync(async () => {
