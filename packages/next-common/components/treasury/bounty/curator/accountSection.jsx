@@ -1,29 +1,33 @@
 import useCuratorInfo from "next-common/hooks/treasury/bounty/useCuratorInfo";
 import AddressDisplay from "./addressDisplay";
 import IndentPanel from "next-common/components/callTreeView/indentPanel";
+import CuratorLinks from "../links";
 
-const AddressWraper = ({ children, borderBottom = false }) => {
-  if (!borderBottom) {
+const AddressWraper = ({ children, isCurator = false, address }) => {
+  if (!isCurator) {
     return children;
   }
 
   return (
-    <div className="flex items-center flex-wrap  space-x-2 h-[44px] mt-0 border-b border-neutral300">
-      {children}
-    </div>
+    <>
+      <div className="flex items-center flex-wrap  space-x-2 h-[44px] mt-0 border-b border-neutral300">
+        {children}
+      </div>
+      <CuratorLinks address={address} showCouncilorLink />
+    </>
   );
 };
 
 export default function AccountSection({
   address,
   isProxy = false,
-  borderBottom = false,
+  isCurator = false,
 }) {
   const { isPure, multisigData, proxies } = useCuratorInfo(address);
 
   return (
     <>
-      <AddressWraper borderBottom={borderBottom}>
+      <AddressWraper isCurator={isCurator} address={address}>
         <AddressDisplay
           address={address}
           isPure={isPure}

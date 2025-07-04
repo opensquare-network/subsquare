@@ -8,7 +8,7 @@ const CuratorContent = memo(function CuratorContent({ address }) {
   return (
     <SecondaryCardDetail>
       <CuratorTitle address={address} />
-      <AccountSection address={address} borderBottom />
+      <AccountSection address={address} isCurator />
     </SecondaryCardDetail>
   );
 });
