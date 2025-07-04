@@ -5,35 +5,6 @@ import { useMemo } from "react";
 import { useAsync } from "react-use";
 import { fetchMultisigData } from "./useCuratorMultisigAddress";
 
-const EMPTY_RESULT = {
-  proxies: [],
-  loading: false,
-};
-
-export default function useCuratorRelationship(address) {
-  const api = useContextApi();
-
-  const { value: proxies, loading: proxiesLoading } = useAsync(async () => {
-    if (isNil(address)) {
-      return;
-    }
-
-    const data = await api.query.proxy.proxies(address);
-    const [proxies] = data.toJSON() || [];
-
-    return proxies;
-  });
-
-  if (isNil(address)) {
-    return EMPTY_RESULT;
-  }
-
-  return {
-    proxies,
-    loading: proxiesLoading,
-  };
-}
-
 const EMPTY_CURATOR = {
   isPure: false,
   isProxy: false,
@@ -46,7 +17,7 @@ const EMPTY_CURATOR = {
   isLoading: false,
 };
 
-export function useCuratorAddress(address) {
+export default function useCuratorInfo(address) {
   const api = useContextApi();
 
   const { value: proxies, loading: proxiesLoading } = useAsync(async () => {

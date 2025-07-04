@@ -1,7 +1,7 @@
 import IndentPanel from "next-common/components/callTreeView/indentPanel";
 import AccountDisplay from "./accountDisplay";
 import { AddressUser } from "next-common/components/user";
-import { useCuratorAddress } from "next-common/hooks/treasury/bounty/useCuratorRelationship";
+import { useCuratorAddress } from "next-common/hooks/treasury/bounty/useCuratorInfo";
 
 export default function ProxyAccounts({ proxies = [] }) {
   if (!proxies || proxies.length === 0) {
