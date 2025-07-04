@@ -19,7 +19,6 @@ import { useOnchainData } from "next-common/context/post";
 import { useBountyAppendantsContext } from "next-common/context/bountyAppendants";
 
 export default function AppendantEditor({
-  onChange,
   onClose,
   editData = null,
   isEditMode = false,
@@ -43,9 +42,6 @@ export default function AppendantEditor({
 
   const handleContentChange = (newContent) => {
     setContent(newContent);
-    if (onChange) {
-      onChange(newContent);
-    }
   };
 
   const handleSubmit = async () => {
