@@ -2,7 +2,7 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { isSameAddress } from "next-common/utils";
 import { useMemo } from "react";
 
-export default function useIsAuthor(data) {
+export default function useIsAppendantAuthor(data) {
   const address = useRealAddress();
 
   return useMemo(() => {

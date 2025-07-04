@@ -19,7 +19,7 @@ import {
   DeleteMenuItem,
 } from "next-common/components/contentMenu";
 import { useClickAway } from "react-use";
-import useIsAuthor from "./useIsAuthor";
+import useIsAppendantAuthor from "./useIsAppendantAuthor";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 
 const AppendantPopup = dynamicPopup(() =>
@@ -142,7 +142,7 @@ function Content({ data }) {
 }
 
 export default function AppendentItem({ index, data }) {
-  const isAuthor = useIsAuthor(data);
+  const isAuthor = useIsAppendantAuthor(data);
 
   return (
     <>
