@@ -5,7 +5,7 @@ import ArticleContent from "next-common/components/articleContent";
 import useSetEdit from "next-common/components/detail/common/hooks/useSetEdit";
 import { useArticleActions } from "next-common/sima/context/articleActions";
 
-export default function MaybeSimaDiscussionArticleContent() {
+export default function MaybeSimaDiscussionArticleContent({ isFold = false }) {
   const { supportSima } = useArticleActions();
   const post = usePost();
   const setIsEdit = useSetEdit();
@@ -13,6 +13,6 @@ export default function MaybeSimaDiscussionArticleContent() {
   return supportSima && isLinkedToSimaDiscussion(post) ? (
     <SimaDiscussionArticleContent className="mt-6" setIsEdit={setIsEdit} />
   ) : (
-    <ArticleContent className="mt-6" setIsEdit={setIsEdit} />
+    <ArticleContent className="mt-6" setIsEdit={setIsEdit} isFold={isFold} />
   );
 }
