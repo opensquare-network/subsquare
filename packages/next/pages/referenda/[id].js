@@ -8,6 +8,7 @@ import {
   gov2ReferendumsDetailApi,
   gov2ReferendumsVoteStatsApi,
   gov2TracksApi,
+  gov2ReferendaAppendantApi,
 } from "next-common/services/url";
 import { EmptyList } from "next-common/utils/constants";
 import Breadcrumb from "next-common/components/_Breadcrumb";
@@ -22,6 +23,7 @@ import { usePageProps } from "next-common/context/page";
 import { ReferendumContent } from "next-common/components/pages/components/referenda/referendaContent";
 import { ReferendaPalletProvider } from "next-common/context/referenda/pallet";
 import WindowSizeProvider from "next-common/context/windowSize";
+import { ReferendaAppendantsProvider } from "next-common/context/referendaAppendants";
 
 function UnFinalizedBreadcrumb({ id }) {
   return (
@@ -73,7 +75,11 @@ function ReferendumPageWithPost() {
   return (
     <ReferendumPageCommon
       breadcrumbs={<ReferendaBreadcrumb />}
-      postContent={<ReferendumContent />}
+      postContent={
+        <ReferendaAppendantsProvider>
+          <ReferendumContent />
+        </ReferendaAppendantsProvider>
+      }
     />
   );
 }
@@ -120,6 +126,10 @@ export const getServerSideProps = withCommonProps(async (context) => {
   );
   const { result: tracksDetail } = await backendApi.fetch(gov2TracksApi);
 
+  const { result: appendants } = await backendApi.fetch(
+    gov2ReferendaAppendantApi(id),
+  );
+
   const tracksProps = await fetchOpenGovTracksProps();
 
   return {
@@ -128,6 +138,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
       voteStats: voteStats ?? {},
       comments: comments ?? EmptyList,
       tracksDetail: tracksDetail ?? null,
+      appendants: appendants ?? [],
 
       ...tracksProps,
     },
