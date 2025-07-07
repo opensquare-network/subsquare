@@ -95,13 +95,14 @@ export default function WishDetail({
   ifpsContent,
   wish,
   cid,
+  evidence,
 }) {
   return (
     <div className="gap-y-4 flex flex-col">
       <WishPanel address={address} activeMember={activeMember} wish={wish} />
       <Divider />
 
-      <EvidenceExternalLinkWithWish wish={wish} cid={cid} />
+      <EvidenceExternalLinkWithWish wish={wish} cid={cid} evidence={evidence} />
       <IpfsEvidenceRawContent key="detail-content" value={ifpsContent} />
     </div>
   );
