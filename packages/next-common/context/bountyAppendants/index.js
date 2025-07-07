@@ -1,23 +1,13 @@
-import {
-  createContext,
-  useContext,
-  useCallback,
-  useState,
-  useEffect,
-} from "react";
+import { createContext, useContext, useCallback, useState } from "react";
 import useBountyAppendants from "next-common/hooks/useBountyAppendants";
+import { usePageProps } from "next-common/context/page";
 
 const BountyAppendantsContext = createContext();
 
-export function BountyAppendantsProvider({ children, bountyIndex }) {
-  const { fetch, value, loading } = useBountyAppendants(bountyIndex);
-  const [appendants, setAppendants] = useState([]);
-
-  useEffect(() => {
-    if (value) {
-      setAppendants(value);
-    }
-  }, [value]);
+export function BountyAppendantsProvider({ children }) {
+  const { appendants: appendantsFromSSR, id } = usePageProps();
+  const [appendants, setAppendants] = useState(appendantsFromSSR);
+  const { fetch } = useBountyAppendants(id);
 
   const update = useCallback(async () => {
     try {
@@ -31,7 +21,7 @@ export function BountyAppendantsProvider({ children, bountyIndex }) {
   }, [fetch]);
 
   return (
-    <BountyAppendantsContext.Provider value={{ appendants, loading, update }}>
+    <BountyAppendantsContext.Provider value={{ appendants, update }}>
       {children}
     </BountyAppendantsContext.Provider>
   );

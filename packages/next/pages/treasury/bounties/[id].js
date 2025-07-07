@@ -20,7 +20,10 @@ import { CuratorProvider } from "next-common/context/treasury/bounties";
 import { useBountyStatus } from "next-common/components/treasury/bounty/useBountyStatus";
 import { useCuratorMultisigAddress } from "next-common/hooks/treasury/bounty/useCuratorMultisigAddress";
 import { TreasuryProvider } from "next-common/context/treasury";
-import { gov2TracksApi } from "next-common/services/url";
+import {
+  gov2TracksApi,
+  treasuryBountiesAppendantApi,
+} from "next-common/services/url";
 import TreasuryBountiesDetailMultiTabs from "next-common/components/pages/components/tabs/treasuryBountiesDetailMultiTabs";
 import Appendants from "next-common/components/appendants";
 import { BountyAppendantsProvider } from "next-common/context/bountyAppendants";
@@ -50,7 +53,7 @@ function BountyContent() {
       <OffChainCommentActionsProvider>
         <CuratorProvider curator={curator} params={curatorParams}>
           <ContentWithComment>
-            <BountyAppendantsProvider bountyIndex={bountyIndex}>
+            <BountyAppendantsProvider>
               <BountyDetail />
               <Appendants />
             </BountyAppendantsProvider>
@@ -109,10 +112,12 @@ export const getServerSideProps = withCommonProps(async (context) => {
     { result: detail },
     { result: childBounties },
     { result: tracksDetail },
+    { result: appendants },
   ] = await Promise.all([
     backendApi.fetch(`treasury/bounties/${id}`),
     backendApi.fetch(`treasury/bounties/${id}/child-bounties`, { pageSize: 5 }),
     backendApi.fetch(gov2TracksApi),
+    backendApi.fetch(treasuryBountiesAppendantApi(id)),
   ]);
 
   if (!detail) {
@@ -131,6 +136,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
       childBounties: childBounties ?? EmptyList,
       comments: comments ?? EmptyList,
       tracksDetail: tracksDetail ?? null,
+      appendants: appendants ?? [],
 
       ...tracksProps,
     },

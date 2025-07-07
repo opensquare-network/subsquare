@@ -6,18 +6,14 @@ import { useSelector } from "react-redux";
 import { isEditingPostSelector } from "next-common/store/reducers/userSlice";
 import BountyCountDown from "next-common/components/detail/treasury/common/bountyCountDown";
 import BountyPostMeta from "next-common/components/detail/treasury/common/bountyMeta";
-import { useBountyAppendantsContext } from "next-common/context/bountyAppendants";
+import { usePageProps } from "next-common/context/page";
 
 export default function BountyDetail() {
   const isEditing = useSelector(isEditingPostSelector);
-  const { appendants } = useBountyAppendantsContext();
+  const { appendants } = usePageProps();
 
   const isFold = useMemo(() => {
-    if (!appendants || appendants?.length === 0) {
-      return false;
-    }
-
-    return true;
+    return appendants?.length > 0;
   }, [appendants]);
 
   return (
