@@ -1,12 +1,12 @@
 import { useMemo, useState } from "react";
 import { useChain } from "next-common/context/chain";
-import useProfileAddress from "next-common/components/profile/useProfileAddress";
+import { useRootAddress } from "next-common/context/relationship";
 import { backendApi } from "next-common/services/nextApi";
 import { useAsync } from "react-use";
 import { isPolkadotChain, isKusamaChain } from "next-common/utils/chain";
 
 function useIdentityApi() {
-  const address = useProfileAddress();
+  const address = useRootAddress();
   const chain = useChain();
 
   return useMemo(() => {

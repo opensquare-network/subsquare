@@ -10,6 +10,7 @@ import useChainPreimageDepositSettings, {
 import useAccountTransferrable from "next-common/hooks/useAccountTransferrable";
 import Divider from "next-common/components/styled/layout/divider";
 import WithApi from "next-common/components/common/withApi";
+import { BalanceTipsWrapper } from "./styled";
 
 function YesOrNo({ yes = true }) {
   if (yes) {
@@ -57,26 +58,37 @@ function PreimageDepositSettingGuard({ children }) {
   return settings ? children : null;
 }
 
-export function InsufficientBalanceTipsInner({ byteLength }) {
-  const api = useContextApi();
-  const signerAccount = useSignerAccount();
-  const { transferrable } = useAccountTransferrable(
-    api,
-    signerAccount?.realAddress,
+export function PreImageBalanceTips({ preimageDeposit, transferrable }) {
+  const isPreimageDepositSufficient =
+    BigInt(preimageDeposit) < BigInt(transferrable);
+
+  return (
+    <BalanceTipsWrapper>
+      <div className="space-y-1">
+        <DepositItem
+          text="Preimage Deposit:"
+          deposit={preimageDeposit}
+          yes={isPreimageDepositSufficient}
+        />
+      </div>
+      <Divider />
+      <DepositCheckTip pass={isPreimageDepositSufficient} />
+    </BalanceTipsWrapper>
   );
-  const preimageDeposit = usePreimageDeposit(byteLength);
+}
+
+export function SubmissionBalanceTips({ api, preimageDeposit, transferrable }) {
   const submissionDeposit = useMemo(
     () => api?.consts?.referenda?.submissionDeposit?.toString() || 0,
     [api],
   );
-
   const isPreimageDepositSufficient =
     BigInt(preimageDeposit) < BigInt(transferrable);
   const isSubmissionDepositSufficient =
     BigInt(submissionDeposit) + BigInt(preimageDeposit) < BigInt(transferrable);
 
   return (
-    <div className="bg-neutral200 rounded-lg px-4 py-2.5 text14Medium text-textSecondary space-y-2">
+    <BalanceTipsWrapper>
       <div className="space-y-1">
         <DepositItem
           text="Preimage Deposit:"
@@ -91,15 +103,47 @@ export function InsufficientBalanceTipsInner({ byteLength }) {
       </div>
       <Divider />
       <DepositCheckTip pass={isSubmissionDepositSufficient} />
-    </div>
+    </BalanceTipsWrapper>
   );
 }
 
-export default function InsufficientBalanceTips({ byteLength }) {
+function BalanceTipsContent({ onlyPreimage = false, byteLength }) {
+  const api = useContextApi();
+  const signerAccount = useSignerAccount();
+  const { transferrable } = useAccountTransferrable(
+    api,
+    signerAccount?.realAddress,
+  );
+  const preimageDeposit = usePreimageDeposit(byteLength);
+
+  if (onlyPreimage) {
+    return (
+      <PreImageBalanceTips
+        preimageDeposit={preimageDeposit}
+        transferrable={transferrable}
+      />
+    );
+  }
+  return (
+    <SubmissionBalanceTips
+      api={api}
+      preimageDeposit={preimageDeposit}
+      transferrable={transferrable}
+    />
+  );
+}
+
+export default function InsufficientBalanceTips({
+  byteLength,
+  onlyPreimage = false,
+}) {
   return (
     <WithApi>
       <PreimageDepositSettingGuard>
-        <InsufficientBalanceTipsInner byteLength={byteLength} />
+        <BalanceTipsContent
+          byteLength={byteLength}
+          onlyPreimage={onlyPreimage}
+        />
       </PreimageDepositSettingGuard>
     </WithApi>
   );

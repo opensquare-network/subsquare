@@ -1,13 +1,10 @@
-import PostList from "next-common/components/postList";
+import PostList from "next-common/components/postList/referenda";
 import normalizeGov2ReferendaListItem from "next-common/utils/gov2/list/normalizeReferendaListItem";
-import businessCategory from "next-common/utils/consts/business/category";
-import NewProposalButton from "next-common/components/summary/newProposalButton";
 import { usePageProps } from "next-common/context/page";
 import { useMemo, useState } from "react";
 import { useActiveReferendaContext } from "next-common/context/activeReferenda";
 import { getOpenGovReferendaPosts } from "next-common/utils/posts";
 import { createStateContext, useAsync } from "react-use";
-import ReferendaListFilter from "./filter";
 import useMyReferendaVotes from "next-common/hooks/referenda/useMyReferendaVotes";
 import { UnVotedOnlyProvider, useUnVotedOnlyContext } from "./unVotedContext";
 
@@ -84,21 +81,16 @@ function WithFilterPostList({
 }) {
   const { tracks } = usePageProps();
 
-  const items = (posts || []).map((item) =>
-    normalizeGov2ReferendaListItem(item, tracks),
-  );
+  const items = useMemo(() => {
+    return (posts || []).map((item) =>
+      normalizeGov2ReferendaListItem(item, tracks),
+    );
+  }, [posts, tracks]);
 
   return (
     <PostList
-      title="List"
-      titleCount={isUnVotedOnlyLoading ? "Filtering un-voted..." : total}
-      titleExtra={
-        <div className="flex items-center gap-x-2">
-          <ReferendaListFilter isUnVotedOnlyLoading={isUnVotedOnlyLoading} />
-          <NewProposalButton />
-        </div>
-      }
-      category={businessCategory.openGovReferenda}
+      total={total}
+      isUnVotedOnlyLoading={isUnVotedOnlyLoading}
       items={items}
       pagination={pagination}
     />

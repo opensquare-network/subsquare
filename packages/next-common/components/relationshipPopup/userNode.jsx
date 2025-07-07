@@ -6,9 +6,9 @@ import {
 import AddressUser from "next-common/components/user/addressUser";
 import styled from "styled-components";
 import tw from "tailwind-styled-components";
-import useProfileAddress from "next-common/components/profile/useProfileAddress";
 import { useProfileBannerUrl } from "next-common/components/profile/header";
 import { cn } from "next-common/utils";
+import { useRootAddress } from "next-common/context/relationship";
 
 const NodeWrap = styled.div`
   box-shadow: var(--shadow100);
@@ -96,8 +96,8 @@ function RelativeUserNode({ data }) {
 }
 
 export default function UserNode({ data }) {
-  const profileAddress = useProfileAddress();
-  const isSelf = profileAddress === data?.address;
+  const rootAddress = useRootAddress();
+  const isSelf = rootAddress === data?.address;
 
   const sourceConnections = useNodeConnections({ handleType: "source" });
   const targetConnections = useNodeConnections({ handleType: "target" });

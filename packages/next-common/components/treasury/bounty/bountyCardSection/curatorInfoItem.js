@@ -1,7 +1,7 @@
 import AddressUser from "next-common/components/user/addressUser";
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 import React from "react";
-import { CuratorBadge } from "next-common/components/treasury/bounty/curator";
+import { CuratorBadge } from "next-common/components/treasury/bounty/styled";
 import Tooltip from "next-common/components/tooltip";
 import { AddressesTooltip } from "next-common/components/multisigs/fields";
 import {

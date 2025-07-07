@@ -91,6 +91,10 @@ const categoryTagMap = {
 };
 
 export default function Tag({ category, state, link, args }) {
+  if (!state) {
+    return null;
+  }
+
   let element = state;
   if (link) {
     element = <a href={link}>{state}</a>;
