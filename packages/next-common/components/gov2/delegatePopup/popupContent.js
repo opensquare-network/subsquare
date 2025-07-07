@@ -20,6 +20,7 @@ import { noop } from "lodash-es";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import EstimatedGas from "next-common/components/estimatedGas";
 import { useTxBuilder } from "next-common/hooks/useTxBuilder";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 
 export default function PopupContent({ defaultTargetAddress, targetDisabled }) {
   const { tracks, showTrackSelect = true, onInBlock = noop } = usePopupParams();
@@ -142,7 +143,9 @@ export default function PopupContent({ defaultTargetAddress, targetDisabled }) {
         conviction={conviction}
         setConviction={setConviction}
       />
-      <EstimatedGas getTxFunc={getTxFuncForFee} />
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getTxFuncForFee} />
+      </AdvanceSettings>
       <TxSubmissionButton
         getTxFunc={getTxFuncForSubmit}
         onInBlock={onInBlock}

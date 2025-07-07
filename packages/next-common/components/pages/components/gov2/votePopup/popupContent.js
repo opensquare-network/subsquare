@@ -29,6 +29,7 @@ import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
 import useReferendaVotingBalance from "next-common/hooks/referenda/useReferendaVotingBalance";
 import { useUpdateVotesFromServer } from "next-common/utils/gov2/useVotesFromServer";
 import EstimatedGas from "next-common/components/estimatedGas";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 
 function VotePanel({
   referendumIndex,
@@ -131,7 +132,9 @@ function VotePanel({
       )}
       {hasDelegatedVote && <StandardVoteStatus votes={votes} />}
       {addressVoteIsLoading && <LoadingVoteStatus />}
-      <EstimatedGas getTxFunc={getVoteFeeTx} />
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getVoteFeeTx} />
+      </AdvanceSettings>
 
       {!isDelegated && (
         // Address is not allow to vote directly when it is in delegate mode

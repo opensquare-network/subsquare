@@ -16,6 +16,7 @@ import SignerWithBalance from "next-common/components/signerPopup/signerWithBala
 import { isSameAddress } from "next-common/utils";
 import { useTxBuilder } from "next-common/hooks/useTxBuilder";
 import EstimatedGas from "next-common/components/estimatedGas";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 
 export function DelayBlocksField({ value, setValue }) {
   const PROXY_WIKI_LINK =
@@ -125,7 +126,9 @@ function PopupContent() {
       {/* <AdvanceSettings>
           <DelayBlocksField value={delay} setValue={setDelay} />
         </AdvanceSettings> */}
-      <EstimatedGas getTxFunc={getTxFuncForFee} />
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getTxFuncForFee} />
+      </AdvanceSettings>
       <TxSubmissionButton
         getTxFunc={getTxFuncForSubmit}
         onFinalized={onFinalized}
