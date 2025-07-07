@@ -67,10 +67,6 @@ function FellowshipWhitelistBarByXcm() {
     whitelistedHashesByXcm,
   );
 
-  if (!whitelistedHashesByXcm || whitelistedHashesByXcm.length === 0) {
-    return [];
-  }
-
   if (!referenda || referenda.length === 0) {
     return null;
   }

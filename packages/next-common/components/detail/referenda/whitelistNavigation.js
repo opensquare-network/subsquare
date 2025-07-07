@@ -45,10 +45,6 @@ export function ReferendaWhitelistBarByXcm() {
     whitelistDispatchedHashes,
   );
 
-  if (!whitelistDispatchedHashes || whitelistDispatchedHashes.length === 0) {
-    return [];
-  }
-
   if (!referenda || referenda.length === 0) {
     return null;
   }
