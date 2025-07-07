@@ -139,6 +139,12 @@ export const ambassadorSalaryPaymentsApi = "ambassador/salary/payments";
 export const ambassadorStatisticsUsersApi = (address) =>
   `ambassador/statistics/users/${address}`;
 
+// treasury bounties
+export const treasuryBountiesAppendantApi = (index) =>
+  `treasury/bounties/${index}/appendants`;
+
+export const appendantsApi = (id) => `appendants/${id}`;
+
 // calender events
 /**
  * param `begin_time`, `end_time`

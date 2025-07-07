@@ -23,6 +23,7 @@ export function AddressUserImpl({
   avatar,
   maxWidth,
   showAvatar = true,
+  avatarSize = "",
   noEvent = false,
   noTooltip = false,
   ellipsis = true,
@@ -80,7 +81,7 @@ export function AddressUserImpl({
           <AvatarDisplay
             address={displayAddress}
             avatarCid={avatar}
-            size={`${20 / 14}em`}
+            size={avatarSize || `${20 / 14}em`}
           />
         </AvatarWrapper>
       )}
@@ -99,6 +100,7 @@ function AddressUserComp({
   ellipsis = true,
   link = "",
   identityIconClassName = "",
+  avatarSize = "",
 }) {
   const address = add;
   const { identity, hasIdentity } = useIdentityInfo(address);
@@ -118,6 +120,7 @@ function AddressUserComp({
       avatar={avatar}
       maxWidth={maxWidth}
       showAvatar={showAvatar}
+      avatarSize={avatarSize}
       noEvent={noEvent}
       noTooltip={noTooltip}
       ellipsis={ellipsis}

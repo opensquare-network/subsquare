@@ -11,8 +11,7 @@ import {
 import { CuratorBadge, CuratorProxyTag } from "./styled";
 import { upperFirst } from "lodash-es";
 
-function CuratorElement() {
-  const curator = useCurator();
+function CuratorElement({ curator }) {
   const { badge, delegateAddress } = useCuratorParams();
 
   if (!curator) {
@@ -77,7 +76,7 @@ function BountyMetadata({ id, meta, address }) {
         normalizedValue = <AddressUser add={value} />;
         break;
       case "curator":
-        normalizedValue = CuratorElement();
+        normalizedValue = <CuratorElement curator={curator} />;
         break;
       case "value":
       case "fee":
