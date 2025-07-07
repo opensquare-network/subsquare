@@ -63,11 +63,9 @@ export default function RecentProposals() {
 
   return (
     <div>
-      <TitleContainer className="mb-4">
-        <span>
-          Recent Proposals
-          <Tooltip content="Active and recently finished proposals"></Tooltip>
-        </span>
+      <TitleContainer className="mb-4 gap-1 justify-start">
+        <span>Recent Proposals</span>
+        <Tooltip content="Active and recently finished proposals"></Tooltip>
       </TitleContainer>
 
       {!activeItems.length ? (
