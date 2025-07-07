@@ -2,15 +2,20 @@ import { useEffect, useState } from "react";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import { useSignerAccount } from "./popupWithSigner/context";
-import Loading from "./loading";
-import Tooltip from "./tooltip";
+import { GreyPanel } from "./styled/containers/greyPanel";
+import { useContextApi } from "next-common/context/api";
+import { isNil } from "lodash-es";
+import LoadableContent from "./common/loadableContent";
 
 export default function EstimatedGas({ getTxFunc }) {
+  const api = useContextApi();
+  const [accountNonce, setAccountNonce] = useState();
   const [fee, setFee] = useState(null);
   const { decimals, symbol } = useChainSettings();
   const signerAccount = useSignerAccount();
   const [tx, setTx] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isGasLoading, setIsGasLoading] = useState(false);
+  const [isNonceLoading, setIsNonceLoading] = useState(false);
 
   useEffect(() => {
     if (typeof getTxFunc !== "function") {
@@ -19,6 +24,21 @@ export default function EstimatedGas({ getTxFunc }) {
     Promise.resolve(getTxFunc()).then(setTx);
   }, [getTxFunc]);
 
+  useEffect(() => {
+    if (!api || !signerAccount?.realAddress) {
+      return;
+    }
+    setIsNonceLoading(true);
+    api.query.system
+      .account(signerAccount?.realAddress)
+      .then((account) => {
+        setAccountNonce(account.nonce.toNumber());
+      })
+      .finally(() => {
+        setIsNonceLoading(false);
+      });
+  }, [api, signerAccount?.realAddress]);
+
   const address = signerAccount?.realAddress;
 
   useEffect(() => {
@@ -26,7 +46,7 @@ export default function EstimatedGas({ getTxFunc }) {
       setFee(null);
       return;
     }
-    setIsLoading(true);
+    setIsGasLoading(true);
     tx.paymentInfo(address)
       .then((info) => {
         setFee(info.partialFee);
@@ -35,7 +55,7 @@ export default function EstimatedGas({ getTxFunc }) {
         console.error(err);
       })
       .finally(() => {
-        setIsLoading(false);
+        setIsGasLoading(false);
       });
   }, [tx, address]);
 
@@ -44,11 +64,19 @@ export default function EstimatedGas({ getTxFunc }) {
   }
 
   return (
-    <div className="text14Medium text-textSecondary flex items-center gap-x-2 justify-end">
-      {isLoading && <Loading size={16} />}
-      <Tooltip content="Estimated">
-        <span>Gas Fee: </span> ≈ {toPrecision(fee, decimals, 4)} {symbol}
-      </Tooltip>
-    </div>
+    <GreyPanel className="flex-col gap-y-1 justify-start !items-start text14Medium text-textSecondary px-4 py-2.5">
+      <div className="flex gap-x-2">
+        <span>Estimated Gas Fee: </span>
+        <LoadableContent isLoading={isGasLoading} size={20}>
+          ≈ {toPrecision(fee, decimals, 4)} {symbol}
+        </LoadableContent>
+      </div>
+      <span className="flex gap-x-2">
+        Nonce:{" "}
+        <LoadableContent isLoading={isNonceLoading} size={20}>
+          {!isNil(accountNonce) && accountNonce}
+        </LoadableContent>
+      </span>
+    </GreyPanel>
   );
 }

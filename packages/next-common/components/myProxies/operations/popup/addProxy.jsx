@@ -125,11 +125,11 @@ function PopupContent() {
       {/* <AdvanceSettings>
           <DelayBlocksField value={delay} setValue={setDelay} />
         </AdvanceSettings> */}
+      <EstimatedGas getTxFunc={getTxFuncForFee} />
       <TxSubmissionButton
         getTxFunc={getTxFuncForSubmit}
         onFinalized={onFinalized}
       />
-      <EstimatedGas getTxFunc={getTxFuncForFee} />
     </div>
   );
 }

@@ -131,6 +131,7 @@ function VotePanel({
       )}
       {hasDelegatedVote && <StandardVoteStatus votes={votes} />}
       {addressVoteIsLoading && <LoadingVoteStatus />}
+      <EstimatedGas getTxFunc={getVoteFeeTx} />
 
       {!isDelegated && (
         // Address is not allow to vote directly when it is in delegate mode
@@ -138,7 +139,6 @@ function VotePanel({
           <PrimaryButton loading={isLoading} onClick={doSubmit}>
             Submit
           </PrimaryButton>
-          <EstimatedGas getTxFunc={getVoteFeeTx} />
         </div>
       )}
     </>

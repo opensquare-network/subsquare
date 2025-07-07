@@ -142,12 +142,12 @@ export default function PopupContent({ defaultTargetAddress, targetDisabled }) {
         conviction={conviction}
         setConviction={setConviction}
       />
+      <EstimatedGas getTxFunc={getTxFuncForFee} />
       <TxSubmissionButton
         getTxFunc={getTxFuncForSubmit}
         onInBlock={onInBlock}
         disabled={disabled}
       />
-      <EstimatedGas getTxFunc={getTxFuncForFee} />
     </>
   );
 }
