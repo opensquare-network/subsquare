@@ -5,7 +5,7 @@ import Tooltip from "next-common/components/tooltip";
 import { SystemActivity } from "@osn/icons/subsquare";
 import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 
-export default function PostTime({ data, elapseIcon }) {
+export default function PostItemTime({ data, elapseIcon }) {
   const timeAgo = formatTimeAgo(data?.time);
   const createAgo = formatTimeAgo(data?.createdAt);
 

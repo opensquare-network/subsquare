@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   Wrapper,
   Footer,
@@ -7,62 +7,32 @@ import {
   ContentWrapper,
 } from "../styled";
 import {
-  PostLabel,
-  PostValueTitle,
-  PostUser,
-  PostTrack,
-  PostCommentCount,
-  PostVotesSummaryImpl,
-  PostMalicious,
-  PostParentIndex,
-  PostBannner,
+  PostItemBannner,
+  PostItemTitleValue,
+  PostItemTrack,
+  PostItemVotesSummaryImpl,
+  PostItemParentIndex,
+  PostItemUser,
+  PostItemTime,
+  PostItemCommentCount,
+  PostItemMalicious,
+  PostItemAISummary,
+  PostItemTitle,
+  PostItemLabel,
 } from "../common";
-import ListPostTitle from "../postTitle";
-import PostListAISummary from "../aiSummary";
+import ElapseIcon from "./elapseIcon";
 import { Gov2ReferendaTag } from "next-common/components/tags/state/gov2";
 import Divider from "next-common/components/styled/layout/divider";
 import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
 import PostListMyReferendaVoteMark from "next-common/components/postList/myVoteMark/referenda";
 import Flex from "next-common/components/styled/flex";
-import PostTime from "../common/postTime";
-import ElapseIcon from "./elapseIcon";
-
-function PostFooter({ data }) {
-  let stateArgs = getGov2ReferendumStateArgs(data.onchainData?.state);
-  let commentsCount = data.polkassemblyCommentsCount || 0;
-
-  return (
-    <FooterWrapper>
-      <Footer>
-        <PostUser data={data} />
-        <PostTrack data={data} href={`/referenda/tracks/${data.track}`} />
-        <PostTime data={data} elapseIcon={<ElapseIcon data={data} />} />
-        <PostCommentCount commentsCount={commentsCount} />
-        <PostVotesSummaryImpl data={data} />
-        <PostParentIndex parentIndex={data?.parentIndex} />
-        <PostLabel labels={data?.labels} />
-        <PostMalicious isMalicious={data?.isMalicious} />
-        <PostListAISummary data={data} />
-      </Footer>
-
-      <Flex className="gap-x-2">
-        <PostListMyReferendaVoteMark data={data} />
-        <Gov2ReferendaTag state={data.status} args={stateArgs} />
-      </Flex>
-    </FooterWrapper>
-  );
-}
-
-function PostHeader({ data }) {
-  return (
-    <HeadWrapper>
-      <ListPostTitle data={data} href={data?.detailLink} />
-      <PostValueTitle data={data} />
-    </HeadWrapper>
-  );
-}
 
 export default function PostItem({ data }) {
+  let stateArgs = useMemo(
+    () => getGov2ReferendumStateArgs(data?.onchainData?.state),
+    [data?.onchainData?.state],
+  );
+
   if (!data) {
     return null;
   }
@@ -70,11 +40,33 @@ export default function PostItem({ data }) {
   return (
     <Wrapper>
       <ContentWrapper>
-        <PostHeader data={data} />
+        <HeadWrapper>
+          <PostItemTitle data={data} href={data?.detailLink} />
+          <PostItemTitleValue data={data} />
+        </HeadWrapper>
         <Divider margin={12} />
-        <PostFooter data={data} />
+        <FooterWrapper>
+          <Footer>
+            <PostItemUser data={data} />
+            <PostItemTrack
+              data={data}
+              href={`/referenda/tracks/${data.track}`}
+            />
+            <PostItemTime data={data} elapseIcon={<ElapseIcon data={data} />} />
+            <PostItemCommentCount data={data} />
+            <PostItemVotesSummaryImpl data={data} />
+            <PostItemParentIndex parentIndex={data?.parentIndex} />
+            <PostItemLabel labels={data?.labels} />
+            <PostItemMalicious isMalicious={data?.isMalicious} />
+            <PostItemAISummary data={data} />
+          </Footer>
+          <Flex className="gap-x-2">
+            <PostListMyReferendaVoteMark data={data} />
+            <Gov2ReferendaTag state={data.status} args={stateArgs} />
+          </Flex>
+        </FooterWrapper>
       </ContentWrapper>
-      <PostBannner bannerCid={data?.bannerCid} />
+      <PostItemBannner bannerCid={data?.bannerCid} />
     </Wrapper>
   );
 }
