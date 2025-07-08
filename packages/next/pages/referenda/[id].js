@@ -23,7 +23,6 @@ import { usePageProps } from "next-common/context/page";
 import { ReferendumContent } from "next-common/components/pages/components/referenda/referendaContent";
 import { ReferendaPalletProvider } from "next-common/context/referenda/pallet";
 import WindowSizeProvider from "next-common/context/windowSize";
-import { ReferendaAppendantsProvider } from "next-common/context/referendaAppendants";
 
 function UnFinalizedBreadcrumb({ id }) {
   return (
@@ -75,11 +74,7 @@ function ReferendumPageWithPost() {
   return (
     <ReferendumPageCommon
       breadcrumbs={<ReferendaBreadcrumb />}
-      postContent={
-        <ReferendaAppendantsProvider>
-          <ReferendumContent />
-        </ReferendaAppendantsProvider>
-      }
+      postContent={<ReferendumContent />}
     />
   );
 }

@@ -10,6 +10,7 @@ import ReferendumDetailMultiTabs from "../tabs/referendumDetailMultiTabs";
 import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 import { useReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import ReferendaAppendants from "next-common/components/appendants/referenda";
+import { ReferendaAppendantsProvider } from "next-common/context/referendaAppendants";
 
 export function ReferendumContent() {
   const indexer = useReferendumVotingFinishIndexer();
@@ -36,8 +37,10 @@ function ReferendumContentInContext() {
   return (
     <MaybeSimaContent>
       <ContentWithComment>
-        <ReferendaDetail />
-        <ReferendaAppendants />
+        <ReferendaAppendantsProvider>
+          <ReferendaDetail />
+          <ReferendaAppendants />
+        </ReferendaAppendantsProvider>
         <Gov2Sidebar />
         <ReferendumDetailMultiTabs />
       </ContentWithComment>
