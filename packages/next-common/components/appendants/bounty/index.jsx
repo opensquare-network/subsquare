@@ -1,5 +1,5 @@
 import { useBountyAppendantsContext } from "next-common/context/bountyAppendants";
-import AppendantItem from "next-common/components/appendants/common/appendantItem";
+import AppendantItem from "next-common/components/appendants/common/item";
 import MoreActions from "next-common/components/appendants/common/moreActions";
 import { memo } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";

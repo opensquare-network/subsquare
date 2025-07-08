@@ -1,5 +1,5 @@
-import AppendantEditorPopup from "next-common/components/appendants/common/appendantEditorPopuprPopup";
-import AppendantEditor from "next-common/components/appendants/common/appendantEditor";
+import AppendantEditorPopup from "next-common/components/appendants/common/editorPopup";
+import AppendantEditor from "next-common/components/appendants/common/editor";
 import { gov2ReferendaAppendantApi } from "next-common/services/url";
 import { useReferendaAppendantsContext } from "next-common/context/referendaAppendants";
 import { usePageProps } from "next-common/context/page";

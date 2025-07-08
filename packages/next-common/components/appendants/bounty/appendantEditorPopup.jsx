@@ -1,5 +1,5 @@
-import AppendantEditorPopup from "next-common/components/appendants/common/appendantEditorPopuprPopup";
-import AppendantEditor from "next-common/components/appendants/common/appendantEditor";
+import AppendantEditorPopup from "next-common/components/appendants/common/editorPopup";
+import AppendantEditor from "next-common/components/appendants/common/editor";
 import { treasuryBountiesAppendantApi } from "next-common/services/url";
 import { useBountyAppendantsContext } from "next-common/context/bountyAppendants";
 import { usePageProps } from "next-common/context/page";

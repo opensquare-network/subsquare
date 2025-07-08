@@ -9,7 +9,7 @@ import { useClickAway } from "react-use";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 
 const DeletePopup = dynamicPopup(() =>
-  import("next-common/components/appendants/common/deleteAppendantPopup"),
+  import("next-common/components/appendants/common/deletePopup"),
 );
 
 export default function MoreActions({ data, EditPopup, update }) {
