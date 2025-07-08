@@ -23,7 +23,7 @@ export default function Multisigs() {
         content: <MultisigsList />,
       },
       {
-        value: "multisig-accounts",
+        value: "accounts",
         label: "Multisig Accounts",
         content: <MultisigAccountsList />,
       },
