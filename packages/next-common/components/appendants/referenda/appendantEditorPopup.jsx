@@ -1,10 +1,10 @@
-import AppendantPopup from "next-common/components/appendants/common/appendantPopup";
+import AppendantEditorPopup from "next-common/components/appendants/common/appendantEditorPopuprPopup";
 import AppendantEditor from "next-common/components/appendants/common/appendantEditor";
 import { gov2ReferendaAppendantApi } from "next-common/services/url";
 import { useReferendaAppendantsContext } from "next-common/context/referendaAppendants";
 import { usePageProps } from "next-common/context/page";
 
-export default function ReferendaAppendantPopup({
+export default function ReferendaAppendantEditorPopup({
   setIsAppend,
   editData = null,
   isEditMode = false,
@@ -18,7 +18,7 @@ export default function ReferendaAppendantPopup({
   } an appendant as authors.`;
 
   return (
-    <AppendantPopup
+    <AppendantEditorPopup
       description={description}
       isEditMode={isEditMode}
       editData={editData}
@@ -33,6 +33,6 @@ export default function ReferendaAppendantPopup({
         createApi={createApi}
         update={update}
       />
-    </AppendantPopup>
+    </AppendantEditorPopup>
   );
 }

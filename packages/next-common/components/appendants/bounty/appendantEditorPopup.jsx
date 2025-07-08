@@ -1,10 +1,10 @@
-import AppendantPopup from "next-common/components/appendants/common/appendantPopup";
+import AppendantEditorPopup from "next-common/components/appendants/common/appendantEditorPopuprPopup";
 import AppendantEditor from "next-common/components/appendants/common/appendantEditor";
 import { treasuryBountiesAppendantApi } from "next-common/services/url";
 import { useBountyAppendantsContext } from "next-common/context/bountyAppendants";
 import { usePageProps } from "next-common/context/page";
 
-export default function BountyAppendantPopup({
+export default function BountyEditorAppendantPopup({
   setIsAppend,
   editData = null,
   isEditMode = false,
@@ -18,7 +18,7 @@ export default function BountyAppendantPopup({
   } an appendant as proposer/curator.`;
 
   return (
-    <AppendantPopup
+    <AppendantEditorPopup
       description={description}
       isEditMode={isEditMode}
       editData={editData}
@@ -33,6 +33,6 @@ export default function BountyAppendantPopup({
         createApi={createApi}
         update={update}
       />
-    </AppendantPopup>
+    </AppendantEditorPopup>
   );
 }

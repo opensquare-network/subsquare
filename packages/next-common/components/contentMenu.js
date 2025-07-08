@@ -43,12 +43,12 @@ const PostUnlinkPopup = dynamicPopup(() =>
   import("./linkPost/postUnlinkPopup"),
 );
 
-const BountyAppendantPopup = dynamicPopup(() =>
-  import("next-common/components/appendants/bounty/appendantPopup"),
+const BountyEditorAppendantPopup = dynamicPopup(() =>
+  import("next-common/components/appendants/bounty/appendantEditorPopup"),
 );
 
-const ReferendaAppendantPopup = dynamicPopup(() =>
-  import("next-common/components/appendants/referenda/appendantPopup"),
+const ReferendaAppendantEditorPopup = dynamicPopup(() =>
+  import("next-common/components/appendants/referenda/appendantEditorPopup"),
 );
 
 const Wrapper = styled.div`
@@ -454,10 +454,10 @@ export function PostContextMenu({ isAuthor, editable, setIsEdit }) {
         />
       )}
       {showBountyAppendPopup && (
-        <BountyAppendantPopup setIsAppend={setShowBountyAppendPopup} />
+        <BountyEditorAppendantPopup setIsAppend={setShowBountyAppendPopup} />
       )}
       {showOpenGovReferendumAppendPopup && (
-        <ReferendaAppendantPopup
+        <ReferendaAppendantEditorPopup
           setIsAppend={setShowOpenGovReferendumAppendPopup}
         />
       )}

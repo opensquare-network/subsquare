@@ -21,7 +21,7 @@ function Wrapper({ children }) {
   );
 }
 
-export default function AppendantPopup({
+export default function AppendantEditorPopup({
   setIsAppend,
   isEditMode = false,
   description,
