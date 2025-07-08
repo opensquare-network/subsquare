@@ -25,7 +25,7 @@ import {
   treasuryBountiesAppendantApi,
 } from "next-common/services/url";
 import TreasuryBountiesDetailMultiTabs from "next-common/components/pages/components/tabs/treasuryBountiesDetailMultiTabs";
-import Appendants from "next-common/components/appendants";
+import Appendants from "next-common/components/appendants/bounty";
 import { BountyAppendantsProvider } from "next-common/context/bountyAppendants";
 
 function useBountyCurator(bountyIndex) {
