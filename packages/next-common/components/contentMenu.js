@@ -376,27 +376,7 @@ export function PostContextMenu({ isAuthor, editable, setIsEdit }) {
       />
       {show && (
         <OptionWrapper>
-          {editable && (
-            <>
-              {isAuthor && (
-                <ConditionalLinkMenu
-                  menu={linkOrUnlinkMenuItem}
-                  isTreasuryBountyPost={isTreasuryBountyPost}
-                  isDiscussionPost={isDiscussionPost}
-                  isFellowshipApplicationPost={isFellowshipApplicationPost}
-                  isOpenGovReferendumPost={isOpenGovReferendumPost}
-                />
-              )}
-              <EditMenuItem setIsEdit={setIsEdit} setShow={setShow} />
-            </>
-          )}
-          {canDelete && (
-            <DeleteMenuItem
-              setShowDeletePopup={setShowDeletePopup}
-              setShow={setShow}
-            />
-          )}
-          {actionsComponent}
+          {editable && <EditMenuItem setIsEdit={setIsEdit} setShow={setShow} />}
           {isTreasuryBountyPost && (
             <BountyAppendMenuItem
               setShow={setShow}
@@ -409,6 +389,22 @@ export function PostContextMenu({ isAuthor, editable, setIsEdit }) {
               setIsAppend={setShowOpenGovReferendumAppendPopup}
             />
           )}
+          {editable && isAuthor && (
+            <ConditionalLinkMenu
+              menu={linkOrUnlinkMenuItem}
+              isTreasuryBountyPost={isTreasuryBountyPost}
+              isDiscussionPost={isDiscussionPost}
+              isFellowshipApplicationPost={isFellowshipApplicationPost}
+              isOpenGovReferendumPost={isOpenGovReferendumPost}
+            />
+          )}
+          {canDelete && (
+            <DeleteMenuItem
+              setShowDeletePopup={setShowDeletePopup}
+              setShow={setShow}
+            />
+          )}
+          {actionsComponent}
           <ReportMenuItem
             setShowReportPopup={setShowReportPopup}
             setShow={setShow}
