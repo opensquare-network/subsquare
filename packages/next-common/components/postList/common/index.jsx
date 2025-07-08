@@ -4,7 +4,6 @@ import {
   TreasuryTag,
 } from "next-common/components/tags/business";
 import {
-  Info,
   MobileHiddenInfo,
   TitleExtraValue,
   TitleExtra,
@@ -15,12 +14,10 @@ import { isNil } from "lodash-es";
 import PostVotesSummary from "./votesSummary";
 import { toPrecision } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
-import Flex from "next-common/components/styled/flex";
 import { getBannerUrl } from "next-common/utils/banner";
 import Anchor from "next-common/components/styled/anchor";
 import PostLabels from "next-common/components/postLabels";
-import { gov2State } from "next-common/utils/consts/state";
-import PostListTreasuryAllSpends from "../treasuryAllSpends";
+import PostListTreasuryAllSpends from "next-common/components/postList/treasuryAllSpends";
 import { useChainSettings } from "next-common/context/chain";
 import LinkInfo from "next-common/components/styled/linkInfo";
 import ValueDisplay from "next-common/components/valueDisplay";
@@ -28,12 +25,8 @@ import SystemUser from "next-common/components/user/systemUser";
 import Gov2TrackTag from "next-common/components/gov2/trackTag";
 import AddressUser from "next-common/components/user/addressUser";
 import WarningIcon from "next-common/assets/imgs/icons/warning.svg";
-import { SystemActivity, SystemComment } from "@osn/icons/subsquare";
+import { SystemComment } from "@osn/icons/subsquare";
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
-import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
-import ConfirmCountdown from "next-common/components/gov2/postList/confirmCountdown";
-import DecisionCountdown from "next-common/components/gov2/postList/decisionCountdown";
-import PreparingCountdown from "next-common/components/gov2/postList/preparingCountdown";
 
 export function PostUser({ data }) {
   const { sm } = useScreenSize();
@@ -58,7 +51,7 @@ export function PostUser({ data }) {
   );
 }
 
-function PostAmount({ amount, decimals, symbol }) {
+export function PostAmount({ amount, decimals, symbol }) {
   return (
     <TitleExtra>
       <TitleExtraValue>
@@ -105,18 +98,6 @@ export function PostValueTitle({ data }) {
 
   return null;
 }
-
-export const ElapseIcon = ({ data }) => {
-  if (data?.status === gov2State.Preparing) {
-    return <PreparingCountdown detail={data} isFellowship={false} />;
-  }
-  if (data?.status === gov2State.Deciding) {
-    return <DecisionCountdown detail={data} />;
-  }
-  if (data?.status === gov2State.Confirming) {
-    return <ConfirmCountdown detail={data} />;
-  }
-};
 
 export function PostBannner({ bannerCid }) {
   const bannerUrl = useMemo(() => getBannerUrl(bannerCid), [bannerCid]);
@@ -184,36 +165,6 @@ export function PostVotesSummaryImpl({ data }) {
       tally={tally}
       symbol={symbol}
     />
-  );
-}
-
-export function PostTime({ data }) {
-  const timeAgo = formatTimeAgo(data?.time);
-  const createAgo = formatTimeAgo(data?.createdAt);
-
-  if (!data.time) {
-    return null;
-  }
-  return (
-    <Info>
-      <SystemActivity className="w-4 h-4 stroke-textTertiary [&_path]:stroke-2" />
-      <Tooltip
-        className="flex"
-        content={
-          <div className="text12Medium">
-            <ul className="list-disc list-inside">
-              <li>Created at {createAgo}</li>
-              <li>Latest activity at {timeAgo}</li>
-            </ul>
-          </div>
-        }
-      >
-        <span className="cursor-pointer">{timeAgo}</span>
-      </Tooltip>
-      <Flex className="elapseIcon">
-        <ElapseIcon data={data} />
-      </Flex>
-    </Info>
   );
 }
 

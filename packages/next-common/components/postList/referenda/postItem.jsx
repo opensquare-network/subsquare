@@ -11,7 +11,6 @@ import {
   PostValueTitle,
   PostUser,
   PostTrack,
-  PostTime,
   PostCommentCount,
   PostVotesSummaryImpl,
   PostMalicious,
@@ -25,6 +24,8 @@ import Divider from "next-common/components/styled/layout/divider";
 import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
 import PostListMyReferendaVoteMark from "next-common/components/postList/myVoteMark/referenda";
 import Flex from "next-common/components/styled/flex";
+import PostTime from "../common/postTime";
+import ElapseIcon from "./elapseIcon";
 
 function PostFooter({ data }) {
   let stateArgs = getGov2ReferendumStateArgs(data.onchainData?.state);
@@ -35,7 +36,7 @@ function PostFooter({ data }) {
       <Footer>
         <PostUser data={data} />
         <PostTrack data={data} href={`/referenda/tracks/${data.track}`} />
-        <PostTime data={data} />
+        <PostTime data={data} elapseIcon={<ElapseIcon data={data} />} />
         <PostCommentCount commentsCount={commentsCount} />
         <PostVotesSummaryImpl data={data} />
         <PostParentIndex parentIndex={data?.parentIndex} />
@@ -46,7 +47,7 @@ function PostFooter({ data }) {
 
       <Flex className="gap-x-2">
         <PostListMyReferendaVoteMark data={data} />
-        <Gov2ReferendaTag state={data.status} args={stateArgs} data={data} />
+        <Gov2ReferendaTag state={data.status} args={stateArgs} />
       </Flex>
     </FooterWrapper>
   );
