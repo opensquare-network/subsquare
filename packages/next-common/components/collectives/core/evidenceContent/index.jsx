@@ -33,7 +33,11 @@ export default function FellowshipEvidenceContent({
 
     content = (
       <>
-        <EvidenceExternalLinkWithWish cid={cid} wish={wish} />
+        <EvidenceExternalLinkWithWish
+          cid={cid}
+          wish={wish}
+          evidence={evidence}
+        />
         <IpfsEvidenceContent cid={cid} />
       </>
     );

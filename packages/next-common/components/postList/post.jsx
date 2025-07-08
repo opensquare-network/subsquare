@@ -233,7 +233,9 @@ export default function Post({ data, href, type }) {
 
   let commentsCount = data.commentsCount || 0;
   if (
-    [Chains.kusama, Chains.kusamaPeople].includes(currentChain) &&
+    [Chains.kusama, Chains.kusamaPeople, Chains.polkadot].includes(
+      currentChain,
+    ) &&
     data.polkassemblyCommentsCount
   ) {
     commentsCount = data.polkassemblyCommentsCount || 0;

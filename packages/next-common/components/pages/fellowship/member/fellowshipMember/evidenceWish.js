@@ -131,6 +131,7 @@ function OnchainEvidenceContent({ evidence, wish }) {
             ifpsContent={ifpsContent}
             wish={wish}
             cid={cid}
+            evidence={evidence}
           />
         )}
       </GreyPanel>
@@ -148,7 +149,7 @@ function OnchainEvidenceLoading() {
   );
 }
 
-function WishDetailPopup({ onClose, ifpsContent, wish, cid }) {
+function WishDetailPopup({ onClose, ifpsContent, wish, cid, evidence }) {
   const { id: address, fellowshipMembers } = usePageProps();
 
   const activeMember = fellowshipMembers.find(
@@ -163,6 +164,7 @@ function WishDetailPopup({ onClose, ifpsContent, wish, cid }) {
         activeMember={activeMember}
         ifpsContent={ifpsContent}
         cid={cid}
+        evidence={evidence}
       />
     </Popup>
   );

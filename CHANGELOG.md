@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+# 5.0.2
+
+date: 2025-07-08
+
+- Enable curators to add appendants for a parent bounty.
+- Improve bounty curators view with multiple proxies and multisigs.
+- Check account balance for deposits on the new preimage popup.
+- Show nonce on some popups that need users signature.
+- Update RPC endpoints for polkadot/kusama.
+- Add tooltip for multisig column titles.
+- Add tooltip for recent proposals title.
+- Refactor post list components for OpenGov referenda.
+- Fix bugs
+    - Fix that search doesn't work on some deployments.
+    - Fix tooltips for OpenGov referendum confirmation attempts and tabs.
+    - Fix: preimage icon doesn't show up on the account deposits page.
+    - Fix: comments count of treasury spend is not correct due to polkassembly new API.
+- Other code refactor and style fixes.
+
 # 5.0.1
 
 date: 2025-07-02
