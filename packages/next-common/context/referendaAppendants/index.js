@@ -31,4 +31,3 @@ export function useReferendaAppendantsContext() {
   const context = useContext(ReferendaAppendantsContext);
   return context;
 }
- 
