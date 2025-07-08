@@ -8,19 +8,23 @@ const ReferendaAppendantPopup = dynamicPopup(() =>
   import("next-common/components/appendants/referenda/appendantPopup"),
 );
 
-function ReferendaAppendants() {
-  const { appendants, update } = useReferendaAppendantsContext();
-  if (!appendants || appendants?.length === 0) {
-    return null;
-  }
+const ReferendaMoreActions = ({ data }) => {
+  const { update } = useReferendaAppendantsContext();
 
-  const ReferendaMoreActions = ({ data }) => (
+  return (
     <MoreActions
       data={data}
       EditPopup={ReferendaAppendantPopup}
       update={update}
     />
   );
+};
+
+function ReferendaAppendants() {
+  const { appendants } = useReferendaAppendantsContext();
+  if (!appendants || appendants?.length === 0) {
+    return null;
+  }
 
   return (
     <div className="flex flex-col">

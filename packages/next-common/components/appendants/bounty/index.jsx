@@ -8,15 +8,19 @@ const BountyAppendantPopup = dynamicPopup(() =>
   import("next-common/components/appendants/bounty/appendantPopup"),
 );
 
+const BountyMoreActions = ({ data }) => {
+  const { update } = useBountyAppendantsContext();
+
+  return (
+    <MoreActions data={data} EditPopup={BountyAppendantPopup} update={update} />
+  );
+};
+
 function BountyAppendants() {
-  const { appendants, update } = useBountyAppendantsContext();
+  const { appendants } = useBountyAppendantsContext();
   if (!appendants || appendants?.length === 0) {
     return null;
   }
-
-  const BountyMoreActions = ({ data }) => (
-    <MoreActions data={data} EditPopup={BountyAppendantPopup} update={update} />
-  );
 
   return (
     <div className="flex flex-col">
