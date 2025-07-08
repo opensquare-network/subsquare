@@ -7,14 +7,16 @@ import { useChain } from "next-common/context/chain";
 /**
  *
  * @param {data} param0
- * @returns kusama, kusamaPeople china get polkassemblyCommentsCount, other get commentsCount
+ * @returns kusama, kusamaPeople, polkadot china get polkassemblyCommentsCount, other get commentsCount
  */
 export default function PostItemCommentCount({ data }) {
   const currentChain = useChain();
 
   const commentsCount = useMemo(() => {
     if (
-      [Chains.kusama, Chains.kusamaPeople].includes(currentChain) &&
+      [Chains.kusama, Chains.kusamaPeople, Chains.polkadot].includes(
+        currentChain,
+      ) &&
       data.polkassemblyCommentsCount
     ) {
       return data.polkassemblyCommentsCount || 0;
