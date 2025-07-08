@@ -29,7 +29,9 @@ import KillReferendumPopup from "./summary/newProposalQuickStart/killReferendumI
 import { useChainSettings } from "next-common/context/chain";
 import useTerminateAction from "next-common/hooks/useTerminateAction";
 import BountyAppendMenuItem from "next-common/components/appendants/bountyAppendMenuItem";
+import ReferendaAppendMenuItem from "next-common/components/appendants/referendaAppendMenuItem";
 import { useBountyAppendantsContext } from "next-common/context/bountyAppendants";
+import { useReferendaAppendantsContext } from "next-common/context/referendaAppendants";
 
 const DeletePopup = dynamicPopup(() => import("./deletePopup"));
 
@@ -269,11 +271,21 @@ function ConditionalBountyLinkMenu({ menu }) {
   return menu;
 }
 
+function ConditionalOpenGovReferendumLinkMenu({ menu }) {
+  const { appendants } = useReferendaAppendantsContext();
+  if (appendants && appendants?.length > 0) {
+    return null;
+  }
+
+  return menu;
+}
+
 function ConditionalLinkMenu({
   menu,
   isTreasuryBountyPost,
   isDiscussionPost,
   isFellowshipApplicationPost,
+  isOpenGovReferendumPost,
 }) {
   if (isDiscussionPost || isFellowshipApplicationPost) {
     return null;
@@ -281,6 +293,10 @@ function ConditionalLinkMenu({
 
   if (isTreasuryBountyPost) {
     return <ConditionalBountyLinkMenu menu={menu} />;
+  }
+
+  if (isOpenGovReferendumPost) {
+    return <ConditionalOpenGovReferendumLinkMenu menu={menu} />;
   }
 
   return menu;
@@ -360,6 +376,7 @@ export function PostContextMenu({ isAuthor, editable, setIsEdit }) {
                   isTreasuryBountyPost={isTreasuryBountyPost}
                   isDiscussionPost={isDiscussionPost}
                   isFellowshipApplicationPost={isFellowshipApplicationPost}
+                  isOpenGovReferendumPost={isOpenGovReferendumPost}
                 />
               )}
               <EditMenuItem setIsEdit={setIsEdit} setShow={setShow} />
@@ -376,6 +393,12 @@ export function PostContextMenu({ isAuthor, editable, setIsEdit }) {
             <BountyAppendMenuItem
               setShow={setShow}
               setIsAppend={setShowBountyAppendPopup}
+            />
+          )}
+          {isOpenGovReferendumPost && (
+            <ReferendaAppendMenuItem
+              setShow={setShow}
+              setIsAppend={null} // TODO: Referenda Append Popup
             />
           )}
           <ReportMenuItem
