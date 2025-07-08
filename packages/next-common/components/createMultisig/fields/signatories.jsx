@@ -19,7 +19,7 @@ export default function SignatoriesField() {
         <MaybeProxySigner noSwitch={true} />
         {signatories.map((address, index) => (
           <AddressCombo
-            key={`${address}-${index}`}
+            key={`signatory-${index}`}
             address={address}
             accounts={extensionAccounts}
             setAddress={(add) => setSignatory(add, index)}

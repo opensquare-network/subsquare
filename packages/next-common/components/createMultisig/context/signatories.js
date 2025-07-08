@@ -8,25 +8,25 @@ export const SignatoriesContext = createContext({
 export function SignatoriesProvider({ children }) {
   const [signatories, setSignatories] = useState([]);
 
-  const setSignatory = useCallback(
-    (address, index) => {
-      signatories[index] = address;
-      setSignatories([...signatories]);
-    },
-    [signatories],
-  );
+  const setSignatory = useCallback((address, index) => {
+    setSignatories((prev) => {
+      const newSignatories = [...prev];
+      newSignatories[index] = address;
+      return newSignatories;
+    });
+  }, []);
 
   const addSignatory = useCallback(() => {
-    setSignatories([...signatories, ""]);
-  }, [signatories]);
+    setSignatories((prev) => [...prev, ""]);
+  }, []);
 
-  const removeSignatory = useCallback(
-    (index) => {
-      signatories.splice(index, 1);
-      setSignatories([...signatories]);
-    },
-    [signatories],
-  );
+  const removeSignatory = useCallback((index) => {
+    setSignatories((prev) => {
+      const newSignatories = [...prev];
+      newSignatories.splice(index, 1);
+      return newSignatories;
+    });
+  }, []);
 
   return (
     <SignatoriesContext.Provider
