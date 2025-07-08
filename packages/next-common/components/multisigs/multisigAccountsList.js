@@ -5,12 +5,13 @@ import { useCallback, useMemo, useState } from "react";
 import { useAsync } from "react-use";
 import PrimaryButton from "next-common/lib/button/primary";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import { ArrowDown, SystemMore } from "@osn/icons/subsquare";
+import { ArrowDown } from "@osn/icons/subsquare";
 import { ActionIconButton, MultisigAccount, SignatorieAccount } from "./styled";
 import WindowSizeProvider from "next-common/context/windowSize";
 import IndentPanel from "../callTreeView/indentPanel";
 import { cn } from "next-common/utils";
 import Tooltip from "../tooltip";
+import CellActions from "./cellActions";
 
 const CreateMultisigPopup = dynamicPopup(() => import("../createMultisig"));
 
@@ -74,9 +75,8 @@ function Row({ multisig }) {
         )}
       </div>
       <div className="flex items-center gap-x-2 justify-end">
-        <ActionIconButton>
-          <SystemMore className="w-4 h-4" />
-        </ActionIconButton>
+        <CellActions multisig={multisig} />
+
         <Tooltip content="Signatories">
           <ActionIconButton
             onClick={handleExtend}
