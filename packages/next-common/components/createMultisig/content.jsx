@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import PrimaryButton from "next-common/lib/button/primary";
 import TextInputField from "../popup/fields/textInputField";
 import nextApi from "next-common/services/nextApi";
@@ -7,6 +7,7 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import ThresholdField from "./fields/threshold";
 import SignatoriesField from "./fields/signatories";
 import { useSignatories } from "./context/signatories";
+import { isEmpty, isNil } from "lodash-es";
 
 export default function CreateMultisigContent() {
   const address = useRealAddress();
@@ -14,6 +15,10 @@ export default function CreateMultisigContent() {
   const [threshold, setThreshold] = useState();
   const [name, setName] = useState("");
   const { signatories } = useSignatories();
+
+  const buttonDisabled = useMemo(() => {
+    return isNil(threshold) || isEmpty(name);
+  }, [threshold, name]);
 
   const handleSubmit = useCallback(
     async (e) => {
@@ -44,7 +49,9 @@ export default function CreateMultisigContent() {
         placeholder="Please fill the name..."
       />
       <div className="flex justify-end">
-        <PrimaryButton type="submit">Submit</PrimaryButton>
+        <PrimaryButton type="submit" disabled={buttonDisabled}>
+          Submit
+        </PrimaryButton>
       </div>
     </form>
   );
