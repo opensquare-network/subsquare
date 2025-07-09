@@ -59,16 +59,12 @@ export default function EstimatedGas({ getTxFunc }) {
       });
   }, [tx, address]);
 
-  if (!fee) {
-    return null;
-  }
-
   return (
     <GreyPanel className="flex-col gap-y-1 justify-start !items-start text14Medium text-textSecondary px-4 py-2.5">
       <div className="flex gap-x-2">
         <span>Estimated Gas Fee: </span>
         <LoadableContent isLoading={isGasLoading} size={20}>
-          ≈ {toPrecision(fee, decimals, 4)} {symbol}
+          {fee ? `≈ ${toPrecision(fee, decimals, 4)} ${symbol}` : "-"}
         </LoadableContent>
       </div>
       <span className="flex gap-x-2">
