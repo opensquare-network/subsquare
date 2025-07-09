@@ -102,6 +102,9 @@ const polkadot = {
   hotMenu: {
     referenda: true,
   },
+  referendaActions: {
+    startFrom: 1584,
+  },
   supportWalletconnect: true,
 };
 

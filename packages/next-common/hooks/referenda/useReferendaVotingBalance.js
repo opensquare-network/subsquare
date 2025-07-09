@@ -8,19 +8,25 @@ export default function useReferendaVotingBalance(address) {
     address,
   ]);
 
+  const isReady = useMemo(() => {
+    return api && address;
+  }, [api, address]);
+
   return useMemo(() => {
-    if (loading || !result) {
+    if (loading || !result || !isReady) {
       return {
-        isLoading: loading,
+        isLoading: loading || !isReady,
         balance: null,
+        isReady,
       };
     }
 
     const balanceBig =
       result.data.free.toBigInt() + result.data.reserved.toBigInt();
     return {
-      isLoading: loading,
+      isLoading: loading || !isReady,
       balance: balanceBig.toString(),
+      isReady,
     };
-  }, [result, loading]);
+  }, [result, loading, isReady]);
 }

@@ -75,7 +75,7 @@ export default function ConfirmAttempts() {
       <Tooltip
         className="cursor-pointer"
         contentClassName="max-w-[240px]"
-        content="The number of times this referendum has been submitted for voting. Sometimes a proposal needs multiple tries due to failure or cancellation."
+        content="The number of times this referendum has been in confirmation."
       >
         <span>Attempts</span>
       </Tooltip>

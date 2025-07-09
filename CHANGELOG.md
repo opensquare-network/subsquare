@@ -2,6 +2,77 @@
 
 All notable changes to this project will be documented in this file.
 
+# 5.0.2
+
+date: 2025-07-08
+
+- Enable curators to add appendants for a parent bounty.
+- Improve bounty curators view with multiple proxies and multisigs.
+- Check account balance for deposits on the new preimage popup.
+- Show nonce on some popups that need users signature.
+- Update RPC endpoints for polkadot/kusama.
+- Add tooltip for multisig column titles.
+- Add tooltip for recent proposals title.
+- Refactor post list components for OpenGov referenda.
+- Fix bugs
+    - Fix that search doesn't work on some deployments.
+    - Fix tooltips for OpenGov referendum confirmation attempts and tabs.
+    - Fix: preimage icon doesn't show up on the account deposits page.
+    - Fix: comments count of treasury spend is not correct due to polkassembly new API.
+- Other code refactor and style fixes.
+
+# 5.0.1
+
+date: 2025-07-02
+
+- Fellowship:
+    - show polkadot execution referenda link on fellowship referenda detail page.
+    - Show tooltip for candidate application state tag.
+- Extract treasury request info by XCM v5.
+- Support OpenGov actions sort by affected tally.
+- Index history OpenGov actions and start show actions data start from polkadot referenda #1584.
+- Show tally affected actions on the threshold curve chart.
+- Show time gap when hovering on the time component of OpenGov actions.
+- A11y: fix pagination on delegation page and a possible bug.
+- Improve balance loading status on vote popup. Show loading first on open, not 0.
+- Show treasury request status bar on overview page treasury panel.
+- Fix styles.
+
+# 5.0.0
+
+date: 2025-06-26
+
+- [Big] Asset hub migration support. Most pallets will be migrated to asset hub. This support solve issues in indexing
+  scripts, backend API server and fronted page logics.
+- [Big] Index and show tally affected actions on a referendum detail page. These actions include vote, remove vote,
+  change vote, delegate, change delete, undelegate. We only show it for latest referenda because old data is not
+  indexed in this release.
+- [Medium] Fellowship:
+    - Enable members whose rank >=3 and admins set a final state(rejected, timedout, invalid) to a new
+      member application.
+    - Add a new member application review todo on fellowship member account panel.
+- [Important] Fix 100% CPU usage because of frequent new default object construction.
+- Show the 2 signing steps when a user is proposing a new referendum.
+- Show treasury requesting status on referenda list page, and users can filter our ongoing treasury related referenda.
+- Show a referenda confirming notification on the overview page, so users can know confirming referenda in time.
+- Correct block time settings for chains who applied async backing.
+- Adapt to polkassembly new API:
+    - Fix syncing scripts for proposal context.
+    - Refactor API to read polkassembly comments, and it's mainly about the data structure.
+    - Fix comments count in fronted. Polkassembly changed the way to calculated comments count in their new API.
+- Show estimated gas on vote, delegate, new proxy popups.
+- Fix treasury request amount of a referendum with `Scheduler#scheduleNamedAfter`. For
+  example [referendum #1584](https://polkadot.subsquare.io/referenda/1584).
+- Fix account democracy votes with cancelled referenda.
+- Open new browser tabs for external links on various posts.
+- Fix skeleton loading style in dark mode.
+- Fix a bug that tracks panel is not shown on mobile view.
+- Fix asset hub profile page crash due to miss of `ProfileUserInfoProvider`.
+- Fix bounties page pagination.
+- Add `useDemocracyReferendumStatus` to use onchain storage first for a democracy pallet referendum.
+- Correct tooltip for OpenGov vote calls.
+- Code refactor and UI tweaks.
+
 # 4.7.8
 
 date: 2025-06-16

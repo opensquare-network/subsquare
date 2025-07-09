@@ -86,11 +86,15 @@ const categoryTagMap = {
   [businessCategory.fellowshipTreasurySpends]: SpendTag,
   [detailPageCategory.FELLOWSHIP_TREASURY_SPEND]: SpendTag,
 
-  [businessCategory.fellowshipApplications]: FellowshipApplicationTag,
+  [businessCategory.fellowshipApplication]: FellowshipApplicationTag,
   [detailPageCategory.FELLOWSHIP_APPLICATION]: FellowshipApplicationTag,
 };
 
 export default function Tag({ category, state, link, args }) {
+  if (!state) {
+    return null;
+  }
+
   let element = state;
   if (link) {
     element = <a href={link}>{state}</a>;

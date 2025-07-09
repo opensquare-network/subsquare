@@ -9,7 +9,7 @@ import kintsugi from "./consts/settings/kintsugi";
 import phala from "./consts/settings/phala";
 import centrifuge from "./consts/settings/centrifuge";
 // import kabocha from "./consts/settings/kabocha";
-import crust from "./consts/settings/crust";
+// import crust from "./consts/settings/crust";
 import litentry from "./consts/settings/litentry";
 import basilisk from "./consts/settings/basilisk";
 import hydradx from "./consts/settings/hydradx";
@@ -59,7 +59,7 @@ export const nodes = [
   westend,
   westendAssetHub,
   westendPeople,
-  crust,
+  // crust,
   hydradx,
   interlay,
   // kabocha,

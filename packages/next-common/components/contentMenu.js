@@ -28,6 +28,10 @@ import CancelReferendumPopup from "./summary/newProposalQuickStart/cancelReferen
 import KillReferendumPopup from "./summary/newProposalQuickStart/killReferendumInnerPopup";
 import { useChainSettings } from "next-common/context/chain";
 import useTerminateAction from "next-common/hooks/useTerminateAction";
+import BountyAppendMenuItem from "next-common/components/appendants/bounty/appendMenuItem";
+import ReferendaAppendMenuItem from "next-common/components/appendants/referenda/appendMenuItem";
+import { useBountyAppendantsContext } from "next-common/context/bountyAppendants";
+import { useReferendaAppendantsContext } from "next-common/context/referendaAppendants";
 
 const DeletePopup = dynamicPopup(() => import("./deletePopup"));
 
@@ -37,6 +41,14 @@ const PostLinkPopup = dynamicPopup(() => import("./linkPost/postLinkPopup"));
 
 const PostUnlinkPopup = dynamicPopup(() =>
   import("./linkPost/postUnlinkPopup"),
+);
+
+const BountyEditorAppendantPopup = dynamicPopup(() =>
+  import("next-common/components/appendants/bounty/appendantEditorPopup"),
+);
+
+const ReferendaAppendantEditorPopup = dynamicPopup(() =>
+  import("next-common/components/appendants/referenda/appendantEditorPopup"),
 );
 
 const Wrapper = styled.div`
@@ -254,6 +266,46 @@ export function CommentContextMenu({ editable, setIsEdit }) {
   );
 }
 
+function ConditionalBountyLinkMenu({ menu }) {
+  const { appendants } = useBountyAppendantsContext();
+  if (appendants && appendants?.length > 0) {
+    return null;
+  }
+
+  return menu;
+}
+
+function ConditionalOpenGovReferendumLinkMenu({ menu }) {
+  const { appendants } = useReferendaAppendantsContext();
+  if (appendants && appendants?.length > 0) {
+    return null;
+  }
+
+  return menu;
+}
+
+function ConditionalLinkMenu({
+  menu,
+  isTreasuryBountyPost,
+  isDiscussionPost,
+  isFellowshipApplicationPost,
+  isOpenGovReferendumPost,
+}) {
+  if (isDiscussionPost || isFellowshipApplicationPost) {
+    return null;
+  }
+
+  if (isTreasuryBountyPost) {
+    return <ConditionalBountyLinkMenu menu={menu} />;
+  }
+
+  if (isOpenGovReferendumPost) {
+    return <ConditionalOpenGovReferendumLinkMenu menu={menu} />;
+  }
+
+  return menu;
+}
+
 export function PostContextMenu({ isAuthor, editable, setIsEdit }) {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -268,6 +320,11 @@ export function PostContextMenu({ isAuthor, editable, setIsEdit }) {
   const [showCancelReferendumPopup, setShowCancelReferendumPopup] =
     useState(false);
   const [showKillReferendumPopup, setShowKillReferendumPopup] = useState(false);
+  const [showBountyAppendPopup, setShowBountyAppendPopup] = useState(false);
+  const [
+    showOpenGovReferendumAppendPopup,
+    setShowOpenGovReferendumAppendPopup,
+  ] = useState(false);
   const isAdmin = useIsAdmin();
   const { actionsComponent, popupComponent } =
     useTerminateAction({
@@ -285,6 +342,8 @@ export function PostContextMenu({ isAuthor, editable, setIsEdit }) {
   const isSimaDiscussion = post.sima;
   const canDelete =
     (editable || isAdmin) && isDiscussionPost && !isSimaDiscussion;
+
+  const isTreasuryBountyPost = postType === detailPageCategory.TREASURY_BOUNTY;
 
   useClickAway(ref, () => setShow(false));
 
@@ -317,14 +376,27 @@ export function PostContextMenu({ isAuthor, editable, setIsEdit }) {
       />
       {show && (
         <OptionWrapper>
-          {editable && (
-            <>
-              {isAuthor &&
-                !isDiscussionPost &&
-                !isFellowshipApplicationPost &&
-                linkOrUnlinkMenuItem}
-              <EditMenuItem setIsEdit={setIsEdit} setShow={setShow} />
-            </>
+          {editable && <EditMenuItem setIsEdit={setIsEdit} setShow={setShow} />}
+          {isTreasuryBountyPost && (
+            <BountyAppendMenuItem
+              setShow={setShow}
+              setIsAppend={setShowBountyAppendPopup}
+            />
+          )}
+          {isOpenGovReferendumPost && (
+            <ReferendaAppendMenuItem
+              setShow={setShow}
+              setIsAppend={setShowOpenGovReferendumAppendPopup}
+            />
+          )}
+          {editable && isAuthor && (
+            <ConditionalLinkMenu
+              menu={linkOrUnlinkMenuItem}
+              isTreasuryBountyPost={isTreasuryBountyPost}
+              isDiscussionPost={isDiscussionPost}
+              isFellowshipApplicationPost={isFellowshipApplicationPost}
+              isOpenGovReferendumPost={isOpenGovReferendumPost}
+            />
           )}
           {canDelete && (
             <DeleteMenuItem
@@ -375,6 +447,14 @@ export function PostContextMenu({ isAuthor, editable, setIsEdit }) {
         <KillReferendumPopup
           referendumIndex={post?.referendumIndex}
           onClose={() => setShowKillReferendumPopup(false)}
+        />
+      )}
+      {showBountyAppendPopup && (
+        <BountyEditorAppendantPopup setIsAppend={setShowBountyAppendPopup} />
+      )}
+      {showOpenGovReferendumAppendPopup && (
+        <ReferendaAppendantEditorPopup
+          setIsAppend={setShowOpenGovReferendumAppendPopup}
         />
       )}
       {popupComponent}

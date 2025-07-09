@@ -52,10 +52,6 @@ const defaultPolkadotNodes = [
   //   url: "wss://1rpc.io/dot",
   // },
   {
-    name: "RadiumBlock",
-    url: "wss://polkadot.public.curie.radiumblock.co/ws",
-  },
-  {
     name: "RockX",
     url: "wss://rockx-dot.w3node.com/polka-public-dot/ws",
   },

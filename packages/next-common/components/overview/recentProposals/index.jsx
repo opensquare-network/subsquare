@@ -17,6 +17,7 @@ import EmptyRecentProposals from "./empty";
 import { useRecentProposalCommunityCouncil } from "./communityCouncil";
 import { useRecentProposalCommunityTreasury } from "./communityTreasury";
 import { useRecentProposalFellowshipTreasury } from "./fellowshipTreasury";
+import Tooltip from "next-common/components/tooltip";
 
 export default function RecentProposals() {
   const chain = useChain();
@@ -62,7 +63,10 @@ export default function RecentProposals() {
 
   return (
     <div>
-      <TitleContainer className="mb-4">Recent Proposals</TitleContainer>
+      <TitleContainer className="mb-4 gap-1 justify-start">
+        <span>Recent Proposals</span>
+        <Tooltip content="Active and recently finished proposals"></Tooltip>
+      </TitleContainer>
 
       {!activeItems.length ? (
         <EmptyRecentProposals />

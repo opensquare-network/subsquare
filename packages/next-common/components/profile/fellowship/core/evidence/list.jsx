@@ -5,11 +5,11 @@ import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
 import dayjs from "dayjs";
 import NoData from "next-common/components/noData";
 import { useNavCollapsed } from "next-common/context/nav";
-import { cn } from "next-common/utils";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import { useState } from "react";
 import FellowshipEvidenceContent from "next-common/components/collectives/core/evidenceContent";
+import { cn, isHash } from "next-common/utils";
 
 const getDate = (row) => {
   return dayjs(row?.indexer?.blockTime).format("YYYY/MM/DD") || "";
@@ -63,13 +63,15 @@ const EvidenceItem = ({ row, popupTitle = "" }) => {
         </div>
         <div className="mt-4 flex items-center gap-x-2">
           <SubSquareLinks referenda={row?.referenda || []} />
-          <ExternalLink
-            href={getIpfsLink(row.cid)}
-            externalIcon={false}
-            className="text-textTertiary hover:text-textSecondary"
-          >
-            <LinkIpfs className="w-5 h-5" />
-          </ExternalLink>
+          {isHash(row.hex) && (
+            <ExternalLink
+              href={getIpfsLink(row.cid)}
+              externalIcon={false}
+              className="text-textTertiary hover:text-textSecondary"
+            >
+              <LinkIpfs className="w-5 h-5" />
+            </ExternalLink>
+          )}
         </div>
       </NeutralPanel>
 

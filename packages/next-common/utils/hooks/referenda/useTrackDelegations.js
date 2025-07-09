@@ -9,6 +9,7 @@ export function useTrackDelegations(track, address) {
   const api = useContextApi();
   const isMounted = useMountedState();
   const [delegations, setDelegations] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setDelegations(null);
@@ -17,14 +18,19 @@ export function useTrackDelegations(track, address) {
       return;
     }
 
-    getGov2BeenDelegatedByAddress(api, address, track).then((result) => {
-      if (isMounted()) {
-        setDelegations(result);
-      }
-    });
+    setIsLoading(true);
+    getGov2BeenDelegatedByAddress(api, address, track)
+      .then((result) => {
+        if (isMounted()) {
+          setDelegations(result);
+        }
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, [track, api, address, isMounted]);
 
-  return delegations;
+  return { delegations, isLoading };
 }
 
 /**

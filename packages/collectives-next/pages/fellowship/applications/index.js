@@ -52,7 +52,7 @@ export default function FellowshipApplicationsPage({ posts }) {
         title="List"
         titleCount={posts.total}
         titleExtra={<NewFellowshipApplicationButton />}
-        category={businessCategory.fellowshipApplications}
+        category={businessCategory.fellowshipApplication}
         items={items}
         pagination={{
           page: posts.page,
