@@ -2,10 +2,15 @@ import Popup from "../popup/wrapper/Popup";
 import { noop } from "lodash-es";
 import ImportMultisigContent from "./content";
 
-export default function ImportMultisig({ onClose = noop }) {
+export default function ImportMultisig({ onClose = noop, parentClose = noop }) {
   return (
     <Popup title="Import Multisig" onClose={onClose}>
-      <ImportMultisigContent />
+      <ImportMultisigContent
+        closeAll={() => {
+          onClose?.();
+          parentClose?.();
+        }}
+      />
     </Popup>
   );
 }

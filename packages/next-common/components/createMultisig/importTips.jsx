@@ -1,11 +1,13 @@
 import { useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import { usePopupParams } from "../popupWithSigner/context";
 
 const ImportMultisigPopup = dynamicPopup(() =>
   import("next-common/components/importMultisig"),
 );
 
 export default function ImportTips() {
+  const { onClose } = usePopupParams();
   const [openImportMultisigPopup, setOpenImportMultisigPopup] = useState(false);
 
   return (
@@ -22,6 +24,7 @@ export default function ImportTips() {
       {openImportMultisigPopup && (
         <ImportMultisigPopup
           onClose={() => setOpenImportMultisigPopup(false)}
+          parentClose={onClose}
           onSubmit={() => setOpenImportMultisigPopup(false)}
         />
       )}

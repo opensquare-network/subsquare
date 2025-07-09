@@ -1,46 +1,12 @@
-import { addressEllipsis } from "next-common/utils";
-import { UserAvatar } from "../relationshipPopup/userNode";
+import { noop } from "lodash-es";
 import RadioButton from "../radioOptionGroup/radioButton";
-import Divider from "../styled/layout/divider";
-import { AddressUser } from "../user";
+import MultisigDisplay from "./multisigDisplay";
 
-function MultisigAccount({ multisig }) {
-  const badge = `${multisig.threshold}/${multisig.signatories.length}`;
-  const ellipsisAddress = addressEllipsis(multisig.address);
+export function MultisigRadioOption({ multisig, checked, onClick = noop }) {
   return (
-    <div className="flex items-center gap-x-3">
-      <UserAvatar address={multisig.address} badge={badge} />
-      <div className="flex flex-col justify-between">
-        <div className="text14Medium text-textPrimary">{ellipsisAddress}</div>
-        <p className="text12Medium text-textTertiary break-all">
-          {multisig.address}
-        </p>
-      </div>
-    </div>
-  );
-}
-
-export function MultisigRadioOption({ multisig, checked, onClick }) {
-  return (
-    <div
-      className="border border-neutral400 rounded-lg p-3"
-      onClick={() => {
-        onClick(multisig.value);
-      }}
-    >
-      <header className="flex items-center justify-between">
-        <MultisigAccount multisig={multisig} />
-        <RadioButton checked={checked} />
-      </header>
-      <div className="ml-14 gap-y-1 flex flex-col">
-        <Divider className="!my-2" />
-        {multisig.signatories.map((item) => (
-          <div key={item}>
-            <AddressUser add={item} />
-          </div>
-        ))}
-      </div>
-    </div>
+    <MultisigDisplay multisig={multisig} onClick={onClick}>
+      <RadioButton checked={checked} />
+    </MultisigDisplay>
   );
 }
 

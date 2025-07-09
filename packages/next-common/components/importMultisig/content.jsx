@@ -4,11 +4,12 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useAsync } from "react-use";
 import ImportMultisigEmpty from "./empty";
 import Loading from "../loading";
-import MultisigRadioGroup from "./multisigRadioGroup";
 import { useState } from "react";
-import PrimaryButton from "next-common/lib/button/primary";
+import MultisigSelect from "./multisigSelect";
+import ImportSubmit from "./importSubmit";
 
-export default function ImportMultisigContent() {
+export default function ImportMultisigContent({ closeAll }) {
+  const [step, setStep] = useState(1);
   const [selectedMultisigAddress, setSelectedMultisigAddress] = useState(null);
   const address = useRealAddress();
   const chain = useChain();
@@ -29,26 +30,32 @@ export default function ImportMultisigContent() {
     return <ImportMultisigEmpty />;
   }
 
-  return (
-    <>
-      <MultisigRadioGroup
-        options={value?.multisigAddresses?.map((item) => ({
+  if (step === 1) {
+    return (
+      <MultisigSelect
+        list={value?.multisigAddresses?.map((item) => ({
           value: item.address,
           label: item.name,
           multisig: item,
         }))}
         selected={selectedMultisigAddress}
         setSelected={setSelectedMultisigAddress}
+        onContinue={() => setStep(2)}
       />
-      <div className="flex items-center justify-end">
-        <PrimaryButton disabled={!selectedMultisigAddress}>
-          Continue
-        </PrimaryButton>
-      </div>
-    </>
-  );
-}
+    );
+  }
 
-export function MultisigAddressItem({ multisigAddress }) {
-  return <div>{multisigAddress.address}</div>;
+  if (step === 2) {
+    return (
+      <ImportSubmit
+        onBack={() => setStep(1)}
+        onSuccessed={closeAll}
+        selectedMultisig={value?.multisigAddresses.find(
+          (item) => item.address === selectedMultisigAddress,
+        )}
+      />
+    );
+  }
+
+  return null;
 }
