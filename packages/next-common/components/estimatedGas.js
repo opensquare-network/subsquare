@@ -64,7 +64,7 @@ export default function EstimatedGas({ getTxFunc }) {
       <div className="flex gap-x-2">
         <span>Estimated Gas Fee: </span>
         <LoadableContent isLoading={isGasLoading} size={20}>
-          {fee ? `≈ ${toPrecision(fee, decimals, 4)} ${symbol}` : "-"}
+          {isNil(fee) ? "-" : `≈ ${toPrecision(fee, decimals, 4)} ${symbol}`}
         </LoadableContent>
       </div>
       <span className="flex gap-x-2">
