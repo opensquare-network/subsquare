@@ -1,7 +1,7 @@
 import React from "react";
-import { ListWrapper } from "../styled";
+import { ListWrapper } from "next-common/components/postList/styled";
 import MaybeEmpty from "next-common/components/emptyList";
-import ReferendaListFilter from "../../referenda/list/filter";
+import ReferendaListFilter from "next-common/components/referenda/list/filter";
 import ListTitleBar from "next-common/components/listTitleBar";
 import Pagination from "next-common/components/pagination/index.js";
 import businessCategory from "next-common/utils/consts/business/category";
