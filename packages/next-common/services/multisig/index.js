@@ -1,6 +1,9 @@
 import { backendApi } from "next-common/services/nextApi";
 import getMultisigApiUrl from "./url";
-import getMultisigsQuery, { getMultisigsCountQuery } from "./query";
+import getMultisigsQuery, {
+  getMultisigsCountQuery,
+  getMultisigAddressesQuery,
+} from "./query";
 
 export default async function fetchMultisigs(
   chain,
@@ -35,6 +38,27 @@ export async function fetchMultisigsCount(chain, address) {
         extensions: {},
         operationName: "MyQuery",
         query: getMultisigsCountQuery(address),
+      }),
+    },
+  );
+}
+
+export async function fetchMultisigAddresses(
+  chain,
+  address,
+  page = 1,
+  pageSize = 15,
+) {
+  return await backendApi.fetch(
+    getMultisigApiUrl(chain),
+    {},
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        extensions: {},
+        operationName: "MyQuery",
+        query: getMultisigAddressesQuery(address, page, pageSize),
       }),
     },
   );

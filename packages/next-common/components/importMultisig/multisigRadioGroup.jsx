@@ -1,0 +1,69 @@
+import { addressEllipsis } from "next-common/utils";
+import { UserAvatar } from "../relationshipPopup/userNode";
+import RadioButton from "../radioOptionGroup/radioButton";
+import Divider from "../styled/layout/divider";
+import { AddressUser } from "../user";
+
+function MultisigAccount({ multisig }) {
+  const badge = `${multisig.threshold}/${multisig.signatories.length}`;
+  const ellipsisAddress = addressEllipsis(multisig.address);
+  return (
+    <div className="flex items-center gap-x-3">
+      <UserAvatar address={multisig.address} badge={badge} />
+      <div className="flex flex-col justify-between">
+        <div className="text14Medium text-textPrimary">{ellipsisAddress}</div>
+        <p className="text12Medium text-textTertiary break-all">
+          {multisig.address}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+export function MultisigRadioOption({ multisig, checked, onClick }) {
+  return (
+    <div
+      className="border border-neutral400 rounded-lg p-3"
+      onClick={() => {
+        onClick(multisig.value);
+      }}
+    >
+      <header className="flex items-center justify-between">
+        <MultisigAccount multisig={multisig} />
+        <RadioButton checked={checked} />
+      </header>
+      <div className="ml-14 gap-y-1 flex flex-col">
+        <Divider className="!my-2" />
+        {multisig.signatories.map((item) => (
+          <div key={item}>
+            <AddressUser add={item} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default function MultisigRadioOptionGroup({
+  options,
+  selected,
+  setSelected,
+}) {
+  if (!options || options.length <= 0) {
+    return null;
+  }
+  return (options || []).map((item) => (
+    <MultisigRadioOption
+      key={item.value}
+      {...item}
+      checked={selected === item.value}
+      onClick={() => {
+        if (item?.disabled) {
+          return;
+        }
+
+        setSelected(item.value);
+      }}
+    />
+  ));
+}

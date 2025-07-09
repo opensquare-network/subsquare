@@ -8,6 +8,7 @@ import ThresholdField from "./fields/threshold";
 import SignatoriesField from "./fields/signatories";
 import { useSignatories } from "./context/signatories";
 import { isEmpty, isNil } from "lodash-es";
+import ImportTips from "./importTips";
 
 export default function CreateMultisigContent() {
   const address = useRealAddress();
@@ -34,25 +35,28 @@ export default function CreateMultisigContent() {
   );
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-y-4">
-      <SignatoriesField />
+    <>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-y-4">
+        <SignatoriesField />
 
-      <ThresholdField
-        signatories={signatories}
-        onChange={setThreshold}
-        value={threshold}
-      />
-      <TextInputField
-        title="Name"
-        text={name}
-        setText={setName}
-        placeholder="Please fill the name..."
-      />
-      <div className="flex justify-end">
-        <PrimaryButton type="submit" disabled={buttonDisabled}>
-          Submit
-        </PrimaryButton>
-      </div>
-    </form>
+        <ThresholdField
+          signatories={signatories}
+          onChange={setThreshold}
+          value={threshold}
+        />
+        <TextInputField
+          title="Name"
+          text={name}
+          setText={setName}
+          placeholder="Please fill the name..."
+        />
+        <div className="flex justify-end">
+          <PrimaryButton type="submit" disabled={buttonDisabled}>
+            Submit
+          </PrimaryButton>
+        </div>
+      </form>
+      <ImportTips />
+    </>
   );
 }
