@@ -1,4 +1,3 @@
-import AppendantEditor from "../editor";
 import { Label, LabelWrapper } from "next-common/components/post/styled";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
 import { cn } from "next-common/utils";
@@ -22,15 +21,13 @@ function Wrapper({ children }) {
   );
 }
 
-export default function AppendantPopup({
+export default function AppendantEditorPopup({
   setIsAppend,
-  editData = null,
   isEditMode = false,
+  description,
+  children,
 }) {
   const title = isEditMode ? "Edit Appendant" : "Appendant";
-  const description = `You are ${
-    isEditMode ? "editing" : "adding"
-  } an appendant as proposer/curator.`;
 
   return (
     <Popup
@@ -47,13 +44,7 @@ export default function AppendantPopup({
         <LabelWrapper className="!my-4">
           <Label>Content</Label>
         </LabelWrapper>
-        <AppendantEditor
-          onClose={() => {
-            setIsAppend(false);
-          }}
-          editData={editData}
-          isEditMode={isEditMode}
-        />
+        {children}
       </Wrapper>
     </Popup>
   );

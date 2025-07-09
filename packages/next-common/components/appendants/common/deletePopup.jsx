@@ -8,7 +8,6 @@ import {
 import { appendantsApi } from "next-common/services/url";
 import nextApi from "next-common/services/nextApi";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import { useBountyAppendantsContext } from "next-common/context/bountyAppendants";
 
 const DeletePopup = dynamicPopup(() =>
   import("next-common/components/deletePopup"),
@@ -17,9 +16,9 @@ const DeletePopup = dynamicPopup(() =>
 export default function DeleteAppendantPopup({
   appendantData,
   setShow = noop,
+  update,
 }) {
   const dispatch = useDispatch();
-  const { update } = useBountyAppendantsContext();
 
   const deletePost = useCallback(async () => {
     try {

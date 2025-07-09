@@ -10,20 +10,16 @@ import {
   newErrorToast,
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
-import {
-  treasuryBountiesAppendantApi,
-  appendantsApi,
-} from "next-common/services/url";
+import { appendantsApi } from "next-common/services/url";
 import nextApi from "next-common/services/nextApi";
-import { useOnchainData } from "next-common/context/post";
-import { useBountyAppendantsContext } from "next-common/context/bountyAppendants";
 
 export default function AppendantEditor({
   onClose,
   editData = null,
   isEditMode = false,
+  createApi = null,
+  update,
 }) {
-  const { bountyIndex } = useOnchainData();
   const [content, setContent] = useState("");
   const [contentType, setContentType] = useState("markdown");
   const [errors, setErrors] = useState();
@@ -31,7 +27,6 @@ export default function AppendantEditor({
   const [submitting, setSubmitting] = useState(false);
   const dispatch = useDispatch();
   const { ensureLogin } = useEnsureLogin();
-  const { update } = useBountyAppendantsContext();
 
   useEffect(() => {
     if (isEditMode && editData) {
@@ -62,8 +57,6 @@ export default function AppendantEditor({
           contentType,
         }));
       } else {
-        const createApi = treasuryBountiesAppendantApi(bountyIndex);
-
         ({ result, error } = await nextApi.post(createApi, {
           content,
           contentType,

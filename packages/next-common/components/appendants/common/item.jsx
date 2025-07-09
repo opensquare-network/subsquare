@@ -11,68 +11,10 @@ import AddressUser from "next-common/components/user/addressUser";
 import { SystemActivity } from "@osn/icons/subsquare";
 import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 import Tooltip from "next-common/components/tooltip";
-import { SystemMore } from "@osn/icons/subsquare";
-import { useState, useRef } from "react";
-import { OptionWrapper } from "next-common/components/internalDropdown/styled";
-import {
-  EditMenuItem,
-  DeleteMenuItem,
-} from "next-common/components/contentMenu";
-import { useClickAway } from "react-use";
-import useIsAppendantAuthor from "./useIsAppendantAuthor";
-import dynamicPopup from "next-common/lib/dynamic/popup";
-
-const AppendantPopup = dynamicPopup(() =>
-  import("next-common/components/appendants/popup"),
-);
-
-const DeletePopup = dynamicPopup(() => import("next-common/components/appendants/popup/delete"));
+import useIsAppendantAuthor from "../useIsAppendantAuthor";
 
 function SplitDot() {
   return <span className="text-textTertiary text12Medium mx-2">·</span>;
-}
-
-function MoreActions({ data }) {
-  const [show, setShow] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
-  const [showDeletePopup, setShowDeletePopup] = useState(false);
-  const ref = useRef();
-
-  useClickAway(ref, () => setShow(false));
-
-  return (
-    <>
-      <div ref={ref} className="relative">
-        <SystemMore
-          className="w-5 h-5 [&_path]:fill-textTertiary cursor-pointer"
-          onClick={() => {
-            setShow(!show);
-          }}
-        />
-        {show && (
-          <OptionWrapper>
-            <EditMenuItem setIsEdit={setIsEdit} setShow={setShow} />
-            <DeleteMenuItem
-              setShowDeletePopup={setShowDeletePopup}
-              setShow={setShow}
-            />
-          </OptionWrapper>
-        )}
-      </div>
-
-      {isEdit && (
-        <AppendantPopup
-          setIsAppend={setIsEdit}
-          editData={data}
-          isEditMode={true}
-        />
-      )}
-
-      {showDeletePopup && (
-        <DeletePopup appendantData={data} setShow={setShowDeletePopup} />
-      )}
-    </>
-  );
 }
 
 function Activity({ data }) {
@@ -141,7 +83,7 @@ function Content({ data }) {
   );
 }
 
-export default function AppendentItem({ index, data }) {
+export default function AppendantItem({ index, data, MoreActions }) {
   const isAuthor = useIsAppendantAuthor(data);
 
   return (
@@ -150,7 +92,7 @@ export default function AppendentItem({ index, data }) {
       <div className="flex flex-col gap-[8px]">
         <div className="flex items-center justify-between">
           <Header index={index} data={data} />
-          {isAuthor && <MoreActions data={data} />}
+          {isAuthor && MoreActions && <MoreActions data={data} />}
         </div>
         <Content data={data} />
       </div>
