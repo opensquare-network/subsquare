@@ -28,7 +28,7 @@ export default function RemovePopup({ onClose, multisigAddress }) {
         dispatch(newErrorToast(error.message));
         return;
       }
-      dispatch(newSuccessToast("Remove multisig account successfully"));
+      dispatch(newSuccessToast("Removed successfully"));
       onClose();
       refresh?.();
     } catch (e) {

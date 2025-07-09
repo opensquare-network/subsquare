@@ -15,6 +15,7 @@ import {
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
 import { usePopupParams } from "../popupWithSigner/context";
+import { useMultisigAccounts } from "../multisigs/context/accountsContext";
 
 export default function CreateMultisigContent() {
   const address = useRealAddress();
@@ -25,6 +26,7 @@ export default function CreateMultisigContent() {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const { onClose } = usePopupParams();
+  const { refresh } = useMultisigAccounts();
 
   const buttonDisabled = useMemo(() => {
     return (
@@ -49,14 +51,24 @@ export default function CreateMultisigContent() {
           throw new Error(error.message);
         }
         onClose?.();
-        dispatch(newSuccessToast("Multisig created successfully"));
+        dispatch(newSuccessToast("Created successfully"));
+        refresh?.();
       } catch (error) {
         dispatch(newErrorToast(error.message));
       } finally {
         setIsLoading(false);
       }
     },
-    [ensureLogin, address, signatories, threshold, name, onClose, dispatch],
+    [
+      ensureLogin,
+      address,
+      signatories,
+      threshold,
+      name,
+      onClose,
+      dispatch,
+      refresh,
+    ],
   );
 
   return (

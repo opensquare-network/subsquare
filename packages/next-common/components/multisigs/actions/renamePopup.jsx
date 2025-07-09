@@ -30,7 +30,7 @@ export default function RemovePopup({ onClose, multisig }) {
         dispatch(newErrorToast(error.message));
         return;
       }
-      dispatch(newSuccessToast("Rename multisig account successfully"));
+      dispatch(newSuccessToast("Renamed successfully"));
       onClose();
       refresh?.();
     } catch (e) {

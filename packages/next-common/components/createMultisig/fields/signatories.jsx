@@ -41,6 +41,7 @@ export default function SignatoriesField() {
         <Button
           onClick={addSignatory}
           className="text-theme500 gap-x-1 h-auto p-0"
+          type="button"
         >
           <SystemPlus />
           Add Signatory
