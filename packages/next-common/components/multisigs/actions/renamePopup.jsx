@@ -8,13 +8,14 @@ import { useDispatch } from "react-redux";
 import PrimaryButton from "next-common/lib/button/primary";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 import Popup from "next-common/components/popup/wrapper/Popup";
-import { useRouter } from "next/router";
 import TextInputField from "next-common/components/popup/fields/textInputField";
+import { useMultisigAccounts } from "../context/accountsContext";
+
 export default function RemovePopup({ onClose, multisig }) {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState();
   const { ensureLogin } = useEnsureLogin();
-  const router = useRouter();
+  const { refresh } = useMultisigAccounts();
   const [name, setName] = useState(multisig.name);
 
   const doSubmit = useCallback(async () => {
@@ -31,13 +32,13 @@ export default function RemovePopup({ onClose, multisig }) {
       }
       dispatch(newSuccessToast("Rename multisig account successfully"));
       onClose();
-      router.replace(router.asPath);
+      refresh?.();
     } catch (e) {
       console.error(e);
     } finally {
       setIsLoading(false);
     }
-  }, [dispatch, ensureLogin, multisig, name, onClose, router]);
+  }, [dispatch, ensureLogin, multisig, name, onClose, refresh]);
 
   return (
     <Popup title="Rename Multisig Account" onClose={onClose}>

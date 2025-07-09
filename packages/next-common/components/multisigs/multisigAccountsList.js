@@ -1,8 +1,5 @@
 import DataList from "next-common/components/dataList";
-import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
-import nextApi from "next-common/services/nextApi";
 import { useCallback, useMemo, useState } from "react";
-import { useAsync } from "react-use";
 import PrimaryButton from "next-common/lib/button/primary";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { ArrowDown } from "@osn/icons/subsquare";
@@ -12,6 +9,7 @@ import IndentPanel from "../callTreeView/indentPanel";
 import { cn } from "next-common/utils";
 import Tooltip from "../tooltip";
 import CellActions from "./cellActions";
+import { useMultisigAccounts } from "./context/accountsContext";
 
 const CreateMultisigPopup = dynamicPopup(() => import("../createMultisig"));
 
@@ -23,23 +21,18 @@ const columns = [
 
 export default function MultisigAccountsList() {
   const [popupOpen, setPopupOpen] = useState(false);
-  const { ensureLogin } = useEnsureLogin();
-  const { value: multisigAccounts = [], loading } = useAsync(async () => {
-    await ensureLogin();
-    const { result } = await nextApi.fetch("user/multisigs");
-    return result;
-  }, []);
+  const { multisigs = [], isLoading } = useMultisigAccounts();
 
   const rows = useMemo(() => {
-    return multisigAccounts.map((multisig) => [
+    return multisigs.map((multisig) => [
       <Row key={multisig.multisigAddress} multisig={multisig} />,
     ]);
-  }, [multisigAccounts]);
+  }, [multisigs]);
 
   return (
     <WindowSizeProvider>
       <div className="flex flex-col gap-y-4">
-        <DataList columns={columns} rows={rows} loading={loading} />
+        <DataList columns={columns} rows={rows} loading={isLoading} />
         <div className="flex justify-end">
           <PrimaryButton onClick={() => setPopupOpen(true)}>
             Add Multisig Account

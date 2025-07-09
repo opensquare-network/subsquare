@@ -8,12 +8,12 @@ import { useDispatch } from "react-redux";
 import { useChain } from "next-common/context/chain";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useSelector } from "react-redux";
-import { cn } from "next-common/utils";
 import {
   fetchMyMultisigsCount,
   myMultisigsCountSelector,
 } from "next-common/store/reducers/multisigSlice";
 import { useEffect } from "react";
+import { useMultisigAccounts } from "./context/accountsContext";
 
 export function MultisigAccount({ multisig }) {
   const badge = `${multisig.threshold}/${multisig.signatories.length}`;
@@ -72,16 +72,38 @@ export function MultisigsCount() {
   );
 }
 
+export function MultisigAccountsCount() {
+  const { total = 0, isLoading } = useMultisigAccounts() || {};
+
+  if (isLoading) {
+    return null;
+  }
+
+  return <span className="text-textTertiary mx-1 text16Medium">{total}</span>;
+}
+
+const TitleLabel = tw.span`
+flex items-center cursor-pointer pb-3 text14Bold border-b-4 whitespace-nowrap hover:text-theme500
+${({ $active }) =>
+  $active
+    ? "text-theme500 border-theme500"
+    : "text-textTertiary border-transparent"}
+`;
+
 export function HistoryTitle({ active }) {
   return (
-    <span
-      className={cn(
-        "text14Bold cursor-pointer hover:text-theme500",
-        active ? "text-theme500" : "text-textTertiary",
-      )}
-    >
+    <TitleLabel $active={active}>
       History
       <MultisigsCount />
-    </span>
+    </TitleLabel>
+  );
+}
+
+export function AccountsTitle({ active }) {
+  return (
+    <TitleLabel $active={active}>
+      Multisig Accounts
+      <MultisigAccountsCount />
+    </TitleLabel>
   );
 }

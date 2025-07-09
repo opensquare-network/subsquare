@@ -9,6 +9,12 @@ import SignatoriesField from "./fields/signatories";
 import { useSignatories } from "./context/signatories";
 import { isEmpty, isNil } from "lodash-es";
 import ImportTips from "./importTips";
+import { useDispatch } from "react-redux";
+import {
+  newErrorToast,
+  newSuccessToast,
+} from "next-common/store/reducers/toastSlice";
+import { usePopupParams } from "../popupWithSigner/context";
 
 export default function CreateMultisigContent() {
   const address = useRealAddress();
@@ -16,22 +22,41 @@ export default function CreateMultisigContent() {
   const [threshold, setThreshold] = useState();
   const [name, setName] = useState("");
   const { signatories } = useSignatories();
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+  const { onClose } = usePopupParams();
 
   const buttonDisabled = useMemo(() => {
-    return isNil(threshold) || isEmpty(name);
-  }, [threshold, name]);
+    return (
+      isNil(threshold) ||
+      isEmpty(name) ||
+      signatories.some((item) => isEmpty(item))
+    );
+  }, [threshold, name, signatories]);
 
   const handleSubmit = useCallback(
     async (e) => {
-      await ensureLogin();
-      e.preventDefault();
-      await nextApi.post("user/multisigs", {
-        signatories: [address, ...signatories],
-        threshold,
-        name,
-      });
+      try {
+        setIsLoading(true);
+        await ensureLogin();
+        e.preventDefault();
+        const { error } = await nextApi.post("user/multisigs", {
+          signatories: [address, ...signatories],
+          threshold,
+          name,
+        });
+        if (error) {
+          throw new Error(error.message);
+        }
+        onClose?.();
+        dispatch(newSuccessToast("Multisig created successfully"));
+      } catch (error) {
+        dispatch(newErrorToast(error.message));
+      } finally {
+        setIsLoading(false);
+      }
     },
-    [ensureLogin, address, signatories, threshold, name],
+    [ensureLogin, address, signatories, threshold, name, onClose, dispatch],
   );
 
   return (
@@ -51,7 +76,11 @@ export default function CreateMultisigContent() {
           placeholder="Please fill the name..."
         />
         <div className="flex justify-end">
-          <PrimaryButton type="submit" disabled={buttonDisabled}>
+          <PrimaryButton
+            type="submit"
+            disabled={buttonDisabled}
+            loading={isLoading}
+          >
             Submit
           </PrimaryButton>
         </div>

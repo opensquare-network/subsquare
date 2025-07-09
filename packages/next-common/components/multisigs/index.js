@@ -7,7 +7,8 @@ import dynamic from "next/dynamic";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { NeutralPanel } from "../styled/containers/neutralPanel";
 import { useRouter } from "next/router";
-import { HistoryTitle } from "./styled";
+import { AccountsTitle, HistoryTitle } from "./styled";
+import { AccountsProvider } from "./context/accountsContext";
 
 const MultisigAccountsList = dynamic(() => import("./multisigAccountsList"), {
   ssr: false,
@@ -24,7 +25,7 @@ export default function Multisigs() {
       },
       {
         value: "accounts",
-        label: "Multisig Accounts",
+        label: ({ active }) => <AccountsTitle active={active} />,
         content: <MultisigAccountsList />,
       },
     ];
@@ -53,23 +54,25 @@ export default function Multisigs() {
   );
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col gap-[16px]">
-        <div className="flex justify-between sm:items-center max-sm:flex-col gap-[12px]">
-          <AccountSubTabs className="mx-6" />
+    <AccountsProvider>
+      <div className="space-y-6">
+        <div className="flex flex-col gap-[16px]">
+          <div className="flex justify-between sm:items-center max-sm:flex-col gap-[12px]">
+            <AccountSubTabs className="mx-6" />
+          </div>
+          <WithPageWidth>
+            <CallPopupProvider>
+              <NeutralPanel className="p-6">
+                <Tabs
+                  tabs={tabs}
+                  activeTabValue={activeTabValue}
+                  onTabClick={onTabClick}
+                />
+              </NeutralPanel>
+            </CallPopupProvider>
+          </WithPageWidth>
         </div>
-        <WithPageWidth>
-          <CallPopupProvider>
-            <NeutralPanel className="p-6">
-              <Tabs
-                tabs={tabs}
-                activeTabValue={activeTabValue}
-                onTabClick={onTabClick}
-              />
-            </NeutralPanel>
-          </CallPopupProvider>
-        </WithPageWidth>
       </div>
-    </div>
+    </AccountsProvider>
   );
 }

@@ -9,12 +9,13 @@ import SecondaryButton from "next-common/lib/button/secondary";
 import PrimaryButton from "next-common/lib/button/primary";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 import Popup from "next-common/components/popup/wrapper/Popup";
-import { useRouter } from "next/router";
+import { useMultisigAccounts } from "../context/accountsContext";
+
 export default function RemovePopup({ onClose, multisigAddress }) {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState();
   const { ensureLogin } = useEnsureLogin();
-  const router = useRouter();
+  const { refresh } = useMultisigAccounts();
 
   const doSubmit = useCallback(async () => {
     setIsLoading(true);
@@ -29,13 +30,13 @@ export default function RemovePopup({ onClose, multisigAddress }) {
       }
       dispatch(newSuccessToast("Remove multisig account successfully"));
       onClose();
-      router.replace(router.asPath);
+      refresh?.();
     } catch (e) {
       console.error(e);
     } finally {
       setIsLoading(false);
     }
-  }, [dispatch, ensureLogin, multisigAddress, onClose, router]);
+  }, [dispatch, ensureLogin, multisigAddress, onClose, refresh]);
 
   return (
     <Popup title="Remove Multisig Account" onClose={onClose}>
