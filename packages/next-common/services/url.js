@@ -26,7 +26,7 @@ export const gov2ReferendaHistoryWhalesApi = "gov2/referenda/history-whales";
 export const gov2ReferendaVoteActionsApi = (index) =>
   `gov2/referenda/${index}/actions`;
 export const gov2ReferendaAppendantApi = (index) =>
-  `gov2/referendums/${index}/appendants`; 
+  `gov2/referenda/${index}/appendants`;
 
 // fellowship
 export const fellowshipReferenda = "fellowship/referenda/";
