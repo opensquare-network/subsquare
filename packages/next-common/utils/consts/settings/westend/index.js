@@ -34,6 +34,7 @@ const westend = {
   links: polkadotLinks,
   postLabels: defaultPostLabels,
   description: "Westend is the primary test network of Polkadot.",
+  hasMultisig: true,
   modules: mergeChainModules({
     referenda: true,
     democracy: false,

@@ -10,7 +10,7 @@ import { isNil } from "lodash-es";
 
 export function When({ height, index }) {
   const chain = useChain();
-  const { integrations } = useChainSettings();
+  const { integrations, assethubMigration } = useChainSettings();
 
   if (
     (!integrations?.statescan && !integrations?.subscan) ||
@@ -23,9 +23,14 @@ export function When({ height, index }) {
   let baseUrl = null;
 
   if (integrations?.statescan) {
-    baseUrl = `https://${
-      integrations?.statescan?.domain || chain
-    }.statescan.io/#/extrinsics`;
+    let domain = null;
+    if (assethubMigration?.migrated) {
+      domain = assethubMigration?.statescanAssethubDomain || null;
+    } else {
+      domain = integrations?.statescan?.domain || chain;
+    }
+
+    baseUrl = `https://${domain}.statescan.io/#/extrinsics`;
   } else if (integrations?.subscan) {
     baseUrl = `https://${
       integrations?.subscan?.domain || chain
