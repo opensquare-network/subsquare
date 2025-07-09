@@ -13,20 +13,19 @@ import ChainLogo from "./logo";
 import Chains from "next-common/utils/consts/chains";
 import { useThemeSetting } from "next-common/context/theme";
 import useDetectDevice from "next-common/components/header/hooks/useDetectDevice";
+import { useMountedState } from "react-use";
 
 export default function Nav() {
   const isMobileDevice = useDetectDevice();
+  const isMounted = useMountedState();
+  if (!isMounted()) {
+    return null;
+  }
 
   return (
     <>
-      {isMobileDevice ? (
-        <NavMobile />
-      ) : (
-        <>
-          <NavDesktop />
-          <NavMobile />
-        </>
-      )}
+      {!isMobileDevice && <NavDesktop />}
+      <NavMobile />
     </>
   );
 }
