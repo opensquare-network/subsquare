@@ -65,7 +65,7 @@ export function MultisigsCount() {
 
   return (
     myMultisigsCount !== null && (
-      <span className="text-textTertiary mx-1 text16Medium">
+      <span className="text-textTertiary mx-1 text14Medium">
         {myMultisigsCount || 0}
       </span>
     )
@@ -79,7 +79,7 @@ export function MultisigAccountsCount() {
     return null;
   }
 
-  return <span className="text-textTertiary mx-1 text16Medium">{total}</span>;
+  return <span className="text-textTertiary mx-1 text14Medium">{total}</span>;
 }
 
 const TitleLabel = tw.span`
