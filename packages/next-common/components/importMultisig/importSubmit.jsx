@@ -13,6 +13,7 @@ import {
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
 import { noop } from "lodash-es";
+import { useMultisigAccounts } from "../multisigs/context/accountsContext";
 
 export default function ImportSubmit({
   selectedMultisig,
@@ -24,6 +25,7 @@ export default function ImportSubmit({
   const [isLoading, setIsLoading] = useState(false);
 
   const { ensureLogin } = useEnsureLogin();
+  const { refetch } = useMultisigAccounts();
 
   const handleSubmit = useCallback(
     async (e) => {
@@ -41,6 +43,7 @@ export default function ImportSubmit({
         }
         dispatch(newSuccessToast("Multisig imported successfully"));
         onSuccessed?.();
+        refetch?.();
       } catch (error) {
         dispatch(newErrorToast(error.message));
         console.error(error);
@@ -48,7 +51,7 @@ export default function ImportSubmit({
         setIsLoading(false);
       }
     },
-    [ensureLogin, selectedMultisig, name, dispatch, onSuccessed],
+    [ensureLogin, selectedMultisig, name, dispatch, onSuccessed, refetch],
   );
 
   if (!selectedMultisig) {
