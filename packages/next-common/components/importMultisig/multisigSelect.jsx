@@ -15,11 +15,13 @@ export default function MultisigSelect({
 }) {
   return (
     <>
-      <MultisigRadioGroup
-        options={list}
-        selected={selected}
-        setSelected={setSelected}
-      />
+      <div className="space-y-4 h-[calc(76vh-180px)] overflow-y-scroll scrollbar-pretty">
+        <MultisigRadioGroup
+          options={list}
+          selected={selected}
+          setSelected={setSelected}
+        />
+      </div>
       {total > pageSize && (
         <Pagination
           total={total}
