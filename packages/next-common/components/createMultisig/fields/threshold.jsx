@@ -14,7 +14,7 @@ export default function ThresholdField({
   const [showThresholdError, setShowThresholdError] = useState(false);
 
   const thresholdOptions = useMemo(() => {
-    return Array.from({ length: signatories.length - 1 }, (_, i) => ({
+    return Array.from({ length: signatories.length }, (_, i) => ({
       label: `${i + 2}`,
       value: i + 2,
     }));
