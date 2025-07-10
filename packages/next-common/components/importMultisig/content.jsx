@@ -8,8 +8,13 @@ import { useState } from "react";
 import MultisigSelect from "./multisigSelect";
 import ImportSubmit from "./importSubmit";
 
+const STEPS = {
+  SELECT_MULTISIG: 1,
+  SUBMIT_MULTISIG: 2,
+};
+
 export default function ImportMultisigContent({ closeAll }) {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(STEPS.SELECT_MULTISIG);
   const [selectedMultisigAddress, setSelectedMultisigAddress] = useState(null);
   const address = useRealAddress();
   const chain = useChain();
@@ -30,7 +35,7 @@ export default function ImportMultisigContent({ closeAll }) {
     return <ImportMultisigEmpty />;
   }
 
-  if (step === 1) {
+  if (step === STEPS.SELECT_MULTISIG) {
     return (
       <MultisigSelect
         list={value?.multisigAddresses?.map((item) => ({
@@ -40,15 +45,15 @@ export default function ImportMultisigContent({ closeAll }) {
         }))}
         selected={selectedMultisigAddress}
         setSelected={setSelectedMultisigAddress}
-        onContinue={() => setStep(2)}
+        onContinue={() => setStep(STEPS.SUBMIT_MULTISIG)}
       />
     );
   }
 
-  if (step === 2) {
+  if (step === STEPS.SUBMIT_MULTISIG) {
     return (
       <ImportSubmit
-        onBack={() => setStep(1)}
+        onBack={() => setStep(STEPS.SELECT_MULTISIG)}
         onSuccessed={closeAll}
         selectedMultisig={value?.multisigAddresses.find(
           (item) => item.address === selectedMultisigAddress,
