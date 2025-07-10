@@ -47,7 +47,7 @@ export async function fetchMultisigAddresses(
   chain,
   address,
   page = 1,
-  pageSize = 15,
+  pageSize = 10,
 ) {
   return await backendApi.fetch(
     getMultisigApiUrl(chain),

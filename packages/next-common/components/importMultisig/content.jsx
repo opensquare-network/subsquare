@@ -18,10 +18,11 @@ export default function ImportMultisigContent({ closeAll }) {
   const [selectedMultisigAddress, setSelectedMultisigAddress] = useState(null);
   const address = useRealAddress();
   const chain = useChain();
+  const [page, setPage] = useState(1);
   const { value, loading } = useAsync(async () => {
-    const { result } = await fetchMultisigAddresses(chain, address);
+    const { result } = await fetchMultisigAddresses(chain, address, page);
     return result?.data?.multisigAddresses;
-  }, [chain, address]);
+  }, [chain, address, page]);
 
   if (loading) {
     return (
@@ -46,6 +47,9 @@ export default function ImportMultisigContent({ closeAll }) {
         selected={selectedMultisigAddress}
         setSelected={setSelectedMultisigAddress}
         onContinue={() => setStep(STEPS.SUBMIT_MULTISIG)}
+        page={page}
+        setPage={setPage}
+        total={value?.total}
       />
     );
   }
