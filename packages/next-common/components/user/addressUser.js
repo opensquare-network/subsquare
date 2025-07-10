@@ -28,6 +28,7 @@ export function AddressUserImpl({
   noTooltip = false,
   ellipsis = true,
   link = "",
+  needHref = true,
   identityIconClassName = "",
 }) {
   const chain = useChain();
@@ -50,7 +51,9 @@ export function AddressUserImpl({
   );
 
   let userIdentityLink;
-  if (isExternalLink(link)) {
+  if (!needHref) {
+    userIdentityLink = userIdentity;
+  } else if (isExternalLink(link)) {
     userIdentityLink = (
       <ExternalLink externalIcon={false} href={link}>
         {userIdentity}
@@ -98,6 +101,7 @@ function AddressUserComp({
   maxWidth: propMaxWidth,
   noTooltip = false,
   ellipsis = true,
+  needHref = true,
   link = "",
   identityIconClassName = "",
   avatarSize = "",
@@ -125,6 +129,7 @@ function AddressUserComp({
       noTooltip={noTooltip}
       ellipsis={ellipsis}
       link={link}
+      needHref={needHref}
       identityIconClassName={identityIconClassName}
       className={cn(inlineClassName, className)}
     />

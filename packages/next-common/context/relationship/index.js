@@ -19,12 +19,13 @@ const defaultContext = {
 const RelationshipContext = createContext(defaultContext);
 
 export default function RelationshipProvider({
-  rootAddress,
+  rootAddress: rootAddressProp,
   children,
   nodes,
   edges,
   isLoading,
 }) {
+  const [rootAddress, setRootAddress] = useState(rootAddressProp);
   const [excludedIndications, setExcludedIndications] = useState(
     defaultContext.excludedIndications,
   );
@@ -36,6 +37,7 @@ export default function RelationshipProvider({
       isLoading,
       excludedIndications,
       setExcludedIndications,
+      setRootAddress,
     }),
     [
       rootAddress,
@@ -153,4 +155,9 @@ export function useSwitchIndications() {
 export function useRootAddress() {
   const context = useContext(RelationshipContext);
   return context?.rootAddress || "";
+}
+
+export function useSetRootAddress() {
+  const context = useContext(RelationshipContext);
+  return context?.setRootAddress || noop;
 }

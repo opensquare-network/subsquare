@@ -8,7 +8,10 @@ import styled from "styled-components";
 import tw from "tailwind-styled-components";
 import { useProfileBannerUrl } from "next-common/components/profile/header";
 import { cn } from "next-common/utils";
-import { useRootAddress } from "next-common/context/relationship";
+import {
+  useRootAddress,
+  useSetRootAddress,
+} from "next-common/context/relationship";
 
 const NodeWrap = styled.div`
   box-shadow: var(--shadow100);
@@ -45,14 +48,24 @@ ${(p) => {
 `;
 
 function AddressLabel({ data }) {
+  const setRootAddress = useSetRootAddress();
   return (
-    <AddressUser
-      add={data?.address || ""}
-      className="flex text14Medium text-textPrimary"
-      maxWidth={200}
-      showAvatar={false}
-      noTooltip
-    />
+    <span
+      onClick={() => {
+        if (data?.address) {
+          setRootAddress(data?.address);
+        }
+      }}
+    >
+      <AddressUser
+        add={data?.address || ""}
+        className="flex text14Medium text-textPrimary"
+        maxWidth={200}
+        showAvatar={false}
+        noTooltip
+        needHref={false}
+      />
+    </span>
   );
 }
 
