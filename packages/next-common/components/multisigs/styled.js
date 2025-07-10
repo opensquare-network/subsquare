@@ -93,7 +93,7 @@ ${({ $active }) =>
 export function HistoryTitle({ active }) {
   return (
     <TitleLabel $active={active}>
-      <span className="inline-block h-6 mr-1">History</span>
+      <span className="inline-flex items-center h-6 mr-1">History</span>
       <MultisigsCount />
     </TitleLabel>
   );
@@ -102,7 +102,7 @@ export function HistoryTitle({ active }) {
 export function AccountsTitle({ active }) {
   return (
     <TitleLabel $active={active}>
-      <span className="inline-block h-6 mr-1">Multisig Accounts</span>
+      <span className="inline-flex items-center h-6 mr-1">Multisig Accounts</span>
       <MultisigAccountsCount />
     </TitleLabel>
   );

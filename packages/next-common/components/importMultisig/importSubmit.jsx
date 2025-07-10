@@ -25,7 +25,7 @@ export default function ImportSubmit({
   const [isLoading, setIsLoading] = useState(false);
 
   const { ensureLogin } = useEnsureLogin();
-  const { refetch } = useMultisigAccounts();
+  const { refresh } = useMultisigAccounts();
 
   const handleSubmit = useCallback(
     async (e) => {
@@ -43,7 +43,7 @@ export default function ImportSubmit({
         }
         dispatch(newSuccessToast("Multisig imported successfully"));
         onSuccessed?.();
-        refetch?.();
+        refresh?.();
       } catch (error) {
         dispatch(newErrorToast(error.message));
         console.error(error);
@@ -51,7 +51,7 @@ export default function ImportSubmit({
         setIsLoading(false);
       }
     },
-    [ensureLogin, selectedMultisig, name, dispatch, onSuccessed, refetch],
+    [ensureLogin, selectedMultisig, name, dispatch, onSuccessed, refresh],
   );
 
   if (!selectedMultisig) {
