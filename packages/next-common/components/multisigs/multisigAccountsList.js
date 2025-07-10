@@ -60,14 +60,17 @@ function Row({ multisig }) {
         {isExtended && (
           <IndentPanel className="ml-4 mt-4">
             <div className="flex flex-col gap-y-4">
-              {multisig.signatories.map((signatory) => (
-                <SignatorieAccount key={signatory} address={signatory} />
+              {multisig.signatories.map((signatory, index) => (
+                <SignatorieAccount
+                  key={`signatory-${index}-${signatory}`}
+                  address={signatory}
+                />
               ))}
             </div>
           </IndentPanel>
         )}
       </div>
-      <div className="flex items-center gap-x-2 justify-end">
+      <div className="flex items-center gap-x-2 justify-end h-10">
         <CellActions multisig={multisig} />
 
         <Tooltip content="Signatories">

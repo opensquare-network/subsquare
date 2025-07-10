@@ -50,6 +50,7 @@ export default function RemovePopup({ onClose, multisigAddress }) {
         <SecondaryButton onClick={onClose}>Cancel</SecondaryButton>
         <PrimaryButton
           loading={isLoading}
+          disabled={isLoading}
           className="!bg-red500"
           onClick={doSubmit}
         >

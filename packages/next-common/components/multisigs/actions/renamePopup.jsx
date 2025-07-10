@@ -51,7 +51,11 @@ export default function RemovePopup({ onClose, multisig }) {
         />
       </div>
       <div className="flex justify-end">
-        <PrimaryButton loading={isLoading} onClick={doSubmit}>
+        <PrimaryButton
+          loading={isLoading}
+          disabled={isLoading || !name}
+          onClick={doSubmit}
+        >
           Save Changes
         </PrimaryButton>
       </div>

@@ -32,15 +32,15 @@ export default function ImportSubmit({
       setIsLoading(true);
       try {
         await ensureLogin();
-        const { error, result } = await nextApi.post("user/multisigs", {
+        const { error } = await nextApi.post("user/multisigs", {
           ...selectedMultisig,
           name,
         });
-        if (result?.success) {
-          dispatch(newSuccessToast("Multisig imported successfully"));
-          onSuccessed?.();
+        if (error) {
+          throw new Error(error.message);
         }
-        throw new Error(error.message);
+        dispatch(newSuccessToast("Multisig imported successfully"));
+        onSuccessed?.();
       } catch (error) {
         dispatch(newErrorToast(error.message));
         console.error(error);
