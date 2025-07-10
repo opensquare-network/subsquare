@@ -96,6 +96,9 @@ const zkverifyTestnet = {
     navigationBorder: "var(--neutral300)",
   },
   allowWeb2Login: true,
+  newProposalQuickStart: {
+    cancelReferendum: true,
+  },
 };
 
 export default zkverifyTestnet;
