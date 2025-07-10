@@ -1,6 +1,5 @@
 import { noop } from "lodash-es";
-import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import {
   createContext,
   useCallback,
@@ -21,17 +20,13 @@ export function AccountsProvider({ children }) {
   const [multisigs, setMultisigs] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [total, setTotal] = useState(0);
-  const { ensureLogin } = useEnsureLogin();
 
   const fetchMultisigs = useCallback(async () => {
     try {
       setIsLoading(true);
-      const loginResult = await ensureLogin();
-      if (loginResult) {
-        const { result } = await nextApi.fetch("user/multisigs");
-        setMultisigs(result);
-        setTotal(result.length);
-      }
+      const { result } = await backendApi.fetch("user/multisigs");
+      setMultisigs(result);
+      setTotal(result.length);
     } catch (error) {
       console.error(error);
     } finally {
