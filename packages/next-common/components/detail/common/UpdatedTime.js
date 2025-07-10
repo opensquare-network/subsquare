@@ -31,7 +31,7 @@ export default function UpdatedTime() {
         }
       >
         <SystemActivity className="w-4 h-4 stroke-textTertiary [&_path]:stroke-2" />
-        <span>{timeAgo}</span>
+        <span suppressHydrationWarning>{timeAgo}</span>
       </Tooltip>
     </Info>
   );
