@@ -10,6 +10,7 @@ import { cn } from "next-common/utils";
 import Tooltip from "../tooltip";
 import CellActions from "./cellActions";
 import { useMultisigAccounts } from "./context/accountsContext";
+import { GreyPanel } from "../styled/containers/greyPanel";
 
 const CreateMultisigPopup = dynamicPopup(() => import("../createMultisig"));
 
@@ -32,7 +33,11 @@ export default function MultisigAccountsList() {
   return (
     <WindowSizeProvider>
       <div className="flex flex-col gap-y-4">
-        <DataList columns={columns} rows={rows} loading={isLoading} />
+        {multisigs.length > 0 ? (
+          <DataList columns={columns} rows={rows} loading={isLoading} />
+        ) : (
+          <ListEmpty />
+        )}
         <div className="flex justify-end">
           <PrimaryButton onClick={() => setPopupOpen(true)}>
             Add Multisig Account
@@ -43,6 +48,14 @@ export default function MultisigAccountsList() {
         )}
       </div>
     </WindowSizeProvider>
+  );
+}
+
+function ListEmpty() {
+  return (
+    <GreyPanel className="px-4 py-2.5 text14Medium text-textSecondary">
+      You have no multisig accounts.
+    </GreyPanel>
   );
 }
 
