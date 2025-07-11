@@ -13,7 +13,6 @@ import ReactQueryClientProvider from "./reactQuery";
 import UserAccountProvider from "./user/account";
 import PageLoadingProvider from "./pageLoading";
 import WalletConnectProvider from "./walletconnect";
-import RealTimeFiatPriceProvider from "./realTimeFiatPrice";
 
 export default function GlobalProvider({
   user,
@@ -49,9 +48,7 @@ export default function GlobalProvider({
                           <WalletConnectProvider>
                             <UserAccountProvider>
                               <SignetContextProvider>
-                                <RealTimeFiatPriceProvider>
-                                  {children}
-                                </RealTimeFiatPriceProvider>
+                                {children}
                               </SignetContextProvider>
                             </UserAccountProvider>
                           </WalletConnectProvider>

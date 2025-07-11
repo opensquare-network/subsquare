@@ -1,14 +1,15 @@
 import { useChainSettings } from "next-common/context/chain";
 import BigNumber from "bignumber.js";
 import { abbreviateBigNumber } from "next-common/utils";
-import Loading from "next-common/components/loading";
-import { useRealTimeFiatPrice } from "next-common/context/realTimeFiatPrice";
+import { createGlobalState } from "react-use";
+
+export const useRealTimeFiatPrice = createGlobalState(0);
 
 export default function useValueTransferFiatPrice(value, decimals, symbol) {
-  const { price, loading } = useRealTimeFiatPrice();
+  const [price] = useRealTimeFiatPrice();
   const chainConfig = useChainSettings();
 
-  if (loading || !value || chainConfig.symbol !== symbol) {
+  if (!price || !value || chainConfig.symbol !== symbol) {
     return null;
   }
 
@@ -16,11 +17,5 @@ export default function useValueTransferFiatPrice(value, decimals, symbol) {
     BigNumber(value).dividedBy(Math.pow(10, decimals)).multipliedBy(price),
   );
 
-  return loading ? (
-    <span className="pl-1 inline-flex items-center">
-      <Loading size={14} color="var(--neutral100)" />
-    </span>
-  ) : (
-    `( ≈ $${valueFiatPrice} )`
-  );
+  return `( ≈ $${valueFiatPrice} )`;
 }
