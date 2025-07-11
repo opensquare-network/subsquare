@@ -4,10 +4,18 @@ import { cn } from "next-common/utils";
 import TreasurySpendValueDisplay from "../gov2/business/treasurySpendValueDisplay";
 import AssetIcon from "../icons/assetIcon";
 import Tooltip from "../tooltip";
+import useValueTransferFiatPrice from "./common/useValueTransferFiatPrice";
+import { useChainSettings } from "next-common/context/chain";
+import { useMemo } from "react";
+import Loading from "../loading";
+import Flex from "../styled/flex";
 
-export default function PostListTreasuryAllSpends({ allSpends }) {
+export default function PostListTreasuryAllSpends({
+  allSpends,
+  showFaitPrice,
+}) {
   const groupedSpends = groupBy(allSpends, "assetKind.symbol");
-  const resolvedSpends = Object.keys(groupedSpends).map((symbol) => {
+  let resolvedSpends = Object.keys(groupedSpends).map((symbol) => {
     const spends = groupedSpends[symbol];
     const amount = BigNumber.sum(
       ...spends.map((spend) => spend.amount),
@@ -21,43 +29,69 @@ export default function PostListTreasuryAllSpends({ allSpends }) {
   });
 
   if (resolvedSpends.length === 1) {
-    const { amount, type, symbol } = resolvedSpends[0];
-
     return (
-      <div className="text-textPrimary">
-        <TreasurySpendValueDisplay
-          className={cn("text14Medium")}
-          type={type}
-          amount={amount}
-          symbol={symbol}
-        />
-      </div>
+      <OnlyOneSpends spend={resolvedSpends[0]} showFaitPrice={showFaitPrice} />
     );
   }
 
-  return <MultiSpends spends={resolvedSpends} />;
+  return <MultiSpends spends={resolvedSpends} showFaitPrice={showFaitPrice} />;
 }
 
-function MultiSpends({ spends }) {
+function OnlyOneSpends({ spend: { type, amount, symbol }, showFaitPrice }) {
+  let { decimals } = useChainSettings();
+  const valueFiatPrice = useValueTransferFiatPrice(amount, decimals, symbol);
+
   return (
-    <Tooltip
-      className="flex items-center"
-      content={
-        <div className="flex flex-col">
-          {spends.map((spend) => (
-            <TreasurySpendValueDisplay
-              key={spend.symbol}
-              className="text-textPrimaryContrast text12Medium"
-              showTooltip={false}
-              amount={spend.amount}
-              type={spend.type}
-              chain={spend.chain}
-              symbol={spend.symbol}
-            />
-          ))}
-        </div>
-      }
-    >
+    <div className="text-textPrimary">
+      <TreasurySpendValueDisplay
+        className={cn("text14Medium")}
+        type={type}
+        amount={amount}
+        symbol={symbol}
+        tooltipOtherContent={showFaitPrice && valueFiatPrice}
+      />
+    </div>
+  );
+}
+
+const SpendValue = ({ spend, showFaitPrice }) => {
+  let { decimals } = useChainSettings();
+  const valueFiatPrice = useValueTransferFiatPrice(
+    spend.amount,
+    decimals,
+    spend.symbol,
+  );
+
+  return (
+    <Flex className="items-center text-textPrimaryContrast text12Medium">
+      <TreasurySpendValueDisplay
+        key={spend.symbol}
+        className="text-textPrimaryContrast text12Medium"
+        showTooltip={false}
+        amount={spend.amount}
+        type={spend.type}
+        chain={spend.chain}
+        symbol={spend.symbol}
+      />
+
+      {showFaitPrice && valueFiatPrice}
+    </Flex>
+  );
+};
+
+function MultiSpends({ spends, showFaitPrice }) {
+  const content = useMemo(() => {
+    return (
+      <div className="flex flex-col">
+        {spends.map((spend, index) => (
+          <SpendValue showFaitPrice={showFaitPrice} spend={spend} key={index} />
+        ))}
+      </div>
+    );
+  }, [showFaitPrice, spends]);
+
+  return (
+    <Tooltip className="flex items-center" content={content}>
       {spends.map((spend, idx) => (
         <AssetIcon
           key={spend.symbol}
@@ -66,6 +100,7 @@ function MultiSpends({ spends }) {
           className={cn("w-5 h-5", idx > 0 && "-ml-2")}
         />
       ))}
+      <Loading size={12} color={"var(--textPrimaryContrast)"} />
     </Tooltip>
   );
 }
