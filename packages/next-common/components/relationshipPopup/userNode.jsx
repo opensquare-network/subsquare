@@ -47,14 +47,14 @@ ${(p) => {
 
 function AddressLabel({ data }) {
   const { setSourceAddress } = useSourceAddress();
-  const changeRootAddress = useCallback(() => {
+  const changeSourceAddress = useCallback(() => {
     if (data?.address) {
       setSourceAddress(data?.address);
     }
   }, [data?.address, setSourceAddress]);
 
   return (
-    <span onClick={changeRootAddress}>
+    <span onClick={changeSourceAddress}>
       <AddressUser
         add={data?.address || ""}
         className="flex text14Medium text-textPrimary"
