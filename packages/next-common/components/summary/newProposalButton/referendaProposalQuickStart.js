@@ -90,6 +90,7 @@ const useQuickStartItems = () => {
     };
   }, [
     cancelReferendum,
+    chain,
     killReferendum,
     spendDotOnAssetHubProposal,
     treasuryProposalTracks,
