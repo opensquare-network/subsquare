@@ -55,7 +55,7 @@ export default function RelationshipPopup({
       title={title}
       onClose={onClose}
     >
-      <AddressProvider sourceAddress={sourceAddress}>
+      <AddressProvider address={sourceAddress}>
         <RelationshipImpl />
       </AddressProvider>
     </Popup>
