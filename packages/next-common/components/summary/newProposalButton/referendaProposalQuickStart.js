@@ -4,7 +4,7 @@ import {
   InfoPopoular,
   SystemNewProposal,
 } from "@osn/icons/subsquare";
-import { useChainSettings } from "next-common/context/chain";
+import { useChainSettings, useChain } from "next-common/context/chain";
 import SecondaryButton from "next-common/lib/button/secondary";
 import Divider from "next-common/components/styled/layout/divider";
 import { useStepContainer } from "next-common/context/stepContainer";
@@ -16,6 +16,7 @@ import { NewTreasuryReferendumInnerPopupContent } from "../newProposalQuickStart
 import { NewUSDxTreasuryReferendumInnerPopupContent } from "../newProposalQuickStart/createUSDxTreasuryProposalPopup";
 import { SpendDotOnAssetHubReferendumInnerPopupContent } from "../newProposalQuickStart/spendDotOnAssetHubPopup";
 import { NewTreasurySpendReferendumInnerPopupContent } from "../newProposalQuickStart/createTreasurySpendReferendumInnerPopupContent";
+import { isZkverifyChain } from "next-common/utils/chain";
 
 const useQuickStartItems = () => {
   const {
@@ -28,6 +29,8 @@ const useQuickStartItems = () => {
       treasurySpendProposal,
     } = {},
   } = useChainSettings();
+
+  const chain = useChain();
 
   return useMemo(() => {
     const items = [];
@@ -61,7 +64,7 @@ const useQuickStartItems = () => {
       });
     }
     items.push({
-      name: "Remark",
+      name: isZkverifyChain(chain) ? "Remark (Wish for Change)" : "Remark",
       description: "Create a remark proposal",
       content: NewRemarkReferendumInnerPopupContent,
     });
