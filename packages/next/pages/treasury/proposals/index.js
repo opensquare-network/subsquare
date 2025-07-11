@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import PostList from "next-common/components/postList";
+import PostList from "next-common/components/postList/treasury/proposals";
 import { withCommonProps } from "next-common/lib";
 import TreasurySummary from "next-common/components/summary/treasurySummary";
 import normalizeTreasuryProposalListItem from "next-common/utils/viewfuncs/treasury/normalizeProposalListItem";
@@ -11,20 +11,20 @@ import {
   TreasuryProvider,
   useTreasuryProposalListUrl,
 } from "next-common/context/treasury";
-import NewTreasuryProposal from "next-common/components/treasury/proposal/newTreasuryProposal";
 import { isPolkadotChain } from "next-common/utils/chain";
 import PolkadotTreasuryStatsOnProposal from "next-common/components/treasury/common/polkadotTreasuryStatsOnProposal";
+import businessCategory from "next-common/utils/consts/business/category";
 
 export default function ProposalsPage({ proposals: ssrProposals, chain }) {
   const [proposals, setProposals] = useState(ssrProposals);
   useEffect(() => setProposals(ssrProposals), [ssrProposals]);
-  const { integrations, showNewTreasuryProposalButton } = useChainSettings();
+  const { integrations } = useChainSettings();
 
   const items = (proposals.items || []).map((item) =>
     normalizeTreasuryProposalListItem(chain, item),
   );
 
-  const category = "Treasury Proposals";
+  const category = businessCategory.treasuryProposals;
   const seoInfo = { title: category, desc: category };
 
   const pallet = "treasury";
@@ -56,15 +56,6 @@ export default function ProposalsPage({ proposals: ssrProposals, chain }) {
         ].filter(Boolean)}
       >
         <PostList
-          titleExtra={
-            showNewTreasuryProposalButton && (
-              <div className="flex justify-end">
-                <NewTreasuryProposal />
-              </div>
-            )
-          }
-          category={category}
-          title="List"
           titleCount={proposals.total}
           items={items}
           pagination={{
