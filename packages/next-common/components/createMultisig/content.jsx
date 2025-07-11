@@ -38,10 +38,10 @@ export default function CreateMultisigContent() {
 
   const handleSubmit = useCallback(
     async (e) => {
+      e.preventDefault();
       try {
         setIsLoading(true);
         await ensureLogin();
-        e.preventDefault();
         const { error } = await nextApi.post("user/multisigs", {
           signatories: [address, ...signatories],
           threshold,

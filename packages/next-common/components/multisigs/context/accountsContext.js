@@ -1,5 +1,5 @@
 import { noop } from "lodash-es";
-import { backendApi } from "next-common/services/nextApi";
+import nextApi from "next-common/services/nextApi";
 import {
   createContext,
   useCallback,
@@ -24,9 +24,9 @@ export function AccountsProvider({ children }) {
   const fetchMultisigs = useCallback(async () => {
     try {
       setIsLoading(true);
-      const { result } = await backendApi.fetch("user/multisigs");
+      const { result } = await nextApi.fetch("user/multisigs");
       setMultisigs(result);
-      setTotal(result.length);
+      setTotal(result?.length || 0);
     } catch (error) {
       console.error(error);
     } finally {
