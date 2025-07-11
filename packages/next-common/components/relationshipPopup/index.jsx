@@ -7,9 +7,7 @@ import Relationship from "./relationship";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { useMemo } from "react";
 import RelationshipProvider from "next-common/context/relationship";
-import SourceAddressProvider, {
-  useSourceAddress,
-} from "next-common/context/relationship/sourceAddress";
+import AddressProvider, { useAddress } from "next-common/context/address";
 
 function NoRelationshipsTip() {
   return (
@@ -20,7 +18,7 @@ function NoRelationshipsTip() {
 }
 
 function RelationshipImpl() {
-  const { sourceAddress } = useSourceAddress() || {};
+  const sourceAddress = useAddress();
   const { isLoading, nodes, edges } =
     useConversionRelationshipNode(sourceAddress);
 
@@ -60,9 +58,9 @@ export default function RelationshipPopup({
       title={title}
       onClose={onClose}
     >
-      <SourceAddressProvider sourceAddress={sourceAddress}>
+      <AddressProvider sourceAddress={sourceAddress}>
         <RelationshipImpl />
-      </SourceAddressProvider>
+      </AddressProvider>
     </Popup>
   );
 }
