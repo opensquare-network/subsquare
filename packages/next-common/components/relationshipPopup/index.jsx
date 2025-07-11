@@ -30,12 +30,7 @@ function RelationshipImpl() {
     return nodes?.length === 1 && edges?.length === 0;
   }, [isLoading, nodes, edges]);
   return (
-    <RelationshipProvider
-      sourceAddress={sourceAddress}
-      isLoading={isLoading}
-      nodes={nodes}
-      edges={edges}
-    >
+    <RelationshipProvider isLoading={isLoading} nodes={nodes} edges={edges}>
       {showNoRelationshipsTip && <NoRelationshipsTip />}
       <Relationship />
       <Indications />
