@@ -172,10 +172,7 @@ function After({ after, className = "" }) {
 }
 
 function PassedTime({ validFrom }) {
-  const { timestamp, isLoading } = useBlockTimestamp(validFrom);
-  if (isLoading) {
-    return <FieldLoading size={14} />;
-  }
+  const { timestamp } = useBlockTimestamp(validFrom);
 
   if (isNaN(timestamp)) {
     return null;
