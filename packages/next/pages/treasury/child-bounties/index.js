@@ -1,4 +1,4 @@
-import PostList from "next-common/components/postList";
+import PostList from "next-common/components/postList/treasury/child-bounties";
 import { withCommonProps } from "next-common/lib";
 import { toTreasuryChildBountyListItem } from "next-common/utils/viewfuncs";
 import { useChain } from "next-common/context/chain";
@@ -41,8 +41,6 @@ export default function ChildBountiesPage({ bounties }) {
         ].filter(Boolean)}
       >
         <PostList
-          category={category}
-          title="List"
           titleCount={bounties.total}
           items={items}
           pagination={{
