@@ -2,7 +2,7 @@ import { noop } from "lodash-es";
 import { createContext, useState, useContext } from "react";
 
 const defaultContext = {
-  address: "",
+  address: null,
   setAddress: noop,
 };
 
@@ -17,10 +17,10 @@ export default function AddressProvider({ children, address: addressProp }) {
   );
 }
 
-export function useAddress() {
+export function useContextAddress() {
   return useContext(AddressContext)?.address;
 }
 
-export function useSetAddress() {
+export function useSetContextAddress() {
   return useContext(AddressContext)?.setAddress;
 }

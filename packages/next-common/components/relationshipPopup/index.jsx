@@ -7,7 +7,9 @@ import Relationship from "./relationship";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { useMemo } from "react";
 import RelationshipProvider from "next-common/context/relationship";
-import AddressProvider, { useAddress } from "next-common/context/address";
+import AddressProvider, {
+  useContextAddress,
+} from "next-common/context/address";
 
 function NoRelationshipsTip() {
   return (
@@ -18,7 +20,7 @@ function NoRelationshipsTip() {
 }
 
 function RelationshipImpl() {
-  const sourceAddress = useAddress();
+  const sourceAddress = useContextAddress();
   const { isLoading, nodes, edges } =
     useConversionRelationshipNode(sourceAddress);
 
