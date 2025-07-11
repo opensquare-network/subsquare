@@ -4,7 +4,7 @@ import useFetchProfileProxies, {
 import useMultisigAddress from "next-common/hooks/useMultisigAddress";
 import useSignatoryMultisig from "next-common/hooks/useSignatoryMultisig";
 import { RELATIONSHIP_NODE_TYPE } from "next-common/utils/constants";
-import useFetchIdentityInfo from "next-common/hooks/profile/useFetchIdentityInfo";
+import useFetchIdentityInfo from "next-common/hooks/useFetchIdentityInfo";
 import Tooltip from "next-common/components/tooltip";
 import Link from "next/link";
 
@@ -287,7 +287,7 @@ export default function useConversionRelationshipNode(sourceAddress = "") {
   });
   const multisigAddress = useMultisigAddress(sourceAddress);
   const signatoryMultisig = useSignatoryMultisig(sourceAddress);
-  const identityInfo = useFetchIdentityInfo();
+  const identityInfo = useFetchIdentityInfo(sourceAddress);
 
   const isLoading =
     proxies.isLoading ||
