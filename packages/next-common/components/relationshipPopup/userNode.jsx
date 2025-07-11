@@ -8,10 +8,7 @@ import styled from "styled-components";
 import tw from "tailwind-styled-components";
 import { useProfileBannerUrl } from "next-common/components/profile/header";
 import { cn } from "next-common/utils";
-import {
-  useRootAddress,
-  useSetRootAddress,
-} from "next-common/context/relationship";
+import { useRootAddress } from "next-common/context/relationship/rootAddress";
 
 const NodeWrap = styled.div`
   box-shadow: var(--shadow100);
@@ -48,7 +45,7 @@ ${(p) => {
 `;
 
 function AddressLabel({ data }) {
-  const setRootAddress = useSetRootAddress();
+  const { setRootAddress } = useRootAddress();
   return (
     <span
       onClick={() => {
@@ -109,7 +106,7 @@ function RelativeUserNode({ data }) {
 }
 
 export default function UserNode({ data }) {
-  const rootAddress = useRootAddress();
+  const { rootAddress } = useRootAddress();
   const isSelf = rootAddress === data?.address;
 
   const sourceConnections = useNodeConnections({ handleType: "source" });

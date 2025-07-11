@@ -7,6 +7,10 @@ import Relationship from "./relationship";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { useMemo } from "react";
 import RelationshipProvider from "next-common/context/relationship";
+import {
+  RootAddressProvider,
+  useRootAddress,
+} from "next-common/context/relationship/rootAddress";
 
 function NoRelationshipsTip() {
   return (
@@ -16,12 +20,8 @@ function NoRelationshipsTip() {
   );
 }
 
-export default function RelationshipPopup({
-  title = "Relatives",
-  className = "",
-  onClose = noop,
-  rootAddress = "",
-}) {
+function RelationshipImpl() {
+  const { rootAddress } = useRootAddress() || {};
   const { isLoading, nodes, edges } =
     useConversionRelationshipNode(rootAddress);
 
@@ -32,23 +32,38 @@ export default function RelationshipPopup({
 
     return nodes?.length === 1 && edges?.length === 0;
   }, [isLoading, nodes, edges]);
+  return (
+    <RelationshipProvider
+      rootAddress={rootAddress}
+      isLoading={isLoading}
+      nodes={nodes}
+      edges={edges}
+    >
+      {showNoRelationshipsTip && <NoRelationshipsTip />}
+      <Relationship />
+      <Indications />
+    </RelationshipProvider>
+  );
+}
 
+export default function RelationshipPopup({
+  title = "Relatives",
+  className = "",
+  onClose = noop,
+  rootAddress = "",
+}) {
+  if (!rootAddress) {
+    return null;
+  }
   return (
     <Popup
       className={cn("w-[960px]", className)}
       title={title}
       onClose={onClose}
     >
-      <RelationshipProvider
-        rootAddress={rootAddress}
-        isLoading={isLoading}
-        nodes={nodes}
-        edges={edges}
-      >
-        {showNoRelationshipsTip && <NoRelationshipsTip />}
-        <Relationship />
-        <Indications />
-      </RelationshipProvider>
+      <RootAddressProvider rootAddress={rootAddress}>
+        <RelationshipImpl />
+      </RootAddressProvider>
     </Popup>
   );
 }
