@@ -9,6 +9,7 @@ import tw from "tailwind-styled-components";
 import { useProfileBannerUrl } from "next-common/components/profile/header";
 import { cn } from "next-common/utils";
 import { useRootAddress } from "next-common/context/relationship/rootAddress";
+import { useCallback } from "react";
 
 const NodeWrap = styled.div`
   box-shadow: var(--shadow100);
@@ -46,14 +47,14 @@ ${(p) => {
 
 function AddressLabel({ data }) {
   const { setRootAddress } = useRootAddress();
+  const changeRootAddress = useCallback(() => {
+    if (data?.address) {
+      setRootAddress(data?.address);
+    }
+  }, [data?.address, setRootAddress]);
+
   return (
-    <span
-      onClick={() => {
-        if (data?.address) {
-          setRootAddress(data?.address);
-        }
-      }}
-    >
+    <span onClick={changeRootAddress}>
       <AddressUser
         add={data?.address || ""}
         className="flex text14Medium text-textPrimary"

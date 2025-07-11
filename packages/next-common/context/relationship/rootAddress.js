@@ -2,7 +2,7 @@ import { createContext, useState, useContext } from "react";
 
 export const RootAddressContext = createContext(null);
 
-export function RootAddressProvider({
+export default function RootAddressProvider({
   children,
   rootAddress: rootAddressProp,
 }) {

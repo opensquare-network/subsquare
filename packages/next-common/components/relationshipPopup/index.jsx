@@ -7,8 +7,7 @@ import Relationship from "./relationship";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { useMemo } from "react";
 import RelationshipProvider from "next-common/context/relationship";
-import {
-  RootAddressProvider,
+import RootAddressProvider, {
   useRootAddress,
 } from "next-common/context/relationship/rootAddress";
 
