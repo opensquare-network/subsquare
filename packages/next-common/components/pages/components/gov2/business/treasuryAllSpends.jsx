@@ -8,7 +8,7 @@ import { useNavCollapsed } from "next-common/context/nav";
 import useBlockTimestamp from "next-common/hooks/common/useBlockTimestamp";
 import { cn } from "next-common/utils";
 import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import TreasurySpendValueDisplay from "next-common/components/gov2/business/treasurySpendValueDisplay";
 import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import FieldLoading from "next-common/components/icons/fieldLoading";
@@ -172,20 +172,7 @@ function After({ after, className = "" }) {
 }
 
 function PassedTime({ validFrom }) {
-  const { timestamp, isLoading } = useBlockTimestamp(validFrom);
-  const [loaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    if (isLoading) {
-      return;
-    }
-
-    setLoaded(true);
-  }, [isLoading]);
-
-  if (!loaded) {
-    return <FieldLoading size={14} />;
-  }
+  const { timestamp } = useBlockTimestamp(validFrom);
 
   if (isNaN(timestamp)) {
     return null;
