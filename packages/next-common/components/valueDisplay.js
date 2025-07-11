@@ -20,11 +20,9 @@ export default function ValueDisplay({
   tooltipOtherContent,
 }) {
   let tooltipContent = (
-    <NumberWithComma
-      value={value}
-      symbol={symbol}
-      otherContent={tooltipOtherContent}
-    />
+    <>
+      <NumberWithComma value={value} symbol={symbol} /> {tooltipOtherContent}
+    </>
   );
   const symbolContent = symbol && (
     <span className={cn("value-display-symbol text-textTertiary", className)}>
