@@ -14,7 +14,7 @@ const NodeWrap = styled.div`
   box-shadow: var(--shadow100);
 `;
 
-function UserAvatar({ address, badge }) {
+export function UserAvatar({ address, badge }) {
   if (!address) {
     return null;
   }
