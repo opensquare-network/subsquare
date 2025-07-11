@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js";
 
-export default function NumberWithComma({ value, symbol = "" }) {
+export default function NumberWithComma({ value, symbol = "", otherContent }) {
   if (!value) {
     return value;
   }
@@ -18,6 +18,7 @@ export default function NumberWithComma({ value, symbol = "" }) {
     <>
       {formattedNumber}
       {symbol && ` ${symbol}`}
+      {otherContent}
     </>
   );
 }
