@@ -8,7 +8,7 @@ import styled from "styled-components";
 import tw from "tailwind-styled-components";
 import { useProfileBannerUrl } from "next-common/components/profile/header";
 import { cn } from "next-common/utils";
-import { useRootAddress } from "next-common/context/relationship/rootAddress";
+import { useSourceAddress } from "next-common/context/relationship/sourceAddress";
 import { useCallback } from "react";
 
 const NodeWrap = styled.div`
@@ -46,12 +46,12 @@ ${(p) => {
 `;
 
 function AddressLabel({ data }) {
-  const { setRootAddress } = useRootAddress();
+  const { setSourceAddress } = useSourceAddress();
   const changeRootAddress = useCallback(() => {
     if (data?.address) {
-      setRootAddress(data?.address);
+      setSourceAddress(data?.address);
     }
-  }, [data?.address, setRootAddress]);
+  }, [data?.address, setSourceAddress]);
 
   return (
     <span onClick={changeRootAddress}>
@@ -107,8 +107,8 @@ function RelativeUserNode({ data }) {
 }
 
 export default function UserNode({ data }) {
-  const { rootAddress } = useRootAddress();
-  const isSelf = rootAddress === data?.address;
+  const { sourceAddress } = useSourceAddress();
+  const isSelf = sourceAddress === data?.address;
 
   const sourceConnections = useNodeConnections({ handleType: "source" });
   const targetConnections = useNodeConnections({ handleType: "target" });
