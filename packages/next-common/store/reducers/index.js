@@ -15,9 +15,11 @@ import multisigSlice from "./multisigSlice";
 import profile from "./profile";
 import avatarReducer from "./avatarSlice";
 import multiAccountsSlice from "./multiAccountsSlice";
+import commonReducer from "./common";
 
 export const commonReducers = {
   // baseLayout header
+  common: commonReducer,
   node: nodeReducer, // node switcher
   chain: chainReducer, // network switcher
   // baseLayout global

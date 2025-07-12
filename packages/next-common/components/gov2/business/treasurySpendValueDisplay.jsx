@@ -9,6 +9,7 @@ export default function TreasurySpendValueDisplay({
   amount,
   symbol,
   showTooltip,
+  tooltipOtherContent,
 }) {
   let { decimals } = useChainSettings();
 
@@ -22,6 +23,7 @@ export default function TreasurySpendValueDisplay({
       symbol={symbol}
       showTooltip={showTooltip}
       className={cn("inline-flex", className)}
+      tooltipOtherContent={tooltipOtherContent}
     />
   );
 }

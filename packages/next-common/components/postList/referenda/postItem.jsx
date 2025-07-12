@@ -26,6 +26,7 @@ import Divider from "next-common/components/styled/layout/divider";
 import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
 import PostListMyReferendaVoteMark from "next-common/components/postList/myVoteMark/referenda";
 import Flex from "next-common/components/styled/flex";
+import { gov2State } from "next-common/utils/consts/state";
 
 export default function PostItem({ data }) {
   let stateArgs = useMemo(
@@ -42,7 +43,15 @@ export default function PostItem({ data }) {
       <ContentWrapper>
         <HeadWrapper>
           <PostItemTitle data={data} href={data?.detailLink} />
-          <PostItemTitleValue data={data} />
+          <PostItemTitleValue
+            data={data}
+            showFaitPrice={[
+              gov2State.Confirming,
+              gov2State.Deciding,
+              gov2State.Preparing,
+              gov2State.Queueing,
+            ].includes(data.status)}
+          />
         </HeadWrapper>
         <Divider margin={12} />
         <FooterWrapper>

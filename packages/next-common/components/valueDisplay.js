@@ -17,8 +17,13 @@ export default function ValueDisplay({
   prefix,
   tooltipClassName,
   showVerySmallNumber = false,
+  tooltipOtherContent,
 }) {
-  let tooltipContent = <NumberWithComma value={value} symbol={symbol} />;
+  let tooltipContent = (
+    <>
+      <NumberWithComma value={value} symbol={symbol} /> {tooltipOtherContent}
+    </>
+  );
   const symbolContent = symbol && (
     <span className={cn("value-display-symbol text-textTertiary", className)}>
       {symbol}
@@ -43,7 +48,7 @@ export default function ValueDisplay({
         {symbolContent}
       </>
     );
-    tooltipContent = `${bigValue.toFixed()}${symbol ? " " + symbol : ""}`;
+    tooltipContent = `${bigValue.toFixed()}${symbol ? " " + symbol : ""} ${tooltipOtherContent}`;
   } else if (
     Number(value) >= 100000 ||
     getEffectiveNumbers(value)?.length >= 11

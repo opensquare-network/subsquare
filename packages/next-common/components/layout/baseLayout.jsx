@@ -21,6 +21,7 @@ import useInitMimir from "next-common/hooks/useInitMimir";
 import { usePageProperties } from "next-common/context/page";
 import { useSubScanHeight } from "next-common/hooks/scanHeight";
 import MaybeSubRelayStatus from "../maybeSubRelayStatus";
+import NativeTokenPriceSubscriber from "next-common/components/common/price/subscriber";
 
 /**
  * @description a base layout includes nav, header and footer
@@ -86,6 +87,7 @@ export default function BaseLayout({
       <Toast />
       <CookiesConsent />
       <LoginGlobalPopup />
+      <NativeTokenPriceSubscriber />
     </MaybeSubRelayStatus>
   );
 }
