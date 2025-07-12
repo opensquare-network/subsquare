@@ -2,7 +2,7 @@ import React from "react";
 import { TitleExtraValue, TitleExtra } from "../styled";
 import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
-import useValueTransferFiatPrice from "./useValueTransferFiatPrice";
+import useFiatValueTooltipContent from "./useFiatValueTooltipContent";
 
 export default function PostItemValueAmount({
   amount,
@@ -10,7 +10,7 @@ export default function PostItemValueAmount({
   symbol,
   showFaitPrice,
 }) {
-  const valueFiatPrice = useValueTransferFiatPrice(amount, decimals, symbol);
+  const fiatValueTooltip = useFiatValueTooltipContent(amount, decimals, symbol);
 
   return (
     <TitleExtra>
@@ -18,7 +18,7 @@ export default function PostItemValueAmount({
         <ValueDisplay
           value={toPrecision(amount, decimals)}
           symbol={symbol}
-          tooltipOtherContent={showFaitPrice && valueFiatPrice}
+          tooltipOtherContent={showFaitPrice && fiatValueTooltip}
         />
       </TitleExtraValue>
     </TitleExtra>

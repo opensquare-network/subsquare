@@ -5,7 +5,7 @@ import { nativeTokenPriceSelector } from "next-common/store/reducers/common";
 import { useSelector } from "react-redux";
 import { isNil } from "lodash-es";
 
-export default function useValueTransferFiatPrice(value, decimals, symbol) {
+export default function useFiatValueTooltipContent(value, decimals, symbol) {
   const price = useSelector(nativeTokenPriceSelector);
   const chainConfig = useChainSettings();
 

@@ -4,7 +4,7 @@ import { cn } from "next-common/utils";
 import TreasurySpendValueDisplay from "../gov2/business/treasurySpendValueDisplay";
 import AssetIcon from "../icons/assetIcon";
 import Tooltip from "../tooltip";
-import useValueTransferFiatPrice from "./common/useValueTransferFiatPrice";
+import useFiatValueTooltipContent from "./common/useFiatValueTooltipContent";
 import { useChainSettings } from "next-common/context/chain";
 import { useMemo } from "react";
 import Loading from "../loading";
@@ -30,16 +30,16 @@ export default function PostListTreasuryAllSpends({
 
   if (resolvedSpends.length === 1) {
     return (
-      <OnlyOneSpends spend={resolvedSpends[0]} showFaitPrice={showFaitPrice} />
+      <OnlyOneSpend spend={resolvedSpends[0]} showFaitPrice={showFaitPrice} />
     );
   }
 
   return <MultiSpends spends={resolvedSpends} showFaitPrice={showFaitPrice} />;
 }
 
-function OnlyOneSpends({ spend: { type, amount, symbol }, showFaitPrice }) {
+function OnlyOneSpend({ spend: { type, amount, symbol }, showFaitPrice }) {
   let { decimals } = useChainSettings();
-  const valueFiatPrice = useValueTransferFiatPrice(amount, decimals, symbol);
+  const fiatValueTooltip = useFiatValueTooltipContent(amount, decimals, symbol);
 
   return (
     <div className="text-textPrimary">
@@ -48,7 +48,7 @@ function OnlyOneSpends({ spend: { type, amount, symbol }, showFaitPrice }) {
         type={type}
         amount={amount}
         symbol={symbol}
-        tooltipOtherContent={showFaitPrice && valueFiatPrice}
+        tooltipOtherContent={showFaitPrice && fiatValueTooltip}
       />
     </div>
   );
@@ -56,7 +56,7 @@ function OnlyOneSpends({ spend: { type, amount, symbol }, showFaitPrice }) {
 
 const SpendValue = ({ spend, showFaitPrice }) => {
   let { decimals } = useChainSettings();
-  const valueFiatPrice = useValueTransferFiatPrice(
+  const fiatValueTooltip = useFiatValueTooltipContent(
     spend.amount,
     decimals,
     spend.symbol,
@@ -74,7 +74,7 @@ const SpendValue = ({ spend, showFaitPrice }) => {
         symbol={spend.symbol}
       />
 
-      {showFaitPrice && valueFiatPrice}
+      {showFaitPrice && fiatValueTooltip}
     </Flex>
   );
 };
