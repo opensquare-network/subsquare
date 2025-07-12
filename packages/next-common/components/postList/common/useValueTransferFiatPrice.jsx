@@ -1,15 +1,15 @@
 import { useChainSettings } from "next-common/context/chain";
 import BigNumber from "bignumber.js";
 import { abbreviateBigNumber } from "next-common/utils";
-import { createGlobalState } from "react-use";
-
-export const useRealTimeFiatPrice = createGlobalState(0);
+import { nativeTokenPriceSelector } from "next-common/store/reducers/common";
+import { useSelector } from "react-redux";
+import { isNil } from "lodash-es";
 
 export default function useValueTransferFiatPrice(value, decimals, symbol) {
-  const [price] = useRealTimeFiatPrice();
+  const price = useSelector(nativeTokenPriceSelector);
   const chainConfig = useChainSettings();
 
-  if (!price || !value || chainConfig.symbol !== symbol) {
+  if (isNil(price) || !value || chainConfig.symbol !== symbol) {
     return null;
   }
 

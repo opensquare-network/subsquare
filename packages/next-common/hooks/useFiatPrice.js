@@ -7,6 +7,8 @@ import bifrostPolkadot from "next-common/utils/consts/settings/bifrostPolkadot";
 import bifrost from "next-common/utils/consts/settings/bifrost";
 import { find } from "lodash-es";
 import { useEffect } from "react";
+import { setNativeTokenPrice } from "next-common/store/reducers/common";
+import { useDispatch } from "react-redux";
 
 const GET_TREASURIES = gql`
   query GetTreasuries {
@@ -31,7 +33,7 @@ const CHAIN_VALUE_TREASURY_MAP = {
   [collectives.value]: polkadot.value,
 };
 
-export default function useFiatPrice() {
+function useLoopQueryNativeTokenPrice() {
   const chain = useChain();
 
   const [getTreasuries, { data, loading }] =
@@ -115,4 +117,13 @@ export function useFiatPriceBySymbolSnapshot(symbol) {
     price: price?.price ?? 0,
     isLoading: loading,
   };
+}
+
+export function useSubNativeTokenPrice() {
+  const { price } = useLoopQueryNativeTokenPrice();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setNativeTokenPrice(price));
+  }, [price, dispatch]);
 }
