@@ -14,7 +14,7 @@ import { getGov2ReferendumStateArgs } from "../../utils/gov2/result";
 import { useChain, useChainSettings } from "../../context/chain";
 import Gov2TrackTag from "../gov2/trackTag";
 import DecisionCountdown from "../gov2/postList/decisionCountdown";
-import { gov2State, gov2VotingState } from "../../utils/consts/state";
+import { gov2State, gov2VotingStates } from "../../utils/consts/state";
 import ConfirmCountdown from "../gov2/postList/confirmCountdown";
 import ValueDisplay from "../valueDisplay";
 import ListPostTitle from "./postTitle";
@@ -261,7 +261,7 @@ export default function Post({ data, href, type }) {
   ].includes(type);
 
   const showVoteMark =
-    (isGov2Referendum && gov2VotingState.includes(data?.status)) ||
+    (isGov2Referendum && gov2VotingStates.includes(data?.status)) ||
     (businessCategory.democracyReferenda === type &&
       data?.status === referendumState.Started);
 

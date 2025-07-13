@@ -1,4 +1,4 @@
-import { gov2VotingState } from "next-common/utils/consts/state";
+import { gov2VotingStates } from "next-common/utils/consts/state";
 import { useEffect, useState } from "react";
 import Gov2Status from "./status";
 import Gov2Tally from "./tally";
@@ -28,7 +28,7 @@ export default function Gov2Sidebar() {
   const [showVote, setShowVote] = useState(false);
   const referendumIndex = detail?.referendumIndex;
   const trackId = detail?.track;
-  const isVoting = gov2VotingState.includes(detail?.state?.name);
+  const isVoting = gov2VotingStates.includes(detail?.state?.name);
   const { hideActionButtons } = useChainSettings();
   const { fetch: fetchVotesFromServer } =
     useFetchVotesFromServer(referendumIndex);
