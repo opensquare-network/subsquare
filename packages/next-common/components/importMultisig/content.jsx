@@ -4,9 +4,11 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useAsync } from "react-use";
 import ImportMultisigEmpty from "./empty";
 import Loading from "../loading";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import MultisigSelect from "./multisigSelect";
 import ImportSubmit from "./importSubmit";
+import { useMultisigAccounts } from "../multisigs/context/accountsContext";
+import { noop } from "lodash-es";
 
 const STEPS = {
   SELECT_MULTISIG: 1,
@@ -38,12 +40,8 @@ export default function ImportMultisigContent({ closeAll }) {
 
   if (step === STEPS.SELECT_MULTISIG) {
     return (
-      <MultisigSelect
-        list={value?.multisigAddresses?.map((item) => ({
-          value: item.address,
-          label: item.name,
-          multisig: item,
-        }))}
+      <MultisigSelectImpl
+        multisigAddresses={value?.multisigAddresses}
         selected={selectedMultisigAddress}
         setSelected={setSelectedMultisigAddress}
         onContinue={() => setStep(STEPS.SUBMIT_MULTISIG)}
@@ -67,4 +65,40 @@ export default function ImportMultisigContent({ closeAll }) {
   }
 
   return null;
+}
+
+function MultisigSelectImpl({
+  multisigAddresses = [],
+  total = 0,
+  page = 1,
+  setPage = noop,
+  setStep = noop,
+  selected,
+  setSelected = noop,
+}) {
+  const { multisigs = [] } = useMultisigAccounts();
+  const importedMultisigAddresses = useMemo(() => {
+    return multisigs.map((item) => item.multisigAddress);
+  }, [multisigs]);
+
+  const selectList = useMemo(() => {
+    return multisigAddresses?.map((item) => ({
+      value: item.address,
+      label: item.name,
+      multisig: item,
+      disabled: importedMultisigAddresses.includes(item.address),
+    }));
+  }, [multisigAddresses, importedMultisigAddresses]);
+
+  return (
+    <MultisigSelect
+      list={selectList}
+      selected={selected}
+      setSelected={setSelected}
+      onContinue={() => setStep(STEPS.SUBMIT_MULTISIG)}
+      page={page}
+      setPage={setPage}
+      total={total}
+    />
+  );
 }

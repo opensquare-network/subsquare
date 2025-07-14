@@ -14,32 +14,37 @@ import {
 } from "next-common/store/reducers/multisigSlice";
 import { useEffect } from "react";
 import { useMultisigAccounts } from "./context/accountsContext";
+import { encodeAddressToChain } from "next-common/services/address";
 
 export function MultisigAccount({ multisig }) {
-  const badge = `${multisig.threshold}/${multisig.signatories.length}`;
+  const chain = useChain();
   const isMobile = useIsMobile();
+  if (!multisig?.multisigAddress) {
+    return null;
+  }
+  const badge = `${multisig.threshold}/${multisig.signatories.length}`;
+  const encodeAddress = encodeAddressToChain(multisig.multisigAddress, chain);
   return (
     <div className="flex items-center gap-x-2">
-      <UserAvatar address={multisig.multisigAddress} badge={badge} />
+      <UserAvatar address={encodeAddress} badge={badge} />
       <div className="flex flex-col justify-between">
         <div className="text14Medium text-textPrimary">{multisig.name}</div>
-        <CopyableAddress
-          address={multisig.multisigAddress}
-          ellipsisAddress={isMobile}
-        />
+        <CopyableAddress address={encodeAddress} ellipsisAddress={isMobile} />
       </div>
     </div>
   );
 }
 
 export function SignatorieAccount({ address }) {
+  const chain = useChain();
+  const encodeAddress = encodeAddressToChain(address, chain);
   const isMobile = useIsMobile();
   return (
     <div className="flex items-center gap-x-2">
-      <UserAvatar address={address} />
+      <UserAvatar address={encodeAddress} />
       <div className="flex flex-col justify-between">
-        <AddressUser add={address} showAvatar={false} />
-        <CopyableAddress address={address} ellipsisAddress={isMobile} />
+        <AddressUser add={encodeAddress} showAvatar={false} />
+        <CopyableAddress address={encodeAddress} ellipsisAddress={isMobile} />
       </div>
     </div>
   );
@@ -102,7 +107,9 @@ export function HistoryTitle({ active }) {
 export function AccountsTitle({ active }) {
   return (
     <TitleLabel $active={active}>
-      <span className="inline-flex items-center h-6 mr-1">Multisig Accounts</span>
+      <span className="inline-flex items-center h-6 mr-1">
+        Multisig Accounts
+      </span>
       <MultisigAccountsCount />
     </TitleLabel>
   );

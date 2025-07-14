@@ -398,7 +398,9 @@ export default function AddressCombo({
           edit={edit && canEdit}
           size={size}
         />
-        {(accounts || []).length > 0 && !readOnly && rightContentComponent}
+        {((accounts || []).length > 0 || rightContent) &&
+          !readOnly &&
+          rightContentComponent}
       </Select>
       {show && (accounts || []).length > 0 && (
         <AddressComboListOptions
