@@ -2,7 +2,9 @@ import { addressEllipsis, cn } from "next-common/utils";
 import Divider from "../styled/layout/divider";
 import { AddressUser } from "../user";
 import { UserAvatar } from "../relationshipPopup/userNode";
+import { sortAddresses } from "@polkadot/util-crypto";
 import { noop } from "lodash-es";
+import { useChainSettings } from "next-common/context/chain";
 
 function MultisigAccount({ multisig }) {
   const badge = `${multisig.threshold}/${multisig.signatories.length}`;
@@ -26,6 +28,11 @@ export default function MultisigDisplay({
   onClick = noop,
   className = "",
 }) {
+  const { ss58Format } = useChainSettings();
+  const sortedSignatories = sortAddresses(
+    multisig.signatories || [],
+    ss58Format,
+  );
   return (
     <div
       className={cn(
@@ -42,7 +49,7 @@ export default function MultisigDisplay({
       </header>
       <div className="ml-14 gap-y-1 flex flex-col">
         <Divider className="!my-2" />
-        {multisig.signatories.map((item) => (
+        {sortedSignatories.map((item) => (
           <div key={item}>
             <AddressUser add={item} />
           </div>

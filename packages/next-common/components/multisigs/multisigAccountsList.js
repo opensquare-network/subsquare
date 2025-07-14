@@ -11,6 +11,8 @@ import Tooltip from "../tooltip";
 import CellActions from "./cellActions";
 import { useMultisigAccounts } from "./context/accountsContext";
 import { GreyPanel } from "../styled/containers/greyPanel";
+import { useChainSettings } from "next-common/context/chain";
+import { sortAddresses } from "@polkadot/util-crypto";
 
 const CreateMultisigPopup = dynamicPopup(() => import("../createMultisig"));
 
@@ -60,6 +62,11 @@ function ListEmpty() {
 }
 
 function Row({ multisig }) {
+  const { ss58Format } = useChainSettings();
+  const sortedSignatories = sortAddresses(
+    multisig.signatories || [],
+    ss58Format,
+  );
   const [isExtended, setIsExtended] = useState(false);
 
   const handleExtend = useCallback(() => {
@@ -73,7 +80,7 @@ function Row({ multisig }) {
         {isExtended && (
           <IndentPanel className="ml-4 mt-4">
             <div className="flex flex-col gap-y-4">
-              {multisig.signatories.map((signatory, index) => (
+              {sortedSignatories.map((signatory, index) => (
                 <SignatorieAccount
                   key={`signatory-${index}-${signatory}`}
                   address={signatory}

@@ -72,7 +72,7 @@ function MultisigSelectImpl({
   total = 0,
   page = 1,
   setPage = noop,
-  setStep = noop,
+  onContinue = noop,
   selected,
   setSelected = noop,
 }) {
@@ -95,7 +95,7 @@ function MultisigSelectImpl({
       list={selectList}
       selected={selected}
       setSelected={setSelected}
-      onContinue={() => setStep(STEPS.SUBMIT_MULTISIG)}
+      onContinue={onContinue}
       page={page}
       setPage={setPage}
       total={total}
