@@ -77,7 +77,7 @@ function AddSignatoryButton() {
   );
 }
 
-function SignatoriesItem({ address, index }) {
+function SignatoriesItem({ address = "", index }) {
   const realAddress = useRealAddress();
   const extensionAccounts = useExtensionAccounts();
   const { removeSignatory, signatories, setSignatory } = useSignatories();
