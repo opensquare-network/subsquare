@@ -7,6 +7,41 @@ import nextApi from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import { useChain } from "next-common/context/chain";
 import { pick } from "lodash-es";
+import FellowshipReferendaPostList from "next-common/components/postList/fellowshipReferendaPostList";
+import businessCategory from "next-common/utils/consts/business/category";
+
+const InnerList = ({ secondCategory, data, pagination }) => {
+  if (secondCategory.id === "comments") {
+    return (
+      <CommentList
+        items={data?.items ?? []}
+        category={secondCategory.categoryName}
+        pagination={pagination}
+      />
+    );
+  }
+
+  if (secondCategory.categoryId === businessCategory.fellowship) {
+    return (
+      <FellowshipReferendaPostList
+        total={data?.total}
+        items={data?.items ?? []}
+        pagination={pagination}
+      />
+    );
+  }
+
+  return (
+    <PostList
+      link={"/" + secondCategory.routePath}
+      title={"List"}
+      titleCount={data?.total}
+      category={secondCategory.categoryId}
+      items={data?.items ?? []}
+      pagination={pagination}
+    />
+  );
+};
 
 export default function List({ id, secondCategory }) {
   const [page, setPage] = useState(1);
@@ -57,24 +92,6 @@ export default function List({ id, secondCategory }) {
     onPageChange,
   };
 
-  const list =
-    secondCategory.id === "comments" ? (
-      <CommentList
-        items={data?.items ?? []}
-        category={secondCategory.categoryName}
-        pagination={pagination}
-      />
-    ) : (
-      <PostList
-        link={"/" + secondCategory.routePath}
-        title={"List"}
-        titleCount={data?.total}
-        category={secondCategory.categoryId}
-        items={data?.items ?? []}
-        pagination={pagination}
-      />
-    );
-
   return (
     <Flex
       style={{
@@ -83,7 +100,15 @@ export default function List({ id, secondCategory }) {
         justifyContent: "center",
       }}
     >
-      {isLoading ? <Loading size={16} /> : list}
+      {isLoading ? (
+        <Loading size={16} />
+      ) : (
+        <InnerList
+          secondCategory={secondCategory}
+          data={data}
+          pagination={pagination}
+        />
+      )}
     </Flex>
   );
 }

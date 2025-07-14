@@ -10,7 +10,11 @@ import UnVotedOnlyOption from "next-common/components/referenda/unVotedOnlyOptio
 import NewFellowshipProposalButton from "next-common/components/summary/newFellowshipProposalButton";
 import { useUnVotedOnlyContext } from "next-common/components/referenda/list/unVotedContext";
 
-function ListTitleWithUnVoteOption({ isUnVotedOnlyLoading, total }) {
+function ListTitleWithUnVoteOption({
+  isUnVotedOnlyLoading,
+  total,
+  hasNewButton,
+}) {
   const address = useRealAddress();
   const { unVotedOnly, setUnVotedOnly } = useUnVotedOnlyContext();
 
@@ -28,14 +32,19 @@ function ListTitleWithUnVoteOption({ isUnVotedOnlyLoading, total }) {
               setIsOn={setUnVotedOnly}
             />
           )}
-          <NewFellowshipProposalButton />
+          {hasNewButton && <NewFellowshipProposalButton />}
         </div>
       }
     />
   );
 }
 
-function ListTitle({ hasUnVotedOption, total, isUnVotedOnlyLoading }) {
+function ListTitle({
+  hasUnVotedOption,
+  total,
+  isUnVotedOnlyLoading,
+  hasNewButton,
+}) {
   if (hasUnVotedOption) {
     return (
       <ListTitleWithUnVoteOption
@@ -49,17 +58,19 @@ function ListTitle({ hasUnVotedOption, total, isUnVotedOnlyLoading }) {
     <ListTitleBar
       title="List"
       titleCount={total}
-      titleExtra={<NewFellowshipProposalButton />}
+      titleExtra={hasNewButton && <NewFellowshipProposalButton />}
+      link="/fellowship"
     />
   );
 }
 
-export default function PostList({
+export default function FellowshipReferendaPostList({
   items,
   pagination,
-  isUnVotedOnlyLoading,
   total,
   hasUnVotedOption,
+  isUnVotedOnlyLoading,
+  hasNewButton,
 }) {
   return (
     <ListWrapper>
@@ -67,6 +78,7 @@ export default function PostList({
         isUnVotedOnlyLoading={isUnVotedOnlyLoading}
         total={total}
         hasUnVotedOption={hasUnVotedOption}
+        hasNewButton={hasNewButton}
       />
       <MaybeEmpty items={items} type={businessCategory.fellowship}>
         {items.map((data, index) => (
