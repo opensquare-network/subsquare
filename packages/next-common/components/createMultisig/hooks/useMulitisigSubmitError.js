@@ -1,6 +1,7 @@
 import useSignatoriesIsEqual from "./useSignatoriesIsEqual";
 import { useMultisigAccounts } from "next-common/components/multisigs/context/accountsContext";
 import { isEmpty, isNil } from "lodash-es";
+import { ERROR_MESSAGE } from "../styled";
 
 const EMPTY_RESULT = {
   disabled: false,
@@ -27,7 +28,7 @@ export default function useMulitisigSubmitError(
   if (isMultisigExist) {
     return {
       disabled: true,
-      error: "This multisig address is already saved.",
+      error: ERROR_MESSAGE.MULTISIG_EXIST,
     };
   }
 
@@ -35,7 +36,7 @@ export default function useMulitisigSubmitError(
   if (names.includes(name?.trim()?.toUpperCase())) {
     return {
       disabled: true,
-      error: "This multisig name is already saved.",
+      error: ERROR_MESSAGE.NAME_EXIST,
     };
   }
 

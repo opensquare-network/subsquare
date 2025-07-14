@@ -8,12 +8,11 @@ import Button from "next-common/lib/button";
 import { useSignatories } from "../context/signatories";
 import { useMemo } from "react";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
-import { colorStyle, PromptTypes } from "next-common/components/scrollPrompt";
 import { isEmpty, uniq } from "lodash-es";
 import Tooltip from "next-common/components/tooltip";
 import { useContextApi } from "next-common/context/api";
 import { cn } from "next-common/utils";
+import { ERROR_MESSAGE, MultisigErrorMessage } from "../styled";
 
 export default function SignatoriesField() {
   const { signatories } = useSignatories();
@@ -40,12 +39,9 @@ export default function SignatoriesField() {
         ))}
       </IndentPanel>
       {showAccountError && (
-        <GreyPanel
-          style={colorStyle[PromptTypes.ERROR]}
-          className="text14Medium px-4 py-2.5"
-        >
-          The signatories must be unique.
-        </GreyPanel>
+        <MultisigErrorMessage>
+          {ERROR_MESSAGE.UNIQUE_ERROR}
+        </MultisigErrorMessage>
       )}
       <div className="flex justify-end">
         <AddSignatoryButton />

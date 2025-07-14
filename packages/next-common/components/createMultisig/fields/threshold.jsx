@@ -1,9 +1,8 @@
-import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { Label } from "../../popup/styled";
 import Select from "next-common/components/select";
-import { colorStyle, PromptTypes } from "next-common/components/scrollPrompt";
 import { useEffect, useMemo, useState } from "react";
 import { noop } from "lodash-es";
+import { ERROR_MESSAGE, MultisigErrorMessage } from "../styled";
 
 export default function ThresholdField({
   signatories = [],
@@ -50,12 +49,9 @@ export default function ThresholdField({
         />
       </div>
       {showThresholdError && (
-        <GreyPanel
-          style={colorStyle[PromptTypes.ERROR]}
-          className="text14Medium px-4 py-2.5"
-        >
-          The threshold must be less than the number of signatories.
-        </GreyPanel>
+        <MultisigErrorMessage>
+          {ERROR_MESSAGE.THRESHOLD_ERROR}
+        </MultisigErrorMessage>
       )}
     </>
   );

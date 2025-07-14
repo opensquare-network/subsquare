@@ -16,9 +16,8 @@ import {
 } from "next-common/store/reducers/toastSlice";
 import { usePopupParams } from "../popupWithSigner/context";
 import { useMultisigAccounts } from "../multisigs/context/accountsContext";
-import { GreyPanel } from "../styled/containers/greyPanel";
-import { colorStyle, PromptTypes } from "../scrollPrompt";
 import useMulitisigSubmitError from "./hooks/useMulitisigSubmitError";
+import { MultisigErrorMessage } from "./styled";
 
 export default function CreateMultisigContent() {
   const address = useRealAddress();
@@ -97,7 +96,7 @@ export default function CreateMultisigContent() {
           placeholder="Please fill the name..."
         />
         {multisigErrorMessage && (
-          <MultisigExist>{multisigErrorMessage}</MultisigExist>
+          <MultisigErrorMessage>{multisigErrorMessage}</MultisigErrorMessage>
         )}
         <div className="flex justify-end">
           <PrimaryButton
@@ -111,16 +110,5 @@ export default function CreateMultisigContent() {
       </form>
       <ImportTips />
     </>
-  );
-}
-
-function MultisigExist({ children }) {
-  return (
-    <GreyPanel
-      style={colorStyle[PromptTypes.ERROR]}
-      className="text14Medium px-4 py-2.5"
-    >
-      {children}
-    </GreyPanel>
   );
 }

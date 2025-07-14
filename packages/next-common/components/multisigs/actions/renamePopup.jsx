@@ -10,6 +10,11 @@ import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import TextInputField from "next-common/components/popup/fields/textInputField";
 import { useMultisigAccounts } from "../context/accountsContext";
+import {
+  ERROR_MESSAGE,
+  MultisigErrorMessage,
+} from "next-common/components/createMultisig/styled";
+import useRenameIsEqual from "next-common/components/createMultisig/hooks/useRenameIsEqual";
 
 export default function RemovePopup({ onClose, multisig }) {
   const dispatch = useDispatch();
@@ -17,6 +22,7 @@ export default function RemovePopup({ onClose, multisig }) {
   const { ensureLogin } = useEnsureLogin();
   const { refresh } = useMultisigAccounts();
   const [name, setName] = useState(multisig.name);
+  const isNameEqual = useRenameIsEqual(multisig.multisigAddress, name);
 
   const doSubmit = useCallback(async () => {
     setIsLoading(true);
@@ -50,10 +56,13 @@ export default function RemovePopup({ onClose, multisig }) {
           placeholder="Please fill the name..."
         />
       </div>
+      {isNameEqual && (
+        <MultisigErrorMessage>{ERROR_MESSAGE.NAME_EXIST}</MultisigErrorMessage>
+      )}
       <div className="flex justify-end">
         <PrimaryButton
           loading={isLoading}
-          disabled={isLoading || !name}
+          disabled={isLoading || !name || isNameEqual}
           onClick={doSubmit}
         >
           Save Changes
