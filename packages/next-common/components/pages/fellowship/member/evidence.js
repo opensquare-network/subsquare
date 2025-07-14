@@ -1,11 +1,17 @@
-import { IpfsEvidenceContent } from "next-common/components/collectives/core/evidenceContent";
+import { IpfsEvidenceRawContent } from "next-common/components/collectives/core/evidenceContent";
 import EvidenceLayout from "next-common/components/layout/evidenceLayout";
 import PageProvider, { usePageProperties } from "next-common/context/page";
+import { WishBar } from "./fellowshipMember/wishBar";
 
 export default function EvidencePage(props) {
   return (
     <PageProvider pageProperties={props}>
-      <EvidenceLayout>
+      <EvidenceLayout
+        seoInfo={{
+          title: props.detail?.title,
+          desc: props.detail?.title,
+        }}
+      >
         <EvidencePageImpl />
       </EvidenceLayout>
     </PageProvider>
@@ -13,15 +19,24 @@ export default function EvidencePage(props) {
 }
 
 function EvidencePageImpl() {
-  const pageProps = usePageProperties();
+  const { detail, fellowshipMembers = [] } = usePageProperties() || {};
 
-  if (pageProps.cid) {
-    return <EvidenceCid cid={pageProps.cid} />;
+  if (!detail) {
+    return null;
   }
 
-  return <div>123123</div>;
-}
+  const activeMember = fellowshipMembers.find(
+    (member) => member.address === detail.who,
+  );
 
-function EvidenceCid({ cid }) {
-  return <IpfsEvidenceContent cid={cid} />;
+  return (
+    <div className="flex flex-col gap-y-6">
+      <WishBar
+        wish={detail.wish}
+        activeMember={activeMember}
+        address={detail.who}
+      />
+      <IpfsEvidenceRawContent value={detail.content} />
+    </div>
+  );
 }

@@ -6,7 +6,7 @@ import { usePageProperties } from "next-common/context/page";
 import { SecondaryCardDetail } from "../styled/containers/secondaryCard";
 
 export default function EvidenceLayout({ seoInfo = {}, children }) {
-  const { member, cid } = usePageProperties() || {};
+  const { who } = usePageProperties() || {};
   return (
     <BaseLayout seoInfo={seoInfo}>
       <div className="max-w-[1200px] px-6 pb-6 mx-auto w-full">
@@ -14,14 +14,11 @@ export default function EvidenceLayout({ seoInfo = {}, children }) {
           <Breadcrumb
             items={[
               {
-                path: `/fellowship/members/${member}`,
-                content: addressEllipsis(member),
+                path: `/fellowship/members/${who}`,
+                content: addressEllipsis(who),
               },
               {
                 content: "Evidence",
-              },
-              {
-                content: addressEllipsis(cid),
               },
             ]}
           />
