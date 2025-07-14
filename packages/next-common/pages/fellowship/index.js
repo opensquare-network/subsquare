@@ -6,9 +6,8 @@ import {
   fellowshipReferendumsSummaryApi,
   fellowshipTracksApi,
 } from "next-common/services/url";
-import PostList from "next-common/components/postList";
+import FellowshipReferendaPostList from "next-common/components/postList/fellowshipReferendaPostList";
 import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/normalizeFellowshipReferendaListItem";
-import businessCategory from "next-common/utils/consts/business/category";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import NewFellowshipProposalButton from "next-common/components/summary/newFellowshipProposalButton";
 import CollectivesProvider from "next-common/context/collectives/collectives";
@@ -74,8 +73,9 @@ function WithFilterPostList({
   );
 
   return (
-    <PostList
-      title="List"
+    <FellowshipReferendaPostList
+      items={items}
+      pagination={pagination}
       titleCount={total}
       titleExtra={
         <div className="flex gap-[12px] items-center">
@@ -90,9 +90,6 @@ function WithFilterPostList({
           <NewFellowshipProposalButton />
         </div>
       }
-      category={businessCategory.fellowship}
-      items={items}
-      pagination={pagination}
     />
   );
 }
