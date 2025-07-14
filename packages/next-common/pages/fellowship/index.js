@@ -6,17 +6,13 @@ import {
   fellowshipReferendumsSummaryApi,
   fellowshipTracksApi,
 } from "next-common/services/url";
-import PostList from "next-common/components/postList";
+import FellowshipReferendaPostList from "next-common/components/postList/fellowshipReferendaPostList";
 import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/normalizeFellowshipReferendaListItem";
-import businessCategory from "next-common/utils/consts/business/category";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import NewFellowshipProposalButton from "next-common/components/summary/newFellowshipProposalButton";
 import CollectivesProvider from "next-common/context/collectives/collectives";
-import UnVotedOnlyOption from "next-common/components/referenda/unVotedOnlyOption";
 import useMyUnVotedCollectiveReferenda from "next-common/hooks/referenda/useMyUnVotedCollectiveReferenda";
 import { useEffect, useMemo, useState } from "react";
 import { usePageProps } from "next-common/context/page";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import {
   UnVotedOnlyProvider,
   useUnVotedOnlyContext,
@@ -66,33 +62,18 @@ function WithFilterPostList({
   pagination,
 }) {
   const { fellowshipTracks } = usePageProps();
-  const address = useRealAddress();
-  const { unVotedOnly, setUnVotedOnly } = useUnVotedOnlyContext();
 
   const items = (posts || []).map((item) =>
     normalizeFellowshipReferendaListItem(item, fellowshipTracks),
   );
 
   return (
-    <PostList
-      title="List"
-      titleCount={total}
-      titleExtra={
-        <div className="flex gap-[12px] items-center">
-          {address && (
-            <UnVotedOnlyOption
-              tooltip="Only referenda I can but haven't voted"
-              isLoading={isUnVotedOnlyLoading}
-              isOn={unVotedOnly}
-              setIsOn={setUnVotedOnly}
-            />
-          )}
-          <NewFellowshipProposalButton />
-        </div>
-      }
-      category={businessCategory.fellowship}
+    <FellowshipReferendaPostList
+      isUnVotedOnlyLoading={isUnVotedOnlyLoading}
       items={items}
       pagination={pagination}
+      total={total}
+      hasUnVotedOption
     />
   );
 }
