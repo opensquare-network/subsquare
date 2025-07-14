@@ -1,9 +1,10 @@
 import getChainSettings from "next-common/utils/consts/settings";
+import safeLocalStorage from "next-common/utils/safeLocalStorage";
 
 export default function getEndpointFromLocalStorage(chain) {
   let localNodeUrl = null;
   try {
-    localNodeUrl = localStorage.getItem(`nodeUrl-${chain}`);
+    localNodeUrl = safeLocalStorage.getItem(`nodeUrl-${chain}`);
   } catch (e) {
     // ignore parse error
   }

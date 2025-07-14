@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import getChainSettings from "../../utils/consts/settings";
+import safeLocalStorage from "next-common/utils/safeLocalStorage";
 
 const chain = process.env.NEXT_PUBLIC_CHAIN;
 
@@ -25,7 +26,7 @@ const endpointsFromEnv = getEnvEndpoints();
 export function getInitNodeUrl(chain) {
   let localNodeUrl = null;
   try {
-    localNodeUrl = localStorage.getItem(`nodeUrl-${chain}`);
+    localNodeUrl = safeLocalStorage.getItem(`nodeUrl-${chain}`);
   } catch (e) {
     // ignore parse error
   }
@@ -62,7 +63,7 @@ const nodeSlice = createSlice({
       });
 
       if (saveLocalStorage) {
-        localStorage.setItem(`nodeUrl-${state.chain}`, url);
+        safeLocalStorage.setItem(`nodeUrl-${state.chain}`, url);
       }
 
       if (refresh) {
@@ -70,7 +71,7 @@ const nodeSlice = createSlice({
       }
     },
     removeCurrentNode(state) {
-      localStorage.removeItem(`nodeUrl-${state.chain}`);
+      safeLocalStorage.removeItem(`nodeUrl-${state.chain}`);
       state.currentNode = null;
     },
     setNodesDelay(state, { payload }) {

@@ -1,6 +1,7 @@
 import { Close } from "./icons";
 import { useCallback, useEffect, useState } from "react";
 import tw from "tailwind-styled-components";
+import safeLocalStorage from "next-common/utils/safeLocalStorage";
 
 const Wrapper = tw.div`
   flex
@@ -26,7 +27,7 @@ function calcIsClosed(name) {
     return false;
   }
 
-  const stored = localStorage.getItem(`CloseableWarning-${name}`);
+  const stored = safeLocalStorage.getItem(`CloseableWarning-${name}`);
   if (!stored) {
     return false;
   }
@@ -49,7 +50,7 @@ export default function ClosableWarning({ name, rememberCloseTime, children }) {
 
   const onClose = useCallback(() => {
     if (name && rememberCloseTime) {
-      localStorage.setItem(
+      safeLocalStorage.setItem(
         `CloseableWarning-${name}`,
         JSON.stringify({
           closedAt: Date.now(),
