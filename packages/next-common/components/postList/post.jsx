@@ -176,7 +176,6 @@ export default function Post({ data, href, type }) {
 
   const isGov2Referendum = [
     businessCategory.openGovReferenda,
-    businessCategory.fellowship,
     businessCategory.ambassadorReferenda,
   ].includes(type);
 
@@ -212,12 +211,7 @@ export default function Post({ data, href, type }) {
 
   if (isGov2Referendum) {
     if (data?.status === gov2State.Preparing) {
-      elapseIcon = (
-        <PreparingCountdown
-          detail={data}
-          isFellowship={businessCategory.fellowship === type}
-        />
-      );
+      elapseIcon = <PreparingCountdown detail={data} />;
     } else if (data?.status === gov2State.Deciding) {
       elapseIcon = <DecisionCountdown detail={data} />;
     } else if (data?.status === gov2State.Confirming) {
@@ -246,8 +240,6 @@ export default function Post({ data, href, type }) {
   let trackTagLink = null;
   if (type === businessCategory.openGovReferenda) {
     trackTagLink = `/referenda/tracks/${data.track}`;
-  } else if (type === businessCategory.fellowship) {
-    trackTagLink = `/fellowship/tracks/${data.track}`;
   } else if (type === businessCategory.ambassadorReferenda) {
     trackTagLink = `/ambassador/tracks/${data.track}`;
   }
@@ -256,7 +248,6 @@ export default function Post({ data, href, type }) {
   const showTally = [
     businessCategory.democracyReferenda,
     businessCategory.openGovReferenda,
-    businessCategory.fellowship,
     businessCategory.ambassadorReferenda,
   ].includes(type);
 
