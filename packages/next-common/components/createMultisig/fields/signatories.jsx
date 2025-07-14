@@ -10,13 +10,20 @@ import { useMemo } from "react";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { colorStyle, PromptTypes } from "next-common/components/scrollPrompt";
-import { uniq } from "lodash-es";
+import { isEmpty, uniq } from "lodash-es";
+import Tooltip from "next-common/components/tooltip";
+import { useContextApi } from "next-common/context/api";
+import { cn } from "next-common/utils";
 
 export default function SignatoriesField() {
-  const { signatories, addSignatory } = useSignatories();
-  const showAccountError = useMemo(
-    () => uniq(signatories).length !== signatories.length,
+  const { signatories } = useSignatories();
+  const filteredSignatories = useMemo(
+    () => signatories.filter((signatory) => !isEmpty(signatory)),
     [signatories],
+  );
+  const showAccountError = useMemo(
+    () => uniq(filteredSignatories).length !== filteredSignatories.length,
+    [filteredSignatories],
   );
 
   return (
@@ -41,16 +48,36 @@ export default function SignatoriesField() {
         </GreyPanel>
       )}
       <div className="flex justify-end">
-        <Button
-          onClick={addSignatory}
-          className="text-theme500 gap-x-1 h-auto p-0"
-          type="button"
-        >
-          <SystemPlus />
-          Add Signatory
-        </Button>
+        <AddSignatoryButton />
       </div>
     </div>
+  );
+}
+
+function AddSignatoryButton() {
+  const api = useContextApi();
+  const { signatories, addSignatory } = useSignatories();
+  const maxSignatories = api?.consts?.multisig?.maxSignatories.toNumber();
+
+  const isDisabled = useMemo(() => {
+    return signatories.length >= maxSignatories;
+  }, [signatories, maxSignatories]);
+
+  return (
+    <Tooltip content={`Max signatory: ${maxSignatories}`}>
+      <Button
+        onClick={addSignatory}
+        className={cn(
+          "text-theme500 gap-x-1 h-auto p-0",
+          isDisabled && "text-textDisabled",
+        )}
+        type="button"
+        disabled={isDisabled}
+      >
+        <SystemPlus />
+        Add Signatory
+      </Button>
+    </Tooltip>
   );
 }
 
@@ -87,7 +114,7 @@ function SignatoriesItem({ address, index }) {
             removeSignatory(index);
           }}
         >
-          <SystemTrash className="text-red500" size={16} />
+          <SystemTrash className="text-red500 w-5 h-5" size={20} />
         </span>
       }
     />
