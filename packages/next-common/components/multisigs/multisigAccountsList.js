@@ -1,5 +1,5 @@
 import DataList from "next-common/components/dataList";
-import { useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import PrimaryButton from "next-common/lib/button/primary";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { ArrowDown } from "@osn/icons/subsquare";
@@ -22,10 +22,10 @@ const columns = [
   },
 ];
 
-export default function MultisigAccountsList() {
-  const [popupOpen, setPopupOpen] = useState(false);
-  const { multisigs = [], isLoading } = useMultisigAccounts();
-
+const MultisigAccountList = memo(function MultisigAccountList({
+  multisigs,
+  isLoading,
+}) {
   const rows = useMemo(() => {
     return multisigs.map((multisig) => [
       <Row key={multisig.multisigAddress} multisig={multisig} />,
@@ -33,13 +33,21 @@ export default function MultisigAccountsList() {
   }, [multisigs]);
 
   return (
+    <>
+      <DataList columns={columns} rows={rows} loading={isLoading} />
+      {multisigs.length === 0 && !isLoading ? <ListEmpty /> : null}
+    </>
+  );
+});
+
+export default function MultisigAccountsList() {
+  const [popupOpen, setPopupOpen] = useState(false);
+  const { multisigs = [], isLoading } = useMultisigAccounts();
+
+  return (
     <WindowSizeProvider>
       <div className="flex flex-col gap-y-4">
-        {multisigs.length > 0 ? (
-          <DataList columns={columns} rows={rows} loading={isLoading} />
-        ) : (
-          <ListEmpty />
-        )}
+        <MultisigAccountList multisigs={multisigs} isLoading={isLoading} />
         <div className="flex justify-end">
           <PrimaryButton onClick={() => setPopupOpen(true)}>
             Add Multisig Account

@@ -16,6 +16,9 @@ import {
 } from "next-common/store/reducers/toastSlice";
 import { usePopupParams } from "../popupWithSigner/context";
 import { useMultisigAccounts } from "../multisigs/context/accountsContext";
+import { GreyPanel } from "../styled/containers/greyPanel";
+import { colorStyle, PromptTypes } from "../scrollPrompt";
+import useMulitisigSubmitError from "./hooks/useMulitisigSubmitError";
 
 export default function CreateMultisigContent() {
   const address = useRealAddress();
@@ -27,14 +30,21 @@ export default function CreateMultisigContent() {
   const [isLoading, setIsLoading] = useState(false);
   const { onClose } = usePopupParams();
   const { refresh } = useMultisigAccounts();
+  const submitSignatories = useMemo(
+    () => [address, ...signatories],
+    [address, signatories],
+  );
+  const { disabled: submitDisabled, error: multisigErrorMessage } =
+    useMulitisigSubmitError(submitSignatories, threshold, name);
 
   const buttonDisabled = useMemo(() => {
     return (
       isNil(threshold) ||
       isEmpty(name) ||
-      signatories.some((item) => isEmpty(item))
+      signatories.some((item) => isEmpty(item)) ||
+      submitDisabled
     );
-  }, [threshold, name, signatories]);
+  }, [threshold, name, signatories, submitDisabled]);
 
   const handleSubmit = useCallback(
     async (e) => {
@@ -43,7 +53,7 @@ export default function CreateMultisigContent() {
         setIsLoading(true);
         await ensureLogin();
         const { error } = await nextApi.post("user/multisigs", {
-          signatories: [address, ...signatories],
+          signatories: submitSignatories,
           threshold,
           name,
         });
@@ -61,8 +71,7 @@ export default function CreateMultisigContent() {
     },
     [
       ensureLogin,
-      address,
-      signatories,
+      submitSignatories,
       threshold,
       name,
       onClose,
@@ -87,6 +96,9 @@ export default function CreateMultisigContent() {
           setText={setName}
           placeholder="Please fill the name..."
         />
+        {multisigErrorMessage && (
+          <MultisigExist>{multisigErrorMessage}</MultisigExist>
+        )}
         <div className="flex justify-end">
           <PrimaryButton
             type="submit"
@@ -99,5 +111,16 @@ export default function CreateMultisigContent() {
       </form>
       <ImportTips />
     </>
+  );
+}
+
+function MultisigExist({ children }) {
+  return (
+    <GreyPanel
+      style={colorStyle[PromptTypes.ERROR]}
+      className="text14Medium px-4 py-2.5"
+    >
+      {children}
+    </GreyPanel>
   );
 }
