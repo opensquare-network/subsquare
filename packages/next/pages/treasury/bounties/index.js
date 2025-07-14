@@ -1,4 +1,4 @@
-import PostList from "next-common/components/postList/treasury/bounties";
+import TreasuryBountiesPostList from "next-common/components/postList/treasyrybountiesPostList";
 import { withCommonProps } from "next-common/lib";
 import normalizeBountyListItem from "next-common/utils/viewfuncs/treasury/normalizeBountyListItem";
 import ListLayout from "next-common/components/layout/ListLayout";
@@ -11,6 +11,7 @@ import { backendApi } from "next-common/services/nextApi";
 import BountyCardSection from "next-common/components/treasury/bounty/bountyCardSection";
 import { fetchList } from "next-common/services/list";
 import businessCategory from "next-common/utils/consts/business/category";
+import NewBountyButton from "next-common/components/treasury/bounty/newBountyButton";
 
 export default function BountiesPage({
   activeBounties,
@@ -51,7 +52,7 @@ export default function BountiesPage({
             )}
           />
         )}
-        <PostList
+        <TreasuryBountiesPostList
           titleCount={inactiveBounties.total}
           items={items}
           pagination={{
@@ -59,6 +60,7 @@ export default function BountiesPage({
             pageSize: inactiveBounties.pageSize,
             total: inactiveBounties.total,
           }}
+          titleExtra={<NewBountyButton />}
         />
       </ListLayout>
     </TreasuryProvider>

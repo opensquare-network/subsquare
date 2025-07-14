@@ -9,6 +9,7 @@ import { useChain } from "next-common/context/chain";
 import { pick } from "lodash-es";
 import FellowshipReferendaPostList from "next-common/components/postList/fellowshipReferendaPostList";
 import businessCategory from "next-common/utils/consts/business/category";
+import TreasuryBountiesPostList from "next-common/components/postList/treasyrybountiesPostList";
 
 const InnerList = ({ secondCategory, data, pagination }) => {
   if (secondCategory.id === "comments") {
@@ -24,6 +25,16 @@ const InnerList = ({ secondCategory, data, pagination }) => {
   if (secondCategory.categoryId === businessCategory.fellowship) {
     return (
       <FellowshipReferendaPostList
+        titleCount={data?.total}
+        items={data?.items ?? []}
+        pagination={pagination}
+      />
+    );
+  }
+
+  if (secondCategory.categoryId === businessCategory.treasuryBounties) {
+    return (
+      <TreasuryBountiesPostList
         titleCount={data?.total}
         items={data?.items ?? []}
         pagination={pagination}
