@@ -14,6 +14,7 @@ import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/no
 import FellowshipReferendaPostList from "next-common/components/postList/fellowshipReferendaPostList";
 import Gov2TrackSummary from "next-common/components/summary/gov2TrackSummary";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import NewFellowshipProposalButton from "next-common/components/summary/newFellowshipProposalButton";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import FellowshipTrackSelect from "next-common/components/fellowship/fellowshipListLayout/trackSelect";
 import { isCollectivesChain } from "next-common/utils/chain";
@@ -58,8 +59,9 @@ export default function TrackPage({
       >
         <TrackPanel className="mb-4" />
         <FellowshipReferendaPostList
-          total={posts.total}
+          titleCount={posts.total}
           items={items}
+          titleExtra={<NewFellowshipProposalButton />}
           pagination={{
             page: posts.page,
             pageSize: posts.pageSize,

@@ -24,7 +24,7 @@ const InnerList = ({ secondCategory, data, pagination }) => {
   if (secondCategory.categoryId === businessCategory.fellowship) {
     return (
       <FellowshipReferendaPostList
-        total={data?.total}
+        titleCount={data?.total}
         items={data?.items ?? []}
         pagination={pagination}
       />
