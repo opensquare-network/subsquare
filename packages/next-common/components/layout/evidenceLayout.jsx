@@ -1,32 +1,35 @@
-import { addressEllipsis } from "next-common/utils";
 import BaseLayout from "./baseLayout";
 import { usePageProps } from "next-common/context/page";
 import { SecondaryCardDetail } from "../styled/containers/secondaryCard";
 import { Breadcrumbs } from "./DetailLayout/breadcrumbs";
+import { AddressUser } from "../user";
 
 export default function EvidenceLayout({ seoInfo = {}, children }) {
   const { who, detail } = usePageProps() || {};
   const { indexer } = detail || {};
-  const { blockHeight, eventIndex } = indexer || {};
+  const { blockHeight } = indexer || {};
 
   return (
     <BaseLayout seoInfo={seoInfo}>
-      <div className="max-w-[1200px] px-6 py-6 mx-auto w-full">
+      <div className="max-w-[1200px] px-6 py-6 mx-auto w-full max-sm:px-0">
         <Breadcrumbs
           breadcrumbs={[
             {
-              path: `/fellowship/members/${who}`,
-              content: addressEllipsis(who),
+              path: "/fellowship/members",
+              content: "Members",
             },
             {
-              content: "Evidence",
+              content: <AddressUser add={who} showAvatar={false} />,
+              className: "flex",
             },
             {
-              content: `#${blockHeight}-${eventIndex}`,
+              content: `#${blockHeight}`,
             },
           ]}
         />
-        <SecondaryCardDetail className="!p-12">{children}</SecondaryCardDetail>
+        <SecondaryCardDetail className="max-sm:!p-6 !p-12">
+          {children}
+        </SecondaryCardDetail>
       </div>
     </BaseLayout>
   );

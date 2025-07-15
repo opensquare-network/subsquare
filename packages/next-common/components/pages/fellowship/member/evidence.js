@@ -17,15 +17,16 @@ export default function EvidencePage(props) {
 }
 
 function EvidencePageImpl() {
-  const { detail, fellowshipMembers = [] } = usePageProps() || {};
+  const { detail } = usePageProps() || {};
 
   if (!detail) {
     return null;
   }
 
-  const activeMember = fellowshipMembers.find(
-    (member) => member.address === detail.who,
-  );
+  const activeMember = {
+    address: detail.who,
+    rank: detail.rank,
+  };
 
   return (
     <div className="flex flex-col gap-y-6">

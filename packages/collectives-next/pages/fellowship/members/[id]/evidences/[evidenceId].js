@@ -1,7 +1,6 @@
 import EvidencePage from "next-common/components/pages/fellowship/member/evidence";
 import { withCommonProps } from "next-common/lib";
 import { backendApi } from "next-common/services/nextApi";
-import { fellowshipMembersApiUri } from "next-common/services/url";
 import { to404 } from "next-common/utils/serverSideUtil";
 
 export default EvidencePage;
@@ -16,8 +15,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
     return to404();
   }
 
-  const [fellowshipMembersResult, commentsResult] = await Promise.all([
-    backendApi.fetch(fellowshipMembersApiUri),
+  const [commentsResult] = await Promise.all([
     backendApi.fetch(
       `fellowship/members/${who}/evidences/${evidenceId}/comments`,
     ),
@@ -25,7 +23,6 @@ export const getServerSideProps = withCommonProps(async (context) => {
 
   return {
     props: {
-      fellowshipMembers: fellowshipMembersResult.result,
       comments: commentsResult.result,
       who,
       detail,
