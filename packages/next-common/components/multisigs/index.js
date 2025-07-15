@@ -54,25 +54,25 @@ export default function Multisigs() {
   );
 
   return (
-    <AccountsProvider>
-      <div className="space-y-6">
-        <div className="flex flex-col gap-[16px]">
-          <div className="flex justify-between sm:items-center max-sm:flex-col gap-[12px]">
-            <AccountSubTabs className="mx-6" />
-          </div>
-          <WithPageWidth>
-            <CallPopupProvider>
-              <NeutralPanel className="p-6">
+    <div className="space-y-6">
+      <div className="flex flex-col gap-[16px]">
+        <div className="flex justify-between sm:items-center max-sm:flex-col gap-[12px]">
+          <AccountSubTabs className="mx-6" />
+        </div>
+        <WithPageWidth>
+          <CallPopupProvider>
+            <NeutralPanel className="p-6">
+              <AccountsProvider>
                 <Tabs
                   tabs={tabs}
                   activeTabValue={activeTabValue}
                   onTabClick={onTabClick}
                 />
-              </NeutralPanel>
-            </CallPopupProvider>
-          </WithPageWidth>
-        </div>
+              </AccountsProvider>
+            </NeutralPanel>
+          </CallPopupProvider>
+        </WithPageWidth>
       </div>
-    </AccountsProvider>
+    </div>
   );
 }

@@ -32,11 +32,14 @@ const MultisigAccountList = memo(function MultisigAccountList({
     ]);
   }, [multisigs]);
 
+  const isEmpty = multisigs.length === 0 && !isLoading;
+
+  if (isEmpty) {
+    return <ListEmpty />;
+  }
+
   return (
-    <>
-      <DataList columns={columns} rows={rows} loading={isLoading} />
-      {multisigs.length === 0 && !isLoading ? <ListEmpty /> : null}
-    </>
+    <DataList noDataText="" columns={columns} rows={rows} loading={isLoading} />
   );
 });
 
