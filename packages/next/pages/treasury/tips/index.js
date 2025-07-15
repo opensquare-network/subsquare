@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
-import PostList from "next-common/components/postList/treasury/tips";
+import TreasuryTipsPostList, {
+  NewTipButtonExtra,
+} from "next-common/components/postList/treasuryTipsPostList";
 import { withCommonProps } from "next-common/lib";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import normalizeTipListItem from "next-common/utils/viewfuncs/treasury/normalizeTipListItem";
@@ -51,7 +53,7 @@ export default function TipsPage({ tips: ssrTips }) {
             },
           ].filter(Boolean)}
         >
-          <PostList
+          <TreasuryTipsPostList
             titleCount={tips.total}
             items={items}
             pagination={{
@@ -59,6 +61,7 @@ export default function TipsPage({ tips: ssrTips }) {
               pageSize: tips.pageSize,
               total: tips.total,
             }}
+            titleExtra={<NewTipButtonExtra />}
           />
         </ListLayout>
       </TreasuryProvider>

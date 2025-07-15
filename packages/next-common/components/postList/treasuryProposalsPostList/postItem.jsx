@@ -16,10 +16,10 @@ import {
   PostItemAISummary,
   PostItemMalicious,
   PostItemBannner,
-} from "../../common";
+} from "../common";
 import { TreasuryTag } from "next-common/components/tags/state/treasury";
 
-export default function PostItem({ data }) {
+export default function TreasuryPorposalsPostItem({ data }) {
   return (
     <>
       <Wrapper>
