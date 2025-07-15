@@ -14,7 +14,7 @@ const DeletePopup = dynamicPopup(() =>
 
 export default function MoreActions({ data, EditPopup, update }) {
   const [show, setShow] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const ref = useRef();
 
@@ -31,7 +31,10 @@ export default function MoreActions({ data, EditPopup, update }) {
         />
         {show && (
           <OptionWrapper>
-            <EditMenuItem setIsEdit={setIsEdit} setShow={setShow} />
+            <EditMenuItem 
+              setIsEdit={setShowEdit} 
+              setShow={setShow} 
+            />
             <DeleteMenuItem
               setShowDeletePopup={setShowDeletePopup}
               setShow={setShow}
@@ -40,8 +43,11 @@ export default function MoreActions({ data, EditPopup, update }) {
         )}
       </div>
 
-      {isEdit && (
-        <EditPopup setIsAppend={setIsEdit} editData={data} isEditMode={true} />
+      {showEdit && (
+        <EditPopup 
+          onClose={() => setShowEdit(false)} 
+          editData={data} 
+        />
       )}
 
       {showDeletePopup && (

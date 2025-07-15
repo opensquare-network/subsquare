@@ -4,15 +4,15 @@ import MoreActions from "next-common/components/appendants/common/moreActions";
 import { memo } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const BountyEditorAppendantPopup = dynamicPopup(() =>
-  import("next-common/components/appendants/bounty/appendantEditorPopup"),
+const BountyEditAppendantPopup = dynamicPopup(() =>
+  import("./editPopup"),
 );
 
 const BountyMoreActions = ({ data }) => {
   const { update } = useBountyAppendantsContext();
 
   return (
-    <MoreActions data={data} EditPopup={BountyEditorAppendantPopup} update={update} />
+    <MoreActions data={data} EditPopup={BountyEditAppendantPopup} update={update} />
   );
 };
 
