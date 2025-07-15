@@ -31,11 +31,7 @@ export default function AppendantPopupLayout({
   loading = false,
 }) {
   return (
-    <Popup
-      title={title}
-      onClose={onClose}
-      className="w-[800px]"
-    >
+    <Popup title={title} onClose={onClose} className="w-[800px]">
       <Wrapper>
         <GreyPanel className="text14Medium text-gray500 py-2.5 px-4 max-w-full !block">
           {description}

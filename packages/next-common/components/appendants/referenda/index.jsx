@@ -4,9 +4,7 @@ import MoreActions from "next-common/components/appendants/common/moreActions";
 import { memo } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const ReferendaEditAppendantPopup = dynamicPopup(() =>
-  import("./editPopup"),
-);
+const ReferendaEditAppendantPopup = dynamicPopup(() => import("./editPopup"));
 
 const ReferendaMoreActions = ({ data }) => {
   const { update } = useReferendaAppendantsContext();

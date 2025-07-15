@@ -31,10 +31,7 @@ export default function MoreActions({ data, EditPopup, update }) {
         />
         {show && (
           <OptionWrapper>
-            <EditMenuItem 
-              setIsEdit={setShowEdit} 
-              setShow={setShow} 
-            />
+            <EditMenuItem setIsEdit={setShowEdit} setShow={setShow} />
             <DeleteMenuItem
               setShowDeletePopup={setShowDeletePopup}
               setShow={setShow}
@@ -44,10 +41,7 @@ export default function MoreActions({ data, EditPopup, update }) {
       </div>
 
       {showEdit && (
-        <EditPopup 
-          onClose={() => setShowEdit(false)} 
-          editData={data} 
-        />
+        <EditPopup onClose={() => setShowEdit(false)} editData={data} />
       )}
 
       {showDeletePopup && (
