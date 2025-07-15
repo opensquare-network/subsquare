@@ -1,17 +1,18 @@
 import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated";
 import { useSubRelayHeight } from "next-common/hooks/relayScanHeight";
 
-export function RelayStatusWrapper({ children, relayScanHeight }) {
+function RelayStatusSubscriber({ relayScanHeight }) {
   useSubRelayHeight(relayScanHeight);
-  return children;
+  return null;
 }
 
 export default function MaybeSubRelayStatus({ relayScanHeight, children }) {
   if (isAssetHubMigrated()) {
     return (
-      <RelayStatusWrapper relayScanHeight={relayScanHeight}>
+      <>
         {children}
-      </RelayStatusWrapper>
+        <RelayStatusSubscriber relayScanHeight={relayScanHeight} />
+      </>
     );
   }
 

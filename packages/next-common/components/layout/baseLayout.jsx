@@ -19,7 +19,7 @@ import GlobalNotification from "next-common/components/globalNotification";
 import useInitApiProviders from "next-common/services/chain/apis/useInitApiProviders";
 import useInitMimir from "next-common/hooks/useInitMimir";
 import { usePageProperties } from "next-common/context/page";
-import { useSubScanHeight } from "next-common/hooks/scanHeight";
+import { ScanHeightSubscriber } from "../scanHeightSubscriber";
 import MaybeSubRelayStatus from "../maybeSubRelayStatus";
 import NativeTokenPriceSubscriber from "next-common/components/common/price/subscriber";
 
@@ -31,7 +31,7 @@ export default function BaseLayout({
   seoInfo = {},
   contentStyle = {},
 }) {
-  const { scanHeight, relayScanHeight } = usePageProperties();
+  const { relayScanHeight } = usePageProperties();
   const { sm } = useScreenSize();
   const [navCollapsed] = useNavCollapsed();
 
@@ -40,7 +40,6 @@ export default function BaseLayout({
   useUpdateNodesDelay();
 
   const api = useContextApi();
-  useSubScanHeight(scanHeight);
   useSubscribeChainHead(api);
   useExistentialDeposit();
 
@@ -88,6 +87,7 @@ export default function BaseLayout({
       <CookiesConsent />
       <LoginGlobalPopup />
       <NativeTokenPriceSubscriber />
+      <ScanHeightSubscriber />
     </MaybeSubRelayStatus>
   );
 }
