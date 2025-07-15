@@ -7,25 +7,28 @@ import { ListWrapper } from "next-common/components/postList/styled";
 import businessCategory from "next-common/utils/consts/business/category";
 import NewTreasuryProposal from "next-common/components/treasury/proposal/newTreasuryProposal";
 
+export function NewTreasuryProposalButton() {
+  const { showNewTreasuryProposalButton } = useChainSettings();
+  if (!showNewTreasuryProposalButton) {
+    return null;
+  }
+  return <NewTreasuryProposal />;
+}
+
 export default function TreasuryProposalsPostList({
   titleCount,
   items,
   pagination,
+  titleExtra,
 }) {
-  const { showNewTreasuryProposalButton } = useChainSettings();
   return (
     <>
       <ListWrapper>
         <ListTitleBar
           title="List"
+          link="/treasury/proposals"
           titleCount={titleCount}
-          titleExtra={
-            showNewTreasuryProposalButton && (
-              <div className="flex justify-end">
-                <NewTreasuryProposal />
-              </div>
-            )
-          }
+          titleExtra={titleExtra}
         />
         <MaybeEmpty items={items} type={businessCategory.treasuryProposals}>
           {items.map((data, index) => (

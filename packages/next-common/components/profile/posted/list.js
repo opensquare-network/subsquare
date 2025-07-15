@@ -11,6 +11,7 @@ import FellowshipReferendaPostList from "next-common/components/postList/fellows
 import businessCategory from "next-common/utils/consts/business/category";
 import TreasuryBountiesPostList from "next-common/components/postList/treasyrybountiesPostList";
 import TreasuryTipsPostList from "next-common/components/postList/treasuryTipsPostList";
+import TreasuryProposalsPostList from "next-common/components/postList/treasuryProposalsPostList";
 
 const InnerList = ({ secondCategory, data, pagination }) => {
   if (secondCategory.id === "comments") {
@@ -46,6 +47,16 @@ const InnerList = ({ secondCategory, data, pagination }) => {
   if (secondCategory.categoryId === businessCategory.treasuryTips) {
     return (
       <TreasuryTipsPostList
+        titleCount={data?.total}
+        items={data?.items ?? []}
+        pagination={pagination}
+      />
+    );
+  }
+
+  if (secondCategory.categoryId === businessCategory.treasuryProposals) {
+    return (
+      <TreasuryProposalsPostList
         titleCount={data?.total}
         items={data?.items ?? []}
         pagination={pagination}
