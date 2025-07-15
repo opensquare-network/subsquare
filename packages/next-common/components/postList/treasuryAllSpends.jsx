@@ -7,7 +7,6 @@ import Tooltip from "../tooltip";
 import useFiatValueTooltipContent from "./common/useFiatValueTooltipContent";
 import { useChainSettings } from "next-common/context/chain";
 import { useMemo } from "react";
-import Loading from "../loading";
 import Flex from "../styled/flex";
 
 export default function PostListTreasuryAllSpends({
