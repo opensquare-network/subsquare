@@ -29,9 +29,9 @@ export default function ApiProvider({ children }) {
   }, [currentEndpoint, candidateNodes]);
 
   useEffect(() => {
-    if (!selectedEndpoint) return;
-
-    let oldApi = nowApi;
+    if (!selectedEndpoint) {
+      return;
+    }
 
     dispatch(
       setCurrentNode({ url: selectedEndpoint, saveLocalStorage: false }),
@@ -41,9 +41,6 @@ export default function ApiProvider({ children }) {
       .then((api) => {
         if (isMounted()) {
           setNowApi(api);
-          if (oldApi && oldApi.disconnect) {
-            oldApi.disconnect();
-          }
         } else {
           if (api && api.disconnect) {
             api.disconnect();
@@ -55,8 +52,7 @@ export default function ApiProvider({ children }) {
           dispatch(removeCurrentNode());
         }
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedEndpoint, dispatch, endpoints, chain]);
+  }, [selectedEndpoint, dispatch, endpoints, chain, isMounted]);
 
   return <ApiProviderWithApi api={nowApi}>{children}</ApiProviderWithApi>;
 }
