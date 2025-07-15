@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import getChainSettings from "../../utils/consts/settings";
 import safeLocalStorage from "next-common/utils/safeLocalStorage";
+import { random } from "lodash-es";
 
 const chain = process.env.NEXT_PUBLIC_CHAIN;
 
@@ -36,9 +37,14 @@ export function getInitNodeUrl(chain) {
   if (chainNodes.length <= 0) {
     throw new Error(`Can not find nodes for ${chain}`);
   }
+  const candidateUrls = chainNodes.map((node) => node.url);
+  if (localNodeUrl && candidateUrls.includes(localNodeUrl)) {
+    return localNodeUrl;
+  }
 
-  const node = (chainNodes || []).find(({ url }) => url === localNodeUrl);
-  return node?.url;
+  const cap = candidateUrls.length > 3 ? 2 : candidateUrls.length - 1;
+  const randomIndex = random(cap);
+  return candidateUrls[randomIndex];
 }
 
 const nodeSlice = createSlice({
