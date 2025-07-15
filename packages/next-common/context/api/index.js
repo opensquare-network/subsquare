@@ -8,6 +8,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import useCandidateNodes from "next-common/services/chain/apis/useCandidateNodes";
 import getOriginApiInSeconds from "next-common/services/chain/api";
+import { useMountedState } from "react-use";
 
 export const ApiContext = createContext(null);
 
@@ -18,6 +19,7 @@ export default function ApiProvider({ children }) {
   const { endpoints } = useChainSettings();
   const candidateNodes = useCandidateNodes();
   const [nowApi, setNowApi] = useState(null);
+  const isMounted = useMountedState();
 
   const selectedEndpoint = useMemo(() => {
     if (currentEndpoint) return currentEndpoint;
@@ -29,7 +31,6 @@ export default function ApiProvider({ children }) {
   useEffect(() => {
     if (!selectedEndpoint) return;
 
-    let isMounted = true;
     let oldApi = nowApi;
 
     dispatch(
@@ -38,7 +39,7 @@ export default function ApiProvider({ children }) {
 
     getOriginApiInSeconds(chain, selectedEndpoint)
       .then((api) => {
-        if (isMounted) {
+        if (isMounted()) {
           setNowApi(api);
           if (oldApi && oldApi.disconnect) {
             oldApi.disconnect();
@@ -54,10 +55,6 @@ export default function ApiProvider({ children }) {
           dispatch(removeCurrentNode());
         }
       });
-
-    return () => {
-      isMounted = false;
-    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedEndpoint, dispatch, endpoints, chain]);
 
