@@ -3,7 +3,7 @@ import { fetchList } from "next-common/services/list";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ListLayout from "next-common/components/layout/ListLayout";
 import TreasurySummary from "next-common/components/summary/treasurySummary";
-import PostList from "next-common/components/postList/treasury/spends";
+import TreasurySpendsPostList from "next-common/components/postList/treasurySpendsPostList";
 import normalizeTreasurySpendListItem from "next-common/utils/viewfuncs/treasury/normalizeTreasurySpendListItem";
 import { TreasuryProvider } from "next-common/context/treasury";
 import { isPolkadotChain } from "next-common/utils/chain";
@@ -37,7 +37,7 @@ export default function ProposalsPage({ spends: pagedSpends, chain }) {
           defaultFilterValues={{ status: "" }}
           shallow={false}
         >
-          <PostList
+          <TreasurySpendsPostList
             titleCount={total}
             items={spends}
             pagination={{ page, pageSize, total }}
