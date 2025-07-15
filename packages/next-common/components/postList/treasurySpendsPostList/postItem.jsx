@@ -12,14 +12,14 @@ import {
   PostItemUser,
   PostItemTime,
   PostItemCommentCount,
+  PostItemVotesSummaryImpl,
   PostItemMalicious,
   PostItemAISummary,
-  PostItemTitleValue,
-  PostItemParentIndex,
 } from "next-common/components/postList/common";
+import TreasurySpendAmount from "./treasurySpeedAmount";
 import Divider from "next-common/components/styled/layout/divider";
-import { ChildBountyTag } from "next-common/components/tags/state/treasury";
-import TreasurySpendsCountDown from "next-common/components/postList/treasury/spends/countdown";
+import { SpendTag } from "next-common/components/tags/state/treasury";
+import TreasurySpendsCountDown from "next-common/components/postList/treasurySpendsPostList/countdown";
 
 export default function PostItem({ data }) {
   return (
@@ -28,7 +28,7 @@ export default function PostItem({ data }) {
         <ContentWrapper>
           <HeadWrapper>
             <PostItemTitle data={data} href={data?.detailLink} />
-            <PostItemTitleValue data={data} />
+            <TreasurySpendAmount meta={data?.meta} />
           </HeadWrapper>
           <Divider margin={12} />
           <FooterWrapper>
@@ -39,11 +39,11 @@ export default function PostItem({ data }) {
                 elapseIcon={<TreasurySpendsCountDown data={data} />}
               />
               <PostItemCommentCount data={data} />
-              <PostItemParentIndex parentIndex={data.parentIndex} />
+              <PostItemVotesSummaryImpl data={data} />
               <PostItemMalicious isMalicious={data?.isMalicious} />
               <PostItemAISummary data={data} />
             </Footer>
-            <ChildBountyTag state={data.status} />
+            <SpendTag state={data.status} />
           </FooterWrapper>
         </ContentWrapper>
         <PostItemBannner bannerCid={data?.bannerCid} />

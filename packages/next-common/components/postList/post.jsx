@@ -37,7 +37,6 @@ import { SystemActivity, SystemComment } from "@osn/icons/subsquare";
 import PostListTreasuryAllSpends from "./treasuryAllSpends";
 import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 import PostListAISummary from "./aiSummary";
-import TreasurySpendsCountDown from "next-common/components/postList/treasury/spends/countdown";
 import PostListMyVoteMark from "./myVoteMark";
 import { referendumState } from "next-common/utils/consts/referendum";
 import Chains from "next-common/utils/consts/chains";
@@ -122,12 +121,7 @@ export function PostValueTitle({ data, type }) {
     ? onchainData?.treasuryInfo?.amount
     : value;
 
-  if (
-    [
-      businessCategory.treasurySpends,
-      businessCategory.fellowshipTreasurySpends,
-    ].includes(type)
-  ) {
+  if ([businessCategory.fellowshipTreasurySpends].includes(type)) {
     return <TreasurySpendAmount meta={data?.meta} />;
   }
 
@@ -221,8 +215,6 @@ export default function Post({ data, href, type }) {
 
   if (businessCategory.democracyReferenda === type) {
     elapseIcon = <ReferendumElapse detail={data} />;
-  } else if (businessCategory.treasurySpends === type) {
-    elapseIcon = <TreasurySpendsCountDown data={data} />;
   }
 
   let commentsCount = data.commentsCount || 0;
