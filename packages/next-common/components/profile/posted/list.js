@@ -10,6 +10,7 @@ import { pick } from "lodash-es";
 import FellowshipReferendaPostList from "next-common/components/postList/fellowshipReferendaPostList";
 import businessCategory from "next-common/utils/consts/business/category";
 import TreasuryBountiesPostList from "next-common/components/postList/treasyrybountiesPostList";
+import TreasuryTipsPostList from "next-common/components/postList/treasuryTipsPostList";
 
 const InnerList = ({ secondCategory, data, pagination }) => {
   if (secondCategory.id === "comments") {
@@ -35,6 +36,16 @@ const InnerList = ({ secondCategory, data, pagination }) => {
   if (secondCategory.categoryId === businessCategory.treasuryBounties) {
     return (
       <TreasuryBountiesPostList
+        titleCount={data?.total}
+        items={data?.items ?? []}
+        pagination={pagination}
+      />
+    );
+  }
+
+  if (secondCategory.categoryId === businessCategory.treasuryTips) {
+    return (
+      <TreasuryTipsPostList
         titleCount={data?.total}
         items={data?.items ?? []}
         pagination={pagination}
