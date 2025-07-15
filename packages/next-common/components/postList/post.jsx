@@ -168,10 +168,9 @@ export default function Post({ data, href, type }) {
     businessCategory.openTechCommitteeProposals,
   ].includes(type);
 
-  const isGov2Referendum = [
-    businessCategory.openGovReferenda,
-    businessCategory.ambassadorReferenda,
-  ].includes(type);
+  const isGov2Referendum = [businessCategory.ambassadorReferenda].includes(
+    type,
+  );
 
   let stateArgs;
   if (isDemocracyCollective) {
@@ -230,16 +229,13 @@ export default function Post({ data, href, type }) {
   const bannerUrl = getBannerUrl(data.bannerCid);
 
   let trackTagLink = null;
-  if (type === businessCategory.openGovReferenda) {
-    trackTagLink = `/referenda/tracks/${data.track}`;
-  } else if (type === businessCategory.ambassadorReferenda) {
+  if (type === businessCategory.ambassadorReferenda) {
     trackTagLink = `/ambassador/tracks/${data.track}`;
   }
 
   const hasTally = data.onchainData?.tally || data.onchainData?.info?.tally;
   const showTally = [
     businessCategory.democracyReferenda,
-    businessCategory.openGovReferenda,
     businessCategory.ambassadorReferenda,
   ].includes(type);
 
