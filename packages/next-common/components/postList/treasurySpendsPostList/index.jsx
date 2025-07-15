@@ -1,9 +1,9 @@
 import Pagination from "next-common/components/pagination/index.js";
-import ListTitleBar from "../../../listTitleBar";
+import ListTitleBar from "../../listTitleBar";
 import TreasurySpendFilter from "next-common/components/treasury/spends/treasurySpendFilter";
 import MaybeEmpty from "next-common/components/emptyList";
 import businessCategory from "next-common/utils/consts/business/category";
-import { ListWrapper } from "../../styled";
+import { ListWrapper } from "../styled";
 import PostItem from "./postItem";
 
 export default function PostList({ titleCount = null, items, pagination }) {
@@ -11,6 +11,7 @@ export default function PostList({ titleCount = null, items, pagination }) {
     <ListWrapper>
       <ListTitleBar
         title="List"
+        link="/treasury/spends"
         titleCount={titleCount}
         titleExtra={<TreasurySpendFilter />}
       />

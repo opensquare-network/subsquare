@@ -19,7 +19,7 @@ import {
 import TreasurySpendAmount from "./treasurySpeedAmount";
 import Divider from "next-common/components/styled/layout/divider";
 import { SpendTag } from "next-common/components/tags/state/treasury";
-import TreasurySpendsCountDown from "next-common/components/postList/treasury/spends/countdown";
+import TreasurySpendsCountDown from "next-common/components/postList/treasurySpendsPostList/countdown";
 
 export default function PostItem({ data }) {
   return (
