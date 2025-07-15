@@ -12,6 +12,7 @@ export function NewTreasuryProposalButton() {
   if (!showNewTreasuryProposalButton) {
     return null;
   }
+
   return <NewTreasuryProposal />;
 }
 
