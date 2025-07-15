@@ -22,6 +22,7 @@ function getFellowshipMembersMenu() {
     extraMatchNavMenuActivePathnames: [
       "/fellowship/members/params",
       "/fellowship/members/feeds",
+      "/fellowship/members/[id]/evidences/[evidenceId]",
     ],
   };
 }

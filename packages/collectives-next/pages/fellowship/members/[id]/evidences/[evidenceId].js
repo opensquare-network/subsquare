@@ -1,37 +1,12 @@
 import EvidencePage from "next-common/components/pages/fellowship/member/evidence";
+import { withCommonProps } from "next-common/lib";
 import { backendApi } from "next-common/services/nextApi";
 import { fellowshipMembersApiUri } from "next-common/services/url";
 import { to404 } from "next-common/utils/serverSideUtil";
 
 export default EvidencePage;
 
-function formatEvidenceId(who, evidenceId) {
-  // If evidenceId is a blockHeight
-  if (/^\d+$/.test(evidenceId)) {
-    const blockHeight = Number(evidenceId);
-    return {
-      who,
-      blockHeight,
-    };
-  }
-
-  // If evidenceId is a "blockHeight-eventIndex"
-  if (/^\d+-\d+$/.test(evidenceId)) {
-    const [blockHeight, eventIndex] = evidenceId.split("-").map(Number);
-    return {
-      who,
-      blockHeight,
-      eventIndex,
-    };
-  }
-
-  return {
-    who,
-    cid: evidenceId,
-  };
-}
-
-export async function getServerSideProps(context) {
+export const getServerSideProps = withCommonProps(async (context) => {
   const { evidenceId, id: who } = context.params;
   const { result: detail } = await backendApi.fetch(
     `fellowship/members/${who}/evidences/${evidenceId}`,
@@ -50,11 +25,10 @@ export async function getServerSideProps(context) {
 
   return {
     props: {
-      indexer: formatEvidenceId(who, evidenceId),
       fellowshipMembers: fellowshipMembersResult.result,
       comments: commentsResult.result,
       who,
       detail,
     },
   };
-}
+});
