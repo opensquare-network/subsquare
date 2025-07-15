@@ -20,7 +20,10 @@ export default function EvidenceLayout({ seoInfo = {}, children }) {
                 content: "Members",
               },
               {
-                content: <AddressUser add={who} showAvatar={false} />,
+                path: `/fellowship/members/${who}`,
+                content: (
+                  <AddressUser add={who} showAvatar={false} needHref={false} />
+                ),
                 className: "flex",
               },
               {
