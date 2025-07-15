@@ -83,7 +83,7 @@ function VoteBar({ address, wish }) {
 function WishPanel({ address, activeMember, wish }) {
   return (
     <div className="flex flex-col gap-[16px]">
-      <WishBar wish={wish} activeMember={activeMember} address={address} />
+      <WishBar wish={wish} rank={activeMember?.rank} address={address} />
       <VoteBar address={address} wish={wish} />
     </div>
   );
