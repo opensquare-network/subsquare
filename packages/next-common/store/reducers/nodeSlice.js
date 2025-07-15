@@ -24,6 +24,16 @@ export function getEnvEndpoints() {
 
 const endpointsFromEnv = getEnvEndpoints();
 
+export function getAllRpcUrls() {
+  const envEndpoints = getEnvEndpoints();
+  if ((envEndpoints || []).length >= 1) {
+    return envEndpoints.map((item) => item.url);
+  }
+
+  const settings = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
+  return settings.endpoints.map((item) => item.url);
+}
+
 export function getInitNodeUrl(chain) {
   let localNodeUrl = null;
   try {
@@ -32,12 +42,10 @@ export function getInitNodeUrl(chain) {
     // ignore parse error
   }
 
-  const settings = getChainSettings(chain);
-  const chainNodes = endpointsFromEnv || settings.endpoints;
-  if (chainNodes.length <= 0) {
+  const candidateUrls = getAllRpcUrls();
+  if (candidateUrls.length <= 0) {
     throw new Error(`Can not find nodes for ${chain}`);
   }
-  const candidateUrls = chainNodes.map((node) => node.url);
   if (localNodeUrl && candidateUrls.includes(localNodeUrl)) {
     return localNodeUrl;
   }
