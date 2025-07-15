@@ -10,7 +10,6 @@ export default function BountyEditAppendantPopup({ onClose, editData }) {
       editData={editData}
       onSuccess={update}
       description="You are editing an appendant as proposer/curator."
-      title="Edit Appendant"
     />
   );
 }

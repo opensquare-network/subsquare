@@ -10,7 +10,6 @@ export default function ReferendaEditAppendantPopup({ onClose, editData }) {
       editData={editData}
       onSuccess={update}
       description="You are editing an appendant as authors."
-      title="Edit Appendant"
     />
   );
 }
