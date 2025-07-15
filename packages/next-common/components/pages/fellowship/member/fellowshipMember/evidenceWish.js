@@ -50,7 +50,7 @@ export default function EvidenceWish() {
 function BlockEvidenceOrEmpty({ wish, evidence, address, activeMember }) {
   return wish && evidence ? (
     <>
-      <WishBar wish={wish} activeMember={activeMember} address={address} />
+      <WishBar wish={wish} rank={activeMember?.rank} address={address} />
       <OnchainEvidenceStatisticsInfoImpl wish={wish} address={address} />
       <OnchainEvidenceContent evidence={evidence} wish={wish} />
     </>
