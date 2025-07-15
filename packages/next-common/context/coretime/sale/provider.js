@@ -36,4 +36,15 @@ export function useCoretimeSaleInfo() {
   return info;
 }
 
+export function useCoretimeSaleConfiguration() {
+  const sale = useCoretimeSale();
+  const { configuration } = sale;
+
+  if (!configuration) {
+    throw new Error("Coretime sale configuration should be available");
+  }
+
+  return configuration;
+}
+
 export { useSharedCoretimeSale };

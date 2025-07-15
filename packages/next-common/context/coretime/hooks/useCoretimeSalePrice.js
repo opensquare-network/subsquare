@@ -2,11 +2,13 @@ import useCoretimeSale from "next-common/context/coretime/sale/provider";
 import useCoretimeChainOrScanHeight from "next-common/hooks/coretime/scanHeight";
 import { isNil } from "lodash-es";
 import { getCoretimePriceAt } from "next-common/utils/coretime/price";
+import useCoretimeCustomizedSaleInfo from "next-common/hooks/coretime/useCoretimeCustomizedSaleInfo";
 
 export default function useCoretimeSalePrice() {
   const sale = useCoretimeSale();
-  const { isFinal, info: saleInfo } = sale;
+  const { isFinal } = sale;
   const chainHeight = useCoretimeChainOrScanHeight();
+  const saleInfo = useCoretimeCustomizedSaleInfo();
   if (isFinal) {
     return {
       isLoading: false,
