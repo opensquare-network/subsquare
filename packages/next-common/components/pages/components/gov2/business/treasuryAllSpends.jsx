@@ -13,6 +13,7 @@ import TreasurySpendValueDisplay from "next-common/components/gov2/business/trea
 import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import FieldLoading from "next-common/components/icons/fieldLoading";
 import useChainOrScanHeight from "next-common/hooks/height";
+import BeneficiaryDetailButton from "./beneficiaryDetailButton";
 
 const separateNumber = 5;
 
@@ -65,8 +66,30 @@ function AllSpends({ onchain }) {
   );
 }
 
+function SpendBeneficiary({ beneficiary, beneficiaryDescriptor }) {
+  if (!beneficiary && !beneficiaryDescriptor) {
+    return null;
+  }
+
+  return (
+    <>
+      <div className="text-textTertiary">to</div>
+      <div className={cn("grow flex")}>
+        {beneficiary ? (
+          <AddressUser add={beneficiary} maxWidth={176} />
+        ) : (
+          <BeneficiaryDetailButton
+            beneficiaryDescriptor={beneficiaryDescriptor}
+          />
+        )}
+      </div>
+    </>
+  );
+}
+
 function Spend({
   beneficiary,
+  beneficiaryDescriptor,
   assetKind,
   amount,
   validFrom,
@@ -99,12 +122,10 @@ function Spend({
           symbol={symbol}
           type={type}
         />
-
-        <div className="text-textTertiary">to</div>
-
-        <div className={cn("grow flex")}>
-          <AddressUser add={beneficiary} maxWidth={176} />
-        </div>
+        <SpendBeneficiary
+          beneficiary={beneficiary}
+          beneficiaryDescriptor={beneficiaryDescriptor}
+        />
       </div>
 
       {!isNil(validFrom) ? (

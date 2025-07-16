@@ -51,7 +51,11 @@ function getTreasuryBusiness(onchain, decimals, symbol) {
 }
 
 function getStableTreasuryBusiness(onchain) {
-  const { spends = [] } = onchain?.stableTreasuryInfo || {};
+  const { proposal, stableTreasuryInfo } = onchain || {};
+  const { spends = [] } = stableTreasuryInfo || {};
+  const beneficiaryDescriptor = proposal?.call?.args?.find(
+    (item) => item.name === "beneficiary",
+  );
 
   const requests = (
     <div className="flex flex-col">
@@ -71,7 +75,9 @@ function getStableTreasuryBusiness(onchain) {
           {spend.beneficiary ? (
             <AddressUser add={spend.beneficiary} />
           ) : (
-            <BeneficiaryDetailButton />
+            <BeneficiaryDetailButton
+              beneficiaryDescriptor={beneficiaryDescriptor}
+            />
           )}
         </div>
       ))}
