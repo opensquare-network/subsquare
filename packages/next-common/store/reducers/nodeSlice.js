@@ -24,13 +24,13 @@ export function getEnvEndpoints() {
 
 const endpointsFromEnv = getEnvEndpoints();
 
-export function getAllRpcUrls() {
+export function getAllRpcUrls(chain) {
   const envEndpoints = getEnvEndpoints();
   if ((envEndpoints || []).length >= 1) {
     return envEndpoints.map((item) => item.url);
   }
 
-  const settings = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
+  const settings = getChainSettings(chain);
   return settings.endpoints.map((item) => item.url);
 }
 
@@ -42,7 +42,7 @@ export function getInitNodeUrl(chain) {
     // ignore parse error
   }
 
-  const candidateUrls = getAllRpcUrls();
+  const candidateUrls = getAllRpcUrls(chain);
   if (candidateUrls.length <= 0) {
     throw new Error(`Can not find nodes for ${chain}`);
   }
