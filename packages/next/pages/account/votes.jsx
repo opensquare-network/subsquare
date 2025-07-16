@@ -54,7 +54,7 @@ function MyVoteLayout({ children }) {
 
 export default function AccountVotesPage() {
   return (
-    <AccountLayout>
+    <AccountLayout seoInfo={{ title: "Account votes management" }}>
       <MyVoteLayout>
         <ModuleVotes />
       </MyVoteLayout>

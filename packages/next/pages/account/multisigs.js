@@ -5,7 +5,7 @@ import Multisigs from "next-common/components/multisigs";
 
 export default function MyMultisigs() {
   return (
-    <AccountLayout>
+    <AccountLayout seoInfo={{ title: "Account multisigs management" }}>
       <Multisigs />
     </AccountLayout>
   );

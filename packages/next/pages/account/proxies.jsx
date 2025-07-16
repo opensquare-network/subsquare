@@ -4,7 +4,7 @@ import { withCommonProps } from "next-common/lib";
 
 export default function AccountProxiesPage() {
   return (
-    <AccountLayout>
+    <AccountLayout seoInfo={{ title: "Account proxies management" }}>
       <MyProxies />
     </AccountLayout>
   );

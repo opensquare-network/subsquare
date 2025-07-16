@@ -41,7 +41,7 @@
     "@osn/eslint-config": "^1.0.2",
     "@types/lodash-es": "^4.17.12",
     "eslint": "^8.44.0",
-    "eslint-config-next": "15.3.0",
+    "eslint-config-next": "^15.3.5",
     "raw-loader": "^4.0.2"
   }
 }

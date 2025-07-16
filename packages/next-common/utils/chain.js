@@ -71,6 +71,10 @@ export function isPolkadotChain(chain) {
   return [Chains.polkadot].includes(chain);
 }
 
+export function isZkverifyChain(chain) {
+  return [Chains.zkverifyTestnet].includes(chain);
+}
+
 export function isRelayChain(chain) {
   return [
     Chains.polkadot,

@@ -18,6 +18,7 @@ import useFellowshipMemberDetailAddr from "next-common/hooks/collectives/member/
 import Register from "next-common/components/fellowship/members/detail/actions/register";
 import Payout from "next-common/components/fellowship/members/detail/actions/payout";
 import useSalaryClaimant from "next-common/hooks/fellowship/salary/useSalaryClaimant";
+import useSubCoreCollectivesMember from "next-common/hooks/collectives/useSubCoreCollectivesMember";
 
 function Wrapper({ children }) {
   return (
@@ -115,15 +116,17 @@ function Statistics({ totalPaid, joinedCycles }) {
   );
 }
 
-function MemberSalary({ address, member }) {
+function MemberSalary({ address }) {
   const { fellowshipParams, claimantCycleStats } = usePageProps();
-  const { isActive } = member || {};
+  const { member, isLoading: isMemberLoading } =
+    useSubCoreCollectivesMember(address);
   const { rank, loading: isRankLoading } = useSubCollectiveRank(address);
 
-  if (isRankLoading) {
+  if (isRankLoading || isMemberLoading) {
     return null;
   }
 
+  const { isActive } = member || {};
   const { activeSalary = [], passiveSalary = [] } = fellowshipParams ?? {};
   const salaryTable = isActive ? activeSalary : passiveSalary;
   const salary = getRankSalary(salaryTable, rank);
@@ -170,5 +173,5 @@ export default function Salary({ address }) {
     return <NotImportedSalary />;
   }
 
-  return <MemberSalary address={address} member={claimant} />;
+  return <MemberSalary address={address} />;
 }

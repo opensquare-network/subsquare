@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useMemo } from "react";
 import { UnStyledIdentity } from "../Identity";
 import Link from "next/link";
 import { AvatarWrapper, UserWrapper } from "./styled";
@@ -23,45 +23,64 @@ export function AddressUserImpl({
   avatar,
   maxWidth,
   showAvatar = true,
+  avatarSize = "",
   noEvent = false,
   noTooltip = false,
   ellipsis = true,
   link = "",
+  needHref = true,
   identityIconClassName = "",
 }) {
   const chain = useChain();
   const displayAddress = tryConvertToEvmAddress(address);
 
-  const userIdentity = hasIdentity ? (
-    <UnStyledIdentity
-      identity={identity}
-      maxWidth={maxWidth}
-      ellipsis={ellipsis}
-      identityIconClassName={identityIconClassName}
-    />
-  ) : (
-    <AddressDisplay
-      address={displayAddress}
-      maxWidth={maxWidth}
-      noTooltip={noTooltip}
-      ellipsis={ellipsis}
-    />
+  const userIdentity = useMemo(
+    () =>
+      hasIdentity ? (
+        <UnStyledIdentity
+          identity={identity}
+          maxWidth={maxWidth}
+          ellipsis={ellipsis}
+          identityIconClassName={identityIconClassName}
+        />
+      ) : (
+        <AddressDisplay
+          address={displayAddress}
+          maxWidth={maxWidth}
+          noTooltip={noTooltip}
+          ellipsis={ellipsis}
+        />
+      ),
+    [
+      hasIdentity,
+      identity,
+      maxWidth,
+      ellipsis,
+      identityIconClassName,
+      displayAddress,
+      noTooltip,
+    ],
   );
 
-  let userIdentityLink;
-  if (isExternalLink(link)) {
-    userIdentityLink = (
-      <ExternalLink externalIcon={false} href={link}>
-        {userIdentity}
-      </ExternalLink>
-    );
-  } else {
+  const userIdentityLink = useMemo(() => {
+    if (!needHref) {
+      return userIdentity;
+    }
+
+    if (isExternalLink(link)) {
+      return (
+        <ExternalLink externalIcon={false} href={link}>
+          {userIdentity}
+        </ExternalLink>
+      );
+    }
+
     let href = `/user/${displayAddress}${link}`;
     if (isAssetHubChain(chain)) {
       href = `/assethub${href}`;
     }
 
-    userIdentityLink = (
+    return (
       <Link
         href={href}
         onClick={(e) => {
@@ -71,7 +90,7 @@ export function AddressUserImpl({
         {userIdentity}
       </Link>
     );
-  }
+  }, [needHref, userIdentity, link, chain, displayAddress]);
 
   return (
     <UserWrapper noEvent={noEvent} className={className}>
@@ -80,7 +99,7 @@ export function AddressUserImpl({
           <AvatarDisplay
             address={displayAddress}
             avatarCid={avatar}
-            size={`${20 / 14}em`}
+            size={avatarSize || `${20 / 14}em`}
           />
         </AvatarWrapper>
       )}
@@ -97,8 +116,10 @@ function AddressUserComp({
   maxWidth: propMaxWidth,
   noTooltip = false,
   ellipsis = true,
+  needHref = true,
   link = "",
   identityIconClassName = "",
+  avatarSize = "",
 }) {
   const address = add;
   const { identity, hasIdentity } = useIdentityInfo(address);
@@ -118,10 +139,12 @@ function AddressUserComp({
       avatar={avatar}
       maxWidth={maxWidth}
       showAvatar={showAvatar}
+      avatarSize={avatarSize}
       noEvent={noEvent}
       noTooltip={noTooltip}
       ellipsis={ellipsis}
       link={link}
+      needHref={needHref}
       identityIconClassName={identityIconClassName}
       className={cn(inlineClassName, className)}
     />

@@ -11,13 +11,6 @@ export default function useCoretimeSale() {
   return sale;
 }
 
-export function useCoretimeSaleStart() {
-  const sale = useCoretimeSale();
-  const { info: { saleStart } = {} } = sale;
-
-  return saleStart;
-}
-
 export function useCoretimeSaleInitHeight() {
   const sale = useCoretimeSale();
   const { initIndexer = {} } = sale;
@@ -34,6 +27,17 @@ export function useCoretimeSaleInfo() {
   }
 
   return info;
+}
+
+export function useCoretimeSaleConfiguration() {
+  const sale = useCoretimeSale();
+  const { configuration } = sale;
+
+  if (!configuration) {
+    throw new Error("Coretime sale configuration should be available");
+  }
+
+  return configuration;
 }
 
 export { useSharedCoretimeSale };

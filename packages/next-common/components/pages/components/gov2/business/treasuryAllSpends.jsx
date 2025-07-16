@@ -13,6 +13,7 @@ import TreasurySpendValueDisplay from "next-common/components/gov2/business/trea
 import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import FieldLoading from "next-common/components/icons/fieldLoading";
 import useChainOrScanHeight from "next-common/hooks/height";
+import BeneficiaryDetailButton from "./beneficiaryDetailButton";
 
 const separateNumber = 5;
 
@@ -65,8 +66,28 @@ function AllSpends({ onchain }) {
   );
 }
 
+function SpendBeneficiary({ beneficiary, beneficiaryLocation }) {
+  if (!beneficiary && !beneficiaryLocation) {
+    return null;
+  }
+
+  return (
+    <>
+      <div className="text-textTertiary">to</div>
+      <div className={cn("grow flex")}>
+        {beneficiary ? (
+          <AddressUser add={beneficiary} maxWidth={176} />
+        ) : (
+          <BeneficiaryDetailButton beneficiaryLocation={beneficiaryLocation} />
+        )}
+      </div>
+    </>
+  );
+}
+
 function Spend({
   beneficiary,
+  beneficiaryLocation,
   assetKind,
   amount,
   validFrom,
@@ -99,12 +120,10 @@ function Spend({
           symbol={symbol}
           type={type}
         />
-
-        <div className="text-textTertiary">to</div>
-
-        <div className={cn("grow flex")}>
-          <AddressUser add={beneficiary} maxWidth={176} />
-        </div>
+        <SpendBeneficiary
+          beneficiary={beneficiary}
+          beneficiaryLocation={beneficiaryLocation}
+        />
       </div>
 
       {!isNil(validFrom) ? (
@@ -172,10 +191,7 @@ function After({ after, className = "" }) {
 }
 
 function PassedTime({ validFrom }) {
-  const { timestamp, isLoading } = useBlockTimestamp(validFrom);
-  if (isLoading) {
-    return <FieldLoading size={14} />;
-  }
+  const { timestamp } = useBlockTimestamp(validFrom);
 
   if (isNaN(timestamp)) {
     return null;

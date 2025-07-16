@@ -8,7 +8,11 @@ import styled from "styled-components";
 import tw from "tailwind-styled-components";
 import { useProfileBannerUrl } from "next-common/components/profile/header";
 import { cn } from "next-common/utils";
-import { useRootAddress } from "next-common/context/relationship";
+import {
+  useContextAddress,
+  useSetContextAddress,
+} from "next-common/context/address";
+import { useCallback } from "react";
 
 const NodeWrap = styled.div`
   box-shadow: var(--shadow100);
@@ -45,14 +49,24 @@ ${(p) => {
 `;
 
 function AddressLabel({ data }) {
+  const setSourceAddress = useSetContextAddress();
+  const changeSourceAddress = useCallback(() => {
+    if (data?.address) {
+      setSourceAddress(data?.address);
+    }
+  }, [data?.address, setSourceAddress]);
+
   return (
-    <AddressUser
-      add={data?.address || ""}
-      className="flex text14Medium text-textPrimary"
-      maxWidth={200}
-      showAvatar={false}
-      noTooltip
-    />
+    <span onClick={changeSourceAddress}>
+      <AddressUser
+        add={data?.address || ""}
+        className="flex text14Medium text-textPrimary"
+        maxWidth={200}
+        showAvatar={false}
+        noTooltip
+        needHref={false}
+      />
+    </span>
   );
 }
 
@@ -96,8 +110,8 @@ function RelativeUserNode({ data }) {
 }
 
 export default function UserNode({ data }) {
-  const rootAddress = useRootAddress();
-  const isSelf = rootAddress === data?.address;
+  const sourceAddress = useContextAddress();
+  const isSelf = sourceAddress === data?.address;
 
   const sourceConnections = useNodeConnections({ handleType: "source" });
   const targetConnections = useNodeConnections({ handleType: "target" });
