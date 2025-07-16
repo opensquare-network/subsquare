@@ -17,7 +17,6 @@ export default function PostItemTime({ data, elapseIcon }) {
 
   return (
     <Info>
-      <SystemActivity className="w-4 h-4 stroke-textTertiary [&_path]:stroke-2 mr-1" />
       <Tooltip
         className="flex"
         content={
@@ -29,9 +28,10 @@ export default function PostItemTime({ data, elapseIcon }) {
           </div>
         }
       >
+        <SystemActivity className="w-4 h-4 stroke-textTertiary [&_path]:stroke-2 mr-1" />
         <span className="cursor-pointer">{activeAgo}</span>
       </Tooltip>
-      <Flex className="elapseIcon">{elapseIcon}</Flex>
+      {elapseIcon && <Flex className="elapseIcon">{elapseIcon}</Flex>}
     </Info>
   );
 }
