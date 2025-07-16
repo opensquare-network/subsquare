@@ -33,18 +33,17 @@ import PolkassemblyUser from "../user/polkassemblyUser";
 import Tooltip from "next-common/components/tooltip";
 import WarningIcon from "next-common/assets/imgs/icons/warning.svg";
 import { getAssetByMeta } from "next-common/utils/treasury/spend/usdCheck";
-import { SystemActivity, SystemComment } from "@osn/icons/subsquare";
+import { SystemComment } from "@osn/icons/subsquare";
 import PostListTreasuryAllSpends from "./treasuryAllSpends";
-import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 import PostListAISummary from "./aiSummary";
 import PostListMyVoteMark from "./myVoteMark";
 import { referendumState } from "next-common/utils/consts/referendum";
 import Chains from "next-common/utils/consts/chains";
+import { PostItemTime } from "./common";
 
 import {
   Wrapper,
   Footer,
-  Info,
   MobileHiddenInfo,
   FooterWrapper,
   TitleExtraValue,
@@ -185,9 +184,6 @@ export default function Post({ data, href, type }) {
     );
   }
 
-  const timeAgo = formatTimeAgo(data.time);
-  const createAgo = formatTimeAgo(data.createdAt);
-
   let elapseIcon = null;
   if (
     [
@@ -281,25 +277,7 @@ export default function Post({ data, href, type }) {
                 <DemocracyTag />
               </div>
             )}
-            {data.time && (
-              <Info>
-                <SystemActivity className="w-4 h-4 stroke-textTertiary [&_path]:stroke-2" />
-                <Tooltip
-                  className="flex"
-                  content={
-                    <div className="text12Medium">
-                      <ul className="list-disc list-inside">
-                        <li>Created at {createAgo}</li>
-                        <li>Latest activity at {timeAgo}</li>
-                      </ul>
-                    </div>
-                  }
-                >
-                  <span className="cursor-pointer">{timeAgo}</span>
-                </Tooltip>
-                <Flex className="elapseIcon">{elapseIcon}</Flex>
-              </Info>
-            )}
+            <PostItemTime data={data} elapseIcon={elapseIcon} />
             {commentsCount > -1 && (
               <MobileHiddenInfo>
                 <Tooltip
