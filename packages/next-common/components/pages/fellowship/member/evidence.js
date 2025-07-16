@@ -6,7 +6,6 @@ import { MarkdownPreviewer } from "@osn/previewer";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { PostProvider } from "next-common/context/post";
 import ArticleActions from "next-common/components/actions/articleActions";
-import RelatedReferenda from "next-common/components/myvotes/popupCommon/relatedReferenda";
 
 export default function EvidencePage(props) {
   return (
@@ -38,7 +37,6 @@ function EvidencePageImpl() {
       <div>
         <EvidenceContent />
         <ArticleActions />
-        <RelatedReferenda relatedReferenda={[324]} />
       </div>
     </div>
   );

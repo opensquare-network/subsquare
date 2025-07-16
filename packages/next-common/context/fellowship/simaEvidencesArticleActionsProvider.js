@@ -6,10 +6,26 @@ import {
   generalBaseApiUrl,
 } from "./simaEvidencesCommentActionsProvider";
 import { backendApi } from "next-common/services/nextApi";
+import { useMyUpVote } from "../post/useMyUpVote";
+import { useCallback } from "react";
+import { usePost, usePostDispatch } from "../post";
+import { fetchAndUpdatePostForUrl } from "../post/update";
+
+export function useReloadPost() {
+  const postDispatch = usePostDispatch();
+  const post = usePost();
+
+  return useCallback(async () => {
+    const url = `${generalBaseApiUrl(post)}`;
+    return await fetchAndUpdatePostForUrl(postDispatch, url);
+  }, [post, postDispatch]);
+}
 
 export function SimaEvidencesArticleActionsProvider({ children }) {
   const signSimaMessage = useSignSimaMessage();
   const provideContext = useProvideContext();
+  const reloadPost = useReloadPost();
+  const myUpVote = useMyUpVote();
 
   const actions = {
     supportSima: true,
@@ -28,8 +44,26 @@ export function SimaEvidencesArticleActionsProvider({ children }) {
         data,
       );
     },
-    cancelUpVote: () => {},
-    reloadPost: () => {},
+    cancelUpVote: async (post) => {
+      if (!myUpVote) {
+        throw new Error("You have no up vote on this post");
+      }
+
+      const indexer = generalIndexer(post);
+      const entity = {
+        indexer,
+        action: "cancel_upvote",
+        cid: myUpVote.cid,
+        timestamp: Date.now(),
+      };
+      const data = await signSimaMessage(entity);
+
+      return await backendApi.post(
+        `${generalBaseApiUrl(post)}/reactions`,
+        data,
+      );
+    },
+    reloadPost,
     getUserDiscussions: () => {},
   };
 
