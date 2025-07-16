@@ -53,7 +53,7 @@ function getTreasuryBusiness(onchain, decimals, symbol) {
 function getStableTreasuryBusiness(onchain) {
   const { proposal, stableTreasuryInfo } = onchain || {};
   const { spends = [] } = stableTreasuryInfo || {};
-  const beneficiaryDescriptor = proposal?.call?.args?.find(
+  const beneficiaryLocation = proposal?.call?.args?.find(
     (item) => item.name === "beneficiary",
   );
 
@@ -76,7 +76,7 @@ function getStableTreasuryBusiness(onchain) {
             <AddressUser add={spend.beneficiary} />
           ) : (
             <BeneficiaryDetailButton
-              beneficiaryDescriptor={beneficiaryDescriptor}
+              beneficiaryLocation={beneficiaryLocation}
             />
           )}
         </div>

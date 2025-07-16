@@ -9,7 +9,7 @@ const JsonView = dynamic(() => import("next-common/components/jsonView"), {
 });
 const InfoDocs = dynamic(() => import("@osn/icons/subsquare/InfoDocs"));
 
-export default function BeneficiaryDetailButton({ beneficiaryDescriptor }) {
+export default function BeneficiaryDetailButton({ beneficiaryLocation }) {
   const [showDetail, setShowDetail] = useState(false);
 
   return (
@@ -26,7 +26,7 @@ export default function BeneficiaryDetailButton({ beneficiaryDescriptor }) {
       </Tooltip>
       {showDetail && (
         <Popup title="Beneficiary Detail" onClose={() => setShowDetail(false)}>
-          <JsonView src={beneficiaryDescriptor} />
+          <JsonView src={beneficiaryLocation} />
         </Popup>
       )}
     </>

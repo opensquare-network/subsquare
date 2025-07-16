@@ -66,8 +66,8 @@ function AllSpends({ onchain }) {
   );
 }
 
-function SpendBeneficiary({ beneficiary, beneficiaryDescriptor }) {
-  if (!beneficiary && !beneficiaryDescriptor) {
+function SpendBeneficiary({ beneficiary, beneficiaryLocation }) {
+  if (!beneficiary && !beneficiaryLocation) {
     return null;
   }
 
@@ -78,9 +78,7 @@ function SpendBeneficiary({ beneficiary, beneficiaryDescriptor }) {
         {beneficiary ? (
           <AddressUser add={beneficiary} maxWidth={176} />
         ) : (
-          <BeneficiaryDetailButton
-            beneficiaryDescriptor={beneficiaryDescriptor}
-          />
+          <BeneficiaryDetailButton beneficiaryLocation={beneficiaryLocation} />
         )}
       </div>
     </>
@@ -89,7 +87,7 @@ function SpendBeneficiary({ beneficiary, beneficiaryDescriptor }) {
 
 function Spend({
   beneficiary,
-  beneficiaryDescriptor,
+  beneficiaryLocation,
   assetKind,
   amount,
   validFrom,
@@ -124,7 +122,7 @@ function Spend({
         />
         <SpendBeneficiary
           beneficiary={beneficiary}
-          beneficiaryDescriptor={beneficiaryDescriptor}
+          beneficiaryLocation={beneficiaryLocation}
         />
       </div>
 
