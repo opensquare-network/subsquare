@@ -7,7 +7,6 @@ import Tooltip from "../tooltip";
 import useFiatValueTooltipContent from "./common/useFiatValueTooltipContent";
 import { useChainSettings } from "next-common/context/chain";
 import { useMemo } from "react";
-import Loading from "../loading";
 import Flex from "../styled/flex";
 
 export default function PostListTreasuryAllSpends({
@@ -100,7 +99,6 @@ function MultiSpends({ spends, showFaitPrice }) {
           className={cn("w-5 h-5", idx > 0 && "-ml-2")}
         />
       ))}
-      <Loading size={12} color={"var(--textPrimaryContrast)"} />
     </Tooltip>
   );
 }

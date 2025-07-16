@@ -94,7 +94,6 @@ function StatisticsImpl({
     initBlockHeightIndex,
     saleStart,
     fixedStart,
-    coretimeSale,
     totalBlocks,
   });
 
