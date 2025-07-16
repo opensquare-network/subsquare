@@ -43,12 +43,12 @@ const PostUnlinkPopup = dynamicPopup(() =>
   import("./linkPost/postUnlinkPopup"),
 );
 
-const BountyEditorAppendantPopup = dynamicPopup(() =>
-  import("next-common/components/appendants/bounty/appendantEditorPopup"),
+const BountyCreateAppendantPopup = dynamicPopup(() =>
+  import("next-common/components/appendants/bounty/createPopup"),
 );
 
-const ReferendaAppendantEditorPopup = dynamicPopup(() =>
-  import("next-common/components/appendants/referenda/appendantEditorPopup"),
+const ReferendaCreateAppendantPopup = dynamicPopup(() =>
+  import("next-common/components/appendants/referenda/createPopup"),
 );
 
 const Wrapper = styled.div`
@@ -320,11 +320,9 @@ export function PostContextMenu({ isAuthor, editable, setIsEdit }) {
   const [showCancelReferendumPopup, setShowCancelReferendumPopup] =
     useState(false);
   const [showKillReferendumPopup, setShowKillReferendumPopup] = useState(false);
-  const [showBountyAppendPopup, setShowBountyAppendPopup] = useState(false);
-  const [
-    showOpenGovReferendumAppendPopup,
-    setShowOpenGovReferendumAppendPopup,
-  ] = useState(false);
+  const [showBountyCreatePopup, setShowBountyCreatePopup] = useState(false);
+  const [showReferendaCreatePopup, setShowReferendaCreatePopup] =
+    useState(false);
   const isAdmin = useIsAdmin();
   const { actionsComponent, popupComponent } =
     useTerminateAction({
@@ -380,13 +378,13 @@ export function PostContextMenu({ isAuthor, editable, setIsEdit }) {
           {isTreasuryBountyPost && (
             <BountyAppendMenuItem
               setShow={setShow}
-              setIsAppend={setShowBountyAppendPopup}
+              setIsAppend={setShowBountyCreatePopup}
             />
           )}
           {isOpenGovReferendumPost && (
             <ReferendaAppendMenuItem
               setShow={setShow}
-              setIsAppend={setShowOpenGovReferendumAppendPopup}
+              setIsAppend={setShowReferendaCreatePopup}
             />
           )}
           {editable && isAuthor && (
@@ -449,12 +447,12 @@ export function PostContextMenu({ isAuthor, editable, setIsEdit }) {
           onClose={() => setShowKillReferendumPopup(false)}
         />
       )}
-      {showBountyAppendPopup && (
-        <BountyEditorAppendantPopup setIsAppend={setShowBountyAppendPopup} />
+      {showBountyCreatePopup && (
+        <BountyCreateAppendantPopup setIsAppend={setShowBountyCreatePopup} />
       )}
-      {showOpenGovReferendumAppendPopup && (
-        <ReferendaAppendantEditorPopup
-          setIsAppend={setShowOpenGovReferendumAppendPopup}
+      {showReferendaCreatePopup && (
+        <ReferendaCreateAppendantPopup
+          setIsAppend={setShowReferendaCreatePopup}
         />
       )}
       {popupComponent}
