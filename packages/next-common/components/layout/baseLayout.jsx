@@ -11,7 +11,6 @@ import { useNavCollapsed } from "next-common/context/nav";
 import LoginGlobalPopup from "../login/globalPopup";
 import GlobalNotification from "next-common/components/globalNotification";
 import { ScanHeightSubscriber } from "../scanHeightSubscriber";
-import MaybeSubRelayStatus from "../maybeSubRelayStatus";
 import NativeTokenPriceSubscriber from "next-common/components/common/price/subscriber";
 import BaseInit from "next-common/components/init";
 
@@ -29,48 +28,46 @@ export default function BaseLayout({
   return (
     <>
       <BaseInit />
-      <MaybeSubRelayStatus>
-        <SEO {...seoInfo} />
+      <SEO {...seoInfo} />
 
-        <div className="min-h-screen flex bg-pageBg max-sm:flex-col">
-          <section className="sticky top-0 max-h-screen z-50">
-            <Nav />
+      <div className="min-h-screen flex bg-pageBg max-sm:flex-col">
+        <section className="sticky top-0 max-h-screen z-50">
+          <Nav />
+        </section>
+
+        <section
+          className={cn(
+            "flex flex-col flex-1",
+            navCollapsed
+              ? "max-w-[calc(100%-72px)]"
+              : "max-w-[calc(100%-300px)]",
+            "max-sm:max-w-full",
+          )}
+        >
+          {!sm && (
+            <div className="sticky top-0 z-50 max-sm:hidden">
+              <Header />
+            </div>
+          )}
+
+          <GlobalNotification />
+
+          <section className="flex flex-col flex-1" style={contentStyle}>
+            {children}
           </section>
 
-          <section
-            className={cn(
-              "flex flex-col flex-1",
-              navCollapsed
-                ? "max-w-[calc(100%-72px)]"
-                : "max-w-[calc(100%-300px)]",
-              "max-sm:max-w-full",
-            )}
-          >
-            {!sm && (
-              <div className="sticky top-0 z-50 max-sm:hidden">
-                <Header />
-              </div>
-            )}
+          <footer>
+            <Footer />
+          </footer>
+        </section>
+      </div>
 
-            <GlobalNotification />
-
-            <section className="flex flex-col flex-1" style={contentStyle}>
-              {children}
-            </section>
-
-            <footer>
-              <Footer />
-            </footer>
-          </section>
-        </div>
-
-        <CMDKPalette />
-        <Toast />
-        <CookiesConsent />
-        <LoginGlobalPopup />
-        <NativeTokenPriceSubscriber />
-        <ScanHeightSubscriber />
-      </MaybeSubRelayStatus>
+      <CMDKPalette />
+      <Toast />
+      <CookiesConsent />
+      <LoginGlobalPopup />
+      <NativeTokenPriceSubscriber />
+      <ScanHeightSubscriber />
     </>
   );
 }
