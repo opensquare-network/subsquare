@@ -44,11 +44,11 @@ export default function CoretimePage() {
       <Provider store={store}>
         <ChainProvider chain={chain}>
           <ApiProvider>
-            <CoretimeCommonProvider>
-              <CoretimeActiveSaleProvider>
+            <CoretimeActiveSaleProvider>
+              <CoretimeCommonProvider>
                 <CoretimeOverviewPageImpl />
-              </CoretimeActiveSaleProvider>
-            </CoretimeCommonProvider>
+              </CoretimeCommonProvider>
+            </CoretimeActiveSaleProvider>
           </ApiProvider>
         </ChainProvider>
       </Provider>

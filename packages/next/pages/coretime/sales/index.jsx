@@ -40,11 +40,11 @@ export default function CoretimeSalesPage() {
       <Provider store={store}>
         <ChainProvider chain={chain}>
           <ApiProvider>
-            <CoretimeCommonProvider>
-              <CoretimeActiveSaleProvider>
+            <CoretimeActiveSaleProvider>
+              <CoretimeCommonProvider>
                 <CoretimeSalesPageImpl />
-              </CoretimeActiveSaleProvider>
-            </CoretimeCommonProvider>
+              </CoretimeCommonProvider>
+            </CoretimeActiveSaleProvider>
           </ApiProvider>
         </ChainProvider>
       </Provider>
