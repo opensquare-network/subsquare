@@ -1,5 +1,5 @@
-import getChainSettings from "next-common/utils/consts/settings";
 import safeLocalStorage from "next-common/utils/safeLocalStorage";
+import { getAllRpcUrls } from "next-common/store/reducers/nodeSlice";
 
 export default function getEndpointFromLocalStorage(chain) {
   let localNodeUrl = null;
@@ -9,8 +9,6 @@ export default function getEndpointFromLocalStorage(chain) {
     // ignore parse error
   }
 
-  const settings = getChainSettings(chain);
-  const chainNodes = settings.endpoints;
-  const targetNode = (chainNodes || []).find(({ url }) => url === localNodeUrl);
-  return targetNode?.url;
+  const urls = getAllRpcUrls();
+  return urls.includes(localNodeUrl) ? localNodeUrl : null;
 }

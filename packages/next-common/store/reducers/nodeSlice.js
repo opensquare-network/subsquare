@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import getChainSettings from "../../utils/consts/settings";
 import safeLocalStorage from "next-common/utils/safeLocalStorage";
+import { random } from "lodash-es";
 
 const chain = process.env.NEXT_PUBLIC_CHAIN;
 
@@ -23,6 +24,16 @@ export function getEnvEndpoints() {
 
 const endpointsFromEnv = getEnvEndpoints();
 
+export function getAllRpcUrls() {
+  const envEndpoints = getEnvEndpoints();
+  if ((envEndpoints || []).length >= 1) {
+    return envEndpoints.map((item) => item.url);
+  }
+
+  const settings = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
+  return settings.endpoints.map((item) => item.url);
+}
+
 export function getInitNodeUrl(chain) {
   let localNodeUrl = null;
   try {
@@ -31,14 +42,17 @@ export function getInitNodeUrl(chain) {
     // ignore parse error
   }
 
-  const settings = getChainSettings(chain);
-  const chainNodes = endpointsFromEnv || settings.endpoints;
-  if (chainNodes.length <= 0) {
+  const candidateUrls = getAllRpcUrls();
+  if (candidateUrls.length <= 0) {
     throw new Error(`Can not find nodes for ${chain}`);
   }
+  if (localNodeUrl && candidateUrls.includes(localNodeUrl)) {
+    return localNodeUrl;
+  }
 
-  const node = (chainNodes || []).find(({ url }) => url === localNodeUrl);
-  return node?.url;
+  const cap = candidateUrls.length > 3 ? 2 : candidateUrls.length - 1;
+  const randomIndex = random(cap);
+  return candidateUrls[randomIndex];
 }
 
 const nodeSlice = createSlice({
