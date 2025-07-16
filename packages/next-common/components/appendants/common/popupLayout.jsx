@@ -3,6 +3,7 @@ import { NeutralPanel } from "next-common/components/styled/containers/neutralPa
 import { cn } from "next-common/utils";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import Popup from "next-common/components/popup/wrapper/Popup";
+import SecondaryButton from "next-common/lib/button/secondary";
 
 function Wrapper({ children }) {
   return (
@@ -21,22 +22,16 @@ function Wrapper({ children }) {
   );
 }
 
-export default function AppendantEditorPopup({
-  setIsAppend,
-  isEditMode = false,
+export default function AppendantPopupLayout({
+  title,
   description,
+  onClose,
   children,
+  actions,
+  loading = false,
 }) {
-  const title = isEditMode ? "Edit Appendant" : "Appendant";
-
   return (
-    <Popup
-      title={title}
-      onClose={() => {
-        setIsAppend(false);
-      }}
-      className="w-[800px]"
-    >
+    <Popup title={title} onClose={onClose} className="w-[800px]">
       <Wrapper>
         <GreyPanel className="text14Medium text-gray500 py-2.5 px-4 max-w-full !block">
           {description}
@@ -45,6 +40,12 @@ export default function AppendantEditorPopup({
           <Label>Content</Label>
         </LabelWrapper>
         {children}
+        <div className="flex items-center justify-end mt-8 [&>:not(:first-child)]:ml-3">
+          <SecondaryButton disabled={loading} onClick={onClose}>
+            Cancel
+          </SecondaryButton>
+          {actions}
+        </div>
       </Wrapper>
     </Popup>
   );
