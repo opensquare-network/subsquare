@@ -141,13 +141,6 @@ export function PostValueTitle({ data, type }) {
     return <PostListTreasuryAllSpends allSpends={allSpends} />;
   }
 
-  if (onchainData?.isStableTreasury) {
-    const { amount, spends = [] } = onchainData?.stableTreasuryInfo || {};
-    const symbolSet = new Set(spends.map((spend) => spend.symbol));
-    const symbol = symbolSet.size > 1 ? "USD" : spends[0].symbol;
-    return <PostAmount amount={amount} decimals={6} symbol={symbol} />;
-  }
-
   if (method) {
     return <TitleExtra>{method}</TitleExtra>;
   }

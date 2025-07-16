@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 import { getAssetByMeta } from "next-common/utils/treasury/spend/usdCheck";
 import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 import { useChainSettings } from "next-common/context/chain";
+import PostListTreasuryAllSpends from "next-common/components/postList/treasuryAllSpends";
 
 export function getReferendumPostTitleColumn() {
   return {
@@ -142,18 +143,9 @@ export function getRequestColumn() {
         );
       }
 
-      if (data.onchainData?.isStableTreasury) {
-        const { amount, spends = [] } =
-          data.onchainData?.stableTreasuryInfo || {};
-        const symbolSet = new Set(spends.map((spend) => spend.symbol));
-        const symbol = symbolSet.size > 1 ? "USD" : spends[0].symbol;
-        return (
-          <ValueDisplay
-            className="text14Medium text-textPrimary"
-            value={toPrecision(amount, 6)}
-            symbol={symbol}
-          />
-        );
+      if (data.onchainData?.allSpends?.length) {
+        const { allSpends } = data.onchainData;
+        return <PostListTreasuryAllSpends allSpends={allSpends} />;
       }
 
       return "--";

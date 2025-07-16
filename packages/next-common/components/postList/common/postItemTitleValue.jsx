@@ -12,8 +12,6 @@ export default function PostItemTitleValue({ data, showFaitPrice }) {
     ? onchainData?.treasuryInfo?.amount
     : value;
 
-  const method = onchainData?.proposal?.method;
-
   if (!isNil(localTreasurySpendAmount)) {
     return (
       <PostItemValueAmount
@@ -35,20 +33,7 @@ export default function PostItemTitleValue({ data, showFaitPrice }) {
     );
   }
 
-  if (onchainData?.isStableTreasury) {
-    const { amount, spends = [] } = onchainData?.stableTreasuryInfo || {};
-    const symbolSet = new Set(spends.map((spend) => spend.symbol));
-    const symbol = symbolSet.size > 1 ? "USD" : spends[0].symbol;
-    return (
-      <PostItemValueAmount
-        amount={amount}
-        decimals={6}
-        symbol={symbol}
-        showFaitPrice={showFaitPrice}
-      />
-    );
-  }
-
+  const method = onchainData?.proposal?.method;
   if (method) {
     return <TitleExtra>{method}</TitleExtra>;
   }
