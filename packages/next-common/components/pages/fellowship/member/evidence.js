@@ -3,17 +3,23 @@ import EvidenceLayout from "next-common/components/layout/evidenceLayout";
 import { usePageProps } from "next-common/context/page";
 import { WishBar } from "./fellowshipMember/wishBar";
 import { MarkdownPreviewer } from "@osn/previewer";
+import ContentWithComment from "next-common/components/detail/common/contentWithComment";
+import { PostProvider } from "next-common/context/post";
 
 export default function EvidencePage(props) {
   return (
-    <EvidenceLayout
-      seoInfo={{
-        title: props.detail?.title,
-        desc: props.detail?.title,
-      }}
-    >
-      <EvidencePageImpl />
-    </EvidenceLayout>
+    <PostProvider post={props.detail}>
+      <EvidenceLayout
+        seoInfo={{
+          title: props.detail?.title,
+          desc: props.detail?.title,
+        }}
+      >
+        <ContentWithComment>
+          <EvidencePageImpl />
+        </ContentWithComment>
+      </EvidenceLayout>
+    </PostProvider>
   );
 }
 

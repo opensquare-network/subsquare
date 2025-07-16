@@ -3,11 +3,24 @@ import { usePageProps } from "next-common/context/page";
 import { SecondaryCardDetail } from "../styled/containers/secondaryCard";
 import { Breadcrumbs } from "./DetailLayout/breadcrumbs";
 import { AddressUser } from "../user";
+import { useChainSettings } from "next-common/context/chain";
+import { GeneralProxiesProvider } from "next-common/context/proxy";
+import SimaEvidencesCommentActionsProvider from "next-common/context/fellowship/simaEvidencesCommentActionsProvider";
 
 export default function EvidenceLayout({ seoInfo = {}, children }) {
   const { who, detail } = usePageProps() || {};
+  const { sima } = useChainSettings();
   const { indexer } = detail || {};
   const { blockHeight } = indexer || {};
+
+  let content = children;
+  if (sima) {
+    content = (
+      <SimaEvidencesCommentActionsProvider>
+        <GeneralProxiesProvider>{children}</GeneralProxiesProvider>
+      </SimaEvidencesCommentActionsProvider>
+    );
+  }
 
   return (
     <BaseLayout seoInfo={seoInfo}>
@@ -32,7 +45,7 @@ export default function EvidenceLayout({ seoInfo = {}, children }) {
             ]}
           />
           <SecondaryCardDetail className="max-sm:!p-6 !p-12">
-            {children}
+            {content}
           </SecondaryCardDetail>
         </div>
       </div>
