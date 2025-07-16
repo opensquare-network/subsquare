@@ -21,7 +21,7 @@ export default function ImportSubmit({
   onSuccessed = noop,
 }) {
   const dispatch = useDispatch();
-  const [name, setName] = useState(selectedMultisig.name);
+  const [name, setName] = useState(selectedMultisig.name || "");
   const [isLoading, setIsLoading] = useState(false);
 
   const { ensureLogin } = useEnsureLogin();

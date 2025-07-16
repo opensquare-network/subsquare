@@ -2,6 +2,7 @@ import { noop } from "lodash-es";
 import Pagination from "../pagination";
 import MultisigRadioGroup from "./multisigRadioGroup";
 import PrimaryButton from "next-common/lib/button/primary";
+import { cn } from "next-common/utils";
 
 export default function MultisigSelect({
   list = [],
@@ -13,16 +14,22 @@ export default function MultisigSelect({
   total = 0,
   pageSize = 10,
 }) {
+  const showPagination = total > pageSize;
   return (
     <>
-      <div className="space-y-4 h-[calc(76vh-180px)] overflow-y-scroll scrollbar-pretty">
+      <div
+        className={cn(
+          "space-y-4  overflow-y-scroll scrollbar-pretty",
+          showPagination ? "h-[calc(76vh-232px)]" : "h-[calc(76vh-180px)]",
+        )}
+      >
         <MultisigRadioGroup
           options={list}
           selected={selected}
           setSelected={setSelected}
         />
       </div>
-      {total > pageSize && (
+      {showPagination && (
         <Pagination
           total={total}
           pageSize={pageSize}
