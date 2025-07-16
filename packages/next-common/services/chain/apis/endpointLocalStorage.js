@@ -9,6 +9,6 @@ export default function getEndpointFromLocalStorage(chain) {
     // ignore parse error
   }
 
-  const urls = getAllRpcUrls();
+  const urls = getAllRpcUrls(chain);
   return urls.includes(localNodeUrl) ? localNodeUrl : null;
 }
