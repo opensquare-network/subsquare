@@ -55,6 +55,9 @@ const westend = {
   sima: true,
   supportWalletconnect: true,
   allowWeb2Login: true,
+  multisigWallets: {
+    mimir: true,
+  },
 };
 
 export default westend;
