@@ -21,7 +21,7 @@ export default function RemovePopup({ onClose, multisig }) {
   const [isLoading, setIsLoading] = useState();
   const { ensureLogin } = useEnsureLogin();
   const { refresh } = useMultisigAccounts();
-  const [name, setName] = useState(multisig.name);
+  const [name, setName] = useState(multisig.name || "");
   const isNameEqual = useRenameIsEqual(multisig.multisigAddress, name);
 
   const doSubmit = useCallback(async () => {
