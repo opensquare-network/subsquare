@@ -4,6 +4,8 @@ import { useOnchainData } from "next-common/context/post";
 import { useState } from "react";
 import { RequestWrapper } from ".";
 import AssetIcon from "next-common/components/icons/assetIcon";
+import useFiatValueTooltipContent from "next-common/components/postList/common/useFiatValueTooltipContent";
+import { useChainSettings } from "next-common/context/chain";
 
 const separateNumber = 5;
 
@@ -61,6 +63,8 @@ export default function AllSpendsRequest() {
 function Spend({ assetKind, amount, symbol, type }) {
   symbol = symbol || assetKind?.symbol;
   type = type || assetKind?.type;
+  const { decimals } = useChainSettings();
+  const fiatValueTooltip = useFiatValueTooltipContent(amount, decimals, symbol);
 
   return (
     <div className="flex items-center gap-x-2">
@@ -70,6 +74,7 @@ function Spend({ assetKind, amount, symbol, type }) {
         amount={amount}
         symbol={symbol}
         className="text14Medium text-textPrimary"
+        tooltipOtherContent={fiatValueTooltip}
       />
     </div>
   );

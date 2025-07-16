@@ -6,6 +6,20 @@ import Link from "next/link";
 import AddressUser from "next-common/components/user/addressUser";
 import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 import BeneficiaryDetailButton from "./beneficiaryDetailButton";
+import useFiatValueTooltipContent from "next-common/components/postList/common/useFiatValueTooltipContent";
+
+function RequestValueDisplay({ amount, symbol, decimals }) {
+  const fiatValueTooltip = useFiatValueTooltipContent(amount, decimals, symbol);
+
+  return (
+    <ValueDisplay
+      value={toPrecision(amount, decimals)}
+      symbol={symbol}
+      className="text14Medium"
+      tooltipOtherContent={fiatValueTooltip}
+    />
+  );
+}
 
 function getTreasuryBusiness(onchain, decimals, symbol) {
   const {
@@ -18,11 +32,11 @@ function getTreasuryBusiness(onchain, decimals, symbol) {
   if (amount) {
     business.push([
       "Request",
-      <ValueDisplay
+      <RequestValueDisplay
         key="request"
-        value={toPrecision(amount, decimals)}
+        amount={amount}
         symbol={symbol}
-        className="text14Medium"
+        decimals={decimals}
       />,
     ]);
   }
