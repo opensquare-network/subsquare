@@ -23,13 +23,12 @@ import Flex from "next-common/components/styled/flex";
 import PostListMyDemocracyReferendaVoteMark from "../myVoteMark/democracy";
 import { getDemocracyStateArgs } from "next-common/utils/democracy/result";
 import { referendumState } from "next-common/utils/consts/referendum";
-
 import ReferendumElapse from "next-common/components/democracy/referendum/referendumElapse.js";
 
 export default function PostItem({ data }) {
   const stateArgs = getDemocracyStateArgs(
-    data.onchainData.state,
-    data.onchainData.timeline,
+    data?.onchainData?.state,
+    data?.onchainData?.timeline,
   );
 
   return (
