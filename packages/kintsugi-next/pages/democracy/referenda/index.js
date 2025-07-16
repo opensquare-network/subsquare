@@ -1,4 +1,4 @@
-import PostList from "next-common/components/postList";
+import DemocracyReferendaPostList from "next-common/components/postList/democracyReferendaPostList";
 import { EmptyList } from "next-common/utils/constants";
 import { withCommonProps } from "next-common/lib";
 import { backendApi } from "next-common/services/nextApi";
@@ -24,9 +24,7 @@ export default function DemocracyReferendaPage({ posts, chain, summary }) {
       summaryData={summary}
       summaryFooter={<KintsugiDemocracyStaking />}
     >
-      <PostList
-        category={category}
-        title="List"
+      <DemocracyReferendaPostList
         titleCount={posts.total}
         items={items}
         pagination={{
