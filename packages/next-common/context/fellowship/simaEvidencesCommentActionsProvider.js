@@ -3,29 +3,30 @@ import { useFindMyUpVote } from "next-common/sima/actions/common";
 import CommentActionsContext from "next-common/sima/context/commentActions";
 import useSignSimaMessage from "next-common/utils/sima/useSignSimaMessage";
 import { getContentField } from "next-common/utils/sima/utils";
-import { useCallback } from "react";
 import { useGetComment } from "next-common/noSima/actions/comment";
+
+export const generalIndexer = (post) => {
+  const { who, indexer: postIndexer } = post;
+  return {
+    section: "fellowship",
+    type: "evidence",
+    who: who,
+    block_height: postIndexer.blockHeight,
+    event_index: postIndexer.eventIndex,
+  };
+};
+
+export const generalBaseApiUrl = (post) => {
+  const { who, indexer } = post;
+  const { blockHeight, eventIndex } = indexer || {};
+  const evidenceId = `${blockHeight}-${eventIndex}`;
+  return `/fellowship/members/${who}/evidences/${evidenceId}`;
+};
 
 export default function SimaEvidencesCommentActionsProvider({ children }) {
   const getComment = useGetComment();
   const signSimaMessage = useSignSimaMessage();
   const findMyUpVote = useFindMyUpVote();
-  const generalIndexer = useCallback((post) => {
-    const { who, indexer: postIndexer } = post;
-    return {
-      section: "fellowship",
-      type: "evidence",
-      who: who,
-      block_height: postIndexer.blockHeight,
-      event_index: postIndexer.eventIndex,
-    };
-  }, []);
-  const generalBaseApiUrl = useCallback((post) => {
-    const { who, indexer } = post;
-    const { blockHeight, eventIndex } = indexer || {};
-    const evidenceId = `${blockHeight}-${eventIndex}`;
-    return `/fellowship/members/${who}/evidences/${evidenceId}`;
-  }, []);
 
   const actions = {
     supportSima: true,

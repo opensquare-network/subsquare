@@ -21,7 +21,7 @@ function getDiscussionUpVoteEntity(cid) {
   };
 }
 
-function getProposalUpVoteEntity(indexer) {
+export function getProposalUpVoteEntity(indexer) {
   return {
     action: "upvote_proposal",
     indexer,

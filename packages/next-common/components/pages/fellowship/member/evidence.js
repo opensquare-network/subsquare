@@ -5,6 +5,8 @@ import { WishBar } from "./fellowshipMember/wishBar";
 import { MarkdownPreviewer } from "@osn/previewer";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { PostProvider } from "next-common/context/post";
+import ArticleActions from "next-common/components/actions/articleActions";
+import RelatedReferenda from "next-common/components/myvotes/popupCommon/relatedReferenda";
 
 export default function EvidencePage(props) {
   return (
@@ -33,7 +35,11 @@ function EvidencePageImpl() {
   return (
     <div className="flex flex-col gap-y-6">
       <WishBar wish={detail.wish} rank={detail.rank} address={detail.who} />
-      <EvidenceContent />
+      <div>
+        <EvidenceContent />
+        <ArticleActions />
+        <RelatedReferenda relatedReferenda={[324]} />
+      </div>
     </div>
   );
 }
