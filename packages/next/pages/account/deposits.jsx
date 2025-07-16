@@ -5,7 +5,7 @@ import { MyProxiesProvider } from "next-common/components/myProxies/context/myPr
 
 export default function AccountDepositsPage() {
   return (
-    <AccountLayout>
+    <AccountLayout seoInfo={{ title: "Account deposits management" }}>
       <MyProxiesProvider>
         <MyDeposits />
       </MyProxiesProvider>
