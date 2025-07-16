@@ -4,10 +4,12 @@ import Flex from "next-common/components/styled/flex";
 import Tooltip from "next-common/components/tooltip";
 import { SystemActivity } from "@osn/icons/subsquare";
 import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
+import formatTime from "next-common/utils/viewfuncs/formatDate";
 
 export default function PostItemTime({ data, elapseIcon }) {
-  const timeAgo = formatTimeAgo(data?.time);
-  const createAgo = formatTimeAgo(data?.createdAt);
+  const activeAgo = formatTimeAgo(data?.time);
+  const activeTime = formatTime(data?.time);
+  const createTime = formatTime(data?.createdAt);
 
   if (!data.time) {
     return null;
@@ -15,21 +17,21 @@ export default function PostItemTime({ data, elapseIcon }) {
 
   return (
     <Info>
-      <SystemActivity className="w-4 h-4 stroke-textTertiary [&_path]:stroke-2 mr-1" />
       <Tooltip
         className="flex"
         content={
           <div className="text12Medium">
             <ul className="list-disc list-inside">
-              <li>Created at {createAgo}</li>
-              <li>Latest activity at {timeAgo}</li>
+              <li>Created at {createTime}</li>
+              <li>Latest activity at {activeTime}</li>
             </ul>
           </div>
         }
       >
-        <span className="cursor-pointer">{timeAgo}</span>
+        <SystemActivity className="w-4 h-4 stroke-textTertiary [&_path]:stroke-2 mr-1" />
+        <span className="cursor-pointer">{activeAgo}</span>
       </Tooltip>
-      <Flex className="elapseIcon">{elapseIcon}</Flex>
+      {elapseIcon && <Flex className="elapseIcon">{elapseIcon}</Flex>}
     </Info>
   );
 }
