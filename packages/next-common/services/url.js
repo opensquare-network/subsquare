@@ -25,6 +25,8 @@ export const gov2ReferendaWhalesApi = "gov2/referenda/whales";
 export const gov2ReferendaHistoryWhalesApi = "gov2/referenda/history-whales";
 export const gov2ReferendaVoteActionsApi = (index) =>
   `gov2/referenda/${index}/actions`;
+export const gov2ReferendaAppendantApi = (index) =>
+  `gov2/referenda/${index}/appendants`;
 
 // fellowship
 export const fellowshipReferenda = "fellowship/referenda/";
@@ -138,6 +140,12 @@ export const ambassadorSalaryPaymentsApi = "ambassador/salary/payments";
 // fellowship statistics
 export const ambassadorStatisticsUsersApi = (address) =>
   `ambassador/statistics/users/${address}`;
+
+// treasury bounties
+export const treasuryBountiesAppendantApi = (index) =>
+  `treasury/bounties/${index}/appendants`;
+
+export const appendantsApi = (id) => `appendants/${id}`;
 
 // calender events
 /**

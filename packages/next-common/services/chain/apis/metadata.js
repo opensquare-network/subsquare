@@ -1,4 +1,5 @@
 import localForage from "localforage";
+import safeLocalStorage from "next-common/utils/safeLocalStorage";
 
 localForage.config({
   name: "subsquare",
@@ -16,7 +17,7 @@ export default async function getMetadata(provider) {
   let metadata = await localForage.getItem(id);
   if (!metadata) {
     // We stored metadata to localstorage in the 1st version. This code branch can be removed after some time.
-    const metadataFromLocalStorage = localStorage.getItem(id);
+    const metadataFromLocalStorage = safeLocalStorage.getItem(id);
     if (metadataFromLocalStorage) {
       metadata = metadataFromLocalStorage;
       await localForage.setItem(id, metadataFromLocalStorage);

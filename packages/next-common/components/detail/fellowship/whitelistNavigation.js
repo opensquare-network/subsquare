@@ -6,7 +6,6 @@ import { useAsync } from "react-use";
 import { useChain } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
 import useObjectMemo from "next-common/hooks/useObjectMemo";
-import LoadingWhitelistNavigationBar from "../referenda/LoadingWhitelistNavigationBar";
 
 export function ReferendumLink({ referendumIndex }) {
   return (
@@ -64,17 +63,9 @@ function useWhitelistLinkedReferenda(whitelistedHashesByXcm) {
 function FellowshipWhitelistBarByXcm() {
   const onchainData = useOnchainData();
   const { whitelistedHashesByXcm } = onchainData;
-  const { value: referenda, loading } = useWhitelistLinkedReferenda(
+  const { value: referenda } = useWhitelistLinkedReferenda(
     whitelistedHashesByXcm,
   );
-
-  if (!whitelistedHashesByXcm || whitelistedHashesByXcm.length === 0) {
-    return [];
-  }
-
-  if (loading && !referenda) {
-    return <LoadingWhitelistNavigationBar />;
-  }
 
   if (!referenda || referenda.length === 0) {
     return null;

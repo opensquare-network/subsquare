@@ -23,7 +23,7 @@ export const gov2FinalState = [
   gov2State.Rejected,
 ];
 
-export const gov2VotingState = [
+export const gov2VotingStates = [
   gov2State.Preparing,
   gov2State.Submitted,
   gov2State.Queueing,

@@ -4,7 +4,7 @@ import useFetchProfileProxies, {
 import useMultisigAddress from "next-common/hooks/useMultisigAddress";
 import useSignatoryMultisig from "next-common/hooks/useSignatoryMultisig";
 import { RELATIONSHIP_NODE_TYPE } from "next-common/utils/constants";
-import useFetchIdentityInfo from "next-common/hooks/profile/useFetchIdentityInfo";
+import useFetchIdentityInfo from "next-common/hooks/useFetchIdentityInfo";
 import Tooltip from "next-common/components/tooltip";
 import Link from "next/link";
 
@@ -276,18 +276,18 @@ const EMPTY_RESULT = {
   edges: [],
 };
 
-export default function useConversionRelationshipNode(rootAddress = "") {
+export default function useConversionRelationshipNode(sourceAddress = "") {
   const proxies = useFetchProfileProxies({
-    delegator: rootAddress,
+    delegator: sourceAddress,
     pageSize: 100,
   });
   const receivedProxies = useFetchProfileProxies({
-    delegatee: rootAddress,
+    delegatee: sourceAddress,
     pageSize: 100,
   });
-  const multisigAddress = useMultisigAddress(rootAddress);
-  const signatoryMultisig = useSignatoryMultisig(rootAddress);
-  const identityInfo = useFetchIdentityInfo();
+  const multisigAddress = useMultisigAddress(sourceAddress);
+  const signatoryMultisig = useSignatoryMultisig(sourceAddress);
+  const identityInfo = useFetchIdentityInfo(sourceAddress);
 
   const isLoading =
     proxies.isLoading ||
@@ -296,9 +296,9 @@ export default function useConversionRelationshipNode(rootAddress = "") {
     signatoryMultisig.loading ||
     identityInfo.isLoading;
 
-  const rootNode = createRootNode(rootAddress, multisigAddress);
+  const rootNode = createRootNode(sourceAddress, multisigAddress);
 
-  if (!rootAddress) {
+  if (!sourceAddress) {
     return EMPTY_RESULT;
   }
 

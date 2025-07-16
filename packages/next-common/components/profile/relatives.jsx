@@ -42,7 +42,7 @@ export default function Relatives() {
       {isPopupOpen && (
         <RelativesPopup
           onClose={() => setIsPopupOpen(false)}
-          rootAddress={address}
+          sourceAddress={address}
         />
       )}
     </RelativesWithNullGuard>

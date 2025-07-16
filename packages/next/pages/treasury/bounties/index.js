@@ -1,4 +1,4 @@
-import PostList from "next-common/components/postList";
+import TreasuryBountiesPostList from "next-common/components/postList/treasyrybountiesPostList";
 import { withCommonProps } from "next-common/lib";
 import normalizeBountyListItem from "next-common/utils/viewfuncs/treasury/normalizeBountyListItem";
 import ListLayout from "next-common/components/layout/ListLayout";
@@ -7,10 +7,11 @@ import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { TreasuryProvider } from "next-common/context/treasury";
 import { isPolkadotChain } from "next-common/utils/chain";
 import PolkadotTreasuryStatsOnProposal from "next-common/components/treasury/common/polkadotTreasuryStatsOnProposal";
-import NewBountyButton from "next-common/components/treasury/bounty/newBountyButton";
 import { backendApi } from "next-common/services/nextApi";
 import BountyCardSection from "next-common/components/treasury/bounty/bountyCardSection";
 import { fetchList } from "next-common/services/list";
+import businessCategory from "next-common/utils/consts/business/category";
+import NewBountyButton from "next-common/components/treasury/bounty/newBountyButton";
 
 export default function BountiesPage({
   activeBounties,
@@ -20,7 +21,7 @@ export default function BountiesPage({
   const items = (inactiveBounties.items || []).map((item) =>
     normalizeBountyListItem(chain, item),
   );
-  const category = "Treasury Bounties";
+  const category = businessCategory.treasuryBounties;
   const seoInfo = { title: category, desc: category };
 
   const treasurySummaryPanel = isPolkadotChain(chain) ? (
@@ -51,17 +52,15 @@ export default function BountiesPage({
             )}
           />
         )}
-        <PostList
-          category={category}
-          title="List"
+        <TreasuryBountiesPostList
           titleCount={inactiveBounties.total}
-          titleExtra={<NewBountyButton />}
           items={items}
           pagination={{
             page: inactiveBounties.page,
             pageSize: inactiveBounties.pageSize,
             total: inactiveBounties.total,
           }}
+          titleExtra={<NewBountyButton />}
         />
       </ListLayout>
     </TreasuryProvider>

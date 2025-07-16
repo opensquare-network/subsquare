@@ -19,13 +19,11 @@ function DataUpdater({ children }) {
 }
 
 export function CoretimeConfigurationProvider({ children }) {
-  const { configuration } = usePageProps();
+  const { coretimeSale } = usePageProps();
 
   return (
-    <Provider initialValue={configuration}>
-      <DataUpdater>
-        {children}
-      </DataUpdater>
+    <Provider initialValue={coretimeSale?.configuration}>
+      <DataUpdater>{children}</DataUpdater>
     </Provider>
   );
 }

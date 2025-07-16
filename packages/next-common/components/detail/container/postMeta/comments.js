@@ -13,7 +13,9 @@ export default function CommentsMeta() {
   let commentsCount = post.commentsCount || 0;
   const currentChain = useChain();
   if (
-    [Chains.kusama, Chains.kusamaPeople].includes(currentChain) &&
+    [Chains.kusama, Chains.kusamaPeople, Chains.polkadot].includes(
+      currentChain,
+    ) &&
     post.polkassemblyCommentsCount
   ) {
     commentsCount = post.polkassemblyCommentsCount || 0;

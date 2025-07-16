@@ -7,6 +7,90 @@ import nextApi from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import { useChain } from "next-common/context/chain";
 import { pick } from "lodash-es";
+import FellowshipReferendaPostList from "next-common/components/postList/fellowshipReferendaPostList";
+import businessCategory from "next-common/utils/consts/business/category";
+import TreasuryBountiesPostList from "next-common/components/postList/treasyrybountiesPostList";
+import TreasuryTipsPostList from "next-common/components/postList/treasuryTipsPostList";
+import TreasuryProposalsPostList from "next-common/components/postList/treasuryProposalsPostList";
+import ReferendaPostList from "next-common/components/postList/referendaPostList";
+
+const InnerList = ({ secondCategory, data, pagination }) => {
+  const link = "/" + secondCategory.routePath;
+  const titleCount = data?.total;
+  const items = data?.items ?? [];
+
+  if (secondCategory.id === "comments") {
+    return (
+      <CommentList
+        items={items}
+        category={secondCategory.categoryName}
+        pagination={pagination}
+      />
+    );
+  }
+
+  if (secondCategory.categoryId === businessCategory.fellowship) {
+    return (
+      <FellowshipReferendaPostList
+        titleCount={titleCount}
+        items={items}
+        pagination={pagination}
+      />
+    );
+  }
+
+  if (secondCategory.categoryId === businessCategory.treasuryBounties) {
+    return (
+      <TreasuryBountiesPostList
+        titleCount={titleCount}
+        items={items}
+        pagination={pagination}
+      />
+    );
+  }
+
+  if (secondCategory.categoryId === businessCategory.treasuryTips) {
+    return (
+      <TreasuryTipsPostList
+        titleCount={titleCount}
+        items={items}
+        pagination={pagination}
+      />
+    );
+  }
+
+  if (secondCategory.categoryId === businessCategory.treasuryProposals) {
+    return (
+      <TreasuryProposalsPostList
+        titleCount={titleCount}
+        items={items}
+        pagination={pagination}
+      />
+    );
+  }
+
+  if (secondCategory.categoryId === businessCategory.openGovReferenda) {
+    return (
+      <ReferendaPostList
+        titleCount={titleCount}
+        items={items}
+        pagination={pagination}
+        link={link}
+      />
+    );
+  }
+
+  return (
+    <PostList
+      link={link}
+      title={"List"}
+      titleCount={titleCount}
+      category={secondCategory.categoryId}
+      items={items}
+      pagination={pagination}
+    />
+  );
+};
 
 export default function List({ id, secondCategory }) {
   const [page, setPage] = useState(1);
@@ -57,24 +141,6 @@ export default function List({ id, secondCategory }) {
     onPageChange,
   };
 
-  const list =
-    secondCategory.id === "comments" ? (
-      <CommentList
-        items={data?.items ?? []}
-        category={secondCategory.categoryName}
-        pagination={pagination}
-      />
-    ) : (
-      <PostList
-        link={"/" + secondCategory.routePath}
-        title={"List"}
-        titleCount={data?.total}
-        category={secondCategory.categoryId}
-        items={data?.items ?? []}
-        pagination={pagination}
-      />
-    );
-
   return (
     <Flex
       style={{
@@ -83,7 +149,15 @@ export default function List({ id, secondCategory }) {
         justifyContent: "center",
       }}
     >
-      {isLoading ? <Loading size={16} /> : list}
+      {isLoading ? (
+        <Loading size={16} />
+      ) : (
+        <InnerList
+          secondCategory={secondCategory}
+          data={data}
+          pagination={pagination}
+        />
+      )}
     </Flex>
   );
 }

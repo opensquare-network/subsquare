@@ -22,6 +22,15 @@ import { sortAddresses } from "@polkadot/util-crypto";
 import { isSameAddress } from "next-common/utils";
 import MultisigSignProvider, { useMultisigSignContext } from "./context";
 import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
+import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
+
+function SubmitPrompt() {
+  return (
+    <GreyPanel className="text14Medium text-textSecondary py-2.5 px-4 max-w-full">
+      Approve this multisig and it will be get executed.
+    </GreyPanel>
+  );
+}
 
 export function SignSubmitInnerPopup({ onClose, multisig = {} }) {
   const api = useContextApi();
@@ -98,6 +107,7 @@ export function SignSubmitInnerPopup({ onClose, multisig = {} }) {
     <Popup title="Multisig" onClose={onClose} maskClosable={false}>
       <SignerWithBalance />
       <PopupPropose />
+      <SubmitPrompt />
       <TxSubmissionButton
         disabled={!isValid}
         getTxFunc={getTxFunc}

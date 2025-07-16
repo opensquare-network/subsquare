@@ -12,9 +12,8 @@ import { to404 } from "next-common/utils/serverSideUtil";
 import ReferendaStatusSelectField from "next-common/components/popup/fields/referendaStatusSelectField";
 import { useRouter } from "next/router";
 import ReferendaTrackLayout from "next-common/components/layout/referendaLayout/track";
-import PostList from "next-common/components/postList";
+import ReferendaPostList from "next-common/components/postList/referendaPostList";
 import normalizeGov2ReferendaListItem from "next-common/utils/gov2/list/normalizeReferendaListItem";
-import businessCategory from "next-common/utils/consts/business/category";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import NewProposalButton from "next-common/components/summary/newProposalButton";
 import useFetchMyReferendaVoting from "next-common/components/myvotes/referenda/useFetchMyReferendaVoting";
@@ -66,8 +65,7 @@ export default function TrackPage({
       summaryData={trackReferendaSummary}
     >
       <TrackPanel className="mb-4" />
-      <PostList
-        title="List"
+      <ReferendaPostList
         titleCount={posts.total}
         titleExtra={
           <div className="flex gap-[12px] items-center">
@@ -78,7 +76,6 @@ export default function TrackPage({
             <NewProposalButton />
           </div>
         }
-        category={businessCategory.openGovReferenda}
         items={items}
         pagination={{
           page: posts.page,

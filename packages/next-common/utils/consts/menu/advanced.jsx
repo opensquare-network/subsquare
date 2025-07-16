@@ -1,4 +1,5 @@
 import { MenuAdvanced } from "@osn/icons/subsquare";
+import omit from "lodash-es/omit";
 
 export default function getAdvancedMenu(advanceMenu = []) {
   return advanceMenu.length
@@ -8,8 +9,7 @@ export default function getAdvancedMenu(advanceMenu = []) {
         type: "advanced",
         icon: <MenuAdvanced />,
         items: advanceMenu.map((item) => {
-          delete item.icon;
-          return item;
+          return omit(item, "icon");
         }),
       }
     : null;

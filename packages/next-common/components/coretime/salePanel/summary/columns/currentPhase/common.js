@@ -6,12 +6,12 @@ import CountDown from "next-common/components/_CountDown";
 import { toPercentage } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
 import { useCoretimeSaleLeadinLength } from "next-common/context/coretime/sale/phases/leadin";
-import { useCoretimeSaleStart } from "next-common/context/coretime/sale/provider";
 import { getEndBlocksTime } from "next-common/components/coretime/salePanel/summary/columns/totalPeriod";
 import { usePageProps } from "next-common/context/page";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import { formatDateTime } from "next-common/components/coretime/sales/history/timeRange";
 import { useMemo } from "react";
+import useCoretimeSaleStart from "next-common/hooks/coretime/useCoretimeSaleStart";
 
 export function getCountDownProgress(startHeight, currentHeight, endHeight) {
   if (currentHeight <= startHeight) {

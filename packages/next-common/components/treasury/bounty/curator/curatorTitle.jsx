@@ -23,7 +23,7 @@ export default function CuratorTitle({ address }) {
       {showRelationshipPopup && (
         <RelationshipPopup
           onClose={() => setShowRelationshipPopup(false)}
-          rootAddress={address}
+          sourceAddress={address}
         />
       )}
     </TitleContainer>
