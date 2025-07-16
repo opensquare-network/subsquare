@@ -6,21 +6,13 @@ import Nav from "../nav";
 import SEO from "../SEO";
 import Toast from "../toast";
 import Footer from "./footer";
-import { useSubscribeChainHead } from "next-common/utils/hooks";
-import useUpdateNodesDelay from "next-common/utils/hooks/useUpdateNodesDelay";
 import { cn } from "next-common/utils";
 import { useNavCollapsed } from "next-common/context/nav";
 import LoginGlobalPopup from "../login/globalPopup";
-import useStoreDemocracyLockPeriod from "next-common/hooks/democracy/useStoreDemocracyLockPeriod";
-import useStoreConvictionVotingLockPeriod from "next-common/hooks/referenda/useStoreConvictionVotingLockPeriod";
-import { useContextApi } from "next-common/context/api";
-import useExistentialDeposit from "next-common/utils/hooks/chain/useExistentialDeposit";
 import GlobalNotification from "next-common/components/globalNotification";
-import useInitApiProviders from "next-common/services/chain/apis/useInitApiProviders";
-import useInitMimir from "next-common/hooks/useInitMimir";
 import { ScanHeightSubscriber } from "../scanHeightSubscriber";
-import MaybeSubRelayStatus from "../maybeSubRelayStatus";
 import NativeTokenPriceSubscriber from "next-common/components/common/price/subscriber";
+import BaseInit from "next-common/components/init";
 
 /**
  * @description a base layout includes nav, header and footer
@@ -33,19 +25,9 @@ export default function BaseLayout({
   const { sm } = useScreenSize();
   const [navCollapsed] = useNavCollapsed();
 
-  useInitMimir();
-  useInitApiProviders();
-  useUpdateNodesDelay();
-
-  const api = useContextApi();
-  useSubscribeChainHead(api);
-  useExistentialDeposit();
-
-  useStoreDemocracyLockPeriod();
-  useStoreConvictionVotingLockPeriod();
-
   return (
-    <MaybeSubRelayStatus>
+    <>
+      <BaseInit />
       <SEO {...seoInfo} />
 
       <div className="min-h-screen flex bg-pageBg max-sm:flex-col">
@@ -86,6 +68,6 @@ export default function BaseLayout({
       <LoginGlobalPopup />
       <NativeTokenPriceSubscriber />
       <ScanHeightSubscriber />
-    </MaybeSubRelayStatus>
+    </>
   );
 }
