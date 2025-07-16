@@ -12,12 +12,17 @@ import businessCategory from "next-common/utils/consts/business/category";
 import TreasuryBountiesPostList from "next-common/components/postList/treasyrybountiesPostList";
 import TreasuryTipsPostList from "next-common/components/postList/treasuryTipsPostList";
 import TreasuryProposalsPostList from "next-common/components/postList/treasuryProposalsPostList";
+import ReferendaPostList from "next-common/components/postList/referendaPostList";
 
 const InnerList = ({ secondCategory, data, pagination }) => {
+  const link = "/" + secondCategory.routePath;
+  const titleCount = data?.total;
+  const items = data?.items ?? [];
+
   if (secondCategory.id === "comments") {
     return (
       <CommentList
-        items={data?.items ?? []}
+        items={items}
         category={secondCategory.categoryName}
         pagination={pagination}
       />
@@ -27,8 +32,8 @@ const InnerList = ({ secondCategory, data, pagination }) => {
   if (secondCategory.categoryId === businessCategory.fellowship) {
     return (
       <FellowshipReferendaPostList
-        titleCount={data?.total}
-        items={data?.items ?? []}
+        titleCount={titleCount}
+        items={items}
         pagination={pagination}
       />
     );
@@ -37,8 +42,8 @@ const InnerList = ({ secondCategory, data, pagination }) => {
   if (secondCategory.categoryId === businessCategory.treasuryBounties) {
     return (
       <TreasuryBountiesPostList
-        titleCount={data?.total}
-        items={data?.items ?? []}
+        titleCount={titleCount}
+        items={items}
         pagination={pagination}
       />
     );
@@ -47,8 +52,8 @@ const InnerList = ({ secondCategory, data, pagination }) => {
   if (secondCategory.categoryId === businessCategory.treasuryTips) {
     return (
       <TreasuryTipsPostList
-        titleCount={data?.total}
-        items={data?.items ?? []}
+        titleCount={titleCount}
+        items={items}
         pagination={pagination}
       />
     );
@@ -57,20 +62,31 @@ const InnerList = ({ secondCategory, data, pagination }) => {
   if (secondCategory.categoryId === businessCategory.treasuryProposals) {
     return (
       <TreasuryProposalsPostList
-        titleCount={data?.total}
-        items={data?.items ?? []}
+        titleCount={titleCount}
+        items={items}
         pagination={pagination}
+      />
+    );
+  }
+
+  if (secondCategory.categoryId === businessCategory.openGovReferenda) {
+    return (
+      <ReferendaPostList
+        titleCount={titleCount}
+        items={items}
+        pagination={pagination}
+        link={link}
       />
     );
   }
 
   return (
     <PostList
-      link={"/" + secondCategory.routePath}
+      link={link}
       title={"List"}
-      titleCount={data?.total}
+      titleCount={titleCount}
       category={secondCategory.categoryId}
-      items={data?.items ?? []}
+      items={items}
       pagination={pagination}
     />
   );
