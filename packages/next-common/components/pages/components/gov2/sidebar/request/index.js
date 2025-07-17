@@ -58,7 +58,6 @@ function SpendSymbol({ symbol }) {
 
 function SpendValue({ amount, symbol, decimals }) {
   const value = toPrecisionNumber(amount, decimals);
-  const fiatValueTooltip = useFiatValueTooltipContent(amount, decimals, symbol);
 
   if (symbol in ASSET_DETAIL_LINKS) {
     return (
@@ -70,6 +69,19 @@ function SpendValue({ amount, symbol, decimals }) {
       </div>
     );
   }
+
+  return (
+    <ValueDisplayWithFiatValue
+      symbol={symbol}
+      amount={amount}
+      decimals={decimals}
+    />
+  );
+}
+
+function ValueDisplayWithFiatValue({ amount, decimals, symbol }) {
+  const value = toPrecisionNumber(amount, decimals);
+  const fiatValueTooltip = useFiatValueTooltipContent(amount, decimals, symbol);
 
   return (
     <ValueDisplay
