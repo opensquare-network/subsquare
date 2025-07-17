@@ -3,6 +3,9 @@ import useCoretimeSale from "next-common/context/coretime/sale/provider";
 import CoretimeSalePanelChartPeriodProgress from "./periodProgress";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { Skeleton } from "next-common/components/skeleton";
+import useCoretimeSaleStart, {
+  useCoretimeSaleFixedStart,
+} from "next-common/hooks/coretime/useCoretimeSaleStart";
 
 const CoretimeSalePanelChartStatistics = dynamicClientOnly(
   () => import("./statistics"),
@@ -13,16 +16,13 @@ const CoretimeSalePanelChartStatistics = dynamicClientOnly(
 
 export default function CoretimeSalePanelChart({ className = "" }) {
   const coretimeSale = useCoretimeSale();
-  const {
-    initIndexer: { blockHeight: initBlockHeight } = {},
-    info: { saleStart, leadinLength },
-  } = coretimeSale;
+  const { initIndexer: { blockHeight: initBlockHeight } = {} } = coretimeSale;
+  const saleStart = useCoretimeSaleStart();
   const endSale = useCoretimeSaleEnd();
+  const fixedStart = useCoretimeSaleFixedStart();
 
   const endBlockHeight = endSale?.indexer?.blockHeight;
   const totalBlocks = endBlockHeight - initBlockHeight;
-  const fixedStart = saleStart + leadinLength;
-
   const isLoading = endSale?.isLoading;
 
   return (

@@ -15,7 +15,6 @@ export default function AccountLayout(props) {
   return (
     <BaseLayout
       title={chainSettings.name}
-      seoInfo={{ title: "" }}
       description={chainSettings.description}
       {...props}
     >

@@ -11,8 +11,7 @@ import { startCase } from "lodash-es";
 import { to404 } from "next-common/utils/serverSideUtil";
 import ListLayout from "next-common/components/layout/ListLayout";
 import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/normalizeFellowshipReferendaListItem";
-import PostList from "next-common/components/postList";
-import businessCategory from "next-common/utils/consts/business/category";
+import FellowshipReferendaPostList from "next-common/components/postList/fellowshipReferendaPostList";
 import Gov2TrackSummary from "next-common/components/summary/gov2TrackSummary";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import NewFellowshipProposalButton from "next-common/components/summary/newFellowshipProposalButton";
@@ -59,12 +58,10 @@ export default function TrackPage({
         }
       >
         <TrackPanel className="mb-4" />
-        <PostList
-          title="List"
+        <FellowshipReferendaPostList
           titleCount={posts.total}
-          titleExtra={<NewFellowshipProposalButton />}
-          category={businessCategory.fellowship}
           items={items}
+          titleExtra={<NewFellowshipProposalButton />}
           pagination={{
             page: posts.page,
             pageSize: posts.pageSize,

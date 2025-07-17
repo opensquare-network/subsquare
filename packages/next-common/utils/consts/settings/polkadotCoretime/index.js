@@ -20,8 +20,20 @@ const polkadotCoretime = {
       url: "wss://polkadot-coretime-rpc.polkadot.io",
     },
     {
+      name: "IBP1",
+      url: "wss://sys.ibp.network/coretime-polkadot",
+    },
+    {
       name: "IBP2",
       url: "wss://coretime-polkadot.dotters.network",
+    },
+    {
+      name: "LuckyFriday",
+      url: "wss://rpc-coretime-polkadot.luckyfriday.io",
+    },
+    {
+      name: "OnFinality",
+      url: "wss://coretime-polkadot.api.onfinality.io/public-ws",
     },
   ],
   integrations: {
