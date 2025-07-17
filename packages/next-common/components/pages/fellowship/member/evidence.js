@@ -45,7 +45,7 @@ function EvidencePageImpl() {
       <Divider />
       <div>
         <EvidenceContent />
-        <ArticleActions />
+        <ArticleActions editable={false} />
       </div>
     </div>
   );
