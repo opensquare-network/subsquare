@@ -18,12 +18,19 @@ const NodeWrap = styled.div`
   box-shadow: var(--shadow100);
 `;
 
-export function UserAvatar({ address, badge }) {
+export function UserAvatar({ address, badge, size = 40, className = "" }) {
   if (!address) {
     return null;
   }
 
-  const avatar = <DisplayUserAvatar address={address} user={{}} size={40} />;
+  const avatar = (
+    <DisplayUserAvatar
+      address={address}
+      user={{}}
+      size={size}
+      className={className}
+    />
+  );
 
   if (!badge) {
     return avatar;

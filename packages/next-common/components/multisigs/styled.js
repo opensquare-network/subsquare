@@ -46,10 +46,18 @@ export function SignatorieAccount({ address }) {
   const isMobile = useIsMobile();
   return (
     <div className="flex items-center gap-x-2">
-      <UserAvatar address={encodeAddress} />
-      <div className="flex flex-col justify-between">
-        <AddressUser add={encodeAddress} showAvatar={false} />
-        <CopyableAddress address={encodeAddress} ellipsisAddress={isMobile} />
+      <UserAvatar address={encodeAddress} size={36} className="!w-9 !h-9" />
+      <div className="flex flex-col justify-between flex-1">
+        <AddressUser
+          className="!text12Medium"
+          add={encodeAddress}
+          showAvatar={false}
+        />
+        <CopyableAddress
+          address={encodeAddress}
+          ellipsisAddress={isMobile}
+          className="!text12Medium"
+        />
       </div>
     </div>
   );
