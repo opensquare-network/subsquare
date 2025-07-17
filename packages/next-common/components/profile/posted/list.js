@@ -13,6 +13,7 @@ import TreasuryBountiesPostList from "next-common/components/postList/treasyrybo
 import TreasuryTipsPostList from "next-common/components/postList/treasuryTipsPostList";
 import TreasuryProposalsPostList from "next-common/components/postList/treasuryProposalsPostList";
 import ReferendaPostList from "next-common/components/postList/referendaPostList";
+import DemocracyReferendaPostList from "next-common/components/postList/democracyReferendaPostList";
 
 const InnerList = ({ secondCategory, data, pagination }) => {
   const link = "/" + secondCategory.routePath;
@@ -72,6 +73,17 @@ const InnerList = ({ secondCategory, data, pagination }) => {
   if (secondCategory.categoryId === businessCategory.openGovReferenda) {
     return (
       <ReferendaPostList
+        titleCount={titleCount}
+        items={items}
+        pagination={pagination}
+        link={link}
+      />
+    );
+  }
+
+  if (secondCategory.categoryId === businessCategory.democracyReferenda) {
+    return (
+      <DemocracyReferendaPostList
         titleCount={titleCount}
         items={items}
         pagination={pagination}
