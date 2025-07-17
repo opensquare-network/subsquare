@@ -22,7 +22,7 @@ export function useIsPostAuthor() {
       }
     } else if (type === detailPageCategory.FELLOWSHIP_APPLICATION) {
       setIsAuthor(isSameAddress(post.proposer, user.address));
-    } else if (type === detailPageCategory.FELLOWSHIP_EVIDENCES) {
+    } else if (type === detailPageCategory.FELLOWSHIP_EVIDENCE) {
       setIsAuthor(isSameAddress(post.who, user.address));
     } else {
       setIsAuthor(isAddressInGroup(user.address, post.authors));
