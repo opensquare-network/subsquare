@@ -1,5 +1,4 @@
 import TreasurySpendValueDisplay from "next-common/components/gov2/business/treasurySpendValueDisplay";
-import { isNil } from "lodash-es";
 import { useOnchainData } from "next-common/context/post";
 import { useState } from "react";
 import { RequestWrapper } from ".";
@@ -15,15 +14,6 @@ export default function AllSpendsRequest() {
   const [showMore, setShowMore] = useState(false);
 
   if (!onchain?.allSpends?.length) {
-    return null;
-  }
-
-  if (
-    !onchain?.isTreasury &&
-    !onchain?.isStableTreasury &&
-    isNil(onchain?.value) &&
-    (onchain.allSpends || []).length <= 0
-  ) {
     return null;
   }
 

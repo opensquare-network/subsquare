@@ -14,7 +14,7 @@ import { getGov2ReferendumStateArgs } from "../../utils/gov2/result";
 import { useChain, useChainSettings } from "../../context/chain";
 import Gov2TrackTag from "../gov2/trackTag";
 import DecisionCountdown from "../gov2/postList/decisionCountdown";
-import { gov2State, gov2VotingStates } from "../../utils/consts/state";
+import { gov2State } from "../../utils/consts/state";
 import ConfirmCountdown from "../gov2/postList/confirmCountdown";
 import ValueDisplay from "../valueDisplay";
 import ListPostTitle from "./postTitle";
@@ -24,8 +24,6 @@ import { useScreenSize } from "../../utils/hooks/useScreenSize";
 import LinkInfo from "../styled/linkInfo";
 import Link from "next/link";
 import PreparingCountdown from "../gov2/postList/preparingCountdown";
-import { getDemocracyStateArgs } from "../../utils/democracy/result";
-import ReferendumElapse from "../democracy/referendum/referendumElapse";
 import PostListCardVotesSummaryBar from "./votesSummaryBar";
 import SystemUser from "../user/systemUser";
 import AddressUser from "../user/addressUser";
@@ -36,8 +34,6 @@ import { getAssetByMeta } from "next-common/utils/treasury/spend/usdCheck";
 import { SystemComment } from "@osn/icons/subsquare";
 import PostListTreasuryAllSpends from "./treasuryAllSpends";
 import PostListAISummary from "./aiSummary";
-import PostListMyVoteMark from "./myVoteMark";
-import { referendumState } from "next-common/utils/consts/referendum";
 import Chains from "next-common/utils/consts/chains";
 import { PostItemTime } from "./common";
 
@@ -141,13 +137,6 @@ export function PostValueTitle({ data, type }) {
     return <PostListTreasuryAllSpends allSpends={allSpends} />;
   }
 
-  if (onchainData?.isStableTreasury) {
-    const { amount, spends = [] } = onchainData?.stableTreasuryInfo || {};
-    const symbolSet = new Set(spends.map((spend) => spend.symbol));
-    const symbol = symbolSet.size > 1 ? "USD" : spends[0].symbol;
-    return <PostAmount amount={amount} decimals={6} symbol={symbol} />;
-  }
-
   if (method) {
     return <TitleExtra>{method}</TitleExtra>;
   }
@@ -176,11 +165,6 @@ export default function Post({ data, href, type }) {
     stateArgs = getMotionStateArgs(data.onchainData.state);
   } else if (isGov2Referendum) {
     stateArgs = getGov2ReferendumStateArgs(data.onchainData?.state);
-  } else if (businessCategory.democracyReferenda === type) {
-    stateArgs = getDemocracyStateArgs(
-      data.onchainData.state,
-      data.onchainData.timeline,
-    );
   }
 
   let elapseIcon = null;
@@ -208,10 +192,6 @@ export default function Post({ data, href, type }) {
     }
   }
 
-  if (businessCategory.democracyReferenda === type) {
-    elapseIcon = <ReferendumElapse detail={data} />;
-  }
-
   let commentsCount = data.commentsCount || 0;
   if (
     [Chains.kusama, Chains.kusamaPeople, Chains.polkadot].includes(
@@ -230,15 +210,7 @@ export default function Post({ data, href, type }) {
   }
 
   const hasTally = data.onchainData?.tally || data.onchainData?.info?.tally;
-  const showTally = [
-    businessCategory.democracyReferenda,
-    businessCategory.ambassadorReferenda,
-  ].includes(type);
-
-  const showVoteMark =
-    (isGov2Referendum && gov2VotingStates.includes(data?.status)) ||
-    (businessCategory.democracyReferenda === type &&
-      data?.status === referendumState.Started);
+  const showTally = [businessCategory.ambassadorReferenda].includes(type);
 
   return (
     <Wrapper>
@@ -320,7 +292,6 @@ export default function Post({ data, href, type }) {
           </Footer>
 
           <div className="flex items-center gap-x-2">
-            {showVoteMark && <PostListMyVoteMark data={data} category={type} />}
             {data.status && (
               <Tag
                 state={data.status}
