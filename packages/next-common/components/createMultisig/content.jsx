@@ -17,7 +17,9 @@ import {
 import { usePopupParams } from "../popupWithSigner/context";
 import { useMultisigAccounts } from "../multisigs/context/accountsContext";
 import useMulitisigSubmitError from "./hooks/useMulitisigSubmitError";
-import { MultisigErrorMessage, MultisigNeutralMessage } from "./styled";
+import { MultisigErrorMessage } from "./styled";
+import { SystemQuestion } from "@osn/icons/subsquare";
+import Tooltip from "../tooltip";
 
 export default function CreateMultisigContent() {
   const address = useRealAddress();
@@ -90,7 +92,14 @@ export default function CreateMultisigContent() {
           value={threshold}
         />
         <TextInputField
-          title="Name"
+          title={
+            <span className="flex items-center gap-x-1">
+              Name
+              <Tooltip content="Used as multisig account name if no identity set">
+                <SystemQuestion className="inline-flex w-4 h-4 [&_path]:fill-textTertiary cursor-pointer" />
+              </Tooltip>
+            </span>
+          }
           text={name}
           setText={setName}
           placeholder="Please fill the name..."
@@ -98,9 +107,6 @@ export default function CreateMultisigContent() {
         {multisigErrorMessage && (
           <MultisigErrorMessage>{multisigErrorMessage}</MultisigErrorMessage>
         )}
-        <MultisigNeutralMessage>
-          Used as multisig account name if no identity set
-        </MultisigNeutralMessage>
         <div className="flex justify-end">
           <PrimaryButton
             type="submit"
