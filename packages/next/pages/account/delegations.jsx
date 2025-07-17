@@ -5,7 +5,7 @@ import MyDelegations from "next-common/components/pages/components/myDelegation/
 
 export default function AccountMyDelegationsPage() {
   return (
-    <AccountLayout>
+    <AccountLayout seoInfo={{ title: "Account delegations management" }}>
       <MyDelegations />
     </AccountLayout>
   );

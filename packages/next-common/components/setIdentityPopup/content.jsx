@@ -147,7 +147,7 @@ function InputField({ field, identityInfo, onFieldChange, errors, setErrors }) {
 
   return (
     <div>
-      <Label>{field.title}</Label>
+      <Label className="mb-2">{field.title}</Label>
       <Input
         ref={inputRef}
         name={field.key}

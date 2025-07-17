@@ -5,7 +5,7 @@ import MyReceivedDelegations from "next-common/components/pages/components/myDel
 
 export default function AccountMyReceivedDelegationsPage() {
   return (
-    <AccountLayout>
+    <AccountLayout seoInfo={{ title: "Delegations to my account" }}>
       <MyReceivedDelegations />
     </AccountLayout>
   );

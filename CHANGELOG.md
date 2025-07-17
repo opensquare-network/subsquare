@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+# 5.0.3
+
+date: 2025-07-16
+
+- [Medium] Appendants
+    - Support bounty curators to add appendants to a parent bounty for the latest context.
+    - Support referenda proposers to add appendants for the latest context.
+- Display the equivalent USD value for treasury request referenda with DOT/KSM tokens.
+- Simplify polkadot API initiation steps.
+- Improve account relatives popup and not open new account profile page when clicking new accounts.
+- Coretime
+    - Fix coretime due to runtime break change. Currently, relay chain block number is used for sale info.
+    - Fix coretime menu incorrect when switching to a sale detail page.
+- Support treasury spend without an address, but an XCM location.
+- Refactor various (referenda, fellowship referenda, treasury proposal, spends, bounties, etc) post-list components to
+  reduce code coupling.
+- Customize referenda templates for zkverify.
+- Display the original amount value in the call detail popup table view.
+- Add multisig API for westend after assethub migration and correct explorer link for `when` field.
+- Fix an issue that estimated gas and nonce are empty on some transaction popups.
+- Fix re-render after global state update.
+- Upgrade dependencies and fix styles.
+
 # 5.0.2
 
 date: 2025-07-08

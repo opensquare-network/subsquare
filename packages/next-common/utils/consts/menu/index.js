@@ -142,7 +142,9 @@ export function getMainMenu({
 
 const matchedMenuItem = (menu, pathname) => {
   for (const menuItem of menu) {
-    const matched = menuItem.pathname === pathname;
+    const matched =
+      menuItem.pathname === pathname ||
+      menuItem?.extraMatchNavMenuActivePathnames?.includes?.(pathname);
     if (menuItem?.items?.length) {
       const findItem = matchedMenuItem(menuItem.items, pathname);
       if (findItem) {
@@ -154,13 +156,14 @@ const matchedMenuItem = (menu, pathname) => {
     }
   }
 };
-const isSubSpaceNavMenu = (type) => type === NAV_MENU_TYPE.subspace;
+const isSubSpaceNavMenu = (type) =>
+  type === NAV_MENU_TYPE.subspace || type === "archived";
 export function matchNewMenu(menu, pathname) {
   if (!isArray(menu)) {
     return null;
   }
   for (const menuItem of menu) {
-    if (isSubSpaceNavMenu(menuItem.type) || menuItem.type === "archived") {
+    if (isSubSpaceNavMenu(menuItem.type)) {
       const findMenu = matchedMenuItem(menuItem.items, pathname);
       if (findMenu) {
         return {

@@ -14,7 +14,7 @@ import { getGov2ReferendumStateArgs } from "../../utils/gov2/result";
 import { useChain, useChainSettings } from "../../context/chain";
 import Gov2TrackTag from "../gov2/trackTag";
 import DecisionCountdown from "../gov2/postList/decisionCountdown";
-import { gov2State, gov2VotingState } from "../../utils/consts/state";
+import { gov2State } from "../../utils/consts/state";
 import ConfirmCountdown from "../gov2/postList/confirmCountdown";
 import ValueDisplay from "../valueDisplay";
 import ListPostTitle from "./postTitle";
@@ -24,8 +24,6 @@ import { useScreenSize } from "../../utils/hooks/useScreenSize";
 import LinkInfo from "../styled/linkInfo";
 import Link from "next/link";
 import PreparingCountdown from "../gov2/postList/preparingCountdown";
-import { getDemocracyStateArgs } from "../../utils/democracy/result";
-import ReferendumElapse from "../democracy/referendum/referendumElapse";
 import PostListCardVotesSummaryBar from "./votesSummaryBar";
 import SystemUser from "../user/systemUser";
 import AddressUser from "../user/addressUser";
@@ -33,19 +31,15 @@ import PolkassemblyUser from "../user/polkassemblyUser";
 import Tooltip from "next-common/components/tooltip";
 import WarningIcon from "next-common/assets/imgs/icons/warning.svg";
 import { getAssetByMeta } from "next-common/utils/treasury/spend/usdCheck";
-import { SystemActivity, SystemComment } from "@osn/icons/subsquare";
+import { SystemComment } from "@osn/icons/subsquare";
 import PostListTreasuryAllSpends from "./treasuryAllSpends";
-import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 import PostListAISummary from "./aiSummary";
-import TreasurySpendsCountDown from "next-common/components/postList/treasury/spends/countdown";
-import PostListMyVoteMark from "./myVoteMark";
-import { referendumState } from "next-common/utils/consts/referendum";
 import Chains from "next-common/utils/consts/chains";
+import { PostItemTime } from "./common";
 
 import {
   Wrapper,
   Footer,
-  Info,
   MobileHiddenInfo,
   FooterWrapper,
   TitleExtraValue,
@@ -122,12 +116,7 @@ export function PostValueTitle({ data, type }) {
     ? onchainData?.treasuryInfo?.amount
     : value;
 
-  if (
-    [
-      businessCategory.treasurySpends,
-      businessCategory.fellowshipTreasurySpends,
-    ].includes(type)
-  ) {
+  if ([businessCategory.fellowshipTreasurySpends].includes(type)) {
     return <TreasurySpendAmount meta={data?.meta} />;
   }
 
@@ -146,13 +135,6 @@ export function PostValueTitle({ data, type }) {
   if (onchainData?.allSpends?.length) {
     const { allSpends } = onchainData;
     return <PostListTreasuryAllSpends allSpends={allSpends} />;
-  }
-
-  if (onchainData?.isStableTreasury) {
-    const { amount, spends = [] } = onchainData?.stableTreasuryInfo || {};
-    const symbolSet = new Set(spends.map((spend) => spend.symbol));
-    const symbol = symbolSet.size > 1 ? "USD" : spends[0].symbol;
-    return <PostAmount amount={amount} decimals={6} symbol={symbol} />;
   }
 
   if (method) {
@@ -174,26 +156,16 @@ export default function Post({ data, href, type }) {
     businessCategory.openTechCommitteeProposals,
   ].includes(type);
 
-  const isGov2Referendum = [
-    businessCategory.openGovReferenda,
-    businessCategory.fellowship,
-    businessCategory.ambassadorReferenda,
-  ].includes(type);
+  const isGov2Referendum = [businessCategory.ambassadorReferenda].includes(
+    type,
+  );
 
   let stateArgs;
   if (isDemocracyCollective) {
     stateArgs = getMotionStateArgs(data.onchainData.state);
   } else if (isGov2Referendum) {
     stateArgs = getGov2ReferendumStateArgs(data.onchainData?.state);
-  } else if (businessCategory.democracyReferenda === type) {
-    stateArgs = getDemocracyStateArgs(
-      data.onchainData.state,
-      data.onchainData.timeline,
-    );
   }
-
-  const timeAgo = formatTimeAgo(data.time);
-  const createAgo = formatTimeAgo(data.createdAt);
 
   let elapseIcon = null;
   if (
@@ -212,23 +184,12 @@ export default function Post({ data, href, type }) {
 
   if (isGov2Referendum) {
     if (data?.status === gov2State.Preparing) {
-      elapseIcon = (
-        <PreparingCountdown
-          detail={data}
-          isFellowship={businessCategory.fellowship === type}
-        />
-      );
+      elapseIcon = <PreparingCountdown detail={data} />;
     } else if (data?.status === gov2State.Deciding) {
       elapseIcon = <DecisionCountdown detail={data} />;
     } else if (data?.status === gov2State.Confirming) {
       elapseIcon = <ConfirmCountdown detail={data} />;
     }
-  }
-
-  if (businessCategory.democracyReferenda === type) {
-    elapseIcon = <ReferendumElapse detail={data} />;
-  } else if (businessCategory.treasurySpends === type) {
-    elapseIcon = <TreasurySpendsCountDown data={data} />;
   }
 
   let commentsCount = data.commentsCount || 0;
@@ -244,26 +205,12 @@ export default function Post({ data, href, type }) {
   const bannerUrl = getBannerUrl(data.bannerCid);
 
   let trackTagLink = null;
-  if (type === businessCategory.openGovReferenda) {
-    trackTagLink = `/referenda/tracks/${data.track}`;
-  } else if (type === businessCategory.fellowship) {
-    trackTagLink = `/fellowship/tracks/${data.track}`;
-  } else if (type === businessCategory.ambassadorReferenda) {
+  if (type === businessCategory.ambassadorReferenda) {
     trackTagLink = `/ambassador/tracks/${data.track}`;
   }
 
   const hasTally = data.onchainData?.tally || data.onchainData?.info?.tally;
-  const showTally = [
-    businessCategory.democracyReferenda,
-    businessCategory.openGovReferenda,
-    businessCategory.fellowship,
-    businessCategory.ambassadorReferenda,
-  ].includes(type);
-
-  const showVoteMark =
-    (isGov2Referendum && gov2VotingState.includes(data?.status)) ||
-    (businessCategory.democracyReferenda === type &&
-      data?.status === referendumState.Started);
+  const showTally = [businessCategory.ambassadorReferenda].includes(type);
 
   return (
     <Wrapper>
@@ -298,25 +245,7 @@ export default function Post({ data, href, type }) {
                 <DemocracyTag />
               </div>
             )}
-            {data.time && (
-              <Info>
-                <SystemActivity className="w-4 h-4 stroke-textTertiary [&_path]:stroke-2" />
-                <Tooltip
-                  className="flex"
-                  content={
-                    <div className="text12Medium">
-                      <ul className="list-disc list-inside">
-                        <li>Created at {createAgo}</li>
-                        <li>Latest activity at {timeAgo}</li>
-                      </ul>
-                    </div>
-                  }
-                >
-                  <span className="cursor-pointer">{timeAgo}</span>
-                </Tooltip>
-                <Flex className="elapseIcon">{elapseIcon}</Flex>
-              </Info>
-            )}
+            <PostItemTime data={data} elapseIcon={elapseIcon} />
             {commentsCount > -1 && (
               <MobileHiddenInfo>
                 <Tooltip
@@ -363,7 +292,6 @@ export default function Post({ data, href, type }) {
           </Footer>
 
           <div className="flex items-center gap-x-2">
-            {showVoteMark && <PostListMyVoteMark data={data} category={type} />}
             {data.status && (
               <Tag
                 state={data.status}
