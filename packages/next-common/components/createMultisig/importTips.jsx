@@ -16,6 +16,7 @@ export default function ImportTips() {
         <span
           className="text-theme500 cursor-pointer"
           onClick={() => setOpenImportMultisigPopup(true)}
+          role="button"
         >
           Import
         </span>{" "}
