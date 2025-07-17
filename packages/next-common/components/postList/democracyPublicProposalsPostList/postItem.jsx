@@ -37,7 +37,7 @@ export default function PostItem({ data }) {
               <PostItemMalicious isMalicious={data?.isMalicious} />
               <PostItemAISummary data={data} />
             </Footer>
-            <DemocracyProposalTag state={data.state} />
+            <DemocracyProposalTag state={data.status} />
           </FooterWrapper>
         </ContentWrapper>
         <PostItemBannner bannerCid={data?.bannerCid} />
