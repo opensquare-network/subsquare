@@ -108,6 +108,7 @@ function Row({ multisig }) {
           <ActionIconButton
             onClick={handleExtend}
             className="[&_svg_path]:!stroke-textPrimary"
+            role="button"
           >
             <ArrowDown
               className={cn("w-4 h-4", {
