@@ -42,11 +42,7 @@ export default function SimaEvidencesCommentActionsProvider({ children }) {
         real,
       };
       const data = await signSimaMessage(entity);
-      const { result } = await backendApi.post(
-        `${generalBaseApiUrl(post)}/comments`,
-        data,
-      );
-      return result;
+      return await backendApi.post(`${generalBaseApiUrl(post)}/comments`, data);
     },
     createCommentReply: async (post, comment, content, contentType, real) => {
       const indexer = generalIndexer(post);
@@ -60,11 +56,10 @@ export default function SimaEvidencesCommentActionsProvider({ children }) {
       };
 
       const data = await signSimaMessage(entity);
-      const { result } = await backendApi.post(
+      return await backendApi.post(
         `${generalBaseApiUrl(post)}/comments/${comment.cid}/replies`,
         data,
       );
-      return result;
     },
     upVoteComment: async (post, comment) => {
       const indexer = generalIndexer(post);
@@ -75,11 +70,10 @@ export default function SimaEvidencesCommentActionsProvider({ children }) {
         timestamp: Date.now(),
       };
       const data = await signSimaMessage(entity);
-      const { result } = await backendApi.post(
+      return await backendApi.post(
         `${generalBaseApiUrl(post)}/comments/${comment.cid}/reactions`,
         data,
       );
-      return result;
     },
     cancelUpVoteComment: async (post, comment) => {
       const indexer = generalIndexer(post);
@@ -94,11 +88,10 @@ export default function SimaEvidencesCommentActionsProvider({ children }) {
         timestamp: Date.now(),
       };
       const data = await signSimaMessage(entity);
-      const { result } = await backendApi.post(
+      return await backendApi.post(
         `${generalBaseApiUrl(post)}/comments/${comment.cid}/reactions`,
         data,
       );
-      return result;
     },
     updateComment: async (
       post,
@@ -119,11 +112,10 @@ export default function SimaEvidencesCommentActionsProvider({ children }) {
         real,
       };
       const data = await signSimaMessage(entity);
-      const { result } = await backendApi.patch(
+      return await backendApi.patch(
         `${generalBaseApiUrl(post)}/comments/${comment.cid}`,
         data,
       );
-      return result;
     },
   };
   return (

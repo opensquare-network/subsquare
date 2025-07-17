@@ -6,6 +6,10 @@ import { MarkdownPreviewer } from "@osn/previewer";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { PostProvider } from "next-common/context/post";
 import ArticleActions from "next-common/components/actions/articleActions";
+import PostMetaBase from "next-common/components/detail/container/postMeta/metaBase";
+import { CommentsContent } from "next-common/components/detail/container/postMeta/comments";
+import { AddressUser } from "next-common/components/user";
+import Divider from "next-common/components/styled/layout/divider";
 
 export default function EvidencePage(props) {
   return (
@@ -25,7 +29,7 @@ export default function EvidencePage(props) {
 }
 
 function EvidencePageImpl() {
-  const { detail } = usePageProps() || {};
+  const { detail, comments } = usePageProps() || {};
 
   if (!detail) {
     return null;
@@ -34,6 +38,11 @@ function EvidencePageImpl() {
   return (
     <div className="flex flex-col gap-y-6">
       <WishBar wish={detail.wish} rank={detail.rank} address={detail.who} />
+      <PostMetaBase>
+        <AddressUser add={detail.who} />
+        <CommentsContent commentsCount={comments.total} />
+      </PostMetaBase>
+      <Divider />
       <div>
         <EvidenceContent />
         <ArticleActions />
