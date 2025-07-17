@@ -13,7 +13,7 @@ export default function useMulitisigSubmitError(
   threshold = 0,
   name = "",
 ) {
-  const { multisigs } = useMultisigAccounts();
+  const { multisigs = [] } = useMultisigAccounts();
 
   const isMultisigExist = useSignatoriesIsEqual(
     inputSignatories,
@@ -32,7 +32,7 @@ export default function useMulitisigSubmitError(
     };
   }
 
-  const names = multisigs.map((i) => i.name?.trim()?.toUpperCase());
+  const names = multisigs?.map((i) => i.name?.trim()?.toUpperCase());
   if (names.includes(name?.trim()?.toUpperCase())) {
     return {
       disabled: true,

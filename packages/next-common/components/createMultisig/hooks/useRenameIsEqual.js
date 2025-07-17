@@ -2,7 +2,7 @@ import { isEmpty } from "lodash-es";
 import { useMultisigAccounts } from "next-common/components/multisigs/context/accountsContext";
 
 export default function useRenameIsEqual(multisigAddress = "", name = "") {
-  const { multisigs } = useMultisigAccounts();
+  const { multisigs = [] } = useMultisigAccounts();
 
   const names = multisigs
     .filter((multisig) => multisig.multisigAddress !== multisigAddress)
