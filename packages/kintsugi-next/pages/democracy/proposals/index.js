@@ -1,4 +1,4 @@
-import PostList from "next-common/components/postList";
+import DemocracyPublicProposalsPostList from "next-common/components/postList/democracyPublicProposalsPostList";
 import { EmptyList } from "next-common/utils/constants";
 import { withCommonProps } from "next-common/lib";
 import { backendApi } from "next-common/services/nextApi";
@@ -29,9 +29,7 @@ export default function DemocracyProposalsPage({ proposals, summary }) {
       summary={<DemocracySummary summary={summary} />}
       summaryFooter={isLoggedIn ? <KintsugiDemocracyStaking /> : null}
     >
-      <PostList
-        category={category}
-        title="List"
+      <DemocracyPublicProposalsPostList
         titleCount={proposals.total}
         titleExtra={<NewDemocracyProposalButton />}
         items={items}
