@@ -1,5 +1,6 @@
 import EvidencePage from "next-common/components/pages/fellowship/member/evidence";
 import { withCommonProps } from "next-common/lib";
+import { fetchDetailComments } from "next-common/services/detail";
 import { backendApi } from "next-common/services/nextApi";
 import { to404 } from "next-common/utils/serverSideUtil";
 
@@ -15,8 +16,9 @@ export const getServerSideProps = withCommonProps(async (context) => {
     return to404();
   }
 
-  const { result: comments } = await backendApi.fetch(
+  const comments = await fetchDetailComments(
     `fellowship/members/${who}/evidences/${evidenceId}/comments`,
+    context,
   );
 
   return {
