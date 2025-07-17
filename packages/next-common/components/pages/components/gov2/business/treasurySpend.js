@@ -1,4 +1,4 @@
-import { toPrecision, toPrecisionNumber } from "next-common/utils";
+import { toPrecisionNumber } from "next-common/utils";
 import React from "react";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { isNil } from "lodash-es";
@@ -6,20 +6,7 @@ import Link from "next/link";
 import AddressUser from "next-common/components/user/addressUser";
 import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 import BeneficiaryDetailButton from "./beneficiaryDetailButton";
-import useFiatValueTooltipContent from "next-common/components/postList/common/useFiatValueTooltipContent";
-
-function RequestValueDisplay({ amount, symbol, decimals }) {
-  const fiatValueTooltip = useFiatValueTooltipContent(amount, decimals, symbol);
-
-  return (
-    <ValueDisplay
-      value={toPrecision(amount, decimals)}
-      symbol={symbol}
-      className="text14Medium"
-      tooltipOtherContent={fiatValueTooltip}
-    />
-  );
-}
+import ValueDisplayWithFiatValue from "./valueDisplayVithFiatValue";
 
 function getTreasuryBusiness(onchain, decimals, symbol) {
   const {
@@ -32,11 +19,12 @@ function getTreasuryBusiness(onchain, decimals, symbol) {
   if (amount) {
     business.push([
       "Request",
-      <RequestValueDisplay
+      <ValueDisplayWithFiatValue
         key="request"
         amount={amount}
         symbol={symbol}
         decimals={decimals}
+        className="text14Medium"
       />,
     ]);
   }

@@ -10,7 +10,7 @@ import {
   SYMBOL_DECIMALS,
   ASSET_DETAIL_LINKS,
 } from "next-common/utils/consts/asset";
-import useFiatValueTooltipContent from "next-common/components/postList/common/useFiatValueTooltipContent";
+import ValueDisplayWithFiatValue from "next-common/components/pages/components/gov2/business/valueDisplayVithFiatValue";
 
 export function RequestWrapper({ children }) {
   return (
@@ -75,19 +75,6 @@ function SpendValue({ amount, symbol, decimals }) {
       symbol={symbol}
       amount={amount}
       decimals={decimals}
-    />
-  );
-}
-
-function ValueDisplayWithFiatValue({ amount, decimals, symbol }) {
-  const value = toPrecisionNumber(amount, decimals);
-  const fiatValueTooltip = useFiatValueTooltipContent(amount, decimals, symbol);
-
-  return (
-    <ValueDisplay
-      value={value}
-      symbol={symbol}
-      tooltipOtherContent={fiatValueTooltip}
     />
   );
 }
