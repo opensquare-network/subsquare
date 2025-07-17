@@ -8,8 +8,8 @@ import { PostProvider } from "next-common/context/post";
 import ArticleActions from "next-common/components/actions/articleActions";
 import PostMetaBase from "next-common/components/detail/container/postMeta/metaBase";
 import { CommentsContent } from "next-common/components/detail/container/postMeta/comments";
-import { AddressUser } from "next-common/components/user";
 import Divider from "next-common/components/styled/layout/divider";
+import { SimpleTime } from "next-common/components/postList/common/postItemTime";
 
 export default function EvidencePage(props) {
   return (
@@ -39,7 +39,7 @@ function EvidencePageImpl() {
     <div className="flex flex-col gap-y-6">
       <WishBar wish={detail.wish} rank={detail.rank} address={detail.who} />
       <PostMetaBase>
-        <AddressUser add={detail.who} />
+        <SimpleTime timestamp={detail.indexer?.blockTime} />
         <CommentsContent commentsCount={comments?.total || 0} />
       </PostMetaBase>
       <Divider />
