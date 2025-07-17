@@ -1,3 +1,5 @@
+import { isHash } from "next-common/utils";
+import { getCidByEvidence } from "next-common/utils/collective/getCidByEvidence";
 import Link from "next/link";
 
 export default function EvidenceLink({
@@ -7,6 +9,7 @@ export default function EvidenceLink({
   cid,
   blockHeight,
   eventIndex,
+  evidence = "",
 }) {
   let evidenceId = "";
   if (cid) {
@@ -17,6 +20,8 @@ export default function EvidenceLink({
     } else {
       evidenceId = blockHeight;
     }
+  } else if (evidence && isHash(evidence)) {
+    evidenceId = getCidByEvidence(evidence);
   }
 
   if (!evidenceId) {
