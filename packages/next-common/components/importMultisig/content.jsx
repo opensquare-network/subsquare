@@ -9,6 +9,7 @@ import MultisigSelect from "./multisigSelect";
 import ImportSubmit from "./importSubmit";
 import { useMultisigAccounts } from "../multisigs/context/accountsContext";
 import { noop } from "lodash-es";
+import { normalizeAddress } from "next-common/utils/address";
 
 const STEPS = {
   SELECT_MULTISIG: 1,
@@ -78,7 +79,7 @@ function MultisigSelectImpl({
 }) {
   const { multisigs = [] } = useMultisigAccounts();
   const importedMultisigAddresses = useMemo(() => {
-    return multisigs.map((item) => item.multisigAddress);
+    return multisigs.map((item) => normalizeAddress(item.multisigAddress));
   }, [multisigs]);
 
   const selectList = useMemo(() => {

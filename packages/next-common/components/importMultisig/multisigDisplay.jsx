@@ -55,7 +55,7 @@ export default function MultisigDisplay({
         <Divider className="!my-2" />
         {sortedSignatories.map((item) => (
           <div key={item}>
-            <AddressUser add={item} />
+            <AddressUser add={item} className="!text12Medium" avatarSize={20} />
           </div>
         ))}
       </div>
