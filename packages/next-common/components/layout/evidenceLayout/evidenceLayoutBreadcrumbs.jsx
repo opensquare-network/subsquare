@@ -26,7 +26,7 @@ export default function EvidenceLayoutBreadcrumbs() {
         isMobile
           ? null
           : {
-              content: "Evidence",
+              content: "Evidences",
             },
         {
           content: `#${blockHeight}`,
