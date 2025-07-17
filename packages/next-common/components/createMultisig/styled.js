@@ -12,10 +12,10 @@ export function MultisigErrorMessage({ children }) {
   );
 }
 
-export function MultisigInfoMessage({ children }) {
+export function MultisigNeutralMessage({ children }) {
   return (
     <GreyPanel
-      style={colorStyle[PromptTypes.INFO]}
+      style={colorStyle[PromptTypes.NEUTRAL]}
       className="text14Medium px-4 py-2.5"
     >
       {children}

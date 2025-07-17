@@ -17,7 +17,7 @@ import {
 import { usePopupParams } from "../popupWithSigner/context";
 import { useMultisigAccounts } from "../multisigs/context/accountsContext";
 import useMulitisigSubmitError from "./hooks/useMulitisigSubmitError";
-import { MultisigErrorMessage, MultisigInfoMessage } from "./styled";
+import { MultisigErrorMessage, MultisigNeutralMessage } from "./styled";
 
 export default function CreateMultisigContent() {
   const address = useRealAddress();
@@ -98,9 +98,9 @@ export default function CreateMultisigContent() {
         {multisigErrorMessage && (
           <MultisigErrorMessage>{multisigErrorMessage}</MultisigErrorMessage>
         )}
-        <MultisigInfoMessage>
+        <MultisigNeutralMessage>
           Used as multisig account name if no identity set
-        </MultisigInfoMessage>
+        </MultisigNeutralMessage>
         <div className="flex justify-end">
           <PrimaryButton
             type="submit"
