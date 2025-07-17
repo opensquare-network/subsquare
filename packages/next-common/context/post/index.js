@@ -7,6 +7,7 @@ import {
 } from "../../utils/gov2/title";
 import getAnnouncementTitle from "../../utils/alliance/title";
 import sortTimeline from "next-common/utils/timeline/sort";
+import { gov2VotingStates } from "next-common/utils/consts/state";
 
 const PostContext = createContext(null);
 const PostDispatchContext = createContext(null);
@@ -98,4 +99,10 @@ export function useTimelineData() {
   const onchainData = useOnchainData();
   const timeline = onchainData?.timeline || [];
   return sortTimeline(timeline);
+}
+
+export function usePostIsVoting() {
+  const state = usePostState();
+  const isVoting = gov2VotingStates.includes(state);
+  return isVoting;
 }
