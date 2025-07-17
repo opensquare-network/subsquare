@@ -10,6 +10,8 @@ import ImportSubmit from "./importSubmit";
 import { useMultisigAccounts } from "../multisigs/context/accountsContext";
 import { noop } from "lodash-es";
 import { normalizeAddress } from "next-common/utils/address";
+import { sortAddresses } from "@polkadot/util-crypto";
+import { useChainSettings } from "next-common/context/chain";
 
 const STEPS = {
   SELECT_MULTISIG: 1,
@@ -78,18 +80,39 @@ function MultisigSelectImpl({
   setSelected = noop,
 }) {
   const { multisigs = [] } = useMultisigAccounts();
+  const { ss58Format } = useChainSettings();
   const importedMultisigAddresses = useMemo(() => {
     return multisigs.map((item) => normalizeAddress(item.multisigAddress));
   }, [multisigs]);
 
   const selectList = useMemo(() => {
-    return multisigAddresses?.map((item) => ({
-      value: item.address,
-      label: item.name,
-      multisig: item,
-      disabled: importedMultisigAddresses.includes(item.address),
-    }));
-  }, [multisigAddresses, importedMultisigAddresses]);
+    const sortedAddresses = sortAddresses(
+      multisigAddresses?.map((item) => item.address) || [],
+      ss58Format,
+    );
+
+    const sortedMultisigAddresses = sortedAddresses
+      .map((address) =>
+        multisigAddresses.find((item) => item.address === address),
+      )
+      .filter(Boolean);
+
+    return (
+      sortedMultisigAddresses
+        .map((item) => ({
+          value: item.address,
+          label: item.name,
+          multisig: item,
+          disabled: importedMultisigAddresses.includes(item.address),
+        }))
+        // sort disabled items to the end
+        .sort((a, b) => {
+          if (a.disabled && !b.disabled) return 1;
+          if (!a.disabled && b.disabled) return -1;
+          return 0;
+        })
+    );
+  }, [multisigAddresses, importedMultisigAddresses, ss58Format]);
 
   return (
     <MultisigSelect
