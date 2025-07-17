@@ -10,6 +10,7 @@ import { useMyUpVote } from "../post/useMyUpVote";
 import { useCallback } from "react";
 import { usePost, usePostDispatch } from "../post";
 import { fetchAndUpdatePostForUrl } from "../post/update";
+import { useGetSimaUserDiscussions } from "next-common/sima/actions/linkPost";
 
 export function useReloadPost() {
   const postDispatch = usePostDispatch();
@@ -24,6 +25,7 @@ export function useReloadPost() {
 export function SimaEvidencesArticleActionsProvider({ children }) {
   const signSimaMessage = useSignSimaMessage();
   const provideContext = useProvideContext();
+  const getUserDiscussions = useGetSimaUserDiscussions();
   const reloadPost = useReloadPost();
   const myUpVote = useMyUpVote();
 
@@ -64,7 +66,7 @@ export function SimaEvidencesArticleActionsProvider({ children }) {
       );
     },
     reloadPost,
-    getUserDiscussions: () => {},
+    getUserDiscussions,
   };
 
   return (

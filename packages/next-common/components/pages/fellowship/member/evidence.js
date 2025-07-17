@@ -40,7 +40,7 @@ function EvidencePageImpl() {
       <WishBar wish={detail.wish} rank={detail.rank} address={detail.who} />
       <PostMetaBase>
         <AddressUser add={detail.who} />
-        <CommentsContent commentsCount={comments.total} />
+        <CommentsContent commentsCount={comments?.total || 0} />
       </PostMetaBase>
       <Divider />
       <div>
