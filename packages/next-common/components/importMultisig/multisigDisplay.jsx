@@ -1,19 +1,23 @@
-import { addressEllipsis, cn } from "next-common/utils";
+import { cn } from "next-common/utils";
 import Divider from "../styled/layout/divider";
 import { AddressUser } from "../user";
 import { UserAvatar } from "../relationshipPopup/userNode";
 import { sortAddresses } from "@polkadot/util-crypto";
 import { noop } from "lodash-es";
 import { useChainSettings } from "next-common/context/chain";
+import MultisigAddress from "../user/multisigAddress";
 
 function MultisigAccount({ multisig }) {
   const badge = `${multisig.threshold}/${multisig.signatories.length}`;
-  const ellipsisAddress = addressEllipsis(multisig.address);
   return (
     <div className="flex items-center gap-x-3">
       <UserAvatar address={multisig.address} badge={badge} />
       <div className="flex flex-col justify-between">
-        <div className="text14Medium text-textPrimary">{ellipsisAddress}</div>
+        <MultisigAddress
+          address={multisig.address}
+          showAvatar={false}
+          className="text14Medium text-textPrimary"
+        />
         <p className="text12Medium text-textTertiary break-all">
           {multisig.address}
         </p>

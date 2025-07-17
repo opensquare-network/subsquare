@@ -15,6 +15,7 @@ import {
 import { useEffect } from "react";
 import { useMultisigAccounts } from "./context/accountsContext";
 import { encodeAddressToChain } from "next-common/services/address";
+import MultisigAddress from "../user/multisigAddress";
 
 export function MultisigAccount({ multisig }) {
   const chain = useChain();
@@ -28,7 +29,11 @@ export function MultisigAccount({ multisig }) {
     <div className="flex items-center gap-x-2">
       <UserAvatar address={encodeAddress} badge={badge} />
       <div className="flex flex-col justify-between">
-        <div className="text14Medium text-textPrimary">{multisig.name}</div>
+        <MultisigAddress
+          address={encodeAddress}
+          accountName={multisig.name}
+          showAvatar={false}
+        />
         <CopyableAddress address={encodeAddress} ellipsisAddress={isMobile} />
       </div>
     </div>

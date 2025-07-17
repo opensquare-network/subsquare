@@ -20,7 +20,9 @@ export default function MultisigSelect({
       <div
         className={cn(
           "space-y-4  overflow-y-scroll scrollbar-pretty",
-          showPagination ? "h-[calc(76vh-232px)]" : "h-[calc(76vh-180px)]",
+          showPagination
+            ? "max-h-[calc(76vh-232px)]"
+            : "max-h-[calc(76vh-180px)]",
         )}
       >
         <MultisigRadioGroup
