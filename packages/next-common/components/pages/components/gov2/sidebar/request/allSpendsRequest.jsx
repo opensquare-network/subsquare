@@ -1,10 +1,11 @@
 import TreasurySpendValueDisplay from "next-common/components/gov2/business/treasurySpendValueDisplay";
-import { useOnchainData, usePostIsVoting } from "next-common/context/post";
+import { useOnchainData } from "next-common/context/post";
 import { useState } from "react";
 import { RequestWrapper } from ".";
 import AssetIcon from "next-common/components/icons/assetIcon";
 import useFiatValueTooltipContent from "next-common/components/postList/common/useFiatValueTooltipContent";
 import { useChainSettings } from "next-common/context/chain";
+import { useIsReferendumFinalState } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 
 const separateNumber = 5;
 
@@ -55,7 +56,7 @@ function Spend({ assetKind, amount, symbol, type }) {
   type = type || assetKind?.type;
   const { decimals } = useChainSettings();
   const fiatValueTooltip = useFiatValueTooltipContent(amount, decimals, symbol);
-  const isVoting = usePostIsVoting();
+  const isInFinalState = useIsReferendumFinalState();
 
   return (
     <div className="flex items-center gap-x-2">
@@ -65,7 +66,7 @@ function Spend({ assetKind, amount, symbol, type }) {
         amount={amount}
         symbol={symbol}
         className="text14Medium text-textPrimary"
-        tooltipOtherContent={isVoting && fiatValueTooltip}
+        tooltipOtherContent={!isInFinalState && fiatValueTooltip}
       />
     </div>
   );

@@ -1,7 +1,7 @@
 import { toPrecisionNumber } from "next-common/utils";
 import useFiatValueTooltipContent from "next-common/components/postList/common/useFiatValueTooltipContent";
 import ValueDisplay from "next-common/components/valueDisplay";
-import { usePostIsVoting } from "next-common/context/post";
+import { useIsReferendumFinalState } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 
 export default function ValueDisplayWithFiatValue({
   amount,
@@ -11,13 +11,13 @@ export default function ValueDisplayWithFiatValue({
 }) {
   const value = toPrecisionNumber(amount, decimals);
   const fiatValueTooltip = useFiatValueTooltipContent(amount, decimals, symbol);
-  const isVoting = usePostIsVoting();
+  const isInFinalState = useIsReferendumFinalState();
 
   return (
     <ValueDisplay
       value={value}
       symbol={symbol}
-      tooltipOtherContent={isVoting && fiatValueTooltip}
+      tooltipOtherContent={!isInFinalState && fiatValueTooltip}
       className={className}
     />
   );
