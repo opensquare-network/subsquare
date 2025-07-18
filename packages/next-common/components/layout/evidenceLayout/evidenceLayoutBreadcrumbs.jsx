@@ -12,6 +12,12 @@ export default function EvidenceLayoutBreadcrumbs() {
   return (
     <Breadcrumbs
       breadcrumbs={[
+        isMobile
+          ? null
+          : {
+              path: "/fellowship",
+              content: "Fellowship",
+            },
         {
           path: "/fellowship/members",
           content: "Members",

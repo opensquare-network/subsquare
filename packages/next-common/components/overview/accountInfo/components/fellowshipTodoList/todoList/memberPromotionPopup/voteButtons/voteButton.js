@@ -17,6 +17,8 @@ function VoteButtonImpl({
   children,
   ButtonComponent = SecondaryButton,
   callbacks,
+  tooltipClassName = "",
+  buttonClassName = "",
 }) {
   const api = useContextApi();
   const collectivePallet = useRankedCollectivePallet();
@@ -40,12 +42,15 @@ function VoteButtonImpl({
   let tooltipContent = voteAye ? "Vote Aye" : "Vote Nay";
   if (!isReferendumInfoLoading && referendumInfo) {
     try {
-      const track = referendumInfo.unwrap()?.asOngoing?.track;
-      if (!isNil(track)) {
-        const requiredRank = getMinRankOfClass(track, collectivePallet);
-        disabled = requiredRank > rank;
-        if (disabled) {
-          tooltipContent = `Only members with rank >= ${requiredRank} can vote`;
+      const referendum = referendumInfo.unwrap();
+      if (referendum?.isOngoing) {
+        const track = referendum?.asOngoing?.track;
+        if (!isNil(track)) {
+          const requiredRank = getMinRankOfClass(track, collectivePallet);
+          disabled = requiredRank > rank;
+          if (disabled) {
+            tooltipContent = `Only members with rank >= ${requiredRank} can vote`;
+          }
         }
       }
     } catch (e) {
@@ -54,19 +59,33 @@ function VoteButtonImpl({
   }
 
   return (
-    <Tooltip content={tooltipContent}>
-      <ButtonComponent disabled={disabled} onClick={doSubmitVote}>
+    <Tooltip content={tooltipContent} className={tooltipClassName}>
+      <ButtonComponent
+        disabled={disabled}
+        onClick={doSubmitVote}
+        className={buttonClassName}
+      >
         {children}
       </ButtonComponent>
     </Tooltip>
   );
 }
 
-export default function VoteButton({ children, ...props }) {
+export default function VoteButton({
+  children,
+  buttonClassName = "",
+  ...props
+}) {
   const ButtonComponent = props.ButtonComponent || SecondaryButton;
   return (
-    <SignerPopupWrapper loadingContent={<ButtonComponent disabled={true} />}>
-      <VoteButtonImpl {...props}>{children}</VoteButtonImpl>
+    <SignerPopupWrapper
+      loadingContent={
+        <ButtonComponent disabled={true} className={buttonClassName} />
+      }
+    >
+      <VoteButtonImpl {...props} buttonClassName={buttonClassName}>
+        {children}
+      </VoteButtonImpl>
     </SignerPopupWrapper>
   );
 }

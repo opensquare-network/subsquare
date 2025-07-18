@@ -24,12 +24,11 @@ function useDefaultReferendumTitle(referendumIndex, trackId) {
   return `[${startCase(trackName)}] Referendum #${referendumIndex}`;
 }
 
-export default function FellowshipReferendumTitle({
+export function FellowshipReferendumTitleImpl({
   referendumIndex,
-  trackId,
+  defaultTitle = "",
 }) {
   const { section } = useCollectivesContext();
-  const defaultTitle = useDefaultReferendumTitle(referendumIndex, trackId);
   const { value: detail, loading } = useFetch(
     `/api/${section}/referenda/${referendumIndex}`,
   );
@@ -52,5 +51,18 @@ export default function FellowshipReferendumTitle({
         </a>
       )}
     </div>
+  );
+}
+
+export default function FellowshipReferendumTitle({
+  referendumIndex,
+  trackId,
+}) {
+  const defaultTitle = useDefaultReferendumTitle(referendumIndex, trackId);
+  return (
+    <FellowshipReferendumTitleImpl
+      referendumIndex={referendumIndex}
+      defaultTitle={defaultTitle}
+    />
   );
 }

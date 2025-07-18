@@ -50,8 +50,12 @@ function CreateReferendumAndVoteButtonImpl({
   });
 
   return (
-    <Tooltip content={tooltip}>
-      <ButtonComponent disabled={disabled} onClick={doSubmitCreateAndVote}>
+    <Tooltip content={tooltip} className="max-sm:!w-full max-sm:!block">
+      <ButtonComponent
+        className="max-sm:!w-full max-sm:!block"
+        disabled={disabled}
+        onClick={doSubmitCreateAndVote}
+      >
         {children}
       </ButtonComponent>
     </Tooltip>
@@ -64,7 +68,14 @@ export default function CreateRetentionReferendumAndVoteButton({
 }) {
   const ButtonComponent = props.ButtonComponent || SecondaryButton;
   return (
-    <SignerPopupWrapper loadingContent={<ButtonComponent disabled={true} />}>
+    <SignerPopupWrapper
+      loadingContent={
+        <ButtonComponent
+          disabled={true}
+          className="max-sm:!w-full max-sm:!block"
+        />
+      }
+    >
       <CreateReferendumAndVoteButtonImpl {...props}>
         {children}
       </CreateReferendumAndVoteButtonImpl>
