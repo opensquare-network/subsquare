@@ -26,32 +26,30 @@ import MotionElapse from "next-common/components/motionElapse";
 export default function PostItem({ data }) {
   const args = getMotionStateArgs(data.onchainData.state);
   return (
-    <>
-      <Wrapper>
-        <ContentWrapper>
-          <HeadWrapper>
-            <PostItemTitle data={data} href={data?.detailLink} />
-            <PostItemTitleValue data={data} />
-          </HeadWrapper>
+    <Wrapper>
+      <ContentWrapper>
+        <HeadWrapper>
+          <PostItemTitle data={data} href={data?.detailLink} />
+          <PostItemTitleValue data={data} />
           <Divider margin={12} />
-          <FooterWrapper>
-            <Footer>
-              <PostItemUser data={data} />
-              <PostItemTreasuryTag isTreasury={data.isTreasury} />
-              <PostItemDemocracyTag isDemocracy={data.isDemocracy} />
-              <PostItemTime
-                data={data}
-                elapseIcon={<MotionElapse motion={data.onchainData} />}
-              />
-              <PostItemCommentCount data={data} />
-              <PostItemMalicious isMalicious={data?.isMalicious} />
-              <PostItemAISummary data={data} />
-            </Footer>
-            <CollectiveTag state={data.status} args={args} />
-          </FooterWrapper>
-        </ContentWrapper>
-        <PostItemBannner bannerCid={data?.bannerCid} />
-      </Wrapper>
-    </>
+        </HeadWrapper>
+        <FooterWrapper>
+          <Footer>
+            <PostItemUser data={data} />
+            <PostItemTreasuryTag isTreasury={data.isTreasury} />
+            <PostItemDemocracyTag isDemocracy={data.isDemocracy} />
+            <PostItemTime
+              data={data}
+              elapseIcon={<MotionElapse motion={data.onchainData} />}
+            />
+            <PostItemCommentCount data={data} />
+            <PostItemMalicious isMalicious={data?.isMalicious} />
+            <PostItemAISummary data={data} />
+          </Footer>
+          <CollectiveTag state={data.status} args={args} />
+        </FooterWrapper>
+      </ContentWrapper>
+      <PostItemBannner bannerCid={data?.bannerCid} />
+    </Wrapper>
   );
 }
