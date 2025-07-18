@@ -10,24 +10,34 @@ import PostMetaBase from "next-common/components/detail/container/postMeta/metaB
 import { CommentsContent } from "next-common/components/detail/container/postMeta/comments";
 import Divider from "next-common/components/styled/layout/divider";
 import { SimpleTime } from "next-common/components/postList/common/postItemTime";
-import { ReferendumVote } from "./fellowshipMember/wishDetail";
+import {
+  CreateReferendumAndVote,
+  ReferendumVote,
+} from "./fellowshipMember/wishDetail";
 import CollectivesProvider from "next-common/context/collectives/collectives";
+import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
+import CollectivesMembersProvider from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/collectivesMember";
+import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 
 export default function EvidencePage(props) {
   return (
     <PostProvider post={props.detail}>
-      <CollectivesProvider>
-        <EvidenceLayout
-          seoInfo={{
-            title: props.detail?.title,
-            desc: props.detail?.title,
-          }}
-        >
-          <ContentWithComment>
-            <EvidencePageImpl />
-          </ContentWithComment>
-        </EvidenceLayout>
-      </CollectivesProvider>
+      <ActiveReferendaProvider pallet="fellowshipReferenda">
+        <CollectivesProvider>
+          <CollectivesMembersProvider>
+            <EvidenceLayout
+              seoInfo={{
+                title: props.detail?.title,
+                desc: props.detail?.title,
+              }}
+            >
+              <ContentWithComment>
+                <EvidencePageImpl />
+              </ContentWithComment>
+            </EvidenceLayout>
+          </CollectivesMembersProvider>
+        </CollectivesProvider>
+      </ActiveReferendaProvider>
     </PostProvider>
   );
 }
@@ -65,17 +75,32 @@ function RelatedReferenda() {
     return null;
   }
 
-  return (
-    <div className="flex flex-col gap-[16px]">
-      {referenda.map((referendum, index) => (
-        <ReferendumVote
-          key={index}
-          referendumIndex={referendum.index}
-          {...referendum}
-        />
-      ))}
-    </div>
-  );
+  let content;
+
+  if (referenda.length <= 0) {
+    content = (
+      <div className="flex gap-x-[16px] justify-between items-center">
+        <p className="text-textTertiary text14Medium">
+          No referendum was created
+        </p>
+        <CreateReferendumAndVote who={detail.who} wish={detail.wish} />
+      </div>
+    );
+  } else {
+    content = (
+      <div className="flex flex-col gap-[16px]">
+        {referenda.map((referendum, index) => (
+          <ReferendumVote
+            key={index}
+            referendumIndex={referendum.index}
+            {...referendum}
+          />
+        ))}
+      </div>
+    );
+  }
+
+  return <SecondaryCard className="mt-4 !p-4">{content}</SecondaryCard>;
 }
 
 function EvidenceContent() {

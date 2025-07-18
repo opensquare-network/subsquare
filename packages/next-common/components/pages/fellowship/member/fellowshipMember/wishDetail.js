@@ -29,7 +29,7 @@ export function ReferendumVote({ referendumIndex, referendum }) {
   );
 }
 
-function CreateReferendumAndVote({ who, wish }) {
+export function CreateReferendumAndVote({ who, wish }) {
   if (wish.toLowerCase() === "promotion") {
     return (
       <div className="flex items-center justify-end text14Medium">
