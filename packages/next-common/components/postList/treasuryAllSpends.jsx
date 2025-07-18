@@ -4,7 +4,6 @@ import { cn } from "next-common/utils";
 import TreasurySpendValueDisplay from "../gov2/business/treasurySpendValueDisplay";
 import AssetIcon from "../icons/assetIcon";
 import Tooltip from "../tooltip";
-import useTokenFiatValue from "next-common/hooks/balance/useTokenFiatValue";
 import { useMemo } from "react";
 import Flex from "../styled/flex";
 import ValueFiatPriceDisplay from "./common/valueFiatPriceDisplay";
