@@ -31,8 +31,8 @@ export default function PostItem({ data }) {
         <HeadWrapper>
           <PostItemTitle data={data} href={data?.detailLink} />
           <PostItemTitleValue data={data} />
-          <Divider margin={12} />
         </HeadWrapper>
+        <Divider margin={12} />
         <FooterWrapper>
           <Footer>
             <PostItemUser data={data} />
