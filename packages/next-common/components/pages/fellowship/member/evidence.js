@@ -10,14 +10,14 @@ import PostMetaBase from "next-common/components/detail/container/postMeta/metaB
 import { CommentsContent } from "next-common/components/detail/container/postMeta/comments";
 import Divider from "next-common/components/styled/layout/divider";
 import { SimpleTime } from "next-common/components/postList/common/postItemTime";
-import {
-  CreateReferendumAndVote,
-  ReferendumVote,
-} from "./fellowshipMember/wishDetail";
+import { CreateReferendumAndVote } from "./fellowshipMember/wishDetail";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import CollectivesMembersProvider from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/collectivesMember";
 import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
+import { FellowshipReferendumTitleImpl } from "next-common/components/fellowshipReferendumTitle";
+import MyVote from "./fellowshipMember/myVote";
+import { ReferendumVoteButtons } from "./fellowshipMember/voteButtons";
 
 export default function EvidencePage(props) {
   return (
@@ -66,6 +66,18 @@ function EvidencePageImpl() {
   );
 }
 
+function ReferendumVoteItem({ referendumIndex }) {
+  return (
+    <div className="flex items-center justify-between text14Medium max-sm:flex-col max-sm:gap-y-3">
+      <div className="flex flex-col gap-[4px]">
+        <FellowshipReferendumTitleImpl referendumIndex={referendumIndex} />
+        <MyVote referendumIndex={referendumIndex} />
+      </div>
+      <ReferendumVoteButtons referendumIndex={referendumIndex} />
+    </div>
+  );
+}
+
 function RelatedReferenda() {
   const { detail } = usePageProps() || {};
 
@@ -79,7 +91,7 @@ function RelatedReferenda() {
 
   if (referenda.length <= 0) {
     content = (
-      <div className="flex gap-x-[16px] justify-between items-center">
+      <div className="flex gap-x-[16px] justify-between items-center max-sm:flex-col max-sm:gap-y-3">
         <p className="text-textTertiary text14Medium">
           No referendum was created
         </p>
@@ -90,11 +102,7 @@ function RelatedReferenda() {
     content = (
       <div className="flex flex-col gap-[16px]">
         {referenda.map((referendum, index) => (
-          <ReferendumVote
-            key={index}
-            referendumIndex={referendum.index}
-            {...referendum}
-          />
+          <ReferendumVoteItem key={index} referendumIndex={referendum.index} />
         ))}
       </div>
     );

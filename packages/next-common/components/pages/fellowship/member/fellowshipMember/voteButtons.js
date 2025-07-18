@@ -10,10 +10,10 @@ import { useRetentionButtonState } from "next-common/components/overview/account
 import CreateRetentionReferendumAndVoteButton from "next-common/components/overview/accountInfo/components/fellowshipTodoList/todoList/memberPromotionPopup/voteButtons/createRetentionReferendumAndVoteButton";
 import CreatePromotionReferendumAndVoteButton from "next-common/components/overview/accountInfo/components/fellowshipTodoList/todoList/memberPromotionPopup/voteButtons/createPromotionReferendumAndVoteButton";
 
-function AyeButton({ disabled, onClick }) {
+function AyeButton({ disabled, onClick, className = "" }) {
   return (
     <PrimaryButton
-      className={cn("!bg-green500", disabled && "opacity-40")}
+      className={cn("!bg-green500", disabled && "opacity-40", className)}
       disabled={disabled}
       onClick={onClick}
     >
@@ -22,10 +22,10 @@ function AyeButton({ disabled, onClick }) {
   );
 }
 
-function NayButton({ disabled, onClick }) {
+function NayButton({ disabled, onClick, className = "" }) {
   return (
     <PrimaryButton
-      className={cn("!bg-red500", disabled && "opacity-40")}
+      className={cn("!bg-red500", disabled && "opacity-40", className)}
       disabled={disabled}
       onClick={onClick}
     >
@@ -38,25 +38,46 @@ export function ReferendumVoteButtons({ referendumIndex }) {
   const dispatch = useDispatch();
   const realAddress = useRealAddress();
 
+  const tooltipClassName = "max-sm:!w-full max-sm:!block";
+  const buttonClassName = "max-sm:!w-full max-sm:!block";
+
   if (!realAddress) {
     return (
-      <div className="flex gap-[8px] items-center justify-end">
-        <Tooltip content="Please connect your wallet to vote">
-          <AyeButton disabled={true} />
+      <div
+        className={cn(
+          "flex gap-[8px] items-center justify-end",
+          "max-sm:!w-full",
+        )}
+      >
+        <Tooltip
+          className={tooltipClassName}
+          content="Please connect your wallet to vote"
+        >
+          <AyeButton disabled={true} className={buttonClassName} />
         </Tooltip>
-        <Tooltip content="Please connect your wallet to vote">
-          <NayButton disabled={true} />
+        <Tooltip
+          className={tooltipClassName}
+          content="Please connect your wallet to vote"
+        >
+          <NayButton disabled={true} className={buttonClassName} />
         </Tooltip>
       </div>
     );
   }
 
   return (
-    <div className="flex gap-[8px] items-center justify-end">
+    <div
+      className={cn(
+        "flex gap-[8px] items-center justify-end",
+        "max-sm:!w-full",
+      )}
+    >
       <VoteButton
         referendumIndex={referendumIndex}
         voteAye={true}
         ButtonComponent={AyeButton}
+        buttonClassName={buttonClassName}
+        tooltipClassName={tooltipClassName}
         callbacks={{
           onInBlock: () => {
             dispatch(newSuccessToast("Vote successfully"));
@@ -68,6 +89,8 @@ export function ReferendumVoteButtons({ referendumIndex }) {
         referendumIndex={referendumIndex}
         voteAye={false}
         ButtonComponent={NayButton}
+        buttonClassName={buttonClassName}
+        tooltipClassName={tooltipClassName}
         callbacks={{
           onInBlock: () => {
             dispatch(newSuccessToast("Vote successfully"));
@@ -80,9 +103,10 @@ export function ReferendumVoteButtons({ referendumIndex }) {
 
 export function CreatePromotionReferendumAndVoteButtons({ who }) {
   const { tooltipContent, disabled } = usePromotionButtonState(who);
+  const mobileClassName = "max-sm:!w-full max-sm:!block";
 
   return (
-    <div className="flex gap-[12px] items-center">
+    <div className={cn("flex gap-[12px] items-center", mobileClassName)}>
       <CreatePromotionReferendumAndVoteButton
         who={who}
         voteAye={true}
