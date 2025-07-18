@@ -7,7 +7,7 @@ import { useChainSettings } from "next-common/context/chain";
 import { useOnchainData } from "next-common/context/post";
 import { toPrecisionNumber } from "next-common/utils";
 import { ASSET_DETAIL_LINKS } from "next-common/utils/consts/asset";
-import ValueDisplayWithFiatValue from "next-common/components/pages/components/gov2/business/valueDisplayVithFiatValue";
+import ValueDisplayWithFiatValue from "next-common/components/pages/components/gov2/business/valueDisplayWithFiatValue";
 
 export function RequestWrapper({ children }) {
   return (

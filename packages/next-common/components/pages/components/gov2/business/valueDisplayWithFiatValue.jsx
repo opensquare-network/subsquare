@@ -10,16 +10,24 @@ export default function ValueDisplayWithFiatValue({
   className,
 }) {
   const value = toPrecisionNumber(amount, decimals);
-  const valueFiatPrice = useTokenFiatValue(amount, symbol);
-  const formattedFiatValue = valueFiatPrice && `( ≈ $${valueFiatPrice} )`;
-  const isInFinalState = useIsReferendumFinalState();
 
   return (
     <ValueDisplay
       value={value}
       symbol={symbol}
-      tooltipOtherContent={!isInFinalState && formattedFiatValue}
+      tooltipOtherContent={<FormatFiatValue amount={amount} symbol={symbol} />}
       className={className}
     />
   );
+}
+
+export function FormatFiatValue({ amount, symbol }) {
+  const valueFiatPrice = useTokenFiatValue(amount, symbol);
+  const isInFinalState = useIsReferendumFinalState();
+
+  if (!valueFiatPrice || isInFinalState) {
+    return null;
+  }
+
+  return `( ≈ $${valueFiatPrice} )`;
 }

@@ -3,8 +3,7 @@ import { useOnchainData } from "next-common/context/post";
 import { useState } from "react";
 import { RequestWrapper } from ".";
 import AssetIcon from "next-common/components/icons/assetIcon";
-import useTokenFiatValue from "next-common/hooks/balance/useTokenFiatValue";
-import { useIsReferendumFinalState } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
+import { FormatFiatValue } from "../../business/valueDisplayWithFiatValue";
 
 const separateNumber = 5;
 
@@ -54,10 +53,6 @@ function Spend({ assetKind, amount, symbol, type }) {
   symbol = symbol || assetKind?.symbol;
   type = type || assetKind?.type;
 
-  const valueFiatPrice = useTokenFiatValue(amount, symbol);
-  const formattedFiatValue = valueFiatPrice && `( ≈ $${valueFiatPrice} )`;
-  const isInFinalState = useIsReferendumFinalState();
-
   return (
     <div className="flex items-center gap-x-2">
       <AssetIcon symbol={symbol} className="w-4 h-4" type={type} />
@@ -66,7 +61,9 @@ function Spend({ assetKind, amount, symbol, type }) {
         amount={amount}
         symbol={symbol}
         className="text14Medium text-textPrimary"
-        tooltipOtherContent={!isInFinalState && formattedFiatValue}
+        tooltipOtherContent={
+          <FormatFiatValue amount={amount} symbol={symbol} />
+        }
       />
     </div>
   );

@@ -2,7 +2,7 @@ import React from "react";
 import { isNil } from "lodash-es";
 import Link from "next/link";
 import AddressUser from "next-common/components/user/addressUser";
-import ValueDisplayWithFiatValue from "./valueDisplayVithFiatValue";
+import ValueDisplayWithFiatValue from "./valueDisplayWithFiatValue";
 
 function getTreasuryBusiness(onchain, decimals, symbol) {
   const {
