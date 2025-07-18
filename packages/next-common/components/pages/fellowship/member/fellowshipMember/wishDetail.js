@@ -12,7 +12,7 @@ import {
 import { Skeleton } from "next-common/components/skeleton";
 import EvidenceExternalLinkWithWish from "next-common/components/collectives/core/evidenceContent/EvidenceExternalLinkWithWish";
 
-function ReferendumVote({ referendumIndex, referendum }) {
+export function ReferendumVote({ referendumIndex, referendum }) {
   const trackId = referendum?.track?.toNumber();
 
   return (

@@ -10,20 +10,24 @@ import PostMetaBase from "next-common/components/detail/container/postMeta/metaB
 import { CommentsContent } from "next-common/components/detail/container/postMeta/comments";
 import Divider from "next-common/components/styled/layout/divider";
 import { SimpleTime } from "next-common/components/postList/common/postItemTime";
+import { ReferendumVote } from "./fellowshipMember/wishDetail";
+import CollectivesProvider from "next-common/context/collectives/collectives";
 
 export default function EvidencePage(props) {
   return (
     <PostProvider post={props.detail}>
-      <EvidenceLayout
-        seoInfo={{
-          title: props.detail?.title,
-          desc: props.detail?.title,
-        }}
-      >
-        <ContentWithComment>
-          <EvidencePageImpl />
-        </ContentWithComment>
-      </EvidenceLayout>
+      <CollectivesProvider>
+        <EvidenceLayout
+          seoInfo={{
+            title: props.detail?.title,
+            desc: props.detail?.title,
+          }}
+        >
+          <ContentWithComment>
+            <EvidencePageImpl />
+          </ContentWithComment>
+        </EvidenceLayout>
+      </CollectivesProvider>
     </PostProvider>
   );
 }
@@ -46,7 +50,30 @@ function EvidencePageImpl() {
       <div>
         <EvidenceContent />
         <ArticleActions editable={false} />
+        <RelatedReferenda />
       </div>
+    </div>
+  );
+}
+
+function RelatedReferenda() {
+  const { detail } = usePageProps() || {};
+
+  const { referenda = [] } = detail || {};
+
+  if (!referenda.length) {
+    return null;
+  }
+
+  return (
+    <div className="flex flex-col gap-[16px]">
+      {referenda.map((referendum, index) => (
+        <ReferendumVote
+          key={index}
+          referendumIndex={referendum.index}
+          {...referendum}
+        />
+      ))}
     </div>
   );
 }
