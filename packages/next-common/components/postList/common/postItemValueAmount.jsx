@@ -2,7 +2,7 @@ import React from "react";
 import { TitleExtraValue, TitleExtra } from "../styled";
 import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
-import useFiatValueTooltipContent from "./useFiatValueTooltipContent";
+import useTokenFiatValue from "next-common/hooks/balance/useTokenFiatValue";
 
 export default function PostItemValueAmount({
   amount,
@@ -10,15 +10,15 @@ export default function PostItemValueAmount({
   symbol,
   showFaitPrice,
 }) {
-  const fiatValueTooltip = useFiatValueTooltipContent(amount, decimals, symbol);
-
+  const valueFiatPrice = useTokenFiatValue(amount, symbol);
+  const formattedFiatValue = valueFiatPrice && `( ≈ $${valueFiatPrice} )`;
   return (
     <TitleExtra>
       <TitleExtraValue>
         <ValueDisplay
           value={toPrecision(amount, decimals)}
           symbol={symbol}
-          tooltipOtherContent={showFaitPrice && fiatValueTooltip}
+          tooltipOtherContent={showFaitPrice && formattedFiatValue}
         />
       </TitleExtraValue>
     </TitleExtra>

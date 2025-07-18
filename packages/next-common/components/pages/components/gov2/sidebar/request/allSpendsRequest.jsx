@@ -3,8 +3,7 @@ import { useOnchainData } from "next-common/context/post";
 import { useState } from "react";
 import { RequestWrapper } from ".";
 import AssetIcon from "next-common/components/icons/assetIcon";
-import useFiatValueTooltipContent from "next-common/components/postList/common/useFiatValueTooltipContent";
-import { useChainSettings } from "next-common/context/chain";
+import useTokenFiatValue from "next-common/hooks/balance/useTokenFiatValue";
 import { useIsReferendumFinalState } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 
 const separateNumber = 5;
@@ -54,8 +53,9 @@ export default function AllSpendsRequest() {
 function Spend({ assetKind, amount, symbol, type }) {
   symbol = symbol || assetKind?.symbol;
   type = type || assetKind?.type;
-  const { decimals } = useChainSettings();
-  const fiatValueTooltip = useFiatValueTooltipContent(amount, decimals, symbol);
+
+  const valueFiatPrice = useTokenFiatValue(amount, symbol);
+  const formattedFiatValue = valueFiatPrice && `( ≈ $${valueFiatPrice} )`;
   const isInFinalState = useIsReferendumFinalState();
 
   return (
@@ -66,7 +66,7 @@ function Spend({ assetKind, amount, symbol, type }) {
         amount={amount}
         symbol={symbol}
         className="text14Medium text-textPrimary"
-        tooltipOtherContent={!isInFinalState && fiatValueTooltip}
+        tooltipOtherContent={!isInFinalState && formattedFiatValue}
       />
     </div>
   );

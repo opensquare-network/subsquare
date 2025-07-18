@@ -14,7 +14,7 @@ import useReferendumVotingFinishHeight from "next-common/context/post/referenda/
 import FieldLoading from "next-common/components/icons/fieldLoading";
 import useChainOrScanHeight from "next-common/hooks/height";
 import BeneficiaryDetailButton from "./beneficiaryDetailButton";
-import useFiatValueTooltipContent from "next-common/components/postList/common/useFiatValueTooltipContent";
+import useTokenFiatValue from "next-common/hooks/balance/useTokenFiatValue";
 
 const separateNumber = 5;
 
@@ -104,8 +104,8 @@ function Spend({
     typeof beneficiary === "string" ? beneficiary : beneficiary?.address;
 
   const [navCollapsed] = useNavCollapsed();
-  const { decimals } = useChainSettings();
-  const fiatValueTooltip = useFiatValueTooltipContent(amount, decimals, symbol);
+  const valueFiatPrice = useTokenFiatValue(amount, symbol);
+  const formattedFiatValue = valueFiatPrice && `( ≈ $${valueFiatPrice} )`;
 
   return (
     <div
@@ -122,7 +122,7 @@ function Spend({
           amount={amount}
           symbol={symbol}
           type={type}
-          tooltipOtherContent={fiatValueTooltip}
+          tooltipOtherContent={formattedFiatValue}
         />
         <SpendBeneficiary
           beneficiary={beneficiary}
