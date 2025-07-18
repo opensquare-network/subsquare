@@ -16,6 +16,7 @@ import ReferendaPostList from "next-common/components/postList/referendaPostList
 import DemocracyReferendaPostList from "next-common/components/postList/democracyReferendaPostList";
 import DemocracyExternalProposalsPostList from "next-common/components/postList/democracyExternalProposalsPostList";
 import DemocracyPublicProposalsPostList from "next-common/components/postList/democracyPublicProposalsPostList";
+import TechCommProposalsPostList from "next-common/components/postList/techCommProposalsPostList";
 
 const InnerList = ({ secondCategory, data, pagination }) => {
   const link = "/" + secondCategory.routePath;
@@ -108,6 +109,17 @@ const InnerList = ({ secondCategory, data, pagination }) => {
   if (secondCategory.categoryId === businessCategory.democracyExternals) {
     return (
       <DemocracyExternalProposalsPostList
+        titleCount={titleCount}
+        items={items}
+        pagination={pagination}
+        link={link}
+      />
+    );
+  }
+
+  if (secondCategory.categoryId === businessCategory.tcProposals) {
+    return (
+      <TechCommProposalsPostList
         titleCount={titleCount}
         items={items}
         pagination={pagination}

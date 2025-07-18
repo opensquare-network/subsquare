@@ -149,7 +149,6 @@ export default function Post({ data, href, type }) {
   const isDemocracyCollective = [
     businessCategory.councilMotions,
     businessCategory.collective,
-    businessCategory.tcProposals,
     businessCategory.financialMotions,
     businessCategory.advisoryMotions,
     businessCategory.treasuryCouncilMotions,
@@ -172,7 +171,6 @@ export default function Post({ data, href, type }) {
     [
       businessCategory.councilMotions,
       businessCategory.financialMotions,
-      businessCategory.tcProposals,
       businessCategory.advisoryMotions,
       businessCategory.allianceMotions,
       businessCategory.treasuryCouncilMotions,
