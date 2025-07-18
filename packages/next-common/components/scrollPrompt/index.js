@@ -65,9 +65,13 @@ export default function ScrollPrompt({ prompts }) {
         return;
       }
       Promise.all([
-        animate(scope.current, colorStyle[scrollingPrompts[1].type], {
-          duration: 1,
-        }),
+        animate(
+          scope.current,
+          colorStyle[scrollingPrompts[1]?.type || PromptTypes.NEUTRAL],
+          {
+            duration: 1,
+          },
+        ),
         animate(
           "&>.scroll-list>:first-child",
           { marginTop: "-20px" },
@@ -101,7 +105,7 @@ export default function ScrollPrompt({ prompts }) {
         "h-[40px] rounded-[8px]",
         "text14Medium py-2.5 px-4",
       )}
-      style={colorStyle[scrollingPrompts[0].type]}
+      style={colorStyle[scrollingPrompts[0]?.type || PromptTypes.NEUTRAL]}
     >
       <div
         className="scroll-list flex flex-col overflow-hidden"
