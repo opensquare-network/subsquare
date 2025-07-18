@@ -50,7 +50,10 @@ export default function MultisigAccountsList() {
   return (
     <WindowSizeProvider>
       <div className="flex flex-col gap-y-4">
-        <MultisigAccountList multisigs={multisigs} isLoading={isLoading} />
+        <MultisigAccountList
+          multisigs={multisigs}
+          isLoading={isLoading && multisigs.length === 0}
+        />
         <div className="flex justify-end">
           <PrimaryButton onClick={() => setPopupOpen(true)}>
             Add Multisig Account
