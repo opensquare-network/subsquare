@@ -29,10 +29,12 @@ export default function RemovePopup({ onClose, multisig }) {
     setIsLoading(true);
     try {
       await ensureLogin();
-      const { error } = await nextApi.post("user/multisigs", {
-        ...multisig,
-        name,
-      });
+      const { error } = await nextApi.patch(
+        `user/multisigs/${multisig.multisigAddress}`,
+        {
+          name,
+        },
+      );
       if (error) {
         dispatch(newErrorToast(error.message));
         return;
