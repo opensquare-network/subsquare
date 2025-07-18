@@ -72,7 +72,11 @@ export const DisplayUser = ({ id, className = "" }) => {
   return <Username>{id}</Username>;
 };
 
-export const CopyableAddress = ({ address, ellipsisAddress = false }) => {
+export const CopyableAddress = ({
+  address,
+  ellipsisAddress = false,
+  className = "",
+}) => {
   if (!address) {
     return null;
   }
@@ -83,7 +87,7 @@ export const CopyableAddress = ({ address, ellipsisAddress = false }) => {
     : maybeEvmAddress;
   return (
     <Copyable copyText={maybeEvmAddress}>
-      <Tertiary>{displayAddress}</Tertiary>
+      <Tertiary className={className}>{displayAddress}</Tertiary>
     </Copyable>
   );
 };

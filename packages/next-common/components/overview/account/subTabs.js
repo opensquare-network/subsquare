@@ -1,5 +1,4 @@
 import { useChain, useChainSettings } from "next-common/context/chain";
-import MultisigsTitle from "./multisigsTitle";
 import { Title } from "./styled";
 import { isKintsugiChain } from "next-common/utils/chain";
 import DepositsTitle from "./depositsTitle";
@@ -45,9 +44,7 @@ export default function AccountSubTabs({ className = "" }) {
   if (hasMultisig) {
     tabs.push({
       value: "multisigs",
-      label({ active }) {
-        return <MultisigsTitle active={active} />;
-      },
+      label: ({ active }) => <TabTitle active={active}>Multisigs</TabTitle>,
       url: "/account/multisigs",
     });
   }

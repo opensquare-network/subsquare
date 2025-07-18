@@ -44,4 +44,24 @@ export const getMultisigsCountQuery = (address) => `query MyQuery {
   }
 }`;
 
+export const getMultisigAddressesQuery = (
+  address,
+  page,
+  pageSize,
+) => `query MyQuery {
+  multisigAddresses(
+    signatory: "${address}"
+    limit: ${pageSize}
+    offset: ${(page - 1) * pageSize}
+  ) {
+    total
+    offset
+    multisigAddresses {
+      address
+      threshold
+      signatories
+    }
+  }
+}`;
+
 export default getMultisigsQuery;

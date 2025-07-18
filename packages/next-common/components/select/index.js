@@ -11,6 +11,7 @@ import {
 } from "./styled";
 import Divider from "../styled/layout/divider";
 import { useClickAway } from "react-use";
+import { isNil } from "lodash-es";
 
 const SearchInput = styled.input`
   width: 100%;
@@ -98,6 +99,11 @@ function Select({
 
   const displayValue = useMemo(() => {
     const item = options.find((option) => option.value === value);
+
+    if (isNil(item)) {
+      return null;
+    }
+
     return (
       <div className="flex items-center">
         {item?.icon && <div className="mr-2 flex">{item.icon}</div>}
