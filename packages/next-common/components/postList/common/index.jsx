@@ -8,6 +8,7 @@ export { default as PostItemVotesSummaryImpl } from "./postItemVotesSummaryImpl"
 export { default as PostItemMalicious } from "./postItemMalicious";
 export { default as PostItemLabel } from "./postItemLabel";
 export { default as PostItemDemocracyTag } from "./postItemDemocracyTag";
+export { default as PostItemTreasuryTag } from "./postItemTreasuryTag";
 export { default as PostItemValueAmount } from "./postItemValueAmount";
 export { default as PostItemAISummary } from "./postItemAiSummary";
 export { default as PostItemTitleValue } from "./postItemTitleValue";

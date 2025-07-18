@@ -1,4 +1,3 @@
-import PostList from "next-common/components/postList";
 import { withCommonProps } from "next-common/lib";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeCouncilMotionListItem from "next-common/utils/viewfuncs/collective/normalizeCouncilMotionListItem";
@@ -10,6 +9,7 @@ import CollectiveProvider from "next-common/context/collective";
 import Chains from "next-common/utils/consts/chains";
 import { TreasuryProvider } from "next-common/context/treasury";
 import { useChainSettings } from "next-common/context/chain";
+import CouncilMotionsPostList from "next-common/components/postList/councilMotionsPostList";
 
 export default function MotionsPage({ motions, chain }) {
   const {
@@ -37,9 +37,7 @@ export default function MotionsPage({ motions, chain }) {
           title={category}
           description="Council motions"
         >
-          <PostList
-            category={category}
-            title="List"
+          <CouncilMotionsPostList
             titleCount={motions.total}
             titleExtra={hasCouncil && <NewCouncilMotionProposalButton />}
             items={items}
