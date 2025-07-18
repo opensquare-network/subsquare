@@ -18,8 +18,7 @@ import { usePopupParams } from "../popupWithSigner/context";
 import { useMultisigAccounts } from "../multisigs/context/accountsContext";
 import useMulitisigSubmitError from "./hooks/useMulitisigSubmitError";
 import { MultisigErrorMessage } from "./styled";
-import { SystemQuestion } from "@osn/icons/subsquare";
-import Tooltip from "../tooltip";
+import { FieldTooltipTitle } from "../styled/fieldTooltipTitle";
 
 export default function CreateMultisigContent() {
   const address = useRealAddress();
@@ -93,12 +92,10 @@ export default function CreateMultisigContent() {
         />
         <TextInputField
           title={
-            <span className="flex items-center gap-x-1">
-              Name
-              <Tooltip content="Used as multisig account name if no identity set">
-                <SystemQuestion className="inline-flex w-4 h-4 [&_path]:fill-textTertiary cursor-pointer" />
-              </Tooltip>
-            </span>
+            <FieldTooltipTitle
+              title="Name"
+              tooltip="Used as multisig account name if no identity set"
+            />
           }
           text={name}
           setText={setName}

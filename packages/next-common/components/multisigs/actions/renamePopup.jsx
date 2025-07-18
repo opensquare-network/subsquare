@@ -15,6 +15,7 @@ import {
   MultisigErrorMessage,
 } from "next-common/components/createMultisig/styled";
 import useRenameIsEqual from "next-common/components/createMultisig/hooks/useRenameIsEqual";
+import { FieldTooltipTitle } from "next-common/components/styled/fieldTooltipTitle";
 
 export default function RemovePopup({ onClose, multisig }) {
   const dispatch = useDispatch();
@@ -50,7 +51,12 @@ export default function RemovePopup({ onClose, multisig }) {
     <Popup title="Rename Multisig Account" onClose={onClose}>
       <div>
         <TextInputField
-          title="Name"
+          title={
+            <FieldTooltipTitle
+              title="Name"
+              tooltip="Used as multisig account name if no identity set"
+            />
+          }
           text={name}
           setText={setName}
           placeholder="Please fill the name..."

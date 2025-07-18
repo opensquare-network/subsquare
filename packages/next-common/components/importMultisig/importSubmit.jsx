@@ -14,6 +14,7 @@ import {
 } from "next-common/store/reducers/toastSlice";
 import { noop } from "lodash-es";
 import { useMultisigAccounts } from "../multisigs/context/accountsContext";
+import { FieldTooltipTitle } from "../styled/fieldTooltipTitle";
 
 export default function ImportSubmit({
   selectedMultisig,
@@ -69,7 +70,12 @@ export default function ImportSubmit({
       </div>
 
       <TextInputField
-        title="Name"
+        title={
+          <FieldTooltipTitle
+            title="Name"
+            tooltip="Used as multisig account name if no identity set"
+          />
+        }
         text={name}
         setText={setName}
         placeholder="Please set a name..."
