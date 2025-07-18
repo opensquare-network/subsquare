@@ -18,6 +18,19 @@ export function useReferendumVotingFinishIndexer() {
   return finishItem?.indexer;
 }
 
+export function useIsReferendumFinalState() {
+  const timeline = useTimelineData();
+  return (timeline || []).find((item) =>
+    [
+      gov2State.Rejected,
+      gov2State.TimedOut,
+      gov2State.Cancelled,
+      gov2State.Killed,
+      gov2State.Executed,
+    ].includes(item.name),
+  );
+}
+
 export function useDemocracyReferendumVotingFinishIndexer(timeline) {
   const finishItem = (timeline || []).find((item) =>
     ["Passed", "NotPassed"].includes(item.method),
