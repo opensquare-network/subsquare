@@ -15,7 +15,7 @@ import {
   PostItemCommentCount,
   PostItemAISummary,
   PostItemMalicious,
-  PostItemBannner,
+  PostItemBanner,
 } from "../common";
 import { TreasuryTag } from "next-common/components/tags/state/treasury";
 
@@ -40,7 +40,7 @@ export default function TreasuryPorposalsPostItem({ data }) {
             <TreasuryTag state={data.status} />
           </FooterWrapper>
         </ContentWrapper>
-        <PostItemBannner bannerCid={data?.bannerCid} />
+        <PostItemBanner bannerCid={data?.bannerCid} />
       </Wrapper>
     </>
   );

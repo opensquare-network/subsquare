@@ -7,7 +7,7 @@ import {
   ContentWrapper,
 } from "next-common/components/postList/styled";
 import {
-  PostItemBannner,
+  PostItemBanner,
   PostItemTitleValue,
   PostItemTrack,
   PostItemUser,
@@ -76,7 +76,7 @@ export default function PostItem({ data }) {
             <Gov2ReferendaTag state={data.status} args={stateArgs} />
           </FooterWrapper>
         </ContentWrapper>
-        <PostItemBannner bannerCid={data?.bannerCid} />
+        <PostItemBanner bannerCid={data?.bannerCid} />
       </Wrapper>
     </>
   );
