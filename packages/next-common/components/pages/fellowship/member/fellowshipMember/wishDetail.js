@@ -30,26 +30,19 @@ function ReferendumVote({ referendumIndex, referendum }) {
   );
 }
 
-export function CreateReferendumAndVote({ who, wish }) {
-  const mobileClassName = "max-sm:!w-full max-sm:!block";
+export function CreateReferendumAndVote({ who, wish, className = "" }) {
   if (wish.toLowerCase() === "promotion") {
     return (
       <div
-        className={cn(
-          "flex items-center justify-end text14Medium",
-          mobileClassName,
-        )}
+        className={cn("flex items-center justify-end text14Medium", className)}
       >
-        <CreatePromotionReferendumAndVoteButtons who={who} />
+        <CreatePromotionReferendumAndVoteButtons who={who} c />
       </div>
     );
   } else if (wish.toLowerCase() === "retention") {
     return (
       <div
-        className={cn(
-          "flex items-center justify-end text14Medium",
-          mobileClassName,
-        )}
+        className={cn("flex items-center justify-end text14Medium", className)}
       >
         <CreateRetentionReferendumAndVoteButtons who={who} />
       </div>

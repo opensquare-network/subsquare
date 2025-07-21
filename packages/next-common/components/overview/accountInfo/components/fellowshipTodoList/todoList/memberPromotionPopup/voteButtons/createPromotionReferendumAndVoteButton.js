@@ -67,12 +67,8 @@ function CreateReferendumAndVoteButtonImpl({
 
   return (
     <>
-      <Tooltip content={tooltip} className="max-sm:!w-full max-sm:!block">
-        <ButtonComponent
-          disabled={disabled}
-          onClick={createReferendaAndVote}
-          className="max-sm:!w-full max-sm:!block"
-        >
+      <Tooltip content={tooltip}>
+        <ButtonComponent disabled={disabled} onClick={createReferendaAndVote}>
           {children}
         </ButtonComponent>
       </Tooltip>
@@ -93,14 +89,7 @@ export default function CreatePromotionReferendumAndVoteButton({
 }) {
   const ButtonComponent = props.ButtonComponent || SecondaryButton;
   return (
-    <SignerPopupWrapper
-      loadingContent={
-        <ButtonComponent
-          disabled={true}
-          className="max-sm:!w-full max-sm:!block"
-        />
-      }
-    >
+    <SignerPopupWrapper loadingContent={<ButtonComponent disabled={true} />}>
       <CreateReferendumAndVoteButtonImpl {...props}>
         {children}
       </CreateReferendumAndVoteButtonImpl>
