@@ -13,4 +13,3 @@ export { default as PostItemValueAmount } from "./postItemValueAmount";
 export { default as PostItemAISummary } from "./postItemAiSummary";
 export { default as PostItemTitleValue } from "./postItemTitleValue";
 export { default as PostItemTitle } from "./postItemTitle";
-export { default as PostItemBannner } from "./postItemBanner";
