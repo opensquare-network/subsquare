@@ -27,7 +27,6 @@ const ReferendumVoteButtonsArea = tw(ReferendumVoteButtons)`
 `;
 
 const ReferendumTitleWrapper = tw(FellowshipReferendumTitleImpl)`
-  h-5
   [&_a]:truncate
 `;
 
@@ -79,7 +78,7 @@ function ReferendumVoteItem({ referendumIndex }) {
 
   return (
     <div className="flex items-center justify-between w-full text14Medium gap-x-4 max-sm:flex-col max-sm:gap-y-3">
-      <div className="flex flex-col gap-[4px] flex-1 min-w-0 w-full">
+      <div className="flex flex-col gap-[4px] flex-1 min-w-0 w-full min-h-[40px] justify-center">
         <ReferendumTitleWrapper
           referendumIndex={referendumIndex}
           title={detail?.title}
