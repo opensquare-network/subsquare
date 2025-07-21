@@ -34,10 +34,6 @@ export default function EvidenceRelatedReferenda() {
 
   const { referenda = [] } = detail || {};
 
-  if (!referenda.length) {
-    return null;
-  }
-
   if (referenda.length <= 0) {
     return (
       <SecondaryCard className="mt-4 !p-4">
