@@ -16,7 +16,7 @@ import {
   PostItemMalicious,
   PostItemAISummary,
 } from "next-common/components/postList/common";
-import TreasurySpendAmount from "./treasurySpendAmount2";
+import TreasurySpendAmount from "./treasurySpendAmount";
 import Divider from "next-common/components/styled/layout/divider";
 import { SpendTag } from "next-common/components/tags/state/treasury";
 import TreasurySpendsCountDown from "next-common/components/postList/treasurySpendsPostList/countdown";

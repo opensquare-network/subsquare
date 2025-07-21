@@ -1,19 +1,21 @@
-import AddressUser from "next-common/components/user/addressUser";
 import React from "react";
+import AddressUser from "next-common/components/user/addressUser";
 import KVList from "next-common/components/listInfo/kvList";
 import HeightWithTime from "next-common/components/common/block/heightWithTime";
 import useTreasurySpendRequest from "next-common/hooks/treasury/spend/useTreasurySpendRequest";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecisionNumber } from "next-common/utils";
 import ExternalLink from "next-common/components/externalLink";
+import BeneficiaryDetailButton from "next-common/components/pages/components/gov2/business/beneficiaryDetailButton";
 
-function Beneficiary({ parachain, beneficiary }) {
+function Beneficiary({ parachain, beneficiary, beneficiaryLocation }) {
   if (!beneficiary) {
-    return null;
+    return (
+      <BeneficiaryDetailButton beneficiaryLocation={beneficiaryLocation} />
+    );
   }
 
-  if (parachain !== 1000) {
-    // not assethub
+  if (parachain !== "assethub") {
     return <AddressUser add={beneficiary} />;
   }
 
@@ -30,8 +32,14 @@ export default function TreasurySpendMetadata({ spend = {} }) {
   const meta = spend?.meta || {};
   const proposer = spend?.proposer;
   const { validFrom, expireAt } = meta;
-  const { parachain, amount, symbol, decimals, beneficiary } =
-    useTreasurySpendRequest(meta);
+  const {
+    parachain,
+    amount,
+    symbol,
+    decimals,
+    beneficiary,
+    beneficiaryLocation,
+  } = useTreasurySpendRequest(spend?.extracted);
 
   const data = [["Id", `#${spend?.index}`]];
   if (proposer) {
@@ -49,7 +57,11 @@ export default function TreasurySpendMetadata({ spend = {} }) {
           symbol={symbol}
         />
         <span className="text-textTertiary">to</span>
-        <Beneficiary parachain={parachain} beneficiary={beneficiary} />
+        <Beneficiary
+          parachain={parachain}
+          beneficiary={beneficiary}
+          beneficiaryLocation={beneficiaryLocation}
+        />
       </div>,
     ]);
   }
