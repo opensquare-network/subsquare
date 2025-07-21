@@ -1,15 +1,17 @@
 import useQueryGovernanceLock from "next-common/hooks/referenda/useQueryGovernanceLock";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useUserAccountInfo } from "next-common/context/user/account";
-
 import AllLocks from "./allLocks";
 import GovLocks from "./govLocks";
+import { useSignerAccount } from "next-common/components/popupWithSigner/context";
+import { useSubAccountInfo } from "./accountInfo";
 
 const ReUseLocks = ({ reUseGovLocks, reUseAllLocks }) => {
-  const address = useRealAddress();
-  const { balance: governanceLockBalance, isLoading } =
-    useQueryGovernanceLock(address);
-  const { info, isLoading: isUserAccountInfoLoading } = useUserAccountInfo();
+  const signerAccount = useSignerAccount();
+  const { balance: governanceLockBalance, isLoading } = useQueryGovernanceLock(
+    signerAccount?.realAddress,
+  );
+  const { info, isLoading: isUserAccountInfoLoading } = useSubAccountInfo(
+    signerAccount?.realAddress,
+  );
   const allLockedBalance = info?.data?.lockedBalance;
 
   if (

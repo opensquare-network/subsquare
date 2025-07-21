@@ -7,7 +7,7 @@ import {
   ContentWrapper,
 } from "next-common/components/postList/styled";
 import {
-  PostItemBannner,
+  PostItemBanner,
   PostItemTitle,
   PostItemUser,
   PostItemTime,
@@ -22,30 +22,28 @@ import TreasurySpendsCountDown from "next-common/components/postList/treasurySpe
 
 export default function PostItem({ data }) {
   return (
-    <>
-      <Wrapper>
-        <ContentWrapper>
-          <HeadWrapper>
-            <PostItemTitle data={data} href={data?.detailLink} />
-            <PostItemTitleValue data={data} />
-          </HeadWrapper>
-          <Divider margin={12} />
-          <FooterWrapper>
-            <Footer>
-              <PostItemUser data={data} />
-              <PostItemTime
-                data={data}
-                elapseIcon={<TreasurySpendsCountDown data={data} />}
-              />
-              <PostItemCommentCount data={data} />
-              <PostItemMalicious isMalicious={data?.isMalicious} />
-              <PostItemAISummary data={data} />
-            </Footer>
-            <TipTag state={data.status} />
-          </FooterWrapper>
-        </ContentWrapper>
-        <PostItemBannner bannerCid={data?.bannerCid} />
-      </Wrapper>
-    </>
+    <Wrapper>
+      <ContentWrapper>
+        <HeadWrapper>
+          <PostItemTitle data={data} href={data?.detailLink} />
+          <PostItemTitleValue data={data} />
+        </HeadWrapper>
+        <Divider margin={12} />
+        <FooterWrapper>
+          <Footer>
+            <PostItemUser data={data} />
+            <PostItemTime
+              data={data}
+              elapseIcon={<TreasurySpendsCountDown data={data} />}
+            />
+            <PostItemCommentCount data={data} />
+            <PostItemMalicious isMalicious={data?.isMalicious} />
+            <PostItemAISummary data={data} />
+          </Footer>
+          <TipTag state={data.status} />
+        </FooterWrapper>
+      </ContentWrapper>
+      <PostItemBanner bannerCid={data?.bannerCid} />
+    </Wrapper>
   );
 }

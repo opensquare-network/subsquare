@@ -19,9 +19,9 @@ const Info = styled.div`
 
 export default function Meta() {
   const onchainData = useOnchainData();
-  const meta = onchainData?.meta || {};
-  const { amount, symbol, decimals, beneficiary } =
-    useTreasurySpendRequest(meta);
+  const { amount, symbol, decimals, beneficiary } = useTreasurySpendRequest(
+    onchainData?.extracted,
+  );
 
   if (!symbol) {
     return null;

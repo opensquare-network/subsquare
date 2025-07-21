@@ -147,7 +147,6 @@ export function PostValueTitle({ data, type }) {
 export default function Post({ data, href, type }) {
   const currentChain = useChain();
   const isDemocracyCollective = [
-    businessCategory.councilMotions,
     businessCategory.collective,
     businessCategory.financialMotions,
     businessCategory.advisoryMotions,
@@ -169,7 +168,6 @@ export default function Post({ data, href, type }) {
   let elapseIcon = null;
   if (
     [
-      businessCategory.councilMotions,
       businessCategory.financialMotions,
       businessCategory.advisoryMotions,
       businessCategory.allianceMotions,
