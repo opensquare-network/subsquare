@@ -27,15 +27,11 @@ function useDefaultReferendumTitle(referendumIndex, trackId) {
 
 export function FellowshipReferendumTitleImpl({
   referendumIndex,
-  defaultTitle = "",
+  title = "",
   className = "",
+  loading = false,
 }) {
   const { section } = useCollectivesContext();
-  const { value: detail, loading } = useFetch(
-    `/api/${section}/referenda/${referendumIndex}`,
-  );
-  const title = detail?.title || defaultTitle;
-
   return (
     <div className={cn("flex items-center gap-[8px]", className)}>
       <span className="text-textPrimary">#{referendumIndex}</span>
@@ -61,10 +57,17 @@ export default function FellowshipReferendumTitle({
   trackId,
 }) {
   const defaultTitle = useDefaultReferendumTitle(referendumIndex, trackId);
+
+  const { section } = useCollectivesContext();
+  const { value: detail, loading } = useFetch(
+    `/api/${section}/referenda/${referendumIndex}`,
+  );
+  const title = detail?.title || defaultTitle;
   return (
     <FellowshipReferendumTitleImpl
       referendumIndex={referendumIndex}
-      defaultTitle={defaultTitle}
+      title={title}
+      loading={loading}
     />
   );
 }
