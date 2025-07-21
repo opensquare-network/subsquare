@@ -7,7 +7,7 @@ import {
   ContentWrapper,
 } from "next-common/components/postList/styled";
 import {
-  PostItemBanner,
+  PostItemBannner,
   PostItemTitle,
   PostItemUser,
   PostItemTime,
@@ -15,11 +15,16 @@ import {
   PostItemMalicious,
   PostItemAISummary,
   PostItemTitleValue,
+  PostItemDemocracyTag,
+  PostItemTreasuryTag,
 } from "next-common/components/postList/common";
 import Divider from "next-common/components/styled/layout/divider";
-import { BountyTag } from "next-common/components/tags/state/treasury";
+import { CollectiveTag } from "next-common/components/tags/state/collective";
+import { getMotionStateArgs } from "next-common/utils/collective/result";
+import MotionElapse from "next-common/components/motionElapse";
 
 export default function PostItem({ data }) {
+  const args = getMotionStateArgs(data.onchainData.state);
   return (
     <Wrapper>
       <ContentWrapper>
@@ -31,15 +36,20 @@ export default function PostItem({ data }) {
         <FooterWrapper>
           <Footer>
             <PostItemUser data={data} />
-            <PostItemTime data={data} />
+            <PostItemTreasuryTag isTreasury={data.isTreasury} />
+            <PostItemDemocracyTag isDemocracy={data.isDemocracy} />
+            <PostItemTime
+              data={data}
+              elapseIcon={<MotionElapse motion={data.onchainData} />}
+            />
             <PostItemCommentCount data={data} />
             <PostItemMalicious isMalicious={data?.isMalicious} />
             <PostItemAISummary data={data} />
           </Footer>
-          <BountyTag state={data.status} />
+          <CollectiveTag state={data.status} args={args} />
         </FooterWrapper>
       </ContentWrapper>
-      <PostItemBanner bannerCid={data?.bannerCid} />
+      <PostItemBannner bannerCid={data?.bannerCid} />
     </Wrapper>
   );
 }
