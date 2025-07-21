@@ -7,7 +7,7 @@ import {
   ContentWrapper,
 } from "next-common/components/postList/styled";
 import {
-  PostItemBannner,
+  PostItemBanner,
   PostItemTitle,
   PostItemUser,
   PostItemTime,
@@ -49,7 +49,7 @@ export default function PostItem({ data }) {
           <CollectiveTag state={data.status} args={args} />
         </FooterWrapper>
       </ContentWrapper>
-      <PostItemBannner bannerCid={data?.bannerCid} />
+      <PostItemBanner bannerCid={data?.bannerCid} />
     </Wrapper>
   );
 }
