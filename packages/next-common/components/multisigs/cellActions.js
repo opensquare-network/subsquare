@@ -27,8 +27,8 @@ export default function CellActions({ multisig }) {
           </div>
         </Popover.Trigger>
         <Popover.Portal>
-          <Popover.Content sideOffset={5}>
-            <OptionWrapper className="static">
+          <Popover.Content side="top" align="end" sideOffset={5}>
+            <OptionWrapper className="static !shadow-200">
               <OptionItem
                 className="flex items-center grow gap-x-2"
                 onClick={() => setShowRenamePopup(true)}
