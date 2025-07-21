@@ -5,6 +5,8 @@ import AddressUser from "next-common/components/user/addressUser";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
+import formatTime from "next-common/utils/viewfuncs/formatDate";
+import Tooltip from "next-common/components/tooltip";
 
 const columns = [
   {
@@ -54,9 +56,15 @@ export default function RegistrarsTable({
               />,
               <div
                 key={`last-judgement-${item.account}`}
-                className="text-textTertiary text14Medium"
+                className="text-textPrimary text14Medium"
               >
-                {time ? formatTimeAgo(time) : "-"}
+                {time ? (
+                  <Tooltip content={formatTime(time)}>
+                    {formatTimeAgo(time)}
+                  </Tooltip>
+                ) : (
+                  "-"
+                )}
               </div>,
               <div
                 key={`request-${index}`}
