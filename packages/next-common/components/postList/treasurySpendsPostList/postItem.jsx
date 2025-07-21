@@ -23,31 +23,29 @@ import TreasurySpendsCountDown from "next-common/components/postList/treasurySpe
 
 export default function PostItem({ data }) {
   return (
-    <>
-      <Wrapper>
-        <ContentWrapper>
-          <HeadWrapper>
-            <PostItemTitle data={data} href={data?.detailLink} />
-            <TreasurySpendAmount meta={data?.meta} />
-          </HeadWrapper>
-          <Divider margin={12} />
-          <FooterWrapper>
-            <Footer>
-              <PostItemUser data={data} />
-              <PostItemTime
-                data={data}
-                elapseIcon={<TreasurySpendsCountDown data={data} />}
-              />
-              <PostItemCommentCount data={data} />
-              <PostItemVotesSummaryImpl data={data} />
-              <PostItemMalicious isMalicious={data?.isMalicious} />
-              <PostItemAISummary data={data} />
-            </Footer>
-            <SpendTag state={data.status} />
-          </FooterWrapper>
-        </ContentWrapper>
-        <PostItemBannner bannerCid={data?.bannerCid} />
-      </Wrapper>
-    </>
+    <Wrapper>
+      <ContentWrapper>
+        <HeadWrapper>
+          <PostItemTitle data={data} href={data?.detailLink} />
+          <TreasurySpendAmount meta={data?.meta} />
+        </HeadWrapper>
+        <Divider margin={12} />
+        <FooterWrapper>
+          <Footer>
+            <PostItemUser data={data} />
+            <PostItemTime
+              data={data}
+              elapseIcon={<TreasurySpendsCountDown data={data} />}
+            />
+            <PostItemCommentCount data={data} />
+            <PostItemVotesSummaryImpl data={data} />
+            <PostItemMalicious isMalicious={data?.isMalicious} />
+            <PostItemAISummary data={data} />
+          </Footer>
+          <SpendTag state={data.status} />
+        </FooterWrapper>
+      </ContentWrapper>
+      <PostItemBannner bannerCid={data?.bannerCid} />
+    </Wrapper>
   );
 }
