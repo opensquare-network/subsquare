@@ -17,8 +17,6 @@ function VoteButtonImpl({
   children,
   ButtonComponent = SecondaryButton,
   callbacks,
-  tooltipClassName = "",
-  buttonClassName = "",
 }) {
   const api = useContextApi();
   const collectivePallet = useRankedCollectivePallet();
@@ -59,33 +57,19 @@ function VoteButtonImpl({
   }
 
   return (
-    <Tooltip content={tooltipContent} className={tooltipClassName}>
-      <ButtonComponent
-        disabled={disabled}
-        onClick={doSubmitVote}
-        className={buttonClassName}
-      >
+    <Tooltip content={tooltipContent}>
+      <ButtonComponent disabled={disabled} onClick={doSubmitVote}>
         {children}
       </ButtonComponent>
     </Tooltip>
   );
 }
 
-export default function VoteButton({
-  children,
-  buttonClassName = "",
-  ...props
-}) {
+export default function VoteButton({ children, ...props }) {
   const ButtonComponent = props.ButtonComponent || SecondaryButton;
   return (
-    <SignerPopupWrapper
-      loadingContent={
-        <ButtonComponent disabled={true} className={buttonClassName} />
-      }
-    >
-      <VoteButtonImpl {...props} buttonClassName={buttonClassName}>
-        {children}
-      </VoteButtonImpl>
+    <SignerPopupWrapper loadingContent={<ButtonComponent disabled={true} />}>
+      <VoteButtonImpl {...props}>{children}</VoteButtonImpl>
     </SignerPopupWrapper>
   );
 }
