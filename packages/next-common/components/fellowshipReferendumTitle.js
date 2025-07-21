@@ -4,6 +4,7 @@ import { startCase } from "lodash-es";
 import { usePageProps } from "next-common/context/page";
 import { useMemo } from "react";
 import FieldLoading from "next-common/components/icons/fieldLoading";
+import { cn } from "next-common/utils";
 
 function useFellowshipTracks() {
   const { section } = useCollectivesContext();
@@ -27,6 +28,7 @@ function useDefaultReferendumTitle(referendumIndex, trackId) {
 export function FellowshipReferendumTitleImpl({
   referendumIndex,
   defaultTitle = "",
+  className = "",
 }) {
   const { section } = useCollectivesContext();
   const { value: detail, loading } = useFetch(
@@ -35,7 +37,7 @@ export function FellowshipReferendumTitleImpl({
   const title = detail?.title || defaultTitle;
 
   return (
-    <div className="flex items-center gap-[8px]">
+    <div className={cn("flex items-center gap-[8px]", className)}>
       <span className="text-textPrimary">#{referendumIndex}</span>
       <span className="text-textTertiary">·</span>
       {loading ? (

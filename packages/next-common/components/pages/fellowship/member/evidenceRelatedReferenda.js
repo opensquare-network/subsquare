@@ -22,6 +22,13 @@ const ReferendumVoteButtonsArea = tw(ReferendumVoteButtons)`
   [&_button]:max-sm:!w-full
 `;
 
+const ReferendumTitleWrapper = tw(FellowshipReferendumTitleImpl)`
+  [&_a]:overflow-hidden
+  [&_a]:h-5
+  [&_a]:text-ellipsis
+  [&_a]:whitespace-nowrap
+`;
+
 export default function EvidenceRelatedReferenda() {
   const { detail } = usePageProps() || {};
 
@@ -57,8 +64,8 @@ export default function EvidenceRelatedReferenda() {
 function ReferendumVoteItem({ referendumIndex }) {
   return (
     <div className="flex items-center justify-between text14Medium max-sm:flex-col max-sm:gap-y-3">
-      <div className="flex flex-col gap-[4px]">
-        <FellowshipReferendumTitleImpl referendumIndex={referendumIndex} />
+      <div className="flex flex-col gap-[4px] max-sm:w-full">
+        <ReferendumTitleWrapper referendumIndex={referendumIndex} />
         <MyVote referendumIndex={referendumIndex} />
       </div>
       <ReferendumVoteButtonsArea referendumIndex={referendumIndex} />
