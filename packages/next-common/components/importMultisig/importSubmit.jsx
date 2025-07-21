@@ -15,15 +15,18 @@ import {
 import { noop } from "lodash-es";
 import { useMultisigAccounts } from "../multisigs/context/accountsContext";
 import { FieldTooltipTitle } from "../styled/fieldTooltipTitle";
+import useNameIsEqual from "../createMultisig/hooks/useNameIsEqual";
+import { ERROR_MESSAGE, MultisigErrorMessage } from "../createMultisig/styled";
 
 export default function ImportSubmit({
   selectedMultisig,
   onBack = noop,
-  onSuccessed = noop,
+  onClose = noop,
 }) {
   const dispatch = useDispatch();
   const [name, setName] = useState(selectedMultisig.name || "");
   const [isLoading, setIsLoading] = useState(false);
+  const isNameEqual = useNameIsEqual(name);
 
   const { ensureLogin } = useEnsureLogin();
   const { refresh } = useMultisigAccounts();
@@ -43,7 +46,7 @@ export default function ImportSubmit({
           throw new Error(error.message);
         }
         dispatch(newSuccessToast("Multisig imported successfully"));
-        onSuccessed?.();
+        onClose?.();
         refresh?.();
       } catch (error) {
         dispatch(newErrorToast(error.message));
@@ -52,7 +55,7 @@ export default function ImportSubmit({
         setIsLoading(false);
       }
     },
-    [ensureLogin, selectedMultisig, name, dispatch, onSuccessed, refresh],
+    [ensureLogin, selectedMultisig, name, dispatch, onClose, refresh],
   );
 
   if (!selectedMultisig) {
@@ -80,6 +83,9 @@ export default function ImportSubmit({
         setText={setName}
         placeholder="Please set a name..."
       />
+      {isNameEqual && (
+        <MultisigErrorMessage>{ERROR_MESSAGE.NAME_EXIST}</MultisigErrorMessage>
+      )}
 
       <div className="flex items-center justify-between">
         <SecondaryButton

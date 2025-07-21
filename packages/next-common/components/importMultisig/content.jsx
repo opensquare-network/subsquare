@@ -18,7 +18,7 @@ const STEPS = {
   SUBMIT_MULTISIG: 2,
 };
 
-export default function ImportMultisigContent({ closeAll }) {
+export default function ImportMultisigContent({ onClose = noop }) {
   const [step, setStep] = useState(STEPS.SELECT_MULTISIG);
   const [selectedMultisigAddress, setSelectedMultisigAddress] = useState(null);
   const address = useRealAddress();
@@ -59,7 +59,7 @@ export default function ImportMultisigContent({ closeAll }) {
     return (
       <ImportSubmit
         onBack={() => setStep(STEPS.SELECT_MULTISIG)}
-        onSuccessed={closeAll}
+        onClose={onClose}
         selectedMultisig={value?.multisigAddresses.find(
           (item) => item.address === selectedMultisigAddress,
         )}

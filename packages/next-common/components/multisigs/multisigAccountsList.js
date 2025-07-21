@@ -15,6 +15,7 @@ import { useChainSettings } from "next-common/context/chain";
 import { sortAddresses } from "@polkadot/util-crypto";
 
 const CreateMultisigPopup = dynamicPopup(() => import("../createMultisig"));
+const ImportMultisigPopup = dynamicPopup(() => import("../importMultisig"));
 
 const columns = [
   {
@@ -44,7 +45,6 @@ const MultisigAccountList = memo(function MultisigAccountList({
 });
 
 export default function MultisigAccountsList() {
-  const [popupOpen, setPopupOpen] = useState(false);
   const { multisigs = [], isLoading } = useMultisigAccounts();
 
   return (
@@ -54,16 +54,37 @@ export default function MultisigAccountsList() {
           multisigs={multisigs}
           isLoading={isLoading && multisigs.length === 0}
         />
-        <div className="flex justify-end">
-          <PrimaryButton onClick={() => setPopupOpen(true)}>
-            Add Multisig Account
-          </PrimaryButton>
-        </div>
-        {popupOpen && (
-          <CreateMultisigPopup onClose={() => setPopupOpen(false)} />
-        )}
+        <AddMultisigButton />
       </div>
     </WindowSizeProvider>
+  );
+}
+
+function AddMultisigButton() {
+  const [popupOpen, setPopupOpen] = useState(false);
+  const [importPopupOpen, setImportPopupOpen] = useState(false);
+
+  const openImportPopup = useCallback(() => {
+    setPopupOpen(false);
+    setImportPopupOpen(true);
+  }, []);
+  return (
+    <>
+      <div className="flex justify-end">
+        <PrimaryButton onClick={() => setPopupOpen(true)}>
+          Add Multisig Account
+        </PrimaryButton>
+      </div>
+      {popupOpen && (
+        <CreateMultisigPopup
+          onClose={() => setPopupOpen(false)}
+          onOpenImportPopup={openImportPopup}
+        />
+      )}
+      {importPopupOpen && (
+        <ImportMultisigPopup onClose={() => setImportPopupOpen(false)} />
+      )}
+    </>
   );
 }
 
