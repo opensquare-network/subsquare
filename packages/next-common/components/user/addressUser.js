@@ -15,6 +15,68 @@ import { isExternalLink } from "next-common/utils";
 import ExternalLink from "../externalLink";
 import { cn } from "next-common/utils";
 
+export function UserAddressLink({ address, link, needHref, children }) {
+  const displayAddress = tryConvertToEvmAddress(address);
+  const chain = useChain();
+  if (!needHref) {
+    return children;
+  }
+
+  if (isExternalLink(link)) {
+    return (
+      <ExternalLink externalIcon={false} href={link}>
+        {children}
+      </ExternalLink>
+    );
+  }
+
+  let href = `/user/${displayAddress}${link}`;
+  if (isAssetHubChain(chain)) {
+    href = `/assethub${href}`;
+  }
+
+  return (
+    <Link
+      href={href}
+      onClick={(e) => {
+        e.stopPropagation();
+      }}
+    >
+      {children}
+    </Link>
+  );
+}
+
+export function AddressUserWrapper({
+  className,
+  address,
+  avatar,
+  showAvatar = true,
+  avatarSize = "",
+  noEvent = false,
+  link = "",
+  needHref = true,
+  children,
+}) {
+  const displayAddress = tryConvertToEvmAddress(address);
+  return (
+    <UserWrapper noEvent={noEvent} className={className}>
+      {showAvatar && (
+        <AvatarWrapper>
+          <AvatarDisplay
+            address={displayAddress}
+            avatarCid={avatar}
+            size={avatarSize || `${20 / 14}em`}
+          />
+        </AvatarWrapper>
+      )}
+      <UserAddressLink address={address} link={link} needHref={needHref}>
+        {children}
+      </UserAddressLink>
+    </UserWrapper>
+  );
+}
+
 export function AddressUserImpl({
   className,
   address,
@@ -31,7 +93,6 @@ export function AddressUserImpl({
   needHref = true,
   identityIconClassName = "",
 }) {
-  const chain = useChain();
   const displayAddress = tryConvertToEvmAddress(address);
 
   const userIdentity = useMemo(
@@ -62,49 +123,19 @@ export function AddressUserImpl({
     ],
   );
 
-  const userIdentityLink = useMemo(() => {
-    if (!needHref) {
-      return userIdentity;
-    }
-
-    if (isExternalLink(link)) {
-      return (
-        <ExternalLink externalIcon={false} href={link}>
-          {userIdentity}
-        </ExternalLink>
-      );
-    }
-
-    let href = `/user/${displayAddress}${link}`;
-    if (isAssetHubChain(chain)) {
-      href = `/assethub${href}`;
-    }
-
-    return (
-      <Link
-        href={href}
-        onClick={(e) => {
-          e.stopPropagation();
-        }}
-      >
-        {userIdentity}
-      </Link>
-    );
-  }, [needHref, userIdentity, link, chain, displayAddress]);
-
   return (
-    <UserWrapper noEvent={noEvent} className={className}>
-      {showAvatar && (
-        <AvatarWrapper>
-          <AvatarDisplay
-            address={displayAddress}
-            avatarCid={avatar}
-            size={avatarSize || `${20 / 14}em`}
-          />
-        </AvatarWrapper>
-      )}
-      {userIdentityLink}
-    </UserWrapper>
+    <AddressUserWrapper
+      className={className}
+      address={address}
+      avata={avatar}
+      showAvatar={showAvatar}
+      avatarSize={avatarSize}
+      noEvent={noEvent}
+      link={link}
+      needHref={needHref}
+    >
+      {userIdentity}
+    </AddressUserWrapper>
   );
 }
 
