@@ -15,7 +15,7 @@ const Timeline = dynamicClientOnly(() =>
   import("next-common/components/timeline"),
 );
 
-export default function TreasurySpeedsDetailMultiTabs() {
+export default function TreasurySpendsDetailMultiTabs() {
   const detail = usePost();
   const timelineData = useTreasurySpendTimelineData(detail?.onchainData);
   const router = useRouter();

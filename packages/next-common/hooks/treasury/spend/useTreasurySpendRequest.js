@@ -1,22 +1,22 @@
-import {
-  getAssetByMeta,
-  getParachainIdByMeta,
-} from "next-common/utils/treasury/spend/usdCheck";
-import getSpendBeneficiaryFromMeta from "next-common/utils/treasury/spend/beneficiary";
-import { useChain, useChainSettings } from "next-common/context/chain";
+import { useChainSettings } from "next-common/context/chain";
+import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 
-export default function useTreasurySpendRequest(meta) {
-  const chain = useChain();
-  const chainSettings = useChainSettings();
-  const parachain = getParachainIdByMeta(meta);
-  const asset = getAssetByMeta(meta, chainSettings);
-  const beneficiary = getSpendBeneficiaryFromMeta(meta, chain);
+export default function useTreasurySpendRequest(extractedTreasuryInfo) {
+  let { decimals } = useChainSettings();
+  const {
+    amount,
+    assetKind: { chain: parachain, type, symbol } = {},
+    beneficiary: { address: beneficiary } = {},
+  } = extractedTreasuryInfo || {};
+  if (type !== "native") {
+    decimals = SYMBOL_DECIMALS[symbol];
+  }
 
   return {
     parachain,
-    amount: meta?.amount,
-    symbol: asset?.symbol,
-    decimals: asset?.decimals,
+    amount,
+    symbol,
+    decimals,
     beneficiary,
   };
 }

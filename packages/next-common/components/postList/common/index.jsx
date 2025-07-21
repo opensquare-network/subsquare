@@ -1,7 +1,7 @@
 export { default as PostItemUser } from "./postItemUser";
 export { default as PostItemTime } from "./postItemTime";
 export { default as PostItemCommentCount } from "./postItemCommentCount";
-export { default as PostItemBannner } from "./postItemBanner";
+export { default as PostItemBanner } from "./postItemBanner";
 export { default as PostItemParentIndex } from "./postItemParentIndex";
 export { default as PostItemTrack } from "./postItemTrack";
 export { default as PostItemVotesSummaryImpl } from "./postItemVotesSummaryImpl";

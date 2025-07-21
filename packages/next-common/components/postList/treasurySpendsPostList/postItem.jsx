@@ -7,7 +7,7 @@ import {
   ContentWrapper,
 } from "next-common/components/postList/styled";
 import {
-  PostItemBannner,
+  PostItemBanner,
   PostItemTitle,
   PostItemUser,
   PostItemTime,
@@ -16,7 +16,7 @@ import {
   PostItemMalicious,
   PostItemAISummary,
 } from "next-common/components/postList/common";
-import TreasurySpendAmount from "./treasurySpeedAmount";
+import TreasurySpendAmount from "./treasurySpendAmount";
 import Divider from "next-common/components/styled/layout/divider";
 import { SpendTag } from "next-common/components/tags/state/treasury";
 import TreasurySpendsCountDown from "next-common/components/postList/treasurySpendsPostList/countdown";
@@ -27,7 +27,7 @@ export default function PostItem({ data }) {
       <ContentWrapper>
         <HeadWrapper>
           <PostItemTitle data={data} href={data?.detailLink} />
-          <TreasurySpendAmount meta={data?.meta} />
+          <TreasurySpendAmount extractedTreasuryInfo={data?.extracted} />
         </HeadWrapper>
         <Divider margin={12} />
         <FooterWrapper>
@@ -45,7 +45,7 @@ export default function PostItem({ data }) {
           <SpendTag state={data.status} />
         </FooterWrapper>
       </ContentWrapper>
-      <PostItemBannner bannerCid={data?.bannerCid} />
+      <PostItemBanner bannerCid={data?.bannerCid} />
     </Wrapper>
   );
 }

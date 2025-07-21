@@ -8,7 +8,7 @@ import {
 } from "../styled";
 import {
   PostItemAISummary,
-  PostItemBannner,
+  PostItemBanner,
   PostItemCommentCount,
   PostItemLabel,
   PostItemMalicious,
@@ -70,7 +70,7 @@ export default function PostItem({ data }) {
           </Flex>
         </FooterWrapper>
       </ContentWrapper>
-      <PostItemBannner bannerCid={data?.bannerCid} />
+      <PostItemBanner bannerCid={data?.bannerCid} />
     </Wrapper>
   );
 }
