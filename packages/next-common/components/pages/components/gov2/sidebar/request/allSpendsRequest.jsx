@@ -3,6 +3,7 @@ import { useOnchainData } from "next-common/context/post";
 import { useState } from "react";
 import { RequestWrapper } from ".";
 import AssetIcon from "next-common/components/icons/assetIcon";
+import { FormatFiatValue } from "../../business/valueDisplayWithFiatValue";
 
 const separateNumber = 5;
 
@@ -60,6 +61,9 @@ function Spend({ assetKind, amount, symbol, type }) {
         amount={amount}
         symbol={symbol}
         className="text14Medium text-textPrimary"
+        tooltipOtherContent={
+          <FormatFiatValue amount={amount} symbol={symbol} />
+        }
       />
     </div>
   );

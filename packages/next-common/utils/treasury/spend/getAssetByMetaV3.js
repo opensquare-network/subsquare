@@ -1,4 +1,4 @@
-import { KnownPolkadotAssetHubAssets } from "./knownPolkadotAssetHubAssets";
+import { getChainAssets } from "./getChainAssets";
 
 export function getParachainIdV3(location) {
   const { parents, interior } = location || {};
@@ -34,7 +34,7 @@ function isNativeAsset(assetId = {}) {
 
 function getAssetHubAsset(assetId = {}) {
   if (isNativeAsset(assetId)) {
-    return KnownPolkadotAssetHubAssets.find((asset) => asset.type === "native");
+    return getChainAssets().find((asset) => asset.type === "native");
   }
   if (!_isAssetHubX2(assetId)) {
     return null;
@@ -43,7 +43,7 @@ function getAssetHubAsset(assetId = {}) {
   if (x2[0]?.palletInstance !== 50) {
     return null;
   }
-  return KnownPolkadotAssetHubAssets.find(
+  return getChainAssets().find(
     (asset) => asset.assetId === x2[1]?.generalIndex,
   );
 }

@@ -1,9 +1,8 @@
-import { toPrecision } from "next-common/utils";
 import React from "react";
-import ValueDisplay from "next-common/components/valueDisplay";
 import { isNil } from "lodash-es";
 import Link from "next/link";
 import AddressUser from "next-common/components/user/addressUser";
+import ValueDisplayWithFiatValue from "./valueDisplayWithFiatValue";
 
 function getTreasuryBusiness(onchain, decimals, symbol) {
   const {
@@ -16,10 +15,11 @@ function getTreasuryBusiness(onchain, decimals, symbol) {
   if (amount) {
     business.push([
       "Request",
-      <ValueDisplay
+      <ValueDisplayWithFiatValue
         key="request"
-        value={toPrecision(amount, decimals)}
+        amount={amount}
         symbol={symbol}
+        decimals={decimals}
         className="text14Medium"
       />,
     ]);
