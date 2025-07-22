@@ -97,7 +97,7 @@ function ProgressDisplay({ data, type, maxImpactVotes }) {
   return (
     <Progress
       className="mb-2 h-1 w-full"
-      bg="#fff"
+      bg="var(--neutral100)"
       fg={isAye ? "var(--green300)" : "var(--red300)"}
       minWidth="2"
       rounded={false}
