@@ -10,8 +10,6 @@ import PostMetaBase from "next-common/components/detail/container/postMeta/metaB
 import { CommentsContent } from "next-common/components/detail/container/postMeta/comments";
 import Divider from "next-common/components/styled/layout/divider";
 import { SimpleTime } from "next-common/components/postList/common/postItemTime";
-import CollectivesProvider from "next-common/context/collectives/collectives";
-import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 import EvidenceRelatedReferenda from "./evidenceRelatedReferenda";
 
 export default function EvidencePage(props) {
@@ -36,11 +34,7 @@ function EvidencePageContent() {
     <div>
       <EvidenceContent />
       <ArticleActions editable={false} />
-      <ActiveReferendaProvider pallet="fellowshipReferenda">
-        <CollectivesProvider>
-          <EvidenceRelatedReferenda />
-        </CollectivesProvider>
-      </ActiveReferendaProvider>
+      <EvidenceRelatedReferenda />
     </div>
   );
 }

@@ -8,6 +8,8 @@ import tw from "tailwind-styled-components";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
 import useFetch from "next-common/hooks/useFetch";
 import { gov2VotingStates } from "next-common/utils/consts/state";
+import CollectivesProvider from "next-common/context/collectives/collectives";
+import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 
 const CreateReferendumAndVoteArea = tw(CreateReferendumAndVote)`
   !w-full
@@ -63,7 +65,11 @@ export default function EvidenceRelatedReferenda() {
   return (
     <div className="flex flex-col gap-y-4 mt-6">
       <label className="text-textPrimary text14Bold">Related Referendum</label>
-      <EvidenceRelatedReferendaImpl />
+      <ActiveReferendaProvider pallet="fellowshipReferenda">
+        <CollectivesProvider>
+          <EvidenceRelatedReferendaImpl />
+        </CollectivesProvider>
+      </ActiveReferendaProvider>
     </div>
   );
 }
