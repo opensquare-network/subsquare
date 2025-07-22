@@ -11,30 +11,37 @@ import { CommentsContent } from "next-common/components/detail/container/postMet
 import Divider from "next-common/components/styled/layout/divider";
 import { SimpleTime } from "next-common/components/postList/common/postItemTime";
 import CollectivesProvider from "next-common/context/collectives/collectives";
-import CollectivesMembersProvider from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/collectivesMember";
 import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 import EvidenceRelatedReferenda from "./evidenceRelatedReferenda";
 
 export default function EvidencePage(props) {
   return (
     <PostProvider post={props.detail}>
+      <EvidenceLayout
+        seoInfo={{
+          title: props.detail?.title,
+          desc: props.detail?.title,
+        }}
+      >
+        <ContentWithComment>
+          <EvidencePageImpl />
+        </ContentWithComment>
+      </EvidenceLayout>
+    </PostProvider>
+  );
+}
+
+function PageContent() {
+  return (
+    <div>
+      <EvidenceContent />
+      <ArticleActions editable={false} />
       <ActiveReferendaProvider pallet="fellowshipReferenda">
         <CollectivesProvider>
-          <CollectivesMembersProvider>
-            <EvidenceLayout
-              seoInfo={{
-                title: props.detail?.title,
-                desc: props.detail?.title,
-              }}
-            >
-              <ContentWithComment>
-                <EvidencePageImpl />
-              </ContentWithComment>
-            </EvidenceLayout>
-          </CollectivesMembersProvider>
+          <EvidenceRelatedReferenda />
         </CollectivesProvider>
       </ActiveReferendaProvider>
-    </PostProvider>
+    </div>
   );
 }
 
@@ -53,11 +60,7 @@ function EvidencePageImpl() {
         <CommentsContent commentsCount={comments?.total || 0} />
       </PostMetaBase>
       <Divider />
-      <div>
-        <EvidenceContent />
-        <ArticleActions editable={false} />
-        <EvidenceRelatedReferenda />
-      </div>
+      <PageContent />
     </div>
   );
 }
