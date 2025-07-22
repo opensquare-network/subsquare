@@ -10,6 +10,7 @@ import useFetch from "next-common/hooks/useFetch";
 import { gov2VotingStates } from "next-common/utils/consts/state";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
+import CollectivesMembersProvider from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/collectivesMember";
 
 const CreateReferendumAndVoteArea = tw(CreateReferendumAndVote)`
   !w-full
@@ -67,7 +68,9 @@ export default function EvidenceRelatedReferenda() {
       <label className="text-textPrimary text14Bold">Related Referendum</label>
       <ActiveReferendaProvider pallet="fellowshipReferenda">
         <CollectivesProvider>
-          <EvidenceRelatedReferendaImpl />
+          <CollectivesMembersProvider>
+            <EvidenceRelatedReferendaImpl />
+          </CollectivesMembersProvider>
         </CollectivesProvider>
       </ActiveReferendaProvider>
     </div>
