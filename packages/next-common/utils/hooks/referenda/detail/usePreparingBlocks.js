@@ -7,10 +7,14 @@ export default function usePreparingBlocks() {
   const decidingBlockHeight = useDecidingSince();
   const onchainData = useOnchainData();
   const createBlockHeight = onchainData.indexer.blockHeight;
+  const preparePeriod = track.preparePeriod;
 
-  if (decidingBlockHeight) {
+  if (
+    decidingBlockHeight &&
+    preparePeriod > decidingBlockHeight - createBlockHeight
+  ) {
     return decidingBlockHeight - createBlockHeight;
   }
 
-  return track.preparePeriod;
+  return preparePeriod;
 }
