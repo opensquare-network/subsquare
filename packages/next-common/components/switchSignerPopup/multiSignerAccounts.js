@@ -1,5 +1,3 @@
-import { useAsync } from "react-use";
-import nextApi from "next-common/services/nextApi";
 import { noop } from "lodash-es";
 import { useMemo } from "react";
 import Loading from "../loading";
@@ -9,16 +7,16 @@ import MultisigDisplay from "../importMultisig/multisigDisplay";
 import { normalizeAddress } from "next-common/utils/address";
 import { ArrowRight } from "@osn/icons/subsquare";
 import { usePopupOnClose } from "next-common/context/popup";
+import { useMultisigAccounts } from "../multisigs/context/accountsContext";
 
 export default function MultiSignerAccounts({ selected, onSelect = noop }) {
   const onClose = usePopupOnClose();
-  const { value: multisigs, loading: isLoading } = useAsync(
-    async () => await nextApi.fetch("user/multisigs"),
-  );
+
+  const { multisigs, isLoading } = useMultisigAccounts();
 
   const multisigList = useMemo(
     () =>
-      (multisigs?.result || []).map((item) => ({
+      (multisigs || []).map((item) => ({
         ...item,
         multisigAddress: normalizeAddress(item.multisigAddress),
       })),
