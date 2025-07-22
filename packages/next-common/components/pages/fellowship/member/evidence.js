@@ -31,7 +31,7 @@ export default function EvidencePage(props) {
   );
 }
 
-function PageContent() {
+function EvidencePageContent() {
   return (
     <div>
       <EvidenceContent />
@@ -60,7 +60,7 @@ function EvidencePageImpl() {
         <CommentsContent commentsCount={comments?.total || 0} />
       </PostMetaBase>
       <Divider />
-      <PageContent />
+      <EvidencePageContent />
     </div>
   );
 }
