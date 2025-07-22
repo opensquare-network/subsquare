@@ -36,7 +36,7 @@ export function CreateReferendumAndVote({ who, wish, className = "" }) {
       <div
         className={cn("flex items-center justify-end text14Medium", className)}
       >
-        <CreatePromotionReferendumAndVoteButtons who={who} c />
+        <CreatePromotionReferendumAndVoteButtons who={who} />
       </div>
     );
   } else if (wish.toLowerCase() === "retention") {
