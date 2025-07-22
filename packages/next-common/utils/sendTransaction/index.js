@@ -20,6 +20,24 @@ export function wrapWithProxy(api, tx, proxyAddress) {
   return api.tx.proxy.proxy(proxyAddress, null, tx);
 }
 
+export async function wrapWithMultisig(api, tx, multisig, userAddress) {
+  const callData = tx.method.toHex();
+  const result = await tx.paymentInfo(multisig.multisigAddress);
+  const weight = result.weight;
+
+  const otherSigners = multisig.signatories.filter(
+    (signer) => signer !== userAddress,
+  );
+
+  return api.tx.multisig.asMulti(
+    multisig.threshold,
+    otherSigners,
+    null,
+    callData,
+    weight,
+  );
+}
+
 export function getEventData(events, sectionName, methodName) {
   if (!events) {
     return;

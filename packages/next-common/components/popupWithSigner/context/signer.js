@@ -53,6 +53,18 @@ export function SignerContextProvider({ children, extensionAccounts }) {
   const user = useUser();
   const userAddress = user?.address;
   const [proxyAddress, setProxyAddress] = useState(user?.proxyAddress);
+  const [multisig, setMultisig] = useState(user?.multisig);
+
+  const realAddress = useMemo(() => {
+    if (multisig) {
+      return multisig.multisigAddress;
+    }
+    if (proxyAddress) {
+      return proxyAddress;
+    }
+    return userAddress;
+  }, [multisig, proxyAddress, userAddress]);
+
   const signerAccount = useMemo(() => {
     if (!userAddress) {
       return;
@@ -67,9 +79,10 @@ export function SignerContextProvider({ children, extensionAccounts }) {
       ...account,
       name: account.meta?.name,
       proxyAddress,
-      realAddress: proxyAddress || userAddress,
+      multisig,
+      realAddress,
     };
-  }, [extensionAccounts, userAddress, proxyAddress]);
+  }, [userAddress, extensionAccounts, proxyAddress, multisig, realAddress]);
 
   return (
     <SignerContext.Provider
@@ -77,6 +90,7 @@ export function SignerContextProvider({ children, extensionAccounts }) {
         extensionAccounts,
         signerAccount,
         setProxyAddress,
+        setMultisig,
       }}
     >
       {children}

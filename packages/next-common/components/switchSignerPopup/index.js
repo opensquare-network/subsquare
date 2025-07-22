@@ -14,6 +14,7 @@ import Loading from "../loading";
 import { addressEllipsis, cn, isSameAddress } from "next-common/utils";
 import { useMemo } from "react";
 import { noop } from "lodash-es";
+import MultiSignerAccounts from "./multiSignerAccounts";
 
 const DisabledAccountItemWrapper = tw.div`
   flex flex-col gap-[12px] p-[12px] pr-[16px]
@@ -201,18 +202,31 @@ export function ProxiedAccounts({ selected, onSelect = noop }) {
 }
 
 export default function SwitchSignerPopup({ onClose }) {
-  const { signerAccount, setProxyAddress } = useSignerContext();
+  const { signerAccount, setProxyAddress, setMultisig } = useSignerContext();
 
   return (
     <Popup title="Select Address" onClose={onClose}>
       <div className="flex flex-col gap-[24px]">
         <OriginAddress
           selected={signerAccount.proxyAddress}
-          onSelect={() => setProxyAddress()}
+          onSelect={() => {
+            setProxyAddress();
+            setMultisig();
+          }}
         />
         <ProxiedAccounts
           selected={signerAccount.proxyAddress}
-          onSelect={(proxyAddress) => setProxyAddress(proxyAddress)}
+          onSelect={(proxyAddress) => {
+            setProxyAddress(proxyAddress);
+            setMultisig();
+          }}
+        />
+        <MultiSignerAccounts
+          selected={signerAccount.multisig}
+          onSelect={(multisig) => {
+            setProxyAddress();
+            setMultisig(multisig);
+          }}
         />
       </div>
     </Popup>
