@@ -4,10 +4,9 @@ import { cn } from "next-common/utils";
 import TreasurySpendValueDisplay from "../gov2/business/treasurySpendValueDisplay";
 import AssetIcon from "../icons/assetIcon";
 import Tooltip from "../tooltip";
-import useFiatValueTooltipContent from "./common/useFiatValueTooltipContent";
-import { useChainSettings } from "next-common/context/chain";
 import { useMemo } from "react";
 import Flex from "../styled/flex";
+import ValueFiatPriceDisplay from "./common/valueFiatPriceDisplay";
 
 export default function PostListTreasuryAllSpends({
   allSpends,
@@ -37,9 +36,6 @@ export default function PostListTreasuryAllSpends({
 }
 
 function OnlyOneSpend({ spend: { type, amount, symbol }, showFaitPrice }) {
-  let { decimals } = useChainSettings();
-  const fiatValueTooltip = useFiatValueTooltipContent(amount, decimals, symbol);
-
   return (
     <div className="text-textPrimary">
       <TreasurySpendValueDisplay
@@ -47,20 +43,17 @@ function OnlyOneSpend({ spend: { type, amount, symbol }, showFaitPrice }) {
         type={type}
         amount={amount}
         symbol={symbol}
-        tooltipOtherContent={showFaitPrice && fiatValueTooltip}
+        tooltipOtherContent={
+          showFaitPrice && (
+            <ValueFiatPriceDisplay amount={amount} symbol={symbol} />
+          )
+        }
       />
     </div>
   );
 }
 
 const SpendValue = ({ spend, showFaitPrice }) => {
-  let { decimals } = useChainSettings();
-  const fiatValueTooltip = useFiatValueTooltipContent(
-    spend.amount,
-    decimals,
-    spend.symbol,
-  );
-
   return (
     <Flex className="items-center text-textPrimaryContrast text12Medium">
       <TreasurySpendValueDisplay
@@ -73,7 +66,9 @@ const SpendValue = ({ spend, showFaitPrice }) => {
         symbol={spend.symbol}
       />
 
-      {showFaitPrice && fiatValueTooltip}
+      {showFaitPrice && (
+        <ValueFiatPriceDisplay amount={spend.amount} symbol={spend.symbol} />
+      )}
     </Flex>
   );
 };

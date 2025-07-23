@@ -17,7 +17,7 @@ import {
   PostItemTitleValue,
 } from "next-common/components/postList/common";
 import Divider from "next-common/components/styled/layout/divider";
-import { BountyTag } from "next-common/components/tags/state/treasury";
+import { DemocracyProposalTag } from "next-common/components/tags/state/democracy";
 
 export default function PostItem({ data }) {
   return (
@@ -36,7 +36,7 @@ export default function PostItem({ data }) {
             <PostItemMalicious isMalicious={data?.isMalicious} />
             <PostItemAISummary data={data} />
           </Footer>
-          <BountyTag state={data.status} />
+          <DemocracyProposalTag state={data.status} />
         </FooterWrapper>
       </ContentWrapper>
       <PostItemBanner bannerCid={data?.bannerCid} />
