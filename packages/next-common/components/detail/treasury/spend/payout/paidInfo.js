@@ -12,20 +12,19 @@ function BeneficiaryLink({ beneficiary }) {
 }
 
 export default function PayHint() {
-  const { extracted: { beneficiary } = {} } = useOnchainData();
-  const beneficiaryAddress = beneficiary?.address;
-  const beneficiaryChain = beneficiary?.chain;
-
   const state = usePostState();
+  const { extracted } = useOnchainData();
+  const { address: beneficiaryAddress, chain: beneficiaryChain } =
+    extracted?.beneficiary || {};
 
   if (["Paid", "Processed"].includes(state)) {
-    if (!beneficiary) {
+    if (!beneficiaryAddress) {
       return <ClaimInfoText>This spend has been paid.</ClaimInfoText>;
     } else {
       return (
         <ClaimInfoText>
           This spend has been paid.&nbsp;
-          <BeneficiaryLink beneficiary={beneficiary} />
+          <BeneficiaryLink beneficiary={beneficiaryAddress} />
         </ClaimInfoText>
       );
     }
