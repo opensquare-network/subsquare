@@ -28,17 +28,17 @@ function CreateReferendumAndVoteButtonImpl({
   const [showMaybeFastPromotePopup, setShowMaybeFastPromotePopup] =
     useState(false);
   const dispatch = useDispatch();
-  const currentRank = useMemberRank(who);
+  const { rank: evidenceOwnerRank } = useMemberRank(who);
 
   const chain = useChain();
-  const trackName = getPromoteTrackNameFromRank(chain, currentRank + 1);
+  const trackName = getPromoteTrackNameFromRank(chain, evidenceOwnerRank + 1);
 
   const [enactment] = useState({ after: 100 });
   const { fetch: fetchActiveReferenda } = useActiveReferendaContext();
   const { triggerMyVotesChanged } = useMyVotesChangedContext();
 
   const getCreateAndVoteTxFunc = useFellowshipProposalSubmissionTxFunc({
-    rank: currentRank + 1,
+    rank: evidenceOwnerRank + 1,
     who,
     action: "promote",
     trackName,
@@ -58,12 +58,12 @@ function CreateReferendumAndVoteButtonImpl({
   });
 
   const createReferendaAndVote = useCallback(() => {
-    if (currentRank < 3) {
+    if (evidenceOwnerRank < 3) {
       setShowMaybeFastPromotePopup(true);
       return;
     }
     doSubmitCreateAndVote();
-  }, [currentRank, doSubmitCreateAndVote]);
+  }, [evidenceOwnerRank, doSubmitCreateAndVote]);
 
   return (
     <>
