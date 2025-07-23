@@ -117,8 +117,7 @@ function MultisigHint({ multisig }) {
       </>
       <Tooltip
         className="truncate"
-        content="Your transaction will be submitted as a multisig transaction, and
-          other signatories can see them later on subsquare."
+        content="Your transaction will be submitted as a multisig transaction"
       >
         <div className="truncate">
           Your transaction will be submitted as a multisig transaction
