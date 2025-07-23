@@ -16,7 +16,7 @@ import { useMyVotesChangedContext } from "../context/myVotesChanged";
 
 export function useRetainAndVoteTaskCount(items) {
   const api = useContextApi();
-  const myRank = useMyRank();
+  const { rank: myRank } = useMyRank();
   const collectivePallet = useRankedCollectivePallet();
   const [count, setCount] = useState(0);
   const { myVotesChangeTimes } = useMyVotesChangedContext();
@@ -66,7 +66,7 @@ export function useRetainAndVoteTaskCount(items) {
 
 export function usePromoteAndVoteTaskCount(items) {
   const api = useContextApi();
-  const myRank = useMyRank();
+  const { rank: myRank } = useMyRank();
   const collectivePallet = useRankedCollectivePallet();
   const [count, setCount] = useState(0);
   const { myVotesChangeTimes } = useMyVotesChangedContext();
@@ -117,7 +117,7 @@ export function usePromoteAndVoteTaskCount(items) {
 export function useVoteTaskCount(items) {
   const address = useRealAddress();
   const api = useContextApi();
-  const myRank = useMyRank();
+  const { rank: myRank } = useMyRank();
   const referendaPallet = useReferendaFellowshipPallet();
   const collectivePallet = useRankedCollectivePallet();
   const [count, setCount] = useState(0);
