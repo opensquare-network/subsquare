@@ -4,29 +4,27 @@ import { useOnchainData } from "next-common/context/post";
 import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import { useSelector } from "react-redux";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
-import useUndecidingTimeout from "next-common/hooks/referendaPallet/useUndecidingTimeout";
+import useChainOrScanHeight from "next-common/hooks/height";
 
-export function usePreparingBlocks(isFellowship = false) {
+export function usePreparingBlocks() {
   const track = useTrack();
   const decidingSince = useDecidingSince();
   const voteFinishedHeight = useReferendumVotingFinishHeight();
   const onchainData = useOnchainData();
   const referendumStartHeight = onchainData.indexer.blockHeight;
   const preparePeriod = track.preparePeriod;
-  const timeout = useUndecidingTimeout(
-    isFellowship ? "fellowshipReferenda" : "referenda",
-  );
+  const latestHeight = useChainOrScanHeight();
 
   // it means a referendum has deciding phase
   if (decidingSince) {
-    return preparePeriod;
+    return Math.max(preparePeriod, decidingSince - referendumStartHeight);
   }
 
   // no deciding phase, then it maybe TimedOut/Cancelled/Killed
   if (voteFinishedHeight) {
     return voteFinishedHeight - referendumStartHeight;
   } else {
-    return Math.max(preparePeriod, timeout ?? 0);
+    return Math.max(preparePeriod, latestHeight - referendumStartHeight);
   }
 }
 
