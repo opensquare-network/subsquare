@@ -7,7 +7,7 @@ import {
   ContentWrapper,
 } from "next-common/components/postList/styled";
 import {
-  PostItemBannner,
+  PostItemBanner,
   PostItemTitleValue,
   PostItemTrack,
   PostItemUser,
@@ -51,33 +51,31 @@ export default function PostItem({ data }) {
   }
 
   return (
-    <>
-      <Wrapper>
-        <ContentWrapper>
-          <HeadWrapper>
-            <PostItemTitle data={data} href={data?.detailLink} />
-            <PostItemTitleValue data={data} />
-          </HeadWrapper>
-          <Divider margin={12} />
-          <FooterWrapper>
-            <Footer>
-              <PostItemUser data={data} />
-              <PostItemTrack
-                data={data}
-                href={`/fellowship/tracks/${data.track}`}
-              />
-              <PostItemTime data={data} elapseIcon={elapseIcon} />
-              <PostItemCommentCount data={data} />
-              <PostItemVotesSummary data={data} />
-              <PostItemLabel labels={data?.labels} />
-              <PostItemMalicious isMalicious={data?.isMalicious} />
-              <PostItemAISummary data={data} />
-            </Footer>
-            <Gov2ReferendaTag state={data.status} args={stateArgs} />
-          </FooterWrapper>
-        </ContentWrapper>
-        <PostItemBannner bannerCid={data?.bannerCid} />
-      </Wrapper>
-    </>
+    <Wrapper>
+      <ContentWrapper>
+        <HeadWrapper>
+          <PostItemTitle data={data} href={data?.detailLink} />
+          <PostItemTitleValue data={data} />
+        </HeadWrapper>
+        <Divider margin={12} />
+        <FooterWrapper>
+          <Footer>
+            <PostItemUser data={data} />
+            <PostItemTrack
+              data={data}
+              href={`/fellowship/tracks/${data.track}`}
+            />
+            <PostItemTime data={data} elapseIcon={elapseIcon} />
+            <PostItemCommentCount data={data} />
+            <PostItemVotesSummary data={data} />
+            <PostItemLabel labels={data?.labels} />
+            <PostItemMalicious isMalicious={data?.isMalicious} />
+            <PostItemAISummary data={data} />
+          </Footer>
+          <Gov2ReferendaTag state={data.status} args={stateArgs} />
+        </FooterWrapper>
+      </ContentWrapper>
+      <PostItemBanner bannerCid={data?.bannerCid} />
+    </Wrapper>
   );
 }

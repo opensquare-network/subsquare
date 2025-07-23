@@ -14,6 +14,7 @@ export const ReferendaTrackColors = {
   small_spender: "#E9598C99",
   medium_spender: "#E9598C66",
   big_spender: "#E9598C33",
+  wish_for_change: "#00B8D9",
 
   // bifrost
   system_staking_admin: "#5564EA",

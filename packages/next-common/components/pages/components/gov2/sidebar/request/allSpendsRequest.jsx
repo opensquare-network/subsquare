@@ -1,9 +1,9 @@
 import TreasurySpendValueDisplay from "next-common/components/gov2/business/treasurySpendValueDisplay";
-import { isNil } from "lodash-es";
 import { useOnchainData } from "next-common/context/post";
 import { useState } from "react";
 import { RequestWrapper } from ".";
 import AssetIcon from "next-common/components/icons/assetIcon";
+import { FormatFiatValue } from "../../business/valueDisplayWithFiatValue";
 
 const separateNumber = 5;
 
@@ -13,15 +13,6 @@ export default function AllSpendsRequest() {
   const [showMore, setShowMore] = useState(false);
 
   if (!onchain?.allSpends?.length) {
-    return null;
-  }
-
-  if (
-    !onchain?.isTreasury &&
-    !onchain?.isStableTreasury &&
-    isNil(onchain?.value) &&
-    (onchain.allSpends || []).length <= 0
-  ) {
     return null;
   }
 
@@ -70,6 +61,9 @@ function Spend({ assetKind, amount, symbol, type }) {
         amount={amount}
         symbol={symbol}
         className="text14Medium text-textPrimary"
+        tooltipOtherContent={
+          <FormatFiatValue amount={amount} symbol={symbol} />
+        }
       />
     </div>
   );

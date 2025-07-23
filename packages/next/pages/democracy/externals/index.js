@@ -1,4 +1,4 @@
-import PostList from "next-common/components/postList";
+import DemocracyExternalProposalsPostList from "next-common/components/postList/democracyExternalProposalsPostList";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { withCommonProps } from "next-common/lib";
 import { backendApi } from "next-common/services/nextApi";
@@ -22,9 +22,7 @@ export default function DemocracyExternalsPage({ externals, chain, summary }) {
       description="Democracy uses public proposal, external proposal and referenda to manage the governance process."
       summary={<DemocracySummary summary={summary} />}
     >
-      <PostList
-        category={category}
-        title="List"
+      <DemocracyExternalProposalsPostList
         titleCount={externals.total}
         items={items}
         pagination={{

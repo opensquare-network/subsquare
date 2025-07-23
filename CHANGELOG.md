@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+# 5.0.4
+
+date: 2025-07-21
+
+- Extract spend info in indexing scripts and use
+- Display corresponding USD equivalent value for requested native tokens on referenda list and detail page.
+- Refactor:
+    - Refactor appendants related code to reduce coupling.
+    - Refactor list page components for democracy referenda, public/external proposals, council motions list components.
+    - Extract page init code into a dedicated component.
+- Add page titles for account pages like votes, proxies, deposits, etc.
+- Enable Mimir for westend.
+- Show tooltip of the concrete time for identity registrar latest judgment.
+- Fix high CPU usage by the multisig signing popup.
+- Fix treasury spend symbol bug on the kusama network.
+- Fix total account proxy deposits color in dark mode.
+- Fix wish for change track color on the referenda statistics page.
+- Fix the incorrect governance lock reuse balance after switching to a proxy account on votes popup.
+- Add bifrost and basilisk icon on referendum detail page request panel.
+- Style fixes and other small code refactor.
+
 # 5.0.3
 
 date: 2025-07-16

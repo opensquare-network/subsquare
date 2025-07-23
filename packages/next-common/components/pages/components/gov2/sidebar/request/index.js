@@ -6,10 +6,8 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { useOnchainData } from "next-common/context/post";
 import { toPrecisionNumber } from "next-common/utils";
-import {
-  SYMBOL_DECIMALS,
-  ASSET_DETAIL_LINKS,
-} from "next-common/utils/consts/asset";
+import { ASSET_DETAIL_LINKS } from "next-common/utils/consts/asset";
+import ValueDisplayWithFiatValue from "next-common/components/pages/components/gov2/business/valueDisplayWithFiatValue";
 
 export function RequestWrapper({ children }) {
   return (
@@ -69,28 +67,18 @@ function SpendValue({ amount, symbol, decimals }) {
     );
   }
 
-  return <ValueDisplay value={value} symbol={symbol} />;
+  return (
+    <ValueDisplayWithFiatValue
+      symbol={symbol}
+      amount={amount}
+      decimals={decimals}
+    />
+  );
 }
 
 function SpendValues() {
   const { symbol, decimals } = useChainSettings();
   const onchain = useOnchainData();
-
-  if (onchain?.isStableTreasury) {
-    const { spends = [] } = onchain?.stableTreasuryInfo || {};
-    return (
-      <div className="flex flex-col gap-[4px] justify-end">
-        {spends.map((spend, index) => (
-          <SpendValue
-            key={index}
-            amount={spend.amount}
-            symbol={spend.symbol}
-            decimals={SYMBOL_DECIMALS[spend.symbol]}
-          />
-        ))}
-      </div>
-    );
-  }
 
   const localTreasurySpendAmount = onchain?.isTreasury
     ? onchain?.treasuryInfo?.amount
@@ -112,11 +100,7 @@ export default function Request() {
     return null;
   }
 
-  if (
-    !onchain?.isTreasury &&
-    !onchain?.isStableTreasury &&
-    isNil(onchain?.value)
-  ) {
+  if (!onchain?.isTreasury && isNil(onchain?.value)) {
     return null;
   }
 
