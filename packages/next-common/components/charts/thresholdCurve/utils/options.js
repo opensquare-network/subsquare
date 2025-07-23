@@ -21,6 +21,7 @@ const commonConfig = {
 };
 
 function getScaleOptions(maxTicks, scalesX = true, scalesY = true) {
+  const stepSize = Math.round(maxTicks / 3);
   return {
     scales: {
       x: {
@@ -28,8 +29,11 @@ function getScaleOptions(maxTicks, scalesX = true, scalesY = true) {
         display: scalesX,
         ticks: {
           max: maxTicks,
-          stepSize: Math.round(maxTicks / 3),
+          stepSize,
           callback(val) {
+            if (val > maxTicks || val + stepSize > maxTicks) {
+              return maxTicks + "hs";
+            }
             return val + "hs";
           },
         },
