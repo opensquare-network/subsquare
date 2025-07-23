@@ -44,8 +44,8 @@ export default function MultisigDisplay({
         />
         {children}
       </header>
-      <div className="ml-14 gap-y-1 flex flex-col">
-        <Divider className="!my-2" />
+      <Divider className="!my-3" />
+      <div className="ml-[52px] gap-y-1 flex flex-col">
         {formattedMultisig.signatories.map((item) => (
           <div key={item}>
             <AddressUser add={item} className="!text12Medium" avatarSize={20} />
