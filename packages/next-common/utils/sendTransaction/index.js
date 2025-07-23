@@ -1,4 +1,5 @@
 import getOriginForExtension from "next-common/utils/extension/origin";
+import { sortAddresses } from "@polkadot/util-crypto";
 
 export { sendSubstrateTx } from "./sendSubstrateTx";
 export { sendEvmTx } from "./sendEvmTx";
@@ -25,8 +26,8 @@ export async function wrapWithMultisig(api, tx, multisig, userAddress) {
   const result = await tx.paymentInfo(multisig.multisigAddress);
   const weight = result.weight;
 
-  const otherSigners = multisig.signatories.filter(
-    (signer) => signer !== userAddress,
+  const otherSigners = sortAddresses(
+    multisig.signatories.filter((signer) => signer !== userAddress),
   );
 
   return api.tx.multisig.asMulti(
