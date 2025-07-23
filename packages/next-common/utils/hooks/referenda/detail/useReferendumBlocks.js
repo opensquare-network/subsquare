@@ -4,22 +4,28 @@ import { useOnchainData } from "next-common/context/post";
 import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import { useSelector } from "react-redux";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
+import useChainOrScanHeight from "next-common/hooks/height";
 
 export function usePreparingBlocks() {
   const track = useTrack();
-  const decidingBlockHeight = useDecidingSince();
+  const decidingSince = useDecidingSince();
+  const voteFinishedHeight = useReferendumVotingFinishHeight();
   const onchainData = useOnchainData();
-  const createBlockHeight = onchainData.indexer.blockHeight;
+  const referendumStartHeight = onchainData.indexer.blockHeight;
   const preparePeriod = track.preparePeriod;
+  const latestHeight = useChainOrScanHeight();
 
-  if (
-    decidingBlockHeight &&
-    preparePeriod > decidingBlockHeight - createBlockHeight
-  ) {
-    return decidingBlockHeight - createBlockHeight;
+  // it means a referendum has deciding phase
+  if (decidingSince) {
+    return Math.max(preparePeriod, decidingSince - referendumStartHeight);
   }
 
-  return preparePeriod;
+  // no deciding phase, then it maybe TimedOut/Cancelled/Killed
+  if (voteFinishedHeight) {
+    return voteFinishedHeight - referendumStartHeight;
+  } else {
+    return Math.max(preparePeriod, latestHeight - referendumStartHeight);
+  }
 }
 
 export function useDecisionBlocks() {
@@ -35,6 +41,7 @@ export function useDecisionBlocks() {
 }
 
 const oneHour = 3600 * 1000;
+
 export function useBlockSteps() {
   const blockTime = useSelector(blockTimeSelector);
   return oneHour / blockTime; // it means the blocks between 2 dots.
