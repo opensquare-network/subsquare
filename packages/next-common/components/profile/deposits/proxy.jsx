@@ -35,7 +35,7 @@ export function TotalBalance({ balance }) {
   return (
     <div className="inline-flex items-center h-8 mr-3">
       <ValueDisplay
-        className="text14Medium"
+        className="text14Medium text-textPrimary"
         value={toPrecision(balance, decimals)}
         symbol={symbol}
       />
