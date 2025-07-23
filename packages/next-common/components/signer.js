@@ -14,6 +14,7 @@ import useOnChainProxyInfo from "next-common/hooks/useOnChainProxy";
 import { useMyProxied } from "next-common/context/proxy";
 import Tooltip from "./tooltip";
 import { useMultisigAccounts } from "./multisigs/context/accountsContext";
+import { isNil } from "lodash-es";
 
 const Wrapper = styled(GreyPanel)`
   padding: 12px 16px;
@@ -137,12 +138,25 @@ export default function MaybeProxySigner({ noSwitch }) {
   const signerAccount = useSignerAccount();
   const originAccount = useOriginAccount();
 
+  const badge = useMemo(() => {
+    if (isNil(signerAccount.multisig)) {
+      return null;
+    }
+    const { threshold, signatories = [] } = signerAccount.multisig;
+    return `${threshold}/${signatories.length}`;
+  }, [signerAccount.multisig]);
+
   return (
     <Wrapper>
       <div className="w-full">
-        <div className="flex justify-between items-center gap-[12px] w-full">
+        <div className="flex justify-between items-center gap-[12px] w-full relative">
           {originAccount ? (
-            <Account account={originAccount} />
+            <>
+              <Account account={originAccount} />
+              <span className="absolute bottom-0 left-0 text-textPrimaryContrast text12Medium inline-block rounded-xl bg-theme500 translate-x-[5px] px-[0.375rem] box-border whitespace-nowrap">
+                {badge}
+              </span>
+            </>
           ) : (
             <EmptyAccount />
           )}
