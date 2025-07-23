@@ -134,7 +134,13 @@ function ProxyHintForAddress({ address }) {
   return <ProxyHint proxyType={proxyType} />;
 }
 
-function MaybeMultisigAccount({ signerAccount, originAccount }) {
+function MaybeMultisigAccount({ signerAccount }) {
+  const originAccount = useOriginAccount();
+
+  if (!signerAccount) {
+    return null;
+  }
+
   if (signerAccount.multisig) {
     return (
       <MultisigAccount
@@ -150,17 +156,13 @@ function MaybeMultisigAccount({ signerAccount, originAccount }) {
 
 export default function MaybeProxySigner({ noSwitch }) {
   const signerAccount = useSignerAccount();
-  const originAccount = useOriginAccount();
 
   return (
     <Wrapper>
       <div className="w-full">
         <div className="flex justify-between items-center gap-[12px] w-full relative">
-          {originAccount ? (
-            <MaybeMultisigAccount
-              signerAccount={signerAccount}
-              originAccount={originAccount}
-            />
+          {signerAccount ? (
+            <MaybeMultisigAccount signerAccount={signerAccount} />
           ) : (
             <EmptyAccount />
           )}

@@ -33,7 +33,7 @@ export default function MultiSignerAccounts({ selected, onSelect = noop }) {
     } else if (!multisigList.length) {
       return (
         <div className="flex justify-center text14Medium text-textTertiary">
-          No proxied accounts
+          No multisig accounts
         </div>
       );
     } else {
