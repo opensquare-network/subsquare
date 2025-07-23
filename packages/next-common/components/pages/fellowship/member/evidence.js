@@ -10,6 +10,7 @@ import PostMetaBase from "next-common/components/detail/container/postMeta/metaB
 import { CommentsContent } from "next-common/components/detail/container/postMeta/comments";
 import Divider from "next-common/components/styled/layout/divider";
 import { SimpleTime } from "next-common/components/postList/common/postItemTime";
+import EvidenceRelatedReferenda from "./evidenceRelatedReferenda";
 
 export default function EvidencePage(props) {
   return (
@@ -28,6 +29,16 @@ export default function EvidencePage(props) {
   );
 }
 
+function EvidencePageContent() {
+  return (
+    <div>
+      <EvidenceContent />
+      <ArticleActions editable={false} />
+      <EvidenceRelatedReferenda />
+    </div>
+  );
+}
+
 function EvidencePageImpl() {
   const { detail, comments } = usePageProps() || {};
 
@@ -43,10 +54,7 @@ function EvidencePageImpl() {
         <CommentsContent commentsCount={comments?.total || 0} />
       </PostMetaBase>
       <Divider />
-      <div>
-        <EvidenceContent />
-        <ArticleActions editable={false} />
-      </div>
+      <EvidencePageContent />
     </div>
   );
 }

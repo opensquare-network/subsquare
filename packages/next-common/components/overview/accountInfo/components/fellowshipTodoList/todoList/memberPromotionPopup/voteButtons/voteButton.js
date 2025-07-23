@@ -40,12 +40,15 @@ function VoteButtonImpl({
   let tooltipContent = voteAye ? "Vote Aye" : "Vote Nay";
   if (!isReferendumInfoLoading && referendumInfo) {
     try {
-      const track = referendumInfo.unwrap()?.asOngoing?.track;
-      if (!isNil(track)) {
-        const requiredRank = getMinRankOfClass(track, collectivePallet);
-        disabled = requiredRank > rank;
-        if (disabled) {
-          tooltipContent = `Only members with rank >= ${requiredRank} can vote`;
+      const referendum = referendumInfo.unwrap();
+      if (referendum?.isOngoing) {
+        const track = referendum?.asOngoing?.track;
+        if (!isNil(track)) {
+          const requiredRank = getMinRankOfClass(track, collectivePallet);
+          disabled = requiredRank > rank;
+          if (disabled) {
+            tooltipContent = `Only members with rank >= ${requiredRank} can vote`;
+          }
         }
       }
     } catch (e) {

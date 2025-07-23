@@ -10,6 +10,7 @@ export default function EvidenceLink({
   blockHeight,
   eventIndex,
   evidence = "",
+  target = "_blank",
 }) {
   let evidenceId = "";
   if (cid) {
@@ -32,6 +33,7 @@ export default function EvidenceLink({
     <Link
       href={`/fellowship/members/${address}/evidences/${evidenceId}`}
       className={className}
+      target={target}
     >
       {children}
     </Link>
