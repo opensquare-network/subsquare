@@ -33,7 +33,7 @@ export function MultisigAccount({
   const badge = `${multisig.threshold}/${multisig.signatories.length}`;
   const encodeAddress = encodeAddressToChain(address, chain);
   return (
-    <div className={cn("flex items-center gap-x-2", className)}>
+    <div className={cn("flex items-center gap-x-3", className)}>
       <UserAvatar address={encodeAddress} badge={badge} />
       <div className="flex flex-col justify-between">
         <MultisigAddress
