@@ -16,25 +16,43 @@ import { useEffect } from "react";
 import { useMultisigAccounts } from "./context/accountsContext";
 import { encodeAddressToChain } from "next-common/services/address";
 import MultisigAddress from "../user/multisigAddress";
+import { cn } from "next-common/utils";
+import TextTertiary from "../styled/paragraph/textTertiary";
 
-export function MultisigAccount({ multisig }) {
+export function MultisigAccount({
+  multisig,
+  showCopyableAddress = true,
+  className = "",
+}) {
   const chain = useChain();
   const isMobile = useIsMobile();
-  if (!multisig?.multisigAddress) {
+  const address = multisig?.multisigAddress || multisig?.address;
+  if (!address) {
     return null;
   }
   const badge = `${multisig.threshold}/${multisig.signatories.length}`;
-  const encodeAddress = encodeAddressToChain(multisig.multisigAddress, chain);
+  const encodeAddress = encodeAddressToChain(address, chain);
   return (
-    <div className="flex items-center gap-x-2">
+    <div className={cn("flex items-center gap-x-2", className)}>
       <UserAvatar address={encodeAddress} badge={badge} />
       <div className="flex flex-col justify-between">
         <MultisigAddress
           address={encodeAddress}
           accountName={multisig.name}
           showAvatar={false}
+          className="text14Medium text-textPrimary"
         />
-        <CopyableAddress address={encodeAddress} ellipsisAddress={isMobile} />
+        {showCopyableAddress ? (
+          <CopyableAddress
+            className="!text12Medium text-textTertiary break-all"
+            address={encodeAddress}
+            ellipsisAddress={isMobile}
+          />
+        ) : (
+          <TextTertiary className="!text12Medium text-textTertiary break-all">
+            {encodeAddress}
+          </TextTertiary>
+        )}
       </div>
     </div>
   );

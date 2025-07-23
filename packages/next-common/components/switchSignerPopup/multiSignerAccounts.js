@@ -48,6 +48,7 @@ export default function MultiSignerAccounts({ selected, onSelect = noop }) {
               <MultisigDisplay
                 key={multisig.multisigAddress}
                 multisig={multisig}
+                showCopyableAddress={false}
                 onClick={() => {
                   onSelect(multisig);
                   onClose?.();
