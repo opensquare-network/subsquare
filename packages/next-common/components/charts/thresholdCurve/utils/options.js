@@ -7,6 +7,7 @@ import {
   abbreviateBigNumber,
   getEffectiveNumbers,
 } from "next-common/utils/viewfuncs";
+import { useDecisionIndex } from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
 
 const commonConfig = {
   clip: false,
@@ -21,7 +22,6 @@ const commonConfig = {
 };
 
 function getScaleOptions(maxTicks, scalesX = true, scalesY = true) {
-  const stepSize = Math.round(maxTicks / 3);
   return {
     scales: {
       x: {
@@ -29,11 +29,8 @@ function getScaleOptions(maxTicks, scalesX = true, scalesY = true) {
         display: scalesX,
         ticks: {
           max: maxTicks,
-          stepSize,
+          stepSize: Math.round(maxTicks / 3),
           callback(val) {
-            if (val > maxTicks || val + stepSize > maxTicks) {
-              return maxTicks + "hs";
-            }
             return val + "hs";
           },
         },
@@ -157,31 +154,89 @@ function handleVoteTooltipLabel(tooltipItem, labelType, chainSettings) {
 
 export default function useDetailPageOptions(labels = [], datasets) {
   const chainSettings = useChainSettings();
+  const decisionIndex = useDecisionIndex();
   const commonPluginsConfig = useCommonPluginsConfig();
-
-  let config = getDetailConfig(labels, commonPluginsConfig, {
-    label(tooltipItem) {
-      const { dataset } = tooltipItem;
-
-      if (dataset.label === "Approval") {
-        return handleTooltipLabel(tooltipItem, "Approval", datasets);
-      } else if (dataset.label === "Support") {
-        return handleTooltipLabel(tooltipItem, "Support", datasets);
+  const { orange400 } = useThemeSetting();
+  const dividerLine = decisionIndex
+    ? {
+        type: "line",
+        xMin: decisionIndex,
+        xMax: decisionIndex,
+        yMin: 0,
+        yMax: "max",
+        borderColor: orange400,
+        borderWidth: 1,
+        borderDash: [5, 5],
       }
-      return null;
-    },
-    afterBody(context) {
-      const nayTooltipItem = find(context, { dataset: { label: "Nay" } });
-      const ayeTooltipItem = find(context, { dataset: { label: "Aye" } });
+    : null;
 
-      return [
-        ayeTooltipItem &&
-          handleVoteTooltipLabel(ayeTooltipItem, "Aye", chainSettings),
-        nayTooltipItem &&
-          handleVoteTooltipLabel(nayTooltipItem, "Nay", chainSettings),
-      ].filter(Boolean);
+  let config = {
+    ...commonConfig,
+    ...getScaleOptions(labels.length, false, true),
+    plugins: {
+      annotation: {
+        annotations: {
+          dividerLine,
+        },
+      },
+      ...commonPluginsConfig,
+      tooltip: {
+        mode: "index",
+        intersect: false,
+        displayColors: false,
+        callbacks: merge(
+          {
+            title: function title(values) {
+              const { dataIndex: hs } = values[0];
+
+              if (hs < decisionIndex) {
+                return `Preparing Time: ${formatHours(hs)}`;
+              }
+              const x = hs - decisionIndex;
+
+              const days = Math.floor(x / 24);
+              const restHs = x - days * 24;
+              let result = `Deciding Time: ${formatHours(x)}`;
+              if (days > 0) {
+                result += ` (${formatDays(days)} ${
+                  restHs > 0 ? formatHours(restHs) : ""
+                })`;
+              }
+
+              return result;
+            },
+          },
+          {
+            label(tooltipItem) {
+              const { dataset } = tooltipItem;
+
+              if (dataset.label === "Approval") {
+                return handleTooltipLabel(tooltipItem, "Approval", datasets);
+              } else if (dataset.label === "Support") {
+                return handleTooltipLabel(tooltipItem, "Support", datasets);
+              }
+              return null;
+            },
+            afterBody(context) {
+              const nayTooltipItem = find(context, {
+                dataset: { label: "Nay" },
+              });
+              const ayeTooltipItem = find(context, {
+                dataset: { label: "Aye" },
+              });
+
+              return [
+                ayeTooltipItem &&
+                  handleVoteTooltipLabel(ayeTooltipItem, "Aye", chainSettings),
+                nayTooltipItem &&
+                  handleVoteTooltipLabel(nayTooltipItem, "Nay", chainSettings),
+              ].filter(Boolean);
+            },
+          },
+        ),
+      },
     },
-  });
+  };
 
   const ayeDataset = find(datasets, { label: "Aye" });
   const nayDataset = find(datasets, { label: "Nay" });
