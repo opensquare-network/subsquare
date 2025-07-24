@@ -7,8 +7,10 @@ import { useDecidingEndHeight } from "next-common/context/post/gov2/decidingPerc
 import { referendaTallyHistorySelector } from "next-common/store/reducers/referenda/tallyHistory";
 import { isEmpty } from "lodash-es";
 import useChainOrScanHeight from "next-common/hooks/height";
-import { useBlockSteps } from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
-import { useOnchainData } from "next-common/context/post";
+import {
+  useBeginHeight,
+  useBlockSteps,
+} from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
 
 function calcFromOneTallyData(tally) {
   const { ayes, nays, support, issuance } = tally;
@@ -55,17 +57,15 @@ export function calcDataFromTallyHistory(
     }
 
     let { currentSupport, currentApprove } = calcFromOneTallyData(tally.tally);
-    if (decidingSince >= iterHeight) {
+    if (decidingSince > iterHeight) {
       historySupportData.push(null);
       historyApprovalData.push(null);
-      historyAyesData.push(null);
-      historyNaysData.push(null);
     } else {
       historySupportData.push(currentSupport);
       historyApprovalData.push(currentApprove);
-      historyAyesData.push(tally.tally.ayes);
-      historyNaysData.push(tally.tally.nays);
     }
+    historyAyesData.push(tally.tally.ayes);
+    historyNaysData.push(tally.tally.nays);
     iterHeight += blockStep;
   }
 
@@ -94,12 +94,12 @@ export default function useHistoryTallyValueData() {
   const decidingEndOrLatestHeight = useDecidingEndHeight();
   const latestHeight = useChainOrScanHeight();
   const blockStep = useBlockSteps();
-  const chainData = useOnchainData();
+  const beginHeight = useBeginHeight();
 
   return useMemo(() => {
     return calcDataFromTallyHistory(
       tallyHistory,
-      chainData.indexer.blockHeight,
+      beginHeight,
       decidingSince,
       decidingEndOrLatestHeight,
       latestHeight,
@@ -108,7 +108,7 @@ export default function useHistoryTallyValueData() {
   }, [
     tallyHistory,
     decidingSince,
-    chainData.indexer.blockHeight,
+    beginHeight,
     decidingEndOrLatestHeight,
     latestHeight,
     blockStep,
