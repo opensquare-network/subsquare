@@ -16,7 +16,7 @@ import useInnerPoints from "next-common/components/charts/thresholdCurve/hooks/u
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import { useRef } from "react";
 import { useDecisionIndex } from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
-import CustomXTickLabels from "./referendaCurveChartCustomXTickLabels";
+import CustomXTickLabels from "./curveChartCustomXTickLabels";
 
 // used for detail page curve chart
 export default function ReferendaCurveChart({ showAyeNay }) {
