@@ -2,15 +2,15 @@ import { useDecidingSince } from "next-common/context/post/gov2/referendum";
 import { useSelector } from "react-redux";
 import { last } from "lodash-es";
 import BigNumber from "bignumber.js";
+import {
+  useBeginHeight,
+  useBlockSteps,
+} from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
 import { useMemo } from "react";
 import { useDecidingEndHeight } from "next-common/context/post/gov2/decidingPercentage";
 import { referendaTallyHistorySelector } from "next-common/store/reducers/referenda/tallyHistory";
 import { isEmpty } from "lodash-es";
 import useChainOrScanHeight from "next-common/hooks/height";
-import {
-  useBeginHeight,
-  useBlockSteps,
-} from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
 
 function calcFromOneTallyData(tally) {
   const { ayes, nays, support, issuance } = tally;
@@ -28,7 +28,7 @@ function calcFromOneTallyData(tally) {
 
 export function calcDataFromTallyHistory(
   tallyHistory,
-  preparingSince,
+  beginHeight,
   decidingSince,
   decidingEnd,
   latestHeight,
@@ -38,7 +38,7 @@ export function calcDataFromTallyHistory(
   let historyApprovalData = [];
   let historyAyesData = [];
   let historyNaysData = [];
-  if (!tallyHistory || !preparingSince || isEmpty(tallyHistory)) {
+  if (!tallyHistory || !beginHeight || isEmpty(tallyHistory)) {
     return {
       historySupportData,
       historyApprovalData,
@@ -47,7 +47,7 @@ export function calcDataFromTallyHistory(
     };
   }
 
-  let iterHeight = preparingSince;
+  let iterHeight = beginHeight;
   while (iterHeight <= decidingEnd) {
     const tally = tallyHistory.findLast(
       (tally) => tally.indexer.blockHeight <= iterHeight,

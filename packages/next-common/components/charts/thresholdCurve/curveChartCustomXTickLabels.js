@@ -1,13 +1,14 @@
+import { useDecisionIndex } from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
 import { useMemo, useRef } from "react";
 
 const PREPARING_THRESHOLD = 60;
 
 export default function CustomXTickLabels({
-  decisionIndex = 0,
   labelsLength = 0,
   showAyeNay = false,
   chartArea = {},
 }) {
+  const decisionIndex = useDecisionIndex();
   const preparingRef = useRef(null);
 
   // tick bar style

@@ -15,7 +15,6 @@ import { set } from "lodash-es";
 import useInnerPoints from "next-common/components/charts/thresholdCurve/hooks/useInnerPoints";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import { useRef } from "react";
-import { useDecisionIndex } from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
 import CustomXTickLabels from "./curveChartCustomXTickLabels";
 
 // used for detail page curve chart
@@ -23,7 +22,6 @@ export default function ReferendaCurveChart({ showAyeNay }) {
   const { width } = useWindowSize();
   const chartRef = useRef();
   const { labels, supportData, approvalData } = useReferendumCurveData();
-  const decisionIndex = useDecisionIndex();
   const supportCurveConfig = useSupportThresholdDatasetConfig(supportData);
   const approvalCurveConfig = useApprovalThresholdDatasetConfig(approvalData);
 
@@ -77,7 +75,6 @@ export default function ReferendaCurveChart({ showAyeNay }) {
       <CustomXTickLabels
         showAyeNay={showAyeNay}
         chartArea={chartRef.current?.chartArea}
-        decisionIndex={decisionIndex}
         labelsLength={labels.length}
       />
     </div>
