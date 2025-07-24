@@ -15,7 +15,6 @@ import {
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
 import { usePopupParams } from "../popupWithSigner/context";
-import { useMultisigAccounts } from "../multisigs/context/accountsContext";
 import useMulitisigSubmitError from "./hooks/useMulitisigSubmitError";
 import { MultisigErrorMessage } from "./styled";
 import { FieldTooltipTitle } from "../styled/fieldTooltipTitle";
@@ -28,8 +27,7 @@ export default function CreateMultisigContent() {
   const { signatories } = useSignatories();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
-  const { onClose } = usePopupParams();
-  const { refresh } = useMultisigAccounts();
+  const { onClose, onRefresh } = usePopupParams();
   const submitSignatories = useMemo(
     () => [address, ...signatories],
     [address, signatories],
@@ -60,9 +58,9 @@ export default function CreateMultisigContent() {
         if (error) {
           throw new Error(error.message);
         }
-        onClose?.();
+        onRefresh?.();
         dispatch(newSuccessToast("Created successfully"));
-        refresh?.();
+        onClose?.();
       } catch (error) {
         dispatch(newErrorToast(error.message));
       } finally {
@@ -74,9 +72,9 @@ export default function CreateMultisigContent() {
       submitSignatories,
       threshold,
       name,
-      onClose,
+      onRefresh,
       dispatch,
-      refresh,
+      onClose,
     ],
   );
 
