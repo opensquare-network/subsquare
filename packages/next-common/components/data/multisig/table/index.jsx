@@ -7,9 +7,8 @@ import useQueryAllMultisigData from "next-common/components/data/multisig/hooks/
 import { MapDataList } from "next-common/components/dataList";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import { useRouter } from "next/router";
-import useMyRelatedSwitch from "../../common/useMyRelatedSwitch";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useSearchComponent from "../../common/useSearchComponent";
+import useQueryTypeSelect from "../../common/useQueryTypeSelect";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { useNavCollapsed } from "next-common/context/nav";
 import { cn } from "next-common/utils";
@@ -21,13 +20,13 @@ export default function MultisigExplorerTable() {
   const [navCollapsed] = useNavCollapsed();
   const router = useRouter();
   const [dataList, setDataList] = useState([]);
-  // component: MyRelatedSwitchComponent
-  const { isOn: isMyRelated } = useMyRelatedSwitch();
   const { search = "", component: SearchBoxComponent } = useSearchComponent({
-    isMyRelated,
-    placeholder: "Search by address",
+    placeholder: "Address",
+    className: "h-7 my-0",
+    size: "small",
   });
-  const userAddress = useRealAddress();
+  const { queryType, component: QueryTypeSelectComponent } =
+    useQueryTypeSelect("account");
   const [totalCount, setTotalCount] = useState(0);
   const [loading, setLoading] = useState(true);
 
@@ -36,15 +35,12 @@ export default function MultisigExplorerTable() {
     defaultPageSize,
   );
 
-  const searchAccount = useMemo(() => {
-    return isMyRelated ? userAddress : search;
-  }, [isMyRelated, userAddress, search]);
-
-  const { data, loading: isLoading } = useQueryAllMultisigData(
-    searchAccount,
-    (page - 1) * defaultPageSize,
-    defaultPageSize,
-  );
+  const { data, loading: isLoading } = useQueryAllMultisigData({
+    search,
+    queryType,
+    offset: (page - 1) * defaultPageSize,
+    limit: defaultPageSize,
+  });
 
   const total = useMemo(() => {
     if (data?.offset === 0 && data?.multisigs.length === 0) {
@@ -77,6 +73,15 @@ export default function MultisigExplorerTable() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
+  useEffect(() => {
+    if (!router.query.search) {
+      return;
+    }
+
+    addRouterQuery(router, "page", 1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [queryType]);
+
   return (
     <div className="flex flex-col gap-y-4">
       <div>
@@ -87,9 +92,11 @@ export default function MultisigExplorerTable() {
               {!loading && total}
             </span>
           </span>
-          {/* {MyRelatedSwitchComponent} */}
+          <div className="flex flex-row items-center gap-y-4">
+            {QueryTypeSelectComponent}
+            {SearchBoxComponent}
+          </div>
         </TitleContainer>
-        {SearchBoxComponent}
       </div>
       <SecondaryCard className="space-y-2">
         <ScrollerX>
