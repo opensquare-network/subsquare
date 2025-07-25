@@ -9,6 +9,9 @@ import {
 } from "next-common/utils/sendTransaction";
 import { useContextApi } from "next-common/context/api";
 import { useSendTransaction } from "next-common/hooks/useSendTransaction";
+import useWraperTxCallback, {
+  useMultisigCallback,
+} from "./useWraperTxCallback";
 
 export default function useTxSubmission({
   getTxFunc = noop,
@@ -22,6 +25,8 @@ export default function useTxSubmission({
   const api = useContextApi();
   const signerAccount = useSignerAccount();
   const { sendTxFunc, isSubmitting } = useSendTransaction();
+  const wraperTxCallback = useWraperTxCallback();
+  const multisigCallback = useMultisigCallback();
 
   const doSubmit = useCallback(async () => {
     if (!api) {
@@ -61,7 +66,7 @@ export default function useTxSubmission({
       api,
       tx,
       onSubmitted,
-      onInBlock,
+      onInBlock: wraperTxCallback(onInBlock, multisigCallback?.onInBlock),
       onFinalized,
       onCancelled,
       onTxError,
@@ -77,6 +82,8 @@ export default function useTxSubmission({
     onFinalized,
     onCancelled,
     onTxError,
+    wraperTxCallback,
+    multisigCallback,
   ]);
 
   return {
