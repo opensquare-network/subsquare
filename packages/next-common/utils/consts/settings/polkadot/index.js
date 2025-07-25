@@ -106,6 +106,14 @@ const polkadot = {
     startFrom: 1584,
   },
   supportWalletconnect: true,
+  parachainEndpoints: {
+    hydration: [
+      "wss://rpc.hydradx.cloud",
+      "wss://hydradx.paras.ibp.network",
+      "wss://hydration.dotters.network",
+      "wss://hydradx-rpc.dwellir.com",
+    ],
+  },
 };
 
 export default polkadot;
