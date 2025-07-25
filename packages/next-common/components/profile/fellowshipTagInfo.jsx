@@ -5,7 +5,7 @@ import { CommonTag } from "../tags/state/styled";
 import { getRankColor } from "next-common/utils/fellowship/getRankColor";
 
 function FellowshipTagInfoImpl({ address, pallet, type }) {
-  const rank = useFellowshipMemberRank(address, pallet);
+  const { rank } = useFellowshipMemberRank(address, pallet);
 
   if (isNil(rank)) {
     return null;

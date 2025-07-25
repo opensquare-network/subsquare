@@ -12,12 +12,14 @@ import { isNil } from "lodash-es";
 
 export function usePromotionButtonState(who) {
   const collectivePallet = useRankedCollectivePallet();
-  const myRank = useMyRank();
-  const currentRank = useMemberRank(who);
+  const { rank: myRank, isLoading: isMyRankLoading } = useMyRank();
+  const { rank: evidenceOwnerRank, isLoading: isEvidenceOwnerRankLoading } =
+    useMemberRank(who);
+  const isLoading = isMyRankLoading || isEvidenceOwnerRankLoading;
 
   let tooltipContent = "Create a new referendum and vote";
-  let disabled = false;
-  if (currentRank >= 7) {
+  let disabled = isLoading; // Disable button while loading data
+  if (evidenceOwnerRank >= 7) {
     tooltipContent =
       "There are no corresponding tracks to promote members with rank >= 7";
     disabled = true;
@@ -25,7 +27,7 @@ export function usePromotionButtonState(who) {
     tooltipContent = "Only rank >= 3 can create a referendum and then vote";
     disabled = true;
   } else {
-    const trackId = getTrackToPromoteToRank(currentRank + 1);
+    const trackId = getTrackToPromoteToRank(evidenceOwnerRank + 1);
     const requiredRank = getMinRankOfClass(trackId, collectivePallet);
     if (requiredRank > myRank) {
       tooltipContent = `Only rank >= ${requiredRank} can create a referendum and then vote`;

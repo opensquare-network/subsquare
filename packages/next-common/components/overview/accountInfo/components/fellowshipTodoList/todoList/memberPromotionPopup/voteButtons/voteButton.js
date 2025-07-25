@@ -21,7 +21,10 @@ function VoteButtonImpl({
   const api = useContextApi();
   const collectivePallet = useRankedCollectivePallet();
   const realAddress = useRealAddress();
-  const rank = useFellowshipMemberRank(realAddress, collectivePallet);
+  const { rank: myRank, isLoading: isMyRankLoading } = useFellowshipMemberRank(
+    realAddress,
+    collectivePallet,
+  );
   const { result: referendumInfo, loading: isReferendumInfoLoading } =
     useSubFellowshipReferendum(referendumIndex);
   const { onInBlock = noop, onFinalized = noop } = callbacks || {};
@@ -36,16 +39,19 @@ function VoteButtonImpl({
     onFinalized,
   });
 
-  let disabled = false;
+  let disabled = isMyRankLoading; // Disable if loading member rank
   let tooltipContent = voteAye ? "Vote Aye" : "Vote Nay";
   if (!isReferendumInfoLoading && referendumInfo) {
     try {
-      const track = referendumInfo.unwrap()?.asOngoing?.track;
-      if (!isNil(track)) {
-        const requiredRank = getMinRankOfClass(track, collectivePallet);
-        disabled = requiredRank > rank;
-        if (disabled) {
-          tooltipContent = `Only members with rank >= ${requiredRank} can vote`;
+      const referendum = referendumInfo.unwrap();
+      if (referendum?.isOngoing) {
+        const track = referendum?.asOngoing?.track;
+        if (!isNil(track)) {
+          const requiredRank = getMinRankOfClass(track, collectivePallet);
+          disabled = requiredRank > myRank;
+          if (disabled) {
+            tooltipContent = `Only members with rank >= ${requiredRank} can vote`;
+          }
         }
       }
     } catch (e) {

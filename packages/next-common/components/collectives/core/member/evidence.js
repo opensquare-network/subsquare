@@ -3,11 +3,11 @@ import Tooltip from "next-common/components/tooltip";
 import CoreFellowshipMemberInfoWrapper from "next-common/components/collectives/core/member/infoWrapper";
 import CoreFellowshipMemberInfoTitle from "next-common/components/collectives/core/member/title";
 import useSubCoreFellowshipEvidence from "next-common/hooks/collectives/useSubCoreFellowshipEvidence";
-import { useState } from "react";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import AvatarAndAddress from "./avatarAndAddress";
 import FellowshipRank from "next-common/components/fellowship/rank";
 import FellowshipEvidenceContent from "../evidenceContent";
+import EvidenceLink from "next-common/components/profile/fellowship/core/evidence/link";
 
 export function CoreFellowshipMemberEvidenceContent({
   member,
@@ -15,9 +15,7 @@ export function CoreFellowshipMemberEvidenceContent({
   wish,
   evidence,
 }) {
-  const [detailOpen, setDetailOpen] = useState(false);
-  const { address, rank } = member || {};
-  const { isActive } = member?.status || {};
+  const { address } = member || {};
 
   let content = <span className="text-textTertiary">-</span>;
 
@@ -29,34 +27,18 @@ export function CoreFellowshipMemberEvidenceContent({
         <Tooltip content="Wish">
           <span className="text-textPrimary capitalize">{wish}</span>
         </Tooltip>
-        <span
-          role="button"
+        <EvidenceLink
+          address={address}
+          evidence={evidence}
           className="text-theme500 text12Medium inline-flex items-center"
-          onClick={() => {
-            setDetailOpen(true);
-          }}
         >
           Evidence
-        </span>
+        </EvidenceLink>
       </>
     );
   }
 
-  return (
-    <>
-      {content}
-      {detailOpen && (
-        <EvidenceDetailPopup
-          address={address}
-          rank={rank}
-          isActive={isActive}
-          wish={wish}
-          evidence={evidence}
-          onClose={() => setDetailOpen(false)}
-        />
-      )}
-    </>
-  );
+  return content;
 }
 
 export default function EvidenceDetailPopup({

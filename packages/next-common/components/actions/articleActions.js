@@ -16,21 +16,27 @@ import { useMyUpVote } from "next-common/context/post/useMyUpVote";
 import useCanEditPost from "next-common/hooks/useCanEditPost";
 import useShouldUseSimaPostEdit from "next-common/sima/hooks/useShouldUseSimaPostEdit";
 
-function SimaPostContextMenu({ isAuthor, setIsEdit }) {
+function SimaPostContextMenu({ isAuthor, setIsEdit, editable = true }) {
   const canEdit = useCanEditPost();
   return (
     <PostContextMenu
       isAuthor={isAuthor}
-      editable={canEdit}
+      editable={canEdit && editable}
       setIsEdit={setIsEdit}
     />
   );
 }
 
-function MaybeSimaPostContextMenu({ isAuthor, setIsEdit }) {
+function MaybeSimaPostContextMenu({ isAuthor, setIsEdit, editable = true }) {
   const isSima = useShouldUseSimaPostEdit();
   if (isSima) {
-    return <SimaPostContextMenu isAuthor={isAuthor} setIsEdit={setIsEdit} />;
+    return (
+      <SimaPostContextMenu
+        isAuthor={isAuthor}
+        setIsEdit={setIsEdit}
+        editable={editable}
+      />
+    );
   }
   return (
     <PostContextMenu
@@ -112,14 +118,22 @@ export function CommonArticleActions({ extraActions, contextMenu }) {
   );
 }
 
-export default function ArticleActions({ setIsEdit, extraActions }) {
+export default function ArticleActions({
+  setIsEdit,
+  extraActions,
+  editable = true,
+}) {
   const isAuthor = useIsPostAuthor();
 
   return (
     <CommonArticleActions
       extraActions={extraActions}
       contextMenu={
-        <MaybeSimaPostContextMenu isAuthor={isAuthor} setIsEdit={setIsEdit} />
+        <MaybeSimaPostContextMenu
+          isAuthor={isAuthor}
+          setIsEdit={setIsEdit}
+          editable={editable}
+        />
       }
     />
   );

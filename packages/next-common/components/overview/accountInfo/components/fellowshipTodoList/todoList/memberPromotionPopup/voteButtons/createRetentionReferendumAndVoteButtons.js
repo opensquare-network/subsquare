@@ -12,19 +12,21 @@ import { SecondaryButtonWrapper } from "./referendumVoteButtons";
 
 export function useRetentionButtonState(who) {
   const collectivePallet = useRankedCollectivePallet();
-  const myRank = useMyRank();
-  const currentRank = useMemberRank(who);
+  const { rank: myRank, isLoading: isMyRankLoading } = useMyRank();
+  const { rank: evidenceOwnerRank, isLoading: isEvidenceOwnerRankLoading } =
+    useMemberRank(who);
+  const isLoading = isMyRankLoading || isEvidenceOwnerRankLoading;
 
   let tooltipContent = "Create a new referendum and vote";
-  let disabled = false;
-  if (currentRank <= 0) {
+  let disabled = isLoading; // Disable button while loading data
+  if (evidenceOwnerRank <= 0) {
     tooltipContent = "Rank retention is not allowed for candidates";
     disabled = true;
   } else if (isNil(myRank) || myRank < 3) {
     tooltipContent = "Only rank >= 3 can create a referendum and then vote";
     disabled = true;
   } else {
-    const trackId = getTrackToRetainAtRank(currentRank);
+    const trackId = getTrackToRetainAtRank(evidenceOwnerRank);
     const requiredRank = getMinRankOfClass(trackId, collectivePallet);
     if (requiredRank > myRank) {
       tooltipContent = `Only rank >= ${requiredRank} can create a referendum and then vote`;

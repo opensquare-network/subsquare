@@ -58,7 +58,7 @@ export default function useFellowshipEvidenceTemplate(wish) {
   const collectivePallet = useRankedCollectivePallet();
   const address = signerAccount?.realAddress;
   const name = signerAccount?.meta?.name || address || "Name of the proposer";
-  const rank = useFellowshipMemberRank(address, collectivePallet);
+  const { rank } = useFellowshipMemberRank(address, collectivePallet);
 
   return useMemo(() => {
     if (!rank || !wish || !address) {
