@@ -11,10 +11,7 @@ import AllianceOverviewSummary from "next-common/components/summary/allianceOver
 import CentrifugeOverviewSummary from "next-common/components/summary/centrifugeOverviewSummary";
 import OffChainVoting from "next-common/components/summary/externalInfo/offChainVoting";
 import Bounties from "next-common/components/summary/externalInfo/bounties";
-import {
-  hasDefinedBounties,
-  hasDefinedOffChainVoting,
-} from "next-common/utils/summaryExternalInfo";
+import { hasDefinedBounties } from "next-common/utils/summaryExternalInfo";
 import { HeadContent, TitleExtra } from "next-common/components/overview";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchRecentProposalsProps } from "next-common/services/serverSide/recentProposals";
@@ -29,6 +26,7 @@ import { DailyExtrinsicsProvider } from "next-common/context/centrifuge/DailyExt
 import { TokenPricesProvider } from "next-common/context/centrifuge/tokenPrices";
 import { backendApi } from "next-common/services/nextApi";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import { votingSpace } from "next-common/utils/opensquareVoting";
 
 const ConfirmingReferendaStats = dynamicClientOnly(() =>
   import("next-common/components/overview/confirmingReferendaStats"),
@@ -42,7 +40,7 @@ function ExternalInfo() {
   const { modules } = useChainSettings();
 
   if (
-    !hasDefinedOffChainVoting() &&
+    !votingSpace &&
     !hasDefinedBounties() &&
     !modules?.referenda &&
     !modules?.coretime
