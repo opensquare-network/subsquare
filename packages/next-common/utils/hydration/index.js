@@ -1,6 +1,6 @@
 import { getChainApi } from "../getChainApi";
 import getChainSettings from "../consts/settings";
-import { CHAIN } from "next-common/utils/constants";
+import Chains from "next-common/utils/consts/chains";
 
 let api = null;
 
@@ -9,8 +9,8 @@ export async function getHydrationApi() {
     return api;
   }
 
-  const { parachainEndpoints } = getChainSettings(CHAIN);
-  const hydrationEndpoints = parachainEndpoints?.hydration;
+  const { endpoints } = getChainSettings(Chains.hydradx);
+  const hydrationEndpoints = endpoints?.map((item) => item.url);
   if (!hydrationEndpoints) {
     return null;
   }

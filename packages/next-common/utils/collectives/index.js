@@ -1,6 +1,6 @@
 import { getChainApi } from "../getChainApi";
-import { getChainSettings } from "../consts/settings";
-import { CHAIN } from "next-common/utils/constants";
+import getChainSettings from "../consts/settings";
+import Chains from "next-common/utils/consts/chains";
 
 let api = null;
 
@@ -9,8 +9,8 @@ export async function getCollectivesApi() {
     return api;
   }
 
-  const { parachainEndpoints } = getChainSettings(CHAIN);
-  const collectivesEndpoints = parachainEndpoints?.collectives;
+  const { endpoints } = getChainSettings(Chains.collectives);
+  const collectivesEndpoints = endpoints?.map((item) => item.url);
   if (!collectivesEndpoints) {
     return null;
   }
