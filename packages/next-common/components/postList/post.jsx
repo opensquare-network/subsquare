@@ -147,7 +147,6 @@ export default function Post({ data, href, type }) {
   const currentChain = useChain();
   const isDemocracyCollective = [
     businessCategory.collective,
-    businessCategory.tcProposals,
     businessCategory.financialMotions,
     businessCategory.advisoryMotions,
     businessCategory.treasuryCouncilMotions,
@@ -169,7 +168,6 @@ export default function Post({ data, href, type }) {
   if (
     [
       businessCategory.financialMotions,
-      businessCategory.tcProposals,
       businessCategory.advisoryMotions,
       businessCategory.allianceMotions,
       businessCategory.treasuryCouncilMotions,
