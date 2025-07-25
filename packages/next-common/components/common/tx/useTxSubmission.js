@@ -53,7 +53,9 @@ export default function useTxSubmission({
         signerAccount.multisig,
         signerAccount.address,
       );
-    } else if (signerAccount?.proxyAddress) {
+    }
+
+    if (signerAccount?.proxyAddress) {
       tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
     }
 
