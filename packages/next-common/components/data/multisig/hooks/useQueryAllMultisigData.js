@@ -64,21 +64,13 @@ export default function useQueryAllMultisigData({
     }
 
     const variables = {
+      account: queryType === "account" ? search : "",
+      signatory: queryType === "signatory" ? search : "",
       offset,
       limit,
     };
 
-    if (queryType === "signatory") {
-      variables.signatory = search;
-    }
-
-    if (queryType === "account") {
-      variables.account = search;
-    }
-
-    getMultisigs({
-      variables,
-    });
+    getMultisigs({ variables });
   }, [offset, limit, getMultisigs, search, queryType]);
 
   useEffect(() => {
