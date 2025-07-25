@@ -6,20 +6,19 @@ import { useFellowshipCanInductMember } from "next-common/hooks/fellowship/useFe
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 import { useContextApi } from "next-common/context/api";
 import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
-import { useDispatch } from "react-redux";
-import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useConnectedAccount } from "next-common/context/connectedAccount";
 import nextApi from "next-common/services/nextApi";
 import { usePost } from "next-common/context/post";
 import { useRouter } from "next/router";
+import { useSmartTxToast } from "next-common/hooks/useMultisigTx";
 
 function InductButton({ address }) {
   const router = useRouter();
   const post = usePost();
-  const dispatch = useDispatch();
   const api = useContextApi();
   const pallet = useCoreFellowshipPallet();
   const canInductMember = useFellowshipCanInductMember();
+  const { smartToastAtInBlock } = useSmartTxToast();
 
   const getTxFunc = useCallback(() => {
     if (api && address) {
@@ -28,7 +27,7 @@ function InductButton({ address }) {
   }, [api, address, pallet]);
 
   const onInBlock = useCallback(() => {
-    dispatch(newSuccessToast("Inducted"));
+    smartToastAtInBlock("Inducted");
     nextApi
       .patch(`fellowship/applications/${post._id}/refresh-status`)
       .then(({ error }) => {
@@ -37,7 +36,7 @@ function InductButton({ address }) {
         }
       });
     router.replace(router.asPath);
-  }, [dispatch, router, post?._id]);
+  }, [smartToastAtInBlock, router, post?._id]);
 
   const { doSubmit } = useTxSubmission({ getTxFunc, onInBlock });
 

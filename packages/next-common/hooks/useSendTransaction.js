@@ -33,6 +33,7 @@ import { HydradxAssets } from "next-common/utils/hydradx";
 import { useWalletConnect } from "next-common/context/walletconnect";
 import { sendWalletConnectTx } from "next-common/utils/sendTransaction/sendWalletConnectTx";
 import { useWalletConnectBuildPayload } from "next-common/hooks/useWalletConnectBuildPayload";
+import useRefreshMyMultisig from "./useMultisigTx";
 
 function shouldSendEvmTx(signerAccount) {
   const isWalletMetamask = signerAccount?.meta?.source === WalletTypes.METAMASK;
@@ -88,6 +89,7 @@ export function useSendTransaction() {
   const signerAccount = useSignerAccount();
   const setSigner = useSetSigner();
   const { sdk: signetSdk } = useSignetSdk();
+  const { refreshMyMultisig } = useRefreshMyMultisig();
 
   const { signWcTx } = useWalletConnect();
   const buildPayload = useWalletConnectBuildPayload();
@@ -157,6 +159,7 @@ export function useSendTransaction() {
       const _onFinalized = (data) => {
         dispatch(removeToast(toastId));
         onFinalized(data);
+        refreshMyMultisig();
       };
 
       const onError = (e) => {
@@ -277,7 +280,15 @@ export function useSendTransaction() {
         setIsSubmitting(false);
       }
     },
-    [buildPayload, dispatch, signWcTx, signerAccount, signetSdk, setSigner],
+    [
+      signerAccount,
+      dispatch,
+      setSigner,
+      refreshMyMultisig,
+      signetSdk,
+      buildPayload,
+      signWcTx,
+    ],
   );
 
   return {

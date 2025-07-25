@@ -6,14 +6,13 @@ import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { useContextApi } from "next-common/context/api";
-import { useDispatch } from "react-redux";
-import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { isEmpty } from "lodash-es";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import Loading from "../loading";
 import styled from "styled-components";
 import { useRegistrarContext } from "next-common/context/people/registrarContext";
 import useJudgementsData from "next-common/components/people/overview/hooks/useJudgementsData";
+import { useSmartTxToast } from "next-common/hooks/useMultisigTx";
 
 const StyledSignerWithBalance = styled.div`
   > div {
@@ -31,7 +30,7 @@ export default function RequestJudgementPopupContent() {
   const { symbol, decimals } = useChainSettings();
   const { registrars, isLoading } = useRegistrarContext();
   const api = useContextApi();
-  const dispatch = useDispatch();
+  const { smartToastAtInBlock } = useSmartTxToast();
   const { data = [] } = useJudgementsData();
 
   const isSelected = (address) =>
@@ -51,8 +50,8 @@ export default function RequestJudgementPopupContent() {
   }, [api, registrars, value]);
 
   const onInBlock = useCallback(() => {
-    dispatch(newSuccessToast("Request judgement successfully"));
-  }, [dispatch]);
+    smartToastAtInBlock("Request judgement successfully");
+  }, [smartToastAtInBlock]);
 
   return (
     <div className="flex flex-col gap-y-4">

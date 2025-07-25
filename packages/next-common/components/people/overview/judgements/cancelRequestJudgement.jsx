@@ -1,16 +1,15 @@
 import RemoveButton from "next-common/components/removeButton";
 import Tooltip from "next-common/components/tooltip";
-import { useDispatch } from "react-redux";
-import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useContextApi } from "next-common/context/api";
 import { useCallback } from "react";
 import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { useSmartTxToast } from "next-common/hooks/useMultisigTx";
 
 export default function CancelRequestJudgement({ registrarIndex }) {
   const api = useContextApi();
-  const dispatch = useDispatch();
   const address = useRealAddress();
+  const { smartToastAtInBlock } = useSmartTxToast();
 
   const getTxFunc = useCallback(() => {
     if (!api || !api?.tx?.identity || !address) {
@@ -21,8 +20,8 @@ export default function CancelRequestJudgement({ registrarIndex }) {
   }, [api, address, registrarIndex]);
 
   const onInBlock = useCallback(() => {
-    dispatch(newSuccessToast("Cancel request successfully"));
-  }, [dispatch]);
+    smartToastAtInBlock("Cancel request successfully");
+  }, [smartToastAtInBlock]);
 
   const { doSubmit, isSubmitting } = useTxSubmission({
     getTxFunc,

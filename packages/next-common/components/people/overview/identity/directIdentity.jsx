@@ -12,8 +12,6 @@ import { useState, useCallback } from "react";
 import useMyIdentityType from "next-common/hooks/people/useMyIdentityType";
 import { AddressUser } from "next-common/components/user";
 import { useContextApi } from "next-common/context/api";
-import { useDispatch } from "react-redux";
-import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
@@ -23,6 +21,7 @@ import { clearCachedIdentitys } from "next-common/services/identity";
 import { useChain } from "next-common/context/chain";
 import { useExtensionAccounts } from "next-common/components/popupWithSigner/context";
 import getChainSettings from "next-common/utils/consts/settings";
+import { useSmartTxToast } from "next-common/hooks/useMultisigTx";
 
 const SetIdentityPopup = dynamicPopup(
   () => import("next-common/components/setIdentityPopup"),
@@ -85,8 +84,8 @@ export function DirectIdentity({ subMyIdentityInfo }) {
 
   const { type, parent } = useMyIdentityType();
   const api = useContextApi();
-  const dispatch = useDispatch();
   const address = useRealAddress();
+  const { smartToastAtInBlock } = useSmartTxToast();
 
   const getTxFunc = useCallback(() => {
     if (!api || !api?.tx?.identity || !address) {
@@ -97,8 +96,8 @@ export function DirectIdentity({ subMyIdentityInfo }) {
   }, [api, address]);
 
   const onInBlock = useCallback(() => {
-    dispatch(newSuccessToast("Clear identity successfully"));
-  }, [dispatch]);
+    smartToastAtInBlock("Clear identity successfully");
+  }, [smartToastAtInBlock]);
 
   const { doSubmit, isSubmitting } = useTxSubmission({
     getTxFunc,
