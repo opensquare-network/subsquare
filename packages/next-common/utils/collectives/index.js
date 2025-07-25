@@ -12,7 +12,7 @@ export async function getCollectivesApi() {
   const { endpoints } = getChainSettings(Chains.collectives);
   const collectivesEndpoints = endpoints?.map((item) => item.url);
   if (!collectivesEndpoints) {
-    return null;
+    throw new Error("Collectives endpoints not found");
   }
 
   return getChainApi(collectivesEndpoints);

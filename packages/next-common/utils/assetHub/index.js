@@ -14,7 +14,7 @@ export async function getAssetHubApi() {
   const { endpoints } = getChainSettings(chain);
   const assetHubEndpoints = endpoints?.map((item) => item.url);
   if (!assetHubEndpoints) {
-    return null;
+    throw new Error("AssetHub endpoints not found");
   }
 
   return getChainApi(assetHubEndpoints);

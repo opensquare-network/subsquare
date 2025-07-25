@@ -12,7 +12,7 @@ export async function getHydrationApi() {
   const { endpoints } = getChainSettings(Chains.hydradx);
   const hydrationEndpoints = endpoints?.map((item) => item.url);
   if (!hydrationEndpoints) {
-    return null;
+    throw new Error("Hydration endpoints not found");
   }
 
   return getChainApi(hydrationEndpoints);
