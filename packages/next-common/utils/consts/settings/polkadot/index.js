@@ -113,6 +113,11 @@ const polkadot = {
       "wss://hydration.dotters.network",
       "wss://hydradx-rpc.dwellir.com",
     ],
+    collectives: [
+      "wss://sys.ibp.network/collectives-polkadot",
+      "wss://collectives-polkadot.dotters.network",
+      "wss://polkadot-collectives-rpc.polkadot.io",
+    ],
   },
 };
 

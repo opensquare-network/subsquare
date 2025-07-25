@@ -1,4 +1,6 @@
 import { getChainApi } from "../getChainApi";
+import { getChainSettings } from "../consts/settings";
+import { CHAIN } from "next-common/utils/constants";
 
 let api = null;
 
@@ -7,14 +9,11 @@ export async function getCollectivesApi() {
     return api;
   }
 
-  const wsCollectivesEndpoint =
-    process.env.NEXT_PUBLIC_WS_COLLECTIVES_ENDPOINTS;
-  if (!wsCollectivesEndpoint) {
+  const { parachainEndpoints } = getChainSettings(CHAIN);
+  const collectivesEndpoints = parachainEndpoints?.collectives;
+  if (!collectivesEndpoints) {
     return null;
   }
 
-  const endpoints = wsCollectivesEndpoint.split(";");
-  api = getChainApi(endpoints);
-
-  return api;
+  return getChainApi(collectivesEndpoints);
 }

@@ -11,9 +11,9 @@ export async function getHydrationApi() {
 
   const { parachainEndpoints } = getChainSettings(CHAIN);
   const hydrationEndpoints = parachainEndpoints?.hydration;
-
-  if (hydrationEndpoints && hydrationEndpoints?.length > 0) {
-    api = getChainApi(hydrationEndpoints);
-    return api;
+  if (!hydrationEndpoints) {
+    return null;
   }
+
+  return getChainApi(hydrationEndpoints);
 }
