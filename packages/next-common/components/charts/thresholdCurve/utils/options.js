@@ -129,7 +129,7 @@ const getNanValueShow = (value) =>
 function handleTooltipLabel(label, itemItem, currentItem) {
   return `${label}: ${getNanValueShow(
     currentItem?.parsed?.y,
-  )} / ${getNanValueShow(itemItem?.parsed?.y)}%`;
+  )} / ${getNanValueShow(itemItem?.parsed?.y)}`;
 }
 
 function handleVoteTooltipLabel(tooltipItem, labelType, chainSettings) {
@@ -148,7 +148,6 @@ export default function useDetailPageOptions(labels = [], datasets) {
   const chainSettings = useChainSettings();
   const decisionIndex = useDecisionIndex();
   const commonPluginsConfig = useCommonPluginsConfig();
-  const { gray400 } = useThemeSetting();
   const dividerLine = decisionIndex
     ? {
         type: "line",
@@ -156,7 +155,7 @@ export default function useDetailPageOptions(labels = [], datasets) {
         xMax: decisionIndex,
         yMin: 0,
         yMax: "max",
-        borderColor: gray400,
+        borderColor: "#9ea9bb",
         borderWidth: 1,
         borderDash: [5, 5],
       }
@@ -226,14 +225,14 @@ export default function useDetailPageOptions(labels = [], datasets) {
 
               return [
                 handleTooltipLabel(
-                  "Support",
-                  supportTooltipItem,
-                  currentSupportTooltipItem,
-                ),
-                handleTooltipLabel(
                   "Approval",
                   approvalTooltipItem,
                   currentApprovalTooltipItem,
+                ),
+                handleTooltipLabel(
+                  "Support",
+                  supportTooltipItem,
+                  currentSupportTooltipItem,
                 ),
                 ayeTooltipItem &&
                   handleVoteTooltipLabel(ayeTooltipItem, "Aye", chainSettings),
