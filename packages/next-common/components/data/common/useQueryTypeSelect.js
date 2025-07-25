@@ -4,34 +4,29 @@ import { addRouterQuery, getRouterQuery } from "next-common/utils/router";
 import { useRouter } from "next/router";
 
 const queryTypeOptions = [
-  { value: "account", label: "Multisig Address" },
+  { value: "multisig", label: "Multisig Address" },
   { value: "signatory", label: "Signatory" },
 ];
 
-export default function useQueryTypeSelect(initialValue = "account") {
+export default function useQueryTypeSelect(initialValue = "multisig") {
   const router = useRouter();
   const queryType = getRouterQuery(router, "query_by") || initialValue;
 
   const handleQueryTypeChange = useCallback(
     (item) => {
-      const newValue = item?.value;
-
-      addRouterQuery(router, "query_by", newValue);
+      addRouterQuery(router, "query_by", item?.value);
     },
     [router],
   );
 
   const component = (
-    <div className="flex items-center gap-x-2">
-      <span className="text12Medium text-textSecondary">Query By</span>
-      <Select
-        value={queryType}
-        options={queryTypeOptions}
-        onChange={handleQueryTypeChange}
-        className="w-[160px]"
-        itemHeight={28}
-      />
-    </div>
+    <Select
+      value={queryType}
+      options={queryTypeOptions}
+      onChange={handleQueryTypeChange}
+      className="w-[160px] flex max-sm:w-full"
+      itemHeight={40}
+    />
   );
 
   return {

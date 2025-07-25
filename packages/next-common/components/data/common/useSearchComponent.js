@@ -14,7 +14,6 @@ export default function useSearchComponent(params) {
     isMyRelated = false,
     placeholder = "Search by identity name or address",
     className = "",
-    size = null,
   } = params || {};
 
   const router = useRouter();
@@ -47,7 +46,6 @@ export default function useSearchComponent(params) {
         value={querySearch || ""}
         onChange={handleInputChange}
         disabled={isMyRelated}
-        size={size}
       />
     ),
   };

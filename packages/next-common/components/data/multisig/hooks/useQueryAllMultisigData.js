@@ -47,7 +47,7 @@ const GET_ALL_MULTISIGS = gql`
 
 export default function useQueryAllMultisigData({
   search = "",
-  queryType = "account",
+  queryType = "multisig",
   offset = 0,
   limit = 10,
 }) {
@@ -64,7 +64,7 @@ export default function useQueryAllMultisigData({
     }
 
     const variables = {
-      account: queryType === "account" ? search : "",
+      account: queryType === "multisig" ? search : "",
       signatory: queryType === "signatory" ? search : "",
       offset,
       limit,

@@ -20,13 +20,13 @@ export default function MultisigExplorerTable() {
   const [navCollapsed] = useNavCollapsed();
   const router = useRouter();
   const [dataList, setDataList] = useState([]);
+  const { queryType, component: QueryTypeSelectComponent } =
+    useQueryTypeSelect("multisig");
   const { search = "", component: SearchBoxComponent } = useSearchComponent({
-    placeholder: "Address",
-    className: "h-7 my-0",
+    placeholder: `Search by ${queryType} address`,
+    className: "my-0 ml-2 flex-1 max-sm:w-full max-sm:ml-6",
     size: "small",
   });
-  const { queryType, component: QueryTypeSelectComponent } =
-    useQueryTypeSelect("account");
   const [totalCount, setTotalCount] = useState(0);
   const [loading, setLoading] = useState(true);
 
@@ -92,11 +92,11 @@ export default function MultisigExplorerTable() {
               {!loading && total}
             </span>
           </span>
-          <div className="flex flex-row items-center gap-y-4">
-            {QueryTypeSelectComponent}
-            {SearchBoxComponent}
-          </div>
         </TitleContainer>
+      </div>
+      <div className="flex w-full items-center pl-6 max-sm:flex-col max-sm:px-6 max-sm:gap-y-2">
+        {QueryTypeSelectComponent}
+        {SearchBoxComponent}
       </div>
       <SecondaryCard className="space-y-2">
         <ScrollerX>
