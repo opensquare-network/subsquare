@@ -6,9 +6,10 @@ import { useRankedCollectivePallet } from "next-common/context/collectives/colle
 import { useCallback, useState } from "react";
 import { useReferendumVoting } from "next-common/context/fellowship/referendumVoting";
 import { useOnchainData } from "next-common/context/post";
+import { useDispatch } from "react-redux";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { fetchFellowshipReferendumVotes2Times } from "next-common/context/fellowship/referendumVoting";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
-import { useSmartTxToast } from "next-common/hooks/useMultisigTx";
 
 const successToastContent =
   "Votes in storage have been cleaned up successfully.";
@@ -19,8 +20,8 @@ function Content() {
   const pallet = useRankedCollectivePallet();
   const { votes, fetch } = useReferendumVoting();
   const { referendumIndex: pollIndex } = useOnchainData();
+  const dispatch = useDispatch();
   const [isDisabled, setIsDisabled] = useState(false);
-  const { smartToastAtInBlock } = useSmartTxToast();
 
   const getTxFunc = useCallback(() => {
     if (!api || !pallet) {
@@ -32,9 +33,9 @@ function Content() {
   }, [api, pallet, pollIndex, votes]);
 
   const onInBlock = useCallback(async () => {
-    smartToastAtInBlock(successToastContent);
+    dispatch(newSuccessToast(successToastContent));
     await fetchFellowshipReferendumVotes2Times(fetch);
-  }, [smartToastAtInBlock, fetch]);
+  }, [dispatch, fetch]);
 
   return (
     <>

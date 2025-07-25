@@ -13,12 +13,13 @@ import VoteButton from "next-common/components/overview/accountInfo/components/f
 import { SystemVoteAye, SystemVoteNay } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
+import { useDispatch } from "react-redux";
 import CreatePromotionReferendumAndVoteButton from "next-common/components/overview/accountInfo/components/fellowshipTodoList/todoList/memberPromotionPopup/voteButtons/createPromotionReferendumAndVoteButton";
 import { usePromotionButtonState } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/todoList/memberPromotionPopup/voteButtons/createPromotionReferendumAndVoteButtons";
 import { useRetentionButtonState } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/todoList/memberPromotionPopup/voteButtons/createRetentionReferendumAndVoteButtons";
 import useSubCoreFellowshipEvidence from "next-common/hooks/collectives/useSubCoreFellowshipEvidence";
 import CreateRetentionReferendumAndVoteButton from "next-common/components/overview/accountInfo/components/fellowshipTodoList/todoList/memberPromotionPopup/voteButtons/createRetentionReferendumAndVoteButton";
-import { useSmartTxToast } from "next-common/hooks/useMultisigTx";
 
 const methods = ["bump", "approve", "promote", "promoteFast"];
 
@@ -67,7 +68,7 @@ function SimpleButton({ disabled, onClick, children }) {
 }
 
 export function ReferendumVoteButtons({ referendumIndex, size = 16 }) {
-  const { smartToastAtInBlock } = useSmartTxToast();
+  const dispatch = useDispatch();
   return (
     <div className="flex gap-[12px] items-center justify-end">
       <VoteButton
@@ -76,7 +77,7 @@ export function ReferendumVoteButtons({ referendumIndex, size = 16 }) {
         ButtonComponent={SimpleButton}
         callbacks={{
           onInBlock: () => {
-            smartToastAtInBlock("Vote successfully");
+            dispatch(newSuccessToast("Vote successfully"));
           },
         }}
       >
@@ -89,7 +90,7 @@ export function ReferendumVoteButtons({ referendumIndex, size = 16 }) {
         ButtonComponent={SimpleButton}
         callbacks={{
           onInBlock: () => {
-            smartToastAtInBlock("Vote successfully");
+            dispatch(newSuccessToast("Vote successfully"));
           },
         }}
       >

@@ -6,7 +6,8 @@ import { useSubFellowshipVote } from "next-common/utils/hooks/fellowship/useFell
 import VoteButton from "./voteButton";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { useMyVotesChangedContext } from "../../../context/myVotesChanged";
-import { useSmartTxToast } from "next-common/hooks/useMultisigTx";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
+import { useDispatch } from "react-redux";
 
 export function MyVote({ referendumIndex }) {
   const realAddress = useRealAddress();
@@ -52,8 +53,8 @@ export function SecondaryButtonWrapper({ disabled, onClick, children }) {
 }
 
 export default function ReferendumVoteButtons({ referendumIndex }) {
+  const dispatch = useDispatch();
   const { triggerMyVotesChanged } = useMyVotesChangedContext();
-  const { smartToastAtInBlock } = useSmartTxToast();
 
   return (
     <div className="flex gap-[12px] h-[31px] items-center justify-end">
@@ -65,7 +66,7 @@ export default function ReferendumVoteButtons({ referendumIndex }) {
         ButtonComponent={SecondaryButtonWrapper}
         callbacks={{
           onInBlock: () => {
-            smartToastAtInBlock("Vote successfully");
+            dispatch(newSuccessToast("Vote successfully"));
             triggerMyVotesChanged();
           },
           onFinalized: () => {
@@ -82,7 +83,7 @@ export default function ReferendumVoteButtons({ referendumIndex }) {
         ButtonComponent={SecondaryButtonWrapper}
         callbacks={{
           onInBlock: () => {
-            smartToastAtInBlock("Vote successfully");
+            dispatch(newSuccessToast("Vote successfully"));
             triggerMyVotesChanged();
           },
           onFinalized: () => {

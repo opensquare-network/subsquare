@@ -1,7 +1,10 @@
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import {
+  newErrorToast,
+  newSuccessToast,
+} from "next-common/store/reducers/toastSlice";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import Signer from "next-common/components/popup/fields/signerField";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
@@ -20,7 +23,6 @@ import getChainSettings from "next-common/utils/consts/settings";
 import { useChain } from "next-common/context/chain";
 import { useAssetHubChain } from "next-common/hooks/useAssetHubChain";
 import Chains from "next-common/utils/consts/chains";
-import { useSmartTxToast } from "next-common/hooks/useMultisigTx";
 
 const SystemCrosschain = dynamic(
   import("@osn/icons/subsquare").then((mod) => mod.SystemCrosschain),
@@ -99,7 +101,6 @@ function PopupContent() {
   });
   const signerAccount = useSignerAccount();
   const dispatch = useDispatch();
-  const { smartToastAtInBlock } = useSmartTxToast();
   const {
     getCheckedValue: getCheckedTransferAmount,
     component: transferAmountField,
@@ -143,7 +144,7 @@ function PopupContent() {
       <TxSubmissionButton
         getTxFunc={getTxFunc}
         onInBlock={() => {
-          smartToastAtInBlock("Teleport successfully");
+          dispatch(newSuccessToast("Teleport successfully"));
         }}
       />
     </>

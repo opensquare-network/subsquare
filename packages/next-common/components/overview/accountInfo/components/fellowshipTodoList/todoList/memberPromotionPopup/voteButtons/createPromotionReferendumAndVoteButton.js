@@ -1,7 +1,9 @@
 import { useCallback, useState } from "react";
+import { useDispatch } from "react-redux";
 import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 import { useFellowshipProposalSubmissionTxFunc } from "next-common/hooks/fellowship/core/useFellowshipCoreMemberProposalSubmitTx";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useActiveReferendaContext } from "next-common/context/activeReferenda";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import Tooltip from "next-common/components/tooltip";
@@ -10,7 +12,6 @@ import { getPromoteTrackNameFromRank } from "next-common/components/fellowship/c
 import useMemberRank from "./useMemberRank";
 import { useMyVotesChangedContext } from "../../../context/myVotesChanged";
 import SecondaryButton from "next-common/lib/button/secondary";
-import { useSmartTxToast } from "next-common/hooks/useMultisigTx";
 
 const CreatePromotionReferendaAndVotePopup = dynamicPopup(() =>
   import("../../createPromotionReferendaAndVotePopup"),
@@ -26,8 +27,8 @@ function CreateReferendumAndVoteButtonImpl({
 }) {
   const [showMaybeFastPromotePopup, setShowMaybeFastPromotePopup] =
     useState(false);
+  const dispatch = useDispatch();
   const currentRank = useMemberRank(who);
-  const { smartToastAtInBlock } = useSmartTxToast();
 
   const chain = useChain();
   const trackName = getPromoteTrackNameFromRank(chain, currentRank + 1);
@@ -50,7 +51,7 @@ function CreateReferendumAndVoteButtonImpl({
   const { doSubmit: doSubmitCreateAndVote } = useTxSubmission({
     getTxFunc: getCreateAndVoteTxFunc,
     onInBlock: () => {
-      smartToastAtInBlock("Vote successfully");
+      dispatch(newSuccessToast("Vote successfully"));
       fetchActiveReferenda();
       triggerMyVotesChanged();
     },

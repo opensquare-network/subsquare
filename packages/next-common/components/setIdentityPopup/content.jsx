@@ -9,11 +9,12 @@ import LoadableContent from "next-common/components/common/loadableContent";
 import { useChainSettings } from "next-common/context/chain";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { useContextApi } from "next-common/context/api";
+import { useDispatch } from "react-redux";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { formatIdentityInfo } from "next-common/components/people/common";
 import { Label } from "../popup/styled";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useIdentityInfoContext } from "next-common/context/people/identityInfoContext";
-import { useSmartTxToast } from "next-common/hooks/useMultisigTx";
 
 const fields = [
   {
@@ -74,7 +75,7 @@ export default function SetIdentityPopupContent() {
   const [errors, setErrors] = useState({});
   const { info: subMyIdentityInfo } = useIdentityInfoContext();
   const api = useContextApi();
-  const { smartToastAtInBlock } = useSmartTxToast();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (subMyIdentityInfo) {
@@ -99,8 +100,8 @@ export default function SetIdentityPopupContent() {
   }, [identityInfo, api]);
 
   const onInBlock = useCallback(() => {
-    smartToastAtInBlock("Set identity successfully");
-  }, [smartToastAtInBlock]);
+    dispatch(newSuccessToast("Set identity successfully"));
+  }, [dispatch]);
 
   const hasErrors = Object.values(errors).some((error) => !!error);
   const isEmpty = Object.values(identityInfo).every((value) => !value);
