@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import styled from "styled-components";
 import Account from "./account";
 import EmptyAccount from "./emptyAccount";
@@ -9,12 +9,10 @@ import {
 } from "./popupWithSigner/context";
 import { useUser } from "next-common/context/user";
 import { addressEllipsis, isSameAddress } from "next-common/utils";
-import SwitchSignerPopup from "./switchSignerPopup";
 import useOnChainProxyInfo from "next-common/hooks/useOnChainProxy";
-import { useMyProxied } from "next-common/context/proxy";
 import Tooltip from "./tooltip";
-import { useMultisigAccounts } from "./multisigs/context/accountsContext";
 import { MultisigAccount } from "./multisigs/styled";
+import SwitchButtonWrapper from "./switchAccountButton";
 
 const Wrapper = styled(GreyPanel)`
   padding: 12px 16px;
@@ -52,30 +50,6 @@ export function useOriginAccount() {
   }
 
   return originAccount;
-}
-
-function SwitchButton() {
-  const user = useUser();
-
-  const { proxies } = useMyProxied();
-  const { total: multisigTotal } = useMultisigAccounts();
-  const [showPopup, setShowPopup] = useState(false);
-
-  if (!proxies.length && !user?.proxyAddress && !multisigTotal) {
-    return null;
-  }
-
-  return (
-    <>
-      <span
-        className="cursor-pointer text-theme500 text14Medium"
-        onClick={() => setShowPopup(true)}
-      >
-        Switch
-      </span>
-      {showPopup && <SwitchSignerPopup onClose={() => setShowPopup(false)} />}
-    </>
-  );
 }
 
 function ProxyHint({ proxyType }) {
@@ -153,7 +127,10 @@ function MaybeMultisigAccount({ signerAccount }) {
   return <Account account={originAccount} />;
 }
 
-export default function MaybeProxySigner({ noSwitch }) {
+export default function MaybeProxySigner({
+  noSwitch,
+  supportedMultisig = true,
+}) {
   const signerAccount = useSignerAccount();
 
   return (
@@ -165,12 +142,14 @@ export default function MaybeProxySigner({ noSwitch }) {
           ) : (
             <EmptyAccount />
           )}
-          {!noSwitch && <SwitchButton />}
+          {!noSwitch && (
+            <SwitchButtonWrapper supportedMultisig={supportedMultisig} />
+          )}
         </div>
         {signerAccount?.proxyAddress && (
           <ProxyHintForAddress address={signerAccount?.proxyAddress} />
         )}
-        {signerAccount?.multisig && (
+        {signerAccount?.multisig && supportedMultisig && (
           <MultisigHint multisig={signerAccount?.multisig} />
         )}
       </div>
