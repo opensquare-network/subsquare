@@ -13,8 +13,10 @@ import { getRealField } from "next-common/sima/actions/common";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useConnectedAccount } from "next-common/context/connectedAccount";
 import { useSignMessage } from "next-common/hooks/useSignMessage";
+import { useUser } from "next-common/context/user";
 
 export default function RemovePopup({ onClose, multisigAddress }) {
+  const user = useUser();
   const realAddress = useRealAddress();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState();
@@ -35,7 +37,7 @@ export default function RemovePopup({ onClose, multisigAddress }) {
         action: "remove-multisig",
         multisigAddress,
         timestamp: Date.now(),
-        real: getRealField(realAddress),
+        real: getRealField(user?.proxyAddress),
       };
       const signature = await signMessage(
         JSON.stringify(entity),
@@ -68,6 +70,7 @@ export default function RemovePopup({ onClose, multisigAddress }) {
   }, [
     connectedAccount,
     realAddress,
+    user?.proxyAddress,
     signMessage,
     dispatch,
     multisigAddress,

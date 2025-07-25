@@ -1,21 +1,21 @@
-import { useUser } from "next-common/context/user";
 import { backendApi } from "next-common/services/nextApi";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useAsync } from "react-use";
 
 export default function useQueryMyProxied() {
-  const user = useUser();
+  const realAddress = useRealAddress();
   const { value: proxies = [], loading } = useAsync(async () => {
-    if (!user?.address) {
+    if (!realAddress) {
       return [];
     }
 
     const { result } = await backendApi.fetch("proxies", {
-      delegatee: user?.address,
+      delegatee: realAddress,
       noDelay: true,
     });
 
     return result || [];
-  }, [user?.address]);
+  }, [realAddress]);
 
   return { proxies, loading };
 }
