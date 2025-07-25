@@ -7,7 +7,7 @@ import Loading from "../loading";
 import { useState, useMemo } from "react";
 import MultisigSelect from "./multisigSelect";
 import ImportSubmit from "./importSubmit";
-import { useMultisigAccounts } from "../multisigs/context/accountsContext";
+import { useMultisigAccounts } from "../multisigs/context/multisigAccountsContext";
 import { noop } from "lodash-es";
 import { normalizeAddress } from "next-common/utils/address";
 import { sortAddresses } from "@polkadot/util-crypto";

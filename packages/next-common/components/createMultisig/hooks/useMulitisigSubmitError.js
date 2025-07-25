@@ -1,5 +1,5 @@
 import useSignatoriesIsEqual from "./useSignatoriesIsEqual";
-import { useMultisigAccounts } from "next-common/components/multisigs/context/accountsContext";
+import { useMultisigAccounts } from "next-common/components/multisigs/context/multisigAccountsContext";
 import { isEmpty, isNil } from "lodash-es";
 import { ERROR_MESSAGE } from "../styled";
 

@@ -13,7 +13,7 @@ import SwitchSignerPopup from "./switchSignerPopup";
 import useOnChainProxyInfo from "next-common/hooks/useOnChainProxy";
 import { useMyProxied } from "next-common/context/proxy";
 import Tooltip from "./tooltip";
-import { useMultisigAccounts } from "./multisigs/context/accountsContext";
+import { useMultisigAccounts } from "./multisigs/context/multisigAccountsContext";
 import { MultisigAccount } from "./multisigs/styled";
 
 const Wrapper = styled(GreyPanel)`

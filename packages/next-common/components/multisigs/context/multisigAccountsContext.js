@@ -8,14 +8,14 @@ import {
   useState,
 } from "react";
 
-export const AccountsContext = createContext({
+export const MultisigAccountsContext = createContext({
   multisigs: [],
   refresh: noop,
   isLoading: false,
   total: 0,
 });
 
-export function AccountsProvider({ children }) {
+export function MultisigAccountsProvider({ userAddress, children }) {
   const [now, setNow] = useState(Date.now());
   const [multisigs, setMultisigs] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -24,7 +24,7 @@ export function AccountsProvider({ children }) {
   const fetchMultisigs = useCallback(async () => {
     try {
       setIsLoading(true);
-      const { result } = await nextApi.fetch("user/multisigs");
+      const { result } = await nextApi.fetch(`users/${userAddress}/multisigs`);
       setMultisigs(result);
       setTotal(result?.length || 0);
     } catch (error) {
@@ -44,12 +44,14 @@ export function AccountsProvider({ children }) {
   }, []);
 
   return (
-    <AccountsContext.Provider value={{ multisigs, refresh, isLoading, total }}>
+    <MultisigAccountsContext.Provider
+      value={{ multisigs, refresh, isLoading, total }}
+    >
       {children}
-    </AccountsContext.Provider>
+    </MultisigAccountsContext.Provider>
   );
 }
 
 export function useMultisigAccounts() {
-  return useContext(AccountsContext);
+  return useContext(MultisigAccountsContext);
 }

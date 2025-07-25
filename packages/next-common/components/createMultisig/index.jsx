@@ -2,7 +2,7 @@ import { noop } from "lodash-es";
 import CreateMultisigContent from "./content";
 import PopupWithSigner from "../popupWithSigner";
 import { SignatoriesProvider } from "./context/signatories";
-import { useMultisigAccounts } from "../multisigs/context/accountsContext";
+import { useMultisigAccounts } from "../multisigs/context/multisigAccountsContext";
 
 export default function CreateMultisigPopup({
   onClose = noop,
