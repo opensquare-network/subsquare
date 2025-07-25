@@ -4,25 +4,40 @@ import {
   getTrackApprovalCurve,
   getTrackSupportCurve,
 } from "next-common/context/post/gov2/curve";
-import { useBlockSteps, useDecisionBlocks } from "./useReferendumBlocks";
+import { useDecisionHours, usePreparingHours } from "./useReferendumBlocks";
 
 // used for curve chart on OpenGov referendum detail page.
 export default function useReferendumCurveData() {
   const track = useTrack();
-  const blockStep = useBlockSteps();
-  const decisionBlocks = useDecisionBlocks();
-  const hours = decisionBlocks / blockStep;
-  const labels = range(hours + 1);
+  const decisionHours = useDecisionHours();
+  const preparingHours = usePreparingHours();
+  const hours = decisionHours + preparingHours;
+  const labels = range(hours + (preparingHours ? 0 : 1));
 
   const supportCalculator = getTrackSupportCurve(track);
-  const supportData = labels.map((i) =>
-    supportCalculator ? supportCalculator(i / hours) * 100 : 0,
-  );
-
   const approvalCalculator = getTrackApprovalCurve(track);
-  const approvalData = labels.map((i) =>
-    approvalCalculator ? approvalCalculator(i / hours) * 100 : 0,
-  );
+  let supportData = [];
+  let approvalData = [];
+
+  for (let index = 0; index < labels.length; index++) {
+    if (index < preparingHours) {
+      supportData.push(null);
+      approvalData.push(null);
+    } else {
+      const decisionIndex = index - preparingHours;
+
+      supportData.push(
+        supportCalculator
+          ? supportCalculator(decisionIndex / decisionHours) * 100
+          : 0,
+      );
+      approvalData.push(
+        approvalCalculator
+          ? approvalCalculator(decisionIndex / decisionHours) * 100
+          : 0,
+      );
+    }
+  }
 
   return {
     labels,

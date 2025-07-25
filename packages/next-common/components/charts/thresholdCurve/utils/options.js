@@ -7,6 +7,7 @@ import {
   abbreviateBigNumber,
   getEffectiveNumbers,
 } from "next-common/utils/viewfuncs";
+import { useDecisionIndex } from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
 
 const commonConfig = {
   clip: false,
@@ -125,18 +126,10 @@ function getDetailConfig(labels, commonPluginsConfig, tooltipCallbacks) {
 const getNanValueShow = (value) =>
   !value ? "--" : `${Number(value).toFixed(2)}%`;
 
-function handleTooltipLabel(tooltipItem, labelType, datasets) {
-  const { parsed, dataIndex } = tooltipItem;
-  const threshold = Number(parsed.y).toFixed(2);
-  const dataset = datasets.find(
-    (dataset) => dataset.label === `Current ${labelType}`,
-  );
-  if (dataset) {
-    return `${labelType}: ${getNanValueShow(
-      (dataset.data || [])[dataIndex],
-    )} / ${threshold}%`;
-  }
-  return null;
+function handleTooltipLabel(label, itemItem, currentItem) {
+  return `${label}: ${getNanValueShow(
+    currentItem?.parsed?.y,
+  )} / ${getNanValueShow(itemItem?.parsed?.y)}`;
 }
 
 function handleVoteTooltipLabel(tooltipItem, labelType, chainSettings) {
@@ -153,31 +146,105 @@ function handleVoteTooltipLabel(tooltipItem, labelType, chainSettings) {
 
 export default function useDetailPageOptions(labels = [], datasets) {
   const chainSettings = useChainSettings();
+  const decisionIndex = useDecisionIndex();
   const commonPluginsConfig = useCommonPluginsConfig();
-
-  let config = getDetailConfig(labels, commonPluginsConfig, {
-    label(tooltipItem) {
-      const { dataset } = tooltipItem;
-
-      if (dataset.label === "Approval") {
-        return handleTooltipLabel(tooltipItem, "Approval", datasets);
-      } else if (dataset.label === "Support") {
-        return handleTooltipLabel(tooltipItem, "Support", datasets);
+  const dividerLine = decisionIndex
+    ? {
+        type: "line",
+        xMin: decisionIndex,
+        xMax: decisionIndex,
+        yMin: 0,
+        yMax: "max",
+        borderColor: "#9ea9bb",
+        borderWidth: 1,
+        borderDash: [5, 5],
       }
-      return null;
-    },
-    afterBody(context) {
-      const nayTooltipItem = find(context, { dataset: { label: "Nay" } });
-      const ayeTooltipItem = find(context, { dataset: { label: "Aye" } });
+    : null;
 
-      return [
-        ayeTooltipItem &&
-          handleVoteTooltipLabel(ayeTooltipItem, "Aye", chainSettings),
-        nayTooltipItem &&
-          handleVoteTooltipLabel(nayTooltipItem, "Nay", chainSettings),
-      ].filter(Boolean);
+  let config = {
+    ...commonConfig,
+    ...getScaleOptions(labels.length, false, true),
+    plugins: {
+      annotation: {
+        annotations: {
+          dividerLine,
+        },
+      },
+      ...commonPluginsConfig,
+      tooltip: {
+        mode: "index",
+        intersect: false,
+        displayColors: false,
+        callbacks: merge(
+          {
+            title: function title(values) {
+              const { dataIndex: hs } = values[0];
+
+              if (hs < decisionIndex) {
+                return `Preparing Time: ${formatHours(hs)}`;
+              }
+              const x = hs - decisionIndex;
+
+              const days = Math.floor(x / 24);
+              const restHs = x - days * 24;
+              let result = `Deciding Time: ${formatHours(x)}`;
+              if (days > 0) {
+                result += ` (${formatDays(days)} ${
+                  restHs > 0 ? formatHours(restHs) : ""
+                })`;
+              }
+
+              return result;
+            },
+          },
+          {
+            label() {
+              return null;
+            },
+            afterBody(context) {
+              const nayTooltipItem = find(context, {
+                dataset: { label: "Nay" },
+              });
+              const ayeTooltipItem = find(context, {
+                dataset: { label: "Aye" },
+              });
+
+              const supportTooltipItem = find(context, {
+                dataset: { label: "Support" },
+              });
+              const currentSupportTooltipItem = find(context, {
+                dataset: { label: "Current Support" },
+              });
+
+              const approvalTooltipItem = find(context, {
+                dataset: { label: "Approval" },
+              });
+              const currentApprovalTooltipItem = find(context, {
+                dataset: { label: "Current Approval" },
+              });
+
+              return [
+                handleTooltipLabel(
+                  "Approval",
+                  approvalTooltipItem,
+                  currentApprovalTooltipItem,
+                ),
+                handleTooltipLabel(
+                  "Support",
+                  supportTooltipItem,
+                  currentSupportTooltipItem,
+                ),
+                ayeTooltipItem &&
+                  handleVoteTooltipLabel(ayeTooltipItem, "Aye", chainSettings),
+                nayTooltipItem &&
+                  handleVoteTooltipLabel(nayTooltipItem, "Nay", chainSettings),
+              ].filter(Boolean);
+            },
+          },
+        ),
+      },
     },
-  });
+  };
 
   const ayeDataset = find(datasets, { label: "Aye" });
   const nayDataset = find(datasets, { label: "Nay" });
