@@ -1,4 +1,3 @@
-import { useDecidingSince } from "next-common/context/post/gov2/referendum";
 import { useSelector } from "react-redux";
 import { last } from "lodash-es";
 import BigNumber from "bignumber.js";
@@ -29,7 +28,6 @@ function calcFromOneTallyData(tally) {
 export function calcDataFromTallyHistory(
   tallyHistory,
   beginHeight,
-  decidingSince,
   decidingEnd,
   latestHeight,
   blockStep,
@@ -57,13 +55,8 @@ export function calcDataFromTallyHistory(
     }
 
     let { currentSupport, currentApprove } = calcFromOneTallyData(tally.tally);
-    if (decidingSince > iterHeight) {
-      historySupportData.push(null);
-      historyApprovalData.push(null);
-    } else {
-      historySupportData.push(currentSupport);
-      historyApprovalData.push(currentApprove);
-    }
+    historySupportData.push(currentSupport);
+    historyApprovalData.push(currentApprove);
     historyAyesData.push(tally.tally.ayes);
     historyNaysData.push(tally.tally.nays);
     iterHeight += blockStep;
@@ -89,7 +82,6 @@ export function calcDataFromTallyHistory(
 }
 
 export default function useHistoryTallyValueData() {
-  const decidingSince = useDecidingSince();
   const tallyHistory = useSelector(referendaTallyHistorySelector);
   const decidingEndOrLatestHeight = useDecidingEndHeight();
   const latestHeight = useChainOrScanHeight();
@@ -100,14 +92,12 @@ export default function useHistoryTallyValueData() {
     return calcDataFromTallyHistory(
       tallyHistory,
       beginHeight,
-      decidingSince,
       decidingEndOrLatestHeight,
       latestHeight,
       blockStep,
     );
   }, [
     tallyHistory,
-    decidingSince,
     beginHeight,
     decidingEndOrLatestHeight,
     latestHeight,

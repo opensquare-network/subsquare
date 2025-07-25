@@ -126,18 +126,10 @@ function getDetailConfig(labels, commonPluginsConfig, tooltipCallbacks) {
 const getNanValueShow = (value) =>
   !value ? "--" : `${Number(value).toFixed(2)}%`;
 
-function handleTooltipLabel(tooltipItem, labelType, datasets) {
-  const { parsed, dataIndex } = tooltipItem;
-  const threshold = Number(parsed.y).toFixed(2);
-  const dataset = datasets.find(
-    (dataset) => dataset.label === `Current ${labelType}`,
-  );
-  if (dataset) {
-    return `${labelType}: ${getNanValueShow(
-      (dataset.data || [])[dataIndex],
-    )} / ${threshold}%`;
-  }
-  return null;
+function handleTooltipLabel(label, itemItem, currentItem) {
+  return `${label}: ${getNanValueShow(
+    currentItem?.parsed?.y,
+  )} / ${getNanValueShow(itemItem?.parsed?.y)}%`;
 }
 
 function handleVoteTooltipLabel(tooltipItem, labelType, chainSettings) {
@@ -156,7 +148,7 @@ export default function useDetailPageOptions(labels = [], datasets) {
   const chainSettings = useChainSettings();
   const decisionIndex = useDecisionIndex();
   const commonPluginsConfig = useCommonPluginsConfig();
-  const { orange400 } = useThemeSetting();
+  const { gray400 } = useThemeSetting();
   const dividerLine = decisionIndex
     ? {
         type: "line",
@@ -164,7 +156,7 @@ export default function useDetailPageOptions(labels = [], datasets) {
         xMax: decisionIndex,
         yMin: 0,
         yMax: "max",
-        borderColor: orange400,
+        borderColor: gray400,
         borderWidth: 1,
         borderDash: [5, 5],
       }
@@ -207,14 +199,7 @@ export default function useDetailPageOptions(labels = [], datasets) {
             },
           },
           {
-            label(tooltipItem) {
-              const { dataset } = tooltipItem;
-
-              if (dataset.label === "Approval") {
-                return handleTooltipLabel(tooltipItem, "Approval", datasets);
-              } else if (dataset.label === "Support") {
-                return handleTooltipLabel(tooltipItem, "Support", datasets);
-              }
+            label() {
               return null;
             },
             afterBody(context) {
@@ -225,7 +210,31 @@ export default function useDetailPageOptions(labels = [], datasets) {
                 dataset: { label: "Aye" },
               });
 
+              const supportTooltipItem = find(context, {
+                dataset: { label: "Support" },
+              });
+              const currentSupportTooltipItem = find(context, {
+                dataset: { label: "Current Support" },
+              });
+
+              const approvalTooltipItem = find(context, {
+                dataset: { label: "Approval" },
+              });
+              const currentApprovalTooltipItem = find(context, {
+                dataset: { label: "Current Approval" },
+              });
+
               return [
+                handleTooltipLabel(
+                  "Support",
+                  supportTooltipItem,
+                  currentSupportTooltipItem,
+                ),
+                handleTooltipLabel(
+                  "Approval",
+                  approvalTooltipItem,
+                  currentApprovalTooltipItem,
+                ),
                 ayeTooltipItem &&
                   handleVoteTooltipLabel(ayeTooltipItem, "Aye", chainSettings),
                 nayTooltipItem &&

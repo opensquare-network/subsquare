@@ -34,7 +34,7 @@ export default function CustomXTickLabels({
     <div className="w-full" style={style}>
       <div className="flex items-center w-full overflow-hidden text12Medium font-normal text-textSecondary">
         <div
-          className="flex-shrink-0 overflow-hidden flex items-center justify-center border-neutral300 border-l border-r"
+          className="flex-shrink-0 overflow-hidden flex items-center justify-center border-gray400 border-l border-r"
           ref={preparingRef}
           style={{
             width: `${(decisionIndex / labelsLength) * 100}%`,
