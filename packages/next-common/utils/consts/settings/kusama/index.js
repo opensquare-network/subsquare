@@ -96,6 +96,9 @@ const kusama = {
     startFrom: 538,
   },
   supportWalletconnect: true,
+  openSquare: {
+    voting: "kusama",
+  },
 };
 
 export default kusama;

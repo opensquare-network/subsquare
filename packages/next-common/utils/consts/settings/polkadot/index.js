@@ -106,6 +106,9 @@ const polkadot = {
     startFrom: 1584,
   },
   supportWalletconnect: true,
+  openSquare: {
+    voting: "polkadot",
+  },
 };
 
 export default polkadot;

@@ -145,6 +145,9 @@ const bifrost = {
     referenda: true,
   },
   preimage: bifrostPreimageSettings,
+  openSquare: {
+    voting: "bifrost",
+  },
 };
 
 export default bifrost;
