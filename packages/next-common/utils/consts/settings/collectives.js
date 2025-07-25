@@ -76,6 +76,10 @@ const collectives = {
   postLabels: [PostLabel.Motion, PostLabel.Announcement],
   hasFellowshipParams: true,
   description: "Collectives on Polkadot network.",
+  variables: {
+    offChainVotingSiteUrl: "https://voting.opensquare.io",
+    bountiesApiUrl: "https://bounties-api.opensquare.io/",
+  },
   modules: mergeChainModules({
     fellowship: {
       core: true,

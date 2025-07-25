@@ -96,6 +96,10 @@ const kusama = {
     startFrom: 538,
   },
   supportWalletconnect: true,
+  variables: {
+    offChainVotingSiteUrl: "https://voting.opensquare.io",
+    bountiesApiUrl: "https://bounties-api.opensquare.io/",
+  },
 };
 
 export default kusama;

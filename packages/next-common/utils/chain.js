@@ -1,4 +1,6 @@
 import Chains from "./consts/chains";
+import { CHAIN } from "next-common/utils/constants";
+import getChainSettings from "next-common/utils/consts/settings";
 
 export async function getBlockHeightFromHash(api, blockHash) {
   const header = await api.rpc.chain.getHeader(blockHash);
@@ -154,4 +156,14 @@ export function getRelayChain(chain) {
   }
 
   throw new Error("Unsupported relay chain");
+}
+
+let variables = null; // cache
+export function getChainVariable(variableName) {
+  if (!variables) {
+    const settings = getChainSettings(CHAIN);
+    variables = settings?.variables;
+  }
+
+  return variables?.[variableName];
 }

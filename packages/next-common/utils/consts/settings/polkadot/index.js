@@ -106,6 +106,10 @@ const polkadot = {
     startFrom: 1584,
   },
   supportWalletconnect: true,
+  variables: {
+    offChainVotingSiteUrl: "https://voting.opensquare.io",
+    bountiesApiUrl: "https://bounties-api.opensquare.io/",
+  },
 };
 
 export default polkadot;

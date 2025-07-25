@@ -26,6 +26,10 @@ const kusamaCoretime = {
   },
   allowWeb2Login: true,
   supportWalletconnect: true,
+  variables: {
+    offChainVotingSiteUrl: "https://voting.opensquare.io",
+    bountiesApiUrl: "https://bounties-api.opensquare.io/",
+  },
 };
 
 export default kusamaCoretime;

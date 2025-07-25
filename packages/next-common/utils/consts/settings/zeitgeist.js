@@ -97,6 +97,10 @@ const zeitgeist = {
     navigationBorder: "var(--neutral300)",
   },
   allowWeb2Login: true,
+  variables: {
+    offChainVotingSiteUrl: "https://voting.opensquare.io",
+    bountiesApiUrl: "https://bounties-api.opensquare.io/",
+  },
 };
 
 export default zeitgeist;

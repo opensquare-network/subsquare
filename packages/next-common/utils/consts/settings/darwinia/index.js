@@ -84,6 +84,10 @@ const darwinia2 = {
   },
   treasuryProposalTracks: darwiniaTreasuryTracks,
   allowWeb2Login: true,
+  variables: {
+    offChainVotingSiteUrl: "https://voting.opensquare.io",
+    bountiesApiUrl: "https://bounties-api.opensquare.io/",
+  },
 };
 
 export default darwinia2;

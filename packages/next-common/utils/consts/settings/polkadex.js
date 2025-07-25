@@ -38,6 +38,10 @@ const polkadex = {
     subscan: true,
   },
   allowWeb2Login: true,
+  variables: {
+    offChainVotingSiteUrl: "https://voting.opensquare.io",
+    bountiesApiUrl: "https://bounties-api.opensquare.io/",
+  },
 };
 
 export default polkadex;

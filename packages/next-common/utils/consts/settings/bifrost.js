@@ -145,6 +145,10 @@ const bifrost = {
     referenda: true,
   },
   preimage: bifrostPreimageSettings,
+  variables: {
+    offChainVotingSiteUrl: "https://voting.opensquare.io",
+    bountiesApiUrl: "https://bounties-api.opensquare.io/",
+  },
 };
 
 export default bifrost;

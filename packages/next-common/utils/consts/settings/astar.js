@@ -94,6 +94,10 @@ const astar = {
   showNewTreasuryProposalButton: true,
   sima: true,
   allowWeb2Login: false,
+  variables: {
+    offChainVotingSiteUrl: "https://voting.opensquare.io",
+    bountiesApiUrl: "https://bounties-api.opensquare.io/",
+  },
   ...astarThemeVars,
 };
 

@@ -146,6 +146,10 @@ const hydradx = {
     referenda: true,
   },
   preimage: hydrationPreimageSettings,
+  variables: {
+    offChainVotingSiteUrl: "https://voting.opensquare.io",
+    bountiesApiUrl: "https://bounties-api.opensquare.io/",
+  },
 };
 
 export default hydradx;

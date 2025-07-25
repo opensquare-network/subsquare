@@ -81,6 +81,10 @@ const paseo = {
   },
   allowWeb2Login: true,
   preimage: polkadotPreimageSettings,
+  variables: {
+    offChainVotingSiteUrl: "https://voting.opensquare.io",
+    bountiesApiUrl: "https://bounties-api.opensquare.io/",
+  },
 };
 
 export default paseo;

@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import Api from "next-common/services/api";
 import { hasDefinedOffChainVoting } from "next-common/utils/summaryExternalInfo";
+import { getChainVariable } from "next-common/utils/chain";
 
 const space = process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE;
 
@@ -72,8 +73,7 @@ export default function OffChainVoting() {
   }
 
   const votingHost = `${
-    process.env.NEXT_PUBLIC_OFF_CHAIN_VOTING_SITE_URL ||
-    "https://voting.opensquare.io"
+    getChainVariable("offChainVotingSiteUrl") || "https://voting.opensquare.io"
   }`;
 
   return <VotingProposals host={votingHost} />;

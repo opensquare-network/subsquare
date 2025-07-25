@@ -58,6 +58,10 @@ const westend = {
   multisigWallets: {
     mimir: true,
   },
+  variables: {
+    offChainVotingSiteUrl: "https://voting.opensquare.io",
+    bountiesApiUrl: "https://bounties-api.opensquare.io/",
+  },
 };
 
 export default westend;

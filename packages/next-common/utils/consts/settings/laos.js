@@ -125,6 +125,10 @@ const laos = {
   disableEvmWallet: true,
   ethereumNetwork,
   allowWeb2Login: false,
+  variables: {
+    offChainVotingSiteUrl: "https://voting.opensquare.io",
+    bountiesApiUrl: "https://bounties-api.opensquare.io/",
+  },
 };
 
 export default laos;

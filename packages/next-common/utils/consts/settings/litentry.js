@@ -20,7 +20,7 @@ const ProjectLogoLitentryLight = dynamic(() =>
 );
 
 const DEFAULT_LITENTRY_NODES = [
-   {
+  {
     name: "Heima",
     url: "wss://rpc.heima-parachain.heima.network/",
   },
@@ -119,6 +119,10 @@ const litentry = {
   },
   blockHeightSettings: litentryBlockHeightSettings,
   allowWeb2Login: true,
+  variables: {
+    offChainVotingSiteUrl: "https://voting.opensquare.io",
+    bountiesApiUrl: "https://bounties-api.opensquare.io/",
+  },
 };
 
 export default litentry;

@@ -104,6 +104,7 @@ const ajuna = {
   group: MenuGroups.PolkadotAndParachains,
   postLabels: defaultPostLabels,
   description: "Creators of the Polkadot Unity SDK.",
+
   modules: mergeChainModules({
     treasury: {
       bounties: false,
@@ -121,6 +122,10 @@ const ajuna = {
   },
   sima: true,
   allowWeb2Login: false,
+  variables: {
+    offChainVotingSiteUrl: "https://voting.opensquare.io",
+    bountiesApiUrl: "https://bounties-api.opensquare.io/",
+  },
   ...themeVars,
 };
 
