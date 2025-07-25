@@ -33,7 +33,7 @@ export function NewRemarkReferendumInnerPopup() {
 
   return (
     <Popup title="New Remark Proposal" onClose={onClose}>
-      <SignerWithBalance />
+      <SignerWithBalance supportedMultisig={false} />
       {remarkField}
       {trackField}
       <AdvanceSettings>
@@ -86,7 +86,7 @@ export function NewRemarkReferendumInnerPopupContent() {
         currentStep={1}
         loading={isLoading}
       />
-      <SignerWithBalance showTransferable />
+      <SignerWithBalance showTransferable supportedMultisig={false} />
       {remarkField}
       {trackField}
       <AdvanceSettings>

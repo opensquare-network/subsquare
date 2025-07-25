@@ -61,7 +61,7 @@ export function CancelReferendumInnerPopup({
 
   return (
     <Popup title="Cancel a referendum" onClose={onClose}>
-      <SignerWithBalance />
+      <SignerWithBalance supportedMultisig={false} />
       {referendumIndexField}
       {trackField}
       <AdvanceSettings>
@@ -145,7 +145,7 @@ export function CancelReferendumInnerPopupContent() {
         currentStep={1}
         loading={isLoading}
       />
-      <SignerWithBalance showTransferable />
+      <SignerWithBalance showTransferable supportedMultisig={false} />
       {referendumIndexField}
       {trackField}
       <AdvanceSettings>

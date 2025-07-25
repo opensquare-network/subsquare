@@ -66,7 +66,7 @@ export function NewUSDxTreasuryReferendumInnerPopupContent() {
         currentStep={1}
         loading={isLoading}
       />
-      <SignerWithBalance showTransferable />
+      <SignerWithBalance showTransferable supportedMultisig={false} />
       {usdxBalanceField}
       <div className="flex flex-col gap-[8px]">
         {beneficiaryField}
@@ -108,7 +108,7 @@ function PopupContent() {
 
   return (
     <>
-      <SignerWithBalance />
+      <SignerWithBalance supportedMultisig={false} />
       {usdxBalanceField}
       <div className="flex flex-col gap-[8px]">
         {beneficiaryField}

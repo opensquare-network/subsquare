@@ -77,7 +77,7 @@ export function NewAssetSpendProposalInnerPopup() {
 
   return (
     <Popup title="Create Treasury Proposal" onClose={onClose}>
-      <SignerWithBalance />
+      <SignerWithBalance supportedMultisig={false} />
       {balanceField}
       <div className="flex flex-col gap-[8px]">
         {beneficiaryField}

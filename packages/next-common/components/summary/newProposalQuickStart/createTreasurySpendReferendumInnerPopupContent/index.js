@@ -49,7 +49,7 @@ export function NewTreasurySpendReferendumInnerPopupContent() {
         currentStep={1}
         loading={isLoading}
       />
-      <SignerWithBalance showTransferable />
+      <SignerWithBalance showTransferable supportedMultisig={false} />
       {balanceField}
       <div className="flex flex-col gap-[8px]">{beneficiaryField}</div>
       {trackField}

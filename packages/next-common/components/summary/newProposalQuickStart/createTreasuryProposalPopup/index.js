@@ -34,7 +34,7 @@ export function NewTreasuryReferendumInnerPopup() {
 
   return (
     <Popup title="Create Treasury Proposal" onClose={onClose}>
-      <SignerWithBalance />
+      <SignerWithBalance supportedMultisig={false} />
       {balanceField}
       {beneficiaryField}
       {trackField}
@@ -98,7 +98,7 @@ export function NewTreasuryReferendumInnerPopupContent() {
         currentStep={1}
         loading={isLoading}
       />
-      <SignerWithBalance showTransferable />
+      <SignerWithBalance showTransferable supportedMultisig={false} />
       {balanceField}
       {beneficiaryField}
       {trackField}

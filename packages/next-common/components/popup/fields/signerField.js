@@ -15,6 +15,7 @@ export default function Signer({
   isBalanceLoading,
   noSwitchSigner = false,
   showTransferable = false,
+  supportedMultisig = true,
 }) {
   const node = useChainSettings();
   const noBalance = isNil(balance) && isNil(isBalanceLoading);
@@ -35,7 +36,10 @@ export default function Signer({
           showTransferable={showTransferable}
         />
       )}
-      <MaybeProxySigner noSwitch={noSwitchSigner} />
+      <MaybeProxySigner
+        noSwitch={noSwitchSigner}
+        supportedMultisig={supportedMultisig}
+      />
     </div>
   );
 }

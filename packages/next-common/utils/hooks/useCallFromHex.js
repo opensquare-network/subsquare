@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { hexToU8a } from "@polkadot/util";
-import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
+import { useContextApi } from "next-common/context/api";
 
 export function useCallFromHexIndexer(blockHeight) {
   if (!blockHeight) {
@@ -13,7 +13,7 @@ export function useCallFromHexIndexer(blockHeight) {
 }
 
 export default function useCallFromHex(callHex) {
-  const blockApi = useConditionalContextApi();
+  const blockApi = useContextApi();
   const [isLoading, setIsLoading] = useState(true);
   const [call, setCall] = useState();
 
