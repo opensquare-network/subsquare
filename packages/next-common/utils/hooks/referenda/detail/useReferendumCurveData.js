@@ -24,12 +24,17 @@ export default function useReferendumCurveData() {
       supportData.push(null);
       approvalData.push(null);
     } else {
-      const i = index - preparingHours;
+      const decisionIndex = index - preparingHours;
+
       supportData.push(
-        supportCalculator ? supportCalculator(i / hours) * 100 : 0,
+        supportCalculator
+          ? supportCalculator(decisionIndex / decisionHours) * 100
+          : 0,
       );
       approvalData.push(
-        approvalCalculator ? approvalCalculator(i / hours) * 100 : 0,
+        approvalCalculator
+          ? approvalCalculator(decisionIndex / decisionHours) * 100
+          : 0,
       );
     }
   }
