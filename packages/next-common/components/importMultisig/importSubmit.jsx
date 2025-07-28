@@ -52,6 +52,7 @@ export default function ImportSubmit({
         const entity = {
           action: "add-multisig",
           ...selectedMultisig,
+          name,
           timestamp: Date.now(),
           real: getRealField(user?.proxyAddress),
         };
@@ -90,6 +91,7 @@ export default function ImportSubmit({
       signMessage,
       connectedAccount,
       selectedMultisig,
+      name,
       dispatch,
       onClose,
       refresh,
