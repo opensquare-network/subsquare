@@ -190,7 +190,7 @@ async function getEvidenceProps(detail, context) {
     };
   }
 
-  const [evidenceComments] = await Promise.all([
+  const [{ result: evidence }, evidenceComments] = await Promise.all([
     backendApi.fetch(
       `fellowship/members/${firstMembership?.who}/evidences/${firstMembership?.evidence.cid}`,
     ),
@@ -201,7 +201,7 @@ async function getEvidenceProps(detail, context) {
   ]);
 
   return {
-    evidence: null,
+    evidence,
     evidenceComments,
   };
 }
