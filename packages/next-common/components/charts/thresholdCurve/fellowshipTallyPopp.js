@@ -1,19 +1,19 @@
-import Popup from "../../../popup/wrapper/Popup";
+import Popup from "../../popup/wrapper/Popup";
 import { noop } from "lodash-es";
-import "../../globalConfig";
-import ThresholdCurvesGov2TallyLegend from "../legend/gov2TallyLegend";
+import "../globalConfig";
+import ThresholdCurvesGov2TallyLegend from "./legend/gov2TallyLegend";
 import {
   useApprovalThreshold,
   useSupportThreshold,
-} from "../../../../context/post/gov2/threshold";
-import ThresholdSupportCard from "../thresholdCards/support";
-import ThresholdApprovalCard from "../thresholdCards/approval";
-import FellowshipCurveChart from "next-common/components/charts/thresholdCurve/fellowshipCurveChart";
+} from "next-common/context/post/gov2/threshold";
+import ThresholdSupportCard from "./thresholdCards/support";
+import ThresholdApprovalCard from "./thresholdCards/approval";
+import FellowshipCurveChart from "./fellowshipCurveChart";
 import Flex from "next-common/components/styled/flex";
 import HowOpenGovWorks from "next-common/components/howOpenGovWorks";
-import ConfirmationEstimation from "next-common/components/charts/thresholdCurve/gov2TallyPopup/confirmationEstimation";
+import ConfirmationEstimation from "./gov2TallyPopup/confirmationEstimation";
 
-export default function FellowshipThresholdCurvesGov2TallyPopup({
+export default function ThresholdCurvesFellowshipTallyPopup({
   closeFunc = noop,
   supportPerbill = 0,
   supportPercentage = 0,
