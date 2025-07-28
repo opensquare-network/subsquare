@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import getRemaining from "./common";
 import Wrapper from "./wrapper";
 import CountDown from "../../_CountDown";
@@ -8,8 +8,18 @@ import FellowshipTimeoutCountdown from "next-common/components/gov2/postList/tim
 import ReferendaTimeoutCountdown from "next-common/components/gov2/postList/timeoutCountdown/referendaTimeoutCountdown";
 import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
 
-function PreparingCountdownImpl({ detail }) {
+function useRemaining(detail) {
   const latestHeight = useAhmLatestHeight();
+  return useMemo(() => {
+    const onchain = detail?.onchainData;
+    const trackInfo = onchain?.trackInfo;
+    const preparePeriod = trackInfo?.preparePeriod;
+    const submitted = onchain?.info?.submitted;
+    return getRemaining(latestHeight, submitted, preparePeriod);
+  }, [detail?.onchainData, latestHeight]);
+}
+
+function PreparingCountdownImpl({ detail }) {
   const onchain = detail?.onchainData;
   const trackInfo = onchain?.trackInfo;
 
@@ -17,8 +27,7 @@ function PreparingCountdownImpl({ detail }) {
   const submitted = onchain?.info?.submitted;
   const prepareEnd = submitted + preparePeriod;
   const hasPutDecisionDeposit = onchain?.info?.decisionDeposit;
-
-  const remaining = getRemaining(latestHeight, submitted, preparePeriod);
+  const remaining = useRemaining(detail);
   const preparePercentage = usePercentage(submitted, preparePeriod);
 
   return (
@@ -47,14 +56,7 @@ function PreparingCountdownImpl({ detail }) {
 }
 
 export default function PreparingCountdown({ detail }) {
-  const latestHeight = useAhmLatestHeight();
-  const onchain = detail?.onchainData;
-  const trackInfo = onchain?.trackInfo;
-
-  const preparePeriod = trackInfo?.preparePeriod;
-  const submitted = onchain?.info?.submitted;
-
-  const remaining = getRemaining(latestHeight, submitted, preparePeriod);
+  const remaining = useRemaining(detail);
 
   if (remaining <= 0) {
     return <ReferendaTimeoutCountdown detail={detail} />;
@@ -64,14 +66,7 @@ export default function PreparingCountdown({ detail }) {
 }
 
 export function FellowshipPreparingCountdown({ detail }) {
-  const latestHeight = useAhmLatestHeight();
-  const onchain = detail?.onchainData;
-  const trackInfo = onchain?.trackInfo;
-
-  const preparePeriod = trackInfo?.preparePeriod;
-  const submitted = onchain?.info?.submitted;
-
-  const remaining = getRemaining(latestHeight, submitted, preparePeriod);
+  const remaining = useRemaining(detail);
 
   if (remaining <= 0) {
     return <FellowshipTimeoutCountdown detail={detail} />;
