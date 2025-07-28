@@ -22,7 +22,7 @@ import { Gov2ReferendaTag } from "next-common/components/tags/state/gov2";
 import Divider from "next-common/components/styled/layout/divider";
 import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
 import { gov2State } from "next-common/utils/consts/state";
-import { FellowshipPreparingCountdown } from "next-common/components/gov2/postList/preparingCountdown";
+import FellowshipPreparingCountdown from "next-common/components/fellowship/referenda/preparingCountdown";
 import DecisionCountdown from "next-common/components/gov2/postList/decisionCountdown";
 import ConfirmCountdown from "next-common/components/gov2/postList/confirmCountdown";
 import PostItemVotesSummary from "./postItemVotesSummary";

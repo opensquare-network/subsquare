@@ -4,11 +4,10 @@ import Wrapper from "./wrapper";
 import CountDown from "../../_CountDown";
 import TimeDuration from "../../TimeDuration";
 import usePercentage from "./usePercentage";
-import FellowshipTimeoutCountdown from "next-common/components/gov2/postList/timeoutCountdown/fellowshipTimeoutCountdown";
 import ReferendaTimeoutCountdown from "next-common/components/gov2/postList/timeoutCountdown/referendaTimeoutCountdown";
 import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
 
-function useRemaining(detail) {
+export function useRemaining(detail) {
   const latestHeight = useAhmLatestHeight();
   return useMemo(() => {
     const onchain = detail?.onchainData;
@@ -19,7 +18,7 @@ function useRemaining(detail) {
   }, [detail?.onchainData, latestHeight]);
 }
 
-function PreparingCountdownImpl({ detail }) {
+export function PreparingCountdownImpl({ detail }) {
   const onchain = detail?.onchainData;
   const trackInfo = onchain?.trackInfo;
 
@@ -60,16 +59,6 @@ export default function PreparingCountdown({ detail }) {
 
   if (remaining <= 0) {
     return <ReferendaTimeoutCountdown detail={detail} />;
-  }
-
-  return <PreparingCountdownImpl detail={detail} />;
-}
-
-export function FellowshipPreparingCountdown({ detail }) {
-  const remaining = useRemaining(detail);
-
-  if (remaining <= 0) {
-    return <FellowshipTimeoutCountdown detail={detail} />;
   }
 
   return <PreparingCountdownImpl detail={detail} />;
