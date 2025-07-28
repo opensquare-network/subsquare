@@ -85,7 +85,7 @@ export function NewFellowshipProposalInnerPopup({
 
   return (
     <Popup title="New Proposal" onClose={onClose}>
-      <SignerWithBalance />
+      <SignerWithBalance supportedMultisig={false} />
       <DetailedFellowshipTrack trackId={trackId} setTrackId={setTrackId} />
       <PreimageField
         preimageHash={preimageHash}

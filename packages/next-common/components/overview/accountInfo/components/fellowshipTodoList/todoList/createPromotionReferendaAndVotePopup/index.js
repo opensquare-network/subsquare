@@ -3,6 +3,8 @@ import PopupWithSigner from "next-common/components/popupWithSigner";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import { useFellowshipProposalSubmissionTxFunc } from "next-common/hooks/fellowship/core/useFellowshipCoreMemberProposalSubmitTx";
 import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
+import { useDispatch } from "react-redux";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useActiveReferendaContext } from "next-common/context/activeReferenda";
 import PrimaryButton from "next-common/lib/button/primary";
 import Tooltip from "next-common/components/tooltip";
@@ -14,14 +16,13 @@ import useRequiredRankToPromoteMember from "./useRequiredRankToPromoteMember";
 import RankField from "./rankField";
 import useMemberRank from "../memberPromotionPopup/voteButtons/useMemberRank";
 import { isNil } from "lodash-es";
-import { useSmartTxToast } from "next-common/hooks/useMultisigTx";
 
 export default function CreatePromotionReferendaAndVotePopup({
   who,
   voteAye,
   onClose,
 }) {
-  const { smartToastAtInBlock } = useSmartTxToast();
+  const dispatch = useDispatch();
 
   const { fetch: fetchActiveReferenda } = useActiveReferendaContext();
   const { component: whoField } = useAddressComboField({
@@ -59,7 +60,7 @@ export default function CreatePromotionReferendaAndVotePopup({
     getTxFunc: getCreateAndVoteTxFunc,
     onSubmitted: onClose,
     onInBlock: () => {
-      smartToastAtInBlock("Vote successfully");
+      dispatch(newSuccessToast("Vote successfully"));
       fetchActiveReferenda();
     },
   });

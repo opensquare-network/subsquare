@@ -1,4 +1,5 @@
 import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useCallback, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { useCombinedPreimageHashes } from "next-common/hooks/usePreimageHashes";
@@ -10,7 +11,6 @@ import { useRouter } from "next/router";
 import { useContextApi } from "next-common/context/api";
 import { useReferendaProposalOrigin } from "next-common/components/summary/newProposalPopup";
 import { getEventData } from "next-common/utils/sendTransaction";
-import { useSmartTxToast } from "./useMultisigTx";
 
 export default function useNewReferendumCells({
   notePreimageTx,
@@ -55,14 +55,13 @@ export default function useNewReferendumCells({
   }, [api, encodedHash, encodedLength, enactment, pallet, proposalOrigin]);
 
   const dispatch = useDispatch();
-  const { smartToastAtInBlock } = useSmartTxToast();
 
   const cells = useMemo(() => {
     return [
       {
         getTxFunc: () => notePreimageTx,
         onInBlock: () => {
-          smartToastAtInBlock("Preimage created");
+          dispatch(newSuccessToast("Preimage created"));
           dispatch(incPreImagesTrigger());
         },
         preimageExists,
@@ -87,9 +86,8 @@ export default function useNewReferendumCells({
   }, [
     preimageExists,
     getSubmitReferendaTx,
-    dispatch,
     notePreimageTx,
-    smartToastAtInBlock,
+    dispatch,
     pallet,
     router,
     referendaUrl,

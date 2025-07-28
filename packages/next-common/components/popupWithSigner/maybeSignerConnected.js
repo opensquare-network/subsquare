@@ -3,7 +3,6 @@ import { useUser } from "../../context/user";
 import { isSameAddress } from "../../utils";
 import { SignerContextProvider, usePopupParams } from "./context";
 import LoginPopup from "next-common/components/login/popup";
-import { MultisigAccountsProvider } from "../multisigs/context/multisigAccountsContext";
 
 export default function MaybeSignerConnected({ children, extensionAccounts }) {
   const user = useUser();
@@ -16,15 +15,9 @@ export default function MaybeSignerConnected({ children, extensionAccounts }) {
     return <LoginPopup onClose={onClose} />;
   }
 
-  const realAddress = user?.proxyAddress || user?.address;
-
   return (
     <SignerContextProvider extensionAccounts={extensionAccounts}>
-      <GeneralProxiesProvider>
-        <MultisigAccountsProvider userAddress={realAddress}>
-          {children}
-        </MultisigAccountsProvider>
-      </GeneralProxiesProvider>
+      <GeneralProxiesProvider>{children}</GeneralProxiesProvider>
     </SignerContextProvider>
   );
 }

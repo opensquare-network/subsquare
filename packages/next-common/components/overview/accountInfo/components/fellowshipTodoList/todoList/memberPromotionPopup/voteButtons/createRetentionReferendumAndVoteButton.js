@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 import { useFellowshipProposalSubmissionTxFunc } from "next-common/hooks/fellowship/core/useFellowshipCoreMemberProposalSubmitTx";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useActiveReferendaContext } from "next-common/context/activeReferenda";
 import Tooltip from "next-common/components/tooltip";
 import { useChain } from "next-common/context/chain";
@@ -9,7 +11,6 @@ import { getRetainTrackNameFromRank } from "next-common/components/fellowship/co
 import useMemberRank from "./useMemberRank";
 import { useMyVotesChangedContext } from "../../../context/myVotesChanged";
 import SecondaryButton from "next-common/lib/button/secondary";
-import { useSmartTxToast } from "next-common/hooks/useMultisigTx";
 
 function CreateReferendumAndVoteButtonImpl({
   who,
@@ -19,10 +20,10 @@ function CreateReferendumAndVoteButtonImpl({
   children,
   ButtonComponent = SecondaryButton,
 }) {
+  const dispatch = useDispatch();
   const currentRank = useMemberRank(who);
   const chain = useChain();
   const trackName = getRetainTrackNameFromRank(chain, currentRank);
-  const { smartToastAtInBlock } = useSmartTxToast();
 
   const [enactment] = useState({ after: 100 });
   const { fetch: fetchActiveReferenda } = useActiveReferendaContext();
@@ -42,7 +43,7 @@ function CreateReferendumAndVoteButtonImpl({
   const { doSubmit: doSubmitCreateAndVote } = useTxSubmission({
     getTxFunc: getCreateAndVoteTxFunc,
     onInBlock: () => {
-      smartToastAtInBlock("Vote successfully");
+      dispatch(newSuccessToast("Vote successfully"));
       fetchActiveReferenda();
       triggerMyVotesChanged();
     },

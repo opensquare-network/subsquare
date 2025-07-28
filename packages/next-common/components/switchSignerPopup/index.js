@@ -202,7 +202,10 @@ export function ProxiedAccounts({ selected, onSelect = noop }) {
   );
 }
 
-export default function SwitchSignerPopup({ onClose }) {
+export default function SwitchSignerPopup({
+  onClose,
+  supportedMultisig = true,
+}) {
   const { signerAccount, setSelectedProxyAddress, setMultisig } =
     useSignerContext();
   const callerAddress = useCallerAddress();
@@ -224,13 +227,15 @@ export default function SwitchSignerPopup({ onClose }) {
             setMultisig();
           }}
         />
-        <MultiSignerAccounts
-          selected={signerAccount.multisig}
-          onSelect={(multisig) => {
-            setSelectedProxyAddress();
-            setMultisig(multisig);
-          }}
-        />
+        {supportedMultisig && (
+          <MultiSignerAccounts
+            selected={signerAccount.multisig}
+            onSelect={(multisig) => {
+              setSelectedProxyAddress();
+              setMultisig(multisig);
+            }}
+          />
+        )}
       </div>
     </Popup>
   );

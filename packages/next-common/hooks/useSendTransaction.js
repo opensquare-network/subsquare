@@ -33,7 +33,7 @@ import { HydradxAssets } from "next-common/utils/hydradx";
 import { useWalletConnect } from "next-common/context/walletconnect";
 import { sendWalletConnectTx } from "next-common/utils/sendTransaction/sendWalletConnectTx";
 import { useWalletConnectBuildPayload } from "next-common/hooks/useWalletConnectBuildPayload";
-import useRefreshMyMultisig from "./useMultisigTx";
+import useRefreshMyMultisig from "next-common/components/common/tx/useRefreshMyMultisig";
 
 function shouldSendEvmTx(signerAccount) {
   const isWalletMetamask = signerAccount?.meta?.source === WalletTypes.METAMASK;
@@ -281,13 +281,13 @@ export function useSendTransaction() {
       }
     },
     [
-      signerAccount,
+      buildPayload,
       dispatch,
+      signWcTx,
+      signerAccount,
+      signetSdk,
       setSigner,
       refreshMyMultisig,
-      signetSdk,
-      buildPayload,
-      signWcTx,
     ],
   );
 

@@ -13,11 +13,12 @@ import { useChainSettings } from "next-common/context/chain";
 import useSetSubsDeposit from "next-common/hooks/people/useSetSubsDeposit";
 import { useContextApi } from "next-common/context/api";
 import TxSubmissionButton from "../common/tx/txSubmissionButton";
+import { useDispatch } from "react-redux";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import SignerWithBalance from "../signerPopup/signerWithBalance";
 import { Label } from "../popup/styled";
 import { noop } from "lodash-es";
 import WindowSizeProvider from "next-common/context/windowSize";
-import { useSmartTxToast } from "next-common/hooks/useMultisigTx";
 
 const defaultSub = {
   address: "",
@@ -27,7 +28,7 @@ const defaultSub = {
 export default function SetSubsPopupContent() {
   const { subs, retry = noop } = usePopupParams();
   const api = useContextApi();
-  const { smartToastAtInBlock } = useSmartTxToast();
+  const dispatch = useDispatch();
   const extensionAccounts = useExtensionAccounts();
   const [subsList, setSubsList] = useState([]);
 
@@ -75,9 +76,9 @@ export default function SetSubsPopupContent() {
   }, [api, subsList]);
 
   const onInBlock = useCallback(() => {
-    smartToastAtInBlock("Submitted subs successfully");
+    dispatch(newSuccessToast("Submitted subs successfully"));
     retry?.();
-  }, [smartToastAtInBlock, retry]);
+  }, [dispatch, retry]);
 
   return (
     <WindowSizeProvider>

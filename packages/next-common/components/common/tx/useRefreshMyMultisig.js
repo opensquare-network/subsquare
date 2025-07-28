@@ -5,7 +5,6 @@ import {
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import { useChain } from "next-common/context/chain";
 import { myMultisigsSelector } from "next-common/store/reducers/multisigSlice";
-import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useCallback } from "react";
 
@@ -28,31 +27,5 @@ export default function useRefreshMyMultisig() {
 
   return {
     refreshMyMultisig,
-  };
-}
-
-const DEFAULT_TOAST_CONTENT =
-  "Multisig transaction submitted and other signatories will see it on subsquare soon.";
-
-export function useSmartTxToast() {
-  const dispatch = useDispatch();
-  const signerAccount = useSignerAccount();
-
-  const smartToastAtInBlock = useCallback(
-    (content = "") => {
-      if (!content) {
-        return;
-      }
-      if (signerAccount?.multisig) {
-        dispatch(newSuccessToast(DEFAULT_TOAST_CONTENT));
-      } else {
-        dispatch(newSuccessToast(content));
-      }
-    },
-    [signerAccount?.multisig, dispatch],
-  );
-
-  return {
-    smartToastAtInBlock,
   };
 }

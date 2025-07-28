@@ -7,6 +7,7 @@ export default function SignerWithBalance({
   title,
   noSwitchSigner,
   showTransferable = false,
+  supportedMultisig = true,
 }) {
   const signerAccount = useSignerAccount();
 
@@ -25,6 +26,7 @@ export default function SignerWithBalance({
       isBalanceLoading={loadingBalance}
       noSwitchSigner={noSwitchSigner}
       showTransferable={showTransferable}
+      supportedMultisig={supportedMultisig}
     />
   );
 }
