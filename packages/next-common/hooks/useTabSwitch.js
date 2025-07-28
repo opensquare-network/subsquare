@@ -1,7 +1,7 @@
 import { createGlobalState } from "react-use";
 import Tab from "next-common/components/tab";
 
-function TabSwitch({ tabs, value, onChange }) {
+export function TabSwitch({ tabs, value, onChange }) {
   return (
     <Tab
       selectedTabId={value}

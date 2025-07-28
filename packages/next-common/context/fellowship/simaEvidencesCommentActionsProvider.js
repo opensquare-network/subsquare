@@ -119,7 +119,10 @@ export default function SimaEvidencesCommentActionsProvider({ children }) {
     },
   };
   return (
-    <CommentActionsContext.Provider value={actions}>
+    <CommentActionsContext.Provider
+      value={actions}
+      key="simaEvidencesCommentActionsProvider"
+    >
       {children}
     </CommentActionsContext.Provider>
   );

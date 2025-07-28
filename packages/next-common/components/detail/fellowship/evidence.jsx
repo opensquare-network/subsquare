@@ -5,11 +5,15 @@ import {
   useCoreFellowshipParams,
 } from "next-common/context/collectives/collectives";
 import { useOnchainData } from "next-common/context/post";
+import { MarkdownPreviewer } from "@osn/previewer";
+import { usePageProps } from "next-common/context/page";
 import { useReferendumFellowshipCoreEvidence } from "next-common/context/post/fellowship/useReferendumFellowshipCoreEvidence";
 import { useReferendumFellowshipMember } from "next-common/context/post/fellowship/useReferendumFellowshipMember";
 import useIsProposalFinished from "next-common/hooks/proposal/useIsProposalFinished";
 import { useReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
+import EvidenceExternalLinkWithWish from "next-common/components/collectives/core/evidenceContent/EvidenceExternalLinkWithWish";
+import { isObject } from "lodash-es";
 
 function FellowshipReferendaDetailEvidenceImpl() {
   const { isLoading, member } = useReferendumFellowshipMember();
@@ -38,11 +42,47 @@ function FellowshipReferendaDetailEvidenceImpl() {
   );
 }
 
+function FellowshipEvidenceContentFromApi({ evidence }) {
+  const isFinished = useIsProposalFinished();
+  const { isLoading, member } = useReferendumFellowshipMember();
+  const params = useCoreFellowshipParams();
+
+  return (
+    <div className="mt-4 space-y-4">
+      <hr />
+      {!isFinished && (
+        <FellowshipEvidenceMemberStatusCard
+          isLoading={isLoading}
+          member={member}
+          params={params}
+        />
+      )}
+
+      <EvidenceExternalLinkWithWish
+        cid={evidence?.cid}
+        wish={evidence?.wish}
+        evidence={evidence?.hex}
+      />
+      <MarkdownPreviewer content={evidence?.content} />
+    </div>
+  );
+}
+
 export default function FellowshipReferendaDetailEvidence() {
   const pallet = useCoreFellowshipPallet();
   const onchainData = useOnchainData();
+  const { evidence } = usePageProps();
   const { call } = onchainData?.inlineCall || onchainData.proposal || {};
   const indexer = useReferendumVotingFinishIndexer();
+
+  if (isObject(evidence)) {
+    return (
+      <FellowshipEvidenceContentFromApi
+        key={evidence?.cid}
+        evidence={evidence}
+      />
+    );
+  }
 
   if (
     call?.section === pallet &&
