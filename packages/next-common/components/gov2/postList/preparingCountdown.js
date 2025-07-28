@@ -8,7 +8,7 @@ import FellowshipTimeoutCountdown from "next-common/components/gov2/postList/tim
 import ReferendaTimeoutCountdown from "next-common/components/gov2/postList/timeoutCountdown/referendaTimeoutCountdown";
 import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
 
-export default function PreparingCountdown({ detail, isFellowship = false }) {
+function PreparingCountdownImpl({ detail }) {
   const latestHeight = useAhmLatestHeight();
   const onchain = detail?.onchainData;
   const trackInfo = onchain?.trackInfo;
@@ -20,14 +20,6 @@ export default function PreparingCountdown({ detail, isFellowship = false }) {
 
   const remaining = getRemaining(latestHeight, submitted, preparePeriod);
   const preparePercentage = usePercentage(submitted, preparePeriod);
-
-  if (remaining <= 0) {
-    return isFellowship ? (
-      <FellowshipTimeoutCountdown detail={detail} />
-    ) : (
-      <ReferendaTimeoutCountdown detail={detail} />
-    );
-  }
 
   return (
     <Wrapper>
@@ -52,4 +44,38 @@ export default function PreparingCountdown({ detail, isFellowship = false }) {
       />
     </Wrapper>
   );
+}
+
+export default function PreparingCountdown({ detail }) {
+  const latestHeight = useAhmLatestHeight();
+  const onchain = detail?.onchainData;
+  const trackInfo = onchain?.trackInfo;
+
+  const preparePeriod = trackInfo?.preparePeriod;
+  const submitted = onchain?.info?.submitted;
+
+  const remaining = getRemaining(latestHeight, submitted, preparePeriod);
+
+  if (remaining <= 0) {
+    return <ReferendaTimeoutCountdown detail={detail} />;
+  }
+
+  return <PreparingCountdownImpl detail={detail} />;
+}
+
+export function FellowshipPreparingCountdown({ detail }) {
+  const latestHeight = useAhmLatestHeight();
+  const onchain = detail?.onchainData;
+  const trackInfo = onchain?.trackInfo;
+
+  const preparePeriod = trackInfo?.preparePeriod;
+  const submitted = onchain?.info?.submitted;
+
+  const remaining = getRemaining(latestHeight, submitted, preparePeriod);
+
+  if (remaining <= 0) {
+    return <FellowshipTimeoutCountdown detail={detail} />;
+  }
+
+  return <PreparingCountdownImpl detail={detail} />;
 }
