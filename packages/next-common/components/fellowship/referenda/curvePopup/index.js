@@ -1,14 +1,14 @@
 import styled from "styled-components";
-import CurveIconOrigin from "../../../icons/curve";
+import CurveIconOrigin from "next-common/components/icons/curve";
 import { useState } from "react";
 import {
   useApprovalPercentage,
   useSupportPercentage,
-} from "../../../../context/post/gov2/percentage";
+} from "next-common/context/post/gov2/percentage";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const ThresholdCurvesGov2TallyPopup = dynamicPopup(() =>
-  import("../../../charts/thresholdCurve/gov2TallyPopup"),
+const ThresholdCurvesFellowshipTallyPopup = dynamicPopup(() =>
+  import("next-common/components/charts/thresholdCurve/fellowshipTallyPopp"),
 );
 
 const CurveIcon = styled(CurveIconOrigin)`
@@ -21,7 +21,7 @@ const CurveIcon = styled(CurveIconOrigin)`
   }
 `;
 
-export default function CurvePopupOpener({
+export default function FellowshipCurvePopupOpener({
   tally = { tally },
   supportPerbill,
 }) {
@@ -39,7 +39,7 @@ export default function CurvePopupOpener({
       />
 
       {showThresholdCurveDetailPopup && (
-        <ThresholdCurvesGov2TallyPopup
+        <ThresholdCurvesFellowshipTallyPopup
           closeFunc={() => setShowThresholdCurveDetailPopup(false)}
           supportPerbill={supportPerbill}
           supportPercentage={supportPercentage}
