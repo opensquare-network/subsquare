@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import {
   newErrorToast,
   newSuccessToast,
@@ -59,7 +59,7 @@ export default function RemovePopup({ onClose, multisig }) {
         signerWallet: connectedAccount.wallet,
       };
 
-      const { error } = await nextApi.patch(
+      const { error } = await backendApi.patch(
         `users/${realAddress}/multisigs/${multisig.multisigAddress}`,
         data,
       );

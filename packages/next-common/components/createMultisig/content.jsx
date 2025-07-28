@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from "react";
 import PrimaryButton from "next-common/lib/button/primary";
 import TextInputField from "../popup/fields/textInputField";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import ThresholdField from "./fields/threshold";
 import SignatoriesField from "./fields/signatories";
@@ -80,7 +80,7 @@ export default function CreateMultisigContent() {
           signature,
           signerWallet: connectedAccount.wallet,
         };
-        const { error } = await nextApi.post(
+        const { error } = await backendApi.post(
           `users/${realAddress}/multisigs`,
           data,
         );

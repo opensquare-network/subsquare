@@ -5,7 +5,7 @@ import PrimaryButton from "next-common/lib/button/primary";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { ArrowLineLeft } from "@osn/icons/subsquare";
 import MultisigDisplay from "./multisigDisplay";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { useDispatch } from "react-redux";
 import {
   newErrorToast,
@@ -67,7 +67,7 @@ export default function ImportSubmit({
           signature,
           signerWallet: connectedAccount.wallet,
         };
-        const { error } = await nextApi.post(
+        const { error } = await backendApi.post(
           `users/${realAddress}/multisigs`,
           data,
         );
