@@ -1,5 +1,5 @@
 import { isEmpty } from "lodash-es";
-import { useMultisigAccounts } from "next-common/components/multisigs/context/accountsContext";
+import { useMultisigAccounts } from "next-common/components/multisigs/context/multisigAccountsContext";
 
 export default function useNameIsEqual(name = "") {
   const { multisigs = [] } = useMultisigAccounts();

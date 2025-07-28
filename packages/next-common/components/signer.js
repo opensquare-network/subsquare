@@ -4,6 +4,7 @@ import Account from "./account";
 import EmptyAccount from "./emptyAccount";
 import { GreyPanel } from "./styled/containers/greyPanel";
 import {
+  useCallerAddress,
   useExtensionAccounts,
   useSignerAccount,
 } from "./popupWithSigner/context";
@@ -22,20 +23,18 @@ const Wrapper = styled(GreyPanel)`
 export function useOriginAccount() {
   const signerAccount = useSignerAccount();
   const extensionAccounts = useExtensionAccounts();
+  const callerAddress = useCallerAddress();
 
   const originAccount = useMemo(() => {
-    if (!signerAccount) {
+    if (!callerAddress) {
       return null;
     }
-    if (!signerAccount.proxyAddress) {
-      return signerAccount;
-    }
     return {
-      address: signerAccount.proxyAddress,
-      name: addressEllipsis(signerAccount.proxyAddress),
-      meta: signerAccount.meta,
+      address: callerAddress,
+      name: addressEllipsis(callerAddress),
+      meta: signerAccount?.meta,
     };
-  }, [signerAccount]);
+  }, [callerAddress, signerAccount?.meta]);
 
   if (!originAccount) {
     return null;
@@ -146,12 +145,13 @@ export default function MaybeProxySigner({
             <SwitchButtonWrapper supportedMultisig={supportedMultisig} />
           )}
         </div>
-        {signerAccount?.proxyAddress && (
-          <ProxyHintForAddress address={signerAccount?.proxyAddress} />
-        )}
-        {signerAccount?.multisig && supportedMultisig && (
+        {signerAccount?.multisig && supportedMultisig ? (
           <MultisigHint multisig={signerAccount?.multisig} />
-        )}
+        ) : signerAccount?.selectedProxyAddress ? (
+          <ProxyHintForAddress address={signerAccount?.selectedProxyAddress} />
+        ) : signerAccount?.proxyAddress ? (
+          <ProxyHintForAddress address={signerAccount?.proxyAddress} />
+        ) : null}
       </div>
     </Wrapper>
   );

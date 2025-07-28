@@ -7,7 +7,7 @@ import MultisigDisplay from "../importMultisig/multisigDisplay";
 import { normalizeAddress } from "next-common/utils/address";
 import { ArrowRight } from "@osn/icons/subsquare";
 import { usePopupOnClose } from "next-common/context/popup";
-import { useMultisigAccounts } from "../multisigs/context/accountsContext";
+import { useMultisigAccounts } from "../multisigs/context/multisigAccountsContext";
 
 export default function MultiSignerAccounts({ selected, onSelect = noop }) {
   const onClose = usePopupOnClose();

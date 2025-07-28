@@ -1,9 +1,9 @@
 import React, { useContext, useMemo } from "react";
 import useQueryMyProxied from "next-common/hooks/useQueryMyProxies";
 import useAllOnChainProxies from "next-common/hooks/useAllOnChainProxies";
-import { useUser } from "../user";
 import { useChainSettings } from "../chain";
 import { isSameAddress } from "next-common/utils";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 const ProxiesContext = React.createContext(null);
 
@@ -24,15 +24,15 @@ export function ServerProxiesProvider({ children }) {
 
 export function OnChainProxiesProvider({ children }) {
   const { proxies: allProxies, loading } = useAllOnChainProxies();
-  const user = useUser();
+  const realAddress = useRealAddress();
 
   const myProxied = useMemo(
     () =>
       allProxies.filter(
         (proxy) =>
-          isSameAddress(proxy.delegatee, user?.address) && proxy.delay === 0,
+          isSameAddress(proxy.delegatee, realAddress) && proxy.delay === 0,
       ),
-    [allProxies, user?.address],
+    [allProxies, realAddress],
   );
 
   return (

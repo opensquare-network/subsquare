@@ -7,22 +7,53 @@ import {
 import { useDispatch } from "react-redux";
 import SecondaryButton from "next-common/lib/button/secondary";
 import PrimaryButton from "next-common/lib/button/primary";
-import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 import Popup from "next-common/components/popup/wrapper/Popup";
-import { useMultisigAccounts } from "../context/accountsContext";
+import { useMultisigAccounts } from "../context/multisigAccountsContext";
+import { getRealField } from "next-common/sima/actions/common";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { useConnectedAccount } from "next-common/context/connectedAccount";
+import { useSignMessage } from "next-common/hooks/useSignMessage";
+import { useUser } from "next-common/context/user";
 
 export default function RemovePopup({ onClose, multisigAddress }) {
+  const user = useUser();
+  const realAddress = useRealAddress();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState();
-  const { ensureLogin } = useEnsureLogin();
   const { refresh } = useMultisigAccounts();
+  const connectedAccount = useConnectedAccount();
+  const signMessage = useSignMessage();
 
   const doSubmit = useCallback(async () => {
     setIsLoading(true);
+
     try {
-      await ensureLogin();
-      const { error } = await nextApi.delete(
-        `user/multisigs/${multisigAddress}`,
+      if (!connectedAccount) {
+        dispatch(newErrorToast("Please connect your account first"));
+        return;
+      }
+
+      const entity = {
+        action: "remove-multisig",
+        multisigAddress,
+        timestamp: Date.now(),
+        real: getRealField(user?.proxyAddress),
+      };
+      const signature = await signMessage(
+        JSON.stringify(entity),
+        connectedAccount.address,
+        connectedAccount.wallet,
+      );
+      const data = {
+        entity,
+        address: connectedAccount.address,
+        signature,
+        signerWallet: connectedAccount.wallet,
+      };
+
+      const { error } = await nextApi.post(
+        `users/${realAddress}/multisigs/${multisigAddress}/delete`,
+        data,
       );
       if (error) {
         dispatch(newErrorToast(error.message));
@@ -36,7 +67,16 @@ export default function RemovePopup({ onClose, multisigAddress }) {
     } finally {
       setIsLoading(false);
     }
-  }, [dispatch, ensureLogin, multisigAddress, onClose, refresh]);
+  }, [
+    connectedAccount,
+    realAddress,
+    user?.proxyAddress,
+    signMessage,
+    dispatch,
+    multisigAddress,
+    onClose,
+    refresh,
+  ]);
 
   return (
     <Popup title="Remove Multisig Account" onClose={onClose}>

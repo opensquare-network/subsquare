@@ -9,7 +9,7 @@ import IndentPanel from "../callTreeView/indentPanel";
 import { cn } from "next-common/utils";
 import Tooltip from "../tooltip";
 import CellActions from "./cellActions";
-import { useMultisigAccounts } from "./context/accountsContext";
+import { useMultisigAccounts } from "./context/multisigAccountsContext";
 import { GreyPanel } from "../styled/containers/greyPanel";
 import { useChainSettings } from "next-common/context/chain";
 import { sortAddresses } from "@polkadot/util-crypto";

@@ -1,9 +1,10 @@
 import { useMyProxied } from "next-common/context/proxy";
 import { useUser } from "next-common/context/user";
 import { useState } from "react";
-import { AccountsProvider as MultisigAccountsProvider } from "./multisigs/context/accountsContext";
-import { useMultisigAccounts } from "./multisigs/context/accountsContext";
+import { MultisigAccountsProvider } from "./multisigs/context/multisigAccountsContext";
+import { useMultisigAccounts } from "./multisigs/context/multisigAccountsContext";
 import SwitchSignerPopup from "./switchSignerPopup";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 function SwitchButton() {
   const user = useUser();
@@ -44,9 +45,11 @@ function SwitchButtonContent() {
 }
 
 export default function SwitchButtonWrapper({ supportedMultisig = true }) {
+  const realAddress = useRealAddress();
+
   if (supportedMultisig) {
     return (
-      <MultisigAccountsProvider>
+      <MultisigAccountsProvider userAddress={realAddress}>
         <MultisigSwitchButton />
       </MultisigAccountsProvider>
     );

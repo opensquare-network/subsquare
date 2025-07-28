@@ -3,10 +3,7 @@ import { useDispatch } from "react-redux";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import { noop } from "lodash-es";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import {
-  wrapWithMultisig,
-  wrapWithProxy,
-} from "next-common/utils/sendTransaction";
+import { wrapTransaction } from "next-common/utils/sendTransaction";
 import { useContextApi } from "next-common/context/api";
 import { useSendTransaction } from "next-common/hooks/useSendTransaction";
 import useWraperTxCallback, {
@@ -51,16 +48,7 @@ export default function useTxSubmission({
       return;
     }
 
-    if (signerAccount?.multisig) {
-      tx = await wrapWithMultisig(
-        api,
-        tx,
-        signerAccount.multisig,
-        signerAccount.address,
-      );
-    } else if (signerAccount?.proxyAddress) {
-      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-    }
+    tx = await wrapTransaction(api, tx, signerAccount);
 
     await sendTxFunc({
       api,

@@ -5,7 +5,6 @@ import PrimaryButton from "next-common/lib/button/primary";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { ArrowLineLeft } from "@osn/icons/subsquare";
 import MultisigDisplay from "./multisigDisplay";
-import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 import nextApi from "next-common/services/nextApi";
 import { useDispatch } from "react-redux";
 import {
@@ -13,23 +12,31 @@ import {
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
 import { noop } from "lodash-es";
-import { useMultisigAccounts } from "../multisigs/context/accountsContext";
+import { useMultisigAccounts } from "../multisigs/context/multisigAccountsContext";
 import { FieldTooltipTitle } from "../styled/fieldTooltipTitle";
 import useNameIsEqual from "../createMultisig/hooks/useNameIsEqual";
 import { ERROR_MESSAGE, MultisigErrorMessage } from "../createMultisig/styled";
+import { getRealField } from "next-common/sima/actions/common";
+import { useConnectedAccount } from "next-common/context/connectedAccount";
+import { useSignMessage } from "next-common/hooks/useSignMessage";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { useUser } from "next-common/context/user";
 
 export default function ImportSubmit({
   selectedMultisig,
   onBack = noop,
   onClose = noop,
 }) {
+  const user = useUser();
+  const realAddress = useRealAddress();
   const dispatch = useDispatch();
   const [name, setName] = useState(selectedMultisig.name || "");
   const [isLoading, setIsLoading] = useState(false);
   const isNameEqual = useNameIsEqual(name);
 
-  const { ensureLogin } = useEnsureLogin();
   const { refresh } = useMultisigAccounts();
+  const connectedAccount = useConnectedAccount();
+  const signMessage = useSignMessage();
 
   const handleSubmit = useCallback(
     async (e) => {
@@ -37,11 +44,33 @@ export default function ImportSubmit({
       e.stopPropagation();
       setIsLoading(true);
       try {
-        await ensureLogin();
-        const { error } = await nextApi.post("user/multisigs", {
+        if (!connectedAccount) {
+          dispatch(newErrorToast("Please connect your account first"));
+          return;
+        }
+
+        const entity = {
+          action: "add-multisig",
           ...selectedMultisig,
-          name,
-        });
+          timestamp: Date.now(),
+          real: getRealField(user?.proxyAddress),
+        };
+        const signature = await signMessage(
+          JSON.stringify(entity),
+          connectedAccount.address,
+          connectedAccount.wallet,
+        );
+        const data = {
+          entity,
+          address: connectedAccount.address,
+          signature,
+          signerWallet: connectedAccount.wallet,
+        };
+        const { error } = await nextApi.post(
+          `users/${realAddress}/multisigs`,
+          data,
+        );
+
         if (error) {
           throw new Error(error.message);
         }
@@ -55,7 +84,16 @@ export default function ImportSubmit({
         setIsLoading(false);
       }
     },
-    [ensureLogin, selectedMultisig, name, dispatch, onClose, refresh],
+    [
+      realAddress,
+      user?.proxyAddress,
+      signMessage,
+      connectedAccount,
+      selectedMultisig,
+      dispatch,
+      onClose,
+      refresh,
+    ],
   );
 
   if (!selectedMultisig) {

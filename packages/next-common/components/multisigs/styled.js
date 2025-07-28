@@ -13,7 +13,7 @@ import {
   myMultisigsCountSelector,
 } from "next-common/store/reducers/multisigSlice";
 import { useEffect } from "react";
-import { useMultisigAccounts } from "./context/accountsContext";
+import { useMultisigAccounts } from "./context/multisigAccountsContext";
 import { encodeAddressToChain } from "next-common/services/address";
 import MultisigAddress from "../user/multisigAddress";
 import { cn } from "next-common/utils";
