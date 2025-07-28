@@ -55,9 +55,14 @@ export default function SignCancel({ multisig = {} }) {
     });
   };
 
+  const onTxError = () => {
+    setIsDisabled(false);
+  };
+
   const { doSubmit, isSubmitting } = useTxSubmission({
     getTxFunc,
     onFinalized,
+    onTxError,
   });
 
   useEffect(() => {
