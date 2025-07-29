@@ -31,14 +31,14 @@ export const useEvidenceCommentActions = (realPost = null) => {
 
   const getBaseApiUrl = useCallback(
     (post) => {
-      return realPost ? generalBaseApiUrl(realPost) : generalBaseApiUrl(post);
+      return generalBaseApiUrl(realPost ?? post);
     },
     [realPost],
   );
 
   const getIndexer = useCallback(
     (post) => {
-      return realPost ? generalIndexer(realPost) : generalIndexer(post);
+      return generalIndexer(realPost ?? post);
     },
     [realPost],
   );
