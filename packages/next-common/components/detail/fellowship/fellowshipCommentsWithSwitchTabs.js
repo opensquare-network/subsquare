@@ -22,7 +22,7 @@ function formatTabTitle(text = "", total = 0) {
   return text;
 }
 
-export default function CommentsWithSwitchTabs({ children }) {
+export default function FellowshipCommentsWithSwitchTabs({ children }) {
   const { comments, evidenceComments } = usePageProps();
 
   const switchTabs = [
