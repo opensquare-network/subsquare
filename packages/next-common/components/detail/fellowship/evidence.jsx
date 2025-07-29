@@ -15,16 +15,14 @@ import { MigrationConditionalApiProvider } from "next-common/context/migration/c
 import EvidenceExternalLinkWithWish from "next-common/components/collectives/core/evidenceContent/EvidenceExternalLinkWithWish";
 import { isObject } from "lodash-es";
 
-function FellowshipReferendaDetailEvidenceImpl() {
+function FellowshipReferendaDetailEvidenceContent({ children }) {
   const { isLoading, member } = useReferendumFellowshipMember();
   const params = useCoreFellowshipParams();
-  const { wish, evidence, loading } = useReferendumFellowshipCoreEvidence();
   const isFinished = useIsProposalFinished();
 
   return (
     <div className="mt-4 space-y-4">
       <hr />
-
       {!isFinished && (
         <FellowshipEvidenceMemberStatusCard
           isLoading={isLoading}
@@ -32,39 +30,35 @@ function FellowshipReferendaDetailEvidenceImpl() {
           params={params}
         />
       )}
+      {children}
+    </div>
+  );
+}
 
+function FellowshipReferendaDetailEvidenceImpl() {
+  const { wish, evidence, loading } = useReferendumFellowshipCoreEvidence();
+
+  return (
+    <FellowshipReferendaDetailEvidenceContent>
       <FellowshipEvidenceContent
         wish={wish}
         evidence={evidence}
         loading={loading}
       />
-    </div>
+    </FellowshipReferendaDetailEvidenceContent>
   );
 }
 
 function FellowshipEvidenceContentFromApi({ evidence }) {
-  const isFinished = useIsProposalFinished();
-  const { isLoading, member } = useReferendumFellowshipMember();
-  const params = useCoreFellowshipParams();
-
   return (
-    <div className="mt-4 space-y-4">
-      <hr />
-      {!isFinished && (
-        <FellowshipEvidenceMemberStatusCard
-          isLoading={isLoading}
-          member={member}
-          params={params}
-        />
-      )}
-
+    <FellowshipReferendaDetailEvidenceContent>
       <EvidenceExternalLinkWithWish
         cid={evidence?.cid}
         wish={evidence?.wish}
         evidence={evidence?.hex}
       />
       <MarkdownPreviewer content={evidence?.content} />
-    </div>
+    </FellowshipReferendaDetailEvidenceContent>
   );
 }
 
