@@ -13,10 +13,10 @@ import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
 import businessCategory from "next-common/utils/consts/business/category";
 import { getMotionStateArgs } from "next-common/utils/collective/result";
 import { useEffect, useState } from "react";
-import { getAssetByMeta } from "next-common/utils/treasury/spend/usdCheck";
 import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 import { useChainSettings } from "next-common/context/chain";
 import PostListTreasuryAllSpends from "next-common/components/postList/treasuryAllSpends";
+import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 
 export function getReferendumPostTitleColumn() {
   return {
@@ -153,24 +153,27 @@ export function getRequestColumn() {
   };
 }
 
-function SpendRequestAmount({ meta }) {
-  const chainSettings = useChainSettings();
-  if (!isNil(meta)) {
-    let { amount } = meta;
-    const asset = getAssetByMeta(meta, chainSettings);
-    if (!asset) {
-      return "--";
-    }
+function SpendRequestAmount({ extractedTreasuryInfo }) {
+  let { decimals } = useChainSettings();
 
-    return (
-      <ValueDisplay
-        className="text14Medium text-textPrimary"
-        value={toPrecision(amount, asset.decimals)}
-        symbol={asset.symbol}
-      />
-    );
+  if (!extractedTreasuryInfo) {
+    return "--";
   }
-  return "--";
+
+  const { assetKind, amount } = extractedTreasuryInfo;
+  const type = assetKind?.type;
+  const symbol = assetKind?.symbol;
+  if (type !== "native") {
+    decimals = SYMBOL_DECIMALS[symbol];
+  }
+
+  return (
+    <ValueDisplay
+      className="text14Medium text-textPrimary"
+      value={toPrecision(amount, decimals)}
+      symbol={symbol}
+    />
+  );
 }
 
 export function getSpendRequestColumn() {
@@ -178,7 +181,7 @@ export function getSpendRequestColumn() {
     name: "Request",
     className: "w-40 text-left",
     cellRender(data) {
-      return <SpendRequestAmount meta={data.meta} />;
+      return <SpendRequestAmount extractedTreasuryInfo={data.extracted} />;
     },
   };
 }

@@ -146,6 +146,9 @@ const hydradx = {
     referenda: true,
   },
   preimage: hydrationPreimageSettings,
+  openSquare: {
+    voting: "hydration",
+  },
 };
 
 export default hydradx;

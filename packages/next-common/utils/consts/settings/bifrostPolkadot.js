@@ -117,6 +117,9 @@ const bifrostPolkadot = {
     referenda: true,
   },
   preimage: bifrostPreimageSettings,
+  openSquare: {
+    voting: "bifrost",
+  },
 };
 
 export default bifrostPolkadot;

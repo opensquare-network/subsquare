@@ -2,11 +2,51 @@ import DataList from "next-common/components/dataList";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { TableName } from "next-common/components/data/common/tableHeader";
 import AddressUser from "next-common/components/user/addressUser";
-import { useChainSettings } from "next-common/context/chain";
+import { useChainSettings, useChain } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
 import Tooltip from "next-common/components/tooltip";
+import Link from "next/link";
+import { isNil } from "lodash-es";
+import { memo, useMemo } from "react";
+import { getRelayChain } from "next-common/utils/chain";
+
+function LastJudgementLink({ indexer, children }) {
+  const currentChain = useChain();
+  const relayChain = getRelayChain(currentChain);
+  const { blockHeight, extrinsicIndex, chain } = indexer;
+  const link = useMemo(() => {
+    if (isNil(blockHeight) && isNil(extrinsicIndex)) {
+      return null;
+    }
+
+    let domain = null;
+    if (isNil(chain)) {
+      domain = `https://${relayChain}.statescan.io/#`;
+    } else {
+      domain = `https://${chain}-${relayChain}.statescan.io/#`;
+    }
+
+    if (isNil(extrinsicIndex)) {
+      return `${domain}/blocks/${blockHeight}`;
+    }
+
+    return `${domain}/extrinsics/${blockHeight}-${extrinsicIndex}`;
+  }, [blockHeight, extrinsicIndex, chain, relayChain]);
+
+  if (isNil(link)) {
+    return children;
+  }
+
+  return (
+    <Link href={link} target="_blank" className="hover:text-theme500">
+      {children}
+    </Link>
+  );
+}
+
+const LastJudgementWrapper = memo(LastJudgementLink);
 
 const columns = [
   {
@@ -60,7 +100,11 @@ export default function RegistrarsTable({
               >
                 {time ? (
                   <Tooltip content={formatTime(time)}>
-                    {formatTimeAgo(time)}
+                    <LastJudgementWrapper
+                      indexer={item.statistics.lastGivenIndexer}
+                    >
+                      {formatTimeAgo(time)}
+                    </LastJudgementWrapper>
                   </Tooltip>
                 ) : (
                   "-"

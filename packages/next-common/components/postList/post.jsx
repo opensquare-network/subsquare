@@ -30,7 +30,6 @@ import AddressUser from "../user/addressUser";
 import PolkassemblyUser from "../user/polkassemblyUser";
 import Tooltip from "next-common/components/tooltip";
 import WarningIcon from "next-common/assets/imgs/icons/warning.svg";
-import { getAssetByMeta } from "next-common/utils/treasury/spend/usdCheck";
 import { SystemComment } from "@osn/icons/subsquare";
 import PostListTreasuryAllSpends from "./treasuryAllSpends";
 import PostListAISummary from "./aiSummary";
@@ -48,6 +47,7 @@ import {
   ContentWrapper,
   BannerWrapper,
 } from "./styled";
+import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 
 function PostUser({ data, type }) {
   const { sm } = useScreenSize();
@@ -92,35 +92,34 @@ function PostAmount({ amount, decimals, symbol }) {
   );
 }
 
-export function TreasurySpendAmount({ meta }) {
-  const chainSettings = useChainSettings();
-  const { amount } = meta;
-  const asset = getAssetByMeta(meta, chainSettings);
-  if (!asset) {
+export function TreasurySpendAmount({ extractedTreasuryInfo }) {
+  let { decimals } = useChainSettings();
+
+  if (!extractedTreasuryInfo) {
     return null;
   }
 
-  return (
-    <PostAmount
-      amount={amount}
-      symbol={asset.symbol}
-      decimals={asset.decimals}
-    />
-  );
+  const { assetKind, amount } = extractedTreasuryInfo;
+  const type = assetKind?.type;
+  const symbol = assetKind?.symbol;
+  if (type !== "native") {
+    decimals = SYMBOL_DECIMALS[symbol];
+  }
+
+  return <PostAmount amount={amount} symbol={symbol} decimals={decimals} />;
 }
 
 export function PostValueTitle({ data, type }) {
   const { decimals, symbol } = useChainSettings(data.indexer?.blockHeight);
   const { onchainData, value } = data;
-  const localTreasurySpendAmount = onchainData?.isTreasury
-    ? onchainData?.treasuryInfo?.amount
-    : value;
-
   if ([businessCategory.fellowshipTreasurySpends].includes(type)) {
-    return <TreasurySpendAmount meta={data?.meta} />;
+    return <TreasurySpendAmount extractedTreasuryInfo={data?.extracted} />;
   }
 
   const method = onchainData?.proposal?.method;
+  const localTreasurySpendAmount = onchainData?.isTreasury
+    ? onchainData?.treasuryInfo?.amount
+    : value;
 
   if (!isNil(localTreasurySpendAmount)) {
     return (
@@ -148,7 +147,6 @@ export default function Post({ data, href, type }) {
   const currentChain = useChain();
   const isDemocracyCollective = [
     businessCategory.collective,
-    businessCategory.tcProposals,
     businessCategory.financialMotions,
     businessCategory.advisoryMotions,
     businessCategory.treasuryCouncilMotions,
@@ -170,7 +168,6 @@ export default function Post({ data, href, type }) {
   if (
     [
       businessCategory.financialMotions,
-      businessCategory.tcProposals,
       businessCategory.advisoryMotions,
       businessCategory.allianceMotions,
       businessCategory.treasuryCouncilMotions,

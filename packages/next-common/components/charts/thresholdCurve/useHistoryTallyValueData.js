@@ -1,9 +1,10 @@
-import { useDecidingSince } from "next-common/context/post/gov2/referendum";
 import { useSelector } from "react-redux";
-import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import { last } from "lodash-es";
 import BigNumber from "bignumber.js";
-import useReferendumCurveData from "next-common/utils/hooks/referenda/detail/useReferendumCurveData";
+import {
+  useBeginHeight,
+  useBlockSteps,
+} from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
 import { useMemo } from "react";
 import { useDecidingEndHeight } from "next-common/context/post/gov2/decidingPercentage";
 import { referendaTallyHistorySelector } from "next-common/store/reducers/referenda/tallyHistory";
@@ -26,17 +27,16 @@ function calcFromOneTallyData(tally) {
 
 export function calcDataFromTallyHistory(
   tallyHistory,
-  labels,
-  decidingSince,
+  beginHeight,
   decidingEnd,
   latestHeight,
-  blockTime,
+  blockStep,
 ) {
   let historySupportData = [];
   let historyApprovalData = [];
   let historyAyesData = [];
   let historyNaysData = [];
-  if (!tallyHistory || !decidingSince || isEmpty(tallyHistory)) {
+  if (!tallyHistory || !beginHeight || isEmpty(tallyHistory)) {
     return {
       historySupportData,
       historyApprovalData,
@@ -45,9 +45,7 @@ export function calcDataFromTallyHistory(
     };
   }
 
-  const oneHour = 3600 * 1000;
-  const blockStep = oneHour / blockTime; // it means the blocks between 2 dots.
-  let iterHeight = decidingSince;
+  let iterHeight = beginHeight;
   while (iterHeight <= decidingEnd) {
     const tally = tallyHistory.findLast(
       (tally) => tally.indexer.blockHeight <= iterHeight,
@@ -84,28 +82,25 @@ export function calcDataFromTallyHistory(
 }
 
 export default function useHistoryTallyValueData() {
-  const { labels } = useReferendumCurveData();
-  const decidingSince = useDecidingSince();
-  const blockTime = useSelector(blockTimeSelector);
   const tallyHistory = useSelector(referendaTallyHistorySelector);
   const decidingEndOrLatestHeight = useDecidingEndHeight();
   const latestHeight = useChainOrScanHeight();
+  const blockStep = useBlockSteps();
+  const beginHeight = useBeginHeight();
 
   return useMemo(() => {
     return calcDataFromTallyHistory(
       tallyHistory,
-      labels,
-      decidingSince,
+      beginHeight,
       decidingEndOrLatestHeight,
       latestHeight,
-      blockTime,
+      blockStep,
     );
   }, [
     tallyHistory,
-    labels,
-    decidingSince,
+    beginHeight,
     decidingEndOrLatestHeight,
     latestHeight,
-    blockTime,
+    blockStep,
   ]);
 }

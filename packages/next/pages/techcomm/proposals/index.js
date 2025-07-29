@@ -1,4 +1,4 @@
-import PostList from "next-common/components/postList";
+import TechCommProposalsPostList from "next-common/components/postList/techCommProposalsPostList";
 import { withCommonProps } from "next-common/lib";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeTechCommMotionListItem from "next-common/utils/viewfuncs/collective/normalizeTechCommMotionListItem";
@@ -37,9 +37,7 @@ export default function ProposalsPage({ proposals, chain }) {
           title={category}
           description="Technical committee proposals"
         >
-          <PostList
-            category={category}
-            title="List"
+          <TechCommProposalsPostList
             titleCount={proposals.total}
             titleExtra={
               hasTechnicalCommittee && <NewCouncilMotionProposalButton />
