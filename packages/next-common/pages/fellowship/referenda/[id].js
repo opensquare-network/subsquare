@@ -170,7 +170,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
 
   return {
     props: {
-      detail: fillCommentsCount(detail, comments, evidenceComments),
+      detail,
       comments: comments ?? EmptyList,
       evidenceComments: evidenceComments ?? EmptyList,
       evidence,
@@ -181,20 +181,6 @@ export const getServerSideProps = withCommonProps(async (context) => {
     },
   };
 });
-
-function fillCommentsCount(detail = {}, comments, evidenceComments) {
-  const resolvedComments = comments ?? EmptyList;
-  const resolvedEvidenceComments = evidenceComments ?? EmptyList;
-  const total = resolvedComments.total + resolvedEvidenceComments.total;
-
-  return {
-    ...detail,
-    polkassemblyCommentsCount: isNil(detail?.polkassemblyCommentsCount)
-      ? detail?.polkassemblyCommentsCount
-      : total,
-    commentsCount: isNil(detail?.commentsCount) ? detail?.commentsCount : total,
-  };
-}
 
 async function getEvidenceProps(detail, context) {
   const memberships = detail?.onchainData?.memberships || [];
