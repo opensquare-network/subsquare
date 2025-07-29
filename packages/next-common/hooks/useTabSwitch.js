@@ -1,13 +1,20 @@
 import { createGlobalState } from "react-use";
 import Tab from "next-common/components/tab";
+import { cn } from "next-common/utils";
 
-export function TabSwitch({ tabs, value, onChange }) {
+export function TabSwitch({
+  tabs,
+  value,
+  onChange,
+  className = "",
+  buttonClassName = "",
+}) {
   return (
     <Tab
       selectedTabId={value}
       setSelectedTabId={onChange}
-      className="w-40 h-[28px] rounded-md p-[2px]"
-      btnClassName="text12Medium"
+      className={cn("w-40 h-[28px] rounded-md p-[2px]", className)}
+      btnClassName={cn("text12Medium", buttonClassName)}
       tabs={tabs}
     />
   );

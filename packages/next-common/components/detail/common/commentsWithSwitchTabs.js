@@ -10,18 +10,25 @@ export function SwitchCommentImpl({ children }) {
   return <CommentsProvider comments={comments}>{children}</CommentsProvider>;
 }
 
+function formatTabTitle(text = "", total = 0) {
+  if (total > 0) {
+    return `${text} · ${total}`;
+  }
+  return text;
+}
+
 export default function CommentsWithSwitchTabs({ children }) {
   const { comments, evidenceComments } = usePageProps();
 
   const switchTabs = [
     {
       tabId: "referendum",
-      tabTitle: "Referendum",
+      tabTitle: formatTabTitle("Referendum", comments?.total),
       comments,
     },
     {
       tabId: "evidence",
-      tabTitle: "Evidence",
+      tabTitle: formatTabTitle("Evidence", evidenceComments?.total),
       comments: evidenceComments,
     },
   ];

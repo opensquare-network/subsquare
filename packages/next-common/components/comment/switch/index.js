@@ -12,6 +12,12 @@ export default function CommentSwitch() {
   const { switchTabs, activeTab, setActiveTab } = commentTabs;
 
   return (
-    <TabSwitch value={activeTab} tabs={switchTabs} onChange={setActiveTab} />
+    <TabSwitch
+      value={activeTab}
+      tabs={switchTabs}
+      onChange={setActiveTab}
+      className="w-auto"
+      buttonClassName="w-[110px]"
+    />
   );
 }
