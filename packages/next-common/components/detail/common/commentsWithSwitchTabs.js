@@ -12,7 +12,12 @@ export function SwitchCommentImpl({ children }) {
 
 function formatTabTitle(text = "", total = 0) {
   if (total > 0) {
-    return `${text} · ${total}`;
+    return (
+      <div className="flex items-center gap-1">
+        {text} <span className="text-textTertiary">·</span>{" "}
+        <span className="total">{total}</span>
+      </div>
+    );
   }
   return text;
 }

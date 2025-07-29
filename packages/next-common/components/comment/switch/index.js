@@ -17,7 +17,7 @@ export default function CommentSwitch() {
       tabs={switchTabs}
       onChange={setActiveTab}
       className="w-auto"
-      buttonClassName="w-[110px]"
+      buttonClassName="w-[110px] [&_.total]:text-textTertiary"
     />
   );
 }
