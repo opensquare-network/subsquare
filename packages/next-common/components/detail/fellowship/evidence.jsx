@@ -76,12 +76,7 @@ export default function FellowshipReferendaDetailEvidence() {
   const indexer = useReferendumVotingFinishIndexer();
 
   if (isObject(evidence)) {
-    return (
-      <FellowshipEvidenceContentFromApi
-        key={evidence?.cid}
-        evidence={evidence}
-      />
-    );
+    return <FellowshipEvidenceContentFromApi evidence={evidence} />;
   }
 
   if (

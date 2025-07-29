@@ -30,9 +30,10 @@ import useSubReferendumInfo from "next-common/hooks/referenda/useSubReferendumIn
 import FellowshipReferendaDetailMultiTabs from "next-common/components/pages/components/tabs/fellowshipReferendaDetailMultiTabs";
 import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 import { useReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
-import SwitchComment from "next-common/components/detail/common/switchComment";
-import SwitchCommentContentProvider from "next-common/components/detail/switchCommentContentProvider";
+import CommentsWithSwitchTabs from "next-common/components/detail/common/commentsWithSwitchTabs";
 import { isNil } from "lodash-es";
+import SwitchCommentActionsProvider from "next-common/context/fellowship/switchCommentActionsProvider";
+import { CommentsContent } from "next-common/components/detail/common/contentWithComment";
 
 function FellowshipContent() {
   const post = usePost();
@@ -43,15 +44,17 @@ function FellowshipContent() {
   useSubscribePostDetail(post?.referendumIndex);
 
   return (
-    <SwitchCommentContentProvider>
-      <SwitchComment>
-        <CollectivesProvider section="fellowship" params={fellowshipParams}>
-          <FellowshipReferendaDetail />
-          <FellowshipReferendumSideBar />
-          <FellowshipReferendaDetailMultiTabs />
-        </CollectivesProvider>
-      </SwitchComment>
-    </SwitchCommentContentProvider>
+    <CollectivesProvider section="fellowship" params={fellowshipParams}>
+      <CommentsWithSwitchTabs>
+        <SwitchCommentActionsProvider>
+          <CommentsContent>
+            <FellowshipReferendaDetail />
+            <FellowshipReferendumSideBar />
+            <FellowshipReferendaDetailMultiTabs />
+          </CommentsContent>
+        </SwitchCommentActionsProvider>
+      </CommentsWithSwitchTabs>
+    </CollectivesProvider>
   );
 }
 

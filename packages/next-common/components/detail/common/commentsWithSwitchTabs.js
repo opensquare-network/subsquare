@@ -3,7 +3,6 @@ import {
   SwitchCommentProvider,
   useSwitchCommentList,
 } from "next-common/context/post/switchComment";
-import { CommentsContent } from "./contentWithComment";
 import { usePageProps } from "next-common/context/page";
 
 export function SwitchCommentImpl({ children }) {
@@ -11,7 +10,7 @@ export function SwitchCommentImpl({ children }) {
   return <CommentsProvider comments={comments}>{children}</CommentsProvider>;
 }
 
-export default function SwitchComment({ children }) {
+export default function CommentsWithSwitchTabs({ children }) {
   const { comments, evidenceComments } = usePageProps();
 
   const switchTabs = [
@@ -28,9 +27,7 @@ export default function SwitchComment({ children }) {
   ];
   return (
     <SwitchCommentProvider switchTabs={switchTabs}>
-      <SwitchCommentImpl>
-        <CommentsContent>{children}</CommentsContent>
-      </SwitchCommentImpl>
+      <SwitchCommentImpl>{children}</SwitchCommentImpl>
     </SwitchCommentProvider>
   );
 }
