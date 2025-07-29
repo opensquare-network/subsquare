@@ -4,6 +4,7 @@ import CommentActionsContext from "next-common/sima/context/commentActions";
 import useSignSimaMessage from "next-common/utils/sima/useSignSimaMessage";
 import { getContentField } from "next-common/utils/sima/utils";
 import { useGetComment } from "next-common/noSima/actions/comment";
+import { useCallback } from "react";
 
 export const generalIndexer = (post) => {
   const { who, indexer: postIndexer } = post;
@@ -23,16 +24,30 @@ export const generalBaseApiUrl = (post) => {
   return `/fellowship/members/${who}/evidences/${evidenceId}`;
 };
 
-export default function SimaEvidencesCommentActionsProvider({ children }) {
+export const useEvidenceCommentActions = (realPost = null) => {
   const getComment = useGetComment();
   const signSimaMessage = useSignSimaMessage();
   const findMyUpVote = useFindMyUpVote();
 
-  const actions = {
+  const getBaseApiUrl = useCallback(
+    (post) => {
+      return generalBaseApiUrl(realPost ?? post);
+    },
+    [realPost],
+  );
+
+  const getIndexer = useCallback(
+    (post) => {
+      return generalIndexer(realPost ?? post);
+    },
+    [realPost],
+  );
+
+  return {
     supportSima: true,
     getComment,
     createPostComment: async (post, content, contentType, real) => {
-      const indexer = generalIndexer(post);
+      const indexer = getIndexer(post);
 
       const entity = {
         action: "comment_evidence",
@@ -42,10 +57,10 @@ export default function SimaEvidencesCommentActionsProvider({ children }) {
         real,
       };
       const data = await signSimaMessage(entity);
-      return await backendApi.post(`${generalBaseApiUrl(post)}/comments`, data);
+      return await backendApi.post(`${getBaseApiUrl(post)}/comments`, data);
     },
     createCommentReply: async (post, comment, content, contentType, real) => {
-      const indexer = generalIndexer(post);
+      const indexer = getIndexer(post);
       const entity = {
         action: "comment_evidence",
         indexer,
@@ -57,12 +72,12 @@ export default function SimaEvidencesCommentActionsProvider({ children }) {
 
       const data = await signSimaMessage(entity);
       return await backendApi.post(
-        `${generalBaseApiUrl(post)}/comments/${comment.cid}/replies`,
+        `${getBaseApiUrl(post)}/comments/${comment.cid}/replies`,
         data,
       );
     },
     upVoteComment: async (post, comment) => {
-      const indexer = generalIndexer(post);
+      const indexer = getIndexer(post);
       const entity = {
         action: "upvote",
         indexer,
@@ -71,12 +86,12 @@ export default function SimaEvidencesCommentActionsProvider({ children }) {
       };
       const data = await signSimaMessage(entity);
       return await backendApi.post(
-        `${generalBaseApiUrl(post)}/comments/${comment.cid}/reactions`,
+        `${getBaseApiUrl(post)}/comments/${comment.cid}/reactions`,
         data,
       );
     },
     cancelUpVoteComment: async (post, comment) => {
-      const indexer = generalIndexer(post);
+      const indexer = getIndexer(post);
       const myUpVote = findMyUpVote(comment?.reactions);
       if (!myUpVote) {
         throw new Error("You have no up vote on this comment");
@@ -89,7 +104,7 @@ export default function SimaEvidencesCommentActionsProvider({ children }) {
       };
       const data = await signSimaMessage(entity);
       return await backendApi.post(
-        `${generalBaseApiUrl(post)}/comments/${comment.cid}/reactions`,
+        `${getBaseApiUrl(post)}/comments/${comment.cid}/reactions`,
         data,
       );
     },
@@ -101,7 +116,7 @@ export default function SimaEvidencesCommentActionsProvider({ children }) {
       contentType,
       real,
     ) => {
-      const indexer = generalIndexer(post);
+      const indexer = getIndexer(post);
       const entity = {
         action: "replace_comment",
         indexer,
@@ -113,11 +128,15 @@ export default function SimaEvidencesCommentActionsProvider({ children }) {
       };
       const data = await signSimaMessage(entity);
       return await backendApi.patch(
-        `${generalBaseApiUrl(post)}/comments/${comment.cid}`,
+        `${getBaseApiUrl(post)}/comments/${comment.cid}`,
         data,
       );
     },
   };
+};
+
+export default function SimaEvidencesCommentActionsProvider({ children }) {
+  const actions = useEvidenceCommentActions();
   return (
     <CommentActionsContext.Provider value={actions}>
       {children}

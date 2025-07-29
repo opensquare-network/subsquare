@@ -7,13 +7,9 @@ import FellowshipWhitelistNavigation from "next-common/components/detail/fellows
 import PreimageWarning from "next-common/components/detail/referenda/preimageWarning";
 import FellowshipTimeoutCountdown from "next-common/components/detail/fellowship/timeoutCountdown";
 import TimeoutGuard from "next-common/components/detail/common/openGov/timeoutGuard";
-import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import FellowshipReferendumTreasurySpendNavigation from "./fellowshipReferendumTreasurySpendNavigation";
 import MaybeSimaDiscussionArticleContent from "next-common/components/maybeSimaDiscussionArticleContent";
-
-const FellowshipReferendaDetailEvidence = dynamicClientOnly(() =>
-  import("./evidence"),
-);
+import FellowshipReferendaDetailEvidence from "./evidence";
 
 export default function FellowshipReferendaDetail() {
   const isEditing = useSelector(isEditingPostSelector);
