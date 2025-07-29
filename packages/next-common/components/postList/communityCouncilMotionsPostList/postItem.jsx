@@ -19,7 +19,7 @@ import {
   PostItemTreasuryTag,
 } from "next-common/components/postList/common";
 import Divider from "next-common/components/styled/layout/divider";
-import { TreasuryTag } from "next-common/components/tags/state/treasury";
+import { CollectiveTag } from "next-common/components/tags/state/collective";
 
 export default function PostItem({ data }) {
   return (
@@ -40,7 +40,7 @@ export default function PostItem({ data }) {
             <PostItemMalicious isMalicious={data?.isMalicious} />
             <PostItemAISummary data={data} />
           </Footer>
-          <TreasuryTag state={data.status} />
+          <CollectiveTag state={data.status} />
         </FooterWrapper>
       </ContentWrapper>
       <PostItemBanner bannerCid={data?.bannerCid} />
