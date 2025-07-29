@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import PostList from "next-common/components/postList";
+import CommunityTreasuryProposalsPostList from "next-common/components/postList/communityTreasuryProposalsPostList";
 import { withCommonProps } from "next-common/lib";
 import TreasurySummary from "next-common/components/summary/treasurySummary";
 import ListLayout from "next-common/components/layout/ListLayout";
@@ -43,9 +43,7 @@ export default function ProposalsPage({ proposals: ssrProposals, chain }) {
           },
         ].filter(Boolean)}
       >
-        <PostList
-          category={category}
-          title="List"
+        <CommunityTreasuryProposalsPostList
           titleExtra={
             showNewTreasuryProposalButton && (
               <div className="flex justify-end">
