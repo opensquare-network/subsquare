@@ -14,7 +14,7 @@ import {
   useSignerAccount,
 } from "next-common/components/popupWithSigner/context";
 import PopupWithSigner from "next-common/components/popupWithSigner";
-import Signer from "next-common/components/popup/fields/signerField";
+import { ConnectedSigner } from "next-common/components/popup/fields/signerField";
 import LoadingPrimaryButton from "next-common/lib/button/loadingPrimary";
 import { refreshAvatar } from "next-common/hooks/useAvatarInfo";
 import { getRealField } from "next-common/sima/actions/common";
@@ -118,7 +118,7 @@ function Content() {
 
   return (
     <>
-      <Signer title="Signer" />
+      <ConnectedSigner title="Signer" />
       {/* <CheckSimaSpec /> */}
       <div className="flex justify-end">
         <LoadingPrimaryButton
