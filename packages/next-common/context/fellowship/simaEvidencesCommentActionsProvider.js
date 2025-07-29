@@ -24,23 +24,30 @@ export const generalBaseApiUrl = (post) => {
   return `/fellowship/members/${who}/evidences/${evidenceId}`;
 };
 
-export const useEvidenceCommentActions = (baseApiUrl = "") => {
+export const useEvidenceCommentActions = (realPost = null) => {
   const getComment = useGetComment();
   const signSimaMessage = useSignSimaMessage();
   const findMyUpVote = useFindMyUpVote();
 
   const getBaseApiUrl = useCallback(
     (post) => {
-      return baseApiUrl || generalBaseApiUrl(post);
+      return realPost ? generalBaseApiUrl(realPost) : generalBaseApiUrl(post);
     },
-    [baseApiUrl],
+    [realPost],
+  );
+
+  const getIndexer = useCallback(
+    (post) => {
+      return realPost ? generalIndexer(realPost) : generalIndexer(post);
+    },
+    [realPost],
   );
 
   return {
     supportSima: true,
     getComment,
     createPostComment: async (post, content, contentType, real) => {
-      const indexer = generalIndexer(post);
+      const indexer = getIndexer(post);
 
       const entity = {
         action: "comment_evidence",
@@ -53,7 +60,7 @@ export const useEvidenceCommentActions = (baseApiUrl = "") => {
       return await backendApi.post(`${getBaseApiUrl(post)}/comments`, data);
     },
     createCommentReply: async (post, comment, content, contentType, real) => {
-      const indexer = generalIndexer(post);
+      const indexer = getIndexer(post);
       const entity = {
         action: "comment_evidence",
         indexer,
@@ -70,7 +77,7 @@ export const useEvidenceCommentActions = (baseApiUrl = "") => {
       );
     },
     upVoteComment: async (post, comment) => {
-      const indexer = generalIndexer(post);
+      const indexer = getIndexer(post);
       const entity = {
         action: "upvote",
         indexer,
@@ -84,7 +91,7 @@ export const useEvidenceCommentActions = (baseApiUrl = "") => {
       );
     },
     cancelUpVoteComment: async (post, comment) => {
-      const indexer = generalIndexer(post);
+      const indexer = getIndexer(post);
       const myUpVote = findMyUpVote(comment?.reactions);
       if (!myUpVote) {
         throw new Error("You have no up vote on this comment");
@@ -109,7 +116,7 @@ export const useEvidenceCommentActions = (baseApiUrl = "") => {
       contentType,
       real,
     ) => {
-      const indexer = generalIndexer(post);
+      const indexer = getIndexer(post);
       const entity = {
         action: "replace_comment",
         indexer,

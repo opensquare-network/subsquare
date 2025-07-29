@@ -9,10 +9,7 @@ import { useProposalCommentUpVote } from "next-common/sima/actions/upVote";
 import { useProposalCommentCancelUpVote } from "next-common/sima/actions/cancelUpVote";
 import { useGetComment } from "next-common/noSima/actions/comment";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
-import {
-  generalBaseApiUrl,
-  useEvidenceCommentActions,
-} from "./simaEvidencesCommentActionsProvider";
+import { useEvidenceCommentActions } from "./simaEvidencesCommentActionsProvider";
 import { useMemo } from "react";
 import { SimaProposalArticleActionsProvider } from "next-common/sima/components/common/context/articleActionsProvider";
 import { GeneralProxiesProvider } from "../proxy";
@@ -28,9 +25,7 @@ export default function SwitchCommentActionsProvider({ children }) {
   const updateComment = useReplaceProposalComment();
   const { evidence } = usePageProps();
 
-  const evidenceActions = useEvidenceCommentActions(
-    evidence?.cid ? generalBaseApiUrl(evidence) : "",
-  );
+  const evidenceActions = useEvidenceCommentActions(evidence);
 
   const fellowshipReferendaActions = useMemo(() => {
     return {
