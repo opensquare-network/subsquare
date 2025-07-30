@@ -20,21 +20,8 @@ async function queryUserAssetAccount(api, assetLocation, realAddress) {
   const unwrapped = accountInfo.unwrap();
   return {
     unwrapped,
-    balance: unwrapped?.balance?.toBigInt(),
+    balance: unwrapped?.balance?.toString(),
     isFrozen: unwrapped?.status?.isFrozen,
-  };
-}
-
-async function queryAssetDetails(api, assetLocation) {
-  const assetRaw = await api.query.foreignAssets.asset(assetLocation);
-  if (!assetRaw.isSome) {
-    return null;
-  }
-
-  const unwrapped = assetRaw.unwrap();
-  return {
-    supply: unwrapped.supply.toString(),
-    ...unwrapped.toJSON(),
   };
 }
 
@@ -53,14 +40,16 @@ async function processUserAssetData(api, key, realAddress) {
       return null;
     }
 
-    const assetDetail = await queryAssetDetails(api, assetLocation);
+    const balance = accountInfo.balance.toString();
+    const isFrozen = accountInfo.isFrozen;
+    const transferable = isFrozen ? "0" : balance;
+
     return {
-      ...accountInfo.unwrapped.toJSON(),
       assetId,
-      balance: accountInfo.balance.toString(),
+      balance,
       location: assetLocation.toJSON(),
-      isFrozen: accountInfo.isFrozen,
-      supply: assetDetail?.supply,
+      isFrozen,
+      transferable,
     };
   } catch (error) {
     console.warn(`Failed to query asset ${assetLocation.toString()}:`, error);
