@@ -55,7 +55,7 @@ export default function useTxSubmission({
       tx,
       onSubmitted,
       onInBlock: wraperTxCallback(onInBlock, multisigCallback?.onInBlock),
-      onFinalized,
+      onFinalized: wraperTxCallback(onFinalized, multisigCallback?.onFinalized),
       onCancelled,
       onTxError,
     });

@@ -22,6 +22,7 @@ export default function useWraperTxCallback() {
 export function useMultisigCallback() {
   return {
     onInBlock: useMultisigOnInBlock(),
+    onFinalized: noop,
   };
 }
 
