@@ -8,8 +8,8 @@ import {
   AssetIconPas,
   AssetIconHdx,
   AssetIconPlaceholder,
-  AssetlconBnc,
-  AssetlconBsx,
+  AssetIconBnc,
+  AssetIconBsx,
 } from "@osn/icons/subsquare";
 
 const knownAssetHubAssetsMap = Object.freeze({
@@ -35,9 +35,9 @@ const assetHubChainNativeTokenIconMap = {
   [Chains.paseoAssetHub]: AssetIconPas,
   [Chains.paseo]: AssetIconPas,
   [Chains.hydradx]: AssetIconHdx,
-  [Chains.bifrost]: AssetlconBnc,
-  [Chains.bifrostPolkadot]: AssetlconBnc,
-  [Chains.basilisk]: AssetlconBsx,
+  [Chains.bifrost]: AssetIconBnc,
+  [Chains.bifrostPolkadot]: AssetIconBnc,
+  [Chains.basilisk]: AssetIconBsx,
 };
 
 export function useNativeTokenIcon() {
