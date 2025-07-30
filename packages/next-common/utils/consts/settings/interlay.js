@@ -113,6 +113,9 @@ const interlay = {
     signet: true,
   },
   allowWeb2Login: true,
+  openSquare: {
+    voting: "interlay",
+  },
 };
 
 export default interlay;

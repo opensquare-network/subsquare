@@ -3,7 +3,7 @@ import { backendApi } from "next-common/services/nextApi";
 import ListLayout from "next-common/components/layout/ListLayout";
 import { useChainSettings } from "next-common/context/chain";
 import OverviewSummary from "next-common/components/summary/overviewSummary";
-import { hasDefinedOffChainVoting } from "next-common/utils/summaryExternalInfo";
+import { votingSpace } from "next-common/utils/opensquareVoting";
 import OffChainVoting from "next-common/components/summary/externalInfo/offChainVoting";
 import { HeadContent, TitleExtra } from "next-common/components/overview";
 import { fetchRecentProposalsProps } from "next-common/services/serverSide/recentProposals";
@@ -13,7 +13,7 @@ export default function Home() {
   const { name, description } = useChainSettings();
 
   let externalInfo = null;
-  if (hasDefinedOffChainVoting()) {
+  if (votingSpace) {
     externalInfo = (
       <div className="grid grid-cols-2 gap-[16px] max-md:grid-cols-1">
         <OffChainVoting />

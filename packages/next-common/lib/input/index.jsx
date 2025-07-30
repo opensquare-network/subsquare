@@ -64,7 +64,7 @@ function InputImpl(
   }
 
   return (
-    <div>
+    <>
       <div
         style={{
           "--input-gap-x": smallSize
@@ -135,7 +135,7 @@ function InputImpl(
       </div>
 
       {error && <ErrorText className={errorClassName}>{error}</ErrorText>}
-    </div>
+    </>
   );
 }
 

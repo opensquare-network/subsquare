@@ -29,7 +29,7 @@ function CleanupPollButton() {
     <>
       <Tooltip content="Clean up votes from storage, no gas">
         <Button
-          className="w-full h-[40px] rounded-lg bg-neutral100 border border-neutral400"
+          className="w-full h-[40px] rounded-lg bg-neutral100 border border-neutral400 text-textPrimary"
           onClick={() => setShowPopup(true)}
         >
           Cleanup Poll

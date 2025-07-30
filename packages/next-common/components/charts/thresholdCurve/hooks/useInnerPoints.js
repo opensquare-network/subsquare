@@ -7,19 +7,20 @@ import {
   useApprovalPoints,
   useSupportPoints,
 } from "next-common/components/charts/thresholdCurve/annotations";
-import { useDecidingSince } from "next-common/context/post/gov2/referendum";
 import { useDecidingEndHeight } from "next-common/context/post/gov2/decidingPercentage";
 import { useSelector } from "react-redux";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
+import { useBeginHeight } from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
 
 export default function useInnerPoints(labels) {
   const approvalThreshold = useApprovalThreshold();
   const supportThreshold = useSupportThreshold();
-  const decisionSince = useDecidingSince();
+  const beginHeight = useBeginHeight();
   const decidingEnd = useDecidingEndHeight();
   const blockTime = useSelector(blockTimeSelector);
 
-  const gone = decisionSince && decidingEnd ? decidingEnd - decisionSince : 0;
+  const gone = decidingEnd ? decidingEnd - beginHeight : 0;
+
   const seconds = new BigNumber(blockTime)
     .multipliedBy(gone)
     .dividedBy(1000)
