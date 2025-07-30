@@ -10,13 +10,19 @@ import Popup from "next-common/components/popup/wrapper/Popup";
 import { useState } from "react";
 import FellowshipEvidenceContent from "next-common/components/collectives/core/evidenceContent";
 import { cn, isHash } from "next-common/utils";
+import Tooltip from "next-common/components/tooltip";
 
 const getDate = (row) => {
   return dayjs(row?.indexer?.blockTime).format("YYYY/MM/DD") || "";
 };
 
 const getTitle = (row) => {
-  const { wish, rank } = row;
+  const { wish, rank, title } = row;
+
+  if (title) {
+    return title;
+  }
+
   const adposition = wish === "Retention" ? "at" : "to";
   const realRankValue = wish === "Promotion" ? rank + 1 : rank;
   return `${wish} ${adposition} Rank ${realRankValue}`;
@@ -46,18 +52,22 @@ const SubSquareLinks = ({ referenda }) => {
 const EvidenceItem = ({ row, popupTitle = "" }) => {
   const [open, setOpen] = useState(false);
 
+  const title = getTitle(row);
+
   return (
     <>
       <NeutralPanel className="p-6">
-        <div
-          role="button"
-          className="text16Bold text-textPrimary hover:underline"
-          onClick={() => {
-            setOpen(true);
-          }}
-        >
-          {getTitle(row)}
-        </div>
+        <Tooltip content={title}>
+          <div
+            role="button"
+            className="text16Bold text-textPrimary hover:underline truncate"
+            onClick={() => {
+              setOpen(true);
+            }}
+          >
+            {title}
+          </div>
+        </Tooltip>
         <div className="text14Medium text-textTertiary mt-1">
           {getDate(row)}
         </div>
