@@ -14,6 +14,7 @@ export default function MultisigDisplay({
   onClick = noop,
   className = "",
   showCopyableAddress = true,
+  isSelected = true,
 }) {
   const { ss58Format } = useChainSettings();
   const formattedMultisig = useMemo(() => {
@@ -30,7 +31,8 @@ export default function MultisigDisplay({
   return (
     <div
       className={cn(
-        "border border-neutral400 rounded-lg p-3 cursor-pointer",
+        "border border-neutral400 rounded-lg p-3 cursor-pointer group",
+        !isSelected && "hover:border-neutral500",
         className,
       )}
       onClick={() => {
