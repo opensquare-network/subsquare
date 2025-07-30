@@ -24,7 +24,6 @@ const CurveIcon = styled(CurveIconOrigin)`
 export default function CurvePopupOpener({
   tally = { tally },
   supportPerbill,
-  isFellowship = false,
 }) {
   const [showThresholdCurveDetailPopup, setShowThresholdCurveDetailPopup] =
     useState(false);
@@ -45,7 +44,6 @@ export default function CurvePopupOpener({
           supportPerbill={supportPerbill}
           supportPercentage={supportPercentage}
           approvalPercentage={approvalPercentage}
-          isFellowship={isFellowship}
         />
       )}
     </>

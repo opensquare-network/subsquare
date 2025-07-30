@@ -3,8 +3,7 @@ import { useIsMacOS } from "next-common/context/page";
 import { useCmdkPaletteVisible } from "next-common/components/cmdk/cmdkPalette";
 import { cn } from "next-common/utils";
 import { NAV_MENU_TYPE } from "next-common/utils/constants";
-
-const space = process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE;
+import { votingSpace, votingHost } from "next-common/utils/opensquareVoting";
 
 export function getMoreMenu({ archivedMenu = [] }) {
   return {
@@ -16,10 +15,10 @@ export function getMoreMenu({ archivedMenu = [] }) {
         name: "Calendar",
         pathname: "/calendar",
       },
-      space && {
+      votingSpace && {
         value: "offChainVoting",
         name: "Off-chain Voting",
-        pathname: `https://voting.opensquare.io/space/${space}`,
+        pathname: `${votingHost}/space/${votingSpace}`,
       },
       {
         value: "navigation",

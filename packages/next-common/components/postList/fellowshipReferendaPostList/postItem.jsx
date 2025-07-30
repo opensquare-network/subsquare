@@ -21,8 +21,8 @@ import {
 import { Gov2ReferendaTag } from "next-common/components/tags/state/gov2";
 import Divider from "next-common/components/styled/layout/divider";
 import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
-import { gov2State } from "next-common/utils/consts/state";
-import PreparingCountdown from "next-common/components/gov2/postList/preparingCountdown";
+import { gov2State, gov2VotingStates } from "next-common/utils/consts/state";
+import FellowshipPreparingCountdown from "next-common/components/fellowship/referenda/preparingCountdown";
 import DecisionCountdown from "next-common/components/gov2/postList/decisionCountdown";
 import ConfirmCountdown from "next-common/components/gov2/postList/confirmCountdown";
 import PostItemVotesSummary from "./postItemVotesSummary";
@@ -30,7 +30,7 @@ import PostItemVotesSummary from "./postItemVotesSummary";
 export default function PostItem({ data }) {
   const elapseIcon = useMemo(() => {
     if (data?.status === gov2State.Preparing) {
-      return <PreparingCountdown detail={data} isFellowship={true} />;
+      return <FellowshipPreparingCountdown detail={data} />;
     }
 
     if (data?.status === gov2State.Deciding) {
@@ -55,7 +55,10 @@ export default function PostItem({ data }) {
       <ContentWrapper>
         <HeadWrapper>
           <PostItemTitle data={data} href={data?.detailLink} />
-          <PostItemTitleValue data={data} />
+          <PostItemTitleValue
+            data={data}
+            showFaitPrice={gov2VotingStates.includes(data.status)}
+          />
         </HeadWrapper>
         <Divider margin={12} />
         <FooterWrapper>

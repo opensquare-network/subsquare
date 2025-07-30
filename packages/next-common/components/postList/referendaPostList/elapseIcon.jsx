@@ -5,7 +5,7 @@ import PreparingCountdown from "next-common/components/gov2/postList/preparingCo
 
 export default function ElapseIcon({ data }) {
   if (data?.status === gov2State.Preparing) {
-    return <PreparingCountdown detail={data} isFellowship={false} />;
+    return <PreparingCountdown detail={data} />;
   }
   if (data?.status === gov2State.Deciding) {
     return <DecisionCountdown detail={data} />;

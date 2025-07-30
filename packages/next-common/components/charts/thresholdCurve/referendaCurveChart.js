@@ -14,10 +14,13 @@ import useDetailPageOptions from "next-common/components/charts/thresholdCurve/u
 import { set } from "lodash-es";
 import useInnerPoints from "next-common/components/charts/thresholdCurve/hooks/useInnerPoints";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import { useRef } from "react";
+import CustomXTickLabels from "./curveChartCustomXTickLabels";
 
 // used for detail page curve chart
 export default function ReferendaCurveChart({ showAyeNay }) {
   const { width } = useWindowSize();
+  const chartRef = useRef();
   const { labels, supportData, approvalData } = useReferendumCurveData();
   const supportCurveConfig = useSupportThresholdDatasetConfig(supportData);
   const approvalCurveConfig = useApprovalThresholdDatasetConfig(approvalData);
@@ -60,8 +63,20 @@ export default function ReferendaCurveChart({ showAyeNay }) {
   );
 
   return (
-    <div style={{ height: width <= 768 ? 144 : 320 }}>
-      <Line data={chartData} options={options} plugins={[hoverLinePlugin]} />
+    <div>
+      <div style={{ height: width <= 768 ? 144 : 320 }}>
+        <Line
+          ref={chartRef}
+          data={chartData}
+          options={options}
+          plugins={[hoverLinePlugin]}
+        />
+      </div>
+      <CustomXTickLabels
+        showAyeNay={showAyeNay}
+        chartArea={chartRef.current?.chartArea}
+        labelsLength={labels.length}
+      />
     </div>
   );
 }

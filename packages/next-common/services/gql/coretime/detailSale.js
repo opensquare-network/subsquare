@@ -1,6 +1,11 @@
 import { coretimeClient } from "next-common/hooks/apollo";
 import { gql } from "@apollo/client";
-import { INFO_FIELDS, INDEXER_FIELDS, COMMON_SALE_FIELDS } from "./common";
+import {
+  INFO_FIELDS,
+  INDEXER_FIELDS,
+  COMMON_SALE_FIELDS,
+  CORETIME_CONFIGURATION_FIELDS,
+} from "./common";
 
 const GET_CORETIME_SALE = gql`
   query MyQuery($id: Int!) {
@@ -21,6 +26,9 @@ const GET_CORETIME_SALE = gql`
       }
       endIndexer {
         ${INDEXER_FIELDS}
+      }
+      configuration {
+        ${CORETIME_CONFIGURATION_FIELDS}
       }
     }
   }

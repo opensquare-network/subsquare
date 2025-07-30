@@ -17,6 +17,7 @@ import DemocracyReferendaPostList from "next-common/components/postList/democrac
 import DemocracyExternalProposalsPostList from "next-common/components/postList/democracyExternalProposalsPostList";
 import DemocracyPublicProposalsPostList from "next-common/components/postList/democracyPublicProposalsPostList";
 import CouncilMotionsPostList from "next-common/components/postList/councilMotionsPostList";
+import TechCommProposalsPostList from "next-common/components/postList/techCommProposalsPostList";
 
 const InnerList = ({ secondCategory, data, pagination }) => {
   const link = "/" + secondCategory.routePath;
@@ -120,6 +121,17 @@ const InnerList = ({ secondCategory, data, pagination }) => {
   if (secondCategory.categoryId === businessCategory.councilMotions) {
     return (
       <CouncilMotionsPostList
+        titleCount={titleCount}
+        items={items}
+        pagination={pagination}
+        link={link}
+      />
+    );
+  }
+
+  if (secondCategory.categoryId === businessCategory.tcProposals) {
+    return (
+      <TechCommProposalsPostList
         titleCount={titleCount}
         items={items}
         pagination={pagination}

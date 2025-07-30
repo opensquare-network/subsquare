@@ -2,11 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+# 5.0.5
+
+date: 2025-07-29
+
+- Show preparing stage votes data on the referendum votes curve chart.
+- Fellowship:
+    - Extract treasury spend info from referenda and show it on the referendum detail page.
+    - Use extracted treasury assets info on treasury spends pages.
+- Remove deprecated code to extract treasury spend assets data. These codes are taken place by data by indexing.
+- Improve environment variables to simplify settings.
+- Support multisigs query by a signatory.
+- Reset cancel button disable status after user cancel a sign.
+- Code refactor to remove useless attributes and optimize components structure.
+- Style fixes for some dark mode issues.
+
 # 5.0.4
 
 date: 2025-07-21
 
-- Extract spend info in indexing scripts and use
+- Extract spend info in indexing scripts and use that in fronted.
 - Display corresponding USD equivalent value for requested native tokens on referenda list and detail page.
 - Refactor:
     - Refactor appendants related code to reduce coupling.

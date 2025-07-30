@@ -1,4 +1,6 @@
 import { getChainApi } from "../getChainApi";
+import getChainSettings from "../consts/settings";
+import Chains from "next-common/utils/consts/chains";
 
 let api = null;
 
@@ -7,13 +9,11 @@ export async function getHydrationApi() {
     return api;
   }
 
-  const hydrationWsEndpointStr = process.env.NEXT_PUBLIC_WS_HYDRATION_ENDPOINTS;
-  if (!hydrationWsEndpointStr) {
-    return null;
+  const { endpoints } = getChainSettings(Chains.hydradx);
+  const hydrationEndpoints = endpoints?.map((item) => item.url);
+  if (!hydrationEndpoints) {
+    throw new Error("Hydration endpoints not found");
   }
 
-  const endpoints = hydrationWsEndpointStr.split(";");
-  api = getChainApi(endpoints);
-
-  return api;
+  return getChainApi(hydrationEndpoints);
 }

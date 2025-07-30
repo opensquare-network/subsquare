@@ -109,6 +109,9 @@ const basilisk = {
     killReferendum: true,
   },
   allowWeb2Login: false,
+  openSquare: {
+    voting: "basilisk",
+  },
 };
 
 export default basilisk;
