@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, useMemo } from "react";
 import useMyForeignAssets from "next-common/hooks/foreignAssets/useMyForeignAssets";
 
 const ForeignAssetsContext = createContext(null);
@@ -6,8 +6,16 @@ const ForeignAssetsContext = createContext(null);
 export function ForeignAssetsProvider({ children }) {
   const { assets, loading } = useMyForeignAssets();
 
+  const count = useMemo(() => {
+    if (loading) {
+      return 0;
+    }
+
+    return assets?.length || 0;
+  }, [assets, loading]);
+
   return (
-    <ForeignAssetsContext.Provider value={{ assets, loading }}>
+    <ForeignAssetsContext.Provider value={{ assets, loading, count }}>
       {children}
     </ForeignAssetsContext.Provider>
   );

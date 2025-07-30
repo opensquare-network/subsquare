@@ -6,7 +6,6 @@ import NativeAsset from "./nativeAsset";
 import Assets from "./assets";
 import Transfers from "./transfers";
 import { AssetHubTabsProvider } from "next-common/components/assets/context/assetHubTabsProvider";
-import { ForeignAssetsProvider } from "next-common/context/foreignAssets";
 import ForeignAssets from "next-common/components/assets/foreignAssets";
 
 export function Title({ assetsCount }) {
@@ -30,9 +29,7 @@ export default function WalletAssetList() {
             <Assets />
             <Transfers />
           </AssetHubTabs>
-          <ForeignAssetsProvider>
-            <ForeignAssets />
-          </ForeignAssetsProvider>
+          <ForeignAssets />
         </div>
       </ListLayout>
     </AssetHubTabsProvider>
