@@ -57,7 +57,7 @@ const EvidenceItem = ({ row, popupTitle = "" }) => {
   return (
     <>
       <NeutralPanel className="p-6">
-        <Tooltip content={title}>
+        <Tooltip content={title} className="w-full">
           <div
             role="button"
             className="text16Bold text-textPrimary hover:underline truncate"
