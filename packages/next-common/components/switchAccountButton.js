@@ -14,7 +14,7 @@ function SwitchButton() {
     return null;
   }
 
-  return <SwitchButtonContent />;
+  return <SwitchButtonContent supportedMultisig={false} />;
 }
 
 function MultisigSwitchButton() {
@@ -26,10 +26,10 @@ function MultisigSwitchButton() {
     return null;
   }
 
-  return <SwitchButtonContent />;
+  return <SwitchButtonContent supportedMultisig />;
 }
 
-function SwitchButtonContent() {
+function SwitchButtonContent({ supportedMultisig }) {
   const [showPopup, setShowPopup] = useState(false);
   return (
     <>
@@ -39,7 +39,12 @@ function SwitchButtonContent() {
       >
         Switch
       </span>
-      {showPopup && <SwitchSignerPopup onClose={() => setShowPopup(false)} />}
+      {showPopup && (
+        <SwitchSignerPopup
+          supportedMultisig={supportedMultisig}
+          onClose={() => setShowPopup(false)}
+        />
+      )}
     </>
   );
 }
