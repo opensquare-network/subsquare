@@ -20,9 +20,25 @@ async function queryUserAssetAccount(api, assetLocation, realAddress) {
   const unwrapped = accountInfo.unwrap();
   return {
     unwrapped,
-    balance: unwrapped?.balance?.toString(),
+    balance: unwrapped?.balance?.toBigInt(),
     isFrozen: unwrapped?.status?.isFrozen,
   };
+}
+
+async function queryAssetMetadata(api, assetLocation) {
+  try {
+    const metadata = await api.query.foreignAssets.metadata(assetLocation);
+
+    return {
+      decimals: metadata?.decimals?.toNumber(),
+      name: metadata?.name?.toHuman(),
+      symbol: metadata?.symbol?.toHuman(),
+    };
+  } catch (error) {
+    console.error(
+      `Failed to query metadata for asset ${assetLocation.toString()}`,
+    );
+  }
 }
 
 async function processUserAssetData(api, key, realAddress) {
@@ -40,6 +56,8 @@ async function processUserAssetData(api, key, realAddress) {
       return null;
     }
 
+    const metadata = await queryAssetMetadata(api, assetLocation);
+
     const balance = accountInfo.balance.toString();
     const isFrozen = accountInfo.isFrozen;
     const transferable = isFrozen ? "0" : balance;
@@ -50,6 +68,9 @@ async function processUserAssetData(api, key, realAddress) {
       location: assetLocation.toJSON(),
       isFrozen,
       transferable,
+      decimals: metadata?.decimals,
+      name: metadata?.name,
+      symbol: metadata?.symbol,
     };
   } catch (error) {
     console.warn(`Failed to query asset ${assetLocation.toString()}:`, error);
