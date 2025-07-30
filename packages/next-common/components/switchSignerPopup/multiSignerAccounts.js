@@ -59,8 +59,9 @@ export default function MultiSignerAccounts({ selected, onSelect = noop }) {
                     multisig.multisigAddress,
                   ) && "cursor-default bg-neutral200 border-transparent",
                 )}
+                isSelected={isSelected}
               >
-                {isSelected ? null : (
+                {!isSelected && (
                   <ArrowRight
                     className={cn(
                       "w-[20px] h-[20px]",
