@@ -1,18 +1,19 @@
 import { useChain } from "next-common/context/chain";
 import { isCollectivesChain } from "next-common/utils/chain";
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
-import useSubFellowshipCoreMember from "next-common/hooks/fellowship/core/useSubFellowshipCoreMember";
 import { TabTitle } from "./";
+import { usePageProps } from "next-common/context/page";
 
 export function useProfileCollectivesTabs() {
   const chain = useChain();
   const address = useProfileAddress();
-  const { member: fellowshipMember } = useSubFellowshipCoreMember(address);
-  const { member: ambassadorMember } = useSubFellowshipCoreMember(
-    address,
-    "ambassadorCore",
+  const { fellowshipMembers = [], ambassadorMembers = [] } = usePageProps();
+  const fellowshipMember = fellowshipMembers.find(
+    (member) => member.address === address,
   );
-
+  const ambassadorMember = ambassadorMembers.find(
+    (member) => member.address === address,
+  );
   if (!isCollectivesChain(chain)) {
     return [];
   }
