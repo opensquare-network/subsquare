@@ -8,8 +8,8 @@ import {
   AssetIconPas,
   AssetIconHdx,
   AssetIconPlaceholder,
-  AssetlconBnc,
-  AssetlconBsx,
+  AssetIconBnc,
+  AssetIconBsx,
 } from "@osn/icons/subsquare";
 import foreignAssetInfo from "next-common/utils/consts/foreignAssets";
 
@@ -36,9 +36,9 @@ const assetHubChainNativeTokenIconMap = {
   [Chains.paseoAssetHub]: AssetIconPas,
   [Chains.paseo]: AssetIconPas,
   [Chains.hydradx]: AssetIconHdx,
-  [Chains.bifrost]: AssetlconBnc,
-  [Chains.bifrostPolkadot]: AssetlconBnc,
-  [Chains.basilisk]: AssetlconBsx,
+  [Chains.bifrost]: AssetIconBnc,
+  [Chains.bifrostPolkadot]: AssetIconBnc,
+  [Chains.basilisk]: AssetIconBsx,
 };
 
 export function useNativeTokenIcon() {

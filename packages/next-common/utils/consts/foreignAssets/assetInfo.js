@@ -12,7 +12,7 @@ import {
   AssetIconPlmc,
   AssetIconDot,
   AssetIconGlmr,
-  AssetlconBnc,
+  AssetIconBnc,
   AssetIconVdot,
   AssetIconHdx,
 } from "@osn/icons/subsquare";
@@ -71,7 +71,7 @@ export const foreignAssetGLMR = {
 export const foreignAssetBNC = {
   id: "0x6d97c1670a369c2b83927764bb82a8620ac042530b96c3425e37965d4cb486a2",
   data: {
-    icon: AssetlconBnc,
+    icon: AssetIconBnc,
   },
 };
 
