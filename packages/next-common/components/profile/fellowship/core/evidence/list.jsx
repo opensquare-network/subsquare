@@ -11,13 +11,19 @@ import { useState } from "react";
 import FellowshipEvidenceContent from "next-common/components/collectives/core/evidenceContent";
 import { cn, isHash } from "next-common/utils";
 import EvidenceLink from "./link";
+import Tooltip from "next-common/components/tooltip";
 
 const getDate = (row) => {
   return dayjs(row?.indexer?.blockTime).format("YYYY/MM/DD") || "";
 };
 
 const getTitle = (row) => {
-  const { wish, rank } = row;
+  const { wish, rank, title } = row;
+
+  if (title) {
+    return title;
+  }
+
   const adposition = wish === "Retention" ? "at" : "to";
   const realRankValue = wish === "Promotion" ? rank + 1 : rank;
   return `${wish} ${adposition} Rank ${realRankValue}`;
@@ -46,6 +52,8 @@ const SubSquareLinks = ({ referenda }) => {
 
 const EvidenceItem = ({ row, popupTitle = "" }) => {
   const [open, setOpen] = useState(false);
+
+  const title = getTitle(row);
 
   return (
     <>
