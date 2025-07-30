@@ -11,7 +11,6 @@ import { useState } from "react";
 import FellowshipEvidenceContent from "next-common/components/collectives/core/evidenceContent";
 import { cn, isHash } from "next-common/utils";
 import EvidenceLink from "./link";
-import Tooltip from "next-common/components/tooltip";
 
 const getDate = (row) => {
   return dayjs(row?.indexer?.blockTime).format("YYYY/MM/DD") || "";
@@ -64,7 +63,7 @@ const EvidenceItem = ({ row, popupTitle = "" }) => {
           eventIndex={row.indexer.eventIndex}
           className="text16Bold text-textPrimary hover:underline"
         >
-          {getTitle(row)}
+          {title}
         </EvidenceLink>
         <div className="text14Medium text-textTertiary mt-1">
           {getDate(row)}

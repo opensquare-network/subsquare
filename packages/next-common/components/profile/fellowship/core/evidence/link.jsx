@@ -1,4 +1,5 @@
-import { isHash } from "next-common/utils";
+import Tooltip from "next-common/components/tooltip";
+import { cn, isHash } from "next-common/utils";
 import { getCidByEvidence } from "next-common/utils/collective/getCidByEvidence";
 import Link from "next/link";
 
@@ -11,6 +12,7 @@ export default function EvidenceLink({
   eventIndex,
   evidence = "",
   target = "_blank",
+  showTooltip = true,
 }) {
   let evidenceId = "";
   if (cid) {
@@ -29,13 +31,21 @@ export default function EvidenceLink({
     return null;
   }
 
-  return (
+  const content = (
     <Link
       href={`/fellowship/members/${address}/evidences/${evidenceId}`}
-      className={className}
+      className={cn(className, "truncate block")}
       target={target}
     >
       {children}
     </Link>
+  );
+
+  return showTooltip ? (
+    <Tooltip content={children} className="w-full">
+      {content}
+    </Tooltip>
+  ) : (
+    content
   );
 }
