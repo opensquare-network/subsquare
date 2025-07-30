@@ -1,7 +1,6 @@
 import React from "react";
 import { toPrecision } from "next-common/utils";
 import Tag from "next-common/components/tags/state/tag";
-import Flex from "next-common/components/styled/flex";
 import MotionElapse from "next-common/components/motionElapse";
 import Anchor from "next-common/components/styled/anchor";
 import Divider from "../styled/layout/divider";
@@ -10,21 +9,14 @@ import { isNil } from "lodash-es";
 import { getBannerUrl } from "../../utils/banner";
 import businessCategory from "../../utils/consts/business/category";
 import { getMotionStateArgs } from "../../utils/collective/result";
-import { getGov2ReferendumStateArgs } from "../../utils/gov2/result";
 import { useChain, useChainSettings } from "../../context/chain";
 import Gov2TrackTag from "../gov2/trackTag";
-import DecisionCountdown from "../gov2/postList/decisionCountdown";
-import { gov2State } from "../../utils/consts/state";
-import ConfirmCountdown from "../gov2/postList/confirmCountdown";
 import ValueDisplay from "../valueDisplay";
 import ListPostTitle from "./postTitle";
 import IpfsLink from "../alliance/ipfsLink";
 import PostLabels from "../postLabels";
 import { useScreenSize } from "../../utils/hooks/useScreenSize";
 import LinkInfo from "../styled/linkInfo";
-import Link from "next/link";
-import PreparingCountdown from "../gov2/postList/preparingCountdown";
-import PostListCardVotesSummaryBar from "./votesSummaryBar";
 import SystemUser from "../user/systemUser";
 import AddressUser from "../user/addressUser";
 import PolkassemblyUser from "../user/polkassemblyUser";
@@ -153,15 +145,9 @@ export default function Post({ data, href, type }) {
     businessCategory.openTechCommitteeProposals,
   ].includes(type);
 
-  const isGov2Referendum = [businessCategory.ambassadorReferenda].includes(
-    type,
-  );
-
   let stateArgs;
   if (isDemocracyCollective) {
     stateArgs = getMotionStateArgs(data.onchainData.state);
-  } else if (isGov2Referendum) {
-    stateArgs = getGov2ReferendumStateArgs(data.onchainData?.state);
   }
 
   let elapseIcon = null;
@@ -177,16 +163,6 @@ export default function Post({ data, href, type }) {
     elapseIcon = <MotionElapse motion={data.onchainData} />;
   }
 
-  if (isGov2Referendum) {
-    if (data?.status === gov2State.Preparing) {
-      elapseIcon = <PreparingCountdown detail={data} />;
-    } else if (data?.status === gov2State.Deciding) {
-      elapseIcon = <DecisionCountdown detail={data} />;
-    } else if (data?.status === gov2State.Confirming) {
-      elapseIcon = <ConfirmCountdown detail={data} />;
-    }
-  }
-
   let commentsCount = data.commentsCount || 0;
   if (
     [Chains.kusama, Chains.kusamaPeople, Chains.polkadot].includes(
@@ -198,14 +174,6 @@ export default function Post({ data, href, type }) {
   }
 
   const bannerUrl = getBannerUrl(data.bannerCid);
-
-  let trackTagLink = null;
-  if (type === businessCategory.ambassadorReferenda) {
-    trackTagLink = `/ambassador/tracks/${data.track}`;
-  }
-
-  const hasTally = data.onchainData?.tally || data.onchainData?.info?.tally;
-  const showTally = [businessCategory.ambassadorReferenda].includes(type);
 
   return (
     <Wrapper>
@@ -222,11 +190,9 @@ export default function Post({ data, href, type }) {
             <PostUser data={data} type={type} />
             {data.trackName && (
               <MobileHiddenInfo>
-                <Link href={trackTagLink} passHref>
-                  <LinkInfo>
-                    <Gov2TrackTag name={data.trackName} id={data.track} />
-                  </LinkInfo>
-                </Link>
+                <LinkInfo>
+                  <Gov2TrackTag name={data.trackName} id={data.track} />
+                </LinkInfo>
               </MobileHiddenInfo>
             )}
 
@@ -251,11 +217,6 @@ export default function Post({ data, href, type }) {
                   {commentsCount}
                 </Tooltip>
               </MobileHiddenInfo>
-            )}
-            {showTally && hasTally && (
-              <Flex>
-                <PostListCardVotesSummaryBar data={data} type={type} />
-              </Flex>
             )}
             {businessCategory.allianceAnnouncements === type && (
               <IpfsLink cid={data.cid} />

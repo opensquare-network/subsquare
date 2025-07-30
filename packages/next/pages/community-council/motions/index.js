@@ -1,7 +1,6 @@
-import PostList from "next-common/components/postList";
+import CommunityCouncilMotionsPostList from "next-common/components/postList/communityCouncilMotionsPostList";
 import { withCommonProps } from "next-common/lib";
 import { toCommunityMotionsListItem } from "next-common/utils/viewfuncs";
-import businessCategory from "next-common/utils/consts/business/category";
 import ListLayout from "next-common/components/layout/ListLayout";
 import { useChainSettings } from "next-common/context/chain";
 import ChainSocialLinks from "next-common/components/chain/socialLinks";
@@ -19,7 +18,6 @@ export default function MotionsPage({ motions }) {
   const items = (motions.items || []).map((item) =>
     toCommunityMotionsListItem(item),
   );
-  const category = businessCategory.communityMotions;
   const seoInfo = {
     title: "Community Council Motions",
     desc: "Community Council Motions",
@@ -34,8 +32,7 @@ export default function MotionsPage({ motions }) {
           description={chainSettings.description}
           headContent={<ChainSocialLinks />}
         >
-          <PostList
-            category={category}
+          <CommunityCouncilMotionsPostList
             titleExtra={<NewCouncilMotionProposalButton />}
             items={items}
             pagination={{

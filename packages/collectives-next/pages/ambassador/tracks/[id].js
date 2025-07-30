@@ -13,8 +13,7 @@ import { startCase } from "lodash-es";
 import normalizeAmbassadorReferendaListItem from "next-common/utils/gov2/list/normalizeAmbassadorReferendaListItem";
 import ListLayout from "next-common/components/layout/ListLayout";
 import Gov2TrackSummary from "next-common/components/summary/gov2TrackSummary";
-import PostList from "next-common/components/postList";
-import businessCategory from "next-common/utils/consts/business/category";
+import AmbassadorReferendaPostList from "next-common/components/postList/ambassadorReferendaPostList";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 
 export default function AmbassadorTrackPage({
@@ -43,10 +42,8 @@ export default function AmbassadorTrackPage({
           />
         }
       >
-        <PostList
-          title="List"
+        <AmbassadorReferendaPostList
           titleCount={posts.total}
-          category={businessCategory.ambassadorReferenda}
           items={items}
           pagination={{
             page: posts.page,
