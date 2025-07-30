@@ -7,19 +7,26 @@ import { usePageProps } from "next-common/context/page";
 export function useProfileCollectivesTabs() {
   const chain = useChain();
   const address = useProfileAddress();
-  const { fellowshipMembers = [], ambassadorMembers = [] } = usePageProps();
+  const {
+    fellowshipMembers = [],
+    ambassadorMembers = [],
+    fellowshipInductedFeeds,
+  } = usePageProps();
+  if (!isCollectivesChain(chain)) {
+    return [];
+  }
+
   const fellowshipMember = fellowshipMembers.find(
     (member) => member.address === address,
   );
   const ambassadorMember = ambassadorMembers.find(
     (member) => member.address === address,
   );
-  if (!isCollectivesChain(chain)) {
-    return [];
-  }
+
+  const isHistoryMember = fellowshipInductedFeeds?.items?.length > 0;
 
   const tabs = [];
-  if (fellowshipMember) {
+  if (fellowshipMember || isHistoryMember) {
     tabs.push({
       label({ active }) {
         return <TabTitle active={active}>Fellowship</TabTitle>;
