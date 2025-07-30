@@ -10,7 +10,7 @@ function InnerNativeTokenPriceSubscriber() {
 
 export default function NativeTokenPriceSubscriber() {
   return (
-    <OnlyChains chains={[Chains.polkadot, Chains.kusama]}>
+    <OnlyChains chains={[Chains.polkadot, Chains.kusama, Chains.collectives]}>
       <InnerNativeTokenPriceSubscriber />
     </OnlyChains>
   );
