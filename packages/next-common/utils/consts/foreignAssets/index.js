@@ -1,6 +1,6 @@
 import * as foreignAssets from "./assetInfo";
 
-export default function foreignAssetInfo() {
+function getForeignAssetInfo() {
   if (!foreignAssets) return {};
 
   const foreignAssetsEntries = Object.values(foreignAssets).map(
@@ -9,3 +9,5 @@ export default function foreignAssetInfo() {
 
   return Object.fromEntries(foreignAssetsEntries);
 }
+
+export const foreignAssetInfo = getForeignAssetInfo();

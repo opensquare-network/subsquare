@@ -11,7 +11,7 @@ import {
   AssetIconBnc,
   AssetIconBsx,
 } from "@osn/icons/subsquare";
-import foreignAssetInfo from "next-common/utils/consts/foreignAssets";
+import { foreignAssetInfo } from "next-common/utils/consts/foreignAssets";
 
 const knownAssetHubAssetsMap = Object.freeze({
   [Chains.polkadotAssetHub]: knownPolkadotAssetHubAssets,
@@ -64,5 +64,6 @@ export function useKnownForeignAssets() {
 
 export function useForeignAssetIcon(assetId) {
   const foreignAssets = useKnownForeignAssets();
+
   return foreignAssets[assetId]?.icon || AssetIconPlaceholder;
 }

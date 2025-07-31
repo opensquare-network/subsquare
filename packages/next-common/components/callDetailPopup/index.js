@@ -23,6 +23,7 @@ export default function CallDetailPopup({
   hasTreeViewData = true,
   setShow,
   customCallTree = null,
+  title = "Call Detail",
 }) {
   const hasTableData = !!tableViewData;
   const hasJsonData = !!jsonViewData;
@@ -56,7 +57,7 @@ export default function CallDetailPopup({
   const CallTreeComponent = customCallTree || CallTreeOnReferendum;
 
   return (
-    <Popup title="Call Detail" onClose={() => setShow(false)}>
+    <Popup title={title} onClose={() => setShow(false)}>
       <Tab
         tabs={tabs}
         selectedTabId={selectedTabId}
