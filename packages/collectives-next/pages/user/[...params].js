@@ -21,6 +21,12 @@ export const getServerSideProps = withCommonProps(async (context) => {
 
   const maybeAddress = tryConvertToSubstrateAddress(id);
 
+  const queryFeedsParams = {
+    page: page,
+    page_size: defaultPageSize,
+    who: id,
+  };
+
   const [
     { result: userSummary },
     { result: user },
@@ -33,16 +39,8 @@ export const getServerSideProps = withCommonProps(async (context) => {
     backendApi.fetch(`users/${maybeAddress}`),
     backendApi.fetch(fellowshipMembersApiUri),
     backendApi.fetch(ambassadorMembersApiUri),
-    backendApi.fetch(fellowshipCoreFeedsApiUri, {
-      page: page,
-      page_size: defaultPageSize,
-      who: id,
-    }),
-    backendApi.fetch(ambassadorCoreFeedsApiUri, {
-      page: page,
-      page_size: defaultPageSize,
-      who: id,
-    }),
+    backendApi.fetch(fellowshipCoreFeedsApiUri, queryFeedsParams),
+    backendApi.fetch(ambassadorCoreFeedsApiUri, queryFeedsParams),
   ]);
   const tracksProps = await fetchOpenGovTracksProps();
 
