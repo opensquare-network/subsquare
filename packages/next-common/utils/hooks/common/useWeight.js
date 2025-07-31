@@ -35,6 +35,7 @@ export function convertWeight(weight) {
 
 export default function useWeight(call) {
   const api = useContextApi();
+  const [isLoading, setIsLoading] = useState(true);
   const isMounted = useMountedState();
   const [state, setState] = useState(() =>
     objectSpread(
@@ -47,17 +48,14 @@ export default function useWeight(call) {
 
   useEffect(() => {
     if (!api || !call || !api?.call?.transactionPaymentApi) {
-      setState((prev) => objectSpread({}, prev, EMPTY_STATE));
       return;
     }
 
     nextTick(async () => {
       try {
-        const { v1Weight, v2Weight } = convertWeight(
-          (await api.tx(call).paymentInfo(ZERO_ACCOUNT)).weight,
-        );
-
-        isMounted() &&
+        const paymentInfo = await api.tx(call).paymentInfo(ZERO_ACCOUNT);
+        const { v1Weight, v2Weight } = convertWeight(paymentInfo.weight);
+        if (isMounted()) {
           setState((prev) =>
             objectSpread({}, prev, {
               encodedCallLength: call.encodedLength,
@@ -66,11 +64,13 @@ export default function useWeight(call) {
               weight: prev.isWeightV2 ? v2Weight : v1Weight,
             }),
           );
+          setIsLoading(false);
+        }
       } catch (error) {
         console.error(error);
       }
     });
   }, [api, call, isMounted]);
 
-  return state;
+  return { state, isLoading };
 }
