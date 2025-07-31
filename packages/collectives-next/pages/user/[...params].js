@@ -16,7 +16,7 @@ export default Profile;
 export const getServerSideProps = withCommonProps(async (context) => {
   const {
     params: [id],
-    page = 0,
+    page = 1,
   } = context.query;
 
   const maybeAddress = tryConvertToSubstrateAddress(id);
