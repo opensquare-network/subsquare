@@ -19,11 +19,22 @@ export default function ProfileFellowshipModuleTabs() {
   const maybeEvmAddress = tryConvertToEvmAddress(id);
 
   const urls = {
-    core: `/user/${maybeEvmAddress}/${section}`,
+    votes: `/user/${maybeEvmAddress}/${section}`,
+    core: `/user/${maybeEvmAddress}/${section}/core`,
     salary: `/user/${maybeEvmAddress}/${section}/salary`,
   };
 
   const tabs = [
+    {
+      value: "votes",
+      label: (
+        <Label className={cn(pathname === urls.votes && "text-textPrimary")}>
+          Votes
+        </Label>
+      ),
+      url: urls.votes,
+      shallow: true,
+    },
     {
       value: "core",
       label: (

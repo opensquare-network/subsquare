@@ -12,6 +12,7 @@ import { usePageProps } from "next-common/context/page";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import ProfileFellowshipCore from "../fellowship/core";
 import ProfileFellowshipSalary from "../fellowship/salary";
+import ProfileFellowshipVotes from "../fellowship/votes";
 import ProfileProxy from "../proxy";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 
@@ -38,10 +39,22 @@ export default function useProfileTabContent() {
   } else if (pathname === `/user/${maybeEvmAddress}/fellowship`) {
     return (
       <CollectivesProvider section="fellowship">
-        <ProfileFellowshipCore />
+        <ProfileFellowshipVotes />
       </CollectivesProvider>
     );
   } else if (pathname === `/user/${maybeEvmAddress}/ambassador`) {
+    return (
+      <CollectivesProvider section="ambassador">
+        <ProfileFellowshipVotes />
+      </CollectivesProvider>
+    );
+  } else if (pathname === `/user/${maybeEvmAddress}/fellowship/core`) {
+    return (
+      <CollectivesProvider section="fellowship">
+        <ProfileFellowshipCore />
+      </CollectivesProvider>
+    );
+  } else if (pathname === `/user/${maybeEvmAddress}/ambassador/core`) {
     return (
       <CollectivesProvider section="ambassador">
         <ProfileFellowshipCore />
