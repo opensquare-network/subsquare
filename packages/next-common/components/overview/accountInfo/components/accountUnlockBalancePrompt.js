@@ -9,7 +9,7 @@ import { colorStyle, PromptTypes } from "next-common/components/scrollPrompt";
 import { SystemClose } from "@osn/icons/subsquare";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useSelector } from "react-redux";
-import { isLoadingReferendaVotingSelector } from "next-common/store/reducers/myOnChainData/referenda/myReferendaVoting";
+import { isLoadingReferendaSummarySelector } from "next-common/store/reducers/myOnChainData/referenda/myReferendaVoting";
 
 const useMode = createGlobalState(true);
 export default function AccountUnlockBalancePrompt() {
@@ -17,11 +17,10 @@ export default function AccountUnlockBalancePrompt() {
   useFetchMyReferendaVoting();
   const { unlockBalance } = useVoteBalance();
   const { symbol, decimals } = useChainSettings();
-  const isLoadingReferendaVoting = useSelector(
-    isLoadingReferendaVotingSelector,
-  );
-  if (isLoadingReferendaVoting || unlockBalance.isZero() || !visible)
+  const isLoading = useSelector(isLoadingReferendaSummarySelector);
+  if (isLoading || unlockBalance.isZero() || !visible) {
     return null;
+  }
 
   return (
     <GreyPanel
