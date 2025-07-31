@@ -5,9 +5,9 @@ import { colTotal } from "./total";
 import { colTransferable } from "./transferable";
 
 export const foreignAssetsColumnsDef = [
-  colId,
   colToken,
   colLocation,
+  colId,
   colTotal,
   colTransferable,
 ];
