@@ -1,9 +1,11 @@
 import { withCommonProps } from "next-common/lib";
 import { backendApi } from "next-common/services/nextApi";
 import Profile from "next-common/components/profile";
+import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { tryConvertToSubstrateAddress } from "next-common/utils/mixedChainUtil";
 import {
+  ambassadorCoreFeedsApiUri,
   ambassadorMembersApiUri,
   fellowshipCoreFeedsApiUri,
   fellowshipMembersApiUri,
@@ -11,16 +13,10 @@ import {
 
 export default Profile;
 
-const getQueryInductedFeedsParams = (id) => ({
-  page: 0,
-  page_size: 10,
-  who: id,
-  event: "Inducted",
-});
-
 export const getServerSideProps = withCommonProps(async (context) => {
   const {
     params: [id],
+    page = 0,
   } = context.query;
 
   const maybeAddress = tryConvertToSubstrateAddress(id);
@@ -30,16 +26,23 @@ export const getServerSideProps = withCommonProps(async (context) => {
     { result: user },
     { result: fellowshipMembers },
     { result: ambassadorMembers },
-    { result: fellowshipInductedFeeds = [] },
+    { result: fellowshipFeeds },
+    { result: ambassadorFeeds },
   ] = await Promise.all([
     backendApi.fetch(`users/${maybeAddress}/counts`),
     backendApi.fetch(`users/${maybeAddress}`),
     backendApi.fetch(fellowshipMembersApiUri),
     backendApi.fetch(ambassadorMembersApiUri),
-    backendApi.fetch(
-      fellowshipCoreFeedsApiUri,
-      getQueryInductedFeedsParams(id),
-    ),
+    backendApi.fetch(fellowshipCoreFeedsApiUri, {
+      page: page,
+      page_size: defaultPageSize,
+      who: id,
+    }),
+    backendApi.fetch(ambassadorCoreFeedsApiUri, {
+      page: page,
+      page_size: defaultPageSize,
+      who: id,
+    }),
   ]);
   const tracksProps = await fetchOpenGovTracksProps();
 
@@ -49,7 +52,8 @@ export const getServerSideProps = withCommonProps(async (context) => {
       userSummary: userSummary ?? {},
       fellowshipMembers: fellowshipMembers ?? null,
       ambassadorMembers: ambassadorMembers ?? null,
-      fellowshipInductedFeeds: fellowshipInductedFeeds ?? null,
+      fellowshipFeeds: fellowshipFeeds ?? EmptyList,
+      ambassadorFeeds: ambassadorFeeds ?? EmptyList,
       user: user ?? {},
       route: context.query?.params?.slice(1)?.join("/") ?? "",
       ...tracksProps,

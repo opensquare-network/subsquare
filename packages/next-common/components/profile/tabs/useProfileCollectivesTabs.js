@@ -3,30 +3,44 @@ import { isCollectivesChain } from "next-common/utils/chain";
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
 import { TabTitle } from "./";
 import { usePageProps } from "next-common/context/page";
+import { EmptyList } from "next-common/utils/constants";
+
+function useShowFellowshipTab() {
+  const address = useProfileAddress();
+  const { fellowshipMembers = [], fellowshipFeeds = EmptyList } =
+    usePageProps();
+  const fellowshipMember = fellowshipMembers?.find(
+    (member) => member.address === address,
+  );
+  const isFellowshipHistoryMember = fellowshipFeeds?.items?.length > 0;
+
+  return fellowshipMember || isFellowshipHistoryMember;
+}
+
+function useShowAmbassadorTab() {
+  const address = useProfileAddress();
+  const { ambassadorMembers = [], ambassadorFeeds = EmptyList } =
+    usePageProps();
+  const ambassadorMember = ambassadorMembers?.find(
+    (member) => member.address === address,
+  );
+  const isAmbassadorHistoryMember = ambassadorFeeds?.items?.length > 0;
+
+  return ambassadorMember || isAmbassadorHistoryMember;
+}
 
 export function useProfileCollectivesTabs() {
   const chain = useChain();
   const address = useProfileAddress();
-  const {
-    fellowshipMembers = [],
-    ambassadorMembers = [],
-    fellowshipInductedFeeds,
-  } = usePageProps();
+  const showFellowshipTab = useShowFellowshipTab();
+  const showAmbassadorTab = useShowAmbassadorTab();
+
   if (!isCollectivesChain(chain)) {
     return [];
   }
 
-  const fellowshipMember = fellowshipMembers.find(
-    (member) => member.address === address,
-  );
-  const ambassadorMember = ambassadorMembers.find(
-    (member) => member.address === address,
-  );
-
-  const isHistoryMember = fellowshipInductedFeeds?.items?.length > 0;
-
   const tabs = [];
-  if (fellowshipMember || isHistoryMember) {
+  if (showFellowshipTab) {
     tabs.push({
       label({ active }) {
         return <TabTitle active={active}>Fellowship</TabTitle>;
@@ -36,7 +50,7 @@ export function useProfileCollectivesTabs() {
       exactMatch: false,
     });
   }
-  if (ambassadorMember) {
+  if (showAmbassadorTab) {
     tabs.push({
       label({ active }) {
         return <TabTitle active={active}>Ambassador</TabTitle>;
