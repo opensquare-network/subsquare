@@ -32,7 +32,7 @@ export default function AccountUnlockBalancePrompt() {
           />
         }
         &nbsp;{symbol} votes expired available to unlock, check it&nbsp;
-        <Link className="underline text14Bold " href={"/account/votes"}>
+        <Link className="underline text14Bold " href="/account/votes">
           here
         </Link>
         .
