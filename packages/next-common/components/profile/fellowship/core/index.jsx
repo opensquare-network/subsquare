@@ -4,7 +4,7 @@ import { useState } from "react";
 import ProfileFellowshipMemberInfo from "../memberInfo";
 import ProfileFellowshipModuleTabs from "../moduleTabs";
 import ProfileFellowshipCoreEvidence from "./evidence";
-import ProfileFellowshipCoreFeeds from "./feeds";
+import { ProfileFellowshipCoreFeedsServerFirst } from "./feeds";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
 import ProfileFellowshipStatisticsInfo from "../statisticsInfo";
 
@@ -16,7 +16,7 @@ export default function ProfileFellowshipCore() {
     {
       label: "Feeds",
       value: "feeds",
-      content: <ProfileFellowshipCoreFeeds />,
+      content: <ProfileFellowshipCoreFeedsServerFirst />,
     },
     {
       label: "Evidence",

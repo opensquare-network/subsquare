@@ -7,8 +7,6 @@ import { useDispatch } from "react-redux";
 import { setProfileTransfers } from "next-common/store/reducers/profile/transfer";
 import { setProfileIdentityTimeline } from "next-common/store/reducers/profile/identityTimeline";
 import useProfileAddress from "./useProfileAddress";
-import useSubFellowshipCoreMember from "next-common/hooks/fellowship/core/useSubFellowshipCoreMember";
-import CollectivesMemberProvider from "next-common/context/collectives/member";
 import ProfileHeaderWithBanner from "./header";
 import ProfileLayout from "next-common/components/layout/ProfileLayout";
 import WindowSizeProvider from "next-common/context/windowSize";
@@ -48,18 +46,9 @@ export default function ProfilePage() {
     dispatch(setProfileIdentityTimeline(null));
   }, [dispatch, address]);
 
-  const { member: fellowshipMember } = useSubFellowshipCoreMember(address);
-  const { member: ambassadorMember } = useSubFellowshipCoreMember(
-    address,
-    "ambassadorCore",
-  );
-  const member = fellowshipMember || ambassadorMember || null;
-
   return (
-    <CollectivesMemberProvider member={member}>
-      <WindowSizeProvider>
-        <ProfilePageImpl />
-      </WindowSizeProvider>
-    </CollectivesMemberProvider>
+    <WindowSizeProvider>
+      <ProfilePageImpl />
+    </WindowSizeProvider>
   );
 }
