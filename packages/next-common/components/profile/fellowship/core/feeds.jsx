@@ -2,47 +2,18 @@ import { SystemLoading } from "@osn/icons/subsquare";
 import { createFellowshipCoreFeedsRows } from "next-common/components/fellowship/core/feeds/list";
 import { FellowshipFeedItems } from "next-common/components/fellowship/feeds/list";
 import Pagination from "next-common/components/pagination";
-import { useCollectivesContext } from "next-common/context/collectives/collectives";
-import { usePageProps } from "next-common/context/page";
-import { backendApi } from "next-common/services/nextApi";
-import {
-  ambassadorCoreFeedsApiUri,
-  fellowshipCoreFeedsApiUri,
-} from "next-common/services/url";
-import { defaultPageSize } from "next-common/utils/constants";
+import useFellowshipCoreFeeds from "next-common/hooks/fellowship/core/useFellowshipCoreFeeds";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { useAsync } from "react-use";
 
 export default function ProfileFellowshipCoreFeeds({
   showUserInfo = true,
   noDataText = "",
 }) {
-  const { id: address } = usePageProps();
   const router = useRouter();
   const [page, setPage] = useState(parseInt(router.query.page || 1));
 
-  let feedsApi;
-  const { section } = useCollectivesContext();
-  if (section === "fellowship") {
-    feedsApi = fellowshipCoreFeedsApiUri;
-  } else if (section === "ambassador") {
-    feedsApi = ambassadorCoreFeedsApiUri;
-  }
-
-  const { value = {}, loading } = useAsync(async () => {
-    if (!feedsApi) {
-      return;
-    }
-
-    const resp = await backendApi.fetch(feedsApi, {
-      who: address,
-      page,
-      pageSize: defaultPageSize,
-    });
-
-    return resp?.result;
-  }, [page, address, feedsApi]);
+  const { value = {}, loading } = useFellowshipCoreFeeds({ page });
 
   const rows = createFellowshipCoreFeedsRows(value?.items, { showUserInfo });
 
