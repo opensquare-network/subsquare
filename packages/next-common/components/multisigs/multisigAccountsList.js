@@ -19,7 +19,12 @@ const ImportMultisigPopup = dynamicPopup(() => import("../importMultisig"));
 
 const columns = [
   {
-    name: "Multisig Address",
+    name: (
+      <span className="flex items-center gap-x-1">
+        Multisig Address{" "}
+        <Tooltip content="You can sign a multisig transaction on behalf of following accounts. Click switch on the signing popup."></Tooltip>
+      </span>
+    ),
   },
 ];
 
