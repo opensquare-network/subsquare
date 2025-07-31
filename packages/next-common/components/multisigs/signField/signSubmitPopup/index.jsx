@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { useContextApi } from "next-common/context/api";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
@@ -36,7 +36,6 @@ export function SignSubmitInnerPopup({ onClose, multisig = {} }) {
   const api = useContextApi();
   const address = useRealAddress();
   const { threshold, signatories, when: maybeTimepoint, callHex } = multisig;
-  const [isSubmitBtnLoading, setIsSubmitBtnLoading] = useState(false);
 
   const { formType, setFormType, callDataMap, setCallData } =
     useMultisigSignContext();
@@ -48,7 +47,10 @@ export function SignSubmitInnerPopup({ onClose, multisig = {} }) {
   const chain = useChain();
   const { call: rawCall, isLoading: isLoadingRawCall } =
     useCallFromHex(callHex);
-  const { weight: maxWeight } = useWeight(call);
+
+  const { state, isLoading: isWeightLoading } = useWeight(call);
+  const { weight: maxWeight } = state;
+
   const { ss58Format } = useChainSettings();
 
   // call tree popup with callHex
@@ -61,13 +63,13 @@ export function SignSubmitInnerPopup({ onClose, multisig = {} }) {
     setCallData("tree", { callData: rawCall, isValid: true });
   }, [callHex, rawCall, isLoadingRawCall, setFormType, setCallData]);
 
+  const isLoading = isLoadingRawCall || isWeightLoading;
+
   const getTxFunc = useCallback(() => {
-    setIsSubmitBtnLoading(true);
-    if (!api || !address || !call || !maxWeight || !isValid) {
+    if (!api || !address || !call || !isValid) {
       return;
     }
 
-    setIsSubmitBtnLoading(false);
     const otherSignatories = signatories.filter(
       (item) => !isSameAddress(item, address),
     );
@@ -89,8 +91,8 @@ export function SignSubmitInnerPopup({ onClose, multisig = {} }) {
     ss58Format,
     maybeTimepoint,
     call,
-    maxWeight,
     isValid,
+    maxWeight,
   ]);
 
   const onFinalized = () => {
@@ -109,10 +111,9 @@ export function SignSubmitInnerPopup({ onClose, multisig = {} }) {
       <PopupPropose />
       <SubmitPrompt />
       <TxSubmissionButton
-        disabled={!isValid}
+        disabled={isLoading || !isValid}
         getTxFunc={getTxFunc}
         onFinalized={onFinalized}
-        loading={isSubmitBtnLoading}
       />
     </Popup>
   );
