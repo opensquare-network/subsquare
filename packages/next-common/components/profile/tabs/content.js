@@ -10,9 +10,7 @@ import ProfileAssets from "../assets";
 import { usePathname } from "next/navigation";
 import { usePageProps } from "next-common/context/page";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
-import ProfileFellowshipCore from "../fellowship/core";
-import ProfileFellowshipSalary from "../fellowship/salary";
-import ProfileFellowshipVotes from "../fellowship/votes";
+import ProfileFellowship from "../fellowship";
 import ProfileProxy from "../proxy";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 
@@ -36,40 +34,16 @@ export default function useProfileTabContent() {
     return <ProfileIdentityTimeline />;
   } else if (pathname.startsWith(`/user/${maybeEvmAddress}/assets`)) {
     return <ProfileAssets />;
-  } else if (pathname === `/user/${maybeEvmAddress}/fellowship`) {
+  } else if (pathname.startsWith(`/user/${maybeEvmAddress}/fellowship`)) {
     return (
       <CollectivesProvider section="fellowship">
-        <ProfileFellowshipVotes />
+        <ProfileFellowship />
       </CollectivesProvider>
     );
-  } else if (pathname === `/user/${maybeEvmAddress}/ambassador`) {
+  } else if (pathname.startsWith(`/user/${maybeEvmAddress}/ambassador`)) {
     return (
       <CollectivesProvider section="ambassador">
-        <ProfileFellowshipVotes />
-      </CollectivesProvider>
-    );
-  } else if (pathname === `/user/${maybeEvmAddress}/fellowship/core`) {
-    return (
-      <CollectivesProvider section="fellowship">
-        <ProfileFellowshipCore />
-      </CollectivesProvider>
-    );
-  } else if (pathname === `/user/${maybeEvmAddress}/ambassador/core`) {
-    return (
-      <CollectivesProvider section="ambassador">
-        <ProfileFellowshipCore />
-      </CollectivesProvider>
-    );
-  } else if (pathname === `/user/${maybeEvmAddress}/fellowship/salary`) {
-    return (
-      <CollectivesProvider section="fellowship">
-        <ProfileFellowshipSalary />
-      </CollectivesProvider>
-    );
-  } else if (pathname === `/user/${maybeEvmAddress}/ambassador/salary`) {
-    return (
-      <CollectivesProvider section="ambassador">
-        <ProfileFellowshipSalary />
+        <ProfileFellowship />
       </CollectivesProvider>
     );
   } else if (pathname.startsWith(`/user/${maybeEvmAddress}/posted`)) {

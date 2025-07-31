@@ -3,7 +3,6 @@ import Tabs from "next-common/components/tabs";
 import { useState } from "react";
 import ProfileFellowshipSalaryPayments from "./payments";
 import ProfileFellowshipSalaryFeeds from "./feeds";
-import FellowshipCommonLayout from "../fellowshipCommonLayout";
 
 export function FellowshipSalaryCard() {
   const [paymentsCount, setPaymentsCount] = useState();
@@ -39,10 +38,8 @@ export function FellowshipSalaryCard() {
 
 export default function ProfileFellowshipSalary() {
   return (
-    <FellowshipCommonLayout>
-      <NeutralPanel className="p-6">
-        <FellowshipSalaryCard />
-      </NeutralPanel>
-    </FellowshipCommonLayout>
+    <NeutralPanel className="p-6">
+      <FellowshipSalaryCard />
+    </NeutralPanel>
   );
 }

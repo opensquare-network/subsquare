@@ -3,7 +3,6 @@ import Tabs from "next-common/components/tabs";
 import { useState } from "react";
 import ProfileFellowshipCoreEvidence from "./evidence";
 import { ProfileFellowshipCoreFeedsServerFirst } from "./feeds";
-import FellowshipCommonLayout from "../fellowshipCommonLayout";
 
 export default function ProfileFellowshipCore() {
   const [evidenceCount, setEvidenceCount] = useState();
@@ -27,16 +26,14 @@ export default function ProfileFellowshipCore() {
   const [activeTabValue, setActiveTabValue] = useState(tabs[0].value);
 
   return (
-    <FellowshipCommonLayout>
-      <NeutralPanel className="p-6">
-        <Tabs
-          tabs={tabs}
-          activeTabValue={activeTabValue}
-          onTabClick={(tab) => {
-            setActiveTabValue(tab.value);
-          }}
-        />
-      </NeutralPanel>
-    </FellowshipCommonLayout>
+    <NeutralPanel className="p-6">
+      <Tabs
+        tabs={tabs}
+        activeTabValue={activeTabValue}
+        onTabClick={(tab) => {
+          setActiveTabValue(tab.value);
+        }}
+      />
+    </NeutralPanel>
   );
 }
