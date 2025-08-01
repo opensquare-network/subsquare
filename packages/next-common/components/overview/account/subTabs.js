@@ -54,10 +54,8 @@ export default function AccountSubTabs({ className = "" }) {
     ![Chains.collectives, Chains.westendCollectives].includes(chain)
   ) {
     tabs.push({
-      value: "delegated_votes",
-      label: ({ active }) => (
-        <TabTitle active={active}>Delegated Votes</TabTitle>
-      ),
+      value: "delegations",
+      label: ({ active }) => <TabTitle active={active}>Delegations</TabTitle>,
       url: "/account/delegations",
     });
 

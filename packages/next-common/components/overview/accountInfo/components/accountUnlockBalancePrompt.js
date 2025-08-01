@@ -5,9 +5,11 @@ import Link from "next/link";
 import useFetchMyReferendaVoting from "next-common/components/myvotes/referenda/useFetchMyReferendaVoting";
 import { createGlobalState } from "react-use";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
-import { PromptTypes, colorStyle } from "next-common/components/scrollPrompt";
+import { colorStyle, PromptTypes } from "next-common/components/scrollPrompt";
 import { SystemClose } from "@osn/icons/subsquare";
 import ValueDisplay from "next-common/components/valueDisplay";
+import { useSelector } from "react-redux";
+import { isLoadingReferendaSummarySelector } from "next-common/store/reducers/myOnChainData/referenda/myReferendaVoting";
 
 const useMode = createGlobalState(true);
 export default function AccountUnlockBalancePrompt() {
@@ -15,7 +17,10 @@ export default function AccountUnlockBalancePrompt() {
   useFetchMyReferendaVoting();
   const { unlockBalance } = useVoteBalance();
   const { symbol, decimals } = useChainSettings();
-  if (unlockBalance.isZero() || !visible) return null;
+  const isLoading = useSelector(isLoadingReferendaSummarySelector);
+  if (isLoading || unlockBalance.isZero() || !visible) {
+    return null;
+  }
 
   return (
     <GreyPanel
@@ -32,7 +37,7 @@ export default function AccountUnlockBalancePrompt() {
           />
         }
         &nbsp;{symbol} votes expired available to unlock, check it&nbsp;
-        <Link className="underline text14Bold " href={"/account/votes"}>
+        <Link className="underline text14Bold " href="/account/votes">
           here
         </Link>
         .
