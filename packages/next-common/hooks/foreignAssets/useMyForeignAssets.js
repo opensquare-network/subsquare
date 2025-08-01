@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useAssetHubApi } from "next-common/hooks/chain/useAssetHubApi";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
@@ -7,7 +7,7 @@ async function getForeignAssetEntries(api) {
   return assetEntries;
 }
 
-async function queryUserAssetAccount(api, assetLocation, realAddress) {
+async function queryForeignAssetAccount(api, assetLocation, realAddress) {
   const accountInfo = await api.query.foreignAssets.account(
     assetLocation,
     realAddress,
@@ -25,7 +25,7 @@ async function queryUserAssetAccount(api, assetLocation, realAddress) {
   };
 }
 
-async function queryAssetMetadata(api, assetLocation) {
+async function queryFreignAssetMetadata(api, assetLocation) {
   try {
     const metadata = await api.query.foreignAssets.metadata(assetLocation);
 
@@ -41,7 +41,7 @@ async function queryAssetMetadata(api, assetLocation) {
   }
 }
 
-async function processUserAssetData(api, key, realAddress) {
+async function processForeignAssetData(api, key, realAddress) {
   const assetLocation = key.args[0];
   if (!assetLocation || !assetLocation?.hash) {
     return null;
@@ -50,7 +50,7 @@ async function processUserAssetData(api, key, realAddress) {
   const assetId = assetLocation?.hash?.toString();
 
   try {
-    const accountInfo = await queryUserAssetAccount(
+    const accountInfo = await queryForeignAssetAccount(
       api,
       assetLocation,
       realAddress,
@@ -60,7 +60,7 @@ async function processUserAssetData(api, key, realAddress) {
       return null;
     }
 
-    const metadata = await queryAssetMetadata(api, assetLocation);
+    const metadata = await queryFreignAssetMetadata(api, assetLocation);
 
     const balance = accountInfo.balance.toString();
     const isFrozen = accountInfo.isFrozen;
@@ -82,13 +82,13 @@ async function processUserAssetData(api, key, realAddress) {
   }
 }
 
-async function fetchUserForeignAssets(api, realAddress) {
+async function fetchForeignAssets(api, realAddress) {
   try {
     const assetEntries = await getForeignAssetEntries(api);
 
     const userAssets = [];
     for (const [key] of assetEntries) {
-      const assetData = await processUserAssetData(api, key, realAddress);
+      const assetData = await processForeignAssetData(api, key, realAddress);
       if (assetData) {
         userAssets.push(assetData);
       }
@@ -107,25 +107,25 @@ export default function useMyForeignAssets() {
   const [assets, setAssets] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const fetchData = useCallback(async () => {
+    try {
+      setLoading(true);
+      const userAssets = await fetchForeignAssets(api, realAddress);
+      setAssets(userAssets);
+    } catch (error) {
+      setAssets([]);
+    } finally {
+      setLoading(false);
+    }
+  }, [api, realAddress]);
+
   useEffect(() => {
     if (!api || !realAddress) {
       return;
     }
 
-    const loadAssets = async () => {
-      try {
-        setLoading(true);
-        const userAssets = await fetchUserForeignAssets(api, realAddress);
-        setAssets(userAssets);
-      } catch (error) {
-        setAssets([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadAssets();
-  }, [api, realAddress]);
+    fetchData();
+  }, [api, realAddress, fetchData]);
 
   return { assets, loading };
 }
