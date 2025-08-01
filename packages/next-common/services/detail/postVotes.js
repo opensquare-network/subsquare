@@ -15,7 +15,7 @@ export async function getPostVotesAndMine(detail, context) {
 
   let votes = null;
   let myVote = null;
-  if (detail.poll) {
+  if (detail?.poll) {
     ({ result: votes } = await backendApi.fetch(
       `polls/${detail.poll._id}/votes`,
     ));
