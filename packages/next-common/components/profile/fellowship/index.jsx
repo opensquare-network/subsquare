@@ -8,7 +8,7 @@ import ProfileFellowshipMemberInfo from "./memberInfo";
 import ProfileFellowshipStatisticsInfo from "./statisticsInfo";
 import ProfileFellowshipModuleTabs from "./moduleTabs";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
-import OnchainEvidence from "next-common/components/pages/fellowship/member/fellowshipMember/onchainEvidence";
+import ProfileFellowshipEvidence from "./evidence";
 
 function ProfileFellowshipContent() {
   const pathname = usePathname();
@@ -34,7 +34,7 @@ export default function ProfileFellowship() {
       <div className="space-y-4">
         <ProfileFellowshipMemberInfo section={section} />
         <ProfileFellowshipStatisticsInfo section={section} />
-        {section === "fellowship" && <OnchainEvidence />}
+        <ProfileFellowshipEvidence section={section} />
       </div>
 
       <div className="space-y-4">
