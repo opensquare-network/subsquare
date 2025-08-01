@@ -43,7 +43,11 @@ async function queryAssetMetadata(api, assetLocation) {
 
 async function processUserAssetData(api, key, realAddress) {
   const assetLocation = key.args[0];
-  const assetId = assetLocation.hash.toString();
+  if (!assetLocation || !assetLocation?.hash) {
+    return null;
+  }
+
+  const assetId = assetLocation?.hash?.toString();
 
   try {
     const accountInfo = await queryUserAssetAccount(
@@ -73,7 +77,7 @@ async function processUserAssetData(api, key, realAddress) {
       symbol: metadata?.symbol,
     };
   } catch (error) {
-    console.warn(`Failed to query asset ${assetLocation.toString()}:`, error);
+    console.error(`Failed to query asset ${assetLocation.toString()}:`, error);
     return null;
   }
 }
