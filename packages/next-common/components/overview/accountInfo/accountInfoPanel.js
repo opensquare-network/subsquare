@@ -11,7 +11,6 @@ import AccountBalances from "next-common/components/overview/accountInfo/compone
 import Divider from "next-common/components/styled/layout/divider";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
-import { AvatarDisplay } from "next-common/components/user/avatarDisplay";
 import AccountPanelScrollPrompt from "./components/accountPanelScrollPrompt";
 import ExtensionUpdatePrompt from "./components/extensionUpdatePrompt";
 import AssetHubManagePrompt from "./components/assetHubManagePrompt";
@@ -30,6 +29,11 @@ import Button from "next-common/lib/button";
 import AccountPanelQuickAccess from "./components/accountPanelQuickAccess";
 import AccountUnlockBalancePrompt from "./components/accountUnlockBalancePrompt";
 import WithPallet from "next-common/components/common/withPallet";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import Avatar from "next-common/components/avatar";
+import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
+import { AvatarImg } from "next-common/components/user/styled";
+import Gravatar from "next-common/components/gravatar";
 
 const RelayChainTeleportPopup = dynamic(
   import("./relayChainTeleportPopup").then((mod) => mod.default),
@@ -55,19 +59,21 @@ const SystemTransfer = dynamic(
 
 const DisplayUserAvatar = () => {
   const user = useUser();
-  return (
-    <AvatarDisplay
-      avatarCid={user?.avatarCid}
-      address={user?.address}
-      emailMd5={user?.emailMd5}
-      size={40}
-    />
-  );
+  if (user?.proxyAddress) {
+    return <Avatar address={user?.proxyAddress} size={40} />;
+  }
+  if (user?.avatarCid) {
+    return <AvatarImg src={getIpfsLink(user?.avatarCid)} size={40} />;
+  }
+  if (user?.address) {
+    return <Avatar address={user?.address} size={40} />;
+  }
+  return <Gravatar emailMd5={user?.emailMd5} size={40} />;
 };
 
 const DisplayUser = () => {
   const user = useUser();
-  const address = user?.address;
+  const address = useRealAddress();
   if (isPolkadotAddress(address) || isEthereumAddress(address)) {
     return (
       <AddressUser
@@ -82,8 +88,8 @@ const DisplayUser = () => {
 };
 
 export function Account() {
-  const user = useUser();
-  const maybeEvmAddress = tryConvertToEvmAddress(user?.address);
+  const realAddress = useRealAddress();
+  const maybeEvmAddress = tryConvertToEvmAddress(realAddress);
 
   return (
     <div className="flex gap-[12px]">
@@ -239,6 +245,7 @@ const transferEnabledChains = [
   Chains.kusama,
   Chains.westend,
   Chains.rococo,
+  Chains.paseo,
 ];
 
 const relayChainTeleportEnabledChains = [Chains.polkadot, Chains.kusama];

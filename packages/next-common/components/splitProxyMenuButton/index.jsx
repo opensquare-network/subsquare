@@ -2,6 +2,7 @@ import { SystemComment } from "@osn/icons/subsquare";
 import SplitMenuButton from "next-common/lib/button/splitMenuButton";
 import SelectProxyAccountPopup from "../selectProxyAccountPopup";
 import { useState } from "react";
+import { useUser } from "next-common/context/user";
 
 export default function SplitProxyMenuButton({
   action,
@@ -9,6 +10,7 @@ export default function SplitProxyMenuButton({
   onClickAsProxy,
   ...props
 }) {
+  const user = useUser();
   const [isSelectProxyAccountPopupOpen, setIsSelectProxyAccountPopupOpen] =
     useState(false);
 
@@ -35,6 +37,7 @@ export default function SplitProxyMenuButton({
       </SplitMenuButton>
       {isSelectProxyAccountPopupOpen && (
         <SelectProxyAccountPopup
+          userAddress={user?.address}
           onClose={() => setIsSelectProxyAccountPopupOpen(false)}
           onSelect={onClickAsProxy}
         />

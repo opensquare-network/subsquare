@@ -1,18 +1,19 @@
 import React, { useContext, useMemo } from "react";
 import useQueryMyProxied from "next-common/hooks/useQueryMyProxies";
 import useAllOnChainProxies from "next-common/hooks/useAllOnChainProxies";
-import { useUser } from "../user";
 import { useChainSettings } from "../chain";
 import { isSameAddress } from "next-common/utils";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 const ProxiesContext = React.createContext(null);
 
-export function ServerProxiesProvider({ children }) {
-  const { proxies, loading } = useQueryMyProxied();
+function ServerProxiesProvider({ children, address }) {
+  const { proxies, loading } = useQueryMyProxied(address);
 
   return (
     <ProxiesContext.Provider
       value={{
+        address,
         proxies,
         isLoading: loading,
       }}
@@ -22,22 +23,20 @@ export function ServerProxiesProvider({ children }) {
   );
 }
 
-export function OnChainProxiesProvider({ children }) {
+function OnChainProxiesProvider({ children, address }) {
   const { proxies: allProxies, loading } = useAllOnChainProxies();
-  const user = useUser();
-
   const myProxied = useMemo(
     () =>
       allProxies.filter(
-        (proxy) =>
-          isSameAddress(proxy.delegatee, user?.address) && proxy.delay === 0,
+        (proxy) => isSameAddress(proxy.delegatee, address) && proxy.delay === 0,
       ),
-    [allProxies, user?.address],
+    [allProxies, address],
   );
 
   return (
     <ProxiesContext.Provider
       value={{
+        address,
         proxies: myProxied,
         isLoading: loading,
       }}
@@ -47,19 +46,23 @@ export function OnChainProxiesProvider({ children }) {
   );
 }
 
-export function GeneralProxiesProvider({ children }) {
+export function GeneralProxiesProvider({ userAddress, children }) {
   const { modules: { proxy: { provider = "chain" } = {} } = {} } =
     useChainSettings();
+  const realAddress = useRealAddress();
+  const address = userAddress || realAddress;
 
-  const context = useContext(ProxiesContext);
-  if (context) {
+  const { address: _address } = useContext(ProxiesContext) || {};
+  if (address === _address) {
     return children;
   }
 
   return provider === "server" ? (
-    <ServerProxiesProvider>{children}</ServerProxiesProvider>
+    <ServerProxiesProvider address={address}>{children}</ServerProxiesProvider>
   ) : (
-    <OnChainProxiesProvider>{children}</OnChainProxiesProvider>
+    <OnChainProxiesProvider address={address}>
+      {children}
+    </OnChainProxiesProvider>
   );
 }
 

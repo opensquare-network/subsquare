@@ -6,7 +6,7 @@ import { VoteEnum } from "next-common/utils/voteEnum";
 import { useChainSettings } from "next-common/context/chain";
 import VoteButton from "next-common/components/popup/voteButton";
 import useFellowshipVote from "next-common/utils/hooks/fellowship/useFellowshipVote";
-import { wrapWithProxy } from "next-common/utils/sendTransaction";
+import { wrapTransaction } from "next-common/utils/sendTransaction";
 import CurrentVote from "./currentVote";
 import VStack from "next-common/components/styled/vStack";
 import {
@@ -85,9 +85,7 @@ function PopupContent() {
       }
 
       let tx = api.tx[collectivePallet].vote(referendumIndex, aye);
-      if (signerAccount?.proxyAddress) {
-        tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-      }
+      tx = await wrapTransaction(api, tx, signerAccount);
 
       setLoadingState(aye ? VoteEnum.Aye : VoteEnum.Nay);
 
