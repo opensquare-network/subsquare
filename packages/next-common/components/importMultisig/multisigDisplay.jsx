@@ -1,46 +1,38 @@
 import { cn } from "next-common/utils";
 import Divider from "../styled/layout/divider";
 import { AddressUser } from "../user";
-import { UserAvatar } from "../relationshipPopup/userNode";
 import { sortAddresses } from "@polkadot/util-crypto";
 import { noop } from "lodash-es";
 import { useChainSettings } from "next-common/context/chain";
-import MultisigAddress from "../user/multisigAddress";
-
-function MultisigAccount({ multisig }) {
-  const badge = `${multisig.threshold}/${multisig.signatories.length}`;
-  return (
-    <div className="flex items-center gap-x-3">
-      <UserAvatar address={multisig.address} badge={badge} />
-      <div className="flex flex-col justify-between">
-        <MultisigAddress
-          address={multisig.address}
-          showAvatar={false}
-          className="text14Medium text-textPrimary"
-        />
-        <p className="text12Medium text-textTertiary break-all">
-          {multisig.address}
-        </p>
-      </div>
-    </div>
-  );
-}
+import { useMemo } from "react";
+import { normalizeAddress } from "next-common/utils/address";
+import { MultisigAccount } from "../multisigs/styled";
 
 export default function MultisigDisplay({
   multisig,
   children,
   onClick = noop,
   className = "",
+  showCopyableAddress = true,
+  isSelected = true,
 }) {
   const { ss58Format } = useChainSettings();
-  const sortedSignatories = sortAddresses(
-    multisig.signatories || [],
-    ss58Format,
-  );
+  const formattedMultisig = useMemo(() => {
+    const sortedSignatories = sortAddresses(
+      multisig.signatories || [],
+      ss58Format,
+    );
+    return {
+      ...multisig,
+      address: normalizeAddress(multisig.address || multisig.multisigAddress),
+      signatories: sortedSignatories,
+    };
+  }, [multisig, ss58Format]);
   return (
     <div
       className={cn(
-        "border border-neutral400 rounded-lg p-3 cursor-pointer",
+        "border border-neutral400 rounded-lg p-3 cursor-pointer group",
+        !isSelected && "hover:border-neutral500",
         className,
       )}
       onClick={() => {
@@ -48,12 +40,15 @@ export default function MultisigDisplay({
       }}
     >
       <header className="flex items-center justify-between">
-        <MultisigAccount multisig={multisig} />
+        <MultisigAccount
+          multisig={formattedMultisig}
+          showCopyableAddress={showCopyableAddress}
+        />
         {children}
       </header>
-      <div className="ml-14 gap-y-1 flex flex-col">
-        <Divider className="!my-2" />
-        {sortedSignatories.map((item) => (
+      <Divider className="!my-3" />
+      <div className="ml-[52px] gap-y-1 flex flex-col">
+        {formattedMultisig.signatories.map((item) => (
           <div key={item}>
             <AddressUser add={item} className="!text12Medium" avatarSize={20} />
           </div>

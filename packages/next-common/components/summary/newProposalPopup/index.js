@@ -104,7 +104,7 @@ export function NewProposalInnerPopup({
 
   return (
     <Popup title="New Proposal" onClose={onClose}>
-      <SignerWithBalance showTransferable />
+      <SignerWithBalance showTransferable supportedMultisig={false} />
       <DetailedTrack trackId={trackId} setTrackId={setTrackId} />
       <PreimageField
         preimageHash={preimageHash}
@@ -196,7 +196,7 @@ export function useNewProposalInnerPopupContent({
     },
     component: (
       <>
-        <SignerWithBalance showTransferable />
+        <SignerWithBalance showTransferable supportedMultisig={false} />
         <DetailedTrack trackId={trackId} setTrackId={setTrackId} />
         <PreimageField
           preimageHash={preimageHash}

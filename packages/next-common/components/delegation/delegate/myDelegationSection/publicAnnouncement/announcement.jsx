@@ -5,20 +5,21 @@ import SplitProxyMenuButton from "next-common/components/splitProxyMenuButton";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import useAddressDelegation from "./useAddressDelegation";
 import { useUser } from "next-common/context/user";
+import PrimaryButton from "next-common/lib/button/primary";
 
 const AnnouncementPublishPopup = dynamicPopup(() =>
   import("../../PublishAnnouncementPopup"),
 );
 
 export default function Announcement({ myDelegation }) {
+  const user = useUser();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [proxyAddress, setProxyAddress] = useState();
-  const user = useUser();
 
   const { value: proxyAddressDelegation } = useAddressDelegation(proxyAddress);
 
   const onClickPublish = (proxyAddress) => {
-    setProxyAddress(proxyAddress || user?.proxyAddress);
+    setProxyAddress(proxyAddress);
     setIsPopupOpen(true);
   };
 
@@ -38,11 +39,17 @@ export default function Announcement({ myDelegation }) {
         </div>
       </div>
       <div className="flex items-center max-sm:justify-end">
-        <SplitProxyMenuButton
-          action={"Publish"}
-          onClick={onClickPublish}
-          onClickAsProxy={onClickPublish}
-        />
+        {user?.proxyAddress ? (
+          <PrimaryButton onClick={() => onClickPublish(user?.proxyAddress)}>
+            Publish
+          </PrimaryButton>
+        ) : (
+          <SplitProxyMenuButton
+            action={"Publish"}
+            onClick={onClickPublish}
+            onClickAsProxy={onClickPublish}
+          />
+        )}
       </div>
       {isPopupOpen && (
         <AnnouncementPublishPopup

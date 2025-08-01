@@ -1,8 +1,7 @@
 import { useCallback, useMemo, useState } from "react";
 import PrimaryButton from "next-common/lib/button/primary";
 import TextInputField from "../popup/fields/textInputField";
-import nextApi from "next-common/services/nextApi";
-import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
+import { backendApi } from "next-common/services/nextApi";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import ThresholdField from "./fields/threshold";
 import SignatoriesField from "./fields/signatories";
@@ -15,24 +14,28 @@ import {
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
 import { usePopupParams } from "../popupWithSigner/context";
-import { useMultisigAccounts } from "../multisigs/context/accountsContext";
 import useMulitisigSubmitError from "./hooks/useMulitisigSubmitError";
 import { MultisigErrorMessage } from "./styled";
 import { FieldTooltipTitle } from "../styled/fieldTooltipTitle";
+import { useSignMessage } from "next-common/hooks/useSignMessage";
+import { useConnectedAccount } from "next-common/context/connectedAccount";
+import { getRealField } from "next-common/sima/actions/common";
+import { useUser } from "next-common/context/user";
 
 export default function CreateMultisigContent() {
-  const address = useRealAddress();
-  const { ensureLogin } = useEnsureLogin();
+  const user = useUser();
+  const connectedAccount = useConnectedAccount();
+  const realAddress = useRealAddress();
   const [threshold, setThreshold] = useState();
   const [name, setName] = useState("");
   const { signatories } = useSignatories();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
-  const { onClose } = usePopupParams();
-  const { refresh } = useMultisigAccounts();
+  const { onClose, onRefresh } = usePopupParams();
+  const signMessage = useSignMessage();
   const submitSignatories = useMemo(
-    () => [address, ...signatories],
-    [address, signatories],
+    () => [realAddress, ...signatories],
+    [realAddress, signatories],
   );
   const { disabled: submitDisabled, error: multisigErrorMessage } =
     useMulitisigSubmitError(submitSignatories, threshold, name);
@@ -49,20 +52,44 @@ export default function CreateMultisigContent() {
   const handleSubmit = useCallback(
     async (e) => {
       e.preventDefault();
+
+      if (!connectedAccount) {
+        dispatch(newErrorToast("Please connect your account first"));
+        return;
+      }
+
       try {
         setIsLoading(true);
-        await ensureLogin();
-        const { error } = await nextApi.post("user/multisigs", {
+
+        const entity = {
+          action: "add-multisig",
           signatories: submitSignatories,
           threshold,
           name,
-        });
+          timestamp: Date.now(),
+          real: getRealField(user?.proxyAddress),
+        };
+        const signature = await signMessage(
+          JSON.stringify(entity),
+          connectedAccount.address,
+          connectedAccount.wallet,
+        );
+        const data = {
+          entity,
+          address: connectedAccount.address,
+          signature,
+          signerWallet: connectedAccount.wallet,
+        };
+        const { error } = await backendApi.post(
+          `users/${realAddress}/multisigs`,
+          data,
+        );
         if (error) {
           throw new Error(error.message);
         }
-        onClose?.();
+        onRefresh?.();
         dispatch(newSuccessToast("Created successfully"));
-        refresh?.();
+        onClose?.();
       } catch (error) {
         dispatch(newErrorToast(error.message));
       } finally {
@@ -70,13 +97,16 @@ export default function CreateMultisigContent() {
       }
     },
     [
-      ensureLogin,
+      realAddress,
+      user?.proxyAddress,
+      signMessage,
+      dispatch,
+      connectedAccount,
       submitSignatories,
       threshold,
       name,
+      onRefresh,
       onClose,
-      dispatch,
-      refresh,
     ],
   );
 

@@ -4,17 +4,17 @@ import { toPrecision } from "next-common/utils";
 import PopupLabelWithBalance from "next-common/components/popup/balanceLabel";
 import { useChainSettings } from "next-common/context/chain";
 import PopupLabel from "../label";
-import MaybeProxySigner from "../../signer";
+import MaybeProxySigner, { ConnectedAccountSigner } from "../../signer";
 import ExtensionUpdatePrompt from "next-common/components/overview/accountInfo/components/extensionUpdatePrompt";
 
-export default function Signer({
+function SignerWrapper({
   title = "Origin",
   balanceName = "Balance",
   symbol,
   balance,
   isBalanceLoading,
-  noSwitchSigner = false,
   showTransferable = false,
+  children,
 }) {
   const node = useChainSettings();
   const noBalance = isNil(balance) && isNil(isBalanceLoading);
@@ -35,7 +35,56 @@ export default function Signer({
           showTransferable={showTransferable}
         />
       )}
-      <MaybeProxySigner noSwitch={noSwitchSigner} />
+      {children}
     </div>
+  );
+}
+
+export function ConnectedSigner({
+  title = "Origin",
+  balanceName = "Balance",
+  symbol,
+  balance,
+  isBalanceLoading,
+  showTransferable = false,
+}) {
+  return (
+    <SignerWrapper
+      title={title}
+      balanceName={balanceName}
+      symbol={symbol}
+      balance={balance}
+      isBalanceLoading={isBalanceLoading}
+      showTransferable={showTransferable}
+    >
+      <ConnectedAccountSigner />
+    </SignerWrapper>
+  );
+}
+
+export default function Signer({
+  title = "Origin",
+  balanceName = "Balance",
+  symbol,
+  balance,
+  isBalanceLoading,
+  noSwitchSigner = false,
+  showTransferable = false,
+  supportedMultisig = true,
+}) {
+  return (
+    <SignerWrapper
+      title={title}
+      balanceName={balanceName}
+      symbol={symbol}
+      balance={balance}
+      isBalanceLoading={isBalanceLoading}
+      showTransferable={showTransferable}
+    >
+      <MaybeProxySigner
+        noSwitch={noSwitchSigner}
+        supportedMultisig={supportedMultisig}
+      />
+    </SignerWrapper>
   );
 }

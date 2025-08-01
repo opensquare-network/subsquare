@@ -9,7 +9,7 @@ import IndentPanel from "../callTreeView/indentPanel";
 import { cn } from "next-common/utils";
 import Tooltip from "../tooltip";
 import CellActions from "./cellActions";
-import { useMultisigAccounts } from "./context/accountsContext";
+import { useMultisigAccounts } from "./context/multisigAccountsContext";
 import { GreyPanel } from "../styled/containers/greyPanel";
 import { useChainSettings } from "next-common/context/chain";
 import { sortAddresses } from "@polkadot/util-crypto";
@@ -19,7 +19,12 @@ const ImportMultisigPopup = dynamicPopup(() => import("../importMultisig"));
 
 const columns = [
   {
-    name: "Multisig Address",
+    name: (
+      <span className="flex items-center gap-x-1">
+        Multisig Address{" "}
+        <Tooltip content="You can sign a multisig transaction on behalf of following accounts. Click switch on the signing popup."></Tooltip>
+      </span>
+    ),
   },
 ];
 

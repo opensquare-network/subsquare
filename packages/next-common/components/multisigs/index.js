@@ -8,13 +8,15 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { NeutralPanel } from "../styled/containers/neutralPanel";
 import { useRouter } from "next/router";
 import { AccountsTitle, HistoryTitle } from "./styled";
-import { AccountsProvider } from "./context/accountsContext";
+import { MultisigAccountsProvider } from "./context/multisigAccountsContext";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 const MultisigAccountsList = dynamic(() => import("./multisigAccountsList"), {
   ssr: false,
 });
 
 export default function Multisigs() {
+  const realAddress = useRealAddress();
   const router = useRouter();
   const tabs = useMemo(() => {
     return [
@@ -62,13 +64,13 @@ export default function Multisigs() {
         <WithPageWidth>
           <CallPopupProvider>
             <NeutralPanel className="p-6">
-              <AccountsProvider>
+              <MultisigAccountsProvider userAddress={realAddress}>
                 <Tabs
                   tabs={tabs}
                   activeTabValue={activeTabValue}
                   onTabClick={onTabClick}
                 />
-              </AccountsProvider>
+              </MultisigAccountsProvider>
             </NeutralPanel>
           </CallPopupProvider>
         </WithPageWidth>

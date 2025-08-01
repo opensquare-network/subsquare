@@ -19,7 +19,8 @@ export default function Close() {
   const pallet = useCollectivePallet();
   const { proposal } = useCollectiveProposal(pallet, onchainData.hash);
 
-  const { encodedCallLength, weight } = useWeight(proposal);
+  const { state } = useWeight(proposal);
+  const { encodedCallLength, weight } = state;
   const { members = [], loading: membersLoading } =
     useCollectiveMembers(pallet);
   const hasFailed = threshold > Math.abs(members?.length - nays.length);
