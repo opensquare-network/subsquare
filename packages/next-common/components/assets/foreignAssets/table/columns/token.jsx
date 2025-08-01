@@ -7,9 +7,9 @@ function Token({ assetId, symbol, name }) {
 
   return (
     <div
-      className={cn("flex items-center gap-[8px]", "max-sm:flex-col items-end")}
+      className={cn("flex items-center gap-[8px]", "max-sm:flex-col items-start")}
     >
-      <div className="flex gap-[8px] items-center text14Medium text-textPrimary max-sm:justify-end">
+      <div className="flex gap-[8px] items-center text14Medium text-textPrimary max-sm:justify-start">
         <AssetIcon width={24} height={24} />
         <span className="text-textPrimary w-20 max-sm:w-auto">{symbol}</span>
       </div>
@@ -20,7 +20,7 @@ function Token({ assetId, symbol, name }) {
 
 export const colToken = {
   name: "Token",
-  style: { textAlign: "left", minWidth: "352px" },
+  style: { textAlign: "left", width: "352px", minWidth: "352px" },
   render: (item) => (
     <Token assetId={item.assetId} symbol={item.symbol} name={item.name} />
   ),
