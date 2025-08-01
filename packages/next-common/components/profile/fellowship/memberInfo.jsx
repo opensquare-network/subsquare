@@ -173,7 +173,7 @@ function MemberSalaryItem({ params, isActive, rank, loading }) {
         </span>
       }
     >
-      <div className="flex flex-col items-end">
+      <div className="flex flex-col">
         <LoadableContent isLoading={loading}>
           <ValueDisplay value={toPrecision(salary, decimals)} symbol={symbol} />
         </LoadableContent>
