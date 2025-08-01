@@ -137,16 +137,32 @@ function MemberSalaryItem({ params, isActive, rank, loading }) {
   const salaryTable = isActive ? activeSalary : passiveSalary;
   const salary = getRankSalary(salaryTable, rank);
 
-  const salaryValue = useMemo(() => {
-    return toPrecision(salary, decimals);
-  }, [salary, decimals]);
-
   const tooltipContent = useMemo(() => {
     if (isActive) {
-      return `It's the active salary. Passive salary is ${salaryValue} when inactive.`;
+      return (
+        <>
+          It&apos;s the active salary. Passive salary is{" "}
+          <ValueDisplay
+            showTooltip={false}
+            value={toPrecision(getRankSalary(passiveSalary, rank), decimals)}
+            symbol={symbol}
+          />
+          {symbol} when inactive.
+        </>
+      );
     }
-    return `It's the inactive salary. Active salary is ${salaryValue} when active.`;
-  }, [isActive, salaryValue]);
+    return (
+      <>
+        It&apos;s the inactive salary. Active salary is{" "}
+        <ValueDisplay
+          showTooltip={false}
+          value={toPrecision(getRankSalary(activeSalary, rank), decimals)}
+          symbol={symbol}
+        />
+        {symbol} when active.
+      </>
+    );
+  }, [activeSalary, rank, decimals, passiveSalary, isActive, symbol]);
 
   return (
     <SummaryItem
