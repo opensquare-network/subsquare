@@ -4,6 +4,7 @@ import { startCase } from "lodash-es";
 import { usePageProps } from "next-common/context/page";
 import { useMemo } from "react";
 import FieldLoading from "next-common/components/icons/fieldLoading";
+import { cn } from "next-common/utils";
 
 function useFellowshipTracks() {
   const { section } = useCollectivesContext();
@@ -24,19 +25,15 @@ function useDefaultReferendumTitle(referendumIndex, trackId) {
   return `[${startCase(trackName)}] Referendum #${referendumIndex}`;
 }
 
-export default function FellowshipReferendumTitle({
+export function FellowshipReferendumTitleImpl({
   referendumIndex,
-  trackId,
+  title = "",
+  className = "",
+  loading = false,
 }) {
   const { section } = useCollectivesContext();
-  const defaultTitle = useDefaultReferendumTitle(referendumIndex, trackId);
-  const { value: detail, loading } = useFetch(
-    `/api/${section}/referenda/${referendumIndex}`,
-  );
-  const title = detail?.title || defaultTitle;
-
   return (
-    <div className="flex items-center gap-[8px]">
+    <div className={cn("flex items-center gap-[8px]", className)}>
       <span className="text-textPrimary">#{referendumIndex}</span>
       <span className="text-textTertiary">·</span>
       {loading ? (
@@ -52,5 +49,25 @@ export default function FellowshipReferendumTitle({
         </a>
       )}
     </div>
+  );
+}
+
+export default function FellowshipReferendumTitle({
+  referendumIndex,
+  trackId,
+}) {
+  const defaultTitle = useDefaultReferendumTitle(referendumIndex, trackId);
+
+  const { section } = useCollectivesContext();
+  const { value: detail, loading } = useFetch(
+    `/api/${section}/referenda/${referendumIndex}`,
+  );
+  const title = detail?.title || defaultTitle;
+  return (
+    <FellowshipReferendumTitleImpl
+      referendumIndex={referendumIndex}
+      title={title}
+      loading={loading}
+    />
   );
 }

@@ -11,6 +11,7 @@ import {
 } from "./voteButtons";
 import { Skeleton } from "next-common/components/skeleton";
 import EvidenceExternalLinkWithWish from "next-common/components/collectives/core/evidenceContent/EvidenceExternalLinkWithWish";
+import { cn } from "next-common/utils";
 
 function ReferendumVote({ referendumIndex, referendum }) {
   const trackId = referendum?.track?.toNumber();
@@ -29,16 +30,20 @@ function ReferendumVote({ referendumIndex, referendum }) {
   );
 }
 
-function CreateReferendumAndVote({ who, wish }) {
+export function CreateReferendumAndVote({ who, wish, className = "" }) {
   if (wish.toLowerCase() === "promotion") {
     return (
-      <div className="flex items-center justify-end text14Medium">
+      <div
+        className={cn("flex items-center justify-end text14Medium", className)}
+      >
         <CreatePromotionReferendumAndVoteButtons who={who} />
       </div>
     );
   } else if (wish.toLowerCase() === "retention") {
     return (
-      <div className="flex items-center justify-end text14Medium">
+      <div
+        className={cn("flex items-center justify-end text14Medium", className)}
+      >
         <CreateRetentionReferendumAndVoteButtons who={who} />
       </div>
     );
@@ -83,7 +88,7 @@ function VoteBar({ address, wish }) {
 function WishPanel({ address, activeMember, wish }) {
   return (
     <div className="flex flex-col gap-[16px]">
-      <WishBar wish={wish} activeMember={activeMember} address={address} />
+      <WishBar wish={wish} rank={activeMember?.rank} address={address} />
       <VoteBar address={address} wish={wish} />
     </div>
   );

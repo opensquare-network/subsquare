@@ -10,7 +10,7 @@ import Popup from "next-common/components/popup/wrapper/Popup";
 import { useState } from "react";
 import FellowshipEvidenceContent from "next-common/components/collectives/core/evidenceContent";
 import { cn, isHash } from "next-common/utils";
-import Tooltip from "next-common/components/tooltip";
+import EvidenceLink from "./link";
 
 const getDate = (row) => {
   return dayjs(row?.indexer?.blockTime).format("YYYY/MM/DD") || "";
@@ -57,17 +57,14 @@ const EvidenceItem = ({ row, popupTitle = "" }) => {
   return (
     <>
       <NeutralPanel className="p-6">
-        <Tooltip content={title} className="w-full">
-          <div
-            role="button"
-            className="text16Bold text-textPrimary hover:underline truncate"
-            onClick={() => {
-              setOpen(true);
-            }}
-          >
-            {title}
-          </div>
-        </Tooltip>
+        <EvidenceLink
+          address={row.who}
+          blockHeight={row.indexer.blockHeight}
+          eventIndex={row.indexer.eventIndex}
+          className="text16Bold text-textPrimary hover:underline"
+        >
+          {title}
+        </EvidenceLink>
         <div className="text14Medium text-textTertiary mt-1">
           {getDate(row)}
         </div>

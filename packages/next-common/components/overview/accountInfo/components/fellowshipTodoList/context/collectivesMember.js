@@ -5,7 +5,7 @@ export const CollectivesMembersContext = createContext({});
 
 export default function CollectivesMembersProvider({ children }) {
   const {
-    members,
+    members = [],
     loading: isLoading,
     fetch,
   } = useFellowshipCollectiveMembers();

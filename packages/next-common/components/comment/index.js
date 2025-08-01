@@ -8,6 +8,7 @@ import CommentSkeleton from "./commentSkeleton";
 import { useMemo, useState } from "react";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { IS_SERVER } from "next-common/utils/constants";
+import CommentSwitch from "./switch";
 
 export default function Comments({ data: commentsData, loading }) {
   return (
@@ -15,7 +16,7 @@ export default function Comments({ data: commentsData, loading }) {
       <div className="mb-4">
         <TitleContainer className={cn("w-full !px-0")}>
           <div className="text14Bold">Comments </div>
-
+          <CommentSwitch />
           <CommentsFilter />
         </TitleContainer>
       </div>

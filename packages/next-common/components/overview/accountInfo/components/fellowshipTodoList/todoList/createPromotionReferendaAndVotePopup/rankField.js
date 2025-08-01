@@ -5,7 +5,7 @@ import useMyRank from "../memberPromotionPopup/voteButtons/useMyRank";
 import useRequiredRankToPromoteMember from "./useRequiredRankToPromoteMember";
 
 function RankOption({ currentRank, optionRank }) {
-  const myRank = useMyRank();
+  const { rank: myRank } = useMyRank();
   const requiredRank = useRequiredRankToPromoteMember(currentRank, optionRank);
   if (!isNil(myRank) && requiredRank <= myRank) {
     return optionRank;

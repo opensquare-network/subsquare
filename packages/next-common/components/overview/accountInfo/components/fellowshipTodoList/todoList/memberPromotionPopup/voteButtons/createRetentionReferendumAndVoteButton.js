@@ -21,16 +21,16 @@ function CreateReferendumAndVoteButtonImpl({
   ButtonComponent = SecondaryButton,
 }) {
   const dispatch = useDispatch();
-  const currentRank = useMemberRank(who);
+  const { rank: evidenceOwnerRank } = useMemberRank(who);
   const chain = useChain();
-  const trackName = getRetainTrackNameFromRank(chain, currentRank);
+  const trackName = getRetainTrackNameFromRank(chain, evidenceOwnerRank);
 
   const [enactment] = useState({ after: 100 });
   const { fetch: fetchActiveReferenda } = useActiveReferendaContext();
   const { triggerMyVotesChanged } = useMyVotesChangedContext();
 
   const getCreateAndVoteTxFunc = useFellowshipProposalSubmissionTxFunc({
-    rank: currentRank,
+    rank: evidenceOwnerRank,
     who,
     action: "approve",
     trackName,

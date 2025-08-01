@@ -55,7 +55,7 @@ function LoadingContent() {
   );
 }
 
-function IpfsEvidenceContent({ cid }) {
+export function IpfsEvidenceContent({ cid }) {
   const { value, loading, error } = useIpfsContent(cid);
 
   return (

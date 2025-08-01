@@ -26,7 +26,7 @@ function CommentsWithFilterContent({ children }) {
   );
 }
 
-function CommentsContent({ children }) {
+export function CommentsContent({ children }) {
   const { commentsData, loading } = usePostCommentsData();
   const { component, focusEditor } = useCommentComponent({
     commentsData,
