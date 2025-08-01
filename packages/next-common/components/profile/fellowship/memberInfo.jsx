@@ -147,7 +147,7 @@ function MemberSalaryItem({ params, isActive, rank, loading }) {
             value={toPrecision(getRankSalary(passiveSalary, rank), decimals)}
             symbol={symbol}
           />
-          {symbol} when inactive.
+          when inactive.
         </>
       );
     }
@@ -159,7 +159,7 @@ function MemberSalaryItem({ params, isActive, rank, loading }) {
           value={toPrecision(getRankSalary(activeSalary, rank), decimals)}
           symbol={symbol}
         />
-        {symbol} when active.
+        when active.
       </>
     );
   }, [activeSalary, rank, decimals, passiveSalary, isActive, symbol]);
