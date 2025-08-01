@@ -57,13 +57,9 @@ const knownForeignAssetsMap = Object.freeze({
   [Chains.kusamaAssetHub]: foreignAssetInfo,
 });
 
-export function useKnownForeignAssets() {
+export function useKnownForeignAssetIcon(assetId) {
   const chain = useChain();
-  return knownForeignAssetsMap[chain] || {};
-}
-
-export function useForeignAssetIcon(assetId) {
-  const foreignAssets = useKnownForeignAssets();
+  const foreignAssets = knownForeignAssetsMap[chain] || {};
 
   return foreignAssets[assetId]?.icon || AssetIconPlaceholder;
 }

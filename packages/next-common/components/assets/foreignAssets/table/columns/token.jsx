@@ -1,9 +1,9 @@
 import React from "react";
-import { useForeignAssetIcon } from "next-common/components/assets/known";
+import { useKnownForeignAssetIcon } from "next-common/components/assets/known";
 import { cn } from "next-common/utils";
 
 function Token({ assetId, symbol, name }) {
-  const AssetIcon = useForeignAssetIcon(assetId);
+  const AssetIcon = useKnownForeignAssetIcon(assetId);
 
   return (
     <div
