@@ -8,7 +8,6 @@ import {
 } from "next-common/services/url";
 import { EmptyList } from "next-common/utils/constants";
 import { startCase } from "lodash-es";
-import { to404 } from "next-common/utils/serverSideUtil";
 import ListLayout from "next-common/components/layout/ListLayout";
 import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/normalizeFellowshipReferendaListItem";
 import FellowshipReferendaPostList from "next-common/components/postList/fellowshipReferendaPostList";
@@ -20,6 +19,18 @@ import FellowshipTrackSelect from "next-common/components/fellowship/fellowshipL
 import { isCollectivesChain } from "next-common/utils/chain";
 import { useChain } from "next-common/context/chain";
 import dynamic from "next/dynamic";
+import { usePageProps } from "next-common/context/page";
+import ReferendaTrackNotFoundLayout from "next-common/components/layout/referendaLayout/trackNotFound";
+
+function TrackNotFound() {
+  const { id } = usePageProps();
+  return (
+    <ReferendaTrackNotFoundLayout id={id}>
+      <TrackPanel className="mb-4" />
+      <FellowshipReferendaPostList items={[]} />
+    </ReferendaTrackNotFoundLayout>
+  );
+}
 
 const TrackPanel = dynamic(
   () => import("next-common/components/referenda/trackPanel"),
@@ -41,6 +52,10 @@ export default function TrackPage({
   const items = (posts.items || []).map((item) =>
     normalizeFellowshipReferendaListItem(item, fellowshipTracks),
   );
+
+  if (!period.id) {
+    return <TrackNotFound />;
+  }
 
   return (
     <CollectivesProvider section="fellowship">
@@ -84,9 +99,6 @@ export const getServerSideProps = withCommonProps(async (context) => {
   if (!track) {
     track = fellowshipTracks.find((item) => item.name === id);
   }
-  if (!track) {
-    return to404();
-  }
 
   const [
     { result: posts },
@@ -94,20 +106,24 @@ export const getServerSideProps = withCommonProps(async (context) => {
     { result: period },
     { result: fellowshipTracksDetail },
   ] = await Promise.all([
-    backendApi.fetch(fellowshipReferendumsTrackApi(track?.id), {
-      page,
-      pageSize,
-      simple: true,
-    }),
-    backendApi.fetch(fellowshipReferendumsTracksSummaryApi(track?.id)),
-    backendApi.fetch(fellowshipReferendumsTracksApi(track?.id)),
+    track
+      ? backendApi.fetch(fellowshipReferendumsTrackApi(track?.id), {
+          page,
+          pageSize,
+          simple: true,
+        })
+      : {},
+    track
+      ? backendApi.fetch(fellowshipReferendumsTracksSummaryApi(track?.id))
+      : {},
+    track ? backendApi.fetch(fellowshipReferendumsTracksApi(track?.id)) : {},
     backendApi.fetch(fellowshipTracksApi),
   ]);
 
   return {
     props: {
       posts: posts ?? EmptyList,
-      title: "Fellowship " + startCase(track.name),
+      title: "Fellowship " + startCase(track?.name),
       summary: summary ?? {},
       ...tracksProps,
       trackReferendaSummary: trackReferendaSummary ?? {},
