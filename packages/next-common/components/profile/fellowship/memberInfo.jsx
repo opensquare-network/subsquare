@@ -146,7 +146,7 @@ function MemberSalaryItem({ params, isActive, rank, loading }) {
             showTooltip={false}
             value={toPrecision(getRankSalary(passiveSalary, rank), decimals)}
             symbol={symbol}
-          />
+          />{" "}
           when inactive.
         </>
       );
@@ -158,7 +158,7 @@ function MemberSalaryItem({ params, isActive, rank, loading }) {
           showTooltip={false}
           value={toPrecision(getRankSalary(activeSalary, rank), decimals)}
           symbol={symbol}
-        />
+        />{" "}
         when active.
       </>
     );
