@@ -34,6 +34,7 @@ export default function ProfileFellowshipModuleTabs() {
       ),
       url: urls.votes,
       shallow: true,
+      scroll: false,
     },
     {
       value: "core",
@@ -44,6 +45,7 @@ export default function ProfileFellowshipModuleTabs() {
       ),
       url: urls.core,
       shallow: true,
+      scroll: false,
     },
     {
       value: "salary",
@@ -54,6 +56,7 @@ export default function ProfileFellowshipModuleTabs() {
       ),
       url: urls.salary,
       shallow: true,
+      scroll: false,
     },
   ];
 
