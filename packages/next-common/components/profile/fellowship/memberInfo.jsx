@@ -83,7 +83,7 @@ function ProfileFellowshipMemberInfoPanel({ member, paramsApi }) {
 
   return (
     <NeutralPanel className="p-6">
-      <SummaryLayout className="grid-cols-3 gap-3">
+      <SummaryLayout>
         <SummaryItem title="Status">
           <div
             className={cn(
