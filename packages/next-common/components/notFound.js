@@ -1,9 +1,9 @@
 import React from "react";
 import { Wrapper, H2, P } from "./styled/notFound";
 
-export default function NotFound() {
+export default function NotFound({ className }) {
   return (
-    <Wrapper>
+    <Wrapper className={className}>
       <svg
         width="150"
         height="60"
