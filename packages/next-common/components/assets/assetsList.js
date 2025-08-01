@@ -122,7 +122,7 @@ export const colTotal = {
 };
 
 export const colTransferrable = {
-  name: "Transferrable",
+  name: "Transferable",
   style: { textAlign: "right", width: "160px", minWidth: "160px" },
   render: (item) => (
     <span key="transferrable" className="text14Medium text-textPrimary">

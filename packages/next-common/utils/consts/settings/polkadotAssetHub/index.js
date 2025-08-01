@@ -48,6 +48,7 @@ const polkadotAssetHub = {
   },
   allowWeb2Login: true,
   supportWalletconnect: true,
+  supportForeignAssets: true,
 };
 
 export default polkadotAssetHub;

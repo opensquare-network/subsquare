@@ -11,6 +11,7 @@ import {
   AssetIconBnc,
   AssetIconBsx,
 } from "@osn/icons/subsquare";
+import { foreignAssetInfo } from "next-common/utils/consts/foreignAssets";
 
 const knownAssetHubAssetsMap = Object.freeze({
   [Chains.polkadotAssetHub]: knownPolkadotAssetHubAssets,
@@ -49,4 +50,16 @@ export default function useKnownAssetHubAssetIcon(assetId) {
   const assets = useKnownAssetHubAssets();
   const targetAsset = (assets || []).find((asset) => asset.assetId === assetId);
   return targetAsset?.icon;
+}
+
+const knownForeignAssetsMap = Object.freeze({
+  [Chains.polkadotAssetHub]: foreignAssetInfo,
+  [Chains.kusamaAssetHub]: foreignAssetInfo,
+});
+
+export function useKnownForeignAssetIcon(assetId) {
+  const chain = useChain();
+  const foreignAssets = knownForeignAssetsMap[chain] || {};
+
+  return foreignAssets[assetId]?.icon || AssetIconPlaceholder;
 }
