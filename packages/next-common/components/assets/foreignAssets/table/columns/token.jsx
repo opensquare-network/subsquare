@@ -14,9 +14,11 @@ function Token({ assetId, symbol, name }) {
     >
       <div className="flex gap-[8px] items-center text14Medium text-textPrimary max-sm:justify-start">
         <AssetIcon width={24} height={24} />
-        <span className="text-textPrimary w-20 max-sm:w-auto">{symbol}</span>
+        <span className="text-textPrimary w-20 max-sm:w-auto">
+          {symbol || "--"}
+        </span>
       </div>
-      <span className="text-textTertiary">{name}</span>
+      <span className="text-textTertiary">{name || "--"}</span>
     </div>
   );
 }
