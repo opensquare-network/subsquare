@@ -13,6 +13,7 @@ import {
 } from "next-common/services/url";
 import { toPrecision } from "next-common/utils";
 import { useAsync } from "react-use";
+import MemberRankChanges from "./memberRankChanges";
 
 function useUserStatisticsData(address, section) {
   let statisticsApi;
@@ -34,13 +35,13 @@ function useUserStatisticsData(address, section) {
 }
 
 function ProfileFellowshipStatisticsInfoImpl({ section = "fellowship" }) {
-  const { id: address } = usePageProps();
+  const { id: address, claimantCycleStats } = usePageProps();
   const { value, loading } = useUserStatisticsData(address, section);
   const { decimals, symbol } = getSalaryAsset();
 
   return (
     <NeutralPanel className="p-6">
-      <SummaryLayout>
+      <SummaryLayout className="grid-cols-3 max-sm:grid-cols-1">
         <SummaryItem title="Total Salary Paid">
           <LoadableContent isLoading={loading || isNil(value?.totalPaid)}>
             <ValueDisplay
@@ -49,20 +50,13 @@ function ProfileFellowshipStatisticsInfoImpl({ section = "fellowship" }) {
             />
           </LoadableContent>
         </SummaryItem>
-        <SummaryItem title="Promotion">
-          <LoadableContent isLoading={loading || isNil(value?.promotionTimes)}>
-            {value?.promotionTimes}
+        <SummaryItem title="Joined Cycles">
+          <LoadableContent isLoading={loading}>
+            {claimantCycleStats?.cycles || "-"}
           </LoadableContent>
         </SummaryItem>
-        <SummaryItem title="Demotion">
-          <LoadableContent isLoading={loading || isNil(value?.demotionTimes)}>
-            {value?.demotionTimes}
-          </LoadableContent>
-        </SummaryItem>
-        <SummaryItem title="Retention">
-          <LoadableContent isLoading={loading || isNil(value?.retentionTimes)}>
-            {value?.retentionTimes}
-          </LoadableContent>
+        <SummaryItem title="Member Rank Changes">
+          <MemberRankChanges value={value} loading={loading} />
         </SummaryItem>
       </SummaryLayout>
     </NeutralPanel>
