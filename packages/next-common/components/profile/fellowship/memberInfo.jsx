@@ -20,6 +20,9 @@ import { useAsync } from "react-use";
 import DemotionRemainLabel from "./demotionRemainLabel";
 import PromotionRemainLabel from "./promotionRemainLabel";
 import { getRankSalary } from "next-common/utils/fellowship/getRankSalary";
+import { LastPayment } from "next-common/components/pages/fellowship/member/fellowshipMember/salary";
+import Tooltip from "next-common/components/tooltip";
+import { useMemo } from "react";
 
 export default function ProfileFellowshipMemberInfo({
   section = "fellowship",
@@ -75,16 +78,12 @@ function ProfileFellowshipMemberInfoPanel({ member, paramsApi }) {
     }
   });
 
-  const { activeSalary = [], passiveSalary = [] } = params;
-
   const { rank, status } = member;
   const { lastProof, lastPromotion, isActive } = status || {};
 
-  const { decimals, symbol } = getSalaryAsset();
-
   return (
     <NeutralPanel className="p-6">
-      <SummaryLayout>
+      <SummaryLayout className="grid-cols-3 gap-3">
         <SummaryItem title="Status">
           <div
             className={cn(
@@ -119,24 +118,51 @@ function ProfileFellowshipMemberInfoPanel({ member, paramsApi }) {
           </div>
         </SummaryItem>
 
-        <SummaryItem title="Active Salary">
-          <LoadableContent isLoading={loading}>
-            <ValueDisplay
-              value={toPrecision(getRankSalary(activeSalary, rank), decimals)}
-              symbol={symbol}
-            />
-          </LoadableContent>
-        </SummaryItem>
-
-        <SummaryItem title="Passive Salary">
-          <LoadableContent isLoading={loading}>
-            <ValueDisplay
-              value={toPrecision(getRankSalary(passiveSalary, rank), decimals)}
-              symbol={symbol}
-            />
-          </LoadableContent>
-        </SummaryItem>
+        <MemberSalaryItem
+          params={params}
+          isActive={isActive}
+          rank={rank}
+          loading={loading}
+        />
       </SummaryLayout>
     </NeutralPanel>
+  );
+}
+
+function MemberSalaryItem({ params, isActive, rank, loading }) {
+  const { activeSalary = [], passiveSalary = [] } = params;
+
+  const { decimals, symbol } = getSalaryAsset();
+
+  const salaryTable = isActive ? activeSalary : passiveSalary;
+  const salary = getRankSalary(salaryTable, rank);
+
+  const salaryValue = useMemo(() => {
+    return toPrecision(salary, decimals);
+  }, [salary, decimals]);
+
+  const tooltipContent = useMemo(() => {
+    if (isActive) {
+      return `It's the active salary. Passive salary is ${salaryValue} when inactive.`;
+    }
+    return `It's the inactive salary. Active salary is ${salaryValue} when active.`;
+  }, [isActive, salaryValue]);
+
+  return (
+    <SummaryItem
+      title={
+        <span className="flex items-center gap-x-1">
+          Salary
+          <Tooltip content={tooltipContent}></Tooltip>
+        </span>
+      }
+    >
+      <div className="flex flex-col items-end">
+        <LoadableContent isLoading={loading}>
+          <ValueDisplay value={toPrecision(salary, decimals)} symbol={symbol} />
+        </LoadableContent>
+        <LastPayment />
+      </div>
+    </SummaryItem>
   );
 }
