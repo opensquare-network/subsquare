@@ -2,6 +2,7 @@ import MultisigsList from "./multisigsList";
 import AccountSubTabs from "next-common/components/overview/account/subTabs";
 import WithPageWidth from "next-common/components/common/withPageWidth";
 import { CallPopupProvider } from "./context/callPopupContext";
+import { SignSubmitPopupProvider } from "./context/signSubmitPopupContext";
 import Tabs from "next-common/components/tabs";
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -63,15 +64,17 @@ export default function Multisigs() {
         </div>
         <WithPageWidth>
           <CallPopupProvider>
-            <NeutralPanel className="p-6">
-              <MultisigAccountsProvider userAddress={realAddress}>
-                <Tabs
-                  tabs={tabs}
-                  activeTabValue={activeTabValue}
-                  onTabClick={onTabClick}
-                />
-              </MultisigAccountsProvider>
-            </NeutralPanel>
+            <SignSubmitPopupProvider>
+              <NeutralPanel className="p-6">
+                <MultisigAccountsProvider userAddress={realAddress}>
+                  <Tabs
+                    tabs={tabs}
+                    activeTabValue={activeTabValue}
+                    onTabClick={onTabClick}
+                  />
+                </MultisigAccountsProvider>
+              </NeutralPanel>
+            </SignSubmitPopupProvider>
           </CallPopupProvider>
         </WithPageWidth>
       </div>
