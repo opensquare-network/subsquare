@@ -1,25 +1,14 @@
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
 import Tabs from "next-common/components/tabs";
 import { useState } from "react";
-import ProfileFellowshipCoreEvidence from "./evidence";
 import { ProfileFellowshipCoreFeedsServerFirst } from "./feeds";
 
 export default function ProfileFellowshipCore() {
-  const [evidenceCount, setEvidenceCount] = useState();
-
   const tabs = [
     {
       label: "Feeds",
       value: "feeds",
       content: <ProfileFellowshipCoreFeedsServerFirst />,
-    },
-    {
-      label: "Evidence",
-      value: "evidence",
-      activeCount: evidenceCount,
-      content: (
-        <ProfileFellowshipCoreEvidence setEvidenceCount={setEvidenceCount} />
-      ),
     },
   ];
 
