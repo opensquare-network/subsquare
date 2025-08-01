@@ -11,6 +11,7 @@ import {
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 import { CallPopupInContext } from "next-common/components/multisigs/callPopup";
+import SignSubmitPopupInContext from "next-common/components/multisigs/signField/signSubmitPopup";
 
 export default function MultisigsList() {
   const { width } = useWindowSize();
@@ -44,6 +45,7 @@ export default function MultisigsList() {
       )}
       {pageComponent}
       <CallPopupInContext />
+      <SignSubmitPopupInContext />
     </>
   );
 }
