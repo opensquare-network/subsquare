@@ -35,7 +35,7 @@ function useUserStatisticsData(address, section) {
 }
 
 function ProfileFellowshipStatisticsInfoImpl({ section = "fellowship" }) {
-  const { id: address, claimantCycleStats } = usePageProps();
+  const { id: address } = usePageProps();
   const { value, loading } = useUserStatisticsData(address, section);
   const { decimals, symbol } = getSalaryAsset();
 
@@ -51,8 +51,8 @@ function ProfileFellowshipStatisticsInfoImpl({ section = "fellowship" }) {
           </LoadableContent>
         </SummaryItem>
         <SummaryItem title="Joined Cycles">
-          <LoadableContent isLoading={loading}>
-            {claimantCycleStats?.cycles || "-"}
+          <LoadableContent isLoading={loading || isNil(value?.joinedCycles)}>
+            {value?.joinedCycles || "-"}
           </LoadableContent>
         </SummaryItem>
         <SummaryItem title="Member Rank Changes">
