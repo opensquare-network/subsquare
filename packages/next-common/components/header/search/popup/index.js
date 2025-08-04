@@ -1,11 +1,10 @@
 import Popup, { PopupSize } from "next-common/components/popup/wrapper/Popup";
 import { cn } from "next-common/utils";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import ReminderInput from "next-common/components/header/search/popup/reminderInput";
 import InputInSearchPopup from "next-common/components/header/search/popup/input";
 import LoadingSkeleton from "next-common/components/header/search/popup/loadingSkeleton";
 import SearchList from "next-common/components/header/search/popup/searchList";
-import useRefCallback from "next-common/hooks/useRefCallback";
 import { isNil } from "lodash-es";
 import NoResult from "next-common/components/header/search/popup/noResult";
 import useSearchResults from "next-common/components/header/hooks/useSearchResults";
@@ -24,31 +23,35 @@ function SearchPopup({ onClose, isMobile }) {
   const [searchValue, setSearchValue] = useState("");
   const { totalList, fetch, isLoading, clearResults } = useSearchResults();
 
-  const handleSearch = useRefCallback(() => {
-    if (!searchValue) return;
-    fetch(searchValue);
-  });
+  const handleSearch = useCallback(
+    (searchValue) => {
+      if (!searchValue) return;
+      fetch(searchValue);
+    },
+    [fetch],
+  );
 
   const searchTimerRef = React.useRef(null);
 
-  const debouncedSearch = useRefCallback((value) => {
-    if (searchTimerRef.current) {
-      clearTimeout(searchTimerRef.current);
-    }
-
-    searchTimerRef.current = setTimeout(() => {
-      if (value.length > 2) {
-        handleSearch();
+  const debouncedSearch = useCallback(
+    (searchValue) => {
+      if (searchTimerRef.current) {
+        clearTimeout(searchTimerRef.current);
       }
-    }, 350);
-  });
+
+      searchTimerRef.current = setTimeout(() => {
+        handleSearch(searchValue);
+      }, 350);
+    },
+    [handleSearch],
+  );
 
   useEffect(() => {
     if (searchValue.length === 0) {
       clearResults();
       return;
     }
-    if (searchValue.length > 2) {
+    if (searchValue.length > 2 || /^\d+$/.test(searchValue)) {
       debouncedSearch(searchValue);
     }
 
@@ -96,7 +99,7 @@ function SearchPopup({ onClose, isMobile }) {
         {Array.isArray(totalList) &&
           totalList.length === 0 &&
           !isLoading &&
-          searchValue.length > 2 && <NoResult isMobile={isMobile} />}
+          searchValue && <NoResult isMobile={isMobile} />}
       </div>
     </Popup>
   );
