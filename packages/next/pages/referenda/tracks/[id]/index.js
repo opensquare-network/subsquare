@@ -7,7 +7,13 @@ import {
   gov2TracksApi,
 } from "next-common/services/url";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
-import { camelCase, snakeCase, startCase, upperFirst } from "lodash-es";
+import {
+  camelCase,
+  isEmpty,
+  snakeCase,
+  startCase,
+  upperFirst,
+} from "lodash-es";
 import ReferendaStatusSelectField from "next-common/components/popup/fields/referendaStatusSelectField";
 import { useRouter } from "next/router";
 import ReferendaTrackLayout from "next-common/components/layout/referendaLayout/track";
@@ -63,7 +69,7 @@ export default function TrackPage({
 
   const router = useRouter();
 
-  if (!period.id) {
+  if (isEmpty(period)) {
     return <TrackNotFound />;
   }
 

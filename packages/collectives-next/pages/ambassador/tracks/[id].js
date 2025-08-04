@@ -8,7 +8,7 @@ import {
 } from "next-common/services/url";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { EmptyList } from "next-common/utils/constants";
-import { startCase } from "lodash-es";
+import { isEmpty, startCase } from "lodash-es";
 import normalizeAmbassadorReferendaListItem from "next-common/utils/gov2/list/normalizeAmbassadorReferendaListItem";
 import ListLayout from "next-common/components/layout/ListLayout";
 import Gov2TrackSummary from "next-common/components/summary/gov2TrackSummary";
@@ -33,7 +33,7 @@ export default function AmbassadorTrackPage({
   detailedTracks,
   trackReferendaSummary,
 }) {
-  if (!track) {
+  if (isEmpty(detailedTracks)) {
     return <TrackNotFound />;
   }
 

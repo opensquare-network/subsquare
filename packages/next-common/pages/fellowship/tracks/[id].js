@@ -7,7 +7,7 @@ import {
   fellowshipTracksApi,
 } from "next-common/services/url";
 import { EmptyList } from "next-common/utils/constants";
-import { startCase } from "lodash-es";
+import { isEmpty, startCase } from "lodash-es";
 import ListLayout from "next-common/components/layout/ListLayout";
 import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/normalizeFellowshipReferendaListItem";
 import FellowshipReferendaPostList from "next-common/components/postList/fellowshipReferendaPostList";
@@ -53,7 +53,7 @@ export default function TrackPage({
     normalizeFellowshipReferendaListItem(item, fellowshipTracks),
   );
 
-  if (!period.id) {
+  if (isEmpty(period)) {
     return <TrackNotFound />;
   }
 

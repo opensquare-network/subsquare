@@ -14,6 +14,7 @@ import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { usePageProps } from "next-common/context/page";
 import ReferendaTrackNotFoundLayout from "next-common/components/layout/referendaLayout/trackNotFound";
 import MaybeEmpty from "next-common/components/emptyList";
+import { isEmpty } from "lodash-es";
 
 function TrackNotFound() {
   const { id } = usePageProps();
@@ -78,7 +79,7 @@ export default function TrackStatisticsPage({
   const seoInfo = { title, desc: title };
   const [navCollapsed] = useNavCollapsed();
 
-  if (!period.id) {
+  if (isEmpty(period)) {
     return <TrackNotFound />;
   }
   return (
@@ -157,7 +158,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
 
   return {
     props: {
-      track: track ?? {},
+      track: track ?? null,
       turnout: turnout ?? [],
       delegatee: delegatee ?? EmptyList,
       delegators: delegators ?? EmptyList,
