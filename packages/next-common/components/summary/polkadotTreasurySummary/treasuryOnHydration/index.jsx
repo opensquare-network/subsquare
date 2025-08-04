@@ -4,7 +4,6 @@ import Link from "next/link";
 import {
   PolkadotTreasuryOnHydrationAccount1,
   PolkadotTreasuryOnHydrationAccount2,
-  PolkadotTreasuryOnHydrationAccount3,
   PolkadotTreasuryOnHydrationAccount4,
 } from "../hook/useQueryHydrationTreasuryBalances";
 import NativeTokenSymbolAsset from "../common/nativeTokenSymbolAsset";
@@ -36,11 +35,10 @@ function AddressLink({ account, index }) {
 
 function AddressLinks() {
   return (
-    <div className="gap-x-1 grid grid-cols-2">
+    <div className="gap-x-1 grid grid-cols-3 max-sm:grid-cols-2">
       <AddressLink account={PolkadotTreasuryOnHydrationAccount1} index={1} />
       <AddressLink account={PolkadotTreasuryOnHydrationAccount2} index={2} />
-      <AddressLink account={PolkadotTreasuryOnHydrationAccount3} index={3} />
-      <AddressLink account={PolkadotTreasuryOnHydrationAccount4} index={4} />
+      <AddressLink account={PolkadotTreasuryOnHydrationAccount4} index={3} />
     </div>
   );
 }
