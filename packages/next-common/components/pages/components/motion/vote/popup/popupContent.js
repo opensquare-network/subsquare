@@ -15,7 +15,7 @@ import SignerWithBalance from "next-common/components/signerPopup/signerWithBala
 import { useShowVoteSuccessful } from "next-common/components/vote";
 import { useContextApi } from "next-common/context/api";
 import { useSendTransaction } from "next-common/hooks/useSendTransaction";
-import { wrapWithProxy } from "next-common/utils/sendTransaction";
+import { wrapTransaction } from "next-common/utils/sendTransaction";
 import useCollectiveMotionVotes from "next-common/hooks/collective/useCollectiveVotes";
 import { useCollectivePallet } from "next-common/context/collective";
 import { isSameAddress, isMotionEnded } from "next-common/utils";
@@ -96,9 +96,7 @@ function PopupContentWithContext() {
       }
 
       let tx = voteMethod(motionHash, motionIndex, approve);
-      if (signerAccount?.proxyAddress) {
-        tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-      }
+      tx = await wrapTransaction(api, tx, signerAccount);
 
       setLoadingState(approve ? VoteEnum.Aye : VoteEnum.Nay);
 

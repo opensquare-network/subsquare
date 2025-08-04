@@ -3,14 +3,30 @@ import PolkassemblyComments from "next-common/components/polkassembly/comment";
 import { usePolkassemblyPostData } from "next-common/hooks/polkassembly/usePolkassemblyPostData";
 import { withCommonProps } from "next-common/lib";
 import { backendApi } from "next-common/services/nextApi";
-import { to404 } from "next-common/utils/serverSideUtil";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import NotFoundDetail from "next-common/components/notFoundDetail";
 
-export default function PostsPage({ detail }) {
+export default function PostDetailPage({ detail }) {
+  if (!detail) {
+    return (
+      <NotFoundDetail
+        breadcrumbItems={[
+          {
+            content: "Polkassembly",
+            path: "/polkassembly/discussions",
+          },
+        ]}
+      />
+    );
+  }
+  return <PostsPageImpl detail={detail} />;
+}
+
+function PostsPageImpl({ detail }) {
   const polkassemblyId = detail?.polkassemblyId;
   const { comments, postReactions, loadingComments } = usePolkassemblyPostData({
     polkassemblyId,
@@ -39,13 +55,10 @@ export default function PostsPage({ detail }) {
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
-  const [{ result: detail }] = await Promise.all([
+  const [{ result: detail = null }] = await Promise.all([
     backendApi.fetch(`polkassembly-discussions/${id}`),
   ]);
 
-  if (!detail) {
-    return to404();
-  }
   const tracksProps = await fetchOpenGovTracksProps();
 
   return {

@@ -10,7 +10,7 @@ import Signer from "next-common/components/popup/fields/signerField";
 import VoteBalance from "./voteBalance";
 import VotingStatus from "./votingStatus";
 import VoteButton from "next-common/components/popup/voteButton";
-import { wrapWithProxy } from "next-common/utils/sendTransaction";
+import { wrapTransaction } from "next-common/utils/sendTransaction";
 import { VoteEnum } from "next-common/utils/voteEnum";
 import { useChainSettings } from "next-common/context/chain";
 import useSubMyDemocracyVote, {
@@ -94,9 +94,7 @@ function PopupContent() {
         balance: bnVoteBalance.toString(),
       });
 
-      if (signerAccount?.proxyAddress) {
-        tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-      }
+      tx = await wrapTransaction(api, tx, signerAccount);
 
       setLoadingState(aye ? VoteEnum.Aye : VoteEnum.Nay);
 

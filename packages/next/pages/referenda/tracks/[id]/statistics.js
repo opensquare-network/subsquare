@@ -5,13 +5,53 @@ import {
 } from "next-common/services/url";
 import { backendApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
-import { to404 } from "next-common/utils/serverSideUtil";
 import ReferendaTrackLayout from "next-common/components/layout/referendaLayout/track";
 import { Header } from "next-common/components/statistics/styled";
 import { cn } from "next-common/utils";
 import { useNavCollapsed } from "next-common/context/nav";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import { usePageProps } from "next-common/context/page";
+import ReferendaTrackNotFoundLayout from "next-common/components/layout/referendaLayout/trackNotFound";
+import MaybeEmpty from "next-common/components/emptyList";
+import { isEmpty } from "lodash-es";
+
+function TrackNotFound() {
+  const { id } = usePageProps();
+  return (
+    <ReferendaTrackNotFoundLayout
+      tabs={[
+        {
+          label: "Referenda",
+          value: "referenda",
+          url: `/referenda/tracks/${id}`,
+        },
+        {
+          label: "Statistics",
+          value: "statistics",
+          url: `/referenda/tracks/${id}/statistics`,
+        },
+      ]}
+      id={id}
+    >
+      <div className="space-y-6">
+        <div>
+          <Header className="px-6 mb-4">Referenda</Header>
+          <div>
+            <MaybeEmpty type="referenda" />
+          </div>
+        </div>
+
+        <div>
+          <Header className="px-6 mb-4">Delegation</Header>
+          <div>
+            <MaybeEmpty type="delegation" />
+          </div>
+        </div>
+      </div>
+    </ReferendaTrackNotFoundLayout>
+  );
+}
 
 const VoteTrend = dynamicClientOnly(() =>
   import("next-common/components/statistics/track/voteTrend"),
@@ -39,6 +79,9 @@ export default function TrackStatisticsPage({
   const seoInfo = { title, desc: title };
   const [navCollapsed] = useNavCollapsed();
 
+  if (isEmpty(period)) {
+    return <TrackNotFound />;
+  }
   return (
     <ReferendaTrackLayout
       seoInfo={seoInfo}
@@ -86,9 +129,6 @@ export const getServerSideProps = withCommonProps(async (context) => {
   if (!track) {
     track = tracks.find((item) => item.name === id);
   }
-  if (!track) {
-    return to404();
-  }
 
   const [
     { result: turnout },
@@ -98,23 +138,27 @@ export const getServerSideProps = withCommonProps(async (context) => {
     { result: trackReferendaSummary },
     { result: period },
   ] = await Promise.all([
-    backendApi.fetch(`referenda/tracks/${id}/turnout`),
-    backendApi.fetch(`referenda/tracks/${id}/delegatee`, {
-      sort: JSON.stringify(["delegatedVotes", "desc"]),
-      pageSize: 25,
-    }),
-    backendApi.fetch(`referenda/tracks/${id}/delegators`, {
-      sort: JSON.stringify(["votes", "desc"]),
-      pageSize: 25,
-    }),
-    backendApi.fetch(`referenda/tracks/${id}/summary`),
-    backendApi.fetch(gov2ReferendumsTracksSummaryApi(track?.id)),
-    backendApi.fetch(gov2ReferendumsTracksApi(track?.id)),
+    track ? backendApi.fetch(`referenda/tracks/${id}/turnout`) : {},
+    track
+      ? backendApi.fetch(`referenda/tracks/${id}/delegatee`, {
+          sort: JSON.stringify(["delegatedVotes", "desc"]),
+          pageSize: 25,
+        })
+      : {},
+    track
+      ? backendApi.fetch(`referenda/tracks/${id}/delegators`, {
+          sort: JSON.stringify(["votes", "desc"]),
+          pageSize: 25,
+        })
+      : {},
+    track ? backendApi.fetch(`referenda/tracks/${id}/summary`) : {},
+    track ? backendApi.fetch(gov2ReferendumsTracksSummaryApi(track.id)) : {},
+    track ? backendApi.fetch(gov2ReferendumsTracksApi(track.id)) : {},
   ]);
 
   return {
     props: {
-      track: track ?? {},
+      track: track ?? null,
       turnout: turnout ?? [],
       delegatee: delegatee ?? EmptyList,
       delegators: delegators ?? EmptyList,

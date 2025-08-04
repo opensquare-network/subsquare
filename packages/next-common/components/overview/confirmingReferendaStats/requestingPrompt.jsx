@@ -10,7 +10,7 @@ export default function RequestingPrompt({ onClose, confirmingCount }) {
   if (confirmingValue?.gt(0)) {
     requesting = (
       <>
-        <span>&nbsp;,&nbsp;</span>
+        <span>,&nbsp;</span>
         <span>requesting&nbsp;</span>
         <ValueDisplay
           className="font-bold"

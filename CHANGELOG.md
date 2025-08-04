@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file.
 
+# 5.1.0
+
+date: 2025-08-04
+
+- [Big] As a user, I can create/import a multisig address, and sign a multisig transaction on behalf of this address.
+  Code [here](https://github.com/opensquare-network/subsquare/commit/c322bd619c1e47bd3c70024b5a6a4996c246cbf0).
+- Fellowship:
+    - Query and save evidence content and extract title in indexing scripts, so the fronted can show the title directly
+      and don't have to query them from IPFS.
+    - Show fiat value for an active fellowship referenda which request DOT.
+    - Check whether to show the profile page fellowship tab in server side and show it if history members.
+    - Show the active evidence panel on the profile page.
+    - Show votes heatmap on the profile fellowship tab.
+    - Refactor the salary and status panel to show more info including joined salary cycles, improve the salary
+      component and refactor the rank change statistics component.
+- Support searching proposals by index.
+- Fix bug that treasury deposits are not shown on account deposits page.
+- Display the NotFound component for some detail pages including fellowship application and discussion post.
+- Add a link to explorer for the latest judgment of identity registrars.
+- Refactor some list page components including treasury proposal list, council motion list, ambassador referenda list to
+  reduce coupling.
+- Improve the voting unlock prompt message and not show it when data is still loading.
+- Correct westend treasury modules settings.
+- Correct westend assethub block time to 6s.
+- Fix the responsive style bug for OpenGov warning message on the overview
+  page, [#6447](https://github.com/opensquare-network/subsquare/issues/6447).
+- Upgrade dependencies, code refactor and small UI fixes.
+
 # 5.0.5
 
 date: 2025-07-29
