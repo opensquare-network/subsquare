@@ -9,9 +9,9 @@ import {
   myMultisigsSelector,
 } from "next-common/store/reducers/multisigSlice";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { ListCard } from "next-common/components/overview/styled";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 import { CallPopupInContext } from "next-common/components/multisigs/callPopup";
+import SignSubmitPopupInContext from "next-common/components/multisigs/signField/signSubmitPopup";
 
 export default function MultisigsList() {
   const { width } = useWindowSize();
@@ -37,7 +37,7 @@ export default function MultisigsList() {
   }, [fetchMyMultisigsData]);
 
   return (
-    <ListCard>
+    <>
       {width > 1024 ? (
         <DesktopList multisigs={multisigs} isLoading={isLoading} />
       ) : (
@@ -45,6 +45,7 @@ export default function MultisigsList() {
       )}
       {pageComponent}
       <CallPopupInContext />
-    </ListCard>
+      <SignSubmitPopupInContext />
+    </>
   );
 }

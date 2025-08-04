@@ -3,9 +3,12 @@ import { useDispatch } from "react-redux";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import { noop } from "lodash-es";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { wrapWithProxy } from "next-common/utils/sendTransaction";
+import { wrapTransaction } from "next-common/utils/sendTransaction";
 import { useContextApi } from "next-common/context/api";
 import { useSendTransaction } from "next-common/hooks/useSendTransaction";
+import useWraperTxCallback, {
+  useMultisigCallback,
+} from "./useWraperTxCallback";
 
 export default function useTxSubmission({
   getTxFunc = noop,
@@ -19,6 +22,8 @@ export default function useTxSubmission({
   const api = useContextApi();
   const signerAccount = useSignerAccount();
   const { sendTxFunc, isSubmitting } = useSendTransaction();
+  const wraperTxCallback = useWraperTxCallback();
+  const multisigCallback = useMultisigCallback();
 
   const doSubmit = useCallback(async () => {
     if (!api) {
@@ -43,16 +48,14 @@ export default function useTxSubmission({
       return;
     }
 
-    if (signerAccount?.proxyAddress) {
-      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-    }
+    tx = await wrapTransaction(api, tx, signerAccount);
 
     await sendTxFunc({
       api,
       tx,
       onSubmitted,
-      onInBlock,
-      onFinalized,
+      onInBlock: wraperTxCallback(onInBlock, multisigCallback?.onInBlock),
+      onFinalized: wraperTxCallback(onFinalized, multisigCallback?.onFinalized),
       onCancelled,
       onTxError,
     });
@@ -67,6 +70,8 @@ export default function useTxSubmission({
     onFinalized,
     onCancelled,
     onTxError,
+    wraperTxCallback,
+    multisigCallback,
   ]);
 
   return {

@@ -56,7 +56,7 @@ function NotImportedSalary() {
   );
 }
 
-function LastPayment() {
+export function LastPayment() {
   const { lastSalaryPayment } = usePageProps();
   const { paidIndexer } = lastSalaryPayment || {};
 

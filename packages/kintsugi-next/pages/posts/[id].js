@@ -1,7 +1,6 @@
 import { withCommonProps } from "next-common/lib";
 import { backendApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
-import { to404 } from "next-common/utils/serverSideUtil";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
@@ -11,8 +10,22 @@ import {
   getPostVotesAndMine,
 } from "next-common/services/detail";
 import PostDetail from "components/postDetail";
+import NotFoundDetail from "next-common/components/notFoundDetail";
 
 export default function Post({ detail }) {
+  if (!detail) {
+    return (
+      <NotFoundDetail
+        breadcrumbItems={[
+          {
+            content: "Discussions",
+            path: "/discussions",
+          },
+        ]}
+      />
+    );
+  }
+
   const desc = getMetaDesc(detail);
   return (
     <PostProvider post={detail}>
@@ -32,22 +45,17 @@ export default function Post({ detail }) {
 export const getServerSideProps = withCommonProps(async (context) => {
   const chain = process.env.CHAIN;
   const { id } = context.query;
-  const [{ result: detail }] = await Promise.all([
+  const [{ result: detail = null }] = await Promise.all([
     backendApi.fetch(`posts/${id}`),
   ]);
-
-  if (!detail) {
-    return to404();
-  }
 
   const { votes, myVote } = await getPostVotesAndMine(detail, context);
 
   const { result: summary } = await backendApi.fetch("overview/summary");
 
-  const comments = await fetchDetailComments(
-    `posts/${detail._id}/comments`,
-    context,
-  );
+  const comments = detail
+    ? await fetchDetailComments(`posts/${detail._id}/comments`, context)
+    : null;
 
   return {
     props: {

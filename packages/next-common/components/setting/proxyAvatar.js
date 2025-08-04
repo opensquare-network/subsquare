@@ -2,8 +2,10 @@ import SecondaryButton from "next-common/lib/button/secondary";
 import { useCallback, useState } from "react";
 import SelectProxyAccountPopup from "../selectProxyAccountPopup";
 import ProxyAvatarPopup from "../proxyAvatarPopup";
+import { useUser } from "next-common/context/user";
 
 export default function ProxyAvatar() {
+  const user = useUser();
   const [proxyAddress, setProxyAddress] = useState("");
   const [isProxyAvatarPopupOpen, setIsProxyAvatarPopupOpen] = useState(false);
   const [isSelectProxyAccountPopupOpen, setIsSelectProxyAccountPopupOpen] =
@@ -29,6 +31,7 @@ export default function ProxyAvatar() {
       </div>
       {isSelectProxyAccountPopupOpen && (
         <SelectProxyAccountPopup
+          userAddress={user?.address}
           onClose={() => setIsSelectProxyAccountPopupOpen(false)}
           onSelect={onSelectProxyAccount}
         />

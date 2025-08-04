@@ -30,7 +30,9 @@ export default function ReferendaSummary() {
   const unLockable = unlockBalance.toString();
 
   let actionComponent = null;
-  if (voteExpiredReferenda.length > 0 || tracksToUnlock.length > 0) {
+  if (loadingSummary) {
+    actionComponent = null;
+  } else if (voteExpiredReferenda.length > 0 || tracksToUnlock.length > 0) {
     actionComponent = (
       <div
         className="cursor-pointer text-theme500 text-[12px]"

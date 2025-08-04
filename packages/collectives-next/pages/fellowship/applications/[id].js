@@ -1,7 +1,6 @@
 import { withCommonProps } from "next-common/lib";
 import { backendApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
-import { to404 } from "next-common/utils/serverSideUtil";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { PostProvider } from "next-common/context/post";
@@ -9,8 +8,26 @@ import { fetchDetailComments } from "next-common/services/detail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ApplicationDetail from "next-common/components/fellowship/applications/detail";
 import FellowshipApplicationBreadcrumb from "next-common/components/fellowship/applications/fellowshipApplicationBreadcrumb";
+import NotFoundDetail from "next-common/components/notFoundDetail";
 
 export default function FellowshipApplicationDetailPage({ detail }) {
+  if (!detail) {
+    return (
+      <NotFoundDetail
+        breadcrumbItems={[
+          {
+            path: "/fellowship",
+            content: "Fellowship",
+          },
+          {
+            path: "/fellowship/applications",
+            content: "Applications",
+          },
+        ]}
+      />
+    );
+  }
+
   const desc = getMetaDesc(detail);
   return (
     <PostProvider post={detail}>
@@ -29,20 +46,17 @@ export default function FellowshipApplicationDetailPage({ detail }) {
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
-  const { result: detail } = await backendApi.fetch(
+  const { result: detail = null } = await backendApi.fetch(
     `fellowship/applications/${id}`,
   );
 
-  if (!detail) {
-    return to404();
-  }
-
   const tracksProps = await fetchOpenGovTracksProps();
-  const comments = await fetchDetailComments(
-    `fellowship/applications/${detail._id}/comments`,
-    context,
-  );
-
+  const comments = detail
+    ? await fetchDetailComments(
+        `fellowship/applications/${detail?._id}/comments`,
+        context,
+      )
+    : null;
   return {
     props: {
       detail,
