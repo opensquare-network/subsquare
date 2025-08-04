@@ -14,47 +14,55 @@ export default function MemberRankChanges({ value, loading }) {
   return (
     <div className="flex flex-row gap-x-2 items-center flex-wrap">
       <div className="flex text12Medium items-center gap-x-2">
-        <MemberRankChangesLabel label="Retention" />
+        <MemberRankChangesLabel
+          label="Retention"
+          tooltipContent={TOOLTIP_CONTENTS.Retention}
+        />
         <MemberRankChangesValue
           value={value?.retentionTimes}
           loading={loading}
-          tooltipContent={TOOLTIP_CONTENTS.Retention}
         />
       </div>
       <SplitSymbol />
       <div className="flex text12Medium items-center gap-x-2">
-        <MemberRankChangesLabel label="Demotion" />
+        <MemberRankChangesLabel
+          label="Demotion"
+          tooltipContent={TOOLTIP_CONTENTS.Demotion}
+        />
         <MemberRankChangesValue
           value={value?.demotionTimes}
           loading={loading}
-          tooltipContent={TOOLTIP_CONTENTS.Demotion}
         />
       </div>
       <SplitSymbol />
       <div className="flex text12Medium items-center gap-x-1">
-        <MemberRankChangesLabel label="Promotion" />
+        <MemberRankChangesLabel
+          label="Promotion"
+          tooltipContent={TOOLTIP_CONTENTS.Promotion}
+        />
         <MemberRankChangesValue
           value={value?.promotionTimes}
           loading={loading}
-          tooltipContent={TOOLTIP_CONTENTS.Promotion}
         />
       </div>
     </div>
   );
 }
 
-function MemberRankChangesLabel({ label }) {
+function MemberRankChangesLabel({ label, tooltipContent }) {
   return (
-    <span className="text-textTertiary flex items-center gap-x-1">{label}</span>
+    <Tooltip content={tooltipContent}>
+      <span className="text-textTertiary text12Medium flex items-center gap-x-1">
+        {label}
+      </span>
+    </Tooltip>
   );
 }
 
-function MemberRankChangesValue({ value, loading, tooltipContent }) {
+function MemberRankChangesValue({ value, loading }) {
   return (
     <LoadableContent isLoading={loading || isNil(value)}>
-      <Tooltip content={tooltipContent}>
-        <span className="text14Bold">{value}</span>
-      </Tooltip>
+      <span className="text16Bold">{value}</span>
     </LoadableContent>
   );
 }

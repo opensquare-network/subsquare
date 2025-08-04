@@ -52,7 +52,7 @@ function ProfileFellowshipStatisticsInfoImpl({ section = "fellowship" }) {
         </SummaryItem>
         <SummaryItem title="Joined Cycles">
           <LoadableContent isLoading={loading || isNil(value?.joinedCycles)}>
-            {value?.joinedCycles || "-"}
+            {value?.joinedCycles}
           </LoadableContent>
         </SummaryItem>
         <SummaryItem title="Member Rank Changes">
