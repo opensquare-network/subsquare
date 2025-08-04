@@ -16,13 +16,17 @@ export const getServerSideProps = withCommonProps(async (context) => {
     return to404();
   }
 
-  const comments = await fetchDetailComments(
-    `fellowship/members/${who}/evidences/${evidenceId}/comments`,
-    context,
-  );
+  const [comments, { result: summary }] = await Promise.all([
+    fetchDetailComments(
+      `fellowship/members/${who}/evidences/${evidenceId}/comments`,
+      context,
+    ),
+    backendApi.fetch("overview/summary"),
+  ]);
 
   return {
     props: {
+      summary: summary ?? {},
       comments,
       who,
       detail,
