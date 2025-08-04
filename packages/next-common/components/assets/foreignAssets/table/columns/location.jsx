@@ -20,8 +20,7 @@ function Location({ location }) {
         role="button"
         className={cn(
           "w-5 h-5 cursor-pointer",
-          "[&_path]:stroke-textTertiary [&_path]:hover:stroke-textSecondary",
-          "[&_path]:fill-textTertiary [&_path]:hover:fill-textSecondary",
+          "[&_path]:fill-textSecondary",
         )}
         onClick={handleClick}
       />
