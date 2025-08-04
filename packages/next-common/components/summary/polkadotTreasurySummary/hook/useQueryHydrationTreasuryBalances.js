@@ -13,9 +13,6 @@ export const PolkadotTreasuryOnHydrationAccount1 =
 export const PolkadotTreasuryOnHydrationAccount2 =
   "7KCp4eenFS4CowF9SpQE5BBCj5MtoBA3K811tNyRmhLfH1aV";
 
-export const PolkadotTreasuryOnHydrationAccount3 =
-  "7KATdGaecnKi4zDAMWQxpB2s59N2RE1JgLuugCjTsRZHgP24";
-
 export const PolkadotTreasuryOnHydrationAccount4 =
   "7N4oFqXKgeTXo6CMSY9BVZdHP5J3RhQXY77Fe7qmQwjcxa1w";
 
@@ -78,15 +75,6 @@ export function useQueryHydrationTreasuryBalances() {
   );
 
   const {
-    dot: dot3,
-    usdt: usdt3,
-    usdc: usdc3,
-    isLoading: isLoading3,
-  } = useHydrationTreasuryBalanceForAccount(
-    PolkadotTreasuryOnHydrationAccount3,
-  );
-
-  const {
     dot: dot4,
     usdt: usdt4,
     usdc: usdc4,
@@ -95,11 +83,11 @@ export function useQueryHydrationTreasuryBalances() {
     PolkadotTreasuryOnHydrationAccount4,
   );
 
-  const isLoading = isLoading1 || isLoading2 || isLoading3 || isLoading4;
+  const isLoading = isLoading1 || isLoading2 || isLoading4;
 
-  const dot = bigAdd(dot1, dot2, dot3, dot4);
-  const usdt = bigAdd(usdt1, usdt2, usdt3, usdt4);
-  const usdc = bigAdd(usdc1, usdc2, usdc3, usdc4);
+  const dot = bigAdd(dot1, dot2, dot4);
+  const usdt = bigAdd(usdt1, usdt2, usdt4);
+  const usdc = bigAdd(usdc1, usdc2, usdc4);
 
   return {
     dot,
