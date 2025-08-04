@@ -6,15 +6,25 @@ import {
   ambassadorTrackReferendaSummaryApi,
   ambassadorTracksApi,
 } from "next-common/services/url";
-import { to404 } from "next-common/utils/serverSideUtil";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { EmptyList } from "next-common/utils/constants";
-import { startCase } from "lodash-es";
+import { isEmpty, startCase } from "lodash-es";
 import normalizeAmbassadorReferendaListItem from "next-common/utils/gov2/list/normalizeAmbassadorReferendaListItem";
 import ListLayout from "next-common/components/layout/ListLayout";
 import Gov2TrackSummary from "next-common/components/summary/gov2TrackSummary";
 import AmbassadorReferendaPostList from "next-common/components/postList/ambassadorReferendaPostList";
 import CollectivesProvider from "next-common/context/collectives/collectives";
+import { usePageProps } from "next-common/context/page";
+import ReferendaTrackNotFoundLayout from "next-common/components/layout/referendaLayout/trackNotFound";
+
+function TrackNotFound() {
+  const { id } = usePageProps();
+  return (
+    <ReferendaTrackNotFoundLayout id={id}>
+      <AmbassadorReferendaPostList items={[]} />
+    </ReferendaTrackNotFoundLayout>
+  );
+}
 
 export default function AmbassadorTrackPage({
   posts,
@@ -23,6 +33,10 @@ export default function AmbassadorTrackPage({
   detailedTracks,
   trackReferendaSummary,
 }) {
+  if (isEmpty(detailedTracks)) {
+    return <TrackNotFound />;
+  }
+
   const seoInfo = { title, desc: title };
   const items = (posts.items || []).map((item) =>
     normalizeAmbassadorReferendaListItem(item, detailedTracks),
@@ -61,12 +75,10 @@ export const getServerSideProps = withCommonProps(async (context) => {
   const { result: detailedTracks } = await backendApi.fetch(
     ambassadorTracksApi,
   );
-  const track = detailedTracks.find(
-    (item) => item.id === parseInt(id) || item.name === id,
-  );
-  if (!track) {
-    return to404();
-  }
+  const track =
+    detailedTracks.find(
+      (item) => item.id === parseInt(id) || item.name === id,
+    ) || null;
 
   const [
     tracksProps,
@@ -75,21 +87,25 @@ export const getServerSideProps = withCommonProps(async (context) => {
     { result: ambassadorTracksDetail },
   ] = await Promise.all([
     fetchOpenGovTracksProps(),
-    backendApi.fetch(ambassadorTrackReferendaApi(track?.id), {
-      page,
-      pageSize,
-      simple: true,
-    }),
-    backendApi.fetch(ambassadorTrackReferendaSummaryApi(track?.id)),
-    backendApi.fetch(ambassadorTrackApi(track?.id)),
+    track
+      ? backendApi.fetch(ambassadorTrackReferendaApi(track?.id), {
+          page,
+          pageSize,
+          simple: true,
+        })
+      : {},
+    track
+      ? backendApi.fetch(ambassadorTrackReferendaSummaryApi(track?.id))
+      : {},
+    track ? backendApi.fetch(ambassadorTrackApi(track?.id)) : {},
   ]);
 
   return {
     props: {
       posts: posts ?? EmptyList,
-      title: "Ambassador " + startCase(track.name),
+      title: "Ambassador " + startCase(track?.name),
       trackReferendaSummary: trackReferendaSummary ?? {},
-      detailedTracks: ambassadorTracksDetail,
+      detailedTracks: ambassadorTracksDetail ?? {},
       track,
       ...tracksProps,
     },
