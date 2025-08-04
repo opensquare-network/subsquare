@@ -52,7 +52,7 @@ export default function MemberRankChanges({ value, loading }) {
 function MemberRankChangesLabel({ label, tooltipContent }) {
   return (
     <Tooltip content={tooltipContent}>
-      <span className="text-textTertiary flex items-center gap-x-1">
+      <span className="text-textTertiary text12Medium flex items-center gap-x-1">
         {label}
       </span>
     </Tooltip>
@@ -62,7 +62,7 @@ function MemberRankChangesLabel({ label, tooltipContent }) {
 function MemberRankChangesValue({ value, loading }) {
   return (
     <LoadableContent isLoading={loading || isNil(value)}>
-      <span className="text14Bold">{value}</span>
+      <span className="text16Bold">{value}</span>
     </LoadableContent>
   );
 }
