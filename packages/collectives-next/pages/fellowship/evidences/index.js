@@ -1,0 +1,41 @@
+import ListLayout from "next-common/components/layout/ListLayout";
+import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
+import { withCommonProps } from "next-common/lib";
+import { backendApi } from "next-common/services/nextApi";
+import { usePageProps } from "next-common/context/page";
+import FellowshipEvidencesTable from "next-common/components/fellowship/evidences/table";
+
+export default function FellowshipEvidencesPage() {
+  const { evidences } = usePageProps();
+
+  const evidencesCount = evidences?.length || 0;
+
+  return (
+    <ListLayout title="Fellowship Evidences">
+      <div className="flex flex-wrap max-md:flex-col md:items-center gap-[12px] max-md:gap-[16px] justify-between pr-6 mb-4">
+        <TitleContainer>
+          <span>
+            List
+            <span className="text-textTertiary text14Medium ml-1">
+              {evidencesCount}
+            </span>
+          </span>
+        </TitleContainer>
+      </div>
+
+      <FellowshipEvidencesTable evidences={evidences} />
+    </ListLayout>
+  );
+}
+
+export const getServerSideProps = withCommonProps(async (context) => {
+  const { result: evidences } = await backendApi.fetch(
+    "/fellowship/members/evidences",
+  );
+
+  return {
+    props: {
+      evidences,
+    },
+  };
+});
