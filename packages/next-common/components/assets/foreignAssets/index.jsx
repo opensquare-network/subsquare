@@ -1,4 +1,3 @@
-import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import ForeignAssetsTable from "./table";
 import {
   ForeignAssetsProvider,
@@ -21,9 +20,7 @@ export default function ForeignAssets() {
   return (
     <ForeignAssetsProvider>
       <ForeignAssetsHeader />
-      <SecondaryCard>
-        <ForeignAssetsTable />
-      </SecondaryCard>
+      <ForeignAssetsTable />
     </ForeignAssetsProvider>
   );
 }

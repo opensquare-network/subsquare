@@ -19,7 +19,7 @@ function Transferable({ transferable, decimals }) {
 
 export const colTransferable = {
   name: "Transferable",
-  style: { textAlign: "right", minWidth: "140px" },
+  style: { textAlign: "right", width: "160px" },
   render: (item) => (
     <Transferable transferable={item.transferable} decimals={item.decimals} />
   ),
