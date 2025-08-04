@@ -2,6 +2,7 @@ import { AddressUser } from "next-common/components/user";
 import FellowshipRank from "next-common/components/fellowship/rank";
 import EvidenceLink from "next-common/components/profile/fellowship/core/evidence/link";
 import { isNil } from "lodash-es";
+import Link from "next/link";
 
 export function getFellowshipEvidencesRows(evidences = []) {
   return evidences.map((evidence, idx) => {
@@ -31,9 +32,13 @@ export function getFellowshipEvidencesRows(evidences = []) {
           </EvidenceLink>
         )}
       </div>,
-      <div key={`count-row-${idx}`} className="text-right text-textTertiary">
+      <Link
+        key={`count-row-${idx}`}
+        className="text-right"
+        href={`/user/${address}/fellowship?evidenceTab=History`}
+      >
         {evidencesCount}
-      </div>,
+      </Link>,
     ];
   });
 }
