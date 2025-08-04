@@ -5,7 +5,6 @@ import ReminderInput from "next-common/components/header/search/popup/reminderIn
 import InputInSearchPopup from "next-common/components/header/search/popup/input";
 import LoadingSkeleton from "next-common/components/header/search/popup/loadingSkeleton";
 import SearchList from "next-common/components/header/search/popup/searchList";
-import { isNil } from "lodash-es";
 import NoResult from "next-common/components/header/search/popup/noResult";
 import useSearchResults from "next-common/components/header/hooks/useSearchResults";
 
@@ -17,6 +16,44 @@ function Wrapper({ children, className = "" }) {
       )}
     </div>
   );
+}
+
+function SearchResultContent({
+  searchValue,
+  onClose,
+  totalList,
+  isLoading,
+  isMobile,
+}) {
+  if (!searchValue) {
+    return (
+      <Wrapper>
+        <ReminderInput isMobile={isMobile} />
+      </Wrapper>
+    );
+  }
+
+  if (searchValue.length < 3 && !/^\d+$/.test(searchValue)) {
+    return null;
+  }
+
+  if (isLoading) {
+    return (
+      <Wrapper>
+        <LoadingSkeleton />
+      </Wrapper>
+    );
+  }
+
+  if (!Array.isArray(totalList)) {
+    return null;
+  }
+
+  if (totalList.length === 0) {
+    return <NoResult isMobile={isMobile} />;
+  }
+
+  return <SearchList data={totalList} onClose={onClose} isMobile={isMobile} />;
 }
 
 function SearchPopup({ onClose, isMobile }) {
@@ -83,23 +120,13 @@ function SearchPopup({ onClose, isMobile }) {
             }}
           />
         </Wrapper>
-        {isNil(totalList) && !isLoading && searchValue.length === 0 && (
-          <Wrapper>
-            <ReminderInput isMobile={isMobile} />
-          </Wrapper>
-        )}
-        {isLoading && (
-          <Wrapper>
-            <LoadingSkeleton />
-          </Wrapper>
-        )}
-        {Array.isArray(totalList) && totalList.length > 0 && !isLoading && (
-          <SearchList data={totalList} onClose={onClose} isMobile={isMobile} />
-        )}
-        {Array.isArray(totalList) &&
-          totalList.length === 0 &&
-          !isLoading &&
-          searchValue && <NoResult isMobile={isMobile} />}
+        <SearchResultContent
+          searchValue={searchValue}
+          onClose={onClose}
+          totalList={totalList}
+          isLoading={isLoading}
+          isMobile={isMobile}
+        />
       </div>
     </Popup>
   );
