@@ -18,6 +18,7 @@ export default function TabsListItem({
   onClick,
   url = "",
   shallow,
+  scroll,
 }) {
   const isFunctionLabel = isFunction(label);
   const isStringLabel = isValidElement(label);
@@ -55,6 +56,7 @@ export default function TabsListItem({
         href={url}
         target={isExternalLink(url) ? "_blank" : "_self"}
         shallow={shallow}
+        scroll={scroll}
       >
         {content}
       </Link>

@@ -14,7 +14,7 @@ import useReferendumVotingFinishHeight from "next-common/context/post/referenda/
 import FieldLoading from "next-common/components/icons/fieldLoading";
 import useChainOrScanHeight from "next-common/hooks/height";
 import BeneficiaryDetailButton from "./beneficiaryDetailButton";
-import ValueFiatPriceDisplay from "next-common/components/postList/common/valueFiatPriceDisplay";
+import { FormatFiatValue } from "./valueDisplayWithFiatValue";
 
 const separateNumber = 5;
 
@@ -121,7 +121,7 @@ function Spend({
           symbol={symbol}
           type={type}
           tooltipOtherContent={
-            <ValueFiatPriceDisplay amount={amount} symbol={symbol} />
+            <FormatFiatValue amount={amount} symbol={symbol} />
           }
         />
         <SpendBeneficiary

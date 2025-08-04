@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import Signer from "next-common/components/popup/fields/signerField";
+import { ConnectedSigner } from "next-common/components/popup/fields/signerField";
 import PopupWithSigner from "../../../components/popupWithSigner";
 import Title from "./title";
 import Link from "./link";
@@ -126,7 +126,7 @@ function PopupContent() {
 
   return (
     <>
-      <Signer />
+      <ConnectedSigner />
       <Title setValue={setTitle} />
       <Description setValue={setDescription} />
       <DateField

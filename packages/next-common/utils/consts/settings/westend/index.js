@@ -43,6 +43,13 @@ const westend = {
     assethub: true,
     people: true,
     vesting: true,
+    treasury: {
+      spends: true,
+      proposals: true,
+      bounties: false,
+      childBounties: false,
+      tips: false,
+    },
   }),
   integrations: {
     statescan: true,
