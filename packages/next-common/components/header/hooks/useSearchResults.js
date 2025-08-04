@@ -18,6 +18,9 @@ function useSearchResults() {
 
   const combineIdentitiesRequest = useCallback(
     async (searchValue) => {
+      if (!searchValue || searchValue.length < 3) {
+        return [];
+      }
       const { identities } = (await fetchIdentities(searchValue)) ?? {};
       if (!identities) return null;
 

@@ -7,8 +7,13 @@ import {
   gov2TracksApi,
 } from "next-common/services/url";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
-import { camelCase, snakeCase, startCase, upperFirst } from "lodash-es";
-import { to404 } from "next-common/utils/serverSideUtil";
+import {
+  camelCase,
+  isEmpty,
+  snakeCase,
+  startCase,
+  upperFirst,
+} from "lodash-es";
 import ReferendaStatusSelectField from "next-common/components/popup/fields/referendaStatusSelectField";
 import { useRouter } from "next/router";
 import ReferendaTrackLayout from "next-common/components/layout/referendaLayout/track";
@@ -18,6 +23,32 @@ import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import NewProposalButton from "next-common/components/summary/newProposalButton";
 import useFetchMyReferendaVoting from "next-common/components/myvotes/referenda/useFetchMyReferendaVoting";
 import dynamic from "next/dynamic";
+import { usePageProps } from "next-common/context/page";
+import ReferendaTrackNotFoundLayout from "next-common/components/layout/referendaLayout/trackNotFound";
+
+function TrackNotFound() {
+  const { id } = usePageProps();
+  return (
+    <ReferendaTrackNotFoundLayout
+      tabs={[
+        {
+          label: "Referenda",
+          value: "referenda",
+          url: `/referenda/tracks/${id}`,
+        },
+        {
+          label: "Statistics",
+          value: "statistics",
+          url: `/referenda/tracks/${id}/statistics`,
+        },
+      ]}
+      id={id}
+    >
+      <TrackPanel className="mb-4" />
+      <ReferendaPostList items={[]} />
+    </ReferendaTrackNotFoundLayout>
+  );
+}
 
 const TrackPanel = dynamic(
   () => import("next-common/components/referenda/trackPanel"),
@@ -37,6 +68,10 @@ export default function TrackPage({
   useFetchMyReferendaVoting();
 
   const router = useRouter();
+
+  if (isEmpty(period)) {
+    return <TrackNotFound />;
+  }
 
   const items = (posts.items || []).map((item) =>
     normalizeGov2ReferendaListItem(item, tracks),
@@ -103,9 +138,6 @@ export const getServerSideProps = withCommonProps(async (context) => {
   if (!track) {
     track = tracks.find((item) => item.name === id);
   }
-  if (!track) {
-    return to404();
-  }
 
   const [
     { result: posts },
@@ -113,14 +145,16 @@ export const getServerSideProps = withCommonProps(async (context) => {
     { result: period },
     { result: tracksDetail },
   ] = await Promise.all([
-    backendApi.fetch(gov2ReferendumsTrackApi(track?.id), {
-      page,
-      pageSize,
-      status,
-      simple: true,
-    }),
-    backendApi.fetch(gov2ReferendumsTracksSummaryApi(track?.id)),
-    backendApi.fetch(gov2ReferendumsTracksApi(track?.id)),
+    track
+      ? backendApi.fetch(gov2ReferendumsTrackApi(track?.id), {
+          page,
+          pageSize,
+          status,
+          simple: true,
+        })
+      : {},
+    track ? backendApi.fetch(gov2ReferendumsTracksSummaryApi(track?.id)) : {},
+    track ? backendApi.fetch(gov2ReferendumsTracksApi(track?.id)) : {},
     backendApi.fetch(gov2TracksApi),
   ]);
 
@@ -129,7 +163,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
       track: track ?? null,
       tracksDetail: tracksDetail ?? null,
       posts: posts ?? EmptyList,
-      title: "Referenda " + startCase(track.name),
+      title: "Referenda " + startCase(track?.name),
       trackReferendaSummary: trackReferendaSummary ?? {},
       period: period ?? {},
       status,
