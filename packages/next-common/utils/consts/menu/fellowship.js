@@ -40,16 +40,19 @@ function getNonCoreFellowshipMembersMenu() {
   };
 }
 
-function getFellowshipEvidencesMenu() {
+function getFellowshipEvidencesMenu(overviewSummary) {
   const { modules } = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
   if (!modules?.fellowship?.core) {
     return null;
   }
 
+  const fellowshipEvidences = overviewSummary?.fellowshipEvidences || {};
+
   return {
     value: "fellowship-evidences",
     name: "Evidences",
     pathname: "/fellowship/evidences",
+    activeCount: fellowshipEvidences.active || 0,
   };
 }
 
@@ -200,7 +203,7 @@ export function getFellowshipMenu(overviewSummary, currentTrackId) {
         currentTrackId,
         totalActiveCount,
       ),
-      getFellowshipEvidencesMenu(),
+      getFellowshipEvidencesMenu(overviewSummary),
       getFellowshipSalaryMenu(),
       getFellowshipTreasuryMenu(overviewSummary),
       getFellowshipApplicationsMenu(overviewSummary),

@@ -28,14 +28,16 @@ export default function FellowshipEvidencesPage() {
   );
 }
 
-export const getServerSideProps = withCommonProps(async (context) => {
-  const { result: evidences } = await backendApi.fetch(
-    "/fellowship/members/evidences",
-  );
+export const getServerSideProps = withCommonProps(async () => {
+  const [{ result: evidences }, { result: summary }] = await Promise.all([
+    backendApi.fetch("/fellowship/members/evidences"),
+    backendApi.fetch("overview/summary"),
+  ]);
 
   return {
     props: {
       evidences,
+      summary: summary ?? {},
     },
   };
 });
