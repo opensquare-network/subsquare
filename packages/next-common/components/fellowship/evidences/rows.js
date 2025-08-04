@@ -22,11 +22,12 @@ export function getFellowshipEvidencesRows(evidences = []) {
           "-"
         ) : (
           <EvidenceLink
-            className="text-left"
+            className="text-left hover:underline"
             tooltipClassName="w-auto max-w-full"
             blockHeight={activeEvidence?.indexer?.blockHeight}
             eventIndex={activeEvidence?.indexer?.eventIndex}
             address={address}
+            target="_self"
           >
             {activeEvidence?.title}
           </EvidenceLink>
@@ -34,7 +35,7 @@ export function getFellowshipEvidencesRows(evidences = []) {
       </div>,
       <Link
         key={`count-row-${idx}`}
-        className="text-right"
+        className="text-right hover:underline"
         href={`/user/${address}/fellowship?evidenceTab=History`}
       >
         {evidencesCount}

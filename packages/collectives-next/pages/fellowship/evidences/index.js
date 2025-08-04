@@ -4,9 +4,12 @@ import { withCommonProps } from "next-common/lib";
 import { backendApi } from "next-common/services/nextApi";
 import { usePageProps } from "next-common/context/page";
 import FellowshipEvidencesTable from "next-common/components/fellowship/evidences/table";
+import useRankFilter from "next-common/components/fellowship/evidences/useRankFilter";
 
 export default function FellowshipEvidencesPage() {
   const { evidences } = usePageProps();
+  const { component: RankFilterComponent, filteredEvidences } =
+    useRankFilter(evidences);
 
   const evidencesCount = evidences?.length || 0;
 
@@ -21,9 +24,10 @@ export default function FellowshipEvidencesPage() {
             </span>
           </span>
         </TitleContainer>
+        {RankFilterComponent}
       </div>
 
-      <FellowshipEvidencesTable evidences={evidences} />
+      <FellowshipEvidencesTable evidences={filteredEvidences} />
     </ListLayout>
   );
 }
