@@ -7,6 +7,7 @@ export default function EvidenceLink({
   address,
   children,
   className = "",
+  tooltipClassName = "",
   cid,
   blockHeight,
   eventIndex,
@@ -42,7 +43,7 @@ export default function EvidenceLink({
   );
 
   return showTooltip ? (
-    <Tooltip content={children} className="w-full">
+    <Tooltip content={children} className={cn("w-full", tooltipClassName)}>
       {content}
     </Tooltip>
   ) : (
