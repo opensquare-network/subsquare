@@ -15,7 +15,7 @@ export function getFellowshipEvidencesRows(evidences = []) {
             <span className="text14Medium text-textTertiary">·</span>
           </>
         )}
-        <AddressUser add={address} />
+        <AddressUser add={address} link="/fellowship" />
       </div>,
       <div key={`title-row-${idx}`} className="max-sm:max-w-[200px]">
         {isNil(activeEvidence) ? (
