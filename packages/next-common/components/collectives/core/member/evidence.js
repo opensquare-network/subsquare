@@ -30,7 +30,8 @@ export function CoreFellowshipMemberEvidenceContent({
         <EvidenceLink
           address={address}
           evidence={evidence}
-          className="text-theme500 text12Medium inline-flex items-center"
+          className="text-theme500 text12Medium inline-flex items-center h-5 leading-5"
+          showTooltip={false}
         >
           Evidence
         </EvidenceLink>

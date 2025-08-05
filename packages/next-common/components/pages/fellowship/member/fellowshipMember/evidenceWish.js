@@ -20,7 +20,7 @@ import { useIpfsContent } from "next-common/hooks/useIpfsContent";
 import { WishBar } from "./wishBar";
 import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
 import EvidenceLink from "next-common/components/profile/fellowship/core/evidence/link";
-import { useParams } from "next/navigation";
+import { useContextAddress } from "next-common/context/address";
 
 export default function EvidenceWish() {
   const { id: address, fellowshipMembers } = usePageProps();
@@ -84,7 +84,7 @@ function OnchainEvidenceStatisticsInfoImpl({ wish, address }) {
 
 function OnchainEvidenceContent({ evidence }) {
   const { isDark } = useTheme();
-  const { id: address } = useParams();
+  const address = useContextAddress();
 
   const cid = getCidByEvidence(evidence);
   const { value: ifpsContent, loading, error } = useIpfsContent(cid);
@@ -120,6 +120,7 @@ function OnchainEvidenceContent({ evidence }) {
             "absolute top-4 right-4 bg-theme500 text-textPrimaryContrast hidden h-7 rounded-md text12Medium py-[5px] px-[11px]",
             { block: !!ifpsContent },
           )}
+          showTooltip={false}
         >
           View Evidence
         </EvidenceLink>
