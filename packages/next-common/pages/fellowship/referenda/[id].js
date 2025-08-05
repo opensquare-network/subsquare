@@ -30,10 +30,9 @@ import useSubReferendumInfo from "next-common/hooks/referenda/useSubReferendumIn
 import FellowshipReferendaDetailMultiTabs from "next-common/components/pages/components/tabs/fellowshipReferendaDetailMultiTabs";
 import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 import { useReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
-import { isNil, merge } from "lodash-es";
+import { isNil } from "lodash-es";
 import { CommentsContent } from "next-common/components/detail/common/contentWithComment";
 import { MaybeUseSwitchComment } from "next-common/components/detail/fellowship/fellowshipCommentsWithSwitchTabs";
-import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
 
 function FellowshipContent() {
   const post = usePost();
@@ -200,15 +199,6 @@ async function getEvidenceProps(detail, context) {
       context,
     ),
   ]);
-
-  if (isNil(evidence.content)) {
-    const content = await fetch(getIpfsLink(evidence.cid)).then((res) =>
-      res.text(),
-    );
-    merge(evidence, {
-      content,
-    });
-  }
 
   return {
     evidence,
