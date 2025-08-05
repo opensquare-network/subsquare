@@ -6,11 +6,7 @@ import { getFellowshipEvidencesRows } from "./rows";
 export default function FellowshipEvidencesTable({ evidences = [] }) {
   const isLoading = isNil(evidences);
 
-  const filteredEvidences = evidences.filter(
-    (evidence) => !isNil(evidence.rank),
-  );
-
-  const rows = getFellowshipEvidencesRows(filteredEvidences);
+  const rows = getFellowshipEvidencesRows(evidences);
 
   return (
     <DataList
