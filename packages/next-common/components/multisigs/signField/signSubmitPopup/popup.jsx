@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useContextApi } from "next-common/context/api";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
@@ -63,7 +63,9 @@ export function SignSubmitInnerPopup({ onClose, multisig = {} }) {
     setCallData("tree", { callData: rawCall, isValid: true });
   }, [callHex, rawCall, isLoadingRawCall, setFormType, setCallData]);
 
-  const isLoading = isLoadingRawCall || isWeightLoading;
+  const isLoading = useMemo(() => {
+    return isWeightLoading || (callHex && isLoadingRawCall);
+  }, [isWeightLoading, callHex, isLoadingRawCall]);
 
   const getTxFunc = useCallback(() => {
     if (!api || !address || !call || !isValid) {
