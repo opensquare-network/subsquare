@@ -18,7 +18,7 @@ export function getFellowshipEvidencesRows(evidences = []) {
         <AddressUser add={address} link="/fellowship" />
       </div>,
       <div key={`title-row-${idx}`} className="max-sm:max-w-[200px]">
-        {isNil(activeEvidence) ? (
+        {isNil(activeEvidence) || isNil(rank) ? (
           "-"
         ) : (
           <EvidenceLink

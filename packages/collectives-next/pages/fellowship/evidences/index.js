@@ -5,16 +5,12 @@ import { backendApi } from "next-common/services/nextApi";
 import { usePageProps } from "next-common/context/page";
 import FellowshipEvidencesTable from "next-common/components/fellowship/evidences/table";
 import useRankFilter from "next-common/components/fellowship/evidences/useRankFilter";
-import { isNil } from "lodash-es";
 
 export default function FellowshipEvidencesPage() {
   const { evidences } = usePageProps();
 
-  const hasRankEvidences = evidences.filter(
-    (evidence) => !isNil(evidence.rank),
-  );
   const { component: RankFilterComponent, filteredEvidences } =
-    useRankFilter(hasRankEvidences);
+    useRankFilter(evidences);
 
   const evidencesCount = filteredEvidences?.length || 0;
 
