@@ -4,6 +4,9 @@ import {
   useSwitchCommentList,
 } from "next-common/context/post/switchComment";
 import { usePageProps } from "next-common/context/page";
+import { isNil } from "lodash-es";
+import MaybeSimaContent from "../maybeSimaContent";
+import SwitchCommentActionsProvider from "next-common/context/fellowship/switchCommentActionsProvider";
 
 export function SwitchCommentImpl({ children }) {
   const comments = useSwitchCommentList();
@@ -41,5 +44,23 @@ export default function FellowshipCommentsWithSwitchTabs({ children }) {
     <SwitchCommentProvider switchTabs={switchTabs}>
       <SwitchCommentImpl>{children}</SwitchCommentImpl>
     </SwitchCommentProvider>
+  );
+}
+
+export function MaybeUseSwitchComment({ children }) {
+  const { evidence, comments } = usePageProps();
+
+  if (isNil(evidence)) {
+    return (
+      <CommentsProvider comments={comments}>
+        <MaybeSimaContent>{children}</MaybeSimaContent>
+      </CommentsProvider>
+    );
+  }
+
+  return (
+    <FellowshipCommentsWithSwitchTabs>
+      <SwitchCommentActionsProvider>{children}</SwitchCommentActionsProvider>
+    </FellowshipCommentsWithSwitchTabs>
   );
 }
