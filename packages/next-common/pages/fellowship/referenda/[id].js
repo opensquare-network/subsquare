@@ -186,7 +186,7 @@ async function getEvidenceProps(detail, context) {
   const memberships = detail?.onchainData?.memberships || [];
   const firstMembership = memberships[0];
 
-  if (isNil(firstMembership)) {
+  if (isNil(firstMembership) || isNil(firstMembership?.evidence)) {
     return {
       evidence: null,
       evidenceComments: EmptyList,
