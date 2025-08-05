@@ -3,10 +3,10 @@ import useProfileAddress from "../useProfileAddress";
 import AddressProvider from "next-common/context/address";
 
 export default function ProfileFellowshipEvidence({ section }) {
-  const who = useProfileAddress();
+  const address = useProfileAddress();
   if (section === "fellowship") {
     return (
-      <AddressProvider address={who}>
+      <AddressProvider address={address}>
         <OnchainEvidence />
       </AddressProvider>
     );
