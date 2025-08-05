@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { isNil } from "lodash-es";
 import { toPrecision } from "next-common/utils";
 import PopupLabelWithBalance from "next-common/components/popup/balanceLabel";
@@ -72,6 +72,8 @@ export default function Signer({
   showTransferable = false,
   supportedMultisig = true,
 }) {
+  const isBalanceUnavailable = useMemo(() => isNil(balance), [balance]);
+
   return (
     <SignerWrapper
       title={title}
@@ -82,7 +84,7 @@ export default function Signer({
       showTransferable={showTransferable}
     >
       <MaybeProxySigner
-        noSwitch={noSwitchSigner}
+        noSwitch={noSwitchSigner || isBalanceUnavailable}
         supportedMultisig={supportedMultisig}
       />
     </SignerWrapper>
