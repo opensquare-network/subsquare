@@ -1,14 +1,14 @@
 import OnchainEvidence from "next-common/components/pages/fellowship/member/fellowshipMember/onchainEvidence";
 import useProfileAddress from "../useProfileAddress";
-import { FellowshipEvidenceProvider } from "next-common/context/fellowship/evidence";
+import AddressProvider from "next-common/context/address";
 
 export default function ProfileFellowshipEvidence({ section }) {
   const who = useProfileAddress();
   if (section === "fellowship") {
     return (
-      <FellowshipEvidenceProvider who={who}>
+      <AddressProvider address={who}>
         <OnchainEvidence />
-      </FellowshipEvidenceProvider>
+      </AddressProvider>
     );
   }
   return null;

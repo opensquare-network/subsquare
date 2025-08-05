@@ -6,7 +6,7 @@ import FellowshipMemberBreadcrumb from "./fellowshipMemberBreadcrumb";
 import Membership from "./membership";
 import OnchainEvidence from "./onchainEvidence";
 import MemberActivities from "./memberActivities";
-import { FellowshipEvidenceProvider } from "next-common/context/fellowship/evidence";
+import AddressProvider from "next-common/context/address";
 
 export default function FellowshipMember({ address }) {
   const [navCollapsed] = useNavCollapsed();
@@ -36,9 +36,9 @@ export default function FellowshipMember({ address }) {
             className={cn("flex flex-col gap-[24px]", "w-full overflow-hidden")}
           >
             <Membership />
-            <FellowshipEvidenceProvider who={address}>
+            <AddressProvider address={address}>
               <OnchainEvidence />
-            </FellowshipEvidenceProvider>
+            </AddressProvider>
             <MemberActivities />
           </div>
         </div>
