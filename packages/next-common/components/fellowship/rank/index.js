@@ -23,7 +23,7 @@ export default function FellowshipRank({ rank }) {
 
 export function FellowshipRankInfo({ address }) {
   const collectivePallet = useRankedCollectivePallet();
-  const rank = useFellowshipMemberRank(address, collectivePallet);
+  const { rank } = useFellowshipMemberRank(address, collectivePallet);
 
   return <FellowshipRank rank={rank} />;
 }

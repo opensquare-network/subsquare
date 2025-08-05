@@ -10,7 +10,12 @@ function Breadcrumb(props) {
   return (
     <ul {...restProps} className={cn("flex items-center", className)}>
       {items?.map?.((item, idx) => (
-        <BreadcrumbItem key={idx} path={item.path} separator={separator}>
+        <BreadcrumbItem
+          key={idx}
+          path={item.path}
+          className={item.className}
+          separator={separator}
+        >
           {item.content}
         </BreadcrumbItem>
       ))}
