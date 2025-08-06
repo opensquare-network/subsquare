@@ -12,18 +12,16 @@ export default function ProposeWithExtrinsic() {
   const [extrinsic, setExtrinsic] = useState(null);
 
   const setValue = useCallback(({ isValid, data }) => {
-    if (!isValid) {
+    if (!isValid || !data) {
       setExtrinsic(null);
       setCallHash(null);
       return;
     }
 
-    if (data) {
-      const encodedProposal = data.method.toHex();
-      const encodedHash = blake2AsHex(encodedProposal);
-      setCallHash(encodedHash);
-      setExtrinsic(data);
-    }
+    const encodedProposal = data.method.toHex();
+    const encodedHash = blake2AsHex(encodedProposal);
+    setCallHash(encodedHash);
+    setExtrinsic(data);
   }, []);
 
   const getTxFunc = useCallback(() => {
