@@ -22,17 +22,11 @@ function FellowshipReferendaDetailEvidenceImpl() {
   );
 }
 
-export default function FellowshipReferendaDetailEvidence() {
+export function FellowshipReferendaDetailEvidenceOnChain() {
   const pallet = useCoreFellowshipPallet();
   const onchainData = useOnchainData();
-  const { evidence } = usePageProps();
   const { call } = onchainData?.inlineCall || onchainData.proposal || {};
   const indexer = useReferendumVotingFinishIndexer();
-
-  if (evidence?.cid || evidence?.content) {
-    return <FellowshipEvidenceContentFromApi evidence={evidence} />;
-  }
-
   if (
     call?.section === pallet &&
     ["approve", "promote", "promoteFast"].includes(call?.method)
@@ -43,6 +37,15 @@ export default function FellowshipReferendaDetailEvidence() {
       </MigrationConditionalApiProvider>
     );
   }
-
   return null;
+}
+
+export default function FellowshipReferendaDetailEvidence() {
+  const { evidence } = usePageProps();
+
+  if (evidence?.cid || evidence?.content) {
+    return <FellowshipEvidenceContentFromApi evidence={evidence} />;
+  }
+
+  return <FellowshipReferendaDetailEvidenceOnChain />;
 }
