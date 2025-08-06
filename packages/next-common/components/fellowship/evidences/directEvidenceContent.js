@@ -5,13 +5,9 @@ import { getCidByEvidence } from "next-common/utils/collective/getCidByEvidence"
 export default function DirectEvidenceContent({ content, cid, hex }) {
   if (content) {
     return <MarkdownPreviewer content={content} />;
-  }
-
-  if (cid) {
+  } else if (cid) {
     return <IpfsEvidenceContent cid={cid} />;
-  }
-
-  if (hex) {
+  } else if (hex) {
     const cid = getCidByEvidence(hex);
     return <IpfsEvidenceContent cid={cid} />;
   }
