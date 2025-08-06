@@ -8,6 +8,7 @@ export function UnStyledIdentity({
   maxWidth,
   ellipsis = false,
   identityIconClassName = "",
+  noTooltip = false,
 }) {
   if (!identity || identity?.info?.status === "NO_ID") {
     return null;
@@ -23,13 +24,17 @@ export function UnStyledIdentity({
         className="mr-1"
         iconClassName={identityIconClassName}
       />
-      <Tooltip
-        content={shouldShowTooltip ? displayName : null}
-        className={cn(shouldShowTooltip && "!line-clamp-1 break-all")}
-        style={{ maxWidth }}
-      >
-        {displayName}
-      </Tooltip>
+      {noTooltip ? (
+        displayName
+      ) : (
+        <Tooltip
+          content={shouldShowTooltip ? displayName : null}
+          className={cn(shouldShowTooltip && "!line-clamp-1 break-all")}
+          style={{ maxWidth }}
+        >
+          {displayName}
+        </Tooltip>
+      )}
     </div>
   );
 }

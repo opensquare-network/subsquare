@@ -41,24 +41,44 @@ export default function BubbleItem({
     >
       <Tooltip
         className={"inline-flex"}
-        content={
-          <div>
-            <div className="space-y-1">
-              <h1 className="text14Bold pb-1">
-                {getActionName(type, data?.preVote, data?.preDelegation)}
-              </h1>
-              <AddressUser
-                className="text14Medium text-textPrimaryContrast"
-                add={who}
-                size={12}
-              />
-              <TallyVotesDisplay data={data} type={type} />
-            </div>
-          </div>
-        }
+        contentClassName={"pointer-events-auto"}
+        content={<TooltipContent who={who} data={data} type={type} />}
       >
         <AvatarDisplay address={who} avatarCid={avatar} size={sideLength} />
       </Tooltip>
+    </div>
+  );
+}
+
+function TooltipContent({ who, data, type }) {
+  return (
+    <div className="space-y-1 pointer-events-auto">
+      {[
+        {
+          label: "Address",
+          value: (
+            <AddressUser
+              noTooltip={true}
+              className="text12Medium text-textPrimaryContrast"
+              add={who}
+              size={12}
+            />
+          ),
+        },
+        {
+          label: "Action",
+          value: getActionName(type, data?.preVote, data?.preDelegation),
+        },
+        {
+          label: "Tally Impact",
+          value: <TallyVotesDisplay data={data} type={type} />,
+        },
+      ].map(({ label, value }) => (
+        <div className="flex" key={label}>
+          <div className="w-[76px]">{label} :</div>
+          <div className="pl-1">{value}</div>
+        </div>
+      ))}
     </div>
   );
 }
@@ -67,29 +87,23 @@ function TallyVotesDisplay({ data, type }) {
   const { decimals, symbol } = useChainSettings();
   const impactVotes = getImpactVotes(data, type);
 
-  const displayValue = useMemo(() => {
-    if (isNil(impactVotes) || BigInt(impactVotes) === BigInt(0)) {
-      return (
-        <NoImpact valueClassName="text-textTertiary" className="text12Medium" />
-      );
-    }
-    const isAye = impactVotes >= 0;
-    const { color } = VOTE_TYPE_CONFIG[isAye ? "aye" : "nay"];
+  if (isNil(impactVotes) || BigInt(impactVotes) === BigInt(0)) {
     return (
-      <div className={cn(color, "inline-flex text12Medium")}>
-        {isAye ? "+" : "-"}
-        <ValueDisplay
-          value={toPrecision(absBigInt(impactVotes), decimals)}
-          symbol={symbol}
-        />
-      </div>
+      <NoImpact
+        valueClassName="text-textSecondaryContrast"
+        className="text12Medium text-textSecondaryContrast"
+      />
     );
-  }, [decimals, impactVotes, symbol]);
-
+  }
+  const isAye = impactVotes >= 0;
+  const { color } = VOTE_TYPE_CONFIG[isAye ? "aye" : "nay"];
   return (
-    <div>
-      <span>Tally: </span>
-      {displayValue}
+    <div className={cn(color, "inline-flex text12Medium")}>
+      {isAye ? "+" : "-"}
+      <ValueDisplay
+        value={toPrecision(absBigInt(impactVotes), decimals)}
+        symbol={symbol}
+      />
     </div>
   );
 }
