@@ -11,6 +11,9 @@ export default function ProposeWithInputHex() {
   const { call, isLoading } = useCallFromHex(inputHex);
 
   const getTxFunc = useCallback(() => {
+    if (!call) {
+      return;
+    }
     return api.tx(call);
   }, [api, call]);
 
