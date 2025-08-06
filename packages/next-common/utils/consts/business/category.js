@@ -53,6 +53,7 @@ export const detailPageCategory = {
   GOV2_REFERENDUM: "referenda",
   FELLOWSHIP_REFERENDUM: "fellowship/referenda",
   FELLOWSHIP_APPLICATION: "fellowship/applications",
+  FELLOWSHIP_EVIDENCE: "fellowship/members",
   FELLOWSHIP_SALARY_CYCLES: "fellowship/salary/cycles",
   AMBASSADOR_REFERENDUM: "ambassador/referenda",
   AMBASSADOR_SALARY_CYCLES: "ambassador/salary/cycles",

@@ -21,6 +21,18 @@ export default function CommentsMeta() {
     commentsCount = post.polkassemblyCommentsCount || 0;
   }
 
+  return (
+    <CommentsContent
+      commentsCount={commentsCount}
+      noCommentsCount={noCommentsCount}
+    />
+  );
+}
+
+export function CommentsContent({
+  commentsCount = 0,
+  noCommentsCount = false,
+}) {
   if (noCommentsCount || commentsCount < 0) {
     return null;
   }

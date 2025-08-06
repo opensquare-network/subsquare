@@ -2,6 +2,27 @@ import { getChainApi } from "../getChainApi";
 import getChainSettings from "../consts/settings";
 import Chains from "next-common/utils/consts/chains";
 
+const runtimeApiTypes = {
+  PalletCurrenciesRpcRuntimeApiAccountData: {
+    free: "Balance",
+    reserved: "Balance",
+    frozen: "Balance",
+  },
+};
+
+const runtimeApiMethods = {
+  CurrenciesApi: {
+    account: {
+      description: "Query account data for a specific currency",
+      params: [
+        { name: "account_id", type: "AccountId" },
+        { name: "currency_id", type: "CurrencyId" },
+      ],
+      type: "PalletCurrenciesRpcRuntimeApiAccountData",
+    },
+  },
+};
+
 let api = null;
 
 export async function getHydrationApi() {
@@ -15,5 +36,9 @@ export async function getHydrationApi() {
     throw new Error("Hydration endpoints not found");
   }
 
-  return getChainApi(hydrationEndpoints);
+  api = await getChainApi(hydrationEndpoints);
+  api.registry.register(runtimeApiTypes);
+  api.registry.register(runtimeApiMethods);
+
+  return api;
 }

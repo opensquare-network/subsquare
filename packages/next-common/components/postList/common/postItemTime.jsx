@@ -5,6 +5,7 @@ import Tooltip from "next-common/components/tooltip";
 import { SystemActivity } from "@osn/icons/subsquare";
 import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
+import { isNil } from "lodash-es";
 
 export default function PostItemTime({ data, elapseIcon }) {
   const activeAgo = formatTimeAgo(data?.time);
@@ -32,6 +33,24 @@ export default function PostItemTime({ data, elapseIcon }) {
         <span className="cursor-pointer">{activeAgo}</span>
       </Tooltip>
       {elapseIcon && <Flex className="elapseIcon">{elapseIcon}</Flex>}
+    </Info>
+  );
+}
+
+export function SimpleTime({ timestamp }) {
+  if (isNil(timestamp)) {
+    return null;
+  }
+
+  const concreteTime = formatTime(timestamp);
+  const activeAgo = formatTimeAgo(timestamp);
+
+  return (
+    <Info>
+      <Tooltip className="flex" content={concreteTime}>
+        <SystemActivity className="w-4 h-4 stroke-textTertiary [&_path]:stroke-2 mr-1" />
+        <span className="cursor-pointer">{activeAgo}</span>
+      </Tooltip>
     </Info>
   );
 }

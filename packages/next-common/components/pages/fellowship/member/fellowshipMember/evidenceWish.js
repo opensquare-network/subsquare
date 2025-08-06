@@ -1,4 +1,3 @@
-import Popup from "next-common/components/popup/wrapper/Popup";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { CardTitle } from "./styled";
 import SummaryLayout from "next-common/components/summary/layout/layout";
@@ -9,9 +8,6 @@ import useSubCoreFellowshipEvidence from "next-common/hooks/collectives/useSubCo
 import { usePageProps } from "next-common/context/page";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { Skeleton } from "next-common/components/skeleton";
-import Button from "next-common/lib/button";
-import { useState } from "react";
-import WishDetail from "next-common/components/pages/fellowship/member/fellowshipMember/wishDetail";
 import { cn } from "next-common/utils";
 import { useTheme } from "styled-components";
 import { IpfsEvidenceRawContent } from "next-common/components/collectives/core/evidenceContent";
@@ -23,6 +19,8 @@ import { getCidByEvidence } from "next-common/utils/collective/getCidByEvidence"
 import { useIpfsContent } from "next-common/hooks/useIpfsContent";
 import { WishBar } from "./wishBar";
 import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
+import EvidenceLink from "next-common/components/profile/fellowship/core/evidence/link";
+import { useContextAddress } from "next-common/context/address";
 
 export default function EvidenceWish() {
   const { id: address, fellowshipMembers } = usePageProps();
@@ -50,7 +48,7 @@ export default function EvidenceWish() {
 function BlockEvidenceOrEmpty({ wish, evidence, address, activeMember }) {
   return wish && evidence ? (
     <>
-      <WishBar wish={wish} activeMember={activeMember} address={address} />
+      <WishBar wish={wish} rank={activeMember?.rank} address={address} />
       <OnchainEvidenceStatisticsInfoImpl wish={wish} address={address} />
       <OnchainEvidenceContent evidence={evidence} wish={wish} />
     </>
@@ -84,9 +82,9 @@ function OnchainEvidenceStatisticsInfoImpl({ wish, address }) {
   );
 }
 
-function OnchainEvidenceContent({ evidence, wish }) {
-  const [detailVisible, setDetailVisible] = useState(false);
+function OnchainEvidenceContent({ evidence }) {
   const { isDark } = useTheme();
+  const address = useContextAddress();
 
   const cid = getCidByEvidence(evidence);
   const { value: ifpsContent, loading, error } = useIpfsContent(cid);
@@ -115,25 +113,17 @@ function OnchainEvidenceContent({ evidence, wish }) {
             error={error}
           />
         </div>
-        <Button
+        <EvidenceLink
+          cid={cid}
+          address={address}
           className={cn(
-            "absolute top-4 right-4 bg-theme500 text-textPrimaryContrast hidden",
+            "absolute top-4 right-4 bg-theme500 text-textPrimaryContrast hidden h-7 rounded-md text12Medium py-[5px] px-[11px]",
             { block: !!ifpsContent },
           )}
-          size="small"
-          onClick={() => setDetailVisible(true)}
+          showTooltip={false}
         >
           View Evidence
-        </Button>
-        {detailVisible && (
-          <WishDetailPopup
-            onClose={() => setDetailVisible(false)}
-            ifpsContent={ifpsContent}
-            wish={wish}
-            cid={cid}
-            evidence={evidence}
-          />
-        )}
+        </EvidenceLink>
       </GreyPanel>
     </>
   );
@@ -146,27 +136,6 @@ function OnchainEvidenceLoading() {
       <Skeleton className="h-5 mt-2" />
       <Skeleton className="h-5 w-1/2 mt-2" />
     </>
-  );
-}
-
-function WishDetailPopup({ onClose, ifpsContent, wish, cid, evidence }) {
-  const { id: address, fellowshipMembers } = usePageProps();
-
-  const activeMember = fellowshipMembers.find(
-    (member) => member.address === address,
-  );
-
-  return (
-    <Popup title={"Evidence Detail"} className="w-[800px]" onClose={onClose}>
-      <WishDetail
-        wish={wish}
-        address={address}
-        activeMember={activeMember}
-        ifpsContent={ifpsContent}
-        cid={cid}
-        evidence={evidence}
-      />
-    </Popup>
   );
 }
 
