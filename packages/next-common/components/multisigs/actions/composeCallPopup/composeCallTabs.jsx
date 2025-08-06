@@ -7,7 +7,7 @@ const tabs = [
   },
   {
     tabId: "input",
-    tabTitle: "Input Call Hash",
+    tabTitle: "Input Call Hex",
   },
 ];
 
