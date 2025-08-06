@@ -11,6 +11,8 @@ import { gov2VotingStates } from "next-common/utils/consts/state";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 import CollectivesMembersProvider from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/collectivesMember";
+import { isNil } from "lodash-es";
+import { useMemo } from "react";
 
 const CreateReferendumAndVoteArea = tw(CreateReferendumAndVote)`
   !w-full
@@ -37,14 +39,22 @@ export function EvidenceRelatedReferendaImpl() {
   const { detail } = usePageProps() || {};
   const { referenda = [] } = detail || {};
 
+  const canCreateReferendum = useMemo(() => {
+    const isOnChain =
+      isNil(detail?.cid) && isNil(detail?.content) && isNil(detail?.hex);
+    return detail?.isActive && !isOnChain && referenda.length <= 0;
+  }, [detail, referenda]);
+
   if (referenda.length <= 0) {
     return (
       <SecondaryCard className="!p-4">
-        <div className="flex gap-x-[16px] justify-between items-center max-sm:flex-col max-sm:gap-y-3">
+        <div className="flex gap-x-[16px] justify-between items-center max-sm:flex-col max-sm:gap-y-3 min-h-[40px]">
           <p className="text-textTertiary text14Medium w-full max-sm:text-center">
             No referendum was created
           </p>
-          <CreateReferendumAndVoteArea who={detail.who} wish={detail.wish} />
+          {canCreateReferendum && (
+            <CreateReferendumAndVoteArea who={detail.who} wish={detail.wish} />
+          )}
         </div>
       </SecondaryCard>
     );
