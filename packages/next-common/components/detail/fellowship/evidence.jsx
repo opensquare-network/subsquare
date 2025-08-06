@@ -6,9 +6,10 @@ import { useReferendumFellowshipCoreEvidence } from "next-common/context/post/fe
 import { useReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 import EvidenceContentWithMemberStatusCard from "./evidenceContentWithMemberStatusCard";
-import { FellowshipEvidenceContentFromApi } from "./fellowshipEvidenceContentFromApi";
+import EvidenceExternalLinkWithWish from "next-common/components/collectives/core/evidenceContent/EvidenceExternalLinkWithWish";
+import DirectEvidenceContent from "next-common/components/fellowship/evidences/directEvidenceContent";
 
-function FellowshipReferendaDetailEvidenceImpl() {
+function OnChainEvidenceImpl() {
   const { wish, evidence, loading } = useReferendumFellowshipCoreEvidence();
 
   return (
@@ -22,7 +23,24 @@ function FellowshipReferendaDetailEvidenceImpl() {
   );
 }
 
-export function FellowshipReferendaDetailEvidenceOnChain() {
+function EvidenceContentFromApi({ evidence }) {
+  return (
+    <EvidenceContentWithMemberStatusCard>
+      <EvidenceExternalLinkWithWish
+        cid={evidence?.cid}
+        wish={evidence?.wish}
+        evidence={evidence?.hex}
+      />
+      <DirectEvidenceContent
+        content={evidence?.content}
+        cid={evidence?.cid}
+        hex={evidence?.hex}
+      />
+    </EvidenceContentWithMemberStatusCard>
+  );
+}
+
+function EvidenceContentOnChain() {
   const pallet = useCoreFellowshipPallet();
   const onchainData = useOnchainData();
   const { call } = onchainData?.inlineCall || onchainData.proposal || {};
@@ -33,7 +51,7 @@ export function FellowshipReferendaDetailEvidenceOnChain() {
   ) {
     return (
       <MigrationConditionalApiProvider indexer={indexer}>
-        <FellowshipReferendaDetailEvidenceImpl />
+        <OnChainEvidenceImpl />
       </MigrationConditionalApiProvider>
     );
   }
@@ -43,9 +61,9 @@ export function FellowshipReferendaDetailEvidenceOnChain() {
 export default function FellowshipReferendaDetailEvidence() {
   const { evidence } = usePageProps();
 
-  if (evidence?.cid || evidence?.content) {
-    return <FellowshipEvidenceContentFromApi evidence={evidence} />;
+  if (evidence?.cid || evidence?.content || evidence?.hex) {
+    return <EvidenceContentFromApi evidence={evidence} />;
   }
 
-  return <FellowshipReferendaDetailEvidenceOnChain />;
+  return <EvidenceContentOnChain />;
 }
