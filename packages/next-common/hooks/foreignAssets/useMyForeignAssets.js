@@ -2,11 +2,6 @@ import { useEffect, useState, useCallback } from "react";
 import { useAssetHubApi } from "next-common/hooks/chain/useAssetHubApi";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
-async function getForeignAssetEntries(api) {
-  const assetEntries = await api.query.foreignAssets.asset.entries();
-  return assetEntries;
-}
-
 async function queryForeignAssetAccount(api, assetLocation, realAddress) {
   const accountInfo = await api.query.foreignAssets.account(
     assetLocation,
@@ -84,7 +79,7 @@ async function processForeignAssetData(api, key, realAddress) {
 
 async function fetchForeignAssets(api, realAddress) {
   try {
-    const assetEntries = await getForeignAssetEntries(api);
+    const assetEntries = await api.query.foreignAssets.asset.entries();
 
     const userAssets = [];
     for (const [key] of assetEntries) {
