@@ -25,7 +25,7 @@ function Token({ assetId, symbol, name }) {
 
 export const colToken = {
   name: "Token",
-  style: { textAlign: "left", minWidth: "352px" },
+  style: { textAlign: "left", minWidth: "368px" },
   render: (item) => (
     <Token assetId={item.assetId} symbol={item.symbol} name={item.name} />
   ),

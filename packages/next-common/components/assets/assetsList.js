@@ -75,7 +75,7 @@ export function paddingDecimals(value, decimals) {
 
 export const colToken = {
   name: "Token",
-  style: { textAlign: "left", width: "160px", minWidth: "160px" },
+  style: { textAlign: "left", width: "112px", minWidth: "112px" },
   render: (item) => (
     <TokenSymbol
       key="token"
@@ -141,8 +141,8 @@ export const colTransfer = {
 
 const columnsDef = [
   colToken,
-  colId,
   colName,
+  colId,
   colTotal,
   colTransferrable,
   colTransfer,
