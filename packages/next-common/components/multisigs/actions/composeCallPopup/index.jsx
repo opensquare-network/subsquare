@@ -3,7 +3,9 @@ import { useSignerContext } from "next-common/components/popupWithSigner/context
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useState } from "react";
 import { useMount } from "react-use";
-import ComposeCallTabs from "../composeCallTabs";
+import ComposeCallTabs from "./composeCallTabs";
+import ProposeWithInputHex from "./proposeWithInputHex";
+import ProposeWithExtrinsic from "./proposeWithExtrinsic";
 
 export default function ComposeCallPopup({ onClose, multisig }) {
   return (
@@ -28,9 +30,13 @@ export function ComposeCallPopupImpl({ multisig }) {
       <SignerWithBalance noSwitchSigner />
       <ComposeCallTabs formType={formType} setFormType={setFormType} />
 
-      <div className={formType === "set" ? "hidden" : ""}></div>
+      <div className={formType === "set" ? "hidden" : ""}>
+        <ProposeWithInputHex />
+      </div>
 
-      <div className={formType === "input" ? "hidden" : ""}></div>
+      <div className={formType === "input" ? "hidden" : ""}>
+        <ProposeWithExtrinsic />
+      </div>
     </div>
   );
 }

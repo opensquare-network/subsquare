@@ -56,7 +56,7 @@ export default function ProposeWithInputHex() {
 
   return (
     <div className="flex flex-col space-y-2">
-      <div className="text14Bold">Call Hex</div>
+      <div className="text-textPrimary text14Bold">Call Hex</div>
       <Input
         placeholder="0x prefixed hex, e.g. 0x1234 or ascii data"
         value={inputHex}

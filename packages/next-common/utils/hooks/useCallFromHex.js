@@ -22,9 +22,13 @@ export default function useCallFromHex(callHex) {
       return;
     }
 
+    setIsLoading(true);
+
     try {
       const bytes = hexToU8a(callHex);
       setCall(blockApi.registry.createType("Call", bytes));
+    } catch (error) {
+      setCall(null);
     } finally {
       setIsLoading(false);
     }
