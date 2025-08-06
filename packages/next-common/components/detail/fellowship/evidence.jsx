@@ -45,6 +45,7 @@ function EvidenceContentOnChain() {
   const onchainData = useOnchainData();
   const { call } = onchainData?.inlineCall || onchainData.proposal || {};
   const indexer = useReferendumVotingFinishIndexer();
+
   if (
     call?.section === pallet &&
     ["approve", "promote", "promoteFast"].includes(call?.method)
