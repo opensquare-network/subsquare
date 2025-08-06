@@ -38,6 +38,10 @@ async function queryFreignAssetMetadata(api, assetLocation) {
 
 async function queryMyForeignAsset(api, key, realAddress) {
   const assetLocation = key.args[0];
+  if (!assetLocation || !assetLocation?.hash) {
+    return null;
+  }
+
   const assetId = assetLocation?.hash?.toString();
   try {
     const accountInfo = await queryForeignAssetAccount(
