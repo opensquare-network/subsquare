@@ -16,9 +16,10 @@ import useInnerPoints from "next-common/components/charts/thresholdCurve/hooks/u
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import { useRef } from "react";
 import CustomXTickLabels from "./curveChartCustomXTickLabels";
+import ApprovalBubbleArea from "./approvalBubbleArea";
 
 // used for detail page curve chart
-export default function ReferendaCurveChart({ showAyeNay }) {
+export default function ReferendaCurveChart({ showAvatar, showAyeNay }) {
   const { width } = useWindowSize();
   const chartRef = useRef();
   const { labels, supportData, approvalData } = useReferendumCurveData();
@@ -64,13 +65,20 @@ export default function ReferendaCurveChart({ showAyeNay }) {
 
   return (
     <div>
-      <div style={{ height: width <= 768 ? 144 : 320 }}>
+      <div style={{ height: width <= 768 ? 144 : 320 }} className="relative">
         <Line
           ref={chartRef}
           data={chartData}
           options={options}
           plugins={[hoverLinePlugin]}
         />
+        {chartRef.current && showAvatar && (
+          <ApprovalBubbleArea
+            scales={chartRef.current?.scales}
+            chartArea={chartRef.current?.chartArea}
+            historyApprovalData={historyApprovalData}
+          />
+        )}
       </div>
       <CustomXTickLabels
         showAyeNay={showAyeNay}
