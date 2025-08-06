@@ -1,6 +1,5 @@
 import { ExtrinsicFieldWithLoading } from "next-common/components/popup/fields/extrinsicField";
 import { useCallback, useState } from "react";
-import { useContextApi } from "next-common/context/api";
 import { blake2AsHex } from "@polkadot/util-crypto";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import CallHash from "./callHash";
@@ -9,27 +8,23 @@ const defaultSectionName = "system";
 const defaultMethodName = "setCode";
 
 export default function ProposeWithExtrinsic() {
-  const api = useContextApi();
   const [callHash, setCallHash] = useState(null);
   const [extrinsic, setExtrinsic] = useState(null);
 
-  const setValue = useCallback(
-    ({ isValid, data }) => {
-      if (!api || !isValid) {
-        setExtrinsic(null);
-        setCallHash(null);
-        return;
-      }
+  const setValue = useCallback(({ isValid, data }) => {
+    if (!isValid) {
+      setExtrinsic(null);
+      setCallHash(null);
+      return;
+    }
 
-      if (data) {
-        const encodedProposal = data.method.toHex();
-        const encodedHash = blake2AsHex(encodedProposal);
-        setCallHash(encodedHash);
-        setExtrinsic(data);
-      }
-    },
-    [api],
-  );
+    if (data) {
+      const encodedProposal = data.method.toHex();
+      const encodedHash = blake2AsHex(encodedProposal);
+      setCallHash(encodedHash);
+      setExtrinsic(data);
+    }
+  }, []);
 
   const getTxFunc = useCallback(() => {
     return extrinsic;
