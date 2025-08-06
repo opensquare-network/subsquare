@@ -55,7 +55,9 @@ function EvidenceContentOnChain() {
 
   return (
     <MigrationConditionalApiProvider indexer={detail?.indexer}>
-      <OnChainEvidenceImpl />
+      <CollectivesProvider section="fellowship">
+        <OnChainEvidenceImpl />
+      </CollectivesProvider>
     </MigrationConditionalApiProvider>
   );
 }
@@ -64,7 +66,13 @@ function EvidenceContentContainer() {
   const { detail } = usePageProps() || {};
 
   if (detail?.cid || detail?.content || detail?.hex) {
-    return <DirectEvidenceContent evidence={detail} />;
+    return (
+      <DirectEvidenceContent
+        cid={detail?.cid}
+        content={detail?.content}
+        hex={detail?.hex}
+      />
+    );
   }
 
   return <EvidenceContentOnChain />;
@@ -88,16 +96,14 @@ function EvidencePageImpl() {
   }
 
   return (
-    <CollectivesProvider section="fellowship">
-      <div className="flex flex-col gap-y-6">
-        <WishBar wish={detail.wish} rank={detail.rank} address={detail.who} />
-        <PostMetaBase>
-          <SimpleTime timestamp={detail.indexer?.blockTime} />
-          <CommentsContent commentsCount={comments?.total || 0} />
-        </PostMetaBase>
-        <Divider />
-        <EvidencePageContent />
-      </div>
-    </CollectivesProvider>
+    <div className="flex flex-col gap-y-6">
+      <WishBar wish={detail.wish} rank={detail.rank} address={detail.who} />
+      <PostMetaBase>
+        <SimpleTime timestamp={detail.indexer?.blockTime} />
+        <CommentsContent commentsCount={comments?.total || 0} />
+      </PostMetaBase>
+      <Divider />
+      <EvidencePageContent />
+    </div>
   );
 }

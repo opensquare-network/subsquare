@@ -3,6 +3,7 @@ import FellowshipRank from "next-common/components/fellowship/rank";
 import EvidenceLink from "next-common/components/profile/fellowship/core/evidence/link";
 import { isNil } from "lodash-es";
 import Link from "next/link";
+import getEvidenceTitle from "next-common/utils/fellowship/getEvidenceTitle";
 
 export function getFellowshipEvidencesRows(evidences = []) {
   return evidences.map((evidence, idx) => {
@@ -29,7 +30,11 @@ export function getFellowshipEvidencesRows(evidences = []) {
             address={address}
             target="_self"
           >
-            {activeEvidence?.title}
+            {getEvidenceTitle({
+              wish: activeEvidence?.wish,
+              rank: activeEvidence?.rank,
+              title: activeEvidence?.title,
+            })}
           </EvidenceLink>
         )}
       </div>,
