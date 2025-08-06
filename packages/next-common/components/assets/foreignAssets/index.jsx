@@ -1,12 +1,12 @@
 import ForeignAssetsTable from "./table";
 import {
-  ForeignAssetsProvider,
-  useForeignAssets,
+  MyForeignAssetsProvider,
+  useMyForeignAssetsContext,
 } from "next-common/context/foreignAssets";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 
 function ForeignAssetsHeader() {
-  const { count } = useForeignAssets();
+  const { count } = useMyForeignAssetsContext();
 
   return (
     <TitleContainer className="justify-start gap-x-1">
@@ -18,9 +18,9 @@ function ForeignAssetsHeader() {
 
 export default function ForeignAssets() {
   return (
-    <ForeignAssetsProvider>
+    <MyForeignAssetsProvider>
       <ForeignAssetsHeader />
       <ForeignAssetsTable />
-    </ForeignAssetsProvider>
+    </MyForeignAssetsProvider>
   );
 }

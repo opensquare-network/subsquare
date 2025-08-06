@@ -3,7 +3,7 @@ import useMyForeignAssets from "next-common/hooks/foreignAssets/useMyForeignAsse
 
 const ForeignAssetsContext = createContext(null);
 
-export function ForeignAssetsProvider({ children }) {
+export function MyForeignAssetsProvider({ children }) {
   const { assets, loading } = useMyForeignAssets();
 
   const count = useMemo(() => {
@@ -21,6 +21,6 @@ export function ForeignAssetsProvider({ children }) {
   );
 }
 
-export function useForeignAssets() {
+export function useMyForeignAssetsContext() {
   return useContext(ForeignAssetsContext);
 }

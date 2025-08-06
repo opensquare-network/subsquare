@@ -36,14 +36,9 @@ async function queryFreignAssetMetadata(api, assetLocation) {
   }
 }
 
-async function processForeignAssetData(api, key, realAddress) {
+async function queryMyForeignAsset(api, key, realAddress) {
   const assetLocation = key.args[0];
-  if (!assetLocation || !assetLocation?.hash) {
-    return null;
-  }
-
   const assetId = assetLocation?.hash?.toString();
-
   try {
     const accountInfo = await queryForeignAssetAccount(
       api,
@@ -83,7 +78,7 @@ async function fetchForeignAssets(api, realAddress) {
 
     const userAssets = [];
     for (const [key] of assetEntries) {
-      const assetData = await processForeignAssetData(api, key, realAddress);
+      const assetData = await queryMyForeignAsset(api, key, realAddress);
       if (assetData) {
         userAssets.push(assetData);
       }

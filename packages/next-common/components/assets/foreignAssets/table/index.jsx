@@ -1,5 +1,5 @@
 import React from "react";
-import { useForeignAssets } from "next-common/context/foreignAssets";
+import { useMyForeignAssetsContext } from "next-common/context/foreignAssets";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import { MapDataList } from "next-common/components/dataList";
 import { foreignAssetsColumnsDef } from "./columns/index";
@@ -19,7 +19,7 @@ function ForeignAssetListItem({ DataListItem, idx, rows, assets, loading }) {
 }
 
 export default function ForeignAssetsTable() {
-  const { assets, loading } = useForeignAssets();
+  const { assets, loading } = useMyForeignAssetsContext();
 
   const renderItem = (DataListItem, idx, rows) => (
     <ForeignAssetListItem
