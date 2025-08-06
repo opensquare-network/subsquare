@@ -55,6 +55,7 @@ const EvidenceItem = ({ row, popupTitle = "" }) => {
           blockHeight={row.indexer.blockHeight}
           eventIndex={row.indexer.eventIndex}
           className="text16Bold text-textPrimary hover:underline"
+          tooltipClassName="w-auto max-w-full"
         >
           {title}
         </EvidenceLink>
