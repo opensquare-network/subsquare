@@ -21,6 +21,7 @@ import { useCollectivePallet } from "next-common/context/collective";
 import { isSameAddress, isMotionEnded } from "next-common/utils";
 import { useOnchainData } from "next-common/context/post";
 import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
+import { useMaybeMultisigCallback } from "next-common/components/common/tx/useMaybeMultisigCallback";
 
 const SignerWrapper = styled.div`
   > :not(:first-child) {
@@ -47,6 +48,7 @@ function PopupContentWithContext() {
   const signerAccount = useSignerAccount();
   const showVoteSuccessful = useShowVoteSuccessful();
   const { sendTxFunc, isSubmitting } = useSendTransaction();
+
   const votes = useCollectiveMotionVotes();
 
   const [loadingState, setLoadingState] = useState();
@@ -70,6 +72,17 @@ function PopupContentWithContext() {
       showVoteSuccessful(currentVote);
     }
   }, [votes, signerAccount?.realAddress, showVoteSuccessful]);
+
+  const myOnInBlock = useCallback(() => {
+    getMyVoteAndShowSuccessful();
+  }, [getMyVoteAndShowSuccessful]);
+
+  const {
+    onInBlock: maybeMultisigOnInBlock,
+    onFinalized: maybeMultisigOnFinalized,
+  } = useMaybeMultisigCallback({
+    onInBlock: myOnInBlock,
+  });
 
   const showErrorToast = useCallback(
     (message) => dispatch(newErrorToast(message)),
@@ -103,9 +116,8 @@ function PopupContentWithContext() {
       await sendTxFunc({
         api,
         tx,
-        onInBlock: () => {
-          getMyVoteAndShowSuccessful();
-        },
+        onInBlock: maybeMultisigOnInBlock,
+        onFinalized: maybeMultisigOnFinalized,
         onSubmitted: onClose,
       });
     },
@@ -116,8 +128,9 @@ function PopupContentWithContext() {
       motionIndex,
       signerAccount,
       sendTxFunc,
-      getMyVoteAndShowSuccessful,
       onClose,
+      maybeMultisigOnInBlock,
+      maybeMultisigOnFinalized,
       isSubmitting,
       showErrorToast,
     ],

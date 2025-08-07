@@ -6,9 +6,7 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { wrapTransaction } from "next-common/utils/sendTransaction";
 import { useContextApi } from "next-common/context/api";
 import { useSendTransaction } from "next-common/hooks/useSendTransaction";
-import useWraperTxCallback, {
-  useMultisigCallback,
-} from "./useWraperTxCallback";
+import { useMaybeMultisigCallback } from "./useMaybeMultisigCallback";
 
 export default function useTxSubmission({
   getTxFunc = noop,
@@ -22,8 +20,10 @@ export default function useTxSubmission({
   const api = useContextApi();
   const signerAccount = useSignerAccount();
   const { sendTxFunc, isSubmitting } = useSendTransaction();
-  const wraperTxCallback = useWraperTxCallback();
-  const multisigCallback = useMultisigCallback();
+  const {
+    onInBlock: maybeMultisigOnInBlock,
+    onFinalized: maybeMultisigOnFinalized,
+  } = useMaybeMultisigCallback({ onInBlock, onFinalized });
 
   const doSubmit = useCallback(async () => {
     if (!api) {
@@ -54,8 +54,8 @@ export default function useTxSubmission({
       api,
       tx,
       onSubmitted,
-      onInBlock: wraperTxCallback(onInBlock, multisigCallback?.onInBlock),
-      onFinalized: wraperTxCallback(onFinalized, multisigCallback?.onFinalized),
+      onInBlock: maybeMultisigOnInBlock,
+      onFinalized: maybeMultisigOnFinalized,
       onCancelled,
       onTxError,
     });
@@ -66,12 +66,10 @@ export default function useTxSubmission({
     getTxFunc,
     sendTxFunc,
     onSubmitted,
-    onInBlock,
-    onFinalized,
+    maybeMultisigOnInBlock,
+    maybeMultisigOnFinalized,
     onCancelled,
     onTxError,
-    wraperTxCallback,
-    multisigCallback,
   ]);
 
   return {

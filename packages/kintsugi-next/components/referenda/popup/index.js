@@ -21,6 +21,7 @@ import { useShowVoteSuccessful } from "next-common/components/vote";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 import { useSendTransaction } from "next-common/hooks/useSendTransaction";
+import { useMaybeMultisigCallback } from "next-common/components/common/tx/useMaybeMultisigCallback";
 
 function PopupContent() {
   const { referendumIndex, onClose } = usePopupParams();
@@ -50,6 +51,17 @@ function PopupContent() {
     }
     showVoteSuccessful(addressVote);
   }, [api, referendumIndex, signerAccount?.realAddress, showVoteSuccessful]);
+
+  const myOnInBlock = useCallback(() => {
+    getMyVoteAndShowSuccessful();
+  }, [getMyVoteAndShowSuccessful]);
+
+  const {
+    onInBlock: maybeMultisigOnInBlock,
+    onFinalized: maybeMultisigOnFinalized,
+  } = useMaybeMultisigCallback({
+    onInBlock: myOnInBlock,
+  });
 
   const showErrorToast = useCallback(
     (message) => dispatch(newErrorToast(message)),
@@ -101,9 +113,8 @@ function PopupContent() {
       await sendTxFunc({
         api,
         tx,
-        onInBlock: () => {
-          getMyVoteAndShowSuccessful();
-        },
+        onInBlock: maybeMultisigOnInBlock,
+        onFinalized: maybeMultisigOnFinalized,
         onSubmitted: onClose,
       });
     },
@@ -115,7 +126,8 @@ function PopupContent() {
       referendumIndex,
       signerAccount,
       votingBalance,
-      getMyVoteAndShowSuccessful,
+      maybeMultisigOnInBlock,
+      maybeMultisigOnFinalized,
       sendTxFunc,
       node,
       showErrorToast,

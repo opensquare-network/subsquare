@@ -3,7 +3,6 @@ import { useCallback, useState } from "react";
 import { blake2AsHex } from "@polkadot/util-crypto";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import CallHash from "./callHash";
-import { useMultisigListFetchFunc } from "./fetchMultisigList";
 
 const defaultSectionName = "system";
 const defaultMethodName = "setCode";
@@ -11,7 +10,6 @@ const defaultMethodName = "setCode";
 export default function ProposeWithExtrinsic() {
   const [callHash, setCallHash] = useState(null);
   const [extrinsic, setExtrinsic] = useState(null);
-  const fetchMultisigListFunc = useMultisigListFetchFunc();
 
   const setValue = useCallback(({ isValid, data }) => {
     if (!isValid || !data) {
@@ -46,7 +44,6 @@ export default function ProposeWithExtrinsic() {
           disabled={!extrinsic}
           title="Propose"
           getTxFunc={getTxFunc}
-          onFinalized={fetchMultisigListFunc}
         />
       </div>
     </div>

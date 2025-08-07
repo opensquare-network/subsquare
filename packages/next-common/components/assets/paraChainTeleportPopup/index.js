@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import { useChainApi, useGetTeleportTxFunc } from "./crossChainApi";
 import useCrossChainDirection from "./useCrossChainDirection";
 import useNativeTransferAmount from "./useNativeTransferAmount";
+import { useMaybeMultisigCallback } from "next-common/components/common/tx/useMaybeMultisigCallback";
 
 function PopupContent() {
   const { onClose } = usePopupParams();
@@ -46,6 +47,17 @@ function PopupContent() {
   const { value: transferToAddress, component: addressComboField } =
     useAddressComboField({ title: "To Address", defaultAddress: address });
 
+  const myOnInBlock = useCallback(() => {
+    dispatch(newSuccessToast("Teleport successfully"));
+  }, [dispatch]);
+
+  const {
+    onInBlock: maybeMultisigOnInBlock,
+    onFinalized: maybeMultisigOnFinalized,
+  } = useMaybeMultisigCallback({
+    onInBlock: myOnInBlock,
+  });
+
   const getTxFunc = useCallback(() => {
     try {
       if (!transferToAddress) {
@@ -75,11 +87,18 @@ function PopupContent() {
       api: sourceApi,
       tx,
       onSubmitted: onClose,
-      onInBlock: () => {
-        dispatch(newSuccessToast("Teleport successfully"));
-      },
+      onInBlock: maybeMultisigOnInBlock,
+      onFinalized: maybeMultisigOnFinalized,
     });
-  }, [sourceApi, dispatch, getTxFunc, sendTxFunc, onClose]);
+  }, [
+    sourceApi,
+    dispatch,
+    getTxFunc,
+    sendTxFunc,
+    onClose,
+    maybeMultisigOnInBlock,
+    maybeMultisigOnFinalized,
+  ]);
 
   return (
     <>

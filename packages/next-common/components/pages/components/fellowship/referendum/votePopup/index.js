@@ -18,11 +18,12 @@ import { useShowVoteSuccessful } from "next-common/components/vote";
 import { getFellowshipVote } from "next-common/utils/gov2/getFellowshipVote";
 import { useContextApi } from "next-common/context/api";
 import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
-import { isNil, noop } from "lodash-es";
+import { isNil } from "lodash-es";
 import { useSendTransaction } from "next-common/hooks/useSendTransaction";
+import { useMaybeMultisigCallback } from "next-common/components/common/tx/useMaybeMultisigCallback";
 
 function PopupContent() {
-  const { referendumIndex, onClose, onInBlock = noop } = usePopupParams();
+  const { referendumIndex, onClose, onInBlock } = usePopupParams();
   const showVoteSuccessful = useShowVoteSuccessful();
   const dispatch = useDispatch();
 
@@ -68,6 +69,18 @@ function PopupContent() {
     collectivePallet,
   ]);
 
+  const myOnInBlock = useCallback(() => {
+    getMyVoteAndShowSuccessful();
+    onInBlock?.();
+  }, [getMyVoteAndShowSuccessful, onInBlock]);
+
+  const {
+    onInBlock: maybeMultisigOnInBlock,
+    onFinalized: maybeMultisigOnFinalized,
+  } = useMaybeMultisigCallback({
+    onInBlock: myOnInBlock,
+  });
+
   const doVote = useCallback(
     async (aye) => {
       if (isSubmitting || isNil(referendumIndex) || !node) {
@@ -92,10 +105,8 @@ function PopupContent() {
       await sendTxFunc({
         api,
         tx,
-        onInBlock: () => {
-          getMyVoteAndShowSuccessful();
-          onInBlock();
-        },
+        onInBlock: maybeMultisigOnInBlock,
+        onFinalized: maybeMultisigOnFinalized,
         onSubmitted: onClose,
       });
     },
@@ -105,8 +116,8 @@ function PopupContent() {
       referendumIndex,
       signerAccount,
       sendTxFunc,
-      onInBlock,
-      getMyVoteAndShowSuccessful,
+      maybeMultisigOnInBlock,
+      maybeMultisigOnFinalized,
       onClose,
       isSubmitting,
       showErrorToast,
