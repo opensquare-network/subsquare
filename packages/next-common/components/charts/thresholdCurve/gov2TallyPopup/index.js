@@ -28,7 +28,7 @@ export default function ThresholdCurvesGov2TallyPopup({
 }) {
   const approvalThreshold = useApprovalThreshold();
   const supportThreshold = useSupportThreshold();
-  const [showAyeNay, setShowAyeNay] = useState(true);
+  const [showAyeNay, setShowAyeNay] = useState(false);
   const [showAvatar, setShowAvatar] = useState(true);
   const showVoteActions = useShowVoteActions();
 

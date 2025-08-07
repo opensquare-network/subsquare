@@ -51,12 +51,12 @@ export default function CustomChartTooltip({
           >
             <div className="w-auto p-2">
               <div>
-                <div className="text12Bold pb-1  whitespace-nowrap">
+                <div className="text12Bold pb-1 whitespace-nowrap">
                   {data?.title}
                 </div>
                 <div className=" text12Normal space-y-0.5">
                   {data?.data?.map(({ label, value }) => (
-                    <div className="flex" key={label}>
+                    <div className="flex whitespace-nowrap" key={label}>
                       <div className="">{label} :</div>
                       <div className="pl-1">{value}</div>
                     </div>
