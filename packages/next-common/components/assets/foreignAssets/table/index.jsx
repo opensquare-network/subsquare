@@ -4,6 +4,8 @@ import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import { MapDataList } from "next-common/components/dataList";
 import { foreignAssetsColumnsDef } from "./columns/index";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
+import { TransferPopupProvider } from "./transferPopup/context";
+import ForeignAssetTransferPopup from "./transferPopup";
 
 function ForeignAssetListItem({ DataListItem, idx, rows, loading }) {
   if (loading) {
@@ -27,16 +29,19 @@ export default function ForeignAssetsTable() {
   );
 
   return (
-    <SecondaryCard>
-      <ScrollerX>
-        <MapDataList
-          columnsDef={foreignAssetsColumnsDef}
-          data={assets}
-          loading={loading}
-          renderItem={renderItem}
-          noDataText="No current foreign assets"
-        />
-      </ScrollerX>
-    </SecondaryCard>
+    <TransferPopupProvider>
+      <SecondaryCard>
+        <ScrollerX>
+          <MapDataList
+            columnsDef={foreignAssetsColumnsDef}
+            data={assets}
+            loading={loading}
+            renderItem={renderItem}
+            noDataText="No current foreign assets"
+          />
+        </ScrollerX>
+      </SecondaryCard>
+      <ForeignAssetTransferPopup />
+    </TransferPopupProvider>
   );
 }

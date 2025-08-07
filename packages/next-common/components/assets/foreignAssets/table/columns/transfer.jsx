@@ -1,17 +1,30 @@
-import ForeignAssetTransferButton from "next-common/components/assets/foreignAssets/table/transfer";
+import React from "react";
+import { SystemTransfer } from "@osn/icons/subsquare";
+import ListButton from "next-common/components/styled/listButton";
+import Tooltip from "next-common/components/tooltip";
+import { useTransferPopup } from "../transferPopup/context";
 
-function Transfer({ item }) {
-  const { transferable, decimals, symbol, location } = item;
+function TransferButton({ asset }) {
+  const { setVisible, setCurrentAsset } = useTransferPopup();
+
+  const handleClick = () => {
+    setCurrentAsset(asset);
+    setVisible(true);
+  };
 
   return (
-    <ForeignAssetTransferButton
-      asset={{ transferable, decimals, symbol, location }}
-    />
+    <Tooltip content="Transfer">
+      <ListButton onClick={handleClick}>
+        <SystemTransfer width={16} height={16} />
+      </ListButton>
+    </Tooltip>
   );
 }
 
 export const colTransfer = {
   name: "",
   style: { textAlign: "right", width: "80px", minWidth: "80px" },
-  render: (item) => <Transfer key={item.assetId} item={item} />,
+  render: (item) => {
+    return <TransferButton asset={item} />;
+  },
 };

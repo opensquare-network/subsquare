@@ -89,7 +89,7 @@ function PopupContent() {
   );
 }
 
-export default function ForeignAssetTransferPopup(props) {
+export default function ForeignAssetTransferPopupContent(props) {
   return (
     <PopupWithSigner title="Transfer" {...props}>
       <PopupContent />
