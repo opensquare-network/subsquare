@@ -5,6 +5,7 @@ import { backendApi } from "next-common/services/nextApi";
 import { usePageProps } from "next-common/context/page";
 import FellowshipEvidencesTable from "next-common/components/fellowship/evidences/table";
 import useRankFilter from "next-common/components/fellowship/evidences/useRankFilter";
+import useEvidencesSort from "next-common/components/fellowship/evidences/useEvidencesSort";
 
 export default function FellowshipEvidencesPage() {
   const { evidences } = usePageProps();
@@ -12,7 +13,9 @@ export default function FellowshipEvidencesPage() {
   const { component: RankFilterComponent, filteredEvidences } =
     useRankFilter(evidences);
 
-  const evidencesCount = filteredEvidences?.length || 0;
+  const sortedEvidences = useEvidencesSort(filteredEvidences);
+
+  const evidencesCount = sortedEvidences?.length || 0;
 
   return (
     <ListLayout title="Fellowship Evidences">

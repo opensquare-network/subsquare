@@ -4,11 +4,15 @@ import EvidenceLink from "next-common/components/profile/fellowship/core/evidenc
 import { isNil } from "lodash-es";
 import Link from "next/link";
 import getEvidenceTitle from "next-common/utils/fellowship/getEvidenceTitle";
+import { MineTagOnListView } from "next-common/components/delegation/delegate/common/mineTag";
+import { isSameAddress } from "next-common/utils";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
-export function getFellowshipEvidencesRows(evidences = []) {
+export function useEvidencesRows(evidences = []) {
+  const realAddress = useRealAddress();
   return evidences.map((evidence, idx) => {
     const { activeEvidence, address, rank, evidencesCount } = evidence;
-    return [
+    const row = [
       <div key={`evidence-row-${idx}`} className="flex items-center gap-x-2">
         {isNil(rank) ? null : (
           <>
@@ -46,5 +50,11 @@ export function getFellowshipEvidencesRows(evidences = []) {
         {evidencesCount}
       </Link>,
     ];
+
+    if (isSameAddress(address, realAddress)) {
+      row.tag = <MineTagOnListView />;
+    }
+
+    return row;
   });
 }
