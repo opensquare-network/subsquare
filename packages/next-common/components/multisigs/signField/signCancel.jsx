@@ -37,6 +37,9 @@ export default function SignCancel({ multisig = {} }) {
 
   const { doSubmit, isSubmitting } = useTxSubmission({
     getTxFunc,
+    onInBlock: () => setIsDisabled(false),
+    onCancelled: () => setIsDisabled(false),
+    onTxError: () => setIsDisabled(false),
     onFinalized: fetchMultisigListFunc,
   });
 
