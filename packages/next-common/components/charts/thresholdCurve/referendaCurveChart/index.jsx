@@ -17,7 +17,9 @@ import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import { useRef, useState } from "react";
 import CustomXTickLabels from "./curveChartCustomXTickLabels";
 import ApprovalBubbleArea from "./approvalBubbleArea";
-import CustomChartTooltip, { getCustomTooltip } from "./curveChartTooltip";
+import CustomChartTooltip, {
+  useChartOptionsWithTooltip,
+} from "./curveChartTooltip";
 
 // used for detail page curve chart
 export default function ReferendaCurveChart({ showAvatar, showAyeNay }) {
@@ -56,8 +58,8 @@ export default function ReferendaCurveChart({ showAvatar, showAyeNay }) {
   ].filter(Boolean);
 
   const chartData = { labels, datasets };
-  const options = useDetailPageOptions(labels, datasets);
-  getCustomTooltip(options, setTooltip);
+  const defaultOptions = useDetailPageOptions(labels, datasets);
+  const options = useChartOptionsWithTooltip(defaultOptions, setTooltip);
 
   const { approvalInnerPoint, supportInnerPoint } = useInnerPoints(labels);
   set(
