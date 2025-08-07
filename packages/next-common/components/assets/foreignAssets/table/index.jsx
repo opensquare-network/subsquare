@@ -21,7 +21,6 @@ export default function ForeignAssetsTable() {
       DataListItem={DataListItem}
       idx={idx}
       rows={rows}
-      assets={assets}
       loading={loading}
       key={assets[idx]?.assetId}
     />
