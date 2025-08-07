@@ -25,52 +25,55 @@ export default function useTxSubmission({
     onFinalized: maybeMultisigOnFinalized,
   } = useMaybeMultisigCallback({ onInBlock, onFinalized });
 
-  const doSubmit = useCallback(async () => {
-    if (!api) {
-      dispatch(newErrorToast("Chain RPC is not connected yet"));
-      return;
-    }
+  const doSubmit = useCallback(
+    async (...args) => {
+      if (!api) {
+        dispatch(newErrorToast("Chain RPC is not connected yet"));
+        return;
+      }
 
-    if (!signerAccount) {
-      dispatch(newErrorToast("Signer account is not specified"));
-      return;
-    }
+      if (!signerAccount) {
+        dispatch(newErrorToast("Signer account is not specified"));
+        return;
+      }
 
-    let tx = null;
-    try {
-      tx = await getTxFunc();
-    } catch (e) {
-      dispatch(newErrorToast(e.message));
-      return;
-    }
+      let tx = null;
+      try {
+        tx = await getTxFunc(...args);
+      } catch (e) {
+        dispatch(newErrorToast(e.message));
+        return;
+      }
 
-    if (!tx) {
-      return;
-    }
+      if (!tx) {
+        return;
+      }
 
-    tx = await wrapTransaction(api, tx, signerAccount);
+      tx = await wrapTransaction(api, tx, signerAccount);
 
-    await sendTxFunc({
+      await sendTxFunc({
+        api,
+        tx,
+        onSubmitted,
+        onInBlock: maybeMultisigOnInBlock,
+        onFinalized: maybeMultisigOnFinalized,
+        onCancelled,
+        onTxError,
+      });
+    },
+    [
       api,
-      tx,
+      dispatch,
+      signerAccount,
+      getTxFunc,
+      sendTxFunc,
       onSubmitted,
-      onInBlock: maybeMultisigOnInBlock,
-      onFinalized: maybeMultisigOnFinalized,
+      maybeMultisigOnInBlock,
+      maybeMultisigOnFinalized,
       onCancelled,
       onTxError,
-    });
-  }, [
-    api,
-    dispatch,
-    signerAccount,
-    getTxFunc,
-    sendTxFunc,
-    onSubmitted,
-    maybeMultisigOnInBlock,
-    maybeMultisigOnFinalized,
-    onCancelled,
-    onTxError,
-  ]);
+    ],
+  );
 
   return {
     isSubmitting,
