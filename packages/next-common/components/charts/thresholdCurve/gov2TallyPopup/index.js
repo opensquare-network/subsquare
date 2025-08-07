@@ -39,7 +39,9 @@ export default function ThresholdCurvesGov2TallyPopup({
       onClose={closeFunc}
       extra={
         <>
-          <AvatarSwitch value={showAvatar} onChange={setShowAvatar} />
+          {showVoteActions && (
+            <AvatarSwitch value={showAvatar} onChange={setShowAvatar} />
+          )}
           <NayAyeSwitch isOn={showAyeNay} setIsOn={setShowAyeNay} />
         </>
       }

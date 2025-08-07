@@ -5,6 +5,7 @@ import {
   useBlockSteps,
 } from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
 import BubbleItem from "./bubbleItem";
+import useShowVoteActions from "next-common/hooks/useShowVoteActions";
 
 const useApprovalBubbleData = (maxX, historyApprovalData) => {
   const beginheight = useBeginHeight();
@@ -33,11 +34,15 @@ const useApprovalBubbleData = (maxX, historyApprovalData) => {
   }, [beginheight, blockStep, historyApprovalData, loading, maxX, voteActions]);
 };
 
-export default function ApprovalBubbleArea({
-  chartArea,
-  scales,
-  historyApprovalData,
-}) {
+export default function ApprovalBubbleArea(props) {
+  const showVoteActions = useShowVoteActions();
+  if (!showVoteActions) {
+    return;
+  }
+  return <ApprovalBubbleAreaImpl {...props} />;
+}
+
+function ApprovalBubbleAreaImpl({ chartArea, scales, historyApprovalData }) {
   const maxX = scales?.["x"]?.max;
   const approvalData = useApprovalBubbleData(maxX, historyApprovalData);
 
