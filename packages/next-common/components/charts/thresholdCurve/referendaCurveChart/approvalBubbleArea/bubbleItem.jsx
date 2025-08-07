@@ -75,7 +75,7 @@ function TooltipContent({ who, data, type }) {
         },
       ].map(({ label, value }) => (
         <div className="flex" key={label}>
-          <div className="w-[76px]">{label} :</div>
+          <div className="">{label} :</div>
           <div className="pl-1">{value}</div>
         </div>
       ))}

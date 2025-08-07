@@ -14,17 +14,24 @@ import useDetailPageOptions from "next-common/components/charts/thresholdCurve/u
 import { set } from "lodash-es";
 import useInnerPoints from "next-common/components/charts/thresholdCurve/hooks/useInnerPoints";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import CustomXTickLabels from "./curveChartCustomXTickLabels";
 import ApprovalBubbleArea from "./approvalBubbleArea";
+import CustomChartTooltip, { getCustomTooltip } from "./curveChartTooltip";
 
 // used for detail page curve chart
 export default function ReferendaCurveChart({ showAvatar, showAyeNay }) {
   const { width } = useWindowSize();
   const chartRef = useRef();
+  const chartWrapper = useRef();
   const { labels, supportData, approvalData } = useReferendumCurveData();
   const supportCurveConfig = useSupportThresholdDatasetConfig(supportData);
   const approvalCurveConfig = useApprovalThresholdDatasetConfig(approvalData);
+  const [tooltip, setTooltip] = useState({
+    visible: false,
+    position: { x: 0, y: 0 },
+    data: {},
+  });
 
   const {
     historySupportData,
@@ -50,6 +57,7 @@ export default function ReferendaCurveChart({ showAvatar, showAyeNay }) {
 
   const chartData = { labels, datasets };
   const options = useDetailPageOptions(labels, datasets);
+  getCustomTooltip(options, setTooltip);
 
   const { approvalInnerPoint, supportInnerPoint } = useInnerPoints(labels);
   set(
@@ -65,13 +73,18 @@ export default function ReferendaCurveChart({ showAvatar, showAyeNay }) {
 
   return (
     <div>
-      <div style={{ height: width <= 768 ? 144 : 320 }} className="relative">
+      <div
+        ref={chartWrapper}
+        style={{ height: width <= 768 ? 144 : 320 }}
+        className="relative"
+      >
         <Line
           ref={chartRef}
           data={chartData}
           options={options}
           plugins={[hoverLinePlugin]}
         />
+        <CustomChartTooltip container={chartWrapper.current} {...tooltip} />
         {chartRef.current && showAvatar && (
           <ApprovalBubbleArea
             scales={chartRef.current?.scales}
