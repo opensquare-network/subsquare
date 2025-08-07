@@ -7,7 +7,7 @@ export default function useEvidencesSort(evidences) {
 
   return useMemo(() => {
     const newEvidencesArray = evidences || [];
-    // Move my member to the first, keep the order of other members
+    // Move my evidences to the first, keep the order of other evidences
     newEvidencesArray.sort((a, b) => {
       if (isSameAddress(a.address, realAddress)) {
         return -1;
