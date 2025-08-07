@@ -6,14 +6,7 @@ import Popup from "next-common/components/popup/wrapper/Popup";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useWeight from "next-common/utils/hooks/common/useWeight";
-import { newSuccessToast } from "next-common/store/reducers/toastSlice";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchMultisigList10Times,
-  fetchMultisigsCount10Times,
-} from "../../common";
-import { myMultisigsSelector } from "next-common/store/reducers/multisigSlice";
-import { useChain, useChainSettings } from "next-common/context/chain";
+import { useChainSettings } from "next-common/context/chain";
 import PopupPropose from "./propose";
 import useCallFromHex, {
   useCallFromHexIndexer,
@@ -23,6 +16,7 @@ import { isSameAddress } from "next-common/utils";
 import MultisigSignProvider, { useMultisigSignContext } from "./context";
 import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
+import { useMultisigListFetchFunc } from "../../actions/composeCallPopup/fetchMultisigList";
 
 function SubmitPrompt() {
   return (
@@ -41,10 +35,6 @@ export function SignSubmitInnerPopup({ onClose, multisig = {} }) {
     useMultisigSignContext();
   const { callData: call, isValid } = callDataMap[formType] || {};
 
-  const dispatch = useDispatch();
-  const myMultisigs = useSelector(myMultisigsSelector);
-  const { page = 1 } = myMultisigs || {};
-  const chain = useChain();
   const { call: rawCall, isLoading: isLoadingRawCall } =
     useCallFromHex(callHex);
 
@@ -52,6 +42,7 @@ export function SignSubmitInnerPopup({ onClose, multisig = {} }) {
   const { weight: maxWeight } = state;
 
   const { ss58Format } = useChainSettings();
+  const fetchMultisigListFunc = useMultisigListFetchFunc();
 
   // call tree popup with callHex
   useEffect(() => {
@@ -95,16 +86,6 @@ export function SignSubmitInnerPopup({ onClose, multisig = {} }) {
     maxWeight,
   ]);
 
-  const onFinalized = () => {
-    dispatch(newSuccessToast("Multisig status will be updated in seconds"));
-    fetchMultisigList10Times(dispatch, chain, address, page).then(() => {
-      // updated 10 time, do nothing
-    });
-    fetchMultisigsCount10Times(dispatch, chain, address).then(() => {
-      // updated 10 time, do nothing
-    });
-  };
-
   return (
     <Popup title="Multisig" onClose={onClose} maskClosable={false}>
       <SignerWithBalance noSwitchSigner />
@@ -113,7 +94,7 @@ export function SignSubmitInnerPopup({ onClose, multisig = {} }) {
       <TxSubmissionButton
         disabled={isLoading || !isValid}
         getTxFunc={getTxFunc}
-        onFinalized={onFinalized}
+        onFinalized={fetchMultisigListFunc}
       />
     </Popup>
   );

@@ -4,11 +4,13 @@ import useCallFromHex from "next-common/utils/hooks/useCallFromHex";
 import CallTree from "next-common/components/proposal/callTree";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { useContextApi } from "next-common/context/api";
+import { useMultisigListFetchFunc } from "./fetchMultisigList";
 
 export default function ProposeWithInputHex() {
   const api = useContextApi();
   const [inputHex, setInputHex] = useState("");
   const { call, isLoading } = useCallFromHex(inputHex);
+  const fetchMultisigListFunc = useMultisigListFetchFunc();
 
   const getTxFunc = useCallback(() => {
     if (!call) {
@@ -33,6 +35,7 @@ export default function ProposeWithInputHex() {
           disabled={!call}
           title="Propose"
           getTxFunc={getTxFunc}
+          onFinalized={fetchMultisigListFunc}
         />
       </div>
     </div>
