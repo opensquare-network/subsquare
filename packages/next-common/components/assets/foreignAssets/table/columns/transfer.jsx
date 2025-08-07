@@ -1,22 +1,11 @@
 import ForeignAssetTransferButton from "next-common/components/assets/foreignAssets/table/transfer";
-import { useMemo } from "react";
-import { useSingleForeignAsset } from "next-common/context/foreignAssets/singleForeignAsset";
 
 function Transfer({ item }) {
-  const { asset, loading } = useSingleForeignAsset();
   const { transferable, decimals, symbol, location } = item;
-
-  const displayTransferable = useMemo(() => {
-    if (loading || !asset) {
-      return transferable;
-    }
-
-    return asset.transferable;
-  }, [loading, asset, transferable]);
 
   return (
     <ForeignAssetTransferButton
-      asset={{ transferable: displayTransferable, decimals, symbol, location }}
+      asset={{ transferable, decimals, symbol, location }}
     />
   );
 }

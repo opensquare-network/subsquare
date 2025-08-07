@@ -3,19 +3,14 @@ import { useMyForeignAssetsContext } from "next-common/context/foreignAssets";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import { MapDataList } from "next-common/components/dataList";
 import { foreignAssetsColumnsDef } from "./columns/index";
-import { SingleForeignAssetProvider } from "next-common/context/foreignAssets/singleForeignAsset";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 
-function ForeignAssetListItem({ DataListItem, idx, rows, assets, loading }) {
+function ForeignAssetListItem({ DataListItem, idx, rows, loading }) {
   if (loading) {
     return null;
   }
 
-  return (
-    <SingleForeignAssetProvider assetLocation={assets[idx]?.location}>
-      <DataListItem row={rows[idx]} />
-    </SingleForeignAssetProvider>
-  );
+  return <DataListItem row={rows[idx]} />;
 }
 
 export default function ForeignAssetsTable() {

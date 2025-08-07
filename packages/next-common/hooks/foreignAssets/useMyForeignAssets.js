@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useAssetHubApi } from "next-common/hooks/chain/useAssetHubApi";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import useChainOrScanHeight from "next-common/hooks/height";
 
 async function queryForeignAssetAccount(api, assetLocation, realAddress) {
   const accountInfo = await api.query.foreignAssets.account(
@@ -100,10 +101,10 @@ export default function useMyForeignAssets() {
   const realAddress = useRealAddress();
   const [assets, setAssets] = useState([]);
   const [loading, setLoading] = useState(true);
+  const blockHeight = useChainOrScanHeight();
 
   const fetchData = useCallback(async () => {
     try {
-      setLoading(true);
       const userAssets = await fetchForeignAssets(api, realAddress);
       setAssets(userAssets);
     } catch (error) {
@@ -119,7 +120,7 @@ export default function useMyForeignAssets() {
     }
 
     fetchData();
-  }, [api, realAddress, fetchData]);
+  }, [api, realAddress, fetchData, blockHeight]);
 
   return { assets, loading };
 }
