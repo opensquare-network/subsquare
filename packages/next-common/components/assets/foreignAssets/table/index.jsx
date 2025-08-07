@@ -28,7 +28,7 @@ export default function ForeignAssetsTable() {
       rows={rows}
       assets={assets}
       loading={loading}
-      key={idx}
+      key={assets[idx]?.assetId}
     />
   );
 

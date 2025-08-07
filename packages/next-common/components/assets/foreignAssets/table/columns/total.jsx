@@ -20,5 +20,7 @@ function Total({ balance, decimals }) {
 export const colTotal = {
   name: "Total",
   style: { textAlign: "right", width: "160px" },
-  render: (item) => <Total balance={item.balance} decimals={item.decimals} />,
+  render: (item) => (
+    <Total key={item.assetId} balance={item.balance} decimals={item.decimals} />
+  ),
 };

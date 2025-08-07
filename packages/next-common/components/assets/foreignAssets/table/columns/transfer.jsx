@@ -24,5 +24,5 @@ function Transfer({ item }) {
 export const colTransfer = {
   name: "",
   style: { textAlign: "right", width: "80px", minWidth: "80px" },
-  render: (item) => <Transfer item={item} />,
+  render: (item) => <Transfer key={item.assetId} item={item} />,
 };
