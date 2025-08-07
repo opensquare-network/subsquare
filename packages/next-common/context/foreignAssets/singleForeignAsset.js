@@ -8,13 +8,13 @@ export function SingleForeignAssetProvider({ assetLocation, children }) {
   const [asset, setAsset] = useState(null);
 
   useEffect(() => {
-    if (loading || !realtimeAsset) {
+    if (loading) {
       return;
     }
 
     setAsset({
-      balance: realtimeAsset.balance,
-      transferable: realtimeAsset.transferrable,
+      balance: realtimeAsset?.balance || "0",
+      transferable: realtimeAsset?.transferrable || "0",
     });
   }, [realtimeAsset, loading]);
 
