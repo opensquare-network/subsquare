@@ -1,12 +1,12 @@
 import DataList from "next-common/components/dataList";
 import { isNil } from "lodash-es";
 import fellowshipMemberColumns from "./columns";
-import { getFellowshipEvidencesRows } from "./rows";
+import { useEvidencesRows } from "./useEvidenceRows";
 
 export default function FellowshipEvidencesTable({ evidences = [] }) {
   const isLoading = isNil(evidences);
 
-  const rows = getFellowshipEvidencesRows(evidences);
+  const rows = useEvidencesRows(evidences);
 
   return (
     <DataList
