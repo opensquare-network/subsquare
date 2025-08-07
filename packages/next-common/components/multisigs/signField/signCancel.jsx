@@ -13,7 +13,7 @@ import { useMultisigListFetchFunc } from "../actions/composeCallPopup/fetchMulti
 export default function SignCancel({ multisig = {} }) {
   const api = useContextApi();
   const address = useRealAddress();
-  const { threshold, signatories, when: timePoint, callHash } = multisig;
+  const { threshold, signatories, when: timepoint, callHash } = multisig;
   const [isDisabled, setIsDisabled] = useState(false);
   const { ss58Format } = useChainSettings();
   const fetchMultisigListFunc = useMultisigListFetchFunc();
@@ -30,10 +30,10 @@ export default function SignCancel({ multisig = {} }) {
     return api.tx.multisig?.cancelAsMulti(
       threshold,
       sortAddresses(otherSignatories, ss58Format),
-      timePoint,
+      timepoint,
       callHash,
     );
-  }, [api, address, threshold, signatories, ss58Format, callHash, timePoint]);
+  }, [api, address, threshold, signatories, ss58Format, callHash, timepoint]);
 
   const { doSubmit, isSubmitting } = useTxSubmission({
     getTxFunc,
