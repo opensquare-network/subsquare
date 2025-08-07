@@ -34,14 +34,13 @@ export default function MultiSignerAccounts({ selected, onSelect = noop }) {
     } else if (!multisigList.length) {
       return (
         <div className="flex justify-center text14Medium text-textTertiary gap-x-1">
-          No multisig accounts,{" "}
+          No multisig accounts found. Add one{" "}
           <Link
             href="/account/multisigs?tab=accounts"
             className="text-theme500"
           >
             Here
-          </Link>{" "}
-          to add.
+          </Link>
         </div>
       );
     } else {
