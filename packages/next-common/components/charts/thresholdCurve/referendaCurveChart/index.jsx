@@ -89,6 +89,7 @@ export default function ReferendaCurveChart({ showAvatar, showAyeNay }) {
         <CustomChartTooltip container={chartWrapper.current} {...tooltip} />
         {chartRef.current && showAvatar && (
           <ApprovalBubbleArea
+            showAyeNay={showAyeNay}
             scales={chartRef.current?.scales}
             chartArea={chartRef.current?.chartArea}
             historyApprovalData={historyApprovalData}

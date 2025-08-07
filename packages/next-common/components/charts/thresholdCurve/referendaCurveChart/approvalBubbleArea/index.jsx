@@ -42,10 +42,14 @@ export default function ApprovalBubbleArea(props) {
   return <ApprovalBubbleAreaImpl {...props} />;
 }
 
-function ApprovalBubbleAreaImpl({ chartArea, scales, historyApprovalData }) {
+function ApprovalBubbleAreaImpl({
+  chartArea,
+  scales,
+  historyApprovalData,
+  showAyeNay,
+}) {
   const maxX = scales?.["x"]?.max;
   const approvalData = useApprovalBubbleData(maxX, historyApprovalData);
-
   const style = useMemo(() => {
     const {
       width = 0,
@@ -55,13 +59,14 @@ function ApprovalBubbleAreaImpl({ chartArea, scales, historyApprovalData }) {
       bottom,
       height,
     } = chartArea || {};
+
     return {
       paddingLeft: `${left}px`,
-      paddingRight: `${Math.max(right - width, 0)}px`,
+      paddingRight: showAyeNay ? `${Math.max(right - width, 0)}px` : "0px",
       paddingTop: `${top}px`,
       paddingBottom: `${Math.max(bottom - height)}px`,
     };
-  }, [chartArea]);
+  }, [chartArea, showAyeNay]);
 
   return (
     <div
