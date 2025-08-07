@@ -10,15 +10,15 @@ import {
   newErrorToast,
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
-import { useAssetHubApi } from "next-common/hooks/chain/useAssetHubApi";
 import { useTransferAmount } from "next-common/components/popup/fields/useTransferAmount";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import Signer from "next-common/components/popup/fields/signerField";
 import { isSameAddress } from "next-common/utils";
+import { useContextApi } from "next-common/context/api";
 
 function PopupContent() {
   const { asset } = usePopupParams();
-  const api = useAssetHubApi();
+  const api = useContextApi();
   const signerAccount = useSignerAccount();
   const address = signerAccount?.realAddress;
   const dispatch = useDispatch();
