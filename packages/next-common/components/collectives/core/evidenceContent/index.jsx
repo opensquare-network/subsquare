@@ -46,7 +46,7 @@ export default function FellowshipEvidenceContent({
   return <div className={cn("space-y-4", className)}>{content}</div>;
 }
 
-function LoadingContent() {
+export function LoadingContent() {
   return (
     <div className="flex items-center justify-center gap-x-2 text-textTertiary text14Medium">
       <SystemLoading className="w-5 h-5" />

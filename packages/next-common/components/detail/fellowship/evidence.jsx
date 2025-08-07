@@ -1,77 +1,50 @@
-import FellowshipEvidenceMemberStatusCard from "next-common/components/collectives/core/evidenceContent/memberStatusCard";
 import FellowshipEvidenceContent from "next-common/components/collectives/core/evidenceContent";
-import {
-  useCoreFellowshipPallet,
-  useCoreFellowshipParams,
-} from "next-common/context/collectives/collectives";
+import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
 import { useOnchainData } from "next-common/context/post";
-import { MarkdownPreviewer } from "@osn/previewer";
 import { usePageProps } from "next-common/context/page";
 import { useReferendumFellowshipCoreEvidence } from "next-common/context/post/fellowship/useReferendumFellowshipCoreEvidence";
-import { useReferendumFellowshipMember } from "next-common/context/post/fellowship/useReferendumFellowshipMember";
-import useIsProposalFinished from "next-common/hooks/proposal/useIsProposalFinished";
 import { useReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
+import EvidenceContentWithMemberStatusCard from "./evidenceContentWithMemberStatusCard";
 import EvidenceExternalLinkWithWish from "next-common/components/collectives/core/evidenceContent/EvidenceExternalLinkWithWish";
-import { isObject } from "lodash-es";
+import DirectEvidenceContent from "next-common/components/fellowship/evidences/directEvidenceContent";
 
-function FellowshipReferendaDetailEvidenceContent({ children }) {
-  const { isLoading, member } = useReferendumFellowshipMember();
-  const params = useCoreFellowshipParams();
-  const isFinished = useIsProposalFinished();
-
-  return (
-    <div className="mt-4 space-y-4">
-      <hr />
-      {!isFinished && (
-        <FellowshipEvidenceMemberStatusCard
-          isLoading={isLoading}
-          member={member}
-          params={params}
-        />
-      )}
-      {children}
-    </div>
-  );
-}
-
-function FellowshipReferendaDetailEvidenceImpl() {
+function OnChainEvidenceImpl() {
   const { wish, evidence, loading } = useReferendumFellowshipCoreEvidence();
 
   return (
-    <FellowshipReferendaDetailEvidenceContent>
+    <EvidenceContentWithMemberStatusCard>
       <FellowshipEvidenceContent
         wish={wish}
         evidence={evidence}
         loading={loading}
       />
-    </FellowshipReferendaDetailEvidenceContent>
+    </EvidenceContentWithMemberStatusCard>
   );
 }
 
-function FellowshipEvidenceContentFromApi({ evidence }) {
+function EvidenceContentFromApi({ evidence }) {
   return (
-    <FellowshipReferendaDetailEvidenceContent>
+    <EvidenceContentWithMemberStatusCard>
       <EvidenceExternalLinkWithWish
         cid={evidence?.cid}
         wish={evidence?.wish}
         evidence={evidence?.hex}
       />
-      <MarkdownPreviewer content={evidence?.content} />
-    </FellowshipReferendaDetailEvidenceContent>
+      <DirectEvidenceContent
+        content={evidence?.content}
+        cid={evidence?.cid}
+        hex={evidence?.hex}
+      />
+    </EvidenceContentWithMemberStatusCard>
   );
 }
 
-export default function FellowshipReferendaDetailEvidence() {
+function EvidenceContentOnChain() {
   const pallet = useCoreFellowshipPallet();
   const onchainData = useOnchainData();
-  const { evidence } = usePageProps();
   const { call } = onchainData?.inlineCall || onchainData.proposal || {};
   const indexer = useReferendumVotingFinishIndexer();
-
-  if (isObject(evidence)) {
-    return <FellowshipEvidenceContentFromApi evidence={evidence} />;
-  }
 
   if (
     call?.section === pallet &&
@@ -79,10 +52,19 @@ export default function FellowshipReferendaDetailEvidence() {
   ) {
     return (
       <MigrationConditionalApiProvider indexer={indexer}>
-        <FellowshipReferendaDetailEvidenceImpl />
+        <OnChainEvidenceImpl />
       </MigrationConditionalApiProvider>
     );
   }
-
   return null;
+}
+
+export default function FellowshipReferendaDetailEvidence() {
+  const { evidence } = usePageProps();
+
+  if (evidence?.cid || evidence?.content || evidence?.hex) {
+    return <EvidenceContentFromApi evidence={evidence} />;
+  }
+
+  return <EvidenceContentOnChain />;
 }
