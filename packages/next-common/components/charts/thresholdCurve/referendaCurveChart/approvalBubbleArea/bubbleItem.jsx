@@ -67,7 +67,15 @@ function TooltipContent({ who, data, type }) {
         },
         {
           label: "Action",
-          value: getActionName(type, data?.preVote, data?.preDelegation),
+          value: `${getActionName(type, data?.preVote, data?.preDelegation)} (${
+            data.vote.isSplitAbstain
+              ? "Abstain"
+              : data.vote.isSplit
+              ? "Split"
+              : data.vote?.vote?.vote?.isAye
+              ? "Aye"
+              : "Nay"
+          })`,
         },
         {
           label: "Tally Impact",
