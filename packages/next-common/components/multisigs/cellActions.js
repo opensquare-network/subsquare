@@ -17,7 +17,7 @@ const MultisigPopup = dynamicPopup(() => import("./actions/composeCallPopup"));
 export default function CellActions({ multisig }) {
   const [showRemovePopup, setShowRemovePopup] = useState(false);
   const [showRenamePopup, setShowRenamePopup] = useState(false);
-  const [showMultisigPopup, setShowMultisigPopup] = useState(false);
+  const [showNewMultisigPopup, setShowNewMultisigPopup] = useState(false);
 
   if (!multisig) {
     return null;
@@ -38,9 +38,9 @@ export default function CellActions({ multisig }) {
             <OptionWrapper className="static !shadow-200">
               <OptionItem
                 className="flex items-center grow gap-x-2"
-                onClick={() => setShowMultisigPopup(true)}
+                onClick={() => setShowNewMultisigPopup(true)}
               >
-                <MenuMultisig /> Multisig
+                <MenuMultisig /> New Multisig
               </OptionItem>
               <OptionItem
                 className="flex items-center grow gap-x-2"
@@ -70,9 +70,9 @@ export default function CellActions({ multisig }) {
           multisig={multisig}
         />
       )}
-      {showMultisigPopup && (
+      {showNewMultisigPopup && (
         <MultisigPopup
-          onClose={() => setShowMultisigPopup(false)}
+          onClose={() => setShowNewMultisigPopup(false)}
           multisig={multisig}
         />
       )}
