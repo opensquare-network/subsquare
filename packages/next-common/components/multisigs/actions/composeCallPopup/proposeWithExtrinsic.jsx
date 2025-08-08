@@ -1,8 +1,10 @@
 import { ExtrinsicFieldWithLoading } from "next-common/components/popup/fields/extrinsicField";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { blake2AsHex } from "@polkadot/util-crypto";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import CallHash from "./callHash";
+import { useSignerContext } from "next-common/components/popupWithSigner/context";
+import { useTimepoint } from "./useTimepoint";
 
 const defaultSectionName = "system";
 const defaultMethodName = "setCode";
@@ -10,6 +12,16 @@ const defaultMethodName = "setCode";
 export default function ProposeWithExtrinsic() {
   const [callHash, setCallHash] = useState(null);
   const [extrinsic, setExtrinsic] = useState(null);
+  const { setMultisig } = useSignerContext();
+
+  const { timepoint, isTimepointLoading } = useTimepoint(callHash);
+
+  useEffect(() => {
+    if (isTimepointLoading) {
+      return;
+    }
+    setMultisig((prev) => ({ ...prev, when: timepoint }));
+  }, [setMultisig, timepoint, isTimepointLoading]);
 
   const setValue = useCallback(({ isValid, data }) => {
     if (!isValid || !data) {
@@ -41,7 +53,7 @@ export default function ProposeWithExtrinsic() {
       </div>
       <div className="flex justify-end">
         <TxSubmissionButton
-          disabled={!extrinsic}
+          disabled={!extrinsic || isTimepointLoading}
           title="Propose"
           getTxFunc={getTxFunc}
         />

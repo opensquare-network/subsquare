@@ -1,14 +1,35 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Input from "next-common/lib/input";
 import useCallFromHex from "next-common/utils/hooks/useCallFromHex";
 import CallTree from "next-common/components/proposal/callTree";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { useContextApi } from "next-common/context/api";
+import { useSignerContext } from "next-common/components/popupWithSigner/context";
+import { useTimepoint } from "./useTimepoint";
+import { blake2AsHex } from "@polkadot/util-crypto";
 
 export default function ProposeWithInputHex() {
   const api = useContextApi();
   const [inputHex, setInputHex] = useState("");
   const { call, isLoading } = useCallFromHex(inputHex);
+  const callHash = useMemo(() => {
+    if (!call) {
+      return;
+    }
+    const encodedProposal = call.toHex();
+    return blake2AsHex(encodedProposal);
+  }, [call]);
+
+  const { setMultisig } = useSignerContext();
+
+  const { timepoint, isTimepointLoading } = useTimepoint(callHash);
+
+  useEffect(() => {
+    if (isTimepointLoading) {
+      return;
+    }
+    setMultisig((prev) => ({ ...prev, when: timepoint }));
+  }, [setMultisig, timepoint, isTimepointLoading]);
 
   const getTxFunc = useCallback(() => {
     if (!call) {
@@ -30,7 +51,7 @@ export default function ProposeWithInputHex() {
       </div>
       <div className="flex justify-end">
         <TxSubmissionButton
-          disabled={!call}
+          disabled={!call || isTimepointLoading}
           title="Propose"
           getTxFunc={getTxFunc}
         />
