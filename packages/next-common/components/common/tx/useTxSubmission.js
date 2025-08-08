@@ -24,7 +24,27 @@ export default function useTxSubmission({
     onInBlock: maybeMultisigOnInBlock,
     onFinalized: maybeMultisigOnFinalized,
   } = useMaybeMultisigCallback({ onInBlock, onFinalized });
-  const [isTxLoading, setIsTxLoading] = useState(false);
+  const [isWraping, setIsWraping] = useState(false);
+
+  const getTx = useCallback(
+    async (...args) => {
+      let tx = null;
+      try {
+        tx = await getTxFunc(...args);
+      } catch (e) {
+        dispatch(newErrorToast(e.message));
+        return;
+      }
+
+      if (!tx) {
+        return;
+      }
+
+      tx = await wrapTransaction(api, tx, signerAccount);
+      return tx;
+    },
+    [getTxFunc, api, signerAccount, dispatch],
+  );
 
   const doSubmit = useCallback(
     async (...args) => {
@@ -38,23 +58,17 @@ export default function useTxSubmission({
         return;
       }
 
-      let tx = null;
-      setIsTxLoading(true);
+      setIsWraping(true);
+      let tx;
       try {
-        tx = await getTxFunc(...args);
-      } catch (e) {
-        dispatch(newErrorToast(e.message));
-        setIsTxLoading(false);
-        return;
+        tx = await getTx(...args);
+      } finally {
+        setIsWraping(false);
       }
 
       if (!tx) {
-        setIsTxLoading(false);
         return;
       }
-
-      tx = await wrapTransaction(api, tx, signerAccount);
-      setIsTxLoading(false);
 
       await sendTxFunc({
         api,
@@ -70,7 +84,7 @@ export default function useTxSubmission({
       api,
       dispatch,
       signerAccount,
-      getTxFunc,
+      getTx,
       sendTxFunc,
       onSubmitted,
       maybeMultisigOnInBlock,
@@ -81,7 +95,7 @@ export default function useTxSubmission({
   );
 
   return {
-    isTxLoading,
+    isWraping,
     isSubmitting,
     doSubmit,
   };
