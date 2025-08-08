@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import { noop } from "lodash-es";
@@ -24,6 +24,7 @@ export default function useTxSubmission({
     onInBlock: maybeMultisigOnInBlock,
     onFinalized: maybeMultisigOnFinalized,
   } = useMaybeMultisigCallback({ onInBlock, onFinalized });
+  const [isTxLoading, setIsTxLoading] = useState(false);
 
   const doSubmit = useCallback(
     async (...args) => {
@@ -38,18 +39,22 @@ export default function useTxSubmission({
       }
 
       let tx = null;
+      setIsTxLoading(true);
       try {
         tx = await getTxFunc(...args);
       } catch (e) {
         dispatch(newErrorToast(e.message));
+        setIsTxLoading(false);
         return;
       }
 
       if (!tx) {
+        setIsTxLoading(false);
         return;
       }
 
       tx = await wrapTransaction(api, tx, signerAccount);
+      setIsTxLoading(false);
 
       await sendTxFunc({
         api,
@@ -76,6 +81,7 @@ export default function useTxSubmission({
   );
 
   return {
+    isTxLoading,
     isSubmitting,
     doSubmit,
   };
