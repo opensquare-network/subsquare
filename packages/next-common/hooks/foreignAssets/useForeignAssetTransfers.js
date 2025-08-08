@@ -29,6 +29,7 @@ const foreignAssetTransfersQuery = gql`
 const foreignAssetMetaDataQuery = gql`
   query MyQuery($assetId: String!) {
     foreignAsset(id: $assetId) {
+      location
       metadata {
         decimals
         deposit
@@ -87,10 +88,13 @@ export default function useForeignAssetTransfers(
 
       const metadataMap = new Map();
       uniqueAssets.forEach((asset, index) => {
-        metadataMap.set(
-          asset.assetId,
-          metadataResults[index]?.foreignAsset?.metadata,
-        );
+        const { location, metadata } =
+          metadataResults[index]?.foreignAsset || {};
+
+        metadataMap.set(asset.assetId, {
+          location,
+          ...metadata,
+        });
       });
 
       transfers.forEach((transfer) => {

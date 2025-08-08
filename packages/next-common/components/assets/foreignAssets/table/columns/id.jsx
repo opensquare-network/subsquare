@@ -38,7 +38,7 @@ function LocationInfoIcon({ location }) {
   );
 }
 
-const Location = memo(LocationInfoIcon);
+export const Location = memo(LocationInfoIcon);
 
 function AssetIDWithoutLink({ assetId }) {
   return <span className="text-textTertiary">{addressEllipsis(assetId)}</span>;
@@ -63,7 +63,7 @@ function AssetIDWithLink({ assetId }) {
   );
 }
 
-function AssetID({ assetId }) {
+export function AssetID({ assetId }) {
   const { supportForeignAssets = false } = useChainSettings();
   if (!supportForeignAssets) {
     return <AssetIDWithoutLink assetId={assetId} />;
