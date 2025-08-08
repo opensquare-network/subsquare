@@ -57,7 +57,7 @@ export async function wrapWithMultisig(api, tx, multisig, userAddress) {
   return api.tx.multisig.asMulti(
     multisig.threshold,
     otherSigners,
-    null,
+    multisig.when,
     callData,
     weight,
   );
