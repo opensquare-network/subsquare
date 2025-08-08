@@ -1,12 +1,12 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import Input from "next-common/lib/input";
 import useCallFromHex from "next-common/utils/hooks/useCallFromHex";
 import CallTree from "next-common/components/proposal/callTree";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { useContextApi } from "next-common/context/api";
-import { useSignerContext } from "next-common/components/popupWithSigner/context";
 import { useTimepoint } from "./useTimepoint";
 import { blake2AsHex } from "@polkadot/util-crypto";
+import ErrorMessage from "next-common/components/styled/errorMessage";
 
 export default function ProposeWithInputHex() {
   const api = useContextApi();
@@ -20,16 +20,7 @@ export default function ProposeWithInputHex() {
     return blake2AsHex(encodedProposal);
   }, [call]);
 
-  const { setMultisig } = useSignerContext();
-
   const { timepoint, isTimepointLoading } = useTimepoint(callHash);
-
-  useEffect(() => {
-    if (isTimepointLoading) {
-      return;
-    }
-    setMultisig((prev) => ({ ...prev, when: timepoint }));
-  }, [setMultisig, timepoint, isTimepointLoading]);
 
   const getTxFunc = useCallback(() => {
     if (!call) {
@@ -48,10 +39,15 @@ export default function ProposeWithInputHex() {
           onChange={(e) => setInputHex(e.target.value)}
         />
         {inputHex && <CallTree call={call} isLoading={isLoading} />}
+        {timepoint && (
+          <ErrorMessage>
+            There is a same multisig on chain. Please confirm it.
+          </ErrorMessage>
+        )}
       </div>
       <div className="flex justify-end">
         <TxSubmissionButton
-          disabled={!call || isTimepointLoading}
+          disabled={!call || isTimepointLoading || timepoint}
           title="Propose"
           getTxFunc={getTxFunc}
         />
