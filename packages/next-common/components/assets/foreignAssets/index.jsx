@@ -1,26 +1,20 @@
 import ForeignAssetsTable from "./table";
-import {
-  MyForeignAssetsProvider,
-  useMyForeignAssetsContext,
-} from "next-common/context/foreignAssets";
-import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
+import ForeignAssetsTransfers from "./transfers";
+import { MyForeignAssetsProvider } from "next-common/context/foreignAssets";
+import AssetHubTabs from "next-common/components/assets/tabs";
+import { AssetHubTabsProvider } from "next-common/components/assets/context/assetHubTabsProvider";
+import { TABS } from "next-common/components/assets/context/assetHubTabsProvider";
 
-function ForeignAssetsHeader() {
-  const { count } = useMyForeignAssetsContext();
-
-  return (
-    <TitleContainer className="justify-start gap-x-1">
-      Foreign Asset
-      <span className="text16Medium text-textTertiary">{count}</span>
-    </TitleContainer>
-  );
-}
-
+// TODO: condition transfers tab
 export default function ForeignAssets() {
   return (
     <MyForeignAssetsProvider>
-      <ForeignAssetsHeader />
-      <ForeignAssetsTable />
+      <AssetHubTabsProvider>
+        <AssetHubTabs customLabels={{ [TABS.assets]: "Foreign Assets" }}>
+          <ForeignAssetsTable />
+          <ForeignAssetsTransfers />
+        </AssetHubTabs>
+      </AssetHubTabsProvider>
     </MyForeignAssetsProvider>
   );
 }
