@@ -6,16 +6,18 @@ const ForeignAssetsContext = createContext(null);
 export function MyForeignAssetsProvider({ children }) {
   const { assets, loading } = useMyForeignAssets();
 
-  const count = useMemo(() => {
-    if (loading) {
-      return 0;
-    }
+  const contextValue = useMemo(() => {
+    const count = loading ? 0 : assets?.length || 0;
 
-    return assets?.length || 0;
+    return {
+      assets,
+      loading,
+      count,
+    };
   }, [assets, loading]);
 
   return (
-    <ForeignAssetsContext.Provider value={{ assets, loading, count }}>
+    <ForeignAssetsContext.Provider value={contextValue}>
       {children}
     </ForeignAssetsContext.Provider>
   );
