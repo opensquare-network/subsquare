@@ -17,7 +17,7 @@ export function useAssetsTransfersHistoryTimeAgeColumn() {
         {isTime ? "Time" : "Age"}
       </button>
     ),
-    className: "min-w-[160px]",
+    className: "min-w-[150px]",
     render(item) {
       const time = item?.indexer?.blockTime;
 
