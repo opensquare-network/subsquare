@@ -1,37 +1,24 @@
 import ListLayout from "next-common/components/layout/ListLayout";
-import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { withCommonProps } from "next-common/lib";
 import { backendApi } from "next-common/services/nextApi";
-import { usePageProps } from "next-common/context/page";
-import FellowshipEvidencesTable from "next-common/components/fellowship/evidences/table";
-import useRankFilter from "next-common/components/fellowship/evidences/useRankFilter";
-import useEvidencesSort from "next-common/components/fellowship/evidences/useEvidencesSort";
+import FellowshipEvidencesList from "./list";
+import { DropdownUrlFilterProvider } from "next-common/components/dropdownFilter/context";
 
 export default function FellowshipEvidencesPage() {
-  const { evidences } = usePageProps();
-
-  const { component: RankFilterComponent, filteredEvidences } =
-    useRankFilter(evidences);
-
-  const sortedEvidences = useEvidencesSort(filteredEvidences);
-
-  const evidencesCount = sortedEvidences?.length || 0;
-
   return (
     <ListLayout title="Fellowship Evidences">
-      <div className="flex flex-wrap max-md:flex-col md:items-center gap-[12px] max-md:gap-[16px] justify-between pr-6 mb-4">
-        <TitleContainer>
-          <span>
-            List
-            <span className="text-textTertiary text14Medium ml-1">
-              {evidencesCount}
-            </span>
-          </span>
-        </TitleContainer>
-        {RankFilterComponent}
-      </div>
-
-      <FellowshipEvidencesTable evidences={filteredEvidences} />
+      <DropdownUrlFilterProvider
+        defaultFilterValues={{
+          rank: null,
+          active_only: false,
+        }}
+        emptyFilterValues={{
+          rank: null,
+          active_only: false,
+        }}
+      >
+        <FellowshipEvidencesList />
+      </DropdownUrlFilterProvider>
     </ListLayout>
   );
 }
