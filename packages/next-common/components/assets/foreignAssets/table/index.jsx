@@ -7,6 +7,7 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import { TransferPopupProvider } from "./transferPopup/context";
 import ForeignAssetTransferPopup from "./transferPopup";
 import { useTotalCounts } from "next-common/components/assets/context/assetHubTabsProvider";
+import { useChainSettings } from "next-common/context/chain";
 
 function ForeignAssetListItem({ DataListItem, idx, rows, loading }) {
   if (loading) {
@@ -19,10 +20,15 @@ function ForeignAssetListItem({ DataListItem, idx, rows, loading }) {
 export default function ForeignAssetsTable() {
   const { assets, loading } = useMyForeignAssetsContext();
   const [, setTotalCount] = useTotalCounts();
+  const { supportForeignAssets } = useChainSettings();
 
   useEffect(() => {
+    if (!supportForeignAssets) {
+      return;
+    }
+
     setTotalCount("assets", assets?.length);
-  }, [assets, setTotalCount]);
+  }, [assets, setTotalCount, supportForeignAssets]);
 
   const renderItem = (DataListItem, idx, rows) => (
     <ForeignAssetListItem
