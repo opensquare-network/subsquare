@@ -4,7 +4,7 @@ import {
   SystemEdit,
   SystemMore,
   SystemSubtract,
-  SystemPlus,
+  MenuMultisig,
 } from "@osn/icons/subsquare";
 import { ActionIconButton } from "./styled";
 
@@ -12,14 +12,12 @@ import dynamicPopup from "next-common/lib/dynamic/popup";
 import { useState } from "react";
 const RemovePopup = dynamicPopup(() => import("./actions/removePopup"));
 const RenamePopup = dynamicPopup(() => import("./actions/renamePopup"));
-const ComposeCallPopup = dynamicPopup(() =>
-  import("./actions/composeCallPopup"),
-);
+const MultisigPopup = dynamicPopup(() => import("./actions/composeCallPopup"));
 
 export default function CellActions({ multisig }) {
   const [showRemovePopup, setShowRemovePopup] = useState(false);
   const [showRenamePopup, setShowRenamePopup] = useState(false);
-  const [showComposeCallPopup, setShowComposeCallPopup] = useState(false);
+  const [showMultisigPopup, setShowMultisigPopup] = useState(false);
 
   if (!multisig) {
     return null;
@@ -40,9 +38,9 @@ export default function CellActions({ multisig }) {
             <OptionWrapper className="static !shadow-200">
               <OptionItem
                 className="flex items-center grow gap-x-2"
-                onClick={() => setShowComposeCallPopup(true)}
+                onClick={() => setShowMultisigPopup(true)}
               >
-                <SystemPlus /> Compose Call
+                <MenuMultisig /> Multisig
               </OptionItem>
               <OptionItem
                 className="flex items-center grow gap-x-2"
@@ -72,9 +70,9 @@ export default function CellActions({ multisig }) {
           multisig={multisig}
         />
       )}
-      {showComposeCallPopup && (
-        <ComposeCallPopup
-          onClose={() => setShowComposeCallPopup(false)}
+      {showMultisigPopup && (
+        <MultisigPopup
+          onClose={() => setShowMultisigPopup(false)}
           multisig={multisig}
         />
       )}

@@ -9,7 +9,7 @@ import ProposeWithExtrinsic from "./proposeWithExtrinsic";
 
 export default function ComposeCallPopup({ onClose, multisig }) {
   return (
-    <PopupWithSigner title="Compose Call" onClose={onClose}>
+    <PopupWithSigner title="Multisig" onClose={onClose}>
       <ComposeCallPopupImpl multisig={multisig} />
     </PopupWithSigner>
   );
