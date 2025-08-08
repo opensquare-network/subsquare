@@ -3,8 +3,7 @@ import { toPrecision } from "next-common/utils";
 
 export const colAmount = {
   name: "Amount",
-  className: "w-[160px]",
-  style: { textAlign: "right" },
+  style: { textAlign: "right", width: "160px", minWidth: "160px" },
   render: (item) => (
     <span key="amount" className="text14Medium text-textPrimary">
       <ValueDisplay

@@ -4,12 +4,12 @@ import {
 } from "next-common/components/assets/foreignAssets/table/columns/id";
 
 export const colId = {
-  name: "ID",
-  style: { textAlign: "left", width: "120px", minWidth: "120px" },
+  name: "Location & ID",
+  style: { textAlign: "left", width: "150px", minWidth: "150px" },
   render: (item) => (
-    <div className="flex items-center justify-between w-[110px]">
-      <AssetID assetId={item.assetId} />
+    <div className="flex items-center gap-x-2">
       <Location location={item?.metadata?.location} />
+      <AssetID assetId={item.assetId} />
     </div>
   ),
 };

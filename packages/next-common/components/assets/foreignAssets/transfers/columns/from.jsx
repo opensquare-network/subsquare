@@ -2,7 +2,6 @@ import AddressUser from "next-common/components/user/addressUser";
 
 export const colFrom = {
   name: "From",
-  className: "w-[212px]",
-  style: { textAlign: "left" },
+  style: { textAlign: "left", minWidth: "212px" },
   render: (item) => <AddressUser key={item.from} add={item.from} />,
 };

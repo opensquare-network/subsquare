@@ -73,12 +73,12 @@ export function AssetID({ assetId }) {
 }
 
 export const colId = {
-  name: "ID",
+  name: "Location & ID",
   style: { textAlign: "left", width: "120px", minWidth: "120px" },
   render: (item) => (
-    <div className="flex items-center justify-between gap-x-2">
-      <AssetID assetId={item.assetId} />
+    <div className="flex items-center gap-x-2">
       <Location location={item.location} />
+      <AssetID assetId={item.assetId} />
     </div>
   ),
 };
