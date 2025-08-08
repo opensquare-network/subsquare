@@ -99,6 +99,7 @@ export function AddressUserImpl({
     () =>
       hasIdentity ? (
         <UnStyledIdentity
+          noTooltip={noTooltip}
           identity={identity}
           maxWidth={maxWidth}
           ellipsis={ellipsis}

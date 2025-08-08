@@ -95,10 +95,15 @@ function MobileTable({
   );
 }
 
+export const useReferendumActions = () => {
+  const { referendumIndex } = useOnchainData();
+  const { loading, voteActions } = useQueryVoteActions(referendumIndex);
+  return { loading, voteActions };
+};
+
 function VoteActionsTable({ search = "", listHeight }) {
   const [sortedColumn, setSortedColumn] = useState("");
-  const { referendumIndex } = useOnchainData();
-  const { loading, voteActions = [] } = useQueryVoteActions(referendumIndex);
+  const { loading, voteActions = [] } = useReferendumActions();
   const maxImpactVotes = useMaxImpactVotes(voteActions);
 
   const getVoter = useCallback((vote) => vote.who, []);

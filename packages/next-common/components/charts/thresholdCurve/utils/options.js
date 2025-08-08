@@ -3,10 +3,7 @@ import { formatDays, formatHours } from "next-common/utils/timeFormat";
 import { find, merge } from "lodash-es";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
-import {
-  abbreviateBigNumber,
-  getEffectiveNumbers,
-} from "next-common/utils/viewfuncs";
+import { abbreviateBigNumber } from "next-common/utils/viewfuncs";
 import { useDecisionIndex } from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
 
 const commonConfig = {
@@ -123,27 +120,6 @@ function getDetailConfig(labels, commonPluginsConfig, tooltipCallbacks) {
   };
 }
 
-const getNanValueShow = (value) =>
-  !value ? "--" : `${Number(value).toFixed(2)}%`;
-
-function handleTooltipLabel(label, itemItem, currentItem) {
-  return `${label}: ${getNanValueShow(
-    currentItem?.parsed?.y,
-  )} / ${getNanValueShow(itemItem?.parsed?.y)}`;
-}
-
-function handleVoteTooltipLabel(tooltipItem, labelType, chainSettings) {
-  const { decimals, symbol } = chainSettings;
-  const { dataIndex, dataset } = tooltipItem;
-
-  let value = toPrecision(dataset.data[dataIndex], decimals);
-  if (Number(value) > 100000 || getEffectiveNumbers(value)?.length >= 11) {
-    value = `≈ ${abbreviateBigNumber(value, 2)}`;
-  }
-
-  return `${labelType}: ${value} ${symbol}`;
-}
-
 export default function useDetailPageOptions(labels = [], datasets) {
   const chainSettings = useChainSettings();
   const decisionIndex = useDecisionIndex();
@@ -171,78 +147,6 @@ export default function useDetailPageOptions(labels = [], datasets) {
         },
       },
       ...commonPluginsConfig,
-      tooltip: {
-        mode: "index",
-        intersect: false,
-        displayColors: false,
-        callbacks: merge(
-          {
-            title: function title(values) {
-              const { dataIndex: hs } = values[0];
-
-              if (hs < decisionIndex) {
-                return `Preparing Time: ${formatHours(hs)}`;
-              }
-              const x = hs - decisionIndex;
-
-              const days = Math.floor(x / 24);
-              const restHs = x - days * 24;
-              let result = `Deciding Time: ${formatHours(x)}`;
-              if (days > 0) {
-                result += ` (${formatDays(days)} ${
-                  restHs > 0 ? formatHours(restHs) : ""
-                })`;
-              }
-
-              return result;
-            },
-          },
-          {
-            label() {
-              return null;
-            },
-            afterBody(context) {
-              const nayTooltipItem = find(context, {
-                dataset: { label: "Nay" },
-              });
-              const ayeTooltipItem = find(context, {
-                dataset: { label: "Aye" },
-              });
-
-              const supportTooltipItem = find(context, {
-                dataset: { label: "Support" },
-              });
-              const currentSupportTooltipItem = find(context, {
-                dataset: { label: "Current Support" },
-              });
-
-              const approvalTooltipItem = find(context, {
-                dataset: { label: "Approval" },
-              });
-              const currentApprovalTooltipItem = find(context, {
-                dataset: { label: "Current Approval" },
-              });
-
-              return [
-                handleTooltipLabel(
-                  "Approval",
-                  approvalTooltipItem,
-                  currentApprovalTooltipItem,
-                ),
-                handleTooltipLabel(
-                  "Support",
-                  supportTooltipItem,
-                  currentSupportTooltipItem,
-                ),
-                ayeTooltipItem &&
-                  handleVoteTooltipLabel(ayeTooltipItem, "Aye", chainSettings),
-                nayTooltipItem &&
-                  handleVoteTooltipLabel(nayTooltipItem, "Nay", chainSettings),
-              ].filter(Boolean);
-            },
-          },
-        ),
-      },
     },
   };
 

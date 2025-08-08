@@ -11,12 +11,12 @@ import { cn } from "next-common/utils";
 import { isNil } from "lodash-es";
 import Progress from "next-common/components/progress";
 
-function NoImpact({ className = "" }) {
+export function NoImpact({ className = "", valueClassName }) {
   const { symbol } = useChainSettings();
 
   return (
     <span className={cn("text-textTertiary text14Medium", className)}>
-      <span className="text-textPrimary">0</span>
+      <span className={cn("text-textPrimary", valueClassName)}>0</span>
       &nbsp;
       <span>{symbol}</span>
     </span>
@@ -35,7 +35,7 @@ function ImpactVotesDisplay({
     : getImpactVotes(data, type);
 
   if (isNil(impactVotes) || BigInt(impactVotes) === BigInt(0)) {
-    return <NoImpact className={valueClassName} />;
+    return <NoImpact valueClassName={valueClassName} />;
   }
 
   const isAye = impactVotes >= 0;

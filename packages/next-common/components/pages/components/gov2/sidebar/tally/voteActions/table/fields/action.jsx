@@ -5,7 +5,7 @@ import { cn } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
 import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 
-function getActionName(type, preVote, preDelegation) {
+export function getActionName(type, preVote, preDelegation) {
   if (type === OPENGOV_ACTIONS.VOTE) {
     return preVote ? "Change Vote" : "Vote";
   }
