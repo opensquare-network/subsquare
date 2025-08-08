@@ -80,7 +80,6 @@ export default function useForeignAssetTransfers(
         const transfers = transfersData?.foreignAssetTransfers?.transfers || [];
         setTotal(transfersData?.foreignAssetTransfers?.total || 0);
 
-        // 获取唯一的assetId列表
         const uniqueAssetIds = new Set();
         const uniqueAssets = [];
 
@@ -93,7 +92,6 @@ export default function useForeignAssetTransfers(
           }
         });
 
-        // 批量查询metadata
         const metadataPromises = uniqueAssets.map((asset) => {
           return request(url, foreignAssetQuery, {
             assetId: asset.assetId,
@@ -102,7 +100,6 @@ export default function useForeignAssetTransfers(
 
         const metadataResults = await Promise.all(metadataPromises);
 
-        // 创建metadata映射
         const metadataMap = new Map();
         uniqueAssets.forEach((asset, index) => {
           metadataMap.set(
@@ -111,7 +108,6 @@ export default function useForeignAssetTransfers(
           );
         });
 
-        // 将metadata添加到每个transfer中
         transfers.forEach((transfer) => {
           transfer.metadata = metadataMap.get(transfer.assetId);
         });

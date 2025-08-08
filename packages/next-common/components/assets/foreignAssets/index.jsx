@@ -8,13 +8,13 @@ import { TABS } from "next-common/components/assets/context/assetHubTabsProvider
 // TODO: condition transfers tab
 export default function ForeignAssets() {
   return (
-    <MyForeignAssetsProvider>
-      <AssetHubTabsProvider>
-        <AssetHubTabs customLabels={{ [TABS.assets]: "Foreign Assets" }}>
+    <AssetHubTabsProvider>
+      <AssetHubTabs customLabels={{ [TABS.assets]: "Foreign Assets" }}>
+        <MyForeignAssetsProvider>
           <ForeignAssetsTable />
-          <ForeignAssetsTransfers />
-        </AssetHubTabs>
-      </AssetHubTabsProvider>
-    </MyForeignAssetsProvider>
+        </MyForeignAssetsProvider>
+        <ForeignAssetsTransfers />
+      </AssetHubTabs>
+    </AssetHubTabsProvider>
   );
 }
