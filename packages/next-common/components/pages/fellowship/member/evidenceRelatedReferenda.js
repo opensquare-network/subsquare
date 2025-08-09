@@ -106,6 +106,7 @@ function ReferendumVoteItem({ referendumIndex }) {
           referendumIndex={referendumIndex}
           title={detail?.title}
           loading={loading}
+          linkTarget="_self"
         />
         <MyVote referendumIndex={referendumIndex} />
       </div>

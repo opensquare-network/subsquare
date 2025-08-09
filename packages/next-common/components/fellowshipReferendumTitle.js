@@ -5,6 +5,7 @@ import { usePageProps } from "next-common/context/page";
 import { useMemo } from "react";
 import FieldLoading from "next-common/components/icons/fieldLoading";
 import { cn } from "next-common/utils";
+import Link from "next/link";
 
 function useFellowshipTracks() {
   const { section } = useCollectivesContext();
@@ -30,6 +31,7 @@ export function FellowshipReferendumTitleImpl({
   title = "",
   className = "",
   loading = false,
+  linkTarget = "_blank",
 }) {
   const { section } = useCollectivesContext();
   return (
@@ -39,14 +41,14 @@ export function FellowshipReferendumTitleImpl({
       {loading ? (
         <FieldLoading size={14} />
       ) : (
-        <a
+        <Link
           className="cursor-pointer text-textPrimary hover:underline"
           href={`/${section}/referenda/${referendumIndex}`}
-          target="_blank"
+          target={linkTarget}
           rel="noreferrer"
         >
           {title}
-        </a>
+        </Link>
       )}
     </div>
   );
@@ -55,6 +57,7 @@ export function FellowshipReferendumTitleImpl({
 export default function FellowshipReferendumTitle({
   referendumIndex,
   trackId,
+  linkTarget,
 }) {
   const defaultTitle = useDefaultReferendumTitle(referendumIndex, trackId);
 
@@ -68,6 +71,7 @@ export default function FellowshipReferendumTitle({
       referendumIndex={referendumIndex}
       title={title}
       loading={loading}
+      linkTarget={linkTarget}
     />
   );
 }
