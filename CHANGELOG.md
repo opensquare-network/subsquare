@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+# 5.2.0
+
+date: 2025-08-09
+
+- [Big] Fellowship: Enable fellowship members to discuss evidence. Code
+  includes [#6385](https://github.com/opensquare-network/subsquare/pull/6385/files), [#6459](https://github.com/opensquare-network/subsquare/pull/6459/files), [#6460](https://github.com/opensquare-network/subsquare/pull/6460/files), [#6473](https://github.com/opensquare-network/subsquare/pull/6473/files), [#6474](https://github.com/opensquare-network/subsquare/pull/6474/files), [#6478](https://github.com/opensquare-network/subsquare/pull/6478/files).
+    - We maintain evidence status in indexing scripts, so we can know whether an evidence is active and its related
+      referenda.
+    - Extract title and content in indexing scripts, so we don't have to fetch them from IPFS every time in fronted.
+    - Backend APIs to server related evidence data.
+    - An evidence list page in fronted to show all members' evidence status.
+    - An evidence detail page where all users can discuss an evidence.
+    - Enable SSR render for evidence on fellowship referenda page.
+- [Medium] Support creating a multisig by composing a call,
+  code [here](https://github.com/opensquare-network/subsquare/pull/6464/files).
+- Fix multisig submit button disable status check on the account multisig page.
+- Show 404 component on some detail pages instead of redirecting users to 404 page.
+- Update endpoints for phala network.
+
 # 5.1.0
 
 date: 2025-08-04
