@@ -36,7 +36,7 @@ export default function CustomChartTooltip({
               "z-[1000000] rounded py-1.5 px-1.5",
               "text12Normal text-textPrimaryContrast",
               "bg-tooltipBg",
-              "[&_.value-display-symbol]:text-inherit pointer-events-none",
+              "[&_.value-display-symbol]:text-inherit pointer-events-none transition-all",
             )}
             style={{
               position: "absolute",
@@ -80,7 +80,6 @@ export default function CustomChartTooltip({
     </RadixTooltip.Provider>
   );
 }
-// useChartOptionsWithTooltip
 export const useChartOptionsWithTooltip = (options, setTooltip) => {
   const chainSettings = useChainSettings();
   const decisionIndex = useDecisionIndex();
@@ -161,23 +160,23 @@ export const useChartOptionsWithTooltip = (options, setTooltip) => {
               data: [
                 {
                   label: "Approval",
-                  value: `${formatValue(currentApprovalData)} / ${formatValue(
-                    approvalData,
-                  )}`,
+                  value: `${formatPercentValue(
+                    currentApprovalData,
+                  )} / ${formatPercentValue(approvalData)}`,
                 },
                 {
                   label: "Support",
-                  value: `${formatValue(currentSupportData)} / ${formatValue(
-                    supportData,
-                  )}`,
+                  value: `${formatPercentValue(
+                    currentSupportData,
+                  )} / ${formatPercentValue(supportData)}`,
                 },
                 ayeData && {
                   label: "Aye",
-                  value: handleVoteTooltipLabel(ayeData, chainSettings),
+                  value: handleVoteTooltipValue(ayeData, chainSettings),
                 },
                 nayData && {
                   label: "Nay",
-                  value: handleVoteTooltipLabel(nayData, chainSettings),
+                  value: handleVoteTooltipValue(nayData, chainSettings),
                 },
               ].filter(Boolean),
             },
@@ -188,14 +187,14 @@ export const useChartOptionsWithTooltip = (options, setTooltip) => {
   });
 };
 
-function formatValue(value) {
+function formatPercentValue(value) {
   if (isNaN(value)) {
     return "--";
   }
   return `${Number(value).toFixed(2)}%`;
 }
 
-function handleVoteTooltipLabel(val, chainSettings) {
+function handleVoteTooltipValue(val, chainSettings) {
   const { decimals, symbol } = chainSettings;
 
   let value = toPrecision(val, decimals);

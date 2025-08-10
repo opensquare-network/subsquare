@@ -50,7 +50,18 @@ export default function BubbleItem({
   );
 }
 
+const getActionType = (data) => {
+  return data.vote.isSplitAbstain
+    ? "Abstain"
+    : data.vote.isSplit
+    ? "Split"
+    : data.vote?.vote?.vote?.isAye
+    ? "Aye"
+    : "Nay";
+};
+
 function TooltipContent({ who, data, type }) {
+  const actionType = useMemo(() => getActionType(data), [data]);
   return (
     <div className="space-y-1 pointer-events-auto">
       {[
@@ -67,15 +78,11 @@ function TooltipContent({ who, data, type }) {
         },
         {
           label: "Action",
-          value: `${getActionName(type, data?.preVote, data?.preDelegation)} (${
-            data.vote.isSplitAbstain
-              ? "Abstain"
-              : data.vote.isSplit
-              ? "Split"
-              : data.vote?.vote?.vote?.isAye
-              ? "Aye"
-              : "Nay"
-          })`,
+          value: `${getActionName(
+            type,
+            data?.preVote,
+            data?.preDelegation,
+          )} (${actionType})`,
         },
         {
           label: "Tally Impact",

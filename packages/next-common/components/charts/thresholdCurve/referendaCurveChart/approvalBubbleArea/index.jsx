@@ -6,6 +6,7 @@ import {
 } from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
 import BubbleItem from "./bubbleItem";
 import useShowVoteActions from "next-common/hooks/useShowVoteActions";
+import { clamp, get } from "lodash-es";
 
 const useApprovalBubbleData = (maxX, historyApprovalData) => {
   const beginheight = useBeginHeight();
@@ -28,7 +29,7 @@ const useApprovalBubbleData = (maxX, historyApprovalData) => {
           type,
           who,
           y: historyApprovalData[Math.ceil(steps)],
-          x: (steps / maxX) * 100,
+          x: clamp((steps / maxX) * 100, 0, 100),
         };
       });
   }, [beginheight, blockStep, historyApprovalData, loading, maxX, voteActions]);
@@ -48,21 +49,22 @@ function ApprovalBubbleAreaImpl({
   historyApprovalData,
   showAyeNay,
 }) {
-  const maxX = scales?.["x"]?.max;
-  const approvalData = useApprovalBubbleData(maxX, historyApprovalData);
+  const approvalData = useApprovalBubbleData(
+    get(scales, ["x", "max"], 0),
+    historyApprovalData,
+  );
   const style = useMemo(() => {
     const {
-      width = 0,
       left = 0,
       right = 0,
-      top,
-      bottom,
-      height,
+      top = 0,
+      bottom = 0,
+      height = 0,
     } = chartArea || {};
 
     return {
       paddingLeft: `${left}px`,
-      paddingRight: showAyeNay ? `${Math.max(right - width, 0)}px` : "0px",
+      paddingRight: showAyeNay ? `calc(100% - ${right}px)` : "0px",
       paddingTop: `${top}px`,
       paddingBottom: `${Math.max(bottom - height)}px`,
     };
