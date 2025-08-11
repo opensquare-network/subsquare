@@ -7,6 +7,7 @@ import {
   VOTE_TYPE_CONFIG,
   absBigInt,
   getImpactVotes,
+  getSupportImpactVotes,
 } from "next-common/components/pages/components/gov2/sidebar/tally/voteActions/common";
 import { isNil } from "lodash-es";
 import ValueDisplay from "next-common/components/valueDisplay";
@@ -41,6 +42,10 @@ export default function TooltipContent({ who, data, type }) {
           label: "Tally Impact",
           value: <TallyVotesDisplay data={data} type={type} />,
         },
+        {
+          label: "Support Impact",
+          value: <TallyVotesDisplay isSupport data={data} type={type} />,
+        },
       ].map(({ label, value }) => (
         <div className="flex" key={label}>
           <div className="">{label} :</div>
@@ -61,9 +66,11 @@ const getActionType = (data) => {
     : "Nay";
 };
 
-function TallyVotesDisplay({ data, type }) {
+function TallyVotesDisplay({ data, type, isSupport }) {
   const { decimals, symbol } = useChainSettings();
-  const impactVotes = getImpactVotes(data, type);
+  const impactVotes = isSupport
+    ? getSupportImpactVotes(data, type)
+    : getImpactVotes(data, type);
 
   if (isNil(impactVotes) || BigInt(impactVotes) === BigInt(0)) {
     return (
