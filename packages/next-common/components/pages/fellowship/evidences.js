@@ -1,6 +1,7 @@
 import ListLayout from "next-common/components/layout/ListLayout";
 import FellowshipEvidencesList from "./evidencesList";
 import { DropdownUrlFilterProvider } from "next-common/components/dropdownFilter/context";
+import CollectivesProvider from "next-common/context/collectives/collectives";
 
 export default function FellowshipEvidencesPage() {
   return (
@@ -15,7 +16,9 @@ export default function FellowshipEvidencesPage() {
           active_only: false,
         }}
       >
-        <FellowshipEvidencesList />
+        <CollectivesProvider section="fellowship">
+          <FellowshipEvidencesList />
+        </CollectivesProvider>
       </DropdownUrlFilterProvider>
     </ListLayout>
   );
