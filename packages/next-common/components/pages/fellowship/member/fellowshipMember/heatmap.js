@@ -1,5 +1,5 @@
 import { cn } from "next-common/utils";
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import Tooltip from "next-common/components/tooltip";
 import Link from "next/link";
 import { useCollectivesSection } from "next-common/context/collectives/collectives";
@@ -8,6 +8,7 @@ import { startCase } from "lodash-es";
 import FieldLoading from "next-common/components/icons/fieldLoading";
 import { usePageProps } from "next-common/context/page";
 import { ReferendaTitleProvider } from "next-common/context/fellowshipReferenda";
+import { useElementRect } from "next-common/hooks/useElementRect";
 
 function Square({ className, children }) {
   return (
@@ -118,7 +119,17 @@ function HeatmapItemTooltip({ referendumIndex, item }) {
   );
 }
 
-export default function Heatmap({ heatmap, referendumCount }) {
+export default function Heatmap({ heatmap, referendumCount, highlightRange }) {
+  const container = useRef();
+  const size = useElementRect(container);
+
+  const [rangeFrom = 1, rangeTo = 0] = highlightRange || [];
+
+  const colsCount =
+    Math.floor(size?.width / 18) + (size?.width % 18 >= 12 ? 1 : 0);
+  const rowsCount = Math.ceil(referendumCount / colsCount);
+  const height = rowsCount * 18;
+
   const heatmapData = useMemo(() => {
     const data = {};
     heatmap?.forEach((item) => {
@@ -130,7 +141,11 @@ export default function Heatmap({ heatmap, referendumCount }) {
   return (
     <ReferendaTitleProvider>
       <div className="flex justify-center">
-        <div className="flex gap-[6px] flex-wrap">
+        <div
+          ref={container}
+          style={{ height }}
+          className="flex flex-col w-full gap-[6px] flex-wrap"
+        >
           {Array.from({ length: referendumCount }).map((_, index) => {
             const item = heatmapData[index];
             return (
@@ -140,15 +155,21 @@ export default function Heatmap({ heatmap, referendumCount }) {
                   <HeatmapItemTooltip referendumIndex={index} item={item} />
                 }
               >
-                {!item ? (
-                  <NotEligibleSquare />
-                ) : !item.isVoted ? (
-                  <NoVoteSquare />
-                ) : item.vote.isAye ? (
-                  <AyeSquare />
-                ) : (
-                  <NaySquare />
-                )}
+                <div
+                  className={cn(
+                    index < rangeFrom || index > rangeTo ? "opacity-20" : "",
+                  )}
+                >
+                  {!item ? (
+                    <NotEligibleSquare />
+                  ) : !item.isVoted ? (
+                    <NoVoteSquare />
+                  ) : item.vote.isAye ? (
+                    <AyeSquare />
+                  ) : (
+                    <NaySquare />
+                  )}
+                </div>
               </Tooltip>
             );
           })}
