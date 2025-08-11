@@ -31,7 +31,7 @@ export default function CellActions({ multisig }) {
   }
 
   return (
-    <MultisigProvider multisig={multisig}>
+    <>
       <Popover.Root>
         <Popover.Trigger>
           <div>
@@ -43,12 +43,20 @@ export default function CellActions({ multisig }) {
         <Popover.Portal>
           <Popover.Content side="top" align="end" sideOffset={5}>
             <OptionWrapper className="static !shadow-200 text14Medium">
-              <OptionItem
-                className="flex items-center grow gap-x-2"
-                onClick={() => setShowNewMultisigPopup(true)}
-              >
-                <MenuMultisig className="w-5 h-5" /> New Multisig
-              </OptionItem>
+              <MultisigProvider multisig={multisig}>
+                <OptionItem
+                  className="flex items-center grow gap-x-2"
+                  onClick={() => setShowNewMultisigPopup(true)}
+                >
+                  <MenuMultisig className="w-5 h-5" /> New Multisig
+                </OptionItem>
+                {showRelativesPopup && (
+                  <RelativesPopup
+                    onClose={() => setShowRelativesPopup(false)}
+                    sourceAddress={normalizeAddress(multisig.multisigAddress)}
+                  />
+                )}
+              </MultisigProvider>
               <OptionItem
                 className="flex items-center grow gap-x-2"
                 onClick={() => setShowRelativesPopup(true)}
@@ -89,12 +97,6 @@ export default function CellActions({ multisig }) {
           multisig={multisig}
         />
       )}
-      {showRelativesPopup && (
-        <RelativesPopup
-          onClose={() => setShowRelativesPopup(false)}
-          sourceAddress={normalizeAddress(multisig.multisigAddress)}
-        />
-      )}
-    </MultisigProvider>
+    </>
   );
 }
