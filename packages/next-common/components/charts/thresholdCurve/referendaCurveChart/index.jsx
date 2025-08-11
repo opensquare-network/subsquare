@@ -17,9 +17,8 @@ import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import { useRef, useState } from "react";
 import CustomXTickLabels from "./curveChartCustomXTickLabels";
 import ApprovalBubbleArea from "./approvalBubbleArea";
-import CustomChartTooltip, {
-  useChartOptionsWithTooltip,
-} from "./curveChartTooltip";
+import CurveChartTooltip from "./curveChartTooltip";
+import useChartOptionsWithTooltip from "./curveChartTooltip/useChartOptionsWithTooltip";
 
 // used for detail page curve chart
 export default function ReferendaCurveChart({ showAvatar, showAyeNay }) {
@@ -86,7 +85,7 @@ export default function ReferendaCurveChart({ showAvatar, showAyeNay }) {
           options={options}
           plugins={[hoverLinePlugin]}
         />
-        <CustomChartTooltip container={chartWrapper.current} {...tooltip} />
+        <CurveChartTooltip container={chartWrapper.current} {...tooltip} />
         {chartRef.current && showAvatar && (
           <ApprovalBubbleArea
             showAyeNay={showAyeNay}
