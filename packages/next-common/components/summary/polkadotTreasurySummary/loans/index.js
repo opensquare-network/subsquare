@@ -2,7 +2,6 @@ import SummaryLabelLinkItem from "../common/summaryLabelLinkItem";
 import FiatPriceLabel from "../common/fiatPriceLabel";
 import SummaryItem from "next-common/components/summary/layout/item";
 import { toPrecision } from "next-common/utils";
-import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 import { useChainSettings } from "next-common/context/chain";
 import ValueDisplay from "next-common/components/valueDisplay";
 import BigNumber from "bignumber.js";
