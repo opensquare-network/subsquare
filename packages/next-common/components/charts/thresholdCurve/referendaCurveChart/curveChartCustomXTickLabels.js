@@ -13,10 +13,10 @@ export default function CustomXTickLabels({
 
   // tick bar style
   const style = useMemo(() => {
-    const { width = 0, left = 0, right = 0 } = chartArea;
+    const { left = 0, right = 0 } = chartArea;
     return {
       paddingLeft: `${left}px`,
-      paddingRight: showAyeNay ? `${Math.max(right - width, 0)}px` : "2px",
+      paddingRight: showAyeNay ? `calc(100% - ${right}px)` : "0px",
     };
   }, [chartArea, showAyeNay]);
 
