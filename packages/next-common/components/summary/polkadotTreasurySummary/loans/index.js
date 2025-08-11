@@ -63,7 +63,6 @@ function LoansItemList() {
 
 export default function Loans() {
   const {
-    loanCentrifugeUsdcBalance,
     loanBifrostDotBalance,
     loadPendulumDotBalance,
     loanHydrationDotBalance,
@@ -77,7 +76,6 @@ export default function Loans() {
             .plus(loadPendulumDotBalance)
             .plus(loanHydrationDotBalance)
             .toString()}
-          usdtBalance={loanCentrifugeUsdcBalance}
         />
         <LoansItemList />
       </div>
