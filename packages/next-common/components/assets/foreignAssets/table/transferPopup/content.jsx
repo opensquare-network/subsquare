@@ -70,7 +70,7 @@ function PopupContent() {
   ]);
 
   const onInBlock = useCallback(() => {
-    dispatch(newSuccessToast("Transfer success"));
+    dispatch(newSuccessToast("Transfer successfully"));
   }, [dispatch]);
 
   return (
