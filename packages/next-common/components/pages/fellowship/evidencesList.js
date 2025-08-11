@@ -63,14 +63,6 @@ function NewEvidenceButton() {
     return false;
   }, [fellowshipMembers, ambassadorMembers, realAddress, section]);
 
-  const tooltipContent = useMemo(() => {
-    if (section === "fellowship") {
-      return "You are not a member of the fellowship";
-    } else if (section === "ambassador") {
-      return "You are not a member of the ambassador";
-    }
-  }, [section]);
-
   let buttonCompnent = (
     <PrimaryButton
       disabled={!canSubmitEvidence}
@@ -84,7 +76,9 @@ function NewEvidenceButton() {
 
   if (!canSubmitEvidence) {
     buttonCompnent = (
-      <Tooltip content={tooltipContent}>{buttonCompnent}</Tooltip>
+      <Tooltip content="Only members can create a new evidence">
+        {buttonCompnent}
+      </Tooltip>
     );
   }
 
