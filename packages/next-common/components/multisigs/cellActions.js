@@ -11,6 +11,8 @@ import { ActionIconButton } from "./styled";
 
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { useState } from "react";
+import { normalizeAddress } from "next-common/utils/address";
+import { MultisigProvider } from "next-common/context/multisig";
 const RemovePopup = dynamicPopup(() => import("./actions/removePopup"));
 const RenamePopup = dynamicPopup(() => import("./actions/renamePopup"));
 const MultisigPopup = dynamicPopup(() => import("./actions/composeCallPopup"));
@@ -29,7 +31,7 @@ export default function CellActions({ multisig }) {
   }
 
   return (
-    <>
+    <MultisigProvider multisig={multisig}>
       <Popover.Root>
         <Popover.Trigger>
           <div>
@@ -90,9 +92,9 @@ export default function CellActions({ multisig }) {
       {showRelativesPopup && (
         <RelativesPopup
           onClose={() => setShowRelativesPopup(false)}
-          sourceAddress={multisig.multisigAddress}
+          sourceAddress={normalizeAddress(multisig.multisigAddress)}
         />
       )}
-    </>
+    </MultisigProvider>
   );
 }
