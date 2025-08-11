@@ -13,7 +13,6 @@ import Tooltip from "next-common/components/tooltip";
 import { useReferendaFellowshipPallet } from "next-common/context/collectives/collectives";
 import { usePageProps } from "next-common/context/page";
 import Slider from "next-common/components/slider";
-import { isNil } from "lodash-es";
 
 function LoadingCard() {
   return (
@@ -97,7 +96,7 @@ export default function VoteActivities() {
   }, []);
 
   const heatmapInRange = useMemo(() => {
-    if (isNil(rangeTo) || rangeFrom > rangeTo) {
+    if (isNaN(rangeTo) || isNaN(rangeFrom) || rangeFrom > rangeTo) {
       return heatmap;
     }
     return heatmap.filter(
