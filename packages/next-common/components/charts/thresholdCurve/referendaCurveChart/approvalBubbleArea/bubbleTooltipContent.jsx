@@ -79,6 +79,7 @@ function TallyVotesDisplay({ data, type }) {
     <div className={cn(color, "inline-flex text12Medium")}>
       {isAye ? "+" : "-"}
       <ValueDisplay
+        showTooltip={false}
         value={toPrecision(absBigInt(impactVotes), decimals)}
         symbol={symbol}
       />
