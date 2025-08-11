@@ -24,7 +24,6 @@ export default function CellActions({ multisig }) {
   const [showRemovePopup, setShowRemovePopup] = useState(false);
   const [showRenamePopup, setShowRenamePopup] = useState(false);
   const [showNewMultisigPopup, setShowNewMultisigPopup] = useState(false);
-  const [showRelativesPopup, setShowRelativesPopup] = useState(false);
 
   if (!multisig) {
     return null;
@@ -49,20 +48,7 @@ export default function CellActions({ multisig }) {
               >
                 <MenuMultisig className="w-5 h-5" /> New Multisig
               </OptionItem>
-              <MultisigProvider multisig={multisig}>
-                <OptionItem
-                  className="flex items-center grow gap-x-2"
-                  onClick={() => setShowRelativesPopup(true)}
-                >
-                  <SystemRelatives className="w-5 h-5" /> Relatives
-                </OptionItem>
-                {showRelativesPopup && (
-                  <RelativesPopup
-                    onClose={() => setShowRelativesPopup(false)}
-                    sourceAddress={normalizeAddress(multisig.multisigAddress)}
-                  />
-                )}
-              </MultisigProvider>
+              <RelativesAction multisig={multisig} />
               <OptionItem
                 className="flex items-center grow gap-x-2"
                 onClick={() => setShowRenamePopup(true)}
@@ -98,5 +84,25 @@ export default function CellActions({ multisig }) {
         />
       )}
     </>
+  );
+}
+
+function RelativesAction({ multisig }) {
+  const [showRelativesPopup, setShowRelativesPopup] = useState(false);
+  return (
+    <MultisigProvider multisig={multisig}>
+      <OptionItem
+        className="flex items-center grow gap-x-2"
+        onClick={() => setShowRelativesPopup(true)}
+      >
+        <SystemRelatives className="w-5 h-5" /> Relatives
+      </OptionItem>
+      {showRelativesPopup && (
+        <RelativesPopup
+          onClose={() => setShowRelativesPopup(false)}
+          sourceAddress={normalizeAddress(multisig.multisigAddress)}
+        />
+      )}
+    </MultisigProvider>
   );
 }
