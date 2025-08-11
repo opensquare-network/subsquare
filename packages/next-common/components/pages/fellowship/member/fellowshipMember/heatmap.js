@@ -129,7 +129,7 @@ function calcHeatmapHeight(referendumCount, containerWidth) {
     (containerWidth % spaceForOneSquare >= squareWidth ? 1 : 0);
 
   const rowsCount = Math.ceil(referendumCount / colsCount);
-  return rowsCount * 18;
+  return (rowsCount - 1) * spaceForOneSquare + squareWidth;
 }
 
 export default function Heatmap({ heatmap, referendumCount, highlightRange }) {

@@ -59,7 +59,7 @@ function AttendancePercentage({ heatmap }) {
 
 function ReferendaSlider({ referendumCount, onSliderChange, defaultRange }) {
   return (
-    <div style={{ marginTop: 9, marginBottom: 48 }}>
+    <div style={{ marginTop: 9, marginBottom: 12 }}>
       <Slider
         min={0}
         max={referendumCount - 1}
@@ -124,12 +124,12 @@ export default function VoteActivities() {
           referendumCount={referendumCount}
           highlightRange={[rangeFrom, rangeTo]}
         />
-        <LegendBar />
         <ReferendaSlider
           referendumCount={referendumCount}
           onSliderChange={onSliderChange}
           defaultRange={[rangeFrom, rangeTo]}
         />
+        <LegendBar />
 
         <div>
           <CardTitle>History</CardTitle>
