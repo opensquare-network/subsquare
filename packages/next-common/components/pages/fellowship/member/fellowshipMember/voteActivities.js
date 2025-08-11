@@ -13,6 +13,7 @@ import Tooltip from "next-common/components/tooltip";
 import { useReferendaFellowshipPallet } from "next-common/context/collectives/collectives";
 import { usePageProps } from "next-common/context/page";
 import Slider from "next-common/components/slider";
+import { isNil } from "lodash-es";
 
 function LoadingCard() {
   return (
@@ -62,7 +63,7 @@ function ReferendaSlider({ referendumCount, onSliderChange, defaultRange }) {
     <div style={{ marginTop: 9, marginBottom: 48 }}>
       <Slider
         min={0}
-        max={referendumCount}
+        max={referendumCount - 1}
         onChange={onSliderChange}
         formatValue={(val) => val}
         defaultValue={defaultRange}
@@ -75,17 +76,16 @@ export default function VoteActivities() {
   const { id: address } = usePageProps();
   const api = useContextApi();
   const referendaPallet = useReferendaFellowshipPallet();
-  const { value: referendumCount, loaded: isReferendumCountLoaded } = useCall(
-    api?.query?.[referendaPallet]?.referendumCount,
-    [],
-  );
+  const { value: referendumCountValue, loaded: isReferendumCountLoaded } =
+    useCall(api?.query?.[referendaPallet]?.referendumCount, []);
+  const referendumCount = referendumCountValue?.toNumber();
   const { value: { result: heatmap = [] } = {}, loading: isHeatmapLoading } =
     useAsync(async () => {
       return await backendApi.fetch(fellowshipMemberHeatmapApi(address));
     }, [address]);
 
-  const [rangeFrom, setRangeFrom] = useState(1);
-  const [rangeTo, setRangeTo] = useState(0);
+  const [rangeFrom, setRangeFrom] = useState(0);
+  const [rangeTo, setRangeTo] = useState(-1);
 
   useEffect(() => {
     setRangeTo(referendumCount);
@@ -97,7 +97,7 @@ export default function VoteActivities() {
   }, []);
 
   const heatmapInRange = useMemo(() => {
-    if (rangeFrom > rangeTo) {
+    if (isNil(rangeTo) || rangeFrom > rangeTo) {
       return heatmap;
     }
     return heatmap.filter(

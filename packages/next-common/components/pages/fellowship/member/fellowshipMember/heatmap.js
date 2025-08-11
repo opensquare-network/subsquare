@@ -160,9 +160,7 @@ export default function Heatmap({ heatmap, referendumCount, highlightRange }) {
               >
                 <div
                   className={cn(
-                    index < rangeFrom - 1 || index >= rangeTo
-                      ? "opacity-20"
-                      : "",
+                    index < rangeFrom || index > rangeTo ? "opacity-20" : "",
                   )}
                 >
                   {!item ? (
