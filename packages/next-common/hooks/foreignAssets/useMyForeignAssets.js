@@ -1,6 +1,8 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useAssetHubApi } from "next-common/hooks/chain/useAssetHubApi";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import useChainOrScanHeight from "next-common/hooks/height";
+import { isEqual } from "lodash-es";
 
 async function queryForeignAssetAccount(api, assetLocation, realAddress) {
   const accountInfo = await api.query.foreignAssets.account(
@@ -38,6 +40,10 @@ async function queryFreignAssetMetadata(api, assetLocation) {
 
 async function queryMyForeignAsset(api, key, realAddress) {
   const assetLocation = key.args[0];
+  if (!assetLocation || !assetLocation?.hash) {
+    return null;
+  }
+
   const assetId = assetLocation?.hash?.toString();
   try {
     const accountInfo = await queryForeignAssetAccount(
@@ -96,11 +102,17 @@ export default function useMyForeignAssets() {
   const realAddress = useRealAddress();
   const [assets, setAssets] = useState([]);
   const [loading, setLoading] = useState(true);
+  const blockHeight = useChainOrScanHeight();
+  const prevAssetsRef = useRef([]);
 
   const fetchData = useCallback(async () => {
     try {
-      setLoading(true);
       const userAssets = await fetchForeignAssets(api, realAddress);
+      if (isEqual(prevAssetsRef.current, userAssets)) {
+        return;
+      }
+
+      prevAssetsRef.current = userAssets;
       setAssets(userAssets);
     } catch (error) {
       setAssets([]);
@@ -115,7 +127,7 @@ export default function useMyForeignAssets() {
     }
 
     fetchData();
-  }, [api, realAddress, fetchData]);
+  }, [api, realAddress, fetchData, blockHeight]);
 
   return { assets, loading };
 }

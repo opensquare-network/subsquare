@@ -7,6 +7,7 @@ import Link from "next/link";
 import { InfoDocs } from "@osn/icons/subsquare";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { cn } from "next-common/utils";
+import Tooltip from "next-common/components/tooltip";
 
 const LocationDetailPopup = dynamicPopup(() =>
   import("next-common/components/callDetailPopup"),
@@ -38,10 +39,14 @@ function LocationInfoIcon({ location }) {
   );
 }
 
-const Location = memo(LocationInfoIcon);
+export const Location = memo(LocationInfoIcon);
 
 function AssetIDWithoutLink({ assetId }) {
-  return <span className="text-textTertiary">{addressEllipsis(assetId)}</span>;
+  return (
+    <span className="text-textTertiary">
+      <Tooltip content={assetId}>{addressEllipsis(assetId)}</Tooltip>
+    </span>
+  );
 }
 
 function AssetIDWithLink({ assetId }) {
@@ -57,13 +62,15 @@ function AssetIDWithLink({ assetId }) {
       {isNil(assetId) ? (
         "-"
       ) : (
-        <span className="text-theme500">{addressEllipsis(assetId)}</span>
+        <Tooltip content={assetId}>
+          <span className="text-theme500">{addressEllipsis(assetId)}</span>
+        </Tooltip>
       )}
     </Link>
   );
 }
 
-function AssetID({ assetId }) {
+export function AssetID({ assetId }) {
   const { supportForeignAssets = false } = useChainSettings();
   if (!supportForeignAssets) {
     return <AssetIDWithoutLink assetId={assetId} />;
@@ -73,12 +80,12 @@ function AssetID({ assetId }) {
 }
 
 export const colId = {
-  name: "ID",
+  name: "Location & ID",
   style: { textAlign: "left", width: "120px", minWidth: "120px" },
   render: (item) => (
-    <div className="flex items-center justify-between gap-x-2">
-      <AssetID assetId={item.assetId} />
+    <div className="flex items-center gap-x-2">
       <Location location={item.location} />
+      <AssetID assetId={item.assetId} />
     </div>
   ),
 };
