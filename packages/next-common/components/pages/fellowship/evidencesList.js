@@ -4,9 +4,12 @@ import useEvidencesSort from "next-common/components/fellowship/evidences/useEvi
 import useEvidenceFilter from "next-common/components/pages/fellowship/useEvidenceFilter";
 import { usePageProps } from "next-common/context/page";
 import PrimaryButton from "next-common/lib/button/primary";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { SystemPlus } from "@osn/icons/subsquare";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import Tooltip from "next-common/components/tooltip";
+import { useCollectivesSection } from "next-common/context/collectives/collectives";
 
 const SubmitEvidencePopup = dynamicPopup(() =>
   import(
@@ -16,7 +19,6 @@ const SubmitEvidencePopup = dynamicPopup(() =>
 
 export default function FellowshipEvidencesList() {
   const { evidences } = usePageProps();
-  const [showSubmitEvidencePopup, setShowSubmitEvidencePopup] = useState(false);
 
   const { component: EvidenceFilterComponent, filteredEvidences } =
     useEvidenceFilter(evidences);
@@ -37,17 +39,58 @@ export default function FellowshipEvidencesList() {
         </TitleContainer>
         <div className="flex items-center gap-3 max-md:pl-6">
           {EvidenceFilterComponent}
-          <PrimaryButton
-            onClick={() => setShowSubmitEvidencePopup(true)}
-            size="small"
-            iconLeft={<SystemPlus className="w-4 h-4" />}
-          >
-            New Evidence
-          </PrimaryButton>
+          <NewEvidenceButton />
         </div>
       </div>
 
       <FellowshipEvidencesTable evidences={filteredEvidences} />
+    </>
+  );
+}
+
+function NewEvidenceButton() {
+  const [showSubmitEvidencePopup, setShowSubmitEvidencePopup] = useState(false);
+  const { fellowshipMembers = [], ambassadorMembers = [] } = usePageProps();
+  const realAddress = useRealAddress();
+  const section = useCollectivesSection();
+
+  const canSubmitEvidence = useMemo(() => {
+    if (section === "fellowship") {
+      return fellowshipMembers.some((member) => member.address === realAddress);
+    } else if (section === "ambassador") {
+      return ambassadorMembers.some((member) => member.address === realAddress);
+    }
+    return false;
+  }, [fellowshipMembers, ambassadorMembers, realAddress, section]);
+
+  const tooltipContent = useMemo(() => {
+    if (section === "fellowship") {
+      return "You are not a member of the fellowship";
+    } else if (section === "ambassador") {
+      return "You are not a member of the ambassador";
+    }
+  }, [section]);
+
+  let buttonCompnent = (
+    <PrimaryButton
+      disabled={!canSubmitEvidence}
+      onClick={() => setShowSubmitEvidencePopup(true)}
+      size="small"
+      iconLeft={<SystemPlus className="w-4 h-4" />}
+    >
+      New Evidence
+    </PrimaryButton>
+  );
+
+  if (!canSubmitEvidence) {
+    buttonCompnent = (
+      <Tooltip content={tooltipContent}>{buttonCompnent}</Tooltip>
+    );
+  }
+
+  return (
+    <>
+      {buttonCompnent}
       {showSubmitEvidencePopup && (
         <SubmitEvidencePopup
           onClose={() => {
