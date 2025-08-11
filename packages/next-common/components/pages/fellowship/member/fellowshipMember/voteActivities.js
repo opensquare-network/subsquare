@@ -1,9 +1,9 @@
+import { useMemo } from "react";
+import { useAsync } from "react-use";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { CardTitle } from "./styled";
-import { useAsync } from "react-use";
 import { backendApi } from "next-common/services/nextApi";
 import { fellowshipMemberHeatmapApi } from "next-common/services/url";
-import { useMemo } from "react";
 import Loading from "next-common/components/loading";
 import FellowshipMemberVotes from "./fellowshipMemberVotes";
 import { useContextApi } from "next-common/context/api";
@@ -12,6 +12,7 @@ import Heatmap, { LegendBar } from "./heatmap";
 import Tooltip from "next-common/components/tooltip";
 import { useReferendaFellowshipPallet } from "next-common/context/collectives/collectives";
 import { usePageProps } from "next-common/context/page";
+import useReferendaSlider from "./referendaSlider";
 
 function LoadingCard() {
   return (
@@ -60,14 +61,30 @@ export default function VoteActivities() {
   const { id: address } = usePageProps();
   const api = useContextApi();
   const referendaPallet = useReferendaFellowshipPallet();
-  const { value: referendumCount, loaded: isReferendumCountLoaded } = useCall(
-    api?.query?.[referendaPallet]?.referendumCount,
-    [],
-  );
+  const { value: referendumCountValue, loaded: isReferendumCountLoaded } =
+    useCall(api?.query?.[referendaPallet]?.referendumCount, []);
+  const referendumCount = referendumCountValue?.toNumber();
+
   const { value: { result: heatmap = [] } = {}, loading: isHeatmapLoading } =
     useAsync(async () => {
       return await backendApi.fetch(fellowshipMemberHeatmapApi(address));
     }, [address]);
+
+  const {
+    component: slider,
+    rangeFrom,
+    rangeTo,
+  } = useReferendaSlider(referendumCount);
+
+  const heatmapInRange = useMemo(() => {
+    if (isNaN(rangeTo) || isNaN(rangeFrom) || rangeFrom > rangeTo) {
+      return heatmap;
+    }
+    return heatmap.filter(
+      ({ referendumIndex }) =>
+        referendumIndex >= rangeFrom && referendumIndex <= rangeTo,
+    );
+  }, [heatmap, rangeFrom, rangeTo]);
 
   if (!isReferendumCountLoaded || isHeatmapLoading) {
     return <LoadingCard />;
@@ -80,10 +97,15 @@ export default function VoteActivities() {
   return (
     <SecondaryCard>
       <CardTitle>
-        Participation Rate <AttendancePercentage heatmap={heatmap} />
+        Participation Rate <AttendancePercentage heatmap={heatmapInRange} />
       </CardTitle>
       <div className="flex flex-col gap-[16px]">
-        <Heatmap heatmap={heatmap} referendumCount={referendumCount} />
+        <Heatmap
+          heatmap={heatmap}
+          referendumCount={referendumCount}
+          highlightRange={[rangeFrom, rangeTo]}
+        />
+        {slider}
         <LegendBar />
         <div>
           <CardTitle>History</CardTitle>
