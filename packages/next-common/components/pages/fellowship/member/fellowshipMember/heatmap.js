@@ -120,8 +120,14 @@ function HeatmapItemTooltip({ referendumIndex, item }) {
 }
 
 function calcHeatmapHeight(referendumCount, containerWidth) {
+  const squareWidth = 12;
+  const squareGap = 6;
+  const spaceForOneSquare = squareWidth + squareGap;
+
   const colsCount =
-    Math.floor(containerWidth / 18) + (containerWidth % 18 >= 12 ? 1 : 0);
+    Math.floor(containerWidth / spaceForOneSquare) +
+    (containerWidth % spaceForOneSquare >= squareWidth ? 1 : 0);
+
   const rowsCount = Math.ceil(referendumCount / colsCount);
   return rowsCount * 18;
 }
