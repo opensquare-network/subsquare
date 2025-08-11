@@ -81,7 +81,7 @@ export const kusamaDvDelegates = [
   {
     address: "DG8Q1VmFkmDwuKDN9ZqdB78W6BiXTX5Z33XzZNAykuB5nFh", // Dr. Jeff Cao
     slots: [
-      { start: 23707164, end: 25266047, trackIds: cohort2TrackIds }, // cohort 2
+      { start: 23707168, end: 25266047, trackIds: cohort2TrackIds }, // cohort 2
     ],
   },
   {

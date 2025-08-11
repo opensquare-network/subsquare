@@ -8,6 +8,7 @@ import { normalizeAddress } from "next-common/utils/address";
 import { ArrowRight } from "@osn/icons/subsquare";
 import { usePopupOnClose } from "next-common/context/popup";
 import { useMultisigAccounts } from "../multisigs/context/multisigAccountsContext";
+import Link from "next/link";
 
 export default function MultiSignerAccounts({ selected, onSelect = noop }) {
   const onClose = usePopupOnClose();
@@ -32,8 +33,14 @@ export default function MultiSignerAccounts({ selected, onSelect = noop }) {
       );
     } else if (!multisigList.length) {
       return (
-        <div className="flex justify-center text14Medium text-textTertiary">
-          No multisig accounts
+        <div className="flex justify-center text14Medium text-textTertiary gap-x-1">
+          No multisig accounts found. Add one{" "}
+          <Link
+            href="/account/multisigs?tab=accounts"
+            className="text-theme500"
+          >
+            Here
+          </Link>
         </div>
       );
     } else {

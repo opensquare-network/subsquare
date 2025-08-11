@@ -3,7 +3,7 @@ import PopupWithSigner from "next-common/components/popupWithSigner";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { useReferendumVoting } from "next-common/context/fellowship/referendumVoting";
 import { useOnchainData } from "next-common/context/post";
 import { useDispatch } from "react-redux";
@@ -21,14 +21,12 @@ function Content() {
   const { votes, fetch } = useReferendumVoting();
   const { referendumIndex: pollIndex } = useOnchainData();
   const dispatch = useDispatch();
-  const [isDisabled, setIsDisabled] = useState(false);
 
   const getTxFunc = useCallback(() => {
     if (!api || !pallet) {
       return;
     }
 
-    setIsDisabled(true);
     return api?.tx?.[pallet]?.cleanupPoll(pollIndex, votes.length);
   }, [api, pallet, pollIndex, votes]);
 
@@ -45,7 +43,6 @@ function Content() {
         getTxFunc={getTxFunc}
         onInBlock={onInBlock}
         onSubmitted={onClose}
-        disabled={isDisabled}
       />
     </>
   );

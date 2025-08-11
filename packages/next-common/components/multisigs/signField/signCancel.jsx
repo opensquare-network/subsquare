@@ -5,27 +5,18 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useCallback, useState, useEffect } from "react";
 import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
 import Tooltip from "next-common/components/tooltip";
-import { newSuccessToast } from "next-common/store/reducers/toastSlice";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchMultisigList10Times,
-  fetchMultisigsCount10Times,
-} from "../common";
-import { myMultisigsSelector } from "next-common/store/reducers/multisigSlice";
-import { useChain, useChainSettings } from "next-common/context/chain";
+import { useChainSettings } from "next-common/context/chain";
 import { sortAddresses } from "@polkadot/util-crypto";
 import { isSameAddress } from "next-common/utils";
+import { useMultisigListFetchFunc } from "../actions/composeCallPopup/fetchMultisigList";
 
 export default function SignCancel({ multisig = {} }) {
   const api = useContextApi();
   const address = useRealAddress();
   const { threshold, signatories, when: timepoint, callHash } = multisig;
-  const dispatch = useDispatch();
   const [isDisabled, setIsDisabled] = useState(false);
-  const myMultisigs = useSelector(myMultisigsSelector);
-  const { page = 1 } = myMultisigs || {};
-  const chain = useChain();
   const { ss58Format } = useChainSettings();
+  const fetchMultisigListFunc = useMultisigListFetchFunc();
 
   const getTxFunc = useCallback(() => {
     if (!api || !address) {
@@ -44,25 +35,12 @@ export default function SignCancel({ multisig = {} }) {
     );
   }, [api, address, threshold, signatories, ss58Format, callHash, timepoint]);
 
-  const onFinalized = () => {
-    setIsDisabled(false);
-    dispatch(newSuccessToast("Multisig status will be updated in seconds"));
-    fetchMultisigList10Times(dispatch, chain, address, page).then(() => {
-      // updated 10 time, do nothing
-    });
-    fetchMultisigsCount10Times(dispatch, chain, address).then(() => {
-      // updated 10 time, do nothing
-    });
-  };
-
-  const onTxError = () => {
-    setIsDisabled(false);
-  };
-
   const { doSubmit, isSubmitting } = useTxSubmission({
     getTxFunc,
-    onFinalized,
-    onTxError,
+    onInBlock: () => setIsDisabled(false),
+    onCancelled: () => setIsDisabled(false),
+    onTxError: () => setIsDisabled(false),
+    onFinalized: fetchMultisigListFunc,
   });
 
   useEffect(() => {

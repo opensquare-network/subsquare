@@ -14,13 +14,12 @@ import {
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useShowVoteSuccessful } from "next-common/components/vote";
 import { useContextApi } from "next-common/context/api";
-import { useSendTransaction } from "next-common/hooks/useSendTransaction";
-import { wrapTransaction } from "next-common/utils/sendTransaction";
 import useCollectiveMotionVotes from "next-common/hooks/collective/useCollectiveVotes";
 import { useCollectivePallet } from "next-common/context/collective";
 import { isSameAddress, isMotionEnded } from "next-common/utils";
 import { useOnchainData } from "next-common/context/post";
 import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
+import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
 
 const SignerWrapper = styled.div`
   > :not(:first-child) {
@@ -46,7 +45,7 @@ function PopupContentWithContext() {
   const api = useContextApi();
   const signerAccount = useSignerAccount();
   const showVoteSuccessful = useShowVoteSuccessful();
-  const { sendTxFunc, isSubmitting } = useSendTransaction();
+
   const votes = useCollectiveMotionVotes();
 
   const [loadingState, setLoadingState] = useState();
@@ -71,56 +70,38 @@ function PopupContentWithContext() {
     }
   }, [votes, signerAccount?.realAddress, showVoteSuccessful]);
 
-  const showErrorToast = useCallback(
-    (message) => dispatch(newErrorToast(message)),
-    [dispatch],
-  );
+  const onInBlock = useCallback(() => {
+    getMyVoteAndShowSuccessful();
+  }, [getMyVoteAndShowSuccessful]);
 
-  const doVote = useCallback(
+  const getTxFunc = useCallback(
     async (approve) => {
-      if (isSubmitting) return;
-
       if (!motionHash || motionIndex === undefined) {
         return;
       }
 
-      if (!signerAccount) {
-        showErrorToast("Please select an account");
+      if (!api.tx[pallet]?.vote) {
+        dispatch(newErrorToast(`${pallet}.vote is not supported`));
         return;
       }
 
-      const voteMethod = api?.tx?.[pallet]?.vote;
-      if (!voteMethod) {
-        showErrorToast("Chain network is not connected yet");
-        return;
-      }
-
-      let tx = voteMethod(motionHash, motionIndex, approve);
-      tx = await wrapTransaction(api, tx, signerAccount);
-
-      setLoadingState(approve ? VoteEnum.Aye : VoteEnum.Nay);
-
-      await sendTxFunc({
-        api,
-        tx,
-        onInBlock: () => {
-          getMyVoteAndShowSuccessful();
-        },
-        onSubmitted: onClose,
-      });
+      return api.tx[pallet].vote(motionHash, motionIndex, approve);
     },
-    [
-      api,
-      pallet,
-      motionHash,
-      motionIndex,
-      signerAccount,
-      sendTxFunc,
-      getMyVoteAndShowSuccessful,
-      onClose,
-      isSubmitting,
-      showErrorToast,
-    ],
+    [api, motionHash, motionIndex, pallet, dispatch],
+  );
+
+  const { doSubmit, isSubmitting } = useTxSubmission({
+    getTxFunc,
+    onInBlock,
+    onSubmitted: onClose,
+  });
+
+  const doVote = useCallback(
+    async (approve) => {
+      setLoadingState(approve ? VoteEnum.Aye : VoteEnum.Nay);
+      await doSubmit(approve);
+    },
+    [doSubmit],
   );
 
   return (

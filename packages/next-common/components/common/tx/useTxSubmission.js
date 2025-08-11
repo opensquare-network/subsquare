@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import { noop } from "lodash-es";
@@ -6,9 +6,7 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { wrapTransaction } from "next-common/utils/sendTransaction";
 import { useContextApi } from "next-common/context/api";
 import { useSendTransaction } from "next-common/hooks/useSendTransaction";
-import useWraperTxCallback, {
-  useMultisigCallback,
-} from "./useWraperTxCallback";
+import { useMaybeMultisigCallback } from "./useMaybeMultisigCallback";
 
 export default function useTxSubmission({
   getTxFunc = noop,
@@ -22,59 +20,82 @@ export default function useTxSubmission({
   const api = useContextApi();
   const signerAccount = useSignerAccount();
   const { sendTxFunc, isSubmitting } = useSendTransaction();
-  const wraperTxCallback = useWraperTxCallback();
-  const multisigCallback = useMultisigCallback();
+  const {
+    onInBlock: maybeMultisigOnInBlock,
+    onFinalized: maybeMultisigOnFinalized,
+  } = useMaybeMultisigCallback({ onInBlock, onFinalized });
+  const [isWraping, setIsWraping] = useState(false);
 
-  const doSubmit = useCallback(async () => {
-    if (!api) {
-      dispatch(newErrorToast("Chain RPC is not connected yet"));
-      return;
-    }
+  const getTx = useCallback(
+    async (...args) => {
+      let tx = null;
+      try {
+        tx = await getTxFunc(...args);
+      } catch (e) {
+        dispatch(newErrorToast(e.message));
+        return;
+      }
 
-    if (!signerAccount) {
-      dispatch(newErrorToast("Signer account is not specified"));
-      return;
-    }
+      if (!tx) {
+        return;
+      }
 
-    let tx = null;
-    try {
-      tx = await getTxFunc();
-    } catch (e) {
-      dispatch(newErrorToast(e.message));
-      return;
-    }
+      tx = await wrapTransaction(api, tx, signerAccount);
+      return tx;
+    },
+    [getTxFunc, api, signerAccount, dispatch],
+  );
 
-    if (!tx) {
-      return;
-    }
+  const doSubmit = useCallback(
+    async (...args) => {
+      if (!api) {
+        dispatch(newErrorToast("Chain RPC is not connected yet"));
+        return;
+      }
 
-    tx = await wrapTransaction(api, tx, signerAccount);
+      if (!signerAccount) {
+        dispatch(newErrorToast("Signer account is not specified"));
+        return;
+      }
 
-    await sendTxFunc({
+      setIsWraping(true);
+      let tx;
+      try {
+        tx = await getTx(...args);
+      } finally {
+        setIsWraping(false);
+      }
+
+      if (!tx) {
+        return;
+      }
+
+      await sendTxFunc({
+        api,
+        tx,
+        onSubmitted,
+        onInBlock: maybeMultisigOnInBlock,
+        onFinalized: maybeMultisigOnFinalized,
+        onCancelled,
+        onTxError,
+      });
+    },
+    [
       api,
-      tx,
+      dispatch,
+      signerAccount,
+      getTx,
+      sendTxFunc,
       onSubmitted,
-      onInBlock: wraperTxCallback(onInBlock, multisigCallback?.onInBlock),
-      onFinalized: wraperTxCallback(onFinalized, multisigCallback?.onFinalized),
+      maybeMultisigOnInBlock,
+      maybeMultisigOnFinalized,
       onCancelled,
       onTxError,
-    });
-  }, [
-    api,
-    dispatch,
-    signerAccount,
-    getTxFunc,
-    sendTxFunc,
-    onSubmitted,
-    onInBlock,
-    onFinalized,
-    onCancelled,
-    onTxError,
-    wraperTxCallback,
-    multisigCallback,
-  ]);
+    ],
+  );
 
   return {
+    isWraping,
     isSubmitting,
     doSubmit,
   };

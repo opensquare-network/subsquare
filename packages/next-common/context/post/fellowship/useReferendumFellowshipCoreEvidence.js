@@ -4,12 +4,8 @@ import { useOnchainData } from "..";
 import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
 import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
-export function useReferendumFellowshipCoreEvidence() {
+export function useReferendumFellowshipCoreEvidenceForWho(who) {
   const pallet = useCoreFellowshipPallet();
-
-  const onchainData = useOnchainData();
-  const { call } = onchainData?.inlineCall || onchainData.proposal || {};
-  const who = find(call?.args, { name: "who" })?.value;
 
   const [wish, setWish] = useState("");
   const [evidence, setEvidence] = useState("");
@@ -41,4 +37,12 @@ export function useReferendumFellowshipCoreEvidence() {
     evidence,
     loading,
   };
+}
+
+export function useReferendumFellowshipCoreEvidence() {
+  const onchainData = useOnchainData();
+  const { call } = onchainData?.inlineCall || onchainData.proposal || {};
+  const who = find(call?.args, { name: "who" })?.value;
+
+  return useReferendumFellowshipCoreEvidenceForWho(who);
 }
