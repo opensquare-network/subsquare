@@ -15,3 +15,8 @@ export function MultisigProvider({ children, multisig: multisigProp }) {
 export function useMultisigContext() {
   return useContext(MultisigContext);
 }
+
+export function useMultisigAccount() {
+  const { multisig } = useMultisigContext() || {};
+  return multisig;
+}

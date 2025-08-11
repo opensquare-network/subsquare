@@ -7,6 +7,7 @@ import { RELATIONSHIP_NODE_TYPE } from "next-common/utils/constants";
 import useFetchIdentityInfo from "next-common/hooks/useFetchIdentityInfo";
 import Tooltip from "next-common/components/tooltip";
 import Link from "next/link";
+import useMaybeContextMultisigAddress from "./useMaybeContextMultisigAddress";
 
 export const rootNodeId = "rootNode";
 const nodeInitialWidth = 240;
@@ -285,7 +286,7 @@ export default function useConversionRelationshipNode(sourceAddress = "") {
     delegatee: sourceAddress,
     pageSize: 100,
   });
-  const multisigAddress = useMultisigAddress(sourceAddress);
+  const multisigAddress = useMaybeContextMultisigAddress(sourceAddress);
   const signatoryMultisig = useSignatoryMultisig(sourceAddress);
   const identityInfo = useFetchIdentityInfo(sourceAddress);
 
