@@ -7,6 +7,7 @@ import Link from "next/link";
 import { InfoDocs } from "@osn/icons/subsquare";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { cn } from "next-common/utils";
+import Tooltip from "next-common/components/tooltip";
 
 const LocationDetailPopup = dynamicPopup(() =>
   import("next-common/components/callDetailPopup"),
@@ -41,7 +42,11 @@ function LocationInfoIcon({ location }) {
 export const Location = memo(LocationInfoIcon);
 
 function AssetIDWithoutLink({ assetId }) {
-  return <span className="text-textTertiary">{addressEllipsis(assetId)}</span>;
+  return (
+    <span className="text-textTertiary">
+      <Tooltip content={assetId}>{addressEllipsis(assetId)}</Tooltip>
+    </span>
+  );
 }
 
 function AssetIDWithLink({ assetId }) {
@@ -57,7 +62,9 @@ function AssetIDWithLink({ assetId }) {
       {isNil(assetId) ? (
         "-"
       ) : (
-        <span className="text-theme500">{addressEllipsis(assetId)}</span>
+        <Tooltip content={assetId}>
+          <span className="text-theme500">{addressEllipsis(assetId)}</span>
+        </Tooltip>
       )}
     </Link>
   );
