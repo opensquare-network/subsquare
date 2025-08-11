@@ -8,6 +8,14 @@ import BubbleItem from "./bubbleItem";
 import useShowVoteActions from "next-common/hooks/useShowVoteActions";
 import { clamp, get } from "lodash-es";
 
+export default function ApprovalBubbleArea(props) {
+  const showVoteActions = useShowVoteActions();
+  if (!showVoteActions) {
+    return;
+  }
+  return <ApprovalBubbleAreaImpl {...props} />;
+}
+
 const useApprovalBubbleData = (maxX, historyApprovalData) => {
   const beginheight = useBeginHeight();
   const blockStep = useBlockSteps();
@@ -34,14 +42,6 @@ const useApprovalBubbleData = (maxX, historyApprovalData) => {
       });
   }, [beginheight, blockStep, historyApprovalData, loading, maxX, voteActions]);
 };
-
-export default function ApprovalBubbleArea(props) {
-  const showVoteActions = useShowVoteActions();
-  if (!showVoteActions) {
-    return;
-  }
-  return <ApprovalBubbleAreaImpl {...props} />;
-}
 
 function ApprovalBubbleAreaImpl({
   chartArea,

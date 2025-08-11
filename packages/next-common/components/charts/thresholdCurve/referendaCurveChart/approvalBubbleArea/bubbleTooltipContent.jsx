@@ -13,16 +13,6 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { cn } from "next-common/utils";
 
-const getActionType = (data) => {
-  return data.vote.isSplitAbstain
-    ? "Abstain"
-    : data.vote.isSplit
-    ? "Split"
-    : data.vote?.vote?.vote?.isAye
-    ? "Aye"
-    : "Nay";
-};
-
 export default function TooltipContent({ who, data, type }) {
   const actionType = useMemo(() => getActionType(data), [data]);
   return (
@@ -60,6 +50,16 @@ export default function TooltipContent({ who, data, type }) {
     </div>
   );
 }
+
+const getActionType = (data) => {
+  return data.vote.isSplitAbstain
+    ? "Abstain"
+    : data.vote.isSplit
+    ? "Split"
+    : data.vote?.vote?.vote?.isAye
+    ? "Aye"
+    : "Nay";
+};
 
 function TallyVotesDisplay({ data, type }) {
   const { decimals, symbol } = useChainSettings();
