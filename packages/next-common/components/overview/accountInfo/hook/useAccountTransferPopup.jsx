@@ -3,7 +3,10 @@ import PopupWithSigner from "next-common/components/popupWithSigner";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import { useContextApi } from "next-common/context/api";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import {
+  newErrorToast,
+  newSuccessToast,
+} from "next-common/store/reducers/toastSlice";
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
@@ -62,6 +65,10 @@ function PopupContent() {
     return api.tx.balances?.transferKeepAlive(transferToAddress, amount);
   }, [dispatch, api, transferToAddress, getCheckedTransferAmount]);
 
+  const onInBlock = useCallback(() => {
+    dispatch(newSuccessToast("Transfer successfully"));
+  }, [dispatch]);
+
   return (
     <>
       <SignerWithBalance />
@@ -71,7 +78,11 @@ function PopupContent() {
         <ExistentialDeposit destApi={api} title="Existential Deposit" />
       </AdvanceSettings>
       <div className="flex justify-end">
-        <TxSubmissionButton title="Confirm" getTxFunc={getTxFunc} />
+        <TxSubmissionButton
+          title="Confirm"
+          getTxFunc={getTxFunc}
+          onInBlock={onInBlock}
+        />
       </div>
     </>
   );
