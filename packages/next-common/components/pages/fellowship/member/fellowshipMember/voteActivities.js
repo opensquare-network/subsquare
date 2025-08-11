@@ -1,9 +1,9 @@
+import { useMemo } from "react";
+import { useAsync } from "react-use";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { CardTitle } from "./styled";
-import { useAsync } from "react-use";
 import { backendApi } from "next-common/services/nextApi";
 import { fellowshipMemberHeatmapApi } from "next-common/services/url";
-import { useCallback, useEffect, useMemo, useState } from "react";
 import Loading from "next-common/components/loading";
 import FellowshipMemberVotes from "./fellowshipMemberVotes";
 import { useContextApi } from "next-common/context/api";
@@ -12,7 +12,7 @@ import Heatmap, { LegendBar } from "./heatmap";
 import Tooltip from "next-common/components/tooltip";
 import { useReferendaFellowshipPallet } from "next-common/context/collectives/collectives";
 import { usePageProps } from "next-common/context/page";
-import Slider from "next-common/components/slider";
+import useReferendaSlider from "./referendaSlider";
 
 function LoadingCard() {
   return (
@@ -57,20 +57,6 @@ function AttendancePercentage({ heatmap }) {
   );
 }
 
-function ReferendaSlider({ referendumCount, onSliderChange, defaultRange }) {
-  return (
-    <div style={{ marginTop: 9, marginBottom: 12 }}>
-      <Slider
-        min={0}
-        max={referendumCount - 1}
-        onChange={onSliderChange}
-        formatValue={(val) => val}
-        defaultValue={defaultRange}
-      />
-    </div>
-  );
-}
-
 export default function VoteActivities() {
   const { id: address } = usePageProps();
   const api = useContextApi();
@@ -78,22 +64,17 @@ export default function VoteActivities() {
   const { value: referendumCountValue, loaded: isReferendumCountLoaded } =
     useCall(api?.query?.[referendaPallet]?.referendumCount, []);
   const referendumCount = referendumCountValue?.toNumber();
+
   const { value: { result: heatmap = [] } = {}, loading: isHeatmapLoading } =
     useAsync(async () => {
       return await backendApi.fetch(fellowshipMemberHeatmapApi(address));
     }, [address]);
 
-  const [rangeFrom, setRangeFrom] = useState(0);
-  const [rangeTo, setRangeTo] = useState(-1);
-
-  useEffect(() => {
-    setRangeTo(referendumCount);
-  }, [referendumCount]);
-
-  const onSliderChange = useCallback(([from, to]) => {
-    setRangeFrom(from);
-    setRangeTo(to);
-  }, []);
+  const {
+    component: slider,
+    rangeFrom,
+    rangeTo,
+  } = useReferendaSlider(referendumCount);
 
   const heatmapInRange = useMemo(() => {
     if (isNaN(rangeTo) || isNaN(rangeFrom) || rangeFrom > rangeTo) {
@@ -124,13 +105,8 @@ export default function VoteActivities() {
           referendumCount={referendumCount}
           highlightRange={[rangeFrom, rangeTo]}
         />
-        <ReferendaSlider
-          referendumCount={referendumCount}
-          onSliderChange={onSliderChange}
-          defaultRange={[rangeFrom, rangeTo]}
-        />
+        {slider}
         <LegendBar />
-
         <div>
           <CardTitle>History</CardTitle>
           <FellowshipMemberVotes address={address} />
