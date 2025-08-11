@@ -119,16 +119,19 @@ function HeatmapItemTooltip({ referendumIndex, item }) {
   );
 }
 
+function calcHeatmapHeight(referendumCount, containerWidth) {
+  const colsCount =
+    Math.floor(containerWidth / 18) + (containerWidth % 18 >= 12 ? 1 : 0);
+  const rowsCount = Math.ceil(referendumCount / colsCount);
+  return rowsCount * 18;
+}
+
 export default function Heatmap({ heatmap, referendumCount, highlightRange }) {
   const container = useRef();
   const size = useElementRect(container);
 
   const [rangeFrom = 1, rangeTo = 0] = highlightRange || [];
-
-  const colsCount =
-    Math.floor(size?.width / 18) + (size?.width % 18 >= 12 ? 1 : 0);
-  const rowsCount = Math.ceil(referendumCount / colsCount);
-  const height = rowsCount * 18;
+  const height = calcHeatmapHeight(referendumCount, size?.width);
 
   const heatmapData = useMemo(() => {
     const data = {};
@@ -157,7 +160,9 @@ export default function Heatmap({ heatmap, referendumCount, highlightRange }) {
               >
                 <div
                   className={cn(
-                    index < rangeFrom || index > rangeTo ? "opacity-20" : "",
+                    index < rangeFrom - 1 || index >= rangeTo
+                      ? "opacity-20"
+                      : "",
                   )}
                 >
                   {!item ? (
