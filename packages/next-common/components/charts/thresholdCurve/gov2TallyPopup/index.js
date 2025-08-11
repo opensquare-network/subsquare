@@ -19,6 +19,8 @@ import AvatarSwitch from "./avatarSwitch";
 import VoteActionsList from "./voteActionsList";
 import useShowVoteActions from "next-common/hooks/useShowVoteActions";
 import { cn } from "next-common/utils";
+import { useOnchainData } from "next-common/context/post";
+import useFetchReferendaTallyHistory from "next-common/utils/hooks/referenda/useFetchReferendaTallyHistory";
 
 export default function ThresholdCurvesGov2TallyPopup({
   closeFunc = noop,
@@ -31,6 +33,9 @@ export default function ThresholdCurvesGov2TallyPopup({
   const [showAyeNay, setShowAyeNay] = useState(false);
   const [showAvatar, setShowAvatar] = useState(true);
   const showVoteActions = useShowVoteActions();
+
+  const { referendumIndex } = useOnchainData();
+  useFetchReferendaTallyHistory(referendumIndex);
 
   return (
     <Popup

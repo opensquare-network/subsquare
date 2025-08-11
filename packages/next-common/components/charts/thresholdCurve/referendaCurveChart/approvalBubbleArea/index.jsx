@@ -6,7 +6,7 @@ import {
 } from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
 import BubbleItem from "./bubbleItem";
 import useShowVoteActions from "next-common/hooks/useShowVoteActions";
-import { clamp, get } from "lodash-es";
+import { clamp, get, last } from "lodash-es";
 
 export default function ApprovalBubbleArea(props) {
   const showVoteActions = useShowVoteActions();
@@ -26,6 +26,13 @@ const useApprovalBubbleData = (maxX, historyApprovalData) => {
     if (loading) {
       return [];
     }
+    const getY = (steps) => {
+      if (steps >= historyApprovalData.length - 1) {
+        return last(historyApprovalData);
+      } else {
+        return historyApprovalData[Math.ceil(steps)];
+      }
+    };
     return voteActions
       .sort((a, b) => a.indexer.blockHeight - b.indexer.blockHeight)
       .map((item) => {
@@ -36,7 +43,7 @@ const useApprovalBubbleData = (maxX, historyApprovalData) => {
           data,
           type,
           who,
-          y: historyApprovalData[Math.ceil(steps)],
+          y: getY(steps),
           x: clamp((steps / maxX) * 100, 0, 100),
         };
       });
