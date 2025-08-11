@@ -10,7 +10,6 @@ import { usePolkadotTreasury } from "next-common/context/treasury/polkadotTreasu
 
 function LoansItemList() {
   const {
-    loanCentrifugeUsdcBalance,
     loanBifrostDotBalance,
     loadPendulumDotBalance,
     loanHydrationDotBalance,
@@ -26,17 +25,6 @@ function LoansItemList() {
 
   return (
     <div className="flex flex-col gap-[4px]">
-      <SummaryLabelLinkItem
-        label="Centrifuge"
-        href={"https://polkadot.subsquare.io/referenda/1122"}
-      >
-        <ValueDisplay
-          value={toPrecision(loanCentrifugeUsdcBalance, SYMBOL_DECIMALS.USDC)}
-          symbol="USDC"
-          className={"text12Medium text-textPrimary"}
-          tooltipClassName={"inline-flex items-center"}
-        />
-      </SummaryLabelLinkItem>
       <SummaryLabelLinkItem
         label="Bifrost"
         href="https://polkadot.subsquare.io/referenda/432"
