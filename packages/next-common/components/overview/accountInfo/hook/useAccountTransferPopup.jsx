@@ -18,7 +18,6 @@ import SignerWithBalance from "next-common/components/signerPopup/signerWithBala
 import useQueryExistentialDeposit from "next-common/utils/hooks/chain/useQueryExistentialDeposit";
 import { toPrecision } from "next-common/utils";
 import BigNumber from "bignumber.js";
-import WarningInfoPanel from "next-common/components/summary/styled/warningInfoPanel";
 import { SystemWarning } from "@osn/icons/subsquare";
 import { WarningMessage } from "next-common/components/setting/styled";
 
