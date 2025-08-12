@@ -1,12 +1,6 @@
 import { noop } from "lodash-es";
-import { backendApi } from "next-common/services/nextApi";
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import useMultisigAccount from "next-common/hooks/multisig/useMultisigAccount";
+import { createContext, useContext } from "react";
 
 export const MultisigAccountsContext = createContext({
   multisigs: [],
@@ -16,34 +10,8 @@ export const MultisigAccountsContext = createContext({
 });
 
 export function MultisigAccountsProvider({ userAddress, children }) {
-  const [now, setNow] = useState(Date.now());
-  const [multisigs, setMultisigs] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [total, setTotal] = useState(0);
-
-  const fetchMultisigs = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      const { result } = await backendApi.fetch(
-        `users/${userAddress}/multisigs`,
-      );
-      setMultisigs(result);
-      setTotal(result?.length || 0);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    fetchMultisigs();
-  }, [fetchMultisigs, now]);
-
-  const refresh = useCallback(() => {
-    setNow(Date.now());
-  }, []);
+  const { multisigs, isLoading, total, refresh } =
+    useMultisigAccount(userAddress);
 
   return (
     <MultisigAccountsContext.Provider
