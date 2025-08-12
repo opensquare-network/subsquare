@@ -20,6 +20,7 @@ import { toPrecision } from "next-common/utils";
 import BigNumber from "bignumber.js";
 import { SystemWarning } from "@osn/icons/subsquare";
 import { WarningMessage } from "next-common/components/setting/styled";
+import { querySystemAccountBalance } from "next-common/utils/hooks/useAddressBalance";
 
 function useDestinationWarningCheck(amount, address) {
   const [showDestinationWarning, setShowDestinationWarning] = useState(false);
@@ -33,15 +34,15 @@ function useDestinationWarningCheck(amount, address) {
       !address ||
       !existentialDeposit ||
       new BigNumber(amount).isZero() ||
-      !api?.query.system.account
+      !api
     ) {
       setShowDestinationWarning(false);
       return;
     }
 
-    api?.query.system.account?.(address).then((accountData) => {
+    querySystemAccountBalance(api, address).then((balance) => {
       if (
-        new BigNumber(accountData?.data?.free?.toString()).isZero() &&
+        new BigNumber(balance).isZero() &&
         new BigNumber(amount).lte(
           new BigNumber(toPrecision(existentialDeposit, decimals)),
         )
@@ -52,7 +53,7 @@ function useDestinationWarningCheck(amount, address) {
 
       setShowDestinationWarning(false);
     });
-  }, [api?.query.system, decimals, existentialDeposit, amount, address]);
+  }, [api, decimals, existentialDeposit, amount, address]);
 
   return showDestinationWarning;
 }
