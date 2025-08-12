@@ -15,9 +15,7 @@ import useAddressComboField from "next-common/components/preImages/createPreimag
 import Signer from "next-common/components/popup/fields/signerField";
 import { isSameAddress } from "next-common/utils";
 import { useContextApi } from "next-common/context/api";
-import { useSubBalanceInfo } from "next-common/hooks/balance/useSubBalanceInfo";
-import useQueryExistentialDeposit from "next-common/utils/hooks/chain/useQueryExistentialDeposit";
-import BigNumber from "bignumber.js";
+import useCheckTransactionFee from "next-common/hooks/balance/useCheckTransactionFee";
 
 function PopupContent() {
   const { asset } = usePopupParams();
@@ -26,8 +24,7 @@ function PopupContent() {
   const address = signerAccount?.realAddress;
   const dispatch = useDispatch();
 
-  const { value: nativeBalance } = useSubBalanceInfo(address);
-  const existentialDeposit = useQueryExistentialDeposit();
+  const { checkTransactionFee } = useCheckTransactionFee(address);
 
   const {
     getCheckedValue: getCheckedTransferAmount,
@@ -61,37 +58,18 @@ function PopupContent() {
       return;
     }
 
-    try {
-      const tx = api.tx.foreignAssets.transfer(
-        asset.location,
-        transferToAddress,
-        amount,
-      );
+    const tx = api.tx.foreignAssets.transfer(
+      asset.location,
+      transferToAddress,
+      amount,
+    );
 
-      const paymentInfo = await tx.paymentInfo(address);
-      const estimatedFee = paymentInfo.partialFee.toBigInt();
-      const totalRequired = new BigNumber(estimatedFee.toString()).plus(
-        existentialDeposit || 0,
-      );
-
-      if (nativeBalance && existentialDeposit) {
-        const { transferrable } = nativeBalance;
-
-        if (new BigNumber(transferrable).lt(totalRequired)) {
-          dispatch(
-            newErrorToast(
-              "Insufficient native token balance for transaction fees.",
-            ),
-          );
-          return;
-        }
-      }
-
-      return tx;
-    } catch (error) {
-      dispatch(newErrorToast("Failed to estimate transaction fee"));
+    const isBalanceSufficient = await checkTransactionFee(tx, address);
+    if (!isBalanceSufficient) {
       return;
     }
+
+    return tx;
   }, [
     dispatch,
     api,
@@ -99,8 +77,7 @@ function PopupContent() {
     address,
     transferToAddress,
     getCheckedTransferAmount,
-    nativeBalance,
-    existentialDeposit,
+    checkTransactionFee,
   ]);
 
   const onInBlock = useCallback(() => {
