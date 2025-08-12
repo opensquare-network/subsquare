@@ -15,7 +15,9 @@ import useAddressComboField from "next-common/components/preImages/createPreimag
 import Signer from "next-common/components/popup/fields/signerField";
 import { isSameAddress } from "next-common/utils";
 import { useContextApi } from "next-common/context/api";
-import useCheckTransactionFee from "next-common/hooks/balance/useCheckTransactionFee";
+import { useSubBalanceInfo } from "next-common/hooks/balance/useSubBalanceInfo";
+import useQueryExistentialDeposit from "next-common/utils/hooks/chain/useQueryExistentialDeposit";
+import BigNumber from "bignumber.js";
 
 function PopupContent() {
   const { asset } = usePopupParams();
@@ -24,7 +26,8 @@ function PopupContent() {
   const address = signerAccount?.realAddress;
   const dispatch = useDispatch();
 
-  const { checkTransactionFee } = useCheckTransactionFee(address);
+  const { value: nativeBalance } = useSubBalanceInfo(address);
+  const existentialDeposit = useQueryExistentialDeposit();
 
   const {
     getCheckedValue: getCheckedTransferAmount,
@@ -58,18 +61,37 @@ function PopupContent() {
       return;
     }
 
-    const tx = api.tx.foreignAssets.transfer(
-      asset.location,
-      transferToAddress,
-      amount,
-    );
+    try {
+      const tx = api.tx.foreignAssets.transfer(
+        asset.location,
+        transferToAddress,
+        amount,
+      );
 
-    const isBalanceSufficient = await checkTransactionFee(tx, address);
-    if (!isBalanceSufficient) {
+      const paymentInfo = await tx.paymentInfo(address);
+      const estimatedFee = paymentInfo.partialFee.toBigInt();
+      const totalRequired = new BigNumber(estimatedFee.toString()).plus(
+        existentialDeposit || 0,
+      );
+
+      if (nativeBalance && existentialDeposit) {
+        const { transferrable } = nativeBalance;
+
+        if (new BigNumber(transferrable).lt(totalRequired)) {
+          dispatch(
+            newErrorToast(
+              "Insufficient native token balance for transaction fees.",
+            ),
+          );
+          return;
+        }
+      }
+
+      return tx;
+    } catch (error) {
+      dispatch(newErrorToast("Failed to estimate transaction fee"));
       return;
     }
-
-    return tx;
   }, [
     dispatch,
     api,
@@ -77,7 +99,8 @@ function PopupContent() {
     address,
     transferToAddress,
     getCheckedTransferAmount,
-    checkTransactionFee,
+    nativeBalance,
+    existentialDeposit,
   ]);
 
   const onInBlock = useCallback(() => {

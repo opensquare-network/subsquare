@@ -15,7 +15,6 @@ import { useSubBalanceInfo } from "next-common/hooks/balance/useSubBalanceInfo";
 import { useChainSettings } from "next-common/context/chain";
 import { useTransferAmount } from "next-common/components/popup/fields/useTransferAmount";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
-import useCheckTransactionFee from "next-common/hooks/balance/useCheckTransactionFee";
 
 export function useAccountTransferPopup() {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,7 +33,6 @@ function PopupContent() {
   const signerAccount = useSignerAccount();
   const address = signerAccount?.realAddress;
   const { value: balance, loading } = useSubBalanceInfo(address);
-  const { checkTransactionFee } = useCheckTransactionFee(address);
   const api = useContextApi();
   const dispatch = useDispatch();
   const {
@@ -50,7 +48,7 @@ function PopupContent() {
   const { value: transferToAddress, component: transferToAddressField } =
     useAddressComboField({ title: "To" });
 
-  const getTxFunc = useCallback(async () => {
+  const getTxFunc = useCallback(() => {
     if (!transferToAddress) {
       dispatch(newErrorToast("Please enter the recipient address"));
       return;
@@ -64,22 +62,8 @@ function PopupContent() {
       return;
     }
 
-    const tx = api.tx.balances?.transferKeepAlive(transferToAddress, amount);
-
-    const isBalanceSufficient = await checkTransactionFee(tx, address);
-    if (!isBalanceSufficient) {
-      return;
-    }
-
-    return tx;
-  }, [
-    transferToAddress,
-    dispatch,
-    getCheckedTransferAmount,
-    api.tx.balances,
-    address,
-    checkTransactionFee,
-  ]);
+    return api.tx.balances?.transferKeepAlive(transferToAddress, amount);
+  }, [dispatch, api, transferToAddress, getCheckedTransferAmount]);
 
   const onInBlock = useCallback(() => {
     dispatch(newSuccessToast("Transfer successfully"));

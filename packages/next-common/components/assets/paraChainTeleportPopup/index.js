@@ -16,7 +16,6 @@ import { useDispatch } from "react-redux";
 import { useChainApi, useGetTeleportTxFunc } from "./crossChainApi";
 import useCrossChainDirection from "./useCrossChainDirection";
 import useNativeTransferAmount from "./useNativeTransferAmount";
-import useCheckTransactionFee from "next-common/hooks/balance/useCheckTransactionFee";
 
 function PopupContent() {
   const { onClose } = usePopupParams();
@@ -36,7 +35,6 @@ function PopupContent() {
 
   const user = useUser();
   const address = user?.address;
-  const { checkTransactionFee } = useCheckTransactionFee(address);
   const dispatch = useDispatch();
   const {
     getCheckedValue: getCheckedTransferAmount,
@@ -73,11 +71,6 @@ function PopupContent() {
       return;
     }
 
-    const isBalanceSufficient = await checkTransactionFee(tx, address);
-    if (!isBalanceSufficient) {
-      return;
-    }
-
     await sendTxFunc({
       api: sourceApi,
       tx,
@@ -86,15 +79,7 @@ function PopupContent() {
         dispatch(newSuccessToast("Teleport successfully"));
       },
     });
-  }, [
-    sourceApi,
-    dispatch,
-    getTxFunc,
-    sendTxFunc,
-    onClose,
-    checkTransactionFee,
-    address,
-  ]);
+  }, [sourceApi, dispatch, getTxFunc, sendTxFunc, onClose]);
 
   return (
     <>
