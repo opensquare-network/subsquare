@@ -20,6 +20,7 @@ import { toPrecision } from "next-common/utils";
 import BigNumber from "bignumber.js";
 import WarningInfoPanel from "next-common/components/summary/styled/warningInfoPanel";
 import { SystemWarning } from "@osn/icons/subsquare";
+import { WarningMessage } from "next-common/components/setting/styled";
 
 function useDestinationWarningCheck(amount, address) {
   const [showDestinationWarning, setShowDestinationWarning] = useState(false);
@@ -59,13 +60,13 @@ function useDestinationWarningCheck(amount, address) {
 
 function DestinationTransferWarning() {
   return (
-    <WarningInfoPanel className="flex justify-center gap-x-2">
+    <WarningMessage className="flex justify-center gap-x-2">
       <SystemWarning className="w-5 h-5 flex-shrink-0" />
       <span>
         The amount is less than the existential deposit and the target address
         may not receive it.
       </span>
-    </WarningInfoPanel>
+    </WarningMessage>
   );
 }
 
