@@ -18,7 +18,6 @@ import { useContextApi } from "next-common/context/api";
 import { useSubBalanceInfo } from "next-common/hooks/balance/useSubBalanceInfo";
 import useQueryExistentialDeposit from "next-common/utils/hooks/chain/useQueryExistentialDeposit";
 import BigNumber from "bignumber.js";
-import { useChainSettings } from "next-common/context/chain";
 
 function PopupContent() {
   const { asset } = usePopupParams();
@@ -26,7 +25,6 @@ function PopupContent() {
   const signerAccount = useSignerAccount();
   const address = signerAccount?.realAddress;
   const dispatch = useDispatch();
-  const { decimals: nativeDecimals, symbol: nativeSymbol } = useChainSettings();
 
   const { value: nativeBalance } = useSubBalanceInfo(address);
   const existentialDeposit = useQueryExistentialDeposit();
