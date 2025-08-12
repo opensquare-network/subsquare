@@ -15,9 +15,12 @@ import HowOpenGovWorks from "next-common/components/howOpenGovWorks";
 import ConfirmationEstimation from "next-common/components/charts/thresholdCurve/gov2TallyPopup/confirmationEstimation";
 import ThresholdVotesCard from "../thresholdCards/votes";
 import NayAyeSwitch from "./nayAyeSwitch";
+import AvatarSwitch from "./avatarSwitch";
 import VoteActionsList from "./voteActionsList";
 import useShowVoteActions from "next-common/hooks/useShowVoteActions";
 import { cn } from "next-common/utils";
+import { useOnchainData } from "next-common/context/post";
+import useFetchReferendaTallyHistory from "next-common/utils/hooks/referenda/useFetchReferendaTallyHistory";
 
 export default function ThresholdCurvesGov2TallyPopup({
   closeFunc = noop,
@@ -27,17 +30,28 @@ export default function ThresholdCurvesGov2TallyPopup({
 }) {
   const approvalThreshold = useApprovalThreshold();
   const supportThreshold = useSupportThreshold();
-  const [showAyeNay, setShowAyeNay] = useState(true);
+  const [showAyeNay, setShowAyeNay] = useState(false);
+  const [showAvatar, setShowAvatar] = useState(true);
   const showVoteActions = useShowVoteActions();
+
+  const { referendumIndex } = useOnchainData();
+  useFetchReferendaTallyHistory(referendumIndex);
 
   return (
     <Popup
       title="Threshold Curves"
       className={cn("w-[960px]", showVoteActions && "my-[4vh]")}
       onClose={closeFunc}
-      extra={<NayAyeSwitch isOn={showAyeNay} setIsOn={setShowAyeNay} />}
+      extra={
+        <>
+          {showVoteActions && (
+            <AvatarSwitch value={showAvatar} onChange={setShowAvatar} />
+          )}
+          <NayAyeSwitch isOn={showAyeNay} setIsOn={setShowAyeNay} />
+        </>
+      }
     >
-      <ReferendaCurveChart showAyeNay={showAyeNay} />
+      <ReferendaCurveChart showAvatar={showAvatar} showAyeNay={showAyeNay} />
       <ThresholdCurvesGov2TallyLegend showAyeNay={showAyeNay} />
 
       <Flex className="flex max-sm:flex-col grow gap-[16px]">

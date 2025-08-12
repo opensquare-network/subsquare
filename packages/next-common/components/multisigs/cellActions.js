@@ -5,26 +5,33 @@ import {
   SystemMore,
   SystemSubtract,
   MenuMultisig,
+  SystemRelatives,
 } from "@osn/icons/subsquare";
 import { ActionIconButton } from "./styled";
 
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { useState } from "react";
+import { normalizeAddress } from "next-common/utils/address";
+import { MultisigProvider } from "next-common/context/multisig";
 const RemovePopup = dynamicPopup(() => import("./actions/removePopup"));
 const RenamePopup = dynamicPopup(() => import("./actions/renamePopup"));
 const MultisigPopup = dynamicPopup(() => import("./actions/composeCallPopup"));
+const RelativesPopup = dynamicPopup(() =>
+  import("next-common/components/relationshipPopup"),
+);
 
 export default function CellActions({ multisig }) {
   const [showRemovePopup, setShowRemovePopup] = useState(false);
   const [showRenamePopup, setShowRenamePopup] = useState(false);
   const [showNewMultisigPopup, setShowNewMultisigPopup] = useState(false);
+  const [showRelativesPopup, setShowRelativesPopup] = useState(false);
 
   if (!multisig) {
     return null;
   }
 
   return (
-    <>
+    <MultisigProvider multisig={multisig}>
       <Popover.Root>
         <Popover.Trigger>
           <div>
@@ -35,24 +42,30 @@ export default function CellActions({ multisig }) {
         </Popover.Trigger>
         <Popover.Portal>
           <Popover.Content side="top" align="end" sideOffset={5}>
-            <OptionWrapper className="static !shadow-200">
+            <OptionWrapper className="static !shadow-200 text14Medium">
               <OptionItem
                 className="flex items-center grow gap-x-2"
                 onClick={() => setShowNewMultisigPopup(true)}
               >
-                <MenuMultisig /> New Multisig
+                <MenuMultisig className="w-5 h-5" /> New Multisig
+              </OptionItem>
+              <OptionItem
+                className="flex items-center grow gap-x-2"
+                onClick={() => setShowRelativesPopup(true)}
+              >
+                <SystemRelatives className="w-5 h-5" /> Relatives
               </OptionItem>
               <OptionItem
                 className="flex items-center grow gap-x-2"
                 onClick={() => setShowRenamePopup(true)}
               >
-                <SystemEdit /> Rename
+                <SystemEdit className="w-5 h-5" /> Rename
               </OptionItem>
               <OptionItem
                 className="flex items-center grow gap-x-2"
                 onClick={() => setShowRemovePopup(true)}
               >
-                <SystemSubtract /> Remove
+                <SystemSubtract className="w-5 h-5" /> Remove
               </OptionItem>
             </OptionWrapper>
           </Popover.Content>
@@ -76,6 +89,13 @@ export default function CellActions({ multisig }) {
           multisig={multisig}
         />
       )}
-    </>
+
+      {showRelativesPopup && (
+        <RelativesPopup
+          onClose={() => setShowRelativesPopup(false)}
+          sourceAddress={normalizeAddress(multisig.multisigAddress)}
+        />
+      )}
+    </MultisigProvider>
   );
 }

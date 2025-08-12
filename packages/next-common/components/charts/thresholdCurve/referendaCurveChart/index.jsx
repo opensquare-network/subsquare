@@ -14,16 +14,25 @@ import useDetailPageOptions from "next-common/components/charts/thresholdCurve/u
 import { set } from "lodash-es";
 import useInnerPoints from "next-common/components/charts/thresholdCurve/hooks/useInnerPoints";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import CustomXTickLabels from "./curveChartCustomXTickLabels";
+import ApprovalBubbleArea from "./approvalBubbleArea";
+import CurveChartTooltip from "./curveChartTooltip";
+import useChartOptionsWithTooltip from "./curveChartTooltip/useChartOptionsWithTooltip";
 
 // used for detail page curve chart
-export default function ReferendaCurveChart({ showAyeNay }) {
+export default function ReferendaCurveChart({ showAvatar, showAyeNay }) {
   const { width } = useWindowSize();
   const chartRef = useRef();
+  const chartWrapper = useRef();
   const { labels, supportData, approvalData } = useReferendumCurveData();
   const supportCurveConfig = useSupportThresholdDatasetConfig(supportData);
   const approvalCurveConfig = useApprovalThresholdDatasetConfig(approvalData);
+  const [tooltip, setTooltip] = useState({
+    visible: false,
+    position: { x: 0, y: 0 },
+    data: {},
+  });
 
   const {
     historySupportData,
@@ -48,7 +57,8 @@ export default function ReferendaCurveChart({ showAyeNay }) {
   ].filter(Boolean);
 
   const chartData = { labels, datasets };
-  const options = useDetailPageOptions(labels, datasets);
+  const defaultOptions = useDetailPageOptions(labels, datasets);
+  const options = useChartOptionsWithTooltip(defaultOptions, setTooltip);
 
   const { approvalInnerPoint, supportInnerPoint } = useInnerPoints(labels);
   set(
@@ -64,13 +74,26 @@ export default function ReferendaCurveChart({ showAyeNay }) {
 
   return (
     <div>
-      <div style={{ height: width <= 768 ? 144 : 320 }}>
+      <div
+        ref={chartWrapper}
+        style={{ height: width <= 768 ? 144 : 320 }}
+        className="relative"
+      >
         <Line
           ref={chartRef}
           data={chartData}
           options={options}
           plugins={[hoverLinePlugin]}
         />
+        <CurveChartTooltip container={chartWrapper.current} {...tooltip} />
+        {chartRef.current && showAvatar && (
+          <ApprovalBubbleArea
+            showAyeNay={showAyeNay}
+            scales={chartRef.current?.scales}
+            chartArea={chartRef.current?.chartArea}
+            historyApprovalData={historyApprovalData}
+          />
+        )}
       </div>
       <CustomXTickLabels
         showAyeNay={showAyeNay}
