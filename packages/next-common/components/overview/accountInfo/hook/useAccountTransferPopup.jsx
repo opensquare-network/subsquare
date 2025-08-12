@@ -18,7 +18,8 @@ import SignerWithBalance from "next-common/components/signerPopup/signerWithBala
 import useQueryExistentialDeposit from "next-common/utils/hooks/chain/useQueryExistentialDeposit";
 import { toPrecision } from "next-common/utils";
 import BigNumber from "bignumber.js";
-import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
+import WarningInfoPanel from "next-common/components/summary/styled/warningInfoPanel";
+import { SystemWarning } from "@osn/icons/subsquare";
 
 function useDestinationWarningCheck(amount, address) {
   const [showDestinationWarning, setShowDestinationWarning] = useState(false);
@@ -58,9 +59,13 @@ function useDestinationWarningCheck(amount, address) {
 
 function DestinationTransferWarning() {
   return (
-    <GreyPanel className="px-4 py-2.5 bg-theme100 text-theme500 text14Medium">
-      This transaction may fail to execute.
-    </GreyPanel>
+    <WarningInfoPanel className="flex justify-center gap-x-2">
+      <SystemWarning className="w-5 h-5 flex-shrink-0" />
+      <span>
+        The amount is less than the existential deposit and the target address
+        may not receive it.
+      </span>
+    </WarningInfoPanel>
   );
 }
 
