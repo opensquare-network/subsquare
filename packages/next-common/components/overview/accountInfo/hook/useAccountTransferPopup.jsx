@@ -7,7 +7,7 @@ import {
   newErrorToast,
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import ExistentialDeposit from "next-common/components/popup/fields/existentialDepositField";
@@ -15,6 +15,18 @@ import { useSubBalanceInfo } from "next-common/hooks/balance/useSubBalanceInfo";
 import { useChainSettings } from "next-common/context/chain";
 import { useTransferAmount } from "next-common/components/popup/fields/useTransferAmount";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
+import useQueryExistentialDeposit from "next-common/utils/hooks/chain/useQueryExistentialDeposit";
+import { toPrecision } from "next-common/utils";
+import BigNumber from "bignumber.js";
+import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
+
+function DestinationTransferWarning() {
+  return (
+    <GreyPanel className="px-4 py-2.5 bg-theme100 text-theme500 text14Medium">
+      This transaction may fail to execute.
+    </GreyPanel>
+  );
+}
 
 export function useAccountTransferPopup() {
   const [isOpen, setIsOpen] = useState(false);
@@ -38,6 +50,7 @@ function PopupContent() {
   const {
     getCheckedValue: getCheckedTransferAmount,
     component: transferAmountField,
+    value: transferAmount,
   } = useTransferAmount({
     transferrable: balance?.transferrable,
     decimals,
@@ -48,6 +61,42 @@ function PopupContent() {
   const { value: transferToAddress, component: transferToAddressField } =
     useAddressComboField({ title: "To" });
 
+  const [showDestinationWarning, setShowDestinationWarning] = useState(false);
+  const existentialDeposit = useQueryExistentialDeposit();
+
+  useEffect(() => {
+    if (
+      !transferAmount ||
+      !transferToAddress ||
+      !existentialDeposit ||
+      new BigNumber(transferAmount).isZero() ||
+      !api?.query.system.account
+    ) {
+      setShowDestinationWarning(false);
+      return;
+    }
+
+    api?.query.system.account?.(transferToAddress).then((accountData) => {
+      if (
+        new BigNumber(accountData?.data?.free?.toString()).isZero() &&
+        new BigNumber(transferAmount).lte(
+          new BigNumber(toPrecision(existentialDeposit, decimals)),
+        )
+      ) {
+        setShowDestinationWarning(true);
+        return;
+      }
+
+      setShowDestinationWarning(false);
+    });
+  }, [
+    api?.query.system,
+    decimals,
+    existentialDeposit,
+    transferAmount,
+    transferToAddress,
+  ]);
+
   const getTxFunc = useCallback(() => {
     if (!transferToAddress) {
       dispatch(newErrorToast("Please enter the recipient address"));
@@ -57,6 +106,7 @@ function PopupContent() {
     let amount;
     try {
       amount = getCheckedTransferAmount();
+      setShowDestinationWarning(true);
     } catch (e) {
       dispatch(newErrorToast(e.message));
       return;
@@ -74,6 +124,7 @@ function PopupContent() {
       <SignerWithBalance />
       {transferToAddressField}
       {transferAmountField}
+      {showDestinationWarning && <DestinationTransferWarning />}
       <AdvanceSettings>
         <ExistentialDeposit destApi={api} title="Existential Deposit" />
       </AdvanceSettings>
