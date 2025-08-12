@@ -20,6 +20,42 @@ import { toPrecision } from "next-common/utils";
 import BigNumber from "bignumber.js";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 
+function useDestinationWarningCheck(amount, address) {
+  const [showDestinationWarning, setShowDestinationWarning] = useState(false);
+  const { decimals } = useChainSettings();
+  const api = useContextApi();
+  const existentialDeposit = useQueryExistentialDeposit();
+
+  useEffect(() => {
+    if (
+      !amount ||
+      !address ||
+      !existentialDeposit ||
+      new BigNumber(amount).isZero() ||
+      !api?.query.system.account
+    ) {
+      setShowDestinationWarning(false);
+      return;
+    }
+
+    api?.query.system.account?.(address).then((accountData) => {
+      if (
+        new BigNumber(accountData?.data?.free?.toString()).isZero() &&
+        new BigNumber(amount).lte(
+          new BigNumber(toPrecision(existentialDeposit, decimals)),
+        )
+      ) {
+        setShowDestinationWarning(true);
+        return;
+      }
+
+      setShowDestinationWarning(false);
+    });
+  }, [api?.query.system, decimals, existentialDeposit, amount, address]);
+
+  return showDestinationWarning;
+}
+
 function DestinationTransferWarning() {
   return (
     <GreyPanel className="px-4 py-2.5 bg-theme100 text-theme500 text14Medium">
@@ -61,41 +97,10 @@ function PopupContent() {
   const { value: transferToAddress, component: transferToAddressField } =
     useAddressComboField({ title: "To" });
 
-  const [showDestinationWarning, setShowDestinationWarning] = useState(false);
-  const existentialDeposit = useQueryExistentialDeposit();
-
-  useEffect(() => {
-    if (
-      !transferAmount ||
-      !transferToAddress ||
-      !existentialDeposit ||
-      new BigNumber(transferAmount).isZero() ||
-      !api?.query.system.account
-    ) {
-      setShowDestinationWarning(false);
-      return;
-    }
-
-    api?.query.system.account?.(transferToAddress).then((accountData) => {
-      if (
-        new BigNumber(accountData?.data?.free?.toString()).isZero() &&
-        new BigNumber(transferAmount).lte(
-          new BigNumber(toPrecision(existentialDeposit, decimals)),
-        )
-      ) {
-        setShowDestinationWarning(true);
-        return;
-      }
-
-      setShowDestinationWarning(false);
-    });
-  }, [
-    api?.query.system,
-    decimals,
-    existentialDeposit,
+  const showDestinationWarning = useDestinationWarningCheck(
     transferAmount,
     transferToAddress,
-  ]);
+  );
 
   const getTxFunc = useCallback(() => {
     if (!transferToAddress) {
@@ -106,7 +111,6 @@ function PopupContent() {
     let amount;
     try {
       amount = getCheckedTransferAmount();
-      setShowDestinationWarning(true);
     } catch (e) {
       dispatch(newErrorToast(e.message));
       return;
