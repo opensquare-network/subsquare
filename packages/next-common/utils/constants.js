@@ -118,6 +118,7 @@ export const CACHE_KEY = {
   navSubmenuVisible: "nav-submenu-visible",
   connectedAccount: "connected-account",
   delegationPromptVisible: "delegation-prompt-visible",
+  multisigPromptVisible: "multisig-prompt-visible",
   setAvatarPromptVisible: "set-avatar-prompt-visible",
   setIdentityPromptVisible: "set-identity-prompt-visible",
   fellowshipDemotionExpiredVisible: "fellowship-demotion-expired-visible",
@@ -136,6 +137,7 @@ export const CACHE_KEY = {
 
 export const ADDRESS_CACHE_KEYS = [
   CACHE_KEY.delegationPromptVisible,
+  CACHE_KEY.multisigPromptVisible,
   CACHE_KEY.setAvatarPromptVisible,
   CACHE_KEY.fellowshipDemotionExpiredVisible,
   CACHE_KEY.fellowshipDemotionExpireRemindVisible,
