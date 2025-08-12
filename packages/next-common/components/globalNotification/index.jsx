@@ -59,7 +59,7 @@ export default function MultisigManageNotification() {
     const transactionContent = myMultisigsCount > 1 ? "multisigs" : "multisig";
 
     return (
-      <Notification cacheKey={CACHE_KEY.multisigPromptVisible}>
+      <Notification cacheKey={CACHE_KEY.multisigManagementPromptVisible}>
         You have {myMultisigsCount} active {transactionContent}, &nbsp;
         {needApprovalCount} of &nbsp;
         {manageContent} need your approval.
