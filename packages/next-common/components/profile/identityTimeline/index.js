@@ -11,6 +11,7 @@ import {
 import { useSelector } from "react-redux";
 import { useMountedState } from "react-use";
 import ExternalLink from "next-common/components/externalLink";
+import { getRelayChain } from "next-common/utils/chain";
 
 function useIdentityUrl() {
   const chain = useChain();
@@ -78,6 +79,7 @@ function useIdentityTimeline() {
 
 export default function ProfileIdentityTimeline() {
   const chain = useChain();
+  const relayChain = getRelayChain(chain);
   const address = useProfileAddress();
   const timeline = useIdentityTimeline();
   const hasTimeline = timeline && timeline.length > 0;
@@ -89,7 +91,7 @@ export default function ProfileIdentityTimeline() {
         <div className="flex w-full justify-end mt-[24px]">
           <ExternalLink
             className="text14Medium text-theme500"
-            href={`https://${chain}.statescan.io/#/accounts/${address}?sub=identity_timeline&tab=identity`}
+            href={`https://${relayChain}.statescan.io/#/accounts/${address}?sub=identity_timeline&tab=identity`}
           >
             View More
           </ExternalLink>
