@@ -3,7 +3,7 @@ import { isNil } from "lodash-es";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 import MobileForeignAssetsList from "./mobileForeignAssetsList";
-import DesktopForeignAssetsList from "./desktopForeignAssetsLists";
+import DesktopForeignAssetsList from "./desktopForeignAssetsList";
 import useSearchAllForeignAssets, {
   SearchInput,
 } from "../useSearchAllForeignAssets";
