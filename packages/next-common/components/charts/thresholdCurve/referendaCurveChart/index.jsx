@@ -19,9 +19,14 @@ import CustomXTickLabels from "./curveChartCustomXTickLabels";
 import ApprovalBubbleArea from "./approvalBubbleArea";
 import CurveChartTooltip from "./curveChartTooltip";
 import useChartOptionsWithTooltip from "./curveChartTooltip/useChartOptionsWithTooltip";
+import { useOnchainData } from "next-common/context/post";
+import useFetchReferendaTallyHistory from "next-common/utils/hooks/referenda/useFetchReferendaTallyHistory";
 
 // used for detail page curve chart
 export default function ReferendaCurveChart({ showAvatar, showAyeNay }) {
+  const { referendumIndex } = useOnchainData();
+  useFetchReferendaTallyHistory(referendumIndex);
+
   const { width } = useWindowSize();
   const chartRef = useRef();
   const chartWrapper = useRef();

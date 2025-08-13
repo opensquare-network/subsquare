@@ -6,7 +6,10 @@ import {
   setTallyHistory,
 } from "next-common/store/reducers/referenda/tallyHistory";
 
-export default function useFetchReferendaTallyHistory(referendumIndex) {
+export default function useFetchReferendaTallyHistory(
+  referendumIndex,
+  autoClear = false,
+) {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -18,7 +21,7 @@ export default function useFetchReferendaTallyHistory(referendumIndex) {
       });
 
     return () => {
-      dispatch(clearTallyHistory());
+      autoClear && dispatch(clearTallyHistory());
     };
-  }, [dispatch, referendumIndex]);
+  }, [autoClear, dispatch, referendumIndex]);
 }
