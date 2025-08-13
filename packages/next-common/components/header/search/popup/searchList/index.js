@@ -18,7 +18,7 @@ import IdentityIcon from "next-common/components/Identity/identityIcon";
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 
 const SearchItem = memo(function ItemContent({ row, onClose }) {
-  const { index, title, content, type, proposalType } = row;
+  const { index, displayIndex, title, content, type, proposalType } = row;
   const { path, category } = getPathAndCategoryByItemData(row);
   const address = proposalType === SearchType.IDENTITIES ? content : "";
   const { identity, hasIdentity } = useIdentityInfo(address);
@@ -76,7 +76,8 @@ const SearchItem = memo(function ItemContent({ row, onClose }) {
                 textOverflow: "ellipsis",
               }}
             >
-              {proposalType !== SearchType.IDENTITIES && `#${index} · ${title}`}
+              {proposalType !== SearchType.IDENTITIES &&
+                `#${displayIndex || index} · ${title}`}
               {proposalType === SearchType.IDENTITIES && (
                 <span className="flex">
                   {hasIdentity && (
