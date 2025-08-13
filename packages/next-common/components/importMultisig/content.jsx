@@ -1,7 +1,5 @@
 import { useChain } from "next-common/context/chain";
-import { fetchMultisigAddresses } from "next-common/services/multisig";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useAsync } from "react-use";
 import ImportMultisigEmpty from "./empty";
 import Loading from "../loading";
 import { useState, useMemo } from "react";
@@ -12,6 +10,7 @@ import { noop } from "lodash-es";
 import { normalizeAddress } from "next-common/utils/address";
 import { sortAddresses } from "@polkadot/util-crypto";
 import { useChainSettings } from "next-common/context/chain";
+import useExplorerMultisigHistory from "next-common/hooks/multisig/useExplorerMultisigHistory";
 
 const STEPS = {
   SELECT_MULTISIG: 1,
@@ -24,10 +23,11 @@ export default function ImportMultisigContent({ onClose = noop }) {
   const address = useRealAddress();
   const chain = useChain();
   const [page, setPage] = useState(1);
-  const { value, loading } = useAsync(async () => {
-    const { result } = await fetchMultisigAddresses(chain, address, page);
-    return result?.data?.multisigAddresses;
-  }, [chain, address, page]);
+  const { loading, items, total } = useExplorerMultisigHistory(
+    chain,
+    address,
+    page,
+  );
 
   if (loading) {
     return (
@@ -37,20 +37,20 @@ export default function ImportMultisigContent({ onClose = noop }) {
     );
   }
 
-  if (value?.multisigAddresses?.length <= 0) {
+  if (items?.length <= 0) {
     return <ImportMultisigEmpty />;
   }
 
   if (step === STEPS.SELECT_MULTISIG) {
     return (
       <MultisigSelectImpl
-        multisigAddresses={value?.multisigAddresses}
+        multisigAddresses={items}
         selected={selectedMultisigAddress}
         setSelected={setSelectedMultisigAddress}
         onContinue={() => setStep(STEPS.SUBMIT_MULTISIG)}
         page={page}
         setPage={setPage}
-        total={value?.total}
+        total={total}
       />
     );
   }
@@ -60,7 +60,7 @@ export default function ImportMultisigContent({ onClose = noop }) {
       <ImportSubmit
         onBack={() => setStep(STEPS.SELECT_MULTISIG)}
         onClose={onClose}
-        selectedMultisig={value?.multisigAddresses.find(
+        selectedMultisig={items.find(
           (item) => item.address === selectedMultisigAddress,
         )}
       />
