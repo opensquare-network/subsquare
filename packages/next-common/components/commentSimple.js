@@ -16,6 +16,7 @@ import { useChain } from "../context/chain";
 import { hashEllipsis, textEllipsis } from "next-common/utils";
 import { isNil } from "lodash-es";
 import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
+import { getChildBountyIndex } from "next-common/utils/viewfuncs/treasury/childBounty";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -145,14 +146,12 @@ const getCommentSource = (comment) => {
     ];
   }
   if (comment?.childBounty) {
-    const parentBountyId = comment?.childBounty.parentBountyId;
     const index = comment?.childBounty.index;
-    const blockHeight = comment?.childBounty.indexer?.blockHeight;
 
     return [
       "Treasury Child Bounties",
       comment?.childBounty.title || `Child bounty #${index}`,
-      `/treasury/child-bounties/${parentBountyId}_${index}_${blockHeight}`,
+      `/treasury/child-bounties/${getChildBountyIndex(comment?.childBounty)}`,
     ];
   }
   if (comment?.bounty) {

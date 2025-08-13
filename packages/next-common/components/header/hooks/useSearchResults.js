@@ -3,6 +3,10 @@ import { backendApi } from "next-common/services/nextApi";
 import useRefCallback from "next-common/hooks/useRefCallback";
 import { markdownToText } from "next-common/components/header/search/utils";
 import useSearchIdentities from "next-common/components/header/hooks/useSearchIdentities";
+import {
+  getChildBountyDisplayIndex,
+  getChildBountyIndex,
+} from "next-common/utils/viewfuncs/treasury/childBounty";
 
 export const ItemType = {
   CATEGORY: "category",
@@ -51,12 +55,6 @@ const formatItems = (
     }),
   ];
 };
-
-const getChildBountyIndex = (item) =>
-  `${item.parentBountyId}_${item.index}_${item.indexer.blockHeight}`;
-
-const getChildBountyDisplayIndex = (item) =>
-  `${item.parentBountyId}_${item.index}`;
 
 function useSearchResults() {
   const [results, setResults] = useState(null);
