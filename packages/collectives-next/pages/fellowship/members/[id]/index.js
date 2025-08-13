@@ -8,7 +8,7 @@ export const getServerSideProps = async (context) => {
   return {
     redirect: {
       destination: `/user/${id}/fellowship`,
-      permanent: true,
+      permanent: false,
     },
   };
 };
