@@ -3,7 +3,7 @@ import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import { MapDataList } from "next-common/components/dataList";
 import { useDesktopColumns } from "./columns";
 
-export default function DesktopForeignAssetsList({ assets }) {
+export default function DesktopForeignAssetsList({ assets, loading }) {
   const columnsDef = useDesktopColumns();
 
   return (
@@ -11,7 +11,7 @@ export default function DesktopForeignAssetsList({ assets }) {
       <MapDataList
         columnsDef={columnsDef}
         data={assets}
-        loading={!assets}
+        loading={loading}
         noDataText="No current foreign assets"
       />
     </ScrollerX>

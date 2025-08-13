@@ -4,10 +4,12 @@ import useQueryAllForeignAssetDetail from "next-common/hooks/foreignAssets/useQu
 import { foreignAssetInfo } from "next-common/utils/consts/foreignAssets";
 
 export default function useAllForeignAssets() {
-  const metadata = useQueryAllForeignAssetMetadata();
-  const details = useQueryAllForeignAssetDetail();
+  const { data: metadata, loading: metadataLoading } =
+    useQueryAllForeignAssetMetadata();
+  const { data: details, loading: detailsLoading } =
+    useQueryAllForeignAssetDetail();
 
-  return useMemo(() => {
+  const assets = useMemo(() => {
     if (!metadata || !details) {
       return;
     }
@@ -38,4 +40,9 @@ export default function useAllForeignAssets() {
 
     return assets;
   }, [metadata, details]);
+
+  return {
+    data: assets,
+    loading: metadataLoading || detailsLoading,
+  };
 }

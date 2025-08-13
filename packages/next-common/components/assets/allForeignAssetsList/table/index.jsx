@@ -19,7 +19,7 @@ function ForeignAssetsTitle({ count }) {
   );
 }
 
-export default function ForeignAssetsList({ assets: allAssets }) {
+export default function ForeignAssetsList({ assets: allAssets, loading }) {
   const { width } = useWindowSize();
   const [searchValue, setSearchValue] = useState("");
   const filteredAssets = useSearchAllForeignAssets(allAssets, searchValue);
@@ -58,7 +58,7 @@ export default function ForeignAssetsList({ assets: allAssets }) {
       </div>
 
       <SecondaryCard>
-        <TableComponent assets={pagedAssets} />
+        <TableComponent assets={pagedAssets} loading={loading} />
         {pagination}
       </SecondaryCard>
     </div>
