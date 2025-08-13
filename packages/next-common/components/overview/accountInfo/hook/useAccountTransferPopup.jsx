@@ -43,7 +43,7 @@ function useDestinationWarningCheck(amount, address) {
     querySystemAccountBalance(api, address).then((balance) => {
       if (
         new BigNumber(balance).isZero() &&
-        new BigNumber(amount).lte(
+        new BigNumber(amount).lt(
           new BigNumber(toPrecision(existentialDeposit, decimals)),
         )
       ) {
