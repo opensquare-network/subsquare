@@ -31,12 +31,13 @@ export default function useMultisigPrompt() {
     ) {
       return null;
     }
+
     return {
       key: CACHE_KEY.multisigPromptVisible,
       message: (
         <div>
           Manage your multisig accounts{" "}
-          <Link className="underline" href={"/account/multisigs?tab=accounts"}>
+          <Link className="underline" href="/account/multisigs?tab=accounts">
             here
           </Link>
           . You will be able to create multisigs on subsquare.
