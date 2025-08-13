@@ -19,7 +19,7 @@ function Beneficiary({ parachain, beneficiary, beneficiaryLocation }) {
     return <AddressUser add={beneficiary} />;
   }
 
-  let link = `https://assethub-polkadot.subscan.io/account/${beneficiary}`;
+  let link = `https://assethub-polkadot.statescan.io/#/accounts/${beneficiary}`;
   return (
     <>
       <AddressUser add={beneficiary} />
