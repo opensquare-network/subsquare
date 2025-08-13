@@ -3,7 +3,7 @@ import { ClaimInfoText } from "next-common/components/treasury/common/styled";
 import ExternalLink from "next-common/components/externalLink";
 
 function BeneficiaryLink({ beneficiary }) {
-  let link = `https://assethub-polkadot.subscan.io/account/${beneficiary}`;
+  let link = `https://assethub-polkadot.statescan.io/#/accounts/${beneficiary}`;
   return (
     <ExternalLink className="text12Medium" href={link}>
       Check the beneficiary

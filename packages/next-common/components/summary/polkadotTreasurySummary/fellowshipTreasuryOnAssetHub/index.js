@@ -24,7 +24,7 @@ function FellowshipTreasuryItemList({
     <div className="flex flex-col gap-[4px]">
       <SummaryLabelLinkItem
         label="Treasury"
-        href={`https://assethub-polkadot.subscan.io/account/${StatemintFellowShipTreasuryAccount}`}
+        href={`https://assethub-polkadot.statescan.io/#/accounts/${StatemintFellowShipTreasuryAccount}`}
       >
         <ValueDisplay
           value={fellowshipFreeBalance}
@@ -35,7 +35,7 @@ function FellowshipTreasuryItemList({
       </SummaryLabelLinkItem>
       <SummaryLabelLinkItem
         label="Salary"
-        href={`https://assethub-polkadot.subscan.io/account/${StatemintFellowShipSalaryAccount}`}
+        href={`https://assethub-polkadot.statescan.io/#/accounts/${StatemintFellowShipSalaryAccount}`}
       >
         <ValueDisplay
           value={toPrecision(fellowshipSalaryUsdtBalance, SYMBOL_DECIMALS.USDT)}

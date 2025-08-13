@@ -15,7 +15,7 @@ export default function FellowshipSalary() {
   const Title = (
     <>
       <Link
-        href={`https://assethub-polkadot.subscan.io/account/${StatemintFellowShipSalaryAccount}`}
+        href={`https://assethub-polkadot.statescan.io/#/accounts/${StatemintFellowShipSalaryAccount}`}
         className="text12Medium text-textTertiary hover:underline"
         target="_blank"
         rel="noreferrer"
