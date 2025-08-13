@@ -7,7 +7,17 @@ import DesktopForeignAssetsList from "./desktopForeignAssetsList";
 import useSearchAllForeignAssets, {
   SearchInput,
 } from "../useSearchAllForeignAssets";
-import { Title } from "next-common/components/assets/walletAssetList";
+import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
+import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
+
+function ForeignAssetsTitle({ count }) {
+  return (
+    <TitleContainer className="justify-start gap-x-1">
+      Foreign Asset
+      <span className="text16Medium text-textTertiary">{count}</span>
+    </TitleContainer>
+  );
+}
 
 export default function ForeignAssetsList({ assets: allAssets }) {
   const { width } = useWindowSize();
@@ -40,17 +50,17 @@ export default function ForeignAssetsList({ assets: allAssets }) {
   return (
     <div className="flex flex-col gap-[16px]">
       <div className="inline-flex w-full justify-between items-center pr-6">
-        <Title assetsCount={filteredAssets?.length || 0} />
+        <ForeignAssetsTitle count={filteredAssets?.length || 0} />
         <SearchInput
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
         />
       </div>
 
-      <div>
+      <SecondaryCard>
         <TableComponent assets={pagedAssets} />
         {pagination}
-      </div>
+      </SecondaryCard>
     </div>
   );
 }

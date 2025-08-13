@@ -1,6 +1,5 @@
 import { isNil } from "lodash-es";
 import ListLayout from "next-common/components/layout/ListLayout";
-import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { useChainSettings } from "next-common/context/chain";
 import SummaryItem from "next-common/components/summary/layout/item";
 import SummaryLayout from "next-common/components/summary/layout/layout";
@@ -31,9 +30,7 @@ export default function AllForeignAssetsList() {
       description={chainSettings.description}
       summary={<Summary assetsCount={allForeignAssets?.length} />}
     >
-      <SecondaryCard>
-        <ForeignAssetsList assets={allForeignAssets} />
-      </SecondaryCard>
+      <ForeignAssetsList assets={allForeignAssets} />
     </ListLayout>
   );
 }
