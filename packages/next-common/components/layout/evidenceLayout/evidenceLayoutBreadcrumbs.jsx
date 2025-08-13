@@ -23,9 +23,13 @@ export default function EvidenceLayoutBreadcrumbs() {
           content: "Members",
         },
         {
-          path: `/fellowship/members/${who}`,
           content: (
-            <AddressUser add={who} showAvatar={false} needHref={false} />
+            <AddressUser
+              add={who}
+              showAvatar={false}
+              needHref={false}
+              link="fellowship"
+            />
           ),
           className: "flex",
         },

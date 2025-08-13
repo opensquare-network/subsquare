@@ -7,6 +7,10 @@ import { LinkStatescan } from "@osn/icons/subsquare";
 
 const statescanDomainMap = {
   [Chains.development]: "gov2",
+  [Chains.polkadotAssetHub]: "assethub-polkadot",
+  [Chains.kusamaAssetHub]: "assethub-kusama",
+  [Chains.westendAssetHub]: "assethub-westend",
+  [Chains.paseoAssetHub]: "assethub-paseo",
 };
 
 export default function StatescanLink({ indexer, children }) {
