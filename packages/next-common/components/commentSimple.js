@@ -147,10 +147,12 @@ const getCommentSource = (comment) => {
   if (comment?.childBounty) {
     const parentBountyId = comment?.childBounty.parentBountyId;
     const index = comment?.childBounty.index;
+    const blockHeight = comment?.childBounty.indexer?.blockHeight;
+
     return [
       "Treasury Child Bounties",
       comment?.childBounty.title || `Child bounty #${index}`,
-      `/treasury/child-bounties/${parentBountyId}_${index}`,
+      `/treasury/child-bounties/${parentBountyId}_${index}_${blockHeight}`,
     ];
   }
   if (comment?.bounty) {

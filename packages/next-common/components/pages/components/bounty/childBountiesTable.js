@@ -29,7 +29,7 @@ export default function ChildBountiesTable({ childBounties }) {
         <div className="flex-1 w-full">
           <Anchor
             className="!text-textPrimary"
-            href={`/treasury/child-bounties/${bounty.parentBountyId}_${bounty.index}`}
+            href={`/treasury/child-bounties/${bounty.parentBountyId}_${bounty.index}_${bounty.indexer?.blockHeight}`}
             title={bounty.title}
           >
             {bounty.title}
