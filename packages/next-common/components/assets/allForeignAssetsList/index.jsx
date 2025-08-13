@@ -4,32 +4,44 @@ import SummaryItem from "next-common/components/summary/layout/item";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import LoadableContent from "next-common/components/common/loadableContent";
 import ForeignAssetsList from "./table";
-import useAllForeignAssets from "../useAllForeignAssets";
+import {
+  AllForeignAssetsProvider,
+  useAllForeignAssetsContext,
+} from "next-common/context/foreignAssets/allForeignAssets";
 
-function Summary({ assetsCount, loading }) {
+function Summary() {
+  const { allForeignAssets, loading } = useAllForeignAssetsContext();
+
   return (
     <SummaryLayout>
       <SummaryItem title="Total Foreign Assets">
-        <LoadableContent isLoading={loading}>{assetsCount}</LoadableContent>
+        <LoadableContent isLoading={loading}>
+          {allForeignAssets?.length}
+        </LoadableContent>
       </SummaryItem>
     </SummaryLayout>
   );
 }
 
-export default function AllForeignAssetsList() {
+function AllForeignAssetsImpl() {
   const chainSettings = useChainSettings();
-  const { data: allForeignAssets, loading } = useAllForeignAssets();
 
   return (
     <ListLayout
       title={chainSettings.name}
       seoInfo={{ title: "Foreign Assets" }}
       description={chainSettings.description}
-      summary={
-        <Summary assetsCount={allForeignAssets?.length} loading={loading} />
-      }
+      summary={<Summary />}
     >
-      <ForeignAssetsList assets={allForeignAssets} loading={loading} />
+      <ForeignAssetsList />
     </ListLayout>
+  );
+}
+
+export default function AllForeignAssetsList() {
+  return (
+    <AllForeignAssetsProvider>
+      <AllForeignAssetsImpl />
+    </AllForeignAssetsProvider>
   );
 }

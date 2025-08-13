@@ -9,20 +9,31 @@ import useSearchAllForeignAssets, {
 } from "../useSearchAllForeignAssets";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
+import { useAllForeignAssetsContext } from "next-common/context/foreignAssets/allForeignAssets";
 
-function ForeignAssetsTitle({ count }) {
+function ForeignAssetsTitle() {
+  const { allForeignAssets, loading } = useAllForeignAssetsContext();
+
   return (
     <TitleContainer className="justify-start gap-x-1">
       Foreign Asset
-      <span className="text16Medium text-textTertiary">{count}</span>
+      {loading ? null : (
+        <span className="text16Medium text-textTertiary">
+          {allForeignAssets?.length || 0}
+        </span>
+      )}
     </TitleContainer>
   );
 }
 
-export default function ForeignAssetsList({ assets: allAssets, loading }) {
+export default function ForeignAssetsList() {
+  const { allForeignAssets } = useAllForeignAssetsContext();
   const { width } = useWindowSize();
   const [searchValue, setSearchValue] = useState("");
-  const filteredAssets = useSearchAllForeignAssets(allAssets, searchValue);
+  const filteredAssets = useSearchAllForeignAssets(
+    allForeignAssets,
+    searchValue,
+  );
 
   const pageSize = 25;
   const {
@@ -50,7 +61,7 @@ export default function ForeignAssetsList({ assets: allAssets, loading }) {
   return (
     <div className="flex flex-col gap-[16px]">
       <div className="inline-flex w-full justify-between items-center pr-6">
-        <ForeignAssetsTitle count={filteredAssets?.length || 0} />
+        <ForeignAssetsTitle />
         <SearchInput
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
@@ -58,7 +69,7 @@ export default function ForeignAssetsList({ assets: allAssets, loading }) {
       </div>
 
       <SecondaryCard>
-        <TableComponent assets={pagedAssets} loading={loading} />
+        <TableComponent assets={pagedAssets} />
         {pagination}
       </SecondaryCard>
     </div>
