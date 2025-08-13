@@ -42,7 +42,7 @@ export default function MythToken() {
               <MythTokenAsset balance={mythTokenBalance} />
               <Link
                 className="text12Medium"
-                href={`https://assethub-polkadot.subscan.io/account/${MythTokenAccount}`}
+                href={`https://assethub-polkadot.statescan.io/#/accounts/${MythTokenAccount}`}
                 target="_blank"
                 rel="noreferrer"
               >
