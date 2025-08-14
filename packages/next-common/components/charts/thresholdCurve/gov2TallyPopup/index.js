@@ -2,7 +2,6 @@ import { useState } from "react";
 import Popup from "../../../popup/wrapper/Popup";
 import { noop } from "lodash-es";
 import "../../globalConfig";
-import ThresholdCurvesGov2TallyLegend from "../legend/gov2TallyLegend";
 import {
   useApprovalThreshold,
   useSupportThreshold,
@@ -29,7 +28,7 @@ export default function ThresholdCurvesGov2TallyPopup({
   const approvalThreshold = useApprovalThreshold();
   const supportThreshold = useSupportThreshold();
   const [showAyeNay, setShowAyeNay] = useState(false);
-  const [showAvatar, setShowAvatar] = useState(true);
+  const [showVoter, setShowAvatarVoter] = useState(true);
   const showVoteActions = useShowVoteActions();
 
   return (
@@ -40,14 +39,13 @@ export default function ThresholdCurvesGov2TallyPopup({
       extra={
         <>
           {showVoteActions && (
-            <AvatarSwitch value={showAvatar} onChange={setShowAvatar} />
+            <AvatarSwitch value={showVoter} onChange={setShowAvatarVoter} />
           )}
           <NayAyeSwitch isOn={showAyeNay} setIsOn={setShowAyeNay} />
         </>
       }
     >
-      <ReferendaCurveChart showAvatar={showAvatar} showAyeNay={showAyeNay} />
-      <ThresholdCurvesGov2TallyLegend showAyeNay={showAyeNay} />
+      <ReferendaCurveChart showVoter={showVoter} showAyeNay={showAyeNay} />
 
       <Flex className="flex max-sm:flex-col grow gap-[16px]">
         <ThresholdApprovalCard
