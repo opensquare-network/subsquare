@@ -1,24 +1,8 @@
 import TabsList from "next-common/components/tabs/list";
-import { cn } from "next-common/utils";
 import { useMemo, useState } from "react";
 import Delegates from "./delegates";
 import CohortsHistory from "./cohortsHistory";
-
-function TabTitle({ label, length, disabled = true }) {
-  return (
-    <div className="flex gap-[8px]" role="button">
-      <div
-        className={cn(
-          "text16Bold",
-          disabled ? "text-textTertiary" : "text-textPrimary",
-        )}
-      >
-        {label}
-      </div>
-      <span className="text-textTertiary text16Medium">{length || 0}</span>
-    </div>
-  );
-}
+import { TabTitle } from "../common/delegatesTabTitle";
 
 const TABS = {
   DELEGATES: "delegates",
