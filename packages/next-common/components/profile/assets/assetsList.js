@@ -10,7 +10,7 @@ import {
 } from "next-common/components/assets/assetsList";
 import useAssetHubTabsAssets from "next-common/components/assets/useAssetHubTabsAssets";
 
-const columnsDef = [colToken, colId, colName, colTotal, colTransferrable];
+const columnsDef = [colToken, colName, colId, colTotal, colTransferrable];
 
 export default function ProfileAssetsList({ address }) {
   const assets = useAssetHubTabsAssets(address);

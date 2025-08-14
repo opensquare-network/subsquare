@@ -1,4 +1,5 @@
 import ProfileAssets from "next-common/components/profile/assets";
+import ProfileForeignAssets from "next-common/components/profile/foreignAssets";
 import Bio from "next-common/components/profile/bio";
 import { useProfileAssetHubTabs } from "next-common/components/profile/tabs/useProfileAssetHubTabs";
 import ApiProvider from "next-common/context/api";
@@ -61,7 +62,10 @@ function AssetHubUserPageImpl() {
       }
       tabs={tabs}
     >
-      <ProfileAssets />
+      <div className="flex flex-col gap-[16px]">
+        <ProfileAssets />
+        <ProfileForeignAssets />
+      </div>
     </ProfileLayout>
   );
 }

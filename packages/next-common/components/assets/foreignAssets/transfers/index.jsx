@@ -8,10 +8,10 @@ import useQueryForeignAssetTransfers from "next-common/hooks/foreignAssets/useQu
 import { useUser } from "next-common/context/user";
 import { useForeignAssetTransfersColumnsDef } from "./columns/index";
 
-export default function ForeignAssetsTransfersTable() {
+export default function ForeignAssetsTransfersTable({ address }) {
   const columnsDef = useForeignAssetTransfersColumnsDef();
   const user = useUser();
-  const address = user?.address;
+  const targetAddress = address || user?.address;
   const [totalCount, setTotalCount] = useState(0);
   const { page, component: pageComponent } = usePaginationComponent(
     totalCount,
@@ -22,7 +22,7 @@ export default function ForeignAssetsTransfersTable() {
     list = [],
     total,
     loading,
-  } = useQueryForeignAssetTransfers(address, page - 1);
+  } = useQueryForeignAssetTransfers(targetAddress, page - 1);
 
   useEffect(() => {
     if (loading) {
