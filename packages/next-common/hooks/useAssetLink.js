@@ -17,8 +17,9 @@ export function useForeignAssetLink(assetId) {
 export function useAssetLink(assetId) {
   const chain = useChain();
   const relayChain = getRelayChain(chain);
+  const { supportAssets = false } = useChainSettings();
 
-  if (isNil(assetId)) {
+  if (!supportAssets || isNil(assetId)) {
     return null;
   }
 

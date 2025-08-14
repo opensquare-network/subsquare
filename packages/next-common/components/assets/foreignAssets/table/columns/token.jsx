@@ -7,22 +7,23 @@ function Token({ assetId, symbol, name }) {
   const AssetIcon = useKnownForeignAssetIcon(assetId);
 
   return (
-    <ForeignAssetLink assetId={assetId}>
-      <div
-        className={cn(
-          "flex items-center gap-[8px]",
-          "max-sm:flex-col items-start",
-        )}
-      >
-        <div className="flex gap-[8px] items-center text14Medium text-textPrimary max-sm:justify-start">
-          <AssetIcon width={24} height={24} />
-          <span className="text-textPrimary hover:text-theme500 w-20 max-sm:w-auto">
-            {symbol || "--"}
-          </span>
-        </div>
-        <span className="text-textTertiary">{name || "--"}</span>
+    <div
+      className={cn(
+        "flex items-center gap-[8px]",
+        "max-sm:flex-col items-start",
+      )}
+    >
+      <div className="flex gap-[8px] items-center text14Medium text-textPrimary max-sm:justify-start">
+        <AssetIcon width={24} height={24} />
+        <ForeignAssetLink
+          assetId={assetId}
+          className="text-textPrimary w-20 max-sm:w-auto"
+        >
+          {symbol || "--"}
+        </ForeignAssetLink>
       </div>
-    </ForeignAssetLink>
+      <span className="text-textTertiary">{name || "--"}</span>
+    </div>
   );
 }
 

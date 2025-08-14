@@ -4,6 +4,7 @@ import {
   useAssetLink,
   useForeignAssetLink,
 } from "next-common/hooks/useAssetLink";
+import { cn } from "next-common/utils";
 
 function CommonAssetLink({ children, className, link, ...props }) {
   if (isNil(link)) {
@@ -15,7 +16,12 @@ function CommonAssetLink({ children, className, link, ...props }) {
   }
 
   return (
-    <Link href={link} target="_blank" className={className} {...props}>
+    <Link
+      href={link}
+      target="_blank"
+      className={cn("hover:text-theme500", className)}
+      {...props}
+    >
       {children}
     </Link>
   );

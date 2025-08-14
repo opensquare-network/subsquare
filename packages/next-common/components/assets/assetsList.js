@@ -53,12 +53,10 @@ export function TokenSymbol({ type, assetId, symbol }) {
   }
 
   return (
-    <AssetLink assetId={assetId}>
-      <div className="flex gap-[8px] items-center text14Medium text-textPrimary">
-        <AssetIcon width={24} height={24} />{" "}
-        <span className="hover:text-theme500">{symbol}</span>
-      </div>
-    </AssetLink>
+    <div className="flex gap-[8px] items-center text14Medium text-textPrimary">
+      <AssetIcon width={24} height={24} />{" "}
+      <AssetLink assetId={assetId}>{symbol}</AssetLink>
+    </div>
   );
 }
 
