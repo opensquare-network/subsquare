@@ -14,6 +14,7 @@ import dynamicPopup from "next-common/lib/dynamic/popup";
 import useAssetHubTabsAssets from "next-common/components/assets/useAssetHubTabsAssets";
 import { clearMultiAccounts } from "next-common/store/reducers/multiAccountsSlice";
 import { useDispatch } from "react-redux";
+import { AssetLink } from "next-common/components/assets/assetLink";
 
 const AssetTransferPopup = dynamicPopup(() => import("./transferPopup"));
 
@@ -52,9 +53,12 @@ export function TokenSymbol({ type, assetId, symbol }) {
   }
 
   return (
-    <div className="flex gap-[8px] items-center text14Medium text-textPrimary">
-      <AssetIcon width={24} height={24} /> {symbol}
-    </div>
+    <AssetLink assetId={assetId}>
+      <div className="flex gap-[8px] items-center text14Medium text-textPrimary">
+        <AssetIcon width={24} height={24} />{" "}
+        <span className="hover:text-theme500">{symbol}</span>
+      </div>
+    </AssetLink>
   );
 }
 

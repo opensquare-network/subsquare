@@ -6,7 +6,7 @@ import { InfoDocs } from "@osn/icons/subsquare";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { cn } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
-import ForeignAssetLink from "next-common/components/assets/foreignAssets/table/foreignAssetLink";
+import { ForeignAssetLink } from "next-common/components/assets/assetLink";
 
 const LocationDetailPopup = dynamicPopup(() =>
   import("next-common/components/callDetailPopup"),
