@@ -67,15 +67,17 @@ function DesktopList() {
 function MobileList() {
   return (
     <NeutralPanel className="p-6">
-      <AvatarWrapper>
-        <AvatarDisplay size={40} address="" />
-      </AvatarWrapper>
-      <AddressUser
-        key="account"
-        add=""
-        className="mt-2 text14Bold"
-        showAvatar={false}
-      />
+      <div className="flex flex-col gap-2">
+        <AvatarWrapper>
+          <AvatarDisplay size={40} address="" />
+        </AvatarWrapper>
+        <AddressUser
+          key="account"
+          add=""
+          className="mt-2 text14Bold"
+          showAvatar={false}
+        />
+      </div>
       <Divider className="my-3" />
       <VoteWrapper key="voteCounts" className="gap-0" height={4} />
       <SummaryLayout className="mt-3">
