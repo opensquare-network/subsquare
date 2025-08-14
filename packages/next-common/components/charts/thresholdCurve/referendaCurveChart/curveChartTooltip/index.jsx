@@ -8,7 +8,7 @@ export default function CurveChartTooltip({ visible, position, data }) {
   return (
     <div
       className={cn(
-        "z-[1000000] rounded p-2",
+        "z-[1000000] rounded p-2 select-none",
         "text12Normal text-textPrimaryContrast",
         "bg-tooltipBg",
         "pointer-events-none transition-all",

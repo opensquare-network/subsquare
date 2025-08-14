@@ -11,7 +11,7 @@ import Issuance from "./values/issuance";
 import useSupportPerbill from "next-common/utils/gov2/tally/useSupportPerbill";
 import useSubActiveIssuance from "next-common/hooks/referenda/useSubActiveIssuance";
 import useReferendaIssuance from "next-common/hooks/referenda/useReferendaIssuance";
-import CurvePopupOpener from "next-common/components/gov2/referendum/curvePopup";
+import { CurvePopupOpener } from "next-common/components/gov2/referendum/curvePopup";
 import VotesInfo from "./votesInfo";
 import { useReferendumTally } from "next-common/hooks/referenda/useReferendumInfo";
 import ConfirmationEstimation from "next-common/components/tally/confirmationEstimation";
@@ -41,7 +41,7 @@ export default function Gov2Tally() {
     <SecondaryCardDetail>
       <Title>
         Tally
-        <CurvePopupOpener tally={tally} supportPerbill={supportPerbill} />
+        <CurvePopupOpener />
       </Title>
       <VoteBar
         tally={tally}
