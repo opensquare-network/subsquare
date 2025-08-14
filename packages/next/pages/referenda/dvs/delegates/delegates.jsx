@@ -46,7 +46,7 @@ function DesktopList() {
   const rows = [
     [
       <AddressUser key="account" add="" />,
-      <VoteWrapper key="voteCounts" />,
+      <VoteWrapper key="voteCounts" height={4} />,
       <ValueDisplay key="participation" value={50} />,
       <ValueDisplay key="winRate" value={50} />,
     ],

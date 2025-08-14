@@ -11,6 +11,7 @@ import {
   SystemVoteAbstain,
 } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
+import Tooltip from "next-common/components/tooltip";
 
 export default function VoteProgress({ height = 8 }) {
   return (
@@ -72,9 +73,11 @@ export function VoteValues() {
 
 export function VoteWrapper({ height = 8, className = "" }) {
   return (
-    <div className={cn("flex flex-col gap-2", className)}>
+    <div className={cn("flex flex-col gap-0", className)}>
       <VoteValues />
-      <VoteProgress height={height} />
+      <Tooltip content="Total votes: 89/100">
+        <VoteProgress height={height} />
+      </Tooltip>
     </div>
   );
 }
