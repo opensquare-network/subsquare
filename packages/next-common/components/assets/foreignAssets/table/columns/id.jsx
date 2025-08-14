@@ -1,13 +1,12 @@
-import { useMemo, useState, memo } from "react";
+import { useState, memo } from "react";
 import { isNil } from "lodash-es";
 import { addressEllipsis } from "next-common/utils";
-import { useChain, useChainSettings } from "next-common/context/chain";
-import { getRelayChain } from "next-common/utils/chain";
-import Link from "next/link";
+import { useChainSettings } from "next-common/context/chain";
 import { InfoDocs } from "@osn/icons/subsquare";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { cn } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
+import ForeignAssetLink from "next-common/components/assets/foreignAssets/table/foreignAssetLink";
 
 const LocationDetailPopup = dynamicPopup(() =>
   import("next-common/components/callDetailPopup"),
@@ -50,15 +49,8 @@ function AssetIDWithoutLink({ assetId }) {
 }
 
 function AssetIDWithLink({ assetId }) {
-  const chain = useChain();
-  const relayChain = getRelayChain(chain);
-
-  const link = useMemo(() => {
-    return `https://assethub-${relayChain}.statescan.io/#/foreign-assets/${assetId}`;
-  }, [assetId, relayChain]);
-
   return (
-    <Link className="text14Medium" href={link} target="_blank">
+    <ForeignAssetLink assetId={assetId} className="text14Medium">
       {isNil(assetId) ? (
         "-"
       ) : (
@@ -66,7 +58,7 @@ function AssetIDWithLink({ assetId }) {
           <span className="text-theme500">{addressEllipsis(assetId)}</span>
         </Tooltip>
       )}
-    </Link>
+    </ForeignAssetLink>
   );
 }
 
