@@ -14,7 +14,8 @@
     "test": "vitest",
     "next": "yarn workspace @subsquare/next",
     "collectives": "yarn workspace @subsquare/collectives-next",
-    "kintsugi": "yarn workspace @subsquare/kintsugi-next"
+    "kintsugi": "yarn workspace @subsquare/kintsugi-next",
+    "common": "yarn workspace next-common"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",
