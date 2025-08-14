@@ -26,6 +26,7 @@ export default function useQueryAllForeignAssetDetail() {
             const detail = optionalStorage.unwrap();
             return {
               assetId,
+              location: assetLocation.toJSON(),
               owner: detail.owner.toJSON(),
               issuer: detail.issuer.toJSON(),
               admin: detail.admin.toJSON(),
