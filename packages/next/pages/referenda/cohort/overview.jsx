@@ -47,13 +47,19 @@ export default function Overview() {
                 <span>4</span>
                 <span className="text-textTertiary">mos</span>
               </div>
+              <span className="text-textSecondary text12Medium hidden max-sm:inline-block before:content-['Start'] before:mr-1 before:text-textTertiary">
+                2024-12-15
+              </span>
+              <span className="text-textSecondary text12Medium hidden max-sm:inline-block before:content-['End'] before:mr-1 before:text-textTertiary">
+                2024-12-15
+              </span>
             </div>
           </SummaryItem>
           <SummaryItem title="Start Time">
             <div className="flex flex-col gap-y-1">
-              <div className="flex items-center gap-x-1">
+              <div className="flex items-center gap-x-1 max-sm:flex-col">
                 <span>2025-04-15</span>
-                <span className="text-textTertiary">13:56:24</span>
+                <span className="text-textTertiary self-start">13:56:24</span>
               </div>
               <span className="text-textSecondary text12Medium">
                 #6,229,278
@@ -62,9 +68,9 @@ export default function Overview() {
           </SummaryItem>
           <SummaryItem title="End Time">
             <div className="flex flex-col gap-y-1">
-              <div className="flex items-center gap-x-1">
+              <div className="flex items-center gap-x-1 max-sm:flex-col">
                 <span>2025-04-15</span>
-                <span className="text-textTertiary">13:56:24</span>
+                <span className="text-textTertiary self-start">13:56:24</span>
               </div>
               <span className="text-textSecondary text12Medium">
                 #6,229,278
