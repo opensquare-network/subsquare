@@ -14,30 +14,19 @@ export default function useAllForeignAssets() {
       return;
     }
 
-    const byId = {};
-
-    for (const item of metadata || []) {
+    const mergedById = [...metadata, ...details].reduce((acc, item) => {
       const id = item.assetId;
-      byId[id] = { assetId: id, ...(byId[id] || {}), ...item };
-    }
+      acc[id] = { assetId: id, ...(acc[id] || {}), ...item };
+      return acc;
+    }, {});
 
-    for (const item of details || []) {
-      const id = item.assetId;
-      byId[id] = { assetId: id, ...(byId[id] || {}), ...item };
-    }
+    const rank = (id) => (foreignAssetInfo[id] ? 0 : 1);
 
-    const list = Object.values(byId);
-
-    list.sort((a, b) => {
-      const aKnown = !!foreignAssetInfo[a.assetId];
-      const bKnown = !!foreignAssetInfo[b.assetId];
-      if (aKnown !== bKnown) {
-        return aKnown ? -1 : 1;
-      }
-      return String(a.assetId || "").localeCompare(String(b.assetId || ""));
-    });
-
-    return list;
+    return Object.values(mergedById).sort(
+      (a, b) =>
+        rank(a.assetId) - rank(b.assetId) ||
+        String(a.assetId || "").localeCompare(String(b.assetId || "")),
+    );
   }, [metadata, details]);
 
   return {
