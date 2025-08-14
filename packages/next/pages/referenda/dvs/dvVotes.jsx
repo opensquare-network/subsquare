@@ -1,11 +1,23 @@
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
-import { AddressUser } from "next-common/components/user";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
-import VoteStatus from "./common/voteStatus";
 import WindowSizeProvider from "next-common/context/windowSize";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
+import { GradientBlanket } from "next-common/components/styled/tabList";
+import { cn } from "next-common/utils";
+import { useEffect, useRef, useState } from "react";
+import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import {
+  AccountColumn,
+  DvVotesTitle,
+  HeaderDivider,
+  VoteStatusColumn,
+  VoteIndicator,
+} from "./common/dvVotesStyled";
+import Divider from "next-common/components/styled/layout/divider";
 
 const referenda = [...Array(20)];
+
+const SPACE = 1;
 
 export default function ReferendaDVsVotes() {
   return (
@@ -14,6 +26,8 @@ export default function ReferendaDVsVotes() {
       <NeutralPanel className="p-6">
         <WindowSizeProvider>
           <ReferendaDVsVotesImpl />
+          <Divider />
+          <VoteIndicator />
         </WindowSizeProvider>
       </NeutralPanel>
     </div>
@@ -23,68 +37,74 @@ export default function ReferendaDVsVotes() {
 export function ReferendaDVsVotesImpl() {
   const isMobile = useIsMobile();
 
+  const scrollerXRef = useRef();
+  const [showLeft, setShowLeft] = useState(false);
+  const [showRight, setShowRight] = useState(false);
+  const { width } = useWindowSize();
+
+  useEffect(() => {
+    if (scrollerXRef.current) {
+      handleGradientBlanketVisible(scrollerXRef.current);
+    }
+  }, [scrollerXRef, width]);
+
+  function handleGradientBlanketVisible(target) {
+    const { scrollLeft, scrollWidth, clientWidth } = target;
+    const scrollSpace = scrollWidth - clientWidth;
+
+    setShowLeft(scrollLeft > SPACE);
+    setShowRight(scrollLeft < scrollSpace - SPACE);
+  }
+
+  function onScroll(event) {
+    const target = event.target;
+    handleGradientBlanketVisible(target);
+  }
+
   if (isMobile) {
     return (
-      <ScrollerX>
-        <div className="flex-1 flex">
-          <AccountColumn />
-          {referenda.map((_, idx) => (
-            <VoteStatusColumn key={idx} title={`#${idx + 1}`} />
-          ))}
-        </div>
-      </ScrollerX>
+      <div className="flex relative">
+        <GradientBlanket className={cn(showLeft && "opacity-100")} />
+        <GradientBlanket reversed className={cn(showRight && "opacity-100")} />
+        <HeaderDivider />
+        <ScrollerX
+          ref={scrollerXRef}
+          onScroll={onScroll}
+          className="scrollbar-hidden"
+        >
+          <div className="flex-1 flex">
+            <AccountColumn />
+            {referenda.map((_, idx) => (
+              <VoteStatusColumn key={idx} title={`#${idx + 1}`} />
+            ))}
+          </div>
+        </ScrollerX>
+      </div>
     );
   }
 
   return (
-    <div className="flex">
+    <div className="flex relative">
       <AccountColumn />
-      <ScrollerX className="flex-1">
+      <GradientBlanket
+        className={cn(
+          "left-[272px] max-sm:left-[200px]",
+          showLeft && "opacity-100",
+        )}
+      />
+      <GradientBlanket reversed className={cn(showRight && "opacity-100")} />
+      <HeaderDivider />
+      <ScrollerX
+        ref={scrollerXRef}
+        className="flex-1 scrollbar-hidden"
+        onScroll={onScroll}
+      >
         <div className="flex-1 flex">
           {referenda.map((_, idx) => (
             <VoteStatusColumn key={idx} title={`#${idx + 1}`} />
           ))}
         </div>
       </ScrollerX>
-    </div>
-  );
-}
-
-function DvVotesTitle() {
-  return <span className="text16Bold mx-6">DV Votes</span>;
-}
-
-function AccountColumn() {
-  return (
-    <div className="w-[272px] max-w-[200px] flex flex-col">
-      <header className="text14Medium text-textTertiary h-8 border-b border-neutral300">
-        <span>Account</span>
-      </header>
-      <div
-        key="accounts"
-        className="flex gap-y-2 flex-col text14Medium text-textPrimary py-4"
-      >
-        <AddressUser add="" />
-        <AddressUser add="" />
-        <AddressUser add="" />
-        <AddressUser add="" />
-      </div>
-    </div>
-  );
-}
-
-function VoteStatusColumn({ title = "" }) {
-  return (
-    <div className="w-16">
-      <header className="text14Medium text-textSecondary text-center h-8 border-b border-neutral300">
-        <span>{title}</span>
-      </header>
-      <div className="flex gap-y-2 flex-col items-center justify-center hover:bg-neutral200 py-4">
-        <VoteStatus status="Aye" />
-        <VoteStatus status="Nay" />
-        <VoteStatus status="Abstain" />
-        <VoteStatus status="Nil" />
-      </div>
     </div>
   );
 }
