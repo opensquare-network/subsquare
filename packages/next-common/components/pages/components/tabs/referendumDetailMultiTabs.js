@@ -31,10 +31,8 @@ const Gov2ReferendaVotesBubble = dynamicClientOnly(() =>
   import("next-common/components/gov2/referendum/votesBubble"),
 );
 const ReferendumReport = dynamicClientOnly(() => import("../referenda/report"));
-const CurvesChart = dynamicClientOnly(() =>
-  import(
-    "next-common/components/charts/thresholdCurve/referendaCurveChart/curvesChart"
-  ),
+const CurvesChartTab = dynamicClientOnly(() =>
+  import("../referenda/curvesChartTab"),
 );
 
 export default function ReferendumDetailMultiTabs() {
@@ -105,7 +103,7 @@ export default function ReferendumDetailMultiTabs() {
         label: "Curves",
         content: (
           <div className="space-y-4">
-            <CurvesChart />
+            <CurvesChartTab />
           </div>
         ),
       },
