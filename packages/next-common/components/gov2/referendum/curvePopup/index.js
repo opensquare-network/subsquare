@@ -7,7 +7,7 @@ import {
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import {
   useThresholdCurvesVisible,
-  changePopupVisible,
+  setPopupVisible,
 } from "next-common/store/reducers/referenda/thresholdCurves";
 import { useReferendumTally } from "next-common/hooks/referenda/useReferendumInfo";
 import useSupportPerbill from "next-common/utils/gov2/tally/useSupportPerbill";
@@ -42,7 +42,7 @@ const ExpandIcon = styled(SystemExpand)`
 export function CurvePopupOpener() {
   const dispatch = useDispatch();
   return (
-    <button onClick={() => dispatch(changePopupVisible(true))}>
+    <button onClick={() => dispatch(setPopupVisible(true))}>
       <CurveIcon />
     </button>
   );
@@ -51,7 +51,7 @@ export function CurvePopupOpener() {
 export function CurvePopupExpander() {
   const dispatch = useDispatch();
   return (
-    <button onClick={() => dispatch(changePopupVisible(true))}>
+    <button onClick={() => dispatch(setPopupVisible(true))}>
       <ExpandIcon />
     </button>
   );
@@ -66,7 +66,7 @@ export default function CurvePopup() {
   const supportPercentage = useSupportPercentage(supportPerbill);
 
   const closeFunc = () => {
-    dispatch(changePopupVisible(false));
+    dispatch(setPopupVisible(false));
   };
 
   return (

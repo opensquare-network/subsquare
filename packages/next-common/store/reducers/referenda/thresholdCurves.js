@@ -10,7 +10,7 @@ const referendaThresholdCurvesSlice = createSlice({
     tallyHistory: null,
   },
   reducers: {
-    changePopupVisible(state, { payload }) {
+    setPopupVisible(state, { payload }) {
       state.visible = payload;
     },
     setTallyHistory(state, { payload }) {
@@ -20,7 +20,7 @@ const referendaThresholdCurvesSlice = createSlice({
 });
 
 export default referendaThresholdCurvesSlice.reducer;
-export const { setTallyHistory, changePopupVisible } =
+export const { setTallyHistory, setPopupVisible } =
   referendaThresholdCurvesSlice.actions;
 
 export const useThresholdCurvesVisible = () => {
