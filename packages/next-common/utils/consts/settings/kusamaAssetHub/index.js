@@ -46,6 +46,7 @@ const kusamaAssetHub = {
   supportWalletconnect: true,
   graphqlApiSubDomain: "statemine-gh-api",
   supportForeignAssets: true,
+  supportAssets: true,
 };
 
 export default kusamaAssetHub;

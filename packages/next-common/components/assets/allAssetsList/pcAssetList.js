@@ -96,8 +96,8 @@ export default function PCAssetsList({ assets }) {
   const columnsDef = [
     colStatus,
     colToken,
-    colId,
     colName,
+    colId,
     colInfo,
     colAccounts,
     colSupply,

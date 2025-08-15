@@ -31,8 +31,8 @@ export const colFreezer = {
 
 const columnsDef = [
   colToken,
-  colId,
   colName,
+  colId,
   colAdmin,
   colOwner,
   colIssuer,

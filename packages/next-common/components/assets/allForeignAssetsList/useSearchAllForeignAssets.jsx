@@ -7,11 +7,11 @@ export function SearchInput({ value, onChange }) {
     <BaseSearchInput
       value={value}
       onChange={onChange}
-      placeholder="Search for asset"
+      placeholder="Search for foreign asset"
     />
   );
 }
 
-export default function useSearchAllAssets(list, value) {
-  return useSearchAssets(list, value, { assetIdToString: true });
+export default function useSearchAllForeignAssets(list, value) {
+  return useSearchAssets(list, value, { assetIdToString: false });
 }
