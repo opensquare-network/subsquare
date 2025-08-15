@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import { last } from "lodash-es";
 import BigNumber from "bignumber.js";
 import {
@@ -7,7 +6,7 @@ import {
 } from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
 import { useMemo } from "react";
 import { useDecidingEndHeight } from "next-common/context/post/gov2/decidingPercentage";
-import { referendaTallyHistorySelector } from "next-common/store/reducers/referenda/tallyHistory";
+import { useReferendaTallyHistory } from "next-common/store/reducers/referenda/thresholdCurves";
 import { isEmpty } from "lodash-es";
 import useChainOrScanHeight from "next-common/hooks/height";
 
@@ -82,7 +81,7 @@ export function calcDataFromTallyHistory(
 }
 
 export default function useHistoryTallyValueData() {
-  const tallyHistory = useSelector(referendaTallyHistorySelector);
+  const tallyHistory = useReferendaTallyHistory();
   const decidingEndOrLatestHeight = useDecidingEndHeight();
   const latestHeight = useChainOrScanHeight();
   const blockStep = useBlockSteps();
