@@ -13,12 +13,10 @@ import ProfileForeignAssetsTable from "./foreignAssetsList";
 
 function ForeignAssetsWithTransfers() {
   return (
-    <AssetHubTabsProvider>
-      <AssetHubTabs customLabels={{ [TABS.assets]: "Foreign Assets" }}>
-        <ProfileForeignAssetsTable />
-        <ProfileForeignAssetsTransfers />
-      </AssetHubTabs>
-    </AssetHubTabsProvider>
+    <AssetHubTabs customLabels={{ [TABS.assets]: "Foreign Assets" }}>
+      <ProfileForeignAssetsTable />
+      <ProfileForeignAssetsTransfers />
+    </AssetHubTabs>
   );
 }
 
@@ -55,8 +53,10 @@ export default function ProfileForeignAssets() {
   const { id } = usePageProps();
 
   return (
-    <ProfileForeignAssetsProvider address={id}>
-      <ProfileForeignAssetsImpl />
-    </ProfileForeignAssetsProvider>
+    <AssetHubTabsProvider>
+      <ProfileForeignAssetsProvider address={id}>
+        <ProfileForeignAssetsImpl />
+      </ProfileForeignAssetsProvider>
+    </AssetHubTabsProvider>
   );
 }
