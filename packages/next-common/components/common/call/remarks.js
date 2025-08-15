@@ -48,16 +48,6 @@ function extractRemarks(call = {}) {
   return remarks;
 }
 
-function splitMarkdownBlockLevels(str = "") {
-  const levels = ["## ", "### ", "#### ", "- ", "   "];
-
-  for (const level of levels) {
-    str = str.split(level).join(`\n${level}`);
-  }
-
-  return str;
-}
-
 export default function extractRemarkMetaFields(call = {}) {
   let remarks = extractRemarks(call);
   let data = [];
@@ -77,9 +67,7 @@ export default function extractRemarkMetaFields(call = {}) {
         </div>
         <RemarkWrapper>
           <ToggleCollapsed collapsedHeight={300} moreLessHeightThreshold={800}>
-            <MarkdownPreviewer
-              content={splitMarkdownBlockLevels(remarks[i] || "")}
-            />
+            <MarkdownPreviewer content={remarks[i] || ""} />
           </ToggleCollapsed>
         </RemarkWrapper>
       </div>,
