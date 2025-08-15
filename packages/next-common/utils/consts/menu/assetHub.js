@@ -21,5 +21,11 @@ export const assetHubMenu = {
       pathname: "/assethub/assets",
       icon: <MenuAsset />,
     },
+    {
+      name: "Foreign Assets",
+      value: "foreignAssets",
+      pathname: "/assethub/foreign-assets",
+      icon: <MenuAsset />,
+    },
   ],
 };
