@@ -40,17 +40,25 @@ export function ConditionRelayInfoProvider({ children }) {
   return <RelayInfoProvider>{children}</RelayInfoProvider>;
 }
 
-export default function AssetHubPage() {
+export { isAssetHubSupported };
+
+export function AssetHubPageProvider({ children }) {
   return (
     <ConditionRelayInfoProvider>
       <Provider store={store}>
         <ChainProvider chain={chain}>
-          <ApiProvider>
-            <AssetHubOverviewPageImpl />
-          </ApiProvider>
+          <ApiProvider>{children}</ApiProvider>
         </ChainProvider>
       </Provider>
     </ConditionRelayInfoProvider>
+  );
+}
+
+export default function AssetHubPage() {
+  return (
+    <AssetHubPageProvider>
+      <AssetHubOverviewPageImpl />
+    </AssetHubPageProvider>
   );
 }
 
