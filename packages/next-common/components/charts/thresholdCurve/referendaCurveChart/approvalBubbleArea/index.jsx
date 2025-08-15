@@ -55,6 +55,7 @@ function ApprovalBubbleAreaImpl({
   scales,
   historyApprovalData,
   showAyeNay,
+  visible,
 }) {
   const approvalData = useApprovalBubbleData(
     get(scales, ["x", "max"], 0),
@@ -74,13 +75,14 @@ function ApprovalBubbleAreaImpl({
       paddingRight: showAyeNay ? `calc(100% - ${right}px)` : "0px",
       paddingTop: `${top}px`,
       paddingBottom: `${Math.max(bottom - height)}px`,
+      visibility: visible ? "visible" : "hidden",
     };
-  }, [chartArea, showAyeNay]);
+  }, [chartArea, showAyeNay, visible]);
 
   return (
     <div
       style={style}
-      className="top-0 left-0 absolute w-full h-full  pointer-events-none"
+      className="top-0 left-0 absolute w-full h-full  pointer-events-none select-none"
     >
       <div className="w-full h-full relative">
         {approvalData?.map(({ x, y, who, data, type }, index) => {

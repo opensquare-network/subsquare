@@ -8,14 +8,12 @@ import Support from "./values/support";
 import { useApprovalThreshold } from "next-common/context/post/gov2/threshold";
 import SupportBar from "./supportBar";
 import Issuance from "./values/issuance";
-import { useOnchainData } from "next-common/context/post";
 import useSupportPerbill from "next-common/utils/gov2/tally/useSupportPerbill";
 import useSubActiveIssuance from "next-common/hooks/referenda/useSubActiveIssuance";
 import useReferendaIssuance from "next-common/hooks/referenda/useReferendaIssuance";
-import CurvePopupOpener from "next-common/components/gov2/referendum/curvePopup";
+import { CurvePopupOpener } from "next-common/components/gov2/referendum/curvePopup";
 import VotesInfo from "./votesInfo";
 import { useReferendumTally } from "next-common/hooks/referenda/useReferendumInfo";
-import useFetchReferendaTallyHistory from "next-common/utils/hooks/referenda/useFetchReferendaTallyHistory";
 import ConfirmationEstimation from "next-common/components/tally/confirmationEstimation";
 import {
   useApprovalPercentage,
@@ -29,7 +27,6 @@ const Title = styled(TitleContainer)`
 `;
 
 export default function Gov2Tally() {
-  const { referendumIndex } = useOnchainData();
   useSubActiveIssuance();
   const tally = useReferendumTally();
   const approvalThreshold = useApprovalThreshold();
@@ -38,14 +35,13 @@ export default function Gov2Tally() {
   const approvalPercentage = useApprovalPercentage(tally);
   const supportPercentage = useSupportPercentage(supportPerbill);
 
-  useFetchReferendaTallyHistory(referendumIndex);
   const issuance = useReferendaIssuance();
 
   return (
     <SecondaryCardDetail>
       <Title>
         Tally
-        <CurvePopupOpener tally={tally} supportPerbill={supportPerbill} />
+        <CurvePopupOpener />
       </Title>
       <VoteBar
         tally={tally}

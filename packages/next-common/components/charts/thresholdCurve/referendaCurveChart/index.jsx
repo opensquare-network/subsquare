@@ -19,12 +19,11 @@ import CustomXTickLabels from "./curveChartCustomXTickLabels";
 import ApprovalBubbleArea from "./approvalBubbleArea";
 import CurveChartTooltip from "./curveChartTooltip";
 import useChartOptionsWithTooltip from "./curveChartTooltip/useChartOptionsWithTooltip";
+import { useOnchainData } from "next-common/context/post";
+import useFetchReferendaTallyHistory from "next-common/utils/hooks/referenda/useFetchReferendaTallyHistory";
+import ThresholdCurvesGov2TallyLegend from "../legend/gov2TallyLegend";
 
-// used for detail page curve chart
-export default function ReferendaCurveChart({ showAvatar, showAyeNay }) {
-  const { width } = useWindowSize();
-  const chartRef = useRef();
-  const chartWrapper = useRef();
+const useReferendaCurveChartData = (showAyeNay) => {
   const { labels, supportData, approvalData } = useReferendumCurveData();
   const supportCurveConfig = useSupportThresholdDatasetConfig(supportData);
   const approvalCurveConfig = useApprovalThresholdDatasetConfig(approvalData);
@@ -61,6 +60,35 @@ export default function ReferendaCurveChart({ showAvatar, showAyeNay }) {
   const options = useChartOptionsWithTooltip(defaultOptions, setTooltip);
 
   const { approvalInnerPoint, supportInnerPoint } = useInnerPoints(labels);
+  return {
+    labels,
+    options,
+    chartData,
+    tooltip,
+    approvalInnerPoint,
+    supportInnerPoint,
+    historyApprovalData,
+  };
+};
+
+// used for detail page curve chart
+export default function ReferendaCurveChart({ showVoter, showAyeNay }) {
+  const { referendumIndex } = useOnchainData();
+  useFetchReferendaTallyHistory(referendumIndex);
+
+  const { width } = useWindowSize();
+  const chartRef = useRef();
+  const chartWrapper = useRef();
+  const {
+    labels,
+    options,
+    chartData,
+    tooltip,
+    approvalInnerPoint,
+    supportInnerPoint,
+    historyApprovalData,
+  } = useReferendaCurveChartData(showAyeNay);
+
   set(
     options,
     "plugins.annotation.annotations.pointSupportInner",
@@ -73,33 +101,37 @@ export default function ReferendaCurveChart({ showAvatar, showAyeNay }) {
   );
 
   return (
-    <div>
-      <div
-        ref={chartWrapper}
-        style={{ height: width <= 768 ? 144 : 320 }}
-        className="relative"
-      >
-        <Line
-          ref={chartRef}
-          data={chartData}
-          options={options}
-          plugins={[hoverLinePlugin]}
-        />
-        <CurveChartTooltip container={chartWrapper.current} {...tooltip} />
-        {chartRef.current && showAvatar && (
-          <ApprovalBubbleArea
-            showAyeNay={showAyeNay}
-            scales={chartRef.current?.scales}
-            chartArea={chartRef.current?.chartArea}
-            historyApprovalData={historyApprovalData}
+    <>
+      <div>
+        <div
+          ref={chartWrapper}
+          style={{ height: width <= 768 ? 144 : 320 }}
+          className="relative"
+        >
+          <Line
+            ref={chartRef}
+            data={chartData}
+            options={options}
+            plugins={[hoverLinePlugin]}
           />
-        )}
+          <CurveChartTooltip container={chartWrapper.current} {...tooltip} />
+          {chartRef.current && (
+            <ApprovalBubbleArea
+              visible={showVoter}
+              showAyeNay={showAyeNay}
+              scales={chartRef.current?.scales}
+              chartArea={chartRef.current?.chartArea}
+              historyApprovalData={historyApprovalData}
+            />
+          )}
+        </div>
+        <CustomXTickLabels
+          showAyeNay={showAyeNay}
+          chartArea={chartRef.current?.chartArea}
+          labelsLength={labels.length}
+        />
       </div>
-      <CustomXTickLabels
-        showAyeNay={showAyeNay}
-        chartArea={chartRef.current?.chartArea}
-        labelsLength={labels.length}
-      />
-    </div>
+      <ThresholdCurvesGov2TallyLegend showAyeNay={showAyeNay} />
+    </>
   );
 }

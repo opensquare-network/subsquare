@@ -11,6 +11,7 @@ import { MigrationConditionalApiProvider } from "next-common/context/migration/c
 import { useReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import ReferendaAppendants from "next-common/components/appendants/referenda";
 import { ReferendaAppendantsProvider } from "next-common/context/referendaAppendants";
+import ThresholdCurvePopup from "next-common/components/gov2/referendum/curvePopup";
 
 export function ReferendumContent() {
   const indexer = useReferendumVotingFinishIndexer();
@@ -41,6 +42,7 @@ function ReferendumContentInContext() {
           <ReferendaDetail />
           <ReferendaAppendants />
         </ReferendaAppendantsProvider>
+        <ThresholdCurvePopup />
         <Gov2Sidebar />
         <ReferendumDetailMultiTabs />
       </ContentWithComment>

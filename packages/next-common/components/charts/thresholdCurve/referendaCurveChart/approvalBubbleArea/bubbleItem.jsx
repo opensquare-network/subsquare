@@ -26,7 +26,7 @@ export default function BubbleItem({
   return (
     <div
       style={style}
-      className="absolute flex bg-red-200 rounded-full pointer-events-auto cursor-pointer overflow-hidden hover:scale-110 hover:z-10"
+      className="absolute flex bg-red-200 rounded-full pointer-events-auto cursor-pointer overflow-hidden hover:z-10"
     >
       <Tooltip
         className={"inline-flex"}
