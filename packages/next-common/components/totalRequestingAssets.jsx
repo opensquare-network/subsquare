@@ -7,6 +7,8 @@ import ValueDisplay from "./valueDisplay";
 import usePromptVisibility from "next-common/hooks/usePromptVisibility";
 import useTreasuryRequesting from "next-common/hooks/useTreasuryRequesting";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useMemo } from "react";
 
 function DisplayTotalRequestingAssets({ styleType, onClose }) {
   const { requestingValue, confirmingValue } = useTreasuryRequesting();
@@ -93,12 +95,19 @@ function RequestingContent({ requestingValue }) {
 }
 
 function RelatedReferenda() {
-  const queryParams = {
-    is_treasury: true,
-    ongoing: true,
-  };
+  const router = useRouter();
 
-  const queryString = new URLSearchParams(queryParams).toString();
+  const queryString = useMemo(() => {
+    const queryParams = {
+      is_treasury: true,
+      ongoing: true,
+    };
+    return new URLSearchParams(queryParams).toString();
+  }, []);
+
+  if (router.pathname === "/referenda") {
+    return null;
+  }
 
   return (
     <>
