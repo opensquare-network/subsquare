@@ -14,6 +14,7 @@ import normalizeTipListItem from "next-common/utils/viewfuncs/treasury/normalize
 import { overviewApi } from "next-common/services/url";
 import { usePageProps } from "next-common/context/page";
 import normalizeTreasurySpendListItem from "next-common/utils/viewfuncs/treasury/normalizeTreasurySpendListItem";
+import normalizeChildBountyListItem from "next-common/utils/viewfuncs/treasury/normalizeChildBountyListItem";
 
 const itemOptions = {
   proposals: {
@@ -48,7 +49,7 @@ const itemOptions = {
       path: overviewApi.treasuryChildBounties,
     },
     formatter(data) {
-      return normalizeBountyListItem(CHAIN, data);
+      return normalizeChildBountyListItem(CHAIN, data);
     },
     category: businessCategory.treasuryChildBounties,
   },
