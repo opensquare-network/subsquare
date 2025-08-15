@@ -44,7 +44,6 @@ function ForeignAssetsWithoutTransfers() {
 
 function ProfileForeignAssetsImpl() {
   const { supportForeignAssets } = useChainSettings();
-
   if (!supportForeignAssets) {
     return <ForeignAssetsWithoutTransfers />;
   }
