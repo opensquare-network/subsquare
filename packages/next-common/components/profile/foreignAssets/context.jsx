@@ -3,7 +3,7 @@ import useProfileForeignAssets from "./useProfileForeignAssets";
 
 const ProfileForeignAssetsContext = createContext(null);
 
-export function ProfileMyForeignAssetsProvider({ children, address }) {
+export function ProfileForeignAssetsProvider({ children, address }) {
   const { assets, loading } = useProfileForeignAssets(address);
 
   const contextValue = useMemo(() => {
