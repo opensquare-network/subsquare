@@ -5,7 +5,7 @@ import { useProfileAssetHubTabs } from "next-common/components/profile/tabs/useP
 import ProfileHeaderWithBanner from "next-common/components/profile/header";
 import ProfileLayout from "next-common/components/layout/ProfileLayout";
 import ProfileUserInfoProvider from "next-common/components/profile/header/context/profileUserInfoContext";
-import { AssetHubPageProvider } from "./";
+import { AssetHubPageProvider } from "../";
 
 export { getServerSideProps } from "../../user/[...params]";
 
