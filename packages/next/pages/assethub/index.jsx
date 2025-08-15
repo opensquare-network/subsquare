@@ -16,7 +16,7 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { Provider } from "react-redux";
 import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated";
 
-const isAssetHubSupported = !!getChainSettings(CHAIN).modules?.assethub;
+export const isAssetHubSupported = !!getChainSettings(CHAIN).modules?.assethub;
 
 let chain;
 let store;
@@ -32,15 +32,13 @@ if (isAssetHubSupported) {
   });
 }
 
-export function ConditionRelayInfoProvider({ children }) {
+function ConditionRelayInfoProvider({ children }) {
   if (isAssetHubMigrated()) {
     return children;
   }
 
   return <RelayInfoProvider>{children}</RelayInfoProvider>;
 }
-
-export { isAssetHubSupported };
 
 export function AssetHubPageProvider({ children }) {
   return (
