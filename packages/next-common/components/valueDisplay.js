@@ -38,7 +38,7 @@ export default function ValueDisplay({
   );
 
   let content = (
-    <span>
+    <span className="inline-flex items-center gap-x-1">
       {prefix}
       {Number(value)?.toLocaleString()}
       {symbolContent}
@@ -49,7 +49,7 @@ export default function ValueDisplay({
     const formattedSmallNumber = formatVerySmallNumberWithAbbr(value);
     const bigValue = new BigNumber(value);
     content = (
-      <span>
+      <span className="inline-flex items-center gap-x-1">
         {prefix}
         {formattedSmallNumber}
         {symbolContent}
@@ -71,7 +71,7 @@ export default function ValueDisplay({
             getEffectiveNumbers(abbreviated) !== getEffectiveNumbers(value)
           }
         />
-        <span>
+        <span className="inline-flex items-center gap-x-1">
           {prefix}
           {abbreviated}
           {symbolContent}
@@ -83,7 +83,7 @@ export default function ValueDisplay({
     if (decimal?.length > 5) {
       const shortDecimal = decimal.substring(0, 5);
       content = (
-        <span>
+        <span className="inline-flex items-center gap-x-1">
           {showApproximationSymbol ? <span>≈</span> : null}
           {prefix}
           {int}.{shortDecimal}
