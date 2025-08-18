@@ -1,7 +1,8 @@
 import { SystemClose } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAnimate } from "framer-motion";
+import { useWindowSize } from "react-use";
 
 export const PromptTypes = {
   INFO: "info",
@@ -35,6 +36,7 @@ export const colorStyle = {
 };
 
 const ITEM_HEIGHT = 40;
+const MOBILE_ITEM_HEIGHT = 60;
 const ITEM_GAP = 4; // space-y-1
 
 export default function ScrollPrompt({
@@ -43,6 +45,8 @@ export default function ScrollPrompt({
   pageSize = 2,
   defaultStep = 1,
 }) {
+  const { width } = useWindowSize();
+  const isMobile = width < 768;
   const step = defaultStep;
   const [promptPages, setPromptPages] = useState([]);
   const [containerRef, animate] = useAnimate();
@@ -52,13 +56,25 @@ export default function ScrollPrompt({
     setPromptPages(prompts);
   }, [prompts]);
 
-  const wrapperHeight = pageSize * ITEM_HEIGHT + ITEM_GAP * (pageSize - 1);
+  const wrapperHeight = useMemo(() => {
+    if (isMobile) {
+      return pageSize * MOBILE_ITEM_HEIGHT + ITEM_GAP * (pageSize - 1);
+    }
+    return pageSize * ITEM_HEIGHT + ITEM_GAP * (pageSize - 1);
+  }, [isMobile, pageSize]);
+
+  const marginTop = useMemo(() => {
+    if (isMobile) {
+      return (MOBILE_ITEM_HEIGHT + ITEM_GAP) * step;
+    }
+    return (ITEM_HEIGHT + ITEM_GAP) * step;
+  }, [isMobile, step]);
 
   const animateHandle = useCallback(() => {
     Promise.all([
       animate(
         "&>.scroll-list>:first-child",
-        { marginTop: `-${(ITEM_HEIGHT + ITEM_GAP) * step}px` },
+        { marginTop: `-${marginTop}px` },
         { duration: 1 },
       ),
     ])
@@ -78,13 +94,15 @@ export default function ScrollPrompt({
           { duration: 0 },
         );
       });
-  }, [animate, step]);
+  }, [animate, marginTop]);
 
   useEffect(() => {
     const interval = setInterval(() => {
       if (pauseRef.current) return;
       if (!containerRef.current || !containerRef.current.firstChild) return;
+      console.log("1--");
       if (promptPages.length < 2) return;
+      console.log("2--");
       animateHandle();
     }, 6500);
     return () => clearInterval(interval);
@@ -114,15 +132,15 @@ export default function ScrollPrompt({
             <div
               key={prompt.key}
               className={cn(
-                "flex justify-between",
-                "h-[40px] rounded-[8px]",
-                "text14Medium py-2.5 px-4",
+                "flex justify-between items-center rounded-lg",
+                "text14Medium py-2.5 px-4 flex-shrink-0",
+                isMobile ? "h-[60px]" : "h-[40px]",
               )}
               style={colorStyle[prompt.type || PromptTypes.NEUTRAL]}
             >
               <div>{prompt.message}</div>
               <SystemClose
-                className="w-5 h-5"
+                className="w-5 h-5 flex-shrink-0"
                 role="button"
                 onClick={() => {
                   setPrompts((prev) =>
