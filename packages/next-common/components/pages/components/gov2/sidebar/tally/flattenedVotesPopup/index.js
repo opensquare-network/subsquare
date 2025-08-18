@@ -130,7 +130,7 @@ function CachedVotesList({ items = [], loading, tab, maxTotalVotes }) {
     },
     {
       name: "VOTES",
-      className: "w-[176px] text-right",
+      className: "w-[170px] text-right",
     },
   ];
 

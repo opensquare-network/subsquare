@@ -39,9 +39,9 @@ function VoteBar({ votes, maxTotalVotes, voteType }) {
   const color = VOTE_BAR_COLOR_MAPS[voteType];
 
   return (
-    <div className="absolute bottom-0 right-0 w-[160px]">
+    <div className="absolute bottom-0 right-0 w-[150px]">
       <Progress
-        className="mb-1 h-1 w-[160px]"
+        className="mb-1 h-1 w-[150px]"
         bg="var(--neutral100)"
         fg={color}
         minWidth="2"
@@ -59,7 +59,7 @@ export default function VoteBarCell({ votes, maxTotalVotes, voteType }) {
   return (
     <div
       key="value"
-      className="flex flex-col justify-center items-end w-[176px] h-[42px] relative"
+      className="flex flex-col justify-center items-end w-[170px] h-[42px] relative"
     >
       <ValueDisplay
         value={toPrecision(votes, decimals)}
