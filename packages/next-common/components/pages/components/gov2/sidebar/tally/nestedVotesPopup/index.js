@@ -1,11 +1,8 @@
 import { useEffect, useState, memo, useMemo } from "react";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
-import ValueDisplay from "next-common/components/valueDisplay";
-import { useChainSettings } from "next-common/context/chain";
 import VotesTab, { tabs } from "../flattenedVotesPopup/tab";
 import EnterSVG from "next-common/assets/imgs/icons/enter.svg";
 import Flex from "next-common/components/styled/flex";
-import { toPrecision } from "next-common/utils";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import SearchBar from "next-common/components/voteSearch/searchBar";
 import SearchBtn from "next-common/components/voteSearch/searchBtn";
@@ -18,6 +15,7 @@ import { isEqual } from "lodash-es";
 import usePopupItemHeight from "next-common/components/democracy/democracyCallsVotesPopup/usePopupItemHeight";
 import VirtualList from "next-common/components/dataList/virtualList";
 import DelayLoaderContent from "next-common/components/delayLoaderContent";
+import VoteBar, { useMaxTotalVotes } from "../common/voteBar";
 
 const NestedPopupDelegatedDetailPopup = dynamicPopup(() =>
   import("next-common/components/popup/nestedVotesPopup/delegatedDetail"),
@@ -102,13 +100,17 @@ export default function NestedVotesPopup({
           abstainsCount={filteredAbstain?.length || 0}
         />
 
-        <VotesList items={cachedVotes} loading={cachedVotesLoading} />
+        <VotesList
+          items={cachedVotes}
+          loading={cachedVotesLoading}
+          tabIndex={tabIndex}
+        />
       </BaseVotesPopup>
     </>
   );
 }
 
-function CachedVotesList({ items, loading }) {
+function CachedVotesList({ items, loading, tabIndex }) {
   const [showDetail, setShowDetail] = useState(false);
   const [detailData, setDetailData] = useState();
 
@@ -119,6 +121,7 @@ function CachedVotesList({ items, loading }) {
         loading={loading}
         setShowDetail={setShowDetail}
         setDetailData={setDetailData}
+        tabIndex={tabIndex}
       />
 
       {showDetail && (
@@ -135,10 +138,15 @@ const VotesList = memo(CachedVotesList);
 
 const VotesListView = memo(CachedVotesListView);
 
-function CachedVotesListView({ items, loading, setDetailData, setShowDetail }) {
-  const chainSettings = useChainSettings();
+function CachedVotesListView({
+  items,
+  loading,
+  setDetailData,
+  setShowDetail,
+  tabIndex,
+}) {
   const itemHeight = usePopupItemHeight();
-  const symbol = chainSettings.voteSymbol || chainSettings.symbol;
+  const maxTotalVotes = useMaxTotalVotes(items);
 
   const columns = useMemo(() => {
     return [
@@ -151,7 +159,7 @@ function CachedVotesListView({ items, loading, setDetailData, setShowDetail }) {
       },
       {
         name: "VOTES",
-        className: "w-[128px] text-right",
+        className: "w-[176px] text-right",
       },
       {
         name: "",
@@ -167,10 +175,11 @@ function CachedVotesListView({ items, loading, setDetailData, setShowDetail }) {
           <AccountCell item={item} />
         </DelayLoaderContent>,
         (item.directVoterDelegations || []).length,
-        <ValueDisplay
-          key="value"
-          value={toPrecision(item.totalVotes, chainSettings.decimals)}
-          symbol={symbol}
+        <VoteBar
+          totalVotes={item.totalVotes}
+          maxTotalVotes={maxTotalVotes}
+          voteType={tabIndex}
+          key={item?.account}
         />,
         <Flex key="enter" style={{ padding: "0 0 0 24px" }}>
           <EnterSVG />
@@ -184,7 +193,7 @@ function CachedVotesListView({ items, loading, setDetailData, setShowDetail }) {
 
       return row;
     });
-  }, [items, chainSettings.decimals, symbol, setDetailData, setShowDetail]);
+  }, [items, maxTotalVotes, tabIndex, setDetailData, setShowDetail]);
 
   return (
     <PopupListWrapper>
