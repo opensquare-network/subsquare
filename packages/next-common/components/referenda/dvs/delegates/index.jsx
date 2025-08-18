@@ -13,6 +13,9 @@ const TABS = {
 export default function ReferendaDVsDelegatesContainer() {
   const [activeTabValue, setActiveTabValue] = useState(TABS.DELEGATES);
   const { cohortsCount } = usePageProps();
+  const { cohort } = usePageProps();
+
+  const delegatesCount = cohort?.delegateCnt || 0;
 
   const tabsListItems = useMemo(() => {
     return [
@@ -22,7 +25,7 @@ export default function ReferendaDVsDelegatesContainer() {
           return (
             <TabTitle
               label="Delegates"
-              length={0}
+              length={delegatesCount}
               disabled={activeTabValue !== TABS.DELEGATES}
             />
           );
@@ -41,7 +44,7 @@ export default function ReferendaDVsDelegatesContainer() {
         },
       },
     ];
-  }, [activeTabValue, cohortsCount]);
+  }, [activeTabValue, cohortsCount, delegatesCount]);
 
   return (
     <div className="flex flex-col gap-[16px]">

@@ -3,6 +3,7 @@ import { withReferendaCommonProps } from "next-common/services/serverSide/refere
 import DelegatesContainer from "next-common/components/referenda/dvs/delegates";
 import ReferendaDVsVotes from "next-common/components/referenda/dvs/dvVotes";
 import { backendApi } from "next-common/services/nextApi";
+import { isNil } from "lodash-es";
 
 export default function ReferendaWhalesPage({ title, gov2ReferendaSummary }) {
   const seoInfo = { title, desc: title };
@@ -24,11 +25,33 @@ export default function ReferendaWhalesPage({ title, gov2ReferendaSummary }) {
 export const getServerSideProps = withReferendaCommonProps(async () => {
   const { result: cohorts } = await backendApi.fetch("/dv/cohorts");
   const cohortsCount = cohorts?.length || 0;
+  const activeCohort = cohorts.find((cohort) => isNil(cohort.endIndexer));
+  let cohort = null;
+  let votes = [];
+  let referenda = [];
+
+  if (activeCohort) {
+    const [
+      { result: cohortResult },
+      { result: votesResult },
+      { result: referendaResult },
+    ] = await Promise.all([
+      backendApi.fetch(`/dv/cohorts/${activeCohort.id}`),
+      backendApi.fetch(`/dv/cohorts/${activeCohort.id}/votes`),
+      backendApi.fetch(`/dv/cohorts/${activeCohort.id}/referenda`),
+    ]);
+    cohort = cohortResult;
+    votes = votesResult;
+    referenda = referendaResult;
+  }
 
   return {
     props: {
+      cohort,
       cohorts,
       cohortsCount,
+      votes,
+      referenda,
     },
   };
 });

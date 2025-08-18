@@ -1,7 +1,7 @@
 import { ArrowRight } from "@osn/icons/subsquare";
 import dayjs from "dayjs";
 import { isNil } from "lodash-es";
-import Link from "next-common/components/calendar/createEventModal/link";
+import Link from "next/link";
 import DvStatusTag from "next-common/components/tags/state/dv";
 import Tooltip from "next-common/components/tooltip";
 import ValueDisplay from "next-common/components/valueDisplay";
