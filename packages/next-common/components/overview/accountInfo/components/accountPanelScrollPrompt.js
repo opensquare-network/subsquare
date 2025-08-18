@@ -25,5 +25,11 @@ export default function AccountPanelScrollPrompt() {
     );
   }, [delegationPrompt, multisigPrompt, setAvatarPrompt, setIdentityPrompt]);
 
-  return <ScrollPrompt prompts={prompts} />;
+  return (
+    <ScrollPrompt
+      prompts={prompts}
+      setPrompts={setPrompts}
+      pageSize={prompts.length > 2 ? 2 : 1}
+    />
+  );
 }
