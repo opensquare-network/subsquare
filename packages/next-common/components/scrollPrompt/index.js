@@ -100,9 +100,7 @@ export default function ScrollPrompt({
     const interval = setInterval(() => {
       if (pauseRef.current) return;
       if (!containerRef.current || !containerRef.current.firstChild) return;
-      console.log("1--");
       if (promptPages.length < 2) return;
-      console.log("2--");
       animateHandle();
     }, 6500);
     return () => clearInterval(interval);

@@ -5,12 +5,23 @@ import { isEmpty } from "lodash-es";
 import ScrollPrompt from "next-common/components/scrollPrompt";
 import useSetIdentityPrompt from "./useSetIdentityPrompt";
 import useMultisigPrompt from "./useMultisigPrompt";
+import useAssetHubManagePrompt from "./useAssetHubManagePrompt";
+import { AssetHubMetadataProvider } from "../context/assetHubMetadataContext";
 
 export default function AccountPanelScrollPrompt() {
+  return (
+    <AssetHubMetadataProvider>
+      <AccountPanelScrollPromptImpl />
+    </AssetHubMetadataProvider>
+  );
+}
+
+function AccountPanelScrollPromptImpl() {
   const delegationPrompt = useDelegationPrompt();
   const setAvatarPrompt = useSetAvatarPrompt();
   const setIdentityPrompt = useSetIdentityPrompt();
   const multisigPrompt = useMultisigPrompt();
+  const assetHubManagePrompt = useAssetHubManagePrompt();
 
   const [prompts, setPrompts] = useState([]);
 
@@ -21,9 +32,16 @@ export default function AccountPanelScrollPrompt() {
         delegationPrompt,
         setAvatarPrompt,
         setIdentityPrompt,
+        assetHubManagePrompt,
       ].filter((item) => !isEmpty(item)),
     );
-  }, [delegationPrompt, multisigPrompt, setAvatarPrompt, setIdentityPrompt]);
+  }, [
+    assetHubManagePrompt,
+    delegationPrompt,
+    multisigPrompt,
+    setAvatarPrompt,
+    setIdentityPrompt,
+  ]);
 
   return (
     <ScrollPrompt
