@@ -140,7 +140,7 @@ export function ProxyTip() {
         />
       </div>
       <span className="text14Medium text-textSecondary">
-        , all your transactions will be submitted on behalf of this proxy
+        , all your transactions will be submitted on behalf of this proxied
         address.
       </span>
     </div>
