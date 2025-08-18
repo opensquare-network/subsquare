@@ -3,7 +3,6 @@ import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import VotesTab, { tabs } from "./tab";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import { useChainSettings } from "next-common/context/chain";
-import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import CapitalListItem from "next-common/components/dataList/capitalListItem";
 import Annotation from "next-common/components/democracy/flattenedVotesPopup/annotation";
@@ -17,6 +16,7 @@ import { isEqual } from "lodash-es";
 import usePopupItemHeight from "next-common/components/democracy/democracyCallsVotesPopup/usePopupItemHeight";
 import VirtualList from "next-common/components/dataList/virtualList";
 import DelayLoaderContent from "next-common/components/delayLoaderContent";
+import VoteBar, { useMaxTotalVotes } from "../common/voteBar";
 
 export default function VotesPopup({
   setShowVoteList,
@@ -105,8 +105,8 @@ export default function VotesPopup({
 
 function CachedVotesList({ items = [], loading, tab }) {
   const chainSettings = useChainSettings();
-  const symbol = chainSettings.voteSymbol || chainSettings.symbol;
   const itemHeight = usePopupItemHeight();
+  const maxTotalVotes = useMaxTotalVotes(items, "votes");
 
   const columns = [
     {
@@ -118,7 +118,7 @@ function CachedVotesList({ items = [], loading, tab }) {
     },
     {
       name: "VOTES",
-      className: "w-[128px] text-right",
+      className: "w-[176px] text-right",
     },
   ];
 
@@ -141,10 +141,11 @@ function CachedVotesList({ items = [], loading, tab }) {
         capital={toPrecision(capital, chainSettings.decimals)}
         tab={tab}
       />,
-      <ValueDisplay
-        key="value"
-        value={toPrecision(votes, chainSettings.decimals)}
-        symbol={symbol}
+      <VoteBar
+        totalVotes={votes}
+        maxTotalVotes={maxTotalVotes}
+        voteType={tab}
+        key={item?.account}
       />,
     ];
   });

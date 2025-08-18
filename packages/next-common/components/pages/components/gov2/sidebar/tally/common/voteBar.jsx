@@ -12,14 +12,14 @@ const VOTE_BAR_COLOR_MAPS = {
   [voteTabs.Abstain]: "var(--neutral300)",
 };
 
-export function useMaxTotalVotes(items) {
+export function useMaxTotalVotes(items, key = "totalVotes") {
   return useMemo(() => {
     if (!items || items.length === 0) return BigInt(0);
     return items.reduce((max, item) => {
-      const votes = BigInt(item.totalVotes || 0);
+      const votes = BigInt(item[key] || 0);
       return votes > max ? votes : max;
     }, BigInt(0));
-  }, [items]);
+  }, [items, key]);
 }
 
 function VoteBar({ totalVotes, maxTotalVotes, voteType }) {
