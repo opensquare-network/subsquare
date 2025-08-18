@@ -177,7 +177,7 @@ function CachedVotesListView({
       },
       {
         name: "",
-        className: "w-10 text-right",
+        className: "w-[30px] text-right",
       },
     ];
   }, []);
@@ -195,7 +195,7 @@ function CachedVotesListView({
           voteType={tabIndex}
           key={item?.account}
         />,
-        <Flex key="enter" style={{ padding: "0 0 0 24px" }}>
+        <Flex key="enter" style={{ padding: "0 0 0 14px" }}>
           <EnterSVG />
         </Flex>,
       ];
