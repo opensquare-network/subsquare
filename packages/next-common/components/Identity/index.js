@@ -16,6 +16,16 @@ export function UnStyledIdentity({
 
   const displayName = getIdentityDisplay(identity);
   const shouldShowTooltip = maxWidth || ellipsis;
+  const displayNameElement = (
+    <span
+      className={cn(
+        shouldShowTooltip && "line-clamp-1 break-all overflow-hidden",
+      )}
+      style={{ maxWidth }}
+    >
+      {displayName}
+    </span>
+  );
 
   return (
     <div className="flex items-center identity">
@@ -25,14 +35,10 @@ export function UnStyledIdentity({
         iconClassName={identityIconClassName}
       />
       {noTooltip ? (
-        displayName
+        displayNameElement
       ) : (
-        <Tooltip
-          content={shouldShowTooltip ? displayName : null}
-          className={cn(shouldShowTooltip && "!line-clamp-1 break-all")}
-          style={{ maxWidth }}
-        >
-          {displayName}
+        <Tooltip content={shouldShowTooltip ? displayName : null}>
+          {displayNameElement}
         </Tooltip>
       )}
     </div>
