@@ -16,7 +16,7 @@ import { isEqual } from "lodash-es";
 import usePopupItemHeight from "next-common/components/democracy/democracyCallsVotesPopup/usePopupItemHeight";
 import VirtualList from "next-common/components/dataList/virtualList";
 import DelayLoaderContent from "next-common/components/delayLoaderContent";
-import VoteBar, { useMaxTotalVotes } from "../common/voteBar";
+import VoteBarCell, { useMaxTotalVotes } from "../common/voteBarCell";
 
 export default function VotesPopup({
   setShowVoteList,
@@ -141,8 +141,8 @@ function CachedVotesList({ items = [], loading, tab }) {
         capital={toPrecision(capital, chainSettings.decimals)}
         tab={tab}
       />,
-      <VoteBar
-        totalVotes={votes}
+      <VoteBarCell
+        votes={votes}
         maxTotalVotes={maxTotalVotes}
         voteType={tab}
         key={item?.account}

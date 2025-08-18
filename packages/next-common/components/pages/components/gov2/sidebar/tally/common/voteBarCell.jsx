@@ -14,27 +14,28 @@ const VOTE_BAR_COLOR_MAPS = {
 
 export function useMaxTotalVotes(items, key = "totalVotes") {
   return useMemo(() => {
-    if (!items || items.length === 0) return BigInt(0);
+    if (!items || items.length === 0) {
+      return 0n;
+    }
+
     return items.reduce((max, item) => {
       const votes = BigInt(item[key] || 0);
       return votes > max ? votes : max;
-    }, BigInt(0));
+    }, 0n);
   }, [items, key]);
 }
 
-function VoteBar({ totalVotes, maxTotalVotes, voteType }) {
+function VoteBar({ votes, maxTotalVotes, voteType }) {
   if (
-    isNil(totalVotes) ||
-    BigInt(totalVotes) === BigInt(0) ||
+    isNil(votes) ||
+    BigInt(votes) === 0n ||
     !maxTotalVotes ||
-    BigInt(maxTotalVotes) === BigInt(0)
+    BigInt(maxTotalVotes) === 0n
   ) {
     return null;
   }
 
-  const percentage = Number(
-    (BigInt(totalVotes) * BigInt(100)) / BigInt(maxTotalVotes),
-  );
+  const percentage = Number((BigInt(votes) * 100n) / BigInt(maxTotalVotes));
   const color = VOTE_BAR_COLOR_MAPS[voteType];
 
   return (
@@ -52,7 +53,7 @@ function VoteBar({ totalVotes, maxTotalVotes, voteType }) {
   );
 }
 
-export default function VoteBarCell({ totalVotes, maxTotalVotes, voteType }) {
+export default function VoteBarCell({ votes, maxTotalVotes, voteType }) {
   const { decimals, voteSymbol, symbol } = useChainSettings();
   const displaySymbol = voteSymbol || symbol;
   return (
@@ -61,11 +62,11 @@ export default function VoteBarCell({ totalVotes, maxTotalVotes, voteType }) {
       className="flex flex-col justify-center items-end w-[176px] h-[42px] relative"
     >
       <ValueDisplay
-        value={toPrecision(totalVotes, decimals)}
+        value={toPrecision(votes, decimals)}
         symbol={displaySymbol}
       />
       <VoteBar
-        totalVotes={totalVotes}
+        votes={votes}
         maxTotalVotes={maxTotalVotes}
         voteType={voteType}
       />

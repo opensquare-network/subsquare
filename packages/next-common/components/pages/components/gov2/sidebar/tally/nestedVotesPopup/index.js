@@ -15,7 +15,7 @@ import { isEqual } from "lodash-es";
 import usePopupItemHeight from "next-common/components/democracy/democracyCallsVotesPopup/usePopupItemHeight";
 import VirtualList from "next-common/components/dataList/virtualList";
 import DelayLoaderContent from "next-common/components/delayLoaderContent";
-import VoteBar, { useMaxTotalVotes } from "../common/voteBar";
+import VoteBarCell, { useMaxTotalVotes } from "../common/voteBarCell";
 
 const NestedPopupDelegatedDetailPopup = dynamicPopup(() =>
   import("next-common/components/popup/nestedVotesPopup/delegatedDetail"),
@@ -175,8 +175,8 @@ function CachedVotesListView({
           <AccountCell item={item} />
         </DelayLoaderContent>,
         (item.directVoterDelegations || []).length,
-        <VoteBar
-          totalVotes={item.totalVotes}
+        <VoteBarCell
+          votes={item.totalVotes}
           maxTotalVotes={maxTotalVotes}
           voteType={tabIndex}
           key={item?.account}
