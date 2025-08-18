@@ -3,7 +3,6 @@ import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import VotesTab, { tabs } from "./tab";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import { useChainSettings } from "next-common/context/chain";
-import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import CapitalListItem from "next-common/components/dataList/capitalListItem";
 import Annotation from "next-common/components/democracy/flattenedVotesPopup/annotation";
@@ -17,6 +16,7 @@ import { isEqual } from "lodash-es";
 import usePopupItemHeight from "next-common/components/democracy/democracyCallsVotesPopup/usePopupItemHeight";
 import VirtualList from "next-common/components/dataList/virtualList";
 import DelayLoaderContent from "next-common/components/delayLoaderContent";
+import VoteBarCell, { useMaxTotalVotes } from "../common/voteBarCell";
 
 export default function VotesPopup({
   setShowVoteList,
@@ -32,6 +32,18 @@ export default function VotesPopup({
   const filteredAye = useSearchVotes(search, allAye);
   const filteredNay = useSearchVotes(search, allNay);
   const filteredAbstain = useSearchVotes(search, allAbstain);
+
+  const allVotes = useMemo(() => {
+    if (tabIndex === voteTabs.Aye) {
+      return allAye;
+    } else if (tabIndex === voteTabs.Nay) {
+      return allNay;
+    } else {
+      return allAbstain;
+    }
+  }, [tabIndex, allAye, allNay, allAbstain]);
+
+  const maxTotalVotes = useMaxTotalVotes(allVotes, "votes");
 
   useEffect(() => {
     const tabs = filterTabs(filteredAye, filteredNay, filteredAbstain);
@@ -98,14 +110,14 @@ export default function VotesPopup({
         items={cachedVotes}
         loading={cachedVotesLoading}
         tab={tabIndex}
+        maxTotalVotes={maxTotalVotes}
       />
     </BaseVotesPopup>
   );
 }
 
-function CachedVotesList({ items = [], loading, tab }) {
+function CachedVotesList({ items = [], loading, tab, maxTotalVotes }) {
   const chainSettings = useChainSettings();
-  const symbol = chainSettings.voteSymbol || chainSettings.symbol;
   const itemHeight = usePopupItemHeight();
 
   const columns = [
@@ -118,7 +130,7 @@ function CachedVotesList({ items = [], loading, tab }) {
     },
     {
       name: "VOTES",
-      className: "w-[128px] text-right",
+      className: "w-[170px] text-right",
     },
   ];
 
@@ -141,10 +153,11 @@ function CachedVotesList({ items = [], loading, tab }) {
         capital={toPrecision(capital, chainSettings.decimals)}
         tab={tab}
       />,
-      <ValueDisplay
-        key="value"
-        value={toPrecision(votes, chainSettings.decimals)}
-        symbol={symbol}
+      <VoteBarCell
+        votes={votes}
+        maxTotalVotes={maxTotalVotes}
+        voteType={tab}
+        key={item?.account}
       />,
     ];
   });
