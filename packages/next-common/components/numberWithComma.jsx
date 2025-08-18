@@ -15,9 +15,9 @@ export default function NumberWithComma({ value, symbol = "" }) {
   const formattedNumber = new BigNumber(value).toFormat();
 
   return (
-    <>
+    <span>
       {formattedNumber}
       {symbol && ` ${symbol}`}
-    </>
+    </span>
   );
 }
