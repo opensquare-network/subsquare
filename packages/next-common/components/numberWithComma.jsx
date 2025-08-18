@@ -1,8 +1,9 @@
 import BigNumber from "bignumber.js";
+import { isNil } from "lodash-es";
 
 export default function NumberWithComma({ value, symbol = "" }) {
-  if (!value) {
-    return value;
+  if (isNil(value)) {
+    return null;
   }
 
   const fmt = {
