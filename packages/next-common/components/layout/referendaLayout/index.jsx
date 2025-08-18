@@ -5,6 +5,7 @@ import { useUser } from "next-common/context/user";
 import { useRouter } from "next/router";
 import { useChainSettings } from "next-common/context/chain";
 import dynamic from "next/dynamic";
+import { DVsLabel } from "./tabTitle";
 
 const Gov2Summary = dynamic(
   () => import("next-common/components/summary/gov2Summary"),
@@ -55,6 +56,16 @@ export default function ReferendaLayout({ summaryData, ...props }) {
           value: "statistics",
           label: "Statistics",
           url: "/referenda/statistics",
+        },
+        {
+          value: "dvs",
+          label: (
+            <DVsLabel
+              label="DVs"
+              active={router.pathname.startsWith("/referenda/dvs")}
+            />
+          ),
+          url: "/referenda/dvs",
         },
         modules.whales && {
           value: "whales",
