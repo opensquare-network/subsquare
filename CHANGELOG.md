@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file.
 
+# 5.3.0
+
+Date:
+2025-08-18. [Code diff](https://github.com/opensquare-network/subsquare/compare/f8ca2ad9901c1b324722207a4cfb4688ee4e7193...6375668f9be64a500bc70f6f68dd130ccd9c9c55).
+
+- [Medium] Shows voters on the referendum curves chart; Add a new tab to show curves on a referendum detail page.
+- [Medium] Support assethub foreign assets. We can see foreign assets, my foreign assets and transfer my assets.
+- [Important] Fix page crash due to google translation. It's due to a confliction between react component update with
+  DOM manipulation by google transaction.
+- [Important] Child bounty index adaption. Child bounties under a same parent bounty may have same index due to history
+  versions. We need to add an additional field (block height) to identity a child bounty in this case.
+- Fellowship:
+    - Add a slider to select a scope of fellowship member votes. So they can know their vote participation rate in this
+      scope.
+    - Enable members to create evidence on the evidence list page.
+    - Show identity tab on the profile page for collectives subsquare.
+    - Redirect users from fellowship member detail page to the profile page to avoid distraction.
+- Remove the centrifuge loan from the polkadot treasury panel.
+- Improve referenda track queue components and remove the misleading placeholder slots.
+- Fix DV start height for Dr. Jeff Cao of cohort 2.
+- Show the relatives chart for a multisig address on the multisig account page.
+- Change assethub treasury exploerer to statescan.
+- Add a user multisig prompt on the account panel.
+- Improve copywriting of proposal finalization waiting after creating a new referendum.
+- Remove the check all component on the treasury requesting panel on referenda page.
+- Fix markdown previewer to show image on WFC
+  referenda([#1710](https://polkadot.subsquare.io/referenda/1710), [#1711](https://polkadot.subsquare.io/referenda/1711))
+  call tab.
+- Code refactor and UI fixes.
+
 # 5.2.0
 
 date: 2025-08-09
