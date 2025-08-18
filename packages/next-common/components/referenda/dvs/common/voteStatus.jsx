@@ -1,16 +1,17 @@
 import { cn } from "next-common/utils";
+import { VOTE_TYPE } from "next-common/utils/dv/voteType";
 
 export default function VoteStatus({ status }) {
   let icon = null;
-  if (status === "Nil") {
+  if (status === VOTE_TYPE.NoVote) {
     icon = <span className="w-2 h-[2px] rounded-[2px] bg-neutral500"></span>;
   } else {
     icon = (
       <span
         className={cn("w-3 h-3 rounded-sm", {
-          "bg-green300": status === "Aye",
-          "bg-red300": status === "Nay",
-          "bg-neutral500": status === "Abstain",
+          "bg-green300": status === VOTE_TYPE.Aye,
+          "bg-red300": status === VOTE_TYPE.Nay,
+          "bg-neutral500": status === VOTE_TYPE.Abstain,
         })}
       ></span>
     );

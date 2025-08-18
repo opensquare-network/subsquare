@@ -1,8 +1,9 @@
+import { sortAddresses } from "@polkadot/util-crypto";
+import { isNil } from "lodash-es";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
 import DataList from "next-common/components/dataList";
 import { AddressUser } from "next-common/components/user";
 import ValueDisplay from "next-common/components/valueDisplay";
-import { VoteWrapper } from "../common/voteProgress";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 import WindowSizeProvider from "next-common/context/windowSize";
 import { AvatarWrapper } from "next-common/components/user/styled";
@@ -11,6 +12,10 @@ import Divider from "next-common/components/styled/layout/divider";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
 import Tooltip from "next-common/components/tooltip";
+import { usePageProps } from "next-common/context/page";
+import { useChainSettings } from "next-common/context/chain";
+import VoteByDelegate from "./voteByDelegate";
+import { ParticipationValue } from "../common/cohortValueStyled";
 
 const columns = [
   {
@@ -42,15 +47,25 @@ function WinRateTooltip() {
   );
 }
 
-function DesktopList() {
-  const rows = [
-    [
-      <AddressUser key="account" add="" />,
-      <VoteWrapper key="voteCounts" height={4} />,
-      <ValueDisplay key="participation" value={50} />,
+function DesktopList({ delegates }) {
+  const { votes = [], referenda = [] } = usePageProps();
+  const rows = delegates.map((delegate) => {
+    const userVote = votes.filter((vote) => vote.account === delegate);
+
+    const participation = userVote.length / referenda.length;
+
+    return [
+      <AddressUser key="account" add={delegate} />,
+      <VoteByDelegate
+        key="voteCounts"
+        height={4}
+        delegate={delegate}
+        userVote={userVote}
+      />,
+      <ParticipationValue key="participation" value={participation} />,
       <ValueDisplay key="winRate" value={50} />,
-    ],
-  ];
+    ];
+  });
   return (
     <NeutralPanel className="p-6">
       <DataList
@@ -79,7 +94,7 @@ function MobileList() {
         />
       </div>
       <Divider className="my-3" />
-      <VoteWrapper key="voteCounts" className="gap-0" height={4} />
+      <VoteByDelegate key="voteCounts" className="gap-0" height={4} />
       <SummaryLayout className="mt-3">
         <SummaryItem title="Participation">
           <span className="text14Medium">82.14%</span>
@@ -95,12 +110,21 @@ function MobileList() {
 
 function DelegatesImpl() {
   const isMobile = useIsMobile();
+  const { cohort } = usePageProps();
+  const { ss58Format } = useChainSettings();
+
+  if (isNil(cohort)) return null;
+
+  const delegates = sortAddresses(
+    cohort.delegates?.map((delegate) => delegate.address) || [],
+    ss58Format,
+  );
 
   if (isMobile) {
-    return <MobileList />;
+    return <MobileList delegates={delegates} />;
   }
 
-  return <DesktopList />;
+  return <DesktopList delegates={delegates} />;
 }
 
 export default function Delegates() {

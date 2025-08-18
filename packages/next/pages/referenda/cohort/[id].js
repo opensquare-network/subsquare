@@ -2,9 +2,10 @@ import SectionLayout from "next-common/components/layout/sectionLayout";
 import { withCommonProps } from "next-common/lib";
 import CohortBreadcrumb from "./breadcrumb";
 import Overview from "./overview";
-import ReferendaDVsVotes from "../dvs/dvVotes";
-import Delegates from "../dvs/delegates/delegates";
-import { TabTitle } from "../dvs/common/delegatesTabTitle";
+import ReferendaDVsVotes from "next-common/components/referenda/dvs/dvVotes";
+import { TabTitle } from "next-common/components/referenda/dvs/common/delegatesTabTitle";
+import Delegates from "next-common/components/referenda/dvs/delegates/delegates";
+import { backendApi } from "next-common/services/nextApi";
 
 export default function CohortPage() {
   return (
@@ -31,10 +32,21 @@ function DelegatesSection() {
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
+  const baseUrl = `/dv/cohorts/${id}`;
+
+  const [{ result: cohort }, { result: votes }, { result: referenda }] =
+    await Promise.all([
+      backendApi.fetch(baseUrl),
+      backendApi.fetch(`${baseUrl}/votes`),
+      backendApi.fetch(`${baseUrl}/referenda`),
+    ]);
 
   return {
     props: {
       id,
+      cohort,
+      votes,
+      referenda,
     },
   };
 });

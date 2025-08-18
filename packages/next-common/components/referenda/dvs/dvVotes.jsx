@@ -14,8 +14,11 @@ import {
   VoteIndicator,
 } from "./common/dvVotesStyled";
 import Divider from "next-common/components/styled/layout/divider";
-
-const referenda = [...Array(20)];
+import { usePageProps } from "next-common/context/page";
+import getVoteType from "next-common/utils/dv/voteType";
+import { groupBy } from "lodash-es";
+import { useChainSettings } from "next-common/context/chain";
+import { sortAddresses } from "@polkadot/util-crypto";
 
 const SPACE = 1;
 
@@ -36,6 +39,28 @@ export default function ReferendaDVsVotes() {
 
 export function ReferendaDVsVotesImpl() {
   const isMobile = useIsMobile();
+  const { ss58Format } = useChainSettings();
+  const { votes: votesRaw, referenda, cohort } = usePageProps();
+
+  const delegates = sortAddresses(
+    cohort?.delegates?.map((delegate) => delegate.address) || [],
+    ss58Format,
+  );
+
+  const votesByReferendum = groupBy(votesRaw, "referendumIndex");
+
+  const referendaCols = referenda.map((referendum) => {
+    const votes = votesByReferendum[referendum.referendumIndex];
+    const votesByDelegate = delegates.map((delegate) => [
+      delegate,
+      getVoteType(votes?.find((vote) => vote.account === delegate)),
+    ]);
+
+    return {
+      ...referendum,
+      votesByDelegate,
+    };
+  });
 
   const scrollerXRef = useRef();
   const [showLeft, setShowLeft] = useState(false);
@@ -73,9 +98,13 @@ export function ReferendaDVsVotesImpl() {
           className="scrollbar-hidden"
         >
           <div className="flex-1 flex">
-            <AccountColumn />
-            {referenda.map((_, idx) => (
-              <VoteStatusColumn key={idx} title={`#${idx + 1}`} />
+            <AccountColumn accounts={delegates} />
+            {referendaCols.map((col, idx) => (
+              <VoteStatusColumn
+                col={col}
+                key={idx}
+                title={`#${col.referendumIndex}`}
+              />
             ))}
           </div>
         </ScrollerX>
@@ -85,7 +114,7 @@ export function ReferendaDVsVotesImpl() {
 
   return (
     <div className="flex relative">
-      <AccountColumn />
+      <AccountColumn accounts={delegates} />
       <GradientBlanket
         className={cn(
           "left-[272px] max-sm:left-[200px]",
@@ -100,8 +129,12 @@ export function ReferendaDVsVotesImpl() {
         onScroll={onScroll}
       >
         <div className="flex-1 flex">
-          {referenda.map((_, idx) => (
-            <VoteStatusColumn key={idx} title={`#${idx + 1}`} />
+          {referendaCols.map((col, idx) => (
+            <VoteStatusColumn
+              col={col}
+              key={idx}
+              title={`#${col.referendumIndex}`}
+            />
           ))}
         </div>
       </ScrollerX>

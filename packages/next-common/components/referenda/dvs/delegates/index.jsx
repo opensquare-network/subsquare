@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import Delegates from "./delegates";
 import CohortsHistory from "./cohortsHistory";
 import { TabTitle } from "../common/delegatesTabTitle";
+import { usePageProps } from "next-common/context/page";
 
 const TABS = {
   DELEGATES: "delegates",
@@ -11,6 +12,7 @@ const TABS = {
 
 export default function ReferendaDVsDelegatesContainer() {
   const [activeTabValue, setActiveTabValue] = useState(TABS.DELEGATES);
+  const { cohortsCount } = usePageProps();
 
   const tabsListItems = useMemo(() => {
     return [
@@ -32,14 +34,14 @@ export default function ReferendaDVsDelegatesContainer() {
           return (
             <TabTitle
               label="Cohorts History"
-              length={0}
+              length={cohortsCount}
               disabled={activeTabValue !== TABS.COHORTS_HISTORY}
             />
           );
         },
       },
     ];
-  }, [activeTabValue]);
+  }, [activeTabValue, cohortsCount]);
 
   return (
     <div className="flex flex-col gap-[16px]">

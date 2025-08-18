@@ -2,34 +2,48 @@ import { useChainSettings } from "next-common/context/chain";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
-import Tag from "next-common/components/tags/state/tag";
 import Divider from "next-common/components/styled/layout/divider";
-import ValueDisplay from "next-common/components/valueDisplay";
+import { usePageProps } from "next-common/context/page";
+import { isNil } from "lodash-es";
+import DvStatusTag from "next-common/components/tags/state/dv";
+import {
+  ParticipationValue,
+  W3fDelegationValue,
+} from "next-common/components/referenda/dvs/common/cohortValueStyled";
+import dayjs from "dayjs";
+import tw from "tailwind-styled-components";
+
+const TenureValue = tw.span`text-textSecondary text12Medium max-sm:hidden inline-block  before:mr-1 before:text-textTertiary`;
 
 export default function Overview() {
+  const { cohort } = usePageProps();
+
   const chainSettings = useChainSettings();
   const symbol = chainSettings.symbol;
+
+  if (isNil(cohort)) return null;
+
   return (
     <NeutralPanel className="p-12">
       <div className="flex gap-x-1">
         <SummaryLayout>
           <SummaryItem title="Index">
-            <span className="text16Bold">4</span>
+            <span className="text16Bold">{cohort.id}</span>
           </SummaryItem>
         </SummaryLayout>
         <div>
-          <Tag state="active">Active</Tag>
+          <DvStatusTag state={cohort.endIndexer ? "Closed" : "Ongoing"} />
         </div>
       </div>
       <Divider className="my-3" />
       <div className="flex gap-x-1">
         <SummaryLayout>
           <SummaryItem title="Delegates">
-            <span className="text16Bold">6</span>
+            <span className="text16Bold">{cohort.delegateCnt}</span>
           </SummaryItem>
           <SummaryItem title="W3F Delegation">
             <div className="flex flex-col gap-y-1">
-              <ValueDisplay value={100} symbol={symbol} />
+              <W3fDelegationValue row={cohort} />
               <span className="text-textSecondary text12Medium">
                 1M {symbol}*6x per DV
               </span>
@@ -37,8 +51,14 @@ export default function Overview() {
           </SummaryItem>
           <SummaryItem title="Participation">
             <div className="flex flex-col gap-y-1">
-              <span>82.14%</span>
-              <span className="text-textSecondary text12Medium">333/362</span>
+              <span>
+                <ParticipationValue
+                  value={cohort.delegateCnt / cohort.dvTrackReferendaCnt}
+                />
+              </span>
+              <span className="text-textSecondary text12Medium">
+                {cohort.delegateCnt}/{cohort.dvTrackReferendaCnt}
+              </span>
             </div>
           </SummaryItem>
           <SummaryItem title="Tenure">
@@ -47,38 +67,45 @@ export default function Overview() {
                 <span>4</span>
                 <span className="text-textTertiary">mos</span>
               </div>
-              <span className="text-textSecondary text12Medium hidden max-sm:inline-block before:content-['Start'] before:mr-1 before:text-textTertiary">
-                2024-12-15
-              </span>
-              <span className="text-textSecondary text12Medium hidden max-sm:inline-block before:content-['End'] before:mr-1 before:text-textTertiary">
-                2024-12-15
-              </span>
+              {cohort.startIndexer && (
+                <TenureValue className="before:content-['Start']">
+                  {dayjs(cohort.startIndexer.blockTime).format("YYYY-MM-DD")}
+                </TenureValue>
+              )}
+              {cohort.endIndexer && (
+                <TenureValue className="before:content-['End']">
+                  {dayjs(cohort.endIndexer.blockTime).format("YYYY-MM-DD")}
+                </TenureValue>
+              )}
             </div>
           </SummaryItem>
           <SummaryItem title="Start Time">
-            <div className="flex flex-col gap-y-1">
-              <div className="flex items-center gap-x-1 max-sm:flex-col">
-                <span>2025-04-15</span>
-                <span className="text-textTertiary self-start">13:56:24</span>
-              </div>
-              <span className="text-textSecondary text12Medium">
-                #6,229,278
-              </span>
-            </div>
+            <IndexerValue indexer={cohort.startIndexer} />
           </SummaryItem>
-          <SummaryItem title="End Time">
-            <div className="flex flex-col gap-y-1">
-              <div className="flex items-center gap-x-1 max-sm:flex-col">
-                <span>2025-04-15</span>
-                <span className="text-textTertiary self-start">13:56:24</span>
-              </div>
-              <span className="text-textSecondary text12Medium">
-                #6,229,278
-              </span>
-            </div>
-          </SummaryItem>
+          {cohort.endIndexer && (
+            <SummaryItem title="End Time">
+              <IndexerValue indexer={cohort.endIndexer} />
+            </SummaryItem>
+          )}
         </SummaryLayout>
       </div>
     </NeutralPanel>
+  );
+}
+
+function IndexerValue({ indexer }) {
+  const blockTime = indexer?.blockTime;
+  const blockHeight = indexer?.blockHeight;
+
+  return (
+    <div className="flex flex-col gap-y-1">
+      <div className="flex items-center gap-x-1 max-sm:flex-col">
+        <span>{dayjs(blockTime).format("YYYY-MM-DD")}</span>
+        <span className="text-textTertiary self-start">
+          {dayjs(blockTime).format("HH:mm:ss")}
+        </span>
+      </div>
+      <span className="text-textSecondary text12Medium">#{blockHeight}</span>
+    </div>
   );
 }
