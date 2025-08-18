@@ -33,6 +33,18 @@ export default function VotesPopup({
   const filteredNay = useSearchVotes(search, allNay);
   const filteredAbstain = useSearchVotes(search, allAbstain);
 
+  const allVotes = useMemo(() => {
+    if (tabIndex === voteTabs.Aye) {
+      return allAye;
+    } else if (tabIndex === voteTabs.Nay) {
+      return allNay;
+    } else {
+      return allAbstain;
+    }
+  }, [tabIndex, allAye, allNay, allAbstain]);
+
+  const maxTotalVotes = useMaxTotalVotes(allVotes, "votes");
+
   useEffect(() => {
     const tabs = filterTabs(filteredAye, filteredNay, filteredAbstain);
     if (!search || tabs.length <= 0 || tabs.includes(tabIndex)) {
@@ -98,15 +110,15 @@ export default function VotesPopup({
         items={cachedVotes}
         loading={cachedVotesLoading}
         tab={tabIndex}
+        maxTotalVotes={maxTotalVotes}
       />
     </BaseVotesPopup>
   );
 }
 
-function CachedVotesList({ items = [], loading, tab }) {
+function CachedVotesList({ items = [], loading, tab, maxTotalVotes }) {
   const chainSettings = useChainSettings();
   const itemHeight = usePopupItemHeight();
-  const maxTotalVotes = useMaxTotalVotes(items, "votes");
 
   const columns = [
     {

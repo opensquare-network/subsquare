@@ -36,6 +36,18 @@ export default function NestedVotesPopup({
   const filteredNay = useSearchVotes(search, allNay);
   const filteredAbstain = useSearchVotes(search, allAbstain);
 
+  const allVotes = useMemo(() => {
+    if (tabIndex === voteTabs.Aye) {
+      return allAye;
+    } else if (tabIndex === voteTabs.Nay) {
+      return allNay;
+    } else {
+      return allAbstain;
+    }
+  }, [tabIndex, allAye, allNay, allAbstain]);
+
+  const maxTotalVotes = useMaxTotalVotes(allVotes);
+
   useEffect(() => {
     const tabs = filterTabs(filteredAye, filteredNay, filteredAbstain);
     if (!search || tabs.length <= 0 || tabs.includes(tabIndex)) {
@@ -104,13 +116,14 @@ export default function NestedVotesPopup({
           items={cachedVotes}
           loading={cachedVotesLoading}
           tabIndex={tabIndex}
+          maxTotalVotes={maxTotalVotes}
         />
       </BaseVotesPopup>
     </>
   );
 }
 
-function CachedVotesList({ items, loading, tabIndex }) {
+function CachedVotesList({ items, loading, tabIndex, maxTotalVotes }) {
   const [showDetail, setShowDetail] = useState(false);
   const [detailData, setDetailData] = useState();
 
@@ -122,6 +135,7 @@ function CachedVotesList({ items, loading, tabIndex }) {
         setShowDetail={setShowDetail}
         setDetailData={setDetailData}
         tabIndex={tabIndex}
+        maxTotalVotes={maxTotalVotes}
       />
 
       {showDetail && (
@@ -144,9 +158,9 @@ function CachedVotesListView({
   setDetailData,
   setShowDetail,
   tabIndex,
+  maxTotalVotes,
 }) {
   const itemHeight = usePopupItemHeight();
-  const maxTotalVotes = useMaxTotalVotes(items);
 
   const columns = useMemo(() => {
     return [
