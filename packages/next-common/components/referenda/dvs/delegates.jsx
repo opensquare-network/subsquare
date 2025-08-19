@@ -15,7 +15,7 @@ import Tooltip from "next-common/components/tooltip";
 import { usePageProps } from "next-common/context/page";
 import { useChainSettings } from "next-common/context/chain";
 import VoteByDelegate from "./voteByDelegate";
-import { ParticipationValue } from "../common/cohortValueStyled";
+import { ParticipationValue } from "./common/cohortValueStyled";
 
 const columns = [
   {

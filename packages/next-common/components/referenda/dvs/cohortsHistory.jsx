@@ -15,7 +15,7 @@ import {
   TenureValue,
   TimeValue,
   W3fDelegationValue,
-} from "../common/cohortValueStyled";
+} from "./common/cohortValueStyled";
 
 const columns = [
   {

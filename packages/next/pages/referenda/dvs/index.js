@@ -1,7 +1,6 @@
 import ReferendaLayout from "next-common/components/layout/referendaLayout";
 import { withReferendaCommonProps } from "next-common/services/serverSide/referenda/common";
-import DelegatesContainer from "next-common/components/referenda/dvs/delegates";
-import ReferendaDVsVotes from "next-common/components/referenda/dvs/dvVotes";
+import ReferendaDVsTabs from "next-common/components/referenda/dvs/tabs";
 import { backendApi } from "next-common/services/nextApi";
 import { isNil } from "lodash-es";
 
@@ -15,8 +14,7 @@ export default function ReferendaWhalesPage({ title, gov2ReferendaSummary }) {
       summaryData={gov2ReferendaSummary}
     >
       <div className="gap-y-6 flex flex-col">
-        <DelegatesContainer />
-        <ReferendaDVsVotes />
+        <ReferendaDVsTabs />
       </div>
     </ReferendaLayout>
   );

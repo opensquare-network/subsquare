@@ -2,7 +2,7 @@ import { groupBy, isNil } from "lodash-es";
 import { cn } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
 import { usePageProps } from "next-common/context/page";
-import VoteProgress, { VoteValues } from "../common/voteProgress";
+import VoteProgress, { VoteValues } from "./common/voteProgress";
 import getVoteType from "next-common/utils/dv/voteType";
 
 export default function VoteByDelegate({

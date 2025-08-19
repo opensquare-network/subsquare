@@ -1,19 +1,23 @@
 import TabsList from "next-common/components/tabs/list";
-import { useMemo, useState } from "react";
-import Delegates from "./delegates";
+import { useMemo } from "react";
+import CurrentCohorts from "./currentCohorts";
 import CohortsHistory from "./cohortsHistory";
-import { TabTitle } from "../common/delegatesTabTitle";
+import { TabTitle } from "./common/delegatesTabTitle";
 import { usePageProps } from "next-common/context/page";
+import { useSearchParams } from "next/navigation";
 
 const TABS = {
   DELEGATES: "delegates",
-  COHORTS_HISTORY: "cohorts-history",
+  COHORTS_HISTORY: "history",
 };
 
-export default function ReferendaDVsDelegatesContainer() {
-  const [activeTabValue, setActiveTabValue] = useState(TABS.DELEGATES);
+export default function ReferendaDVsTabs() {
   const { cohortsCount } = usePageProps();
   const { cohort } = usePageProps();
+  const searchParams = useSearchParams();
+
+  const tab = searchParams.get("tab");
+  const activeTabValue = tab || TABS.DELEGATES;
 
   const delegatesCount = cohort?.delegateCnt || 0;
 
@@ -21,6 +25,8 @@ export default function ReferendaDVsDelegatesContainer() {
     return [
       {
         value: TABS.DELEGATES,
+        url: "/referenda/dvs",
+        shallow: true,
         label() {
           return (
             <TabTitle
@@ -33,6 +39,8 @@ export default function ReferendaDVsDelegatesContainer() {
       },
       {
         value: TABS.COHORTS_HISTORY,
+        url: "/referenda/dvs?tab=history",
+        shallow: true,
         label() {
           return (
             <TabTitle
@@ -51,11 +59,10 @@ export default function ReferendaDVsDelegatesContainer() {
       <TabsList
         tabs={tabsListItems}
         activeTabValue={activeTabValue}
-        onTabClick={(tab) => setActiveTabValue(tab.value)}
         className="mx-6"
       />
 
-      {activeTabValue === TABS.DELEGATES && <Delegates />}
+      {activeTabValue === TABS.DELEGATES && <CurrentCohorts />}
       {activeTabValue === TABS.COHORTS_HISTORY && <CohortsHistory />}
     </div>
   );

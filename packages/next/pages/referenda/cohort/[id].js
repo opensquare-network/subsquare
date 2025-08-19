@@ -4,7 +4,7 @@ import CohortBreadcrumb from "./breadcrumb";
 import Overview from "./overview";
 import ReferendaDVsVotes from "next-common/components/referenda/dvs/dvVotes";
 import { TabTitle } from "next-common/components/referenda/dvs/common/delegatesTabTitle";
-import Delegates from "next-common/components/referenda/dvs/delegates/delegates";
+import Delegates from "next-common/components/referenda/dvs/delegates";
 import { backendApi } from "next-common/services/nextApi";
 
 export default function CohortPage() {
