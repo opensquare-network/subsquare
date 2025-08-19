@@ -41,7 +41,7 @@ function VoteBar({ votes, maxTotalVotes, voteType }) {
   return (
     <div className="absolute bottom-0 right-0 w-[150px]">
       <Progress
-        className="mb-1 h-1 w-[150px]"
+        className="mb-1 h-[2px] w-[150px]"
         bg="var(--neutral100)"
         fg={color}
         minWidth="2"
