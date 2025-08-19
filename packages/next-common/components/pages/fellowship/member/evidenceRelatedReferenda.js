@@ -19,6 +19,7 @@ import { isNil } from "lodash-es";
 import { useMemo } from "react";
 import { Gov2ReferendaTag } from "next-common/components/tags/state/gov2";
 import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
+import { useIsWeb3User } from "next-common/context/user";
 
 const CreateReferendumAndVoteArea = tw(CreateReferendumAndVote)`
   !w-full
@@ -42,14 +43,17 @@ const ReferendumTitleWrapper = tw(FellowshipReferendumTitleImpl)`
 `;
 
 export function EvidenceRelatedReferendaImpl() {
+  const isWeb3User = useIsWeb3User();
   const { detail } = usePageProps() || {};
   const { referenda = [] } = detail || {};
 
   const canCreateReferendum = useMemo(() => {
     const isOnChain =
       isNil(detail?.cid) && isNil(detail?.content) && isNil(detail?.hex);
-    return detail?.isActive && !isOnChain && referenda.length <= 0;
-  }, [detail, referenda]);
+    return (
+      detail?.isActive && !isOnChain && referenda.length <= 0 && isWeb3User
+    );
+  }, [detail, referenda, isWeb3User]);
 
   if (referenda.length <= 0) {
     return (
