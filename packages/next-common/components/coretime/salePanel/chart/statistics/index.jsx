@@ -48,7 +48,6 @@ function StatisticsImpl({
   initBlockHeight,
   totalBlocks = 0,
   saleStart,
-  fixedStart,
 }) {
   const chainHeight = useCoretimeChainOrScanHeight();
 
@@ -93,8 +92,7 @@ function StatisticsImpl({
   const priceDataset = useCoretimeStatisticsPriceDataset({
     initBlockHeightIndex,
     saleStart,
-    fixedStart,
-    totalBlocks,
+    totalBlocksIndex,
   });
 
   const maxPrice = Number(
