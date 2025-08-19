@@ -3,7 +3,6 @@ import { isNil } from "lodash-es";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
 import DataList from "next-common/components/dataList";
 import { AddressUser } from "next-common/components/user";
-import ValueDisplay from "next-common/components/valueDisplay";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 import WindowSizeProvider from "next-common/context/windowSize";
 import { AvatarWrapper } from "next-common/components/user/styled";
@@ -14,8 +13,10 @@ import SummaryItem from "next-common/components/summary/layout/item";
 import Tooltip from "next-common/components/tooltip";
 import { usePageProps } from "next-common/context/page";
 import { useChainSettings } from "next-common/context/chain";
+import isWin from "next-common/utils/dv/isWin";
 import VoteByDelegate from "./voteByDelegate";
 import { ParticipationValue } from "./common/cohortValueStyled";
+import WinRate from "./common/winRate";
 
 const columns = [
   {
@@ -49,9 +50,11 @@ function WinRateTooltip() {
 
 function DesktopList({ delegates }) {
   const { votes = [], referenda = [] } = usePageProps();
+
   const rows = delegates.map((delegate) => {
     const userVote = votes.filter((vote) => vote.account === delegate);
-
+    const voteCount = userVote.length;
+    const winCount = userVote.filter((vote) => isWin(vote, referenda)).length;
     const participation = userVote.length / referenda.length;
 
     return [
@@ -63,7 +66,7 @@ function DesktopList({ delegates }) {
         userVote={userVote}
       />,
       <ParticipationValue key="participation" value={participation} />,
-      <ValueDisplay key="winRate" value={50} />,
+      <WinRate key="winRate" winCount={winCount} voteCount={voteCount} />,
     ];
   });
   return (
@@ -79,31 +82,51 @@ function DesktopList({ delegates }) {
   );
 }
 
-function MobileList() {
+function MobileList({ delegates }) {
+  const { votes = [], referenda = [] } = usePageProps();
   return (
     <NeutralPanel className="p-6">
-      <div className="flex flex-col gap-2">
-        <AvatarWrapper>
-          <AvatarDisplay size={40} address="" />
-        </AvatarWrapper>
-        <AddressUser
-          key="account"
-          add=""
-          className="mt-2 text14Bold"
-          showAvatar={false}
-        />
-      </div>
-      <Divider className="my-3" />
-      <VoteByDelegate key="voteCounts" className="gap-0" height={4} />
-      <SummaryLayout className="mt-3">
-        <SummaryItem title="Participation">
-          <span className="text14Medium">82.14%</span>
-        </SummaryItem>
-        <SummaryItem title="Win Rate">
-          <span className="text14Medium">82.14%</span>
-        </SummaryItem>
-      </SummaryLayout>
-      <Divider className="my-3" />
+      {delegates.map((delegate) => {
+        const userVote = votes.filter((vote) => vote.account === delegate);
+        const voteCount = userVote.length;
+        const winCount = userVote.filter((vote) =>
+          isWin(vote, referenda),
+        ).length;
+        const participation = userVote.length / referenda.length;
+
+        return (
+          <div key={delegate}>
+            <div className="flex flex-col gap-2">
+              <AvatarWrapper>
+                <AvatarDisplay size={40} address={delegate} />
+              </AvatarWrapper>
+              <AddressUser
+                key="account"
+                add={delegate}
+                className="text14Bold"
+                showAvatar={false}
+              />
+            </div>
+            <Divider className="my-3" />
+            <VoteByDelegate
+              key="voteCounts"
+              className="gap-0"
+              height={4}
+              delegate={delegate}
+              userVote={userVote}
+            />
+            <SummaryLayout className="mt-3">
+              <SummaryItem title="Participation">
+                <ParticipationValue value={participation} />
+              </SummaryItem>
+              <SummaryItem title="Win Rate">
+                <WinRate winCount={winCount} voteCount={voteCount} />
+              </SummaryItem>
+            </SummaryLayout>
+            <Divider className="my-3" />
+          </div>
+        );
+      })}
     </NeutralPanel>
   );
 }

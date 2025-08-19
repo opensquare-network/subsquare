@@ -6,6 +6,8 @@ import ReferendaDVsVotes from "next-common/components/referenda/dvs/dvVotes";
 import { TabTitle } from "next-common/components/referenda/dvs/common/delegatesTabTitle";
 import Delegates from "next-common/components/referenda/dvs/delegates";
 import { backendApi } from "next-common/services/nextApi";
+import { usePageProps } from "next-common/context/page";
+import { isNil } from "lodash-es";
 
 export default function CohortPage() {
   return (
@@ -20,10 +22,18 @@ export default function CohortPage() {
 }
 
 function DelegatesSection() {
+  const { cohort } = usePageProps();
+  if (isNil(cohort)) {
+    return null;
+  }
   return (
     <div className="flex flex-col gap-y-4">
       <div className="mx-6">
-        <TabTitle label="Delegates" length={0} disabled={false} />
+        <TabTitle
+          label="Delegates"
+          length={cohort.delegates?.length || 0}
+          disabled={false}
+        />
       </div>
       <Delegates />
     </div>
