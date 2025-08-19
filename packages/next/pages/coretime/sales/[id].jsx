@@ -24,6 +24,7 @@ import {
   queryCoretimeSaleRenewalsChart,
   queryCoretimeSalePurchasesChart,
 } from "next-common/services/gql/coretime/chart";
+import NotFoundDetail from "next-common/components/notFoundDetail";
 
 const isCoretimeSupported = !!getChainSettings(CHAIN).modules?.coretime;
 
@@ -38,9 +39,21 @@ if (isCoretimeSupported) {
   });
 }
 
-export default function CoretimeSaleDetailPage() {
+export default function CoretimeSaleDetailPage({ coretimeSale }) {
   if (!isCoretimeSupported) {
     return null;
+  }
+  if (!coretimeSale) {
+    return (
+      <NotFoundDetail
+        breadcrumbItems={[
+          {
+            content: "Sales",
+            path: "/coretime/sales",
+          },
+        ]}
+      />
+    );
   }
 
   return (
