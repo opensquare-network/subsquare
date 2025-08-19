@@ -6,6 +6,8 @@ import { NeutralPanel } from "next-common/components/styled/containers/neutralPa
 import Divider from "next-common/components/styled/layout/divider";
 import { isNil } from "lodash-es";
 import { VOTE_TYPE } from "next-common/utils/dv/voteType";
+import Tooltip from "next-common/components/tooltip";
+import LazyLoadableReferendumTitle from "./lazyLoadableReferendumTitle";
 
 export function DvVotesTitle() {
   return <span className="text16Bold mx-6 text-textPrimary">DV Votes</span>;
@@ -29,12 +31,21 @@ export function AccountColumn({ accounts }) {
 
 export function VoteStatusColumn({ title = "", col }) {
   if (isNil(col)) return null;
-
   const { votesByDelegate } = col;
 
   return (
     <div className="w-16">
-      <ColumnHeader className="text-center">{title}</ColumnHeader>
+      <ColumnHeader className="text-center">
+        <Tooltip
+          content={
+            <LazyLoadableReferendumTitle
+              referendumIndex={col.referendumIndex}
+            />
+          }
+        >
+          {title}
+        </Tooltip>
+      </ColumnHeader>
       <HoverCard.Root>
         <HoverCard.Trigger>
           <div className="flex gap-y-2 flex-col items-center justify-center hover:bg-neutral200 py-4">
@@ -113,7 +124,9 @@ function VoteItem({ address, voteType }) {
 export function VoteDetailCard({ col }) {
   return (
     <NeutralPanel className="py-3 px-4 gap-y-3 flex flex-col w-[320px]">
-      <div className="text16Bold text-textPrimary">Referendum: Title</div>
+      <div className="text16Bold text-textPrimary truncate">
+        <LazyLoadableReferendumTitle referendumIndex={col.referendumIndex} />
+      </div>
       <Divider />
       <div className="flex flex-col gap-y-2 pt-1">
         {col.votesByDelegate.map(([address, voteType]) => (
