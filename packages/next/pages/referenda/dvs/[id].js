@@ -1,7 +1,7 @@
 import SectionLayout from "next-common/components/layout/sectionLayout";
 import { withCommonProps } from "next-common/lib";
-import CohortBreadcrumb from "./breadcrumb";
-import Overview from "./overview";
+import CohortBreadcrumb from "../../../../next-common/components/referenda/dvs/cohort/breadcrumb";
+import Overview from "../../../../next-common/components/referenda/dvs/cohort/overview";
 import ReferendaDVsVotes from "next-common/components/referenda/dvs/dvVotes";
 import { TabTitle } from "next-common/components/referenda/dvs/common/delegatesTabTitle";
 import Delegates from "next-common/components/referenda/dvs/delegates";
@@ -15,8 +15,10 @@ export default function CohortPage() {
   return (
     <SectionLayout breadcrumbs={<CohortBreadcrumb />} hasSidebar>
       <div className="flex flex-col gap-y-6">
-        <Overview />
-        <DelegatesSection />
+        <ReferendaDvProvider>
+          <Overview />
+          <DelegatesSection />
+        </ReferendaDvProvider>
         <ReferendaDVsVotes />
       </div>
     </SectionLayout>
@@ -30,16 +32,14 @@ function DelegatesSection() {
   }
   return (
     <div className="flex flex-col gap-y-4">
-      <ReferendaDvProvider>
-        <SwitchCountTab className="mx-6">
-          <TabTitle
-            label="Delegates"
-            length={cohort.delegates?.length || 0}
-            disabled={false}
-          />
-        </SwitchCountTab>
-        <Delegates />
-      </ReferendaDvProvider>
+      <SwitchCountTab className="mx-6">
+        <TabTitle
+          label="Delegates"
+          length={cohort.delegates?.length || 0}
+          disabled={false}
+        />
+      </SwitchCountTab>
+      <Delegates />
     </div>
   );
 }

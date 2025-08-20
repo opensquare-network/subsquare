@@ -11,7 +11,7 @@ import { toPrecision } from "next-common/utils";
 
 export function DetailAction({ row }) {
   return (
-    <Link href={`/referenda/cohort/${row.id}`}>
+    <Link href={`/referenda/dvs/${row.id}`}>
       <SecondaryButton key="action" size="icon" className="p-0 w-7 h-7">
         <ArrowRight />
       </SecondaryButton>

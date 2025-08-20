@@ -10,6 +10,7 @@ function getBreadcrumbItems(id) {
       content: "Referenda",
     },
     {
+      path: "/referenda/dvs?tab=history",
       content: "Cohort",
     },
     {

@@ -29,6 +29,8 @@ export function getReferendaMenu(tracks = [], currentTrackId, hotMenu = false) {
           "/referenda/statistics",
           "/referenda/whales",
           "/referenda/whales/history",
+          "/referenda/dvs",
+          "/referenda/dvs/[id]",
         ],
         excludeToSumActives: true,
       },

@@ -4,7 +4,7 @@ import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
 import Divider from "next-common/components/styled/layout/divider";
 import { usePageProps } from "next-common/context/page";
-import { isNil } from "lodash-es";
+import { groupBy, isNil } from "lodash-es";
 import DvStatusTag from "next-common/components/tags/state/dv";
 import {
   ParticipationValue,
@@ -47,7 +47,7 @@ export default function Overview() {
             <OverviewW3fDelegationValue cohort={cohort} />
           </SummaryItem>
           <SummaryItem title="Participation">
-            <OverviewParticipationValue cohort={cohort} />
+            <OverviewParticipationValue />
           </SummaryItem>
           {cohort.startIndexer && cohort.endIndexer && (
             <SummaryItem title="Tenure">
@@ -106,15 +106,18 @@ function OverviewW3fDelegationValue({ cohort }) {
   );
 }
 
-function OverviewParticipationValue({ cohort }) {
+function OverviewParticipationValue() {
+  const { votes } = usePageProps();
   const count = useReferendaDvCount();
+  const voteCount = Object.values(groupBy(votes, "referendumIndex")).length;
+
   return (
     <div className="flex flex-col gap-y-1">
       <span>
-        <ParticipationValue value={cohort.delegateCnt / count} />
+        <ParticipationValue voteCount={voteCount} totalCount={count} />
       </span>
       <span className="text-textSecondary text12Medium">
-        {cohort.delegateCnt}/{count}
+        {voteCount}/{count}
       </span>
     </div>
   );
