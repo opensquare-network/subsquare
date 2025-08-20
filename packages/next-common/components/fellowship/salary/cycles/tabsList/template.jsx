@@ -53,6 +53,7 @@ export function FellowshipSalaryCycleDetailListTemplateTable({
 
   function fetchData() {
     if (api?.path) {
+      setLoading(true);
       backendApi
         .fetch(api?.path, { ...api.params, page, pageSize: result?.pageSize })
         .then((resp) => {
