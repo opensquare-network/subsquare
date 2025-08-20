@@ -12,14 +12,16 @@ import {
 } from "next-common/components/referenda/dvs/common/cohortValueStyled";
 import dayjs from "dayjs";
 import tw from "tailwind-styled-components";
+import { formatTimeDuration } from "next-common/utils/viewfuncs/formatTimeDuration";
+import { toPrecision } from "next-common/utils";
+import ValueDisplay from "next-common/components/valueDisplay";
+import BigNumber from "bignumber.js";
+import { useReferendaDvCount } from "next-common/context/referenda/dv";
 
 const TenureValue = tw.span`text-textSecondary text12Medium max-sm:hidden inline-block  before:mr-1 before:text-textTertiary`;
 
 export default function Overview() {
   const { cohort } = usePageProps();
-
-  const chainSettings = useChainSettings();
-  const symbol = chainSettings.symbol;
 
   if (isNil(cohort)) return null;
 
@@ -42,43 +44,35 @@ export default function Overview() {
             <span className="text16Bold">{cohort.delegateCnt}</span>
           </SummaryItem>
           <SummaryItem title="W3F Delegation">
-            <div className="flex flex-col gap-y-1">
-              <W3fDelegationValue row={cohort} />
-              <span className="text-textSecondary text12Medium">
-                1M {symbol}*6x per DV
-              </span>
-            </div>
+            <OverviewW3fDelegationValue cohort={cohort} />
           </SummaryItem>
           <SummaryItem title="Participation">
-            <div className="flex flex-col gap-y-1">
-              <span>
-                <ParticipationValue
-                  value={cohort.delegateCnt / cohort.dvTrackReferendaCnt}
-                />
-              </span>
-              <span className="text-textSecondary text12Medium">
-                {cohort.delegateCnt}/{cohort.dvTrackReferendaCnt}
-              </span>
-            </div>
+            <OverviewParticipationValue cohort={cohort} />
           </SummaryItem>
-          <SummaryItem title="Tenure">
-            <div className="flex flex-col gap-y-1">
-              <div className="flex items-center gap-x-1">
-                <span>4</span>
-                <span className="text-textTertiary">mos</span>
+          {cohort.startIndexer && cohort.endIndexer && (
+            <SummaryItem title="Tenure">
+              <div className="flex flex-col gap-y-1">
+                <div className="flex items-center gap-x-1">
+                  <span>
+                    {formatTimeDuration(
+                      cohort.endIndexer.blockTime -
+                        cohort.startIndexer.blockTime,
+                    )}
+                  </span>
+                </div>
+                {cohort.startIndexer && (
+                  <TenureValue className="before:content-['Start']">
+                    {dayjs(cohort.startIndexer.blockTime).format("YYYY-MM-DD")}
+                  </TenureValue>
+                )}
+                {cohort.endIndexer && (
+                  <TenureValue className="before:content-['End']">
+                    {dayjs(cohort.endIndexer.blockTime).format("YYYY-MM-DD")}
+                  </TenureValue>
+                )}
               </div>
-              {cohort.startIndexer && (
-                <TenureValue className="before:content-['Start']">
-                  {dayjs(cohort.startIndexer.blockTime).format("YYYY-MM-DD")}
-                </TenureValue>
-              )}
-              {cohort.endIndexer && (
-                <TenureValue className="before:content-['End']">
-                  {dayjs(cohort.endIndexer.blockTime).format("YYYY-MM-DD")}
-                </TenureValue>
-              )}
-            </div>
-          </SummaryItem>
+            </SummaryItem>
+          )}
           <SummaryItem title="Start Time">
             <IndexerValue indexer={cohort.startIndexer} />
           </SummaryItem>
@@ -90,6 +84,39 @@ export default function Overview() {
         </SummaryLayout>
       </div>
     </NeutralPanel>
+  );
+}
+
+function OverviewW3fDelegationValue({ cohort }) {
+  const chainSettings = useChainSettings();
+  const perDV = BigNumber(cohort.delegation).div(cohort.delegateCnt);
+
+  return (
+    <div className="flex flex-col gap-y-1">
+      <W3fDelegationValue row={cohort} />
+      <span className="text-textSecondary text12Medium flex items-center gap-x-1">
+        <ValueDisplay
+          value={toPrecision(perDV, chainSettings.decimals)}
+          showVerySmallNumber={true}
+        />
+        <span>*</span>
+        <span>{cohort.delegateCnt}x per DV</span>
+      </span>
+    </div>
+  );
+}
+
+function OverviewParticipationValue({ cohort }) {
+  const count = useReferendaDvCount();
+  return (
+    <div className="flex flex-col gap-y-1">
+      <span>
+        <ParticipationValue value={cohort.delegateCnt / count} />
+      </span>
+      <span className="text-textSecondary text12Medium">
+        {cohort.delegateCnt}/{count}
+      </span>
+    </div>
   );
 }
 

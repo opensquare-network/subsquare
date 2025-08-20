@@ -5,6 +5,8 @@ import CohortsHistory from "./cohortsHistory";
 import { TabTitle } from "./common/delegatesTabTitle";
 import { usePageProps } from "next-common/context/page";
 import { useSearchParams } from "next/navigation";
+import SwitchCountTab from "./common/switchCountTab";
+import ReferendaDvProvider from "next-common/context/referenda/dv";
 
 const TABS = {
   DELEGATES: "delegates",
@@ -56,13 +58,17 @@ export default function ReferendaDVsTabs() {
 
   return (
     <div className="flex flex-col gap-[16px]">
-      <TabsList
-        tabs={tabsListItems}
-        activeTabValue={activeTabValue}
-        className="mx-6"
-      />
+      <ReferendaDvProvider>
+        <SwitchCountTab>
+          <TabsList
+            tabs={tabsListItems}
+            activeTabValue={activeTabValue}
+            className="mx-6"
+          />
+        </SwitchCountTab>
 
-      {activeTabValue === TABS.DELEGATES && <CurrentCohorts />}
+        {activeTabValue === TABS.DELEGATES && <CurrentCohorts />}
+      </ReferendaDvProvider>
       {activeTabValue === TABS.COHORTS_HISTORY && <CohortsHistory />}
     </div>
   );

@@ -28,20 +28,12 @@ export function TimeValue({ time, blockNumber }) {
   );
 }
 
-export function ParticipationValue({ value }) {
-  const participation = toPrecision(value * 100);
+export function ParticipationValue({ voteCount, totalCount }) {
+  const participation = toPrecision((voteCount / totalCount) * 100, 0, 2);
   return (
-    <>
-      <ValueDisplay
-        key="participation"
-        value={participation}
-        showApproximationSymbol={false}
-        showSymbol={false}
-        showTooltip={false}
-        className="text-textPrimary"
-      />
-      <span className="text-textSecondary">%</span>
-    </>
+    <Tooltip content={`Voted/Total: ${voteCount}/${totalCount}`}>
+      <span className="text-textPrimary">{participation}%</span>
+    </Tooltip>
   );
 }
 

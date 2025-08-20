@@ -8,6 +8,8 @@ import Delegates from "next-common/components/referenda/dvs/delegates";
 import { backendApi } from "next-common/services/nextApi";
 import { usePageProps } from "next-common/context/page";
 import { isNil } from "lodash-es";
+import SwitchCountTab from "next-common/components/referenda/dvs/common/switchCountTab";
+import ReferendaDvProvider from "next-common/context/referenda/dv";
 
 export default function CohortPage() {
   return (
@@ -28,14 +30,16 @@ function DelegatesSection() {
   }
   return (
     <div className="flex flex-col gap-y-4">
-      <div className="mx-6">
-        <TabTitle
-          label="Delegates"
-          length={cohort.delegates?.length || 0}
-          disabled={false}
-        />
-      </div>
-      <Delegates />
+      <ReferendaDvProvider>
+        <SwitchCountTab className="mx-6">
+          <TabTitle
+            label="Delegates"
+            length={cohort.delegates?.length || 0}
+            disabled={false}
+          />
+        </SwitchCountTab>
+        <Delegates />
+      </ReferendaDvProvider>
     </div>
   );
 }
