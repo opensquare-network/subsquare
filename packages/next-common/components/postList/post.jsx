@@ -39,7 +39,6 @@ import {
   ContentWrapper,
   BannerWrapper,
 } from "./styled";
-import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 
 function PostUser({ data, type }) {
   const { sm } = useScreenSize();
@@ -84,29 +83,9 @@ function PostAmount({ amount, decimals, symbol }) {
   );
 }
 
-export function TreasurySpendAmount({ extractedTreasuryInfo }) {
-  let { decimals } = useChainSettings();
-
-  if (!extractedTreasuryInfo) {
-    return null;
-  }
-
-  const { assetKind, amount } = extractedTreasuryInfo;
-  const type = assetKind?.type;
-  const symbol = assetKind?.symbol;
-  if (type !== "native") {
-    decimals = SYMBOL_DECIMALS[symbol];
-  }
-
-  return <PostAmount amount={amount} symbol={symbol} decimals={decimals} />;
-}
-
-export function PostValueTitle({ data, type }) {
+export function PostValueTitle({ data }) {
   const { decimals, symbol } = useChainSettings(data.indexer?.blockHeight);
   const { onchainData, value } = data;
-  if ([businessCategory.fellowshipTreasurySpends].includes(type)) {
-    return <TreasurySpendAmount extractedTreasuryInfo={data?.extracted} />;
-  }
 
   const method = onchainData?.proposal?.method;
   const localTreasurySpendAmount = onchainData?.isTreasury
@@ -181,7 +160,7 @@ export default function Post({ data, href, type }) {
         <HeadWrapper>
           <ListPostTitle data={data} href={href} />
 
-          <PostValueTitle data={data} type={type} />
+          <PostValueTitle data={data} />
         </HeadWrapper>
 
         <Divider margin={12} />
