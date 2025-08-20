@@ -13,14 +13,22 @@ export default function FellowshipSalaryPage() {
   );
 }
 
-export const getServerSideProps = withFellowshipSalaryCommonProps(async () => {
-  const { result: historyCycles = {} } = await backendApi.fetch(
-    "fellowship/salary/history_cycles",
-  );
+export const getServerSideProps = withFellowshipSalaryCommonProps(
+  async (context) => {
+    const { page = 1, page_size: pageSize = 10 } = context.query;
 
-  return {
-    props: {
-      historyCycles,
-    },
-  };
-});
+    const { result: historyCycles = {} } = await backendApi.fetch(
+      "fellowship/salary/history_cycles",
+      {
+        page,
+        pageSize,
+      },
+    );
+
+    return {
+      props: {
+        historyCycles,
+      },
+    };
+  },
+);
