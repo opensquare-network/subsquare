@@ -1,8 +1,6 @@
-import { useReferendaDvCount } from "next-common/context/referenda/dv";
 import DataList from "next-common/components/dataList";
 import {
   DetailAction,
-  ParticipationValue,
   StatusValue,
   TenureValue,
   W3fDelegationValue,
@@ -26,10 +24,6 @@ const columns = [
     style: { width: 160, textAlign: "right" },
   },
   {
-    name: "Participation",
-    style: { width: 120, textAlign: "right" },
-  },
-  {
     name: "Status",
     style: { width: 120, textAlign: "right" },
   },
@@ -40,17 +34,11 @@ const columns = [
 ];
 
 export default function CohortsHistoryDesktopList({ dataRows = [] }) {
-  const count = useReferendaDvCount();
   const rows = dataRows.map((row) => [
     <span key="index">{row.id}</span>,
     <TenureValue key="tenure" row={row} />,
     <span key="delegates">{row.delegateCnt}</span>,
     <W3fDelegationValue key="w3fDelegation" value={row.delegation} />,
-    <ParticipationValue
-      key="participation"
-      voteCount={row.delegateCnt}
-      totalCount={count}
-    />,
     <StatusValue key="status" isEnded={!isNil(row.endIndexer)} />,
     <DetailAction key="action" row={row} />,
   ]);

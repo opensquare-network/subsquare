@@ -1,8 +1,6 @@
-import { groupBy, isNil } from "lodash-es";
-import { useReferendaDv } from "next-common/context/referenda/dv";
+import { isNil } from "lodash-es";
 import {
   DetailAction,
-  ParticipationValue,
   StatusValue,
   TimeValue,
   W3fDelegationValue,
@@ -13,14 +11,8 @@ import { Divider } from "../../trackPanel/lineItem";
 import { usePageProps } from "next-common/context/page";
 
 export default function CohortsHistoryMobileList() {
-  const { cohorts = [], votes = [] } = usePageProps();
-  const votesByCohort = groupBy(votes, "referendumIndex");
-  const voteReferendumCount = Object.keys(votesByCohort).length;
-  const { countType } = useReferendaDv();
-
+  const { cohorts = [] } = usePageProps();
   const rows = cohorts.map((row) => {
-    const count =
-      countType === "referenda" ? row.allReferendaCnt : row.dvTrackReferendaCnt;
     return (
       <div key={row.id}>
         <div className="mb-3">
@@ -67,10 +59,6 @@ export default function CohortsHistoryMobileList() {
             {
               label: "W3F Delegation",
               value: <W3fDelegationValue value={row.delegation} />,
-            },
-            {
-              label: "Participation",
-              value: <ParticipationValue value={voteReferendumCount / count} />,
             },
             {
               label: "Status",
