@@ -8,9 +8,11 @@ import Pagination from "next-common/components/pagination";
 export function FellowshipFeedItems({
   rows = [],
   noDataText = "No current feeds",
+  loading,
 }) {
   return (
     <DataList
+      loading={loading}
       noDataText={noDataText}
       className={cn(
         "text14Medium",
