@@ -20,7 +20,7 @@ export default function ProfileFellowshipModuleTabs() {
 
   const urls = {
     votes: `/user/${maybeEvmAddress}/${section}`,
-    core: `/user/${maybeEvmAddress}/${section}/core`,
+    core: `/user/${maybeEvmAddress}/${section}/membership`,
     salary: `/user/${maybeEvmAddress}/${section}/salary`,
   };
 
@@ -40,7 +40,7 @@ export default function ProfileFellowshipModuleTabs() {
       value: "core",
       label: (
         <Label className={cn(pathname === urls.core && "text-textPrimary")}>
-          Core
+          Membership
         </Label>
       ),
       url: urls.core,
