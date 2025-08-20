@@ -7,6 +7,7 @@ import {
   TenureValue,
   W3fDelegationValue,
 } from "../common/cohortValueStyled";
+import { isNil } from "lodash-es";
 
 const columns = [
   {
@@ -44,9 +45,13 @@ export default function CohortsHistoryDesktopList({ dataRows = [] }) {
     <span key="index">{row.id}</span>,
     <TenureValue key="tenure" row={row} />,
     <span key="delegates">{row.delegateCnt}</span>,
-    <W3fDelegationValue key="w3fDelegation" row={row} />,
-    <ParticipationValue key="participation" value={row.delegateCnt / count} />,
-    <StatusValue key="status" row={row} />,
+    <W3fDelegationValue key="w3fDelegation" value={row.delegation} />,
+    <ParticipationValue
+      key="participation"
+      voteCount={row.delegateCnt}
+      totalCount={count}
+    />,
+    <StatusValue key="status" isEnded={!isNil(row.endIndexer)} />,
     <DetailAction key="action" row={row} />,
   ]);
   return (

@@ -1,9 +1,9 @@
 import { groupBy, isNil } from "lodash-es";
 import { cn } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
-import { usePageProps } from "next-common/context/page";
 import VoteProgress, { VoteValues } from "./common/voteProgress";
 import getVoteType from "next-common/utils/dv/voteType";
+import { useReferendaDvCount } from "next-common/context/referenda/dv";
 
 export default function VoteByDelegate({
   height = 8,
@@ -11,10 +11,8 @@ export default function VoteByDelegate({
   delegate,
   userVote,
 }) {
-  const { referenda = [] } = usePageProps();
+  const count = useReferendaDvCount();
   if (isNil(delegate) || isNil(userVote)) return null;
-
-  const referendaCount = referenda?.length || 0;
 
   const vote = userVote.map(getVoteType);
 
@@ -24,14 +22,14 @@ export default function VoteByDelegate({
   const nayCount = Nay.length;
   const abstainCount = Abstain.length;
 
-  const ayePercentage = (ayeCount / referendaCount) * 100;
-  const nayPercentage = (nayCount / referendaCount) * 100;
-  const abstainPercentage = (abstainCount / referendaCount) * 100;
+  const ayePercentage = (ayeCount / count) * 100;
+  const nayPercentage = (nayCount / count) * 100;
+  const abstainPercentage = (abstainCount / count) * 100;
 
   return (
     <div className={cn("flex flex-col gap-0", className)}>
       <VoteValues aye={ayeCount} nay={nayCount} abstain={abstainCount} />
-      <Tooltip content={`Total votes: ${vote.length}/${referendaCount}`}>
+      <Tooltip content={`Total votes: ${vote.length}/${count}`}>
         <VoteProgress
           height={height}
           aye={ayePercentage}

@@ -56,7 +56,7 @@ export default function SwitchCountTab({ children, className = "" }) {
   return (
     <div
       className={cn(
-        "flex items-center justify-between max-sm:flex-col max-sm:gap-y-3 max-sm:items-start",
+        "flex items-center justify-between max-sm:flex-col max-sm:gap-y-3 max-sm:items-start mx-6",
         className,
       )}
     >

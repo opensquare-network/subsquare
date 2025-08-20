@@ -60,11 +60,7 @@ export default function ReferendaDVsTabs() {
     <div className="flex flex-col gap-[16px]">
       <ReferendaDvProvider>
         <SwitchCountTab>
-          <TabsList
-            tabs={tabsListItems}
-            activeTabValue={activeTabValue}
-            className="mx-6"
-          />
+          <TabsList tabs={tabsListItems} activeTabValue={activeTabValue} />
         </SwitchCountTab>
 
         {activeTabValue === TABS.DELEGATES && <CurrentCohorts />}

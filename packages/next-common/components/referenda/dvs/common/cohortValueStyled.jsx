@@ -1,6 +1,5 @@
 import { ArrowRight } from "@osn/icons/subsquare";
 import dayjs from "dayjs";
-import { isNil } from "lodash-es";
 import Link from "next/link";
 import DvStatusTag from "next-common/components/tags/state/dv";
 import Tooltip from "next-common/components/tooltip";
@@ -8,6 +7,7 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { toPrecision } from "next-common/utils";
+import { isObject } from "lodash-es";
 
 export function DetailAction({ row }) {
   return (
@@ -30,6 +30,7 @@ export function TimeValue({ time, blockNumber }) {
 
 export function ParticipationValue({ voteCount, totalCount }) {
   const participation = toPrecision((voteCount / totalCount) * 100, 0, 2);
+
   return (
     <Tooltip content={`Voted/Total: ${voteCount}/${totalCount}`}>
       <span className="text-textPrimary">{participation}%</span>
@@ -37,52 +38,60 @@ export function ParticipationValue({ voteCount, totalCount }) {
   );
 }
 
-export function StatusValue({ row }) {
-  const { endIndexer } = row;
-  const isEnded = !isNil(endIndexer);
+export function StatusValue({ isEnded }) {
   return <DvStatusTag state={isEnded ? "Inactive" : "Ongoing"} />;
 }
 
 export function TenureValue({ row }) {
   const { startIndexer, endIndexer } = row;
+
+  const endTimeDisplay = endIndexer ? (
+    <> - {dayjs(endIndexer?.blockTime).format("YYYY-MM-DD HH:mm:ss")}</>
+  ) : null;
+
+  let tooltipContent = (
+    <>
+      <div className="text12Bold">#{startIndexer?.blockHeight}</div>
+      <div>
+        Start Time:{" "}
+        {dayjs(startIndexer?.blockTime).format("YYYY-MM-DD HH:mm:ss")}
+      </div>
+    </>
+  );
+
+  if (isObject(endIndexer)) {
+    tooltipContent = (
+      <>
+        <div className="text12Bold">
+          #{startIndexer?.blockHeight}- #{endIndexer?.blockHeight}
+        </div>
+        <div>
+          Start Time:{" "}
+          {dayjs(startIndexer?.blockTime).format("YYYY-MM-DD HH:mm:ss")}
+        </div>
+        <div>
+          End Time: {dayjs(endIndexer?.blockTime).format("YYYY-MM-DD HH:mm:ss")}
+        </div>
+      </>
+    );
+  }
+
   return (
-    <Tooltip
-      content={
-        <>
-          <div className="text12Bold">
-            # {startIndexer?.blockHeight}
-            {endIndexer ? <> - # {endIndexer?.blockHeight}</> : null}
-          </div>
-          <div>
-            Start Time:{" "}
-            {dayjs(startIndexer?.blockTime).format("YYYY-MM-DD HH:mm:ss")}
-          </div>
-          {endIndexer ? (
-            <div>
-              End Time:{" "}
-              {dayjs(endIndexer?.blockTime).format("YYYY-MM-DD HH:mm:ss")}
-            </div>
-          ) : null}
-        </>
-      }
-    >
+    <Tooltip content={tooltipContent}>
       <span className="text-textTertiary">
         {dayjs(startIndexer?.blockTime).format("YYYY-MM-DD")}
-        {endIndexer ? (
-          <> - {dayjs(endIndexer?.blockTime).format("YYYY-MM-DD")}</>
-        ) : null}
+        {endTimeDisplay}
       </span>
     </Tooltip>
   );
 }
 
-export function W3fDelegationValue({ row }) {
+export function W3fDelegationValue({ value }) {
   const chainSettings = useChainSettings();
   const symbol = chainSettings.voteSymbol || chainSettings.symbol;
-  const { delegation } = row;
   return (
     <ValueDisplay
-      value={toPrecision(delegation, chainSettings.decimals)}
+      value={toPrecision(value, chainSettings.decimals)}
       symbol={symbol}
     />
   );

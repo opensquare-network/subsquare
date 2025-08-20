@@ -93,7 +93,7 @@ function OverviewW3fDelegationValue({ cohort }) {
 
   return (
     <div className="flex flex-col gap-y-1">
-      <W3fDelegationValue row={cohort} />
+      <W3fDelegationValue value={cohort.delegation} />
       <span className="text-textSecondary text12Medium flex items-center gap-x-1">
         <ValueDisplay
           value={toPrecision(perDV, chainSettings.decimals)}

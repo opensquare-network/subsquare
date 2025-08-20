@@ -1,4 +1,4 @@
-import { groupBy } from "lodash-es";
+import { groupBy, isNil } from "lodash-es";
 import { useReferendaDv } from "next-common/context/referenda/dv";
 import {
   DetailAction,
@@ -66,7 +66,7 @@ export default function CohortsHistoryMobileList() {
             },
             {
               label: "W3F Delegation",
-              value: <W3fDelegationValue row={row} />,
+              value: <W3fDelegationValue value={row.delegation} />,
             },
             {
               label: "Participation",
@@ -74,7 +74,7 @@ export default function CohortsHistoryMobileList() {
             },
             {
               label: "Status",
-              value: <StatusValue row={row} />,
+              value: <StatusValue isEnded={!isNil(row.endIndexer)} />,
             },
           ].filter(Boolean)}
         />
