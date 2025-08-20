@@ -6,7 +6,6 @@ import { useState } from "react";
 import { fellowshipSalaryCycleFeedsApi } from "next-common/services/url";
 import { backendApi } from "next-common/services/nextApi";
 import { useUpdateEffect } from "react-use";
-import { SystemLoading } from "@osn/icons/subsquare";
 import { defaultPageSize } from "next-common/utils/constants";
 
 export function FellowshipSalaryFeedsList({ feeds }) {
@@ -35,15 +34,9 @@ export function FellowshipSalaryFeedsList({ feeds }) {
 
   useUpdateEffect(fetchData, [page]);
 
-  if (loading) {
-    return (
-      <SystemLoading className="w-5 h-5 mt-4 mb-2 mx-auto [&_path]:stroke-textDisabled" />
-    );
-  }
-
   return (
     <div className="mx-[-24px]">
-      <FellowshipFeedItems rows={rows} />
+      <FellowshipFeedItems loading={loading} rows={rows} />
       <Pagination
         page={page}
         pageSize={feeds.pageSize}
