@@ -4,11 +4,12 @@ import { cn } from "next-common/utils";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import { noop } from "lodash-es";
 import { AccountColumn, VoteStatusColumn } from "./column";
-import { HeaderDivider } from "../common/dvVotesStyled";
+import { HeaderDivider } from "../common/styled";
 
 const DvVotesDesktopList = forwardRef(DvVotesDesktopListInner);
 
 export default DvVotesDesktopList;
+
 function DvVotesDesktopListInner(
   { referendaCols, delegates, showLeft, showRight, onScroll = noop },
   parentRef,

@@ -1,9 +1,10 @@
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
 import WindowSizeProvider from "next-common/context/windowSize";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
-import { TabsTitle, VoteIndicator } from "../common/dvVotesStyled";
+import { TabsTitle } from "../common/styled";
+import { VoteIndicator } from "../common/voteIndicator";
 import Divider from "next-common/components/styled/layout/divider";
 import { usePageProps } from "next-common/context/page";
 import getVoteType from "next-common/utils/dv/voteType";
@@ -31,53 +32,65 @@ export default function ReferendaDVsVotes() {
 }
 
 export function ReferendaDVsVotesImpl() {
+  const { votes: allVotes, referenda, cohort } = usePageProps();
   const isMobile = useIsMobile();
   const { ss58Format } = useChainSettings();
-  const { votes: votesRaw, referenda, cohort } = usePageProps();
-
-  const delegates = sortAddresses(
-    cohort?.delegates?.map((delegate) => delegate.address) || [],
-    ss58Format,
-  );
-
-  const votesByReferendum = groupBy(votesRaw, "referendumIndex");
-
-  const referendaCols = referenda.map((referendum) => {
-    const votes = votesByReferendum[referendum.referendumIndex];
-    const votesByDelegate = delegates.map((delegate) => [
-      delegate,
-      getVoteType(votes?.find((vote) => vote.account === delegate)),
-    ]);
-
-    return {
-      ...referendum,
-      votesByDelegate,
-    };
-  });
-
   const scrollerXRef = useRef();
   const [showLeft, setShowLeft] = useState(false);
   const [showRight, setShowRight] = useState(false);
   const { width } = useWindowSize();
 
+  const delegates = useMemo(
+    () =>
+      sortAddresses(
+        cohort?.delegates?.map((delegate) => delegate.address) || [],
+        ss58Format,
+      ),
+    [cohort, ss58Format],
+  );
+
+  const votesByReferendum = useMemo(
+    () => groupBy(allVotes, "referendumIndex"),
+    [allVotes],
+  );
+
+  const referendaCols = useMemo(
+    () =>
+      referenda.map((referendum) => {
+        const votes = votesByReferendum[referendum.referendumIndex];
+        const votesByDelegate = delegates.map((delegate) => [
+          delegate,
+          getVoteType(votes?.find((vote) => vote.account === delegate)),
+        ]);
+
+        return {
+          ...referendum,
+          votesByDelegate,
+        };
+      }),
+    [referenda, votesByReferendum, delegates],
+  );
+
+  const handleGradientBlanketVisible = useCallback((target) => {
+    const { scrollLeft, scrollWidth, clientWidth } = target;
+    const scrollSpace = scrollWidth - clientWidth;
+    setShowLeft(scrollLeft > SPACE);
+    setShowRight(scrollLeft < scrollSpace - SPACE);
+  }, []);
+
+  const onScroll = useCallback(
+    (event) => {
+      const target = event.target;
+      handleGradientBlanketVisible(target);
+    },
+    [handleGradientBlanketVisible],
+  );
+
   useEffect(() => {
     if (scrollerXRef.current) {
       handleGradientBlanketVisible(scrollerXRef.current);
     }
-  }, [scrollerXRef, width]);
-
-  function handleGradientBlanketVisible(target) {
-    const { scrollLeft, scrollWidth, clientWidth } = target;
-    const scrollSpace = scrollWidth - clientWidth;
-
-    setShowLeft(scrollLeft > SPACE);
-    setShowRight(scrollLeft < scrollSpace - SPACE);
-  }
-
-  function onScroll(event) {
-    const target = event.target;
-    handleGradientBlanketVisible(target);
-  }
+  }, [scrollerXRef, width, handleGradientBlanketVisible]);
 
   if (isMobile) {
     return (

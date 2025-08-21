@@ -3,7 +3,7 @@ import { cn } from "next-common/utils";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import { useRef, forwardRef, useImperativeHandle } from "react";
 import { noop } from "lodash-es";
-import { HeaderDivider } from "../common/dvVotesStyled";
+import { HeaderDivider } from "../common/styled";
 import { AccountColumn, VoteStatusColumn } from "./column";
 
 const DvVotesMobileList = forwardRef(DvVotesMobileListInner);
