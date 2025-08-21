@@ -3,7 +3,7 @@ import Loading from "next-common/components/loading";
 import { getGov2ReferendumTitle } from "next-common/utils/gov2/title";
 import { fetchReferendumData } from "next-common/services/referendaData";
 
-export default function LazyLoadableReferendumTitle({ referendumIndex }) {
+export default function LoadableReferendumTitle({ referendumIndex }) {
   const { value, loading } = useAsync(async () => {
     return fetchReferendumData(referendumIndex);
   });

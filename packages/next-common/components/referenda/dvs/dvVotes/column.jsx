@@ -3,7 +3,7 @@ import { AddressUser } from "next-common/components/user";
 import { cn } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
 import * as HoverCard from "@radix-ui/react-hover-card";
-import LazyLoadableReferendumTitle from "../common/lazyLoadableReferendumTitle";
+import LoadableReferendumTitle from "../common/loadableReferendumTitle";
 import Link from "next/link";
 import VoteStatus from "../common/voteStatus";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
@@ -35,9 +35,7 @@ export function VoteStatusColumn({ title = "", col }) {
       <ColumnHeader className="text-center">
         <Tooltip
           content={
-            <LazyLoadableReferendumTitle
-              referendumIndex={col.referendumIndex}
-            />
+            <LoadableReferendumTitle referendumIndex={col.referendumIndex} />
           }
         >
           <Link
@@ -69,9 +67,7 @@ function ColumnContent({ col, children }) {
             className="text16Bold text-textPrimary truncate cursor-pointer hover:underline"
             href={`/referenda/${col.referendumIndex}`}
           >
-            <LazyLoadableReferendumTitle
-              referendumIndex={col.referendumIndex}
-            />
+            <LoadableReferendumTitle referendumIndex={col.referendumIndex} />
           </Link>
           <Divider />
           <div className="flex flex-col gap-y-2 pt-1">

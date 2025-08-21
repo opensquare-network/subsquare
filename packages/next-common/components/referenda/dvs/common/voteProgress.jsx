@@ -10,6 +10,7 @@ import {
   SystemVoteNay,
   SystemVoteAbstain,
 } from "@osn/icons/subsquare";
+import { VoteValueWrapper } from "./styled";
 
 export default function VoteProgress({ height = 8, aye, nay, abstain }) {
   return (
@@ -25,31 +26,31 @@ export default function VoteProgress({ height = 8, aye, nay, abstain }) {
 
 export function AyeValue({ aye }) {
   return (
-    <div className="flex items-center gap-2">
+    <VoteValueWrapper>
       <SystemVoteAye className="w-4 h-4" />
       <span className="text-green500">Aye</span>
       <span>{aye}</span>
-    </div>
+    </VoteValueWrapper>
   );
 }
 
 export function NayValue({ nay }) {
   return (
-    <div className="flex items-center gap-2">
+    <VoteValueWrapper>
       <SystemVoteNay className="w-4 h-4" />
       <span className="text-red500">Nay</span>
       <span>{nay}</span>
-    </div>
+    </VoteValueWrapper>
   );
 }
 
 export function AbstainValue({ abstain }) {
   return (
-    <div className="flex items-center gap-2">
+    <VoteValueWrapper>
       <SystemVoteAbstain className="w-4 h-4" />
       <span className="text-textTertiary">Abstain</span>
       <span>{abstain}</span>
-    </div>
+    </VoteValueWrapper>
   );
 }
 
