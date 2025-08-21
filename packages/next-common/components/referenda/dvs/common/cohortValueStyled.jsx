@@ -5,16 +5,16 @@ import DvStatusTag from "next-common/components/tags/state/dv";
 import Tooltip from "next-common/components/tooltip";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
-import SecondaryButton from "next-common/lib/button/secondary";
 import { toPrecision } from "next-common/utils";
 import { isObject } from "lodash-es";
 
 export function DetailAction({ row }) {
   return (
-    <Link href={`/referenda/dvs/${row.id}`}>
-      <SecondaryButton key="action" size="icon" className="p-0 w-7 h-7">
-        <ArrowRight />
-      </SecondaryButton>
+    <Link
+      href={`/referenda/dvs/${row.id}`}
+      className="inline-flex items-center justify-center w-7 h-7 border border-neutral400 rounded hover:border-neutral500"
+    >
+      <ArrowRight className="w-4 h-4 text-textPrimary" />
     </Link>
   );
 }

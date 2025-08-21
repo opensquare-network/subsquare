@@ -8,6 +8,7 @@ import { isNil } from "lodash-es";
 import { VOTE_TYPE } from "next-common/utils/dv/voteType";
 import Tooltip from "next-common/components/tooltip";
 import LazyLoadableReferendumTitle from "./lazyLoadableReferendumTitle";
+import Link from "next/link";
 
 export function DvVotesTitle() {
   return <span className="text16Bold mx-6 text-textPrimary">DV Votes</span>;
@@ -43,7 +44,12 @@ export function VoteStatusColumn({ title = "", col }) {
             />
           }
         >
-          {title}
+          <Link
+            className="truncate cursor-pointer hover:underline"
+            href={`/referenda/${col.referendumIndex}`}
+          >
+            {title}
+          </Link>
         </Tooltip>
       </ColumnHeader>
       <HoverCard.Root>
@@ -124,9 +130,12 @@ function VoteItem({ address, voteType }) {
 export function VoteDetailCard({ col }) {
   return (
     <NeutralPanel className="py-3 px-4 gap-y-3 flex flex-col w-[320px]">
-      <div className="text16Bold text-textPrimary truncate">
+      <Link
+        className="text16Bold text-textPrimary truncate cursor-pointer hover:underline"
+        href={`/referenda/${col.referendumIndex}`}
+      >
         <LazyLoadableReferendumTitle referendumIndex={col.referendumIndex} />
-      </div>
+      </Link>
       <Divider />
       <div className="flex flex-col gap-y-2 pt-1">
         {col.votesByDelegate.map(([address, voteType]) => (

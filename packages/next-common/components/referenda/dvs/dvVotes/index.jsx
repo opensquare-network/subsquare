@@ -82,6 +82,7 @@ export function ReferendaDVsVotesImpl() {
   if (isMobile) {
     return (
       <DvVotesMobileList
+        ref={scrollerXRef}
         referendaCols={referendaCols}
         delegates={delegates}
         showLeft={showLeft}
@@ -93,6 +94,7 @@ export function ReferendaDVsVotesImpl() {
 
   return (
     <DvVotesDesktopList
+      ref={scrollerXRef}
       referendaCols={referendaCols}
       delegates={delegates}
       showLeft={showLeft}
