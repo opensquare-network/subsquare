@@ -24,9 +24,7 @@ export default function FellowshipTreasurySpendsPostList({
         type={businessCategory.fellowshipTreasurySpends}
       >
         {items.map((data, index) => (
-          <>
-            <PostItem key={index} data={data} />
-          </>
+          <PostItem key={index} data={data} />
         ))}
       </MaybeEmpty>
       <Pagination {...pagination} />
