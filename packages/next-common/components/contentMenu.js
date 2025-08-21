@@ -177,6 +177,11 @@ export function CancelReferendumMenuItem({
   setShowCancelReferendumPopup,
   setShow,
 }) {
+  const isVoting = useReferendaIsVoting();
+  if (!isVoting) {
+    return null;
+  }
+
   return (
     <OptionItem
       onClick={() => {
@@ -196,6 +201,10 @@ export function KillReferendumMenuItem({
   setShowKillReferendumPopup,
   setShow,
 }) {
+  const isVoting = useReferendaIsVoting();
+  if (!isVoting) {
+    return null;
+  }
   return (
     <OptionItem
       onClick={() => {
@@ -332,7 +341,6 @@ export function PostContextMenu({ isAuthor, editable, setIsEdit }) {
 
   const { newProposalQuickStart: { cancelReferendum, killReferendum } = {} } =
     useChainSettings();
-  const isVoting = useReferendaIsVoting();
 
   const isOpenGovReferendumPost =
     postType === detailPageCategory.GOV2_REFERENDUM;
@@ -409,7 +417,7 @@ export function PostContextMenu({ isAuthor, editable, setIsEdit }) {
             setShowReportPopup={setShowReportPopup}
             setShow={setShow}
           />
-          {isOpenGovReferendumPost && isVoting && (
+          {isOpenGovReferendumPost && (
             <>
               {cancelReferendum && (
                 <CancelReferendumMenuItem
