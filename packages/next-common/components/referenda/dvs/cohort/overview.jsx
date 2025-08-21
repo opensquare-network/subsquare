@@ -139,7 +139,9 @@ function IndexerValue({ indexer }) {
           {dayjs(blockTime).format("HH:mm:ss")}
         </span>
       </div>
-      <span className="text-textSecondary text12Medium">#{blockHeight}</span>
+      <span className="text-textSecondary text12Medium">
+        #{blockHeight?.toLocaleString()}
+      </span>
     </div>
   );
 }

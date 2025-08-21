@@ -51,7 +51,9 @@ export function TenureValue({ row }) {
 
   let tooltipContent = (
     <>
-      <div className="text12Bold">#{startIndexer?.blockHeight}</div>
+      <div className="text12Bold">
+        #{startIndexer?.blockHeight?.toLocaleString()}
+      </div>
       <div>
         Start Time:{" "}
         {dayjs(startIndexer?.blockTime).format("YYYY-MM-DD HH:mm:ss")}
@@ -63,7 +65,8 @@ export function TenureValue({ row }) {
     tooltipContent = (
       <>
         <div className="text12Bold">
-          #{startIndexer?.blockHeight}- #{endIndexer?.blockHeight}
+          #{startIndexer?.blockHeight?.toLocaleString()} - #
+          {endIndexer?.blockHeight?.toLocaleString()}
         </div>
         <div>
           Start Time:{" "}
