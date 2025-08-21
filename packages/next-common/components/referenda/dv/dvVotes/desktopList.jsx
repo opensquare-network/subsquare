@@ -23,7 +23,7 @@ function DvVotesDesktopListInner(
       <AccountColumn accounts={delegates} />
       <GradientBlanket
         className={cn(
-          "left-[272px] max-sm:left-[200px]",
+          "left-[240px] max-sm:left-[200px]",
           showLeft && "opacity-100",
         )}
       />

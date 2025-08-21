@@ -43,7 +43,7 @@ export default function DelegatesDesktopList({ delegates }) {
     const winCount = userVote.filter((vote) => isWin(vote, referenda)).length;
 
     return [
-      <AddressUser key="account" add={delegate} />,
+      <AddressUser key="account" add={delegate} maxWidth={220} />,
       <VoteByDelegate
         key="voteCounts"
         height={4}
