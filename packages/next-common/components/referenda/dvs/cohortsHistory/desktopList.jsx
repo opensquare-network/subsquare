@@ -39,7 +39,7 @@ export default function CohortsHistoryDesktopList({ dataRows = [] }) {
     <TenureValue key="tenure" row={row} />,
     <span key="delegates">{row.delegateCnt}</span>,
     <W3fDelegationValue key="w3fDelegation" value={row.delegation} />,
-    <StatusValue key="status" isEnded={!isNil(row.endIndexer)} />,
+    <StatusValue key="status" isClosed={!isNil(row.endIndexer)} />,
     <DetailAction key="action" row={row} />,
   ]);
   return (

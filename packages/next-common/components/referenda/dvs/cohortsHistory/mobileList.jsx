@@ -62,7 +62,7 @@ export default function CohortsHistoryMobileList() {
             },
             {
               label: "Status",
-              value: <StatusValue isEnded={!isNil(row.endIndexer)} />,
+              value: <StatusValue isClosed={!isNil(row.endIndexer)} />,
             },
           ].filter(Boolean)}
         />

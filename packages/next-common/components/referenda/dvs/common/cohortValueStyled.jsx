@@ -38,8 +38,8 @@ export function ParticipationValue({ voteCount, totalCount }) {
   );
 }
 
-export function StatusValue({ isEnded }) {
-  return <DvStatusTag state={isEnded ? "Inactive" : "Ongoing"} />;
+export function StatusValue({ isClosed }) {
+  return <DvStatusTag state={isClosed ? "Closed" : "Ongoing"} />;
 }
 
 export function TenureValue({ row }) {

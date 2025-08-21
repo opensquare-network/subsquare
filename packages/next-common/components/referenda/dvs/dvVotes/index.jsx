@@ -1,24 +1,17 @@
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
-import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import WindowSizeProvider from "next-common/context/windowSize";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
-import { GradientBlanket } from "next-common/components/styled/tabList";
-import { cn } from "next-common/utils";
 import { useEffect, useRef, useState } from "react";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
-import {
-  AccountColumn,
-  DvVotesTitle,
-  HeaderDivider,
-  VoteStatusColumn,
-  VoteIndicator,
-} from "./common/dvVotesStyled";
+import { DvVotesTitle, VoteIndicator } from "../common/dvVotesStyled";
 import Divider from "next-common/components/styled/layout/divider";
 import { usePageProps } from "next-common/context/page";
 import getVoteType from "next-common/utils/dv/voteType";
 import { groupBy } from "lodash-es";
 import { useChainSettings } from "next-common/context/chain";
 import { sortAddresses } from "@polkadot/util-crypto";
+import DvVotesMobileList from "./mobileList";
+import DvVotesDesktopList from "./desktopList";
 
 const SPACE = 1;
 
@@ -88,56 +81,23 @@ export function ReferendaDVsVotesImpl() {
 
   if (isMobile) {
     return (
-      <div className="flex relative">
-        <GradientBlanket className={cn(showLeft && "opacity-100")} />
-        <GradientBlanket reversed className={cn(showRight && "opacity-100")} />
-        <HeaderDivider />
-        <ScrollerX
-          ref={scrollerXRef}
-          onScroll={onScroll}
-          className="scrollbar-hidden"
-        >
-          <div className="flex-1 flex">
-            <AccountColumn accounts={delegates} />
-            {referendaCols.map((col, idx) => (
-              <VoteStatusColumn
-                col={col}
-                key={idx}
-                title={`#${col.referendumIndex}`}
-              />
-            ))}
-          </div>
-        </ScrollerX>
-      </div>
+      <DvVotesMobileList
+        referendaCols={referendaCols}
+        delegates={delegates}
+        showLeft={showLeft}
+        showRight={showRight}
+        onScroll={onScroll}
+      />
     );
   }
 
   return (
-    <div className="flex relative">
-      <AccountColumn accounts={delegates} />
-      <GradientBlanket
-        className={cn(
-          "left-[272px] max-sm:left-[200px]",
-          showLeft && "opacity-100",
-        )}
-      />
-      <GradientBlanket reversed className={cn(showRight && "opacity-100")} />
-      <HeaderDivider />
-      <ScrollerX
-        ref={scrollerXRef}
-        className="flex-1 scrollbar-hidden"
-        onScroll={onScroll}
-      >
-        <div className="flex-1 flex">
-          {referendaCols.map((col, idx) => (
-            <VoteStatusColumn
-              col={col}
-              key={idx}
-              title={`#${col.referendumIndex}`}
-            />
-          ))}
-        </div>
-      </ScrollerX>
-    </div>
+    <DvVotesDesktopList
+      referendaCols={referendaCols}
+      delegates={delegates}
+      showLeft={showLeft}
+      showRight={showRight}
+      onScroll={onScroll}
+    />
   );
 }
