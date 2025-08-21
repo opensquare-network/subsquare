@@ -3,7 +3,7 @@ import WindowSizeProvider from "next-common/context/windowSize";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 import { useEffect, useRef, useState } from "react";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
-import { DvVotesTitle, VoteIndicator } from "../common/dvVotesStyled";
+import { TabsTitle, VoteIndicator } from "../common/dvVotesStyled";
 import Divider from "next-common/components/styled/layout/divider";
 import { usePageProps } from "next-common/context/page";
 import getVoteType from "next-common/utils/dv/voteType";
@@ -18,7 +18,7 @@ const SPACE = 1;
 export default function ReferendaDVsVotes() {
   return (
     <div className="flex flex-col gap-y-4">
-      <DvVotesTitle />
+      <TabsTitle>DV Votes</TabsTitle>
       <NeutralPanel className="p-6">
         <WindowSizeProvider>
           <ReferendaDVsVotesImpl />
