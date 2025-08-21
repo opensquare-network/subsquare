@@ -1,6 +1,6 @@
 import ReferendaLayout from "next-common/components/layout/referendaLayout";
 import { withReferendaCommonProps } from "next-common/services/serverSide/referenda/common";
-import ReferendaDVsTabs from "next-common/components/referenda/dvs/tabs";
+import ReferendaDvTabs from "next-common/components/referenda/dv/tabs";
 import { backendApi } from "next-common/services/nextApi";
 import { isNil } from "lodash-es";
 
@@ -14,7 +14,7 @@ export default function ReferendaWhalesPage({ title, gov2ReferendaSummary }) {
       summaryData={gov2ReferendaSummary}
     >
       <div className="gap-y-6 flex flex-col">
-        <ReferendaDVsTabs />
+        <ReferendaDvTabs />
       </div>
     </ReferendaLayout>
   );

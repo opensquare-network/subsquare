@@ -16,13 +16,13 @@ import DvVotesDesktopList from "./desktopList";
 
 const SPACE = 1;
 
-export default function ReferendaDVsVotes() {
+export default function ReferendaDVVotes() {
   return (
     <div className="flex flex-col gap-y-4">
       <TabsTitle>DV Votes</TabsTitle>
       <NeutralPanel className="p-6">
         <WindowSizeProvider>
-          <ReferendaDVsVotesImpl />
+          <ReferendaDvVotesImpl />
           <Divider />
           <VoteIndicator />
         </WindowSizeProvider>
@@ -31,7 +31,7 @@ export default function ReferendaDVsVotes() {
   );
 }
 
-export function ReferendaDVsVotesImpl() {
+export function ReferendaDvVotesImpl() {
   const { votes: allVotes, referenda, cohort } = usePageProps();
   const isMobile = useIsMobile();
   const { ss58Format } = useChainSettings();

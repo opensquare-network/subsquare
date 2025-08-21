@@ -13,7 +13,7 @@ const TABS = {
   COHORTS_HISTORY: "history",
 };
 
-export default function ReferendaDVsTabs() {
+export default function ReferendaDvTabs() {
   const { cohortsCount } = usePageProps();
   const { cohort } = usePageProps();
   const searchParams = useSearchParams();
@@ -27,7 +27,7 @@ export default function ReferendaDVsTabs() {
     return [
       {
         value: TABS.DELEGATES,
-        url: "/referenda/dvs",
+        url: "/referenda/dv",
         shallow: true,
         label() {
           return (
@@ -41,7 +41,7 @@ export default function ReferendaDVsTabs() {
       },
       {
         value: TABS.COHORTS_HISTORY,
-        url: "/referenda/dvs?tab=history",
+        url: "/referenda/dv?tab=history",
         shallow: true,
         label() {
           return (

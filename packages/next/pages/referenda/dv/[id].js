@@ -1,14 +1,14 @@
 import SectionLayout from "next-common/components/layout/sectionLayout";
 import { withCommonProps } from "next-common/lib";
-import CohortBreadcrumb from "../../../../next-common/components/referenda/dvs/cohort/breadcrumb";
-import Overview from "../../../../next-common/components/referenda/dvs/cohort/overview";
-import ReferendaDVsVotes from "next-common/components/referenda/dvs/dvVotes";
-import { TabTitle } from "next-common/components/referenda/dvs/common/delegatesTabTitle";
-import Delegates from "next-common/components/referenda/dvs/delegates";
+import CohortBreadcrumb from "next-common/components/referenda/dv/cohort/breadcrumb";
+import Overview from "next-common/components/referenda/dv/cohort/overview";
+import ReferendaDvVotes from "next-common/components/referenda/dv/dvVotes";
+import { TabTitle } from "next-common/components/referenda/dv/common/delegatesTabTitle";
+import Delegates from "next-common/components/referenda/dv/delegates";
 import { backendApi } from "next-common/services/nextApi";
 import { usePageProps } from "next-common/context/page";
 import { isNil } from "lodash-es";
-import SwitchCountTab from "next-common/components/referenda/dvs/common/switchCountTab";
+import SwitchCountTab from "next-common/components/referenda/dv/common/switchCountTab";
 import ReferendaDvProvider from "next-common/context/referenda/dv";
 import { to404 } from "next-common/utils/serverSideUtil";
 
@@ -20,7 +20,7 @@ export default function CohortPage() {
           <Overview />
           <DelegatesSection />
         </ReferendaDvProvider>
-        <ReferendaDVsVotes />
+        <ReferendaDvVotes />
       </div>
     </SectionLayout>
   );

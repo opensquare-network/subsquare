@@ -11,7 +11,7 @@ import { isObject } from "lodash-es";
 export function DetailAction({ row }) {
   return (
     <Link
-      href={`/referenda/dvs/${row.id}`}
+      href={`/referenda/dv/${row.id}`}
       className="inline-flex items-center justify-center w-7 h-7 border border-neutral400 rounded hover:border-neutral500"
     >
       <ArrowRight className="w-4 h-4 text-textPrimary" />

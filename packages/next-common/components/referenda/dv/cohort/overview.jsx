@@ -9,7 +9,7 @@ import DvStatusTag from "next-common/components/tags/state/dv";
 import {
   ParticipationValue,
   W3fDelegationValue,
-} from "next-common/components/referenda/dvs/common/cohortValueStyled";
+} from "next-common/components/referenda/dv/common/cohortValueStyled";
 import dayjs from "dayjs";
 import tw from "tailwind-styled-components";
 import { formatTimeDuration } from "next-common/utils/viewfuncs/formatTimeDuration";
