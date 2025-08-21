@@ -58,7 +58,7 @@ export default function ReferendaLayout({ summaryData, ...props }) {
           url: "/referenda/statistics",
         },
         {
-          value: "dvs",
+          value: "dv",
           label: (
             <DvLabel
               label="DV"
