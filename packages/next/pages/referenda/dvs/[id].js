@@ -10,6 +10,7 @@ import { usePageProps } from "next-common/context/page";
 import { isNil } from "lodash-es";
 import SwitchCountTab from "next-common/components/referenda/dvs/common/switchCountTab";
 import ReferendaDvProvider from "next-common/context/referenda/dv";
+import { to404 } from "next-common/utils/serverSideUtil";
 
 export default function CohortPage() {
   return (
@@ -48,12 +49,15 @@ export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
   const baseUrl = `/dv/cohorts/${id}`;
 
-  const [{ result: cohort }, { result: votes }, { result: referenda }] =
-    await Promise.all([
-      backendApi.fetch(baseUrl),
-      backendApi.fetch(`${baseUrl}/votes`),
-      backendApi.fetch(`${baseUrl}/referenda`),
-    ]);
+  const { result: cohort } = await backendApi.fetch(baseUrl);
+  if (isNil(cohort)) {
+    return to404();
+  }
+
+  const [{ result: votes }, { result: referenda }] = await Promise.all([
+    backendApi.fetch(`${baseUrl}/votes`),
+    backendApi.fetch(`${baseUrl}/referenda`),
+  ]);
 
   return {
     props: {

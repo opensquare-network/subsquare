@@ -21,9 +21,9 @@ export default function ReferendaWhalesPage({ title, gov2ReferendaSummary }) {
 }
 
 export const getServerSideProps = withReferendaCommonProps(async () => {
-  const { result: cohorts } = await backendApi.fetch("/dv/cohorts");
+  const { result: cohorts = [] } = await backendApi.fetch("/dv/cohorts");
   const cohortsCount = cohorts?.length || 0;
-  const activeCohort = cohorts.find((cohort) => isNil(cohort.endIndexer));
+  const activeCohort = cohorts?.find((cohort) => isNil(cohort.endIndexer));
   let cohort = null;
   let votes = [];
   let referenda = [];
