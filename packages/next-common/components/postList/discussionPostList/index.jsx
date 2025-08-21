@@ -9,17 +9,10 @@ export default function DiscussionPostList({
   titleCount = null,
   items,
   pagination,
-  titleExtra,
-  link,
 }) {
   return (
     <ListWrapper>
-      <ListTitleBar
-        titleExtra={titleExtra}
-        title="List"
-        titleCount={titleCount}
-        link={link}
-      />
+      <ListTitleBar title="List" titleCount={titleCount} />
       <MaybeEmpty items={items} type={businessCategory.discussions}>
         {items.map((data, index) => (
           <PostItem key={index} data={data} />
