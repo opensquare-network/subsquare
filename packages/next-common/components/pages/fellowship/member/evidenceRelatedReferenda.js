@@ -9,7 +9,6 @@ import { useCollectivesContext } from "next-common/context/collectives/collectiv
 import useFetch from "next-common/hooks/useFetch";
 import {
   gov2FinalState,
-  gov2State,
   gov2VotingStates,
 } from "next-common/utils/consts/state";
 import CollectivesProvider from "next-common/context/collectives/collectives";
@@ -125,7 +124,7 @@ function ReferendumVoteItem({ referendumIndex }) {
 function ReferendumVoteItemRight({ state, referendumIndex }) {
   const isVoting = gov2VotingStates.includes(state?.name);
 
-  const isFinal = [...gov2FinalState, gov2State.Executed].includes(state?.name);
+  const isFinal = gov2FinalState.includes(state?.name);
 
   if (isVoting) {
     return <ReferendumVoteButtonsArea referendumIndex={referendumIndex} />;

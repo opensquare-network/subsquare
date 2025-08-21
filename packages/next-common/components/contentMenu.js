@@ -32,6 +32,7 @@ import BountyAppendMenuItem from "next-common/components/appendants/bounty/appen
 import ReferendaAppendMenuItem from "next-common/components/appendants/referenda/appendMenuItem";
 import { useBountyAppendantsContext } from "next-common/context/bountyAppendants";
 import { useReferendaAppendantsContext } from "next-common/context/referendaAppendants";
+import { gov2FinalState } from "next-common/utils/consts/state";
 
 const DeletePopup = dynamicPopup(() => import("./deletePopup"));
 
@@ -340,6 +341,7 @@ export function PostContextMenu({ isAuthor, editable, setIsEdit }) {
   const isSimaDiscussion = post.sima;
   const canDelete =
     (editable || isAdmin) && isDiscussionPost && !isSimaDiscussion;
+  const isFinished = gov2FinalState.includes(post.state?.name);
 
   const isTreasuryBountyPost = postType === detailPageCategory.TREASURY_BOUNTY;
 
@@ -407,7 +409,7 @@ export function PostContextMenu({ isAuthor, editable, setIsEdit }) {
             setShowReportPopup={setShowReportPopup}
             setShow={setShow}
           />
-          {isOpenGovReferendumPost && (
+          {isOpenGovReferendumPost && !isFinished && (
             <>
               {cancelReferendum && (
                 <CancelReferendumMenuItem

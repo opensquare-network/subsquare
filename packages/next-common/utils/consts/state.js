@@ -21,6 +21,7 @@ export const gov2FinalState = [
   gov2State.Killed,
   gov2State.TimedOut,
   gov2State.Rejected,
+  gov2State.Executed,
 ];
 
 export const gov2VotingStates = [
