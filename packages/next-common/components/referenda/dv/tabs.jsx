@@ -59,7 +59,7 @@ export default function ReferendaDvTabs() {
   return (
     <div className="flex flex-col gap-[16px]">
       <ReferendaDvProvider>
-        <SwitchCountTab>
+        <SwitchCountTab showSwitch={activeTabValue === TABS.DELEGATES}>
           <TabsList tabs={tabsListItems} activeTabValue={activeTabValue} />
         </SwitchCountTab>
 

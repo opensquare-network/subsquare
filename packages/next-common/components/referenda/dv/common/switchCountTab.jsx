@@ -52,16 +52,20 @@ function SwitchCountTabImpl() {
   );
 }
 
-export default function SwitchCountTab({ children, className = "" }) {
+export default function SwitchCountTab({
+  children,
+  className = "",
+  showSwitch = true,
+}) {
   return (
     <div
       className={cn(
-        "flex items-center justify-between max-sm:flex-col max-sm:gap-y-3 max-sm:items-start mx-6",
+        "flex items-center justify-between max-sm:flex-col max-sm:gap-y-3 max-sm:items-start mx-6 min-h-[28px]",
         className,
       )}
     >
       {children}
-      <SwitchCountTabImpl />
+      {showSwitch && <SwitchCountTabImpl />}
     </div>
   );
 }
