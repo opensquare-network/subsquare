@@ -64,19 +64,19 @@ export function useCoretimeStatisticsSalesDataset({ initBlockHeightIndex }) {
 export function useCoretimeStatisticsPriceDataset({
   initBlockHeightIndex,
   saleStart,
-  fixedStart,
+  totalBlocksIndex,
 }) {
   const { decimals } = useChainSettings();
   const saleInfo = useCoretimeCustomizedSaleInfo();
 
   return useMemo(() => {
     const steppedBlocksRange = range(
-      saleStart,
-      fixedStart + saleStart,
-      INDEX_SIZE,
+      toIndex(saleStart) - initBlockHeightIndex,
+      totalBlocksIndex,
+      1,
     );
-
-    return steppedBlocksRange.map((blockHeight) => {
+    return steppedBlocksRange.map((item, index) => {
+      const blockHeight = saleStart + index * INDEX_SIZE;
       const price = toPrecision(
         getCoretimePriceAt(blockHeight, saleInfo),
         decimals,
@@ -85,9 +85,9 @@ export function useCoretimeStatisticsPriceDataset({
       return {
         blockHeight,
         price,
-        x: toIndex(blockHeight) - initBlockHeightIndex,
+        x: item,
         y: price,
       };
     });
-  }, [saleInfo, decimals, fixedStart, saleStart, initBlockHeightIndex]);
+  }, [saleStart, initBlockHeightIndex, totalBlocksIndex, saleInfo, decimals]);
 }
