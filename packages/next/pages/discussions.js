@@ -1,4 +1,4 @@
-import PostList from "next-common/components/postList";
+import DiscussionPostList from "next-common/components/postList/discussionPostList";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { withCommonProps } from "next-common/lib";
 import { backendApi } from "next-common/services/nextApi";
@@ -18,9 +18,7 @@ export default function DiscussionsPage({ posts }) {
 
   return (
     <DiscussionsLayout seoInfo={seoInfo} title={category}>
-      <PostList
-        category={category}
-        title="List"
+      <DiscussionPostList
         titleCount={posts.total}
         items={items}
         pagination={{
