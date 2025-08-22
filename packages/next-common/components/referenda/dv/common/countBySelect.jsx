@@ -25,7 +25,7 @@ function CountBySelectImpl({ selectClassName = "" }) {
   return (
     <div
       className={cn(
-        "flex items-center gap-x-2 text12Medium text-textSecondary max-sm:ml-6",
+        "flex items-center gap-x-2 text12Medium text-textSecondary",
         selectClassName,
       )}
     >

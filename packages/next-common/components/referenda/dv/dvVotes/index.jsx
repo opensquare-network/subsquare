@@ -13,7 +13,10 @@ import { useChainSettings } from "next-common/context/chain";
 import { sortAddresses } from "@polkadot/util-crypto";
 import DvVotesMobileList from "./mobileList";
 import DvVotesDesktopList from "./desktopList";
-import { useFilteredDvReferenda } from "next-common/context/referenda/dv";
+import {
+  useFilteredDvReferenda,
+  useFilteredDvVotes,
+} from "next-common/context/referenda/dv";
 
 const SPACE = 1;
 
@@ -33,7 +36,7 @@ export default function ReferendaDVVotes() {
 }
 
 export function ReferendaDvVotesImpl() {
-  const { votes: allVotes, cohort } = usePageProps();
+  const { cohort } = usePageProps();
   const isMobile = useIsMobile();
   const { ss58Format } = useChainSettings();
   const scrollerXRef = useRef();
@@ -41,6 +44,7 @@ export function ReferendaDvVotesImpl() {
   const [showRight, setShowRight] = useState(false);
   const { width } = useWindowSize();
   const filteredReferenda = useFilteredDvReferenda();
+  const filteredVotes = useFilteredDvVotes();
 
   const delegates = useMemo(
     () =>
@@ -52,8 +56,8 @@ export function ReferendaDvVotesImpl() {
   );
 
   const votesByReferendum = useMemo(
-    () => groupBy(allVotes, "referendumIndex"),
-    [allVotes],
+    () => groupBy(filteredVotes, "referendumIndex"),
+    [filteredVotes],
   );
 
   const referendaCols = useMemo(() => {

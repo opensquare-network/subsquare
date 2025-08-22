@@ -1,5 +1,8 @@
-import { usePageProps } from "next-common/context/page";
-import { useReferendaDvCount } from "next-common/context/referenda/dv";
+import {
+  useFilteredDvReferenda,
+  useFilteredDvVotes,
+  useReferendaDvCount,
+} from "next-common/context/referenda/dv";
 import isWin from "next-common/utils/dv/isWin";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
 import VoteByDelegate from "../voteByDelegate";
@@ -13,7 +16,8 @@ import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
 
 export default function DelegatesMobileList({ delegates }) {
-  const { votes = [], referenda = [] } = usePageProps();
+  const votes = useFilteredDvVotes();
+  const referenda = useFilteredDvReferenda();
   const count = useReferendaDvCount();
 
   return (
