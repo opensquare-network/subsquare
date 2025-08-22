@@ -8,20 +8,27 @@ import Delegates from "next-common/components/referenda/dv/delegates";
 import { backendApi } from "next-common/services/nextApi";
 import { usePageProps } from "next-common/context/page";
 import { isNil } from "lodash-es";
+import Breadcrumbs from "next-common/components/layout/DetailLayout/breadcrumbs";
 import CountBySelect from "next-common/components/referenda/dv/common/countBySelect";
 import ReferendaDvProvider from "next-common/context/referenda/dv";
 import { to404 } from "next-common/utils/serverSideUtil";
 
 export default function CohortPage() {
   return (
-    <SectionLayout breadcrumbs={<CohortBreadcrumb />} hasSidebar>
-      <div className="flex flex-col gap-y-6">
-        <ReferendaDvProvider>
+    <SectionLayout hasSidebar>
+      <ReferendaDvProvider>
+        <CountBySelect className="mx-0 mb-6" selectClassName="max-sm:ml-12">
+          <Breadcrumbs
+            className="mb-0 flex-1"
+            breadcrumbs={<CohortBreadcrumb />}
+          />
+        </CountBySelect>
+        <div className="flex flex-col gap-y-6">
           <Overview />
           <DelegatesSection />
           <ReferendaDvVotes />
-        </ReferendaDvProvider>
-      </div>
+        </div>
+      </ReferendaDvProvider>
     </SectionLayout>
   );
 }
@@ -33,13 +40,11 @@ function DelegatesSection() {
   }
   return (
     <div className="flex flex-col gap-y-4">
-      <CountBySelect className="mx-6">
-        <TabTitle
-          label="Delegates"
-          length={cohort.delegates?.length || 0}
-          disabled={false}
-        />
-      </CountBySelect>
+      <TabTitle
+        label="Delegates"
+        length={cohort.delegates?.length || 0}
+        disabled={false}
+      />
       <Delegates />
     </div>
   );

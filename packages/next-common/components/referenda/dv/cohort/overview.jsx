@@ -16,7 +16,10 @@ import { formatTimeDuration } from "next-common/utils/viewfuncs/formatTimeDurati
 import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
 import BigNumber from "bignumber.js";
-import { useReferendaDvCount } from "next-common/context/referenda/dv";
+import {
+  useFilteredDvVotes,
+  useReferendaDvCount,
+} from "next-common/context/referenda/dv";
 import { useMemo } from "react";
 
 const TenureValue = tw.span`text-textSecondary text12Medium max-sm:hidden inline-block  before:mr-1 before:text-textTertiary`;
@@ -108,7 +111,7 @@ function OverviewW3fDelegationValue({ cohort }) {
 }
 
 function OverviewParticipationValue() {
-  const { votes } = usePageProps();
+  const votes = useFilteredDvVotes();
   const count = useReferendaDvCount();
   const voteCount = useMemo(
     () => Object.values(groupBy(votes, "referendumIndex")).length,

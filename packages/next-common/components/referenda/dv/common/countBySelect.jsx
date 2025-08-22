@@ -5,7 +5,7 @@ import { usePageProps } from "next-common/context/page";
 import { isNil } from "lodash-es";
 import Select from "next-common/components/select";
 
-function CountBySelectImpl() {
+function CountBySelectImpl({ selectClassName = "" }) {
   const { countType, setCountType } = useReferendaDv();
   const { cohort } = usePageProps();
   if (isNil(cohort) || isNil(countType)) {
@@ -23,7 +23,12 @@ function CountBySelectImpl() {
     },
   ];
   return (
-    <div className="flex items-center gap-x-2 text12Medium text-textSecondary">
+    <div
+      className={cn(
+        "flex items-center gap-x-2 text12Medium text-textSecondary max-sm:ml-6",
+        selectClassName,
+      )}
+    >
       Count by
       <Select
         small
@@ -39,7 +44,8 @@ function CountBySelectImpl() {
 export default function CountBySelect({
   children,
   className = "",
-  showSwitch = true,
+  showSelect = true,
+  selectClassName = "",
 }) {
   return (
     <div
@@ -49,7 +55,7 @@ export default function CountBySelect({
       )}
     >
       {children}
-      {showSwitch && <CountBySelectImpl />}
+      {showSelect && <CountBySelectImpl selectClassName={selectClassName} />}
     </div>
   );
 }
