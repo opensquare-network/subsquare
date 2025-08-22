@@ -9,7 +9,7 @@ export const TABS = {
   COHORTS: "cohorts",
 };
 
-export default function TypeTabsList() {
+export default function ReferendaDvTabsList() {
   const { cohortsCount, cohort } = usePageProps();
   const delegatesCount = cohort?.delegateCnt || 0;
   const searchParams = useSearchParams();

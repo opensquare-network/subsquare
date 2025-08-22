@@ -1,5 +1,5 @@
 import CurrentCohorts from "./currentCohorts";
-import TypeTabsList, { TABS } from "./common/typeTabsList";
+import ReferendaDvTabsList, { TABS } from "./common/referendaDvTabsList";
 import { useSearchParams } from "next/navigation";
 import Cohorts from "./cohorts";
 
@@ -9,7 +9,7 @@ export default function ReferendaDvTabs() {
   return (
     <>
       <div className="mx-6">
-        <TypeTabsList />
+        <ReferendaDvTabsList />
       </div>
       {tab === TABS.DELEGATES && <CurrentCohorts />}
       {tab === TABS.COHORTS && <Cohorts />}

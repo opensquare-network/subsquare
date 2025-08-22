@@ -2,7 +2,7 @@ import ReferendaLayout from "next-common/components/layout/referendaLayout";
 import { withReferendaCommonProps } from "next-common/services/serverSide/referenda/common";
 import { backendApi } from "next-common/services/nextApi";
 import { isNil } from "lodash-es";
-import ReferendaDv from "next-common/components/referenda/dv/ReferendaDv";
+import ReferendaDv from "next-common/components/referenda/dv/referendaDv";
 
 export default function ReferendaWhalesPage({ title, gov2ReferendaSummary }) {
   const seoInfo = { title, desc: title };

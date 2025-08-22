@@ -1,4 +1,4 @@
-import ReferendaDvTabs from "next-common/components/referenda/dv/tabs";
+import ReferendaDvTabs from "next-common/components/referenda/dv/referendaDvTabs";
 import { TabsTitle } from "next-common/components/referenda/dv/common/styled";
 import CountBySelect from "next-common/components/referenda/dv/common/countBySelect";
 import ReferendaDvProvider from "next-common/context/referenda/dv";
@@ -28,7 +28,7 @@ export default function ReferendaDv() {
   );
 }
 
-export function OnlyShowCohortsHistory() {
+function OnlyShowCohortsHistory() {
   const { cohorts = [] } = usePageProps();
   return (
     <>
