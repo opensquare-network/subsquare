@@ -13,6 +13,7 @@ import { useChainSettings } from "next-common/context/chain";
 import { sortAddresses } from "@polkadot/util-crypto";
 import DvVotesMobileList from "./mobileList";
 import DvVotesDesktopList from "./desktopList";
+import { useFilteredDvReferenda } from "next-common/context/referenda/dv";
 
 const SPACE = 1;
 
@@ -32,13 +33,14 @@ export default function ReferendaDVVotes() {
 }
 
 export function ReferendaDvVotesImpl() {
-  const { votes: allVotes, referenda, cohort } = usePageProps();
+  const { votes: allVotes, cohort } = usePageProps();
   const isMobile = useIsMobile();
   const { ss58Format } = useChainSettings();
   const scrollerXRef = useRef();
   const [showLeft, setShowLeft] = useState(false);
   const [showRight, setShowRight] = useState(false);
   const { width } = useWindowSize();
+  const filteredReferenda = useFilteredDvReferenda();
 
   const delegates = useMemo(
     () =>
@@ -54,22 +56,20 @@ export function ReferendaDvVotesImpl() {
     [allVotes],
   );
 
-  const referendaCols = useMemo(
-    () =>
-      referenda.map((referendum) => {
-        const votes = votesByReferendum[referendum.referendumIndex];
-        const votesByDelegate = delegates.map((delegate) => [
-          delegate,
-          getVoteType(votes?.find((vote) => vote.account === delegate)),
-        ]);
+  const referendaCols = useMemo(() => {
+    return filteredReferenda.map((referendum) => {
+      const votes = votesByReferendum[referendum.referendumIndex];
+      const votesByDelegate = delegates.map((delegate) => [
+        delegate,
+        getVoteType(votes?.find((vote) => vote.account === delegate)),
+      ]);
 
-        return {
-          ...referendum,
-          votesByDelegate,
-        };
-      }),
-    [referenda, votesByReferendum, delegates],
-  );
+      return {
+        ...referendum,
+        votesByDelegate,
+      };
+    });
+  }, [filteredReferenda, votesByReferendum, delegates]);
 
   const handleGradientBlanketVisible = useCallback((target) => {
     const { scrollLeft, scrollWidth, clientWidth } = target;

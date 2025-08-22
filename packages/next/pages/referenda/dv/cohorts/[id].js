@@ -19,8 +19,8 @@ export default function CohortPage() {
         <ReferendaDvProvider>
           <Overview />
           <DelegatesSection />
+          <ReferendaDvVotes />
         </ReferendaDvProvider>
-        <ReferendaDvVotes />
       </div>
     </SectionLayout>
   );

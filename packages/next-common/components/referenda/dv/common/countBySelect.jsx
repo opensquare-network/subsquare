@@ -24,7 +24,7 @@ function CountBySelectImpl() {
   ];
   return (
     <div className="flex items-center gap-x-2 text12Medium text-textSecondary">
-      Count By
+      Count by
       <Select
         small
         value={countType}
