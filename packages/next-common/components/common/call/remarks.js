@@ -50,29 +50,23 @@ function extractRemarks(call = {}) {
 
 export default function extractRemarkMetaFields(call = {}) {
   let remarks = extractRemarks(call);
-  let data = [];
-  for (let i = 0; i < remarks.length; i++) {
-    let key = "Remark";
-    if (remarks.length > 1) {
-      key = `${key} ${i + 1}`;
-    }
+  const multipleRemark = remarks.length > 1;
 
-    data.push([
+  return remarks?.map((item, index) => {
+    const key = `Remark ${multipleRemark ? index + 1 : ""}`;
+
+    return [
+      key,
       <div
         key={key}
         className={cn("flex overflow-x-auto", "max-sm:flex-col max-sm:gap-2")}
       >
-        <div className="text-textSecondary text14Medium w-40 min-w-[160px]">
-          Remark
-        </div>
         <RemarkWrapper>
           <ToggleCollapsed collapsedHeight={300} moreLessHeightThreshold={800}>
-            <MarkdownPreviewer content={remarks[i] || ""} />
+            <MarkdownPreviewer content={item || ""} />
           </ToggleCollapsed>
         </RemarkWrapper>
       </div>,
-    ]);
-  }
-
-  return data;
+    ];
+  });
 }

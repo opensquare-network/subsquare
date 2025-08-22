@@ -16,15 +16,6 @@ import {
   isKusamaChain,
   isPolkadotChain,
 } from "next-common/utils/chain";
-import { convertProposalForTableView } from "next-common/components/proposal";
-
-const getCallRemarks = (call, chain) => {
-  return (
-    convertProposalForTableView(call, chain).args?.calls?.filter(
-      (item) => item.method === "remark",
-    ) || []
-  );
-};
 
 const EvmCall = dynamic(() => import("./evmCallDecode"), {
   ssr: false,
@@ -102,19 +93,6 @@ export default function Gov2ReferendumCall() {
       ...extractFellowshipApprove(proposal?.call || inlineCall?.call),
     ],
   );
-
-  const remarkList = getCallRemarks(callData, chain);
-  if (remarkList.length > 1) {
-    remarkList.map((item, index) => {
-      const key = `Remark${index + 1}`;
-      data.push([
-        key,
-        <div key={key} className="text14Medium">
-          {item.args.remark}
-        </div>,
-      ]);
-    });
-  }
 
   if (isHydradx(chain) && callData) {
     data.push(<EvmCall key="evm-call" call={callData} />);
