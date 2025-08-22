@@ -1,71 +1,18 @@
-import TabsList from "next-common/components/tabs/list";
-import { useMemo } from "react";
 import CurrentCohorts from "./currentCohorts";
-import CohortsHistory from "./cohortsHistory";
-import { TabTitle } from "./common/delegatesTabTitle";
-import { usePageProps } from "next-common/context/page";
+import TypeTabsList, { TABS } from "./common/typeTabsList";
 import { useSearchParams } from "next/navigation";
-import SwitchCountTab from "./common/switchCountTab";
-import ReferendaDvProvider from "next-common/context/referenda/dv";
-
-const TABS = {
-  DELEGATES: "delegates",
-  COHORTS_HISTORY: "history",
-};
+import Cohorts from "./cohorts";
 
 export default function ReferendaDvTabs() {
-  const { cohortsCount } = usePageProps();
-  const { cohort } = usePageProps();
   const searchParams = useSearchParams();
-
-  const tab = searchParams.get("tab");
-  const activeTabValue = tab || TABS.DELEGATES;
-
-  const delegatesCount = cohort?.delegateCnt || 0;
-
-  const tabsListItems = useMemo(() => {
-    return [
-      {
-        value: TABS.DELEGATES,
-        url: "/referenda/dv",
-        shallow: true,
-        label() {
-          return (
-            <TabTitle
-              label="Delegates"
-              length={delegatesCount}
-              disabled={activeTabValue !== TABS.DELEGATES}
-            />
-          );
-        },
-      },
-      {
-        value: TABS.COHORTS_HISTORY,
-        url: "/referenda/dv?tab=history",
-        shallow: true,
-        label() {
-          return (
-            <TabTitle
-              label="Cohorts History"
-              length={cohortsCount}
-              disabled={activeTabValue !== TABS.COHORTS_HISTORY}
-            />
-          );
-        },
-      },
-    ];
-  }, [activeTabValue, cohortsCount, delegatesCount]);
-
+  const tab = searchParams.get("tab") || TABS.DELEGATES;
   return (
-    <div className="flex flex-col gap-[16px]">
-      <ReferendaDvProvider>
-        <SwitchCountTab showSwitch={activeTabValue === TABS.DELEGATES}>
-          <TabsList tabs={tabsListItems} activeTabValue={activeTabValue} />
-        </SwitchCountTab>
-
-        {activeTabValue === TABS.DELEGATES && <CurrentCohorts />}
-      </ReferendaDvProvider>
-      {activeTabValue === TABS.COHORTS_HISTORY && <CohortsHistory />}
-    </div>
+    <>
+      <div className="mx-6">
+        <TypeTabsList />
+      </div>
+      {tab === TABS.DELEGATES && <CurrentCohorts />}
+      {tab === TABS.COHORTS && <Cohorts />}
+    </>
   );
 }

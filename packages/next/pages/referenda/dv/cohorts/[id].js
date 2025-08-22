@@ -8,7 +8,7 @@ import Delegates from "next-common/components/referenda/dv/delegates";
 import { backendApi } from "next-common/services/nextApi";
 import { usePageProps } from "next-common/context/page";
 import { isNil } from "lodash-es";
-import SwitchCountTab from "next-common/components/referenda/dv/common/switchCountTab";
+import CountBySelect from "next-common/components/referenda/dv/common/countBySelect";
 import ReferendaDvProvider from "next-common/context/referenda/dv";
 import { to404 } from "next-common/utils/serverSideUtil";
 
@@ -33,13 +33,13 @@ function DelegatesSection() {
   }
   return (
     <div className="flex flex-col gap-y-4">
-      <SwitchCountTab className="mx-6">
+      <CountBySelect className="mx-6">
         <TabTitle
           label="Delegates"
           length={cohort.delegates?.length || 0}
           disabled={false}
         />
-      </SwitchCountTab>
+      </CountBySelect>
       <Delegates />
     </div>
   );

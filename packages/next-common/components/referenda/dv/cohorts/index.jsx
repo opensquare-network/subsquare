@@ -1,6 +1,4 @@
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
-import Pagination from "next-common/components/pagination";
-import { defaultPageSize } from "next-common/utils/constants";
 import WindowSizeProvider from "next-common/context/windowSize";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 import { usePageProps } from "next-common/context/page";
@@ -16,14 +14,13 @@ export function CohortsHistoryImpl({ dataRows = [] }) {
   return <CohortsHistoryDesktopList dataRows={dataRows} />;
 }
 
-export default function CohortsHistory() {
+export default function Cohorts() {
   const { cohorts = [] } = usePageProps();
 
   return (
     <WindowSizeProvider>
       <NeutralPanel className="p-6">
         <CohortsHistoryImpl dataRows={cohorts} />
-        <Pagination total={1} pageSize={defaultPageSize} current={1} />
       </NeutralPanel>
     </WindowSizeProvider>
   );

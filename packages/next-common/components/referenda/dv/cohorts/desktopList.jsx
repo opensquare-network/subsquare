@@ -46,7 +46,7 @@ export default function CohortsHistoryDesktopList({ dataRows = [] }) {
     <DataList
       columns={columns}
       rows={rows}
-      noDataText="No cohorts history"
+      noDataText="No cohorts"
       bordered={false}
     />
   );
