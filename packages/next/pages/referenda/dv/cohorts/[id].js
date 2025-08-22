@@ -17,7 +17,10 @@ export default function CohortPage() {
   return (
     <SectionLayout hasSidebar>
       <ReferendaDvProvider>
-        <CountBySelect className="mx-0 mb-4" selectClassName="max-sm:ml-12">
+        <CountBySelect
+          className="mx-0 mb-4"
+          selectClassName="max-sm:ml-12 mr-6"
+        >
           <Breadcrumbs
             className="mb-0 flex-1"
             breadcrumbs={<CohortBreadcrumb />}
