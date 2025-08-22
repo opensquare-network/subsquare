@@ -17,7 +17,7 @@ export default function ReferendaDv() {
 
   return (
     <ReferendaDvProvider>
-      <div className="gap-y-6 flex flex-col">
+      <div className="gap-y-4 flex flex-col">
         <CountBySelect>
           <TabsTitle className="mx-0">Decentralized Voices</TabsTitle>
         </CountBySelect>

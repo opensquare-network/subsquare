@@ -17,13 +17,13 @@ export default function CohortPage() {
   return (
     <SectionLayout hasSidebar>
       <ReferendaDvProvider>
-        <CountBySelect className="mx-0 mb-6" selectClassName="max-sm:ml-12">
+        <CountBySelect className="mx-0 mb-4" selectClassName="max-sm:ml-12">
           <Breadcrumbs
             className="mb-0 flex-1"
             breadcrumbs={<CohortBreadcrumb />}
           />
         </CountBySelect>
-        <div className="flex flex-col gap-y-6">
+        <div className="flex flex-col gap-y-4">
           <Overview />
           <DelegatesSection />
           <ReferendaDvVotes />
@@ -44,6 +44,7 @@ function DelegatesSection() {
         label="Delegates"
         length={cohort.delegates?.length || 0}
         disabled={false}
+        className="mx-6"
       />
       <Delegates />
     </div>
