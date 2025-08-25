@@ -1,12 +1,12 @@
 import { cn } from "next-common/utils";
 
-export function TabTitle({ label, length, disabled = true }) {
+export function TabTitle({ label, length, active = true, className = "" }) {
   return (
-    <div className="flex gap-[8px]" role="button">
+    <div className={cn("flex gap-[8px]", className)} role="button">
       <div
         className={cn(
           "text16Bold",
-          disabled ? "text-textTertiary" : "text-textPrimary",
+          active ? "text-textPrimary" : "text-textTertiary",
         )}
       >
         {label}
