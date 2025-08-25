@@ -14,7 +14,7 @@ export function useCheckApiConnected() {
 
 export function CheckApiConnectedWrapper({ children, isConnected = true }) {
   if (!isConnected) {
-    return <Tooltip content="Connecting RPC">{children}</Tooltip>;
+    return <Tooltip content="RPC is not connected">{children}</Tooltip>;
   }
 
   return children;
