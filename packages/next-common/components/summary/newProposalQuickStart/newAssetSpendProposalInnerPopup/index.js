@@ -17,6 +17,7 @@ import { useSubmissionDeposit } from "../common/useSubmissionDeposit";
 import useFellowshipCoreMembersWithRank from "next-common/hooks/fellowship/core/useFellowshipCoreMembersWithRank";
 import Tooltip from "next-common/components/tooltip";
 import { useAssetHubNativeTreasuryNotePreimageTx } from "next-common/components/preImages/createPreimagePopup/templates/newFellowshipTreasuryProposalPopup";
+import { find } from "lodash-es";
 
 function CreateProposalSubmitButtonWithRankCheck({
   trackId,
@@ -25,7 +26,7 @@ function CreateProposalSubmitButtonWithRankCheck({
   encodedLength,
   notePreimageTx,
 }) {
-  const { members } = useFellowshipCoreMembersWithRank();
+  const { members = [] } = useFellowshipCoreMembersWithRank();
   const signerAccount = useSignerAccount();
   const realAddress = signerAccount?.realAddress;
   const me = find(members, { address: realAddress });
