@@ -82,7 +82,7 @@ export function TenureValue({ row }) {
   return (
     <Tooltip content={tooltipContent}>
       <span className="text-textTertiary">
-        {dayjs(startIndexer?.blockTime).format("YYYY-MM-DD")}
+        {dayjs(startIndexer?.blockTime).format("YYYY-MM-DD HH:mm:ss")}
         {endTimeDisplay}
       </span>
     </Tooltip>
