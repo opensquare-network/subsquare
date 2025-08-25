@@ -14,7 +14,7 @@ import { InfoMessage } from "next-common/components/setting/styled";
 import useBalanceField from "next-common/components/preImages/createPreimagePopup/fields/useBalanceField";
 import { useDefaultTrackId } from "../../newProposalPopup/useTrackDetail";
 import { useSubmissionDeposit } from "../common/useSubmissionDeposit";
-import useFellowshipCoreMembersWithRank from "next-common/hooks/fellowship/core/useFellowshipCoreMembersWithRank";
+import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
 import Tooltip from "next-common/components/tooltip";
 import { useAssetHubNativeTreasuryNotePreimageTx } from "next-common/components/preImages/createPreimagePopup/templates/newFellowshipTreasuryProposalPopup";
 import { find } from "lodash-es";
@@ -26,7 +26,7 @@ function CreateProposalSubmitButtonWithRankCheck({
   encodedLength,
   notePreimageTx,
 }) {
-  const { members = [] } = useFellowshipCoreMembersWithRank();
+  const { members = [] } = useFellowshipCollectiveMembers();
   const signerAccount = useSignerAccount();
   const realAddress = signerAccount?.realAddress;
   const me = find(members, { address: realAddress });
