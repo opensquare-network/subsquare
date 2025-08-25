@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Post from "./post";
 import Pagination from "next-common/components/pagination/index.js";
-import { EmptyList } from "../emptyList";
+import MaybeEmpty from "next-common/components/emptyList";
 import ListTitleBar from "../listTitleBar";
 
 const Wrapper = styled.div`
@@ -36,18 +36,12 @@ export default function PostList({
 
       {summary}
 
-      {items?.length > 0 ? (
-        items.map((item, index) => (
-          <Post
-            key={index}
-            data={item}
-            href={item.detailLink}
-            type={category}
-          />
-        ))
-      ) : (
-        <EmptyList type={category} />
-      )}
+      <MaybeEmpty items={items} type={category}>
+        {items.map((item, index) => (
+          <Post key={index} data={item} type={category} />
+        ))}
+      </MaybeEmpty>
+
       {pagination && <Pagination {...pagination} />}
     </Wrapper>
   );

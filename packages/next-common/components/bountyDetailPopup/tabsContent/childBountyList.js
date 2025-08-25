@@ -9,7 +9,7 @@ import ListPostTitle from "next-common/components/postList/postTitle";
 import { toTreasuryChildBountyListItem } from "next-common/utils/viewfuncs";
 import Tag from "next-common/components/tags/state/tag";
 import businessCategory from "next-common/utils/consts/business/category";
-import { PostValueTitle } from "next-common/components/postList/post";
+import { PostItemTitleValue } from "next-common/components/postList/common";
 
 let pageSize = 25;
 
@@ -69,11 +69,7 @@ function ChildBountyList({ childBounties, bountyIndex, className = "" }) {
         href={formatItem.detailLink}
       />,
       <div key={index + "value"} className="flex justify-end">
-        <PostValueTitle
-          className="items-end"
-          data={formatItem}
-          type={businessCategory.treasuryChildBounties}
-        />
+        <PostItemTitleValue data={formatItem} />
       </div>,
       <Tag
         key={index + "status"}
