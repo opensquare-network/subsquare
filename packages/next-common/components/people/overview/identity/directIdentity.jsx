@@ -1,4 +1,3 @@
-import tw from "tailwind-styled-components";
 import RightWrapper from "next-common/components/rightWraper";
 import PrimaryButton from "next-common/lib/button/primary";
 import { Account } from "next-common/components/overview/accountInfo/accountInfoPanel";
@@ -23,6 +22,9 @@ import { clearCachedIdentitys } from "next-common/services/identity";
 import { useChain } from "next-common/context/chain";
 import { useExtensionAccounts } from "next-common/components/popupWithSigner/context";
 import getChainSettings from "next-common/utils/consts/settings";
+import IdentityPropList, {
+  SubIdentityDisplay,
+} from "next-common/components/people/overview/identity/identityPropList";
 
 const SetIdentityPopup = dynamicPopup(
   () => import("next-common/components/setIdentityPopup"),
@@ -154,62 +156,11 @@ export function DirectIdentity({ subMyIdentityInfo }) {
         <SetIdentityPopup onClose={() => setShowSetIdentityPopup(false)} />
       )}
       <Divider className="my-4" />
-      <PropList subMyIdentityInfo={subMyIdentityInfo} />
-      {isSubIdentity && (
-        <>
-          <Divider className="my-4" />
-          <PropListWrapper className="space-y-2 ml-14">
-            <div className="flex">
-              <PropListLabel>Parent</PropListLabel>
-              <PropListValue>
-                <AddressUser
-                  className="ml-1.5"
-                  add={parent}
-                  showAvatar={false}
-                />
-              </PropListValue>
-            </div>
-          </PropListWrapper>
-          <Divider className="my-4" />
-        </>
-      )}
+      <IdentityPropList identityInfo={subMyIdentityInfo} />
+      <SubIdentityDisplay
+        isSubIdentity={isSubIdentity}
+        parentAddress={parent}
+      />
     </>
-  );
-}
-
-const PropListWrapper = tw.div`
-space-y-2 ml-14
-`;
-
-const PropListLabel = tw.div`
-text14Medium text-textTertiary w-60
-`;
-
-const PropListValue = tw.div`
-text14Medium text-textPrimary
-`;
-
-function PropList({ subMyIdentityInfo }) {
-  const list = [
-    { label: "Display Name", valueKey: "display" },
-    { label: "Legal Name", valueKey: "legal" },
-    { label: "Email", valueKey: "email" },
-    { label: "Website", valueKey: "web" },
-    { label: "Twitter", valueKey: "twitter" },
-    { label: "Discord", valueKey: "discord" },
-    { label: "Matrix Name", valueKey: "matrix" },
-    { label: "Github Name", valueKey: "github" },
-  ];
-  return (
-    <PropListWrapper className="space-y-2 ml-14">
-      {list.map((item) => (
-        <div key={item.label} className="flex">
-          <PropListLabel>{item.label}</PropListLabel>
-          <PropListValue>
-            {subMyIdentityInfo[item.valueKey] ?? "-"}
-          </PropListValue>
-        </div>
-      ))}
-    </PropListWrapper>
   );
 }

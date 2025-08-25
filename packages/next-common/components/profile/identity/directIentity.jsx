@@ -1,12 +1,12 @@
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
-import { useIdentityOf } from "next-common/hooks/people/useSubMyIdentityInfo";
+import { useIdentityOf } from "next-common/hooks/identity/useIdentityOf";
 import { usePeopleApi } from "next-common/context/people/api";
+import IdentityPropList from "next-common/components/people/overview/identity/identityPropList";
 
 export default function DirectIdentity() {
   const api = usePeopleApi();
   const address = useProfileAddress();
   const { info, judgements, isLoading } = useIdentityOf(api, address);
-  console.log(api, info, judgements, isLoading, address);
 
-  return <div>DirectIdentity</div>;
+  return <IdentityPropList subMyIdentityInfo={info} isLoading={isLoading} />;
 }
