@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+# 5.3.1
+
+Date:
+2025-08-25. [Code diff](https://github.com/opensquare-network/subsquare/compare/b24f98fefd32e87608c3b4a1c481bbbf8d3129b0...ed81cd8a08c3c527b396203a7e14e994a69d898c).
+
+- Show a votes bar on nested and flattened votes popup to better compare votes impact.
+- Fix identity name display and not change line for long name in some cases.
+- Improve the prompt scroll on the overview page account panel. Show 2 prompts at the same time if there are more than 3
+  ones.
+- Fellowship:
+    - Fix pagination on fellowship salary list pages.
+    - Fix a bug that members cannot submit referenda by quick start templates.
+    - Disable referenda submission button when RPC not connected and show this tooltip to members.
+    - Fix a bug that login popup shows automatically.
+    - Change core tab on fellowship profile page to membership.
+- Not show the cancel and kill referenda menu if a referendum voting period is finished on the referendum detail page.
+- Update assethub foreign assets menu icon.
+- Fix coretime chart fixed price phase line.
+- Show the 404 component on invalid coretime sale page instead of redirecting users to the 404 page.
+- Refactor various post list components including discussion post list, financial council motion list to reduce
+  coupling.
+- Upgrade dependencies and style fixes.
+
 # 5.3.0
 
 Date:
