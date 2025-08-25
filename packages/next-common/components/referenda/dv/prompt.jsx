@@ -16,8 +16,11 @@ export default function Prompt() {
     <BillBoardPanel
       icon={<MenuHorn className="[&_path]:fill-theme500" />}
       items={[
-        <span key="learn" className="flex items-center gap-1">
-          Click{" "}
+        <span
+          key="learn"
+          className="flex items-center gap-x-2 gap-y-1 flex-wrap"
+        >
+          <span>Click</span>
           <a
             className="text-theme500"
             href="https://wiki.polkadot.com/general/decentralized-voices/"
@@ -26,7 +29,7 @@ export default function Prompt() {
           >
             here
           </a>{" "}
-          to learn about decentralized voices
+          <span>to learn about decentralized voices</span>
         </span>,
         <span key="latest" className="text14Medium">
           The latest issue of coordination is {cohorts?.length},{" "}

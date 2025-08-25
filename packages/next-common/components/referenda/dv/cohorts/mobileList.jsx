@@ -9,6 +9,7 @@ import Descriptions from "next-common/components/Descriptions";
 import dayjs from "dayjs";
 import { Divider } from "../../trackPanel/lineItem";
 import { usePageProps } from "next-common/context/page";
+import DelegateCol from "./delegateCol";
 
 export default function CohortsHistoryMobileList() {
   const { cohorts = [] } = usePageProps();
@@ -54,7 +55,7 @@ export default function CohortsHistoryMobileList() {
               : null,
             {
               label: "Delegates",
-              value: row.delegateCnt,
+              value: <DelegateCol row={row} />,
             },
             {
               label: "W3F Delegation",

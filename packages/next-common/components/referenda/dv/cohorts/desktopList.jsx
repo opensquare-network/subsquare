@@ -6,6 +6,7 @@ import {
   W3fDelegationValue,
 } from "../common/cohortValueStyled";
 import { isNil } from "lodash-es";
+import DelegateCol from "./delegateCol";
 
 const columns = [
   {
@@ -37,11 +38,12 @@ export default function CohortsHistoryDesktopList({ dataRows = [] }) {
   const rows = dataRows.map((row) => [
     <span key="index">{row.id}</span>,
     <TenureValue key="tenure" row={row} />,
-    <span key="delegates">{row.delegateCnt}</span>,
+    <DelegateCol key="delegates" row={row} />,
     <W3fDelegationValue key="w3fDelegation" value={row.delegation} />,
     <StatusValue key="status" isClosed={!isNil(row.endIndexer)} />,
     <DetailAction key="action" row={row} />,
   ]);
+
   return (
     <DataList
       columns={columns}
