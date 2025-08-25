@@ -87,7 +87,7 @@ export default function Gov2ReferendumCall() {
   }
   data.push(
     ...[
-      ...extractRemarkMetaFields(proposal?.call || inlineCall?.call),
+      ...extractRemarkMetaFields(onchainData.remarks ?? []),
       ...extractWhitelistCallHash(whitelistCallHashes),
       ...extractFellowshipPromote(proposal?.call || inlineCall?.call),
       ...extractFellowshipApprove(proposal?.call || inlineCall?.call),
