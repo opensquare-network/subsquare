@@ -5,7 +5,7 @@ import ProfileMultisigs from "../multisigs";
 import ProfileDelegation from "../delegation";
 import ProfileDeposits from "../deposits";
 import ProfileTransfers from "../transfers";
-import ProfileIdentityTimeline from "../identityTimeline";
+import ProfileIdentity from "../identity";
 import ProfileAssets from "../assets";
 import { usePathname } from "next/navigation";
 import { usePageProps } from "next-common/context/page";
@@ -31,7 +31,7 @@ export default function useProfileTabContent() {
   } else if (pathname.startsWith(`/user/${maybeEvmAddress}/transfers`)) {
     return <ProfileTransfers />;
   } else if (pathname.startsWith(`/user/${maybeEvmAddress}/identity`)) {
-    return <ProfileIdentityTimeline />;
+    return <ProfileIdentity />;
   } else if (pathname.startsWith(`/user/${maybeEvmAddress}/assets`)) {
     return <ProfileAssets />;
   } else if (pathname.startsWith(`/user/${maybeEvmAddress}/fellowship`)) {
