@@ -13,6 +13,7 @@ function getWinRateColorClass(percent) {
 export default function WinRate({ winCount, voteCount }) {
   const percent = voteCount ? (winCount / voteCount) * 100 : 0;
   const winRate = percent.toFixed(2);
+
   return (
     <Tooltip content={`Won/Participated: ${winCount}/${voteCount}`}>
       <span className={getWinRateColorClass(percent)}>{winRate}%</span>

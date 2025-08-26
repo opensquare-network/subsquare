@@ -64,6 +64,7 @@ export default function DelegatesDesktopList({ delegates }) {
       <WinRate key="winRate" winCount={winCount} voteCount={voteCount} />,
     ];
   });
+
   return (
     <NeutralPanel className="p-6">
       <DataList

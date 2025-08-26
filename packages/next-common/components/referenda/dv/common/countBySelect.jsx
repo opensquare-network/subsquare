@@ -6,6 +6,17 @@ import { isNil } from "lodash-es";
 import Select from "next-common/components/select";
 import { DV_DATA_TYPE } from "next-common/context/referenda/dv";
 
+const switchTabs = [
+  {
+    value: DV_DATA_TYPE.TRACK_REFERENDA,
+    label: <span role="button">Only DV tracks referenda</span>,
+  },
+  {
+    value: DV_DATA_TYPE.ALL_REFERNDA,
+    label: <span role="button">All referenda</span>,
+  },
+];
+
 function CountBySelectImpl({ selectClassName = "" }) {
   const { countType, setCountType } = useDvReferenda();
   const { cohort } = usePageProps();
@@ -13,16 +24,6 @@ function CountBySelectImpl({ selectClassName = "" }) {
     return null;
   }
 
-  const switchTabs = [
-    {
-      value: DV_DATA_TYPE.TRACK_REFERENDA,
-      label: <span role="button">Only DV tracks referenda</span>,
-    },
-    {
-      value: DV_DATA_TYPE.ALL_REFERNDA,
-      label: <span role="button">All referenda</span>,
-    },
-  ];
   return (
     <div
       className={cn(

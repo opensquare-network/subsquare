@@ -3,6 +3,7 @@ import { VOTE_TYPE } from "next-common/utils/dv/voteType";
 
 export default function VoteStatus({ status }) {
   let icon = null;
+
   if (status === VOTE_TYPE.NoVote) {
     icon = <span className="w-2 h-[2px] rounded-[2px] bg-neutral500"></span>;
   } else {
@@ -16,6 +17,7 @@ export default function VoteStatus({ status }) {
       ></span>
     );
   }
+
   return (
     <span className="inline-flex w-5 h-5 justify-center items-center">
       {icon}
