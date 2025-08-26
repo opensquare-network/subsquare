@@ -25,7 +25,7 @@ function NewTag() {
   );
 }
 
-export function DVsLabel({ label, active }) {
+export function DvLabel({ label, active }) {
   return (
     <TabTitle active={active}>
       {label}
