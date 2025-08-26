@@ -12,7 +12,7 @@ export default function DecentralizedVoices() {
   const { cohort } = usePageProps();
 
   if (isNil(cohort)) {
-    return <OnlyShowCohortsHistory />;
+    return <OnlyShowCohortList />;
   }
 
   return (
@@ -28,7 +28,7 @@ export default function DecentralizedVoices() {
   );
 }
 
-function OnlyShowCohortsHistory() {
+function OnlyShowCohortList() {
   const { cohorts = [] } = usePageProps();
   return (
     <>
