@@ -13,6 +13,7 @@ import {
 } from "next-common/components/profile/votingHistory/common";
 import PalletTabs from "next-common/components/profile/delegation/palletTabs";
 import getChainSettings from "next-common/utils/consts/settings";
+import NoData from "next-common/components/noData";
 
 function Content() {
   const selectedTabId = useModuleTab();
@@ -25,13 +26,13 @@ function Content() {
     return <DemocracyStats />;
   }
 
-  return null;
+  return <NoData text={`No current ${selectedTabId?.toLowerCase()} data`} />;
 }
 
-export default function DelegationStatsPage() {
+export default function DelegationStatsPage({ defaultType }) {
   return (
     <DelegationLayout>
-      <PalletTabs shallow={false}>
+      <PalletTabs defaultTab={defaultType} shallow={false}>
         <div className="flex justify-between mx-[24px] max-sm:flex-col gap-[12px]">
           <span className="text16Bold text-textPrimary">
             Delegation Statistics
@@ -53,7 +54,10 @@ export const getServerSideProps = withCommonProps(async (ctx) => {
 
   const tracksProps = await fetchOpenGovTracksProps();
 
-  if (type === Democracy || (!type && defaultType === Democracy)) {
+  if (
+    type === Democracy.toLowerCase() ||
+    (!type && defaultType === Democracy)
+  ) {
     const [
       { result: delegatee },
       { result: delegators },
@@ -72,13 +76,17 @@ export const getServerSideProps = withCommonProps(async (ctx) => {
 
     return {
       props: {
+        defaultType,
         delegatee: delegatee ?? EmptyList,
         delegators: delegators ?? EmptyList,
         democracySummary: democracySummary ?? {},
         ...tracksProps,
       },
     };
-  } else if (type === Referenda || (!type && defaultType === Referenda)) {
+  } else if (
+    type === Referenda.toLowerCase() ||
+    (!type && defaultType === Referenda)
+  ) {
     const [
       { result: tracksStats },
       { result: delegatee },
@@ -94,6 +102,7 @@ export const getServerSideProps = withCommonProps(async (ctx) => {
 
     return {
       props: {
+        defaultType,
         tracksStats: tracksStats ?? [],
         delegatee: delegatee ?? EmptyList,
         tracksReferendaSummary: tracksReferendaSummary ?? [],
@@ -103,6 +112,7 @@ export const getServerSideProps = withCommonProps(async (ctx) => {
   } else {
     return {
       props: {
+        defaultType: type,
         ...tracksProps,
       },
     };
