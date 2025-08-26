@@ -5,15 +5,15 @@ export const AllReferenda = "referenda";
 export const TrackReferenda = "track";
 
 const DEFAULT_COUNT_TYPE = TrackReferenda;
-const ReferendaDvContext = createContext();
+const DvReferendaContext = createContext();
 
 export default function DvDataTypeProvider({ children }) {
   const [countType, setCountType] = useState(DEFAULT_COUNT_TYPE);
 
   return (
-    <ReferendaDvContext.Provider value={{ countType, setCountType }}>
+    <DvReferendaContext.Provider value={{ countType, setCountType }}>
       {children}
-    </ReferendaDvContext.Provider>
+    </DvReferendaContext.Provider>
   );
 }
 
@@ -34,7 +34,7 @@ export function useDvReferendaCount() {
 }
 
 export function useDvReferenda() {
-  return useContext(ReferendaDvContext) || {};
+  return useContext(DvReferendaContext) || {};
 }
 
 export function useFilteredDvReferenda() {
