@@ -8,5 +8,13 @@ export default function DirectIdentity() {
   const address = useProfileAddress();
   const { info, judgements, isLoading } = useIdentityOf(api, address);
 
-  return <IdentityPropList subMyIdentityInfo={info} isLoading={isLoading} />;
+  console.log(judgements);
+
+  return (
+    <IdentityPropList
+      className="ml-0"
+      identityInfo={info}
+      isLoading={isLoading}
+    />
+  );
 }
