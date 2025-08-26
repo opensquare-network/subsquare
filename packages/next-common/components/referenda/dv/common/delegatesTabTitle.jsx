@@ -2,7 +2,7 @@ import { cn } from "next-common/utils";
 
 export function TabTitle({ label, length, active = true, className = "" }) {
   return (
-    <div className={cn("flex gap-[8px]", className)} role="button">
+    <div className={cn("flex gap-[8px]", className)}>
       <div
         className={cn(
           "text16Bold",
