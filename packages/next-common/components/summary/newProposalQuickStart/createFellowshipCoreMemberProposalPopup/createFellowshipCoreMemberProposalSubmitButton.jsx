@@ -50,7 +50,6 @@ export default function CreateFellowshipCoreMemberProposalSubmitButton({
     >
       <TxSubmissionButton
         disabled={buttonDisabled}
-        title="Create Preimage"
         getTxFunc={getTxFunc}
         onInBlock={({ events }) => {
           const eventData = getEventData(events, referendaPallet, "Submitted");
