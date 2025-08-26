@@ -12,7 +12,7 @@ const switchTabs = [
     label: <span role="button">Only DV tracks referenda</span>,
   },
   {
-    value: DV_DATA_TYPE.ALL_REFERNDA,
+    value: DV_DATA_TYPE.ALL_REFERENDA,
     label: <span role="button">All referenda</span>,
   },
 ];
