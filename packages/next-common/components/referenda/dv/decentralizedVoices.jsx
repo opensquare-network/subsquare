@@ -2,13 +2,13 @@ import ReferendaDvTabs from "next-common/components/referenda/dv/referendaDvTabs
 import { TabsTitle } from "next-common/components/referenda/dv/common/styled";
 import CountBySelect from "next-common/components/referenda/dv/common/countBySelect";
 import DvDataTypeProvider from "next-common/context/referenda/dv";
-import Prompt from "next-common/components/referenda/dv/prompt";
+import DvInfoPanel from "next-common/components/referenda/dv/dvInfoPanel";
 import { isNil } from "lodash-es";
 import { usePageProps } from "next-common/context/page";
 import Cohorts from "./cohorts";
 import { TabTitle } from "./common/delegatesTabTitle";
 
-export default function ReferendaDv() {
+export default function DecentralizedVoices() {
   const { cohort } = usePageProps();
 
   if (isNil(cohort)) {
@@ -21,7 +21,7 @@ export default function ReferendaDv() {
         <CountBySelect>
           <TabsTitle className="mx-0">Decentralized Voices</TabsTitle>
         </CountBySelect>
-        <Prompt />
+        <DvInfoPanel />
         <ReferendaDvTabs />
       </div>
     </DvDataTypeProvider>

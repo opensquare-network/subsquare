@@ -7,7 +7,7 @@ import { cn } from "next-common/utils";
 import { isKusamaChain, isPolkadotChain } from "next-common/utils/chain";
 import Link from "next/link";
 
-export default function Prompt() {
+export default function DvInfoPanel() {
   const { cohort, cohorts } = usePageProps();
   const chain = useChain();
 

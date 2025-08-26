@@ -4,7 +4,7 @@ import { cn } from "next-common/utils";
 import { usePageProps } from "next-common/context/page";
 import { isNil } from "lodash-es";
 import Select from "next-common/components/select";
-import { TrackReferenda, AllReferenda } from "next-common/context/referenda/dv";
+import { DV_DATA_TYPE } from "next-common/context/referenda/dv";
 
 function CountBySelectImpl({ selectClassName = "" }) {
   const { countType, setCountType } = useDvReferenda();
@@ -15,11 +15,11 @@ function CountBySelectImpl({ selectClassName = "" }) {
 
   const switchTabs = [
     {
-      value: TrackReferenda,
+      value: DV_DATA_TYPE.TRACK_REFERENDA,
       label: <span role="button">Only DV tracks referenda</span>,
     },
     {
-      value: AllReferenda,
+      value: DV_DATA_TYPE.ALL_REFERNDA,
       label: <span role="button">All referenda</span>,
     },
   ];
@@ -45,7 +45,6 @@ function CountBySelectImpl({ selectClassName = "" }) {
 export default function CountBySelect({
   children,
   className = "",
-  showSelect = true,
   selectClassName = "",
 }) {
   return (
@@ -56,7 +55,7 @@ export default function CountBySelect({
       )}
     >
       {children}
-      {showSelect && <CountBySelectImpl selectClassName={selectClassName} />}
+      <CountBySelectImpl selectClassName={selectClassName} />
     </div>
   );
 }

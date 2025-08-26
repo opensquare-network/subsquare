@@ -1,10 +1,12 @@
 import { usePageProps } from "next-common/context/page";
 import { createContext, useContext, useMemo, useState } from "react";
 
-export const AllReferenda = "referenda";
-export const TrackReferenda = "track";
+export const DV_DATA_TYPE = {
+  ALL_REFERNDA: "referenda",
+  TRACK_REFERENDA: "track",
+};
 
-const DEFAULT_COUNT_TYPE = TrackReferenda;
+const DEFAULT_COUNT_TYPE = DV_DATA_TYPE.TRACK_REFERENDA;
 const DvReferendaContext = createContext();
 
 export default function DvDataTypeProvider({ children }) {
@@ -23,9 +25,9 @@ export function useDvReferendaCount() {
 
   return useMemo(() => {
     if (cohort) {
-      if (countType === AllReferenda) {
+      if (countType === DV_DATA_TYPE.ALL_REFERNDA) {
         return cohort.allReferendaCnt;
-      } else if (countType === TrackReferenda) {
+      } else if (countType === DV_DATA_TYPE.TRACK_REFERENDA) {
         return cohort.dvTrackReferendaCnt;
       }
     }
@@ -42,7 +44,7 @@ export function useFilteredDvReferenda() {
   const { countType } = useDvReferenda();
 
   return useMemo(() => {
-    if (countType === TrackReferenda) {
+    if (countType === DV_DATA_TYPE.TRACK_REFERENDA) {
       return referenda.filter((referendum) =>
         cohort?.tracks?.includes(referendum.track),
       );
@@ -62,7 +64,7 @@ export function useFilteredDvVotes() {
   }, [referenda, cohort]);
 
   return useMemo(() => {
-    if (countType === TrackReferenda) {
+    if (countType === DV_DATA_TYPE.TRACK_REFERENDA) {
       return votes.filter((vote) => ids.includes(vote.referendumIndex));
     }
     return votes;
