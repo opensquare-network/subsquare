@@ -7,7 +7,7 @@ export const TrackReferenda = "track";
 const DEFAULT_COUNT_TYPE = TrackReferenda;
 const ReferendaDvContext = createContext();
 
-export default function ReferendaDvProvider({ children }) {
+export default function DvDataTypeProvider({ children }) {
   const [countType, setCountType] = useState(DEFAULT_COUNT_TYPE);
 
   return (

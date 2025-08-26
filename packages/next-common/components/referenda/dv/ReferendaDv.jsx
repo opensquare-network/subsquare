@@ -1,7 +1,7 @@
 import ReferendaDvTabs from "next-common/components/referenda/dv/referendaDvTabs";
 import { TabsTitle } from "next-common/components/referenda/dv/common/styled";
 import CountBySelect from "next-common/components/referenda/dv/common/countBySelect";
-import ReferendaDvProvider from "next-common/context/referenda/dv";
+import DvDataTypeProvider from "next-common/context/referenda/dv";
 import Prompt from "next-common/components/referenda/dv/prompt";
 import { isNil } from "lodash-es";
 import { usePageProps } from "next-common/context/page";
@@ -16,7 +16,7 @@ export default function ReferendaDv() {
   }
 
   return (
-    <ReferendaDvProvider>
+    <DvDataTypeProvider>
       <div className="gap-y-4 flex flex-col">
         <CountBySelect>
           <TabsTitle className="mx-0">Decentralized Voices</TabsTitle>
@@ -24,7 +24,7 @@ export default function ReferendaDv() {
         <Prompt />
         <ReferendaDvTabs />
       </div>
-    </ReferendaDvProvider>
+    </DvDataTypeProvider>
   );
 }
 

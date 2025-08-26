@@ -10,7 +10,7 @@ import { usePageProps } from "next-common/context/page";
 import { isNil } from "lodash-es";
 import Breadcrumbs from "next-common/components/layout/DetailLayout/breadcrumbs";
 import CountBySelect from "next-common/components/referenda/dv/common/countBySelect";
-import ReferendaDvProvider from "next-common/context/referenda/dv";
+import DvDataTypeProvider from "next-common/context/referenda/dv";
 import NotFound from "next-common/components/notFound";
 
 function NilCohortPage() {
@@ -31,7 +31,7 @@ export default function CohortPage() {
 
   return (
     <SectionLayout>
-      <ReferendaDvProvider>
+      <DvDataTypeProvider>
         <CountBySelect
           className="mx-0 mb-4"
           selectClassName="max-sm:ml-12 mr-6"
@@ -46,7 +46,7 @@ export default function CohortPage() {
           <DelegatesSection />
           <DvReferendaVotes />
         </div>
-      </ReferendaDvProvider>
+      </DvDataTypeProvider>
     </SectionLayout>
   );
 }
