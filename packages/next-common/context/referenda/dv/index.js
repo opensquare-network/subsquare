@@ -2,7 +2,7 @@ import { usePageProps } from "next-common/context/page";
 import { createContext, useContext, useMemo, useState } from "react";
 
 export const DV_DATA_TYPE = {
-  ALL_REFERNDA: "referenda",
+  ALL_REFERENDA: "referenda",
   TRACK_REFERENDA: "track",
 };
 
@@ -25,7 +25,7 @@ export function useDvReferendaCount() {
 
   return useMemo(() => {
     if (cohort) {
-      if (countType === DV_DATA_TYPE.ALL_REFERNDA) {
+      if (countType === DV_DATA_TYPE.ALL_REFERENDA) {
         return cohort.allReferendaCnt;
       } else if (countType === DV_DATA_TYPE.TRACK_REFERENDA) {
         return cohort.dvTrackReferendaCnt;
