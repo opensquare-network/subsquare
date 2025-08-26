@@ -6,18 +6,11 @@ export const VOTE_TYPE = {
 };
 
 export default function getVoteType(vote) {
-  if (!vote) return VOTE_TYPE.NoVote;
-
-  if (vote.isSplitAbstain) {
+  if (vote?.isSplitAbstain || vote?.isSplit) {
     return VOTE_TYPE.Abstain;
-  } else if (vote.isStandard) {
-    if (vote.aye) {
-      return VOTE_TYPE.Aye;
-    } else {
-      return VOTE_TYPE.Nay;
-    }
-  } else if (vote.isAbstain) {
-    return VOTE_TYPE.Abstain;
+  } else if (vote?.isStandard) {
+    return vote.aye ? VOTE_TYPE.Aye : VOTE_TYPE.Nay;
+  } else {
+    return VOTE_TYPE.NoVote;
   }
-  return VOTE_TYPE.NoVote;
 }

@@ -2,7 +2,7 @@ import SectionLayout from "next-common/components/layout/sectionLayout";
 import { withCommonProps } from "next-common/lib";
 import CohortBreadcrumb from "next-common/components/referenda/dv/cohort/breadcrumb";
 import Overview from "next-common/components/referenda/dv/cohort/overview";
-import ReferendaDvVotes from "next-common/components/referenda/dv/dvVotes";
+import DvReferendaVotes from "next-common/components/referenda/dv/dvVotes";
 import { TabTitle } from "next-common/components/referenda/dv/common/delegatesTabTitle";
 import Delegates from "next-common/components/referenda/dv/delegates";
 import { backendApi } from "next-common/services/nextApi";
@@ -11,11 +11,26 @@ import { isNil } from "lodash-es";
 import Breadcrumbs from "next-common/components/layout/DetailLayout/breadcrumbs";
 import CountBySelect from "next-common/components/referenda/dv/common/countBySelect";
 import ReferendaDvProvider from "next-common/context/referenda/dv";
-import { to404 } from "next-common/utils/serverSideUtil";
+import NotFound from "next-common/components/notFound";
+
+function NilCohortPage() {
+  return (
+    <SectionLayout>
+      <Breadcrumbs breadcrumbs={<CohortBreadcrumb />} />
+      <NotFound className="py-10" />
+    </SectionLayout>
+  );
+}
 
 export default function CohortPage() {
+  const { cohort } = usePageProps();
+
+  if (isNil(cohort)) {
+    return <NilCohortPage />;
+  }
+
   return (
-    <SectionLayout hasSidebar>
+    <SectionLayout>
       <ReferendaDvProvider>
         <CountBySelect
           className="mx-0 mb-4"
@@ -29,7 +44,7 @@ export default function CohortPage() {
         <div className="flex flex-col gap-y-4">
           <Overview />
           <DelegatesSection />
-          <ReferendaDvVotes />
+          <DvReferendaVotes />
         </div>
       </ReferendaDvProvider>
     </SectionLayout>
@@ -38,9 +53,7 @@ export default function CohortPage() {
 
 function DelegatesSection() {
   const { cohort } = usePageProps();
-  if (isNil(cohort)) {
-    return null;
-  }
+
   return (
     <div className="flex flex-col gap-y-4">
       <TabTitle
@@ -60,7 +73,11 @@ export const getServerSideProps = withCommonProps(async (context) => {
 
   const { result: cohort } = await backendApi.fetch(baseUrl);
   if (isNil(cohort)) {
-    return to404();
+    return {
+      props: {
+        id,
+      },
+    };
   }
 
   const [{ result: votes }, { result: referenda }] = await Promise.all([

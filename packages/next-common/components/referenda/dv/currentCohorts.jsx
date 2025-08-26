@@ -1,11 +1,11 @@
 import Delegates from "./delegates";
-import ReferendaDvVotes from "./dvVotes";
+import DvReferendaVotes from "./dvVotes";
 
 export default function CurrentCohorts() {
   return (
     <>
       <Delegates />
-      <ReferendaDvVotes />
+      <DvReferendaVotes />
     </>
   );
 }

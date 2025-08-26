@@ -1,7 +1,10 @@
 import { usePageProps } from "next-common/context/page";
 import { createContext, useContext, useMemo, useState } from "react";
 
-const DEFAULT_COUNT_TYPE = "track";
+export const AllReferenda = "referenda";
+export const TrackReferenda = "track";
+
+const DEFAULT_COUNT_TYPE = TrackReferenda;
 const ReferendaDvContext = createContext();
 
 export default function ReferendaDvProvider({ children }) {
@@ -14,15 +17,15 @@ export default function ReferendaDvProvider({ children }) {
   );
 }
 
-export function useReferendaDvCount() {
+export function useDvReferendaCount() {
   const { cohort } = usePageProps();
-  const { countType } = useReferendaDv();
+  const { countType } = useDvReferenda();
 
   return useMemo(() => {
     if (cohort) {
-      if (countType === "referenda") {
+      if (countType === AllReferenda) {
         return cohort.allReferendaCnt;
-      } else if (countType === "track") {
+      } else if (countType === TrackReferenda) {
         return cohort.dvTrackReferendaCnt;
       }
     }
@@ -30,16 +33,16 @@ export function useReferendaDvCount() {
   }, [cohort, countType]);
 }
 
-export function useReferendaDv() {
+export function useDvReferenda() {
   return useContext(ReferendaDvContext) || {};
 }
 
 export function useFilteredDvReferenda() {
   const { referenda = [], cohort } = usePageProps();
-  const { countType } = useReferendaDv();
+  const { countType } = useDvReferenda();
 
   return useMemo(() => {
-    if (countType === "track") {
+    if (countType === TrackReferenda) {
       return referenda.filter((referendum) =>
         cohort?.tracks?.includes(referendum.track),
       );
@@ -50,7 +53,7 @@ export function useFilteredDvReferenda() {
 
 export function useFilteredDvVotes() {
   const { votes = [], cohort } = usePageProps();
-  const { countType } = useReferendaDv();
+  const { countType } = useDvReferenda();
   const referenda = useFilteredDvReferenda();
   const ids = useMemo(() => {
     return referenda
@@ -59,7 +62,7 @@ export function useFilteredDvVotes() {
   }, [referenda, cohort]);
 
   return useMemo(() => {
-    if (countType === "track") {
+    if (countType === TrackReferenda) {
       return votes.filter((vote) => ids.includes(vote.referendumIndex));
     }
     return votes;

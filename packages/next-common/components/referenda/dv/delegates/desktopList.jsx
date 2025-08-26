@@ -1,6 +1,6 @@
 import { AddressUser } from "next-common/components/user";
 import {
-  useReferendaDvCount,
+  useDvReferendaCount,
   useFilteredDvReferenda,
   useFilteredDvVotes,
 } from "next-common/context/referenda/dv";
@@ -37,14 +37,14 @@ const columns = [
 ];
 
 export default function DelegatesDesktopList({ delegates }) {
-  const count = useReferendaDvCount();
+  const count = useDvReferendaCount();
   const filteredReferenda = useFilteredDvReferenda();
   const votes = useFilteredDvVotes();
 
   const rows = delegates.map((delegate) => {
-    const userVote = votes.filter((vote) => vote.account === delegate);
-    const voteCount = userVote.length;
-    const winCount = userVote.filter((vote) =>
+    const userVotes = votes.filter((vote) => vote.account === delegate);
+    const voteCount = userVotes.length;
+    const winCount = userVotes.filter((vote) =>
       isWin(vote, filteredReferenda),
     ).length;
 
@@ -54,7 +54,7 @@ export default function DelegatesDesktopList({ delegates }) {
         key="voteCounts"
         height={4}
         delegate={delegate}
-        userVote={userVote}
+        userVotes={userVotes}
       />,
       <ParticipationValue
         key="participation"

@@ -1,12 +1,13 @@
 "use client";
-import { useReferendaDv } from "next-common/context/referenda/dv";
+import { useDvReferenda } from "next-common/context/referenda/dv";
 import { cn } from "next-common/utils";
 import { usePageProps } from "next-common/context/page";
 import { isNil } from "lodash-es";
 import Select from "next-common/components/select";
+import { TrackReferenda, AllReferenda } from "next-common/context/referenda/dv";
 
 function CountBySelectImpl({ selectClassName = "" }) {
-  const { countType, setCountType } = useReferendaDv();
+  const { countType, setCountType } = useDvReferenda();
   const { cohort } = usePageProps();
   if (isNil(cohort) || isNil(countType)) {
     return null;
@@ -14,11 +15,11 @@ function CountBySelectImpl({ selectClassName = "" }) {
 
   const switchTabs = [
     {
-      value: "track",
+      value: TrackReferenda,
       label: <span role="button">Only DV tracks referenda</span>,
     },
     {
-      value: "referenda",
+      value: AllReferenda,
       label: <span role="button">All referenda</span>,
     },
   ];

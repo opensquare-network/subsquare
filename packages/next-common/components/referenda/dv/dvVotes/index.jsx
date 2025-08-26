@@ -20,13 +20,13 @@ import {
 
 const SPACE = 1;
 
-export default function ReferendaDVVotes() {
+export default function DvReferendaVotes() {
   return (
     <div className="flex flex-col gap-y-4">
       <TabsTitle>DV Votes</TabsTitle>
       <NeutralPanel className="p-6">
         <WindowSizeProvider>
-          <ReferendaDvVotesImpl />
+          <DvReferendaVotesImpl />
           <Divider />
           <VoteIndicator />
         </WindowSizeProvider>
@@ -35,7 +35,7 @@ export default function ReferendaDVVotes() {
   );
 }
 
-export function ReferendaDvVotesImpl() {
+export function DvReferendaVotesImpl() {
   const { cohort } = usePageProps();
   const isMobile = useIsMobile();
   const { ss58Format } = useChainSettings();

@@ -1,7 +1,7 @@
 import {
   useFilteredDvReferenda,
   useFilteredDvVotes,
-  useReferendaDvCount,
+  useDvReferendaCount,
 } from "next-common/context/referenda/dv";
 import isWin from "next-common/utils/dv/isWin";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
@@ -18,14 +18,14 @@ import SummaryItem from "next-common/components/summary/layout/item";
 export default function DelegatesMobileList({ delegates }) {
   const votes = useFilteredDvVotes();
   const referenda = useFilteredDvReferenda();
-  const count = useReferendaDvCount();
+  const count = useDvReferendaCount();
 
   return (
     <NeutralPanel className="p-6">
       {delegates.map((delegate) => {
-        const userVote = votes.filter((vote) => vote.account === delegate);
-        const voteCount = userVote.length;
-        const winCount = userVote.filter((vote) =>
+        const userVotes = votes.filter((vote) => vote.account === delegate);
+        const voteCount = userVotes.length;
+        const winCount = userVotes.filter((vote) =>
           isWin(vote, referenda),
         ).length;
 
@@ -48,7 +48,7 @@ export default function DelegatesMobileList({ delegates }) {
               className="gap-0"
               height={4}
               delegate={delegate}
-              userVote={userVote}
+              userVotes={userVotes}
             />
             <SummaryLayout className="mt-3">
               <SummaryItem title="Participation">
