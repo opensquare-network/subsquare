@@ -32,7 +32,7 @@ export function SubItem({
         }}
       />
       <div className="flex flex-1 flex-row gap-x-4">
-        <div className="flex flex-1 flex-col">
+        <div className="flex flex-1 flex-col gap-y-2">
           <Label>Sub Name</Label>
           <Input
             className="flex-1"
