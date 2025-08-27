@@ -9,15 +9,11 @@ import { usePeopleApi } from "next-common/context/people/api";
 
 const columnsDef = [colRegistrar, colStatus];
 
-export default function Judgements({
-  judgements,
-  isLoading: judgementsIsLoading,
-}) {
+export default function Judgements({ judgements, isLoading: _isLoading }) {
   const api = usePeopleApi();
   const registrarsResult = useSpecifyApiRegistrarsList(api);
-  const judgementsResult = { judgements, isLoading: judgementsIsLoading };
   const { data, isLoading } = useMergedJudgementsData(
-    judgementsResult,
+    { judgements, isLoading: _isLoading },
     registrarsResult,
   );
 
