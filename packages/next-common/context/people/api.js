@@ -1,19 +1,12 @@
 import { getPeopleChain } from "next-common/utils/chain";
-import {
-  createContext,
-  memo,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useChain } from "../chain";
 import getChainSettings from "next-common/utils/consts/settings";
 import { getChainApi } from "next-common/utils/getChainApi";
 
 const PeopleApiContext = createContext(null);
 
-export function PeopleApiProvider({ children }) {
+export default function PeopleApiProvider({ children }) {
   const [api, setApi] = useState(null);
   const chain = useChain();
   const peopleChain = useMemo(() => getPeopleChain(chain), [chain]);
@@ -43,8 +36,6 @@ export function PeopleApiProvider({ children }) {
     </PeopleApiContext.Provider>
   );
 }
-
-export const MemoizedPeopleApiContext = memo(PeopleApiProvider);
 
 export function usePeopleApi() {
   const { api } = useContext(PeopleApiContext) || {};

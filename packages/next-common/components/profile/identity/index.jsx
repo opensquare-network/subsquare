@@ -1,7 +1,7 @@
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import Tabs from "next-common/components/tabs";
 import ProfileIdentityTimeline from "../identityTimeline";
-import { MemoizedPeopleApiContext } from "next-common/context/people/api";
+import PeopleApiProvider from "next-common/context/people/api";
 import { useState, useMemo } from "react";
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
 import { useIdentityOf } from "next-common/hooks/identity/useIdentityOf";
@@ -48,10 +48,10 @@ function ProfileIdentityImpl() {
 
 export default function ProfileIdentity() {
   return (
-    <MemoizedPeopleApiContext>
+    <PeopleApiProvider>
       <SecondaryCard>
         <ProfileIdentityImpl />
       </SecondaryCard>
-    </MemoizedPeopleApiContext>
+    </PeopleApiProvider>
   );
 }
