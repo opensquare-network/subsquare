@@ -1,19 +1,15 @@
 import Loading from "next-common/components/loading";
-import IdentityPropList, {
-  SubIdentityDisplay,
-} from "next-common/components/people/overview/identity/common";
 import { isIdentityEmpty } from "next-common/components/people/common";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { useIdentityType } from "next-common/hooks/people/useMyIdentityType";
 import { usePeopleApi } from "next-common/context/people/api";
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
+import { DirectIdentityContent } from "next-common/components/profile/identity/directIdentityContent";
 
 export default function DirectIdentity({ identityInfo, isLoading }) {
   const api = usePeopleApi();
   const address = useProfileAddress();
   const { type, parent } = useIdentityType(api, address);
-
-  const isSubIdentity = type === "sub";
 
   if (isLoading) {
     return (
@@ -32,17 +28,10 @@ export default function DirectIdentity({ identityInfo, isLoading }) {
   }
 
   return (
-    <>
-      <IdentityPropList
-        className="ml-0"
-        identityInfo={identityInfo}
-        isLoading={isLoading}
-      />
-      <SubIdentityDisplay
-        isSubIdentity={isSubIdentity}
-        parentAddress={parent}
-        className="ml-0"
-      />
-    </>
+    <DirectIdentityContent
+      identityInfo={identityInfo}
+      type={type}
+      parentAddress={parent}
+    />
   );
 }
