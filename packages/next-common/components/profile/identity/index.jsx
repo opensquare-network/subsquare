@@ -19,13 +19,7 @@ function ProfileIdentityImpl() {
     {
       value: "direct-identity",
       label: "Direct Identity",
-      content: (
-        <DirectIdentity
-          isEmpty={false}
-          identityInfo={info}
-          isLoading={isLoading}
-        />
-      ),
+      content: <DirectIdentity identityInfo={info} isLoading={isLoading} />,
     },
     {
       value: "judgements",
