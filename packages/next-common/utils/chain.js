@@ -155,17 +155,3 @@ export function getRelayChain(chain) {
 
   throw new Error("Unsupported relay chain");
 }
-
-export function getPeopleChain(chain) {
-  if (isPaseoChain(chain)) {
-    return Chains.paseoPeople;
-  } else if (isPolkadotChain(chain)) {
-    return Chains.polkadotPeople;
-  } else if (isKusamaChain(chain)) {
-    return Chains.kusamaPeople;
-  } else if (isWestendChain(chain)) {
-    return Chains.westendPeople;
-  }
-
-  return null;
-}
