@@ -67,14 +67,10 @@ function useSuperOfIdentityDisplayName(identity) {
   };
 }
 
-function useAddressIdentityInfo(address) {
-  const api = useContextApi();
-  return useIdentityOf(api, address);
-}
-
 export default function useSubMyIdentityInfo() {
+  const api = useContextApi();
   const address = useRealAddress();
-  const { info, judgements, isLoading } = useAddressIdentityInfo(address);
+  const { info, judgements, isLoading } = useIdentityOf(api, address);
   const { result: superResult } = useSuperOfIdentityDisplayName(info);
 
   return {

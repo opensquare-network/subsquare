@@ -16,7 +16,7 @@ const SetIdentityPopup = dynamicPopup(
   },
 );
 
-export default function DirectIdentityImpl({
+export default function MyDirectIdentityImpl({
   isEmpty,
   identityInfo,
   isLoading,
@@ -32,7 +32,7 @@ export default function DirectIdentityImpl({
   if (!isEmpty) {
     return (
       <SignerPopupWrapper>
-        <DirectIdentity subMyIdentityInfo={identityInfo} />
+        <MyDirectIdentity subMyIdentityInfo={identityInfo} />
       </SignerPopupWrapper>
     );
   }
@@ -62,7 +62,7 @@ export function DirectIdentityEmpty() {
   );
 }
 
-export function DirectIdentity({ subMyIdentityInfo }) {
+export function MyDirectIdentity({ subMyIdentityInfo }) {
   const { type, parent } = useMyIdentityType();
 
   return (
