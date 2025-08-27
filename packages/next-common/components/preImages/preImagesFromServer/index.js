@@ -18,8 +18,17 @@ function useServerPreimages() {
       if (!api) {
         return item;
       }
+      if (!item.hex) {
+        return { ...item, proposalWarning: "No preimage bytes found" };
+      }
       const proposal = parsePreImageCall(item.hex, api);
-      return { ...item, proposal };
+      if (proposal) {
+        return { ...item, proposal };
+      }
+      return {
+        ...item,
+        proposalError: "Unable to decode preimage bytes into a valid Call",
+      };
     });
   }, [api]);
 }

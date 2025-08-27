@@ -47,11 +47,21 @@ function OldPreimageItemComp({ hash, index }) {
 const PreimageItem = React.memo(PreimageItemComp);
 const OldPreimageItem = React.memo(OldPreimageItemComp);
 
+function convertTicket(ticket) {
+  if (!ticket) {
+    return null;
+  }
+  return {
+    amount: ticket[1].toNumber(),
+    who: ticket[0].toString(),
+  };
+}
+
 function Item({ hash, preimage, isStatusLoaded, isBytesLoaded, index }) {
   const dispatch = useDispatch();
   const triggerUpdate = useSelector(preImagesTriggerSelector);
   const [showArgumentsDetail, setShowArgumentsDetail] = useState(null);
-  const deposit = preimage?.ticket || preimage?.deposit;
+  const deposit = convertTicket(preimage?.ticket || preimage?.deposit);
 
   return (
     <>

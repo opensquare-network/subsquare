@@ -4,7 +4,7 @@ import useColumns from "next-common/components/styledList/useColumns";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import DataList from "next-common/components/dataList";
-import { Hash } from "../fields";
+import { Deposit, Hash, Proposal, Status } from "../fields";
 
 const PreimageDetailPopup = dynamicPopup(() =>
   import("../preImageDetailPopup"),
@@ -36,20 +36,45 @@ export default function DesktopList({ data, loading }) {
     },
   ]);
 
-  const rows = data.map((preimage) => [
-    <Hash
-      key="hash"
-      hash={preimage.hash}
-      proposal={preimage.proposal}
-      setShowArgumentsDetail={setShowArgumentsDetail}
-    />,
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-    "-",
-  ]);
+  const rows = data.map((preimage) => {
+    const deposit =
+      preimage.requested?.maybeTicket || preimage.unrequested?.ticket;
+    const len = preimage.requested?.maybeLen || preimage.unrequested?.len;
+    const statusName = preimage.requested ? "Requested" : "Unrequested";
+
+    return [
+      <Hash
+        key="hash"
+        hash={preimage.hash}
+        proposal={preimage.proposal}
+        setShowArgumentsDetail={setShowArgumentsDetail}
+      />,
+      <Proposal
+        key="proposal"
+        proposal={preimage.proposal}
+        proposalError={preimage.proposalError}
+        proposalWarning={preimage.proposalWarning}
+        setShowArgumentsDetail={setShowArgumentsDetail}
+      />,
+      deposit && (
+        <Deposit
+          key="deposit"
+          deposit={deposit}
+          hash={preimage.hash}
+          count={preimage.requested?.count}
+          status={statusName}
+          onUnnoteInBlock={() => {}}
+          triggerUpdate={() => {}}
+        />
+      ),
+      len?.toLocaleString(),
+      <Status
+        key="status"
+        statusName={statusName}
+        count={preimage.requested?.count}
+      />,
+    ];
+  });
 
   return (
     <SecondaryCard>

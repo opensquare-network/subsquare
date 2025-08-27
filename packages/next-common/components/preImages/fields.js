@@ -60,7 +60,7 @@ export function Deposit({
       >
         <ValueDisplay
           className="whitespace-nowrap"
-          value={toPrecision(amount.toJSON(), decimals)}
+          value={toPrecision(amount, decimals)}
           symbol={symbol}
         />
         {unnote}
