@@ -109,6 +109,7 @@ const polkadot = {
   openSquare: {
     voting: "polkadot",
   },
+  preimagesGraphql: true,
 };
 
 export default polkadot;

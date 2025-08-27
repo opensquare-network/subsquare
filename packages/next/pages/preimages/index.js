@@ -1,5 +1,5 @@
 import ListLayout from "next-common/components/layout/ListLayout";
-import PreImagesList from "next-common/components/preImages/preImagesList";
+import PreImagesList from "next-common/components/preImages/preImagesFromServer";
 import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
 import PreImagesFooter from "next-common/components/preImages/footer";
 
