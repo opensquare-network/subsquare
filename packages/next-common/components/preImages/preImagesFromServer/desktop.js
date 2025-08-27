@@ -7,12 +7,15 @@ import DataList from "next-common/components/dataList";
 import { Deposit, Hash, Proposal, Status } from "../fields";
 import { useContextApi } from "next-common/context/api";
 import FieldLoading from "next-common/components/icons/fieldLoading";
+import { useDispatch } from "react-redux";
+import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
 
 const PreimageDetailPopup = dynamicPopup(() =>
   import("../preImageDetailPopup"),
 );
 
 export default function DesktopList({ data, loading }) {
+  const dispatch = useDispatch();
   const api = useContextApi();
   const isApiLoading = !api;
   const [showArgumentsDetail, setShowArgumentsDetail] = useState(null);
@@ -71,8 +74,7 @@ export default function DesktopList({ data, loading }) {
           hash={preimage.hash}
           count={preimage.requested?.count}
           status={statusName}
-          onUnnoteInBlock={() => {}}
-          triggerUpdate={() => {}}
+          onUnnoteInBlock={() => dispatch(incPreImagesTrigger())}
         />
       ),
       len?.toLocaleString(),

@@ -2,11 +2,8 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import React, { useState, useEffect, useRef } from "react";
 import usePreimage from "next-common/hooks/usePreimage";
 import useOldPreimage from "next-common/hooks/useOldPreimage";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  incPreImagesTrigger,
-  preImagesTriggerSelector,
-} from "next-common/store/reducers/preImagesSlice";
+import { useDispatch } from "react-redux";
+import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
 import FieldLoading from "../icons/fieldLoading";
 import { Deposit, Hash, Proposal, Status } from "./fields";
 import tw from "tailwind-styled-components";
@@ -15,6 +12,7 @@ import dynamicPopup from "next-common/lib/dynamic/popup";
 import Loading from "next-common/components/loading";
 import { cn } from "next-common/utils";
 import { FixedSizeList } from "react-window";
+import { convertTicket } from "./common";
 
 const PreimageDetailPopup = dynamicPopup(() => import("./preImageDetailPopup"));
 
@@ -47,19 +45,8 @@ function OldPreimageItemComp({ hash, index }) {
 const PreimageItem = React.memo(PreimageItemComp);
 const OldPreimageItem = React.memo(OldPreimageItemComp);
 
-function convertTicket(ticket) {
-  if (!ticket) {
-    return null;
-  }
-  return {
-    amount: ticket[1].toNumber(),
-    who: ticket[0].toString(),
-  };
-}
-
 function Item({ hash, preimage, isStatusLoaded, isBytesLoaded, index }) {
   const dispatch = useDispatch();
-  const triggerUpdate = useSelector(preImagesTriggerSelector);
   const [showArgumentsDetail, setShowArgumentsDetail] = useState(null);
   const deposit = convertTicket(preimage?.ticket || preimage?.deposit);
 
@@ -116,7 +103,6 @@ function Item({ hash, preimage, isStatusLoaded, isBytesLoaded, index }) {
                 count={preimage.count}
                 status={preimage.statusName}
                 onUnnoteInBlock={() => dispatch(incPreImagesTrigger())}
-                triggerUpdate={triggerUpdate}
                 right
               />
             )
