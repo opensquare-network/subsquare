@@ -3,6 +3,7 @@ import { cn } from "next-common/utils";
 import Divider from "next-common/components/styled/layout/divider";
 import { AddressUser } from "next-common/components/user";
 import { isNil } from "lodash-es";
+import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 
 const IdentityPropListWrapper = tw.div`
 space-y-2 ml-14
@@ -44,12 +45,16 @@ export default function IdentityPropList({ identityInfo, className = "" }) {
   );
 }
 
-export function SubIdentityDisplay({ isSubIdentity, parentAddress }) {
+export function SubIdentityDisplay({
+  isSubIdentity,
+  parentAddress,
+  className = "",
+}) {
   if (!isSubIdentity) return null;
   return (
     <>
       <Divider className="my-4" />
-      <IdentityPropListWrapper className="space-y-2 ml-14">
+      <IdentityPropListWrapper className={cn("space-y-2 ml-14", className)}>
         <div className="flex">
           <IdentityPropListLabel>Parent</IdentityPropListLabel>
           <IdentityPropListValue>
@@ -63,5 +68,16 @@ export function SubIdentityDisplay({ isSubIdentity, parentAddress }) {
       </IdentityPropListWrapper>
       <Divider className="my-4" />
     </>
+  );
+}
+
+export function SubIdentityInfoPanel({ isSubIdentity, parentAddress }) {
+  if (!isSubIdentity) return null;
+
+  return (
+    <GreyPanel className="px-4 py-2.5 text14Medium text-textSecondary mb-4">
+      Currently displayed as the sub identity of{" "}
+      <AddressUser className="ml-1.5" add={parentAddress} showAvatar={false} />.
+    </GreyPanel>
   );
 }

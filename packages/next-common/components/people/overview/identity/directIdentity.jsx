@@ -9,7 +9,6 @@ import dynamicPopup from "next-common/lib/dynamic/popup";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { useState, useCallback } from "react";
 import useMyIdentityType from "next-common/hooks/people/useMyIdentityType";
-import { AddressUser } from "next-common/components/user";
 import { useContextApi } from "next-common/context/api";
 import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
@@ -24,7 +23,8 @@ import { useExtensionAccounts } from "next-common/components/popupWithSigner/con
 import getChainSettings from "next-common/utils/consts/settings";
 import IdentityPropList, {
   SubIdentityDisplay,
-} from "next-common/components/people/overview/identity/identityPropList";
+  SubIdentityInfoPanel,
+} from "next-common/components/people/overview/identity/common";
 
 const SetIdentityPopup = dynamicPopup(
   () => import("next-common/components/setIdentityPopup"),
@@ -125,12 +125,10 @@ export function DirectIdentity({ subMyIdentityInfo }) {
 
   return (
     <>
-      {isSubIdentity && (
-        <GreyPanel className="px-4 py-2.5 text14Medium text-textSecondary mb-4">
-          Currently displayed as the sub identity of{" "}
-          <AddressUser className="ml-1.5" add={parent} showAvatar={false} />.
-        </GreyPanel>
-      )}
+      <SubIdentityInfoPanel
+        isSubIdentity={isSubIdentity}
+        parentAddress={parent}
+      />
       <div className="flex justify-between gap-2">
         <Account />
         <div className="flex items-center gap-2 text-textPrimary">

@@ -157,7 +157,7 @@ export function getRelayChain(chain) {
 }
 
 export function getPeopleChain(chain) {
-  if (isPeopleChain(chain)) {
+  if (isPaseoChain(chain)) {
     return Chains.paseoPeople;
   } else if (isPolkadotChain(chain)) {
     return Chains.polkadotPeople;
