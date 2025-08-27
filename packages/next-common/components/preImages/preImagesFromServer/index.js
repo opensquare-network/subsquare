@@ -9,6 +9,7 @@ import { isSameAddress } from "next-common/utils";
 import DesktopList from "./desktop";
 import { useContextApi } from "next-common/context/api";
 import { parsePreImageCall } from "next-common/components/proposal/preImage";
+import { formatNumber } from "@polkadot/util";
 
 function useServerPreimages() {
   const api = useContextApi();
@@ -19,7 +20,7 @@ function useServerPreimages() {
       return null;
     }
     return preimages.map((item) => {
-      if (!api) {
+      if (!api || !api.registry) {
         return item;
       }
       if (!item.hex) {
@@ -27,6 +28,16 @@ function useServerPreimages() {
       }
       const proposal = parsePreImageCall(item.hex, api);
       if (proposal) {
+        const callLength = proposal.encodedLength;
+        const storeLength = item.requested?.maybeLen || item.unrequested?.len;
+        if (callLength !== storeLength) {
+          return {
+            ...item,
+            proposalWarning: `Decoded call length does not match on-chain stored preimage length (${formatNumber(
+              callLength,
+            )} bytes vs ${formatNumber(storeLength)} bytes)`,
+          };
+        }
         return { ...item, proposal };
       }
       return {
@@ -66,7 +77,7 @@ export default function PreImagesList() {
           <ListTitleBar
             className={"max-md:-ml-6"}
             title="List"
-            titleCount={0}
+            titleCount={filteredData.length}
           />
           {realAddress && (
             <MyDeposit isOn={isMyDepositOn} setIsOn={setIsMyDepositOn} />
