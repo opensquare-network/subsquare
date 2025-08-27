@@ -32,6 +32,7 @@ export default function DirectIdentity({ identityInfo, isLoading }) {
       identityInfo={identityInfo}
       type={type}
       parentAddress={parent}
+      address={address}
     />
   );
 }

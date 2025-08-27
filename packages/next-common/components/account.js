@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Identity from "./Identity";
-import { addressEllipsis } from "../utils";
+import { addressEllipsis, cn } from "../utils";
 import { normalizeAddress } from "next-common/utils/address";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { allWallets } from "next-common/utils/consts/connect";
@@ -55,7 +55,11 @@ const NameWrapper = styled.div`
   }
 `;
 
-export default function Account({ account, showFullAddress = false }) {
+export default function Account({
+  account,
+  showFullAddress = false,
+  addressClassName = "",
+}) {
   const { identity, hasIdentity, isLoading } = useIdentityInfo(
     account?.address,
   );
@@ -88,14 +92,18 @@ export default function Account({ account, showFullAddress = false }) {
         {hasIdentity ? (
           <>
             <Identity identity={identity} />
-            <div className="truncate">{account?.address}</div>
+            <div className={cn("truncate", addressClassName)}>
+              {account?.address}
+            </div>
           </>
         ) : (
           <>
             <div className="text-textPrimary">
               {account?.name || addressHint}
             </div>
-            <div className="truncate">{account?.address}</div>
+            <div className={cn("truncate", addressClassName)}>
+              {account?.address}
+            </div>
           </>
         )}
       </NameWrapper>

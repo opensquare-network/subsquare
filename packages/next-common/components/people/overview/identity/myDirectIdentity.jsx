@@ -8,6 +8,7 @@ import useMyIdentityType from "next-common/hooks/people/useMyIdentityType";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 import { DirectIdentityActions } from "next-common/components/people/overview/identity/directIdentityActions";
 import { DirectIdentityContent } from "next-common/components/profile/identity/directIdentityContent";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 const SetIdentityPopup = dynamicPopup(
   () => import("next-common/components/setIdentityPopup"),
@@ -64,12 +65,14 @@ export function DirectIdentityEmpty() {
 
 export function MyDirectIdentity({ subMyIdentityInfo }) {
   const { type, parent } = useMyIdentityType();
+  const address = useRealAddress();
 
   return (
     <DirectIdentityContent
       identityInfo={subMyIdentityInfo}
       type={type}
       parentAddress={parent}
+      address={address}
     >
       <DirectIdentityActions />
     </DirectIdentityContent>

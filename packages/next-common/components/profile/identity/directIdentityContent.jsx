@@ -1,11 +1,12 @@
+import Account from "next-common/components/account";
 import IdentityPropList, {
   SubIdentityDisplay,
   SubIdentityInfoPanel,
 } from "next-common/components/people/overview/identity/common";
-import { Account } from "next-common/components/overview/accountInfo/accountInfoPanel";
 import Divider from "next-common/components/styled/layout/divider";
 
 export function DirectIdentityContent({
+  address,
   identityInfo,
   type,
   parentAddress,
@@ -20,7 +21,7 @@ export function DirectIdentityContent({
         parentAddress={parentAddress}
       />
       <div className="flex justify-between gap-2">
-        <Account />
+        <Account account={{ address }} addressClassName="!text14Medium" />
         {children}
       </div>
 
