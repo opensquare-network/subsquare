@@ -12,8 +12,12 @@ import { parsePreImageCall } from "next-common/components/proposal/preImage";
 
 function useServerPreimages() {
   const api = useContextApi();
-  return useAsync(async () => {
-    const preimages = await queryPreimages();
+  const { value: preimages, loading } = useAsync(queryPreimages, []);
+
+  const parsedPreimages = useMemo(() => {
+    if (!preimages) {
+      return null;
+    }
     return preimages.map((item) => {
       if (!api) {
         return item;
@@ -30,7 +34,9 @@ function useServerPreimages() {
         proposalError: "Unable to decode preimage bytes into a valid Call",
       };
     });
-  }, [api]);
+  }, [preimages, api]);
+
+  return { value: parsedPreimages, loading };
 }
 
 export default function PreImagesList() {

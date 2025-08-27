@@ -5,12 +5,16 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import DataList from "next-common/components/dataList";
 import { Deposit, Hash, Proposal, Status } from "../fields";
+import { useContextApi } from "next-common/context/api";
+import FieldLoading from "next-common/components/icons/fieldLoading";
 
 const PreimageDetailPopup = dynamicPopup(() =>
   import("../preImageDetailPopup"),
 );
 
 export default function DesktopList({ data, loading }) {
+  const api = useContextApi();
+  const isApiLoading = !api;
   const [showArgumentsDetail, setShowArgumentsDetail] = useState(null);
 
   const { columns } = useColumns([
@@ -37,7 +41,7 @@ export default function DesktopList({ data, loading }) {
   ]);
 
   const rows = data.map((preimage) => {
-    const deposit =
+    const ticket =
       preimage.requested?.maybeTicket || preimage.unrequested?.ticket;
     const len = preimage.requested?.maybeLen || preimage.unrequested?.len;
     const statusName = preimage.requested ? "Requested" : "Unrequested";
@@ -49,17 +53,21 @@ export default function DesktopList({ data, loading }) {
         proposal={preimage.proposal}
         setShowArgumentsDetail={setShowArgumentsDetail}
       />,
-      <Proposal
-        key="proposal"
-        proposal={preimage.proposal}
-        proposalError={preimage.proposalError}
-        proposalWarning={preimage.proposalWarning}
-        setShowArgumentsDetail={setShowArgumentsDetail}
-      />,
-      deposit && (
+      isApiLoading ? (
+        <FieldLoading />
+      ) : (
+        <Proposal
+          key="proposal"
+          proposal={preimage.proposal}
+          proposalError={preimage.proposalError}
+          proposalWarning={preimage.proposalWarning}
+          setShowArgumentsDetail={setShowArgumentsDetail}
+        />
+      ),
+      ticket && (
         <Deposit
           key="deposit"
-          deposit={deposit}
+          deposit={ticket}
           hash={preimage.hash}
           count={preimage.requested?.count}
           status={statusName}
