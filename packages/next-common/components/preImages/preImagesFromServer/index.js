@@ -58,12 +58,13 @@ export default function PreImagesList() {
 
   let filteredData = useMemo(
     () =>
-      (data || []).filter(({ hash, ticket }) => {
+      (data || []).filter(({ hash, requested, unrequested }) => {
         if (!hash.includes(searchValue.toLowerCase())) {
           return false;
         }
         if (isMyDepositOn && realAddress) {
-          return isSameAddress(ticket?.who, realAddress);
+          const who = requested?.maybeTicket?.who || unrequested?.ticket?.who;
+          return isSameAddress(who, realAddress);
         }
         return true;
       }),
@@ -92,7 +93,9 @@ export default function PreImagesList() {
       <div className="max-md:hidden">
         <DesktopList data={filteredData} loading={loading} />
       </div>
-      <div className="hidden max-md:block"></div>
+      {/* <div className="hidden max-md:block">
+        <MobileList data={filteredData} loading={loading} />
+      </div> */}
     </div>
   );
 }
