@@ -1,8 +1,9 @@
-import { getPeopleChain } from "next-common/utils/chain";
+import { isCollectivesChain, isPolkadotChain } from "next-common/utils/chain";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useChain } from "../chain";
 import getChainSettings from "next-common/utils/consts/settings";
 import { getChainApi } from "next-common/utils/getChainApi";
+import Chains from "next-common/utils/consts/chains";
 
 const PeopleApiContext = createContext(null);
 
@@ -40,4 +41,12 @@ export default function PeopleApiProvider({ children }) {
 export function usePeopleApi() {
   const { api } = useContext(PeopleApiContext) || {};
   return api;
+}
+
+function getPeopleChain(chain) {
+  if (isPolkadotChain(chain) || isCollectivesChain(chain)) {
+    return Chains.polkadotPeople;
+  }
+
+  return null;
 }
