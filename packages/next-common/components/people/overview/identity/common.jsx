@@ -5,15 +5,15 @@ import { AddressUser } from "next-common/components/user";
 import { isNil } from "lodash-es";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 
-const IdentityPropListWrapper = tw.div`
-space-y-2 ml-14
+export const IdentityPropListWrapper = tw.div`
+space-y-2 ml-14 max-sm:ml-0
 `;
 
-const IdentityPropListLabel = tw.div`
-text14Medium text-textTertiary w-60
+export const IdentityPropListLabel = tw.div`
+text14Medium text-textTertiary w-60 max-sm:w-auto
 `;
 
-const IdentityPropListValue = tw.div`
+export const IdentityPropListValue = tw.div`
 text14Medium text-textPrimary
 `;
 
@@ -32,9 +32,11 @@ export default function IdentityPropList({ identityInfo, className = "" }) {
   if (isNil(identityInfo)) return null;
 
   return (
-    <IdentityPropListWrapper className={cn("space-y-2 ml-14", className)}>
+    <IdentityPropListWrapper
+      className={cn("space-y-2 ml-14 max-sm:ml-0", className)}
+    >
       {list.map((item) => (
-        <div key={item.label} className="flex">
+        <div key={item.label} className="flex max-sm:justify-between">
           <IdentityPropListLabel>{item.label}</IdentityPropListLabel>
           <IdentityPropListValue>
             {identityInfo[item.valueKey] ?? "-"}
@@ -54,8 +56,10 @@ export function SubIdentityDisplay({
   return (
     <>
       <Divider className="my-4" />
-      <IdentityPropListWrapper className={cn("space-y-2 ml-14", className)}>
-        <div className="flex">
+      <IdentityPropListWrapper
+        className={cn("space-y-2 ml-14 max-sm:ml-0", className)}
+      >
+        <div className="flex max-sm:justify-between">
           <IdentityPropListLabel>Parent</IdentityPropListLabel>
           <IdentityPropListValue>
             <AddressUser

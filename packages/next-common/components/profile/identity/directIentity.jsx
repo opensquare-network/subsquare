@@ -5,26 +5,30 @@ import { useIdentityType } from "next-common/hooks/people/useMyIdentityType";
 import { usePeopleApi } from "next-common/context/people/api";
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
 import { DirectIdentityContent } from "next-common/components/profile/identity/directIdentityContent";
+import ChildInfo from "./childInfo";
 
 export default function DirectIdentity({ identityInfo, isLoading }) {
   const api = usePeopleApi();
   const address = useProfileAddress();
-  const { type, parent } = useIdentityType(api, address);
+  const { type, parent, subName } = useIdentityType(api, address);
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-full">
-        <Loading size="24" />
-      </div>
-    );
+    return <IdentityContentLoading />;
   }
 
   if (isIdentityEmpty(identityInfo)) {
-    return (
-      <GreyPanel className="px-4 py-2.5 text14Medium text-textSecondary">
-        User has no identity.
-      </GreyPanel>
-    );
+    if (type === "sub") {
+      return (
+        <>
+          <GreyPanel className="px-4 py-2.5 text14Medium text-textSecondary">
+            No direct identity
+          </GreyPanel>
+          <ChildInfo parentAddress={parent} subName={subName} />
+        </>
+      );
+    }
+
+    return <IdentityContentEmpty />;
   }
 
   return (
@@ -34,5 +38,21 @@ export default function DirectIdentity({ identityInfo, isLoading }) {
       parentAddress={parent}
       address={address}
     />
+  );
+}
+
+export function IdentityContentLoading() {
+  return (
+    <div className="flex justify-center items-center h-full">
+      <Loading size="24" />
+    </div>
+  );
+}
+
+export function IdentityContentEmpty() {
+  return (
+    <GreyPanel className="px-4 py-2.5 text14Medium text-textSecondary">
+      No direct identity
+    </GreyPanel>
   );
 }
