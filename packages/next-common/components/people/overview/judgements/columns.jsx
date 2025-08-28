@@ -58,6 +58,7 @@ export const colRegistrar = {
 };
 
 export const colStatus = {
+  isCustomStatus: true,
   name: "Status",
   style: { textAlign: "right", minWidth: "160px" },
   render: ({ status, fee }) => <Status status={status} fee={fee} />,
