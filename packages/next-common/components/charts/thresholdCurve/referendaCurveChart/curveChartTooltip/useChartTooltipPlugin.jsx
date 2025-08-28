@@ -1,34 +1,13 @@
 import { debounce, find, get, merge } from "lodash-es";
-import { formatDays, formatHours } from "next-common/utils/timeFormat";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import {
   abbreviateBigNumber,
   getEffectiveNumbers,
 } from "next-common/utils/viewfuncs";
-import { useDecisionIndex } from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
 
-export default function useChartOptionsWithTooltip(options, setTooltip) {
+export default function useChartTooltipPlugin(options, setTooltip) {
   const chainSettings = useChainSettings();
-  const decisionIndex = useDecisionIndex();
-
-  const getTitle = (hs) => {
-    if (hs < decisionIndex) {
-      return `Preparing Time: ${formatHours(hs)}`;
-    }
-    const x = hs - decisionIndex;
-
-    const days = Math.floor(x / 24);
-    const restHs = x - days * 24;
-    let result = `Deciding Time: ${formatHours(x)}`;
-    if (days > 0) {
-      result += ` (${formatDays(days)} ${
-        restHs > 0 ? formatHours(restHs) : ""
-      })`;
-    }
-
-    return result;
-  };
 
   const setData = debounce(setTooltip, 100);
 
@@ -82,7 +61,7 @@ export default function useChartOptionsWithTooltip(options, setTooltip) {
               align: tooltip.yAlign,
             },
             data: {
-              title: getTitle(dataIndex),
+              dataIndex: dataIndex,
               value: tooltip.body.map((b) => b.lines.join("")).join(""),
               afterBody: tooltip.afterBody,
               data: [

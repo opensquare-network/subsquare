@@ -64,6 +64,7 @@ export default function Slider({
   onChange = noop,
   formatValue,
   defaultValue,
+  minDistance = 0,
 }) {
   const Thumb = useThumb({ formatValue });
   const [show, setShow] = useState(false);
@@ -76,6 +77,7 @@ export default function Slider({
       min={min}
       max={max}
       defaultValue={defaultValue || [min, max]}
+      minDistance={minDistance}
       renderTrack={Track}
       renderThumb={Thumb}
       onChange={onChange}
