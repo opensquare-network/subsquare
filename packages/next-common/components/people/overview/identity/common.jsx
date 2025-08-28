@@ -5,15 +5,15 @@ import { AddressUser } from "next-common/components/user";
 import { isNil } from "lodash-es";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 
-const IdentityPropListWrapper = tw.div`
+export const IdentityPropListWrapper = tw.div`
 space-y-2 ml-14
 `;
 
-const IdentityPropListLabel = tw.div`
+export const IdentityPropListLabel = tw.div`
 text14Medium text-textTertiary w-60
 `;
 
-const IdentityPropListValue = tw.div`
+export const IdentityPropListValue = tw.div`
 text14Medium text-textPrimary
 `;
 
