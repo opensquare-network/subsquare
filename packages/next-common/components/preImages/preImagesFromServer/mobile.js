@@ -123,11 +123,11 @@ export default function MobileList({ data, loading }) {
     }
   }, [data]);
 
-  if (loading && data?.length === 0) {
+  if (loading && !data) {
     return <TableLoading />;
   }
 
-  if (data?.length === 0) {
+  if (!data?.length) {
     return <NoDataText />;
   }
 

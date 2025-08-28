@@ -44,7 +44,7 @@ export default function DesktopList({ data, loading }) {
     },
   ]);
 
-  const rows = data.map((preimage) => {
+  const rows = (data || []).map((preimage) => {
     const ticket = getPreimageTicket(preimage);
     const len = getPreimageLen(preimage);
     const statusName = getPreimageStatus(preimage);
@@ -93,7 +93,7 @@ export default function DesktopList({ data, loading }) {
           columns={columns}
           rows={rows}
           noDataText="No current preimages"
-          loading={loading && data.length === 0}
+          loading={loading && !data}
         />
       </ScrollerX>
       {showArgumentsDetail && (

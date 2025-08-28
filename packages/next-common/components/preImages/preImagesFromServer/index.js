@@ -63,7 +63,7 @@ export default function PreImagesList() {
 
   let filteredData = useMemo(
     () =>
-      (data || []).filter((preimage) => {
+      data?.filter((preimage) => {
         if (!preimage.hash.includes(searchValue.toLowerCase())) {
           return false;
         }
@@ -83,7 +83,7 @@ export default function PreImagesList() {
           <ListTitleBar
             className={"max-md:-ml-6"}
             title="List"
-            titleCount={filteredData.length}
+            titleCount={filteredData?.length || 0}
           />
           {realAddress && (
             <MyDeposit isOn={isMyDepositOn} setIsOn={setIsMyDepositOn} />
