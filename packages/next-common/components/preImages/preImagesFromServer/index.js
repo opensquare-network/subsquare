@@ -10,6 +10,7 @@ import DesktopList from "./desktop";
 import { useContextApi } from "next-common/context/api";
 import { parsePreImageCall } from "next-common/components/proposal/preImage";
 import { formatNumber } from "@polkadot/util";
+import MobileList from "./mobile";
 
 function useServerPreimages() {
   const api = useContextApi();
@@ -93,9 +94,9 @@ export default function PreImagesList() {
       <div className="max-md:hidden">
         <DesktopList data={filteredData} loading={loading} />
       </div>
-      {/* <div className="hidden max-md:block">
+      <div className="hidden max-md:block">
         <MobileList data={filteredData} loading={loading} />
-      </div> */}
+      </div>
     </div>
   );
 }
