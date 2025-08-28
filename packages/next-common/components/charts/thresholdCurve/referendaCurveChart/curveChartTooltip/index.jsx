@@ -1,14 +1,9 @@
 import { cn } from "next-common/utils";
 import { useDecisionIndex } from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
 import { formatDays, formatHours } from "next-common/utils/timeFormat";
 
-export default function CurveChartTooltip({
-  visible,
-  position,
-  data,
-  rangeData,
-}) {
+export default memo(function CurveChartTooltip({ position, data, rangeData }) {
   const decisionIndex = useDecisionIndex();
 
   const index = data?.dataIndex + rangeData[0];
@@ -31,7 +26,7 @@ export default function CurveChartTooltip({
     return result;
   }, [decisionIndex, index]);
 
-  if (!visible) {
+  if (!data) {
     return null;
   }
 
@@ -57,9 +52,9 @@ export default function CurveChartTooltip({
         <div>
           <div className="text12Bold pb-1 whitespace-nowrap">{title}</div>
           <div className=" text12Normal space-y-0.5">
-            {data?.data?.map(({ label, value }) => (
+            {data?.items?.map(({ label, value }) => (
               <div className="flex whitespace-nowrap" key={label}>
-                <div className="">{label} :</div>
+                <div className="">{label} </div>
                 <div className="pl-1">{value}</div>
               </div>
             ))}
@@ -78,4 +73,4 @@ export default function CurveChartTooltip({
       </div>
     </div>
   );
-}
+});

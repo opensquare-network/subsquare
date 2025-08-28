@@ -1,97 +1,107 @@
-import { debounce, find, get, merge } from "lodash-es";
+import { find, get, merge, isEqual } from "lodash-es";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import {
   abbreviateBigNumber,
   getEffectiveNumbers,
 } from "next-common/utils/viewfuncs";
+import { useState, useCallback } from "react";
 
-export default function useChartTooltipPlugin(options, setTooltip) {
+export default function useChartTooltipPlugin(options) {
   const chainSettings = useChainSettings();
+  const [tooltipData, setTooltipData] = useState(null);
+  const externalTooltip = useCallback(
+    (context) => {
+      const { chart, tooltip } = context;
 
-  const setData = debounce(setTooltip, 100);
+      if (tooltip.opacity === 0) {
+        setTooltipData(null);
+        return;
+      }
+      const dataIndex = tooltip.dataPoints[0].dataIndex;
 
-  return merge(options, {
-    plugins: {
-      tooltip: {
-        mode: "index",
-        intersect: false,
-        enabled: false,
-        external: (context) => {
-          const { chart, tooltip } = context;
-          if (tooltip.opacity === 0) {
-            setData({ ...tooltip, visible: false });
-            return;
-          }
-          const dataIndex = tooltip.dataPoints[0].dataIndex;
+      const approvalData = get(
+        find(chart.data.datasets, { label: "Approval" }),
+        ["data", dataIndex],
+      );
+      const currentApprovalData = get(
+        find(chart.data.datasets, { label: "Current Approval" }),
+        ["data", dataIndex],
+      );
 
-          const approvalData = get(
-            find(chart.data.datasets, { label: "Approval" }),
-            ["data", dataIndex],
-          );
-          const currentApprovalData = get(
-            find(chart.data.datasets, { label: "Current Approval" }),
-            ["data", dataIndex],
-          );
+      const supportData = get(find(chart.data.datasets, { label: "Support" }), [
+        "data",
+        dataIndex,
+      ]);
+      const currentSupportData = get(
+        find(chart.data.datasets, { label: "Current Support" }),
+        ["data", dataIndex],
+      );
 
-          const supportData = get(
-            find(chart.data.datasets, { label: "Support" }),
-            ["data", dataIndex],
-          );
-          const currentSupportData = get(
-            find(chart.data.datasets, { label: "Current Support" }),
-            ["data", dataIndex],
-          );
+      const nayData = get(find(chart.data.datasets, { label: "Nay" }), [
+        "data",
+        dataIndex,
+      ]);
+      const ayeData = get(find(chart.data.datasets, { label: "Aye" }), [
+        "data",
+        dataIndex,
+      ]);
 
-          const nayData = get(find(chart.data.datasets, { label: "Nay" }), [
-            "data",
+      setTooltipData((prev) => {
+        const next = {
+          data: {
             dataIndex,
-          ]);
-          const ayeData = get(find(chart.data.datasets, { label: "Aye" }), [
-            "data",
-            dataIndex,
-          ]);
+            title: tooltip.title[0],
+            afterBody: tooltip.afterBody,
+            items: [
+              {
+                label: "Approval",
+                value: `${formatPercentValue(
+                  currentApprovalData,
+                )} / ${formatPercentValue(approvalData)}`,
+              },
+              {
+                label: "Support",
+                value: `${formatPercentValue(
+                  currentSupportData,
+                )} / ${formatPercentValue(supportData)}`,
+              },
+              ayeData && {
+                label: "Aye",
+                value: handleVoteTooltipValue(ayeData, chainSettings),
+              },
+              nayData && {
+                label: "Nay",
+                value: handleVoteTooltipValue(nayData, chainSettings),
+              },
+            ].filter(Boolean),
+          },
+          position: {
+            x: chart.canvas.offsetLeft + tooltip.caretX,
+            y: chart.canvas.offsetTop + tooltip.caretY,
+            side: tooltip.xAlign,
+            align: tooltip.yAlign,
+          },
+        };
+        return isEqual(prev, next) ? prev : next;
+      });
+    },
+    [chainSettings],
+  );
 
-          setData({
-            visible: true,
-            position: {
-              x: chart.canvas.offsetLeft + tooltip.caretX,
-              y: chart.canvas.offsetTop + tooltip.caretY,
-              side: tooltip.xAlign,
-              align: tooltip.yAlign,
-            },
-            data: {
-              dataIndex: dataIndex,
-              value: tooltip.body.map((b) => b.lines.join("")).join(""),
-              afterBody: tooltip.afterBody,
-              data: [
-                {
-                  label: "Approval",
-                  value: `${formatPercentValue(
-                    currentApprovalData,
-                  )} / ${formatPercentValue(approvalData)}`,
-                },
-                {
-                  label: "Support",
-                  value: `${formatPercentValue(
-                    currentSupportData,
-                  )} / ${formatPercentValue(supportData)}`,
-                },
-                ayeData && {
-                  label: "Aye",
-                  value: handleVoteTooltipValue(ayeData, chainSettings),
-                },
-                nayData && {
-                  label: "Nay",
-                  value: handleVoteTooltipValue(nayData, chainSettings),
-                },
-              ].filter(Boolean),
-            },
-          });
+  return {
+    options: merge(options, {
+      plugins: {
+        tooltip: {
+          enabled: false,
+          external: externalTooltip,
+          mode: "index",
+          intersect: false,
         },
       },
-    },
-  });
+    }),
+    tooltipData,
+  };
 }
 
 function formatPercentValue(value) {

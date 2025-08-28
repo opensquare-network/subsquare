@@ -5,7 +5,6 @@ import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import { useRef, useState, useMemo } from "react";
 import CustomXTickLabels from "./curveChartCustomXTickLabels";
 import ApprovalBubbleArea from "./approvalBubbleArea";
-import CurveChartTooltip from "./curveChartTooltip";
 import useChartTooltipPlugin from "./curveChartTooltip/useChartTooltipPlugin";
 import { useOnchainData } from "next-common/context/post";
 import useFetchReferendaTallyHistory from "next-common/utils/hooks/referenda/useFetchReferendaTallyHistory";
@@ -13,15 +12,11 @@ import ThresholdCurvesGov2TallyLegend from "../legend/gov2TallyLegend";
 import Slider from "next-common/components/slider";
 import useCurveChartOptions from "./useCurveChartOptions";
 import useReferendaCurveChartData from "./useReferendaCurveChartData";
+import CurveChartTooltip from "./curveChartTooltip";
 
 export default function ReferendaCurveChart({ showVoter, showAyeNay }) {
   const { referendumIndex } = useOnchainData();
   useFetchReferendaTallyHistory(referendumIndex);
-  const [tooltip, setTooltip] = useState({
-    visible: false,
-    position: { x: 0, y: 0 },
-    data: {},
-  });
 
   const { width } = useWindowSize();
   const chartRef = useRef();
@@ -44,7 +39,11 @@ export default function ReferendaCurveChart({ showVoter, showAyeNay }) {
     chartData.datasets,
     [rangeData[0], rangeData[1] + 1],
   );
-  const options = useChartTooltipPlugin(defaultOptions, setTooltip);
+
+  const { options, tooltipData } = useChartTooltipPlugin(
+    defaultOptions,
+    rangeData,
+  );
 
   const style = useMemo(() => {
     const { left = 0, right = 0 } = chartRef.current?.chartArea || {};
@@ -69,11 +68,8 @@ export default function ReferendaCurveChart({ showVoter, showAyeNay }) {
             options={options}
             plugins={[hoverLinePlugin]}
           />
-          <CurveChartTooltip
-            rangeData={rangeData}
-            container={chartWrapper.current}
-            {...tooltip}
-          />
+          <CurveChartTooltip rangeData={rangeData} {...tooltipData} />
+
           {chartRef.current && (
             <ApprovalBubbleArea
               rangeData={rangeData}
