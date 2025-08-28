@@ -67,7 +67,7 @@ export const paseoRelayChainNodes = [
   },
   {
     name: "Dwellir",
-    url: "wss://paseo-rpc.dwellir.com",
+    url: "wss://paseo-rpc.n.dwellir.com",
   },
   {
     name: "IBP2",
@@ -86,7 +86,7 @@ export const paseoAssetHubNodes = [
   },
   {
     name: "Dwellir",
-    url: "wss://asset-hub-paseo-rpc.dwellir.com",
+    url: "wss://asset-hub-paseo-rpc.n.dwellir.com",
   },
   {
     name: "StakeWorld",
