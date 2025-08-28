@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useSubStorage from "../common/useSubStorage";
 
 export const InitIdentityInfo = {
@@ -19,7 +19,13 @@ export function useIdentityOf(api, address) {
     "identity",
     "identityOf",
     [address],
+    { api },
   );
+  const [isQueryLoading, setIsQueryLoading] = useState(isLoading);
+
+  const isReady = useMemo(() => {
+    return !!api && !!address;
+  }, [api, address]);
 
   const [identity, setIdentity] = useState({
     info: InitIdentityInfo,
@@ -27,7 +33,7 @@ export function useIdentityOf(api, address) {
   });
 
   useEffect(() => {
-    if (!api || !address) {
+    if (!isReady) {
       return;
     }
 
@@ -35,6 +41,7 @@ export function useIdentityOf(api, address) {
       if (!result || result.isNone) {
         try {
           // Subscription may have data returned as isNone. Here, to avoid errors, we need to get the data again.
+          setIsQueryLoading(true);
           const apiResult = await api.query?.identity.identityOf(address);
           if (apiResult && !apiResult.isNone) {
             setIdentity(convertIdentity(apiResult));
@@ -50,6 +57,8 @@ export function useIdentityOf(api, address) {
             info: InitIdentityInfo,
             judgements: InitIdentityJudgements,
           });
+        } finally {
+          setIsQueryLoading(false);
         }
       } else {
         setIdentity(convertIdentity(result));
@@ -57,11 +66,11 @@ export function useIdentityOf(api, address) {
     }
 
     fetchIdentity();
-  }, [address, api, result]);
+  }, [address, api, result, isReady]);
 
   return {
     ...identity,
-    isLoading,
+    isLoading: isQueryLoading || isLoading || !isReady,
   };
 }
 
@@ -98,7 +107,7 @@ export function extractRaw(field) {
     return null;
   }
 
-  return field?.Raw || field || null;
+  return field?.Raw || field;
 }
 
 export function convertJudgements(identityOf) {

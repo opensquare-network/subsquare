@@ -7,6 +7,7 @@ import getChainSettings from "next-common/utils/consts/settings";
 import { clearCachedIdentitys } from "next-common/services/identity";
 import { useExtensionAccounts } from "../popupWithSigner/context";
 import { cn } from "next-common/utils";
+import Tooltip from "../tooltip";
 
 const columns = [
   {
@@ -21,6 +22,34 @@ const columns = [
     name: "Address",
   },
 ];
+
+export function SubIdentitiesTableImpl({ subs = [], isLoading }) {
+  return (
+    <DataList
+      columns={columns}
+      rows={(subs ?? []).map(([address, subName], index) => {
+        return [
+          <AddressUser key={`Identity-${index}`} add={address} />,
+          <div key={`Name-${index}`} className="text-textPrimary text14Medium">
+            <Tooltip content={subName}>
+              <span className="max-w-[220px] truncate inline-block">
+                {subName}
+              </span>
+            </Tooltip>
+          </div>,
+          <div
+            key={`Address-${index}`}
+            className="text-textTertiary text14Medium flex justify-between gap-x-2 items-center sm:ml-0 ml-4"
+          >
+            <AddressDisplay address={address} />
+          </div>,
+        ];
+      })}
+      loading={isLoading && subs.length <= 0}
+      noDataText="No sub identities"
+    />
+  );
+}
 
 export default function SubIdentitiesTable({ subs = [], isLoading }) {
   const chain = useChain();
@@ -45,28 +74,7 @@ export default function SubIdentitiesTable({ subs = [], isLoading }) {
         "border-b border-neutral300": subs?.length === 0,
       })}
     >
-      <DataList
-        columns={columns}
-        rows={(subs ?? []).map(([address, subName], index) => {
-          return [
-            <AddressUser key={`Identity-${index}`} add={address} />,
-            <div
-              key={`Name-${index}`}
-              className="text-textPrimary text14Medium"
-            >
-              {subName}
-            </div>,
-            <div
-              key={`Address-${index}`}
-              className="text-textTertiary text14Medium flex justify-between gap-x-2 items-center sm:ml-0 ml-4"
-            >
-              <AddressDisplay address={address} />
-            </div>,
-          ];
-        })}
-        loading={isLoading && subs.length <= 0}
-        noDataText="No sub identities"
-      />
+      <SubIdentitiesTableImpl subs={subs} isLoading={isLoading} />
     </div>
   );
 }
