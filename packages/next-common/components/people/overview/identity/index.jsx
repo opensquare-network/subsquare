@@ -1,6 +1,6 @@
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import Tabs from "next-common/components/tabs";
-import DirectIdentityImpl from "./directIdentity";
+import MyDirectIdentityImpl from "./myDirectIdentity";
 import { useIdentityInfoContext } from "next-common/context/people/identityInfoContext";
 import SubIdentitiesImpl from "./subIdentities";
 import { useState } from "react";
@@ -17,7 +17,7 @@ export default function PeopleOverviewIdentity() {
       value: "direct-identity",
       label: "Direct Identity",
       content: (
-        <DirectIdentityImpl
+        <MyDirectIdentityImpl
           isEmpty={isEmpty}
           identityInfo={subMyIdentityInfo}
           isLoading={isLoading}

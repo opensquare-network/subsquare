@@ -31,10 +31,12 @@ function matchArraysByIndex(judgements, registrars) {
     .filter(Boolean);
 }
 
-export default function useJudgementsData() {
-  const { judgements, isLoading: isIdentityInfoLoading } =
-    useIdentityInfoContext();
-  const { registrars, isLoading: isRegistrarLoading } = useRegistrarContext();
+export function useMergedJudgementsData(
+  judgementsResult = {},
+  registrarResult = {},
+) {
+  const { judgements, isLoading: isIdentityInfoLoading } = judgementsResult;
+  const { registrars, isLoading: isRegistrarLoading } = registrarResult;
   const isLoading = isIdentityInfoLoading || isRegistrarLoading;
 
   const data = useMemo(() => {
@@ -49,4 +51,11 @@ export default function useJudgementsData() {
     data,
     isLoading,
   };
+}
+
+export default function useJudgementsData() {
+  const judgementsResult = useIdentityInfoContext();
+  const registrarResult = useRegistrarContext();
+
+  return useMergedJudgementsData(judgementsResult, registrarResult);
 }

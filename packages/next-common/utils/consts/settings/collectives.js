@@ -75,7 +75,7 @@ const collectives = {
   group: MenuGroups.PolkadotAndParachains,
   postLabels: [PostLabel.Motion, PostLabel.Announcement],
   hasFellowshipParams: true,
-  hasIdentityTimeline: true,
+  hasIdentity: true,
   graphqlApiSubDomain: "dot-gh-api",
   description: "Collectives on Polkadot network.",
   modules: mergeChainModules({

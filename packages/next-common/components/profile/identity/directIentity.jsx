@@ -1,0 +1,38 @@
+import Loading from "next-common/components/loading";
+import { isIdentityEmpty } from "next-common/components/people/common";
+import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
+import { useIdentityType } from "next-common/hooks/people/useMyIdentityType";
+import { usePeopleApi } from "next-common/context/people/api";
+import useProfileAddress from "next-common/components/profile/useProfileAddress";
+import { DirectIdentityContent } from "next-common/components/profile/identity/directIdentityContent";
+
+export default function DirectIdentity({ identityInfo, isLoading }) {
+  const api = usePeopleApi();
+  const address = useProfileAddress();
+  const { type, parent } = useIdentityType(api, address);
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-full">
+        <Loading size="24" />
+      </div>
+    );
+  }
+
+  if (isIdentityEmpty(identityInfo)) {
+    return (
+      <GreyPanel className="px-4 py-2.5 text14Medium text-textSecondary">
+        User has no identity.
+      </GreyPanel>
+    );
+  }
+
+  return (
+    <DirectIdentityContent
+      identityInfo={identityInfo}
+      type={type}
+      parentAddress={parent}
+      address={address}
+    />
+  );
+}
