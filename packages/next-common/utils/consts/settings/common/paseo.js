@@ -51,3 +51,60 @@ export const paseoCommonSettings = {
   group: MenuGroups.Paseo,
   supportWalletconnect: true,
 };
+
+export const paseoRelayChainNodes = [
+  {
+    name: "Amforc",
+    url: "wss://paseo.rpc.amforc.com",
+  },
+  {
+    name: "IBP1",
+    url: "wss://rpc.ibp.network/paseo",
+  },
+  {
+    name: "StakeWorld",
+    url: "wss://pas-rpc.stakeworld.io",
+  },
+  {
+    name: "Dwellir",
+    url: "wss://paseo-rpc.n.dwellir.com",
+  },
+  {
+    name: "IBP2",
+    url: "wss://paseo.dotters.network",
+  },
+];
+
+export const paseoAssetHubNodes = [
+  {
+    name: "IBP1",
+    url: "wss://sys.ibp.network/asset-hub-paseo",
+  },
+  {
+    name: "IBP2",
+    url: "wss://asset-hub-paseo.dotters.network",
+  },
+  {
+    name: "Dwellir",
+    url: "wss://asset-hub-paseo-rpc.n.dwellir.com",
+  },
+  {
+    name: "StakeWorld",
+    url: "wss://pas-rpc.stakeworld.io/assethub",
+  },
+  {
+    name: "TurboFlakes",
+    url: "wss://sys.turboflakes.io/asset-hub-paseo",
+  },
+];
+
+export const subscanPaseoAssethubDomain = "assethub-paseo";
+export const statescanPaseoAssethubDomain = "assethub-paseo";
+
+export const paseoAssethubMigration = {
+  migrated: true,
+  timestamp: 1756125576000,
+  subscanAssethubDomain: subscanPaseoAssethubDomain,
+  statescanAssethubDomain: statescanPaseoAssethubDomain,
+  relayBlockTime: 6000,
+};
