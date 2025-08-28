@@ -3,7 +3,7 @@ import Tabs from "next-common/components/tabs";
 import PeopleApiProvider from "next-common/context/people/api";
 import { useState, useMemo } from "react";
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
-import { useIdentityOf } from "next-common/hooks/identity/useIdentityOf";
+import { useFetchIdentity } from "next-common/hooks/identity/useFetchIdentity";
 import { usePeopleApi } from "next-common/context/people/api";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
@@ -19,7 +19,7 @@ function ProfileIdentityImpl() {
   const api = usePeopleApi();
   const address = useProfileAddress();
 
-  const { info, judgements, isLoading } = useIdentityOf(api, address);
+  const { info, judgements, isLoading } = useFetchIdentity(api, address);
 
   const tabs = useMemo(
     () => [
