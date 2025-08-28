@@ -3,7 +3,7 @@ export function convertTicket(ticket) {
     return null;
   }
   return {
-    amount: ticket[1].toNumber(),
-    who: ticket[0].toString(),
+    amount: ticket.amount.toNumber(),
+    who: ticket.who.toString(),
   };
 }
