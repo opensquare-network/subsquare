@@ -11,6 +11,7 @@ import Loading from "next-common/components/loading";
 import { cn } from "next-common/utils";
 import { FixedSizeList } from "react-window";
 import { useContextApi } from "next-common/context/api";
+import { getPreimageTicket, getPreimageLen, getPreimageStatus } from "./common";
 
 const PreimageDetailPopup = dynamicPopup(() =>
   import("../preImageDetailPopup"),
@@ -23,10 +24,9 @@ function Item({ preimage, index }) {
   const isApiLoading = !api;
   const dispatch = useDispatch();
   const [showArgumentsDetail, setShowArgumentsDetail] = useState(null);
-  const statusName = preimage.requested ? "Requested" : "Unrequested";
-  const ticket =
-    preimage.requested?.maybeTicket || preimage.unrequested?.ticket;
-  const len = preimage.requested?.maybeLen || preimage.unrequested?.len;
+  const statusName = getPreimageStatus(preimage);
+  const ticket = getPreimageTicket(preimage);
+  const len = getPreimageLen(preimage);
 
   return (
     <>

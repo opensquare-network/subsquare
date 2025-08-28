@@ -9,6 +9,7 @@ import { useContextApi } from "next-common/context/api";
 import FieldLoading from "next-common/components/icons/fieldLoading";
 import { useDispatch } from "react-redux";
 import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
+import { getPreimageTicket, getPreimageLen, getPreimageStatus } from "./common";
 
 const PreimageDetailPopup = dynamicPopup(() =>
   import("../preImageDetailPopup"),
@@ -44,10 +45,9 @@ export default function DesktopList({ data, loading }) {
   ]);
 
   const rows = data.map((preimage) => {
-    const ticket =
-      preimage.requested?.maybeTicket || preimage.unrequested?.ticket;
-    const len = preimage.requested?.maybeLen || preimage.unrequested?.len;
-    const statusName = preimage.requested ? "Requested" : "Unrequested";
+    const ticket = getPreimageTicket(preimage);
+    const len = getPreimageLen(preimage);
+    const statusName = getPreimageStatus(preimage);
 
     return [
       <Hash

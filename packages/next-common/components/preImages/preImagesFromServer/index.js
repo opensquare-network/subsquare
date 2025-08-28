@@ -11,6 +11,7 @@ import { useContextApi } from "next-common/context/api";
 import { parsePreImageCall } from "next-common/components/proposal/preImage";
 import { formatNumber } from "@polkadot/util";
 import MobileList from "./mobile";
+import { getPreimageTicket } from "./common";
 
 function useServerPreimages() {
   const api = useContextApi();
@@ -59,13 +60,13 @@ export default function PreImagesList() {
 
   let filteredData = useMemo(
     () =>
-      (data || []).filter(({ hash, requested, unrequested }) => {
-        if (!hash.includes(searchValue.toLowerCase())) {
+      (data || []).filter((preimage) => {
+        if (!preimage.hash.includes(searchValue.toLowerCase())) {
           return false;
         }
         if (isMyDepositOn && realAddress) {
-          const who = requested?.maybeTicket?.who || unrequested?.ticket?.who;
-          return isSameAddress(who, realAddress);
+          const ticket = getPreimageTicket(preimage);
+          return isSameAddress(ticket?.who, realAddress);
         }
         return true;
       }),

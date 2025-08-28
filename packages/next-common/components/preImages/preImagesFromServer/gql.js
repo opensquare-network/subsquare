@@ -7,7 +7,12 @@ const PREIMAGE_QUERY = gql`
       hex
       requested {
         count
+        len
         maybeLen
+        deposit {
+          amount
+          who
+        }
         maybeTicket {
           amount
           who
@@ -15,9 +20,13 @@ const PREIMAGE_QUERY = gql`
       }
       unrequested {
         len
-        ticket {
+        deposit {
           amount
           who
+        }
+        ticket {
+          who
+          amount
         }
       }
     }
