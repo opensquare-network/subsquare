@@ -89,14 +89,14 @@ export default function ReferendaCurveChart({ showVoter, showAyeNay }) {
           showAyeNay={showAyeNay}
           chartArea={chartRef.current?.chartArea}
         />
-        <div className="py-4" style={style}>
+        <div className="pt-2" style={style}>
           <Slider
             defaultValue={rangeData}
             min={0}
             max={labels.length}
             minDistance={50}
             onChange={setRangeData}
-            formatValue={(val) => val}
+            formatValue={() => null}
           />
         </div>
       </div>
