@@ -12,10 +12,13 @@ import { parsePreImageCall } from "next-common/components/proposal/preImage";
 import { formatNumber } from "@polkadot/util";
 import MobileList from "./mobile";
 import { getPreimageTicket } from "./common";
+import { preImagesTriggerSelector } from "next-common/store/reducers/preImagesSlice";
+import { useSelector } from "react-redux";
 
 function useServerPreimages() {
+  const trigger = useSelector(preImagesTriggerSelector);
   const api = useContextApi();
-  const { value: preimages, loading } = useAsync(queryPreimages, []);
+  const { value: preimages, loading } = useAsync(queryPreimages, [trigger]);
 
   const parsedPreimages = useMemo(() => {
     if (!preimages) {

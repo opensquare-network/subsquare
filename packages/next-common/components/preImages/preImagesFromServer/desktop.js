@@ -93,7 +93,7 @@ export default function DesktopList({ data, loading }) {
           columns={columns}
           rows={rows}
           noDataText="No current preimages"
-          loading={loading}
+          loading={loading && data.length === 0}
         />
       </ScrollerX>
       {showArgumentsDetail && (

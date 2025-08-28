@@ -123,7 +123,7 @@ export default function MobileList({ data, loading }) {
     }
   }, [data]);
 
-  if (loading) {
+  if (loading && data?.length === 0) {
     return <TableLoading />;
   }
 
