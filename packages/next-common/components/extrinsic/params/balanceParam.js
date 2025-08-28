@@ -11,7 +11,7 @@ function SimpleBalanceParam({ title, setValue }) {
     (data) => {
       const bn = new BigNumber(inputText);
 
-      if (bn.isNaN() || bn.isLessThan(0)) {
+      if (bn.isNaN() || bn.isLessThan(0) || !bn.integerValue().eq(bn)) {
         setValue({
           isValid: false,
           data,
@@ -21,7 +21,7 @@ function SimpleBalanceParam({ title, setValue }) {
 
       setValue({
         isValid: true,
-        data: bn.integerValue().toString(),
+        data: bn.toFixed(),
       });
     },
     [setValue, inputText],
@@ -53,7 +53,7 @@ function NativeTokenBalanceParam({ title, setValue }) {
 
       setValue({
         isValid: true,
-        data: bn.times(Math.pow(10, decimals)).integerValue().toString(),
+        data: bn.times(Math.pow(10, decimals)).integerValue().toFixed(),
       });
     },
     [setValue, decimals, inputText],
