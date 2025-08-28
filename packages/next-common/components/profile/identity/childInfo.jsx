@@ -12,14 +12,18 @@ export default function ChildInfo({ parentAddress, subName, className = "" }) {
     <>
       <Divider className="my-4" />
       <IdentityPropListWrapper className={cn("space-y-2 ml-0", className)}>
-        <div className="flex">
-          <IdentityPropListLabel>Parent</IdentityPropListLabel>
+        <div className="flex max-sm:justify-between">
+          <IdentityPropListLabel className="max-sm:w-auto">
+            Parent
+          </IdentityPropListLabel>
           <IdentityPropListValue>
             <AddressUser className="ml-1.5" add={parentAddress} />
           </IdentityPropListValue>
         </div>
-        <div className="flex">
-          <IdentityPropListLabel>Sub name</IdentityPropListLabel>
+        <div className="flex max-sm:justify-between">
+          <IdentityPropListLabel className="max-sm:w-auto">
+            Sub name
+          </IdentityPropListLabel>
           <IdentityPropListValue>{subName}</IdentityPropListValue>
         </div>
       </IdentityPropListWrapper>
