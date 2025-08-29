@@ -17,18 +17,18 @@ import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import InsufficientBalanceTips from "next-common/components/summary/newProposalQuickStart/common/insufficientBalanceTips";
 
-const EMPTY_HASH = blake2AsHex("0x");
+const EMPTY_HASH = blake2AsHex("");
 
 const EMPTY_PROPOSAL = {
   encodedHash: EMPTY_HASH,
   encodedLength: 0,
-  encodedProposal: "0x",
+  encodedProposal: "",
   notePreimageTx: null,
 };
 
 export function getState(api, proposal) {
   let encodedHash = EMPTY_HASH;
-  let encodedProposal = "0x";
+  let encodedProposal = "";
   let encodedLength = 0;
   let notePreimageTx = null;
 
@@ -85,11 +85,13 @@ export function NewPreimageInnerPopup({ onCreated = noop }) {
             defaultMethodName="setCode"
             setValue={setProposal}
           />
-          <ExtrinsicInfo
-            preimageHash={encodedHash}
-            callData={encodedProposal}
-            preimageLength={encodedLength || 0}
-          />
+          {encodedProposal && (
+            <ExtrinsicInfo
+              preimageHash={encodedHash}
+              callData={encodedProposal}
+              preimageLength={encodedLength || 0}
+            />
+          )}
         </div>
         <InsufficientBalanceTips byteLength={encodedLength} onlyPreimage />
       </div>
@@ -163,11 +165,13 @@ export function useNewPrerimageForm() {
               setValue={setProposal}
             />
           </div>
-          <ExtrinsicInfo
-            preimageHash={encodedHash}
-            callData={encodedProposal}
-            preimageLength={encodedLength || 0}
-          />
+          {encodedProposal && (
+            <ExtrinsicInfo
+              preimageHash={encodedHash}
+              callData={encodedProposal}
+              preimageLength={encodedLength || 0}
+            />
+          )}
           <InsufficientBalanceTips byteLength={encodedLength} />
         </>
       );
