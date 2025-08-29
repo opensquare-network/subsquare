@@ -13,6 +13,7 @@ import useValidFromField from "../fields/useValidFromField";
 import { useChainSettings } from "next-common/context/chain";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import InsufficientBalanceTips from "next-common/components/summary/newProposalQuickStart/common/insufficientBalanceTips";
+import ExtrinsicInfo from "../../newPreimagePopup/info";
 
 const getAssetKindParam = () => {
   return {
@@ -96,11 +97,8 @@ function PopupContent() {
     useAddressComboField();
   const { value: validFrom, component: validFromField } = useValidFromField();
 
-  const { notePreimageTx, encodedLength } = useSpendDotOnAssetHubPreimageTx(
-    inputBalance,
-    beneficiary,
-    validFrom,
-  );
+  const { notePreimageTx, encodedLength, encodedProposal, encodedHash } =
+    useSpendDotOnAssetHubPreimageTx(inputBalance, beneficiary, validFrom);
 
   return (
     <>
@@ -113,6 +111,13 @@ function PopupContent() {
         </InfoMessage>
       </div>
       {validFromField}
+      {encodedProposal && (
+        <ExtrinsicInfo
+          preimageHash={encodedHash}
+          callData={encodedProposal}
+          preimageLength={encodedLength || 0}
+        />
+      )}
       <InsufficientBalanceTips byteLength={encodedLength} onlyPreimage />
       <div className="flex justify-end">
         <NotePreimageButton notePreimageTx={notePreimageTx} />

@@ -14,6 +14,7 @@ import useBalanceField from "next-common/components/preImages/createPreimagePopu
 import NotePreimageButton from "../notePreimageButton";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import InsufficientBalanceTips from "next-common/components/summary/newProposalQuickStart/common/insufficientBalanceTips";
+import ExtrinsicInfo from "../../newPreimagePopup/info";
 
 const getAssetKindParam = () => {
   return {
@@ -97,7 +98,7 @@ export default function NewFellowshipTreasuryProposalPopup() {
     useAddressComboField();
   const { value: validFrom, component: validFromField } = useValidFromField();
 
-  const { notePreimageTx, encodedLength } =
+  const { notePreimageTx, encodedLength, encodedProposal, encodedHash } =
     useAssetHubNativeTreasuryNotePreimageTx(
       inputBalance,
       beneficiary,
@@ -114,7 +115,16 @@ export default function NewFellowshipTreasuryProposalPopup() {
           Please input an AssetHub address as the beneficiary
         </InfoMessage>
       </div>
-      <AdvanceSettings>{validFromField}</AdvanceSettings>
+      <AdvanceSettings>
+        {validFromField}
+        {encodedProposal && (
+          <ExtrinsicInfo
+            preimageHash={encodedHash}
+            callData={encodedProposal}
+            preimageLength={encodedLength || 0}
+          />
+        )}
+      </AdvanceSettings>
       <InsufficientBalanceTips byteLength={encodedLength} onlyPreimage />
       <div className="flex justify-end">
         <NotePreimageButton notePreimageTx={notePreimageTx} />
