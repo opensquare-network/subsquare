@@ -17,18 +17,18 @@ import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import InsufficientBalanceTips from "next-common/components/summary/newProposalQuickStart/common/insufficientBalanceTips";
 
-const EMPTY_HASH = blake2AsHex("");
+const EMPTY_HASH = blake2AsHex("0x");
 
 const EMPTY_PROPOSAL = {
   encodedHash: EMPTY_HASH,
   encodedLength: 0,
-  encodedProposal: null,
+  encodedProposal: "0x",
   notePreimageTx: null,
 };
 
 export function getState(api, proposal) {
   let encodedHash = EMPTY_HASH;
-  let encodedProposal = null;
+  let encodedProposal = "0x";
   let encodedLength = 0;
   let notePreimageTx = null;
 
@@ -50,8 +50,10 @@ export function getState(api, proposal) {
 export function NewPreimageInnerPopup({ onCreated = noop }) {
   const { onClose } = usePopupParams();
   const api = useContextApi();
-  const [{ encodedHash, encodedLength, notePreimageTx }, setState] =
-    useState(EMPTY_PROPOSAL);
+  const [
+    { encodedHash, encodedLength, encodedProposal, notePreimageTx },
+    setState,
+  ] = useState(EMPTY_PROPOSAL);
   const disabled = !api || !notePreimageTx;
   const dispatch = useDispatch();
 
@@ -85,6 +87,7 @@ export function NewPreimageInnerPopup({ onCreated = noop }) {
           />
           <ExtrinsicInfo
             preimageHash={encodedHash}
+            callData={encodedProposal}
             preimageLength={encodedLength || 0}
           />
         </div>
@@ -121,8 +124,10 @@ export default function NewPreimagePopup({ onClose, onCreated = noop }) {
 
 export function useNewPrerimageForm() {
   const api = useContextApi();
-  const [{ encodedHash, encodedLength, notePreimageTx }, setState] =
-    useState(EMPTY_PROPOSAL);
+  const [
+    { encodedHash, encodedLength, encodedProposal, notePreimageTx },
+    setState,
+  ] = useState(EMPTY_PROPOSAL);
   const [callState, setCallState] = useState();
 
   const setProposal = useCallback(
@@ -160,6 +165,7 @@ export function useNewPrerimageForm() {
           </div>
           <ExtrinsicInfo
             preimageHash={encodedHash}
+            callData={encodedProposal}
             preimageLength={encodedLength || 0}
           />
           <InsufficientBalanceTips byteLength={encodedLength} />
@@ -168,7 +174,14 @@ export function useNewPrerimageForm() {
     }
 
     return extrinsicComponent;
-  }, [api, callState, encodedHash, encodedLength, setProposal]);
+  }, [
+    api,
+    callState,
+    encodedHash,
+    encodedLength,
+    encodedProposal,
+    setProposal,
+  ]);
 
   return {
     encodedHash,
