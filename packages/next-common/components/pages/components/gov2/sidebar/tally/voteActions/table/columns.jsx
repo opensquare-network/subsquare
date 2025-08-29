@@ -12,7 +12,7 @@ function MobileRow({ label, children }) {
 
 export const mobileColumns = [
   {
-    render: ({ who }) => <AddressUser key="user" add={who} />,
+    render: ({ who }) => <AddressUser key="user" add={who} link="/votes" />,
   },
   {
     render: ({ type, indexer, data }) => (
@@ -54,7 +54,7 @@ export const desktopColumns = [
   {
     name: "Account",
     className: "w-[240px]",
-    render: ({ who }) => <AddressUser key="user" add={who} />,
+    render: ({ who }) => <AddressUser key="user" add={who} link="/votes" />,
   },
   {
     name: "Action",
