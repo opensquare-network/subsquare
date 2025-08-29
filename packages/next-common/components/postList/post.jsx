@@ -63,9 +63,9 @@ export default function Post({ data, type }) {
         businessCategory.openTechCommitteeProposals,
       ].includes(type)
     ) {
-      return getMotionStateArgs(data.onchainData.state);
+      return getMotionStateArgs(data?.onchainData?.state);
     }
-  }, [data.onchainData.state, type]);
+  }, [data?.onchainData?.state, type]);
 
   const elapseIcon = useMemo(() => {
     if (
