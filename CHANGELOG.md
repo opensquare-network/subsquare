@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+# 5.3.2
+
+Date:
+2025-08-29. [Code diff](https://github.com/opensquare-network/subsquare/compare/ed81cd8a08c3c527b396203a7e14e994a69d898c...a8888fae0b85cfd6d119f6b553e8230a263d3c63).
+
+- Support assethub migration for paseo testnet.
+- Show more identity info on the profile page including direct identity, sub identities, judgments.
+- Show call data when users are composing a preimage.
+- Show remarks in nested calls wrapped in batch, multisig and other calls on the referendum detail page.
+- Fix the page crash due to referenda/democracy switch on the delegation page.
+- Fix the bug that popup search input is not focused on firefox.
+- Code refactor and style improvements.
+
 # 5.3.1
 
 Date:
