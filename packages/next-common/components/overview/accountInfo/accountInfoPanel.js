@@ -26,8 +26,6 @@ import { isNil } from "lodash-es";
 import Link from "next/link";
 import Button from "next-common/lib/button";
 import AccountPanelQuickAccess from "./components/accountPanelQuickAccess";
-import AccountUnlockBalancePrompt from "./components/accountUnlockBalancePrompt";
-import WithPallet from "next-common/components/common/withPallet";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Avatar from "next-common/components/avatar";
 import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
@@ -309,9 +307,6 @@ export default function AccountInfoPanel() {
       <Divider />
       <AccountBalances />
       <ExtensionUpdatePrompt />
-      <WithPallet pallet="referenda">
-        <AccountUnlockBalancePrompt />
-      </WithPallet>
       <AccountPanelScrollPrompt />
     </NeutralPanel>
   );

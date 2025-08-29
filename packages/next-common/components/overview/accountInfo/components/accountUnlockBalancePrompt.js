@@ -4,30 +4,38 @@ import { useChainSettings } from "next-common/context/chain";
 import Link from "next/link";
 import useFetchMyReferendaVoting from "next-common/components/myvotes/referenda/useFetchMyReferendaVoting";
 import { createGlobalState } from "react-use";
-import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
-import { colorStyle, PromptTypes } from "next-common/components/scrollPrompt";
-import { SystemClose } from "@osn/icons/subsquare";
+import { PromptTypes } from "next-common/components/scrollPrompt";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useSelector } from "react-redux";
 import { isLoadingReferendaSummarySelector } from "next-common/store/reducers/myOnChainData/referenda/myReferendaVoting";
+import WithPallet from "next-common/components/common/withPallet";
+import { isEmpty } from "lodash-es";
+import { ScrollPromptItemWrapper } from "next-common/components/scrollPrompt";
 
 const useMode = createGlobalState(true);
-export default function AccountUnlockBalancePrompt() {
+
+export default function AccountUnlockBalancePrompt({ onClose }) {
+  return (
+    <WithPallet pallet="referenda">
+      <AccountUnlockBalancePromptImpl onClose={onClose} />
+    </WithPallet>
+  );
+}
+
+function useAccountUnlockBalancePrompt() {
   const [visible, setVisible] = useMode(true);
   useFetchMyReferendaVoting();
   const { unlockBalance } = useVoteBalance();
   const { symbol, decimals } = useChainSettings();
   const isLoading = useSelector(isLoadingReferendaSummarySelector);
-  if (isLoading || unlockBalance.isZero() || !visible) {
-    return null;
-  }
 
-  return (
-    <GreyPanel
-      className="text14Medium py-2.5 px-4 justify-between"
-      style={colorStyle[PromptTypes]}
-    >
-      <div className="text-textSecondary">
+  if (isLoading || unlockBalance.isZero() || !visible) {
+    return {};
+  }
+  return {
+    key: "AccountUnlockBalancePromptImpl",
+    message: (
+      <div>
         You have&nbsp;
         {
           <ValueDisplay
@@ -40,15 +48,27 @@ export default function AccountUnlockBalancePrompt() {
         <Link className="underline text14Bold " href="/account/votes">
           here
         </Link>
-        .
       </div>
-      <SystemClose
-        className="w-5 h-5 text-textSecondary"
-        role="button"
-        onClick={() => {
-          setVisible(false);
-        }}
-      />
-    </GreyPanel>
+    ),
+    type: PromptTypes.INFO,
+    close: () => setVisible(false),
+  };
+}
+
+function AccountUnlockBalancePromptImpl({ onClose }) {
+  const prompt = useAccountUnlockBalancePrompt();
+  if (isEmpty(prompt)) {
+    return null;
+  }
+  return (
+    <ScrollPromptItemWrapper
+      prompt={{
+        ...prompt,
+        close: () => {
+          onClose?.();
+          prompt?.close();
+        },
+      }}
+    />
   );
 }

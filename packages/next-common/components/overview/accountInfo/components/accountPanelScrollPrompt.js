@@ -7,6 +7,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { animate } from "framer-motion";
 import { useWindowSize } from "react-use";
 import { Fragment } from "react";
+import AccountUnlockBalancePrompt from "./accountUnlockBalancePrompt";
 
 const ITEM_HEIGHT = 40;
 const MOBILE_ITEM_HEIGHT = 60;
@@ -18,6 +19,7 @@ const promptComponents = [
   IdentityPrompt,
   MultisigPrompt,
   AssetHubManagePrompt,
+  AccountUnlockBalancePrompt,
 ];
 
 export default function AccountPanelScrollPrompt() {
@@ -46,9 +48,9 @@ export default function AccountPanelScrollPrompt() {
 
   const marginTop = useMemo(() => {
     if (isMobile) {
-      return (MOBILE_ITEM_HEIGHT + ITEM_GAP) * 1;
+      return MOBILE_ITEM_HEIGHT + ITEM_GAP;
     }
-    return (ITEM_HEIGHT + ITEM_GAP) * 1;
+    return ITEM_HEIGHT + ITEM_GAP;
   }, [isMobile]);
 
   const indexRef = useRef(0);
