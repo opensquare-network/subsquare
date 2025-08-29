@@ -71,14 +71,6 @@ function DefaultOverviewPage() {
     },
   ];
 
-  if (chain === "interlay" || chain === "kintsugi") {
-    tabs.push({
-      value: "escrow",
-      label: "Escrow",
-      url: "/escrow",
-    });
-  }
-
   if (isCentrifugeChain(chain)) {
     return (
       <BasicDataProvider>
