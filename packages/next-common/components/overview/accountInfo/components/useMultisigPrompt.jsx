@@ -1,4 +1,7 @@
-import { PromptTypes } from "next-common/components/scrollPrompt";
+import {
+  PromptTypes,
+  ScrollPromptItemWrapper,
+} from "next-common/components/scrollPrompt";
 import { CACHE_KEY } from "next-common/utils/constants";
 import { useCookieValue } from "next-common/utils/hooks/useCookieValue";
 import Link from "next/link";
@@ -8,6 +11,7 @@ import useExplorerMultisigHistory from "next-common/hooks/multisig/useExplorerMu
 import useMultisigAccount from "next-common/hooks/multisig/useMultisigAccount";
 import { useChain } from "next-common/context/chain";
 import { useRouter } from "next/router";
+import { isEmpty } from "lodash-es";
 
 export default function useMultisigPrompt() {
   const [visible, setVisible] = useCookieValue(
@@ -53,4 +57,22 @@ export default function useMultisigPrompt() {
     setVisible,
     visible,
   ]);
+}
+
+export function MultisigPrompt({ onClose }) {
+  const prompt = useMultisigPrompt();
+  if (isEmpty(prompt)) {
+    return null;
+  }
+  return (
+    <ScrollPromptItemWrapper
+      prompt={{
+        ...prompt,
+        close: () => {
+          onClose?.();
+          prompt?.close();
+        },
+      }}
+    />
+  );
 }

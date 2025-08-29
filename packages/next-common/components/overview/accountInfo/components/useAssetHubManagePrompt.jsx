@@ -1,14 +1,18 @@
-import { PromptTypes } from "next-common/components/scrollPrompt";
-import { useChain } from "next-common/context/chain";
+import {
+  PromptTypes,
+  ScrollPromptItemWrapper,
+} from "next-common/components/scrollPrompt";
 import { CACHE_KEY } from "next-common/utils/constants";
 import { useCookieValue } from "next-common/utils/hooks/useCookieValue";
 import Chains from "next-common/utils/consts/chains";
 import useAssetsFromAssetHub from "../hook/useAssetsFromAssetHub";
 import Link from "next/link";
 import { useMemo } from "react";
+import { isEmpty } from "lodash-es";
+import { OnlyChains } from "next-common/components/common/onlyChain";
+import { AssetHubMetadataProvider } from "../context/assetHubMetadataContext";
 
-export default function useAssetHubManagePrompt() {
-  const chain = useChain();
+function useAssetHubManagePrompt() {
   const [visible, setVisible] = useCookieValue(
     CACHE_KEY.assetHubPromptVisible,
     true,
@@ -18,7 +22,7 @@ export default function useAssetHubManagePrompt() {
   const assetsAmount = assets?.length || 0;
 
   return useMemo(() => {
-    if (!visible || Chains.polkadot !== chain || !assetsAmount) {
+    if (!visible || !assetsAmount) {
       return {};
     }
     return {
@@ -36,5 +40,33 @@ export default function useAssetHubManagePrompt() {
       type: PromptTypes.NEUTRAL,
       close: () => setVisible(false, { expires: 15 }),
     };
-  }, [assetsAmount, chain, setVisible, visible]);
+  }, [assetsAmount, setVisible, visible]);
+}
+
+export default function AssetHubManagePrompt({ onClose }) {
+  return (
+    <OnlyChains chains={[Chains.polkadex, Chains.kusama]}>
+      <AssetHubMetadataProvider>
+        <AssetHubManagePromptImpl onClose={onClose} />
+      </AssetHubMetadataProvider>
+    </OnlyChains>
+  );
+}
+
+function AssetHubManagePromptImpl({ onClose }) {
+  const prompt = useAssetHubManagePrompt();
+  if (isEmpty(prompt)) {
+    return null;
+  }
+  return (
+    <ScrollPromptItemWrapper
+      prompt={{
+        ...prompt,
+        close: () => {
+          onClose?.();
+          prompt?.close();
+        },
+      }}
+    />
+  );
 }
