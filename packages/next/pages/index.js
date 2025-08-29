@@ -10,7 +10,6 @@ import OverviewSummary from "next-common/components/summary/overviewSummary";
 import AllianceOverviewSummary from "next-common/components/summary/allianceOverviewSummary";
 import CentrifugeOverviewSummary from "next-common/components/summary/centrifugeOverviewSummary";
 import OffChainVoting from "next-common/components/summary/externalInfo/offChainVoting";
-import Bounties from "next-common/components/summary/externalInfo/bounties";
 import { hasDefinedBounties } from "next-common/utils/summaryExternalInfo";
 import { HeadContent, TitleExtra } from "next-common/components/overview";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
@@ -52,7 +51,6 @@ function ExternalInfo() {
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-[16px] max-md:grid-cols-1">
         <OffChainVoting />
-        <Bounties />
       </div>
       <ConfirmingReferendaStats />
       <CoretimeStats />
