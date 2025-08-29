@@ -295,7 +295,7 @@ export function AccountHead({ width }) {
   );
 }
 
-export function CommonAccountInfoPanel() {
+export default function AccountInfoPanel() {
   const { width } = useWindowSize();
 
   if (isNil(width)) {
@@ -315,8 +315,4 @@ export function CommonAccountInfoPanel() {
       <AccountPanelScrollPrompt />
     </NeutralPanel>
   );
-}
-
-export default function AccountInfoPanel() {
-  return <CommonAccountInfoPanel />;
 }
