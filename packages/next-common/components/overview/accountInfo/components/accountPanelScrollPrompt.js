@@ -72,12 +72,12 @@ export default function AccountPanelScrollPrompt() {
       }
       const scrollTop = wrapperRef.current?.scrollTop;
 
-      animate(0, 100, {
+      animate(scrollTop, scrollTop + marginTop, {
         duration: 1,
         times: [0, 1],
-        onUpdate: (v) => {
+        onUpdate: (top) => {
           wrapperRef.current?.scrollTo({
-            top: (v / 100) * marginTop + scrollTop,
+            top: top,
           });
         },
       });
