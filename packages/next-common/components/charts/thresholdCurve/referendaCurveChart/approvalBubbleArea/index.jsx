@@ -6,7 +6,7 @@ import {
 } from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
 import BubbleItem from "./bubbleItem";
 import useShowVoteActions from "next-common/hooks/useShowVoteActions";
-import { clamp, get, last } from "lodash-es";
+import { clamp, inRange, last } from "lodash-es";
 
 export default function ApprovalBubbleArea(props) {
   const showVoteActions = useShowVoteActions();
@@ -16,7 +16,8 @@ export default function ApprovalBubbleArea(props) {
   return <ApprovalBubbleAreaImpl {...props} />;
 }
 
-const useApprovalBubbleData = (maxX, historyApprovalData) => {
+const useApprovalBubbleData = (rangeData, historyApprovalData) => {
+  const maxX = rangeData[1] - rangeData[0];
   const beginheight = useBeginHeight();
   const blockStep = useBlockSteps();
 
@@ -39,28 +40,37 @@ const useApprovalBubbleData = (maxX, historyApprovalData) => {
         const { data, type, who } = item;
         const blockHeight = item.indexer.blockHeight;
         const steps = (blockHeight - beginheight) / blockStep;
+        const x = steps - rangeData[0];
+
         return {
           data,
           type,
           who,
           y: getY(steps),
-          x: clamp((steps / maxX) * 100, 0, 100),
+          x: clamp((x / maxX) * 100, 0, 100) + 1,
+          index: steps,
+          hidden: !inRange(steps, rangeData[0], rangeData[1]),
         };
       });
-  }, [beginheight, blockStep, historyApprovalData, loading, maxX, voteActions]);
+  }, [
+    beginheight,
+    blockStep,
+    historyApprovalData,
+    loading,
+    maxX,
+    rangeData,
+    voteActions,
+  ]);
 };
 
 function ApprovalBubbleAreaImpl({
   chartArea,
-  scales,
   historyApprovalData,
   showAyeNay,
   visible,
+  rangeData,
 }) {
-  const approvalData = useApprovalBubbleData(
-    get(scales, ["x", "max"], 0),
-    historyApprovalData,
-  );
+  const approvalData = useApprovalBubbleData(rangeData, historyApprovalData);
   const style = useMemo(() => {
     const {
       left = 0,
@@ -85,13 +95,14 @@ function ApprovalBubbleAreaImpl({
       className="top-0 left-0 absolute w-full h-full  pointer-events-none select-none"
     >
       <div className="w-full h-full relative">
-        {approvalData?.map(({ x, y, who, data, type }, index) => {
+        {approvalData?.map(({ x, y, who, data, type, hidden }, index) => {
           return (
             <BubbleItem
               key={index}
               leftPositionPercent={x + "%"}
               bottomPositionPercent={y + "%"}
               who={who}
+              hidden={hidden}
               data={data}
               type={type}
             />
