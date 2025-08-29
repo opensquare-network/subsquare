@@ -44,7 +44,7 @@ export default function PopupContent({ defaultTargetAddress, targetDisabled }) {
 
   const { getTxFuncForSubmit, getTxFuncForFee } = useTxBuilder(
     (toastError) => {
-      if (selectedTracks?.length === 0) {
+      if (!selectedTracks || selectedTracks?.length === 0) {
         toastError("Please select at least one track");
         return;
       }
