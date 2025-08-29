@@ -8,7 +8,7 @@ import {
   incPreImagesTrigger,
   preImagesTriggerSelector,
 } from "next-common/store/reducers/preImagesSlice";
-import FieldLoading from "../icons/fieldLoading";
+import FieldLoading from "next-common/components/icons/fieldLoading";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import DataList from "next-common/components/dataList";
 import { Deposit, Hash, Proposal, Status } from "./fields";
