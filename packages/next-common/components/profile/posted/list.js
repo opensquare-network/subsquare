@@ -18,6 +18,8 @@ import DemocracyExternalProposalsPostList from "next-common/components/postList/
 import DemocracyPublicProposalsPostList from "next-common/components/postList/democracyPublicProposalsPostList";
 import CouncilMotionsPostList from "next-common/components/postList/councilMotionsPostList";
 import TechCommProposalsPostList from "next-common/components/postList/techCommProposalsPostList";
+import DiscussionPostList from "next-common/components/postList/discussionPostList";
+import PolkassemblyDiscussionPostList from "next-common/components/postList/polkassemblyDiscussionPostList";
 
 const InnerList = ({ secondCategory, data, pagination }) => {
   const link = "/" + secondCategory.routePath;
@@ -136,6 +138,24 @@ const InnerList = ({ secondCategory, data, pagination }) => {
         items={items}
         pagination={pagination}
         link={link}
+      />
+    );
+  }
+  if (secondCategory.categoryId === businessCategory.discussions) {
+    return (
+      <DiscussionPostList
+        titleCount={titleCount}
+        items={items}
+        pagination={pagination}
+      />
+    );
+  }
+  if (secondCategory.categoryId === businessCategory.polkassemblyDiscussions) {
+    return (
+      <PolkassemblyDiscussionPostList
+        titleCount={titleCount}
+        items={items}
+        pagination={pagination}
       />
     );
   }
