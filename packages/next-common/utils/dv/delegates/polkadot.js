@@ -48,7 +48,7 @@ export const polkadotDvDelegates = [
     address: "12mP4sjCfKbDyMRAEyLpkeHeoYtS5USY4x34n9NMwQrcEyoh", // Polkaworld
     slots: [
       { start: 19653280, end: 21157754, trackIds: treasuryTrackIds },
-      { start: 25571048, end: null, trackIds: cohort4TrackIds },
+      { start: 25571048, end: 27578561, trackIds: cohort4TrackIds },
     ],
   },
   {
@@ -90,14 +90,14 @@ export const polkadotDvDelegates = [
     address: "15KHTWdJyzyxaQbBNRmQN89KmFr1jPXXsPHM5Rxvd1Tkb2XZ", // KusDAO
     slots: [
       { start: 23364955, end: 25571026, trackIds: cohort3TrackIds }, // cohort 3
-      { start: 25571027, end: null, trackIds: cohort4TrackIds }, // cohort 4
+      { start: 25571027, end: 27578617, trackIds: cohort4TrackIds }, // cohort 4
     ],
   },
   {
     address: "13z9CiETVYCrxz3cghDuTyRGbaYQrwSyRnRcJX5iFbXvrwhT", // Polkadot Hungary
     slots: [
       { start: 23364955, end: 25571026, trackIds: cohort3TrackIds }, // cohort 3
-      { start: 25571027, end: null, trackIds: cohort4TrackIds }, // cohort 4
+      { start: 25571027, end: 27578617, trackIds: cohort4TrackIds }, // cohort 4
     ],
   },
   {
@@ -106,14 +106,14 @@ export const polkadotDvDelegates = [
   },
   {
     address: "14ZaBmSkr6JWf4fUDHbApqHBvbeeAEBSAARxgzXHcSruLELJ", // PERMANENCE DAO/DV
-    slots: [{ start: 25571026, end: null, trackIds: cohort3TrackIds }], // cohort 4
+    slots: [{ start: 25571026, end: 27578561, trackIds: cohort3TrackIds }], // cohort 4
   },
   {
     address: "13vYFRVn6d4e3vQtrFJppQKN9qhatbCLwci2JQdWuNoXw8i7", // Trustless Core
-    slots: [{ start: 25571060, end: null, trackIds: cohort4TrackIds }], // cohort 4
+    slots: [{ start: 25571060, end: 27578624, trackIds: cohort4TrackIds }], // cohort 4
   },
   {
     address: "13NCLd3foNpsv1huPDzvvfyKh37NEEkGFotZnP52CTR98YFJ", // JAM Implementers DAO
-    slots: [{ start: 25571091, end: null, trackIds: cohort4TrackIds }], // cohort 4
+    slots: [{ start: 25571091, end: 27578624, trackIds: cohort4TrackIds }], // cohort 4
   },
 ];
