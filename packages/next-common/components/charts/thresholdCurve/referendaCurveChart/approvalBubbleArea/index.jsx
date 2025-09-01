@@ -17,7 +17,7 @@ export default function ApprovalBubbleArea(props) {
 }
 
 const useApprovalBubbleData = (rangeData, historyApprovalData) => {
-  const maxX = rangeData[1] - rangeData[0];
+  const labelXLength = rangeData[1] - rangeData[0];
   const beginheight = useBeginHeight();
   const blockStep = useBlockSteps();
 
@@ -39,17 +39,18 @@ const useApprovalBubbleData = (rangeData, historyApprovalData) => {
       .map((item) => {
         const { data, type, who } = item;
         const blockHeight = item.indexer.blockHeight;
-        const steps = (blockHeight - beginheight) / blockStep;
-        const x = steps - rangeData[0];
+        const currentStep = (blockHeight - beginheight) / blockStep;
 
         return {
           data,
           type,
           who,
-          y: getY(steps),
-          x: clamp((x / maxX) * 100, 0, 100) + 1,
-          index: steps,
-          hidden: !inRange(steps, rangeData[0], rangeData[1]),
+          y: getY(currentStep),
+          x:
+            clamp(((currentStep - rangeData[0]) / labelXLength) * 100, 0, 100) +
+            1,
+          index: currentStep,
+          hidden: !inRange(currentStep, rangeData[0], rangeData[1]),
         };
       });
   }, [
@@ -57,7 +58,7 @@ const useApprovalBubbleData = (rangeData, historyApprovalData) => {
     blockStep,
     historyApprovalData,
     loading,
-    maxX,
+    labelXLength,
     rangeData,
     voteActions,
   ]);

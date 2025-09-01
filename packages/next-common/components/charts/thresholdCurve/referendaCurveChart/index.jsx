@@ -40,10 +40,7 @@ export default function ReferendaCurveChart({ showVoter, showAyeNay }) {
     [rangeData[0], rangeData[1] + 1],
   );
 
-  const { options, tooltipData } = useChartTooltipPlugin(
-    defaultOptions,
-    rangeData,
-  );
+  const { options, tooltipData } = useChartTooltipPlugin(defaultOptions);
 
   const style = useMemo(() => {
     const { left = 0, right = 0 } = chartRef.current?.chartArea || {};

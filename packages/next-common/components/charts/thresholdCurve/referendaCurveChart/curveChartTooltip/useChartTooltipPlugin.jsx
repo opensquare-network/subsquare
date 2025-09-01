@@ -1,4 +1,4 @@
-import { find, get, merge, isEqual } from "lodash-es";
+import { find, get, merge } from "lodash-es";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import {
@@ -51,8 +51,6 @@ export default function useChartTooltipPlugin(options) {
         const next = {
           data: {
             dataIndex,
-            title: tooltip.title[0],
-            afterBody: tooltip.afterBody,
             items: [
               {
                 label: "Approval",
@@ -83,7 +81,10 @@ export default function useChartTooltipPlugin(options) {
             align: tooltip.yAlign,
           },
         };
-        return isEqual(prev, next) ? prev : next;
+        return prev?.data.dataIndex === dataIndex &&
+          prev?.position?.x === next?.position?.x
+          ? prev
+          : next;
       });
     },
     [chainSettings],
