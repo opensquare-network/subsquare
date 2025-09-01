@@ -13,6 +13,7 @@ import Slider from "next-common/components/slider";
 import useCurveChartOptions from "./useCurveChartOptions";
 import useReferendaCurveChartData from "./useReferendaCurveChartData";
 import CurveChartTooltip from "./curveChartTooltip";
+import { debounce } from "lodash-es";
 
 export default function ReferendaCurveChart({ showVoter, showAyeNay }) {
   const { referendumIndex } = useOnchainData();
@@ -51,6 +52,10 @@ export default function ReferendaCurveChart({ showVoter, showAyeNay }) {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chartRef.current?.chartArea, showAyeNay]);
+
+  const onAfterChange = debounce(() => {
+    setRanging(false);
+  }, [100]);
 
   return (
     <>
@@ -92,9 +97,7 @@ export default function ReferendaCurveChart({ showVoter, showAyeNay }) {
             onBeforeChange={() => {
               setRanging(true);
             }}
-            onAfterChange={() => {
-              setRanging(false);
-            }}
+            onAfterChange={onAfterChange}
             onChange={setRangeData}
             formatValue={() => null}
           />
