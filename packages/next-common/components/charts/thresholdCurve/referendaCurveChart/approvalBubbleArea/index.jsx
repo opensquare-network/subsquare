@@ -7,6 +7,7 @@ import {
 import BubbleItem from "./bubbleItem";
 import useShowVoteActions from "next-common/hooks/useShowVoteActions";
 import { clamp, inRange, last } from "lodash-es";
+import { cn } from "next-common/utils";
 
 export default function ApprovalBubbleArea(props) {
   const showVoteActions = useShowVoteActions();
@@ -86,14 +87,16 @@ function ApprovalBubbleAreaImpl({
       paddingRight: showAyeNay ? `calc(100% - ${right}px)` : "0px",
       paddingTop: `${top}px`,
       paddingBottom: `${Math.max(bottom - height)}px`,
-      visibility: visible ? "visible" : "hidden",
     };
-  }, [chartArea, showAyeNay, visible]);
+  }, [chartArea, showAyeNay]);
 
   return (
     <div
       style={style}
-      className="top-0 left-0 absolute w-full h-full  pointer-events-none select-none"
+      className={cn(
+        "top-0 left-0 absolute w-full h-full  pointer-events-none select-none",
+        !visible && "hidden",
+      )}
     >
       <div className="w-full h-full relative">
         {approvalData?.map(({ x, y, who, data, type, hidden }, index) => {

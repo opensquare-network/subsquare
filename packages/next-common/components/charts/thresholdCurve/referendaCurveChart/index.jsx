@@ -23,6 +23,7 @@ export default function ReferendaCurveChart({ showVoter, showAyeNay }) {
   const chartWrapper = useRef();
   const { labels, supportData, approvalData } = useReferendumCurveData();
   const [rangeData, setRangeData] = useState([0, labels.length]);
+  const [ranging, setRanging] = useState(false);
   const rangeLabel = labels.slice(rangeData[0], rangeData[1]);
 
   const { chartData, historyApprovalData } = useReferendaCurveChartData(
@@ -70,7 +71,7 @@ export default function ReferendaCurveChart({ showVoter, showAyeNay }) {
           {chartRef.current && (
             <ApprovalBubbleArea
               rangeData={rangeData}
-              visible={showVoter}
+              visible={showVoter && !ranging}
               showAyeNay={showAyeNay}
               chartArea={chartRef.current?.chartArea}
               historyApprovalData={historyApprovalData}
@@ -88,6 +89,12 @@ export default function ReferendaCurveChart({ showVoter, showAyeNay }) {
             min={0}
             max={labels.length}
             minDistance={50}
+            onBeforeChange={() => {
+              setRanging(true);
+            }}
+            onAfterChange={() => {
+              setRanging(false);
+            }}
             onChange={setRangeData}
             formatValue={() => null}
           />

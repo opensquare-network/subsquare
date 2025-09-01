@@ -65,6 +65,8 @@ export default function Slider({
   formatValue,
   defaultValue,
   minDistance = 0,
+  onBeforeChange,
+  onAfterChange,
 }) {
   const Thumb = useThumb({ formatValue });
   const [show, setShow] = useState(false);
@@ -81,6 +83,8 @@ export default function Slider({
       renderTrack={Track}
       renderThumb={Thumb}
       onChange={onChange}
+      onBeforeChange={onBeforeChange}
+      onAfterChange={onAfterChange}
     />
   );
 }
