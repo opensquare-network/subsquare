@@ -154,3 +154,26 @@ export default function ScrollPrompt({
     </div>
   );
 }
+
+export function ScrollPromptItemWrapper({ prompt }) {
+  const { width } = useWindowSize();
+  const isMobile = width < 768;
+  return (
+    <div
+      key={prompt.key}
+      className={cn(
+        "flex justify-between items-center rounded-lg",
+        "text14Medium py-2.5 px-4 flex-shrink-0",
+        isMobile ? "h-[60px]" : "h-[40px]",
+      )}
+      style={colorStyle[prompt.type || PromptTypes.NEUTRAL]}
+    >
+      <div>{prompt.message}</div>
+      <SystemClose
+        className="w-5 h-5 flex-shrink-0"
+        role="button"
+        onClick={prompt.close}
+      />
+    </div>
+  );
+}
