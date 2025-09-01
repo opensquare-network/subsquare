@@ -1,7 +1,32 @@
 import { cn } from "next-common/utils";
+import { useDecisionIndex } from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
+import { memo, useMemo } from "react";
+import { formatDays, formatHours } from "next-common/utils/timeFormat";
 
-export default function CurveChartTooltip({ visible, position, data }) {
-  if (!visible) {
+export default memo(function CurveChartTooltip({ position, data, rangeData }) {
+  const decisionIndex = useDecisionIndex();
+
+  const index = data?.dataIndex + rangeData[0];
+
+  const title = useMemo(() => {
+    if (index < decisionIndex) {
+      return `Preparing Time: ${formatHours(index)}`;
+    }
+    const x = index - decisionIndex;
+
+    const days = Math.floor(x / 24);
+    const restHs = x - days * 24;
+    let result = `Deciding Time: ${formatHours(x)}`;
+    if (days > 0) {
+      result += ` (${formatDays(days)} ${
+        restHs > 0 ? formatHours(restHs) : ""
+      })`;
+    }
+
+    return result;
+  }, [decisionIndex, index]);
+
+  if (!data) {
     return null;
   }
 
@@ -25,11 +50,11 @@ export default function CurveChartTooltip({ visible, position, data }) {
     >
       <div>
         <div>
-          <div className="text12Bold pb-1 whitespace-nowrap">{data?.title}</div>
+          <div className="text12Bold pb-1 whitespace-nowrap">{title}</div>
           <div className=" text12Normal space-y-0.5">
-            {data?.data?.map(({ label, value }) => (
+            {data?.items?.map(({ label, value }) => (
               <div className="flex whitespace-nowrap" key={label}>
-                <div className="">{label} :</div>
+                <div className="">{label} </div>
                 <div className="pl-1">{value}</div>
               </div>
             ))}
@@ -48,4 +73,4 @@ export default function CurveChartTooltip({ visible, position, data }) {
       </div>
     </div>
   );
-}
+});
