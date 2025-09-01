@@ -43,6 +43,11 @@ export const polkadotDvDelegates = [
       { start: 19653264, end: 21157744, trackIds: treasuryTrackIds },
       { start: 21172834, end: 22888566, trackIds: cohort2TrackIds }, // cohort 2
       { start: 23364976, end: 25570905, trackIds: cohort3TrackIds }, // cohort 3
+    ],
+  },
+  {
+    address: "11fx8xKPNd4zVSBxkpN8qhhaGEmNJvPgKqwhDATZQXs7dkM", // SAXEMBERG cohort 5
+    slots: [
       { start: 27578766, end: null, trackIds: cohort5TrackIds }, // cohort 5
     ],
   },
