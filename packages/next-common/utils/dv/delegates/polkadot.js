@@ -2,6 +2,7 @@ import {
   cohort2TrackIds,
   cohort3TrackIds,
   cohort4TrackIds,
+  cohort5TrackIds,
   treasuryTrackIds,
 } from "./common";
 
@@ -42,13 +43,14 @@ export const polkadotDvDelegates = [
       { start: 19653264, end: 21157744, trackIds: treasuryTrackIds },
       { start: 21172834, end: 22888566, trackIds: cohort2TrackIds }, // cohort 2
       { start: 23364976, end: 25570905, trackIds: cohort3TrackIds }, // cohort 3
+      { start: 27578766, end: null, trackIds: cohort5TrackIds }, // cohort 5
     ],
   },
   {
     address: "12mP4sjCfKbDyMRAEyLpkeHeoYtS5USY4x34n9NMwQrcEyoh", // Polkaworld
     slots: [
       { start: 19653280, end: 21157754, trackIds: treasuryTrackIds },
-      { start: 25571048, end: null, trackIds: cohort4TrackIds },
+      { start: 25571048, end: 27578561, trackIds: cohort4TrackIds },
     ],
   },
   {
@@ -90,30 +92,116 @@ export const polkadotDvDelegates = [
     address: "15KHTWdJyzyxaQbBNRmQN89KmFr1jPXXsPHM5Rxvd1Tkb2XZ", // KusDAO
     slots: [
       { start: 23364955, end: 25571026, trackIds: cohort3TrackIds }, // cohort 3
-      { start: 25571027, end: null, trackIds: cohort4TrackIds }, // cohort 4
+      { start: 25571027, end: 27578617, trackIds: cohort4TrackIds }, // cohort 4
     ],
   },
   {
     address: "13z9CiETVYCrxz3cghDuTyRGbaYQrwSyRnRcJX5iFbXvrwhT", // Polkadot Hungary
     slots: [
       { start: 23364955, end: 25571026, trackIds: cohort3TrackIds }, // cohort 3
-      { start: 25571027, end: null, trackIds: cohort4TrackIds }, // cohort 4
+      { start: 25571027, end: 27578617, trackIds: cohort4TrackIds }, // cohort 4
     ],
   },
   {
     address: "16Gpd7FDEMR6STGyzTqKie4Xd3AXWNCjr6K8W8kSaG1r4VTQ", // Le Nexus
-    slots: [{ start: 23364976, end: 25570912, trackIds: cohort3TrackIds }], // cohort 3
+    slots: [
+      { start: 23364976, end: 25570912, trackIds: cohort3TrackIds }, // cohort 3
+      { start: 27578766, end: null, trackIds: cohort5TrackIds }, // cohort 5
+    ],
   },
   {
     address: "14ZaBmSkr6JWf4fUDHbApqHBvbeeAEBSAARxgzXHcSruLELJ", // PERMANENCE DAO/DV
-    slots: [{ start: 25571026, end: null, trackIds: cohort3TrackIds }], // cohort 4
+    slots: [
+      { start: 25571026, end: 27578561, trackIds: cohort3TrackIds }, // cohort 4
+      { start: 27578579, end: null, trackIds: cohort5TrackIds }, // cohort 5
+    ],
   },
   {
     address: "13vYFRVn6d4e3vQtrFJppQKN9qhatbCLwci2JQdWuNoXw8i7", // Trustless Core
-    slots: [{ start: 25571060, end: null, trackIds: cohort4TrackIds }], // cohort 4
+    slots: [{ start: 25571060, end: 27578624, trackIds: cohort4TrackIds }], // cohort 4
+  },
+  {
+    address: "16m5p2WXqhRtYZFxzR4VUCBu9h9VDgg8AP1DzqUfduT4pdjD", // Trustless Core - Cohort 5
+    slots: [
+      { start: 27578820, end: null, trackIds: cohort5TrackIds }, // cohort 5
+    ],
+  },
+  {
+    address: "15EVjoms1KvEAvZaaNYYvnWHmc3Xg1Du3ECuARHyXdPyh1bs", // PBA Alumni Voting DAO
+    slots: [
+      { start: 27578820, end: null, trackIds: cohort5TrackIds }, // cohort 5
+    ],
+  },
+  {
+    address: "1313ciB4VzPeH3n1QKJym1brBmzRdfHBEctWipgH4uGsyF6n", // Polkadot Poland DAO
+    slots: [
+      { start: 27578868, end: null, trackIds: cohort5TrackIds }, // cohort 5
+    ],
   },
   {
     address: "13NCLd3foNpsv1huPDzvvfyKh37NEEkGFotZnP52CTR98YFJ", // JAM Implementers DAO
-    slots: [{ start: 25571091, end: null, trackIds: cohort4TrackIds }], // cohort 4
+    slots: [{ start: 25571091, end: 27578624, trackIds: cohort4TrackIds }], // cohort 4
+  },
+  {
+    address: "13du3Rt2CAV9L1v1QXTeYosuKaiBSYiPWpa2B4nxzfSdEAF1", // REEEEEEEEEE DAO
+    slots: [
+      { start: 27578579, end: null, trackIds: cohort5TrackIds }, // cohort 5
+    ],
+  },
+
+  {
+    address: "13pgGkebYEYGLhA7eR6sBM1boEvq86V9adonjswtYe1iDK2K", // The White Rabbit
+    slots: [
+      {
+        start: 27579005,
+        end: null,
+        trackIds: cohort5TrackIds,
+        role: "guardian",
+      }, // cohort 5
+    ],
+  },
+  {
+    address: "15oLanodWWweiZJSoDTEBtrX7oGfq6e8ct5y5E6fVRDPhUgj", // Daniel Olano
+    slots: [
+      {
+        start: 27578868,
+        end: null,
+        trackIds: cohort5TrackIds,
+        role: "guardian",
+      }, // cohort 5
+    ],
+  },
+  {
+    address: "1haHsRuCUCkbkPRmSrnfP8ps6cTaR2b5JCU5uNPUbxsVPbf", // Flez
+    slots: [
+      {
+        start: 27578931,
+        end: null,
+        trackIds: cohort5TrackIds,
+        role: "guardian",
+      }, // cohort 5
+    ],
+  },
+  {
+    address: "13Q56KnUmLNe8fomKD3hoY38ZwLKZgRGdY4RTovRNFjMSwKw", // Cybergov — AI Agents(Karim)
+    slots: [
+      {
+        start: 27579005,
+        end: null,
+        trackIds: cohort5TrackIds,
+        role: "guardian",
+      }, // cohort 5
+    ],
+  },
+  {
+    address: "14oJnm4XKoNbzR6B8eqRF8rrt5eHvVgKN79y16L6jQvvp3pt", // GoverNoun AI (Governance Agent) — AI Agent
+    slots: [
+      {
+        start: 27578931,
+        end: null,
+        trackIds: cohort5TrackIds,
+        role: "guardian",
+      }, // cohort 5
+    ],
   },
 ];
