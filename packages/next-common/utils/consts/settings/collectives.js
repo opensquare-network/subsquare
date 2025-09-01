@@ -58,6 +58,19 @@ const collectivesEndpoints = [
   },
 ];
 
+const collectivesTreasuryTracks = [
+  {
+    id: 3,
+    name: "Fellows",
+    max: 10 * 1000,
+  },
+  {
+    id: 4,
+    name: "Architects",
+    max: 1000 * 1000,
+  },
+];
+
 const collectives = {
   value: Chains.collectives,
   name: "Collectives",
@@ -78,6 +91,7 @@ const collectives = {
   hasIdentity: true,
   graphqlApiSubDomain: "dot-gh-api",
   description: "Collectives on Polkadot network.",
+  treasuryProposalTracks: collectivesTreasuryTracks,
   modules: mergeChainModules({
     fellowship: {
       core: true,
