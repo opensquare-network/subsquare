@@ -3,6 +3,7 @@ import { MarkdownPreviewer } from "@osn/previewer";
 import styled from "styled-components";
 import { cn } from "next-common/utils";
 import ToggleCollapsed from "next-common/toggleCollapsed";
+import { isHex, hexToString } from "@polkadot/util";
 
 const RemarkWrapper = styled.div`
   .markdown-body {
@@ -17,6 +18,11 @@ export default function extractRemarkMetaFields(remarks) {
   return remarks?.map((item, index) => {
     const key = `Remark ${multipleRemark ? index + 1 : ""}`;
 
+    let content = item || "";
+    if (isHex(content)) {
+      content = hexToString(content);
+    }
+
     return [
       key,
       <div
@@ -25,7 +31,7 @@ export default function extractRemarkMetaFields(remarks) {
       >
         <RemarkWrapper>
           <ToggleCollapsed collapsedHeight={300} moreLessHeightThreshold={800}>
-            <MarkdownPreviewer content={item || ""} />
+            <MarkdownPreviewer content={content} />
           </ToggleCollapsed>
         </RemarkWrapper>
       </div>,
