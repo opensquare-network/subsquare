@@ -9,6 +9,7 @@ export default function ViewTypeSelect({ setViewType = noop, className = "" }) {
   const { viewType } = useRelationshipViewTypeState();
   return (
     <Select
+      small
       className={className}
       options={[
         {

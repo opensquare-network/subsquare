@@ -73,8 +73,6 @@ export default function useDelegatorsRelationshipNode(sourceAddress = "") {
   const multisigAddress = useMaybeContextMultisigAddress(sourceAddress);
   const rootNode = createRootNode(sourceAddress, multisigAddress);
 
-  console.log("rootNode", rootNode);
-
   if (rootNode?.data) {
     rootNode.data.pure = (
       <DynamicPureProxy
