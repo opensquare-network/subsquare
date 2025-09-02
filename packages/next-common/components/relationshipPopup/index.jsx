@@ -1,44 +1,8 @@
 import { noop } from "@polkadot/util";
 import { cn } from "next-common/utils";
-import useConversionRelationshipNode from "next-common/hooks/useConversionRelationshipNode";
 import Popup from "../popup/wrapper/Popup";
-import Indications from "./indications";
-import Relationship from "./relationship";
-import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
-import { useMemo } from "react";
-import RelationshipProvider from "next-common/context/relationship";
-import AddressProvider, {
-  useContextAddress,
-} from "next-common/context/address";
-
-function NoRelationshipsTip() {
-  return (
-    <GreyPanel className="justify-start gap-x-2 text14Medium text-textSecondary py-2.5 px-4 max-w-full">
-      This account has no relationships with proxy, multisig and identity.
-    </GreyPanel>
-  );
-}
-
-function RelationshipImpl() {
-  const sourceAddress = useContextAddress();
-  const { isLoading, nodes, edges } =
-    useConversionRelationshipNode(sourceAddress);
-
-  const showNoRelationshipsTip = useMemo(() => {
-    if (isLoading) {
-      return false;
-    }
-
-    return nodes?.length === 1 && edges?.length === 0;
-  }, [isLoading, nodes, edges]);
-  return (
-    <RelationshipProvider isLoading={isLoading} nodes={nodes} edges={edges}>
-      {showNoRelationshipsTip && <NoRelationshipsTip />}
-      <Relationship />
-      <Indications />
-    </RelationshipProvider>
-  );
-}
+import AddressProvider from "next-common/context/address";
+import RelationshipContent from "./relationshipContent";
 
 export default function RelationshipPopup({
   title = "Relatives",
@@ -56,7 +20,7 @@ export default function RelationshipPopup({
       onClose={onClose}
     >
       <AddressProvider address={sourceAddress}>
-        <RelationshipImpl />
+        <RelationshipContent />
       </AddressProvider>
     </Popup>
   );

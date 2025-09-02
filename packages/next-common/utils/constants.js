@@ -187,4 +187,5 @@ export const RELATIONSHIP_NODE_TYPE = {
   Multisig: "Multisig",
   Proxy: "Proxy",
   Identity: "Identity",
+  Delegator: "Delegator",
 };

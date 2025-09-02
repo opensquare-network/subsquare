@@ -4,11 +4,13 @@ import {
   getSmoothStepPath,
   useNodesData,
 } from "@xyflow/react";
+import { isNil } from "lodash-es";
 import { DisplayUser } from "next-common/components/profile/bio";
 import { indications } from "next-common/components/relationshipPopup/indications";
 import Tooltip from "next-common/components/tooltip";
-import { rootNodeId } from "next-common/hooks/useConversionRelationshipNode";
+import { rootNodeId } from "next-common/hooks/useRelationshipNode";
 import styled from "styled-components";
+import { useTrackContent } from "../referenda/track/trackTag";
 
 const EdgeLabel = styled.div`
   position: absolute;
@@ -86,6 +88,7 @@ export default function StatusEdge({
                 source={sourceNode?.data?.address}
                 target={targetNode?.data?.address}
                 value={data.value}
+                rawData={data}
               />
             }
           >
@@ -123,6 +126,10 @@ function TooltipsContent({ type, ...rest }) {
 
   if (type === "Identity") {
     return <IdentityTipContent {...rest} />;
+  }
+
+  if (type === "Delegator") {
+    return <DelegatorTipContent {...rest} />;
   }
 
   return null;
@@ -167,4 +174,28 @@ function IdentityTipContent({ source, target, value }) {
       <DisplayUser id={target} className="flex text12Medium text-white" />
     </div>
   );
+}
+
+function DelegatorTipContent({ rawData }) {
+  if (isNil(rawData) || isNil(rawData.tracks)) {
+    return null;
+  }
+
+  const items = Array.from(rawData.tracks.values());
+
+  return (
+    <div className="flex gap-x-2 gap-y-1 items-center max-w-[400px] flex-wrap">
+      {items.map((track, index) => (
+        <div key={track.trackId}>
+          <TrackItem id={track.trackId} />
+          {index !== items.length - 1 && ","}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function TrackItem({ id }) {
+  const trackInfo = useTrackContent(id);
+  return <span>{trackInfo}</span>;
 }

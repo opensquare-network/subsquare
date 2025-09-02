@@ -6,6 +6,7 @@ export const indications = [
   { name: RELATIONSHIP_NODE_TYPE.Multisig, color: "var(--theme500)" },
   { name: RELATIONSHIP_NODE_TYPE.Proxy, color: "var(--green500)" },
   { name: RELATIONSHIP_NODE_TYPE.Identity, color: "var(--blue500)" },
+  { name: RELATIONSHIP_NODE_TYPE.Delegator, color: "var(--orange500)" },
 ];
 
 export default function Indications() {
