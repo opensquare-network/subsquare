@@ -2,12 +2,14 @@ import { SystemMenu } from "@osn/icons/subsquare";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { cn, toPrecision } from "next-common/utils";
 import { useState } from "react";
-import DVDetailPopup from "./DVDetailPopup";
 import { useDecentralizedVoicesVotes } from "next-common/hooks/referenda/useDecentralizedVoicesVotes";
 import { useDecentralizedVoicesValue } from "next-common/hooks/referenda/useDecentralizedVoicesValue";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { useDecentralizedVoicesPercentage } from "next-common/hooks/referenda/useDecentralizedVoicesPercentage";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const DVDetailPopup = dynamicPopup(() => import("./DVDetailPopup"));
 
 function Item({ label = "", value, percentage }) {
   const { decimals } = useChainSettings();
