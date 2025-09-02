@@ -35,7 +35,7 @@ const PREIMAGE_QUERY = gql`
 
 const apolloClient = new ApolloClient({
   ssrMode: true,
-  uri: process.env.NEXT_PUBLIC_GOV_TRACKER_API,
+  uri: process.env.NEXT_PUBLIC_INTIME_API,
   cache: new InMemoryCache(),
 });
 
