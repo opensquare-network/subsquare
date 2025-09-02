@@ -4,6 +4,7 @@ import useMaybeContextMultisigAddress from "./useMaybeContextMultisigAddress";
 import useDelegated, { useDelegators } from "./useRelativesDelegators";
 import {
   BadgeInfo,
+  DynamicPureProxy,
   createRootNode,
   createRelationship,
   EMPTY_RESULT,
@@ -20,6 +21,7 @@ function createDelegatorsRelationship(rootNode, delegators = []) {
       tracks: item.tracks,
       address: item.account,
       badge: <BadgeInfo address={item.account} />,
+      pure: <DynamicPureProxy address={item.account} />,
     }),
     edgeDataMapper: (item) => ({
       type: RELATIONSHIP_NODE_TYPE.Delegator,
@@ -44,6 +46,7 @@ function createDelegatedRelationship(rootNode, delegated = []) {
       tracks: item.tracks,
       address: item.account,
       badge: <BadgeInfo address={item.account} />,
+      pure: <DynamicPureProxy address={item.account} />,
     }),
     edgeDataMapper: (item) => ({
       type: RELATIONSHIP_NODE_TYPE.Delegated,
@@ -69,6 +72,17 @@ export default function useDelegatorsRelationshipNode(sourceAddress = "") {
 
   const multisigAddress = useMaybeContextMultisigAddress(sourceAddress);
   const rootNode = createRootNode(sourceAddress, multisigAddress);
+
+  console.log("rootNode", rootNode);
+
+  if (rootNode?.data) {
+    rootNode.data.pure = (
+      <DynamicPureProxy
+        address={sourceAddress}
+        className="inline-flex absolute h-5 right-2 top-2"
+      />
+    );
+  }
 
   if (!sourceAddress) {
     return EMPTY_RESULT;

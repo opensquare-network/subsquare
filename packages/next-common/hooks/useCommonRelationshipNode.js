@@ -1,6 +1,4 @@
-import useFetchProfileProxies, {
-  useIsPureProxy,
-} from "next-common/hooks/profile/useFetchProfileProxies";
+import useFetchProfileProxies from "next-common/hooks/profile/useFetchProfileProxies";
 import useSignatoryMultisig from "next-common/hooks/useSignatoryMultisig";
 import { RELATIONSHIP_NODE_TYPE } from "next-common/utils/constants";
 import useFetchIdentityInfo from "next-common/hooks/useFetchIdentityInfo";
@@ -12,18 +10,9 @@ import {
   BadgeInfo,
   createBadge,
   createRootNode,
+  DynamicPureProxy,
   EMPTY_RESULT,
 } from "./useRelationshipNode";
-
-function DynamicPureProxy({ address }) {
-  const { isPure, loading } = useIsPureProxy(address);
-
-  if (!isPure || loading) {
-    return null;
-  }
-
-  return <PureProxy />;
-}
 
 function createProxiesRelationship(rootNode, proxies = []) {
   return createRelationship({

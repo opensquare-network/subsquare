@@ -1,7 +1,7 @@
-import { useIsPureProxy } from "next-common/hooks/profile/useFetchProfileProxies";
 import useMultisigAddress from "next-common/hooks/useMultisigAddress";
 import Tooltip from "next-common/components/tooltip";
 import Link from "next/link";
+import { useIsPureProxy } from "./profile/useFetchProfileProxies";
 
 export const rootNodeId = "rootNode";
 export const nodeInitialWidth = 240;
@@ -46,14 +46,14 @@ export function PureProxy({ className = "" }) {
   );
 }
 
-export function DynamicPureProxy({ address }) {
+export function DynamicPureProxy({ address, className = "" }) {
   const { isPure, loading } = useIsPureProxy(address);
 
   if (!isPure || loading) {
     return null;
   }
 
-  return <PureProxy />;
+  return <PureProxy className={className} />;
 }
 
 export function createRelationship({
