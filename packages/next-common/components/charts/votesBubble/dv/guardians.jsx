@@ -1,13 +1,16 @@
 import { isNil, partition } from "lodash-es";
 import DVDelegateCard from "./card";
 
-export default function DVDetailDelegates({ votes = [] }) {
+export default function DVDetailGuardians({ votes = [] }) {
   const [voted, noVoted] = partition(votes, (v) => !isNil(v?.totalVotes));
+  if (votes.length === 0) {
+    return null;
+  }
 
   return (
     <div className="space-y-4 text-textPrimary">
       <div className="text14Bold mt-6 mb-4">
-        Delegates
+        Guardians
         {!!votes.length && (
           <span className="text14Medium text-textTertiary ml-1">
             {votes.length}
