@@ -5,7 +5,7 @@ import { useAsync } from "react-use";
 export default function useDelegated(address) {
   const { value, loading } = useAsync(async () => {
     return await backendApi.fetch(`/users/${address}/referenda/delegated`);
-  });
+  }, [address]);
 
   return useMemo(() => {
     const list = value?.result || [];
@@ -31,7 +31,7 @@ export default function useDelegated(address) {
 export function useDelegators(address) {
   const { value, loading } = useAsync(async () => {
     return await backendApi.fetch(`users/${address}/referenda/delegators`);
-  });
+  }, [address]);
 
   return useMemo(() => {
     const list = value?.result || [];
