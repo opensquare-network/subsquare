@@ -1,21 +1,27 @@
-import { VIEW_TYPE } from "next-common/context/relationship";
-
+import { useRelationshipNodes } from "next-common/context/relationship";
 import Indications from "./indications";
 import Relationship from "./relationship";
-import { useState } from "react";
+import { useMemo } from "react";
 import ViewTypeSelect from "./viewTypeSelect";
 import useCommonRelationshipNode from "next-common/hooks/useCommonRelationshipNode";
 import useDelegatorsRelationshipNode from "next-common/hooks/useDelegatorsRelationshipNode";
 import { useContextAddress } from "next-common/context/address";
 import RelationshipProvider from "next-common/context/relationship";
+import NoRelationshipsTip from "./noRelationshipsTip";
+import RelationshipViewTypeProvider, {
+  useRelationshipViewTypeState,
+  VIEW_TYPE,
+} from "next-common/context/relationship/selectViewType";
 
 export function CommonRelationshipContent() {
   const sourceAddress = useContextAddress();
   const { isLoading, nodes, edges } = useCommonRelationshipNode(sourceAddress);
+
   return (
     <RelationshipProvider nodes={nodes} edges={edges} isLoading={isLoading}>
+      <NoRelationshipsWithViewTypeSelect />
       <Relationship />
-      <Indications viewType={VIEW_TYPE.COMMON} />
+      <Indications />
     </RelationshipProvider>
   );
 }
@@ -27,26 +33,50 @@ export function DelegationRelationshipContent() {
 
   return (
     <RelationshipProvider nodes={nodes} edges={edges} isLoading={isLoading}>
+      <NoRelationshipsWithViewTypeSelect />
       <Relationship />
-      <Indications viewType={VIEW_TYPE.DELEGATION} />
+      <Indications />
     </RelationshipProvider>
   );
 }
 
-export default function RelationshipContent() {
-  const [viewType, setViewType] = useState(VIEW_TYPE.COMMON);
+function RelationshipContentImpl() {
+  const { viewType } = useRelationshipViewTypeState();
 
-  let content = null;
   if (viewType === VIEW_TYPE.DELEGATION) {
-    content = <DelegationRelationshipContent />;
-  } else {
-    content = <CommonRelationshipContent />;
+    return <DelegationRelationshipContent />;
+  } else if (viewType === VIEW_TYPE.COMMON) {
+    return <CommonRelationshipContent />;
   }
+  return null;
+}
 
+export default function RelationshipContent() {
   return (
-    <>
-      <ViewTypeSelect viewType={viewType} setViewType={setViewType} />
-      {content}
-    </>
+    <RelationshipViewTypeProvider>
+      <RelationshipContentImpl />
+    </RelationshipViewTypeProvider>
+  );
+}
+
+function NoRelationshipsWithViewTypeSelect() {
+  const { nodes, edges, isLoading } = useRelationshipNodes();
+  const { viewType, setViewType } = useRelationshipViewTypeState();
+
+  const isNoRelationships = useMemo(() => {
+    if (isLoading) {
+      return false;
+    }
+
+    return nodes?.length === 1 && edges?.length === 0;
+  }, [isLoading, nodes, edges]);
+  return (
+    <div className="flex justify-end items-center gap-x-2">
+      {isNoRelationships && (
+        <NoRelationshipsTip className="flex-1" type={viewType} />
+      )}
+
+      <ViewTypeSelect setViewType={setViewType} />
+    </div>
   );
 }

@@ -9,13 +9,7 @@ import React, {
 
 export const rootNodeId = "rootNode";
 
-export const VIEW_TYPE = {
-  COMMON: "common",
-  DELEGATION: "delegation",
-};
-
 const defaultContext = {
-  viewType: VIEW_TYPE.COMMON,
   nodes: [],
   edges: [],
   isLoading: false,
@@ -31,28 +25,18 @@ export default function RelationshipProvider({
   edges,
   isLoading,
 }) {
-  const [viewType, setViewType] = useState(defaultContext.viewType);
   const [excludedIndications, setExcludedIndications] = useState(
     defaultContext.excludedIndications,
   );
   const value = useMemo(
     () => ({
-      viewType,
-      setViewType,
       nodes,
       edges,
       isLoading,
       excludedIndications,
       setExcludedIndications,
     }),
-    [
-      nodes,
-      edges,
-      isLoading,
-      excludedIndications,
-      setExcludedIndications,
-      viewType,
-    ],
+    [nodes, edges, isLoading, excludedIndications, setExcludedIndications],
   );
 
   return (
@@ -60,11 +44,6 @@ export default function RelationshipProvider({
       {children}
     </RelationshipContext.Provider>
   );
-}
-
-export function useRelationshipViewTypeState() {
-  const { viewType, setViewType } = useContext(RelationshipContext) || {};
-  return { viewType, setViewType };
 }
 
 export function useRelationshipNodes() {

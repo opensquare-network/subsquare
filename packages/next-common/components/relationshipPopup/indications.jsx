@@ -1,7 +1,8 @@
+import { useSwitchIndications } from "next-common/context/relationship";
 import {
-  useSwitchIndications,
+  useRelationshipViewTypeState,
   VIEW_TYPE,
-} from "next-common/context/relationship";
+} from "next-common/context/relationship/selectViewType";
 import { cn } from "next-common/utils";
 import { RELATIONSHIP_NODE_TYPE } from "next-common/utils/constants";
 
@@ -27,8 +28,9 @@ export const getIndications = (viewType) => {
   return [];
 };
 
-export default function Indications({ viewType = VIEW_TYPE.COMMON }) {
+export default function Indications() {
   const { toggleIndication, excludedIndications } = useSwitchIndications();
+  const { viewType = VIEW_TYPE.COMMON } = useRelationshipViewTypeState();
   const indications = getIndications(viewType);
   return (
     <div className="flex justify-center gap-x-4">

@@ -1,8 +1,12 @@
 import Select from "next-common/components/select";
-import { VIEW_TYPE } from "next-common/context/relationship";
+import {
+  useRelationshipViewTypeState,
+  VIEW_TYPE,
+} from "next-common/context/relationship/selectViewType";
 import { noop } from "lodash-es";
 
-export default function ViewTypeSelect({ viewType, setViewType = noop }) {
+export default function ViewTypeSelect({ setViewType = noop }) {
+  const { viewType } = useRelationshipViewTypeState();
   return (
     <div>
       <Select
