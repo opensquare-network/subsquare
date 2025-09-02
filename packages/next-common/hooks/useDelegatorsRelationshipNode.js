@@ -45,7 +45,7 @@ function createDelegatedRelationship(rootNode, delegated = []) {
       badge: <BadgeInfo address={item.account} />,
     }),
     edgeDataMapper: (item) => ({
-      type: RELATIONSHIP_NODE_TYPE.Delegator,
+      type: RELATIONSHIP_NODE_TYPE.Delegated,
       value: `${item.tracks.size} Tracks`,
       name: "Delegated",
       tracks: item.tracks,

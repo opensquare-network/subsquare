@@ -15,7 +15,7 @@ export function CommonRelationshipContent() {
   return (
     <RelationshipProvider nodes={nodes} edges={edges} isLoading={isLoading}>
       <Relationship />
-      <Indications />
+      <Indications viewType={VIEW_TYPE.COMMON} />
     </RelationshipProvider>
   );
 }
@@ -28,7 +28,7 @@ export function DelegationRelationshipContent() {
   return (
     <RelationshipProvider nodes={nodes} edges={edges} isLoading={isLoading}>
       <Relationship />
-      <Indications />
+      <Indications viewType={VIEW_TYPE.DELEGATION} />
     </RelationshipProvider>
   );
 }

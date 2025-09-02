@@ -1,16 +1,35 @@
-import { useSwitchIndications } from "next-common/context/relationship";
+import {
+  useSwitchIndications,
+  VIEW_TYPE,
+} from "next-common/context/relationship";
 import { cn } from "next-common/utils";
 import { RELATIONSHIP_NODE_TYPE } from "next-common/utils/constants";
 
-export const indications = [
+export const commonIndications = [
   { name: RELATIONSHIP_NODE_TYPE.Multisig, color: "var(--theme500)" },
   { name: RELATIONSHIP_NODE_TYPE.Proxy, color: "var(--green500)" },
   { name: RELATIONSHIP_NODE_TYPE.Identity, color: "var(--blue500)" },
-  { name: RELATIONSHIP_NODE_TYPE.Delegator, color: "var(--orange500)" },
 ];
 
-export default function Indications() {
+export const delegationIndications = [
+  { name: RELATIONSHIP_NODE_TYPE.Delegator, color: "var(--orange500)" },
+  { name: RELATIONSHIP_NODE_TYPE.Delegated, color: "var(--blue500)" },
+];
+
+export const allIndications = [...commonIndications, ...delegationIndications];
+
+export const getIndications = (viewType) => {
+  if (viewType === VIEW_TYPE.COMMON) {
+    return commonIndications;
+  } else if (viewType === VIEW_TYPE.DELEGATION) {
+    return delegationIndications;
+  }
+  return [];
+};
+
+export default function Indications({ viewType = VIEW_TYPE.COMMON }) {
   const { toggleIndication, excludedIndications } = useSwitchIndications();
+  const indications = getIndications(viewType);
   return (
     <div className="flex justify-center gap-x-4">
       {indications.map((item, index) => {
