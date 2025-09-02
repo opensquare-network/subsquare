@@ -6,11 +6,14 @@ import {
 } from "@xyflow/react";
 import { isNil } from "lodash-es";
 import { DisplayUser } from "next-common/components/profile/bio";
-import { allIndications } from "next-common/components/relationshipPopup/indications";
+import { indications } from "next-common/components/relationshipPopup/indications";
 import Tooltip from "next-common/components/tooltip";
 import { rootNodeId } from "next-common/hooks/useRelationshipNode";
 import styled from "styled-components";
 import { useTrackContent } from "../referenda/track/trackTag";
+import ValueDisplay from "../valueDisplay";
+import { toPrecision } from "next-common/utils";
+import { useChainSettings } from "next-common/context/chain";
 
 const EdgeLabel = styled.div`
   position: absolute;
@@ -45,7 +48,7 @@ export default function StatusEdge({
     centerX: edgePathCenterX,
   });
 
-  const edgeTheme = allIndications.find((item) => item.name === data?.type);
+  const edgeTheme = indications.find((item) => item.name === data?.type);
   const sourceNode = useNodesData(source);
   const targetNode = useNodesData(target);
 
@@ -177,6 +180,7 @@ function IdentityTipContent({ source, target, value }) {
 }
 
 function DelegatorTipContent({ rawData }) {
+  const { decimals, symbol } = useChainSettings();
   if (isNil(rawData) || isNil(rawData.tracks)) {
     return null;
   }
@@ -184,14 +188,17 @@ function DelegatorTipContent({ rawData }) {
   const items = Array.from(rawData.tracks.values());
 
   return (
-    <div className="flex gap-x-2 gap-y-1 items-center max-w-[400px] flex-wrap">
-      {items.map((track, index) => (
-        <div key={track.trackId}>
+    <ul className="text12Medium">
+      {items.map((track) => (
+        <li key={track.trackId} className="flex items-center gap-x-1">
           <TrackItem id={track.trackId} />
-          {index !== items.length - 1 && ","}
-        </div>
+          <ValueDisplay
+            value={toPrecision(track.balance, decimals)}
+            symbol={symbol}
+          />
+        </li>
       ))}
-    </div>
+    </ul>
   );
 }
 

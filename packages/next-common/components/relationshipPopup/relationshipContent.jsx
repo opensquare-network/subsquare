@@ -19,8 +19,8 @@ export function CommonRelationshipContent() {
   return (
     <RelationshipProvider nodes={nodes} edges={edges} isLoading={isLoading}>
       <NoRelationshipsWrapper />
-      <Relationship />
       <Indications />
+      <Relationship />
     </RelationshipProvider>
   );
 }
@@ -33,8 +33,8 @@ export function DelegationRelationshipContent() {
   return (
     <RelationshipProvider nodes={nodes} edges={edges} isLoading={isLoading}>
       <NoRelationshipsWrapper />
-      <Relationship />
       <Indications />
+      <Relationship />
     </RelationshipProvider>
   );
 }
