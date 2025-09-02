@@ -71,12 +71,12 @@ function NoRelationshipsWithViewTypeSelect() {
     return nodes?.length === 1 && edges?.length === 0;
   }, [isLoading, nodes, edges]);
   return (
-    <div className="flex justify-end items-center gap-x-2">
+    <div className="flex justify-end items-center gap-2 max-sm:flex-col max-sm:items-start">
       {isNoRelationships && (
         <NoRelationshipsTip className="flex-1" type={viewType} />
       )}
 
-      <ViewTypeSelect setViewType={setViewType} />
+      <ViewTypeSelect className="max-sm:w-full" setViewType={setViewType} />
     </div>
   );
 }

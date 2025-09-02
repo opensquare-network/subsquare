@@ -1,4 +1,5 @@
 import { RELATIONSHIP_NODE_TYPE } from "next-common/utils/constants";
+import pluralize from "pluralize";
 import useMaybeContextMultisigAddress from "./useMaybeContextMultisigAddress";
 import useDelegated, { useDelegators } from "./useRelativesDelegators";
 import {
@@ -22,7 +23,7 @@ function createDelegatorsRelationship(rootNode, delegators = []) {
     }),
     edgeDataMapper: (item) => ({
       type: RELATIONSHIP_NODE_TYPE.Delegator,
-      value: `${item.tracks.size} Tracks`,
+      value: `${item.tracks.size} ${pluralize("track", item.tracks.size)}`,
       name: "Delegator",
       tracks: item.tracks,
     }),
@@ -46,7 +47,7 @@ function createDelegatedRelationship(rootNode, delegated = []) {
     }),
     edgeDataMapper: (item) => ({
       type: RELATIONSHIP_NODE_TYPE.Delegated,
-      value: `${item.tracks.size} Tracks`,
+      value: `${item.tracks.size} ${pluralize("track", item.tracks.size)}`,
       name: "Delegated",
       tracks: item.tracks,
     }),
