@@ -2,7 +2,7 @@ import { gql, ApolloClient, InMemoryCache } from "@apollo/client";
 
 const PREIMAGE_QUERY = gql`
   query MyQuery {
-    preimages {
+    intimePreimages {
       hash
       hex
       requested {
@@ -25,8 +25,8 @@ const PREIMAGE_QUERY = gql`
           who
         }
         ticket {
-          who
           amount
+          who
         }
       }
     }
@@ -46,7 +46,7 @@ export async function queryPreimages() {
       fetchPolicy: "no-cache",
     });
 
-    return data?.preimages;
+    return data?.intimePreimages;
   } catch (e) {
     return null;
   }
