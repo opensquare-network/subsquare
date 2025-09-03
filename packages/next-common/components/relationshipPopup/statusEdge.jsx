@@ -192,7 +192,7 @@ function DelegationTipContent({ rawData }) {
       {items.map((track) => (
         <li key={track.trackId} className="flex items-center">
           <TrackItem id={track.trackId} />
-          <span className="mr-1"> : </span>
+          <span className="mr-1">:</span>
           <ValueDisplay
             value={toPrecision(track.balance, decimals)}
             symbol={symbol}
