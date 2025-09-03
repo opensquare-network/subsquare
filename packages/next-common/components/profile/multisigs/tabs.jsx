@@ -1,14 +1,8 @@
 import Tabs from "next-common/components/tabs";
 import { useState } from "react";
 import { cn } from "next-common/utils";
-
-function MultisigList() {
-  return <div>Multisig List</div>;
-}
-
-function MultisigsListAsSignatory() {
-  return <div>Multisigs List As Signatory</div>;
-}
+import MyMultisigs from "next-common/components/profile/multisigs/myMultisigs";
+import SignatoryMultisigs from "next-common/components/profile/multisigs/signatoryMultisigs";
 
 function TabTitle({ active, children }) {
   return (
@@ -31,14 +25,14 @@ export default function MultisigsTabs() {
       label({ active }) {
         return <TabTitle active={active}>Multisigs</TabTitle>;
       },
-      content: <MultisigList />,
+      content: <MyMultisigs />,
     },
     {
       value: "multisigs_as_signatory",
       label({ active }) {
         return <TabTitle active={active}>Multisigs as a Signatory</TabTitle>;
       },
-      content: <MultisigsListAsSignatory />,
+      content: <SignatoryMultisigs />,
     },
   ].filter(Boolean);
 
