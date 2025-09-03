@@ -19,11 +19,13 @@ import { fetchMultisigData } from "next-common/hooks/treasury/bounty/useCuratorM
 import { useAsync } from "react-use";
 import Loading from "next-common/components/loading";
 import MultisigSummary from "next-common/components/profile/multisigs/summary";
+import MultisigsTabs from "next-common/components/profile/multisigs/tabs";
 
 function MultisigAddressPage({ threshold, signatories }) {
   return (
-    <div>
+    <div className="flex flex-col gap-[18px]">
       <MultisigSummary threshold={threshold} signatories={signatories} />
+      <MultisigsTabs />
     </div>
   );
 }
