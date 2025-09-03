@@ -3,7 +3,7 @@ import WindowSizeProvider from "next-common/context/windowSize";
 import DelegatesDesktopList from "./desktopList";
 import DelegatesMobileList from "./mobileList";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import DelegatesRoleTabs from "../common/roleTabs";
+import MaybeDelegatesRoleTabs from "../common/maybeRoleTabs";
 
 function DelegatesImpl({ delegates = [] }) {
   const isMobile = useIsMobile();
@@ -19,7 +19,7 @@ export default function Delegates() {
   return (
     <WindowSizeProvider>
       <SecondaryCard>
-        <DelegatesRoleTabs component={DelegatesImpl} />
+        <MaybeDelegatesRoleTabs component={DelegatesImpl} />
       </SecondaryCard>
     </WindowSizeProvider>
   );

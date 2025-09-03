@@ -19,6 +19,8 @@ export default function Overview() {
 
   if (isNil(cohort)) return null;
 
+  const hasGuardians = cohort?.guardianCnt > 0;
+
   return (
     <NeutralPanel className="p-12">
       <div className="flex gap-x-1">
@@ -37,6 +39,11 @@ export default function Overview() {
           <SummaryItem title="Delegates">
             <span className="text16Bold">{cohort.delegateCnt}</span>
           </SummaryItem>
+          {hasGuardians && (
+            <SummaryItem title="Guardians">
+              <span className="text16Bold">{cohort.guardianCnt}</span>
+            </SummaryItem>
+          )}
           <SummaryItem title="W3F Delegation">
             <OverviewW3fDelegationValue cohort={cohort} />
           </SummaryItem>

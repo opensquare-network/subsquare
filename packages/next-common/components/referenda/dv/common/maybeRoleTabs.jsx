@@ -2,10 +2,13 @@ import { useState, useMemo } from "react";
 import Tabs from "next-common/components/tabs";
 import useFormattedDelegates from "next-common/hooks/referenda/useFormattedDelegates";
 import { isNil } from "lodash-es";
+import { useDvDelegateGuardians } from "next-common/context/referenda/dv";
 
-export default function RoleTabs({ component: Component }) {
+export function RoleTabsImpl({
+  component: Component,
+  formattedDelegates = [],
+}) {
   const [activeTabValue, setActiveTabValue] = useState("delegate");
-  const formattedDelegates = useFormattedDelegates();
 
   const tabs = useMemo(() => {
     if (isNil(formattedDelegates)) {
@@ -35,6 +38,22 @@ export default function RoleTabs({ component: Component }) {
       tabs={tabs}
       activeTabValue={activeTabValue}
       onTabClick={(tab) => setActiveTabValue(tab.value)}
+    />
+  );
+}
+
+export default function MaybeRoleTabs({ component: Component }) {
+  const { hasGuardians } = useDvDelegateGuardians();
+  const formattedDelegates = useFormattedDelegates();
+
+  if (!hasGuardians) {
+    return <Component delegates={formattedDelegates} />;
+  }
+
+  return (
+    <RoleTabsImpl
+      component={Component}
+      formattedDelegates={formattedDelegates}
     />
   );
 }

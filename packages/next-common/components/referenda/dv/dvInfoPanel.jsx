@@ -3,6 +3,7 @@ import { isNil } from "lodash-es";
 import BillBoardPanel from "next-common/components/billBoardPanel";
 import { useChain } from "next-common/context/chain";
 import { usePageProps } from "next-common/context/page";
+import { useDvDelegateGuardians } from "next-common/context/referenda/dv";
 import { cn } from "next-common/utils";
 import { isKusamaChain, isPolkadotChain } from "next-common/utils/chain";
 import Link from "next/link";
@@ -30,7 +31,7 @@ export default function DvInfoPanel() {
         tokensText && <LearnLine key="learn" tokensText={tokensText} />,
         <span key="latest" className="text14Medium flex items-center gap-x-1">
           The latest DV cohort is {cohorts?.length || 0} with{" "}
-          {cohort?.delegateCnt || 0} delegates.
+          {cohort?.delegateCnt || 0} delegates. <GuardianTips />
         </span>,
         <span
           key="tracks"
@@ -90,4 +91,14 @@ function LearnLine({ tokensText = "" }) {
       </a>
     </span>
   );
+}
+
+function GuardianTips() {
+  const { hasGuardians, guardiansCount } = useDvDelegateGuardians();
+
+  if (!hasGuardians) {
+    return null;
+  }
+
+  return `and ${guardiansCount} guardians`;
 }

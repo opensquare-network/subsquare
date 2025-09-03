@@ -15,7 +15,7 @@ import {
   useFilteredDvVotes,
 } from "next-common/context/referenda/dv";
 import NoData from "next-common/components/noData";
-import VotesRoleTabs from "../common/roleTabs";
+import MaybeVotesRoleTabs from "../common/maybeRoleTabs";
 
 const SPACE = 1;
 
@@ -25,7 +25,7 @@ export default function DvReferendaVotes() {
       <TabsTitle>DV Votes</TabsTitle>
       <NeutralPanel className="p-6">
         <WindowSizeProvider>
-          <VotesRoleTabs component={MaybeEmptyDelegates} />
+          <MaybeVotesRoleTabs component={MaybeEmptyDelegates} />
           <Divider />
           <VoteIndicator />
         </WindowSizeProvider>

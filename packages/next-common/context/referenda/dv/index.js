@@ -1,5 +1,6 @@
 import { usePageProps } from "next-common/context/page";
 import { createContext, useContext, useMemo, useState } from "react";
+import { isNil } from "lodash-es";
 
 export const DV_DATA_TYPE = {
   ALL_REFERENDA: "referenda",
@@ -69,4 +70,21 @@ export function useFilteredDvVotes() {
     }
     return votes;
   }, [votes, countType, ids]);
+}
+
+export function useDvDelegateGuardians() {
+  const { cohort } = usePageProps();
+
+  if (isNil(cohort) || isNil(cohort.guardianCnt))
+    return {
+      guardiansCount: 0,
+      hasGuardians: false,
+    };
+
+  const guardiansCount = cohort.guardianCnt;
+
+  return {
+    guardiansCount,
+    hasGuardians: guardiansCount > 0,
+  };
 }
