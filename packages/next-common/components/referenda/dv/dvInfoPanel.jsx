@@ -31,7 +31,8 @@ export default function DvInfoPanel() {
         tokensText && <LearnLine key="learn" tokensText={tokensText} />,
         <span key="latest" className="text14Medium flex items-center gap-x-1">
           The latest DV cohort is {cohorts?.length || 0} with{" "}
-          {cohort?.delegateCnt || 0} delegates. <GuardianTips />
+          {cohort?.delegateCnt || 0} delegates
+          <GuardianTips />.
         </span>,
         <span
           key="tracks"
@@ -100,5 +101,5 @@ function GuardianTips() {
     return null;
   }
 
-  return `and ${guardiansCount} guardians`;
+  return ` and ${guardiansCount} guardians`;
 }
