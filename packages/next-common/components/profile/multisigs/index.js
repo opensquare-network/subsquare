@@ -18,9 +18,14 @@ import { CallPopupInContext } from "next-common/components/multisigs/callPopup";
 import { fetchMultisigData } from "next-common/hooks/treasury/bounty/useCuratorMultisigAddress";
 import { useAsync } from "react-use";
 import Loading from "next-common/components/loading";
+import MultisigSummary from "next-common/components/profile/multisigs/summary";
 
-function MultisigAddressPage() {
-  return <div>Multisig address</div>;
+function MultisigAddressPage({ threshold, signatories }) {
+  return (
+    <div>
+      <MultisigSummary threshold={threshold} signatories={signatories} />
+    </div>
+  );
 }
 
 function NonMultisigAddressPage() {
@@ -84,7 +89,12 @@ function Multisigs() {
   }
 
   if (multisigData && multisigData.signatories?.length > 0) {
-    return <MultisigAddressPage />;
+    return (
+      <MultisigAddressPage
+        threshold={multisigData.threshold}
+        signatories={multisigData.signatories}
+      />
+    );
   }
 
   return <NonMultisigAddressPage />;
