@@ -172,31 +172,56 @@ export const kusamaDvDelegates = [
   {
     address: "FPznjjQJpHieoy3TUruw9YT6DDRETkBxWv3yFEVUMCgn8q8", // The White Rabbit
     slots: [
-      { start: 29912374, end: null, trackIds: cohort5TrackIds }, // cohort 5
+      {
+        start: 29912374,
+        end: null,
+        trackIds: cohort5TrackIds,
+        role: "guardian",
+      }, // cohort 5
     ],
   },
   {
     address: "EvoLanodoqDsgHb98Ymbu41uXXKfCPDKxeM6dXHyJ2JoVus", // Daniel Olano
     slots: [
-      { start: 29912400, end: null, trackIds: cohort5TrackIds }, // cohort 5
+      {
+        start: 29912400,
+        end: null,
+        trackIds: cohort5TrackIds,
+        role: "guardian",
+      }, // cohort 5
     ],
   },
   {
     address: "DuCg7rhST4TX6DWsyePUjntsmJd6UNyQVTHWD5BFjcgmgWp", // Flez
     slots: [
-      { start: 29912400, end: null, trackIds: cohort5TrackIds }, // cohort 5
+      {
+        start: 29912400,
+        end: null,
+        trackIds: cohort5TrackIds,
+        role: "guardian",
+      }, // cohort 5
     ],
   },
   {
     address: "EyPcJsHXv86Snch8GokZLZyrucug3gK1RAghBD2HxvL1YRZ", // Cybergov — AI Agents(Karim)
     slots: [
-      { start: 29912423, end: null, trackIds: cohort5TrackIds }, // cohort 5
+      {
+        start: 29912423,
+        end: null,
+        trackIds: cohort5TrackIds,
+        role: "guardian",
+      }, // cohort 5
     ],
   },
   {
     address: "GNdJk9L6P84JXu6wibTzwPiB3vt2rwMjzGEETchf87uNuyW", // GoverNoun AI (Governance Agent) — AI Agent
     slots: [
-      { start: 29912423, end: null, trackIds: cohort5TrackIds }, // cohort 5
+      {
+        start: 29912423,
+        end: null,
+        trackIds: cohort5TrackIds,
+        role: "guardian",
+      }, // cohort 5
     ],
   },
 ];
