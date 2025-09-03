@@ -15,21 +15,21 @@ import usePaginationComponent from "next-common/components/pagination/usePaginat
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
 import { CallPopupProvider } from "next-common/components/multisigs/context/callPopupContext";
 import { CallPopupInContext } from "next-common/components/multisigs/callPopup";
-import { fetchMultisigData } from "next-common/hooks/treasury/bounty/useCuratorMultisigAddress";
-import { useAsync } from "react-use";
 import Loading from "next-common/components/loading";
-import MultisigSummary from "next-common/components/profile/multisigs/summary";
 import MultisigsTabs from "next-common/components/profile/multisigs/tabs";
+import MultisigProvider, {
+  useMultisigContext,
+} from "next-common/components/profile/multisigs/context";
 
-function MultisigAddressPage({ threshold, signatories }) {
+function MultisigAddressPage() {
   return (
     <div className="flex flex-col gap-[18px]">
-      <MultisigSummary threshold={threshold} signatories={signatories} />
       <MultisigsTabs />
     </div>
   );
 }
 
+// TODO: reuse new entry?
 function NonMultisigAddressPage() {
   const { width } = useWindowSize();
   const address = useProfileAddress();
@@ -75,14 +75,9 @@ function NonMultisigAddressPage() {
 }
 
 function Multisigs() {
-  const address = useProfileAddress();
+  const { data, loading } = useMultisigContext();
 
-  const { value: multisigData, loading: multisigLoading } = useAsync(
-    async () => await fetchMultisigData(address),
-    [address],
-  );
-
-  if (multisigLoading) {
+  if (loading) {
     return (
       <div className="flex grow mt-2 justify-center items-center">
         <Loading size={20} />
@@ -90,13 +85,8 @@ function Multisigs() {
     );
   }
 
-  if (multisigData && multisigData.signatories?.length > 0) {
-    return (
-      <MultisigAddressPage
-        threshold={multisigData.threshold}
-        signatories={multisigData.signatories}
-      />
-    );
+  if (data && data?.signatories?.length > 0) {
+    return <MultisigAddressPage />;
   }
 
   return <NonMultisigAddressPage />;
@@ -106,7 +96,9 @@ export default function ProfileMultisigs() {
   return (
     <WithPageWidth>
       <CallPopupProvider>
-        <Multisigs />
+        <MultisigProvider>
+          <Multisigs />
+        </MultisigProvider>
       </CallPopupProvider>
     </WithPageWidth>
   );

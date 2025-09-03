@@ -1,7 +1,7 @@
 import Tabs from "next-common/components/tabs";
 import { useState } from "react";
 import { cn } from "next-common/utils";
-import MyMultisigs from "next-common/components/profile/multisigs/myMultisigs";
+import OwnMultisigs from "next-common/components/profile/multisigs/ownMultisigs";
 import SignatoryMultisigs from "next-common/components/profile/multisigs/signatoryMultisigs";
 
 function TabTitle({ active, children }) {
@@ -21,16 +21,16 @@ function TabTitle({ active, children }) {
 export default function MultisigsTabs() {
   const tabs = [
     {
-      value: "multisig_list",
+      value: "as_multisig_address",
       label({ active }) {
-        return <TabTitle active={active}>Multisigs</TabTitle>;
+        return <TabTitle active={active}>As a multisig address</TabTitle>;
       },
-      content: <MyMultisigs />,
+      content: <OwnMultisigs />,
     },
     {
-      value: "multisigs_as_signatory",
+      value: "as_multisig_signatory",
       label({ active }) {
-        return <TabTitle active={active}>Multisigs as a Signatory</TabTitle>;
+        return <TabTitle active={active}>As a multisig signatory</TabTitle>;
       },
       content: <SignatoryMultisigs />,
     },
@@ -39,16 +39,14 @@ export default function MultisigsTabs() {
   const [activeTabValue, setActiveTabValue] = useState(tabs[0].value);
 
   return (
-    <div className="ml-[24px]">
-      <Tabs
-        tabs={tabs}
-        activeTabValue={activeTabValue}
-        onTabClick={(tab) => {
-          setActiveTabValue(tab.value);
-        }}
-        tabsListDivider={false}
-        tabsListClassName="mr-6 h-7"
-      />
-    </div>
+    <Tabs
+      tabs={tabs}
+      activeTabValue={activeTabValue}
+      onTabClick={(tab) => {
+        setActiveTabValue(tab.value);
+      }}
+      tabsListDivider={false}
+      tabsListClassName="mr-6 h-7 ml-[24px]"
+    />
   );
 }
