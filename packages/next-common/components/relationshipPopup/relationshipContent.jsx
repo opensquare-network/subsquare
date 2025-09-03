@@ -1,4 +1,4 @@
-import { useRelationshipNodes } from "next-common/context/relationship";
+import { useRelationshipRawData } from "next-common/context/relationship";
 import Indications from "./indications";
 import Relationship from "./relationship";
 import { useMemo } from "react";
@@ -51,7 +51,7 @@ export default function RelationshipContent() {
 }
 
 function NoRelationshipsWrapper() {
-  const { nodes, edges, isLoading } = useRelationshipNodes();
+  const { nodes, edges, isLoading } = useRelationshipRawData();
   const { viewType } = useRelationshipViewTypeState();
 
   const isNoRelationships = useMemo(() => {

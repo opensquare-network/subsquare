@@ -46,6 +46,15 @@ export default function RelationshipProvider({
   );
 }
 
+export function useRelationshipRawData() {
+  const context = useContext(RelationshipContext) || defaultContext;
+  return {
+    nodes: context.nodes,
+    edges: context.edges,
+    isLoading: context.isLoading,
+  };
+}
+
 export function useRelationshipNodes() {
   const context = useContext(RelationshipContext);
   if (!context) {

@@ -24,9 +24,9 @@ function createDelegatorsRelationship(rootNode, delegators = []) {
       pure: <DynamicPureProxy address={item.account} />,
     }),
     edgeDataMapper: (item) => ({
-      type: RELATIONSHIP_NODE_TYPE.Delegator,
+      type: RELATIONSHIP_NODE_TYPE.Delegation,
       value: `${item.tracks.size} ${pluralize("track", item.tracks.size)}`,
-      name: "Delegator",
+      name: "Delegation",
       tracks: item.tracks,
     }),
     sourceKey: "node",
@@ -49,9 +49,9 @@ function createDelegatedRelationship(rootNode, delegated = []) {
       pure: <DynamicPureProxy address={item.account} />,
     }),
     edgeDataMapper: (item) => ({
-      type: RELATIONSHIP_NODE_TYPE.Delegator,
+      type: RELATIONSHIP_NODE_TYPE.Delegation,
       value: `${item.tracks.size} ${pluralize("track", item.tracks.size)}`,
-      name: "Delegator",
+      name: "Delegation",
       tracks: item.tracks,
     }),
     sourceKey: rootNodeId,

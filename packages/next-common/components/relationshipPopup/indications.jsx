@@ -1,19 +1,42 @@
 import { useSwitchIndications } from "next-common/context/relationship";
-import { useRelationshipViewTypeState } from "next-common/context/relationship/selectViewType";
+import {
+  useRelationshipViewTypeState,
+  VIEW_TYPE,
+} from "next-common/context/relationship/selectViewType";
 import { cn } from "next-common/utils";
 import { RELATIONSHIP_NODE_TYPE } from "next-common/utils/constants";
 import ViewTypeSelect from "./viewTypeSelect";
+import { isNil } from "lodash-es";
 
-export const indications = [
+const commonIndications = [
   { name: RELATIONSHIP_NODE_TYPE.Multisig, color: "var(--theme500)" },
   { name: RELATIONSHIP_NODE_TYPE.Proxy, color: "var(--green500)" },
   { name: RELATIONSHIP_NODE_TYPE.Identity, color: "var(--blue500)" },
-  { name: RELATIONSHIP_NODE_TYPE.Delegator, color: "var(--orange500)" },
 ];
+
+const delegationIndications = [
+  { name: RELATIONSHIP_NODE_TYPE.Delegation, color: "var(--orange500)" },
+];
+
+export const allIndications = [...commonIndications, ...delegationIndications];
+
+const getIndications = (viewType) => {
+  if (viewType === VIEW_TYPE.COMMON) {
+    return commonIndications;
+  } else if (viewType === VIEW_TYPE.DELEGATION) {
+    return delegationIndications;
+  }
+};
 
 export default function Indications() {
   const { toggleIndication, excludedIndications } = useSwitchIndications();
-  const { setViewType } = useRelationshipViewTypeState();
+  const { viewType, setViewType } = useRelationshipViewTypeState();
+
+  const indications = getIndications(viewType);
+
+  if (isNil(indications)) {
+    return null;
+  }
 
   return (
     <div className="flex items-center gap-2 flex-1 justify-between">

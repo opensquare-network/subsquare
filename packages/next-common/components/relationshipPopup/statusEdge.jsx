@@ -6,7 +6,7 @@ import {
 } from "@xyflow/react";
 import { isNil } from "lodash-es";
 import { DisplayUser } from "next-common/components/profile/bio";
-import { indications } from "next-common/components/relationshipPopup/indications";
+import { allIndications } from "next-common/components/relationshipPopup/indications";
 import Tooltip from "next-common/components/tooltip";
 import { rootNodeId } from "next-common/hooks/useRelationshipNode";
 import styled from "styled-components";
@@ -48,7 +48,7 @@ export default function StatusEdge({
     centerX: edgePathCenterX,
   });
 
-  const edgeTheme = indications.find((item) => item.name === data?.type);
+  const edgeTheme = allIndications.find((item) => item.name === data?.type);
   const sourceNode = useNodesData(source);
   const targetNode = useNodesData(target);
 
@@ -131,8 +131,8 @@ function TooltipsContent({ type, ...rest }) {
     return <IdentityTipContent {...rest} />;
   }
 
-  if (type === "Delegator" || type === "Delegated") {
-    return <DelegatorTipContent {...rest} />;
+  if (type === "Delegation") {
+    return <DelegationTipContent {...rest} />;
   }
 
   return null;
@@ -179,7 +179,7 @@ function IdentityTipContent({ source, target, value }) {
   );
 }
 
-function DelegatorTipContent({ rawData }) {
+function DelegationTipContent({ rawData }) {
   const { decimals, symbol } = useChainSettings();
   if (isNil(rawData) || isNil(rawData.tracks)) {
     return null;
