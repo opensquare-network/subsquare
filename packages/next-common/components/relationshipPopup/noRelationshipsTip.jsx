@@ -11,7 +11,7 @@ export default function NoRelationshipsTip({
     text =
       "This account has no relationships with proxy, multisig and identity.";
   } else if (type === VIEW_TYPE.DELEGATION) {
-    text = "This account has no relationships with delegators and delegated.";
+    text = "This account has no relationship with delegations.";
   }
   return (
     <GreyPanel
