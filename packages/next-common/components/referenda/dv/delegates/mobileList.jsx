@@ -1,10 +1,8 @@
 import {
   useFilteredDvReferenda,
-  useFilteredDvVotes,
   useDvReferendaCount,
 } from "next-common/context/referenda/dv";
 import isWin from "next-common/utils/dv/isWin";
-import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
 import VoteByDelegate from "../voteByDelegate";
 import { ParticipationValue } from "../common/cohortValueStyled";
 import WinRate from "../common/winRate";
@@ -16,52 +14,48 @@ import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
 
 export default function DelegatesMobileList({ delegates }) {
-  const votes = useFilteredDvVotes();
   const referenda = useFilteredDvReferenda();
   const count = useDvReferendaCount();
 
-  return (
-    <NeutralPanel className="p-6">
-      {delegates.map((delegate) => {
-        const userVotes = votes.filter((vote) => vote.account === delegate);
-        const voteCount = userVotes.length;
-        const winCount = userVotes.filter((vote) =>
-          isWin(vote, referenda),
-        ).length;
+  return delegates.map((delegate) => {
+    const winCount = delegate.userVotes.filter((vote) =>
+      isWin(vote, referenda),
+    ).length;
 
-        return (
-          <div key={delegate}>
-            <div className="flex flex-col gap-2">
-              <AvatarWrapper>
-                <AvatarDisplay size={40} address={delegate} />
-              </AvatarWrapper>
-              <AddressUser
-                key="account"
-                add={delegate}
-                className="text14Bold"
-                showAvatar={false}
-              />
-            </div>
-            <Divider className="my-3" />
-            <VoteByDelegate
-              key="voteCounts"
-              className="gap-0"
-              height={4}
-              delegate={delegate}
-              userVotes={userVotes}
+    return (
+      <div key={delegate.address}>
+        <div className="flex flex-col gap-2">
+          <AvatarWrapper>
+            <AvatarDisplay size={40} address={delegate.address} />
+          </AvatarWrapper>
+          <AddressUser
+            key="account"
+            add={delegate.address}
+            className="text14Bold"
+            showAvatar={false}
+          />
+        </div>
+        <Divider className="my-3" />
+        <VoteByDelegate
+          key="voteCounts"
+          className="gap-0"
+          height={4}
+          delegate={delegate.address}
+          userVotes={delegate.userVotes}
+        />
+        <SummaryLayout className="mt-3">
+          <SummaryItem title="Participation">
+            <ParticipationValue
+              voteCount={delegate.voteCount}
+              totalCount={count}
             />
-            <SummaryLayout className="mt-3">
-              <SummaryItem title="Participation">
-                <ParticipationValue voteCount={voteCount} totalCount={count} />
-              </SummaryItem>
-              <SummaryItem title="Win Rate">
-                <WinRate winCount={winCount} voteCount={voteCount} />
-              </SummaryItem>
-            </SummaryLayout>
-            <Divider className="my-3" />
-          </div>
-        );
-      })}
-    </NeutralPanel>
-  );
+          </SummaryItem>
+          <SummaryItem title="Win Rate">
+            <WinRate winCount={winCount} voteCount={delegate.voteCount} />
+          </SummaryItem>
+        </SummaryLayout>
+        <Divider className="my-3" />
+      </div>
+    );
+  });
 }

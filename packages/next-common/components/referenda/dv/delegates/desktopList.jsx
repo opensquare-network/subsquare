@@ -2,14 +2,12 @@ import { AddressUser } from "next-common/components/user";
 import {
   useDvReferendaCount,
   useFilteredDvReferenda,
-  useFilteredDvVotes,
 } from "next-common/context/referenda/dv";
 import isWin from "next-common/utils/dv/isWin";
 import DataList from "next-common/components/dataList";
 import VoteByDelegate from "../voteByDelegate";
 import { ParticipationValue } from "../common/cohortValueStyled";
 import WinRate from "../common/winRate";
-import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
 import Tooltip from "next-common/components/tooltip";
 
 const columns = [
@@ -39,42 +37,41 @@ const columns = [
 export default function DelegatesDesktopList({ delegates }) {
   const count = useDvReferendaCount();
   const filteredReferenda = useFilteredDvReferenda();
-  const votes = useFilteredDvVotes();
 
   const rows = delegates.map((delegate) => {
-    const userVotes = votes.filter((vote) => vote.account === delegate);
-    const voteCount = userVotes.length;
-    const winCount = userVotes.filter((vote) =>
+    const winCount = delegate.userVotes.filter((vote) =>
       isWin(vote, filteredReferenda),
     ).length;
 
     return [
-      <AddressUser key="account" add={delegate} maxWidth={220} />,
+      <AddressUser key="account" add={delegate.address} maxWidth={220} />,
       <VoteByDelegate
         key="voteCounts"
         height={4}
-        delegate={delegate}
-        userVotes={userVotes}
+        delegate={delegate.address}
+        userVotes={delegate.userVotes}
       />,
       <ParticipationValue
         key="participation"
-        voteCount={voteCount}
+        voteCount={delegate.voteCount}
         totalCount={count}
       />,
-      <WinRate key="winRate" winCount={winCount} voteCount={voteCount} />,
+      <WinRate
+        key="winRate"
+        winCount={winCount}
+        voteCount={delegate.voteCount}
+      />,
     ];
   });
 
   return (
-    <NeutralPanel className="p-6">
-      <DataList
-        columns={columns}
-        rows={rows}
-        loading={false}
-        noDataText="No delegates"
-        bordered={false}
-      />
-    </NeutralPanel>
+    <DataList
+      columns={columns}
+      rows={rows}
+      loading={false}
+      noDataText="No delegates"
+      bordered={false}
+    />
   );
 }
 
