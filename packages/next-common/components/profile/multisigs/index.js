@@ -15,8 +15,15 @@ import usePaginationComponent from "next-common/components/pagination/usePaginat
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
 import { CallPopupProvider } from "next-common/components/multisigs/context/callPopupContext";
 import { CallPopupInContext } from "next-common/components/multisigs/callPopup";
+import { fetchMultisigData } from "next-common/hooks/treasury/bounty/useCuratorMultisigAddress";
+import { useAsync } from "react-use";
+import Loading from "next-common/components/loading";
 
-function Multisigs() {
+function MultisigAddressPage() {
+  return <div>Multisig address</div>;
+}
+
+function NonMultisigAddressPage() {
   const { width } = useWindowSize();
   const address = useProfileAddress();
   const chain = useChain();
@@ -58,6 +65,29 @@ function Multisigs() {
       <CallPopupInContext />
     </ListCard>
   );
+}
+
+function Multisigs() {
+  const address = useProfileAddress();
+
+  const { value: multisigData, loading: multisigLoading } = useAsync(
+    async () => await fetchMultisigData(address),
+    [address],
+  );
+
+  if (multisigLoading) {
+    return (
+      <div className="flex grow mt-2 justify-center items-center">
+        <Loading size={20} />
+      </div>
+    );
+  }
+
+  if (multisigData && multisigData.signatories?.length > 0) {
+    return <MultisigAddressPage />;
+  }
+
+  return <NonMultisigAddressPage />;
 }
 
 export default function ProfileMultisigs() {
