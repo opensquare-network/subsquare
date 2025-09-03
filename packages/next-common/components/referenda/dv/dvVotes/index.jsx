@@ -6,17 +6,16 @@ import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import { TabsTitle } from "../common/styled";
 import { VoteIndicator } from "../common/voteIndicator";
 import Divider from "next-common/components/styled/layout/divider";
-import { usePageProps } from "next-common/context/page";
 import getVoteType from "next-common/utils/dv/voteType";
-import { groupBy } from "lodash-es";
-import { useChainSettings } from "next-common/context/chain";
-import { sortAddresses } from "@polkadot/util-crypto";
+import { groupBy, isNil } from "lodash-es";
 import DvVotesMobileList from "./mobileList";
 import DvVotesDesktopList from "./desktopList";
 import {
   useFilteredDvReferenda,
   useFilteredDvVotes,
 } from "next-common/context/referenda/dv";
+import NoData from "next-common/components/noData";
+import MaybeVotesRoleTabs from "../common/maybeRoleTabs";
 
 const SPACE = 1;
 
@@ -26,7 +25,7 @@ export default function DvReferendaVotes() {
       <TabsTitle>DV Votes</TabsTitle>
       <NeutralPanel className="p-6">
         <WindowSizeProvider>
-          <DvReferendaVotesImpl />
+          <MaybeVotesRoleTabs component={MaybeEmptyDelegates} />
           <Divider />
           <VoteIndicator />
         </WindowSizeProvider>
@@ -35,10 +34,14 @@ export default function DvReferendaVotes() {
   );
 }
 
-export function DvReferendaVotesImpl() {
-  const { cohort } = usePageProps();
+export function MaybeEmptyDelegates({ delegates }) {
+  if (isNil(delegates) || delegates.length === 0) return <NoData />;
+
+  return <DvReferendaVotesImpl delegates={delegates} />;
+}
+
+export function DvReferendaVotesImpl({ delegates = [] }) {
   const isMobile = useIsMobile();
-  const { ss58Format } = useChainSettings();
   const scrollerXRef = useRef();
   const [showLeft, setShowLeft] = useState(false);
   const [showRight, setShowRight] = useState(false);
@@ -46,13 +49,9 @@ export function DvReferendaVotesImpl() {
   const filteredReferenda = useFilteredDvReferenda();
   const filteredVotes = useFilteredDvVotes();
 
-  const delegates = useMemo(
-    () =>
-      sortAddresses(
-        cohort?.delegates?.map((delegate) => delegate.address) || [],
-        ss58Format,
-      ),
-    [cohort, ss58Format],
+  const sortedDelegatesAddress = useMemo(
+    () => delegates.map((delegate) => delegate.address),
+    [delegates],
   );
 
   const votesByReferendum = useMemo(
@@ -63,7 +62,7 @@ export function DvReferendaVotesImpl() {
   const referendaCols = useMemo(() => {
     return filteredReferenda.map((referendum) => {
       const votes = votesByReferendum[referendum.referendumIndex];
-      const votesByDelegate = delegates.map((delegate) => [
+      const votesByDelegate = sortedDelegatesAddress.map((delegate) => [
         delegate,
         getVoteType(votes?.find((vote) => vote.account === delegate)),
       ]);
@@ -73,7 +72,7 @@ export function DvReferendaVotesImpl() {
         votesByDelegate,
       };
     });
-  }, [filteredReferenda, votesByReferendum, delegates]);
+  }, [filteredReferenda, votesByReferendum, sortedDelegatesAddress]);
 
   const handleGradientBlanketVisible = useCallback((target) => {
     const { scrollLeft, scrollWidth, clientWidth } = target;
@@ -101,7 +100,7 @@ export function DvReferendaVotesImpl() {
       <DvVotesMobileList
         ref={scrollerXRef}
         referendaCols={referendaCols}
-        delegates={delegates}
+        delegates={sortedDelegatesAddress}
         showLeft={showLeft}
         showRight={showRight}
         onScroll={onScroll}
@@ -113,7 +112,7 @@ export function DvReferendaVotesImpl() {
     <DvVotesDesktopList
       ref={scrollerXRef}
       referendaCols={referendaCols}
-      delegates={delegates}
+      delegates={sortedDelegatesAddress}
       showLeft={showLeft}
       showRight={showRight}
       onScroll={onScroll}

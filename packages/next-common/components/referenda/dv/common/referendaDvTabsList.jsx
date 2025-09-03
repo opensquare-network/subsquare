@@ -11,7 +11,7 @@ export const TABS = {
 
 export default function ReferendaDvTabsList() {
   const { cohortsCount, cohort } = usePageProps();
-  const delegatesCount = cohort?.delegateCnt || 0;
+  const delegatesCount = cohort?.delegates?.length || 0;
   const searchParams = useSearchParams();
   const tab = searchParams.get("tab") || TABS.DELEGATES;
 
