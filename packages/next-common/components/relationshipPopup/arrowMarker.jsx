@@ -1,4 +1,4 @@
-import { indications } from "next-common/components/relationshipPopup/indications";
+import { allIndications } from "next-common/components/relationshipPopup/indications";
 import { Fragment } from "react";
 
 const generateArrowMarker = (id, color) => {
@@ -22,7 +22,7 @@ const generateArrowMarker = (id, color) => {
 export const arrowMarker = (
   <svg>
     <defs>
-      {indications.map((item) => (
+      {allIndications.map((item) => (
         <Fragment key={item.name}>
           {generateArrowMarker(
             "relationship_popup-arrow-" + item.name,

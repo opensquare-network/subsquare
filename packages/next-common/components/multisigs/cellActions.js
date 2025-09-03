@@ -13,6 +13,8 @@ import dynamicPopup from "next-common/lib/dynamic/popup";
 import { useState } from "react";
 import { normalizeAddress } from "next-common/utils/address";
 import { MultisigProvider } from "next-common/context/multisig";
+import RelativesWithNullGuard from "next-common/components/relationshipPopup/relativesWithNullGuard";
+
 const RemovePopup = dynamicPopup(() => import("./actions/removePopup"));
 const RenamePopup = dynamicPopup(() => import("./actions/renamePopup"));
 const MultisigPopup = dynamicPopup(() => import("./actions/composeCallPopup"));
@@ -49,12 +51,14 @@ export default function CellActions({ multisig }) {
               >
                 <MenuMultisig className="w-5 h-5" /> New Multisig
               </OptionItem>
-              <OptionItem
-                className="flex items-center grow gap-x-2"
-                onClick={() => setShowRelativesPopup(true)}
-              >
-                <SystemRelatives className="w-5 h-5" /> Relatives
-              </OptionItem>
+              <RelativesWithNullGuard>
+                <OptionItem
+                  className="flex items-center grow gap-x-2"
+                  onClick={() => setShowRelativesPopup(true)}
+                >
+                  <SystemRelatives className="w-5 h-5" /> Relatives
+                </OptionItem>
+              </RelativesWithNullGuard>
               <OptionItem
                 className="flex items-center grow gap-x-2"
                 onClick={() => setShowRenamePopup(true)}
