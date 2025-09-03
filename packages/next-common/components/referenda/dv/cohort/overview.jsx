@@ -6,13 +6,11 @@ import Divider from "next-common/components/styled/layout/divider";
 import { usePageProps } from "next-common/context/page";
 import { isNil } from "lodash-es";
 import DvStatusTag from "next-common/components/tags/state/dv";
-import { W3fDelegationValue } from "next-common/components/referenda/dv/common/cohortValueStyled";
 import dayjs from "dayjs";
 import { TenureValue } from "next-common/components/referenda/dv/common/styled";
 import { formatTimeDuration } from "next-common/utils/viewfuncs/formatTimeDuration";
 import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
-import BigNumber from "bignumber.js";
 
 export default function Overview() {
   const { cohort } = usePageProps();
@@ -37,16 +35,19 @@ export default function Overview() {
       <div className="flex gap-x-1">
         <SummaryLayout>
           <SummaryItem title="Delegates">
-            <span className="text16Bold">{cohort.delegateCnt}</span>
+            <OverviewEachValue
+              count={cohort.delegateCnt}
+              eachValue={cohort.delegation}
+            />
           </SummaryItem>
           {hasGuardians && (
             <SummaryItem title="Guardians">
-              <span className="text16Bold">{cohort.guardianCnt}</span>
+              <OverviewEachValue
+                count={cohort.guardianCnt}
+                eachValue={cohort.guardianDelegation}
+              />
             </SummaryItem>
           )}
-          <SummaryItem title="W3F Delegation">
-            <OverviewW3fDelegationValue cohort={cohort} />
-          </SummaryItem>
           {cohort.startIndexer && cohort.endIndexer && (
             <SummaryItem title="Tenure">
               <div className="flex flex-col gap-y-1">
@@ -85,20 +86,18 @@ export default function Overview() {
   );
 }
 
-function OverviewW3fDelegationValue({ cohort }) {
+function OverviewEachValue({ count, eachValue }) {
   const chainSettings = useChainSettings();
-  const perDV = BigNumber(cohort.delegation).div(cohort.delegateCnt);
 
   return (
     <div className="flex flex-col gap-y-1">
-      <W3fDelegationValue value={cohort.delegation} />
+      <span className="text16Bold">{count}</span>
       <span className="text-textSecondary text12Medium flex items-center gap-x-1">
         <ValueDisplay
-          value={toPrecision(perDV, chainSettings.decimals)}
+          value={toPrecision(eachValue, chainSettings.decimals)}
           showVerySmallNumber={true}
         />
-        <span>*</span>
-        <span>{cohort.delegateCnt}x per DV</span>
+        delegations each
       </span>
     </div>
   );
