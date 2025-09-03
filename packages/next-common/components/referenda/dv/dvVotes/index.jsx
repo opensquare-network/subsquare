@@ -8,16 +8,14 @@ import { VoteIndicator } from "../common/voteIndicator";
 import Divider from "next-common/components/styled/layout/divider";
 import getVoteType from "next-common/utils/dv/voteType";
 import { groupBy, isNil } from "lodash-es";
-import Tabs from "next-common/components/tabs";
 import DvVotesMobileList from "./mobileList";
 import DvVotesDesktopList from "./desktopList";
 import {
   useFilteredDvReferenda,
   useFilteredDvVotes,
 } from "next-common/context/referenda/dv";
-import useFormattedDelegates from "next-common/hooks/referenda/useFormattedDelegates";
-import { usePageProps } from "next-common/context/page";
 import NoData from "next-common/components/noData";
+import VotesRoleTabs from "../common/roleTabs";
 
 const SPACE = 1;
 
@@ -27,46 +25,12 @@ export default function DvReferendaVotes() {
       <TabsTitle>DV Votes</TabsTitle>
       <NeutralPanel className="p-6">
         <WindowSizeProvider>
-          <DelegatesRole />
+          <VotesRoleTabs component={MaybeEmptyDelegates} />
           <Divider />
           <VoteIndicator />
         </WindowSizeProvider>
       </NeutralPanel>
     </div>
-  );
-}
-
-function DelegatesRole() {
-  const { cohort } = usePageProps();
-  const [activeTabValue, setActiveTabValue] = useState("delegate");
-  const formattedDelegates = useFormattedDelegates();
-
-  const tabs = useMemo(() => {
-    const filteredDelegates = formattedDelegates.filter(
-      (delegate) => delegate.role === activeTabValue,
-    );
-    return [
-      {
-        value: "delegate",
-        label: "DAO",
-        content: <MaybeEmptyDelegates delegates={filteredDelegates} />,
-      },
-      {
-        value: "guardian",
-        label: "Guardian",
-        content: <MaybeEmptyDelegates delegates={filteredDelegates} />,
-      },
-    ];
-  }, [activeTabValue, formattedDelegates]);
-
-  if (isNil(cohort)) return null;
-
-  return (
-    <Tabs
-      tabs={tabs}
-      activeTabValue={activeTabValue}
-      onTabClick={(tab) => setActiveTabValue(tab.value)}
-    />
   );
 }
 
