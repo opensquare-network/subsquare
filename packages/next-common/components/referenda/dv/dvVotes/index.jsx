@@ -7,7 +7,8 @@ import { TabsTitle } from "../common/styled";
 import { VoteIndicator } from "../common/voteIndicator";
 import Divider from "next-common/components/styled/layout/divider";
 import getVoteType from "next-common/utils/dv/voteType";
-import { groupBy } from "lodash-es";
+import { groupBy, isNil } from "lodash-es";
+import Tabs from "next-common/components/tabs";
 import DvVotesMobileList from "./mobileList";
 import DvVotesDesktopList from "./desktopList";
 import {
@@ -15,6 +16,8 @@ import {
   useFilteredDvVotes,
 } from "next-common/context/referenda/dv";
 import useFormattedDelegates from "next-common/hooks/referenda/useFormattedDelegates";
+import { usePageProps } from "next-common/context/page";
+import NoData from "next-common/components/noData";
 
 const SPACE = 1;
 
@@ -24,7 +27,7 @@ export default function DvReferendaVotes() {
       <TabsTitle>DV Votes</TabsTitle>
       <NeutralPanel className="p-6">
         <WindowSizeProvider>
-          <DvReferendaVotesImpl />
+          <DelegatesRole />
           <Divider />
           <VoteIndicator />
         </WindowSizeProvider>
@@ -33,7 +36,47 @@ export default function DvReferendaVotes() {
   );
 }
 
-export function DvReferendaVotesImpl() {
+function DelegatesRole() {
+  const { cohort } = usePageProps();
+  const [activeTabValue, setActiveTabValue] = useState("delegate");
+  const formattedDelegates = useFormattedDelegates();
+
+  const tabs = useMemo(() => {
+    const filteredDelegates = formattedDelegates.filter(
+      (delegate) => delegate.role === activeTabValue,
+    );
+    return [
+      {
+        value: "delegate",
+        label: "DAO",
+        content: <MaybeEmptyDelegates delegates={filteredDelegates} />,
+      },
+      {
+        value: "guardian",
+        label: "Guardian",
+        content: <MaybeEmptyDelegates delegates={filteredDelegates} />,
+      },
+    ];
+  }, [activeTabValue, formattedDelegates]);
+
+  if (isNil(cohort)) return null;
+
+  return (
+    <Tabs
+      tabs={tabs}
+      activeTabValue={activeTabValue}
+      onTabClick={(tab) => setActiveTabValue(tab.value)}
+    />
+  );
+}
+
+export function MaybeEmptyDelegates({ delegates }) {
+  if (isNil(delegates) || delegates.length === 0) return <NoData />;
+
+  return <DvReferendaVotesImpl delegates={delegates} />;
+}
+
+export function DvReferendaVotesImpl({ delegates = [] }) {
   const isMobile = useIsMobile();
   const scrollerXRef = useRef();
   const [showLeft, setShowLeft] = useState(false);
@@ -42,10 +85,9 @@ export function DvReferendaVotesImpl() {
   const filteredReferenda = useFilteredDvReferenda();
   const filteredVotes = useFilteredDvVotes();
 
-  const formattedDelegates = useFormattedDelegates();
-
-  const sortedDelegatesAddress = formattedDelegates.map(
-    (delegate) => delegate.address,
+  const sortedDelegatesAddress = useMemo(
+    () => delegates.map((delegate) => delegate.address),
+    [delegates],
   );
 
   const votesByReferendum = useMemo(
