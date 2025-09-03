@@ -12,6 +12,10 @@ export default function FellowshipMembersSummary() {
   const total = (collectiveMembers || []).length;
   const candidates = (collectiveMembers || []).filter((m) => m.rank <= 0);
   const isLoading = isNil(coreMembers);
+  const countOfNotInCore = Math.max(
+    0,
+    (collectiveMembers || []).length - (coreMembers || []).length,
+  );
 
   return (
     <SummaryLayout>
@@ -30,7 +34,7 @@ export default function FellowshipMembersSummary() {
       </SummaryItem>
       <SummaryItem title="Not in Core">
         <LoadableContent isLoading={isLoading}>
-          {collectiveMembers?.length - (coreMembers || []).length}
+          {countOfNotInCore}
         </LoadableContent>
       </SummaryItem>
     </SummaryLayout>

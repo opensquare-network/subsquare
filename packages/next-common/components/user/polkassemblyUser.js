@@ -9,6 +9,7 @@ import { useWidth } from "./util";
 import Gravatar from "../gravatar";
 import Link from "next/link";
 import ExternalLink from "../externalLink";
+import { cn } from "next-common/utils";
 
 function PolkassemblyUser({
   className = "text14Medium text-textPrimary",
@@ -54,7 +55,7 @@ function PolkassemblyUser({
         <ExternalLink
           href={user.polkassemblyUserLink}
           externalIcon={false}
-          className="text-inherit hover:!underline"
+          className={cn("text-inherit hover:!underline", className)}
         >
           {userIdentity}
         </ExternalLink>

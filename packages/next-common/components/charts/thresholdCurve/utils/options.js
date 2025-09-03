@@ -121,6 +121,7 @@ function getDetailConfig(labels, commonPluginsConfig, tooltipCallbacks) {
 }
 
 export default function useDetailPageOptions(labels = [], datasets) {
+  const { neutral300 } = useThemeSetting();
   const chainSettings = useChainSettings();
   const decisionIndex = useDecisionIndex();
   const commonPluginsConfig = useCommonPluginsConfig();
@@ -159,7 +160,15 @@ export default function useDetailPageOptions(labels = [], datasets) {
     config = merge(config, getVotesScaleOptions(chainSettings));
   }
 
-  return config;
+  return merge(config, {
+    scales: {
+      y: {
+        grid: {
+          color: neutral300,
+        },
+      },
+    },
+  });
 }
 
 export function useDetailPageOptionsWithoutTallyHistory(labels = []) {

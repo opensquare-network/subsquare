@@ -51,13 +51,14 @@ function Action({ index, status }) {
   return <CancelRequestJudgement registrarIndex={index} />;
 }
 
-const colRegistrar = {
+export const colRegistrar = {
   name: "Registrar",
   style: { textAlign: "left" },
   render: ({ account, index }) => <Registrar account={account} index={index} />,
 };
 
-const colStatus = {
+export const colStatus = {
+  isCustomStatus: true,
   name: "Status",
   style: { textAlign: "right", minWidth: "160px" },
   render: ({ status, fee }) => <Status status={status} fee={fee} />,

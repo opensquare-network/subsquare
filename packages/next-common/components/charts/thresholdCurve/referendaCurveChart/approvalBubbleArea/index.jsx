@@ -6,7 +6,8 @@ import {
 } from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
 import BubbleItem from "./bubbleItem";
 import useShowVoteActions from "next-common/hooks/useShowVoteActions";
-import { clamp, get, last } from "lodash-es";
+import { clamp, inRange, last } from "lodash-es";
+import { cn } from "next-common/utils";
 
 export default function ApprovalBubbleArea(props) {
   const showVoteActions = useShowVoteActions();
@@ -16,7 +17,8 @@ export default function ApprovalBubbleArea(props) {
   return <ApprovalBubbleAreaImpl {...props} />;
 }
 
-const useApprovalBubbleData = (maxX, historyApprovalData) => {
+const useApprovalBubbleData = (rangeData, historyApprovalData) => {
+  const labelXLength = rangeData[1] - rangeData[0];
   const beginheight = useBeginHeight();
   const blockStep = useBlockSteps();
 
@@ -38,28 +40,39 @@ const useApprovalBubbleData = (maxX, historyApprovalData) => {
       .map((item) => {
         const { data, type, who } = item;
         const blockHeight = item.indexer.blockHeight;
-        const steps = (blockHeight - beginheight) / blockStep;
+        const currentStep = (blockHeight - beginheight) / blockStep;
+
         return {
           data,
           type,
           who,
-          y: getY(steps),
-          x: clamp((steps / maxX) * 100, 0, 100),
+          y: getY(currentStep),
+          x:
+            clamp(((currentStep - rangeData[0]) / labelXLength) * 100, 0, 100) +
+            1,
+          index: currentStep,
+          hidden: !inRange(currentStep, rangeData[0], rangeData[1]),
         };
       });
-  }, [beginheight, blockStep, historyApprovalData, loading, maxX, voteActions]);
+  }, [
+    beginheight,
+    blockStep,
+    historyApprovalData,
+    loading,
+    labelXLength,
+    rangeData,
+    voteActions,
+  ]);
 };
 
 function ApprovalBubbleAreaImpl({
   chartArea,
-  scales,
   historyApprovalData,
   showAyeNay,
+  visible,
+  rangeData,
 }) {
-  const approvalData = useApprovalBubbleData(
-    get(scales, ["x", "max"], 0),
-    historyApprovalData,
-  );
+  const approvalData = useApprovalBubbleData(rangeData, historyApprovalData);
   const style = useMemo(() => {
     const {
       left = 0,
@@ -80,16 +93,20 @@ function ApprovalBubbleAreaImpl({
   return (
     <div
       style={style}
-      className="top-0 left-0 absolute w-full h-full  pointer-events-none"
+      className={cn(
+        "top-0 left-0 absolute w-full h-full  pointer-events-none select-none",
+        !visible && "hidden",
+      )}
     >
       <div className="w-full h-full relative">
-        {approvalData?.map(({ x, y, who, data, type }, index) => {
+        {approvalData?.map(({ x, y, who, data, type, hidden }, index) => {
           return (
             <BubbleItem
               key={index}
               leftPositionPercent={x + "%"}
               bottomPositionPercent={y + "%"}
               who={who}
+              hidden={hidden}
               data={data}
               type={type}
             />

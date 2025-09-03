@@ -36,7 +36,7 @@ const polkadot = {
   group: MenuGroups.PolkadotAndParachains,
   links: polkadotLinks,
   postLabels: defaultPostLabels,
-  hasIdentityTimeline: true,
+  hasIdentity: true,
   graphqlApiSubDomain: "dot-gh-api",
   graphql: {
     domain: "dot-gh-api",

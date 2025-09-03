@@ -2,9 +2,7 @@ import { useState, useEffect } from "react";
 import { useContextApi } from "next-common/context/api";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
-export default function useMyIdentityType() {
-  const api = useContextApi();
-  const address = useRealAddress();
+export function useIdentityType(api, address) {
   const [type, setType] = useState(null);
   const [parent, setParent] = useState(null);
   const [subName, setSubName] = useState(null);
@@ -40,4 +38,11 @@ export default function useMyIdentityType() {
   }, [api, address]);
 
   return { type, parent, subName, isLoading };
+}
+
+export default function useMyIdentityType() {
+  const api = useContextApi();
+  const address = useRealAddress();
+
+  return useIdentityType(api, address);
 }

@@ -32,6 +32,7 @@ import BountyAppendMenuItem from "next-common/components/appendants/bounty/appen
 import ReferendaAppendMenuItem from "next-common/components/appendants/referenda/appendMenuItem";
 import { useBountyAppendantsContext } from "next-common/context/bountyAppendants";
 import { useReferendaAppendantsContext } from "next-common/context/referendaAppendants";
+import { useReferendaIsVoting } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 
 const DeletePopup = dynamicPopup(() => import("./deletePopup"));
 
@@ -176,6 +177,11 @@ export function CancelReferendumMenuItem({
   setShowCancelReferendumPopup,
   setShow,
 }) {
+  const isVoting = useReferendaIsVoting();
+  if (!isVoting) {
+    return null;
+  }
+
   return (
     <OptionItem
       onClick={() => {
@@ -195,6 +201,10 @@ export function KillReferendumMenuItem({
   setShowKillReferendumPopup,
   setShow,
 }) {
+  const isVoting = useReferendaIsVoting();
+  if (!isVoting) {
+    return null;
+  }
   return (
     <OptionItem
       onClick={() => {

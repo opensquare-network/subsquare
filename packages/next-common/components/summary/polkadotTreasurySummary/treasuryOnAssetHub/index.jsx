@@ -57,7 +57,7 @@ export default function TreasuryOnAssetHub() {
       title={
         <Link
           className="text12Medium"
-          href={`https://assethub-polkadot.subscan.io/account/${StatemintTreasuryAccount}`}
+          href={`https://assethub-polkadot.statescan.io/#/accounts/${StatemintTreasuryAccount}`}
           target="_blank"
           rel="noreferrer"
         >

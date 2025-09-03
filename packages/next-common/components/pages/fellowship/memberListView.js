@@ -160,7 +160,7 @@ function NonCoreMemberAddressCol({ address }) {
 
 function DetailButton({ address }) {
   const section = useCollectivesSection();
-  return <NavigateToDetailButton href={`/${section}/members/${address}`} />;
+  return <NavigateToDetailButton href={`/user/${address}/${section}`} />;
 }
 
 function getCoreMemberRow({ idx, member, params, ActionsComponent }) {

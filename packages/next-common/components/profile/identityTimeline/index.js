@@ -2,7 +2,6 @@ import { useChain, useChainSettings } from "next-common/context/chain";
 import useProfileAddress from "../useProfileAddress";
 import { useEffect } from "react";
 import IdentityTimeline from "next-common/components/identityTimeline";
-import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { useDispatch } from "react-redux";
 import {
   profileIdentityTimelineSelector,
@@ -85,7 +84,7 @@ export default function ProfileIdentityTimeline() {
   const hasTimeline = timeline && timeline.length > 0;
 
   return (
-    <SecondaryCard>
+    <>
       <IdentityTimeline timelineData={timeline} />
       {hasTimeline && (
         <div className="flex w-full justify-end mt-[24px]">
@@ -97,6 +96,6 @@ export default function ProfileIdentityTimeline() {
           </ExternalLink>
         </div>
       )}
-    </SecondaryCard>
+    </>
   );
 }

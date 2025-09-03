@@ -14,6 +14,7 @@ import dynamicPopup from "next-common/lib/dynamic/popup";
 import useAssetHubTabsAssets from "next-common/components/assets/useAssetHubTabsAssets";
 import { clearMultiAccounts } from "next-common/store/reducers/multiAccountsSlice";
 import { useDispatch } from "react-redux";
+import { AssetLink } from "next-common/components/assets/assetLink";
 
 const AssetTransferPopup = dynamicPopup(() => import("./transferPopup"));
 
@@ -53,7 +54,8 @@ export function TokenSymbol({ type, assetId, symbol }) {
 
   return (
     <div className="flex gap-[8px] items-center text14Medium text-textPrimary">
-      <AssetIcon width={24} height={24} /> {symbol}
+      <AssetIcon width={24} height={24} />{" "}
+      <AssetLink assetId={assetId}>{symbol}</AssetLink>
     </div>
   );
 }
@@ -75,7 +77,7 @@ export function paddingDecimals(value, decimals) {
 
 export const colToken = {
   name: "Token",
-  style: { textAlign: "left", width: "160px", minWidth: "160px" },
+  style: { textAlign: "left", width: "112px", minWidth: "112px" },
   render: (item) => (
     <TokenSymbol
       key="token"
@@ -122,7 +124,7 @@ export const colTotal = {
 };
 
 export const colTransferrable = {
-  name: "Transferrable",
+  name: "Transferable",
   style: { textAlign: "right", width: "160px", minWidth: "160px" },
   render: (item) => (
     <span key="transferrable" className="text14Medium text-textPrimary">
@@ -141,8 +143,8 @@ export const colTransfer = {
 
 const columnsDef = [
   colToken,
-  colId,
   colName,
+  colId,
   colTotal,
   colTransferrable,
   colTransfer,

@@ -3,10 +3,57 @@ import { backendApi } from "next-common/services/nextApi";
 import useRefCallback from "next-common/hooks/useRefCallback";
 import { markdownToText } from "next-common/components/header/search/utils";
 import useSearchIdentities from "next-common/components/header/hooks/useSearchIdentities";
+import {
+  getChildBountyDisplayIndex,
+  getChildBountyIndex,
+} from "next-common/utils/viewfuncs/treasury/childBounty";
 
 export const ItemType = {
   CATEGORY: "category",
   ITEM: "item",
+};
+
+const formatItems = (
+  proposalType,
+  items,
+  indexKeyOrGetIndexFn,
+  displayIndexKeyOrGetIndexFn,
+) => {
+  if ((items?.length || []) <= 0) {
+    return [];
+  }
+
+  return [
+    {
+      index: null,
+      title: proposalType,
+      content: "-",
+      proposalType,
+      type: ItemType.CATEGORY,
+    },
+    ...items.map((item) => {
+      const index =
+        typeof indexKeyOrGetIndexFn === "string"
+          ? item[indexKeyOrGetIndexFn]
+          : indexKeyOrGetIndexFn(item);
+      const displayIndex =
+        typeof displayIndexKeyOrGetIndexFn === "string"
+          ? item[displayIndexKeyOrGetIndexFn]
+          : displayIndexKeyOrGetIndexFn?.(item);
+      return {
+        index: index ?? 0,
+        displayIndex: displayIndex ?? 0,
+        title: item.title ?? "-",
+        content: item.content
+          ? item.content
+          : item.contentSummary?.summary
+          ? markdownToText(item.contentSummary.summary)
+          : "-",
+        proposalType,
+        type: ItemType.ITEM,
+      };
+    }),
+  ];
 };
 
 function useSearchResults() {
@@ -96,41 +143,6 @@ function useSearchResults() {
     }
   });
 
-  const formatItems = useRefCallback(
-    (proposalType, items, indexKeyOrGetIndexFn) => {
-      if ((items?.length || []) <= 0) {
-        return [];
-      }
-
-      return [
-        {
-          index: null,
-          title: proposalType,
-          content: "-",
-          proposalType,
-          type: ItemType.CATEGORY,
-        },
-        ...items.map((item) => {
-          const index =
-            typeof indexKeyOrGetIndexFn === "string"
-              ? item[indexKeyOrGetIndexFn]
-              : indexKeyOrGetIndexFn(item);
-          return {
-            index: index ?? 0,
-            title: item.title ?? "-",
-            content: item.content
-              ? item.content
-              : item.contentSummary?.summary
-              ? markdownToText(item.contentSummary.summary)
-              : "-",
-            proposalType,
-            type: ItemType.ITEM,
-          };
-        }),
-      ];
-    },
-  );
-
   const totalList = useMemo(() => {
     if (!results) return null;
 
@@ -143,9 +155,12 @@ function useSearchResults() {
         case "bounties":
           return formatItems("Bounties", value, "bountyIndex");
         case "childBounties": {
-          return formatItems("ChildBounties", value, (item) => {
-            return `${item.parentBountyId}_${item.index}`;
-          });
+          return formatItems(
+            "ChildBounties",
+            value,
+            getChildBountyIndex,
+            getChildBountyDisplayIndex,
+          );
         }
         case "identities":
           return formatItems("Identities", value, "index");
@@ -157,7 +172,7 @@ function useSearchResults() {
           return [];
       }
     });
-  }, [formatItems, results]);
+  }, [results]);
 
   return {
     totalList,

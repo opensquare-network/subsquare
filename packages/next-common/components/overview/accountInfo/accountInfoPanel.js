@@ -13,7 +13,6 @@ import { NeutralPanel } from "next-common/components/styled/containers/neutralPa
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import AccountPanelScrollPrompt from "./components/accountPanelScrollPrompt";
 import ExtensionUpdatePrompt from "./components/extensionUpdatePrompt";
-import AssetHubManagePrompt from "./components/assetHubManagePrompt";
 import { useAccountTransferPopup } from "./hook/useAccountTransferPopup";
 import dynamic from "next/dynamic";
 import { useState } from "react";
@@ -27,8 +26,6 @@ import { isNil } from "lodash-es";
 import Link from "next/link";
 import Button from "next-common/lib/button";
 import AccountPanelQuickAccess from "./components/accountPanelQuickAccess";
-import AccountUnlockBalancePrompt from "./components/accountUnlockBalancePrompt";
-import WithPallet from "next-common/components/common/withPallet";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Avatar from "next-common/components/avatar";
 import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
@@ -140,7 +137,7 @@ export function ProxyTip() {
         />
       </div>
       <span className="text14Medium text-textSecondary">
-        , all your transactions will be submitted on behalf of this proxy
+        , all your transactions will be submitted on behalf of this proxied
         address.
       </span>
     </div>
@@ -296,7 +293,7 @@ export function AccountHead({ width }) {
   );
 }
 
-export function CommonAccountInfoPanel() {
+export default function AccountInfoPanel() {
   const { width } = useWindowSize();
 
   if (isNil(width)) {
@@ -310,15 +307,7 @@ export function CommonAccountInfoPanel() {
       <Divider />
       <AccountBalances />
       <ExtensionUpdatePrompt />
-      <WithPallet pallet="referenda">
-        <AccountUnlockBalancePrompt />
-      </WithPallet>
-      <AssetHubManagePrompt />
       <AccountPanelScrollPrompt />
     </NeutralPanel>
   );
-}
-
-export default function AccountInfoPanel() {
-  return <CommonAccountInfoPanel />;
 }

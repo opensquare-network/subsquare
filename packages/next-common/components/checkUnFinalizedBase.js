@@ -87,8 +87,8 @@ export default function CheckUnFinalizedBase({
         <>
           <H2>Waiting for block confirmation</H2>
           <P>
-            We find the proposal on chain but not finalized. This page will be
-            refreshed when it gets finalized.
+            Your proposal is on-chain, but the block hasn’t finalized yet. This
+            page will update automatically once it’s confirmed.
           </P>
         </>
       )}

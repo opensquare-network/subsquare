@@ -2,6 +2,72 @@
 
 All notable changes to this project will be documented in this file.
 
+# 5.3.2
+
+Date:
+2025-08-29. [Code diff](https://github.com/opensquare-network/subsquare/compare/ed81cd8a08c3c527b396203a7e14e994a69d898c...a8888fae0b85cfd6d119f6b553e8230a263d3c63).
+
+- Support assethub migration for paseo testnet.
+- Show more identity info on the profile page including direct identity, sub identities, judgments.
+- Show call data when users are composing a preimage.
+- Show remarks in nested calls wrapped in batch, multisig and other calls on the referendum detail page.
+- Fix the page crash due to referenda/democracy switch on the delegation page.
+- Fix the bug that popup search input is not focused on firefox.
+- Code refactor and style improvements.
+
+# 5.3.1
+
+Date:
+2025-08-25. [Code diff](https://github.com/opensquare-network/subsquare/compare/b24f98fefd32e87608c3b4a1c481bbbf8d3129b0...ed81cd8a08c3c527b396203a7e14e994a69d898c).
+
+- Show a votes bar on nested and flattened votes popup to better compare votes impact.
+- Fix identity name display and not change line for long name in some cases.
+- Improve the prompt scroll on the overview page account panel. Show 2 prompts at the same time if there are more than 3
+  ones.
+- Fellowship:
+    - Fix pagination on fellowship salary list pages.
+    - Fix a bug that members cannot submit referenda by quick start templates.
+    - Disable referenda submission button when RPC not connected and show this tooltip to members.
+    - Fix a bug that login popup shows automatically.
+    - Change core tab on fellowship profile page to membership.
+- Not show the cancel and kill referenda menu if a referendum voting period is finished on the referendum detail page.
+- Update assethub foreign assets menu icon.
+- Fix coretime chart fixed price phase line.
+- Show the 404 component on invalid coretime sale page instead of redirecting users to the 404 page.
+- Refactor various post list components including discussion post list, financial council motion list to reduce
+  coupling.
+- Upgrade dependencies and style fixes.
+
+# 5.3.0
+
+Date:
+2025-08-18. [Code diff](https://github.com/opensquare-network/subsquare/compare/f8ca2ad9901c1b324722207a4cfb4688ee4e7193...6375668f9be64a500bc70f6f68dd130ccd9c9c55).
+
+- [Medium] Shows voters on the referendum curves chart; Add a new tab to show curves on a referendum detail page.
+- [Medium] Support assethub foreign assets. We can see foreign assets, my foreign assets and transfer my assets.
+- [Important] Fix page crash due to google translation. It's due to a confliction between react component update with
+  DOM manipulation by google transaction.
+- [Important] Child bounty index adaption. Child bounties under a same parent bounty may have same index due to history
+  versions. We need to add an additional field (block height) to identity a child bounty in this case.
+- Fellowship:
+    - Add a slider to select a scope of fellowship member votes. So they can know their vote participation rate in this
+      scope.
+    - Enable members to create evidence on the evidence list page.
+    - Show identity tab on the profile page for collectives subsquare.
+    - Redirect users from fellowship member detail page to the profile page to avoid distraction.
+- Remove the centrifuge loan from the polkadot treasury panel.
+- Improve referenda track queue components and remove the misleading placeholder slots.
+- Fix DV start height for Dr. Jeff Cao of cohort 2.
+- Show the relatives chart for a multisig address on the multisig account page.
+- Change assethub treasury exploerer to statescan.
+- Add a user multisig prompt on the account panel.
+- Improve copywriting of proposal finalization waiting after creating a new referendum.
+- Remove the check all component on the treasury requesting panel on referenda page.
+- Fix markdown previewer to show image on WFC
+  referenda([#1710](https://polkadot.subsquare.io/referenda/1710), [#1711](https://polkadot.subsquare.io/referenda/1711))
+  call tab.
+- Code refactor and UI fixes.
+
 # 5.2.0
 
 date: 2025-08-09

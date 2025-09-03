@@ -7,6 +7,9 @@ import {
   paseoLinks,
   paseoThemeVars,
   paseoCommonSettings,
+  paseoAssethubMigration,
+  paseoRelayChainNodes,
+  paseoAssetHubNodes,
 } from "./common/paseo";
 import polkadotPreimageSettings from "next-common/utils/consts/settings/common/preimage/polkadot";
 
@@ -17,35 +20,14 @@ const ProjectIconPaseoLight = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconPaseoLight"),
 );
 
-const nodes = [
-  {
-    name: "Amforc",
-    url: "wss://paseo.rpc.amforc.com",
-  },
-  {
-    name: "IBP1",
-    url: "wss://rpc.ibp.network/paseo",
-  },
-  {
-    name: "StakeWorld",
-    url: "wss://pas-rpc.stakeworld.io",
-  },
-  {
-    name: "Dwellir",
-    url: "wss://paseo-rpc.dwellir.com",
-  },
-  {
-    name: "IBP2",
-    url: "wss://paseo.dotters.network",
-  },
-];
-
 const paseo = {
   ...paseoCommonSettings,
   value: Chains.paseo,
   name: capitalize(Chains.paseo),
   blockTime: 6000,
-  endpoints: nodes,
+  endpoints: paseoAssetHubNodes,
+  relayChainEndpoints: paseoRelayChainNodes,
+  assethubMigration: paseoAssethubMigration,
   avatar: ProjectIconPaseoLight,
   darkAvatar: ProjectIconPaseoDark,
   navPreferDark: true,
@@ -72,6 +54,7 @@ const paseo = {
     vesting: true,
   }),
   integrations: {
+    statescan: true,
     subscan: true,
   },
   sima: true,

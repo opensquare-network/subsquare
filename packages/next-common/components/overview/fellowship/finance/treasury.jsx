@@ -27,7 +27,7 @@ export default function FellowshipTreasury() {
   const Title = (
     <>
       <Link
-        href={`https://assethub-polkadot.subscan.io/account/${StatemintFellowShipTreasuryAccount}`}
+        href={`https://assethub-polkadot.statescan.io/#/accounts/${StatemintFellowShipTreasuryAccount}`}
         className="text12Medium text-textTertiary hover:underline"
         target="_blank"
         rel="noreferrer"

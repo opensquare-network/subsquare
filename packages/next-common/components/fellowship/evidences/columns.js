@@ -8,7 +8,7 @@ const fellowshipMemberColumns = [
     className: "text-left max-w-[400px]",
   },
   {
-    name: "All Evidence Count",
+    name: "All Submissions",
     className: "text-right",
   },
 ];

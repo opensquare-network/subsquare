@@ -3,6 +3,7 @@ import Tooltip from "next-common/components/tooltip";
 import useAvatarInfo from "next-common/hooks/useAvatarInfo";
 import { AvatarDisplay } from "next-common/components/user/avatarDisplay";
 import TooltipContent from "./bubbleTooltipContent";
+import { cn } from "next-common/utils";
 
 const sideLength = 16;
 
@@ -12,6 +13,7 @@ export default function BubbleItem({
   type,
   who,
   data,
+  hidden,
 }) {
   const style = useMemo(() => {
     return {
@@ -26,7 +28,10 @@ export default function BubbleItem({
   return (
     <div
       style={style}
-      className="absolute flex bg-red-200 rounded-full pointer-events-auto cursor-pointer overflow-hidden hover:scale-110 hover:z-10"
+      className={cn(
+        "absolute flex bg-red-200 rounded-full pointer-events-auto cursor-pointer overflow-hidden hover:z-10 transition-all",
+        hidden && "hidden",
+      )}
     >
       <Tooltip
         className={"inline-flex"}

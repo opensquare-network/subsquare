@@ -19,7 +19,7 @@ function ProfileFellowshipContent() {
 
   if (pathname === panelPath) {
     return <ProfileFellowshipVotes />;
-  } else if (pathname === `${panelPath}/core`) {
+  } else if (pathname === `${panelPath}/membership`) {
     return <ProfileFellowshipCore />;
   } else if (pathname === `${panelPath}/salary`) {
     return <ProfileFellowshipSalary />;

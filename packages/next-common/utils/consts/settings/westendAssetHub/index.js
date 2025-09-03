@@ -44,6 +44,7 @@ const westendAssetHub = {
   },
   supportWalletconnect: true,
   allowWeb2Login: true,
+  supportAssets: true,
 };
 
 export default westendAssetHub;

@@ -33,7 +33,7 @@ export default function useProfileTabs() {
     },
     integrations,
     hasMultisig,
-    hasIdentityTimeline,
+    hasIdentity,
   } = useChainSettings();
   const chain = useChain();
   const hasDemocracyModule = democracy && !democracy?.archived;
@@ -107,7 +107,7 @@ export default function useProfileTabs() {
       exactMatch: false,
     });
 
-    if (hasIdentityTimeline) {
+    if (hasIdentity) {
       tabs.push({
         label({ active }) {
           return <TabTitle active={active}>Identity</TabTitle>;

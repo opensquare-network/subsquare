@@ -22,7 +22,6 @@ function getFellowshipMembersMenu() {
     extraMatchNavMenuActivePathnames: [
       "/fellowship/members/params",
       "/fellowship/members/feeds",
-      "/fellowship/members/[id]/evidences/[evidenceId]",
     ],
   };
 }
@@ -53,6 +52,9 @@ function getFellowshipEvidencesMenu(overviewSummary) {
     name: "Evidences",
     pathname: "/fellowship/evidences",
     activeCount: fellowshipEvidences.active || 0,
+    extraMatchNavMenuActivePathnames: [
+      "/fellowship/members/[id]/evidences/[evidenceId]",
+    ],
   };
 }
 

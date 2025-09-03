@@ -31,6 +31,9 @@ const Gov2ReferendaVotesBubble = dynamicClientOnly(() =>
   import("next-common/components/gov2/referendum/votesBubble"),
 );
 const ReferendumReport = dynamicClientOnly(() => import("../referenda/report"));
+const CurvesChartTab = dynamicClientOnly(() =>
+  import("../referenda/curvesChartTab"),
+);
 
 export default function ReferendumDetailMultiTabs() {
   const chain = useChain();
@@ -95,7 +98,16 @@ export default function ReferendumDetailMultiTabs() {
         ),
       },
       {
-        // lazy: true,
+        lazy: true,
+        value: "curves",
+        label: "Curves",
+        content: (
+          <div className="space-y-4">
+            <CurvesChartTab />
+          </div>
+        ),
+      },
+      {
         value: "statistics",
         label: "Statistics",
         content: (

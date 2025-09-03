@@ -17,7 +17,7 @@ export default function Ambassador() {
       title={
         <Link
           className="text12Medium"
-          href={`https://assethub-polkadot.subscan.io/account/${AmbassadorAccount}`}
+          href={`https://assethub-polkadot.statescan.io/#/accounts/${AmbassadorAccount}`}
           target="_blank"
           rel="noreferrer"
         >

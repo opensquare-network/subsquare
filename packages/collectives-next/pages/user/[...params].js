@@ -16,9 +16,19 @@ export default Profile;
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const {
-    params: [id],
+    params: [id, activityType, category],
     page = 1,
   } = context.query;
+
+  // redirect core to membership
+  if (category === "core") {
+    return {
+      redirect: {
+        permanent: true,
+        destination: `/user/${id}/${activityType}/membership`,
+      },
+    };
+  }
 
   const maybeAddress = tryConvertToSubstrateAddress(id);
 
