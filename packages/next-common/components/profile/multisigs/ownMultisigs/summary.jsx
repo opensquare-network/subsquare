@@ -6,6 +6,7 @@ import { useMultisigContext } from "next-common/components/profile/multisigs/con
 
 export default function MultisigSummary() {
   const { data, loading } = useMultisigContext();
+
   return (
     <SecondaryCard>
       <SummaryLayout>

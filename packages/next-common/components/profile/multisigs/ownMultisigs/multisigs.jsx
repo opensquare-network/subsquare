@@ -2,14 +2,13 @@ import { useState, useEffect } from "react";
 import CommonMultisigsTable from "next-common/components/profile/multisigs/commonTable";
 import useFetchProfileMultisigs from "../useFetchProfileMultisigs";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
-import { ListCard } from "next-common/components/overview/styled";
 
-export default function SignatoryMultisigs() {
+export default function Multisigs() {
   const [total, setTotal] = useState(0);
   const [multisigs, setMultisigs] = useState(null);
   const { page, component: pageComponent } = usePaginationComponent(total, 15);
   const { data, isLoading } = useFetchProfileMultisigs({
-    queryType: "signatory",
+    queryType: "multisig",
     page,
     pageSize: 15,
   });
@@ -24,9 +23,9 @@ export default function SignatoryMultisigs() {
   }, [data, isLoading]);
 
   return (
-    <ListCard>
+    <div>
       <CommonMultisigsTable multisigs={multisigs} isLoading={isLoading} />
       {pageComponent}
-    </ListCard>
+    </div>
   );
 }
