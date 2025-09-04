@@ -53,6 +53,23 @@ export default function DvInfoPanel() {
             />
           ))}
         </span>,
+        cohort?.announcementLink ? (
+          <span
+            key="announcement"
+            className="text14Medium flex items-center gap-x-1"
+          >
+            Check{" "}
+            <Link
+              target="_blank"
+              rel="noreferrer"
+              className="text-theme500"
+              href={cohort?.announcementLink}
+            >
+              here
+            </Link>{" "}
+            for the latest cohort announcement.
+          </span>
+        ) : null,
       ].filter(Boolean)}
     />
   );
