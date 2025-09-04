@@ -46,7 +46,9 @@ const polkadot = {
   subsquareGraphql: {
     domain: "polkadot-gh-api",
     coretime: true,
-    intime: true,
+    intime: {
+      preimage: true,
+    },
   },
   hasMultisig: true,
   multisigApiPrefix: "dot",
@@ -114,7 +116,6 @@ const polkadot = {
   openSquare: {
     voting: "polkadot",
   },
-  preimagesGraphql: true,
 };
 
 export default polkadot;
