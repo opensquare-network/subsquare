@@ -26,12 +26,10 @@ import dynamicPopup from "next-common/lib/dynamic/popup";
 import { useClickAway } from "react-use";
 import CancelReferendumPopup from "./summary/newProposalQuickStart/cancelReferendumInnerPopup";
 import KillReferendumPopup from "./summary/newProposalQuickStart/killReferendumInnerPopup";
-import { useChainSettings } from "next-common/context/chain";
 import useTerminateAction from "next-common/hooks/useTerminateAction";
 import BountyAppendMenuItem from "next-common/components/appendants/bounty/appendMenuItem";
-import ReferendaAppendMenuItem from "next-common/components/appendants/referenda/appendMenuItem";
+import ReferendaArticleMoreMenu from "./articleMoreMenu/referendaArticleMoreMenu";
 import { useBountyAppendantsContext } from "next-common/context/bountyAppendants";
-import { useReferendaAppendantsContext } from "next-common/context/referendaAppendants";
 import { useReferendaIsVoting } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 
 const DeletePopup = dynamicPopup(() => import("./deletePopup"));
@@ -285,21 +283,11 @@ function ConditionalBountyLinkMenu({ menu }) {
   return menu;
 }
 
-function ConditionalOpenGovReferendumLinkMenu({ menu }) {
-  const { appendants } = useReferendaAppendantsContext();
-  if (appendants && appendants?.length > 0) {
-    return null;
-  }
-
-  return menu;
-}
-
 function ConditionalLinkMenu({
   menu,
   isTreasuryBountyPost,
   isDiscussionPost,
   isFellowshipApplicationPost,
-  isOpenGovReferendumPost,
 }) {
   if (isDiscussionPost || isFellowshipApplicationPost) {
     return null;
@@ -309,14 +297,18 @@ function ConditionalLinkMenu({
     return <ConditionalBountyLinkMenu menu={menu} />;
   }
 
-  if (isOpenGovReferendumPost) {
-    return <ConditionalOpenGovReferendumLinkMenu menu={menu} />;
-  }
-
   return menu;
 }
 
-export function PostContextMenu({ isAuthor, editable, setIsEdit }) {
+export function PostContextMenu(props) {
+  const postType = useDetailType();
+  if (postType === detailPageCategory.GOV2_REFERENDUM) {
+    return <ReferendaArticleMoreMenu {...props} />;
+  }
+  return <_PostContextMenu {...props} />;
+}
+
+function _PostContextMenu({ isAuthor, editable, setIsEdit }) {
   const dispatch = useDispatch();
   const router = useRouter();
   const post = usePost();
@@ -339,11 +331,6 @@ export function PostContextMenu({ isAuthor, editable, setIsEdit }) {
       onShowPopup: () => setShow(false),
     }) || {};
 
-  const { newProposalQuickStart: { cancelReferendum, killReferendum } = {} } =
-    useChainSettings();
-
-  const isOpenGovReferendumPost =
-    postType === detailPageCategory.GOV2_REFERENDUM;
   const isDiscussionPost = postType === detailPageCategory.POST;
   const isFellowshipApplicationPost =
     postType === detailPageCategory.FELLOWSHIP_APPLICATION;
@@ -391,19 +378,12 @@ export function PostContextMenu({ isAuthor, editable, setIsEdit }) {
               setIsAppend={setShowBountyCreatePopup}
             />
           )}
-          {isOpenGovReferendumPost && (
-            <ReferendaAppendMenuItem
-              setShow={setShow}
-              setIsAppend={setShowReferendaCreatePopup}
-            />
-          )}
           {editable && isAuthor && (
             <ConditionalLinkMenu
               menu={linkOrUnlinkMenuItem}
               isTreasuryBountyPost={isTreasuryBountyPost}
               isDiscussionPost={isDiscussionPost}
               isFellowshipApplicationPost={isFellowshipApplicationPost}
-              isOpenGovReferendumPost={isOpenGovReferendumPost}
             />
           )}
           {canDelete && (
@@ -417,22 +397,6 @@ export function PostContextMenu({ isAuthor, editable, setIsEdit }) {
             setShowReportPopup={setShowReportPopup}
             setShow={setShow}
           />
-          {isOpenGovReferendumPost && (
-            <>
-              {cancelReferendum && (
-                <CancelReferendumMenuItem
-                  setShowCancelReferendumPopup={setShowCancelReferendumPopup}
-                  setShow={setShow}
-                />
-              )}
-              {killReferendum && (
-                <KillReferendumMenuItem
-                  setShowKillReferendumPopup={setShowKillReferendumPopup}
-                  setShow={setShow}
-                />
-              )}
-            </>
-          )}
         </OptionWrapper>
       )}
       {showLinkPopup && <PostLinkPopup setShow={setShowLinkPopup} />}

@@ -8,7 +8,7 @@ import AdvanceSettings from "../common/advanceSettings";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import useEnactmentBlocksField from "../common/useEnactmentBlocksField";
-import useTrackField from "../common/useTrackField";
+import useAutoSelectTreasuryTrackField from "../common/useAutoSelectTreasuryTrackField";
 import useValidFromField from "next-common/components/preImages/createPreimagePopup/fields/useValidFromField";
 import { InfoMessage } from "next-common/components/setting/styled";
 import useBalanceField from "next-common/components/preImages/createPreimagePopup/fields/useBalanceField";
@@ -63,7 +63,7 @@ export function NewAssetSpendProposalInnerPopup() {
   const { value: beneficiary, component: beneficiaryField } =
     useAddressComboField();
   const { value: trackId, component: trackField } =
-    useTrackField(defaultTrackId);
+    useAutoSelectTreasuryTrackField(inputBalance, defaultTrackId);
   const { value: enactment, component: enactmentField } =
     useEnactmentBlocksField(trackId);
   const { value: validFrom, component: validFromField } = useValidFromField();

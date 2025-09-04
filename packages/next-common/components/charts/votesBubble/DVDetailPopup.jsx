@@ -1,5 +1,7 @@
+import { useMemo } from "react";
 import Popup from "../../popup/wrapper/Popup";
 import DVDetailDelegates from "./dv/delegates";
+import DVDetailGuardians from "./dv/guardians";
 import DVDetailInfo from "./dv/info";
 
 export default function DVDetailPopup({
@@ -12,6 +14,16 @@ export default function DVDetailPopup({
   nayVotesValue,
   nayPercentage,
 }) {
+  const delegatesVotes = useMemo(
+    () => dvVotes.filter((v) => v.role !== "guardian"),
+    [dvVotes],
+  );
+
+  const guardiansVotes = useMemo(
+    () => dvVotes.filter((v) => v.role === "guardian"),
+    [dvVotes],
+  );
+
   return (
     <Popup title="Decentralized Voices Detail" onClose={closeFunc}>
       <div>
@@ -26,7 +38,8 @@ export default function DVDetailPopup({
 
         <hr />
 
-        <DVDetailDelegates votes={dvVotes} />
+        <DVDetailDelegates votes={delegatesVotes} />
+        <DVDetailGuardians votes={guardiansVotes} />
       </div>
     </Popup>
   );

@@ -3,6 +3,7 @@ import { TitleContainer } from "next-common/components/styled/containers/titleCo
 import Tooltip from "next-common/components/tooltip";
 import { useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import RelativesWithNullGuard from "next-common/components/relationshipPopup/relativesWithNullGuard";
 
 const RelationshipPopup = dynamicPopup(() =>
   import("next-common/components/relationshipPopup"),
@@ -14,12 +15,14 @@ export default function CuratorTitle({ address }) {
   return (
     <TitleContainer className="mb-4 !px-0">
       <span>Curator</span>
-      <Tooltip content="Check Relatives Detail">
-        <SystemRelatives
-          onClick={() => setShowRelationshipPopup(true)}
-          className="w-5 h-5 cursor-pointer text-textTertiary"
-        />
-      </Tooltip>
+      <RelativesWithNullGuard>
+        <Tooltip content="Check Relatives Detail">
+          <SystemRelatives
+            onClick={() => setShowRelationshipPopup(true)}
+            className="w-5 h-5 cursor-pointer text-textTertiary"
+          />
+        </Tooltip>
+      </RelativesWithNullGuard>
       {showRelationshipPopup && (
         <RelationshipPopup
           onClose={() => setShowRelationshipPopup(false)}

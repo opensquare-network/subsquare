@@ -2,6 +2,38 @@
 
 All notable changes to this project will be documented in this file.
 
+# 5.3.3
+
+Date:
+2025-09-04. [Code diff](https://github.com/opensquare-network/subsquare/compare/269a562dcdcefa6ed08935055118f838d73b8f44...8d11350bf360958e3389b47bfa0ad4ef5d744aac).
+
+- Add a range bar in the referendum curve component so we can zoom in to see votes and impacts on the tally line of
+  curve chart.
+- Add delegation relationships to profile relatives chart. Users can click a select component to show different types of
+  relationships of an address.
+- Decentralized voices:
+    - Update cohort 4 and 5 delegates.
+    - Support DV guardian and show them on the DV votes popup.
+- Fix call remark render if the data is hex.
+- Refactor account panel scroll prompts components to reduce the coupling of different prompts.
+- Redirect users to profile votes page in the vote actions popup after clicking an address.
+- [Fellowship] Enable track auto selection for the treasury request referenda template.
+- Update the icon for assethub foreign assets.
+- Upgrade dependencies.
+
+# 5.3.2
+
+Date:
+2025-08-29. [Code diff](https://github.com/opensquare-network/subsquare/compare/ed81cd8a08c3c527b396203a7e14e994a69d898c...a8888fae0b85cfd6d119f6b553e8230a263d3c63).
+
+- Support assethub migration for paseo testnet.
+- Show more identity info on the profile page including direct identity, sub identities, judgments.
+- Show call data when users are composing a preimage.
+- Show remarks in nested calls wrapped in batch, multisig and other calls on the referendum detail page.
+- Fix the page crash due to referenda/democracy switch on the delegation page.
+- Fix the bug that popup search input is not focused on firefox.
+- Code refactor and style improvements.
+
 # 5.3.1
 
 Date:

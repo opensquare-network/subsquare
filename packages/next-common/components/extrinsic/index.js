@@ -5,6 +5,7 @@ import Params from "./params";
 import SectionSelect from "./sectionSelect";
 import { useObjectItemState } from "next-common/hooks/useItemState";
 import { useContextApi } from "next-common/context/api";
+import { CallContext } from "./context";
 
 function getParams({ meta }) {
   return meta.args.map(({ name, type, typeName }) => ({
@@ -133,11 +134,15 @@ export default function Extrinsic({
         methodName={methodName}
         setMethodName={setMethodName}
       />
-      <Params
-        params={callState?.extrinsic?.params}
-        value={callValues}
-        setValue={setCallValues}
-      />
+      <CallContext.Provider
+        value={{ section: sectionName, method: methodName }}
+      >
+        <Params
+          params={callState?.extrinsic?.params}
+          value={callValues}
+          setValue={setCallValues}
+        />
+      </CallContext.Provider>
     </div>
   );
 }
