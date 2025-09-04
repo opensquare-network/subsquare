@@ -2,12 +2,12 @@ import WithPageWidth from "next-common/components/common/withPageWidth";
 import { CallPopupProvider } from "next-common/components/multisigs/context/callPopupContext";
 import Loading from "next-common/components/loading";
 import MultisigsTabs from "next-common/components/profile/multisigs/tabs";
-import MultisigProvider, {
-  useMultisigContext,
+import ProfileMultisigsProvider, {
+  useProfileMultisigsContext,
 } from "next-common/components/profile/multisigs/context";
 
 function ProfileMultisigsImpl() {
-  const { loading } = useMultisigContext();
+  const { loading } = useProfileMultisigsContext();
   if (loading) {
     return (
       <div className="flex grow mt-2 justify-center items-center">
@@ -27,9 +27,9 @@ export default function ProfileMultisigs() {
   return (
     <WithPageWidth>
       <CallPopupProvider>
-        <MultisigProvider>
+        <ProfileMultisigsProvider>
           <ProfileMultisigsImpl />
-        </MultisigProvider>
+        </ProfileMultisigsProvider>
       </CallPopupProvider>
     </WithPageWidth>
   );

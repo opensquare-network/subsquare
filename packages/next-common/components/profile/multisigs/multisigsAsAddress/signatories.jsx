@@ -1,4 +1,4 @@
-import { useMultisigContext } from "next-common/components/profile/multisigs/context";
+import { useProfileMultisigsContext } from "next-common/components/profile/multisigs/context";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import DataList from "next-common/components/dataList";
 import { AddressUser } from "next-common/components/user";
@@ -7,7 +7,7 @@ import { useChainSettings } from "next-common/context/chain";
 import { useMemo } from "react";
 
 export default function Signatories() {
-  const { data, loading } = useMultisigContext();
+  const { data, loading } = useProfileMultisigsContext();
   const { ss58Format } = useChainSettings();
 
   const sortedSignatories = useMemo(() => {

@@ -1,6 +1,6 @@
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import MultisigSummary from "next-common/components/profile/multisigs/multisigsAsAddress/summary";
-import { useMultisigContext } from "next-common/components/profile/multisigs/context";
+import { useProfileMultisigsContext } from "next-common/components/profile/multisigs/context";
 import MultisigsAsAddressTabs from "next-common/components/profile/multisigs/multisigsAsAddress/tabs";
 
 function MultisigsAsAddressContent() {
@@ -25,7 +25,7 @@ function Empty() {
 }
 
 function MultisigsAsAddressWithNullGuard() {
-  const { data } = useMultisigContext();
+  const { data } = useProfileMultisigsContext();
   if (data?.signatories?.length === 0) {
     return <Empty />;
   }
