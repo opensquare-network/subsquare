@@ -1,14 +1,7 @@
 import Tabs from "next-common/components/tabs";
 import { useState, useMemo } from "react";
-import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
-
-const Multisigs = dynamicClientOnly(() =>
-  import("next-common/components/profile/multisigs/ownMultisigs/multisigs"),
-);
-
-const Signatories = dynamicClientOnly(() =>
-  import("next-common/components/profile/multisigs/ownMultisigs/signatories"),
-);
+import Multisigs from "next-common/components/profile/multisigs/ownMultisigs/multisigs";
+import Signatories from "next-common/components/profile/multisigs/ownMultisigs/signatories";
 
 export default function OwnMultisigsTabs() {
   const [activeTabValue, setActiveTabValue] = useState("multisigs");
