@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+# 5.3.3
+
+Date:
+2025-09-04. [Code diff](https://github.com/opensquare-network/subsquare/compare/269a562dcdcefa6ed08935055118f838d73b8f44...8d11350bf360958e3389b47bfa0ad4ef5d744aac).
+
+- Add a range bar in the referendum curve component so we can zoom in to see votes and impacts on the tally line of
+  curve chart.
+- Add delegation relationships to profile relatives chart. Users can click a select component to show different types of
+  relationships of an address.
+- Decentralized voices:
+    - Update cohort 4 and 5 delegates.
+    - Support DV guardian and show them on the DV votes popup.
+- Fix call remark render if the data is hex.
+- Refactor account panel scroll prompts components to reduce the coupling of different prompts.
+- Redirect users to profile votes page in the vote actions popup after clicking an address.
+- [Fellowship] Enable track auto selection for the treasury request referenda template.
+- Update the icon for assethub foreign assets.
+- Upgrade dependencies.
+
 # 5.3.2
 
 Date:
