@@ -36,6 +36,9 @@ const kusama = {
   subsquareGraphql: {
     domain: "kusama-gh-api",
     coretime: true,
+    intime: {
+      preimage: true,
+    },
   },
   postLabels: defaultPostLabels,
   useVoteCall: true,
