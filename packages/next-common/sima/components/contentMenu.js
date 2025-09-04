@@ -1,11 +1,8 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { useClickAway } from "react-use";
-import {
-  OptionItem,
-  OptionWrapper,
-} from "next-common/components/internalDropdown/styled";
-import { InfoPlus, SystemMore } from "@osn/icons/subsquare";
+import { OptionWrapper } from "next-common/components/internalDropdown/styled";
+import { SystemMore } from "@osn/icons/subsquare";
 import copy from "copy-to-clipboard";
 import { useComment } from "next-common/components/comment/context";
 import {
@@ -19,6 +16,7 @@ import PostLinkPopup from "next-common/components/linkPost/postLinkPopup";
 import PostUnlinkPopup from "next-common/components/linkPost/postUnlinkPopup";
 import { useDetailType } from "next-common/context/page";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
+import { AppendMenuItem } from "next-common/components/articleMoreMenu/common";
 
 const Wrapper = styled.div`
   position: relative;
@@ -29,22 +27,6 @@ const Wrapper = styled.div`
     cursor: pointer;
   }
 `;
-
-export function AppendMenuItem({ setIsAppend, setShow }) {
-  return (
-    <OptionItem
-      onClick={() => {
-        setIsAppend(true);
-        setShow(false);
-      }}
-    >
-      <div className="mr-2">
-        <InfoPlus />
-      </div>
-      <span>Append</span>
-    </OptionItem>
-  );
-}
 
 export function CommentContextMenu() {
   const comment = useComment();
@@ -111,7 +93,12 @@ export function PostContextMenu({ isAuthor, canEdit, setIsAppend, setIsEdit }) {
               <>
                 {isAuthor && !isSimaDiscussion && linkOrUnlinkMenuItem}
                 {post.content ? (
-                  <AppendMenuItem setIsAppend={setIsAppend} setShow={setShow} />
+                  <AppendMenuItem
+                    onClick={() => {
+                      setIsAppend(true);
+                      setShow(false);
+                    }}
+                  />
                 ) : (
                   <EditMenuItem setIsEdit={setIsEdit} setShow={setShow} />
                 )}

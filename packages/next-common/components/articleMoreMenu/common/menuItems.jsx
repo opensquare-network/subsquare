@@ -171,14 +171,9 @@ export function KillReferendumMenuItem({
   );
 }
 
-export function AppendMenuItem({ setIsAppend, setShow }) {
+export function AppendMenuItem({ onClick }) {
   return (
-    <OptionItem
-      onClick={() => {
-        setIsAppend(true);
-        setShow(false);
-      }}
-    >
+    <OptionItem onClick={onClick}>
       <div className="mr-2">
         <InfoPlus />
       </div>
