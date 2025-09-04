@@ -5,7 +5,6 @@ import { usePost } from "../context/post";
 import { detailPageCategory } from "../utils/consts/business/category";
 import { OptionItem, OptionWrapper } from "./internalDropdown/styled";
 import {
-  SystemCancel,
   SystemCopied,
   SystemCopy,
   SystemEdit,
@@ -24,13 +23,11 @@ import { useRouter } from "next/router";
 import useIsAdmin from "next-common/hooks/useIsAdmin";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { useClickAway } from "react-use";
-import CancelReferendumPopup from "./summary/newProposalQuickStart/cancelReferendumInnerPopup";
-import KillReferendumPopup from "./summary/newProposalQuickStart/killReferendumInnerPopup";
 import useTerminateAction from "next-common/hooks/useTerminateAction";
 import BountyAppendMenuItem from "next-common/components/appendants/bounty/appendMenuItem";
 import ReferendaArticleMoreMenu from "./articleMoreMenu/referendaArticleMoreMenu";
+import DescussionArticleMoreMenu from "./articleMoreMenu/descussionArticleMoreMenu";
 import { useBountyAppendantsContext } from "next-common/context/bountyAppendants";
-import { useReferendaIsVoting } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 
 const DeletePopup = dynamicPopup(() => import("./deletePopup"));
 
@@ -171,53 +168,6 @@ export function DeleteMenuItem({ setShowDeletePopup, setShow }) {
   );
 }
 
-export function CancelReferendumMenuItem({
-  setShowCancelReferendumPopup,
-  setShow,
-}) {
-  const isVoting = useReferendaIsVoting();
-  if (!isVoting) {
-    return null;
-  }
-
-  return (
-    <OptionItem
-      onClick={() => {
-        setShowCancelReferendumPopup(true);
-        setShow(false);
-      }}
-    >
-      <div className="mr-2">
-        <SystemCancel />
-      </div>
-      <span>Cancel</span>
-    </OptionItem>
-  );
-}
-
-export function KillReferendumMenuItem({
-  setShowKillReferendumPopup,
-  setShow,
-}) {
-  const isVoting = useReferendaIsVoting();
-  if (!isVoting) {
-    return null;
-  }
-  return (
-    <OptionItem
-      onClick={() => {
-        setShowKillReferendumPopup(true);
-        setShow(false);
-      }}
-    >
-      <div className="mr-2">
-        <SystemTrash />
-      </div>
-      <span>Kill</span>
-    </OptionItem>
-  );
-}
-
 export function CommentContextMenu({ editable, setIsEdit }) {
   const dispatch = useDispatch();
   const comment = useComment();
@@ -286,10 +236,9 @@ function ConditionalBountyLinkMenu({ menu }) {
 function ConditionalLinkMenu({
   menu,
   isTreasuryBountyPost,
-  isDiscussionPost,
   isFellowshipApplicationPost,
 }) {
-  if (isDiscussionPost || isFellowshipApplicationPost) {
+  if (isFellowshipApplicationPost) {
     return null;
   }
 
@@ -305,12 +254,13 @@ export function PostContextMenu(props) {
   if (postType === detailPageCategory.GOV2_REFERENDUM) {
     return <ReferendaArticleMoreMenu {...props} />;
   }
+  if (postType === detailPageCategory.POST) {
+    return <DescussionArticleMoreMenu {...props} />;
+  }
   return <_PostContextMenu {...props} />;
 }
 
 function _PostContextMenu({ isAuthor, editable, setIsEdit }) {
-  const dispatch = useDispatch();
-  const router = useRouter();
   const post = usePost();
   const [show, setShow] = useState(false);
   const ref = useRef();
@@ -318,38 +268,20 @@ function _PostContextMenu({ isAuthor, editable, setIsEdit }) {
   const [showLinkPopup, setShowLinkPopup] = useState(false);
   const [showUnlinkPopup, setShowUnlinkPopup] = useState(false);
   const [showReportPopup, setShowReportPopup] = useState(false);
-  const [showDeletePopup, setShowDeletePopup] = useState(false);
-  const [showCancelReferendumPopup, setShowCancelReferendumPopup] =
-    useState(false);
-  const [showKillReferendumPopup, setShowKillReferendumPopup] = useState(false);
   const [showBountyCreatePopup, setShowBountyCreatePopup] = useState(false);
   const [showReferendaCreatePopup, setShowReferendaCreatePopup] =
     useState(false);
-  const isAdmin = useIsAdmin();
   const { actionsComponent, popupComponent } =
     useTerminateAction({
       onShowPopup: () => setShow(false),
     }) || {};
 
-  const isDiscussionPost = postType === detailPageCategory.POST;
   const isFellowshipApplicationPost =
     postType === detailPageCategory.FELLOWSHIP_APPLICATION;
-  const isSimaDiscussion = post.sima;
-  const canDelete =
-    (editable || isAdmin) && isDiscussionPost && !isSimaDiscussion;
 
   const isTreasuryBountyPost = postType === detailPageCategory.TREASURY_BOUNTY;
 
   useClickAway(ref, () => setShow(false));
-
-  const deletePost = useCallback(async () => {
-    const { error } = await nextApi.delete(`posts/${post._id}`);
-    if (error) {
-      dispatch(newErrorToast(error.message));
-      return;
-    }
-    router.replace("/discussions");
-  }, [dispatch, post._id, router]);
 
   let linkOrUnlinkMenuItem = (
     <LinkMenuItem setShowLinkPopup={setShowLinkPopup} setShow={setShow} />
@@ -382,14 +314,7 @@ function _PostContextMenu({ isAuthor, editable, setIsEdit }) {
             <ConditionalLinkMenu
               menu={linkOrUnlinkMenuItem}
               isTreasuryBountyPost={isTreasuryBountyPost}
-              isDiscussionPost={isDiscussionPost}
               isFellowshipApplicationPost={isFellowshipApplicationPost}
-            />
-          )}
-          {canDelete && (
-            <DeleteMenuItem
-              setShowDeletePopup={setShowDeletePopup}
-              setShow={setShow}
             />
           )}
           {actionsComponent}
@@ -402,25 +327,6 @@ function _PostContextMenu({ isAuthor, editable, setIsEdit }) {
       {showLinkPopup && <PostLinkPopup setShow={setShowLinkPopup} />}
       {showUnlinkPopup && <PostUnlinkPopup setShow={setShowUnlinkPopup} />}
       {showReportPopup && <ReportPopup setShow={setShowReportPopup} />}
-      {showDeletePopup && (
-        <DeletePopup
-          itemName="post"
-          setShow={setShowDeletePopup}
-          deletePost={deletePost}
-        />
-      )}
-      {showCancelReferendumPopup && (
-        <CancelReferendumPopup
-          referendumIndex={post?.referendumIndex}
-          onClose={() => setShowCancelReferendumPopup(false)}
-        />
-      )}
-      {showKillReferendumPopup && (
-        <KillReferendumPopup
-          referendumIndex={post?.referendumIndex}
-          onClose={() => setShowKillReferendumPopup(false)}
-        />
-      )}
       {showBountyCreatePopup && (
         <BountyCreateAppendantPopup setIsAppend={setShowBountyCreatePopup} />
       )}

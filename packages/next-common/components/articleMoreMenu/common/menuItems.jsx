@@ -9,6 +9,7 @@ import {
   SystemLink,
   SystemTrash,
 } from "@osn/icons/subsquare";
+import { InfoPlus } from "@osn/icons/subsquare";
 import { noop } from "lodash-es";
 import { useReferendaIsVoting } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 
@@ -166,6 +167,22 @@ export function KillReferendumMenuItem({
         <SystemTrash />
       </div>
       <span>Kill</span>
+    </OptionItem>
+  );
+}
+
+export function AppendMenuItem({ setIsAppend, setShow }) {
+  return (
+    <OptionItem
+      onClick={() => {
+        setIsAppend(true);
+        setShow(false);
+      }}
+    >
+      <div className="mr-2">
+        <InfoPlus />
+      </div>
+      <span>Append</span>
     </OptionItem>
   );
 }
