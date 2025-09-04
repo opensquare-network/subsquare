@@ -20,7 +20,7 @@ function DvVotesDesktopListInner(
 
   return (
     <div className="flex relative">
-      <AccountColumn accounts={delegates} />
+      <AccountColumn delegates={delegates} />
       <GradientBlanket
         className={cn(
           "left-[240px] max-sm:left-[200px]",

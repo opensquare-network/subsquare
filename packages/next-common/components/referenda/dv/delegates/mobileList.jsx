@@ -33,6 +33,7 @@ export default function DelegatesMobileList({ delegates }) {
             add={delegate.address}
             className="text14Bold"
             showAvatar={false}
+            username={delegate.name}
           />
         </div>
         <Divider className="my-3" />
