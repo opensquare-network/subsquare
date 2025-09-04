@@ -1,22 +1,8 @@
 import Tabs from "next-common/components/tabs";
 import { useState } from "react";
-import { cn } from "next-common/utils";
-import OwnMultisigs from "next-common/components/profile/multisigs/ownMultisigs";
-import SignatoryMultisigs from "next-common/components/profile/multisigs/signatoryMultisigs";
-
-function TabTitle({ active, children }) {
-  return (
-    <div
-      role="button"
-      className={cn(
-        "text16Bold",
-        active ? "text-textPrimary" : "text-textTertiary",
-      )}
-    >
-      {children}
-    </div>
-  );
-}
+import MultisigsAsAddress from "next-common/components/profile/multisigs/multisigsAsAddress";
+import MultisigsAsSignatory from "next-common/components/profile/multisigs/multisigsAsSignatory";
+import { TabTitle } from "next-common/components/profile/tabs";
 
 export default function MultisigsTabs() {
   const tabs = [
@@ -25,14 +11,14 @@ export default function MultisigsTabs() {
       label({ active }) {
         return <TabTitle active={active}>As a multisig address</TabTitle>;
       },
-      content: <OwnMultisigs />,
+      content: <MultisigsAsAddress />,
     },
     {
       value: "as_multisig_signatory",
       label({ active }) {
         return <TabTitle active={active}>As a multisig signatory</TabTitle>;
       },
-      content: <SignatoryMultisigs />,
+      content: <MultisigsAsSignatory />,
     },
   ].filter(Boolean);
 

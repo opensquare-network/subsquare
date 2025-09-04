@@ -1,14 +1,14 @@
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import MultisigSummary from "next-common/components/profile/multisigs/ownMultisigs/summary";
+import MultisigSummary from "next-common/components/profile/multisigs/multisigsAsAddress/summary";
 import { useMultisigContext } from "next-common/components/profile/multisigs/context";
-import OwnMultisigsTabs from "next-common/components/profile/multisigs/ownMultisigs/tabs";
+import MultisigsAsAddressTabs from "next-common/components/profile/multisigs/multisigsAsAddress/tabs";
 
-function OwnMultisigsContent() {
+function MultisigsAsAddressContent() {
   return (
     <>
       <MultisigSummary />
       <SecondaryCard>
-        <OwnMultisigsTabs />
+        <MultisigsAsAddressTabs />
       </SecondaryCard>
     </>
   );
@@ -24,19 +24,19 @@ function Empty() {
   );
 }
 
-function OwnMultisigsWithNullGuard() {
+function MultisigsAsAddressWithNullGuard() {
   const { data } = useMultisigContext();
   if (data?.signatories?.length === 0) {
     return <Empty />;
   }
 
-  return <OwnMultisigsContent />;
+  return <MultisigsAsAddressContent />;
 }
 
-export default function OwnMultisigs() {
+export default function MultisigsAsAddress() {
   return (
     <div className="flex flex-col gap-[18px]">
-      <OwnMultisigsWithNullGuard />
+      <MultisigsAsAddressWithNullGuard />
     </div>
   );
 }

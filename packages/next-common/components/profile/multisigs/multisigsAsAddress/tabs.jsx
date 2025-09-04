@@ -1,9 +1,9 @@
 import Tabs from "next-common/components/tabs";
 import { useState, useMemo } from "react";
-import Multisigs from "next-common/components/profile/multisigs/ownMultisigs/multisigs";
-import Signatories from "next-common/components/profile/multisigs/ownMultisigs/signatories";
+import Multisigs from "next-common/components/profile/multisigs/multisigsAsAddress/multisigs";
+import Signatories from "next-common/components/profile/multisigs/multisigsAsAddress/signatories";
 
-export default function OwnMultisigsTabs() {
+export default function MultisigsAsAddressTabs() {
   const [activeTabValue, setActiveTabValue] = useState("multisigs");
 
   const tabs = useMemo(
