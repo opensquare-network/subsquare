@@ -133,6 +133,7 @@ export const CACHE_KEY = {
   requestJudgementPrompt: "request-judgement-prompt",
   walletConnectSession: "walletconnect-session",
   totalRequestingAssets: "total-requesting-assets",
+  dvApplyPromptVisible: "dv-apply-prompt-visible",
 };
 
 export const ADDRESS_CACHE_KEYS = [
