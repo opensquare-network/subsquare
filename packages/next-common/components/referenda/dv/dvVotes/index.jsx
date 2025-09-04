@@ -22,7 +22,7 @@ const SPACE = 1;
 export default function DvReferendaVotes() {
   return (
     <div className="flex flex-col gap-y-4">
-      <TabsTitle>DV Votes</TabsTitle>
+      <TabsTitle>Votes</TabsTitle>
       <NeutralPanel className="p-6">
         <WindowSizeProvider>
           <MaybeVotesRoleTabs component={MaybeEmptyDelegates} />
