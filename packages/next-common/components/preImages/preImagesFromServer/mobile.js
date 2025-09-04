@@ -1,61 +1,40 @@
-import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import React, { useState, useEffect, useRef } from "react";
-import usePreimage from "next-common/hooks/usePreimage";
-import useOldPreimage from "next-common/hooks/useOldPreimage";
 import { useDispatch } from "react-redux";
-import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
-import FieldLoading from "../icons/fieldLoading";
-import { Deposit, Hash, Proposal, Status } from "./fields";
 import tw from "tailwind-styled-components";
-import DetailButton from "../detailButton";
+import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
+import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
+import FieldLoading from "../../icons/fieldLoading";
+import { Deposit, Hash, Proposal, Status } from "../fields";
+import DetailButton from "../../detailButton";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import Loading from "next-common/components/loading";
 import { cn } from "next-common/utils";
 import { FixedSizeList } from "react-window";
-import { convertTicket } from "./common";
-import { newSuccessToast } from "next-common/store/reducers/toastSlice";
+import { useContextApi } from "next-common/context/api";
+import { getPreimageTicket, getPreimageLen, getPreimageStatus } from "./common";
 
-const PreimageDetailPopup = dynamicPopup(() => import("./preImageDetailPopup"));
+const PreimageDetailPopup = dynamicPopup(() =>
+  import("../preImageDetailPopup"),
+);
 
 const FieldName = tw.span`text-textTertiary`;
 
-function PreimageItemComp({ hash, index }) {
-  const [preimage, isStatusLoaded, isBytesLoaded] = usePreimage(hash);
-  return (
-    <Item
-      hash={hash}
-      preimage={preimage}
-      isStatusLoaded={isStatusLoaded}
-      isBytesLoaded={isBytesLoaded}
-      index={index}
-    />
-  );
-}
-function OldPreimageItemComp({ hash, index }) {
-  const [preimage, isStatusLoaded, isBytesLoaded] = useOldPreimage(hash);
-  return (
-    <Item
-      hash={hash}
-      preimage={preimage}
-      isStatusLoaded={isStatusLoaded}
-      isBytesLoaded={isBytesLoaded}
-      index={index}
-    />
-  );
-}
-const PreimageItem = React.memo(PreimageItemComp);
-const OldPreimageItem = React.memo(OldPreimageItemComp);
-
-function Item({ hash, preimage, isStatusLoaded, isBytesLoaded, index }) {
+function Item({ preimage, index }) {
+  const api = useContextApi();
+  const isApiLoading = !api;
   const dispatch = useDispatch();
   const [showArgumentsDetail, setShowArgumentsDetail] = useState(null);
-  const deposit = convertTicket(preimage?.ticket || preimage?.deposit);
+  const statusName = getPreimageStatus(preimage);
+  const ticket = getPreimageTicket(preimage);
+  const len = getPreimageLen(preimage);
 
   return (
     <>
       <PreimageMobileListItemTemplate
         title={
-          isBytesLoaded ? (
+          isApiLoading ? (
+            <FieldLoading />
+          ) : (
             <Proposal
               key="proposal"
               proposal={preimage.proposal}
@@ -63,8 +42,6 @@ function Item({ hash, preimage, isStatusLoaded, isBytesLoaded, index }) {
               proposalWarning={preimage.proposalWarning}
               setShowArgumentsDetail={setShowArgumentsDetail}
             />
-          ) : (
-            <FieldLoading />
           )
         }
         titleExtra={
@@ -74,58 +51,35 @@ function Item({ hash, preimage, isStatusLoaded, isBytesLoaded, index }) {
           />
         }
         status={
-          isStatusLoaded ? (
-            preimage.statusName && (
-              <Status
-                key="status"
-                statusName={preimage.statusName}
-                count={preimage.count}
-              />
-            )
-          ) : (
-            <FieldLoading />
-          )
+          <Status
+            key="status"
+            statusName={statusName}
+            count={preimage.requested?.count}
+          />
         }
         hash={
           <Hash
             key="hash"
-            hash={hash}
+            hash={preimage.hash}
             proposal={preimage.proposal}
             setShowArgumentsDetail={setShowArgumentsDetail}
           />
         }
         depositBalance={
-          isStatusLoaded ? (
-            deposit && (
-              <Deposit
-                key="deposit"
-                deposit={deposit}
-                hash={hash}
-                count={preimage.count}
-                status={preimage.statusName}
-                onUnnoteInBlock={() => {
-                  dispatch(incPreImagesTrigger());
-                  dispatch(
-                    newSuccessToast(
-                      "Preimage unnoted. Data will be refreshed in seconds.",
-                    ),
-                  );
-                }}
-                right
-              />
-            )
-          ) : (
-            <FieldLoading />
+          ticket && (
+            <Deposit
+              key="deposit"
+              deposit={ticket}
+              hash={preimage.hash}
+              count={preimage.count}
+              status={statusName}
+              onUnnoteInBlock={() => dispatch(incPreImagesTrigger())}
+              right
+            />
           )
         }
         length={
-          isStatusLoaded ? (
-            <span className="text-textPrimary">
-              {preimage.proposalLength?.toNumber()?.toLocaleString()}
-            </span>
-          ) : (
-            <FieldLoading />
-          )
+          <span className="text-textPrimary">{len?.toLocaleString()}</span>
         }
         index={index}
       />
@@ -169,26 +123,18 @@ export default function MobileList({ data, loading }) {
     }
   }, [data]);
 
-  if (loading) {
+  if (loading && !data) {
     return <TableLoading />;
   }
 
-  if (data?.length === 0) {
+  if (!data?.length) {
     return <NoDataText />;
   }
 
   const Row = ({ index, style }) => {
-    const {
-      data: [hash],
-      method,
-    } = data[index];
     return (
       <div style={style}>
-        {method === "requestStatusFor" ? (
-          <PreimageItem key={hash} hash={hash} index={index} />
-        ) : (
-          <OldPreimageItem key={hash} hash={hash} index={index} />
-        )}
+        <Item preimage={data[index]} index={index} />
       </div>
     );
   };
