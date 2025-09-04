@@ -13,6 +13,7 @@ import Loading from "next-common/components/loading";
 import { cn } from "next-common/utils";
 import { FixedSizeList } from "react-window";
 import { convertTicket } from "./common";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 
 const PreimageDetailPopup = dynamicPopup(() => import("./preImageDetailPopup"));
 
@@ -102,7 +103,14 @@ function Item({ hash, preimage, isStatusLoaded, isBytesLoaded, index }) {
                 hash={hash}
                 count={preimage.count}
                 status={preimage.statusName}
-                onUnnoteInBlock={() => dispatch(incPreImagesTrigger())}
+                onUnnoteInBlock={() => {
+                  dispatch(incPreImagesTrigger());
+                  dispatch(
+                    newSuccessToast(
+                      "Preimage unnoted. Data will be refreshed in seconds.",
+                    ),
+                  );
+                }}
                 right
               />
             )
