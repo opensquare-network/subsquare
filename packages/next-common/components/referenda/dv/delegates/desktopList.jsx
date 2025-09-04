@@ -44,7 +44,12 @@ export default function DelegatesDesktopList({ delegates }) {
     ).length;
 
     return [
-      <AddressUser key="account" add={delegate.address} maxWidth={220} />,
+      <AddressUser
+        key="account"
+        add={delegate.address}
+        maxWidth={220}
+        username={delegate.name}
+      />,
       <VoteByDelegate
         key="voteCounts"
         height={4}

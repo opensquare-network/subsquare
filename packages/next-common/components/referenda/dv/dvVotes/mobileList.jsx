@@ -28,7 +28,7 @@ function DvVotesMobileListInner(
         className="scrollbar-hidden"
       >
         <div className="flex-1 flex">
-          <AccountColumn accounts={delegates} />
+          <AccountColumn delegates={delegates} />
           {referendaCols.map((col, idx) => (
             <VoteStatusColumn
               col={col}

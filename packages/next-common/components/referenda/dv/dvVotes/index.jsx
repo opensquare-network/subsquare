@@ -22,7 +22,7 @@ const SPACE = 1;
 export default function DvReferendaVotes() {
   return (
     <div className="flex flex-col gap-y-4">
-      <TabsTitle>DV Votes</TabsTitle>
+      <TabsTitle>Votes</TabsTitle>
       <NeutralPanel className="p-6">
         <WindowSizeProvider>
           <MaybeVotesRoleTabs component={MaybeEmptyDelegates} />
@@ -49,11 +49,6 @@ export function DvReferendaVotesImpl({ delegates = [] }) {
   const filteredReferenda = useFilteredDvReferenda();
   const filteredVotes = useFilteredDvVotes();
 
-  const sortedDelegatesAddress = useMemo(
-    () => delegates.map((delegate) => delegate.address),
-    [delegates],
-  );
-
   const votesByReferendum = useMemo(
     () => groupBy(filteredVotes, "referendumIndex"),
     [filteredVotes],
@@ -62,9 +57,9 @@ export function DvReferendaVotesImpl({ delegates = [] }) {
   const referendaCols = useMemo(() => {
     return filteredReferenda.map((referendum) => {
       const votes = votesByReferendum[referendum.referendumIndex];
-      const votesByDelegate = sortedDelegatesAddress.map((delegate) => [
-        delegate,
-        getVoteType(votes?.find((vote) => vote.account === delegate)),
+      const votesByDelegate = delegates.map((delegate) => [
+        delegate.address,
+        getVoteType(votes?.find((vote) => vote.account === delegate.address)),
       ]);
 
       return {
@@ -72,7 +67,7 @@ export function DvReferendaVotesImpl({ delegates = [] }) {
         votesByDelegate,
       };
     });
-  }, [filteredReferenda, votesByReferendum, sortedDelegatesAddress]);
+  }, [filteredReferenda, votesByReferendum, delegates]);
 
   const handleGradientBlanketVisible = useCallback((target) => {
     const { scrollLeft, scrollWidth, clientWidth } = target;
@@ -100,7 +95,7 @@ export function DvReferendaVotesImpl({ delegates = [] }) {
       <DvVotesMobileList
         ref={scrollerXRef}
         referendaCols={referendaCols}
-        delegates={sortedDelegatesAddress}
+        delegates={delegates}
         showLeft={showLeft}
         showRight={showRight}
         onScroll={onScroll}
@@ -112,7 +107,7 @@ export function DvReferendaVotesImpl({ delegates = [] }) {
     <DvVotesDesktopList
       ref={scrollerXRef}
       referendaCols={referendaCols}
-      delegates={sortedDelegatesAddress}
+      delegates={delegates}
       showLeft={showLeft}
       showRight={showRight}
       onScroll={onScroll}

@@ -6,7 +6,7 @@ import LoadableReferendumTitle from "../common/loadableReferendumTitle";
 import Link from "next/link";
 import VoteStatus from "../common/voteStatus";
 
-export function AccountColumn({ accounts }) {
+export function AccountColumn({ delegates }) {
   return (
     <div className="w-[240px] max-sm:w-[200px] flex flex-col">
       <ColumnHeader>Account</ColumnHeader>
@@ -14,8 +14,13 @@ export function AccountColumn({ accounts }) {
         key="accounts"
         className="flex gap-y-2 flex-col text14Medium text-textPrimary py-4"
       >
-        {accounts.map((address) => (
-          <AddressUser add={address} maxWidth={220} key={address} />
+        {delegates.map((delegate) => (
+          <AddressUser
+            add={delegate.address}
+            maxWidth={220}
+            key={delegate.address}
+            username={delegate.name}
+          />
         ))}
       </div>
     </div>

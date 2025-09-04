@@ -92,7 +92,7 @@ function OverviewEachValue({ count, eachValue }) {
   return (
     <div className="flex flex-col gap-y-1">
       <span className="text16Bold">{count}</span>
-      <span className="text-textSecondary text12Medium flex items-center gap-x-1">
+      <span className="text-textSecondary text12Medium flex items-center gap-x-1 flex-wrap">
         <ValueDisplay
           value={toPrecision(eachValue, chainSettings.decimals)}
           showVerySmallNumber={true}

@@ -14,6 +14,7 @@ import { isAssetHubChain } from "next-common/utils/chain";
 import { isExternalLink } from "next-common/utils";
 import ExternalLink from "../externalLink";
 import { cn } from "next-common/utils";
+import UserDisplay from "./userDisplay";
 
 export function UserAddressLink({ address, link, needHref, children }) {
   const displayAddress = tryConvertToEvmAddress(address);
@@ -92,8 +93,29 @@ export function AddressUserImpl({
   link = "",
   needHref = true,
   identityIconClassName = "",
+  username = "",
 }) {
   const displayAddress = tryConvertToEvmAddress(address);
+
+  const noIdentityDisplay = useMemo(() => {
+    if (username) {
+      return (
+        <UserDisplay
+          user={{ username, address: displayAddress }}
+          maxWidth={maxWidth}
+          noTooltip={noTooltip}
+        />
+      );
+    }
+    return (
+      <AddressDisplay
+        address={displayAddress}
+        maxWidth={maxWidth}
+        noTooltip={noTooltip}
+        ellipsis={ellipsis}
+      />
+    );
+  }, [username, maxWidth, noTooltip, displayAddress, ellipsis]);
 
   const userIdentity = useMemo(
     () =>
@@ -106,12 +128,7 @@ export function AddressUserImpl({
           identityIconClassName={identityIconClassName}
         />
       ) : (
-        <AddressDisplay
-          address={displayAddress}
-          maxWidth={maxWidth}
-          noTooltip={noTooltip}
-          ellipsis={ellipsis}
-        />
+        noIdentityDisplay
       ),
     [
       hasIdentity,
@@ -119,7 +136,7 @@ export function AddressUserImpl({
       maxWidth,
       ellipsis,
       identityIconClassName,
-      displayAddress,
+      noIdentityDisplay,
       noTooltip,
     ],
   );
@@ -152,6 +169,7 @@ function AddressUserComp({
   link = "",
   identityIconClassName = "",
   avatarSize = "",
+  username = "",
 }) {
   const address = add;
   const { identity, hasIdentity } = useIdentityInfo(address);
@@ -179,6 +197,7 @@ function AddressUserComp({
       needHref={needHref}
       identityIconClassName={identityIconClassName}
       className={cn(inlineClassName, className)}
+      username={username}
     />
   );
 }
