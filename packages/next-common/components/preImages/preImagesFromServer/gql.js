@@ -1,4 +1,6 @@
 import { gql, ApolloClient, InMemoryCache } from "@apollo/client";
+import { CHAIN } from "next-common/utils/constants";
+import getChainSettings from "next-common/utils/consts/settings";
 
 const PREIMAGE_QUERY = gql`
   query MyQuery {
@@ -33,15 +35,25 @@ const PREIMAGE_QUERY = gql`
   }
 `;
 
-const apolloClient = new ApolloClient({
-  ssrMode: true,
-  uri: process.env.NEXT_PUBLIC_INTIME_API,
-  cache: new InMemoryCache(),
-});
+const { subsquareGraphql } = getChainSettings(CHAIN);
+
+let intimeClient = null;
+
+if (subsquareGraphql && subsquareGraphql.intime) {
+  intimeClient = new ApolloClient({
+    ssrMode: true,
+    uri: `https://${subsquareGraphql.domain}.subsquare.io/graphql`,
+    cache: new InMemoryCache(),
+  });
+}
 
 export async function queryPreimages() {
+  if (!intimeClient) {
+    throw new Error("Intime module is not supported");
+  }
+
   try {
-    const { data } = await apolloClient.query({
+    const { data } = await intimeClient.query({
       query: PREIMAGE_QUERY,
       fetchPolicy: "no-cache",
     });

@@ -43,6 +43,11 @@ const polkadot = {
     identity: true,
     multisig: false,
   },
+  subsquareGraphql: {
+    domain: "polkadot-gh-api",
+    coretime: true,
+    intime: true,
+  },
   hasMultisig: true,
   multisigApiPrefix: "dot",
   useVoteCall: true,
