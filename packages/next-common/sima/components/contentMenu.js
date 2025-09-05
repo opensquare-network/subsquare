@@ -8,7 +8,6 @@ import { useComment } from "next-common/components/comment/context";
 import {
   CopyMenuItem,
   EditMenuItem,
-  LinkMenuItem,
   UnlinkMenuItem,
 } from "next-common/components/contentMenu";
 import { usePost } from "next-common/context/post";
@@ -16,7 +15,10 @@ import PostLinkPopup from "next-common/components/linkPost/postLinkPopup";
 import PostUnlinkPopup from "next-common/components/linkPost/postUnlinkPopup";
 import { useDetailType } from "next-common/context/page";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
-import { AppendMenuItem } from "next-common/components/articleMoreMenu/common";
+import {
+  AppendMenuItem,
+  LinkMenuItem,
+} from "next-common/components/articleMoreMenu/common";
 
 const Wrapper = styled.div`
   position: relative;
@@ -69,7 +71,12 @@ export function PostContextMenu({ isAuthor, canEdit, setIsAppend, setIsEdit }) {
   useClickAway(ref, () => setShow(false));
 
   let linkOrUnlinkMenuItem = (
-    <LinkMenuItem setShowLinkPopup={setShowLinkPopup} setShow={setShow} />
+    <LinkMenuItem
+      onClick={() => {
+        setShowLinkPopup(true);
+        setShow(false);
+      }}
+    />
   );
   if (post?.isBoundDiscussion) {
     linkOrUnlinkMenuItem = (

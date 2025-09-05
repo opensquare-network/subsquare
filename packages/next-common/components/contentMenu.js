@@ -25,9 +25,10 @@ import dynamicPopup from "next-common/lib/dynamic/popup";
 import { useClickAway } from "react-use";
 import useTerminateAction from "next-common/hooks/useTerminateAction";
 import BountyAppendMenuItem from "next-common/components/appendants/bounty/appendMenuItem";
+import { useBountyAppendantsContext } from "next-common/context/bountyAppendants";
 import ReferendaArticleMoreMenu from "./articleMoreMenu/referendaArticleMoreMenu";
 import DiscussionArticleMoreMenu from "./articleMoreMenu/discussionArticleMoreMenu";
-import { useBountyAppendantsContext } from "next-common/context/bountyAppendants";
+import { LinkMenuItem } from "next-common/components/articleMoreMenu/common";
 
 const DeletePopup = dynamicPopup(() => import("./deletePopup"));
 
@@ -56,22 +57,6 @@ const Wrapper = styled.div`
     cursor: pointer;
   }
 `;
-
-export function LinkMenuItem({ setShowLinkPopup, setShow }) {
-  return (
-    <OptionItem
-      onClick={() => {
-        setShowLinkPopup(true);
-        setShow(false);
-      }}
-    >
-      <div className="mr-2">
-        <SystemLink />
-      </div>
-      <span>Link</span>
-    </OptionItem>
-  );
-}
 
 export function UnlinkMenuItem({ setShowUnlinkPopup, setShow }) {
   return (
@@ -284,7 +269,12 @@ function _PostContextMenu({ isAuthor, editable, setIsEdit }) {
   useClickAway(ref, () => setShow(false));
 
   let linkOrUnlinkMenuItem = (
-    <LinkMenuItem setShowLinkPopup={setShowLinkPopup} setShow={setShow} />
+    <LinkMenuItem
+      onClick={() => {
+        setShowLinkPopup(true);
+        setShow(false);
+      }}
+    />
   );
   if (post?.isBoundDiscussion) {
     linkOrUnlinkMenuItem = (

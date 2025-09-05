@@ -13,14 +13,9 @@ import { InfoPlus } from "@osn/icons/subsquare";
 import { noop } from "lodash-es";
 import { useReferendaIsVoting } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 
-export function LinkMenuItem({ setShowLinkPopup, setShow }) {
+export function LinkMenuItem({ onClick }) {
   return (
-    <OptionItem
-      onClick={() => {
-        setShowLinkPopup(true);
-        setShow(false);
-      }}
-    >
+    <OptionItem onClick={onClick}>
       <div className="mr-2">
         <SystemLink />
       </div>
