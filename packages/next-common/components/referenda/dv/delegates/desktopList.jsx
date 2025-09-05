@@ -82,6 +82,6 @@ export default function DelegatesDesktopList({ delegates }) {
 
 function WinRateTooltip() {
   return (
-    <Tooltip content="Probability that DV's votes align with the outcomes of referenda" />
+    <Tooltip content="A win = referendum not finished && ((aye vote && referendum approval) || (nay vote && no referendum approval))" />
   );
 }

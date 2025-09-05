@@ -7,7 +7,7 @@ export default function isWin(vote, referenda) {
   const referendum = referenda.find(
     (referendum) => referendum.referendumIndex === vote.referendumIndex,
   );
-  if (isNil(referendum)) {
+  if (isNil(referendum) || !referendum?.isFinal) {
     return false;
   }
   const isApproved = !!referendum.approved;
