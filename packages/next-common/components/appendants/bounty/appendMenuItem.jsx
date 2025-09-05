@@ -1,4 +1,4 @@
-import { AppendMenuItem } from "next-common/sima/components/contentMenu";
+import { AppendMenuItem } from "next-common/components/articleMoreMenu/common";
 import useCanAppendBountyPost from "next-common/hooks/useCanAppendBountyPost";
 
 export default function BountyAppendMenuItem({ setShow, setIsAppend }) {
@@ -7,5 +7,12 @@ export default function BountyAppendMenuItem({ setShow, setIsAppend }) {
     return null;
   }
 
-  return <AppendMenuItem setIsAppend={setIsAppend} setShow={setShow} />;
+  return (
+    <AppendMenuItem
+      onClick={() => {
+        setIsAppend(true);
+        setShow(false);
+      }}
+    />
+  );
 }

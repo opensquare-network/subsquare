@@ -11,7 +11,12 @@ export default function LinkMenu({ setShow }) {
 
   return (
     <div>
-      <LinkMenuItem setShowLinkPopup={setShowLinkPopup} setShow={setShow} />
+      <LinkMenuItem
+        onClick={() => {
+          setShowLinkPopup(true);
+          setShow(false);
+        }}
+      />
       {showLinkPopup && <PostLinkPopup setShow={setShowLinkPopup} />}
     </div>
   );

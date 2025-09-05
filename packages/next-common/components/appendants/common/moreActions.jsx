@@ -4,7 +4,7 @@ import { OptionWrapper } from "next-common/components/internalDropdown/styled";
 import {
   EditMenuItem,
   DeleteMenuItem,
-} from "next-common/components/contentMenu";
+} from "next-common/components/articleMoreMenu/common";
 import { useClickAway } from "react-use";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 
@@ -31,10 +31,17 @@ export default function MoreActions({ data, EditPopup, update }) {
         />
         {show && (
           <OptionWrapper>
-            <EditMenuItem setIsEdit={setShowEdit} setShow={setShow} />
+            <EditMenuItem
+              onClick={() => {
+                setShowEdit(true);
+                setShow(false);
+              }}
+            />
             <DeleteMenuItem
-              setShowDeletePopup={setShowDeletePopup}
-              setShow={setShow}
+              onClick={() => {
+                setShowDeletePopup(true);
+                setShow(false);
+              }}
             />
           </OptionWrapper>
         )}
