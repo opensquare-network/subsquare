@@ -15,7 +15,7 @@ const Wrapper = styled.div`
   }
 `;
 
-export default function DescussionArticleMoreMenu({ editable, setIsEdit }) {
+export default function DiscussionArticleMoreMenu({ editable, setIsEdit }) {
   const isAdmin = useIsAdmin();
   const ref = useRef();
   const [show, setShow] = useState(false);

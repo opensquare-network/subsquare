@@ -26,7 +26,7 @@ import { useClickAway } from "react-use";
 import useTerminateAction from "next-common/hooks/useTerminateAction";
 import BountyAppendMenuItem from "next-common/components/appendants/bounty/appendMenuItem";
 import ReferendaArticleMoreMenu from "./articleMoreMenu/referendaArticleMoreMenu";
-import DescussionArticleMoreMenu from "./articleMoreMenu/descussionArticleMoreMenu";
+import DiscussionArticleMoreMenu from "./articleMoreMenu/discussionArticleMoreMenu";
 import { useBountyAppendantsContext } from "next-common/context/bountyAppendants";
 
 const DeletePopup = dynamicPopup(() => import("./deletePopup"));
@@ -255,7 +255,7 @@ export function PostContextMenu(props) {
     return <ReferendaArticleMoreMenu {...props} />;
   }
   if (postType === detailPageCategory.POST) {
-    return <DescussionArticleMoreMenu {...props} />;
+    return <DiscussionArticleMoreMenu {...props} />;
   }
   return <_PostContextMenu {...props} />;
 }
