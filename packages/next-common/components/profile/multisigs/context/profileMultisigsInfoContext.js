@@ -1,6 +1,6 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, useMemo } from "react";
 import useUserMultisigsActiveCount from "next-common/hooks/multisig/useUserMultisigsActiveCount";
-import useProfileAddress from "next-common/hooks/useProfileAddress";
+import useProfileAddress from "next-common/components/profile/useProfileAddress";
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 import { useChainSettings } from "next-common/context/chain";
 
@@ -17,9 +17,14 @@ function ProfileMultisigsInfoProvider({ children }) {
     isLoading: isActiveCountAsSignatoryLoading,
   } = useUserMultisigsActiveCount({ address, queryType: "signatory" });
 
+  const activeCount = useMemo(() => {
+    return activeCountAsMultisig + activeCountAsSignatory;
+  }, [activeCountAsMultisig, activeCountAsSignatory]);
+
   return (
     <ProfileMultisigsInfoContext.Provider
       value={{
+        activeCount,
         activeCountAsMultisig,
         activeCountAsSignatory,
         isActiveCountAsMultisigLoading,
@@ -39,6 +44,7 @@ function ConditionalProfileMultisigsInfoProvider({ children }) {
     return (
       <ProfileMultisigsInfoContext.Provider
         value={{
+          activeCount: 0,
           activeCountAsMultisig: 0,
           activeCountAsSignatory: 0,
           isActiveCountAsMultisigLoading: false,

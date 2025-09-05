@@ -3,8 +3,12 @@ import { useState } from "react";
 import MultisigsAsAddress from "next-common/components/profile/multisigs/multisigsAsAddress";
 import MultisigsAsSignatory from "next-common/components/profile/multisigs/multisigsAsSignatory";
 import { TabTitle } from "next-common/components/profile/tabs";
+import { useProfileMultisigsInfoContext } from "next-common/components/profile/multisigs/context/profileMultisigsInfoContext";
 
 export default function MultisigsTabs() {
+  const { activeCountAsMultisig, activeCountAsSignatory } =
+    useProfileMultisigsInfoContext();
+
   const tabs = [
     {
       value: "as_multisig_address",
@@ -12,6 +16,7 @@ export default function MultisigsTabs() {
         return <TabTitle active={active}>As a multisig address</TabTitle>;
       },
       content: <MultisigsAsAddress />,
+      activeCount: activeCountAsMultisig,
     },
     {
       value: "as_multisig_signatory",
@@ -19,6 +24,7 @@ export default function MultisigsTabs() {
         return <TabTitle active={active}>As a multisig signatory</TabTitle>;
       },
       content: <MultisigsAsSignatory />,
+      activeCount: activeCountAsSignatory,
     },
   ].filter(Boolean);
 
