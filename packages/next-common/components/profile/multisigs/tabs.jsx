@@ -3,11 +3,11 @@ import { useState } from "react";
 import MultisigsAsAddress from "next-common/components/profile/multisigs/multisigsAsAddress";
 import MultisigsAsSignatory from "next-common/components/profile/multisigs/multisigsAsSignatory";
 import { TabTitle } from "next-common/components/profile/tabs";
-import { useProfileMultisigsInfoContext } from "next-common/components/profile/multisigs/context/profileMultisigsInfoContext";
+import { useProfileMultisigsActiveContext } from "next-common/components/profile/multisigs/context/profileMultisigsActiveContext";
 
 export default function MultisigsTabs() {
   const { activeCountAsMultisig, activeCountAsSignatory } =
-    useProfileMultisigsInfoContext();
+    useProfileMultisigsActiveContext();
 
   const tabs = [
     {

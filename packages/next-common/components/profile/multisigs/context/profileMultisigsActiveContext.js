@@ -4,9 +4,9 @@ import useProfileAddress from "next-common/components/profile/useProfileAddress"
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 import { useChainSettings } from "next-common/context/chain";
 
-const ProfileMultisigsInfoContext = createContext();
+const ProfileMultisigsActiveContext = createContext();
 
-function ProfileMultisigsInfoProvider({ children }) {
+function Provider({ children }) {
   const address = useProfileAddress();
   const {
     total: activeCountAsMultisig,
@@ -22,7 +22,7 @@ function ProfileMultisigsInfoProvider({ children }) {
   }, [activeCountAsMultisig, activeCountAsSignatory]);
 
   return (
-    <ProfileMultisigsInfoContext.Provider
+    <ProfileMultisigsActiveContext.Provider
       value={{
         activeCount,
         activeCountAsMultisig,
@@ -32,17 +32,17 @@ function ProfileMultisigsInfoProvider({ children }) {
       }}
     >
       {children}
-    </ProfileMultisigsInfoContext.Provider>
+    </ProfileMultisigsActiveContext.Provider>
   );
 }
 
-function ConditionalProfileMultisigsInfoProvider({ children }) {
+export default function ProfileMultisigsActiveProvider({ children }) {
   const address = useProfileAddress();
   const { hasMultisig } = useChainSettings();
 
   if (!isPolkadotAddress(address) || !hasMultisig) {
     return (
-      <ProfileMultisigsInfoContext.Provider
+      <ProfileMultisigsActiveContext.Provider
         value={{
           activeCount: 0,
           activeCountAsMultisig: 0,
@@ -52,17 +52,15 @@ function ConditionalProfileMultisigsInfoProvider({ children }) {
         }}
       >
         {children}
-      </ProfileMultisigsInfoContext.Provider>
+      </ProfileMultisigsActiveContext.Provider>
     );
   }
 
   return (
-    <ProfileMultisigsInfoProvider>{children}</ProfileMultisigsInfoProvider>
+    <Provider>{children}</Provider>
   );
 }
 
-export default ConditionalProfileMultisigsInfoProvider;
-
-export function useProfileMultisigsInfoContext() {
-  return useContext(ProfileMultisigsInfoContext);
+export function useProfileMultisigsActiveContext() {
+  return useContext(ProfileMultisigsActiveContext);
 }

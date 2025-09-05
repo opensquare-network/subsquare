@@ -5,7 +5,7 @@ import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { useProfileCollectivesTabs } from "./useProfileCollectivesTabs";
 import { isKintsugiChain } from "next-common/utils/chain";
 import { cn } from "next-common/utils";
-import { useProfileMultisigsInfoContext } from "next-common/components/profile/multisigs/context/profileMultisigsInfoContext";
+import { useProfileMultisigsActiveContext } from "next-common/components/profile/multisigs/context/profileMultisigsActiveContext";
 
 export function TabTitle({ active, children }) {
   return (
@@ -38,7 +38,7 @@ export default function useProfileTabs() {
   const hasDemocracyModule = democracy && !democracy?.archived;
   const depositsCount = useDepositsCount();
   const { activeCount: activeMultisigsCount } =
-    useProfileMultisigsInfoContext();
+    useProfileMultisigsActiveContext();
 
   const maybeEvmAddress = tryConvertToEvmAddress(id);
   const prefix = `/user/${maybeEvmAddress}/`;

@@ -3,9 +3,9 @@ import { fetchMultisigData } from "next-common/hooks/treasury/bounty/useCuratorM
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
 import { useAsync } from "react-use";
 
-const ProfileMultisigsContext = createContext(null);
+const ProfileMultisigsDataContext = createContext(null);
 
-export default function ProfileProfileMultisigsProvider({ children }) {
+export default function ProfileMultisigsDataProvider({ children }) {
   const address = useProfileAddress();
 
   const { value, loading } = useAsync(
@@ -14,17 +14,17 @@ export default function ProfileProfileMultisigsProvider({ children }) {
   );
 
   return (
-    <ProfileMultisigsContext.Provider
+    <ProfileMultisigsDataContext.Provider
       value={{
         data: value,
         loading,
       }}
     >
       {children}
-    </ProfileMultisigsContext.Provider>
+    </ProfileMultisigsDataContext.Provider>
   );
 }
 
-export function useProfileMultisigsContext() {
-  return useContext(ProfileMultisigsContext);
+export function useProfileMultisigsDataContext() {
+  return useContext(ProfileMultisigsDataContext);
 }

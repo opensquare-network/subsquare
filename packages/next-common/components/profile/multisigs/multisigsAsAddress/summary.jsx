@@ -2,10 +2,10 @@ import LoadableContent from "next-common/components/common/loadableContent";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
-import { useProfileMultisigsContext } from "next-common/components/profile/multisigs/context";
+import { useProfileMultisigsDataContext } from "next-common/components/profile/multisigs/context/profileMultisigsDataContext";
 
 export default function MultisigSummary() {
-  const { data, loading } = useProfileMultisigsContext();
+  const { data, loading } = useProfileMultisigsDataContext();
 
   return (
     <SecondaryCard>
