@@ -6,6 +6,7 @@ import FellowshipSalary from "./salary";
 import FellowshipCurrentSalaryCycle from "./currentSalaryCycle";
 import { cn } from "next-common/utils";
 import { useNavCollapsed } from "next-common/context/nav";
+// import TestFeeds from "next-common/components/scrollFeeds/testFeeds";
 
 export default function FellowshipFinanceOverview() {
   const [navCollapsed] = useNavCollapsed();
@@ -24,6 +25,7 @@ export default function FellowshipFinanceOverview() {
         <FellowshipSalary />
         <FellowshipCurrentSalaryCycle />
       </SecondaryCard>
+      {/* <TestFeeds /> */}
     </CollectivesProvider>
   );
 }

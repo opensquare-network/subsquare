@@ -7,13 +7,13 @@ export default function FellowshipFeedSuffix({ indexer }) {
     <div className="flex items-center max-sm:gap-x-2">
       <FellowshipFeedTime
         indexer={indexer}
-        className="w-40 text-textTertiary max-sm:w-auto"
+        className="w-40 text-textTertiary max-sm:w-auto text14Medium"
       />
       <FellowshipFeedExplorerLink
         indexer={indexer}
         className={cn(
           "opacity-0 group-hover/datalist-item:opacity-100 max-sm:opacity-100",
-          "text-textTertiary",
+          "text-textTertiary text14Medium",
         )}
       />
     </div>
