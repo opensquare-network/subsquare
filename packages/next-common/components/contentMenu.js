@@ -1,7 +1,6 @@
 import React, { useCallback, useRef, useState } from "react";
 import styled from "styled-components";
 import { useDetailType } from "../context/page";
-import { usePost } from "../context/post";
 import { detailPageCategory } from "../utils/consts/business/category";
 import { OptionWrapper } from "./internalDropdown/styled";
 import { SystemMore } from "@osn/icons/subsquare";
@@ -14,28 +13,19 @@ import { useRouter } from "next/router";
 import useIsAdmin from "next-common/hooks/useIsAdmin";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { useClickAway } from "react-use";
-import useTerminateAction from "next-common/hooks/useTerminateAction";
 import ReferendaArticleMoreMenu from "./articleMoreMenu/referendaArticleMoreMenu";
 import DiscussionArticleMoreMenu from "./articleMoreMenu/discussionArticleMoreMenu";
 import TreasuryBountyAricleMoreMenu from "./articleMoreMenu/treasuryBountyAricleMoreMenu";
+import FellowshipApplicationArticleMoreMenu from "./articleMoreMenu/fellowshipApplicationArticleMoreMenu";
 import {
-  LinkMenuItem,
   DeleteMenuItem,
   EditMenuItem,
-  ReportMenuItem,
   CopyMenuItem,
-  UnlinkMenuItem,
+  ReportMenu,
+  LinkOrUnlinkMenu,
 } from "next-common/components/articleMoreMenu/common";
 
 const DeletePopup = dynamicPopup(() => import("./deletePopup"));
-
-const ReportPopup = dynamicPopup(() => import("./reportPopup"));
-
-const PostLinkPopup = dynamicPopup(() => import("./linkPost/postLinkPopup"));
-
-const PostUnlinkPopup = dynamicPopup(() =>
-  import("./linkPost/postUnlinkPopup"),
-);
 
 const Wrapper = styled.div`
   position: relative;
@@ -112,14 +102,6 @@ export function CommentContextMenu({ editable, setIsEdit }) {
   );
 }
 
-function ConditionalLinkMenu({ menu, isFellowshipApplicationPost }) {
-  if (isFellowshipApplicationPost) {
-    return null;
-  }
-
-  return menu;
-}
-
 export function PostContextMenu(props) {
   const postType = useDetailType();
   if (postType === detailPageCategory.GOV2_REFERENDUM) {
@@ -131,45 +113,16 @@ export function PostContextMenu(props) {
   if (postType === detailPageCategory.TREASURY_BOUNTY) {
     return <TreasuryBountyAricleMoreMenu {...props} />;
   }
+  if (postType === detailPageCategory.FELLOWSHIP_APPLICATION) {
+    return <FellowshipApplicationArticleMoreMenu {...props} />;
+  }
   return <_PostContextMenu {...props} />;
 }
 
 function _PostContextMenu({ isAuthor, editable, setIsEdit }) {
-  const post = usePost();
   const [show, setShow] = useState(false);
   const ref = useRef();
-  const postType = useDetailType();
-  const [showLinkPopup, setShowLinkPopup] = useState(false);
-  const [showUnlinkPopup, setShowUnlinkPopup] = useState(false);
-  const [showReportPopup, setShowReportPopup] = useState(false);
-  const { actionsComponent, popupComponent } =
-    useTerminateAction({
-      onShowPopup: () => setShow(false),
-    }) || {};
-
-  const isFellowshipApplicationPost =
-    postType === detailPageCategory.FELLOWSHIP_APPLICATION;
-
   useClickAway(ref, () => setShow(false));
-
-  let linkOrUnlinkMenuItem = (
-    <LinkMenuItem
-      onClick={() => {
-        setShowLinkPopup(true);
-        setShow(false);
-      }}
-    />
-  );
-  if (post?.isBoundDiscussion) {
-    linkOrUnlinkMenuItem = (
-      <UnlinkMenuItem
-        onClick={() => {
-          setShowUnlinkPopup(true);
-          setShow(false);
-        }}
-      />
-    );
-  }
 
   return (
     <Wrapper ref={ref}>
@@ -177,35 +130,18 @@ function _PostContextMenu({ isAuthor, editable, setIsEdit }) {
         className="w-5 h-5 [&_path]:fill-textTertiary cursor-pointer"
         onClick={() => setShow(!show)}
       />
-      {show && (
-        <OptionWrapper>
-          {editable && (
-            <EditMenuItem
-              onClick={() => {
-                setIsEdit(true);
-                setShow(false);
-              }}
-            />
-          )}
-          {editable && isAuthor && (
-            <ConditionalLinkMenu
-              menu={linkOrUnlinkMenuItem}
-              isFellowshipApplicationPost={isFellowshipApplicationPost}
-            />
-          )}
-          {actionsComponent}
-          <ReportMenuItem
+      <OptionWrapper className={!show && "hidden"}>
+        {editable && (
+          <EditMenuItem
             onClick={() => {
+              setIsEdit(true);
               setShow(false);
-              setShowReportPopup(true);
             }}
           />
-        </OptionWrapper>
-      )}
-      {showLinkPopup && <PostLinkPopup setShow={setShowLinkPopup} />}
-      {showUnlinkPopup && <PostUnlinkPopup setShow={setShowUnlinkPopup} />}
-      {showReportPopup && <ReportPopup setShow={setShowReportPopup} />}
-      {popupComponent}
+        )}
+        {editable && isAuthor && <LinkOrUnlinkMenu setShow={setShow} />}
+        <ReportMenu setShow={setShow} />
+      </OptionWrapper>
     </Wrapper>
   );
 }
