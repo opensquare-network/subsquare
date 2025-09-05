@@ -12,6 +12,7 @@ import ProfileLayout from "next-common/components/layout/ProfileLayout";
 import WindowSizeProvider from "next-common/context/windowSize";
 import AvatarPermissionsProvider from "./header/context/avatarPermissionsContext";
 import ProfileUserInfoProvider from "./header/context/profileUserInfoContext";
+import ProfileMultisigsActiveProvider from "next-common/components/profile/multisigs/context/profileMultisigsActiveContext";
 
 function ProfilePageImpl() {
   useFetchProfileData();
@@ -47,8 +48,10 @@ export default function ProfilePage() {
   }, [dispatch, address]);
 
   return (
-    <WindowSizeProvider>
-      <ProfilePageImpl />
-    </WindowSizeProvider>
+    <ProfileMultisigsActiveProvider>
+      <WindowSizeProvider>
+        <ProfilePageImpl />
+      </WindowSizeProvider>
+    </ProfileMultisigsActiveProvider>
   );
 }
