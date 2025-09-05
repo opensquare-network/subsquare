@@ -15,10 +15,9 @@ import useIsAdmin from "next-common/hooks/useIsAdmin";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { useClickAway } from "react-use";
 import useTerminateAction from "next-common/hooks/useTerminateAction";
-import BountyAppendMenuItem from "next-common/components/appendants/bounty/appendMenuItem";
-import { useBountyAppendantsContext } from "next-common/context/bountyAppendants";
 import ReferendaArticleMoreMenu from "./articleMoreMenu/referendaArticleMoreMenu";
 import DiscussionArticleMoreMenu from "./articleMoreMenu/discussionArticleMoreMenu";
+import TreasuryBountyAricleMoreMenu from "./articleMoreMenu/treasuryBountyAricleMoreMenu";
 import {
   LinkMenuItem,
   DeleteMenuItem,
@@ -36,14 +35,6 @@ const PostLinkPopup = dynamicPopup(() => import("./linkPost/postLinkPopup"));
 
 const PostUnlinkPopup = dynamicPopup(() =>
   import("./linkPost/postUnlinkPopup"),
-);
-
-const BountyCreateAppendantPopup = dynamicPopup(() =>
-  import("next-common/components/appendants/bounty/createPopup"),
-);
-
-const ReferendaCreateAppendantPopup = dynamicPopup(() =>
-  import("next-common/components/appendants/referenda/createPopup"),
 );
 
 const Wrapper = styled.div`
@@ -121,26 +112,9 @@ export function CommentContextMenu({ editable, setIsEdit }) {
   );
 }
 
-function ConditionalBountyLinkMenu({ menu }) {
-  const { appendants } = useBountyAppendantsContext();
-  if (appendants && appendants?.length > 0) {
-    return null;
-  }
-
-  return menu;
-}
-
-function ConditionalLinkMenu({
-  menu,
-  isTreasuryBountyPost,
-  isFellowshipApplicationPost,
-}) {
+function ConditionalLinkMenu({ menu, isFellowshipApplicationPost }) {
   if (isFellowshipApplicationPost) {
     return null;
-  }
-
-  if (isTreasuryBountyPost) {
-    return <ConditionalBountyLinkMenu menu={menu} />;
   }
 
   return menu;
@@ -154,6 +128,9 @@ export function PostContextMenu(props) {
   if (postType === detailPageCategory.POST) {
     return <DiscussionArticleMoreMenu {...props} />;
   }
+  if (postType === detailPageCategory.TREASURY_BOUNTY) {
+    return <TreasuryBountyAricleMoreMenu {...props} />;
+  }
   return <_PostContextMenu {...props} />;
 }
 
@@ -165,9 +142,6 @@ function _PostContextMenu({ isAuthor, editable, setIsEdit }) {
   const [showLinkPopup, setShowLinkPopup] = useState(false);
   const [showUnlinkPopup, setShowUnlinkPopup] = useState(false);
   const [showReportPopup, setShowReportPopup] = useState(false);
-  const [showBountyCreatePopup, setShowBountyCreatePopup] = useState(false);
-  const [showReferendaCreatePopup, setShowReferendaCreatePopup] =
-    useState(false);
   const { actionsComponent, popupComponent } =
     useTerminateAction({
       onShowPopup: () => setShow(false),
@@ -175,8 +149,6 @@ function _PostContextMenu({ isAuthor, editable, setIsEdit }) {
 
   const isFellowshipApplicationPost =
     postType === detailPageCategory.FELLOWSHIP_APPLICATION;
-
-  const isTreasuryBountyPost = postType === detailPageCategory.TREASURY_BOUNTY;
 
   useClickAway(ref, () => setShow(false));
 
@@ -215,16 +187,9 @@ function _PostContextMenu({ isAuthor, editable, setIsEdit }) {
               }}
             />
           )}
-          {isTreasuryBountyPost && (
-            <BountyAppendMenuItem
-              setShow={setShow}
-              setIsAppend={setShowBountyCreatePopup}
-            />
-          )}
           {editable && isAuthor && (
             <ConditionalLinkMenu
               menu={linkOrUnlinkMenuItem}
-              isTreasuryBountyPost={isTreasuryBountyPost}
               isFellowshipApplicationPost={isFellowshipApplicationPost}
             />
           )}
@@ -240,14 +205,6 @@ function _PostContextMenu({ isAuthor, editable, setIsEdit }) {
       {showLinkPopup && <PostLinkPopup setShow={setShowLinkPopup} />}
       {showUnlinkPopup && <PostUnlinkPopup setShow={setShowUnlinkPopup} />}
       {showReportPopup && <ReportPopup setShow={setShowReportPopup} />}
-      {showBountyCreatePopup && (
-        <BountyCreateAppendantPopup setIsAppend={setShowBountyCreatePopup} />
-      )}
-      {showReferendaCreatePopup && (
-        <ReferendaCreateAppendantPopup
-          setIsAppend={setShowReferendaCreatePopup}
-        />
-      )}
       {popupComponent}
     </Wrapper>
   );
