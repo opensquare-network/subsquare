@@ -1,20 +1,11 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import styled from "styled-components";
 import { useDetailType } from "../context/page";
 import { usePost } from "../context/post";
 import { detailPageCategory } from "../utils/consts/business/category";
-import { OptionItem, OptionWrapper } from "./internalDropdown/styled";
-import {
-  SystemCopied,
-  SystemCopy,
-  SystemEdit,
-  SystemFlag,
-  SystemLink,
-  SystemMore,
-  SystemTrash,
-} from "@osn/icons/subsquare";
+import { OptionWrapper } from "./internalDropdown/styled";
+import { SystemMore } from "@osn/icons/subsquare";
 import copy from "copy-to-clipboard";
-import { noop } from "lodash-es";
 import { useComment } from "./comment/context";
 import nextApi from "next-common/services/nextApi";
 import { useDispatch } from "react-redux";
@@ -28,7 +19,14 @@ import BountyAppendMenuItem from "next-common/components/appendants/bounty/appen
 import { useBountyAppendantsContext } from "next-common/context/bountyAppendants";
 import ReferendaArticleMoreMenu from "./articleMoreMenu/referendaArticleMoreMenu";
 import DiscussionArticleMoreMenu from "./articleMoreMenu/discussionArticleMoreMenu";
-import { LinkMenuItem } from "next-common/components/articleMoreMenu/common";
+import {
+  LinkMenuItem,
+  DeleteMenuItem,
+  EditMenuItem,
+  ReportMenuItem,
+  CopyMenuItem,
+  UnlinkMenuItem,
+} from "next-common/components/articleMoreMenu/common";
 
 const DeletePopup = dynamicPopup(() => import("./deletePopup"));
 
@@ -57,101 +55,6 @@ const Wrapper = styled.div`
     cursor: pointer;
   }
 `;
-
-export function UnlinkMenuItem({ setShowUnlinkPopup, setShow }) {
-  return (
-    <OptionItem
-      onClick={() => {
-        setShowUnlinkPopup(true);
-        setShow(false);
-      }}
-    >
-      <div className="mr-2">
-        <SystemLink />
-      </div>
-      <span>Unlink</span>
-    </OptionItem>
-  );
-}
-
-export function EditMenuItem({ setIsEdit, setShow }) {
-  return (
-    <OptionItem
-      onClick={() => {
-        setIsEdit(true);
-        setShow(false);
-      }}
-    >
-      <div className="mr-2">
-        <SystemEdit />
-      </div>
-      <span>Edit</span>
-    </OptionItem>
-  );
-}
-
-export function CopyMenuItem({ onCopy = noop }) {
-  const [copyState, setCopyState] = useState(false);
-
-  useEffect(() => {
-    if (copyState) {
-      setTimeout(() => {
-        setCopyState(false);
-      }, 3000);
-    }
-  }, [copyState]);
-
-  return (
-    <OptionItem
-      onClick={() => {
-        try {
-          onCopy();
-        } catch (e) {
-          // fixme: we should not ignore
-        } finally {
-          setCopyState(true);
-        }
-      }}
-    >
-      <div className="mr-2">
-        {copyState ? <SystemCopied /> : <SystemCopy />}
-      </div>
-      <span>{copyState ? "Copied" : "Copy Link"}</span>
-    </OptionItem>
-  );
-}
-
-export function ReportMenuItem({ setShowReportPopup, setShow }) {
-  return (
-    <OptionItem
-      onClick={() => {
-        setShow(false);
-        setShowReportPopup(true);
-      }}
-    >
-      <div className="mr-2">
-        <SystemFlag />
-      </div>
-      <span>Report</span>
-    </OptionItem>
-  );
-}
-
-export function DeleteMenuItem({ setShowDeletePopup, setShow }) {
-  return (
-    <OptionItem
-      onClick={() => {
-        setShowDeletePopup(true);
-        setShow(false);
-      }}
-    >
-      <div className="mr-2">
-        <SystemTrash />
-      </div>
-      <span>Delete</span>
-    </OptionItem>
-  );
-}
 
 export function CommentContextMenu({ editable, setIsEdit }) {
   const dispatch = useDispatch();
@@ -187,11 +90,20 @@ export function CommentContextMenu({ editable, setIsEdit }) {
       />
       {show && (
         <OptionWrapper>
-          {editable && <EditMenuItem setIsEdit={setIsEdit} setShow={setShow} />}
+          {editable && (
+            <EditMenuItem
+              onClick={() => {
+                setIsEdit(true);
+                setShow(false);
+              }}
+            />
+          )}
           {comment?.dataSource !== "sima" && (editable || isAdmin) && (
             <DeleteMenuItem
-              setShowDeletePopup={setShowDeletePopup}
-              setShow={setShow}
+              onClick={() => {
+                setShowDeletePopup(true);
+                setShow(false);
+              }}
             />
           )}
 
@@ -279,8 +191,10 @@ function _PostContextMenu({ isAuthor, editable, setIsEdit }) {
   if (post?.isBoundDiscussion) {
     linkOrUnlinkMenuItem = (
       <UnlinkMenuItem
-        setShowUnlinkPopup={setShowUnlinkPopup}
-        setShow={setShow}
+        onClick={() => {
+          setShowUnlinkPopup(true);
+          setShow(false);
+        }}
       />
     );
   }
@@ -293,7 +207,14 @@ function _PostContextMenu({ isAuthor, editable, setIsEdit }) {
       />
       {show && (
         <OptionWrapper>
-          {editable && <EditMenuItem setIsEdit={setIsEdit} setShow={setShow} />}
+          {editable && (
+            <EditMenuItem
+              onClick={() => {
+                setIsEdit(true);
+                setShow(false);
+              }}
+            />
+          )}
           {isTreasuryBountyPost && (
             <BountyAppendMenuItem
               setShow={setShow}
@@ -309,8 +230,10 @@ function _PostContextMenu({ isAuthor, editable, setIsEdit }) {
           )}
           {actionsComponent}
           <ReportMenuItem
-            setShowReportPopup={setShowReportPopup}
-            setShow={setShow}
+            onClick={() => {
+              setShow(false);
+              setShowReportPopup(true);
+            }}
           />
         </OptionWrapper>
       )}

@@ -5,11 +5,6 @@ import { OptionWrapper } from "next-common/components/internalDropdown/styled";
 import { SystemMore } from "@osn/icons/subsquare";
 import copy from "copy-to-clipboard";
 import { useComment } from "next-common/components/comment/context";
-import {
-  CopyMenuItem,
-  EditMenuItem,
-  UnlinkMenuItem,
-} from "next-common/components/contentMenu";
 import { usePost } from "next-common/context/post";
 import PostLinkPopup from "next-common/components/linkPost/postLinkPopup";
 import PostUnlinkPopup from "next-common/components/linkPost/postUnlinkPopup";
@@ -18,6 +13,9 @@ import { detailPageCategory } from "next-common/utils/consts/business/category";
 import {
   AppendMenuItem,
   LinkMenuItem,
+  EditMenuItem,
+  CopyMenuItem,
+  UnlinkMenuItem,
 } from "next-common/components/articleMoreMenu/common";
 
 const Wrapper = styled.div`
@@ -81,8 +79,10 @@ export function PostContextMenu({ isAuthor, canEdit, setIsAppend, setIsEdit }) {
   if (post?.isBoundDiscussion) {
     linkOrUnlinkMenuItem = (
       <UnlinkMenuItem
-        setShowUnlinkPopup={setShowUnlinkPopup}
-        setShow={setShow}
+        onClick={() => {
+          setShowUnlinkPopup(true);
+          setShow(false);
+        }}
       />
     );
   }
@@ -107,7 +107,12 @@ export function PostContextMenu({ isAuthor, canEdit, setIsAppend, setIsEdit }) {
                     }}
                   />
                 ) : (
-                  <EditMenuItem setIsEdit={setIsEdit} setShow={setShow} />
+                  <EditMenuItem
+                    onClick={() => {
+                      setIsEdit(true);
+                      setShow(false);
+                    }}
+                  />
                 )}
               </>
             )}

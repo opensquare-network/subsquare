@@ -47,7 +47,14 @@ export default function ReferendaArticleMoreMenu({
       />
       {
         <OptionWrapper className={!show && "hidden"}>
-          {editable && <EditMenuItem setIsEdit={setIsEdit} setShow={setShow} />}
+          {editable && (
+            <EditMenuItem
+              onClick={() => {
+                setIsEdit(true);
+                setShow(false);
+              }}
+            />
+          )}
           {<AppendReferendaMenu setShow={setShow} />}
           {editable && isAuthor && !appendants?.length && (
             <LinkMenu setShow={setShow} />

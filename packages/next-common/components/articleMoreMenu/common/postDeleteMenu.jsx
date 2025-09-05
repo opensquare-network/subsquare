@@ -30,8 +30,10 @@ export default function PostDeleteMenu({ setShow = noop }) {
   return (
     <div>
       <DeleteMenuItem
-        setShowDeletePopup={setShowDeletePopup}
-        setShow={setShow}
+        onClick={() => {
+          setShowDeletePopup(true);
+          setShow(false);
+        }}
       />
       {showDeletePopup && (
         <DeletePopup

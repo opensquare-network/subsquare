@@ -32,7 +32,14 @@ export default function DiscussionArticleMoreMenu({ editable, setIsEdit }) {
       />
       {
         <OptionWrapper className={!show && "hidden"}>
-          {editable && <EditMenuItem setIsEdit={setIsEdit} setShow={setShow} />}
+          {editable && (
+            <EditMenuItem
+              onClick={() => {
+                setIsEdit(true);
+                setShow(false);
+              }}
+            />
+          )}
           {canDelete && <PostDeleteMenu setShow={setShow} />}
           <ReportMenu setShow={setShow} />
         </OptionWrapper>

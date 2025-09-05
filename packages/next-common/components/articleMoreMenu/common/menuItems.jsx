@@ -24,14 +24,9 @@ export function LinkMenuItem({ onClick }) {
   );
 }
 
-export function UnlinkMenuItem({ setShowUnlinkPopup, setShow }) {
+export function UnlinkMenuItem({ onClick }) {
   return (
-    <OptionItem
-      onClick={() => {
-        setShowUnlinkPopup(true);
-        setShow(false);
-      }}
-    >
+    <OptionItem onClick={onClick}>
       <div className="mr-2">
         <SystemLink />
       </div>
@@ -40,14 +35,9 @@ export function UnlinkMenuItem({ setShowUnlinkPopup, setShow }) {
   );
 }
 
-export function EditMenuItem({ setIsEdit, setShow }) {
+export function EditMenuItem({ onClick }) {
   return (
-    <OptionItem
-      onClick={() => {
-        setIsEdit(true);
-        setShow(false);
-      }}
-    >
+    <OptionItem onClick={onClick}>
       <div className="mr-2">
         <SystemEdit />
       </div>
@@ -87,14 +77,9 @@ export function CopyMenuItem({ onCopy = noop }) {
   );
 }
 
-export function ReportMenuItem({ setShowReportPopup, setShow }) {
+export function ReportMenuItem({ onClick }) {
   return (
-    <OptionItem
-      onClick={() => {
-        setShow(false);
-        setShowReportPopup(true);
-      }}
-    >
+    <OptionItem onClick={onClick}>
       <div className="mr-2">
         <SystemFlag />
       </div>
@@ -103,14 +88,9 @@ export function ReportMenuItem({ setShowReportPopup, setShow }) {
   );
 }
 
-export function DeleteMenuItem({ setShowDeletePopup, setShow }) {
+export function DeleteMenuItem({ onClick }) {
   return (
-    <OptionItem
-      onClick={() => {
-        setShowDeletePopup(true);
-        setShow(false);
-      }}
-    >
+    <OptionItem onClick={onClick}>
       <div className="mr-2">
         <SystemTrash />
       </div>
@@ -119,22 +99,14 @@ export function DeleteMenuItem({ setShowDeletePopup, setShow }) {
   );
 }
 
-export function CancelReferendumMenuItem({
-  setShowCancelReferendumPopup,
-  setShow,
-}) {
+export function CancelReferendumMenuItem({ onClick }) {
   const isVoting = useReferendaIsVoting();
   if (!isVoting) {
     return null;
   }
 
   return (
-    <OptionItem
-      onClick={() => {
-        setShowCancelReferendumPopup(true);
-        setShow(false);
-      }}
-    >
+    <OptionItem onClick={onClick}>
       <div className="mr-2">
         <SystemCancel />
       </div>
@@ -143,21 +115,13 @@ export function CancelReferendumMenuItem({
   );
 }
 
-export function KillReferendumMenuItem({
-  setShowKillReferendumPopup,
-  setShow,
-}) {
+export function KillReferendumMenuItem({ onClick }) {
   const isVoting = useReferendaIsVoting();
   if (!isVoting) {
     return null;
   }
   return (
-    <OptionItem
-      onClick={() => {
-        setShowKillReferendumPopup(true);
-        setShow(false);
-      }}
-    >
+    <OptionItem onClick={onClick}>
       <div className="mr-2">
         <SystemTrash />
       </div>
