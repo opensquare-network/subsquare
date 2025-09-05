@@ -2,11 +2,8 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import React, { useState, useEffect, useRef } from "react";
 import usePreimage from "next-common/hooks/usePreimage";
 import useOldPreimage from "next-common/hooks/useOldPreimage";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  incPreImagesTrigger,
-  preImagesTriggerSelector,
-} from "next-common/store/reducers/preImagesSlice";
+import { useDispatch } from "react-redux";
+import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
 import FieldLoading from "../icons/fieldLoading";
 import { Deposit, Hash, Proposal, Status } from "./fields";
 import tw from "tailwind-styled-components";
@@ -15,6 +12,8 @@ import dynamicPopup from "next-common/lib/dynamic/popup";
 import Loading from "next-common/components/loading";
 import { cn } from "next-common/utils";
 import { FixedSizeList } from "react-window";
+import { convertTicket } from "./common";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 
 const PreimageDetailPopup = dynamicPopup(() => import("./preImageDetailPopup"));
 
@@ -49,9 +48,8 @@ const OldPreimageItem = React.memo(OldPreimageItemComp);
 
 function Item({ hash, preimage, isStatusLoaded, isBytesLoaded, index }) {
   const dispatch = useDispatch();
-  const triggerUpdate = useSelector(preImagesTriggerSelector);
   const [showArgumentsDetail, setShowArgumentsDetail] = useState(null);
-  const deposit = preimage?.ticket || preimage?.deposit;
+  const deposit = convertTicket(preimage?.ticket || preimage?.deposit);
 
   return (
     <>
@@ -105,8 +103,14 @@ function Item({ hash, preimage, isStatusLoaded, isBytesLoaded, index }) {
                 hash={hash}
                 count={preimage.count}
                 status={preimage.statusName}
-                onUnnoteInBlock={() => dispatch(incPreImagesTrigger())}
-                triggerUpdate={triggerUpdate}
+                onUnnoteInBlock={() => {
+                  dispatch(incPreImagesTrigger());
+                  dispatch(
+                    newSuccessToast(
+                      "Preimage unnoted. Data will be refreshed in seconds.",
+                    ),
+                  );
+                }}
                 right
               />
             )
