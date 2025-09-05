@@ -40,12 +40,20 @@ function ConditionRelayInfoProvider({ children }) {
   return <RelayInfoProvider>{children}</RelayInfoProvider>;
 }
 
+function ConditionApiProvider({ children }) {
+  if (isAssetHubMigrated()) {
+    return children;
+  }
+
+  return <ApiProvider>{children}</ApiProvider>;
+}
+
 export function AssetHubPageProvider({ children }) {
   return (
     <ConditionRelayInfoProvider>
       <Provider store={store}>
         <ChainProvider chain={chain}>
-          <ApiProvider>{children}</ApiProvider>
+          <ConditionApiProvider>{children}</ConditionApiProvider>
         </ChainProvider>
       </Provider>
     </ConditionRelayInfoProvider>

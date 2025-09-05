@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import getChainSettings from "../../utils/consts/settings";
 import safeLocalStorage from "next-common/utils/safeLocalStorage";
 import { random } from "lodash-es";
+import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated";
+import { getRelayChain, isAssetHubChain } from "next-common/utils/chain";
 
 const chain = process.env.NEXT_PUBLIC_CHAIN;
 
@@ -34,10 +36,18 @@ export function getAllRpcUrls(chain) {
   return settings.endpoints.map((item) => item.url);
 }
 
+export function getNodeChainName() {
+  if (isAssetHubMigrated(chain) && isAssetHubChain(chain)) {
+    return `nodeUrl-${getRelayChain(chain)}`;
+  }
+
+  return `nodeUrl-${chain}`;
+}
+
 export function getInitNodeUrl(chain) {
   let localNodeUrl = null;
   try {
-    localNodeUrl = safeLocalStorage.getItem(`nodeUrl-${chain}`);
+    localNodeUrl = safeLocalStorage.getItem(getNodeChainName());
   } catch (e) {
     // ignore parse error
   }
@@ -77,7 +87,7 @@ const nodeSlice = createSlice({
       });
 
       if (saveLocalStorage) {
-        safeLocalStorage.setItem(`nodeUrl-${state.chain}`, url);
+        safeLocalStorage.setItem(getNodeChainName(), url);
       }
 
       if (refresh) {
@@ -85,7 +95,7 @@ const nodeSlice = createSlice({
       }
     },
     removeCurrentNode(state) {
-      safeLocalStorage.removeItem(`nodeUrl-${state.chain}`);
+      safeLocalStorage.removeItem(getNodeChainName());
       state.currentNode = null;
     },
     setNodesDelay(state, { payload }) {
