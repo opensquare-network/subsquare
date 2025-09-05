@@ -2,9 +2,11 @@ import Tabs from "next-common/components/tabs";
 import { useState, useMemo } from "react";
 import Multisigs from "next-common/components/profile/multisigs/multisigsAsAddress/multisigs";
 import Signatories from "next-common/components/profile/multisigs/multisigsAsAddress/signatories";
+import { useProfileMultisigsActiveContext } from "next-common/components/profile/multisigs/context/profileMultisigsActiveContext";
 
 export default function MultisigsAsAddressTabs() {
   const [activeTabValue, setActiveTabValue] = useState("multisigs");
+  const { activeCountAsMultisig } = useProfileMultisigsActiveContext();
 
   const tabs = useMemo(
     () => [
@@ -12,6 +14,7 @@ export default function MultisigsAsAddressTabs() {
         value: "multisigs",
         label: "Multisigs",
         content: <Multisigs />,
+        activeCount: activeCountAsMultisig,
       },
       {
         value: "signatories",
@@ -19,7 +22,7 @@ export default function MultisigsAsAddressTabs() {
         content: <Signatories />,
       },
     ],
-    [],
+    [activeCountAsMultisig],
   );
 
   return (
