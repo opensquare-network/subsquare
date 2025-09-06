@@ -15,7 +15,6 @@ import {
 export default function useConfirmationEstimateTime({
   approvePercentage,
   supportPercentage,
-  units,
 }) {
   const decisionPeriod = useDecision();
   const decidingSince = useDecidingSince();
@@ -76,10 +75,7 @@ export default function useConfirmationEstimateTime({
     );
   }, [estimatedApprovalHeight, estimatedSupportHeight]);
 
-  const estimatedTimeToConfirm = useEstimateTimeFromNowToBlockHeight(
-    estimated,
-    units,
-  );
+  const estimatedTimeToConfirm = useEstimateTimeFromNowToBlockHeight(estimated);
   const maybeConfirmAtTimestamp = useEstimateTimestampAtBlockHeight(estimated);
 
   if (
