@@ -8,9 +8,14 @@ import { useDecision } from "next-common/context/post/gov2/track";
 import { useDecidingSince } from "next-common/context/post/gov2/referendum";
 import BigNumber from "bignumber.js";
 import {
-  useEstimateTimeFromNowToBlockHeight,
+  useEstimateBlocksTime,
   useEstimateTimestampAtBlockHeight,
 } from "next-common/utils/hooks";
+
+function useTimeByBlocks(blocks = 0) {
+  const result = useEstimateBlocksTime(blocks);
+  return result || "";
+}
 
 export default function useConfirmationEstimateTime({
   approvePercentage,
@@ -26,8 +31,11 @@ export default function useConfirmationEstimateTime({
   const [supportX, setSupportX] = useState();
 
   const [estimatedApprovalHeight, setEstimatedApprovalHeight] = useState();
+  const [estimatedApprovalBlocks, setEstimatedApprovalBlocks] = useState();
   const [estimatedSupportHeight, setEstimatedSupportHeight] = useState();
+  const [estimatedSupportBlocks, setEstimatedSupportBlocks] = useState();
   const [estimated, setEstimated] = useState();
+  const [estimatedBlocks, setEstimatedBlocks] = useState();
 
   useEffect(() => {
     if (!revertSupportFunc || !revertSupportFunc) {
@@ -47,6 +55,15 @@ export default function useConfirmationEstimateTime({
     if (isNil(approvalX) || isNil(supportX)) {
       return;
     }
+
+    const approvalBlocks = new BigNumber(decisionPeriod)
+      .multipliedBy(approvalX)
+      .toFixed(0, BigNumber.ROUND_UP);
+    setEstimatedApprovalBlocks(approvalBlocks);
+    const supportBlocks = new BigNumber(decisionPeriod)
+      .multipliedBy(supportX)
+      .toFixed(0, BigNumber.ROUND_UP);
+    setEstimatedSupportBlocks(supportBlocks);
 
     setEstimatedApprovalHeight(
       new BigNumber(decisionPeriod)
@@ -75,7 +92,20 @@ export default function useConfirmationEstimateTime({
     );
   }, [estimatedApprovalHeight, estimatedSupportHeight]);
 
-  const estimatedTimeToConfirm = useEstimateTimeFromNowToBlockHeight(estimated);
+  useEffect(() => {
+    if (isNil(estimatedApprovalBlocks) || isNil(estimatedSupportBlocks)) {
+      return;
+    }
+
+    setEstimatedBlocks(
+      Math.max(
+        parseInt(estimatedApprovalBlocks),
+        parseInt(estimatedSupportBlocks),
+      ),
+    );
+  }, [estimatedApprovalBlocks, estimatedSupportBlocks]);
+
+  const estimatedTimeToConfirm = useTimeByBlocks(estimatedBlocks);
   const maybeConfirmAtTimestamp = useEstimateTimestampAtBlockHeight(estimated);
 
   if (
@@ -83,7 +113,7 @@ export default function useConfirmationEstimateTime({
     new BigNumber(supportX).gt(1) ||
     new BigNumber(approvalX).lt(0) ||
     new BigNumber(supportX).lt(0) ||
-    isNil(estimated)
+    isNil(estimatedBlocks)
   ) {
     return {};
   }

@@ -25,6 +25,7 @@ const paseo = {
   value: Chains.paseo,
   name: capitalize(Chains.paseo),
   blockTime: 6000,
+  assethubBlockTime: 12000,
   endpoints: paseoAssetHubNodes,
   relayChainEndpoints: paseoRelayChainNodes,
   assethubMigration: paseoAssethubMigration,

@@ -10,7 +10,7 @@ import {
 import BigNumber from "bignumber.js";
 import useCurrentBlockHeightAndTime from "./useCurrentBlockHeightAndTime";
 import { estimateBlocksTime } from "..";
-import { useScanHeight } from "next-common/hooks/scanHeight";
+import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
 
 const DEFAULT_TIME = new BN(6_000);
 
@@ -77,7 +77,7 @@ export function useEstimateTimestampAtBlockHeight(blockHeight) {
 }
 
 export function useEstimateTimeFromNowToBlockHeight(blockHeight) {
-  const currentHeight = useScanHeight();
+  const currentHeight = useAhmLatestHeight();
   const result = useEstimateBlocksTime(blockHeight - currentHeight);
   if (!currentHeight) {
     return "";
