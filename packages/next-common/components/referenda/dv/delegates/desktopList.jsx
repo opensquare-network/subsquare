@@ -82,6 +82,6 @@ export default function DelegatesDesktopList({ delegates }) {
 
 function WinRateTooltip() {
   return (
-    <Tooltip content="A win = referendum not finished && ((aye vote && referendum approval) || (nay vote && no referendum approval))" />
+    <Tooltip content="A win = referendum finished && ((aye vote && referendum approval) || (nay vote && no referendum approval))" />
   );
 }
