@@ -18,6 +18,8 @@ const FellowshipCoreFeedsCompareParamsChangesPopup = dynamicPopup(() =>
 export default function FellowshipCoreFeedsListEvent({
   feed = {},
   className = "",
+  beforeContent,
+  afterContent,
   showUserInfo = true,
 }) {
   const event = feed?.event;
@@ -80,12 +82,16 @@ export default function FellowshipCoreFeedsListEvent({
   return (
     <div
       className={cn(
-        "flex items-center flex-wrap gap-x-2",
+        "flex items-start flex-wrap gap-x-2",
         "text-textTertiary",
         className,
       )}
     >
+      {beforeContent}
+
       {content}
+
+      {afterContent}
 
       {comparePopupVisible && (
         <FellowshipCoreFeedsCompareParamsChangesPopup

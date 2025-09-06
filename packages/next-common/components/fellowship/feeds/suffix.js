@@ -2,9 +2,9 @@ import FellowshipFeedTime from "next-common/components/fellowship/feeds/time";
 import FellowshipFeedExplorerLink from "next-common/components/fellowship/feeds/explorerLink";
 import { cn } from "next-common/utils";
 
-export default function FellowshipFeedSuffix({ indexer }) {
+export default function FellowshipFeedSuffix({ indexer, className = "" }) {
   return (
-    <div className="flex items-center max-sm:gap-x-2">
+    <div className={cn("flex items-center max-sm:gap-x-2", className)}>
       <FellowshipFeedTime
         indexer={indexer}
         className="w-40 text-textTertiary max-sm:w-auto text14Medium"

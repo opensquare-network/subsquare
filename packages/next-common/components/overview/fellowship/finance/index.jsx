@@ -6,26 +6,25 @@ import FellowshipSalary from "./salary";
 import FellowshipCurrentSalaryCycle from "./currentSalaryCycle";
 import { cn } from "next-common/utils";
 import { useNavCollapsed } from "next-common/context/nav";
-// import TestFeeds from "next-common/components/scrollFeeds/testFeeds";
 
 export default function FellowshipFinanceOverview() {
   const [navCollapsed] = useNavCollapsed();
-
   return (
     <CollectivesProvider>
       <TitleContainer className="mb-4">Fellowship Finance</TitleContainer>
 
       <SecondaryCard
         className={cn(
-          "grid grid-cols-4 gap-4",
-          !navCollapsed ? "max-md:grid-cols-2" : "max-sm:grid-cols-2",
+          "grid grid-cols-2 gap-4 gap-y-6",
+          navCollapsed
+            ? "max-md:grid-cols-4"
+            : "max-md:grid-cols-2 max-lg:grid-cols-4",
         )}
       >
         <FellowshipTreasury />
         <FellowshipSalary />
         <FellowshipCurrentSalaryCycle />
       </SecondaryCard>
-      {/* <TestFeeds /> */}
     </CollectivesProvider>
   );
 }

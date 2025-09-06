@@ -6,6 +6,8 @@ import { useWindowSize } from "react-use";
 import FellowshipCoreFeedsListEvent from "../fellowship/core/feeds/event";
 import FellowshipFeedSuffix from "../fellowship/feeds/suffix";
 import FellowshipFeedLeadingBar from "../fellowship/feeds/leading";
+import { AddressUser } from "../user";
+import { AvatarDisplay } from "../user/avatarDisplay";
 
 export const PromptTypes = {
   INFO: "info",
@@ -38,14 +40,14 @@ export const colorStyle = {
   },
 };
 
-const ITEM_HEIGHT = 56;
-const MOBILE_ITEM_HEIGHT = 56;
+const ITEM_HEIGHT = 53;
+const MOBILE_ITEM_HEIGHT = 96;
 const ITEM_GAP = 0; // space-y-1
 
 export default function ScrollFeeds({
   feeds = [],
-  pageSize = 4,
-  defaultStep = 4,
+  pageSize = 6,
+  defaultStep = 1,
 }) {
   const { width } = useWindowSize();
   const isMobile = width < 768;
@@ -82,10 +84,11 @@ export default function ScrollFeeds({
     ])
       .then(() => {
         setFeedPages((prev) => {
-          if (prev.length < 4) {
+          if (prev.length < 1) {
             return prev;
           }
-          return [...prev.slice(4), ...prev.slice(0, 4)];
+          const [first, ...rest] = prev;
+          return [...rest, first];
         });
       })
       .then(() => {
@@ -103,7 +106,7 @@ export default function ScrollFeeds({
       if (!containerRef.current || !containerRef.current.firstChild) return;
       if (feedPages?.length < 4) return;
       animateHandle();
-    }, 6500);
+    }, 3000);
     return () => clearInterval(interval);
   }, [animateHandle, containerRef, feedPages?.length]);
 
@@ -136,19 +139,27 @@ export default function ScrollFeeds({
                   item.indexer.blockHeight +
                   item.indexer.eventIndex
                 }
-                className="flex group/datalist-item text14Medium"
+                className="flex group/datalist-item text14Medium h-[53px] max-sm:h-[96px]"
               >
                 <FellowshipFeedLeadingBar className="pr-4" isLast={isLast} />
-                <div className="pt-2 flex flex-col gap-y-1 pb-1">
-                  <div>
-                    <FellowshipCoreFeedsListEvent
-                      feed={item}
-                      className="pr-2 [&>span]:whitespace-nowrap"
-                    />
+                <div className="flex pt-2">
+                  <div className="mt-1 mr-2">
+                    <AvatarDisplay size={20} address={item?.args?.who} />
                   </div>
-                  <div className="pl-7">
-                    <FellowshipFeedSuffix indexer={item?.indexer} />
-                  </div>
+                  <FellowshipCoreFeedsListEvent
+                    feed={item}
+                    className="pr-2 pb-1 pt-1 gap-y-0.5 max-sm:items-start"
+                    showUserInfo={false}
+                    beforeContent={
+                      <AddressUser showAvatar={false} add={item?.args?.who} />
+                    }
+                    afterContent={
+                      <FellowshipFeedSuffix
+                        className="w-3/5 max-sm:w-full"
+                        indexer={item?.indexer}
+                      />
+                    }
+                  />
                 </div>
               </div>
             );

@@ -1,12 +1,12 @@
 import { fellowshipCoreFeedsApiUri } from "next-common/services/url";
 import { backendApi } from "next-common/services/nextApi";
 import { useAsync } from "react-use";
-import { SecondaryCard } from "../styled/containers/secondaryCard";
-import { TitleContainer } from "../styled/containers/titleContainer";
-import ScrollFeeds from "./index";
+import ScrollFeeds from "next-common/components/scrollFeeds";
 import Link from "next/link";
+import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
+import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 
-export default function TestFeeds() {
+export default function FellowshipFeeds() {
   const { value } = useAsync(async () => {
     const resp = await backendApi.fetch(fellowshipCoreFeedsApiUri);
     return resp.result?.items || [];
