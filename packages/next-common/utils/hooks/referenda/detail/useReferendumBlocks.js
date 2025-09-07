@@ -12,20 +12,20 @@ export function usePreparingBlocks() {
   const decidingSince = useDecidingSince();
   const voteFinishedHeight = useReferendumVotingFinishHeight();
   const onchainData = useOnchainData();
-  const referendumStartHeight = onchainData.indexer.blockHeight;
+  const submitted = onchainData.info.submitted;
   const preparePeriod = track.preparePeriod;
   const latestHeight = useChainOrScanHeight();
 
   // it means a referendum has deciding phase
   if (decidingSince) {
-    return Math.max(preparePeriod, decidingSince - referendumStartHeight);
+    return Math.max(preparePeriod, decidingSince - submitted);
   }
 
   // no deciding phase, then it maybe TimedOut/Cancelled/Killed
   if (voteFinishedHeight) {
-    return voteFinishedHeight - referendumStartHeight;
+    return voteFinishedHeight - submitted;
   } else {
-    return Math.max(preparePeriod, latestHeight - referendumStartHeight);
+    return Math.max(preparePeriod, latestHeight - submitted);
   }
 }
 
