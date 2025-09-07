@@ -99,3 +99,16 @@ export function useTimelineData() {
   const timeline = onchainData?.timeline || [];
   return sortTimeline(timeline);
 }
+
+export function useReferendumApprovedOrThrow() {
+  const onchainData = useOnchainData();
+  if (!onchainData?.approved) {
+    throw new Error("No approved data when call useReferendumApprovedOrThrow");
+  }
+  return onchainData?.approved;
+}
+
+export function useReferendumApprovedHeightOrThrow() {
+  const approved = useReferendumApprovedOrThrow();
+  return approved[0];
+}
