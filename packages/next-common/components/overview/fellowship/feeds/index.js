@@ -5,12 +5,15 @@ import ScrollFeeds from "next-common/components/scrollFeeds";
 import Link from "next/link";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
+import NoData from "next-common/components/noData";
 
 export default function FellowshipFeeds() {
   const { value } = useAsync(async () => {
     const resp = await backendApi.fetch(fellowshipCoreFeedsApiUri);
     return resp.result?.items || [];
   }, []);
+
+  const hasFeeds = value?.length > 0;
 
   return (
     <>
@@ -23,8 +26,12 @@ export default function FellowshipFeeds() {
           All Feeds
         </Link>
       </div>
-      <SecondaryCard>
-        <ScrollFeeds feeds={value} />
+      <SecondaryCard className="flex justify-center items-center flex-1">
+        {hasFeeds ? (
+          <ScrollFeeds feeds={value} />
+        ) : (
+          <NoData text="No activities in latest 30 days" />
+        )}
       </SecondaryCard>
     </>
   );
