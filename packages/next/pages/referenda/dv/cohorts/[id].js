@@ -14,7 +14,10 @@ import DvDataTypeProvider from "next-common/context/referenda/dv";
 import NotFound from "next-common/components/notFound";
 
 function NilCohortPage() {
-  const seoInfo = { title: "Decentralized Voices Cohort Not Found" };
+  const seoInfo = {
+    title: "Decentralized Voices Cohort Not Found",
+    desc: "Cohort not found",
+  };
 
   return (
     <SectionLayout seoInfo={seoInfo}>
@@ -31,7 +34,10 @@ export default function CohortPage() {
     return <NilCohortPage />;
   }
 
-  const seoInfo = { title: `Decentralized Voices Cohort ${cohort.id}` };
+  const seoInfo = {
+    title: `Decentralized Voices Cohort ${cohort.id}`,
+    desc: `View decentralized voices cohort ${cohort.id}`,
+  };
 
   return (
     <SectionLayout seoInfo={seoInfo}>

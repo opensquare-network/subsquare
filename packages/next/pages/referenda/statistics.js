@@ -6,6 +6,7 @@ import { gov2ReferendumsSummaryApi } from "next-common/services/url";
 import { Header } from "next-common/components/statistics/styled";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import { title } from "next-common/components/charts/thresholdCurve/utils/options";
 
 const ReferendaSummaryStats = dynamicClientOnly(() =>
   import("next-common/components/statistics/referenda/summaryStats"),
@@ -20,13 +21,16 @@ export default function ReferendaStatisticsPage({
   tracksReferendaSummary,
   gov2ReferendaSummary,
 }) {
-  const title = "OpenGov Statistics";
-  const seoInfo = { title, desc: title };
+  const seoInfo = {
+    title: "OpenGov Statistics",
+    desc: "View OpenGov statistics",
+  };
 
   return (
     <ReferendaLayout
       seoInfo={seoInfo}
-      title={title}
+      title={seoInfo.title}
+      description={seoInfo.desc}
       summaryData={gov2ReferendaSummary}
     >
       <div className="space-y-6">
