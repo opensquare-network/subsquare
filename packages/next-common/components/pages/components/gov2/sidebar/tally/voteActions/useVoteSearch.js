@@ -14,7 +14,7 @@ export default function useVoteSearch() {
     />
   );
 
-  const searchBar = showSearch ? <SearchBar setSearch={setSearch} /> : null;
+  const searchBar = showSearch ? <SearchBar setSearch={setSearch} autoFocus /> : null;
 
   return {
     search,
