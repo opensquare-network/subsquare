@@ -20,9 +20,11 @@ export default function MultipleColumnCard() {
         navCollapsed ? "max-md:flex-col" : "max-lg:flex-col",
       )}
     >
-      <div className="flex-1">
-        <FellowshipFeeds />
-      </div>
+      <WithPallet pallet="fellowshipCore">
+        <div className="flex-1">
+          <FellowshipFeeds />
+        </div>
+      </WithPallet>
       <div className="flex flex-col gap-4 flex-1">
         <div>
           <WithPallet pallet="fellowshipTreasury">
