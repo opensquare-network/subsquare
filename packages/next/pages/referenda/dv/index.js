@@ -4,7 +4,7 @@ import { backendApi } from "next-common/services/nextApi";
 import { isNil } from "lodash-es";
 import DecentralizedVoices from "next-common/components/referenda/dv/decentralizedVoices";
 
-export default function ReferendaWhalesPage({ title, gov2ReferendaSummary }) {
+export default function ReferendaDvPage({ title, gov2ReferendaSummary }) {
   const seoInfo = { title, desc: title };
 
   return (
@@ -43,6 +43,7 @@ export const getServerSideProps = withReferendaCommonProps(async () => {
 
   return {
     props: {
+      title: "Decentralized Voices",
       cohort,
       cohorts,
       cohortsCount,
