@@ -60,6 +60,20 @@ const config = {
     );
     return config;
   },
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          // Allow https://app.mimir.global/ use iframe
+          {
+            key: "Content-Security-Policy",
+            value: "frame-ancestors https://app.mimir.global;",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 module.exports = withBundleAnalyzer(config);
