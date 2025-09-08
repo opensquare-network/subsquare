@@ -1,19 +1,9 @@
 import React, { useRef, useState } from "react";
-import styled from "styled-components";
 import { OptionWrapper } from "next-common/components/internalDropdown/styled";
 import { SystemMore } from "@osn/icons/subsquare";
 import { useClickAway } from "react-use";
 import { EditMenuItem, ReportMenu } from "./common";
 import useTerminateAction from "next-common/hooks/useTerminateAction";
-
-const Wrapper = styled.div`
-  position: relative;
-  > img {
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
-  }
-`;
 
 export default function FellowshipApplicationArticleMoreMenu({
   editable,
@@ -29,7 +19,7 @@ export default function FellowshipApplicationArticleMoreMenu({
   useClickAway(ref, () => setShow(false));
 
   return (
-    <Wrapper ref={ref}>
+    <div ref={ref} className="relative">
       <SystemMore
         className="w-5 h-5 [&_path]:fill-textTertiary cursor-pointer"
         onClick={() => setShow(!show)}
@@ -47,6 +37,6 @@ export default function FellowshipApplicationArticleMoreMenu({
         <ReportMenu setShow={setShow} />
       </OptionWrapper>
       {popupComponent}
-    </Wrapper>
+    </div>
   );
 }

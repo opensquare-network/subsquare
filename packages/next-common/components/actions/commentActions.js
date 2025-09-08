@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { CommentContextMenu } from "../contentMenu";
+import CommentMoreMenu from "../articleMoreMenu/commentMoreMenu";
 import ThumbsUp from "../thumbsUp";
 import ReplyButton from "./replyButton";
 import ThumbUpList from "./thumbUpList";
@@ -31,7 +31,7 @@ function useShouldUseSima(comment) {
 
 function SimaCommentContextMenu({ setIsEdit }) {
   const canEditComment = useCanEditComment();
-  return <CommentContextMenu editable={canEditComment} setIsEdit={setIsEdit} />;
+  return <CommentMoreMenu editable={canEditComment} setIsEdit={setIsEdit} />;
 }
 
 function MaybeSimaCommentContextMenu({ setIsEdit }) {
@@ -41,7 +41,7 @@ function MaybeSimaCommentContextMenu({ setIsEdit }) {
   if (shouldUseSima) {
     return <SimaCommentContextMenu setIsEdit={setIsEdit} />;
   }
-  return <CommentContextMenu editable={ownComment} setIsEdit={setIsEdit} />;
+  return <CommentMoreMenu editable={ownComment} setIsEdit={setIsEdit} />;
 }
 
 function useIsOwnComment() {
