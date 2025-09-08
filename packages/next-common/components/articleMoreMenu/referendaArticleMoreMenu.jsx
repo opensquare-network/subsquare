@@ -1,5 +1,4 @@
 import React, { useRef, useState } from "react";
-import styled from "styled-components";
 import { OptionWrapper } from "next-common/components/internalDropdown/styled";
 import { SystemMore } from "@osn/icons/subsquare";
 
@@ -16,16 +15,6 @@ import {
   AppendReferendaMenu,
 } from "./common";
 
-const Wrapper = styled.div`
-  position: relative;
-
-  > img {
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
-  }
-`;
-
 export default function ReferendaArticleMoreMenu({
   isAuthor,
   editable,
@@ -40,7 +29,7 @@ export default function ReferendaArticleMoreMenu({
   useClickAway(ref, () => setShow(false));
 
   return (
-    <Wrapper ref={ref}>
+    <div ref={ref} className="relative">
       <SystemMore
         className="w-5 h-5 [&_path]:fill-textTertiary cursor-pointer"
         onClick={() => setShow(!show)}
@@ -64,6 +53,6 @@ export default function ReferendaArticleMoreMenu({
           {killReferendum && <KillReferendumMenu setShow={setShow} />}
         </OptionWrapper>
       }
-    </Wrapper>
+    </div>
   );
 }

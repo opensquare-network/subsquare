@@ -1,19 +1,10 @@
 import React, { useRef, useState } from "react";
-import styled from "styled-components";
 import { OptionWrapper } from "next-common/components/internalDropdown/styled";
 import { SystemMore } from "@osn/icons/subsquare";
 import { useClickAway } from "react-use";
 import { EditMenuItem, ReportMenu, PostDeleteMenu } from "./common";
 import useIsAdmin from "next-common/hooks/useIsAdmin";
 import { usePost } from "next-common/context/post";
-const Wrapper = styled.div`
-  position: relative;
-  > img {
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
-  }
-`;
 
 export default function DiscussionArticleMoreMenu({ editable, setIsEdit }) {
   const isAdmin = useIsAdmin();
@@ -25,7 +16,7 @@ export default function DiscussionArticleMoreMenu({ editable, setIsEdit }) {
   const canDelete = (editable || isAdmin) && !post.sima;
 
   return (
-    <Wrapper ref={ref}>
+    <div ref={ref} className="relative">
       <SystemMore
         className="w-5 h-5 [&_path]:fill-textTertiary cursor-pointer"
         onClick={() => setShow(!show)}
@@ -44,6 +35,6 @@ export default function DiscussionArticleMoreMenu({ editable, setIsEdit }) {
           <ReportMenu setShow={setShow} />
         </OptionWrapper>
       }
-    </Wrapper>
+    </div>
   );
 }
