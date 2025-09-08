@@ -42,14 +42,16 @@ export default function ReferendaVotesPage({ referendaSummary }) {
     }
   }, [user, router]);
 
-  const title = "OpenGov Referenda";
-
-  const seoInfo = { title, desc: title };
+  const seoInfo = {
+    title: "OpenGov Referenda Votes",
+    desc: "View your OpenGov referenda votes",
+  };
 
   return (
     <ReferendaLayout
       seoInfo={seoInfo}
-      title={title}
+      title={seoInfo.title}
+      description={seoInfo.desc}
       summaryData={referendaSummary}
     >
       <ModuleTabProvider defaultTab={Referenda}>
