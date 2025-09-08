@@ -126,7 +126,6 @@ export const getServerSideProps = withCommonProps(async (context) => {
   );
 
   const tracksProps = await fetchOpenGovTracksProps();
-  const { result: cohorts = [] } = await backendApi.fetch("/dv/cohorts");
 
   return {
     props: {
@@ -135,7 +134,6 @@ export const getServerSideProps = withCommonProps(async (context) => {
       comments: comments ?? EmptyList,
       tracksDetail: tracksDetail ?? null,
       appendants: appendants ?? [],
-      cohorts,
 
       ...tracksProps,
     },
