@@ -125,7 +125,7 @@ export default function OpenGovCallsVotesPopup({ setShowVoteList }) {
       onClose={() => setShowVoteList(false)}
       extra={searchBtn}
     >
-      {showSearch && <SearchBar setSearch={setSearch} />}
+      {showSearch && <SearchBar setSearch={setSearch} autoFocus />}
 
       <VotesTab
         tabIndex={tabIndex}
