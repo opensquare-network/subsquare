@@ -1,32 +1,19 @@
 import React, { useRef, useState } from "react";
 import { OptionWrapper } from "next-common/components/internalDropdown/styled";
 import { SystemMore } from "@osn/icons/subsquare";
-
 import { useClickAway } from "react-use";
-import { useChainSettings } from "next-common/context/chain";
-import { useReferendaAppendantsContext } from "next-common/context/referendaAppendants";
+import { EditMenuItem, ReportMenu, PostDeleteMenu } from "./common";
+import useIsAdmin from "next-common/hooks/useIsAdmin";
+import { usePost } from "next-common/context/post";
 
-import {
-  EditMenuItem,
-  ReportMenu,
-  LinkMenu,
-  CancelReferendumMenu,
-  KillReferendumMenu,
-  AppendReferendaMenu,
-} from "./common";
-
-export default function ReferendaArticleMoreMenu({
-  isAuthor,
-  editable,
-  setIsEdit,
-}) {
+export default function DiscussionArticleMoreMenu({ editable, setIsEdit }) {
+  const isAdmin = useIsAdmin();
   const ref = useRef();
   const [show, setShow] = useState(false);
-  const { appendants } = useReferendaAppendantsContext();
-  const { newProposalQuickStart: { cancelReferendum, killReferendum } = {} } =
-    useChainSettings();
 
   useClickAway(ref, () => setShow(false));
+  const post = usePost();
+  const canDelete = (editable || isAdmin) && !post.sima;
 
   return (
     <div ref={ref} className="relative">
@@ -44,13 +31,8 @@ export default function ReferendaArticleMoreMenu({
               }}
             />
           )}
-          {<AppendReferendaMenu setShow={setShow} />}
-          {editable && isAuthor && !appendants?.length && (
-            <LinkMenu setShow={setShow} />
-          )}
+          {canDelete && <PostDeleteMenu setShow={setShow} />}
           <ReportMenu setShow={setShow} />
-          {cancelReferendum && <CancelReferendumMenu setShow={setShow} />}
-          {killReferendum && <KillReferendumMenu setShow={setShow} />}
         </OptionWrapper>
       }
     </div>

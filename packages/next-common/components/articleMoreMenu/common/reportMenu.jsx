@@ -12,8 +12,10 @@ export default function ReportMenu({ setShow = noop }) {
   return (
     <div>
       <ReportMenuItem
-        setShowReportPopup={setShowReportPopup}
-        setShow={setShow}
+        onClick={() => {
+          setShow(false);
+          setShowReportPopup(true);
+        }}
       />
       {showReportPopup && <ReportPopup setShow={setShowReportPopup} />}
     </div>
