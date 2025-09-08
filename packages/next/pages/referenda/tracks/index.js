@@ -37,4 +37,10 @@ export default function TracksPage() {
   );
 }
 
-export const getServerSideProps = withReferendaCommonProps();
+export const getServerSideProps = withReferendaCommonProps(function () {
+  return {
+    props: {
+      title: "Referenda Tracks",
+    },
+  };
+});

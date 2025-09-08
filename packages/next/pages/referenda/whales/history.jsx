@@ -29,4 +29,10 @@ export default function ReferendaWhalesHistoryPage({
   );
 }
 
-export const getServerSideProps = withReferendaCommonProps();
+export const getServerSideProps = withReferendaCommonProps(function () {
+  return {
+    props: {
+      title: "Referenda Whales History",
+    },
+  };
+});

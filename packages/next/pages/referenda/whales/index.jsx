@@ -26,4 +26,8 @@ export default function ReferendaWhalesPage({ title, gov2ReferendaSummary }) {
   );
 }
 
-export const getServerSideProps = withReferendaCommonProps();
+export const getServerSideProps = withReferendaCommonProps(function () {
+  return {
+    props: { title: "Referenda Whales" },
+  };
+});
