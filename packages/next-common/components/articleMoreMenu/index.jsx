@@ -1,6 +1,5 @@
 import React, { useRef, useState } from "react";
 import { useClickAway } from "react-use";
-import styled from "styled-components";
 import { useDetailType } from "next-common/context/page";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { OptionWrapper } from "next-common/components/internalDropdown/styled";
@@ -14,16 +13,6 @@ import {
   ReportMenu,
   LinkOrUnlinkMenu,
 } from "next-common/components/articleMoreMenu/common";
-
-const Wrapper = styled.div`
-  position: relative;
-
-  > img {
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
-  }
-`;
 
 export default function ArticleMoreMenu(props) {
   const postType = useDetailType();
@@ -48,7 +37,7 @@ function _ArticleMoreMenu({ isAuthor, editable, setIsEdit }) {
   useClickAway(ref, () => setShow(false));
 
   return (
-    <Wrapper ref={ref}>
+    <div ref={ref} className="relative">
       <SystemMore
         className="w-5 h-5 [&_path]:fill-textTertiary cursor-pointer"
         onClick={() => setShow(!show)}
@@ -65,6 +54,6 @@ function _ArticleMoreMenu({ isAuthor, editable, setIsEdit }) {
         {editable && isAuthor && <LinkOrUnlinkMenu setShow={setShow} />}
         <ReportMenu setShow={setShow} />
       </OptionWrapper>
-    </Wrapper>
+    </div>
   );
 }

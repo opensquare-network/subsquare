@@ -1,5 +1,4 @@
 import React, { useRef, useState } from "react";
-import styled from "styled-components";
 import { OptionWrapper } from "next-common/components/internalDropdown/styled";
 import { SystemMore } from "@osn/icons/subsquare";
 import { useClickAway } from "react-use";
@@ -10,14 +9,6 @@ import {
   LinkOrUnlinkMenu,
 } from "./common";
 import { useBountyAppendantsContext } from "next-common/context/bountyAppendants";
-const Wrapper = styled.div`
-  position: relative;
-  > img {
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
-  }
-`;
 
 export default function TreasuryBountyAricleMoreMenu({
   editable,
@@ -31,7 +22,7 @@ export default function TreasuryBountyAricleMoreMenu({
   useClickAway(ref, () => setShow(false));
 
   return (
-    <Wrapper ref={ref}>
+    <div ref={ref} className="relative">
       <SystemMore
         className="w-5 h-5 [&_path]:fill-textTertiary cursor-pointer"
         onClick={() => setShow(!show)}
@@ -53,6 +44,6 @@ export default function TreasuryBountyAricleMoreMenu({
           <ReportMenu setShow={setShow} />
         </OptionWrapper>
       }
-    </Wrapper>
+    </div>
   );
 }
