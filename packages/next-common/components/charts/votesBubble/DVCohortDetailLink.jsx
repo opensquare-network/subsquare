@@ -45,7 +45,7 @@ export default function DVCohortDetailLink() {
   return (
     <div className="mt-4">
       <span className="text14Medium text-textSecondary">
-        Check details of decentralized cohort{" "}
+        Check more data of decentralized voices{" "}
         <ExternalLink
           className="font-bold text-theme500"
           href={`/referenda/dv/cohorts/${cohortID}`}
