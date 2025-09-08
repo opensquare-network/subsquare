@@ -3,6 +3,7 @@ import Popup from "../../popup/wrapper/Popup";
 import DVDetailDelegates from "./dv/delegates";
 import DVDetailGuardians from "./dv/guardians";
 import DVDetailInfo from "./dv/info";
+import DVCohortDetailLink from "./DVCohortDetailLink";
 
 export default function DVDetailPopup({
   closeFunc,
@@ -40,6 +41,7 @@ export default function DVDetailPopup({
 
         <DVDetailDelegates votes={delegatesVotes} />
         <DVDetailGuardians votes={guardiansVotes} />
+        <DVCohortDetailLink />
       </div>
     </Popup>
   );
