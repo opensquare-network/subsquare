@@ -7,7 +7,7 @@ import DecentralizedVoices from "next-common/components/referenda/dv/decentraliz
 export default function ReferendaDvPage({ gov2ReferendaSummary }) {
   const seoInfo = {
     title: "Decentralized Voices",
-    desc: "View decentralized voices",
+    desc: "The Decentralized Voices program empowers broader community participation in Polkadot OpenGov by delegating tokens to delegates.",
   };
 
   return (

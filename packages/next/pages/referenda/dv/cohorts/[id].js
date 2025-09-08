@@ -15,7 +15,7 @@ import NotFound from "next-common/components/notFound";
 
 function NilCohortPage() {
   const seoInfo = {
-    title: "Decentralized Voices Cohort Not Found",
+    title: "DV 404",
     desc: "Cohort not found",
   };
 
@@ -35,8 +35,8 @@ export default function CohortPage() {
   }
 
   const seoInfo = {
-    title: `Decentralized Voices Cohort ${cohort.id}`,
-    desc: `View decentralized voices cohort ${cohort.id}`,
+    title: `DV Cohort ${cohort.id}`,
+    desc: `Data about decentralized voices cohort ${cohort.id}`,
   };
 
   return (
