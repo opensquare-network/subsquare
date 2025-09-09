@@ -1,17 +1,15 @@
 import DataList from "next-common/components/dataList";
-import { useMemo, useState } from "react";
-import { SystemMenu, SystemYes, SystemNo } from "@osn/icons/subsquare";
+import { useMemo } from "react";
+import { SystemYes, SystemNo } from "@osn/icons/subsquare";
 import Track from "../../track/trackTag";
 import { getGov2ReferendumTitle } from "next-common/utils/gov2/title";
 import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
 import { Gov2ReferendaTag } from "next-common/components/tags/state/gov2";
 import Link from "next/link";
-import SecondaryButton from "next-common/lib/button/secondary";
 import PostVotesSummary from "next-common/components/postList/common/votesSummary";
 import { useChainSettings } from "next-common/context/chain";
 import BigNumber from "bignumber.js";
-import DVDetailPopup from "./voteDetailModal";
-import { useVoicesValue } from "next-common/hooks/referenda/useDecentralizedVoicesValue";
+import ActionButton from "./actionButton";
 
 const columns = [
   {
@@ -100,63 +98,6 @@ export function StateTag({ referendum }) {
   }
 
   return <Gov2ReferendaTag state={referendum.state.name} args={stateArgs} />;
-}
-
-export function ActionButton({ referendum, referendumVotes }) {
-  const [detailOpen, setDetailOpen] = useState(false);
-  const { dvVotesValue, ayeVotesValue, nayVotesValue } = useVoicesValue(
-    referendumVotes.map((v) => ({
-      ...v,
-      totalVotes:
-        v.votes && v.delegations
-          ? BigNumber(v.votes).plus(v.delegations?.votes["$numberDecimal"] || 0)
-          : null,
-    })) || [],
-  );
-
-  if (!referendum) {
-    return null;
-  }
-  console.log(
-    "referendumVotes in ActionButton",
-    referendumVotes,
-    referendumVotes.map((v) => ({
-      ...v,
-      totalVotes:
-        v.votes && v.delegations
-          ? BigNumber(v.votes).plus(v.delegations?.votes["$numberDecimal"] || 0)
-          : null,
-    })) || [],
-    dvVotesValue,
-    ayeVotesValue,
-    nayVotesValue,
-  );
-
-  return (
-    <>
-      <SecondaryButton
-        size="small"
-        variant="secondary"
-        className="p-0 w-7 h-7"
-        onClick={() => setDetailOpen(true)}
-      >
-        <SystemMenu className="w-4 h-4" />
-      </SecondaryButton>
-      {detailOpen && (
-        <DVDetailPopup
-          closeFunc={() => setDetailOpen(false)}
-          referendum={referendum}
-          dvVotes={referendumVotes}
-          dvVotesValue={dvVotesValue}
-          dvPercentage={0}
-          ayeVotesValue={ayeVotesValue}
-          ayePercentage={0}
-          nayVotesValue={nayVotesValue}
-          nayPercentage={0}
-        />
-      )}
-    </>
-  );
 }
 
 export function Influence({ referendum, referendumVotes = [] }) {

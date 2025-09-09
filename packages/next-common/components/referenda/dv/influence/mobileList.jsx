@@ -4,28 +4,19 @@ import {
 } from "next-common/context/referenda/dv";
 import PostVotesSummary from "next-common/components/postList/common/votesSummary";
 import { getGov2ReferendumTitle } from "next-common/utils/gov2/title";
-import VoteByDelegate from "../voteByDelegate";
-import { ParticipationValue } from "../common/cohortValueStyled";
-import WinRate from "../common/winRate";
-import { AddressUser } from "next-common/components/user";
 import { Divider } from "../../trackPanel/lineItem";
-import SummaryLayout from "next-common/components/summary/layout/layout";
-import SummaryItem from "next-common/components/summary/layout/item";
 import { useChainSettings } from "next-common/context/chain";
 import Link from "next/link";
 import Descriptions from "next-common/components/Descriptions";
 import Track from "../../track/trackTag";
-import { ActionButton, Influence, StateTag } from "./desktopList";
+import { Influence, StateTag } from "./desktopList";
+import ActionButton from "./actionButton";
 
 export default function InfluenceMobileList({
   referendumData,
   delegateReferendumVotesMap,
 }) {
   const { symbol, decimals } = useChainSettings();
-  const referenda = useFilteredDvReferenda();
-  const count = useDvReferendaCount();
-
-  console.log("referendumData", referendumData);
 
   if (!referendumData) {
     return null;
