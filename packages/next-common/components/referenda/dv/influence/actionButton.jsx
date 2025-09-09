@@ -51,6 +51,7 @@ export default function ActionButton({ referendum, referendumVotes }) {
           ayePercentage={ayePercentage}
           nayVotesValue={nayVotesValue}
           nayPercentage={nayPercentage}
+          referendumVotes={referendumVotes}
         />
       )}
     </>

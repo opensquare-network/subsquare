@@ -20,7 +20,7 @@ export default function DVDetailPopup({
   ayePercentage,
   nayVotesValue,
   nayPercentage,
-  delegateReferendumVotesMap = {},
+  referendumVotes = {},
 }) {
   const { cohort } = usePageProps();
   const { delegates } = cohort || {};
@@ -67,10 +67,7 @@ export default function DVDetailPopup({
               value: (
                 <InfluenceValue
                   referendum={referendum}
-                  referendumVotes={
-                    delegateReferendumVotesMap?.[referendum.referendumIndex] ||
-                    []
-                  }
+                  referendumVotes={referendumVotes}
                 />
               ),
             },

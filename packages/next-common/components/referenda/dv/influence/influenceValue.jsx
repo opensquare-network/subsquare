@@ -26,11 +26,8 @@ export default function InfluenceValue({ referendum, referendumVotes = [] }) {
     { aye: BigNumber(0), nay: BigNumber(0) },
   );
 
-  const dvAye = tallyAye.minus(dvTotalImpact.aye || 0);
-  const dvNay = tallyNay.minus(dvTotalImpact.nay || 0);
-
-  const noDvAye = tallyAye.minus(dvAye);
-  const noDvNay = tallyNay.minus(dvNay);
+  const noDvAye = tallyAye.minus(dvTotalImpact.aye);
+  const noDvNay = tallyNay.minus(dvTotalImpact.nay);
 
   const isPass = tallyAye.gt(tallyNay);
   const noDvIsPass = noDvAye.gt(noDvNay);
