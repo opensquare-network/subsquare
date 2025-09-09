@@ -84,5 +84,5 @@ export default function useConfirmationEstimateBlocks(
 
     const expected = decidingSince + estimatedBlocks;
     return Math.max(expected - latestHeight, 0);
-  }, [approvalX, supportX, estimatedBlocks, latestHeight, decidingSince]);
+  }, [estimatedBlocks, latestHeight, decidingSince, approvalX, supportX]);
 }
