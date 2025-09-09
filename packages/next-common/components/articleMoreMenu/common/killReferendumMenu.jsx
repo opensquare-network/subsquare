@@ -11,8 +11,10 @@ export default function KillReferendumMenu({ setShow = noop }) {
   return (
     <div>
       <KillReferendumMenuItem
-        setShowKillReferendumPopup={setShowKillReferendumPopup}
-        setShow={setShow}
+        onClick={() => {
+          setShowKillReferendumPopup(true);
+          setShow(false);
+        }}
       />
       {showKillReferendumPopup && (
         <KillReferendumPopup
