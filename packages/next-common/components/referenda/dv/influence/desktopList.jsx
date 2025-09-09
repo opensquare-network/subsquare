@@ -41,6 +41,7 @@ const columns = [
 export default function InfluenceDesktopList({
   referendumData,
   delegateReferendumVotesMap,
+  loading = false,
 }) {
   const { symbol, decimals } = useChainSettings();
   const rows = useMemo(() => {
@@ -80,5 +81,12 @@ export default function InfluenceDesktopList({
     ]);
   }, [referendumData, delegateReferendumVotesMap, decimals, symbol]);
 
-  return <DataList title="Influence" columns={columns} rows={rows} />;
+  return (
+    <DataList
+      title="Influence"
+      columns={columns}
+      rows={rows}
+      loading={loading}
+    />
+  );
 }
