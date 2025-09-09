@@ -6,7 +6,7 @@ import { OptionWrapper } from "next-common/components/internalDropdown/styled";
 import { SystemMore } from "@osn/icons/subsquare";
 import ReferendaArticleMoreMenu from "next-common/components/articleMoreMenu/referendaArticleMoreMenu";
 import DiscussionArticleMoreMenu from "next-common/components/articleMoreMenu/discussionArticleMoreMenu";
-import TreasuryBountyAricleMoreMenu from "next-common/components/articleMoreMenu/treasuryBountyAricleMoreMenu";
+import TreasuryBountyArticleMoreMenu from "next-common/components/articleMoreMenu/treasuryBountyArticleMoreMenu";
 import FellowshipApplicationArticleMoreMenu from "next-common/components/articleMoreMenu/fellowshipApplicationArticleMoreMenu";
 import {
   EditMenuItem,
@@ -23,7 +23,7 @@ export default function ArticleMoreMenu(props) {
     return <DiscussionArticleMoreMenu {...props} />;
   }
   if (postType === detailPageCategory.TREASURY_BOUNTY) {
-    return <TreasuryBountyAricleMoreMenu {...props} />;
+    return <TreasuryBountyArticleMoreMenu {...props} />;
   }
   if (postType === detailPageCategory.FELLOWSHIP_APPLICATION) {
     return <FellowshipApplicationArticleMoreMenu {...props} />;

@@ -10,7 +10,7 @@ import {
 } from "./common";
 import { useBountyAppendantsContext } from "next-common/context/bountyAppendants";
 
-export default function TreasuryBountyAricleMoreMenu({
+export default function TreasuryBountyArticleMoreMenu({
   editable,
   isAuthor,
   setIsEdit,
