@@ -14,6 +14,7 @@ const columns = [
   {
     name: "Referendum",
     style: { textAlign: "left" },
+    className: "flex-1 whitespace-nowrap overflow-hidden text-ellipsis pr-1",
   },
   {
     name: "Track",
@@ -48,11 +49,7 @@ export default function InfluenceDesktopList({
     }
 
     return referendumData.map((referendum) => [
-      <Link
-        href={`/referenda/${referendum.referendumIndex}`}
-        key="title"
-        className="text-ellipsis"
-      >
+      <Link key="title" href={`/referenda/${referendum.referendumIndex}`}>
         {getGov2ReferendumTitle(referendum)}
       </Link>,
       <Track key="track" id={referendum.track} />,

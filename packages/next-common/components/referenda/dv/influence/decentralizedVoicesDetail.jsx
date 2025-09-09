@@ -90,17 +90,30 @@ export default function DVDetailPopup({
 function mergedVotes(delegates = [], dvVotes = []) {
   return delegates.map((delegate) => {
     const dvVote = dvVotes.find((v) => v.account === delegate.address);
+    let totalVotes = null;
+
+    if (!dvVote) {
+      return {
+        ...delegate,
+        account: delegate.address,
+        role: delegate.role,
+        totalVotes,
+      };
+    }
+
+    if (dvVote.isStandard) {
+      totalVotes = BigNumber(dvVote.votes).plus(
+        dvVote.delegations?.votes["$numberDecimal"] || 0,
+      );
+    } else if (dvVote.isSplitAbstain) {
+      totalVotes = BigNumber(dvVote.abstainVotes["$numberDecimal"] || 0);
+    }
     return {
       ...delegate,
       ...dvVote,
       account: delegate.address,
       role: delegate.role,
-      totalVotes:
-        dvVote?.votes && dvVote?.delegations
-          ? BigNumber(dvVote?.votes || 0).plus(
-              dvVote?.delegations?.votes["$numberDecimal"] || 0,
-            )
-          : null,
+      totalVotes,
     };
   });
 }
