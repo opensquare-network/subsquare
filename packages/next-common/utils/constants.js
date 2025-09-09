@@ -93,7 +93,7 @@ export const defaultBlockTime = 12000;
 export const defaultPageSize = 25;
 
 export const DEFAULT_SEO_INFO = {
-  title: "SubSquare | governance platform",
+  title: `SubSquare | ${process.env.CHAIN} governance platform`,
   desc: "A platform that scans and normalizes the blockchain governance data. It enables community members to propose, vote proposals and discuss the corresponding topics.",
 };
 
