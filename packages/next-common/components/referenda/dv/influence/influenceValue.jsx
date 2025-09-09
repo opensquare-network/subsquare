@@ -30,11 +30,15 @@ export function InfluenceValueImpl({ referendumVotes }) {
     { aye: BigNumber(0), nay: BigNumber(0) },
   );
 
+  const denominator = tallyAye.plus(tallyNay);
+
   const noDvAye = tallyAye.minus(dvTotalImpact.aye);
   const noDvNay = tallyNay.minus(dvTotalImpact.nay);
 
-  const isPass = tallyAye.div(tallyNay).gt(approval);
-  const noDvIsPass = noDvAye.div(noDvNay).gt(approval);
+  const noDvDenominator = noDvAye.plus(noDvNay);
+
+  const isPass = tallyAye.div(denominator).gt(approval);
+  const noDvIsPass = noDvAye.div(noDvDenominator).gt(approval);
 
   const icon = isPass !== noDvIsPass ? <SystemYes /> : <SystemNo />;
 
