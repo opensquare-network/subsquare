@@ -36,30 +36,15 @@ export default function InfluenceImpl() {
     return groupBy(votes, "referendumIndex");
   }, [votes]);
 
+  let Component = InfluenceDesktopList;
+
   if (isMobile) {
-    return (
-      <>
-        <InfluenceMobileList
-          loading={loading}
-          referendumData={referendumData}
-          delegateReferendumVotesMap={delegateReferendumVotesMap}
-        />
-        <Pagination
-          page={page}
-          onPageChange={(e, val) => {
-            e.preventDefault();
-            setPage(val);
-          }}
-          total={filteredReferenda.length}
-          pageSize={InfluencePageSize}
-        />
-      </>
-    );
+    Component = InfluenceMobileList;
   }
 
   return (
     <>
-      <InfluenceDesktopList
+      <Component
         loading={loading}
         referendumData={referendumData}
         delegateReferendumVotesMap={delegateReferendumVotesMap}

@@ -2,13 +2,13 @@ import DataList from "next-common/components/dataList";
 import { useMemo } from "react";
 import Track from "../../track/trackTag";
 import { getGov2ReferendumTitle } from "next-common/utils/gov2/title";
-import Link from "next/link";
 import PostVotesSummary from "next-common/components/postList/common/votesSummary";
 import { useChainSettings } from "next-common/context/chain";
 import ActionButton from "./actionButton";
 import StateTag from "./stateTag";
 import InfluenceValue from "./influenceValue";
 import { InfluenceLabel } from "./styled";
+import { PostTitleImpl } from "next-common/components/profile/votingHistory/common";
 
 const columns = [
   {
@@ -49,9 +49,12 @@ export default function InfluenceDesktopList({
     }
 
     return referendumData.map((referendum) => [
-      <Link key="title" href={`/referenda/${referendum.referendumIndex}`}>
-        {getGov2ReferendumTitle(referendum)}
-      </Link>,
+      <PostTitleImpl
+        key="title"
+        referendumIndex={referendum.referendumIndex}
+        title={getGov2ReferendumTitle(referendum)}
+        url={`/referenda/${referendum.referendumIndex}`}
+      />,
       <Track key="track" id={referendum.track} />,
       <PostVotesSummary
         tally={referendum.onchainData?.tally}
