@@ -5,7 +5,7 @@ import Share from "../shareSNS";
 import { usePost } from "../../context/post";
 import { useIsPostAuthor } from "../../context/post/useIsPostAuthor";
 import ThumbsUp from "../thumbsUp";
-import { PostContextMenu } from "../contentMenu";
+import PostContextMenu from "../articleMoreMenu";
 import ThumbUpList from "./thumbUpList";
 import { useUser } from "../../context/user";
 import { useFocusEditor } from "next-common/context/post/editor";
