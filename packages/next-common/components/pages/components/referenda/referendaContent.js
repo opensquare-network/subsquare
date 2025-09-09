@@ -33,7 +33,6 @@ function ReferendumContentInContext() {
       dispatch(clearVotes());
     };
   }, [dispatch]);
-  const gov2Sidebar = <Gov2Sidebar />;
 
   return (
     <MaybeSimaContent>
@@ -44,11 +43,15 @@ function ReferendumContentInContext() {
             <ReferendaAppendants />
           </ReferendaAppendantsProvider>
           <ThresholdCurvePopup />
-          <div className="md:hidden">{gov2Sidebar}</div>
+          <div className="md:hidden">
+            <Gov2Sidebar />
+          </div>
           <ReferendumDetailMultiTabs />
         </ContentWithComment>
       </ReferendaContentWrapper>
-      <div className="max-md:hidden">{gov2Sidebar}</div>
+      <div className="max-md:hidden">
+        <Gov2Sidebar />
+      </div>
     </MaybeSimaContent>
   );
 }
