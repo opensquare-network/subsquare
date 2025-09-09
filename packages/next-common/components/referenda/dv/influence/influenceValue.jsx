@@ -1,8 +1,12 @@
 import { SystemYes, SystemNo } from "@osn/icons/subsquare";
 import BigNumber from "bignumber.js";
+import { PostProvider } from "next-common/context/post";
+import { useApprovalThreshold } from "next-common/context/post/gov2/threshold";
+import { useReferendumTally } from "next-common/hooks/referenda/useReferendumInfo";
 
-export default function InfluenceValue({ referendum, referendumVotes = [] }) {
-  const tally = referendum?.onchainData?.tally;
+export function InfluenceValueImpl({ referendumVotes }) {
+  const tally = useReferendumTally();
+  const approval = useApprovalThreshold();
 
   if (!tally) {
     return null;
@@ -29,12 +33,20 @@ export default function InfluenceValue({ referendum, referendumVotes = [] }) {
   const noDvAye = tallyAye.minus(dvTotalImpact.aye);
   const noDvNay = tallyNay.minus(dvTotalImpact.nay);
 
-  const isPass = tallyAye.gt(tallyNay);
-  const noDvIsPass = noDvAye.gt(noDvNay);
+  const isPass = tallyAye.div(tallyNay).gt(approval);
+  const noDvIsPass = noDvAye.div(noDvNay).gt(approval);
 
   const icon = isPass !== noDvIsPass ? <SystemYes /> : <SystemNo />;
 
   return <div className="flex justify-end">{icon}</div>;
+}
+
+export default function InfluenceValue({ referendum, referendumVotes = [] }) {
+  return (
+    <PostProvider post={referendum}>
+      <InfluenceValueImpl referendumVotes={referendumVotes} />
+    </PostProvider>
+  );
 }
 
 function calculateImpact(vote) {
