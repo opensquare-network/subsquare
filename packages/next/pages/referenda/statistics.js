@@ -20,13 +20,16 @@ export default function ReferendaStatisticsPage({
   tracksReferendaSummary,
   gov2ReferendaSummary,
 }) {
-  const title = "OpenGov Statistics";
-  const seoInfo = { title, desc: title };
+  const seoInfo = {
+    title: "OpenGov Statistics",
+    desc: "View OpenGov statistics",
+  };
 
   return (
     <ReferendaLayout
       seoInfo={seoInfo}
-      title={title}
+      title={seoInfo.title}
+      description={seoInfo.desc}
       summaryData={gov2ReferendaSummary}
     >
       <div className="space-y-6">

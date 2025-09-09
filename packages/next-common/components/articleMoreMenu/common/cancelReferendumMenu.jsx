@@ -12,8 +12,10 @@ export default function CancelReferendumMenu({ setShow = noop }) {
   return (
     <div>
       <CancelReferendumMenuItem
-        setShowCancelReferendumPopup={setShowCancelReferendumPopup}
-        setShow={setShow}
+        onClick={() => {
+          setShowCancelReferendumPopup(true);
+          setShow(false);
+        }}
       />
       {showCancelReferendumPopup && (
         <CancelReferendumPopup

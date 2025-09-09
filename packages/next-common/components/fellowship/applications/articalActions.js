@@ -8,7 +8,7 @@ import styled from "styled-components";
 import {
   EditMenuItem,
   ReportMenuItem,
-} from "next-common/components/contentMenu";
+} from "next-common/components/articleMoreMenu/common";
 import ReportPopup from "next-common/components/reportPopup";
 
 const Wrapper = styled.div`
@@ -40,13 +40,20 @@ function FellowshipApplicationContextMenu({ isAuthor, setIsEdit }) {
           {editable && (
             <>
               {isAuthor && (
-                <EditMenuItem setIsEdit={setIsEdit} setShow={setShow} />
+                <EditMenuItem
+                  onClick={() => {
+                    setIsEdit(true);
+                    setShow(false);
+                  }}
+                />
               )}
             </>
           )}
           <ReportMenuItem
-            setShowReportPopup={setShowReportPopup}
-            setShow={setShow}
+            onClick={() => {
+              setShow(false);
+              setShowReportPopup(true);
+            }}
           />
         </OptionWrapper>
       )}

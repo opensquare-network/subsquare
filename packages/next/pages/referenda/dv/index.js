@@ -4,12 +4,16 @@ import { backendApi } from "next-common/services/nextApi";
 import { isNil } from "lodash-es";
 import DecentralizedVoices from "next-common/components/referenda/dv/decentralizedVoices";
 
-export default function ReferendaWhalesPage({ title, gov2ReferendaSummary }) {
-  const seoInfo = { title, desc: title };
+export default function ReferendaDvPage({ gov2ReferendaSummary }) {
+  const seoInfo = {
+    title: "Decentralized Voices",
+    desc: "The Decentralized Voices program empowers broader community participation in Polkadot OpenGov by delegating tokens to delegates.",
+  };
 
   return (
     <ReferendaLayout
-      title={title}
+      title={seoInfo.title}
+      description={seoInfo.desc}
       seoInfo={seoInfo}
       summaryData={gov2ReferendaSummary}
     >

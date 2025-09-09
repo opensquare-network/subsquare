@@ -15,8 +15,13 @@ import NotFound from "next-common/components/notFound";
 import Influence from "next-common/components/referenda/dv/influence";
 
 function NilCohortPage() {
+  const seoInfo = {
+    title: "DV 404",
+    desc: "Cohort not found",
+  };
+
   return (
-    <SectionLayout>
+    <SectionLayout seoInfo={seoInfo}>
       <Breadcrumbs breadcrumbs={<CohortBreadcrumb />} />
       <NotFound className="py-10" />
     </SectionLayout>
@@ -30,8 +35,13 @@ export default function CohortPage() {
     return <NilCohortPage />;
   }
 
+  const seoInfo = {
+    title: `DV Cohort ${cohort.id}`,
+    desc: `Data about decentralized voices cohort ${cohort.id}`,
+  };
+
   return (
-    <SectionLayout>
+    <SectionLayout seoInfo={seoInfo}>
       <DvDataTypeProvider>
         <CountBySelect
           className="mx-0 mb-4"

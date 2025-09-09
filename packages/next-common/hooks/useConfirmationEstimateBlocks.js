@@ -71,11 +71,18 @@ export default function useConfirmationEstimateBlocks(
   }, [estimatedApprovalBlocks, estimatedSupportBlocks]);
 
   return useMemo(() => {
-    if (isNil(estimatedBlocks) || isNil(latestHeight)) {
+    if (
+      new BigNumber(approvalX).gt(1) ||
+      new BigNumber(supportX).gt(1) ||
+      new BigNumber(approvalX).lt(0) ||
+      new BigNumber(supportX).lt(0) ||
+      isNil(estimatedBlocks) ||
+      isNil(latestHeight)
+    ) {
       return null;
     }
 
     const expected = decidingSince + estimatedBlocks;
     return Math.max(expected - latestHeight, 0);
-  }, [estimatedBlocks, latestHeight, decidingSince]);
+  }, [estimatedBlocks, latestHeight, decidingSince, approvalX, supportX]);
 }
