@@ -12,6 +12,7 @@ import { useReferendumVotingFinishIndexer } from "next-common/context/post/refer
 import ReferendaAppendants from "next-common/components/appendants/referenda";
 import { ReferendaAppendantsProvider } from "next-common/context/referendaAppendants";
 import ThresholdCurvePopup from "next-common/components/gov2/referendum/curvePopup";
+import { ReferendaContentWrapper } from "next-common/components/layout/DetailLayout/referendaDetailLayout";
 
 export function ReferendumContent() {
   const indexer = useReferendumVotingFinishIndexer();
@@ -26,26 +27,28 @@ export function ReferendumContent() {
 function ReferendumContentInContext() {
   const dispatch = useDispatch();
   useSubReferendumInfo();
-  // const onchainData = useOnchainData();
-  // useFetchVotes(onchainData);
 
   useEffect(() => {
     return () => {
       dispatch(clearVotes());
     };
   }, [dispatch]);
+  const gov2Sidebar = <Gov2Sidebar />;
 
   return (
     <MaybeSimaContent>
-      <ContentWithComment>
-        <ReferendaAppendantsProvider>
-          <ReferendaDetail />
-          <ReferendaAppendants />
-        </ReferendaAppendantsProvider>
-        <ThresholdCurvePopup />
-        <Gov2Sidebar />
-        <ReferendumDetailMultiTabs />
-      </ContentWithComment>
+      <ReferendaContentWrapper hasSidebar>
+        <ContentWithComment>
+          <ReferendaAppendantsProvider>
+            <ReferendaDetail />
+            <ReferendaAppendants />
+          </ReferendaAppendantsProvider>
+          <ThresholdCurvePopup />
+          <div className="md:hidden">{gov2Sidebar}</div>
+          <ReferendumDetailMultiTabs />
+        </ContentWithComment>
+      </ReferendaContentWrapper>
+      <div className="max-md:hidden">{gov2Sidebar}</div>
     </MaybeSimaContent>
   );
 }

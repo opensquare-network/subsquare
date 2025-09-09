@@ -15,7 +15,7 @@ import Breadcrumb from "next-common/components/_Breadcrumb";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import CheckUnFinalized from "next-common/components/pages/components/gov2/checkUnFinalized";
 import ReferendaBreadcrumb from "next-common/components/referenda/breadcrumb";
-import DetailLayout from "next-common/components/layout/DetailLayout";
+import DetailLayout from "next-common/components/layout/DetailLayout/referendaDetailLayout";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";

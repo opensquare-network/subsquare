@@ -38,7 +38,7 @@ export default function Gov2Sidebar() {
   }, [fetchVotesFromServer]);
 
   return (
-    <RightBarWrapper>
+    <RightBarWrapper className="relative">
       <Request />
       <AllSpendsRequest />
       <Gov2Status />
