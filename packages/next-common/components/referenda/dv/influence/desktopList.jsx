@@ -1,15 +1,14 @@
 import DataList from "next-common/components/dataList";
 import { useMemo } from "react";
-import { SystemYes, SystemNo } from "@osn/icons/subsquare";
 import Track from "../../track/trackTag";
 import { getGov2ReferendumTitle } from "next-common/utils/gov2/title";
-import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
-import { Gov2ReferendaTag } from "next-common/components/tags/state/gov2";
 import Link from "next/link";
 import PostVotesSummary from "next-common/components/postList/common/votesSummary";
 import { useChainSettings } from "next-common/context/chain";
-import BigNumber from "bignumber.js";
 import ActionButton from "./actionButton";
+import StateTag from "./stateTag";
+import InfluenceValue from "./influenceValue";
+import { InfluenceLabel } from "./styled";
 
 const columns = [
   {
@@ -29,7 +28,7 @@ const columns = [
     style: { width: 120, textAlign: "right" },
   },
   {
-    name: "Influence",
+    name: <InfluenceLabel className="justify-end" />,
     style: { width: 120, textAlign: "right" },
   },
   {
@@ -64,7 +63,7 @@ export default function InfluenceDesktopList({
         key="votesSummary"
       />,
       <StateTag key="state" referendum={referendum} />,
-      <Influence
+      <InfluenceValue
         referendum={referendum}
         referendumVotes={
           delegateReferendumVotesMap[referendum.referendumIndex] || []
@@ -81,72 +80,5 @@ export default function InfluenceDesktopList({
     ]);
   }, [referendumData, delegateReferendumVotesMap, decimals, symbol]);
 
-  return (
-    <>
-      <DataList title="Influence" columns={columns} rows={rows} />
-    </>
-  );
-}
-
-export function StateTag({ referendum }) {
-  const stateArgs = useMemo(() => {
-    return getGov2ReferendumStateArgs(referendum?.onchainData?.state);
-  }, [referendum?.onchainData?.state]);
-
-  if (!referendum) {
-    return null;
-  }
-
-  return <Gov2ReferendaTag state={referendum.state.name} args={stateArgs} />;
-}
-
-export function Influence({ referendum, referendumVotes = [] }) {
-  const tally = referendum?.onchainData?.tally;
-
-  if (!tally) {
-    return null;
-  }
-
-  const allAye = BigNumber(tally.ayes);
-  const allNay = BigNumber(tally.nays);
-
-  if (!allAye || !allNay) {
-    return null;
-  }
-
-  const totalImpact = referendumVotes.reduce(
-    (sum, v) => {
-      const impact = calculateImpact(v);
-      return {
-        aye: sum.aye.plus(impact.aye),
-        nay: sum.nay.plus(impact.nay),
-      };
-    },
-    { aye: BigNumber(0), nay: BigNumber(0) },
-  );
-
-  const a = allAye.plus(totalImpact.aye || 0);
-  const n = allNay.minus(totalImpact.nay || 0);
-
-  const icon = allAye.gt(a) ? <SystemYes /> : <SystemNo />;
-
-  return <div className="flex justify-end">{icon}</div>;
-}
-
-function calculateImpact(vote) {
-  let aye = BigNumber(0);
-  let nay = BigNumber(0);
-
-  if (vote.isStandard) {
-    if (vote.aye) {
-      aye = aye.plus(vote.balance);
-    } else {
-      nay = nay.plus(vote.balance);
-    }
-  }
-
-  return {
-    aye,
-    nay,
-  };
+  return <DataList title="Influence" columns={columns} rows={rows} />;
 }

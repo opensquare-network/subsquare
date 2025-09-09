@@ -1,7 +1,3 @@
-import {
-  useFilteredDvReferenda,
-  useDvReferendaCount,
-} from "next-common/context/referenda/dv";
 import PostVotesSummary from "next-common/components/postList/common/votesSummary";
 import { getGov2ReferendumTitle } from "next-common/utils/gov2/title";
 import { Divider } from "../../trackPanel/lineItem";
@@ -9,10 +5,13 @@ import { useChainSettings } from "next-common/context/chain";
 import Link from "next/link";
 import Descriptions from "next-common/components/Descriptions";
 import Track from "../../track/trackTag";
-import { Influence, StateTag } from "./desktopList";
 import ActionButton from "./actionButton";
+import Loading from "next-common/components/loading";
+import InfluenceValue from "./influenceValue";
+import StateTag from "./stateTag";
 
 export default function InfluenceMobileList({
+  loading = false,
   referendumData,
   delegateReferendumVotesMap,
 }) {
@@ -20,6 +19,14 @@ export default function InfluenceMobileList({
 
   if (!referendumData) {
     return null;
+  }
+
+  if (loading) {
+    return (
+      <div className="flex justify-center">
+        <Loading className="mx-auto" size="24px" />
+      </div>
+    );
   }
 
   return referendumData.map((referendum) => {
@@ -55,7 +62,7 @@ export default function InfluenceMobileList({
             {
               label: "Influence",
               value: (
-                <Influence
+                <InfluenceValue
                   referendum={referendum}
                   referendumVotes={
                     delegateReferendumVotesMap?.[referendum.referendumIndex] ||

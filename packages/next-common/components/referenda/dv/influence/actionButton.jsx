@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { SystemMenu } from "@osn/icons/subsquare";
 import SecondaryButton from "next-common/lib/button/secondary";
-import DVDetailPopup from "./voteDetailModal";
+import DecentralizedVoicesDetail from "./decentralizedVoicesDetail";
 import { useVoicesValue } from "next-common/hooks/referenda/useDecentralizedVoicesValue";
 import { bnToPercentage } from "next-common/utils/bn";
 import BigNumber from "bignumber.js";
@@ -41,7 +41,7 @@ export default function ActionButton({ referendum, referendumVotes }) {
         <SystemMenu className="w-4 h-4" />
       </SecondaryButton>
       {detailOpen && (
-        <DVDetailPopup
+        <DecentralizedVoicesDetail
           closeFunc={() => setDetailOpen(false)}
           referendum={referendum}
           dvVotes={referendumVotes}

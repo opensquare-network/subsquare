@@ -40,6 +40,7 @@ export default function InfluenceImpl() {
     return (
       <>
         <InfluenceMobileList
+          loading={loading}
           referendumData={referendumData}
           delegateReferendumVotesMap={delegateReferendumVotesMap}
         />
@@ -59,6 +60,7 @@ export default function InfluenceImpl() {
   return (
     <>
       <InfluenceDesktopList
+        loading={loading}
         referendumData={referendumData}
         delegateReferendumVotesMap={delegateReferendumVotesMap}
       />
