@@ -15,12 +15,13 @@ const PROXIES_QUERY = gql`
   }
 `;
 
-const { subsquareGraphql } = getChainSettings(CHAIN);
+function getProxiesClient() {
+  const { subsquareGraphql } = getChainSettings(CHAIN);
+  if (!hasProxiesGraphQL()) {
+    return null;
+  }
 
-let proxiesClient = null;
-
-if (hasProxiesGraphQL()) {
-  proxiesClient = new ApolloClient({
+  return new ApolloClient({
     ssrMode: true,
     uri: `https://${subsquareGraphql.domain}.subsquare.io/graphql`,
     cache: new InMemoryCache(),
@@ -28,6 +29,7 @@ if (hasProxiesGraphQL()) {
 }
 
 async function queryProxies() {
+  const proxiesClient = getProxiesClient();
   if (!proxiesClient) {
     throw new Error("Intime module is not supported");
   }
