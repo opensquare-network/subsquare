@@ -84,6 +84,7 @@ export default function InfluenceDesktopList({
   return (
     <DataList
       title="Influence"
+      noDataText="No influence"
       columns={columns}
       rows={rows}
       loading={loading}

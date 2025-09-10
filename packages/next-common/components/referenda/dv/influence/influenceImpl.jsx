@@ -20,7 +20,7 @@ export default function InfluenceImpl() {
   const votes = useFilteredDvVotes();
 
   const pageFilteredReferenda = useMemo(() => {
-    const start = page * InfluencePageSize;
+    const start = (page - 1) * InfluencePageSize;
     return filteredReferenda.slice(start, start + InfluencePageSize);
   }, [filteredReferenda, page]);
 
@@ -56,6 +56,7 @@ export default function InfluenceImpl() {
           e.preventDefault();
           setPage(val);
         }}
+        shallow
         total={filteredReferenda.length}
         pageSize={InfluencePageSize}
       />
