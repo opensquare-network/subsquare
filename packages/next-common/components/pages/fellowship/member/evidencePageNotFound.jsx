@@ -6,8 +6,8 @@ import { useIsMobile } from "next-common/components/overview/accountInfo/compone
 
 function EvidencePageNotFoundImpl({ props }) {
   const router = useRouter();
-  const routerPath = router.asPath.split("/");
-  const evidenceId = routerPath[routerPath?.length - 1];
+  const pathSegments = router.asPath?.split("/");
+  const evidenceId = pathSegments[pathSegments?.length - 1];
   const isMobile = useIsMobile();
 
   return (
