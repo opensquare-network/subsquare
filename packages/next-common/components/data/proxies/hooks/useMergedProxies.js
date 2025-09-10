@@ -1,13 +1,11 @@
 import { useState, useEffect } from "react";
-import useAllServerProxies from "next-common/hooks/useAllServerProxies";
-import useAllOnChainProxies from "next-common/hooks/useAllOnChainProxies";
 
-export default function useAllProxies() {
-  const { proxies: serverProxies, loading: serverLoading } =
-    useAllServerProxies();
-  const { proxies: onChainProxies, loading: onChainLoading } =
-    useAllOnChainProxies();
-
+export default function useMergedProxies({
+  serverProxies,
+  onChainProxies,
+  serverLoading,
+  onChainLoading,
+}) {
   const [proxies, setProxies] = useState([]);
   const [loading, setLoading] = useState(true);
 
