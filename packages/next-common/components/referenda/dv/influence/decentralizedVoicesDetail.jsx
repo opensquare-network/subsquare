@@ -9,7 +9,7 @@ import { usePageProps } from "next-common/context/page";
 import Descriptions from "next-common/components/Descriptions";
 import InfluenceValue from "./influenceValue";
 import { InfluenceLabel } from "./styled";
-import { fillTotalVotesValue } from "next-common/utils/dv/fillTotalVotesValue";
+import { getTotalVotesValue } from "next-common/utils/dv/getTotalVotesValue";
 
 export default function DVDetailPopup({
   referendum,
@@ -108,7 +108,7 @@ function mergedVotes(delegates = [], dvVotes = []) {
       ...dvVote,
       account: delegate.address,
       role: delegate.role,
-      totalVotes: fillTotalVotesValue(dvVote),
+      totalVotes: getTotalVotesValue(dvVote),
     };
   });
 }

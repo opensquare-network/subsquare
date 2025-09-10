@@ -5,14 +5,14 @@ import DecentralizedVoicesDetail from "./decentralizedVoicesDetail";
 import { useVoicesValue } from "next-common/hooks/referenda/useDecentralizedVoicesValue";
 import { bnToPercentage } from "next-common/utils/bn";
 import BigNumber from "bignumber.js";
-import { fillTotalVotesValue } from "next-common/utils/dv/fillTotalVotesValue";
+import { getTotalVotesValue } from "next-common/utils/dv/getTotalVotesValue";
 
 export default function ActionButton({ referendum, referendumVotes }) {
   const [detailOpen, setDetailOpen] = useState(false);
   const { dvVotesValue, ayeVotesValue, nayVotesValue } = useVoicesValue(
     referendumVotes.map((v) => ({
       ...v,
-      totalVotes: fillTotalVotesValue(v),
+      totalVotes: getTotalVotesValue(v),
     })) || [],
   );
 

@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js";
 
-export function fillTotalVotesValue(dvVote) {
+export function getTotalVotesValue(dvVote) {
   let totalVotes = null;
 
   if (!dvVote) {
