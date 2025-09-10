@@ -9,6 +9,7 @@ import { usePageProps } from "next-common/context/page";
 import Descriptions from "next-common/components/Descriptions";
 import InfluenceValue from "./influenceValue";
 import { InfluenceLabel } from "./styled";
+import { fillTotalVotesValue } from "next-common/utils/dv/fillTotalVotesValue";
 
 export default function DVDetailPopup({
   referendum,
@@ -102,23 +103,12 @@ function mergedVotes(delegates = [], dvVotes = []) {
       };
     }
 
-    // todo: need more type
-    if (dvVote.isStandard) {
-      totalVotes = BigNumber(dvVote.votes).plus(
-        dvVote.delegations?.votes["$numberDecimal"] || 0,
-      );
-    } else if (dvVote.isSplitAbstain) {
-      totalVotes = BigNumber(dvVote.abstainVotes["$numberDecimal"] || 0);
-    } else if (dvVote.isSplit) {
-      // todo: how to display
-      totalVotes = BigNumber(dvVote.ayeVotes["$numberDecimal"] || 0);
-    }
     return {
       ...delegate,
       ...dvVote,
       account: delegate.address,
       role: delegate.role,
-      totalVotes,
+      totalVotes: fillTotalVotesValue(dvVote),
     };
   });
 }
