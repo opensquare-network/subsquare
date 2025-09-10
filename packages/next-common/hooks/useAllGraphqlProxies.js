@@ -1,25 +1,16 @@
-// import { useState, useCallback } from "react";
 import { useAsync } from "react-use";
 import { gql, ApolloClient, InMemoryCache } from "@apollo/client";
 import { CHAIN } from "next-common/utils/constants";
 import getChainSettings from "next-common/utils/consts/settings";
 import { hasProxiesGraphQL } from "next-common/utils/env/proxy";
 
-// TODO
 const PROXIES_QUERY = gql`
-  query ProxiesQuery($address: String, $offset: Int, $limit: Int) {
-    proxies(address: $address, offset: $offset, limit: $limit) {
-      items {
-        delegator
-        items {
-          delegatee
-          proxyType
-          delay
-        }
-      }
-      page
-      pageSize
-      total
+  query AllProxiesQuery {
+    proxies {
+      delay
+      delegator
+      delegatee
+      proxyType
     }
   }
 `;
