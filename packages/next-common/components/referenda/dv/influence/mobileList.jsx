@@ -4,11 +4,12 @@ import { Divider } from "../../trackPanel/lineItem";
 import { useChainSettings } from "next-common/context/chain";
 import Link from "next/link";
 import Descriptions from "next-common/components/Descriptions";
-import Track from "../../track/trackTag";
 import ActionButton from "./actionButton";
 import Loading from "next-common/components/loading";
 import InfluenceValue from "./influenceValue";
 import StateTag from "./stateTag";
+import { PostTitleImpl } from "next-common/components/profile/votingHistory/common";
+import Gov2TrackTag from "next-common/components/gov2/trackTag";
 
 export default function InfluenceMobileList({
   loading = false,
@@ -33,13 +34,13 @@ export default function InfluenceMobileList({
     return (
       <div key={referendum.referendumIndex}>
         <div className="flex items-center gap-2">
-          <Link
-            href={`/referenda/${referendum.referendumIndex}`}
+          <PostTitleImpl
             key="title"
-            className="flex-1 max-w-full overflow-hidden text-ellipsis whitespace-nowrap"
-          >
-            {getGov2ReferendumTitle(referendum)}
-          </Link>
+            referendumIndex={referendum.referendumIndex}
+            title={getGov2ReferendumTitle(referendum)}
+            url={`/referenda/${referendum.referendumIndex}`}
+            className="text14Medium flex-1"
+          />
           <ActionButton
             referendum={referendum}
             referendumVotes={
@@ -53,7 +54,18 @@ export default function InfluenceMobileList({
           items={[
             {
               label: "Track",
-              value: <Track id={referendum.track} />,
+              value: (
+                <Link
+                  key="track"
+                  className="inline-flex"
+                  href={`/referenda/tracks/${referendum.track}`}
+                >
+                  <Gov2TrackTag
+                    name={referendum.trackInfo.name}
+                    id={referendum.track}
+                  />
+                </Link>
+              ),
             },
             {
               label: "Status",
