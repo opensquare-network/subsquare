@@ -14,8 +14,13 @@ import { MigrationConditionalApiProvider } from "next-common/context/migration/c
 import { useReferendumFellowshipCoreEvidenceForWho } from "next-common/context/post/fellowship/useReferendumFellowshipCoreEvidence";
 import FellowshipEvidenceContent from "next-common/components/collectives/core/evidenceContent";
 import CollectivesProvider from "next-common/context/collectives/collectives";
+import EvidencePageNotFound from "./evidencePageNotFound";
 
 export default function EvidencePage(props) {
+  if (!props?.detail) {
+    return <EvidencePageNotFound props={props} />;
+  }
+
   return (
     <PostProvider post={props.detail}>
       <EvidenceLayout

@@ -2,31 +2,33 @@ import EvidencePage from "next-common/components/pages/fellowship/member/evidenc
 import { withCommonProps } from "next-common/lib";
 import { fetchDetailComments } from "next-common/services/detail";
 import { backendApi } from "next-common/services/nextApi";
-import { to404 } from "next-common/utils/serverSideUtil";
 
 export default EvidencePage;
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const { evidenceId, id: who } = context.params;
-  const { result: detail } = await backendApi.fetch(
+  const { result: detail = null } = await backendApi.fetch(
     `fellowship/members/${who}/evidences/${evidenceId}`,
   );
 
-  if (!detail) {
-    return to404();
-  }
+  let comments = null;
+  let summary = {};
 
-  const [comments, { result: summary }] = await Promise.all([
-    fetchDetailComments(
-      `fellowship/members/${who}/evidences/${evidenceId}/comments`,
-      context,
-    ),
-    backendApi.fetch("overview/summary"),
-  ]);
+  if (detail) {
+    const [commentsResult, { result: summaryResult }] = await Promise.all([
+      fetchDetailComments(
+        `fellowship/members/${who}/evidences/${evidenceId}/comments`,
+        context,
+      ),
+      backendApi.fetch("overview/summary"),
+    ]);
+    comments = commentsResult;
+    summary = summaryResult ?? {};
+  }
 
   return {
     props: {
-      summary: summary ?? {},
+      summary,
       comments,
       who,
       detail,
