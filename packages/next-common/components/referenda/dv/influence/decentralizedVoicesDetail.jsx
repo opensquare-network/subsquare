@@ -39,9 +39,10 @@ export default function DVDetailPopup({
     [formatVotes],
   );
 
-  const tally = referendum?.onchainData?.tally;
-
-  const allVotesValue = BigNumber(tally.ayes).plus(tally.nays);
+  const allVotesValue = useMemo(() => {
+    const tally = referendum?.onchainData?.tally;
+    return BigNumber(tally.ayes).plus(tally.nays);
+  }, [referendum]);
 
   return (
     <Popup title="Decentralized Voices Detail" onClose={closeFunc}>
