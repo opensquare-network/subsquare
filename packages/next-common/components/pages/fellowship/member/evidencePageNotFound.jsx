@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import NotFoundDetail from "next-common/components/notFoundDetail";
 import AddressUser from "next-common/components/user/addressUser";
 import { useRouter } from "next/router";
@@ -10,36 +11,54 @@ function EvidencePageNotFoundImpl({ props }) {
   const evidenceId = pathSegments[pathSegments?.length - 1];
   const isMobile = useIsMobile();
 
+  const mobileBreadcrumbItems = useMemo(
+    () => [
+      {
+        path: "/fellowship/members",
+        content: "Members",
+      },
+      {
+        content: (
+          <AddressUser add={props.who} showAvatar={false} link="/fellowship" />
+        ),
+        className: "flex",
+      },
+    ],
+    [props.who],
+  );
+
+  const desktopBreadcrumbItems = useMemo(
+    () => [
+      {
+        path: "/fellowship",
+        content: "Fellowship",
+      },
+      {
+        path: "/fellowship/members",
+        content: "Members",
+      },
+      {
+        content: (
+          <AddressUser add={props.who} showAvatar={false} link="/fellowship" />
+        ),
+        className: "flex",
+      },
+      {
+        content: "Evidences",
+      },
+    ],
+    [props.who],
+  );
+
+  const responsiveBreadcrumbItems = useMemo(
+    () => (isMobile ? mobileBreadcrumbItems : desktopBreadcrumbItems),
+    [isMobile, mobileBreadcrumbItems, desktopBreadcrumbItems],
+  );
+
   return (
     <NotFoundDetail
       customId={`#${evidenceId}`}
-      breadcrumbItems={[
-        isMobile
-          ? null
-          : {
-              path: "/fellowship",
-              content: "Fellowship",
-            },
-        {
-          path: "/fellowship/members",
-          content: "Members",
-        },
-        {
-          content: (
-            <AddressUser
-              add={props.who}
-              showAvatar={false}
-              link="/fellowship"
-            />
-          ),
-          className: "flex",
-        },
-        isMobile
-          ? null
-          : {
-              content: "Evidences",
-            },
-      ].filter(Boolean)}
+      breadcrumbItems={responsiveBreadcrumbItems}
     />
   );
 }
