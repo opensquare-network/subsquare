@@ -65,9 +65,7 @@ function BackendApiProxiesProvider({ children }) {
 }
 
 export function AllProxiesProvider({ children }) {
-  const hasGraphQL = hasProxiesGraphQL();
-
-  if (hasGraphQL) {
+  if (hasProxiesGraphQL()) {
     return <GraphQLProxiesProvider>{children}</GraphQLProxiesProvider>;
   }
 
