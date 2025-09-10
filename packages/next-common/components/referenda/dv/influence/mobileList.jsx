@@ -10,6 +10,7 @@ import InfluenceValue from "./influenceValue";
 import StateTag from "./stateTag";
 import { PostTitleImpl } from "next-common/components/profile/votingHistory/common";
 import Gov2TrackTag from "next-common/components/gov2/trackTag";
+import NoData from "next-common/components/noData";
 
 export default function InfluenceMobileList({
   loading = false,
@@ -28,6 +29,10 @@ export default function InfluenceMobileList({
         <Loading className="mx-auto" size="24px" />
       </div>
     );
+  }
+
+  if (referendumData.length <= 0) {
+    return <NoData text="No influence" />;
   }
 
   return referendumData.map((referendum) => {
