@@ -6,10 +6,9 @@ import WindowSizeProvider from "next-common/context/windowSize";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 
 function EvidencePageNotFoundImpl({ props }) {
-  const router = useRouter();
-  const pathSegments = router.asPath?.split("/");
-  const evidenceId = pathSegments[pathSegments?.length - 1];
   const isMobile = useIsMobile();
+  const router = useRouter();
+  const evidenceId = router.query.evidenceId;
 
   const mobileBreadcrumbItems = useMemo(
     () => [
