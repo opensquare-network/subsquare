@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { isEqual } from "lodash-es";
 
 export default function useMergedProxies({
   serverProxies,
@@ -20,12 +21,11 @@ export default function useMergedProxies({
     }
 
     if (!onChainLoading && onChainProxies?.length > 0) {
-      const areProxiesEqual =
-        JSON.stringify(serverProxies) === JSON.stringify(onChainProxies);
-
-      if (!areProxiesEqual) {
-        setProxies(onChainProxies);
+      if (isEqual(serverProxies, onChainProxies)) {
+        return;
       }
+
+      setProxies(onChainProxies);
       setLoading(false);
     }
 

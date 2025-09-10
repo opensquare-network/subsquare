@@ -27,16 +27,7 @@ function InnerProvider({ children, proxies, initialLoading }) {
 }
 
 function GraphQLProxiesProvider({ children }) {
-  const { proxies: serverProxies, loading: serverLoading } =
-    useAllGraphqlProxies();
-  const { proxies: onChainProxies, loading: onChainLoading } =
-    useAllOnChainProxies();
-  const { proxies, loading } = useMergedProxies({
-    serverProxies,
-    onChainProxies,
-    serverLoading,
-    onChainLoading,
-  });
+  const { proxies, loading } = useAllGraphqlProxies();
 
   return (
     <InnerProvider proxies={proxies} initialLoading={loading}>
