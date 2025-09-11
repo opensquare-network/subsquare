@@ -5,7 +5,7 @@ export function InfluenceLabel({ className = "" }) {
   return (
     <span className={cn("flex items-center gap-x-1", className)}>
       Influence
-      <Tooltip content="Whether the voting of DVs changes the outcome of a referendum"></Tooltip>
+      <Tooltip content="Whether DV delegations changed the outcome of a referendum"></Tooltip>
     </span>
   );
 }
