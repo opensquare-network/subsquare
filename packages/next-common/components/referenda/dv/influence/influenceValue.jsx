@@ -35,7 +35,7 @@ export function InfluenceValueImpl({ referendumVotes }) {
     if (hasInfluence) {
       tooltipContent = `This referendum won't ${tipsStateText} if no DV delegations`;
     } else {
-      tooltipContent = `This referendum will ${tipsStateText} if no DV delegations`;
+      tooltipContent = "DV delegation didn't change the referendum result";
     }
   } else {
     const tipsStateText = isPass ? "passing" : "failing";
