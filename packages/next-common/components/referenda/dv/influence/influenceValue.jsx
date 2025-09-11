@@ -19,6 +19,10 @@ export function InfluenceValueImpl({ referendumVotes }) {
 }
 
 export default function InfluenceValue({ referendum, referendumVotes = [] }) {
+  if (!referendum) {
+    return null;
+  }
+
   return (
     <PostProvider post={referendum}>
       <InfluenceValueImpl referendumVotes={referendumVotes} />

@@ -1,9 +1,7 @@
 import { useState, useMemo } from "react";
 import InfluenceDesktopList from "./desktopList";
 import InfluenceMobileList from "./mobileList";
-import { useAsync } from "react-use";
 import { groupBy } from "lodash-es";
-import { fetchReferendumData } from "next-common/services/referendaData";
 import Pagination from "next-common/components/pagination";
 import {
   useFilteredDvReferenda,
@@ -24,14 +22,6 @@ export default function InfluenceImpl() {
     return filteredReferenda.slice(start, start + InfluencePageSize);
   }, [filteredReferenda, page]);
 
-  const { loading, value: referendumData } = useAsync(async () => {
-    return Promise.all(
-      pageFilteredReferenda.map((referendum) =>
-        fetchReferendumData(referendum.referendumIndex),
-      ),
-    );
-  }, [pageFilteredReferenda]);
-
   const delegateReferendumVotesMap = useMemo(() => {
     return groupBy(votes, "referendumIndex");
   }, [votes]);
@@ -45,8 +35,7 @@ export default function InfluenceImpl() {
   return (
     <>
       <Component
-        loading={loading}
-        referendumData={referendumData}
+        list={pageFilteredReferenda}
         delegateReferendumVotesMap={delegateReferendumVotesMap}
       />
 

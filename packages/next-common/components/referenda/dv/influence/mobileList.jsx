@@ -2,106 +2,117 @@ import PostVotesSummary from "next-common/components/postList/common/votesSummar
 import { getGov2ReferendumTitle } from "next-common/utils/gov2/title";
 import { Divider } from "../../trackPanel/lineItem";
 import { useChainSettings } from "next-common/context/chain";
-import Link from "next/link";
 import Descriptions from "next-common/components/Descriptions";
 import ActionButton from "./actionButton";
-import Loading from "next-common/components/loading";
 import InfluenceValue from "./influenceValue";
 import StateTag from "./stateTag";
 import { PostTitleImpl } from "next-common/components/profile/votingHistory/common";
-import Gov2TrackTag from "next-common/components/gov2/trackTag";
 import NoData from "next-common/components/noData";
+import { fetchReferendumData } from "next-common/services/referendaData";
+import { useAsync } from "react-use";
+import LoadableContent from "next-common/components/common/loadableContent";
+import TrackTag from "./trackTag";
 
 export default function InfluenceMobileList({
-  loading = false,
-  referendumData,
+  list = [],
   delegateReferendumVotesMap,
 }) {
-  const { symbol, decimals } = useChainSettings();
+  // if (loading) {
+  //   return (
+  //     <div className="flex justify-center">
+  //       <Loading className="mx-auto" size="24px" />
+  //     </div>
+  //   );
+  // }
 
-  if (!referendumData) {
-    return null;
-  }
-
-  if (loading) {
-    return (
-      <div className="flex justify-center">
-        <Loading className="mx-auto" size="24px" />
-      </div>
-    );
-  }
-
-  if (referendumData.length <= 0) {
+  if (list.length <= 0) {
     return <NoData text="No influence" />;
   }
 
-  return referendumData.map((referendum) => {
+  return list.map((referendum) => {
     return (
-      <div key={referendum.referendumIndex}>
-        <div className="flex items-center gap-2">
-          <PostTitleImpl
-            key="title"
-            referendumIndex={referendum.referendumIndex}
-            title={getGov2ReferendumTitle(referendum)}
-            url={`/referenda/${referendum.referendumIndex}`}
-            className="text14Medium flex-1"
-          />
+      <ListRow
+        key={referendum.referendumIndex}
+        referendum={referendum}
+        delegateReferendumVotesMap={delegateReferendumVotesMap}
+      />
+    );
+  });
+}
+
+function ListRow({ referendum, delegateReferendumVotesMap }) {
+  const { symbol, decimals } = useChainSettings();
+  const { value: referendumDetail, loading } = useAsync(async () => {
+    const res = await fetchReferendumData(referendum.referendumIndex);
+    return res;
+  }, [referendum.referendumIndex]);
+
+  return (
+    <div key={referendum.referendumIndex}>
+      <div className="flex items-center gap-2">
+        <PostTitleImpl
+          key="title"
+          referendumIndex={referendum.referendumIndex}
+          title={
+            loading ? (
+              <LoadableContent key="influence" isLoading={loading} />
+            ) : (
+              getGov2ReferendumTitle(referendumDetail)
+            )
+          }
+          url={`/referenda/${referendum.referendumIndex}`}
+          className="text14Medium flex-1"
+        />
+        <LoadableContent key="action" isLoading={loading}>
           <ActionButton
-            referendum={referendum}
+            referendum={referendumDetail}
             referendumVotes={
               delegateReferendumVotesMap[referendum.referendumIndex] || []
             }
           />
-        </div>
-        <Descriptions
-          bordered={false}
-          className="[&_.descriptions-item-label]:text-textTertiary [&_.descriptions-item]:h-auto [&_.descriptions-item]:my-2"
-          items={[
-            {
-              label: "Track",
-              value: (
-                <Link
-                  key="track"
-                  className="inline-flex"
-                  href={`/referenda/tracks/${referendum.track}`}
-                >
-                  <Gov2TrackTag
-                    name={referendum.trackInfo.name}
-                    id={referendum.track}
-                  />
-                </Link>
-              ),
-            },
-            {
-              label: "Status",
-              value: <StateTag referendum={referendum} />,
-            },
-            {
-              label: "Influence",
-              value: (
+        </LoadableContent>
+      </div>
+      <Descriptions
+        bordered={false}
+        className="[&_.descriptions-item-label]:text-textTertiary [&_.descriptions-item]:h-auto [&_.descriptions-item]:my-2"
+        items={[
+          {
+            label: "Track",
+            value: <TrackTag key="track" id={referendum.track} />,
+          },
+          {
+            label: "Status",
+            value: <StateTag state={referendum.state} />,
+          },
+          {
+            label: "Influence",
+            value: (
+              <LoadableContent key="influence" isLoading={loading}>
                 <InfluenceValue
-                  referendum={referendum}
+                  referendum={referendumDetail}
                   referendumVotes={
                     delegateReferendumVotesMap?.[referendum.referendumIndex] ||
                     []
                   }
                 />
-              ),
-            },
-            {
-              label: "Vote Bar",
-              value: (
+              </LoadableContent>
+            ),
+          },
+          {
+            label: "Vote Bar",
+            value: (
+              <LoadableContent key="votesSummary" isLoading={loading}>
                 <PostVotesSummary
-                  tally={referendum.onchainData?.tally}
+                  tally={referendumDetail?.onchainData?.tally}
                   decimals={decimals}
                   symbol={symbol}
                 />
-              ),
-            },
-          ]}
-        />
-        <Divider className="my-3" />
-      </div>
-    );
-  });
+              </LoadableContent>
+            ),
+          },
+        ]}
+      />
+      <Divider className="my-3" />
+    </div>
+  );
 }
