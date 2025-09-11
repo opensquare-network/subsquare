@@ -36,10 +36,10 @@ export default function InfluenceMobileList({
 
 function ListRow({ row, delegateReferendumVotesMap }) {
   const { symbol, decimals } = useChainSettings();
-  const { value: referendumDetail, loading } = useAsync(async () => {
-    const res = await fetchReferendumData(row.referendumIndex);
-    return res;
-  }, [row.referendumIndex]);
+  const { value: referendumDetail, loading } = useAsync(
+    async () => await fetchReferendumData(row.referendumIndex),
+    [row.referendumIndex],
+  );
 
   return (
     <div key={row.referendumIndex}>
