@@ -11,63 +11,60 @@ import NoData from "next-common/components/noData";
 import { fetchReferendumData } from "next-common/services/referendaData";
 import { useAsync } from "react-use";
 import LoadableContent from "next-common/components/common/loadableContent";
+import FieldLoading from "next-common/components/icons/fieldLoading";
 import TrackTag from "./trackTag";
+import { cn } from "next-common/utils";
 
 export default function InfluenceMobileList({
   list = [],
   delegateReferendumVotesMap,
 }) {
-  // if (loading) {
-  //   return (
-  //     <div className="flex justify-center">
-  //       <Loading className="mx-auto" size="24px" />
-  //     </div>
-  //   );
-  // }
-
   if (list.length <= 0) {
     return <NoData text="No influence" />;
   }
 
-  return list.map((referendum) => {
+  return list.map((row) => {
     return (
       <ListRow
-        key={referendum.referendumIndex}
-        referendum={referendum}
+        key={row.referendumIndex}
+        row={row}
         delegateReferendumVotesMap={delegateReferendumVotesMap}
       />
     );
   });
 }
 
-function ListRow({ referendum, delegateReferendumVotesMap }) {
+function ListRow({ row, delegateReferendumVotesMap }) {
   const { symbol, decimals } = useChainSettings();
   const { value: referendumDetail, loading } = useAsync(async () => {
-    const res = await fetchReferendumData(referendum.referendumIndex);
+    const res = await fetchReferendumData(row.referendumIndex);
     return res;
-  }, [referendum.referendumIndex]);
+  }, [row.referendumIndex]);
 
   return (
-    <div key={referendum.referendumIndex}>
+    <div key={row.referendumIndex}>
       <div className="flex items-center gap-2">
         <PostTitleImpl
           key="title"
-          referendumIndex={referendum.referendumIndex}
+          referendumIndex={row.referendumIndex}
           title={
             loading ? (
-              <LoadableContent key="influence" isLoading={loading} />
+              <FieldLoading className="flex" />
             ) : (
               getGov2ReferendumTitle(referendumDetail)
             )
           }
-          url={`/referenda/${referendum.referendumIndex}`}
-          className="text14Medium flex-1"
+          url={`/referenda/${row.referendumIndex}`}
+          className={cn(
+            "text14Medium flex flex-1 items-center [&>a]:truncate [&>a]:flex-1",
+            loading && "[&>a>span]:flex",
+          )}
         />
         <LoadableContent key="action" isLoading={loading}>
           <ActionButton
             referendum={referendumDetail}
             referendumVotes={
-              delegateReferendumVotesMap[referendum.referendumIndex] || []
+              delegateReferendumVotesMap[row.referendumIndex] || []
             }
           />
         </LoadableContent>
@@ -78,11 +75,11 @@ function ListRow({ referendum, delegateReferendumVotesMap }) {
         items={[
           {
             label: "Track",
-            value: <TrackTag key="track" id={referendum.track} />,
+            value: <TrackTag key="track" id={row.track} />,
           },
           {
             label: "Status",
-            value: <StateTag state={referendum.state} />,
+            value: <StateTag state={row.state} />,
           },
           {
             label: "Influence",
@@ -91,8 +88,7 @@ function ListRow({ referendum, delegateReferendumVotesMap }) {
                 <InfluenceValue
                   referendum={referendumDetail}
                   referendumVotes={
-                    delegateReferendumVotesMap?.[referendum.referendumIndex] ||
-                    []
+                    delegateReferendumVotesMap?.[row.referendumIndex] || []
                   }
                 />
               </LoadableContent>
