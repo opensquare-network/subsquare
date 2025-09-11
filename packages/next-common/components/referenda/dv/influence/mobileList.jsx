@@ -78,6 +78,18 @@ function ListRow({ row, delegateReferendumVotesMap }) {
             value: <TrackTag key="track" id={row.track} />,
           },
           {
+            label: "Vote Bar",
+            value: (
+              <LoadableContent key="votesSummary" isLoading={loading}>
+                <PostVotesSummary
+                  tally={referendumDetail?.onchainData?.tally}
+                  decimals={decimals}
+                  symbol={symbol}
+                />
+              </LoadableContent>
+            ),
+          },
+          {
             label: "Status",
             value: <StateTag state={row.state} />,
           },
@@ -90,18 +102,6 @@ function ListRow({ row, delegateReferendumVotesMap }) {
                   referendumVotes={
                     delegateReferendumVotesMap?.[row.referendumIndex] || []
                   }
-                />
-              </LoadableContent>
-            ),
-          },
-          {
-            label: "Vote Bar",
-            value: (
-              <LoadableContent key="votesSummary" isLoading={loading}>
-                <PostVotesSummary
-                  tally={referendumDetail?.onchainData?.tally}
-                  decimals={decimals}
-                  symbol={symbol}
                 />
               </LoadableContent>
             ),
