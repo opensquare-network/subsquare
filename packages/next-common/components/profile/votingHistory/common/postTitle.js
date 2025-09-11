@@ -38,6 +38,7 @@ export function PostTitle({ referendumIndex, title, noLink, className }) {
       title={title}
       noLink={noLink}
       className={className}
+      referendumIndex={referendumIndex}
     />
   );
 }
