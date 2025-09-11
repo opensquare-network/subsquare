@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
-import useAllServerProxies from "next-common/hooks/useAllServerProxies";
-import useAllOnChainProxies from "next-common/hooks/useAllOnChainProxies";
+import { isEqual } from "lodash-es";
 
-export default function useAllProxies() {
-  const { proxies: serverProxies, loading: serverLoading } =
-    useAllServerProxies();
-  const { proxies: onChainProxies, loading: onChainLoading } =
-    useAllOnChainProxies();
-
+export default function useMergedProxies({
+  serverProxies,
+  onChainProxies,
+  serverLoading,
+  onChainLoading,
+}) {
   const [proxies, setProxies] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -22,12 +21,11 @@ export default function useAllProxies() {
     }
 
     if (!onChainLoading && onChainProxies?.length > 0) {
-      const areProxiesEqual =
-        JSON.stringify(serverProxies) === JSON.stringify(onChainProxies);
-
-      if (!areProxiesEqual) {
-        setProxies(onChainProxies);
+      if (isEqual(serverProxies, onChainProxies)) {
+        return;
       }
+
+      setProxies(onChainProxies);
       setLoading(false);
     }
 
