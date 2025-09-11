@@ -5,7 +5,7 @@ import { hasPreimagesGraphQL } from "next-common/utils/env/preimage";
 
 const PREIMAGE_QUERY = gql`
   query MyQuery {
-    intimePreimages {
+    preimages {
       hash
       hex
       requested {
@@ -59,7 +59,7 @@ export async function queryPreimages() {
       fetchPolicy: "no-cache",
     });
 
-    return data?.intimePreimages;
+    return data?.preimages;
   } catch (e) {
     return null;
   }
