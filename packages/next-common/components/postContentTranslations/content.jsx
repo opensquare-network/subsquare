@@ -3,6 +3,7 @@ import PostContent from "next-common/components/detail/common/PostContent";
 import { isPostEdited } from "next-common/utils/post";
 import { EDITED_TRANSLATIONS, LANGUAGE_CODES } from "./constants";
 import { usePostContentTranslationsContext } from "./context";
+import Loading from "next-common/components/loading";
 
 function getEditedText(languageCode) {
   return (
@@ -12,8 +13,16 @@ function getEditedText(languageCode) {
 }
 
 export default function TranslatedPostContent() {
-  const { post, isFold, selectedLanguage } =
+  const { post, isFold, selectedLanguage, isTranslationLoading } =
     usePostContentTranslationsContext();
+
+  if (isTranslationLoading) {
+    return (
+      <div className="flex justify-center items-center py-8">
+        <Loading size={24} />
+      </div>
+    );
+  }
 
   return (
     <>
