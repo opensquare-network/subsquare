@@ -1,15 +1,15 @@
 import BigNumber from "bignumber.js";
+import { usePageProps } from "next-common/context/page";
 
-export function calculateImpact(vote) {
+export function calculateImpact(vote, cohort) {
   let aye = BigNumber(0);
   let nay = BigNumber(0);
 
-  // todo: add more types support
   if (vote.isStandard) {
     if (vote.aye) {
-      aye = aye.plus(vote.delegations?.votes || 0);
+      aye = aye.plus(cohort.delegation || 0);
     } else {
-      nay = nay.plus(vote.delegations?.votes || 0);
+      nay = nay.plus(cohort.delegation || 0);
     }
   }
 
@@ -19,21 +19,18 @@ export function calculateImpact(vote) {
   };
 }
 
-export function getInfluence(tally, approval, dvVotes = []) {
-  if (!tally || !approval) {
+export function useInfluence(tally, approval, dvVotes = []) {
+  const { cohort } = usePageProps();
+  if (!tally || !approval || !cohort) {
     return false;
   }
 
   const tallyAye = BigNumber(tally.ayes);
   const tallyNay = BigNumber(tally.nays);
 
-  if (!tallyAye || !tallyNay) {
-    return null;
-  }
-
   const dvTotalImpact = dvVotes.reduce(
-    (sum, v) => {
-      const impact = calculateImpact(v);
+    (sum, vote) => {
+      const impact = calculateImpact(vote, cohort);
       return {
         aye: sum.aye.plus(impact.aye),
         nay: sum.nay.plus(impact.nay),
