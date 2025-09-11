@@ -11,7 +11,7 @@ import {
 } from "next-common/context/referenda/dv";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 
-const InfluencePageSize = 5;
+const InfluencePageSize = 10;
 
 export default function InfluenceImpl() {
   const isMobile = useIsMobile();
