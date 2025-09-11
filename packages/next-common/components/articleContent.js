@@ -58,10 +58,11 @@ export default function ArticleContent({
       content: <ContentSummary />,
     },
     {
+      value: "translations",
       label: "Translations",
       content: (
         <>
-          <ContentTranslations className="mb-4" />
+          <ContentTranslations />
           {postContent}
         </>
       ),

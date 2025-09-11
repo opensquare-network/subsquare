@@ -1,11 +1,9 @@
 import tw from "tailwind-styled-components";
-import React, { useState, useRef, useMemo, useEffect } from "react";
-import useOnClickOutside from "../utils/hooks/useOnClickOutside.js";
-import Relative from "./styled/relative";
+import { useState, useRef, useMemo, useEffect } from "react";
 import { SystemVoteAye } from "@osn/icons/subsquare";
 import Divider from "next-common/components/styled/layout/divider";
 import Caret from "next-common/components/icons/caret";
-const Wrapper = Relative;
+import { useClickAway } from "react-use";
 
 export const Select = tw.div`
   flex items-center justify-between
@@ -72,14 +70,13 @@ const dataRestOptions = [
 const dataOptions = [sourceData, ...dataRestOptions];
 
 export default function TranslationsSelect({
-  className,
   selectedLauguage = sourceData.value,
   onSelect,
 }) {
   const [show, setShow] = useState(false);
   const ref = useRef();
 
-  useOnClickOutside(ref, () => setShow(false));
+  useClickAway(ref, () => setShow(false));
 
   const curLabel = useMemo(() => {
     return dataOptions.find((i) => i.value === selectedLauguage)?.label;
@@ -89,10 +86,10 @@ export default function TranslationsSelect({
     if (!selectedLauguage) {
       onSelect(sourceData.value);
     }
-  }, []);
+  }, [onSelect, selectedLauguage]);
 
   return (
-    <Wrapper className={className} ref={ref}>
+    <div className="relative flex-1" ref={ref}>
       <Select onClick={() => setShow(!show)}>
         <span className="text-textPrimary text14Medium">{curLabel}</span>
         <Caret isGrey down={!show} />
@@ -128,6 +125,6 @@ export default function TranslationsSelect({
           </OptionsRowDiv>
         </OptionsDiv>
       )}
-    </Wrapper>
+    </div>
   );
 }
