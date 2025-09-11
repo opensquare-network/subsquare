@@ -70,8 +70,7 @@ export default function InfluenceDesktopList({
 function ListRow({ row, delegateReferendumVotesMap }) {
   const { symbol, decimals } = useChainSettings();
   const { value: referendumDetail, loading } = useAsync(async () => {
-    const res = await fetchReferendumData(row.referendumIndex);
-    return res;
+    return await fetchReferendumData(row.referendumIndex);
   }, [row.referendumIndex]);
 
   return (
