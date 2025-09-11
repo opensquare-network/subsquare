@@ -9,14 +9,12 @@ export function getTotalVotesValue(dvVote) {
 
   // todo: need more type
   if (dvVote.isStandard) {
-    totalVotes = BigNumber(dvVote.votes).plus(
-      dvVote.delegations?.votes["$numberDecimal"] || 0,
-    );
+    totalVotes = BigNumber(dvVote.votes).plus(dvVote.delegations?.votes || 0);
   } else if (dvVote.isSplitAbstain) {
-    totalVotes = BigNumber(dvVote.abstainVotes["$numberDecimal"] || 0);
+    totalVotes = BigNumber(dvVote.abstainVotes || 0);
   } else if (dvVote.isSplit) {
     // todo: how to display
-    totalVotes = BigNumber(dvVote.ayeVotes["$numberDecimal"] || 0);
+    totalVotes = BigNumber(dvVote.ayeVotes || 0);
   }
 
   return totalVotes;

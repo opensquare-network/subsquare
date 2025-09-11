@@ -7,9 +7,9 @@ export function calculateImpact(vote) {
   // todo: add more types support
   if (vote.isStandard) {
     if (vote.aye) {
-      aye = aye.plus(vote.delegations?.votes["$numberDecimal"] || 0);
+      aye = aye.plus(vote.delegations?.votes || 0);
     } else {
-      nay = nay.plus(vote.delegations?.votes["$numberDecimal"] || 0);
+      nay = nay.plus(vote.delegations?.votes || 0);
     }
   }
 
