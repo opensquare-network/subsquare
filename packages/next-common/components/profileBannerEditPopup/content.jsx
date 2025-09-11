@@ -14,6 +14,7 @@ import useBannerSubmission from "next-common/hooks/profile/banner/useBannerSubmi
 import useBannerReset from "next-common/hooks/profile/banner/useBannerReset";
 import { noop } from "lodash-es";
 import { useProfileUserInfoContext } from "next-common/components/profile/header/context/profileUserInfoContext";
+import BannerTemplate from "./bannerTemplate";
 
 export default function ProfileBannerEditPopupContent({ closePopup = noop }) {
   const { isProxyAccount: isProxy } = useAvatarPermissionsContext();
@@ -95,6 +96,11 @@ export default function ProfileBannerEditPopupContent({ closePopup = noop }) {
         Upload banner cover. We recommend to upload images in 1440x120
         resolution. Max 2 MB in JPEG or PNG format
       </GreyPanel>
+
+      <BannerTemplate
+        setImageFile={setImageFile}
+        setImageDataUrl={setImageDataUrl}
+      />
 
       <div className="flex justify-end gap-x-2">
         <SecondaryButton
