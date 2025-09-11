@@ -31,7 +31,7 @@ export function InfluenceValueImpl({ referendumVotes }) {
     return <SystemVoteAbstain />;
   }
 
-  let tooltipContent = null;
+  let tooltipContent;
   if (isFinal) {
     const tipsStateText = isPass ? "pass" : "fail";
     if (hasInfluence) {
