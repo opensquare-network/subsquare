@@ -20,7 +20,9 @@ export function InfluenceValueImpl({ referendumVotes }) {
 
   const noNeedComparison = [
     gov2State.TimedOut,
+    gov2State.Timeout,
     gov2State.Preparing,
+    gov2State.Queueing,
     gov2State.Killed,
     gov2State.Cancelled,
   ].includes(stateName);
