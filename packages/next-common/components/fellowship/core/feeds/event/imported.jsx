@@ -4,12 +4,15 @@ import {
   FellowshipCoreFeedRankLabel,
 } from "./shared";
 
-export default function FellowshipCoreFeedsImportedEvent({ feed }) {
+export default function FellowshipCoreFeedsImportedEvent({
+  feed,
+  showUserInfo = true,
+}) {
   const { args: { who, rank } = {} } = feed || {};
 
   return (
     <>
-      <AddressUser key={who} add={who} noTooltip />
+      {showUserInfo && <AddressUser key={who} add={who} noTooltip />}
       <span>
         was{" "}
         <FellowshipCoreFeedEventLabel>Imported</FellowshipCoreFeedEventLabel>{" "}

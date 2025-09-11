@@ -1,7 +1,7 @@
 import { isNil } from "lodash-es";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { usePageProps } from "../../../context/page";
-import useIsMounted from "../useIsMounted";
+import { useMountedState } from "react-use";
 import useRealAddress from "../useRealAddress";
 import { extractAddressAndTrackId } from "../../gov2/utils";
 import { useContextApi } from "next-common/context/api";
@@ -24,7 +24,7 @@ export async function getAddressTrackDelegations(api, address) {
 export function useAllMyDelegationList() {
   const api = useContextApi();
   const realAddress = useRealAddress();
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   const { tracks = [] } = usePageProps();
   const [myDelegationList, setMyDelegationList] = useState(null);
   const isLoading = useMemo(() => isNil(myDelegationList), [myDelegationList]);
@@ -49,7 +49,7 @@ export function useAllMyDelegationList() {
       })
       .filter((v) => v);
 
-    if (isMounted.current) {
+    if (isMounted()) {
       setMyDelegationList(delegations);
     }
   }, [isMounted, api, realAddress, tracks]);

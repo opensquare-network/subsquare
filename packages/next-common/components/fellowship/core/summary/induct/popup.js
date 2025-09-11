@@ -1,25 +1,25 @@
 import React, { useCallback } from "react";
-import useAddressInput from "next-common/components/fellowship/core/summary/induct/useAddressInput";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import useSigner from "next-common/components/common/tx/useSigner";
-import useFellowshipMembersUpdateFunc from "next-common/components/fellowship/core/updateFunc";
-import { usePopupParams } from "next-common/components/popupWithSigner/context";
+import useCoreFellowshipUpdateFunc from "next-common/components/collectives/core/updateFunc";
 import { useContextApi } from "next-common/context/api";
+import useAddressInput from "next-common/components/collectives/core/useAddressInput";
+import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
 
 function Content() {
-  const { onClose } = usePopupParams();
+  const pallet = useCoreFellowshipPallet();
   const { component } = useSigner("Origin");
   const api = useContextApi();
   const { address: whoAddress, component: whoInput } = useAddressInput("Who");
 
   const getTxFunc = useCallback(() => {
     if (api && whoAddress) {
-      return api.tx.fellowshipCore.induct(whoAddress);
+      return api.tx[pallet].induct(whoAddress);
     }
-  }, [api, whoAddress]);
+  }, [api, whoAddress, pallet]);
 
-  const onInBlock = useFellowshipMembersUpdateFunc();
+  const onInBlock = useCoreFellowshipUpdateFunc();
 
   return (
     <>
@@ -27,7 +27,6 @@ function Content() {
       {whoInput}
       <TxSubmissionButton
         getTxFunc={getTxFunc}
-        onClose={onClose}
         onInBlock={onInBlock}
         onFinalized={onInBlock}
       />

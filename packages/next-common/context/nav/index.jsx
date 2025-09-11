@@ -1,19 +1,26 @@
-import { CACHE_KEY } from "next-common/utils/constants";
+import { CACHE_KEY, NAV_MENU_TYPE } from "next-common/utils/constants";
+import { getMainMenu } from "next-common/utils/consts/menu";
 import { useCookieValue } from "next-common/utils/hooks/useCookieValue";
-import { createContext, useContext } from "react";
+import { createContext, useContext, useMemo, useState } from "react";
+import { useIsomorphicLayoutEffect } from "react-use";
+import { matchNewMenu } from "next-common/utils/consts/menu";
 
 const NavCollapsedContext = createContext([]);
 const NavSubmenuVisibleContext = createContext([]);
+const NavMenuTypeContext = createContext([]);
 
 export default function NavProvider({
   navCollapsed,
   navSubmenuVisible = "{}",
+  pathname,
   children,
 }) {
   return (
     <NavCollapsedProvider value={navCollapsed}>
       <NavSubmenuVisibleProvider value={navSubmenuVisible}>
-        {children}
+        <NavMenuTypeProvider pathname={pathname}>
+          {children}
+        </NavMenuTypeProvider>
       </NavSubmenuVisibleProvider>
     </NavCollapsedProvider>
   );
@@ -61,5 +68,34 @@ function NavSubmenuVisibleProvider({ children, value }) {
     >
       {children}
     </NavSubmenuVisibleContext.Provider>
+  );
+}
+
+const menu = getMainMenu();
+export function useNavMenuType() {
+  return useContext(NavMenuTypeContext);
+}
+
+import { useRouter } from "next/router";
+function NavMenuTypeProvider({ children }) {
+  const router = useRouter();
+  const matchMenu = useMemo(() => {
+    return (
+      matchNewMenu(menu, router.pathname) || {
+        type: NAV_MENU_TYPE.main,
+        menu: null,
+      }
+    );
+  }, [router.pathname]);
+  const [navMenuType, setNavMenuType] = useState(matchMenu);
+
+  useIsomorphicLayoutEffect(() => {
+    setNavMenuType(matchMenu);
+  }, [matchMenu]);
+
+  return (
+    <NavMenuTypeContext.Provider value={[navMenuType, setNavMenuType]}>
+      {children}
+    </NavMenuTypeContext.Provider>
   );
 }

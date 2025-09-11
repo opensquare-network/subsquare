@@ -2,11 +2,18 @@ import Chains from "../chains";
 import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
-import {
-  ProjectIconTuringDark,
-  ProjectIconTuringLight,
-  ProjectLogoTuringDark,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+import { mergeChainModules } from "./common/modules";
+
+const ProjectIconTuringDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconTuringDark"),
+);
+const ProjectIconTuringLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconTuringLight"),
+);
+const ProjectLogoTuringDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoTuringDark"),
+);
 
 export const DEFAULT_TURING_NODES = [
   {
@@ -59,7 +66,6 @@ const turing = {
   blockTime: 12000,
   hasElections: false,
   ss58Format: 51,
-  snsCoverCid: "bafybeidmqvyfi467agi4cum26idgh5h56wmegrjh7jnl5wvtkzbvgucmpm",
   endpoints: DEFAULT_TURING_NODES,
   avatar: ProjectIconTuringLight,
   darkAvatar: ProjectIconTuringDark,
@@ -69,11 +75,15 @@ const turing = {
   links,
   group: MenuGroups.KusamaAndParachains,
   postLabels: defaultPostLabels,
-  hasSubscan: true,
   useVoteCall: true,
   description: "The Web 3.0 Hub for Automated DeFi and Payments",
-  modules: {
-    democracy: true,
+  modules: mergeChainModules({
+    treasury: {
+      tips: false,
+    },
+  }),
+  integrations: {
+    subscan: true,
   },
   cssVarsLight: {
     theme100: "rgba(168,44,190,0.10)",
@@ -94,6 +104,7 @@ const turing = {
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",
   },
+  allowWeb2Login: true,
 };
 
 export default turing;

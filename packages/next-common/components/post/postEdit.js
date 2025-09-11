@@ -1,10 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
-import Input from "../input";
+import Input from "next-common/lib/input";
 import EditInput from "../editInput";
-import nextApi from "../../services/nextApi";
-import { toApiType } from "../../utils/viewfuncs";
-import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
+import { useMountedState } from "react-use";
 import ToggleText from "../uploadBanner/toggleText";
 import Uploader from "../uploadBanner/uploader";
 import { usePost, usePostTitle } from "../../context/post";
@@ -12,13 +10,39 @@ import { useDetailType } from "../../context/page";
 import PostLabel from "./postLabel";
 import { detailPageCategory } from "../../utils/consts/business/category";
 import FormItem from "../form/item";
+import { useArticleActions } from "next-common/sima/context/articleActions";
+import { getRealField } from "next-common/sima/actions/common";
+import usePostProxyAuthor from "next-common/hooks/usePostProxyAuthor";
+import { useIsPostAuthor } from "next-common/context/post/useIsPostAuthor";
+import useShouldUseSimaPostEdit from "next-common/sima/hooks/useShouldUseSimaPostEdit";
 
 const UploaderWrapper = styled.div`
   margin-top: 16px;
 `;
 
-export default function PostEdit({ setIsEdit, updatePost }) {
-  const type = useDetailType();
+function SimaEditInput({ update, ...props }) {
+  const proxyAuthor = usePostProxyAuthor();
+  const isAuthor = useIsPostAuthor();
+  return (
+    <EditInput
+      {...props}
+      updateButtonText={isAuthor ? "Update" : "Update as a proxy"}
+      update={(content, contentType) =>
+        update(content, contentType, !isAuthor ? proxyAuthor : undefined)
+      }
+    />
+  );
+}
+
+function MaybeSimaEditInput(props) {
+  const isUseSimaEdit = useShouldUseSimaPostEdit();
+  if (isUseSimaEdit) {
+    return <SimaEditInput {...props} />;
+  }
+  return <EditInput {...props} />;
+}
+
+export default function PostEdit({ setIsEdit }) {
   const post = usePost();
   const defaultTitle = usePostTitle();
   const [title, setTitle] = useState(defaultTitle);
@@ -26,6 +50,7 @@ export default function PostEdit({ setIsEdit, updatePost }) {
   const [bannerCid, setBannerCid] = useState(post.bannerCid);
   const [selectedLabels, setSelectedLabels] = useState(post.labels || []);
   const postType = useDetailType();
+  const { provideContext, reloadPost } = useArticleActions();
 
   const [isSetBanner, setIsSetBanner] = useState(!!post.bannerCid);
   useEffect(() => {
@@ -35,20 +60,23 @@ export default function PostEdit({ setIsEdit, updatePost }) {
   }, [isSetBanner]);
 
   const editPost = useCallback(
-    async (content, contentType) => {
-      const url = `${toApiType(type)}/${post._id}`;
-      return await nextApi.patch(url, {
-        title,
-        content,
-        contentType,
-        bannerCid,
-        labels: selectedLabels,
-      });
+    async (content, contentType, realAddress) => {
+      return await provideContext(
+        post,
+        {
+          title,
+          content,
+          contentType,
+          bannerCid,
+          labels: selectedLabels,
+        },
+        getRealField(realAddress),
+      );
     },
-    [type, post, bannerCid, title, selectedLabels],
+    [post, bannerCid, title, selectedLabels, provideContext],
   );
 
-  const isMounted = useIsMountedBool();
+  const isMounted = useMountedState();
 
   return (
     <div>
@@ -87,12 +115,12 @@ export default function PostEdit({ setIsEdit, updatePost }) {
       )}
 
       <FormItem label="Issue">
-        <EditInput
+        <MaybeSimaEditInput
           editContent={post.content || ""}
           editContentType={post.contentType}
           onFinishedEdit={async (reload) => {
             if (reload) {
-              await updatePost();
+              await reloadPost();
             }
 
             if (isMounted()) {

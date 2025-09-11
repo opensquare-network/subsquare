@@ -1,7 +1,10 @@
 const MenuGroups = {
   PolkadotAndParachains: "Polkadot & Parachains",
   KusamaAndParachains: "Kusama & Parachains",
-  Solochain: "Solochains & testnets",
+  WestendAndParachains: "Westend and Parachains",
+  Solochain: "Solochains",
+  Testnet: "Testnets",
+  Paseo: "Paseo",
 };
 
 export default MenuGroups;

@@ -1,11 +1,11 @@
 import { withCommonProps } from "next-common/lib";
 import AccountLayout from "next-common/components/layout/AccountLayout";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import MyDelegations from "components/myDelegation/myDelegations";
+import MyDelegations from "next-common/components/pages/components/myDelegation/myDelegations";
 
 export default function AccountMyDelegationsPage() {
   return (
-    <AccountLayout>
+    <AccountLayout seoInfo={{ title: "Account delegations management" }}>
       <MyDelegations />
     </AccountLayout>
   );

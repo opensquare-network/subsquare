@@ -1,4 +1,4 @@
-import Input from "next-common/components/input";
+import NumberInput from "next-common/lib/input/number";
 import PopupLabel from "next-common/components/popup/label";
 import Tab from "next-common/components/tab";
 import { useEffect, useMemo, useState } from "react";
@@ -51,6 +51,7 @@ export default function EnactmentBlocks({ track, setEnactment }) {
     setEnactment({
       at: parseInt(initialAt),
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isInvalid, initialAt, afterBlocks, tabIndex]);
 
   return (
@@ -72,20 +73,22 @@ export default function EnactmentBlocks({ track, setEnactment }) {
           setSelectedTabId={setTabIndex}
         />
         {tabIndex === "after" ? (
-          <Input
+          <NumberInput
             key="after-input"
             value={afterBlocks}
             placeholder="0"
             symbol="Blocks"
-            onChange={(e) => setAfterBlocks(e.target.value)}
+            controls={false}
+            onValueChange={setAfterBlocks}
           />
         ) : (
-          <Input
+          <NumberInput
             key="at-input"
             value={initialAt}
             placeholder="0"
             symbol="Blocks"
-            onChange={(e) => setInitialAt(e.target.value)}
+            controls={false}
+            onValueChange={setInitialAt}
           />
         )}
       </div>

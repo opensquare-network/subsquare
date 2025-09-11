@@ -14,10 +14,10 @@ export function removeTrailingSlash(domain = "") {
   return domain;
 }
 
-export function objectToQueryString(obj){
+export function objectToQueryString(obj) {
   const searchParams = new URLSearchParams();
   Object.keys(obj).forEach((key) => {
-    if(obj[key]){
+    if (obj[key]) {
       searchParams.append(key, obj[key]);
     }
   });

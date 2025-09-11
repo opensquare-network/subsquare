@@ -1,7 +1,4 @@
-import { getExcludeChains } from "../../viewfuncs";
-import Chains from "../chains";
-import { sumBy } from "lodash-es";
-import { startCase } from "lodash-es";
+import { sumBy, capitalize, startCase } from "lodash-es";
 import { MenuReferenda } from "@osn/icons/subsquare";
 
 export const name = "REFERENDA";
@@ -11,36 +8,29 @@ export const Names = {
   all: "All",
 };
 
-export function getReferendaMenu(tracks = [], currentTrackId) {
+export function getReferendaMenu(tracks = [], currentTrackId, hotMenu = false) {
   const totalActiveCount = sumBy(tracks, (t) => t.activeCount || 0);
 
   const menu = {
-    name: Names.referenda,
-    excludeToChains: getExcludeChains([
-      Chains.development,
-      Chains.kusama,
-      Chains.moonriver,
-      Chains.moonbeam,
-      Chains.polkadot,
-      Chains.bifrost,
-      Chains.bifrostPolkadot,
-      Chains.vara,
-      Chains.rococo,
-      Chains.darwinia2,
-    ]),
+    name: capitalize(Names.referenda),
     activeCount: totalActiveCount,
+    isHot: hotMenu,
     icon: <MenuReferenda />,
     pathname: "/referenda",
+    hideItemsOnMenu: true,
     items: [
       {
         value: "all",
         name: Names.all,
         pathname: "/referenda",
         activeCount: totalActiveCount,
+
         extraMatchNavMenuActivePathnames: [
           "/referenda/statistics",
           "/referenda/whales",
           "/referenda/whales/history",
+          "/referenda/dv",
+          "/referenda/dv/[id]",
         ],
         excludeToSumActives: true,
       },

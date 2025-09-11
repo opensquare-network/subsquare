@@ -12,9 +12,7 @@ export function AnnouncementNavigator({ cid, height, isLink = true }) {
   let link = `Announcement ${cid.slice(0, 4)}...`;
   if (isLink) {
     link = (
-      <Link href={`/alliance/announcements/${height}_${cid}`} legacyBehavior>
-        {link}
-      </Link>
+      <Link href={`/alliance/announcements/${height}_${cid}`}>{link}</Link>
     );
   }
 
@@ -31,10 +29,7 @@ export function AllianceMotionNavigator({ motion }) {
 
   return (
     <div>
-      <Link
-        href={`/alliance/motions/${getMotionId(motion, chain)}`}
-        legacyBehavior
-      >
+      <Link href={`/alliance/motions/${getMotionId(motion, chain)}`}>
         {`Motion #${shortMotionId(motion)}`}
       </Link>
     </div>
@@ -43,11 +38,17 @@ export function AllianceMotionNavigator({ motion }) {
 
 export default function AnnouncementNavigation() {
   const type = useDetailType();
+
   if (detailPageCategory.ALLIANCE_ANNOUNCEMENT !== type) {
     return null;
   }
 
+  return <AnnouncementNavigationImpl />;
+}
+
+function AnnouncementNavigationImpl() {
   const chainData = usePostOnChainData();
+
   const { motion, cid, height } = chainData;
   if (!motion) {
     return null;

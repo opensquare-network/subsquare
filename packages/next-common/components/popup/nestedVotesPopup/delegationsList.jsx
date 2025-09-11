@@ -61,7 +61,7 @@ function DetailDelegatorList({ items = [] }) {
     },
     {
       name: "VOTES",
-      style: { minWidth: 128, textAlign: "right" },
+      style: { textAlign: "right" },
     },
   ];
 
@@ -74,7 +74,7 @@ function DetailDelegatorList({ items = [] }) {
         add={item.account}
         noTooltip
         maxWidth={296}
-        linkToVotesPage
+        link="/votes"
       />,
       <CapitalListItem
         key="capital"

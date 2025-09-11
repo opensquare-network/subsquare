@@ -1,19 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useRef, useState } from "react";
 import styled, { css } from "styled-components";
-import { useState, useRef } from "react";
-import useOnClickOutside from "../utils/hooks/useOnClickOutside.js";
 import Avatar from "./avatar";
 import Flex from "./styled/flex";
 import Relative from "./styled/relative";
-import { encodeAddressToChain } from "../services/address";
-import { fetchIdentity } from "../services/identity";
 import Identity from "./Identity";
 import Caret from "./icons/caret";
-import { addressEllipsis } from "../utils";
+import { addressEllipsis, isSameAddress } from "../utils";
 import PseudoAvatar from "../assets/imgs/pesudoAvatar.svg";
-import { useChainSettings } from "../context/chain";
 import { normalizeAddress } from "next-common/utils/address.js";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
+import { useClickAway } from "react-use";
+import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 
 const Wrapper = Relative;
 
@@ -49,6 +46,8 @@ const Select = styled(Flex)`
 const NameWrapper = styled.div`
   color: var(--textPrimary);
   flex-grow: 1;
+  width: 100%;
+  overflow: hidden;
   > :first-child {
     font-size: 14px;
     font-weight: 500;
@@ -106,38 +105,24 @@ const Item = styled(Flex)`
 `;
 
 function Account({ account }) {
-  const settings = useChainSettings();
-  const [identity, setIdentity] = useState(null);
+  const { identity, hasIdentity } = useIdentityInfo(account?.address);
   const normalizedAddr = normalizeAddress(account?.address);
   const maybeEvmAddress = tryConvertToEvmAddress(normalizedAddr);
   const shortAddr = addressEllipsis(maybeEvmAddress);
-
-  useEffect(() => {
-    setIdentity(null);
-    if (account?.address) {
-      fetchIdentity(
-        settings.identity,
-        encodeAddressToChain(account.address, settings.identity),
-      ).then((identity) => setIdentity(identity));
-    }
-  }, [account?.address, settings]);
 
   return (
     <>
       <Avatar address={maybeEvmAddress} />
       <NameWrapper>
         {/*TODO: use <IdentityOrAddr> after PR merged*/}
-        {identity && identity?.info?.status !== "NO_ID" ? (
-          <>
-            <Identity identity={identity} />
-            <div>{shortAddr}</div>
-          </>
+        {hasIdentity ? (
+          <Identity identity={identity} />
         ) : (
-          <>
-            <div>{account?.name || shortAddr}</div>
-            <div>{shortAddr ?? "--"}</div>
-          </>
+          <div>{account?.name || shortAddr}</div>
         )}
+        <div className="overflow-hidden whitespace-nowrap overflow-ellipsis">
+          {account?.address}
+        </div>
       </NameWrapper>
     </>
   );
@@ -174,7 +159,7 @@ export default function AddressSelect({
   const [show, setShow] = useState(false);
   const ref = useRef();
 
-  useOnClickOutside(ref, () => setShow(false));
+  useClickAway(ref, () => setShow(false));
 
   return (
     <Wrapper ref={ref}>
@@ -200,7 +185,7 @@ export default function AddressSelect({
               }}
               item={item}
               selected={
-                item.address === selectedAccount?.address &&
+                isSameAddress(item.address, selectedAccount?.address) &&
                 item.meta?.source === selectedAccount.meta?.source
               }
             />

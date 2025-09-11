@@ -4,20 +4,26 @@ import CallTree from "next-common/components/proposal/callTree";
 import Tab from "next-common/components/tab";
 import InnerDataTable from "next-common/components/table/innerDataTable";
 import dynamic from "next/dynamic";
-import { useMemo } from "react";
-import { useLocalStorage } from "usehooks-ts";
+import { useContext, useMemo } from "react";
+import { useLocalStorage } from "react-use";
+import { RawCallContext } from "next-common/context/call/raw";
 
 const JsonView = dynamic(() => import("next-common/components/jsonView"), {
   ssr: false,
 });
 
+function CallTreeOnReferendum() {
+  const { call, isLoading } = useContext(RawCallContext);
+  return <CallTree call={call} isLoading={isLoading} />;
+}
+
 export default function CallDetailPopup({
   tableViewData,
   jsonViewData,
   hasTreeViewData = true,
-  rawCall,
-  isLoadingRawCall,
   setShow,
+  customCallTree = null,
+  title = "Call Detail",
 }) {
   const hasTableData = !!tableViewData;
   const hasJsonData = !!jsonViewData;
@@ -48,20 +54,16 @@ export default function CallDetailPopup({
     tabs.find((item) => item.tabId === storageTabId)?.tabId || tabs[0].tabId;
   const setSelectedTabId = setStorageTabId;
 
+  const CallTreeComponent = customCallTree || CallTreeOnReferendum;
+
   return (
-    <Popup
-      title="Call Detail"
-      onClose={() => setShow(false)}
-      className="w-[650px]"
-    >
+    <Popup title={title} onClose={() => setShow(false)}>
       <Tab
         tabs={tabs}
         selectedTabId={selectedTabId}
         setSelectedTabId={setSelectedTabId}
       />
-      {selectedTabId === "tree" && (
-        <CallTree call={rawCall} isLoading={isLoadingRawCall} />
-      )}
+      {selectedTabId === "tree" && CallTreeComponent && <CallTreeComponent />}
       {selectedTabId === "table" && (
         <ArgsWrapper className="wrapper text-textPrimary">
           <InnerDataTable data={tableViewData} />

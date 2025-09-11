@@ -1,72 +1,54 @@
-import Popup from "next-common/components/popup/wrapper/Popup";
-import NewPreimageSVG from "./icons/new-preimage.svg";
-import NewProposalSVG from "./icons/new-proposal.svg";
-import { ArrowRight } from "@osn/icons/subsquare";
-import { cn } from "next-common/utils";
-import { useCallback, useState } from "react";
-import NewPreimagePopup from "next-common/components/preImages/newPreimagePopup";
+import {
+  ArrowRight,
+  SystemNewPreimage,
+  SystemCopyPreimage,
+} from "@osn/icons/subsquare";
+import SecondaryButton from "next-common/lib/button/secondary";
 
-function ChoiceButton({ icon, name, description, onClick }) {
+export function ChoiceButton({
+  icon = null,
+  name,
+  description,
+  onClick,
+  buttonSuffix,
+}) {
   return (
-    <div
-      className={cn(
-        "flex items-center justify-center",
-        "rounded-[8px] border border-neutral400 cursor-pointer hover:border-neutral500",
-      )}
+    <SecondaryButton
       onClick={onClick}
+      iconLeft={icon}
+      iconRight={<ArrowRight className="text-textTertiary" />}
+      className="flex h-auto w-full whitespace-normal p-[11px]"
     >
-      <div className="flex items-center grow">
-        <div className="p-[12px]">{icon}</div>
-        <div>
-          <div className="text14Medium text-textPrimary">{name}</div>
-          <div className="text12Medium text-textTertiary">{description}</div>
+      <div className="flex flex-col grow text-left">
+        <div className="inline-flex items-center">
+          {name}
+          {buttonSuffix}
         </div>
+
+        <div className="text12Medium text-textTertiary">{description}</div>
       </div>
-      <div className="p-[10px] [&_svg_path]:stroke-textTertiary">
-        <ArrowRight />
-      </div>
-    </div>
+    </SecondaryButton>
   );
 }
 
-export default function SubmitProposalPopupCommon({
-  setPreimageHash,
-  setPreimageLength,
-  onClose,
-  newProposalPopup,
-}) {
-  const [showNewPreimagePopup, setShowNewPreimagePopup] = useState(false);
-  const [showNewProposalPopup, setShowNewProposalPopup] = useState(false);
-
-  const onPreimageCreated = useCallback((preimageHash, preimageLength) => {
-    setPreimageHash(preimageHash);
-    setPreimageLength(preimageLength);
-    setShowNewPreimagePopup(false);
-    setShowNewProposalPopup(true);
-  }, []);
-
-  if (showNewPreimagePopup) {
-    return <NewPreimagePopup onClose={onClose} onCreated={onPreimageCreated} />;
-  }
-
-  if (showNewProposalPopup) {
-    return newProposalPopup;
-  }
-
+export function NewPreimageButton({ onClick }) {
   return (
-    <Popup wide title="Submit Proposal" onClose={onClose}>
-      <ChoiceButton
-        icon={<NewPreimageSVG />}
-        name="New preimage"
-        description="Proposals can be submitted with preimage hash-only"
-        onClick={() => setShowNewPreimagePopup(true)}
-      />
-      <ChoiceButton
-        icon={<NewProposalSVG />}
-        name="I already have a preimage"
-        description="Copy preimage hash to continue submitting a proposal"
-        onClick={() => setShowNewProposalPopup(true)}
-      />
-    </Popup>
+    <ChoiceButton
+      icon={<SystemNewPreimage className="text-textTertiary mr-1" />}
+      name="New preimage"
+      description="Proposals can be submitted with preimage hash-only"
+      onClick={onClick}
+    />
+  );
+}
+
+export function NewProposalFromPreimageButton({ onClick }) {
+  return (
+    <ChoiceButton
+      icon={<SystemCopyPreimage className="text-textTertiary mr-1" />}
+      name="I already have a preimage"
+      description="Copy preimage hash to continue submitting a proposal"
+      onClick={onClick}
+    />
   );
 }

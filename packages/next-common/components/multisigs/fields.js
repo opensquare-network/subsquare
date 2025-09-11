@@ -1,18 +1,45 @@
 import Copyable from "next-common/components/copyable";
 import { cn, textEllipsis } from "next-common/utils";
-import { useState } from "react";
-import CallPopup from "./callPopup";
 import Tooltip from "next-common/components/tooltip";
 import ExternalLink from "next-common/components/externalLink";
-import { useChain } from "next-common/context/chain";
-import ExplorerLink from "next-common/components/links/explorerLink";
+import { useChain, useChainSettings } from "next-common/context/chain";
 import AddressUser from "next-common/components/user/addressUser";
+import { sortAddresses } from "@polkadot/util-crypto";
+import { useCallPopup } from "./context/callPopupContext";
+import { isNil } from "lodash-es";
 
 export function When({ height, index }) {
   const chain = useChain();
+  const { integrations, assethubMigration } = useChainSettings();
+
+  if (
+    (!integrations?.statescan && !integrations?.subscan) ||
+    isNil(height) ||
+    isNil(index)
+  ) {
+    return null;
+  }
+
+  let baseUrl = null;
+
+  if (integrations?.statescan) {
+    let domain = null;
+    if (assethubMigration?.migrated) {
+      domain = assethubMigration?.statescanAssethubDomain || null;
+    } else {
+      domain = integrations?.statescan?.domain || chain;
+    }
+
+    baseUrl = `https://${domain}.statescan.io/#/extrinsics`;
+  } else if (integrations?.subscan) {
+    baseUrl = `https://${
+      integrations?.subscan?.domain || chain
+    }.subscan.io/extrinsic`;
+  }
+
   return (
     <ExternalLink
-      href={`https://${chain}.subscan.io/extrinsic/${height}-${index}`}
+      href={`${baseUrl}/${height}-${index}`}
       className="hover:!underline flex cursor-pointer gap-[4px] text-textPrimary"
       externalIcon={false}
     >
@@ -22,7 +49,16 @@ export function When({ height, index }) {
 }
 
 export function Call({ when, callHash, call, callHex, right = false }) {
-  const [showPopup, setShowPopup] = useState(false);
+  const { setShowPopup, setCallPopupData } = useCallPopup();
+
+  const handleClick = () => {
+    setCallPopupData({
+      call,
+      callHex,
+      blockHeight: when.height,
+    });
+    setShowPopup(true);
+  };
 
   return (
     <div className={cn("flex flex-col")}>
@@ -32,7 +68,7 @@ export function Call({ when, callHash, call, callHex, right = false }) {
             "cursor-pointer text14Medium hover:underline",
             right ? "text-right" : "",
           )}
-          onClick={() => setShowPopup(true)}
+          onClick={handleClick}
         >
           {call?.section}.{call?.method}
         </span>
@@ -48,32 +84,28 @@ export function Call({ when, callHash, call, callHex, right = false }) {
           {textEllipsis(callHash, 6, 4)}
         </span>
       </Copyable>
-      {showPopup && (
-        <CallPopup
-          call={call}
-          callHex={callHex}
-          blockHeight={when.height}
-          setShow={setShowPopup}
-        />
-      )}
     </div>
   );
 }
 
-function AddressesTooltip({ addresses = [] }) {
+export function AddressesTooltip({
+  addresses = [],
+  className = "",
+  addressMaxWidth,
+}) {
   if (!addresses || addresses.length <= 0) {
     return null;
   }
 
   return (
-    <ul>
+    <ul className={cn(className)}>
       {(addresses || []).map((address, index) => (
         <li key={index} className="leading-5">
           <AddressUser
             add={address}
             ellipsis={false}
-            color="var(--textPrimaryContrast)"
-            fontSize={12}
+            maxWidth={addressMaxWidth}
+            className="text12Medium text-textPrimaryContrast"
           />
         </li>
       ))}
@@ -94,9 +126,12 @@ export function Approving({ approvals, threshold }) {
 }
 
 export function Signatories({ signatories = [] }) {
+  const { ss58Format } = useChainSettings();
+  const sortedSignatories = sortAddresses(signatories, ss58Format);
+
   return (
-    <Tooltip content={<AddressesTooltip addresses={signatories} />}>
-      <span>{signatories?.length}</span>
+    <Tooltip content={<AddressesTooltip addresses={sortedSignatories} />}>
+      <span>{sortedSignatories?.length}</span>
     </Tooltip>
   );
 }
@@ -107,7 +142,7 @@ export const MultisigStatus = {
   Executed: "Executed",
 };
 
-export function Status({ name, args = {}, updateAt }) {
+export function Status({ name, args = {} }) {
   let textColor = "";
   switch (name) {
     case MultisigStatus.Approving: {
@@ -127,16 +162,5 @@ export function Status({ name, args = {}, updateAt }) {
     }
   }
 
-  const textComponent = (
-    <span className={cn("text14Medium", textColor)}>{name}</span>
-  );
-
-  if (updateAt) {
-    return (
-      <ExplorerLink indexer={updateAt} style={{ display: "inline" }}>
-        {textComponent}
-      </ExplorerLink>
-    );
-  }
-  return textComponent;
+  return <span className={cn("text14Medium", textColor)}>{name}</span>;
 }

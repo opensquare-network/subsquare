@@ -1,13 +1,12 @@
 import DetailItem from "components/detailItem";
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Timeline from "components/publicProposal/timeline";
 import Business from "components/publicProposal/business";
 import Metadata from "next-common/components/publicProposal/metadata";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import Second from "next-common/components/publicProposal/second";
-import { useAddressVotingBalance } from "utils/hooks";
 import { isNil } from "lodash-es";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
@@ -20,6 +19,10 @@ import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
+import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
+import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
+import { useSelector } from "react-redux";
+import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 
 function PublicProposalContent() {
   const post = usePost();
@@ -41,50 +44,56 @@ function PublicProposalContent() {
   const hasCanceled = ["Canceled", "Cleared", "Removed"].includes(state);
 
   const timeline = publicProposal?.timeline;
-  const lastTimelineBlockHeight =
-    timeline?.[timeline?.length - 1]?.indexer.blockHeight;
-  const secondsAtBlockHeight = isEnded
-    ? lastTimelineBlockHeight - 1
-    : undefined;
+  const indexer = timeline?.[timeline?.length - 1]?.indexer || {};
+  const blockTime = useSelector(blockTimeSelector);
+
+  const lastIndexer = isEnded
+    ? {
+        blockTime: indexer?.blockTime - blockTime,
+        blockHeight: indexer?.blockHeight - 1,
+      }
+    : null;
 
   const treasuryProposals = publicProposal?.treasuryProposals;
   const call = publicProposal?.preImage?.call || publicProposal?.call;
 
   return (
-    <ContentWithComment>
-      <DetailItem />
-      <Second
-        proposalIndex={proposalIndex}
-        hasTurnIntoReferendum={hasTurnIntoReferendum}
-        hasCanceled={hasCanceled}
-        useAddressVotingBalance={useAddressVotingBalance}
-        atBlockHeight={secondsAtBlockHeight}
-      />
-      <DetailMultiTabs
-        call={
-          call && (
-            <DemocracyPublicProposalCall
-              call={call}
-              shorten={publicProposal.preImage?.shorten}
-              proposalIndex={publicProposal.proposalIndex}
-              referendumIndex={publicProposal.referendumIndex}
-            />
-          )
-        }
-        business={
-          !!treasuryProposals?.length && (
-            <Business treasuryProposals={treasuryProposals} />
-          )
-        }
-        metadata={<Metadata publicProposal={post?.onchainData} />}
-        timeline={
-          <Timeline
-            publicProposalTimeline={post?.onchainData?.timeline}
-            referendumTimeline={referendum?.onchainData?.timeline}
+    <MaybeSimaContent>
+      <ContentWithComment>
+        <DetailItem />
+        <MigrationConditionalApiProvider indexer={lastIndexer}>
+          <Second
+            proposalIndex={proposalIndex}
+            hasTurnIntoReferendum={hasTurnIntoReferendum}
+            hasCanceled={hasCanceled}
           />
-        }
-      />
-    </ContentWithComment>
+        </MigrationConditionalApiProvider>
+        <DetailMultiTabs
+          call={
+            call && (
+              <DemocracyPublicProposalCall
+                call={call}
+                shorten={publicProposal.preImage?.shorten}
+                proposalIndex={publicProposal.proposalIndex}
+                referendumIndex={publicProposal.referendumIndex}
+              />
+            )
+          }
+          business={
+            !!treasuryProposals?.length && (
+              <Business treasuryProposals={treasuryProposals} />
+            )
+          }
+          metadata={<Metadata publicProposal={post?.onchainData} />}
+          timeline={
+            <Timeline
+              publicProposalTimeline={post?.onchainData?.timeline}
+              referendumTimeline={referendum?.onchainData?.timeline}
+            />
+          }
+        />
+      </ContentWithComment>
+    </MaybeSimaContent>
   );
 }
 
@@ -127,7 +136,9 @@ export default function DemocracyProposalPage({ detail }) {
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
 
-  const { result: detail } = await nextApi.fetch(`democracy/proposals/${id}`);
+  const { result: detail } = await backendApi.fetch(
+    `democracy/proposals/${id}`,
+  );
 
   if (!detail) {
     return getNullDetailProps(id, { referendum: null });
@@ -135,7 +146,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
 
   let referendum;
   if (!isNil(detail.referendumIndex)) {
-    const { result } = await nextApi.fetch(
+    const { result } = await backendApi.fetch(
       `democracy/referendums/${detail.referendumIndex}`,
     );
     referendum = result;
@@ -146,7 +157,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
     context,
   );
 
-  const { result: summary } = await nextApi.fetch("summary");
+  const { result: summary } = await backendApi.fetch("overview/summary");
 
   return {
     props: {

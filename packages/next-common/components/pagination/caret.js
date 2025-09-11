@@ -5,7 +5,7 @@ import CaretRight from "../../assets/imgs/icons/pager-caret-right.svg";
 import Link from "next/link";
 import styled from "styled-components";
 
-const LinkInnerWrapper = styled.a`
+const LinkInnerWrapper = styled.span`
   display: inline-flex;
   align-items: center;
 `;
@@ -27,7 +27,6 @@ export default function PageCaret({
       scroll={!shallow}
       href={`${url}?${urlParams}`}
       passHref
-      legacyBehavior
     >
       <LinkInnerWrapper
         onClick={(e) => {

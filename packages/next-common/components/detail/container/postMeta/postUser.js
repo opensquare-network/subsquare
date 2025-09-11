@@ -11,13 +11,12 @@ export default function PostUser() {
   const detailType = useDetailType();
   const { sm } = useScreenSize();
   const userMaxWidth = sm ? 236 : 370;
-  const userFontSize = 12;
 
   if (detailType === detailPageCategory.PA_POST) {
     return (
       <PolkassemblyUser
         user={post?.author}
-        fontSize={userFontSize}
+        className="text12Medium text-textPrimary"
         maxWidth={userMaxWidth}
       />
     );
@@ -27,7 +26,7 @@ export default function PostUser() {
     return (
       <SystemUser
         user={post?.author}
-        fontSize={userFontSize}
+        className="text12Medium text-textPrimary"
         maxWidth={userMaxWidth}
       />
     );
@@ -35,7 +34,7 @@ export default function PostUser() {
     return (
       <AddressUser
         add={post?.proposer || post?.finder}
-        fontSize={userFontSize}
+        className="text12Medium text-textPrimary"
         maxWidth={userMaxWidth}
       />
     );
@@ -43,7 +42,7 @@ export default function PostUser() {
     return (
       <AddressUser
         add={post?.authors[0]}
-        fontSize={userFontSize}
+        className="text12Medium text-textPrimary"
         maxWidth={userMaxWidth}
       />
     );

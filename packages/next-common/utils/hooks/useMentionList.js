@@ -7,7 +7,7 @@ import {
 import { uniqBy } from "lodash-es";
 import { useUser } from "../../context/user";
 import { useChain } from "../../context/chain";
-import { addressEllipsis, isKeyRegisteredUser } from "..";
+import { addressEllipsis, isKeyRegisteredUser, isSameAddress } from "..";
 import { tryConvertToEvmAddress } from "../mixedChainUtil";
 
 export default function useMentionList(post, comments) {
@@ -24,10 +24,23 @@ export default function useMentionList(post, comments) {
     let userAppearances = getMentionList(comments);
     if (post.author) {
       userAppearances.push(post.author);
+    } else if (post.proposer) {
+      const exists = userAppearances.find((item) =>
+        isSameAddress(item.address, post.proposer),
+      );
+      if (!exists) {
+        const maybeEvmAddress = tryConvertToEvmAddress(post.proposer);
+        userAppearances.push({
+          username: addressEllipsis(maybeEvmAddress),
+          address: maybeEvmAddress,
+        });
+      }
     }
     userAppearances = uniqBy(userAppearances, (item) => item.username);
     for (const address of post.authors ?? []) {
-      const existing = userAppearances.find((item) => item.address === address);
+      const existing = userAppearances.find((item) =>
+        isSameAddress(item.address, address),
+      );
       if (existing) {
         continue;
       }
@@ -60,7 +73,7 @@ export default function useMentionList(post, comments) {
     loadSuggestions().then((suggestions) => {
       setUsers(suggestions);
     });
-  }, [chain, post, comments]);
+  }, [chain, post, comments, currentUser?.username]);
 
   return users;
 }

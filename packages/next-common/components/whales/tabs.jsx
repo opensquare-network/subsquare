@@ -1,22 +1,20 @@
-import { usePageProps } from "next-common/context/page";
-import TabsList from "../tabs/tabsList";
+import TabsList from "../tabs/list";
 
-export default function WhalesTabs() {
-  const { whales, historyWhales } = usePageProps();
-
+export default function WhalesTabs({ currentCount, historyCount }) {
   return (
     <TabsList
-      isUrlTabs
       tabs={[
         {
+          value: "current",
           label: "Current",
           url: "/referenda/whales",
-          activeCount: whales?.total || 0,
+          activeCount: currentCount || 0,
         },
         {
+          value: "history",
           label: "History",
           url: "/referenda/whales/history",
-          activeCount: historyWhales?.total || 0,
+          activeCount: historyCount || 0,
         },
       ]}
     />

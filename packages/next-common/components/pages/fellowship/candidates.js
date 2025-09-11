@@ -1,6 +1,3 @@
-import useFetchFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFetchFellowshipCoreMembers";
-import { useSelector } from "react-redux";
-import { fellowshipCoreMembersSelector } from "next-common/store/reducers/fellowship/core";
 import { useMemo } from "react";
 import FellowshipMembersLoadable from "next-common/components/pages/fellowship/loadable";
 import FellowshipMemberCommon from "next-common/components/pages/fellowship/common";
@@ -8,27 +5,77 @@ import FellowshipMemberTabs from "next-common/components/fellowship/core/members
 import FellowshipCoreMemberCardListContainer from "next-common/components/fellowship/core/members/listContainer";
 import FellowshipCoreMemberCard from "next-common/components/fellowship/core/members/card";
 import FellowshipMembersEmpty from "./empty";
+import { usePageProps } from "next-common/context/page";
+import CollectivesProvider, {
+  useCollectivesContext,
+} from "next-common/context/collectives/collectives";
+import useFellowshipCoreMembersWithRank from "next-common/hooks/fellowship/core/useFellowshipCoreMembersWithRank";
+import { useMembersWithStatus } from "next-common/components/fellowship/collective/hook/useFellowshipCoreMembersFilter";
+import { useSortedFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
 
 export default function FellowshipCandidatesPage() {
-  useFetchFellowshipCoreMembers();
-  const members = useSelector(fellowshipCoreMembersSelector);
+  const { fellowshipParams } = usePageProps();
+
+  return (
+    <CollectivesProvider section="fellowship" params={fellowshipParams}>
+      <FellowshipCandidatesPageImpl />
+    </CollectivesProvider>
+  );
+}
+
+function useFellowshipMembersData() {
+  const { members: fellowshipMembers } = useSortedFellowshipCollectiveMembers();
+  const { membersWithStatus } = useMembersWithStatus(fellowshipMembers);
+
+  const membersCount = useMemo(
+    () =>
+      (membersWithStatus || []).filter(
+        (member) => member.isFellowshipCoreMember,
+      ).length,
+    [membersWithStatus],
+  );
+
+  const candidatesCount = useMemo(
+    () => (membersWithStatus || []).filter((member) => member.rank <= 0).length,
+    [membersWithStatus],
+  );
+
+  return {
+    membersCount,
+    candidatesCount,
+  };
+}
+
+function FellowshipCandidatesPageImpl() {
+  const { params } = useCollectivesContext();
+  const { members } = useFellowshipCoreMembersWithRank();
   const pageMembers = useMemo(
     () => (members || []).filter((member) => member.rank <= 0),
     [members],
   );
   const hasMembers = !!pageMembers.length;
+  const { membersCount, candidatesCount } = useFellowshipMembersData();
 
   return (
     <FellowshipMembersLoadable>
       <FellowshipMemberCommon>
         <div className="mb-4 pr-6 leading-8">
-          <FellowshipMemberTabs members={members} />
+          <FellowshipMemberTabs
+            members={members}
+            membersCount={membersCount}
+            candidatesCount={candidatesCount}
+          />
         </div>
 
         {hasMembers ? (
           <FellowshipCoreMemberCardListContainer>
             {pageMembers.map((member) => (
-              <FellowshipCoreMemberCard key={member.address} member={member} />
+              <FellowshipCoreMemberCard
+                key={member.address}
+                member={member}
+                params={params}
+                isCandidate={true}
+              />
             ))}
           </FellowshipCoreMemberCardListContainer>
         ) : (

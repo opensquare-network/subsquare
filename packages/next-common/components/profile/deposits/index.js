@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { profilePreimageDepositsSelector } from "next-common/store/reducers/profile/deposits/preimage";
 import useProfileIdentityDepositsData from "next-common/components/profile/deposits/identity";
 import { useDepositSections } from "next-common/components/myDeposits";
+import { useProfileProxyDepositsData } from "./proxy";
 
 export default function ProfileDeposits() {
   const referenda = useProfileReferendaDepositsData();
@@ -14,6 +15,7 @@ export default function ProfileDeposits() {
   const treasury = useProfileTreasuryDepositsData();
   const identity = useProfileIdentityDepositsData();
   const preimageDeposits = useSelector(profilePreimageDepositsSelector);
+  const proxyDeposits = useProfileProxyDepositsData();
 
   const [activeSections, nonActiveSections] = useDepositSections(
     referenda,
@@ -22,6 +24,7 @@ export default function ProfileDeposits() {
     treasury,
     identity,
     preimageDeposits,
+    proxyDeposits,
   );
 
   return (

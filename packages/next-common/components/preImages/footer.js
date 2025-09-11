@@ -2,7 +2,9 @@ import { Button } from "next-common/components/summary/styled";
 import styled from "styled-components";
 import AddSVG from "next-common/assets/imgs/icons/add.svg";
 import { useState } from "react";
-import NewPreimagePopup from "./newPreimagePopup";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const CreatePreimagePopup = dynamicPopup(() => import("./createPreimagePopup"));
 
 const AddButton = styled(Button)`
   display: flex;
@@ -25,7 +27,7 @@ export default function PreImagesFooter() {
         New Preimage
       </AddButton>
       {showNewPreimagePopup && (
-        <NewPreimagePopup onClose={() => setShowNewPreimagePopup(false)} />
+        <CreatePreimagePopup onClose={() => setShowNewPreimagePopup(false)} />
       )}
     </div>
   );

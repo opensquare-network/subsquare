@@ -1,8 +1,9 @@
-import { usePageProps } from "next-common/context/page";
-import { getReferendaWhales } from "next-common/services/serverSide/referenda/whales";
+import {
+  fetchReferendaWhales,
+  fetchReferendaWhalesHistory,
+} from "next-common/services/serverSide/referenda/whales";
 import { useRouter } from "next/router";
-import { useState } from "react";
-import { useUpdateEffect } from "react-use";
+import { useAsync } from "react-use";
 import DataList from "../dataList";
 import Pagination from "../pagination";
 import { SecondaryCard } from "../styled/containers/secondaryCard";
@@ -15,13 +16,27 @@ import { tracksCol } from "./columns/tracksCol";
 import { votesPowerCol } from "./columns/votesPowerCol";
 import { winRateCol } from "./columns/winRateCol";
 import WhalesTabs from "./tabs";
+import { defaultPageSize } from "next-common/utils/constants";
 
 export default function WhalesCurrentList() {
-  const { whales } = usePageProps();
-  const [data, setData] = useState(whales);
   const router = useRouter();
-
   const page = Number(router.query.page) || 1;
+
+  const { value: currentData, loading } = useAsync(async () => {
+    return fetchReferendaWhales(page, defaultPageSize).then((resp) => {
+      if (resp.result) {
+        return resp.result;
+      }
+    });
+  }, [page]);
+
+  const { value: historyData } = useAsync(async () => {
+    return fetchReferendaWhalesHistory(1, 1).then((resp) => {
+      if (resp.result) {
+        return resp.result;
+      }
+    });
+  }, []);
 
   const columns = [
     addressCol,
@@ -33,35 +48,35 @@ export default function WhalesCurrentList() {
     winRateCol,
   ];
 
-  const rows = data.items.map((whale) => {
+  const rows = currentData?.items?.map?.((whale) => {
     return columns.map((col) => col.cellRender(whale));
   });
-
-  useUpdateEffect(() => {
-    getReferendaWhales(page, 25).then((resp) => {
-      if (resp.result) {
-        setData(resp.result);
-      }
-    });
-  }, [page]);
 
   return (
     <div className="space-y-4">
       <TitleContainer>List</TitleContainer>
 
       <SecondaryCard className="!p-6">
-        <WhalesTabs />
+        <WhalesTabs
+          currentCount={currentData?.total}
+          historyCount={historyData?.total}
+        />
 
         <hr />
 
-        <DataList className="mt-4" columns={columns} rows={rows} />
+        <DataList
+          className="mt-4"
+          columns={columns}
+          rows={rows}
+          loading={loading}
+        />
 
         <div className="mt-2">
           <Pagination
             shallow
             page={page}
-            pageSize={data.pageSize}
-            total={data.total}
+            pageSize={currentData?.pageSize}
+            total={currentData?.total}
           />
         </div>
       </SecondaryCard>

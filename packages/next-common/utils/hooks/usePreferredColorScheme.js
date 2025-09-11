@@ -1,7 +1,7 @@
-import { useMediaQuery } from "usehooks-ts";
+import { useMedia } from "react-use";
 
 export function usePreferredColorScheme() {
-  const isDark = useMediaQuery("(prefers-color-scheme: dark)");
+  const isDark = useMedia("(prefers-color-scheme: dark)", false);
 
   if (isDark) return "dark";
   else return "light";

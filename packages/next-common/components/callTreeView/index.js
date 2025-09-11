@@ -9,7 +9,7 @@ export default function CallTreeView({ proposal }) {
 
   return (
     <div className="text-textPrimary">
-      <div className="flex flex-col">
+      <div className="flex flex-col text14Medium">
         <span className="font-medium leading-[20px]">{`${section}.${method}`}</span>
         <span className="text-textTertiary text-[12px] leading-[16px]">
           {doc}

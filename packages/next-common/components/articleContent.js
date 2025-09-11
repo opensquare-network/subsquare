@@ -26,7 +26,11 @@ const BannerImage = styled.img`
   margin-bottom: 1rem;
 `;
 
-export default function ArticleContent({ setIsEdit, className = "" }) {
+export default function ArticleContent({
+  setIsEdit,
+  className = "",
+  isFold = false,
+}) {
   const post = usePost();
   const bannerUrl = getBannerUrl(post.bannerCid);
 
@@ -34,7 +38,7 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
     <>
       {bannerUrl && <BannerImage src={bannerUrl} alt="banner image" />}
 
-      <PostContent post={post} />
+      <PostContent post={post} isFold={isFold} />
 
       {isPostEdited(post) && (
         <div className="mt-4 text12Medium text-textTertiary">Edited</div>
@@ -44,12 +48,13 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
 
   const tabs = [
     {
+      value: "content",
       label: "Content",
       content: postContent,
     },
     post.contentSummary?.summary && {
+      value: "ai_summary",
       label: "AI Summary",
-      tooltip: "Powered by OpenAI",
       content: <ContentSummary />,
     },
     {
@@ -62,7 +67,7 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
       ),
     },
   ].filter(Boolean);
-  const [activeTab, setActiveTab] = useState(tabs[0].label);
+  const [activeValue, setActiveValue] = useState(tabs[0].value);
 
   return (
     <Wrapper className={className}>
@@ -77,10 +82,10 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
         <div className="mt-6">
           {post.contentSummary?.summary ? (
             <Tabs
-              activeTabLabel={activeTab}
+              activeTabValue={activeValue}
               tabs={tabs}
               onTabClick={(tab) => {
-                setActiveTab(tab.label);
+                setActiveValue(tab.value);
               }}
             />
           ) : (

@@ -13,6 +13,12 @@ const valueCommon = {
   ...thresholdCommon,
 };
 
+const votesCommon = {
+  ...thresholdCommon,
+  borderWidth: 0,
+  yAxisID: "y1",
+};
+
 export function useSupportThresholdDatasetConfig(data = []) {
   const { purple500 } = useThemeSetting();
 
@@ -51,5 +57,29 @@ export function useApprovalValueDatasetConfig(data = []) {
     data: [...(data || [])],
     borderColor: green500,
     ...valueCommon,
+  };
+}
+
+export function useAyesValueDatasetConfig(data = []) {
+  const { green100Solid } = useThemeSetting();
+  return {
+    label: "Aye",
+    data: [...(data || [])],
+    fill: true,
+    backgroundColor: green100Solid,
+    ...votesCommon,
+    order: 2,
+  };
+}
+
+export function useNaysValueDatasetConfig(data = []) {
+  const { red100Solid } = useThemeSetting();
+  return {
+    label: "Nay",
+    data: [...(data || [])],
+    fill: true,
+    backgroundColor: red100Solid,
+    ...votesCommon,
+    order: 1,
   };
 }

@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { useMountedState } from "react-use";
 import {
   convertPolkassemblyReaction,
   toPolkassemblyCommentListItem,
 } from "next-common/utils/polkassembly";
 import { useChain } from "next-common/context/chain";
-import { isNil } from "lodash-es";
-import nextApi from "next-common/services/nextApi";
-import { uniqBy } from "lodash-es";
+import { isNil, uniqBy } from "lodash-es";
+import { backendApi } from "next-common/services/nextApi";
 import QuickLRU from "quick-lru";
 
 const dataCache = new QuickLRU({ maxSize: 100 });
@@ -17,7 +16,7 @@ export function usePolkassemblyPostData({
   polkassemblyPostType = "discussion",
 }) {
   const chain = useChain();
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   const [comments, setComments] = useState([]);
   const [postReactions, setPostReactions] = useState([]);
   const [loadingComments, setLoadingComments] = useState(false);
@@ -38,15 +37,21 @@ export function usePolkassemblyPostData({
     }
 
     setLoadingComments(true);
-    nextApi
-      .fetch("polkassembly-comments", {
-        postId: polkassemblyId,
-        postType: polkassemblyPostType,
-      })
+    backendApi
+      .fetch(
+        "polkassembly-comments",
+        {
+          postId: polkassemblyId,
+          postType: polkassemblyPostType,
+        },
+        {
+          timeout: 12 * 1000,
+        },
+      )
       .then(({ result }) => {
-        if (isMounted.current) {
+        if (isMounted()) {
           let comments = (result?.comments || [])
-            .filter((item) => item.comment_source !== "subsquare")
+            // .filter((item) => item.comment_source !== "subsquare")
             .map((item) => toPolkassemblyCommentListItem(chain, item));
           comments = uniqBy([...comments].reverse(), "id");
           comments?.sort(
@@ -69,7 +74,7 @@ export function usePolkassemblyPostData({
         }
       })
       .finally(() => {
-        if (isMounted.current) {
+        if (isMounted()) {
           setLoadingComments(false);
         }
       });

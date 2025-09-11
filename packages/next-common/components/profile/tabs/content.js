@@ -5,10 +5,14 @@ import ProfileMultisigs from "../multisigs";
 import ProfileDelegation from "../delegation";
 import ProfileDeposits from "../deposits";
 import ProfileTransfers from "../transfers";
-import ProfileIdentityTimeline from "../identityTimeline";
+import ProfileIdentity from "../identity";
+import ProfileAssets from "../assets";
 import { usePathname } from "next/navigation";
 import { usePageProps } from "next-common/context/page";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
+import ProfileFellowship from "../fellowship";
+import ProfileProxy from "../proxy";
+import CollectivesProvider from "next-common/context/collectives/collectives";
 
 export default function useProfileTabContent() {
   const { id } = usePageProps();
@@ -27,7 +31,25 @@ export default function useProfileTabContent() {
   } else if (pathname.startsWith(`/user/${maybeEvmAddress}/transfers`)) {
     return <ProfileTransfers />;
   } else if (pathname.startsWith(`/user/${maybeEvmAddress}/identity`)) {
-    return <ProfileIdentityTimeline />;
+    return <ProfileIdentity />;
+  } else if (pathname.startsWith(`/user/${maybeEvmAddress}/assets`)) {
+    return <ProfileAssets />;
+  } else if (pathname.startsWith(`/user/${maybeEvmAddress}/fellowship`)) {
+    return (
+      <CollectivesProvider section="fellowship">
+        <ProfileFellowship />
+      </CollectivesProvider>
+    );
+  } else if (pathname.startsWith(`/user/${maybeEvmAddress}/ambassador`)) {
+    return (
+      <CollectivesProvider section="ambassador">
+        <ProfileFellowship />
+      </CollectivesProvider>
+    );
+  } else if (pathname.startsWith(`/user/${maybeEvmAddress}/posted`)) {
+    return <Posted />;
+  } else if (pathname.startsWith(`/user/${maybeEvmAddress}/proxies`)) {
+    return <ProfileProxy />;
   }
 
   return <Posted />;

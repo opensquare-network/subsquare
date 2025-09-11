@@ -1,17 +1,27 @@
 import { EmptyList } from "next-common/utils/constants";
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
-import DemocracyStatistics from "next-common/components/statistics/democracy";
-import TurnoutStatistics from "next-common/components/statistics/track/turnoutStatistics";
+import { backendApi } from "next-common/services/nextApi";
 import BigNumber from "bignumber.js";
 import { useChainSettings } from "next-common/context/chain";
 import DemocracyReferendaLayout from "next-common/components/layout/democracyLayout/referenda";
 import { Header } from "next-common/components/statistics/styled";
 import { cn } from "next-common/utils";
 import { useNavCollapsed } from "next-common/context/nav";
-import VoteTrend from "next-common/components/statistics/track/voteTrend";
-import AddressTrend from "next-common/components/statistics/track/addressTrend";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+
+const VoteTrend = dynamicClientOnly(() =>
+  import("next-common/components/statistics/track/voteTrend"),
+);
+const AddressTrend = dynamicClientOnly(() =>
+  import("next-common/components/statistics/track/addressTrend"),
+);
+const TurnoutStatistics = dynamicClientOnly(() =>
+  import("next-common/components/statistics/track/turnoutStatistics"),
+);
+const DemocracyStatistics = dynamicClientOnly(() =>
+  import("next-common/components/statistics/democracy"),
+);
 
 export default function DemocracyStatisticsPage({
   delegatee,
@@ -21,8 +31,10 @@ export default function DemocracyStatisticsPage({
   summary,
 }) {
   const {
-    modules: { democracy: hasDemocracyModule },
+    modules: { democracy },
   } = useChainSettings();
+
+  const hasDemocracyModule = democracy && !democracy?.archived;
 
   const title = "Democracy Statistics";
   const seoInfo = { title, desc: title };
@@ -39,12 +51,8 @@ export default function DemocracyStatisticsPage({
           <Header className="px-6 mb-4">Referenda</Header>
           <div
             className={cn(
-              "flex gap-4 flex-wrap",
-              "[&_>_div]:min-w-[calc(50%-16px)] [&_>_div]:max-w-[calc(50%-8px)] [&_>_div]:flex-1",
-              !navCollapsed ? "max-md:flex-col" : "max-sm:flex-col",
-              !navCollapsed
-                ? "[&_>_div]:max-md:max-w-full"
-                : "[&_>_div]:max-sm:max-w-full",
+              "grid grid-cols-2 gap-4",
+              !navCollapsed ? "max-md:grid-cols-1" : "max-sm:grid-cols-1",
             )}
           >
             <VoteTrend turnout={turnout} />
@@ -77,16 +85,16 @@ export const getServerSideProps = withCommonProps(async (context) => {
     { result: democracySummary },
     { result: turnout },
   ] = await Promise.all([
-    nextApi.fetch("democracy/delegatee", {
+    backendApi.fetch("democracy/delegatee", {
       sort: JSON.stringify(["delegatedVotes", "desc"]),
       pageSize: 25,
     }),
-    nextApi.fetch("democracy/delegators", {
+    backendApi.fetch("democracy/delegators", {
       sort: JSON.stringify(["votes", "desc"]),
       pageSize: 25,
     }),
-    nextApi.fetch("democracy/summary"),
-    nextApi.fetch("democracy/referenda/turnout"),
+    backendApi.fetch("democracy/summary"),
+    backendApi.fetch("democracy/referenda/turnout"),
   ]);
 
   const normailizedTurnout = turnout?.map((item) => ({

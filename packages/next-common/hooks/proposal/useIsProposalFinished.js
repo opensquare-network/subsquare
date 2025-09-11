@@ -12,6 +12,7 @@ import useIsTreasuryProposalFinished from "next-common/hooks/treasury/proposal/u
 import useIsTipFinished from "next-common/hooks/treasury/tip/useIsTipFinished";
 import useIsBountyFinished from "next-common/hooks/treasury/bounty/useIsBountyFinished";
 import useIsChildBountyFinished from "next-common/hooks/treasury/bounty/useIsChildBountyFinished";
+import useIsTreasurySpendFinished from "next-common/hooks/treasury/spend/useIsTreasurySpendFinished";
 
 export default function useIsProposalFinished() {
   const type = useDetailType();
@@ -28,6 +29,7 @@ export default function useIsProposalFinished() {
   const isTipFinished = useIsTipFinished();
   const isBountyFinished = useIsBountyFinished();
   const isChildBountyFinished = useIsChildBountyFinished();
+  const isTreasurySpendFinished = useIsTreasurySpendFinished();
 
   useEffect(() => {
     if (
@@ -45,6 +47,8 @@ export default function useIsProposalFinished() {
       setIsFinished(isDemocracyExternalFinished);
     } else if (type === detailPageCategory.TREASURY_PROPOSAL) {
       setIsFinished(isTreasuryProposalFinished);
+    } else if (type === detailPageCategory.TREASURY_SPEND) {
+      setIsFinished(isTreasurySpendFinished);
     } else if (type === detailPageCategory.TREASURY_TIP) {
       setIsFinished(isTipFinished);
     } else if (type === detailPageCategory.TREASURY_BOUNTY) {
@@ -67,7 +71,20 @@ export default function useIsProposalFinished() {
       // set false as default, so we will subscribe proposal post detail by default
       setIsFinished(false);
     }
-  }, [type, timeline]);
+  }, [
+    type,
+    timeline,
+    openGovReferendumFinishedHeight,
+    isDemocracyReferendumVoteFinished,
+    isDemocracyProposalFinished,
+    isDemocracyExternalFinished,
+    isTreasuryProposalFinished,
+    isTreasurySpendFinished,
+    isTipFinished,
+    isBountyFinished,
+    isChildBountyFinished,
+    isMotionEnd,
+  ]);
 
   return isFinished;
 }

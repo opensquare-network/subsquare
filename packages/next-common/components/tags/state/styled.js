@@ -1,16 +1,15 @@
 import styled from "styled-components";
 import tw from "tailwind-styled-components";
 
-const Common = styled.span`
-  display: inline-flex;
-  align-items: center;
-  padding: 2px 8px;
-  font-size: 12px;
-  line-height: 16px;
-  font-weight: 500;
-  border-radius: 4px;
-  color: var(--textPrimaryContrast);
+const Common = tw.span`
+  inline-flex items-center
+  py-0.5 px-2
+  text12Medium text-textPrimaryContrast
+  rounded
+  capitalize
 `;
+
+export const CommonTag = Common;
 
 export const StartTag = styled(Common)`
   background: var(--azure500);

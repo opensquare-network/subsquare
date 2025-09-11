@@ -1,8 +1,8 @@
 import NoData from "next-common/components/noData";
 import DemocracyNewDelegation from "next-common/components/summary/democracySummaryDelegation/newDelegation";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { delegationDemocracyDelegatesAddressApi } from "next-common/services/url";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useDebounce } from "react-use";
 import Delegates from "./members";
 import DelegatesLoadable from "../common/loadable";
@@ -13,13 +13,14 @@ export default function DemocracyDelegationSearchResult({
 }) {
   const [result, setResult] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const delegates = useMemo(() => [result], [result]);
 
   useDebounce(
     () => {
       setIsLoading(true);
       setResult(null);
 
-      nextApi
+      backendApi
         .fetch(delegationDemocracyDelegatesAddressApi(searchAddress))
         .then((resp) => {
           if (resp.result) {
@@ -58,7 +59,7 @@ export default function DemocracyDelegationSearchResult({
 
   return (
     <DelegatesLoadable delegates={result}>
-      <Delegates delegates={[result]} />
+      <Delegates delegates={delegates} />
     </DelegatesLoadable>
   );
 }

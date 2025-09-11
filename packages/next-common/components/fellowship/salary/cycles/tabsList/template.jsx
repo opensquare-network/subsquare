@@ -3,18 +3,19 @@ import { noop } from "lodash-es";
 import DataList from "next-common/components/dataList";
 import Pagination from "next-common/components/pagination";
 import Tabs from "next-common/components/tabs";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { useState } from "react";
-import { useUpdateEffect } from "usehooks-ts";
+import { useUpdateEffect } from "react-use";
 
 export default function FellowshipSalaryCycleDetailListTemplate({
   items = [],
-  defaultTab,
+  defaultTabValue,
   onTabClick = noop,
 }) {
   const tabs = items.map((m) => {
     return {
       url: m.url,
+      value: m.name,
       label: m.name,
       activeCount: m.activeCount,
       content: m.content || (
@@ -22,17 +23,17 @@ export default function FellowshipSalaryCycleDetailListTemplate({
       ),
     };
   });
-  const [activeTabLabel, setActiveTabLabel] = useState(
-    defaultTab ?? tabs[0]?.label,
+  const [activeTabValue, setActiveTabValue] = useState(
+    defaultTabValue ?? tabs[0]?.value,
   );
 
   return (
     <div>
       <Tabs
         tabs={tabs}
-        activeTabLabel={activeTabLabel}
+        activeTabValue={activeTabValue}
         onTabClick={(tab) => {
-          setActiveTabLabel(tab.label);
+          setActiveTabValue(tab.value);
           onTabClick(tab);
         }}
       />
@@ -52,7 +53,8 @@ export function FellowshipSalaryCycleDetailListTemplateTable({
 
   function fetchData() {
     if (api?.path) {
-      nextApi
+      setLoading(true);
+      backendApi
         .fetch(api?.path, { ...api.params, page, pageSize: result?.pageSize })
         .then((resp) => {
           if (resp.result) {

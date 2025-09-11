@@ -5,12 +5,13 @@ import {
   getThresholdOfSimplyMajority,
   getThresholdOfSuperMajorityAgainst,
   getThresholdOfSuperMajorityApprove,
-} from "utils/referendumUtil";
+} from "next-common/utils/referendumUtil";
 import Threshold from "../threshold";
 import { isNil } from "lodash-es";
 import VoteBarBarProgress from "./barProgress";
 import { getTallyVotesBarPercent } from "next-common/utils/referendumCommon";
 import tw from "tailwind-styled-components";
+import Tooltip from "next-common/components/tooltip";
 
 const Wrapper = styled.div``;
 
@@ -78,25 +79,30 @@ function VoteBar({ tally, electorate, threshold, percentage, thin = false }) {
             <ContentPercentage>{ayesPercent}%</ContentPercentage>
             <ContentDescription>Aye</ContentDescription>
           </ContentAyeGroup>
-
-          <ContentThresholdGroup>
-            <ContentPercentage>
-              {threshold === "percentage" && !isNil(percentage) && (
-                <span>{percentageStr}</span>
-              )}
-              {threshold && threshold !== "percentage" && (
-                <span>Passing threshold</span>
-              )}
-            </ContentPercentage>
-            <ContentDescription>
-              {threshold === "percentage" && !isNil(percentage) && (
-                <span>Threshold</span>
-              )}
-              {threshold && threshold !== "percentage" && (
-                <span>{threshold}</span>
-              )}
-            </ContentDescription>
-          </ContentThresholdGroup>
+          <Tooltip
+            className="cursor-pointer"
+            contentClassName="max-w-[240px]"
+            content="The minimum percentage of approval required for the proposal to pass."
+          >
+            <ContentThresholdGroup>
+              <ContentPercentage>
+                {threshold === "percentage" && !isNil(percentage) && (
+                  <span>{percentageStr}</span>
+                )}
+                {threshold && threshold !== "percentage" && (
+                  <span>Passing threshold</span>
+                )}
+              </ContentPercentage>
+              <ContentDescription>
+                {threshold === "percentage" && !isNil(percentage) && (
+                  <span>Threshold</span>
+                )}
+                {threshold && threshold !== "percentage" && (
+                  <span>{threshold}</span>
+                )}
+              </ContentDescription>
+            </ContentThresholdGroup>
+          </Tooltip>
 
           <ContentNayGroup>
             <ContentPercentage>{naysPercent}%</ContentPercentage>

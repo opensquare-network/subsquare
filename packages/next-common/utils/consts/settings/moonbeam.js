@@ -3,11 +3,18 @@ import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
 import ChainTypes from "../chainTypes";
-import {
-  ProjectIconMoonbeamDark,
-  ProjectIconMoonbeamLight,
-  ProjectLogoMoonbeamDark,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+import { mergeChainModules } from "./common/modules";
+
+const ProjectIconMoonbeamDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconMoonbeamDark"),
+);
+const ProjectIconMoonbeamLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconMoonbeamLight"),
+);
+const ProjectLogoMoonbeamDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoMoonbeamDark"),
+);
 
 export const DEFAULT_MOONBEAM_NODES = [
   {
@@ -29,7 +36,6 @@ const moonbeam = {
   blockTime: 12000,
   hasElections: false,
   ss58Format: 18,
-  snsCoverCid: "QmQ2r48Wf6yu8d9k9VEejvcRoxNDVuiqW12ui7RCiXgWQg",
   endpoints: DEFAULT_MOONBEAM_NODES,
   avatar: ProjectIconMoonbeamLight,
   darkAvatar: ProjectIconMoonbeamDark,
@@ -38,8 +44,6 @@ const moonbeam = {
   navPreferDark: true,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: [...defaultPostLabels, "Treasury Council", "Open Tech.Comm."],
-  hasSubscan: true,
-  subscanDomain: "moonbeam",
   // hideActionButtons: true,
   chainType: ChainTypes.ETHEREUM,
   noDispatchPrecompile: true,
@@ -56,9 +60,18 @@ const moonbeam = {
   },
   description:
     "Solidity Smart Contracts on Polkadot. Moonbeam is a Polkadot parachain designed for developers that combines full Ethereum compatibility with the power of Polkadot.",
-  modules: {
+  modules: mergeChainModules({
     referenda: true,
-    democracy: true,
+    fellowship: true,
+    treasury: {
+      bounties: false,
+      tips: false,
+    },
+  }),
+  integrations: {
+    subscan: {
+      domain: "moonbeam",
+    },
   },
   cssVarsLight: {
     theme100: "rgba(230,0,122,0.10)",
@@ -79,6 +92,10 @@ const moonbeam = {
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",
   },
+  multisigWallets: {
+    signet: true,
+  },
+  allowWeb2Login: true,
 };
 
 export default moonbeam;

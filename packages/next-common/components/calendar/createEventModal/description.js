@@ -1,11 +1,11 @@
 import React from "react";
-import TextInput from "../../../components/textInput";
+import TextAreaInput from "../../../components/textAreaInput";
 import Labeled from "../../../components/Labeled";
 
 export default function Description({ setValue }) {
   return (
     <Labeled text={"Description"}>
-      <TextInput
+      <TextAreaInput
         placeholder="Please fill the description..."
         setValue={setValue}
       />

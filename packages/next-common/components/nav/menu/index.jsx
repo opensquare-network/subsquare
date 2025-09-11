@@ -1,110 +1,54 @@
-import NavCommonMenu from "./common";
-import NavMenuDivider from "../divider";
-import NavFeaturedMenu from "./featured";
-import NavArchivedMenu from "./archived";
-import {
-  ArrowCircleLeft,
-  ArrowRight,
-  MenuArchived,
-} from "@osn/icons/subsquare";
+import { ArrowCircleLeft } from "@osn/icons/subsquare";
 import NavMenuItem from "./item";
-import { getNavMenu } from "next-common/utils/consts/menu";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  navMenuShowMainMenuSelector,
-  setMenuShowMainMenu,
-} from "next-common/store/reducers/navSlice";
-import { usePageProps } from "next-common/context/page";
+import { useRouter } from "next/router";
+import { useNavMenuType } from "next-common/context/nav";
+import { NAV_MENU_TYPE } from "next-common/utils/constants";
+import useMainMenuData from "next-common/hooks/useMainMenuData";
 
 export default function NavMenu({ collapsed }) {
-  const { tracks, fellowshipTracks, summary, detail } = usePageProps();
-  const showMainMenu = useSelector(navMenuShowMainMenuSelector);
-  const showArchivedMenu = !showMainMenu;
+  const [navMenuType, setNavMenuType] = useNavMenuType();
+  const router = useRouter();
+  const mainMenu = useMainMenuData();
 
-  const { featuredMenu, archivedMenu } = getNavMenu({
-    tracks,
-    fellowshipTracks,
-    summary,
-    currentTrackId: detail?.track,
-  });
-
-  return (
-    <div>
-      {showMainMenu && (
-        <MainMenu
-          collapsed={collapsed}
-          featuredMenu={featuredMenu}
-          hasArchivedMenu={!!archivedMenu?.length}
-        />
-      )}
-
-      {showArchivedMenu && (
-        <ArchivedMenu collapsed={collapsed} archivedMenu={archivedMenu} />
-      )}
-    </div>
-  );
-}
-
-function MainMenu({ collapsed, featuredMenu = [], hasArchivedMenu = false }) {
-  return (
-    <>
-      <NavCommonMenu collapsed={collapsed} />
-
-      <NavMenuDivider />
-      <NavFeaturedMenu collapsed={collapsed} menu={featuredMenu} />
-
-      {hasArchivedMenu && (
-        <>
-          <NavMenuDivider />
-          <ArchivedMenuButton collapsed={collapsed} />
-        </>
-      )}
-    </>
-  );
-}
-
-function ArchivedMenu({ collapsed, archivedMenu = [] }) {
-  const dispatch = useDispatch();
-
-  return (
-    <>
-      <ul>
-        <li>
-          <NavMenuItem
-            icon={<ArrowCircleLeft />}
-            label="Back"
-            onClick={() => {
-              dispatch(setMenuShowMainMenu(true));
-            }}
-            collapsed={collapsed}
-          />
-        </li>
-      </ul>
-
-      <NavMenuDivider />
-
-      <NavArchivedMenu collapsed={collapsed} menu={archivedMenu} />
-    </>
-  );
-}
-
-function ArchivedMenuButton({ collapsed }) {
-  const dispatch = useDispatch();
+  let menu = [];
+  if (navMenuType.type === NAV_MENU_TYPE.main) {
+    menu = mainMenu;
+  } else if (navMenuType.type === NAV_MENU_TYPE.subspace) {
+    menu = [
+      {
+        name: "Back",
+        icon: <ArrowCircleLeft />,
+        onClick() {
+          router.push("/");
+        },
+      },
+      { type: "divider" },
+      ...(navMenuType.menu || []),
+    ];
+  } else if (navMenuType.type === NAV_MENU_TYPE.archived) {
+    menu = [
+      {
+        name: "Back",
+        icon: <ArrowCircleLeft />,
+        onClick() {
+          setNavMenuType({ type: NAV_MENU_TYPE.main, menu: null });
+        },
+      },
+      { type: "divider" },
+      ...(navMenuType.menu || []),
+    ];
+  }
 
   return (
     <ul>
       <li>
-        <NavMenuItem
-          collapsed={collapsed}
-          icon={<MenuArchived />}
-          label="Archived"
-          onClick={() => {
-            dispatch(setMenuShowMainMenu(false));
-          }}
-          extra={
-            <ArrowRight className="[&_path]:stroke-navigationTextTertiary" />
-          }
-        />
+        {menu.map((m, idx) => (
+          <NavMenuItem
+            key={`${m.value || ""}-${idx}`}
+            {...m}
+            collapsed={collapsed}
+          />
+        ))}
       </li>
     </ul>
   );

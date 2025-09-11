@@ -3,7 +3,7 @@ import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import DelegationLayout from "next-common/components/delegation/layout";
 import ReferendaStats from "next-common/components/delegation/stats/referendaStats";
 import DemocracyStats from "next-common/components/delegation/stats/democracyStats";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import {
   Democracy,
@@ -13,6 +13,7 @@ import {
 } from "next-common/components/profile/votingHistory/common";
 import PalletTabs from "next-common/components/profile/delegation/palletTabs";
 import getChainSettings from "next-common/utils/consts/settings";
+import NoData from "next-common/components/noData";
 
 function Content() {
   const selectedTabId = useModuleTab();
@@ -25,13 +26,13 @@ function Content() {
     return <DemocracyStats />;
   }
 
-  return null;
+  return <NoData text={`No current ${selectedTabId?.toLowerCase()} data`} />;
 }
 
-export default function DelegationStatsPage() {
+export default function DelegationStatsPage({ defaultType }) {
   return (
     <DelegationLayout>
-      <PalletTabs shallow={false}>
+      <PalletTabs defaultTab={defaultType} shallow={false}>
         <div className="flex justify-between mx-[24px] max-sm:flex-col gap-[12px]">
           <span className="text16Bold text-textPrimary">
             Delegation Statistics
@@ -53,47 +54,55 @@ export const getServerSideProps = withCommonProps(async (ctx) => {
 
   const tracksProps = await fetchOpenGovTracksProps();
 
-  if (type === Democracy || (!type && defaultType === Democracy)) {
+  if (
+    type === Democracy.toLowerCase() ||
+    (!type && defaultType === Democracy)
+  ) {
     const [
       { result: delegatee },
       { result: delegators },
       { result: democracySummary },
     ] = await Promise.all([
-      nextApi.fetch("democracy/delegatee", {
+      backendApi.fetch("democracy/delegatee", {
         sort: JSON.stringify(["delegatedVotes", "desc"]),
         pageSize: 25,
       }),
-      nextApi.fetch("democracy/delegators", {
+      backendApi.fetch("democracy/delegators", {
         sort: JSON.stringify(["votes", "desc"]),
         pageSize: 25,
       }),
-      nextApi.fetch("democracy/summary"),
+      backendApi.fetch("democracy/summary"),
     ]);
 
     return {
       props: {
+        defaultType,
         delegatee: delegatee ?? EmptyList,
         delegators: delegators ?? EmptyList,
         democracySummary: democracySummary ?? {},
         ...tracksProps,
       },
     };
-  } else if (type === Referenda || (!type && defaultType === Referenda)) {
+  } else if (
+    type === Referenda.toLowerCase() ||
+    (!type && defaultType === Referenda)
+  ) {
     const [
       { result: tracksStats },
       { result: delegatee },
       { result: tracksReferendaSummary },
     ] = await Promise.all([
-      nextApi.fetch("referenda/tracks"),
-      nextApi.fetch("referenda/delegatee", {
+      backendApi.fetch("referenda/tracks"),
+      backendApi.fetch("referenda/delegatee", {
         sort: JSON.stringify(["votes", "desc"]),
         pageSize: 25,
       }),
-      nextApi.fetch("referenda/summary"),
+      backendApi.fetch("referenda/summary"),
     ]);
 
     return {
       props: {
+        defaultType,
         tracksStats: tracksStats ?? [],
         delegatee: delegatee ?? EmptyList,
         tracksReferendaSummary: tracksReferendaSummary ?? [],
@@ -103,6 +112,7 @@ export const getServerSideProps = withCommonProps(async (ctx) => {
   } else {
     return {
       props: {
+        defaultType: type,
         ...tracksProps,
       },
     };

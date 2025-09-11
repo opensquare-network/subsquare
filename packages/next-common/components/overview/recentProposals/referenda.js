@@ -12,8 +12,8 @@ import { overviewApi } from "next-common/services/url";
 import { usePageProps } from "next-common/context/page";
 
 export function useRecentProposalReferenda() {
-  const { overviewSummary, recentProposals } = usePageProps();
-  const tracks = overviewSummary?.gov2ReferendaTracks;
+  const { recentSummary, recentProposals } = usePageProps();
+  const tracks = recentSummary?.gov2ReferendaTracks;
 
   const menu = getReferendaMenu(tracks);
 

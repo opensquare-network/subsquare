@@ -5,6 +5,7 @@ import DemocracyReferendaVoteTag from "./democracyReferendaVoteTag";
 import { isKintsugiChain } from "next-common/utils/chain";
 import { useChain } from "next-common/context/chain";
 import KintDemocracyReferendaVoteTag from "./kintDemocracyReferendaVoteTag";
+import FellowshipReferendaVoteTag from "./fellowshipReferendaVoteTag";
 
 export default function VoteTag() {
   const type = useDetailType();
@@ -17,6 +18,8 @@ export default function VoteTag() {
       return <KintDemocracyReferendaVoteTag />;
     }
     return <DemocracyReferendaVoteTag />;
+  } else if (type === detailPageCategory.FELLOWSHIP_REFERENDUM) {
+    return <FellowshipReferendaVoteTag />;
   }
 
   return null;

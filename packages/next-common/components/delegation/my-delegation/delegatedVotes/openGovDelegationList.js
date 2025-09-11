@@ -15,17 +15,17 @@ export default function OpenGovDelegationList() {
 
   const columnsDef = [
     ...sharedColumnsDef,
-    [
-      {
-        name: "",
-        style: {
-          textAlign: "right",
-          width: 80,
-          minWidth: 80,
-        },
+    {
+      name: "",
+      style: {
+        textAlign: "right",
+        width: 80,
+        minWidth: 80,
       },
-      (item) => <RemoveDelegation key="action" trackId={item.trackId} />,
-    ],
+      render: (item) => (
+        <RemoveDelegation key="action" trackId={item.trackId} />
+      ),
+    },
   ];
 
   return (

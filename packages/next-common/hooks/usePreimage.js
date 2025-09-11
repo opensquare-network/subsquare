@@ -17,7 +17,7 @@ function convertTicket(ticket) {
 }
 
 /** @internal Returns the parameters required for a call to bytes */
-function getBytesParams(interimResult, optStatus) {
+export function getBytesParams(interimResult, optStatus) {
   const result = objectSpread({}, interimResult, {
     status: optStatus.unwrapOr(null),
   });
@@ -76,7 +76,7 @@ export default function usePreimage(hashOrBounded) {
     [api, hashOrBounded],
   );
 
-  const [optStatus, , isStatusLoaded] = useCall(
+  const { value: optStatus, loaded: isStatusLoaded } = useCall(
     !inlineData && paramsStatus && api?.query.preimage?.requestStatusFor,
     paramsStatus ? paramsStatus : [undefined],
   );
@@ -90,7 +90,7 @@ export default function usePreimage(hashOrBounded) {
     [optStatus, resultPreimageHash],
   );
 
-  const [optBytes, , isBytesLoaded] = useCall(
+  const { value: optBytes, loaded: isBytesLoaded } = useCall(
     paramsBytes && api?.query.preimage?.preimageFor,
     paramsBytes ? paramsBytes : [undefined],
     { cacheKey: `usePreimage/preimageFor/${hashOrBounded}` },

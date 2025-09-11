@@ -1,46 +1,43 @@
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { blake2AsHex } from "@polkadot/util-crypto";
-import { BN_ZERO } from "@polkadot/util";
 import Extrinsic from "next-common/components/extrinsic";
 import PopupLabel from "next-common/components/popup/label";
-import SignerPopup from "next-common/components/signerPopup";
 import ExtrinsicInfo from "./info";
 import { useDispatch } from "react-redux";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import Loading from "next-common/components/loading";
 import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
 import { noop } from "lodash-es";
 import { useContextApi } from "next-common/context/api";
+import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
+import SignerWithVotingBalance from "next-common/components/signerPopup/signerWithVotingBalance";
+import Popup from "next-common/components/popup/wrapper/Popup";
+import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import { isEmptyFunc } from "next-common/utils/isEmptyFunc";
+import { ExtrinsicLoading } from "next-common/components/popup/fields/extrinsicField";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
+import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
+import InsufficientBalanceTips from "next-common/components/summary/newProposalQuickStart/common/insufficientBalanceTips";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 
 const EMPTY_HASH = blake2AsHex("");
 
 const EMPTY_PROPOSAL = {
   encodedHash: EMPTY_HASH,
   encodedLength: 0,
-  encodedProposal: null,
+  encodedProposal: "",
   notePreimageTx: null,
-  storageFee: BN_ZERO,
 };
 
-function getState(api, proposal) {
+export function getState(api, proposal) {
   let encodedHash = EMPTY_HASH;
-  let encodedProposal = null;
+  let encodedProposal = "";
   let encodedLength = 0;
   let notePreimageTx = null;
-  let storageFee = BN_ZERO;
 
   if (proposal) {
     encodedProposal = proposal.method.toHex();
     encodedLength = Math.ceil((encodedProposal.length - 2) / 2);
     encodedHash = blake2AsHex(encodedProposal);
     notePreimageTx = api.tx.preimage.notePreimage(encodedProposal);
-
-    // we currently don't have a constant exposed, however match to Substrate
-    storageFee = (api.consts.preimage?.baseDeposit || BN_ZERO).add(
-      (api.consts.preimage?.byteDeposit || BN_ZERO).muln(encodedLength),
-    );
   }
 
   return {
@@ -48,19 +45,18 @@ function getState(api, proposal) {
     encodedLength,
     encodedProposal,
     notePreimageTx,
-    storageFee,
   };
 }
 
-export default function NewPreimagePopup({ onClose, onCreated = noop }) {
+export function NewPreimageInnerPopup({ onCreated = noop }) {
+  const { onClose } = usePopupParams();
   const api = useContextApi();
-  const [{ encodedHash, encodedLength, notePreimageTx }, setState] =
-    useState(EMPTY_PROPOSAL);
+  const [
+    { encodedHash, encodedLength, encodedProposal, notePreimageTx },
+    setState,
+  ] = useState(EMPTY_PROPOSAL);
   const disabled = !api || !notePreimageTx;
   const dispatch = useDispatch();
-  const isMounted = useIsMounted();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const isLoading = !api;
 
   const setProposal = useCallback(
     ({ isValid, data: tx }) => {
@@ -76,65 +72,13 @@ export default function NewPreimagePopup({ onClose, onCreated = noop }) {
     [api],
   );
 
-  const showErrorToast = useCallback(
-    (message) => dispatch(newErrorToast(message)),
-    [dispatch],
-  );
+  let extrinsicComponent = null;
 
-  const doConfirm = useCallback(
-    async (api, signerAccount) => {
-      if (!api) {
-        return showErrorToast("Chain network is not connected yet");
-      }
-
-      if (!signerAccount) {
-        return showErrorToast("Please login first");
-      }
-
-      let tx = notePreimageTx;
-      if (signerAccount?.proxyAddress) {
-        tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-      }
-
-      await sendTx({
-        tx,
-        setLoading: setIsSubmitting,
-        dispatch,
-        signerAccount,
-        isMounted,
-        onInBlock: () => {
-          onCreated(encodedHash, encodedLength);
-          dispatch(incPreImagesTrigger());
-        },
-        onFinalized: () => dispatch(incPreImagesTrigger()),
-        onClose: onCreated === noop ? onClose : undefined,
-      });
-    },
-    [
-      dispatch,
-      isMounted,
-      showErrorToast,
-      setIsSubmitting,
-      notePreimageTx,
-      onClose,
-    ],
-  );
-
-  return (
-    <SignerPopup
-      className="w-[640px]"
-      title="New Preimage"
-      onClose={onClose}
-      maskClosable={false}
-      disabled={disabled}
-      isLoading={isSubmitting}
-      actionCallback={doConfirm}
-    >
-      {isLoading ? (
-        <div className="flex justify-center">
-          <Loading size={20} />
-        </div>
-      ) : (
+  if (!api) {
+    extrinsicComponent = <ExtrinsicLoading />;
+  } else {
+    extrinsicComponent = (
+      <div className="flex flex-col gap-4">
         <div>
           <PopupLabel text="Propose" />
           <Extrinsic
@@ -142,12 +86,116 @@ export default function NewPreimagePopup({ onClose, onCreated = noop }) {
             defaultMethodName="setCode"
             setValue={setProposal}
           />
-          <ExtrinsicInfo
-            preimageHash={encodedHash}
-            preimageLength={encodedLength || 0}
-          />
+          {encodedProposal && (
+            <ExtrinsicInfo
+              preimageHash={encodedHash}
+              callData={encodedProposal}
+              preimageLength={encodedLength || 0}
+            />
+          )}
         </div>
-      )}
-    </SignerPopup>
+        <InsufficientBalanceTips byteLength={encodedLength} onlyPreimage />
+      </div>
+    );
+  }
+
+  return (
+    <Popup title="New Preimage" onClose={onClose} maskClosable={false}>
+      <SignerWithVotingBalance />
+      {extrinsicComponent}
+      <TxSubmissionButton
+        disabled={disabled}
+        getTxFunc={() => notePreimageTx}
+        onInBlock={() => {
+          onCreated(encodedHash, encodedLength);
+          dispatch(incPreImagesTrigger());
+          dispatch(
+            newSuccessToast(
+              "Preimage created. Data will be refreshed in seconds.",
+            ),
+          );
+        }}
+        autoClose={isEmptyFunc(onCreated)}
+      />
+    </Popup>
   );
+}
+
+export default function NewPreimagePopup({ onClose, onCreated = noop }) {
+  return (
+    <SignerPopupWrapper onClose={onClose}>
+      <NewPreimageInnerPopup onClose={onClose} onCreated={onCreated} />
+    </SignerPopupWrapper>
+  );
+}
+
+export function useNewPrerimageForm() {
+  const api = useContextApi();
+  const [
+    { encodedHash, encodedLength, encodedProposal, notePreimageTx },
+    setState,
+  ] = useState(EMPTY_PROPOSAL);
+  const [callState, setCallState] = useState();
+
+  const setProposal = useCallback(
+    ({ isValid, data: tx }) => {
+      if (!api) {
+        return;
+      }
+      if (!isValid) {
+        return setState(EMPTY_PROPOSAL);
+      }
+      const state = getState(api, tx);
+      setState(state);
+    },
+    [api],
+  );
+
+  const extrinsicComponent = useMemo(() => {
+    let extrinsicComponent = null;
+
+    if (!api) {
+      extrinsicComponent = <ExtrinsicLoading />;
+    } else {
+      extrinsicComponent = (
+        <>
+          <SignerWithBalance showTransferable supportedMultisig={false} />
+          <div>
+            <PopupLabel text="Pre-Propose" />
+            <Extrinsic
+              defaultCallState={callState}
+              onCallStateChange={setCallState}
+              defaultSectionName="system"
+              defaultMethodName="setCode"
+              setValue={setProposal}
+            />
+          </div>
+          {encodedProposal && (
+            <ExtrinsicInfo
+              preimageHash={encodedHash}
+              callData={encodedProposal}
+              preimageLength={encodedLength || 0}
+            />
+          )}
+          <InsufficientBalanceTips byteLength={encodedLength} />
+        </>
+      );
+    }
+
+    return extrinsicComponent;
+  }, [
+    api,
+    callState,
+    encodedHash,
+    encodedLength,
+    encodedProposal,
+    setProposal,
+  ]);
+
+  return {
+    encodedHash,
+    encodedLength,
+    notePreimageTx,
+    component: extrinsicComponent,
+  };
 }

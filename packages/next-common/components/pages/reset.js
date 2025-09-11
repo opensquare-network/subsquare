@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import Input from "next-common/components/input";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import Input from "next-common/lib/input";
+import { useMountedState } from "react-use";
 import useCountdown from "next-common/utils/hooks/useCountdown";
 import nextApi from "next-common/services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
@@ -22,7 +22,7 @@ const Reset = () => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { email, token } = router.query;
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   const { countdown, counting: success, startCountdown } = useCountdown(3);
 
   if (success && countdown === 0) {
@@ -41,15 +41,15 @@ const Reset = () => {
         ...formData,
       });
       if (res.result) {
-        if (isMounted.current) {
+        if (isMounted()) {
           startCountdown();
         }
       } else if (res.error) {
-        if (isMounted.current) {
+        if (isMounted()) {
           setErrors(res.error);
         }
       }
-      if (isMounted.current) {
+      if (isMounted()) {
         setLoading(false);
       }
     },

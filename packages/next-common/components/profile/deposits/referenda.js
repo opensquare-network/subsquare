@@ -6,9 +6,13 @@ import {
 } from "next-common/store/reducers/profile/deposits/referenda";
 import { isNil } from "lodash-es";
 import { useReferendaTableItems } from "next-common/components/myDeposits/referenda";
+import { useChainSettings } from "next-common/context/chain";
 
 export default function useProfileReferendaDepositsData() {
-  const menu = getReferendaMenu();
+  const {
+    modules: { referenda },
+  } = useChainSettings();
+
   const submissionDeposits = useSelector(
     profileReferendaSubmissionDepositsSelector,
   );
@@ -19,6 +23,12 @@ export default function useProfileReferendaDepositsData() {
     (submissionDeposits?.length || 0) + (decisionDeposits?.length || 0);
   const loading = isNil(submissionDeposits) || isNil(decisionDeposits);
   const items = useReferendaTableItems(submissionDeposits, decisionDeposits);
+
+  if (!referenda) {
+    return null;
+  }
+
+  const menu = getReferendaMenu();
 
   return {
     ...menu,

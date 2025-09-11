@@ -1,24 +1,45 @@
 import { useCallback } from "react";
 import { stringToHex } from "@polkadot/util";
-import { personalSign } from "next-common/utils/metamask";
-import WalletTypes from "next-common/utils/consts/walletTypes";
-import useInjectedWeb3 from "next-common/components/wallet/useInjectedWeb3";
 import {
   getEvmSignerAddress,
   tryConvertToEvmAddress,
 } from "next-common/utils/mixedChainUtil";
+import { useSignMessage as useEVMSignMessage } from "wagmi";
+import { metamask, walletConnect } from "next-common/utils/consts/connect";
+import { findInjectedExtension } from "next-common/hooks/connect/useInjectedWeb3Extension";
+import useInjectedWeb3 from "./connect/useInjectedWeb3";
+import { useWalletConnect } from "next-common/context/walletconnect";
 
 export function useSignMessage() {
   const { injectedWeb3 } = useInjectedWeb3();
+  const { signMessage } = useEVMSignMessage();
+  const { signWcMessage } = useWalletConnect();
 
   return useCallback(
     async (message, address, walletName) => {
-      if (walletName === WalletTypes.METAMASK) {
+      const shouldUseEVMSign = walletName === metamask.extensionName;
+
+      if (shouldUseEVMSign) {
         const signerAddress = getEvmSignerAddress(address);
-        return await personalSign(stringToHex(message), signerAddress);
+        return await new Promise((resolve, reject) => {
+          signMessage(
+            { account: signerAddress, message },
+            { onSuccess: resolve, onError: reject },
+          );
+        });
       }
 
-      const extension = injectedWeb3?.[walletName];
+      if (walletName === walletConnect.extensionName) {
+        const { signature } = await signWcMessage({
+          type: "bytes",
+          address,
+          message: stringToHex(message),
+        });
+
+        return signature;
+      }
+
+      const extension = findInjectedExtension(walletName, injectedWeb3);
       if (!extension) {
         throw new Error("Wallet not found: " + walletName);
       }
@@ -33,6 +54,6 @@ export function useSignMessage() {
 
       return signature;
     },
-    [injectedWeb3],
+    [injectedWeb3, signMessage, signWcMessage],
   );
 }

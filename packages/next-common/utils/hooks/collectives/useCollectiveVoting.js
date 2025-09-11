@@ -1,10 +1,10 @@
-import useIsMounted from "../useIsMounted";
+import { useMountedState } from "react-use";
 import { useEffect, useState } from "react";
 import { useContextApi } from "next-common/context/api";
 
 export default function useCollectiveVoting(moduleName = "council", hash) {
   const api = useContextApi();
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   const [loading, setLoading] = useState(false);
   const [voting, setVoting] = useState();
 
@@ -17,16 +17,16 @@ export default function useCollectiveVoting(moduleName = "council", hash) {
     api.query[moduleName]
       .voting(hash)
       .then((wrappedVoting) => {
-        if (wrappedVoting?.isSome && isMounted.current) {
+        if (wrappedVoting?.isSome && isMounted()) {
           setVoting(wrappedVoting.unwrap());
         }
       })
       .finally(() => {
-        if (isMounted.current) {
+        if (isMounted()) {
           setLoading(false);
         }
       });
-  }, [api, isMounted, hash]);
+  }, [api, isMounted, hash, moduleName]);
 
   return {
     voting,

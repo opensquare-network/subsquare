@@ -1,13 +1,13 @@
 import CardHeader from "./cardHeader";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { DetailList, DetailRow } from "./detailRow";
-import { useBasicData } from "next-common/context/centrifuge/basicData";
+import useCfgBasicData from "next-common/context/centrifuge/basicData";
 import { bnToLocaleString } from "next-common/utils/bn";
 import Tooltip from "next-common/components/tooltip";
 import LoadableContent from "next-common/components/common/loadableContent";
 
 export default function TokenHoldersCard() {
-  const { data = {}, loading: isLoading } = useBasicData();
+  const [{ data = {}, loading: isLoading }] = useCfgBasicData();
   const { holders = {} } = data;
   const { all = 0, whales = 0, dolphins = 0 } = holders;
 

@@ -3,11 +3,18 @@ import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
 import ChainTypes from "../chainTypes";
-import {
-  ProjectIconMoonriverDark,
-  ProjectIconMoonriverLight,
-  ProjectLogoMoonriverDark,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+import { mergeChainModules } from "./common/modules";
+
+const ProjectIconMoonriverDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconMoonriverDark"),
+);
+const ProjectIconMoonriverLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconMoonriverLight"),
+);
+const ProjectLogoMoonriverDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoMoonriverDark"),
+);
 
 export const DEFAULT_MOONRIVER_NODES = [
   {
@@ -33,7 +40,6 @@ const moonriver = {
   blockTime: 12000,
   hasElections: false,
   ss58Format: 18,
-  snsCoverCid: "QmR2LSfa9e46C1Wc5LTZ2oRm9wkdaxfX4SyhYXVohcsdrB",
   endpoints: DEFAULT_MOONRIVER_NODES,
   navLogo: ProjectLogoMoonriverDark,
   navLogoDark: ProjectLogoMoonriverDark,
@@ -42,11 +48,6 @@ const moonriver = {
   darkAvatar: ProjectIconMoonriverDark,
   group: MenuGroups.KusamaAndParachains,
   postLabels: [...defaultPostLabels, "Treasury Council", "Open Tech.Comm."],
-  hasSubscan: true,
-  showReferendaReferendumDelegationPercentage: true,
-  subscanDomain: "moonriver",
-  hasTipsModule: false,
-  hasPolkassemblyDiscussions: true,
   // hideActionButtons: true,
   chainType: ChainTypes.ETHEREUM,
   noDispatchPrecompile: true,
@@ -64,9 +65,21 @@ const moonriver = {
   description:
     "Solidity Smart Contracts on Kusama. Moonriver is a community-led cousin parachain on Kusama and will provide a permanently incentivized canary network for Moonbeam.",
   useVoteCall: true,
-  modules: {
+  modules: mergeChainModules({
     referenda: true,
-    democracy: true,
+    fellowship: true,
+    treasury: {
+      bounties: false,
+      tips: false,
+    },
+  }),
+  integrations: {
+    subscan: {
+      domain: "moonriver",
+    },
+    polkassembly: {
+      discussions: true,
+    },
   },
   cssVarsLight: {
     theme100: "rgba(79,204,198,0.10)",
@@ -87,6 +100,7 @@ const moonriver = {
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",
   },
+  allowWeb2Login: true,
 };
 
 export default moonriver;

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import dynamic from "next/dynamic";
 import BigNumber from "bignumber.js";
 import styled from "styled-components";
 import { toPrecision } from "next-common/utils";
@@ -9,7 +8,7 @@ import {
   getThresholdOfSimplyMajority,
   getThresholdOfSuperMajorityAgainst,
   getThresholdOfSuperMajorityApprove,
-} from "utils/referendumUtil";
+} from "next-common/utils/referendumUtil";
 import Threshold from "./threshold";
 import Loading from "next-common/components/loading";
 import PrimaryButton from "next-common/lib/button/primary";
@@ -32,10 +31,9 @@ import ExternalLink from "next-common/components/externalLink";
 import WithAddress from "next-common/components/common/withAddress";
 import { VoteSuccessfulProvider } from "next-common/components/vote";
 import VoteSuccessfulPopup from "./popup/voteSuccessful";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const Popup = dynamic(() => import("./popup"), {
-  ssr: false,
-});
+const Popup = dynamicPopup(() => import("./popup"));
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;

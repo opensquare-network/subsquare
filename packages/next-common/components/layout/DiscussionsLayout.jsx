@@ -13,10 +13,12 @@ export default function DiscussionsLayout(props) {
 
   const tabs = [
     {
+      value: "subsquare",
       label: "Subsquare",
       url: "/discussions",
     },
     {
+      value: "polkassembly",
       label: "Polkassembly",
       url: "/polkassembly/discussions",
     },
@@ -24,7 +26,7 @@ export default function DiscussionsLayout(props) {
 
   return (
     <ListLayout
-      tabs={chainSettings.hasPolkassemblyDiscussions && tabs}
+      tabs={chainSettings.integrations?.polkassembly?.discussions && tabs}
       summaryFooter={
         <div className="flex justify-end">
           <PrimaryButton

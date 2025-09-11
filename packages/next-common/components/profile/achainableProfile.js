@@ -86,6 +86,7 @@ function AchainableLebels({ labels }) {
   );
 }
 
+// todo: remove this component
 export default function AchainableProfile({ id }) {
   const data = useAchainableData(id);
   const { labels } = data || {};

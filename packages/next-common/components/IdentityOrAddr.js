@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { fetchIdentity } from "../services/identity";
+import React from "react";
 import { encodeAddressToChain } from "../services/address";
 import Identity from "./Identity";
 import styled from "styled-components";
 import { addressEllipsis } from "../utils";
 import { isPolkadotAddress } from "../utils/viewfuncs";
 import { isEthereumAddress } from "@polkadot/util-crypto";
-import getChainSettings from "next-common/utils/consts/settings";
+import { useChainAddressIdentityInfo } from "next-common/hooks/useIdentityInfo";
 
 const MentionBox = styled.a`
   display: flex;
@@ -16,18 +15,10 @@ const MentionBox = styled.a`
 `;
 
 function IdentityOrAddr({ address, network }) {
-  const [identity, setIdentity] = useState(null);
-
-  useEffect(() => {
-    setIdentity(null);
-    if (address) {
-      const settings = getChainSettings(network);
-      fetchIdentity(
-        settings.identity,
-        encodeAddressToChain(address, settings.identity),
-      ).then((identity) => setIdentity(identity));
-    }
-  }, [address, network]);
+  const { identity, hasIdentity } = useChainAddressIdentityInfo(
+    network,
+    address,
+  );
 
   if (!isPolkadotAddress(address) && !isEthereumAddress(address)) {
     return (
@@ -48,7 +39,7 @@ function IdentityOrAddr({ address, network }) {
 
   return (
     <div className="inline-block text14Medium text-sapphire500 bg-sapphire100">
-      {identity && identity?.info?.status !== "NO_ID" ? (
+      {hasIdentity ? (
         <MentionBox href={`/user/${address}`}>
           <span>@</span>
           <Identity identity={identity} />

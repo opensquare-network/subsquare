@@ -2,22 +2,24 @@ import React from "react";
 import { useEffect, useState } from "react";
 import AddressCombo from "../../addressCombo";
 import PopupLabel from "../label";
-import { normalizeAddress } from "next-common/utils/address";
 
 export default function AddressComboField({
-  defaultAddress,
+  defaultAddress = "",
   extensionAccounts,
   setAddress,
   title = "Address",
+  placeholder,
+  readOnly = false,
+  canEdit = true,
+  comboClassName = "",
+  size = "default",
 }) {
   const accounts = extensionAccounts.map((acc) => ({
     address: acc.address,
     name: acc.meta.name,
   }));
 
-  const address = defaultAddress || normalizeAddress(accounts?.[0]?.address);
-
-  const [targetAddress, setTargetAddress] = useState(address);
+  const [targetAddress, setTargetAddress] = useState(defaultAddress);
 
   useEffect(() => {
     setAddress(targetAddress);
@@ -30,6 +32,11 @@ export default function AddressComboField({
         address={targetAddress}
         setAddress={setTargetAddress}
         accounts={accounts}
+        readOnly={readOnly}
+        placeholder={placeholder}
+        className={comboClassName}
+        size={size}
+        canEdit={canEdit}
       />
     </div>
   );

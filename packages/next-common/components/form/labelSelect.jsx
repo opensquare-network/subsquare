@@ -34,6 +34,7 @@ export default function LabelSelect({
         return [...selected, name].slice(-maxSelect);
       });
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [maxSelect],
   );
 

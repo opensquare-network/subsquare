@@ -1,8 +1,8 @@
 import NoData from "next-common/components/noData";
 import NewDelegateButton from "next-common/components/summary/allDelegation/newDelegateButton";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { delegationReferendaDelegatesAddressApi } from "next-common/services/url";
-import { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useDebounce } from "react-use";
 import Delegates from "./members";
 import DelegatesLoadable from "../common/loadable";
@@ -13,13 +13,14 @@ export default function ReferendaDelegationSearchResult({
 }) {
   const [result, setResult] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const delegates = useMemo(() => [result], [result]);
 
   useDebounce(
     () => {
       setIsLoading(true);
       setResult(null);
 
-      nextApi
+      backendApi
         .fetch(delegationReferendaDelegatesAddressApi(searchAddress))
         .then((resp) => {
           if (resp.result) {
@@ -37,7 +38,7 @@ export default function ReferendaDelegationSearchResult({
     [searchAddress],
   );
 
-  if (isNil(result) && !isLoading) {
+  if ((isNil(result) && !isLoading) || !result?.address) {
     return (
       <NoData
         text={
@@ -58,7 +59,7 @@ export default function ReferendaDelegationSearchResult({
 
   return (
     <DelegatesLoadable delegates={result}>
-      <Delegates delegates={[result]} />
+      <Delegates delegates={delegates} />
     </DelegatesLoadable>
   );
 }

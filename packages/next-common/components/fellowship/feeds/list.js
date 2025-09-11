@@ -5,9 +5,15 @@ import fellowshipFeedColumns from "next-common/components/fellowship/feeds/colum
 import FellowshipFeedLeadingBar from "next-common/components/fellowship/feeds/leading";
 import Pagination from "next-common/components/pagination";
 
-export function FellowshipFeedItems({ rows = [] }) {
+export function FellowshipFeedItems({
+  rows = [],
+  noDataText = "No current feeds",
+  loading,
+}) {
   return (
     <DataList
+      loading={loading}
+      noDataText={noDataText}
       className={cn(
         "text14Medium",
         "[&_.datalist-head]:hidden [&_.datalist-body]:divide-y-0 [&_.datalist-body]:border-b-0",

@@ -1,0 +1,60 @@
+import CommunityCouncilMotionsPostList from "next-common/components/postList/communityCouncilMotionsPostList";
+import { withCommonProps } from "next-common/lib";
+import { toCommunityMotionsListItem } from "next-common/utils/viewfuncs";
+import ListLayout from "next-common/components/layout/ListLayout";
+import { useChainSettings } from "next-common/context/chain";
+import ChainSocialLinks from "next-common/components/chain/socialLinks";
+import { fetchList } from "next-common/services/list";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import CollectiveProvider, {
+  collectivePallets,
+} from "next-common/context/collective";
+import NewCouncilMotionProposalButton from "next-common/components/summary/newCouncilMotionProposalButton";
+import { TreasuryProvider } from "next-common/context/treasury";
+
+export default function MotionsPage({ motions }) {
+  const chainSettings = useChainSettings();
+
+  const items = (motions.items || []).map((item) =>
+    toCommunityMotionsListItem(item),
+  );
+  const seoInfo = {
+    title: "Community Council Motions",
+    desc: "Community Council Motions",
+  };
+
+  return (
+    <TreasuryProvider pallet="communityTreasury">
+      <CollectiveProvider pallet={collectivePallets.communityCouncil}>
+        <ListLayout
+          title={chainSettings.name}
+          seoInfo={seoInfo}
+          description={chainSettings.description}
+          headContent={<ChainSocialLinks />}
+        >
+          <CommunityCouncilMotionsPostList
+            titleExtra={<NewCouncilMotionProposalButton />}
+            items={items}
+            pagination={{
+              page: motions.page,
+              pageSize: motions.pageSize,
+              total: motions.total,
+            }}
+          />
+        </ListLayout>
+      </CollectiveProvider>
+    </TreasuryProvider>
+  );
+}
+
+export const getServerSideProps = withCommonProps(async (context) => {
+  const motions = await fetchList("community-council/motions", context);
+  const tracksProps = await fetchOpenGovTracksProps();
+
+  return {
+    props: {
+      motions,
+      ...tracksProps,
+    },
+  };
+});

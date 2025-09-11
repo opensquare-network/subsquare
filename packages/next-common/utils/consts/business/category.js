@@ -1,5 +1,7 @@
 const businessCategory = {
   treasuryProposals: "Treasury Proposals",
+  treasurySpends: "Treasury Spends",
+  fellowshipTreasurySpends: "Fellowship Treasury Spends",
   treasuryTips: "Tips",
   treasuryBounties: "Treasury Bounties",
   treasuryChildBounties: "Treasury Child Bounties",
@@ -14,11 +16,23 @@ const businessCategory = {
   discussions: "Discussions",
   openGovReferenda: "OpenGov Referenda",
   fellowship: "Fellowship",
+  fellowshipApplication: "Fellowship Applications",
+  ambassadorReferenda: "Ambassador Referenda",
   financialMotions: "Financial Motions",
   advisoryMotions: "Advisory Motions",
   allianceMotions: "Alliance Motions",
   allianceAnnouncements: "Alliance Announcements",
   openTechCommitteeProposals: "Open Tech. Comm. Proposals",
+  communityMotions: "Community Motions",
+  communityTreasuryProposals: "Community Treasury Proposals",
+};
+
+// TODO: add more category
+export const listPageCategory = {
+  REFERENDA: "referenda",
+  FELLOWSHIP_REFERENDA: "fellowship",
+  AMBASSADOR_REFERENDA: "ambassador/referenda",
+  TREASURY_BOUNTY: "treasury/bounties",
 };
 
 export const detailPageCategory = {
@@ -31,17 +45,26 @@ export const detailPageCategory = {
   DEMOCRACY_EXTERNAL: "democracy/externals",
   DEMOCRACY_PROPOSAL: "democracy/proposals",
   TREASURY_PROPOSAL: "treasury/proposals",
+  TREASURY_SPEND: "treasury/spends",
+  FELLOWSHIP_TREASURY_SPEND: "fellowship/treasury/spends",
   TREASURY_BOUNTY: "treasury/bounties",
   TREASURY_CHILD_BOUNTY: "treasury/child-bounties",
   TREASURY_TIP: "treasury/tips",
   GOV2_REFERENDUM: "referenda",
   FELLOWSHIP_REFERENDUM: "fellowship/referenda",
+  FELLOWSHIP_APPLICATION: "fellowship/applications",
+  FELLOWSHIP_EVIDENCE: "fellowship/members",
   FELLOWSHIP_SALARY_CYCLES: "fellowship/salary/cycles",
+  AMBASSADOR_REFERENDUM: "ambassador/referenda",
+  AMBASSADOR_SALARY_CYCLES: "ambassador/salary/cycles",
   ADVISORY_MOTION: "advisory-committee/motions",
   ALLIANCE_MOTION: "alliance/motions",
   ALLIANCE_ANNOUNCEMENT: "alliance/announcements",
   TREASURY_COUNCIL_MOTION: "treasury-council/motions",
   OPEN_TECH_COMM_PROPOSAL: "open-techcomm/proposals",
+  COMMUNITY_MOTION: "community-council/motions",
+  COMMUNITY_TREASURY_PROPOSAL: "community-treasury/proposals",
+  CORETIME_SALES: "coretime/sales",
 };
 
 export default businessCategory;

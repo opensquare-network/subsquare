@@ -1,76 +1,120 @@
-import React, { useEffect, useRef, useState } from "react";
-import { HtmlPreviewer, MarkdownPreviewer } from "@osn/previewer";
-import { cn } from "next-common/utils";
-import SecondaryButton from "next-common/lib/button/secondary";
+import React, { useState } from "react";
+import {
+  HtmlPreviewer,
+  MarkdownPreviewer,
+  highlightCodeExtension,
+} from "@osn/previewer";
 import { sanitizeHtml } from "next-common/utils/post/sanitizeHtml";
-import { marked } from "marked";
+import { Marked } from "marked";
+import { useChain } from "next-common/context/chain";
+import { ensurePolkassemblyRelativeLink } from "next-common/utils/polkassembly/ensurePolkassemblyRelativeLink";
+import correctionIpfsEndpointPlugin from "next-common/utils/previewerPlugins/correctionIpfsEndpoint";
+import ToggleCollapsed from "next-common/toggleCollapsed";
+import { cn } from "next-common/utils";
 
-const collapsedHeight = 640;
-const moreLessHeightThreshold = 2000;
+const marked = new Marked();
 
-export default function PostContent({ post = {} }) {
-  const ref = useRef(null);
-  const [showToggleButton, setShowToggleButton] = useState(false);
-  // assume is long content by default to AVOID flicker
-  const [postContentCollapsed, setPostContentCollapsed] = useState(true);
+marked.use(highlightCodeExtension());
 
-  useEffect(() => {
-    const shouldCollapse =
-      ref.current?.clientHeight >= collapsedHeight &&
-      ref.current?.scrollHeight > moreLessHeightThreshold;
+function ToggleButton({ onClick, children }) {
+  return (
+    <button
+      onClick={onClick}
+      className="px-3 py-[6px] text12Medium bg-neutral100 border border-neutral400 rounded-md"
+    >
+      {children}
+    </button>
+  );
+}
 
-    setPostContentCollapsed(shouldCollapse);
-    setShowToggleButton(shouldCollapse);
-  }, [ref]);
-
-  let content;
-  if (post.contentType === "markdown") {
-    let postContent = post.content;
-
-    if (post.dataSource === "polkassembly") {
-      postContent = marked(post.content || "", { breaks: true });
-
-      // strip all inline attributes
-      postContent = sanitizeHtml(postContent || "");
-    }
-
-    content = <MarkdownPreviewer content={postContent} />;
-  } else if (post.contentType === "html") {
-    content = <HtmlPreviewer content={sanitizeHtml(post.content || "")} />;
-  }
+function FoldableContent({ children }) {
+  const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <div
-      ref={ref}
-      className={cn(
-        "flex flex-col",
-        "relative",
-        postContentCollapsed && "max-h-[640px] overflow-hidden",
-      )}
-    >
-      {content}
+    <div className="relative">
+      <div
+        className={cn(
+          "overflow-hidden transition-all duration-300",
+          !isExpanded && "max-h-[150px]",
+        )}
+      >
+        {children}
+      </div>
 
-      {showToggleButton && (
+      {!isExpanded && (
         <div
-          className={cn(
-            "flex justify-center",
-            "absolute bottom-0 right-0 left-0",
-            !postContentCollapsed && "!static",
-            postContentCollapsed
-              ? "pt-12 pb-4 bg-gradient-to-b from-transparent via-neutral100-80 to-neutral100"
-              : "mt-4",
-          )}
+          className="absolute bottom-0 left-0 right-0 h-12 flex items-end justify-center px-6 pt-12 pb-4"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, rgba(255, 255, 255, 0.80) 50%, #FFF 100%)",
+          }}
         >
-          <SecondaryButton
-            size="small"
-            onClick={() => {
-              setPostContentCollapsed(!postContentCollapsed);
-            }}
-          >
-            Show {postContentCollapsed ? "More" : "Less"}
-          </SecondaryButton>
+          <ToggleButton onClick={() => setIsExpanded(true)}>
+            Show More
+          </ToggleButton>
+        </div>
+      )}
+
+      {isExpanded && (
+        <div className="flex justify-center mt-4">
+          <ToggleButton onClick={() => setIsExpanded(false)}>
+            Show Less
+          </ToggleButton>
         </div>
       )}
     </div>
   );
+}
+
+export default function PostContent({ post = {}, isFold = false }) {
+  const chain = useChain();
+
+  let content;
+  if (post.contentType === "markdown") {
+    if (post.dataSource === "polkassembly") {
+      let postContent = marked.parse(
+        post.polkassemblyContentHtml || post.content || "",
+        {
+          breaks: true,
+        },
+      );
+
+      // strip all inline attributes
+      postContent = sanitizeHtml(postContent || "");
+
+      postContent = ensurePolkassemblyRelativeLink(postContent, chain);
+
+      content = (
+        <HtmlPreviewer
+          content={postContent}
+          plugins={[correctionIpfsEndpointPlugin()]}
+        />
+      );
+    } else {
+      content = (
+        <MarkdownPreviewer
+          content={post.content}
+          markedOptions={{
+            breaks: true,
+          }}
+          plugins={[correctionIpfsEndpointPlugin()]}
+        />
+      );
+    }
+  } else if (post.contentType === "html") {
+    content = (
+      <HtmlPreviewer
+        content={sanitizeHtml(post.content || "")}
+        plugins={[correctionIpfsEndpointPlugin()]}
+      />
+    );
+  }
+
+  const wrappedContent = <ToggleCollapsed>{content}</ToggleCollapsed>;
+
+  if (!isFold) {
+    return wrappedContent;
+  }
+
+  return <FoldableContent>{wrappedContent}</FoldableContent>;
 }

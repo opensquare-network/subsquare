@@ -1,5 +1,3 @@
-import isMoonChain from "next-common/utils/isMoonChain";
-
 // gov2
 export const gov2TracksApi = "gov2/tracks";
 export const gov2TracksSummaryApi = gov2TracksApi + "/summary";
@@ -25,9 +23,15 @@ export const gov2ReferendumsSummaryApi = "gov2/referendums/summary";
 
 export const gov2ReferendaWhalesApi = "gov2/referenda/whales";
 export const gov2ReferendaHistoryWhalesApi = "gov2/referenda/history-whales";
+export const gov2ReferendaVoteActionsApi = (index) =>
+  `gov2/referenda/${index}/actions`;
+export const gov2ReferendaAppendantApi = (index) =>
+  `gov2/referenda/${index}/appendants`;
 
 // fellowship
 export const fellowshipReferenda = "fellowship/referenda/";
+export const fellowshipMemberHeatmapApi = (address) =>
+  `fellowship/referenda/members/${address}/heatmap`;
 
 export const getFellowshipReferendumUrl = (id) => `${fellowshipReferenda}${id}`;
 export const getFellowshipReferendumCommentsUrl = (id) =>
@@ -52,10 +56,13 @@ export const fellowshipReferendumsSummaryApi =
 export const fellowshipParamsApi = "fellowship/params";
 export const fellowshipMembersApiUri = "fellowship/members";
 export const fellowshipCoreFeedsApiUri = "fellowship/core/feeds";
+export const fellowshipCoreEvidencesApiUri = "fellowship/core/evidences";
 
 // fellowship salary
 export const fellowshipSalaryCycleApi = (index) =>
   `fellowship/salary/cycles/${index}`;
+
+export const fellowshipSalaryActiveCycleApi = "fellowship/salary/active_cycle";
 
 export const fellowshipSalaryCycleRegistrationsApi = (index) =>
   `fellowship/salary/cycles/${index}/registrations`;
@@ -69,7 +76,76 @@ export const fellowshipSalaryCycleUnregisteredPaymentsApi = (index) =>
 export const fellowshipSalaryCycleFeedsApi = (index) =>
   `fellowship/salary/cycles/${index}/feeds`;
 
+export const fellowshipMemberLastSalaryPaymentApi = (address) =>
+  `fellowship/salary/address/${address}/last_payment`;
+
 export const fellowshipSalaryClaimantsApi = "fellowship/salary/claimants";
+export const fellowshipSalaryFeedsApi = "fellowship/salary/feeds";
+export const fellowshipSalaryPaymentsApi = "fellowship/salary/payments";
+
+// fellowship statistics
+export const fellowshipStatisticsCyclesApi =
+  "fellowship/statistics/salary/cycles";
+export const fellowshipStatisticsMembersApi =
+  "fellowship/statistics/salary/members";
+export const fellowshipStatisticsMemberApi = (address) =>
+  `fellowship/statistics/salary/members/${address}`;
+
+export const fellowshipStatisticsRanksApi =
+  "fellowship/statistics/salary/ranks";
+export const fellowshipStatisticsMembershipApi =
+  "fellowship/statistics/membership/times";
+export const fellowshipStatisticsUsersApi = (address) =>
+  `fellowship/statistics/users/${address}`;
+
+// ambassador
+export const ambassadorParamsApi = "ambassador/params";
+export const ambassadorMembersApiUri = "ambassador/members";
+export const ambassadorCoreFeedsApiUri = "ambassador/core/feeds";
+export const ambassadorCoreEvidencesApiUri = "ambassador/core/evidences";
+export const ambassadorTracksApi = "ambassador/tracks";
+export const ambassadorTracksSummaryApi = "ambassador/tracks/summary";
+export const ambassadorReferendumsApi = "ambassador/referenda";
+export const getAmbassadorReferendumUrl = (id) =>
+  `${ambassadorReferendumsApi}/${id}`;
+export const getAmbassadorReferendumCommentsUrl = (id) =>
+  `${getAmbassadorReferendumUrl(id)}/comments`;
+
+export const ambassadorReferendumsSummaryApi =
+  ambassadorReferendumsApi + "/summary";
+export const ambassadorTrackReferendaApi = (trackId) =>
+  ambassadorTracksApi + `/${trackId}/referenda`;
+export const ambassadorTrackReferendaSummaryApi = (trackId) =>
+  ambassadorTracksApi + `/${trackId}/referenda/summary`;
+export const ambassadorTrackApi = (trackId) =>
+  fellowshipTracksApi + `/${trackId}`;
+// ambassador salary
+export const ambassadorSalaryHistoryCyclesApi =
+  "ambassador/salary/history_cycles";
+export const ambassadorSalaryActiveCycleApi = "ambassador/salary/active_cycle";
+export const ambassadorSalaryClaimantsApi = "ambassador/salary/claimants";
+export const ambassadorSalaryCycleApi = (index) =>
+  `ambassador/salary/cycles/${index}`;
+export const ambassadorSalaryFeedsApi = "ambassador/salary/feeds";
+export const ambassadorSalaryCycleRegistrationsApi = (index) =>
+  `ambassador/salary/cycles/${index}/registrations`;
+export const ambassadorSalaryCycleRegisteredPaymentsApi = (index) =>
+  `ambassador/salary/cycles/${index}/registered_payments`;
+export const ambassadorSalaryCycleUnregisteredPaymentsApi = (index) =>
+  `ambassador/salary/cycles/${index}/unregistered_payments`;
+export const ambassadorSalaryCycleFeedsApi = (index) =>
+  `ambassador/salary/cycles/${index}/feeds`;
+export const ambassadorSalaryPaymentsApi = "ambassador/salary/payments";
+
+// fellowship statistics
+export const ambassadorStatisticsUsersApi = (address) =>
+  `ambassador/statistics/users/${address}`;
+
+// treasury bounties
+export const treasuryBountiesAppendantApi = (index) =>
+  `treasury/bounties/${index}/appendants`;
+
+export const appendantsApi = (id) => `appendants/${id}`;
 
 // calender events
 /**
@@ -99,24 +175,26 @@ export const overviewApi = {
   democracyPublicProposals: "overview/public-proposals",
   democracyExternalProposals: "overview/externals",
   treasuryProposals: "overview/treasury-proposals",
+  treasurySpends: "overview/treasury-spends",
   treasuryBounties: "overview/bounties",
   treasuryChildBounties: "overview/child-bounties",
   treasuryTips: "overview/tips",
-  councilMotions: isMoonChain() ? "overview/moon-council" : "overview/motions",
+  councilMotions: "overview/motions",
   tcMotions: "overview/tc-motions",
   financialMotions: "overview/financial-motions",
   allianceMotions: "overview/alliance-motions",
   allianceAnnouncements: "overview/alliance-announcements",
   advisoryMotions: "overview/advisory-motions",
-  // moon
-  treasuryCouncilMotions: "overview/motions",
-  openTCMotions: "overview/open-tc-motion",
+  communityMotions: "overview/community-motions",
+  communityTreasuryProposals: "overview/community-treasury-proposals",
+  fellowshipTreasurySpends: "overview/fellowship/treasury-spends",
 };
 
 // delegation
 // referenda
 export const delegationReferendaDelegatesAddressApi = (address) =>
   `delegation/referenda/delegates/${address}`;
+
 // democracy
 export const delegationDemocracyDelegatesAddressApi = (address) =>
   `delegation/democracy/delegates/${address}`;

@@ -5,15 +5,15 @@ import {
   calendarUserEventsApi,
   calendarUserEventsSummaryApi,
 } from "../services/url";
-import useIsMounted from "../utils/hooks/useIsMounted";
-import nextApi from "../services/nextApi";
+import { useMountedState } from "react-use";
+import { backendApi } from "../services/nextApi";
 import dayjs from "dayjs";
 
 /**
  * @param {dayjs.OpUnitType} unit
  */
 function useFetchCalendarEvents(endpoint, date, unit) {
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   const [loading, setLoading] = useState(false);
   const [cachedEvents, setCachedEvents] = useState({});
 
@@ -23,17 +23,22 @@ function useFetchCalendarEvents(endpoint, date, unit) {
   const cachedKey = `${endpoint}_${begin_time}_${end_time}_${unit}`;
 
   const refresh = useCallback(async () => {
-    const { result } = await nextApi.fetch(endpoint, { begin_time, end_time });
+    const { result } = await backendApi.fetch(endpoint, {
+      begin_time,
+      end_time,
+    });
     if (result) {
-      setCachedEvents({
-        ...cachedEvents,
-        [cachedKey]: result,
+      setCachedEvents((events) => {
+        return {
+          ...events,
+          [cachedKey]: result,
+        };
       });
     }
-  }, [begin_time, end_time, cachedKey]);
+  }, [endpoint, begin_time, end_time, cachedKey]);
 
   useEffect(() => {
-    if (isMounted.current) {
+    if (isMounted()) {
       setLoading(true);
       refresh().finally(() => {
         setLoading(false);

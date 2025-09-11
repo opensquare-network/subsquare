@@ -1,10 +1,17 @@
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
-import {
-  ProjectIconKaruraDark,
-  ProjectIconKaruraLight,
-  ProjectLogoKaruraDark,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+import { mergeChainModules } from "./common/modules";
+
+const ProjectIconKaruraDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconKaruraDark"),
+);
+const ProjectIconKaruraLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconKaruraLight"),
+);
+const ProjectLogoKaruraDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoKaruraDark"),
+);
 
 export const DEFAULT_KARURA_NODES = [
   {
@@ -32,6 +39,10 @@ export const DEFAULT_KARURA_NODES = [
     url: "wss://karura-rpc.dwellir.com",
   },
   {
+    name: "LuckyFriday",
+    url: "wss://rpc-karura.luckyfriday.io",
+  },
+  {
     name: "OnFinality",
     url: "wss://karura.api.onfinality.io/public-ws",
   },
@@ -52,7 +63,7 @@ const links = [
   },
   {
     name: "discord",
-    url: "https://www.acala.gg/",
+    url: "https://discord.gg/Tm3bkvP9Ku",
   },
   {
     name: "github",
@@ -69,7 +80,6 @@ const karura = {
   blockTime: 12000,
   hasElections: false,
   ss58Format: 8,
-  snsCoverCid: "bafybeiaoq7r32qsnpjqcey3x5hxfikbq3artjzi32he7dkretvesqgf3ny",
   endpoints: DEFAULT_KARURA_NODES,
   avatar: ProjectIconKaruraLight,
   darkAvatar: ProjectIconKaruraDark,
@@ -77,16 +87,18 @@ const karura = {
   navLogoDark: ProjectLogoKaruraDark,
   navPreferDark: true,
   links,
-  hasDiscussionsForumTopics: true,
-  discourseForumLink: "https://acala.discourse.group",
   group: MenuGroups.KusamaAndParachains,
   postLabels: [...defaultPostLabels, PostLabel.Financial],
-  hasSubscan: true,
-  noIdentityModule: true,
   useVoteCall: true,
   description: "Cross-chain DeFi Hub for Polkadot, Kusama and beyond.",
-  modules: {
-    democracy: true,
+  modules: mergeChainModules({
+    financialCouncil: true,
+  }),
+  integrations: {
+    subscan: true,
+    discourseForum: {
+      link: "https://acala.discourse.group",
+    },
   },
   cssVarsLight: {
     theme100: "rgba(229,15,89,0.10)",
@@ -107,6 +119,11 @@ const karura = {
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",
   },
+  multisigWallets: {
+    signet: true,
+    mimir: true,
+  },
+  allowWeb2Login: true,
 };
 
 export default karura;

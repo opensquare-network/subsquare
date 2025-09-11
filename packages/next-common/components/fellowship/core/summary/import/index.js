@@ -1,26 +1,28 @@
 import { useMemo, useState } from "react";
 import PrimaryButton from "next-common/lib/button/primary";
-import { useSelector } from "react-redux";
-import { fellowshipCollectiveMembersSelector } from "next-common/store/reducers/fellowship/collective";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { fellowshipCoreMembersSelector } from "next-common/store/reducers/fellowship/core";
-import { isSameAddress } from "next-common/utils";
-import FellowshipCoreImportPopup from "next-common/components/fellowship/core/summary/import/popup";
+import { isAddressInGroup } from "next-common/utils";
 import { SystemImportMember } from "@osn/icons/subsquare";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+import useFellowshipCoreMembersWithRank from "next-common/hooks/fellowship/core/useFellowshipCoreMembersWithRank";
+import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
+
+const FellowshipCoreImportPopup = dynamicPopup(() =>
+  import("next-common/components/fellowship/core/summary/import/popup"),
+);
 
 export default function Import() {
   const [showPopup, setShowPopup] = useState(false);
-  const collectiveMembers = useSelector(fellowshipCollectiveMembersSelector);
-  const coreMembers = useSelector(fellowshipCoreMembersSelector);
+  const { members: collectiveMembers } = useFellowshipCollectiveMembers();
+  const { members: coreMembers } = useFellowshipCoreMembersWithRank();
   const realAddress = useRealAddress();
 
   const canImport = useMemo(() => {
-    const isCollectiveMembers = (collectiveMembers || []).some((m) =>
-      isSameAddress(m.address, realAddress),
+    const isCollectiveMembers = isAddressInGroup(
+      realAddress,
+      collectiveMembers,
     );
-    const isCoreMembers = (coreMembers || []).some((m) =>
-      isSameAddress(m.address, realAddress),
-    );
+    const isCoreMembers = isAddressInGroup(realAddress, coreMembers);
     return isCollectiveMembers && !isCoreMembers;
   }, [collectiveMembers, coreMembers, realAddress]);
 

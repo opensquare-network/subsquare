@@ -12,6 +12,7 @@ import { useFellowshipSalaryCycleTimeAgeColumn } from "./columns/timeAge";
 import { useState } from "react";
 import { FellowshipSalaryCycleDetailListTemplateTable } from "./template";
 import CheckableTag from "next-common/components/tags/checkable";
+import { defaultPageSize } from "next-common/utils/constants";
 
 export function useFellowshipSalaryCyclePaymentsTabItem() {
   const { registeredPayments, unRegisteredPayments, id } = usePageProps();
@@ -45,6 +46,7 @@ export function useFellowshipSalaryCyclePaymentsTabItem() {
   const noDataText = "No payments";
 
   const registeredTab = {
+    value: "registered",
     label: "Registered",
     count: registeredPayments?.total,
     content: (
@@ -54,11 +56,15 @@ export function useFellowshipSalaryCyclePaymentsTabItem() {
         api={{
           path: fellowshipSalaryCycleRegisteredPaymentsApi(id),
           initData: registeredPayments,
+          params: {
+            pageSize: defaultPageSize,
+          },
         }}
       />
     ),
   };
   const unRegisteredTab = {
+    value: "unregistered",
     label: "Unregistered",
     count: unRegisteredPayments?.total,
     content: (
@@ -68,14 +74,17 @@ export function useFellowshipSalaryCyclePaymentsTabItem() {
         api={{
           path: fellowshipSalaryCycleUnregisteredPaymentsApi(id),
           initData: unRegisteredPayments,
+          params: {
+            pageSize: defaultPageSize,
+          },
         }}
       />
     ),
   };
 
   const subTabs = [registeredTab, unRegisteredTab];
-  const subTabLabels = subTabs.map((subTab) => subTab.label);
-  const [subTabActiveLabel, setSubTabActiveLabel] = useState(subTabLabels[0]);
+  const subTabValues = subTabs.map((subTab) => subTab.value);
+  const [subTabActiveValue, setSubTabActiveValue] = useState(subTabValues[0]);
 
   return {
     name: "Payments",
@@ -87,11 +96,11 @@ export function useFellowshipSalaryCyclePaymentsTabItem() {
         <div className="flex items-center gap-x-2 mb-4">
           {subTabs.map((subTab) => (
             <CheckableTag
-              checked={subTabActiveLabel === subTab.label}
-              key={subTab.label}
+              checked={subTabActiveValue === subTab.value}
+              key={subTab.value}
               count={subTab.count}
               onClick={() => {
-                setSubTabActiveLabel(subTab.label);
+                setSubTabActiveValue(subTab.value);
               }}
             >
               {subTab.label}
@@ -99,9 +108,9 @@ export function useFellowshipSalaryCyclePaymentsTabItem() {
           ))}
         </div>
 
-        {subTabActiveLabel === registeredTab.label && registeredTab.content}
+        {subTabActiveValue === registeredTab.value && registeredTab.content}
 
-        {subTabActiveLabel === unRegisteredTab.label && unRegisteredTab.content}
+        {subTabActiveValue === unRegisteredTab.value && unRegisteredTab.content}
       </>
     ),
   };

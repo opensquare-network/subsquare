@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { useMountedState } from "react-use";
 import { useContextApi } from "next-common/context/api";
 
 export async function getKintDemocracyDirectVote(
@@ -21,7 +21,7 @@ export default function useSubMyDemocracyVote(referendumIndex, address) {
 
   const [isLoading, setIsLoading] = useState(false);
   const [vote, setVote] = useState(null);
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
 
   useEffect(() => {
     if (!api || !address || !api.query.democracy) {
@@ -38,7 +38,7 @@ export default function useSubMyDemocracyVote(referendumIndex, address) {
           (vote) => vote[0] === referendumIndex,
         )?.[1];
 
-        if (isMounted.current) {
+        if (isMounted()) {
           setVote(vote);
         }
       })

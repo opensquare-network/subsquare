@@ -1,26 +1,26 @@
-import DetailItem from "components/detailItem";
+import DetailItem from "next-common/components/pages/components/detailItem";
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
-import Metadata from "next-common/components/publicProposal/metadata";
-import DemocracyPublicProposalCall from "next-common/components/publicProposal/call";
-import Timeline from "components/publicProposal/timeline";
 import Second from "next-common/components/publicProposal/second";
-import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
 import { isNil } from "lodash-es";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/democracy/publicProposal/checkUnFinalized";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
-import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
 import useIsDemocracyProposalFinished from "next-common/hooks/democracy/proposal/useIsDemocracyProposalFinished";
+import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
+import DemocracyPublicProposalsDetailMultiTabs from "next-common/components/pages/components/tabs/democracyPublicProposalsDetailMultiTabs";
+import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
+import { useSelector } from "react-redux";
+import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 
 function PublicProposalContent() {
   const post = usePost();
@@ -35,39 +35,30 @@ function PublicProposalContent() {
   const hasCanceled = ["Canceled", "Cleared", "Removed"].includes(state);
 
   const timeline = publicProposal?.timeline;
-  const lastTimelineBlockHeight =
-    timeline?.[timeline?.length - 1]?.indexer.blockHeight;
-  const secondsAtBlockHeight = isEnded
-    ? lastTimelineBlockHeight - 1
-    : undefined;
+  const indexer = timeline?.[timeline?.length - 1]?.indexer || {};
+  const blockTime = useSelector(blockTimeSelector);
 
-  const call = publicProposal?.preImage?.call || publicProposal?.call;
+  const lastIndexer = isEnded
+    ? {
+        blockTime: indexer?.blockTime - blockTime,
+        blockHeight: indexer?.blockHeight - 1,
+      }
+    : null;
 
   return (
-    <ContentWithComment>
-      <DetailItem />
-      <Second
-        proposalIndex={proposalIndex}
-        hasTurnIntoReferendum={hasTurnIntoReferendum}
-        hasCanceled={hasCanceled}
-        useAddressVotingBalance={useAddressBalance}
-        atBlockHeight={secondsAtBlockHeight}
-      />
-      <DetailMultiTabs
-        call={
-          call && (
-            <DemocracyPublicProposalCall
-              call={call}
-              shorten={publicProposal.preImage?.shorten}
-              proposalIndex={publicProposal.proposalIndex}
-              referendumIndex={publicProposal.referendumIndex}
-            />
-          )
-        }
-        metadata={<Metadata publicProposal={post?.onchainData} />}
-        timeline={<Timeline />}
-      />
-    </ContentWithComment>
+    <MaybeSimaContent>
+      <ContentWithComment>
+        <DetailItem />
+        <MigrationConditionalApiProvider indexer={lastIndexer}>
+          <Second
+            proposalIndex={proposalIndex}
+            hasTurnIntoReferendum={hasTurnIntoReferendum}
+            hasCanceled={hasCanceled}
+          />
+        </MigrationConditionalApiProvider>
+        <DemocracyPublicProposalsDetailMultiTabs />
+      </ContentWithComment>
+    </MaybeSimaContent>
   );
 }
 
@@ -110,7 +101,9 @@ export default function DemocracyProposalPage({ detail }) {
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
-  const { result: detail } = await nextApi.fetch(`democracy/proposals/${id}`);
+  const { result: detail } = await backendApi.fetch(
+    `democracy/proposals/${id}`,
+  );
 
   if (!detail) {
     return getNullDetailProps(id);

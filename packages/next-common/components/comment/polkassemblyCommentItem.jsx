@@ -16,13 +16,18 @@ import { useState } from "react";
 import { useIsUniversalPostComments } from "next-common/hooks/usePostComments";
 import { CommentProvider, useComment } from "./context";
 import PolkassemblyCommentUser from "./polkassemblyUser";
+import { useChain } from "next-common/context/chain";
+import { ensurePolkassemblyRelativeLink } from "next-common/utils/polkassembly/ensurePolkassemblyRelativeLink";
 
 function PolkassemblyCommentItemImpl({ isSecondLevel }) {
+  const chain = useChain();
   const comment = useComment();
   const type = useDetailType();
   const post = usePost();
   const [showReplies, setShowReplies] = useState(false);
   const isUniversalComments = useIsUniversalPostComments();
+
+  comment.content = ensurePolkassemblyRelativeLink(comment.content, chain);
 
   return (
     <CommentItemTemplate
@@ -52,6 +57,9 @@ function PolkassemblyCommentItemImpl({ isSecondLevel }) {
         <MarkdownPreviewer
           content={comment.content || ""}
           plugins={[renderMentionIdentityUserPlugin(<IdentityOrAddr />)]}
+          markedOptions={{
+            breaks: true,
+          }}
         />
       }
       actions={

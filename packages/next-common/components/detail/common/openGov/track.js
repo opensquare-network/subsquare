@@ -4,17 +4,18 @@ import Gov2TrackTag from "../../../gov2/trackTag";
 import React from "react";
 import Link from "next/link";
 
-export default function ReferendaTrack({ isFellowship = false }) {
+export default function ReferendaTrack({ section = "referenda" }) {
   const onchain = useOnchainData();
   const { name: trackName, id: trackId } = onchain?.trackInfo || {};
-  const section = isFellowship ? "fellowship" : "referenda";
-  let href = `/${ section }/track/${ trackId }`;
+  let href = `/${section}/tracks/${trackId}`;
 
-  return <div>
-    <Link href={href} passHref legacyBehavior>
-      <LinkInfo>
-        <Gov2TrackTag name={trackName} />
-      </LinkInfo>
-    </Link>
-  </div>;
+  return (
+    <div>
+      <Link href={href} passHref>
+        <LinkInfo>
+          <Gov2TrackTag name={trackName} id={trackId} />
+        </LinkInfo>
+      </Link>
+    </div>
+  );
 }

@@ -1,11 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import useColumns from "next-common/components/styledList/useColumns";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import Pagination from "next-common/components/pagination";
 import useStateChanged from "next-common/hooks/useStateChanged";
 import Flex from "next-common/components/styled/flex";
-import BeenDelegatedListPopup from "../beenDelegatedPopup";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
@@ -13,6 +12,11 @@ import AddressUser from "next-common/components/user/addressUser";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import DataList from "next-common/components/dataList";
 import DetailButton from "next-common/components/detailButton";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const BeenDelegatedListPopup = dynamicPopup(() =>
+  import("../beenDelegatedPopup"),
+);
 
 const Wrapper = styled.div``;
 
@@ -78,7 +82,7 @@ export default function DemocracyDelegatee({
 
   const fetchData = useCallback(
     (page, pageSize) => {
-      nextApi
+      backendApi
         .fetch(`${apiRoot}/delegatee`, {
           ...getSortParams(sortedColumn),
           page,
@@ -106,7 +110,7 @@ export default function DemocracyDelegatee({
     delegateeList?.pageSize,
   ]);
 
-  const rows = (delegateeList.items || []).map((item) => {
+  const rows = (delegateeList?.items || []).map((item) => {
     const row = [
       <Flex key="account">
         <AddressUser add={item.account} maxWidth={230} />

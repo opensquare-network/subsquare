@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import Input from "../../../input";
+import Input from "next-common/lib/input";
 import Select from "../../../select";
 import Toggle from "../../../toggle";
 import InputOptions from "./inputOptions";
@@ -45,6 +45,7 @@ function PollForm({ disabled, isCreatePoll, setFormValue = () => {} }, ref) {
           : endTime,
       },
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, endTime]);
 
   useEffect(() => {
@@ -56,6 +57,7 @@ function PollForm({ disabled, isCreatePoll, setFormValue = () => {} }, ref) {
     } else {
       setValue(initValue);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isCreatePoll]);
 
   const handleAddOption = () => {

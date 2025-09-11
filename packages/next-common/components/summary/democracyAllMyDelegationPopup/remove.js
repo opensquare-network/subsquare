@@ -1,38 +1,42 @@
 import RemoveButton from "next-common/components/removeButton";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { incMyReferendaDelegationsTrigger } from "next-common/store/reducers/myOnChainData/referenda/myReferendaDelegations";
-import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
-import isMoonChain from "next-common/utils/isMoonChain";
-import UndelegatePopup from "../delegation/undelegatePopup";
-import MoonUndelegatePopup from "../delegation/undelegatePopup/moonPopup";
 import Tooltip from "next-common/components/tooltip";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+import getChainSettings from "next-common/utils/consts/settings";
+import { defaultBlockTime } from "next-common/utils/constants";
+import { sleep } from "next-common/utils";
+
+const UndelegatePopup = dynamicPopup(() =>
+  import("../delegation/undelegatePopup"),
+);
 
 export default function RemoveDelegation({ trackId }) {
   const dispatch = useDispatch();
   const [showPopup, setShowPopup] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const isUseMetamask = useIsUseMetamask();
 
-  let TheUndelegatePopup = UndelegatePopup;
-  if (isMoonChain() && isUseMetamask) {
-    TheUndelegatePopup = MoonUndelegatePopup;
-  }
+  const updateDelegationsFn = useCallback(async () => {
+    const blockTime =
+      getChainSettings(process.env.NEXT_PUBLIC_CHAIN).blockTime ||
+      defaultBlockTime;
+
+    for (let i = 0; i < 3; i++) {
+      dispatch(incMyReferendaDelegationsTrigger());
+      await sleep(blockTime);
+    }
+  }, [dispatch]);
 
   return (
     <>
       <Tooltip content={"Remove"}>
-        <RemoveButton disabled={isLoading} onClick={() => setShowPopup(true)} />
+        <RemoveButton onClick={() => setShowPopup(true)} />
       </Tooltip>
       {showPopup && (
-        <TheUndelegatePopup
+        <UndelegatePopup
           trackId={trackId}
           onClose={() => setShowPopup(false)}
-          isLoading={isLoading}
-          setIsLoading={setIsLoading}
-          onInBlock={() => {
-            dispatch(incMyReferendaDelegationsTrigger());
-          }}
+          onInBlock={updateDelegationsFn}
         />
       )}
     </>

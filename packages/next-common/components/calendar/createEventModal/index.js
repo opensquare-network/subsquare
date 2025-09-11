@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import Signer from "next-common/components/popup/fields/signerField";
+import { ConnectedSigner } from "next-common/components/popup/fields/signerField";
 import PopupWithSigner from "../../../components/popupWithSigner";
 import Title from "./title";
 import Link from "./link";
@@ -35,32 +35,37 @@ function PopupContent() {
 
   const showErrorToast = useCallback(
     (message) => dispatch(newErrorToast(message)),
-    [],
+    [dispatch],
   );
   const showSuccessToast = useCallback(
     (message) => dispatch(newSuccessToast(message)),
-    [],
+    [dispatch],
   );
 
   const submit = useCallback(async () => {
     if (!title) {
-      return showErrorToast("Please fill the title.");
+      showErrorToast("Please fill the title.");
+      return;
     }
 
     if (!description) {
-      return showErrorToast("Please fill the description.");
+      showErrorToast("Please fill the description.");
+      return;
     }
 
     if (!startDate) {
-      return showErrorToast("Please select the start date.");
+      showErrorToast("Please select the start date.");
+      return;
     }
 
     if (startDate.getTime() < Date.now()) {
-      return showErrorToast("Start date must be in the future.");
+      showErrorToast("Start date must be in the future.");
+      return;
     }
 
     if (endDate && endDate.getTime() < startDate.getTime()) {
-      return showErrorToast("End date must be after start date.");
+      showErrorToast("End date must be after start date.");
+      return;
     }
 
     setIsLoading(true);
@@ -86,7 +91,8 @@ function PopupContent() {
       );
 
       if (error) {
-        return showErrorToast(error.message);
+        showErrorToast(error.message);
+        return;
       }
 
       if (result) {
@@ -120,7 +126,7 @@ function PopupContent() {
 
   return (
     <>
-      <Signer />
+      <ConnectedSigner />
       <Title setValue={setTitle} />
       <Description setValue={setDescription} />
       <DateField

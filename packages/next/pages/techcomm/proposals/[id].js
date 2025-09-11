@@ -1,6 +1,6 @@
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
-import MotionDetail from "components/motion/motionDetail";
+import { backendApi } from "next-common/services/nextApi";
+import MotionDetail from "next-common/components/pages/components/motion/motionDetail";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { EmptyList } from "next-common/utils/constants";
 import { getBannerUrl } from "next-common/utils/banner";
@@ -12,6 +12,10 @@ import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
+import CollectiveProvider, {
+  collectivePallets,
+} from "next-common/context/collective";
+import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
 
 function TechCommMotionContent() {
   const motion = usePost();
@@ -19,9 +23,11 @@ function TechCommMotionContent() {
   motion.status = motion.state?.state;
 
   return (
-    <ContentWithComment>
-      <MotionDetail />
-    </ContentWithComment>
+    <MaybeSimaContent>
+      <ContentWithComment>
+        <MotionDetail />
+      </ContentWithComment>
+    </MaybeSimaContent>
   );
 }
 
@@ -56,15 +62,17 @@ function ProposalPageImpl() {
 
 export default function ProposalPage({ motion }) {
   return (
-    <PostProvider post={motion}>
-      <ProposalPageImpl />
-    </PostProvider>
+    <CollectiveProvider pallet={collectivePallets.technicalCommittee}>
+      <PostProvider post={motion}>
+        <ProposalPageImpl />
+      </PostProvider>
+    </CollectiveProvider>
   );
 }
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
-  const { result: motion } = await nextApi.fetch(`tech-comm/motions/${id}`);
+  const { result: motion } = await backendApi.fetch(`tech-comm/motions/${id}`);
   if (!motion) {
     return getNullDetailProps(id, { motion: null });
   }

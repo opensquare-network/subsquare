@@ -1,9 +1,10 @@
 import { withCommonProps } from "next-common/lib";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import {
   fellowshipMembersApiUri,
   fellowshipParamsApi,
+  fellowshipSalaryActiveCycleApi,
   fellowshipSalaryClaimantsApi,
 } from "next-common/services/url";
 import { merge, noop } from "lodash-es";
@@ -15,11 +16,13 @@ export function withFellowshipSalaryCommonProps(fn = noop) {
       { result: fellowshipMembers },
       { result: fellowshipParams = {} },
       { result: fellowshipSalaryClaimants },
+      { result: activeCycle },
     ] = await Promise.all([
       fetchOpenGovTracksProps(),
-      nextApi.fetch(fellowshipMembersApiUri),
-      nextApi.fetch(fellowshipParamsApi),
-      nextApi.fetch(fellowshipSalaryClaimantsApi),
+      backendApi.fetch(fellowshipMembersApiUri),
+      backendApi.fetch(fellowshipParamsApi),
+      backendApi.fetch(fellowshipSalaryClaimantsApi),
+      backendApi.fetch(fellowshipSalaryActiveCycleApi),
     ]);
 
     const res = await fn?.(context);
@@ -28,9 +31,10 @@ export function withFellowshipSalaryCommonProps(fn = noop) {
       {
         props: {
           ...tracksProps,
-          fellowshipMembers,
+          fellowshipMembers: fellowshipMembers ?? null,
           fellowshipParams,
           fellowshipSalaryClaimants,
+          activeCycle,
         },
       },
       res,

@@ -1,6 +1,10 @@
 import { useThemeSetting } from "next-common/context/theme";
 import { formatDays, formatHours } from "next-common/utils/timeFormat";
-import { emptyFunction } from "next-common/utils";
+import { find, merge } from "lodash-es";
+import { useChainSettings } from "next-common/context/chain";
+import { toPrecision } from "next-common/utils";
+import { abbreviateBigNumber } from "next-common/utils/viewfuncs";
+import { useDecisionIndex } from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
 
 const commonConfig = {
   clip: false,
@@ -41,6 +45,31 @@ function getScaleOptions(maxTicks, scalesX = true, scalesY = true) {
             return val + "%";
           },
         },
+        grid: {
+          drawTicks: false,
+        },
+      },
+    },
+  };
+}
+
+function getVotesScaleOptions(chainSettings) {
+  const { decimals } = chainSettings || {};
+
+  return {
+    scales: {
+      y1: {
+        stacked: true,
+        position: "right",
+        min: 0,
+        grid: {
+          display: false,
+        },
+        ticks: {
+          callback(value) {
+            return abbreviateBigNumber(toPrecision(value, decimals));
+          },
+        },
       },
     },
   };
@@ -70,7 +99,7 @@ export function title(values) {
   return result;
 }
 
-function getDetailConfig(labels, commonPluginsConfig, labelFunc) {
+function getDetailConfig(labels, commonPluginsConfig, tooltipCallbacks) {
   return {
     ...commonConfig,
     ...getScaleOptions(labels.length, true, true),
@@ -80,67 +109,86 @@ function getDetailConfig(labels, commonPluginsConfig, labelFunc) {
         mode: "index",
         intersect: false,
         displayColors: false,
-        callbacks: {
-          title,
-          label: labelFunc,
-        },
+        callbacks: merge(
+          {
+            title,
+          },
+          tooltipCallbacks,
+        ),
       },
     },
   };
 }
 
-function getNanValueShow(value) {
-  if (!value) {
-    return "--";
+export default function useDetailPageOptions(labels = [], datasets) {
+  const { neutral300 } = useThemeSetting();
+  const chainSettings = useChainSettings();
+  const decisionIndex = useDecisionIndex();
+  const commonPluginsConfig = useCommonPluginsConfig();
+  const dividerLine = decisionIndex
+    ? {
+        type: "line",
+        xMin: decisionIndex,
+        xMax: decisionIndex,
+        yMin: 0,
+        yMax: "max",
+        borderColor: "#9ea9bb",
+        borderWidth: 1,
+        borderDash: [5, 5],
+      }
+    : null;
+
+  let config = {
+    ...commonConfig,
+    ...getScaleOptions(labels.length, false, true),
+    plugins: {
+      annotation: {
+        annotations: {
+          dividerLine,
+        },
+      },
+      ...commonPluginsConfig,
+    },
+  };
+
+  const ayeDataset = find(datasets, { label: "Aye" });
+  const nayDataset = find(datasets, { label: "Nay" });
+  const shouldShowVotesScale =
+    ayeDataset?.data.length > 0 || nayDataset?.data.length > 0;
+
+  if (shouldShowVotesScale) {
+    config = merge(config, getVotesScaleOptions(chainSettings));
   }
 
-  return `${Number(value).toFixed(2)}%`;
-}
-
-export default function useDetailPageOptions(labels = [], datasets) {
-  const commonPluginsConfig = useCommonPluginsConfig();
-  return getDetailConfig(labels, commonPluginsConfig, function (tooltipItem) {
-    const { dataset, parsed, dataIndex } = tooltipItem;
-    if (dataset.label === "Approval") {
-      const threshold = Number(parsed.y).toFixed(2);
-      const dataset = datasets.find(
-        (dataset) => dataset.label === "Current Approval",
-      );
-
-      return `Approval: ${getNanValueShow(
-        (dataset.data || [])[dataIndex],
-      )} / ${threshold}%`;
-    } else if (dataset.label === "Support") {
-      const threshold = Number(parsed.y).toFixed(2);
-      const dataset = datasets.find(
-        (dataset) => dataset.label === "Current Support",
-      );
-
-      return `Support: ${getNanValueShow(
-        (dataset.data || [])[dataIndex],
-      )} / ${threshold}%`;
-    }
-
-    return null;
+  return merge(config, {
+    scales: {
+      y: {
+        grid: {
+          color: neutral300,
+        },
+      },
+    },
   });
 }
 
 export function useDetailPageOptionsWithoutTallyHistory(labels = []) {
   const commonPluginsConfig = useCommonPluginsConfig();
-  return getDetailConfig(labels, commonPluginsConfig, function (tooltipItem) {
-    const { dataset, parsed } = tooltipItem;
-    if (dataset.label === "Approval") {
-      const approvalValue = Number(parsed.y).toFixed(2);
-      return `Approval: ${approvalValue}%`;
-    } else if (dataset.label === "Support") {
-      const supportValue = Number(parsed.y).toFixed(2);
-      return `Support: ${supportValue}%`;
-    }
-    return null;
+  return getDetailConfig(labels, commonPluginsConfig, {
+    label(tooltipItem) {
+      const { dataset, parsed } = tooltipItem;
+      if (dataset.label === "Approval") {
+        const approvalValue = Number(parsed.y).toFixed(2);
+        return `Approval: ${approvalValue}%`;
+      } else if (dataset.label === "Support") {
+        const supportValue = Number(parsed.y).toFixed(2);
+        return `Support: ${supportValue}%`;
+      }
+      return null;
+    },
   });
 }
 
-export function useCurveChartOptions(labels = [], labelFunc = emptyFunction) {
+export function useCurveChartOptions(labels = [], tooltipCallbacks = {}) {
   const commonPluginsConfig = useCommonPluginsConfig();
-  return getDetailConfig(labels, commonPluginsConfig, labelFunc);
+  return getDetailConfig(labels, commonPluginsConfig, tooltipCallbacks);
 }

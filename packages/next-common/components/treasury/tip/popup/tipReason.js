@@ -1,11 +1,14 @@
 import React from "react";
-import TextInput from "../../../textInput";
+import TextAreaInput from "../../../textAreaInput";
 import Labeled from "../../../Labeled";
 
 export default function TipReason({ setValue }) {
   return (
     <Labeled text={"Reason"} tooltip={"The tip reason"}>
-      <TextInput setValue={setValue} />
+      <TextAreaInput
+        setValue={setValue}
+        placeholder="Please fill the reason..."
+      />
     </Labeled>
   );
 }

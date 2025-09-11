@@ -5,9 +5,9 @@ import { useChainSettings } from "next-common/context/chain";
 
 export default function VotingHistory() {
   const {
-    modules: { referenda: hasReferenda, fellowship: hasFellowship },
-    noDemocracy,
+    modules: { referenda: hasReferenda, fellowship: hasFellowship, democracy },
   } = useChainSettings();
+  const hasDemocracyModule = democracy && !democracy?.archived;
 
   const availableTabs = [];
   if (hasReferenda) {
@@ -16,7 +16,7 @@ export default function VotingHistory() {
   if (hasFellowship) {
     availableTabs.push({ tabId: Fellowship, tabTitle: Fellowship });
   }
-  if (!noDemocracy) {
+  if (hasDemocracyModule) {
     availableTabs.push({ tabId: Democracy, tabTitle: Democracy });
   }
 

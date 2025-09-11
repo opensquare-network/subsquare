@@ -1,85 +1,71 @@
 import { useEffect, useState } from "react";
-import PostList from "next-common/components/postList";
+import TreasuryTipsPostList, {
+  NewTipButtonExtra,
+} from "next-common/components/postList/treasuryTipsPostList";
 import { withCommonProps } from "next-common/lib";
-import dynamic from "next/dynamic";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import normalizeTipListItem from "next-common/utils/viewfuncs/treasury/normalizeTipListItem";
 import { lowerCase } from "lodash-es";
 import ListLayout from "next-common/components/layout/ListLayout";
-import PrimaryButton from "next-common/lib/button/primary";
-import { SystemPlus } from "@osn/icons/subsquare";
 import TreasurySummary from "next-common/components/summary/treasurySummary";
-import useHasTips from "next-common/hooks/treasury/useHasTips";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchList } from "next-common/services/list";
-
-const Popup = dynamic(
-  () => import("next-common/components/treasury/tip/popup"),
-  {
-    ssr: false,
-  },
-);
+import { TreasuryProvider } from "next-common/context/treasury";
+import CollectiveProvider, {
+  collectivePallets,
+} from "next-common/context/collective";
+import Chains from "next-common/utils/consts/chains";
 
 export default function TipsPage({ tips: ssrTips }) {
   const chain = useChain();
-  const [showPopup, setShowPopup] = useState(false);
   const [tips, setTips] = useState(ssrTips);
   useEffect(() => setTips(ssrTips), [ssrTips]);
-  const { hasDotreasury, symbol, hideActionButtons } = useChainSettings();
-  const hasTips = useHasTips();
+  const { integrations, symbol } = useChainSettings();
 
   const items = (tips.items || []).map((item) =>
     normalizeTipListItem(chain, item),
   );
 
-  const category = "Tips";
   const seoInfo = { title: "Treasury Tips", desc: "Treasury Tips" };
 
+  let pallet = collectivePallets.council;
+  if ([Chains.acala, Chains.karura].includes(chain)) {
+    pallet = collectivePallets.generalCouncil;
+  }
+
   return (
-    <ListLayout
-      seoInfo={seoInfo}
-      title={seoInfo.title}
-      summary={<TreasurySummary />}
-      summaryFooter={
-        !hideActionButtons &&
-        hasTips && (
-          <div className="flex justify-end">
-            <PrimaryButton
-              size="small"
-              iconLeft={
-                <SystemPlus className="w-4 h-4 [&_path]:fill-textPrimaryContrast" />
-              }
-              onClick={() => setShowPopup(true)}
-            >
-              New Tip
-            </PrimaryButton>
-          </div>
-        )
-      }
-      tabs={[
-        {
-          label: "Tips",
-          url: "/treasury/tips",
-        },
-        hasDotreasury && {
-          label: "Statistics",
-          url: `https://dotreasury.com/${lowerCase(symbol)}/tips`,
-        },
-      ].filter(Boolean)}
-    >
-      <PostList
-        category={category}
-        title="List"
-        titleCount={tips.total}
-        items={items}
-        pagination={{
-          page: tips.page,
-          pageSize: tips.pageSize,
-          total: tips.total,
-        }}
-      />
-      {showPopup && <Popup onClose={() => setShowPopup(false)} />}
-    </ListLayout>
+    <CollectiveProvider pallet={pallet}>
+      <TreasuryProvider>
+        <ListLayout
+          seoInfo={seoInfo}
+          title={seoInfo.title}
+          summary={<TreasurySummary />}
+          tabs={[
+            {
+              value: "tips",
+              label: "Tips",
+              url: "/treasury/tips",
+            },
+            integrations?.doTreasury && {
+              value: "statistics",
+              label: "Statistics",
+              url: `https://dotreasury.com/${lowerCase(symbol)}/tips`,
+            },
+          ].filter(Boolean)}
+        >
+          <TreasuryTipsPostList
+            titleCount={tips.total}
+            items={items}
+            pagination={{
+              page: tips.page,
+              pageSize: tips.pageSize,
+              total: tips.total,
+            }}
+            titleExtra={<NewTipButtonExtra />}
+          />
+        </ListLayout>
+      </TreasuryProvider>
+    </CollectiveProvider>
   );
 }
 

@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
-import { getProfileCategories } from "../../../utils/consts/profile";
+import { useEffect, useState, useMemo } from "react";
+import { getProfileCategories } from "next-common/utils/consts/profile";
 import { useRouter } from "next/router";
-import { useChain } from "../../../context/chain";
+import { useChain } from "next-common/context/chain";
 import List from "./list";
 import Categories from "./categories";
-import isMoonChain from "next-common/utils/isMoonChain";
 import { usePageProps } from "next-common/context/page";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
+import CollectivesProvider from "next-common/context/collectives/collectives";
 
 const getCategoryByRoute = (route, categories = []) => {
   let category;
@@ -25,32 +25,27 @@ const getCategoryByRoute = (route, categories = []) => {
 
 export default function Posted() {
   const { route, userSummary: summary, id } = usePageProps();
-  const maybeEvmAddress = tryConvertToEvmAddress(id);
+  const maybeEvmAddress = useMemo(() => tryConvertToEvmAddress(id), [id]);
   const postedRoute = route.replace(/^posted\//, "");
 
-  const overview = {
-    ...summary,
-    collectives: {
-      councilMotions: summary?.council?.motions ?? 0,
-      techCommProposals: summary?.techComm?.proposals ?? 0,
-    },
-    discussions: {
-      posts: summary?.discussions ?? 0,
-      comments: summary?.comments ?? 0,
-      polkassemblyDiscussions: summary?.polkassemblyDiscussions ?? 0,
-    },
-  };
-
-  if (isMoonChain()) {
-    overview.collectives.treasuryCouncilMotions =
-      overview.collectives.councilMotions ?? 0;
-    overview.collectives.councilMotions = summary?.moonCouncil?.motions ?? 0;
-    overview.collectives.openTechCommProposals =
-      summary?.openTechComm?.proposals ?? 0;
-  }
+  const overview = useMemo(
+    () => ({
+      ...summary,
+      collectives: {
+        councilMotions: summary?.council?.motions ?? 0,
+        techCommProposals: summary?.techComm?.proposals ?? 0,
+      },
+      discussions: {
+        posts: summary?.discussions ?? 0,
+        comments: summary?.comments ?? 0,
+        polkassemblyDiscussions: summary?.polkassemblyDiscussions ?? 0,
+      },
+    }),
+    [summary],
+  );
 
   const chain = useChain();
-  const categories = getProfileCategories(chain);
+  const categories = useMemo(() => getProfileCategories(chain), [chain]);
   const [firstCategory, setFirstCategory] = useState(
     getCategoryByRoute(postedRoute, categories)[0],
   );
@@ -67,14 +62,18 @@ export default function Posted() {
       undefined,
       { shallow: true },
     );
-  }, [maybeEvmAddress, secondCategory]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [maybeEvmAddress, secondCategory.routePath]);
 
   useEffect(() => {
     const [, postedRoute] = router.asPath.split("/posted/");
     const items = getCategoryByRoute(postedRoute, categories);
-    setFirstCategory(items[0]);
-    setSecondCategory(items[1]);
-  }, [router]);
+    if (items[0] !== firstCategory || items[1] !== secondCategory) {
+      setFirstCategory(items[0]);
+      setSecondCategory(items[1]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.asPath, categories]);
 
   useEffect(() => {
     if (router.asPath !== `/user/${maybeEvmAddress}`) {
@@ -90,13 +89,48 @@ export default function Posted() {
       }
       for (subCategory of mainCategory.children) {
         if (overview[mainCategory.id][subCategory.id] > 0) {
-          setFirstCategory(mainCategory);
-          setSecondCategory(subCategory);
+          if (
+            mainCategory !== firstCategory ||
+            subCategory !== secondCategory
+          ) {
+            setFirstCategory(mainCategory);
+            setSecondCategory(subCategory);
+          }
           return;
         }
       }
     }
-  }, [id, router, categories, summary]);
+  }, [
+    id,
+    router.asPath,
+    categories,
+    overview,
+    maybeEvmAddress,
+    firstCategory,
+    secondCategory,
+  ]);
+
+  if ("fellowship" === secondCategory.id) {
+    return (
+      <>
+        <Categories
+          categories={categories}
+          setFirstCategory={setFirstCategory}
+          setSecondCategory={setSecondCategory}
+          firstCategory={firstCategory}
+          secondCategory={secondCategory}
+          overview={overview}
+        />
+        <CollectivesProvider section="fellowship">
+          <List
+            key={secondCategory.categoryId}
+            id={id}
+            secondCategory={secondCategory}
+          />
+        </CollectivesProvider>
+      </>
+    );
+  }
 
   return (
     <>

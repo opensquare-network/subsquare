@@ -2,7 +2,7 @@ import { isNil } from "lodash-es";
 import {
   DemocracyProposalNavigator,
   NavigationWrapper,
-  ReferendumNavigationItem,
+  DemocracyReferendumNavigator,
   TechCommMotionNavigator,
 } from "next-common/components/detail/navigation/navigators";
 
@@ -18,7 +18,7 @@ export default function TechCommNavigation({ motion = {} }) {
   let referendum = null;
   if (hasReferendum) {
     referendum = (
-      <ReferendumNavigationItem
+      <DemocracyReferendumNavigator
         referendumIndex={publicProposal.referendumIndex}
       />
     );

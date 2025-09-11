@@ -2,7 +2,13 @@ import React from "react";
 import businessCategory, {
   detailPageCategory,
 } from "../../../utils/consts/business/category";
-import { TreasuryTag, TipTag, BountyTag, ChildBountyTag } from "./treasury";
+import {
+  TreasuryTag,
+  TipTag,
+  BountyTag,
+  ChildBountyTag,
+  SpendTag,
+} from "./treasury";
 import { ClosedTag, MotionTag } from "./styled";
 import { CollectiveTag } from "./collective";
 import {
@@ -12,10 +18,14 @@ import {
 } from "./democracy";
 import { Gov2ReferendaTag } from "./gov2";
 import AnnouncementTag from "./announcement";
+import FellowshipApplicationTag from "./fellowshipApplication";
 
 const categoryTagMap = {
   [businessCategory.treasuryProposals]: TreasuryTag,
   [detailPageCategory.TREASURY_PROPOSAL]: TreasuryTag,
+
+  [businessCategory.communityTreasuryProposals]: TreasuryTag,
+  [detailPageCategory.COMMUNITY_TREASURY_PROPOSAL]: TreasuryTag,
 
   [businessCategory.treasuryTips]: TipTag,
   [detailPageCategory.TREASURY_TIP]: TipTag,
@@ -28,6 +38,9 @@ const categoryTagMap = {
 
   [businessCategory.councilMotions]: CollectiveTag,
   [detailPageCategory.COUNCIL_MOTION]: CollectiveTag,
+
+  [businessCategory.communityMotions]: CollectiveTag,
+  [detailPageCategory.COMMUNITY_MOTION]: CollectiveTag,
 
   [businessCategory.tcProposals]: CollectiveTag,
   [detailPageCategory.TECH_COMM_MOTION]: CollectiveTag,
@@ -66,9 +79,22 @@ const categoryTagMap = {
 
   [businessCategory.allianceAnnouncements]: AnnouncementTag,
   [detailPageCategory.ALLIANCE_ANNOUNCEMENT]: AnnouncementTag,
+
+  [businessCategory.treasurySpends]: SpendTag,
+  [detailPageCategory.TREASURY_SPEND]: SpendTag,
+
+  [businessCategory.fellowshipTreasurySpends]: SpendTag,
+  [detailPageCategory.FELLOWSHIP_TREASURY_SPEND]: SpendTag,
+
+  [businessCategory.fellowshipApplication]: FellowshipApplicationTag,
+  [detailPageCategory.FELLOWSHIP_APPLICATION]: FellowshipApplicationTag,
 };
 
 export default function Tag({ category, state, link, args }) {
+  if (!state) {
+    return null;
+  }
+
   let element = state;
   if (link) {
     element = <a href={link}>{state}</a>;

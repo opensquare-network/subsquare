@@ -1,12 +1,19 @@
-import Chains from "next-common/utils/consts/chains";
+import dynamic from "next/dynamic";
 import capitalize from "next-common/utils/capitalize";
-import {
-  ProjectIconVaraDark,
-  ProjectIconVaraLight,
-  ProjectLogoVaraDark,
-} from "@osn/icons/subsquare";
+import Chains from "next-common/utils/consts/chains";
 import { defaultPostLabels } from "next-common/utils/consts/settings/common";
 import MenuGroups from "next-common/utils/consts/settings/menuGroups";
+import { mergeChainModules } from "./common/modules";
+
+const ProjectIconVaraDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconVaraDark"),
+);
+const ProjectIconVaraLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconVaraLight"),
+);
+const ProjectLogoVaraDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoVaraDark"),
+);
 
 const nodes = [
   {
@@ -16,6 +23,14 @@ const nodes = [
   {
     name: "Vara2",
     url: "wss://archive-rpc.vara-network.io/",
+  },
+  {
+    name: "Blast",
+    url: "wss://vara-mainnet.public.blastapi.io",
+  },
+  {
+    name: "dPRC",
+    url: "wss://vara.drpc.org",
   },
   {
     name: "Vara3",
@@ -61,7 +76,6 @@ const vara = {
   hasElections: false,
   ss58Format: 137,
   blockTime: 3000,
-  snsCoverCid: "bafybeigeeecghmad3ap7alskf5mlifu7got2rbwcyya7qh6m6opgnd34gq",
   endpoints: nodes,
   links,
   avatar: ProjectIconVaraLight,
@@ -71,21 +85,25 @@ const vara = {
   navPreferDark: true,
   group: MenuGroups.Solochain,
   postLabels: defaultPostLabels,
-  hasTipsModule: false,
-  hasStatescan: false,
-  hasSubscan: true,
-  hasDotreasury: false,
-  hasTechComm: false,
-  // used to control whether to show votes delegation percentage on referendum detail page.
-  showReferendaReferendumDelegationPercentage: true,
   useVoteCall: true,
   hasMultisig: true,
   multisigApiPrefix: "vara",
   description:
     "Vara is an ultra-fast and scalable Layer-1 decentralized network powered by the Gear Protocol.",
-  modules: {
+  modules: mergeChainModules({
     referenda: true,
+    democracy: false,
     fellowship: true,
+    treasury: {
+      bounties: false,
+      tips: false,
+    },
+    council: false,
+    technicalCommittee: false,
+    vesting: true,
+  }),
+  integrations: {
+    subscan: true,
   },
   cssVarsLight: {
     theme100: "rgba(11,234,179,0.10)",
@@ -106,6 +124,11 @@ const vara = {
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",
   },
+  multisigWallets: {
+    signet: true,
+    mimir: true,
+  },
+  allowWeb2Login: false,
 };
 
 export default vara;

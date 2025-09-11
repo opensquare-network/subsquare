@@ -1,12 +1,18 @@
 import React from "react";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import CheckUnFinalizedBase from "next-common/components/checkUnFinalizedBase";
+import { useTreasuryPallet } from "next-common/context/treasury";
+import { kebabCase } from "lodash-es";
 
 export default function CheckUnFinalized({ id }) {
+  const pallet = useTreasuryPallet();
+
   return (
     <CheckUnFinalizedBase
-      onChainDataFetcher={async (api) => api.query.treasury?.proposals(id)}
-      serverPostFetcher={() => nextApi.fetch(`treasury/proposals/${id}`)}
+      onChainDataFetcher={async (api) => api.query[pallet]?.proposals(id)}
+      serverPostFetcher={() =>
+        backendApi.fetch(`${kebabCase(pallet)}/proposals/${id}`)
+      }
     />
   );
 }

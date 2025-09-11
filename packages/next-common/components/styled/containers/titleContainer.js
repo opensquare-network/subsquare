@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { GreyPanel } from "./greyPanel";
+import tw from "tailwind-styled-components";
 
 export const FilterContainer = styled.div`
   display: flex;
@@ -12,17 +13,10 @@ export const FilterContainer = styled.div`
 `;
 
 // used for card titles, list page titles
-export const TitleContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  font-weight: bold;
-  font-size: 16px;
-  line-height: 24px;
-  color: var(--textPrimary);
-  padding-left: 24px;
-  padding-right: 24px;
+export const TitleContainer = tw.div`
+  flex flex-wrap items-center justify-between
+  text16Bold text-textPrimary
+  px-6
 `;
 
 export const StatisticTitleContainer = styled(TitleContainer)`

@@ -2,14 +2,16 @@ import React from "react";
 import {
   DemocracyProposalNavigator,
   NavigationWrapper,
-  ReferendumNavigationItem,
+  DemocracyReferendumNavigator,
   TechCommMotionNavigator,
 } from "./navigators";
 import { isNil } from "lodash-es";
 import { usePost } from "next-common/context/post";
+import { PublicProposalTreasurySpendNavigator } from "./democracyNavigator";
 
 export default function DemocracyProposalNavigation() {
   const post = usePost();
+  const publicProposal = post?.onchainData;
   const proposalIndex = post?.proposalIndex;
   const referendumIndex = post?.referendumIndex;
 
@@ -19,7 +21,8 @@ export default function DemocracyProposalNavigation() {
         proposalIndex={proposalIndex}
         isLink={false}
       />
-      <ReferendumNavigationItem referendumIndex={referendumIndex} />
+      <DemocracyReferendumNavigator referendumIndex={referendumIndex} />
+      <PublicProposalTreasurySpendNavigator publicProposal={publicProposal} />
     </NavigationWrapper>
   );
 }
@@ -35,7 +38,7 @@ export function KintsugiDemocracyProposalNavigation() {
         <TechCommMotionNavigator motion={techCommMotion} key={key} />
       ))}
       {!isNil(onchainData?.referendumIndex) && (
-        <ReferendumNavigationItem
+        <DemocracyReferendumNavigator
           referendumIndex={onchainData.referendumIndex}
         />
       )}

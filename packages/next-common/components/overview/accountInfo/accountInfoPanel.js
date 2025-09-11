@@ -1,56 +1,99 @@
-import Avatar from "next-common/components/avatar";
-import Gravatar from "next-common/components/gravatar";
 import { useIsWeb3User, useUser } from "next-common/context/user";
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import { AddressUser } from "next-common/components/user";
 import Copyable from "next-common/components/copyable";
 import tw from "tailwind-styled-components";
-import { SystemProfile, SystemSetting } from "@osn/icons/subsquare";
 import { useRouter } from "next/router";
-import { addressEllipsis } from "next-common/utils";
-import { useChain } from "next-common/context/chain";
+import { addressEllipsis, cn } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
-import useSubscribeAccount from "next-common/hooks/account/useSubAccount";
 import AccountBalances from "next-common/components/overview/accountInfo/components/accountBalances";
-import useSubKintsugiAccount from "next-common/hooks/account/useSubKintsugiAccount";
 import Divider from "next-common/components/styled/layout/divider";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
-import { isKintsugiChain } from "next-common/utils/chain";
-import Link from "next/link";
-import useAccountUrl from "next-common/hooks/account/useAccountUrl";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
-import AccountDelegationPrompt from "./components/delegationPrompt";
+import AccountPanelScrollPrompt from "./components/accountPanelScrollPrompt";
+import ExtensionUpdatePrompt from "./components/extensionUpdatePrompt";
+import { useAccountTransferPopup } from "./hook/useAccountTransferPopup";
+import dynamic from "next/dynamic";
+import { useState } from "react";
+import { OnlyChains } from "next-common/components/common/onlyChain";
+import Chains from "next-common/utils/consts/chains";
+import { RelayChainApiProvider } from "next-common/context/relayChain";
+import { CollectivesApiProvider } from "next-common/context/collectives/api";
+import useAccountUrl from "next-common/hooks/account/useAccountUrl";
+import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import { isNil } from "lodash-es";
+import Link from "next/link";
+import Button from "next-common/lib/button";
+import AccountPanelQuickAccess from "./components/accountPanelQuickAccess";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import Avatar from "next-common/components/avatar";
+import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
+import { AvatarImg } from "next-common/components/user/styled";
+import Gravatar from "next-common/components/gravatar";
+
+const RelayChainTeleportPopup = dynamic(
+  import("./relayChainTeleportPopup").then((mod) => mod.default),
+);
+const ParaChainTeleportPopup = dynamic(() =>
+  import("next-common/components/assets/paraChainTeleportPopup").then(
+    (mod) => mod.default,
+  ),
+);
+
+const SystemCrosschain = dynamic(
+  import("@osn/icons/subsquare").then((mod) => mod.SystemCrosschain),
+);
+const MenuAccount = dynamic(
+  import("@osn/icons/subsquare").then((mod) => mod.MenuAccount),
+);
+const SystemSetting = dynamic(
+  import("@osn/icons/subsquare").then((mod) => mod.SystemSetting),
+);
+const SystemTransfer = dynamic(
+  import("@osn/icons/subsquare").then((mod) => mod.SystemTransfer),
+);
 
 const DisplayUserAvatar = () => {
   const user = useUser();
-  return user?.address ? (
-    <Avatar address={user?.address} size={40} />
-  ) : (
-    <Gravatar emailMd5={user?.emailMd5} size={40} />
-  );
+  if (user?.proxyAddress) {
+    return <Avatar address={user?.proxyAddress} size={40} />;
+  }
+  if (user?.avatarCid) {
+    return <AvatarImg src={getIpfsLink(user?.avatarCid)} size={40} />;
+  }
+  if (user?.address) {
+    return <Avatar address={user?.address} size={40} />;
+  }
+  return <Gravatar emailMd5={user?.emailMd5} size={40} />;
 };
 
 const DisplayUser = () => {
   const user = useUser();
-  const address = user?.address;
+  const address = useRealAddress();
   if (isPolkadotAddress(address) || isEthereumAddress(address)) {
-    return <AddressUser add={address} showAvatar={false} fontSize={14} />;
+    return (
+      <AddressUser
+        add={address}
+        showAvatar={false}
+        className="text14Medium text-textPrimary"
+      />
+    );
   }
 
   return <div className="text-textPrimary text14Bold">{user?.username}</div>;
 };
 
-function Account() {
-  const user = useUser();
-  const maybeEvmAddress = tryConvertToEvmAddress(user?.address);
+export function Account() {
+  const realAddress = useRealAddress();
+  const maybeEvmAddress = tryConvertToEvmAddress(realAddress);
 
   return (
     <div className="flex gap-[12px]">
       <DisplayUserAvatar />
       <div className="flex flex-col">
         <DisplayUser />
-        <Copyable className="max-md:hidden text-textTertiary text14Medium">
+        <Copyable className="max-md:hidden text-textTertiary text14Medium inline-flex items-center">
           {maybeEvmAddress}
         </Copyable>
         <Copyable
@@ -64,18 +107,18 @@ function Account() {
   );
 }
 
-const IconButton = tw.div`
-  cursor-pointer
+const IconButton = tw(Button)`
   flex
   justify-center
   items-center
+  p-0
   w-[32px]
   h-[32px]
   rounded-[8px]
   bg-neutral200
 `;
 
-function ProxyTip() {
+export function ProxyTip() {
   const user = useUser();
   const proxyAddress = user?.proxyAddress;
   if (!proxyAddress) {
@@ -88,90 +131,183 @@ function ProxyTip() {
         <span className="text14Medium text-textSecondary">
           Set as a proxy to
         </span>
-        <AddressUser add={proxyAddress} fontSize={14} />
+        <AddressUser
+          add={proxyAddress}
+          className="text14Medium text-textPrimary"
+        />
       </div>
       <span className="text14Medium text-textSecondary">
-        , all your transactions will be submitted on behalf of this proxy
+        , all your transactions will be submitted on behalf of this proxied
         address.
       </span>
     </div>
   );
 }
 
-function AccountHead() {
+function TransferButton() {
+  const { showPopup, component: transferPopup } = useAccountTransferPopup();
+  return (
+    <>
+      <Tooltip content="Transfer">
+        <IconButton
+          className="text-theme500 bg-theme100"
+          onClick={() => {
+            showPopup();
+          }}
+        >
+          <SystemTransfer className="w-5 h-5" />
+        </IconButton>
+      </Tooltip>
+      {transferPopup}
+    </>
+  );
+}
+
+function AccountButton() {
   const router = useRouter();
-  const user = useUser();
-  const isWeb3User = useIsWeb3User();
+  const url = useAccountUrl();
 
-  const goProfile = () => {
-    router.push(`/user/${user?.address}`);
-  };
-
-  const goSetting = () => {
-    if (isWeb3User) {
-      router.push("/settings/key-account");
-    } else {
-      router.push("/settings/account");
-    }
-  };
+  if (router.pathname.startsWith("/account")) {
+    return null;
+  }
 
   return (
-    <div className="flex justify-between items-center grow">
-      <Account />
-      <div className="flex gap-[16px]">
-        <Tooltip content="Profile">
-          <IconButton
-            className="[&_svg_path]:fill-textSecondary"
-            onClick={goProfile}
+    <Tooltip content="Account">
+      <Link href={url}>
+        <IconButton className="text-textSecondary">
+          <MenuAccount width={20} height={20} />
+        </IconButton>
+      </Link>
+    </Tooltip>
+  );
+}
+
+function SettingsButton() {
+  const isWeb3User = useIsWeb3User();
+
+  let url;
+  if (isWeb3User) {
+    url = "/settings/key-account";
+  } else {
+    url = "/settings/account";
+  }
+
+  return (
+    <Tooltip content="Settings">
+      <Link href={url}>
+        <IconButton className="text-textSecondary">
+          <SystemSetting width={20} height={20} />
+        </IconButton>
+      </Link>
+    </Tooltip>
+  );
+}
+
+function CrosschainButton({ onClick }) {
+  return (
+    <Tooltip content="Cross-chain">
+      <IconButton className="bg-theme100 text-theme500" onClick={onClick}>
+        <SystemCrosschain width={20} height={20} />
+      </IconButton>
+    </Tooltip>
+  );
+}
+
+function TeleportButton() {
+  const [showPopup, setShowPopup] = useState(false);
+  return (
+    <>
+      <CrosschainButton onClick={() => setShowPopup(true)} />
+      {showPopup && (
+        <RelayChainTeleportPopup onClose={() => setShowPopup(false)} />
+      )}
+    </>
+  );
+}
+
+function ParaChainTeleportButton() {
+  const [showPopup, setShowPopup] = useState(false);
+  return (
+    <>
+      <CrosschainButton onClick={() => setShowPopup(true)} />
+      {showPopup && (
+        <ParaChainTeleportPopup onClose={() => setShowPopup(false)} />
+      )}
+    </>
+  );
+}
+
+const transferEnabledChains = [
+  Chains.polkadot,
+  Chains.kusama,
+  Chains.westend,
+  Chains.rococo,
+  Chains.paseo,
+];
+
+const relayChainTeleportEnabledChains = [Chains.polkadot, Chains.kusama];
+
+const paraChainTeleportEnabledChains = [Chains.collectives];
+
+export function AccountHead({ width }) {
+  return (
+    <div className="flex flex-col gap-2">
+      <div
+        className={cn(
+          "flex justify-between items-start grow gap-4",
+          width > 768 ? "flex-row" : "flex-col",
+        )}
+      >
+        <div className="flex flex-col gap-2">
+          <Account />
+          <AccountPanelQuickAccess />
+        </div>
+        <div className="flex gap-[16px] items-center">
+          <OnlyChains chains={transferEnabledChains}>
+            <TransferButton />
+          </OnlyChains>
+          <OnlyChains chains={relayChainTeleportEnabledChains}>
+            <CollectivesApiProvider>
+              <TeleportButton />
+            </CollectivesApiProvider>
+          </OnlyChains>
+          <OnlyChains chains={paraChainTeleportEnabledChains}>
+            <RelayChainApiProvider>
+              <ParaChainTeleportButton />
+            </RelayChainApiProvider>
+          </OnlyChains>
+          <OnlyChains
+            chains={[
+              ...transferEnabledChains,
+              ...relayChainTeleportEnabledChains,
+              ...paraChainTeleportEnabledChains,
+            ]}
           >
-            <SystemProfile width={20} height={20} />
-          </IconButton>
-        </Tooltip>
-        <Tooltip content="Settings">
-          <IconButton
-            className="[&_svg_path]:stroke-textSecondary"
-            onClick={goSetting}
-          >
-            <SystemSetting width={20} height={20} />
-          </IconButton>
-        </Tooltip>
+            <div className="w-[1px] h-[16px] bg-neutral300"></div>
+          </OnlyChains>
+          <AccountButton />
+          <SettingsButton />
+        </div>
       </div>
     </div>
   );
 }
 
-function AssetInfo() {
-  useSubscribeAccount();
-  return <AccountBalances />;
-}
+export default function AccountInfoPanel() {
+  const { width } = useWindowSize();
 
-function KintAssetInfo() {
-  useSubKintsugiAccount();
-  return <AccountBalances />;
-}
-
-export default function AccountInfoPanel({ hideManageAccountLink }) {
-  const chain = useChain();
-  const isKintsugi = isKintsugiChain(chain);
-  const link = useAccountUrl();
+  if (isNil(width)) {
+    return null;
+  }
 
   return (
     <NeutralPanel className="p-6 space-y-4">
       <ProxyTip />
-      <AccountHead />
+      <AccountHead width={width} />
       <Divider />
-
-      {isKintsugi ? <KintAssetInfo /> : <AssetInfo />}
-
-      {!hideManageAccountLink && (
-        <div className="flex items-end justify-end !mt-2">
-          <Link href={link} className="text14Medium text-theme500">
-            Manage Account
-          </Link>
-        </div>
-      )}
-
-      <AccountDelegationPrompt />
+      <AccountBalances />
+      <ExtensionUpdatePrompt />
+      <AccountPanelScrollPrompt />
     </NeutralPanel>
   );
 }

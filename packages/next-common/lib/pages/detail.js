@@ -2,7 +2,7 @@ import { detailPageCategory } from "../../utils/consts/business/category";
 import { isNil } from "lodash-es";
 
 function getTypeProperties(context) {
-  const url = context.resolvedUrl;
+  let url = context.resolvedUrl;
   if (!url) {
     return null;
   }

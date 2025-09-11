@@ -8,111 +8,175 @@ import { getAdvisoryCommitteeMenu } from "./advisoryCouncil";
 import { getAllianceMenu } from "./alliance";
 import { getReferendaMenu } from "./referenda";
 import { getFellowshipMenu } from "./fellowship";
-import { getTreasuryCouncilMenu } from "./treasuryCouncil";
-import { getOpenTechCommMenu } from "./openTechCommittee";
+import { getAmbassadorMenu } from "next-common/utils/consts/menu/ambassador";
+import { assetHubMenu } from "./assetHub";
+import { getCommunityCouncilMenu } from "./communityCouncil";
 import { CHAIN } from "next-common/utils/constants";
-import isMoonChain from "next-common/utils/isMoonChain";
 import preImages from "./preImages";
 import { partition } from "lodash-es";
+import { getCommunityTreasuryMenu } from "./communityTreasury";
+import getChainSettings from "../settings";
+import { getMoreMenu } from "./more";
+import { coretimeMenu } from "./coretime";
+import { peopleMenu } from "./people";
+import Data from "./data";
+import getAdvancedMenu from "next-common/utils/consts/menu/advanced";
+import { NAV_MENU_TYPE } from "next-common/utils/constants";
+import { isArray } from "lodash-es";
 
 export function getHomeMenu({
   summary = {},
   tracks = [],
-  fellowshipTracks = [],
+  ambassadorTracks = [],
   currentTrackId,
 } = {}) {
-  if (isMoonChain()) {
-    return [
-      commonMenus,
-      getReferendaMenu(tracks, currentTrackId),
-      getDemocracyMenu(summary),
-      getTreasuryMenu(summary),
-      getCouncilMenu(summary),
-      getTreasuryCouncilMenu(summary),
-      getTechCommMenu(summary),
-      getOpenTechCommMenu(summary),
-      preImages,
-    ];
-  }
+  const {
+    modules,
+    hasMultisig = false,
+    hotMenu = {},
+  } = getChainSettings(CHAIN);
 
-  return [
-    commonMenus,
-    getReferendaMenu(tracks, currentTrackId),
-    getFellowshipMenu(fellowshipTracks, currentTrackId),
-    getDemocracyMenu(summary),
-    getTreasuryMenu(summary),
-    getCouncilMenu(summary),
-    getTechCommMenu(summary),
-    getFinancialCouncilMenu(summary),
-    getAdvisoryCommitteeMenu(summary),
-    getAllianceMenu(summary),
-    preImages,
-  ];
+  const integrationsMenu = [
+    modules?.assethub && assetHubMenu,
+    modules?.coretime && coretimeMenu,
+    modules?.people && peopleMenu,
+  ].filter(Boolean);
+
+  const menuItems = [
+    modules?.referenda &&
+      getReferendaMenu(tracks, currentTrackId, hotMenu.referenda),
+    modules?.fellowship && getFellowshipMenu(summary, currentTrackId),
+    modules?.ambassador && getAmbassadorMenu(ambassadorTracks, currentTrackId),
+    modules?.democracy && getDemocracyMenu(summary),
+    modules?.treasury && getTreasuryMenu(summary),
+    modules?.communityTreasury && getCommunityTreasuryMenu(summary),
+    modules?.council && getCouncilMenu(summary),
+    modules?.technicalCommittee && getTechCommMenu(summary),
+    modules?.financialCouncil && getFinancialCouncilMenu(summary),
+    modules?.advisoryCommittee && getAdvisoryCommitteeMenu(summary),
+    modules?.alliance && getAllianceMenu(summary),
+    modules?.communityCouncil && getCommunityCouncilMenu(summary),
+    getAdvancedMenu(
+      [
+        modules?.preimages && preImages,
+        ...integrationsMenu,
+        (modules?.proxy || modules?.vesting || hasMultisig) && Data,
+      ].filter(Boolean),
+    ),
+  ].filter(Boolean);
+
+  return menuItems.map((menuItem) => {
+    if (menuItem.hideItemsOnMenu === true && menuItem.items) {
+      return {
+        ...menuItem,
+        items: [],
+      };
+    }
+    return menuItem;
+  });
 }
 
-export function getCommonMenu({ tracks = [], fellowshipTracks = [] }) {
-  const [commonMenu] = getHomeMenu({ tracks, fellowshipTracks });
-  commonMenu.items = commonMenu.items.filter(
-    (i) => !i?.excludeToChains?.includes?.(CHAIN),
-  );
-  return commonMenu.items;
-}
-
-export function getNavMenu({
+export function getMainMenu({
   summary = {},
   tracks = [],
   fellowshipTracks = [],
+  ambassadorTracks = [],
   currentTrackId,
 } = {}) {
-  const menu = getHomeMenu({
+  const modulesMenu = getHomeMenu({
     summary,
     tracks,
     fellowshipTracks,
+    ambassadorTracks,
     currentTrackId,
   });
 
-  const featuredMenu = [];
-  const archivedMenu = [];
+  const activeModulesMenu = [];
+  const archivedModulesMenu = [];
 
-  for (let idx = 0; idx < menu.slice(1).length; idx++) {
-    const m = menu.slice(1)[idx];
-
-    // next loop early
-    if (m?.excludeToChains?.includes?.(CHAIN)) {
-      continue;
-    }
+  for (let idx = 0; idx < modulesMenu.length; idx++) {
+    const m = modulesMenu[idx];
 
     // single menu
     if (!m?.items?.length) {
-      featuredMenu.push(m);
+      activeModulesMenu.push(m);
       continue;
     }
 
     // root menu archived
-    if (m?.archivedToChains?.includes?.(CHAIN)) {
-      archivedMenu.push(m);
+    if (m?.archived) {
+      archivedModulesMenu.push(m);
     }
     // child menu
     else {
-      const [featuredItems, archivedItems] = partition(
-        m.items?.filter?.((item) => !item?.excludeToChains?.includes?.(CHAIN)),
-        (item) => !item?.archivedToChains?.includes?.(CHAIN),
+      const [activeItems, archivedItems] = partition(
+        m.items,
+        (item) => !item?.archived,
       );
 
       if (archivedItems.length) {
-        archivedMenu.push({
+        archivedModulesMenu.push({
           ...m,
           items: archivedItems,
         });
       }
-      if (featuredItems.length) {
-        featuredMenu.push({
+      if (activeItems.length) {
+        activeModulesMenu.push({
           ...m,
-          items: featuredItems,
+          items: activeItems,
         });
       }
     }
   }
 
-  return { featuredMenu, archivedMenu };
+  const moreMenu = getMoreMenu({ archivedMenu: archivedModulesMenu });
+
+  return [
+    ...commonMenus.items,
+    { type: "divider" },
+    ...activeModulesMenu,
+    { type: "divider" },
+    moreMenu,
+  ];
+}
+
+const matchedMenuItem = (menu, pathname) => {
+  for (const menuItem of menu) {
+    const matched =
+      menuItem.pathname === pathname ||
+      menuItem?.extraMatchNavMenuActivePathnames?.includes?.(pathname);
+    if (menuItem?.items?.length) {
+      const findItem = matchedMenuItem(menuItem.items, pathname);
+      if (findItem) {
+        return menuItem;
+      }
+    }
+    if (matched) {
+      return menuItem;
+    }
+  }
+};
+const isSubSpaceNavMenu = (type) =>
+  type === NAV_MENU_TYPE.subspace || type === "archived";
+export function matchNewMenu(menu, pathname) {
+  if (!isArray(menu)) {
+    return null;
+  }
+  for (const menuItem of menu) {
+    if (isSubSpaceNavMenu(menuItem.type)) {
+      const findMenu = matchedMenuItem(menuItem.items, pathname);
+      if (findMenu) {
+        return {
+          type: menuItem.type,
+          menu: menuItem.items,
+        };
+      }
+    } else if (menuItem?.items?.length) {
+      const metchMenu = matchNewMenu(menuItem.items, pathname);
+      if (metchMenu) {
+        return metchMenu;
+      }
+    }
+  }
+  return null;
 }

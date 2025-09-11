@@ -1,14 +1,15 @@
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import SecondaryButton from "next-common/lib/button/secondary";
-import DelegatePopup from "next-common/components/gov2/delegatePopup";
-import MoonDelegatePopup from "next-common/components/gov2/delegatePopup/moonPopup";
 import { SystemPlus } from "@osn/icons/subsquare";
-import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
-import isMoonChain from "next-common/utils/isMoonChain";
 import { clearVotingForEntries } from "next-common/utils/gov2/gov2ReferendumVote";
 import { incMyReferendaDelegationsTrigger } from "next-common/store/reducers/myOnChainData/referenda/myReferendaDelegations";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const DelegatePopup = dynamicPopup(() =>
+  import("next-common/components/gov2/delegatePopup"),
+);
 
 /**
  * @param {{
@@ -24,12 +25,6 @@ export default function NewDelegateButton({
 }) {
   const dispatch = useDispatch();
   const [showDelegatePopup, setShowDelegatePopup] = useState(false);
-  const isUseMetamask = useIsUseMetamask();
-
-  let Popup = DelegatePopup;
-  if (isMoonChain() && isUseMetamask) {
-    Popup = MoonDelegatePopup;
-  }
 
   const onDelegateInBlock = useCallback(() => {
     clearVotingForEntries();
@@ -50,7 +45,7 @@ export default function NewDelegateButton({
         {props.children || "Delegate"}
       </SecondaryButton>
       {showDelegatePopup && (
-        <Popup
+        <DelegatePopup
           defaultTargetAddress={defaultTargetAddress}
           targetDisabled={targetDisabled}
           onInBlock={onDelegateInBlock}

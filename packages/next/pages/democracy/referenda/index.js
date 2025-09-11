@@ -1,13 +1,16 @@
-import PostList from "next-common/components/postList";
+import DemocracyReferendaPostList from "next-common/components/postList/democracyReferendaPostList";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeReferendaListItem from "next-common/utils/viewfuncs/democracy/normalizeReferendaListItem";
 import DemocracyReferendaLayout from "next-common/components/layout/democracyLayout/referenda";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import useSubMyDemocracyVoting from "next-common/components/myvotes/democracy/useSubMyDemocracyVoting";
 
 export default function DemocracyReferendaPage({ posts, chain, summary }) {
+  useSubMyDemocracyVoting();
+
   const items = (posts.items || []).map((item) =>
     normalizeReferendaListItem(chain, item),
   );
@@ -23,9 +26,7 @@ export default function DemocracyReferendaPage({ posts, chain, summary }) {
       seoInfo={seoInfo}
       summaryData={summary}
     >
-      <PostList
-        category={category}
-        title="List"
+      <DemocracyReferendaPostList
         titleCount={posts.total}
         items={items}
         pagination={{
@@ -43,7 +44,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
 
   const { page, page_size: pageSize } = context.query;
 
-  const { result: posts } = await nextApi.fetch("democracy/referendums", {
+  const { result: posts } = await backendApi.fetch("democracy/referendums", {
     page: page ?? 1,
     pageSize: pageSize ?? defaultPageSize,
     simple: true,

@@ -2,7 +2,7 @@ import { useUser } from "../user";
 import { usePost } from "./index";
 import { useDetailType } from "../page";
 import { useEffect, useState } from "react";
-import { isSameAddress } from "next-common/utils";
+import { isAddressInGroup, isSameAddress } from "next-common/utils";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 export function useIsPostAuthor() {
@@ -15,11 +15,17 @@ export function useIsPostAuthor() {
     if (!user) {
       setIsAuthor(false);
     } else if (type === detailPageCategory.POST) {
-      setIsAuthor(post.author?.username === user.username);
+      if (post.dataSource === "sima") {
+        setIsAuthor(isSameAddress(post.proposer, user.address));
+      } else {
+        setIsAuthor(post.author?.username === user.username);
+      }
+    } else if (type === detailPageCategory.FELLOWSHIP_APPLICATION) {
+      setIsAuthor(isSameAddress(post.proposer, user.address));
+    } else if (type === detailPageCategory.FELLOWSHIP_EVIDENCE) {
+      setIsAuthor(isSameAddress(post.who, user.address));
     } else {
-      setIsAuthor(
-        post?.authors?.some((address) => isSameAddress(address, user.address)),
-      );
+      setIsAuthor(isAddressInGroup(user.address, post.authors));
     }
   }, [user, type, post]);
 

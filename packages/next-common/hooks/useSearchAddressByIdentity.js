@@ -8,10 +8,9 @@ export default function useSearchAddressByIdentity(
   fromAccounts,
 ) {
   const [identityDisplayToAddress, setIdentityDisplayToAddress] = useState({});
-  const chainSettings = useChainSettings();
+  const { identity: identityChain } = useChainSettings();
 
   useEffect(() => {
-    const identityChain = chainSettings.identity;
     fromAccounts.forEach((account) => {
       fetchIdentity(identityChain, account).then((identity) => {
         const identityDisplay = getIdentityDisplay(identity);
@@ -21,7 +20,7 @@ export default function useSearchAddressByIdentity(
         }));
       });
     });
-  }, [fromAccounts, chainSettings]);
+  }, [fromAccounts, identityChain]);
 
   return useMemo(() => {
     if (!identitySearch) {

@@ -20,43 +20,37 @@ export function useColumnsDef() {
   };
 
   return [
-    [
-      {
-        name: "Track",
-        style: {
-          textAlign: "left",
-          whiteSpace: "nowrap",
-          minWidth: 160,
-        },
+    {
+      name: "Track",
+      style: {
+        textAlign: "left",
+        whiteSpace: "nowrap",
+        minWidth: 160,
       },
-      (item) => <Track key="track" id={item.trackId} />,
-    ],
-    [
-      {
-        name: "Target",
-        style: {
-          textAlign: "left",
-          minWidth: 240,
-        },
+      render: (item) => <Track key="track" id={item.trackId} />,
+    },
+    {
+      name: "Target",
+      style: {
+        textAlign: "left",
+        minWidth: 240,
       },
-      (item) => (
+      render: (item) => (
         <AddressUser
           key="user"
           add={item.target}
           maxWidth={colWidths.delegatingTo}
         />
       ),
-    ],
-    [
-      {
-        name: "Capital",
-        style: {
-          textAlign: "right",
-          width: 240,
-          minWidth: 240,
-        },
+    },
+    {
+      name: "Capital",
+      style: {
+        textAlign: "right",
+        width: 240,
+        minWidth: 240,
       },
-      (item) => (
+      render: (item) => (
         <CapitalListItem
           key="capital"
           item={item}
@@ -64,24 +58,22 @@ export function useColumnsDef() {
           conviction={item.conviction}
         />
       ),
-    ],
-    [
-      {
-        name: "Votes",
-        style: {
-          textAlign: "right",
-          width: 160,
-          minWidth: 160,
-        },
+    },
+    {
+      name: "Votes",
+      style: {
+        textAlign: "right",
+        width: 160,
+        minWidth: 160,
       },
-      (item) => (
+      render: (item) => (
         <ValueDisplay
           key="votes"
           value={toPrecision(item.votes, decimals)}
           symbol={symbol}
         />
       ),
-    ],
+    },
   ];
 }
 

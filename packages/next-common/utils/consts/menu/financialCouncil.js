@@ -1,6 +1,3 @@
-import React from "react";
-import { getExcludeChains } from "../../viewfuncs";
-import Chains from "../chains";
 import { MenuFinancialCouncil } from "@osn/icons/subsquare";
 
 export const Names = {
@@ -14,7 +11,6 @@ export function getFinancialCouncilMenu(summary) {
 
   return {
     name: Names.financialCouncil,
-    excludeToChains: getExcludeChains([Chains.karura, Chains.acala]),
     activeCount: activeFinancialMotions,
     icon: <MenuFinancialCouncil />,
     pathname: "/financial-council",

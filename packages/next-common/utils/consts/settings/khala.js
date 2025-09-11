@@ -1,16 +1,27 @@
-import MenuGroups from "./menuGroups";
+import dynamic from "next/dynamic";
 import { defaultPostLabels } from "./common";
-import {
-  ProjectIconKhalaDark,
-  ProjectIconKhalaLight,
-  ProjectLogoKhalaDark,
-} from "@osn/icons/subsquare";
+import MenuGroups from "./menuGroups";
 import phala from "./phala";
+import { mergeChainModules } from "./common/modules";
+
+const ProjectIconKhalaDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconKhalaDark"),
+);
+const ProjectIconKhalaLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconKhalaLight"),
+);
+const ProjectLogoKhalaDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoKhalaDark"),
+);
 
 const DEFAULT_KHALA_NODES = [
   {
     name: "Dwellir",
     url: "wss://khala-rpc.dwellir.com",
+  },
+  {
+    name: "Helikon",
+    url: "wss://rpc.helikon.io/khala",
   },
   {
     name: "OnFinality",
@@ -19,6 +30,14 @@ const DEFAULT_KHALA_NODES = [
   {
     name: "Phala",
     url: "wss://khala-api.phala.network/ws",
+  },
+  {
+    name: "RadiumBlock",
+    url: "wss://khala.public.curie.radiumblock.co/ws",
+  },
+  {
+    name: "Rockx",
+    url: "wss://rockx-khala.w3node.com/polka-public-khala/ws",
   },
 ];
 
@@ -33,7 +52,6 @@ const khala = {
   blockTime: 12000,
   hasElections: true,
   ss58Format: 30,
-  snsCoverCid: "bafybeifo4hsd3ue5ivsbcrb77fp2uvglxyc2royqvg52eo5eggnppdjxp4",
   endpoints: DEFAULT_KHALA_NODES,
   avatar: ProjectIconKhalaLight,
   darkAvatar: ProjectIconKhalaDark,
@@ -43,14 +61,18 @@ const khala = {
   links,
   group: MenuGroups.KusamaAndParachains,
   postLabels: defaultPostLabels,
-  hasSubscan: true,
   description:
     "Khala Network is the canary network of Phala launched on Kusama and is responsible for the technical and economic testing of Phala Network.",
   useVoteCall: true,
   hasMultisig: true,
   multisigApiPrefix: "khala",
-  modules: {
-    democracy: true,
+  modules: mergeChainModules({
+    treasury: {
+      childBounties: true,
+    },
+  }),
+  integrations: {
+    subscan: true,
   },
   cssVarsLight: {
     theme100: "rgba(5,227,227,0.10)",
@@ -71,6 +93,11 @@ const khala = {
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "rgba(39,42,58,1)",
   },
+  multisigWallets: {
+    signet: true,
+    mimir: true,
+  },
+  allowWeb2Login: true,
 };
 
 export default khala;

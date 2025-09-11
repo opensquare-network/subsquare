@@ -1,81 +1,65 @@
-import React from "react";
-import styled, { css } from "styled-components";
 import IdentityIcon from "./identityIcon";
-import Flex from "../styled/flex";
 import Tooltip from "../tooltip";
 import { getIdentityDisplay } from "next-common/utils/identity";
+import { cn } from "next-common/utils";
 
-const Wrapper = styled(Flex)`
-  display: flex;
-  align-items: center;
-  font-weight: 500;
-
-  svg {
-    margin-right: 4px;
-  }
-  .VERIFIED,
-  VERIFIED_LINKED {
-    path:first-child {
-      fill: var(--green500);
-    }
-    path:last-child {
-      fill: var(--textPrimaryContrast);
-    }
-  }
-
-  .NOT_VERIFIED,
-  .NOT_VERIFIED_LINKED {
-    path:first-child {
-      fill: var(--neutral400);
-    }
-    path:last-child {
-      fill: var(--neutral500);
-    }
-  }
-
-  .ERRONEOUS,
-  .ERRONEOUS_LINKED {
-    path:first-child {
-      fill: var(--red500);
-    }
-    path:last-child {
-      fill: var(--textPrimaryContrast);
-    }
-  }
-`;
-
-const Display = styled.div`
-  font-size: ${(props) => props.fontSize}px;
-  /* font-weight: 500; */
-  ${(p) =>
-    p.maxWidth
-      ? css`
-          max-width: ${p.maxWidth}px;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        `
-      : css`
-          word-break: break-all;
-        `}
-`;
-
-export default function Identity({ identity, fontSize = 14, maxWidth }) {
+export function UnStyledIdentity({
+  identity,
+  maxWidth,
+  ellipsis = false,
+  identityIconClassName = "",
+  noTooltip = false,
+}) {
   if (!identity || identity?.info?.status === "NO_ID") {
     return null;
   }
 
   const displayName = getIdentityDisplay(identity);
-  const display = (
-    <Display fontSize={fontSize} maxWidth={maxWidth}>
+  const shouldShowTooltip = maxWidth || ellipsis;
+  const displayNameElement = (
+    <span
+      className={cn(
+        shouldShowTooltip && "line-clamp-1 break-all overflow-hidden",
+      )}
+      style={{ maxWidth }}
+    >
       {displayName}
-    </Display>
+    </span>
   );
 
   return (
-    <Wrapper className="identity">
-      <IdentityIcon identity={identity} />
-      {maxWidth ? <Tooltip content={displayName}>{display}</Tooltip> : display}
-    </Wrapper>
+    <div className="flex items-center identity">
+      <IdentityIcon
+        identity={identity}
+        className="mr-1"
+        iconClassName={identityIconClassName}
+      />
+      {noTooltip ? (
+        displayNameElement
+      ) : (
+        <Tooltip content={shouldShowTooltip ? displayName : null}>
+          {displayNameElement}
+        </Tooltip>
+      )}
+    </div>
+  );
+}
+
+export default function Identity({
+  identity,
+  maxWidth,
+  className = "text14Medium text-textPrimary",
+  ellipsis,
+  identityIconClassName = "",
+}) {
+  return (
+    <div className={className}>
+      <UnStyledIdentity
+        identity={identity}
+        maxWidth={maxWidth}
+        ellipsis={ellipsis}
+        iconClassName={identityIconClassName}
+      />
+    </div>
   );
 }

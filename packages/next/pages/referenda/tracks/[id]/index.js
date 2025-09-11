@@ -1,5 +1,5 @@
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import {
   gov2ReferendumsTrackApi,
   gov2ReferendumsTracksApi,
@@ -7,17 +7,55 @@ import {
   gov2TracksApi,
 } from "next-common/services/url";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
-import { startCase } from "lodash-es";
-import { to404 } from "next-common/utils/serverSideUtil";
+import {
+  camelCase,
+  isEmpty,
+  snakeCase,
+  startCase,
+  upperFirst,
+} from "lodash-es";
 import ReferendaStatusSelectField from "next-common/components/popup/fields/referendaStatusSelectField";
 import { useRouter } from "next/router";
-import { camelCase, snakeCase, upperFirst } from "lodash-es";
 import ReferendaTrackLayout from "next-common/components/layout/referendaLayout/track";
-import PostList from "next-common/components/postList";
+import ReferendaPostList from "next-common/components/postList/referendaPostList";
 import normalizeGov2ReferendaListItem from "next-common/utils/gov2/list/normalizeReferendaListItem";
-import businessCategory from "next-common/utils/consts/business/category";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import NewProposalButton from "next-common/components/summary/newProposalButton";
+import useFetchMyReferendaVoting from "next-common/components/myvotes/referenda/useFetchMyReferendaVoting";
+import dynamic from "next/dynamic";
+import { usePageProps } from "next-common/context/page";
+import ReferendaTrackNotFoundLayout from "next-common/components/layout/referendaLayout/trackNotFound";
+
+function TrackNotFound() {
+  const { id } = usePageProps();
+  return (
+    <ReferendaTrackNotFoundLayout
+      tabs={[
+        {
+          label: "Referenda",
+          value: "referenda",
+          url: `/referenda/tracks/${id}`,
+        },
+        {
+          label: "Statistics",
+          value: "statistics",
+          url: `/referenda/tracks/${id}/statistics`,
+        },
+      ]}
+      id={id}
+    >
+      <TrackPanel className="mb-4" />
+      <ReferendaPostList items={[]} />
+    </ReferendaTrackNotFoundLayout>
+  );
+}
+
+const TrackPanel = dynamic(
+  () => import("next-common/components/referenda/trackPanel"),
+  {
+    ssr: false,
+  },
+);
 
 export default function TrackPage({
   posts,
@@ -27,7 +65,13 @@ export default function TrackPage({
   period,
   status,
 }) {
+  useFetchMyReferendaVoting();
+
   const router = useRouter();
+
+  if (isEmpty(period)) {
+    return <TrackNotFound />;
+  }
 
   const items = (posts.items || []).map((item) =>
     normalizeGov2ReferendaListItem(item, tracks),
@@ -55,8 +99,8 @@ export default function TrackPage({
       periodData={period}
       summaryData={trackReferendaSummary}
     >
-      <PostList
-        title="List"
+      <TrackPanel className="mb-4" />
+      <ReferendaPostList
         titleCount={posts.total}
         titleExtra={
           <div className="flex gap-[12px] items-center">
@@ -67,7 +111,6 @@ export default function TrackPage({
             <NewProposalButton />
           </div>
         }
-        category={businessCategory.openGovReferenda}
         items={items}
         pagination={{
           page: posts.page,
@@ -89,13 +132,11 @@ export const getServerSideProps = withCommonProps(async (context) => {
 
   const status = upperFirst(camelCase(statusQuery));
 
-  const { tracks, fellowshipTracks, summary } = await fetchOpenGovTracksProps();
+  const tracksProps = await fetchOpenGovTracksProps();
+  const { tracks } = tracksProps;
   let track = tracks.find((trackItem) => trackItem.id === parseInt(id));
   if (!track) {
     track = tracks.find((item) => item.name === id);
-  }
-  if (!track) {
-    return to404();
   }
 
   const [
@@ -104,15 +145,17 @@ export const getServerSideProps = withCommonProps(async (context) => {
     { result: period },
     { result: tracksDetail },
   ] = await Promise.all([
-    nextApi.fetch(gov2ReferendumsTrackApi(track?.id), {
-      page,
-      pageSize,
-      status,
-      simple: true,
-    }),
-    nextApi.fetch(gov2ReferendumsTracksSummaryApi(track?.id)),
-    nextApi.fetch(gov2ReferendumsTracksApi(track?.id)),
-    nextApi.fetch(gov2TracksApi),
+    track
+      ? backendApi.fetch(gov2ReferendumsTrackApi(track?.id), {
+          page,
+          pageSize,
+          status,
+          simple: true,
+        })
+      : {},
+    track ? backendApi.fetch(gov2ReferendumsTracksSummaryApi(track?.id)) : {},
+    track ? backendApi.fetch(gov2ReferendumsTracksApi(track?.id)) : {},
+    backendApi.fetch(gov2TracksApi),
   ]);
 
   return {
@@ -120,13 +163,11 @@ export const getServerSideProps = withCommonProps(async (context) => {
       track: track ?? null,
       tracksDetail: tracksDetail ?? null,
       posts: posts ?? EmptyList,
-      title: "Referenda " + startCase(track.name),
-      tracks,
-      fellowshipTracks,
-      summary: summary ?? {},
+      title: "Referenda " + startCase(track?.name),
       trackReferendaSummary: trackReferendaSummary ?? {},
       period: period ?? {},
       status,
+      ...tracksProps,
     },
   };
 });

@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import ErrorText from "next-common/components/ErrorText";
 import SecondaryButton from "next-common/lib/button/secondary";
-import PrimaryButton from "next-common/lib/button/primary";
 import Editor from "./editor";
-import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
+import PrimaryButton from "next-common/lib/button/primary";
 
 const Wrapper = styled.div`
   margin-top: 8px;
@@ -21,6 +20,7 @@ const ButtonWrapper = styled.div`
 `;
 
 export default function EditInput({
+  updateButtonText = "Update",
   editContent = "",
   editContentType,
   onFinishedEdit,
@@ -31,16 +31,12 @@ export default function EditInput({
   const [content, setContent] = useState(editContent);
   const [contentType, setContentType] = useState(editContentType);
   const [errors, setErrors] = useState();
-  const { ensureLogin } = useEnsureLogin();
 
   const isEmpty = content === "" || content === "<p><br></p>";
 
   const onUpdate = async () => {
     setLoading(true);
     try {
-      if (!(await ensureLogin())) {
-        return;
-      }
       const { result, error } = await update(content, contentType);
       if (error) {
         setErrors(error);
@@ -48,7 +44,7 @@ export default function EditInput({
         await onFinishedEdit(true, setLoading);
       }
     } catch (e) {
-      if (e) {
+      if (e.message !== "Cancelled") {
         setErrors(e);
       }
     } finally {
@@ -75,8 +71,12 @@ export default function EditInput({
             Cancel
           </SecondaryButton>
         )}
-        <PrimaryButton loading={loading} onClick={onUpdate} disabled={isEmpty}>
-          Update
+        <PrimaryButton
+          loading={loading}
+          disabled={isEmpty}
+          onClick={() => onUpdate()}
+        >
+          {updateButtonText}
         </PrimaryButton>
       </ButtonWrapper>
     </Wrapper>

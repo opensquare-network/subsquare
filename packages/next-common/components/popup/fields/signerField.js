@@ -4,49 +4,87 @@ import { toPrecision } from "next-common/utils";
 import PopupLabelWithBalance from "next-common/components/popup/balanceLabel";
 import { useChainSettings } from "next-common/context/chain";
 import PopupLabel from "../label";
-import ConnectedSigner from "../../connectedSigner";
-import ProxyInfo from "../proxyInfo";
-import { useSignerAccount } from "next-common/components/popupWithSigner/context";
+import MaybeProxySigner, { ConnectedAccountSigner } from "../../signer";
+import ExtensionUpdatePrompt from "next-common/components/overview/accountInfo/components/extensionUpdatePrompt";
 
-export default function Signer({
-  isBalanceLoading,
-  balance,
+function SignerWrapper({
+  title = "Origin",
   balanceName = "Balance",
   symbol,
-  signerBalance,
-  isSignerBalanceLoading,
-  title = "Address",
+  balance,
+  isBalanceLoading,
+  showTransferable = false,
+  children,
 }) {
-  const signerAccount = useSignerAccount();
   const node = useChainSettings();
-  const noSignerBalance = isNil(signerBalance) && isNil(isSignerBalanceLoading);
-  const noVotingBalance = isNil(balance) && isNil(isBalanceLoading);
+  const noBalance = isNil(balance) && isNil(isBalanceLoading);
 
   return (
     <div>
-      {noSignerBalance ? (
-        <PopupLabel text="Signer Address" />
+      <ExtensionUpdatePrompt isWithCache={false} />
+
+      {noBalance ? (
+        <PopupLabel text={title || "Origin"} />
       ) : (
         <PopupLabelWithBalance
-          text={title || "Address"}
-          isLoading={isSignerBalanceLoading}
+          text={title || "Origin"}
+          isLoading={isBalanceLoading}
           balanceName={balanceName}
-          balance={toPrecision(signerBalance ?? 0, node.decimals)}
+          balance={toPrecision(balance ?? 0, node.decimals)}
           symbol={symbol || node.symbol}
+          showTransferable={showTransferable}
         />
       )}
-      <ConnectedSigner />
-      {signerAccount?.proxyAddress &&
-        (noVotingBalance ? (
-          <ProxyInfo address={signerAccount.proxyAddress} />
-        ) : (
-          <ProxyInfo
-            address={signerAccount.proxyAddress}
-            balance={toPrecision(balance ?? 0, node.decimals)}
-            isLoading={isBalanceLoading}
-            symbol={symbol || node.symbol}
-          />
-        ))}
+      {children}
     </div>
+  );
+}
+
+export function ConnectedSigner({
+  title = "Origin",
+  balanceName = "Balance",
+  symbol,
+  balance,
+  isBalanceLoading,
+  showTransferable = false,
+}) {
+  return (
+    <SignerWrapper
+      title={title}
+      balanceName={balanceName}
+      symbol={symbol}
+      balance={balance}
+      isBalanceLoading={isBalanceLoading}
+      showTransferable={showTransferable}
+    >
+      <ConnectedAccountSigner />
+    </SignerWrapper>
+  );
+}
+
+export default function Signer({
+  title = "Origin",
+  balanceName = "Balance",
+  symbol,
+  balance,
+  isBalanceLoading,
+  noSwitchSigner = false,
+  showTransferable = false,
+  supportedMultisig = true,
+}) {
+  return (
+    <SignerWrapper
+      title={title}
+      balanceName={balanceName}
+      symbol={symbol}
+      balance={balance}
+      isBalanceLoading={isBalanceLoading}
+      showTransferable={showTransferable}
+    >
+      <MaybeProxySigner
+        noSwitch={noSwitchSigner}
+        supportedMultisig={supportedMultisig}
+      />
+    </SignerWrapper>
   );
 }

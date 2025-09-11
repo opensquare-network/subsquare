@@ -2,6 +2,7 @@ import styled, { css } from "styled-components";
 import SelectedSVG from "./selected.svg";
 import pluralize from "pluralize";
 import { cn } from "next-common/utils";
+import Tooltip from "next-common/components/tooltip";
 
 const Wrapper = styled.div`
   display: flex;
@@ -78,7 +79,7 @@ export default function DropDownList({
       <Divider />
       {options?.map((o) => {
         const selected = selectedValues.includes(o.value);
-        return (
+        const listItem = (
           <ListItem
             key={o.value}
             selected={selected}
@@ -94,6 +95,12 @@ export default function DropDownList({
             <Info>{o.info}</Info>
             {selected && !o.disabled && <SelectedSVG />}
           </ListItem>
+        );
+
+        return o.disabled && o.info && o.label && o.tooltipContent ? (
+          <Tooltip content={o.tooltipContent}>{listItem}</Tooltip>
+        ) : (
+          listItem
         );
       })}
     </Wrapper>

@@ -1,7 +1,7 @@
-import PostList from "next-common/components/postList";
+import DemocracyPublicProposalsPostList from "next-common/components/postList/democracyPublicProposalsPostList";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeProposalListItem from "next-common/utils/viewfuncs/democracy/normalizeProposalListItem";
 import ListLayout from "next-common/components/layout/ListLayout";
@@ -13,10 +13,12 @@ import NewDemocracyProposalButton from "next-common/components/summary/newDemocr
 
 export default function DemocracyProposalsPage({ proposals, summary }) {
   const {
-    modules: { democracy: hasDemocracyModule },
+    modules: { democracy },
   } = useChainSettings();
   const chain = useChain();
   const noProposeButton = [Chains.crust].includes(chain);
+
+  const hasDemocracyModule = democracy && !democracy?.archived;
 
   const items = (proposals.items || []).map((item) =>
     normalizeProposalListItem(chain, item),
@@ -32,9 +34,7 @@ export default function DemocracyProposalsPage({ proposals, summary }) {
       description="Democracy uses public proposal, external proposal and referenda to manage the governance process."
       summary={<DemocracySummary summary={summary} />}
     >
-      <PostList
-        category={category}
-        title="List"
+      <DemocracyPublicProposalsPostList
         titleCount={proposals.total}
         titleExtra={
           hasDemocracyModule &&
@@ -54,7 +54,7 @@ export default function DemocracyProposalsPage({ proposals, summary }) {
 export const getServerSideProps = withCommonProps(async (context) => {
   const { page, page_size: pageSize } = context.query;
 
-  const { result: proposals } = await nextApi.fetch("democracy/proposals", {
+  const { result: proposals } = await backendApi.fetch("democracy/proposals", {
     page: page ?? 1,
     pageSize: pageSize ?? defaultPageSize,
     simple: true,

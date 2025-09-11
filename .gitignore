@@ -22,3 +22,9 @@ log
 .yalc/
 yalc.lock
 
+.vscode/settings.json
+
+.cursorrules
+
+.chopsticks
+.vercel

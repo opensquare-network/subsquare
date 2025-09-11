@@ -1,18 +1,19 @@
 import React from "react";
 import MaybeSignerConnected from "./maybeSignerConnected";
-import { useMetaMaskAccounts } from "../../utils/metamask";
-import ContextPopup from "./contextPopup";
+import { useEVMAccounts } from "next-common/hooks/connect/useEVMAccounts";
+import { usePopupParams } from "./context";
 
 export default function MaybeMetamaskSigner({ children }) {
-  const [metamaskAccounts, isLoading] = useMetaMaskAccounts(true);
+  const { loadingContent = null } = usePopupParams();
+  const { accounts, loading } = useEVMAccounts();
 
-  if (isLoading) {
-    return null;
+  if (loading) {
+    return loadingContent;
   }
 
   return (
-    <MaybeSignerConnected extensionAccounts={metamaskAccounts}>
-      <ContextPopup>{children}</ContextPopup>
+    <MaybeSignerConnected extensionAccounts={accounts}>
+      {children}
     </MaybeSignerConnected>
   );
 }

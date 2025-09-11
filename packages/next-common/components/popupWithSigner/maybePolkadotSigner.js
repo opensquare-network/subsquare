@@ -1,85 +1,29 @@
-import React, { useEffect, useState } from "react";
 import MaybeSignerConnected from "./maybeSignerConnected";
-import useInjectedWeb3 from "../wallet/useInjectedWeb3";
-import { useDispatch } from "react-redux";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount";
-import { useChainSettings } from "next-common/context/chain";
-import ChainTypes from "next-common/utils/consts/chainTypes";
-import { normalizeAddress } from "next-common/utils/address";
-import WalletTypes from "next-common/utils/consts/walletTypes";
+import { useSubstrateAccounts } from "next-common/hooks/connect/useSubstrateAccounts";
+import { find } from "lodash-es";
+import { allWallets } from "next-common/utils/consts/connect";
 import { usePopupParams } from "./context";
-import ContextPopup from "./contextPopup";
 
 export default function MaybePolkadotSigner({ children }) {
-  const dispatch = useDispatch();
-  const { injectedWeb3, loading } = useInjectedWeb3();
-  const [polkadotAccounts, setPolkadotAccounts] = useState([]);
-  const [detecting, setDetecting] = useState(true);
+  const { loadingContent = null } = usePopupParams();
   const { lastConnectedAccount } = useConnectedAccountContext();
-  const { chainType } = useChainSettings();
-  const { onClose } = usePopupParams();
+  const wallet = find(allWallets, {
+    extensionName: lastConnectedAccount?.wallet,
+  });
 
-  useEffect(() => {
-    (async () => {
-      if (loading) {
-        return;
-      }
+  const { accounts, loading } = useSubstrateAccounts({
+    wallet,
+    defaultLoading: true,
+  });
 
-      try {
-        if (!injectedWeb3) {
-          return;
-        }
-
-        if (!lastConnectedAccount) {
-          return;
-        }
-
-        const extension = injectedWeb3?.[lastConnectedAccount?.wallet];
-
-        if (!extension) {
-          return;
-        }
-
-        const wallet = await extension.enable("subsquare");
-        const extensionAccounts = await wallet.accounts?.get();
-
-        let filter = (item) => item.type !== "ethereum";
-        if (chainType === ChainTypes.ETHEREUM) {
-          filter = (item) => item.type === "ethereum";
-        } else if (
-          ChainTypes.MIXED === chainType &&
-          lastConnectedAccount?.wallet === WalletTypes.TALISMAN
-        ) {
-          filter = () => true;
-        }
-
-        setPolkadotAccounts(
-          extensionAccounts.filter(filter).map((item) => ({
-            ...item,
-            address: normalizeAddress(item.address),
-            meta: {
-              name: item.name,
-              source: lastConnectedAccount?.wallet,
-            },
-          })),
-        );
-      } catch (e) {
-        dispatch(newErrorToast(e.message));
-        onClose();
-      } finally {
-        setDetecting(false);
-      }
-    })();
-  }, [lastConnectedAccount, injectedWeb3, loading, chainType]);
-
-  if (detecting) {
-    return null;
+  if (loading) {
+    return loadingContent;
   }
 
   return (
-    <MaybeSignerConnected extensionAccounts={polkadotAccounts}>
-      <ContextPopup>{children}</ContextPopup>
+    <MaybeSignerConnected extensionAccounts={accounts}>
+      {children}
     </MaybeSignerConnected>
   );
 }

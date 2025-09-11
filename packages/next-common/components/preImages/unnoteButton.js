@@ -1,5 +1,7 @@
 import { useState } from "react";
-import UnnotePopup from "./unnotePopup";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const UnnotePopup = dynamicPopup(() => import("./unnotePopup"));
 
 export default function UnnoteButton({ hash, onInBlock }) {
   const [showPopup, setShowPopup] = useState(false);

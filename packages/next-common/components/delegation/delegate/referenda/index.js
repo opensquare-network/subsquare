@@ -11,11 +11,12 @@ import DelegationSearchInput from "../common/searchInput";
 import NewDelegateButton from "next-common/components/summary/allDelegation/newDelegateButton";
 import { SystemPlus } from "@osn/icons/subsquare";
 import Pagination from "next-common/components/pagination";
+import { omit } from "lodash-es";
 
 export default function ReferendaDelegates() {
   const router = useRouter();
 
-  const [page, setPage] = useState(1);
+  const page = Number(router.query.page) || 1;
   const [sort, setSort] = useState(router.query.sort || "");
   const [searchAddress, setSearchAddress] = useState("");
   const referendaDelegatesPageData = useReferendaDelegatesData({ page, sort });
@@ -30,7 +31,12 @@ export default function ReferendaDelegates() {
   }, [router.query.sort]);
 
   useEffect(() => {
-    setPage(1);
+    const q = omit(router.query, ["page"]);
+    router.replace({ query: q }, null, {
+      shallow: true,
+    });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sort]);
 
   return (
@@ -67,21 +73,11 @@ export default function ReferendaDelegates() {
           {delegates <= 0 ? (
             <DelegateEmpty />
           ) : (
-            <Delegates delegates={delegates} />
+            <Delegates page={page} delegates={delegates} />
           )}
 
           <div className="mt-2">
-            <Pagination
-              page={page}
-              setPage={setPage}
-              total={total}
-              pageSize={pageSize}
-              onPageChange={(event, page) => {
-                event.preventDefault();
-                event.stopPropagation();
-                setPage(page);
-              }}
-            />
+            <Pagination page={page} total={total} pageSize={pageSize} shallow />
           </div>
         </DelegatesLoadable>
       )}

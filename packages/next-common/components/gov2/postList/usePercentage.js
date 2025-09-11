@@ -1,10 +1,9 @@
-import { useSelector } from "react-redux";
 import { isNil } from "lodash-es";
 import { useMemo } from "react";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
 
 export default function usePercentage(startHeight, period) {
-  const latestHeight = useSelector(chainOrScanHeightSelector);
+  const latestHeight = useAhmLatestHeight();
   const end = startHeight + period;
 
   return useMemo(() => {
@@ -18,5 +17,5 @@ export default function usePercentage(startHeight, period) {
 
     const gone = latestHeight - startHeight;
     return Number((gone / period) * 100).toFixed(2);
-  }, [latestHeight, startHeight, period]);
+  }, [latestHeight, startHeight, end, period]);
 }

@@ -1,34 +1,29 @@
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
 import { difference } from "lodash-es";
-import {
-  ProjectIconKintsugiDark,
-  ProjectIconKintsugiLight,
-  ProjectLogoKintsugiDark,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+import { mergeChainModules } from "./common/modules";
 
-const DEFAULT_KINTSUGI_NODES =
-  process.env.NEXT_PUBLIC_TEST === "true"
-    ? [
-        {
-          name: "Kintsugi Test Endpoint",
-          url: "wss://api-dev-kintsugi.interlay.io/parachain",
-        },
-      ]
-    : [
-        {
-          name: "Dwellir",
-          url: "wss://kintsugi-rpc.dwellir.com",
-        },
-        {
-          name: "Kintsugi Labs",
-          url: "wss://api-kusama.interlay.io/parachain",
-        },
-        {
-          name: "OnFinality",
-          url: "wss://kintsugi.api.onfinality.io/public-ws",
-        },
-      ];
+const ProjectIconKintsugiDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconKintsugiDark"),
+);
+const ProjectIconKintsugiLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconKintsugiLight"),
+);
+const ProjectLogoKintsugiDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoKintsugiDark"),
+);
+
+const DEFAULT_KINTSUGI_NODES = [
+  {
+    name: "Kintsugi Labs",
+    url: "wss://api-kusama.interlay.io/parachain",
+  },
+  {
+    name: "OnFinality",
+    url: "wss://kintsugi.api.onfinality.io/public-ws",
+  },
+];
 
 const links = [
   {
@@ -67,7 +62,6 @@ const kintsugi = {
   blockTime: 12000,
   hasElections: false,
   ss58Format: 2092,
-  snsCoverCid: "bafybeifddx4p4ouofy2mj3pt5o62alnpfywbu7w7iedws3shpiu547tszi",
   endpoints: DEFAULT_KINTSUGI_NODES,
   avatar: ProjectIconKintsugiLight,
   darkAvatar: ProjectIconKintsugiDark,
@@ -77,14 +71,21 @@ const kintsugi = {
   links,
   group: MenuGroups.KusamaAndParachains,
   postLabels: difference(defaultPostLabels, [PostLabel.Council]),
-  hasSubscan: true,
   description:
     "Make your Bitcoin work for you with Kintsugi. Use your BTC for lending, borrowing, swapping and staking.",
   useVoteCall: true,
-  hasTreasuryModule: false,
-  hasTipsModule: false,
-  modules: {
-    democracy: true,
+  modules: mergeChainModules({
+    democracy: {
+      externalProposals: false,
+    },
+    treasury: {
+      bounties: false,
+      tips: false,
+    },
+    council: false,
+  }),
+  integrations: {
+    subscan: true,
   },
   cssVarsLight: {
     theme100: "rgba(247,205,69,0.10)",
@@ -104,6 +105,16 @@ const kintsugi = {
     navigationBg: "rgba(33,36,51,1)",
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",
+  },
+  wallets: {
+    walletconnect: false,
+  },
+  multisigWallets: {
+    signet: true,
+  },
+  allowWeb2Login: true,
+  openSquare: {
+    voting: "kintsugi",
   },
 };
 

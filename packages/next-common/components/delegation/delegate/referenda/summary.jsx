@@ -1,7 +1,8 @@
-import Summary from "next-common/components/summary";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { toPercentage, toPrecision } from "next-common/utils";
+import SummaryLayout from "next-common/components/summary/layout/layout";
+import SummaryItem from "next-common/components/summary/layout/item";
 
 export default function ReferendaDelegationCardSummary({
   delegate,
@@ -12,27 +13,17 @@ export default function ReferendaDelegationCardSummary({
   const { delegatorsCount, maxTrackDelegations, participationRate } = delegate;
 
   return (
-    <Summary
-      className={className}
-      items={[
-        {
-          title: "Max Delegated",
-          content: (
-            <ValueDisplay
-              value={toPrecision(maxTrackDelegations, decimals)}
-              symbol={symbol}
-            />
-          ),
-        },
-        {
-          title: "Delegators",
-          content: delegatorsCount,
-        },
-        {
-          title: "Participation",
-          content: toPercentage(participationRate, 1) + "%",
-        },
-      ]}
-    />
+    <SummaryLayout className={className}>
+      <SummaryItem title="Max Delegated">
+        <ValueDisplay
+          value={toPrecision(maxTrackDelegations, decimals)}
+          symbol={symbol}
+        />
+      </SummaryItem>
+      <SummaryItem title="Delegators">{delegatorsCount}</SummaryItem>
+      <SummaryItem title="Participation">
+        {toPercentage(participationRate, 1) + "%"}
+      </SummaryItem>
+    </SummaryLayout>
   );
 }

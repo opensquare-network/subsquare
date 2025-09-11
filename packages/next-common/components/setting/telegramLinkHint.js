@@ -61,7 +61,7 @@ export default function TelegramLinkHint() {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [userContext]);
+  }, [dispatch, userContext]);
 
   let tokenDisplay = null;
   if (isLoading) {

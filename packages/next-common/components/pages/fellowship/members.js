@@ -1,56 +1,254 @@
-import { useSelector } from "react-redux";
-import { fellowshipCoreMembersSelector } from "next-common/store/reducers/fellowship/core";
-import { isNil } from "lodash-es";
 import FellowshipMemberTabs from "next-common/components/fellowship/core/members/tabs";
-import { useMemo } from "react";
-import useRankFilter from "next-common/hooks/fellowship/useRankFilter";
-import FellowshipMembersLoadable from "next-common/components/pages/fellowship/loadable";
+import { useState } from "react";
 import FellowshipMemberCommon from "next-common/components/pages/fellowship/common";
-import useFetchFellowshipCoreMembers from "next-common/hooks/fellowship/core/useFetchFellowshipCoreMembers";
-import FellowshipCoreMemberCardListContainer from "next-common/components/fellowship/core/members/listContainer";
-import FellowshipCoreMemberCard from "next-common/components/fellowship/core/members/card";
 import FellowshipMembersEmpty from "./empty";
+import { usePageProps } from "next-common/context/page";
+import CollectivesProvider from "next-common/context/collectives/collectives";
+import MemberWarnings from "next-common/components/fellowship/core/memberWarnings";
+import { AllMemberEvidenceProvider } from "next-common/components/collectives/core/context/evidenceMemberContext";
+import { DropdownUrlFilterProvider } from "next-common/components/dropdownFilter/context";
+import useMembersWithMeAtFirst from "../useMembersWithMeAtFirst";
+import ViewModeSwitch from "./viewModeSwitch";
+import useMembersFilter from "./useMemberFilter";
+import FellowshipMemberCardView from "./memberCardView";
+import FellowshipMemberListView from "./memberListView";
+import { useMembersWithStatus } from "next-common/components/fellowship/collective/hook/useFellowshipCoreMembersFilter";
+import { useRouter } from "next/router";
+import MoreActions from "./moreActions";
+import { useChain } from "next-common/context/chain";
+import Chains from "next-common/utils/consts/chains";
+import SimpleFellowshipMembersPage from "./simpleMembers";
+import useCandidatesFilter from "./useCandidatesFilter";
+import MemberCandidatesWarnings from "next-common/components/fellowship/core/memberWarnings/candidates";
+import { filter, partition } from "lodash-es";
+import { useSortedFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
 
-export default function FellowshipMembersPage() {
-  useFetchFellowshipCoreMembers();
-  const members = useSelector(fellowshipCoreMembersSelector);
-  const candidates = (members || []).filter((member) => member.rank <= 0);
-  const pageMembers = useMemo(
-    () => (members || []).filter((member) => member.rank > 0),
-    [members],
-  );
-  const hasMembers = !!pageMembers.length;
+function FellowshipMembers({
+  viewMode,
+  members,
+  isLoading,
+  isCandidate = false,
+}) {
+  if (viewMode === "list") {
+    return (
+      <FellowshipMemberListView
+        members={members}
+        isLoading={isLoading}
+        ActionsComponent={MoreActions}
+        isCandidate={isCandidate}
+      />
+    );
+  }
 
-  const ranks = [...new Set(pageMembers.map((m) => m.rank))];
-  const { rank, component } = useRankFilter(ranks);
+  return <FellowshipMemberCardView members={members} isLoading={isLoading} />;
+}
 
-  const filteredMembers = useMemo(() => {
-    if (isNil(rank)) {
-      return pageMembers;
-    } else {
-      return pageMembers.filter((m) => m.rank === rank);
-    }
-  }, [pageMembers, rank]);
-  const membersForTabs = [...filteredMembers, ...candidates];
+export function useViewModeSwitch() {
+  const [viewMode, setViewMode] = useState("list");
+  return {
+    viewMode,
+    component: <ViewModeSwitch viewMode={viewMode} setViewMode={setViewMode} />,
+  };
+}
+
+function FellowshipMembersCardList({
+  viewMode,
+  isLoading,
+  members,
+  isCandidate,
+}) {
+  const hasMembers = members?.length > 0;
+  const sortedMembers = useMembersWithMeAtFirst(members);
+
+  if (!isLoading && !hasMembers) {
+    return <FellowshipMembersEmpty />;
+  }
 
   return (
-    <FellowshipMembersLoadable>
-      <FellowshipMemberCommon>
-        <div className="flex items-center justify-between mb-4 pr-6">
-          <FellowshipMemberTabs members={membersForTabs} />
-          {component}
-        </div>
-
-        {hasMembers ? (
-          <FellowshipCoreMemberCardListContainer>
-            {filteredMembers.map((member) => (
-              <FellowshipCoreMemberCard key={member.address} member={member} />
-            ))}
-          </FellowshipCoreMemberCardListContainer>
-        ) : (
-          <FellowshipMembersEmpty />
-        )}
-      </FellowshipMemberCommon>
-    </FellowshipMembersLoadable>
+    <FellowshipMembers
+      viewMode={viewMode}
+      members={sortedMembers}
+      isLoading={isLoading}
+      isCandidate={isCandidate}
+    />
   );
+}
+
+function FellowshipMembersTabPage({
+  members,
+  memberFilters,
+  isLoading,
+  coreMembersCount,
+  coreCandidatesCount,
+}) {
+  const { viewMode, component: viewModeSwitch } = useViewModeSwitch();
+
+  return (
+    <FellowshipMemberCommon>
+      <div className="flex flex-wrap max-md:flex-col md:items-center gap-[16px] max-md:gap-[12px] justify-between mb-4 pr-6">
+        <FellowshipMemberTabs
+          membersCount={members?.length ?? coreMembersCount}
+          candidatesCount={coreCandidatesCount}
+        />
+        <div className="flex items-center gap-[12px] max-md:pl-6">
+          {memberFilters}
+          {viewModeSwitch}
+        </div>
+      </div>
+
+      <MemberWarnings className="mb-[24px]" />
+
+      <FellowshipMembersCardList
+        viewMode={viewMode}
+        isLoading={isLoading}
+        members={members}
+      />
+    </FellowshipMemberCommon>
+  );
+}
+
+function FellowshipCandidatesTabPage({
+  candidates,
+  isLoading,
+  memberFilters,
+  coreMembersCount,
+  coreCandidatesCount,
+}) {
+  const { viewMode, component: viewModeSwitch } = useViewModeSwitch();
+
+  return (
+    <FellowshipMemberCommon>
+      <div className="flex flex-wrap max-md:flex-col md:items-center gap-[16px] max-md:gap-[12px] justify-between mb-4 pr-6">
+        <FellowshipMemberTabs
+          membersCount={coreMembersCount}
+          candidatesCount={candidates?.length ?? coreCandidatesCount}
+        />
+        <div className="flex items-center gap-[12px] max-md:pl-6">
+          {memberFilters}
+          {viewModeSwitch}
+        </div>
+      </div>
+
+      <MemberCandidatesWarnings className="mb-6" members={candidates} />
+
+      <FellowshipMembersCardList
+        viewMode={viewMode}
+        members={candidates}
+        isLoading={isLoading}
+        isCandidate
+      />
+    </FellowshipMemberCommon>
+  );
+}
+
+function FellowshipMembersPageInContext({
+  isLoading,
+  members,
+  coreMembersCount,
+  coreCandidatesCount,
+}) {
+  const { filteredMembers, component: memberFilters } =
+    useMembersFilter(members);
+
+  return (
+    <FellowshipMembersTabPage
+      members={filteredMembers}
+      memberFilters={memberFilters}
+      isLoading={isLoading}
+      coreMembersCount={coreMembersCount}
+      coreCandidatesCount={coreCandidatesCount}
+    />
+  );
+}
+
+function FellowshipCandidatesPageInContext({
+  isLoading,
+  candidates,
+  coreMembersCount,
+  coreCandidatesCount,
+}) {
+  const { filteredMembers: filteredCandidates, component: candidateFilters } =
+    useCandidatesFilter(candidates);
+
+  return (
+    <FellowshipCandidatesTabPage
+      candidates={filteredCandidates}
+      isLoading={isLoading}
+      memberFilters={candidateFilters}
+      coreMembersCount={coreMembersCount}
+      coreCandidatesCount={coreCandidatesCount}
+    />
+  );
+}
+
+function FellowshipMembersInContext() {
+  const { members: fellowshipMembers } = useSortedFellowshipCollectiveMembers();
+  const { membersWithStatus, isLoading } =
+    useMembersWithStatus(fellowshipMembers);
+
+  const router = useRouter();
+  const isCandidatesPage = router.query.tab === "candidates";
+
+  const [members, candidates] = partition(membersWithStatus, (m) => m.rank > 0);
+  const coreMembersCount = filter(members, {
+    isFellowshipCoreMember: true,
+  }).length;
+  const coreCandidatesCount = filter(candidates, {
+    isFellowshipCoreMember: true,
+  }).length;
+
+  return isCandidatesPage ? (
+    <FellowshipCandidatesPageInContext
+      isLoading={isLoading}
+      candidates={candidates}
+      coreMembersCount={coreMembersCount}
+      coreCandidatesCount={coreCandidatesCount}
+    />
+  ) : (
+    <FellowshipMembersPageInContext
+      isLoading={isLoading}
+      members={members}
+      coreMembersCount={coreMembersCount}
+      coreCandidatesCount={coreCandidatesCount}
+    />
+  );
+}
+
+function CollectivesFellowshipMembersPage() {
+  const { fellowshipParams } = usePageProps();
+
+  return (
+    <CollectivesProvider params={fellowshipParams} section="fellowship">
+      <AllMemberEvidenceProvider>
+        <DropdownUrlFilterProvider
+          defaultFilterValues={{
+            evidence_only: false,
+            wish: "all",
+            period: "all",
+            rank: null,
+            core_only: true,
+          }}
+          emptyFilterValues={{
+            evidence_only: false,
+            wish: "all",
+            period: "all",
+            rank: null,
+            core_only: false,
+          }}
+        >
+          <FellowshipMembersInContext />
+        </DropdownUrlFilterProvider>
+      </AllMemberEvidenceProvider>
+    </CollectivesProvider>
+  );
+}
+
+export default function FellowshipMembersPage() {
+  const chain = useChain();
+
+  if (chain === Chains.collectives) {
+    return <CollectivesFellowshipMembersPage />;
+  }
+
+  return <SimpleFellowshipMembersPage />;
 }

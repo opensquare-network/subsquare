@@ -321,14 +321,16 @@ function useScheduled() {
   const api = useContextApi();
   const blockTime = useSelector(blockTimeSelector);
   const leaseRangeMax = useLeaseRangeMax();
-  const [bestNumber] = useCall(api?.derive.chain.bestNumber);
-  const [auctionInfo] = useCall(api?.query.auctions?.auctionInfo);
-  const [councilMotions] = useCall(api?.derive.council?.proposals);
-  const [dispatches] = useCall(api?.derive.democracy?.dispatchQueue);
+  const { value: bestNumber } = useCall(api?.derive.chain.bestNumber);
+  const { value: auctionInfo } = useCall(api?.query.auctions?.auctionInfo);
+  const { value: councilMotions } = useCall(api?.derive.council?.proposals);
+  const { value: dispatches } = useCall(api?.derive.democracy?.dispatchQueue);
+  const { value: scheduled } = useCall(api?.query.scheduler?.agenda?.entries);
+  const { value: sessionInfo } = useCall(api?.derive.session?.progress);
+  const { value: slashes } = useCall(
+    api?.query.staking?.unappliedSlashes?.entries,
+  );
   const referendums = useReferendums(api);
-  const [scheduled] = useCall(api?.query.scheduler?.agenda?.entries);
-  const [sessionInfo] = useCall(api?.derive.session?.progress);
-  const [slashes] = useCall(api?.query.staking?.unappliedSlashes?.entries);
   const [state, setState] = useState([]);
 
   useEffect(() => {

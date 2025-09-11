@@ -4,6 +4,7 @@ import normalizeTreasuryProposalListItem from "next-common/utils/viewfuncs/treas
 import {
   getProposalPostTitleColumn,
   getRequestColumn,
+  getSpendRequestColumn,
   getStatusTagColumn,
   getVoteSummaryColumnPlaceholder,
 } from "./columns";
@@ -12,6 +13,8 @@ import normalizeBountyListItem from "next-common/utils/viewfuncs/treasury/normal
 import normalizeTipListItem from "next-common/utils/viewfuncs/treasury/normalizeTipListItem";
 import { overviewApi } from "next-common/services/url";
 import { usePageProps } from "next-common/context/page";
+import normalizeTreasurySpendListItem from "next-common/utils/viewfuncs/treasury/normalizeTreasurySpendListItem";
+import normalizeChildBountyListItem from "next-common/utils/viewfuncs/treasury/normalizeChildBountyListItem";
 
 const itemOptions = {
   proposals: {
@@ -22,6 +25,15 @@ const itemOptions = {
       return normalizeTreasuryProposalListItem(CHAIN, data);
     },
     category: businessCategory.treasuryProposals,
+  },
+  spends: {
+    api: {
+      path: overviewApi.treasurySpends,
+    },
+    formatter(data) {
+      return normalizeTreasurySpendListItem(CHAIN, data);
+    },
+    category: businessCategory.treasurySpends,
   },
   bounties: {
     api: {
@@ -37,7 +49,7 @@ const itemOptions = {
       path: overviewApi.treasuryChildBounties,
     },
     formatter(data) {
-      return normalizeBountyListItem(CHAIN, data);
+      return normalizeChildBountyListItem(CHAIN, data);
     },
     category: businessCategory.treasuryChildBounties,
   },
@@ -52,9 +64,17 @@ const itemOptions = {
   },
 };
 
+const treasuryTooltipContent = {
+  spends: "Approved proposals with funds already paid out.",
+  proposals: "Pending funding requests from the community.",
+  bounties: "Rewarded budget to achieve specific goals.",
+  "child-bounties": "Smaller spend sunder a bounty.",
+  tips: "One-time small rewards given for valuable contributions",
+};
+
 export function useRecentProposalTreasury() {
-  const { overviewSummary, recentProposals } = usePageProps();
-  const summary = overviewSummary;
+  const { recentSummary, recentProposals } = usePageProps();
+  const summary = recentSummary;
 
   const menu = getTreasuryMenu(summary);
 
@@ -62,15 +82,19 @@ export function useRecentProposalTreasury() {
     ?.map((item) => {
       const options = itemOptions[item.value];
 
-      const requestColumn = getRequestColumn();
+      let requestColumn = getRequestColumn();
       if (item.value === "tips") {
         requestColumn.name = "Value";
+      }
+      if (item.value === "spends") {
+        requestColumn = getSpendRequestColumn();
       }
 
       if (options) {
         return {
           ...item,
           ...options,
+          tooltip: treasuryTooltipContent[item.value],
           api: {
             ...options.api,
             initData: recentProposals.treasury?.[item.value],

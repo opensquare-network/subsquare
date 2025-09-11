@@ -1,12 +1,20 @@
-import MenuGroups from "./menuGroups";
-import { defaultPostLabels } from "./common";
-import {
-  ProjectIconBifrostPolkadotDark,
-  ProjectIconBifrostPolkadotLight,
-  ProjectLogoBifrostPolkadotDark,
-} from "@osn/icons/subsquare";
-import bifrost from "./bifrost";
+import dynamic from "next/dynamic";
 import Chains from "../chains";
+import bifrost from "./bifrost";
+import { defaultPostLabels } from "./common";
+import MenuGroups from "./menuGroups";
+import { mergeChainModules } from "./common/modules";
+import bifrostPreimageSettings from "next-common/utils/consts/settings/common/preimage/bifrost";
+
+const ProjectIconBifrostPolkadotDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconBifrostPolkadotDark"),
+);
+const ProjectIconBifrostPolkadotLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconBifrostPolkadotLight"),
+);
+const ProjectLogoBifrostPolkadotDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoBifrostPolkadotDark"),
+);
 
 const DEFAULT_NODES = [
   {
@@ -18,8 +26,12 @@ const DEFAULT_NODES = [
     url: "wss://eu.bifrost-polkadot-rpc.liebi.com/ws",
   },
   {
-    name: "OnFinality",
-    url: "wss://bifrost-polkadot.api.onfinality.io/public-ws",
+    name: "IBP1",
+    url: "wss://bifrost-polkadot.ibp.network",
+  },
+  {
+    name: "IBP2",
+    url: "wss://bifrost-polkadot.dotters.network",
   },
 ];
 
@@ -32,10 +44,9 @@ const bifrostPolkadot = {
   identity: Chains.bifrostPolkadot,
   symbol: "BNC",
   decimals: 12,
-  blockTime: 12000,
+  blockTime: 6000,
   hasElections: false,
-  ss58Format: 6,
-  snsCoverCid: "bafybeicykjzlwi3rjs637txy4fn2m6qbjofjwlypgmthbbb7i3f522xjzy",
+  ss58Format: 0,
   endpoints: DEFAULT_NODES,
   avatar: ProjectIconBifrostPolkadotLight,
   darkAvatar: ProjectIconBifrostPolkadotDark,
@@ -44,18 +55,34 @@ const bifrostPolkadot = {
   navPreferDark: true,
   links,
   group: MenuGroups.PolkadotAndParachains,
-  subscanDomain: "bifrost",
   postLabels: defaultPostLabels,
-  hasSubscan: true,
   useVoteCall: true,
   hasMultisig: true,
   multisigApiPrefix: "pbnc",
-  description:
-    "Provide LSD for 9+ blockchains and beyond, dedicated layer-1 built on Substrate with XCM for cross-chain staking.",
-  modules: {
+  description: bifrost.description,
+  modules: mergeChainModules({
     referenda: true,
     fellowship: true,
-    democracy: true,
+    treasury: {
+      spends: true,
+      bounties: false,
+      tips: false,
+    },
+    vesting: true,
+    democracy: {
+      archived: true,
+    },
+    council: {
+      archived: true,
+    },
+    technicalCommittee: {
+      archived: true,
+    },
+  }),
+  integrations: {
+    subscan: {
+      domain: "bifrost",
+    },
   },
   cssVarsLight: {
     theme100: "rgba(84,43,251,0.10)",
@@ -75,6 +102,23 @@ const bifrostPolkadot = {
     navigationBg: "rgba(33,36,51,1)",
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",
+  },
+  multisigWallets: {
+    signet: true,
+    mimir: true,
+  },
+  newProposalQuickStart: {
+    cancelReferendum: true,
+    killReferendum: true,
+  },
+  supportWalletconnect: true,
+  allowWeb2Login: false,
+  hotMenu: {
+    referenda: true,
+  },
+  preimage: bifrostPreimageSettings,
+  openSquare: {
+    voting: "bifrost",
   },
 };
 

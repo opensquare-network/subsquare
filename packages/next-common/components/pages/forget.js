@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import Input from "next-common/components/input";
+import Input from "next-common/lib/input";
 import nextApi from "next-common/services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
 import { useDispatch } from "react-redux";

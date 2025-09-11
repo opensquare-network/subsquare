@@ -3,7 +3,7 @@ import Tooltip from "next-common/components/tooltip";
 import AddressUser from "next-common/components/user/addressUser";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
-import { nestedVotesSelector } from "next-common/store/reducers/referenda/votes/selectors";
+import { allNestedVotesSelector } from "next-common/store/reducers/referenda/votes/selectors";
 import { cn, toPrecision } from "next-common/utils";
 import { bnSumBy, bnToPercentage } from "next-common/utils/bn";
 import { useSelector } from "react-redux";
@@ -28,19 +28,18 @@ function Container({ children, className = "" }) {
 export default function DVDelegateCard({ data }) {
   const { decimals, symbol } = useChainSettings();
 
-  const nestedVotes = useSelector(nestedVotesSelector);
-  const nestedTotalVotesValue = bnSumBy(nestedVotes, "totalVotes");
+  const allNestedVotes = useSelector(allNestedVotesSelector);
+  const nestedTotalVotesValue = bnSumBy(allNestedVotes, "totalVotes");
 
   const aye = data?.aye;
   const nay = data?.aye === false;
-  const abstain = data?.isAbstain;
+  const split = data?.isSplit;
+  const abstain = data?.isAbstain || data?.isSplitAbstain;
   const totalVotes = data?.totalVotes;
   const noVoted = isNil(totalVotes);
   const delegators = data?.directVoterDelegations;
 
-  const user = (
-    <AddressUser linkToVotesPage add={data.account} maxWidth={220} />
-  );
+  const user = <AddressUser link="/votes" add={data.account} maxWidth={220} />;
 
   const percentage = `${bnToPercentage(
     totalVotes,
@@ -48,12 +47,14 @@ export default function DVDelegateCard({ data }) {
   ).toFixed(2)}%`;
 
   let voteStats;
-  if (aye) {
+  if (split) {
+    voteStats = `split (${percentage})`;
+  } else if (abstain) {
+    voteStats = `abstain (${percentage})`;
+  } else if (aye) {
     voteStats = `aye (${percentage})`;
   } else if (nay) {
     voteStats = `nay (${percentage})`;
-  } else if (abstain) {
-    voteStats = `abstain (${percentage})`;
   } else if (noVoted) {
     voteStats = "-";
   }
@@ -64,6 +65,7 @@ export default function DVDelegateCard({ data }) {
         aye && "bg-green100 text-green500",
         nay && "bg-red100 text-red500",
         abstain && "bg-neutral200 text-textSecondary",
+        split && "bg-neutral200 text-textSecondary",
         noVoted && "bg-neutral200 text-textDisabled",
       )}
     >

@@ -1,46 +1,39 @@
-import React, { useEffect } from "react";
 import styled from "styled-components";
-import { useState } from "react";
-import Avatar from "./avatar";
-import { encodeAddressToChain } from "../services/address";
-import { fetchIdentity } from "../services/identity";
 import Identity from "./Identity";
-import { addressEllipsis } from "../utils";
-import { useChainSettings } from "../context/chain";
+import { addressEllipsis, cn } from "../utils";
 import { normalizeAddress } from "next-common/utils/address";
-import {
-  WalletPolkadotjs,
-  WalletMetamask,
-  WalletTailsman,
-  WalletSubwallet,
-  WalletPolkagate,
-  WalletNova,
-} from "@osn/icons/subsquare";
-import WalletTypes from "next-common/utils/consts/walletTypes";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
+import { allWallets } from "next-common/utils/consts/connect";
+import { find } from "lodash-es";
+import ChainTypes from "next-common/utils/consts/chainTypes";
+import { useConnectors } from "wagmi";
+import AddressAvatar from "./user/addressAvatar";
+import useIdentityInfo from "next-common/hooks/useIdentityInfo";
+import AddressInfoLoading from "./addressInfo";
 
-const WalletIcon = ({ wallet }) => {
+export function WalletIcon({ wallet: walletName }) {
+  const wallet = find(allWallets, { extensionName: walletName });
+
   return (
-    <div className="absolute right-0 bottom-0">
-      {wallet === WalletTypes.POLKADOT_JS && (
-        <WalletPolkadotjs width={16} height={16} />
-      )}
-      {wallet === WalletTypes.METAMASK && (
-        <WalletMetamask width={16} height={16} />
-      )}
-      {wallet === WalletTypes.TALISMAN && (
-        <WalletTailsman width={16} height={16} />
-      )}
-      {wallet === WalletTypes.SUBWALLET_JS && (
-        <WalletSubwallet width={16} height={16} />
-      )}
-      {wallet === WalletTypes.POLKAGATE && (
-        <WalletPolkagate width={16} height={16} />
-      )}
-      {wallet === WalletTypes.NOVA && <WalletNova width={16} height={16} />}
-    </div>
+    wallet?.logo && (
+      <wallet.logo className="absolute right-0 bottom-0 w-4 h-4" />
+    )
   );
-};
+}
+
+export function EvmWalletIcon({ id, wallet }) {
+  const connectors = useConnectors();
+  let connector = find(connectors, { id });
+  // mixed chain talisman
+  if (!connector) {
+    connector = find(
+      connectors,
+      (c) => c.name.toLowerCase() === wallet?.toLowerCase?.(),
+    );
+  }
+
+  return <WalletIcon wallet={connector?.name?.toLowerCase?.()} />;
+}
 
 const AvatarWrapper = styled.div`
   display: flex;
@@ -62,41 +55,55 @@ const NameWrapper = styled.div`
   }
 `;
 
-export default function Account({ account }) {
-  const settings = useChainSettings();
-  const [identity, setIdentity] = useState(null);
-
+export default function Account({
+  account,
+  showFullAddress = false,
+  addressClassName = "",
+}) {
+  const { identity, hasIdentity, isLoading } = useIdentityInfo(
+    account?.address,
+  );
   const address = normalizeAddress(account?.address);
   const maybeEvmAddress = tryConvertToEvmAddress(address);
   const wallet = account?.meta?.source;
 
-  useEffect(() => {
-    setIdentity(null);
-    if (account?.address) {
-      fetchIdentity(
-        settings.identity,
-        encodeAddressToChain(account.address, settings.identity),
-      ).then((identity) => setIdentity(identity));
-    }
-  }, [account?.address, settings]);
+  const isEthereum = account?.type === ChainTypes.ETHEREUM;
+
+  const addressHint = showFullAddress
+    ? maybeEvmAddress
+    : addressEllipsis(maybeEvmAddress);
+
+  if (isLoading) {
+    return <AddressInfoLoading address={address} />;
+  }
 
   return (
     <>
       <AvatarWrapper>
-        <Avatar address={maybeEvmAddress} size={40} />
-        <WalletIcon wallet={wallet} />
+        <AddressAvatar address={address} size={40} />
+        {isEthereum ? (
+          <EvmWalletIcon id={account?.meta?.connectorId} wallet={wallet} />
+        ) : (
+          <WalletIcon wallet={wallet} />
+        )}
       </AvatarWrapper>
-      <NameWrapper>
+      <NameWrapper className="truncate">
         {/*TODO: use <IdentityOrAddr> after PR merged*/}
-        {identity && identity?.info?.status !== "NO_ID" ? (
+        {hasIdentity ? (
           <>
             <Identity identity={identity} />
-            <div>{addressEllipsis(maybeEvmAddress)}</div>
+            <div className={cn("truncate", addressClassName)}>
+              {account?.address}
+            </div>
           </>
         ) : (
           <>
-            <div className="text-textPrimary">{account?.name}</div>
-            <div>{addressEllipsis(maybeEvmAddress) ?? "--"}</div>
+            <div className="text-textPrimary">
+              {account?.name || addressHint}
+            </div>
+            <div className={cn("truncate", addressClassName)}>
+              {account?.address}
+            </div>
           </>
         )}
       </NameWrapper>

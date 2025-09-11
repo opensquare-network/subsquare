@@ -1,21 +1,24 @@
 import ReferendaLayout from "next-common/components/layout/referendaLayout";
 import { withReferendaCommonProps } from "next-common/services/serverSide/referenda/common";
 import WhalesContainer from "next-common/components/whales/container";
-import WhalesHistoryList from "next-common/components/whales/historyList";
-import {
-  getReferendaWhales,
-  getReferendaWhalesHistory,
-} from "next-common/services/serverSide/referenda/whales";
+import dynamic from "next/dynamic";
+
+const WhalesHistoryList = dynamic(
+  () => import("next-common/components/whales/historyList"),
+  {
+    ssr: false,
+  },
+);
 
 export default function ReferendaWhalesHistoryPage({
-  title,
   gov2ReferendaSummary,
 }) {
-  const seoInfo = { title, desc: title };
+  const seoInfo = { title : "Referenda Whales History"  , desc: "View the history of referenda whales" };
 
   return (
     <ReferendaLayout
-      title={title}
+      title={seoInfo.title}
+      description={seoInfo.desc}
       seoInfo={seoInfo}
       summaryData={gov2ReferendaSummary}
     >
@@ -26,18 +29,4 @@ export default function ReferendaWhalesHistoryPage({
   );
 }
 
-export const getServerSideProps = withReferendaCommonProps(async (ctx) => {
-  const page = ctx.query.page || 1;
-
-  const [{ result: whales }, { result: historyWhales }] = await Promise.all([
-    getReferendaWhales(1, 1),
-    getReferendaWhalesHistory(page, 25),
-  ]);
-
-  return {
-    props: {
-      whales,
-      historyWhales,
-    },
-  };
-});
+export const getServerSideProps = withReferendaCommonProps();

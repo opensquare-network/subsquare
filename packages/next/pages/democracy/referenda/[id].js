@@ -1,11 +1,9 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
-import Vote from "components/referenda/vote";
+import Vote from "next-common/components/pages/components/referenda/vote";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
-import Timeline from "components/referenda/timeline";
-import ReferendumMetadata from "next-common/components/democracy/metadata";
 import useMaybeFetchElectorate from "next-common/utils/hooks/referenda/useMaybeFetchElectorate";
 import useFetchVotes from "next-common/utils/hooks/referenda/useFetchVotes";
 import { getBannerUrl } from "next-common/utils/banner";
@@ -15,42 +13,39 @@ import DemocracyReferendaDetail from "next-common/components/detail/Democracy/re
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import useDemocracyVotesFromServer from "next-common/utils/hooks/referenda/useDemocracyVotesFromServer";
 import { clearVotes } from "next-common/store/reducers/democracy/votes";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
-import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
-import ReferendumCall from "next-common/components/democracy/call";
-import useInlineCall from "next-common/components/democracy/metadata/useInlineCall";
-import DemocracyReferendaVotesBubble from "next-common/components/democracy/referendum/votesBubble";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
 import useSubDemocracyReferendumStatus from "next-common/hooks/democracy/useSubDemocracyReferendumStatus";
-import useSetReferendumStatus from "next-common/hooks/democracy/useSetReferendumStatus";
-import { referendumStatusSelector } from "next-common/store/reducers/referendumSlice";
-import { useContextApi } from "next-common/context/api";
+import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
+import DemocracyReferendaDetailMultiTabs from "next-common/components/pages/components/tabs/democracyReferendaDetailMultiTabs";
+import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
+import { useDemocracyReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 
 function ReferendumContent() {
   const post = usePost();
+  const indexer = useDemocracyReferendumVotingFinishIndexer(
+    post?.onchainData?.timeline,
+  );
 
-  const onchainData = post?.onchainData;
+  return (
+    <MigrationConditionalApiProvider indexer={indexer}>
+      <ReferendumContentContentInContext post={post} />
+    </MigrationConditionalApiProvider>
+  );
+}
+
+function ReferendumContentContentInContext({ post }) {
   const dispatch = useDispatch();
 
-  const { timeline = [], preImage } = onchainData;
-
   useSubscribePostDetail(post?.referendumIndex);
-  useSetReferendumStatus();
   useSubDemocracyReferendumStatus(post?.referendumIndex);
 
-  const api = useContextApi();
-  const referendumStatus = useSelector(referendumStatusSelector);
-  const proposal = referendumStatus?.proposal;
-
-  const { call: inlineCall } = useInlineCall(timeline, proposal);
-  const call = preImage?.call || inlineCall;
-
-  useMaybeFetchElectorate(post?.onchainData, api);
+  useMaybeFetchElectorate(post?.onchainData);
   useDemocracyVotesFromServer(post.referendumIndex);
   useFetchVotes(post?.onchainData);
 
@@ -61,34 +56,13 @@ function ReferendumContent() {
   }, [dispatch]);
 
   return (
-    <ContentWithComment>
-      <DemocracyReferendaDetail />
-
-      <Vote referendumIndex={post?.referendumIndex} />
-
-      <DetailMultiTabs
-        call={
-          (call || inlineCall) && (
-            <ReferendumCall
-              call={call || inlineCall}
-              shorten={post?.onchainData?.preImage?.shorten}
-              onchainData={post?.onchainData}
-            />
-          )
-        }
-        metadata={
-          <ReferendumMetadata
-            proposer={post?.proposer}
-            status={referendumStatus ?? {}}
-            call={post?.onchainData?.preImage?.call || post?.onchainData?.call}
-            shorten={post?.onchainData?.preImage?.shorten}
-            onchainData={post?.onchainData}
-          />
-        }
-        timeline={<Timeline />}
-        votesBubble={<DemocracyReferendaVotesBubble />}
-      />
-    </ContentWithComment>
+    <MaybeSimaContent>
+      <ContentWithComment>
+        <DemocracyReferendaDetail />
+        <Vote referendumIndex={post?.referendumIndex} />
+        <DemocracyReferendaDetailMultiTabs />
+      </ContentWithComment>
+    </MaybeSimaContent>
   );
 }
 
@@ -132,7 +106,9 @@ export default function DemocracyReferendumPage({ detail }) {
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
 
-  const { result: detail } = await nextApi.fetch(`democracy/referendums/${id}`);
+  const { result: detail } = await backendApi.fetch(
+    `democracy/referendums/${id}`,
+  );
   if (!detail) {
     return getNullDetailProps(id);
   }

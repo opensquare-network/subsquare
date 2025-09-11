@@ -3,9 +3,13 @@ import { useState } from "react";
 import ThresholdCurvesChart from "next-common/components/charts/thresholdCurve";
 import { ArrowExpend } from "@osn/icons/subsquare";
 import ThresholdCurvesGov2TrackSummaryLegend from "next-common/components/charts/thresholdCurve/legend/gov2TrackSummaryLegend";
-import ThresholdCurvesPopup from "next-common/components/charts/thresholdCurve/popup";
 import { SummaryItemTitle } from "next-common/components/summary/styled";
 import useGov2ThresholdCurveData from "next-common/utils/hooks/useGov2ThresholdCurveData";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const ThresholdCurvesPopup = dynamicPopup(() =>
+  import("next-common/components/charts/thresholdCurve/popup"),
+);
 
 const SummaryThresholdCurveItem = styled.div`
   height: 100%;

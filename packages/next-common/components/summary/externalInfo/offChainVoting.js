@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import Api from "next-common/services/api";
-import { hasDefinedOffChainVoting } from "next-common/utils/summaryExternalInfo";
+import { votingSpace, votingHost } from "next-common/utils/opensquareVoting";
 
 const NewProposal = styled.a`
   cursor: pointer;
@@ -13,14 +13,14 @@ const NewProposal = styled.a`
   -webkit-text-fill-color: transparent;
 `;
 
-function NoProposals({ host }) {
+function NoProposals() {
   return (
     <div className="flex gap-[8px] text-textTertiary text12Medium">
       <span>No active off-chain voting</span>
       <NewProposal
         className="text12Bold"
         target="_blank"
-        href={`${host}/space/${process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE}/create`}
+        href={`${votingHost}/space/${votingSpace}/create`}
       >
         + New Proposal
       </NewProposal>
@@ -28,13 +28,11 @@ function NoProposals({ host }) {
   );
 }
 
-function VotingProposals({ host }) {
-  const space = process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE;
-
-  const [posts, setPosts] = useState();
+function VotingProposals() {
+  const [posts, setPosts] = useState([]);
   useEffect(() => {
-    new Api(host)
-      .fetch(`/api/${space}/proposals/active`)
+    new Api(votingHost)
+      .fetch(`/api/${votingSpace}/proposals/active`)
       .then(({ result: { items } }) => {
         setPosts(
           items.filter((item) =>
@@ -42,17 +40,10 @@ function VotingProposals({ host }) {
           ),
         );
       });
-  }, [host]);
+  }, []);
 
-  if (!space) {
-    throw new Error("NEXT_PUBLIC_OFF_CHAIN_SPACE is not set");
-  }
-
-  if (!posts) {
-    return null;
-  }
   if (posts.length <= 0) {
-    return <NoProposals host={host} />;
+    return <NoProposals />;
   }
 
   return (
@@ -60,21 +51,16 @@ function VotingProposals({ host }) {
       title="Active off-chain voting"
       items={(posts || []).map((item) => ({
         title: item.title,
-        href: `${host}/space/${space}/proposal/${item.cid}`,
+        href: `${votingHost}/space/${votingSpace}/proposal/${item.cid}`,
       }))}
     />
   );
 }
 
 export default function OffChainVoting() {
-  if (!hasDefinedOffChainVoting()) {
+  if (!votingSpace) {
     return null;
   }
 
-  const votingHost = `${
-    process.env.NEXT_PUBLIC_OFF_CHAIN_VOTING_SITE_URL ||
-    "https://voting.opensquare.io"
-  }`;
-
-  return <VotingProposals host={votingHost} />;
+  return <VotingProposals />;
 }

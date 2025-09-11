@@ -1,64 +1,86 @@
-import React, { useCallback, useState } from "react";
-import { useDispatch } from "react-redux";
-import { useSignerAccount } from "next-common/components/popupWithSigner/context";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import { emptyFunction } from "next-common/utils";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
+import React from "react";
+import { noop } from "lodash-es";
 import PrimaryButton from "next-common/lib/button/primary";
-import { useContextApi } from "next-common/context/api";
+import LoadingButton from "next-common/lib/button/loading";
+import useTxSubmission from "./useTxSubmission";
+import { usePopupOnClose } from "next-common/context/popup";
 
 export default function TxSubmissionButton({
+  loading = false,
+  loadingText,
   disabled = false,
-  getTxFunc = emptyFunction,
+  getTxFunc = noop,
   title = "Submit",
-  onFinalized = emptyFunction,
-  onInBlock = emptyFunction,
-  onSubmitted = emptyFunction,
-  onClose = emptyFunction,
+  onFinalized = noop,
+  onInBlock = noop,
+  onSubmitted = noop,
+  autoClose = true,
 }) {
-  const [isCalling, setIsCalling] = useState(false);
-  const api = useContextApi();
-  const dispatch = useDispatch();
-  const signerAccount = useSignerAccount();
-  const isMounted = useIsMounted();
+  const onClose = usePopupOnClose();
+  const { isSubmitting, isWraping, doSubmit } = useTxSubmission({
+    getTxFunc,
+    onFinalized,
+    onInBlock,
+    onSubmitted: () => {
+      if (autoClose) {
+        onClose();
+      }
+      onSubmitted();
+    },
+  });
 
-  const onSubmit = useCallback(async () => {
-    if (!api) {
-      dispatch(newErrorToast("Chain network is not connected yet"));
-      return;
-    }
-
-    if (!signerAccount) {
-      dispatch(newErrorToast("Signer account is not specified"));
-      return;
-    }
-
-    let tx = await getTxFunc();
-    if (!tx) {
-      return;
-    } else if (signerAccount?.proxyAddress) {
-      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-    }
-
-    await sendTx({
-      tx,
-      dispatch,
-      setLoading: setIsCalling,
-      signerAccount,
-      isMounted,
-      onClose,
-      onSubmitted,
-      onInBlock,
-      onFinalized,
-    });
-  }, [api, dispatch, signerAccount, getTxFunc]);
+  const isLoading = isSubmitting || loading || isWraping;
 
   return (
     <div className="flex justify-end">
-      <PrimaryButton loading={isCalling} onClick={onSubmit} disabled={disabled}>
-        {title}
-      </PrimaryButton>
+      {isLoading && loadingText ? (
+        <LoadingButton>{loadingText}</LoadingButton>
+      ) : (
+        <PrimaryButton
+          loading={isLoading}
+          onClick={doSubmit}
+          disabled={disabled}
+        >
+          {title}
+        </PrimaryButton>
+      )}
     </div>
   );
+}
+
+export function useTxSubmissionButton({
+  loadingText,
+  disabled = false,
+  getTxFunc = noop,
+  title = "Submit",
+  onFinalized = noop,
+  onInBlock = noop,
+  onSubmitted = noop,
+}) {
+  const { isSubmitting, isWraping, doSubmit } = useTxSubmission({
+    getTxFunc,
+    onFinalized,
+    onInBlock,
+    onSubmitted,
+  });
+
+  return {
+    isWraping,
+    isLoading: isSubmitting,
+    component: (
+      <div className="flex justify-end">
+        {isSubmitting && loadingText ? (
+          <LoadingButton>{loadingText}</LoadingButton>
+        ) : (
+          <PrimaryButton
+            loading={isSubmitting || isWraping}
+            onClick={doSubmit}
+            disabled={disabled}
+          >
+            {title}
+          </PrimaryButton>
+        )}
+      </div>
+    ),
+  };
 }

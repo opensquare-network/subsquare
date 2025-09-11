@@ -1,37 +1,53 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
+import { useTreasuryPallet } from "next-common/context/treasury";
 import { useContextApi } from "next-common/context/api";
+
+function isValidApi(api) {
+  return api?.approvals && api?.proposals;
+}
 
 export default function useToBeAwarded() {
   const api = useContextApi();
+  const pallet = useTreasuryPallet();
   const [toBeAwarded, setToBeAwarded] = useState();
 
-  useEffect(() => {
-    if (
-      !api ||
-      !api?.query?.treasury?.approvals ||
-      !api?.query?.treasury?.proposals
-    ) {
+  const toBeAwardedAPI = api?.query?.[pallet];
+  const fetchToBeAwarded = useCallback(async () => {
+    if (!isValidApi(toBeAwardedAPI)) {
       return;
     }
 
-    Promise.all([
-      api.query.treasury.approvals(),
-      api.query.treasury.proposals.entries(),
-    ]).then(([approvals, proposals]) => {
+    try {
+      const [approvals, proposals] = await Promise.all([
+        toBeAwardedAPI.approvals(),
+        toBeAwardedAPI.proposals.entries(),
+      ]);
+
       const toBeAwardedProposalIds = approvals.toJSON();
-      const toBeAwarded = proposals.reduce((result, [id, proposal]) => {
+      const toBeAwardedAmount = proposals.reduce((total, [id, proposal]) => {
         if (proposal.isNone) {
-          return result;
+          return total;
         }
+
         const proposalId = id.args[0].toNumber();
         if (!toBeAwardedProposalIds.includes(proposalId)) {
-          return result;
+          return total;
         }
-        return result + proposal.value.value.toBigInt();
+
+        return total + proposal.value.value.toBigInt();
       }, 0n);
-      setToBeAwarded(toBeAwarded);
-    });
-  }, [api]);
+
+      setToBeAwarded(toBeAwardedAmount);
+    } catch (error) {
+      console.error("Error fetching to be awarded proposals:", error);
+    }
+  }, [toBeAwardedAPI]);
+
+  useEffect(() => {
+    if (toBeAwardedAPI) {
+      fetchToBeAwarded();
+    }
+  }, [fetchToBeAwarded, toBeAwardedAPI]);
 
   return toBeAwarded;
 }

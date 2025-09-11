@@ -11,18 +11,19 @@ import { useRecentProposalTechComm } from "./tc";
 import { useRecentProposalFinancialCouncil } from "./financialCouncil";
 import { useRecentProposalAlliance } from "./alliance";
 import { useRecentProposalAdvisoryCommittee } from "./advisoryCommittee";
-import { useRecentProposalOpenTechComm } from "./openTechComm";
-import isMoonChain from "next-common/utils/isMoonChain";
-import { useRecentProposalTreasuryCouncil } from "./treasuryCouncil";
 import Chains from "next-common/utils/consts/chains";
 import { partition } from "lodash-es";
 import EmptyRecentProposals from "./empty";
+import { useRecentProposalCommunityCouncil } from "./communityCouncil";
+import { useRecentProposalCommunityTreasury } from "./communityTreasury";
+import { useRecentProposalFellowshipTreasury } from "./fellowshipTreasury";
+import Tooltip from "next-common/components/tooltip";
 
 export default function RecentProposals() {
   const chain = useChain();
   const chainSettings = useChainSettings();
+  const { modules } = chainSettings;
   const isPolkadotChain = chain === Chains.polkadot;
-  const hasDiscussions = chainSettings.hasDiscussions !== false;
 
   const discussions = useRecentProposalDiscussions();
   const referenda = useRecentProposalReferenda();
@@ -34,8 +35,9 @@ export default function RecentProposals() {
   const financialCouncil = useRecentProposalFinancialCouncil();
   const alliance = useRecentProposalAlliance();
   const advisoryCommittee = useRecentProposalAdvisoryCommittee();
-  const treasuryCouncil = useRecentProposalTreasuryCouncil();
-  const openTechComm = useRecentProposalOpenTechComm();
+  const communityCouncil = useRecentProposalCommunityCouncil();
+  const communityTreasury = useRecentProposalCommunityTreasury();
+  const fellowshipTreasury = useRecentProposalFellowshipTreasury();
 
   const {
     modules: { referenda: hasReferenda, fellowship: hasFellowship },
@@ -45,24 +47,26 @@ export default function RecentProposals() {
     hasFellowship && fellowship,
     democracy,
     treasury,
+    fellowshipTreasury,
     !isPolkadotChain && council,
-    isMoonChain() && treasuryCouncil,
     !isPolkadotChain && tc,
     financialCouncil,
     alliance,
     advisoryCommittee,
-    isMoonChain() && openTechComm,
-    (hasDiscussions || chainSettings.hasDiscussionsForumTopics) && discussions,
-  ]
-    .filter(Boolean)
-    .filter((item) => !item.excludeToChains?.includes?.(chain))
-    .filter((item) => !item.archivedToChains?.includes?.(chain));
+    communityCouncil,
+    communityTreasury,
+    (modules?.discussions || chainSettings.integrations?.discourseForum) &&
+      discussions,
+  ].filter(Boolean);
 
   const [activeItems] = partition(sections, (item) => item.activeCount > 0);
 
   return (
     <div>
-      <TitleContainer className="mb-4">Recent Proposals</TitleContainer>
+      <TitleContainer className="mb-4 gap-1 justify-start">
+        <span>Recent Proposals</span>
+        <Tooltip content="Active and recently finished proposals"></Tooltip>
+      </TitleContainer>
 
       {!activeItems.length ? (
         <EmptyRecentProposals />

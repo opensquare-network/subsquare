@@ -2,7 +2,6 @@ import React from "react";
 import Router from "next/router";
 import NProgress from "nprogress";
 import { Provider } from "react-redux";
-
 import "nprogress/nprogress.css";
 import "next-common/styles/globals.css";
 import "next-common/styles/tailwind.css";
@@ -12,11 +11,10 @@ import "next-common/styles/cmdk.css";
 import "next-common/styles/react-datepicker.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import Head from "next/head";
-import ScanStatusComponent from "next-common/components/scanStatus";
 import SystemVersionUpgrade from "next-common/components/systemVersionUpgrade";
 import "@osn/previewer/styles.css";
 import "next-common/styles/markdown.css";
-import useInitMimir from "next-common/hooks/useInitMimir";
+import dynamic from "next/dynamic";
 
 NProgress.configure({
   minimum: 0.3,
@@ -38,13 +36,15 @@ Router.events.on(
   (url, { shallow }) => !shallow && NProgress.done(),
 );
 
-function MyApp({ Component, pageProps }) {
-  if (!process.env.NEXT_PUBLIC_CHAIN) {
-    throw new Error("NEXT_PUBLIC_CHAIN env not set");
-  }
+//convert the read and write operations of localStorage to client-side rendering
+const ClientOnlySystemUpgrade = dynamic(
+  () => Promise.resolve(SystemVersionUpgrade),
+  {
+    ssr: false,
+  },
+);
 
-  useInitMimir();
-
+function AppImpl({ Component, pageProps }) {
   const {
     connectedAccount,
     user,
@@ -54,8 +54,10 @@ function MyApp({ Component, pageProps }) {
     pageProperties,
     navCollapsed,
     navSubmenuVisible,
+    pathname,
     ...otherProps
   } = pageProps;
+
   return (
     <>
       <Head>
@@ -72,15 +74,21 @@ function MyApp({ Component, pageProps }) {
           pageProperties={pageProperties}
           navCollapsed={navCollapsed}
           navSubmenuVisible={navSubmenuVisible}
+          pathname={pathname}
         >
-          <SystemVersionUpgrade />
-          <ScanStatusComponent>
-            <Component {...otherProps} />
-          </ScanStatusComponent>
+          <ClientOnlySystemUpgrade />
+          <Component {...otherProps} />
         </GlobalProvider>
       </Provider>
     </>
   );
+}
+
+function MyApp({ Component, pageProps }) {
+  if (!process.env.NEXT_PUBLIC_CHAIN) {
+    throw new Error("NEXT_PUBLIC_CHAIN env not set");
+  }
+  return <AppImpl Component={Component} pageProps={pageProps} />;
 }
 
 export default MyApp;

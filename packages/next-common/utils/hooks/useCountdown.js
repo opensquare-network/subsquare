@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
-import useIsMounted from "./useIsMounted";
+import { useMountedState } from "react-use";
 
 export default function useCountdown(initSeconds) {
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   const [countdown, setCountdown] = useState(initSeconds);
   const [counting, setCounting] = useState(false);
 
@@ -16,7 +16,7 @@ export default function useCountdown(initSeconds) {
     }
 
     setTimeout(() => {
-      if (isMounted.current) {
+      if (isMounted()) {
         setCountdown(countdown - 1);
       }
     }, 1000);
@@ -26,7 +26,7 @@ export default function useCountdown(initSeconds) {
   const resetCountdown = useCallback(() => {
     setCountdown(initSeconds);
     setCounting(false);
-  }, []);
+  }, [initSeconds]);
 
   return { countdown, counting, startCountdown, resetCountdown };
 }

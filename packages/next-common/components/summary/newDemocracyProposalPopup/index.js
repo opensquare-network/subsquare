@@ -1,8 +1,5 @@
-import SignerPopup from "next-common/components/signerPopup";
 import { useCallback, useEffect, useState } from "react";
-import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
-import { useDispatch } from "react-redux";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { getEventData } from "next-common/utils/sendTransaction";
 import { useRouter } from "next/router";
 import SubmissionDeposit from "./submissionDeposit";
 import LockedBalance from "./lockedBalance";
@@ -12,22 +9,23 @@ import { isValidPreimageHash } from "next-common/utils";
 import usePreimageLength from "next-common/hooks/usePreimageLength";
 import PreimageField from "../newProposalPopup/preimageField";
 import { useContextApi } from "next-common/context/api";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
+import SignerWithVotingBalance from "next-common/components/signerPopup/signerWithVotingBalance";
+import Popup from "next-common/components/popup/wrapper/Popup";
+import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 
-export default function NewDemocracyProposalPopup({
-  onClose,
+export function NewDemocracyProposalInnerPopup({
   preimageHash: _preimageHash,
   preimageLength: _preimageLength,
 }) {
-  const dispatch = useDispatch();
+  const { onClose } = usePopupParams();
   const router = useRouter();
-  const isMounted = useIsMounted();
   const api = useContextApi();
   const { decimals } = useChainSettings();
   const [deposit, setDeposit] = useState("0");
   const [lockedBalance, setLockedBalance] = useState("0");
   const [preimageHash, setPreimageHash] = useState(_preimageHash || "");
   const [preimageLength, setPreimageLength] = useState(_preimageLength || "");
-  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (!api) {
@@ -39,7 +37,7 @@ export default function NewDemocracyProposalPopup({
 
     setDeposit(deposit);
     setLockedBalance(deposit);
-  }, [api]);
+  }, [api, decimals]);
 
   const length = usePreimageLength(preimageHash);
   useEffect(() => {
@@ -48,83 +46,54 @@ export default function NewDemocracyProposalPopup({
     }
   }, [length]);
 
-  const onSubmit = useCallback(
-    (api, signerAccount) => {
-      if (!api || !signerAccount) {
-        return;
-      }
+  const getTxFunc = useCallback(() => {
+    if (!api) {
+      return;
+    }
 
-      const value = new BigNumber(lockedBalance || 0)
-        .times(Math.pow(10, decimals))
-        .toString();
+    const value = new BigNumber(lockedBalance || 0)
+      .times(Math.pow(10, decimals))
+      .toString();
 
-      let tx = api.tx.democracy.propose(
-        {
-          Lookup: {
-            hash: preimageHash,
-            len: parseInt(preimageLength),
-          },
+    return api.tx.democracy.propose(
+      {
+        Lookup: {
+          hash: preimageHash,
+          len: parseInt(preimageLength),
         },
-        value,
-      );
-
-      if (signerAccount?.proxyAddress) {
-        tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-      }
-
-      sendTx({
-        tx,
-        api,
-        dispatch,
-        isMounted,
-        signerAccount,
-        setLoading: setIsLoading,
-        onInBlock: (eventData) => {
-          if (!eventData) {
-            return;
-          }
-          const [proposalIndex] = eventData;
-          router.push(`/democracy/proposals/${proposalIndex}`);
-        },
-        section: "democracy",
-        method: "Proposed",
-        onClose,
-      });
-    },
-    [
-      dispatch,
-      router,
-      isMounted,
-      preimageHash,
-      preimageLength,
-      lockedBalance,
-      onClose,
-      decimals,
-    ],
-  );
+      },
+      value,
+    );
+  }, [api, preimageHash, preimageLength, lockedBalance, decimals]);
 
   const disabled = !preimageHash || !isValidPreimageHash(preimageHash);
 
   return (
-    <SignerPopup
-      wide
-      title="New Proposal"
-      onClose={onClose}
-      actionCallback={onSubmit}
-      disabled={disabled}
-      isLoading={isLoading}
-    >
+    <Popup title="New Proposal" onClose={onClose}>
+      <SignerWithVotingBalance />
       <PreimageField
         preimageHash={preimageHash}
         setPreimageHash={setPreimageHash}
         preimageLength={preimageLength}
-        setPreimageLength={preimageLength}
+        setPreimageLength={setPreimageLength}
       />
       <LockedBalance
         lockedBalance={lockedBalance}
         setLockedBalance={setLockedBalance}
       />
-      <SubmissionDeposit deposit={deposit} />
-    </SignerPopup>
+      <SubmissionDeposit deposit={deposit} />{" "}
+      <TxSubmissionButton
+        getTxFunc={getTxFunc}
+        disabled={disabled}
+        onInBlock={({ events }) => {
+          const eventData = getEventData(events, "democracy", "Proposed");
+          if (!eventData) {
+            return;
+          }
+          const [proposalIndex] = eventData;
+          router.push(`/democracy/proposals/${proposalIndex}`);
+        }}
+      />
+    </Popup>
   );
 }

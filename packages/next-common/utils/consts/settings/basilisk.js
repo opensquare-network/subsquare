@@ -1,10 +1,17 @@
 import { defaultPostLabels } from "./common";
 import MenuGroups from "./menuGroups";
-import {
-  ProjectIconBasiliskDark,
-  ProjectIconBasiliskLight,
-  ProjectLogoBasiliskDark,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+import { mergeChainModules } from "./common/modules";
+
+const ProjectIconBasiliskDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconBasiliskDark"),
+);
+const ProjectIconBasiliskLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconBasiliskLight"),
+);
+const ProjectLogoBasiliskDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoBasiliskDark"),
+);
 
 const DEFAULT_BASILISK_NODES = [
   {
@@ -50,10 +57,9 @@ const basilisk = {
   identity: "basilisk",
   symbol: "BSX",
   decimals: 12,
-  blockTime: 12000,
+  blockTime: 6000,
   hasElections: true,
   ss58Format: 10041,
-  snsCoverCid: "bafybeicxl7g3sjtq2bflm4itrxwlibbt3jhwybf24fex4hf3hyuwbbeawy",
   avatar: ProjectIconBasiliskLight,
   darkAvatar: ProjectIconBasiliskDark,
   navLogo: ProjectLogoBasiliskDark,
@@ -63,12 +69,21 @@ const basilisk = {
   links,
   group: MenuGroups.KusamaAndParachains,
   postLabels: defaultPostLabels,
-  hasSubscan: true,
   useVoteCall: true,
   description:
     "Snek brings permissionless liquidity to the Kusama ecosystem. Swap tokens, flip NFTs and earn rewards. Help young crypto projects bootstrap liquidity and receive tokens.",
-  modules: {
-    democracy: true,
+  modules: mergeChainModules({
+    referenda: true,
+    treasury: {
+      bounties: false,
+      spends: true,
+    },
+    council: {
+      archived: true,
+    },
+  }),
+  integrations: {
+    subscan: true,
   },
   cssVarsLight: {
     theme100: "rgba(63,227,154,0.10)",
@@ -81,7 +96,6 @@ const basilisk = {
     navigationTextTertiary: "var(--textTertiaryContrast)",
     navigationIcon: "var(--textSecondaryContrast)",
   },
-
   cssVarsDark: {
     theme100: "rgba(63,227,154,0.10)",
     theme300: "rgba(63,227,154,0.40)",
@@ -89,6 +103,14 @@ const basilisk = {
     navigationBg: "rgba(33,36,51,1)",
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "rgba(39,42,58,1)",
+  },
+  newProposalQuickStart: {
+    cancelReferendum: true,
+    killReferendum: true,
+  },
+  allowWeb2Login: false,
+  openSquare: {
+    voting: "basilisk",
   },
 };
 

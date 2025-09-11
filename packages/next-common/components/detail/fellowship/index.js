@@ -1,6 +1,4 @@
 import DetailContentBase from "../common/detailBase";
-import ArticleContent from "../../articleContent";
-import useSetEdit from "../common/hooks/useSetEdit";
 import PostTitle from "next-common/components/detail/common/Title";
 import ReferendaPostMeta from "next-common/components/detail/common/openGov/meta";
 import { useSelector } from "react-redux";
@@ -9,9 +7,11 @@ import FellowshipWhitelistNavigation from "next-common/components/detail/fellows
 import PreimageWarning from "next-common/components/detail/referenda/preimageWarning";
 import FellowshipTimeoutCountdown from "next-common/components/detail/fellowship/timeoutCountdown";
 import TimeoutGuard from "next-common/components/detail/common/openGov/timeoutGuard";
+import FellowshipReferendumTreasurySpendNavigation from "./fellowshipReferendumTreasurySpendNavigation";
+import MaybeSimaDiscussionArticleContent from "next-common/components/maybeSimaDiscussionArticleContent";
+import FellowshipReferendaDetailEvidence from "./evidence";
 
 export default function FellowshipReferendaDetail() {
-  const setIsEdit = useSetEdit();
   const isEditing = useSelector(isEditingPostSelector);
 
   return (
@@ -24,13 +24,15 @@ export default function FellowshipReferendaDetail() {
               <FellowshipTimeoutCountdown />
             </TimeoutGuard>
             <FellowshipWhitelistNavigation />
+            <FellowshipReferendumTreasurySpendNavigation />
           </>
         )
       }
       title={<PostTitle />}
-      meta={<ReferendaPostMeta isFellowship />}
+      meta={<ReferendaPostMeta section="fellowship" />}
     >
-      <ArticleContent className="mt-6" setIsEdit={setIsEdit} />
+      <MaybeSimaDiscussionArticleContent />
+      <FellowshipReferendaDetailEvidence />
     </DetailContentBase>
   );
 }

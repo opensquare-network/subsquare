@@ -5,19 +5,17 @@ import useSubIdentityDisplay from "next-common/hooks/useSubIdentityDisplay";
 import { AddressUserImpl } from "./addressUser";
 
 function SubIdentityUser({
+  className = "text14Medium text-textPrimary",
   add,
   showAvatar = true,
-  fontSize = 14,
   noEvent = false,
   maxWidth: propMaxWidth,
   noTooltip = false,
-  color,
-  linkToVotesPage = false,
   ellipsis = true,
-  externalLink,
+  link,
 }) {
   const address = add;
-  const [identity, hasIdentity] = useIdentityInfo(address);
+  const { identity, hasIdentity } = useIdentityInfo(address);
   const { isLoading, displayParent, display } = useSubIdentityDisplay(address);
 
   let subIdentity = identity;
@@ -40,18 +38,16 @@ function SubIdentityUser({
 
   return (
     <AddressUserImpl
+      className={className}
       address={address}
       identity={subIdentity}
       hasIdentity={hasIdentity}
       maxWidth={maxWidth}
       showAvatar={showAvatar}
-      fontSize={fontSize}
       noEvent={noEvent}
       noTooltip={noTooltip}
-      color={color}
-      linkToVotesPage={linkToVotesPage}
       ellipsis={ellipsis}
-      externalLink={externalLink}
+      link={link}
     />
   );
 }

@@ -4,14 +4,15 @@ import CommentEditor from "next-common/components/comment/editor";
 import useMentionList from "next-common/utils/hooks/useMentionList";
 import { getFocusEditor } from "next-common/utils/post";
 import { useUser } from "../../context/user";
-import { usePostCommentsData } from "next-common/hooks/usePostComments";
 import { usePost } from "next-common/context/post";
+import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
+import PrimaryButton from "next-common/lib/button/primary";
+import { useChainSettings } from "next-common/context/chain";
 
-export default function useCommentComponent() {
+export default function useCommentComponent({ commentsData, loading }) {
   const user = useUser();
   const post = usePost();
-  const postId = post._id;
-  const { commentsData, loading } = usePostCommentsData();
+  const { sima } = useChainSettings();
 
   const editorWrapperRef = useRef(null);
   const [quillRef, setQuillRef] = useState(null);
@@ -20,29 +21,57 @@ export default function useCommentComponent() {
     user?.preference?.editor || "markdown",
   );
 
+  const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
+  const { ensureLogin, ensureConnect } = useEnsureLogin();
   const users = useMentionList(post, commentsData);
 
-  const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
-
-  const CommentComponent = (
-    <div>
-      <Comments data={commentsData} loading={loading} />
-      {user && (
-        <CommentEditor
-          postId={postId}
-          ref={editorWrapperRef}
-          setQuillRef={setQuillRef}
-          {...{
-            contentType,
-            setContentType,
-            content,
-            setContent,
-            users,
-          }}
-        />
-      )}
+  let editor = sima ? (
+    <div className="flex justify-end mt-4">
+      <PrimaryButton
+        onClick={() => {
+          ensureConnect();
+        }}
+      >
+        Connect
+      </PrimaryButton>
+    </div>
+  ) : (
+    <div className="flex justify-end mt-4">
+      <PrimaryButton
+        onClick={() => {
+          ensureLogin();
+        }}
+      >
+        Login
+      </PrimaryButton>
     </div>
   );
 
-  return { CommentComponent, focusEditor };
+  if (user) {
+    editor = (
+      <CommentEditor
+        ref={editorWrapperRef}
+        setQuillRef={setQuillRef}
+        {...{
+          contentType,
+          setContentType,
+          content,
+          setContent,
+          users,
+        }}
+      />
+    );
+  }
+
+  const component = (
+    <div>
+      <Comments data={commentsData} loading={loading} />
+      {editor}
+    </div>
+  );
+
+  return {
+    component,
+    focusEditor,
+  };
 }

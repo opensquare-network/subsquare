@@ -3,8 +3,10 @@ import Link from "next/link";
 
 export default function ReferendaDelegationLink() {
   const {
-    modules: { referenda: hasReferenda, democracy: hasDemocracy },
+    modules: { referenda: hasReferenda, democracy },
   } = useChainSettings();
+  const hasDemocracy = democracy && !democracy?.archived;
+
   let delegationLink = "/delegation";
   if (hasReferenda && hasDemocracy) {
     delegationLink = delegationLink + "?type=referenda";

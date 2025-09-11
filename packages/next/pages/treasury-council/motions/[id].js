@@ -1,6 +1,6 @@
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
-import MotionDetail from "components/motion/motionDetail";
+import { backendApi } from "next-common/services/nextApi";
+import MotionDetail from "next-common/components/pages/components/motion/motionDetail";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { EmptyList } from "next-common/utils/constants";
 import { getBannerUrl } from "next-common/utils/banner";
@@ -12,6 +12,11 @@ import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
+import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
+import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
+import CollectiveProvider, {
+  collectivePallets,
+} from "next-common/context/collective";
 
 function MotionContent() {
   const motion = usePost();
@@ -19,9 +24,13 @@ function MotionContent() {
   motion.status = motion.state?.state;
 
   return (
-    <ContentWithComment>
-      <MotionDetail />
-    </ContentWithComment>
+    <OffChainArticleActionsProvider>
+      <OffChainCommentActionsProvider>
+        <ContentWithComment>
+          <MotionDetail />
+        </ContentWithComment>
+      </OffChainCommentActionsProvider>
+    </OffChainArticleActionsProvider>
   );
 }
 
@@ -56,15 +65,17 @@ function MotionPageImpl() {
 
 export default function MotionPage({ motion }) {
   return (
-    <PostProvider post={motion}>
-      <MotionPageImpl />
-    </PostProvider>
+    <CollectiveProvider pallet={collectivePallets.treasuryCouncilCollective}>
+      <PostProvider post={motion}>
+        <MotionPageImpl />
+      </PostProvider>
+    </CollectiveProvider>
   );
 }
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
-  const { result: motion } = await nextApi.fetch(`motions/${id}`);
+  const { result: motion } = await backendApi.fetch(`motions/${id}`);
   if (!motion) {
     return getNullDetailProps(id, { motion: null });
   }

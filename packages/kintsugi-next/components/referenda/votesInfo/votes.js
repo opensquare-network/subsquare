@@ -1,6 +1,10 @@
 import SubLink from "next-common/components/styled/subLink";
 import { useState } from "react";
-import CheckAllVotesPopup from "components/democracy/allVotesPopup";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const CheckAllVotesPopup = dynamicPopup(() =>
+  import("components/democracy/allVotesPopup"),
+);
 
 export default function Votes() {
   const [showVoteList, setShowVoteList] = useState(false);

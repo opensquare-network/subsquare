@@ -1,7 +1,6 @@
 import React from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
-import { TrackColors } from "./colors";
 import { startCase } from "lodash-es";
 import { cn } from "next-common/utils";
 
@@ -30,7 +29,7 @@ const options = {
   cutout: "80%",
 };
 
-export function DoughnutChart({ trackReferendaCounts }) {
+export function DoughnutChart({ trackReferendaCounts, trackColors }) {
   const data = {
     labels: trackReferendaCounts.map((item) => startCase(item.name)),
     datasets: [
@@ -38,9 +37,9 @@ export function DoughnutChart({ trackReferendaCounts }) {
         label: "Referendum Count",
         data: trackReferendaCounts.map((item) => item.count),
         backgroundColor: trackReferendaCounts.map(
-          (item) => TrackColors[item.name],
+          (item) => trackColors[item.name],
         ),
-        borderColor: trackReferendaCounts.map((item) => TrackColors[item.name]),
+        borderColor: trackReferendaCounts.map((item) => trackColors[item.name]),
         borderWidth: 0,
         name: trackReferendaCounts.map((item) => startCase(item.name)),
         percentage: trackReferendaCounts.map(

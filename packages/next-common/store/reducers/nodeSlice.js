@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import getChainSettings from "../../utils/consts/settings";
+import safeLocalStorage from "next-common/utils/safeLocalStorage";
+import { random } from "lodash-es";
 
 const chain = process.env.NEXT_PUBLIC_CHAIN;
 
@@ -22,34 +24,43 @@ export function getEnvEndpoints() {
 
 const endpointsFromEnv = getEnvEndpoints();
 
-function getInitNodeUrl(chain) {
+export function getAllRpcUrls(chain) {
+  const envEndpoints = getEnvEndpoints();
+  if ((envEndpoints || []).length >= 1) {
+    return envEndpoints.map((item) => item.url);
+  }
+
+  const settings = getChainSettings(chain);
+  return settings.endpoints.map((item) => item.url);
+}
+
+export function getInitNodeUrl(chain) {
   let localNodeUrl = null;
   try {
-    localNodeUrl = localStorage.getItem("nodeUrl");
+    localNodeUrl = safeLocalStorage.getItem(`nodeUrl-${chain}`);
   } catch (e) {
     // ignore parse error
   }
 
-  const settings = getChainSettings(chain);
-  const chainNodes = endpointsFromEnv || settings.endpoints;
-  if (chainNodes.length <= 0) {
+  const candidateUrls = getAllRpcUrls(chain);
+  if (candidateUrls.length <= 0) {
     throw new Error(`Can not find nodes for ${chain}`);
   }
-
-  const node = (chainNodes || []).find(({ url }) => url === localNodeUrl);
-  if (node) {
-    return node.url;
-  } else {
-    return chainNodes[0].url;
+  if (localNodeUrl && candidateUrls.includes(localNodeUrl)) {
+    return localNodeUrl;
   }
+
+  const cap = candidateUrls.length > 3 ? 2 : candidateUrls.length - 1;
+  const randomIndex = random(cap);
+  return candidateUrls[randomIndex];
 }
 
 const nodeSlice = createSlice({
   name: "node",
   initialState: {
+    chain,
     currentNode: getInitNodeUrl(chain),
     nodes: endpointsFromEnv || getChainSettings(chain).endpoints,
-    nodesHeight: null,
   },
   reducers: {
     setCurrentNode(state, { payload }) {
@@ -66,15 +77,15 @@ const nodeSlice = createSlice({
       });
 
       if (saveLocalStorage) {
-        localStorage.setItem("nodeUrl", url);
+        safeLocalStorage.setItem(`nodeUrl-${state.chain}`, url);
       }
 
       if (refresh) {
-        window.location.href = `https://${chain}.subsquare.io`;
+        window.location.reload();
       }
     },
     removeCurrentNode(state) {
-      localStorage.removeItem("nodeUrl");
+      safeLocalStorage.removeItem(`nodeUrl-${state.chain}`);
       state.currentNode = null;
     },
     setNodesDelay(state, { payload }) {
@@ -83,21 +94,13 @@ const nodeSlice = createSlice({
         if (node) node.delay = item.delay;
       });
     },
-    setNodeBlockHeight(state, { payload }) {
-      state.nodesHeight = payload;
-    },
   },
 });
 
 export const currentNodeSelector = (state) => state.node?.currentNode;
 export const nodesSelector = (state) => state.node?.nodes;
-export const nodesHeightSelector = (state) => state.node?.nodesHeight;
 
-export const {
-  setCurrentNode,
-  removeCurrentNode,
-  setNodesDelay,
-  setNodeBlockHeight,
-} = nodeSlice.actions;
+export const { setCurrentNode, removeCurrentNode, setNodesDelay } =
+  nodeSlice.actions;
 
 export default nodeSlice.reducer;

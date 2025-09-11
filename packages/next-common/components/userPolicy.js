@@ -2,7 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import ErrorText from "next-common/components/ErrorText";
-import { SystemCheckboxOff, SystemCheckboxOn } from "@osn/icons/subsquare";
+import {
+  SystemCheckboxDisabled,
+  SystemCheckboxOff,
+  SystemCheckboxOn,
+} from "@osn/icons/subsquare";
 
 const Wrapper = styled.div`
   margin-top: 16px !important;
@@ -25,17 +29,22 @@ const Text = styled.div`
   }
 `;
 
-function CheckBox({ checked, setChecked, setAgreeError }) {
+function CheckBox({ disabled, checked, setChecked, setAgreeError }) {
   return (
     <span
       role="checkbox"
       className="mr-2"
       onClick={() => {
+        if (disabled) {
+          return;
+        }
         setChecked(!checked);
         setAgreeError(null);
       }}
     >
-      {checked ? (
+      {disabled ? (
+        <SystemCheckboxDisabled className="w-5 h-5" />
+      ) : checked ? (
         <SystemCheckboxOn className="w-5 h-5 [&_rect]:fill-theme500" />
       ) : (
         <SystemCheckboxOff className="w-5 h-5" />
@@ -45,6 +54,7 @@ function CheckBox({ checked, setChecked, setAgreeError }) {
 }
 
 export default function UserPolicy({
+  disabled,
   checked,
   setChecked,
   agreeError,
@@ -54,6 +64,7 @@ export default function UserPolicy({
     <Wrapper>
       <ClickWrapper>
         <CheckBox
+          disabled={disabled}
           checked={checked}
           setChecked={setChecked}
           setAgreeError={setAgreeError}

@@ -1,12 +1,14 @@
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import CardHeader from "./cardHeader";
 import { DetailList, DetailRow } from "./detailRow";
-import TokenValue from "./tokenValue";
-import { useBasicData } from "next-common/context/centrifuge/basicData";
-import { bnToLocaleString } from "next-common/utils/bn";
+import useCfgBasicData from "next-common/context/centrifuge/basicData";
+import { useChainSettings } from "next-common/context/chain";
+import ValueDisplay from "next-common/components/valueDisplay";
+import LoadableContent from "next-common/components/common/loadableContent";
 
 export default function BlockRewardsCard() {
-  const { data = {}, loading: isLoading } = useBasicData();
+  const { symbol } = useChainSettings();
+  const [{ data = {}, loading: isLoading }] = useCfgBasicData();
   const { rewards = {} } = data;
   const { total = 0, collator = 0, treasury = 0 } = rewards;
 
@@ -16,26 +18,26 @@ export default function BlockRewardsCard() {
         <CardHeader
           title="Block Rewards"
           value={
-            <TokenValue value={bnToLocaleString(total)} isLoading={isLoading} />
+            <LoadableContent isLoading={isLoading}>
+              <ValueDisplay value={total} symbol={symbol} />
+            </LoadableContent>
           }
         />
         <DetailList>
           <DetailRow
             title="Collator"
             value={
-              <TokenValue
-                value={bnToLocaleString(collator)}
-                isLoading={isLoading}
-              />
+              <LoadableContent isLoading={isLoading}>
+                <ValueDisplay value={collator} symbol={symbol} />
+              </LoadableContent>
             }
           />
           <DetailRow
             title="Treasury"
             value={
-              <TokenValue
-                value={bnToLocaleString(treasury)}
-                isLoading={isLoading}
-              />
+              <LoadableContent isLoading={isLoading}>
+                <ValueDisplay value={treasury} symbol={symbol} />
+              </LoadableContent>
             }
           />
         </DetailList>

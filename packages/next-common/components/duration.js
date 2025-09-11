@@ -1,4 +1,4 @@
-import { timeDurationFromNow } from "next-common/utils";
+import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 import { useEffect, useState } from "react";
 
 export default function Duration({ time }) {
@@ -8,7 +8,7 @@ export default function Duration({ time }) {
     if (!time) {
       return;
     }
-    setDuration(timeDurationFromNow(time));
+    setDuration(formatTimeAgo(time));
   }, [time]);
 
   return <span>{duration}</span>;

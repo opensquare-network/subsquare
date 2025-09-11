@@ -1,27 +1,28 @@
 import DataList from "next-common/components/dataList";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import FellowshipRank from "../../rank";
-import { usePageProps } from "next-common/context/page";
 import { has, isNil } from "lodash-es";
 import AddressUser from "next-common/components/user/addressUser";
 import FellowshipSalaryMemberIsRegistered from "./isRegistered";
 import Link from "next/link";
-import { useSalaryAsset } from "next-common/hooks/useSalaryAsset";
+import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import FellowshipSalaryMemberStatus from "./status";
 import useRankFilter from "next-common/hooks/fellowship/useRankFilter";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { useFellowshipSalaryMemberStatusFilter } from "next-common/hooks/fellowship/salary/useFellowshipSalaryStatusFilter";
-import { claimStatsValues, claimantListColumns } from "./consts";
-import { useFellowSalaryClaimantsData } from "next-common/hooks/fellowship/salary/useFellowshipSalaryClaimantsData";
+import { claimStatsValues, claimantListColumns } from "./utils";
+import { getRankSalary } from "next-common/utils/fellowship/getRankSalary";
 
-export default function FellowshipSalaryClaimants() {
-  const { fellowshipParams, fellowshipMembers } = usePageProps();
-  const { symbol, decimals } = useSalaryAsset();
-  const fellowshipSalaryClaimants = useFellowSalaryClaimantsData();
+export default function FellowshipSalaryClaimantsList({
+  claimants = [],
+  params = {},
+  members = [],
+}) {
+  const { symbol, decimals } = getSalaryAsset();
 
-  const ranks = [...new Set(fellowshipMembers.map((m) => m.rank))];
+  const ranks = [...new Set(members.map((m) => m.rank))];
   const { rank, component: rankFilterComponent } = useRankFilter(ranks);
 
   const { status, component: statusFilterComponent } =
@@ -29,15 +30,15 @@ export default function FellowshipSalaryClaimants() {
 
   const filteredClaimants =
     isNil(rank) && isNil(status)
-      ? fellowshipSalaryClaimants
-      : fellowshipSalaryClaimants.filter((claimant) => {
+      ? claimants
+      : claimants.filter((claimant) => {
           return (
             (isNil(rank) || claimant.rank === rank) &&
             (isNil(status) || has(claimant?.status?.status, status))
           );
         });
 
-  const { activeSalary = [], passiveSalary = [] } = fellowshipParams ?? {};
+  const { activeSalary = [], passiveSalary = [] } = params ?? {};
 
   const rows = filteredClaimants?.map((claimant) => {
     const address = claimant?.address;
@@ -47,12 +48,15 @@ export default function FellowshipSalaryClaimants() {
       <AddressUser key={`address-${address}`} add={address} />,
       <ValueDisplay
         key={`active-salary-${address}`}
-        value={toPrecision(activeSalary[claimant.rank - 1] || 0, decimals)}
+        value={toPrecision(
+          getRankSalary(activeSalary, claimant.rank),
+          decimals,
+        )}
         symbol={symbol}
       />,
       <ValueDisplay
         key={`passive-salary-${address}`}
-        value={toPrecision(passiveSalary[claimant.rank - 1] || 0, decimals)}
+        value={toPrecision(getRankSalary(passiveSalary, rank), decimals)}
         symbol={symbol}
       />,
       <FellowshipSalaryMemberIsRegistered

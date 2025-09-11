@@ -1,23 +1,7 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import useDuration from "../../utils/hooks/useDuration";
+import { useState } from "react";
 import formatTime from "../../utils/viewfuncs/formatDate";
-
-const Wrapper = styled.span`
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 140%;
-  color: var(--textTertiary);
-  cursor: pointer;
-
-  &:hover {
-    color: var(--textSecondary);
-  }
-
-  & > span {
-    margin-right: 4px;
-  }
-`;
+import { cn } from "next-common/utils";
+import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 
 function SwitchableTime({
   timestamp = new Date().getTime(),
@@ -27,13 +11,23 @@ function SwitchableTime({
   const [isDuration, setIsDuration] = useState(showDuration);
 
   const timeStr = formatTime(timestamp);
-  const duration = useDuration(timestamp);
+  const timeAgo = formatTimeAgo(timestamp);
 
   return (
-    <Wrapper onClick={() => setIsDuration(!isDuration)}>
-      {isEstimated ? <span>≈</span> : null}
-      {isDuration ? duration : timeStr}
-    </Wrapper>
+    <span
+      role="button"
+      className={cn(
+        "text12Medium",
+        "text-textTertiary",
+        "hover:text-textSecondary",
+      )}
+      onClick={() => {
+        setIsDuration(!isDuration);
+      }}
+    >
+      {isEstimated ? <span className="mr-1">≈</span> : null}
+      {isDuration ? timeAgo : timeStr}
+    </span>
   );
 }
 

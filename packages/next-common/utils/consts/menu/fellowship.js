@@ -1,42 +1,66 @@
-import React from "react";
-import { sumBy } from "lodash-es";
-import Divider from "../../../components/styled/layout/divider";
-import { startCase } from "lodash-es";
-import { getExcludeChains } from "../../viewfuncs";
-import Chains from "../chains";
+import { startCase, sumBy } from "lodash-es";
 import { MenuFellowship } from "@osn/icons/subsquare";
 import getChainSettings from "../settings";
-
-export const name = "FELLOWSHIP";
+import { collectivesCommonNames } from "next-common/utils/consts/menu/common/collectives";
+import { isCollectivesChain } from "next-common/utils/chain";
 
 export const Names = {
   fellowship: "FELLOWSHIP",
-  members: "Members",
-  core: "Core",
-  salary: "Salary",
-  all: "All",
+  ...collectivesCommonNames,
 };
 
-function getFellowshipCoreMenu() {
-  const chainSettings = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
-  if (!chainSettings.hasFellowshipCore) {
+function getFellowshipMembersMenu() {
+  const { modules } = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
+  if (!modules?.fellowship?.core) {
     return null;
   }
 
   return {
-    value: "fellowship-core",
-    name: Names.core,
-    pathname: "/fellowship/core",
+    value: "fellowship-members",
+    name: Names.members,
+    pathname: "/fellowship/members",
     extraMatchNavMenuActivePathnames: [
-      "/fellowship/core/params",
-      "/fellowship/core/feeds",
+      "/fellowship/members/params",
+      "/fellowship/members/feeds",
+    ],
+  };
+}
+
+function getNonCoreFellowshipMembersMenu() {
+  const { modules } = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
+  if (modules?.fellowship?.core) {
+    return null;
+  }
+
+  return {
+    value: "fellowship-members",
+    name: Names.members,
+    pathname: "/fellowship/members",
+  };
+}
+
+function getFellowshipEvidencesMenu(overviewSummary) {
+  const { modules } = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
+  if (!modules?.fellowship?.core) {
+    return null;
+  }
+
+  const fellowshipEvidences = overviewSummary?.fellowshipEvidences || {};
+
+  return {
+    value: "fellowship-evidences",
+    name: "Evidences",
+    pathname: "/fellowship/evidences",
+    activeCount: fellowshipEvidences.active || 0,
+    extraMatchNavMenuActivePathnames: [
+      "/fellowship/members/[id]/evidences/[evidenceId]",
     ],
   };
 }
 
 function getFellowshipSalaryMenu() {
-  const chainSettings = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
-  if (!chainSettings.hasFellowshipCore) {
+  const { modules } = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
+  if (!modules?.fellowship?.core) {
     return null;
   }
 
@@ -52,53 +76,23 @@ function getFellowshipSalaryMenu() {
   };
 }
 
-export function getFellowshipMenu(fellowshipTracks = [], currentTrackId) {
-  const totalActiveCount = sumBy(fellowshipTracks, (t) => t.activeCount || 0);
+function getFellowshipStatisticsMenu() {
+  if (!isCollectivesChain(process.env.NEXT_PUBLIC_CHAIN)) {
+    return null;
+  }
 
-  const menu = {
-    name: Names.fellowship,
-    excludeToChains: getExcludeChains([
-      Chains.development,
-      Chains.kusama,
-      Chains.collectives,
-      Chains.moonriver,
-      Chains.moonbeam,
-      Chains.bifrost,
-      Chains.bifrostPolkadot,
-      Chains.westendCollectives,
-      Chains.vara,
-      Chains.rococo,
-    ]),
-    activeCount: totalActiveCount,
-    icon: <MenuFellowship />,
-    pathname: "/fellowship",
-    items: [
-      {
-        value: "fellowship-members",
-        name: Names.members,
-        pathname: "/fellowship/members",
-      },
-      getFellowshipCoreMenu(),
-      getFellowshipSalaryMenu(),
-      {
-        component: (
-          <Divider
-            key="divider"
-            style={{ width: 62, margin: "10px 0 10px 18px" }}
-          />
-        ),
-        type: "divider",
-      },
-      {
-        value: "all",
-        name: Names.all,
-        pathname: "/fellowship",
-        activeCount: totalActiveCount,
-        excludeToSumActives: true,
-      },
-    ].filter(Boolean),
+  return {
+    value: "fellowship-statistics",
+    name: Names.statistics,
+    pathname: "/fellowship/statistics",
   };
+}
 
+function getFellowshipReferendaMenu(
+  fellowshipTracks = [],
+  currentTrackId,
+  totalActiveCount,
+) {
   const resolveFellowshipTrackItem = (track) => {
     return {
       value: track.id,
@@ -112,10 +106,112 @@ export function getFellowshipMenu(fellowshipTracks = [], currentTrackId) {
     };
   };
 
-  for (let idx = 0; idx < fellowshipTracks.length; idx++) {
-    const track = fellowshipTracks[idx];
-    menu.items.push(resolveFellowshipTrackItem(track));
+  const trackItems = fellowshipTracks.map(resolveFellowshipTrackItem);
+
+  return {
+    value: "fellowship-referenda",
+    name: "Referenda",
+    extraMatchNavMenuActivePathnames: [
+      "/fellowship",
+      "/fellowship/referenda/statistics",
+      "/fellowship/tracks/[id]",
+    ],
+    activeCount: totalActiveCount,
+    pathname: "/fellowship",
+    hideItemsOnMenu: true,
+    items: [
+      {
+        value: "all",
+        name: Names.all,
+        pathname: "/fellowship",
+        extraMatchNavMenuActivePathnames: [
+          "/fellowship",
+          "/fellowship/referenda/statistics",
+        ],
+        activeCount: totalActiveCount,
+        excludeToSumActives: true,
+      },
+      ...trackItems,
+    ],
+  };
+}
+
+function getFellowshipTreasuryMenu(overviewSummary) {
+  const { modules } = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
+  if (!modules?.fellowshipTreasury) {
+    return null;
   }
+
+  const fellowshipTreasurySpends =
+    overviewSummary?.fellowshipTreasurySpends || {};
+  return {
+    value: "fellowship-treasury-spends",
+    name: Names.treasurySpends,
+    extraMatchNavMenuActivePathnames: [
+      "/fellowship/treasury/spends",
+      "/fellowship/treasury/spends/[id]",
+    ],
+    activeCount: fellowshipTreasurySpends.active || 0,
+    pathname: "/fellowship/treasury/spends",
+    hideItemsOnMenu: true,
+    items: [
+      {
+        value: "fellowship-treasury-spends",
+        name: Names.treasurySpends,
+        pathname: "/fellowship/treasury/spends",
+        extraMatchNavMenuActivePathnames: [
+          "/fellowship/treasury/spends",
+          "/fellowship/treasury/spends/[id]",
+        ],
+        activeCount: fellowshipTreasurySpends.active || 0,
+      },
+    ],
+  };
+}
+
+function getFellowshipApplicationsMenu(overviewSummary) {
+  if (!isCollectivesChain(process.env.NEXT_PUBLIC_CHAIN)) {
+    return null;
+  }
+
+  const fellowshipApplications = overviewSummary?.fellowshipApplications || {};
+
+  return {
+    value: "fellowship-applications",
+    name: Names.applications,
+    pathname: "/fellowship/applications",
+    extraMatchNavMenuActivePathnames: [
+      "/fellowship/applications",
+      "/fellowship/applications/[id]",
+    ],
+    activeCount: fellowshipApplications.active || 0,
+  };
+}
+
+export function getFellowshipMenu(overviewSummary, currentTrackId) {
+  const fellowshipTracks = overviewSummary?.fellowshipReferendaTracks || [];
+  const totalActiveCount = sumBy(fellowshipTracks, (t) => t.activeCount || 0);
+
+  const menu = {
+    name: Names.fellowship,
+    activeCount: totalActiveCount,
+    icon: <MenuFellowship />,
+    pathname: "/fellowship",
+    items: [
+      getNonCoreFellowshipMembersMenu(),
+      getFellowshipMembersMenu(),
+      getFellowshipReferendaMenu(
+        fellowshipTracks,
+        currentTrackId,
+        totalActiveCount,
+      ),
+      getFellowshipEvidencesMenu(overviewSummary),
+      getFellowshipSalaryMenu(),
+      getFellowshipTreasuryMenu(overviewSummary),
+      getFellowshipApplicationsMenu(overviewSummary),
+      getFellowshipStatisticsMenu(),
+    ].filter(Boolean),
+  };
 
   return menu;
 }

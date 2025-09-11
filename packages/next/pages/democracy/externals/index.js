@@ -1,7 +1,7 @@
-import PostList from "next-common/components/postList";
+import DemocracyExternalProposalsPostList from "next-common/components/postList/democracyExternalProposalsPostList";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeExternalListItem from "next-common/utils/viewfuncs/democracy/normliazeExternalListItem";
 import ListLayout from "next-common/components/layout/ListLayout";
@@ -22,9 +22,7 @@ export default function DemocracyExternalsPage({ externals, chain, summary }) {
       description="Democracy uses public proposal, external proposal and referenda to manage the governance process."
       summary={<DemocracySummary summary={summary} />}
     >
-      <PostList
-        category={category}
-        title="List"
+      <DemocracyExternalProposalsPostList
         titleCount={externals.total}
         items={items}
         pagination={{
@@ -42,7 +40,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
 
   const { page, page_size: pageSize } = context.query;
 
-  const { result: externals } = await nextApi.fetch("democracy/externals", {
+  const { result: externals } = await backendApi.fetch("democracy/externals", {
     page: page ?? 1,
     pageSize: pageSize ?? defaultPageSize,
     simple: true,

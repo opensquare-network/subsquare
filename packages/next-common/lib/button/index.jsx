@@ -1,11 +1,16 @@
 import { SystemLoading } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
+import { forwardRef } from "react";
+
+const Button = forwardRef(_Button);
+
+export default Button;
 
 /**
  * @param {ButtonProps} props
  * @private
  */
-export default function _Button(props) {
+function _Button(props, ref) {
   const {
     size,
     loading,
@@ -22,6 +27,7 @@ export default function _Button(props) {
 
   return (
     <button
+      ref={ref}
       {...attrs}
       disabled={disabled || loading}
       className={cn(
@@ -47,7 +53,7 @@ export default function _Button(props) {
           ),
         // border radius
         "rounded-lg",
-        smallSize && "rounded",
+        smallSize && "rounded-md",
         className,
       )}
     >
@@ -55,9 +61,17 @@ export default function _Button(props) {
         <SystemLoading className={cn(smallSize && "w-4 h-4")} />
       ) : (
         <>
-          {iconLeft && <span className="inline-flex mr-1">{iconLeft}</span>}
+          {iconLeft && (
+            <span
+              className={`icon-left inline-flex ${smallSize ? "mr-2" : "mr-3"}`}
+            >
+              {iconLeft}
+            </span>
+          )}
           {children}
-          {iconRight && <span className="inline-flex ml-1">{iconRight}</span>}
+          {iconRight && (
+            <span className="icon-right inline-flex ml-1">{iconRight}</span>
+          )}
         </>
       )}
     </button>

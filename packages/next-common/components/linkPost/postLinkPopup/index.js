@@ -3,7 +3,6 @@ import styled, { css } from "styled-components";
 import Popup from "../../popup/wrapper/Popup";
 import nextApi from "../../../services/nextApi";
 import { useDispatch } from "react-redux";
-import { useUser } from "../../../context/user";
 import { addToast } from "../../../store/reducers/toastSlice";
 import { toApiType } from "../../../utils/viewfuncs";
 import { usePost } from "../../../context/post";
@@ -13,32 +12,44 @@ import PrimaryButton from "next-common/lib/button/primary";
 import Loading from "../../loading";
 import { Info } from "../styled";
 import { useDetailType } from "../../../context/page";
-import Input from "../../input";
+import Input from "next-common/lib/input";
 import { PopupButtonWrapper } from "../../popup/wrapper";
 import tw from "tailwind-styled-components";
+import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
+import { useArticleActions } from "next-common/sima/context/articleActions";
 
 const Section = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
+  margin-top: 24px !important;
 `;
 
 const SectionTitle = tw.span`
-  text12Bold text-textPrimary
+  text14Bold text-textPrimary
 `;
 
 const Discussion = styled.div`
   display: flex;
   cursor: pointer;
   padding: 10px 16px;
-  color: var(--textPrimary);
   background: var(--neutral200);
+  overflow: hidden;
+  color: var(--textPrimary);
+  text-overflow: ellipsis;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+  background: rgba(0, 0, 0, 0);
+  border-radius: 8px;
+  border: 1px solid var(--neutral400);
   ${(p) =>
     p.selected &&
     css`
-      background: var(--neutral300);
+      background: var(--neutral200);
     `}
-  border-radius: 4px;
 `;
 
 function getDiscussionUrl(discussion) {
@@ -54,22 +65,18 @@ export default function PostLinkPopup({ setShow = noop }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingList, setIsLoadingList] = useState(false);
   const [postUrl, setPostUrl] = useState("");
-  const user = useUser();
   const dispatch = useDispatch();
   const post = usePost();
   const postType = useDetailType();
   const router = useRouter();
+  const { ensureLogin } = useEnsureLogin();
+  const { getUserDiscussions } = useArticleActions();
 
   useEffect(() => {
-    if (!user?.address) {
-      return;
-    }
-
     setMyDiscussions([]);
 
     setIsLoadingList(true);
-    nextApi
-      .fetch(`users/${user?.address}/all-posts`)
+    getUserDiscussions()
       .then(({ result, error }) => {
         if (error) {
           dispatch(
@@ -86,7 +93,7 @@ export default function PostLinkPopup({ setShow = noop }) {
       .finally(() => {
         setIsLoadingList(false);
       });
-  }, [dispatch, user]);
+  }, [dispatch, getUserDiscussions]);
 
   const bindDiscussion = useCallback(async () => {
     if (!post?._id) {
@@ -105,6 +112,10 @@ export default function PostLinkPopup({ setShow = noop }) {
 
     setIsLoading(true);
     try {
+      if (!(await ensureLogin())) {
+        return;
+      }
+
       const { error } = await nextApi.post(
         `${toApiType(postType)}/${post?._id}/bind`,
         {
@@ -135,7 +146,8 @@ export default function PostLinkPopup({ setShow = noop }) {
     } finally {
       setIsLoading(false);
     }
-  }, [dispatch, postType, post?._id, router, selectedDiscussion]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, postType, post?._id, router, selectedDiscussion, ensureLogin]);
 
   const onSelectDiscussion = useCallback((discussion) => {
     setSelectedDiscussion(discussion);
@@ -148,10 +160,10 @@ export default function PostLinkPopup({ setShow = noop }) {
       (item) => getDiscussionUrl(item) === postUrl,
     );
     setSelectedDiscussion(item);
-  }, [postUrl]);
+  }, [myDiscussions, postUrl]);
 
   let discussionList = (
-    <div className="flex justify-center items-center text14Medium text-textTertiary">
+    <div className="flex justify-center items-center text14Medium text-textPrimary">
       {isLoadingList ? <Loading size={16} /> : "No posts"}
     </div>
   );
@@ -174,7 +186,7 @@ export default function PostLinkPopup({ setShow = noop }) {
         Linking a post will use the linked content and comments, existing
         comments will be hidden.
       </Info>
-      <Section>
+      <Section className="!gap-[8px]">
         <SectionTitle>Paste URL</SectionTitle>
         <Input
           value={postUrl || ""}

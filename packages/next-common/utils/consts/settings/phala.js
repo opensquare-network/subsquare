@@ -1,23 +1,34 @@
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
-import {
-  ProjectIconPhalaDark,
-  ProjectIconPhalaLight,
-  ProjectLogoPhalaDark,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+import { mergeChainModules } from "./common/modules";
+
+const ProjectIconPhalaDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconPhalaDark"),
+);
+const ProjectIconPhalaLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconPhalaLight"),
+);
+const ProjectLogoPhalaDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoPhalaDark"),
+);
 
 const DEFAULT_PHALA_NODES = [
   {
     name: "Dwellir",
-    url: "wss://phala-rpc.dwellir.com",
+    url: "wss://phala-rpc.n.dwellir.com",
   },
   {
-    name: "Phala",
-    url: "wss://api.phala.network/ws",
+    name: "Helikon",
+    url: "wss://rpc.helikon.io/phala",
   },
   {
     name: "OnFinality",
     url: "wss://phala.api.onfinality.io/public-ws",
+  },
+  {
+    name: "RadiumBlock",
+    url: "wss://phala.public.curie.radiumblock.co/ws",
   },
 ];
 
@@ -57,7 +68,6 @@ const phala = {
   blockTime: 12000,
   hasElections: true,
   ss58Format: 30,
-  snsCoverCid: "bafybeibte36v2qk5wg352hk7ewvkuhoke6iwb7l5gvjt7wy446yayxjie4",
   endpoints: DEFAULT_PHALA_NODES,
   avatar: ProjectIconPhalaLight,
   darkAvatar: ProjectIconPhalaDark,
@@ -67,14 +77,19 @@ const phala = {
   links,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: defaultPostLabels,
-  hasSubscan: true,
   description:
     "Phala Network, an off-chain compute network powered by Secure Enclaves, can be utilized to build the MEV core stack with minimal trust assumptions.",
   useVoteCall: true,
   hasMultisig: true,
   multisigApiPrefix: "phala",
-  modules: {
-    democracy: true,
+  modules: mergeChainModules({
+    treasury: {
+      childBounties: true,
+    },
+    vesting: true,
+  }),
+  integrations: {
+    subscan: true,
   },
   cssVarsLight: {
     theme100: "rgba(192,236,69,0.10)",
@@ -95,6 +110,11 @@ const phala = {
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "rgba(39,42,58,1)",
   },
+  multisigWallets: {
+    signet: true,
+    mimir: true,
+  },
+  allowWeb2Login: true,
 };
 
 export default phala;

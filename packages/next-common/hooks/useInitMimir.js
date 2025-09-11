@@ -1,4 +1,4 @@
-import { tryInitMimir } from "next-common/utils/mimir";
+import { tryInitMimir } from "next-common/utils/sendTransaction/sendMimirTx";
 import { useEffect } from "react";
 
 export default function useInitMimir() {

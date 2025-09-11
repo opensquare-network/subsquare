@@ -4,7 +4,7 @@ import { flatten } from "lodash-es";
 import CirclePacking from "next-common/components/charts/circlePacking";
 import { useNavCollapsed } from "next-common/context/nav";
 import { useLayoutEffect, useRef, useState } from "react";
-import { useEventListener } from "usehooks-ts";
+import { useEvent } from "react-use";
 import VoteBubbleContent from "./bubbleContent";
 import VotesBubbleLegend from "./legend";
 import DVBubbleLegend from "./DVBubbleLegend";
@@ -17,6 +17,7 @@ export default function VotesBubble({
   allNay,
   allAbstain,
   sizeField,
+  loading,
   ...props
 }) {
   const hasVotes = !![
@@ -48,9 +49,10 @@ export default function VotesBubble({
 
   useLayoutEffect(() => {
     handleSize();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navCollapsed, ref.current]);
 
-  useEventListener("resize", handleSize, ref.current);
+  useEvent("resize", handleSize);
 
   function handleSize() {
     if (!ref.current) return;
@@ -64,44 +66,48 @@ export default function VotesBubble({
     children: votes,
   };
 
-  if (!hasVotes) {
+  if (!hasVotes && !loading) {
     return <NoData text="No votes data" />;
   }
 
+  const showLoading = loading && isFirst;
+
   return (
     <>
-      {isFirst && (
+      {showLoading && (
         <div className="py-4">
           <SystemLoading className="[&_path]:stroke-textTertiary mx-auto" />
         </div>
       )}
 
-      <div className={cn(isFirst && "h-0 opacity-0 overflow-hidden")}>
+      <div className={cn(showLoading && "h-0 opacity-0 overflow-hidden")}>
         <div
           className={cn(props.className, "w-full h-[480px] max-sm:h-80")}
           {...props}
           ref={ref}
         >
-          <CirclePacking
-            data={chartData}
-            keyField="account"
-            sizeField={sizeField}
-            width={size.width}
-            height={size.height}
-            bubbleClassName={(node) =>
-              cn(
-                node.data.aye && "fill-green300 stroke-green500",
-                node.data.aye === false && "fill-red300 stroke-red500",
-                node.data.isAbstain && "fill-neutral400 stroke-neutral500",
-              )
-            }
-            renderBubbleContent={(node) => (
-              <VoteBubbleContent node={node} sizeField={sizeField} />
-            )}
-            onReady={() => {
-              setIsFirst(false);
-            }}
-          />
+          {hasVotes && (
+            <CirclePacking
+              data={chartData}
+              keyField="account"
+              sizeField={sizeField}
+              width={size.width}
+              height={size.height}
+              bubbleClassName={(node) =>
+                cn(
+                  node.data.aye && "fill-green300 stroke-green500",
+                  node.data.aye === false && "fill-red300 stroke-red500",
+                  node.data.isAbstain && "fill-neutral400 stroke-neutral500",
+                )
+              }
+              renderBubbleContent={(node) => (
+                <VoteBubbleContent node={node} sizeField={sizeField} />
+              )}
+              onReady={() => {
+                setIsFirst(false);
+              }}
+            />
+          )}
         </div>
 
         <VotesBubbleLegend

@@ -1,19 +1,10 @@
-import {
-  Democracy,
-  Referenda,
-  useModuleTab,
-} from "next-common/components/profile/votingHistory/common";
-import ReferendaAnnouncement from "./referenda";
-import DemocracyAnnouncement from "./democracy";
+import Announcement from "./announcement";
+import useAddressDelegation from "./useAddressDelegation";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 export default function PublicAnnouncement() {
-  const moduleTab = useModuleTab();
+  const realAddress = useRealAddress();
+  const { value: myDelegation } = useAddressDelegation(realAddress);
 
-  if (moduleTab === Referenda) {
-    return <ReferendaAnnouncement />;
-  } else if (moduleTab === Democracy) {
-    return <DemocracyAnnouncement />;
-  }
-
-  return null;
+  return <Announcement myDelegation={myDelegation} />;
 }

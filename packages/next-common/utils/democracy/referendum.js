@@ -12,13 +12,14 @@ export default function extractVoteInfo(timeline = []) {
     referendumVoteFinishedStatusArray.includes(status),
   );
   const voteFinished = index >= 0;
-  let voteFinishedHeight = null;
+  let voteFinishedIndexer = null;
   if (voteFinished) {
-    voteFinishedHeight = timeline[index].indexer.blockHeight;
+    voteFinishedIndexer = timeline[index].indexer;
   }
 
   return {
     voteFinished,
-    voteFinishedHeight,
+    voteFinishedIndexer,
+    voteFinishedHeight: voteFinishedIndexer?.blockHeight,
   };
 }

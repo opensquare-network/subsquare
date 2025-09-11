@@ -1,6 +1,6 @@
 import { cn } from "next-common/utils";
-import { useChainSettings } from "next-common/context/chain";
-import { useToggle } from "usehooks-ts";
+import { useChain, useChainSettings } from "next-common/context/chain";
+import { useToggle } from "react-use";
 import NavMenu from "./menu";
 import tw from "tailwind-styled-components";
 import HeaderDrawer from "../header/drawer";
@@ -8,13 +8,30 @@ import { ArrowFold, SystemClose, SystemMenu } from "@osn/icons/subsquare";
 import Link from "next/link";
 import { useNavCollapsed } from "next-common/context/nav";
 import { useScrollLock } from "next-common/utils/hooks/useScrollLock";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import ChainLogo from "./logo";
+import Chains from "next-common/utils/consts/chains";
+import { useThemeSetting } from "next-common/context/theme";
+import useDetectDevice from "next-common/components/header/hooks/useDetectDevice";
+import { useMountedState } from "react-use";
+import { useIsMobileDevice } from "next-common/hooks/useIsMobileDevice";
 
 export default function Nav() {
+  const isMobileFromUA = useIsMobileDevice();
+  const isMobileFromDetect = useDetectDevice();
+  const isMounted = useMountedState();
+
+  const isMobileDevice = useMemo(() => {
+    if (!isMounted()) {
+      return isMobileFromUA;
+    }
+
+    return isMobileFromDetect;
+  }, [isMobileFromDetect, isMobileFromUA, isMounted]);
+
   return (
     <>
-      <NavDesktop />
+      {!isMobileDevice && <NavDesktop />}
       <NavMobile />
     </>
   );
@@ -30,10 +47,20 @@ function ChainName() {
   );
 }
 
+const BrandingHintMap = {
+  [Chains.westendAssetHub]: "Westend Asset Hub Management",
+};
+
+const getBrandingHint = (chain) => {
+  return BrandingHintMap[chain] || "Governance by Subsquare";
+};
+
 function BrandingHint() {
+  const chain = useChain();
+
   return (
     <div className="text12Medium mt-1 max-sm:mt-0 text-navigationTextTertiary">
-      Governance by Subsquare
+      {getBrandingHint(chain)}
     </div>
   );
 }
@@ -45,6 +72,7 @@ w-6 h-6 bg-navigationActive rounded
 
 function NavDesktop() {
   const [navCollapsed, setNavCollapsed] = useNavCollapsed();
+  const { navigationBgFrom, navigationBgTo } = useThemeSetting();
 
   return (
     <nav
@@ -55,6 +83,12 @@ function NavDesktop() {
         "bg-navigationBg dark:bg-neutral100 text-navigationText",
         "scrollbar-hidden",
       )}
+      style={
+        navigationBgFrom &&
+        navigationBgTo && {
+          backgroundImage: `linear-gradient(180deg, ${navigationBgFrom}, ${navigationBgTo})`,
+        }
+      }
     >
       <div>
         <ChainLogo className="p-4 flex" />
@@ -98,7 +132,7 @@ function NavMobile() {
     } else {
       setLocked(false);
     }
-  }, [menuVisible, toolbarVisible]);
+  }, [menuVisible, setLocked, toolbarVisible]);
 
   return (
     <nav

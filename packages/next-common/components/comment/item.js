@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import nextApi from "next-common/services/nextApi";
 import EditInput from "next-common/components/editInput";
-import { useIsMountedBool } from "../../utils/hooks/useIsMounted";
+import { useMountedState } from "react-use";
 import {
   HtmlPreviewer,
   MarkdownPreviewer,
@@ -19,6 +18,11 @@ import { useIsUniversalPostComments } from "next-common/hooks/usePostComments";
 import { CommentProvider, useComment } from "./context";
 import PolkassemblyCommentItem from "./polkassemblyCommentItem";
 import CommentUser from "./user";
+import { useCommentActions } from "next-common/sima/context/commentActions";
+import { usePost } from "next-common/context/post";
+import { getRealField } from "next-common/sima/actions/common";
+import useIsCommentProxyAuthor from "next-common/hooks/useIsCommentProxyAuthor";
+import { useRouter } from "next/router";
 
 function jumpToAnchor(anchorId) {
   var anchorElement = document.getElementById(anchorId);
@@ -35,23 +39,59 @@ function jumpToAnchor(anchorId) {
   });
 }
 
+function useIsShouldUseSimaCommentEdit() {
+  const comment = useComment();
+  const { supportSima } = useCommentActions();
+  return supportSima && comment.dataSource === "sima";
+}
+
+function SimaEditInput({ update, ...props }) {
+  const comment = useComment();
+  const isProxyAuthor = useIsCommentProxyAuthor();
+  return (
+    <EditInput
+      {...props}
+      updateButtonText={isProxyAuthor ? "Update as a proxy" : "Update"}
+      update={(content, contentType) =>
+        update(
+          content,
+          contentType,
+          isProxyAuthor ? comment.proposer : undefined,
+        )
+      }
+    />
+  );
+}
+
+function MaybeSimaEditInput(props) {
+  const isUseSimaEdit = useIsShouldUseSimaCommentEdit();
+  if (isUseSimaEdit) {
+    return <SimaEditInput {...props} />;
+  }
+  return <EditInput {...props} />;
+}
+
 function CommentItemImpl({
   replyToCommentId,
+  replyToComment,
   isSecondLevel,
-  updateTopLevelComment,
+  reloadTopLevelComment,
   scrollToTopLevelCommentBottom,
 }) {
+  const router = useRouter();
+  const post = usePost();
   const comment = useComment();
   const refCommentTree = useRef();
   const [isEdit, setIsEdit] = useState(false);
   const [loading, setLoading] = useState(false);
   const [highlight, setHighlight] = useState(false);
-  const isMounted = useIsMountedBool();
+  const isMounted = useMountedState();
   const { hasAnchor, anchor } = useCommentsAnchor();
   const [showReplies, setShowReplies] = useState(false);
   const comments = useComments();
   const setComments = useSetComments();
   const isUniversalComments = useIsUniversalPostComments();
+  const { getComment, updateComment } = useCommentActions();
 
   // Jump to comment when anchor is set
   useEffect(() => {
@@ -67,14 +107,10 @@ function CommentItemImpl({
         jumpToAnchor(anchor);
       }, 100);
     }
-  }, [hasAnchor, anchor]);
+  }, [hasAnchor, anchor, comment.height]);
 
-  const commentId = comment._id;
-
-  const updateComment = useCallback(async () => {
-    const { result: updatedComment } = await nextApi.fetch(
-      `comments/${comment._id}`,
-    );
+  const reloadComment = useCallback(async () => {
+    const { result: updatedComment } = await getComment(comment);
     if (updatedComment) {
       const newComments = {
         ...comments,
@@ -86,8 +122,15 @@ function CommentItemImpl({
         }),
       };
       setComments(newComments);
+
+      const scrollPosition = window.scrollY;
+      await router.replace(router.asPath);
+      window.scrollTo(0, scrollPosition);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [comments, setComments, comment._id]);
+
+  const maybeReloadTopLevelComment = reloadTopLevelComment || reloadComment;
 
   const scrollToCommentBottom = useCallback(() => {
     if (refCommentTree.current) {
@@ -98,11 +141,15 @@ function CommentItemImpl({
     }
   }, [refCommentTree]);
 
-  const editComment = async (content, contentType) => {
-    return await nextApi.patch(`comments/${commentId}`, {
-      content: contentType === "html" ? prettyHTML(content) : content,
+  const editComment = async (content, contentType, realAddress) => {
+    return await updateComment(
+      post,
+      replyToComment !== comment ? replyToComment : null,
+      comment,
+      content,
       contentType,
-    });
+      getRealField(realAddress),
+    );
   };
 
   return (
@@ -131,6 +178,9 @@ function CommentItemImpl({
                   plugins={[
                     renderMentionIdentityUserPlugin(<IdentityOrAddr />),
                   ]}
+                  markedOptions={{
+                    breaks: true,
+                  }}
                 />
               )}
               {comment.contentType === "html" && (
@@ -146,12 +196,12 @@ function CommentItemImpl({
             </>
           )}
           {isEdit && (
-            <EditInput
+            <MaybeSimaEditInput
               editContent={comment.content}
               editContentType={comment.contentType}
               onFinishedEdit={async (reload) => {
                 if (reload) {
-                  await updateComment();
+                  await maybeReloadTopLevelComment();
                 }
                 if (isMounted()) {
                   setIsEdit(false);
@@ -167,11 +217,12 @@ function CommentItemImpl({
       actions={
         <CommentActions
           setShowReplies={setShowReplies}
-          updateComment={updateTopLevelComment || updateComment}
+          reloadComment={maybeReloadTopLevelComment}
           scrollToNewReplyComment={
             scrollToTopLevelCommentBottom || scrollToCommentBottom
           }
           replyToCommentId={replyToCommentId}
+          replyToComment={replyToComment}
           setIsEdit={setIsEdit}
         />
       }
@@ -183,8 +234,9 @@ function CommentItemImpl({
             key={reply._id}
             data={reply}
             replyToCommentId={replyToCommentId}
+            replyToComment={replyToComment}
             isSecondLevel
-            updateTopLevelComment={updateTopLevelComment || updateComment}
+            reloadTopLevelComment={maybeReloadTopLevelComment}
             scrollToTopLevelCommentBottom={
               scrollToTopLevelCommentBottom || scrollToCommentBottom
             }
@@ -198,8 +250,9 @@ function CommentItemImpl({
 export default function CommentItem({
   data,
   replyToCommentId,
+  replyToComment,
   isSecondLevel,
-  updateTopLevelComment,
+  reloadTopLevelComment,
   scrollToTopLevelCommentBottom,
   ...props
 }) {
@@ -207,8 +260,9 @@ export default function CommentItem({
     <CommentProvider comment={data}>
       <CommentItemImpl
         replyToCommentId={replyToCommentId}
+        replyToComment={replyToComment}
         isSecondLevel={isSecondLevel}
-        updateTopLevelComment={updateTopLevelComment}
+        reloadTopLevelComment={reloadTopLevelComment}
         scrollToTopLevelCommentBottom={scrollToTopLevelCommentBottom}
         {...props}
       />

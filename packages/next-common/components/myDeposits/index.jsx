@@ -12,6 +12,10 @@ import { useSelector } from "react-redux";
 import useMyIdentityDeposit from "next-common/hooks/useMyIdentityDeposit";
 import IdentityDeposit from "./identity";
 import { useMemo } from "react";
+import WithPallet from "../common/withPallet";
+import { usePathname } from "next/navigation";
+import ProfileProxyDeposits from "next-common/components/profile/deposits/proxy";
+import MyProxyDeposits, { useMyProxyDeposits } from "./proxy";
 
 export function useDepositSections(
   referenda,
@@ -20,19 +24,31 @@ export function useDepositSections(
   treasury,
   identity,
   preimageDeposits,
+  proxyDeposits,
 ) {
   const chainSettings = useChainSettings();
+  const pathname = usePathname();
+  const isProfilePage = pathname.startsWith("/user");
+  const isAccountPage = pathname.startsWith("/account");
 
   return useMemo(() => {
     const {
       modules: {
         referenda: hasReferenda,
         fellowship: hasFellowship,
-        democracy: hasDemocracyModule,
+        democracy: hasDemocracy,
+        treasury: treasurySettings,
+        proxy,
       },
-      hasTreasuryModule,
-      noIdentityModule,
     } = chainSettings;
+
+    const hasDemocracyModule = hasDemocracy && !hasDemocracy?.archived;
+
+    const { proposals, bounties, childBounties, tips } = treasurySettings;
+    const hasTreasury = proposals || bounties || childBounties || tips === true;
+
+    const hasProfileProxyDeposits = proxy && isProfilePage;
+    const hasMyProxyDeposits = proxy && isAccountPage;
 
     const sections = [
       hasReferenda && {
@@ -47,7 +63,7 @@ export function useDepositSections(
         activeCount: democracy.activeCount,
         content: <DepositTemplate key="democracy" {...democracy} />,
       },
-      hasTreasuryModule !== false && {
+      hasTreasury && {
         activeCount: treasury.activeCount,
         content: <DepositTemplate key="treasury" {...treasury} />,
       },
@@ -57,9 +73,21 @@ export function useDepositSections(
           <MyDepositPreimages key="preimages" deposits={preimageDeposits} />
         ),
       },
-      !noIdentityModule && {
+      {
         activeCount: identity?.depositsCount || 0,
-        content: <IdentityDeposit key="identity" deposits={identity} />,
+        content: (
+          <WithPallet key="identity" pallet="identity">
+            <IdentityDeposit deposits={identity} />
+          </WithPallet>
+        ),
+      },
+      hasProfileProxyDeposits && {
+        activeCount: proxyDeposits?.total,
+        content: <ProfileProxyDeposits key="proxy" deposits={proxyDeposits} />,
+      },
+      hasMyProxyDeposits && {
+        activeCount: proxyDeposits?.total,
+        content: <MyProxyDeposits key="myProxy" deposits={proxyDeposits} />,
       },
     ].filter(Boolean);
 
@@ -71,6 +99,9 @@ export function useDepositSections(
     treasury,
     identity,
     preimageDeposits,
+    proxyDeposits,
+    isProfilePage,
+    isAccountPage,
     chainSettings,
   ]);
 }
@@ -82,6 +113,7 @@ export default function MyDeposits() {
   const treasury = useMyDepositTreasury();
   const identity = useMyIdentityDeposit();
   const preimageDeposits = useSelector(myPreimageDepositsSelector);
+  const proxyDeposits = useMyProxyDeposits();
 
   const [activeSections, nonActiveSections] = useDepositSections(
     referenda,
@@ -90,6 +122,7 @@ export default function MyDeposits() {
     treasury,
     identity,
     preimageDeposits,
+    proxyDeposits,
   );
 
   return (

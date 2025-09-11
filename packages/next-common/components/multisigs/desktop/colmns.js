@@ -2,6 +2,7 @@ const columns = [
   {
     name: "When",
     style: { textAlign: "left", width: "120px", minWidth: "120px" },
+    tooltip: "When the multisig was created",
   },
   {
     name: "Multisig Address",
@@ -15,10 +16,13 @@ const columns = [
   {
     name: "Call",
     style: { textAlign: "left", minWidth: "256px" },
+    tooltip:
+      "What will be executed after approved on behalf of the multisig address",
   },
   {
     name: "Approving",
     style: { textAlign: "left", width: "120px", minWidth: "120px" },
+    tooltip: "Signing status",
   },
   {
     name: "Signatories",
@@ -31,8 +35,8 @@ const columns = [
   {
     name: "",
     style: {
-      width: 80,
-      minWidth: 80,
+      width: 120,
+      minWidth: 120,
     },
   },
 ];

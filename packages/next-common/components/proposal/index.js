@@ -1,25 +1,23 @@
 import styled from "styled-components";
 import { useState } from "react";
-import dynamic from "next/dynamic";
 import BigNumber from "bignumber.js";
 import { hexToString } from "@polkadot/util";
-import { hexEllipsis, toPrecision } from "../../utils";
+import { hexEllipsis } from "../../utils";
 import LargeDataPlaceHolder from "./largeDataPlaceHolder";
 import { hexIsValidUTF8 } from "../../utils/utf8validate";
 import { useChain } from "../../context/chain";
-import getChainSettings from "../../utils/consts/settings";
 import needCheckUtf8 from "./needCheckUtf8";
 import { ThemedTag } from "../tags/state/styled";
 import { InfoDocs } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
 import Tooltip from "../tooltip";
-import CallDetailPopup from "../callDetailPopup";
 import ProposalChildCalls from "./childCalls";
-import usePreImageCallFromHash from "./preImage";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
-const LongText = dynamic(() => import("../longText"), {
-  ssr: false,
-});
+const CallDetailPopup = dynamicPopup(() => import("../callDetailPopup"));
+
+const LongText = dynamicClientOnly(() => import("../longText"));
 
 const Header = styled.div`
   font-style: normal;
@@ -75,9 +73,7 @@ export function convertProposalForTableView(proposal, chain) {
     return {};
   }
 
-  const { decimals, symbol } = getChainSettings(chain);
   const { section, method } = proposal;
-  const isTreasurySpend = "treasury" === section && "spend" === method;
 
   if (!section || !method) {
     return {};
@@ -87,10 +83,6 @@ export function convertProposalForTableView(proposal, chain) {
     ...proposal,
     args: Object.fromEntries(
       (proposal.args || []).map((arg) => {
-        if (isTreasurySpend && arg.name === "amount") {
-          return [arg.name, `${toPrecision(arg.value, decimals)} ${symbol}`];
-        }
-
         switch (arg.type) {
           case "OrmlTraitsChangeU128":
             {
@@ -230,9 +222,6 @@ export default function Proposal({
   const chain = useChain();
   const [detailPopupVisible, setDetailPopupVisible] = useState(false);
 
-  const { call: rawCall, isLoading: isLoadingRawCall } =
-    usePreImageCallFromHash(preImageHash);
-
   const tableViewData = convertProposalForTableView(call, chain);
   const jsonViewData = convertProposalForJsonView(call, chain);
 
@@ -288,8 +277,6 @@ export default function Proposal({
           tableViewData={dataTableData}
           jsonViewData={jsonViewData}
           hasTreeViewData={!!preImageHash}
-          rawCall={rawCall}
-          isLoadingRawCall={isLoadingRawCall}
           setShow={setDetailPopupVisible}
         />
       )}

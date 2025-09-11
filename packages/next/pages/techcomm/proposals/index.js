@@ -1,12 +1,25 @@
-import PostList from "next-common/components/postList";
+import TechCommProposalsPostList from "next-common/components/postList/techCommProposalsPostList";
 import { withCommonProps } from "next-common/lib";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeTechCommMotionListItem from "next-common/utils/viewfuncs/collective/normalizeTechCommMotionListItem";
 import ListLayout from "next-common/components/layout/ListLayout";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchList } from "next-common/services/list";
+import CollectiveProvider, {
+  collectivePallets,
+} from "next-common/context/collective";
+import NewCouncilMotionProposalButton from "next-common/components/summary/newCouncilMotionProposalButton";
+import { TreasuryProvider } from "next-common/context/treasury";
+import { useChainSettings } from "next-common/context/chain";
 
 export default function ProposalsPage({ proposals, chain }) {
+  const {
+    modules: { technicalCommittee },
+  } = useChainSettings();
+
+  const hasTechnicalCommittee =
+    technicalCommittee && !technicalCommittee?.archived;
+
   const items = (proposals.items || []).map((item) =>
     normalizeTechCommMotionListItem(chain, item),
   );
@@ -17,23 +30,28 @@ export default function ProposalsPage({ proposals, chain }) {
   };
 
   return (
-    <ListLayout
-      seoInfo={seoInfo}
-      title={category}
-      description="Technical committee proposals"
-    >
-      <PostList
-        category={category}
-        title="List"
-        titleCount={proposals.total}
-        items={items}
-        pagination={{
-          page: proposals.page,
-          pageSize: proposals.pageSize,
-          total: proposals.total,
-        }}
-      />
-    </ListLayout>
+    <CollectiveProvider pallet={collectivePallets.technicalCommittee}>
+      <TreasuryProvider>
+        <ListLayout
+          seoInfo={seoInfo}
+          title={category}
+          description="Technical committee proposals"
+        >
+          <TechCommProposalsPostList
+            titleCount={proposals.total}
+            titleExtra={
+              hasTechnicalCommittee && <NewCouncilMotionProposalButton />
+            }
+            items={items}
+            pagination={{
+              page: proposals.page,
+              pageSize: proposals.pageSize,
+              total: proposals.total,
+            }}
+          />
+        </ListLayout>
+      </TreasuryProvider>
+    </CollectiveProvider>
   );
 }
 

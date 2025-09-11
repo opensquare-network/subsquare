@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import useOnClickOutside from "../../utils/hooks/useOnClickOutside";
 import copy from "copy-to-clipboard";
 import { OptionItem, OptionWrapper } from "../internalDropdown/styled";
 import { getShare2SNStext } from "../../utils/post/share";
@@ -8,6 +7,7 @@ import { usePost } from "../../context/post";
 import { useDetailType } from "../../context/page";
 import { Item } from "../actions/styled";
 import { SystemShare } from "@osn/icons/subsquare";
+import { useClickAway } from "react-use";
 
 const Wrapper = styled.div`
   position: relative;
@@ -58,7 +58,7 @@ export default function Share() {
     }
   }, [copyState]);
 
-  useOnClickOutside(ref, () => setShowShare(false));
+  useClickAway(ref, () => setShowShare(false));
 
   const tweet = () => {
     setShowShare(false);

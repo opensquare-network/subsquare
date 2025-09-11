@@ -2,37 +2,64 @@ import React, { useState } from "react";
 import { Wrapper } from "./styled";
 import ReplyButton from "./replyButton";
 import Share from "../shareSNS";
-import { usePost, usePostDispatch } from "../../context/post";
+import { usePost } from "../../context/post";
 import { useIsPostAuthor } from "../../context/post/useIsPostAuthor";
-import { useIsThumbUp } from "../../context/post/isThumbUp";
 import ThumbsUp from "../thumbsUp";
-import { PostContextMenu } from "../contentMenu";
+import PostContextMenu from "../articleMoreMenu";
 import ThumbUpList from "./thumbUpList";
 import { useUser } from "../../context/user";
 import { useFocusEditor } from "next-common/context/post/editor";
 import { useDispatch } from "react-redux";
-import { useDetailType } from "next-common/context/page";
-import nextApi from "next-common/services/nextApi";
-import { toApiType } from "next-common/utils/viewfuncs";
-import fetchAndUpdatePost from "next-common/context/post/update";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
+import { useArticleActions } from "next-common/sima/context/articleActions";
+import { useMyUpVote } from "next-common/context/post/useMyUpVote";
+import useCanEditPost from "next-common/hooks/useCanEditPost";
+import useShouldUseSimaPostEdit from "next-common/sima/hooks/useShouldUseSimaPostEdit";
 
-export default function ArticleActions({ setIsEdit, extraActions }) {
+function SimaPostContextMenu({ isAuthor, setIsEdit, editable = true }) {
+  const canEdit = useCanEditPost();
+  return (
+    <PostContextMenu
+      isAuthor={isAuthor}
+      editable={canEdit && editable}
+      setIsEdit={setIsEdit}
+    />
+  );
+}
+
+function MaybeSimaPostContextMenu({ isAuthor, setIsEdit, editable = true }) {
+  const isSima = useShouldUseSimaPostEdit();
+  if (isSima) {
+    return (
+      <SimaPostContextMenu
+        isAuthor={isAuthor}
+        setIsEdit={setIsEdit}
+        editable={editable}
+      />
+    );
+  }
+  return (
+    <PostContextMenu
+      isAuthor={isAuthor}
+      editable={isAuthor}
+      setIsEdit={setIsEdit}
+    />
+  );
+}
+
+export function CommonArticleActions({ extraActions, contextMenu }) {
   const user = useUser();
-  const { ensureLogin } = useEnsureLogin();
   const post = usePost();
   const isAuthor = useIsPostAuthor();
-  const thumbsUp = useIsThumbUp();
+  const myUpVote = useMyUpVote();
+  const thumbsUp = !!myUpVote;
   const focusEditor = useFocusEditor();
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
 
-  const postDispatch = usePostDispatch();
   const dispatch = useDispatch();
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
 
-  const type = useDetailType();
-  const thumbUp = useIsThumbUp();
+  const { upVote, cancelUpVote, reloadPost } = useArticleActions();
 
   const toggleThumbUp = async () => {
     if (!user || isAuthor || thumbUpLoading) {
@@ -41,29 +68,23 @@ export default function ArticleActions({ setIsEdit, extraActions }) {
 
     setThumbUpLoading(true);
     try {
-      if (!(await ensureLogin())) {
-        return;
-      }
-
       let result, error;
 
-      if (thumbUp) {
-        ({ result, error } = await nextApi.delete(
-          `${toApiType(type)}/${post._id}/reaction`,
-        ));
+      if (thumbsUp) {
+        ({ result, error } = await cancelUpVote(post));
       } else {
-        ({ result, error } = await nextApi.put(
-          `${toApiType(type)}/${post._id}/reaction`,
-          { reaction: 1 },
-          { credentials: "include" },
-        ));
+        ({ result, error } = await upVote(post));
       }
 
       if (result) {
-        await fetchAndUpdatePost(postDispatch, type, post._id);
+        await reloadPost();
       }
       if (error) {
         dispatch(newErrorToast(error.message));
+      }
+    } catch (e) {
+      if (e.message !== "Cancelled") {
+        dispatch(newErrorToast(e.message));
       }
     } finally {
       setThumbUpLoading(false);
@@ -74,7 +95,7 @@ export default function ArticleActions({ setIsEdit, extraActions }) {
     <div className="mt-4">
       <div className="flex items-center justify-between">
         <Wrapper className="space-x-4">
-          <ReplyButton onReply={focusEditor} noHover={!user || isAuthor} />
+          <ReplyButton onReply={focusEditor} noHover={!user} />
           <ThumbsUp
             count={post?.reactions?.length}
             noHover={!user || isAuthor}
@@ -89,10 +110,31 @@ export default function ArticleActions({ setIsEdit, extraActions }) {
           {extraActions}
         </Wrapper>
 
-        {user && <PostContextMenu editable={isAuthor} setIsEdit={setIsEdit} />}
+        {user && contextMenu}
       </div>
 
       {showThumbsUpList && <ThumbUpList reactions={post?.reactions} />}
     </div>
+  );
+}
+
+export default function ArticleActions({
+  setIsEdit,
+  extraActions,
+  editable = true,
+}) {
+  const isAuthor = useIsPostAuthor();
+
+  return (
+    <CommonArticleActions
+      extraActions={extraActions}
+      contextMenu={
+        <MaybeSimaPostContextMenu
+          isAuthor={isAuthor}
+          setIsEdit={setIsEdit}
+          editable={editable}
+        />
+      }
+    />
   );
 }

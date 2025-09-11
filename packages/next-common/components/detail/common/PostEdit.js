@@ -1,9 +1,9 @@
 import React from "react";
-import { emptyFunction } from "../../../utils";
 import { LinkButton } from "./styled";
 import { SystemEdit } from "@osn/icons/subsquare";
+import { noop } from "lodash-es";
 
-export default function PostEdit({ setIsEdit = emptyFunction }) {
+export default function PostEdit({ setIsEdit = noop }) {
   return (
     <LinkButton
       onClick={() => {

@@ -7,6 +7,12 @@ import NavProvider from "./nav";
 import { AdminProvider } from "./admin";
 import { ConnectedAccountProvider } from "./connectedAccount";
 import ApiProvider from "next-common/context/api";
+import { SignetContextProvider } from "./signet";
+import WagmiProvider from "./wagmi";
+import ReactQueryClientProvider from "./reactQuery";
+import UserAccountProvider from "./user/account";
+import PageLoadingProvider from "./pageLoading";
+import WalletConnectProvider from "./walletconnect";
 
 export default function GlobalProvider({
   user,
@@ -19,25 +25,43 @@ export default function GlobalProvider({
   pageProperties,
   navCollapsed,
   navSubmenuVisible,
+  pathname,
 }) {
   return (
-    <ThemeModeProvider defaultThemeMode={themeMode}>
-      <ChainProvider chain={chain}>
-        <UserProvider user={user} userStatus={userStatus}>
-          <ConnectedAccountProvider connectedAccount={connectedAccount}>
-            <AdminProvider admins={admins}>
-              <NavProvider
-                navCollapsed={navCollapsed}
-                navSubmenuVisible={navSubmenuVisible}
-              >
-                <PageProvider pageProperties={pageProperties}>
-                  <ApiProvider>{children}</ApiProvider>
-                </PageProvider>
-              </NavProvider>
-            </AdminProvider>
-          </ConnectedAccountProvider>
-        </UserProvider>
-      </ChainProvider>
-    </ThemeModeProvider>
+    <WagmiProvider>
+      <ReactQueryClientProvider>
+        <ThemeModeProvider defaultThemeMode={themeMode}>
+          <ChainProvider chain={chain}>
+            <UserProvider user={user} userStatus={userStatus}>
+              <PageLoadingProvider>
+                <AdminProvider admins={admins}>
+                  <NavProvider
+                    navCollapsed={navCollapsed}
+                    navSubmenuVisible={navSubmenuVisible}
+                    pathname={pathname}
+                  >
+                    <PageProvider pageProperties={pageProperties}>
+                      <ApiProvider>
+                        <ConnectedAccountProvider
+                          connectedAccount={connectedAccount}
+                        >
+                          <WalletConnectProvider>
+                            <UserAccountProvider>
+                              <SignetContextProvider>
+                                {children}
+                              </SignetContextProvider>
+                            </UserAccountProvider>
+                          </WalletConnectProvider>
+                        </ConnectedAccountProvider>
+                      </ApiProvider>
+                    </PageProvider>
+                  </NavProvider>
+                </AdminProvider>
+              </PageLoadingProvider>
+            </UserProvider>
+          </ChainProvider>
+        </ThemeModeProvider>
+      </ReactQueryClientProvider>
+    </WagmiProvider>
   );
 }

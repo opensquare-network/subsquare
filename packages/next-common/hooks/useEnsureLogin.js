@@ -1,6 +1,5 @@
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useRouter } from "next/router";
 import nextApi from "next-common/services/nextApi";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { LoginResult } from "next-common/store/reducers/userSlice";
@@ -16,6 +15,7 @@ import { useChain } from "next-common/context/chain";
 import { useLoginPopup } from "./useLoginPopup";
 import { getCookieConnectedAccount } from "next-common/utils/getCookieConnectedAccount";
 import { useSignMessage } from "./useSignMessage";
+import isShibuya from "next-common/utils/isShibuya";
 
 export function useEnsureLogin() {
   const chain = useChain();
@@ -23,7 +23,6 @@ export function useEnsureLogin() {
   const setUser = useSetUser();
   const userContext = useUserContext();
   const isLoggedIn = useIsLoggedIn();
-  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const { openLoginPopup, waitForClose } = useLoginPopup();
@@ -34,7 +33,12 @@ export function useEnsureLogin() {
 
     setLoading(true);
     try {
-      const address = encodeAddressToChain(connectedAccount.address, chain);
+      let address;
+      if (isShibuya() && connectedAccount.evmAddress) {
+        address = connectedAccount.evmAddress;
+      } else {
+        address = encodeAddressToChain(connectedAccount.address, chain);
+      }
 
       const { result, error } = await nextApi.fetch(`auth/login/${address}`);
 
@@ -77,7 +81,7 @@ export function useEnsureLogin() {
     } finally {
       setLoading(false);
     }
-  }, [signMsg, chain, dispatch, setUser, router]);
+  }, [chain, dispatch, signMsg, setUser, userContext]);
 
   const ensureLogin = useCallback(async () => {
     if (isLoggedIn) {
@@ -102,9 +106,29 @@ export function useEnsureLogin() {
     return false;
   }, [user, isLoggedIn, login, openLoginPopup, waitForClose]);
 
+  const ensureConnect = useCallback(async () => {
+    const connectedAccount = getCookieConnectedAccount();
+    if (connectedAccount) {
+      return connectedAccount;
+    }
+
+    // Not connect yet
+    openLoginPopup();
+    const loginResult = await waitForClose();
+    if (
+      loginResult === LoginResult.Connected ||
+      loginResult === LoginResult.LoggedIn
+    ) {
+      return getCookieConnectedAccount();
+    }
+
+    return null;
+  }, [openLoginPopup, waitForClose]);
+
   return {
     login,
     ensureLogin,
+    ensureConnect,
     loading,
   };
 }

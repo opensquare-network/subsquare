@@ -1,5 +1,4 @@
-export const VoteLoadingEnum = {
+export const VoteEnum = {
   Aye: "Aye",
   Nay: "Nay",
-  None: "None",
 };

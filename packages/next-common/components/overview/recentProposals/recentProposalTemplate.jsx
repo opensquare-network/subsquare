@@ -5,11 +5,10 @@ import { cn } from "next-common/utils";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Pagination from "next-common/components/pagination";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { recentProposalFetchParams } from "next-common/services/serverSide/recentProposals";
 import { isNil } from "lodash-es";
-import { useUpdateEffect } from "usehooks-ts";
-import { useChain } from "next-common/context/chain";
+import { useUpdateEffect } from "react-use";
 import { first } from "lodash-es";
 import DataList from "next-common/components/dataList";
 
@@ -20,11 +19,7 @@ export default function RecentProposalTemplate({
   activeCount,
   items = [],
 }) {
-  const chain = useChain();
-
-  const activeItems = (items || [])
-    .filter((item) => item.activeCount)
-    .filter((item) => !item.excludeToChains?.includes(chain));
+  const activeItems = (items || []).filter((item) => item.activeCount);
 
   const titleLink =
     first(activeItems)?.pathname ?? first(items)?.pathname ?? pathname;
@@ -59,7 +54,9 @@ export default function RecentProposalTemplate({
   const [tabTableLoaded, setTabTableLoaded] = useState({});
   const tabs = activeItems.map((m) => {
     return {
+      value: m.name,
       label: m.name,
+      tooltip: m.tooltip,
       activeCount: m.activeCount,
       content: (
         <TableTemplate tabTableLoaded={tabTableLoaded} label={m.name} {...m} />
@@ -67,13 +64,14 @@ export default function RecentProposalTemplate({
     };
   });
 
-  const [activeTabLabel, setActiveTabLabel] = useState(tabs[0]?.label);
+  const [activeTabValue, setActiveTabValue] = useState(tabs[0]?.value);
   useEffect(() => {
     setTabTableLoaded({
       ...tabTableLoaded,
-      [activeTabLabel]: true,
+      [activeTabValue]: true,
     });
-  }, [activeTabLabel]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTabValue]);
 
   if (!activeCount) {
     return <SecondaryCard className="flex">{title}</SecondaryCard>;
@@ -83,8 +81,8 @@ export default function RecentProposalTemplate({
     <AccordionCard title={title} defaultOpen>
       <Tabs
         tabs={tabs}
-        activeTabLabel={activeTabLabel}
-        onTabClick={(tab) => setActiveTabLabel(tab.label)}
+        activeTabValue={activeTabValue}
+        onTabClick={(tab) => setActiveTabValue(tab.value)}
       />
     </AccordionCard>
   );
@@ -103,7 +101,7 @@ function TableTemplate({
 
   function fetchData() {
     if (api?.path) {
-      nextApi
+      backendApi
         .fetch(api?.path, { ...api.params, page, ...recentProposalFetchParams })
         .then((resp) => {
           if (resp.result) {
@@ -126,6 +124,7 @@ function TableTemplate({
     }
 
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tabTableLoaded]);
 
   useUpdateEffect(fetchData, [page]);

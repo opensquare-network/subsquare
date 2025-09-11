@@ -5,6 +5,7 @@ import Loading from "../assets/imgs/icons/block-loading.svg";
 import { H2, P, Wrapper } from "./styled/notFound";
 import NotFound from "./notFound";
 import { useContextApi } from "next-common/context/api";
+import { isEmptyFunc } from "next-common/utils/isEmptyFunc";
 
 export default function CheckUnFinalizedBase({
   onChainDataFetcher = noop,
@@ -16,7 +17,7 @@ export default function CheckUnFinalizedBase({
   const [isNotFound, setIsNotFound] = useState(false);
 
   useEffect(() => {
-    if (!api || onChainDataFetcher === noop) {
+    if (!api || isEmptyFunc(onChainDataFetcher)) {
       return;
     }
 
@@ -39,7 +40,7 @@ export default function CheckUnFinalizedBase({
   }, [api, onChainDataFetcher]);
 
   const checkServerPostAvailable = useCallback(async () => {
-    if (serverPostFetcher === noop) {
+    if (isEmptyFunc(serverPostFetcher)) {
       return false;
     }
 
@@ -86,8 +87,8 @@ export default function CheckUnFinalizedBase({
         <>
           <H2>Waiting for block confirmation</H2>
           <P>
-            We find the proposal on chain but not finalized. This page will be
-            refreshed when it gets finalized.
+            Your proposal is on-chain, but the block hasn’t finalized yet. This
+            page will update automatically once it’s confirmed.
           </P>
         </>
       )}

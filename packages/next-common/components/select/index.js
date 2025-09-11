@@ -1,12 +1,17 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import Option from "./option";
-import useOnClickOutside from "../../utils/hooks/useOnClickOutside";
 import FlexBetweenCenter from "../styled/flexBetweenCenter";
 import { ArrowDown } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
-import { OptionsWrapper } from "./styled";
+import {
+  OptionsPadLeftWrapper,
+  OptionsPadRightWrapper,
+  OptionsWrapper,
+} from "./styled";
 import Divider from "../styled/layout/divider";
+import { useClickAway } from "react-use";
+import { isNil } from "lodash-es";
 
 const SearchInput = styled.input`
   width: 100%;
@@ -21,12 +26,11 @@ const SearchInput = styled.input`
 
 const SelectWrapper = styled(FlexBetweenCenter)`
   position: relative;
-  font-size: 14px;
   background: var(--neutral100);
   border: 1px solid var(--neutral400);
   border-radius: 6px;
   height: ${(p) => p.itemHeight}px;
-  padding: 10px 16px;
+  padding: 10px 6px 10px 16px;
   cursor: pointer;
   color: var(--textPrimary);
   ${(p) =>
@@ -35,12 +39,6 @@ const SelectWrapper = styled(FlexBetweenCenter)`
       background-color: var(--neutral200);
       color: var(--textDisabled);
       cursor: default;
-
-      svg {
-        path {
-          stroke: var(--textDisabled);
-        }
-      }
     `}
 `;
 
@@ -59,11 +57,14 @@ function Select({
   small = false,
   itemHeight,
   search = false,
+  readOnly = false,
+  optionsPadding = "",
+  placeholder = "",
 }) {
   const ref = useRef();
   const [searchText, setSearchText] = useState("");
   const [showOptions, setShowOptions] = useState(false);
-  useOnClickOutside(ref, () => setShowOptions(false));
+  useClickAway(ref, () => setShowOptions(false));
   const selectedOptionRef = useRef();
 
   useEffect(() => {
@@ -97,33 +98,62 @@ function Select({
   };
 
   const displayValue = useMemo(() => {
-    const item = filteredOptions.find((option) => option.value === value);
-    return item?.label || item?.text;
-  }, [filteredOptions, value]);
+    const item = options.find((option) => option.value === value);
+
+    if (isNil(item)) {
+      return null;
+    }
+
+    return (
+      <div className="flex items-center">
+        {item?.icon && <div className="mr-2 flex">{item.icon}</div>}
+        {item?.displayValue || item?.label || item?.text}
+      </div>
+    );
+  }, [options, value]);
+
+  let DropdownOptionsWrapper = OptionsWrapper;
+  if (optionsPadding === "left") {
+    DropdownOptionsWrapper = OptionsPadLeftWrapper;
+  } else if (optionsPadding === "right") {
+    DropdownOptionsWrapper = OptionsPadRightWrapper;
+  }
 
   return (
     <SelectWrapper
-      className={className}
+      className={cn(
+        "text14Medium",
+        className,
+        readOnly && "pointer-events-none !bg-neutral200",
+      )}
       ref={ref}
       disabled={disabled}
       onClick={handleShowOptions}
       itemHeight={theItemHeight}
     >
       <SelectInner>
-        <div className="overflow-hidden">{displayValue}</div>
-        <div>
-          <ArrowDown
-            className={cn(
-              showOptions && "rotate-180",
-              "w-5 h-5",
-              "[&_path]:stroke-textTertiary",
-            )}
-          />
+        <div className="overflow-hidden">
+          {displayValue ? (
+            displayValue
+          ) : (
+            <span className="text-textDisabled">{placeholder}</span>
+          )}
         </div>
+        {!readOnly && (
+          <div>
+            <ArrowDown
+              className={cn(
+                showOptions && "rotate-180",
+                "w-5 h-5",
+                "[&_path]:stroke-textTertiary",
+              )}
+            />
+          </div>
+        )}
       </SelectInner>
 
       {showOptions && (
-        <OptionsWrapper>
+        <DropdownOptionsWrapper className="select-option-wrapper">
           {search && (
             <>
               <SearchInput
@@ -160,13 +190,16 @@ function Select({
                     onClick={() => onChange(option)}
                     height={theItemHeight}
                   >
+                    {option?.icon && (
+                      <div className="mr-2 flex">{option.icon}</div>
+                    )}
                     {option.label || option.text}
                   </Option>
                 ),
               )}
             </div>
           )}
-        </OptionsWrapper>
+        </DropdownOptionsWrapper>
       )}
     </SelectWrapper>
   );

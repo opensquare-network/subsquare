@@ -3,8 +3,33 @@ import Breadcrumb from "next-common/components/_Breadcrumb";
 import { useNavCollapsed } from "next-common/context/nav";
 import useBreadcrumbs from "next-common/components/layout/DetailLayout/useBreadcrumbs";
 
-export default function Breadcrumbs({ breadcrumbs, hasSidebar }) {
+export function Breadcrumbs({ breadcrumbs, hasSidebar, className = "" }) {
   const [navCollapsed] = useNavCollapsed();
+
+  return (
+    <div
+      className={cn(
+        "mb-6 px-12",
+        "w-full",
+        className,
+        hasSidebar ? "max-w-[calc(100%-320px-24px)]" : "max-w-full",
+        navCollapsed ? "max-md:max-w-full" : "max-lg:max-w-full",
+      )}
+    >
+      {breadcrumbs?.length > 0 ? (
+        <Breadcrumb items={breadcrumbs} />
+      ) : (
+        breadcrumbs
+      )}
+    </div>
+  );
+}
+
+export default function BreadcrumbsWithDefault({
+  breadcrumbs,
+  hasSidebar,
+  className = "",
+}) {
   const defaultBreadcrumbs = useBreadcrumbs();
   if (!breadcrumbs && !defaultBreadcrumbs) {
     return null;
@@ -12,19 +37,10 @@ export default function Breadcrumbs({ breadcrumbs, hasSidebar }) {
 
   const finalBreadcrumbs = breadcrumbs || defaultBreadcrumbs;
   return (
-    <div
-      className={cn(
-        "mb-6 px-12",
-        "w-full",
-        hasSidebar ? "max-w-[calc(100%-320px-24px)]" : "max-w-full",
-        navCollapsed ? "max-md:max-w-full" : "max-lg:max-w-full",
-      )}
-    >
-      {finalBreadcrumbs?.length > 0 ? (
-        <Breadcrumb items={finalBreadcrumbs} />
-      ) : (
-        breadcrumbs
-      )}
-    </div>
+    <Breadcrumbs
+      breadcrumbs={finalBreadcrumbs}
+      hasSidebar={hasSidebar}
+      className={className}
+    />
   );
 }

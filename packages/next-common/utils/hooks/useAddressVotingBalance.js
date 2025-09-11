@@ -1,31 +1,36 @@
-import { useEffect, useState } from "react";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
-
-export async function getAddressVotingBalance(api, address) {
-  const account = await api.query.system.account(address);
-  const jsonAccount = account?.toJSON();
-  return jsonAccount?.data?.free;
-}
+import { useCallback, useEffect, useState } from "react";
+import { useMountedState } from "react-use";
+import { getAddressVotingBalance } from "next-common/utils/democracy/getAddressVotingBalance";
+import { useChain } from "next-common/context/chain";
 
 export function useAddressVotingBalance(api, address) {
-  const [balance, setBalance] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const isMounted = useIsMounted();
-  useEffect(() => {
-    if (api && address) {
-      setIsLoading(true);
-      getAddressVotingBalance(api, address)
-        .then((value) => {
-          if (isMounted.current) {
-            setBalance(value);
-          }
-        })
-        .finally(() => {
-          if (isMounted.current) {
-            setIsLoading(false);
-          }
-        });
+  const chain = useChain();
+  const [balance, setBalance] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const isMounted = useMountedState();
+
+  const refresh = useCallback(() => {
+    if (!api || !address) {
+      return;
     }
-  }, [api, address, isMounted]);
-  return [balance, isLoading];
+
+    setIsLoading(true);
+    getAddressVotingBalance(chain, api, address)
+      .then((value) => {
+        if (isMounted()) {
+          setBalance(value);
+        }
+      })
+      .finally(() => {
+        if (isMounted()) {
+          setIsLoading(false);
+        }
+      });
+  }, [chain, api, address, isMounted]);
+
+  useEffect(() => {
+    refresh();
+  }, [refresh]);
+
+  return { balance, isLoading, refresh };
 }

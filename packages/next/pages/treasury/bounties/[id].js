@@ -1,57 +1,68 @@
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
-import Metadata from "next-common/components/treasury/bounty/metadata";
-import ChildBountiesTable from "../../../components/bounty/childBountiesTable";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
-import CheckUnFinalized from "components/bounty/checkUnFinalized";
+import CheckUnFinalized from "next-common/components/pages/components/bounty/checkUnFinalized";
 import BountyDetail from "next-common/components/detail/treasury/bounty";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
-import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
-import useBountyTimelineData from "../../../components/bounty/useBountyTimelineData";
-import Timeline from "next-common/components/timeline";
-import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/reducers/detailSlice";
-import { useSelector } from "react-redux";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
-import BountySidebar from "components/bounty/sidebar";
+import BountySidebar from "next-common/components/pages/components/bounty/sidebar";
+import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
+import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
+import { CuratorProvider } from "next-common/context/treasury/bounties";
+import { useBountyStatus } from "next-common/components/treasury/bounty/useBountyStatus";
+import { useCuratorMultisigAddress } from "next-common/hooks/treasury/bounty/useCuratorMultisigAddress";
+import { TreasuryProvider } from "next-common/context/treasury";
+import {
+  gov2TracksApi,
+  treasuryBountiesAppendantApi,
+} from "next-common/services/url";
+import TreasuryBountiesDetailMultiTabs from "next-common/components/pages/components/tabs/treasuryBountiesDetailMultiTabs";
+import Appendants from "next-common/components/appendants/bounty";
+import { BountyAppendantsProvider } from "next-common/context/bountyAppendants";
+
+function useBountyCurator(bountyIndex) {
+  const status = useBountyStatus(bountyIndex);
+  if (status?.isActive) {
+    return status.asActive.curator.toString();
+  }
+  if (status?.isPendingPayout) {
+    return status.asPendingPayout.curator.toString();
+  }
+  return null;
+}
 
 function BountyContent() {
-  const { childBounties } = usePageProps();
   const detail = usePost();
+  const bountyIndex = detail?.bountyIndex;
 
-  useSubscribePostDetail(detail?.bountyIndex);
+  useSubscribePostDetail(bountyIndex);
 
-  const timelineData = useBountyTimelineData(detail?.onchainData);
-  const isTimelineCompact = useSelector(
-    detailMultiTabsIsTimelineCompactModeSelector,
-  );
+  const curator = useBountyCurator(bountyIndex);
+  const curatorParams = useCuratorMultisigAddress(curator);
 
   return (
-    <ContentWithComment>
-      <BountyDetail />
-      <BountySidebar />
-      <DetailMultiTabs
-        childBounties={
-          !!childBounties.total && <ChildBountiesTable {...{ childBounties }} />
-        }
-        childBountiesCount={childBounties.total}
-        metadata={
-          <Metadata
-            meta={detail.onchainData?.meta}
-            address={detail.onchainData?.address}
-          />
-        }
-        timeline={<Timeline data={timelineData} compact={isTimelineCompact} />}
-        timelineCount={timelineData.length}
-      />
-    </ContentWithComment>
+    <OffChainArticleActionsProvider>
+      <OffChainCommentActionsProvider>
+        <CuratorProvider curator={curator} params={curatorParams}>
+          <ContentWithComment>
+            <BountyAppendantsProvider>
+              <BountyDetail />
+              <Appendants />
+            </BountyAppendantsProvider>
+            <BountySidebar />
+            <TreasuryBountiesDetailMultiTabs />
+          </ContentWithComment>
+        </CuratorProvider>
+      </OffChainCommentActionsProvider>
+    </OffChainArticleActionsProvider>
   );
 }
 
@@ -88,16 +99,25 @@ function BountyPageImpl() {
 export default function BountyPage({ detail }) {
   return (
     <PostProvider post={detail}>
-      <BountyPageImpl />
+      <TreasuryProvider>
+        <BountyPageImpl />
+      </TreasuryProvider>
     </PostProvider>
   );
 }
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
-  const [{ result: detail }, { result: childBounties }] = await Promise.all([
-    nextApi.fetch(`treasury/bounties/${id}`),
-    nextApi.fetch(`treasury/bounties/${id}/child-bounties`, { pageSize: 5 }),
+  const [
+    { result: detail },
+    { result: childBounties },
+    { result: tracksDetail },
+    { result: appendants },
+  ] = await Promise.all([
+    backendApi.fetch(`treasury/bounties/${id}`),
+    backendApi.fetch(`treasury/bounties/${id}/child-bounties`, { pageSize: 5 }),
+    backendApi.fetch(gov2TracksApi),
+    backendApi.fetch(treasuryBountiesAppendantApi(id)),
   ]);
 
   if (!detail) {
@@ -115,6 +135,8 @@ export const getServerSideProps = withCommonProps(async (context) => {
       detail,
       childBounties: childBounties ?? EmptyList,
       comments: comments ?? EmptyList,
+      tracksDetail: tracksDetail ?? null,
+      appendants: appendants ?? [],
 
       ...tracksProps,
     },

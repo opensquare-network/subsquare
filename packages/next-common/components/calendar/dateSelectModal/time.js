@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Labeled from "../../../components/Labeled";
 import { noop } from "lodash-es";
-import LineInput from "../../lineInput";
+import NumberInput from "next-common/lib/input/number";
 import Flex from "../../styled/flex";
 
 export default function Time({
@@ -24,24 +24,33 @@ export default function Time({
     m = Math.max(0, Math.min(m, 59));
 
     onChange(h, m);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hour, minute]);
 
   return (
     <Labeled text={"Time"}>
       <Flex>
-        <LineInput
-          style={{ textAlign: "center" }}
-          placeholder="00"
-          value={hour}
-          setValue={setHour}
-        />
+        <div className="grow">
+          <NumberInput
+            className="flex w-full"
+            controls={false}
+            style={{ textAlign: "center" }}
+            placeholder="00"
+            value={hour}
+            onValueChange={setHour}
+          />
+        </div>
         <span style={{ padding: 8 }}>:</span>
-        <LineInput
-          style={{ textAlign: "center" }}
-          placeholder="00"
-          value={minute}
-          setValue={setMinute}
-        />
+        <div className="grow">
+          <NumberInput
+            className="flex w-full"
+            controls={false}
+            style={{ textAlign: "center" }}
+            placeholder="00"
+            value={minute}
+            onValueChange={setMinute}
+          />
+        </div>
       </Flex>
     </Labeled>
   );

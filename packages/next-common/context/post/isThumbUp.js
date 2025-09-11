@@ -1,14 +1,6 @@
-import { useUser } from "../user";
-import { usePost } from "./index";
+import { useMyUpVote } from "./useMyUpVote";
 
 export function useIsThumbUp() {
-  const user = useUser();
-  const post = usePost();
-  if (!user) {
-    return false;
-  }
-
-  return (
-    post?.reactions?.findIndex((r) => r.user?.username === user.username) > -1
-  );
+  const myUpVote = useMyUpVote();
+  return !!myUpVote;
 }

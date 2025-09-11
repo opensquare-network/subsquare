@@ -1,9 +1,7 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import VotesTab, { tabs } from "./tab";
 import { useSelector } from "react-redux";
 import { isLoadingVoteCallsSelector } from "next-common/store/reducers/democracy/voteCalls";
-import Pagination from "next-common/components/pagination";
-import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import ExplorerLink from "next-common/components/links/explorerLink";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
@@ -11,14 +9,21 @@ import CapitalListItem from "next-common/components/dataList/capitalListItem";
 import { toPrecision } from "next-common/utils";
 import styled from "styled-components";
 import { useChainSettings } from "next-common/context/chain";
-import { useOnchainData } from "next-common/context/post";
+import { useOnchainData, usePost } from "next-common/context/post";
 import useDemocracyFetchVoteCalls from "./useDemocracyFetchVoteCalls";
 import useSearchVotes from "next-common/hooks/useSearchVotes";
 import SearchBtn from "next-common/components/voteSearch/searchBtn";
 import SearchBar from "next-common/components/voteSearch/searchBar";
 import filterTabs from "next-common/components/democracy/common/filterTabs";
 import AddressUser from "next-common/components/user/addressUser";
-import DataList from "next-common/components/dataList";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+import VirtualList from "next-common/components/dataList/virtualList";
+import usePopupItemHeight from "next-common/components/democracy/democracyCallsVotesPopup/usePopupItemHeight";
+import WindowSizeProvider from "next-common/context/windowSize";
+
+const BaseVotesPopup = dynamicPopup(() =>
+  import("next-common/components/popup/baseVotesPopup"),
+);
 
 const VoteTime = styled.div`
   font-style: normal;
@@ -39,9 +44,6 @@ export default function DemocracyCallsVotesPopup({ setShowVoteList }) {
     useDemocracyFetchVoteCalls(referendumIndex);
   const isLoading = useSelector(isLoadingVoteCallsSelector);
   const [tabIndex, setTabIndex] = useState(tabs[0].tabId);
-  const [ayePage, setAyePage] = useState(1);
-  const [nayPage, setNayPage] = useState(1);
-  const pageSize = 50;
 
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(false);
@@ -55,40 +57,15 @@ export default function DemocracyCallsVotesPopup({ setShowVoteList }) {
     }
 
     setTabIndex(tabs[0]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
 
-  let page;
   let votes;
   if (tabIndex === "Aye") {
-    page = ayePage;
     votes = filteredAye;
   } else if (tabIndex === "Nay") {
-    page = nayPage;
     votes = filteredNay;
   }
-
-  const onPageChange = (e, target) => {
-    e.preventDefault();
-    if (tabIndex === "Aye") {
-      setAyePage(target);
-    } else if (tabIndex === "Nay") {
-      setNayPage(target);
-    }
-  };
-
-  const pagination = {
-    page,
-    pageSize,
-    total: votes?.length || 0,
-    onPageChange,
-  };
-
-  const sliceFrom = (pagination.page - 1) * pageSize;
-  const sliceTo = sliceFrom + pageSize;
-
-  const items = useMemo(() => {
-    return votes.slice(sliceFrom, sliceTo);
-  }, [votes, sliceFrom, sliceTo]);
 
   const searchBtn = (
     <SearchBtn
@@ -99,28 +76,30 @@ export default function DemocracyCallsVotesPopup({ setShowVoteList }) {
   );
 
   return (
-    <BaseVotesPopup
-      wide
-      title="Calls"
-      onClose={() => setShowVoteList(false)}
-      extra={searchBtn}
-    >
-      {showSearch && <SearchBar setSearch={setSearch} />}
+    <WindowSizeProvider>
+      <BaseVotesPopup
+        title="Calls"
+        onClose={() => setShowVoteList(false)}
+        extra={searchBtn}
+      >
+        {showSearch && <SearchBar setSearch={setSearch} autoFocus />}
 
-      <VotesTab
-        tabIndex={tabIndex}
-        setTabIndex={setTabIndex}
-        ayesCount={filteredAye?.length || 0}
-        naysCount={filteredNay?.length || 0}
-      />
-      <VotesList items={items} loading={isLoading} />
-      <Pagination {...pagination} />
-    </BaseVotesPopup>
+        <VotesTab
+          tabIndex={tabIndex}
+          setTabIndex={setTabIndex}
+          ayesCount={filteredAye?.length || 0}
+          naysCount={filteredNay?.length || 0}
+        />
+        <VotesList items={votes} loading={isLoading} />
+      </BaseVotesPopup>
+    </WindowSizeProvider>
   );
 }
 
 function VotesList({ items = [], loading }) {
-  const chainSettings = useChainSettings();
+  const post = usePost();
+  const chainSettings = useChainSettings(post.indexer?.blockHeight);
+  const itemHeight = usePopupItemHeight();
 
   const columns = [
     {
@@ -144,7 +123,7 @@ function VotesList({ items = [], loading }) {
         add={item.voter}
         noTooltip
         maxWidth={264}
-        linkToVotesPage
+        link="/votes"
       />,
       <VoteTime key="date">
         <ExplorerLink indexer={item.indexer}>
@@ -164,11 +143,13 @@ function VotesList({ items = [], loading }) {
 
   return (
     <PopupListWrapper>
-      <DataList
+      <VirtualList
         scrollToFirstRowOnChange
         loading={loading}
         columns={columns}
         rows={rows}
+        itemHeight={itemHeight}
+        listHeight={395}
       />
     </PopupListWrapper>
   );

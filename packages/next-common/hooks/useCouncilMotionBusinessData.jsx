@@ -5,9 +5,33 @@ import SymbolBalance from "next-common/components/values/symbolBalance";
 import Copyable from "next-common/components/copyable";
 import AddressUser from "next-common/components/user/addressUser";
 import Proposal from "next-common/components/proposal";
+import { useDetailType } from "next-common/context/page";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
+import useBlockPreimage from "next-common/hooks/preimages/useBlockPreimage";
+import RawCallProvider from "next-common/context/call/raw";
+import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
+
+function getTreasuryProposalLink(type, proposalIndex) {
+  if (type === detailPageCategory.COMMUNITY_MOTION) {
+    return `/community-treasury/proposals/${proposalIndex}`;
+  }
+  return `/treasury/proposals/${proposalIndex}`;
+}
+
+function ExternalCall({ preimage }) {
+  const { hash } = preimage || {};
+  const { preimage: call, isLoading } = useBlockPreimage(hash);
+
+  return (
+    <RawCallProvider call={call} isLoading={isLoading}>
+      <Proposal key="call" call={preimage.call} preImageHash={preimage.hash} />,
+    </RawCallProvider>
+  );
+}
 
 export function useCouncilMotionBusinessData() {
   const motion = usePostOnChainData();
+  const type = useDetailType();
 
   const business = [];
 
@@ -21,23 +45,22 @@ export function useCouncilMotionBusinessData() {
           "Link to",
           <Link
             key="proposal-link"
-            href={`/treasury/proposals/${proposal.proposalIndex}`}
-            legacyBehavior
+            href={getTreasuryProposalLink(type, proposal.proposalIndex)}
           >{`Treasury Proposal #${proposal.proposalIndex}`}</Link>,
         ],
         [
           "Beneficiary",
           <Flex key="proposal-beneficiary">
-            <AddressUser add={proposal.meta.beneficiary} />
+            <AddressUser add={proposal.meta?.beneficiary} />
           </Flex>,
         ],
         [
           "Value",
-          <SymbolBalance key="proposal-value" value={proposal.meta.value} />,
+          <SymbolBalance key="proposal-value" value={proposal.meta?.value} />,
         ],
         [
           "Bond",
-          <SymbolBalance key="proposal-bond" value={proposal.meta.bond} />,
+          <SymbolBalance key="proposal-bond" value={proposal.meta?.bond} />,
         ],
       ]);
     }
@@ -50,7 +73,6 @@ export function useCouncilMotionBusinessData() {
         <Link
           key="bounty-link"
           href={`/treasury/bounties/${bounty.bountyIndex}`}
-          legacyBehavior
         >{`Treasury Bounty #${bounty.bountyIndex}`}</Link>,
       ]);
 
@@ -92,7 +114,6 @@ export function useCouncilMotionBusinessData() {
           <Link
             key="external-link"
             href={`/democracy/externals/${external?.indexer?.blockHeight}_${external?.proposalHash}`}
-            legacyBehavior
           >{`Democracy External #${external?.proposalHash?.slice(
             0,
             6,
@@ -102,14 +123,15 @@ export function useCouncilMotionBusinessData() {
         ["Threshold", external.voteThreshold],
       ]);
 
-      if (external.preImage) {
-        business.push([
+      if (external.preImage && business.length > 0) {
+        business[0].push([
           [
-            <Proposal
+            <MigrationConditionalApiProvider
               key="call"
-              call={external.preImage.call}
-              preImageHash={external.preImage.hash}
-            />,
+              indexer={external.indexer}
+            >
+              <ExternalCall preimage={external?.preImage} />
+            </MigrationConditionalApiProvider>,
           ],
         ]);
       }
@@ -124,7 +146,6 @@ export function useCouncilMotionBusinessData() {
           <Link
             key="external-link"
             href={`/democracy/externals/${external?.indexer?.blockHeight}_${external?.proposalHash}`}
-            legacyBehavior
           >{`Democracy External #${external?.proposalHash?.slice(
             0,
             6,

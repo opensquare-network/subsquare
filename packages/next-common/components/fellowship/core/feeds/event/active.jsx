@@ -1,11 +1,14 @@
 import AddressUser from "next-common/components/user/addressUser";
 import { FellowshipCoreFeedEventLabel } from "./shared";
 
-export default function FellowshipCoreFeedsActiveEvent({ feed }) {
+export default function FellowshipCoreFeedsActiveEvent({
+  feed,
+  showUserInfo = true,
+}) {
   const { args: { who, isActive } = {} } = feed || {};
   return (
     <>
-      <AddressUser key={who} add={who} noTooltip />
+      {showUserInfo && <AddressUser key={who} add={who} noTooltip />}
       <span>
         <FellowshipCoreFeedEventLabel>Changed</FellowshipCoreFeedEventLabel>{" "}
         status to{" "}

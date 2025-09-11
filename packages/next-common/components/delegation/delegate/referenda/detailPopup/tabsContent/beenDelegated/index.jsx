@@ -6,7 +6,7 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { toPrecision } from "next-common/utils";
-import { useAllBeenDelegatedList } from "next-common/utils/hooks/referenda/useAllBeenDelegatedList";
+import { useMaybeServerAllBeenDelegatedList } from "next-common/utils/hooks/referenda/useAllBeenDelegatedList";
 import { useState } from "react";
 import ReferendaDelegateeDetailPopupBeenDelegatedInfo from "./info";
 import DelegatorList from "./delegatorList";
@@ -15,7 +15,7 @@ export default function ReferendaDelegateeDetailPopupBeenDelegated({
   delegate,
 }) {
   const { symbol, decimals } = useChainSettings();
-  const { isLoading, beenDelegatedList } = useAllBeenDelegatedList(
+  const { isLoading, beenDelegatedList } = useMaybeServerAllBeenDelegatedList(
     delegate.address,
   );
 
@@ -89,7 +89,6 @@ export default function ReferendaDelegateeDetailPopupBeenDelegated({
       {beenDelegatedPopup && (
         <Popup
           title="Been Delegated"
-          className="w-[640px] max-w-full"
           onClose={() => {
             setBeenDelegatedPopup(false);
             setBeenDelegatedPopupData([]);

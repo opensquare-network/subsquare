@@ -1,26 +1,29 @@
 import { debounce } from "lodash-es";
+import { Deferred } from "next-common/utils/deferred";
 import QuickLRU from "quick-lru";
 
-class Deferred {
-  constructor() {
-    this.promise = new Promise((resolve, reject) => {
-      this.resolve = resolve;
-      this.reject = reject;
-    });
-  }
-}
-
 const cachedIdentities = new QuickLRU({ maxSize: 1000 });
-let pendingQueries = new Map();
+const pendingQueries = new Map();
+const processingQueries = new Map();
 
 const delayQuery = debounce(() => {
-  const pending = pendingQueries;
-  if (pending.size < 1) {
+  if (pendingQueries.size < 1) {
     return;
   }
 
+  const idNames = [];
+  for (const [idName, deferred] of pendingQueries) {
+    if (processingQueries.has(idName)) {
+      // Should not happen
+      console.error("Duplicate identity query:", idName);
+      continue;
+    }
+    idNames.push(idName);
+    processingQueries.set(idName, deferred);
+    pendingQueries.delete(idName);
+  }
+
   const chainAddresses = {};
-  const idNames = [...pending.keys()];
   const idNameSplits = idNames.map((item) => item.split("/"));
   for (const [chain, address] of idNameSplits) {
     if (!chainAddresses[chain]) {
@@ -49,19 +52,19 @@ const delayQuery = debounce(() => {
       .then((data) => {
         const identities = new Map(data.map((item) => [item.address, item]));
 
-        for (const idName of idNames) {
-          if (!pending.has(idName)) {
+        for (const addr of addresses) {
+          const idName = `${chain}/${addr}`;
+
+          if (!processingQueries.has(idName)) {
+            // Should not happen
+            console.error("Identity query deferred not found:", idName);
             continue;
           }
 
-          const { resolve } = pending.get(idName);
-          pending.delete(idName);
+          const { resolve } = processingQueries.get(idName);
+          processingQueries.delete(idName);
 
-          const [chainOfIdName, addrOfIdName] = idName.split("/");
-          if (chainOfIdName !== chain) {
-            continue;
-          }
-          const identity = identities.get(addrOfIdName) || null;
+          const identity = identities.get(addr) || null;
           cachedIdentities.set(idName, identity);
           if (resolve) {
             resolve(identity);
@@ -78,18 +81,23 @@ export function fetchIdentity(chain, address) {
   }
 
   const idName = `${chain}/${address}`;
+
   if (cachedIdentities.has(idName)) {
     return Promise.resolve(cachedIdentities.get(idName));
   }
 
-  const pending = pendingQueries;
-
-  if (!pending.has(idName)) {
-    pending.set(idName, new Deferred());
-    delayQuery();
+  if (processingQueries.has(idName)) {
+    return processingQueries.get(idName).promise;
   }
 
-  return pending.get(idName).promise;
+  if (pendingQueries.has(idName)) {
+    return pendingQueries.get(idName).promise;
+  }
+
+  const deferred = new Deferred();
+  pendingQueries.set(idName, deferred);
+  delayQuery();
+  return deferred.promise;
 }
 
 /**
@@ -105,3 +113,17 @@ export function getCachedIdentity(chain, address) {
 }
 
 export const getIdentity = getCachedIdentity;
+
+export const clearCachedIdentitys = (list, clearPending = false) => {
+  list.forEach((item) => {
+    if (!item.chain || !item.address) {
+      return;
+    }
+
+    const idName = `${item.chain}/${item.address}`;
+    cachedIdentities.delete(idName);
+    if (clearPending) {
+      pendingQueries.delete(idName);
+    }
+  });
+};

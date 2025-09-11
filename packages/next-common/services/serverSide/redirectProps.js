@@ -1,14 +1,12 @@
-import { emptyFunction } from "next-common/utils";
+import { noop } from "lodash-es";
 
-export function getRedirectServerSideProps(getDestinationFun = emptyFunction) {
+export function getRedirectServerSideProps(getDestinationFun = noop) {
   return getRedirectServerSidePropsByContext((ctx) =>
     getDestinationFun(ctx.query.id),
   );
 }
 
-export function getRedirectServerSidePropsByContext(
-  getDestinationFun = emptyFunction,
-) {
+export function getRedirectServerSidePropsByContext(getDestinationFun = noop) {
   return async function (ctx) {
     return {
       redirect: {

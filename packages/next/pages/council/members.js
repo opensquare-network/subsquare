@@ -1,26 +1,32 @@
 import ListLayout from "next-common/components/layout/ListLayout";
-import MembersNoElections from "components/council/membersNoElections";
-import isMoonChain from "next-common/utils/isMoonChain";
-import { detailPageCategory } from "next-common/utils/consts/business/category";
+import MembersNoElections from "next-common/components/pages/components/council/membersNoElections";
 import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
+import CollectiveProvider, {
+  collectivePallets,
+} from "next-common/context/collective";
+import { useChain } from "next-common/context/chain";
+import Chains from "next-common/utils/consts/chains";
 
 export default function MembersPage() {
   const category = "Council Members";
   const seoInfo = { title: category, desc: category };
+  const chain = useChain();
 
-  let members = <MembersNoElections />;
-  if (isMoonChain()) {
-    members = <MembersNoElections type={detailPageCategory.COUNCIL_MOTION} />;
+  let pallet = collectivePallets.council;
+  if ([Chains.acala, Chains.karura].includes(chain)) {
+    pallet = collectivePallets.generalCouncil;
   }
 
   return (
-    <ListLayout
-      seoInfo={seoInfo}
-      title={category}
-      description="Council members"
-    >
-      {members}
-    </ListLayout>
+    <CollectiveProvider pallet={pallet}>
+      <ListLayout
+        seoInfo={seoInfo}
+        title={category}
+        description="Council members"
+      >
+        <MembersNoElections />
+      </ListLayout>
+    </CollectiveProvider>
   );
 }
 

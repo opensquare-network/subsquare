@@ -10,18 +10,20 @@ import {
 import { useChainSettings } from "next-common/context/chain";
 import { cn } from "next-common/utils";
 import AccountSubTabs from "next-common/components/overview/account/subTabs";
-import ModuleVotes from "components/myvotes/moduleVotes";
+import ModuleVotes from "next-common/components/myvotes/moduleVotes";
 
 function MyVoteLayout({ children }) {
   const {
-    modules: { referenda: hasReferenda, democracy: hasDemocracyModule },
+    modules: { referenda: hasReferenda, democracy },
   } = useChainSettings();
+
+  const hasDemocracy = democracy && !democracy?.archived;
 
   const availableTabs = [];
   if (hasReferenda) {
     availableTabs.push({ tabId: Referenda, tabTitle: Referenda });
   }
-  if (hasDemocracyModule) {
+  if (hasDemocracy) {
     availableTabs.push({ tabId: Democracy, tabTitle: Democracy });
   }
 
@@ -52,7 +54,7 @@ function MyVoteLayout({ children }) {
 
 export default function AccountVotesPage() {
   return (
-    <AccountLayout>
+    <AccountLayout seoInfo={{ title: "Account votes management" }}>
       <MyVoteLayout>
         <ModuleVotes />
       </MyVoteLayout>

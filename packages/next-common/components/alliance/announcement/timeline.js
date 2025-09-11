@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useDetailType } from "../../../context/page";
 import sortTimeline from "../../../utils/timeline/sort";
 import Timeline from "../../timeline";
-import { createMotionTimelineData } from "@subsquare/next/utils/timeline/motion";
+import { createMotionTimelineData } from "next-common/utils/pages/timeline/motion";
 import IpfsCidWithLink from "../ipfsCidWithLink";
 import formatTime from "../../../utils/viewfuncs/formatDate";
-import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/reducers/detailSlice";
-import { useSelector } from "react-redux";
+import { useIsTimelineCompact } from "next-common/components/detail/detailMultiTabs/timelineModeTabs";
 
 function getData(item) {
   const { method, args = {} } = item;
@@ -42,11 +41,9 @@ export default function AnnouncementTimeline({ data }) {
     );
 
     setTimelineData(sortTimeline([...data, ...motionTimeline].filter(Boolean)));
-  }, [timeline, motion]);
+  }, [timeline, motion, type]);
 
-  const isTimelineCompact = useSelector(
-    detailMultiTabsIsTimelineCompactModeSelector,
-  );
+  const isTimelineCompact = useIsTimelineCompact();
 
   return (
     <Timeline data={timelineData} indent={false} compact={isTimelineCompact} />

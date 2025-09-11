@@ -1,34 +1,43 @@
-import Chains from "../chains";
-import MenuGroups from "./menuGroups";
-import { PostLabel } from "./common";
-import {
-  ProjectIconWestendCollectivesDark,
-  ProjectIconWestendCollectivesLight,
-  ProjectLogoWestendCollectivesDark,
-  ProjectLogoWestendCollectivesLight,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
 import { collectiveLinks } from "next-common/utils/consts/settings/common/collectiveLinks";
+import Chains from "../chains";
+import { PostLabel } from "./common";
+import MenuGroups from "./menuGroups";
+import { mergeChainModules } from "./common/modules";
+
+const ProjectIconWestendCollectivesDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconWestendCollectivesDark"),
+);
+const ProjectIconWestendCollectivesLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconWestendCollectivesLight"),
+);
+const ProjectLogoWestendCollectivesDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoWestendCollectivesDark"),
+);
+const ProjectLogoWestendCollectivesLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoWestendCollectivesLight"),
+);
 
 const westendCollectivesEndpoints = [
   {
+    name: "Parity",
+    url: "wss://westend-collectives-rpc.polkadot.io/",
+  },
+  {
+    name: "IBP1",
+    url: "wss://sys.ibp.network/collectives-westend",
+  },
+  {
     name: "Dwellir",
-    url: "wss://westend-collectives-rpc.dwellir.com",
+    url: "wss://collectives-westend-rpc.dwellir.com",
   },
   {
     name: "Dwellir Tunisia",
     url: "wss://westend-collectives-rpc-tn.dwellir.com",
   },
   {
-    name: "IBP-GeoDNS1",
-    url: "wss://sys.ibp.network/collectives-westend",
-  },
-  {
-    name: "IBP-GeoDNS2",
+    name: "IBP2",
     url: "wss://sys.dotters.network/collectives-westend",
-  },
-  {
-    name: "Parity",
-    url: "wss://westend-collectives-rpc.polkadot.io/",
   },
 ];
 
@@ -40,23 +49,29 @@ const westendCollectives = {
   decimals: 12,
   blockTime: 12000,
   ss58Format: 42,
-  snsCoverCid: "bafybeibtr7oelilpotm26qrnnp34ztbnde7ouu5fdflcx6f6dj6foyb5eq",
   endpoints: westendCollectivesEndpoints,
   links: collectiveLinks,
   avatar: ProjectIconWestendCollectivesLight,
   darkAvatar: ProjectIconWestendCollectivesDark,
   navLogo: ProjectLogoWestendCollectivesLight,
   navLogoDark: ProjectLogoWestendCollectivesDark,
-  group: MenuGroups.Solochain,
+  group: MenuGroups.WestendAndParachains,
   postLabels: [PostLabel.Motion, PostLabel.Announcement],
-  hasStatescan: true,
   hasFellowship: true,
-  hasTechComm: false,
   hasTreasury: false,
-  hasTreasuryModule: false,
-  noIdentityModule: true,
-  modules: {
-    fellowship: true,
+  modules: mergeChainModules({
+    fellowship: {
+      core: true,
+    },
+    treasury: false,
+    fellowshipTreasury: true,
+    democracy: false,
+    council: false,
+    technicalCommittee: false,
+    alliance: true,
+  }),
+  integrations: {
+    statescan: true,
   },
   cssVarsLight: {
     theme100: "rgba(239,72,106,0.10)",
@@ -74,6 +89,7 @@ const westendCollectives = {
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",
   },
+  allowWeb2Login: true,
 };
 
 export default westendCollectives;

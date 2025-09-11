@@ -7,13 +7,17 @@ import { forwardRef, useEffect, useRef, useState } from "react";
 import { useUploadToIpfs } from "next-common/hooks/useUploadToIpfs";
 import { cn } from "next-common/utils";
 import { SystemLoading } from "@osn/icons/subsquare";
-import { useEventListener } from "usehooks-ts";
-import { useDispatch } from "react-redux";
-import { setEditorUploading } from "next-common/store/reducers/editorSlice";
+import { createGlobalState, useEvent } from "react-use";
+import { noop } from "lodash-es";
+import LoadingEditor from "./loading";
+
+export const useEditorUploading = createGlobalState(false);
 
 const UniverseEditor = dynamic(
   () => import("@osn/rich-text-editor").then((mod) => mod.UniverseEditor),
-  { ssr: false },
+  {
+    ssr: false,
+  },
 );
 
 const Wrapper = styled(EditorWrapper)``;
@@ -22,13 +26,23 @@ const Wrapper = styled(EditorWrapper)``;
  * @param {Parameters<UniverseEditor>[0]} props
  */
 function Editor(props, ref) {
+  // Handle default values
+  props = Object.assign(
+    {
+      setContentType: noop,
+      loadSuggestions: () => [],
+      setQuillRef: noop,
+      previewerPlugins: [],
+    },
+    props,
+  );
+  const [, setEditorUploading] = useEditorUploading();
   const [dragging, setDragging] = useState(false);
   const { uploading, upload } = useUploadToIpfs();
   const inputRef = useRef();
   const [isPreview, setIsPreview] = useState(false);
   const textAreaRef = useRef(null);
   const [lastCaretPosition, setLastCursorPosition] = useState(0);
-  const dispatch = useDispatch();
 
   function saveLastCaretPosition(e) {
     const start = e.target.selectionStart;
@@ -38,11 +52,7 @@ function Editor(props, ref) {
     }
   }
 
-  useEventListener(
-    "selectionchange",
-    saveLastCaretPosition,
-    textAreaRef.current,
-  );
+  useEvent("selectionchange", saveLastCaretPosition, textAreaRef.current);
 
   useEffect(() => {
     if (!uploading) {
@@ -51,11 +61,12 @@ function Editor(props, ref) {
         textarea.selectionStart = textarea.selectionEnd = lastCaretPosition;
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [uploading, textAreaRef]);
 
   useEffect(() => {
-    dispatch(setEditorUploading(uploading));
-  }, [uploading]);
+    setEditorUploading(uploading);
+  }, [setEditorUploading, uploading]);
 
   function onDragOver(event) {
     event.preventDefault();
@@ -188,11 +199,25 @@ function Editor(props, ref) {
       onDrop={onDrop}
       onPaste={onPaste}
       className={cn(
+        "relative",
+        isPreview
+          ? "min-h-[182px] max-sm:min-h-[182px]"
+          : "min-h-[182px] max-sm:min-h-[222px]",
+        "[&_.editor-wrapper]:bg-neutral100",
+        "[&_.editor-wrapper]:relative",
+        "[&_.editor-wrapper]:z-1",
+        "[&_.editor-wrapper]:min-h-[inherit] [&_.editor-wrapper]:max-sm:min-h-[inherit]",
+        "[&_.editor-wrapper]:pb-10",
+        "[&_.toggle-bar-wrapper]:absolute [&_.toggle-bar-wrapper]:left-0 [&_.toggle-bar-wrapper]:right-0 [&_.toggle-bar-wrapper]:bottom-0",
         dragging &&
           "[&_.editor-wrapper]:!border-theme500 [&_.toggle-bar-wrapper]:!border-theme500",
       )}
     >
+      <LoadingEditor />
       <UniverseEditor
+        loadingSkeleton={
+          <LoadingEditor className="border-none min-h-[inherit] max-sm:min-h-[inherit]" />
+        }
         {...props}
         setTextAreaRef={(textarea) => {
           textAreaRef.current = textarea;

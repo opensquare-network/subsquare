@@ -195,7 +195,7 @@ export default function useOldPreimage(hashOrBounded) {
     [api, hashOrBounded],
   );
 
-  const [optStatus, , isStatusLoaded] = useCall(
+  const { value: optStatus, loaded: isStatusLoaded } = useCall(
     !inlineData && paramsStatus && api?.query.preimage?.statusFor,
     paramsStatus ? paramsStatus : [undefined],
   );
@@ -209,7 +209,7 @@ export default function useOldPreimage(hashOrBounded) {
     [optStatus, resultPreimageHash],
   );
 
-  const [optBytes, , isBytesLoaded] = useCall(
+  const { value: optBytes, loaded: isBytesLoaded } = useCall(
     paramsBytes && api?.query.preimage?.preimageFor,
     paramsBytes ? paramsBytes : [undefined],
     { cacheKey: `usePreimage/preimageFor/${hashOrBounded}` },

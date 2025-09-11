@@ -1,16 +1,16 @@
 import { CACHE_KEY } from "next-common/utils/constants";
 import { clearCookie, setCookie } from "next-common/utils/viewfuncs/cookies";
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, useCallback, useContext, useState } from "react";
 import { fetchAndUpdateUser, logoutUser, useUserContext } from "../user";
-import getStorageAddressInfo from "next-common/utils/getStorageAddressInfo";
+import { useLocalStorage } from "react-use";
+import { clearMyMultisigsData } from "next-common/store/reducers/multisigSlice";
+import { useDispatch } from "react-redux";
+import { usePageLoading } from "next-common/context/pageLoading";
 
 const ConnectedAccountContext = createContext(null);
+
+let ssrConnectedAccount = null;
+let savedConnectedAccount = null;
 
 export default ConnectedAccountContext;
 
@@ -18,44 +18,58 @@ export function ConnectedAccountProvider({
   connectedAccount: _connectedAccount,
   children,
 }) {
+  ssrConnectedAccount = _connectedAccount;
   const userContext = useUserContext();
   const [connectedAccount, setConnectedAccount] = useState(_connectedAccount);
-  const [lastConnectedAccount, setLastConnectedAccount] = useState();
-
-  useEffect(() => {
-    const info = getStorageAddressInfo(CACHE_KEY.lastConnectedAccount);
-    if (info) {
-      setLastConnectedAccount(info);
-    }
-  }, []);
+  const [lastConnectedAccount, setLastConnectedAccount] = useLocalStorage(
+    CACHE_KEY.lastConnectedAccount,
+  );
+  const dispatch = useDispatch();
+  const { setPageLoading } = usePageLoading();
 
   const saveConnectedAccount = useCallback((account) => {
-    setConnectedAccount(account);
+    savedConnectedAccount = account;
     setCookie(CACHE_KEY.connectedAccount, JSON.stringify(account), 365);
+    setConnectedAccount(account);
   }, []);
 
-  const saveLastConnectedAccount = useCallback((account) => {
-    setLastConnectedAccount(account);
-    localStorage.setItem(
-      CACHE_KEY.lastConnectedAccount,
-      JSON.stringify(account),
-    );
-  }, []);
+  const saveLastConnectedAccount = useCallback(
+    (account) => {
+      setLastConnectedAccount(account);
+    },
+    [setLastConnectedAccount],
+  );
 
   const disconnect = useCallback(async () => {
     await logoutUser(userContext);
-    setConnectedAccount(null);
+    ssrConnectedAccount = null;
+    savedConnectedAccount = null;
     clearCookie(CACHE_KEY.connectedAccount);
-  }, [userContext]);
+    setConnectedAccount(null);
+    dispatch(clearMyMultisigsData());
+  }, [userContext, dispatch]);
 
   const connect = useCallback(
     async (account) => {
-      await disconnect();
-      saveConnectedAccount(account);
-      saveLastConnectedAccount(account);
-      await fetchAndUpdateUser(userContext);
+      try {
+        setPageLoading(true);
+        await disconnect();
+        saveConnectedAccount(account);
+        saveLastConnectedAccount(account);
+        await fetchAndUpdateUser(userContext);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setPageLoading(false);
+      }
     },
-    [disconnect, saveLastConnectedAccount, saveConnectedAccount, userContext],
+    [
+      disconnect,
+      saveLastConnectedAccount,
+      saveConnectedAccount,
+      userContext,
+      setPageLoading,
+    ],
   );
 
   return (
@@ -87,4 +101,8 @@ export function useConnectedAccountContext() {
 export function useConnectedAccount() {
   const { connectedAccount } = useConnectedAccountContext();
   return connectedAccount;
+}
+
+export function getContextConnectedAccount() {
+  return savedConnectedAccount || ssrConnectedAccount;
 }

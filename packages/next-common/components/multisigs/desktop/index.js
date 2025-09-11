@@ -30,7 +30,6 @@ export default function DesktopList({ multisigs = [], isLoading = false }) {
       key="status"
       name={multisig.state.name}
       args={multisig.state.args}
-      updateAt={multisig.updateAt}
     />,
     <MultisigSignField key="signStatus" multisig={multisig} />,
   ]);

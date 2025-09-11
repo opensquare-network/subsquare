@@ -1,5 +1,4 @@
-import { encodeAddress } from "@polkadot/keyring";
-import { isEthereumAddress } from "@polkadot/util-crypto";
+import { isEthereumAddress, encodeAddress } from "@polkadot/util-crypto";
 import getChainSettings from "../utils/consts/settings";
 
 export const encodeAddressToChain = (address, chain) => {

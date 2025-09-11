@@ -7,6 +7,7 @@
 import * as d3 from "d3";
 import { noop } from "lodash-es";
 import { Fragment, useEffect, useMemo, useState } from "react";
+import { useMountedState } from "react-use";
 
 export default function CirclePacking({
   data,
@@ -18,7 +19,7 @@ export default function CirclePacking({
   renderBubbleContent = noop,
   onReady = noop,
 }) {
-  const [isFirst, setIsFirst] = useState(true);
+  const isMounted = useMountedState();
   const [nodes, setNodes] = useState([]);
   useEffect(() => {
     if (!width || !height) {
@@ -29,7 +30,7 @@ export default function CirclePacking({
     const pack = d3.pack().size([width, height]).padding(4);
     const root = pack(hierarchy);
     setNodes(root.descendants().slice(1));
-  }, [width, height, data]);
+  }, [width, height, data, sizeField]);
 
   const allBubbles = useMemo(() => {
     return nodes.map((node, idx) => {
@@ -39,7 +40,7 @@ export default function CirclePacking({
       const bubbleContent = renderBubbleContent?.(node) || null;
 
       return (
-        <Fragment key={node.data[keyField] || idx}>
+        <Fragment key={`${node.data[keyField]}-${idx}`}>
           <circle cx={x} cy={y} r={r} className={circleClassName} />
           {bubbleContent && (
             <foreignObject
@@ -55,14 +56,14 @@ export default function CirclePacking({
         </Fragment>
       );
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nodes]);
 
   useEffect(() => {
-    if (allBubbles.length && isFirst) {
+    if (isMounted()) {
       onReady();
-      setIsFirst(false);
     }
-  }, [isFirst, allBubbles]);
+  }, [isMounted, onReady]);
 
   return (
     <svg width={width} height={height}>

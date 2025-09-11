@@ -28,7 +28,7 @@ export default function useSubIdentityDisplay(address) {
       setParentIdentity(result);
       setIsLoading(false);
     });
-  }, [parentAddress]);
+  }, [api, parentAddress]);
 
   return {
     isLoading,

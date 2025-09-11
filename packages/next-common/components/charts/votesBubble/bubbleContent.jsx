@@ -34,11 +34,12 @@ export default function VoteBubbleContent({ node, sizeField }) {
             noEvent
             noTooltip
             ellipsis={false}
-            linkToVotesPage
-            color={cn(
-              node.data.aye && "var(--green500)",
-              node.data.aye === false && "var(--red500)",
-              node.data.isAbstain && "var(--textSecondary)",
+            link="/votes"
+            className={cn(
+              "text14Medium",
+              node.data.aye && "text-[var(--green500)]",
+              node.data.aye === false && "text-[var(--red500)]",
+              node.data.isAbstain && "text-[var(--textSecondary)]",
             )}
           />
         )}

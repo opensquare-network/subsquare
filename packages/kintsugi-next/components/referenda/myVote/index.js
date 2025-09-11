@@ -10,9 +10,13 @@ import { VoteItem } from "next-common/components/myReferendumVote/voteItem";
 import useSubMyDemocracyVote from "hooks/democracy/useSubMyDemocracyVote";
 import { usePost } from "next-common/context/post";
 import { useState } from "react";
-import RemoveDemocracyVotePopup from "next-common/components/myReferendumVote/removeDemocracyVotePopup";
 import { isNil } from "lodash-es";
 import useDemocracyVoteFinishedHeight from "next-common/context/post/democracy/referendum/voteFinishedHeight";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const RemoveDemocracyVotePopup = dynamicPopup(() =>
+  import("next-common/components/myReferendumVote/removeDemocracyVotePopup"),
+);
 
 export const Button = tw.div`
   cursor-pointer

@@ -7,6 +7,7 @@ import {
   useFellowshipSalaryCyclePaymentColumn,
   useFellowshipSalaryCyclePaymentMobileColumns,
 } from "./columns/payment";
+import { defaultPageSize } from "next-common/utils/constants";
 
 export function useFellowshipSalaryCycleRegistrationsTabItem() {
   const { registrations } = usePageProps();
@@ -32,6 +33,9 @@ export function useFellowshipSalaryCycleRegistrationsTabItem() {
     api: {
       path: fellowshipSalaryCycleRegistrationsApi(id),
       initData: registrations,
+      params: {
+        pageSize: defaultPageSize,
+      },
     },
   };
 }

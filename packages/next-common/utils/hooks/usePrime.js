@@ -1,29 +1,34 @@
 import { useEffect, useState } from "react";
-import useIsMounted from "./useIsMounted";
-import useCouncilName from "next-common/hooks/useCouncilName";
+import { useMountedState } from "react-use";
 import { useContextApi } from "next-common/context/api";
+import { useCollectivePallet } from "next-common/context/collective";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
-export default function usePrime(blockHash) {
+function usePrimeFromApi(api) {
   const [prime, setPrime] = useState();
-  const councilName = useCouncilName();
-  const isMounted = useIsMounted();
-  const api = useContextApi();
+  const pallet = useCollectivePallet();
+  const isMounted = useMountedState();
 
   useEffect(() => {
     if (!api) return;
 
-    (blockHash ? api.at(blockHash) : Promise.resolve(api))
-      .then((blockApi) => {
-        return blockApi.query[councilName]?.prime?.();
-      })
-      .then((prime) => {
-        if (!prime) return;
-
-        if (isMounted.current) {
-          setPrime(prime.toJSON());
-        }
-      });
-  }, [api, blockHash, councilName, isMounted]);
+    api.query[pallet]?.prime?.().then((prime) => {
+      if (!prime) return;
+      if (isMounted()) {
+        setPrime(prime.toJSON());
+      }
+    });
+  }, [api, pallet, isMounted]);
 
   return prime;
+}
+
+export default function usePrime() {
+  const api = useContextApi();
+  return usePrimeFromApi(api);
+}
+
+export function useConditionalContextPrime() {
+  const api = useConditionalContextApi();
+  return usePrimeFromApi(api);
 }

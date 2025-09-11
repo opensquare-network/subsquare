@@ -1,52 +1,63 @@
 import Chains from "../chains";
-import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
-import {
-  ProjectIconLitentryDark,
-  ProjectIconLitentryLight,
-  ProjectLogoLitentryDark,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+import { litentryBlockHeightSettings } from "./blockHeightSettings/litentry";
+import { mergeChainModules } from "./common/modules";
+
+const ProjectIconLitentryDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconHeimaDark"),
+);
+const ProjectIconLitentryLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconHeimaLight"),
+);
+const ProjectLogoLitentryDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoHeima"),
+);
+
+const ProjectLogoLitentryLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoHeima"),
+);
 
 const DEFAULT_LITENTRY_NODES = [
+   {
+    name: "Heima",
+    url: "wss://rpc.heima-parachain.heima.network/",
+  },
   {
     name: "Dwellir",
-    url: "wss://litentry-rpc.dwellir.com/",
+    url: "wss://heima-rpc.n.dwellir.com/",
   },
-  {
-    name: "Litentry",
-    url: "wss://rpc.litentry-parachain.litentry.io",
-  },
-  {
-    name: "OnFinality",
-    url: "wss://litentry.api.onfinality.io/public-ws",
-  },
+  // {
+  //   name: "OnFinality",
+  //   url: "wss://litentry.api.onfinality.io/public-ws",
+  // },
 ];
 
 const links = [
   {
     name: "website",
-    url: "https://litentry.com",
+    url: "https://www.heima.network/",
   },
   {
     name: "twitter",
-    url: "https://twitter.com/litentry",
+    url: "https://x.com/heimaNetwork",
   },
   {
     name: "medium",
-    url: "https://medium.com/litentry",
+    url: "https://heima-network.medium.com/",
   },
   {
     name: "telegram",
-    url: "https://t.me/litentry",
+    url: "https://t.me/heimaNetwork",
   },
   {
     name: "discord",
-    url: "https://discord.gg/6KxSqDPgWh",
+    url: "https://discord.com/invite/heimanetwork",
   },
   {
     name: "github",
-    url: "https://github.com/litentry",
+    url: "https://github.com/litentry/heima",
   },
   {
     name: "youtube",
@@ -56,54 +67,58 @@ const links = [
 
 const litentry = {
   value: Chains.litentry,
-  name: capitalize(Chains.litentry),
+  name: "Heima",
   identity: Chains.polkadot,
-  symbol: "LIT",
-  decimals: 12,
+  symbol: "HEI",
+  decimals: 18,
   blockTime: 12000,
   hasElections: false,
   ss58Format: 31,
-  snsCoverCid: "bafybeiej7his75nmaf2yhm6n3sqxf3ew2kvkyb7q37pbt37b72jwvs5cu4",
   endpoints: DEFAULT_LITENTRY_NODES,
   avatar: ProjectIconLitentryLight,
   darkAvatar: ProjectIconLitentryDark,
-  navLogo: ProjectLogoLitentryDark,
+  navLogo: ProjectLogoLitentryLight,
   navLogoDark: ProjectLogoLitentryDark,
   navPreferDark: true,
   links,
   group: MenuGroups.PolkadotAndParachains,
-  hasStatescan: true,
-  hasSubscan: false,
   postLabels: defaultPostLabels,
   useVoteCall: true,
-  hasTipsModule: false,
-  noIdentityModule: true,
   hasMultisig: true,
   multisigApiPrefix: "litentry",
   description:
-    "The Litentry identity Hub allows you to aggregate your personal data from blockchains and platforms to manage granular access to dApps. Exist in a digital world without KYC. Get Maximum Privacy & Authorization Control. Share Interoperable Verifiable Credentials. Use Multi-chain Data from Web3 + Web2 Platforms",
-  modules: {
-    democracy: true,
+    "Heima Network is a chain abstraction infrastructure designed to enable users to unify all blockchains through a single account.",
+  modules: mergeChainModules({
+    treasury: {
+      tips: false,
+      spends: true,
+    },
+    vesting: true,
+  }),
+  integrations: {
+    statescan: { domain: "heima" },
   },
   cssVarsLight: {
-    theme100: "rgba(21,184,135,0.10)",
-    theme300: "rgba(21,184,135,0.40)",
-    theme500: "rgba(21,184,135,1)",
-    navigationBg: "rgba(0,0,0,1)",
-    navigationActive: "rgba(255,255,255,0.10)",
-    navigationBorder: "rgba(255,255,255,0.12)",
+    theme100: "rgba(104,192,102,0.10)",
+    theme300: "rgba(104,192,102,0.40)",
+    theme500: "rgba(104,192,102,1)",
+    navigationBg: "rgba(10,55,59,1)",
+    navigationActive: "rgba(255,255,255,0.04)",
+    navigationBorder: "rgba(255,255,255,0.06)",
     navigationText: "var(--textPrimaryContrast)",
     navigationTextTertiary: "var(--textTertiaryContrast)",
     navigationIcon: "var(--textSecondaryContrast)",
   },
   cssVarsDark: {
-    theme100: "rgba(21,184,135,0.10)",
-    theme300: "rgba(21,184,135,0.40)",
-    theme500: "rgba(21,184,135,1)",
+    theme100: "rgba(104,192,102,0.10)",
+    theme300: "rgba(104,192,102,0.40)",
+    theme500: "rgba(104,192,102,1)",
     navigationBg: "rgba(33,36,51,1)",
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",
   },
+  blockHeightSettings: litentryBlockHeightSettings,
+  allowWeb2Login: true,
 };
 
 export default litentry;

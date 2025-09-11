@@ -70,6 +70,33 @@ export default function useBreadcrumbs() {
       },
       getIndexField(post?.proposalIndex, id),
     ];
+  } else if (detailPageCategory.COMMUNITY_TREASURY_PROPOSAL === type) {
+    return [
+      { content: "Community Treasury" },
+      {
+        content: "Proposals",
+        path: "/community-treasury/proposals",
+      },
+      getIndexField(post?.proposalIndex, id),
+    ];
+  } else if (detailPageCategory.TREASURY_SPEND === type) {
+    return [
+      treasury,
+      {
+        content: "Spends",
+        path: "/treasury/spends",
+      },
+      getIndexField(post?.index, id),
+    ];
+  } else if (detailPageCategory.FELLOWSHIP_TREASURY_SPEND === type) {
+    return [
+      treasury,
+      {
+        content: "Spends",
+        path: "/fellowship/treasury/spends",
+      },
+      getIndexField(post?.index, id),
+    ];
   } else if (detailPageCategory.TREASURY_BOUNTY === type) {
     return [
       treasury,
@@ -83,11 +110,21 @@ export default function useBreadcrumbs() {
     return [
       treasury,
       {
+        content: "Bounties",
+        path: "/treasury/bounties",
+      },
+      post?.parentBountyId
+        ? {
+            content: `#${post?.parentBountyId}`,
+            path: `/treasury/bounties/${post?.parentBountyId}`,
+          }
+        : null,
+      {
         content: "Child Bounties",
         path: "/treasury/child-bounties",
       },
-      getIndexField(post?.bountyIndex, id),
-    ];
+      getIndexField(post?.index, id),
+    ].filter(Boolean);
   } else if (detailPageCategory.TREASURY_TIP === type) {
     return [
       treasury,
@@ -174,6 +211,17 @@ export default function useBreadcrumbs() {
       },
       getMotionField(post, id),
     ];
+  } else if (detailPageCategory.COMMUNITY_MOTION === type) {
+    return [
+      {
+        content: "Community Council",
+      },
+      {
+        content: "Motions",
+        path: "/community-council/motions",
+      },
+      getMotionField(post, id),
+    ];
   } else if (detailPageCategory.DEMOCRACY_EXTERNAL === type) {
     return [
       {
@@ -228,6 +276,16 @@ export default function useBreadcrumbs() {
       {
         content: "Salary Cycles",
         path: "/fellowship/salary",
+      },
+      {
+        content: `#${id}`,
+      },
+    ];
+  } else if (detailPageCategory.CORETIME_SALES === type) {
+    return [
+      {
+        content: "Sales",
+        path: "/coretime/sales",
       },
       {
         content: `#${id}`,

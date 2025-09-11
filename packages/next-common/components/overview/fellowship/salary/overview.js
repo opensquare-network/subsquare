@@ -2,11 +2,12 @@ import { TitleContainer } from "next-common/components/styled/containers/titleCo
 import FellowshipSalaryStats from "next-common/components/overview/fellowship/salary/stats";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import Link from "next/link";
-import FellowshipSalaryStatsDetailLink from "./detailLink";
+import FellowshipSalaryStatsActiveCycleDetailLink from "./detailLink/activeCycle";
+import CollectivesProvider from "next-common/context/collectives/collectives";
 
 export default function FellowshipSalaryOverview() {
   return (
-    <>
+    <CollectivesProvider>
       <TitleContainer className="mb-4">Fellowship Salary Cycle</TitleContainer>
 
       <SecondaryCard>
@@ -20,9 +21,9 @@ export default function FellowshipSalaryOverview() {
             All Cycles
           </Link>
 
-          <FellowshipSalaryStatsDetailLink />
+          <FellowshipSalaryStatsActiveCycleDetailLink />
         </div>
       </SecondaryCard>
-    </>
+    </CollectivesProvider>
   );
 }

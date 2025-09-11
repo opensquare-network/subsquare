@@ -1,8 +1,8 @@
-import React from "react";
+import { GeneralProxiesProvider } from "next-common/context/proxy";
 import { useUser } from "../../context/user";
 import { isSameAddress } from "../../utils";
-import SelectWalletPopup from "../selectWallet";
 import { SignerContextProvider, usePopupParams } from "./context";
+import LoginPopup from "next-common/components/login/popup";
 
 export default function MaybeSignerConnected({ children, extensionAccounts }) {
   const user = useUser();
@@ -12,12 +12,12 @@ export default function MaybeSignerConnected({ children, extensionAccounts }) {
     !user?.address ||
     !extensionAccounts?.find((acc) => isSameAddress(acc.address, user?.address))
   ) {
-    return <SelectWalletPopup onClose={onClose} />;
+    return <LoginPopup onClose={onClose} />;
   }
 
   return (
     <SignerContextProvider extensionAccounts={extensionAccounts}>
-      {children}
+      <GeneralProxiesProvider>{children}</GeneralProxiesProvider>
     </SignerContextProvider>
   );
 }

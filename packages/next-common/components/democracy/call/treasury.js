@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 
 export default function extractTreasuryFields(call = {}) {
-  const { section, method, args = [] } = call;
+  const { section, method, args = [] } = call || {};
   if (
     "treasury" !== section ||
     !["approveProposal", "rejectProposal"].includes(method)
@@ -17,7 +17,6 @@ export default function extractTreasuryFields(call = {}) {
       <Link
         key="proposal-link"
         href={`/treasury/proposals/${proposalId}`}
-        legacyBehavior
       >{`Treasury Proposal #${proposalId}`}</Link>,
     ],
   ];

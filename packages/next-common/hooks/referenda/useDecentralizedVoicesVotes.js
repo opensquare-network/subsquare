@@ -2,13 +2,13 @@ import { find } from "lodash-es";
 import { useChain } from "next-common/context/chain";
 import { usePost } from "next-common/context/post";
 import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
-import { nestedVotesSelector } from "next-common/store/reducers/referenda/votes/selectors";
-import getDvAddresses from "next-common/utils/dv";
+import { allNestedVotesSelector } from "next-common/store/reducers/referenda/votes/selectors";
+import { getDvCandidates } from "next-common/utils/dv";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 export function useDecentralizedVoicesVotes() {
-  const nestedVotes = useSelector(nestedVotesSelector);
+  const allNestedVotes = useSelector(allNestedVotesSelector);
 
   const chain = useChain();
   const post = usePost();
@@ -17,19 +17,20 @@ export function useDecentralizedVoicesVotes() {
   const [votes, setVotes] = useState([]);
 
   useEffect(() => {
-    const addresses = getDvAddresses(chain, post.track, finishHeight);
+    const candidates = getDvCandidates(chain, post.track, finishHeight);
 
-    const dvVotes = addresses.map((address) => {
-      const vote = find(nestedVotes, { account: address });
+    const dvVotes = candidates.map(({ address, role }) => {
+      const vote = find(allNestedVotes, { account: address });
 
       return {
         account: address,
         ...vote,
+        role,
       };
     });
 
     setVotes(dvVotes);
-  }, [nestedVotes, chain, post.track]);
+  }, [allNestedVotes, chain, post.track, finishHeight]);
 
   return votes;
 }

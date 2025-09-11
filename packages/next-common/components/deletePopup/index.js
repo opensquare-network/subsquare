@@ -1,9 +1,8 @@
 import React, { useCallback, useState } from "react";
 import Popup from "../popup/wrapper/Popup";
 import { noop } from "lodash-es";
-import PrimaryButton from "next-common/lib/button/primary";
+import DangerButton from "next-common/lib/button/danger";
 import { PopupButtonWrapper } from "../popup/wrapper";
-import { useDispatch } from "react-redux";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 
@@ -12,7 +11,6 @@ export default function DeletePopup({
   setShow = noop,
   deletePost = noop,
 }) {
-  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const { ensureLogin } = useEnsureLogin();
 
@@ -27,23 +25,20 @@ export default function DeletePopup({
     } finally {
       setIsLoading(false);
     }
-  }, [dispatch, ensureLogin, deletePost]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ensureLogin, deletePost]);
 
   return (
     <Popup title="Delete" onClose={() => setShow(false)}>
       <div className="text-[14px] text-textPrimary">
-        This will delete this {itemName} permanently. You will not be able to
-        recover it.
+        This {itemName} will be deleted permanently, and can&apos;t be
+        recovered.
       </div>
       <PopupButtonWrapper className="gap-[8px]">
         <SecondaryButton onClick={() => setShow(false)}>Cancel</SecondaryButton>
-        <PrimaryButton
-          className="!bg-red-500"
-          loading={isLoading}
-          onClick={doDelete}
-        >
+        <DangerButton loading={isLoading} onClick={doDelete}>
           Delete
-        </PrimaryButton>
+        </DangerButton>
       </PopupButtonWrapper>
     </Popup>
   );

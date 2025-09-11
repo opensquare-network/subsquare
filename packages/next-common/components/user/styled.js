@@ -1,9 +1,10 @@
 import styled, { css } from "styled-components";
 import Flex from "../styled/flex";
+import { cssSize } from "next-common/utils/cssUtils";
 
 export const AvatarWrapper = styled(Flex)`
   display: flex;
-  margin-right: ${(p) => (p.fontSize <= 12 ? "4px" : "8px")};
+  margin-right: clamp(4px, calc((1em - 12px) * 9999), 8px);
   svg {
     circle:first-child {
       fill: var(--neutral200);
@@ -19,18 +20,6 @@ export const UserWrapper = styled(Flex)`
     }
   }
 
-  a,
-  div {
-    ${(p) =>
-      p.color
-        ? css`
-            color: ${p.color};
-          `
-        : css`
-            color: var(--textPrimary);
-          `}
-  }
-
   ${(p) =>
     p.noEvent &&
     css`
@@ -38,22 +27,11 @@ export const UserWrapper = styled(Flex)`
     `}
 `;
 
-export const LinkWrapper = styled.a`
-  width: max-content;
-  ${(p) =>
-    p.color
-      ? css`
-          color: ${p.color} !important;
-          text-decoration-color: ${p.color} !important;
-        `
-      : css`
-          color: var(--textPrimary) !important;
-          text-decoration-color: var(--textPrimary) !important;
-        `}
-  display: flex;
-  align-items: center;
-  :hover {
-    text-decoration: underline;
-    cursor: pointer;
-  }
+export const AvatarImg = styled.img`
+  border-radius: 50%;
+  width: ${(p) => cssSize(p.size)};
+  height: ${(p) => cssSize(p.size)};
+  min-width: ${(p) => cssSize(p.size)};
+  min-height: ${(p) => cssSize(p.size)};
+  object-fit: cover;
 `;

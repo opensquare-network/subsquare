@@ -183,7 +183,12 @@ export function ValuePanel({ registry, name, type, typeName, value }) {
   const val = value.toJSON();
 
   if (accountTypes.includes(type)) {
-    valueComponent = <AddressUser add={val.id || val} fontSize={12} />;
+    valueComponent = (
+      <AddressUser
+        add={val.id || val}
+        className="text12Medium text-textPrimary"
+      />
+    );
   } else if (
     balanceTypes.includes(typeName) &&
     shouldShowBalance(chain, section, method)
@@ -213,7 +218,7 @@ export function ValuePanel({ registry, name, type, typeName, value }) {
 
   return (
     <div className="flex flex-col px-[16px] py-[8px] bg-neutral200 rounded-[4px]">
-      <span className="text-textTertiary">
+      <span className="text-textTertiary truncate">
         {name ? `${name}: ${type}` : type}
       </span>
       <div>{valueComponent}</div>

@@ -1,4 +1,4 @@
-import Avatar from "next-common/components/avatar";
+import AddressAvatar from "next-common/components/user/addressAvatar";
 import { useAddressAvatarMap } from "next-common/context/avatar";
 
 export function DelegateAvatar({ address }) {
@@ -17,7 +17,7 @@ export function DelegateAvatar({ address }) {
             alt="avatar image"
           />
         ) : (
-          <Avatar address={address} size={40} />
+          <AddressAvatar address={address} size={40} />
         )}
       </div>
     </div>

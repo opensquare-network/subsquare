@@ -1,37 +1,44 @@
 import { withCommonProps } from "next-common/lib";
 import { EmptyList } from "next-common/utils/constants";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
-import nextApi from "next-common/services/nextApi";
-import Timeline from "components/tip/timeline";
-import Metadata from "components/tip/metadata";
-import Tipper from "components/tipper";
+import { backendApi } from "next-common/services/nextApi";
+import Tipper from "next-common/components/pages/components/tipper";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
-import CheckUnFinalized from "components/tip/checkUnFinalized";
+import CheckUnFinalized from "next-common/components/pages/components/tip/checkUnFinalized";
 import TipDetail from "next-common/components/detail/treasury/tip";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
-import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
+import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
+import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
+import { TreasuryProvider } from "next-common/context/treasury";
+import CollectiveProvider, {
+  collectivePallets,
+} from "next-common/context/collective";
+import { useChain } from "next-common/context/chain";
+import Chains from "next-common/utils/consts/chains";
+import TreasuryTipsDetailMultiTabs from "next-common/components/pages/components/tabs/treasuryTipsDetailMultiTabs";
 
 function TreasuryTipContent() {
   const post = usePost();
   useSubscribePostDetail(`${post?.height}_${post?.hash}`);
 
   return (
-    <ContentWithComment>
-      <TipDetail />
-      <Tipper />
-      <DetailMultiTabs
-        metadata={<Metadata tip={post?.onchainData} />}
-        timeline={<Timeline tip={post?.onchainData} />}
-      />
-    </ContentWithComment>
+    <OffChainArticleActionsProvider>
+      <OffChainCommentActionsProvider>
+        <ContentWithComment>
+          <TipDetail />
+          <Tipper />
+          <TreasuryTipsDetailMultiTabs />
+        </ContentWithComment>
+      </OffChainCommentActionsProvider>
+    </OffChainArticleActionsProvider>
   );
 }
 
@@ -67,17 +74,28 @@ function TipPageImpl() {
 }
 
 export default function TipPage({ detail }) {
+  const chain = useChain();
+
+  let pallet = collectivePallets.council;
+  if ([Chains.acala, Chains.karura].includes(chain)) {
+    pallet = collectivePallets.generalCouncil;
+  }
+
   return (
-    <PostProvider post={detail}>
-      <TipPageImpl />
-    </PostProvider>
+    <CollectiveProvider pallet={pallet}>
+      <PostProvider post={detail}>
+        <TreasuryProvider>
+          <TipPageImpl />
+        </TreasuryProvider>
+      </PostProvider>
+    </CollectiveProvider>
   );
 }
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
 
-  const { result: detail } = await nextApi.fetch(`treasury/tips/${id}`);
+  const { result: detail } = await backendApi.fetch(`treasury/tips/${id}`);
 
   if (!detail) {
     return getNullDetailProps(id);

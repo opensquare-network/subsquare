@@ -1,16 +1,20 @@
-import UrlTabs from "next-common/components/urlTabs";
+import TabsList from "next-common/components/tabs/list";
+import TitleSuffix from "next-common/components/titleSuffix";
+import { useRouter } from "next/router";
 
-export default function FellowshipMemberTabs({ members }) {
-  const membersCount = (members || []).filter(
-    (member) => member.rank > 0,
-  ).length;
-  const candidatesCount = (members || []).filter(
-    (member) => member.rank <= 0,
-  ).length;
+// maybe used for fellowship and ambassador
+export default function FellowshipMemberTabs({
+  membersCount,
+  candidatesCount,
+  section = "fellowship",
+}) {
+  const router = useRouter();
+  const isCandidate = router.query.tab === "candidates";
+
   const tabs = [
     {
-      label: "Members",
-      render({ active }) {
+      value: "members",
+      label({ active }) {
         return (
           <>
             <span
@@ -20,17 +24,17 @@ export default function FellowshipMemberTabs({ members }) {
             >
               Members
             </span>
-            <span className="ml-1 text-textTertiary text14Medium">
-              {membersCount}
-            </span>
+            <TitleSuffix suffix={membersCount} />
           </>
         );
       },
-      url: "/fellowship/core",
+      url: `/${section}/members`,
+      active: !isCandidate,
+      shallow: true,
     },
     {
-      label: "Candidates",
-      render({ active }) {
+      value: "candidates",
+      label({ active }) {
         return (
           <>
             <span
@@ -40,15 +44,15 @@ export default function FellowshipMemberTabs({ members }) {
             >
               Candidates
             </span>
-            <span className="ml-1 text-textTertiary text14Medium">
-              {candidatesCount}
-            </span>
+            <TitleSuffix suffix={candidatesCount} />
           </>
         );
       },
-      url: "/fellowship/core/candidates",
+      url: `/${section}/members?tab=candidates`,
+      active: isCandidate,
+      shallow: true,
     },
   ];
 
-  return <UrlTabs tabs={tabs} className="px-6" />;
+  return <TabsList tabs={tabs} className="px-6" />;
 }

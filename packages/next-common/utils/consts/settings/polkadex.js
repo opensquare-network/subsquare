@@ -27,15 +27,17 @@ const polkadex = {
   hasElections: true,
   ss58Format: 88,
   blockTime: 6000,
-  snsCoverCid: "bafybeickjkgii2nnhwyypiem6jjj3z75u4dfknwcmedru4ytzv6qddfg5y",
   endpoints: DEFAULT_POLKADEX_NODES,
   avatar: Avatar,
   darkAvatar: DarkAvatar,
   group: MenuGroups.Solochain,
   postLabels: defaultPostLabels,
-  hasSubscan: true,
   description:
     "Trade crypto with fully decentralized peer-to-peer orderbook based trading engine for Web3. Polkadex Orderbook - the CEXiest DEX in DeFi.",
+  integrations: {
+    subscan: true,
+  },
+  allowWeb2Login: true,
 };
 
 export default polkadex;

@@ -14,6 +14,7 @@ import SecondaryButton from "next-common/lib/button/secondary";
 import { ArrowRight } from "@osn/icons/subsquare";
 import Tooltip from "next-common/components/tooltip";
 import Link from "next/link";
+import { noop } from "lodash-es";
 
 const indexColumn = {
   name: "Index",
@@ -61,10 +62,12 @@ const actionColumn = {
   name: "",
   width: 80,
   className: "text-right",
-  cellRender(data) {
+  cellRender(data, { resolveActionColLink }) {
+    const link = resolveActionColLink?.(data);
+
     return (
       <Tooltip content="View Detail">
-        <Link href={`/fellowship/salary/cycles/${data.index}`}>
+        <Link href={link}>
           <SecondaryButton size="small" className="w-7 p-0">
             <ArrowRight className="w-4 h-4" />
           </SecondaryButton>
@@ -107,15 +110,22 @@ const mobileColumns = [
   actionColumn,
 ];
 
-export default function FellowshipSalaryCycles({ historyCycles }) {
+export default function FellowshipSalaryCycles({
+  historyCycles,
+  resolveActionColLink = noop,
+}) {
   const { items = [] } = historyCycles || {};
 
   const desktopRows = items.map((item) => {
-    return desktopColumns.map((col) => col.cellRender?.(item));
+    return desktopColumns.map((col) =>
+      col.cellRender?.(item, { resolveActionColLink }),
+    );
   });
 
   const mobileRows = items.map((item) => {
-    return mobileColumns.map((col) => col.cellRender?.(item));
+    return mobileColumns.map((col) =>
+      col.cellRender?.(item, { resolveActionColLink }),
+    );
   });
 
   return (

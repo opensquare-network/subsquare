@@ -87,7 +87,7 @@ const getSecondCategoryCount = (firstCategory, secondCategory, summary) => {
 
 const Category = ({ type, count, selected, onClick }) => {
   return (
-    <CategoryOption selected={selected} onClick={onClick}>
+    <CategoryOption selected={selected} onClick={onClick} role="button">
       <Secondary selected={selected}>{type}</Secondary>
       <Tertiary>{count}</Tertiary>
     </CategoryOption>

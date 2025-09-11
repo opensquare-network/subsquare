@@ -1,19 +1,21 @@
-import moment from "moment";
 import BigNumber from "bignumber.js";
-import { extractTime } from "@polkadot/util";
 import { encodeAddress, isEthereumAddress } from "@polkadot/util-crypto";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { capitalize } from "lodash-es";
-import clsx from "clsx";
-import { twMerge } from "tailwind-merge";
+import updateLocale from "dayjs/plugin/updateLocale";
+import { capitalize, isNil } from "lodash-es";
 import { isHex } from "@polkadot/util";
 import { camelCase } from "lodash-es";
 import { upperFirst } from "lodash-es";
+import { getEffectiveNumbers } from "next-common/utils/viewfuncs";
+import { formatTimeDuration } from "./viewfuncs/formatTimeDuration";
+
+export { cn } from "./clsx";
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
+dayjs.extend(updateLocale);
 
 BigNumber.config({ EXPONENTIAL_AT: 36 });
 
@@ -48,75 +50,17 @@ export function hashEllipsis(hash = "") {
   return hash.slice(0, 6);
 }
 
-export function timeDurationFromNow(time) {
-  if (!time) {
-    return "Unknown time";
+export function toPrecision(value, decimals = 0, fixed) {
+  const normalized = BigNumber(value).dividedBy(Math.pow(10, decimals));
+  if (isNil(fixed)) {
+    return normalized.toString();
+  } else {
+    return normalized.toFixed(fixed);
   }
-  moment.updateLocale("en", {
-    relativeTime: {
-      future: "in %s",
-      past: "%s ",
-      s: (number) => number + " secs",
-      ss: "%d secs",
-      m: "1 min",
-      mm: "%d mins",
-      h: "1 h",
-      hh: "%d hrs",
-      d: "1 d",
-      dd: "%dd",
-      M: "1 mo",
-      MM: "%d mos",
-      y: "1 y",
-      yy: "%d y",
-    },
-  });
-  const now = moment();
-  if (moment(time).isSameOrAfter(now)) {
-    return moment(time).fromNow();
-  }
-
-  let ss = now.diff(time, "seconds");
-  let ii = now.diff(time, "minutes");
-  let hh = now.diff(time, "hours");
-  let dd = now.diff(time, "days");
-  let mm = now.diff(time, "months");
-  let yy = now.diff(time, "years");
-  if (yy) {
-    mm %= 12;
-    if (mm) {
-      return `${yy}y ${mm}mo${mm > 1 ? "s" : ""} ago`;
-    }
-    return `${yy}y ago`;
-  }
-  if (mm) {
-    return `${mm}mo${mm > 1 ? "s" : ""} ago`;
-  }
-  if (dd) {
-    hh %= 24;
-    if (hh && dd < 3) {
-      return `${dd}d ${hh}h${hh > 1 ? "rs" : ""} ago`;
-    }
-    return `${dd}d ago`;
-  }
-  if (hh) {
-    ii %= 60;
-    if (ii) {
-      return `${hh}h${hh > 1 ? "rs" : ""} ${ii}min${ii > 1 ? "s" : ""} ago`;
-    }
-    return `${hh}h${hh > 1 ? "rs" : ""} ago`;
-  }
-  if (ii) {
-    ss %= 60;
-    if (ss) {
-      return `${ii}min${ii > 1 ? "s" : ""} ${ss}s ago`;
-    }
-    return `${ii}min${ii > 1 ? "s" : ""} ago`;
-  }
-  return `${ss}s ago`;
 }
 
-export function toPrecision(value, decimals = 0) {
-  return new BigNumber(value).dividedBy(Math.pow(10, decimals)).toString();
+export function fromPrecision(value, decimals = 0) {
+  return BigNumber(value).times(Math.pow(10, decimals)).toString();
 }
 
 export function toPrecisionNumber(value, decimals = 0) {
@@ -189,7 +133,7 @@ export function abbreviateBigNumber(x, fixed = 2) {
     { bigNumber: new BigNumber("1000000000000000"), abbr: "Q" },
   ];
   bigNumbers.forEach((data) => {
-    if (n.isGreaterThan(data.bigNumber)) {
+    if (n.isGreaterThanOrEqualTo(data.bigNumber)) {
       divideBy = data.bigNumber;
       fmt.suffix = data.abbr;
     }
@@ -204,23 +148,31 @@ export const estimateBlocksTime = (blocks, blockTime) => {
   }
 
   const value = new BigNumber(blockTime).multipliedBy(blocks).toNumber();
-  const time = extractTime(Math.abs(value));
-  const { days, hours, minutes, seconds } = time;
-  return [
-    days ? (days > 1 ? `${days} days` : "1 day") : null,
-    hours ? (hours > 1 ? `${hours} hrs` : "1 hr") : null,
-    minutes ? (minutes > 1 ? `${minutes} mins` : "1 min") : null,
-    seconds ? (seconds > 1 ? `${seconds} s` : "1 s") : null,
-  ]
-    .filter((s) => !!s)
-    .slice(0, 2)
-    .join(" ")
-    .split(" ");
+  return formatTimeDuration(value, { withUnitSpace: true });
+};
+
+export const estimateBlocksTimeInDate = (blocks, blockTime) => {
+  if (!blockTime) {
+    return null;
+  }
+
+  const value = new BigNumber(blockTime).multipliedBy(blocks).toNumber();
+  return dayjs().add(value, "millisecond").format("YYYY-MM-DD");
+};
+
+export const estimateBlocksTimeInDays = (blocks, blockTime) => {
+  if (!blockTime) {
+    return null;
+  }
+
+  const value = new BigNumber(blockTime).multipliedBy(blocks).toNumber();
+  return formatTimeDuration(value, { withUnitSpace: true, showMonths: false });
 };
 
 export function isMotionEnded(motion) {
+  const { state, name } = motion?.state || {};
   return ["Closed", "Approved", "Executed", "Disapproved"].includes(
-    motion?.state?.state,
+    state || name,
   );
 }
 
@@ -235,8 +187,6 @@ export function isEthereumKeyRegisteredUser(user) {
 export function isKeyRegisteredUser(user) {
   return isPolkadotKeyRegisteredUser(user) || isEthereumKeyRegisteredUser(user);
 }
-
-export function emptyFunction() {}
 
 export function checkInputValue(
   inputValue,
@@ -289,7 +239,7 @@ export function isSameAddress(addr1, addr2) {
 }
 
 export function isAddressInGroup(addr, addresses = []) {
-  return addresses.some((item) => isSameAddress(addr, item));
+  return addresses?.some((item) => isSameAddress(addr, item));
 }
 
 export function isExternalLink(url = "") {
@@ -317,6 +267,20 @@ export function upperFirstCamelCase(str) {
   return upperFirst(camelCase(str));
 }
 
-export function cn(...inputs) {
-  return twMerge(clsx(inputs));
+export function formatNum(value) {
+  let content = Number(value)?.toLocaleString();
+  if (Number(value) >= 100000 || getEffectiveNumbers(value)?.length >= 11) {
+    const abbreviated = abbreviateBigNumber(value, 2);
+    content = abbreviated;
+    if (getEffectiveNumbers(abbreviated) !== getEffectiveNumbers(value)) {
+      content = "≈" + content;
+    }
+  } else if (String(value).includes(".")) {
+    const [int, decimal] = String(value).split(".");
+    if (decimal?.length > 5) {
+      const shortDecimal = decimal.substring(0, 5);
+      content = "≈" + int + "." + shortDecimal;
+    }
+  }
+  return content;
 }

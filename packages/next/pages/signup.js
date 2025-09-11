@@ -2,8 +2,8 @@ import styled from "styled-components";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import Input from "next-common/components/input";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import Input from "next-common/lib/input";
+import { useMountedState } from "react-use";
 import useCountdown from "next-common/utils/hooks/useCountdown";
 import nextApi from "next-common/services/nextApi";
 import ErrorText from "next-common/components/ErrorText";
@@ -17,6 +17,8 @@ import useForm from "next-common/utils/hooks/useForm";
 import { LoginCard } from "next-common/components/styled/containers/loginCard";
 import { useSetUser, useUser } from "next-common/context/user";
 import { withCommonProps } from "next-common/lib";
+import { WarningMessage } from "next-common/components/setting/styled";
+import { useChainSettings } from "next-common/context/chain";
 
 const Title = styled.div`
   font-weight: bold;
@@ -79,9 +81,11 @@ export default function Signup() {
   const [loading, setLoading] = useState(false);
   const [checked, setChecked] = useState(false);
   const [agreeError, setAgreeError] = useState();
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   const { countdown, counting: emailSent, startCountdown } = useCountdown(3);
   const setUser = useSetUser();
+  const { sima } = useChainSettings();
+  const disabledForm = !!sima;
 
   if (emailSent && countdown === 0) {
     router.replace("/");
@@ -101,17 +105,17 @@ export default function Signup() {
       setLoading(true);
       const res = await nextApi.post("auth/signup", formData);
       if (res.result) {
-        if (isMounted.current) {
+        if (isMounted()) {
           setUser(res.result);
           setSuccess(true);
         }
         sendVerifyEmail();
       } else if (res.error) {
-        if (isMounted.current) {
+        if (isMounted()) {
           setErrors(res.error);
         }
       }
-      if (isMounted.current) {
+      if (isMounted()) {
         setLoading(false);
       }
     },
@@ -126,19 +130,19 @@ export default function Signup() {
       .post("user/resendverifyemail")
       .then(({ result, error }) => {
         if (result) {
-          if (isMounted.current) {
+          if (isMounted()) {
             startCountdown();
           }
           return;
         }
-        if (isMounted.current) {
+        if (isMounted()) {
           showErrorToast(
             error?.message ?? "some error occured when sending an Email",
           );
         }
       })
       .catch(() => {
-        if (isMounted.current) {
+        if (isMounted()) {
           showErrorToast("some error occurred when sending an Email");
         }
       });
@@ -162,9 +166,16 @@ export default function Signup() {
           <>
             <Title>Sign up</Title>
             <FormWrapper onSubmit={handleSubmit}>
+              {disabledForm && (
+                <WarningMessage>
+                  To align with the goal of web3, registration via email is no
+                  longer available. Please connect SubSquare with an address.
+                </WarningMessage>
+              )}
               <InputWrapper>
                 <Label>Username</Label>
                 <Input
+                  disabled={disabledForm}
                   placeholder="Please fill your name"
                   name="username"
                   value={username}
@@ -175,6 +186,7 @@ export default function Signup() {
                 />
                 <Label>Email</Label>
                 <Input
+                  disabled={disabledForm}
                   placeholder="Please fill email"
                   name="email"
                   value={email}
@@ -185,6 +197,7 @@ export default function Signup() {
                 />
                 <Label>Password</Label>
                 <Input
+                  disabled={disabledForm}
                   placeholder="Please fill password"
                   type="password"
                   name="password"
@@ -199,6 +212,7 @@ export default function Signup() {
                 )}
               </InputWrapper>
               <UserPolicy
+                disabled={disabledForm}
                 checked={checked}
                 setChecked={setChecked}
                 agreeError={agreeError}
@@ -206,6 +220,7 @@ export default function Signup() {
               />
               <ButtonWrapper>
                 <PrimaryButton
+                  disabled={disabledForm}
                   className="w-full"
                   type="submit"
                   loading={loading}

@@ -1,0 +1,65 @@
+import Chains from "next-common/utils/consts/chains";
+import knownPolkadotAssetHubAssets from "next-common/components/assets/known/polkadot";
+import { useChain } from "next-common/context/chain";
+import {
+  AssetIconDot,
+  AssetIconWnd,
+  AssetIconKsm,
+  AssetIconPas,
+  AssetIconHdx,
+  AssetIconPlaceholder,
+  AssetIconBnc,
+  AssetIconBsx,
+} from "@osn/icons/subsquare";
+import { foreignAssetInfo } from "next-common/utils/consts/foreignAssets";
+
+const knownAssetHubAssetsMap = Object.freeze({
+  [Chains.polkadotAssetHub]: knownPolkadotAssetHubAssets,
+  [Chains.westendAssetHub]: [],
+  [Chains.kusamaAssetHub]: [],
+  [Chains.paseoAssetHub]: [],
+});
+
+export function useKnownAssetHubAssets() {
+  const chain = useChain();
+  return knownAssetHubAssetsMap[chain];
+}
+
+const assetHubChainNativeTokenIconMap = {
+  [Chains.polkadotAssetHub]: AssetIconDot,
+  [Chains.polkadot]: AssetIconDot,
+  [Chains.collectives]: AssetIconDot,
+  [Chains.westendAssetHub]: AssetIconWnd,
+  [Chains.westend]: AssetIconWnd,
+  [Chains.kusamaAssetHub]: AssetIconKsm,
+  [Chains.kusama]: AssetIconKsm,
+  [Chains.paseoAssetHub]: AssetIconPas,
+  [Chains.paseo]: AssetIconPas,
+  [Chains.hydradx]: AssetIconHdx,
+  [Chains.bifrost]: AssetIconBnc,
+  [Chains.bifrostPolkadot]: AssetIconBnc,
+  [Chains.basilisk]: AssetIconBsx,
+};
+
+export function useNativeTokenIcon() {
+  const chain = useChain();
+  return assetHubChainNativeTokenIconMap[chain] || AssetIconPlaceholder;
+}
+
+export default function useKnownAssetHubAssetIcon(assetId) {
+  const assets = useKnownAssetHubAssets();
+  const targetAsset = (assets || []).find((asset) => asset.assetId === assetId);
+  return targetAsset?.icon;
+}
+
+const knownForeignAssetsMap = Object.freeze({
+  [Chains.polkadotAssetHub]: foreignAssetInfo,
+  [Chains.kusamaAssetHub]: foreignAssetInfo,
+});
+
+export function useKnownForeignAssetIcon(assetId) {
+  const chain = useChain();
+  const foreignAssets = knownForeignAssetsMap[chain] || {};
+
+  return foreignAssets[assetId]?.icon || AssetIconPlaceholder;
+}

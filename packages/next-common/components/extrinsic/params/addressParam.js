@@ -15,6 +15,7 @@ export default function AddressParam({ title, value, setValue }) {
       isValid: false,
       data: "",
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const { data } = value || {};

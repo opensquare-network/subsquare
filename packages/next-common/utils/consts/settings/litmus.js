@@ -2,11 +2,19 @@ import Chains from "../chains";
 import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
-import {
-  ProjectIconLitmusDark,
-  ProjectIconLitmusLight,
-  ProjectLogoLitmusLight,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+import { litmusBlockHeightSettings } from "./blockHeightSettings/litmus";
+import { mergeChainModules } from "./common/modules";
+
+const ProjectIconLitmusDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconLitmusDark"),
+);
+const ProjectIconLitmusLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconLitmusLight"),
+);
+const ProjectLogoLitmusLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoLitmusLight"),
+);
 
 const DEFAULT_LITMUS_NODES = [
   {
@@ -43,11 +51,10 @@ const litmus = {
   name: capitalize(Chains.litmus),
   identity: Chains.kusama,
   symbol: "LIT",
-  decimals: 12,
+  decimals: 18,
   blockTime: 12000,
   hasElections: false,
   ss58Format: 131,
-  snsCoverCid: "bafybeiexfrkdte6eruqghlc66xpnfoyadkgq5we3ql5elqjwgdzbxmez6q",
   endpoints: DEFAULT_LITMUS_NODES,
   avatar: ProjectIconLitmusLight,
   darkAvatar: ProjectIconLitmusDark,
@@ -56,18 +63,19 @@ const litmus = {
   navPreferDark: true,
   links,
   group: MenuGroups.KusamaAndParachains,
-  hasStatescan: true,
-  hasSubscan: false,
   postLabels: defaultPostLabels,
   useVoteCall: true,
-  hasTipsModule: false,
-  noIdentityModule: true,
   hasMultisig: true,
   multisigApiPrefix: "litmus",
   description:
     "Litmus is a companion canary network to Litentry and connects to the Kusama ecosystem as parachain.",
-  modules: {
-    democracy: true,
+  modules: mergeChainModules({
+    treasury: {
+      tips: false,
+    },
+  }),
+  integrations: {
+    statescan: true,
   },
   cssVarsLight: {
     theme100: "rgba(104,34,251,0.10)",
@@ -88,6 +96,8 @@ const litmus = {
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",
   },
+  blockHeightSettings: litmusBlockHeightSettings,
+  allowWeb2Login: true,
 };
 
 export default litmus;

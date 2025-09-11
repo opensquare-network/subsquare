@@ -1,6 +1,3 @@
-import { getExcludeChains } from "../../viewfuncs";
-import Chains from "../chains";
-import React from "react";
 import { MenuAdvisoryCommittee } from "@osn/icons/subsquare";
 
 export const Names = {
@@ -14,7 +11,6 @@ export function getAdvisoryCommitteeMenu(summary) {
 
   return {
     name: Names.advisoryCommittee,
-    excludeToChains: getExcludeChains([Chains.zeitgeist]),
     activeCount: activeAdvisoryMotions,
     icon: <MenuAdvisoryCommittee />,
     pathname: "/advisory-committee",

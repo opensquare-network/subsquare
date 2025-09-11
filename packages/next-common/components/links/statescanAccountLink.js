@@ -5,12 +5,16 @@ import StatescanSVG from "@osn/icons/subsquare/LinkStatescan";
 
 const statescanDomainMap = {
   [Chains.development]: "gov2",
+  [Chains.polkadotAssetHub]: "statemint",
+  [Chains.westendAssetHub]: "westmint",
+  [Chains.kusamaAssetHub]: "statemine",
+  [Chains.paseoAssetHub]: "paseo",
 };
 
 export default function StatescanAccountLink({ address }) {
   const chain = useChain();
-  const { hasStatescan } = useChainSettings();
-  if (!hasStatescan) {
+  const { integrations } = useChainSettings();
+  if (!integrations?.statescan) {
     return null;
   }
 
@@ -18,8 +22,8 @@ export default function StatescanAccountLink({ address }) {
     <IconLink
       href={`https://${
         statescanDomainMap[chain] || chain
-      }.statescan.io//#/accounts/${address}`}
-      icon={<StatescanSVG />}
+      }.statescan.io/#/accounts/${address}`}
+      icon={<StatescanSVG className="w-5 h-5" />}
     />
   );
 }

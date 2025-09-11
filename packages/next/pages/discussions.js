@@ -1,7 +1,7 @@
-import PostList from "next-common/components/postList";
+import DiscussionPostList from "next-common/components/postList/discussionPostList";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import DiscussionsLayout from "next-common/components/layout/DiscussionsLayout";
 import { useChain } from "next-common/context/chain";
 import normalizeDiscussionListItem from "next-common/utils/viewfuncs/discussion/normalizeDiscussionListItem";
@@ -18,9 +18,7 @@ export default function DiscussionsPage({ posts }) {
 
   return (
     <DiscussionsLayout seoInfo={seoInfo} title={category}>
-      <PostList
-        category={category}
-        title="List"
+      <DiscussionPostList
         titleCount={posts.total}
         items={items}
         pagination={{
@@ -44,7 +42,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
   if (label) {
     q = { label, ...q };
   }
-  const { result: posts } = await nextApi.fetch("posts", q);
+  const { result: posts } = await backendApi.fetch("posts", q);
   const tracksProps = await fetchOpenGovTracksProps();
 
   return {

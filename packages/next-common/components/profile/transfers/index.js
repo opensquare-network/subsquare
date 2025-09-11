@@ -10,7 +10,7 @@ import {
 } from "next-common/store/reducers/profile/transfer";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { useMountedState } from "react-use";
 
 const DEFAULT_PAGE_SIZE = 25;
 
@@ -20,7 +20,7 @@ export default function ProfileTransfers() {
   const address = useProfileAddress();
   const transfers = useSelector(profileTransfersSelector);
   const [page, setPage] = useState(1);
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
 
   useEffect(() => {
     if (!address) {
@@ -39,12 +39,12 @@ export default function ProfileTransfers() {
         return response.json();
       })
       .then((result) => {
-        if (isMounted.current) {
+        if (isMounted()) {
           dispatch(setProfileTransfers(result));
         }
       })
       .catch((error) => console.error(error));
-  }, [address, chain, page, isMounted]);
+  }, [address, chain, page, isMounted, dispatch]);
 
   return (
     <SecondaryCard>

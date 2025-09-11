@@ -20,16 +20,25 @@ function mergeComments(polkassemblyComments, subsquareComments) {
     const subsquareItem = newSubsquareComments.find(
       (item) => item._id === polkaItem.id,
     );
+
     if (subsquareItem) {
       subsquareItem.replies = subsquareItem.replies || [];
       subsquareItem.replies.push(
-        ...polkaItem.replies.map((r) => ({
-          ...r,
-          comment_source: "polkassembly",
-        })),
+        ...polkaItem.replies
+          .filter((r) => r.comment_source !== "subsquare")
+          .map((r) => ({
+            ...r,
+            comment_source: "polkassembly",
+          })),
+      );
+      subsquareItem.replies.sort(
+        (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
       );
     } else {
-      filteredPolkassemblyComments.push(polkaItem);
+      filteredPolkassemblyComments.push({
+        ...polkaItem,
+        comment_source: "polkassembly",
+      });
     }
   }
 

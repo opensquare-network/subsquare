@@ -1,12 +1,12 @@
 import styled, { css } from "styled-components";
 import ReactDatePicker from "react-datepicker";
 import { useEffect, useState } from "react";
-import moment from "moment";
+import dayjs from "dayjs";
 import ArrowLeft from "../assets/imgs/icons/caret-left-16.svg";
 import ArrowRight from "../assets/imgs/icons/caret-right-16.svg";
 import Flex from "./styled/flex";
 import FlexBetween from "./styled/flexBetween";
-import Input from "./input";
+import NumberInput from "next-common/lib/input/number";
 import PrimaryButton from "next-common/lib/button/primary";
 import Popup from "./popup/wrapper/Popup";
 const CaretWrapper = styled.div`
@@ -188,16 +188,17 @@ export default function DatePicker({
     if (isOpen && date === null) {
       setDate(new Date(now.setDate(now.getDate() + 7)));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
 
   const getFormattedTime = () => {
     if (!date || !hour || !minute) return "";
     const datetime = new Date(
       Date.parse(
-        `${moment(date ?? new Date()).format("YYYY-MM-DD")} ${hour}:${minute}`,
+        `${dayjs(date ?? new Date()).format("YYYY-MM-DD")} ${hour}:${minute}`,
       ),
     );
-    return moment(datetime).format("YYYY-MM-DD, HH:mm");
+    return dayjs(datetime).format("YYYY-MM-DD, HH:mm");
   };
 
   return (
@@ -242,13 +243,13 @@ export default function DatePicker({
                         <DateHeader>
                           <CaretLeft
                             disabled={
-                              moment(date).format("YYYY-MM") ===
-                              moment(new Date()).format("YYYY-MM")
+                              dayjs(date).format("YYYY-MM") ===
+                              dayjs(new Date()).format("YYYY-MM")
                             }
                             onClick={decreaseMonth}
                           />
                           <b className="text14Bold">
-                            {moment(date).format("YYYY-MM")}
+                            {dayjs(date).format("YYYY-MM")}
                           </b>
                           <CaretRight onClick={increaseMonth} />
                         </DateHeader>
@@ -266,32 +267,30 @@ export default function DatePicker({
                     </span>
                   </FlexBetween>
                   <TimeWrapper>
-                    <Input
+                    <NumberInput
                       className="input"
-                      type="number"
+                      controls={false}
                       value={hour}
-                      onChange={(e) => {
-                        const value = parseInt(e.target.value);
+                      onValueChange={(value) => {
                         if (0 <= value && value < 24) {
                           setHour(value.toString());
                         }
-                        if (e.target.value === "") {
+                        if (value === "") {
                           setHour("");
                         }
                       }}
                       placeholder="00"
                     />
                     <span>:</span>
-                    <Input
+                    <NumberInput
                       className="input"
-                      type="number"
+                      controls={false}
                       value={minute}
-                      onChange={(e) => {
-                        const value = parseInt(e.target.value);
+                      onValueChange={(value) => {
                         if (0 <= value && value < 60) {
                           setMinute(value.toString());
                         }
-                        if (e.target.value === "") {
+                        if (value === "") {
                           setMinute("");
                         }
                       }}
@@ -309,7 +308,7 @@ export default function DatePicker({
                       }
                       onSelectDatetime(
                         Date.parse(
-                          `${moment(date ?? new Date()).format(
+                          `${dayjs(date ?? new Date()).format(
                             "YYYY-MM-DD",
                           )} ${hour}:${minute}`,
                         ),

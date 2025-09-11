@@ -1,64 +1,42 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
-import useIsMounted from "../../../../utils/hooks/useIsMounted";
-import { newErrorToast } from "../../../../store/reducers/toastSlice";
-
-import { checkInputValue, isAddressInGroup } from "../../../../utils";
-import PopupWithSigner from "../../../popupWithSigner";
-import Beneficiary from "../../common/beneficiary";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import { checkInputValue, isAddressInGroup } from "next-common/utils";
+import PopupWithSigner from "next-common/components/popupWithSigner";
+import Beneficiary from "next-common/components/popupWithSigner/fields/beneficiary";
 import TipReason from "./tipReason";
 import Tab, { NewTip, ReportAwesome } from "./tab";
 import TipValue from "./tipValue";
-import { sendTx, wrapWithProxy } from "../../../../utils/sendTx";
-import PrimaryButton from "next-common/lib/button/primary";
-import { useChainSettings } from "../../../../context/chain";
-import { PopupButtonWrapper } from "../../../popup/wrapper";
-import {
-  useExtensionAccounts,
-  useSignerAccount,
-} from "next-common/components/popupWithSigner/context";
+import { getEventData } from "next-common/utils/sendTransaction";
+import { useChainSettings } from "next-common/context/chain";
+import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useRouter } from "next/router";
 import { useContextApi } from "next-common/context/api";
-import useCouncilMembers from "next-common/utils/hooks/useCouncilMembers";
 import { WarningMessage } from "next-common/components/popup/styled";
-import { usePopupParams } from "next-common/components/popupWithSigner/context";
+import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import useCollectiveMembers from "next-common/utils/hooks/collectives/useCollectiveMembers";
 
 function TipCommon({ setBeneficiary, setReason }) {
-  const extensionAccounts = useExtensionAccounts();
-
   return (
     <>
       <SignerWithBalance />
-      <Beneficiary
-        extensionAccounts={extensionAccounts}
-        setAddress={setBeneficiary}
-      />
+      <Beneficiary setAddress={setBeneficiary} />
       <TipReason setValue={setReason} />
     </>
-  );
-}
-
-function SubmitButton({ disabled, loading, onSubmit }) {
-  return (
-    <PopupButtonWrapper>
-      <PrimaryButton disabled={disabled} loading={loading} onClick={onSubmit}>
-        Submit
-      </PrimaryButton>
-    </PopupButtonWrapper>
   );
 }
 
 function ReportAwesomeContent({
   setBeneficiary,
   setReason,
-  loading,
-  onSubmit,
+  getTxFunc,
+  onInBlock,
 }) {
   return (
     <>
       <TipCommon setBeneficiary={setBeneficiary} setReason={setReason} />
-      <SubmitButton loading={loading} onSubmit={onSubmit} />
+      <TxSubmissionButton getTxFunc={getTxFunc} onInBlock={onInBlock} />
     </>
   );
 }
@@ -67,15 +45,12 @@ function NewTipContent({
   setBeneficiary,
   setReason,
   setInputValue,
-  loading,
-  onSubmit,
+  getTxFunc,
+  onInBlock,
 }) {
   const signerAccount = useSignerAccount();
-  const councilTippers = useCouncilMembers();
-  const isTipper = isAddressInGroup(
-    signerAccount?.realAddress,
-    councilTippers || [],
-  );
+  const { members } = useCollectiveMembers();
+  const isTipper = isAddressInGroup(signerAccount?.realAddress, members || []);
   return (
     <>
       <WarningMessage danger={!isTipper}>
@@ -83,22 +58,18 @@ function NewTipContent({
       </WarningMessage>
       <TipCommon setBeneficiary={setBeneficiary} setReason={setReason} />
       <TipValue setValue={setInputValue} />
-      <SubmitButton
+      <TxSubmissionButton
         disabled={!isTipper}
-        loading={loading}
-        onSubmit={onSubmit}
+        getTxFunc={getTxFunc}
+        onInBlock={onInBlock}
       />
     </>
   );
 }
 
 function PopupContent() {
-  const { onClose } = usePopupParams();
   const dispatch = useDispatch();
-  const isMounted = useIsMounted();
-  const signerAccount = useSignerAccount();
   const [reason, setReason] = useState("");
-  const [loading, setLoading] = useState(false);
   const [tabIndex, setTabIndex] = useState(ReportAwesome);
   const [inputValue, setInputValue] = useState("0");
   const { decimals } = useChainSettings();
@@ -107,23 +78,20 @@ function PopupContent() {
 
   const [beneficiary, setBeneficiary] = useState();
 
-  const showErrorToast = (message) => dispatch(newErrorToast(message));
+  const showErrorToast = useCallback(
+    (message) => dispatch(newErrorToast(message)),
+    [dispatch],
+  );
 
-  const submit = async () => {
-    if (!api) {
-      return showErrorToast("Chain network is not connected yet");
-    }
-
-    if (!signerAccount) {
-      return showErrorToast("Please login first");
-    }
-
+  const getTxFunc = useCallback(async () => {
     if (!beneficiary) {
-      return showErrorToast("Please input a beneficiary");
+      showErrorToast("Please input a beneficiary");
+      return;
     }
 
     if (!reason) {
-      return showErrorToast("Please input a reason");
+      showErrorToast("Please input a reason");
+      return;
     }
 
     let tx;
@@ -133,7 +101,8 @@ function PopupContent() {
       try {
         bnValue = checkInputValue(inputValue, decimals, "tip value");
       } catch (err) {
-        return showErrorToast(err.message);
+        showErrorToast(err.message);
+        return;
       }
 
       tx = api.tx.tips.tipNew(reason, beneficiary, bnValue.toString());
@@ -141,31 +110,31 @@ function PopupContent() {
       tx = api.tx.tips.reportAwesome(reason, beneficiary);
     }
 
-    if (signerAccount?.proxyAddress) {
-      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-    }
+    return tx;
+  }, [
+    beneficiary,
+    decimals,
+    inputValue,
+    reason,
+    showErrorToast,
+    tabIndex,
+    api,
+  ]);
 
-    await sendTx({
-      tx,
-      dispatch,
-      setLoading,
-      onInBlock: (eventData, blockHash) => {
-        if (!eventData || !blockHash) {
-          return;
-        }
-        api?.rpc.chain.getHeader(blockHash).then((header) => {
-          const blockNumber = header.number.toNumber();
-          const [tipHash] = eventData;
-          router.push(`/treasury/tips/${blockNumber}_${tipHash}`);
-        });
-      },
-      onClose,
-      signerAccount,
-      isMounted,
-      section: "tips",
-      method: "NewTip",
-    });
-  };
+  const onInBlock = useCallback(
+    ({ events, blockHash }) => {
+      const eventData = getEventData(events, "tips", "NewTip");
+      if (!eventData || !blockHash) {
+        return;
+      }
+      api?.rpc.chain.getHeader(blockHash).then((header) => {
+        const blockNumber = header.number.toNumber();
+        const [tipHash] = eventData;
+        router.push(`/treasury/tips/${blockNumber}_${tipHash}`);
+      });
+    },
+    [api, router],
+  );
 
   return (
     <>
@@ -174,18 +143,18 @@ function PopupContent() {
       </div>
       {tabIndex === NewTip ? (
         <NewTipContent
-          onSubmit={submit}
+          getTxFunc={getTxFunc}
+          onInBlock={onInBlock}
           setBeneficiary={setBeneficiary}
           setReason={setReason}
           setInputValue={setInputValue}
-          loading={loading}
         />
       ) : (
         <ReportAwesomeContent
-          onSubmit={submit}
+          getTxFunc={getTxFunc}
+          onInBlock={onInBlock}
           setBeneficiary={setBeneficiary}
           setReason={setReason}
-          loading={loading}
         />
       )}
     </>

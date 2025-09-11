@@ -2,23 +2,26 @@ import BigNumber from "bignumber.js";
 import Chains from "../consts/chains";
 import { BalanceDecimals } from "../constants";
 import { detailPageCategory } from "../consts/business/category";
-import isMoonChain from "../isMoonChain";
 import { getMotionId } from "next-common/utils/motion";
 import { getTitle } from "next-common/utils/post";
 import {
   advisoryCommitteeBaseUrl,
   childBountyBaseUrl,
+  communityMotionBaseUrl,
 } from "next-common/utils/postBaseUrl";
 import { getPostLastActivityAt } from "next-common/utils/viewfuncs/postUpdatedTime";
 import { isAddress } from "@polkadot/util-crypto";
+import { isNil } from "lodash-es";
+import { getChildBountyIndex } from "./treasury/childBounty";
 
 export function toApiType(type) {
   // Open Gov
   if (type === detailPageCategory.GOV2_REFERENDUM) {
     return "gov2/referendums";
-  }
-  if (type === detailPageCategory.FELLOWSHIP_REFERENDUM) {
+  } else if (type === detailPageCategory.FELLOWSHIP_REFERENDUM) {
     return "fellowship/referenda";
+  } else if (type === detailPageCategory.AMBASSADOR_REFERENDUM) {
+    return "ambassador/referenda";
   }
 
   // Democracy
@@ -35,22 +38,18 @@ export function toApiType(type) {
   // Treasury
   if (type === detailPageCategory.TREASURY_BOUNTY) {
     return "treasury/bounties";
-  }
-  if (type === detailPageCategory.TREASURY_CHILD_BOUNTY) {
+  } else if (type === detailPageCategory.TREASURY_CHILD_BOUNTY) {
     return "treasury/child-bounties";
-  }
-  if (type === detailPageCategory.TREASURY_PROPOSAL) {
+  } else if (type === detailPageCategory.TREASURY_PROPOSAL) {
     return "treasury/proposals";
-  }
-  if (type === detailPageCategory.TREASURY_TIP) {
+  } else if (type === detailPageCategory.TREASURY_TIP) {
     return "treasury/tips";
+  } else if (type === detailPageCategory.TREASURY_SPEND) {
+    return "treasury/spends";
   }
 
   // Motions
   if (type === detailPageCategory.COUNCIL_MOTION) {
-    if (isMoonChain()) {
-      return "moon-council/motions";
-    }
     return "motions";
   }
   if (type === detailPageCategory.TECH_COMM_MOTION) {
@@ -73,14 +72,6 @@ export function toApiType(type) {
   // Karura
   if (type === detailPageCategory.FINANCIAL_MOTION) {
     return "financial-motions";
-  }
-
-  // Moonbeam / Moonriver
-  if (type === detailPageCategory.OPEN_TECH_COMM_PROPOSAL) {
-    return "open-techcomm/motions";
-  }
-  if (type === detailPageCategory.TREASURY_COUNCIL_MOTION) {
-    return "motions";
   }
 
   // Zeitgeist
@@ -185,14 +176,56 @@ export const toAdvisoryMotionsListItem = (item) => ({
   time: getPostLastActivityAt(item),
 });
 
+export const toCommunityMotionsListItem = (item) => ({
+  ...item,
+  index: item.motionIndex,
+  title: getTitle(item),
+  author: item.author,
+  address: item.proposer,
+  status: item.state ?? "Unknown",
+  detailLink: `${communityMotionBaseUrl}/${getMotionId(item)}`,
+  time: getPostLastActivityAt(item),
+});
+
 export const toTreasuryChildBountyListItem = (item) => ({
   ...item,
+  index: isNil(item?.parentBountyId)
+    ? item?.index
+    : `${item.parentBountyId}-${item?.index}`,
   title: getTitle(item),
   author: item.author,
   address: item.proposer,
   status: item.state ?? "Unknown",
   time: getPostLastActivityAt(item),
   value: item.onchainData.value,
-  detailLink: `${childBountyBaseUrl}/${item.index}`,
+  detailLink: `${childBountyBaseUrl}/${getChildBountyIndex(item)}`,
   parentIndex: item.parentBountyId,
 });
+
+export function formatVerySmallNumberWithAbbr(value) {
+  const bigValue = new BigNumber(value);
+
+  const smallNumbers = [
+    { smallNumber: new BigNumber("0.001"), abbr: "m" }, // milli (10^-3)
+    { smallNumber: new BigNumber("0.000001"), abbr: "μ" }, // micro (10^-6)
+    { smallNumber: new BigNumber("0.000000001"), abbr: "n" }, // nano (10^-9)
+    { smallNumber: new BigNumber("0.000000000001"), abbr: "p" }, // pico (10^-12)
+    { smallNumber: new BigNumber("0.000000000000001"), abbr: "f" }, // femto (10^-15)
+    { smallNumber: new BigNumber("0.000000000000000001"), abbr: "a" }, // atto (10^-18)
+  ];
+
+  if (bigValue.isGreaterThanOrEqualTo(1)) {
+    return bigValue.toFixed(2);
+  }
+
+  for (let i = 0; i < smallNumbers.length; i++) {
+    const { smallNumber, abbr } = smallNumbers[i];
+
+    if (bigValue.isGreaterThanOrEqualTo(smallNumber)) {
+      const divided = bigValue.dividedBy(smallNumber).toFixed(2);
+      return `${divided}${abbr}`;
+    }
+  }
+
+  return bigValue.toFixed(2);
+}

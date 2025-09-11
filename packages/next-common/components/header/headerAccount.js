@@ -1,19 +1,23 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { useRouter } from "next/router";
-import useOnClickOutside from "../../utils/hooks/useOnClickOutside.js";
 import useWindowSize from "../../utils/hooks/useWindowSize.js";
 import Relative from "../styled/relative";
 import Flex from "../styled/flex";
 import { useIsLoggedIn, useUser } from "../../context/user";
-import useIsMounted from "../../utils/hooks/useIsMounted";
+import { useClickAway, useMountedState } from "react-use";
 import PrimaryButton from "next-common/lib/button/primary";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup.js";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { SystemProfile } from "@osn/icons/subsquare";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount/index.js";
-import { SystemUser, AddressUser } from "../user";
+import { AddressUser, SystemUser } from "../user";
 import { useAccountMenu } from "./useAccountMenu.js";
+import { walletConnect } from "next-common/utils/consts/connect/index.js";
+import { useWalletConnect } from "next-common/context/walletconnect/index.jsx";
+import Divider from "next-common/components/styled/layout/divider";
+import SwitchAccount from "next-common/components/switchAccount";
+import { WalletConnectDisconnectLoading } from "next-common/components/header/drawer.jsx";
 
 const Wrapper = Relative;
 
@@ -22,7 +26,7 @@ const Menu = styled.div`
   position: absolute;
   right: 0;
   margin-top: 4px;
-  padding: 8px;
+  padding: 8px 8px;
   z-index: 999999;
   background: var(--neutral100);
   border-width: 1px;
@@ -33,9 +37,9 @@ const Menu = styled.div`
 `;
 
 const Item = styled(Flex)`
-  min-width: 160px;
+  min-width: 240px;
   cursor: pointer;
-  padding: 0 12px;
+  padding: 0 8px;
   height: 36px;
   border-radius: 8px;
   font-size: 14px;
@@ -62,16 +66,19 @@ function ProfileMenuItem({ onClick }) {
 export default function HeaderAccount() {
   const user = useUser();
   const isLoggedIn = useIsLoggedIn();
-  const { disconnect: disconnectAccount } = useConnectedAccountContext();
+  const { disconnect: disconnectAccount, connectedAccount } =
+    useConnectedAccountContext();
   const router = useRouter();
   const [show, setShow] = useState(false);
   const ref = useRef();
   const windowSize = useWindowSize();
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   const { openLoginPopup } = useLoginPopup();
   const menu = useAccountMenu();
+  const { disconnect: disconnectWc } = useWalletConnect();
+  const [showSwitchAccount, setShowSwitchAccount] = useState(false);
 
-  useOnClickOutside(ref, () => setShow(false));
+  useClickAway(ref, () => setShow(false));
 
   useEffect(() => {
     if (windowSize.width && windowSize.width <= 600) {
@@ -81,12 +88,18 @@ export default function HeaderAccount() {
 
   const handleAccountMenu = async (item) => {
     if (item.value === "logout") {
-      await disconnectAccount();
+      if (connectedAccount?.wallet === walletConnect.extensionName) {
+        await disconnectWc();
+      } else {
+        await disconnectAccount();
+      }
+    } else if (item.value === "switch") {
+      setShowSwitchAccount(true);
     } else if (item.pathname) {
       await router.push(item.pathname);
     }
 
-    if (isMounted.current) {
+    if (isMounted()) {
       setShow(false);
     }
   };
@@ -124,15 +137,28 @@ export default function HeaderAccount() {
             {user?.address && <ProfileMenuItem onClick={openUserProfile} />}
             {menu?.map((item, index) => (
               <Fragment key={index}>
+                {item?.value === "switch" && <Divider className="my-2" />}
                 <Item onClick={() => handleAccountMenu(item)}>
                   {item.icon}
                   <span>{item.name}</span>
+                  <WalletConnectDisconnectLoading type={item.value} />
                 </Item>
               </Fragment>
             ))}
           </Menu>
         )}
       </Wrapper>
+      {showSwitchAccount && (
+        <SwitchAccount
+          onClose={() => {
+            setShowSwitchAccount(false);
+          }}
+          onOpenLogin={() => {
+            openLoginPopup();
+            setShowSwitchAccount(false);
+          }}
+        />
+      )}
     </>
   );
 }

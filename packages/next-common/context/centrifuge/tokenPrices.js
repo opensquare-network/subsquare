@@ -1,11 +1,9 @@
 import { useAsync } from "react-use";
 import queryTokenPrices from "./query/queryTokenPrices";
+import { createStateContext } from "react-use";
+import { useEffect, useMemo, useState } from "react";
 
-const { createContext, useContext, useState, useMemo } = require("react");
-
-const TokenPricesContext = createContext(null);
-
-export default TokenPricesContext;
+const [useCfgTokenPrices, InnerProvider] = createStateContext({});
 
 export const TIME_RANGE = {
   DAY_1: "DAY_1",
@@ -23,18 +21,27 @@ function parsePricesDataType(price) {
   };
 }
 
-export function TokenPricesProvider({ children }) {
+function DataUpdater({ children }) {
   const [range, setRange] = useState(TIME_RANGE.DAY_7);
   const { value, loading } = useAsync(() => queryTokenPrices(range), [range]);
   const data = useMemo(() => (value || []).map(parsePricesDataType), [value]);
+  const [, setCfgTokenPrices] = useCfgTokenPrices();
 
+  useEffect(() => {
+    setCfgTokenPrices({ data, loading, range, setRange });
+  }, [data, loading, setCfgTokenPrices, range, setRange]);
+
+  return children;
+}
+
+export function TokenPricesProvider({ children }) {
   return (
-    <TokenPricesContext.Provider value={{ range, setRange, data, loading }}>
-      {children}
-    </TokenPricesContext.Provider>
+    <InnerProvider>
+      <DataUpdater>
+        {children}
+      </DataUpdater>
+    </InnerProvider>
   );
 }
 
-export function useTokenPrices() {
-  return useContext(TokenPricesContext);
-}
+export default useCfgTokenPrices;

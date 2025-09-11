@@ -1,17 +1,21 @@
 import WalletTypes from "../walletTypes";
-import isEvmChain from "next-common/utils/isEvmChain";
 import {
   WalletMetamask,
   WalletMimir,
   WalletNova,
   WalletPolkadotjs,
   WalletPolkagate,
+  WalletPolkagateSnap,
   WalletSubwallet,
   WalletTailsman,
+  WalletSignet,
+  WalletPhantom,
+  WalletOkx,
+  WalletCoinbase,
+  WalletWalletconnect,
 } from "@osn/icons/subsquare";
-import isMixedChain from "next-common/utils/isMixedChain";
 
-const polkadotJs = {
+export const polkadotJs = {
   extensionName: WalletTypes.POLKADOT_JS,
   title: "Polkadot.js",
   installUrl:
@@ -19,7 +23,7 @@ const polkadotJs = {
   logo: WalletPolkadotjs,
 };
 
-const subWalletJs = {
+export const subWallet = {
   extensionName: WalletTypes.SUBWALLET_JS,
   title: "SubWallet",
   installUrl:
@@ -27,7 +31,7 @@ const subWalletJs = {
   logo: WalletSubwallet,
 };
 
-const talisman = {
+export const talisman = {
   extensionName: WalletTypes.TALISMAN,
   title: "Talisman",
   installUrl:
@@ -35,7 +39,7 @@ const talisman = {
   logo: WalletTailsman,
 };
 
-const metamask = {
+export const metamask = {
   extensionName: WalletTypes.METAMASK,
   title: "MetaMask",
   installUrl:
@@ -43,7 +47,7 @@ const metamask = {
   logo: WalletMetamask,
 };
 
-const polkagate = {
+export const polkagate = {
   extensionName: WalletTypes.POLKAGATE,
   title: "PolkaGate",
   installUrl:
@@ -51,51 +55,74 @@ const polkagate = {
   logo: WalletPolkagate,
 };
 
-const nova = {
+export const polkagateSnap = {
+  extensionName: WalletTypes.POLKAGATE_SNAP,
+  title: "PolkaGate Snap",
+  installUrl: "https://snaps.metamask.io/snap/npm/polkagate/snap/",
+  logo: WalletPolkagateSnap,
+};
+
+export const nova = {
   extensionName: WalletTypes.NOVA,
   title: "Nova",
   installUrl: "https://novawallet.io/",
   logo: WalletNova,
 };
 
-const mimir = {
+export const mimir = {
   extensionName: WalletTypes.MIMIR,
   title: "Mimir",
-  installUrl: "https://app.mimir.global/",
+  installUrl: "https://mimir.global/",
   logo: WalletMimir,
 };
 
-export function getWallets() {
-  if (isEvmChain()) {
-    return [talisman, metamask, nova];
-  } else if (isMixedChain()) {
-    return [
-      metamask,
-      polkadotJs,
-      subWalletJs,
-      talisman,
-      polkagate,
-      nova,
-      mimir,
-    ];
-  } else {
-    return [polkadotJs, subWalletJs, talisman, polkagate, nova, mimir];
-  }
-}
+export const signet = {
+  extensionName: WalletTypes.SIGNET,
+  title: "Signet",
+  installUrl: "https://www.talisman.xyz/signet",
+  logo: WalletSignet,
+};
 
-export function getSingleSigWallets() {
-  if (isEvmChain()) {
-    return [talisman, metamask, nova];
-  } else if (isMixedChain()) {
-    return [metamask, polkadotJs, subWalletJs, talisman, polkagate, nova];
-  } else {
-    return [polkadotJs, subWalletJs, talisman, polkagate, nova];
-  }
-}
+export const phantom = {
+  extensionName: WalletTypes.PHANTOM,
+  title: "Phantom",
+  installUrl: "https://phantom.app/",
+  logo: WalletPhantom,
+};
 
-export function getMultiSigWallets() {
-  if (isEvmChain()) {
-    return [];
-  }
-  return [mimir];
-}
+export const okxWallet = {
+  extensionName: WalletTypes.OKX_WALLET,
+  title: "OKX Wallet",
+  installUrl: "https://www.okx.com/web3",
+  logo: WalletOkx,
+};
+
+export const coinbaseWallet = {
+  extensionName: WalletTypes.COINBASE_WALLET,
+  title: "Coinbase Wallet",
+  installUrl: "https://www.coinbase.com/wallet/downloads",
+  logo: WalletCoinbase,
+};
+
+export const walletConnect = {
+  extensionName: WalletTypes.WALLETCONNECT,
+  title: "WalletConnect",
+  installUrl: "https://walletconnect.network/",
+  logo: WalletWalletconnect,
+};
+
+export const allWallets = [
+  polkadotJs,
+  subWallet,
+  talisman,
+  metamask,
+  polkagate,
+  polkagateSnap,
+  nova,
+  mimir,
+  signet,
+  phantom,
+  okxWallet,
+  coinbaseWallet,
+  walletConnect,
+];

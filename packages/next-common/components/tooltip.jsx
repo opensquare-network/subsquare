@@ -20,6 +20,7 @@ export default function Tooltip({
   label,
   className,
   style,
+  contentClassName,
   side,
   sideOffset = 2,
   keepTooltipOpenAfterClick,
@@ -42,9 +43,11 @@ export default function Tooltip({
         sideOffset={sideOffset}
         side={side}
         className={cn(
-          "z-[10000] rounded py-1.5 px-3",
+          "z-[1000000] rounded py-1.5 px-3",
           "text12Normal text-textPrimaryContrast break-words",
           "bg-tooltipBg",
+          "[&_.value-display-symbol]:text-inherit",
+          contentClassName,
         )}
       >
         {content}
@@ -74,11 +77,3 @@ export default function Tooltip({
     </RadixTooltip.Provider>
   );
 }
-
-export const BlockTooltip = styled(Tooltip)`
-  display: block;
-`;
-
-export const InlineBlockTooltip = styled(Tooltip)`
-  display: inline-block;
-`;

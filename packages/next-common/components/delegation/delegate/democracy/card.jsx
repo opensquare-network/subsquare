@@ -2,17 +2,22 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import AddressUser from "next-common/components/user/addressUser";
 import { useState } from "react";
 import Divider from "next-common/components/styled/layout/divider";
-import { cn } from "next-common/utils";
+import { cn, isSameAddress } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
 import AccountLinks from "next-common/components/links/accountLinks";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { SystemMenu } from "@osn/icons/subsquare";
 import DemocracyNewDelegation from "next-common/components/summary/democracySummaryDelegation/newDelegation";
-import ReferendaDelegateeDetailPopup from "./detailPopup";
 import ReferendaDelegationCardSummary from "./summary";
 import { DelegateAvatar } from "../referenda/avatar";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useSubDemocracyDelegating from "next-common/utils/hooks/referenda/useSubDemocracyDelegating";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+import MineTag from "../common/mineTag";
+
+const ReferendaDelegateeDetailPopup = dynamicPopup(() =>
+  import("./detailPopup"),
+);
 
 export default function DemocracyDelegateCard({
   delegate = {},
@@ -26,7 +31,9 @@ export default function DemocracyDelegateCard({
   const [detailOpen, setDetailOpen] = useState(false);
 
   return (
-    <SecondaryCard className="flex flex-col text-textPrimary">
+    <SecondaryCard className="flex flex-col text-textPrimary relative">
+      {isSameAddress(address, realAddress) && <MineTag />}
+
       <div className="flex justify-between">
         <DelegateAvatar address={address} />
 
@@ -53,8 +60,8 @@ export default function DemocracyDelegateCard({
         <AddressUser
           add={address}
           showAvatar={false}
-          fontSize={14}
-          className="[&_.identity]:!font-semibold"
+          className="text14Medium text-textPrimary [&_.identity]:!font-semibold"
+          ellipsis
         />
       </div>
 

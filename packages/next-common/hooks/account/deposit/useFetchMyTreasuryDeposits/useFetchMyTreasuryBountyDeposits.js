@@ -6,8 +6,9 @@ import {
   setBountyBonds,
   setBountyCuratorDeposits,
 } from "next-common/store/reducers/myOnChainData/deposits/myTreasuryDeposits";
-import { useMenuHasTreasuryBounties } from "next-common/context/chain";
+import { useChainSettings } from "next-common/context/chain";
 import { useContextApi } from "next-common/context/api";
+import { isSameAddress } from "next-common/utils";
 
 export async function queryAddressDeposits(api, address) {
   const entries = await api.query.bounties.bounties.entries();
@@ -28,7 +29,7 @@ export async function queryAddressDeposits(api, address) {
       if (
         status.isProposed &&
         new BigNumber(bond).gt(0) &&
-        proposer === address
+        isSameAddress(proposer, address)
       ) {
         bonds.push({
           proposalIndex,
@@ -43,7 +44,10 @@ export async function queryAddressDeposits(api, address) {
 
       if (status.isActive) {
         const curator = status.asActive.curator.toString();
-        if (curator === address && new BigNumber(curatorDeposit).gt(0)) {
+        if (
+          isSameAddress(curator, address) &&
+          new BigNumber(curatorDeposit).gt(0)
+        ) {
           curatorDeposits.push({
             proposalIndex,
             curatorDeposit,
@@ -52,7 +56,10 @@ export async function queryAddressDeposits(api, address) {
         }
       } else if (status.isPendingPayout) {
         const curator = status.asPendingPayout.curator.toString();
-        if (curator === address && new BigNumber(curatorDeposit).gt(0)) {
+        if (
+          isSameAddress(curator, address) &&
+          new BigNumber(curatorDeposit).gt(0)
+        ) {
           curatorDeposits.push({
             proposalIndex,
             curatorDeposit,
@@ -71,7 +78,10 @@ export default function useFetchMyTreasuryBountyDeposits() {
   const realAddress = useRealAddress();
   const api = useContextApi();
   const dispatch = useDispatch();
-  const hasTreasuryBounties = useMenuHasTreasuryBounties();
+  const {
+    modules: { treasury },
+  } = useChainSettings();
+  const hasTreasuryBounties = !!treasury?.bounties;
 
   useEffect(() => {
     if (!hasTreasuryBounties) {

@@ -9,7 +9,7 @@ import {
   setIsLoadingFellowshipVotes,
 } from "next-common/store/reducers/fellowship/votes";
 import { partition } from "lodash-es";
-import { useContextApi } from "next-common/context/api";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
 /**
  * // Fellowship voting storage: (pollIndex, address, VoteRecord)
@@ -31,7 +31,7 @@ function extractPollIndexAndAddress(storageKey = []) {
   };
 }
 
-function normalizeVotingRecord(optionalRecord) {
+export function normalizeVotingRecord(optionalRecord) {
   if (!optionalRecord.isSome) {
     return null;
   }
@@ -45,14 +45,8 @@ function normalizeVotingRecord(optionalRecord) {
   };
 }
 
-async function query(api, targetPollIndex, blockHeight) {
-  let blockApi = api;
-  if (blockHeight) {
-    const blockHash = await api.rpc.chain.getBlockHash(blockHeight);
-    blockApi = await api.at(blockHash);
-  }
-
-  const voting = await blockApi.query.fellowshipCollective.voting.entries();
+export async function query(api, targetPollIndex) {
+  const voting = await api.query.fellowshipCollective.voting.entries();
 
   const normalized = [];
   for (const [storageKey, votingOf] of voting) {
@@ -74,8 +68,8 @@ async function query(api, targetPollIndex, blockHeight) {
   return normalized;
 }
 
-export default function useFellowshipVotes(pollIndex, blockHeight) {
-  const api = useContextApi();
+export default function useFellowshipVotes(pollIndex) {
+  const api = useConditionalContextApi();
   const dispatch = useDispatch();
   const votesTrigger = useSelector(fellowshipVotesTriggerSelector);
 
@@ -88,7 +82,7 @@ export default function useFellowshipVotes(pollIndex, blockHeight) {
       dispatch(setIsLoadingFellowshipVotes(true));
     }
 
-    query(api, pollIndex, blockHeight)
+    query(api, pollIndex)
       .then((votes) => {
         const [allAye = [], allNay = []] = partition(votes, (v) => v.isAye);
         dispatch(setFellowshipVotes({ allAye, allNay }));
@@ -99,5 +93,5 @@ export default function useFellowshipVotes(pollIndex, blockHeight) {
       dispatch(clearFellowshipVotes());
       dispatch(clearFellowshipVotesTrigger());
     };
-  }, [api, pollIndex, blockHeight, votesTrigger]);
+  }, [api, pollIndex, votesTrigger, dispatch]);
 }

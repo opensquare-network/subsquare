@@ -12,8 +12,9 @@ export default function useFetchProfileDemocracyDeposits() {
   const api = useContextApi();
   const dispatch = useDispatch();
   const {
-    modules: { democracy: hasDemocracyModule },
+    modules: { democracy },
   } = useChainSettings();
+  const hasDemocracyModule = democracy && !democracy?.archived;
 
   useEffect(() => {
     if (!api) {
@@ -28,5 +29,5 @@ export default function useFetchProfileDemocracyDeposits() {
     queryDemocracyAddressDeposits(api, address).then((data) => {
       dispatch(setProfileDemocracyDeposits(data));
     });
-  }, [api, address, dispatch]);
+  }, [api, address, dispatch, hasDemocracyModule]);
 }

@@ -5,21 +5,26 @@ import {
   DemocracyExternalNavigator,
   DemocracyProposalNavigator,
   NavigationWrapper,
-  ReferendumNavigationItem,
+  DemocracyReferendumNavigator,
   TechCommMotionNavigator,
 } from "./navigators";
 import { usePost } from "next-common/context/post";
+import { DemocracyReferendaTreasurySpendNavigator } from "./democracyNavigator";
 
 export default function ReferendumNavigation() {
   const post = usePost();
+  const referendum = post.onchainData;
 
   if (!isNil(post.proposalIndex)) {
     return (
       <NavigationWrapper>
         <DemocracyProposalNavigator proposalIndex={post.proposalIndex} />
-        <ReferendumNavigationItem
+        <DemocracyReferendumNavigator
           referendumIndex={post?.referendumIndex}
           isLink={false}
+        />
+        <DemocracyReferendaTreasurySpendNavigator
+          treasurySpendIndexes={referendum?.treasurySpendIndexes}
         />
       </NavigationWrapper>
     );
@@ -31,25 +36,26 @@ export default function ReferendumNavigation() {
 
   return (
     <NavigationWrapper>
-      {post?.onchainData?.motions?.map((motion, key) => (
+      {referendum?.motions?.map((motion, key) => (
         <CouncilMotionNavigator key={key} motion={motion} hasTriangle={false} />
       ))}
       <DemocracyExternalNavigator
         blockHeight={post.externalProposalIndexer?.blockHeight}
         hash={post.externalProposalHash}
       />
-      {post?.onchainData?.techCommMotions?.map((techCommMotion, key) => (
+      {referendum?.techCommMotions?.map((techCommMotion, key) => (
         <TechCommMotionNavigator motion={techCommMotion} key={key} />
       ))}
-
       {/* used for centrifuge/altair, they use council to fast_track external proposal */}
-      {post?.onchainData?.councilMotions?.map((motion, key) => (
+      {referendum?.councilMotions?.map((motion, key) => (
         <CouncilMotionNavigator key={key} motion={motion} hasTriangle={false} />
       ))}
-
-      <ReferendumNavigationItem
+      <DemocracyReferendumNavigator
         referendumIndex={post?.referendumIndex}
         isLink={false}
+      />
+      <DemocracyReferendaTreasurySpendNavigator
+        treasurySpendIndexes={referendum?.treasurySpendIndexes}
       />
     </NavigationWrapper>
   );
@@ -71,7 +77,7 @@ export function KintsugiReferendumNavigation() {
       {onchainData?.techCommMotions?.map((techCommMotion, key) => (
         <TechCommMotionNavigator motion={techCommMotion} key={key} />
       ))}
-      <ReferendumNavigationItem
+      <DemocracyReferendumNavigator
         referendumIndex={onchainData?.referendumIndex}
         isLink={false}
       />

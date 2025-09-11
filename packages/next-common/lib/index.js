@@ -5,12 +5,18 @@ import {
   toBrowserIncompatible,
 } from "next-common/utils/serverSideUtil";
 import { CACHE_KEY } from "../utils/constants";
+import getListPageProperties from "./pages/list";
 import getDetailPageProperties, { getIdProperty } from "./pages/detail";
 import fetchProfile from "next-common/lib/fetchProfile";
 import fetchUserStatus from "next-common/lib/fetchUserStatus";
 import { adminsApi } from "next-common/services/url";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { getConnectedAccount } from "next-common/services/serverSide/getConnectedAccount";
+import {
+  fetchRelayScanHeight,
+  fetchScanHeight,
+} from "next-common/services/fetchScanHeight";
+import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated";
 
 async function defaultGetServerSideProps() {
   return { props: {} };
@@ -28,20 +34,29 @@ export function withCommonProps(
     const themeMode = cookies.get(CACHE_KEY.themeMode);
     const navCollapsed = cookies.get(CACHE_KEY.navCollapsed);
     const navSubmenuVisible = cookies.get(CACHE_KEY.navSubmenuVisible);
+    const listPageProperties = getListPageProperties(context);
     const detailPageProperties = getDetailPageProperties(context);
     const connectedAccount = getConnectedAccount(cookies);
+    const pathname = context.resolvedUrl?.split("?")?.[0];
 
     const [
       props,
       { result: user },
       { result: userStatus },
       { result: admins },
+      scanHeight,
     ] = await Promise.all([
       getServerSideProps(context),
-      fetchProfile(context),
+      fetchProfile(context?.req),
       fetchUserStatus(context),
-      nextApi.fetch(adminsApi),
+      backendApi.fetch(adminsApi),
+      fetchScanHeight(),
     ]);
+
+    let relayScanHeight = null;
+    if (isAssetHubMigrated()) {
+      relayScanHeight = await fetchRelayScanHeight();
+    }
 
     if (context.resolvedUrl?.startsWith("/settings/") && !user) {
       const { unsubscribe } = context.query;
@@ -54,22 +69,27 @@ export function withCommonProps(
     return {
       ...props,
       props: {
-        ...props.props,
+        ...(props?.props || {}),
+        pathname,
         chain: process.env.CHAIN,
         user: user ?? null,
         userStatus: userStatus ?? null,
         connectedAccount: connectedAccount ?? null,
         admins: admins ?? [],
         themeMode: themeMode ?? null,
-        navCollapsed: navCollapsed || false,
+        navCollapsed: navCollapsed || "true",
         navSubmenuVisible: navSubmenuVisible || "{}",
+        ...listPageProperties,
         ...detailPageProperties,
         pageProperties: {
+          ...listPageProperties,
           ...detailPageProperties,
           userAgent,
+          scanHeight: scanHeight ?? null,
+          relayScanHeight: relayScanHeight ?? null,
           props: {
             ...getIdProperty(context),
-            ...props.props,
+            ...(props?.props || {}),
           },
         },
       },

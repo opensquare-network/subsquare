@@ -1,7 +1,7 @@
 import Copyable from "next-common/components/copyable";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
-import { cn, toPrecision } from "next-common/utils";
+import { cn, isSameAddress, toPrecision } from "next-common/utils";
 import DetailButton from "next-common/components/detailButton";
 import DotSplitter from "next-common/components/dotSplitter";
 import UnnoteButton from "./unnoteButton";
@@ -28,26 +28,32 @@ export function Hash({ hash, proposal, setShowArgumentsDetail }) {
   );
 }
 
+function UnNote({ hash, status, who, onUnnoteInBlock }) {
+  const realAddress = useRealAddress();
+  const isMyDeposit = isSameAddress(realAddress, who);
+  const isUnrequested = status.toLowerCase() === "unrequested";
+
+  if (!isUnrequested || !isMyDeposit) {
+    return null;
+  }
+
+  return (
+    <>
+      <DotSplitter />
+      <UnnoteButton hash={hash} onInBlock={onUnnoteInBlock} />
+    </>
+  );
+}
+
 export function Deposit({
   hash,
   deposit,
-  count,
   status,
   onUnnoteInBlock,
   right = false,
 }) {
   const { symbol, decimals } = useChainSettings();
   const { who, amount } = deposit;
-  const realAddress = useRealAddress();
-
-  const unnote = count === 0 &&
-    status.toLowerCase() === "unrequested" &&
-    realAddress === who && (
-      <>
-        <DotSplitter />
-        <UnnoteButton hash={hash} onInBlock={onUnnoteInBlock} />
-      </>
-    );
 
   return (
     <div className="flex flex-col">
@@ -55,15 +61,20 @@ export function Deposit({
       <div
         className={cn(
           "flex ml-[28px] text-textSecondary text-[12px]",
-          right ? "justify-end" : "",
+          right && "justify-end",
         )}
       >
         <ValueDisplay
           className="whitespace-nowrap"
-          value={toPrecision(amount.toJSON(), decimals)}
+          value={toPrecision(amount, decimals)}
           symbol={symbol}
         />
-        {unnote}
+        <UnNote
+          hash={hash}
+          status={status}
+          who={who}
+          onUnnoteInBlock={onUnnoteInBlock}
+        />
       </div>
     </div>
   );

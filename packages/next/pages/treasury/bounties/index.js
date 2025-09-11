@@ -1,62 +1,84 @@
-import PostList from "next-common/components/postList";
+import TreasuryBountiesPostList from "next-common/components/postList/treasyrybountiesPostList";
 import { withCommonProps } from "next-common/lib";
 import normalizeBountyListItem from "next-common/utils/viewfuncs/treasury/normalizeBountyListItem";
-import { useChainSettings } from "next-common/context/chain";
-import { lowerCase } from "lodash-es";
 import ListLayout from "next-common/components/layout/ListLayout";
 import TreasurySummary from "next-common/components/summary/treasurySummary";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import { TreasuryProvider } from "next-common/context/treasury";
+import { isPolkadotChain } from "next-common/utils/chain";
+import PolkadotTreasuryStatsOnProposal from "next-common/components/treasury/common/polkadotTreasuryStatsOnProposal";
+import { backendApi } from "next-common/services/nextApi";
+import BountyCardSection from "next-common/components/treasury/bounty/bountyCardSection";
 import { fetchList } from "next-common/services/list";
+import businessCategory from "next-common/utils/consts/business/category";
+import NewBountyButton from "next-common/components/treasury/bounty/newBountyButton";
 
-export default function BountiesPage({ bounties, chain }) {
-  const chainSettings = useChainSettings();
-
-  const items = (bounties.items || []).map((item) =>
+export default function BountiesPage({
+  activeBounties,
+  inactiveBounties,
+  chain,
+}) {
+  const items = (inactiveBounties.items || []).map((item) =>
     normalizeBountyListItem(chain, item),
   );
-  const category = "Treasury Bounties";
+  const category = businessCategory.treasuryBounties;
   const seoInfo = { title: category, desc: category };
 
+  const treasurySummaryPanel = isPolkadotChain(chain) ? (
+    <PolkadotTreasuryStatsOnProposal />
+  ) : (
+    <TreasurySummary />
+  );
+
   return (
-    <ListLayout
-      seoInfo={seoInfo}
-      title={category}
-      summary={<TreasurySummary />}
-      tabs={[
-        {
-          label: "Bounties",
-          url: "/treasury/bounties",
-        },
-        chainSettings.hasDotreasury && {
-          label: "Statistics",
-          url: `https://dotreasury.com/${lowerCase(
-            chainSettings.symbol,
-          )}/bounties`,
-        },
-      ].filter(Boolean)}
-    >
-      <PostList
-        category={category}
-        title="List"
-        titleCount={bounties.total}
-        items={items}
-        pagination={{
-          page: bounties.page,
-          pageSize: bounties.pageSize,
-          total: bounties.total,
-        }}
-      />
-    </ListLayout>
+    <TreasuryProvider>
+      <ListLayout
+        seoInfo={seoInfo}
+        title={category}
+        summary={treasurySummaryPanel}
+        tabs={[
+          {
+            value: "bounties",
+            label: "Bounties",
+            url: "/treasury/bounties",
+          },
+        ].filter(Boolean)}
+      >
+        {activeBounties && activeBounties.length > 0 && (
+          <BountyCardSection
+            category={category}
+            activeBounties={activeBounties?.map((item) =>
+              normalizeBountyListItem(chain, item),
+            )}
+          />
+        )}
+        <TreasuryBountiesPostList
+          titleCount={inactiveBounties.total}
+          items={items}
+          pagination={{
+            page: inactiveBounties.page,
+            pageSize: inactiveBounties.pageSize,
+            total: inactiveBounties.total,
+          }}
+          titleExtra={<NewBountyButton />}
+        />
+      </ListLayout>
+    </TreasuryProvider>
   );
 }
 
 export const getServerSideProps = withCommonProps(async (context) => {
-  const bounties = await fetchList("treasury/bounties", context);
-  const tracksProps = await fetchOpenGovTracksProps();
+  const [tracksProps, { result: activeBounties }, inactiveBounties] =
+    await Promise.all([
+      fetchOpenGovTracksProps(),
+      backendApi.fetch("/treasury/bounties/active"),
+      fetchList("/treasury/bounties/inactive", context),
+    ]);
 
   return {
     props: {
-      bounties,
+      activeBounties,
+      inactiveBounties,
       ...tracksProps,
     },
   };

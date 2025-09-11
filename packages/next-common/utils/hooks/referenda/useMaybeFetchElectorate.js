@@ -8,13 +8,15 @@ import {
   setElectorate,
 } from "../../../store/reducers/referendumSlice";
 import useDemocracyTally from "../../../context/post/democracy/referendum/tally";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
+import useChainOrScanHeight from "next-common/hooks/height";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
-export default function useMaybeFetchElectorate(referendum, api) {
+export default function useMaybeFetchElectorate(referendum) {
+  const api = useConditionalContextApi();
   const dispatch = useDispatch();
   const electorate = useSelector(electorateSelector);
   const referendumStatus = useSelector(referendumStatusSelector);
-  const nowHeight = useSelector(chainOrScanHeightSelector);
+  const nowHeight = useChainOrScanHeight();
   const tally = useDemocracyTally();
 
   const { voteFinished, voteFinishedHeight } = extractVoteInfo(
@@ -32,15 +34,15 @@ export default function useMaybeFetchElectorate(referendum, api) {
       dispatch(setElectorate(tally.electorate));
     }
 
-    if (api) {
-      dispatch(
-        fetchElectorate(
-          api,
-          voteFinishedHeight || nowHeight,
-          possibleElectorate,
-        ),
-      );
+    if (possibleElectorate) {
+      dispatch(setElectorate(possibleElectorate));
+      return;
     }
+
+    if (api) {
+      dispatch(fetchElectorate(api, voteFinishedHeight || nowHeight));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [api, dispatch, voteFinishedHeight, nowHeight, possibleElectorate]);
 
   return electorate;

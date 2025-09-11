@@ -1,9 +1,28 @@
+import { useState } from "react";
 import { MenuAnnouncement } from "@osn/icons/subsquare";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import Tooltip from "next-common/components/tooltip";
+import SplitProxyMenuButton from "next-common/components/splitProxyMenuButton";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+import useAddressDelegation from "./useAddressDelegation";
+import { useUser } from "next-common/context/user";
 import PrimaryButton from "next-common/lib/button/primary";
 
-export default function Announcement() {
+const AnnouncementPublishPopup = dynamicPopup(() =>
+  import("../../PublishAnnouncementPopup"),
+);
+
+export default function Announcement({ myDelegation }) {
+  const user = useUser();
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [proxyAddress, setProxyAddress] = useState();
+
+  const { value: proxyAddressDelegation } = useAddressDelegation(proxyAddress);
+
+  const onClickPublish = (proxyAddress) => {
+    setProxyAddress(proxyAddress);
+    setIsPopupOpen(true);
+  };
+
   return (
     <SecondaryCard className="flex flex-row gap-[16px] max-sm:flex-col">
       <div className="flex grow gap-[16px] sm:items-center max-sm:gap-[12px] max-sm:flex-col">
@@ -20,10 +39,25 @@ export default function Announcement() {
         </div>
       </div>
       <div className="flex items-center max-sm:justify-end">
-        <Tooltip content="Coming soon">
-          <PrimaryButton disabled>Publish</PrimaryButton>
-        </Tooltip>
+        {user?.proxyAddress ? (
+          <PrimaryButton onClick={() => onClickPublish(user?.proxyAddress)}>
+            Publish
+          </PrimaryButton>
+        ) : (
+          <SplitProxyMenuButton
+            action={"Publish"}
+            onClick={onClickPublish}
+            onClickAsProxy={onClickPublish}
+          />
+        )}
       </div>
+      {isPopupOpen && (
+        <AnnouncementPublishPopup
+          onClose={() => setIsPopupOpen(false)}
+          myDelegation={proxyAddress ? proxyAddressDelegation : myDelegation}
+          proxyAddress={proxyAddress}
+        />
+      )}
     </SecondaryCard>
   );
 }

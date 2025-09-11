@@ -1,25 +1,15 @@
 import React from "react";
-import useDuration from "../../../utils/hooks/useDuration";
-import Info from "../../styled/info";
-import UpdateIcon from "../../../assets/imgs/icons/line-chart.svg";
 import { usePost } from "../../../context/post";
+import { getPostLastActivityAt } from "next-common/utils/viewfuncs/postUpdatedTime";
+import { PostItemTime } from "next-common/components/postList/common";
 
 export default function UpdatedTime() {
   const post = usePost();
-  const postUpdatedTime = Math.max(
-    new Date(post.createdAt),
-    new Date(post.updatedAt),
-  );
 
+  const postUpdatedTime = getPostLastActivityAt(post);
   if (!postUpdatedTime) {
     return null;
   }
 
-  const duration = useDuration(postUpdatedTime);
-  return (
-    <Info>
-      <UpdateIcon />
-      <span>{duration}</span>
-    </Info>
-  );
+  return <PostItemTime data={{ ...post, time: postUpdatedTime }} />;
 }

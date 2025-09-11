@@ -1,5 +1,3 @@
-const vara = "vara";
-
 const Chains = {
   polkadot: "polkadot",
   kusama: "kusama",
@@ -34,7 +32,24 @@ const Chains = {
   moonriver: "moonriver",
   moonbeam: "moonbeam",
   bifrostPolkadot: "bifrost-polkadot",
-  vara,
+  polkadotAssetHub: "polkadot-assethub",
+  westendAssetHub: "westend-assethub",
+  kusamaAssetHub: "kusama-assethub",
+  vara: "vara",
+  shibuya: "shibuya",
+  astar: "astar",
+  zkverifyTestnet: "zkverify-testnet",
+  paseo: "paseo",
+  paseoAssetHub: "paseo-assethub",
+  ajuna: "ajuna",
+  kusamaCoretime: "kusama-coretime",
+  kusamaPeople: "kusama-people",
+  polkadotCoretime: "polkadot-coretime",
+  polkadotPeople: "polkadot-people",
+  paseoPeople: "paseo-people",
+  westendPeople: "westend-people",
+  laos: "laos",
+  laosTestnet: "laos-testnet",
 };
 
 export default Chains;

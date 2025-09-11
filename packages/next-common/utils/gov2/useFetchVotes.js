@@ -27,5 +27,5 @@ export default function useFetchVotes(referendum) {
     return () => {
       dispatch(clearVotes());
     };
-  }, [api, dispatch, finishedHeight, referendumIndex, votesTrigger]);
+  }, [api, dispatch, finishedHeight, referendumIndex, trackId, votesTrigger]);
 }

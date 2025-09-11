@@ -5,9 +5,11 @@ import { useTrackDelegations } from "next-common/utils/hooks/referenda/useTrackD
 import DelegationList from "next-common/components/summary/democracyBeenDelegated/beenDelegatedListPopup/delegationList";
 import DelegationSummary from "next-common/components/summary/democracyBeenDelegated/beenDelegatedListPopup/delegationSummary";
 import useProfileAddress from "../../useProfileAddress";
+import { usePathname } from "next/navigation";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 const StyledPopup = styled(BaseVotesPopup)`
-  width: 610px;
+  width: 640px;
 `;
 
 function TrackBeenDelegatedPopupList({
@@ -15,11 +17,17 @@ function TrackBeenDelegatedPopupList({
   trackBeenDelegatedList,
   track,
 }) {
-  const address = useProfileAddress();
-  const delegations = useTrackDelegations(track, address);
+  const pathname = usePathname();
+  const isMyDelegationPage = pathname.startsWith("/delegation/mine");
+  const profileAddress = useProfileAddress();
+  const myAddress = useRealAddress();
+  const realAddress = isMyDelegationPage ? myAddress : profileAddress;
+  const { delegations, isLoading } = useTrackDelegations(track, realAddress);
+
   return (
     <>
       <DelegationSummary
+        isLoading={isLoading}
         delegations={delegations}
         beenDelegatedList={trackBeenDelegatedList || []}
       />

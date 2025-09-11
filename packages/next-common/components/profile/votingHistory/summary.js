@@ -1,11 +1,17 @@
 import { useEffect, useState } from "react";
-import Summary from "next-common/components/summary";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { Title } from "./styled";
-import { ModuleTab, useAvailableModuleTabs, useModuleName } from "./common";
-import nextApi from "next-common/services/nextApi";
+import {
+  ModuleTab,
+  useAvailableModuleTabs,
+  useIsFellowship,
+  useModuleName,
+} from "./common";
+import { backendApi } from "next-common/services/nextApi";
 import { usePageProps } from "next-common/context/page";
 import { useChainSettings } from "next-common/context/chain";
+import SummaryLayout from "next-common/components/summary/layout/layout";
+import SummaryItem from "next-common/components/summary/layout/item";
 
 function CountSummaryContent({ count }) {
   return <span>{(count || 0).toLocaleString()}</span>;
@@ -21,35 +27,15 @@ export default function VotingHistorySummary() {
   const { useVoteCall } = useChainSettings();
   const module = useModuleName();
   const availableTabs = useAvailableModuleTabs();
+  const isFellowship = useIsFellowship();
 
   useEffect(() => {
-    nextApi.fetch(`users/${id}/${module}/vote-stats`).then(({ result }) => {
+    backendApi.fetch(`users/${id}/${module}/vote-stats`).then(({ result }) => {
       if (result) {
         setData(result);
       }
     });
   }, [id, module]);
-
-  const items = [
-    {
-      title: "All Votes",
-      content: <CountSummaryContent count={data?.totalVotes || 0} />,
-    },
-    useVoteCall
-      ? {
-          title: "All Calls",
-          content: <CountSummaryContent count={data?.totalCalls || 0} />,
-        }
-      : null,
-    {
-      title: "Participation Rate",
-      content: (
-        <TextSummaryContent
-          value={`${((data?.participationRate || 0) * 100).toFixed(1)}%`}
-        />
-      ),
-    },
-  ].filter(Boolean);
 
   return (
     <>
@@ -60,7 +46,23 @@ export default function VotingHistorySummary() {
         </div>
       )}
       <SecondaryCard>
-        <Summary items={items} />
+        <SummaryLayout>
+          <SummaryItem title="All Votes">
+            <CountSummaryContent count={data?.totalVotes || 0} />
+          </SummaryItem>
+          {useVoteCall ? (
+            <SummaryItem title="All Calls">
+              <CountSummaryContent count={data?.totalCalls || 0} />
+            </SummaryItem>
+          ) : null}
+          {!isFellowship && (
+            <SummaryItem title="Participation Rate">
+              <TextSummaryContent
+                value={`${((data?.participationRate || 0) * 100).toFixed(1)}%`}
+              />
+            </SummaryItem>
+          )}
+        </SummaryLayout>
       </SecondaryCard>
     </>
   );

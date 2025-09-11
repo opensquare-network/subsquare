@@ -1,8 +1,6 @@
-import DetailItem from "components/detailItem";
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
-import { to404 } from "next-common/utils/serverSideUtil";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { getBannerUrl } from "next-common/utils/banner";
@@ -12,9 +10,23 @@ import {
   getPostVotesAndMine,
 } from "next-common/services/detail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import ContentWithComment from "next-common/components/detail/common/contentWithComment";
+import PostDetail from "next-common/components/pages/components/postDetail";
+import NotFoundDetail from "next-common/components/notFoundDetail";
 
 export default function PostDetailPage({ detail }) {
+  if (!detail) {
+    return (
+      <NotFoundDetail
+        breadcrumbItems={[
+          {
+            content: "Discussions",
+            path: "/discussions",
+          },
+        ]}
+      />
+    );
+  }
+
   const desc = getMetaDesc(detail);
   return (
     <PostProvider post={detail}>
@@ -25,9 +37,7 @@ export default function PostDetailPage({ detail }) {
           ogImage: getBannerUrl(detail?.bannerCid),
         }}
       >
-        <ContentWithComment>
-          <DetailItem />
-        </ContentWithComment>
+        <PostDetail />
       </DetailLayout>
     </PostProvider>
   );
@@ -36,18 +46,14 @@ export default function PostDetailPage({ detail }) {
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
 
-  const { result: detail } = await nextApi.fetch(`posts/${id}`);
+  const { result: detail = null } = await backendApi.fetch(`posts/${id}`);
 
-  if (!detail) {
-    return to404();
-  }
-
-  const comments = await fetchDetailComments(
-    `posts/${detail._id}/comments`,
-    context,
-  );
-  const { votes, myVote } = await getPostVotesAndMine(detail, context);
   const tracksProps = await fetchOpenGovTracksProps();
+  const { votes, myVote } = await getPostVotesAndMine(detail, context);
+
+  const comments = detail
+    ? await fetchDetailComments(`posts/${detail._id}/comments`, context)
+    : null;
 
   return {
     props: {

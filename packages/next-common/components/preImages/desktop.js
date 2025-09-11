@@ -3,18 +3,21 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import { useState } from "react";
 import useOldPreimage from "next-common/hooks/useOldPreimage";
 import usePreimage from "next-common/hooks/usePreimage";
-import PreimageDetailPopup from "./preImageDetailPopup";
 import { useDispatch, useSelector } from "react-redux";
 import {
   incPreImagesTrigger,
   preImagesTriggerSelector,
 } from "next-common/store/reducers/preImagesSlice";
-import FieldLoading from "../icons/fieldLoading";
+import FieldLoading from "next-common/components/icons/fieldLoading";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import DataList from "next-common/components/dataList";
 import { Deposit, Hash, Proposal, Status } from "./fields";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 
-function createPreimageRow(
+const PreimageDetailPopup = dynamicPopup(() => import("./preImageDetailPopup"));
+
+function useCreatePreimageRow(
   hash,
   preimage,
   isStatusLoaded,
@@ -51,7 +54,14 @@ function createPreimageRow(
           hash={hash}
           count={preimage.count}
           status={preimage.statusName}
-          onUnnoteInBlock={() => dispatch(incPreImagesTrigger())}
+          onUnnoteInBlock={() => {
+            dispatch(incPreImagesTrigger());
+            dispatch(
+              newSuccessToast(
+                "Preimage unnoted. Data will be refreshed in seconds.",
+              ),
+            );
+          }}
           triggerUpdate={triggerUpdate}
         />
       )
@@ -59,7 +69,7 @@ function createPreimageRow(
       <FieldLoading />
     ),
     isStatusLoaded ? (
-      preimage.proposalLength?.toJSON()?.toLocaleString()
+      preimage.proposalLength?.toNumber()?.toLocaleString()
     ) : (
       <FieldLoading />
     ),
@@ -83,7 +93,7 @@ function createPreimageRow(
 
 function PreimageRow({ DataListItem, hash, setShowArgumentsDetail }) {
   const [preimage, isStatusLoaded, isBytesLoaded] = usePreimage(hash);
-  const row = createPreimageRow(
+  const row = useCreatePreimageRow(
     hash,
     preimage,
     isStatusLoaded,
@@ -95,7 +105,7 @@ function PreimageRow({ DataListItem, hash, setShowArgumentsDetail }) {
 
 function OldPreimageRow({ DataListItem, hash, setShowArgumentsDetail }) {
   const [preimage, isStatusLoaded, isBytesLoaded] = useOldPreimage(hash);
-  const row = createPreimageRow(
+  const row = useCreatePreimageRow(
     hash,
     preimage,
     isStatusLoaded,
@@ -105,7 +115,7 @@ function OldPreimageRow({ DataListItem, hash, setShowArgumentsDetail }) {
   return <DataListItem row={row} />;
 }
 
-export default function DesktopList({ data }) {
+export default function DesktopList({ data, loading }) {
   const [showArgumentsDetail, setShowArgumentsDetail] = useState(null);
   const { columns } = useColumns([
     {
@@ -137,7 +147,7 @@ export default function DesktopList({ data }) {
           columns={columns}
           rows={data}
           noDataText="No current preimages"
-          loading={!data}
+          loading={loading}
           renderItem={(DataListItem, idx, rows) => {
             const {
               data: [hash],

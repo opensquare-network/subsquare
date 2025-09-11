@@ -1,48 +1,42 @@
-import { useSelector } from "react-redux";
-import { fellowshipCoreMembersSelector } from "next-common/store/reducers/fellowship/core";
-import Summary from "next-common/components/summary";
+import useFellowshipCoreMembersWithRank from "next-common/hooks/fellowship/core/useFellowshipCoreMembersWithRank";
+import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
 import { isNil } from "lodash-es";
+import SummaryLayout from "next-common/components/summary/layout/layout";
+import SummaryItem from "next-common/components/summary/layout/item";
 import LoadableContent from "next-common/components/common/loadableContent";
-import { fellowshipCollectiveMembersSelector } from "next-common/store/reducers/fellowship/collective";
 
-export default function FellowshipCoreMembersSummary() {
-  const fellowshipMembers = useSelector(fellowshipCollectiveMembersSelector);
-  const coreMembers = useSelector(fellowshipCoreMembersSelector);
-  const candidates = (coreMembers || []).filter((m) => m.rank <= 0);
-  const total = (coreMembers || []).length;
+export default function FellowshipMembersSummary() {
+  const { members: collectiveMembers } = useFellowshipCollectiveMembers();
+  const { members: coreMembers } = useFellowshipCoreMembersWithRank();
 
+  const total = (collectiveMembers || []).length;
+  const candidates = (collectiveMembers || []).filter((m) => m.rank <= 0);
   const isLoading = isNil(coreMembers);
+  const countOfNotInCore = Math.max(
+    0,
+    (collectiveMembers || []).length - (coreMembers || []).length,
+  );
 
-  const items = [
-    {
-      title: "Total",
-      content: <LoadableContent isLoading={isLoading}>{total}</LoadableContent>,
-    },
-    {
-      title: "Members",
-      content: (
+  return (
+    <SummaryLayout>
+      <SummaryItem title="Total">
+        <LoadableContent isLoading={isLoading}>{total}</LoadableContent>
+      </SummaryItem>
+      <SummaryItem title="Members">
         <LoadableContent isLoading={isLoading}>
           {total - candidates.length}
         </LoadableContent>
-      ),
-    },
-    {
-      title: "Candidates",
-      content: (
+      </SummaryItem>
+      <SummaryItem title="Candidates">
         <LoadableContent isLoading={isLoading}>
           {candidates.length}
         </LoadableContent>
-      ),
-    },
-    {
-      title: "Not Inducted",
-      content: (
+      </SummaryItem>
+      <SummaryItem title="Not in Core">
         <LoadableContent isLoading={isLoading}>
-          {fellowshipMembers?.length - total}
+          {countOfNotInCore}
         </LoadableContent>
-      ),
-    },
-  ];
-
-  return <Summary items={items} />;
+      </SummaryItem>
+    </SummaryLayout>
+  );
 }

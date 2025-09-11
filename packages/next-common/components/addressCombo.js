@@ -1,24 +1,19 @@
-import React, { useCallback, useEffect } from "react";
+import { useMemo, useRef, useState } from "react";
 import styled, { css } from "styled-components";
-import { useState, useRef } from "react";
-import useOnClickOutside from "../utils/hooks/useOnClickOutside.js";
 import Avatar from "./avatar";
 import Flex from "./styled/flex";
 import Relative from "./styled/relative";
-import { isAddress } from "@polkadot/util-crypto";
+import { isAddress, isEthereumAddress } from "@polkadot/util-crypto";
 import Caret from "./icons/caret";
-import { addressEllipsis } from "../utils";
+import { addressEllipsis, cn, isSameAddress } from "../utils";
 import { normalizeAddress } from "next-common/utils/address.js";
-import { fetchIdentity } from "next-common/services/identity.js";
-import { useChainSettings } from "next-common/context/chain.js";
-import { encodeAddressToChain } from "next-common/services/address.js";
 import { getIdentityDisplay } from "next-common/utils/identity.js";
 import IdentityIcon from "./Identity/identityIcon.js";
-import {
-  getAddressHint,
-  tryConvertToEvmAddress,
-} from "next-common/utils/mixedChainUtil";
-import { isEthereumAddress } from "@polkadot/util-crypto";
+import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
+import { useClickAway } from "react-use";
+import useIdentityInfo from "next-common/hooks/useIdentityInfo";
+import AddressInfoLoading from "./addressInfo";
+import { noop } from "lodash-es";
 
 const Wrapper = Relative;
 
@@ -37,12 +32,13 @@ const Select = styled(Flex)`
 const NameWrapper = styled.div`
   color: var(--textPrimary);
   flex-grow: 1;
+  width: 100%;
+  overflow: hidden;
   > :first-child {
     font-size: 14px;
     font-weight: 500;
   }
-  > :last-child {
-    margin-top: 4px;
+  > :nth-child(2) {
     font-size: 12px;
     color: var(--textTertiary);
   }
@@ -106,60 +102,219 @@ const IdentityName = styled.div`
   gap: 4px;
 `;
 
+function getAddressHint(address) {
+  let addressHint = "--";
+
+  if (address) {
+    const maybeEvmAddress = tryConvertToEvmAddress(address);
+
+    addressHint = addressEllipsis(maybeEvmAddress);
+    if (!isSameAddress(maybeEvmAddress, address)) {
+      addressHint += ` (${addressEllipsis(address)})`;
+    }
+  }
+
+  return addressHint;
+}
+
+export function AddressComboInput({
+  inputAddress,
+  setInputAddress,
+  onBlur,
+  placeholder,
+  avatarSize = 40,
+}) {
+  return (
+    <>
+      <Avatar address={inputAddress} size={avatarSize} />
+      <Input
+        value={inputAddress}
+        onChange={(e) => setInputAddress(e.target.value)}
+        onBlur={onBlur}
+        placeholder={placeholder}
+      />
+    </>
+  );
+}
+
+export function IdentityDisplay({ address, name }) {
+  const { identity, hasIdentity } = useIdentityInfo(address);
+  const displayName = getIdentityDisplay(identity);
+  const addressHint = getAddressHint(address);
+
+  return (
+    <IdentityName>
+      {hasIdentity ? (
+        <>
+          <IdentityIcon identity={identity} />
+          <div className="line-clamp-1">{displayName || name}</div>
+        </>
+      ) : (
+        <div className="line-clamp-1 text-textPrimary">
+          {displayName || name || addressHint}
+        </div>
+      )}
+    </IdentityName>
+  );
+}
+
+export function AddressComboListItemAccount({ account, size }) {
+  const { isLoading } = useIdentityInfo(account.address);
+  const address = normalizeAddress(account.address);
+
+  if (isLoading) {
+    return <AddressInfoLoading address={address} size={size} />;
+  }
+
+  return (
+    <>
+      <Avatar address={account.address} size={size === "default" ? 40 : 24} />
+      <NameWrapper>
+        <IdentityDisplay address={account.address} name={account?.name} />
+        {size === "default" && (
+          <div className="flex-1 w-full overflow-hidden whitespace-nowrap overflow-ellipsis">
+            {address}
+          </div>
+        )}
+      </NameWrapper>
+    </>
+  );
+}
+
+function AvatarNameWrapper({ address, children, avatarSize = 40 }) {
+  return (
+    <>
+      <Avatar address={address} size={avatarSize} />
+      <NameWrapper className="truncate">{children}</NameWrapper>
+    </>
+  );
+}
+
+function Identity({ identity, address }) {
+  const addressHint = getAddressHint(address);
+  const displayName = getIdentityDisplay(identity);
+  return (
+    <AvatarNameWrapper address={address}>
+      <IdentityName className="truncate">
+        <IdentityIcon identity={identity} />
+        <div className="whitespace-nowrap truncate">{displayName}</div>
+      </IdentityName>
+      <div>{addressHint}</div>
+    </AvatarNameWrapper>
+  );
+}
+
+function NoIdentity({ address }) {
+  const maybeEvmAddress = tryConvertToEvmAddress(address);
+  return (
+    <AvatarNameWrapper address={address}>
+      <IdentityName className="truncate">
+        <div className="whitespace-nowrap truncate">{maybeEvmAddress}</div>
+      </IdentityName>
+    </AvatarNameWrapper>
+  );
+}
+
+export function AddressComboCustomAddress({ address, size = "default" }) {
+  const { identity, isLoading, hasIdentity } = useIdentityInfo(address);
+
+  if (isLoading) {
+    return <AddressInfoLoading address={address} size={size} />;
+  }
+
+  if (size !== "default") {
+    return <AddressComboListItemAccount account={{ address }} size={size} />;
+  }
+
+  if (hasIdentity) {
+    return <Identity identity={identity} address={address} />;
+  }
+
+  return <NoIdentity address={address} />;
+}
+
+function AddressComboHeader({
+  inputAddress,
+  setInputAddress,
+  onBlur,
+  placeholder,
+  accounts,
+  address,
+  edit,
+  size = "default",
+}) {
+  const selectedAccount = accounts.find((item) =>
+    isSameAddress(normalizeAddress(item.address), address),
+  );
+
+  if (edit) {
+    return (
+      <AddressComboInput
+        inputAddress={inputAddress}
+        setInputAddress={setInputAddress}
+        onBlur={onBlur}
+        placeholder={placeholder}
+        avatarSize={size === "default" ? 40 : 24}
+      />
+    );
+  }
+
+  if (selectedAccount) {
+    return (
+      <AddressComboListItemAccount account={selectedAccount} size={size} />
+    );
+  }
+
+  if (size !== "default") {
+    return <AddressComboListItemAccount account={{ address }} size={size} />;
+  }
+
+  return <AddressComboCustomAddress address={address} size={size} />;
+}
+
+function AddressComboListOptions({ accounts, address, onSelect, size }) {
+  return (
+    <Options className="scrollbar-pretty">
+      {(accounts || []).map((item, index) => {
+        return (
+          <Item
+            key={index}
+            onClick={() => onSelect(item)}
+            selected={isSameAddress(item.address, address)}
+            className={cn(size === "small" && "!h-10")}
+          >
+            <AddressComboListItemAccount account={item} size={size} />
+          </Item>
+        );
+      })}
+    </Options>
+  );
+}
+
 export default function AddressCombo({
+  className,
   accounts,
   address,
   setAddress,
   allowInvalidAddress = false,
+  readOnly = false,
+  canEdit = true,
+  size = "default",
+  placeholder = "Please fill the address or select another one...",
+  rightContent = null,
 }) {
   const [show, setShow] = useState(false);
-  const [edit, setEdit] = useState(false);
   const [inputAddress, setInputAddress] = useState(
     tryConvertToEvmAddress(address) || "",
   );
   const ref = useRef();
+  useClickAway(ref, () => setShow(false));
 
-  const selectedAccount = accounts.find(
-    (item) => normalizeAddress(item.address) === address,
-  );
-  const maybeEvmAddress = tryConvertToEvmAddress(address);
-  const addressHint = getAddressHint(address);
-  const shortEvmAddr = addressEllipsis(maybeEvmAddress);
-  const { identity } = useChainSettings();
-  const [identities, setIdentities] = useState({});
-
-  const isValidAddress = allowInvalidAddress
-    ? true
-    : isAddress(address) ||
-      normalizeAddress(address) ||
-      isEthereumAddress(address);
-
-  const fetchAddressIdentity = useCallback(
-    (address) => {
-      const identityAddress = encodeAddressToChain(address, identity);
-      fetchIdentity(identity, identityAddress).then((identity) => {
-        if (!identity || identity?.info?.status === "NO_ID") {
-          return;
-        }
-        setIdentities((identities) => ({
-          ...identities,
-          [address]: {
-            identity,
-            displayName: getIdentityDisplay(identity),
-          },
-        }));
-      });
-    },
-    [identity],
-  );
-
-  useEffect(() => {
-    accounts.forEach((acc) => fetchAddressIdentity(acc.address));
-  }, [fetchAddressIdentity, accounts]);
-
-  useEffect(() => {
-    fetchAddressIdentity(address);
-  }, [fetchAddressIdentity, address]);
+  const isValidAddress =
+    isAddress(address) ||
+    normalizeAddress(address) ||
+    isEthereumAddress(address);
+  const [edit, setEdit] = useState(!isValidAddress);
 
   const onBlur = () => {
     const isAddr = isAddress(inputAddress);
@@ -190,120 +345,85 @@ export default function AddressCombo({
     setEdit(false);
   };
 
-  useOnClickOutside(ref, () => {
+  const onSelect = (item) => {
+    const ss58Address = normalizeAddress(item.address);
+    const maybeEvmAddress = tryConvertToEvmAddress(ss58Address);
+    setAddress(ss58Address);
+    setInputAddress(maybeEvmAddress);
+    setEdit(false);
     setShow(false);
-  });
+  };
 
-  let selectContent;
+  const rightContentComponent = useMemo(() => {
+    if (readOnly) {
+      return null;
+    }
 
-  if (edit) {
-    selectContent = (
-      <>
-        <Avatar address={inputAddress} />
-        <Input
-          value={inputAddress}
-          onChange={(e) => setInputAddress(e.target.value)}
-          onBlur={onBlur}
-        />
-      </>
-    );
-  } else if (selectedAccount) {
-    selectContent = (
-      <>
-        <Avatar address={selectedAccount.address} />
-        <NameWrapper>
-          <IdentityName>
-            {identities[selectedAccount.address] && (
-              <IdentityIcon
-                identity={identities[selectedAccount.address]?.identity}
-              />
-            )}
-            <div>
-              {identities[selectedAccount.address]?.displayName ||
-                selectedAccount.name}
-            </div>
-          </IdentityName>
-          <div>{addressHint}</div>
-        </NameWrapper>
-      </>
-    );
-  } else {
-    selectContent = (
-      <>
-        <Avatar address={address} />
-        <NameWrapper>
-          <IdentityName>
-            {identities[address] && (
-              <IdentityIcon identity={identities[address].identity} />
-            )}
-            <div>{identities[address]?.displayName || shortEvmAddr}</div>
-          </IdentityName>
-          <div>{addressHint}</div>
-        </NameWrapper>
-      </>
-    );
-  }
+    if (rightContent) {
+      return rightContent;
+    }
 
-  const listOptions = (
-    <Options className="scrollbar-pretty">
-      {(accounts || []).map((item, index) => {
-        const ss58Address = normalizeAddress(item.address);
-        const maybeEvmAddress = tryConvertToEvmAddress(ss58Address);
-        return (
-          <Item
-            key={index}
-            onClick={() => {
-              setAddress(ss58Address);
-              setInputAddress(maybeEvmAddress);
-              setEdit(false);
-              setShow(false);
-            }}
-            selected={item.address === address}
-          >
-            <Avatar address={item.address} />
-            <NameWrapper>
-              <IdentityName>
-                {identities[item.address] && (
-                  <IdentityIcon identity={identities[item.address].identity} />
-                )}
-                <div>{identities[item.address]?.displayName || item.name}</div>
-              </IdentityName>
-              <div>{getAddressHint(ss58Address)}</div>
-            </NameWrapper>
-          </Item>
-        );
-      })}
-    </Options>
-  );
+    return (
+      <CaretContent
+        show={show}
+        onClick={(e) => {
+          setShow(!show);
+          e.stopPropagation();
+        }}
+      />
+    );
+  }, [readOnly, show, rightContent]);
 
   return (
     <Wrapper ref={ref}>
       <Select
+        className={cn(
+          className,
+          readOnly && "pointer-events-none",
+          size === "small" && "!h-10",
+        )}
         onClick={() => {
           setShow(true);
           setEdit(true);
           setTimeout(() => ref.current.querySelector("input")?.focus(), 100);
         }}
       >
-        {selectContent}
-        {(accounts || []).length > 0 && (
-          <span
-            onClick={(e) => {
-              setShow(!show);
-              e.stopPropagation();
-            }}
-          >
-            <Caret down={!show} />
-          </span>
-        )}
+        <AddressComboHeader
+          inputAddress={inputAddress}
+          setInputAddress={setInputAddress}
+          onBlur={onBlur}
+          placeholder={placeholder}
+          accounts={accounts}
+          address={address}
+          edit={edit && canEdit}
+          size={size}
+        />
+        {((accounts || []).length > 0 || rightContent) &&
+          !readOnly &&
+          rightContentComponent}
       </Select>
-      {show && (accounts || []).length > 0 && listOptions}
+      {show && (accounts || []).length > 0 && (
+        <AddressComboListOptions
+          accounts={accounts}
+          address={address}
+          onSelect={onSelect}
+          size={size}
+        />
+      )}
 
-      {!isValidAddress && (
+      {address && !isValidAddress && !allowInvalidAddress && (
         <div className="mt-2 text-red500 text12Medium">
           Please fill a valid address
         </div>
       )}
     </Wrapper>
+  );
+}
+
+function CaretContent({ show, onClick = noop }) {
+  return (
+    <span onClick={onClick}>
+      <Caret down={!show} />
+    </span>
   );
 }

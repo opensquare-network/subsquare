@@ -1,32 +1,24 @@
-import Summary from "next-common/components/summary";
 import { SummaryGreyText } from "next-common/components/summary/styled";
-
+import SummaryLayout from "next-common/components/summary/layout/layout";
+import SummaryItem from "next-common/components/summary/layout/item";
 export default function Gov2Summary({ summary }) {
   return (
-    <Summary
-      items={[
-        {
-          title: "Confirming",
-          content: <span>{summary.confirmingCount || 0}</span>,
-        },
-        {
-          title: "Deciding",
-          content: <span>{summary.decidingCount || 0}</span>,
-        },
-        {
-          title: "Preparing",
-          content: <span>{summary.preparingCount || 0}</span>,
-        },
-        {
-          title: "Active",
-          content: (
-            <span>
-              {summary.activeCount || 0}
-              <SummaryGreyText> / {summary.total || 0}</SummaryGreyText>
-            </span>
-          ),
-        },
-      ]}
-    />
+    <SummaryLayout>
+      <SummaryItem title="Confirming">
+        <span>{summary.confirmingCount || 0}</span>
+      </SummaryItem>
+      <SummaryItem title="Deciding">
+        <span>{summary.decidingCount || 0}</span>
+      </SummaryItem>
+      <SummaryItem title="Preparing">
+        <span>{summary.preparingCount || 0}</span>
+      </SummaryItem>
+      <SummaryItem title="Active">
+        <span>
+          {summary.activeCount || 0}
+          <SummaryGreyText> / {summary.total || 0}</SummaryGreyText>
+        </span>
+      </SummaryItem>
+    </SummaryLayout>
   );
 }

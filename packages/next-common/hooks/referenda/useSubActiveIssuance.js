@@ -22,5 +22,5 @@ export default function useSubActiveIssuance() {
     api.query.balances.inactiveIssuance((inactive) => {
       dispatch(setReferendaInActive(inactive.toString()));
     });
-  }, [api]);
+  }, [api, dispatch]);
 }

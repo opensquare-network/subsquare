@@ -8,6 +8,7 @@ import { useState } from "react";
 import Tabs from "next-common/components/tabs";
 import Divider from "next-common/components/styled/layout/divider";
 import PostDataSource from "next-common/components/postDataSource";
+import correctionIpfsEndpointPlugin from "next-common/utils/previewerPlugins/correctionIpfsEndpoint";
 
 const EditedLabel = styled.div`
   margin-top: 8px;
@@ -22,7 +23,13 @@ export default function ArticleContent({ postReactions, className = "" }) {
 
   const postContent = (
     <>
-      <MarkdownPreviewer content={post.content || ""} />
+      <MarkdownPreviewer
+        content={post.content || ""}
+        markedOptions={{
+          breaks: true,
+        }}
+        plugins={[correctionIpfsEndpointPlugin()]}
+      />
 
       {post.createdAt !== post.updatedAt && <EditedLabel>Edited</EditedLabel>}
     </>
@@ -30,16 +37,17 @@ export default function ArticleContent({ postReactions, className = "" }) {
 
   const tabs = [
     {
+      value: "content",
       label: "Content",
       content: postContent,
     },
     post.contentSummary?.summary && {
+      value: "ai_summary",
       label: "AI Summary",
-      tooltip: "Powered by OpenAI",
       content: <ContentSummary />,
     },
   ].filter(Boolean);
-  const [activeTab, setActiveTab] = useState(tabs[0].label);
+  const [activeValue, setActiveValue] = useState(tabs[0].value);
 
   if (!post) {
     return null;
@@ -55,10 +63,10 @@ export default function ArticleContent({ postReactions, className = "" }) {
         <div className="mt-6">
           {post.contentSummary?.summary ? (
             <Tabs
-              activeTabLabel={activeTab}
+              activeTabValue={activeValue}
               tabs={tabs}
               onTabClick={(tab) => {
-                setActiveTab(tab.label);
+                setActiveValue(tab.value);
               }}
             />
           ) : (

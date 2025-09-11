@@ -1,26 +1,37 @@
-import { useChain } from "next-common/context/chain";
+import { useChain, useChainSettings } from "next-common/context/chain";
 import useProfileAddress from "../useProfileAddress";
 import { useEffect } from "react";
 import IdentityTimeline from "next-common/components/identityTimeline";
-import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { useDispatch } from "react-redux";
 import {
   profileIdentityTimelineSelector,
   setProfileIdentityTimeline,
 } from "next-common/store/reducers/profile/identityTimeline";
 import { useSelector } from "react-redux";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { useMountedState } from "react-use";
 import ExternalLink from "next-common/components/externalLink";
+import { getRelayChain } from "next-common/utils/chain";
+
+function useIdentityUrl() {
+  const chain = useChain();
+  const { graphqlApiSubDomain } = useChainSettings();
+  if (graphqlApiSubDomain) {
+    return `https://${graphqlApiSubDomain}.statescan.io/graphql`;
+  } else {
+    return `https://${chain}-identity-api.statescan.io/graphql`;
+  }
+}
 
 function useIdentityTimeline() {
   const dispatch = useDispatch();
   const address = useProfileAddress();
   const chain = useChain();
   const timeline = useSelector(profileIdentityTimelineSelector);
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
+  const identityApiUrl = useIdentityUrl();
 
   useEffect(() => {
-    fetch(`https://${chain}-identity-api.statescan.io/graphql`, {
+    fetch(identityApiUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -35,12 +46,13 @@ function useIdentityTimeline() {
             name
             args
               indexer {
+                chain
                 blockHeight
-                  blockHash
-                  blockTime
-                  extrinsicIndex
-                  eventIndex
-                  __typename
+                blockHash
+                blockTime
+                extrinsicIndex
+                eventIndex
+                __typename
               }
             __typename
           }
@@ -54,35 +66,36 @@ function useIdentityTimeline() {
         return response.json();
       })
       .then((result) => {
-        if (isMounted.current) {
+        if (isMounted()) {
           dispatch(setProfileIdentityTimeline(result.data?.identityTimeline));
         }
       })
       .catch((error) => console.error(error));
-  }, [address, chain, isMounted]);
+  }, [address, chain, dispatch, identityApiUrl, isMounted]);
 
   return timeline;
 }
 
 export default function ProfileIdentityTimeline() {
   const chain = useChain();
+  const relayChain = getRelayChain(chain);
   const address = useProfileAddress();
   const timeline = useIdentityTimeline();
   const hasTimeline = timeline && timeline.length > 0;
 
   return (
-    <SecondaryCard>
+    <>
       <IdentityTimeline timelineData={timeline} />
       {hasTimeline && (
         <div className="flex w-full justify-end mt-[24px]">
           <ExternalLink
             className="text14Medium text-theme500"
-            href={`https://${chain}.statescan.io/#/accounts/${address}?sub=identity_timeline&tab=identity`}
+            href={`https://${relayChain}.statescan.io/#/accounts/${address}?sub=identity_timeline&tab=identity`}
           >
             View More
           </ExternalLink>
         </div>
       )}
-    </SecondaryCard>
+    </>
   );
 }

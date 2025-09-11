@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { setDemocracyDeposits } from "next-common/store/reducers/myOnChainData/deposits/myDemocracyDeposits";
 import { useChainSettings } from "next-common/context/chain";
 import { useContextApi } from "next-common/context/api";
+import { isSameAddress } from "next-common/utils";
 
 export async function queryAddressDeposits(api, address) {
   const entries = await api.query.democracy.depositOf.entries();
@@ -17,8 +18,8 @@ export async function queryAddressDeposits(api, address) {
     const rawDepositors = storage[0];
     const depositors = rawDepositors.map((i) => i.toString());
     const eachDepositValue = storage[1].toString();
-    const depositCount = depositors.filter(
-      (depositor) => depositor === address,
+    const depositCount = depositors.filter((depositor) =>
+      isSameAddress(depositor, address),
     ).length;
 
     if (depositCount > 0) {
@@ -41,8 +42,9 @@ export default function useFetchMyDemocracyDeposits() {
   const api = useContextApi();
   const dispatch = useDispatch();
   const {
-    modules: { democracy: hasDemocracyModule },
+    modules: { democracy },
   } = useChainSettings();
+  const hasDemocracyModule = democracy && !democracy?.archived;
 
   useEffect(() => {
     if (!api || !realAddress || !api.query?.democracy || !hasDemocracyModule) {
@@ -52,5 +54,5 @@ export default function useFetchMyDemocracyDeposits() {
     queryAddressDeposits(api, realAddress).then((data) => {
       dispatch(setDemocracyDeposits(data));
     });
-  }, [api, realAddress, dispatch]);
+  }, [api, realAddress, dispatch, hasDemocracyModule]);
 }

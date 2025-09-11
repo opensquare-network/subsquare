@@ -1,142 +1,100 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import BigNumber from "bignumber.js";
-import useIsMounted from "../../../../utils/hooks/useIsMounted";
-import { newErrorToast } from "../../../../store/reducers/toastSlice";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
 
-import { checkInputValue, emptyFunction } from "../../../../utils";
-import PopupWithSigner from "../../../popupWithSigner";
+import { checkInputValue } from "next-common/utils";
+import PopupWithSigner from "next-common/components/popupWithSigner";
 import ProposalBond from "./proposalBond";
-import Beneficiary from "../../common/beneficiary";
 import ProposalValue from "./proposalValue";
 import Signer from "next-common/components/popup/fields/signerField";
-import useAddressBalance from "../../../../utils/hooks/useAddressBalance";
-import { WarningMessage } from "../../../popup/styled";
-import useBond from "../../../../utils/hooks/useBond";
-import { sendTx, wrapWithProxy } from "../../../../utils/sendTx";
-import PrimaryButton from "next-common/lib/button/primary";
-import { useChainSettings } from "../../../../context/chain";
-import { PopupButtonWrapper } from "../../../popup/wrapper";
-import {
-  useExtensionAccounts,
-  useSignerAccount,
-} from "next-common/components/popupWithSigner/context";
+import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
+import { WarningMessage } from "next-common/components/popup/styled";
+import useBond from "next-common/utils/hooks/useBond";
+import { useChainSettings } from "next-common/context/chain";
+import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
+import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import { noop } from "lodash-es";
+import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
+import { useTreasuryPallet } from "next-common/context/treasury";
 
-function PopupContent() {
-  const {
-    onClose,
-    onInBlock = emptyFunction,
-    onFinalized = emptyFunction,
-    onSubmitted = emptyFunction,
-  } = usePopupParams();
-  const dispatch = useDispatch();
-  const isMounted = useIsMounted();
-  const signerAccount = useSignerAccount();
-  const extensionAccounts = useExtensionAccounts();
-
-  const [inputValue, setInputValue] = useState();
-  const [loading, setLoading] = useState(false);
-
-  const node = useChainSettings();
-  const api = useContextApi();
-
-  const proposalValue = new BigNumber(inputValue).times(
-    Math.pow(10, node.decimals),
-  );
+function useProposalBond({ proposalValue }) {
+  const pallet = useTreasuryPallet();
   const bond = useBond({
-    api,
+    pallet,
     proposalValue,
   });
 
-  const [beneficiary, setBeneficiary] = useState();
+  return {
+    value: bond,
+    component: <ProposalBond bond={bond} />,
+  };
+}
+
+function PopupContent() {
+  const { onInBlock = noop } = usePopupParams();
+  const dispatch = useDispatch();
+  const signerAccount = useSignerAccount();
+  const pallet = useTreasuryPallet();
+
+  const api = useContextApi();
+  const { decimals } = useChainSettings();
+
+  const [inputValue, setInputValue] = useState();
+  const proposalValue = new BigNumber(inputValue).times(Math.pow(10, decimals));
+  const { value: bond, component: bondComponent } = useProposalBond({
+    pallet,
+    proposalValue,
+  });
+  const { value: beneficiary, component: beneficiaryField } =
+    useAddressComboField();
 
   const [balance, balanceIsLoading] = useAddressBalance(
     api,
     signerAccount?.realAddress,
   );
-  const [signerBalance, isSignerBalanceLoading] = useAddressBalance(
-    api,
-    signerAccount?.address,
-  );
 
-  const showErrorToast = (message) => dispatch(newErrorToast(message));
-
-  const submit = async () => {
-    if (!api) {
-      return showErrorToast("Chain network is not connected yet");
-    }
-
-    if (!signerAccount) {
-      return showErrorToast("Please select an account");
-    }
-
+  const getTxFunc = useCallback(async () => {
     if (!beneficiary) {
-      return showErrorToast("Please input a beneficiary");
+      dispatch(newErrorToast("Please input a beneficiary"));
+      return;
     }
 
     let bnValue;
     try {
-      bnValue = checkInputValue(inputValue, node.decimals);
+      bnValue = checkInputValue(inputValue, decimals);
     } catch (err) {
-      return showErrorToast(err.message);
+      dispatch(newErrorToast(err.message));
+      return;
     }
 
-    let tx = api.tx.treasury.proposeSpend(bnValue.toString(), beneficiary);
-
-    if (signerAccount?.proxyAddress) {
-      tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-    }
-
-    await sendTx({
-      tx,
-      dispatch,
-      setLoading,
-      onFinalized,
-      onInBlock: (eventData) => {
-        const [proposalIndex] = eventData;
-        onInBlock(signerAccount?.address, proposalIndex);
-      },
-      onSubmitted,
-      onClose,
-      signerAccount,
-      isMounted,
-      section: "treasury",
-      method: "Proposed",
-    });
-  };
+    return api.tx[pallet].proposeSpend(bnValue.toString(), beneficiary);
+  }, [pallet, beneficiary, inputValue, decimals, api, dispatch]);
 
   const balanceInsufficient = new BigNumber(bond).gt(balance);
   const disabled = balanceInsufficient || !new BigNumber(inputValue).gt(0);
 
   return (
     <>
-      <Signer
-        balance={balance}
-        isBalanceLoading={balanceIsLoading}
-        signerBalance={signerBalance}
-        isSignerBalanceLoading={isSignerBalanceLoading}
-      />
-      <Beneficiary
-        extensionAccounts={extensionAccounts}
-        setAddress={setBeneficiary}
-      />
+      <Signer balance={balance} isBalanceLoading={balanceIsLoading} />
+      {beneficiaryField}
       <ProposalValue setValue={setInputValue} />
-      <ProposalBond bond={bond} node={node} />
+      {bondComponent}
       {balanceInsufficient && (
         <WarningMessage danger>Insufficient balance</WarningMessage>
       )}
-      <PopupButtonWrapper>
-        <PrimaryButton disabled={disabled} loading={loading} onClick={submit}>
-          Submit
-        </PrimaryButton>
-      </PopupButtonWrapper>
+      <TxSubmissionButton
+        getTxFunc={getTxFunc}
+        disabled={disabled}
+        onInBlock={onInBlock}
+      />
     </>
   );
 }
 
-export default function Popup(props) {
+export default function NewTreasuryProposalPopup(props) {
   return (
     <PopupWithSigner title="New Treasury Proposal" {...props}>
       <PopupContent />

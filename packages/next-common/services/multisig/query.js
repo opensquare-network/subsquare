@@ -13,6 +13,7 @@ const getMultisigsQuery = (address, page, pageSize) => `query MyQuery {
       call
       callHash
       callHex
+      depositor
       signatories
       threshold
       when {
@@ -40,6 +41,26 @@ export const getMultisigsCountQuery = (address) => `query MyQuery {
     offset: 0
   ) {
     total
+  }
+}`;
+
+export const getMultisigAddressesQuery = (
+  address,
+  page,
+  pageSize,
+) => `query MyQuery {
+  multisigAddresses(
+    signatory: "${address}"
+    limit: ${pageSize}
+    offset: ${(page - 1) * pageSize}
+  ) {
+    total
+    offset
+    multisigAddresses {
+      address
+      threshold
+      signatories
+    }
   }
 }`;
 

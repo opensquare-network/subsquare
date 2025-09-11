@@ -1,19 +1,19 @@
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { gov2ReferendumsSummaryApi } from "next-common/services/url";
 import ReferendaLayout from "next-common/components/layout/referendaLayout";
 import {
   ModuleTabProvider,
   Referenda,
 } from "next-common/components/profile/votingHistory/common";
-import ModuleVotes from "components/myvotes/moduleVotes";
+import ModuleVotes from "next-common/components/myvotes/moduleVotes";
 import { useUser } from "next-common/context/user";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { cn } from "next-common/utils";
 import { ModuleTab } from "next-common/components/profile/votingHistory/common";
-import { Title } from "components/myvotes/styled";
+import { Title } from "next-common/components/myvotes/styled";
 
 export function ReferendaVoteLayout({ children }) {
   return (
@@ -42,14 +42,16 @@ export default function ReferendaVotesPage({ referendaSummary }) {
     }
   }, [user, router]);
 
-  const title = "OpenGov Referenda";
-
-  const seoInfo = { title, desc: title };
+  const seoInfo = {
+    title: "OpenGov Referenda Votes",
+    desc: "View your OpenGov referenda votes",
+  };
 
   return (
     <ReferendaLayout
       seoInfo={seoInfo}
-      title={title}
+      title={seoInfo.title}
+      description={seoInfo.desc}
       summaryData={referendaSummary}
     >
       <ModuleTabProvider defaultTab={Referenda}>
@@ -64,7 +66,7 @@ export default function ReferendaVotesPage({ referendaSummary }) {
 export const getServerSideProps = withCommonProps(async () => {
   const [tracksProps, { result: referendaSummary }] = await Promise.all([
     fetchOpenGovTracksProps(),
-    nextApi.fetch(gov2ReferendumsSummaryApi),
+    backendApi.fetch(gov2ReferendumsSummaryApi),
   ]);
 
   return {

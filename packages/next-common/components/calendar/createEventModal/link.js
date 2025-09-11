@@ -1,14 +1,11 @@
 import React from "react";
 import Labeled from "../../../components/Labeled";
-import LineInput from "../../lineInput";
+import Input from "next-common/lib/input";
 
 export default function Link({ setValue }) {
   return (
     <Labeled text={"Link"}>
-      <LineInput
-        placeholder="Please fill the link..."
-        setValue={setValue}
-      />
+      <Input placeholder="Please fill the link..." onValueChange={setValue} />
     </Labeled>
   );
 }

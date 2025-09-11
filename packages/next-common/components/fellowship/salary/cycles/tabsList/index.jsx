@@ -6,16 +6,17 @@ import { useRouter } from "next/router";
 import { find } from "lodash-es";
 import { useFellowshipSalaryCyclePaymentsTabItem } from "./payments";
 import { usePageProps } from "next-common/context/page";
+import { useUrlSearchParams } from "next-common/hooks/useUrlSearchParams";
 
 export default function FellowshipSalaryCycleDetailTabsList() {
   const router = useRouter();
   const { cycle } = usePageProps();
+  const [, , updateSearchParams] = useUrlSearchParams();
 
   const registrationsTabItem = useFellowshipSalaryCycleRegistrationsTabItem();
   const paymentsTabItem = useFellowshipSalaryCyclePaymentsTabItem();
   const feedTabItem = useFellowshipSalaryCycleFeedsTabItem();
 
-  const [id] = router.query.params;
   const { tab = "" } = router.query;
 
   const items = cycle?.isFinal
@@ -27,26 +28,15 @@ export default function FellowshipSalaryCycleDetailTabsList() {
     (i) => i.name.toLowerCase() === tab?.toLowerCase?.(),
   );
 
-  const defaultTab = matchedTabItem?.name || items[0]?.name;
+  const defaultTabValue = matchedTabItem?.name || items[0]?.name;
 
   return (
     <PrimaryCard>
       <FellowshipSalaryCycleDetailListTemplate
         items={items}
-        defaultTab={defaultTab}
+        defaultTabValue={defaultTabValue}
         onTabClick={(tab) => {
-          router.replace(
-            {
-              pathname: `/fellowship/salary/cycles/${id}`,
-              query: {
-                tab: tab.label?.toLowerCase?.(),
-              },
-            },
-            undefined,
-            {
-              shallow: true,
-            },
-          );
+          updateSearchParams({ tab: tab.value?.toLowerCase?.() });
         }}
       />
     </PrimaryCard>

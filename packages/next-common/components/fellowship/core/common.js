@@ -3,12 +3,12 @@ import FellowshipCoreMembersSummary from "next-common/components/fellowship/core
 import FellowshipSummaryActions from "next-common/components/fellowship/core/summary/actions";
 
 export default function FellowshipCoreCommon({ children, ...props }) {
-  const title = "Fellowship Core";
+  const title = "Fellowship Members";
   const desc =
-    "The core pallet controls the overall process of induction, promotion and demotion according to the Fellowship rules and timelines, and handles the retention of evidence which members and candidates submit for these processes.";
+    "The Technical Fellowship is a self-governing body of experts and developers of Polkadot and Kusama networks protocols. It operates on-chain through the Polkadot Collectives system chain and off-chain through the Polkadot Fellows repository.";
   const seoInfo = { title, desc };
 
-  const corePath = "/fellowship/core";
+  const corePath = "/fellowship/members";
 
   return (
     <ListLayout
@@ -19,19 +19,16 @@ export default function FellowshipCoreCommon({ children, ...props }) {
       summaryFooter={<FellowshipSummaryActions />}
       tabs={[
         {
+          value: "members",
           label: "Members",
           url: corePath,
-          urls: [corePath, "/fellowship/core/candidates"],
+          urls: [corePath, "/fellowship/members/candidates"],
           exactMatch: true,
         },
         {
-          label: "Params",
-          url: "/fellowship/core/params",
-          exactMatch: true,
-        },
-        {
+          value: "feeds",
           label: "Feeds",
-          url: "/fellowship/core/feeds",
+          url: "/fellowship/members/feeds",
           exactMatch: true,
         },
       ].filter(Boolean)}

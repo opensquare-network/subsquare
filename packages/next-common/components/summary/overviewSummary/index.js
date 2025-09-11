@@ -2,38 +2,26 @@ import styled from "styled-components";
 import Flex from "../../styled/flex";
 import { SummaryGreyText } from "../styled";
 import ActiveValue from "./activeValue";
-import {
-  useChainSettings,
-  useMenuHasCouncil,
-  useMenuHasDemocracyExternal,
-  useMenuHasTechComm,
-  useMenuHasTreasuryBounties,
-  useMenuHasTreasuryChildBounties,
-  useMenuHasTreasuryTips,
-} from "../../../context/chain";
-import Summary from "..";
-import isMoonChain from "next-common/utils/isMoonChain";
+import { useChainSettings } from "../../../context/chain";
 import { usePageProps } from "next-common/context/page";
+import SummaryLayout from "next-common/components/summary/layout/layout";
+import SummaryItem from "next-common/components/summary/layout/item";
+import DotSplitter from "next-common/components/dotSplitter";
 
 const ContentWrapper = styled.div`
   display: flex;
+  flex-wrap: wrap;
 `;
 const TypeGroup = styled(Flex)`
-  &:not(:last-child) {
-    &::after {
-      content: "${(p) => p.separator || "·"}";
-      display: inline-block;
-      margin: 0 4px;
-      color: var(--textDisabled);
-    }
-  }
+  column-gap: 4px;
 `;
 
 function SummaryTypeGroup({ separator, label, tooltip, href, value }) {
   return (
-    <TypeGroup separator={separator}>
+    <TypeGroup separator={separator} className="group">
       <SummaryGreyText className="text16Bold">{label}</SummaryGreyText>
       <ActiveValue tooltip={tooltip} href={href} value={value} />
+      <DotSplitter className="mx-1 ml-0 group-last:hidden" />
     </TypeGroup>
   );
 }
@@ -69,7 +57,10 @@ function OpenGovGroupContent() {
 
 function DemocracyGroupContent() {
   const { summary } = usePageProps();
-  const showExternal = useMenuHasDemocracyExternal();
+  const {
+    modules: { democracy },
+  } = useChainSettings();
+  const showExternal = democracy?.externalProposals;
 
   const { referenda, publicProposals, externalProposals } = summary ?? {};
 
@@ -101,11 +92,16 @@ function DemocracyGroupContent() {
 
 function TreasuryGroupContent() {
   const { summary } = usePageProps();
-  const showTreasuryBounties = useMenuHasTreasuryBounties();
-  const showChildBounties = useMenuHasTreasuryChildBounties();
-  const showTips = useMenuHasTreasuryTips();
+  const {
+    modules: { treasury },
+  } = useChainSettings();
+  const showTreasuryBounties = !!treasury?.bounties;
+  const showChildBounties = !!treasury?.childBounties;
+  const showTips = !!treasury?.tips && !treasury?.tips?.archived;
+  const showSpends = !!treasury?.spends;
 
-  const { bounties, childBounties, tips, treasuryProposals } = summary ?? {};
+  const { bounties, childBounties, tips, treasuryProposals, treasurySpends } =
+    summary ?? {};
 
   return (
     <ContentWrapper>
@@ -115,6 +111,14 @@ function TreasuryGroupContent() {
         href="/treasury/proposals"
         value={treasuryProposals?.active || 0}
       />
+      {showSpends && (
+        <SummaryTypeGroup
+          label="S"
+          tooltip="Active spends"
+          href="/treasury/spends"
+          value={treasurySpends?.active || 0}
+        />
+      )}
       {showTreasuryBounties && (
         <SummaryTypeGroup
           label="B"
@@ -145,10 +149,13 @@ function TreasuryGroupContent() {
 
 function CouncilGroupContent() {
   const { summary } = usePageProps();
-  const showCouncil = useMenuHasCouncil();
-  const showTc = useMenuHasTechComm();
+  const {
+    modules: { council, technicalCommittee },
+  } = useChainSettings();
+  const showCouncil = !!council;
+  const showTc = !!technicalCommittee;
 
-  const { motions, techCommMotions, moonCouncilMotions } = summary ?? {};
+  const { motions, techCommMotions } = summary ?? {};
 
   return (
     <ContentWrapper>
@@ -158,9 +165,7 @@ function CouncilGroupContent() {
           label="M"
           tooltip="Active council motions"
           href="/council/motions"
-          value={
-            (isMoonChain() ? moonCouncilMotions?.active : motions?.active) || 0
-          }
+          value={motions?.active || 0}
         />
       )}
       {showTc && (
@@ -176,49 +181,47 @@ function CouncilGroupContent() {
 }
 
 export default function OverviewSummary() {
-  const showCouncil = useMenuHasCouncil();
-  const showTC = useMenuHasTechComm();
+  const {
+    modules: { council, technicalCommittee },
+  } = useChainSettings();
+  const showCouncil = !!council;
+  const showTC = !!technicalCommittee;
   const {
     modules: {
       referenda: hasReferenda,
       fellowship: hasFellowship,
-      democracy: hasDemocracyModule,
+      democracy,
+      treasury: hasTreasury,
     },
   } = useChainSettings();
-
-  const items = [];
-  if (hasReferenda || hasFellowship) {
-    items.push({
-      title: "Open Gov",
-      content: <OpenGovGroupContent />,
-    });
-  }
-
-  if (hasDemocracyModule) {
-    items.push({
-      title: "Democracy",
-      content: <DemocracyGroupContent />,
-    });
-  }
-
-  items.push({
-    title: "Treasury",
-    content: <TreasuryGroupContent />,
-  });
-
-  if (hasDemocracyModule) {
-    items.push({
-      title: `${showCouncil ? "Council" : ""}${
-        showTC && showCouncil ? " / " : ""
-      }${showTC ? "T.C." : ""}`,
-      content: <CouncilGroupContent />,
-    });
-  }
+  const hasDemocracyModule = democracy && !democracy?.archived;
 
   return (
-    <Summary
-      description="Active proposal numbers of various governance processes."
-      items={items}
-    />
+    <SummaryLayout description="Active proposal numbers of various governance processes.">
+      {(hasReferenda || hasFellowship) && (
+        <SummaryItem title="Open Gov">
+          <OpenGovGroupContent />
+        </SummaryItem>
+      )}
+      {hasDemocracyModule && (
+        <SummaryItem title="Democracy">
+          <DemocracyGroupContent />
+        </SummaryItem>
+      )}
+      {hasTreasury && (
+        <SummaryItem title="Treasury">
+          <TreasuryGroupContent />
+        </SummaryItem>
+      )}
+      {hasDemocracyModule && (
+        <SummaryItem
+          title={`${showCouncil ? "Council" : ""}${
+            showTC && showCouncil ? " / " : ""
+          }${showTC ? "T.C." : ""}`}
+        >
+          <CouncilGroupContent />
+        </SummaryItem>
+      )}
+    </SummaryLayout>
   );
 }

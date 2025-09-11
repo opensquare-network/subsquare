@@ -62,6 +62,7 @@ export default function MethodSelect({
     if (!option) {
       setMethodName(options[0].value);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [options]);
 
   return (

@@ -1,8 +1,6 @@
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
-import Timeline from "components/treasuryProposal/timeline";
-import Metadata from "next-common/components/treasury/proposal/metadata";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
@@ -15,6 +13,16 @@ import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import { TreasuryProvider } from "next-common/context/treasury";
+import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
+
+const Timeline = dynamicClientOnly(() =>
+  import("components/treasuryProposal/timeline"),
+);
+const Metadata = dynamicClientOnly(() =>
+  import("next-common/components/treasury/proposal/metadata"),
+);
 
 function TreasuryProposalContent() {
   const detail = usePost();
@@ -22,13 +30,15 @@ function TreasuryProposalContent() {
   useSubscribePostDetail(detail?.proposalIndex);
 
   return (
-    <ContentWithComment>
-      <TreasuryProposalDetail />
-      <DetailMultiTabs
-        metadata={<Metadata treasuryProposal={detail?.onchainData} />}
-        timeline={<Timeline treasuryProposal={detail?.onchainData} />}
-      />
-    </ContentWithComment>
+    <MaybeSimaContent>
+      <ContentWithComment>
+        <TreasuryProposalDetail />
+        <DetailMultiTabs
+          metadata={<Metadata treasuryProposal={detail?.onchainData} />}
+          timeline={<Timeline treasuryProposal={detail?.onchainData} />}
+        />
+      </ContentWithComment>
+    </MaybeSimaContent>
   );
 }
 
@@ -63,14 +73,16 @@ function ProposalPageImpl() {
 export default function Proposal({ detail }) {
   return (
     <PostProvider post={detail}>
-      <ProposalPageImpl />
+      <TreasuryProvider>
+        <ProposalPageImpl />
+      </TreasuryProvider>
     </PostProvider>
   );
 }
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
-  const { result: detail } = await nextApi.fetch(`treasury/proposals/${id}`);
+  const { result: detail } = await backendApi.fetch(`treasury/proposals/${id}`);
 
   if (!detail) {
     return getNullDetailProps(id);
@@ -80,7 +92,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
     `treasury/proposals/${detail._id}/comments`,
     context,
   );
-  const { result: summary } = await nextApi.fetch("summary");
+  const { result: summary } = await backendApi.fetch("overview/summary");
 
   return {
     props: {

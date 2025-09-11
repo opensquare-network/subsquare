@@ -4,14 +4,18 @@ const VoteSuccessfulContext = React.createContext();
 
 export function VoteSuccessfulProvider({ VoteSuccessfulPopup, children }) {
   const [addressVote, setAddressVote] = React.useState(null);
+  const [addressDelegations, setAddressDelegations] = React.useState(null);
   const [isShow, setIsShow] = React.useState(false);
 
   return (
-    <VoteSuccessfulContext.Provider value={{ setAddressVote, setIsShow }}>
+    <VoteSuccessfulContext.Provider
+      value={{ setAddressVote, setAddressDelegations, setIsShow }}
+    >
       {children}
       {isShow && (
         <VoteSuccessfulPopup
           addressVote={addressVote}
+          addressDelegations={addressDelegations}
           onClose={() => setIsShow(false)}
         />
       )}
@@ -20,12 +24,15 @@ export function VoteSuccessfulProvider({ VoteSuccessfulPopup, children }) {
 }
 
 export function useShowVoteSuccessful() {
-  const { setAddressVote, setIsShow } = React.useContext(VoteSuccessfulContext);
+  const { setAddressVote, setAddressDelegations, setIsShow } = React.useContext(
+    VoteSuccessfulContext,
+  );
   return React.useCallback(
-    (addressVote) => {
+    (addressVote, addressDelegations) => {
       setAddressVote(addressVote);
+      setAddressDelegations(addressDelegations);
       setIsShow(true);
     },
-    [setAddressVote, setIsShow],
+    [setAddressVote, setIsShow, setAddressDelegations],
   );
 }

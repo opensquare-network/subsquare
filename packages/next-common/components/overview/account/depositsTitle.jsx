@@ -19,6 +19,7 @@ import {
 import { sumBy } from "lodash-es";
 import { isNil } from "lodash-es";
 import useMyIdentityDeposit from "next-common/hooks/useMyIdentityDeposit";
+import useSubMyProxies from "next-common/hooks/account/useSubMyProxies";
 
 export default function DepositsTitle({ active }) {
   const referendaSubmissionDeposits = useSelector(
@@ -46,6 +47,9 @@ export default function DepositsTitle({ active }) {
 
   const { depositsCount } = useMyIdentityDeposit();
 
+  const { proxies = [] } = useSubMyProxies();
+  const proxyDepositsCount = proxies[0]?.length || 0;
+
   const count =
     sumBy(
       [
@@ -61,7 +65,9 @@ export default function DepositsTitle({ active }) {
         preimageDeposits,
       ],
       "length",
-    ) + depositsCount;
+    ) +
+    depositsCount +
+    proxyDepositsCount;
 
   return (
     <Title className={active ? "text-textPrimary" : "text-textTertiary"}>

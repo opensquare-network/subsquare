@@ -11,3 +11,11 @@ export const Create = styled.div`
   }
   cursor: pointer;
 `;
+
+export const ClaimInfoText = styled.div`
+  margin-top: 16px;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--textTertiary);
+`;

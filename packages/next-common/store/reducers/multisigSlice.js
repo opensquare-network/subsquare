@@ -20,9 +20,9 @@ const multisigSlice = createSlice({
   },
 });
 
-export const myMultisigsSelector = (state) => state.multisig.myMultisigs;
+export const myMultisigsSelector = (state) => state?.multisig?.myMultisigs;
 export const myMultisigsCountSelector = (state) =>
-  state.multisig.myMultisigsCount;
+  state?.multisig?.myMultisigsCount;
 
 export const { setMyMultisigs, setMyMultisigsCount } = multisigSlice.actions;
 
@@ -64,4 +64,9 @@ export const fetchMyMultisigsCount = (chain, address) => async (dispatch) => {
   const { multisigs } = result.data || {};
   const count = multisigs?.total || 0;
   dispatch(setMyMultisigsCount(count));
+};
+
+export const clearMyMultisigsData = () => async (dispatch) => {
+  dispatch(setMyMultisigs(null));
+  dispatch(setMyMultisigsCount(null));
 };

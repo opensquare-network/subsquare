@@ -1,15 +1,16 @@
 import { useState } from "react";
 import { Button } from "next-common/components/summary/styled";
-import DelegatePopup from "next-common/components/gov2/delegatePopup";
-import MoonDelegatePopup from "next-common/components/gov2/delegatePopup/moonPopup";
 import AddSVG from "next-common/assets/imgs/icons/add.svg";
 import RemoveSVG from "next-common/assets/imgs/icons/remove.svg";
-import UndelegatePopup from "./undelegatePopup";
-import MoonUndelegatePopup from "./undelegatePopup/moonPopup";
 import Tooltip from "next-common/components/tooltip";
 import styled from "styled-components";
-import isMoonChain from "next-common/utils/isMoonChain";
-import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const DelegatePopup = dynamicPopup(() =>
+  import("next-common/components/gov2/delegatePopup"),
+);
+
+const UndelegatePopup = dynamicPopup(() => import("./undelegatePopup"));
 
 const RemoveButton = styled(Button)`
   display: flex;
@@ -20,14 +21,6 @@ export default function DelegationButton({ delegating, trackId }) {
   const [isLoading, setIsLoading] = useState(false);
   const [showDelegatePopup, setShowDelegatePopup] = useState(false);
   const [showUndelegatePopup, setShowUndelegatePopup] = useState(false);
-  const isUseMetamask = useIsUseMetamask();
-
-  let TheDelegatePopup = DelegatePopup;
-  let TheUndelegatePopup = UndelegatePopup;
-  if (isMoonChain() && isUseMetamask) {
-    TheDelegatePopup = MoonDelegatePopup;
-    TheUndelegatePopup = MoonUndelegatePopup;
-  }
 
   const addDelegationButton = (
     <Button onClick={() => setShowDelegatePopup(true)}>
@@ -53,13 +46,13 @@ export default function DelegationButton({ delegating, trackId }) {
     <>
       {delegating ? removeDelegationButton : addDelegationButton}
       {showDelegatePopup && (
-        <TheDelegatePopup
+        <DelegatePopup
           tracks={[trackId]}
           onClose={() => setShowDelegatePopup(false)}
         />
       )}
       {showUndelegatePopup && (
-        <TheUndelegatePopup
+        <UndelegatePopup
           trackId={trackId}
           onClose={() => setShowUndelegatePopup(false)}
           isLoading={isLoading}

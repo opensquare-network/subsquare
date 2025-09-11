@@ -7,13 +7,10 @@ import { isExternalLink } from "../../utils";
 import commonMenus from "../../utils/consts/menu/common";
 import { useIsMacOS, usePageProps } from "next-common/context/page";
 import { getHomeMenu } from "next-common/utils/consts/menu";
-import { useChain } from "next-common/context/chain";
-import {
-  cmdkPaletteVisibleSelector,
-  setCmdkPaletteVisible,
-} from "next-common/store/reducers/cmdkSlice";
-import { useSelector, useDispatch } from "react-redux";
 import { SystemMenu } from "@osn/icons/subsquare";
+import { createGlobalState } from "react-use";
+
+export const useCmdkPaletteVisible = createGlobalState(false);
 
 function renderCommandPaletteLink(props) {
   const { href, children, ...restProps } = props ?? {};
@@ -38,25 +35,19 @@ function renderCommandPaletteLink(props) {
 }
 
 export default function CMDKPalette() {
-  const chain = useChain();
   const { isDark } = useTheme();
   const isMacOS = useIsMacOS();
   const [page, setPage] = useState("home");
   const [search, setSearch] = useState("");
-  const cmdkPaletteVisible = useSelector(cmdkPaletteVisibleSelector);
-  const dispatch = useDispatch();
+  const [cmdkPaletteVisible, setCmdkPaletteVisible] = useCmdkPaletteVisible();
 
   const { tracks, fellowshipTracks } = usePageProps();
   const homeMenus = getHomeMenu({ tracks, fellowshipTracks });
-  function filterExcludeChains(item) {
-    return !item?.excludeToChains?.includes(chain);
-  }
 
   const foldedMenu = homeMenus
     .filter((menu) => menu.name)
-    .filter(filterExcludeChains)
     .map((menu) => {
-      const items = (menu.items || []).filter(filterExcludeChains);
+      const items = menu.items || [];
       return {
         ...menu,
         items,
@@ -96,7 +87,7 @@ export default function CMDKPalette() {
           {
             id: "home",
             items: [
-              ...commonMenus.items.filter(filterExcludeChains).map((i) => {
+              ...commonMenus.items.map((i) => {
                 return {
                   id: i.name,
                   children: i.name,
@@ -144,11 +135,12 @@ export default function CMDKPalette() {
     };
 
     return [homePageItem, ...subPageItems];
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [foldedMenu, search]);
 
   function onPageEscape(page) {
     if (page.id === "home") {
-      dispatch(setCmdkPaletteVisible(false));
+      setCmdkPaletteVisible(false);
       return;
     }
     setPage("home");
@@ -159,7 +151,7 @@ export default function CMDKPalette() {
     if (modifierKey && e.key === "k") {
       e.preventDefault();
       e.stopPropagation();
-      dispatch(setCmdkPaletteVisible(true));
+      setCmdkPaletteVisible(true);
     }
   });
 
@@ -169,7 +161,7 @@ export default function CMDKPalette() {
         page={page}
         onChangeSearch={setSearch}
         isOpen={cmdkPaletteVisible}
-        onChangeOpen={(v) => dispatch(setCmdkPaletteVisible(v))}
+        onChangeOpen={(v) => setCmdkPaletteVisible(v)}
         search={search}
         renderLink={renderCommandPaletteLink}
         theme={isDark ? "dark" : "light"}

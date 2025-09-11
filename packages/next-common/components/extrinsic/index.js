@@ -5,6 +5,7 @@ import Params from "./params";
 import SectionSelect from "./sectionSelect";
 import { useObjectItemState } from "next-common/hooks/useItemState";
 import { useContextApi } from "next-common/context/api";
+import { CallContext } from "./context";
 
 function getParams({ meta }) {
   return meta.args.map(({ name, type, typeName }) => ({
@@ -26,7 +27,7 @@ function getCallState(fn, values = []) {
   };
 }
 
-function getExtrinsicValues(value) {
+export function getExtrinsicValues(value) {
   if (!value) {
     return value;
   }
@@ -67,11 +68,16 @@ export default function Extrinsic({
   defaultMethodName,
   // value,
   setValue,
+  defaultCallState,
+  onCallStateChange,
 }) {
   const api = useContextApi();
   const [sectionName, setSectionName] = useState(defaultSectionName);
   const [methodName, setMethodName] = useState(defaultMethodName);
-  const [callState, setCallState] = useState();
+  const [callState, setCallState] = useState(defaultCallState);
+  useEffect(() => {
+    onCallStateChange?.(callState);
+  }, [callState, onCallStateChange]);
 
   const [callValues, setCallValues] = useObjectItemState({
     items: callState,
@@ -87,7 +93,7 @@ export default function Extrinsic({
 
     try {
       const fnValues = getExtrinsicValues(values);
-      const tx = fn(...fnValues);
+      const tx = fn(...(fnValues || []));
       setValue({
         isValid: true,
         data: tx,
@@ -128,11 +134,15 @@ export default function Extrinsic({
         methodName={methodName}
         setMethodName={setMethodName}
       />
-      <Params
-        params={callState?.extrinsic?.params}
-        value={callValues}
-        setValue={setCallValues}
-      />
+      <CallContext.Provider
+        value={{ section: sectionName, method: methodName }}
+      >
+        <Params
+          params={callState?.extrinsic?.params}
+          value={callValues}
+          setValue={setCallValues}
+        />
+      </CallContext.Provider>
     </div>
   );
 }

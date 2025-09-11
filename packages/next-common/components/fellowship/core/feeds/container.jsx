@@ -6,6 +6,7 @@ import SearchBox from "next-common/components/preImages/searchBox";
 import { useRouter } from "next/router";
 import { objectToQueryString } from "next-common/utils/url";
 import FilterButton from "next-common/components/filterButton";
+import { useCollectivesContext } from "next-common/context/collectives/collectives";
 
 const EVENT_CONTENTS = {
   ParamsChanged: "ParamsChanged",
@@ -21,6 +22,7 @@ const EVENT_CONTENTS = {
 };
 
 export default function FellowshipCoreFeedsContainer({ feeds = {} }) {
+  const { section } = useCollectivesContext();
   const router = useRouter();
   const { who: queryWho, event: queryEvent } = router.query;
   const [searchValue, setSearchValue] = useState(queryWho || "");
@@ -41,7 +43,7 @@ export default function FellowshipCoreFeedsContainer({ feeds = {} }) {
       who: searchValue,
     };
     let query = objectToQueryString(queryObject);
-    router.push({ pathname: "/fellowship/core/feeds", query });
+    router.push({ pathname: `/${section}/members/feeds`, query });
     setLoading(true);
   };
 

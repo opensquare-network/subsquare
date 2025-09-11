@@ -12,10 +12,13 @@ function Warning() {
   const { hash, meta, info, status: onChainStatus } = useOnchainData();
   const proposalHash = hash || meta?.proposalHash;
   const api = useContextApi();
-  const [status] = useCall(api?.query?.preimage?.statusFor, [proposalHash]);
-  const [requestStatus] = useCall(api?.query?.preimage?.requestStatusFor, [
+  const { value: status } = useCall(api?.query?.preimage?.statusFor, [
     proposalHash,
   ]);
+  const { value: requestStatus } = useCall(
+    api?.query?.preimage?.requestStatusFor,
+    [proposalHash],
+  );
   const proposal = info?.ongoing?.proposal || onChainStatus?.proposal;
 
   let lenFromStatus;

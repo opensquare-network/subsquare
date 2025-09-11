@@ -1,6 +1,6 @@
 import { MenuDelegation } from "@osn/icons/subsquare";
 import { noop } from "lodash-es";
-import Input from "next-common/components/input";
+import Input from "next-common/lib/input";
 
 export default function DelegationSearchInput({
   address = "",
@@ -8,7 +8,7 @@ export default function DelegationSearchInput({
   delegateButton,
 }) {
   return (
-    <div className="flex items-center gap-x-2">
+    <div className="flex items-center gap-x-2 [&>div]:w-full">
       <Input
         className="w-full h-10 bg-neutral100"
         placeholder="Please fill an address to delegate votes"

@@ -1,30 +1,18 @@
-import styled, { css } from "styled-components";
-import React, { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import styled from "styled-components";
+import { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import useWindowSize from "../../utils/hooks/useWindowSize";
-import useOnClickOutside from "../../utils/hooks/useOnClickOutside";
 import {
   currentNodeSelector,
   nodesSelector,
-  setCurrentNode,
 } from "../../store/reducers/nodeSlice";
 import Caret from "../icons/caret";
-import SignalDefault from "../../assets/imgs/icons/signal-default.svg";
-import signalMedium from "../../assets/imgs/icons/signal-medium.png";
-import signalSlow from "../../assets/imgs/icons/signal-slow.png";
-import signalFast from "../../assets/imgs/icons/signal-fast.png";
-import darkSignalMedium from "../../assets/imgs/icons/dark-signal-medium.png";
-import darkSignalSlow from "../../assets/imgs/icons/dark-signal-slow.png";
-import darkSignalFast from "../../assets/imgs/icons/dark-signal-fast.png";
 import { useChainSettings } from "../../context/chain";
-import { useThemeMode } from "../../context/theme";
-import { NeutralPanel } from "../styled/containers/neutralPanel";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import NodeSignalIcon from "./nodeSignalIcon";
+import { useClickAway } from "react-use";
 
-const SignalDefaultIcon = styled(SignalDefault)`
-  path {
-    fill: var(--neutral500);
-  }
-`;
+const NodeOptions = dynamicClientOnly(() => import("./nodeOptions"));
 
 const Wrapper = styled.div``;
 
@@ -44,6 +32,9 @@ const SmallSelect = styled.div`
   > img {
     width: 24px;
     height: 24px;
+  }
+  &:hover {
+    border-color: var(--neutral500);
   }
 `;
 
@@ -67,64 +58,6 @@ const Select = styled.div`
   > div {
     flex-grow: 1;
   }
-  > img.signal {
-    width: 24px;
-    height: 24px;
-    flex: 0 0 24px;
-  }
-`;
-
-const Options = styled(NeutralPanel)`
-  border-radius: 8px;
-  position: absolute;
-  right: 0;
-  margin-top: 4px;
-  padding: 8px;
-  width: 100%;
-  z-index: 1;
-  color: var(--textPrimary);
-  border: 1px solid;
-  border-color: var(--neutral300);
-  box-shadow: var(--shadow200);
-
-  ${(p) =>
-    p.small &&
-    css`
-      width: auto;
-      min-width: 192px;
-    `}
-`;
-
-const Item = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 100%;
-  cursor: pointer;
-  white-space: nowrap;
-  color: var(--textPrimary);
-  :hover {
-    background-color: var(--neutral200);
-  }
-  ${(p) =>
-    p.active &&
-    css`
-      background-color: var(--neutral200);
-    `}
-  > img {
-    width: 24px;
-    height: 24px;
-  }
-  > :not(:last-child) {
-    margin-right: 8px;
-  }
-  .delay {
-    margin-left: auto;
-    color: ${(p) => p.color};
-  }
 `;
 
 export default function NodeSwitch({ small }) {
@@ -137,10 +70,8 @@ export default function NodeSwitch({ small }) {
   const [currentNodeSetting, setCurrentNodeSetting] = useState(
     chainSettings.endpoints[0],
   );
-  const dispatch = useDispatch();
-  const [mode] = useThemeMode();
 
-  useOnClickOutside(ref, () => setShow(false));
+  useClickAway(ref, () => setShow(false));
 
   useEffect(() => {
     if (small && windowSize.width && windowSize.width <= 768) {
@@ -156,20 +87,6 @@ export default function NodeSwitch({ small }) {
     }
   }, [currentNode, nodes]);
 
-  const getSignalImg = (delay) => {
-    let imgFile;
-    if (!delay || isNaN(delay)) {
-      return <SignalDefaultIcon />;
-    } else if (delay >= 300) {
-      imgFile = mode === "dark" ? darkSignalSlow : signalSlow;
-    } else if (delay >= 100) {
-      imgFile = mode === "dark" ? darkSignalMedium : signalMedium;
-    } else {
-      imgFile = mode === "dark" ? darkSignalFast : signalFast;
-    }
-    return <img alt="" src={`${imgFile.src}`} width={24} height={24} />;
-  };
-
   if (!currentNodeSetting) {
     return null;
   }
@@ -177,40 +94,23 @@ export default function NodeSwitch({ small }) {
   return (
     <Wrapper className="max-sm:relative" ref={ref}>
       {small && (
-        <SmallSelect onClick={() => setShow(!show)}>
-          {getSignalImg(currentNodeSetting?.delay)}
+        <SmallSelect role="button" onClick={() => setShow(!show)}>
+          <NodeSignalIcon delay={currentNodeSetting?.delay} />
         </SmallSelect>
       )}
       {!small && (
-        <Select onClick={() => setShow(!show)}>
-          {getSignalImg(currentNodeSetting?.delay)}
+        <Select role="button" onClick={() => setShow(!show)}>
+          <NodeSignalIcon delay={currentNodeSetting?.delay} />
           <div>{currentNodeSetting?.name}</div>
           <Caret />
         </Select>
       )}
       {show && (
-        <Options small={small}>
-          {(nodes || []).map((item, index) => (
-            <Item
-              key={index}
-              onClick={() => {
-                if (item.url === currentNodeSetting.url) {
-                  setShow(false);
-                  return;
-                }
-                dispatch(setCurrentNode({ url: item.url }));
-                setShow(false);
-              }}
-              active={item.url === currentNodeSetting.url}
-            >
-              {getSignalImg(item?.delay)}
-              <div>{`${item?.name}`}</div>
-              <div className="delay">
-                {item?.delay && !isNaN(item?.delay) ? `${item.delay} ms` : ""}
-              </div>
-            </Item>
-          ))}
-        </Options>
+        <NodeOptions
+          small={small}
+          currentNodeSetting={currentNodeSetting}
+          setShow={setShow}
+        />
       )}
     </Wrapper>
   );

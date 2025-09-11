@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import DetailItem from "components/detailItem";
 import Vote from "components/referenda/vote";
@@ -21,6 +21,7 @@ import useDemocracyVotesFromServer from "next-common/utils/hooks/referenda/useDe
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
+import { useIsTimelineCompact } from "next-common/components/detail/detailMultiTabs/timelineModeTabs";
 import useInlineCall from "next-common/components/democracy/metadata/useInlineCall";
 import ReferendumCall from "next-common/components/democracy/call";
 import DemocracyReferendaVotesBubble from "components/referenda/votesBubble";
@@ -28,13 +29,14 @@ import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
-import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/reducers/detailSlice";
 import useSubDemocracyReferendumStatus from "next-common/hooks/democracy/useSubDemocracyReferendumStatus";
 import useSetReferendumStatus from "next-common/hooks/democracy/useSetReferendumStatus";
 import { referendumStatusSelector } from "next-common/store/reducers/referendumSlice";
-import { useContextApi } from "next-common/context/api";
+import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
+import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
+import { useDemocracyReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 
-function ReferendumContent() {
+function ReferendumContent({ timelineData, setTimelineData }) {
   const dispatch = useDispatch();
   const post = usePost();
   const { publicProposal } = usePageProps();
@@ -43,11 +45,10 @@ function ReferendumContent() {
   useSetReferendumStatus();
   useSubDemocracyReferendumStatus(post?.referendumIndex);
 
-  const api = useContextApi();
   const referendumStatus = useSelector(referendumStatusSelector);
   const proposal = referendumStatus?.proposal;
 
-  useMaybeFetchElectorate(post?.onchainData, api);
+  useMaybeFetchElectorate(post?.onchainData);
   useDemocracyVotesFromServer(post.referendumIndex);
   useFetchVotes(post?.onchainData);
 
@@ -55,7 +56,6 @@ function ReferendumContent() {
     return () => dispatch(clearVotes());
   }, [dispatch]);
 
-  const [timelineData, setTimelineData] = useState([]);
   useEffect(() => {
     const proposalTimeline = publicProposal?.onchainData?.timeline || [];
     const referendumTimeline = post?.onchainData?.timeline || [];
@@ -69,58 +69,70 @@ function ReferendumContent() {
         detailPageCategory.DEMOCRACY_REFERENDUM,
       ),
     ]);
-  }, [publicProposal, post]);
+  }, [publicProposal, post, setTimelineData]);
 
-  const { call: inlineCall } = useInlineCall(timelineData, proposal);
+  const { call: inlineCall } = useInlineCall(proposal);
   const call = post?.onchainData?.preImage?.call || inlineCall;
 
-  const isTimelineCompact = useSelector(
-    detailMultiTabsIsTimelineCompactModeSelector,
-  );
+  const isTimelineCompact = useIsTimelineCompact();
 
   return (
-    <ContentWithComment>
-      <DetailItem />
+    <MaybeSimaContent>
+      <ContentWithComment>
+        <DetailItem />
 
-      <Vote
-        referendumInfo={post?.onchainData?.info}
-        referendumIndex={post?.referendumIndex}
-      />
+        <Vote
+          referendumInfo={post?.onchainData?.info}
+          referendumIndex={post?.referendumIndex}
+        />
 
-      <DetailMultiTabs
-        call={
-          (call || inlineCall) && (
-            <ReferendumCall
-              call={call || inlineCall}
-              shorten={post?.onchainData?.preImage?.shorten}
+        <DetailMultiTabs
+          call={
+            (call || inlineCall) && (
+              <ReferendumCall
+                call={call || inlineCall}
+                shorten={post?.onchainData?.preImage?.shorten}
+                onchainData={post?.onchainData}
+              />
+            )
+          }
+          metadata={
+            <ReferendumMetadata
+              proposer={post?.proposer || (post.authors || [])[0]}
+              status={referendumStatus ?? {}}
               onchainData={post?.onchainData}
             />
-          )
-        }
-        metadata={
-          <ReferendumMetadata
-            proposer={post?.proposer || (post.authors || [])[0]}
-            status={referendumStatus ?? {}}
-            onchainData={post?.onchainData}
-          />
-        }
-        timeline={<Timeline data={timelineData} compact={isTimelineCompact} />}
-        timelineCount={timelineData.length}
-        votesBubble={<DemocracyReferendaVotesBubble />}
-      />
-    </ContentWithComment>
+          }
+          timeline={
+            <Timeline data={timelineData} compact={isTimelineCompact} />
+          }
+          timelineCount={timelineData.length}
+          votesBubble={<DemocracyReferendaVotesBubble />}
+        />
+      </ContentWithComment>
+    </MaybeSimaContent>
   );
 }
 
 function ReferendumContentWithNullGuard() {
   const post = usePost();
   const { id } = usePageProps();
+  const [timelineData, setTimelineData] = useState([]);
+
+  const indexer = useDemocracyReferendumVotingFinishIndexer(timelineData);
 
   if (!post) {
     return <CheckUnFinalized id={id} />;
   }
 
-  return <ReferendumContent />;
+  return (
+    <MigrationConditionalApiProvider indexer={indexer}>
+      <ReferendumContent
+        timelineData={timelineData}
+        setTimelineData={setTimelineData}
+      />
+    </MigrationConditionalApiProvider>
+  );
 }
 
 function DemocracyReferendumPageImpl() {
@@ -150,7 +162,9 @@ export default function DemocracyReferendumPage({ detail }) {
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
 
-  const { result: detail } = await nextApi.fetch(`democracy/referendums/${id}`);
+  const { result: detail } = await backendApi.fetch(
+    `democracy/referendums/${id}`,
+  );
 
   if (!detail) {
     return getNullDetailProps(id, { publicProposal: null });
@@ -158,7 +172,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
 
   let publicProposal;
   if (!isNil(detail.proposalIndex)) {
-    const { result } = await nextApi.fetch(
+    const { result } = await backendApi.fetch(
       `democracy/proposals/${detail.proposalIndex}`,
     );
     publicProposal = result;
@@ -169,7 +183,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
     context,
   );
 
-  const { result: summary } = await nextApi.fetch("summary");
+  const { result: summary } = await backendApi.fetch("overview/summary");
 
   return {
     props: {

@@ -1,58 +1,31 @@
-import React, { useCallback, useState } from "react";
-import { useDispatch } from "react-redux";
-
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
-import SignerPopup from "next-common/components/signerPopup";
+import React, { useCallback } from "react";
+import SimpleTxPopup from "next-common/components/simpleTxPopup";
+import { useContextApi } from "next-common/context/api";
+import { useUpdateVotesFromServer } from "next-common/utils/gov2/useVotesFromServer";
 
 export default function RemoveReferendaVotePopup({
   trackId,
   referendumIndex,
   onClose,
 }) {
-  const dispatch = useDispatch();
-  const isMounted = useIsMounted();
-  const [isLoading, setIsLoading] = useState(false);
+  const api = useContextApi();
+  const { update } = useUpdateVotesFromServer(referendumIndex);
 
-  const showErrorToast = useCallback(
-    (message) => dispatch(newErrorToast(message)),
-    [dispatch],
-  );
+  const getTxFunc = useCallback(async () => {
+    return api.tx.convictionVoting.removeVote(trackId, referendumIndex);
+  }, [api, trackId, referendumIndex]);
 
-  const doRemoveVote = useCallback(
-    async (api, signerAccount) => {
-      if (!api) {
-        return showErrorToast("Chain network is not connected yet");
-      }
-
-      if (!signerAccount) {
-        return showErrorToast("Please login first");
-      }
-
-      let tx = api.tx.convictionVoting.removeVote(trackId, referendumIndex);
-      if (signerAccount?.proxyAddress) {
-        tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-      }
-
-      await sendTx({
-        tx,
-        setLoading: setIsLoading,
-        dispatch,
-        onClose,
-        signerAccount,
-        isMounted,
-      });
-    },
-    [dispatch, isMounted, showErrorToast, onClose, trackId, referendumIndex],
-  );
+  const onInBlock = useCallback(() => {
+    update();
+  }, [update]);
 
   return (
-    <SignerPopup
+    <SimpleTxPopup
       title="Remove Vote"
-      actionCallback={doRemoveVote}
+      getTxFunc={getTxFunc}
       onClose={onClose}
-      isLoading={isLoading}
+      onInBlock={onInBlock}
+      noSwitchSigner
     />
   );
 }

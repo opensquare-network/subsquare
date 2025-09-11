@@ -5,7 +5,7 @@ import PostListCardVotesSummaryBar from "next-common/components/postList/votesSu
 import Flex from "next-common/components/styled/flex";
 import Tag from "next-common/components/tags/state/tag";
 import ValueDisplay from "next-common/components/valueDisplay";
-import { timeDurationFromNow, toPrecision } from "next-common/utils";
+import { toPrecision } from "next-common/utils";
 import { CHAIN } from "next-common/utils/constants";
 import getChainSettings from "next-common/utils/consts/settings";
 import Link from "next/link";
@@ -13,6 +13,10 @@ import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
 import businessCategory from "next-common/utils/consts/business/category";
 import { getMotionStateArgs } from "next-common/utils/collective/result";
 import { useEffect, useState } from "react";
+import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
+import { useChainSettings } from "next-common/context/chain";
+import PostListTreasuryAllSpends from "next-common/components/postList/treasuryAllSpends";
+import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 
 export function getReferendumPostTitleColumn() {
   return {
@@ -112,7 +116,7 @@ export function getTrackColumn({ hrefPrefix = "", ...props }) {
           href={`${hrefPrefix}/${data.track}`}
           {...props}
         >
-          <Gov2TrackTag name={data.trackName} />
+          <Gov2TrackTag name={data.trackName} id={data.track} />
         </Link>
       );
     },
@@ -129,29 +133,69 @@ export function getRequestColumn() {
         ? data.onchainData?.treasuryInfo?.amount
         : data.value;
 
-      return !isNil(postValue) ? (
-        <ValueDisplay
-          className="text14Medium text-textPrimary"
-          value={toPrecision(postValue, decimals)}
-          symbol={symbol}
-        />
-      ) : (
-        "--"
-      );
+      if (!isNil(postValue)) {
+        return (
+          <ValueDisplay
+            className="text14Medium text-textPrimary"
+            value={toPrecision(postValue, decimals)}
+            symbol={symbol}
+          />
+        );
+      }
+
+      if (data.onchainData?.allSpends?.length) {
+        const { allSpends } = data.onchainData;
+        return <PostListTreasuryAllSpends allSpends={allSpends} />;
+      }
+
+      return "--";
+    },
+  };
+}
+
+function SpendRequestAmount({ extractedTreasuryInfo }) {
+  let { decimals } = useChainSettings();
+
+  if (!extractedTreasuryInfo) {
+    return "--";
+  }
+
+  const { assetKind, amount } = extractedTreasuryInfo;
+  const type = assetKind?.type;
+  const symbol = assetKind?.symbol;
+  if (type !== "native") {
+    decimals = SYMBOL_DECIMALS[symbol];
+  }
+
+  return (
+    <ValueDisplay
+      className="text14Medium text-textPrimary"
+      value={toPrecision(amount, decimals)}
+      symbol={symbol}
+    />
+  );
+}
+
+export function getSpendRequestColumn() {
+  return {
+    name: "Request",
+    className: "w-40 text-left",
+    cellRender(data) {
+      return <SpendRequestAmount extractedTreasuryInfo={data.extracted} />;
     },
   };
 }
 
 function Time({ time }) {
   const [text, setText] = useState("");
-  useEffect(() => setText(time), []);
+  useEffect(() => setText(time), [time]);
   if (!text) {
     return null;
   }
 
   return (
     <span className="text14Medium text-textSecondary">
-      {timeDurationFromNow(text)}
+      {formatTimeAgo(text)}
     </span>
   );
 }

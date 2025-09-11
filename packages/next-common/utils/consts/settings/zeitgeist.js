@@ -2,20 +2,23 @@ import Chains from "../chains";
 import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
-import {
-  ProjectIconZeigeistDark,
-  ProjectIconZeigeistLight,
-  ProjectLogoZeigeistDark,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+import { mergeChainModules } from "./common/modules";
+
+const ProjectIconZeigeistDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconZeigeistDark"),
+);
+const ProjectIconZeigeistLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconZeigeistLight"),
+);
+const ProjectLogoZeigeistDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoZeigeistDark"),
+);
 
 const defaultNodes = [
   {
     name: "OnFinality",
     url: "wss://zeitgeist.api.onfinality.io/public-ws",
-  },
-  {
-    name: "Dwellir",
-    url: "wss://zeitgeist-rpc.dwellir.com",
   },
   {
     name: "ZeitgeistPM",
@@ -51,7 +54,6 @@ const zeitgeist = {
   hasElections: false,
   ss58Format: 73,
   blockTime: 12000,
-  snsCoverCid: "bafybeifwpcjcbym2df3zuh63p4nowvh53d6hgludiwvlsnusxckyke5sri",
   endpoints: defaultNodes,
   avatar: ProjectIconZeigeistLight,
   darkAvatar: ProjectIconZeigeistDark,
@@ -61,13 +63,19 @@ const zeitgeist = {
   links,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: [...defaultPostLabels, PostLabel.Advisory, "ZIP", "Court"],
-  hasSubscan: true,
   useVoteCall: true,
-  hasTipsModule: false,
   description:
     "A Prediction Markets protocol built on Polkadot. With the world’s leading forecasting minds, we’re building the best prediction markets app available.",
-  modules: {
-    democracy: true,
+  modules: mergeChainModules({
+    treasury: {
+      bounties: false,
+      tips: false,
+    },
+    advisoryCommittee: true,
+    vesting: true,
+  }),
+  integrations: {
+    subscan: true,
   },
   cssVarsLight: {
     theme100: "rgba(28,100,242,0.10)",
@@ -88,6 +96,7 @@ const zeitgeist = {
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",
   },
+  allowWeb2Login: true,
 };
 
 export default zeitgeist;

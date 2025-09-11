@@ -1,6 +1,6 @@
 import { usePostState } from "next-common/context/post";
-import { useDecisionDeposit } from "next-common/context/post/gov2/referendum";
 import { gov2State } from "next-common/utils/consts/state";
+import { useDecisionDeposit } from "next-common/hooks/referenda/useReferendumInfo";
 
 export default function TimeoutGuard({ children }) {
   const state = usePostState();

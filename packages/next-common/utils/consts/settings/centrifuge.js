@@ -1,15 +1,24 @@
-import Chains from "../chains";
-import capitalize from "../../capitalize";
-import MenuGroups from "./menuGroups";
-import { defaultPostLabels, PostLabel } from "./common";
 import { difference } from "lodash-es";
-import {
-  ProjectIconCentrifugeDark,
-  ProjectIconCentrifugeLight,
-  ProjectLogoCentrifugeDark,
-  ProjectLogoCentrifugeLight,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+import capitalize from "../../capitalize";
+import Chains from "../chains";
 import ChainTypes from "../chainTypes";
+import { defaultPostLabels, PostLabel } from "./common";
+import MenuGroups from "./menuGroups";
+import { mergeChainModules } from "./common/modules";
+
+const ProjectIconCentrifugeDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconCentrifugeDark"),
+);
+const ProjectIconCentrifugeLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconCentrifugeLight"),
+);
+const ProjectLogoCentrifugeDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoCentrifugeDark"),
+);
+const ProjectLogoCentrifugeLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoCentrifugeLight"),
+);
 
 const name = Chains.centrifuge;
 
@@ -25,6 +34,10 @@ export const defaultNodes = [
   {
     name: "OnFinality",
     url: "wss://centrifuge-parachain.api.onfinality.io/public-ws",
+  },
+  {
+    name: "Dwellir",
+    url: "wss://centrifuge-rpc.dwellir.com",
   },
 ];
 
@@ -68,28 +81,33 @@ const centrifuge = {
   blockTime: 12000,
   hasElections: true,
   ss58Format: 36,
-  snsCoverCid: "bafybeigik7gv4e2tasibkgjhvlfyjzdlbw4p33x6o64jhdypmgqhmo3a54",
   endpoints: defaultNodes,
   avatar: ProjectIconCentrifugeLight,
   darkAvatar: ProjectIconCentrifugeDark,
   navLogo: ProjectLogoCentrifugeLight,
   navLogoDark: ProjectLogoCentrifugeDark,
   links,
-  hasDiscussionsForumTopics: true,
-  discourseForumLink: "https://gov.centrifuge.io",
   group: MenuGroups.PolkadotAndParachains,
   postLabels: difference(defaultPostLabels, [PostLabel.TechComm]),
-  hasSubscan: true,
-  hasDiscussions: false,
-  hasTechComm: false,
-  hasTipsModule: false,
   description: "Real-world DeFi: The on-chain ecosystem for structured credit.",
   useVoteCall: true,
-  hasDotreasury: true,
   hasMultisig: true,
   multisigApiPrefix: "cfg",
-  modules: {
-    democracy: true,
+  modules: mergeChainModules({
+    discussions: false,
+    treasury: {
+      bounties: false,
+      tips: false,
+    },
+    technicalCommittee: false,
+    vesting: true,
+  }),
+  integrations: {
+    subscan: true,
+    doTreasury: true,
+    discourseForum: {
+      link: "https://gov.centrifuge.io",
+    },
   },
   cssVarsLight: {
     theme100: "rgba(18,83,255,0.10)",
@@ -109,6 +127,7 @@ const centrifuge = {
   },
   chainType: ChainTypes.MIXED,
   ethereumNetwork,
+  allowWeb2Login: true,
 };
 
 export default centrifuge;

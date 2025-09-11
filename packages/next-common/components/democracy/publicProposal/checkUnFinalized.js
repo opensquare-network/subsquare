@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import CheckUnFinalizedBase from "next-common/components/checkUnFinalizedBase";
 
 export default function CheckUnFinalized({ id }) {
@@ -17,7 +17,7 @@ export default function CheckUnFinalized({ id }) {
   return (
     <CheckUnFinalizedBase
       onChainDataFetcher={getPublicProposal}
-      serverPostFetcher={() => nextApi.fetch(`democracy/proposals/${id}`)}
+      serverPostFetcher={() => backendApi.fetch(`democracy/proposals/${id}`)}
     />
   );
 }

@@ -1,4 +1,5 @@
 import BigNumber from "bignumber.js";
+import { isSameAddress } from "next-common/utils";
 
 function getData(storage) {
   if (storage.isApproved) {
@@ -62,7 +63,7 @@ export default async function queryAddressDeposits(
       }
 
       if (
-        submissionDeposit?.who === address &&
+        isSameAddress(submissionDeposit?.who, address) &&
         new BigNumber(submissionDeposit?.amount).gt(0)
       ) {
         submissionDeposits.push({
@@ -71,7 +72,7 @@ export default async function queryAddressDeposits(
         });
       }
       if (
-        decisionDeposit?.who === address &&
+        isSameAddress(decisionDeposit?.who, address) &&
         new BigNumber(decisionDeposit?.amount).gt(0)
       ) {
         decisionDeposits.push({

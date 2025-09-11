@@ -1,13 +1,21 @@
 import { withCommonProps } from "next-common/lib";
-import nextApi from "next-common/services/nextApi";
-import TurnoutStatistics from "components/statistics/democracy/turnoutStatistics";
+import { backendApi } from "next-common/services/nextApi";
 import DemocracyReferendaLayout from "next-common/components/layout/democracyLayout/referenda";
 import KintsugiDemocracyStaking from "components/summary/kintsugiDemocracyStaking";
 import { useNavCollapsed } from "next-common/context/nav";
-import VoteTrend from "components/statistics/democracy/voteTrend";
-import AddressTrend from "components/statistics/democracy/addressTrend";
 import { Header } from "next-common/components/statistics/styled";
 import { cn } from "next-common/utils";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+
+const VoteTrend = dynamicClientOnly(() =>
+  import("components/statistics/democracy/voteTrend"),
+);
+const AddressTrend = dynamicClientOnly(() =>
+  import("components/statistics/democracy/addressTrend"),
+);
+const TurnoutStatistics = dynamicClientOnly(() =>
+  import("components/statistics/democracy/turnoutStatistics"),
+);
 
 export default function DemocracyStatisticsPage({ turnout, summary }) {
   const title = "Democracy Statistics";
@@ -26,12 +34,8 @@ export default function DemocracyStatisticsPage({ turnout, summary }) {
           <Header className="px-6 mb-4">Referenda</Header>
           <div
             className={cn(
-              "flex gap-4 flex-wrap",
-              "[&_>_div]:min-w-[calc(50%-16px)] [&_>_div]:max-w-[calc(50%-8px)] [&_>_div]:flex-1",
-              !navCollapsed ? "max-md:flex-col" : "max-sm:flex-col",
-              !navCollapsed
-                ? "[&_>_div]:max-md:max-w-full"
-                : "[&_>_div]:max-sm:max-w-full",
+              "grid grid-cols-2 gap-4",
+              !navCollapsed ? "max-md:grid-cols-1" : "max-sm:grid-cols-1",
             )}
           >
             <VoteTrend turnout={turnout} />
@@ -46,8 +50,8 @@ export default function DemocracyStatisticsPage({ turnout, summary }) {
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const [{ result: turnout }, { result: summary }] = await Promise.all([
-    nextApi.fetch("democracy/referenda/turnout"),
-    nextApi.fetch("summary"),
+    backendApi.fetch("democracy/referenda/turnout"),
+    backendApi.fetch("overview/summary"),
   ]);
 
   return {

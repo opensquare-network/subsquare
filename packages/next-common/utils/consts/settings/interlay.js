@@ -1,18 +1,23 @@
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
 import { difference } from "lodash-es";
-import {
-  ProjectIconInterlayDark,
-  ProjectIconInterlayLight,
-  ProjectLogoInterlayDark,
-  ProjectLogoInterlayLight,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+import { mergeChainModules } from "./common/modules";
+
+const ProjectIconInterlayDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconInterlayDark"),
+);
+const ProjectIconInterlayLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconInterlayLight"),
+);
+const ProjectLogoInterlayDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoInterlayDark"),
+);
+const ProjectLogoInterlayLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoInterlayLight"),
+);
 
 const DEFAULT_INTERLAY_NODES = [
-  {
-    name: "Dwellir",
-    url: "wss://interlay-rpc.dwellir.com",
-  },
   {
     name: "Kintsugi Labs",
     url: "wss://api.interlay.io/parachain",
@@ -60,7 +65,6 @@ const interlay = {
   blockTime: 12000,
   hasElections: false,
   ss58Format: 2032,
-  snsCoverCid: "bafybeifqabzy3677ms2jihcb4ed4kxcvbjtxskctjboidcoy7pbosqrqyi",
   endpoints: DEFAULT_INTERLAY_NODES,
   avatar: ProjectIconInterlayLight,
   darkAvatar: ProjectIconInterlayDark,
@@ -69,16 +73,22 @@ const interlay = {
   links,
   group: MenuGroups.PolkadotAndParachains,
   postLabels: difference(defaultPostLabels, [PostLabel.Council]),
-  hasSubscan: true,
   description:
     "Interlay is building the safest and easiest way to use Bitcoin in decentralized finance: a one-stop-shop for all things Bitcoin finance, including trading, lending, and staking.",
   useVoteCall: true,
-  hasMultisig: true,
   multisigApiPrefix: "interlay",
-  hasTreasuryModule: false,
-  hasTipsModule: false,
-  modules: {
-    democracy: true,
+  modules: mergeChainModules({
+    democracy: {
+      externalProposals: false,
+    },
+    treasury: {
+      bounties: false,
+      tips: false,
+    },
+    council: false,
+  }),
+  integrations: {
+    statescan: true,
   },
   cssVarsLight: {
     theme100: "rgba(7,90,188,0.10)",
@@ -95,6 +105,16 @@ const interlay = {
     navigationBg: "rgba(33,36,51,1)",
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",
+  },
+  wallets: {
+    walletconnect: false,
+  },
+  multisigWallets: {
+    signet: true,
+  },
+  allowWeb2Login: true,
+  openSquare: {
+    voting: "interlay",
   },
 };
 

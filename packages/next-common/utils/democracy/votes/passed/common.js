@@ -15,7 +15,8 @@ export const openGovEmptyVotes = {
 export function calcVotes(capital = 0, conviction = 0) {
   return new BigNumber(capital)
     .multipliedBy(LOCKS[conviction])
-    .div(10).toFixed(0, 1);
+    .div(10)
+    .toFixed(1, 1);
 }
 
 export function objectSpread(dest, ...sources) {
@@ -61,7 +62,9 @@ export function sortVotesWithConviction(votes = []) {
 }
 
 export function normalizeVotingOfEntry([storageKey, voting]) {
-  const { args: [accountId] } = storageKey;
+  const {
+    args: [accountId],
+  } = storageKey;
   const account = accountId.toString();
   return { account, voting };
 }

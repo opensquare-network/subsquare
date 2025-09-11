@@ -3,24 +3,23 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
+  useMemo,
   useState,
 } from "react";
-import useInjectedWeb3 from "next-common/components/wallet/useInjectedWeb3";
+import useInjectedWeb3 from "next-common/hooks/connect/useInjectedWeb3";
 import { useUser } from "next-common/context/user";
 import { isSameAddress } from "next-common/utils";
-import { useContextApi } from "next-common/context/api";
+import { findInjectedExtension } from "next-common/hooks/connect/useInjectedWeb3Extension";
 
 export const SignerContext = createContext();
 
 export default SignerContext;
 
-function useSetSigner() {
-  const api = useContextApi();
+export function useSetSigner() {
   const { injectedWeb3 } = useInjectedWeb3();
 
   return useCallback(
-    async (account) => {
+    async (api, account) => {
       if (!account) {
         return;
       }
@@ -33,7 +32,10 @@ function useSetSigner() {
         return;
       }
 
-      const extension = injectedWeb3?.[account.meta?.source];
+      const extension = findInjectedExtension(
+        account.meta?.source,
+        injectedWeb3,
+      );
       if (!extension) {
         return;
       }
@@ -43,46 +45,64 @@ function useSetSigner() {
         api?.setSigner(wallet.signer);
       }
     },
-    [injectedWeb3, api],
+    [injectedWeb3],
   );
 }
 
 export function SignerContextProvider({ children, extensionAccounts }) {
-  const [signerAccount, setSignerAccount] = useState();
   const user = useUser();
   const userAddress = user?.address;
   const proxyAddress = user?.proxyAddress;
-  const setSigner = useSetSigner();
+  const [selectedProxyAddress, setSelectedProxyAddress] = useState();
+  const [multisig, setMultisig] = useState(user?.multisig);
 
-  useEffect(() => {
+  const realAddress = useMemo(() => {
+    if (multisig) {
+      return multisig.multisigAddress;
+    }
+    if (selectedProxyAddress) {
+      return selectedProxyAddress;
+    }
+    if (proxyAddress) {
+      return proxyAddress;
+    }
+    return userAddress;
+  }, [multisig, selectedProxyAddress, proxyAddress, userAddress]);
+
+  const signerAccount = useMemo(() => {
     if (!userAddress) {
       return;
     }
-
     const account = extensionAccounts?.find((item) =>
       isSameAddress(item.address, userAddress),
     );
-
     if (!account) {
-      setSignerAccount();
       return;
     }
-
-    setSigner(account);
-
-    setSignerAccount({
+    return {
       ...account,
       name: account.meta?.name,
       proxyAddress,
-      realAddress: proxyAddress || userAddress,
-    });
-  }, [extensionAccounts, userAddress, proxyAddress, setSigner]);
+      selectedProxyAddress,
+      multisig,
+      realAddress,
+    };
+  }, [
+    userAddress,
+    extensionAccounts,
+    proxyAddress,
+    selectedProxyAddress,
+    multisig,
+    realAddress,
+  ]);
 
   return (
     <SignerContext.Provider
       value={{
         extensionAccounts,
         signerAccount,
+        setSelectedProxyAddress,
+        setMultisig,
       }}
     >
       {children}
@@ -90,12 +110,21 @@ export function SignerContextProvider({ children, extensionAccounts }) {
   );
 }
 
+export function useSignerContext() {
+  return useContext(SignerContext);
+}
+
 export function useSignerAccount() {
-  const { signerAccount } = useContext(SignerContext);
-  return signerAccount;
+  const value = useContext(SignerContext);
+  return value?.signerAccount;
 }
 
 export function useExtensionAccounts() {
-  const { extensionAccounts } = useContext(SignerContext);
-  return extensionAccounts;
+  const value = useContext(SignerContext);
+  return value?.extensionAccounts;
+}
+
+export function useCallerAddress() {
+  const signerAccount = useSignerAccount();
+  return signerAccount?.realAddress;
 }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { BN, BN_THOUSAND, BN_TWO, extractTime } from "@polkadot/util";
-import useIsMounted from "./useIsMounted";
+import { BN, BN_THOUSAND, BN_TWO } from "@polkadot/util";
+import { useMountedState } from "react-use";
 import { useDispatch, useSelector } from "react-redux";
 import {
   blockTimeSelector,
@@ -8,8 +8,9 @@ import {
   setLatestHeight,
 } from "../../store/reducers/chainSlice";
 import BigNumber from "bignumber.js";
-import { nodesHeightSelector } from "next-common/store/reducers/nodeSlice";
 import useCurrentBlockHeightAndTime from "./useCurrentBlockHeightAndTime";
+import { estimateBlocksTime } from "..";
+import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
 
 const DEFAULT_TIME = new BN(6_000);
 
@@ -39,22 +40,22 @@ export function useBlockTime(api) {
     if (blockTime) {
       dispatch(setBlockTime(blockTime.toNumber()));
     }
-  }, [api]);
+  }, [api, dispatch]);
 }
 
 export function useSubscribeChainHead(api) {
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   const dispatch = useDispatch();
   useEffect(() => {
     if (api) {
       api.rpc.chain.subscribeNewHeads((header) => {
         const latestUnFinalizedHeight = header.number.toNumber();
-        if (isMounted.current) {
+        if (isMounted()) {
           dispatch(setLatestHeight(latestUnFinalizedHeight));
         }
       });
     }
-  }, [api]);
+  }, [api, dispatch, isMounted]);
 }
 
 export function useEstimateTimestampAtBlockHeight(blockHeight) {
@@ -75,43 +76,22 @@ export function useEstimateTimestampAtBlockHeight(blockHeight) {
   return estimatedTime;
 }
 
-export function useEstimateTimeFromNowToBlockHeight(blockHeight, units) {
-  const currentHeight = useSelector(nodesHeightSelector);
-  const result = useEstimateBlocksTime(blockHeight - currentHeight, units);
+export function useEstimateTimeFromNowToBlockHeight(blockHeight) {
+  const currentHeight = useAhmLatestHeight();
+  const result = useEstimateBlocksTime(blockHeight - currentHeight);
   if (!currentHeight) {
     return "";
   }
   return result;
 }
 
-export function useEstimateBlocksTime(blocks, units) {
-  const {
-    day = "day",
-    days: daysUnit = "days",
-    hr = "hr",
-    hrs = "hrs",
-    min = "min",
-    mins = "mins",
-    s = "s",
-  } = units || {};
+export function useEstimateBlocksTime(blocks) {
   const blockTime = useSelector(blockTimeSelector);
   const [estimatedTime, setEstimatedTime] = useState("");
-  useEffect(() => {
-    const value = new BigNumber(blockTime).multipliedBy(blocks).toNumber();
-    const time = extractTime(Math.abs(value));
-    const { days, hours, minutes, seconds } = time;
-    const timeStr = [
-      days ? (days > 1 ? `${days} ${daysUnit}` : `1 ${day}`) : null,
-      hours ? (hours > 1 ? `${hours} ${hrs}` : `1 ${hr}`) : null,
-      minutes ? (minutes > 1 ? `${minutes} ${mins}` : `1 ${min}`) : null,
-      seconds ? (seconds > 1 ? `${seconds} ${s}` : `1 ${s}`) : null,
-    ]
-      .filter((s) => !!s)
-      .slice(0, 2)
-      .join(" ");
 
-    setEstimatedTime(timeStr);
-  }, [blocks]);
+  useEffect(() => {
+    setEstimatedTime(estimateBlocksTime(blocks, blockTime));
+  }, [blockTime, blocks]);
 
   return estimatedTime;
 }

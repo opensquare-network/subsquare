@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import BigNumber from "bignumber.js";
 import { setTreasuryProposalDeposits } from "next-common/store/reducers/myOnChainData/deposits/myTreasuryDeposits";
 import { useContextApi } from "next-common/context/api";
+import { isSameAddress } from "next-common/utils";
 
 export async function queryAddressDeposits(api, address) {
   const entries = await api.query.treasury.proposals.entries();
@@ -16,7 +17,7 @@ export async function queryAddressDeposits(api, address) {
     const storage = optionalStorage.unwrap();
     const bond = storage.bond.toString();
     const proposer = storage.proposer.toString();
-    if (new BigNumber(bond).lte(0) || proposer !== address) {
+    if (new BigNumber(bond).lte(0) || !isSameAddress(proposer, address)) {
       return result;
     }
 

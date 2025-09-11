@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { useMountedState } from "react-use";
 import { useContextApi } from "next-common/context/api";
 
 export default function useSubReferendumInfo(pallet, referendumIndex) {
   const api = useContextApi();
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   const [info, setInfo] = useState();
 
   useEffect(() => {
@@ -15,7 +15,7 @@ export default function useSubReferendumInfo(pallet, referendumIndex) {
     let unsub;
     api.query[pallet]
       .referendumInfoFor(referendumIndex, (optionalInfo) => {
-        if (!isMounted.current || !optionalInfo.isSome) {
+        if (!isMounted() || !optionalInfo.isSome) {
           return;
         }
 
@@ -30,7 +30,7 @@ export default function useSubReferendumInfo(pallet, referendumIndex) {
         unsub();
       }
     };
-  }, [api, referendumIndex]);
+  }, [api, isMounted, pallet, referendumIndex]);
 
   return info;
 }

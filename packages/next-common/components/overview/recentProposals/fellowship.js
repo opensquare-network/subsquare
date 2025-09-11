@@ -9,14 +9,16 @@ import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/no
 import { getFellowshipMenu } from "next-common/utils/consts/menu/fellowship";
 import { overviewApi } from "next-common/services/url";
 import { usePageProps } from "next-common/context/page";
+import { find } from "lodash-es";
 
 export function useRecentProposalFellowship() {
-  const { overviewSummary, recentProposals } = usePageProps();
-  const fellowshipTracks = overviewSummary?.fellowshipReferendaTracks;
+  const { recentSummary, recentProposals } = usePageProps();
+  const fellowshipTracks = recentSummary?.fellowshipReferendaTracks;
 
-  const menu = getFellowshipMenu(fellowshipTracks);
+  const menu = getFellowshipMenu(recentSummary);
+  const referendaMenu = find(menu.items, { value: "fellowship-referenda" });
 
-  const items = menu.items?.map((item) => {
+  const items = referendaMenu.items?.map((item) => {
     const track = item.value;
 
     const api = {

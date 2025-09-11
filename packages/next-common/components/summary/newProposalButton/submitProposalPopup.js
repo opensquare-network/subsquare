@@ -1,26 +1,50 @@
-import { useState } from "react";
-import NewProposalPopup from "../newProposalPopup";
-import { usePageProps } from "next-common/context/page";
-import SubmitProposalPopupCommon from "./common";
+import {
+  useStepContainer,
+  StepContainerProvider,
+} from "next-common/context/stepContainer";
+import CreateFormPreImage from "./createFromPreImage";
+import Popup from "next-common/components/popup/wrapper/Popup";
+import ReferendaProposalQuickStart from "./referendaProposalQuickStart";
+import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 
 export default function SubmitProposalPopup({ onClose }) {
-  const { period } = usePageProps();
-  const [preimageHash, setPreimageHash] = useState();
-  const [preimageLength, setPreimageLength] = useState();
+  return (
+    <SignerPopupWrapper onClose={onClose}>
+      <StepContainerProvider
+        list={[
+          {
+            title: "Submit Proposal",
+            component: SubmitProposal,
+          },
+        ]}
+      >
+        <PopupContent onClose={onClose} />
+      </StepContainerProvider>
+    </SignerPopupWrapper>
+  );
+}
+const PopupContent = ({ onClose }) => {
+  const { currentStep, closeAll } = useStepContainer();
+  const { title, component: CurrentComponent } = currentStep || {};
 
   return (
-    <SubmitProposalPopupCommon
-      setPreimageHash={setPreimageHash}
-      setPreimageLength={setPreimageLength}
-      onClose={onClose}
-      newProposalPopup={
-        <NewProposalPopup
-          track={period}
-          onClose={onClose}
-          preimageHash={preimageHash}
-          preimageLength={preimageLength}
-        />
-      }
-    />
+    <Popup
+      title={title}
+      onClose={() => {
+        onClose();
+        closeAll();
+      }}
+    >
+      <CurrentComponent />
+    </Popup>
+  );
+};
+
+function SubmitProposal() {
+  return (
+    <>
+      <ReferendaProposalQuickStart />
+      <CreateFormPreImage />
+    </>
   );
 }

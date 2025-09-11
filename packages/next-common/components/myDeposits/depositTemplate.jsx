@@ -6,8 +6,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { recentProposalFetchParams } from "next-common/services/serverSide/recentProposals";
 import { isNil } from "lodash-es";
-import { useUpdateEffect } from "usehooks-ts";
-import { useChain } from "next-common/context/chain";
+import { useUpdateEffect } from "react-use";
 import { first } from "lodash-es";
 import Pagination from "next-common/components/pagination";
 import Loading from "next-common/components/loading";
@@ -44,12 +43,9 @@ export default function DepositTemplate({
   items = [],
   children,
   loading,
+  extra,
 }) {
-  const chain = useChain();
-
-  const activeItems = (items || [])
-    .filter((item) => item.activeCount)
-    .filter((item) => !item.excludeToChains?.includes(chain));
+  const activeItems = (items || []).filter((item) => item.activeCount);
 
   const firstActiveItem = first(activeItems);
   const titleLink = firstActiveItem?.pathname ?? pathname;
@@ -81,6 +77,7 @@ export default function DepositTemplate({
   const [tabTableLoaded, setTabTableLoaded] = useState({});
   const tabs = activeItems.map((m) => {
     return {
+      value: m.name,
       label: m.name,
       activeCount: m.activeCount,
       content: (
@@ -89,17 +86,19 @@ export default function DepositTemplate({
     };
   });
 
-  const [activeTabLabel, setActiveTabLabel] = useState(tabs[0]?.label);
+  const [activeTabValue, setActiveTabValue] = useState(tabs[0]?.value);
   useEffect(() => {
-    setActiveTabLabel(tabs[0]?.label);
+    setActiveTabValue(tabs[0]?.value);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items]);
 
   useEffect(() => {
     setTabTableLoaded({
       ...tabTableLoaded,
-      [activeTabLabel]: true,
+      [activeTabValue]: true,
     });
-  }, [activeTabLabel]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTabValue]);
 
   if (!activeCount || loading) {
     return (
@@ -112,12 +111,12 @@ export default function DepositTemplate({
   }
 
   return (
-    <AccordionCard title={title} defaultOpen>
+    <AccordionCard title={title} extra={extra} defaultOpen>
       {children || (
         <Tabs
           tabs={tabs}
-          activeTabLabel={activeTabLabel}
-          onTabClick={(tab) => setActiveTabLabel(tab.label)}
+          activeTabValue={activeTabValue}
+          onTabClick={(tab) => setActiveTabValue(tab.value)}
         />
       )}
     </AccordionCard>
@@ -161,6 +160,7 @@ function TableTemplate({
     }
 
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tabTableLoaded]);
 
   useUpdateEffect(fetchData, [page, api?.fetchData]);

@@ -1,0 +1,184 @@
+import { Handle, Position, useNodeConnections } from "@xyflow/react";
+import {
+  CopyableAddress,
+  DisplayUserAvatar,
+} from "next-common/components/profile/bio";
+import AddressUser from "next-common/components/user/addressUser";
+import styled from "styled-components";
+import tw from "tailwind-styled-components";
+import { useProfileBannerUrl } from "next-common/components/profile/header";
+import { cn } from "next-common/utils";
+import {
+  useContextAddress,
+  useSetContextAddress,
+} from "next-common/context/address";
+import { useCallback } from "react";
+
+const NodeWrap = styled.div`
+  box-shadow: var(--shadow100);
+`;
+
+export function UserAvatar({ address, badge, size = 40, className = "" }) {
+  if (!address) {
+    return null;
+  }
+
+  const avatar = (
+    <DisplayUserAvatar
+      address={address}
+      user={{}}
+      size={size}
+      className={className}
+    />
+  );
+
+  if (!badge) {
+    return avatar;
+  }
+
+  return (
+    <div className="relative flex">
+      {avatar}
+      <span className="text-textPrimaryContrast text12Medium inline-block rounded-xl bg-theme500 absolute bottom-0 left-1/2 -translate-x-1/2 px-[0.375rem] box-border whitespace-nowrap">
+        {badge}
+      </span>
+    </div>
+  );
+}
+
+const HandleWraper = tw(Handle)`
+!min-w-0 !w-0 !border-0
+${(p) => {
+  let topClass = p.location === "top" ? "!top-1/3" : "!top-2/3";
+  let isOnlyHandle = p.size <= 1;
+  return isOnlyHandle ? "!top-1/2" : topClass;
+}}
+`;
+
+function AddressLabel({ data }) {
+  const setSourceAddress = useSetContextAddress();
+  const changeSourceAddress = useCallback(() => {
+    if (data?.address) {
+      setSourceAddress(data?.address);
+    }
+  }, [data?.address, setSourceAddress]);
+
+  return (
+    <span onClick={changeSourceAddress}>
+      <AddressUser
+        add={data?.address || ""}
+        className="flex text14Medium text-textPrimary"
+        maxWidth={200}
+        showAvatar={false}
+        needHref={false}
+      />
+    </span>
+  );
+}
+
+function SelfNode({ data }) {
+  const bannerUrl = useProfileBannerUrl();
+
+  return (
+    <div className="flex flex-col items-center justify-center">
+      <div
+        className="bg-no-repeat bg-cover w-60 h-[40px] rounded-t-[12px] bg-center"
+        style={{ backgroundImage: `url(${bannerUrl})` }}
+      >
+        {data?.pure}
+        <div className="w-full relative top-[20px] flex justify-center">
+          <UserAvatar address={data?.address} badge={data.badge} />
+        </div>
+      </div>
+      <div className="px-4 py-2 mt-5 text-center">
+        <div className="flex items-center justify-between h-5">
+          <AddressLabel data={data} />
+        </div>
+        <CopyableAddress address={data?.address} ellipsisAddress />
+      </div>
+    </div>
+  );
+}
+
+function RelativeUserNode({ data }) {
+  return (
+    <>
+      <UserAvatar address={data?.address} badge={data.badge} />
+      <div className="flex-1">
+        <div className="flex items-center justify-between h-6">
+          <AddressLabel data={data} />
+          {data?.pure}
+        </div>
+        <CopyableAddress address={data?.address} ellipsisAddress />
+      </div>
+    </>
+  );
+}
+
+export default function UserNode({ data }) {
+  const sourceAddress = useContextAddress();
+  const isSelf = sourceAddress === data?.address;
+
+  const sourceConnections = useNodeConnections({ handleType: "source" });
+  const targetConnections = useNodeConnections({ handleType: "target" });
+  const sourceHandleTypeSize = new Set(
+    sourceConnections.map((item) => item.sourceHandle),
+  ).size;
+  const targetHandleTypeSize = new Set(
+    targetConnections.map((item) => item.targetHandle),
+  ).size;
+
+  if (!data?.address) {
+    return null;
+  }
+
+  return (
+    <NodeWrap
+      className={cn(
+        "bg-neutral100 p-3 rounded-xl border border-neutral300 flex gap-x-3 w-60 items-center",
+        isSelf && "p-0",
+      )}
+    >
+      {isSelf ? <SelfNode data={data} /> : <RelativeUserNode data={data} />}
+
+      <HandleWraper
+        type="target"
+        id="targetProxy"
+        size={targetHandleTypeSize}
+        position={Position.Left}
+        location="top"
+      />
+      <HandleWraper
+        type="target"
+        id="targetMultisig"
+        size={targetHandleTypeSize}
+        position={Position.Left}
+      />
+      <HandleWraper
+        type="target"
+        id="targetParent"
+        size={targetHandleTypeSize}
+        position={Position.Left}
+      />
+      <HandleWraper
+        type="source"
+        size={sourceHandleTypeSize}
+        id="sourceProxy"
+        position={Position.Right}
+        location="top"
+      />
+      <HandleWraper
+        type="source"
+        size={sourceHandleTypeSize}
+        id="sourceMultisig"
+        position={Position.Right}
+      />
+      <HandleWraper
+        type="source"
+        size={sourceHandleTypeSize}
+        id="sourceSub"
+        position={Position.Right}
+      />
+    </NodeWrap>
+  );
+}

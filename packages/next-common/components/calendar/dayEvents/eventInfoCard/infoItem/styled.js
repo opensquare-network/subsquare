@@ -10,7 +10,7 @@ export const ItemValue = styled.span`
   word-break: break-word;
 `;
 
-export const ItemLink = styled.a`
+export const ItemLink = styled.span`
   color: var(--sapphire500);
   :hover {
     text-decoration: underline;

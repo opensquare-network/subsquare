@@ -1,5 +1,6 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { GreyPanel } from "../styled/containers/greyPanel";
+import tw from "tailwind-styled-components";
 
 export const Wrapper = styled.div`
   @media screen and (max-width: 1024px) {
@@ -61,22 +62,22 @@ export const ButtonWrapper = styled.div`
 `;
 
 export const WarningMessage = styled.div`
-  color: var(--red500);
-  background: var(--red100);
+  ${(p) =>
+    p.danger
+      ? css`
+          color: var(--red500);
+          background: var(--red100);
+        `
+      : css`
+          color: var(--orange500);
+          background: var(--orange100);
+        `}
   border-radius: 4px;
   padding: 12px 16px;
   font-size: 14px;
   line-height: 140%;
 `;
 
-export const InfoMessage = styled(GreyPanel)`
-  padding: 10px 16px;
-
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
-
-  color: var(--textSecondary);
-
-  margin-bottom: 16px;
+export const InfoMessage = tw(GreyPanel)`
+  text14Medium text-textSecondary px-4 py-2.5
 `;

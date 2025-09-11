@@ -1,36 +1,17 @@
 import BigNumber from "bignumber.js";
-import { useChain } from "next-common/context/chain";
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
+import useSubStorage from "next-common/hooks/common/useSubStorage";
 
-export default function useSubAddressBalance(api, address) {
-  const chain = useChain();
+export default function useSubAddressBalance(address) {
   const [balance, setBalance] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
+  const { loading } = useSubStorage("system", "account", [address], {
+    callback: useCallback((account) => {
+      const balance = new BigNumber(account.data.free.toJSON())
+        .plus(account.data.reserved.toJSON())
+        .toString();
+      setBalance(balance);
+    }, []),
+  });
 
-  useEffect(() => {
-    if (!api || !address) {
-      return;
-    }
-
-    let unsub;
-
-    api.query.system
-      .account(address, (account) => {
-        const balance = new BigNumber(account.data.free.toJSON())
-          .plus(account.data.reserved.toJSON())
-          .toString();
-
-        setBalance(balance);
-        setIsLoading(false);
-      })
-      .then((result) => (unsub = result));
-
-    return () => {
-      if (unsub) {
-        unsub();
-      }
-    };
-  }, [api, chain, address]);
-
-  return { balance, isLoading };
+  return { balance, isLoading: loading };
 }

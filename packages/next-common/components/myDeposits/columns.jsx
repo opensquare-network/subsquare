@@ -5,25 +5,21 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { CHAIN } from "next-common/utils/constants";
 import getChainSettings from "next-common/utils/consts/settings";
-import dynamic from "next/dynamic";
 import { useState } from "react";
 import useSubReferendumInfo from "next-common/components/myDeposits/referenda/useSubReferendumInfo";
 import MyDepositUndoButton from "./undoButton";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const SubmissionDepositRefundPopup = dynamic(
-  () =>
-    import(
-      "next-common/components/gov2/referendum/metadata/submissionDepositRefund/popup"
-    ),
-  { ssr: false },
+const SubmissionDepositRefundPopup = dynamicPopup(() =>
+  import(
+    "next-common/components/gov2/referendum/metadata/submissionDepositRefund/popup"
+  ),
 );
 
-const DecisionDepositRefundPopup = dynamic(
-  () =>
-    import(
-      "next-common/components/gov2/referendum/metadata/decisionDepositRefund/popup"
-    ),
-  { ssr: false },
+const DecisionDepositRefundPopup = dynamicPopup(() =>
+  import(
+    "next-common/components/gov2/referendum/metadata/decisionDepositRefund/popup"
+  ),
 );
 
 export function getSubmissionDepositRefundColumn({ pallet } = {}) {

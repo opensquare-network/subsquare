@@ -1,14 +1,15 @@
 import { isNil } from "lodash-es";
 import { useEffect, useState } from "react";
 import { getGov2BeenDelegatedByAddress } from "../../gov2/gov2ReferendumVote";
-import useIsMounted from "../useIsMounted";
+import { useMountedState } from "react-use";
 import useRealAddress from "../useRealAddress";
 import { useContextApi } from "next-common/context/api";
 
 export function useTrackDelegations(track, address) {
   const api = useContextApi();
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
   const [delegations, setDelegations] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setDelegations(null);
@@ -17,14 +18,19 @@ export function useTrackDelegations(track, address) {
       return;
     }
 
-    getGov2BeenDelegatedByAddress(api, address, track).then((result) => {
-      if (isMounted.current) {
-        setDelegations(result);
-      }
-    });
+    setIsLoading(true);
+    getGov2BeenDelegatedByAddress(api, address, track)
+      .then((result) => {
+        if (isMounted()) {
+          setDelegations(result);
+        }
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, [track, api, address, isMounted]);
 
-  return delegations;
+  return { delegations, isLoading };
 }
 
 /**

@@ -1,39 +1,75 @@
-import DetailedTrack from "next-common/components/popup/fields/DetailedTrackField";
-import SignerPopup from "next-common/components/signerPopup";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import PreimageField from "./preimageField";
 import EnactmentBlocks from "./enactmentBlocks";
-import { sendTx, wrapWithProxy } from "next-common/utils/sendTx";
-import { useDispatch } from "react-redux";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { getEventData } from "next-common/utils/sendTransaction";
 import { isNil } from "lodash-es";
 import { useRouter } from "next/router";
-import { usePageProps } from "next-common/context/page";
 import SubmissionDeposit from "./submissionDeposit";
 import { isValidPreimageHash, upperFirstCamelCase } from "next-common/utils";
 import usePreimageLength from "next-common/hooks/usePreimageLength";
+import DetailedTrack from "next-common/components/popup/fields/detailedTrackField";
+import useTrackDetail from "./useTrackDetail";
+import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
+import { useContextApi } from "next-common/context/api";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
+import Popup from "next-common/components/popup/wrapper/Popup";
+import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import { useListPageType } from "next-common/context/page";
+import { listPageCategory } from "next-common/utils/consts/business/category";
+import AdvanceSettings from "../newProposalQuickStart/common/advanceSettings";
+import { usePreimageWithHash } from "next-common/hooks/usePreimageHashes";
+import CallTree from "next-common/components/proposal/callTree";
+import Loading from "next-common/components/loading";
+import InsufficientBalanceTips from "../newProposalQuickStart/common/insufficientBalanceTips";
 
-export default function NewProposalPopup({
+export function useProposalOrigin(trackId) {
+  const track = useTrackDetail(trackId);
+  const origins = track?.origins;
+  if (Array.isArray(origins)) {
+    return origins[0];
+  }
+  return origins;
+}
+
+export function useReferendaProposalOrigin(trackId) {
+  const listPageType = useListPageType();
+  const track = useTrackDetail(trackId);
+  const origins = useProposalOrigin(trackId);
+  if (origins) {
+    return origins;
+  }
+
+  if (track?.name === "root") {
+    return { system: "Root" };
+  }
+  const trackName = upperFirstCamelCase(track?.name);
+
+  if (listPageType === listPageCategory.FELLOWSHIP_REFERENDA) {
+    return { FellowshipOrigins: trackName };
+  } else if (listPageType === listPageCategory.AMBASSADOR_REFERENDA) {
+    return { AmbassadorOrigins: trackName };
+  } else {
+    return { Origins: trackName };
+  }
+}
+
+export function NewProposalInnerPopup({
   track: _track,
-  onClose,
   preimageHash: _preimageHash,
   preimageLength: _preimageLength,
 }) {
-  const { tracksDetail } = usePageProps();
-  const dispatch = useDispatch();
+  const api = useContextApi();
+  const { onClose } = usePopupParams();
   const router = useRouter();
-  const isMounted = useIsMounted();
-  const [isLoading, setIsLoading] = useState(false);
 
   const [trackId, setTrackId] = useState(_track?.id);
+  const proposalOrigin = useReferendaProposalOrigin(trackId);
+
   const [enactment, setEnactment] = useState();
   const [preimageHash, setPreimageHash] = useState(_preimageHash || "");
   const [preimageLength, setPreimageLength] = useState(_preimageLength || "");
 
-  const track = useMemo(
-    () => tracksDetail?.find((track) => track.id === trackId),
-    [trackId, tracksDetail],
-  );
+  const track = useTrackDetail(trackId);
 
   const disabled =
     isNil(trackId) ||
@@ -49,74 +85,26 @@ export default function NewProposalPopup({
     }
   }, [length]);
 
-  const onSubmit = useCallback(
-    (api, signerAccount) => {
-      if (!api || !signerAccount) {
-        return;
-      }
+  const getTxFunc = useCallback(() => {
+    if (!api) {
+      return;
+    }
 
-      let proposalOrigin = null;
-      if (track?.name === "root") {
-        proposalOrigin = { system: "Root" };
-      } else {
-        proposalOrigin = { Origins: upperFirstCamelCase(track?.name) };
-      }
-
-      let tx = api.tx.referenda.submit(
-        proposalOrigin,
-        {
-          Lookup: {
-            hash: preimageHash,
-            len: parseInt(preimageLength),
-          },
+    return api.tx.referenda.submit(
+      proposalOrigin,
+      {
+        Lookup: {
+          hash: preimageHash,
+          len: parseInt(preimageLength),
         },
-        enactment,
-      );
-
-      if (signerAccount?.proxyAddress) {
-        tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-      }
-
-      sendTx({
-        tx,
-        api,
-        dispatch,
-        isMounted,
-        signerAccount,
-        setLoading: setIsLoading,
-        onInBlock: (eventData) => {
-          if (!eventData) {
-            return;
-          }
-          const [referendumIndex] = eventData;
-          router.push(`/referenda/${referendumIndex}`);
-        },
-        section: "referenda",
-        method: "Submitted",
-        onClose,
-      });
-    },
-    [
-      dispatch,
-      router,
-      isMounted,
-      track?.name,
+      },
       enactment,
-      preimageHash,
-      preimageLength,
-      onClose,
-    ],
-  );
+    );
+  }, [api, proposalOrigin, preimageHash, preimageLength, enactment]);
 
   return (
-    <SignerPopup
-      wide
-      title="New Proposal"
-      onClose={onClose}
-      actionCallback={onSubmit}
-      disabled={disabled}
-      isLoading={isLoading}
-    >
+    <Popup title="New Proposal" onClose={onClose}>
+      <SignerWithBalance showTransferable supportedMultisig={false} />
       <DetailedTrack trackId={trackId} setTrackId={setTrackId} />
       <PreimageField
         preimageHash={preimageHash}
@@ -126,6 +114,109 @@ export default function NewProposalPopup({
       />
       <EnactmentBlocks track={track} setEnactment={setEnactment} />
       <SubmissionDeposit />
-    </SignerPopup>
+      <TxSubmissionButton
+        getTxFunc={getTxFunc}
+        disabled={disabled}
+        onInBlock={({ events }) => {
+          const eventData = getEventData(events, "referenda", "Submitted");
+          if (!eventData) {
+            return;
+          }
+          const [referendumIndex] = eventData;
+          router.push(`/referenda/${referendumIndex}`);
+        }}
+      />
+    </Popup>
   );
+}
+export function useNewProposalInnerPopupContent({
+  track: _track,
+  preimageHash: _preimageHash,
+  preimageLength: _preimageLength,
+}) {
+  const api = useContextApi();
+  const router = useRouter();
+
+  const [trackId, setTrackId] = useState(_track?.id);
+  const proposalOrigin = useReferendaProposalOrigin(trackId);
+
+  const [enactment, setEnactment] = useState();
+  const [preimageHash, setPreimageHash] = useState(_preimageHash || "");
+  const [preimageLength, setPreimageLength] = useState(_preimageLength || "");
+  const [info, loading] = usePreimageWithHash(preimageHash);
+
+  useEffect(() => {
+    setTrackId(_track?.id);
+    setPreimageHash(_preimageHash);
+    setPreimageLength(_preimageLength);
+  }, [_track, _preimageHash, _preimageLength]);
+
+  const track = useTrackDetail(trackId);
+
+  const disabled =
+    isNil(trackId) ||
+    isNil(enactment) ||
+    !preimageHash ||
+    !isValidPreimageHash(preimageHash) ||
+    !preimageLength;
+
+  const length = usePreimageLength(preimageHash);
+  useEffect(() => {
+    if (length) {
+      setPreimageLength(length);
+    }
+  }, [length]);
+
+  const getTxFunc = useCallback(() => {
+    if (!api) {
+      return;
+    }
+
+    return api.tx.referenda.submit(
+      proposalOrigin,
+      {
+        Lookup: {
+          hash: preimageHash,
+          len: parseInt(preimageLength),
+        },
+      },
+      enactment,
+    );
+  }, [api, proposalOrigin, preimageHash, preimageLength, enactment]);
+  return {
+    getTxFunc,
+    disabled,
+    onInBlock: ({ events }) => {
+      const eventData = getEventData(events, "referenda", "Submitted");
+      if (!eventData) {
+        return;
+      }
+      const [referendumIndex] = eventData;
+      router.push(`/referenda/${referendumIndex}`);
+    },
+    component: (
+      <>
+        <SignerWithBalance showTransferable supportedMultisig={false} />
+        <DetailedTrack trackId={trackId} setTrackId={setTrackId} />
+        <PreimageField
+          preimageHash={preimageHash}
+          preimageLength={preimageLength}
+          setPreimageHash={setPreimageHash}
+          setPreimageLength={setPreimageLength}
+        />
+        {loading ? (
+          <div className="flex justify-center py-[12px]">
+            <Loading size={20} />
+          </div>
+        ) : info?.proposal ? (
+          <CallTree call={info?.proposal} />
+        ) : null}
+        <AdvanceSettings>
+          <EnactmentBlocks track={track} setEnactment={setEnactment} />
+          <SubmissionDeposit />
+        </AdvanceSettings>
+        <InsufficientBalanceTips byteLength={preimageLength} />
+      </>
+    ),
+  };
 }

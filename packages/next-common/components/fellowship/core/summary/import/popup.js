@@ -2,29 +2,28 @@ import PopupWithSigner from "next-common/components/popupWithSigner";
 import React, { useCallback } from "react";
 import useSigner from "next-common/components/common/tx/useSigner";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
-import useFellowshipMembersUpdateFunc from "next-common/components/fellowship/core/updateFunc";
-import { usePopupParams } from "next-common/components/popupWithSigner/context";
+import useCoreFellowshipUpdateFunc from "next-common/components/collectives/core/updateFunc";
 import { useContextApi } from "next-common/context/api";
+import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
 
 function Content() {
-  const { onClose } = usePopupParams();
+  const pallet = useCoreFellowshipPallet();
   const { component } = useSigner();
   const api = useContextApi();
 
   const getTxFunc = useCallback(() => {
     if (api) {
-      return api.tx.fellowshipCore.import();
+      return api.tx[pallet].import();
     }
-  }, [api]);
+  }, [api, pallet]);
 
-  const onInBlock = useFellowshipMembersUpdateFunc();
+  const onInBlock = useCoreFellowshipUpdateFunc();
 
   return (
     <>
       {component}
       <TxSubmissionButton
         getTxFunc={getTxFunc}
-        onClose={onClose}
         onInBlock={onInBlock}
         onFinalized={onInBlock}
       />

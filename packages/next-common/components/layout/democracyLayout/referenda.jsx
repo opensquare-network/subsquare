@@ -11,8 +11,10 @@ export default function DemocracyReferendaLayout({ summaryData, ...props }) {
   const isKintsugi = [Chains.kintsugi, Chains.interlay].includes(chain);
   const user = useUser();
   const {
-    modules: { democracy: hasDemocracyModule },
+    modules: { democracy },
   } = chainSettings;
+
+  const hasDemocracyModule = democracy && !democracy?.archived;
 
   return (
     <ListLayout
@@ -22,14 +24,23 @@ export default function DemocracyReferendaLayout({ summaryData, ...props }) {
         hasDemocracyModule && !isKintsugi && <DemocracySummaryFooter />
       }
       tabs={[
-        { label: "Referenda", url: "/democracy/referenda" },
+        {
+          label: "Referenda",
+          value: "referenda",
+          url: "/democracy/referenda",
+        },
         !isKintsugi &&
           hasDemocracyModule &&
           user?.address && {
             label: "My Votes",
+            value: "my_votes",
             url: "/democracy/votes",
           },
-        { label: "Statistics", url: "/democracy/statistics" },
+        {
+          label: "Statistics",
+          value: "statistics",
+          url: "/democracy/statistics",
+        },
       ].filter(Boolean)}
       {...props}
     >

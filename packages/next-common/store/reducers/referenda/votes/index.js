@@ -7,6 +7,7 @@ const referendaVotesSlice = createSlice({
   initialState: {
     allVotes: null,
     votesTrigger: 1,
+    loading: false,
   },
   reducers: {
     setAllVotes(state, { payload }) {
@@ -18,25 +19,37 @@ const referendaVotesSlice = createSlice({
     clearVotersTrigger(state) {
       state.votesTrigger = 1;
     },
+    setLoading(state, { payload }) {
+      state.loading = payload;
+    },
   },
 });
 
-export const {
-  setAllVotes,
-  incVotesTrigger,
-  clearVotersTrigger,
-} = referendaVotesSlice.actions;
+export const { setAllVotes, incVotesTrigger, clearVotersTrigger, setLoading } =
+  referendaVotesSlice.actions;
 
 export const clearVotes = () => async (dispatch) => {
   dispatch(setAllVotes(null));
   dispatch(clearVotersTrigger());
 };
 
-export const triggerFetchVotes = () => async dispatch => dispatch(incVotesTrigger());
+export const triggerFetchVotes = () => async (dispatch) =>
+  dispatch(incVotesTrigger());
 
-export const fetchReferendaVotes = (api, trackId, referendumIndex) => async (dispatch) => {
-  const sortedVotes = await fetchAndNormalizeVotes(api, trackId, referendumIndex);
-  dispatch(setAllVotes(sortedVotes));
-};
+export const fetchReferendaVotes =
+  (api, trackId, referendumIndex) => async (dispatch) => {
+    dispatch(setLoading(true));
+
+    try {
+      const sortedVotes = await fetchAndNormalizeVotes(
+        api,
+        trackId,
+        referendumIndex,
+      );
+      dispatch(setAllVotes(sortedVotes));
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
 
 export default referendaVotesSlice.reducer;

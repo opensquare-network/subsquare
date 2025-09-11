@@ -1,4 +1,4 @@
-import PostList from "next-common/components/postList";
+import FinancialCouncilMotionPostList from "next-common/components/postList/financialCouncilMotionPostList";
 import { withCommonProps } from "next-common/lib";
 import { toFinancialMotionsListItem } from "next-common/utils/viewfuncs";
 import businessCategory from "next-common/utils/consts/business/category";
@@ -19,9 +19,7 @@ export default function MotionsPage({ motions }) {
       title={category}
       description="Financial council motions"
     >
-      <PostList
-        category={category}
-        title="List"
+      <FinancialCouncilMotionPostList
         titleCount={motions.total}
         items={items}
         pagination={{

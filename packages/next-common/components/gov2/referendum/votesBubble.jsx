@@ -1,29 +1,31 @@
-import { detailMultiTabsVotesBubbleView } from "next-common/store/reducers/detailSlice";
 import {
-  allNestedVotesSelector,
+  nestedVotesSelector,
   flattenVotesSelector,
+  votesLoadingSelector,
 } from "next-common/store/reducers/referenda/votes/selectors";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import VotesBubble from "../../charts/votesBubble";
+import { useVotesBubbleView } from "next-common/components/detail/detailMultiTabs/votesBubbleViewTabs";
 
 export default function Gov2ReferendaVotesBubble() {
-  const allFlattenedVotes = useSelector(flattenVotesSelector);
-  const allNestedVotes = useSelector(allNestedVotesSelector);
+  const flattenVotes = useSelector(flattenVotesSelector);
+  const nestedVotes = useSelector(nestedVotesSelector);
+  const loading = useSelector(votesLoadingSelector);
 
   const [votesObj, setVotesObj] = useState({});
   const [sizeField, setSizeField] = useState("votes");
-  const viewMode = useSelector(detailMultiTabsVotesBubbleView);
+  const [viewMode] = useVotesBubbleView();
 
   useEffect(() => {
     if (viewMode === "flattened") {
-      setVotesObj(allFlattenedVotes);
+      setVotesObj(flattenVotes);
       setSizeField("votes");
     } else {
-      setVotesObj(allNestedVotes);
+      setVotesObj(nestedVotes);
       setSizeField("totalVotes");
     }
-  }, [viewMode, allFlattenedVotes, allNestedVotes]);
+  }, [viewMode, flattenVotes, nestedVotes]);
 
   return (
     <VotesBubble
@@ -31,6 +33,7 @@ export default function Gov2ReferendaVotesBubble() {
       allNay={votesObj.allNay}
       allAbstain={votesObj.allAbstain}
       sizeField={sizeField}
+      loading={loading}
     />
   );
 }

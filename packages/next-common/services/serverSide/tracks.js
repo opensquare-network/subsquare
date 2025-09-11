@@ -1,49 +1,47 @@
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import {
+  ambassadorTracksSummaryApi,
   fellowshipTracksSummaryApi,
   gov2TracksSummaryApi,
 } from "next-common/services/url";
 import getChainSettings from "next-common/utils/consts/settings";
 
-export async function fetchSummary() {
-  const { result } = await nextApi.fetch("summary");
-  return result || {};
-}
-
-async function fetchAll() {
-  const [{ result: tracks }, { result: fellowshipTracks }] = await Promise.all([
-    nextApi.fetch(gov2TracksSummaryApi),
-    nextApi.fetch(fellowshipTracksSummaryApi),
-  ]);
-
-  return {
-    tracks: tracks ?? [],
-    fellowshipTracks: fellowshipTracks ?? [],
-  };
-}
-
 export async function fetchOpenGovTracksProps() {
-  const summary = await fetchSummary();
+  const { result: summary = {} } = await backendApi.fetch("overview/summary");
 
   const {
-    modules: { referenda: hasReferenda, fellowship: hasFellowship },
+    modules: {
+      referenda: hasReferenda,
+      fellowship: hasFellowship,
+      ambassador: hasAmbassador,
+    } = {},
   } = getChainSettings(process.env.CHAIN);
-  if (hasReferenda && hasFellowship) {
-    const result = await fetchAll();
-    return { ...result, summary };
-  }
-
+  let tracks = [];
+  let fellowshipTracks = [];
+  let ambassadorTracks = [];
   if (hasReferenda) {
-    const { result: tracks } = await nextApi.fetch(gov2TracksSummaryApi);
-    return { tracks: tracks ?? [], fellowshipTracks: [], summary };
+    const { result: referendaTracks } = await backendApi.fetch(
+      gov2TracksSummaryApi,
+    );
+    tracks = referendaTracks;
   }
-
   if (hasFellowship) {
-    const { result: fellowshipTracks } = await nextApi.fetch(
+    const { result: fellowshipTracksResult } = await backendApi.fetch(
       fellowshipTracksSummaryApi,
     );
-    return { tracks: [], fellowshipTracks: fellowshipTracks ?? [], summary };
+    fellowshipTracks = fellowshipTracksResult;
+  }
+  if (hasAmbassador) {
+    const { result: ambassadorTracksResult } = await backendApi.fetch(
+      ambassadorTracksSummaryApi,
+    );
+    ambassadorTracks = ambassadorTracksResult;
   }
 
-  return { tracks: [], fellowshipTracks: [], summary };
+  return {
+    summary,
+    tracks: tracks ?? [],
+    fellowshipTracks: fellowshipTracks ?? [],
+    ambassadorTracks: ambassadorTracks ?? [],
+  };
 }

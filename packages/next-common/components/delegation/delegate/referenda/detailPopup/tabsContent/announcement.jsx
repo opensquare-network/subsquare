@@ -14,6 +14,7 @@ export default function ReferendaDelegateeDetailPopupAnnouncement({
   } else {
     switch (manifesto?.source) {
       case "nova":
+      case "sima":
         content = manifesto?.longDescription || "";
         break;
       case "parity":
@@ -33,7 +34,12 @@ export default function ReferendaDelegateeDetailPopupAnnouncement({
   }
 
   return contentType === "markdown" ? (
-    <MarkdownPreviewer content={content} />
+    <MarkdownPreviewer
+      content={content}
+      markedOptions={{
+        breaks: true,
+      }}
+    />
   ) : (
     <HtmlPreviewer content={content} />
   );

@@ -13,9 +13,9 @@ export default function ReferendumCall({ call, shorten, onchainData = {} }) {
   const chain = useChain();
   const preImageHash = onchainData.preImage?.hash;
 
-  const data = [
-    ["Hash", <Copyable key="hash">{hash}</Copyable>],
-    [
+  const data = [["Hash", <Copyable key="hash">{hash}</Copyable>]];
+  if (call) {
+    data.push([
       <Proposal
         key={"call"}
         call={call}
@@ -23,11 +23,13 @@ export default function ReferendumCall({ call, shorten, onchainData = {} }) {
         shorten={shorten}
         referendumIndex={onchainData.referendumIndex}
       />,
-    ],
+    ]);
+  }
+  data.push(
     ...extractKintsugiFields(chain, call),
     ...extractTreasuryFields(call),
-    ...extractRemarkMetaFields(call),
-  ];
+    ...extractRemarkMetaFields(call.remarks || []),
+  );
 
   return <KvList data={data} />;
 }

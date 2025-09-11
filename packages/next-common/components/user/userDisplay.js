@@ -4,14 +4,7 @@ import Tooltip from "../tooltip";
 import Username from "./username";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 
-export default function UserDisplay({
-  user,
-  fontSize,
-  color,
-  maxWidth,
-  noTooltip,
-  ellipsis,
-}) {
+export default function UserDisplay({ user, maxWidth, noTooltip, ellipsis }) {
   const isWeb3User = isKeyRegisteredUser(user);
 
   let username = user?.username;
@@ -24,23 +17,14 @@ export default function UserDisplay({
     tip = displayAddress;
   }
 
-  const name = (
-    <Username
-      username={username}
-      fontSize={fontSize}
-      color={color}
-      maxWidth={maxWidth}
-    />
-  );
-
   return (
     <div className="flex items-center gap-[4px]">
       {maxWidth && !noTooltip ? (
         <Tooltip content={tip}>
-          <div>{name}</div>
+          <Username username={username} maxWidth={maxWidth} />
         </Tooltip>
       ) : (
-        name
+        <Username username={username} maxWidth={maxWidth} />
       )}
     </div>
   );

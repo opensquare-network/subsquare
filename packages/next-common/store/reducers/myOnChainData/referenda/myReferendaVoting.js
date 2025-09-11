@@ -7,6 +7,7 @@ const myReferendaVotingSlice = createSlice({
   initialState: {
     voting: [],
     priors: [],
+    delegations: [],
     isLoadingVoting: false,
     classLocks: [],
     isLoadingClassLocks: false,
@@ -18,6 +19,9 @@ const myReferendaVotingSlice = createSlice({
     },
     setPriors(state, { payload }) {
       state.priors = payload;
+    },
+    setDelegations(state, { payload }) {
+      state.delegations = payload;
     },
     setIsLoadingVoting(state, { payload }) {
       state.isLoadingVoting = payload;
@@ -37,6 +41,7 @@ const myReferendaVotingSlice = createSlice({
 export const {
   setVoting: setMyReferendaVoting,
   setPriors: setMyReferendaPriors,
+  setDelegations: setMyReferendaDelegations,
   setClassLocks: setMyReferendaClassLocks,
   setIsLoadingVoting: setIsLoadingReferendaVoting,
   setIsLoadingClassLocks,
@@ -51,6 +56,8 @@ export const isLoadingClassLocksSelector = (state) =>
   state[name].isLoadingClassLocks;
 export const myReferendaVotesTriggerSelector = (state) => state[name].trigger;
 export const myReferendaPriorLocksSelector = (state) => state[name].priors;
+export const myReferendaDelegationsSelector = (state) =>
+  state[name].delegations;
 
 export const isLoadingReferendaSummarySelector = createSelector(
   isLoadingReferendaVotingSelector,

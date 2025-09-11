@@ -1,6 +1,15 @@
 import { useState, useEffect } from "react";
 import { encodeAddressToChain } from "../../services/address";
 import getChainSettings from "../consts/settings";
+import { isEthereumAddress } from "@polkadot/util-crypto";
+
+function getIdentityAddress(address, chain) {
+  if (isEthereumAddress(address)) {
+    return address;
+  } else {
+    return encodeAddressToChain(address, chain);
+  }
+}
 
 export default function useIdentity(address, chain) {
   const [identity, setIdentity] = useState();
@@ -12,7 +21,7 @@ export default function useIdentity(address, chain) {
 
     const setting = getChainSettings(chain);
     const identityChain = setting.identity;
-    const identityAddress = encodeAddressToChain(address, identityChain);
+    const identityAddress = getIdentityAddress(address, identityChain);
     fetch(
       `${process.env.NEXT_PUBLIC_IDENTITY_SERVER_HOST}/${identityChain}/identity/${identityAddress}`,
     )

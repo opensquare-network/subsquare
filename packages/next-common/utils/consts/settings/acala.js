@@ -1,11 +1,20 @@
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
-import {
-  ProjectIconAcalaDark,
-  ProjectIconAcalaLight,
-  ProjectLogoAcalaDark,
-  ProjectLogoAcalaLight,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+import { mergeChainModules } from "./common/modules";
+
+const ProjectIconAcalaDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconAcalaDark"),
+);
+const ProjectIconAcalaLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconAcalaLight"),
+);
+const ProjectLogoAcalaDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoAcalaDark"),
+);
+const ProjectLogoAcalaLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoAcalaLight"),
+);
 
 const DEFAULT_ACALA_NODES = [
   {
@@ -23,6 +32,10 @@ const DEFAULT_ACALA_NODES = [
   {
     name: "Dwellir",
     url: "wss://acala-rpc.dwellir.com",
+  },
+  {
+    name: "LuckyFriday",
+    url: "wss://rpc-acala.luckyfriday.io",
   },
   {
     name: "OnFinality",
@@ -53,7 +66,7 @@ const links = [
   },
   {
     name: "discord",
-    url: "https://www.acala.gg/",
+    url: "https://discord.gg/Tm3bkvP9Ku",
   },
   {
     name: "github",
@@ -70,25 +83,26 @@ const acala = {
   blockTime: 12000,
   hasElections: false,
   ss58Format: 10,
-  snsCoverCid: "bafybeiafirhri4nsnvxm6usej6fcfyrz4hty5jikupag7fufsniamnyauy",
   endpoints: DEFAULT_ACALA_NODES,
   avatar: ProjectIconAcalaLight,
   darkAvatar: ProjectIconAcalaDark,
   navLogo: ProjectLogoAcalaLight,
   navLogoDark: ProjectLogoAcalaDark,
   links,
-  hasDiscussionsForumTopics: true,
-  discourseForumLink: "https://acala.discourse.group",
   group: MenuGroups.PolkadotAndParachains,
   postLabels: [...defaultPostLabels, PostLabel.Financial],
-  hasSubscan: true,
-  noIdentityModule: true,
   useVoteCall: true,
   hasMultisig: true,
   multisigApiPrefix: "acala",
   description: "Cross-chain DeFi Hub for Polkadot, Kusama and beyond.",
-  modules: {
-    democracy: true,
+  modules: mergeChainModules({
+    financialCouncil: true,
+  }),
+  integrations: {
+    subscan: true,
+    discourseForum: {
+      link: "https://acala.discourse.group",
+    },
   },
   cssVarsLight: {
     theme100: "rgba(100,90,255,0.10)",
@@ -106,6 +120,11 @@ const acala = {
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",
   },
+  multisigWallets: {
+    signet: true,
+    mimir: true,
+  },
+  allowWeb2Login: true,
 };
 
 export default acala;

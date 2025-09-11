@@ -1,32 +1,40 @@
 .markdown-body,
 .html-body {
-  --color-border-default: var(--neutral300);
-  --color-border-muted: var(--neutral300);
-  --color-canvas-default: var(--neutral100);
+  --borderColor-default: var(--neutral300);
+  --borderColor-muted: var(--neutral400);
 
   -webkit-font-smoothing: initial;
-
+  font-weight: initial;
   /* block level */
   h6 {
     color: var(--textSecondary);
   }
 
   table {
-    thead tr {
+    tr {
       background-color: var(--neutral100);
     }
+
     tbody {
       tr {
-        background-color: var(--neutral100);
         &:nth-child(2n) {
           background-color: var(--neutral200);
         }
       }
     }
+
+    th,
+    td {
+      border-color: var(--borderColor-default);
+    }
   }
 
   pre {
-    background-color: var(--neutral200);
+    background-color: var(--neutral200) !important;
+  }
+
+  img {
+    margin: 1rem 0;
   }
 
   /* inline level */

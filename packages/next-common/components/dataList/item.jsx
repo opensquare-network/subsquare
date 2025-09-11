@@ -3,6 +3,8 @@ import { cn } from "next-common/utils";
 import Descriptions from "../Descriptions";
 import { last } from "lodash-es";
 import { isNil } from "lodash-es";
+import { useNavCollapsed } from "next-common/context/nav";
+import useIsNarrowView from "next-common/hooks/useIsNarrowView";
 
 export default function DataListItem({
   columns,
@@ -10,8 +12,12 @@ export default function DataListItem({
   columnClassNames,
   columnStyles,
   highlighted,
+  itemClassName,
+  descriptionClassName,
 }) {
   const { onClick } = row ?? {};
+  const [navCollapsed] = useNavCollapsed();
+  const isNarrowView = useIsNarrowView();
 
   return (
     <div
@@ -20,9 +26,10 @@ export default function DataListItem({
         "datalist-item group/datalist-item",
         "w-full",
         "flex items-center py-4",
-        "max-sm:block",
+        navCollapsed ? "max-sm:block" : "max-md:block",
         onClick && "cursor-pointer",
         "relative",
+        itemClassName,
         highlighted &&
           cn(
             "z-0",
@@ -34,24 +41,30 @@ export default function DataListItem({
       )}
       onClick={onClick}
     >
-      <DesktopContent
-        row={row}
-        columnClassNames={columnClassNames}
-        columnStyles={columnStyles}
-      />
-
-      <MobileContent
-        row={row}
-        columns={columns}
-        columnClassNames={columnClassNames}
-      />
+      {isNarrowView ? (
+        <MobileContent
+          row={row}
+          columns={columns}
+          columnClassNames={columnClassNames}
+          descriptionClassName={descriptionClassName}
+        />
+      ) : (
+        <DesktopContent
+          row={row}
+          columnClassNames={columnClassNames}
+          columnStyles={columnStyles}
+        />
+      )}
     </div>
   );
 }
 
 function DesktopContent({ row, columnClassNames, columnStyles }) {
   return (
-    <div className="datalist-desktop-item max-sm:hidden w-full flex items-center">
+    <div
+      className={cn("relative datalist-desktop-item w-full flex items-center")}
+    >
+      {row.tag}
       {row?.map((item, idx) => (
         <div
           key={idx}
@@ -65,11 +78,14 @@ function DesktopContent({ row, columnClassNames, columnStyles }) {
   );
 }
 
-function MobileContent({ row = [], columns }) {
+function MobileContent({ row = [], columns, descriptionClassName }) {
+  const [navCollapsed] = useNavCollapsed();
+
   const items = columns.map((col, idx) => {
     return {
       name: col.name,
       value: row?.[idx],
+      isCustomStatus: col?.isCustomStatus || false,
     };
   });
 
@@ -79,7 +95,7 @@ function MobileContent({ row = [], columns }) {
 
   const statusIdx = findLastIndex(
     items,
-    (item) => item.name?.toLowerCase?.() === "status",
+    (item) => item.name?.toLowerCase?.() === "status" && !item?.isCustomStatus,
   );
   const hasStatus = statusIdx > -1;
 
@@ -102,7 +118,13 @@ function MobileContent({ row = [], columns }) {
     .filter(Boolean);
 
   return (
-    <div className="datalist-mobile-item sm:hidden sm:py-4 space-y-3">
+    <div
+      className={cn(
+        "relative datalist-mobile-item space-y-3",
+        navCollapsed ? "sm:py-4" : "md:py-4",
+      )}
+    >
+      {row.tag}
       <div>
         <div className="flex grow items-center justify-between">
           {first.value}
@@ -113,7 +135,11 @@ function MobileContent({ row = [], columns }) {
         )}
       </div>
 
-      <Descriptions bordered={false} items={descriptionItems} />
+      <Descriptions
+        bordered={false}
+        items={descriptionItems}
+        className={descriptionClassName}
+      />
     </div>
   );
 }

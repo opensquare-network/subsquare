@@ -7,6 +7,7 @@ export default function NoData({
   head = "",
   text = "No data",
   className = "",
+  children,
   ...props
 }) {
   return (
@@ -28,6 +29,8 @@ export default function NoData({
       >
         {text}
       </div>
+
+      {children}
     </div>
   );
 }

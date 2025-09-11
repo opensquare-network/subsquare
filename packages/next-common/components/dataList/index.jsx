@@ -3,22 +3,31 @@ import { cn } from "next-common/utils";
 import NoData from "../noData";
 import DataListBody, { defaultRenderItem } from "./body";
 import { useDeepCompareEffect, useUpdateEffect } from "react-use";
-import { useEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 import { useNavCollapsed } from "next-common/context/nav";
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 import { isNil } from "lodash-es";
+import Tooltip from "../tooltip";
 
-export default function DataList({
-  columns = [],
-  rows = [],
-  loading = false,
-  scrollToFirstRowOnChange = false,
-  className = "",
-  noDataText = "No current votes",
-  bordered = false,
-  highlightedIndexes = [],
-  renderItem = defaultRenderItem,
-}) {
+function DataList(
+  {
+    columns = [],
+    rows = [],
+    loading = false,
+    scrollToFirstRowOnChange = false,
+    className = "",
+    noDataText = "No current votes",
+    bordered = false,
+    highlightedIndexes = [],
+    renderItem = defaultRenderItem,
+    tree = false,
+    treeKey = "children",
+    treeData = [],
+    titleClassName = "",
+    contentClassName = "",
+  },
+  ref,
+) {
   let content;
   const listRef = useRef();
   const bodyRef = useRef();
@@ -26,6 +35,29 @@ export default function DataList({
 
   const [listOverflow, setListOverflow] = useState(false);
   const screenSize = useScreenSize();
+  const [expandedRows, setExpandedRows] = useState(new Set());
+
+  // Toggle row expansion (expand/collapse)
+  const toggleRowExpansion = (rowIdx) => {
+    setExpandedRows((prev) => {
+      const newExpandedRows = new Set(prev);
+      if (newExpandedRows.has(rowIdx)) {
+        newExpandedRows.delete(rowIdx);
+      } else {
+        newExpandedRows.add(rowIdx);
+      }
+      return newExpandedRows;
+    });
+  };
+
+  useEffect(() => {
+    if (!tree || treeData.length === 0) {
+      return;
+    }
+
+    setExpandedRows(new Set());
+  }, [treeData, tree]);
+
   function handleListOverflowSize() {
     const parentEl = listRef.current?.parentElement;
     const listEl = listRef.current;
@@ -91,12 +123,19 @@ export default function DataList({
         columnStyles={columnStyles}
         columns={columns}
         highlightedIndexes={highlightedIndexes}
+        tree={tree}
+        treeKey={treeKey}
+        treeData={treeData}
+        expandedRows={expandedRows}
+        toggleRowExpansion={toggleRowExpansion}
+        contentClassName={contentClassName}
       />
     );
   }
 
   return (
     <div
+      ref={ref}
       className={cn(
         "w-full",
         "scrollbar-hidden",
@@ -118,7 +157,9 @@ export default function DataList({
             "datalist-head",
             "flex items-center pb-3",
             "border-b border-neutral300",
-            "max-sm:hidden",
+            navCollapsed ? "max-sm:hidden" : "max-md:hidden",
+            tree && "pl-[54px]",
+            titleClassName,
           )}
         >
           {columns.map((column, idx) => (
@@ -131,7 +172,13 @@ export default function DataList({
               )}
               style={columnStyles[idx]}
             >
-              {column.name}
+              {column.tooltip ? (
+                <Tooltip className="cursor-pointer" content={column.tooltip}>
+                  {column.name}
+                </Tooltip>
+              ) : (
+                column.name
+              )}
             </div>
           ))}
         </div>
@@ -141,3 +188,17 @@ export default function DataList({
     </div>
   );
 }
+
+const ForwardRefDataList = forwardRef(DataList);
+
+export function MapDataList({ data, columnsDef = [], getRowKey, ...props }) {
+  const rows = (data || []).map((item, index) => {
+    const row = columnsDef.map(({ render }) => render(item));
+    row.key = getRowKey ? getRowKey(item) : index;
+    return row;
+  });
+
+  return <ForwardRefDataList columns={columnsDef} rows={rows} {...props} />;
+}
+
+export default ForwardRefDataList;

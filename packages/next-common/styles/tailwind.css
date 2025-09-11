@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  border-color: transparent;
+}
+
 table {
   border-collapse: separate;
 }

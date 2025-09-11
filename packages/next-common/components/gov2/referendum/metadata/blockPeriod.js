@@ -9,8 +9,7 @@ export default function BlockPeriod({ block }) {
   const blockTime = useSelector(blockTimeSelector);
 
   const decisionPeriod = useMemo(() => {
-    const timeArr = estimateBlocksTime(block, blockTime);
-    return timeArr.join(" ");
+    return estimateBlocksTime(block, blockTime);
   }, [block, blockTime]);
 
   return (

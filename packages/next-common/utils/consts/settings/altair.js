@@ -3,11 +3,18 @@ import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels, PostLabel } from "./common";
 import { difference } from "lodash-es";
-import {
-  ProjectIconAltairDark,
-  ProjectIconAltairLight,
-  ProjectLogoAltairDark,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+import { mergeChainModules } from "./common/modules";
+
+const ProjectIconAltairDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconAltairDark"),
+);
+const ProjectIconAltairLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconAltairLight"),
+);
+const ProjectLogoAltairDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoAltairDark"),
+);
 
 const nodes = [
   {
@@ -40,7 +47,6 @@ const altair = {
   blockTime: 12000,
   hasElections: true,
   ss58Format: 136,
-  snsCoverCid: "bafybeidmyuzahzhhsxk5yeofehqj3y2yhj5wn5n4xqblx3j4kczytvnvs4",
   endpoints: nodes,
   avatar: ProjectIconAltairLight,
   darkAvatar: ProjectIconAltairDark,
@@ -48,18 +54,25 @@ const altair = {
   navLogoDark: ProjectLogoAltairDark,
   navPreferDark: true,
   links,
-  hasDiscussionsForumTopics: true,
-  discourseForumLink: "https://gov.centrifuge.io",
   group: MenuGroups.KusamaAndParachains,
   postLabels: difference(defaultPostLabels, [PostLabel.TechComm]),
-  hasSubscan: true,
-  hasDiscussions: false,
-  hasTechComm: false,
-  hasTipsModule: false,
   description:
     "The home for financing assets on Kusama. Powered by Centrifuge.",
-  modules: {
-    democracy: true,
+  modules: mergeChainModules({
+    discussions: false,
+    referenda: true,
+    treasury: {
+      bounties: false,
+      tips: false,
+    },
+    technicalCommittee: false,
+    vesting: true,
+  }),
+  integrations: {
+    subscan: true,
+    discourseForum: {
+      link: "https://gov.centrifuge.io",
+    },
   },
   cssVarsLight: {
     theme100: "rgba(255,192,18,0.10)",
@@ -80,6 +93,11 @@ const altair = {
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",
   },
+  newProposalQuickStart: {
+    cancelReferendum: true,
+    killReferendum: true,
+  },
+  allowWeb2Login: true,
 };
 
 export default altair;

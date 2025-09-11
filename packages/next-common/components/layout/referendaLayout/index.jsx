@@ -1,11 +1,17 @@
 import { SubscribeTip, TitleExtra } from "next-common/components/overview";
 import ListLayout from "../ListLayout";
-import Gov2Summary from "next-common/components/summary/gov2Summary";
 import Gov2SummaryFooter from "next-common/components/summary/gov2SummaryFooter";
 import { useUser } from "next-common/context/user";
-import { ThemedTag } from "next-common/components/tags/state/styled";
 import { useRouter } from "next/router";
-import { useChainSettings } from "next-common/context/chain";
+import { useChain, useChainSettings } from "next-common/context/chain";
+import dynamic from "next/dynamic";
+import { DvLabel } from "./tabTitle";
+import Chains from "next-common/utils/consts/chains";
+
+const Gov2Summary = dynamic(
+  () => import("next-common/components/summary/gov2Summary"),
+  { ssr: false },
+);
 
 function HeadContent() {
   return (
@@ -15,14 +21,11 @@ function HeadContent() {
   );
 }
 
-/**
- * @param {import("../ListLayout").ListLayoutProps & {summaryData: Record<string, any>}} props
- * @description layout for referenda page
- */
 export default function ReferendaLayout({ summaryData, ...props }) {
   const user = useUser();
   const router = useRouter();
   const { modules } = useChainSettings();
+  const chain = useChain();
 
   return (
     <ListLayout
@@ -32,12 +35,39 @@ export default function ReferendaLayout({ summaryData, ...props }) {
       headContent={<HeadContent />}
       description="All active and history referenda of various tracks."
       tabs={[
-        { label: "Referenda", url: "/referenda" },
-        user?.address && { label: "My Votes", url: "/referenda/votes" },
-        { label: "Statistics", url: "/referenda/statistics" },
+        {
+          value: "referenda",
+          label: "Referenda",
+          url: "/referenda",
+        },
+        {
+          value: "tracks",
+          label: "Tracks Stats",
+          url: "/referenda/tracks",
+        },
+        user?.address && {
+          value: "my_votes",
+          label: "My Votes",
+          url: "/referenda/votes",
+        },
+        {
+          value: "statistics",
+          label: "Statistics",
+          url: "/referenda/statistics",
+        },
+        [Chains.kusama, Chains.polkadot].includes(chain) && {
+          value: "dv",
+          label: (
+            <DvLabel
+              label="DV"
+              active={router.pathname.startsWith("/referenda/dv")}
+            />
+          ),
+          url: "/referenda/dv",
+        },
         modules.whales && {
+          value: "whales",
           label: "Whales",
-          labelExtra: <ThemedTag className="!rounded-full ml-2">New</ThemedTag>,
           url: "/referenda/whales",
           active: router.pathname.startsWith("/referenda/whales"),
         },

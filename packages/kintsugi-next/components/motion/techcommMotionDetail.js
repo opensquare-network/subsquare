@@ -3,7 +3,7 @@ import Link from "next/link";
 import Timeline from "next-common/components/timeline";
 import { isMotionEnded } from "next-common/utils";
 import { findLastIndex } from "lodash-es";
-import ArticleContent from "next-common/components/articleContent";
+import MaybeSimaDiscussionArticleContent from "next-common/components/maybeSimaDiscussionArticleContent";
 import { createMotionTimelineData } from "utils/timeline/motion";
 import MultiKVList from "next-common/components/listInfo/multiKVList";
 import MotionEnd from "next-common/components/motionEnd";
@@ -21,11 +21,12 @@ import useSetEdit from "next-common/components/detail/common/hooks/useSetEdit";
 import { isEditingPostSelector } from "next-common/store/reducers/userSlice";
 import DetailContentBase from "next-common/components/detail/common/detailBase";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
+import { useIsTimelineCompact } from "next-common/components/detail/detailMultiTabs/timelineModeTabs";
 import TechcommMotionDetailHeader from "components/motion/techcommMotionDetailHeader";
 import Copyable from "next-common/components/copyable";
 import AddressUser from "next-common/components/user/addressUser";
-import chainOrScanHeightSelector from "next-common/store/reducers/selectors/height";
-import { detailMultiTabsIsTimelineCompactModeSelector } from "next-common/store/reducers/detailSlice";
+import useChainOrScanHeight from "next-common/hooks/height";
+import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 
 const TimelineMotionEnd = styled.div`
   display: flex;
@@ -43,7 +44,6 @@ function createMotionBusinessData(motion) {
       <Link
         key="link-to"
         href={`/democracy/externals/${height}_${motion.proposalHash}`}
-        legacyBehavior
       >{`External proposal ${motion.proposalHash.slice(0, 8)}`}</Link>,
     ],
   ];
@@ -104,14 +104,12 @@ export default function TechcommMotionDetail({ motion }) {
   const isEdit = useSelector(isEditingPostSelector);
   const setIsEdit = useSetEdit();
   const motionEndHeight = motion.onchainData?.voting?.end;
-  const blockHeight = useSelector(chainOrScanHeightSelector);
+  const blockHeight = useChainOrScanHeight();
   const estimatedBlocksTime = useEstimateBlocksTime(
     blockHeight - motionEndHeight,
   );
 
-  const isTimelineCompact = useSelector(
-    detailMultiTabsIsTimelineCompactModeSelector,
-  );
+  const isTimelineCompact = useIsTimelineCompact();
 
   if (isEdit) {
     return (
@@ -156,7 +154,6 @@ export default function TechcommMotionDetail({ motion }) {
         <Link
           key="treasury-link-to"
           href={`/treasury/proposals/${motion.treasuryProposalIndex}`}
-          legacyBehavior
         >{`Treasury Proposal #${motion.treasuryProposalIndex}`}</Link>,
       ],
       [
@@ -182,7 +179,6 @@ export default function TechcommMotionDetail({ motion }) {
           <Link
             key="link-to"
             href={`/democracy/proposals/${proposal?.proposalIndex}`}
-            legacyBehavior
           >{`Democracy Public Proposal #${proposal?.proposalIndex}`}</Link>,
         ],
         ["Hash", <Copyable key="hash">{proposal.hash}</Copyable>],
@@ -201,13 +197,15 @@ export default function TechcommMotionDetail({ motion }) {
     <div className="flex flex-col gap-y-12">
       <DetailContentBase>
         <TechcommMotionDetailHeader motion={motion} />
-        <ArticleContent setIsEdit={setIsEdit} />
+        <MaybeSimaDiscussionArticleContent />
       </DetailContentBase>
 
       <DetailMultiTabs
         call={
           post?.onchainData?.proposal && (
-            <CollectiveCall call={post.onchainData.proposal} />
+            <MigrationConditionalApiProvider indexer={post.onchainData.indexer}>
+              <CollectiveCall call={post.onchainData.proposal} />
+            </MigrationConditionalApiProvider>
           )
         }
         business={

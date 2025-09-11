@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { noop } from "lodash-es";
 import BaseVotesPopup from "next-common/components/popup/baseVotesPopup";
-import Pagination from "next-common/components/pagination";
 import VotesTab, { tabs } from "../flattenedVotesPopup/tab";
 import PopupListWrapper from "next-common/components/styled/popupListWrapper";
 import ValueDisplay from "next-common/components/valueDisplay";
@@ -11,11 +10,10 @@ import Flex from "next-common/components/styled/flex";
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import EnterSVG from "next-common/assets/imgs/icons/enter.svg";
-import NestedPopupDelegatedDetailPopup from "next-common/components/popup/nestedVotesPopup/delegatedDetail";
 import { sortTotalVotes } from "../../../utils/democracy/votes/passed/common";
 import { useSelector } from "react-redux";
 import {
-  allNestedVotesSelector,
+  nestedVotesSelector,
   showVotesNumberSelector,
 } from "next-common/store/reducers/democracy/votes/selectors";
 import useSearchVotes from "next-common/hooks/useSearchVotes";
@@ -23,15 +21,19 @@ import SearchBtn from "next-common/components/voteSearch/searchBtn";
 import SearchBar from "next-common/components/voteSearch/searchBar";
 import filterTabs from "../common/filterTabs";
 import AddressUser from "next-common/components/user/addressUser";
-import DataList from "next-common/components/dataList";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+import { usePost } from "next-common/context/post";
+import VirtualList from "next-common/components/dataList/virtualList";
+import usePopupItemHeight from "next-common/components/democracy/democracyCallsVotesPopup/usePopupItemHeight";
+
+const NestedPopupDelegatedDetailPopup = dynamicPopup(() =>
+  import("next-common/components/popup/nestedVotesPopup/delegatedDetail"),
+);
 
 export default function NestedVotesPopup({ setShowVoteList = noop }) {
   const showVotesNumber = useSelector(showVotesNumberSelector);
-  const { allAye, allNay } = useSelector(allNestedVotesSelector);
+  const { allAye, allNay } = useSelector(nestedVotesSelector);
   const [tabIndex, setTabIndex] = useState(tabs[0].tabId);
-  const [ayePage, setAyePage] = useState(1);
-  const [nayPage, setNayPage] = useState(1);
-  const pageSize = 50;
 
   const allDirectAyes = useMemo(
     () => sortTotalVotes(allAye.filter((v) => !v.isDelegating)),
@@ -54,35 +56,15 @@ export default function NestedVotesPopup({ setShowVoteList = noop }) {
     }
 
     setTabIndex(tabs[0]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
 
-  let page;
   let votes;
   if (tabIndex === "Aye") {
-    page = ayePage;
     votes = filteredAye;
   } else {
-    page = nayPage;
     votes = filteredNay;
   }
-
-  function onPageChange(e, target) {
-    e.preventDefault();
-    if (tabIndex === "Aye") {
-      setAyePage(target);
-    } else {
-      setNayPage(target);
-    }
-  }
-  const pagination = {
-    page,
-    pageSize,
-    total: votes?.length || 0,
-    onPageChange,
-  };
-
-  const sliceFrom = (pagination.page - 1) * pageSize;
-  const sliceTo = sliceFrom + pageSize;
 
   const searchBtn = (
     <SearchBtn
@@ -98,7 +80,7 @@ export default function NestedVotesPopup({ setShowVoteList = noop }) {
       onClose={() => setShowVoteList(false)}
       extra={searchBtn}
     >
-      {showSearch && <SearchBar setSearch={setSearch} />}
+      {showSearch && <SearchBar setSearch={setSearch} autoFocus />}
       <VotesTab
         tabIndex={tabIndex}
         setTabIndex={setTabIndex}
@@ -106,18 +88,15 @@ export default function NestedVotesPopup({ setShowVoteList = noop }) {
         naysCount={filteredNay?.length || 0}
       />
 
-      <VotesList
-        items={votes.slice(sliceFrom, sliceTo)}
-        loading={!showVotesNumber}
-      />
-
-      <Pagination {...pagination} />
+      <VotesList items={votes} loading={!showVotesNumber} />
     </BaseVotesPopup>
   );
 }
 
 function VotesList({ items = [], loading }) {
-  const chainSettings = useChainSettings();
+  const post = usePost();
+  const chainSettings = useChainSettings(post.indexer?.blockHeight);
+  const itemHeight = usePopupItemHeight();
   const symbol = chainSettings.voteSymbol || chainSettings.symbol;
 
   const [showDetail, setShowDetail] = useState(false);
@@ -148,7 +127,7 @@ function VotesList({ items = [], loading }) {
         add={item.account}
         noTooltip
         maxWidth={296}
-        linkToVotesPage
+        link="/votes"
       />,
       (item.directVoterDelegations || []).length,
       <ValueDisplay
@@ -172,11 +151,13 @@ function VotesList({ items = [], loading }) {
   return (
     <>
       <PopupListWrapper>
-        <DataList
+        <VirtualList
           scrollToFirstRowOnChange
           columns={columns}
           rows={rows}
           loading={loading}
+          itemHeight={itemHeight}
+          listHeight={395}
         />
       </PopupListWrapper>
 

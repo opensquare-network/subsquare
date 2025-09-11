@@ -32,7 +32,7 @@ const Address = styled.span`
 `;
 
 export default function Web3Address({ address }) {
-  const [identity, hasId] = useIdentityInfo(address);
+  const { identity, hasIdentity } = useIdentityInfo(address);
   const maybeEvmAddress = tryConvertToEvmAddress(address);
 
   return (
@@ -40,7 +40,7 @@ export default function Web3Address({ address }) {
       <Avatar address={address} size={40} />
       <div>
         <Address>
-          {hasId ? (
+          {hasIdentity ? (
             <Identity identity={identity} />
           ) : (
             addressEllipsis(maybeEvmAddress)

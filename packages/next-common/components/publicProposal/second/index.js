@@ -1,6 +1,5 @@
 import React, { Fragment, useState } from "react";
 import styled from "styled-components";
-import dynamic from "next/dynamic";
 import { countBy } from "lodash-es";
 import BigNumber from "bignumber.js";
 import Loading from "../../loading";
@@ -11,20 +10,12 @@ import { TitleContainer } from "../../styled/containers/titleContainer";
 import SubLink from "../../styled/subLink";
 import { useChainSettings } from "../../../context/chain";
 import useMaxDeposits from "./useMaxDeposits";
-import isMoonChain from "next-common/utils/isMoonChain";
 import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarWrapper";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
-import useIsUseMetamask from "next-common/hooks/useIsUseMetamask";
 import AddressUser from "next-common/components/user/addressUser";
-import { useContextApi } from "next-common/context/api";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const SecondPopup = dynamic(() => import("./popup"), {
-  ssr: false,
-});
-
-const MoonSecondPopup = dynamic(() => import("./popup/moonPopup"), {
-  ssr: false,
-});
+const SecondPopup = dynamicPopup(() => import("./popup"));
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -93,25 +84,14 @@ export default function Second({
   proposalIndex,
   hasTurnIntoReferendum,
   hasCanceled,
-  useAddressVotingBalance,
-  atBlockHeight,
 }) {
   const [showPopup, setShowPopup] = useState(false);
   const [expand, setExpand] = useState(false);
   const maxDeposits = useMaxDeposits();
-  const isUseMetamask = useIsUseMetamask();
 
-  let Popup = SecondPopup;
-  if (isMoonChain() && isUseMetamask) {
-    Popup = MoonSecondPopup;
-  }
-
-  const api = useContextApi();
   const [triggerUpdate, setTriggerUpdate] = useState(0);
   const [seconds, depositRequired, isLoadingSeconds] = useDepositOf(
-    api,
     proposalIndex,
-    atBlockHeight,
     triggerUpdate,
   );
   const reachedMaxDeposits = maxDeposits <= seconds.length;
@@ -137,7 +117,11 @@ export default function Second({
         <SecondsList>
           {showData.map((address, index) => (
             <SecondItem key={index}>
-              <AddressUser add={address} fontSize={12} maxWidth={148} />
+              <AddressUser
+                add={address}
+                className="text12Medium text-textPrimary"
+                maxWidth={148}
+              />
               <Tooltip
                 content={`${new BigNumber(depositRequired)
                   .times(secondsCount[address])
@@ -202,13 +186,12 @@ export default function Second({
         {!node?.hideActionButtons && action}
       </RightBarWrapper>
       {showPopup && (
-        <Popup
+        <SecondPopup
           proposalIndex={proposalIndex}
           depositorUpperBound={seconds.length}
           depositRequired={depositRequired}
           onClose={() => setShowPopup(false)}
           onInBlock={() => setTriggerUpdate(Date.now())}
-          useAddressVotingBalance={useAddressVotingBalance}
         />
       )}
     </>

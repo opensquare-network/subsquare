@@ -17,7 +17,7 @@ function Address({ data }) {
 
   return (
     <div className="flex items-center gap-x-2">
-      <AddressUser maxWidth={maxWidth} linkToVotesPage add={data.address} />
+      <AddressUser maxWidth={maxWidth} link="/votes" add={data.address} />
       {isDV && <AddressDVTag />}
     </div>
   );

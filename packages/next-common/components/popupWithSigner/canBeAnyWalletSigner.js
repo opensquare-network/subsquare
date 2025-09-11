@@ -1,63 +1,30 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import MaybeSignerConnected from "./maybeSignerConnected";
-import { useMetaMaskAccounts } from "../../utils/metamask";
-import ChainTypes from "next-common/utils/consts/chainTypes";
-import { useChainSettings } from "next-common/context/chain";
-import { normalizeAddress } from "next-common/utils/address";
-import WalletTypes from "next-common/utils/consts/walletTypes";
-import ContextPopup from "./contextPopup";
-
-function usePolkadotAccounts() {
-  const [accounts, setAccounts] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const { chainType } = useChainSettings();
-
-  useEffect(() => {
-    (async () => {
-      const { web3Enable, web3Accounts } = await import(
-        "@polkadot/extension-dapp"
-      );
-
-      await web3Enable("subsquare");
-      const injectedAccounts = await web3Accounts();
-
-      let filter = (item) => item.type !== "ethereum";
-      if (chainType === ChainTypes.ETHEREUM) {
-        filter = (item) => item.type === "ethereum";
-      } else if (ChainTypes.MIXED === chainType) {
-        filter = (item) =>
-          item.type !== "ethereum" || item.meta.source === WalletTypes.TALISMAN;
-      }
-
-      setAccounts(
-        injectedAccounts.filter(filter).map((item) => ({
-          ...item,
-          address: normalizeAddress(item.address),
-        })),
-      );
-      setIsLoading(false);
-    })();
-  }, [chainType]);
-
-  return [accounts, isLoading];
-}
+import { useSignetAccounts, useSignetSdk } from "next-common/context/signet";
+import { useEVMAccounts } from "next-common/hooks/connect/useEVMAccounts";
+import { useSubstrateInjectedAccounts } from "next-common/hooks/connect/useSubstrateInjectedAccounts";
+import { usePopupParams } from "./context";
 
 export default function CanBeAnyWalletSigner({ children }) {
-  const [metamaskAccounts, isLoadingMetamask] = useMetaMaskAccounts(true);
-  const [polkadotAccounts, isLoadingPolkadot] = usePolkadotAccounts(true);
+  const { loadingContent = null } = usePopupParams();
+  const { accounts: substrateInjectedAccounts, loading: isLoadingSubstrate } =
+    useSubstrateInjectedAccounts();
+  const { accounts: evmAccounts, loading: isLoadingEVM } = useEVMAccounts();
+  const signetAccounts = useSignetAccounts();
+  const { loading: isLoadingSignet } = useSignetSdk();
 
   const combinedAccounts = useMemo(
-    () => [...metamaskAccounts, ...polkadotAccounts],
-    [metamaskAccounts, polkadotAccounts],
+    () => [...evmAccounts, ...substrateInjectedAccounts, ...signetAccounts],
+    [evmAccounts, substrateInjectedAccounts, signetAccounts],
   );
 
-  if (isLoadingMetamask || isLoadingPolkadot) {
-    return null;
+  if (isLoadingSubstrate || isLoadingSignet || isLoadingEVM) {
+    return loadingContent;
   }
 
   return (
     <MaybeSignerConnected extensionAccounts={combinedAccounts}>
-      <ContextPopup>{children}</ContextPopup>
+      {children}
     </MaybeSignerConnected>
   );
 }

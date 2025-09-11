@@ -1,21 +1,13 @@
-import { useSelector } from "react-redux";
-import { fellowshipCoreMembersSelector } from "next-common/store/reducers/fellowship/core";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { isSameAddress } from "next-common/utils";
 import FellowshipCoreCommon from "next-common/components/fellowship/core/common";
-import MyFellowshipMemberStatus from "next-common/components/fellowship/core/members/myStatus";
+import CollectivesMembersProvider from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/collectivesMember";
+import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 
 export default function FellowshipMemberCommon({ children }) {
-  const members = useSelector(fellowshipCoreMembersSelector);
-  const myAddress = useRealAddress();
-  const mine = (members || []).find((member) =>
-    isSameAddress(member.address, myAddress),
-  );
-
   return (
-    <FellowshipCoreCommon>
-      <MyFellowshipMemberStatus member={mine} />
-      {children}
-    </FellowshipCoreCommon>
+    <ActiveReferendaProvider pallet="fellowshipReferenda">
+      <CollectivesMembersProvider>
+        <FellowshipCoreCommon>{children}</FellowshipCoreCommon>
+      </CollectivesMembersProvider>
+    </ActiveReferendaProvider>
   );
 }

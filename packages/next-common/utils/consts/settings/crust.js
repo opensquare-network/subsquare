@@ -2,11 +2,18 @@ import Chains from "../chains";
 import capitalize from "../../capitalize";
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
-import {
-  ProjectIconCrustDark,
-  ProjectIconCrustLight,
-  ProjectLogoCrustDark,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+import { mergeChainModules } from "./common/modules";
+
+const ProjectIconCrustDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconCrustDark"),
+);
+const ProjectIconCrustLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconCrustLight"),
+);
+const ProjectLogoCrustDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoCrustDark"),
+);
 
 const DEFAULT_CRUST_NODES = [
   {
@@ -16,6 +23,10 @@ const DEFAULT_CRUST_NODES = [
   {
     name: "Crust",
     url: "wss://rpc.crust.network",
+  },
+  {
+    name: "Dwellir",
+    url: "wss://crust-mainnet-rpc.dwellir.com",
   },
 ];
 
@@ -55,7 +66,6 @@ const crust = {
   hasElections: false,
   ss58Format: 66,
   blockTime: 6000,
-  snsCoverCid: "bafybeicb77dwocjcssmcb75irbsvxly4ep335pky2r7tvwsjnoyzpl3c3y",
   endpoints: DEFAULT_CRUST_NODES,
   avatar: ProjectIconCrustLight,
   darkAvatar: ProjectIconCrustDark,
@@ -65,12 +75,14 @@ const crust = {
   links,
   group: MenuGroups.Solochain,
   postLabels: defaultPostLabels,
-  hasSubscan: true,
   showAccountManagementTab: false,
   description:
     "CRUST implements the incentive layer protocol for decentralized storage. It is adaptable to multiple storage layer protocols such as IPFS, and provides support for the application layer. ",
-  modules: {
-    democracy: true,
+  modules: mergeChainModules({
+    preimages: false,
+  }),
+  integrations: {
+    subscan: true,
   },
   cssVarsLight: {
     theme100: "rgba(250,140,22,0.10)",
@@ -91,6 +103,10 @@ const crust = {
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",
   },
+  multisigWallets: {
+    mimir: true,
+  },
+  allowWeb2Login: true,
 };
 
 export default crust;

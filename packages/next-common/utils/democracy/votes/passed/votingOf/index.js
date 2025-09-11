@@ -1,4 +1,10 @@
-import { calcVotes, normalizeVotingOfEntry, objectSpread, sortVotes } from "../common";
+import { isSameAddress } from "next-common/utils";
+import {
+  calcVotes,
+  normalizeVotingOfEntry,
+  objectSpread,
+  sortVotes,
+} from "../common";
 
 function extractDirectVotes(mapped, targetReferendumIndex) {
   return mapped
@@ -50,25 +56,29 @@ function extractDirectVotes(mapped, targetReferendumIndex) {
           isSplit: true,
         };
         if (split.aye.toBigInt() > 0) {
-          result.push(objectSpread(
-            { ...commonObj },
-            {
-              balance: ayeBalance,
-              aye: true,
-              conviction: 0,
-              votes: calcVotes(ayeBalance, 0),
-            }),
+          result.push(
+            objectSpread(
+              { ...commonObj },
+              {
+                balance: ayeBalance,
+                aye: true,
+                conviction: 0,
+                votes: calcVotes(ayeBalance, 0),
+              },
+            ),
           );
         }
         if (split.nay.toBigInt() > 0) {
-          result.push(objectSpread(
-            { ...commonObj },
-            {
-              balance: nayBalance,
-              aye: false,
-              conviction: 0,
-              votes: calcVotes(nayBalance, 0),
-            }),
+          result.push(
+            objectSpread(
+              { ...commonObj },
+              {
+                balance: nayBalance,
+                aye: false,
+                conviction: 0,
+                votes: calcVotes(nayBalance, 0),
+              },
+            ),
           );
         }
       }
@@ -87,26 +97,35 @@ function extractDelegations(mapped, directVotes = []) {
       };
     });
 
-  return delegations.reduce((result, { account, delegating: { balance, conviction, target } }) => {
-    const targetAddress = target.toString();
-    const to = directVotes.find(({ account, isStandard }) => account === targetAddress && isStandard);
-    if (!to) {
-      return result;
-    }
+  return delegations.reduce(
+    (result, { account, delegating: { balance, conviction, target } }) => {
+      const targetAddress = target.toString();
+      const to = directVotes.find(
+        ({ account, isStandard }) =>
+          isSameAddress(account, targetAddress) && isStandard,
+      );
+      if (!to) {
+        return result;
+      }
 
-    return [
-      ...result,
-      {
-        account,
-        target: target.toString(),
-        balance: balance.toBigInt().toString(),
-        isDelegating: true,
-        aye: to.aye,
-        conviction: conviction.toNumber(),
-        votes: calcVotes(balance.toBigInt().toString(), conviction.toNumber()),
-      },
-    ];
-  }, []);
+      return [
+        ...result,
+        {
+          account,
+          target: target.toString(),
+          balance: balance.toBigInt().toString(),
+          isDelegating: true,
+          aye: to.aye,
+          conviction: conviction.toNumber(),
+          votes: calcVotes(
+            balance.toBigInt().toString(),
+            conviction.toNumber(),
+          ),
+        },
+      ];
+    },
+    [],
+  );
 }
 
 export async function getReferendumVotesFromVotingOf(

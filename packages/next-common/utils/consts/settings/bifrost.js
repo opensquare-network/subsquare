@@ -1,16 +1,20 @@
 import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
-import {
-  ProjectIconBifrostKusamaDark,
-  ProjectIconBifrostKusamaLight,
-  ProjectLogoBifrostKusamaDark,
-} from "@osn/icons/subsquare";
+import dynamic from "next/dynamic";
+import { mergeChainModules } from "./common/modules";
+import bifrostPreimageSettings from "next-common/utils/consts/settings/common/preimage/bifrost";
+
+const ProjectIconBifrostKusamaDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconBifrostKusamaDark"),
+);
+const ProjectIconBifrostKusamaLight = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectIconBifrostKusamaLight"),
+);
+const ProjectLogoBifrostKusamaDark = dynamic(() =>
+  import("@osn/icons/subsquare/ProjectLogoBifrostKusamaDark"),
+);
 
 const DEFAULT_BIFROST_NODES = [
-  {
-    name: "Dwellir",
-    url: "wss://bifrost-rpc.dwellir.com",
-  },
   {
     name: "Liebi",
     url: "wss://bifrost-rpc.liebi.com/ws",
@@ -20,31 +24,39 @@ const DEFAULT_BIFROST_NODES = [
     url: "wss://us.bifrost-rpc.liebi.com/ws",
   },
   {
-    name: "OnFinality",
-    url: "wss://bifrost-parachain.api.onfinality.io/public-ws",
+    name: "RadiumBlock",
+    url: "wss://bifrost.public.curie.radiumblock.co/ws",
   },
 ];
 
 const links = [
   {
     name: "website",
-    url: "https://bifrost.finance/",
+    url: "https://bifrost.io/",
+  },
+  {
+    name: "dapp",
+    url: "https://app.bifrost.io/",
   },
   {
     name: "github",
-    url: "https://github.com/bifrost-finance",
+    url: "https://github.com/bifrost-io",
   },
   {
     name: "twitter",
-    url: "https://twitter.com/BifrostFinance",
+    url: "https://x.com/Bifrost",
   },
   {
     name: "telegram",
-    url: "https://t.me/bifrost_finance",
+    url: "https://t.me/bifrost_io",
   },
   {
     name: "discord",
-    url: "https://discord.gg/8DRBw2h5X4",
+    url: "https://discord.bifrost.io/",
+  },
+  {
+    name: "youtube",
+    url: "https://www.youtube.com/@bifrostio/videos",
   },
   {
     name: "medium",
@@ -60,10 +72,9 @@ const bifrost = {
   identity: "bifrost",
   symbol: "BNC",
   decimals: 12,
-  blockTime: 12000,
+  blockTime: 6000,
   hasElections: false,
-  ss58Format: 6,
-  snsCoverCid: "bafybeianzspawke2pll23iovv6jarictrqdpmptdp4o2eevmo2hnpe3lea",
+  ss58Format: 0,
   endpoints: DEFAULT_BIFROST_NODES,
   avatar: ProjectIconBifrostKusamaLight,
   darkAvatar: ProjectIconBifrostKusamaDark,
@@ -72,16 +83,31 @@ const bifrost = {
   navPreferDark: true,
   links,
   group: MenuGroups.KusamaAndParachains,
-  subscanDomain: "bifrost-kusama",
   postLabels: defaultPostLabels,
-  hasSubscan: true,
-  showReferendaReferendumDelegationPercentage: true,
-  description:
-    "Provide LSD for 9+ blockchains and beyond, dedicated layer-1 built on Substrate with XCM for cross-chain staking.",
-  modules: {
+  description: "The Liquid Staking Standard for Any Chain.",
+  modules: mergeChainModules({
     referenda: true,
     fellowship: true,
-    democracy: true,
+    treasury: {
+      spends: true,
+      bounties: false,
+      tips: false,
+    },
+    vesting: true,
+    democracy: {
+      archived: true,
+    },
+    council: {
+      archived: true,
+    },
+    technicalCommittee: {
+      archived: true,
+    },
+  }),
+  integrations: {
+    subscan: {
+      domain: "bifrost-kusama",
+    },
   },
   useVoteCall: true,
   hasMultisig: true,
@@ -104,6 +130,23 @@ const bifrost = {
     navigationBg: "rgba(33,36,51,1)",
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",
+  },
+  multisigWallets: {
+    signet: true,
+    mimir: true,
+  },
+  newProposalQuickStart: {
+    cancelReferendum: true,
+    killReferendum: true,
+  },
+  supportWalletconnect: true,
+  allowWeb2Login: false,
+  hotMenu: {
+    referenda: true,
+  },
+  preimage: bifrostPreimageSettings,
+  openSquare: {
+    voting: "bifrost",
   },
 };
 

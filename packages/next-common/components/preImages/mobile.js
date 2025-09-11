@@ -1,21 +1,25 @@
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import usePreimage from "next-common/hooks/usePreimage";
 import useOldPreimage from "next-common/hooks/useOldPreimage";
-import PreimageDetailPopup from "./preImageDetailPopup";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  incPreImagesTrigger,
-  preImagesTriggerSelector,
-} from "next-common/store/reducers/preImagesSlice";
+import { useDispatch } from "react-redux";
+import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
 import FieldLoading from "../icons/fieldLoading";
 import { Deposit, Hash, Proposal, Status } from "./fields";
 import tw from "tailwind-styled-components";
 import DetailButton from "../detailButton";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+import Loading from "next-common/components/loading";
+import { cn } from "next-common/utils";
+import { FixedSizeList } from "react-window";
+import { convertTicket } from "./common";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
+
+const PreimageDetailPopup = dynamicPopup(() => import("./preImageDetailPopup"));
 
 const FieldName = tw.span`text-textTertiary`;
 
-function PreimageItem({ hash }) {
+function PreimageItemComp({ hash, index }) {
   const [preimage, isStatusLoaded, isBytesLoaded] = usePreimage(hash);
   return (
     <Item
@@ -23,11 +27,11 @@ function PreimageItem({ hash }) {
       preimage={preimage}
       isStatusLoaded={isStatusLoaded}
       isBytesLoaded={isBytesLoaded}
+      index={index}
     />
   );
 }
-
-function OldPreimageItem({ hash }) {
+function OldPreimageItemComp({ hash, index }) {
   const [preimage, isStatusLoaded, isBytesLoaded] = useOldPreimage(hash);
   return (
     <Item
@@ -35,15 +39,17 @@ function OldPreimageItem({ hash }) {
       preimage={preimage}
       isStatusLoaded={isStatusLoaded}
       isBytesLoaded={isBytesLoaded}
+      index={index}
     />
   );
 }
+const PreimageItem = React.memo(PreimageItemComp);
+const OldPreimageItem = React.memo(OldPreimageItemComp);
 
-function Item({ hash, preimage, isStatusLoaded, isBytesLoaded }) {
+function Item({ hash, preimage, isStatusLoaded, isBytesLoaded, index }) {
   const dispatch = useDispatch();
-  const triggerUpdate = useSelector(preImagesTriggerSelector);
   const [showArgumentsDetail, setShowArgumentsDetail] = useState(null);
-  const deposit = preimage?.ticket || preimage?.deposit;
+  const deposit = convertTicket(preimage?.ticket || preimage?.deposit);
 
   return (
     <>
@@ -97,8 +103,14 @@ function Item({ hash, preimage, isStatusLoaded, isBytesLoaded }) {
                 hash={hash}
                 count={preimage.count}
                 status={preimage.statusName}
-                onUnnoteInBlock={() => dispatch(incPreImagesTrigger())}
-                triggerUpdate={triggerUpdate}
+                onUnnoteInBlock={() => {
+                  dispatch(incPreImagesTrigger());
+                  dispatch(
+                    newSuccessToast(
+                      "Preimage unnoted. Data will be refreshed in seconds.",
+                    ),
+                  );
+                }}
                 right
               />
             )
@@ -109,12 +121,13 @@ function Item({ hash, preimage, isStatusLoaded, isBytesLoaded }) {
         length={
           isStatusLoaded ? (
             <span className="text-textPrimary">
-              {preimage.proposalLength?.toJSON()?.toLocaleString()}
+              {preimage.proposalLength?.toNumber()?.toLocaleString()}
             </span>
           ) : (
             <FieldLoading />
           )
         }
+        index={index}
       />
 
       {showArgumentsDetail && (
@@ -127,15 +140,74 @@ function Item({ hash, preimage, isStatusLoaded, isBytesLoaded }) {
   );
 }
 
-export default function MobileList({ data }) {
+function NoDataText() {
+  return (
+    <SecondaryCard className="flex justify-center">
+      <div className="text14Medium text-textTertiary inline-flex items-center">
+        No current preimages
+      </div>
+    </SecondaryCard>
+  );
+}
+
+function TableLoading() {
   return (
     <SecondaryCard>
-      {data.map(({ data: [hash], method }) => {
-        if (method === "requestStatusFor") {
-          return <PreimageItem key={hash} hash={hash} />;
-        }
-        return <OldPreimageItem key={hash} hash={hash} />;
-      })}
+      <div className="flex w-full justify-center p-[8px]">
+        <Loading size={20} />
+      </div>
+    </SecondaryCard>
+  );
+}
+
+export default function MobileList({ data, loading }) {
+  const listRef = useRef();
+
+  useEffect(() => {
+    if (listRef.current && data?.length) {
+      listRef.current?.scrollTo(0, 0);
+    }
+  }, [data]);
+
+  if (loading) {
+    return <TableLoading />;
+  }
+
+  if (data?.length === 0) {
+    return <NoDataText />;
+  }
+
+  const Row = ({ index, style }) => {
+    const {
+      data: [hash],
+      method,
+    } = data[index];
+    return (
+      <div style={style}>
+        {method === "requestStatusFor" ? (
+          <PreimageItem key={hash} hash={hash} index={index} />
+        ) : (
+          <OldPreimageItem key={hash} hash={hash} index={index} />
+        )}
+      </div>
+    );
+  };
+
+  const itemSize = 210;
+  const itemCount = data?.length || 0;
+  const listHeight = itemCount >= 3 ? 680 : itemCount * itemSize;
+
+  return (
+    <SecondaryCard>
+      <FixedSizeList
+        height={listHeight}
+        itemCount={itemCount}
+        itemSize={itemSize}
+        width="100%"
+        ref={listRef}
+      >
+        {Row}
+      </FixedSizeList>
     </SecondaryCard>
   );
 }
@@ -147,9 +219,15 @@ export function PreimageMobileListItemTemplate({
   hash,
   depositBalance,
   length,
+  index,
 }) {
   return (
-    <div className="flex flex-col py-[16px] gap-[12px] [&:not(:last-child)]:border-b [&:not(:last-child)]:border-neutral300 text14Medium">
+    <div
+      className={cn(
+        "flex flex-col py-[16px] gap-[12px] text14Medium",
+        index === 0 ? "" : "border-t border-neutral300",
+      )}
+    >
       <div className="flex flex-col gap-[12px]">
         <div className="flex justify-between gap-[24px]">
           {title}

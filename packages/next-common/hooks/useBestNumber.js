@@ -3,6 +3,6 @@ import { useContextApi } from "next-common/context/api";
 
 export default function useBestNumber() {
   const api = useContextApi();
-  const [bestNumber] = useCall(api?.derive?.chain?.bestNumber, []);
+  const { value: bestNumber } = useCall(api?.derive?.chain?.bestNumber, []);
   return bestNumber?.toNumber();
 }

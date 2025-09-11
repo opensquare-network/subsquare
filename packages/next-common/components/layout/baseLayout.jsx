@@ -6,38 +6,32 @@ import Nav from "../nav";
 import SEO from "../SEO";
 import Toast from "../toast";
 import Footer from "./footer";
-import { useBlockTime, useSubscribeChainHead } from "next-common/utils/hooks";
-import useUpdateNodesDelay from "next-common/utils/hooks/useUpdateNodesDelay";
 import { cn } from "next-common/utils";
 import { useNavCollapsed } from "next-common/context/nav";
 import LoginGlobalPopup from "../login/globalPopup";
-import useStoreDemocracyLockPeriod from "next-common/hooks/democracy/useStoreDemocracyLockPeriod";
-import useStoreConvictionVotingLockPeriod from "next-common/hooks/referenda/useStoreConvictionVotingLockPeriod";
-import useConnectApis from "next-common/services/chain/apis/useConnectApis";
-import { useContextApi } from "next-common/context/api";
+import GlobalNotification from "next-common/components/globalNotification";
+import { ScanHeightSubscriber } from "../scanHeightSubscriber";
+import NativeTokenPriceSubscriber from "next-common/components/common/price/subscriber";
+import BaseInit from "next-common/components/init";
 
 /**
  * @description a base layout includes nav, header and footer
  */
-export default function BaseLayout({ children, seoInfo = {} }) {
+export default function BaseLayout({
+  children,
+  seoInfo = {},
+  contentStyle = {},
+}) {
   const { sm } = useScreenSize();
   const [navCollapsed] = useNavCollapsed();
-  useConnectApis();
-  useUpdateNodesDelay();
-
-  const api = useContextApi();
-  useBlockTime(api);
-  useSubscribeChainHead(api);
-
-  useStoreDemocracyLockPeriod();
-  useStoreConvictionVotingLockPeriod();
 
   return (
     <>
+      <BaseInit />
       <SEO {...seoInfo} />
 
       <div className="min-h-screen flex bg-pageBg max-sm:flex-col">
-        <section className="sticky top-0 max-h-screen z-20">
+        <section className="sticky top-0 max-h-screen z-50">
           <Nav />
         </section>
 
@@ -51,12 +45,16 @@ export default function BaseLayout({ children, seoInfo = {} }) {
           )}
         >
           {!sm && (
-            <div className="sticky top-0 z-10 max-sm:hidden">
+            <div className="sticky top-0 z-50 max-sm:hidden">
               <Header />
             </div>
           )}
 
-          <section className="flex flex-col flex-1">{children}</section>
+          <GlobalNotification />
+
+          <section className="flex flex-col flex-1" style={contentStyle}>
+            {children}
+          </section>
 
           <footer>
             <Footer />
@@ -68,6 +66,8 @@ export default function BaseLayout({ children, seoInfo = {} }) {
       <Toast />
       <CookiesConsent />
       <LoginGlobalPopup />
+      <NativeTokenPriceSubscriber />
+      <ScanHeightSubscriber />
     </>
   );
 }

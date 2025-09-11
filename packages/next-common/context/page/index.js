@@ -1,5 +1,8 @@
 import React, { createContext, useContext } from "react";
-import { detailPageCategory } from "../../utils/consts/business/category";
+import {
+  detailPageCategory,
+  listPageCategory,
+} from "../../utils/consts/business/category";
 
 const PageContext = createContext({});
 
@@ -15,6 +18,24 @@ export function usePageProperties() {
   return useContext(PageContext);
 }
 
+/**
+ * @returns {listPageCategory[keyof typeof listPageCategory]}>
+ */
+export function useListPageType() {
+  let { listPageType } = usePageProperties();
+
+  // treat page `/fellowship` as `fellowship/referenda`
+  if (listPageType === "fellowship") {
+    listPageType = listPageCategory.FELLOWSHIP_REFERENDA;
+  }
+
+  if (!Object.values(listPageCategory).includes(listPageType)) {
+    throw new Error(`Unknown list page type: ${listPageType}`);
+  }
+
+  return listPageType;
+}
+
 export function useDetailType() {
   const { type } = usePageProperties();
   if (!Object.values(detailPageCategory).includes(type)) {
@@ -28,7 +49,7 @@ export function useDetailType() {
  */
 export function usePageProps() {
   const { props } = usePageProperties();
-  return props;
+  return props || {};
 }
 
 /**

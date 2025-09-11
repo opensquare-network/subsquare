@@ -12,11 +12,11 @@ import {
 import { getMotionId } from "../utils/motion";
 import IdentityOrAddr from "./IdentityOrAddr";
 import { prettyHTML } from "../utils/viewfuncs";
-import useDuration from "../utils/hooks/useDuration";
 import { useChain } from "../context/chain";
 import { hashEllipsis, textEllipsis } from "next-common/utils";
-import isMoonChain from "next-common/utils/isMoonChain";
 import { isNil } from "lodash-es";
+import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
+import { getChildBountyIndex } from "next-common/utils/viewfuncs/treasury/childBounty";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -116,7 +116,7 @@ const HeadWrapper = styled.div`
   }
 `;
 
-const getCommentSource = (comment, chain) => {
+const getCommentSource = (comment) => {
   if (comment?.financialMotion) {
     const hash = comment?.financialMotion.hash;
     return [
@@ -131,21 +131,11 @@ const getCommentSource = (comment, chain) => {
   }
   if (comment?.motion) {
     const motionId = getMotionId(comment?.motion);
-
-    const isMoon = isMoonChain(chain);
-    if (isMoon) {
-      return [
-        "Treasury Council Motion",
-        comment?.motion.title || `Treasury motion #${motionId}`,
-        `/treasury-council/motions/${motionId}`,
-      ];
-    } else {
-      return [
-        "Council Motions",
-        comment?.motion.title || `Motion #${motionId}`,
-        `/council/motions/${motionId}`,
-      ];
-    }
+    return [
+      "Council Motions",
+      comment?.motion.title || `Motion #${motionId}`,
+      `/council/motions/${motionId}`,
+    ];
   }
   if (comment?.tip) {
     const tipHash = comment?.tip.hash;
@@ -157,10 +147,11 @@ const getCommentSource = (comment, chain) => {
   }
   if (comment?.childBounty) {
     const index = comment?.childBounty.index;
+
     return [
       "Treasury Child Bounties",
       comment?.childBounty.title || `Child bounty #${index}`,
-      `/treasury/child-bounties/${index}`,
+      `/treasury/child-bounties/${getChildBountyIndex(comment?.childBounty)}`,
     ];
   }
   if (comment?.bounty) {
@@ -227,14 +218,6 @@ const getCommentSource = (comment, chain) => {
       `/fellowship/referenda/${referendumIndex}`,
     ];
   }
-  if (comment?.moonCouncil) {
-    const motionId = getMotionId(comment?.moonCouncil);
-    return [
-      "Council Motions",
-      comment?.motion.title || `Motion #${motionId}`,
-      `/council/motions/${motionId}`,
-    ];
-  }
   if (comment?.advisoryCommitteeMotion) {
     const motionId = getMotionId(comment?.advisoryCommitteeMotion);
     return [
@@ -275,7 +258,7 @@ const getCommentSource = (comment, chain) => {
 export default function CommentSimple({ data }) {
   const chain = useChain();
   const [type, title, route] = getCommentSource(data, chain);
-  const duration = useDuration(data.updatedAt);
+  const timeAgo = formatTimeAgo(data.updatedAt);
   return (
     <Wrapper>
       <div className="flex-1 overflow-x-scroll overflow-y-hidden scrollbar-pretty">
@@ -289,6 +272,9 @@ export default function CommentSimple({ data }) {
                     renderMentionIdentityUserPlugin(<IdentityOrAddr />),
                   ]}
                   maxLines={2}
+                  markedOptions={{
+                    breaks: true,
+                  }}
                 />
               )}
               {data.contentType === "html" && (
@@ -315,7 +301,7 @@ export default function CommentSimple({ data }) {
                 {title || "Untitled"}
               </Anchor>
             </AutHideInfo>
-            {data.updatedAt && <Info>{duration}</Info>}
+            {data.updatedAt && <Info>{timeAgo}</Info>}
           </Footer>
         </FooterWrapper>
       </div>

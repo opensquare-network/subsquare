@@ -1,15 +1,36 @@
 import {
   MenuOverview,
   MenuDiscussions,
-  MenuCalendar,
-  MenuOffChainVoting,
   MenuDelegation,
+  MenuAccount,
 } from "@osn/icons/subsquare";
 import getChainSettings from "../settings";
 import { CHAIN } from "next-common/utils/constants";
-import { isKintsugiChain } from "next-common/utils/chain";
+import { getAccountUrl } from "next-common/hooks/account/useAccountUrl";
+import supportsDelegation from "./supportsDelegation";
 
 const chainSettings = getChainSettings(CHAIN);
+
+export const overviewMenu = {
+  value: "overview",
+  name: "Overview",
+  pathname: "/",
+  icon: <MenuOverview />,
+};
+
+export const accountMenu = {
+  value: "account",
+  name: "Account",
+  pathname: getAccountUrl(),
+  extraMatchNavMenuActivePathnames: [
+    "/account/been-delegated",
+    "/account/delegations",
+    "/account/deposits",
+    "/account/multisigs",
+    "/account/proxies",
+  ],
+  icon: <MenuAccount />,
+};
 
 export const discussionsMenu = {
   value: "discussions",
@@ -24,24 +45,14 @@ export const discussionsMenu = {
 };
 
 const commonMenus = {
-  items: [
-    {
-      value: "overview",
-      name: "Overview",
-      pathname: "/",
-      icon: <MenuOverview />,
-    },
-  ],
+  items: [overviewMenu, accountMenu],
 };
 
-if (chainSettings.hasDiscussions !== false) {
+if (chainSettings.modules.discussions) {
   commonMenus.items.push(discussionsMenu);
 }
 
-const {
-  modules: { referenda: hasReferenda },
-} = chainSettings;
-if ((hasReferenda || !chainSettings.noDemocracy) && !isKintsugiChain(CHAIN)) {
+if (supportsDelegation()) {
   commonMenus.items.push({
     value: "delegation",
     name: "Delegation",
@@ -53,23 +64,6 @@ if ((hasReferenda || !chainSettings.noDemocracy) && !isKintsugiChain(CHAIN)) {
       "/delegation/mine/delegations",
     ],
     icon: <MenuDelegation />,
-  });
-}
-
-commonMenus.items.push({
-  value: "calendar",
-  name: "Calendar",
-  pathname: "/calendar",
-  icon: <MenuCalendar />,
-});
-
-const space = process.env.NEXT_PUBLIC_OFF_CHAIN_SPACE;
-if (space) {
-  commonMenus.items.push({
-    value: "offChainVoting",
-    name: "Off-chain Voting",
-    pathname: `https://voting.opensquare.io/space/${space}`,
-    icon: <MenuOffChainVoting />,
   });
 }
 

@@ -32,7 +32,6 @@ function Fields({ multisig }) {
           key="status"
           name={multisig.state.name}
           args={multisig.state.args}
-          updateAt={multisig.updateAt}
         />
       </Field>
       <Field>

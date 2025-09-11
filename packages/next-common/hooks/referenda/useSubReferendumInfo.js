@@ -2,33 +2,33 @@ import { useOnchainData } from "next-common/context/post";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { useMountedState } from "react-use";
 import {
   clearReferendaReferendumInfo,
   setReferendaReferendumInfo,
 } from "../../store/reducers/referenda/info";
 import { triggerFetchVotes } from "next-common/store/reducers/referenda/votes";
-import { useContextApi } from "next-common/context/api";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
-export default function useSubReferendumInfo() {
-  const api = useContextApi();
+export default function useSubReferendumInfo(pallet = "referenda") {
   const onchain = useOnchainData();
   const { referendumIndex } = onchain;
 
   const dispatch = useDispatch();
   const votingFinishHeight = useReferendumVotingFinishHeight();
-  const isMounted = useIsMounted();
+  const isMounted = useMountedState();
+  const api = useConditionalContextApi();
 
   useEffect(() => {
-    if (!api || votingFinishHeight || !api.query.referenda) {
+    if (!api || votingFinishHeight || !api?.query?.referenda) {
       dispatch(setReferendaReferendumInfo(onchain.info));
       return () => dispatch(clearReferendaReferendumInfo());
     }
 
     let unsub;
-    api.query.referenda
+    api.query[pallet]
       .referendumInfoFor(referendumIndex, (optionalInfo) => {
-        if (!isMounted.current || !optionalInfo.isSome) {
+        if (!isMounted() || !optionalInfo.isSome) {
           return;
         }
 
@@ -38,7 +38,9 @@ export default function useSubReferendumInfo() {
         }
 
         dispatch(setReferendaReferendumInfo(info.asOngoing.toJSON()));
-        dispatch(triggerFetchVotes());
+        if (pallet === "referenda") {
+          dispatch(triggerFetchVotes());
+        }
       })
       .then((result) => {
         unsub = result;
@@ -50,5 +52,13 @@ export default function useSubReferendumInfo() {
       }
       dispatch(clearReferendaReferendumInfo());
     };
-  }, [api, votingFinishHeight, referendumIndex, isMounted]);
+  }, [
+    api,
+    votingFinishHeight,
+    referendumIndex,
+    isMounted,
+    pallet,
+    dispatch,
+    onchain.info,
+  ]);
 }

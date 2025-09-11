@@ -1,10 +1,10 @@
-import UrlTabs from "next-common/components/urlTabs";
 import { useChain, useChainSettings } from "next-common/context/chain";
-import MultisigsTitle from "./multisigsTitle";
 import { Title } from "./styled";
 import { isKintsugiChain } from "next-common/utils/chain";
 import DepositsTitle from "./depositsTitle";
+import ProxiesTitle from "./proxiesTitle";
 import Chains from "next-common/utils/consts/chains";
+import TabsList from "next-common/components/tabs/list";
 
 function TabTitle({ active, children }) {
   return (
@@ -15,7 +15,10 @@ function TabTitle({ active, children }) {
 }
 
 export default function AccountSubTabs({ className = "" }) {
-  const { hasMultisig } = useChainSettings();
+  const {
+    hasMultisig,
+    modules: { proxy },
+  } = useChainSettings();
   const chain = useChain();
 
   const tabs = [];
@@ -24,15 +27,15 @@ export default function AccountSubTabs({ className = "" }) {
     ![Chains.collectives, Chains.westendCollectives].includes(chain)
   ) {
     tabs.push({
-      label: "Votes",
-      render: ({ active }) => <TabTitle active={active}>Votes</TabTitle>,
+      value: "votes",
+      label: ({ active }) => <TabTitle active={active}>Votes</TabTitle>,
       url: "/account/votes",
     });
   }
 
   tabs.push({
-    label: "Deposits",
-    render({ active }) {
+    value: "deposits",
+    label({ active }) {
       return <DepositsTitle active={active} />;
     },
     url: "/account/deposits",
@@ -40,10 +43,8 @@ export default function AccountSubTabs({ className = "" }) {
 
   if (hasMultisig) {
     tabs.push({
-      label: "Multisigs",
-      render({ active }) {
-        return <MultisigsTitle active={active} />;
-      },
+      value: "multisigs",
+      label: ({ active }) => <TabTitle active={active}>Multisigs</TabTitle>,
       url: "/account/multisigs",
     });
   }
@@ -53,21 +54,27 @@ export default function AccountSubTabs({ className = "" }) {
     ![Chains.collectives, Chains.westendCollectives].includes(chain)
   ) {
     tabs.push({
-      label: "Delegated Votes",
-      render: ({ active }) => (
-        <TabTitle active={active}>Delegated Votes</TabTitle>
-      ),
+      value: "delegations",
+      label: ({ active }) => <TabTitle active={active}>Delegations</TabTitle>,
       url: "/account/delegations",
     });
 
     tabs.push({
-      label: "Been Delegated",
-      render: ({ active }) => (
+      value: "been_delegated",
+      label: ({ active }) => (
         <TabTitle active={active}>Been Delegated</TabTitle>
       ),
       url: "/account/been-delegated",
     });
   }
 
-  return <UrlTabs tabs={tabs} className={className} />;
+  if (proxy) {
+    tabs.push({
+      value: "proxies",
+      label: ({ active }) => <ProxiesTitle active={active} />,
+      url: "/account/proxies",
+    });
+  }
+
+  return <TabsList tabs={tabs} className={className} />;
 }

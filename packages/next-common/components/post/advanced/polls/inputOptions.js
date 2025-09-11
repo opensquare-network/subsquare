@@ -1,4 +1,4 @@
-import Input from "../../../input";
+import Input from "next-common/lib/input";
 import { Trash } from "../../../icons";
 import React, { forwardRef, useImperativeHandle } from "react";
 

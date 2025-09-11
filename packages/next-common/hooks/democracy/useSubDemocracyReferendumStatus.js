@@ -1,7 +1,7 @@
 import useIsDemocracyVoteFinished from "next-common/context/post/democracy/referendum/isVoteFinished";
 import { useEffect } from "react";
 import { isNil } from "lodash-es";
-import useIsMounted from "next-common/utils/hooks/useIsMounted";
+import { useMountedState } from "react-use";
 import { useDispatch } from "react-redux";
 import { setReferendumStatus } from "next-common/store/reducers/referendumSlice";
 import {
@@ -11,7 +11,7 @@ import {
 import getChainSettings from "next-common/utils/consts/settings";
 import { defaultBlockTime } from "next-common/utils/constants";
 import { sleep } from "next-common/utils";
-import { useContextApi } from "next-common/context/api";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
 async function fetchDemocracyVotes10Times(api, dispatch, referendumIndex) {
   const blockTime =
@@ -27,8 +27,8 @@ async function fetchDemocracyVotes10Times(api, dispatch, referendumIndex) {
 
 export default function useSubDemocracyReferendumStatus(referendumIndex) {
   const isVoteFinished = useIsDemocracyVoteFinished();
-  const isMounted = useIsMounted();
-  const api = useContextApi();
+  const isMounted = useMountedState();
+  const api = useConditionalContextApi();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -43,7 +43,7 @@ export default function useSubDemocracyReferendumStatus(referendumIndex) {
     let unsub;
     api.query.democracy
       ?.referendumInfoOf(referendumIndex, (optionalInfo) => {
-        if (!isMounted.current || !optionalInfo.isSome) {
+        if (!isMounted() || !optionalInfo.isSome) {
           return;
         }
 

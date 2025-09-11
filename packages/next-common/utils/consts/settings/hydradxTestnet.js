@@ -1,6 +1,7 @@
 import ChainTypes from "../chainTypes";
 import Chains from "../chains";
 import hydradx from "./hydradx";
+import MenuGroups from "./menuGroups";
 
 const endpoints = [
   {
@@ -24,14 +25,10 @@ const hydradxTestnet = {
   ...hydradx,
   value: Chains.hydradxTestnet,
   name: "HydraDX Testnet",
+  group: MenuGroups.Testnet,
   endpoints,
   chainType: ChainTypes.MIXED,
-  hasStatescan: true,
-  hasSubscan: false,
   ethereumNetwork,
-  modules: {
-    democracy: true,
-  },
 };
 
 export default hydradxTestnet;
