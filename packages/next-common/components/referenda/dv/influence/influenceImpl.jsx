@@ -17,10 +17,16 @@ export default function InfluenceImpl() {
   const filteredReferenda = useFilteredDvReferenda();
   const votes = useFilteredDvVotes();
 
+  const sortedReferenda = useMemo(() => {
+    return filteredReferenda.sort(
+      (a, b) => b.referendumIndex - a.referendumIndex,
+    );
+  }, [filteredReferenda]);
+
   const pageFilteredReferenda = useMemo(() => {
     const start = (page - 1) * InfluencePageSize;
-    return filteredReferenda.slice(start, start + InfluencePageSize);
-  }, [filteredReferenda, page]);
+    return sortedReferenda.slice(start, start + InfluencePageSize);
+  }, [sortedReferenda, page]);
 
   const delegateReferendumVotesMap = useMemo(() => {
     return groupBy(votes, "referendumIndex");

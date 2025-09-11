@@ -43,7 +43,7 @@ function ListRow({ row, delegateReferendumVotesMap }) {
 
   return (
     <div key={row.referendumIndex}>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 h-6">
         <PostTitleImpl
           key="title"
           referendumIndex={row.referendumIndex}
@@ -71,7 +71,7 @@ function ListRow({ row, delegateReferendumVotesMap }) {
       </div>
       <Descriptions
         bordered={false}
-        className="[&_.descriptions-item-label]:text-textTertiary [&_.descriptions-item]:h-auto [&_.descriptions-item]:my-2"
+        className="[&_.descriptions-item-label]:text-textTertiary [&_.descriptions-item]:h-6 [&_.descriptions-item]:my-2"
         items={[
           {
             label: "Track",

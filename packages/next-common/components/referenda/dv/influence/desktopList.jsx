@@ -42,6 +42,7 @@ const columns = [
   {
     name: "",
     style: { width: 80, textAlign: "right" },
+    className: "flex justify-end h-6",
   },
 ];
 
@@ -88,7 +89,7 @@ function ListRow({ row, delegateReferendumVotesMap }) {
           )}
           title={
             loading ? (
-              <FieldLoading className="flex" />
+              <FieldLoading className="flex h-5" />
             ) : (
               getGov2ReferendumTitle(referendumDetail)
             )
