@@ -18,13 +18,21 @@ const delegationIndications = [
   { name: RELATIONSHIP_NODE_TYPE.Delegation, color: "var(--orange500)" },
 ];
 
-export const allIndications = [...commonIndications, ...delegationIndications];
+const transferIndications = [];
+
+export const allIndications = [
+  ...commonIndications,
+  ...delegationIndications,
+  ...transferIndications,
+];
 
 const getIndications = (viewType) => {
   if (viewType === VIEW_TYPE.COMMON) {
     return commonIndications;
   } else if (viewType === VIEW_TYPE.DELEGATION) {
     return delegationIndications;
+  } else if (viewType === VIEW_TYPE.TRANSFER) {
+    return transferIndications;
   }
 };
 

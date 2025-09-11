@@ -20,6 +20,10 @@ export default function ViewTypeSelect({ setViewType = noop, className = "" }) {
           label: "Delegation",
           value: VIEW_TYPE.DELEGATION,
         },
+        {
+          label: "Transfer",
+          value: VIEW_TYPE.TRANSFER,
+        },
       ]}
       value={viewType}
       onChange={(item) => setViewType(item.value)}
