@@ -11,7 +11,7 @@ import { isPostEdited } from "next-common/utils/post";
 import Tabs from "./tabs";
 import ContentSummary from "./contentSummary";
 import PostDataSource from "./postDataSource";
-import ContentTranslations from "./contentTranslations";
+import PostContentTranslations from "./postContentTranslations";
 
 const Wrapper = styled.div`
   :hover {
@@ -21,10 +21,14 @@ const Wrapper = styled.div`
   }
 `;
 
-const BannerImage = styled.img`
-  width: 100%;
-  margin-bottom: 1rem;
-`;
+export function BannerImage({ bannerCid }) {
+  const bannerUrl = getBannerUrl(bannerCid);
+  if (!bannerUrl) {
+    return null;
+  }
+
+  return <img src={bannerUrl} className="w-full mb-4" alt="banner image" />;
+}
 
 export default function ArticleContent({
   setIsEdit,
@@ -32,14 +36,11 @@ export default function ArticleContent({
   isFold = false,
 }) {
   const post = usePost();
-  const bannerUrl = getBannerUrl(post.bannerCid);
 
   const postContent = (
     <>
-      {bannerUrl && <BannerImage src={bannerUrl} alt="banner image" />}
-
+      <BannerImage bannerCid={post.bannerCid} />
       <PostContent post={post} isFold={isFold} />
-
       {isPostEdited(post) && (
         <div className="mt-4 text12Medium text-textTertiary">Edited</div>
       )}
@@ -58,14 +59,9 @@ export default function ArticleContent({
       content: <ContentSummary />,
     },
     {
-      value: "translations",
+      value: "content_translations",
       label: "Translations",
-      content: (
-        <>
-          <ContentTranslations />
-          {postContent}
-        </>
-      ),
+      content: <PostContentTranslations post={post} isFold={isFold} />,
     },
   ].filter(Boolean);
   const [activeValue, setActiveValue] = useState(tabs[0].value);

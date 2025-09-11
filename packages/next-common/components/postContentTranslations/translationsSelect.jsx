@@ -4,6 +4,13 @@ import { SystemVoteAye } from "@osn/icons/subsquare";
 import Divider from "next-common/components/styled/layout/divider";
 import Caret from "next-common/components/icons/caret";
 import { useClickAway } from "react-use";
+import {
+  ALL_LANGUAGE_OPTIONS,
+  DEFAULT_LANGUAGE_OPTION,
+  AVAILABLE_LANGUAGES,
+} from "./constants";
+import { usePostContentTranslationsContext } from "./context";
+import { SystemTranslate } from "@osn/icons/subsquare";
 
 const SelectTrigger = tw.div`
   flex items-center justify-between
@@ -30,33 +37,6 @@ const MenuItem = tw.div`
      ${(p) => p.selected && "bg-neutral200"}
 `;
 
-const LANGUAGE_CODES = {
-  SOURCE: "SOURCE",
-  CHINESE_SIMPLIFIED: "SC",
-  SPANISH: "ES",
-  RUSSIAN: "RU",
-};
-
-const DEFAULT_LANGUAGE_OPTION = {
-  label: "Source",
-  value: LANGUAGE_CODES.SOURCE,
-};
-
-const AVAILABLE_LANGUAGES = [
-  {
-    label: "Chinese (Simplified)",
-    value: LANGUAGE_CODES.CHINESE_SIMPLIFIED,
-  },
-  {
-    label: "Spanish",
-    value: LANGUAGE_CODES.SPANISH,
-  },
-  {
-    label: "Russian",
-    value: LANGUAGE_CODES.RUSSIAN,
-  },
-];
-
 function LanguageOption({ className, onChange, label, value, selected }) {
   return (
     <MenuItem
@@ -70,12 +50,12 @@ function LanguageOption({ className, onChange, label, value, selected }) {
   );
 }
 
-const ALL_LANGUAGE_OPTIONS = [DEFAULT_LANGUAGE_OPTION, ...AVAILABLE_LANGUAGES];
+function TranslationsSelector() {
+  const {
+    selectedLanguage = DEFAULT_LANGUAGE_OPTION.value,
+    setSelectedLanguage,
+  } = usePostContentTranslationsContext();
 
-export default function TranslationsSelect({
-  selectedLanguage = DEFAULT_LANGUAGE_OPTION.value,
-  onSelect,
-}) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const ref = useRef();
 
@@ -89,9 +69,9 @@ export default function TranslationsSelect({
 
   useEffect(() => {
     if (!selectedLanguage) {
-      onSelect(DEFAULT_LANGUAGE_OPTION.value);
+      setSelectedLanguage(DEFAULT_LANGUAGE_OPTION.value);
     }
-  }, [onSelect, selectedLanguage]);
+  }, [setSelectedLanguage, selectedLanguage]);
 
   return (
     <div className="relative flex-1" ref={ref}>
@@ -106,7 +86,7 @@ export default function TranslationsSelect({
           <MenuSection>
             <LanguageOption
               onChange={(value) => {
-                onSelect(value);
+                setSelectedLanguage(value);
                 setIsDropdownOpen(false);
               }}
               selected={selectedLanguage === DEFAULT_LANGUAGE_OPTION.value}
@@ -121,7 +101,7 @@ export default function TranslationsSelect({
                 key={language.value}
                 className="md:basis-1/3 box-border max-md:basis-full"
                 onChange={(value) => {
-                  onSelect(value);
+                  setSelectedLanguage(value);
                   setIsDropdownOpen(false);
                 }}
                 selected={selectedLanguage === language.value}
@@ -132,6 +112,15 @@ export default function TranslationsSelect({
           </MenuSection>
         </DropdownMenu>
       )}
+    </div>
+  );
+}
+
+export default function TranslationsSelect() {
+  return (
+    <div className="p-2.5 pl-4 mb-4 bg-neutral200 rounded-lg flex items-center">
+      <SystemTranslate className="w-6 h-6 mr-4 text-textTertiary" />
+      <TranslationsSelector />
     </div>
   );
 }
