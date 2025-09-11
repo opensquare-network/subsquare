@@ -1,21 +1,58 @@
-import { SystemYes, SystemNo } from "@osn/icons/subsquare";
-import { PostProvider } from "next-common/context/post";
-import { useApprovalThreshold } from "next-common/context/post/gov2/threshold";
+import { SystemYes, SystemNo, SystemVoteAbstain } from "@osn/icons/subsquare";
+import { PostProvider, usePostState } from "next-common/context/post";
 import { useReferendumTally } from "next-common/hooks/referenda/useReferendumInfo";
 import { useInfluence } from "next-common/hooks/referenda/useInfluence";
+import { useIsReferendumFinalState } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
+import { isNil } from "lodash-es";
+import Tooltip from "next-common/components/tooltip";
+import { gov2State } from "next-common/utils/consts/state";
 
 export function InfluenceValueImpl({ referendumVotes }) {
   const tally = useReferendumTally();
-  const approval = useApprovalThreshold();
-  const hasInfluence = useInfluence(tally, approval, referendumVotes);
+  const { hasInfluence, isPass } = useInfluence(tally, referendumVotes);
+  const finalState = useIsReferendumFinalState();
+  const isFinal = !isNil(finalState);
+  const stateName = usePostState();
 
-  if (!tally || !approval) {
+  if (!tally) {
     return null;
+  }
+
+  const noNeedComparison = [
+    gov2State.TimedOut,
+    gov2State.Preparing,
+    gov2State.Killed,
+    gov2State.Cancelled,
+  ].includes(stateName);
+
+  if (noNeedComparison) {
+    return <SystemVoteAbstain />;
+  }
+
+  let tooltipContent = null;
+  if (isFinal) {
+    const tipsStateText = isPass ? "pass" : "fail";
+    if (hasInfluence) {
+      tooltipContent = `This referendum won't ${tipsStateText} if no DV delegations`;
+    } else {
+      tooltipContent = `This referendum will ${tipsStateText} if no DV delegations`;
+    }
+  } else {
+    const tipsStateText = isPass ? "passing" : "failing";
+    if (hasInfluence) {
+      tooltipContent = `This referendum will stay ${tipsStateText} if no DV delegations`;
+    } else {
+      tooltipContent = `This referendum will be ${tipsStateText} if no DV delegations`;
+    }
   }
 
   const icon = hasInfluence ? <SystemYes /> : <SystemNo />;
 
-  return <div className="flex justify-end">{icon}</div>;
+  return (
+    <Tooltip className="flex justify-end" content={tooltipContent}>
+      {icon}
+    </Tooltip>
+  );
 }
 
 export default function InfluenceValue({ referendum, referendumVotes = [] }) {

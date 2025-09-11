@@ -1,5 +1,6 @@
 import BigNumber from "bignumber.js";
 import { usePageProps } from "next-common/context/page";
+import { useApprovalCurve } from "next-common/context/post/gov2/curve";
 
 export function calculateImpact(vote, cohort) {
   let aye = BigNumber(0);
@@ -19,8 +20,11 @@ export function calculateImpact(vote, cohort) {
   };
 }
 
-export function useInfluence(tally, approval, dvVotes = []) {
+export function useInfluence(tally, dvVotes = []) {
   const { cohort } = usePageProps();
+  const approvalCurve = useApprovalCurve();
+  // Always use 100% approval to calculate influence
+  const approval = approvalCurve(1);
   if (!tally || !approval || !cohort) {
     return false;
   }
@@ -49,5 +53,9 @@ export function useInfluence(tally, approval, dvVotes = []) {
   const isPass = tallyAye.div(denominator).gt(approval);
   const noDvIsPass = noDvAye.div(noDvDenominator).gt(approval);
 
-  return isPass !== noDvIsPass;
+  return {
+    isPass,
+    noDvIsPass,
+    hasInfluence: isPass !== noDvIsPass,
+  };
 }
