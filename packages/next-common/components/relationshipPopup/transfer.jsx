@@ -101,23 +101,27 @@ const createNodes = (
       event.stopPropagation();
     });
 
-  const textColor = isDark ? "#fff" : "#333";
   node
     .append("text")
     .attr("dx", 0)
     .attr("dy", 35)
     .attr("text-anchor", "middle")
     .attr("font-size", "12px")
-    .attr("fill", textColor)
+    .attr("fill", "var(--textPrimary)")
     .attr("font-weight", (d) => (d.isRoot ? "bold" : "normal"))
     .text((d) => d.displayName || d.address.slice(0, 8) + "...");
 
   function dragstarted(event, d) {
     if (!event.active) simulation.alphaTarget(0.3).restart();
-    const t = d3.zoomTransform(svg.node());
-    const [x, y] = t.invert([event.x, event.y]);
-    d.fx = x;
-    d.fy = y;
+    const nodes = simulation.nodes();
+    for (const n of nodes) {
+      if (n !== d) {
+        n.fx = n.x;
+        n.fy = n.y;
+      }
+    }
+    d.fx = d.x;
+    d.fy = d.y;
   }
 
   function dragged(event, d) {
@@ -133,6 +137,13 @@ const createNodes = (
     const [x, y] = t.invert([event.x, event.y]);
     d.fx = x;
     d.fy = y;
+    const nodes = simulation.nodes();
+    for (const n of nodes) {
+      if (n !== d) {
+        n.fx = n.x;
+        n.fy = n.y;
+      }
+    }
   }
 
   return node;
