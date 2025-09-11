@@ -23,6 +23,7 @@ export default function ProfileBannerEditPopupContent({ closePopup = noop }) {
   const { fetch, user } = useProfileUserInfoContext();
 
   const [bannerCid, setBannerCid] = useState(user?.bannerCid);
+  const [templateCid, setTemplateCid] = useState(null);
 
   const [imageFile, setImageFile] = useState(null);
   const [imageDataUrl, setImageDataUrl] = useState(null);
@@ -31,11 +32,13 @@ export default function ProfileBannerEditPopupContent({ closePopup = noop }) {
   const { setBanner, isLoading, uploading } = useBannerSubmission(
     imageFile,
     proxyAddress,
+    templateCid,
   );
 
   useEffect(() => {
     setImageFile(null);
     setImageDataUrl(null);
+    setTemplateCid(null);
   }, [bannerCid]);
 
   const save = async () => {
@@ -81,7 +84,10 @@ export default function ProfileBannerEditPopupContent({ closePopup = noop }) {
         )}
         <EditBanner
           setImageDataUrl={setImageDataUrl}
-          setImageFile={setImageFile}
+          setImageFile={(file) => {
+            setImageFile(file);
+            setTemplateCid(null);
+          }}
         >
           <SecondaryButton
             iconLeft={<SystemUpload className="w-4 h-4" />}
@@ -98,8 +104,12 @@ export default function ProfileBannerEditPopupContent({ closePopup = noop }) {
       </GreyPanel>
 
       <BannerTemplate
-        setImageFile={setImageFile}
-        setImageDataUrl={setImageDataUrl}
+        templateCid={templateCid}
+        onSelect={(url, cid) => {
+          setTemplateCid(cid);
+          setImageDataUrl(url);
+          setImageFile(null);
+        }}
       />
 
       <div className="flex justify-end gap-x-2">
@@ -112,7 +122,7 @@ export default function ProfileBannerEditPopupContent({ closePopup = noop }) {
         </SecondaryButton>
         <PrimaryButton
           onClick={save}
-          disabled={uploading || isLoading || !imageFile}
+          disabled={uploading || isLoading || !(imageFile || templateCid)}
           loading={uploading || isLoading}
         >
           Save Change
