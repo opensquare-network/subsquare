@@ -5,24 +5,24 @@ import Divider from "next-common/components/styled/layout/divider";
 import Caret from "next-common/components/icons/caret";
 import { useClickAway } from "react-use";
 
-export const Select = tw.div`
+const SelectTrigger = tw.div`
   flex items-center justify-between
   bg-neutral100 border border-neutral400 hover:border-neutral500 rounded-lg
   h-10 px-4 cursor-pointer
 `;
 
-const OptionsDiv = tw.div`
+const DropdownMenu = tw.div`
   absolute scrollbar-pretty
   w-full mt-1 bg-neutral100 shadow-200
   border border-neutral300 rounded-lg
   max-h-[320px] overflow-y-auto z-50
 `;
 
-const OptionsRowDiv = tw.div`
+const MenuSection = tw.div`
   py-2 px-2
 `;
 
-const OptionsItemDiv = tw.div`
+const MenuItem = tw.div`
  flex items-center justify-between
  rounded-md py-[10px] pl-[16px] pr-[10px]
  cursor-pointer hover:bg-neutral200
@@ -30,100 +30,107 @@ const OptionsItemDiv = tw.div`
      ${(p) => p.selected && "bg-neutral200"}
 `;
 
-export function Item({ className, onChange, label, value, selected }) {
+const LANGUAGE_CODES = {
+  SOURCE: "SOURCE",
+  CHINESE_SIMPLIFIED: "SC",
+  SPANISH: "ES",
+  RUSSIAN: "RU",
+};
+
+const DEFAULT_LANGUAGE_OPTION = {
+  label: "Source",
+  value: LANGUAGE_CODES.SOURCE,
+};
+
+const AVAILABLE_LANGUAGES = [
+  {
+    label: "Chinese (Simplified)",
+    value: LANGUAGE_CODES.CHINESE_SIMPLIFIED,
+  },
+  {
+    label: "Spanish",
+    value: LANGUAGE_CODES.SPANISH,
+  },
+  {
+    label: "Russian",
+    value: LANGUAGE_CODES.RUSSIAN,
+  },
+];
+
+function LanguageOption({ className, onChange, label, value, selected }) {
   return (
-    <OptionsItemDiv
+    <MenuItem
       className={className}
       onClick={() => onChange(value)}
       selected={selected}
     >
       <span className="text-textPrimary text14Medium">{label}</span>
       {selected && <SystemVoteAye className="w-5 h-5 text-theme500" />}
-    </OptionsItemDiv>
+    </MenuItem>
   );
 }
 
-const ChineseSimplified = "SC";
-const Spanish = "ES";
-const Russian = "RU";
-
-const sourceData = {
-  label: "Source",
-  value: "SOURCE",
-};
-
-const dataRestOptions = [
-  {
-    label: "Chinese (Simplified)",
-    value: ChineseSimplified,
-  },
-  {
-    label: "Spanish",
-    value: Spanish,
-  },
-  {
-    label: "Russian",
-    value: Russian,
-  },
-];
-
-const dataOptions = [sourceData, ...dataRestOptions];
+const ALL_LANGUAGE_OPTIONS = [DEFAULT_LANGUAGE_OPTION, ...AVAILABLE_LANGUAGES];
 
 export default function TranslationsSelect({
-  selectedLauguage = sourceData.value,
+  selectedLanguage = DEFAULT_LANGUAGE_OPTION.value,
   onSelect,
 }) {
-  const [show, setShow] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const ref = useRef();
 
-  useClickAway(ref, () => setShow(false));
+  useClickAway(ref, () => setIsDropdownOpen(false));
 
-  const curLabel = useMemo(() => {
-    return dataOptions.find((i) => i.value === selectedLauguage)?.label;
-  }, [selectedLauguage]);
+  const currentLanguageLabel = useMemo(() => {
+    return ALL_LANGUAGE_OPTIONS.find(
+      (option) => option.value === selectedLanguage,
+    )?.label;
+  }, [selectedLanguage]);
 
   useEffect(() => {
-    if (!selectedLauguage) {
-      onSelect(sourceData.value);
+    if (!selectedLanguage) {
+      onSelect(DEFAULT_LANGUAGE_OPTION.value);
     }
-  }, [onSelect, selectedLauguage]);
+  }, [onSelect, selectedLanguage]);
 
   return (
     <div className="relative flex-1" ref={ref}>
-      <Select onClick={() => setShow(!show)}>
-        <span className="text-textPrimary text14Medium">{curLabel}</span>
-        <Caret isGrey down={!show} />
-      </Select>
-      {show && (
-        <OptionsDiv>
-          <OptionsRowDiv>
-            <Item
+      <SelectTrigger onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+        <span className="text-textPrimary text14Medium">
+          {currentLanguageLabel}
+        </span>
+        <Caret isGrey down={!isDropdownOpen} />
+      </SelectTrigger>
+      {isDropdownOpen && (
+        <DropdownMenu>
+          <MenuSection>
+            <LanguageOption
               onChange={(value) => {
                 onSelect(value);
-                setShow(false);
+                setIsDropdownOpen(false);
               }}
-              selected={selectedLauguage === sourceData.value}
-              label={sourceData.label}
-              value={sourceData.value}
+              selected={selectedLanguage === DEFAULT_LANGUAGE_OPTION.value}
+              label={DEFAULT_LANGUAGE_OPTION.label}
+              value={DEFAULT_LANGUAGE_OPTION.value}
             />
-          </OptionsRowDiv>
+          </MenuSection>
           <Divider />
-          <OptionsRowDiv className="flex flex-wrap">
-            {dataRestOptions.map((i) => (
-              <Item
-                key={i.value}
+          <MenuSection className="flex flex-wrap">
+            {AVAILABLE_LANGUAGES.map((language) => (
+              <LanguageOption
+                key={language.value}
                 className="md:basis-1/3 box-border max-md:basis-full"
                 onChange={(value) => {
                   onSelect(value);
-                  setShow(false);
+                  setIsDropdownOpen(false);
                 }}
-                selected={selectedLauguage === i.value}
-                label={i.label}
-                value={i.value}
+                selected={selectedLanguage === language.value}
+                label={language.label}
+                value={language.value}
               />
             ))}
-          </OptionsRowDiv>
-        </OptionsDiv>
+          </MenuSection>
+        </DropdownMenu>
       )}
     </div>
   );
