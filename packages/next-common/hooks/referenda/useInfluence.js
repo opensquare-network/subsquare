@@ -1,4 +1,5 @@
 import BigNumber from "bignumber.js";
+import { noop } from "lodash-es";
 import { usePageProps } from "next-common/context/page";
 import { useApprovalCurve } from "next-common/context/post/gov2/curve";
 
@@ -23,6 +24,20 @@ export function calculateImpact(vote, cohort) {
 export function useInfluence(tally, dvVotes = []) {
   const { cohort } = usePageProps();
   const approvalCurve = useApprovalCurve();
+
+  return getInfluence(tally, dvVotes, cohort, approvalCurve);
+}
+
+export function getInfluence(
+  tally,
+  dvVotes = [],
+  cohort,
+  approvalCurve = noop,
+) {
+  if (!tally || !cohort) {
+    return false;
+  }
+
   // Always use 100% approval to calculate influence
   const approval = approvalCurve(1);
   if (!tally || !approval || !cohort) {

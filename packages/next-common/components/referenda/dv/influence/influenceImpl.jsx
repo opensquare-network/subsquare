@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import InfluenceDesktopList from "./desktopList";
 import InfluenceMobileList from "./mobileList";
+import InfluenceStatistic from "./statistic";
 import { groupBy } from "lodash-es";
 import Pagination from "next-common/components/pagination";
 import {
@@ -40,6 +41,9 @@ export default function InfluenceImpl() {
 
   return (
     <>
+      <InfluenceStatistic
+        delegateReferendumVotesMap={delegateReferendumVotesMap}
+      />
       <Component
         list={pageFilteredReferenda}
         delegateReferendumVotesMap={delegateReferendumVotesMap}
