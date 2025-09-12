@@ -77,20 +77,13 @@ export default function ArticleContent({
 
       {post.content && (
         <div className="mt-6">
-          {post.contentSummary?.summary ? (
-            <Tabs
-              activeTabValue={activeValue}
-              tabs={tabs}
-              onTabClick={(tab) => {
-                setActiveValue(tab.value);
-              }}
-            />
-          ) : (
-            <>
-              <Divider className="mb-4" />
-              {postContent}
-            </>
-          )}
+          <Tabs
+            activeTabValue={activeValue}
+            tabs={tabs}
+            onTabClick={(tab) => {
+              setActiveValue(tab.value);
+            }}
+          />
         </div>
       )}
 
