@@ -1,4 +1,3 @@
-import { fellowshipCoreFeedsApiUri } from "next-common/services/url";
 import { backendApi } from "next-common/services/nextApi";
 import { useAsync } from "react-use";
 import ScrollFeeds from "next-common/components/scrollFeeds";
@@ -6,14 +5,17 @@ import Link from "next/link";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import NoData from "next-common/components/noData";
+import { useMemo } from "react";
 
 export default function FellowshipFeeds() {
-  const { value } = useAsync(async () => {
-    const resp = await backendApi.fetch(fellowshipCoreFeedsApiUri);
-    return resp.result?.items || [];
+  const { value: feeds } = useAsync(async () => {
+    const resp = await backendApi.fetch("/fellowship/feeds/recent");
+    return resp.result || [];
   }, []);
 
-  const hasFeeds = value?.length > 0;
+  console.log("feeds", feeds);
+
+  const hasFeeds = useMemo(() => feeds?.length > 0, [feeds]);
 
   return (
     <>
@@ -28,7 +30,7 @@ export default function FellowshipFeeds() {
       </div>
       <SecondaryCard className="flex justify-center items-center flex-1">
         {hasFeeds ? (
-          <ScrollFeeds feeds={value} />
+          <ScrollFeeds feeds={feeds} />
         ) : (
           <NoData text="No activities in latest 30 days" />
         )}

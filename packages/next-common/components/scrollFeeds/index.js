@@ -3,11 +3,11 @@ import { cn } from "next-common/utils";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAnimate } from "framer-motion";
 import { useWindowSize } from "react-use";
-import FellowshipCoreFeedsListEvent from "../fellowship/core/feeds/event";
 import FellowshipFeedSuffix from "../fellowship/feeds/suffix";
 import FellowshipFeedLeadingBar from "../fellowship/feeds/leading";
 import { AddressUser } from "../user";
 import { AvatarDisplay } from "../user/avatarDisplay";
+import FellowshipCommonEventList from "../feeds/fellowshipCommonEventList";
 
 export const PromptTypes = {
   INFO: "info",
@@ -117,6 +117,7 @@ export default function ScrollFeeds({
   return (
     <div
       ref={containerRef}
+      className="w-full"
       style={{
         height: wrapperHeight + "px",
       }}
@@ -146,8 +147,8 @@ export default function ScrollFeeds({
                   <div className="mt-1 mr-2">
                     <AvatarDisplay size={20} address={item?.args?.who} />
                   </div>
-                  <FellowshipCoreFeedsListEvent
-                    feed={item}
+                  <FellowshipCommonEventList
+                    event={item}
                     className="pr-2 pb-1 pt-1 gap-y-0.5 max-sm:items-start"
                     showUserInfo={false}
                     beforeContent={
