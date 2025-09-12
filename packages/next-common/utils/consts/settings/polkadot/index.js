@@ -117,6 +117,9 @@ const polkadot = {
   openSquare: {
     voting: "polkadot",
   },
+  translations: {
+    referenda: true,
+  },
 };
 
 export default polkadot;
