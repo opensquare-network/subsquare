@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import InfluenceDesktopList from "./desktopList";
 import InfluenceMobileList from "./mobileList";
 import InfluenceStatistic from "./statistic";
@@ -9,6 +9,7 @@ import {
   useFilteredDvVotes,
 } from "next-common/context/referenda/dv";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
+import { useRouter } from "next/router";
 
 const InfluencePageSize = 10;
 
@@ -17,6 +18,11 @@ export default function InfluenceImpl() {
   const [page, setPage] = useState(1);
   const filteredReferenda = useFilteredDvReferenda();
   const votes = useFilteredDvVotes();
+  const router = useRouter();
+
+  useEffect(() => {
+    setPage(parseInt(router.query.page || 1));
+  }, [router.query.page]);
 
   const sortedReferenda = useMemo(() => {
     return filteredReferenda.sort(
@@ -52,8 +58,9 @@ export default function InfluenceImpl() {
       <Pagination
         page={page}
         onPageChange={(e, val) => {
-          e.preventDefault();
           setPage(val);
+          e.preventDefault();
+          e.stopPropagation();
         }}
         shallow
         total={filteredReferenda.length}
