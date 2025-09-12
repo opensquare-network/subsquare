@@ -18,7 +18,9 @@ const delegationIndications = [
   { name: RELATIONSHIP_NODE_TYPE.Delegation, color: "var(--orange500)" },
 ];
 
-const transferIndications = [];
+const transferIndications = [
+  { name: RELATIONSHIP_NODE_TYPE.Transfer, color: "var(--red500)" },
+];
 
 export const allIndications = [
   ...commonIndications,

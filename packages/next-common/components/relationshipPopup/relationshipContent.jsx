@@ -12,7 +12,6 @@ import {
   VIEW_TYPE,
 } from "next-common/context/relationship/selectViewType";
 import useTransferRelationshipNode from "next-common/hooks/useTransferRelationshipNode";
-import TransferRelationship from "./transfer";
 
 export function CommonRelationshipContent() {
   const sourceAddress = useContextAddress();
@@ -51,7 +50,7 @@ export function TransferRelationshipContent() {
     <RelationshipProvider nodes={nodes} edges={edges} isLoading={isLoading}>
       <NoRelationshipsWrapper />
       <Indications />
-      <TransferRelationship />
+      <Relationship />
     </RelationshipProvider>
   );
 }

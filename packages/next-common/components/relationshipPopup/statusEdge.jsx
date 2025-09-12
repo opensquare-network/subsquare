@@ -71,6 +71,11 @@ export default function StatusEdge({
         type="smoothstep"
         style={{ stroke: `${edgeTheme.color} !important` }}
         markerEnd={`url(#relationship_popup-arrow-${edgeTheme.name})`}
+        markerStart={
+          data?.isTwoWay
+            ? `url(#relationship_popup-arrow-start-${edgeTheme.name})`
+            : undefined
+        }
       />
       <EdgeLabelRenderer className="relative !z-20">
         <EdgeLabel
@@ -133,6 +138,10 @@ function TooltipsContent({ type, ...rest }) {
 
   if (type === "Delegation") {
     return <DelegationTipContent {...rest} />;
+  }
+
+  if (type === "Transfer") {
+    return <TransferTipContent {...rest} />;
   }
 
   return null;
@@ -200,6 +209,34 @@ function DelegationTipContent({ rawData }) {
         </li>
       ))}
     </ul>
+  );
+}
+
+function TransferTipContent({ rawData }) {
+  const { decimals, symbol } = useChainSettings();
+  const transfers = rawData?.userTransferVolumes || [];
+
+  return (
+    <div className="flex gap-x-1 items-center flex-col">
+      {transfers.map((transfer) => (
+        <div key={transfer.id} className="flex gap-x-1 items-center">
+          <DisplayUser
+            id={transfer.from}
+            className="flex text12Medium text-white"
+          />
+          <span>has {transfer.count} times transferred</span>
+          <DisplayUser
+            id={transfer.to}
+            className="flex text12Medium text-white"
+          />
+          <span>with volume </span>
+          <ValueDisplay
+            value={toPrecision(transfer.volume, decimals)}
+            symbol={symbol}
+          />
+        </div>
+      ))}
+    </div>
   );
 }
 

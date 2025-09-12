@@ -19,6 +19,24 @@ const generateArrowMarker = (id, color) => {
   );
 };
 
+const generateStartArrowMarker = (id, color) => {
+  return (
+    <marker
+      id={id}
+      viewBox="0 0 10 10"
+      key={id}
+      refX="0"
+      refY="5"
+      markerUnits="strokeWidth"
+      markerWidth="8"
+      markerHeight="6"
+      orient="auto"
+    >
+      <path d="M 10 0 L 0 5 L 10 10 Z" fill={color} />
+    </marker>
+  );
+};
+
 export const arrowMarker = (
   <svg>
     <defs>
@@ -26,6 +44,10 @@ export const arrowMarker = (
         <Fragment key={item.name}>
           {generateArrowMarker(
             "relationship_popup-arrow-" + item.name,
+            item.color,
+          )}
+          {generateStartArrowMarker(
+            "relationship_popup-arrow-start-" + item.name,
             item.color,
           )}
         </Fragment>
