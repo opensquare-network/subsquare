@@ -14,6 +14,9 @@ export const GET_CORETIME_SALE_PURCHASES = gql`
         indexer {
           ${INDEXER_FIELDS}
         }
+        relayIndexer {
+          ${INDEXER_FIELDS}
+        }
         price
         who
       }
@@ -36,12 +39,14 @@ export const GET_CORETIME_SALE_RENEWALS = gql`
         indexer {
           ${INDEXER_FIELDS}
         }
+        relayIndexer {
+          ${INDEXER_FIELDS}
+        }
       }
     }
   }
 `;
 
-// TODO: isFinal
 export const GET_CORETIME_HISTORY_SALES = gql`
   query MyQuery($limit: Int!, $offset: Int!) {
     coretimeHistorySales(limit: $limit, offset: $offset) {
