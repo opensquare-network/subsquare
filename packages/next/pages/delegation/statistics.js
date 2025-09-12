@@ -45,70 +45,73 @@ export default function DelegationStatsPage({ defaultType }) {
   );
 }
 
+const getDemocracyProps = async (tracksProps) => {
+  const [
+    { result: delegatee },
+    { result: delegators },
+    { result: democracySummary },
+  ] = await Promise.all([
+    backendApi.fetch("democracy/delegatee", {
+      sort: JSON.stringify(["delegatedVotes", "desc"]),
+      pageSize: 25,
+    }),
+    backendApi.fetch("democracy/delegators", {
+      sort: JSON.stringify(["votes", "desc"]),
+      pageSize: 25,
+    }),
+    backendApi.fetch("democracy/summary"),
+  ]);
+
+  return {
+    props: {
+      defaultType: Democracy,
+      delegatee: delegatee ?? EmptyList,
+      delegators: delegators ?? EmptyList,
+      democracySummary: democracySummary ?? {},
+      ...tracksProps,
+    },
+  };
+};
+
+const getReferendaProps = async (tracksProps) => {
+  const [
+    { result: tracksStats },
+    { result: delegatee },
+    { result: tracksReferendaSummary },
+  ] = await Promise.all([
+    backendApi.fetch("referenda/tracks"),
+    backendApi.fetch("referenda/delegatee", {
+      sort: JSON.stringify(["votes", "desc"]),
+      pageSize: 25,
+    }),
+    backendApi.fetch("referenda/summary"),
+  ]);
+
+  return {
+    props: {
+      defaultType: Referenda,
+      tracksStats: tracksStats ?? [],
+      delegatee: delegatee ?? EmptyList,
+      tracksReferendaSummary: tracksReferendaSummary ?? [],
+      ...tracksProps,
+    },
+  };
+};
+
 export const getServerSideProps = withCommonProps(async (ctx) => {
   const { type } = ctx.query;
   const {
     modules: { referenda: hasReferenda },
   } = getChainSettings(process.env.CHAIN);
   const defaultType = hasReferenda ? Referenda : Democracy;
+  const queryType = type || defaultType.toLowerCase();
 
   const tracksProps = await fetchOpenGovTracksProps();
 
-  if (
-    type === Democracy.toLowerCase() ||
-    (!type && defaultType === Democracy)
-  ) {
-    const [
-      { result: delegatee },
-      { result: delegators },
-      { result: democracySummary },
-    ] = await Promise.all([
-      backendApi.fetch("democracy/delegatee", {
-        sort: JSON.stringify(["delegatedVotes", "desc"]),
-        pageSize: 25,
-      }),
-      backendApi.fetch("democracy/delegators", {
-        sort: JSON.stringify(["votes", "desc"]),
-        pageSize: 25,
-      }),
-      backendApi.fetch("democracy/summary"),
-    ]);
-
-    return {
-      props: {
-        defaultType,
-        delegatee: delegatee ?? EmptyList,
-        delegators: delegators ?? EmptyList,
-        democracySummary: democracySummary ?? {},
-        ...tracksProps,
-      },
-    };
-  } else if (
-    type === Referenda.toLowerCase() ||
-    (!type && defaultType === Referenda)
-  ) {
-    const [
-      { result: tracksStats },
-      { result: delegatee },
-      { result: tracksReferendaSummary },
-    ] = await Promise.all([
-      backendApi.fetch("referenda/tracks"),
-      backendApi.fetch("referenda/delegatee", {
-        sort: JSON.stringify(["votes", "desc"]),
-        pageSize: 25,
-      }),
-      backendApi.fetch("referenda/summary"),
-    ]);
-
-    return {
-      props: {
-        defaultType,
-        tracksStats: tracksStats ?? [],
-        delegatee: delegatee ?? EmptyList,
-        tracksReferendaSummary: tracksReferendaSummary ?? [],
-        ...tracksProps,
-      },
-    };
+  if (queryType === Democracy.toLowerCase()) {
+    return await getDemocracyProps(tracksProps);
+  } else if (queryType === Referenda.toLowerCase()) {
+    return await getReferendaProps(tracksProps);
   } else {
     return {
       props: {
