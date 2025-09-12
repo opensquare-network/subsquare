@@ -11,12 +11,17 @@ const fetchTranslatedPost = async (languageCode, originalPost) => {
   // });
 
   // Mock data
+  const polkassemblyContentHtml = `Translated content for ${languageCode}`;
   const content = `Translated content for ${languageCode}`;
+
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({
         ...originalPost,
         content,
+        ...(originalPost.dataSource === "polkassembly"
+          ? { polkassemblyContentHtml }
+          : {}),
       });
     }, 500);
   });
