@@ -1,7 +1,7 @@
 import { isNil, partition } from "lodash-es";
 import DVDelegateCard from "./card";
 
-export default function DVDetailSection({ title, votes = [] }) {
+export default function DVDetailSection({ title, votes = [], allVotesValue }) {
   const [voted, noVoted] = partition(votes, (v) => !isNil(v?.totalVotes));
 
   return (
@@ -17,13 +17,21 @@ export default function DVDetailSection({ title, votes = [] }) {
 
       <div className="space-y-2">
         {voted.map((data) => (
-          <DVDelegateCard key={data.account} data={data} />
+          <DVDelegateCard
+            key={data.account}
+            data={data}
+            allVotesValue={allVotesValue}
+          />
         ))}
 
         {!!voted.length && !!noVoted.length && <hr className="!my-4" />}
 
         {noVoted.map((data) => (
-          <DVDelegateCard key={data.account} data={data} />
+          <DVDelegateCard
+            key={data.account}
+            data={data}
+            allVotesValue={allVotesValue}
+          />
         ))}
       </div>
     </div>

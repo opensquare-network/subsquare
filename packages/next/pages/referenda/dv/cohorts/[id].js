@@ -1,5 +1,5 @@
 import SectionLayout from "next-common/components/layout/sectionLayout";
-import { withCommonProps } from "next-common/lib";
+import { withReferendaCommonProps } from "next-common/services/serverSide/referenda/common";
 import CohortBreadcrumb from "next-common/components/referenda/dv/cohort/breadcrumb";
 import Overview from "next-common/components/referenda/dv/cohort/overview";
 import DvReferendaVotes from "next-common/components/referenda/dv/dvVotes";
@@ -12,6 +12,7 @@ import Breadcrumbs from "next-common/components/layout/DetailLayout/breadcrumbs"
 import CountBySelect from "next-common/components/referenda/dv/common/countBySelect";
 import DvDataTypeProvider from "next-common/context/referenda/dv";
 import NotFound from "next-common/components/notFound";
+import Influence from "next-common/components/referenda/dv/influence";
 
 function NilCohortPage() {
   const seoInfo = {
@@ -55,6 +56,7 @@ export default function CohortPage() {
           <Overview />
           <DelegatesSection />
           <DvReferendaVotes />
+          <Influence />
         </div>
       </DvDataTypeProvider>
     </SectionLayout>
@@ -77,7 +79,7 @@ function DelegatesSection() {
   );
 }
 
-export const getServerSideProps = withCommonProps(async (context) => {
+export const getServerSideProps = withReferendaCommonProps(async (context) => {
   const { id } = context.query;
   const baseUrl = `/dv/cohorts/${id}`;
 
