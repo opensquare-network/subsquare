@@ -12,6 +12,7 @@ import Tabs from "./tabs";
 import ContentSummary from "./contentSummary";
 import PostDataSource from "./postDataSource";
 import PostContentTranslations from "./postContentTranslations";
+import useShowTranslations from "next-common/hooks/useShowTranslations";
 
 const Wrapper = styled.div`
   :hover {
@@ -36,6 +37,7 @@ export default function ArticleContent({
   isFold = false,
 }) {
   const post = usePost();
+  const showTranslations = useShowTranslations();
 
   const postContent = (
     <>
@@ -58,7 +60,7 @@ export default function ArticleContent({
       label: "AI Summary",
       content: <ContentSummary />,
     },
-    {
+    showTranslations && {
       value: "content_translations",
       label: "Translations",
       content: <PostContentTranslations post={post} isFold={isFold} />,
@@ -77,13 +79,20 @@ export default function ArticleContent({
 
       {post.content && (
         <div className="mt-6">
-          <Tabs
-            activeTabValue={activeValue}
-            tabs={tabs}
-            onTabClick={(tab) => {
-              setActiveValue(tab.value);
-            }}
-          />
+          {post.contentSummary?.summary || showTranslations ? (
+            <Tabs
+              activeTabValue={activeValue}
+              tabs={tabs}
+              onTabClick={(tab) => {
+                setActiveValue(tab.value);
+              }}
+            />
+          ) : (
+            <>
+              <Divider className="mb-4" />
+              {postContent}
+            </>
+          )}
         </div>
       )}
 
