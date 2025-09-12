@@ -14,19 +14,27 @@ import {
 import PalletTabs from "next-common/components/profile/delegation/palletTabs";
 import getChainSettings from "next-common/utils/consts/settings";
 import NoData from "next-common/components/noData";
+import { useChainSettings } from "next-common/context/chain";
 
 function Content() {
+  const {
+    modules: { referenda: hasReferenda, democracy },
+  } = useChainSettings();
+  const hasDemocracyModule = democracy && !democracy?.archived;
+
   const selectedTabId = useModuleTab();
 
-  if (selectedTabId === Referenda) {
+  if (selectedTabId === Referenda && hasReferenda) {
     return <ReferendaStats />;
   }
 
-  if (selectedTabId === Democracy) {
+  if (selectedTabId === Democracy && hasDemocracyModule) {
     return <DemocracyStats />;
   }
 
-  return <NoData text={`No current ${selectedTabId?.toLowerCase()} data`} />;
+  return (
+    <NoData text={`No current ${selectedTabId?.toLowerCase() || ""} data`} />
+  );
 }
 
 export default function DelegationStatsPage({ defaultType }) {
@@ -45,76 +53,95 @@ export default function DelegationStatsPage({ defaultType }) {
   );
 }
 
+const getDemocracyProps = async () => {
+  const [
+    { result: delegatee },
+    { result: delegators },
+    { result: democracySummary },
+  ] = await Promise.all([
+    backendApi.fetch("democracy/delegatee", {
+      sort: JSON.stringify(["delegatedVotes", "desc"]),
+      pageSize: 25,
+    }),
+    backendApi.fetch("democracy/delegators", {
+      sort: JSON.stringify(["votes", "desc"]),
+      pageSize: 25,
+    }),
+    backendApi.fetch("democracy/summary"),
+  ]);
+
+  return {
+    defaultType: Democracy,
+    delegatee: delegatee ?? EmptyList,
+    delegators: delegators ?? EmptyList,
+    democracySummary: democracySummary ?? {},
+  };
+};
+
+const getReferendaProps = async () => {
+  const [
+    { result: tracksStats },
+    { result: delegatee },
+    { result: tracksReferendaSummary },
+  ] = await Promise.all([
+    backendApi.fetch("referenda/tracks"),
+    backendApi.fetch("referenda/delegatee", {
+      sort: JSON.stringify(["votes", "desc"]),
+      pageSize: 25,
+    }),
+    backendApi.fetch("referenda/summary"),
+  ]);
+
+  return {
+    defaultType: Referenda,
+    tracksStats: tracksStats ?? [],
+    delegatee: delegatee ?? EmptyList,
+    tracksReferendaSummary: tracksReferendaSummary ?? [],
+  };
+};
+
 export const getServerSideProps = withCommonProps(async (ctx) => {
   const { type } = ctx.query;
   const {
-    modules: { referenda: hasReferenda },
+    modules: { referenda: hasReferenda, democracy },
   } = getChainSettings(process.env.CHAIN);
-  const defaultType = hasReferenda ? Referenda : Democracy;
+  const hasDemocracyModule = democracy && !democracy?.archived;
+  const defaultType =
+    type ||
+    (hasReferenda
+      ? Referenda.toLowerCase()
+      : hasDemocracyModule
+      ? Democracy.toLowerCase()
+      : "");
 
   const tracksProps = await fetchOpenGovTracksProps();
 
-  if (
-    type === Democracy.toLowerCase() ||
-    (!type && defaultType === Democracy)
-  ) {
-    const [
-      { result: delegatee },
-      { result: delegators },
-      { result: democracySummary },
-    ] = await Promise.all([
-      backendApi.fetch("democracy/delegatee", {
-        sort: JSON.stringify(["delegatedVotes", "desc"]),
-        pageSize: 25,
-      }),
-      backendApi.fetch("democracy/delegators", {
-        sort: JSON.stringify(["votes", "desc"]),
-        pageSize: 25,
-      }),
-      backendApi.fetch("democracy/summary"),
-    ]);
-
+  if (defaultType === Democracy.toLowerCase()) {
+    const propsData = await getDemocracyProps();
     return {
       props: {
         defaultType,
-        delegatee: delegatee ?? EmptyList,
-        delegators: delegators ?? EmptyList,
-        democracySummary: democracySummary ?? {},
-        ...tracksProps,
-      },
-    };
-  } else if (
-    type === Referenda.toLowerCase() ||
-    (!type && defaultType === Referenda)
-  ) {
-    const [
-      { result: tracksStats },
-      { result: delegatee },
-      { result: tracksReferendaSummary },
-    ] = await Promise.all([
-      backendApi.fetch("referenda/tracks"),
-      backendApi.fetch("referenda/delegatee", {
-        sort: JSON.stringify(["votes", "desc"]),
-        pageSize: 25,
-      }),
-      backendApi.fetch("referenda/summary"),
-    ]);
-
-    return {
-      props: {
-        defaultType,
-        tracksStats: tracksStats ?? [],
-        delegatee: delegatee ?? EmptyList,
-        tracksReferendaSummary: tracksReferendaSummary ?? [],
-        ...tracksProps,
-      },
-    };
-  } else {
-    return {
-      props: {
-        defaultType: type,
+        ...propsData,
         ...tracksProps,
       },
     };
   }
+
+  if (defaultType === Referenda.toLowerCase()) {
+    const propsData = await getReferendaProps();
+    return {
+      props: {
+        defaultType,
+        ...propsData,
+        ...tracksProps,
+      },
+    };
+  }
+
+  return {
+    props: {
+      defaultType,
+      ...tracksProps,
+    },
+  };
 });
