@@ -43,11 +43,13 @@ export function FellowshipFeedsImpl() {
     <DropdownUrlFilterProvider
       shallow={false}
       defaultFilterValues={{
+        page: 1,
         who: null,
         event: null,
         section: null,
       }}
       emptyFilterValues={{
+        page: 1,
         who: null,
         event: null,
         section: null,

@@ -2,7 +2,7 @@ import { DropdownFilter } from "next-common/components/dropdownFilter";
 import { useStagedFilterState } from "next-common/components/dropdownFilter/context";
 import Select from "next-common/components/select";
 import Input from "next-common/lib/input";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 
 const SECTION_CONTENTS = {
   fellowshipReferenda: "Referenda",
@@ -77,6 +77,16 @@ export default function useFeedsFilter() {
     [stagedFilter?.section],
   );
 
+  const onFilterChange = useCallback(
+    (state) => {
+      setStagedFilter({
+        ...state,
+        page: 1,
+      });
+    },
+    [setStagedFilter],
+  );
+
   const component = (
     <DropdownFilter className="w-[320px]">
       <div className="flex flex-col gap-y-2">
@@ -88,7 +98,7 @@ export default function useFeedsFilter() {
             value={stagedFilter?.section || null}
             options={sectionOptions}
             onChange={(option) => {
-              setStagedFilter({
+              onFilterChange({
                 ...stagedFilter,
                 section: option.value,
                 event: null,
@@ -104,7 +114,7 @@ export default function useFeedsFilter() {
             value={stagedFilter?.event || null}
             options={eventOptions}
             onChange={(option) => {
-              setStagedFilter({ ...stagedFilter, event: option.value });
+              onFilterChange({ ...stagedFilter, event: option.value });
             }}
           />
         </div>
@@ -116,7 +126,7 @@ export default function useFeedsFilter() {
             placeholder="Search address"
             value={stagedFilter?.who || ""}
             onChange={(e) => {
-              setStagedFilter({ ...stagedFilter, who: e.target.value });
+              onFilterChange({ ...stagedFilter, who: e.target.value });
             }}
           />
         </div>
