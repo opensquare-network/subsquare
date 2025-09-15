@@ -137,7 +137,7 @@ function ScrollFeedItem({ item, isLast }) {
           </div>
         )}
 
-        <div className="pr-2 pb-1 pt-1 gap-y-0.5 max-sm:items-start flex flex-wrap gap-x-1">
+        <div className="pr-2 pb-1 pt-1 gap-y-0.5 max-sm:items-start flex flex-wrap gap-x-1 max-sm:h-min">
           <FellowshipCommonEvent
             feed={item}
             showUserInfo={false}
