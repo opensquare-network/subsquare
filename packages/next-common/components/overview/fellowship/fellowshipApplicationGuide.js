@@ -9,6 +9,7 @@ import Link from "next/link";
 import { isAddressInGroup } from "next-common/utils";
 import { useMemo } from "react";
 import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
+import Tooltip from "next-common/components/tooltip";
 
 export default function FellowshipApplicationGuide() {
   const chain = useChain();
@@ -30,8 +31,8 @@ function ApplicationGuide() {
   );
 
   const isDisabled = useMemo(() => {
-    return isFellowshipMember && !loading && realAddress;
-  }, [isFellowshipMember, loading, realAddress]);
+    return isFellowshipMember && realAddress;
+  }, [isFellowshipMember, realAddress]);
 
   return (
     <SecondaryCard>
@@ -68,15 +69,25 @@ function ApplicationGuide() {
             </div>
           </div>
         </div>
-        <ApplyButton isDisabled={isDisabled} />
+        <ApplyButton
+          loading={loading}
+          isDisabled={isDisabled}
+          isFellowshipMember={isFellowshipMember}
+        />
       </div>
     </SecondaryCard>
   );
 }
 
-function ApplyButton({ isDisabled }) {
-  if (isDisabled) {
-    return <PrimaryButton disabled={isDisabled}>Apply</PrimaryButton>;
+function ApplyButton({ isDisabled, isFellowshipMember, loading }) {
+  if (isDisabled || loading) {
+    return (
+      <Tooltip content={isFellowshipMember && "You are already a member"}>
+        <PrimaryButton disabled={isDisabled} loading={loading}>
+          Apply
+        </PrimaryButton>
+      </Tooltip>
+    );
   }
   return (
     <Link href="/fellowship/applications/create">
