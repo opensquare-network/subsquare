@@ -29,7 +29,8 @@ export default function CohortInfoPanel() {
       items={[
         tokensText && <LearnLine key="learn" tokensText={tokensText} />,
         <span key="latest" className="text14Medium flex items-center gap-x-1">
-          The cohort has {cohort.delegateCnt} delegates.
+          The cohort has {cohort.delegateCnt} delegates
+          {cohort.guardianCnt ? ` and ${cohort.guardianCnt} guardians` : ""}.
         </span>,
         <span
           key="tracks"
