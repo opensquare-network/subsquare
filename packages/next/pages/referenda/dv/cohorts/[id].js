@@ -13,6 +13,7 @@ import CountBySelect from "next-common/components/referenda/dv/common/countBySel
 import DvDataTypeProvider from "next-common/context/referenda/dv";
 import NotFound from "next-common/components/notFound";
 import Influence from "next-common/components/referenda/dv/influence";
+import DvInfoPanel from "next-common/components/referenda/dv/dvInfoPanel";
 
 function NilCohortPage() {
   const seoInfo = {
@@ -53,6 +54,7 @@ export default function CohortPage() {
           />
         </CountBySelect>
         <div className="flex flex-col gap-y-4">
+          <DvInfoPanel showLearnLine={false} />
           <Overview />
           <DelegatesSection />
           <DvReferendaVotes />

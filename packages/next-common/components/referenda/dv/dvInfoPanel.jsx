@@ -8,7 +8,7 @@ import { cn } from "next-common/utils";
 import { isKusamaChain, isPolkadotChain } from "next-common/utils/chain";
 import Link from "next/link";
 
-export default function DvInfoPanel() {
+export default function DvInfoPanel({ showLearnLine = true }) {
   const { cohort, cohorts } = usePageProps();
   const chain = useChain();
 
@@ -28,7 +28,7 @@ export default function DvInfoPanel() {
       className="[&>div:last-child]:flex-1"
       icon={<MenuHorn className="[&_path]:fill-theme500" />}
       items={[
-        tokensText && <LearnLine key="learn" tokensText={tokensText} />,
+        showLearnLine && tokensText && <LearnLine key="learn" tokensText={tokensText} />,
         <span key="latest" className="text14Medium flex items-center gap-x-1">
           The latest DV cohort is {cohorts?.length || 0} with{" "}
           {cohort?.delegateCnt || 0} delegates
