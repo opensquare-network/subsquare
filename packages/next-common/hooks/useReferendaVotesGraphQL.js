@@ -5,28 +5,30 @@ import getChainSettings from "next-common/utils/consts/settings";
 import { hasReferendaVotesGraphQL } from "next-common/utils/env/referendaVotes";
 import { transformVotesData } from "next-common/hooks/useReferendaVotesBackend";
 
-// TODO: query params
 const REFERENDA_VOTES_QUERY = gql`
   query ReferendaVotesQuery($referendumIndex: Int!) {
     referendaVotes(referendumIndex: $referendumIndex) {
-      referendumIndex
+      abstainBalance
+      abstainVotes
       account
-      balance
-      votes
       aye
+      ayeBalance
+      ayeVotes
+      balance
       conviction
+      delegations {
+        capital
+        votes
+      }
       isDelegating
       isSplit
       isSplitAbstain
-      ayeBalance
-      ayeVotes
+      isStandard
       nayBalance
       nayVotes
-      abstainBalance
-      abstainVotes
-      delegations {
-        votes
-      }
+      referendumIndex
+      votes
+      target
     }
   }
 `;
@@ -44,7 +46,7 @@ function getReferendaVotesClient() {
   });
 }
 
-async function queryReferendaVotes(referendumIndex) {
+export async function queryReferendaVotes(referendumIndex) {
   const client = getReferendaVotesClient();
   if (!client) {
     throw new Error("Referenda votes GraphQL is not supported");
