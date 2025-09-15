@@ -3,12 +3,8 @@ import FeedsSubmittedEvent from "next-common/components/feeds/referendaEvents/su
 import FeedsDecisionStartedEvent from "next-common/components/feeds/referendaEvents/decisionStarted";
 import FeedsDecisionDepositPlacedEvent from "next-common/components/feeds/referendaEvents/decisionDepositPlaced";
 
-import FellowshipRegisteredFeed from "../fellowship/salary/feeds/events/registered";
-import FellowshipInductedFeed from "../fellowship/feeds/events/inducted";
-import FellowshipCycleStartedFeed from "../fellowship/salary/feeds/events/cycleStarted";
-import FellowshipSalaryPaidFeed from "../fellowship/salary/feeds/events/paid";
-
 import { getFellowshipCoreFeedsEventContent } from "next-common/components/fellowship/core/feeds/event";
+import { getFellowshipSalaryFeedsEventContent } from "../fellowship/salary/feeds/events";
 
 function getReferendaEventContent(feed, showUserInfo = true) {
   const event = feed?.event;
@@ -28,29 +24,6 @@ function getReferendaEventContent(feed, showUserInfo = true) {
   return EVENT_CONTENTS[event];
 }
 
-function getFellowshipSalaryEventContent(feed, showUserInfo = true) {
-  const event = feed?.event;
-  const EVENT_CONTENTS = {
-    Inducted: (
-      <FellowshipInductedFeed
-        who={feed?.args?.who}
-        showUserInfo={showUserInfo}
-      />
-    ),
-    Registered: (
-      <FellowshipRegisteredFeed
-        who={feed?.args?.who}
-        amount={feed?.args?.amount}
-        index={feed?.index}
-        showUserInfo={showUserInfo}
-      />
-    ),
-    CycleStarted: <FellowshipCycleStartedFeed index={feed?.index} />,
-    Paid: <FellowshipSalaryPaidFeed feed={feed} />,
-  };
-  return EVENT_CONTENTS[event];
-}
-
 function EventContent({ feed, showUserInfo = true }) {
   const eventSection = feed?.section?.toUpperCase();
 
@@ -63,7 +36,7 @@ function EventContent({ feed, showUserInfo = true }) {
   }
 
   if (eventSection === "FELLOWSHIPSALARY") {
-    return getFellowshipSalaryEventContent(feed, showUserInfo);
+    return getFellowshipSalaryFeedsEventContent(feed, showUserInfo);
   }
 
   return null;

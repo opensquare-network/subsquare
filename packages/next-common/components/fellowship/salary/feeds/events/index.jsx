@@ -5,24 +5,37 @@ import FellowshipCycleStartedFeed from "next-common/components/fellowship/salary
 import FellowshipCycleEndedFeed from "next-common/components/fellowship/salary/feeds/events/cycleEnded";
 import FellowshipSalaryPaidFeed from "next-common/components/fellowship/salary/feeds/events/paid";
 
-export default function FellowshipSalaryFeed({ feed = {}, className = "" }) {
+export function getFellowshipSalaryFeedsEventContent(
+  feed,
+  showUserInfo = true,
+) {
   const event = feed?.event;
-
   const EVENT_CONTENTS = {
-    Inducted: <FellowshipInductedFeed who={feed?.args?.who} />,
+    Inducted: (
+      <FellowshipInductedFeed
+        who={feed?.args?.who}
+        showUserInfo={showUserInfo}
+      />
+    ),
     Registered: (
       <FellowshipRegisteredFeed
         who={feed?.args?.who}
         amount={feed?.args?.amount}
         index={feed?.index}
+        showUserInfo={showUserInfo}
       />
     ),
     CycleStarted: <FellowshipCycleStartedFeed index={feed?.index} />,
     CycleEnded: <FellowshipCycleEndedFeed index={feed?.index} />,
     Paid: <FellowshipSalaryPaidFeed feed={feed} />,
   };
+  return EVENT_CONTENTS[event];
+}
 
-  const content = EVENT_CONTENTS[event];
+export default function FellowshipSalaryFeed({ feed = {}, className = "" }) {
+  const event = feed?.event;
+
+  const content = getFellowshipSalaryFeedsEventContent(feed);
   if (!content) {
     return event;
   }
