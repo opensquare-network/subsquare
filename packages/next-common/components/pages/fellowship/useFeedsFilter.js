@@ -12,9 +12,16 @@ const SECTION_CONTENTS = {
 
 const ReferendaEventContents = {
   Voted: "Voted",
-  Submitted: "Submitted",
-  DecisionStarted: "DecisionStarted",
+  Cancelled: "Cancelled",
+  ConfirmAborted: "ConfirmAborted",
+  ConfirmStarted: "ConfirmStarted",
+  Confirmed: "Confirmed",
   DecisionDepositPlaced: "DecisionDepositPlaced",
+  DecisionStarted: "DecisionStarted",
+  Killed: "Killed",
+  Rejected: "Rejected",
+  Submitted: "Submitted",
+  TimedOut: "TimedOut",
 };
 
 const CoreEventContents = {

@@ -1,7 +1,7 @@
 import FeedsVotedEvent from "next-common/components/feeds/referendaEvents/voted";
 import FeedsSubmittedEvent from "next-common/components/feeds/referendaEvents/submitted";
-import FeedsDecisionStartedEvent from "next-common/components/feeds/referendaEvents/decisionStarted";
 import FeedsDecisionDepositPlacedEvent from "next-common/components/feeds/referendaEvents/decisionDepositPlaced";
+import FeedsCommonEvent from "next-common/components/feeds/referendaEvents/commonEvent";
 
 import { getFellowshipCoreFeedsEventContent } from "next-common/components/fellowship/core/feeds/event";
 import { getFellowshipSalaryFeedsEventContent } from "../fellowship/salary/feeds/events";
@@ -11,15 +11,22 @@ function getReferendaEventContent(feed, showUserInfo = true) {
   const EVENT_CONTENTS = {
     Voted: <FeedsVotedEvent feed={feed} showUserInfo={showUserInfo} />,
     Submitted: <FeedsSubmittedEvent feed={feed} showUserInfo={showUserInfo} />,
-    DecisionStarted: (
-      <FeedsDecisionStartedEvent feed={feed} showUserInfo={showUserInfo} />
-    ),
     DecisionDepositPlaced: (
       <FeedsDecisionDepositPlacedEvent
         feed={feed}
         showUserInfo={showUserInfo}
       />
     ),
+    DecisionStarted: (
+      <FeedsCommonEvent feed={feed} stateName="Decision Started" />
+    ),
+    Cancelled: <FeedsCommonEvent feed={feed} name="Cancelled" />,
+    ConfirmAborted: <FeedsCommonEvent feed={feed} name="Confirm Aborted" />,
+    ConfirmStarted: <FeedsCommonEvent feed={feed} name="Confirm Started" />,
+    Confirmed: <FeedsCommonEvent feed={feed} name="Confirmed" />,
+    Killed: <FeedsCommonEvent feed={feed} name="Killed" />,
+    Rejected: <FeedsCommonEvent feed={feed} name="Rejected" />,
+    TimedOut: <FeedsCommonEvent feed={feed} name="Timed Out" />,
   };
   return EVENT_CONTENTS[event];
 }
