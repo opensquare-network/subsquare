@@ -6,26 +6,29 @@ import { toPrecision } from "next-common/utils";
 import Link from "next/link";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
 
-export default function FellowshipRegisteredFeed({ who, amount, index }) {
+export default function FellowshipRegisteredFeed({
+  who,
+  amount,
+  index,
+  showUserInfo = true,
+}) {
   const { symbol, decimals } = getSalaryAsset();
   const { section } = useCollectivesContext();
 
   return (
     <>
-      <AddressUser key={who} add={who} noTooltip />
-      <span>
-        <FellowshipFeedEventLabel>registered</FellowshipFeedEventLabel> in{" "}
-        <Link
-          href={`/${section}/salary/cycles/${index}`}
-          className="text-textPrimary hover:underline"
-        >
-          cycle #{index}
-        </Link>{" "}
-        with salary{" "}
-        <FellowshipFeedEventLabel>
-          <ValueDisplay value={toPrecision(amount, decimals)} symbol={symbol} />
-        </FellowshipFeedEventLabel>
-      </span>
+      {showUserInfo && <AddressUser key={who} add={who} noTooltip />}
+      <FellowshipFeedEventLabel>registered</FellowshipFeedEventLabel> in{" "}
+      <Link
+        href={`/${section}/salary/cycles/${index}`}
+        className="text-textPrimary hover:underline"
+      >
+        cycle #{index}
+      </Link>{" "}
+      with salary{" "}
+      <FellowshipFeedEventLabel>
+        <ValueDisplay value={toPrecision(amount, decimals)} symbol={symbol} />
+      </FellowshipFeedEventLabel>
     </>
   );
 }

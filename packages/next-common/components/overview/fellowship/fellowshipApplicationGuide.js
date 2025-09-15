@@ -29,9 +29,9 @@ function ApplicationGuide() {
     [realAddress, all],
   );
 
-  if (isFellowshipMember || loading || !realAddress) {
-    return null;
-  }
+  const isDisabled = useMemo(() => {
+    return isFellowshipMember && !loading && realAddress;
+  }, [isFellowshipMember, loading, realAddress]);
 
   return (
     <SecondaryCard>
@@ -68,10 +68,19 @@ function ApplicationGuide() {
             </div>
           </div>
         </div>
-        <Link href="/fellowship/applications/create">
-          <PrimaryButton>Apply</PrimaryButton>
-        </Link>
+        <ApplyButton isDisabled={isDisabled} />
       </div>
     </SecondaryCard>
+  );
+}
+
+function ApplyButton({ isDisabled }) {
+  if (isDisabled) {
+    return <PrimaryButton disabled={isDisabled}>Apply</PrimaryButton>;
+  }
+  return (
+    <Link href="/fellowship/applications/create">
+      <PrimaryButton>Apply</PrimaryButton>
+    </Link>
   );
 }

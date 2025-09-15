@@ -27,7 +27,7 @@ export function getFellowshipSalaryFeedsEventContent(
     ),
     CycleStarted: <FellowshipCycleStartedFeed index={feed?.index} />,
     CycleEnded: <FellowshipCycleEndedFeed index={feed?.index} />,
-    Paid: <FellowshipSalaryPaidFeed feed={feed} />,
+    Paid: <FellowshipSalaryPaidFeed feed={feed} showUserInfo={showUserInfo} />,
   };
   return EVENT_CONTENTS[event];
 }

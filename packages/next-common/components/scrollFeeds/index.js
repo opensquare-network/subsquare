@@ -101,13 +101,13 @@ export default function ScrollFeeds({
   }, [animate, marginTop]);
 
   useEffect(() => {
-    // const interval = setInterval(() => {
-    //   if (pauseRef.current) return;
-    //   if (!containerRef.current || !containerRef.current.firstChild) return;
-    //   if (feedPages?.length < 4) return;
-    //   animateHandle();
-    // }, 3000);
-    // return () => clearInterval(interval);
+    const interval = setInterval(() => {
+      if (pauseRef.current) return;
+      if (!containerRef.current || !containerRef.current.firstChild) return;
+      if (feedPages?.length < 4) return;
+      animateHandle();
+    }, 3000);
+    return () => clearInterval(interval);
   }, [animateHandle, containerRef, feedPages?.length]);
 
   if (feedPages?.length === 0 || pageSize <= 0) {
@@ -131,42 +131,61 @@ export default function ScrollFeeds({
         onMouseLeave={() => (pauseRef.current = false)}
       >
         <div className="flex flex-col">
-          {(feedPages || []).map((item, idx) => {
-            const isLast = idx === feeds.length - 1;
+          {(feedPages || []).map((feed, idx) => {
+            const isLast = idx === feedPages.length - 1;
             return (
-              <div
+              <ScrollFeedItem
                 key={
-                  item.event +
-                  item.indexer.blockHeight +
-                  item.indexer.eventIndex
+                  feed.event +
+                  feed.indexer.blockHeight +
+                  feed.indexer.eventIndex
                 }
-                className="flex group/datalist-item text14Medium h-[53px] max-sm:h-[96px]"
-              >
-                <FellowshipFeedLeadingBar className="pr-4" isLast={isLast} />
-                <div className="flex pt-2">
-                  <div className="mt-1 mr-2">
-                    <AvatarDisplay size={20} address={item?.args?.who} />
-                  </div>
-
-                  <div className="pr-2 pb-1 pt-1 gap-y-0.5 max-sm:items-start flex flex-wrap gap-x-1">
-                    <FellowshipCommonEvent
-                      feed={item}
-                      showUserInfo={false}
-                      prefix={
-                        <AddressUser showAvatar={false} add={item?.args?.who} />
-                      }
-                      suffix={
-                        <FellowshipFeedSuffix
-                          className="w-3/5 max-sm:w-full"
-                          indexer={item?.indexer}
-                        />
-                      }
-                    />
-                  </div>
-                </div>
-              </div>
+                item={feed}
+                idx={idx}
+                isLast={isLast}
+              />
             );
           })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ScrollFeedItem({ item, isLast }) {
+  const showUserInfo = item?.showUserInfo ?? true;
+  const who = item?.args?.who;
+  const displayWho = showUserInfo && who;
+
+  return (
+    <div
+      key={item.event + item.indexer.blockHeight + item.indexer.eventIndex}
+      className="flex group/datalist-item text14Medium h-[53px] max-sm:h-[96px]"
+    >
+      <FellowshipFeedLeadingBar className="pr-4" isLast={isLast} />
+      <div className="flex pt-2">
+        {displayWho && (
+          <div className="mt-1 mr-2">
+            <AvatarDisplay size={20} address={item?.args?.who} />
+          </div>
+        )}
+
+        <div className="pr-2 pb-1 pt-1 gap-y-0.5 max-sm:items-start flex flex-wrap gap-x-1">
+          <FellowshipCommonEvent
+            feed={item}
+            showUserInfo={false}
+            prefix={
+              displayWho ? (
+                <AddressUser showAvatar={false} add={item?.args?.who} />
+              ) : null
+            }
+            suffix={
+              <FellowshipFeedSuffix
+                className="w-3/5 max-sm:w-full"
+                indexer={item?.indexer}
+              />
+            }
+          />
         </div>
       </div>
     </div>

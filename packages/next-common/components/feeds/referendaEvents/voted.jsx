@@ -9,11 +9,21 @@ const Label = tw.span`text-textSecondary`;
 export default function FeedsVotedEvent({ feed, showUserInfo = true }) {
   const { args: { who, referendumIndex, isAye } = {} } = feed || {};
 
-  let voteIcon;
+  let vote;
   if (isAye) {
-    voteIcon = <SystemVoteAye className="w-4 h-4" />;
+    vote = (
+      <>
+        <SystemVoteAye className="w-4 h-4" />
+        <span className="text-green500">Aye</span>
+      </>
+    );
   } else {
-    voteIcon = <SystemVoteNay className="w-4 h-4" />;
+    vote = (
+      <>
+        <SystemVoteNay className="w-4 h-4" />
+        <span className="text-red500">Nay</span>
+      </>
+    );
   }
 
   return (
@@ -22,7 +32,7 @@ export default function FeedsVotedEvent({ feed, showUserInfo = true }) {
         {showUserInfo && <AddressUser key={who} add={who} noTooltip />}
       </span>
       <Label>Voted</Label>
-      <span>{voteIcon}</span>
+      <span className="inline-flex items-center gap-x-1">{vote}</span>
       <Label>on</Label>
       <Tooltip
         content={
