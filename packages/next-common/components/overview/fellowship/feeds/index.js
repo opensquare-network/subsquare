@@ -6,14 +6,13 @@ import { TitleContainer } from "next-common/components/styled/containers/titleCo
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import NoData from "next-common/components/noData";
 import { useMemo } from "react";
+import CollectivesProvider from "next-common/context/collectives/collectives";
 
 export default function FellowshipFeeds() {
   const { value: feeds } = useAsync(async () => {
     const resp = await backendApi.fetch("/fellowship/feeds/recent");
     return resp.result || [];
   }, []);
-
-  console.log("feeds", feeds);
 
   const hasFeeds = useMemo(() => feeds?.length > 0, [feeds]);
 
@@ -30,7 +29,9 @@ export default function FellowshipFeeds() {
       </div>
       <SecondaryCard className="flex justify-center items-center flex-1">
         {hasFeeds ? (
-          <ScrollFeeds feeds={feeds} />
+          <CollectivesProvider section="fellowship">
+            <ScrollFeeds feeds={feeds} />
+          </CollectivesProvider>
         ) : (
           <NoData text="No activities in latest 30 days" />
         )}

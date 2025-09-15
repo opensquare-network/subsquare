@@ -1,5 +1,4 @@
 import { cn } from "next-common/utils";
-import { useState } from "react";
 import FellowshipCoreFeedsParamsChangedEvent from "./event/paramsChanged";
 import FellowshipCoreFeedsOffboardedEvent from "./event/offboarded";
 import FellowshipCoreFeedsProvenEvent from "./event/proven";
@@ -9,23 +8,9 @@ import FellowshipCoreFeedsImportedEvent from "./event/imported";
 import FellowshipCoreFeedsInductedEvent from "./event/inducted";
 import FellowshipCoreFeedsActiveEvent from "./event/active";
 import FellowshipCoreFeedsRequestedEvent from "next-common/components/fellowship/core/feeds/event/requested";
-import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const FellowshipCoreFeedsCompareParamsChangesPopup = dynamicPopup(() =>
-  import("./compareParamsChangesPopup"),
-);
-
-export default function FellowshipCoreFeedsListEvent({
-  feed = {},
-  className = "",
-  beforeContent,
-  afterContent,
-  showUserInfo = true,
-}) {
+export function getFellowshipCoreFeedsEventContent(feed, showUserInfo = true) {
   const event = feed?.event;
-
-  const [comparePopupVisible, setComparePopupVisible] = useState(false);
-
   const EVENT_CONTENTS = {
     ActiveChanged: (
       <FellowshipCoreFeedsActiveEvent feed={feed} showUserInfo={showUserInfo} />
@@ -56,7 +41,7 @@ export default function FellowshipCoreFeedsListEvent({
     ),
     ParamsChanged: (
       <FellowshipCoreFeedsParamsChangedEvent
-        setComparePopupVisible={setComparePopupVisible}
+        feed={feed}
         showUserInfo={showUserInfo}
       />
     ),
@@ -78,6 +63,15 @@ export default function FellowshipCoreFeedsListEvent({
   };
 
   const content = EVENT_CONTENTS[event];
+  return content;
+}
+
+export default function FellowshipCoreFeedsListEvent({
+  feed = {},
+  className = "",
+  showUserInfo = true,
+}) {
+  const content = getFellowshipCoreFeedsEventContent(feed, showUserInfo);
 
   return (
     <div
@@ -87,20 +81,7 @@ export default function FellowshipCoreFeedsListEvent({
         className,
       )}
     >
-      {beforeContent}
-
       {content}
-
-      {afterContent}
-
-      {comparePopupVisible && (
-        <FellowshipCoreFeedsCompareParamsChangesPopup
-          feed={feed}
-          onClose={() => {
-            setComparePopupVisible(false);
-          }}
-        />
-      )}
     </div>
   );
 }

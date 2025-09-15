@@ -1,29 +1,15 @@
-import AddressUser from "next-common/components/user/addressUser";
-import { SystemVoteAye, SystemVoteNay } from "@osn/icons/subsquare";
 import Link from "next/link";
 import tw from "tailwind-styled-components";
 import Tooltip from "next-common/components/tooltip";
 import LoadableFellowshipReferendumTitle from "next-common/components/feeds/loadableFellowshipReferendumTitle";
 const Label = tw.span`text-textSecondary`;
 
-export default function FeedsVotedEvent({ feed, showUserInfo = true }) {
-  const { args: { who, referendumIndex, isAye } = {} } = feed || {};
-
-  let voteIcon;
-  if (isAye) {
-    voteIcon = <SystemVoteAye className="w-4 h-4" />;
-  } else {
-    voteIcon = <SystemVoteNay className="w-4 h-4" />;
-  }
+export default function FeedsDecisionStartedEvent({ feed }) {
+  const { args: { referendumIndex } = {} } = feed || {};
 
   return (
     <>
-      <span className="text-textPrimary">
-        {showUserInfo && <AddressUser key={who} add={who} noTooltip />}
-      </span>
-      <Label>Voted</Label>
-      <span>{voteIcon}</span>
-      <Label>on</Label>
+      <Label>Decision Started</Label>
       <Tooltip
         content={
           <LoadableFellowshipReferendumTitle

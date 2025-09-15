@@ -7,7 +7,7 @@ import FellowshipFeedSuffix from "../fellowship/feeds/suffix";
 import FellowshipFeedLeadingBar from "../fellowship/feeds/leading";
 import { AddressUser } from "../user";
 import { AvatarDisplay } from "../user/avatarDisplay";
-import FellowshipCommonEventList from "../feeds/fellowshipCommonEventList";
+import FellowshipCommonEvent from "../feeds/fellowshipCommonEvent";
 
 export const PromptTypes = {
   INFO: "info",
@@ -101,13 +101,13 @@ export default function ScrollFeeds({
   }, [animate, marginTop]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (pauseRef.current) return;
-      if (!containerRef.current || !containerRef.current.firstChild) return;
-      if (feedPages?.length < 4) return;
-      animateHandle();
-    }, 3000);
-    return () => clearInterval(interval);
+    // const interval = setInterval(() => {
+    //   if (pauseRef.current) return;
+    //   if (!containerRef.current || !containerRef.current.firstChild) return;
+    //   if (feedPages?.length < 4) return;
+    //   animateHandle();
+    // }, 3000);
+    // return () => clearInterval(interval);
   }, [animateHandle, containerRef, feedPages?.length]);
 
   if (feedPages?.length === 0 || pageSize <= 0) {
@@ -147,20 +147,22 @@ export default function ScrollFeeds({
                   <div className="mt-1 mr-2">
                     <AvatarDisplay size={20} address={item?.args?.who} />
                   </div>
-                  <FellowshipCommonEventList
-                    event={item}
-                    className="pr-2 pb-1 pt-1 gap-y-0.5 max-sm:items-start"
-                    showUserInfo={false}
-                    beforeContent={
-                      <AddressUser showAvatar={false} add={item?.args?.who} />
-                    }
-                    afterContent={
-                      <FellowshipFeedSuffix
-                        className="w-3/5 max-sm:w-full"
-                        indexer={item?.indexer}
-                      />
-                    }
-                  />
+
+                  <div className="pr-2 pb-1 pt-1 gap-y-0.5 max-sm:items-start flex flex-wrap gap-x-1">
+                    <FellowshipCommonEvent
+                      feed={item}
+                      showUserInfo={false}
+                      prefix={
+                        <AddressUser showAvatar={false} add={item?.args?.who} />
+                      }
+                      suffix={
+                        <FellowshipFeedSuffix
+                          className="w-3/5 max-sm:w-full"
+                          indexer={item?.indexer}
+                        />
+                      }
+                    />
+                  </div>
                 </div>
               </div>
             );
