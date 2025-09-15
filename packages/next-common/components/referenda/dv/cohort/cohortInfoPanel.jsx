@@ -3,13 +3,12 @@ import { isNil } from "lodash-es";
 import BillBoardPanel from "next-common/components/billBoardPanel";
 import { useChain } from "next-common/context/chain";
 import { usePageProps } from "next-common/context/page";
-import { useDvDelegateGuardians } from "next-common/context/referenda/dv";
 import { cn } from "next-common/utils";
 import { isKusamaChain, isPolkadotChain } from "next-common/utils/chain";
 import Link from "next/link";
 
-export default function DvInfoPanel() {
-  const { cohort, cohorts } = usePageProps();
+export default function CohortInfoPanel() {
+  const { cohort } = usePageProps();
   const chain = useChain();
 
   let tokensText = "";
@@ -30,17 +29,14 @@ export default function DvInfoPanel() {
       items={[
         tokensText && <LearnLine key="learn" tokensText={tokensText} />,
         <span key="latest" className="text14Medium flex items-center gap-x-1">
-          The latest DV cohort is {cohorts?.length || 0} with{" "}
-          {cohort?.delegateCnt || 0} delegates
-          <GuardianTips />.
+          The cohort has {cohort.delegateCnt} delegates.
         </span>,
         <span
           key="tracks"
           className="text14Medium flex items-center gap-x-2 gap-y-1 flex-wrap"
         >
           <span>
-            The latest DV cohort supports {cohort?.tracks?.length || 0} tracks,
-            including
+            The cohort supports {cohort?.tracks?.length || 0} tracks, including
           </span>
           {cohort?.tracks?.map((track, index) => (
             <Track
@@ -67,7 +63,7 @@ export default function DvInfoPanel() {
             >
               here
             </Link>{" "}
-            for the latest cohort announcement.
+            for the cohort announcement.
           </span>
         ) : null,
       ].filter(Boolean)}
@@ -109,14 +105,4 @@ function LearnLine({ tokensText = "" }) {
       </a>
     </span>
   );
-}
-
-function GuardianTips() {
-  const { hasGuardians, guardiansCount } = useDvDelegateGuardians();
-
-  if (!hasGuardians) {
-    return null;
-  }
-
-  return ` and ${guardiansCount} guardians`;
 }
