@@ -1,5 +1,3 @@
-import { SystemClose } from "@osn/icons/subsquare";
-import { cn } from "next-common/utils";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAnimate } from "framer-motion";
 import { useWindowSize } from "react-use";
@@ -8,37 +6,6 @@ import FellowshipFeedLeadingBar from "../fellowship/feeds/leading";
 import { AddressUser } from "../user";
 import { AvatarDisplay } from "../user/avatarDisplay";
 import FellowshipCommonEvent from "../feeds/fellowshipCommonEvent";
-
-export const PromptTypes = {
-  INFO: "info",
-  WARNING: "warning",
-  ERROR: "error",
-  SUCCESS: "success",
-  NEUTRAL: "neutral",
-};
-
-export const colorStyle = {
-  [PromptTypes.INFO]: {
-    backgroundColor: "var(--theme100)",
-    color: "var(--theme500)",
-  },
-  [PromptTypes.WARNING]: {
-    backgroundColor: "var(--orange100)",
-    color: "var(--orange500)",
-  },
-  [PromptTypes.ERROR]: {
-    backgroundColor: "var(--red100)",
-    color: "var(--red500)",
-  },
-  [PromptTypes.SUCCESS]: {
-    backgroundColor: "var(--green100)",
-    color: "var(--green500)",
-  },
-  [PromptTypes.NEUTRAL]: {
-    backgroundColor: "var(--gray100)",
-    color: "var(--gray500)",
-  },
-};
 
 const ITEM_HEIGHT = 53;
 const MOBILE_ITEM_HEIGHT = 96;
@@ -188,29 +155,6 @@ function ScrollFeedItem({ item, isLast }) {
           />
         </div>
       </div>
-    </div>
-  );
-}
-
-export function ScrollPromptItemWrapper({ prompt }) {
-  const { width } = useWindowSize();
-  const isMobile = width < 768;
-  return (
-    <div
-      key={prompt.key}
-      className={cn(
-        "flex justify-between items-center rounded-lg",
-        "text14Medium py-2.5 px-4 flex-shrink-0",
-        isMobile ? "h-[60px]" : "h-[40px]",
-      )}
-      style={colorStyle[prompt.type || PromptTypes.NEUTRAL]}
-    >
-      <div>{prompt.message}</div>
-      <SystemClose
-        className="w-5 h-5 flex-shrink-0"
-        role="button"
-        onClick={prompt.close}
-      />
     </div>
   );
 }
