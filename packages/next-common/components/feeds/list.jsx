@@ -12,7 +12,7 @@ export function createFellowshipFeedsRows(feeds) {
 
   return orderedItems?.map?.((item) => {
     return [
-      <div key="feed" className="pr-2 flex gap-x-1 text14Medium">
+      <div key="feed" className="pr-2 text14Medium flex gap-x-1 max-sm:block">
         <FellowshipCommonEvent feed={item} />
       </div>,
       <FellowshipFeedSuffix key="block-info" indexer={item?.indexer} />,

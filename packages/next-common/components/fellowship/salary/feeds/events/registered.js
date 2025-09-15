@@ -6,18 +6,12 @@ import { toPrecision } from "next-common/utils";
 import Link from "next/link";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
 
-export default function FellowshipRegisteredFeed({
-  who,
-  amount,
-  index,
-  showUserInfo = true,
-}) {
+export function FellowshipRegisteredFeedContent({ amount, index }) {
   const { symbol, decimals } = getSalaryAsset();
   const { section } = useCollectivesContext();
 
   return (
     <>
-      {showUserInfo && <AddressUser key={who} add={who} noTooltip />}
       <FellowshipFeedEventLabel>registered</FellowshipFeedEventLabel> in{" "}
       <Link
         href={`/${section}/salary/cycles/${index}`}
@@ -29,6 +23,22 @@ export default function FellowshipRegisteredFeed({
       <FellowshipFeedEventLabel>
         <ValueDisplay value={toPrecision(amount, decimals)} symbol={symbol} />
       </FellowshipFeedEventLabel>
+    </>
+  );
+}
+
+export default function FellowshipRegisteredFeed({
+  who,
+  amount,
+  index,
+  showUserInfo = true,
+}) {
+  return (
+    <>
+      {showUserInfo && <AddressUser key={who} add={who} noTooltip />}
+      <span>
+        <FellowshipRegisteredFeedContent amount={amount} index={index} />
+      </span>
     </>
   );
 }

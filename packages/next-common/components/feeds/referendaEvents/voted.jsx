@@ -32,7 +32,7 @@ export default function FeedsVotedEvent({ feed, showUserInfo = true }) {
         {showUserInfo && <AddressUser key={who} add={who} noTooltip />}
       </span>
       <Label>Voted</Label>
-      <span className="inline-flex items-center gap-x-1">{vote}</span>
+      <span className="inline-flex items-center mx-1">{vote}</span>
       <Label>on</Label>
       <Tooltip
         content={
