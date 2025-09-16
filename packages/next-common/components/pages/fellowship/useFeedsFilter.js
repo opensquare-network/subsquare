@@ -4,52 +4,12 @@ import Select from "next-common/components/select";
 import Input from "next-common/lib/input";
 import { useCallback, useMemo } from "react";
 import { omitBy, isNil } from "lodash-es";
+import { SECTION_EVENT_CONTENTS } from "next-common/utils/consts/fellowship/feeds";
 
 const SECTION_CONTENTS = {
   referenda: "Referenda",
   membership: "Membership",
   salary: "Salary",
-};
-
-const ReferendaEventContents = {
-  Voted: "Voted",
-  Cancelled: "Cancelled",
-  ConfirmAborted: "ConfirmAborted",
-  ConfirmStarted: "ConfirmStarted",
-  Confirmed: "Confirmed",
-  DecisionDepositPlaced: "DecisionDepositPlaced",
-  DecisionStarted: "DecisionStarted",
-  Killed: "Killed",
-  Executed: "Executed",
-  Rejected: "Rejected",
-  Submitted: "Submitted",
-  TimedOut: "TimedOut",
-};
-
-const CoreEventContents = {
-  ParamsChanged: "ParamsChanged",
-  ActiveChanged: "ActiveChanged",
-  Inducted: "Inducted",
-  Offboarded: "Offboarded",
-  Imported: "Imported",
-  Promoted: "Promoted",
-  Demoted: "Demoted",
-  Proven: "Proven",
-  Requested: "Requested",
-  EvidenceJudged: "EvidenceJudged",
-};
-
-const SalaryEventContents = {
-  CycleStarted: "CycleStarted",
-  Inducted: "Inducted",
-  Registered: "Registered",
-  Paid: "Paid",
-};
-
-const SECTION_EVENT_CONTENTS = {
-  referenda: ReferendaEventContents,
-  membership: CoreEventContents,
-  salary: SalaryEventContents,
 };
 
 function unshiftAll(options) {
@@ -138,7 +98,7 @@ export default function useFeedsFilter() {
             className="w-48 text12Medium"
             size="small"
             placeholder="Search address"
-            value={stagedFilter?.who || null}
+            value={stagedFilter?.who || ""}
             onChange={(e) => {
               onFilterChange({
                 ...stagedFilter,
