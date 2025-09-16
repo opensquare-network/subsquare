@@ -156,7 +156,7 @@ function ScrollFeedItem({ item, isLast }) {
             suffix={
               <FellowshipFeedSuffix
                 className={cn(
-                  "max-sm:w-full",
+                  "max-sm:w-full [&>*]:text12Medium",
                   isFullEventSuffix ? "w-full" : "w-3/5",
                 )}
                 indexer={item?.indexer}
