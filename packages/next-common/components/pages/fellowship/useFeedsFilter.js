@@ -6,9 +6,9 @@ import { useCallback, useMemo } from "react";
 import { omitBy, isNil } from "lodash-es";
 
 const SECTION_CONTENTS = {
-  fellowshipReferenda: "Referenda",
-  fellowshipCore: "Membership",
-  fellowshipSalary: "Salary",
+  referenda: "Referenda",
+  membership: "Membership",
+  salary: "Salary",
 };
 
 const ReferendaEventContents = {
@@ -47,9 +47,9 @@ const SalaryEventContents = {
 };
 
 const SECTION_EVENT_CONTENTS = {
-  fellowshipReferenda: ReferendaEventContents,
-  fellowshipCore: CoreEventContents,
-  fellowshipSalary: SalaryEventContents,
+  referenda: ReferendaEventContents,
+  membership: CoreEventContents,
+  salary: SalaryEventContents,
 };
 
 function unshiftAll(options) {
