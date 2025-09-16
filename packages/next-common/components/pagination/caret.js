@@ -1,13 +1,13 @@
 import React from "react";
-import { useRouter } from "next/router";
 import CaretLeft from "../../assets/imgs/icons/pager-caret-left.svg";
 import CaretRight from "../../assets/imgs/icons/pager-caret-right.svg";
-import Link from "next/link";
 import styled from "styled-components";
+import LinkItem from "./linkItem";
 
 const LinkInnerWrapper = styled.span`
   display: inline-flex;
   align-items: center;
+  height: 28px;
 `;
 
 export default function PageCaret({
@@ -15,26 +15,26 @@ export default function PageCaret({
   page,
   onPageChange = null,
   shallow = false,
+  buttonMode = false,
 }) {
-  const router = useRouter();
-  const [url, query] = router.asPath.split("?");
-  const urlParams = new URLSearchParams(query);
-  urlParams.set("page", page);
+  const content = (
+    <LinkInnerWrapper
+      role={buttonMode && "button"}
+      onClick={(e) => {
+        onPageChange && onPageChange(e, page);
+      }}
+    >
+      {isPre ? <CaretLeft /> : <CaretRight />}
+    </LinkInnerWrapper>
+  );
+
+  if (buttonMode) {
+    return content;
+  }
 
   return (
-    <Link
-      shallow={shallow}
-      scroll={!shallow}
-      href={`${url}?${urlParams}`}
-      passHref
-    >
-      <LinkInnerWrapper
-        onClick={(e) => {
-          onPageChange && onPageChange(e, page);
-        }}
-      >
-        {isPre ? <CaretLeft /> : <CaretRight />}
-      </LinkInnerWrapper>
-    </Link>
+    <LinkItem shallow={shallow} page={page} key={page}>
+      {content}
+    </LinkItem>
   );
 }
