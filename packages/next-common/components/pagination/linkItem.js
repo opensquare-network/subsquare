@@ -13,6 +13,7 @@ export default function LinkItem({ children, shallow, page }) {
       scroll={!shallow}
       href={`${url}?${urlParams}`}
       passHref
+      className="inline-flex"
     >
       {children}
     </Link>
