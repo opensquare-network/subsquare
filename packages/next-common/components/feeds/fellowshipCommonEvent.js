@@ -25,19 +25,20 @@ function getReferendaEventContent(feed, showUserInfo = true) {
       />
     ),
     DecisionStarted: (
-      <FeedsCommonEvent feed={feed} stateName="Decision Started" />
+      <FeedsCommonEvent feed={feed} suffixLabel="decision started" />
     ),
-    Cancelled: <FeedsCommonEvent feed={feed} stateName="Cancelled" />,
+    Cancelled: <FeedsCommonEvent feed={feed} suffixLabel="was cancelled" />,
     ConfirmAborted: (
-      <FeedsCommonEvent feed={feed} stateName="Confirm Aborted" />
+      <FeedsCommonEvent feed={feed} suffixLabel="was confirm aborted" />
     ),
     ConfirmStarted: (
-      <FeedsCommonEvent feed={feed} stateName="Confirm Started" />
+      <FeedsCommonEvent feed={feed} suffixLabel="was confirm started" />
     ),
-    Confirmed: <FeedsCommonEvent feed={feed} stateName="Confirmed" />,
-    Killed: <FeedsCommonEvent feed={feed} stateName="Killed" />,
-    Rejected: <FeedsCommonEvent feed={feed} stateName="Rejected" />,
-    TimedOut: <FeedsCommonEvent feed={feed} stateName="Timed Out" />,
+    Confirmed: <FeedsCommonEvent feed={feed} suffixLabel="was confirmed" />,
+    Killed: <FeedsCommonEvent feed={feed} suffixLabel="was killed" />,
+    Rejected: <FeedsCommonEvent feed={feed} suffixLabel="was rejected" />,
+    TimedOut: <FeedsCommonEvent feed={feed} suffixLabel="was timed out" />,
+    Executed: <FeedsCommonEvent feed={feed} suffixLabel="was executed" />,
   };
   return EVENT_CONTENTS[event];
 }

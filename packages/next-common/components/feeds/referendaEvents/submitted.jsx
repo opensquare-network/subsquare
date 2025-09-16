@@ -13,7 +13,7 @@ export default function FeedsVotedEvent({ feed, showUserInfo = true }) {
       <span className="text-textPrimary">
         {showUserInfo && <AddressUser key={who} add={who} noTooltip />}
       </span>
-      <Label>Submitted</Label>
+      <Label>Submitted decision deposit for referendum</Label>
       <Tooltip
         content={
           <LoadableFellowshipReferendumTitle

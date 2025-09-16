@@ -22,7 +22,7 @@ export default function FeedsDecisionDepositPlacedEvent({
       </span>
       <Label>Deposit</Label>
       <ValueDisplay value={toPrecision(amount, decimals)} symbol={symbol} />
-      <Label>on</Label>
+      <Label>for referendum</Label>
       <Tooltip
         content={
           <LoadableFellowshipReferendumTitle

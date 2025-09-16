@@ -4,12 +4,12 @@ import Tooltip from "next-common/components/tooltip";
 import LoadableFellowshipReferendumTitle from "next-common/components/feeds/loadableFellowshipReferendumTitle";
 const Label = tw.span`text-textSecondary`;
 
-export default function FeedsCommonEvent({ feed, stateName }) {
+export default function FeedsCommonEvent({ feed, suffixLabel }) {
   const { args: { referendumIndex } = {} } = feed || {};
 
   return (
     <>
-      <Label>{stateName}</Label>
+      <Label>Referendum</Label>
       <Tooltip
         content={
           <LoadableFellowshipReferendumTitle
@@ -24,6 +24,7 @@ export default function FeedsCommonEvent({ feed, stateName }) {
           #{referendumIndex}
         </Link>
       </Tooltip>
+      {suffixLabel && <Label>{suffixLabel}</Label>}
     </>
   );
 }

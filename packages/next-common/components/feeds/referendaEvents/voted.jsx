@@ -33,7 +33,7 @@ export default function FeedsVotedEvent({ feed, showUserInfo = true }) {
       </span>
       <Label>Voted</Label>
       <span className="inline-flex items-center mx-1">{vote}</span>
-      <Label>on</Label>
+      <Label>for referendum</Label>
       <Tooltip
         content={
           <LoadableFellowshipReferendumTitle
