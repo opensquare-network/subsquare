@@ -18,7 +18,7 @@ export default function FellowshipFeeds() {
   return (
     <>
       <div className="flex items-center justify-between mb-4">
-        <TitleContainer>Fellowship Feeds</TitleContainer>
+        <TitleContainer>Latest Feeds</TitleContainer>
         <Link
           href="/fellowship/feeds"
           className="text-theme500 text12Medium mr-6"
