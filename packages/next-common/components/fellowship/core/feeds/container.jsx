@@ -18,6 +18,7 @@ function FellowshipCoreFeedsFilter({ feeds = {} }) {
   const { event, component } = useEventFilter(
     Object.entries(CoreEventContents),
     queryEvent,
+    "membership",
   );
   // TODO: core feeds, event filter options
   useEffect(() => {

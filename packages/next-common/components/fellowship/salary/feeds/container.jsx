@@ -16,6 +16,7 @@ function FellowshipSalaryFeedsFilter({ feeds = {} }) {
   const { event, component } = useEventFilter(
     Object.entries(SalaryEventContents),
     queryEvent,
+    "salary",
   );
   // TODO: core feeds, event filter options
   useEffect(() => {

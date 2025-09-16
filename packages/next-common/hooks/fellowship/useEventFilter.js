@@ -1,7 +1,8 @@
 import { useState } from "react";
 import Select from "next-common/components/select";
+import { getFeedsEventCompatibleValue } from "next-common/utils/fellowship/getFeedsEvent";
 
-export default function useEventFilter(events = [], curEvent) {
+export default function useEventFilter(events = [], curEvent, section) {
   const options = (events || []).map(([value, label]) => ({
     label: label,
     value: value,
@@ -20,7 +21,7 @@ export default function useEventFilter(events = [], curEvent) {
       <Select
         className="w-40 text12Medium"
         small
-        value={event}
+        value={getFeedsEventCompatibleValue(section, event)}
         options={options}
         onChange={(option) => {
           setEvent(option.value);

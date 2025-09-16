@@ -5,6 +5,7 @@ import Input from "next-common/lib/input";
 import { useCallback, useMemo } from "react";
 import { omitBy, isNil } from "lodash-es";
 import { SECTION_EVENT_CONTENTS } from "next-common/utils/consts/fellowship/feeds";
+import { getFeedsEventCompatibleValue } from "next-common/utils/fellowship/getFeedsEvent";
 
 const SECTION_CONTENTS = {
   referenda: "Referenda",
@@ -85,7 +86,10 @@ export default function useFeedsFilter() {
           <Select
             className="w-48 text12Medium"
             small
-            value={stagedFilter?.event || null}
+            value={getFeedsEventCompatibleValue(
+              stagedFilter?.section,
+              stagedFilter?.event,
+            )}
             options={eventOptions}
             onChange={(option) => {
               onFilterChange({ ...stagedFilter, event: option.value });
