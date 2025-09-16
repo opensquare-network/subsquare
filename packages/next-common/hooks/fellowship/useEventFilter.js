@@ -2,9 +2,9 @@ import { useState } from "react";
 import Select from "next-common/components/select";
 
 export default function useEventFilter(events = [], curEvent) {
-  const options = (events || []).map((event) => ({
-    label: String(event),
-    value: event,
+  const options = (events || []).map(([value, label]) => ({
+    label: label,
+    value: value,
   }));
 
   options.unshift({

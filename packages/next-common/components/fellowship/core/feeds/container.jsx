@@ -7,19 +7,7 @@ import { useRouter } from "next/router";
 import { objectToQueryString } from "next-common/utils/url";
 import FilterButton from "next-common/components/filterButton";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
-
-const EVENT_CONTENTS = {
-  ParamsChanged: "ParamsChanged",
-  ActiveChanged: "ActiveChanged",
-  Inducted: "Inducted",
-  Offboarded: "Offboarded",
-  Imported: "Imported",
-  Promoted: "Promoted",
-  Demoted: "Demoted",
-  Proven: "Proven",
-  Requested: "Requested",
-  EvidenceJudged: "EvidenceJudged",
-};
+import { CoreEventContents } from "next-common/utils/consts/fellowship/feeds";
 
 function FellowshipCoreFeedsFilter({ feeds = {} }) {
   const { section } = useCollectivesContext();
@@ -28,7 +16,7 @@ function FellowshipCoreFeedsFilter({ feeds = {} }) {
   const [searchValue, setSearchValue] = useState(queryWho || "");
   const [loading, setLoading] = useState(false);
   const { event, component } = useEventFilter(
-    Object.values(EVENT_CONTENTS),
+    Object.entries(CoreEventContents),
     queryEvent,
   );
   // TODO: core feeds, event filter options

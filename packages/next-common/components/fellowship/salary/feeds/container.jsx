@@ -6,13 +6,7 @@ import { useEffect, useState } from "react";
 import useEventFilter from "next-common/hooks/fellowship/useEventFilter";
 import { useRouter } from "next/router";
 import { objectToQueryString } from "next-common/utils/url";
-
-const EVENT_CONTENTS = {
-  CycleStarted: "CycleStarted",
-  Inducted: "Inducted",
-  Registered: "Registered",
-  Paid: "Paid",
-};
+import { SalaryEventContents } from "next-common/utils/consts/fellowship/feeds";
 
 function FellowshipSalaryFeedsFilter({ feeds = {} }) {
   const router = useRouter();
@@ -20,7 +14,7 @@ function FellowshipSalaryFeedsFilter({ feeds = {} }) {
   const [searchValue, setSearchValue] = useState(queryWho || "");
   const [loading, setLoading] = useState(false);
   const { event, component } = useEventFilter(
-    Object.values(EVENT_CONTENTS),
+    Object.entries(SalaryEventContents),
     queryEvent,
   );
   // TODO: core feeds, event filter options
