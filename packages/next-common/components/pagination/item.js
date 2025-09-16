@@ -39,7 +39,7 @@ export default function PageItem({
   const content = (
     <Item
       active={now === page}
-      role={buttonMode && "button"}
+      role={buttonMode ? "button" : undefined}
       onClick={(e) => {
         onPageChange && onPageChange(e, page);
       }}

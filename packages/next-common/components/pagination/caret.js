@@ -19,7 +19,7 @@ export default function PageCaret({
 }) {
   const content = (
     <LinkInnerWrapper
-      role={buttonMode && "button"}
+      role={buttonMode ? "button" : undefined}
       onClick={(e) => {
         onPageChange && onPageChange(e, page);
       }}
