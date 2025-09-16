@@ -18,7 +18,7 @@ export default function useEventFilter(events = [], curEvent) {
     <div className="text12Medium text-textPrimary flex items-center gap-x-2">
       <div>Event</div>
       <Select
-        className="w-40"
+        className="w-40 text12Medium"
         small
         value={event}
         options={options}

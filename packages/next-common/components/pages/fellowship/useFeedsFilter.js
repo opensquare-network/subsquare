@@ -6,7 +6,7 @@ import { useCallback, useMemo } from "react";
 
 const SECTION_CONTENTS = {
   fellowshipReferenda: "Referenda",
-  fellowshipCore: "Core",
+  fellowshipCore: "Membership",
   fellowshipSalary: "Salary",
 };
 
@@ -100,7 +100,7 @@ export default function useFeedsFilter() {
         <div className="text12Medium text-textPrimary flex justify-between items-center gap-x-2">
           <div>Section</div>
           <Select
-            className="w-48"
+            className="w-48 text12Medium"
             small
             value={stagedFilter?.section || null}
             options={sectionOptions}
@@ -116,7 +116,7 @@ export default function useFeedsFilter() {
         <div className="text12Medium text-textPrimary flex justify-between items-center gap-x-2">
           <div>Event</div>
           <Select
-            className="w-48"
+            className="w-48 text12Medium"
             small
             value={stagedFilter?.event || null}
             options={eventOptions}
@@ -128,7 +128,7 @@ export default function useFeedsFilter() {
         <div className="text12Medium text-textPrimary flex justify-between items-center gap-x-2">
           <div>Who</div>
           <Input
-            className="w-48"
+            className="w-48 text12Medium"
             size="small"
             placeholder="Search address"
             value={stagedFilter?.who || ""}
