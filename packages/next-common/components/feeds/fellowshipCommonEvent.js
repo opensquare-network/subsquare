@@ -27,13 +27,17 @@ function getReferendaEventContent(feed, showUserInfo = true) {
     DecisionStarted: (
       <FeedsCommonEvent feed={feed} stateName="Decision Started" />
     ),
-    Cancelled: <FeedsCommonEvent feed={feed} name="Cancelled" />,
-    ConfirmAborted: <FeedsCommonEvent feed={feed} name="Confirm Aborted" />,
-    ConfirmStarted: <FeedsCommonEvent feed={feed} name="Confirm Started" />,
-    Confirmed: <FeedsCommonEvent feed={feed} name="Confirmed" />,
-    Killed: <FeedsCommonEvent feed={feed} name="Killed" />,
-    Rejected: <FeedsCommonEvent feed={feed} name="Rejected" />,
-    TimedOut: <FeedsCommonEvent feed={feed} name="Timed Out" />,
+    Cancelled: <FeedsCommonEvent feed={feed} stateName="Cancelled" />,
+    ConfirmAborted: (
+      <FeedsCommonEvent feed={feed} stateName="Confirm Aborted" />
+    ),
+    ConfirmStarted: (
+      <FeedsCommonEvent feed={feed} stateName="Confirm Started" />
+    ),
+    Confirmed: <FeedsCommonEvent feed={feed} stateName="Confirmed" />,
+    Killed: <FeedsCommonEvent feed={feed} stateName="Killed" />,
+    Rejected: <FeedsCommonEvent feed={feed} stateName="Rejected" />,
+    TimedOut: <FeedsCommonEvent feed={feed} stateName="Timed Out" />,
   };
   return EVENT_CONTENTS[event];
 }
