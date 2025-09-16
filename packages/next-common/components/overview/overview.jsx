@@ -10,6 +10,7 @@ import PolkadotTreasuryStats from "./polkadotTreasuryStats";
 import { isPolkadotChain, isKusamaChain } from "next-common/utils/chain";
 import KusamaTreasuryStats from "./kusamaTreasuryStats";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import EcoNews from "./ecoNews";
 
 const AccountInfo = dynamicClientOnly(() => import("./accountInfo"));
 const FellowshipFinanceOverview = dynamicClientOnly(() =>
@@ -67,9 +68,11 @@ export default function Overview() {
         <FellowshipTreasuryStats />
       </WithPallet> */}
 
-      <div>
-        <RecentProposals />
-        {/* news */}
+      <div className="flex gap-6 flex-col md:flex-row">
+        <div className="overflow-hidden w-full">
+          <RecentProposals />
+        </div>
+        <EcoNews />
       </div>
     </div>
   );
