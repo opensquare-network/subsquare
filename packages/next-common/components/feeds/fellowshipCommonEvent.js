@@ -5,6 +5,13 @@ import FeedsCommonEvent from "next-common/components/feeds/referendaEvents/commo
 
 import { getFellowshipCoreFeedsEventContent } from "next-common/components/fellowship/core/feeds/event";
 import { getFellowshipSalaryFeedsEventContent } from "../fellowship/salary/feeds/events";
+import { FellowshipRegisteredFeedContent } from "../fellowship/salary/feeds/events/registered";
+
+export const SECTIONS = {
+  FELLOWSHIP_REFERENDA: "fellowshipReferenda",
+  FELLOWSHIP_CORE: "fellowshipCore",
+  FELLOWSHIP_SALARY: "fellowshipSalary",
+};
 
 function getReferendaEventContent(feed, showUserInfo = true) {
   const event = feed?.event;
@@ -32,17 +39,25 @@ function getReferendaEventContent(feed, showUserInfo = true) {
 }
 
 function EventContent({ feed, showUserInfo = true }) {
-  const eventSection = feed?.section?.toUpperCase();
+  const eventSection = feed?.section;
 
-  if (eventSection === "FELLOWSHIPREFERENDA") {
+  if (eventSection === SECTIONS.FELLOWSHIP_REFERENDA) {
     return getReferendaEventContent(feed, showUserInfo);
   }
 
-  if (eventSection === "FELLOWSHIPCORE") {
+  if (eventSection === SECTIONS.FELLOWSHIP_CORE) {
     return getFellowshipCoreFeedsEventContent(feed, showUserInfo);
   }
 
-  if (eventSection === "FELLOWSHIPSALARY") {
+  if (eventSection === SECTIONS.FELLOWSHIP_SALARY) {
+    if (feed?.event === "Registered" && !showUserInfo) {
+      return (
+        <FellowshipRegisteredFeedContent
+          amount={feed?.args?.amount}
+          index={feed?.index}
+        />
+      );
+    }
     return getFellowshipSalaryFeedsEventContent(feed, showUserInfo);
   }
 

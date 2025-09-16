@@ -5,7 +5,10 @@ import FellowshipFeedSuffix from "../fellowship/feeds/suffix";
 import FellowshipFeedLeadingBar from "../fellowship/feeds/leading";
 import { AddressUser } from "../user";
 import { AvatarDisplay } from "../user/avatarDisplay";
-import FellowshipCommonEvent from "../feeds/fellowshipCommonEvent";
+import FellowshipCommonEvent, {
+  SECTIONS,
+} from "../feeds/fellowshipCommonEvent";
+import { cn } from "next-common/utils";
 
 const ITEM_HEIGHT = 53;
 const MOBILE_ITEM_HEIGHT = 96;
@@ -123,6 +126,10 @@ function ScrollFeedItem({ item, isLast }) {
   const showUserInfo = item?.showUserInfo ?? true;
   const who = item?.args?.who;
   const displayWho = showUserInfo && who;
+  const isFullEventSuffix = eventSuffixIsFull({
+    section: item?.section,
+    event: item?.event,
+  });
 
   return (
     <div
@@ -148,7 +155,10 @@ function ScrollFeedItem({ item, isLast }) {
             }
             suffix={
               <FellowshipFeedSuffix
-                className="w-3/5 max-sm:w-full"
+                className={cn(
+                  "max-sm:w-full",
+                  isFullEventSuffix ? "w-full" : "w-3/5",
+                )}
                 indexer={item?.indexer}
               />
             }
@@ -157,4 +167,27 @@ function ScrollFeedItem({ item, isLast }) {
       </div>
     </div>
   );
+}
+
+function eventSuffixIsFull({ section, event }) {
+  if (section === SECTIONS.FELLOWSHIP_CORE) {
+    return ["Inducted"].includes(event);
+  }
+  if (section === SECTIONS.FELLOWSHIP_SALARY) {
+    return ["Inducted", "CycleEnded", "CycleStarted"].includes(event);
+  }
+  if (section === SECTIONS.FELLOWSHIP_REFERENDA) {
+    return [
+      "Submitted",
+      "DecisionStarted",
+      "Cancelled",
+      "ConfirmAborted",
+      "ConfirmStarted",
+      "Confirmed",
+      "Killed",
+      "Rejected",
+      "TimedOut",
+    ].includes(event);
+  }
+  return false;
 }
