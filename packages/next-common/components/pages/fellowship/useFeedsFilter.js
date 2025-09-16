@@ -3,6 +3,7 @@ import { useStagedFilterState } from "next-common/components/dropdownFilter/cont
 import Select from "next-common/components/select";
 import Input from "next-common/lib/input";
 import { useCallback, useMemo } from "react";
+import { omitBy, isNil } from "lodash-es";
 
 const SECTION_CONTENTS = {
   fellowshipReferenda: "Referenda",
@@ -19,6 +20,7 @@ const ReferendaEventContents = {
   DecisionDepositPlaced: "DecisionDepositPlaced",
   DecisionStarted: "DecisionStarted",
   Killed: "Killed",
+  Executed: "Executed",
   Rejected: "Rejected",
   Submitted: "Submitted",
   TimedOut: "TimedOut",
@@ -86,10 +88,15 @@ export default function useFeedsFilter() {
 
   const onFilterChange = useCallback(
     (state) => {
-      setStagedFilter({
-        ...state,
-        page: 1,
-      });
+      const filteredState = omitBy(
+        {
+          ...state,
+          page: 1,
+        },
+        isNil,
+      );
+
+      setStagedFilter(filteredState);
     },
     [setStagedFilter],
   );
@@ -131,9 +138,12 @@ export default function useFeedsFilter() {
             className="w-48 text12Medium"
             size="small"
             placeholder="Search address"
-            value={stagedFilter?.who || ""}
+            value={stagedFilter?.who || null}
             onChange={(e) => {
-              onFilterChange({ ...stagedFilter, who: e.target.value });
+              onFilterChange({
+                ...stagedFilter,
+                who: e.target.value || null,
+              });
             }}
           />
         </div>
