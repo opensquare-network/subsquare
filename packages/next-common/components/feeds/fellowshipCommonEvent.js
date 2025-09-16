@@ -29,10 +29,10 @@ function getReferendaEventContent(feed, showUserInfo = true) {
     ),
     Cancelled: <FeedsCommonEvent feed={feed} suffixLabel="was cancelled" />,
     ConfirmAborted: (
-      <FeedsCommonEvent feed={feed} suffixLabel="was confirm aborted" />
+      <FeedsCommonEvent feed={feed} suffixLabel="confirmation aborted" />
     ),
     ConfirmStarted: (
-      <FeedsCommonEvent feed={feed} suffixLabel="was confirm started" />
+      <FeedsCommonEvent feed={feed} suffixLabel="started confirmation" />
     ),
     Confirmed: <FeedsCommonEvent feed={feed} suffixLabel="was confirmed" />,
     Killed: <FeedsCommonEvent feed={feed} suffixLabel="was killed" />,
