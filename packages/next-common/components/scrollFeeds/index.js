@@ -74,11 +74,11 @@ export default function ScrollFeeds({
     const interval = setInterval(() => {
       if (pauseRef.current) return;
       if (!containerRef.current || !containerRef.current.firstChild) return;
-      if (feedPages?.length < 4) return;
+      if (feedPages?.length <= pageSize) return;
       animateHandle();
     }, 3000);
     return () => clearInterval(interval);
-  }, [animateHandle, containerRef, feedPages?.length]);
+  }, [animateHandle, containerRef, feedPages?.length, pageSize]);
 
   if (feedPages?.length === 0 || pageSize <= 0) {
     return null;
