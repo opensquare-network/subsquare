@@ -57,12 +57,12 @@ export default function InfluenceImpl() {
 
       <Pagination
         page={page}
+        buttonMode
         onPageChange={(e, val) => {
           setPage(val);
           e.preventDefault();
           e.stopPropagation();
         }}
-        shallow
         total={filteredReferenda.length}
         pageSize={InfluencePageSize}
       />
