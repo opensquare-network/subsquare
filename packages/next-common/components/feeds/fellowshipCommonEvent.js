@@ -44,6 +44,7 @@ function getReferendaEventContent(feed, showUserInfo = true) {
 
 function EventContent({ feed, showUserInfo = true }) {
   const eventSection = feed?.section;
+  const event = feed?.event;
 
   if (eventSection === SECTIONS.FELLOWSHIP_REFERENDA) {
     return getReferendaEventContent(feed, showUserInfo);
@@ -65,7 +66,7 @@ function EventContent({ feed, showUserInfo = true }) {
     return getFellowshipSalaryFeedsEventContent(feed, showUserInfo);
   }
 
-  return null;
+  return event;
 }
 
 export default function FellowshipCommonEvent({
