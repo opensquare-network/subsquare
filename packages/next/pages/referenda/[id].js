@@ -23,6 +23,7 @@ import { usePageProps } from "next-common/context/page";
 import { ReferendumContent } from "next-common/components/pages/components/referenda/referendaContent";
 import { ReferendaPalletProvider } from "next-common/context/referenda/pallet";
 import WindowSizeProvider from "next-common/context/windowSize";
+import NotFoundDetail from "next-common/components/notFoundDetail";
 
 function UnFinalizedBreadcrumb({ id }) {
   return (
@@ -81,6 +82,22 @@ function ReferendumPageWithPost() {
 
 function ReferendumPageImpl() {
   const detail = usePost();
+  const { id } = usePageProps();
+
+  if (!/^\d+$/.test(id)) {
+    return (
+      <NotFoundDetail
+        hasSidebar
+        customId={id}
+        breadcrumbItems={[
+          {
+            path: "/referenda",
+            content: "Referenda",
+          },
+        ]}
+      />
+    );
+  }
 
   if (!detail) {
     return <ReferendumNullPage />;
@@ -103,6 +120,10 @@ export default function ReferendumPage({ detail }) {
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
+
+  if (!/^\d+$/.test(id)) {
+    return getNullDetailProps(id, { voteStats: {} });
+  }
 
   const { result: detail } = await backendApi.fetch(
     gov2ReferendumsDetailApi(id),
