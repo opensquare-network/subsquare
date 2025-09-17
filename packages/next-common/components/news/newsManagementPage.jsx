@@ -57,7 +57,6 @@ export default function NewsManagementPage() {
   const [items, setItems] = useState(initialItems);
   const [loading, setLoading] = useState(false);
   const [deleteIndex, setDeleteIndex] = useState(null);
-  const [draggedIndex, setDraggedIndex] = useState(null);
 
   const moveNews = useCallback(
     (fromIndex, toIndex) => {
@@ -88,40 +87,6 @@ export default function NewsManagementPage() {
     }, 2000);
   }, [dispatch]);
 
-  const handleDragStart = useCallback((e, index) => {
-    setDraggedIndex(index);
-    e.dataTransfer.effectAllowed = "move";
-    e.dataTransfer.setData("text/html", e.target.outerHTML);
-    e.target.style.opacity = "0.5";
-  }, []);
-
-  const handleDragEnd = useCallback((e) => {
-    e.target.style.opacity = "";
-    setDraggedIndex(null);
-  }, []);
-
-  const handleDragOver = useCallback((e) => {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = "move";
-  }, []);
-
-  const handleDrop = useCallback(
-    (e, dropIndex) => {
-      e.preventDefault();
-      if (draggedIndex !== null && draggedIndex !== dropIndex) {
-        moveNews(draggedIndex, dropIndex);
-        dispatch(
-          newSuccessToast(
-            `Moved news item from position ${draggedIndex + 1} to ${
-              dropIndex + 1
-            }`,
-          ),
-        );
-      }
-    },
-    [draggedIndex, moveNews, dispatch],
-  );
-
   const [popupData, setPopupData] = useState(null);
 
   return (
@@ -137,33 +102,10 @@ export default function NewsManagementPage() {
               {items?.length > 0 ? (
                 items.map((item, index) => (
                   <Fragment key={item.id}>
-                    <StyledTr
-                      className={`hover:bg-neutral200 ${
-                        draggedIndex === index ? "opacity-50" : ""
-                      }`}
-                      draggable={false}
-                      onDragStart={(e) => handleDragStart(e, index)}
-                      onDragEnd={handleDragEnd}
-                      onDragOver={handleDragOver}
-                      onDrop={(e) => handleDrop(e, index)}
-                    >
-                      <StyledTd
-                        style={{ textAlign: "left", width: 80 }}
-                        className="cursor-move"
-                        onMouseDown={(e) => {
-                          e.currentTarget
-                            .closest("tr")
-                            .setAttribute("draggable", "true");
-                        }}
-                        onMouseUp={(e) => {
-                          e.currentTarget
-                            .closest("tr")
-                            .setAttribute("draggable", "false");
-                        }}
-                      >
+                    <StyledTr>
+                      <StyledTd style={{ textAlign: "left", width: 80 }}>
                         <div className="flex items-center gap-2">
-                          <span className="text-neutral400">⋮⋮</span>#
-                          {index + 1}
+                          #{index + 1}
                         </div>
                       </StyledTd>
                       <StyledTd onMouseDown={(e) => e.stopPropagation()}>
