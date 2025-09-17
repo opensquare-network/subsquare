@@ -9,6 +9,8 @@ import FellowshipCommonEvent, {
   SECTIONS,
 } from "../feeds/fellowshipCommonEvent";
 import { cn } from "next-common/utils";
+import { GreyPanel } from "../styled/containers/greyPanel";
+import Link from "next/link";
 
 const ITEM_HEIGHT = 53;
 const MOBILE_ITEM_HEIGHT = 96;
@@ -27,8 +29,12 @@ export default function ScrollFeeds({
   const pauseRef = useRef(false);
 
   useEffect(() => {
-    setFeedPages(feeds);
-  }, [feeds]);
+    if (feeds?.length <= pageSize) {
+      setFeedPages(feeds);
+      return;
+    }
+    setFeedPages(fillEmptySpace(feeds));
+  }, [feeds, pageSize]);
 
   const wrapperHeight = useMemo(() => {
     if (isMobile) {
@@ -80,6 +86,15 @@ export default function ScrollFeeds({
     return () => clearInterval(interval);
   }, [animateHandle, containerRef, feedPages?.length, pageSize]);
 
+  const feedsKeys = useMemo(() => {
+    const firstFeed = feeds[0];
+    const lastFeed = feeds[feeds.length - 1];
+    if (!firstFeed || !lastFeed) {
+      return [];
+    }
+    return [getFeedKey(firstFeed), getFeedKey(lastFeed)];
+  }, [feeds]);
+
   if (feedPages?.length === 0 || pageSize <= 0) {
     return null;
   }
@@ -101,8 +116,15 @@ export default function ScrollFeeds({
         onMouseLeave={() => (pauseRef.current = false)}
       >
         <div className="flex flex-col">
-          {(feedPages || []).map((feed, idx) => {
-            const isLast = idx === feedPages.length - 1;
+          {(feedPages || []).map((feed) => {
+            if (feed.isEmpty) {
+              return <EmptySplitFeed key="emptySplitFeed" />;
+            }
+
+            const key = getFeedKey(feed);
+            const [firstKey, lastKey] = feedsKeys;
+            const isFirst = key === firstKey;
+            const isLast = key === lastKey;
             return (
               <ScrollFeedItem
                 key={
@@ -111,8 +133,9 @@ export default function ScrollFeeds({
                   feed.indexer.eventIndex
                 }
                 item={feed}
-                idx={idx}
+                idx={key}
                 isLast={isLast}
+                isFirst={isFirst}
               />
             );
           })}
@@ -122,7 +145,7 @@ export default function ScrollFeeds({
   );
 }
 
-function ScrollFeedItem({ item, isLast }) {
+function ScrollFeedItem({ item, isLast, isFirst }) {
   const showUserInfo = item?.showUserInfo ?? true;
   const who = item?.args?.who;
   const displayWho = showUserInfo && who;
@@ -136,8 +159,12 @@ function ScrollFeedItem({ item, isLast }) {
       key={item.event + item.indexer.blockHeight + item.indexer.eventIndex}
       className="flex group/datalist-item text14Medium h-[53px] max-sm:h-[96px]"
     >
-      <FellowshipFeedLeadingBar className="pr-4" isLast={isLast} />
-      <div className="flex pt-2">
+      <FellowshipFeedLeadingBar
+        className="pr-4"
+        isLast={isLast}
+        isFirst={isFirst}
+      />
+      <div className="flex pt-3">
         {displayWho && (
           <div className="mt-1 mr-2">
             <AvatarDisplay size={20} address={item?.args?.who} />
@@ -190,4 +217,26 @@ function eventSuffixIsFull({ section, event }) {
     ].includes(event);
   }
   return false;
+}
+
+function EmptySplitFeed() {
+  return (
+    <div className="flex flex-col text14Medium h-[53px] max-sm:h-[96px] items-center justify-center w-full pl-6">
+      <GreyPanel className="text12Medium text-textSecondary py-2.5 px-4 w-full mt-3">
+        Check all feeds{" "}
+        <Link className="text-theme500 ml-1" href="/fellowship/feeds">
+          here
+        </Link>
+        .
+      </GreyPanel>
+    </div>
+  );
+}
+
+function getFeedKey(feed) {
+  return `${feed?.event}-${feed?.indexer?.blockHeight}-${feed?.indexer?.eventIndex}`;
+}
+
+function fillEmptySpace(feeds = []) {
+  return [...feeds, { isEmpty: true, key: "isEmpty" }];
 }
