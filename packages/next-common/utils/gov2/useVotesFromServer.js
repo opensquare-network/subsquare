@@ -12,8 +12,11 @@ import { createGlobalState } from "react-use";
 import getChainSettings from "next-common/utils/consts/settings";
 import { defaultBlockTime } from "next-common/utils/constants";
 import { sleep } from "next-common/utils";
+import { hasReferendaVotesGraphQL } from "next-common/utils/env/referendaVotes";
+import useReferendaVotesGraphQL from "next-common/hooks/useReferendaVotesGraphQL";
+import useReferendaVotesBackend from "next-common/hooks/useReferendaVotesBackend";
 
-function extractSplitVotes(vote = {}) {
+export function extractSplitVotes(vote = {}) {
   const {
     referendumIndex,
     account,
@@ -50,7 +53,7 @@ function extractSplitVotes(vote = {}) {
   return result;
 }
 
-function extractSplitAbstainVotes(vote = {}) {
+export function extractSplitAbstainVotes(vote = {}) {
   const {
     referendumIndex,
     account,
@@ -107,28 +110,28 @@ export function useFetchVotesFromServer(referendumIndex) {
   const [loaded, setLoaded] = useGlobalVotesLoadedMark();
   const dispatch = useDispatch();
 
+  const { fetchVotes: fetchGraphQLVotes } =
+    useReferendaVotesGraphQL(referendumIndex);
+
+  const { fetchVotes: fetchBackendVotes } =
+    useReferendaVotesBackend(referendumIndex);
+
   const fetch = useCallback(() => {
     if (votingFinishedHeight && loaded) {
       return Promise.resolve();
     }
+
     dispatch(setLoading(true));
 
-    return backendApi
-      .fetch(`gov2/referenda/${referendumIndex}/votes`)
-      .then(({ result: votes }) => {
-        const allVotes = (votes || []).reduce((result, vote) => {
-          if (vote.isSplit) {
-            return [...result, ...extractSplitVotes(vote)];
-          } else if (vote.isSplitAbstain) {
-            return [...result, ...extractSplitAbstainVotes(vote)];
-          }
-          return [...result, vote];
-        }, []);
+    const shouldUseGraphQL =
+      !votingFinishedHeight && hasReferendaVotesGraphQL();
 
-        const filteredVotes = allVotes.filter(
-          (vote) =>
-            BigInt(vote.votes) > 0 || BigInt(vote?.delegations?.votes || 0) > 0,
-        );
+    const fetchFunction = shouldUseGraphQL
+      ? fetchGraphQLVotes
+      : fetchBackendVotes;
+
+    return fetchFunction()
+      .then((filteredVotes) => {
         dispatch(setAllVotes(sortVotes(filteredVotes)));
 
         if (!loaded) {
@@ -137,18 +140,17 @@ export function useFetchVotesFromServer(referendumIndex) {
 
         return filteredVotes;
       })
-      .catch((error) => {
-        console.error(
-          "Error fetching votes for referendum:",
-          referendumIndex,
-          error,
-        );
-        throw new Error("Error fetching votes for referendum");
-      })
       .finally(() => {
         setTimeout(() => dispatch(setLoading(false)), 1);
       });
-  }, [votingFinishedHeight, referendumIndex, dispatch, setLoaded, loaded]);
+  }, [
+    votingFinishedHeight,
+    dispatch,
+    setLoaded,
+    loaded,
+    fetchGraphQLVotes,
+    fetchBackendVotes,
+  ]);
 
   useEffect(() => {
     return () => {
