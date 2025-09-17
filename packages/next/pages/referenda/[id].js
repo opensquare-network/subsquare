@@ -88,6 +88,7 @@ function ReferendumPageImpl() {
     return (
       <NotFoundDetail
         hasSidebar
+        customId={id}
         breadcrumbItems={[
           {
             path: "/referenda",
