@@ -198,10 +198,10 @@ function ScrollFeedItem({ item, isLast, isFirst }) {
 
 function eventSuffixIsFull({ section, event }) {
   if (section === SECTIONS.FELLOWSHIP_CORE) {
-    return ["Inducted"].includes(event);
+    return ["Inducted", "Offboarded"].includes(event);
   }
   if (section === SECTIONS.FELLOWSHIP_SALARY) {
-    return ["Inducted", "CycleEnded", "CycleStarted"].includes(event);
+    return ["Inducted", "CycleEnded", "CycleStarted", "Paid"].includes(event);
   }
   if (section === SECTIONS.FELLOWSHIP_REFERENDA) {
     return [
