@@ -71,11 +71,6 @@ export default function StatusEdge({
         type="smoothstep"
         style={{ stroke: `${edgeTheme.color} !important` }}
         markerEnd={`url(#relationship_popup-arrow-${edgeTheme.name})`}
-        markerStart={
-          data?.isTwoWay
-            ? `url(#relationship_popup-arrow-start-${edgeTheme.name})`
-            : undefined
-        }
       />
       <EdgeLabelRenderer className="relative !z-20">
         <EdgeLabel
