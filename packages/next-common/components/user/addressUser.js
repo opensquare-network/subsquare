@@ -179,7 +179,7 @@ function AddressUserComp({
   const inlineClassName = "text14Medium text-textPrimary";
   const maxWidth = useWidth(showAvatar, identity, propMaxWidth);
 
-  if (!isPolkadotAddress(address) || !isEthereumAddress(address)) {
+  if (!address || !isPolkadotAddress(address) || !isEthereumAddress(address)) {
     return <DeletedAccount address={address} />;
   }
 
