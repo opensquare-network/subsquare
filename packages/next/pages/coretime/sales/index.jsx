@@ -16,6 +16,7 @@ import queryCoretimeStatus from "next-common/services/gql/coretime/status";
 import CoretimeCommonProvider from "next-common/context/coretime/common";
 import useLoopCoretimeScanHeight from "next-common/hooks/coretime/useLoopCoretimeScanHeight";
 import RelayInfoProvider from "next-common/context/relayInfo";
+import generateCoretimeTitle from "next-common/utils/coretime/generateCoretimeTitle";
 
 const isCoretimeSupported = !!getChainSettings(CHAIN).modules?.coretime;
 
@@ -57,7 +58,10 @@ function CoretimeSalesPageImpl() {
   useLoopCoretimeScanHeight();
 
   return (
-    <ListLayout title="Coretime" description={description}>
+    <ListLayout
+      seoInfo={{ rawTitle: generateCoretimeTitle("Coretime Sales") }}
+      description={description}
+    >
       <div className="space-y-6">
         <ActiveCoretimeSale />
         <CoretimeSalesHistory />

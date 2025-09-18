@@ -23,6 +23,7 @@ import {
 } from "next-common/services/gql/coretime/chart";
 import NotFoundDetail from "next-common/components/notFoundDetail";
 import { usePageProps } from "next-common/context/page";
+import generateCoretimeTitle from "next-common/utils/coretime/generateCoretimeTitle";
 
 const isCoretimeSupported = !!getChainSettings(CHAIN).modules?.coretime;
 
@@ -77,7 +78,7 @@ function CoretimeSalesDetailPageImpl() {
   const { coretimeSale } = usePageProps();
 
   const seoInfo = {
-    title: `Subsquare | Coretime Sale #${coretimeSale?.id}`,
+    title: generateCoretimeTitle(`Coretime Sale #${coretimeSale?.id}`),
     desc: `Data about coretime sale #${coretimeSale?.id}`,
   };
 

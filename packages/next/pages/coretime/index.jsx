@@ -20,6 +20,7 @@ import {
   queryCoretimeSalePurchasesChart,
   queryCoretimeSaleRenewalsChart,
 } from "next-common/services/gql/coretime/chart";
+import generateCoretimeTitle from "next-common/utils/coretime/generateCoretimeTitle";
 
 const isCoretimeSupported = !!getChainSettings(CHAIN).modules?.coretime;
 
@@ -61,7 +62,11 @@ function CoretimeOverviewPageImpl() {
   useLoopCoretimeScanHeight();
 
   return (
-    <ListLayout title="Coretime" description={description}>
+    <ListLayout
+      title="Coretime"
+      seoInfo={{ rawTitle: generateCoretimeTitle("Coretime") }}
+      description={description}
+    >
       <div className="space-y-6">
         <CoretimeSalePanel />
         <CoretimeSalesHistorySection />
