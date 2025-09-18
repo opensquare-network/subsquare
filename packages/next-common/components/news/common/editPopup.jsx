@@ -1,9 +1,10 @@
 import { PopupButtonWrapper } from "next-common/components/popup/wrapper";
-import Popup from "../popup/wrapper/Popup";
-import { useCallback, useState } from "react";
+import Popup from "next-common/components/popup/wrapper/Popup";
+import { useState } from "react";
 import Button from "next-common/lib/button";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import Input from "next-common/lib/input";
 
 const isValidUrl = (string) => {
   try {
@@ -22,69 +23,57 @@ export default function EditPopup({
 }) {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState(data);
-  const [errors, setErrors] = useState({});
 
-  const validateForm = useCallback(() => {
-    const newErrors = {};
+  const validateForm = () => {
     if (!formData.content.trim()) {
-      newErrors.title = "Title is required";
+      return "Title is required";
     }
     if (formData.link && !isValidUrl(formData.link)) {
-      newErrors.link = "Please enter a valid URL";
+      return "Please enter a valid URL";
     }
-    return Object.keys(newErrors).length === 0;
-  }, [formData.link, formData.content]);
+  };
 
-  const handleSubmit = useCallback(async () => {
-    if (!validateForm()) {
-      dispatch(newErrorToast("Please fix the form errors before submitting"));
+  const handleSubmit = async () => {
+    const errorMessage = validateForm();
+    if (errorMessage) {
+      dispatch(newErrorToast("errorMessage"));
       return;
     }
 
     onConfirm(formData);
-  }, [validateForm, onConfirm, formData, dispatch]);
+  };
 
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
-    if (errors[field]) {
-      setErrors((prev) => ({ ...prev, [field]: "" }));
-    }
   };
 
   return (
-    <Popup title={title} onClose={() => onClose(false)}>
+    <Popup title={title} onClose={() => !isLoading && onClose(false)}>
       <div className="space-y-4">
         <div className="flex flex-col space-y-2">
           <label htmlFor="title" className="text-sm font-medium">
-            Title *
+            Title
           </label>
           <textarea
             id="title"
             value={formData.content}
             onChange={(e) => handleInputChange("content", e.target.value)}
             placeholder="Enter news title"
-            className="border border-neutral500 px-4 py-3 rounded"
+            className="border text14Medium border-neutral400 hover:border-neutral500 px-4 py-3 rounded focus:border-neutral500 outline-none"
             rows={3}
           />
-          {errors.title && (
-            <div className="text-red-500 text-xs">{errors.title}</div>
-          )}
         </div>
         <div className="flex flex-col space-y-2">
           <label htmlFor="link" className="text-sm font-medium">
             Link (optional)
           </label>
-          <input
+          <Input
             id="link"
             type="url"
             value={formData.link}
             onChange={(e) => handleInputChange("link", e.target.value)}
             placeholder="https://..."
-            className="border border-neutral500 px-4 py-3 rounded"
           />
-          {errors.link && (
-            <div className="text-red-500 text-xs">{errors.link}</div>
-          )}
         </div>
       </div>
       <PopupButtonWrapper className="space-x-2">
