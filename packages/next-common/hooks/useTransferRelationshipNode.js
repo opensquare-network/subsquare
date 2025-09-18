@@ -9,39 +9,49 @@ import {
 } from "./useRelationshipNode";
 import useMaybeContextMultisigAddress from "./useMaybeContextMultisigAddress";
 import { RELATIONSHIP_NODE_TYPE } from "next-common/utils/constants";
+import { useChainSettings } from "next-common/context/chain";
+import { isSameAddress, toPrecision } from "next-common/utils";
+import ValueDisplay from "next-common/components/valueDisplay";
 
-function createTransferRelationship(
-  rootNode,
-  accounts = [],
-  transferVolumes = [],
-) {
+function TransferName({ volume }) {
+  const { symbol, decimals } = useChainSettings();
+  return (
+    <>
+      <ValueDisplay
+        showTooltip={false}
+        value={toPrecision(volume, decimals, 2)}
+        symbol={symbol}
+        className="text-red500"
+      />
+    </>
+  );
+}
+
+function createTransferRelationship(rootNode, accounts = [], direction) {
   const filteredAccounts = accounts.filter(
     (item) => item.address !== rootNode.data.address,
   );
   return createRelationship({
     rootNode,
     items: filteredAccounts,
-    nodeIdPrefix: "transfer",
-    edgeIdPrefix: "root-transfer",
+    nodeIdPrefix: `transfer-${direction}`,
+    edgeIdPrefix: `root-transfer-${direction}`,
     nodeDataMapper: (item) => ({
       address: item.address,
+      username: item.username,
+      transfer: item.data,
       badge: <BadgeInfo address={item.address} />,
       pure: <DynamicPureProxy address={item.address} />,
     }),
-    edgeDataMapper: (node) => {
-      const userTransferVolumes = transferVolumes.filter(
-        (item) => item.from === node.address || item.to === node.address,
-      );
-      return {
-        type: RELATIONSHIP_NODE_TYPE.Transfer,
-        value: "Transfer",
-        name: "Transfer",
-        isTwoWay: userTransferVolumes.length > 1,
-        userTransferVolumes,
-      };
-    },
-    sourceKey: "node",
-    targetKey: rootNodeId,
+    edgeDataMapper: (data) => ({
+      type: RELATIONSHIP_NODE_TYPE.Transfer,
+      name: `Total ${data.transfer.count}`,
+      value: <TransferName volume={data.transfer.volume} />,
+      data: data.transfer,
+      username: data.username,
+    }),
+    sourceKey: direction === "incoming" ? "node" : rootNodeId,
+    targetKey: direction === "incoming" ? rootNodeId : "node",
     sourceHandle: "sourceSub",
     targetHandle: "targetParent",
   });
@@ -69,24 +79,89 @@ export default function useTransferRelationshipNode(sourceAddress) {
         className="inline-flex absolute h-5 right-2 top-2"
       />
     );
+    rootNode.data.username = getUsername(
+      value?.accounts?.find((item) =>
+        isSameAddress(item.address, sourceAddress),
+      ),
+    );
   }
 
   if (!sourceAddress) {
     return EMPTY_RESULT;
   }
 
-  const { nodes: transferNodes, edges: transferEdges } =
-    createTransferRelationship(
-      rootNode,
-      value?.accounts,
-      value?.transferVolumes,
-    );
+  const { incoming, outgoing } = relationshipExtend(
+    rootNode,
+    value?.accounts,
+    value?.transferVolumes,
+  );
 
-  // console.log({ transferNodes, transferEdges });
+  const { nodes: incomingtransferNodes, edges: incomingtransferEdges } =
+    createTransferRelationship(rootNode, incoming.nodes, "incoming");
+
+  const { nodes: outgoingtransferNodes, edges: outgoingtransferEdges } =
+    createTransferRelationship(rootNode, outgoing.nodes, "outgoing");
 
   return {
-    loading,
-    nodes: [rootNode, ...transferNodes],
-    edges: transferEdges,
+    isLoading: loading,
+    nodes: [rootNode, ...incomingtransferNodes, ...outgoingtransferNodes],
+    edges: [...incomingtransferEdges, ...outgoingtransferEdges],
   };
+}
+
+function getUsername(account) {
+  if (account) {
+    const { display, accountDisplay } = account.subscanAccount || {};
+    const username = display || accountDisplay?.merkle?.tagName || null;
+    return username;
+  }
+  return null;
+}
+
+function relationshipExtend(rootNode, accounts = [], transfers = []) {
+  const rootAddress = rootNode?.data?.address || "";
+  const accountsMap = new Map(
+    accounts.map((account) => [account.address, account]),
+  );
+  const nodeMaps = { incoming: new Map(), outgoing: new Map() };
+  const result = {
+    incoming: { nodes: [], edges: [] },
+    outgoing: { nodes: [], edges: [] },
+  };
+
+  const createNode = (address, transfer, direction) => {
+    const nodeMap = nodeMaps[direction];
+    if (!nodeMap.has(address)) {
+      const item = accountsMap.get(address);
+      if (item) {
+        const username = getUsername(item);
+        const node = { address, username, data: transfer };
+        nodeMap.set(address, node);
+        result[direction].nodes.push(node);
+      }
+    }
+  };
+
+  const createEdge = (source, target, direction, transfer) => {
+    result[direction].edges.push({
+      source: direction === "incoming" ? source : rootNode.id,
+      target: direction === "incoming" ? rootNode.id : target,
+      type: "transfer",
+      data: transfer,
+      direction,
+    });
+  };
+
+  transfers.forEach((transfer) => {
+    const { from, to } = transfer;
+    if (from === rootAddress) {
+      createNode(to, transfer, "outgoing");
+      createEdge(rootNode.id, to, "outgoing", transfer);
+    } else if (to === rootAddress) {
+      createNode(from, transfer, "incoming");
+      createEdge(from, rootNode.id, "incoming", transfer);
+    }
+  });
+
+  return result;
 }

@@ -214,28 +214,32 @@ function DelegationTipContent({ rawData }) {
 
 function TransferTipContent({ rawData }) {
   const { decimals, symbol } = useChainSettings();
-  const transfers = rawData?.userTransferVolumes || [];
+  const { data: transfer } = rawData || {};
+
+  if (isNil(transfer)) {
+    return null;
+  }
 
   return (
     <div className="flex gap-x-1 items-center flex-col">
-      {transfers.map((transfer) => (
-        <div key={transfer.id} className="flex gap-x-1 items-center">
-          <DisplayUser
-            id={transfer.from}
-            className="flex text12Medium text-white"
-          />
-          <span>has {transfer.count} times transferred</span>
-          <DisplayUser
-            id={transfer.to}
-            className="flex text12Medium text-white"
-          />
-          <span>with volume </span>
-          <ValueDisplay
-            value={toPrecision(transfer.volume, decimals)}
-            symbol={symbol}
-          />
-        </div>
-      ))}
+      <div className="flex gap-x-1 items-center">
+        <DisplayUser
+          id={transfer.from}
+          username={rawData.username}
+          className="flex text12Medium text-white"
+        />
+        <span>transferred {transfer.count} times</span>
+        <DisplayUser
+          id={transfer.to}
+          username={rawData.username}
+          className="flex text12Medium text-white"
+        />
+        <span>total </span>
+        <ValueDisplay
+          value={toPrecision(transfer.volume, decimals)}
+          symbol={symbol}
+        />
+      </div>
     </div>
   );
 }
