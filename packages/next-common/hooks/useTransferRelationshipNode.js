@@ -12,6 +12,7 @@ import { RELATIONSHIP_NODE_TYPE } from "next-common/utils/constants";
 import { useChainSettings } from "next-common/context/chain";
 import { isSameAddress, toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
+import pluralize from "pluralize";
 
 function TransferName({ volume }) {
   const { symbol, decimals } = useChainSettings();
@@ -43,13 +44,16 @@ function createTransferRelationship(rootNode, accounts = [], direction) {
       badge: <BadgeInfo address={item.address} />,
       pure: <DynamicPureProxy address={item.address} />,
     }),
-    edgeDataMapper: (data) => ({
-      type: RELATIONSHIP_NODE_TYPE.Transfer,
-      name: `Total ${data.transfer.count}`,
-      value: <TransferName volume={data.transfer.volume} />,
-      data: data.transfer,
-      username: data.username,
-    }),
+    edgeDataMapper: (data) => {
+      const { count, volume } = data?.transfer || {};
+      return {
+        type: RELATIONSHIP_NODE_TYPE.Transfer,
+        name: `${count} ${pluralize("time", count)}`,
+        value: <TransferName volume={volume} />,
+        data: data.transfer,
+        username: data.username,
+      };
+    },
     sourceKey: direction === "incoming" ? "node" : rootNodeId,
     targetKey: direction === "incoming" ? rootNodeId : "node",
     sourceHandle: "sourceSub",

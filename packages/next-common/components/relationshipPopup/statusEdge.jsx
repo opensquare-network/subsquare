@@ -14,6 +14,7 @@ import { useTrackContent } from "../referenda/track/trackTag";
 import ValueDisplay from "../valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
+import pluralize from "pluralize";
 
 const EdgeLabel = styled.div`
   position: absolute;
@@ -223,7 +224,9 @@ function TransferTipContent({ rawData }) {
           username={rawData.username}
           className="flex text12Medium text-white"
         />
-        <span>transferred {transfer.count} times</span>
+        <span>
+          transferred {transfer.count} {pluralize("time", transfer.count)}
+        </span>
         <DisplayUser
           id={transfer.to}
           username={rawData.username}
