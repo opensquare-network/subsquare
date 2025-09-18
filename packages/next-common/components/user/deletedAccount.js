@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import AvatarDeleted from "../../assets/imgs/icons/avatar-deleted.svg";
 import Flex from "../styled/flex";
+import { addressEllipsis } from "next-common/utils/";
+import Username from "next-common/components/user/username";
 
 const Wrapper = styled(Flex)`
   font-weight: 500;
@@ -20,11 +22,15 @@ const Wrapper = styled(Flex)`
   }
 `;
 
-export default function DeletedAccount() {
+export default function DeletedAccount({ address }) {
   return (
     <Wrapper>
       <AvatarDeleted />
-      [Deleted Account]
+      {address ? (
+        <Username username={addressEllipsis(address)} />
+      ) : (
+        "[Deleted Account]"
+      )}
     </Wrapper>
   );
 }
