@@ -4,6 +4,7 @@ import { useCallback, useState } from "react";
 import Button from "next-common/lib/button";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
+
 const isValidUrl = (string) => {
   try {
     new URL(string);
@@ -12,22 +13,27 @@ const isValidUrl = (string) => {
     return false;
   }
 };
-export default function EditPopup({ onClose, onConfirm, data, title }) {
+export default function EditPopup({
+  isLoading,
+  onClose,
+  onConfirm,
+  data = {},
+  title,
+}) {
   const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState(data);
   const [errors, setErrors] = useState({});
 
   const validateForm = useCallback(() => {
     const newErrors = {};
-    if (!formData.title.trim()) {
+    if (!formData.content.trim()) {
       newErrors.title = "Title is required";
     }
     if (formData.link && !isValidUrl(formData.link)) {
       newErrors.link = "Please enter a valid URL";
     }
     return Object.keys(newErrors).length === 0;
-  }, [formData.link, formData.title]);
+  }, [formData.link, formData.content]);
 
   const handleSubmit = useCallback(async () => {
     if (!validateForm()) {
@@ -35,16 +41,8 @@ export default function EditPopup({ onClose, onConfirm, data, title }) {
       return;
     }
 
-    setIsLoading(true);
-    try {
-      // todo api
-      onConfirm();
-    } catch (error) {
-      dispatch(newErrorToast("Failed to add news item. Please try again."));
-    } finally {
-      setIsLoading(false);
-    }
-  }, [validateForm, dispatch, onConfirm]);
+    onConfirm(formData);
+  }, [validateForm, onConfirm, formData, dispatch]);
 
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -52,6 +50,7 @@ export default function EditPopup({ onClose, onConfirm, data, title }) {
       setErrors((prev) => ({ ...prev, [field]: "" }));
     }
   };
+
   return (
     <Popup title={title} onClose={() => onClose(false)}>
       <div className="space-y-4">
@@ -61,8 +60,8 @@ export default function EditPopup({ onClose, onConfirm, data, title }) {
           </label>
           <textarea
             id="title"
-            value={formData.title}
-            onChange={(e) => handleInputChange("title", e.target.value)}
+            value={formData.content}
+            onChange={(e) => handleInputChange("content", e.target.value)}
             placeholder="Enter news title"
             className="border border-neutral500 px-4 py-3 rounded"
             rows={3}

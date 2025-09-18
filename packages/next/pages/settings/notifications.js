@@ -5,7 +5,7 @@ import Notification from "next-common/components/setting/pages/notification";
 import OnChainEventsSubscription from "next-common/components/pages/components/settings/subscription/onchainEventsSubscription";
 import { usePageProps } from "next-common/context/page";
 
-export default function NotificationPage() {
+export default function NotificationPage(...a) {
   const { ssrTimestamp } = usePageProps();
   return (
     <Notification>
