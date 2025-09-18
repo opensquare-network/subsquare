@@ -15,6 +15,7 @@ import { isExternalLink } from "next-common/utils";
 import ExternalLink from "../externalLink";
 import { cn } from "next-common/utils";
 import UserDisplay from "./userDisplay";
+import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 
 export function UserAddressLink({ address, link, needHref, children }) {
   const displayAddress = tryConvertToEvmAddress(address);
@@ -177,8 +178,8 @@ function AddressUserComp({
   const inlineClassName = "text14Medium text-textPrimary";
   const maxWidth = useWidth(showAvatar, identity, propMaxWidth);
 
-  if (!address) {
-    return <DeletedAccount />;
+  if (!isPolkadotAddress(address)) {
+    return <DeletedAccount address={address} />;
   }
 
   return (
