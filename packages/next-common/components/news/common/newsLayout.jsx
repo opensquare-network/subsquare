@@ -20,7 +20,7 @@ export default function NewsLayout({ children }) {
   return (
     <>
       <div className="bg-neutral100 w-screen h-screen">
-        <main className="max-w-7xl mx-auto bg-neutral100 p-2  space-y-4">
+        <main className="max-w-7xl mx-auto bg-neutral100 p-2  space-y-4 text-textPrimary">
           <header className="py-2 space-y-1 flex justify-between items-center">
             <h1 className="text-lg sm:text-xl font-bold">
               <Link href="/">SubSquare News Management</Link>

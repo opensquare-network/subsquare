@@ -63,7 +63,7 @@ export function DeleteButton({ api, onConfirm }) {
               Delete
             </DangerButton>
             <Button
-              className="border border-neutral400"
+              className="border border-neutral400 text-textPrimary"
               onClick={() => {
                 setOpen(false);
               }}
@@ -124,7 +124,7 @@ export function ApproveButton({ item, onConfirm }) {
               Approve
             </PrimaryButton>
             <Button
-              className="border border-neutral400"
+              className="border border-neutral400 text-textPrimary"
               onClick={() => {
                 setOpen(false);
               }}
@@ -284,7 +284,7 @@ export function ToTopButton({ items, index, onConfirm }) {
       </Popover.Trigger>
       <Popover.Portal>
         <Popover.Content side="top" align="center">
-          <NeutralPanel className="p-4 w-[200px]">
+          <NeutralPanel className="p-4 w-[200px] text-textPrimary">
             <p className=" text-[14px]">Move item to top ?</p>
             <div className="flex justify-end gap-1 pt-4">
               <PrimaryButton
