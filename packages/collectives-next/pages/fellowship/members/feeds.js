@@ -6,6 +6,7 @@ import { fellowshipCoreFeedsApiUri } from "next-common/services/url";
 import FellowshipCoreFeedsContainer from "next-common/components/fellowship/core/feeds/container";
 import { defaultPageSize } from "next-common/utils/constants";
 import CollectivesProvider from "next-common/context/collectives/collectives";
+import { getFeedsEvent } from "next-common/utils/fellowship/getFeedsEvent";
 
 export default function FellowshipCoreFeedsPage({ fellowshipCoreFeeds }) {
   return (
@@ -24,7 +25,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
     page_size: defaultPageSize,
   };
   if (event) {
-    Object.assign(query, { event });
+    Object.assign(query, { event: getFeedsEvent("membership", event) });
   }
   if (who) {
     Object.assign(query, { who });

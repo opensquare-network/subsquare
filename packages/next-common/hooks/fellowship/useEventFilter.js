@@ -1,10 +1,11 @@
 import { useState } from "react";
 import Select from "next-common/components/select";
+import { getFeedsEventCompatibleValue } from "next-common/utils/fellowship/getFeedsEvent";
 
-export default function useEventFilter(events = [], curEvent) {
-  const options = (events || []).map((event) => ({
-    label: String(event),
-    value: event,
+export default function useEventFilter(events = [], curEvent, section) {
+  const options = (events || []).map(([value, label]) => ({
+    label: label,
+    value: value,
   }));
 
   options.unshift({
@@ -18,9 +19,9 @@ export default function useEventFilter(events = [], curEvent) {
     <div className="text12Medium text-textPrimary flex items-center gap-x-2">
       <div>Event</div>
       <Select
-        className="w-40"
+        className="w-40 text12Medium"
         small
-        value={event}
+        value={getFeedsEventCompatibleValue(section, event)}
         options={options}
         onChange={(option) => {
           setEvent(option.value);
