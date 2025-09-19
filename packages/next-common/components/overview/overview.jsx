@@ -35,6 +35,7 @@ export default function Overview() {
   return (
     <div className="space-y-6">
       <AccountInfo />
+      <EcoNews />
 
       <WithPallet pallet="fellowshipCore">
         <CollectivesProvider section="fellowship">
@@ -56,12 +57,7 @@ export default function Overview() {
         <FellowshipTreasuryStats />
       </WithPallet> */}
 
-      <div className="flex gap-6 flex-col md:flex-row">
-        <div className="overflow-hidden w-full">
-          <RecentProposals />
-        </div>
-        <EcoNews />
-      </div>
+      <RecentProposals />
     </div>
   );
 }
