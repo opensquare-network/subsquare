@@ -48,6 +48,7 @@ const polkadot = {
     coretime: true,
     intime: {
       preimage: true,
+      proxy: true,
     },
   },
   hasMultisig: true,

@@ -151,6 +151,7 @@ function TableTemplate({
           <Pagination
             page={page}
             pageSize={recentProposalFetchParams.pageSize}
+            buttonMode
             total={result?.total || 0}
             onPageChange={(e, newPage) => {
               e.preventDefault();
