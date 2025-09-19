@@ -6,8 +6,6 @@ import { cn } from "next-common/utils";
 import { useContextApi } from "next-common/context/api";
 import { isNil } from "lodash-es";
 import { useMemo } from "react";
-import OnlyChain from "next-common/components/common/onlyChain";
-import Chains from "next-common/utils/consts/chains";
 
 const FellowshipFinanceOverview = dynamicClientOnly(() => import("./finance"));
 const FellowshipFeeds = dynamicClientOnly(() => import("./feeds"));
@@ -46,33 +44,31 @@ export default function MultipleColumnCard() {
   }
 
   return (
-    <OnlyChain chain={Chains.collectives}>
-      <div
-        className={cn(
-          "flex gap-4",
-          navCollapsed ? "max-md:flex-col" : "max-lg:flex-col",
-          showSingleColumn && "flex-col",
-        )}
-      >
-        <div className="flex-1 flex flex-col">
-          <FellowshipFeeds />
-        </div>
-        <div className="flex flex-col gap-4 flex-1">
-          <div>
-            <WithPallet pallet="fellowshipTreasury">
-              <WithPallet pallet="fellowshipSalary">
-                <FellowshipFinanceOverview />
-              </WithPallet>
+    <div
+      className={cn(
+        "flex gap-4",
+        navCollapsed ? "max-md:flex-col" : "max-lg:flex-col",
+        showSingleColumn && "flex-col",
+      )}
+    >
+      <div className="flex-1 flex flex-col">
+        <FellowshipFeeds />
+      </div>
+      <div className="flex flex-col gap-4 flex-1">
+        <div>
+          <WithPallet pallet="fellowshipTreasury">
+            <WithPallet pallet="fellowshipSalary">
+              <FellowshipFinanceOverview />
             </WithPallet>
-          </div>
-
-          <WithPallet pallet="fellowshipCore">
-            <CollectivesProvider section="fellowship">
-              <FellowshipApplicationGuide />
-            </CollectivesProvider>
           </WithPallet>
         </div>
+
+        <WithPallet pallet="fellowshipCore">
+          <CollectivesProvider section="fellowship">
+            <FellowshipApplicationGuide />
+          </CollectivesProvider>
+        </WithPallet>
       </div>
-    </OnlyChain>
+    </div>
   );
 }
