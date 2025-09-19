@@ -32,7 +32,7 @@ function EcoNewsImpl() {
         Eco News
         <AddNews />
       </TitleContainer>
-      <div className="p-6 bg-neutral100 shadow-100 border border-neutral300 rounded-xl">
+      <div className="p-6 bg-neutral100 shadow-100 border border-neutral300 rounded-xl max-h-[400px] overflow-y-auto">
         {loading ? (
           <div className="flex justify-center">
             <Loading />
@@ -53,9 +53,13 @@ function NewsList({ list }) {
     <ul className="list-disc text14Medium text-textPrimary space-y-4">
       {list?.map((item, index) => (
         <li key={index}>
-          <Link href={item.link} target="_block" className="hover:underline">
-            {item.content}
-          </Link>
+          {item.link ? (
+            <Link href={item.link} target="_block" className="hover:underline">
+              {item.content}
+            </Link>
+          ) : (
+            item.content
+          )}
         </li>
       ))}
     </ul>

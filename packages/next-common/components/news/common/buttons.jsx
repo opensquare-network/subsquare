@@ -144,11 +144,11 @@ export function EditButton({ api, item, onConfirm }) {
   const dispatch = useDispatch();
   const onSave = async (data) => {
     setLoading(true);
-    const { error } = await nextApi.patch(api, data).finally(() => {
+    const { error, result } = await nextApi.patch(api, data).finally(() => {
       setLoading(false);
     });
     if (!error) {
-      onConfirm();
+      onConfirm(result);
       setOpen(false);
       dispatch(newSuccessToast("Edit changes saved successfully!"));
     } else {
@@ -240,13 +240,17 @@ export function ToTopButton({ items, index, onConfirm }) {
   const getSortItem = () => {
     const newsList = [...items];
     const firstNews = newsList.splice(index, 1);
-    return [...firstNews, ...newsList].map(({ _id }) => _id);
+    return [...firstNews, ...newsList];
   };
 
   const onMove = async () => {
     setLoading(true);
+    const sortItems = getSortItem();
     const { error } = await nextApi
-      .post("eco-news/resort", getSortItem())
+      .post(
+        "eco-news/resort",
+        sortItems.map(({ _id }) => _id),
+      )
       .finally(() => {
         setLoading(false);
       });
@@ -257,7 +261,7 @@ export function ToTopButton({ items, index, onConfirm }) {
       );
     } else {
       setOpen(false);
-      onConfirm();
+      onConfirm(sortItems);
       dispatch(newSuccessToast("Move news to top successfully!"));
     }
   };
@@ -269,7 +273,7 @@ export function ToTopButton({ items, index, onConfirm }) {
         !loading && setOpen(state);
       }}
     >
-      <Popover.Trigger>
+      <Popover.Trigger asChild>
         <Button
           disabled={index === 0}
           size="small"

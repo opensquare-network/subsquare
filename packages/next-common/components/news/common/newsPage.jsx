@@ -1,86 +1,90 @@
 import {
-  EmptyTd,
-  StyledTable,
-  StyledTd,
-  StyledTr,
-} from "next-common/components/styled/table";
-import { Fragment } from "react";
-import Loading from "../../loading";
-import {
   EditButton,
   DeleteButton,
   AddNewsButton,
   ToTopButton,
 } from "./buttons";
 import { useEcoNewsData } from "./hooks";
+import Table from "./table";
 
 export default function NewsPage() {
-  const { items, loading, refresh: getItems } = useEcoNewsData();
+  const { items, loading, refresh: getItems, setItems } = useEcoNewsData();
 
   return (
     <div>
       <div className="overflow-x-auto">
-        <StyledTable>
-          <tbody>
-            {items?.length > 0 ? (
-              items.map((item, index) => (
-                <Fragment key={item._id}>
-                  <StyledTr>
-                    <StyledTd style={{ textAlign: "left", width: 80 }}>
-                      <div className="flex items-center gap-2">
-                        #{index + 1}
-                      </div>
-                    </StyledTd>
-                    <StyledTd onMouseDown={(e) => e.stopPropagation()}>
-                      <div className="max-w-md">
-                        <div className="font-medium text-sm">
-                          {item.content}
-                        </div>
-                      </div>
-                    </StyledTd>
-                    <StyledTd onMouseDown={(e) => e.stopPropagation()}>
-                      <a
-                        href={item.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-theme500 hover:text-theme600 text-sm break-all"
-                      >
-                        {item.link}
-                      </a>
-                    </StyledTd>
-                    <StyledTd
-                      style={{ textAlign: "center", width: 200 }}
-                      onMouseDown={(e) => e.stopPropagation()}
-                    >
-                      <div className="flex gap-1 justify-center">
-                        <ToTopButton
-                          items={items}
-                          index={index}
-                          onConfirm={getItems}
-                        />
-                        <EditButton
-                          api={`eco-news/${item._id}`}
-                          item={item}
-                          onConfirm={getItems}
-                        />
-                        <DeleteButton
-                          api={`eco-news/${item._id}`}
-                          onConfirm={getItems}
-                        />
-                      </div>
-                    </StyledTd>
-                  </StyledTr>
-                </Fragment>
-              ))
-            ) : (
-              <StyledTr>
-                <EmptyTd colSpan="5">
-                  {loading ? <Loading size={16} /> : "No news items found"}
-                </EmptyTd>
-              </StyledTr>
-            )}
-          </tbody>
-        </StyledTable>
+        <Table
+          loading={loading}
+          dataSource={items}
+          columns={[
+            {
+              title: "Order",
+              key: "_id",
+              style: { textAlign: "left", width: 80 },
+              render(a, b, index) {
+                return `#${index + 1}`;
+              },
+            },
+            {
+              title: "Title",
+              key: "content",
+              className: "min-w-[201px]",
+            },
+            {
+              title: "Link",
+              key: "link",
+              render(link) {
+                return link ? (
+                  <a
+                    href={link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-theme500 hover:text-theme600 text-sm break-all"
+                  >
+                    {link}
+                  </a>
+                ) : (
+                  <span className="text-textTertiary">No link</span>
+                );
+              },
+            },
+            {
+              title: "Action",
+              className: "w-[180px] px-0",
+              render(_, item, index) {
+                return (
+                  <>
+                    <ToTopButton
+                      items={items}
+                      index={index}
+                      onConfirm={(data) => {
+                        setItems(data);
+                        getItems();
+                      }}
+                    />
+                    <EditButton
+                      api={`eco-news/${item._id}`}
+                      item={item}
+                      onConfirm={(data) => {
+                        items[index] = data;
+                        setItems([...items]);
+                        getItems();
+                      }}
+                    />
+                    <DeleteButton
+                      api={`eco-news/${item._id}`}
+                      onConfirm={() => {
+                        items.splice(index, 1);
+                        setItems([...items]);
+                        getItems();
+                      }}
+                    />
+                  </>
+                );
+              },
+            },
+          ]}
+        />
       </div>
       <div className="flex flex-col sm:flex-row gap-2 pt-4">
         <AddNewsButton api="eco-news" onConfirm={getItems} />

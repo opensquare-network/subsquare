@@ -85,7 +85,7 @@ export default function EditPopup({
           Submit
         </Button>
         <Button
-          className="border border-neutral400 text-textPrimaryContrast"
+          className="border border-neutral400 text-textPrimary"
           onClick={() => onClose(false)}
           disabled={isLoading}
         >

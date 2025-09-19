@@ -19,8 +19,8 @@ export default function NewsLayout({ children }) {
 
   return (
     <>
-      <div className="bg-neutral100 w-screen h-screen">
-        <main className="max-w-7xl mx-auto bg-neutral100 p-2  space-y-4 text-textPrimary">
+      <div className="bg-neutral100 w-screen h-screen overflow-auto">
+        <main className="max-w-7xl mx-auto bg-neutral100 p-4  space-y-4 text-textPrimary">
           <header className="py-2 space-y-1 flex justify-between items-center">
             <h1 className="text-lg sm:text-xl font-bold">
               <Link href="/">SubSquare News Management</Link>
@@ -46,7 +46,7 @@ export default function NewsLayout({ children }) {
           {isLoggedIn ? (
             children
           ) : (
-            <div className=" flex items-center">
+            <div className="w-full flex items-center">
               <PrimaryButton onClick={ensureLogin}>log in</PrimaryButton>
             </div>
           )}
