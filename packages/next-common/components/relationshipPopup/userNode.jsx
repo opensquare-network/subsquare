@@ -67,6 +67,7 @@ function AddressLabel({ data }) {
     <span onClick={changeSourceAddress}>
       <AddressUser
         add={data?.address || ""}
+        username={data?.username || ""}
         className="flex text14Medium text-textPrimary"
         maxWidth={200}
         showAvatar={false}

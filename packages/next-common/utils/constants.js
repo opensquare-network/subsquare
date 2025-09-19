@@ -189,4 +189,5 @@ export const RELATIONSHIP_NODE_TYPE = {
   Proxy: "Proxy",
   Identity: "Identity",
   Delegation: "Delegation",
+  Transfer: "Transfer",
 };
