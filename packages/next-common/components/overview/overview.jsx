@@ -10,6 +10,7 @@ import PolkadotTreasuryStats from "./polkadotTreasuryStats";
 import { isPolkadotChain, isKusamaChain } from "next-common/utils/chain";
 import KusamaTreasuryStats from "./kusamaTreasuryStats";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import useTotalAssetsBalance from "../../hooks/ecoAssets/hydration/useTotalAssetsBalance";
 
 const MultipleColumnCard = dynamicClientOnly(() =>
   import("./fellowship/multipleColumnCard"),
@@ -31,6 +32,7 @@ function ConditionTreasuryStats() {
 }
 
 export default function Overview() {
+  useTotalAssetsBalance();
   return (
     <div className="space-y-6">
       <AccountInfo />
