@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file.
 
+# 5.4.0
+
+Date:
+2025-09-13. [Code diff](https://github.com/opensquare-network/subsquare/compare/a1113c82465b04faa0ac8e196508d1821a21d967...124ffc47dc551c44dd9d10a1a7c7dfa179c7f24f).
+
+- [Medium] Add decentralized voices page for OpenGov referenda.
+    - A table to show DV delegates participation and win rate, comparison of Aye/Nay/Abstain votes.
+    - A heatmap to show votes of referenda.
+    - Influence to referenda by DV delegations.
+    - Data are divided by DAOs and guardians.
+    - History DV cohorts are shown, and we can see details of history cohort.
+- Show more multisig info on the profile page. If an address is a multisig address, we show its multisigs and its
+  composition as a multisig including signatories and threshold.
+- Assethub migration support
+    - Fix confirmation estimation.
+    - Fix deciding progress percentage calculation.
+    - Fix preparing blocks calculation.
+    - Fix referendum enactment status calculation.
+    - Fix the referenda countdown component status calculation.
+- Add intime-scan package to index on-chain business following the latest block, not finalized block, so we can get the
+  latest on-chain data in fronted without waiting for the block confirmation.
+    - Support preimage latest onchain data indexing and fronted integration.
+    - Support proxy latest onchain data indexing and fronted integration.
+- Add next config headers to fix clickjacking.
+- Support autofocus for the votes popup search input.
+- Refactor more menu related code on the referendum detail page and the discussion post menu to reduce code coupling
+- Fix delegation page with democracy query param.
+- Show component 404 instead of redirecting users to 404 page for evidence detail page.
+- Style fixes and dependencies upgration.
+
 # 5.3.3
 
 Date:

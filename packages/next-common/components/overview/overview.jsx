@@ -11,13 +11,11 @@ import { isPolkadotChain, isKusamaChain } from "next-common/utils/chain";
 import KusamaTreasuryStats from "./kusamaTreasuryStats";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 
+const MultipleColumnCard = dynamicClientOnly(() =>
+  import("./fellowship/multipleColumnCard"),
+);
+
 const AccountInfo = dynamicClientOnly(() => import("./accountInfo"));
-const FellowshipFinanceOverview = dynamicClientOnly(() =>
-  import("./fellowship/finance"),
-);
-const FellowshipApplicationGuide = dynamicClientOnly(() =>
-  import("./fellowship/fellowshipApplicationGuide"),
-);
 
 function ConditionTreasuryStats() {
   const chain = useChain();
@@ -47,17 +45,7 @@ export default function Overview() {
         <ConditionTreasuryStats />
       </WithPallet>
 
-      <WithPallet pallet="fellowshipTreasury">
-        <WithPallet pallet="fellowshipSalary">
-          <FellowshipFinanceOverview />
-        </WithPallet>
-      </WithPallet>
-
-      <WithPallet pallet="fellowshipCore">
-        <CollectivesProvider section="fellowship">
-          <FellowshipApplicationGuide />
-        </CollectivesProvider>
-      </WithPallet>
+      <MultipleColumnCard />
 
       {/* <WithPallet pallet="fellowshipSalary">
         <FellowshipSalaryOverview />

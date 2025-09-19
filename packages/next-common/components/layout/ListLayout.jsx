@@ -49,7 +49,7 @@ export default function ListLayout({
   );
 
   const seoInfo = {
-    title: "Subsquare | " + seoTitle,
+    title: seoInfoProp.rawTitle ?? "Subsquare | " + seoTitle,
     desc: description || seoInfoProp.desc,
   };
 

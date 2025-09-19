@@ -10,26 +10,39 @@ import { useSignerAccount } from "next-common/components/popupWithSigner/context
 import { getRealField } from "next-common/sima/actions/common";
 import { useUploadToIpfs } from "next-common/hooks/useUploadToIpfs";
 
-export default function useBannerSubmission(imageFile, proxyAddress) {
+export default function useBannerSubmission(
+  imageFile,
+  proxyAddress,
+  templateCid,
+) {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const signMessage = useSignMessage();
   const signerAccount = useSignerAccount();
   const { uploading, upload } = useUploadToIpfs();
 
+  const getCid = useCallback(async () => {
+    if (templateCid) {
+      return templateCid;
+    }
+
+    const { error: uploadError, result: uploadResult } = await upload(
+      imageFile,
+      {
+        errorMessage: "Failed to upload image to IPFS",
+      },
+    );
+    if (uploadError) {
+      throw new Error(uploadError.message);
+    }
+    const { cid } = uploadResult;
+    return cid;
+  }, [imageFile, templateCid, upload]);
+
   const setBanner = useCallback(async () => {
     setIsLoading(true);
     try {
-      const { error: uploadError, result: uploadResult } = await upload(
-        imageFile,
-        {
-          errorMessage: "Failed to upload image to IPFS",
-        },
-      );
-      if (uploadError) {
-        throw new Error(uploadError.message);
-      }
-      const { cid } = uploadResult;
+      const cid = await getCid();
 
       const entity = {
         action: "set-profile-banner",
@@ -75,8 +88,7 @@ export default function useBannerSubmission(imageFile, proxyAddress) {
       setIsLoading(false);
     }
   }, [
-    upload,
-    imageFile,
+    getCid,
     proxyAddress,
     signerAccount?.address,
     signerAccount?.meta.source,

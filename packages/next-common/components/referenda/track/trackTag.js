@@ -2,6 +2,15 @@ import { usePageProps } from "next-common/context/page";
 import { startCase } from "lodash-es";
 import { cn } from "next-common/utils";
 
+export function useTrackName(id) {
+  const { tracks } = usePageProps();
+  const track = tracks.find((track) => track.id === id);
+  if (!track) {
+    return null;
+  }
+  return startCase(track.name);
+}
+
 export function useTrackContent(id) {
   const { tracks } = usePageProps();
   const track = tracks.find((track) => track.id === id);

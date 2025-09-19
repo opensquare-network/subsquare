@@ -1,7 +1,6 @@
 import React from "react";
-import { useRouter } from "next/router";
-import Link from "next/link";
 import styled, { css } from "styled-components";
+import LinkItem from "./linkItem";
 
 const Item = styled.span`
   padding: 0 8px;
@@ -35,28 +34,27 @@ export default function PageItem({
   now,
   onPageChange = null,
   shallow = false,
+  buttonMode = false,
 }) {
-  const router = useRouter();
-  const [url, query] = router.asPath.split("?");
-  const urlParams = new URLSearchParams(query);
-  urlParams.set("page", page);
+  const content = (
+    <Item
+      active={now === page}
+      role={buttonMode ? "button" : undefined}
+      onClick={(e) => {
+        onPageChange && onPageChange(e, page);
+      }}
+    >
+      {page}
+    </Item>
+  );
+
+  if (buttonMode) {
+    return content;
+  }
 
   return (
-    <Link
-      shallow={shallow}
-      scroll={!shallow}
-      key={page}
-      href={`${url}?${urlParams}`}
-      passHref
-    >
-      <Item
-        active={now === page}
-        onClick={(e) => {
-          onPageChange && onPageChange(e, page);
-        }}
-      >
-        {page}
-      </Item>
-    </Link>
+    <LinkItem shallow={shallow} page={page} key={page}>
+      {content}
+    </LinkItem>
   );
 }

@@ -3,10 +3,8 @@ import Tooltip from "next-common/components/tooltip";
 import AddressUser from "next-common/components/user/addressUser";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
-import { allNestedVotesSelector } from "next-common/store/reducers/referenda/votes/selectors";
 import { cn, toPrecision } from "next-common/utils";
-import { bnSumBy, bnToPercentage } from "next-common/utils/bn";
-import { useSelector } from "react-redux";
+import { bnToPercentage } from "next-common/utils/bn";
 
 function Container({ children, className = "" }) {
   return (
@@ -25,11 +23,8 @@ function Container({ children, className = "" }) {
   );
 }
 
-export default function DVDelegateCard({ data }) {
+export default function DVDelegateCard({ data, allVotesValue }) {
   const { decimals, symbol } = useChainSettings();
-
-  const allNestedVotes = useSelector(allNestedVotesSelector);
-  const nestedTotalVotesValue = bnSumBy(allNestedVotes, "totalVotes");
 
   const aye = data?.aye;
   const nay = data?.aye === false;
@@ -41,10 +36,7 @@ export default function DVDelegateCard({ data }) {
 
   const user = <AddressUser link="/votes" add={data.account} maxWidth={220} />;
 
-  const percentage = `${bnToPercentage(
-    totalVotes,
-    nestedTotalVotesValue,
-  ).toFixed(2)}%`;
+  const percentage = `${bnToPercentage(totalVotes, allVotesValue).toFixed(2)}%`;
 
   let voteStats;
   if (split) {

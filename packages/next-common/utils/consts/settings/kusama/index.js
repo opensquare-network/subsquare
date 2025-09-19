@@ -38,6 +38,7 @@ const kusama = {
     coretime: true,
     intime: {
       preimage: true,
+      proxy: true,
     },
   },
   postLabels: defaultPostLabels,
