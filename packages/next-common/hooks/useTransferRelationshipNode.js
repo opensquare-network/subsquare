@@ -48,7 +48,7 @@ function createTransferRelationship(rootNode, accounts = [], direction) {
       const { count, volume } = data?.transfer || {};
       return {
         type: RELATIONSHIP_NODE_TYPE.Transfer,
-        name: `${count} ${pluralize("time", count)}`,
+        name: `${count} ${pluralize("transfer", count)}`,
         value: <TransferName volume={volume} />,
         data: data.transfer,
         username: data.username,

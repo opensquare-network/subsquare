@@ -225,18 +225,21 @@ function TransferTipContent({ rawData }) {
           className="flex text12Medium text-white"
         />
         <span>
-          transferred {transfer.count} {pluralize("time", transfer.count)}
+          has {transfer.count} {pluralize("transfer", transfer.count)}
         </span>
-        <DisplayUser
-          id={transfer.to}
-          username={rawData.username}
-          className="flex text12Medium text-white"
-        />
-        <span>total </span>
+        <span className="inline-flex">
+          <DisplayUser
+            id={transfer.to}
+            username={rawData.username}
+            className="flex text12Medium text-white"
+          />
+          ,
+        </span>
         <ValueDisplay
           value={toPrecision(transfer.volume, decimals)}
           symbol={symbol}
         />
+        <span>in total</span>
       </div>
     </div>
   );
