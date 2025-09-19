@@ -5,6 +5,10 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 /** @type {import('next').NextConfig} */
 const config = {
   transpilePackages: ["next-common", "@osn/icons", "@osn/react-cmdk"],
+  experimental: {
+    asyncWebAssembly: true,
+    layers: true,
+  },
   modularizeImports: {
     "@osn/icons/subsquare": {
       transform: "@osn/icons/subsquare/{{member}}",
@@ -27,6 +31,17 @@ const config = {
     ];
   },
   webpack(config, { dev }) {
+    config.experiments = {
+      ...config.experiments,
+      asyncWebAssembly: true,
+      layers: true,
+    };
+
+    config.module.rules.push({
+      test: /\.wasm$/,
+      type: "webassembly/async",
+    });
+
     // Treat warnings as errors if we're not in development.
     if (!dev) {
       config.optimization.minimizer = config.optimization.minimizer || [];

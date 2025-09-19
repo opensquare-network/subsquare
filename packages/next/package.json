@@ -10,6 +10,8 @@
     "lint": "next lint --dir ."
   },
   "dependencies": {
+    "@galacticcouncil/api-augment": "^0.8.1",
+    "@galacticcouncil/sdk": "^9.16.0",
     "@next/env": "^13.3.0",
     "@osn/icons": "^1.230.0",
     "@svgr/webpack": "^7.0.0",
