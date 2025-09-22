@@ -1,15 +1,17 @@
-import Toast from "next-common/components/toast";
-import Button from "next-common/lib/button";
-import { useUser } from "next-common/context/user";
-import { useIsLoggedIn } from "next-common/context/user";
 import Link from "next/link";
-import { logoutUser } from "next-common/context/user";
-import HeaderAccount from "next-common/components/header/headerAccount";
-import CookiesConsent from "next-common/components/cookiesConsent";
-import LoginGlobalPopup from "next-common/components/login/globalPopup";
-import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
-import { useUserContext } from "next-common/context/user";
+import {
+  logoutUser,
+  useUser,
+  useIsLoggedIn,
+  useUserContext,
+} from "next-common/context/user";
+import Button from "next-common/lib/button";
+import Toast from "next-common/components/toast";
 import PrimaryButton from "next-common/lib/button/primary";
+import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
+import CookiesConsent from "next-common/components/cookiesConsent";
+import HeaderAccount from "next-common/components/header/headerAccount";
+import LoginGlobalPopup from "next-common/components/login/globalPopup";
 
 export default function NewsLayout({ children }) {
   const userContext = useUserContext();

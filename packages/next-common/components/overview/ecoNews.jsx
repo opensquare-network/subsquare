@@ -1,19 +1,25 @@
-import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
-import nextApi from "next-common/services/nextApi";
 import Link from "next/link";
-import { useState, useRef, useEffect, useCallback } from "react";
-import { SystemPlus } from "@osn/icons/subsquare";
-import EditPopup from "../news/common/editPopup";
 import { useDispatch } from "react-redux";
+import { useAnimate } from "framer-motion";
+import { SystemPlus } from "@osn/icons/subsquare";
+import { useState, useRef, useEffect, useCallback } from "react";
 import {
   newSuccessToast,
   newErrorToast,
 } from "next-common/store/reducers/toastSlice";
+import nextApi from "next-common/services/nextApi";
+import NoData from "next-common/components/noData";
+import Loading from "next-common/components/loading";
+import Tooltip from "next-common/components/tooltip";
 import { useChainSettings } from "next-common/context/chain";
-import Loading from "../loading";
-import { useEcoNewsData } from "../news/common/hooks";
-import NoData from "../noData";
-import { useAnimate } from "framer-motion";
+import Bar from "next-common/components/fellowship/feeds/bar";
+import EditPopup from "next-common/components/news/common/editPopup";
+import { useEcoNewsData } from "next-common/components/news/common/hooks";
+import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
+
+const LINE_HEIGHT = 20;
+const ITEM_GAP = 0;
+const ITEM_PADDING = 20;
 
 export default function EcoNews(props) {
   const { ecoNews } = useChainSettings();
@@ -22,10 +28,6 @@ export default function EcoNews(props) {
   }
   return <EcoNewsImpl {...props} />;
 }
-
-const LINE_HEIGHT = 20;
-const ITEM_GAP = 0;
-const ITEM_PADDING = 20;
 
 function EcoNewsImpl({ className, showItem = 5, lineClamp = 1, step = 1 }) {
   const { items, loading, setItems } = useEcoNewsData();
@@ -99,9 +101,6 @@ function EcoNewsImpl({ className, showItem = 5, lineClamp = 1, step = 1 }) {
     </div>
   );
 }
-
-import Bar from "next-common/components/fellowship/feeds/bar";
-import Tooltip from "../tooltip";
 
 function NewsList({ list, lineClamp }) {
   if (!list?.length) {

@@ -4,8 +4,8 @@ import {
   AddNewsButton,
   ToTopButton,
 } from "./buttons";
-import { useEcoNewsData } from "./hooks";
 import Table from "./table";
+import { useEcoNewsData } from "./hooks";
 
 export default function NewsPage() {
   const { items, loading, refresh: getItems, setItems } = useEcoNewsData();

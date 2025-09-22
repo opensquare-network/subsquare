@@ -1,21 +1,20 @@
-import { PopupButtonWrapper } from "next-common/components/popup/wrapper";
-import Popup from "next-common/components/popup/wrapper/Popup";
-import ErrorMessage from "next-common/components/styled/errorMessage";
-import { StatusWrapper } from "next-common/components/popup/styled";
-import { useState } from "react";
-import DangerButton from "next-common/lib/button/danger";
-import PrimaryButton from "next-common/lib/button/primary";
-import Button from "next-common/lib/button";
 import EditPopup from "./editPopup";
-import { useCallback } from "react";
+import { cn } from "next-common/utils";
 import { useDispatch } from "react-redux";
+import Button from "next-common/lib/button";
+import { useCallback, useState } from "react";
+import * as Popover from "@radix-ui/react-popover";
 import nextApi from "next-common/services/nextApi";
 import {
   newSuccessToast,
   newErrorToast,
 } from "next-common/store/reducers/toastSlice";
-import { cn } from "next-common/utils";
-import * as Popover from "@radix-ui/react-popover";
+import DangerButton from "next-common/lib/button/danger";
+import PrimaryButton from "next-common/lib/button/primary";
+import Popup from "next-common/components/popup/wrapper/Popup";
+import { StatusWrapper } from "next-common/components/popup/styled";
+import ErrorMessage from "next-common/components/styled/errorMessage";
+import { PopupButtonWrapper } from "next-common/components/popup/wrapper";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
 
 export function DeleteButton({ api, onConfirm }) {

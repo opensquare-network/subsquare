@@ -3,11 +3,11 @@ import {
   StyledTable,
   StyledTr,
 } from "next-common/components/styled/table";
-import { Fragment, useMemo, useCallback } from "react";
-import Loading from "next-common/components/loading";
 import { cn } from "next-common/utils";
 import { isFunction } from "lodash-es";
 import NoData from "next-common/components/noData";
+import Loading from "next-common/components/loading";
+import { Fragment, useMemo, useCallback } from "react";
 
 const getStyle = (color, item, index) => {
   if (isFunction(color)) {
@@ -63,7 +63,7 @@ export default function Table({
       )}
       <tbody>
         {dataSource?.length > 0 ? (
-          dataSource.map((item, index) => (
+          dataSource?.map((item, index) => (
             <Fragment key={item[rowKey] || index}>
               <tr
                 className={cn(

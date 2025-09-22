@@ -1,9 +1,9 @@
 import { useMemo } from "react";
 import TabsList from "../tabs/list";
+import { useRouter } from "next/router";
+import NewsPage from "./common/newsPage";
 import NewsLayout from "./common/newsLayout";
 import ReviewNewsListPage from "./common/reviewNewsListPage";
-import NewsPage from "./common/newsPage";
-import { useRouter } from "next/router";
 
 export default function NewsManagementPage() {
   const router = useRouter();
