@@ -86,7 +86,7 @@ function BatchTransferContent() {
         transfers.map((transfer) =>
           api.tx.balances?.transferKeepAlive(
             transfer.targetAddress,
-            transfer.transferAmount,
+            BigNumber(transfer.transferAmount).times(Math.pow(10, decimals)),
           ),
         ),
       );
