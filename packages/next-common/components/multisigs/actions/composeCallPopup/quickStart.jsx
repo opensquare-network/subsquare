@@ -35,7 +35,7 @@ export default function QuickStart() {
         }}
       />
       <ChoiceButton
-        description="Builds a call to add a proxy with a given type and delay"
+        description="Builds a call to add a proxy with type"
         icon={<SystemNewProposal className="text-textTertiary" />}
         buttonSuffix="Add Proxy"
         onClick={() => {
@@ -46,7 +46,7 @@ export default function QuickStart() {
         }}
       />
       <ChoiceButton
-        description="Builds a call to remove a proxy with a given type and delay"
+        description="Builds a call to remove a proxy with type"
         icon={<SystemNewProposal className="text-textTertiary" />}
         buttonSuffix="Remove Proxy"
         onClick={() => {
