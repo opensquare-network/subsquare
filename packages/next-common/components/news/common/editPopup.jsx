@@ -54,13 +54,18 @@ export default function EditPopup({
           <label htmlFor="title" className="text-sm font-medium">
             Title
           </label>
-          <Input
-            max={150}
-            id="title"
-            value={formData.content}
-            onChange={(e) => handleInputChange("content", e.target.value)}
-            placeholder="Enter news title (max 150 characters)"
-          />
+          <div>
+            <Input
+              maxLength={150}
+              id="title"
+              value={formData.content}
+              onChange={(e) => handleInputChange("content", e.target.value)}
+              placeholder="Enter news title "
+            />
+            <div className="text-end text12Normal text-xs text-textDisabled pt-0.5">
+              {formData?.content?.length || 0} / 150
+            </div>
+          </div>
         </div>
         <div className="flex flex-col space-y-2">
           <label htmlFor="link" className="text-sm font-medium">

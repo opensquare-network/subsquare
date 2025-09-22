@@ -2,23 +2,23 @@ import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { useAnimate } from "framer-motion";
 import { SystemPlus } from "@osn/icons/subsquare";
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import {
   newSuccessToast,
   newErrorToast,
 } from "next-common/store/reducers/toastSlice";
 import nextApi from "next-common/services/nextApi";
-import NoData from "next-common/components/noData";
 import Tooltip from "next-common/components/tooltip";
 import { useChainSettings } from "next-common/context/chain";
 import Bar from "next-common/components/fellowship/feeds/bar";
 import EditPopup from "next-common/components/news/common/editPopup";
 import { useEcoNewsData } from "next-common/components/news/common/hooks";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
+import { useWindowSize } from "react-use";
 
 const LINE_HEIGHT = 20;
-const ITEM_GAP = 0;
 const ITEM_PADDING = 20;
+const SHOW_TOTAL = 5;
 
 export default function EcoNews(props) {
   const { ecoNews } = useChainSettings();
@@ -29,7 +29,7 @@ export default function EcoNews(props) {
   return <EcoNewsImpl {...props} />;
 }
 
-function EcoNewsImpl({ className, showItem = 5, lineClamp = 1, step = 1 }) {
+function EcoNewsImpl({ className }) {
   const { items, setItems } = useEcoNewsData();
 
   if (!items?.length) {
@@ -43,25 +43,26 @@ function EcoNewsImpl({ className, showItem = 5, lineClamp = 1, step = 1 }) {
         <AddNews />
       </TitleContainer>
       <div className="p-6 bg-neutral100 shadow-100 border border-neutral300 rounded-xl overflow-hidden">
-        <EcoNewsScroll
-          showItem={showItem}
-          lineClamp={lineClamp}
-          step={step}
-          items={items}
-          setItems={setItems}
-        />
+        <EcoNewsScroll items={items} setItems={setItems} />
       </div>
     </div>
   );
 }
 
-function EcoNewsScroll({ showItem, lineClamp, step, items, setItems }) {
-  const needScroll = showItem < items.length;
+function EcoNewsScroll({ items, setItems }) {
+  const needScroll = SHOW_TOTAL < items.length;
   const [containerRef, animate] = useAnimate();
   const pauseRef = useRef(false);
+  const { width } = useWindowSize();
+  const itemHeight = useMemo(() => {
+    if (width < 768) {
+      return LINE_HEIGHT * 2 + ITEM_PADDING;
+    }
+    return LINE_HEIGHT + ITEM_PADDING;
+  }, [width]);
+
   const animateHandle = useCallback(() => {
-    const marginTop =
-      (lineClamp * LINE_HEIGHT + ITEM_PADDING + ITEM_GAP) * step;
+    const marginTop = itemHeight;
     Promise.all([
       animate(
         "&>:first-child",
@@ -83,82 +84,65 @@ function EcoNewsScroll({ showItem, lineClamp, step, items, setItems }) {
       .then(() => {
         animate("&>:first-child", { marginTop: "0px" }, { duration: 0 });
       });
-  }, [animate, lineClamp, setItems, step]);
+  }, [animate, itemHeight, setItems]);
 
   useEffect(() => {
     const interval = setInterval(() => {
       if (pauseRef.current) return;
       if (!containerRef.current || !containerRef.current.firstChild) return;
-      if (items?.length <= showItem) return;
+      if (!needScroll) return;
       animateHandle();
     }, 3000);
     return () => clearInterval(interval);
-  }, [animateHandle, containerRef, items?.length, showItem, step]);
+  }, [animateHandle, containerRef, items.length, needScroll]);
 
   return (
     <div
       ref={containerRef}
       className="h-full overflow-hidden scroll-list"
       style={{
-        height: needScroll
-          ? showItem * (LINE_HEIGHT + ITEM_PADDING) * lineClamp +
-            ITEM_GAP * (showItem - 1)
-          : "auto",
+        height: needScroll ? SHOW_TOTAL * itemHeight : "auto",
       }}
       onMouseEnter={() => (pauseRef.current = true)}
       onMouseLeave={() => (pauseRef.current = false)}
     >
-      <NewsList list={items} lineClamp={lineClamp} />
-    </div>
-  );
-}
-
-function NewsList({ list, lineClamp }) {
-  if (!list?.length) {
-    return <NoData text="No news data" />;
-  }
-
-  return (
-    <ul className="text14Medium text-textPrimary ">
-      {list?.map((item, index) => (
-        <li
-          key={index}
-          className="flex items-center rounded-md"
-          style={{
-            height: lineClamp * LINE_HEIGHT + ITEM_PADDING,
-          }}
-        >
-          <div
-            className={"inline-flex flex-col mr-4"}
+      <ul className="text14Medium text-textPrimary ">
+        {items?.map((item, index) => (
+          <li
+            key={index}
+            className="flex items-center rounded-md"
             style={{
-              height: lineClamp * LINE_HEIGHT + ITEM_PADDING,
+              height: itemHeight,
             }}
           >
-            <Bar />
-
-            <div className="w-3 h-5 flex items-center">
-              <div className="w-3 h-3 border-[3px] border-theme500 rounded-full" />
+            <div className={"inline-flex flex-col mr-4 h-full"}>
+              <Bar />
+              <div className="w-3 h-5 flex items-center">
+                <div className="w-3 h-3 border-[3px] border-theme500 rounded-full" />
+              </div>
+              <Bar />
             </div>
-
-            <Bar />
-          </div>
-          {item.link ? (
-            <Link
-              className={`line-clamp-${lineClamp} hover:underline`}
-              title={item.content}
-              href={item.link}
-              target="_block"
-            >
-              {item.content}
-            </Link>
-          ) : (
-            <p className={`line-clamp-${lineClamp}`} title={item.content}>
-              {item.content}
-            </p>
-          )}
-        </li>
-      ))}
-    </ul>
+            {item.link ? (
+              <Link
+                className={"sm:line-clamp-1 line-clamp-2 hover:underline"}
+                title={item.content}
+                href={item.link}
+                target="_block"
+              >
+                {item.content}
+              </Link>
+            ) : (
+              <p
+                className={"sm:line-clamp-1 line-clamp-2"}
+                title={item.content}
+              >
+                {item.content}
+              </p>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
 
