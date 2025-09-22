@@ -70,6 +70,19 @@ function BatchTransferContent() {
         return;
       }
 
+      const transferTxs = transfers.map((transfer) => {
+        const amount = checkTransferAmount({
+          transferAmount: transfer.transferAmount,
+          decimals,
+          transferrable: balance?.transferrable,
+        });
+
+        return api.tx.balances?.transferKeepAlive(
+          transfer.targetAddress,
+          amount,
+        );
+      });
+
       const totalTransferAmount = transfers.reduce((sum, transfer) => {
         if (!transfer.transferAmount) return sum;
         const amount = new BigNumber(transfer.transferAmount);
@@ -82,16 +95,7 @@ function BatchTransferContent() {
         transferrable: balance?.transferrable,
       });
 
-      return api.tx.utility.batchAll(
-        transfers.map((transfer) =>
-          api.tx.balances?.transferKeepAlive(
-            transfer.targetAddress,
-            BigNumber(transfer.transferAmount)
-              .times(Math.pow(10, decimals))
-              .toNumber(),
-          ),
-        ),
-      );
+      return api.tx.utility.batchAll(transferTxs);
     },
     [api, transfers, balance, decimals],
   );
