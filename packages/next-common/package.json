@@ -81,7 +81,7 @@
     "tailwind-merge": "^1.14.0",
     "tailwind-styled-components": "^2.2.0",
     "viem": "^2.16.1",
-    "wagmi": "^2.14.16"
+    "wagmi": "^2.17.1"
   },
   "devDependencies": {
     "@osn/eslint-config": "^1.0.2",
