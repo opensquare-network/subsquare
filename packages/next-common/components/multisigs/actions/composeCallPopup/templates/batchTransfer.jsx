@@ -14,15 +14,11 @@ import { useChainSettings } from "next-common/context/chain";
 import { useStepContainer } from "next-common/context/stepContainer";
 import { useTxBuilder } from "next-common/hooks/useTxBuilder";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { noop, random } from "lodash-es";
+import { noop } from "lodash-es";
 import BigNumber from "bignumber.js";
 import { checkTransferAmount } from "next-common/utils/checkTransferAmount";
 import MultisigPopupWrapper from "../multisigPopupWraper";
 import { useMultisigBalance } from "../context";
-
-function generateKey() {
-  return random();
-}
 
 function BatchTransferContent() {
   const { balance } = useMultisigBalance();
@@ -33,7 +29,7 @@ function BatchTransferContent() {
   const [transfers, setTransfers] = useState([]);
 
   useEffect(() => {
-    setTransfers([{ key: generateKey() }]);
+    setTransfers([{}]);
   }, []);
 
   const transferAddresses = useMemo(() => {
@@ -41,7 +37,7 @@ function BatchTransferContent() {
   }, [transfers]);
 
   const onAddTransfer = useCallback(() => {
-    setTransfers((prev) => [...prev, { key: generateKey() }]);
+    setTransfers((prev) => [...prev, {}]);
   }, []);
 
   const onRemoveTransfer = useCallback(() => {
@@ -111,7 +107,6 @@ function BatchTransferContent() {
       <IndentPanel className="flex flex-col gap-y-4">
         {transfers.map((transfer, index) => (
           <IndentPanel key={index} className="flex flex-col gap-y-4">
-            <span className="text-textSecondary">#{index + 1}</span>
             <TransferField
               extensionAccounts={extensionAccounts.filter(
                 (account) =>
