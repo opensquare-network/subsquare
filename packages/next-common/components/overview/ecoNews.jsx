@@ -24,8 +24,8 @@ export default function EcoNews(props) {
 }
 
 const LINE_HEIGHT = 20;
-const ITEM_GAP = 4;
-const ITEM_PADDING = 18;
+const ITEM_GAP = 0;
+const ITEM_PADDING = 20;
 
 function EcoNewsImpl({ className, showItem = 5, lineClamp = 1, step = 1 }) {
   const { items, loading, setItems } = useEcoNewsData();
@@ -100,24 +100,39 @@ function EcoNewsImpl({ className, showItem = 5, lineClamp = 1, step = 1 }) {
   );
 }
 
+import Bar from "next-common/components/fellowship/feeds/bar";
+import Tooltip from "../tooltip";
+
 function NewsList({ list, lineClamp }) {
   if (!list?.length) {
     return <NoData text="No news data" />;
   }
 
   return (
-    <ul className="text14Medium text-textPrimary space-y-1">
+    <ul className="text14Medium text-textPrimary ">
       {list?.map((item, index) => (
         <li
           key={index}
           className="flex items-center rounded-md"
           style={{
-            padding: `${ITEM_PADDING / 2}px 16px`,
             height: lineClamp * LINE_HEIGHT + ITEM_PADDING,
           }}
         >
+          <div
+            className={"inline-flex flex-col mr-4"}
+            style={{
+              height: lineClamp * LINE_HEIGHT + ITEM_PADDING,
+            }}
+          >
+            <Bar />
+
+            <div className="w-3 h-5 flex items-center">
+              <div className="w-3 h-3 border-[3px] border-theme500 rounded-full" />
+            </div>
+
+            <Bar />
+          </div>
           <p className={`line-clamp-${lineClamp}`} title={item.content}>
-            <span className="mr-2 mt-1 ">•</span>
             {item.link ? (
               <Link
                 href={item.link}
@@ -161,12 +176,14 @@ function AddNews() {
   };
   return (
     <>
-      <button
-        className=" rounded-full bg-neutral500  text-textPrimaryContrast"
-        onClick={() => setOpen(true)}
-      >
-        <SystemPlus className="w-3 h-3" />
-      </button>
+      <Tooltip content="Report">
+        <button
+          className=" rounded-full bg-neutral500  text-textPrimaryContrast"
+          onClick={() => setOpen(true)}
+        >
+          <SystemPlus className="w-3 h-3" />
+        </button>
+      </Tooltip>
       {open && (
         <EditPopup
           title="Add News"
