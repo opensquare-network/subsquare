@@ -43,7 +43,7 @@ function RemoveProxyContent() {
         return;
       }
 
-      return api.tx.proxy.addProxy(proxyAccount, proxyType, delay);
+      return api.tx.proxy.removeProxy(proxyAccount, proxyType, delay);
     },
     [api, address, proxyType, proxyAccount, delay],
   );
