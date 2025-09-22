@@ -10,6 +10,8 @@ import PolkadotTreasuryStats from "./polkadotTreasuryStats";
 import { isPolkadotChain, isKusamaChain } from "next-common/utils/chain";
 import KusamaTreasuryStats from "./kusamaTreasuryStats";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import OnlyChain from "next-common/components/common/onlyChain";
+import Chains from "next-common/utils/consts/chains";
 import EcoNews from "./ecoNews";
 
 const MultipleColumnCard = dynamicClientOnly(() =>
@@ -47,7 +49,9 @@ export default function Overview() {
         <ConditionTreasuryStats />
       </WithPallet>
 
-      <MultipleColumnCard />
+      <OnlyChain chain={Chains.collectives}>
+        <MultipleColumnCard />
+      </OnlyChain>
 
       {/* <WithPallet pallet="fellowshipSalary">
         <FellowshipSalaryOverview />
