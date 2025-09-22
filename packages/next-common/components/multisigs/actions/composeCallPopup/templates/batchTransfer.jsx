@@ -13,7 +13,7 @@ import { useContextApi } from "next-common/context/api";
 import { useChainSettings } from "next-common/context/chain";
 import { useStepContainer } from "next-common/context/stepContainer";
 import { useTxBuilder } from "next-common/hooks/useTxBuilder";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { noop, random } from "lodash-es";
 import BigNumber from "bignumber.js";
 import { checkTransferAmount } from "next-common/utils/checkTransferAmount";
@@ -35,6 +35,10 @@ function BatchTransferContent() {
   useEffect(() => {
     setTransfers([{ key: generateKey() }]);
   }, []);
+
+  const transferAddresses = useMemo(() => {
+    return transfers.map((transfer) => transfer.targetAddress);
+  }, [transfers]);
 
   const onAddTransfer = useCallback(() => {
     setTransfers((prev) => [...prev, { key: generateKey() }]);
@@ -109,7 +113,11 @@ function BatchTransferContent() {
           <IndentPanel key={index} className="flex flex-col gap-y-4">
             <span className="text-textSecondary">#{index + 1}</span>
             <TransferField
-              extensionAccounts={extensionAccounts}
+              extensionAccounts={extensionAccounts.filter(
+                (account) =>
+                  !transferAddresses.includes(account.address) ||
+                  account.address === transfer.targetAddress,
+              )}
               onTransferChange={(transfer) => onTransferChange(transfer, index)}
             />
           </IndentPanel>
