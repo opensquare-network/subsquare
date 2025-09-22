@@ -54,13 +54,12 @@ export default function EditPopup({
           <label htmlFor="title" className="text-sm font-medium">
             Title
           </label>
-          <textarea
+          <Input
+            max={150}
             id="title"
             value={formData.content}
             onChange={(e) => handleInputChange("content", e.target.value)}
-            placeholder="Enter news title"
-            className="border text14Medium border-neutral400 hover:border-neutral500 px-4 py-3 rounded focus:border-neutral500 outline-none bg-neutral100 placeholder:text-textDisabled"
-            rows={3}
+            placeholder="Enter news title (max 150 characters)"
           />
         </div>
         <div className="flex flex-col space-y-2">

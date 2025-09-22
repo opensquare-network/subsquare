@@ -9,7 +9,6 @@ import {
 } from "next-common/store/reducers/toastSlice";
 import nextApi from "next-common/services/nextApi";
 import NoData from "next-common/components/noData";
-import Loading from "next-common/components/loading";
 import Tooltip from "next-common/components/tooltip";
 import { useChainSettings } from "next-common/context/chain";
 import Bar from "next-common/components/fellowship/feeds/bar";
@@ -23,6 +22,7 @@ const ITEM_PADDING = 20;
 
 export default function EcoNews(props) {
   const { ecoNews } = useChainSettings();
+
   if (!ecoNews) {
     return null;
   }
@@ -30,7 +30,32 @@ export default function EcoNews(props) {
 }
 
 function EcoNewsImpl({ className, showItem = 5, lineClamp = 1, step = 1 }) {
-  const { items, loading, setItems } = useEcoNewsData();
+  const { items, setItems } = useEcoNewsData();
+
+  if (!items?.length) {
+    return null;
+  }
+
+  return (
+    <div className={className}>
+      <TitleContainer className="flex justify-start mb-4 gap-1">
+        Eco News
+        <AddNews />
+      </TitleContainer>
+      <div className="p-6 bg-neutral100 shadow-100 border border-neutral300 rounded-xl overflow-hidden">
+        <EcoNewsScroll
+          showItem={showItem}
+          lineClamp={lineClamp}
+          step={step}
+          items={items}
+          setItems={setItems}
+        />
+      </div>
+    </div>
+  );
+}
+
+function EcoNewsScroll({ showItem, lineClamp, step, items, setItems }) {
   const needScroll = showItem < items.length;
   const [containerRef, animate] = useAnimate();
   const pauseRef = useRef(false);
@@ -64,40 +89,26 @@ function EcoNewsImpl({ className, showItem = 5, lineClamp = 1, step = 1 }) {
     const interval = setInterval(() => {
       if (pauseRef.current) return;
       if (!containerRef.current || !containerRef.current.firstChild) return;
-      if (items?.length <= showItem + step) return;
+      if (items?.length <= showItem) return;
       animateHandle();
     }, 3000);
     return () => clearInterval(interval);
   }, [animateHandle, containerRef, items?.length, showItem, step]);
 
   return (
-    <div className={className}>
-      <TitleContainer className="flex justify-start mb-4 gap-1">
-        Eco News
-        <AddNews />
-      </TitleContainer>
-      <div className="p-6 bg-neutral100 shadow-100 border border-neutral300 rounded-xl overflow-hidden">
-        <div
-          ref={containerRef}
-          className="h-full overflow-hidden scroll-list"
-          style={{
-            height: needScroll
-              ? showItem * (LINE_HEIGHT + ITEM_PADDING) * lineClamp +
-                ITEM_GAP * (showItem - 1)
-              : "auto",
-          }}
-          onMouseEnter={() => (pauseRef.current = true)}
-          onMouseLeave={() => (pauseRef.current = false)}
-        >
-          {loading ? (
-            <div className="h-full flex items-center justify-center">
-              <Loading size={24} />
-            </div>
-          ) : (
-            <NewsList list={items} lineClamp={lineClamp} />
-          )}
-        </div>
-      </div>
+    <div
+      ref={containerRef}
+      className="h-full overflow-hidden scroll-list"
+      style={{
+        height: needScroll
+          ? showItem * (LINE_HEIGHT + ITEM_PADDING) * lineClamp +
+            ITEM_GAP * (showItem - 1)
+          : "auto",
+      }}
+      onMouseEnter={() => (pauseRef.current = true)}
+      onMouseLeave={() => (pauseRef.current = false)}
+    >
+      <NewsList list={items} lineClamp={lineClamp} />
     </div>
   );
 }
@@ -131,19 +142,20 @@ function NewsList({ list, lineClamp }) {
 
             <Bar />
           </div>
-          <p className={`line-clamp-${lineClamp}`} title={item.content}>
-            {item.link ? (
-              <Link
-                href={item.link}
-                target="_block"
-                className="hover:underline"
-              >
-                {item.content}
-              </Link>
-            ) : (
-              item.content
-            )}
-          </p>
+          {item.link ? (
+            <Link
+              className={`line-clamp-${lineClamp} hover:underline`}
+              title={item.content}
+              href={item.link}
+              target="_block"
+            >
+              {item.content}
+            </Link>
+          ) : (
+            <p className={`line-clamp-${lineClamp}`} title={item.content}>
+              {item.content}
+            </p>
+          )}
         </li>
       ))}
     </ul>
@@ -175,7 +187,7 @@ function AddNews() {
   };
   return (
     <>
-      <Tooltip content="Report">
+      <Tooltip content="Report" className="flex items-center">
         <button
           className=" rounded-full bg-neutral500  text-textPrimaryContrast"
           onClick={() => setOpen(true)}

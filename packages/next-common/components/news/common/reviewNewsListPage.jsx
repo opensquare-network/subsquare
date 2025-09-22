@@ -5,6 +5,7 @@ import {
   AddNewsButton,
 } from "./buttons";
 import { useEcoNewsReviewData } from "./hooks";
+import { AddressUser } from "next-common/components/user";
 import Table from "./table";
 
 export default function ReviewNewsListPage() {
@@ -56,6 +57,11 @@ export default function ReviewNewsListPage() {
             {
               title: "Proposer",
               key: "proposer",
+              render(proposer) {
+                return (
+                  proposer?.address && <AddressUser add={proposer.address} />
+                );
+              },
             },
             {
               title: "Action",
