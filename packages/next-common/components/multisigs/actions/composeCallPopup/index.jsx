@@ -5,7 +5,7 @@ import {
   useStepContainer,
   StepContainerProvider,
 } from "next-common/context/stepContainer";
-import QuickStart from "./quickStart";
+import TemplateSelections from "./templateSelections";
 
 export default function ComposeCallPopup({ onClose, multisig }) {
   return (
@@ -14,7 +14,7 @@ export default function ComposeCallPopup({ onClose, multisig }) {
         list={[
           {
             title: "New Multisig",
-            component: QuickStart,
+            component: TemplateSelections,
           },
         ]}
       >

@@ -8,7 +8,7 @@ import RemoveProxy from "./templates/removeProxy";
 import { useStepContainer } from "next-common/context/stepContainer";
 import ComposeCallPopupImpl from "./composeCall";
 
-export default function QuickStart() {
+export function QuickStart() {
   const { goNext } = useStepContainer();
   return (
     <>
@@ -56,17 +56,24 @@ export default function QuickStart() {
           });
         }}
       />
-      <ChoiceButton
-        description="Allows building any Propose call manually."
-        icon={<SystemNewProposal className="text-textTertiary" />}
-        buttonSuffix="Propose Call"
-        onClick={() => {
-          goNext({
-            title: "Propose Call",
-            component: ComposeCallPopupImpl,
-          });
-        }}
-      />
     </>
+  );
+}
+
+export function ComposeCallSelection() {
+  const { goNext } = useStepContainer();
+
+  return (
+    <ChoiceButton
+      description="Allows building any Propose call manually."
+      icon={<SystemNewProposal className="text-textTertiary" />}
+      buttonSuffix="Propose Call"
+      onClick={() => {
+        goNext({
+          title: "Propose Call",
+          component: ComposeCallPopupImpl,
+        });
+      }}
+    />
   );
 }
