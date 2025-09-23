@@ -29,7 +29,7 @@ function RemoveProxyContent() {
 
     try {
       const jsonData = result?.toJSON();
-      const list = jsonData[0];
+      const list = jsonData?.[0] || [];
       setDataList(list);
     } catch (error) {
       console.error(error);
