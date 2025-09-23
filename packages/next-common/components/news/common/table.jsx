@@ -73,9 +73,9 @@ export default function Table({
               onClick={(e) => handleRowClick(item, index, e)}
               style={getStyle(onRow?.style, item, index)}
             >
-              {columns.map((column) => (
+              {columns.map((column, index) => (
                 <TableTd
-                  key={column.key || column.dataIndex}
+                  key={column.key || column.dataIndex || index}
                   data={item}
                   config={column}
                   index={index}

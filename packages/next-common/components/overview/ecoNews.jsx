@@ -30,7 +30,7 @@ export default function EcoNews(props) {
 }
 
 function EcoNewsImpl({ className }) {
-  const { items, setItems } = useEcoNewsData();
+  const { items } = useEcoNewsData();
 
   if (!items?.length) {
     return null;
@@ -43,14 +43,15 @@ function EcoNewsImpl({ className }) {
         <AddNews />
       </TitleContainer>
       <div className="p-6 bg-neutral100 shadow-100 border border-neutral300 rounded-xl overflow-hidden">
-        <EcoNewsScroll items={items} setItems={setItems} />
+        <EcoNewsScroll data={items} />
       </div>
     </div>
   );
 }
 
-function EcoNewsScroll({ items, setItems }) {
-  const needScroll = SHOW_TOTAL < items.length;
+function EcoNewsScroll({ data }) {
+  const [list, setList] = useState(data);
+  const needScroll = SHOW_TOTAL < list.length;
   const [containerRef, animate] = useAnimate();
   const pauseRef = useRef(false);
   const { width } = useWindowSize();
@@ -73,7 +74,7 @@ function EcoNewsScroll({ items, setItems }) {
       ),
     ])
       .then(() => {
-        setItems((prev) => {
+        setList((prev) => {
           if (prev?.length < 1) {
             return prev;
           }
@@ -84,7 +85,7 @@ function EcoNewsScroll({ items, setItems }) {
       .then(() => {
         animate("&>:first-child", { marginTop: "0px" }, { duration: 0 });
       });
-  }, [animate, itemHeight, setItems]);
+  }, [animate, itemHeight, setList]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -94,7 +95,7 @@ function EcoNewsScroll({ items, setItems }) {
       animateHandle();
     }, 3000);
     return () => clearInterval(interval);
-  }, [animateHandle, containerRef, items.length, needScroll]);
+  }, [animateHandle, containerRef, list.length, needScroll]);
 
   return (
     <div
@@ -107,7 +108,7 @@ function EcoNewsScroll({ items, setItems }) {
       onMouseLeave={() => (pauseRef.current = false)}
     >
       <ul className="text14Medium text-textPrimary ">
-        {items?.map((item, index) => (
+        {list?.map((item, index) => (
           <li
             key={index}
             className="flex items-center rounded-md"
