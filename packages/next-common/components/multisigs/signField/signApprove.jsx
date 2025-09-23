@@ -1,14 +1,6 @@
 import { SystemSignature } from "@osn/icons/subsquare";
 import styled, { css } from "styled-components";
-import { useContextApi } from "next-common/context/api";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useCallback, useEffect, useState } from "react";
-import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
 import Tooltip from "next-common/components/tooltip";
-import { useChainSettings } from "next-common/context/chain";
-import { sortAddresses } from "@polkadot/util-crypto";
-import { isSameAddress } from "next-common/utils";
-import { useMultisigListFetchFunc } from "../actions/composeCallPopup/fetchMultisigList";
 import { useSignApprovePopup } from "../context/signApprovePopupContext";
 
 export const Wrapper = styled.div`
@@ -36,70 +28,15 @@ export const Wrapper = styled.div`
 `;
 
 export default function SignApprove({ multisig = {} }) {
-  const api = useContextApi();
-  const address = useRealAddress();
-  const { threshold, signatories, when: maybeTimepoint, callHash } = multisig;
-  const [isDisabled, setIsDisabled] = useState(false);
-  const { ss58Format } = useChainSettings();
-  const fetchMultisigListFunc = useMultisigListFetchFunc();
-  const { setVisible, setCurrentMultisig } = useSignApprovePopup();
-
-  const getTxFunc = useCallback(() => {
-    if (!api || !address) {
-      return;
-    }
-
-    const otherSignatories = signatories.filter(
-      (item) => !isSameAddress(item, address),
-    );
-    const maxWeight = {
-      refTime: 0,
-      proofSize: 0,
-    };
-
-    return api.tx.multisig?.approveAsMulti(
-      threshold,
-      sortAddresses(otherSignatories, ss58Format),
-      maybeTimepoint,
-      callHash,
-      maxWeight,
-    );
-  }, [
-    api,
-    address,
-    threshold,
-    signatories,
-    ss58Format,
-    callHash,
-    maybeTimepoint,
-  ]);
-
-  const { doSubmit, isSubmitting } = useTxSubmission({
-    getTxFunc,
-    onInBlock: () => setIsDisabled(false),
-    onCancelled: () => setIsDisabled(false),
-    onTxError: () => setIsDisabled(false),
-    onFinalized: fetchMultisigListFunc,
-  });
-
-  useEffect(() => {
-    if (isSubmitting) {
-      setIsDisabled(isSubmitting);
-    }
-  }, [isSubmitting]);
+  const { approveMultisig, isSubmitting } = useSignApprovePopup();
 
   const handleClick = () => {
-    if (multisig?.call) {
-      setVisible(true);
-      setCurrentMultisig(multisig);
-    } else {
-      doSubmit();
-    }
+    approveMultisig(multisig);
   };
 
   return (
     <Tooltip content="Approve">
-      <Wrapper disabled={isDisabled} onClick={handleClick}>
+      <Wrapper disabled={isSubmitting} onClick={handleClick}>
         <SystemSignature role="button" className="w-4 h-4" />
       </Wrapper>
     </Tooltip>
