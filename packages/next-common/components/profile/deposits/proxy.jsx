@@ -1,9 +1,9 @@
 import DepositTemplate from "next-common/components/myDeposits/depositTemplate";
-import useProfileOnChainProxies from "next-common/components/profile/proxy/hooks/useProfileOnChainProxies";
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
 import { MenuProxy } from "@osn/icons/subsquare";
 import { MapDataList } from "next-common/components/dataList";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import {
   delegateeColumn,
   typeColumn,
@@ -12,17 +12,32 @@ import {
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
+import { setProfileProxyDeposits } from "next-common/store/reducers/profile/deposits/proxy";
+import { isNil } from "lodash-es";
+import { useContextApi } from "next-common/context/api";
 
 export function useProfileProxyDepositsData() {
+  const api = useContextApi();
+  const dispatch = useDispatch();
   const address = useProfileAddress();
-  const { proxies = [], loading } = useProfileOnChainProxies(address);
-  const total = proxies[0]?.length || 0;
-  return {
-    items: proxies[0],
-    loading,
-    total,
-    balance: proxies[1] ?? 0,
-  };
+
+  useEffect(() => {
+    if (!api || !address || !api.query?.proxy?.proxies) {
+      return;
+    }
+    api?.query.proxy?.proxies(address).then((result) => {
+      const proxies = result.toJSON() || [];
+      const total = proxies[0]?.length || 0;
+      const balance = proxies[1] ?? 0;
+
+      return dispatch(
+        setProfileProxyDeposits({ items: proxies[0], total, balance }),
+      );
+    });
+    return () => {
+      dispatch(setProfileProxyDeposits(null));
+    };
+  }, [api, address, dispatch]);
 }
 
 export function TotalBalance({ balance }) {
@@ -44,7 +59,7 @@ export function TotalBalance({ balance }) {
 }
 
 export default function ProxyDeposits({ deposits }) {
-  const { items, total, loading, balance } = deposits;
+  const { items, total, loading, balance } = deposits || {};
 
   const [dataList, setDataList] = useState([]);
   const delayBlockOrTimeColumn = useDelayBlockOrTimeColumn();
@@ -57,6 +72,10 @@ export default function ProxyDeposits({ deposits }) {
 
     setDataList(items);
   }, [items, loading]);
+
+  if (isNil(deposits)) {
+    return null;
+  }
 
   return (
     <DepositTemplate

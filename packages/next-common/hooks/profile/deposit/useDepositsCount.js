@@ -20,6 +20,7 @@ import {
   profileIdentityDepositSelector,
   profileIdentitySubsSelector,
 } from "next-common/store/reducers/profile/deposits/identity";
+import { profileProxyDepositsSelector } from "next-common/store/reducers/profile/deposits/proxy";
 
 export default function useDepositsCount() {
   const proposalDeposits = useSelector(profileTreasuryProposalDepositsSelector);
@@ -50,6 +51,8 @@ export default function useDepositsCount() {
   const identityDeposit = useSelector(profileIdentityDepositSelector);
   const identitySubs = useSelector(profileIdentitySubsSelector);
 
+  const proxyDeposits = useSelector(profileProxyDepositsSelector);
+
   let depositCount = [
     proposalDeposits,
     bountyBonds,
@@ -62,6 +65,7 @@ export default function useDepositsCount() {
     democracyDeposits,
     preimageStatuses,
     identitySubs,
+    proxyDeposits?.items,
   ].reduce((result, deposits) => {
     if (isNil(deposits)) {
       return result;
