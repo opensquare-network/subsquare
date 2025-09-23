@@ -65,7 +65,7 @@ export function ComposeCallSelection() {
 
   return (
     <ChoiceButton
-      description="Allows building any Propose a call manually."
+      description="Create a multisig by composing a call"
       icon={<SystemNewProposal className="text-textTertiary" />}
       buttonSuffix="Compose a call"
       onClick={() => {
