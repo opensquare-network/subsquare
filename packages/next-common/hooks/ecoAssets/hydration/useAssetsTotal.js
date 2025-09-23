@@ -2,6 +2,7 @@ import { createSdkContext, findNestedKey } from "@galacticcouncil/sdk";
 import { ApiPromise, WsProvider } from "@polkadot/api";
 import BigNumber from "bignumber.js";
 import { useCallback, useState, useEffect } from "react";
+import { HUB_ID, fetchShareTokens, fallbackAsset } from "./utils";
 
 //  Hydration SDK in provider?
 const ws = "wss://rpc.hydradx.cloud";
@@ -68,9 +69,10 @@ const getFullAsset = (asset) => {
   };
 };
 
-async function getAllAssets() {
+export async function getAllAssets() {
   const { client } = sdk ?? {};
   const assets = await client.asset.getOnChainAssets();
+  const shareTokensRaw = await fetchShareTokens(api);
 
   const allAssets = assets.reduce(
     (acc, assetRaw) => {
@@ -93,18 +95,82 @@ async function getAllAssets() {
         acc.native = asset;
       }
 
+      if (asset.id === HUB_ID) {
+        acc.hub = asset;
+      }
+
       return acc;
     },
     {
       all: new Map([]),
       native: {},
+      hub: {},
     },
   );
 
-  return allAssets;
+  const { shareTokens, shareTokensMap } = shareTokensRaw.reduce(
+    (acc, token) => {
+      const assetA = all.get(token.assets[0]);
+      const assetB = all.get(token.assets[1]);
+
+      if (assetA && assetB && assetA.symbol && assetB.symbol) {
+        const assetDecimal =
+          Number(assetA.id) > Number(assetB.id) ? assetB : assetA;
+        const decimals = assetDecimal.decimals;
+        const symbol = `${assetA.symbol}/${assetB.symbol}`;
+        const name = `${assetA.name.split(" (")[0]}/${
+          assetB.name.split(" (")[0]
+        }`;
+        const iconId = [
+          isBond(assetA) ? assetA.underlyingAssetId : assetA.id,
+          isBond(assetB) ? assetB.underlyingAssetId : assetB.id,
+        ];
+
+        const tokenFull = {
+          ...fallbackAsset,
+          id: token.shareTokenId,
+          poolAddress: token.poolAddress,
+          assets: [assetA, assetB],
+          isShareToken: true,
+          decimals,
+          symbol,
+          name,
+          iconId,
+        };
+        acc.shareTokens.push(tokenFull);
+        acc.shareTokensMap.set(tokenFull.id, tokenFull);
+      }
+
+      return acc;
+    },
+    { shareTokens: [], shareTokensMap: new Map([]) },
+  );
+
+  const allWithShareTokensMap = new Map([...all, ...shareTokensMap]);
+
+  const getAsset = (id) => allWithShareTokensMap.get(id);
+
+  const getAssetWithFallback = (id) => getAsset(id) ?? fallbackAsset;
+  const getAssets = (ids) => ids.map((id) => getAssetWithFallback(id));
+
+  const getShareToken = (id) => shareTokensMap.get(id);
+  const getShareTokens = (ids) => ids.map((id) => getShareToken(id));
+
+  const getShareTokenByAddress = (poolAddress) =>
+    shareTokens.find((shareToken) => shareToken?.poolAddress === poolAddress);
+
+  return {
+    ...allAssets,
+    getAsset,
+    getAssetWithFallback,
+    getAssets,
+    getShareToken,
+    getShareTokens,
+    getShareTokenByAddress,
+  };
 }
 
-export async function queryAssetPrice(assetIn, assetOut) {
+export async function queryAssetPrice(assetIn, assetOut = "10") {
   if (!assetIn || !assetOut || !sdk) {
     return NaN;
   }

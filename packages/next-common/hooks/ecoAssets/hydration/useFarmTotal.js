@@ -1,7 +1,15 @@
-import { createSdkContext, findNestedKey } from "@galacticcouncil/sdk";
+import { createSdkContext } from "@galacticcouncil/sdk";
 import { ApiPromise, WsProvider } from "@polkadot/api";
 import BigNumber from "bignumber.js";
 import { useCallback, useState, useEffect, useMemo } from "react";
+import useUniqueIds from "./hooks/useUniqueIds";
+import useAccountPositions from "./hooks/useAccountPosition";
+import useLiquidityPositionData from "./hooks/useLiquidityPositionData";
+import { getAllAssets } from "./useAssetsTotal";
+import useTotalIssuances from "./hooks/useTotalIssuances";
+import { useXYKSDKPools } from "./hooks/useHydrationPools";
+import useDisplayShareTokenPrice from "./hooks/useDisplayShareTokenPrice";
+import { scaleHuman, BN_0 } from "./utils";
 
 //  Hydration SDK in provider?
 const ws = "wss://rpc.hydradx.cloud";
@@ -13,153 +21,85 @@ const api = await ApiPromise.create({
 
 const sdk = await createSdkContext(api);
 
-const NATIVE_ASSET_ID = "0";
-const bannedAssets = ["1000042"];
+const useAllXYKDeposits = (address) => {
+  const { data: accountPositions } = useAccountPositions(address);
+  const { xykDeposits = [] } = accountPositions ?? {};
+  const { getShareTokenByAddress } = getAllAssets();
 
-async function getUniqueIds() {
-  const [miningNftId] = await Promise.all([
-    api.consts.omnipoolLiquidityMining.nftCollectionId,
-  ]);
+  const depositNftsData = xykDeposits.reduce((acc, depositNft) => {
+    const asset = getShareTokenByAddress(depositNft.data.ammPoolId.toString());
 
-  return {
-    miningNftId: miningNftId.toString(),
-  };
-}
-
-const parseNfts = (nfts) =>
-  nfts.map(([storageKey]) => {
-    const [owner, classId, instanceId] = storageKey.args;
-
-    return {
-      owner: owner.toString(),
-      classId: classId.toString(),
-      instanceId: instanceId.toString(),
-    };
-  });
-
-const parceLiquidityPositions = (positions, ids, metadata) => (
-  (acc, pos, i) => {
-    if (!pos.isNone) {
-      const data = pos.unwrap();
-
+    if (asset)
       acc.push({
-        id: ids[i],
-        amount: data.amount.toString(),
-        shares: data.shares.toString(),
-        price: data.price.map((e) => e.toString()),
-        assetId: data.assetId.toString(),
-        ...(metadata ? metadata[i] : {}),
+        asset,
+        depositNft,
       });
-    }
-
     return acc;
-  },
-  []
-);
+  }, []);
 
-const parseDepositData = (api, nfts, values, isXyk) => {
-  return nfts
-    .reduce((acc, nft, index) => {
-      const dataRaw = values[index];
+  const uniqAssetIds = [
+    ...new Set(depositNftsData.map((deposit) => deposit.asset.id)),
+  ];
 
-      if (!dataRaw.isNone) {
-        const dataUnwraped = api.registry.createType(
-          isXyk ? "XykLMDeposit" : "OmnipoolLMDeposit",
-          dataRaw.unwrap(),
+  const issuances = useTotalIssuances();
+  const shareTokeSpotPrices = useDisplayShareTokenPrice(uniqAssetIds);
+  const { data: xykPools, isLoading: isXykPoolsLoading } = useXYKSDKPools();
+
+  const isLoading =
+    isXykPoolsLoading ||
+    issuances.isLoading ||
+    shareTokeSpotPrices.isInitialLoading;
+
+  const data = useMemo(
+    () =>
+      depositNftsData.reduce((acc, deposit) => {
+        const { asset, depositNft } = deposit;
+        const shareTokenIssuance = issuances.data?.get(asset.id);
+
+        const pool = xykPools?.find(
+          (pool) => pool.address === asset.poolAddress,
         );
-        const data = {
-          ammPoolId: dataUnwraped.ammPoolId.toString(),
-          shares: dataUnwraped.shares.toString(),
-          yieldFarmEntries: dataUnwraped.yieldFarmEntries.map((farmEntry) => ({
-            globalFarmId: farmEntry.globalFarmId.toString(),
-            yieldFarmId: farmEntry.yieldFarmId.toString(),
-            enteredAt: farmEntry.enteredAt.toString(),
-            updatedAt: farmEntry.updatedAt.toString(),
-            valuedShares: farmEntry.valuedShares.toString(),
-            accumulatedRpvs: farmEntry.accumulatedRpvs.toString(),
-            accumulatedClaimedRewards:
-              farmEntry.accumulatedClaimedRewards.toString(),
-            stoppedAtCreation: farmEntry.stoppedAtCreation.toString(),
-          })),
-        };
-        acc.push({
-          id: nft.instanceId,
-          data,
-          isXyk,
-        });
-      }
 
-      return acc;
-    }, [])
-    .sort((a, b) => {
-      const firstFarmLastBlock = a.data.yieldFarmEntries.reduce(
-        (acc, curr) =>
-          acc.lt(curr.enteredAt) ? BigNumber(curr.enteredAt) : acc,
-        BigNumber(0),
-      );
+        if (shareTokenIssuance && pool) {
+          const index = asset.id;
+          const shares = depositNft.data.shares;
+          const ratio = BigNumber(shares).div(shareTokenIssuance);
+          const amountUSD = scaleHuman(shareTokenIssuance, asset.decimals)
+            .multipliedBy(shareTokeSpotPrices.data?.[0]?.spotPrice ?? 1)
+            .times(ratio);
 
-      const secondFarmLastBlock = b.data.yieldFarmEntries.reduce(
-        (acc, curr) =>
-          acc.lt(curr.enteredAt) ? BigNumber(curr.enteredAt) : acc,
-        BigNumber(0),
-      );
+          const [assetA, assetB] = pool.tokens.map((token) => {
+            const amount = scaleHuman(
+              BigNumber(token.balance).times(ratio),
+              token.decimals,
+            );
 
-      return secondFarmLastBlock.minus(firstFarmLastBlock).toNumber();
-    });
-};
+            return {
+              id: token.id,
+              symbol: token.symbol,
+              decimals: token.decimals,
+              amount,
+            };
+          });
 
-const useAccountPositions = (address) => {
-  const [data, setData] = useState(null);
+          acc[index] = [
+            ...(acc[index] ?? []),
+            {
+              assetA,
+              assetB,
+              amountUSD,
+              assetId: asset.id,
+              depositId: depositNft.id,
+            },
+          ];
+        }
 
-  const fetchAccountPositions = useCallback(async () => {
-    const { miningNftId } = await getUniqueIds();
-    const [miningNftsRaw] = await api.query.uniques.account.entries(
-      address,
-      miningNftId,
-    );
-    const miningNfts = parseNfts(miningNftsRaw);
+        return acc;
+      }, {}),
+    [depositNftsData, issuances.data, xykPools, shareTokeSpotPrices.data],
+  );
 
-    const omniPositionIdsRaw =
-      await api.query.omnipoolLiquidityMining.omniPositionId.multi(
-        miningNfts.map((nft) => nft.instanceId),
-      );
-
-    const omniPositionIds = omniPositionIdsRaw.map((id) => id.toString());
-
-    const depositLiquidityPositions = parceLiquidityPositions(
-      await api.query.omnipool.positions.multi(omniPositionIds),
-      omniPositionIds,
-      miningNfts.map((nft) => ({ depositId: nft.instanceId })),
-    );
-
-    const accountAssetsMap = new Map([]);
-
-    depositLiquidityPositions.forEach((depositLiquidityPosition) => {
-      const id = depositLiquidityPosition.assetId;
-
-      const balance = accountAssetsMap.get(id);
-
-      accountAssetsMap.set(id, {
-        ...(balance ?? {}),
-
-        depositLiquidityPositions: [
-          ...(balance?.depositLiquidityPositions ?? []),
-          depositLiquidityPosition,
-        ],
-        isPoolPositions: true,
-      });
-    });
-
-    setData({
-      depositLiquidityPositions,
-    });
-  }, [address]);
-
-  useEffect(() => {
-    fetchAccountPositions();
-  }, [fetchAccountPositions]);
-
-  return { data };
+  return { data, isLoading };
 };
 
 const useAllOmnipoolDeposits = (address) => {
@@ -194,23 +134,60 @@ const useAllOmnipoolDeposits = (address) => {
   return data;
 };
 
+function useAllFarmDeposits(address) {
+  const omnipoolDepositValues = useAllOmnipoolDeposits(address);
+  const xykDepositValues = useAllXYKDeposits(address);
+
+  const isLoading = xykDepositValues.isLoading;
+
+  return {
+    isLoading,
+    omnipool: omnipoolDepositValues,
+    xyk: xykDepositValues.data,
+  };
+}
+
+function useFarmDepositsTotal(address) {
+  const { isLoading, omnipool, xyk } = useAllFarmDeposits(address);
+
+  const total = useMemo(() => {
+    let poolsTotal = BN_0;
+
+    for (const poolId in omnipool) {
+      const poolTotal = omnipool[poolId].reduce((memo, share) => {
+        return memo.plus(share.valueDisplay);
+      }, BN_0);
+      poolsTotal = poolsTotal.plus(poolTotal);
+    }
+
+    for (const id in xyk) {
+      const xykTotal = xyk[id].reduce((memo, deposit) => {
+        if (deposit.amountUSD) {
+          memo = memo.plus(deposit.amountUSD);
+        }
+        return memo;
+      }, BN_0);
+
+      poolsTotal = poolsTotal.plus(xykTotal);
+    }
+
+    return poolsTotal.toString();
+  }, [omnipool, xyk]);
+
+  return { isLoading: isLoading, value: total };
+}
+
 // Farm Total Balance
 export default function useFarmTotal(address) {
   const [assetsBalance, setAssetsBalance] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { value: total } = useFarmDepositsTotal(address);
+  console.log("::::farmTotal", total);
 
   const fetchData = useCallback(async () => {
     setIsLoading(true);
     try {
       // setAssetsBalance(totalBalance);
-      const { omnipoolNftId, miningNftId, xykMiningNftId } =
-        await getUniqueIds();
-      console.log(
-        "::::omnipoolNftId, miningNftId, xykMiningNftId,",
-        omnipoolNftId,
-        miningNftId,
-        xykMiningNftId,
-      );
     } catch (error) {
       console.error(error);
     } finally {
