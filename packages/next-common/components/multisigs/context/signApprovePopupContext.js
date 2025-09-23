@@ -65,7 +65,6 @@ export function SignApprovePopupProvider({ children }) {
     onTxError: () => {},
     onFinalized: () => {
       fetchMultisigListFunc();
-      setVisible(false);
     },
   });
 
