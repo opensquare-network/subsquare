@@ -57,7 +57,7 @@ export const DisplayUserAvatar = ({ address, user, size = 48 }) => (
   />
 );
 
-export const DisplayUser = ({ id, className = "" }) => {
+export const DisplayUser = ({ id, className = "", username = "" }) => {
   if (isPolkadotAddress(id) || isEthereumAddress(id)) {
     return (
       <AddressUser
@@ -65,6 +65,7 @@ export const DisplayUser = ({ id, className = "" }) => {
         showAvatar={false}
         className={cn("text16Bold text-textPrimary", className)}
         identityIconClassName="w-4 h-4"
+        username={username}
       />
     );
   }

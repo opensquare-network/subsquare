@@ -12,7 +12,10 @@ export default function NoRelationshipsTip({
       "This account has no relationships with proxy, multisig and identity.";
   } else if (type === VIEW_TYPE.DELEGATION) {
     text = "This account has no relationship with delegations.";
+  } else if (type === VIEW_TYPE.TRANSFER) {
+    text = "This account has no relationship with transfers.";
   }
+
   return (
     <GreyPanel
       className={cn(

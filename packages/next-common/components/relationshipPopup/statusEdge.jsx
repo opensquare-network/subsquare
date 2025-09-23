@@ -14,6 +14,7 @@ import { useTrackContent } from "../referenda/track/trackTag";
 import ValueDisplay from "../valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
+import pluralize from "pluralize";
 
 const EdgeLabel = styled.div`
   position: absolute;
@@ -135,6 +136,10 @@ function TooltipsContent({ type, ...rest }) {
     return <DelegationTipContent {...rest} />;
   }
 
+  if (type === "Transfer") {
+    return <TransferTipContent {...rest} />;
+  }
+
   return null;
 }
 
@@ -200,6 +205,43 @@ function DelegationTipContent({ rawData }) {
         </li>
       ))}
     </ul>
+  );
+}
+
+function TransferTipContent({ rawData }) {
+  const { decimals, symbol } = useChainSettings();
+  const { data: transfer } = rawData || {};
+
+  if (isNil(transfer)) {
+    return null;
+  }
+
+  return (
+    <div className="flex gap-x-1 items-center flex-col">
+      <div className="flex gap-x-1 items-center">
+        <DisplayUser
+          id={transfer.from}
+          username={rawData.username}
+          className="flex text12Medium text-white"
+        />
+        <span>
+          has {transfer.count} {pluralize("transfer", transfer.count)}
+        </span>
+        <span className="inline-flex">
+          <DisplayUser
+            id={transfer.to}
+            username={rawData.username}
+            className="flex text12Medium text-white"
+          />
+          ,
+        </span>
+        <ValueDisplay
+          value={toPrecision(transfer.volume, decimals)}
+          symbol={symbol}
+        />
+        <span>in total</span>
+      </div>
+    </div>
   );
 }
 

@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+# 5.4.1
+
+Date:
+2025-09-22. [Code diff](https://github.com/opensquare-network/subsquare/compare/c3afd2a8e965c67b397fb31a86d18275961fa04d...37a8251b4043bb9061f0558411c11ebee0959178).
+
+- [Big] Add a consolidated feeds for fellowship:
+    - Index and save referenda related feeds to the database.
+    - Add API for latest feeds and paged feeds data.
+    - Show the latest feeds panel on the overview page and develop a new feeds page including referenda, membership and
+      salary related feeds.
+- Add transfer relationships to profile relatives chart for polkadot.
+- Decentralized voices
+    - Add a statistics message on the influence panel, so users can see how many referenda are affected by the DV
+      program.
+    - Show the description panel for on each DV cohort detail page.
+- Improve pagination component to solve some UX issues.
+- Show the 404 component when referendum id error on the referendum detail page.
+- Guard invalid address for the profile page and the fellowship evidence detail page.
+- Fix page title for coretime and people page.
+- Add code guard for democracy call when extracting remarks.
+- Fix user's banner does not change when switching addresses on the profile relatives popup.
+- Style fixes and code refactor.
+
 # 5.4.0
 
 Date:
