@@ -108,10 +108,16 @@ export async function getAllAssets() {
     },
   );
 
+  // TODO: split as hooks
+  // return allAssets;
+
   const { shareTokens, shareTokensMap } = shareTokensRaw.reduce(
     (acc, token) => {
-      const assetA = all.get(token.assets[0]);
-      const assetB = all.get(token.assets[1]);
+      if (!allAssets.all) {
+        return acc;
+      }
+      const assetA = allAssets.all.get(token.assets[0]);
+      const assetB = allAssets.all.get(token.assets[1]);
 
       if (assetA && assetB && assetA.symbol && assetB.symbol) {
         const assetDecimal =
@@ -160,7 +166,7 @@ export async function getAllAssets() {
     shareTokens.find((shareToken) => shareToken?.poolAddress === poolAddress);
 
   return {
-    ...allAssets,
+    allAssets,
     getAsset,
     getAssetWithFallback,
     getAssets,
@@ -208,7 +214,8 @@ async function queryTokenAssetTotalBalance(address) {
   const { client } = sdk ?? {};
   const { balanceV2 } = client ?? {};
 
-  const { all, native } = await getAllAssets();
+  const allAssets = await getAllAssets();
+  const { all, native } = allAssets ?? {};
   const followedAssets = [];
   const followedErc20Tokens = [];
 
