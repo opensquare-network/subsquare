@@ -65,12 +65,12 @@ export function ComposeCallSelection() {
 
   return (
     <ChoiceButton
-      description="Allows building any Propose call manually."
+      description="Allows building any Propose a call manually."
       icon={<SystemNewProposal className="text-textTertiary" />}
-      buttonSuffix="Propose Call"
+      buttonSuffix="Compose a call"
       onClick={() => {
         goNext({
-          title: "Propose Call",
+          title: "Compose a call",
           component: ComposeCallPopupImpl,
         });
       }}
