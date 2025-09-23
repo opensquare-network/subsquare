@@ -1,63 +1,68 @@
-import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
-import EstimatedGas from "next-common/components/estimatedGas";
-import { ProxyTypeSelector } from "next-common/components/myProxies/operations/popup/addProxy";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
-import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import PreviousButton from "next-common/components/summary/newProposalButton/previousButton";
-import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
-import { useContextApi } from "next-common/context/api";
+import { MapDataList } from "next-common/components/dataList";
 import { useStepContainer } from "next-common/context/stepContainer";
-import { useTxBuilder } from "next-common/hooks/useTxBuilder";
-import { isSameAddress } from "next-common/utils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MultisigPopupWrapper from "../multisigPopupWraper";
+import { MyProxiesProvider } from "next-common/components/myProxies/context/myProxies";
+import useSubStorage from "next-common/hooks/common/useSubStorage";
+import {
+  delegateeColumn,
+  removeColumn,
+  typeColumn,
+  useDelayBlockOrTimeColumn,
+} from "next-common/components/myProxies/common/columns";
 
 function RemoveProxyContent() {
-  const api = useContextApi();
-  const [proxyType, setProxyType] = useState("Any");
-  const { value: proxyAccount, component: proxyAccountField } =
-    useAddressComboField({ title: "Proxy Account" });
+  const [dataList, setDataList] = useState([]);
   const { goBack } = useStepContainer();
   const signerAccount = useSignerAccount();
-  const address = signerAccount?.realAddress;
-  const delay = 0;
 
-  const { getTxFuncForSubmit, getTxFuncForFee } = useTxBuilder(
-    (toastError) => {
-      if (!api || !address) {
-        return;
-      }
+  const { result, loading } = useSubStorage("proxy", "proxies", [
+    signerAccount?.realAddress,
+  ]);
 
-      if (!proxyType) {
-        toastError("The proxy type is required");
-        return;
-      }
+  useEffect(() => {
+    if (loading) {
+      return;
+    }
 
-      if (!proxyAccount) {
-        toastError("The proxy account is required");
-        return;
-      }
+    try {
+      const jsonData = result?.toJSON();
+      const list = jsonData[0];
+      setDataList(list);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [result, loading]);
 
-      if (isSameAddress(address, proxyAccount)) {
-        toastError("Cannot set yourself as proxy");
-        return;
-      }
-
-      return api.tx.proxy.removeProxy(proxyAccount, proxyType, delay);
+  const delayBlockOrTimeColumn = useDelayBlockOrTimeColumn();
+  const columns = [
+    delegateeColumn,
+    {
+      ...typeColumn,
+      className: "w-[160px]",
     },
-    [api, address, proxyType, proxyAccount, delay],
-  );
+    {
+      ...delayBlockOrTimeColumn,
+      className: "w-[180px]",
+    },
+    {
+      ...removeColumn,
+      className: "w-[30px]",
+    },
+  ];
 
   return (
     <>
-      <ProxyTypeSelector proxyType={proxyType} setProxyType={setProxyType} />
-      {proxyAccountField}
-      <AdvanceSettings>
-        <EstimatedGas getTxFunc={getTxFuncForFee} />
-      </AdvanceSettings>
+      <MapDataList
+        loading={loading}
+        noDataText="No proxy set"
+        columnsDef={columns}
+        data={dataList}
+      />
       <div className="flex justify-between">
         <PreviousButton onClick={goBack} />
-        <TxSubmissionButton getTxFunc={getTxFuncForSubmit} />
       </div>
     </>
   );
@@ -66,7 +71,9 @@ function RemoveProxyContent() {
 export default function RemoveProxy() {
   return (
     <MultisigPopupWrapper>
-      <RemoveProxyContent />
+      <MyProxiesProvider>
+        <RemoveProxyContent />
+      </MyProxiesProvider>
     </MultisigPopupWrapper>
   );
 }
