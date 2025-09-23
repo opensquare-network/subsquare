@@ -1,0 +1,36 @@
+import { createContext, useContext, useState, useEffect } from "react";
+
+const SignApprovePopupContext = createContext({
+  visible: false,
+  setVisible: () => {},
+  currentMultisig: null,
+  setCurrentMultisig: () => {},
+});
+
+export function SignApprovePopupProvider({ children }) {
+  const [visible, setVisible] = useState(false);
+  const [currentMultisig, setCurrentMultisig] = useState(null);
+
+  useEffect(() => {
+    if (!visible && currentMultisig) {
+      setCurrentMultisig(null);
+    }
+  }, [visible, currentMultisig]);
+
+  return (
+    <SignApprovePopupContext.Provider
+      value={{
+        visible,
+        setVisible,
+        currentMultisig,
+        setCurrentMultisig,
+      }}
+    >
+      {children}
+    </SignApprovePopupContext.Provider>
+  );
+}
+
+export function useSignApprovePopup() {
+  return useContext(SignApprovePopupContext);
+}

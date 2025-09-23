@@ -9,6 +9,7 @@ import { useChainSettings } from "next-common/context/chain";
 import { sortAddresses } from "@polkadot/util-crypto";
 import { isSameAddress } from "next-common/utils";
 import { useMultisigListFetchFunc } from "../actions/composeCallPopup/fetchMultisigList";
+import { useSignApprovePopup } from "../context/signApprovePopupContext";
 
 export const Wrapper = styled.div`
   display: inline-flex;
@@ -41,6 +42,7 @@ export default function SignApprove({ multisig = {} }) {
   const [isDisabled, setIsDisabled] = useState(false);
   const { ss58Format } = useChainSettings();
   const fetchMultisigListFunc = useMultisigListFetchFunc();
+  const { setVisible, setCurrentMultisig } = useSignApprovePopup();
 
   const getTxFunc = useCallback(() => {
     if (!api || !address) {
@@ -86,9 +88,18 @@ export default function SignApprove({ multisig = {} }) {
     }
   }, [isSubmitting]);
 
+  const handleClick = () => {
+    if (multisig?.call) {
+      setVisible(true);
+      setCurrentMultisig(multisig);
+    } else {
+      doSubmit();
+    }
+  };
+
   return (
     <Tooltip content="Approve">
-      <Wrapper disabled={isDisabled} onClick={doSubmit}>
+      <Wrapper disabled={isDisabled} onClick={handleClick}>
         <SystemSignature role="button" className="w-4 h-4" />
       </Wrapper>
     </Tooltip>
