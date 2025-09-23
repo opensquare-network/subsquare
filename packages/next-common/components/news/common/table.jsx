@@ -63,22 +63,22 @@ export default function Table({
       )}
       <tbody>
         {dataSource?.length > 0 ? (
-          dataSource?.map((item, index) => (
+          dataSource?.map((item, dataIndex) => (
             <tr
-              key={item?.[rowKey] || index}
+              key={item?.[rowKey] || dataIndex}
               className={cn(
                 "hover:bg-neutral200",
-                getClassName(onRow?.className, item, index),
+                getClassName(onRow?.className, item, dataIndex),
               )}
-              onClick={(e) => handleRowClick(item, index, e)}
-              style={getStyle(onRow?.style, item, index)}
+              onClick={(e) => handleRowClick(item, dataIndex, e)}
+              style={getStyle(onRow?.style, item, dataIndex)}
             >
-              {columns.map((column, index) => (
+              {columns.map((column, colIndex) => (
                 <TableTd
-                  key={column.key || column.dataIndex || index}
+                  key={column.key || column.dataIndex || colIndex}
                   data={item}
                   config={column}
-                  index={index}
+                  index={dataIndex}
                 />
               ))}
             </tr>
@@ -126,7 +126,7 @@ function TableTd({ data, config, index }) {
   // Get data value from the specified key or dataIndex
   const value = useMemo(() => {
     const key = config.key || config.dataIndex;
-    return key ? data[key] : undefined;
+    return key ? data?.[key] : undefined;
   }, [config.key, config.dataIndex, data]);
 
   // Render cell content using custom render function or display value

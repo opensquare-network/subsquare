@@ -57,6 +57,7 @@ export default function ReviewNewsListPage() {
             {
               title: "Proposer",
               key: "proposer",
+              className: "w-[130px] px-0",
               render(proposer) {
                 return (
                   proposer?.address && <AddressUser add={proposer.address} />

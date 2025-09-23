@@ -61,7 +61,7 @@ export default function EditPopup({
             <Input
               maxLength={150}
               id="title"
-              value={formData.content}
+              value={formData.content || ""}
               onChange={(e) => handleInputChange("content", e.target.value)}
               placeholder="Enter news title "
             />
@@ -77,7 +77,7 @@ export default function EditPopup({
           <Input
             id="link"
             type="url"
-            value={formData.link}
+            value={formData.link || ""}
             onChange={(e) => handleInputChange("link", e.target.value)}
             placeholder="https://..."
           />
