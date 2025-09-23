@@ -34,7 +34,7 @@ const paseo = {
   navPreferDark: true,
   links: paseoLinks,
   hasMultisig: true,
-  multisigApiPrefix: "paseo",
+  multisigApiPrefix: "ahs-gh-api",
   graphqlApiSubDomain: "paseo-gh-api",
   postLabels: defaultPostLabels,
   description:
