@@ -18,7 +18,10 @@ export default function EditPopup({
   isLoading,
   onClose,
   onConfirm,
-  data = {},
+  data = {
+    link: "",
+    content: "",
+  },
   title,
 }) {
   const dispatch = useDispatch();

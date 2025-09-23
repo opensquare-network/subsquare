@@ -63,7 +63,6 @@ export default function NewsPage() {
                       }}
                     />
                     <EditButton
-                      api={`eco-news/${item._id}`}
                       item={item}
                       onConfirm={(data) => {
                         items[index] = data;
@@ -72,7 +71,7 @@ export default function NewsPage() {
                       }}
                     />
                     <DeleteButton
-                      api={`eco-news/${item._id}`}
+                      item={item}
                       onConfirm={() => {
                         items.splice(index, 1);
                         setItems([...items]);

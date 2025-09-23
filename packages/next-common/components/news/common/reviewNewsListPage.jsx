@@ -70,7 +70,6 @@ export default function ReviewNewsListPage() {
                 return (
                   <>
                     <EditButton
-                      api={`eco-news/review/${item._id}`}
                       item={item}
                       onConfirm={(data) => {
                         items[index] = data;
@@ -87,7 +86,6 @@ export default function ReviewNewsListPage() {
                       }}
                     />
                     <DeleteButton
-                      api={`eco-news/review/${item._id}`}
                       item={item}
                       onConfirm={() => {
                         items.splice(index, 1);

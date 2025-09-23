@@ -17,7 +17,7 @@ import ErrorMessage from "next-common/components/styled/errorMessage";
 import { PopupButtonWrapper } from "next-common/components/popup/wrapper";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
 
-export function DeleteButton({ api, onConfirm }) {
+export function DeleteButton({ item, onConfirm }) {
   const dispatch = useDispatch();
 
   const [open, setOpen] = useState(false);
@@ -25,9 +25,11 @@ export function DeleteButton({ api, onConfirm }) {
 
   const onDelete = async () => {
     setLoading(true);
-    const { error } = await nextApi.delete(api).finally(() => {
-      setLoading(false);
-    });
+    const { error } = await nextApi
+      .delete(`eco-news/${item._id}`)
+      .finally(() => {
+        setLoading(false);
+      });
     if (!error) {
       onConfirm();
       setOpen(false);
@@ -137,15 +139,18 @@ export function ApproveButton({ item, onConfirm }) {
   );
 }
 
-export function EditButton({ api, item, onConfirm }) {
+export function EditButton({ item, onConfirm }) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const onSave = async (data) => {
     setLoading(true);
-    const { error, result } = await nextApi.patch(api, data).finally(() => {
-      setLoading(false);
-    });
+    const { error, result } = await nextApi
+      .patch(`eco-news/${item._id}`, data)
+      .finally(() => {
+        setLoading(false);
+      });
+
     if (!error) {
       onConfirm(result);
       setOpen(false);
@@ -190,17 +195,19 @@ export function AddNewsButton({ api, onConfirm }) {
   const handleSubmit = useCallback(
     async (data) => {
       setIsLoading(true);
-      try {
-        const { result } = await nextApi.post(api, data);
-        if (result) {
-          setOpen(false);
-          onConfirm();
-          dispatch(newSuccessToast("Add news successfully!"));
-        }
-      } catch (error) {
-        dispatch(newErrorToast("Failed to add news item. Please try again."));
-      } finally {
+      const { error } = await nextApi.post(api, data).finally(() => {
         setIsLoading(false);
+      });
+      if (error) {
+        dispatch(
+          newErrorToast(
+            error.message || "Failed to add news item. Please try again.",
+          ),
+        );
+      } else {
+        setOpen(false);
+        onConfirm();
+        dispatch(newSuccessToast("Add news successfully!"));
       }
     },
     [api, dispatch, onConfirm],

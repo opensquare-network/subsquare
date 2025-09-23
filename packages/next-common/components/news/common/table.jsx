@@ -7,7 +7,7 @@ import { cn } from "next-common/utils";
 import { isFunction } from "lodash-es";
 import NoData from "next-common/components/noData";
 import Loading from "next-common/components/loading";
-import { Fragment, useMemo, useCallback } from "react";
+import { useMemo, useCallback } from "react";
 
 const getStyle = (color, item, index) => {
   if (isFunction(color)) {
@@ -49,9 +49,9 @@ export default function Table({
       {showHeader && (
         <thead className="bg-neutral200 border-b border-neutral100">
           <tr>
-            {columns.map((column) => (
+            {columns.map((column, index) => (
               <td
-                key={column.key || column.dataIndex}
+                key={column.key || column.dataIndex || index}
                 style={column.headerStyle}
                 className={cn("p-2 py-3 text14Bold", column.headerClassName)}
               >
@@ -64,25 +64,24 @@ export default function Table({
       <tbody>
         {dataSource?.length > 0 ? (
           dataSource?.map((item, index) => (
-            <Fragment key={item[rowKey] || index}>
-              <tr
-                className={cn(
-                  "hover:bg-neutral200",
-                  getClassName(onRow?.className, item, index),
-                )}
-                onClick={(e) => handleRowClick(item, index, e)}
-                style={getStyle(onRow?.style, item, index)}
-              >
-                {columns.map((column) => (
-                  <TableTd
-                    key={column.key || column.dataIndex}
-                    data={item}
-                    config={column}
-                    index={index}
-                  />
-                ))}
-              </tr>
-            </Fragment>
+            <tr
+              key={item?.[rowKey] || index}
+              className={cn(
+                "hover:bg-neutral200",
+                getClassName(onRow?.className, item, index),
+              )}
+              onClick={(e) => handleRowClick(item, index, e)}
+              style={getStyle(onRow?.style, item, index)}
+            >
+              {columns.map((column) => (
+                <TableTd
+                  key={column.key || column.dataIndex}
+                  data={item}
+                  config={column}
+                  index={index}
+                />
+              ))}
+            </tr>
           ))
         ) : (
           <EmptyOrLoadingBody
