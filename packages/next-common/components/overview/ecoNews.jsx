@@ -14,12 +14,19 @@ import EditPopup from "next-common/components/news/common/editPopup";
 import { useEcoNewsData } from "next-common/components/news/common/hooks";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { useWindowSize } from "react-use";
+import { useChainSettings } from "next-common/context/chain";
 
 const LINE_HEIGHT = 20;
 const ITEM_PADDING = 20;
 const SHOW_TOTAL = 5;
 
 export default function EcoNews(props) {
+  const { ecoNews } = useChainSettings();
+
+  if (!ecoNews) {
+    return null;
+  }
+
   return <EcoNewsImpl {...props} />;
 }
 
