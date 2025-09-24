@@ -5,6 +5,8 @@ import TxSubmissionButton from "next-common/components/common/tx/txSubmissionBut
 import CallHash from "./callHash";
 import { useTimepoint } from "./useTimepoint";
 import ErrorMessage from "next-common/components/styled/errorMessage";
+import PreviousButton from "next-common/components/summary/newProposalButton/previousButton";
+import { useStepContainer } from "next-common/context/stepContainer";
 
 const defaultSectionName = "system";
 const defaultMethodName = "setCode";
@@ -12,6 +14,7 @@ const defaultMethodName = "setCode";
 export default function ProposeWithExtrinsic() {
   const [callHash, setCallHash] = useState(null);
   const [extrinsic, setExtrinsic] = useState(null);
+  const { goBack } = useStepContainer();
 
   const { timepoint, isTimepointLoading } = useTimepoint(callHash);
 
@@ -48,7 +51,8 @@ export default function ProposeWithExtrinsic() {
           </ErrorMessage>
         )}
       </div>
-      <div className="flex justify-end">
+      <div className="flex justify-between">
+        <PreviousButton onClick={goBack} />
         <TxSubmissionButton
           disabled={!extrinsic || isTimepointLoading || timepoint}
           title="Propose"
