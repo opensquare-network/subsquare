@@ -10,7 +10,7 @@ function SignApproveInnerPopup({ onClose, multisig }) {
 
   return (
     <Popup title="Multisig" onClose={onClose} maskClosable={false}>
-      <SignerWithBalance />
+      <SignerWithBalance noSwitchSigner />
       <ProposeTree callHex={multisig?.callHex} when={multisig?.when} />
       <div className="flex justify-end">
         <PrimaryButton onClick={doSubmit} loading={isDisabled}>
