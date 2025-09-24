@@ -14,7 +14,6 @@ import { CallPopupInContext } from "next-common/components/multisigs/callPopup";
 import SignSubmitPopupInContext from "next-common/components/multisigs/signField/signSubmitPopup";
 import SignApprovePopupInContext from "next-common/components/multisigs/signField/signApprovePopup";
 
-
 export default function MultisigsList() {
   const { width } = useWindowSize();
   const dispatch = useDispatch();

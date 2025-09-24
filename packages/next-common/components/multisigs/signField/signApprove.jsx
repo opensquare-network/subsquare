@@ -38,17 +38,17 @@ export const Wrapper = styled.div`
 export function useSignApprove(multisig) {
   const api = useContextApi();
   const address = useRealAddress();
-  const { ss58Format } = useChainSettings();
+  const { threshold, signatories, when: maybeTimepoint, callHash } = multisig;
   const [isDisabled, setIsDisabled] = useState(false);
+  const { ss58Format } = useChainSettings();
   const fetchMultisigListFunc = useMultisigListFetchFunc();
   const { visible, setVisible } = useSignApprovePopup();
 
   const getTxFunc = useCallback(() => {
-    if (!api || !address || !multisig) {
+    if (!api || !address) {
       return;
     }
 
-    const { threshold, signatories, when: maybeTimepoint, callHash } = multisig;
     const otherSignatories = signatories.filter(
       (item) => !isSameAddress(item, address),
     );
@@ -64,7 +64,15 @@ export function useSignApprove(multisig) {
       callHash,
       maxWeight,
     );
-  }, [api, address, multisig, ss58Format]);
+  }, [
+    api,
+    address,
+    threshold,
+    signatories,
+    ss58Format,
+    callHash,
+    maybeTimepoint,
+  ]);
 
   const { doSubmit, isSubmitting } = useTxSubmission({
     getTxFunc,
