@@ -27,9 +27,6 @@ const config = {
     ];
   },
   webpack(config, { dev }) {
-    // Fix MetaMask SDK React Native dependency issue
-    config.resolve.alias["@react-native-async-storage/async-storage"] = false;
-
     // Treat warnings as errors if we're not in development.
     if (!dev) {
       config.optimization.minimizer = config.optimization.minimizer || [];
