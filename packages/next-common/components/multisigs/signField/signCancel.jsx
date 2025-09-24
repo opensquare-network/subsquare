@@ -9,14 +9,16 @@ import { useChainSettings } from "next-common/context/chain";
 import { sortAddresses } from "@polkadot/util-crypto";
 import { isSameAddress } from "next-common/utils";
 import { useMultisigListFetchFunc } from "../actions/composeCallPopup/fetchMultisigList";
+import { useSignCancelPopup } from "../context/signCancelPopupContext";
 
-export default function SignCancel({ multisig = {} }) {
+export function useSignCancel(multisig) {
   const api = useContextApi();
   const address = useRealAddress();
   const { threshold, signatories, when: timepoint, callHash } = multisig;
   const [isDisabled, setIsDisabled] = useState(false);
   const { ss58Format } = useChainSettings();
   const fetchMultisigListFunc = useMultisigListFetchFunc();
+  const { visible, setVisible } = useSignCancelPopup();
 
   const getTxFunc = useCallback(() => {
     if (!api || !address) {
@@ -34,10 +36,14 @@ export default function SignCancel({ multisig = {} }) {
       callHash,
     );
   }, [api, address, threshold, signatories, ss58Format, callHash, timepoint]);
-
   const { doSubmit, isSubmitting } = useTxSubmission({
     getTxFunc,
-    onInBlock: () => setIsDisabled(false),
+    onInBlock: () => {
+      if (visible) {
+        setVisible(false);
+      }
+      setIsDisabled(false);
+    },
     onCancelled: () => setIsDisabled(false),
     onTxError: () => setIsDisabled(false),
     onFinalized: fetchMultisigListFunc,
@@ -49,9 +55,28 @@ export default function SignCancel({ multisig = {} }) {
     }
   }, [isSubmitting]);
 
+  return {
+    doSubmit,
+    isDisabled,
+  };
+}
+
+export default function SignCancel({ multisig = {} }) {
+  const { doSubmit, isDisabled } = useSignCancel(multisig);
+  const { setCurrentMultisig, setVisible } = useSignCancelPopup();
+
+  const handleClick = useCallback(() => {
+    if (multisig?.call) {
+      setCurrentMultisig(multisig);
+      setVisible(true);
+    } else {
+      doSubmit();
+    }
+  }, [doSubmit, multisig, setCurrentMultisig, setVisible]);
+
   return (
     <Tooltip content="Cancel">
-      <Wrapper disabled={isDisabled} onClick={doSubmit}>
+      <Wrapper disabled={isDisabled} onClick={handleClick}>
         <SystemClose role="button" className="w-4 h-4" />
       </Wrapper>
     </Tooltip>

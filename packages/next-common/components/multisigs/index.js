@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import { AccountsTitle, HistoryTitle } from "./styled";
 import { MultisigAccountsProvider } from "./context/multisigAccountsContext";
 import { SignApprovePopupProvider } from "./context/signApprovePopupContext";
+import { SignCancelPopupProvider } from "./context/signCancelPopupContext";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 const MultisigAccountsList = dynamic(() => import("./multisigAccountsList"), {
@@ -67,15 +68,17 @@ export default function Multisigs() {
           <CallPopupProvider>
             <SignSubmitPopupProvider>
               <SignApprovePopupProvider>
-                <NeutralPanel className="p-6">
-                  <MultisigAccountsProvider userAddress={realAddress}>
-                    <Tabs
-                      tabs={tabs}
-                      activeTabValue={activeTabValue}
-                      onTabClick={onTabClick}
-                    />
-                  </MultisigAccountsProvider>
-                </NeutralPanel>
+                <SignCancelPopupProvider>
+                  <NeutralPanel className="p-6">
+                    <MultisigAccountsProvider userAddress={realAddress}>
+                      <Tabs
+                        tabs={tabs}
+                        activeTabValue={activeTabValue}
+                        onTabClick={onTabClick}
+                      />
+                    </MultisigAccountsProvider>
+                  </NeutralPanel>
+                </SignCancelPopupProvider>
               </SignApprovePopupProvider>
             </SignSubmitPopupProvider>
           </CallPopupProvider>

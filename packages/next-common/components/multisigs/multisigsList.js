@@ -13,6 +13,7 @@ import usePaginationComponent from "next-common/components/pagination/usePaginat
 import { CallPopupInContext } from "next-common/components/multisigs/callPopup";
 import SignSubmitPopupInContext from "next-common/components/multisigs/signField/signSubmitPopup";
 import SignApprovePopupInContext from "next-common/components/multisigs/signField/signApprovePopup";
+import SignCancelPopupInContext from "next-common/components/multisigs/signField/signCancelPopup";
 
 export default function MultisigsList() {
   const { width } = useWindowSize();
@@ -48,6 +49,7 @@ export default function MultisigsList() {
       <CallPopupInContext />
       <SignSubmitPopupInContext />
       <SignApprovePopupInContext />
+      <SignCancelPopupInContext />
     </>
   );
 }
