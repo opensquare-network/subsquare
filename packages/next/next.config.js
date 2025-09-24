@@ -58,6 +58,10 @@ const config = {
         use: "raw-loader",
       },
     );
+
+    // Fix MetaMask SDK React Native dependency issue
+    config.resolve.alias["@react-native-async-storage/async-storage"] = false;
+
     return config;
   },
   async headers() {
