@@ -41,6 +41,7 @@ export function useSignApprove(multisig) {
   const { ss58Format } = useChainSettings();
   const [isDisabled, setIsDisabled] = useState(false);
   const fetchMultisigListFunc = useMultisigListFetchFunc();
+  const { visible, setVisible } = useSignApprovePopup();
 
   const getTxFunc = useCallback(() => {
     if (!api || !address || !multisig) {
@@ -67,7 +68,12 @@ export function useSignApprove(multisig) {
 
   const { doSubmit, isSubmitting } = useTxSubmission({
     getTxFunc,
-    onInBlock: () => {},
+    onInBlock: () => {
+      if (visible) {
+        setIsDisabled(false);
+        setVisible(false);
+      }
+    },
     onCancelled: () => {
       setIsDisabled(false);
     },
@@ -95,14 +101,14 @@ export default function SignApprove({ multisig = {} }) {
   const { doSubmit, isDisabled } = useSignApprove(multisig);
   const { setCurrentMultisig, setVisible } = useSignApprovePopup();
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     if (multisig?.call) {
       setCurrentMultisig(multisig);
       setVisible(true);
     } else {
       doSubmit();
     }
-  };
+  }, [doSubmit, multisig, setCurrentMultisig, setVisible]);
 
   return (
     <Tooltip content="Approve">
