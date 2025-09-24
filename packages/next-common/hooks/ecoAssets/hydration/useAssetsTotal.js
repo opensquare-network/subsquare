@@ -3,6 +3,7 @@ import { ApiPromise, WsProvider } from "@polkadot/api";
 import BigNumber from "bignumber.js";
 import { useCallback, useState, useEffect } from "react";
 import { HUB_ID, fetchShareTokens, fallbackAsset } from "./utils";
+import useAllAssets from "./hooks/useAllAssets";
 
 //  Hydration SDK in provider?
 const ws = "wss://rpc.hydradx.cloud";
@@ -206,7 +207,7 @@ export async function queryAssetPrice(assetIn, assetOut = "10") {
   return spotPrice;
 }
 
-async function queryTokenAssetTotalBalance(address) {
+async function queryTokenAssetTotalBalance(address, allAssets) {
   if (!address) {
     return;
   }
@@ -214,7 +215,7 @@ async function queryTokenAssetTotalBalance(address) {
   const { client } = sdk ?? {};
   const { balanceV2 } = client ?? {};
 
-  const allAssets = await getAllAssets();
+  // const allAssets = await getAllAssets();
   const { all, native } = allAssets ?? {};
   const followedAssets = [];
   const followedErc20Tokens = [];
@@ -278,11 +279,12 @@ async function calculateTotalBalance(balances) {
 export default function useAssetsTotal(address) {
   const [assetsBalance, setAssetsBalance] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { data: allAssets } = useAllAssets();
 
   const fetchData = useCallback(async () => {
     setIsLoading(true);
     try {
-      const balances = await queryTokenAssetTotalBalance(address);
+      const balances = await queryTokenAssetTotalBalance(address, allAssets);
       const totalBalance = await calculateTotalBalance(balances);
       setAssetsBalance(totalBalance);
     } catch (error) {
