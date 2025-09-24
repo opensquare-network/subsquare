@@ -12,8 +12,11 @@ import {
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
-import { setProfileProxyDeposits } from "next-common/store/reducers/profile/deposits/proxy";
-import { isNil } from "lodash-es";
+import {
+  resetProfileProxyDeposits,
+  setProfileProxyDeposits,
+  setProfileProxyDepositsLoading,
+} from "next-common/store/reducers/profile/deposits/proxy";
 import { useContextApi } from "next-common/context/api";
 
 export function useProfileProxyDepositsData() {
@@ -25,17 +28,19 @@ export function useProfileProxyDepositsData() {
     if (!api || !address || !api.query?.proxy?.proxies) {
       return;
     }
+    dispatch(setProfileProxyDepositsLoading(true));
     api?.query.proxy?.proxies(address).then((result) => {
       const proxies = result.toJSON() || [];
       const total = proxies[0]?.length || 0;
       const balance = proxies[1] ?? 0;
 
+      dispatch(setProfileProxyDepositsLoading(false));
       return dispatch(
         setProfileProxyDeposits({ items: proxies[0], total, balance }),
       );
     });
     return () => {
-      dispatch(setProfileProxyDeposits(null));
+      dispatch(resetProfileProxyDeposits());
     };
   }, [api, address, dispatch]);
 }
@@ -59,7 +64,7 @@ export function TotalBalance({ balance }) {
 }
 
 export default function ProxyDeposits({ deposits }) {
-  const { items, total, loading, balance } = deposits || {};
+  const { items, total, loading, balance } = deposits;
 
   const [dataList, setDataList] = useState([]);
   const delayBlockOrTimeColumn = useDelayBlockOrTimeColumn();
@@ -72,10 +77,6 @@ export default function ProxyDeposits({ deposits }) {
 
     setDataList(items);
   }, [items, loading]);
-
-  if (isNil(deposits)) {
-    return null;
-  }
 
   return (
     <DepositTemplate
