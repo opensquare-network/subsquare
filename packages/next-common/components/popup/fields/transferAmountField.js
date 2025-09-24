@@ -27,8 +27,9 @@ export default function TransferAmount({
   transferFromAddress,
   transferAmount,
   setTransferAmount,
+  showBalance = true,
 }) {
-  const balanceStatus = !!transferFromAddress && (
+  const balanceStatus = !!transferFromAddress && showBalance && (
     <TransferrableBalance
       value={transferrable}
       isLoading={isLoading}

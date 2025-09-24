@@ -1,42 +1,42 @@
-import PopupWithSigner from "next-common/components/popupWithSigner";
-import { useSignerContext } from "next-common/components/popupWithSigner/context";
-import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
-import { useState } from "react";
-import { useMount } from "react-use";
-import ComposeCallTabs from "./composeCallTabs";
-import ProposeWithInputHex from "./proposeWithInputHex";
-import ProposeWithExtrinsic from "./proposeWithExtrinsic";
+import Popup from "next-common/components/popup/wrapper/Popup";
+import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
+
+import {
+  useStepContainer,
+  StepContainerProvider,
+} from "next-common/context/stepContainer";
+import TemplateSelections from "./templateSelections";
 
 export default function ComposeCallPopup({ onClose, multisig }) {
   return (
-    <PopupWithSigner title="New Multisig" onClose={onClose}>
-      <ComposeCallPopupImpl multisig={multisig} />
-    </PopupWithSigner>
+    <SignerPopupWrapper multisig={multisig}>
+      <StepContainerProvider
+        list={[
+          {
+            title: "New Multisig",
+            component: TemplateSelections,
+          },
+        ]}
+      >
+        <PopupContent onClose={onClose} />
+      </StepContainerProvider>
+    </SignerPopupWrapper>
   );
 }
 
-export function ComposeCallPopupImpl({ multisig }) {
-  const [formType, setFormType] = useState("set");
-
-  const { setSelectedProxyAddress, setMultisig } = useSignerContext();
-
-  useMount(() => {
-    setSelectedProxyAddress();
-    setMultisig(multisig);
-  });
+const PopupContent = ({ onClose }) => {
+  const { currentStep, closeAll } = useStepContainer();
+  const { title, component: CurrentComponent } = currentStep || {};
 
   return (
-    <div className="flex flex-col gap-[8px]">
-      <SignerWithBalance noSwitchSigner />
-      <ComposeCallTabs formType={formType} setFormType={setFormType} />
-
-      <div className={formType === "set" ? "hidden" : ""}>
-        <ProposeWithInputHex />
-      </div>
-
-      <div className={formType === "input" ? "hidden" : ""}>
-        <ProposeWithExtrinsic />
-      </div>
-    </div>
+    <Popup
+      title={title}
+      onClose={() => {
+        onClose();
+        closeAll();
+      }}
+    >
+      <CurrentComponent />
+    </Popup>
   );
-}
+};

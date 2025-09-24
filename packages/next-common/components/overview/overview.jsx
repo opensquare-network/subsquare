@@ -12,6 +12,7 @@ import KusamaTreasuryStats from "./kusamaTreasuryStats";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import OnlyChain from "next-common/components/common/onlyChain";
 import Chains from "next-common/utils/consts/chains";
+import EcoNews from "./ecoNews";
 
 const MultipleColumnCard = dynamicClientOnly(() =>
   import("./fellowship/multipleColumnCard"),
@@ -36,6 +37,7 @@ export default function Overview() {
   return (
     <div className="space-y-6">
       <AccountInfo />
+      <EcoNews />
 
       <WithPallet pallet="fellowshipCore">
         <CollectivesProvider section="fellowship">
@@ -59,10 +61,7 @@ export default function Overview() {
         <FellowshipTreasuryStats />
       </WithPallet> */}
 
-      <div>
-        <RecentProposals />
-        {/* news */}
-      </div>
+      <RecentProposals />
     </div>
   );
 }
