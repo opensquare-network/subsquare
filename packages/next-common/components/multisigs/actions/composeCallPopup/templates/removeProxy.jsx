@@ -8,15 +8,17 @@ import { MyProxiesProvider } from "next-common/components/myProxies/context/myPr
 import useSubStorage from "next-common/hooks/common/useSubStorage";
 import {
   delegateeColumn,
-  removeColumn,
   typeColumn,
   useDelayBlockOrTimeColumn,
 } from "next-common/components/myProxies/common/columns";
+import RemoveProxyAction from "next-common/components/myProxies/operations/removeProxy";
+import { usePopupOnClose } from "next-common/context/popup";
 
 function RemoveProxyContent() {
   const [dataList, setDataList] = useState([]);
   const { goBack } = useStepContainer();
   const signerAccount = useSignerAccount();
+  const onClose = usePopupOnClose();
 
   const { result, loading } = useSubStorage("proxy", "proxies", [
     signerAccount?.realAddress,
@@ -48,8 +50,9 @@ function RemoveProxyContent() {
       className: "w-[180px]",
     },
     {
-      ...removeColumn,
-      className: "w-[30px]",
+      name: "",
+      className: "text-right w-20",
+      render: (data) => <RemoveProxyAction data={data} onSubmitted={onClose} />,
     },
   ];
 
