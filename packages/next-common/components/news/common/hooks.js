@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
 import nextApi from "next-common/services/nextApi";
+import Api from "next-common/services/api";
+import { isPolkadotChain } from "next-common/utils/chain";
+import { CHAIN } from "next-common/utils/constants";
+
+const polkadotApi = new Api("https://polkadot-api.subsquare.io");
 
 export const useEcoNewsData = () => {
   const [items, setItems] = useState([]);
@@ -7,9 +12,11 @@ export const useEcoNewsData = () => {
 
   const getItems = async () => {
     setLoading(true);
-    const { result } = await nextApi.fetch("eco-news").finally(() => {
-      setLoading(false);
-    });
+    const { result } = await (isPolkadotChain(CHAIN) ? nextApi : polkadotApi)
+      .fetch("eco-news")
+      .finally(() => {
+        setLoading(false);
+      });
     setItems(result);
   };
 
