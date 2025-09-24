@@ -107,6 +107,7 @@ const kusama = {
   openSquare: {
     voting: "kusama",
   },
+  ecoNews: true,
 };
 
 export default kusama;
