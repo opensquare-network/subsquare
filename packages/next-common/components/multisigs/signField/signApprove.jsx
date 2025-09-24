@@ -78,19 +78,13 @@ export function useSignApprove(multisig) {
     getTxFunc,
     onInBlock: () => {
       if (visible) {
-        setIsDisabled(false);
         setVisible(false);
       }
-    },
-    onCancelled: () => {
       setIsDisabled(false);
     },
-    onTxError: () => {
-      setIsDisabled(false);
-    },
-    onFinalized: () => {
-      fetchMultisigListFunc();
-    },
+    onCancelled: () => setIsDisabled(false),
+    onTxError: () => setIsDisabled(false),
+    onFinalized: fetchMultisigListFunc,
   });
 
   useEffect(() => {
