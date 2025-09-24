@@ -117,7 +117,6 @@ const polkadot = {
   openSquare: {
     voting: "polkadot",
   },
-  ecoNews: true,
 };
 
 export default polkadot;

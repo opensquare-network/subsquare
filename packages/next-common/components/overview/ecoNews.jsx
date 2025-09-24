@@ -9,7 +9,6 @@ import {
 } from "next-common/store/reducers/toastSlice";
 import nextApi from "next-common/services/nextApi";
 import Tooltip from "next-common/components/tooltip";
-import { useChainSettings } from "next-common/context/chain";
 import Bar from "next-common/components/fellowship/feeds/bar";
 import EditPopup from "next-common/components/news/common/editPopup";
 import { useEcoNewsData } from "next-common/components/news/common/hooks";
@@ -21,11 +20,6 @@ const ITEM_PADDING = 20;
 const SHOW_TOTAL = 5;
 
 export default function EcoNews(props) {
-  const { ecoNews } = useChainSettings();
-
-  if (!ecoNews) {
-    return null;
-  }
   return <EcoNewsImpl {...props} />;
 }
 
