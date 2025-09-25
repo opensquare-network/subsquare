@@ -8,38 +8,66 @@ import { useDetailType } from "next-common/context/page";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { PolkassemblyChains } from "next-common/utils/polkassembly";
 import { cloneDeep } from "lodash-es";
+import { usePolkassemblyCommentReply } from "./polkassembly/usePolkassemblyCommentReply";
 
 function getShouldReadPolkassemblyComments(chain) {
   return PolkassemblyChains.includes(chain);
 }
 
-function mergeComments(polkassemblyComments, subsquareComments) {
+function mergeComments(
+  polkassemblyComments,
+  subsquareComments,
+  polkassemblyCommentReplies,
+) {
   const filteredPolkassemblyComments = [];
   const newSubsquareComments = cloneDeep(subsquareComments);
+
   for (const polkaItem of polkassemblyComments ?? []) {
+    let mergedReplies = polkaItem.replies || [];
+    if (polkassemblyCommentReplies?.[polkaItem.id]) {
+      const replies = polkassemblyCommentReplies[polkaItem.id];
+      mergedReplies = [
+        ...mergedReplies,
+        ...replies.map((r) => ({
+          ...r,
+          comment_source: "polkassembly-comment-reply",
+        })),
+      ];
+    }
+    mergedReplies.sort(
+      (a, b) =>
+        dayjs(a.createdAt || a.created_at).unix() -
+        dayjs(b.createdAt || b.created_at).unix(),
+    );
+
     const subsquareItem = newSubsquareComments.find(
       (item) => item._id === polkaItem.id,
     );
 
-    if (subsquareItem) {
-      subsquareItem.replies = subsquareItem.replies || [];
-      subsquareItem.replies.push(
-        ...polkaItem.replies
-          .filter((r) => r.comment_source !== "subsquare")
-          .map((r) => ({
-            ...r,
-            comment_source: "polkassembly",
-          })),
-      );
-      subsquareItem.replies.sort(
-        (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
-      );
-    } else {
+    if (!subsquareItem) {
       filteredPolkassemblyComments.push({
         ...polkaItem,
+        replies: mergedReplies,
         comment_source: "polkassembly",
       });
+      continue;
     }
+
+    subsquareItem.replies = subsquareItem.replies || [];
+    subsquareItem.replies.push(
+      ...mergedReplies
+        .filter((r) => r.comment_source !== "subsquare")
+        .map((r) => ({
+          ...r,
+          comment_source:
+            r.comment_source === "polkassembly-comment-reply"
+              ? "polkassembly-comment-reply"
+              : "polkassembly",
+        })),
+    );
+    subsquareItem.replies.sort(
+      (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
+    );
   }
 
   return [
@@ -53,19 +81,25 @@ export function usePostCommentsData() {
   const chain = useChain();
   const post = usePost();
   const polkassemblyPostData = usePolkassemblyPostData(post);
+  const { polkassemblyCommentReplies, isPolkassemblyCommentRepliesLoading } =
+    usePolkassemblyCommentReply(post);
 
   const [commentsData, setCommentsData] = useState(comments);
   const shouldReadPolkassemblyComments =
     getShouldReadPolkassemblyComments(chain);
 
+  const isLoading =
+    polkassemblyPostData.loadingComments || isPolkassemblyCommentRepliesLoading;
+
   useEffect(() => {
     if (shouldReadPolkassemblyComments) {
-      if (!polkassemblyPostData.loadingComments) {
+      if (!isLoading) {
         const data = { ...comments };
 
         data.items = mergeComments(
           polkassemblyPostData.comments,
           comments.items,
+          polkassemblyCommentReplies,
         );
 
         setCommentsData(data);
@@ -75,14 +109,15 @@ export function usePostCommentsData() {
     }
   }, [
     comments,
-    polkassemblyPostData.loadingComments,
     polkassemblyPostData.comments,
     shouldReadPolkassemblyComments,
+    polkassemblyCommentReplies,
+    isLoading,
   ]);
 
   return {
     commentsData,
-    loading: polkassemblyPostData.loadingComments,
+    loading: isLoading,
   };
 }
 
