@@ -9,6 +9,14 @@ import IdentityOrAddr from "../IdentityOrAddr";
 import Tooltip from "../tooltip";
 import PrimaryButton from "next-common/lib/button/primary";
 import { useChain } from "next-common/context/chain";
+import nextApi from "next-common/services/nextApi";
+import { usePost } from "next-common/context/post";
+import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
+import { useDispatch } from "react-redux";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import { useRouter } from "next/router";
+import { setLoading } from "next-common/store/reducers/referenda/votes";
+import { useComment } from "../comment/context";
 
 const Wrapper = styled.div`
   margin-top: 48px;
@@ -45,14 +53,53 @@ function PolkassemblyCommentReplyEditor(
   },
   ref,
 ) {
+  const comment = useComment();
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const post = usePost();
   const chain = useChain();
   // const [errors, setErrors] = useState();
   // const [loading, setLoading] = useState(false);
+  const { ensureLogin } = useEnsureLogin();
 
   const isEmpty = content === "" || content === "<p><br></p>";
 
-  const createReply = async (content, contentType) => {
-    window.console.log("createReply", content, contentType);
+  const createReply = async () => {
+    setLoading(true);
+    try {
+      if (!(await ensureLogin())) {
+        return;
+      }
+
+      const polkassemblyCommentId =
+        comment?.polkassemblyCommentId || comment?.id;
+
+      if (!polkassemblyCommentId) {
+        dispatch(newErrorToast("Polkassembly comment id not found"));
+        return;
+      }
+
+      const { result, error } = await nextApi.post(
+        `polkassembly-comments/${post.polkassemblyPostType}/${post.polkassemblyId}/${polkassemblyCommentId}/replies`,
+        {
+          content,
+          contentType,
+        },
+      );
+
+      if (error) {
+        dispatch(newErrorToast(error.message));
+      }
+      if (result) {
+        setContent("");
+        onFinishedEdit(false);
+        router.replace(router.asPath);
+      }
+    } catch (e) {
+      dispatch(newErrorToast(e.message));
+    } finally {
+      setLoading(false);
+    }
   };
 
   const loadSuggestions = (text) => {
