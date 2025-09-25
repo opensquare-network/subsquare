@@ -3,6 +3,7 @@ import { ApiPromise, WsProvider } from "@polkadot/api";
 import BigNumber from "bignumber.js";
 import { useCallback, useState, useEffect } from "react";
 import useAllAssets from "./common/useAllAssets";
+import useAccountBalance from "./common/useAccountBalance";
 
 //  Hydration SDK in provider?
 const ws = "wss://rpc.hydradx.cloud";
@@ -13,8 +14,6 @@ const api = await ApiPromise.create({
 });
 
 const sdk = await createSdkContext(api);
-
-const NATIVE_ASSET_ID = "0";
 
 export async function queryAssetPrice(assetIn, assetOut = "10") {
   if (!assetIn || !assetOut || !sdk) {
@@ -46,49 +45,6 @@ export async function queryAssetPrice(assetIn, assetOut = "10") {
   return spotPrice;
 }
 
-async function queryTokenAssetTotalBalance(address, allAssets) {
-  if (!address) {
-    return;
-  }
-
-  const { client } = sdk ?? {};
-  const { balanceV2 } = client ?? {};
-
-  const { all, native } = allAssets ?? {};
-  const followedAssets = [];
-  const followedErc20Tokens = [];
-
-  for (const [, asset] of all) {
-    if (!asset.isErc20 && asset.id !== NATIVE_ASSET_ID) {
-      followedAssets.push(asset);
-    } else if (asset.isErc20) {
-      followedErc20Tokens.push(asset);
-    }
-  }
-
-  const systemBalance = await balanceV2.getSystemBalance(address);
-  const tokenBalance = await Promise.all(
-    followedAssets.map(async (asset) => {
-      const balance = await balanceV2.getTokenBalance(address, asset.id);
-
-      return { balance, asset };
-    }),
-  );
-  const erc20Balance = await Promise.all(
-    followedErc20Tokens.map(async (asset) => {
-      const balance = await balanceV2.getErc20Balance(address, asset.id);
-
-      return { balance, asset };
-    }),
-  );
-
-  return [
-    { balance: systemBalance, asset: native },
-    ...tokenBalance,
-    ...erc20Balance,
-  ];
-}
-
 async function calculateTotalBalance(balances) {
   let totalSum = new BigNumber(0);
 
@@ -118,15 +74,19 @@ export default function useAssetsTotal(address) {
   const [assetsBalance, setAssetsBalance] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const { allAssets, loading: allAssetsLoading } = useAllAssets();
+  const { balances, isLoading: accountBalanceLoading } = useAccountBalance(
+    address,
+    allAssets,
+    allAssetsLoading,
+  );
 
   const fetchData = useCallback(async () => {
-    if (allAssetsLoading) {
+    if (allAssetsLoading || accountBalanceLoading) {
       return;
     }
 
     setIsLoading(true);
     try {
-      const balances = await queryTokenAssetTotalBalance(address, allAssets);
       const totalBalance = await calculateTotalBalance(balances);
       setAssetsBalance(totalBalance);
     } catch (error) {
@@ -134,7 +94,7 @@ export default function useAssetsTotal(address) {
     } finally {
       setIsLoading(false);
     }
-  }, [address, allAssetsLoading]);
+  }, [address, allAssetsLoading, balances, accountBalanceLoading]);
 
   useEffect(() => {
     fetchData();

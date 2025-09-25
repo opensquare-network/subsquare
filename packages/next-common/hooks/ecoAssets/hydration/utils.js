@@ -6,6 +6,7 @@ import { BN } from "@polkadot/util";
 export const BN_0 = new BigNumber(0);
 export const BN_NAN = new BigNumber(NaN);
 
+export const NATIVE_ASSET_ID = "0";
 export const HUB_ID = "1";
 export const TRILL = 12;
 export const QUINTILL = 18;
