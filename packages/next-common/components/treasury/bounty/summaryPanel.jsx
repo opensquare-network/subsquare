@@ -7,6 +7,8 @@ import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import Tooltip from "next-common/components/tooltip";
 import LoadableContent from "next-common/components/common/loadableContent";
+import TreasurySummary from "next-common/components/summary/treasurySummary";
+import FieldLoading from "next-common/components/icons/fieldLoading";
 
 export function BountiesSummaryPanelImpl() {
   const { symbol, decimals } = useChainSettings();
@@ -118,6 +120,16 @@ export function BountiesSummaryPanelImpl() {
 }
 
 export default function BountiesSummaryPanel() {
+  const api = useContextApi();
+
+  if (!api) {
+    return <FieldLoading />;
+  }
+
+  if (!api.query?.bounties?.bounties) {
+    return <TreasurySummary />;
+  }
+
   return (
     <SummaryItem title="Total">
       <BountiesSummaryPanelImpl />
