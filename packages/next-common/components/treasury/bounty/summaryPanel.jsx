@@ -1,6 +1,6 @@
 import SummaryItem from "next-common/components/summary/layout/item";
 import { useContextApi } from "next-common/context/api";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import BigNumber from "bignumber.js";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
@@ -8,60 +8,79 @@ import { useChainSettings } from "next-common/context/chain";
 import Tooltip from "next-common/components/tooltip";
 import LoadableContent from "next-common/components/common/loadableContent";
 
-export function BountiesSummaryPanelImpl({ bounties = [], loading = false }) {
+export function BountiesSummaryPanelImpl() {
   const { symbol, decimals } = useChainSettings();
-  const [total, setTotal] = useState(new BigNumber(0));
-  const [groupedTotal, setGroupedTotal] = useState({});
+  const [bounties, setBounties] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const api = useContextApi();
 
   useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    setIsLoading(true);
+    api.query.bounties.bounties
+      .entries()
+      .then((result) => {
+        const entries = result.map(([entryIndex, value]) => {
+          const [id] = entryIndex.toHuman() || [];
+          return [id, value];
+        });
+        setBounties(entries);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [api]);
+
+  const { total, groupedTotal } = useMemo(() => {
+    let allTotal = new BigNumber(0);
+    const groupedMap = {
+      Active: {
+        total: new BigNumber(0),
+        count: 0,
+      },
+      Proposed: {
+        total: new BigNumber(0),
+        count: 0,
+      },
+      Funded: {
+        total: new BigNumber(0),
+        count: 0,
+      },
+    };
     if (bounties.length > 0) {
-      let allTotal = new BigNumber(0);
-      const totalMap = {
-        Active: new BigNumber(0),
-        Proposed: new BigNumber(0),
-        Funded: new BigNumber(0),
-      };
-      const countMap = {
-        Active: 0,
-        Proposed: 0,
-        Funded: 0,
-      };
       for (const item of bounties) {
-        const data = item.value;
-        allTotal = allTotal.plus(data.value);
-        if (data.status.isActive) {
-          totalMap.Active = totalMap.Active.plus(data.value);
-          countMap.Active++;
+        const data = item[1];
+        const status = data.value.status;
+        const json = data.toJSON();
+        allTotal = allTotal.plus(json.value);
+        if (status.isActive) {
+          groupedMap.Active.total = groupedMap.Active.total.plus(json.value);
+          groupedMap.Active.count++;
         }
-        if (data.status.isFunded) {
-          totalMap.Funded = totalMap.Funded.plus(data.value);
-          countMap.Funded++;
+        if (status.isFunded) {
+          groupedMap.Funded.total = groupedMap.Funded.total.plus(json.value);
+          groupedMap.Funded.count++;
         }
-        if (data.status.isProposed) {
-          totalMap.Proposed = totalMap.Proposed.plus(data.value);
-          countMap.Proposed++;
+        if (status.isProposed) {
+          groupedMap.Proposed.total = groupedMap.Proposed.total.plus(
+            json.value,
+          );
+          groupedMap.Proposed.count++;
         }
       }
-      setTotal(allTotal);
-      setGroupedTotal({
-        Active: {
-          total: totalMap.Active,
-          count: countMap.Active,
-        },
-        Proposed: {
-          total: totalMap.Proposed,
-          count: countMap.Proposed,
-        },
-        Funded: {
-          total: totalMap.Funded,
-          count: countMap.Funded,
-        },
-      });
     }
+
+    return {
+      total: allTotal,
+      groupedTotal: groupedMap,
+    };
   }, [bounties]);
 
   return (
-    <LoadableContent isLoading={loading}>
+    <LoadableContent isLoading={isLoading}>
       <ValueDisplay value={toPrecision(total, decimals)} symbol={symbol} />
       <div className="flex items-center gap-x-2 mt-2">
         {Object.entries(groupedTotal).map(([label, value]) => (
@@ -99,36 +118,9 @@ export function BountiesSummaryPanelImpl({ bounties = [], loading = false }) {
 }
 
 export default function BountiesSummaryPanel() {
-  const [bountieMap, setBountieMap] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
-  const api = useContextApi();
-
-  useEffect(() => {
-    if (!api) {
-      return;
-    }
-
-    setIsLoading(true);
-    api.query.bounties.bounties
-      .entries()
-      .then((result) => {
-        const entries = result.map(([entryIndex, value]) => {
-          const [id] = entryIndex.toHuman() || [];
-          return [id, value];
-        });
-        setBountieMap(Object.fromEntries(entries));
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [api]);
-
   return (
     <SummaryItem title="Total">
-      <BountiesSummaryPanelImpl
-        loading={isLoading}
-        bounties={Object.values(bountieMap)}
-      />
+      <BountiesSummaryPanelImpl />
     </SummaryItem>
   );
 }
