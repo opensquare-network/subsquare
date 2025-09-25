@@ -4,7 +4,7 @@ import ThumbsUp from "next-common/components/thumbsUp";
 import ReplyButton from "next-common/components/actions/replyButton";
 import ThumbUpList from "next-common/components/actions/thumbUpList";
 import { Wrapper } from "next-common/components/actions/styled";
-import CommentEditor from "next-common/components/comment/editor";
+import PolkassemblyCommentReplyEditor from "./polkassemblyCommentReplyEditor";
 import { usePost } from "next-common/context/post";
 import { useUser } from "next-common/context/user";
 import useMentionList from "next-common/utils/hooks/useMentionList";
@@ -60,7 +60,6 @@ function useIsOwnComment() {
 
 export default function PolkassemblyCommentReplyActions({
   reloadComment = noop,
-  scrollToNewReplyComment = noop,
   setShowReplies = noop,
   replyToCommentId,
   replyToComment,
@@ -180,7 +179,7 @@ export default function PolkassemblyCommentReplyActions({
       </div>
       {showThumbsUpList && <ThumbUpList reactions={reactions} />}
       {isReply && (
-        <CommentEditor
+        <PolkassemblyCommentReplyEditor
           commentId={replyToCommentId}
           comment={replyToComment}
           ref={editorWrapperRef}
@@ -190,8 +189,8 @@ export default function PolkassemblyCommentReplyActions({
             setIsReply(false);
             if (reload) {
               setShowReplies(true);
-              await reloadComment();
-              scrollToNewReplyComment();
+              // await reloadReplies();
+              // scrollToNewReplyComment();
             }
           }}
           {...{ contentType, setContentType, content, setContent, users }}
