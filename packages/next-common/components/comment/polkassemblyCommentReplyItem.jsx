@@ -5,7 +5,7 @@ import {
 } from "@osn/previewer";
 import IdentityOrAddr from "next-common/components/IdentityOrAddr";
 import CommentItemTemplate from "next-common/components/comment/itemTemplate";
-import { CommentProvider, useComment } from "./context";
+import { CommentProvider, useComment, useSetComment } from "./context";
 import CommentUser from "./user";
 import { useState } from "react";
 import PolkassemblyCommentReplyActions from "../polkassembly/polkassemblyCommentReplyActions";
@@ -13,10 +13,14 @@ import { prettyHTML } from "next-common/utils/viewfuncs";
 import EditInput from "../editInput";
 import { useMountedState } from "react-use";
 import nextApi from "next-common/services/nextApi";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import { useDispatch } from "react-redux";
 
 function PolkassemblyCommentReplyItemImpl() {
+  const dispatch = useDispatch();
   const isMounted = useMountedState();
   const comment = useComment();
+  const setComment = useSetComment();
   const [isEdit, setIsEdit] = useState(false);
 
   const update = async (content, contentType) => {
@@ -24,6 +28,18 @@ function PolkassemblyCommentReplyItemImpl() {
       content,
       contentType,
     });
+  };
+
+  const reloadComment = async () => {
+    const { result, error } = await nextApi.fetch(
+      `polkassembly-comments/replies/${comment._id}`,
+    );
+    if (error) {
+      dispatch(newErrorToast(error.message));
+      return;
+    }
+
+    setComment(result);
   };
 
   return (
@@ -75,7 +91,7 @@ function PolkassemblyCommentReplyItemImpl() {
       }
       actions={
         <PolkassemblyCommentReplyActions
-          reloadComment={() => {}}
+          reloadComment={reloadComment}
           scrollToNewReplyComment={() => {}}
           replyToCommentId={comment.polkassemblyCommentId}
           setIsEdit={setIsEdit}

@@ -15,10 +15,10 @@ import { noop } from "lodash-es";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useComment } from "next-common/components/comment/context";
-import { useCommentActions } from "next-common/sima/context/commentActions";
 import { useFindMyUpVote } from "next-common/sima/actions/common";
 import nextApi from "next-common/services/nextApi";
 import { useRouter } from "next/router";
+import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 
 function useMyUpVote(reactions) {
   const findMyUpVote = useFindMyUpVote();
@@ -108,8 +108,33 @@ export default function PolkassemblyCommentReplyActions({
   const dispatch = useDispatch();
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
+  const { ensureLogin } = useEnsureLogin();
 
-  const { upVoteComment, cancelUpVoteComment } = useCommentActions();
+  const upVoteComment = useCallback(async () => {
+    const { error } = await nextApi.put(
+      `polkassembly-comments/replies/${comment._id}/reaction`,
+      { reaction: 1 },
+      { credentials: "include" },
+    );
+
+    if (error) {
+      dispatch(newErrorToast(error.message));
+      return;
+    }
+
+    await reloadComment();
+  }, [comment._id, dispatch, reloadComment]);
+
+  const cancelUpVoteComment = useCallback(async () => {
+    const { error } = await nextApi.delete(
+      `polkassembly-comments/replies/${comment._id}/reaction`,
+    );
+    if (error) {
+      dispatch(newErrorToast(error.message));
+      return;
+    }
+    await reloadComment();
+  }, [comment._id, dispatch, reloadComment]);
 
   const toggleThumbUp = async () => {
     if (!user || ownComment || thumbUpLoading) {
@@ -118,19 +143,14 @@ export default function PolkassemblyCommentReplyActions({
 
     setThumbUpLoading(true);
     try {
-      let result, error;
+      if (!(await ensureLogin())) {
+        return;
+      }
 
       if (myUpVote) {
-        ({ result, error } = await cancelUpVoteComment(post, comment));
+        await cancelUpVoteComment();
       } else {
-        ({ result, error } = await upVoteComment(post, comment));
-      }
-
-      if (result) {
-        await reloadComment();
-      }
-      if (error) {
-        dispatch(newErrorToast(error.message));
+        await upVoteComment();
       }
     } catch (e) {
       if (e.message !== "Cancelled") {
