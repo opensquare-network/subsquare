@@ -1,6 +1,5 @@
 import styled, { css } from "styled-components";
 import React, { useState } from "react";
-// import ErrorText from "next-common/components/ErrorText";
 import Flex from "next-common/components/styled/flex";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { noop } from "lodash-es";
