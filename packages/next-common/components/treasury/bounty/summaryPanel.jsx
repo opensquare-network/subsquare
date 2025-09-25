@@ -43,11 +43,11 @@ export function BountiesSummaryPanelImpl() {
         total: new BigNumber(0),
         count: 0,
       },
-      Proposed: {
+      Funded: {
         total: new BigNumber(0),
         count: 0,
       },
-      Funded: {
+      Proposed: {
         total: new BigNumber(0),
         count: 0,
       },
