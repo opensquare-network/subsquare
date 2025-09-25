@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import React from "react";
+import React, { useState } from "react";
 // import ErrorText from "next-common/components/ErrorText";
 import Flex from "next-common/components/styled/flex";
 import SecondaryButton from "next-common/lib/button/secondary";
@@ -15,7 +15,6 @@ import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useRouter } from "next/router";
-import { setLoading } from "next-common/store/reducers/referenda/votes";
 import { useComment } from "../comment/context";
 
 const Wrapper = styled.div`
@@ -59,7 +58,7 @@ function PolkassemblyCommentReplyEditor(
   const post = usePost();
   const chain = useChain();
   // const [errors, setErrors] = useState();
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { ensureLogin } = useEnsureLogin();
 
   const isEmpty = content === "" || content === "<p><br></p>";
@@ -144,7 +143,7 @@ function PolkassemblyCommentReplyEditor(
         )}
         <Tooltip content={isEmpty ? "Cannot submit empty content" : ""}>
           <PrimaryButton
-            // loading={loading}
+            loading={loading}
             disabled={isEmpty}
             onClick={createReply}
           >
