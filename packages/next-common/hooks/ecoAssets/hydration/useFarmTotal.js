@@ -1,14 +1,13 @@
 import { createSdkContext } from "@galacticcouncil/sdk";
 import { ApiPromise, WsProvider } from "@polkadot/api";
 import BigNumber from "bignumber.js";
-import { useCallback, useState, useEffect, useMemo } from "react";
-import useUniqueIds from "./hooks/useUniqueIds";
-import useAccountPositions from "./hooks/useAccountPosition";
-import useLiquidityPositionData from "./hooks/useLiquidityPositionData";
-import { getAllAssets } from "./useAssetsTotal";
-import useTotalIssuances from "./hooks/useTotalIssuances";
-import { useXYKSDKPools } from "./hooks/useHydrationPools";
-import useDisplayShareTokenPrice from "./hooks/useDisplayShareTokenPrice";
+import {  useMemo } from "react";
+import useAccountPositions from "./common/useAccountPosition";
+import useLiquidityPositionData from "./common/useLiquidityPositionData";
+import { useAllAssetsFunc } from "./common/useAllAssets";
+import useTotalIssuances from "./common/useTotalIssuances";
+import { useXYKSDKPools } from "./common/useHydrationPools";
+import useDisplayShareTokenPrice from "./common/useDisplayShareTokenPrice";
 import { scaleHuman, BN_0 } from "./utils";
 
 //  Hydration SDK in provider?
@@ -24,7 +23,9 @@ const sdk = await createSdkContext(api);
 const useAllXYKDeposits = (address) => {
   const { data: accountPositions } = useAccountPositions(address);
   const { xykDeposits = [] } = accountPositions ?? {};
-  const { getShareTokenByAddress } = getAllAssets();
+  const { getShareTokenByAddress, loading: allAssetsLoading } =
+    useAllAssetsFunc();
+  const issuances = useTotalIssuances();
 
   const depositNftsData = xykDeposits.reduce((acc, depositNft) => {
     const asset = getShareTokenByAddress(depositNft.data.ammPoolId.toString());
@@ -41,7 +42,6 @@ const useAllXYKDeposits = (address) => {
     ...new Set(depositNftsData.map((deposit) => deposit.asset.id)),
   ];
 
-  const issuances = useTotalIssuances();
   const shareTokeSpotPrices = useDisplayShareTokenPrice(uniqAssetIds);
   const { data: xykPools, isLoading: isXykPoolsLoading } = useXYKSDKPools();
 
@@ -50,54 +50,59 @@ const useAllXYKDeposits = (address) => {
     issuances.isLoading ||
     shareTokeSpotPrices.isInitialLoading;
 
-  const data = useMemo(
-    () =>
-      depositNftsData.reduce((acc, deposit) => {
-        const { asset, depositNft } = deposit;
-        const shareTokenIssuance = issuances.data?.get(asset.id);
+  const data = useMemo(() => {
+    if (isLoading) {
+      return {};
+    }
+    return depositNftsData.reduce((acc, deposit) => {
+      const { asset, depositNft } = deposit;
+      const shareTokenIssuance = issuances?.data?.get(asset.id);
 
-        const pool = xykPools?.find(
-          (pool) => pool.address === asset.poolAddress,
-        );
+      const pool = xykPools?.find((pool) => pool.address === asset.poolAddress);
 
-        if (shareTokenIssuance && pool) {
-          const index = asset.id;
-          const shares = depositNft.data.shares;
-          const ratio = BigNumber(shares).div(shareTokenIssuance);
-          const amountUSD = scaleHuman(shareTokenIssuance, asset.decimals)
-            .multipliedBy(shareTokeSpotPrices.data?.[0]?.spotPrice ?? 1)
-            .times(ratio);
+      if (shareTokenIssuance && pool) {
+        const index = asset.id;
+        const shares = depositNft.data.shares;
+        const ratio = BigNumber(shares).div(shareTokenIssuance);
+        const amountUSD = scaleHuman(shareTokenIssuance, asset.decimals)
+          .multipliedBy(shareTokeSpotPrices.data?.[0]?.spotPrice ?? 1)
+          .times(ratio);
 
-          const [assetA, assetB] = pool.tokens.map((token) => {
-            const amount = scaleHuman(
-              BigNumber(token.balance).times(ratio),
-              token.decimals,
-            );
+        const [assetA, assetB] = pool.tokens.map((token) => {
+          const amount = scaleHuman(
+            BigNumber(token.balance).times(ratio),
+            token.decimals,
+          );
 
-            return {
-              id: token.id,
-              symbol: token.symbol,
-              decimals: token.decimals,
-              amount,
-            };
-          });
+          return {
+            id: token.id,
+            symbol: token.symbol,
+            decimals: token.decimals,
+            amount,
+          };
+        });
 
-          acc[index] = [
-            ...(acc[index] ?? []),
-            {
-              assetA,
-              assetB,
-              amountUSD,
-              assetId: asset.id,
-              depositId: depositNft.id,
-            },
-          ];
-        }
+        acc[index] = [
+          ...(acc[index] ?? []),
+          {
+            assetA,
+            assetB,
+            amountUSD,
+            assetId: asset.id,
+            depositId: depositNft.id,
+          },
+        ];
+      }
 
-        return acc;
-      }, {}),
-    [depositNftsData, issuances.data, xykPools, shareTokeSpotPrices.data],
-  );
+      return acc;
+    }, {});
+  }, [
+    depositNftsData,
+    issuances?.data,
+    xykPools,
+    shareTokeSpotPrices?.data,
+    isLoading,
+  ]);
 
   return { data, isLoading };
 };
@@ -147,7 +152,7 @@ function useAllFarmDeposits(address) {
   };
 }
 
-function useFarmDepositsTotal(address) {
+export default function useFarmTotal(address) {
   const { isLoading, omnipool, xyk } = useAllFarmDeposits(address);
 
   const total = useMemo(() => {
@@ -174,30 +179,5 @@ function useFarmDepositsTotal(address) {
     return poolsTotal.toString();
   }, [omnipool, xyk]);
 
-  return { isLoading: isLoading, value: total };
-}
-
-// Farm Total Balance
-export default function useFarmTotal(address) {
-  const [assetsBalance, setAssetsBalance] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const { value: total } = useFarmDepositsTotal(address);
-  console.log("::::farmTotal", total);
-
-  const fetchData = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      // setAssetsBalance(totalBalance);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [address]);
-
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
-
-  return { balance: assetsBalance, isLoading };
+  return { isLoading: isLoading, balance: total };
 }

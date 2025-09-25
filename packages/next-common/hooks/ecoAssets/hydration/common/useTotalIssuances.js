@@ -1,5 +1,6 @@
 import { useCallback, useState, useEffect } from "react";
 import { useHydrationApi } from "next-common/hooks/chain/useHydrationApi";
+import BigNumber from "bignumber.js";
 
 export default function useTotalIssuances() {
   const [data, setData] = useState(null);
@@ -7,13 +8,18 @@ export default function useTotalIssuances() {
   const api = useHydrationApi();
 
   const fetchTotalIssuances = useCallback(async () => {
+    if (!api) {
+      return;
+    }
+
     setIsLoading(true);
     try {
       const res = await api.query.tokens.totalIssuance.entries();
+
       const issuances = new Map(
         res.map(([key, rawData]) => [
           key.args[0].toString(),
-          rawData.toBigNumber(),
+          new BigNumber(rawData.toString()),
         ]),
       );
       setData(issuances);
@@ -25,11 +31,8 @@ export default function useTotalIssuances() {
   }, [api]);
 
   useEffect(() => {
-    if (!api) {
-      return;
-    }
     fetchTotalIssuances();
-  }, [fetchTotalIssuances, api]);
+  }, [fetchTotalIssuances]);
 
   return { data, isLoading };
 }

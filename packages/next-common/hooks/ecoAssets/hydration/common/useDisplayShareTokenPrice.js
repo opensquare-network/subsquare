@@ -1,19 +1,28 @@
-import { useMemo } from "react";
+import { useMemo, useEffect, useCallback, useState } from "react";
 import useTotalIssuances from "./useTotalIssuances";
 import { useXYKSDKPools } from "./useHydrationPools";
-import { getAllAssets, queryAssetPrice } from "../useAssetsTotal";
+import { queryAssetPrice } from "../useAssetsTotal";
+import { useAllAssetsFunc } from "./useAllAssets";
 import BigNumber from "bignumber.js";
 import { isNil } from "lodash-es";
 
 export default function useDisplayShareTokenPrice(ids) {
-  // TODO: await in useCallback
-  const { getShareTokens, getAssetWithFallback } = getAllAssets();
-  const pools = getShareTokens(ids);
+  const {
+    getShareTokens,
+    getAssetWithFallback,
+    loading: allAssetsLoading,
+  } = useAllAssetsFunc();
 
   const { data: xykPools = [], isLoading: isPoolsLoading } = useXYKSDKPools();
   const { data: issuances, isLoading: isIssuanceLoading } = useTotalIssuances();
 
+  const [data, setData] = useState([]);
+
   const { ids: pricesIds, tvls: shareTokensTvl } = useMemo(() => {
+    if (allAssetsLoading || !getShareTokens) {
+      return { ids: [], tvls: [] };
+    }
+    const pools = getShareTokens(ids);
     return pools.reduce(
       (acc, shareToken) => {
         const { poolAddress } = shareToken ?? {};
@@ -54,14 +63,14 @@ export default function useDisplayShareTokenPrice(ids) {
       },
       { ids: [], tvls: [] },
     );
-  }, [pools, xykPools]);
+  }, [allAssetsLoading, getShareTokens, ids, xykPools]);
 
-  const isLoading = isIssuanceLoading || isPoolsLoading;
+  const isLoading = isIssuanceLoading || isPoolsLoading || allAssetsLoading;
 
-  const data = useMemo(() => {
-    return shareTokensTvl
-      .map((shareTokenTvl) => {
-        const spotPrice = queryAssetPrice(shareTokenTvl.spotPriceId);
+  const fetchData = useCallback(async () => {
+    const displayShareTokenPrices = await Promise.all(
+      shareTokensTvl.map(async (shareTokenTvl) => {
+        const spotPrice = await queryAssetPrice(shareTokenTvl.spotPriceId);
 
         const tvlDisplay = BigNumber(shareTokenTvl.tvl).multipliedBy(spotPrice);
 
@@ -80,9 +89,16 @@ export default function useDisplayShareTokenPrice(ids) {
           tokenOut: "10",
           spotPrice: shareTokenDisplay,
         };
-      })
-      .filter((item) => !isNil(item));
+      }),
+    ).filter((item) => !isNil(item));
+
+    setData(displayShareTokenPrices);
   }, [getAssetWithFallback, issuances, shareTokensTvl]);
+
+  useEffect(() => {
+    if (isLoading || !pricesIds.length) return;
+    fetchData();
+  }, [pricesIds, shareTokensTvl, isLoading, fetchData]);
 
   return { data, isLoading, isInitialLoading: isLoading };
 }

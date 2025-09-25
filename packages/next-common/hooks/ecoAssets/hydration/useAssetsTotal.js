@@ -1,9 +1,8 @@
-import { createSdkContext, findNestedKey } from "@galacticcouncil/sdk";
+import { createSdkContext } from "@galacticcouncil/sdk";
 import { ApiPromise, WsProvider } from "@polkadot/api";
 import BigNumber from "bignumber.js";
 import { useCallback, useState, useEffect } from "react";
-import { HUB_ID, fetchShareTokens, fallbackAsset } from "./utils";
-import useAllAssets from "./hooks/useAllAssets";
+import useAllAssets from "./common/useAllAssets";
 
 //  Hydration SDK in provider?
 const ws = "wss://rpc.hydradx.cloud";
@@ -16,166 +15,6 @@ const api = await ApiPromise.create({
 const sdk = await createSdkContext(api);
 
 const NATIVE_ASSET_ID = "0";
-const bannedAssets = ["1000042"];
-
-const ASSETHUB_ID_BLACKLIST = [
-  "34",
-  "41",
-  "43",
-  "47",
-  "49",
-  "52",
-  "53",
-  "54",
-  "65",
-  "73",
-  "74",
-  "75",
-  "92",
-  "92",
-  "97",
-  "22222000",
-  "22222001",
-  "22222002",
-  "22222003",
-  "22222004",
-  "50000019",
-  "50000030",
-  "50000031",
-  "50000032",
-  "50000033",
-  "50000034",
-];
-
-const getFullAsset = (asset) => {
-  const isToken = asset.type === "Token";
-  const isBond = asset.type === "Bond";
-  const isStableSwap = asset.type === "StableSwap";
-  const isExternal = asset.type === "External";
-  const isErc20 = asset.type === "Erc20";
-  const isShareToken = false;
-
-  const parachainEntry = findNestedKey(asset.location, "parachain");
-
-  return {
-    ...asset,
-    parachainId: parachainEntry?.parachain.toString() || undefined,
-    existentialDeposit: asset.existentialDeposit,
-    isToken,
-    isBond,
-    isStableSwap,
-    isExternal,
-    isErc20,
-    isShareToken,
-  };
-};
-
-export async function getAllAssets() {
-  const { client } = sdk ?? {};
-  const assets = await client.asset.getOnChainAssets();
-  const shareTokensRaw = await fetchShareTokens(api);
-
-  const allAssets = assets.reduce(
-    (acc, assetRaw) => {
-      if (bannedAssets.includes(assetRaw.id)) return acc;
-
-      const asset = {
-        ...getFullAsset(assetRaw),
-      };
-
-      if (
-        asset?.externalId &&
-        ASSETHUB_ID_BLACKLIST.includes(asset.externalId)
-      ) {
-        return acc;
-      }
-
-      acc.all.set(asset.id, asset);
-
-      if (asset.id === NATIVE_ASSET_ID) {
-        acc.native = asset;
-      }
-
-      if (asset.id === HUB_ID) {
-        acc.hub = asset;
-      }
-
-      return acc;
-    },
-    {
-      all: new Map([]),
-      native: {},
-      hub: {},
-    },
-  );
-
-  // TODO: split as hooks
-  // return allAssets;
-
-  const { shareTokens, shareTokensMap } = shareTokensRaw.reduce(
-    (acc, token) => {
-      if (!allAssets.all) {
-        return acc;
-      }
-      const assetA = allAssets.all.get(token.assets[0]);
-      const assetB = allAssets.all.get(token.assets[1]);
-
-      if (assetA && assetB && assetA.symbol && assetB.symbol) {
-        const assetDecimal =
-          Number(assetA.id) > Number(assetB.id) ? assetB : assetA;
-        const decimals = assetDecimal.decimals;
-        const symbol = `${assetA.symbol}/${assetB.symbol}`;
-        const name = `${assetA.name.split(" (")[0]}/${
-          assetB.name.split(" (")[0]
-        }`;
-        const iconId = [
-          isBond(assetA) ? assetA.underlyingAssetId : assetA.id,
-          isBond(assetB) ? assetB.underlyingAssetId : assetB.id,
-        ];
-
-        const tokenFull = {
-          ...fallbackAsset,
-          id: token.shareTokenId,
-          poolAddress: token.poolAddress,
-          assets: [assetA, assetB],
-          isShareToken: true,
-          decimals,
-          symbol,
-          name,
-          iconId,
-        };
-        acc.shareTokens.push(tokenFull);
-        acc.shareTokensMap.set(tokenFull.id, tokenFull);
-      }
-
-      return acc;
-    },
-    { shareTokens: [], shareTokensMap: new Map([]) },
-  );
-
-  const allWithShareTokensMap = new Map([...all, ...shareTokensMap]);
-
-  const getAsset = (id) => allWithShareTokensMap.get(id);
-
-  const getAssetWithFallback = (id) => getAsset(id) ?? fallbackAsset;
-  const getAssets = (ids) => ids.map((id) => getAssetWithFallback(id));
-
-  const getShareToken = (id) => shareTokensMap.get(id);
-  const getShareTokens = (ids) => ids.map((id) => getShareToken(id));
-
-  const getShareTokenByAddress = (poolAddress) =>
-    shareTokens.find((shareToken) => shareToken?.poolAddress === poolAddress);
-
-  return {
-    allAssets,
-    getAsset,
-    getAssetWithFallback,
-    getAssets,
-    getShareToken,
-    getShareTokens,
-    getShareTokenByAddress,
-  };
-}
 
 export async function queryAssetPrice(assetIn, assetOut = "10") {
   if (!assetIn || !assetOut || !sdk) {
@@ -215,7 +54,6 @@ async function queryTokenAssetTotalBalance(address, allAssets) {
   const { client } = sdk ?? {};
   const { balanceV2 } = client ?? {};
 
-  // const allAssets = await getAllAssets();
   const { all, native } = allAssets ?? {};
   const followedAssets = [];
   const followedErc20Tokens = [];
@@ -279,9 +117,13 @@ async function calculateTotalBalance(balances) {
 export default function useAssetsTotal(address) {
   const [assetsBalance, setAssetsBalance] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const { data: allAssets } = useAllAssets();
+  const { allAssets, loading: allAssetsLoading } = useAllAssets();
 
   const fetchData = useCallback(async () => {
+    if (allAssetsLoading) {
+      return;
+    }
+
     setIsLoading(true);
     try {
       const balances = await queryTokenAssetTotalBalance(address, allAssets);
@@ -292,7 +134,7 @@ export default function useAssetsTotal(address) {
     } finally {
       setIsLoading(false);
     }
-  }, [address]);
+  }, [address, allAssetsLoading]);
 
   useEffect(() => {
     fetchData();

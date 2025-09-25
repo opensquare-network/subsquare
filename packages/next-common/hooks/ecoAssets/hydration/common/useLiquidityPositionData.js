@@ -1,64 +1,104 @@
-import { useCallback } from "react";
+import { useCallback, useMemo, useState, useEffect } from "react";
 import { BN_NAN, scale } from "../utils";
-import { getAllAssets, queryAssetPrice } from "../useAssetsTotal";
+import { queryAssetPrice } from "../useAssetsTotal";
+import { useAllAssetsFunc } from "./useAllAssets";
 import BigNumber from "bignumber.js";
 import {
   calculate_liquidity_lrna_out,
   calculate_liquidity_out,
 } from "@galacticcouncil/math-omnipool";
+import { useOmniPoolTokens } from "./useHydrationPools";
 
-import { createSdkContext } from "@galacticcouncil/sdk";
-import { ApiPromise, WsProvider } from "@polkadot/api";
+function useHubPrice(hub, loading) {
+  const [price, setPrice] = useState(null);
 
-//  Hydration SDK in provider?
-const ws = "wss://rpc.hydradx.cloud";
-const wsProvider = new WsProvider(ws, 2_500, {}, 60_000, 102400, 10 * 60_000);
+  const fetchPrice = useCallback(async () => {
+    if (loading) {
+      return;
+    }
 
-const api = await ApiPromise.create({
-  provider: wsProvider,
-});
+    try {
+      const price = await queryAssetPrice(hub.id);
+      setPrice(price);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [hub.id, loading]);
 
-const sdk = await createSdkContext(api);
+  useEffect(() => {
+    fetchPrice();
+  }, [fetchPrice]);
 
-async function getAllPools(api) {
-  const pools = await api.router.getPools();
-  return pools;
+  return price;
 }
 
-async function getOmnipoolTokens() {
-  if (!sdk) {
-    return null;
-  }
+function useOmnipoolAssetsPrice(assets, loading) {
+  const [pricesMap, setPricesMap] = useState(null);
 
-  const { api } = sdk;
-  const pools = await getAllPools(api);
+  const fetchPrices = useCallback(async () => {
+    if (loading || !assets || !assets?.length) {
+      return;
+    }
 
-  const omnipoolTokens = pools.filter((pool) => pool.type === "Omnipool");
+    try {
+      const assetPrices = await Promise.all(
+        assets.map(async (asset) => {
+          const price = await queryAssetPrice(asset.id);
+          return {
+            id: asset.id,
+            price,
+          };
+        }),
+      );
+      setPricesMap(assetPrices);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [assets, loading]);
 
-  const dataMap = omnipoolTokens
-    ? new Map(omnipoolTokens.map((asset) => [asset.id, asset]))
-    : undefined;
+  useEffect(() => {
+    fetchPrices();
+  }, [fetchPrices]);
 
-  return {
-    data: omnipoolTokens,
-    dataMap,
-  };
+  return pricesMap;
 }
 
 export default function useLiquidityPositionData() {
+  const {
+    hub,
+    getAssetWithFallback,
+    loading: allAssetsLoading,
+  } = useAllAssetsFunc();
+  const hubPrice = useHubPrice(hub, allAssetsLoading);
+
+  const { data: omnipoolTokens, isLoading: omniPoolTokensLoading } =
+    useOmniPoolTokens();
+  const dataMap = useMemo(() => {
+    if (omniPoolTokensLoading || !omnipoolTokens) {
+      return undefined;
+    }
+
+    return new Map(omnipoolTokens.map((asset) => [asset.id, asset]));
+  }, [omniPoolTokensLoading, omnipoolTokens]);
+
+  const assetsPriceMap = useOmnipoolAssetsPrice(
+    omnipoolTokens,
+    omniPoolTokensLoading,
+  );
+
   const getData = useCallback(
-    async (position, options) => {
-      const { hub, getAssetWithFallback } = await getAllAssets();
-      console.log("::::hub", hub, getAllAssets());
-      const omnipoolAssets = getOmnipoolTokens();
+    (position, options) => {
+      if (allAssetsLoading || !hub || !hubPrice || !assetsPriceMap) {
+        return undefined;
+      }
 
-      const hubPrice = queryAssetPrice(hub.id);
-
-      const omnipoolAsset = omnipoolAssets.dataMap?.get(position.assetId);
+      const omnipoolAsset = dataMap?.get(position.assetId);
 
       if (!omnipoolAsset) return undefined;
 
-      const spotPrice = queryAssetPrice(omnipoolAsset.id);
+      const spotPrice = assetsPriceMap?.find(
+        (asset) => asset.id === omnipoolAsset.id,
+      )?.price;
 
       const meta = getAssetWithFallback(omnipoolAsset.id);
 
@@ -146,7 +186,14 @@ export default function useLiquidityPositionData() {
         meta,
       };
     },
-    [],
+    [
+      allAssetsLoading,
+      assetsPriceMap,
+      dataMap,
+      getAssetWithFallback,
+      hub,
+      hubPrice,
+    ],
   );
 
   return { getData };
