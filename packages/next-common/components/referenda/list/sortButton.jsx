@@ -22,7 +22,9 @@ export default function SortButton() {
   }, [router.query, sort]);
 
   const tooltipText =
-    sort === "" ? "Click to sort descending" : "Click to clear sorting";
+    sort === ""
+      ? "Click to sort referenda by index descending"
+      : "Click to clear sorting";
 
   return (
     <Tooltip content={tooltipText}>
