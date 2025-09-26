@@ -18,6 +18,7 @@ import {
   PostItemBanner,
 } from "../common";
 import { TreasuryTag } from "next-common/components/tags/state/treasury";
+import { TreasuryAwardCountDownImpl } from "next-common/components/detail/treasury/proposal/awardCountDown";
 
 export default function TreasuryPorposalsPostItem({ data }) {
   return (
@@ -31,7 +32,15 @@ export default function TreasuryPorposalsPostItem({ data }) {
         <FooterWrapper>
           <Footer>
             <PostItemUser data={data} />
-            <PostItemTime data={data} />
+            <PostItemTime
+              data={data}
+              elapseIcon={
+                <TreasuryAwardCountDownImpl
+                  proposalIndex={data.proposalIndex}
+                  showText={false}
+                />
+              }
+            />
             <PostItemCommentCount data={data} />
             <PostItemMalicious isMalicious={data?.isMalicious} />
             <PostItemAISummary data={data} />
