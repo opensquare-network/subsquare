@@ -40,15 +40,15 @@ export default function useInnerPoints(labels) {
 }
 
 export function useCurrentHeightPoints() {
-  const { supportData, approvalData, totalHours } = useReferendumCurveData();
+  const { supportData, approvalData, labels } = useReferendumCurveData();
   const currentHeight = useChainOrScanHeight();
   const steps = useBlockSteps();
   const beginHeight = useBeginHeight();
 
   const xValue = useMemo(() => {
     const index = Math.floor((currentHeight - beginHeight) / steps);
-    return Math.min(index, Math.ceil(totalHours));
-  }, [beginHeight, currentHeight, steps, totalHours]);
+    return Math.min(index, labels.length - 1);
+  }, [beginHeight, currentHeight, labels.length, steps]);
 
   const [, supportInnerPoint] = useSupportPoints(
     xValue,
