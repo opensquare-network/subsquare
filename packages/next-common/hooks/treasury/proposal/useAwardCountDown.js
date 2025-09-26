@@ -7,21 +7,17 @@ import { CountDownWrapper } from "next-common/components/detail/common/styled";
 import { useEffect, useMemo, useState } from "react";
 import { useContextApi } from "next-common/context/api";
 import { useTreasuryPallet } from "next-common/context/treasury";
-import useCall from "next-common/utils/hooks/useCall";
+import { useTreasuryApprovals } from "next-common/context/treasury/approvals";
 
 const DEFAULT_RESULT = {
   component: null,
 };
 
-export default function useAwardCountDown({
-  approvalsQuery,
-  proposalIndex,
-  showText = true,
-}) {
+export default function useAwardCountDown({ proposalIndex, showText = true }) {
+  const { approvalsList = [] } = useTreasuryApprovals();
   const api = useContextApi();
   const pallet = useTreasuryPallet();
   const blockHeight = useChainOrScanHeight();
-  const { value: rawApprovals } = useCall(approvalsQuery, []);
 
   const spendPeriod = useMemo(() => {
     return api?.consts?.[pallet]?.spendPeriod?.toNumber() || null;
@@ -36,9 +32,8 @@ export default function useAwardCountDown({
     }
   }, [blockHeight, spendPeriod]);
 
-  if (!gone || !rawApprovals) return DEFAULT_RESULT;
+  if (!gone) return DEFAULT_RESULT;
 
-  const approvalsList = rawApprovals.toJSON() || [];
   if (!approvalsList.includes(proposalIndex)) return DEFAULT_RESULT;
 
   const shortText = `Next award in ${estimatedBlocksTime}`;
