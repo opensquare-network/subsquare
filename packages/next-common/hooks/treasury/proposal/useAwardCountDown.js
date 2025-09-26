@@ -27,9 +27,7 @@ export default function useAwardCountDown({ proposalIndex, showText = true }) {
 
   const estimatedBlocksTime = useEstimateBlocksTime(spendPeriod - gone);
 
-  if (!gone) return DEFAULT_RESULT;
-
-  if (!approvalsList.includes(proposalIndex)) return DEFAULT_RESULT;
+  if (!gone || !approvalsList.includes(proposalIndex)) return DEFAULT_RESULT;
 
   const shortText = `Next award in ${estimatedBlocksTime}`;
   const longText = `${shortText}, #${bigNumber2Locale(
