@@ -17,8 +17,8 @@ import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useComment } from "next-common/components/comment/context";
 import { useFindMyUpVote } from "next-common/sima/actions/common";
 import nextApi from "next-common/services/nextApi";
-import { useRouter } from "next/router";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
+import { usePolkassemblyCommentRepliesContext } from "next-common/hooks/polkassembly/usePolkassemblyCommentReply";
 
 function useMyUpVote(reactions) {
   const findMyUpVote = useFindMyUpVote();
@@ -27,9 +27,10 @@ function useMyUpVote(reactions) {
 
 function ContextMenu({ setIsEdit }) {
   const dispatch = useDispatch();
-  const router = useRouter();
   const comment = useComment();
   const ownComment = useIsOwnComment();
+  const { refetchPolkassemblyCommentReplies } =
+    usePolkassemblyCommentRepliesContext();
 
   const deleteComment = useCallback(async () => {
     const { error } = await nextApi.delete(
@@ -39,8 +40,8 @@ function ContextMenu({ setIsEdit }) {
       dispatch(newErrorToast(error.message));
       return;
     }
-    router.replace(router.asPath);
-  }, [comment._id, dispatch, router]);
+    refetchPolkassemblyCommentReplies();
+  }, [comment._id, dispatch, refetchPolkassemblyCommentReplies]);
 
   return (
     <CommentMoreMenu

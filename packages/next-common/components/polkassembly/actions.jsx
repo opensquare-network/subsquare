@@ -11,6 +11,7 @@ import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import { useChain } from "next-common/context/chain";
 import PolkassemblyCommentReplyEditor from "./polkassemblyCommentReplyEditor";
 import { noop } from "lodash-es";
+import { usePolkassemblyCommentRepliesContext } from "next-common/hooks/polkassembly/usePolkassemblyCommentReply";
 
 const Wrapper = styled(Flex)`
   align-items: flex-start;
@@ -75,6 +76,9 @@ export default function PolkassemblyActions({
     }, 100);
   };
 
+  const { refetchPolkassemblyCommentReplies } =
+    usePolkassemblyCommentRepliesContext();
+
   return (
     <>
       <Wrapper>
@@ -117,7 +121,7 @@ export default function PolkassemblyActions({
             setIsReply(false);
             if (reload) {
               setShowReplies(true);
-              // await reloadReplies();
+              await refetchPolkassemblyCommentReplies();
               // scrollToNewReplyComment();
             }
           }}

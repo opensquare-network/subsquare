@@ -8,7 +8,7 @@ import { useDetailType } from "next-common/context/page";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { PolkassemblyChains } from "next-common/utils/polkassembly";
 import { cloneDeep } from "lodash-es";
-import { usePolkassemblyCommentReply } from "./polkassembly/usePolkassemblyCommentReply";
+import { usePolkassemblyCommentRepliesContext } from "./polkassembly/usePolkassemblyCommentReply";
 
 function getShouldReadPolkassemblyComments(chain) {
   return PolkassemblyChains.includes(chain);
@@ -82,7 +82,7 @@ export function usePostCommentsData() {
   const post = usePost();
   const polkassemblyPostData = usePolkassemblyPostData(post);
   const { polkassemblyCommentReplies, isPolkassemblyCommentRepliesLoading } =
-    usePolkassemblyCommentReply(post);
+    usePolkassemblyCommentRepliesContext();
 
   const [commentsData, setCommentsData] = useState(comments);
   const shouldReadPolkassemblyComments =
