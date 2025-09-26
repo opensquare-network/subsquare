@@ -26,6 +26,7 @@ import { TokenPricesProvider } from "next-common/context/centrifuge/tokenPrices"
 import { backendApi } from "next-common/services/nextApi";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { votingSpace } from "next-common/utils/opensquareVoting";
+import generateLayoutRawTitle from "next-common/utils/generateLayoutRawTitle";
 
 const ConfirmingReferendaStats = dynamicClientOnly(() =>
   import("next-common/components/overview/confirmingReferendaStats"),
@@ -97,6 +98,7 @@ function DefaultOverviewPage() {
   return (
     <ListLayout
       title={chainSettings.name}
+      seoInfo={{ rawTitle: generateLayoutRawTitle("governance platform") }}
       titleExtra={<TitleExtra />}
       description={chainSettings.description}
       headContent={<HeadContent />}
