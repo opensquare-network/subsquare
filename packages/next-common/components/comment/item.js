@@ -228,7 +228,13 @@ function CommentItemImpl({
       }
       renderReplyItem={(reply) =>
         reply.comment_source === "polkassembly" ? (
-          <PolkassemblyCommentItem key={reply.id} data={reply} isSecondLevel />
+          <PolkassemblyCommentItem
+            key={reply.id}
+            data={reply}
+            isSecondLevel
+            replyToComment={replyToComment || comment}
+            reloadComment={reloadComment}
+          />
         ) : (
           <CommentItem
             key={reply._id}

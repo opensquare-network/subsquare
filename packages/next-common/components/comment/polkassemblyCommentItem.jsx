@@ -20,7 +20,11 @@ import { useChain } from "next-common/context/chain";
 import { ensurePolkassemblyRelativeLink } from "next-common/utils/polkassembly/ensurePolkassemblyRelativeLink";
 import { PolkassemblyCommentReplyItem } from "./polkassemblyCommentReplyItem";
 
-function PolkassemblyCommentItemImpl({ isSecondLevel, topLevelComment }) {
+function PolkassemblyCommentItemImpl({
+  isSecondLevel,
+  replyToComment,
+  reloadComment,
+}) {
   const chain = useChain();
   const comment = useComment();
   const type = useDetailType();
@@ -29,6 +33,8 @@ function PolkassemblyCommentItemImpl({ isSecondLevel, topLevelComment }) {
   const isUniversalComments = useIsUniversalPostComments();
 
   comment.content = ensurePolkassemblyRelativeLink(comment.content, chain);
+
+  const _replyToComment = replyToComment || comment;
 
   return (
     <CommentItemTemplate
@@ -66,26 +72,27 @@ function PolkassemblyCommentItemImpl({ isSecondLevel, topLevelComment }) {
       actions={
         <PolkassemblyActions
           reactions={comment.reactions}
-          topLevelComment={topLevelComment || comment}
+          replyToComment={_replyToComment}
+          reloadComment={reloadComment}
         />
       }
       renderReplyItem={(reply) => (
         <PolkassemblyReplyItem
           key={reply.id}
           data={reply}
-          topLevelComment={topLevelComment || comment}
+          replyToComment={_replyToComment}
         />
       )}
     />
   );
 }
 
-function PolkassemblyReplyItem({ data, topLevelComment }) {
+function PolkassemblyReplyItem({ data, replyToComment, reloadComment }) {
   if (data.comment_source === "polkassembly-comment-reply") {
     return (
       <PolkassemblyCommentReplyItem
         data={data}
-        topLevelComment={topLevelComment}
+        replyToComment={replyToComment}
       />
     );
   }
@@ -94,7 +101,8 @@ function PolkassemblyReplyItem({ data, topLevelComment }) {
     <PolkassemblyCommentItem
       data={data}
       isSecondLevel
-      topLevelComment={topLevelComment}
+      replyToComment={replyToComment}
+      reloadComment={reloadComment}
     />
   );
 }

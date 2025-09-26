@@ -11,6 +11,7 @@ import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import { useChain } from "next-common/context/chain";
 import PolkassemblyCommentReplyEditor from "./polkassemblyCommentReplyEditor";
 import { noop } from "lodash-es";
+import CommentEditor from "next-common/components/comment/editor";
 
 const Wrapper = styled(Flex)`
   align-items: flex-start;
@@ -40,7 +41,8 @@ export default function PolkassemblyActions({
   reactions,
   extraActions,
   setShowReplies = noop,
-  topLevelComment,
+  replyToComment,
+  reloadComment = noop,
 }) {
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
   const thumbsUpReactions = (reactions || []).filter((r) => r.reaction === 1);
@@ -76,6 +78,44 @@ export default function PolkassemblyActions({
     }, 100);
   };
 
+  let editor = null;
+
+  if (replyToComment?.comment_source === "polkassembly") {
+    editor = (
+      <PolkassemblyCommentReplyEditor
+        polkassemblyCommentId={replyToComment?.id || comment?.id}
+        ref={editorWrapperRef}
+        setQuillRef={setQuillRef}
+        isReply={isReply}
+        onFinishedEdit={async (reload) => {
+          setIsReply(false);
+          if (reload) {
+            setShowReplies(true);
+          }
+        }}
+        {...{ contentType, setContentType, content, setContent, users }}
+      />
+    );
+  } else {
+    editor = (
+      <CommentEditor
+        comment={replyToComment}
+        ref={editorWrapperRef}
+        setQuillRef={setQuillRef}
+        isReply={isReply}
+        onFinishedEdit={async (reload) => {
+          setIsReply(false);
+          if (reload) {
+            setShowReplies(true);
+            await reloadComment();
+            // scrollToNewReplyComment();
+          }
+        }}
+        {...{ contentType, setContentType, content, setContent, users }}
+      />
+    );
+  }
+
   return (
     <>
       <Wrapper className="space-x-4">
@@ -105,21 +145,7 @@ export default function PolkassemblyActions({
             ))}
         </GreyWrapper>
       )}
-      {isReply && (
-        <PolkassemblyCommentReplyEditor
-          polkassemblyCommentId={topLevelComment?.id || comment?.id}
-          ref={editorWrapperRef}
-          setQuillRef={setQuillRef}
-          isReply={isReply}
-          onFinishedEdit={async (reload) => {
-            setIsReply(false);
-            if (reload) {
-              setShowReplies(true);
-            }
-          }}
-          {...{ contentType, setContentType, content, setContent, users }}
-        />
-      )}
+      {isReply && editor}
     </>
   );
 }
