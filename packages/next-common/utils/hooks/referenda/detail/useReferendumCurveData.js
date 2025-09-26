@@ -43,5 +43,6 @@ export default function useReferendumCurveData() {
     labels,
     supportData,
     approvalData,
+    totalHours: hours,
   };
 }
