@@ -26,6 +26,9 @@ const zkverify = {
   group: MenuGroups.Solochain,
   modules: zkverifyModules,
   integrations: zkverifyIntegrations,
+  referendaActions: {
+    startFrom: 0,
+  },
   ...zkverifyThemeVars,
 };
 
