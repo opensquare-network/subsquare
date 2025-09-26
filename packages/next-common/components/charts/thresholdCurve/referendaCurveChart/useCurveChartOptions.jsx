@@ -5,7 +5,7 @@ import { toPrecision } from "next-common/utils";
 import { abbreviateBigNumber } from "next-common/utils/viewfuncs";
 import { useDecisionIndex } from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
 import { useMemo } from "react";
-import useInnerPoints from "../hooks/useInnerPoints";
+import { useCurrentHeightPoints } from "../hooks/useInnerPoints";
 
 export default function useCurveChartOptions(
   labels,
@@ -108,9 +108,7 @@ export default function useCurveChartOptions(
       : null,
   );
 
-  // inner points
-  const { approvalInnerPoint, supportInnerPoint } =
-    useInnerPoints(sourceLabels);
+  const { approvalInnerPoint, supportInnerPoint } = useCurrentHeightPoints();
   set(
     options,
     "plugins.annotation.annotations.pointApprovalInner",

@@ -43,6 +43,10 @@ export function useDecisionBlocks() {
 
 const oneHour = 3600 * 1000;
 
+/**
+ * @description it means how many blocks in one hour
+ * @returns
+ */
 export function useBlockSteps() {
   const blockTime = useSelector(blockTimeSelector);
   return oneHour / blockTime; // it means the blocks between 2 dots.
