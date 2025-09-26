@@ -96,6 +96,7 @@ function DefaultOverviewPage() {
 
   return (
     <ListLayout
+      title={chainSettings.name}
       titleExtra={<TitleExtra />}
       description={chainSettings.description}
       headContent={<HeadContent />}
