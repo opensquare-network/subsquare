@@ -92,8 +92,6 @@ function PolkassemblyCommentReplyItemImpl() {
       actions={
         <PolkassemblyCommentReplyActions
           reloadComment={reloadComment}
-          scrollToNewReplyComment={() => {}}
-          replyToCommentId={comment.polkassemblyCommentId}
           setIsEdit={setIsEdit}
         />
       }

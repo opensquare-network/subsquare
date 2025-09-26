@@ -13,8 +13,6 @@ import { usePost } from "next-common/context/post";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-// import { useRouter } from "next/router";
-import { useComment } from "../comment/context";
 import { usePolkassemblyCommentRepliesContext } from "next-common/hooks/polkassembly/usePolkassemblyCommentReply";
 
 const Wrapper = styled.div`
@@ -49,10 +47,10 @@ function PolkassemblyCommentReplyEditor(
     setContentType,
     setQuillRef = () => {},
     users = [],
+    polkassemblyCommentId,
   },
   ref,
 ) {
-  const comment = useComment();
   // const router = useRouter();
   const dispatch = useDispatch();
   const post = usePost();
@@ -69,14 +67,6 @@ function PolkassemblyCommentReplyEditor(
     setLoading(true);
     try {
       if (!(await ensureLogin())) {
-        return;
-      }
-
-      const polkassemblyCommentId =
-        comment?.polkassemblyCommentId || comment?.id;
-
-      if (!polkassemblyCommentId) {
-        dispatch(newErrorToast("Polkassembly comment id not found"));
         return;
       }
 

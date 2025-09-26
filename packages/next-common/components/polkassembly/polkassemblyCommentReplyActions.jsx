@@ -61,9 +61,6 @@ function useIsOwnComment() {
 
 export default function PolkassemblyCommentReplyActions({
   reloadComment = noop,
-  setShowReplies = noop,
-  replyToCommentId,
-  replyToComment,
   setIsEdit,
 }) {
   const comment = useComment();
@@ -181,18 +178,12 @@ export default function PolkassemblyCommentReplyActions({
       {showThumbsUpList && <ThumbUpList reactions={reactions} />}
       {isReply && (
         <PolkassemblyCommentReplyEditor
-          commentId={replyToCommentId}
-          comment={replyToComment}
+          polkassemblyCommentId={comment.polkassemblyCommentId}
           ref={editorWrapperRef}
           setQuillRef={setQuillRef}
           isReply={isReply}
-          onFinishedEdit={async (reload) => {
+          onFinishedEdit={async () => {
             setIsReply(false);
-            if (reload) {
-              setShowReplies(true);
-              // await reloadReplies();
-              // scrollToNewReplyComment();
-            }
           }}
           {...{ contentType, setContentType, content, setContent, users }}
         />
