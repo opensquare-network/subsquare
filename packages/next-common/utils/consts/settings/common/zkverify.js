@@ -1,4 +1,5 @@
 import dynamic from "next/dynamic";
+import { mergeChainModules } from "./modules";
 
 const ProjectIconZkverifyDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconZkverifyDark"),
@@ -75,4 +76,16 @@ export const zkverifyThemeVars = {
     navigationActive: "rgba(38,41,56,1)",
     navigationBorder: "var(--neutral300)",
   },
+};
+
+export const zkverifyModules = mergeChainModules({
+  democracy: false,
+  referenda: true,
+  treasury: false,
+  council: false,
+  technicalCommittee: false,
+});
+
+export const zkverifyIntegrations = {
+  subscan: true,
 };

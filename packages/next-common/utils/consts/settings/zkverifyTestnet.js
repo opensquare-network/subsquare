@@ -1,10 +1,11 @@
 import Chains from "../chains";
-import { mergeChainModules } from "./common/modules";
 import MenuGroups from "./menuGroups";
 import {
   zkverifyCommonSettings,
   zkverifyThemeVars,
   zkverifyLinks,
+  zkverifyModules,
+  zkverifyIntegrations,
 } from "./common/zkverify";
 
 const DEFAULT_ZKVERIFY_NODES = [
@@ -23,16 +24,8 @@ const zkverifyTestnet = {
   endpoints: DEFAULT_ZKVERIFY_NODES,
   links: zkverifyLinks,
   group: MenuGroups.Testnet,
-  modules: mergeChainModules({
-    democracy: false,
-    referenda: true,
-    treasury: false,
-    council: false,
-    technicalCommittee: false,
-  }),
-  integrations: {
-    subscan: true,
-  },
+  modules: zkverifyModules,
+  integrations: zkverifyIntegrations,
   ...zkverifyThemeVars,
 };
 
