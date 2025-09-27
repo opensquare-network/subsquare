@@ -25,7 +25,31 @@ export default function Comments({ data: commentsData, loading }) {
   );
 }
 
+function CommentLoading() {
+  return (
+    <>
+      <CommentSkeleton />
+      <CommentSkeleton />
+    </>
+  );
+}
+
+function CommonCommentItem({ data }) {
+  if (data.comment_source === "polkassembly") {
+    return <PolkassemblyCommentItem data={data} />;
+  }
+
+  return (
+    <CommentItem
+      data={data}
+      replyToCommentId={data._id}
+      replyToComment={data}
+    />
+  );
+}
+
 const paseSize = 20;
+
 function CommentsContent({ loading, items = [] }) {
   const [page, setPage] = useState(1);
   const [hasCommentPositioning] = useState(() => {
@@ -48,30 +72,18 @@ function CommentsContent({ loading, items = [] }) {
   );
 
   if (loading) {
-    return (
-      <>
-        <CommentSkeleton />
-        <CommentSkeleton />
-      </>
-    );
-  } else if (items?.length === 0) {
+    return <CommentLoading />;
+  }
+
+  if (items?.length === 0) {
     return <NoComment />;
   }
 
   return (
     <div>
-      {pageData.map((item) =>
-        item.comment_source === "polkassembly" ? (
-          <PolkassemblyCommentItem key={item.id} data={item} />
-        ) : (
-          <CommentItem
-            key={item._id}
-            data={item}
-            replyToCommentId={item._id}
-            replyToComment={item}
-          />
-        ),
-      )}
+      {pageData.map((item) => (
+        <CommonCommentItem key={item.id} data={item} />
+      ))}
       {hasMore ? (
         <div className="pt-8 flex justify-center">
           <SecondaryButton
