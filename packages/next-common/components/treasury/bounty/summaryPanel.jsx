@@ -8,6 +8,7 @@ import { useChainSettings } from "next-common/context/chain";
 import Tooltip from "next-common/components/tooltip";
 import LoadableContent from "next-common/components/common/loadableContent";
 import TreasurySummary from "next-common/components/summary/treasurySummary";
+import FiatPriceLabel from "next-common/components/summary/polkadotTreasurySummary/common/fiatPriceLabel";
 import FieldLoading from "next-common/components/icons/fieldLoading";
 
 export function BountiesSummaryPanelImpl() {
@@ -81,7 +82,18 @@ export function BountiesSummaryPanelImpl() {
 
   return (
     <LoadableContent isLoading={isLoading}>
-      <ValueDisplay value={toPrecision(total, decimals)} symbol={symbol} />
+      <div className="flex flex-col">
+        <div>
+          <ValueDisplay
+            className="inline-flex"
+            value={toPrecision(total, decimals)}
+            symbol={symbol}
+          />
+        </div>
+        <span className="text12Medium text-textTertiary">
+          <FiatPriceLabel free={total} />
+        </span>
+      </div>
       <div className="flex items-center gap-x-2 mt-2">
         {Object.entries(groupedTotal).map(([label, value]) => (
           <Tooltip
@@ -129,7 +141,7 @@ export default function BountiesSummaryPanel() {
   }
 
   return (
-    <SummaryItem title="Total">
+    <SummaryItem title="Total Bounty Value">
       <BountiesSummaryPanelImpl />
     </SummaryItem>
   );
