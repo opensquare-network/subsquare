@@ -1,7 +1,5 @@
-import { createSdkContext } from "@galacticcouncil/sdk";
-import { ApiPromise, WsProvider } from "@polkadot/api";
 import BigNumber from "bignumber.js";
-import {  useMemo } from "react";
+import { useMemo } from "react";
 import useAccountPositions from "./common/useAccountPosition";
 import useLiquidityPositionData from "./common/useLiquidityPositionData";
 import { useAllAssetsFunc } from "./common/useAllAssets";
@@ -10,21 +8,10 @@ import { useXYKSDKPools } from "./common/useHydrationPools";
 import useDisplayShareTokenPrice from "./common/useDisplayShareTokenPrice";
 import { scaleHuman, BN_0 } from "./utils";
 
-//  Hydration SDK in provider?
-const ws = "wss://rpc.hydradx.cloud";
-const wsProvider = new WsProvider(ws, 2_500, {}, 60_000, 102400, 10 * 60_000);
-
-const api = await ApiPromise.create({
-  provider: wsProvider,
-});
-
-const sdk = await createSdkContext(api);
-
 const useAllXYKDeposits = (address) => {
   const { data: accountPositions } = useAccountPositions(address);
   const { xykDeposits = [] } = accountPositions ?? {};
-  const { getShareTokenByAddress, loading: allAssetsLoading } =
-    useAllAssetsFunc();
+  const { getShareTokenByAddress } = useAllAssetsFunc();
   const issuances = useTotalIssuances();
 
   const depositNftsData = xykDeposits.reduce((acc, depositNft) => {

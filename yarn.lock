@@ -12,6 +12,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@aave/contract-helpers@npm:^1.36.2":
+  version: 1.36.2
+  resolution: "@aave/contract-helpers@npm:1.36.2"
+  dependencies:
+    isomorphic-unfetch: ^3.1.0
+  peerDependencies:
+    bignumber.js: ^9.x
+    ethers: ^5.x
+    reflect-metadata: ^0.1.x
+    tslib: ^2.4.x
+  checksum: 779607bcec3faef5e32d4bdebad157a95d0f576f08a9929cc357288e4d911a19e66ee76cc82bb7fc4541fd605e7dc214e0ca998fd29b420663fc1ef729aec1aa
+  languageName: node
+  linkType: hard
+
+"@aave/math-utils@npm:^1.36.2":
+  version: 1.36.2
+  resolution: "@aave/math-utils@npm:1.36.2"
+  peerDependencies:
+    bignumber.js: ^9.x
+    tslib: ^2.4.x
+  checksum: 99382fb6f2112a032c3241f071ec5e0f68d5bdcf9540d985e192a77ec2eb1ed5fdcbd05043b75c56a061bf524b3953e8d6d1bda473bc0c28575f092969d78df5
+  languageName: node
+  linkType: hard
+
 "@adraffy/ens-normalize@npm:1.10.0":
   version: 1.10.0
   resolution: "@adraffy/ens-normalize@npm:1.10.0"
@@ -6052,6 +6076,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@subsquare/next@workspace:packages/next"
   dependencies:
+    "@aave/contract-helpers": ^1.36.2
+    "@aave/math-utils": ^1.36.2
     "@galacticcouncil/api-augment": ^0.8.1
     "@galacticcouncil/sdk": ^9.16.0
     "@next/bundle-analyzer": 15.3.0
@@ -6068,6 +6094,7 @@ __metadata:
     eslint: ^8.44.0
     eslint-config-next: ^15.3.5
     http-proxy: ^1.18.1
+    immer: ^10.1.3
     localforage: ^1.10.0
     lodash-es: ^4.17.21
     next: 15.4.7
@@ -10902,8 +10929,8 @@ __metadata:
   linkType: hard
 
 "ethers@npm:^6.13.4":
-  version: 6.13.4
-  resolution: "ethers@npm:6.13.4"
+  version: 6.15.0
+  resolution: "ethers@npm:6.15.0"
   dependencies:
     "@adraffy/ens-normalize": 1.10.1
     "@noble/curves": 1.2.0
@@ -10912,7 +10939,7 @@ __metadata:
     aes-js: 4.0.0-beta.5
     tslib: 2.7.0
     ws: 8.17.1
-  checksum: a64ad0f05ed7f79bf3092cd54ac11c3ed4a0a3fe8ee00a81053b5b4a34d84728c12fa5aa9bf3e2cc5efabbf1a0a37f62cd3a1852cf780a1ab619421fa03c2713
+  checksum: 3e8fb73b5cf2bef564433442adb68fe89a6da0d664c1ebe6e226fe5e7160da7010800334c3ecc53eef51ff8c10a3255fa99160e8d424f1241440043f6faa2ea1
   languageName: node
   linkType: hard
 
@@ -12115,6 +12142,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"immer@npm:^10.1.3":
+  version: 10.1.3
+  resolution: "immer@npm:10.1.3"
+  checksum: 1829457274084c14e32397f80132037cc758afb05e1fa36c92c8c2eea53fdca47cfa3509f7b8f7aaac1787434bbf1a2f2e7f8cbe40de969221188c0fcfe9d196
+  languageName: node
+  linkType: hard
+
 "immer@npm:^9.0.16":
   version: 9.0.21
   resolution: "immer@npm:9.0.21"
@@ -12870,6 +12904,16 @@ __metadata:
   version: 3.0.1
   resolution: "isobject@npm:3.0.1"
   checksum: db85c4c970ce30693676487cca0e61da2ca34e8d4967c2e1309143ff910c207133a969f9e4ddb2dc6aba670aabce4e0e307146c310350b298e74a31f7d464703
+  languageName: node
+  linkType: hard
+
+"isomorphic-unfetch@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "isomorphic-unfetch@npm:3.1.0"
+  dependencies:
+    node-fetch: ^2.6.1
+    unfetch: ^4.2.0
+  checksum: 82b92fe4ec2823a81ab0fc0d11bd94d710e6f9a940d56b3cba31896d4345ec9ffc7949f4ff31ebcae84f6b95f7ebf3474c4c7452b834eb4078ea3f2c37e459c5
   languageName: node
   linkType: hard
 
@@ -13956,6 +14000,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "next-common@workspace:packages/next-common"
   dependencies:
+    "@aave/contract-helpers": ^1.36.2
+    "@aave/math-utils": ^1.36.2
     "@apollo/client": ^3.8.8
     "@galacticcouncil/api-augment": ^0.8.1
     "@galacticcouncil/sdk": ^9.16.0
@@ -14005,6 +14051,7 @@ __metadata:
     framer-motion: ^11.2.10
     graphql: ^16.8.1
     graphql-request: ^7.1.0
+    immer: ^10.1.3
     is-ipfs: ^8.0.1
     is-utf8: ^0.2.1
     lodash-es: ^4.17.21
@@ -14164,7 +14211,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:^2.6.12":
+"node-fetch@npm:^2.6.1, node-fetch@npm:^2.6.12":
   version: 2.7.0
   resolution: "node-fetch@npm:2.7.0"
   dependencies:
@@ -17337,7 +17384,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "subsquare@workspace:."
   dependencies:
-    "@galacticcouncil/sdk": ^9.16.0
     autoprefixer: ^10.4.14
     eslint: ^8.44.0
     eslint-plugin-react: ^7.31.11
@@ -18050,6 +18096,13 @@ __metadata:
     node-fetch-native: ^1.6.1
     pathe: ^1.1.1
   checksum: 4cfbeedee1436e7f417d655c521e4c6220228f5b96afff90b5253d4504282c6de5acdd982aa51c977ce38d21d7692a33d10fc857166b3488655ff29c3bb754a2
+  languageName: node
+  linkType: hard
+
+"unfetch@npm:^4.2.0":
+  version: 4.2.0
+  resolution: "unfetch@npm:4.2.0"
+  checksum: 6a4b2557e1d921eaa80c4425ce27a404945ec26491ed06e62598f333996a91a44c7908cb26dc7c2746d735762b13276cf4aa41829b4c8f438dde63add3045d7a
   languageName: node
   linkType: hard
 

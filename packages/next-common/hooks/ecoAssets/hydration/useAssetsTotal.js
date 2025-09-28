@@ -94,7 +94,7 @@ export default function useAssetsTotal(address) {
     } finally {
       setIsLoading(false);
     }
-  }, [address, allAssetsLoading, balances, accountBalanceLoading]);
+  }, [allAssetsLoading, balances, accountBalanceLoading]);
 
   useEffect(() => {
     fetchData();
