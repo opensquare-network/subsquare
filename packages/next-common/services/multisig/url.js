@@ -5,11 +5,7 @@ import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated"
 export default function getMultisigApiUrl(chain) {
   const settings = getChainSettings(chain);
 
-  if (
-    [Chains.kusama, Chains.polkadot].includes(
-      settings?.identity || chain,
-    )
-  ) {
+  if ([Chains.polkadot].includes(settings?.identity || chain)) {
     return `https://${settings.graphqlApiSubDomain}.statescan.io/graphql`;
   }
   if (!settings?.multisigApiPrefix) {
