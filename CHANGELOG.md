@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+# 5.4.2
+
+Date:
+2025-09-28. [Code diff](https://github.com/opensquare-network/subsquare/compare/5ce5c40cbc2e7452d8a9e4de92d83de6ccb8a819...b0c8769265ed2489719126a9daa0c6e7185b0537).
+
+- Support for multisig templates. Users can quickly create a call to transfer/batch transfer/add a proxy/remove a proxy.
+- Add eco news on the overview page, so users can report/see the latest eco news. Admins can manage news.
+- Show the call popup when users are approving a multisig if there is call info, so users can confirm the multisig call.
+- Fix deposit tab number on the profile page, so users can see the correct deposits number.
+- Use paseo assethub API for paseo multisigs after assethub migration.
+- Add a component to sort referenda by index desc.
+- Support zkverify mainnet.
+- Enable OpenGov actions for hydration, bifrost-polkadot and zkverify.
+- Add an award countdown component on the treasury proposal list.
+- Fix OpenGov referendum curve chart when a referendum vote finished before the deciding period end.
+- Update dependency to wagmi.
+
 # 5.4.1
 
 Date:
