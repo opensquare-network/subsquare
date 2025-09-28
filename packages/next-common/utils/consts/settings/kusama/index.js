@@ -5,7 +5,9 @@ import kusamaTreasuryTracks from "next-common/utils/consts/settings/kusama/track
 import { defaultPostLabels } from "../common";
 import MenuGroups from "../menuGroups";
 import { mergeChainModules } from "../common/modules";
-import kusamaCommonCfg from "next-common/utils/consts/settings/kusama/common";
+import kusamaCommonCfg, {
+  kusamaAssethubMigration,
+} from "next-common/utils/consts/settings/kusama/common";
 import kusamaPreimageSettings from "next-common/utils/consts/settings/common/preimage/kusama";
 
 const ProjectIconKusamaDark = dynamic(() =>
@@ -21,6 +23,8 @@ const kusama = {
   ...kusamaCommonCfg,
   hasElections: true,
   blockTime: 6000,
+  assethubBlockTime: 12000,
+  assethubMigration: kusamaAssethubMigration,
   endpoints: defaultKusamaNodes,
   avatar: ProjectIconKusamaLight,
   darkAvatar: ProjectIconKusamaDark,
