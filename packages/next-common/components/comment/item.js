@@ -23,6 +23,7 @@ import { usePost } from "next-common/context/post";
 import { getRealField } from "next-common/sima/actions/common";
 import useIsCommentProxyAuthor from "next-common/hooks/useIsCommentProxyAuthor";
 import { useRouter } from "next/router";
+import { useRootCommentData } from "./rootComment";
 
 function jumpToAnchor(anchorId) {
   var anchorElement = document.getElementById(anchorId);
@@ -72,8 +73,6 @@ function MaybeSimaEditInput(props) {
 }
 
 function CommentItemImpl({
-  replyToCommentId,
-  replyToComment,
   isSecondLevel,
   reloadTopLevelComment,
   scrollToTopLevelCommentBottom,
@@ -92,6 +91,7 @@ function CommentItemImpl({
   const setComments = useSetComments();
   const isUniversalComments = useIsUniversalPostComments();
   const { getComment, updateComment } = useCommentActions();
+  const replyToComment = useRootCommentData();
 
   // Jump to comment when anchor is set
   useEffect(() => {
@@ -221,8 +221,6 @@ function CommentItemImpl({
           scrollToNewReplyComment={
             scrollToTopLevelCommentBottom || scrollToCommentBottom
           }
-          replyToCommentId={replyToCommentId}
-          replyToComment={replyToComment}
           setIsEdit={setIsEdit}
         />
       }
@@ -232,15 +230,12 @@ function CommentItemImpl({
             key={reply.id}
             data={reply}
             isSecondLevel
-            replyToComment={replyToComment || comment}
             reloadComment={reloadComment}
           />
         ) : (
           <CommentItem
             key={reply._id}
             data={reply}
-            replyToCommentId={replyToCommentId}
-            replyToComment={replyToComment}
             isSecondLevel
             reloadTopLevelComment={maybeReloadTopLevelComment}
             scrollToTopLevelCommentBottom={
@@ -255,8 +250,6 @@ function CommentItemImpl({
 
 export default function CommentItem({
   data,
-  replyToCommentId,
-  replyToComment,
   isSecondLevel,
   reloadTopLevelComment,
   scrollToTopLevelCommentBottom,
@@ -265,8 +258,6 @@ export default function CommentItem({
   return (
     <CommentProvider comment={data}>
       <CommentItemImpl
-        replyToCommentId={replyToCommentId}
-        replyToComment={replyToComment}
         isSecondLevel={isSecondLevel}
         reloadTopLevelComment={reloadTopLevelComment}
         scrollToTopLevelCommentBottom={scrollToTopLevelCommentBottom}

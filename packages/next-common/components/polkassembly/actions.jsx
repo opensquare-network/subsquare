@@ -6,12 +6,12 @@ import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import PolkassemblyUser from "next-common/components/user/polkassemblyUser";
 import ReplyButton from "next-common/components/actions/replyButton";
 import { useUser } from "next-common/context/user";
-import { useComment } from "../comment/context";
 import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import { useChain } from "next-common/context/chain";
 import PolkassemblyCommentReplyEditor from "./polkassemblyCommentReplyEditor";
 import { noop } from "lodash-es";
 import CommentEditor from "next-common/components/comment/editor";
+import { useRootCommentData } from "../comment/rootComment";
 
 const Wrapper = styled(Flex)`
   align-items: flex-start;
@@ -41,13 +41,11 @@ export default function PolkassemblyActions({
   reactions,
   extraActions,
   setShowReplies = noop,
-  replyToComment,
   reloadComment = noop,
 }) {
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
   const thumbsUpReactions = (reactions || []).filter((r) => r.reaction === 1);
   const user = useUser();
-  const comment = useComment();
   const [content, setContent] = useState("");
   const [contentType, setContentType] = useState(
     user?.preference?.editor || "markdown",
@@ -80,10 +78,12 @@ export default function PolkassemblyActions({
 
   let editor = null;
 
+  const replyToComment = useRootCommentData();
+
   if (replyToComment?.comment_source === "polkassembly") {
     editor = (
       <PolkassemblyCommentReplyEditor
-        polkassemblyCommentId={replyToComment?.id || comment?.id}
+        polkassemblyCommentId={replyToComment?.id}
         ref={editorWrapperRef}
         setQuillRef={setQuillRef}
         isReply={isReply}
@@ -99,7 +99,7 @@ export default function PolkassemblyActions({
   } else {
     editor = (
       <CommentEditor
-        comment={replyToComment}
+        replyToComment={replyToComment}
         ref={editorWrapperRef}
         setQuillRef={setQuillRef}
         isReply={isReply}

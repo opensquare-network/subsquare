@@ -20,11 +20,7 @@ import { useChain } from "next-common/context/chain";
 import { ensurePolkassemblyRelativeLink } from "next-common/utils/polkassembly/ensurePolkassemblyRelativeLink";
 import { PolkassemblyCommentReplyItem } from "./polkassemblyCommentReplyItem";
 
-function PolkassemblyCommentItemImpl({
-  isSecondLevel,
-  replyToComment,
-  reloadComment,
-}) {
+function PolkassemblyCommentItemImpl({ isSecondLevel, reloadComment }) {
   const chain = useChain();
   const comment = useComment();
   const type = useDetailType();
@@ -33,8 +29,6 @@ function PolkassemblyCommentItemImpl({
   const isUniversalComments = useIsUniversalPostComments();
 
   comment.content = ensurePolkassemblyRelativeLink(comment.content, chain);
-
-  const _replyToComment = replyToComment || comment;
 
   return (
     <CommentItemTemplate
@@ -72,36 +66,25 @@ function PolkassemblyCommentItemImpl({
       actions={
         <PolkassemblyActions
           reactions={comment.reactions}
-          replyToComment={_replyToComment}
           reloadComment={reloadComment}
         />
       }
       renderReplyItem={(reply) => (
-        <PolkassemblyReplyItem
-          key={reply.id}
-          data={reply}
-          replyToComment={_replyToComment}
-        />
+        <PolkassemblyReplyItem key={reply.id} data={reply} />
       )}
     />
   );
 }
 
-function PolkassemblyReplyItem({ data, replyToComment, reloadComment }) {
+function PolkassemblyReplyItem({ data, reloadComment }) {
   if (data.comment_source === "polkassembly-comment-reply") {
-    return (
-      <PolkassemblyCommentReplyItem
-        data={data}
-        replyToComment={replyToComment}
-      />
-    );
+    return <PolkassemblyCommentReplyItem data={data} />;
   }
 
   return (
     <PolkassemblyCommentItem
       data={data}
       isSecondLevel
-      replyToComment={replyToComment}
       reloadComment={reloadComment}
     />
   );

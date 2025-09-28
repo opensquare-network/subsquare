@@ -1,14 +1,13 @@
-import CommentItem from "./item";
 import NoComment from "./noComment";
 import { TitleContainer } from "../styled/containers/titleContainer";
 import { cn } from "next-common/utils";
-import PolkassemblyCommentItem from "./polkassemblyCommentItem";
 import CommentsFilter from "./filter";
 import CommentSkeleton from "./commentSkeleton";
 import { useMemo, useState } from "react";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { IS_SERVER } from "next-common/utils/constants";
 import CommentSwitch from "./switch";
+import { RootCommentItem } from "./rootComment";
 
 export default function Comments({ data: commentsData, loading }) {
   return (
@@ -31,20 +30,6 @@ function CommentLoading() {
       <CommentSkeleton />
       <CommentSkeleton />
     </>
-  );
-}
-
-function CommonCommentItem({ data }) {
-  if (data.comment_source === "polkassembly") {
-    return <PolkassemblyCommentItem data={data} />;
-  }
-
-  return (
-    <CommentItem
-      data={data}
-      replyToCommentId={data._id}
-      replyToComment={data}
-    />
   );
 }
 
@@ -82,7 +67,7 @@ function CommentsContent({ loading, items = [] }) {
   return (
     <div>
       {pageData.map((item) => (
-        <CommonCommentItem key={item.id} data={item} />
+        <RootCommentItem key={item.id} data={item} />
       ))}
       {hasMore ? (
         <div className="pt-8 flex justify-center">

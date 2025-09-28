@@ -18,6 +18,7 @@ import { useComment } from "../comment/context";
 import { useCommentActions } from "next-common/sima/context/commentActions";
 import { useFindMyUpVote } from "next-common/sima/actions/common";
 import useCanEditComment from "next-common/hooks/useCanEditComment";
+import { useRootCommentData } from "../comment/rootComment";
 
 function useMyUpVote(reactions) {
   const findMyUpVote = useFindMyUpVote();
@@ -55,8 +56,6 @@ export default function CommentActions({
   reloadComment = noop,
   scrollToNewReplyComment = noop,
   setShowReplies = noop,
-  replyToCommentId,
-  replyToComment,
   setIsEdit,
 }) {
   const comment = useComment();
@@ -134,6 +133,8 @@ export default function CommentActions({
     }
   };
 
+  const replyToComment = useRootCommentData();
+
   return (
     <>
       <div className="flex items-center justify-between">
@@ -154,8 +155,7 @@ export default function CommentActions({
       {showThumbsUpList && <ThumbUpList reactions={reactions} />}
       {isReply && (
         <CommentEditor
-          commentId={replyToCommentId}
-          comment={replyToComment}
+          replyToComment={replyToComment}
           ref={editorWrapperRef}
           setQuillRef={setQuillRef}
           isReply={isReply}
