@@ -64,14 +64,16 @@ export function BountiesSummaryPanelImpl() {
         const json = data.toJSON();
         const value = json.value || 0;
 
-        if (!status.isProposed) {
-          // proposed are not included in the total
+        const isFunded = status.isFunded || status.isCuratorProposed;
+
+        if (!isFunded) {
+          // Funded are not included in the total
           allTotal = allTotal.plus(value);
         }
         if (status.isActive || status.isPendingPayout) {
           groupedMap.Active.count++;
           groupedMap.Active.total = groupedMap.Active.total.plus(value);
-        } else if (status.isFunded || status.isCuratorProposed) {
+        } else if (isFunded) {
           groupedMap.Funded.count++;
           groupedMap.Funded.total = groupedMap.Funded.total.plus(value);
         } else if (status.isProposed) {
