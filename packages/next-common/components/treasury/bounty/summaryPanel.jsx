@@ -64,7 +64,10 @@ export function BountiesSummaryPanelImpl() {
         const json = data.toJSON();
         const value = json.value || 0;
 
-        allTotal = allTotal.plus(value);
+        if (!status.isProposed) {
+          // proposed are not included in the total
+          allTotal = allTotal.plus(value);
+        }
         if (status.isActive || status.isPendingPayout) {
           groupedMap.Active.count++;
           groupedMap.Active.total = groupedMap.Active.total.plus(value);
