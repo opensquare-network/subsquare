@@ -48,7 +48,7 @@ const kusama = {
   postLabels: defaultPostLabels,
   useVoteCall: true,
   hasMultisig: true,
-  multisigApiPrefix: "kusama",
+  multisigApiPrefix: "statemine-gh-api",
   description:
     "Kusama is a scalable multi-chain network for radical innovation and early stage Polkadot deployments. Expect Chaos. No promises.",
   modules: mergeChainModules({
