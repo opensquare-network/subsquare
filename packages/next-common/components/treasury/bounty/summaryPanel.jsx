@@ -74,7 +74,7 @@ export function BountiesSummaryPanelImpl() {
         } else if (status.isProposed) {
           groupedMap.Proposed.count++;
           groupedMap.Proposed.total = groupedMap.Proposed.total.plus(value);
-        } else if (status.isApproved || status.ApprovedWithCurator) {
+        } else if (status.isApproved || status.isApprovedWithCurator) {
           groupedMap.Approved.count++;
           groupedMap.Approved.total = groupedMap.Approved.total.plus(value);
         }
