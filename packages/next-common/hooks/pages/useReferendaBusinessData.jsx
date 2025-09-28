@@ -70,7 +70,7 @@ function extractBounty(call = {}, chainSettings = {}) {
   }
 
   const { decimals, symbol } = chainSettings;
-  if ("proposeCurator" === method) {
+  if (["proposeCurator", "approveBountyWithCurator"].includes(method)) {
     const bountyId = args[0].value;
     let curator = args[1].value;
     if (typeof curator === "object" && curator.id) {
