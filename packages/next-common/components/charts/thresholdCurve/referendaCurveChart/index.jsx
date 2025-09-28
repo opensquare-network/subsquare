@@ -22,7 +22,8 @@ export default function ReferendaCurveChart({ showVoter, showAyeNay }) {
   const { width } = useWindowSize();
   const chartRef = useRef();
   const chartWrapper = useRef();
-  const { labels, supportData, approvalData } = useReferendumCurveData();
+  const { labels, supportData, approvalData, totalHours } =
+    useReferendumCurveData();
   const [rangeData, setRangeData] = useState([0, labels.length]);
   const [ranging, setRanging] = useState(false);
   const rangeLabel = labels.slice(rangeData[0], rangeData[1]);
@@ -33,6 +34,7 @@ export default function ReferendaCurveChart({ showVoter, showAyeNay }) {
     rangeLabel,
     supportData,
     approvalData,
+    totalHours,
   );
 
   const defaultOptions = useCurveChartOptions(

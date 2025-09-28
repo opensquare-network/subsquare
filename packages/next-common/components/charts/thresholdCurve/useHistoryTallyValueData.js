@@ -5,7 +5,6 @@ import {
   useBlockSteps,
 } from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
 import { useMemo } from "react";
-import { useDecidingEndHeight } from "next-common/context/post/gov2/decidingPercentage";
 import { useReferendaTallyHistory } from "next-common/store/reducers/referenda/thresholdCurves";
 import { isEmpty } from "lodash-es";
 import useChainOrScanHeight from "next-common/hooks/height";
@@ -27,9 +26,9 @@ function calcFromOneTallyData(tally) {
 export function calcDataFromTallyHistory(
   tallyHistory,
   beginHeight,
-  decidingEnd,
   latestHeight,
   blockStep,
+  rangeEndHeight,
 ) {
   let historySupportData = [];
   let historyApprovalData = [];
@@ -44,14 +43,14 @@ export function calcDataFromTallyHistory(
     };
   }
 
+  const endHeight = Math.min(latestHeight, rangeEndHeight);
+
   let iterHeight = beginHeight;
-  while (iterHeight <= decidingEnd) {
-    const tally = tallyHistory.findLast(
-      (tally) => tally.indexer.blockHeight <= iterHeight,
-    );
-    if (!tally) {
-      break;
-    }
+  while (iterHeight <= endHeight) {
+    const tally =
+      tallyHistory.findLast(
+        (tally) => tally.indexer.blockHeight <= iterHeight,
+      ) || last(tallyHistory);
 
     let { currentSupport, currentApprove } = calcFromOneTallyData(tally.tally);
     historySupportData.push(currentSupport);
@@ -59,17 +58,6 @@ export function calcDataFromTallyHistory(
     historyAyesData.push(tally.tally.ayes);
     historyNaysData.push(tally.tally.nays);
     iterHeight += blockStep;
-  }
-
-  if (iterHeight < decidingEnd + blockStep && latestHeight > decidingEnd) {
-    const lastTally = last(tallyHistory);
-    let { currentSupport, currentApprove } = calcFromOneTallyData(
-      lastTally.tally,
-    );
-    historySupportData.push(currentSupport);
-    historyApprovalData.push(currentApprove);
-    historyAyesData.push(lastTally.tally.ayes);
-    historyNaysData.push(lastTally.tally.nays);
   }
 
   return {
@@ -80,26 +68,20 @@ export function calcDataFromTallyHistory(
   };
 }
 
-export default function useHistoryTallyValueData() {
+export default function useHistoryTallyValueData(totalHours) {
   const tallyHistory = useReferendaTallyHistory();
-  const decidingEndOrLatestHeight = useDecidingEndHeight();
   const latestHeight = useChainOrScanHeight();
   const blockStep = useBlockSteps();
   const beginHeight = useBeginHeight();
+  const rangeEndHeight = beginHeight + blockStep * totalHours;
 
   return useMemo(() => {
     return calcDataFromTallyHistory(
       tallyHistory,
       beginHeight,
-      decidingEndOrLatestHeight,
       latestHeight,
       blockStep,
+      rangeEndHeight,
     );
-  }, [
-    tallyHistory,
-    beginHeight,
-    decidingEndOrLatestHeight,
-    latestHeight,
-    blockStep,
-  ]);
+  }, [tallyHistory, beginHeight, latestHeight, blockStep, rangeEndHeight]);
 }
