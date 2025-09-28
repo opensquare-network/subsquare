@@ -10,7 +10,6 @@ import IdentityOrAddr from "../IdentityOrAddr";
 import { prettyHTML } from "../../utils/viewfuncs";
 import CommentActions from "../actions/commentActions";
 import useCommentsAnchor from "../../utils/hooks/useCommentsAnchor";
-import { useComments, useSetComments } from "next-common/context/post/comments";
 import { LinkSubsquare } from "@osn/icons/subsquare";
 import Tooltip from "../tooltip";
 import CommentItemTemplate from "./itemTemplate";
@@ -22,8 +21,7 @@ import { useCommentActions } from "next-common/sima/context/commentActions";
 import { usePost } from "next-common/context/post";
 import { getRealField } from "next-common/sima/actions/common";
 import useIsCommentProxyAuthor from "next-common/hooks/useIsCommentProxyAuthor";
-import { useRouter } from "next/router";
-import { useRootCommentData } from "./rootComment";
+import { useRootCommentContext, useRootCommentData } from "./rootComment";
 
 function jumpToAnchor(anchorId) {
   var anchorElement = document.getElementById(anchorId);
@@ -72,12 +70,7 @@ function MaybeSimaEditInput(props) {
   return <EditInput {...props} />;
 }
 
-function CommentItemImpl({
-  isSecondLevel,
-  reloadTopLevelComment,
-  scrollToTopLevelCommentBottom,
-}) {
-  const router = useRouter();
+function CommentItemImpl({ isSecondLevel, scrollToTopLevelCommentBottom }) {
   const post = usePost();
   const comment = useComment();
   const refCommentTree = useRef();
@@ -87,10 +80,8 @@ function CommentItemImpl({
   const isMounted = useMountedState();
   const { hasAnchor, anchor } = useCommentsAnchor();
   const [showReplies, setShowReplies] = useState(false);
-  const comments = useComments();
-  const setComments = useSetComments();
   const isUniversalComments = useIsUniversalPostComments();
-  const { getComment, updateComment } = useCommentActions();
+  const { updateComment } = useCommentActions();
   const replyToComment = useRootCommentData();
 
   // Jump to comment when anchor is set
@@ -109,28 +100,7 @@ function CommentItemImpl({
     }
   }, [hasAnchor, anchor, comment.height]);
 
-  const reloadComment = useCallback(async () => {
-    const { result: updatedComment } = await getComment(comment);
-    if (updatedComment) {
-      const newComments = {
-        ...comments,
-        items: comments.items.map((item) => {
-          if (item._id === updatedComment._id) {
-            return updatedComment;
-          }
-          return item;
-        }),
-      };
-      setComments(newComments);
-
-      const scrollPosition = window.scrollY;
-      await router.replace(router.asPath);
-      window.scrollTo(0, scrollPosition);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [comments, setComments, comment._id]);
-
-  const maybeReloadTopLevelComment = reloadTopLevelComment || reloadComment;
+  const { reloadRootComment } = useRootCommentContext();
 
   const scrollToCommentBottom = useCallback(() => {
     if (refCommentTree.current) {
@@ -201,7 +171,7 @@ function CommentItemImpl({
               editContentType={comment.contentType}
               onFinishedEdit={async (reload) => {
                 if (reload) {
-                  await maybeReloadTopLevelComment();
+                  await reloadRootComment();
                 }
                 if (isMounted()) {
                   setIsEdit(false);
@@ -217,7 +187,6 @@ function CommentItemImpl({
       actions={
         <CommentActions
           setShowReplies={setShowReplies}
-          reloadComment={maybeReloadTopLevelComment}
           scrollToNewReplyComment={
             scrollToTopLevelCommentBottom || scrollToCommentBottom
           }
@@ -226,18 +195,12 @@ function CommentItemImpl({
       }
       renderReplyItem={(reply) =>
         reply.comment_source === "polkassembly" ? (
-          <PolkassemblyCommentItem
-            key={reply.id}
-            data={reply}
-            isSecondLevel
-            reloadComment={reloadComment}
-          />
+          <PolkassemblyCommentItem key={reply.id} data={reply} isSecondLevel />
         ) : (
           <CommentItem
             key={reply._id}
             data={reply}
             isSecondLevel
-            reloadTopLevelComment={maybeReloadTopLevelComment}
             scrollToTopLevelCommentBottom={
               scrollToTopLevelCommentBottom || scrollToCommentBottom
             }
@@ -251,7 +214,6 @@ function CommentItemImpl({
 export default function CommentItem({
   data,
   isSecondLevel,
-  reloadTopLevelComment,
   scrollToTopLevelCommentBottom,
   ...props
 }) {
@@ -259,7 +221,6 @@ export default function CommentItem({
     <CommentProvider comment={data}>
       <CommentItemImpl
         isSecondLevel={isSecondLevel}
-        reloadTopLevelComment={reloadTopLevelComment}
         scrollToTopLevelCommentBottom={scrollToTopLevelCommentBottom}
         {...props}
       />

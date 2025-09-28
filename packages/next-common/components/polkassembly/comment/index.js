@@ -2,12 +2,12 @@
 // https://github.com/opensquare-network/subsquare/issues/3525
 
 import styled from "styled-components";
-import PolkassemblyCommentItem from "next-common/components/comment/polkassemblyCommentItem";
 import NoComment from "next-common/components/comment/noComment";
 import PolkassemblyCommentButton from "./commentButton";
 import Loading from "next-common/components/loading";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { cn } from "next-common/utils";
+import { PolkassemblyRootComment } from "next-common/components/comment/rootComment";
 
 const LoadingDiv = styled.div`
   display: flex;
@@ -39,7 +39,7 @@ export default function PolkassemblyComments({
         <>
           <div>
             {(comments || []).map((item, idx) => (
-              <PolkassemblyCommentItem key={idx} data={item} />
+              <PolkassemblyRootComment key={idx} data={item} />
             ))}
           </div>
         </>

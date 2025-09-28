@@ -11,7 +11,10 @@ import { useChain } from "next-common/context/chain";
 import PolkassemblyCommentReplyEditor from "./polkassemblyCommentReplyEditor";
 import { noop } from "lodash-es";
 import CommentEditor from "next-common/components/comment/editor";
-import { useRootCommentData } from "../comment/rootComment";
+import {
+  useRootCommentContext,
+  useRootCommentData,
+} from "../comment/rootComment";
 
 const Wrapper = styled(Flex)`
   align-items: flex-start;
@@ -41,7 +44,6 @@ export default function PolkassemblyActions({
   reactions,
   extraActions,
   setShowReplies = noop,
-  reloadComment = noop,
 }) {
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
   const thumbsUpReactions = (reactions || []).filter((r) => r.reaction === 1);
@@ -79,6 +81,7 @@ export default function PolkassemblyActions({
   let editor = null;
 
   const replyToComment = useRootCommentData();
+  const { reloadRootComment } = useRootCommentContext();
 
   if (replyToComment?.comment_source === "polkassembly") {
     editor = (
@@ -91,6 +94,8 @@ export default function PolkassemblyActions({
           setIsReply(false);
           if (reload) {
             setShowReplies(true);
+            reloadRootComment();
+            // scrollToNewReplyComment();
           }
         }}
         {...{ contentType, setContentType, content, setContent, users }}
@@ -107,7 +112,7 @@ export default function PolkassemblyActions({
           setIsReply(false);
           if (reload) {
             setShowReplies(true);
-            await reloadComment();
+            await reloadRootComment();
             // scrollToNewReplyComment();
           }
         }}

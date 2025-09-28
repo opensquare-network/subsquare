@@ -1,46 +1,40 @@
+import { useCallback, useState } from "react";
+import { useMountedState } from "react-use";
 import {
   HtmlPreviewer,
   MarkdownPreviewer,
   renderMentionIdentityUserPlugin,
 } from "@osn/previewer";
+import nextApi from "next-common/services/nextApi";
 import IdentityOrAddr from "next-common/components/IdentityOrAddr";
 import CommentItemTemplate from "next-common/components/comment/itemTemplate";
-import { CommentProvider, useComment, useSetComment } from "./context";
+import { CommentProvider, useComment } from "./context";
 import CommentUser from "./user";
-import { useState } from "react";
 import PolkassemblyCommentReplyActions from "../polkassembly/polkassemblyCommentReplyActions";
 import { prettyHTML } from "next-common/utils/viewfuncs";
 import EditInput from "../editInput";
-import { useMountedState } from "react-use";
-import nextApi from "next-common/services/nextApi";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { useDispatch } from "react-redux";
+import { useRootCommentContext } from "./rootComment";
 
 function PolkassemblyCommentReplyItemImpl() {
-  const dispatch = useDispatch();
   const isMounted = useMountedState();
   const comment = useComment();
-  const setComment = useSetComment();
   const [isEdit, setIsEdit] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const update = async (content, contentType) => {
-    return await nextApi.patch(`polkassembly-comments/replies/${comment._id}`, {
-      content,
-      contentType,
-    });
-  };
+  const update = useCallback(
+    async (content, contentType) => {
+      return await nextApi.patch(
+        `polkassembly-comments/replies/${comment._id}`,
+        {
+          content,
+          contentType,
+        },
+      );
+    },
+    [comment._id],
+  );
 
-  const reloadComment = async () => {
-    const { result, error } = await nextApi.fetch(
-      `polkassembly-comments/replies/${comment._id}`,
-    );
-    if (error) {
-      dispatch(newErrorToast(error.message));
-      return;
-    }
-
-    setComment(result);
-  };
+  const { reloadRootComment } = useRootCommentContext();
 
   return (
     <CommentItemTemplate
@@ -77,24 +71,22 @@ function PolkassemblyCommentReplyItemImpl() {
             <EditInput
               editContent={comment.content}
               editContentType={comment.contentType}
-              onFinishedEdit={async () => {
+              onFinishedEdit={async (reload) => {
                 if (isMounted()) {
                   setIsEdit(false);
                 }
+                if (reload) {
+                  await reloadRootComment();
+                }
               }}
               update={update}
-              loading={false}
-              setLoading={() => {}}
+              loading={loading}
+              setLoading={setLoading}
             />
           )}
         </>
       }
-      actions={
-        <PolkassemblyCommentReplyActions
-          reloadComment={reloadComment}
-          setIsEdit={setIsEdit}
-        />
-      }
+      actions={<PolkassemblyCommentReplyActions setIsEdit={setIsEdit} />}
     />
   );
 }

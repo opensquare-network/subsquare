@@ -20,7 +20,7 @@ import { useChain } from "next-common/context/chain";
 import { ensurePolkassemblyRelativeLink } from "next-common/utils/polkassembly/ensurePolkassemblyRelativeLink";
 import { PolkassemblyCommentReplyItem } from "./polkassemblyCommentReplyItem";
 
-function PolkassemblyCommentItemImpl({ isSecondLevel, reloadComment }) {
+function PolkassemblyCommentItemImpl({ isSecondLevel }) {
   const chain = useChain();
   const comment = useComment();
   const type = useDetailType();
@@ -63,12 +63,7 @@ function PolkassemblyCommentItemImpl({ isSecondLevel, reloadComment }) {
           }}
         />
       }
-      actions={
-        <PolkassemblyActions
-          reactions={comment.reactions}
-          reloadComment={reloadComment}
-        />
-      }
+      actions={<PolkassemblyActions reactions={comment.reactions} />}
       renderReplyItem={(reply) => (
         <PolkassemblyReplyItem key={reply.id} data={reply} />
       )}
@@ -76,18 +71,12 @@ function PolkassemblyCommentItemImpl({ isSecondLevel, reloadComment }) {
   );
 }
 
-function PolkassemblyReplyItem({ data, reloadComment }) {
+function PolkassemblyReplyItem({ data }) {
   if (data.comment_source === "polkassembly-comment-reply") {
     return <PolkassemblyCommentReplyItem data={data} />;
   }
 
-  return (
-    <PolkassemblyCommentItem
-      data={data}
-      isSecondLevel
-      reloadComment={reloadComment}
-    />
-  );
+  return <PolkassemblyCommentItem data={data} isSecondLevel />;
 }
 
 export default function PolkassemblyCommentItem({

@@ -11,14 +11,13 @@ import useMentionList from "next-common/utils/hooks/useMentionList";
 import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import { useChain } from "next-common/context/chain";
 import { useComments } from "next-common/context/post/comments";
-import { noop } from "lodash-es";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useComment } from "next-common/components/comment/context";
 import { useFindMyUpVote } from "next-common/sima/actions/common";
 import nextApi from "next-common/services/nextApi";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
-import { usePolkassemblyCommentRepliesContext } from "next-common/hooks/polkassembly/usePolkassemblyCommentReply";
+import { useRootCommentContext } from "../comment/rootComment";
 
 function useMyUpVote(reactions) {
   const findMyUpVote = useFindMyUpVote();
@@ -29,8 +28,7 @@ function ContextMenu({ setIsEdit }) {
   const dispatch = useDispatch();
   const comment = useComment();
   const ownComment = useIsOwnComment();
-  const { refetchPolkassemblyCommentReplies } =
-    usePolkassemblyCommentRepliesContext();
+  const { reloadRootComment } = useRootCommentContext();
 
   const deleteComment = useCallback(async () => {
     const { error } = await nextApi.delete(
@@ -40,8 +38,8 @@ function ContextMenu({ setIsEdit }) {
       dispatch(newErrorToast(error.message));
       return;
     }
-    refetchPolkassemblyCommentReplies();
-  }, [comment._id, dispatch, refetchPolkassemblyCommentReplies]);
+    reloadRootComment();
+  }, [comment._id, dispatch, reloadRootComment]);
 
   return (
     <CommentMoreMenu
@@ -59,10 +57,7 @@ function useIsOwnComment() {
   return user && author?.username === user.username;
 }
 
-export default function PolkassemblyCommentReplyActions({
-  reloadComment = noop,
-  setIsEdit,
-}) {
+export default function PolkassemblyCommentReplyActions({ setIsEdit }) {
   const comment = useComment();
   const user = useUser();
   const reactions = comment?.reactions || [];
@@ -106,6 +101,7 @@ export default function PolkassemblyCommentReplyActions({
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
   const { ensureLogin } = useEnsureLogin();
+  const { reloadRootComment } = useRootCommentContext();
 
   const upVoteComment = useCallback(async () => {
     const { error } = await nextApi.put(
@@ -119,8 +115,8 @@ export default function PolkassemblyCommentReplyActions({
       return;
     }
 
-    await reloadComment();
-  }, [comment._id, dispatch, reloadComment]);
+    await reloadRootComment();
+  }, [comment._id, dispatch, reloadRootComment]);
 
   const cancelUpVoteComment = useCallback(async () => {
     const { error } = await nextApi.delete(
@@ -130,8 +126,8 @@ export default function PolkassemblyCommentReplyActions({
       dispatch(newErrorToast(error.message));
       return;
     }
-    await reloadComment();
-  }, [comment._id, dispatch, reloadComment]);
+    await reloadRootComment();
+  }, [comment._id, dispatch, reloadRootComment]);
 
   const toggleThumbUp = async () => {
     if (!user || ownComment || thumbUpLoading) {
@@ -182,8 +178,11 @@ export default function PolkassemblyCommentReplyActions({
           ref={editorWrapperRef}
           setQuillRef={setQuillRef}
           isReply={isReply}
-          onFinishedEdit={async () => {
+          onFinishedEdit={async (reload) => {
             setIsReply(false);
+            if (reload) {
+              await reloadRootComment();
+            }
           }}
           {...{ contentType, setContentType, content, setContent, users }}
         />

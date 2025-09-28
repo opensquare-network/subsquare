@@ -13,7 +13,6 @@ import { usePost } from "next-common/context/post";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { usePolkassemblyCommentRepliesContext } from "next-common/hooks/polkassembly/usePolkassemblyCommentReply";
 
 const Wrapper = styled.div`
   margin-top: 48px;
@@ -58,8 +57,6 @@ function PolkassemblyCommentReplyEditor(
   // const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
   const { ensureLogin } = useEnsureLogin();
-  const { refetchPolkassemblyCommentReplies } =
-    usePolkassemblyCommentRepliesContext();
 
   const isEmpty = content === "" || content === "<p><br></p>";
 
@@ -83,8 +80,7 @@ function PolkassemblyCommentReplyEditor(
       }
       if (result) {
         setContent("");
-        onFinishedEdit(false);
-        refetchPolkassemblyCommentReplies();
+        onFinishedEdit(true);
       }
     } catch (e) {
       dispatch(newErrorToast(e.message));
