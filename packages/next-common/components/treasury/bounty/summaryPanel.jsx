@@ -57,20 +57,18 @@ export function BountiesSummaryPanelImpl() {
         const data = item[1];
         const status = data.value.status;
         const json = data.toJSON();
-        allTotal = allTotal.plus(json.value);
+        const value = json.value || 0;
+
+        allTotal = allTotal.plus(value);
         if (status.isActive) {
-          groupedMap.Active.total = groupedMap.Active.total.plus(json.value);
           groupedMap.Active.count++;
-        }
-        if (status.isFunded) {
-          groupedMap.Funded.total = groupedMap.Funded.total.plus(json.value);
+          groupedMap.Active.total = groupedMap.Active.total.plus(value);
+        } else if (status.isFunded || status.isCuratorProposed) {
           groupedMap.Funded.count++;
-        }
-        if (status.isProposed) {
-          groupedMap.Proposed.total = groupedMap.Proposed.total.plus(
-            json.value,
-          );
+          groupedMap.Funded.total = groupedMap.Funded.total.plus(value);
+        } else if (status.isProposed) {
           groupedMap.Proposed.count++;
+          groupedMap.Proposed.total = groupedMap.Proposed.total.plus(value);
         }
       }
     }
