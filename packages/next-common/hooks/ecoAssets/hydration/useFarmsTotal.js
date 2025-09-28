@@ -139,7 +139,7 @@ function useAllFarmDeposits(address) {
   };
 }
 
-export default function useFarmTotal(address) {
+export default function useFarmsTotal(address) {
   const { isLoading, omnipool, xyk } = useAllFarmDeposits(address);
 
   const total = useMemo(() => {

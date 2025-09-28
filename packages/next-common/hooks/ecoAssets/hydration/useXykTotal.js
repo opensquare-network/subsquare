@@ -5,7 +5,7 @@ import useAccountBalance, {
 } from "./common/useAccountBalance";
 import useAllAssets from "./common/useAllAssets";
 import useDisplayShareTokenPrice from "./common/useDisplayShareTokenPrice";
-import { BN_NAN } from "./utils";
+import { BN_NAN, BN_0 } from "./utils";
 
 export default function useXykTotal(address) {
   const { allAssets, loading: allAssetsLoading } = useAllAssets();

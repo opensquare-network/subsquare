@@ -1,22 +1,39 @@
 import useAssetsTotal from "./useAssetsTotal";
-import useFarmTotal from "./useFarmTotal";
+import useFarmsTotal from "./useFarmsTotal";
 import useLPTotal from "./useLPTotal";
 import useXykTotal from "./useXykTotal";
 import useBorrowsTotal from "./useBorrowsTotal";
+import BigNumber from "bignumber.js";
+import { useMemo } from "react";
 
 export default async function useTotalAssetsBalance() {
   const address = "12sNU8BXivMj1xQmcd4T39ugCyHjmhir8jkPqfAw5ZDESrx4";
-  // const { balance, isLoading } = useAssetsTotal(address);
-  // const { balance: lpBalance, isLoading: lpIsLoading } = useLPTotal(address);
-  // const { balance: farmBalance, isLoading: farmIsLoading } = useFarmTotal(address);
-  // const { balance: xykBalance, isLoading: xykIsLoading } = useXykTotal(address);
-  const { balance: borrowsBalance, isLoading: borrowsIsLoading } =
+  const { balance: assetsTotal, isLoading: assetsIsLoading } =
+    useAssetsTotal(address);
+  const { balance: lpTotal, isLoading: lpIsLoading } = useLPTotal(address);
+  const { balance: farmsTotal, isLoading: farmsIsLoading } =
+    useFarmsTotal(address);
+  const { balance: xykTotal, isLoading: xykIsLoading } = useXykTotal(address);
+  const { balance: borrowsTotal, isLoading: borrowsIsLoading } =
     useBorrowsTotal(address);
-  console.log("::::borrowsBalance", borrowsBalance, borrowsIsLoading);
 
-  // console.log("::::xykBalance", xykBalance, xykIsLoading);
-  // console.log("::::balance", balance, isLoading);
-  // console.log("::::farmBalance", farmBalance, farmIsLoading);
-  // console.log("::::lpBalance", lpBalance, lpIsLoading);
+  console.log("::::assetsTotal", assetsTotal, assetsIsLoading);
+  console.log("::::lpTotal", lpTotal, lpIsLoading);
+  console.log("::::xykTotal", xykTotal, xykIsLoading);
+  console.log("::::borrowsTotal", borrowsTotal, borrowsIsLoading);
+  console.log("::::farmsTotal", farmsTotal, farmsIsLoading);
+
+  const balanceTotal = useMemo(
+    () =>
+      BigNumber(assetsTotal)
+        .plus(farmsTotal)
+        .plus(lpTotal)
+        .plus(xykTotal)
+        .minus(borrowsTotal)
+        .toString(),
+    [assetsTotal, farmsTotal, lpTotal, xykTotal, borrowsTotal],
+  );
+
+  console.log("::::balanceTotal", balanceTotal);
   // return { balance, isLoading };
 }

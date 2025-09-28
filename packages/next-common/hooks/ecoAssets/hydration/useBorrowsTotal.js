@@ -336,10 +336,10 @@ function useUserBorrowSummary(address) {
     fetchBorrowUserSummary();
   }, [fetchBorrowUserSummary]);
 
-  return { data, isLoading };
+  return { borrows: data, isLoading };
 }
 
-export default async function useBorrowsTotal(address) {
-  const { data, isLoading } = useUserBorrowSummary(address);
-  return { balance: data, isLoading };
+export default function useBorrowsTotal(address) {
+  const { borrows, isLoading } = useUserBorrowSummary(address);
+  return { balance: borrows?.data?.totalBorrowsUSD ?? "0", isLoading };
 }
