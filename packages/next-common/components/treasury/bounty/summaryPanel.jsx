@@ -52,6 +52,10 @@ export function BountiesSummaryPanelImpl() {
         total: new BigNumber(0),
         count: 0,
       },
+      Approved: {
+        total: new BigNumber(0),
+        count: 0,
+      },
     };
     if (bounties.length > 0) {
       for (const item of bounties) {
@@ -61,7 +65,7 @@ export function BountiesSummaryPanelImpl() {
         const value = json.value || 0;
 
         allTotal = allTotal.plus(value);
-        if (status.isActive) {
+        if (status.isActive || status.isPendingPayout) {
           groupedMap.Active.count++;
           groupedMap.Active.total = groupedMap.Active.total.plus(value);
         } else if (status.isFunded || status.isCuratorProposed) {
@@ -70,8 +74,16 @@ export function BountiesSummaryPanelImpl() {
         } else if (status.isProposed) {
           groupedMap.Proposed.count++;
           groupedMap.Proposed.total = groupedMap.Proposed.total.plus(value);
+        } else if (status.isApproved || status.ApprovedWithCurator) {
+          groupedMap.Approved.count++;
+          groupedMap.Approved.total = groupedMap.Approved.total.plus(value);
         }
       }
+    }
+
+    if (groupedMap.Approved.count === 0) {
+      // if there are no approved bounties, don't show the approved group
+      delete groupedMap.Approved;
     }
 
     return {
