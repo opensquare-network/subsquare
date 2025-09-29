@@ -21,8 +21,8 @@ export function useBountiesSummary() {
     }
 
     setIsLoading(true);
-    api.query.bounties.bounties
-      .entries()
+    api?.query.bounties?.bounties
+      ?.entries()
       .then((result) => {
         const bounties = result.map(([entryIndex, value]) => {
           const [id] = entryIndex.toHuman() || [];
