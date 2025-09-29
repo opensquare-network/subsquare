@@ -13,6 +13,7 @@ import WindowSizeProvider from "next-common/context/windowSize";
 import AvatarPermissionsProvider from "./header/context/avatarPermissionsContext";
 import ProfileUserInfoProvider from "./header/context/profileUserInfoContext";
 import ProfileMultisigsActiveProvider from "next-common/components/profile/multisigs/context/profileMultisigsActiveContext";
+import useTotalAssetsBalance from "next-common/hooks/ecoAssets/hydration/useTotalAssetsBalance";
 
 function ProfilePageImpl() {
   useFetchProfileData();
@@ -41,6 +42,7 @@ function ProfilePageImpl() {
 
 export default function ProfilePage() {
   const address = useProfileAddress();
+  useTotalAssetsBalance(address);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(setProfileTransfers(null));

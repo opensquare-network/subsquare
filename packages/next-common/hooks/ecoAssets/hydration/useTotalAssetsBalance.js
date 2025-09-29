@@ -6,8 +6,7 @@ import useBorrowsTotal from "./useBorrowsTotal";
 import BigNumber from "bignumber.js";
 import { useMemo } from "react";
 
-export default async function useTotalAssetsBalance() {
-  const address = "12sNU8BXivMj1xQmcd4T39ugCyHjmhir8jkPqfAw5ZDESrx4";
+export default async function useTotalAssetsBalance(address) {
   const { balance: assetsTotal, isLoading: assetsIsLoading } =
     useAssetsTotal(address);
   const { balance: lpTotal, isLoading: lpIsLoading } = useLPTotal(address);
@@ -23,17 +22,36 @@ export default async function useTotalAssetsBalance() {
   console.log("::::borrowsTotal", borrowsTotal, borrowsIsLoading);
   console.log("::::farmsTotal", farmsTotal, farmsIsLoading);
 
-  const balanceTotal = useMemo(
+  const isLoading = useMemo(
     () =>
-      BigNumber(assetsTotal)
-        .plus(farmsTotal)
-        .plus(lpTotal)
-        .plus(xykTotal)
-        .minus(borrowsTotal)
-        .toString(),
-    [assetsTotal, farmsTotal, lpTotal, xykTotal, borrowsTotal],
+      assetsIsLoading ||
+      lpIsLoading ||
+      farmsIsLoading ||
+      xykIsLoading ||
+      borrowsIsLoading,
+    [
+      assetsIsLoading,
+      lpIsLoading,
+      farmsIsLoading,
+      xykIsLoading,
+      borrowsIsLoading,
+    ],
   );
 
+  const balanceTotal = useMemo(() => {
+    if (isLoading) {
+      return "0";
+    }
+
+    return BigNumber(assetsTotal)
+      .plus(farmsTotal)
+      .plus(lpTotal)
+      .plus(xykTotal)
+      .minus(borrowsTotal)
+      .toString();
+  }, [isLoading, assetsTotal, farmsTotal, lpTotal, xykTotal, borrowsTotal]);
+
   console.log("::::balanceTotal", balanceTotal);
-  // return { balance, isLoading };
+
+  return { balance: balanceTotal, isLoading };
 }
