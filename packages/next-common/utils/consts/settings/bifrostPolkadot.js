@@ -84,6 +84,9 @@ const bifrostPolkadot = {
       domain: "bifrost",
     },
   },
+  referendaActions: {
+    startFrom: 136,
+  },
   cssVarsLight: {
     theme100: "rgba(84,43,251,0.10)",
     theme300: "rgba(84,43,251,0.40)",

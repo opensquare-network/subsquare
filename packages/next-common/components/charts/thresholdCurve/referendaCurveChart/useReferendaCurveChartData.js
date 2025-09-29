@@ -12,9 +12,10 @@ import { useMemo } from "react";
 export default function useReferendaCurveChartData(
   showAyeNay,
   rangeData,
-  labels,
+  rangeLabels,
   supportData,
   approvalData,
+  totalHours,
 ) {
   const supportCurveConfig = useSupportThresholdDatasetConfig(supportData);
   const approvalCurveConfig = useApprovalThresholdDatasetConfig(approvalData);
@@ -23,7 +24,7 @@ export default function useReferendaCurveChartData(
     historyApprovalData,
     historyAyesData,
     historyNaysData,
-  } = useHistoryTallyValueData();
+  } = useHistoryTallyValueData(totalHours);
 
   const supportHistoryConfig = useSupportValueDatasetConfig(historySupportData);
   const approvalHistoryConfig =
@@ -75,10 +76,9 @@ export default function useReferendaCurveChartData(
     ],
   );
 
-  const chartData = { labels, datasets };
+  const chartData = { labels: rangeLabels, datasets };
 
   return {
-    labels,
     chartData,
     historyApprovalData,
   };

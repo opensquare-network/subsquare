@@ -11,22 +11,25 @@ import {
 const DEFAULT_ZKVERIFY_NODES = [
   {
     name: "ZKVerify",
-    url: "wss://zkverify-volta.nirvanalabs.xyz/VoltaSubSquare-mhq7r?apikey=0d7c82be-b75c-4eca-a086-5d70c64705f7",
+    url: "wss://zkverify-rpc.zkverify.io",
   },
 ];
 
-const zkverifyTestnet = {
+const zkverify = {
   ...zkverifyCommonSettings,
-  value: Chains.zkverifyTestnet,
-  name: "ZKVerify Testnet",
-  identity: Chains.zkverifyTestnet,
-  symbol: "tVFY",
+  value: Chains.zkverify,
+  name: "ZKVerify",
+  identity: Chains.zkverify,
+  symbol: "VFY",
   endpoints: DEFAULT_ZKVERIFY_NODES,
   links: zkverifyLinks,
-  group: MenuGroups.Testnet,
+  group: MenuGroups.Solochain,
   modules: zkverifyModules,
   integrations: zkverifyIntegrations,
+  referendaActions: {
+    startFrom: 0,
+  },
   ...zkverifyThemeVars,
 };
 
-export default zkverifyTestnet;
+export default zkverify;

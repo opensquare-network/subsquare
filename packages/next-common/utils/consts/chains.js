@@ -38,6 +38,7 @@ const Chains = {
   vara: "vara",
   shibuya: "shibuya",
   astar: "astar",
+  zkverify: "zkverify",
   zkverifyTestnet: "zkverify-testnet",
   paseo: "paseo",
   paseoAssetHub: "paseo-assethub",
