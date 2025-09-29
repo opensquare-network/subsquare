@@ -6,10 +6,11 @@ import { useChainSettings } from "next-common/context/chain";
 import Tooltip from "next-common/components/tooltip";
 import LoadableContent from "next-common/components/common/loadableContent";
 import TreasurySummary from "next-common/components/summary/treasurySummary";
-import FiatPriceLabel from "next-common/components/summary/polkadotTreasurySummary/common/fiatPriceLabel";
+// import FiatPriceLabel from "next-common/components/summary/polkadotTreasurySummary/common/fiatPriceLabel";
 import FieldLoading from "next-common/components/icons/fieldLoading";
 import { useBountiesSummary } from "next-common/hooks/treasury/bounty/useBountiesSummary";
 import { isNil, lowerCase } from "lodash-es";
+import PriceDisplay from "next-common/components/summary/treasurySummary/priceDisplay";
 
 export function BountiesSummaryPanelImpl() {
   const { symbol, decimals } = useChainSettings();
@@ -17,18 +18,7 @@ export function BountiesSummaryPanelImpl() {
 
   return (
     <LoadableContent isLoading={isLoading || isNil(groupedTotal)}>
-      <div className="flex flex-col">
-        <div>
-          <ValueDisplay
-            className="inline-flex"
-            value={toPrecision(totalBalance, decimals)}
-            symbol={symbol}
-          />
-        </div>
-        <span className="text12Medium text-textTertiary">
-          <FiatPriceLabel free={totalBalance} />
-        </span>
-      </div>
+      <PriceDisplay value={totalBalance} />
       <div className="flex items-center gap-x-2 mt-2 !ml-0">
         {Object.entries(groupedTotal || {}).map(([label, value]) => (
           <Tooltip
@@ -53,10 +43,10 @@ export function BountiesSummaryPanelImpl() {
                 </span>
                 <span>·</span>
               </div>
-              <ValueDisplay
-                className="text12Medium h-4"
-                value={toPrecision(value.total, decimals)}
-                symbol={symbol}
+              <PriceDisplay
+                valueClassName="text12Medium h-4"
+                value={value.total}
+                showExtraInfo={false}
                 showTooltip={false}
               />
             </BalanceWrapper>
