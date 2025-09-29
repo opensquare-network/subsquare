@@ -66,5 +66,5 @@ export function PolkassemblyCommentRepliesProvider({
 }
 
 export function usePolkassemblyCommentRepliesContext() {
-  return React.useContext(PolkassemblyCommentRepliesContext);
+  return React.useContext(PolkassemblyCommentRepliesContext) || {};
 }
