@@ -9,7 +9,7 @@ import TreasurySummary from "next-common/components/summary/treasurySummary";
 import FiatPriceLabel from "next-common/components/summary/polkadotTreasurySummary/common/fiatPriceLabel";
 import FieldLoading from "next-common/components/icons/fieldLoading";
 import { useBountiesSummary } from "next-common/hooks/treasury/bounty/useBountiesSummary";
-import { isNil } from "lodash-es";
+import { isNil, lowerCase } from "lodash-es";
 
 export function BountiesSummaryPanelImpl() {
   const { symbol, decimals } = useChainSettings();
@@ -35,7 +35,8 @@ export function BountiesSummaryPanelImpl() {
             key={label}
             content={
               <>
-                {label} has {value.count} bounties with a total value of{" "}
+                There are {value.count} {lowerCase(label)} bounties with a total
+                value of{" "}
                 <ValueDisplay
                   value={toPrecision(value.total, decimals)}
                   symbol={symbol}
