@@ -6,6 +6,7 @@ import { abbreviateBigNumber } from "next-common/utils/viewfuncs";
 import { useDecisionIndex } from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
 import { useMemo } from "react";
 import { useCurrentHeightPoints } from "../hooks/useInnerPoints";
+import { commonConfig } from "../utils/options";
 
 export default function useCurveChartOptions(
   labels,
@@ -17,15 +18,7 @@ export default function useCurveChartOptions(
   const chainSettings = useChainSettings();
 
   const options = {
-    clip: false,
-    responsive: true,
-    maintainAspectRatio: false,
-    animation: {
-      duration: 0,
-    },
-    layout: {
-      padding: 2,
-    },
+    ...commonConfig,
     scales: {
       x: {
         type: "linear",
