@@ -40,7 +40,7 @@ const useApprovalBubbleData = (rangeData, historyApprovalData) => {
       .map((item) => {
         const { data, type, who } = item;
         const blockHeight = item.indexer.blockHeight;
-        const currentStep = (blockHeight - beginHeight) / blockStep + 1;
+        const currentStep = (blockHeight - beginHeight) / blockStep;
 
         return {
           data,
