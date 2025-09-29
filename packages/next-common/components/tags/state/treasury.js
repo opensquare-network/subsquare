@@ -95,7 +95,7 @@ const bountyStateTagMap = {
 const bountyTooltipMap = {
   Proposed: proposedTooltip,
   Approved: approvedTooltip,
-  Funded: "Proposal has been granted funding",
+  Funded: "Bounty has been granted, waiting for curator assignment",
   Active: "Funding has been approved and is currently in use",
   PendingPayout: pendingPayoutTooltip,
   Rejected: rejectedTooltip,
