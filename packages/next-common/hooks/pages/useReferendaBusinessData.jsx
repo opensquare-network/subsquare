@@ -89,7 +89,12 @@ function extractBounty(call = {}, chainSettings = {}) {
         "Curator",
         <AddressUser key="curator" add={curator} color="var(--sapphire500)" />,
       ],
-      ["Fee", `${toPrecision(fee, decimals)} ${symbol}`],
+      [
+        "Fee",
+        <div className="text14Medium" key="fee">
+          {`${toPrecision(fee, decimals)} ${symbol}`}
+        </div>,
+      ],
     ];
   }
 
