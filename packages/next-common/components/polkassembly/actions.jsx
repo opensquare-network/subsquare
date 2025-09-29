@@ -15,6 +15,8 @@ import {
   useRootCommentContext,
   useRootCommentData,
 } from "../comment/rootComment";
+import { useDetailType } from "next-common/context/page";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 const Wrapper = styled(Flex)`
   align-items: flex-start;
@@ -78,6 +80,9 @@ export default function PolkassemblyActions({
     }, 100);
   };
 
+  const postType = useDetailType();
+  const isPolkassemblyDiscussion = postType === detailPageCategory.PA_POST;
+
   let editor = null;
 
   const replyToComment = useRootCommentData();
@@ -124,7 +129,9 @@ export default function PolkassemblyActions({
   return (
     <>
       <Wrapper className="space-x-4">
-        <ReplyButton onReply={startReply} noHover={!user} />
+        {!isPolkassemblyDiscussion && (
+          <ReplyButton onReply={startReply} noHover={!user} />
+        )}
         <ThumbsUp
           disabled={true}
           count={thumbsUpReactions.length}

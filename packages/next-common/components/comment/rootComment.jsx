@@ -16,24 +16,24 @@ export function SubsquareRootComment({ data }) {
 
   const reloadRootComment = useCallback(async () => {
     const { result: updatedComment } = await getComment(data);
-    if (updatedComment) {
-      const newComments = {
-        ...comments,
-        items: comments.items.map((item) => {
-          if (item._id === updatedComment._id) {
-            return updatedComment;
-          }
-          return item;
-        }),
-      };
-      setComments(newComments);
-
-      const scrollPosition = window.scrollY;
-      await router.replace(router.asPath);
-      window.scrollTo(0, scrollPosition);
+    if (!updatedComment) {
+      return;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [comments, setComments, data._id]);
+    const newComments = {
+      ...comments,
+      items: comments.items.map((item) => {
+        if (item._id === updatedComment._id) {
+          return updatedComment;
+        }
+        return item;
+      }),
+    };
+    setComments(newComments);
+
+    const scrollPosition = window.scrollY;
+    await router.replace(router.asPath);
+    window.scrollTo(0, scrollPosition);
+  }, [comments, setComments, data, getComment, router]);
 
   return (
     <RootCommentContext.Provider value={{ data, reloadRootComment }}>
@@ -63,11 +63,11 @@ export function RootCommentItem({ data }) {
   return <SubsquareRootComment data={data} />;
 }
 
-export function useRootCommentData() {
-  const { data } = useContext(RootCommentContext) || {};
-  return data;
+export function useRootCommentContext() {
+  return useContext(RootCommentContext) || {};
 }
 
-export function useRootCommentContext() {
-  return useContext(RootCommentContext);
+export function useRootCommentData() {
+  const { data } = useRootCommentContext();
+  return data;
 }

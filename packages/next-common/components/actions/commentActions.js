@@ -18,7 +18,10 @@ import { useComment } from "../comment/context";
 import { useCommentActions } from "next-common/sima/context/commentActions";
 import { useFindMyUpVote } from "next-common/sima/actions/common";
 import useCanEditComment from "next-common/hooks/useCanEditComment";
-import { useRootCommentData } from "../comment/rootComment";
+import {
+  useRootCommentContext,
+  useRootCommentData,
+} from "../comment/rootComment";
 
 function useMyUpVote(reactions) {
   const findMyUpVote = useFindMyUpVote();
@@ -53,7 +56,6 @@ function useIsOwnComment() {
 }
 
 export default function CommentActions({
-  reloadComment = noop,
   scrollToNewReplyComment = noop,
   setShowReplies = noop,
   setIsEdit,
@@ -102,6 +104,7 @@ export default function CommentActions({
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
 
   const { upVoteComment, cancelUpVoteComment } = useCommentActions();
+  const { reloadRootComment } = useRootCommentContext();
 
   const toggleThumbUp = async () => {
     if (!user || ownComment || thumbUpLoading) {
@@ -119,7 +122,7 @@ export default function CommentActions({
       }
 
       if (result) {
-        await reloadComment();
+        await reloadRootComment();
       }
       if (error) {
         dispatch(newErrorToast(error.message));
@@ -163,7 +166,7 @@ export default function CommentActions({
             setIsReply(false);
             if (reload) {
               setShowReplies(true);
-              await reloadComment();
+              await reloadRootComment();
               scrollToNewReplyComment();
             }
           }}
