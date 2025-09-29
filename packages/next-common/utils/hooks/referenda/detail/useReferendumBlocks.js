@@ -70,14 +70,6 @@ export function useDecisionHours() {
   );
 }
 
-export function useDecisionIndex() {
-  const hours = usePreparingHours();
-  if (hours) {
-    return hours - 1;
-  }
-  return 0;
-}
-
 export function useBeginHeight() {
   const preparingHours = usePreparingHours();
   const onchainData = useOnchainData();
