@@ -2,35 +2,18 @@ import BigNumber from "bignumber.js";
 import { useContextApi } from "next-common/context/api";
 import { usePageProps } from "next-common/context/page";
 import { backendApi } from "next-common/services/nextApi";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
+import { mapValues, groupBy } from "lodash-es";
+
+const STATUSES = ["Active", "Funded", "Proposed", "Approved"];
 
 export function useBountiesSummary() {
   const api = useContextApi();
   const { activeBounties } = usePageProps();
   const [isLoading, setIsLoading] = useState(true);
-  const [groupedSummary, setGroupedSummary] = useState(null);
+  const [groupedTotal, setGroupedTotal] = useState(null);
   const [totalBalance, setTotalBalance] = useState(0);
   const [allBounties, setAllBounties] = useState([]);
-
-  const activeBountiesAddresses = useMemo(
-    () => activeBounties.map((item) => item.onchainData.address),
-    [activeBounties],
-  );
-
-  useEffect(() => {
-    if (!api) {
-      return;
-    }
-
-    api?.query?.system?.account?.multi(activeBountiesAddresses, (result) => {
-      const list = result.map((item) => item.data.free.toNumber());
-      const total = list.reduce(
-        (acc, item) => BigNumber(acc).plus(item),
-        BigNumber(0),
-      );
-      setTotalBalance(total.toString());
-    });
-  }, [api, activeBountiesAddresses]);
 
   useEffect(() => {
     if (!api) {
@@ -45,9 +28,6 @@ export function useBountiesSummary() {
           const [id] = entryIndex.toHuman() || [];
           return [id, value];
         });
-        const groupedSummary = getGroupedSummary(entries);
-        setGroupedSummary(groupedSummary);
-
         setAllBounties(entries);
       })
       .finally(() => {
@@ -82,69 +62,47 @@ export function useBountiesSummary() {
         }),
       )
       .then(async (values) => await Promise.all(values))
-      .then((values) => {});
+      .then((values) => {
+        const groupedValues = groupBy(values, 0);
+        const groupedTotal = mapValues(groupedValues, (values) => {
+          return {
+            total: values.reduce(
+              (acc, value) => BigNumber(acc).plus(value[1]),
+              BigNumber(0),
+            ),
+            count: values.length,
+          };
+        });
+
+        const finalGroupedTotal = {};
+        STATUSES.forEach((status) => {
+          finalGroupedTotal[status] = groupedTotal[status] || {
+            total: BigNumber(0),
+            count: 0,
+          };
+        });
+
+        // don't include proposed
+        setTotalBalance(
+          [
+            finalGroupedTotal.Active.total,
+            finalGroupedTotal.Funded.total,
+            finalGroupedTotal.Approved.total,
+          ].reduce((acc, value) => BigNumber(acc).plus(value), BigNumber(0)),
+        );
+
+        // don't include approved if there are no approved bounties
+        if (finalGroupedTotal.Approved.count === 0) {
+          delete finalGroupedTotal.Approved;
+        }
+
+        setGroupedTotal(finalGroupedTotal);
+      });
   }, [allBounties, activeBounties, api]);
 
   return {
-    groupedSummary,
+    groupedTotal,
     isLoading,
     totalBalance,
-  };
-}
-
-function getGroupedSummary(bounties = []) {
-  let allTotal = new BigNumber(0);
-  const groupedMap = {
-    Active: {
-      total: new BigNumber(0),
-      count: 0,
-    },
-    Funded: {
-      total: new BigNumber(0),
-      count: 0,
-    },
-    Proposed: {
-      total: new BigNumber(0),
-      count: 0,
-    },
-    Approved: {
-      total: new BigNumber(0),
-      count: 0,
-    },
-  };
-
-  for (const item of bounties) {
-    const data = item[1];
-    const status = data.value.status;
-    const json = data.toJSON();
-    const value = json.value || 0;
-
-    if (!status.isProposed) {
-      // proposed are not included in the total
-      allTotal = allTotal.plus(value);
-    }
-    if (status.isActive || status.isPendingPayout) {
-      groupedMap.Active.count++;
-      groupedMap.Active.total = groupedMap.Active.total.plus(value);
-    } else if (status.isFunded || status.isCuratorProposed) {
-      groupedMap.Funded.count++;
-      groupedMap.Funded.total = groupedMap.Funded.total.plus(value);
-    } else if (status.isProposed) {
-      groupedMap.Proposed.count++;
-      groupedMap.Proposed.total = groupedMap.Proposed.total.plus(value);
-    } else if (status.isApproved || status.isApprovedWithCurator) {
-      groupedMap.Approved.count++;
-      groupedMap.Approved.total = groupedMap.Approved.total.plus(value);
-    }
-  }
-
-  if (groupedMap.Approved.count === 0) {
-    // if there are no approved bounties, don't show the approved group
-    delete groupedMap.Approved;
-  }
-
-  return {
-    total: allTotal,
-    groupedTotal: groupedMap,
   };
 }

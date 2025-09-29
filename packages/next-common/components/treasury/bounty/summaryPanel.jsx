@@ -13,12 +13,10 @@ import { isNil } from "lodash-es";
 
 export function BountiesSummaryPanelImpl() {
   const { symbol, decimals } = useChainSettings();
-  const { groupedSummary, isLoading, totalBalance } = useBountiesSummary();
-
-  const { total = 0, groupedTotal = {} } = groupedSummary || {};
+  const { groupedTotal, isLoading, totalBalance = 0 } = useBountiesSummary();
 
   return (
-    <LoadableContent isLoading={isLoading || isNil(groupedSummary)}>
+    <LoadableContent isLoading={isLoading || isNil(groupedTotal)}>
       <div className="flex flex-col">
         <div>
           <ValueDisplay
@@ -32,7 +30,7 @@ export function BountiesSummaryPanelImpl() {
         </span>
       </div>
       <div className="flex items-center gap-x-2 mt-2">
-        {Object.entries(groupedTotal).map(([label, value]) => (
+        {Object.entries(groupedTotal || {}).map(([label, value]) => (
           <Tooltip
             key={label}
             content={
