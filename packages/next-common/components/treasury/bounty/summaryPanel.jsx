@@ -29,7 +29,7 @@ export function BountiesSummaryPanelImpl() {
           <FiatPriceLabel free={totalBalance} />
         </span>
       </div>
-      <div className="flex items-center gap-x-2 mt-2">
+      <div className="flex items-center gap-x-2 mt-2 !ml-0">
         {Object.entries(groupedTotal || {}).map(([label, value]) => (
           <Tooltip
             key={label}
@@ -44,11 +44,13 @@ export function BountiesSummaryPanelImpl() {
             }
           >
             <BalanceWrapper>
-              <div className="inline-flex items-center gap-x-1">
-                <BalanceLabel>{label}</BalanceLabel>
-                <BalanceLabel>·</BalanceLabel>
-                <span className="text12Medium">{value.count}</span>
-                <BalanceLabel>·</BalanceLabel>
+              <div className="inline-flex items-center gap-x-1 text12Medium text-textTertiary">
+                <span>{label}</span>
+                <span>·</span>
+                <span className="text12Medium text-textSecondary">
+                  {value.count}
+                </span>
+                <span>·</span>
               </div>
               <ValueDisplay
                 className="text12Medium h-4"
@@ -88,8 +90,4 @@ function BalanceWrapper({ children }) {
       {children}
     </div>
   );
-}
-
-function BalanceLabel({ children }) {
-  return <span className="text12Medium text-textTertiary">{children}</span>;
 }
