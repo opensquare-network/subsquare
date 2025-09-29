@@ -30,7 +30,7 @@ function mergeComments(
         ...mergedReplies,
         ...replies.map((r) => ({
           ...r,
-          comment_source: "polkassembly-comment-reply",
+          comment_source: "subsquare-reply-to-polkassembly-comment",
         })),
       ];
     }
@@ -60,8 +60,8 @@ function mergeComments(
         .map((r) => ({
           ...r,
           comment_source:
-            r.comment_source === "polkassembly-comment-reply"
-              ? "polkassembly-comment-reply"
+            r.comment_source === "subsquare-reply-to-polkassembly-comment"
+              ? "subsquare-reply-to-polkassembly-comment"
               : "polkassembly",
         })),
     );

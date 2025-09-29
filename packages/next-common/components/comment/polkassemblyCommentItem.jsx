@@ -72,7 +72,7 @@ function PolkassemblyCommentItemImpl({ isSecondLevel }) {
 }
 
 function PolkassemblyReplyItem({ data }) {
-  if (data.comment_source === "polkassembly-comment-reply") {
+  if (data.comment_source === "subsquare-reply-to-polkassembly-comment") {
     return <PolkassemblyCommentReplyItem data={data} />;
   }
 
