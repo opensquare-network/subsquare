@@ -1,5 +1,4 @@
 import BigNumber from "bignumber.js";
-import { isNil } from "lodash-es";
 import { BN } from "@polkadot/util";
 
 // TODO: consts?
@@ -34,19 +33,6 @@ export function getAddressFromAssetId(assetId) {
     return "";
   }
 }
-
-const underlyingAssetMap = {
-  [getAddressFromAssetId(GDOT_STABLESWAP_ASSET_ID)]: {
-    name: "GIGADOT",
-    symbol: "GDOT",
-    iconSymbol: "GDOT",
-  },
-  [getAddressFromAssetId(GETH_STABLESWAP_ASSET_ID)]: {
-    name: "GIGAETH",
-    symbol: "GETH",
-    iconSymbol: "GETH",
-  },
-};
 
 export function normalizeBigNumber(value) {
   if (value == null) return null;
@@ -133,24 +119,6 @@ export const unPrefixSymbol = (symbol, prefix) => {
     .toUpperCase()
     .replace(RegExp(`^(${prefix[0]}?${prefix.slice(1)})`), "");
 };
-
-export function fetchIconSymbolAndName({ symbol, name, underlyingAsset }) {
-  const unifiedSymbol = unPrefixSymbol(symbol.toUpperCase(), "AMM");
-
-  const lowerUnderlyingAsset = underlyingAsset.toLowerCase();
-  // if (underlyingAssetMap.hasOwnProperty(lowerUnderlyingAsset)) {
-  //   return {
-  //     symbol,
-  //     ...underlyingAssetMap[lowerUnderlyingAsset],
-  //   };
-  // }
-
-  return {
-    iconSymbol: unifiedSymbol,
-    name: name || unifiedSymbol,
-    symbol,
-  };
-}
 
 export const reserveSortFn = (a, b) => {
   if (a.symbol === GHO_SYMBOL) return -1;
@@ -262,41 +230,3 @@ export const fallbackAsset = {
   icon: "",
   externalId: undefined,
 };
-
-export async function fetchShareTokens(api) {
-  if (!api) {
-    return null;
-  }
-
-  try {
-    const [shareToken, poolAssets] = await Promise.all([
-      api.query.xyk.shareToken.entries(),
-      api.query.xyk.poolAssets.entries(),
-    ]);
-
-    const data = shareToken
-      .map(([key, shareTokenIdRaw]) => {
-        const poolAddress = key.args[0].toString();
-        const shareTokenId = shareTokenIdRaw.toString();
-
-        const xykAssets = poolAssets.find(
-          (xykPool) => xykPool[0].args[0].toString() === poolAddress,
-        )?.[1];
-
-        if (xykAssets)
-          return {
-            poolAddress,
-            shareTokenId,
-            assets: xykAssets.unwrap().map((asset) => asset.toString()),
-          };
-
-        return undefined;
-      })
-      .filter((item) => !isNil(item));
-
-    return data;
-  } catch (error) {
-    console.error("Error fetching share tokens:", error);
-    throw error;
-  }
-}

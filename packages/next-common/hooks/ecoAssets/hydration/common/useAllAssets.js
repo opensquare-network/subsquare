@@ -1,7 +1,7 @@
 import { createSdkContext, findNestedKey } from "@galacticcouncil/sdk";
 import { ApiPromise, WsProvider } from "@polkadot/api";
 import { useCallback, useState, useEffect, useMemo } from "react";
-import { HUB_ID, fallbackAsset, fetchShareTokens } from "../utils";
+import { HUB_ID, fallbackAsset } from "../utils";
 
 //  Hydration SDK in provider?
 const ws = "wss://rpc.hydradx.cloud";
@@ -69,19 +69,19 @@ const getFullAsset = (asset) => {
 };
 
 export default function useAllAssets() {
-  const { client } = sdk ?? {};
+  const { client, api } = sdk ?? {};
   const [allAssets, setAllAssets] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const fetchAllAssets = useCallback(async () => {
-    if (!client) {
+    if (!client || !api) {
       return;
     }
 
     setLoading(true);
     try {
       const assets = await client.asset.getOnChainAssets();
-      const shareTokensRaw = await fetchShareTokens(api);
+      const shareTokensRaw = await api.router.poolService.xykClient.pools;
       const allAssets = assets.reduce(
         (acc, assetRaw) => {
           if (bannedAssets.includes(assetRaw.id)) return acc;
@@ -122,7 +122,7 @@ export default function useAllAssets() {
     } finally {
       setLoading(false);
     }
-  }, [client]);
+  }, [api, client]);
 
   useEffect(() => {
     fetchAllAssets();
