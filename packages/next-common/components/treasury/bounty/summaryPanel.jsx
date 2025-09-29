@@ -13,7 +13,7 @@ import { isNil } from "lodash-es";
 
 export function BountiesSummaryPanelImpl() {
   const { symbol, decimals } = useChainSettings();
-  const { groupedSummary, isLoading } = useBountiesSummary();
+  const { groupedSummary, isLoading, totalBalance } = useBountiesSummary();
 
   const { total = 0, groupedTotal = {} } = groupedSummary || {};
 
@@ -23,12 +23,12 @@ export function BountiesSummaryPanelImpl() {
         <div>
           <ValueDisplay
             className="inline-flex"
-            value={toPrecision(total, decimals)}
+            value={toPrecision(totalBalance, decimals)}
             symbol={symbol}
           />
         </div>
         <span className="text12Medium text-textTertiary">
-          <FiatPriceLabel free={total} />
+          <FiatPriceLabel free={totalBalance} />
         </span>
       </div>
       <div className="flex items-center gap-x-2 mt-2">

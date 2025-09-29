@@ -1,11 +1,36 @@
 import BigNumber from "bignumber.js";
 import { useContextApi } from "next-common/context/api";
-import { useEffect, useState } from "react";
+import { usePageProps } from "next-common/context/page";
+import { backendApi } from "next-common/services/nextApi";
+import { useEffect, useMemo, useState } from "react";
 
 export function useBountiesSummary() {
   const api = useContextApi();
+  const { activeBounties } = usePageProps();
   const [isLoading, setIsLoading] = useState(true);
   const [groupedSummary, setGroupedSummary] = useState(null);
+  const [totalBalance, setTotalBalance] = useState(0);
+  const [allBounties, setAllBounties] = useState([]);
+
+  const activeBountiesAddresses = useMemo(
+    () => activeBounties.map((item) => item.onchainData.address),
+    [activeBounties],
+  );
+
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    api?.query?.system?.account?.multi(activeBountiesAddresses, (result) => {
+      const list = result.map((item) => item.data.free.toNumber());
+      const total = list.reduce(
+        (acc, item) => BigNumber(acc).plus(item),
+        BigNumber(0),
+      );
+      setTotalBalance(total.toString());
+    });
+  }, [api, activeBountiesAddresses]);
 
   useEffect(() => {
     if (!api) {
@@ -22,15 +47,48 @@ export function useBountiesSummary() {
         });
         const groupedSummary = getGroupedSummary(entries);
         setGroupedSummary(groupedSummary);
+
+        setAllBounties(entries);
       })
       .finally(() => {
         setIsLoading(false);
       });
   }, [api]);
 
+  useEffect(() => {
+    if (!allBounties.length) {
+      return;
+    }
+    Promise.all(
+      allBounties.map(([idx]) => {
+        const bounty = activeBounties.find((item) => item.bountyIndex === +idx);
+        if (!bounty) {
+          return backendApi
+            .fetch(`treasury/bounties/${idx}`)
+            .then((res) => res.result);
+        }
+        return bounty;
+      }),
+    )
+      .then((entries) =>
+        entries.map((entry) => {
+          const address = entry.onchainData.address;
+          if (address) {
+            return api?.query?.system
+              ?.account(address)
+              .then((res) => [entry.state, res.data.free.toNumber()]);
+          }
+          return [entry.state, entry.onchainData.meta.value];
+        }),
+      )
+      .then(async (values) => await Promise.all(values))
+      .then((values) => {});
+  }, [allBounties, activeBounties, api]);
+
   return {
     groupedSummary,
     isLoading,
+    totalBalance,
   };
 }
 
