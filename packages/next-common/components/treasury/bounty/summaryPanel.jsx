@@ -1,7 +1,5 @@
 import SummaryItem from "next-common/components/summary/layout/item";
 import { useContextApi } from "next-common/context/api";
-import { useEffect, useMemo, useState } from "react";
-import BigNumber from "bignumber.js";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
@@ -10,93 +8,17 @@ import LoadableContent from "next-common/components/common/loadableContent";
 import TreasurySummary from "next-common/components/summary/treasurySummary";
 import FiatPriceLabel from "next-common/components/summary/polkadotTreasurySummary/common/fiatPriceLabel";
 import FieldLoading from "next-common/components/icons/fieldLoading";
+import { useBountiesSummary } from "next-common/hooks/treasury/bounty/useBountiesSummary";
+import { isNil } from "lodash-es";
 
 export function BountiesSummaryPanelImpl() {
   const { symbol, decimals } = useChainSettings();
-  const [bounties, setBounties] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const api = useContextApi();
+  const { groupedSummary, isLoading } = useBountiesSummary();
 
-  useEffect(() => {
-    if (!api) {
-      return;
-    }
-
-    setIsLoading(true);
-    api.query.bounties.bounties
-      .entries()
-      .then((result) => {
-        const entries = result.map(([entryIndex, value]) => {
-          const [id] = entryIndex.toHuman() || [];
-          return [id, value];
-        });
-        setBounties(entries);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [api]);
-
-  const { total, groupedTotal } = useMemo(() => {
-    let allTotal = new BigNumber(0);
-    const groupedMap = {
-      Active: {
-        total: new BigNumber(0),
-        count: 0,
-      },
-      Funded: {
-        total: new BigNumber(0),
-        count: 0,
-      },
-      Proposed: {
-        total: new BigNumber(0),
-        count: 0,
-      },
-      Approved: {
-        total: new BigNumber(0),
-        count: 0,
-      },
-    };
-    if (bounties.length > 0) {
-      for (const item of bounties) {
-        const data = item[1];
-        const status = data.value.status;
-        const json = data.toJSON();
-        const value = json.value || 0;
-
-        if (!status.isProposed) {
-          // proposed are not included in the total
-          allTotal = allTotal.plus(value);
-        }
-        if (status.isActive || status.isPendingPayout) {
-          groupedMap.Active.count++;
-          groupedMap.Active.total = groupedMap.Active.total.plus(value);
-        } else if (status.isFunded || status.isCuratorProposed) {
-          groupedMap.Funded.count++;
-          groupedMap.Funded.total = groupedMap.Funded.total.plus(value);
-        } else if (status.isProposed) {
-          groupedMap.Proposed.count++;
-          groupedMap.Proposed.total = groupedMap.Proposed.total.plus(value);
-        } else if (status.isApproved || status.isApprovedWithCurator) {
-          groupedMap.Approved.count++;
-          groupedMap.Approved.total = groupedMap.Approved.total.plus(value);
-        }
-      }
-    }
-
-    if (groupedMap.Approved.count === 0) {
-      // if there are no approved bounties, don't show the approved group
-      delete groupedMap.Approved;
-    }
-
-    return {
-      total: allTotal,
-      groupedTotal: groupedMap,
-    };
-  }, [bounties]);
+  const { total = 0, groupedTotal = {} } = groupedSummary || {};
 
   return (
-    <LoadableContent isLoading={isLoading}>
+    <LoadableContent isLoading={isLoading || isNil(groupedSummary)}>
       <div className="flex flex-col">
         <div>
           <ValueDisplay
