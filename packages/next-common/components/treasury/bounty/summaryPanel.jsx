@@ -18,7 +18,7 @@ export function BountiesSummaryPanelImpl() {
 
   return (
     <LoadableContent isLoading={isLoading || isNil(groupedTotal)}>
-      <PriceDisplay value={totalBalance} />
+      <PriceDisplay value={totalBalance} className="!ml-0" />
       <div className="flex items-center gap-x-2 mt-2 !ml-0">
         {Object.entries(groupedTotal || {}).map(([label, value]) => (
           <Tooltip
@@ -77,7 +77,7 @@ export default function BountiesSummaryPanel() {
 
 function BalanceWrapper({ children }) {
   return (
-    <div className="bg-neutral200 py-1 px-2 rounded-[4px] flex items-center gap-x-2 h-6 text-textSecondary">
+    <div className="bg-neutral200 py-1 px-2 rounded-[4px] flex items-center gap-x-1 h-6 text-textSecondary">
       {children}
     </div>
   );

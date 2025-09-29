@@ -3,13 +3,14 @@ import { isNil } from "lodash-es";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { useFiatPriceSnapshot } from "next-common/hooks/useFiatPrice";
-import { toPrecision } from "next-common/utils";
+import { cn, toPrecision } from "next-common/utils";
 import { useMemo } from "react";
 
 export default function PriceDisplay({
   value,
   showExtraInfo = true,
   showTooltip = true,
+  className = "",
   valueClassName = "",
 }) {
   const { decimals, symbol } = useChainSettings();
@@ -41,12 +42,12 @@ export default function PriceDisplay({
       <ValueDisplay
         value={toPrecision(totalPrice)}
         symbol={""}
-        prefix={"$"}
+        prefix={totalPrice.isZero() ? "" : "$"}
         showTooltip={showTooltip}
         className={valueClassName}
       />
       {showExtraInfo && (
-        <div className="text12Medium text-textTertiary">
+        <div className={cn("text12Medium text-textTertiary", className)}>
           <ValueDisplay
             value={toPrecision(value, decimals)}
             symbol={symbol}

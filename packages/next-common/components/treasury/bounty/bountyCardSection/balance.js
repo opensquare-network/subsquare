@@ -11,7 +11,7 @@ function Balance({ address }) {
 
   return (
     <LoadableContent isLoading={isLoading}>
-      <PriceDisplay value={balance} />
+      <PriceDisplay value={balance} className="!ml-0" />
     </LoadableContent>
   );
 }
