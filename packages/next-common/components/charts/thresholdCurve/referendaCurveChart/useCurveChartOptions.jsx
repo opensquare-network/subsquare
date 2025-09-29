@@ -3,17 +3,12 @@ import { find, inRange, set } from "lodash-es";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import { abbreviateBigNumber } from "next-common/utils/viewfuncs";
-import { useDecisionIndex } from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
+import { usePreparingHours } from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
 import { useMemo } from "react";
 import { useCurrentHeightPoints } from "../hooks/useInnerPoints";
 import { commonConfig } from "../utils/options";
 
-export default function useCurveChartOptions(
-  labels,
-  sourceLabels,
-  datasets,
-  rangeData,
-) {
+export default function useCurveChartOptions(labels, datasets, rangeData) {
   const { neutral300, neutral400 } = useThemeSetting();
   const chainSettings = useChainSettings();
 
@@ -83,7 +78,7 @@ export default function useCurveChartOptions(
   }
 
   // decision line
-  const decisionIndex = useDecisionIndex();
+  const decisionIndex = usePreparingHours();
   set(
     options,
     "plugins.annotation.annotations.dividerLine",

@@ -11,15 +11,15 @@ import { cn } from "next-common/utils";
 
 export default function ApprovalBubbleArea(props) {
   const showVoteActions = useShowVoteActions();
-  if (!showVoteActions) {
-    return;
+  if (!showVoteActions || !props.chartArea) {
+    return null;
   }
   return <ApprovalBubbleAreaImpl {...props} />;
 }
 
 const useApprovalBubbleData = (rangeData, historyApprovalData) => {
   const labelXLength = rangeData[1] - rangeData[0];
-  const beginheight = useBeginHeight();
+  const beginHeight = useBeginHeight();
   const blockStep = useBlockSteps();
 
   const { loading, voteActions } = useReferendumActions();
@@ -40,7 +40,7 @@ const useApprovalBubbleData = (rangeData, historyApprovalData) => {
       .map((item) => {
         const { data, type, who } = item;
         const blockHeight = item.indexer.blockHeight;
-        const currentStep = (blockHeight - beginheight) / blockStep;
+        const currentStep = (blockHeight - beginHeight) / blockStep + 1;
 
         return {
           data,
@@ -55,7 +55,7 @@ const useApprovalBubbleData = (rangeData, historyApprovalData) => {
         };
       });
   }, [
-    beginheight,
+    beginHeight,
     blockStep,
     historyApprovalData,
     loading,
