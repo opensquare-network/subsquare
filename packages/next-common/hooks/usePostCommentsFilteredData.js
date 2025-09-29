@@ -42,7 +42,7 @@ export function usePostCommentsFilteredData() {
     return Array.isArray(accounts) ? Array.from(accounts) : [];
   }, [commentsData]);
 
-  const { identities, isCommentWithIdenticalAddress, loadingAddressIdentity } =
+  const { identities, isCommentWithIdenticalAddress } =
     usePostCommentsFilterByAddressIdentity(accountList);
 
   useEffect(() => {
@@ -188,6 +188,6 @@ export function usePostCommentsFilteredData() {
 
   return {
     commentsData: filteredComments,
-    loading: commentsLoading || loadingAddressIdentity,
+    loading: commentsLoading,
   };
 }

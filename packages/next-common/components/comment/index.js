@@ -67,7 +67,7 @@ function CommentsContent({ loading, items = [] }) {
   return (
     <div>
       {pageData.map((item) => (
-        <RootCommentItem key={item.id} data={item} />
+        <RootCommentItem key={item.id || item._id} data={item} />
       ))}
       {hasMore ? (
         <div className="pt-8 flex justify-center">

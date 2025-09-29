@@ -65,7 +65,7 @@ function PolkassemblyCommentItemImpl({ isSecondLevel }) {
       }
       actions={<PolkassemblyActions reactions={comment.reactions} />}
       renderReplyItem={(reply) => (
-        <PolkassemblyReplyItem key={reply.id} data={reply} />
+        <PolkassemblyReplyItem key={reply.id || reply._id} data={reply} />
       )}
     />
   );

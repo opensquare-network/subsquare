@@ -80,7 +80,10 @@ export function usePostCommentsData() {
   const comments = useComments();
   const chain = useChain();
   const post = usePost();
-  const polkassemblyPostData = usePolkassemblyPostData(post);
+  const {
+    loadingComments: isPolkassemblyCommentsLoading,
+    comments: polkassemblyComments,
+  } = usePolkassemblyPostData(post);
   const { polkassemblyCommentReplies, isPolkassemblyCommentRepliesLoading } =
     usePolkassemblyCommentRepliesContext();
 
@@ -89,27 +92,30 @@ export function usePostCommentsData() {
     getShouldReadPolkassemblyComments(chain);
 
   const isLoading =
-    polkassemblyPostData.loadingComments || isPolkassemblyCommentRepliesLoading;
+    isPolkassemblyCommentsLoading || isPolkassemblyCommentRepliesLoading;
 
   useEffect(() => {
-    if (shouldReadPolkassemblyComments) {
-      if (!isLoading) {
-        const data = { ...comments };
-
-        data.items = mergeComments(
-          polkassemblyPostData.comments,
-          comments.items,
-          polkassemblyCommentReplies,
-        );
-
-        setCommentsData(data);
-      }
-    } else {
+    if (!shouldReadPolkassemblyComments) {
       setCommentsData(comments);
+      return;
     }
+
+    if (isLoading) {
+      return;
+    }
+
+    const data = { ...comments };
+
+    data.items = mergeComments(
+      polkassemblyComments,
+      comments.items,
+      polkassemblyCommentReplies,
+    );
+
+    setCommentsData(data);
   }, [
     comments,
-    polkassemblyPostData.comments,
+    polkassemblyComments,
     shouldReadPolkassemblyComments,
     polkassemblyCommentReplies,
     isLoading,
