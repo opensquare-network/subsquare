@@ -20,7 +20,7 @@ import {
 import { TreasuryTag } from "next-common/components/tags/state/treasury";
 import { TreasuryAwardCountDownImpl } from "next-common/components/detail/treasury/proposal/awardCountDown";
 
-export default function TreasuryPorposalsPostItem({ data }) {
+export default function TreasuryProposalsPostItem({ data }) {
   return (
     <Wrapper>
       <ContentWrapper>
