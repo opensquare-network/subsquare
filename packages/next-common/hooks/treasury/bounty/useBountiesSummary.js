@@ -59,7 +59,7 @@ export function useBountiesSummary() {
             if (address) {
               return api?.query?.system
                 ?.account(address)
-                .then((res) => [bountie.state, res.data.free.toNumber()]);
+                .then((res) => [bountie.state, res.data.free]);
             }
             return [bountie.state, bountie?.onchainData?.value || 0];
           }),
