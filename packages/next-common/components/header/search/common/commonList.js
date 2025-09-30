@@ -11,6 +11,8 @@ export const SearchType = {
   IDENTITIES: "Identities",
   TREASURY_PROPOSALS: "TreasuryProposals",
   TREASURY_SPENDS: "TreasurySpends",
+  FELLOWSHIP_REFERENDA: "FellowshipReferenda",
+  FELLOWSHIP_TREASURY_SPENDS: "FellowshipTreasurySpends",
 };
 
 export const getPathAndCategoryByItemData = (item) => {
@@ -63,6 +65,20 @@ export const getPathAndCategoryByItemData = (item) => {
           ? `/treasury/spends/${item.index}`
           : "/treasury/spends",
       category: "Treasury Spends",
+    },
+    [SearchType.FELLOWSHIP_REFERENDA]: {
+      path:
+        item.type !== ItemType.CATEGORY
+          ? `/fellowship/referenda/${item.index}`
+          : "/fellowship/referenda",
+      category: "Fellowship Referenda",
+    },
+    [SearchType.FELLOWSHIP_TREASURY_SPENDS]: {
+      path:
+        item.type !== ItemType.CATEGORY
+          ? `/fellowship/treasury/spends/${item.index}`
+          : "/fellowship/treasury/spends",
+      category: "Fellowship Treasury Spends",
     },
   };
 

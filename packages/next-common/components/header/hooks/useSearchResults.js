@@ -168,6 +168,10 @@ function useSearchResults() {
           return formatItems("TreasuryProposals", value, "proposalIndex");
         case "treasurySpends":
           return formatItems("TreasurySpends", value, "index");
+        case "fellowshipReferenda":
+          return formatItems("FellowshipReferenda", value, "referendumIndex");
+        case "fellowshipTreasurySpends":
+          return formatItems("FellowshipTreasurySpends", value, "index");
         default:
           return [];
       }
