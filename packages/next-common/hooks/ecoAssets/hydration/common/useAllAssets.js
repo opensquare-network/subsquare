@@ -1,7 +1,7 @@
 import { createSdkContext, findNestedKey } from "@galacticcouncil/sdk";
 import { ApiPromise, WsProvider } from "@polkadot/api";
 import { useCallback, useState, useEffect, useMemo } from "react";
-import { HUB_ID, fallbackAsset } from "../utils";
+import { HUB_ID, fallbackAsset, fetchShareTokens } from "../utils";
 
 //  Hydration SDK in provider?
 const ws = "wss://rpc.hydradx.cloud";
@@ -69,19 +69,19 @@ const getFullAsset = (asset) => {
 };
 
 export default function useAllAssets() {
-  const { client, api } = sdk ?? {};
+  const { client } = sdk ?? {};
   const [allAssets, setAllAssets] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const fetchAllAssets = useCallback(async () => {
-    if (!client || !api) {
+    if (!client) {
       return;
     }
 
     setLoading(true);
     try {
       const assets = await client.asset.getOnChainAssets();
-      const shareTokensRaw = await api.router.poolService.xykClient.pools;
+      const shareTokensRaw = await fetchShareTokens(api);
       const allAssets = assets.reduce(
         (acc, assetRaw) => {
           if (bannedAssets.includes(assetRaw.id)) return acc;
@@ -116,13 +116,70 @@ export default function useAllAssets() {
         },
       );
 
-      setAllAssets({ ...allAssets, shareTokensRaw });
+      const { shareTokens, shareTokensMap } = shareTokensRaw.reduce(
+        (acc, token) => {
+          const { shareTokenId, poolAddress, assets } = token;
+
+          const existingShareToken = allAssets.all.get(shareTokenId);
+
+          let tokenFull;
+          if (existingShareToken) {
+            tokenFull = {
+              ...existingShareToken,
+              poolAddress,
+              assets: assets
+                .map((assetId) => allAssets.all.get(assetId))
+                .filter(Boolean),
+              isShareToken: true,
+            };
+          } else {
+            const assetA = allAssets.all.get(assets[0]);
+            const assetB = allAssets.all.get(assets[1]);
+
+            if (assetA && assetB && assetA.symbol && assetB.symbol) {
+              const assetDecimal =
+                Number(assetA.id) > Number(assetB.id) ? assetB : assetA;
+              const decimals = assetDecimal.decimals;
+              const symbol = `${assetA.symbol}/${assetB.symbol}`;
+              const name = `${assetA.name.split(" (")[0]}/${
+                assetB.name.split(" (")[0]
+              }`;
+
+              tokenFull = {
+                ...fallbackAsset,
+                id: shareTokenId,
+                poolAddress,
+                assets: [assetA, assetB],
+                isShareToken: true,
+                decimals,
+                symbol,
+                name,
+              };
+            }
+          }
+
+          if (tokenFull) {
+            acc.shareTokens.push(tokenFull);
+            acc.shareTokensMap.set(tokenFull.id, tokenFull);
+          }
+
+          return acc;
+        },
+        { shareTokens: [], shareTokensMap: new Map([]) },
+      );
+
+      setAllAssets({
+        ...allAssets,
+        shareTokensRaw,
+        shareTokens,
+        shareTokensMap,
+      });
     } catch (error) {
       console.error("Error fetching assets:", error);
     } finally {
       setLoading(false);
     }
-  }, [api, client]);
+  }, [client]);
 
   useEffect(() => {
     fetchAllAssets();
@@ -131,52 +188,14 @@ export default function useAllAssets() {
   return { allAssets, loading };
 }
 
-// TODO: remove useless params
 export function useAllAssetsFunc() {
   const { allAssets, loading } = useAllAssets();
-  const { all = [], hub = {}, shareTokensRaw = [] } = allAssets ?? {};
-
-  const { shareTokens, shareTokensMap } = useMemo(() => {
-    if (!all || !loading) {
-      return { shareTokens: [], shareTokensMap: new Map([]) };
-    }
-
-    return shareTokensRaw.reduce(
-      (acc, token) => {
-        if (!all) {
-          return acc;
-        }
-        const assetA = all.get(token.assets[0]);
-        const assetB = all.get(token.assets[1]);
-
-        if (assetA && assetB && assetA.symbol && assetB.symbol) {
-          const assetDecimal =
-            Number(assetA.id) > Number(assetB.id) ? assetB : assetA;
-          const decimals = assetDecimal.decimals;
-          const symbol = `${assetA.symbol}/${assetB.symbol}`;
-          const name = `${assetA.name.split(" (")[0]}/${
-            assetB.name.split(" (")[0]
-          }`;
-
-          const tokenFull = {
-            ...fallbackAsset,
-            id: token.shareTokenId,
-            poolAddress: token.poolAddress,
-            assets: [assetA, assetB],
-            isShareToken: true,
-            decimals,
-            symbol,
-            name,
-          };
-          acc.shareTokens.push(tokenFull);
-          acc.shareTokensMap.set(tokenFull.id, tokenFull);
-        }
-
-        return acc;
-      },
-      { shareTokens: [], shareTokensMap: new Map([]) },
-    );
-  }, [all, loading, shareTokensRaw]);
+  const {
+    all = new Map([]),
+    hub = {},
+    shareTokens = [],
+    shareTokensMap = new Map([]),
+  } = allAssets ?? {};
 
   const allWithShareTokensMap = useMemo(
     () => new Map([...all, ...shareTokensMap]),
@@ -192,6 +211,7 @@ export function useAllAssetsFunc() {
     (id) => getAsset(id) ?? fallbackAsset,
     [getAsset],
   );
+
   const getAssets = useCallback(
     (ids) => ids.map((id) => getAssetWithFallback(id)),
     [getAssetWithFallback],
@@ -201,6 +221,7 @@ export function useAllAssetsFunc() {
     (id) => shareTokensMap.get(id),
     [shareTokensMap],
   );
+
   const getShareTokens = useCallback(
     (ids) => ids.map((id) => getShareToken(id)),
     [getShareToken],

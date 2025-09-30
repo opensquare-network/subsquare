@@ -24,12 +24,12 @@ export default function useAccountBalance(
   const [erc20Balances, setErc20Balances] = useState([]);
 
   const [isLoading, setIsLoading] = useState(true);
-  const { all = [], native } = allAssets ?? {};
+  const { all = [], native, shareTokens = [] } = allAssets ?? {};
 
   const fetchBalance = useCallback(async () => {
     const { client } = sdk ?? {};
     const { balanceV2 } = client ?? {};
-    const followedAssets = [];
+    const followedAssets = [...shareTokens];
     const followedErc20Tokens = [];
     if (allAssetsLoading) {
       return;
@@ -69,7 +69,7 @@ export default function useAccountBalance(
     } finally {
       setIsLoading(false);
     }
-  }, [address, all, allAssetsLoading]);
+  }, [address, all, allAssetsLoading, shareTokens]);
 
   useEffect(() => {
     fetchBalance();

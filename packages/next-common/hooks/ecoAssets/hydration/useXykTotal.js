@@ -37,6 +37,13 @@ export default function useXykTotal(address) {
     shareTokenBalances.map((token) => token.asset.id),
   );
 
+  console.log(
+    "::::shareTokenBalances",
+    shareTokenBalances,
+    accountAssetsMap,
+    allAssets,
+  );
+
   const xykTotal = useMemo(() => {
     if (!shareTokenBalances || !spotPrices.data || isLoading) return BN_NAN;
     return shareTokenBalances.reduce((acc, { asset, balance }) => {
