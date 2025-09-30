@@ -10,7 +10,7 @@ import PreimageWarning from "next-common/components/detail/referenda/preimageWar
 import TimeoutGuard from "next-common/components/detail/common/openGov/timeoutGuard";
 import ReferendaReferendumTreasurySpendNavigation from "next-common/components/detail/referenda/referendaReferendumTreasurySpendNavigation";
 import MaybeSimaDiscussionArticleContent from "next-common/components/maybeSimaDiscussionArticleContent";
-import ReferendaReferendumTreasuryBountiesNavigation from "next-common/components/detail/navigation/treasuryBountiesNavigation";
+import RelatedBountiesNavigation from "next-common/components/detail/navigation/relatedBountiesNavigation";
 
 export default function ReferendaDetail() {
   const isEditing = useSelector(isEditingPostSelector);
@@ -27,7 +27,7 @@ export default function ReferendaDetail() {
             <ReferendaWhiteListNavigation />
             <ReferendaReferendumNavigation />
             <ReferendaReferendumTreasurySpendNavigation />
-            <ReferendaReferendumTreasuryBountiesNavigation />
+            <RelatedBountiesNavigation />
           </>
         )
       }
