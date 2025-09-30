@@ -57,10 +57,7 @@ function useIsOwnComment() {
   return user && author?.username === user.username;
 }
 
-export default function PolkassemblyCommentReplyActions({
-  setIsEdit,
-  setShowReplies,
-}) {
+export default function PolkassemblyCommentReplyActions({ setIsEdit }) {
   const comment = useComment();
   const user = useUser();
   const reactions = comment?.reactions || [];
@@ -184,7 +181,6 @@ export default function PolkassemblyCommentReplyActions({
           onFinishedEdit={async (reload) => {
             setIsReply(false);
             if (reload) {
-              setShowReplies(true);
               await reloadRootComment();
             }
           }}
