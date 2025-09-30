@@ -4,6 +4,7 @@ import { PostLabel } from "./common";
 import MenuGroups from "./menuGroups";
 import { mergeChainModules } from "./common/modules";
 
+//TODO: update hyperbridge icons
 const ProjectIconHydrationDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconHydrationDark"),
 );
@@ -78,7 +79,7 @@ const hyperBridge = {
   useVoteCall: true,
   hasMultisig: true,
   multisigApiPrefix: "hyperBridge",
-  description: "Making finance efficient, simple and unstoppable.",
+  description: "Securely connecting blockchains for seamless asset transfer.",
   modules: mergeChainModules({
     referenda: true,
     treasury: {
