@@ -5,12 +5,10 @@ import ReplyButton from "next-common/components/actions/replyButton";
 import ThumbUpList from "next-common/components/actions/thumbUpList";
 import { Wrapper } from "next-common/components/actions/styled";
 import PolkassemblyCommentReplyEditor from "./polkassemblyCommentReplyEditor";
-import { usePost } from "next-common/context/post";
 import { useUser } from "next-common/context/user";
 import useMentionList from "next-common/utils/hooks/useMentionList";
 import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import { useChain } from "next-common/context/chain";
-import { useComments } from "next-common/context/post/comments";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useComment } from "next-common/components/comment/context";
@@ -67,7 +65,6 @@ export default function PolkassemblyCommentReplyActions({ setIsEdit }) {
   const thumbUp = !!myUpVote;
 
   const chain = useChain();
-  const post = usePost();
   const editorWrapperRef = useRef();
   const [quillRef, setQuillRef] = useState(null);
   const [content, setContent] = useState("");
@@ -75,9 +72,8 @@ export default function PolkassemblyCommentReplyActions({ setIsEdit }) {
     user?.preference?.editor || "markdown",
   );
   const [isReply, setIsReply] = useState(false);
-  const comments = useComments();
 
-  const users = useMentionList(post, comments);
+  const users = useMentionList();
 
   const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 

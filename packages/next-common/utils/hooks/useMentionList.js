@@ -10,12 +10,17 @@ import { useChain } from "../../context/chain";
 import { addressEllipsis, isKeyRegisteredUser, isSameAddress } from "..";
 import { tryConvertToEvmAddress } from "../mixedChainUtil";
 import { usePolkassemblyCommentRepliesContext } from "next-common/hooks/polkassembly/usePolkassemblyCommentReply";
+import { useComments } from "next-common/context/post/comments";
+import { usePost } from "next-common/context/post";
 
-export default function useMentionList(post, comments) {
+export default function useMentionList(commentsData) {
   const chain = useChain();
   const [users, setUsers] = useState([]);
   const currentUser = useUser();
+  const post = usePost();
   const { polkassemblyCommentReplies } = usePolkassemblyCommentRepliesContext();
+  let comments = useComments();
+  comments = commentsData || comments;
 
   useEffect(() => {
     if (!post) {

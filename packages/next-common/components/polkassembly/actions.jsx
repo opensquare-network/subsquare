@@ -17,6 +17,7 @@ import {
 } from "../comment/rootComment";
 import { useDetailType } from "next-common/context/page";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
+import useMentionList from "next-common/utils/hooks/useMentionList";
 
 const Wrapper = styled(Flex)`
   align-items: flex-start;
@@ -60,7 +61,7 @@ export default function PolkassemblyActions({
   const editorWrapperRef = useRef();
   const [quillRef, setQuillRef] = useState(null);
 
-  const users = [];
+  const users = useMentionList();
 
   const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
