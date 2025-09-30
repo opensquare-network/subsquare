@@ -79,7 +79,7 @@ export default function PolkassemblyActions({
   const startReply = () => {
     setIsReply(true);
     setTimeout(() => {
-      onReply(comment.author);
+      onReply(comment?.author);
     }, 100);
   };
 

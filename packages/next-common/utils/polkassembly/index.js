@@ -76,6 +76,7 @@ export const convertPolkassemblyReaction = (paReactions, chain) => {
       username: u,
       address: "",
       polkassemblyUserLink: `https://${chain}.polkassembly.io/user/${u}`,
+      dataSource: "polkassembly",
     },
   }));
 
@@ -100,6 +101,7 @@ export const convertPolkassemblyComment = (chain, comment) => {
         : comment.username,
       address,
       polkassemblyUserLink: `https://${chain}.polkassembly.io/user/${comment.username}`,
+      dataSource: "polkassembly",
     },
   };
 };
