@@ -11,6 +11,10 @@ const EditorWrapper = styled.div`
     color: var(--textPrimary);
   }
 
+  div ul.mention-list {
+    z-index: 10;
+  }
+
   div ul.mention-list,
   div.ql-mention-list-container {
     background: var(--neutral100);

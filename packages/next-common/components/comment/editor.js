@@ -65,7 +65,7 @@ function CommentEditor(
   {
     isReply,
     onFinishedEdit = noop,
-    comment,
+    replyToComment,
     content,
     setContent,
     contentType,
@@ -84,7 +84,7 @@ function CommentEditor(
   const isMounted = useMountedState();
   const { createPostComment, createCommentReply } = useCommentActions();
 
-  const shouldUseSima = useShouldUseSima(comment);
+  const shouldUseSima = useShouldUseSima(replyToComment);
 
   const createComment = async (realAddress) => {
     if (!isMounted()) {
@@ -95,10 +95,10 @@ function CommentEditor(
     try {
       let result;
 
-      if (comment) {
+      if (replyToComment) {
         result = await createCommentReply(
           post,
-          comment,
+          replyToComment,
           content,
           contentType,
           getRealField(realAddress),
