@@ -1,3 +1,5 @@
+import { isNaN } from "lodash-es";
+
 export function getPostLastActivityAt(post) {
   if (!post) {
     return;
@@ -8,6 +10,10 @@ export function getPostLastActivityAt(post) {
     new Date(post.updatedAt),
     new Date(post.lastActivityAt),
   );
+
+  if (isNaN(lastTime)) {
+    return;
+  }
 
   return new Date(lastTime).toISOString();
 }
