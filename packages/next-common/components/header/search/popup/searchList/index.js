@@ -64,6 +64,12 @@ const SearchItem = memo(function ItemContent({ row, onClose }) {
             {proposalType === SearchType.TREASURY_SPENDS && (
               <MenuTreasurySpend className="w-6 h-6 [&_path]:fill-textTertiary" />
             )}
+            {proposalType === SearchType.FELLOWSHIP_REFERENDA && (
+              <MenuReferenda className="w-6 h-6 [&_path]:fill-textTertiary" />
+            )}
+            {proposalType === SearchType.FELLOWSHIP_TREASURY_SPENDS && (
+              <MenuTreasurySpend className="w-6 h-6 [&_path]:fill-textTertiary" />
+            )}
           </div>
           <div className="pl-2 flex flex-col justify-between min-w-0 flex-1">
             <span

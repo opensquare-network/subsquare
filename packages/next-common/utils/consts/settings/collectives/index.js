@@ -22,6 +22,11 @@ const collectives = {
   hasFellowshipParams: true,
   hasIdentity: true,
   graphqlApiSubDomain: "dot-gh-api",
+  graphql: {
+    domain: "dot-gh-api",
+    identity: true,
+    multisig: false,
+  },
   description: "Collectives on Polkadot network.",
   treasuryProposalTracks: collectivesTreasuryTracks,
   modules: mergeChainModules({
