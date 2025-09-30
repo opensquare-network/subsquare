@@ -6,6 +6,7 @@ import Link from "next/link";
 import { toPrecision } from "next-common/utils";
 import AddressUser from "next-common/components/user/addressUser";
 import { getTreasuryAllSpendsBusiness } from "next-common/components/pages/components/gov2/business/treasuryAllSpends";
+import TreasuryBountiesTitleTooltip from "next-common/components/referenda/titleTooltip/treasuryBounties";
 
 function extractReferendaLink(call = {}) {
   const { section, method, args = [] } = call;
@@ -61,10 +62,11 @@ function extractBounty(call = {}, chainSettings = {}) {
     return [
       [
         "Link to",
-        <Link
-          key="bounty-link"
-          href={`/treasury/bounties/${bountyId}`}
-        >{`Bounty #${bountyId}`}</Link>,
+        <TreasuryBountiesTitleTooltip key="bounty-link" id={bountyId}>
+          <Link
+            href={`/treasury/bounties/${bountyId}`}
+          >{`Bounty #${bountyId}`}</Link>
+        </TreasuryBountiesTitleTooltip>,
       ],
     ];
   }
@@ -80,10 +82,11 @@ function extractBounty(call = {}, chainSettings = {}) {
     return [
       [
         "Link to",
-        <Link
-          key="bounty-link"
-          href={`/treasury/bounties/${bountyId}`}
-        >{`Bounty #${bountyId}`}</Link>,
+        <TreasuryBountiesTitleTooltip key="bounty-link" id={bountyId}>
+          <Link
+            href={`/treasury/bounties/${bountyId}`}
+          >{`Bounty #${bountyId}`}</Link>
+        </TreasuryBountiesTitleTooltip>,
       ],
       [
         "Curator",
