@@ -48,6 +48,7 @@ import polkadotPeople from "./polkadotPeople";
 import kusamaPeople from "./kusamaPeople";
 import paseoPeople from "./paseoPeople";
 import westendPeople from "./westendPeople";
+import hyperBridge from "./hyperBridge";
 
 const settingsMap = {
   polkadot,
@@ -63,6 +64,7 @@ const settingsMap = {
   crust,
   darwinia2,
   hydradx,
+  [hyperBridge.value]: hyperBridge,
   [hydradxTestnet.value]: hydradxTestnet,
   interlay,
   karura,
