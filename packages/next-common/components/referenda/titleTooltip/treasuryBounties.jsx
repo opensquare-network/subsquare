@@ -3,27 +3,28 @@ import Tooltip from "next-common/components/tooltip";
 import { backendApi } from "next-common/services/nextApi";
 import { useAsync } from "react-use";
 
-function TitleTooltipContent({ title, loading }) {
-  if (loading) {
-    return <Loading size={16} />;
-  }
-  if (!title) {
-    return null;
-  }
-  return <div>{title}</div>;
-}
+const globalCache = new Map();
 
-export default function TreasuryBountiesTitleTooltip({ children, id }) {
+function TitleTooltipContent({ id }) {
   const { value, loading } = useAsync(async () => {
-    const resp = await backendApi.fetch(`/treasury/bounties/${id}`);
+    if (!globalCache.has(id)) {
+      globalCache.set(id, backendApi.fetch(`/treasury/bounties/${id}`));
+    }
+    const resp = await globalCache.get(id);
     return resp?.result;
   }, [id]);
 
+  if (loading) {
+    return <Loading size={16} />;
+  }
+  if (!value?.title) {
+    return null;
+  }
+  return <div>{value?.title}</div>;
+}
+
+export default function TreasuryBountiesTitleTooltip({ children, id }) {
   return (
-    <Tooltip
-      content={<TitleTooltipContent title={value?.title} loading={loading} />}
-    >
-      {children}
-    </Tooltip>
+    <Tooltip content={<TitleTooltipContent id={id} />}>{children}</Tooltip>
   );
 }
