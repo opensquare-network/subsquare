@@ -43,6 +43,7 @@ function ProfilePageImpl() {
 export default function ProfilePage() {
   const address = useProfileAddress();
   useTotalAssetsBalance(address);
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(setProfileTransfers(null));

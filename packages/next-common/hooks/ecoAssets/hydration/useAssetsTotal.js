@@ -2,7 +2,7 @@ import { createSdkContext } from "@galacticcouncil/sdk";
 import { ApiPromise, WsProvider } from "@polkadot/api";
 import BigNumber from "bignumber.js";
 import { useCallback, useState, useEffect } from "react";
-import useAllAssets from "./common/useAllAssets";
+import useAllAssets, { external } from "./common/useAllAssets";
 import useAccountBalance from "./common/useAccountBalance";
 
 //  Hydration SDK in provider?
@@ -50,12 +50,19 @@ async function calculateTotalBalance(balances) {
 
   for (const { balance, asset } of balances) {
     try {
+      if (!asset?.decimals || !balance?.total) {
+        continue;
+      }
+
       const total = new BigNumber(balance.total).shiftedBy(-asset.decimals);
+
       const spotPrice = await queryAssetPrice(asset.id, "10");
 
       if (!spotPrice || isNaN(spotPrice)) {
         continue;
       }
+
+      console.log(":::get spotPrice", spotPrice, asset);
 
       const totalDisplay = total.times(spotPrice);
 
@@ -80,13 +87,16 @@ export default function useAssetsTotal(address) {
     allAssetsLoading,
   );
 
+  const { ctx } = sdk;
+
   const fetchData = useCallback(async () => {
-    if (allAssetsLoading || accountBalanceLoading) {
+    if (allAssetsLoading || accountBalanceLoading || !ctx) {
       return;
     }
 
     setIsLoading(true);
     try {
+      await ctx.pool.syncRegistry(external);
       const totalBalance = await calculateTotalBalance(balances);
       setAssetsBalance(totalBalance);
     } catch (error) {
@@ -94,7 +104,7 @@ export default function useAssetsTotal(address) {
     } finally {
       setIsLoading(false);
     }
-  }, [allAssetsLoading, balances, accountBalanceLoading]);
+  }, [allAssetsLoading, accountBalanceLoading, ctx, balances]);
 
   useEffect(() => {
     fetchData();
