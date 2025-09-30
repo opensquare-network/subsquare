@@ -18,6 +18,7 @@ import {
 import { useDetailType } from "next-common/context/page";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import useMentionList from "next-common/utils/hooks/useMentionList";
+import { useComment } from "../comment/context";
 
 const Wrapper = styled(Flex)`
   align-items: flex-start;
@@ -56,6 +57,7 @@ export default function PolkassemblyActions({
     user?.preference?.editor || "markdown",
   );
   const chain = useChain();
+  const comment = useComment();
 
   const [isReply, setIsReply] = useState(false);
   const editorWrapperRef = useRef();
@@ -77,7 +79,7 @@ export default function PolkassemblyActions({
   const startReply = () => {
     setIsReply(true);
     setTimeout(() => {
-      onReply();
+      onReply(comment.author);
     }, 100);
   };
 
