@@ -1,4 +1,4 @@
-import { useDecisionIndex } from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
+import { usePreparingHours } from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
 import { useMemo, useRef } from "react";
 
 const PREPARING_THRESHOLD = 60;
@@ -8,7 +8,7 @@ export default function CustomXTickLabels({
   showAyeNay = false,
   chartArea = {},
 }) {
-  const decisionIndex = useDecisionIndex();
+  const decisionIndex = usePreparingHours();
   const preparingRef = useRef(null);
   const labelsLength = rangeData[1] - rangeData[0];
 

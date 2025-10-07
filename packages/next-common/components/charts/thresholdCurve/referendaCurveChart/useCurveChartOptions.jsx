@@ -3,29 +3,17 @@ import { find, inRange, set } from "lodash-es";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import { abbreviateBigNumber } from "next-common/utils/viewfuncs";
-import { useDecisionIndex } from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
+import { usePreparingHours } from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
 import { useMemo } from "react";
-import useInnerPoints from "../hooks/useInnerPoints";
+import { useCurrentHeightPoints } from "../hooks/useInnerPoints";
+import { commonConfig } from "../utils/options";
 
-export default function useCurveChartOptions(
-  labels,
-  sourceLabels,
-  datasets,
-  rangeData,
-) {
+export default function useCurveChartOptions(labels, datasets, rangeData) {
   const { neutral300, neutral400 } = useThemeSetting();
   const chainSettings = useChainSettings();
 
   const options = {
-    clip: false,
-    responsive: true,
-    maintainAspectRatio: false,
-    animation: {
-      duration: 0,
-    },
-    layout: {
-      padding: 2,
-    },
+    ...commonConfig,
     scales: {
       x: {
         type: "linear",
@@ -90,7 +78,7 @@ export default function useCurveChartOptions(
   }
 
   // decision line
-  const decisionIndex = useDecisionIndex();
+  const decisionIndex = usePreparingHours();
   set(
     options,
     "plugins.annotation.annotations.dividerLine",
@@ -108,9 +96,7 @@ export default function useCurveChartOptions(
       : null,
   );
 
-  // inner points
-  const { approvalInnerPoint, supportInnerPoint } =
-    useInnerPoints(sourceLabels);
+  const { approvalInnerPoint, supportInnerPoint } = useCurrentHeightPoints();
   set(
     options,
     "plugins.annotation.annotations.pointApprovalInner",

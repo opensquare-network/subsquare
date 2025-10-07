@@ -21,6 +21,7 @@ const zkverify = {
   name: "ZKVerify",
   identity: Chains.zkverify,
   symbol: "VFY",
+  ss58Format: 8741,
   endpoints: DEFAULT_ZKVERIFY_NODES,
   links: zkverifyLinks,
   group: MenuGroups.Solochain,

@@ -4,15 +4,21 @@ import {
   getTrackApprovalCurve,
   getTrackSupportCurve,
 } from "next-common/context/post/gov2/curve";
-import { useDecisionHours, usePreparingHours } from "./useReferendumBlocks";
+import {
+  useDecisionHours,
+  usePreparingHours,
+} from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
+import {
+  useApprovalThresholdDatasetConfig,
+  useSupportThresholdDatasetConfig,
+} from "next-common/components/charts/thresholdCurve/utils/dataset";
 
-// used for curve chart on OpenGov referendum detail page.
-export default function useReferendumCurveData() {
+function useFellowshipReferendaCurveData() {
   const track = useTrack();
   const decisionHours = useDecisionHours();
   const preparingHours = usePreparingHours();
   const hours = decisionHours + preparingHours;
-  const labels = range(hours + (preparingHours ? 0 : 1));
+  const labels = range(hours + 1);
 
   const supportCalculator = getTrackSupportCurve(track);
   const approvalCalculator = getTrackApprovalCurve(track);
@@ -44,5 +50,20 @@ export default function useReferendumCurveData() {
     supportData,
     approvalData,
     totalHours: hours,
+  };
+}
+
+export default function useFellowshipReferendaCurveChartData() {
+  const { labels, supportData, approvalData } =
+    useFellowshipReferendaCurveData();
+  const supportThresholdConfig = useSupportThresholdDatasetConfig(supportData);
+  const approvalThresholdConfig =
+    useApprovalThresholdDatasetConfig(approvalData);
+
+  return {
+    labels,
+    supportData,
+    approvalData,
+    datasets: [approvalThresholdConfig, supportThresholdConfig],
   };
 }

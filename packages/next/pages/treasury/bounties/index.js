@@ -2,16 +2,14 @@ import TreasuryBountiesPostList from "next-common/components/postList/treasyrybo
 import { withCommonProps } from "next-common/lib";
 import normalizeBountyListItem from "next-common/utils/viewfuncs/treasury/normalizeBountyListItem";
 import ListLayout from "next-common/components/layout/ListLayout";
-import TreasurySummary from "next-common/components/summary/treasurySummary";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { TreasuryProvider } from "next-common/context/treasury";
-import { isPolkadotChain } from "next-common/utils/chain";
-import PolkadotTreasuryStatsOnProposal from "next-common/components/treasury/common/polkadotTreasuryStatsOnProposal";
 import { backendApi } from "next-common/services/nextApi";
 import BountyCardSection from "next-common/components/treasury/bounty/bountyCardSection";
 import { fetchList } from "next-common/services/list";
 import businessCategory from "next-common/utils/consts/business/category";
 import NewBountyButton from "next-common/components/treasury/bounty/newBountyButton";
+import BountiesSummaryPanel from "next-common/components/treasury/bounty/summaryPanel";
 
 export default function BountiesPage({
   activeBounties,
@@ -24,11 +22,7 @@ export default function BountiesPage({
   const category = businessCategory.treasuryBounties;
   const seoInfo = { title: category, desc: category };
 
-  const treasurySummaryPanel = isPolkadotChain(chain) ? (
-    <PolkadotTreasuryStatsOnProposal />
-  ) : (
-    <TreasurySummary />
-  );
+  const treasurySummaryPanel = <BountiesSummaryPanel />;
 
   return (
     <TreasuryProvider>
