@@ -9,6 +9,7 @@ import kusamaCommonCfg, {
   kusamaAssethubMigration,
 } from "next-common/utils/consts/settings/kusama/common";
 import kusamaPreimageSettings from "next-common/utils/consts/settings/common/preimage/kusama";
+import kusamaAssetHubNodes from "next-common/utils/consts/settings/kusamaAssetHub/endpoints";
 
 const ProjectIconKusamaDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconKusamaDark"),
@@ -25,7 +26,8 @@ const kusama = {
   blockTime: 6000,
   assethubBlockTime: 12000,
   assethubMigration: kusamaAssethubMigration,
-  endpoints: defaultKusamaNodes,
+  endpoints: kusamaAssetHubNodes,
+  relayChainEndpoints: defaultKusamaNodes,
   avatar: ProjectIconKusamaLight,
   darkAvatar: ProjectIconKusamaDark,
   navPreferDark: true,
