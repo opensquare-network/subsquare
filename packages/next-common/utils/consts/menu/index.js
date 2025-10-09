@@ -23,6 +23,8 @@ import Data from "./data";
 import getAdvancedMenu from "next-common/utils/consts/menu/advanced";
 import { NAV_MENU_TYPE } from "next-common/utils/constants";
 import { isArray } from "lodash-es";
+import { assetsMenu } from "./assets";
+import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated";
 
 export function getHomeMenu({
   summary = {},
@@ -38,6 +40,7 @@ export function getHomeMenu({
 
   const integrationsMenu = [
     modules?.assethub && assetHubMenu,
+    isAssetHubMigrated() && assetsMenu,
     modules?.coretime && coretimeMenu,
     modules?.people && peopleMenu,
   ].filter(Boolean);
