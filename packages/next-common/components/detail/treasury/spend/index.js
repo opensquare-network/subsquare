@@ -11,6 +11,7 @@ import {
   TreasurySpendByDemocracyExternalNavigation,
   TreasurySpendByDemocracyProposalNavigation,
 } from "./treasurySpendByDemocracyNavigation";
+import NonFinalTreasurySpendGuard from "next-common/components/detail/treasury/spend/NonFinalGuard";
 
 export default function TreasurySpendDetail() {
   const isEditing = useSelector(isEditingPostSelector);
@@ -23,8 +24,10 @@ export default function TreasurySpendDetail() {
             <TreasurySpendByDemocracyProposalNavigation />
             <TreasurySpendByDemocracyExternalNavigation />
             <TreasurySpendByGov2Navigation />
-            <TreasurySpendValidCountdown />
-            <TreasurySpendExpireCountdown />
+            <NonFinalTreasurySpendGuard>
+              <TreasurySpendValidCountdown />
+              <TreasurySpendExpireCountdown />
+            </NonFinalTreasurySpendGuard>
           </>
         )
       }

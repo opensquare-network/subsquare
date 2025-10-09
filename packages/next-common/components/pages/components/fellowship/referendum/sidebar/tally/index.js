@@ -12,8 +12,6 @@ import useFellowshipVotes from "next-common/utils/hooks/fellowship/useFellowship
 import { useOnchainData } from "next-common/context/post";
 import useFellowshipPerbill from "next-common/utils/hooks/fellowship/useFellowshipPerbill";
 import FellowshipCurvePopupOpener from "next-common/components/fellowship/referenda/curvePopup";
-import Calls from "./voteCalls";
-import { useChainSettings } from "next-common/context/chain";
 import { useFellowshipReferendumTally } from "next-common/hooks/fellowship/useFellowshipReferendumInfo";
 import {
   useApprovalPercentage,
@@ -49,7 +47,6 @@ export default function FellowshipTally() {
 function FellowshipTallyWithContext() {
   const tally = useFellowshipReferendumTally();
   const approvalThreshold = useApprovalThreshold();
-  const { useVoteCall } = useChainSettings();
 
   const { referendumIndex } = useOnchainData();
   useFellowshipVotes(referendumIndex);
@@ -86,7 +83,7 @@ function FellowshipTallyWithContext() {
 
       <Footer className="justify-end">
         <EligibleVoters />
-        {useVoteCall && <Calls />}
+        {/*{useVoteCall && <Calls />}*/}
       </Footer>
     </SecondaryCardDetail>
   );

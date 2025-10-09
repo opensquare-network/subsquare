@@ -5,8 +5,8 @@ import dynamicPopup from "next-common/lib/dynamic/popup";
 import useSubTreasurySpend from "next-common/hooks/treasury/spend/useSubTreasurySpend";
 import { has } from "lodash-es";
 import { cn } from "next-common/utils";
-import useChainOrScanHeight from "next-common/hooks/height";
 import { noop } from "@polkadot/util";
+import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
 
 const Popup = dynamicPopup(() => import("./popup"));
 
@@ -28,7 +28,7 @@ export default function TreasurySpendPay() {
 
 function PayoutContent({ setShowPopup = noop }) {
   const { index, meta } = useOnchainData() || {};
-  const latestHeight = useChainOrScanHeight();
+  const latestHeight = useAhmLatestHeight();
   const onchainStatus = useSubTreasurySpend(index);
   const { expireAt } = meta || {};
   const disabled = useMemo(() => {

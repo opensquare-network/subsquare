@@ -1,11 +1,11 @@
-import useChainOrScanHeight from "next-common/hooks/height";
 import { isNil } from "lodash-es";
 import TooltipCountdown from "next-common/components/postList/common/tooltipCountdown";
+import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
 
 export default function TreasurySpendsCountDown({ data = {} }) {
   const { meta, state, indexer } = data || {};
   const { expireAt, validFrom } = meta || {};
-  const latestHeight = useChainOrScanHeight();
+  const latestHeight = useAhmLatestHeight();
 
   if (
     isNil(expireAt) ||
