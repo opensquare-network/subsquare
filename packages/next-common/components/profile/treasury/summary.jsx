@@ -23,7 +23,7 @@ export default function ProfileTreasurySummary() {
   return (
     <SecondaryCard>
       <SummaryLayout>
-        <SummaryItem title="Award value">
+        <SummaryItem title="Total Awarded">
           <LoadableContent isLoading={loading}>
             <ValueDisplay
               value={value?.totalBenefitFiatValue}
@@ -32,7 +32,6 @@ export default function ProfileTreasurySummary() {
             />
           </LoadableContent>
         </SummaryItem>
-        <SummaryItem title="Rank">1</SummaryItem>
       </SummaryLayout>
     </SecondaryCard>
   );
