@@ -7,10 +7,6 @@ import { usePageProps } from "next-common/context/page";
 export default function ProfileTreasurySummary() {
   const { beneficiariesSummary } = usePageProps();
 
-  if (!beneficiariesSummary) {
-    return null;
-  }
-
   return (
     <SecondaryCard>
       <SummaryLayout>

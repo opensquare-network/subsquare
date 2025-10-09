@@ -66,10 +66,6 @@ export default function ProfileTreasuryProposals() {
     });
   }, [value, symbol, decimals]);
 
-  if (!value) {
-    return null;
-  }
-
   return (
     <>
       <div className="text16Bold text-textPrimary mx-6">
