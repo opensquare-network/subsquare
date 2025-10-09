@@ -6,7 +6,6 @@ import { useMemo, useState } from "react";
 import { TreasuryTag } from "next-common/components/tags/state/treasury";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
-import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import Pagination from "next-common/components/pagination";
 import {
   getProposalPostTitleColumn,
@@ -68,27 +67,19 @@ export default function ProfileTreasuryProposals() {
 
   return (
     <>
-      <div className="text16Bold text-textPrimary mx-6">
-        Proposals
-        <span className="text-textTertiary text14Medium ml-1">
-          {value?.total}
-        </span>
-      </div>
-      <SecondaryCard>
-        <DataList
-          loading={loading}
-          columns={columns}
-          rows={rows}
-          noDataText="No proposals"
-        />
-        <Pagination
-          buttonMode
-          page={page}
-          pageSize={PAGE_SIZE}
-          total={value?.total}
-          onPageChange={(_, newPage) => setPage(newPage)}
-        />
-      </SecondaryCard>
+      <DataList
+        loading={loading}
+        columns={columns}
+        rows={rows}
+        noDataText="No proposals"
+      />
+      <Pagination
+        buttonMode
+        page={page}
+        pageSize={PAGE_SIZE}
+        total={value?.total}
+        onPageChange={(_, newPage) => setPage(newPage)}
+      />
     </>
   );
 }

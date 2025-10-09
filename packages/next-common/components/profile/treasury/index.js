@@ -1,5 +1,6 @@
+import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import ProfileTreasurySummary from "./summary";
-import ProfileTreasuryProposals from "./proposals";
+import ProfileTreasuryTabs from "./tabs";
 import { usePageProps } from "next-common/context/page";
 
 export default function ProfileTreasury() {
@@ -12,7 +13,9 @@ export default function ProfileTreasury() {
   return (
     <div className="flex flex-col gap-y-4">
       <ProfileTreasurySummary />
-      <ProfileTreasuryProposals />
+      <SecondaryCard>
+        <ProfileTreasuryTabs />
+      </SecondaryCard>
     </div>
   );
 }
