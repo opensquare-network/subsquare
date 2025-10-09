@@ -117,7 +117,6 @@ const polkadot = {
   openSquare: {
     voting: "polkadot",
   },
-  profileShowTreasury: true,
   ecoNews: true,
 };
 

@@ -33,7 +33,6 @@ export default function useProfileTabs() {
     integrations,
     hasMultisig,
     hasIdentity,
-    profileShowTreasury,
   } = useChainSettings();
   const chain = useChain();
   const hasDemocracyModule = democracy && !democracy?.archived;
@@ -108,7 +107,7 @@ export default function useProfileTabs() {
       exactMatch: false,
     });
 
-    if (profileShowTreasury && beneficiariesSummary) {
+    if (integrations?.doTreasury && beneficiariesSummary) {
       tabs.push({
         label({ active }) {
           return <TabTitle active={active}>Treasury</TabTitle>;

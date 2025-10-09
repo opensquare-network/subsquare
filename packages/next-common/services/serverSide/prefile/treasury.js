@@ -2,8 +2,8 @@ import { backendApi } from "next-common/services/nextApi";
 import getChainSettings from "next-common/utils/consts/settings";
 
 export async function fetchProfileTreasuryProps(address) {
-  const { profileShowTreasury } = getChainSettings(process.env.CHAIN);
-  if (!profileShowTreasury) {
+  const { integrations } = getChainSettings(process.env.CHAIN);
+  if (!integrations.doTreasury) {
     return {
       beneficiariesSummary: null,
     };

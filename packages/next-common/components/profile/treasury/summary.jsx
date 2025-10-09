@@ -16,7 +16,7 @@ export default function ProfileTreasurySummary() {
       <SummaryLayout>
         <SummaryItem title="Total Awarded">
           <ValueDisplay
-            value={beneficiariesSummary?.totalBenefitFiatValue}
+            value={beneficiariesSummary?.totalBenefitFiatValue || 0}
             symbol=""
             prefix="$"
           />

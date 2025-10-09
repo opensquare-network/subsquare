@@ -17,6 +17,7 @@ import businessCategory from "next-common/utils/consts/business/category";
 import ListPostTitle from "next-common/components/postList/postTitle";
 import { CHAIN } from "next-common/utils/constants";
 import normalizeProposalListItem from "next-common/utils/viewfuncs/democracy/normalizeProposalListItem";
+import { toPrecision } from "next-common/utils";
 
 const columns = [
   getProposalPostTitleColumn(),
@@ -28,7 +29,7 @@ const PAGE_SIZE = 10;
 
 export default function ProfileTreasuryProposals() {
   const [page, setPage] = useState(1);
-  const { symbol } = useChainSettings();
+  const { symbol, decimals } = useChainSettings();
   const address = useProfileAddress();
 
   const { value, loading } = useAsync(async () => {
@@ -55,11 +56,15 @@ export default function ProfileTreasuryProposals() {
           href={formattedItem.detailLink}
           ellipsis
         />,
-        <ValueDisplay key="value" value={item.dValue} symbol={symbol} />,
+        <ValueDisplay
+          key="value"
+          value={toPrecision(item.onchainData?.value, decimals)}
+          symbol={symbol}
+        />,
         <TreasuryTag key="status" state={item.state} />,
       ];
     });
-  }, [value, symbol]);
+  }, [value, symbol, decimals]);
 
   if (!value) {
     return null;
