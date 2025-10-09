@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef, useCallback } from "react";
+import { useState, useMemo, useRef, useCallback, useEffect } from "react";
 import { backendApi } from "next-common/services/nextApi";
 import { markdownToText } from "next-common/components/header/search/utils";
 import useSearchIdentities from "next-common/components/header/hooks/useSearchIdentities";
@@ -11,6 +11,7 @@ import { fetchIdentity } from "next-common/services/identity";
 import { useContextApi } from "next-common/context/api";
 import { useAsync } from "react-use";
 import { useChainSettings } from "next-common/context/chain";
+import { Deferred } from "next-common/utils/deferred";
 
 export const ItemType = {
   CATEGORY: "category",
@@ -81,7 +82,7 @@ function useFellowshipMembers() {
   const api = useContextApi();
   return useAsync(async () => {
     if (!api) {
-      return [];
+      return null;
     }
 
     try {
@@ -99,7 +100,7 @@ function useFellowshipMembers() {
         }),
       );
     } catch (e) {
-      return [];
+      return null;
     }
   }, [api]);
 }
@@ -109,7 +110,10 @@ function useFellowshipMembersWithIdentity() {
   const { value: fellowshipMembers, loading } = useFellowshipMembers();
   return useAsync(async () => {
     if (loading) {
-      return [];
+      return null;
+    }
+    if (!fellowshipMembers) {
+      return null;
     }
     return await Promise.all(
       fellowshipMembers.map(async (member) => {
@@ -122,6 +126,39 @@ function useFellowshipMembersWithIdentity() {
       }),
     );
   }, [identityChain, fellowshipMembers, loading]);
+}
+
+function useSearchFellowshipMembers() {
+  const [isLoading, setIsLoading] = useState(false);
+  const { value: fellowshipMembers, loading: isFellowshipMembersLoading } =
+    useFellowshipMembersWithIdentity();
+
+  const [dataDeferred] = useState(new Deferred());
+
+  useEffect(() => {
+    if (isFellowshipMembersLoading || !fellowshipMembers) {
+      return;
+    }
+    dataDeferred.resolve(fellowshipMembers);
+  }, [fellowshipMembers, isFellowshipMembersLoading, dataDeferred]);
+
+  const search = useCallback(
+    async (searchValue) => {
+      setIsLoading(true);
+      try {
+        const fellowshipMembers = await dataDeferred.promise;
+        return searchFromMembers(fellowshipMembers, searchValue);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [dataDeferred],
+  );
+
+  return {
+    search,
+    isLoading,
+  };
 }
 
 function searchFromMembers(members, text) {
@@ -144,7 +181,10 @@ function useSearchResults() {
   const lastSearchValueRef = useRef("");
   const [fetchIdentities, isIdentitiesLoading] = useSearchIdentities();
 
-  const { value: fellowshipMembers } = useFellowshipMembersWithIdentity();
+  const {
+    search: searchFellowshipMembers,
+    isLoading: isFellowshipMembersLoading,
+  } = useSearchFellowshipMembers();
 
   const combineIdentitiesRequest = useCallback(
     async (searchValue) => {
@@ -192,22 +232,21 @@ function useSearchResults() {
         setIsLoading(true);
         lastSearchValueRef.current = searchValue;
 
-        const filteredFellowshipMembers = searchFromMembers(
-          fellowshipMembers,
-          searchValue,
-        );
-
-        const [{ value: apiResult }, { value: identitiesResult }] =
-          await Promise.allSettled([
-            baseSearchDataRequest(searchValue, signal),
-            combineIdentitiesRequest(searchValue),
-          ]);
+        const [
+          { value: apiResult },
+          { value: identitiesResult },
+          { value: fellowshipMembers },
+        ] = await Promise.allSettled([
+          baseSearchDataRequest(searchValue, signal),
+          combineIdentitiesRequest(searchValue),
+          searchFellowshipMembers(searchValue),
+        ]);
 
         if (!signal.aborted) {
           setResults({
             ...apiResult?.result,
             identities: identitiesResult || [],
-            fellowshipMembers: filteredFellowshipMembers || [],
+            fellowshipMembers: fellowshipMembers || [],
           });
         }
       } finally {
@@ -219,7 +258,7 @@ function useSearchResults() {
     [
       baseSearchDataRequest,
       combineIdentitiesRequest,
-      fellowshipMembers,
+      searchFellowshipMembers,
       results,
     ],
   );
@@ -274,7 +313,7 @@ function useSearchResults() {
   return {
     totalList,
     fetch,
-    isLoading: isLoading || isIdentitiesLoading,
+    isLoading: isLoading || isIdentitiesLoading || isFellowshipMembersLoading,
     setResults,
     clearResults,
   };
