@@ -65,10 +65,11 @@ export function Call({ when, callHash, call, callHex, right = false }) {
       {call ? (
         <span
           className={cn(
-            "cursor-pointer text14Medium hover:underline",
+            "cursor-pointer text14Medium hover:underline truncate",
             right ? "text-right" : "",
           )}
           onClick={handleClick}
+          title={`${call?.section}.${call?.method}`}
         >
           {call?.section}.{call?.method}
         </span>
