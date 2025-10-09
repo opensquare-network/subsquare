@@ -2,21 +2,12 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import SummaryItem from "next-common/components/summary/layout/item";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import ValueDisplay from "next-common/components/valueDisplay";
-import { backendApi } from "next-common/services/nextApi";
-import { useAsync } from "react-use";
-import useProfileAddress from "../useProfileAddress";
-import LoadableContent from "next-common/components/common/loadableContent";
+import { usePageProps } from "next-common/context/page";
 
 export default function ProfileTreasurySummary() {
-  const address = useProfileAddress();
-  const { value, loading } = useAsync(async () => {
-    const { result } = await backendApi.fetch(
-      `treasury/beneficiaries/${address}`,
-    );
-    return result;
-  }, [address]);
+  const { beneficiariesSummary } = usePageProps();
 
-  if (!value) {
+  if (!beneficiariesSummary) {
     return null;
   }
 
@@ -24,13 +15,11 @@ export default function ProfileTreasurySummary() {
     <SecondaryCard>
       <SummaryLayout>
         <SummaryItem title="Total Awarded">
-          <LoadableContent isLoading={loading}>
-            <ValueDisplay
-              value={value?.totalBenefitFiatValue}
-              symbol=""
-              prefix="$"
-            />
-          </LoadableContent>
+          <ValueDisplay
+            value={beneficiariesSummary?.totalBenefitFiatValue}
+            symbol=""
+            prefix="$"
+          />
         </SummaryItem>
       </SummaryLayout>
     </SecondaryCard>
