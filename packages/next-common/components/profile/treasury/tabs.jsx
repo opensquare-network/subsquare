@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ProfileTreasuryProposals from "./proposals";
+import ProfileTreasuryCommonTable from "./commonTable";
 import Tabs from "next-common/components/tabs";
 import { usePageProps } from "next-common/context/page";
 
@@ -13,31 +13,31 @@ export default function ProfileTreasuryTabs() {
     {
       value: "spends",
       label: "Spends",
-      content: <ProfileTreasuryProposals />,
+      content: <ProfileTreasuryCommonTable type="spends" />,
       activeCount: spends?.benefitCount || 0,
     },
     {
       value: "proposals",
       label: "Proposals",
-      content: <ProfileTreasuryProposals />,
+      content: <ProfileTreasuryCommonTable type="proposals" />,
       activeCount: proposals?.benefitCount || 0,
     },
     {
       value: "tips",
       label: "Tips",
-      content: <ProfileTreasuryProposals />,
+      content: <ProfileTreasuryCommonTable type="tips" />,
       activeCount: tips?.benefitCount || 0,
     },
     {
       value: "bounties",
       label: "Bounties",
-      content: <ProfileTreasuryProposals />,
+      content: <ProfileTreasuryCommonTable type="bounties" />,
       activeCount: bounties?.benefitCount || 0,
     },
     {
       value: "child-bounties",
       label: "Child Bounties",
-      content: <ProfileTreasuryProposals />,
+      content: <ProfileTreasuryCommonTable type="child-bounties" />,
       activeCount: childBounties?.benefitCount || 0,
     },
   ];
