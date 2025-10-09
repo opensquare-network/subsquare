@@ -1,12 +1,16 @@
 import { useState, useMemo, useRef, useCallback } from "react";
 import { backendApi } from "next-common/services/nextApi";
-import useRefCallback from "next-common/hooks/useRefCallback";
 import { markdownToText } from "next-common/components/header/search/utils";
 import useSearchIdentities from "next-common/components/header/hooks/useSearchIdentities";
 import {
   getChildBountyDisplayIndex,
   getChildBountyIndex,
 } from "next-common/utils/viewfuncs/treasury/childBounty";
+import { getIdentityDisplay } from "next-common/utils/identity";
+import { fetchIdentity } from "next-common/services/identity";
+import { useContextApi } from "next-common/context/api";
+import { useAsync } from "react-use";
+import { useChainSettings } from "next-common/context/chain";
 
 export const ItemType = {
   CATEGORY: "category",
@@ -56,12 +60,91 @@ const formatItems = (
   ];
 };
 
+const formatSearchResult = (proposalType, value) => {
+  if (!value?.length) {
+    return [];
+  }
+  return [
+    {
+      proposalType,
+      type: ItemType.CATEGORY,
+    },
+    ...(value || []).map((item) => ({
+      ...item,
+      proposalType,
+      type: ItemType.ITEM,
+    })),
+  ];
+};
+
+function useFellowshipMembers() {
+  const api = useContextApi();
+  return useAsync(async () => {
+    if (!api) {
+      return [];
+    }
+
+    try {
+      const fellowshipMembers =
+        await api?.query.fellowshipCollective.members.entries();
+      return fellowshipMembers.map(
+        ([
+          {
+            args: [account],
+          },
+          info,
+        ]) => ({
+          address: account.toString(),
+          rank: info.unwrap()?.rank.toNumber(),
+        }),
+      );
+    } catch (e) {
+      return [];
+    }
+  }, [api]);
+}
+
+function useFellowshipMembersWithIdentity() {
+  const { identity: identityChain } = useChainSettings();
+  const { value: fellowshipMembers, loading } = useFellowshipMembers();
+  return useAsync(async () => {
+    if (loading) {
+      return [];
+    }
+    return await Promise.all(
+      fellowshipMembers.map(async (member) => {
+        const identity = await fetchIdentity(identityChain, member.address);
+        const name = getIdentityDisplay(identity);
+        return {
+          ...member,
+          name,
+        };
+      }),
+    );
+  }, [identityChain, fellowshipMembers, loading]);
+}
+
+function searchFromMembers(members, text) {
+  if (!members || !text || text.length < 3) {
+    return [];
+  }
+
+  // filter members where contains text in address or name
+  return members.filter(
+    (member) =>
+      member.address.toLowerCase().includes(text.toLowerCase()) ||
+      (member.name ?? "").toLowerCase().includes(text.toLowerCase()),
+  );
+}
+
 function useSearchResults() {
   const [results, setResults] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const abortControllerRef = useRef(null);
   const lastSearchValueRef = useRef("");
   const [fetchIdentities, isIdentitiesLoading] = useSearchIdentities();
+
+  const { value: fellowshipMembers } = useFellowshipMembersWithIdentity();
 
   const combineIdentitiesRequest = useCallback(
     async (searchValue) => {
@@ -92,48 +175,56 @@ function useSearchResults() {
     );
   }, []);
 
-  const fetch = useRefCallback(async (searchValue) => {
-    if (searchValue === lastSearchValueRef.current && results !== null) {
-      return;
-    }
-
-    try {
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
+  const fetch = useCallback(
+    async (searchValue) => {
+      if (searchValue === lastSearchValueRef.current && results !== null) {
+        return;
       }
 
-      abortControllerRef.current = new AbortController();
-      const signal = abortControllerRef.current.signal; //avoid race and data leakage
+      try {
+        if (abortControllerRef.current) {
+          abortControllerRef.current.abort();
+        }
 
-      setIsLoading(true);
-      lastSearchValueRef.current = searchValue;
+        abortControllerRef.current = new AbortController();
+        const signal = abortControllerRef.current.signal; //avoid race and data leakage
 
-      const [{ value: apiResult }, { value: identitiesResult }] =
-        await Promise.allSettled([
-          baseSearchDataRequest(searchValue, signal),
-          combineIdentitiesRequest(searchValue),
-        ]);
+        setIsLoading(true);
+        lastSearchValueRef.current = searchValue;
 
-      const endIdentities = (identitiesResult || []).map((item, index) => ({
-        index,
-        content: item?.account,
-        title: item?.fullDisplay ?? "-",
-      }));
+        const filteredFellowshipMembers = searchFromMembers(
+          fellowshipMembers,
+          searchValue,
+        );
 
-      if (!signal.aborted) {
-        setResults({
-          ...apiResult?.result,
-          identities: endIdentities,
-        });
+        const [{ value: apiResult }, { value: identitiesResult }] =
+          await Promise.allSettled([
+            baseSearchDataRequest(searchValue, signal),
+            combineIdentitiesRequest(searchValue),
+          ]);
+
+        if (!signal.aborted) {
+          setResults({
+            ...apiResult?.result,
+            identities: identitiesResult || [],
+            fellowshipMembers: filteredFellowshipMembers || [],
+          });
+        }
+      } finally {
+        if (searchValue === lastSearchValueRef.current) {
+          setIsLoading(false);
+        }
       }
-    } finally {
-      if (searchValue === lastSearchValueRef.current) {
-        setIsLoading(false);
-      }
-    }
-  });
+    },
+    [
+      baseSearchDataRequest,
+      combineIdentitiesRequest,
+      fellowshipMembers,
+      results,
+    ],
+  );
 
-  const clearResults = useRefCallback(() => {
+  const clearResults = useCallback(() => {
     setResults(null);
     lastSearchValueRef.current = "";
 
@@ -141,7 +232,7 @@ function useSearchResults() {
       abortControllerRef.current.abort();
       abortControllerRef.current = null;
     }
-  });
+  }, [abortControllerRef, lastSearchValueRef]);
 
   const totalList = useMemo(() => {
     if (!results) return null;
@@ -162,8 +253,6 @@ function useSearchResults() {
             getChildBountyDisplayIndex,
           );
         }
-        case "identities":
-          return formatItems("Identities", value, "index");
         case "treasuryProposals":
           return formatItems("TreasuryProposals", value, "proposalIndex");
         case "treasurySpends":
@@ -172,6 +261,10 @@ function useSearchResults() {
           return formatItems("FellowshipReferenda", value, "referendumIndex");
         case "fellowshipTreasurySpends":
           return formatItems("FellowshipTreasurySpends", value, "index");
+        case "identities":
+          return formatSearchResult("Identities", value);
+        case "fellowshipMembers":
+          return formatSearchResult("FellowshipMembers", value);
         default:
           return [];
       }
