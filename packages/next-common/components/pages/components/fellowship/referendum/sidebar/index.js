@@ -34,6 +34,7 @@ function CollectiveVote({ onClick = noop }) {
   const minRank = useRankedCollectiveMinRank();
   const disabled = !address || loading || isNil(rank) || rank < minRank;
   const text = loading ? "Checking permissions" : "Vote";
+  console.log("minRank", minRank, "rank", rank, "address", address);
 
   const tooltipText = useMemo(() => {
     if (loading) {
@@ -51,7 +52,7 @@ function CollectiveVote({ onClick = noop }) {
     <Tooltip content={tooltipText}>
       <PrimaryButton
         loading={address && loading}
-        disabled={disabled}
+        // disabled={disabled}
         style={{ width: "100%" }}
         onClick={onClick}
       >

@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo } from "react";
 import { createGlobalState } from "react-use";
 import { useChain } from "next-common/context/chain";
 import { isNil } from "lodash-es";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
 const subs = {};
 
@@ -31,7 +32,7 @@ export default function useSubStorage(
   params = [],
   options = {}, // callback or api
 ) {
-  const contextApi = useContextApi();
+  const contextApi = useConditionalContextApi();
   const { callback, api = contextApi } = options;
   const chain = useChain();
 

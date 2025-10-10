@@ -8,6 +8,7 @@ export default function useSubCollectiveRank(
   const [rank, setRank] = useState(undefined);
   const { loading } = useSubStorage(pallet, "members", [address], {
     callback: useCallback((rawOptional) => {
+      console.log("rawOptional", rawOptional);
       if (rawOptional.isSome) {
         const unwrapped = rawOptional.unwrap();
         setRank(unwrapped.rank.toNumber());

@@ -12,16 +12,16 @@ import {
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useShowVoteSuccessful } from "next-common/components/vote";
 import { getFellowshipVote } from "next-common/utils/gov2/getFellowshipVote";
-import { useContextApi } from "next-common/context/api";
 import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
 import { isNil } from "lodash-es";
 import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
 function PopupContent() {
   const { referendumIndex, onClose, onInBlock } = usePopupParams();
   const showVoteSuccessful = useShowVoteSuccessful();
   const signerAccount = useSignerAccount();
-  const api = useContextApi();
+  const api = useConditionalContextApi();
 
   const [loadingState, setLoadingState] = useState();
   const { vote, isLoading: isLoadingVote } = useFellowshipVote(
