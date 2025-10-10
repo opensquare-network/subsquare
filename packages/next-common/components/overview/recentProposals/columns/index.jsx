@@ -153,8 +153,13 @@ export function getRequestColumn() {
   };
 }
 
-function SpendRequestAmount({ extractedTreasuryInfo }) {
+export function SpendRequestAmount({
+  extractedTreasuryInfo,
+  fiatValue,
+  showFiatValue = false,
+}) {
   let { decimals } = useChainSettings();
+  let tooltipOtherContent;
 
   if (!extractedTreasuryInfo) {
     return "--";
@@ -165,6 +170,14 @@ function SpendRequestAmount({ extractedTreasuryInfo }) {
   const symbol = assetKind?.symbol;
   if (type !== "native") {
     decimals = SYMBOL_DECIMALS[symbol];
+  } else {
+    if (showFiatValue && !isNil(fiatValue)) {
+      tooltipOtherContent = (
+        <>
+          <br />${Number(fiatValue).toLocaleString()}
+        </>
+      );
+    }
   }
 
   return (
@@ -172,6 +185,7 @@ function SpendRequestAmount({ extractedTreasuryInfo }) {
       className="text14Medium text-textPrimary"
       value={toPrecision(amount, decimals)}
       symbol={symbol}
+      tooltipOtherContent={tooltipOtherContent}
     />
   );
 }

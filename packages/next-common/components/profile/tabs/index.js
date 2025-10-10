@@ -22,7 +22,7 @@ export function TabTitle({ active, children }) {
 }
 
 export default function useProfileTabs() {
-  const { id } = usePageProps();
+  const { id, beneficiariesSummary } = usePageProps();
   const {
     modules: {
       referenda: hasReferenda,
@@ -106,6 +106,16 @@ export default function useProfileTabs() {
       url: `${prefix}transfers`,
       exactMatch: false,
     });
+
+    if (beneficiariesSummary) {
+      tabs.push({
+        label({ active }) {
+          return <TabTitle active={active}>Treasury</TabTitle>;
+        },
+        value: "treasury",
+        url: `${prefix}treasury`,
+      });
+    }
 
     if (hasIdentity) {
       tabs.push({
