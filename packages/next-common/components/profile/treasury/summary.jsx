@@ -13,14 +13,14 @@ export default function ProfileTreasurySummary() {
 
   return (
     <SecondaryCard>
-      <GreyPanel className="text14Medium text-gray500 py-2.5 px-4 max-w-full mb-4 max-sm:!block gap-x-1 flex-wrap">
-        <AddressUser add={beneficiariesSummary?.address} /> is a beneficiary of{" "}
-        {CHAIN} treasury. Check all beneficiaries{" "}
+      <GreyPanel className="text14Medium text-gray500 py-2.5 px-4 max-w-full mb-4 max-sm:!block flex-wrap">
+        <AddressUser add={beneficiariesSummary?.address} className="mr-1" />
+        is a beneficiary of {CHAIN} treasury. Check all beneficiaries
         <Link
           href={`https://${CHAIN}.dotreasury.com/#/beneficiaries`}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex text-theme500 underline"
+          className="inline-flex text-theme500 underline ml-1"
         >
           here
         </Link>
