@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useContextApi } from "next-common/context/api";
 import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
 export default function useCollectivesReferendaVotes() {
-  const api = useContextApi();
+  const api = useConditionalContextApi();
   const address = useRealAddress();
   const [votes, setVotes] = useState();
   const [isLoading, setIsLoading] = useState(true);
