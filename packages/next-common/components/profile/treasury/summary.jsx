@@ -17,7 +17,7 @@ export default function ProfileTreasurySummary() {
             symbol=""
             prefix="$"
           />
-          <p className="text12Medium text-textTertiary">
+          <p className="text12Medium text-textTertiary !ml-0">
             Check all beneficiaries{" "}
             <Link
               href="https://kusama.dotreasury.com/#/beneficiaries"
