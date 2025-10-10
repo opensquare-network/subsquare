@@ -143,9 +143,9 @@ function useSearchResults() {
 
         if (!signal.aborted) {
           setResults({
+            fellowshipMembers: fellowshipMembers || [],
             ...apiResult?.result,
             identities: identitiesResult || [],
-            fellowshipMembers: fellowshipMembers || [],
           });
         }
       } finally {
