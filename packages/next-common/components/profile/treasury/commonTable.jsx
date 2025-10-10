@@ -4,11 +4,8 @@ import DataList from "next-common/components/dataList";
 import useProfileAddress from "../useProfileAddress";
 import { useMemo, useState } from "react";
 import Pagination from "next-common/components/pagination";
-import {
-  getProposalPostTitleColumn,
-  getRequestColumn,
-} from "next-common/components/overview/recentProposals/columns";
-import { getStatusTagColumn } from "./column";
+import { getProposalPostTitleColumn } from "next-common/components/overview/recentProposals/columns";
+import { getRequestColumn, getStatusTagColumn } from "./column";
 import { CHAIN } from "next-common/utils/constants";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeTreasuryProposalListItem from "next-common/utils/viewfuncs/treasury/normalizeProposalListItem";
