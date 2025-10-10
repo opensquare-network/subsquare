@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ProfileTreasuryCommonTable from "./commonTable";
+import ProfileTreasuryCommonTable from "./table";
 import Tabs from "next-common/components/tabs";
 import { usePageProps } from "next-common/context/page";
 

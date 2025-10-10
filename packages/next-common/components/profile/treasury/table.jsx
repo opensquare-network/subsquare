@@ -18,53 +18,55 @@ import normalizeChildBountyListItem from "next-common/utils/viewfuncs/treasury/n
 import normalizeTipListItem from "next-common/utils/viewfuncs/treasury/normalizeTipListItem";
 
 const commonColumns = [getProposalPostTitleColumn(), getRequestColumn()];
-
-const columnsMap = {
-  spends: [
-    getProposalPostTitleColumn(),
-    getSpendRequestColumn(),
-    getStatusTagColumn({ category: businessCategory.treasurySpends }),
-  ],
-  proposals: [
-    ...commonColumns,
-    getStatusTagColumn({ category: businessCategory.treasuryProposals }),
-  ],
-  bounties: [
-    ...commonColumns,
-    getStatusTagColumn({ category: businessCategory.treasuryBounties }),
-  ],
-  "child-bounties": [
-    ...commonColumns,
-    getStatusTagColumn({ category: businessCategory.treasuryChildBounties }),
-  ],
-  tips: [
-    ...commonColumns,
-    getStatusTagColumn({ category: businessCategory.treasuryTips }),
-  ],
-};
-
 const PAGE_SIZE = 10;
 
-const apiSubfixMap = {
-  spends: "treasury-spends",
-  proposals: "treasury-proposals",
-  bounties: "bounties",
-  "child-bounties": "child-bounties",
-  tips: "tips",
+const tableTemplateMap = {
+  spends: {
+    columns: [
+      getProposalPostTitleColumn(),
+      getSpendRequestColumn(),
+      getStatusTagColumn({ category: businessCategory.treasurySpends }),
+    ],
+    apiSubfix: "treasury-spends",
+    formatter: normalizeTreasurySpendListItem,
+  },
+  proposals: {
+    columns: [
+      ...commonColumns,
+      getStatusTagColumn({ category: businessCategory.treasuryProposals }),
+    ],
+    apiSubfix: "treasury-proposals",
+    formatter: normalizeTreasuryProposalListItem,
+  },
+  bounties: {
+    columns: [
+      ...commonColumns,
+      getStatusTagColumn({ category: businessCategory.treasuryBounties }),
+    ],
+    apiSubfix: "bounties",
+    formatter: normalizeBountyListItem,
+  },
+  "child-bounties": {
+    columns: [
+      ...commonColumns,
+      getStatusTagColumn({ category: businessCategory.treasuryChildBounties }),
+    ],
+    apiSubfix: "child-bounties",
+    formatter: normalizeChildBountyListItem,
+  },
+  tips: {
+    columns: [
+      ...commonColumns,
+      getStatusTagColumn({ category: businessCategory.treasuryTips }),
+    ],
+    apiSubfix: "tips",
+    formatter: normalizeTipListItem,
+  },
 };
 
-const formatterMap = {
-  spends: normalizeTreasurySpendListItem,
-  proposals: normalizeTreasuryProposalListItem,
-  bounties: normalizeBountyListItem,
-  "child-bounties": normalizeChildBountyListItem,
-  tips: normalizeTipListItem,
-};
-
-export default function ProfileTreasuryCommonTable({ type }) {
+function ProfileTreasuryCommonTableImpl({ apiSubfix, formatter, columns }) {
   const [page, setPage] = useState(1);
   const address = useProfileAddress();
-  const apiSubfix = apiSubfixMap[type];
 
   const { value, loading } = useAsync(async () => {
     const { result } = await backendApi.fetch(
@@ -81,19 +83,18 @@ export default function ProfileTreasuryCommonTable({ type }) {
 
   const rows = useMemo(() => {
     return value?.items?.map((item) => {
-      const formattedItem = formatterMap[type]?.(CHAIN, item);
-      const columns = columnsMap[type];
+      const formattedItem = formatter(CHAIN, item);
       return columns.map((column) =>
         column.cellRender?.(formattedItem, item, value.items),
       );
     });
-  }, [value, type]);
+  }, [value, formatter, columns]);
 
   return (
     <>
       <DataList
         loading={loading}
-        columns={columnsMap[type]}
+        columns={columns}
         rows={rows}
         noDataText="No data"
       />
@@ -106,4 +107,14 @@ export default function ProfileTreasuryCommonTable({ type }) {
       />
     </>
   );
+}
+
+export default function ProfileTreasuryCommonTable({ type }) {
+  const tableTemplate = tableTemplateMap[type];
+
+  if (!tableTemplate) {
+    return null;
+  }
+
+  return <ProfileTreasuryCommonTableImpl {...tableTemplate} />;
 }
