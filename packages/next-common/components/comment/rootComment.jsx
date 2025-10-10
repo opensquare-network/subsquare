@@ -43,12 +43,12 @@ export function SubsquareRootComment({ data }) {
 }
 
 export function PolkassemblyRootComment({ data }) {
-  const { refetchPolkassemblyCommentReplies } =
+  const { fetchPolkassemblyCommentReplies } =
     usePolkassemblyCommentRepliesContext();
 
   return (
     <RootCommentContext.Provider
-      value={{ data, reloadRootComment: refetchPolkassemblyCommentReplies }}
+      value={{ data, reloadRootComment: fetchPolkassemblyCommentReplies }}
     >
       <PolkassemblyCommentItem data={data} />
     </RootCommentContext.Provider>
