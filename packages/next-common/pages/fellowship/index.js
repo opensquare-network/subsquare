@@ -22,6 +22,7 @@ import {
 } from "next-common/components/referenda/list/unVotedContext";
 import FellowshipListLayout from "next-common/components/fellowship/fellowshipListLayout";
 import TrackPanel from "next-common/components/referenda/trackPanel";
+import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 
 function useMyUnVotedReferendaPosts() {
   const [posts, setPosts] = useState();
@@ -178,12 +179,14 @@ function ReferendaList() {
 
 export default function FellowshipPage({ fellowshipSummary }) {
   return (
-    <CollectivesProvider section="fellowship">
-      <FellowshipListLayout fellowshipSummary={fellowshipSummary}>
-        <TrackPanel className="mb-4" />
-        <ReferendaList />
-      </FellowshipListLayout>
-    </CollectivesProvider>
+    <MigrationConditionalApiProvider>
+      <CollectivesProvider section="fellowship">
+        <FellowshipListLayout fellowshipSummary={fellowshipSummary}>
+          <TrackPanel className="mb-4" />
+          <ReferendaList />
+        </FellowshipListLayout>
+      </CollectivesProvider>
+    </MigrationConditionalApiProvider>
   );
 }
 
