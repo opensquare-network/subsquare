@@ -3,7 +3,7 @@ import {
   renderMentionIdentityUserPlugin,
 } from "@osn/previewer";
 import IdentityOrAddr from "next-common/components/IdentityOrAddr";
-import PolkassemblyActions from "../polkassembly/actions";
+import PolkassemblyCommentActions from "../polkassembly/commentActions";
 import { cn } from "next-common/utils";
 import { LinkPolkassembly } from "@osn/icons/subsquare";
 import Tooltip from "next-common/components/tooltip";
@@ -64,7 +64,7 @@ function PolkassemblyCommentItemImpl({ isSecondLevel }) {
         />
       }
       actions={
-        <PolkassemblyActions
+        <PolkassemblyCommentActions
           setShowReplies={setShowReplies}
           reactions={comment.reactions}
         />

@@ -36,13 +36,11 @@ export default function PolkassemblyComments({
           <Loading size={14} />
         </LoadingDiv>
       ) : comments?.length > 0 ? (
-        <>
-          <div>
-            {(comments || []).map((item, idx) => (
-              <PolkassemblyRootComment key={idx} data={item} />
-            ))}
-          </div>
-        </>
+        <div>
+          {(comments || []).map((item, idx) => (
+            <PolkassemblyRootComment key={idx} data={item} />
+          ))}
+        </div>
       ) : (
         <NoComment />
       )}

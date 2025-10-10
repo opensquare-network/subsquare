@@ -1,8 +1,5 @@
 import React, { useRef, useState } from "react";
-import styled from "styled-components";
-import Flex from "next-common/components/styled/flex";
 import ThumbsUp from "next-common/components/thumbsUp";
-import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import PolkassemblyUser from "next-common/components/user/polkassemblyUser";
 import ReplyButton from "next-common/components/actions/replyButton";
 import { useUser } from "next-common/context/user";
@@ -19,32 +16,9 @@ import { useDetailType } from "next-common/context/page";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import useMentionList from "next-common/utils/hooks/useMentionList";
 import { useComment } from "../comment/context";
+import { Wrapper, GreyWrapper, GreyItem } from "./styled";
 
-const Wrapper = styled(Flex)`
-  align-items: flex-start;
-  flex-wrap: wrap;
-`;
-
-const GreyWrapper = styled(GreyPanel)`
-  flex-flow: wrap;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  line-height: 22px;
-  padding: 8px 12px;
-  margin-top: 16px;
-`;
-
-const GreyItem = styled.div`
-  display: inline-block;
-  margin-right: 12px;
-
-  > .username {
-    color: var(--textSecondary);
-  }
-`;
-
-export default function PolkassemblyActions({
+export default function PolkassemblyCommentActions({
   reactions,
   extraActions,
   setShowReplies = noop,
