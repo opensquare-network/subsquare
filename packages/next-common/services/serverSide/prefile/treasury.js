@@ -3,7 +3,8 @@ import { CHAIN } from "next-common/utils/constants";
 import Chains from "next-common/utils/consts/chains";
 
 export async function fetchProfileTreasuryProps(address) {
-  if ([Chains.polkadot, Chains.kusama].includes(CHAIN)) {
+  // only support polkadot and kusama
+  if (![Chains.polkadot, Chains.kusama].includes(CHAIN)) {
     return {
       beneficiariesSummary: null,
     };
