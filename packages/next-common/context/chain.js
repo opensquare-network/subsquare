@@ -1,6 +1,7 @@
 import { createContext, useContext, useMemo } from "react";
 import getChainSettings from "../utils/consts/settings";
 import Chains from "next-common/utils/consts/chains";
+import { useRelayChain } from "next-common/hooks/useRelayChain";
 
 const ChainContext = createContext(process.env.NEXT_PUBLIC_CHAIN);
 
@@ -21,6 +22,14 @@ export function useIsKintsugi() {
 
 export function useChainSettings(blockHeight = null) {
   const chain = useChain();
+  return useMemo(
+    () => getChainSettings(chain, blockHeight),
+    [chain, blockHeight],
+  );
+}
+
+export function useRelayChainSettings(blockHeight = null) {
+  const chain = useRelayChain();
   return useMemo(
     () => getChainSettings(chain, blockHeight),
     [chain, blockHeight],
