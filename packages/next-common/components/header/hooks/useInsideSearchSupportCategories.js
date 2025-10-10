@@ -18,17 +18,17 @@ export default function useInsideSearchSupportCategories() {
     ...(treasury?.spends ? ["treasury spends"] : []),
   ];
 
-  let categoryString =
-    categories.length > 0
-      ? categories.length > 3
-        ? `${categories.slice(0, 3).join(", ")}, etc.`
-        : categories.join(", ")
-      : "";
+  let categoryString = "";
 
-  if (fellowship?.core && categories.length > 3) {
-    const rest = categories.slice(0, -1);
-    const last = categories[categories.length - 1];
-    categoryString = `${rest.join(", ")} and ${last}`;
+  if (categories.length > 3) {
+    categoryString = `${categories.slice(0, 3).join(", ")}, etc.`;
+    if (fellowship?.core) {
+      const rest = categories.slice(0, -1);
+      const last = categories[categories.length - 1];
+      categoryString = `${rest.join(", ")} and ${last}`;
+    }
+  } else {
+    categoryString = categories.join(", ");
   }
 
   return {
