@@ -30,7 +30,7 @@ export function getStatusTagColumn({ category } = {}) {
     name: "Status",
     className: "text-right w-[120px]",
     cellRender(data) {
-      return <Tag state={data.state} />;
+      return <Tag state={data.status} />;
     },
   };
 }
@@ -41,7 +41,7 @@ export function getRequestColumn() {
     className: "w-40 text-left",
     cellRender(data) {
       const { decimals, symbol } = getChainSettings(CHAIN);
-      const fiatValue = data.fiatValue
+      const fiatValue = !isNil(data.fiatValue)
         ? toPrecision(data.fiatValue, 0, 2)
         : null;
       if (!isNil(data.value)) {
@@ -51,7 +51,7 @@ export function getRequestColumn() {
             value={toPrecision(data.value, decimals)}
             symbol={symbol}
             tooltipOtherContent={
-              fiatValue && (
+              !isNil(fiatValue) && (
                 <>
                   <br />${Number(fiatValue).toLocaleString()}
                 </>

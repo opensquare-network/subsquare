@@ -4,7 +4,10 @@ import DataList from "next-common/components/dataList";
 import useProfileAddress from "../useProfileAddress";
 import { useMemo, useState } from "react";
 import Pagination from "next-common/components/pagination";
-import { getProposalPostTitleColumn } from "next-common/components/overview/recentProposals/columns";
+import {
+  getProposalPostTitleColumn,
+  getSpendRequestColumn,
+} from "next-common/components/overview/recentProposals/columns";
 import { getRequestColumn, getStatusTagColumn } from "./column";
 import { CHAIN } from "next-common/utils/constants";
 import businessCategory from "next-common/utils/consts/business/category";
@@ -18,7 +21,8 @@ const commonColumns = [getProposalPostTitleColumn(), getRequestColumn()];
 
 const columnsMap = {
   spends: [
-    ...commonColumns,
+    getProposalPostTitleColumn(),
+    getSpendRequestColumn(),
     getStatusTagColumn({ category: businessCategory.treasurySpends }),
   ],
   proposals: [
