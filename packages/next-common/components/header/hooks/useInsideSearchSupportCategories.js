@@ -2,9 +2,15 @@ import { useChainSettings } from "next-common/context/chain";
 
 export default function useInsideSearchSupportCategories() {
   const node = useChainSettings();
-  const { referenda, democracy = {}, treasury = {} } = node?.modules ?? {};
+  const {
+    referenda,
+    democracy = {},
+    treasury = {},
+    fellowship = {},
+  } = node?.modules ?? {};
 
   const categories = [
+    ...(fellowship?.core ? ["fellowship referenda", "members"] : []),
     ...(referenda || democracy?.referenda ? ["referenda"] : []),
     ...(treasury?.bounties || treasury?.childBounties ? ["bounties"] : []),
     ...(node?.graphql?.identity ? ["identity"] : []),
