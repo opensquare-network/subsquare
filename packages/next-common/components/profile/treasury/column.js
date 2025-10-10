@@ -1,4 +1,5 @@
 import { isNil } from "lodash-es";
+import { SpendRequestAmount } from "next-common/components/overview/recentProposals/columns";
 import { ClosedTag } from "next-common/components/tags/state/styled";
 import {
   SpendTag,
@@ -62,6 +63,22 @@ export function getRequestColumn() {
       }
 
       return "--";
+    },
+  };
+}
+
+export function getSpendRequestColumn() {
+  return {
+    name: "Request",
+    className: "w-40 text-left",
+    cellRender(data) {
+      return (
+        <SpendRequestAmount
+          showFiatValue
+          fiatValue={data.fiatValue}
+          extractedTreasuryInfo={data.extracted}
+        />
+      );
     },
   };
 }
