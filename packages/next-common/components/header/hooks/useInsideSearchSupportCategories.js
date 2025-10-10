@@ -10,7 +10,7 @@ export default function useInsideSearchSupportCategories() {
   } = node?.modules ?? {};
 
   const categories = [
-    ...(fellowship?.core ? ["fellowship referenda", "members"] : []),
+    ...(fellowship?.core ? ["fellowship members", "referenda", "spends"] : []),
     ...(referenda || democracy?.referenda ? ["referenda"] : []),
     ...(treasury?.bounties || treasury?.childBounties ? ["bounties"] : []),
     ...(node?.graphql?.identity ? ["identity"] : []),
@@ -18,12 +18,18 @@ export default function useInsideSearchSupportCategories() {
     ...(treasury?.spends ? ["treasury spends"] : []),
   ];
 
-  const categoryString =
+  let categoryString =
     categories.length > 0
       ? categories.length > 3
         ? `${categories.slice(0, 3).join(", ")}, etc.`
         : categories.join(", ")
       : "";
+
+  if (fellowship?.core && categories.length > 3) {
+    const rest = categories.slice(0, -1);
+    const last = categories[categories.length - 1];
+    categoryString = `${rest.join(", ")} and ${last}`;
+  }
 
   return {
     categories,
