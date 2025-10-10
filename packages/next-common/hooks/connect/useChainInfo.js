@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { getSpecTypes } from "@polkadot/types-known";
 import { formatBalance, isNumber } from "@polkadot/util";
 import { base64Encode } from "@polkadot/util-crypto";
-import { useContextApi } from "next-common/context/api";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 import { useChainSettings } from "next-common/context/chain";
 
 export default function useChainInfo() {
-  const api = useContextApi();
+  const api = useConditionalContextApi();
   const [chainInfo, setChainInfo] = useState();
   const { decimals, ss58Format } = useChainSettings();
 

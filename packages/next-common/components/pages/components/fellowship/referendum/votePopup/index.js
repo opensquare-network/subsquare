@@ -69,6 +69,7 @@ function PopupContent() {
   );
 
   const { doSubmit, isSubmitting } = useTxSubmission({
+    api,
     getTxFunc,
     onInBlock: myOnInBlock,
     onSubmitted: onClose,
