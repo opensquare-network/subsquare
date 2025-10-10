@@ -9,10 +9,12 @@ import { Deferred } from "next-common/utils/deferred";
 function useFellowshipMembers() {
   const api = useContextApi();
   return useAsync(async () => {
-    if (!api || !api.query.fellowshipCollective) {
+    if (!api) {
       return null;
     }
-
+    if (!api.query.fellowshipCollective) {
+      return [];
+    }
     try {
       const fellowshipMembers =
         await api?.query.fellowshipCollective.members.entries();
