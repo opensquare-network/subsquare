@@ -1,9 +1,9 @@
 import { backendApi } from "next-common/services/nextApi";
-import getChainSettings from "next-common/utils/consts/settings";
+import { CHAIN } from "next-common/utils/constants";
+import Chains from "next-common/utils/consts/chains";
 
 export async function fetchProfileTreasuryProps(address) {
-  const { integrations } = getChainSettings(process.env.CHAIN);
-  if (!integrations.doTreasury) {
+  if ([Chains.polkadot, Chains.kusama].includes(CHAIN)) {
     return {
       beneficiariesSummary: null,
     };

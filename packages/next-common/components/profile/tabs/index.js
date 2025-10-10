@@ -107,7 +107,7 @@ export default function useProfileTabs() {
       exactMatch: false,
     });
 
-    if (integrations?.doTreasury && beneficiariesSummary) {
+    if (beneficiariesSummary) {
       tabs.push({
         label({ active }) {
           return <TabTitle active={active}>Treasury</TabTitle>;
