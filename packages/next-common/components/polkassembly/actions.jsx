@@ -3,10 +3,7 @@ import ThumbsUp from "next-common/components/thumbsUp";
 import PolkassemblyUser from "next-common/components/user/polkassemblyUser";
 import { Wrapper, GreyWrapper, GreyItem } from "./styled";
 
-export default function PolkassemblyArticleActions({
-  reactions,
-  extraActions,
-}) {
+export default function PolkassemblyActions({ reactions, extraActions }) {
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
   const thumbsUpReactions = (reactions || []).filter((r) => r.reaction === 1);
 

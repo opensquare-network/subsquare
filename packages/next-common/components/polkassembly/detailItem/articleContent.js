@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import PolkassemblyArticleActions from "../articleActions";
+import PolkassemblyActions from "../actions";
 import { MarkdownPreviewer } from "@osn/previewer";
 import NoData from "next-common/components/noData";
 import { usePost } from "next-common/context/post";
@@ -78,7 +78,7 @@ export default function ArticleContent({ postReactions, className = "" }) {
         </div>
       )}
 
-      <PolkassemblyArticleActions
+      <PolkassemblyActions
         reactions={postReactions}
         extraActions={<PostDataSource />}
       />
