@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useMountedState } from "react-use";
 import { getFellowshipVote } from "../../gov2/getFellowshipVote";
-import { useContextApi } from "next-common/context/api";
 import { useRankedCollectivePallet } from "next-common/context/collectives/collectives";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
 export default function useFellowshipVote(referendumIndex, address) {
-  const api = useContextApi();
+  const api = useConditionalContextApi();
   const [vote, setVote] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const isMounted = useMountedState();
