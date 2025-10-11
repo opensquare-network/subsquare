@@ -5,7 +5,7 @@ import MenuGroups from "./menuGroups";
 import { mergeChainModules } from "./common/modules";
 
 const ProjectIconHyperBridge = dynamic(() =>
-  import("@osn/icons/subsquare/projectIconHyperBridge"),
+  import("@osn/icons/subsquare/ProjectIconHyperBridge"),
 );
 
 const endpoints = [
