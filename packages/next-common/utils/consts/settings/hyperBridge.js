@@ -1,8 +1,12 @@
+import dynamic from "next/dynamic";
 import Chains from "../chains";
 import { PostLabel } from "./common";
 import MenuGroups from "./menuGroups";
 import { mergeChainModules } from "./common/modules";
-import { ProjectIconHyperBridge } from "@osn/icons/subsquare";
+
+const ProjectIconHyperBridge = dynamic(() =>
+  import("@osn/icons/subsquare/projectIconHyperBridge"),
+);
 
 const endpoints = [
   {
