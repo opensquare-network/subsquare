@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useMountedState } from "react-use";
 import { useChain, useSymbol } from "../../context/chain";
 import { isKintsugiChain } from "../chain";
@@ -12,7 +12,7 @@ export async function querySystemAccountBalance(api, address) {
     .toString();
 }
 
-function useSubAddressBalance(pallet, storage, params = [], { api }) {
+function useSubAddressBalance(pallet, storage, params = [], api) {
   const isMounted = useMountedState();
   const [result, setResult] = useState();
   const [loading, setLoading] = useState(true);
@@ -59,7 +59,7 @@ function useSubAddressBalance(pallet, storage, params = [], { api }) {
       if (unsub) {
         unsub();
       }
-    };// eslint-disable-next-line react-hooks/exhaustive-deps
+    }; // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [api, pallet, storage, isMounted, ...filteredParams]);
 
   return { result, loading };
@@ -69,22 +69,28 @@ export default function useAddressBalance(api, address) {
   const chain = useChain();
   const symbol = useSymbol();
 
-  let pallet;
-  let storage;
-  let params;
-  if (isKintsugiChain(chain)) {
-    pallet = "tokens";
-    storage = "accounts";
-    params = [address, { token: symbol }];
-  } else {
-    pallet = "system";
-    storage = "account";
-    params = [address];
-  }
+  const { pallet, storage, params } = useMemo(() => {
+    if (isKintsugiChain(chain)) {
+      return {
+        pallet: "tokens",
+        storage: "accounts",
+        params: [address, { token: symbol }],
+      };
+    }
 
-  const { result, loading } = useSubAddressBalance(pallet, storage, params, {
+    return {
+      pallet: "system",
+      storage: "account",
+      params: [address],
+    };
+  }, [chain, address, symbol]);
+
+  const { result, loading } = useSubAddressBalance(
+    pallet,
+    storage,
+    params,
     api,
-  });
+  );
 
   let balance = 0;
   let resultJson;
