@@ -78,6 +78,7 @@ const hyperBridge = {
     treasury: {
       spends: true,
       bounties: false,
+      tips: false,
     },
     democracy: false,
     council: false,
