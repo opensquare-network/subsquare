@@ -78,12 +78,9 @@ function useSearchResults() {
   const [isLoading, setIsLoading] = useState(false);
   const abortControllerRef = useRef(null);
   const lastSearchValueRef = useRef("");
-  const [fetchIdentities, isIdentitiesLoading] = useSearchIdentities();
+  const [fetchIdentities] = useSearchIdentities();
 
-  const {
-    search: searchFellowshipMembers,
-    isLoading: isFellowshipMembersLoading,
-  } = useSearchFellowshipMembers();
+  const { search: searchFellowshipMembers } = useSearchFellowshipMembers();
 
   const combineIdentitiesRequest = useCallback(
     async (searchValue) => {
@@ -114,9 +111,26 @@ function useSearchResults() {
     );
   }, []);
 
+  const requestCallback = useCallback(
+    (result, signal, searchValue) => {
+      if (!signal.aborted && lastSearchValueRef.current === searchValue) {
+        setResults((prev) => {
+          if (prev === null) {
+            setIsLoading(false);
+          }
+          return {
+            ...prev,
+            ...result,
+          };
+        });
+      }
+    },
+    [lastSearchValueRef],
+  );
+
   const fetch = useCallback(
     async (searchValue) => {
-      if (searchValue === lastSearchValueRef.current && results !== null) {
+      if (searchValue === lastSearchValueRef.current) {
         return;
       }
 
@@ -128,26 +142,31 @@ function useSearchResults() {
         abortControllerRef.current = new AbortController();
         const signal = abortControllerRef.current.signal; //avoid race and data leakage
 
+        setResults(null);
         setIsLoading(true);
         lastSearchValueRef.current = searchValue;
 
-        const [
-          { value: apiResult },
-          { value: identitiesResult },
-          { value: fellowshipMembers },
-        ] = await Promise.allSettled([
-          baseSearchDataRequest(searchValue, signal),
-          combineIdentitiesRequest(searchValue),
-          searchFellowshipMembers(searchValue),
-        ]);
+        const promises = [
+          baseSearchDataRequest(searchValue, signal).then((apiResult) =>
+            requestCallback(apiResult?.result || {}, signal, searchValue),
+          ),
+          combineIdentitiesRequest(searchValue).then((identitiesResult) =>
+            requestCallback(
+              { identities: identitiesResult || [] },
+              signal,
+              searchValue,
+            ),
+          ),
+          searchFellowshipMembers(searchValue).then((fellowshipMembers) =>
+            requestCallback(
+              { fellowshipMembers: fellowshipMembers || [] },
+              signal,
+              searchValue,
+            ),
+          ),
+        ];
 
-        if (!signal.aborted) {
-          setResults({
-            fellowshipMembers: fellowshipMembers || [],
-            ...apiResult?.result,
-            identities: identitiesResult || [],
-          });
-        }
+        await Promise.allSettled(promises);
       } finally {
         if (searchValue === lastSearchValueRef.current) {
           setIsLoading(false);
@@ -158,7 +177,7 @@ function useSearchResults() {
       baseSearchDataRequest,
       combineIdentitiesRequest,
       searchFellowshipMembers,
-      results,
+      requestCallback,
     ],
   );
 
@@ -175,7 +194,18 @@ function useSearchResults() {
   const totalList = useMemo(() => {
     if (!results) return null;
 
-    return Object.entries(results).flatMap(([key, value]) => {
+    const priorityKeys = ["fellowshipMembers"];
+    const allEntries = Object.entries(results);
+    const priorityEntries = priorityKeys
+      .map((key) => [key, results[key]])
+      .filter(([, value]) => value !== undefined);
+
+    const otherEntries = allEntries.filter(
+      ([key]) => !priorityKeys.includes(key),
+    );
+    const orderedEntries = [...priorityEntries, ...otherEntries];
+
+    return orderedEntries.flatMap(([key, value]) => {
       switch (key) {
         case "openGovReferenda":
           return formatItems("Referenda", value, "referendumIndex");
@@ -212,7 +242,7 @@ function useSearchResults() {
   return {
     totalList,
     fetch,
-    isLoading: isLoading || isIdentitiesLoading || isFellowshipMembersLoading,
+    isLoading,
     setResults,
     clearResults,
   };
