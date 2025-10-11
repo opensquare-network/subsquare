@@ -22,19 +22,19 @@ export const gov2Fellowship = {
   routePath: "fellowship",
   apiPath: "fellowship/referendums",
   formatter: (chain, item) => normalizeFellowshipReferendaListItem(item),
-  getCount: (overview) => overview?.openGov.fellowship ?? 0,
+  getCount: (overview) => overview?.openGov?.fellowship ?? 0,
 };
 
 export const openGovCategory = {
   id: "openGov",
   name: "OpenGov",
   children: [gov2Referenda],
-  getCount: (overview) => overview?.openGov.referenda ?? 0,
+  getCount: (overview) => overview?.openGov?.referenda ?? 0,
 };
 
 export const fellowshipCategory = {
   id: "fellowship",
   name: "Fellowship",
   children: [gov2Fellowship],
-  getCount: (overview) => overview?.openGov.fellowship ?? 0,
+  getCount: (overview) => overview?.openGov?.fellowship ?? 0,
 };
