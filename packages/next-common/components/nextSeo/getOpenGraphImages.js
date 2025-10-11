@@ -14,6 +14,10 @@ const CHAIN_COVER_FILENAMES_MAP = {
     large: "zkverify.jpg",
     small: "zkverify-small.jpg",
   },
+  [Chains.zkverify]: {
+    large: "zkverify.jpg",
+    small: "zkverify-small.jpg",
+  },
   [Chains.kusamaAssetHub]: {
     large: "kusama-asset-hub.jpg",
     small: "kusama-asset-hub-small.jpg",

@@ -32,3 +32,14 @@ const kusamaCommonCfg = {
 };
 
 export default kusamaCommonCfg;
+
+export const subscanKusamaAssethubDomain = "assethub-kusama";
+export const statescanKusamaAssethubDomain = "assethub-kusama";
+
+export const kusamaAssethubMigration = {
+  migrated: true,
+  timestamp: 1759844124000,
+  subscanAssethubDomain: subscanKusamaAssethubDomain,
+  statescanAssethubDomain: statescanKusamaAssethubDomain,
+  relayBlockTime: 6000,
+};

@@ -47,7 +47,7 @@ export function DelayBlocksField({ value, setValue }) {
   );
 }
 
-function ProxyTypeSelector({ proxyType, setProxyType }) {
+export function ProxyTypeSelector({ proxyType, setProxyType }) {
   const { options, isLoading } = useProxyTypeOptions();
 
   if (isLoading) {
@@ -75,9 +75,7 @@ function ProxyTypeSelector({ proxyType, setProxyType }) {
   );
 }
 
-// TODO: delay options
-// TODO: advance settings
-function PopupContent() {
+export function AddProxyFields({ previousButton }) {
   const api = useContextApi();
   const signerAccount = useSignerAccount();
   const address = signerAccount?.realAddress;
@@ -119,20 +117,33 @@ function PopupContent() {
   };
 
   return (
-    <div className="space-y-4">
-      <SignerWithBalance />
+    <>
       <ProxyTypeSelector proxyType={proxyType} setProxyType={setProxyType} />
       {proxyAccountField}
       {/* <AdvanceSettings>
-          <DelayBlocksField value={delay} setValue={setDelay} />
-        </AdvanceSettings> */}
+      <DelayBlocksField value={delay} setValue={setDelay} />
+    </AdvanceSettings> */}
       <AdvanceSettings>
         <EstimatedGas getTxFunc={getTxFuncForFee} />
       </AdvanceSettings>
-      <TxSubmissionButton
-        getTxFunc={getTxFuncForSubmit}
-        onFinalized={onFinalized}
-      />
+      <div className="flex justify-between">
+        {previousButton}
+        <TxSubmissionButton
+          getTxFunc={getTxFuncForSubmit}
+          onFinalized={onFinalized}
+        />
+      </div>
+    </>
+  );
+}
+
+// TODO: delay options
+// TODO: advance settings
+function PopupContent() {
+  return (
+    <div className="space-y-4">
+      <SignerWithBalance />
+      <AddProxyFields />
     </div>
   );
 }

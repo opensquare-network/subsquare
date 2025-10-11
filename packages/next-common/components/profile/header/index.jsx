@@ -21,18 +21,23 @@ const ProfileBannerEditPopup = dynamicPopup(
   },
 );
 
-export function useProfileBannerUrl() {
+export function useProfileBannerUrlWithDefault() {
   const { isDark } = useTheme();
   const filename = `imgBannerProfile${isDark ? "Dark" : "Light"}.webp`;
+  return `${STATICS_CDN_URL}/banner/${filename}`;
+}
+
+export function useProfileBannerUrl() {
   const { user } = useProfileUserInfoContext();
+  const defaultBannerUrl = useProfileBannerUrlWithDefault();
 
   const bannerUrl = useMemo(() => {
     if (!user?.bannerCid) {
-      return `${STATICS_CDN_URL}/banner/${filename}`;
+      return defaultBannerUrl;
     }
 
     return getIpfsLink(user.bannerCid);
-  }, [filename, user]);
+  }, [defaultBannerUrl, user]);
 
   return bannerUrl;
 }

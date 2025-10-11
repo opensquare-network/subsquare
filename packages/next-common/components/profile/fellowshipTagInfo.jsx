@@ -4,9 +4,7 @@ import { useFellowshipMemberRank } from "next-common/hooks/fellowship/useFellows
 import { CommonTag } from "../tags/state/styled";
 import { getRankColor } from "next-common/utils/fellowship/getRankColor";
 
-function FellowshipTagInfoImpl({ address, pallet, type }) {
-  const { rank } = useFellowshipMemberRank(address, pallet);
-
+export function FellowshipTagByRank({ rank, type }) {
   if (isNil(rank)) {
     return null;
   }
@@ -22,6 +20,12 @@ function FellowshipTagInfoImpl({ address, pallet, type }) {
       {upperFirst(type)} #{rank}
     </CommonTag>
   );
+}
+
+function FellowshipTagInfoImpl({ address, pallet, type }) {
+  const { rank } = useFellowshipMemberRank(address, pallet);
+
+  return <FellowshipTagByRank rank={rank} type={type} />;
 }
 
 export default function FellowshipTagInfo({

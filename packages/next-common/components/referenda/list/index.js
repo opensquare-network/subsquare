@@ -9,6 +9,7 @@ import useMyReferendaVotes from "next-common/hooks/referenda/useMyReferendaVotes
 import { UnVotedOnlyProvider, useUnVotedOnlyContext } from "./unVotedContext";
 import ReferendaListFilter from "next-common/components/referenda/list/filter";
 import NewProposalButton from "next-common/components/summary/newProposalButton";
+import SortButton from "next-common/components/referenda/list/sortButton";
 
 const [useIsTreasuryState, IsTreasuryStateProvider] = createStateContext(false);
 const [useIsOngoingState, IsOngoingStateProvider] = createStateContext(false);
@@ -96,6 +97,7 @@ function WithFilterPostList({
       titleCount={isUnVotedOnlyLoading ? "Filtering un-voted..." : total}
       titleExtra={
         <div className="flex items-center gap-x-2">
+          <SortButton />
           <ReferendaListFilter isUnVotedOnlyLoading={isUnVotedOnlyLoading} />
           <NewProposalButton />
         </div>

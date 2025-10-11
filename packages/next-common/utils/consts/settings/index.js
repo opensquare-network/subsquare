@@ -35,6 +35,7 @@ import kusamaAssetHub from "./kusamaAssetHub";
 import shibuya from "./shibuya";
 import astar from "./astar";
 import { isNil } from "lodash-es";
+import zkverify from "./zkverify";
 import zkverifyTestnet from "./zkverifyTestnet";
 import paseo from "./paseo";
 import paseoAssetHub from "./paseoAssetHub";
@@ -86,6 +87,7 @@ const settingsMap = {
   [kusamaAssetHub.value]: kusamaAssetHub,
   vara,
   shibuya,
+  [zkverify.value]: zkverify,
   [zkverifyTestnet.value]: zkverifyTestnet,
   paseo,
   [paseoAssetHub.value]: paseoAssetHub,

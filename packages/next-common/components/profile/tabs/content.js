@@ -12,6 +12,7 @@ import { usePageProps } from "next-common/context/page";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import ProfileFellowship from "../fellowship";
 import ProfileProxy from "../proxy";
+import ProfileTreasury from "../treasury";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 
 export default function useProfileTabContent() {
@@ -50,6 +51,8 @@ export default function useProfileTabContent() {
     return <Posted />;
   } else if (pathname.startsWith(`/user/${maybeEvmAddress}/proxies`)) {
     return <ProfileProxy />;
+  } else if (pathname.startsWith(`/user/${maybeEvmAddress}/treasury`)) {
+    return <ProfileTreasury />;
   }
 
   return <Posted />;

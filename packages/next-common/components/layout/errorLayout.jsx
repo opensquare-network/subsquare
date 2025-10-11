@@ -50,10 +50,15 @@ export const ContactWithUs = memo(function ContactWithUs({ className = "" }) {
   );
 });
 
-export default function ErrorLayout({ icon, title, description }) {
+export default function ErrorLayout({ icon, title, description, className }) {
   return (
     <ThemeModeProvider defaultThemeMode="system">
-      <div className="h-screen flex flex-col items-center justify-center gap-y-6 text-textPrimary text14Medium">
+      <div
+        className={cn(
+          "h-screen flex flex-col items-center justify-center gap-y-6 text-textPrimary text14Medium",
+          className,
+        )}
+      >
         {icon}
 
         <div className="flex flex-col items-center">

@@ -111,6 +111,9 @@ const hydradx = {
   integrations: {
     subscan: true,
   },
+  referendaActions: {
+    startFrom: 98,
+  },
   cssVarsLight: {
     theme100: "rgba(229,62,118,0.10)",
     theme300: "rgba(229,62,118,0.40)",

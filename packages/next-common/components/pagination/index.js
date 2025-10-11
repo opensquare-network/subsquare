@@ -56,6 +56,7 @@ export default function Pagination({
   total = 0,
   onPageChange = null,
   shallow = false,
+  buttonMode = false,
 }) {
   const totalPages = Math.ceil(total / pageSize)
     ? Math.ceil(total / pageSize)
@@ -72,6 +73,7 @@ export default function Pagination({
           isPre={true}
           page={prevPage}
           onPageChange={onPageChange}
+          buttonMode={buttonMode}
         />
       </Nav>
       <Items
@@ -79,6 +81,7 @@ export default function Pagination({
         page={page}
         total={totalPages}
         onPageChange={onPageChange}
+        buttonMode={buttonMode}
       />
       <Nav disabled={page === totalPages}>
         <PageCaret
@@ -86,6 +89,7 @@ export default function Pagination({
           isPre={false}
           page={nextPage}
           onPageChange={onPageChange}
+          buttonMode={buttonMode}
         />
       </Nav>
     </Wrapper>

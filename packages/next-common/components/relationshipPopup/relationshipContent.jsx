@@ -11,6 +11,7 @@ import {
   useRelationshipViewTypeState,
   VIEW_TYPE,
 } from "next-common/context/relationship/selectViewType";
+import useTransferRelationshipNode from "next-common/hooks/useTransferRelationshipNode";
 
 export function CommonRelationshipContent() {
   const sourceAddress = useContextAddress();
@@ -39,6 +40,21 @@ export function DelegationRelationshipContent() {
   );
 }
 
+export function TransferRelationshipContent() {
+  const sourceAddress = useContextAddress();
+
+  const { nodes, edges, isLoading } =
+    useTransferRelationshipNode(sourceAddress);
+
+  return (
+    <RelationshipProvider nodes={nodes} edges={edges} isLoading={isLoading}>
+      <NoRelationshipsWrapper />
+      <Indications />
+      <Relationship />
+    </RelationshipProvider>
+  );
+}
+
 export default function RelationshipContent() {
   const { viewType } = useRelationshipViewTypeState();
 
@@ -46,6 +62,8 @@ export default function RelationshipContent() {
     return <DelegationRelationshipContent />;
   } else if (viewType === VIEW_TYPE.COMMON) {
     return <CommonRelationshipContent />;
+  } else if (viewType === VIEW_TYPE.TRANSFER) {
+    return <TransferRelationshipContent />;
   }
   return null;
 }

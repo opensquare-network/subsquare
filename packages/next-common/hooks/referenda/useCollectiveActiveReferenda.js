@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { useContextApi } from "next-common/context/api";
 import { useReferendaFellowshipPallet } from "next-common/context/collectives/collectives";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
 export default function useCollectiveActiveReferenda() {
-  const api = useContextApi();
+  const api = useConditionalContextApi();
   const [activeReferenda, setActiveReferenda] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const pallet = useReferendaFellowshipPallet();
