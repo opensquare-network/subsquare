@@ -77,7 +77,11 @@ const hyperBridge = {
     referenda: true,
     treasury: {
       spends: true,
+      bounties: false,
     },
+    democracy: false,
+    council: false,
+    technicalCommittee: false,
   }),
   integrations: {
     subscan: {
