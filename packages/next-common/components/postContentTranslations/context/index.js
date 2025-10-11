@@ -4,7 +4,6 @@ import { useTranslatedPost } from "../hooks/useTranslatedPost";
 
 const PostContentTranslationsContext = createContext(null);
 
-// TODO: defaultLanguage field from server
 export default function PostContentTranslationsProvider({
   defaultLanguage = DEFAULT_LANGUAGE_OPTION.value,
   post,

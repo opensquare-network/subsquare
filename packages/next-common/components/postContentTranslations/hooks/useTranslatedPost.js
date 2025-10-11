@@ -1,29 +1,28 @@
 import { useState, useEffect, useCallback } from "react";
 import { LANGUAGE_CODES } from "../constants";
-// import { backendApi } from "next-common/services/nextApi";
+import { postContentTranslationsApi } from "next-common/services/url";
+import nextApi from "next-common/services/nextApi";
 
-// TODO: return translated post
 const fetchTranslatedPost = async (languageCode, originalPost) => {
-  // const content = await backendApi.fetch(translatedPostsApi, {
-  //   who: address,
-  //   postId: originalPost.id,
-  //   language: languageCode,
-  // });
+  const { result, error } = await nextApi.post(postContentTranslationsApi, {
+    lang: languageCode,
+    postType: "referendaReferendum",
+    postId: originalPost?._id,
+  });
 
-  // Mock data
-  const polkassemblyContentHtml = `Translated content for ${languageCode}`;
-  const content = `Translated content for ${languageCode}`;
+  return new Promise((resolve, reject) => {
+    if (error) {
+      reject(new Error(error));
+    }
 
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        ...originalPost,
-        content,
-        ...(originalPost.dataSource === "polkassembly"
-          ? { polkassemblyContentHtml }
-          : {}),
-      });
-    }, 500);
+    const content = result?.content || "";
+    resolve({
+      ...originalPost,
+      content,
+      ...(originalPost.dataSource === "polkassembly"
+        ? { polkassemblyContentHtml: content }
+        : {}),
+    });
   });
 };
 

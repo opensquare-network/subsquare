@@ -198,3 +198,5 @@ export const delegationReferendaDelegatesAddressApi = (address) =>
 // democracy
 export const delegationDemocracyDelegatesAddressApi = (address) =>
   `delegation/democracy/delegates/${address}`;
+
+export const postContentTranslationsApi = "translations";
