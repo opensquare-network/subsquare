@@ -4,10 +4,17 @@ import { postContentTranslationsApi } from "next-common/services/url";
 import nextApi from "next-common/services/nextApi";
 
 const fetchTranslatedPost = async (languageCode, originalPost) => {
+  let postType = "post";
+  let postId = originalPost._id;
+  if (originalPost.rootPost) {
+    postType = originalPost.rootPost.postType;
+    postId = originalPost.rootPost.postId;
+  }
+
   const { result, error } = await nextApi.post(postContentTranslationsApi, {
     lang: languageCode,
-    postType: "referendaReferendum",
-    postId: originalPost?._id,
+    postType,
+    postId,
   });
 
   return new Promise((resolve, reject) => {
