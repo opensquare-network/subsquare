@@ -10,7 +10,6 @@ import {
   MenuDemocracy,
   MenuBounties,
   MenuChildBounties,
-  MenuUser,
   MenuTreasurySpend,
   MenuTreasuryProposal,
 } from "@osn/icons/subsquare";
@@ -19,6 +18,7 @@ import { ItemType } from "next-common/components/header/hooks/useSearchResults";
 import IdentityIcon from "next-common/components/Identity/identityIcon";
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 import { FellowshipTagByRank } from "next-common/components/profile/fellowshipTagInfo";
+import AddressAvatar from "next-common/components/user/addressAvatar";
 
 function SearchItemCategory({ href, category, onClose }) {
   return (
@@ -105,7 +105,7 @@ function IdentitySearchItem({ address, name, onClose }) {
 
   return (
     <CommonSearchItem
-      IconComponent={MenuUser}
+      IconComponent={() => <AddressAvatar address={address} />}
       title={title}
       content={address}
       href={`/user/${address}`}
@@ -134,7 +134,7 @@ function MemberSearchItem({ address, rank, name, onClose }) {
 
   return (
     <CommonSearchItem
-      IconComponent={MenuUser}
+      IconComponent={() => <AddressAvatar address={address} />}
       title={title}
       content={address}
       href={`/user/${address}`}
