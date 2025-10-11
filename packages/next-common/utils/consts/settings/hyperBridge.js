@@ -111,6 +111,7 @@ const hyperBridge = {
   newProposalQuickStart: {
     treasurySpendProposal: true,
   },
+  graphqlApiSubDomain: "dot-gh-api",
   supportWalletconnect: true,
   allowWeb2Login: false,
   hotMenu: {
