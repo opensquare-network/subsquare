@@ -70,8 +70,6 @@ const hyperBridge = {
   group: MenuGroups.PolkadotAndParachains,
   postLabels: [PostLabel.Treasury],
   useVoteCall: true,
-  hasMultisig: true,
-  multisigApiPrefix: "hyperBridge",
   description: "Securely connecting blockchains for seamless asset transfer.",
   modules: mergeChainModules({
     referenda: true,
@@ -85,7 +83,7 @@ const hyperBridge = {
     technicalCommittee: false,
   }),
   integrations: {
-    subscan: {
+    statescan: {
       domain: "nexus",
     },
   },
@@ -111,7 +109,6 @@ const hyperBridge = {
   newProposalQuickStart: {
     treasurySpendProposal: true,
   },
-  graphqlApiSubDomain: "dot-gh-api",
   supportWalletconnect: true,
   allowWeb2Login: false,
   hotMenu: {
