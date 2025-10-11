@@ -4,21 +4,14 @@ import { PostLabel } from "./common";
 import MenuGroups from "./menuGroups";
 import { mergeChainModules } from "./common/modules";
 
-//TODO: update hyperbridge icons
-const ProjectIconHydrationDark = dynamic(() =>
-  import("@osn/icons/subsquare/ProjectIconHydrationDark"),
-);
-const ProjectIconHydrationLight = dynamic(() =>
-  import("@osn/icons/subsquare/ProjectIconHydrationLight"),
-);
-const ProjectLogoHydrationDark = dynamic(() =>
-  import("@osn/icons/subsquare/ProjectLogoHydrationDark"),
+const ProjectIconHyperBridge = dynamic(() =>
+  import("@osn/icons/subsquare/projectIconHyperBridge"),
 );
 
 const endpoints = [
   {
     name: "IBP1",
-    url: "wss://hydration.ibp.network/",
+    url: "wss://nexus.ibp.network",
   },
   {
     name: "IBP2",
@@ -67,10 +60,10 @@ const hyperBridge = {
   blockTime: 6000,
   hasElections: false,
   ss58Format: 0,
-  avatar: ProjectIconHydrationLight,
-  darkAvatar: ProjectIconHydrationDark,
-  navLogo: ProjectLogoHydrationDark,
-  navLogoDark: ProjectLogoHydrationDark,
+  avatar: ProjectIconHyperBridge,
+  darkAvatar: ProjectIconHyperBridge,
+  navLogo: ProjectIconHyperBridge,
+  navLogoDark: ProjectIconHyperBridge,
   navPreferDark: true,
   endpoints,
   links,
@@ -92,23 +85,23 @@ const hyperBridge = {
     },
   },
   cssVarsLight: {
-    theme100: "rgba(229,62,118,0.10)",
-    theme300: "rgba(229,62,118,0.40)",
-    theme500: "rgba(229,62,118,1)",
-    navigationBg: "rgba(36,14,50,1)",
+    theme100: "rgba(47,62,198,0.10)",
+    theme300: "rgba(47,62,198,0.40)",
+    theme500: "rgba(47,62,198,1)",
+    navigationBg: "rgba(3,3,3,1)",
     navigationActive: "rgba(255,255,255,0.04)",
-    navigationBorder: "rgba(255,255,255,0.08)",
+    navigationBorder: "rgba(29, 29, 29, 1)",
     navigationText: "var(--textPrimaryContrast)",
     navigationTextTertiary: "var(--textTertiaryContrast)",
     navigationIcon: "var(--textSecondaryContrast)",
   },
   cssVarsDark: {
-    theme100: "rgba(229,62,118,0.10)",
-    theme300: "rgba(229,62,118,0.40)",
-    theme500: "rgba(229,62,118,1)",
-    navigationBg: "rgba(33,36,51,1)",
+    theme100: "rgba(47,62,198,0.10)",
+    theme300: "rgba(47,62,198,0.40)",
+    theme500: "rgba(47,62,198,1)",
+    navigationBg: "rgba(3,3,3,1)",
     navigationActive: "rgba(38,41,56,1)",
-    navigationBorder: "rgba(39,42,58,1)",
+    navigationBorder: "rgba(29, 29, 29, 1)",
   },
   newProposalQuickStart: {
     treasurySpendProposal: true,
