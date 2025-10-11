@@ -19,7 +19,7 @@ const formatItems = (
   indexKeyOrGetIndexFn,
   displayIndexKeyOrGetIndexFn,
 ) => {
-  if ((items?.length || []) <= 0) {
+  if (!items || (items || []).length <= 0) {
     return [];
   }
 
@@ -115,7 +115,9 @@ function useSearchResults() {
     (result, signal, searchValue) => {
       if (!signal.aborted && lastSearchValueRef.current === searchValue) {
         setResults((prev) => {
-          if (prev === null) {
+          // Set to false as soon as the first non-empty result is encountered.
+          const isEmpty = (formatResults(result) ?? []).length === 0;
+          if (prev === null && !isEmpty) {
             setIsLoading(false);
           }
           return {
@@ -191,53 +193,7 @@ function useSearchResults() {
     }
   }, [abortControllerRef, lastSearchValueRef]);
 
-  const totalList = useMemo(() => {
-    if (!results) return null;
-
-    const priorityKeys = ["fellowshipMembers"];
-    const allEntries = Object.entries(results);
-    const priorityEntries = priorityKeys
-      .map((key) => [key, results[key]])
-      .filter(([, value]) => value !== undefined);
-
-    const otherEntries = allEntries.filter(
-      ([key]) => !priorityKeys.includes(key),
-    );
-    const orderedEntries = [...priorityEntries, ...otherEntries];
-
-    return orderedEntries.flatMap(([key, value]) => {
-      switch (key) {
-        case "openGovReferenda":
-          return formatItems("Referenda", value, "referendumIndex");
-        case "democracyReferenda":
-          return formatItems("DemocracyReferenda", value, "referendumIndex");
-        case "bounties":
-          return formatItems("Bounties", value, "bountyIndex");
-        case "childBounties": {
-          return formatItems(
-            "ChildBounties",
-            value,
-            getChildBountyIndex,
-            getChildBountyDisplayIndex,
-          );
-        }
-        case "treasuryProposals":
-          return formatItems("TreasuryProposals", value, "proposalIndex");
-        case "treasurySpends":
-          return formatItems("TreasurySpends", value, "index");
-        case "fellowshipReferenda":
-          return formatItems("FellowshipReferenda", value, "referendumIndex");
-        case "fellowshipTreasurySpends":
-          return formatItems("FellowshipTreasurySpends", value, "index");
-        case "identities":
-          return formatSearchResult("Identities", value);
-        case "fellowshipMembers":
-          return formatSearchResult("FellowshipMembers", value);
-        default:
-          return [];
-      }
-    });
-  }, [results]);
+  const totalList = useMemo(() => formatResults(results), [results]);
 
   return {
     totalList,
@@ -249,3 +205,51 @@ function useSearchResults() {
 }
 
 export default useSearchResults;
+
+function formatResults(results) {
+  if (!results) return null;
+
+  const priorityKeys = ["fellowshipMembers"];
+  const allEntries = Object.entries(results);
+  const priorityEntries = priorityKeys
+    .map((key) => [key, results[key]])
+    .filter(([, value]) => value !== undefined);
+
+  const otherEntries = allEntries.filter(
+    ([key]) => !priorityKeys.includes(key),
+  );
+  const orderedEntries = [...priorityEntries, ...otherEntries];
+
+  return orderedEntries.flatMap(([key, value]) => {
+    switch (key) {
+      case "openGovReferenda":
+        return formatItems("Referenda", value, "referendumIndex");
+      case "democracyReferenda":
+        return formatItems("DemocracyReferenda", value, "referendumIndex");
+      case "bounties":
+        return formatItems("Bounties", value, "bountyIndex");
+      case "childBounties": {
+        return formatItems(
+          "ChildBounties",
+          value,
+          getChildBountyIndex,
+          getChildBountyDisplayIndex,
+        );
+      }
+      case "treasuryProposals":
+        return formatItems("TreasuryProposals", value, "proposalIndex");
+      case "treasurySpends":
+        return formatItems("TreasurySpends", value, "index");
+      case "fellowshipReferenda":
+        return formatItems("FellowshipReferenda", value, "referendumIndex");
+      case "fellowshipTreasurySpends":
+        return formatItems("FellowshipTreasurySpends", value, "index");
+      case "identities":
+        return formatSearchResult("Identities", value);
+      case "fellowshipMembers":
+        return formatSearchResult("FellowshipMembers", value);
+      default:
+        return [];
+    }
+  });
+}
