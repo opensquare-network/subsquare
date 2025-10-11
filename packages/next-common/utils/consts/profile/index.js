@@ -4,7 +4,7 @@ import { allianceCategory } from "./categories/alliance";
 import { collectivesCategory } from "./categories/collectives";
 import { democracyCategory } from "./categories/democracy";
 import { discussionCategory } from "./categories/discussion";
-import { gov2Fellowship, gov2Referenda } from "./categories/gov2";
+import { fellowshipCategory, openGovCategory } from "./categories/gov2";
 import { treasuryCategory } from "./categories/treasury";
 
 export function getProfileCategories(chain) {
@@ -20,15 +20,12 @@ export function getProfileCategories(chain) {
     },
   } = settings;
 
-  if (hasReferenda || hasFellowship) {
-    categories.push({
-      id: "openGov",
-      name: "OpenGov",
-      children: [
-        hasReferenda && gov2Referenda,
-        hasFellowship && gov2Fellowship,
-      ].filter(Boolean),
-    });
+  if (hasReferenda) {
+    categories.push(openGovCategory);
+  }
+
+  if (hasFellowship) {
+    categories.push(fellowshipCategory);
   }
 
   if (hasDemocracy) {
