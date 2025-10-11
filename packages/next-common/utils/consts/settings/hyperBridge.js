@@ -2,7 +2,7 @@ import Chains from "../chains";
 import { PostLabel } from "./common";
 import MenuGroups from "./menuGroups";
 import { mergeChainModules } from "./common/modules";
-import ProjectIconHyperBridge from "@osn/icons/subsquare/projectIconHyperBridge";
+import { ProjectIconHyperBridge } from "@osn/icons/subsquare";
 
 const endpoints = [
   {
