@@ -13,6 +13,7 @@ import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import OnlyChain from "next-common/components/common/onlyChain";
 import Chains from "next-common/utils/consts/chains";
 import EcoNews from "./ecoNews";
+import Whitelist from "./whiteList";
 
 const MultipleColumnCard = dynamicClientOnly(() =>
   import("./fellowship/multipleColumnCard"),
@@ -38,6 +39,7 @@ export default function Overview() {
     <div className="space-y-6">
       <AccountInfo />
       <EcoNews />
+      <Whitelist />
 
       <WithPallet pallet="fellowshipCore">
         <CollectivesProvider section="fellowship">
