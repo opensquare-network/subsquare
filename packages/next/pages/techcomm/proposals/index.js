@@ -5,17 +5,17 @@ import normalizeTechCommMotionListItem from "next-common/utils/viewfuncs/collect
 import ListLayout from "next-common/components/layout/ListLayout";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchList } from "next-common/services/list";
-import CollectiveProvider, {
-  collectivePallets,
-} from "next-common/context/collective";
+import CollectiveProvider from "next-common/context/collective";
 import NewCouncilMotionProposalButton from "next-common/components/summary/newCouncilMotionProposalButton";
 import { TreasuryProvider } from "next-common/context/treasury";
 import { useChainSettings } from "next-common/context/chain";
+import useTechcommPallet from "next-common/hooks/techcomm/useTechcommPallet";
 
 export default function ProposalsPage({ proposals, chain }) {
   const {
     modules: { technicalCommittee },
   } = useChainSettings();
+  const pallet = useTechcommPallet();
 
   const hasTechnicalCommittee =
     technicalCommittee && !technicalCommittee?.archived;
@@ -30,7 +30,7 @@ export default function ProposalsPage({ proposals, chain }) {
   };
 
   return (
-    <CollectiveProvider pallet={collectivePallets.technicalCommittee}>
+    <CollectiveProvider pallet={pallet}>
       <TreasuryProvider>
         <ListLayout
           seoInfo={seoInfo}
