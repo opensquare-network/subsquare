@@ -11,6 +11,7 @@ export default function PreimagesPage() {
       seoInfo={seoInfo}
       title={title}
       description={
+        // eslint-disable-next-line quotes
         'Polkadot OpenGov allows the Technical Fellowship to authorize an origin known as "Whitelisted-Caller" to execute with Root-level privileges for calls approved by the Fellowship (currently only level-three fellows and above can vote for whitelist calls). Note that the fellowship cannot unanimously change the network parameters, conduct rescues or move assets. The whitelisted proposals still have to go through the whole life cycle of an OpenGov referendum and can only be enacted when the referendum passes successfully.'
       }
     >
