@@ -49,5 +49,5 @@ export default function useWhitelist() {
   );
 
   const list = useMemo(() => hashes?.map((h) => h.toHex()), [hashes]);
-  return list;
+  return list || [];
 }

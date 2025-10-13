@@ -19,6 +19,7 @@ import getChainSettings from "../settings";
 import { getMoreMenu } from "./more";
 import { coretimeMenu } from "./coretime";
 import { peopleMenu } from "./people";
+import whitelist from "./whitelist";
 import Data from "./data";
 import getAdvancedMenu from "next-common/utils/consts/menu/advanced";
 import { NAV_MENU_TYPE } from "next-common/utils/constants";
@@ -59,6 +60,7 @@ export function getHomeMenu({
     getAdvancedMenu(
       [
         modules?.preimages && preImages,
+        modules?.whitelist && whitelist,
         ...integrationsMenu,
         (modules?.proxy || modules?.vesting || hasMultisig) && Data,
       ].filter(Boolean),
