@@ -1,10 +1,16 @@
 import { useEffect, useState } from "react";
 import { useMountedState } from "react-use";
 import { isNil } from "lodash-es";
-import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
+import { useContextApi } from "next-common/context/api";
 
-export default function useConditionalSubStorage(pallet, storage, params = []) {
-  const api = useConditionalContextApi();
+export default function useConditionalSubStorage(
+  pallet,
+  storage,
+  params = [],
+  options = {},
+) {
+  const contextApi = useContextApi();
+  const { api = contextApi } = options;
   const isMounted = useMountedState();
   const [result, setResult] = useState();
   const [loading, setLoading] = useState(true);

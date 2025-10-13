@@ -35,7 +35,7 @@ export default function useAddressBalance(api, address) {
     pallet,
     storage,
     params,
-    api,
+    { api },
   );
 
   let balance = 0;
