@@ -26,19 +26,16 @@ const createTranslatedPost = (originalPost, content) => ({
 
 const doTranslation = async (languageCode, originalPost) => {
   const { postType, postId } = extractPostInfo(originalPost);
-
   const { result, error } = await backendApi.post("translations", {
     lang: languageCode,
     postType,
     postId,
   });
-
   if (error) {
     throw new Error(error);
   }
 
-  const content = result?.translation || "";
-  return createTranslatedPost(originalPost, content);
+  return createTranslatedPost(originalPost, result?.translation || "");
 };
 
 export default function usePostTranslation(originalPost, selectedLanguage) {
@@ -58,9 +55,7 @@ export default function usePostTranslation(originalPost, selectedLanguage) {
         setTranslatedPost(translated);
       } catch (err) {
         console.error(`Translation failed for ${languageCode}:`, err);
-        throw new Error(
-          `Failed to fetch translation for ${languageCode}: ${err.message}`,
-        );
+        throw new Error(`Failed to fetch translation for ${languageCode}`);
       } finally {
         setIsLoading(false);
       }
