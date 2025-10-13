@@ -3,13 +3,30 @@ import { LANGUAGE_CODES } from "../constants";
 import { postContentTranslationsApi } from "next-common/services/url";
 import { backendApi } from "next-common/services/nextApi";
 
-const fetchTranslatedPost = async (languageCode, originalPost) => {
-  let postType = "post";
-  let postId = originalPost._id;
+const extractPostInfo = (originalPost) => {
   if (originalPost.rootPost) {
-    postType = originalPost.rootPost.postType;
-    postId = originalPost.rootPost.postId;
+    return {
+      postType: originalPost.rootPost.postType,
+      postId: originalPost.rootPost.postId,
+    };
   }
+
+  return {
+    postType: "post",
+    postId: originalPost._id,
+  };
+};
+
+const createTranslatedPost = (originalPost, content) => ({
+  ...originalPost,
+  content,
+  ...(originalPost.dataSource === "polkassembly" && {
+    polkassemblyContentHtml: content,
+  }),
+});
+
+const doTranslation = async (languageCode, originalPost) => {
+  const { postType, postId } = extractPostInfo(originalPost);
 
   const { result, error } = await backendApi.post(postContentTranslationsApi, {
     lang: languageCode,
@@ -17,23 +34,15 @@ const fetchTranslatedPost = async (languageCode, originalPost) => {
     postId,
   });
 
-  return new Promise((resolve, reject) => {
-    if (error) {
-      reject(new Error(error));
-    }
+  if (error) {
+    throw new Error(error);
+  }
 
-    const content = result?.translation || "";
-    resolve({
-      ...originalPost,
-      content,
-      ...(originalPost.dataSource === "polkassembly"
-        ? { polkassemblyContentHtml: content }
-        : {}),
-    });
-  });
+  const content = result?.translation || "";
+  return createTranslatedPost(originalPost, content);
 };
 
-export function useTranslatedPost(originalPost, selectedLanguage) {
+export default function usePostTranslation(originalPost, selectedLanguage) {
   const [translatedPost, setTranslatedPost] = useState(originalPost);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -46,13 +55,13 @@ export function useTranslatedPost(originalPost, selectedLanguage) {
 
       setIsLoading(true);
       try {
-        const translated = await fetchTranslatedPost(
-          languageCode,
-          originalPost,
-        );
+        const translated = await doTranslation(languageCode, originalPost);
         setTranslatedPost(translated);
       } catch (err) {
-        throw new Error(`Failed to fetch translation for ${languageCode}`);
+        console.error(`Translation failed for ${languageCode}:`, err);
+        throw new Error(
+          `Failed to fetch translation for ${languageCode}: ${err.message}`,
+        );
       } finally {
         setIsLoading(false);
       }

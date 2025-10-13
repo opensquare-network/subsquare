@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import { DEFAULT_LANGUAGE_OPTION } from "../constants";
-import { useTranslatedPost } from "../hooks/useTranslatedPost";
+import usePostTranslation from "../hooks/usePostTranslation";
 
 const PostContentTranslationsContext = createContext(null);
 
@@ -11,7 +11,7 @@ export default function PostContentTranslationsProvider({
   children,
 }) {
   const [selectedLanguage, setSelectedLanguage] = useState(defaultLanguage);
-  const { translatedPost, isLoading } = useTranslatedPost(
+  const { translatedPost, isLoading } = usePostTranslation(
     post,
     selectedLanguage,
   );
