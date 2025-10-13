@@ -11,6 +11,7 @@ const statescanDomainMap = {
   [Chains.kusamaAssetHub]: "assethub-kusama",
   [Chains.westendAssetHub]: "assethub-westend",
   [Chains.paseoAssetHub]: "assethub-paseo",
+  [Chains.hyperBridge]: "nexus",
 };
 
 export default function StatescanLink({ indexer, children }) {
