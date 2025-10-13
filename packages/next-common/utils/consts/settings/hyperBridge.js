@@ -53,7 +53,7 @@ const links = [
 const hyperBridge = {
   value: Chains.hyperBridge,
   domain: "hyperbridge",
-  name: "HyperBridge",
+  name: "Hyperbridge",
   identity: Chains.polkadot,
   symbol: "BRIDGE",
   decimals: 12,
@@ -70,7 +70,8 @@ const hyperBridge = {
   group: MenuGroups.PolkadotAndParachains,
   postLabels: [PostLabel.Treasury],
   useVoteCall: true,
-  description: "Securely connecting blockchains for seamless asset transfer.",
+  description:
+    "Hyperbridge scales verifiable interoperability to all blockchains.",
   modules: mergeChainModules({
     referenda: true,
     treasury: {
