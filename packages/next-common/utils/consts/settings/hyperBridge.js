@@ -80,7 +80,7 @@ const hyperBridge = {
     },
     democracy: false,
     council: false,
-    technicalCommittee: false,
+    technicalCommittee: true,
   }),
   integrations: {
     statescan: {
