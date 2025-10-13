@@ -109,6 +109,10 @@ export function isLaosChain(chain) {
   return [Chains.laos].includes(chain);
 }
 
+export function isHyperBridgeChain(chain) {
+  return [Chains.hyperBridge].includes(chain);
+}
+
 export function getAssetHubChain(chain) {
   if (isAssetHubChain(chain)) {
     return chain;
@@ -151,6 +155,8 @@ export function getRelayChain(chain) {
     return Chains.paseo;
   } else if (isWestendPeopleChain(chain)) {
     return Chains.westend;
+  } else if (isHyperBridgeChain(chain)) {
+    return Chains.polkadot;
   }
 
   throw new Error("Unsupported relay chain");
