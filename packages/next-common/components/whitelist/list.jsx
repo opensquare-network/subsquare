@@ -10,7 +10,7 @@ export default function List({ data, setShowArgumentsDetail }) {
     <SecondaryCard>
       <div className="datalist-head flex items-center pb-3 border-b border-neutral300 max-md:hidden">
         <div className="text-textTertiary text14Medium flex-1 w-full">Hash</div>
-        <div className="text-textTertiary text14Medium flex-1 w-full">
+        <div className="text-textTertiary text14Medium flex-1 w-full text-end">
           Preimage
         </div>
       </div>
@@ -28,7 +28,7 @@ export default function List({ data, setShowArgumentsDetail }) {
                   </span>
                 </Copyable>
               </div>
-              <div className="text14Medium flex-1 w-full">
+              <div className="text14Medium flex-1 w-full flex md:justify-end">
                 <PreImage
                   hash={hash}
                   setShowArgumentsDetail={setShowArgumentsDetail}
@@ -50,7 +50,7 @@ const PreImage = memo(function PreImage({ hash, setShowArgumentsDetail }) {
   const { proposal } = info;
 
   return (
-    <div className="text14Medium">
+    <>
       <p className="text-textTertiary">{info.proposalWarning}</p>
       <PreImageName
         info={info}
@@ -58,7 +58,7 @@ const PreImage = memo(function PreImage({ hash, setShowArgumentsDetail }) {
           setShowArgumentsDetail(proposal);
         }}
       />
-    </div>
+    </>
   );
 });
 
@@ -81,7 +81,7 @@ const PreImageName = ({ info, onClick }) => {
   const callName = `${section}.${method}`;
 
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex items-center justify-end gap-1">
       <div className="flex flex-col gap-1 ">
         <div className="flex gap-1 items-center group">
           <InfoDocs
