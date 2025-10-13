@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
 import { LANGUAGE_CODES } from "../constants";
-import { postContentTranslationsApi } from "next-common/services/url";
 import { backendApi } from "next-common/services/nextApi";
 
 const extractPostInfo = (originalPost) => {
@@ -28,7 +27,7 @@ const createTranslatedPost = (originalPost, content) => ({
 const doTranslation = async (languageCode, originalPost) => {
   const { postType, postId } = extractPostInfo(originalPost);
 
-  const { result, error } = await backendApi.post(postContentTranslationsApi, {
+  const { result, error } = await backendApi.post("translations", {
     lang: languageCode,
     postType,
     postId,
