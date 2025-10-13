@@ -1,73 +1,48 @@
 import Copyable from "next-common/components/copyable";
 import usePreimage from "next-common/hooks/useWhitelist/usePreimage";
-import { useMemo } from "react";
-import useColumns from "../styledList/useColumns";
-import DataList from "next-common/components/dataList";
+import { memo, useMemo } from "react";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { InfoDocs } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
 
-export default function List({ setShowArgumentsDetail, data }) {
-  return (
-    <div>
-      <div className="hidden md:block">
-        <DesktopList
-          data={data}
-          setShowArgumentsDetail={setShowArgumentsDetail}
-        />
-      </div>
-      <div className="md:hidden space-y-2">
-        <MobileList
-          data={data}
-          setShowArgumentsDetail={setShowArgumentsDetail}
-        />
-      </div>
-    </div>
-  );
-}
-
-function DesktopList({ data, setShowArgumentsDetail }) {
-  const { columns } = useColumns([
-    {
-      name: "Hash",
-      style: { textAlign: "left" },
-    },
-
-    {
-      name: "Preimage",
-      style: { textAlign: "left" },
-    },
-  ]);
-
-  const rows = (data || []).map((hash) => {
-    return [
-      <div key="hash">
-        <Copyable key="hash" className="flex items-center" copyText={hash}>
-          <span className="text14Medium text-textPrimary inline-block w-[200px]  truncate">
-            {hash}
-          </span>
-        </Copyable>
-      </div>,
-      <PreImage
-        key="name"
-        hash={hash}
-        setShowArgumentsDetail={setShowArgumentsDetail}
-      />,
-    ];
-  });
-
+export default function List({ data, setShowArgumentsDetail }) {
   return (
     <SecondaryCard>
-      <DataList
-        columns={columns}
-        rows={rows}
-        noDataText="No current preimages"
-      />
+      <div className="datalist-head flex items-center pb-3 border-b border-neutral300 max-md:hidden">
+        <div className="text-textTertiary text14Medium flex-1 w-full">Hash</div>
+        <div className="text-textTertiary text14Medium flex-1 w-full">
+          Preimage
+        </div>
+      </div>
+      <div className="w-full scrollbar-hidden overflow-auto text-textPrimary bg-neutral100">
+        {data.map((hash) => (
+          <div
+            key={hash}
+            className="datalist-item border-b border-neutral300 group/datalist-item w-full flex items-center py-4 max-md:block relative"
+          >
+            <div className="relative datalist-desktop-item w-full flex flex-col sm:flex-row gap-2 sm:gap-0 items-center">
+              <div className="text14Medium flex-1 w-full">
+                <Copyable className="flex items-center" copyText={hash}>
+                  <span className="text14Medium text-textPrimary inline-block w-[300px] sm:w-[200px]  truncate">
+                    {hash}
+                  </span>
+                </Copyable>
+              </div>
+              <div className="text14Medium flex-1 w-full">
+                <PreImage
+                  hash={hash}
+                  setShowArgumentsDetail={setShowArgumentsDetail}
+                />
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </SecondaryCard>
   );
 }
 
-const PreImage = ({ hash, setShowArgumentsDetail }) => {
+const PreImage = memo(function PreImage({ hash, setShowArgumentsDetail }) {
   const info = usePreimage(hash);
   if (!info) {
     return null;
@@ -75,7 +50,7 @@ const PreImage = ({ hash, setShowArgumentsDetail }) => {
   const { proposal } = info;
 
   return (
-    <div className=" text14Medium">
+    <div className="text14Medium">
       <p className="text-textTertiary">{info.proposalWarning}</p>
       <PreImageName
         info={info}
@@ -85,7 +60,7 @@ const PreImage = ({ hash, setShowArgumentsDetail }) => {
       />
     </div>
   );
-};
+});
 
 const PreImageName = ({ info, onClick }) => {
   const { proposal } = info;
@@ -137,24 +112,3 @@ const PreImageName = ({ info, onClick }) => {
     </div>
   );
 };
-
-function MobileList({ data, setShowArgumentsDetail }) {
-  return data.map((hash) => {
-    return (
-      <SecondaryCard key={hash}>
-        <div key="hash">
-          <Copyable key="hash" className="flex items-center" copyText={hash}>
-            <span className="text14Medium text-textPrimary inline-block w-[300px]  truncate">
-              {hash}
-            </span>
-          </Copyable>
-        </div>
-        <PreImage
-          key="name"
-          hash={hash}
-          setShowArgumentsDetail={setShowArgumentsDetail}
-        />
-      </SecondaryCard>
-    );
-  });
-}
