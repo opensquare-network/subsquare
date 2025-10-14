@@ -1,68 +1,14 @@
 import BigNumber from "bignumber.js";
-import { useEffect, useState, useMemo } from "react";
-import { useMountedState } from "react-use";
+import { useMemo } from "react";
 import { useChain, useSymbol } from "../../context/chain";
 import { isKintsugiChain } from "../chain";
-import { isNil } from "lodash-es";
+import useConditionalSubStorage from "next-common/hooks/common/useConditionalSubStorage";
 
 export async function querySystemAccountBalance(api, address) {
   const account = await api.query.system.account(address);
   return new BigNumber(account.data.free.toJSON())
     .plus(account.data.reserved.toJSON())
     .toString();
-}
-
-function useSubAddressBalance(pallet, storage, params = [], api) {
-  const isMounted = useMountedState();
-  const [result, setResult] = useState();
-  const [loading, setLoading] = useState(true);
-
-  const filteredParams = (Array.isArray(params) ? params : [params]).filter(
-    (param) => !isNil(param),
-  );
-
-  useEffect(() => {
-    if (!api || isNil(pallet) || isNil(storage)) {
-      return;
-    }
-
-    const queryStorage = api?.query[pallet]?.[storage];
-    if (!queryStorage) {
-      setResult();
-      setLoading(false);
-      return;
-    }
-
-    setLoading(true);
-    let unsub;
-
-    queryStorage(...filteredParams, (subscribeResult) => {
-      if (!isMounted()) {
-        return;
-      }
-
-      setResult(subscribeResult);
-      setLoading(false);
-    })
-      .then((unsubscribe) => {
-        unsub = unsubscribe;
-      })
-      .catch((e) => {
-        console.error(e);
-        if (isMounted()) {
-          setResult();
-          setLoading(false);
-        }
-      });
-
-    return () => {
-      if (unsub) {
-        unsub();
-      }
-    }; // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [api, pallet, storage, isMounted, ...filteredParams]);
-
-  return { result, loading };
 }
 
 export default function useAddressBalance(api, address) {
@@ -85,11 +31,11 @@ export default function useAddressBalance(api, address) {
     };
   }, [chain, address, symbol]);
 
-  const { result, loading } = useSubAddressBalance(
+  const { result, loading } = useConditionalSubStorage(
     pallet,
     storage,
     params,
-    api,
+    { api },
   );
 
   let balance = 0;

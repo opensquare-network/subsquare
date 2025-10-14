@@ -1,7 +1,7 @@
 import { CHAIN } from "next-common/utils/constants";
-import { capitalize } from "lodash-es";
+import getChainSettings from "./consts/settings";
 
 export default function generateLayoutRawTitle(title) {
-  const chain = capitalize(CHAIN);
-  return `Subsquare | ${chain} ${title}`;
+  const { name } = getChainSettings(CHAIN);
+  return `Subsquare | ${name} ${title}`;
 }

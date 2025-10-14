@@ -84,11 +84,11 @@ export default function Posted() {
 
     // find first non-empty category
     for (mainCategory of categories) {
-      if (!overview[mainCategory.id]) {
-        continue;
-      }
       for (subCategory of mainCategory.children) {
-        if (overview[mainCategory.id][subCategory.id] > 0) {
+        const count = subCategory.getCount
+          ? subCategory.getCount(overview)
+          : overview[mainCategory.id]?.[subCategory.id];
+        if (count > 0) {
           if (
             mainCategory !== firstCategory ||
             subCategory !== secondCategory
