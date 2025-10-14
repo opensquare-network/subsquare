@@ -63,6 +63,7 @@ const kusama = {
       archived: true,
     },
     treasury: {
+      statistics: true,
       spends: true,
       childBounties: true,
       tips: {
