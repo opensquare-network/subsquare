@@ -9,7 +9,7 @@ export default function BlocknumberTips() {
 
   return (
     <div className="text12Medium text-textTertiary">
-      The block number is relative to the relay chain best number.
+      The block number is the relay chain latest block height.
     </div>
   );
 }
