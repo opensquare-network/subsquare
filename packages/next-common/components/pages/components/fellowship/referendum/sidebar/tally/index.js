@@ -21,6 +21,7 @@ import ConfirmationEstimation from "next-common/components/tally/confirmationEst
 import EligibleVoters from "./eligibleVoters";
 import { useReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
+import VoteActions from "./voteActions";
 
 const Title = styled(TitleContainer)`
   margin-bottom: 16px;
@@ -83,7 +84,7 @@ function FellowshipTallyWithContext() {
 
       <Footer className="justify-end">
         <EligibleVoters />
-        {/*{useVoteCall && <Calls />}*/}
+        <VoteActions />
       </Footer>
     </SecondaryCardDetail>
   );
