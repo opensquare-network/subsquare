@@ -3,24 +3,21 @@ import TreasuryProposalsPostList, {
   NewTreasuryProposalButton,
 } from "next-common/components/postList/treasuryProposalsPostList";
 import { withCommonProps } from "next-common/lib";
-import TreasurySummary from "next-common/components/summary/treasurySummary";
 import normalizeTreasuryProposalListItem from "next-common/utils/viewfuncs/treasury/normalizeProposalListItem";
-import { useChainSettings } from "next-common/context/chain";
 import ListLayout from "next-common/components/layout/ListLayout";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchList } from "next-common/services/list";
-import {
-  TreasuryProvider,
-  useTreasuryProposalListUrl,
-} from "next-common/context/treasury";
-import { isPolkadotChain } from "next-common/utils/chain";
-import PolkadotTreasuryStatsOnProposal from "next-common/components/treasury/common/polkadotTreasuryStatsOnProposal";
+import { TreasuryProvider } from "next-common/context/treasury";
 import businessCategory from "next-common/utils/consts/business/category";
+import TreasurySummaryPanel from "../statistics/summaryPanel";
+import useLayoutTabs from "next-common/hooks/treasury/proposal/useLayoutTabs";
+
+const pallet = "treasury";
 
 export default function ProposalsPage({ proposals: ssrProposals, chain }) {
   const [proposals, setProposals] = useState(ssrProposals);
   useEffect(() => setProposals(ssrProposals), [ssrProposals]);
-  const { integrations } = useChainSettings();
+  const tabs = useLayoutTabs(pallet);
 
   const items = (proposals.items || []).map((item) =>
     normalizeTreasuryProposalListItem(chain, item),
@@ -29,33 +26,13 @@ export default function ProposalsPage({ proposals: ssrProposals, chain }) {
   const category = businessCategory.treasuryProposals;
   const seoInfo = { title: category, desc: category };
 
-  const pallet = "treasury";
-  const treasuryProposalListUrl = useTreasuryProposalListUrl(pallet);
-
-  const treasurySummaryPanel = isPolkadotChain(chain) ? (
-    <PolkadotTreasuryStatsOnProposal />
-  ) : (
-    <TreasurySummary />
-  );
-
   return (
     <TreasuryProvider pallet={pallet}>
       <ListLayout
         seoInfo={seoInfo}
         title={category}
-        summary={treasurySummaryPanel}
-        tabs={[
-          {
-            value: "proposals",
-            label: "Proposals",
-            url: treasuryProposalListUrl,
-          },
-          integrations?.doTreasury && {
-            value: "statistics",
-            label: "Statistics",
-            url: `https://${chain}.dotreasury.com`,
-          },
-        ].filter(Boolean)}
+        summary={<TreasurySummaryPanel />}
+        tabs={tabs}
       >
         <TreasuryProposalsPostList
           titleCount={proposals.total}
