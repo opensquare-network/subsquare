@@ -3,6 +3,7 @@ import PopupLabel from "next-common/components/popup/label";
 import Tab from "next-common/components/tab";
 import { useEffect, useMemo, useState } from "react";
 import useBestNumber from "next-common/hooks/useBestNumber";
+import BlocknumberTips from "./blocknumberTips";
 
 const defaultAfterBlock = 100;
 
@@ -91,9 +92,7 @@ export default function EnactmentBlocks({ track, setEnactment }) {
               controls={false}
               onValueChange={setInitialAt}
             />
-            <div className="bg-neutral200 rounded-lg px-4 py-2.5 text14Medium text-textSecondary">
-              The block number is relative to the relay chain best number.
-            </div>
+            <BlocknumberTips />
           </>
         )}
       </div>
