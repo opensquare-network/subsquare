@@ -8,7 +8,7 @@ export default function BlocknumberTips() {
   }
 
   return (
-    <div className="bg-neutral200 rounded-lg px-4 py-2.5 text14Medium text-textSecondary">
+    <div className="text12Medium text-textTertiary">
       The block number is relative to the relay chain best number.
     </div>
   );
