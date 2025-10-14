@@ -7,7 +7,7 @@ export function getBeneficiariesIdColumn() {
   return {
     name: "ID",
     cellRender(data) {
-      return <AddressUser add={data.address} />;
+      return <AddressUser add={data.address} link="/treasury" />;
     },
   };
 }
