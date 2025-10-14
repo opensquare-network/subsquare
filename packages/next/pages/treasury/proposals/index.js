@@ -9,7 +9,7 @@ import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchList } from "next-common/services/list";
 import { TreasuryProvider } from "next-common/context/treasury";
 import businessCategory from "next-common/utils/consts/business/category";
-import TreasurySummaryPanel from "../statistics/summaryPanel";
+import TreasurySummaryPanel from "next-common/components/treasury/statistics/summaryPanel";
 import useLayoutTabs from "next-common/hooks/treasury/proposal/useLayoutTabs";
 
 const pallet = "treasury";

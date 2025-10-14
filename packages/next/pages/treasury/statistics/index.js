@@ -1,7 +1,7 @@
 import { TreasuryProvider } from "next-common/context/treasury";
 import ListLayout from "next-common/components/layout/ListLayout";
-import TreasurySummaryPanel from "./summaryPanel";
-import TreasuryStatisticsTabContent from "./tabContent";
+import TreasurySummaryPanel from "next-common/components/treasury/statistics/summaryPanel";
+import TreasuryStatisticsTabContent from "next-common/components/treasury/statistics/tabContent";
 import useLayoutTabs from "next-common/hooks/treasury/proposal/useLayoutTabs";
 
 const seoInfo = { title: "Treasury Statistics", desc: "Treasury Statistics" };

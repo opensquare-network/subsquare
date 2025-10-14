@@ -8,7 +8,7 @@ import { TreasuryProvider } from "next-common/context/treasury";
 import { DropdownUrlFilterProvider } from "next-common/components/dropdownFilter/context";
 import { upperFirst } from "lodash-es";
 import businessCategory from "next-common/utils/consts/business/category";
-import TreasurySummaryPanel from "../statistics/summaryPanel";
+import TreasurySummaryPanel from "next-common/components/treasury/statistics/summaryPanel";
 
 export default function ProposalsPage({ spends: pagedSpends, chain }) {
   const { items, total, page, pageSize } = pagedSpends;
