@@ -46,10 +46,11 @@ export default function TreasuryStatusTabContent() {
         <DataList
           noDataText="No Data"
           columns={columns}
-          loading={loading}
+          loading={loading && !rows?.length}
           rows={rows}
         />
         <Pagination
+          buttonMode
           total={beneficiaries?.total}
           page={page}
           pageSize={defaultPageSize}
