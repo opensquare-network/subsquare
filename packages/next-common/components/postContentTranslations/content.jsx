@@ -18,8 +18,9 @@ export default function TranslatedPostContent() {
 
   if (isTranslationLoading) {
     return (
-      <div className="flex justify-center items-center py-8">
+      <div className="flex items-center justify-center gap-x-2 text-textTertiary text14Medium py-8">
         <Loading size={24} />
+        The translation process may take a while
       </div>
     );
   }
