@@ -90,16 +90,6 @@ export default function usePostTranslation(originalPost, selectedLanguage) {
     [originalPost],
   );
 
-  const clearTranslation = useCallback(() => {
-    setTranslatedPost(originalPost);
-    lastLanguageRef.current = "";
-
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort();
-      abortControllerRef.current = null;
-    }
-  }, [originalPost]);
-
   useEffect(() => {
     if (selectedLanguage) {
       fetchTranslation(selectedLanguage);
@@ -108,13 +98,14 @@ export default function usePostTranslation(originalPost, selectedLanguage) {
     return () => {
       if (abortControllerRef.current) {
         abortControllerRef.current.abort();
+        abortControllerRef.current = null;
       }
+      lastLanguageRef.current = "";
     };
   }, [selectedLanguage, fetchTranslation]);
 
   return {
     translatedPost,
     isLoading,
-    clearTranslation,
   };
 }
