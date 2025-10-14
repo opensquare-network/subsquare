@@ -1,6 +1,6 @@
 import { TreasuryProvider } from "next-common/context/treasury";
 import ListLayout from "next-common/components/layout/ListLayout";
-import TreasurySummaryPanel from "next-common/components/treasury/status/summaryPanel";
+import TreasuryStatusSummaryPanel from "next-common/components/treasury/status/summaryPanel";
 import TreasuryStatusTabContent from "next-common/components/treasury/status/tabContent";
 
 const seoInfo = { title: "Treasury Status", desc: "Treasury Status" };
@@ -11,7 +11,7 @@ export default function TreasuryStatusPage() {
       <ListLayout
         seoInfo={seoInfo}
         title="Treasury Status"
-        summary={<TreasurySummaryPanel />}
+        summary={<TreasuryStatusSummaryPanel />}
       >
         <TreasuryStatusTabContent />
       </ListLayout>

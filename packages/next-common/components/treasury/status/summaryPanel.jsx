@@ -3,7 +3,7 @@ import { isPolkadotChain } from "next-common/utils/chain";
 import PolkadotTreasuryStatsOnProposal from "next-common/components/treasury/common/polkadotTreasuryStatsOnProposal";
 import TreasurySummary from "next-common/components/summary/treasurySummary";
 
-export default function TreasurySummaryPanel() {
+export default function TreasuryStatusSummaryPanel() {
   const chain = useChain();
   const summaryPanel = isPolkadotChain(chain) ? (
     <PolkadotTreasuryStatsOnProposal />

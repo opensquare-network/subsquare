@@ -20,7 +20,7 @@ const columns = [
 
 const PAGE_SIZE = 10;
 
-export default function TreasuryStatisticsTabContent() {
+export default function TreasuryStatusTabContent() {
   const [page, setPage] = useState(1);
   const { value: beneficiaries, loading } = useAsync(async () => {
     const { result } = await backendApi.fetch("/treasury/beneficiaries", {
