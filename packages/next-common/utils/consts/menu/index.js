@@ -163,18 +163,18 @@ export function matchNewMenu(menu, pathname) {
     return null;
   }
   for (const menuItem of menu) {
-    if (isSubSpaceNavMenu(menuItem.type)) {
+    if (menuItem?.items?.length) {
+      const metchMenu = matchNewMenu(menuItem.items, pathname);
+      if (metchMenu) {
+        return metchMenu;
+      }
+    } else if (isSubSpaceNavMenu(menuItem.type)) {
       const findMenu = matchedMenuItem(menuItem.items, pathname);
       if (findMenu) {
         return {
           type: menuItem.type,
           menu: menuItem.items,
         };
-      }
-    } else if (menuItem?.items?.length) {
-      const metchMenu = matchNewMenu(menuItem.items, pathname);
-      if (metchMenu) {
-        return metchMenu;
       }
     }
   }
