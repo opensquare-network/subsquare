@@ -65,7 +65,7 @@ const polkadot = {
       displayTreasuryRequesting: true,
     },
     treasury: {
-      statistics: true,
+      status: true,
       spends: true,
       childBounties: true,
       tips: {
