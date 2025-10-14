@@ -3,7 +3,7 @@ import { TitleContainer } from "next-common/components/styled/containers/titleCo
 import DataList from "next-common/components/dataList";
 import { backendApi } from "next-common/services/nextApi";
 import { useAsync } from "react-use";
-import { EmptyList } from "next-common/utils/constants";
+import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { useMemo, useState } from "react";
 import Pagination from "next-common/components/pagination";
 import {
@@ -18,14 +18,12 @@ const columns = [
   getBeneficiariesAwardedColumn(),
 ];
 
-const PAGE_SIZE = 10;
-
 export default function TreasuryStatusTabContent() {
   const [page, setPage] = useState(1);
   const { value: beneficiaries, loading } = useAsync(async () => {
     const { result } = await backendApi.fetch("/treasury/beneficiaries", {
       page,
-      pageSize: PAGE_SIZE,
+      pageSize: defaultPageSize,
     });
     return result || EmptyList;
   }, [page]);
@@ -54,7 +52,7 @@ export default function TreasuryStatusTabContent() {
         <Pagination
           total={beneficiaries?.total}
           page={page}
-          pageSize={PAGE_SIZE}
+          pageSize={defaultPageSize}
           onPageChange={(e, page) => {
             e.preventDefault();
             e.stopPropagation();
