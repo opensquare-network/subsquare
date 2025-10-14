@@ -27,11 +27,7 @@ function ProfilePageImpl() {
       <ProfileUserInfoProvider>
         <ProfileLayout
           pageHeader={<ProfileHeaderWithBanner />}
-          header={
-            <>
-              <Bio />
-            </>
-          }
+          header={<Bio />}
           tabs={tabs}
         >
           {address ? tabContent : <NoData text="No profile data" />}

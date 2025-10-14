@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+# 5.4.3
+
+Date:
+2025-10-11. [Code diff](https://github.com/opensquare-network/subsquare/compare/0d1a5c15e462d9c6cef3d70cd15fc5a2ff4e3e57...d4edbebf11d54051923378e9d88ecfd0ffed4e07).
+
+- Support kusama assethub migration.
+    - Index relay chain for fellowship business and assethub for other governance related business.
+    - Fronted configs and use relay chain API for fellowship pages.
+- A better design for bounty summary. We show the total value and bounty numbers of different status.
+- Show treasury beneficiary status on user profile page.
+- Fellowship: enable search for collectives chain and users can search fellowship members, referenda, treasury spends.
+- Show related bounty info and link on the referendum detail page if the referendum is related to a bounty.
+- Correct zkverify mainnet ss58 format.
+- Improve tooltip for bounty funded status tag.
+- Refactor referenda curves related code to reduce coupling.
+- Style improvements and other code refactor.
+
 # 5.4.2
 
 Date:

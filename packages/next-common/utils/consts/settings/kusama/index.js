@@ -114,6 +114,9 @@ const kusama = {
     voting: "kusama",
   },
   ecoNews: true,
+  translations: {
+    referenda: true,
+  },
 };
 
 export default kusama;

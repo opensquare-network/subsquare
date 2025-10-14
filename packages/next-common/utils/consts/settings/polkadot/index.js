@@ -118,6 +118,9 @@ const polkadot = {
     voting: "polkadot",
   },
   ecoNews: true,
+  translations: {
+    referenda: true,
+  },
 };
 
 export default polkadot;

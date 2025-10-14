@@ -51,6 +51,7 @@ const Chains = {
   westendPeople: "westend-people",
   laos: "laos",
   laosTestnet: "laos-testnet",
+  hyperBridge: "hyperbridge",
 };
 
 export default Chains;

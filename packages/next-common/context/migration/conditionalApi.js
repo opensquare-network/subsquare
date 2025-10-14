@@ -4,6 +4,19 @@ import { getChainApi, getChainApiAt } from "next-common/utils/getChainApi";
 import { useChainSettings } from "next-common/context/chain";
 import { useContextApi } from "next-common/context/api";
 import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated";
+import { useRouter } from "next/router";
+import { useChain } from "next-common/context/chain";
+import { isKusamaChain } from "next-common/utils/chain";
+
+function useIsKusamaFellowship() {
+  const router = useRouter();
+  const chain = useChain();
+
+  return useMemo(
+    () => router.pathname.includes("/fellowship") && isKusamaChain(chain),
+    [router.pathname, chain],
+  );
+}
 
 function useConditionalApi(indexer) {
   const [conditionalApi, setConditionalApi] = useState(null);
@@ -13,8 +26,13 @@ function useConditionalApi(indexer) {
     endpoints = [],
     assethubMigration = {},
   } = useChainSettings();
+  const isKusamaFellowship = useIsKusamaFellowship();
 
   const endpointUrls = useMemo(() => {
+    if (isKusamaFellowship) {
+      return relayChainEndpoints?.map?.((item) => item.url) || [];
+    }
+
     const migrationBlockTime = assethubMigration?.timestamp || 0;
     if (
       !isNil(indexer) &&
@@ -24,7 +42,13 @@ function useConditionalApi(indexer) {
     }
 
     return endpoints?.map?.((item) => item.url) || [];
-  }, [assethubMigration?.timestamp, endpoints, indexer, relayChainEndpoints]);
+  }, [
+    assethubMigration?.timestamp,
+    endpoints,
+    indexer,
+    isKusamaFellowship,
+    relayChainEndpoints,
+  ]);
 
   useEffect(() => {
     if (!endpointUrls || endpointUrls?.length === 0) {

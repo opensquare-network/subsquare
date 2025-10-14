@@ -36,6 +36,7 @@ import laos from "./consts/settings/laos";
 // import paseoAssetHub from "./consts/settings/paseoAssetHub";
 import paseoPeople from "./consts/settings/paseoPeople";
 import westendPeople from "./consts/settings/westendPeople";
+import hyperBridge from "./consts/settings/hyperBridge";
 
 const optionalNodes =
   process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? [development] : [];
@@ -62,6 +63,7 @@ export const nodes = [
   westendPeople,
   // crust,
   hydradx,
+  hyperBridge,
   interlay,
   // kabocha,
   karura,

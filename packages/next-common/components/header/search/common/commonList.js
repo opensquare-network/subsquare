@@ -11,64 +11,106 @@ export const SearchType = {
   IDENTITIES: "Identities",
   TREASURY_PROPOSALS: "TreasuryProposals",
   TREASURY_SPENDS: "TreasurySpends",
+  FELLOWSHIP_REFERENDA: "FellowshipReferenda",
+  FELLOWSHIP_TREASURY_SPENDS: "FellowshipTreasurySpends",
+  FELLOWSHIP_MEMBERS: "FellowshipMembers",
 };
 
-export const getPathAndCategoryByItemData = (item) => {
-  const typeToPathAndCategoryMap = {
-    [SearchType.REFERENDA]: {
-      path:
-        item.type !== ItemType.CATEGORY
-          ? `/referenda/${item.index}`
-          : "/referenda",
-      category: "Referenda",
-    },
-    [SearchType.DEMOCRACY_REFERENDA]: {
-      path:
-        item.type !== ItemType.CATEGORY
-          ? `/democracy/referenda/${item.index}`
-          : "/democracy/referenda",
-      category: "Democracy Referenda",
-    },
-    [SearchType.BOUNTIES]: {
-      path:
-        item.type !== ItemType.CATEGORY
-          ? `/treasury/bounties/${item.index}`
-          : "/treasury/bounties",
-      category: "Bounties",
-    },
-    [SearchType.CHILD_BOUNTIES]: {
-      path:
-        item.type !== ItemType.CATEGORY
-          ? `/treasury/child-bounties/${item.index}`
-          : "/treasury/child-bounties",
-      category: "Child Bounties",
-    },
-    [SearchType.IDENTITIES]: {
-      path:
-        item.type !== ItemType.CATEGORY && item.content !== "-"
-          ? `/user/${item.content}`
-          : "/",
-      category: "Identities",
-    },
-    [SearchType.TREASURY_PROPOSALS]: {
-      path:
-        item.type !== ItemType.CATEGORY
-          ? `/treasury/proposals/${item.index}`
-          : "/treasury/proposals",
-      category: "Treasury Proposals",
-    },
-    [SearchType.TREASURY_SPENDS]: {
-      path:
-        item.type !== ItemType.CATEGORY
-          ? `/treasury/spends/${item.index}`
-          : "/treasury/spends",
-      category: "Treasury Spends",
-    },
-  };
+export function getSearchItemPath(proposalType, index) {
+  switch (proposalType) {
+    case SearchType.REFERENDA:
+      return `/referenda/${index}`;
+    case SearchType.DEMOCRACY_REFERENDA:
+      return `/democracy/referenda/${index}`;
+    case SearchType.BOUNTIES:
+      return `/treasury/bounties/${index}`;
+    case SearchType.CHILD_BOUNTIES:
+      return `/treasury/child-bounties/${index}`;
+    case SearchType.TREASURY_PROPOSALS:
+      return `/treasury/proposals/${index}`;
+    case SearchType.TREASURY_SPENDS:
+      return `/treasury/spends/${index}`;
+    case SearchType.FELLOWSHIP_REFERENDA:
+      return `/fellowship/referenda/${index}`;
+    case SearchType.FELLOWSHIP_TREASURY_SPENDS:
+      return `/fellowship/treasury/spends/${index}`;
+    case SearchType.IDENTITIES:
+      return `/user/${index}`;
+    case SearchType.FELLOWSHIP_MEMBERS:
+      return `/user/${index}`;
+    default:
+      return "/";
+  }
+}
 
-  const { path, category } = typeToPathAndCategoryMap[item.proposalType] || {};
-  return { path, category };
-};
+export function getCategoryPath(proposalType) {
+  switch (proposalType) {
+    case SearchType.REFERENDA:
+      return "/referenda";
+    case SearchType.DEMOCRACY_REFERENDA:
+      return "/democracy/referenda";
+    case SearchType.BOUNTIES:
+      return "/treasury/bounties";
+    case SearchType.CHILD_BOUNTIES:
+      return "/treasury/child-bounties";
+    case SearchType.TREASURY_PROPOSALS:
+      return "/treasury/proposals";
+    case SearchType.TREASURY_SPENDS:
+      return "/treasury/spends";
+    case SearchType.FELLOWSHIP_REFERENDA:
+      return "/fellowship/referenda";
+    case SearchType.FELLOWSHIP_TREASURY_SPENDS:
+      return "/fellowship/treasury/spends";
+    case SearchType.IDENTITIES:
+      return "/";
+    case SearchType.FELLOWSHIP_MEMBERS:
+      return "/fellowship/members";
+    default:
+      return "/";
+  }
+}
+
+export function getCategoryOrSearchItemPath(item) {
+  if (item.type === ItemType.CATEGORY) {
+    return getCategoryPath(item.proposalType);
+  }
+  if (
+    [SearchType.IDENTITIES, SearchType.FELLOWSHIP_MEMBERS].includes(
+      item.proposalType,
+    )
+  ) {
+    return getSearchItemPath(item.proposalType, item.address);
+  }
+
+  return getSearchItemPath(item.proposalType, item.index);
+}
+
+export function getCategoryName(proposalType) {
+  switch (proposalType) {
+    case SearchType.REFERENDA:
+      return "Referenda";
+    case SearchType.DEMOCRACY_REFERENDA:
+      return "Democracy Referenda";
+    case SearchType.BOUNTIES:
+      return "Bounties";
+    case SearchType.CHILD_BOUNTIES:
+      return "Child Bounties";
+    case SearchType.TREASURY_PROPOSALS:
+      return "Treasury Proposals";
+    case SearchType.TREASURY_SPENDS:
+      return "Treasury Spends";
+    case SearchType.FELLOWSHIP_REFERENDA:
+      return "Fellowship Referenda";
+    case SearchType.FELLOWSHIP_TREASURY_SPENDS:
+      return "Fellowship Treasury Spends";
+    case SearchType.IDENTITIES:
+      return "Identities";
+    case SearchType.FELLOWSHIP_MEMBERS:
+      return "Fellowship Members";
+    default:
+      return "Unknown";
+  }
+}
 
 function CommonList({ data, isLoading, ItemBox, onClose, isMobile }) {
   const router = useRouter();
@@ -89,7 +131,7 @@ function CommonList({ data, isLoading, ItemBox, onClose, isMobile }) {
       } else if (e.key === "Enter" && selectedIndex !== -1) {
         const item = data[selectedIndex];
 
-        const { path } = getPathAndCategoryByItemData(item) || {};
+        const path = getCategoryOrSearchItemPath(item);
         if (path) {
           onClose?.();
           router.push(path);

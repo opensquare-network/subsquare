@@ -107,6 +107,9 @@ const hydradx = {
       bounties: false,
       spends: true,
     },
+    council: {
+      archived: true,
+    },
   }),
   integrations: {
     subscan: true,
