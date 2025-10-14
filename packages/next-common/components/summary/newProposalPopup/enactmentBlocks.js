@@ -82,14 +82,19 @@ export default function EnactmentBlocks({ track, setEnactment }) {
             onValueChange={setAfterBlocks}
           />
         ) : (
-          <NumberInput
-            key="at-input"
-            value={initialAt}
-            placeholder="0"
-            symbol="Blocks"
-            controls={false}
-            onValueChange={setInitialAt}
-          />
+          <>
+            <NumberInput
+              key="at-input"
+              value={initialAt}
+              placeholder="0"
+              symbol="Blocks"
+              controls={false}
+              onValueChange={setInitialAt}
+            />
+            <div className="bg-neutral200 rounded-lg px-4 py-2.5 text14Medium text-textSecondary">
+              The block number is relative to the relay chain best number.
+            </div>
+          </>
         )}
       </div>
     </div>
