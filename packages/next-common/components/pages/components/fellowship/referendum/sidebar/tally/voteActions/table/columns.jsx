@@ -117,7 +117,11 @@ export const desktopColumns = [
 function MobileRow({ label, children }) {
   return (
     <div className="flex flex-row justify-between pr-2">
-      {label && <span className="text14Medium text-textTertiary">{label}</span>}
+      {label && (
+        <span className="text14Medium text-textTertiary flex items-center">
+          {label}
+        </span>
+      )}
       {children}
     </div>
   );
