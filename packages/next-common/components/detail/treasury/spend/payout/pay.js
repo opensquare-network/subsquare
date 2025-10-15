@@ -3,10 +3,11 @@ import PrimaryButton from "next-common/lib/button/primary";
 import { useMemo, useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import useSubTreasurySpend from "next-common/hooks/treasury/spend/useSubTreasurySpend";
-import { has } from "lodash-es";
+import { has, isNil } from "lodash-es";
 import { cn } from "next-common/utils";
 import { noop } from "@polkadot/util";
 import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
+import Tooltip from "next-common/components/tooltip";
 
 const Popup = dynamicPopup(() => import("./popup"));
 
@@ -31,9 +32,12 @@ function PayoutContent({ setShowPopup = noop }) {
   const latestHeight = useAhmLatestHeight();
   const onchainStatus = useSubTreasurySpend(index);
   const { expireAt } = meta || {};
-  const disabled = useMemo(() => {
-    return !has(onchainStatus?.status, "pending");
+
+  const isPending = useMemo(() => {
+    return has(onchainStatus?.status, "pending");
   }, [onchainStatus]);
+
+  const disabled = isPending || isNil(onchainStatus);
 
   const onAttemptPayout = () => {
     if (disabled) {
@@ -60,12 +64,14 @@ function PayoutContent({ setShowPopup = noop }) {
   }
 
   return (
-    <PrimaryButton
-      className="w-full"
-      disabled={disabled}
-      onClick={onAttemptPayout}
-    >
-      Payout
-    </PrimaryButton>
+    <Tooltip content={isPending && "This treasury spend is pending"}>
+      <PrimaryButton
+        className="w-full"
+        disabled={disabled}
+        onClick={onAttemptPayout}
+      >
+        Payout
+      </PrimaryButton>
+    </Tooltip>
   );
 }
