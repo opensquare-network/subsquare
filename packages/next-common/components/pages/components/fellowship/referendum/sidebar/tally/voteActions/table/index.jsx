@@ -15,6 +15,8 @@ import {
   VoteDetailRow,
   VoteLabel,
 } from "next-common/components/pages/components/gov2/sidebar/tally/voteActions/table/fields/detail";
+import { ProgressDisplay } from "next-common/components/pages/components/gov2/sidebar/tally/voteActions/table/fields/impact";
+import { VOTE_TYPE_CONFIG } from "next-common/components/pages/components/gov2/sidebar/tally/voteActions/common";
 
 function getActionTypeLabel(type, preVote) {
   if (type === 1) {
@@ -53,11 +55,9 @@ function VoteChangeDetail({ vote, preVote }) {
 function VoteDetail({ vote }) {
   const voteType = vote?.isAye ? "aye" : "nay";
   return (
-    <>
-      <VoteDetailRow label={<VoteLabel type={voteType} />}>
-        ({vote?.votes})
-      </VoteDetailRow>
-    </>
+    <VoteDetailRow label={<VoteLabel type={voteType} />}>
+      ({vote?.votes})
+    </VoteDetailRow>
   );
 }
 
@@ -65,11 +65,54 @@ function VoteDetailField({ vote, preVote }) {
   if (preVote) {
     return <VoteChangeDetail vote={vote} preVote={preVote} />;
   }
-
   return <VoteDetail vote={vote} />;
 }
 
+function ImpactVotesProgressDisplay({ vote, maxImpactVotes }) {
+  //TODO: handle preVote change impact
+  const impactVotes = vote.isAye ? BigInt(vote.votes) : -BigInt(vote.votes);
+  return (
+    <ProgressDisplay
+      impactVotes={impactVotes}
+      maxImpactVotes={maxImpactVotes}
+    />
+  );
+}
+
+function TallyVotesDisplay({ vote }) {
+  //TODO: handle preVote change impact
+  const { color } = VOTE_TYPE_CONFIG[vote.isAye ? "aye" : "nay"];
+
+  return (
+    <div>
+      <span>Tally: </span>
+      <div className={cn(color, "inline-flex")}>
+        <span>
+          {vote.isAye ? "+" : "-"}
+          {vote.votes}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function ImpactVotesField({ vote, preVote, type, maxImpactVotes }) {
+  return (
+    <div className="text-textTertiary text14Medium max-md:flex max-md:flex-col max-md:items-end">
+      <ImpactVotesProgressDisplay
+        vote={vote}
+        preVote={preVote}
+        type={type}
+        maxImpactVotes={maxImpactVotes}
+      />
+      <TallyVotesDisplay vote={vote} preVote={preVote} type={type} />
+    </div>
+  );
+}
+
 function Table({ voteActions, loading }) {
+  //TODO: impact column sorting
+
   const columns = [
     {
       name: "Account",
@@ -85,6 +128,11 @@ function Table({ voteActions, loading }) {
       width: 120,
       className: "text-left",
     },
+    {
+      name: "Impact",
+      className: "w-[176px] text-right",
+      sortable: true,
+    },
   ];
 
   const rows = (voteActions || []).map(
@@ -98,6 +146,12 @@ function Table({ voteActions, loading }) {
           preVote={preVote}
         />,
         <VoteDetailField key="detail" vote={vote} preVote={preVote} />,
+        <ImpactVotesField
+          key="impact"
+          vote={vote}
+          preVote={preVote}
+          type={type}
+        />,
       ];
     },
   );
