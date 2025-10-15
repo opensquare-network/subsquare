@@ -14,6 +14,7 @@ import PolkassemblyCommentReplyActions from "../polkassembly/polkassemblyComment
 import { prettyHTML } from "next-common/utils/viewfuncs";
 import EditInput from "../editInput";
 import { useRootCommentContext } from "./rootComment";
+import CommentSource from "./commentSource";
 
 function PolkassemblyCommentReplyItemImpl() {
   const isMounted = useMountedState();
@@ -40,6 +41,7 @@ function PolkassemblyCommentReplyItemImpl() {
     <CommentItemTemplate
       isSecondLevel={true}
       user={<CommentUser author={comment.author} />}
+      commentSource={<CommentSource />}
       content={
         <>
           {!isEdit && (

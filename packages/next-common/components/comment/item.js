@@ -10,10 +10,7 @@ import IdentityOrAddr from "../IdentityOrAddr";
 import { prettyHTML } from "../../utils/viewfuncs";
 import CommentActions from "../actions/commentActions";
 import useCommentsAnchor from "../../utils/hooks/useCommentsAnchor";
-import { LinkSubsquare } from "@osn/icons/subsquare";
-import Tooltip from "../tooltip";
 import CommentItemTemplate from "./itemTemplate";
-import { useIsUniversalPostComments } from "next-common/hooks/usePostComments";
 import { CommentProvider, useComment } from "./context";
 import PolkassemblyCommentItem from "./polkassemblyCommentItem";
 import CommentUser from "./user";
@@ -22,6 +19,7 @@ import { usePost } from "next-common/context/post";
 import { getRealField } from "next-common/sima/actions/common";
 import useIsCommentProxyAuthor from "next-common/hooks/useIsCommentProxyAuthor";
 import { useRootCommentContext, useRootCommentData } from "./rootComment";
+import { SubsquareCommentSource } from "./commentSource";
 
 function jumpToAnchor(anchorId) {
   var anchorElement = document.getElementById(anchorId);
@@ -80,7 +78,6 @@ function CommentItemImpl({ isSecondLevel, scrollToTopLevelCommentBottom }) {
   const isMounted = useMountedState();
   const { hasAnchor, anchor } = useCommentsAnchor();
   const [showReplies, setShowReplies] = useState(false);
-  const isUniversalComments = useIsUniversalPostComments();
   const { updateComment } = useCommentActions();
   const replyToComment = useRootCommentData();
 
@@ -131,13 +128,7 @@ function CommentItemImpl({ isSecondLevel, scrollToTopLevelCommentBottom }) {
       id={comment.height}
       highlight={highlight}
       user={<CommentUser author={comment.author} />}
-      commentSource={
-        isUniversalComments && (
-          <Tooltip content="Comment from SubSquare" className="ml-2">
-            <LinkSubsquare className="w-4 h-4 [&_path]:fill-textTertiary" />
-          </Tooltip>
-        )
-      }
+      commentSource={<SubsquareCommentSource />}
       content={
         <>
           {!isEdit && (
