@@ -8,35 +8,13 @@ import { AvatarDisplay } from "next-common/components/user/avatarDisplay";
 import { ProxyTip } from "next-common/components/overview/accountInfo/accountInfoPanel.js";
 import ExtensionUpdatePrompt from "next-common/components/overview/accountInfo/components/extensionUpdatePrompt";
 import AddressUser from "next-common/components/user/addressUser";
-import { useState } from "react";
-import Tabs from "next-common/components/tabs";
-import AssetsOverview from "./overview";
 
-// TODO
+// TODO: headers for different tabs
 export default function HeadContent() {
   const address = useRealAddress();
   const user = useUser();
 
   const maybeEvmAddress = tryConvertToEvmAddress(address);
-
-  const tabs = [
-    {
-      value: "overview",
-      label: "Overview",
-      content: <AssetsOverview />,
-    },
-    {
-      value: "assets",
-      label: "Assets",
-      content: "assets",
-    },
-    {
-      value: "foreignAssets",
-      label: "Foreign Assets",
-      content: "Foreign Assets",
-    },
-  ].filter(Boolean);
-  const [activeValue, setActiveValue] = useState(tabs[0].value);
 
   return (
     <div className="flex flex-col gap-[16px]">
@@ -66,13 +44,6 @@ export default function HeadContent() {
       </div>
       <ProxyTip />
       <ExtensionUpdatePrompt />
-      <Tabs
-        activeTabValue={activeValue}
-        tabs={tabs}
-        onTabClick={(tab) => {
-          setActiveValue(tab.value);
-        }}
-      />
     </div>
   );
 }
