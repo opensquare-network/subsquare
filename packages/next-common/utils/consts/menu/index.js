@@ -39,8 +39,7 @@ export function getHomeMenu({
   } = getChainSettings(CHAIN);
 
   const integrationsMenu = [
-    modules?.assethub && assetHubMenu,
-    isAssetHubMigrated() && assetsMenu,
+    isAssetHubMigrated() ? assetsMenu : assetHubMenu,
     modules?.coretime && coretimeMenu,
     modules?.people && peopleMenu,
   ].filter(Boolean);

@@ -3,12 +3,9 @@ import NoWalletConnected from "next-common/components/assets/noWalletConnected";
 import WalletAssetList from "next-common/components/assets/walletAssetList";
 import { RelayChainApiProvider } from "next-common/context/relayChain";
 import { withCommonProps } from "next-common/lib";
-import { CHAIN } from "next-common/utils/constants";
-import getChainSettings from "next-common/utils/consts/settings";
 import useExistentialDeposit from "next-common/utils/hooks/chain/useExistentialDeposit";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-
-export const isAssetHubSupported = !!getChainSettings(CHAIN).modules?.assethub;
+import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated";
 
 export default function AssetHubPage() {
   const realAddress = useRealAddress();
@@ -29,7 +26,7 @@ export default function AssetHubPage() {
 }
 
 export const getServerSideProps = async (ctx) => {
-  if (!isAssetHubSupported) {
+  if (!isAssetHubMigrated()) {
     return {
       notFound: true,
     };
