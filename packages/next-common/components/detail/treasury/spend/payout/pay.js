@@ -1,6 +1,6 @@
 import { useOnchainData, usePostState } from "next-common/context/post";
 import PrimaryButton from "next-common/lib/button/primary";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import useSubTreasurySpend from "next-common/hooks/treasury/spend/useSubTreasurySpend";
 import { has, isNil } from "lodash-es";
@@ -30,17 +30,39 @@ export default function TreasurySpendPay() {
 function PayoutContent({ setShowPopup = noop }) {
   const { index, meta } = useOnchainData() || {};
   const latestHeight = useAhmLatestHeight();
-  const onchainStatus = useSubTreasurySpend(index);
-  const { expireAt } = meta || {};
+  const { spend: onchainStatus, loading } = useSubTreasurySpend(index);
+  const { expireAt, validFrom } = meta || {};
 
-  const isPending = useMemo(() => {
-    return has(onchainStatus?.status, "pending");
-  }, [onchainStatus]);
+  const isReady = !isNil(onchainStatus) && !loading;
 
-  const disabled = isPending || isNil(onchainStatus);
+  const isNilOnChainStatus = isNil(onchainStatus) && !loading;
+
+  let tooltipContent;
+  let isDisabled = !isReady;
+
+  if (isNilOnChainStatus) {
+    isDisabled = true;
+    tooltipContent = "This treasury spend is not valid.";
+  } else if (has(onchainStatus?.status, "pending")) {
+    isDisabled = true;
+    tooltipContent = "This treasury spend is pending.";
+  } else if (has(onchainStatus?.status, "failed")) {
+    isDisabled = true;
+    tooltipContent = "This treasury spend is failed.";
+  } else if (isReady && latestHeight < validFrom) {
+    isDisabled = true;
+    tooltipContent = "This treasury spend cannot be paid out yet.";
+  }
 
   const onAttemptPayout = () => {
-    if (disabled) {
+    if (isDisabled) {
+      return;
+    }
+    setShowPopup(true);
+  };
+
+  const onStillPayout = () => {
+    if (!isReady) {
       return;
     }
     setShowPopup(true);
@@ -53,9 +75,9 @@ function PayoutContent({ setShowPopup = noop }) {
         <span
           className={cn(
             "text-theme500 cursor-pointer font-bold",
-            disabled && "text-theme300 cursor-not-allowed",
+            !isReady && "text-theme300 cursor-not-allowed",
           )}
-          onClick={onAttemptPayout}
+          onClick={onStillPayout}
         >
           still payout.
         </span>
@@ -64,10 +86,11 @@ function PayoutContent({ setShowPopup = noop }) {
   }
 
   return (
-    <Tooltip content={isPending && "This treasury spend is pending"}>
+    <Tooltip content={tooltipContent}>
       <PrimaryButton
         className="w-full"
-        disabled={disabled}
+        loading={loading}
+        disabled={isDisabled}
         onClick={onAttemptPayout}
       >
         Payout
