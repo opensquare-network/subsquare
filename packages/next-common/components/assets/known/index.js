@@ -54,7 +54,7 @@ export default function useKnownAssetHubAssetIcon(assetId) {
 
 const knownForeignAssetsMap = Object.freeze({
   [Chains.polkadotAssetHub]: foreignAssetInfo,
-  [Chains.kusamaAssetHub]: foreignAssetInfo,
+  [Chains.kusama]: foreignAssetInfo,
 });
 
 export function useKnownForeignAssetIcon(assetId) {

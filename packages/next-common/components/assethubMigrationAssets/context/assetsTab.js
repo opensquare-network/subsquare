@@ -2,7 +2,7 @@ import { createContext, useContext, useState } from "react";
 
 const AssetsTabContext = createContext(null);
 
-export function AssetsTabProvider({ children, defaultValue = "overview" }) {
+export function AssetsTabProvider({ children, defaultValue = "account" }) {
   const [activeValue, setActiveValue] = useState(defaultValue);
 
   const value = {

@@ -1,17 +1,17 @@
 import ListLayout from "next-common/components/layout/ListLayout";
 import { AssetHubTabsProvider } from "next-common/components/assets/context/assetHubTabsProvider";
-import HeadContent from "./headContent";
 import HeaderTabs from "./headerTabs";
-import AssetsOverview from "./overview";
+import AssetsAccount from "./account";
 import AllAssetsList from "./allAssetsList";
 import ForeignAssetsList from "./allForeignAssetsList";
 import { AssetsTabProvider, useAssetsTab } from "./context/assetsTab";
+import { useChainSettings } from "next-common/context/chain";
 
-function AssethubMigrationAssetsContent() {
+function AssetsContent() {
   const { activeValue } = useAssetsTab();
 
-  if (activeValue === "overview") {
-    return <AssetsOverview />;
+  if (activeValue === "account") {
+    return <AssetsAccount />;
   }
 
   if (activeValue === "assets") {
@@ -26,16 +26,23 @@ function AssethubMigrationAssetsContent() {
 }
 
 export default function AssethubMigrationAssets() {
+  const chain = useChainSettings();
+
+  // TODO: title & description
+  const title = `${chain.name} Assets`;
+  const description = `${chain.name} Assets is the original ${chain.name} Asset Hub module`;
+
   return (
     <AssetHubTabsProvider>
       <AssetsTabProvider>
         <ListLayout
           seoInfo={{ title: "" }}
-          headContent={<HeadContent />}
+          title={title}
+          description={description}
           customTabs={<HeaderTabs />}
         >
           <div className="flex flex-col gap-[16px]">
-            <AssethubMigrationAssetsContent />
+            <AssetsContent />
           </div>
         </ListLayout>
       </AssetsTabProvider>
