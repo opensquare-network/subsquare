@@ -16,7 +16,7 @@ const name = Chains.kusamaAssetHub;
 
 const kusamaAssetHub = {
   value: name,
-  name: "Kusama",
+  name: "Asset Hub",
   ...kusamaCommonCfg,
   blockTime: 12000,
   assethubMigration: kusamaAssethubMigration,
