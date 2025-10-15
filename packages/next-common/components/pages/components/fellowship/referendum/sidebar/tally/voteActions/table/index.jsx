@@ -10,21 +10,27 @@ import ExplorerLink from "next-common/components/links/explorerLink";
 import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 import Tooltip from "next-common/components/tooltip";
 import { formatDateTime } from "next-common/components/coretime/sales/history/timeRange";
+import {
+  ChangeVoteWrapper,
+  VoteDetailRow,
+  VoteLabel,
+} from "next-common/components/pages/components/gov2/sidebar/tally/voteActions/table/fields/detail";
 
-function getActionTypeLabel(type) {
-  switch (type) {
-    case 1:
-      return "Voted";
-    default:
-      return "Unknown";
+function getActionTypeLabel(type, preVote) {
+  if (type === 1) {
+    if (preVote) {
+      return "Change Vote";
+    }
+    return "Vote";
   }
+  return "";
 }
 
-function ActionField({ type, indexer, className }) {
+function ActionField({ type, indexer, className, preVote }) {
   return (
     <div className={cn("flex flex-col", className)}>
       <div className="text-textPrimary text14Medium">
-        {getActionTypeLabel(type)}
+        {getActionTypeLabel(type, preVote)}
       </div>
       <ExplorerLink indexer={indexer} style={{ fontSize: "12px" }}>
         <Tooltip content={formatTimeAgo(indexer?.blockTime)}>
@@ -36,6 +42,31 @@ function ActionField({ type, indexer, className }) {
       </ExplorerLink>
     </div>
   );
+}
+
+function VoteChangeDetail({ vote, preVote }) {
+  const pre = <VoteDetail vote={preVote} />;
+  const current = <VoteDetail vote={vote} />;
+  return <ChangeVoteWrapper pre={pre} current={current} />;
+}
+
+function VoteDetail({ vote }) {
+  const voteType = vote?.isAye ? "aye" : "nay";
+  return (
+    <>
+      <VoteDetailRow label={<VoteLabel type={voteType} />}>
+        ({vote?.votes})
+      </VoteDetailRow>
+    </>
+  );
+}
+
+function VoteDetailField({ vote, preVote }) {
+  if (preVote) {
+    return <VoteChangeDetail vote={vote} preVote={preVote} />;
+  }
+
+  return <VoteDetail vote={vote} />;
 }
 
 function Table({ voteActions, loading }) {
@@ -52,17 +83,24 @@ function Table({ voteActions, loading }) {
     {
       name: "Detail",
       width: 120,
-      className: "text-right",
+      className: "text-left",
     },
   ];
 
-  const rows = (voteActions || []).map(({ who, type, indexer }) => {
-    return [
-      <AddressUser key="who" add={who} />,
-      <ActionField key="type" type={type} indexer={indexer} />,
-      "--",
-    ];
-  });
+  const rows = (voteActions || []).map(
+    ({ who, type, indexer, data: { vote, preVote } }) => {
+      return [
+        <AddressUser key="who" add={who} />,
+        <ActionField
+          key="type"
+          type={type}
+          indexer={indexer}
+          preVote={preVote}
+        />,
+        <VoteDetailField key="detail" vote={vote} preVote={preVote} />,
+      ];
+    },
+  );
 
   return (
     <DataList
