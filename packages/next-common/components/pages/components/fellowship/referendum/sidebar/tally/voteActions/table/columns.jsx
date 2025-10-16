@@ -11,22 +11,29 @@ import {
 } from "next-common/components/pages/components/gov2/sidebar/tally/voteActions/table/fields/detail";
 import { ProgressDisplay } from "next-common/components/pages/components/gov2/sidebar/tally/voteActions/table/fields/impact";
 import { VOTE_TYPE_CONFIG } from "next-common/components/pages/components/gov2/sidebar/tally/voteActions/common";
+import { useMemo } from "react";
 
-function getActionTypeLabel(type, preVote) {
-  if (type === 1) {
-    if (preVote) {
+function ActionField({
+  data: {
+    type,
+    indexer,
+    data: { preVote, vote },
+  },
+}) {
+  const actionName = useMemo(() => {
+    if (type !== 1) {
+      return "";
+    }
+    if (preVote && preVote?.votes !== vote?.votes) {
       return "Change Vote";
     }
     return "Vote";
-  }
-  return "";
-}
+  }, [preVote, type, vote?.votes]);
 
-function ActionField({ type, indexer, className, preVote }) {
   return (
-    <div className={cn("flex flex-col", className)}>
+    <div className={cn("flex flex-col")}>
       <div className="text-textPrimary text14Medium text-end md:text-start ">
-        {getActionTypeLabel(type, preVote)}
+        {actionName}
       </div>
       <ExplorerLink indexer={indexer} style={{ fontSize: "12px" }}>
         <Tooltip content={formatTimeAgo(indexer?.blockTime)}>
@@ -55,9 +62,23 @@ function VoteDetail({ vote }) {
   );
 }
 
-function ImpactVotesField({ vote, maxImpactVotes }) {
-  const impactVotes = vote.isAye ? BigInt(vote.votes) : -BigInt(vote.votes);
-  const { color } = VOTE_TYPE_CONFIG[vote.isAye ? "aye" : "nay"];
+function ImpactVotesField({ data, maxImpactVotes }) {
+  const { vote, preVote } = data;
+
+  const { votes, isAye } = useMemo(() => {
+    if (preVote) {
+      const difference = vote.votes - preVote.votes;
+      const isAye = difference > 0 ? vote.isAye : preVote.isAye;
+      return {
+        isAye,
+        votes: Math.abs(difference),
+      };
+    }
+    return vote;
+  }, [preVote, vote]);
+  const impactVotes = isAye ? BigInt(votes) : -BigInt(votes);
+
+  const { color } = VOTE_TYPE_CONFIG[isAye ? "aye" : "nay"];
 
   return (
     <div className="text-textTertiary text14Medium max-md:flex max-md:flex-col max-md:items-end pr-2">
@@ -67,12 +88,19 @@ function ImpactVotesField({ vote, maxImpactVotes }) {
       />
       <div>
         <span>Tally: </span>
-        <div className={cn(color, "inline-flex")}>
+        <div className={cn(votes ? color : "text-textPrimary", "inline-flex")}>
           <span>
-            {vote.isAye ? "+" : "-"}
-            {vote.votes}
+            {votes ? (isAye ? "+" : "-") : null}
+            {votes}
           </span>
         </div>
+      </div>
+      <div className="text12Medium">
+        <span className="">Support: </span>
+        <span className={cn(votes ? color : "text-textPrimary")}>
+          {votes ? (isAye ? "+" : "-") : null}
+          {votes}
+        </span>
       </div>
     </div>
   );
@@ -88,9 +116,7 @@ export const desktopColumns = [
     name: "Action",
     width: 160,
     className: "text-left",
-    render: ({ type, indexer, data: { preVote } }) => (
-      <ActionField key="type" type={type} indexer={indexer} preVote={preVote} />
-    ),
+    render: (data) => <ActionField data={data} />,
   },
   {
     name: "Detail",
@@ -108,8 +134,8 @@ export const desktopColumns = [
     key: "impact",
     className: "w-[176px] text-right",
     sortable: true,
-    render: ({ maxImpactVotes, data: { vote } }) => (
-      <ImpactVotesField vote={vote} maxImpactVotes={maxImpactVotes} />
+    render: ({ maxImpactVotes, data }) => (
+      <ImpactVotesField data={data} maxImpactVotes={maxImpactVotes} />
     ),
   },
 ];
@@ -117,11 +143,7 @@ export const desktopColumns = [
 function MobileRow({ label, children }) {
   return (
     <div className="flex flex-row justify-between pr-2">
-      {label && (
-        <span className="text14Medium text-textTertiary flex items-center">
-          {label}
-        </span>
-      )}
+      {label && <span className="text14Medium text-textTertiary">{label}</span>}
       {children}
     </div>
   );
@@ -134,14 +156,9 @@ export const mobileColumns = [
     render: ({ who }) => <AddressUser key="who" add={who} />,
   },
   {
-    render: ({ type, indexer, data: { preVote } }) => (
+    render: (data) => (
       <MobileRow label={"Action"}>
-        <ActionField
-          key="type"
-          type={type}
-          indexer={indexer}
-          preVote={preVote}
-        />
+        <ActionField data={data} />
       </MobileRow>
     ),
   },
@@ -157,9 +174,9 @@ export const mobileColumns = [
     ),
   },
   {
-    render: ({ maxImpactVotes, data: { vote } }) => (
+    render: ({ maxImpactVotes, data }) => (
       <MobileRow label={"Impact"}>
-        <ImpactVotesField vote={vote} maxImpactVotes={maxImpactVotes} />
+        <ImpactVotesField data={data} maxImpactVotes={maxImpactVotes} />
       </MobileRow>
     ),
   },
