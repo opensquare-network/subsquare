@@ -6,6 +6,7 @@ import NodeSwitch from "next-common/components/header/nodeSwitch";
 import Flex from "next-common/components/styled/flex";
 import PrimaryButton from "next-common/lib/button/primary";
 import { useUser } from "../../context/user";
+import { useChainSettings } from "../../context/chain";
 import Profile from "../../assets/imgs/icons/profile.svg";
 import SearchInput from "./searchInput";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
@@ -19,7 +20,6 @@ import SearchInputWithPopup from "./searchInputWithPopup";
 import { useWalletConnect } from "next-common/context/walletconnect";
 import Loading from "next-common/components/loading";
 import useIsEnhancementSearch from "next-common/components/header/hooks/useIsEnhancementSearch";
-import useActiveNodeChainSettings from "next-common/hooks/useActiveNodeChainSettings";
 
 const Wrapper = styled.div``;
 
@@ -81,7 +81,7 @@ function ConnectedAccount({ user }) {
 export default function SidebarAccount() {
   const user = useUser();
   const router = useRouter();
-  const activeNode = useActiveNodeChainSettings();
+  const node = useChainSettings();
   const { openLoginPopup } = useLoginPopup();
   const { disconnect: disconnectAccount, connectedAccount } =
     useConnectedAccountContext();
@@ -117,8 +117,8 @@ export default function SidebarAccount() {
       )}
 
       <Title>NETWORK</Title>
-      <NetworkSwitch activeNode={activeNode} />
-      {activeNode?.hideHeight ? null : <Title>NODE</Title>}
+      <NetworkSwitch activeNode={node} />
+      {node?.hideHeight ? null : <Title>NODE</Title>}
       <NodeSwitch />
       <Title>ACCOUNT</Title>
       {!user && (
