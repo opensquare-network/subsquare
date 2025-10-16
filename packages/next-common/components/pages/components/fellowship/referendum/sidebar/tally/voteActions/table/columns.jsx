@@ -24,11 +24,11 @@ function ActionField({
     if (type !== 1) {
       return "";
     }
-    if (preVote && preVote?.votes !== vote?.votes) {
+    if (preVote && preVote.isAye !== vote.isAye) {
       return "Change Vote";
     }
     return "Vote";
-  }, [preVote, type, vote?.votes]);
+  }, [preVote, type, vote?.isAye]);
 
   return (
     <div className={cn("flex flex-col")}>
@@ -66,7 +66,7 @@ function ImpactVotesField({ data, maxImpactVotes }) {
   const { vote, preVote } = data;
 
   const { votes, isAye } = useMemo(() => {
-    if (preVote) {
+    if (preVote && preVote.isAye === vote.isAye) {
       const difference = vote.votes - preVote.votes;
       const isAye = difference > 0 ? vote.isAye : preVote.isAye;
       return {
