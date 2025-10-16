@@ -11,8 +11,6 @@ import FellowshipCommonEvent, {
 import { cn } from "next-common/utils";
 import { GreyPanel } from "../styled/containers/greyPanel";
 import Link from "next/link";
-import { useIsMobile } from "../overview/accountInfo/components/accountBalances";
-import WindowSizeProvider from "next-common/context/windowSize";
 
 const ITEM_HEIGHT = 53;
 const MOBILE_ITEM_HEIGHT = 96;
@@ -114,31 +112,29 @@ export default function ScrollFeeds({
         onMouseLeave={() => (pauseRef.current = false)}
       >
         <div className="flex flex-col will-change-transform">
-          <WindowSizeProvider>
-            {(feedPages || []).map((feed) => {
-              if (feed.isEmpty) {
-                return <EmptySplitFeed key="emptySplitFeed" />;
-              }
+          {(feedPages || []).map((feed) => {
+            if (feed.isEmpty) {
+              return <EmptySplitFeed key="emptySplitFeed" />;
+            }
 
-              const key = getFeedKey(feed);
-              const [firstKey, lastKey] = feedsKeys;
-              const isFirst = key === firstKey;
-              const isLast = key === lastKey;
-              return (
-                <ScrollFeedItem
-                  key={
-                    feed.event +
-                    feed.indexer.blockHeight +
-                    feed.indexer.eventIndex
-                  }
-                  item={feed}
-                  idx={key}
-                  isLast={isLast}
-                  isFirst={isFirst}
-                />
-              );
-            })}
-          </WindowSizeProvider>
+            const key = getFeedKey(feed);
+            const [firstKey, lastKey] = feedsKeys;
+            const isFirst = key === firstKey;
+            const isLast = key === lastKey;
+            return (
+              <ScrollFeedItem
+                key={
+                  feed.event +
+                  feed.indexer.blockHeight +
+                  feed.indexer.eventIndex
+                }
+                item={feed}
+                idx={key}
+                isLast={isLast}
+                isFirst={isFirst}
+              />
+            );
+          })}
         </div>
       </div>
     </div>
@@ -146,7 +142,8 @@ export default function ScrollFeeds({
 }
 
 function ScrollFeedItem({ item, isLast, isFirst }) {
-  const isMobile = useIsMobile();
+  const { width } = useWindowSize();
+  const isMobile = width < 768;
   const showUserInfo = item?.showUserInfo ?? true;
   const who = item?.args?.who;
   const displayWho = showUserInfo && who;
