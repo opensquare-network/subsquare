@@ -1,4 +1,4 @@
-import useQueryVoteActions from "../useQueryVoteActions";
+import useQueryVoteActions from "./useQueryVoteActions";
 import { useOnchainData } from "next-common/context/post";
 import { useMemo } from "react";
 
