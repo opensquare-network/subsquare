@@ -6,6 +6,7 @@ import { useProfileCollectivesTabs } from "./useProfileCollectivesTabs";
 import { isKintsugiChain } from "next-common/utils/chain";
 import { cn } from "next-common/utils";
 import { useProfileMultisigsActiveContext } from "next-common/components/profile/multisigs/context/profileMultisigsActiveContext";
+import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated";
 
 export function TabTitle({ active, children }) {
   return (
@@ -138,6 +139,17 @@ export default function useProfileTabs() {
       url: `${prefix}proxies/mine`,
       root: `${prefix}proxies`,
       exactMatch: false,
+    });
+  }
+
+  if (isAssetHubMigrated()) {
+    tabs.push({
+      label({ active }) {
+        return <TabTitle active={active}>Assets</TabTitle>;
+      },
+      value: "assets",
+      url: `${prefix}assets`,
+      root: `${prefix}assets`,
     });
   }
 
