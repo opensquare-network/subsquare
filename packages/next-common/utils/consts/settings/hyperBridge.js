@@ -3,6 +3,7 @@ import Chains from "../chains";
 import { PostLabel } from "./common";
 import MenuGroups from "./menuGroups";
 import { mergeChainModules } from "./common/modules";
+import { keccakAsU8a } from "@polkadot/util-crypto";
 
 const ProjectIconHyperBridge = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconHyperBridge"),
@@ -114,6 +115,9 @@ const hyperBridge = {
   allowWeb2Login: false,
   hotMenu: {
     referenda: true,
+  },
+  chainApi: {
+    hasher: keccakAsU8a,
   },
 };
 

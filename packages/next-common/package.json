@@ -19,7 +19,7 @@
     "@osn/icons": "^1.231.0",
     "@osn/polkadot-react-identicon": "^1.0.10",
     "@osn/previewer": "^2.0.2",
-    "@osn/provider-options": "1.1.13",
+    "@osn/provider-options": "1.1.0",
     "@osn/react-cmdk": "^1.2.1",
     "@osn/rich-text-editor": "^0.7.3",
     "@polkadot/api": "^16.1.2",
