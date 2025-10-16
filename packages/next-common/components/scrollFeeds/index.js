@@ -54,8 +54,8 @@ export default function ScrollFeeds({
     Promise.all([
       animate(
         "&>.scroll-list>:first-child",
-        { marginTop: `-${marginTop}px` },
-        { duration: 1 },
+        { y: -marginTop },
+        { duration: 1, ease: "easeInOut" },
       ),
     ])
       .then(() => {
@@ -68,11 +68,7 @@ export default function ScrollFeeds({
         });
       })
       .then(() => {
-        animate(
-          "&>.scroll-list>:first-child",
-          { marginTop: "0px" },
-          { duration: 0 },
-        );
+        animate("&>.scroll-list>:first-child", { y: 0 }, { duration: 0 });
       });
   }, [animate, marginTop]);
 
@@ -115,7 +111,7 @@ export default function ScrollFeeds({
         onMouseEnter={() => (pauseRef.current = true)}
         onMouseLeave={() => (pauseRef.current = false)}
       >
-        <div className="flex flex-col">
+        <div className="flex flex-col will-change-transform">
           {(feedPages || []).map((feed) => {
             if (feed.isEmpty) {
               return <EmptySplitFeed key="emptySplitFeed" />;
