@@ -15,6 +15,9 @@ import { foreignAssetInfo } from "next-common/utils/consts/foreignAssets";
 
 const knownAssetHubAssetsMap = Object.freeze({
   [Chains.polkadotAssetHub]: knownPolkadotAssetHubAssets,
+  [Chains.kusamaAssetHub]: [],
+  [Chains.westendAssetHub]: [],
+  [Chains.paseoAssetHub]: [],
   [Chains.westend]: [],
   [Chains.kusama]: [],
   [Chains.paseo]: [],
@@ -54,6 +57,7 @@ export default function useKnownAssetHubAssetIcon(assetId) {
 
 const knownForeignAssetsMap = Object.freeze({
   [Chains.polkadotAssetHub]: foreignAssetInfo,
+  [Chains.kusamaAssetHub]: foreignAssetInfo,
   [Chains.kusama]: foreignAssetInfo,
 });
 
