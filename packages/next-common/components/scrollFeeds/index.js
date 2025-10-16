@@ -11,6 +11,8 @@ import FellowshipCommonEvent, {
 import { cn } from "next-common/utils";
 import { GreyPanel } from "../styled/containers/greyPanel";
 import Link from "next/link";
+import { useIsMobile } from "../overview/accountInfo/components/accountBalances";
+import WindowSizeProvider from "next-common/context/windowSize";
 
 const ITEM_HEIGHT = 53;
 const MOBILE_ITEM_HEIGHT = 96;
@@ -112,29 +114,31 @@ export default function ScrollFeeds({
         onMouseLeave={() => (pauseRef.current = false)}
       >
         <div className="flex flex-col will-change-transform">
-          {(feedPages || []).map((feed) => {
-            if (feed.isEmpty) {
-              return <EmptySplitFeed key="emptySplitFeed" />;
-            }
+          <WindowSizeProvider>
+            {(feedPages || []).map((feed) => {
+              if (feed.isEmpty) {
+                return <EmptySplitFeed key="emptySplitFeed" />;
+              }
 
-            const key = getFeedKey(feed);
-            const [firstKey, lastKey] = feedsKeys;
-            const isFirst = key === firstKey;
-            const isLast = key === lastKey;
-            return (
-              <ScrollFeedItem
-                key={
-                  feed.event +
-                  feed.indexer.blockHeight +
-                  feed.indexer.eventIndex
-                }
-                item={feed}
-                idx={key}
-                isLast={isLast}
-                isFirst={isFirst}
-              />
-            );
-          })}
+              const key = getFeedKey(feed);
+              const [firstKey, lastKey] = feedsKeys;
+              const isFirst = key === firstKey;
+              const isLast = key === lastKey;
+              return (
+                <ScrollFeedItem
+                  key={
+                    feed.event +
+                    feed.indexer.blockHeight +
+                    feed.indexer.eventIndex
+                  }
+                  item={feed}
+                  idx={key}
+                  isLast={isLast}
+                  isFirst={isFirst}
+                />
+              );
+            })}
+          </WindowSizeProvider>
         </div>
       </div>
     </div>
@@ -142,6 +146,7 @@ export default function ScrollFeeds({
 }
 
 function ScrollFeedItem({ item, isLast, isFirst }) {
+  const isMobile = useIsMobile();
   const showUserInfo = item?.showUserInfo ?? true;
   const who = item?.args?.who;
   const displayWho = showUserInfo && who;
@@ -160,8 +165,8 @@ function ScrollFeedItem({ item, isLast, isFirst }) {
         isLast={isLast}
         isFirst={isFirst}
       />
-      <div className="flex pt-3">
-        {displayWho && (
+      <div className="flex pt-3 max-sm:pt-0">
+        {displayWho && !isMobile && (
           <div className="mt-1 mr-2">
             <AvatarDisplay size={20} address={item?.args?.who} />
           </div>
@@ -173,7 +178,7 @@ function ScrollFeedItem({ item, isLast, isFirst }) {
             showUserInfo={false}
             prefix={
               displayWho ? (
-                <AddressUser showAvatar={false} add={item?.args?.who} />
+                <AddressUser showAvatar={isMobile} add={item?.args?.who} />
               ) : null
             }
             suffix={
