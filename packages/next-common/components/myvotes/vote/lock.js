@@ -3,7 +3,7 @@ import React from "react";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import styled from "styled-components";
 import { NoticeWrapper } from "next-common/components/styled/containers/titleContainer";
-import useChainOrScanHeight from "next-common/hooks/height";
+import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
 
 export const CountDownWrapper = styled(NoticeWrapper)`
   width: 100%;
@@ -18,7 +18,7 @@ export const CountDownWrapper = styled(NoticeWrapper)`
 `;
 
 function LockExpired({ lockEnd }) {
-  const blockHeight = useChainOrScanHeight();
+  const blockHeight = useAhmLatestHeight();
   const tooltip = `Unlock at ${lockEnd}, now ${blockHeight}`;
   return (
     <CountDownWrapper>
@@ -29,7 +29,7 @@ function LockExpired({ lockEnd }) {
 }
 
 function LockCountDown({ lockInfo }) {
-  const blockHeight = useChainOrScanHeight();
+  const blockHeight = useAhmLatestHeight();
   const { voteEnd, lockEnd } = lockInfo;
   const estimatedBlocksTime = useEstimateBlocksTime(lockEnd - blockHeight);
   if (!voteEnd || !lockEnd) {
@@ -58,7 +58,7 @@ function LockCountDown({ lockInfo }) {
 
 export default function VoteLock({ lockInfo }) {
   const { hasLock } = lockInfo;
-  const blockHeight = useChainOrScanHeight();
+  const blockHeight = useAhmLatestHeight();
   if (!hasLock || !blockHeight) {
     return null;
   }

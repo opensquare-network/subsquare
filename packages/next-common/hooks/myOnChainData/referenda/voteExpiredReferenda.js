@@ -3,7 +3,7 @@ import { myReferendaVotingSelector } from "next-common/store/reducers/myOnChainD
 import { referendaLockingPeriodSelector } from "next-common/store/reducers/referenda/meta";
 import { flatten } from "lodash-es";
 import { orderBy } from "lodash-es";
-import useChainOrScanHeight from "next-common/hooks/height";
+import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
 
 function getVoteExpiredReferendaByTrack(voting, latestHeight, lockingPeriod) {
   const { isDelegating, votes = [] } = voting;
@@ -44,7 +44,7 @@ function getVoteExpiredReferendaByTrack(voting, latestHeight, lockingPeriod) {
 
 export function useVoteExpiredReferenda() {
   const votingArr = useSelector(myReferendaVotingSelector);
-  const latestHeight = useChainOrScanHeight();
+  const latestHeight = useAhmLatestHeight();
   const lockingPeriod = useSelector(referendaLockingPeriodSelector);
 
   const ordered = orderBy(votingArr, ["trackId"]);
