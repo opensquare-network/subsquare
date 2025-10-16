@@ -51,6 +51,13 @@ const links = [
   },
 ];
 
+// Constant values from
+// https://github.com/polytope-labs/hyperbridge/blob/main/parachain/runtimes/nexus/src/governance/mod.rs#L38
+const hyperBridgePreimageSettings = {
+  baseDeposit: "5000000000000",
+  byteDeposit: "5000000000000",
+};
+
 const hyperBridge = {
   value: Chains.hyperBridge,
   domain: "hyperbridge",
@@ -119,6 +126,7 @@ const hyperBridge = {
   chainApi: {
     hasher: keccakAsU8a,
   },
+  preimage: hyperBridgePreimageSettings,
 };
 
 export default hyperBridge;
