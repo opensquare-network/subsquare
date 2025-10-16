@@ -11,7 +11,6 @@ import { cn } from "next-common/utils";
 export default function Table({
   search,
   loading,
-  maxImpactVotes,
   setSortedColumn,
   sortedVoteActions,
   sortedColumn,
@@ -23,7 +22,6 @@ export default function Table({
           setSortedColumn={setSortedColumn}
           voteActions={sortedVoteActions}
           listKey={`desktop-${search}-${sortedColumn}`}
-          maxImpactVotes={maxImpactVotes}
           loading={loading}
         />
       </div>
@@ -31,7 +29,6 @@ export default function Table({
         <MobileTable
           voteActions={sortedVoteActions}
           loading={loading}
-          maxImpactVotes={maxImpactVotes}
           listKey={`mobile-${search}-${sortedColumn}`}
         />
       </div>
@@ -39,13 +36,7 @@ export default function Table({
   );
 }
 
-function DesktopTable({
-  voteActions,
-  listKey,
-  setSortedColumn,
-  maxImpactVotes,
-  loading,
-}) {
+function DesktopTable({ voteActions, listKey, setSortedColumn, loading }) {
   const getItemSize = useDesktopItemSize(voteActions);
   const { sortedColumn, columns } = useColumns(desktopColumns, "", true);
   useEffect(() => {
@@ -54,10 +45,9 @@ function DesktopTable({
 
   const row = useMemo(() => {
     return voteActions?.map((item) => {
-      const newItem = { ...item, maxImpactVotes };
-      return desktopColumns.map((col) => col.render(newItem));
+      return desktopColumns.map((col) => col.render(item));
     });
-  }, [voteActions, maxImpactVotes]);
+  }, [voteActions]);
 
   return (
     <VirtualList
@@ -75,7 +65,7 @@ function DesktopTable({
   );
 }
 
-function MobileTable({ voteActions, loading, maxImpactVotes, listKey }) {
+function MobileTable({ voteActions, loading, listKey }) {
   const getItemSize = useMobileItemSize(voteActions);
 
   const columns = useMemo(() => {
@@ -83,19 +73,16 @@ function MobileTable({ voteActions, loading, maxImpactVotes, listKey }) {
   }, []);
 
   const rows = useMemo(() => {
-    return (
-      voteActions?.map((item) => {
-        const newItem = { ...item, maxImpactVotes };
-        return [
-          <div key={item.who} className="flex flex-col space-y-2 w-full">
-            {mobileColumns.map((col, index) => (
-              <div key={index}>{col.render(newItem)}</div>
-            ))}
-          </div>,
-        ];
-      }) || []
-    );
-  }, [maxImpactVotes, voteActions]);
+    return voteActions?.map((item) => {
+      return [
+        <div key={item.who} className="flex flex-col space-y-2 w-full">
+          {mobileColumns.map((col, index) => (
+            <div key={index}>{col.render(item)}</div>
+          ))}
+        </div>,
+      ];
+    });
+  }, [voteActions]);
 
   return (
     <VirtualList

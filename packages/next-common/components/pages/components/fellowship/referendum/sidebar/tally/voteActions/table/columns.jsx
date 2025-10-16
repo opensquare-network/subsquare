@@ -11,29 +11,12 @@ import {
 } from "next-common/components/pages/components/gov2/sidebar/tally/voteActions/table/fields/detail";
 import { ProgressDisplay } from "next-common/components/pages/components/gov2/sidebar/tally/voteActions/table/fields/impact";
 import { VOTE_TYPE_CONFIG } from "next-common/components/pages/components/gov2/sidebar/tally/voteActions/common";
-import { useMemo } from "react";
 
-function ActionField({
-  data: {
-    type,
-    indexer,
-    data: { preVote, vote },
-  },
-}) {
-  const actionName = useMemo(() => {
-    if (type !== 1) {
-      return "";
-    }
-    if (preVote && preVote.isAye !== vote.isAye) {
-      return "Change Vote";
-    }
-    return "Vote";
-  }, [preVote, type, vote?.isAye]);
-
+function ActionField({ data: { indexer, formatData } }) {
   return (
     <div className={cn("flex flex-col")}>
       <div className="text-textPrimary text14Medium text-end md:text-start ">
-        {actionName}
+        {formatData?.actionName}
       </div>
       <ExplorerLink indexer={indexer} style={{ fontSize: "12px" }}>
         <Tooltip content={formatTimeAgo(indexer?.blockTime)}>
@@ -62,29 +45,16 @@ function VoteDetail({ vote }) {
   );
 }
 
-function ImpactVotesField({ data, maxImpactVotes }) {
-  const { vote, preVote } = data;
-
-  const { votes, isAye } = useMemo(() => {
-    if (preVote && preVote.isAye === vote.isAye) {
-      const difference = vote.votes - preVote.votes;
-      const isAye = difference > 0 ? vote.isAye : preVote.isAye;
-      return {
-        isAye,
-        votes: Math.abs(difference),
-      };
-    }
-    return vote;
-  }, [preVote, vote]);
+function ImpactVotesField({ data: { maxImpactVotes, formatData } }) {
+  const { tally: votes, isAye } = formatData;
   const impactVotes = isAye ? BigInt(votes) : -BigInt(votes);
-
   const { color } = VOTE_TYPE_CONFIG[isAye ? "aye" : "nay"];
 
   return (
     <div className="text-textTertiary text14Medium max-md:flex max-md:flex-col max-md:items-end pr-2">
       <ProgressDisplay
         impactVotes={impactVotes}
-        maxImpactVotes={BigInt(maxImpactVotes)}
+        maxImpactVotes={BigInt(maxImpactVotes || 0)}
       />
       <div>
         <span>Tally: </span>
@@ -117,7 +87,7 @@ export const desktopColumns = [
   {
     name: "Account",
     className: "",
-    render: ({ who }) => <AddressUser key="who" add={who} />,
+    render: ({ who }) => <AddressUser add={who} />,
   },
   {
     name: "Action",
@@ -141,9 +111,7 @@ export const desktopColumns = [
     key: "impact",
     className: "w-[176px] text-right",
     sortable: true,
-    render: ({ maxImpactVotes, data }) => (
-      <ImpactVotesField data={data} maxImpactVotes={maxImpactVotes} />
-    ),
+    render: (data) => <ImpactVotesField data={data} />,
   },
 ];
 
@@ -181,9 +149,9 @@ export const mobileColumns = [
     ),
   },
   {
-    render: ({ maxImpactVotes, data }) => (
+    render: (data) => (
       <MobileRow label={"Impact"}>
-        <ImpactVotesField data={data} maxImpactVotes={maxImpactVotes} />
+        <ImpactVotesField data={data} />
       </MobileRow>
     ),
   },
