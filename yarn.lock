@@ -3333,10 +3333,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/provider-options@npm:1.1.13":
-  version: 1.1.13
-  resolution: "@osn/provider-options@npm:1.1.13"
-  checksum: 4a5686d6af3135b542ff7edd80e8ca0370f248a45ce2d6677e2243e82dff8c9eed2394b397174ac212300e393862b87e3e55d7bd42aba9399f77483831a5738b
+"@osn/provider-options@npm:1.1.0":
+  version: 1.1.0
+  resolution: "@osn/provider-options@npm:1.1.0"
+  checksum: 3c31537837cc841e54f9bca93d0bfbdf573ecb6538ee41e1026c01f0a688207d7ad69a4d135cf9ca1ca9d70371b1968b888f90406276fdb28952034eab012d35
   languageName: node
   linkType: hard
 
@@ -14066,7 +14066,7 @@ __metadata:
     "@osn/icons": ^1.231.0
     "@osn/polkadot-react-identicon": ^1.0.10
     "@osn/previewer": ^2.0.2
-    "@osn/provider-options": 1.1.13
+    "@osn/provider-options": 1.1.0
     "@osn/react-cmdk": ^1.2.1
     "@osn/rich-text-editor": ^0.7.3
     "@polkadot/api": ^16.1.2
