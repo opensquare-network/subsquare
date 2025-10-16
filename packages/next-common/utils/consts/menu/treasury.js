@@ -3,6 +3,7 @@ import getChainSettings from "../settings";
 import { CHAIN } from "next-common/utils/constants";
 
 export const Names = {
+  status: "Status",
   treasury: "TREASURY",
   proposals: "Proposals",
   spends: "Spends",
@@ -34,6 +35,11 @@ export function getTreasuryMenu(summary) {
     pathname: "/treasury",
     activeCount: totalActiveCount,
     items: [
+      treasury?.status && {
+        value: "status",
+        name: Names.status,
+        pathname: "/treasury",
+      },
       treasury?.spends && {
         value: "spends",
         name: Names.spends,

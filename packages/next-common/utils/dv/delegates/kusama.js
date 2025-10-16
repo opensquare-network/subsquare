@@ -142,7 +142,12 @@ export const kusamaDvDelegates = [
     address: "E3Ra4aGnmZGGtGaLsoCqjtJowT1qDvuLNEwB8t74M1UQrWM", // Trustless Core
     slots: [
       { start: 27921516, end: 29912023, trackIds: cohort4TrackIds }, // cohort 4
-      { start: 29912340, end: null, trackIds: cohort5TrackIds }, // cohort 5
+    ],
+  },
+  {
+    address: "D8LipdVuWD5tT3jCjt4WmYMfHi1vRVjpfbK9cz2G2HrWRLw", // Trustless Core - Cohort 5
+    slots: [
+      { start: 29923134, end: null, trackIds: cohort5TrackIds }, // cohort 5
     ],
   },
   {

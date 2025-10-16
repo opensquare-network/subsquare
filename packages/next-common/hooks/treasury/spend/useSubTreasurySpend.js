@@ -5,6 +5,7 @@ import { useTreasuryPallet } from "next-common/context/treasury";
 
 export default function useSubTreasurySpend(index) {
   const api = useContextApi();
+  const [loading, setLoading] = useState(true);
   const [spend, setSpend] = useState();
   const treasuryPallet = useTreasuryPallet();
 
@@ -22,7 +23,8 @@ export default function useSubTreasurySpend(index) {
 
         setSpend(optional.unwrap().toJSON());
       })
-      .then((result) => (unsub = result));
+      .then((result) => (unsub = result))
+      .finally(() => setLoading(false));
 
     return () => {
       if (unsub) {
@@ -31,5 +33,5 @@ export default function useSubTreasurySpend(index) {
     };
   }, [api, index, treasuryPallet]);
 
-  return spend;
+  return { spend, loading };
 }

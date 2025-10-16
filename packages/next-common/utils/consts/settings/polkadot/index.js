@@ -65,6 +65,7 @@ const polkadot = {
       displayTreasuryRequesting: true,
     },
     treasury: {
+      status: true,
       spends: true,
       childBounties: true,
       tips: {
@@ -81,6 +82,7 @@ const polkadot = {
     assethub: true,
     people: true,
     vesting: true,
+    whitelist: true,
   }),
   integrations: {
     doTreasury: true,

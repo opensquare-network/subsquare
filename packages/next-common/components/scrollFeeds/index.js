@@ -54,8 +54,8 @@ export default function ScrollFeeds({
     Promise.all([
       animate(
         "&>.scroll-list>:first-child",
-        { marginTop: `-${marginTop}px` },
-        { duration: 1 },
+        { y: -marginTop },
+        { duration: 1, ease: "easeInOut" },
       ),
     ])
       .then(() => {
@@ -68,11 +68,7 @@ export default function ScrollFeeds({
         });
       })
       .then(() => {
-        animate(
-          "&>.scroll-list>:first-child",
-          { marginTop: "0px" },
-          { duration: 0 },
-        );
+        animate("&>.scroll-list>:first-child", { y: 0 }, { duration: 0 });
       });
   }, [animate, marginTop]);
 
@@ -115,7 +111,7 @@ export default function ScrollFeeds({
         onMouseEnter={() => (pauseRef.current = true)}
         onMouseLeave={() => (pauseRef.current = false)}
       >
-        <div className="flex flex-col">
+        <div className="flex flex-col will-change-transform">
           {(feedPages || []).map((feed) => {
             if (feed.isEmpty) {
               return <EmptySplitFeed key="emptySplitFeed" />;
@@ -146,6 +142,8 @@ export default function ScrollFeeds({
 }
 
 function ScrollFeedItem({ item, isLast, isFirst }) {
+  const { width } = useWindowSize();
+  const isMobile = width < 768;
   const showUserInfo = item?.showUserInfo ?? true;
   const who = item?.args?.who;
   const displayWho = showUserInfo && who;
@@ -164,8 +162,8 @@ function ScrollFeedItem({ item, isLast, isFirst }) {
         isLast={isLast}
         isFirst={isFirst}
       />
-      <div className="flex pt-3">
-        {displayWho && (
+      <div className="flex pt-3 max-sm:pt-0">
+        {displayWho && !isMobile && (
           <div className="mt-1 mr-2">
             <AvatarDisplay size={20} address={item?.args?.who} />
           </div>
@@ -177,7 +175,7 @@ function ScrollFeedItem({ item, isLast, isFirst }) {
             showUserInfo={false}
             prefix={
               displayWho ? (
-                <AddressUser showAvatar={false} add={item?.args?.who} />
+                <AddressUser showAvatar={isMobile} add={item?.args?.who} />
               ) : null
             }
             suffix={
