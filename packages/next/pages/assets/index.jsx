@@ -1,13 +1,12 @@
 import { AssetMetadataProvider } from "next-common/components/assets/context/assetMetadata";
 import NoWalletConnected from "next-common/components/assets/noWalletConnected";
-import { RelayChainApiProvider } from "next-common/context/relayChain";
 import { withCommonProps } from "next-common/lib";
 import useExistentialDeposit from "next-common/utils/hooks/chain/useExistentialDeposit";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated";
 import AssethubMigrationAssets from "next-common/components/assethubMigrationAssets";
 
-export default function AssetHubPage() {
+export default function AssetsPage() {
   const realAddress = useRealAddress();
   useExistentialDeposit();
 
@@ -17,10 +16,7 @@ export default function AssetHubPage() {
 
   return (
     <AssetMetadataProvider>
-      {/* Remove useRelayChainApi (Polkadot AHM completed) */}
-      <RelayChainApiProvider>
-        <AssethubMigrationAssets />
-      </RelayChainApiProvider>
+      <AssethubMigrationAssets />
     </AssetMetadataProvider>
   );
 }
