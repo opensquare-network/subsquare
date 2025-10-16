@@ -106,7 +106,7 @@ function ImpactVotesField({ data, maxImpactVotes }) {
               : "",
           )}
         >
-          {isAye && votes ? `+${votes}` : "0"}
+          {isAye && votes ? "+1" : "0"}
         </span>
       </div>
     </div>
