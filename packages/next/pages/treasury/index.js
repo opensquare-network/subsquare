@@ -1,3 +1,4 @@
+import { withCommonProps } from "next-common/lib";
 import { TreasuryProvider } from "next-common/context/treasury";
 import ListLayout from "next-common/components/layout/ListLayout";
 import TreasuryStatusSummaryPanel from "next-common/components/treasury/status/summaryPanel";
@@ -18,3 +19,5 @@ export default function TreasuryStatusPage() {
     </TreasuryProvider>
   );
 }
+
+export const getServerSideProps = withCommonProps();
