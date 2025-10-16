@@ -4,7 +4,11 @@ import { isNil } from "lodash-es";
 import { LinkSubscan } from "@osn/icons/subsquare";
 import IconLink from "./iconLink";
 
-export default function SubScanLink({ indexer = {}, children }) {
+export default function SubScanLink({
+  indexer = {},
+  children,
+  customDomain = null,
+}) {
   const chain = useChain();
   const { integrations, assethubMigration = {} } = useChainSettings();
 
@@ -18,6 +22,9 @@ export default function SubScanLink({ indexer = {}, children }) {
     domain = integrations.subscan.domain || chain;
   }
 
+  if (customDomain) {
+    domain = customDomain;
+  }
   if (!domain) {
     return null;
   }

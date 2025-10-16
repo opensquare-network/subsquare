@@ -117,6 +117,8 @@ const kusama = {
   translations: {
     referenda: true,
   },
+  supportForeignAssets: true,
+  supportAssets: true,
 };
 
 export default kusama;
