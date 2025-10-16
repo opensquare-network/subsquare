@@ -96,10 +96,17 @@ function ImpactVotesField({ data, maxImpactVotes }) {
         </div>
       </div>
       <div className="text12Medium">
-        <span className="">Support: </span>
-        <span className={cn(votes ? color : "text-textPrimary")}>
-          {votes ? (isAye ? "+" : "-") : null}
-          {votes}
+        <span className="">Bare Aye: </span>
+        <span
+          className={cn(
+            isAye
+              ? votes
+                ? VOTE_TYPE_CONFIG.aye.color
+                : "text-textPrimary"
+              : "",
+          )}
+        >
+          {isAye && votes ? `+${votes}` : "0"}
         </span>
       </div>
     </div>
