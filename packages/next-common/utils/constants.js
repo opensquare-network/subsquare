@@ -186,6 +186,7 @@ export const NAV_MENU_TYPE = {
   main: "main",
   subspace: "subspace",
   archived: "archived",
+  group: "group",
 };
 
 export const RELATIONSHIP_NODE_TYPE = {
