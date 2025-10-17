@@ -9,6 +9,7 @@ import { useReferendumVotingFinishIndexer } from "next-common/context/post/refer
 import { isNil } from "lodash-es";
 import { useOnchainData } from "next-common/context/post";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 
 const CleanupPopup = dynamicPopup(() => import("./popup"));
 
@@ -55,7 +56,9 @@ export default function FellowshipReferendumCleanupPoll() {
   return (
     <MakesureReferendumFinishedGuard>
       <ReferendumVotingProvider>
-        <CleanupPollButton />
+        <MigrationConditionalApiProvider>
+          <CleanupPollButton />
+        </MigrationConditionalApiProvider>
       </ReferendumVotingProvider>
     </MakesureReferendumFinishedGuard>
   );
