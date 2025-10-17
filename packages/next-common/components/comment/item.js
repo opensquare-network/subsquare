@@ -9,7 +9,7 @@ import {
 import IdentityOrAddr from "../IdentityOrAddr";
 import { prettyHTML } from "../../utils/viewfuncs";
 import CommentActions from "../actions/commentActions";
-import useCommentsAnchor from "../../utils/hooks/useCommentsAnchor";
+import { useJumpCommentAnchor } from "./useCommentAnchor";
 import CommentItemTemplate from "./itemTemplate";
 import { CommentProvider, useComment } from "./context";
 import PolkassemblyCommentItem from "./polkassemblyCommentItem";
@@ -20,21 +20,6 @@ import { getRealField } from "next-common/sima/actions/common";
 import useIsCommentProxyAuthor from "next-common/hooks/useIsCommentProxyAuthor";
 import { useRootCommentContext, useRootCommentData } from "./rootComment";
 import { SubsquareCommentSource } from "./commentSource";
-
-function jumpToAnchor(anchorId) {
-  var anchorElement = document.getElementById(anchorId);
-  if (!anchorElement) {
-    return;
-  }
-  var bodyRect = document.body.getBoundingClientRect();
-  var elementRect = anchorElement.getBoundingClientRect();
-  var offset = elementRect.top - bodyRect.top;
-  var scrollPosition = offset - window.innerHeight / 2;
-  window.scrollTo({
-    top: scrollPosition,
-    behavior: "smooth",
-  });
-}
 
 function useIsShouldUseSimaCommentEdit() {
   const comment = useComment();
@@ -74,28 +59,19 @@ function CommentItemImpl({ isSecondLevel, scrollToTopLevelCommentBottom }) {
   const refCommentTree = useRef();
   const [isEdit, setIsEdit] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [highlight, setHighlight] = useState(false);
   const isMounted = useMountedState();
-  const { hasAnchor, anchor } = useCommentsAnchor();
+  const { isCurrentCommentAnchored, currentCommentAnchor, hasRouterAnchor } =
+    useJumpCommentAnchor();
+
   const [showReplies, setShowReplies] = useState(false);
+  useEffect(() => {
+    if (hasRouterAnchor) {
+      setShowReplies(true);
+    }
+  }, [hasRouterAnchor]);
+
   const { updateComment } = useCommentActions();
   const replyToComment = useRootCommentData();
-
-  // Jump to comment when anchor is set
-  useEffect(() => {
-    if (!hasAnchor) {
-      return;
-    }
-
-    setShowReplies(true);
-
-    if (anchor === comment.height) {
-      setHighlight(true);
-      setTimeout(() => {
-        jumpToAnchor(anchor);
-      }, 100);
-    }
-  }, [hasAnchor, anchor, comment.height]);
 
   const { reloadRootComment } = useRootCommentContext();
 
@@ -125,8 +101,8 @@ function CommentItemImpl({ isSecondLevel, scrollToTopLevelCommentBottom }) {
       isSecondLevel={isSecondLevel}
       showReplies={showReplies}
       setShowReplies={setShowReplies}
-      id={comment.height}
-      highlight={highlight}
+      id={currentCommentAnchor}
+      highlight={isCurrentCommentAnchored}
       user={<CommentUser author={comment.author} />}
       commentSource={<SubsquareCommentSource />}
       content={

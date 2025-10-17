@@ -15,12 +15,15 @@ import { prettyHTML } from "next-common/utils/viewfuncs";
 import EditInput from "../editInput";
 import { useRootCommentContext } from "./rootComment";
 import CommentSource from "./commentSource";
+import { useJumpCommentAnchor } from "./useCommentAnchor";
 
 function PolkassemblyCommentReplyItemImpl() {
   const isMounted = useMountedState();
   const comment = useComment();
   const [isEdit, setIsEdit] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { isCurrentCommentAnchored, currentCommentAnchor } =
+    useJumpCommentAnchor();
 
   const update = useCallback(
     async (content, contentType) => {
@@ -39,6 +42,8 @@ function PolkassemblyCommentReplyItemImpl() {
 
   return (
     <CommentItemTemplate
+      id={currentCommentAnchor}
+      highlight={isCurrentCommentAnchored}
       isSecondLevel={true}
       user={<CommentUser author={comment.author} />}
       commentSource={<CommentSource />}

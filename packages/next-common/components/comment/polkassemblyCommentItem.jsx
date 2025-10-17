@@ -6,7 +6,7 @@ import IdentityOrAddr from "next-common/components/IdentityOrAddr";
 import PolkassemblyCommentActions from "../polkassembly/commentActions";
 import { useDetailType } from "next-common/context/page";
 import CommentItemTemplate from "next-common/components/comment/itemTemplate";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CommentProvider, useComment } from "./context";
 import PolkassemblyCommentUser from "./polkassemblyUser";
 import { useChain } from "next-common/context/chain";
@@ -15,12 +15,21 @@ import { PolkassemblyCommentReplyItem } from "./polkassemblyCommentReplyItem";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import PolkassemblyActions from "../polkassembly/actions";
 import { PolkassemblyCommentSource } from "./commentSource";
+import useRouterAnchor from "next-common/utils/hooks/useRouterAnchor";
 
 function PolkassemblyCommentItemImpl({ isSecondLevel }) {
   const chain = useChain();
   const comment = useComment();
   const type = useDetailType();
+
   const [showReplies, setShowReplies] = useState(false);
+
+  const { hasAnchor: hasRouterAnchor } = useRouterAnchor();
+  useEffect(() => {
+    if (hasRouterAnchor) {
+      setShowReplies(true);
+    }
+  }, [hasRouterAnchor]);
 
   comment.content = ensurePolkassemblyRelativeLink(comment.content, chain);
 
