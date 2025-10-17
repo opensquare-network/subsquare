@@ -30,6 +30,8 @@ export const gov2ReferendaAppendantApi = (index) =>
 
 // fellowship
 export const fellowshipReferenda = "fellowship/referenda/";
+export const fellowshipReferendaVoteActionsApi = (index) =>
+  `fellowship/referenda/${index}/actions`;
 export const fellowshipMemberHeatmapApi = (address) =>
   `fellowship/referenda/members/${address}/heatmap`;
 
