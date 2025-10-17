@@ -161,6 +161,7 @@ export function useNewProposalInnerPopupContent({
     !preimageLength;
 
   const length = usePreimageLength(preimageHash);
+
   useEffect(() => {
     if (length) {
       setPreimageLength(length);
@@ -183,6 +184,7 @@ export function useNewProposalInnerPopupContent({
       enactment,
     );
   }, [api, proposalOrigin, preimageHash, preimageLength, enactment]);
+
   return {
     getTxFunc,
     disabled,
