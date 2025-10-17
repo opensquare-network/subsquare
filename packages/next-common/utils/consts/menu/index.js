@@ -160,18 +160,23 @@ const matchedMenuItem = (menu, pathname) => {
     }
   }
 };
+
+function matchedGroupMenu(menu, pathname) {
+  return isNavGroupMenu(menu.type) && menu?.pathname === pathname;
+}
+
 const isSubSpaceNavMenu = (type) =>
   type === NAV_MENU_TYPE.subspace || type === "archived";
+
+const isNavGroupMenu = (type) => type === NAV_MENU_TYPE.group;
+
 export function matchNewMenu(menu, pathname) {
   if (!isArray(menu)) {
     return null;
   }
   for (const menuItem of menu) {
-    if (menuItem?.items?.length) {
-      const metchMenu = matchNewMenu(menuItem.items, pathname);
-      if (metchMenu) {
-        return metchMenu;
-      }
+    if (matchedGroupMenu(menuItem, pathname)) {
+      return null;
     } else if (isSubSpaceNavMenu(menuItem.type)) {
       const findMenu = matchedMenuItem(menuItem.items, pathname);
       if (findMenu) {
@@ -179,6 +184,11 @@ export function matchNewMenu(menu, pathname) {
           type: menuItem.type,
           menu: menuItem.items,
         };
+      }
+    } else if (menuItem?.items?.length) {
+      const metchMenu = matchNewMenu(menuItem.items, pathname);
+      if (metchMenu) {
+        return metchMenu;
       }
     }
   }

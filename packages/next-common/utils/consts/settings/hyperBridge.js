@@ -3,6 +3,7 @@ import Chains from "../chains";
 import { PostLabel } from "./common";
 import MenuGroups from "./menuGroups";
 import { mergeChainModules } from "./common/modules";
+import { keccakAsU8a } from "@polkadot/util-crypto";
 
 const ProjectIconHyperBridge = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconHyperBridge"),
@@ -49,6 +50,13 @@ const links = [
     url: "https://www.youtube.com/playlist?list=PLBYmzMa52CEE4lBa8Sos6FsQb_SnkPhgl",
   },
 ];
+
+// Constant values from
+// https://github.com/polytope-labs/hyperbridge/blob/main/parachain/runtimes/nexus/src/governance/mod.rs#L38
+const hyperBridgePreimageSettings = {
+  baseDeposit: "5000000000000",
+  byteDeposit: "5000000000000",
+};
 
 const hyperBridge = {
   value: Chains.hyperBridge,
@@ -115,6 +123,10 @@ const hyperBridge = {
   hotMenu: {
     referenda: true,
   },
+  chainApi: {
+    hasher: keccakAsU8a,
+  },
+  preimage: hyperBridgePreimageSettings,
 };
 
 export default hyperBridge;

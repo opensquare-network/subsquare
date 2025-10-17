@@ -1,6 +1,6 @@
 import { MenuTreasury } from "@osn/icons/subsquare";
 import getChainSettings from "../settings";
-import { CHAIN } from "next-common/utils/constants";
+import { CHAIN, NAV_MENU_TYPE } from "next-common/utils/constants";
 
 export const Names = {
   status: "Status",
@@ -34,6 +34,7 @@ export function getTreasuryMenu(summary) {
     icon: <MenuTreasury />,
     pathname: "/treasury",
     activeCount: totalActiveCount,
+    type: NAV_MENU_TYPE.group,
     items: [
       treasury?.status && {
         value: "status",
