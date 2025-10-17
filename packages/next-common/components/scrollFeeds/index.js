@@ -162,7 +162,7 @@ function ScrollFeedItem({ item, isLast, isFirst }) {
         isLast={isLast}
         isFirst={isFirst}
       />
-      <div className="flex pt-3 max-sm:pt-0">
+      <div className="flex pt-3 max-sm:pt-0 text-textSecondary">
         {displayWho && !isMobile && (
           <div className="mt-1 mr-2">
             <AvatarDisplay size={20} address={item?.args?.who} />

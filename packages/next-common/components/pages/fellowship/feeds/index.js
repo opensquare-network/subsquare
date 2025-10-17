@@ -23,7 +23,7 @@ function FellowshipFeedsFilterImpl() {
   const { component } = useFeedsFilter(feeds);
   return (
     <div className="flex items-center justify-between mb-4 mx-6">
-      <div className="text16Bold">
+      <div className="text16Bold text-textPrimary">
         Feeds
         {!!feeds.total && (
           <span className="text-textTertiary text14Medium ml-1">
