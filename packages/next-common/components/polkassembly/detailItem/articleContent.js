@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import PolkassemblyActions from "next-common/components/polkassembly/actions";
+import PolkassemblyActions from "../actions";
 import { MarkdownPreviewer } from "@osn/previewer";
 import NoData from "next-common/components/noData";
 import { usePost } from "next-common/context/post";

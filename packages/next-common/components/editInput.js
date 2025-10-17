@@ -41,7 +41,7 @@ export default function EditInput({
       if (error) {
         setErrors(error);
       } else if (result) {
-        await onFinishedEdit(true, setLoading);
+        await onFinishedEdit(true);
       }
     } catch (e) {
       if (e.message !== "Cancelled") {

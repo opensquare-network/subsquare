@@ -1,50 +1,51 @@
-import React, { useRef, useState } from "react";
-import CommentMoreMenu from "../articleMoreMenu/commentMoreMenu";
-import ThumbsUp from "../thumbsUp";
-import ReplyButton from "./replyButton";
-import ThumbUpList from "./thumbUpList";
-import { Wrapper } from "./styled";
-import CommentEditor from "../comment/editor";
-import { usePost } from "next-common/context/post";
+import React, { useCallback, useRef, useState } from "react";
+import CommentMoreMenu from "next-common/components/articleMoreMenu/commentMoreMenu";
+import ThumbsUp from "next-common/components/thumbsUp";
+import ReplyButton from "next-common/components/actions/replyButton";
+import ThumbUpList from "next-common/components/actions/thumbUpList";
+import { Wrapper } from "next-common/components/actions/styled";
+import PolkassemblyCommentReplyEditor from "./polkassemblyCommentReplyEditor";
 import { useUser } from "next-common/context/user";
 import useMentionList from "next-common/utils/hooks/useMentionList";
 import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import { useChain } from "next-common/context/chain";
-import { noop } from "lodash-es";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { useComment } from "../comment/context";
-import { useCommentActions } from "next-common/sima/context/commentActions";
+import { useComment } from "next-common/components/comment/context";
 import { useFindMyUpVote } from "next-common/sima/actions/common";
-import useCanEditComment from "next-common/hooks/useCanEditComment";
-import {
-  useRootCommentContext,
-  useRootCommentData,
-} from "../comment/rootComment";
+import nextApi from "next-common/services/nextApi";
+import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
+import { useRootCommentContext } from "../comment/rootComment";
 
 function useMyUpVote(reactions) {
   const findMyUpVote = useFindMyUpVote();
   return findMyUpVote(reactions);
 }
 
-function useShouldUseSima(comment) {
-  const { supportSima } = useCommentActions();
-  return supportSima && comment?.dataSource === "sima";
-}
-
-function SimaCommentContextMenu({ setIsEdit }) {
-  const canEditComment = useCanEditComment();
-  return <CommentMoreMenu editable={canEditComment} setIsEdit={setIsEdit} />;
-}
-
-function MaybeSimaCommentContextMenu({ setIsEdit }) {
+function ContextMenu({ setIsEdit }) {
+  const dispatch = useDispatch();
   const comment = useComment();
   const ownComment = useIsOwnComment();
-  const shouldUseSima = useShouldUseSima(comment);
-  if (shouldUseSima) {
-    return <SimaCommentContextMenu setIsEdit={setIsEdit} />;
-  }
-  return <CommentMoreMenu editable={ownComment} setIsEdit={setIsEdit} />;
+  const { reloadRootComment } = useRootCommentContext();
+
+  const deleteComment = useCallback(async () => {
+    const { error } = await nextApi.delete(
+      `polkassembly-comments/replies/${comment._id}`,
+    );
+    if (error) {
+      dispatch(newErrorToast(error.message));
+      return;
+    }
+    reloadRootComment();
+  }, [comment._id, dispatch, reloadRootComment]);
+
+  return (
+    <CommentMoreMenu
+      editable={ownComment}
+      setIsEdit={setIsEdit}
+      customDeleteComment={deleteComment}
+    />
+  );
 }
 
 function useIsOwnComment() {
@@ -54,11 +55,7 @@ function useIsOwnComment() {
   return user && author?.username === user.username;
 }
 
-export default function CommentActions({
-  scrollToNewReplyComment = noop,
-  setShowReplies = noop,
-  setIsEdit,
-}) {
+export default function PolkassemblyCommentReplyActions({ setIsEdit }) {
   const comment = useComment();
   const user = useUser();
   const reactions = comment?.reactions || [];
@@ -68,7 +65,6 @@ export default function CommentActions({
   const thumbUp = !!myUpVote;
 
   const chain = useChain();
-  const post = usePost();
   const editorWrapperRef = useRef();
   const [quillRef, setQuillRef] = useState(null);
   const [content, setContent] = useState("");
@@ -100,9 +96,34 @@ export default function CommentActions({
   const dispatch = useDispatch();
   const [thumbUpLoading, setThumbUpLoading] = useState(false);
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
-
-  const { upVoteComment, cancelUpVoteComment } = useCommentActions();
+  const { ensureLogin } = useEnsureLogin();
   const { reloadRootComment } = useRootCommentContext();
+
+  const upVoteComment = useCallback(async () => {
+    const { error } = await nextApi.put(
+      `polkassembly-comments/replies/${comment._id}/reaction`,
+      { reaction: 1 },
+      { credentials: "include" },
+    );
+
+    if (error) {
+      dispatch(newErrorToast(error.message));
+      return;
+    }
+
+    await reloadRootComment();
+  }, [comment._id, dispatch, reloadRootComment]);
+
+  const cancelUpVoteComment = useCallback(async () => {
+    const { error } = await nextApi.delete(
+      `polkassembly-comments/replies/${comment._id}/reaction`,
+    );
+    if (error) {
+      dispatch(newErrorToast(error.message));
+      return;
+    }
+    await reloadRootComment();
+  }, [comment._id, dispatch, reloadRootComment]);
 
   const toggleThumbUp = async () => {
     if (!user || ownComment || thumbUpLoading) {
@@ -111,19 +132,14 @@ export default function CommentActions({
 
     setThumbUpLoading(true);
     try {
-      let result, error;
+      if (!(await ensureLogin())) {
+        return;
+      }
 
       if (myUpVote) {
-        ({ result, error } = await cancelUpVoteComment(post, comment));
+        await cancelUpVoteComment();
       } else {
-        ({ result, error } = await upVoteComment(post, comment));
-      }
-
-      if (result) {
-        await reloadRootComment();
-      }
-      if (error) {
-        dispatch(newErrorToast(error.message));
+        await upVoteComment();
       }
     } catch (e) {
       if (e.message !== "Cancelled") {
@@ -133,8 +149,6 @@ export default function CommentActions({
       setThumbUpLoading(false);
     }
   };
-
-  const replyToComment = useRootCommentData();
 
   return (
     <>
@@ -151,21 +165,19 @@ export default function CommentActions({
             setShowThumbsUpList={setShowThumbsUpList}
           />
         </Wrapper>
-        <MaybeSimaCommentContextMenu setIsEdit={setIsEdit} />
+        <ContextMenu setIsEdit={setIsEdit} />
       </div>
       {showThumbsUpList && <ThumbUpList reactions={reactions} />}
       {isReply && (
-        <CommentEditor
-          replyToComment={replyToComment}
+        <PolkassemblyCommentReplyEditor
+          polkassemblyCommentId={comment.polkassemblyCommentId}
           ref={editorWrapperRef}
           setQuillRef={setQuillRef}
           isReply={isReply}
           onFinishedEdit={async (reload) => {
             setIsReply(false);
             if (reload) {
-              setShowReplies(true);
               await reloadRootComment();
-              scrollToNewReplyComment();
             }
           }}
           {...{ contentType, setContentType, content, setContent, users }}

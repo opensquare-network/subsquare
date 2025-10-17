@@ -9,12 +9,8 @@ import {
 import IdentityOrAddr from "../IdentityOrAddr";
 import { prettyHTML } from "../../utils/viewfuncs";
 import CommentActions from "../actions/commentActions";
-import useCommentsAnchor from "../../utils/hooks/useCommentsAnchor";
-import { useComments, useSetComments } from "next-common/context/post/comments";
-import { LinkSubsquare } from "@osn/icons/subsquare";
-import Tooltip from "../tooltip";
+import { useJumpCommentAnchor } from "./useCommentAnchor";
 import CommentItemTemplate from "./itemTemplate";
-import { useIsUniversalPostComments } from "next-common/hooks/usePostComments";
 import { CommentProvider, useComment } from "./context";
 import PolkassemblyCommentItem from "./polkassemblyCommentItem";
 import CommentUser from "./user";
@@ -22,22 +18,8 @@ import { useCommentActions } from "next-common/sima/context/commentActions";
 import { usePost } from "next-common/context/post";
 import { getRealField } from "next-common/sima/actions/common";
 import useIsCommentProxyAuthor from "next-common/hooks/useIsCommentProxyAuthor";
-import { useRouter } from "next/router";
-
-function jumpToAnchor(anchorId) {
-  var anchorElement = document.getElementById(anchorId);
-  if (!anchorElement) {
-    return;
-  }
-  var bodyRect = document.body.getBoundingClientRect();
-  var elementRect = anchorElement.getBoundingClientRect();
-  var offset = elementRect.top - bodyRect.top;
-  var scrollPosition = offset - window.innerHeight / 2;
-  window.scrollTo({
-    top: scrollPosition,
-    behavior: "smooth",
-  });
-}
+import { useRootCommentContext, useRootCommentData } from "./rootComment";
+import { SubsquareCommentSource } from "./commentSource";
 
 function useIsShouldUseSimaCommentEdit() {
   const comment = useComment();
@@ -71,66 +53,27 @@ function MaybeSimaEditInput(props) {
   return <EditInput {...props} />;
 }
 
-function CommentItemImpl({
-  replyToCommentId,
-  replyToComment,
-  isSecondLevel,
-  reloadTopLevelComment,
-  scrollToTopLevelCommentBottom,
-}) {
-  const router = useRouter();
+function CommentItemImpl({ isSecondLevel, scrollToTopLevelCommentBottom }) {
   const post = usePost();
   const comment = useComment();
   const refCommentTree = useRef();
   const [isEdit, setIsEdit] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [highlight, setHighlight] = useState(false);
   const isMounted = useMountedState();
-  const { hasAnchor, anchor } = useCommentsAnchor();
+  const { isCurrentCommentAnchored, currentCommentAnchor, hasRouterAnchor } =
+    useJumpCommentAnchor();
+
   const [showReplies, setShowReplies] = useState(false);
-  const comments = useComments();
-  const setComments = useSetComments();
-  const isUniversalComments = useIsUniversalPostComments();
-  const { getComment, updateComment } = useCommentActions();
-
-  // Jump to comment when anchor is set
   useEffect(() => {
-    if (!hasAnchor) {
-      return;
+    if (hasRouterAnchor) {
+      setShowReplies(true);
     }
+  }, [hasRouterAnchor]);
 
-    setShowReplies(true);
+  const { updateComment } = useCommentActions();
+  const replyToComment = useRootCommentData();
 
-    if (anchor === comment.height) {
-      setHighlight(true);
-      setTimeout(() => {
-        jumpToAnchor(anchor);
-      }, 100);
-    }
-  }, [hasAnchor, anchor, comment.height]);
-
-  const reloadComment = useCallback(async () => {
-    const { result: updatedComment } = await getComment(comment);
-    if (updatedComment) {
-      const newComments = {
-        ...comments,
-        items: comments.items.map((item) => {
-          if (item._id === updatedComment._id) {
-            return updatedComment;
-          }
-          return item;
-        }),
-      };
-      setComments(newComments);
-
-      const scrollPosition = window.scrollY;
-      await router.replace(router.asPath);
-      window.scrollTo(0, scrollPosition);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [comments, setComments, comment._id]);
-
-  const maybeReloadTopLevelComment = reloadTopLevelComment || reloadComment;
+  const { reloadRootComment } = useRootCommentContext();
 
   const scrollToCommentBottom = useCallback(() => {
     if (refCommentTree.current) {
@@ -158,16 +101,10 @@ function CommentItemImpl({
       isSecondLevel={isSecondLevel}
       showReplies={showReplies}
       setShowReplies={setShowReplies}
-      id={comment.height}
-      highlight={highlight}
+      id={currentCommentAnchor}
+      highlight={isCurrentCommentAnchored}
       user={<CommentUser author={comment.author} />}
-      commentSource={
-        isUniversalComments && (
-          <Tooltip content="Comment from SubSquare" className="ml-2">
-            <LinkSubsquare className="w-4 h-4 [&_path]:fill-textTertiary" />
-          </Tooltip>
-        )
-      }
+      commentSource={<SubsquareCommentSource />}
       content={
         <>
           {!isEdit && (
@@ -201,7 +138,7 @@ function CommentItemImpl({
               editContentType={comment.contentType}
               onFinishedEdit={async (reload) => {
                 if (reload) {
-                  await maybeReloadTopLevelComment();
+                  await reloadRootComment();
                 }
                 if (isMounted()) {
                   setIsEdit(false);
@@ -217,12 +154,9 @@ function CommentItemImpl({
       actions={
         <CommentActions
           setShowReplies={setShowReplies}
-          reloadComment={maybeReloadTopLevelComment}
           scrollToNewReplyComment={
             scrollToTopLevelCommentBottom || scrollToCommentBottom
           }
-          replyToCommentId={replyToCommentId}
-          replyToComment={replyToComment}
           setIsEdit={setIsEdit}
         />
       }
@@ -233,10 +167,7 @@ function CommentItemImpl({
           <CommentItem
             key={reply._id}
             data={reply}
-            replyToCommentId={replyToCommentId}
-            replyToComment={replyToComment}
             isSecondLevel
-            reloadTopLevelComment={maybeReloadTopLevelComment}
             scrollToTopLevelCommentBottom={
               scrollToTopLevelCommentBottom || scrollToCommentBottom
             }
@@ -249,20 +180,14 @@ function CommentItemImpl({
 
 export default function CommentItem({
   data,
-  replyToCommentId,
-  replyToComment,
   isSecondLevel,
-  reloadTopLevelComment,
   scrollToTopLevelCommentBottom,
   ...props
 }) {
   return (
     <CommentProvider comment={data}>
       <CommentItemImpl
-        replyToCommentId={replyToCommentId}
-        replyToComment={replyToComment}
         isSecondLevel={isSecondLevel}
-        reloadTopLevelComment={reloadTopLevelComment}
         scrollToTopLevelCommentBottom={scrollToTopLevelCommentBottom}
         {...props}
       />

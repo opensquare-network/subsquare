@@ -15,12 +15,17 @@ import {
   EditMenuItem,
   CopyMenuItem,
 } from "next-common/components/articleMoreMenu/common";
+import { useCurrentCommentAnchor } from "../comment/useCommentAnchor";
 
 const DeletePopup = dynamicPopup(() =>
   import("next-common/components/deletePopup"),
 );
 
-export default function CommentMoreMenu({ editable, setIsEdit }) {
+export default function CommentMoreMenu({
+  editable,
+  setIsEdit,
+  customDeleteComment,
+}) {
   const dispatch = useDispatch();
   const comment = useComment();
   const [show, setShow] = useState(false);
@@ -28,12 +33,13 @@ export default function CommentMoreMenu({ editable, setIsEdit }) {
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const router = useRouter();
   const isAdmin = useIsAdmin();
+  const currentCommentAnchor = useCurrentCommentAnchor();
 
   useClickAway(ref, () => setShow(false));
 
   const onCopy = () => {
     copy(
-      `${window.location.origin}${window.location.pathname}${window.location.search}#${comment.height}`,
+      `${window.location.origin}${window.location.pathname}${window.location.search}#${currentCommentAnchor}`,
     );
   };
 
@@ -78,7 +84,7 @@ export default function CommentMoreMenu({ editable, setIsEdit }) {
         <DeletePopup
           itemName="comment"
           setShow={setShowDeletePopup}
-          deletePost={deleteComment}
+          deletePost={customDeleteComment || deleteComment}
         />
       )}
     </div>
