@@ -16,7 +16,8 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { Provider } from "react-redux";
 import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated";
 
-export const isAssetHubSupported = !!getChainSettings(CHAIN).modules?.assethub;
+export const isAssetHubSupported =
+  !!getChainSettings(CHAIN).modules?.assethub && !isAssetHubMigrated();
 
 let chain;
 let store;

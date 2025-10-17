@@ -30,6 +30,7 @@ export default function HeadContent() {
             maxWidth={176}
             showAvatar={false}
             className="text16Bold text-textPrimary"
+            link="/assets"
           />
           <Copyable copyText={maybeEvmAddress}>
             <span className="text14Medium text-textTertiary">

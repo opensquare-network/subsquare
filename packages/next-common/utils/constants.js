@@ -23,8 +23,8 @@ import vara from "./consts/settings/vara";
 import westend from "./consts/settings/westend";
 import polkadotAssetHub from "next-common/utils/consts/settings/polkadotAssetHub";
 import polkadotPeople from "next-common/utils/consts/settings/polkadotPeople";
-import westendAssetHub from "next-common/utils/consts/settings/westendAssetHub";
-import kusamaAssetHub from "next-common/utils/consts/settings/kusamaAssetHub";
+// import westendAssetHub from "next-common/utils/consts/settings/westendAssetHub";
+// import kusamaAssetHub from "next-common/utils/consts/settings/kusamaAssetHub";
 import kusamaPeople from "next-common/utils/consts/settings/kusamaPeople";
 // import shibuya from "next-common/utils/consts/settings/shibuya";
 import astar from "next-common/utils/consts/settings/astar";
@@ -33,7 +33,7 @@ import zkverifyTestnet from "./consts/settings/zkverifyTestnet";
 import paseo from "./consts/settings/paseo";
 import ajuna from "./consts/settings/ajuna";
 import laos from "./consts/settings/laos";
-import paseoAssetHub from "./consts/settings/paseoAssetHub";
+// import paseoAssetHub from "./consts/settings/paseoAssetHub";
 import paseoPeople from "./consts/settings/paseoPeople";
 import westendPeople from "./consts/settings/westendPeople";
 import hyperBridge from "./consts/settings/hyperBridge";
@@ -46,7 +46,7 @@ export const nodes = [
   polkadotAssetHub,
   polkadotPeople,
   kusama,
-  kusamaAssetHub,
+  // kusamaAssetHub,
   kusamaPeople,
   acala,
   ajuna,
@@ -59,7 +59,7 @@ export const nodes = [
   collectives,
   // crab,
   westend,
-  westendAssetHub,
+  // westendAssetHub,
   westendPeople,
   // crust,
   hydradx,
@@ -80,7 +80,7 @@ export const nodes = [
   zkverify,
   zkverifyTestnet,
   paseo,
-  paseoAssetHub,
+  // paseoAssetHub,
   paseoPeople,
   ...optionalNodes,
 ];

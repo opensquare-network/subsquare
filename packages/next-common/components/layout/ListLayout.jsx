@@ -43,6 +43,7 @@ export default function ListLayout({
   summaryFooter,
   tabs = [],
   header,
+  customTabs = null,
 }) {
   const seoTitle = usePageTitle(
     seoInfoProp.title ?? title ?? "governance platform",
@@ -92,6 +93,7 @@ export default function ListLayout({
             <TabsList tabs={tabs} />
           </div>
         )}
+        {customTabs}
       </div>
 
       <div className="flex-1">

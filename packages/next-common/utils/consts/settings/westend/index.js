@@ -66,6 +66,7 @@ const westend = {
   multisigWallets: {
     mimir: true,
   },
+  supportAssets: true,
 };
 
 export default westend;

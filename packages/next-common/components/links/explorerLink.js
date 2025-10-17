@@ -10,7 +10,12 @@ const Wrapper = styled(Flex)`
   height: 20px;
 `;
 
-export default function ExplorerLink({ indexer = {}, style = {}, children }) {
+export default function ExplorerLink({
+  indexer = {},
+  style = {},
+  children,
+  customDomain = null,
+}) {
   const { integrations } = useChainSettings();
 
   if (isEmpty(indexer)) {
@@ -26,7 +31,9 @@ export default function ExplorerLink({ indexer = {}, style = {}, children }) {
 
   return (
     <Wrapper style={style}>
-      <LinkComponent indexer={indexer}>{children}</LinkComponent>
+      <LinkComponent indexer={indexer} customDomain={customDomain}>
+        {children}
+      </LinkComponent>
     </Wrapper>
   );
 }

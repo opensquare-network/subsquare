@@ -7,8 +7,8 @@ import SearchInputWithPopup from "./searchInputWithPopup";
 import useIsEnhancementSearch from "next-common/components/header/hooks/useIsEnhancementSearch";
 
 export default function Header() {
-  const chainSettings = useChainSettings();
   const isEnhancementSearch = useIsEnhancementSearch();
+  const chainSettings = useChainSettings();
 
   return (
     <header className="py-4 px-6 flex gap-x-6 border-b border-neutral300 bg-neutral100">
