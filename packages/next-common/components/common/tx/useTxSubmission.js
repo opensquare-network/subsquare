@@ -26,7 +26,7 @@ export default function useTxSubmission({
     onInBlock: maybeMultisigOnInBlock,
     onFinalized: maybeMultisigOnFinalized,
   } = useMaybeMultisigCallback({ onInBlock, onFinalized });
-  const [isWraping, setIsWraping] = useState(false);
+  const [isWrapping, setIsWrapping] = useState(false);
 
   const getTx = useCallback(
     async (...args) => {
@@ -60,12 +60,12 @@ export default function useTxSubmission({
         return;
       }
 
-      setIsWraping(true);
+      setIsWrapping(true);
       let tx;
       try {
         tx = await getTx(...args);
       } finally {
-        setIsWraping(false);
+        setIsWrapping(false);
       }
 
       if (!tx) {
@@ -97,7 +97,7 @@ export default function useTxSubmission({
   );
 
   return {
-    isWraping,
+    isWrapping,
     isSubmitting,
     doSubmit,
   };
