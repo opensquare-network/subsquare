@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
-import { blake2AsHex } from "@polkadot/util-crypto";
+import { chainApiHash } from "next-common/utils/chain";
 import Extrinsic from "next-common/components/extrinsic";
 import PopupLabel from "next-common/components/popup/label";
 import ExtrinsicInfo from "./info";
@@ -18,7 +18,7 @@ import SignerWithBalance from "next-common/components/signerPopup/signerWithBala
 import InsufficientBalanceTips from "next-common/components/summary/newProposalQuickStart/common/insufficientBalanceTips";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 
-const EMPTY_HASH = blake2AsHex("");
+const EMPTY_HASH = chainApiHash("");
 
 const EMPTY_PROPOSAL = {
   encodedHash: EMPTY_HASH,
@@ -36,7 +36,7 @@ export function getState(api, proposal) {
   if (proposal) {
     encodedProposal = proposal.method.toHex();
     encodedLength = Math.ceil((encodedProposal.length - 2) / 2);
-    encodedHash = blake2AsHex(encodedProposal);
+    encodedHash = chainApiHash(encodedProposal);
     notePreimageTx = api.tx.preimage.notePreimage(encodedProposal);
   }
 
