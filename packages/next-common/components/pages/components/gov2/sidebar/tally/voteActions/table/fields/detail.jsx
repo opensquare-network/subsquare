@@ -25,7 +25,7 @@ function DetailLabel({ children }) {
   );
 }
 
-function VoteLabel({ type }) {
+export function VoteLabel({ type }) {
   const voteConfig = VOTE_TYPE_CONFIG[type];
   if (!voteConfig) {
     return null;
@@ -68,7 +68,7 @@ function DetailVoteValue({ balance, conviction }) {
   );
 }
 
-function VoteDetailRow({ label, children }) {
+export function VoteDetailRow({ label, children }) {
   return (
     <div className="flex flex-row max-md:justify-end">
       <DetailLabel>{label}</DetailLabel>
@@ -77,7 +77,7 @@ function VoteDetailRow({ label, children }) {
   );
 }
 
-function ChangeVoteWrapper({ pre, current, className }) {
+export function ChangeVoteWrapper({ pre, current, className }) {
   return (
     <div
       className={cn("max-md:flex max-md:flex-col max-md:items-end", className)}

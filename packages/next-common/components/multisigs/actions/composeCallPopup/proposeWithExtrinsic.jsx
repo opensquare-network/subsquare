@@ -1,6 +1,6 @@
 import { ExtrinsicFieldWithLoading } from "next-common/components/popup/fields/extrinsicField";
 import { useCallback, useState } from "react";
-import { blake2AsHex } from "@polkadot/util-crypto";
+import { chainApiHash } from "next-common/utils/chain";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import CallHash from "./callHash";
 import { useTimepoint } from "./useTimepoint";
@@ -26,7 +26,7 @@ export default function ProposeWithExtrinsic() {
     }
 
     const encodedProposal = data.method.toHex();
-    const encodedHash = blake2AsHex(encodedProposal);
+    const encodedHash = chainApiHash(encodedProposal);
     setCallHash(encodedHash);
     setExtrinsic(data);
   }, []);
