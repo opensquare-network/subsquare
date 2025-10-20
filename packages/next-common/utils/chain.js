@@ -1,6 +1,7 @@
 import { blake2AsHex } from "@polkadot/util-crypto";
 import Chains from "./consts/chains";
 import getChainSettings from "./consts/settings";
+import { u8aToHex } from "@polkadot/util";
 
 export async function getBlockHeightFromHash(api, blockHash) {
   const header = await api.rpc.chain.getHeader(blockHash);
@@ -168,6 +169,9 @@ export function chainApiHash(...args) {
   const { chainApi: { hasher } = {} } = getChainSettings(
     process.env.NEXT_PUBLIC_CHAIN,
   );
-  const hasherFunc = hasher || blake2AsHex;
-  return hasherFunc(...args);
+  if (hasher) {
+    const hash = hasher(...args);
+    return u8aToHex(hash);
+  }
+  return blake2AsHex(...args);
 }
