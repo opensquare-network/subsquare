@@ -5,7 +5,7 @@ import CallTree from "next-common/components/proposal/callTree";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { useContextApi } from "next-common/context/api";
 import { useTimepoint } from "./useTimepoint";
-import { blake2AsHex } from "@polkadot/util-crypto";
+import { chainApiHash } from "next-common/utils/chain";
 import ErrorMessage from "next-common/components/styled/errorMessage";
 
 export default function ProposeWithInputHex() {
@@ -17,7 +17,7 @@ export default function ProposeWithInputHex() {
       return;
     }
     const encodedProposal = call.toHex();
-    return blake2AsHex(encodedProposal);
+    return chainApiHash(encodedProposal);
   }, [call]);
 
   const { timepoint, isTimepointLoading } = useTimepoint(callHash);

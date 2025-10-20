@@ -1,4 +1,6 @@
+import { blake2AsHex } from "@polkadot/util-crypto";
 import Chains from "./consts/chains";
+import getChainSettings from "./consts/settings";
 
 export async function getBlockHeightFromHash(api, blockHash) {
   const header = await api.rpc.chain.getHeader(blockHash);
@@ -160,4 +162,12 @@ export function getRelayChain(chain) {
   }
 
   throw new Error("Unsupported relay chain");
+}
+
+export function chainApiHash(...args) {
+  const { chainApi: { hasher } = {} } = getChainSettings(
+    process.env.NEXT_PUBLIC_CHAIN,
+  );
+  const hasherFunc = hasher || blake2AsHex;
+  return hasherFunc(...args);
 }
