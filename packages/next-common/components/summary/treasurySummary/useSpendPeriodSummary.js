@@ -50,7 +50,7 @@ export default function useSpendPeriodSummary() {
   const spendPeriod = useSpendPeriod(api);
 
   useEffect(() => {
-    if (!api) {
+    if (!api || !spendPeriod || !blockTime) {
       return;
     }
 
@@ -66,7 +66,7 @@ export default function useSpendPeriodSummary() {
       .multipliedBy(100)
       .toNumber();
 
-    if (!spendPeriod || !goneBlocks || !blockTime) {
+    if (!goneBlocks) {
       return;
     }
 
