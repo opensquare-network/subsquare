@@ -98,10 +98,12 @@ export function Proposal({
   const doc = meta?.docs[0]?.toJSON();
   return (
     <div className="flex flex-col max-md:overflow-hidden">
-      <span
-        className="text-textPrimary font-medium leading-[20px] hover:underline cursor-pointer max-md:text-[16px] max-md:leading-[24px]"
-        onClick={() => setShowArgumentsDetail(proposal)}
-      >{`${section}.${method}`}</span>
+      <div>
+        <span
+          className="text-textPrimary font-medium leading-[20px] hover:underline cursor-pointer max-md:text-[16px] max-md:leading-[24px]"
+          onClick={() => setShowArgumentsDetail(proposal)}
+        >{`${section}.${method}`}</span>
+      </div>
       <span className="text-textSecondary text-[12px] leading-[16px] max-md:text-[14px] max-md:whitespace-nowrap max-md:overflow-hidden max-md:text-ellipsis max-md:leading-[20px]">
         {doc}
       </span>
