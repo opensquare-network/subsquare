@@ -12,7 +12,8 @@ import FellowshipCurveChart from "./fellowshipCurveChart";
 import Flex from "next-common/components/styled/flex";
 import HowOpenGovWorks from "next-common/components/howOpenGovWorks";
 import ConfirmationEstimation from "./gov2TallyPopup/confirmationEstimation";
-
+import useVoteSearch from "next-common/components/pages/components/fellowship/referendum/sidebar/tally/voteActions/useVoteSearch";
+import VoteActionsTable from "next-common/components/pages/components/fellowship/referendum/sidebar/tally/voteActions/table";
 export default function ThresholdCurvesFellowshipTallyPopup({
   closeFunc = noop,
   supportPerbill = 0,
@@ -21,6 +22,7 @@ export default function ThresholdCurvesFellowshipTallyPopup({
 }) {
   const approvalThreshold = useApprovalThreshold();
   const supportThreshold = useSupportThreshold();
+  const { search, searchBtn, searchBar } = useVoteSearch();
 
   return (
     <Popup title="Threshold Curves" className="w-[960px]" onClose={closeFunc}>
@@ -47,6 +49,15 @@ export default function ThresholdCurvesFellowshipTallyPopup({
 
       <div className="mt-[16px]">
         <HowOpenGovWorks anchor="referenda" />
+      </div>
+
+      <div>
+        <div className="flex justify-between text-textPrimary text14Bold pb-4">
+          <span>Action</span> {searchBtn}
+        </div>
+
+        {searchBar}
+        <VoteActionsTable search={search} />
       </div>
     </Popup>
   );
