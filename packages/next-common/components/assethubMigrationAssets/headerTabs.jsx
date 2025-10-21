@@ -11,7 +11,7 @@ const TABS = Object.freeze([
     label: "Assets",
   },
   {
-    value: "foreignAssets",
+    value: "foreign_assets",
     label: "Foreign Assets",
   },
 ]);

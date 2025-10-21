@@ -9,13 +9,13 @@ import { AssetsTabProvider, useAssetsTab } from "./context/assetsTab";
 const TITLE_MAPS = Object.freeze({
   account: "Account assets",
   assets: "Assets",
-  foreignAssets: "Foreign Assets",
+  ["foreign_assets"]: "Foreign Assets",
 });
 
 const DESCRIPTION_MAPS = Object.freeze({
   account: "Connected user can see and manage various assets",
   assets: "All no fungible assets info",
-  foreignAssets: "All foreign assets info",
+  ["foreign_assets"]: "All foreign assets info",
 });
 
 function AssetsContent() {
@@ -29,7 +29,7 @@ function AssetsContent() {
     return <AllAssetsList />;
   }
 
-  if (activeValue === "foreignAssets") {
+  if (activeValue === "foreign_assets") {
     return <ForeignAssetsList />;
   }
 
