@@ -28,7 +28,7 @@ export default function TreasuryProposalsPostList({
     <>
       <ListWrapper>
         <ListTitleBar
-          title="List"
+          title="Proposed treasury proposals"
           link="/treasury/proposals"
           titleCount={titleCount}
           titleExtra={titleExtra}

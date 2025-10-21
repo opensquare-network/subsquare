@@ -15,7 +15,7 @@ export default function TechCommProposalsPostList({
   return (
     <ListWrapper>
       <ListTitleBar
-        title="List"
+        title="Tech. Comm. proposals"
         titleCount={titleCount}
         titleExtra={titleExtra}
         link={link}

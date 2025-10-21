@@ -12,7 +12,7 @@ export default function DiscussionPostList({
 }) {
   return (
     <ListWrapper>
-      <ListTitleBar title="List" titleCount={titleCount} />
+      <ListTitleBar title="Discussions" titleCount={titleCount} />
       <MaybeEmpty items={items} type={businessCategory.discussions}>
         {items.map((data, index) => (
           <PostItem key={index} data={data} />

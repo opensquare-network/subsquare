@@ -16,7 +16,7 @@ export default function ReferendaPostList({
   return (
     <ListWrapper>
       <ListTitleBar
-        title="List"
+        title="OpenGov referenda"
         link={link}
         titleCount={titleCount}
         titleExtra={titleExtra}

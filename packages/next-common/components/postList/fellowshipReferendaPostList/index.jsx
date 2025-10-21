@@ -15,7 +15,7 @@ export default function FellowshipReferendaPostList({
   return (
     <ListWrapper>
       <ListTitleBar
-        title="List"
+        title="Fellowship referenda"
         titleCount={titleCount}
         titleExtra={titleExtra}
         link="/fellowship"

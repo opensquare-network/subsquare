@@ -13,7 +13,11 @@ export default function DemocracyExternalProposalsPostList({
 }) {
   return (
     <ListWrapper>
-      <ListTitleBar title="List" titleCount={titleCount} link={link} />
+      <ListTitleBar
+        title="Proposed democracy externals"
+        titleCount={titleCount}
+        link={link}
+      />
       <MaybeEmpty items={items} type={businessCategory.democracyExternals}>
         {items.map((data, index) => (
           <PostItem key={index} data={data} />

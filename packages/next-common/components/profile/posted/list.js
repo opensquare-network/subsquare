@@ -27,13 +27,7 @@ const InnerList = ({ secondCategory, data, pagination }) => {
   const items = data?.items ?? [];
 
   if (secondCategory.id === "comments") {
-    return (
-      <CommentList
-        items={items}
-        category={secondCategory.categoryName}
-        pagination={pagination}
-      />
-    );
+    return <CommentList items={items} pagination={pagination} />;
   }
 
   if (secondCategory.categoryId === businessCategory.fellowship) {
@@ -163,9 +157,8 @@ const InnerList = ({ secondCategory, data, pagination }) => {
   return (
     <PostList
       link={link}
-      title={"List"}
       titleCount={titleCount}
-      category={secondCategory.categoryId}
+      category={secondCategory.categoryName}
       items={items}
       pagination={pagination}
     />

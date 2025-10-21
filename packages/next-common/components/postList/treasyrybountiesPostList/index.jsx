@@ -14,7 +14,7 @@ export default function TreasuryBountiesPostList({
   return (
     <ListWrapper>
       <ListTitleBar
-        title="List"
+        title="Proposed treasury bounties"
         titleCount={titleCount}
         titleExtra={titleExtra}
         link="/treasury/bounties"

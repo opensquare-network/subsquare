@@ -12,7 +12,7 @@ export default function PolkassemblyDiscussionPostList({
 }) {
   return (
     <ListWrapper>
-      <ListTitleBar title="List" titleCount={titleCount} />
+      <ListTitleBar title="Polkassembly Discussions" titleCount={titleCount} />
       <MaybeEmpty items={items} type={businessCategory.polkassemblyDiscussions}>
         {items.map((data, index) => (
           <PostItem key={index} data={data} />
