@@ -5,9 +5,10 @@ import { useMemo } from "react";
 import { cn } from "next-common/utils";
 import { ArrowDown, ArrowUp } from "@osn/icons/subsquare";
 
+const NONE = "none";
 const options = [
   {
-    value: "none",
+    value: NONE,
     label: <Label label="All status" />,
   },
   ...[
@@ -36,7 +37,7 @@ export default function ReferendaStatusSelectField({
   onOpenChange,
 }) {
   const selectedLabel = useMemo(() => {
-    return options?.find((item) => item.value === value)?.label;
+    return options?.find((item) => item.value === (value || NONE))?.label;
   }, [value]);
 
   return (
@@ -44,10 +45,12 @@ export default function ReferendaStatusSelectField({
       open={open}
       onOpenChange={onOpenChange}
       value={value}
-      onValueChange={onChange}
+      onValueChange={(status) => {
+        onChange(status === NONE ? "" : status);
+      }}
     >
       <RadixSelect.Trigger className=" flex justify-between items-center min-w-5 w-[160px] h-[28px] bg-neutral100 border border-neutral400 cursor-pointer text-textPrimary rounded-md py-1.5 px-1.5 pl-4">
-        {selectedLabel || <Label label="All status" />}
+        {selectedLabel}
         <div>
           <ArrowDown
             className={cn(
