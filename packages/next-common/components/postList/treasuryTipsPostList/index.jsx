@@ -29,7 +29,7 @@ export default function TreasuryTipsPostList({
     <>
       <ListWrapper>
         <ListTitleBar
-          title="List"
+          title="Proposed treasury tips"
           link="/treasury/tips"
           titleCount={titleCount}
           titleExtra={titleExtra}

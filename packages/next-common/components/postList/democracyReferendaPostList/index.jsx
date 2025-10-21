@@ -13,7 +13,11 @@ export default function DemocracyReferendaPostList({
 }) {
   return (
     <ListWrapper>
-      <ListTitleBar title="List" titleCount={titleCount} link={link} />
+      <ListTitleBar
+        title="Proposed democracy referenda"
+        titleCount={titleCount}
+        link={link}
+      />
       <MaybeEmpty items={items} type={businessCategory.democracyReferenda}>
         {items.map((data, index) => (
           <PostItem key={index} data={data} />

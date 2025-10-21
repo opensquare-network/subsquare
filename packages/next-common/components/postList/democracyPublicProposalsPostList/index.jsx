@@ -16,7 +16,7 @@ export default function DemocracyPublicProposalsPostList({
     <ListWrapper>
       <ListTitleBar
         titleExtra={titleExtra}
-        title="List"
+        title="Proposed democracy proposals"
         titleCount={titleCount}
         link={link}
       />

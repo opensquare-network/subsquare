@@ -16,7 +16,7 @@ export default function CouncilMotionsPostList({
     <ListWrapper>
       <ListTitleBar
         titleExtra={titleExtra}
-        title="List"
+        title="Council motions"
         titleCount={titleCount}
         link={link}
       />
