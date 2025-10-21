@@ -1,23 +1,47 @@
 import { useSelector } from "react-redux";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useMountedState } from "react-use";
 import BigNumber from "bignumber.js";
 import { estimateBlocksTime } from "next-common/utils";
 import useChainOrScanHeight from "next-common/hooks/height";
-import { useContextApi } from "next-common/context/api";
 import { useTreasuryPallet } from "next-common/context/treasury";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
+import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
+
+function useConditionalBlockHeight(api) {
+  const localHeight = useChainOrScanHeight();
+  const ahmLatestHeight = useAhmLatestHeight();
+  const pallet = useTreasuryPallet();
+
+  return useMemo(() => {
+    if (!api || !pallet) {
+      return null;
+    }
+
+    if (api?.query[pallet]?.lastSpendPeriod) {
+      return ahmLatestHeight;
+    }
+
+    return localHeight;
+  }, [api, pallet, ahmLatestHeight, localHeight]);
+}
 
 export default function useSpendPeriodSummary() {
-  const api = useContextApi();
-  const blockHeight = useChainOrScanHeight();
+  const api = useConditionalContextApi();
+  const blockHeight = useConditionalBlockHeight(api);
   const [summary, setSummary] = useState({});
   const isMounted = useMountedState();
   const blockTime = useSelector(blockTimeSelector);
   const pallet = useTreasuryPallet();
 
   useEffect(() => {
-    if (!api || !api.consts || !api.consts[pallet]?.spendPeriod) {
+    if (
+      !api ||
+      !api.consts ||
+      !api.consts[pallet]?.spendPeriod ||
+      !blockHeight
+    ) {
       return;
     }
 
