@@ -13,7 +13,7 @@ const TITLE_MAPS = Object.freeze({
 });
 
 const DESCRIPTION_MAPS = Object.freeze({
-  account: "Connected user can see and manage various assets",
+  account: "Connected user can check and manage various assets",
   assets: "All no fungible assets info",
   ["foreign_assets"]: "All foreign assets info",
 });
@@ -23,17 +23,13 @@ function AssetsContent() {
 
   if (activeValue === "account") {
     return <AssetsAccount />;
-  }
-
-  if (activeValue === "assets") {
+  } else if (activeValue === "assets") {
     return <AllAssetsList />;
-  }
-
-  if (activeValue === "foreign_assets") {
+  } else if (activeValue === "foreign_assets") {
     return <ForeignAssetsList />;
+  } else {
+    return null;
   }
-
-  return null;
 }
 
 function AssethubMigrationAssetsImpl() {
