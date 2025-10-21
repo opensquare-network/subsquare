@@ -8,6 +8,8 @@ import { MigrationConditionalApiProvider } from "next-common/context/migration/c
 import useFellowshipCurveChartOptions from "./useFellowshipCurveChartOptions";
 import useFellowshipReferendaCurveData from "./useFellowshipReferendaCurveData";
 import useSlider from "../referendaCurveChart/useSlider";
+import CustomXTickLabels from "./curveChartCustomXTickLabels";
+import ThresholdCurvesGov2TallyLegend from "next-common/components/charts/thresholdCurve/legend/gov2TallyLegend";
 
 export default function FellowshipCurveChart() {
   const indexer = useReferendumVotingFinishIndexer();
@@ -35,6 +37,7 @@ function FellowshipCurveChartWithContext() {
     rangeLabel,
     supportData,
     approvalData,
+    rangeData,
   );
 
   const options = useFellowshipCurveChartOptions(
@@ -45,14 +48,24 @@ function FellowshipCurveChartWithContext() {
   );
 
   return (
-    <div style={{ height: width > 768 ? 320 : 144 }}>
-      <Line
-        ref={chartRef}
-        data={chartData}
-        options={options}
-        plugins={[hoverLinePlugin]}
-      />
-      {slider}
-    </div>
+    <>
+      <div>
+        <div style={{ height: width > 768 ? 320 : 144 }}>
+          <Line
+            ref={chartRef}
+            data={chartData}
+            options={options}
+            plugins={[hoverLinePlugin]}
+          />
+        </div>
+        <CustomXTickLabels
+          rangeData={rangeData}
+          showAyeNay={false}
+          chartArea={chartRef.current?.chartArea}
+        />
+        {slider}
+      </div>
+      <ThresholdCurvesGov2TallyLegend showAyeNay={false} />
+    </>
   );
 }

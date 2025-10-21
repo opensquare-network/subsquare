@@ -7,6 +7,7 @@ export default function useFellowshipReferendaCurveChartData(
   labels,
   supportData,
   approvalData,
+  rangeData,
 ) {
   const supportThresholdConfig = useSupportThresholdDatasetConfig(supportData);
   const approvalThresholdConfig =
@@ -15,7 +16,16 @@ export default function useFellowshipReferendaCurveChartData(
   return {
     chartData: {
       labels: labels,
-      datasets: [approvalThresholdConfig, supportThresholdConfig],
+      datasets: [
+        {
+          ...approvalThresholdConfig,
+          data: approvalThresholdConfig.data.slice(rangeData[0], rangeData[1]),
+        },
+        {
+          ...supportThresholdConfig,
+          data: supportThresholdConfig.data.slice(rangeData[0], rangeData[1]),
+        },
+      ],
     },
   };
 }

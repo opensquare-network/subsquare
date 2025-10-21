@@ -1,7 +1,6 @@
 import Popup from "../../popup/wrapper/Popup";
 import { noop } from "lodash-es";
 import "../globalConfig";
-import ThresholdCurvesGov2TallyLegend from "./legend/gov2TallyLegend";
 import {
   useApprovalThreshold,
   useSupportThreshold,
@@ -27,7 +26,6 @@ export default function ThresholdCurvesFellowshipTallyPopup({
   return (
     <Popup title="Threshold Curves" className="w-[960px]" onClose={closeFunc}>
       <FellowshipCurveChart />
-      <ThresholdCurvesGov2TallyLegend showAyeNay={false} />
 
       <Flex className="flex max-sm:flex-col grow gap-[16px]">
         <ThresholdApprovalCard

@@ -30,18 +30,10 @@ function useFellowshipCurveChartDefaultOptions(labels = []) {
     scales: {
       x: {
         type: "linear",
-        display: true,
+        display: false,
         ticks: {
           stepSize: 1,
           max: labels.length,
-          callback(val) {
-            const stepSize = Math.round(labels.length / 3);
-            if (
-              [0, stepSize * 1, stepSize * 2, labels.length - 1].includes(val)
-            ) {
-              return val + "hs";
-            }
-          },
         },
         grid: {
           display: false,
