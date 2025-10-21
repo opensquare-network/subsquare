@@ -77,12 +77,12 @@ export default function TrackPage({
     normalizeGov2ReferendaListItem(item, tracks),
   );
 
-  function onStatusChange(item) {
+  function onStatusChange(status) {
     const q = router.query;
 
     delete q.page;
-    if (item.value) {
-      q.status = snakeCase(item.value);
+    if (status) {
+      q.status = snakeCase(status);
     } else {
       delete q.status;
     }
