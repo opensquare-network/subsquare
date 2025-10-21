@@ -17,11 +17,12 @@ function useConditionalBlockHeight(api) {
 
   const getBlockHeight = useCallback(async () => {
     if (!api || !pallet) {
-      return null;
+      return;
     }
     const lastSpendPeriod = await api?.query[pallet]?.lastSpendPeriod();
     if (lastSpendPeriod && !lastSpendPeriod?.isNone) {
       setBlockHeight(ahmLatestHeight);
+      return;
     }
 
     setBlockHeight(localHeight);
