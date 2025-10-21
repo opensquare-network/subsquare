@@ -4,8 +4,13 @@ import Breadcrumb from "next-common/components/_Breadcrumb";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import { usePageProps } from "next-common/context/page";
 
-export default function NotFoundDetail({ breadcrumbItems = [], hasSidebar }) {
+export default function NotFoundDetail({
+  breadcrumbItems = [],
+  hasSidebar,
+  customId = null,
+}) {
   const { id } = usePageProps();
+
   return (
     <DetailLayout
       breadcrumbs={
@@ -14,7 +19,7 @@ export default function NotFoundDetail({ breadcrumbItems = [], hasSidebar }) {
             items={[
               ...breadcrumbItems,
               {
-                content: `#${id}`,
+                content: customId || `#${id}`,
               },
             ]}
           />

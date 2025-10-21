@@ -4,6 +4,7 @@ import useFetchProfileDemocracyDeposits from "next-common/hooks/profile/deposit/
 import useFetchProfileTreasuryDeposits from "next-common/hooks/profile/deposit/treasury";
 import useFetchProfilePreimageDeposits from "next-common/hooks/profile/deposit/useFetchProfilePreimageDeposits";
 import useSubProfileIdentityDeposits from "next-common/hooks/profile/deposit/useFetchProfileIdentityDeposits";
+import { useProfileProxyDepositsData } from "next-common/components/profile/deposits/proxy";
 
 export default function useFetchProfileDepositsData() {
   useFetchProfileReferendaDeposits();
@@ -12,4 +13,5 @@ export default function useFetchProfileDepositsData() {
   useFetchProfileTreasuryDeposits();
   useSubProfileIdentityDeposits();
   useFetchProfilePreimageDeposits();
+  useProfileProxyDepositsData();
 }

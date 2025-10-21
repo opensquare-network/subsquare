@@ -24,6 +24,7 @@ const westend = {
   name: capitalize(name),
   ...westendCommonCfg,
   blockTime: 6000,
+  assethubBlockTime: 12000,
   assethubMigration: westendAssethubMigration,
   multisigApiPrefix: "westmint-gh-api",
   endpoints: westendAssetHubNodes,

@@ -1,12 +1,11 @@
 import { useChainSettings, useChain } from "next-common/context/chain";
-import { useSelector } from "react-redux";
-import { profileActiveMultisigsCountSelector } from "next-common/store/reducers/profile/multisig";
 import useDepositsCount from "next-common/hooks/profile/deposit/useDepositsCount";
 import { usePageProps } from "next-common/context/page";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { useProfileCollectivesTabs } from "./useProfileCollectivesTabs";
 import { isKintsugiChain } from "next-common/utils/chain";
 import { cn } from "next-common/utils";
+import { useProfileMultisigsActiveContext } from "next-common/components/profile/multisigs/context/profileMultisigsActiveContext";
 
 export function TabTitle({ active, children }) {
   return (
@@ -23,7 +22,7 @@ export function TabTitle({ active, children }) {
 }
 
 export default function useProfileTabs() {
-  const { id } = usePageProps();
+  const { id, beneficiariesSummary } = usePageProps();
   const {
     modules: {
       referenda: hasReferenda,
@@ -37,8 +36,9 @@ export default function useProfileTabs() {
   } = useChainSettings();
   const chain = useChain();
   const hasDemocracyModule = democracy && !democracy?.archived;
-  const activeMultisigsCount = useSelector(profileActiveMultisigsCountSelector);
   const depositsCount = useDepositsCount();
+  const { activeCount: activeMultisigsCount } =
+    useProfileMultisigsActiveContext();
 
   const maybeEvmAddress = tryConvertToEvmAddress(id);
   const prefix = `/user/${maybeEvmAddress}/`;
@@ -106,6 +106,16 @@ export default function useProfileTabs() {
       url: `${prefix}transfers`,
       exactMatch: false,
     });
+
+    if (beneficiariesSummary) {
+      tabs.push({
+        label({ active }) {
+          return <TabTitle active={active}>Treasury</TabTitle>;
+        },
+        value: "treasury",
+        url: `${prefix}treasury`,
+      });
+    }
 
     if (hasIdentity) {
       tabs.push({

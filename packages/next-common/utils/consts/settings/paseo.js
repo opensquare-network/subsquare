@@ -25,6 +25,7 @@ const paseo = {
   value: Chains.paseo,
   name: capitalize(Chains.paseo),
   blockTime: 6000,
+  assethubBlockTime: 12000,
   endpoints: paseoAssetHubNodes,
   relayChainEndpoints: paseoRelayChainNodes,
   assethubMigration: paseoAssethubMigration,
@@ -33,7 +34,7 @@ const paseo = {
   navPreferDark: true,
   links: paseoLinks,
   hasMultisig: true,
-  multisigApiPrefix: "paseo",
+  multisigApiPrefix: "ahs-gh-api",
   graphqlApiSubDomain: "paseo-gh-api",
   postLabels: defaultPostLabels,
   description:

@@ -124,7 +124,11 @@ export default function Categories({
               onClick={() => onFirstCategoryClick(c)}
               key={index}
               type={c.name}
-              count={getFirstCategoryCount(c.id, overview)}
+              count={
+                c.getCount
+                  ? c.getCount(overview)
+                  : getFirstCategoryCount(c.id, overview)
+              }
               selected={c.id === firstCategory.id}
             />
           ))}
@@ -135,11 +139,9 @@ export default function Categories({
               return null;
             }
 
-            const count = getSecondCategoryCount(
-              firstCategory.id,
-              c.id,
-              overview,
-            );
+            const count = c.getCount
+              ? c.getCount(overview)
+              : getSecondCategoryCount(firstCategory.id, c.id, overview);
 
             const selected = c.id === secondCategory.id;
 

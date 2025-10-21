@@ -19,6 +19,7 @@ import getChainSettings from "../settings";
 import { getMoreMenu } from "./more";
 import { coretimeMenu } from "./coretime";
 import { peopleMenu } from "./people";
+import whitelist from "./whitelist";
 import Data from "./data";
 import getAdvancedMenu from "next-common/utils/consts/menu/advanced";
 import { NAV_MENU_TYPE } from "next-common/utils/constants";
@@ -59,6 +60,7 @@ export function getHomeMenu({
     getAdvancedMenu(
       [
         modules?.preimages && preImages,
+        modules?.whitelist && whitelist,
         ...integrationsMenu,
         (modules?.proxy || modules?.vesting || hasMultisig) && Data,
       ].filter(Boolean),
@@ -156,14 +158,24 @@ const matchedMenuItem = (menu, pathname) => {
     }
   }
 };
+
+function matchedGroupMenu(menu, pathname) {
+  return isNavGroupMenu(menu.type) && menu?.pathname === pathname;
+}
+
 const isSubSpaceNavMenu = (type) =>
   type === NAV_MENU_TYPE.subspace || type === "archived";
+
+const isNavGroupMenu = (type) => type === NAV_MENU_TYPE.group;
+
 export function matchNewMenu(menu, pathname) {
   if (!isArray(menu)) {
     return null;
   }
   for (const menuItem of menu) {
-    if (isSubSpaceNavMenu(menuItem.type)) {
+    if (matchedGroupMenu(menuItem, pathname)) {
+      return null;
+    } else if (isSubSpaceNavMenu(menuItem.type)) {
       const findMenu = matchedMenuItem(menuItem.items, pathname);
       if (findMenu) {
         return {

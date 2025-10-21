@@ -11,14 +11,14 @@ const WhalesHistoryList = dynamic(
 );
 
 export default function ReferendaWhalesHistoryPage({
-  title,
   gov2ReferendaSummary,
 }) {
-  const seoInfo = { title, desc: title };
+  const seoInfo = { title : "Referenda Whales History"  , desc: "View the history of referenda whales" };
 
   return (
     <ReferendaLayout
-      title={title}
+      title={seoInfo.title}
+      description={seoInfo.desc}
       seoInfo={seoInfo}
       summaryData={gov2ReferendaSummary}
     >

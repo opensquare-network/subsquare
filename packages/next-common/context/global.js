@@ -13,6 +13,7 @@ import ReactQueryClientProvider from "./reactQuery";
 import UserAccountProvider from "./user/account";
 import PageLoadingProvider from "./pageLoading";
 import WalletConnectProvider from "./walletconnect";
+import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 
 export default function GlobalProvider({
   user,
@@ -42,17 +43,19 @@ export default function GlobalProvider({
                   >
                     <PageProvider pageProperties={pageProperties}>
                       <ApiProvider>
-                        <ConnectedAccountProvider
-                          connectedAccount={connectedAccount}
-                        >
-                          <WalletConnectProvider>
-                            <UserAccountProvider>
-                              <SignetContextProvider>
-                                {children}
-                              </SignetContextProvider>
-                            </UserAccountProvider>
-                          </WalletConnectProvider>
-                        </ConnectedAccountProvider>
+                        <MigrationConditionalApiProvider>
+                          <ConnectedAccountProvider
+                            connectedAccount={connectedAccount}
+                          >
+                            <WalletConnectProvider>
+                              <UserAccountProvider>
+                                <SignetContextProvider>
+                                  {children}
+                                </SignetContextProvider>
+                              </UserAccountProvider>
+                            </WalletConnectProvider>
+                          </ConnectedAccountProvider>
+                        </MigrationConditionalApiProvider>
                       </ApiProvider>
                     </PageProvider>
                   </NavProvider>

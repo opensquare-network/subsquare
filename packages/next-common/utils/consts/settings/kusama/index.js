@@ -5,8 +5,11 @@ import kusamaTreasuryTracks from "next-common/utils/consts/settings/kusama/track
 import { defaultPostLabels } from "../common";
 import MenuGroups from "../menuGroups";
 import { mergeChainModules } from "../common/modules";
-import kusamaCommonCfg from "next-common/utils/consts/settings/kusama/common";
+import kusamaCommonCfg, {
+  kusamaAssethubMigration,
+} from "next-common/utils/consts/settings/kusama/common";
 import kusamaPreimageSettings from "next-common/utils/consts/settings/common/preimage/kusama";
+import kusamaAssetHubNodes from "next-common/utils/consts/settings/kusamaAssetHub/endpoints";
 
 const ProjectIconKusamaDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconKusamaDark"),
@@ -21,7 +24,10 @@ const kusama = {
   ...kusamaCommonCfg,
   hasElections: true,
   blockTime: 6000,
-  endpoints: defaultKusamaNodes,
+  assethubBlockTime: 12000,
+  assethubMigration: kusamaAssethubMigration,
+  endpoints: kusamaAssetHubNodes,
+  relayChainEndpoints: defaultKusamaNodes,
   avatar: ProjectIconKusamaLight,
   darkAvatar: ProjectIconKusamaDark,
   navPreferDark: true,
@@ -33,10 +39,18 @@ const kusama = {
     identity: true,
     multisig: false,
   },
+  subsquareGraphql: {
+    domain: "kusama-gh-api",
+    coretime: true,
+    intime: {
+      preimage: true,
+      proxy: true,
+    },
+  },
   postLabels: defaultPostLabels,
   useVoteCall: true,
   hasMultisig: true,
-  multisigApiPrefix: "kusama",
+  multisigApiPrefix: "statemine-gh-api",
   description:
     "Kusama is a scalable multi-chain network for radical innovation and early stage Polkadot deployments. Expect Chaos. No promises.",
   modules: mergeChainModules({
@@ -49,6 +63,7 @@ const kusama = {
       archived: true,
     },
     treasury: {
+      status: true,
       spends: true,
       childBounties: true,
       tips: {
@@ -98,6 +113,10 @@ const kusama = {
   supportWalletconnect: true,
   openSquare: {
     voting: "kusama",
+  },
+  ecoNews: true,
+  translations: {
+    referenda: true,
   },
 };
 

@@ -1,6 +1,7 @@
 import { SystemSearch } from "@osn/icons/subsquare";
 import { noop } from "lodash-es";
 import styled from "styled-components";
+import { useRef, useEffect } from "react";
 
 const Wrapper = styled.div`
   margin: 24px 0 !important;
@@ -22,13 +23,22 @@ const Input = styled.input`
   font-weight: 500;
 `;
 
-export default function SearchBar({ setSearch = noop }) {
+export default function SearchBar({ setSearch = noop, autoFocus = false }) {
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (autoFocus && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [autoFocus]);
+
   return (
     <Wrapper>
       <div className="flex p-[8px] [&_path]:fill-textTertiary">
         <SystemSearch width={24} height={24} />
       </div>
       <Input
+        ref={inputRef}
         placeholder="Search for address/identity"
         onChange={(e) => setSearch(e.target.value)}
       />

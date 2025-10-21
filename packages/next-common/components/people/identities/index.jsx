@@ -5,6 +5,7 @@ import IdentitiesTable from "./table";
 import OnchainPeopleIdentitiesPage from "./onchain";
 import IdentitiesSummary from "./summary";
 import PeopleCommonProvider from "../common/commonProvider";
+import generateLayoutRawTitle from "next-common/utils/generateLayoutRawTitle";
 
 export const tabs = [
   {
@@ -30,6 +31,7 @@ export default function PeopleIdentitiesPageImpl() {
     <PeopleCommonProvider>
       <ListLayout
         title="Identities"
+        seoInfo={{ rawTitle: generateLayoutRawTitle("People Identities") }}
         description={description}
         headContent={<ChainSocialLinks />}
         summary={<IdentitiesSummary />}

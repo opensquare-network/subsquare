@@ -8,11 +8,14 @@ import { OnChainReferendaTracksProvider } from "next-common/context/referenda/tr
 import { withReferendaCommonProps } from "next-common/services/serverSide/referenda/common";
 
 function TracksPageLayout({ children }) {
-  const { title, gov2ReferendaSummary } = usePageProps();
+  const { gov2ReferendaSummary } = usePageProps();
+  const seoInfo = { title: "Referenda Tracks", desc: "View referenda tracks" };
+
   return (
     <ReferendaLayout
-      title={title}
-      seoInfo={{ title }}
+      title={seoInfo.title}
+      description={seoInfo.desc}
+      seoInfo={seoInfo}
       summaryData={gov2ReferendaSummary}
     >
       {children}

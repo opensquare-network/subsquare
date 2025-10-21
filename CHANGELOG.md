@@ -2,6 +2,112 @@
 
 All notable changes to this project will be documented in this file.
 
+# 5.4.3
+
+Date:
+2025-10-11. [Code diff](https://github.com/opensquare-network/subsquare/compare/0d1a5c15e462d9c6cef3d70cd15fc5a2ff4e3e57...d4edbebf11d54051923378e9d88ecfd0ffed4e07).
+
+- Support kusama assethub migration.
+    - Index relay chain for fellowship business and assethub for other governance related business.
+    - Fronted configs and use relay chain API for fellowship pages.
+- A better design for bounty summary. We show the total value and bounty numbers of different status.
+- Show treasury beneficiary status on user profile page.
+- Fellowship: enable search for collectives chain and users can search fellowship members, referenda, treasury spends.
+- Show related bounty info and link on the referendum detail page if the referendum is related to a bounty.
+- Correct zkverify mainnet ss58 format.
+- Improve tooltip for bounty funded status tag.
+- Refactor referenda curves related code to reduce coupling.
+- Style improvements and other code refactor.
+
+# 5.4.2
+
+Date:
+2025-09-28. [Code diff](https://github.com/opensquare-network/subsquare/compare/5ce5c40cbc2e7452d8a9e4de92d83de6ccb8a819...b0c8769265ed2489719126a9daa0c6e7185b0537).
+
+- Support for multisig templates. Users can quickly create a call to transfer/batch transfer/add a proxy/remove a proxy.
+- Add eco news on the overview page, so users can report/see the latest eco news. Admins can manage news.
+- Show the call popup when users are approving a multisig if there is call info, so users can confirm the multisig call.
+- Fix deposit tab number on the profile page, so users can see the correct deposits number.
+- Use paseo assethub API for paseo multisigs after assethub migration.
+- Add a component to sort referenda by index desc.
+- Support zkverify mainnet.
+- Enable OpenGov actions for hydration, bifrost-polkadot and zkverify.
+- Add an award countdown component on the treasury proposal list.
+- Fix OpenGov referendum curve chart when a referendum vote finished before the deciding period end.
+- Update dependency to wagmi.
+
+# 5.4.1
+
+Date:
+2025-09-22. [Code diff](https://github.com/opensquare-network/subsquare/compare/c3afd2a8e965c67b397fb31a86d18275961fa04d...37a8251b4043bb9061f0558411c11ebee0959178).
+
+- [Big] Add a consolidated feeds for fellowship:
+    - Index and save referenda related feeds to the database.
+    - Add API for latest feeds and paged feeds data.
+    - Show the latest feeds panel on the overview page and develop a new feeds page including referenda, membership and
+      salary related feeds.
+- Add transfer relationships to profile relatives chart for polkadot.
+- Decentralized voices
+    - Add a statistics message on the influence panel, so users can see how many referenda are affected by the DV
+      program.
+    - Show the description panel for on each DV cohort detail page.
+- Improve pagination component to solve some UX issues.
+- Show the 404 component when referendum id error on the referendum detail page.
+- Guard invalid address for the profile page and the fellowship evidence detail page.
+- Fix page title for coretime and people page.
+- Add code guard for democracy call when extracting remarks.
+- Fix user's banner does not change when switching addresses on the profile relatives popup.
+- Style fixes and code refactor.
+
+# 5.4.0
+
+Date:
+2025-09-13. [Code diff](https://github.com/opensquare-network/subsquare/compare/a1113c82465b04faa0ac8e196508d1821a21d967...124ffc47dc551c44dd9d10a1a7c7dfa179c7f24f).
+
+- [Medium] Add decentralized voices page for OpenGov referenda.
+    - A table to show DV delegates participation and win rate, comparison of Aye/Nay/Abstain votes.
+    - A heatmap to show votes of referenda.
+    - Influence to referenda by DV delegations.
+    - Data are divided by DAOs and guardians.
+    - History DV cohorts are shown, and we can see details of history cohort.
+- Show more multisig info on the profile page. If an address is a multisig address, we show its multisigs and its
+  composition as a multisig including signatories and threshold.
+- Assethub migration support
+    - Fix confirmation estimation.
+    - Fix deciding progress percentage calculation.
+    - Fix preparing blocks calculation.
+    - Fix referendum enactment status calculation.
+    - Fix the referenda countdown component status calculation.
+- Add intime-scan package to index on-chain business following the latest block, not finalized block, so we can get the
+  latest on-chain data in fronted without waiting for the block confirmation.
+    - Support preimage latest onchain data indexing and fronted integration.
+    - Support proxy latest onchain data indexing and fronted integration.
+- Add next config headers to fix clickjacking.
+- Support autofocus for the votes popup search input.
+- Refactor more menu related code on the referendum detail page and the discussion post menu to reduce code coupling
+- Fix delegation page with democracy query param.
+- Show component 404 instead of redirecting users to 404 page for evidence detail page.
+- Style fixes and dependencies upgration.
+
+# 5.3.3
+
+Date:
+2025-09-04. [Code diff](https://github.com/opensquare-network/subsquare/compare/269a562dcdcefa6ed08935055118f838d73b8f44...8d11350bf360958e3389b47bfa0ad4ef5d744aac).
+
+- Add a range bar in the referendum curve component so we can zoom in to see votes and impacts on the tally line of
+  curve chart.
+- Add delegation relationships to profile relatives chart. Users can click a select component to show different types of
+  relationships of an address.
+- Decentralized voices:
+    - Update cohort 4 and 5 delegates.
+    - Support DV guardian and show them on the DV votes popup.
+- Fix call remark render if the data is hex.
+- Refactor account panel scroll prompts components to reduce the coupling of different prompts.
+- Redirect users to profile votes page in the vote actions popup after clicking an address.
+- [Fellowship] Enable track auto selection for the treasury request referenda template.
+- Update the icon for assethub foreign assets.
+- Upgrade dependencies.
+
 # 5.3.2
 
 Date:

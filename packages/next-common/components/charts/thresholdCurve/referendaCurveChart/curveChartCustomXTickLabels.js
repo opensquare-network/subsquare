@@ -1,15 +1,23 @@
-import { useDecisionIndex } from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
+import { usePreparingHours } from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
 import { useMemo, useRef } from "react";
 
 const PREPARING_THRESHOLD = 60;
 
 export default function CustomXTickLabels({
-  labelsLength = 0,
+  rangeData,
   showAyeNay = false,
   chartArea = {},
 }) {
-  const decisionIndex = useDecisionIndex();
+  const decisionIndex = usePreparingHours();
   const preparingRef = useRef(null);
+  const labelsLength = rangeData[1] - rangeData[0];
+
+  const preparingwidth = useMemo(() => {
+    if (rangeData[0] <= decisionIndex) {
+      return (decisionIndex - rangeData[0]) / labelsLength;
+    }
+    return 0;
+  }, [decisionIndex, labelsLength, rangeData]);
 
   // tick bar style
   const style = useMemo(() => {
@@ -22,13 +30,23 @@ export default function CustomXTickLabels({
 
   //deciding ticks
   const tickLabels = useMemo(() => {
+    let end = rangeData[1];
+    end = end - decisionIndex;
+    let start = rangeData[0];
+    if (rangeData[0] <= decisionIndex) {
+      start = 0;
+    } else {
+      start = start - decisionIndex;
+    }
+
+    const total = end - start;
     return [
-      0,
-      Math.floor((labelsLength - decisionIndex) / 3),
-      Math.floor(((labelsLength - decisionIndex) / 3) * 2),
-      labelsLength - decisionIndex - 1,
+      start,
+      start + Math.floor(total / 3),
+      start + Math.floor((total / 3) * 2),
+      end - 1,
     ];
-  }, [labelsLength, decisionIndex]);
+  }, [decisionIndex, rangeData]);
 
   return (
     <div className="w-full" style={style}>
@@ -37,7 +55,7 @@ export default function CustomXTickLabels({
           className="flex-shrink-0 overflow-hidden flex items-center justify-center border-gray400 border-l border-r"
           ref={preparingRef}
           style={{
-            width: `${(decisionIndex / labelsLength) * 100}%`,
+            width: `${preparingwidth * 100}%`,
             visibility:
               preparingRef.current?.offsetWidth < PREPARING_THRESHOLD
                 ? "hidden"

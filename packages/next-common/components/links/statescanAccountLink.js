@@ -9,6 +9,7 @@ const statescanDomainMap = {
   [Chains.westendAssetHub]: "westmint",
   [Chains.kusamaAssetHub]: "statemine",
   [Chains.paseoAssetHub]: "paseo",
+  [Chains.hyperBridge]: "nexus",
 };
 
 export default function StatescanAccountLink({ address }) {

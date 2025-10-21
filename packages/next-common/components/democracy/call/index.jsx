@@ -28,7 +28,7 @@ export default function ReferendumCall({ call, shorten, onchainData = {} }) {
   data.push(
     ...extractKintsugiFields(chain, call),
     ...extractTreasuryFields(call),
-    ...extractRemarkMetaFields(call.remarks || []),
+    ...extractRemarkMetaFields(call?.remarks || []),
   );
 
   return <KvList data={data} />;

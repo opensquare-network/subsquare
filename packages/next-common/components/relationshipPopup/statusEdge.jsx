@@ -4,11 +4,17 @@ import {
   getSmoothStepPath,
   useNodesData,
 } from "@xyflow/react";
+import { isNil } from "lodash-es";
 import { DisplayUser } from "next-common/components/profile/bio";
-import { indications } from "next-common/components/relationshipPopup/indications";
+import { allIndications } from "next-common/components/relationshipPopup/indications";
 import Tooltip from "next-common/components/tooltip";
-import { rootNodeId } from "next-common/hooks/useConversionRelationshipNode";
+import { rootNodeId } from "next-common/hooks/useRelationshipNode";
 import styled from "styled-components";
+import { useTrackContent } from "../referenda/track/trackTag";
+import ValueDisplay from "../valueDisplay";
+import { toPrecision } from "next-common/utils";
+import { useChainSettings } from "next-common/context/chain";
+import pluralize from "pluralize";
 
 const EdgeLabel = styled.div`
   position: absolute;
@@ -43,7 +49,7 @@ export default function StatusEdge({
     centerX: edgePathCenterX,
   });
 
-  const edgeTheme = indications.find((item) => item.name === data?.type);
+  const edgeTheme = allIndications.find((item) => item.name === data?.type);
   const sourceNode = useNodesData(source);
   const targetNode = useNodesData(target);
 
@@ -86,6 +92,7 @@ export default function StatusEdge({
                 source={sourceNode?.data?.address}
                 target={targetNode?.data?.address}
                 value={data.value}
+                rawData={data}
               />
             }
           >
@@ -123,6 +130,14 @@ function TooltipsContent({ type, ...rest }) {
 
   if (type === "Identity") {
     return <IdentityTipContent {...rest} />;
+  }
+
+  if (type === "Delegation") {
+    return <DelegationTipContent {...rest} />;
+  }
+
+  if (type === "Transfer") {
+    return <TransferTipContent {...rest} />;
   }
 
   return null;
@@ -167,4 +182,70 @@ function IdentityTipContent({ source, target, value }) {
       <DisplayUser id={target} className="flex text12Medium text-white" />
     </div>
   );
+}
+
+function DelegationTipContent({ rawData }) {
+  const { decimals, symbol } = useChainSettings();
+  if (isNil(rawData) || isNil(rawData.tracks)) {
+    return null;
+  }
+
+  const items = Array.from(rawData.tracks.values());
+
+  return (
+    <ul className="text12Medium">
+      {items.map((track) => (
+        <li key={track.trackId} className="flex items-center">
+          <TrackItem id={track.trackId} />
+          <span className="mr-1">:</span>
+          <ValueDisplay
+            value={toPrecision(track.balance, decimals)}
+            symbol={symbol}
+          />
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function TransferTipContent({ rawData }) {
+  const { decimals, symbol } = useChainSettings();
+  const { data: transfer } = rawData || {};
+
+  if (isNil(transfer)) {
+    return null;
+  }
+
+  return (
+    <div className="flex gap-x-1 items-center flex-col">
+      <div className="flex gap-x-1 items-center">
+        <DisplayUser
+          id={transfer.from}
+          username={rawData.username}
+          className="flex text12Medium text-white"
+        />
+        <span>
+          has {transfer.count} {pluralize("transfer", transfer.count)}
+        </span>
+        <span className="inline-flex">
+          <DisplayUser
+            id={transfer.to}
+            username={rawData.username}
+            className="flex text12Medium text-white"
+          />
+          ,
+        </span>
+        <ValueDisplay
+          value={toPrecision(transfer.volume, decimals)}
+          symbol={symbol}
+        />
+        <span>in total</span>
+      </div>
+    </div>
+  );
+}
+
+function TrackItem({ id }) {
+  const trackInfo = useTrackContent(id);
+  return <span>{trackInfo}</span>;
 }

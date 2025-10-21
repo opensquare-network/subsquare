@@ -9,6 +9,7 @@ import { useSendTransaction } from "next-common/hooks/useSendTransaction";
 import { useMaybeMultisigCallback } from "./useMaybeMultisigCallback";
 
 export default function useTxSubmission({
+  api,
   getTxFunc = noop,
   onFinalized = noop,
   onInBlock = noop,
@@ -17,14 +18,15 @@ export default function useTxSubmission({
   onTxError = noop,
 }) {
   const dispatch = useDispatch();
-  const api = useContextApi();
+  const defaultApi = useContextApi();
+  const apiToUse = api || defaultApi;
   const signerAccount = useSignerAccount();
   const { sendTxFunc, isSubmitting } = useSendTransaction();
   const {
     onInBlock: maybeMultisigOnInBlock,
     onFinalized: maybeMultisigOnFinalized,
   } = useMaybeMultisigCallback({ onInBlock, onFinalized });
-  const [isWraping, setIsWraping] = useState(false);
+  const [isWrapping, setIsWrapping] = useState(false);
 
   const getTx = useCallback(
     async (...args) => {
@@ -40,15 +42,15 @@ export default function useTxSubmission({
         return;
       }
 
-      tx = await wrapTransaction(api, tx, signerAccount);
+      tx = await wrapTransaction(apiToUse, tx, signerAccount);
       return tx;
     },
-    [getTxFunc, api, signerAccount, dispatch],
+    [getTxFunc, apiToUse, signerAccount, dispatch],
   );
 
   const doSubmit = useCallback(
     async (...args) => {
-      if (!api) {
+      if (!apiToUse) {
         dispatch(newErrorToast("Chain RPC is not connected yet"));
         return;
       }
@@ -58,12 +60,12 @@ export default function useTxSubmission({
         return;
       }
 
-      setIsWraping(true);
+      setIsWrapping(true);
       let tx;
       try {
         tx = await getTx(...args);
       } finally {
-        setIsWraping(false);
+        setIsWrapping(false);
       }
 
       if (!tx) {
@@ -71,7 +73,7 @@ export default function useTxSubmission({
       }
 
       await sendTxFunc({
-        api,
+        api: apiToUse,
         tx,
         onSubmitted,
         onInBlock: maybeMultisigOnInBlock,
@@ -81,7 +83,7 @@ export default function useTxSubmission({
       });
     },
     [
-      api,
+      apiToUse,
       dispatch,
       signerAccount,
       getTx,
@@ -95,7 +97,7 @@ export default function useTxSubmission({
   );
 
   return {
-    isWraping,
+    isWrapping,
     isSubmitting,
     doSubmit,
   };

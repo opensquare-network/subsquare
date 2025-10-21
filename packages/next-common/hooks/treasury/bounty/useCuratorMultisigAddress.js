@@ -52,7 +52,11 @@ export async function fetchMultisigData(currentAddress) {
       ? `${multisigAddress.threshold}/${signatoriesList.length}`
       : "";
 
-    return { badge: badgeCount, signatories: signatoriesList };
+    return {
+      badge: badgeCount,
+      signatories: signatoriesList,
+      threshold: multisigAddress?.threshold,
+    };
   } catch (error) {
     console.error(error);
     return EMPTY_RESULT;

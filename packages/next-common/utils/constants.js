@@ -28,6 +28,7 @@ import kusamaAssetHub from "next-common/utils/consts/settings/kusamaAssetHub";
 import kusamaPeople from "next-common/utils/consts/settings/kusamaPeople";
 // import shibuya from "next-common/utils/consts/settings/shibuya";
 import astar from "next-common/utils/consts/settings/astar";
+import zkverify from "./consts/settings/zkverify";
 import zkverifyTestnet from "./consts/settings/zkverifyTestnet";
 import paseo from "./consts/settings/paseo";
 import ajuna from "./consts/settings/ajuna";
@@ -35,6 +36,7 @@ import laos from "./consts/settings/laos";
 import paseoAssetHub from "./consts/settings/paseoAssetHub";
 import paseoPeople from "./consts/settings/paseoPeople";
 import westendPeople from "./consts/settings/westendPeople";
+import hyperBridge from "./consts/settings/hyperBridge";
 
 const optionalNodes =
   process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? [development] : [];
@@ -61,6 +63,7 @@ export const nodes = [
   westendPeople,
   // crust,
   hydradx,
+  hyperBridge,
   interlay,
   // kabocha,
   karura,
@@ -74,6 +77,7 @@ export const nodes = [
   // rococo,
   // shibuya,
   vara,
+  zkverify,
   zkverifyTestnet,
   paseo,
   paseoAssetHub,
@@ -93,7 +97,7 @@ export const defaultBlockTime = 12000;
 export const defaultPageSize = 25;
 
 export const DEFAULT_SEO_INFO = {
-  title: "SubSquare | governance platform",
+  title: `SubSquare | ${process.env.NEXT_PUBLIC_CHAIN} governance platform`,
   desc: "A platform that scans and normalizes the blockchain governance data. It enables community members to propose, vote proposals and discuss the corresponding topics.",
 };
 
@@ -133,6 +137,7 @@ export const CACHE_KEY = {
   requestJudgementPrompt: "request-judgement-prompt",
   walletConnectSession: "walletconnect-session",
   totalRequestingAssets: "total-requesting-assets",
+  dvApplyPromptVisible: "dv-apply-prompt-visible",
 };
 
 export const ADDRESS_CACHE_KEYS = [
@@ -181,10 +186,13 @@ export const NAV_MENU_TYPE = {
   main: "main",
   subspace: "subspace",
   archived: "archived",
+  group: "group",
 };
 
 export const RELATIONSHIP_NODE_TYPE = {
   Multisig: "Multisig",
   Proxy: "Proxy",
   Identity: "Identity",
+  Delegation: "Delegation",
+  Transfer: "Transfer",
 };

@@ -40,6 +40,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
     status: statusQuery = "",
     is_treasury = "",
     ongoing = "",
+    sort = "",
   } = context.query;
 
   const status = upperFirst(camelCase(statusQuery));
@@ -58,6 +59,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
       ongoing,
       status,
       simple: true,
+      sort,
     }),
     backendApi.fetch(gov2ReferendumsSummaryApi),
     backendApi.fetch(gov2TracksApi),

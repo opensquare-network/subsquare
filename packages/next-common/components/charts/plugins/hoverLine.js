@@ -1,6 +1,6 @@
 const hoverLinePlugin = {
   id: "hoverLine",
-  beforeDraw: (chart) => {
+  afterDraw: (chart) => {
     const options = chart.config.options?.plugins?.hoverLine ?? {};
 
     if (!options) {

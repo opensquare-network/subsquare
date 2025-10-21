@@ -40,4 +40,8 @@ bg-theme100
 !text-theme500
 `;
 
+export const QueueingTag = styled(Common)`
+  background-color: var(--orange500);
+`;
+
 export const BaseTag = Common;

@@ -29,7 +29,7 @@ export default function CommentList({
   summary,
 }) {
   return (
-    <Wrapper>
+    <Wrapper className="max-w-full">
       <TitleContainer>
         {category}
         {create}

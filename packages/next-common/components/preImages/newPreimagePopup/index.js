@@ -16,6 +16,7 @@ import { ExtrinsicLoading } from "next-common/components/popup/fields/extrinsicF
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import InsufficientBalanceTips from "next-common/components/summary/newProposalQuickStart/common/insufficientBalanceTips";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 
 const EMPTY_HASH = blake2AsHex("");
 
@@ -108,8 +109,12 @@ export function NewPreimageInnerPopup({ onCreated = noop }) {
         onInBlock={() => {
           onCreated(encodedHash, encodedLength);
           dispatch(incPreImagesTrigger());
+          dispatch(
+            newSuccessToast(
+              "Preimage created. Data will be refreshed in seconds.",
+            ),
+          );
         }}
-        onFinalized={() => dispatch(incPreImagesTrigger())}
         autoClose={isEmptyFunc(onCreated)}
       />
     </Popup>

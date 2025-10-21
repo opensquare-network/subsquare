@@ -35,6 +35,7 @@ import kusamaAssetHub from "./kusamaAssetHub";
 import shibuya from "./shibuya";
 import astar from "./astar";
 import { isNil } from "lodash-es";
+import zkverify from "./zkverify";
 import zkverifyTestnet from "./zkverifyTestnet";
 import paseo from "./paseo";
 import paseoAssetHub from "./paseoAssetHub";
@@ -47,6 +48,7 @@ import polkadotPeople from "./polkadotPeople";
 import kusamaPeople from "./kusamaPeople";
 import paseoPeople from "./paseoPeople";
 import westendPeople from "./westendPeople";
+import hyperBridge from "./hyperBridge";
 
 const settingsMap = {
   polkadot,
@@ -62,6 +64,7 @@ const settingsMap = {
   crust,
   darwinia2,
   hydradx,
+  [hyperBridge.value]: hyperBridge,
   [hydradxTestnet.value]: hydradxTestnet,
   interlay,
   karura,
@@ -86,6 +89,7 @@ const settingsMap = {
   [kusamaAssetHub.value]: kusamaAssetHub,
   vara,
   shibuya,
+  [zkverify.value]: zkverify,
   [zkverifyTestnet.value]: zkverifyTestnet,
   paseo,
   [paseoAssetHub.value]: paseoAssetHub,

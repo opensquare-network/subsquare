@@ -43,6 +43,14 @@ const polkadot = {
     identity: true,
     multisig: false,
   },
+  subsquareGraphql: {
+    domain: "polkadot-gh-api",
+    coretime: true,
+    intime: {
+      preimage: true,
+      proxy: true,
+    },
+  },
   hasMultisig: true,
   multisigApiPrefix: "dot",
   useVoteCall: true,
@@ -57,6 +65,7 @@ const polkadot = {
       displayTreasuryRequesting: true,
     },
     treasury: {
+      status: true,
       spends: true,
       childBounties: true,
       tips: {
@@ -73,6 +82,7 @@ const polkadot = {
     assethub: true,
     people: true,
     vesting: true,
+    whitelist: true,
   }),
   integrations: {
     doTreasury: true,
@@ -108,6 +118,10 @@ const polkadot = {
   supportWalletconnect: true,
   openSquare: {
     voting: "polkadot",
+  },
+  ecoNews: true,
+  translations: {
+    referenda: true,
   },
 };
 
