@@ -7,6 +7,7 @@ import { useReferendumVotingFinishIndexer } from "next-common/context/post/refer
 import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 import useFellowshipCurveChartOptions from "./useFellowshipCurveChartOptions";
 import useFellowshipReferendaCurveData from "./useFellowshipReferendaCurveData";
+import useSlider from "../referendaCurveChart/useSlider";
 
 export default function FellowshipCurveChart() {
   const indexer = useReferendumVotingFinishIndexer();
@@ -18,7 +19,6 @@ export default function FellowshipCurveChart() {
   );
 }
 
-import useSlider from "../referendaCurveChart/useSlider";
 function FellowshipCurveChartWithContext() {
   const chartRef = useRef();
   const { width } = useWindowSize();
