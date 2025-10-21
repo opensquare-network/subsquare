@@ -23,9 +23,9 @@ function useSpendPeriod(api) {
   return spendPeriod;
 }
 
-function useAhmStartHeight(api) {
+function useLastSpendPeriod(api) {
   const pallet = useTreasuryPallet();
-  const [startHeight, setStartHeight] = useState(null);
+  const [lastSpendPeriod, setLastSpendPeriod] = useState(null);
 
   useEffect(() => {
     if (!api || !api.query || !api.query[pallet]?.lastSpendPeriod) {
@@ -33,11 +33,11 @@ function useAhmStartHeight(api) {
     }
 
     api.query[pallet].lastSpendPeriod().then((result) => {
-      setStartHeight(result?.toString() || null);
+      setLastSpendPeriod(result?.toString() || null);
     });
   }, [api, pallet]);
 
-  return startHeight;
+  return lastSpendPeriod;
 }
 
 export default function useSpendPeriodSummary() {
@@ -46,7 +46,7 @@ export default function useSpendPeriodSummary() {
   const [summary, setSummary] = useState({});
   const isMounted = useMountedState();
   const blockTime = useSelector(blockTimeSelector);
-  const startHeight = useAhmStartHeight(api);
+  const lastSpendPeriod = useLastSpendPeriod(api);
   const spendPeriod = useSpendPeriod(api);
 
   useEffect(() => {
@@ -55,8 +55,8 @@ export default function useSpendPeriodSummary() {
     }
 
     let goneBlocks;
-    if (startHeight) {
-      goneBlocks = new BigNumber(latestHeight).minus(startHeight).toNumber();
+    if (lastSpendPeriod) {
+      goneBlocks = new BigNumber(latestHeight).minus(lastSpendPeriod).toNumber();
     } else {
       goneBlocks = new BigNumber(latestHeight).mod(spendPeriod).toNumber();
     }
@@ -84,7 +84,7 @@ export default function useSpendPeriodSummary() {
         ),
       });
     }
-  }, [api, latestHeight, blockTime, isMounted, startHeight, spendPeriod]);
+  }, [api, latestHeight, blockTime, isMounted, lastSpendPeriod, spendPeriod]);
 
   return summary;
 }
