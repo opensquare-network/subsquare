@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useMountedState } from "react-use";
 import BigNumber from "bignumber.js";
 import { estimateBlocksTime } from "next-common/utils";
@@ -13,18 +13,25 @@ function useConditionalBlockHeight(api) {
   const localHeight = useChainOrScanHeight();
   const ahmLatestHeight = useAhmLatestHeight();
   const pallet = useTreasuryPallet();
+  const [blockHeight, setBlockHeight] = useState(null);
 
-  return useMemo(() => {
+  const getBlockHeight = useCallback(async () => {
     if (!api || !pallet) {
       return null;
     }
-
-    if (api?.query[pallet]?.lastSpendPeriod) {
-      return ahmLatestHeight;
+    const lastSpendPeriod = await api?.query[pallet]?.lastSpendPeriod();
+    if (lastSpendPeriod && !lastSpendPeriod?.isNone) {
+      setBlockHeight(ahmLatestHeight);
     }
 
-    return localHeight;
+    setBlockHeight(localHeight);
   }, [api, pallet, ahmLatestHeight, localHeight]);
+
+  useEffect(() => {
+    getBlockHeight();
+  }, [getBlockHeight]);
+
+  return blockHeight;
 }
 
 export default function useSpendPeriodSummary() {
