@@ -29,6 +29,7 @@ export default function ReferendaListFilter({ isUnVotedOnlyLoading }) {
   const [isTreasury, setIsTreasury] = useIsTreasuryState();
   const [ongoing, setOngoing] = useIsOngoingState();
 
+  const [stateOpen, setStateOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState({
     status,
@@ -104,7 +105,15 @@ export default function ReferendaListFilter({ isUnVotedOnlyLoading }) {
   }
 
   return (
-    <Popover.Root open={open} onOpenChange={setOpen}>
+    <Popover.Root
+      open={open}
+      onOpenChange={(open) => {
+        if (!open && stateOpen) {
+          return setStateOpen(false);
+        }
+        setOpen(open);
+      }}
+    >
       <Popover.Trigger asChild>
         <SecondaryButton
           size="small"
@@ -166,12 +175,14 @@ export default function ReferendaListFilter({ isUnVotedOnlyLoading }) {
                 <div>Status</div>
 
                 <ReferendaStatusSelectField
+                  open={stateOpen}
+                  onOpenChange={setStateOpen}
                   value={value?.status}
-                  onChange={(item) => {
+                  onChange={(status) => {
                     setValue?.((val) => {
                       return {
                         ...val,
-                        status: item.value,
+                        status: status,
                       };
                     });
                   }}

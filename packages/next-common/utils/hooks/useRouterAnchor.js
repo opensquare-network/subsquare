@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
-export default function useCommentsAnchor() {
+export default function useRouterAnchor() {
   const router = useRouter();
   const [anchor, setAnchor] = useState({
     hasAnchor: false,
@@ -12,10 +12,10 @@ export default function useCommentsAnchor() {
     if (window?.location?.hash === "") {
       return;
     }
-    const height = parseInt(window.location.hash.substr(1));
+    const anchor = window.location.hash.substring(1);
     setAnchor({
-      hasAnchor: !isNaN(height),
-      anchor: height || null,
+      hasAnchor: !!anchor,
+      anchor: anchor || null,
     });
   }, [router]);
 

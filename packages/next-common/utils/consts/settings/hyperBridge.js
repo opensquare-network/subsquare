@@ -127,6 +127,9 @@ const hyperBridge = {
     hasher: keccakAsU8a,
   },
   preimage: hyperBridgePreimageSettings,
+  referendaActions: {
+    startFrom: 0,
+  },
 };
 
 export default hyperBridge;

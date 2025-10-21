@@ -78,9 +78,7 @@ function SupportVotesDisplay({ data, type }) {
   );
 }
 
-function ProgressDisplay({ data, type, maxImpactVotes }) {
-  const impactVotes = getImpactVotes(data, type);
-
+export function ProgressDisplay({ impactVotes, maxImpactVotes }) {
   if (
     isNil(impactVotes) ||
     BigInt(impactVotes) === BigInt(0) ||
@@ -107,10 +105,20 @@ function ProgressDisplay({ data, type, maxImpactVotes }) {
   );
 }
 
+function ImpactVotesProgressDisplay({ data, type, maxImpactVotes }) {
+  const impactVotes = getImpactVotes(data, type);
+  return (
+    <ProgressDisplay
+      impactVotes={impactVotes}
+      maxImpactVotes={maxImpactVotes}
+    />
+  );
+}
+
 export default function ImpactVotesField({ data, type, maxImpactVotes }) {
   return (
     <div className="text-textTertiary text14Medium max-md:flex max-md:flex-col max-md:items-end">
-      <ProgressDisplay
+      <ImpactVotesProgressDisplay
         data={data}
         type={type}
         maxImpactVotes={maxImpactVotes}

@@ -8,7 +8,7 @@ export default function usePostCommentsFilterByAddressIdentity(
 ) {
   const chain = useChain();
   const [identities, setIdentities] = useState({});
-  const [loadingAddressIdentity, setLoadingAddressIdentity] = useState(false);
+  const [loadingAddressIdentity, setLoadingAddressIdentity] = useState(true);
 
   const fetchIdentities = useRefCallback(async (chain, accountList) => {
     const identities = await fetchBatchIdentities(chain, accountList);
