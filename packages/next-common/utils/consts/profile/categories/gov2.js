@@ -15,9 +15,9 @@ export const gov2Referenda = {
 };
 
 export const gov2Fellowship = {
-  id: "fellowship",
-  name: "Fellowship",
-  categoryName: "Fellowship",
+  id: "fellowshipReferenda",
+  name: "Referenda",
+  categoryName: "Fellowship referenda",
   categoryId: businessCategory.fellowship,
   routePath: "fellowship",
   apiPath: "fellowship/referendums",
