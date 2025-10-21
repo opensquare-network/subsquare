@@ -8,6 +8,7 @@ export const toPolkassemblyDiscussionAuthor = (author, chain) => ({
       }
     : {}),
   polkassemblyUserLink: `https://${chain}.polkassembly.io/user/${author?.username}`,
+  dataSource: "polkassembly",
 });
 
 export default function normalizePolkassemblyDiscussionListItem(chain, item) {

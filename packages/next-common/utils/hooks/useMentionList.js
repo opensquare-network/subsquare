@@ -4,16 +4,23 @@ import {
   getMentionList,
   getMentionName,
 } from "next-common/utils/post";
-import { uniqBy } from "lodash-es";
+import { flatten, uniqBy } from "lodash-es";
 import { useUser } from "../../context/user";
 import { useChain } from "../../context/chain";
 import { addressEllipsis, isKeyRegisteredUser, isSameAddress } from "..";
 import { tryConvertToEvmAddress } from "../mixedChainUtil";
+import { usePolkassemblyCommentRepliesContext } from "next-common/hooks/polkassembly/usePolkassemblyCommentReply";
+import { useComments } from "next-common/context/post/comments";
+import { usePost } from "next-common/context/post";
 
-export default function useMentionList(post, comments) {
+export default function useMentionList(commentsData) {
   const chain = useChain();
   const [users, setUsers] = useState([]);
   const currentUser = useUser();
+  const post = usePost();
+  const { polkassemblyCommentReplies } = usePolkassemblyCommentRepliesContext();
+  let comments = useComments();
+  comments = commentsData || comments;
 
   useEffect(() => {
     if (!post) {
@@ -22,6 +29,12 @@ export default function useMentionList(post, comments) {
 
     //combine post author(s) and comment authors but exclude current user
     let userAppearances = getMentionList(comments);
+    userAppearances = [
+      ...userAppearances,
+      ...flatten(Object.values(polkassemblyCommentReplies || {})).map(
+        (reply) => reply.author,
+      ),
+    ];
     if (post.author) {
       userAppearances.push(post.author);
     } else if (post.proposer) {
@@ -73,7 +86,13 @@ export default function useMentionList(post, comments) {
     loadSuggestions().then((suggestions) => {
       setUsers(suggestions);
     });
-  }, [chain, post, comments, currentUser?.username]);
+  }, [
+    chain,
+    post,
+    comments,
+    currentUser?.username,
+    polkassemblyCommentReplies,
+  ]);
 
   return users;
 }

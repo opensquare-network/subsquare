@@ -113,7 +113,9 @@ export function getOnReply(
       const memberId = getMemberId(user, chain);
       if (contentType === "markdown") {
         reply = `[@${name}](/user/${memberId}) `;
-        if (isKeyRegisteredUser(user)) {
+        if (user.dataSource === "polkassembly" && user.address) {
+          reply = `[@${name}](${memberId}-${chain}) `;
+        } else if (isKeyRegisteredUser(user)) {
           reply = `[@${name}](${memberId}-${chain}) `;
         }
         const at = content ? `${reply}` : reply;
