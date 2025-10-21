@@ -19,6 +19,8 @@ import { useBeginHeight } from "next-common/utils/hooks/referenda/detail/useRefe
 import { useFellowshipReferendumTally } from "next-common/hooks/fellowship/useFellowshipReferendumInfo";
 import useFellowshipPerbill from "next-common/utils/hooks/fellowship/useFellowshipPerbill";
 import { title, commonConfig } from "../utils/options";
+import useFellowshipReferendaCurveData from "./useFellowshipReferendaCurveData";
+import { inRange } from "lodash-es";
 
 function useFellowshipCurveChartDefaultOptions(labels = []) {
   const { neutral400 } = useThemeSetting();
@@ -97,6 +99,7 @@ export default function useFellowshipCurveChartOptions(
   labels = [],
   supportData,
   approvalData,
+  rangeData,
 ) {
   const options = useFellowshipCurveChartDefaultOptions(labels);
   const { supportThresholdLine, approvalThresholdLine } = useThresholdLine();
@@ -112,8 +115,20 @@ export default function useFellowshipCurveChartOptions(
         annotations: {
           lineSupportThreshold: supportThresholdLine,
           lineApprovalThreshold: approvalThresholdLine,
-          pointApprovalInner: approvalInnerPoint,
-          pointSupportInner: supportInnerPoint,
+          pointApprovalInner: inRange(
+            approvalInnerPoint.xValue,
+            rangeData[0],
+            rangeData[1],
+          )
+            ? approvalInnerPoint
+            : null,
+          pointSupportInner: inRange(
+            supportInnerPoint.xValue,
+            rangeData[0],
+            rangeData[1],
+          )
+            ? supportInnerPoint
+            : null,
         },
       },
     },
@@ -121,7 +136,10 @@ export default function useFellowshipCurveChartOptions(
   return options;
 }
 
-const useInnerPoint = (labels, supportData, approvalData) => {
+const useInnerPoint = () => {
+  const { labels, supportData, approvalData } =
+    useFellowshipReferendaCurveData();
+
   const currentHeight = useChainOrScanHeight();
   const steps = useBlockSteps();
   const beginHeight = useBeginHeight();

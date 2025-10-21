@@ -53,11 +53,11 @@ export default function ThresholdCurvesFellowshipTallyPopup({
 
       <div>
         <div className="flex justify-between text-textPrimary text14Bold pb-4">
-          <span>Action</span> {searchBtn}
+          <span>Actions</span> {searchBtn}
         </div>
 
         {searchBar}
-        <VoteActionsTable search={search} />
+        <VoteActionsTable listHeight={300} search={search} />
       </div>
     </Popup>
   );

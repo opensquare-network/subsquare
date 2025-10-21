@@ -41,6 +41,7 @@ function FellowshipCurveChartWithContext() {
     rangeLabel,
     supportData,
     approvalData,
+    rangeData,
   );
 
   return (
