@@ -15,9 +15,11 @@ export function Hash({ hash, proposal, setShowArgumentsDetail }) {
         <Copyable
           className="max-md:flex max-md:items-center flex items-center"
           copyText={hash}
-          title={hash}
         >
-          <span className="text14Medium text-textPrimary inline-block w-[96px] truncate">
+          <span
+            title={hash}
+            className="text14Medium text-textPrimary inline-block w-[96px] truncate"
+          >
             {hash}
           </span>
         </Copyable>

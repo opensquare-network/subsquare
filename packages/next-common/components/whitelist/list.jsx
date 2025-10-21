@@ -22,12 +22,11 @@ export default function List({ data, setShowArgumentsDetail }) {
           >
             <div className="relative datalist-desktop-item w-full flex flex-col sm:flex-row gap-2 sm:gap-0 items-center">
               <div className="text14Medium flex-1 w-full">
-                <Copyable
-                  className="flex items-center"
-                  copyText={hash}
-                  title={hash}
-                >
-                  <span className="text14Medium text-textPrimary inline-block w-[300px] sm:w-[200px] truncate">
+                <Copyable className="flex items-center" copyText={hash}>
+                  <span
+                    title={hash}
+                    className="text14Medium text-textPrimary inline-block w-[300px] sm:w-[200px] truncate"
+                  >
                     {hash}
                   </span>
                 </Copyable>
