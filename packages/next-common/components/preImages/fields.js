@@ -12,8 +12,14 @@ export function Hash({ hash, proposal, setShowArgumentsDetail }) {
   return (
     <div className="flex justify-between">
       <div className="flex items-center">
-        <Copyable className="max-md:flex max-md:items-center" copyText={hash}>
-          <span className="text14Medium text-textPrimary inline-block w-[96px] truncate">
+        <Copyable
+          className="max-md:flex max-md:items-center flex items-center"
+          copyText={hash}
+        >
+          <span
+            title={hash}
+            className="text14Medium text-textPrimary inline-block w-[96px] truncate"
+          >
             {hash}
           </span>
         </Copyable>
