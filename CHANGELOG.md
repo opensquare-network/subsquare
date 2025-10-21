@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file.
 
+# 5.4.4
+
+Date:
+2025-10-21. [Code diff](https://github.com/opensquare-network/subsquare/compare/c4161977cc7a8fb0c50199e64d35698cb4ccf207...c93d1ad6977471261528bdc1b324c91e6a665f45).
+
+- Support kusama assethub migration.
+    - Support fellowship business is still in relay chain which other businesses are in assethub.
+    - Fix account votes unlock issue caused by assethub migration.
+    - Fix treasury spend period countdown after assethub migration. New countdown is calculated by the `lastSpendPeriod`
+      storage.
+- Fellowship:
+    - Fix api for querying fellowship members.
+    - Support fellowship referenda actions so users can see all tally affected votes by members.
+    - Fix the page crash by the cleanup pool action.
+- Support post content translations for referenda.
+- Add a treasury status page to show treasury balances and all beneficiaries.
+- Support replying comments from polkassembly.
+- Support hyperbridge and support keccakAsU8a hasher.
+- Improve treasury spend payout button status. Disable the payout button when invalid and show related tooltip.
+- Add whitelist page to show all whitelisted calls.
+- Move fellowship category out of the OpenGov menu on the profile page.
+- Fix kusama DV address for trustless core.
+- Fix page title of the overview page.
+- Archive council module for hydration.
+- Fix styles and upgrade dependencies.
+
 # 5.4.3
 
 Date:
