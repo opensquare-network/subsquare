@@ -156,6 +156,7 @@ const InnerList = ({ secondCategory, data, pagination }) => {
 
   return (
     <PostList
+      title={secondCategory.categoryName}
       link={link}
       titleCount={titleCount}
       category={secondCategory.categoryName}
