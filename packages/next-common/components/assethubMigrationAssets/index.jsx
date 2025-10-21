@@ -5,7 +5,18 @@ import AssetsAccount from "./account";
 import AllAssetsList from "./allAssetsList";
 import ForeignAssetsList from "./allForeignAssetsList";
 import { AssetsTabProvider, useAssetsTab } from "./context/assetsTab";
-import { useChainSettings } from "next-common/context/chain";
+
+const TITLE_MAPS = Object.freeze({
+  account: "Account assets",
+  assets: "Assets",
+  foreignAssets: "Foreign Assets",
+});
+
+const DESCRIPTION_MAPS = Object.freeze({
+  account: "Connected user can see and manage various assets",
+  assets: "All no fungible assets info",
+  foreignAssets: "All foreign assets info",
+});
 
 function AssetsContent() {
   const { activeValue } = useAssetsTab();
@@ -25,26 +36,28 @@ function AssetsContent() {
   return null;
 }
 
+function AssethubMigrationAssetsImpl() {
+  const { activeValue } = useAssetsTab();
+
+  return (
+    <ListLayout
+      seoInfo={{ title: "" }}
+      title={TITLE_MAPS[activeValue]}
+      description={DESCRIPTION_MAPS[activeValue]}
+      customTabs={<HeaderTabs />}
+    >
+      <div className="flex flex-col gap-[16px]">
+        <AssetsContent />
+      </div>
+    </ListLayout>
+  );
+}
+
 export default function AssethubMigrationAssets() {
-  const chain = useChainSettings();
-
-  // TODO: title & description
-  const title = `${chain.name} Assets`;
-  const description = `${chain.name} Assets is the original ${chain.name} Asset Hub module`;
-
   return (
     <AssetHubTabsProvider>
       <AssetsTabProvider>
-        <ListLayout
-          seoInfo={{ title: "" }}
-          title={title}
-          description={description}
-          customTabs={<HeaderTabs />}
-        >
-          <div className="flex flex-col gap-[16px]">
-            <AssetsContent />
-          </div>
-        </ListLayout>
+        <AssethubMigrationAssetsImpl />
       </AssetsTabProvider>
     </AssetHubTabsProvider>
   );
