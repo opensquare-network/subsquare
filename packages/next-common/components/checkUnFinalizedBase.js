@@ -81,16 +81,19 @@ export default function CheckUnFinalizedBase({
   if (isNotFound) {
     return (
       <Wrapper
-        className={cn("w-full", hasSidebar && "lg:w-[calc(100%-320px-24px)]")}
+        className={cn(
+          "w-full p-4 ",
+          hasSidebar && "lg:w-[calc(100%-320px-24px)]",
+        )}
       >
-        <NotFound />
+        <NotFound className="p-0" />
       </Wrapper>
     );
   }
 
   return (
     <Wrapper
-      className={cn("w-full", hasSidebar && "lg:w-[calc(100%-320px-24px)]")}
+      className={cn("w-full p-4", hasSidebar && "lg:w-[calc(100%-320px-24px)]")}
     >
       <Loading />
       {
