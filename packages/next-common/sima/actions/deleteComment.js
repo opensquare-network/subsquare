@@ -14,7 +14,7 @@ export function useDeleteDiscussionComment() {
 
       const entity = {
         action: "delete_comment",
-        cid: post.cid,
+        cid: comment.cid,
         timestamp: Date.now(),
       };
       const data = await signSimaMessage(entity);
