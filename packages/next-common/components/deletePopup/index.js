@@ -6,6 +6,28 @@ import { PopupButtonWrapper } from "../popup/wrapper";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 
+export function DeletePopupImpl({
+  itemName = "item",
+  setShow = noop,
+  doDelete = noop,
+  isLoading = false,
+}) {
+  return (
+    <Popup title="Delete" onClose={() => setShow(false)}>
+      <div className="text-[14px] text-textPrimary">
+        This {itemName} will be deleted permanently, and can&apos;t be
+        recovered.
+      </div>
+      <PopupButtonWrapper className="gap-[8px]">
+        <SecondaryButton onClick={() => setShow(false)}>Cancel</SecondaryButton>
+        <DangerButton loading={isLoading} onClick={doDelete}>
+          Delete
+        </DangerButton>
+      </PopupButtonWrapper>
+    </Popup>
+  );
+}
+
 export default function DeletePopup({
   itemName = "item",
   setShow = noop,
@@ -29,17 +51,11 @@ export default function DeletePopup({
   }, [ensureLogin, deletePost]);
 
   return (
-    <Popup title="Delete" onClose={() => setShow(false)}>
-      <div className="text-[14px] text-textPrimary">
-        This {itemName} will be deleted permanently, and can&apos;t be
-        recovered.
-      </div>
-      <PopupButtonWrapper className="gap-[8px]">
-        <SecondaryButton onClick={() => setShow(false)}>Cancel</SecondaryButton>
-        <DangerButton loading={isLoading} onClick={doDelete}>
-          Delete
-        </DangerButton>
-      </PopupButtonWrapper>
-    </Popup>
+    <DeletePopupImpl
+      itemName={itemName}
+      setShow={setShow}
+      doDelete={doDelete}
+      isLoading={isLoading}
+    />
   );
 }
