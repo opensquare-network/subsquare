@@ -1,4 +1,3 @@
-import { AssetMetadataProvider } from "next-common/components/assets/context/assetMetadata";
 import NoWalletConnected from "next-common/components/assets/noWalletConnected";
 import { withCommonProps } from "next-common/lib";
 import useExistentialDeposit from "next-common/utils/hooks/chain/useExistentialDeposit";
@@ -14,11 +13,7 @@ export default function AssetsPage() {
     return <NoWalletConnected />;
   }
 
-  return (
-    <AssetMetadataProvider>
-      <AssethubMigrationAssets />
-    </AssetMetadataProvider>
-  );
+  return <AssethubMigrationAssets />;
 }
 
 export const getServerSideProps = async (ctx) => {

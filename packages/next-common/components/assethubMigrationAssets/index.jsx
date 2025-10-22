@@ -5,6 +5,8 @@ import AssetsAccount from "./account";
 import AllAssetsList from "./allAssetsList";
 import ForeignAssetsList from "./allForeignAssetsList";
 import { AssetsTabProvider, useAssetsTab } from "./context/assetsTab";
+import { AssetMetadataProvider } from "next-common/components/assets/context/assetMetadata";
+
 
 const TITLE_MAPS = Object.freeze({
   account: "Account assets",
@@ -43,7 +45,9 @@ function AssethubMigrationAssetsImpl() {
       customTabs={<HeaderTabs />}
     >
       <div className="flex flex-col gap-[16px]">
-        <AssetsContent />
+        <AssetMetadataProvider>
+          <AssetsContent />
+        </AssetMetadataProvider>
       </div>
     </ListLayout>
   );
