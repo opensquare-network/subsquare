@@ -7,7 +7,6 @@ import ForeignAssetsList from "./allForeignAssetsList";
 import { AssetsTabProvider, useAssetsTab } from "./context/assetsTab";
 import { AssetMetadataProvider } from "next-common/components/assets/context/assetMetadata";
 
-
 const TITLE_MAPS = Object.freeze({
   account: "Account assets",
   assets: "Assets",
