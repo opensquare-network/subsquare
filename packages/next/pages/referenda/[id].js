@@ -66,7 +66,7 @@ function ReferendumNullPage() {
   return (
     <ReferendumPageCommon
       breadcrumbs={<UnFinalizedBreadcrumb id={id} />}
-      postContent={<CheckUnFinalized id={id} />}
+      postContent={<CheckUnFinalized hasSidebar id={id} />}
     />
   );
 }

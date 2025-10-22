@@ -6,10 +6,12 @@ import { H2, P, Wrapper } from "./styled/notFound";
 import NotFound from "./notFound";
 import { useContextApi } from "next-common/context/api";
 import { isEmptyFunc } from "next-common/utils/isEmptyFunc";
+import { cn } from "next-common/utils";
 
 export default function CheckUnFinalizedBase({
   onChainDataFetcher = noop,
   serverPostFetcher = noop,
+  hasSidebar,
 }) {
   const api = useContextApi();
   const router = useRouter();
@@ -77,13 +79,21 @@ export default function CheckUnFinalizedBase({
   }, [isUnFinalized, checkServerPostAvailable, router]);
 
   if (isNotFound) {
-    return <NotFound />;
+    return (
+      <Wrapper
+        className={cn("w-full", hasSidebar && "lg:w-[calc(100%-320px-24px)]")}
+      >
+        <NotFound />
+      </Wrapper>
+    );
   }
 
   return (
-    <Wrapper>
+    <Wrapper
+      className={cn("w-full", hasSidebar && "lg:w-[calc(100%-320px-24px)]")}
+    >
       <Loading />
-      {isUnFinalized && (
+      {
         <>
           <H2>Waiting for block confirmation</H2>
           <P>
@@ -91,7 +101,7 @@ export default function CheckUnFinalizedBase({
             page will update automatically once it’s confirmed.
           </P>
         </>
-      )}
+      }
     </Wrapper>
   );
 }
