@@ -8,12 +8,13 @@ export function PolkassemblyCommentRepliesProvider({
   polkassemblyId,
   polkassemblyPostType = "discussion",
 }) {
+  const defaultLoading = polkassemblyId && polkassemblyPostType;
   const [polkassemblyCommentReplies, setPolkassemblyCommentReplies] =
     useState(null);
   const [
     isPolkassemblyCommentRepliesLoading,
     setIsPolkassemblyCommentRepliesLoading,
-  ] = useState(true);
+  ] = useState(defaultLoading);
 
   const fetchPolkassemblyCommentReplies = useCallback(async () => {
     try {
