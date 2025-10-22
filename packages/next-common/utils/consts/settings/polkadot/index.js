@@ -123,6 +123,7 @@ const polkadot = {
   translations: {
     referenda: true,
   },
+  bountyIdentity: true,
 };
 
 export default polkadot;

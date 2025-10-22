@@ -1,6 +1,8 @@
-import { debounce } from "lodash-es";
+import { debounce, isEmpty } from "lodash-es";
 import { Deferred } from "next-common/utils/deferred";
 import QuickLRU from "quick-lru";
+import { backendApi } from "next-common/services/nextApi";
+import getChainSettings from "next-common/utils/consts/settings";
 
 const cachedIdentities = new QuickLRU({ maxSize: 1000 });
 const pendingQueries = new Map();
@@ -127,3 +129,37 @@ export const clearCachedIdentitys = (list, clearPending = false) => {
     }
   });
 };
+
+// TODO: add cache
+export async function fetchBountyIdentityInfo(chain, address) {
+  const { bountyIdentity } = getChainSettings(chain);
+  if (!bountyIdentity) {
+    return null;
+  }
+
+  const { result: bountyInfo } = await backendApi.fetch(
+    `treasury/addresses/${address}`,
+  );
+  if (isEmpty(bountyInfo)) {
+    return null;
+  }
+
+  let identityInfo = null;
+  if (bountyInfo?.type === "bounty") {
+    identityInfo = {
+      display: `Bounty-${bountyInfo.bountyIndex}`,
+      status: "NONE",
+      tooltip: `Address of bounty #${bountyInfo.bountyIndex}`,
+    };
+  }
+
+  if (bountyInfo?.type === "childBounty") {
+    identityInfo = {
+      display: `Child Bounty-${bountyInfo.parentBountyId}-${bountyInfo.index}`,
+      status: "NONE",
+      tooltip: `Address of child bounty #${bountyInfo.index} under parent bounty #${bountyInfo.parentBountyId}`,
+    };
+  }
+
+  return identityInfo;
+}

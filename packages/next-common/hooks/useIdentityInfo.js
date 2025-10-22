@@ -3,6 +3,7 @@ import { useChain } from "next-common/context/chain";
 import { encodeAddressToChain } from "next-common/services/address";
 import {
   fetchIdentity,
+  fetchBountyIdentityInfo,
   getCachedIdentity,
 } from "next-common/services/identity";
 import getChainSettings from "next-common/utils/consts/settings";
@@ -31,9 +32,12 @@ export function useChainAddressIdentityInfo(chain, address, realAddress = "") {
     setIdentity(null);
     if (address) {
       setIsLoading(true);
+      let resolvedIdentity = null;
+
       fetchIdentity(identityChain, encodeAddressToChain(address, identityChain))
         .then((identity) => {
           if (!isPeopleChain(chain) || !isSameAddress(realAddress, address)) {
+            resolvedIdentity = identity;
             setIdentity(identity);
             return;
           }
@@ -42,6 +46,7 @@ export function useChainAddressIdentityInfo(chain, address, realAddress = "") {
             (item) => isNil(item),
           );
           if (myIdentityIsEmpty && !displayName) {
+            resolvedIdentity = null;
             setIdentity(null);
             return;
           }
@@ -67,9 +72,31 @@ export function useChainAddressIdentityInfo(chain, address, realAddress = "") {
             peopleIdentity.info.display = displayName;
           }
 
+          resolvedIdentity = peopleIdentity;
           setIdentity(peopleIdentity);
         })
-        .finally(() => setIsLoading(false));
+        .finally(async () => {
+          const hasIdentity =
+            resolvedIdentity && resolvedIdentity?.info?.status !== "NO_ID";
+
+          if (!hasIdentity) {
+            try {
+              const bountyIdentityInfo = await fetchBountyIdentityInfo(
+                chain,
+                address,
+              );
+              if (!isNil(bountyIdentityInfo)) {
+                setIdentity({
+                  info: bountyIdentityInfo,
+                });
+              }
+            } catch (err) {
+              console.error("Failed to fetch bounty identity:", err);
+            }
+          }
+
+          setIsLoading(false);
+        });
     }
   }, [address, identityChain, myIdentityInfo, displayName, chain, realAddress]);
 

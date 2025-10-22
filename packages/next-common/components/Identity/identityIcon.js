@@ -16,6 +16,10 @@ export default function IdentityIcon({
   className = "",
   iconClassName = "",
 }) {
+  if (identity?.info?.status === "NONE") {
+    return null;
+  }
+
   const statusIconMap = {
     NOT_VERIFIED: (
       <>

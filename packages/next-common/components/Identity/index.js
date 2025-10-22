@@ -27,6 +27,8 @@ export function UnStyledIdentity({
     </span>
   );
 
+  const tooltipContent = identity?.info?.tooltip || displayName;
+
   return (
     <div className="flex items-center identity">
       <IdentityIcon
@@ -37,7 +39,7 @@ export function UnStyledIdentity({
       {noTooltip ? (
         displayNameElement
       ) : (
-        <Tooltip content={shouldShowTooltip ? displayName : null}>
+        <Tooltip content={shouldShowTooltip ? tooltipContent : null}>
           {displayNameElement}
         </Tooltip>
       )}
