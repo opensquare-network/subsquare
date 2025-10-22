@@ -3,7 +3,6 @@ import { OptionWrapper } from "next-common/components/internalDropdown/styled";
 import { SystemMore } from "@osn/icons/subsquare";
 import copy from "copy-to-clipboard";
 import { useComment } from "../comment/context";
-import nextApi from "next-common/services/nextApi";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useRouter } from "next/router";
@@ -16,6 +15,8 @@ import {
   CopyMenuItem,
 } from "next-common/components/articleMoreMenu/common";
 import { useCurrentCommentAnchor } from "../comment/useCommentAnchor";
+import { usePost } from "next-common/context/post";
+import { useCommentActions } from "next-common/sima/context/commentActions";
 
 const DeletePopup = dynamicPopup(() =>
   import("next-common/components/deletePopup"),
@@ -28,12 +29,14 @@ export default function CommentMoreMenu({
 }) {
   const dispatch = useDispatch();
   const comment = useComment();
+  const post = usePost();
   const [show, setShow] = useState(false);
   const ref = useRef();
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const router = useRouter();
   const isAdmin = useIsAdmin();
   const currentCommentAnchor = useCurrentCommentAnchor();
+  const { deleteComment: deleteCommentAction } = useCommentActions();
 
   useClickAway(ref, () => setShow(false));
 
@@ -44,13 +47,13 @@ export default function CommentMoreMenu({
   };
 
   const deleteComment = useCallback(async () => {
-    const { error } = await nextApi.delete(`comments/${comment._id}`);
+    const { error } = await deleteCommentAction(post, comment);
     if (error) {
       dispatch(newErrorToast(error.message));
       return;
     }
     router.replace(router.asPath);
-  }, [comment._id, dispatch, router]);
+  }, [deleteCommentAction, post, comment, dispatch, router]);
 
   return (
     <div ref={ref} className=" relative">
@@ -68,7 +71,7 @@ export default function CommentMoreMenu({
               }}
             />
           )}
-          {comment?.dataSource !== "sima" && (editable || isAdmin) && (
+          {(editable || isAdmin) && (
             <DeleteMenuItem
               onClick={() => {
                 setShowDeletePopup(true);

@@ -135,13 +135,14 @@ class Api {
     return result;
   }
 
-  async delete(path) {
+  async delete(path, body = null) {
     const result = await this.fetch(
       path,
       {},
       {
         method: "DELETE",
         credentials: "same-origin",
+        body: body ? JSON.stringify(body) : null,
         headers: { "Content-Type": "application/json" },
       },
     );
