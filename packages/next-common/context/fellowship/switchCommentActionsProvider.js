@@ -5,6 +5,7 @@ import {
   useCreateProposalCommentReply,
   useReplaceProposalComment,
 } from "next-common/sima/actions/comment";
+import { useDeleteProposalComment } from "next-common/sima/actions/deleteComment";
 import { useProposalCommentUpVote } from "next-common/sima/actions/upVote";
 import { useProposalCommentCancelUpVote } from "next-common/sima/actions/cancelUpVote";
 import { useGetComment } from "next-common/noSima/actions/comment";
@@ -23,6 +24,7 @@ export default function SwitchCommentActionsProvider({ children }) {
   const upVoteComment = useProposalCommentUpVote();
   const cancelUpVoteComment = useProposalCommentCancelUpVote();
   const updateComment = useReplaceProposalComment();
+  const deleteComment = useDeleteProposalComment();
   const { evidence } = usePageProps();
 
   const evidenceActions = useEvidenceCommentActions(evidence);
@@ -36,6 +38,7 @@ export default function SwitchCommentActionsProvider({ children }) {
       upVoteComment,
       cancelUpVoteComment,
       updateComment,
+      deleteComment,
     };
   }, [
     getComment,
@@ -44,6 +47,7 @@ export default function SwitchCommentActionsProvider({ children }) {
     upVoteComment,
     cancelUpVoteComment,
     updateComment,
+    deleteComment,
   ]);
 
   const actions = useMemo(() => {
