@@ -18,8 +18,8 @@ import { useCurrentCommentAnchor } from "../comment/useCommentAnchor";
 import { usePost } from "next-common/context/post";
 import { useCommentActions } from "next-common/sima/context/commentActions";
 
-const DeletePopup = dynamicPopup(() =>
-  import("next-common/components/deletePopup"),
+const MaybeSimaDeletePopup = dynamicPopup(() =>
+  import("next-common/components/deletePopup/maybeSima"),
 );
 
 export default function CommentMoreMenu({
@@ -84,10 +84,11 @@ export default function CommentMoreMenu({
         </OptionWrapper>
       )}
       {showDeletePopup && (
-        <DeletePopup
+        <MaybeSimaDeletePopup
           itemName="comment"
           setShow={setShowDeletePopup}
           deletePost={customDeleteComment || deleteComment}
+          isSima={comment.dataSource === "sima"}
         />
       )}
     </div>
