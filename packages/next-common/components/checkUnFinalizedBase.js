@@ -6,12 +6,10 @@ import { H2, P, Wrapper } from "./styled/notFound";
 import NotFound from "./notFound";
 import { useContextApi } from "next-common/context/api";
 import { isEmptyFunc } from "next-common/utils/isEmptyFunc";
-import { cn } from "next-common/utils";
 
 export default function CheckUnFinalizedBase({
   onChainDataFetcher = noop,
   serverPostFetcher = noop,
-  hasSidebar,
 }) {
   const api = useContextApi();
   const router = useRouter();
@@ -80,21 +78,14 @@ export default function CheckUnFinalizedBase({
 
   if (isNotFound) {
     return (
-      <Wrapper
-        className={cn(
-          "w-full p-4 ",
-          hasSidebar && "lg:w-[calc(100%-320px-24px)]",
-        )}
-      >
+      <Wrapper className={"w-full p-4"}>
         <NotFound className="p-0" />
       </Wrapper>
     );
   }
 
   return (
-    <Wrapper
-      className={cn("w-full p-4", hasSidebar && "lg:w-[calc(100%-320px-24px)]")}
-    >
+    <Wrapper className={"w-full p-4"}>
       <Loading />
       {
         <>
