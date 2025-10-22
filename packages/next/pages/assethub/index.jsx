@@ -79,6 +79,15 @@ function AssetHubOverviewPageImpl() {
 }
 
 export const getServerSideProps = async (ctx) => {
+  if (isAssetHubMigrated()) {
+    return {
+      redirect: {
+        permanent: true,
+        destination: "/assets",
+      },
+    };
+  }
+
   if (!isAssetHubSupported) {
     return {
       notFound: true,
