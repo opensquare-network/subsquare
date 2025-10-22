@@ -3,8 +3,9 @@ import { useChain } from "next-common/context/chain";
 import { encodeAddressToChain } from "next-common/services/address";
 import {
   fetchIdentity,
-  fetchBountyIdentityInfo,
+  fetchBountyIdentity,
   getCachedIdentity,
+  getCachedBountyIdentity,
 } from "next-common/services/identity";
 import getChainSettings from "next-common/utils/consts/settings";
 import { isPeopleChain } from "next-common/utils/chain";
@@ -25,11 +26,15 @@ export function useChainAddressIdentityInfo(chain, address, realAddress = "") {
   // Render the identity immediately if it's already in cache
   const encodedAddress = encodeAddressToChain(address, identityChain);
   const cachedIdentity = getCachedIdentity(identityChain, encodedAddress);
-  const [identity, setIdentity] = useState(cachedIdentity);
+  const cachedBountyIdentity = getCachedBountyIdentity(chain, address);
+
+  const initialIdentity = cachedIdentity || cachedBountyIdentity;
+  const [identity, setIdentity] = useState(initialIdentity);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setIdentity(null);
+
     if (address) {
       setIsLoading(true);
       let resolvedIdentity = null;
@@ -81,14 +86,12 @@ export function useChainAddressIdentityInfo(chain, address, realAddress = "") {
 
           if (!hasIdentity) {
             try {
-              const bountyIdentityInfo = await fetchBountyIdentityInfo(
+              const bountyIdentity = await fetchBountyIdentity(
                 chain,
                 address,
               );
-              if (!isNil(bountyIdentityInfo)) {
-                setIdentity({
-                  info: bountyIdentityInfo,
-                });
+              if (!isNil(bountyIdentity)) {
+                setIdentity(bountyIdentity);
               }
             } catch (err) {
               console.error("Failed to fetch bounty identity:", err);
