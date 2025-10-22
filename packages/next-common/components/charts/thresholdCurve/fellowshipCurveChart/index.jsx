@@ -26,7 +26,7 @@ function FellowshipCurveChartWithContext() {
   const { width } = useWindowSize();
   const { labels, supportData, approvalData, totalHours } =
     useFellowshipReferendaCurveData();
-  const { rangeData, component: slider } = useSlider(
+  const { rangeData } = useSlider(
     chartRef.current?.chartArea,
     false,
     totalHours,
@@ -63,7 +63,7 @@ function FellowshipCurveChartWithContext() {
           showAyeNay={false}
           chartArea={chartRef.current?.chartArea}
         />
-        {slider}
+        {/* {slider} */}
       </div>
       <ThresholdCurvesGov2TallyLegend showAyeNay={false} />
     </>
