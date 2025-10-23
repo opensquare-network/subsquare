@@ -43,7 +43,7 @@ export function CopyableAddress({ address }) {
   return (
     <Copyable copyText={address} className="inline-flex items-center">
       <Tooltip content={address}>
-        <AddressUser add={address} />
+        <AddressUser add={address} showBountyIdentity={false} />
       </Tooltip>
     </Copyable>
   );

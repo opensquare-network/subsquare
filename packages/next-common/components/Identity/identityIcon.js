@@ -16,7 +16,7 @@ export default function IdentityIcon({
   className = "",
   iconClassName = "",
 }) {
-  if (identity?.info?.status === "NONE") {
+  if (identity?.info?.type === "bounty") {
     return null;
   }
 

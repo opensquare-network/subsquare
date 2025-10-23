@@ -174,16 +174,16 @@ export async function fetchBountyIdentity(chain, address) {
       if (bountyInfo?.type === "bounty") {
         identityInfo = {
           display: `Bounty-${bountyInfo.bountyIndex}`,
-          status: "NONE",
           tooltip: `Address of bounty #${bountyInfo.bountyIndex}`,
+          type: "bounty",
         };
       }
 
       if (bountyInfo?.type === "childBounty") {
         identityInfo = {
           display: `Child Bounty-${bountyInfo.parentBountyId}-${bountyInfo.index}`,
-          status: "NONE",
           tooltip: `Address of child bounty #${bountyInfo.index} under parent bounty #${bountyInfo.parentBountyId}`,
+          type: "bounty",
         };
       }
 
