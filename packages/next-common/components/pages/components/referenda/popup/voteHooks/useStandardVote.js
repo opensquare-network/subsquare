@@ -1,10 +1,9 @@
-import { useCallback, useState } from "react";
-import { useDispatch } from "react-redux";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import { useState } from "react";
 import { checkInputValue } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import DirectVote from "../directVote";
 import { useContextApi } from "next-common/context/api";
+import { useTxBuilder } from "next-common/hooks/useTxBuilder";
 
 export default function useStandardVote({
   module = "convictionVoting",
@@ -15,7 +14,6 @@ export default function useStandardVote({
   votingBalance,
   showReUseLocks,
 }) {
-  const dispatch = useDispatch();
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
   const [voteLock, setVoteLock] = useState(0);
   const node = useChainSettings();
@@ -35,45 +33,51 @@ export default function useStandardVote({
     />
   );
 
-  const getStandardVoteTx = useCallback(() => {
-    let bnVoteBalance;
-    try {
-      bnVoteBalance = checkInputValue(
-        inputVoteBalance,
-        node.decimals,
-        "vote balance",
-        true,
-      );
-    } catch (err) {
-      dispatch(newErrorToast(err.message));
-      return;
-    }
+  const { getTxFuncForSubmit, getTxFuncForFee } = useTxBuilder(
+    (toastError) => {
+      let bnVoteBalance;
+      try {
+        bnVoteBalance = checkInputValue(
+          inputVoteBalance,
+          node.decimals,
+          "vote balance",
+          true,
+        );
+      } catch (err) {
+        toastError(err.message);
+        return;
+      }
 
-    if (bnVoteBalance.gt(votingBalance)) {
-      dispatch(newErrorToast("Insufficient voting balance"));
-      return;
-    }
+      if (bnVoteBalance.gt(votingBalance)) {
+        toastError("Insufficient voting balance");
+        return;
+      }
 
-    return api.tx[module].vote(referendumIndex, {
-      Standard: {
-        balance: bnVoteBalance.toString(),
-        vote: {
-          aye: isAye,
-          conviction: voteLock,
+      return api.tx[module].vote(referendumIndex, {
+        Standard: {
+          balance: bnVoteBalance.toString(),
+          vote: {
+            aye: isAye,
+            conviction: voteLock,
+          },
         },
-      },
-    });
-  }, [
-    dispatch,
-    api,
-    inputVoteBalance,
-    node.decimals,
-    votingBalance,
-    module,
-    referendumIndex,
-    isAye,
-    voteLock,
-  ]);
+      });
+    },
+    [
+      api,
+      inputVoteBalance,
+      node.decimals,
+      votingBalance,
+      module,
+      referendumIndex,
+      isAye,
+      voteLock,
+    ],
+  );
 
-  return { StandardVoteComponent, getStandardVoteTx };
+  return {
+    StandardVoteComponent,
+    getStandardVoteTx: getTxFuncForSubmit,
+    getStandardVoteFeeTx: getTxFuncForFee,
+  };
 }

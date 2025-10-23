@@ -7,6 +7,7 @@ export default function TextInputField({
   setText,
   className,
   disabled = false,
+  placeholder = "",
 }) {
   return (
     <div className={className}>
@@ -15,6 +16,7 @@ export default function TextInputField({
         value={text}
         setValue={setText}
         disabled={disabled}
+        placeholder={placeholder}
       />
     </div>
   );

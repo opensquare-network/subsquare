@@ -12,8 +12,14 @@ export function Hash({ hash, proposal, setShowArgumentsDetail }) {
   return (
     <div className="flex justify-between">
       <div className="flex items-center">
-        <Copyable className="max-md:flex max-md:items-center" copyText={hash}>
-          <span className="text14Medium text-textPrimary inline-block w-[96px] truncate">
+        <Copyable
+          className="max-md:flex max-md:items-center flex items-center"
+          copyText={hash}
+        >
+          <span
+            title={hash}
+            className="text14Medium text-textPrimary inline-block w-[96px] truncate"
+          >
             {hash}
           </span>
         </Copyable>
@@ -28,26 +34,32 @@ export function Hash({ hash, proposal, setShowArgumentsDetail }) {
   );
 }
 
+function UnNote({ hash, status, who, onUnnoteInBlock }) {
+  const realAddress = useRealAddress();
+  const isMyDeposit = isSameAddress(realAddress, who);
+  const isUnrequested = status.toLowerCase() === "unrequested";
+
+  if (!isUnrequested || !isMyDeposit) {
+    return null;
+  }
+
+  return (
+    <>
+      <DotSplitter />
+      <UnnoteButton hash={hash} onInBlock={onUnnoteInBlock} />
+    </>
+  );
+}
+
 export function Deposit({
   hash,
   deposit,
-  count,
   status,
   onUnnoteInBlock,
   right = false,
 }) {
   const { symbol, decimals } = useChainSettings();
   const { who, amount } = deposit;
-  const realAddress = useRealAddress();
-
-  const unnote = count === 0 &&
-    status.toLowerCase() === "unrequested" &&
-    isSameAddress(realAddress, who) && (
-      <>
-        <DotSplitter />
-        <UnnoteButton hash={hash} onInBlock={onUnnoteInBlock} />
-      </>
-    );
 
   return (
     <div className="flex flex-col">
@@ -55,15 +67,20 @@ export function Deposit({
       <div
         className={cn(
           "flex ml-[28px] text-textSecondary text-[12px]",
-          right ? "justify-end" : "",
+          right && "justify-end",
         )}
       >
         <ValueDisplay
           className="whitespace-nowrap"
-          value={toPrecision(amount.toJSON(), decimals)}
+          value={toPrecision(amount, decimals)}
           symbol={symbol}
         />
-        {unnote}
+        <UnNote
+          hash={hash}
+          status={status}
+          who={who}
+          onUnnoteInBlock={onUnnoteInBlock}
+        />
       </div>
     </div>
   );
@@ -87,10 +104,12 @@ export function Proposal({
   const doc = meta?.docs[0]?.toJSON();
   return (
     <div className="flex flex-col max-md:overflow-hidden">
-      <span
-        className="text-textPrimary font-medium leading-[20px] hover:underline cursor-pointer max-md:text-[16px] max-md:leading-[24px]"
-        onClick={() => setShowArgumentsDetail(proposal)}
-      >{`${section}.${method}`}</span>
+      <div>
+        <span
+          className="text-textPrimary font-medium leading-[20px] hover:underline cursor-pointer max-md:text-[16px] max-md:leading-[24px]"
+          onClick={() => setShowArgumentsDetail(proposal)}
+        >{`${section}.${method}`}</span>
+      </div>
       <span className="text-textSecondary text-[12px] leading-[16px] max-md:text-[14px] max-md:whitespace-nowrap max-md:overflow-hidden max-md:text-ellipsis max-md:leading-[20px]">
         {doc}
       </span>

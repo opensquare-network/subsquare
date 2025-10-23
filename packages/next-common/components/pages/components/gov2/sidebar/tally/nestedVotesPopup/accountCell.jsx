@@ -7,7 +7,6 @@ export default function AccountCell({ item }) {
       <AddressUser
         key={item.account}
         add={item.account}
-        noTooltip
         maxWidth={296}
         link="/votes"
       />

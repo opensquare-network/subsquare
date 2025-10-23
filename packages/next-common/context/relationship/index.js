@@ -6,7 +6,8 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import { rootNodeId } from "next-common/hooks/useConversionRelationshipNode";
+
+export const rootNodeId = "rootNode";
 
 const defaultContext = {
   nodes: [],
@@ -43,6 +44,15 @@ export default function RelationshipProvider({
       {children}
     </RelationshipContext.Provider>
   );
+}
+
+export function useRelationshipRawData() {
+  const context = useContext(RelationshipContext) || defaultContext;
+  return {
+    nodes: context.nodes,
+    edges: context.edges,
+    isLoading: context.isLoading,
+  };
 }
 
 export function useRelationshipNodes() {

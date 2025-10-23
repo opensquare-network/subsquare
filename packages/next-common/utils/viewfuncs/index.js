@@ -12,6 +12,7 @@ import {
 import { getPostLastActivityAt } from "next-common/utils/viewfuncs/postUpdatedTime";
 import { isAddress } from "@polkadot/util-crypto";
 import { isNil } from "lodash-es";
+import { getChildBountyIndex } from "./treasury/childBounty";
 
 export function toApiType(type) {
   // Open Gov
@@ -197,7 +198,7 @@ export const toTreasuryChildBountyListItem = (item) => ({
   status: item.state ?? "Unknown",
   time: getPostLastActivityAt(item),
   value: item.onchainData.value,
-  detailLink: `${childBountyBaseUrl}/${item.parentBountyId}_${item.index}`,
+  detailLink: `${childBountyBaseUrl}/${getChildBountyIndex(item)}`,
   parentIndex: item.parentBountyId,
 });
 

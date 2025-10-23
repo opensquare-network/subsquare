@@ -14,8 +14,10 @@ import getChainSettings from "next-common/utils/consts/settings";
 import useExistentialDeposit from "next-common/utils/hooks/chain/useExistentialDeposit";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { Provider } from "react-redux";
+import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated";
 
-const isAssetHubSupported = !!getChainSettings(CHAIN).modules?.assethub;
+export const isAssetHubSupported =
+  !!getChainSettings(CHAIN).modules?.assethub && !isAssetHubMigrated();
 
 let chain;
 let store;
@@ -31,27 +33,31 @@ if (isAssetHubSupported) {
   });
 }
 
-export function ConditionRelayInfoProvider({ children }) {
-  const isAssetHubMigrated = getChainSettings(CHAIN)?.assetHubMigrated;
-
-  if (isAssetHubMigrated) {
+function ConditionRelayInfoProvider({ children }) {
+  if (isAssetHubMigrated()) {
     return children;
   }
 
   return <RelayInfoProvider>{children}</RelayInfoProvider>;
 }
 
-export default function AssetHubPage() {
+export function AssetHubPageProvider({ children }) {
   return (
     <ConditionRelayInfoProvider>
       <Provider store={store}>
         <ChainProvider chain={chain}>
-          <ApiProvider>
-            <AssetHubOverviewPageImpl />
-          </ApiProvider>
+          <ApiProvider>{children}</ApiProvider>
         </ChainProvider>
       </Provider>
     </ConditionRelayInfoProvider>
+  );
+}
+
+export default function AssetHubPage() {
+  return (
+    <AssetHubPageProvider>
+      <AssetHubOverviewPageImpl />
+    </AssetHubPageProvider>
   );
 }
 
@@ -73,6 +79,15 @@ function AssetHubOverviewPageImpl() {
 }
 
 export const getServerSideProps = async (ctx) => {
+  if (isAssetHubMigrated()) {
+    return {
+      redirect: {
+        permanent: true,
+        destination: "/assets",
+      },
+    };
+  }
+
   if (!isAssetHubSupported) {
     return {
       notFound: true,

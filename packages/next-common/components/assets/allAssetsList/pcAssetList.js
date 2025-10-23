@@ -56,7 +56,7 @@ function InfoAddressItem({ name, address }) {
       <span className="text14Medium text-textTertiary min-w-[80px]">
         {name}
       </span>
-      <AddressUser add={address} maxWidth={160} />
+      <AddressUser add={address} maxWidth={160} link="/assets" />
     </div>
   );
 }
@@ -84,7 +84,7 @@ function useInfoCol() {
             <InfoAddressItem name="Freezer" address={item.freezer} />
           </>
         ) : (
-          <AddressUser add={item.admin} maxWidth={160} />
+          <AddressUser add={item.admin} maxWidth={160} link="/assets" />
         )}
       </div>
     ),
@@ -96,8 +96,8 @@ export default function PCAssetsList({ assets }) {
   const columnsDef = [
     colStatus,
     colToken,
-    colId,
     colName,
+    colId,
     colInfo,
     colAccounts,
     colSupply,

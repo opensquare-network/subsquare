@@ -10,7 +10,7 @@ import { useCurator } from "next-common/context/treasury/bounties";
 function CardBalanceAndCurator({ item, className = "" }) {
   const { address } = item?.onchainData ?? {};
   const curator = useCurator();
-  if (isNil(address) || isNil(curator)) return null;
+  if (isNil(address)) return null;
 
   return (
     <SummaryLayout className={cn("mt-4 mb-3 flex", className)}>
@@ -18,7 +18,7 @@ function CardBalanceAndCurator({ item, className = "" }) {
         <Balance address={address} />
       </SummaryItem>
       <SummaryItem title="Curator">
-        <Curator />
+        {curator ? <Curator /> : <span className="text12Medium">-</span>}
       </SummaryItem>
     </SummaryLayout>
   );

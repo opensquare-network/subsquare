@@ -54,7 +54,9 @@ export default function Gov2ReferendumCall() {
   if (onchainData?.proposalHash) {
     data.push([
       "Proposal Hash",
-      <Copyable key="hash">{onchainData?.proposalHash}</Copyable>,
+      <Copyable key="hash" className="text14Medium">
+        {onchainData?.proposalHash}
+      </Copyable>,
     ]);
   }
 
@@ -85,7 +87,7 @@ export default function Gov2ReferendumCall() {
   }
   data.push(
     ...[
-      ...extractRemarkMetaFields(proposal?.call || inlineCall?.call),
+      ...extractRemarkMetaFields(onchainData.remarks ?? []),
       ...extractWhitelistCallHash(whitelistCallHashes),
       ...extractFellowshipPromote(proposal?.call || inlineCall?.call),
       ...extractFellowshipApprove(proposal?.call || inlineCall?.call),

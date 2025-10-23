@@ -81,7 +81,7 @@ export default function AccountsRingChart({ className }) {
         borderWidth: 0,
         name: labelDatas.map((i) => i.label),
         percentage: labelDatas.map(
-          (item) => `${(item.percent * 100).toFixed(2)}%`,
+          (item) => `${((item.percent || 0) * 100).toFixed(2)}%`,
         ),
       },
     ],
@@ -101,7 +101,7 @@ export default function AccountsRingChart({ className }) {
             key={i.label}
             label={i.label}
             bgColor={i.bgColor}
-            percentage={`${(i.percent * 100).toFixed(2)}%`}
+            percentage={`${((i.percent || 0) * 100).toFixed(2)}%`}
           />
         ))}
       </div>

@@ -1,12 +1,11 @@
-import { useDecidingSince } from "next-common/context/post/gov2/referendum";
-import { useSelector } from "react-redux";
-import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import { last } from "lodash-es";
 import BigNumber from "bignumber.js";
-import useReferendumCurveData from "next-common/utils/hooks/referenda/detail/useReferendumCurveData";
+import {
+  useBeginHeight,
+  useBlockSteps,
+} from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
 import { useMemo } from "react";
-import { useDecidingEndHeight } from "next-common/context/post/gov2/decidingPercentage";
-import { referendaTallyHistorySelector } from "next-common/store/reducers/referenda/tallyHistory";
+import { useReferendaTallyHistory } from "next-common/store/reducers/referenda/thresholdCurves";
 import { isEmpty } from "lodash-es";
 import useChainOrScanHeight from "next-common/hooks/height";
 
@@ -26,17 +25,16 @@ function calcFromOneTallyData(tally) {
 
 export function calcDataFromTallyHistory(
   tallyHistory,
-  labels,
-  decidingSince,
-  decidingEnd,
+  beginHeight,
   latestHeight,
-  blockTime,
+  blockStep,
+  rangeEndHeight,
 ) {
   let historySupportData = [];
   let historyApprovalData = [];
   let historyAyesData = [];
   let historyNaysData = [];
-  if (!tallyHistory || !decidingSince || isEmpty(tallyHistory)) {
+  if (!tallyHistory || !beginHeight || isEmpty(tallyHistory)) {
     return {
       historySupportData,
       historyApprovalData,
@@ -45,16 +43,14 @@ export function calcDataFromTallyHistory(
     };
   }
 
-  const oneHour = 3600 * 1000;
-  const blockStep = oneHour / blockTime; // it means the blocks between 2 dots.
-  let iterHeight = decidingSince;
-  while (iterHeight <= decidingEnd) {
-    const tally = tallyHistory.findLast(
-      (tally) => tally.indexer.blockHeight <= iterHeight,
-    );
-    if (!tally) {
-      break;
-    }
+  const endHeight = Math.min(latestHeight, rangeEndHeight);
+
+  let iterHeight = beginHeight;
+  while (iterHeight <= endHeight) {
+    const tally =
+      tallyHistory.findLast(
+        (tally) => tally.indexer.blockHeight <= iterHeight,
+      ) || last(tallyHistory);
 
     let { currentSupport, currentApprove } = calcFromOneTallyData(tally.tally);
     historySupportData.push(currentSupport);
@@ -62,17 +58,6 @@ export function calcDataFromTallyHistory(
     historyAyesData.push(tally.tally.ayes);
     historyNaysData.push(tally.tally.nays);
     iterHeight += blockStep;
-  }
-
-  if (iterHeight < decidingEnd + blockStep && latestHeight > decidingEnd) {
-    const lastTally = last(tallyHistory);
-    let { currentSupport, currentApprove } = calcFromOneTallyData(
-      lastTally.tally,
-    );
-    historySupportData.push(currentSupport);
-    historyApprovalData.push(currentApprove);
-    historyAyesData.push(lastTally.tally.ayes);
-    historyNaysData.push(lastTally.tally.nays);
   }
 
   return {
@@ -83,29 +68,20 @@ export function calcDataFromTallyHistory(
   };
 }
 
-export default function useHistoryTallyValueData() {
-  const { labels } = useReferendumCurveData();
-  const decidingSince = useDecidingSince();
-  const blockTime = useSelector(blockTimeSelector);
-  const tallyHistory = useSelector(referendaTallyHistorySelector);
-  const decidingEndOrLatestHeight = useDecidingEndHeight();
+export default function useHistoryTallyValueData(totalHours) {
+  const tallyHistory = useReferendaTallyHistory();
   const latestHeight = useChainOrScanHeight();
+  const blockStep = useBlockSteps();
+  const beginHeight = useBeginHeight();
+  const rangeEndHeight = beginHeight + blockStep * totalHours;
 
   return useMemo(() => {
     return calcDataFromTallyHistory(
       tallyHistory,
-      labels,
-      decidingSince,
-      decidingEndOrLatestHeight,
+      beginHeight,
       latestHeight,
-      blockTime,
+      blockStep,
+      rangeEndHeight,
     );
-  }, [
-    tallyHistory,
-    labels,
-    decidingSince,
-    decidingEndOrLatestHeight,
-    latestHeight,
-    blockTime,
-  ]);
+  }, [tallyHistory, beginHeight, latestHeight, blockStep, rangeEndHeight]);
 }

@@ -76,7 +76,25 @@ const config = {
         use: "raw-loader",
       },
     );
+
+    // Fix MetaMask SDK React Native dependency issue
+    config.resolve.alias["@react-native-async-storage/async-storage"] = false;
+
     return config;
+  },
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          // Allow https://app.mimir.global/ use iframe
+          {
+            key: "Content-Security-Policy",
+            value: "frame-ancestors https://app.mimir.global;",
+          },
+        ],
+      },
+    ];
   },
 };
 

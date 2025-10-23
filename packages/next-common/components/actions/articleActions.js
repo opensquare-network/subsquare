@@ -5,7 +5,7 @@ import Share from "../shareSNS";
 import { usePost } from "../../context/post";
 import { useIsPostAuthor } from "../../context/post/useIsPostAuthor";
 import ThumbsUp from "../thumbsUp";
-import { PostContextMenu } from "../contentMenu";
+import PostContextMenu from "../articleMoreMenu";
 import ThumbUpList from "./thumbUpList";
 import { useUser } from "../../context/user";
 import { useFocusEditor } from "next-common/context/post/editor";
@@ -16,21 +16,27 @@ import { useMyUpVote } from "next-common/context/post/useMyUpVote";
 import useCanEditPost from "next-common/hooks/useCanEditPost";
 import useShouldUseSimaPostEdit from "next-common/sima/hooks/useShouldUseSimaPostEdit";
 
-function SimaPostContextMenu({ isAuthor, setIsEdit }) {
+function SimaPostContextMenu({ isAuthor, setIsEdit, editable = true }) {
   const canEdit = useCanEditPost();
   return (
     <PostContextMenu
       isAuthor={isAuthor}
-      editable={canEdit}
+      editable={canEdit && editable}
       setIsEdit={setIsEdit}
     />
   );
 }
 
-function MaybeSimaPostContextMenu({ isAuthor, setIsEdit }) {
+function MaybeSimaPostContextMenu({ isAuthor, setIsEdit, editable = true }) {
   const isSima = useShouldUseSimaPostEdit();
   if (isSima) {
-    return <SimaPostContextMenu isAuthor={isAuthor} setIsEdit={setIsEdit} />;
+    return (
+      <SimaPostContextMenu
+        isAuthor={isAuthor}
+        setIsEdit={setIsEdit}
+        editable={editable}
+      />
+    );
   }
   return (
     <PostContextMenu
@@ -41,7 +47,7 @@ function MaybeSimaPostContextMenu({ isAuthor, setIsEdit }) {
   );
 }
 
-export default function ArticleActions({ setIsEdit, extraActions }) {
+export function CommonArticleActions({ extraActions, contextMenu }) {
   const user = useUser();
   const post = usePost();
   const isAuthor = useIsPostAuthor();
@@ -104,12 +110,31 @@ export default function ArticleActions({ setIsEdit, extraActions }) {
           {extraActions}
         </Wrapper>
 
-        {user && (
-          <MaybeSimaPostContextMenu isAuthor={isAuthor} setIsEdit={setIsEdit} />
-        )}
+        {user && contextMenu}
       </div>
 
       {showThumbsUpList && <ThumbUpList reactions={post?.reactions} />}
     </div>
+  );
+}
+
+export default function ArticleActions({
+  setIsEdit,
+  extraActions,
+  editable = true,
+}) {
+  const isAuthor = useIsPostAuthor();
+
+  return (
+    <CommonArticleActions
+      extraActions={extraActions}
+      contextMenu={
+        <MaybeSimaPostContextMenu
+          isAuthor={isAuthor}
+          setIsEdit={setIsEdit}
+          editable={editable}
+        />
+      }
+    />
   );
 }

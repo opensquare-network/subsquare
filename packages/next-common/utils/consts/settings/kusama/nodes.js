@@ -40,14 +40,6 @@ const defaultKusamaNodes = [
     url: "wss://kusama.dotters.network",
   },
   {
-    name: "RadiumBlock",
-    url: "wss://kusama.public.curie.radiumblock.co/ws",
-  },
-  {
-    name: "RockX",
-    url: "wss://rockx-ksm.w3node.com/polka-public-ksm/ws",
-  },
-  {
     name: "LuckyFriday",
     url: "wss://rpc-kusama.luckyfriday.io",
   },

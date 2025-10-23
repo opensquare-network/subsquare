@@ -6,8 +6,8 @@ import BountyClaim from "next-common/components/treasury/bounty/claim";
 import NewChildBountyButton from "next-common/components/treasury/bounty/newChildBountyButton";
 import BountyProposeCuratorButton from "next-common/components/treasury/bounty/proposeCurator/button";
 import BountyAcceptCuratorButton from "next-common/components/treasury/bounty/acceptCurator/button";
-import useSubStorage from "next-common/hooks/common/useSubStorage";
 import BountySidebarActionTip from "next-common/components/treasury/common/bountySidebarActionTip";
+import useSubStorage from "next-common/hooks/common/useSubStorage";
 
 function BountySidebar() {
   const { address, bountyIndex } = useOnchainData();

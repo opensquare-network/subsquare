@@ -3,6 +3,7 @@ import PopupLabel from "next-common/components/popup/label";
 import Tab from "next-common/components/tab";
 import { useEffect, useMemo, useState } from "react";
 import useBestNumber from "next-common/hooks/useBestNumber";
+import BlocknumberTips from "./blocknumberTips";
 
 const defaultAfterBlock = 100;
 
@@ -82,14 +83,17 @@ export default function EnactmentBlocks({ track, setEnactment }) {
             onValueChange={setAfterBlocks}
           />
         ) : (
-          <NumberInput
-            key="at-input"
-            value={initialAt}
-            placeholder="0"
-            symbol="Blocks"
-            controls={false}
-            onValueChange={setInitialAt}
-          />
+          <>
+            <NumberInput
+              key="at-input"
+              value={initialAt}
+              placeholder="0"
+              symbol="Blocks"
+              controls={false}
+              onValueChange={setInitialAt}
+            />
+            <BlocknumberTips />
+          </>
         )}
       </div>
     </div>

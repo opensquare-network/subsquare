@@ -6,8 +6,7 @@ function bnSumTotalVotes(votes = []) {
   return bnSumBy(votes, "totalVotes");
 }
 
-export function useDecentralizedVoicesValue() {
-  const dvVotes = useDecentralizedVoicesVotes();
+export function useVoicesValue(dvVotes) {
   const dvTotalVotesValue = bnSumTotalVotes(dvVotes);
 
   const [abstains, rest] = partition(dvVotes, (v) => v?.isAbstain);
@@ -23,4 +22,10 @@ export function useDecentralizedVoicesValue() {
     nayVotesValue: nayVotes.toString(),
     abstainVotesValue: abstainVotes.toString(),
   };
+}
+
+export function useDecentralizedVoicesValue() {
+  const dvVotes = useDecentralizedVoicesVotes();
+
+  return useVoicesValue(dvVotes);
 }

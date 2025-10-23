@@ -5,7 +5,7 @@ import { cn } from "next-common/utils";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Pagination from "next-common/components/pagination";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { recentProposalFetchParams } from "next-common/services/serverSide/recentProposals";
 import { isNil } from "lodash-es";
 import { useUpdateEffect } from "react-use";
@@ -101,7 +101,7 @@ function TableTemplate({
 
   function fetchData() {
     if (api?.path) {
-      nextApi
+      backendApi
         .fetch(api?.path, { ...api.params, page, ...recentProposalFetchParams })
         .then((resp) => {
           if (resp.result) {
@@ -151,6 +151,7 @@ function TableTemplate({
           <Pagination
             page={page}
             pageSize={recentProposalFetchParams.pageSize}
+            buttonMode
             total={result?.total || 0}
             onPageChange={(e, newPage) => {
               e.preventDefault();

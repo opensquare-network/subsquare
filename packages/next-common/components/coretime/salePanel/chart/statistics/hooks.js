@@ -5,6 +5,7 @@ import { toPrecision } from "next-common/utils";
 import { useMemo } from "react";
 import { INDEX_SIZE, toIndex } from "./utils";
 import { getCoretimePriceAt } from "next-common/utils/coretime/price";
+import useCoretimeCustomizedSaleInfo from "next-common/hooks/coretime/useCoretimeCustomizedSaleInfo";
 
 export function useCoretimeStatisticsRenewalsDataset({ initBlockHeightIndex }) {
   const { coretimeSaleRenewalsChart } = usePageProps();
@@ -63,36 +64,30 @@ export function useCoretimeStatisticsSalesDataset({ initBlockHeightIndex }) {
 export function useCoretimeStatisticsPriceDataset({
   initBlockHeightIndex,
   saleStart,
-  fixedStart,
-  coretimeSale,
+  totalBlocksIndex,
 }) {
   const { decimals } = useChainSettings();
+  const saleInfo = useCoretimeCustomizedSaleInfo();
 
   return useMemo(() => {
     const steppedBlocksRange = range(
-      saleStart,
-      fixedStart + saleStart,
-      INDEX_SIZE,
+      toIndex(saleStart) - initBlockHeightIndex,
+      totalBlocksIndex,
+      1,
     );
-
-    return steppedBlocksRange.map((blockHeight) => {
+    return steppedBlocksRange.map((item, index) => {
+      const blockHeight = saleStart + index * INDEX_SIZE;
       const price = toPrecision(
-        getCoretimePriceAt(blockHeight, coretimeSale.info),
+        getCoretimePriceAt(blockHeight, saleInfo),
         decimals,
       );
 
       return {
         blockHeight,
         price,
-        x: toIndex(blockHeight) - initBlockHeightIndex,
+        x: item,
         y: price,
       };
     });
-  }, [
-    coretimeSale.info,
-    decimals,
-    fixedStart,
-    saleStart,
-    initBlockHeightIndex,
-  ]);
+  }, [saleStart, initBlockHeightIndex, totalBlocksIndex, saleInfo, decimals]);
 }

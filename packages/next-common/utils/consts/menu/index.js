@@ -19,10 +19,13 @@ import getChainSettings from "../settings";
 import { getMoreMenu } from "./more";
 import { coretimeMenu } from "./coretime";
 import { peopleMenu } from "./people";
+import whitelist from "./whitelist";
 import Data from "./data";
 import getAdvancedMenu from "next-common/utils/consts/menu/advanced";
 import { NAV_MENU_TYPE } from "next-common/utils/constants";
 import { isArray } from "lodash-es";
+import { assetsMenu } from "./assets";
+import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated";
 
 export function getHomeMenu({
   summary = {},
@@ -37,7 +40,7 @@ export function getHomeMenu({
   } = getChainSettings(CHAIN);
 
   const integrationsMenu = [
-    modules?.assethub && assetHubMenu,
+    isAssetHubMigrated() ? assetsMenu : assetHubMenu,
     modules?.coretime && coretimeMenu,
     modules?.people && peopleMenu,
   ].filter(Boolean);
@@ -59,6 +62,7 @@ export function getHomeMenu({
     getAdvancedMenu(
       [
         modules?.preimages && preImages,
+        modules?.whitelist && whitelist,
         ...integrationsMenu,
         (modules?.proxy || modules?.vesting || hasMultisig) && Data,
       ].filter(Boolean),
@@ -142,7 +146,9 @@ export function getMainMenu({
 
 const matchedMenuItem = (menu, pathname) => {
   for (const menuItem of menu) {
-    const matched = menuItem.pathname === pathname;
+    const matched =
+      menuItem.pathname === pathname ||
+      menuItem?.extraMatchNavMenuActivePathnames?.includes?.(pathname);
     if (menuItem?.items?.length) {
       const findItem = matchedMenuItem(menuItem.items, pathname);
       if (findItem) {
@@ -154,13 +160,24 @@ const matchedMenuItem = (menu, pathname) => {
     }
   }
 };
-const isSubSpaceNavMenu = (type) => type === NAV_MENU_TYPE.subspace;
+
+function matchedGroupMenu(menu, pathname) {
+  return isNavGroupMenu(menu.type) && menu?.pathname === pathname;
+}
+
+const isSubSpaceNavMenu = (type) =>
+  type === NAV_MENU_TYPE.subspace || type === "archived";
+
+const isNavGroupMenu = (type) => type === NAV_MENU_TYPE.group;
+
 export function matchNewMenu(menu, pathname) {
   if (!isArray(menu)) {
     return null;
   }
   for (const menuItem of menu) {
-    if (isSubSpaceNavMenu(menuItem.type) || menuItem.type === "archived") {
+    if (matchedGroupMenu(menuItem, pathname)) {
+      return null;
+    } else if (isSubSpaceNavMenu(menuItem.type)) {
       const findMenu = matchedMenuItem(menuItem.items, pathname);
       if (findMenu) {
         return {

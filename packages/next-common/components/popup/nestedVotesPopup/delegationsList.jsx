@@ -61,7 +61,7 @@ function DetailDelegatorList({ items = [] }) {
     },
     {
       name: "VOTES",
-      style: { minWidth: 128, textAlign: "right" },
+      style: { textAlign: "right" },
     },
   ];
 

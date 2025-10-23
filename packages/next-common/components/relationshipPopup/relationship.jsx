@@ -20,6 +20,7 @@ import { useTheme } from "styled-components";
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
 import { useRelationshipNodes } from "next-common/context/relationship";
 import ProfileUserInfoProvider from "next-common/components/profile/header/context/profileUserInfoContext";
+import PoweredBy from "./poweredBy";
 
 const nodeTypes = {
   user: UserNode,
@@ -112,6 +113,7 @@ function RelationshipFlow({ calculatedNodes, initialEdges }) {
       >
         <Background />
         <ControlTool />
+        <PoweredBy />
         {arrowMarker}
       </ReactFlow>
     )

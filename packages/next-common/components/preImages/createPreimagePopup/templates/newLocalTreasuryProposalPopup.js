@@ -9,6 +9,8 @@ import NotePreimageButton from "../notePreimageButton";
 import useBalanceField from "../fields/useBalanceField";
 import useAddressComboField from "../fields/useAddressComboField";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
+import InsufficientBalanceTips from "next-common/components/summary/newProposalQuickStart/common/insufficientBalanceTips";
+import ExtrinsicInfo from "../../newPreimagePopup/info";
 
 export function useLocalTreasuryNotePreimageTx(inputBalance, beneficiary) {
   const api = useContextApi();
@@ -42,16 +44,22 @@ export default function NewLocalTreasuryProposalPopup() {
   const { value: beneficiary, component: beneficiaryField } =
     useAddressComboField();
 
-  const { notePreimageTx } = useLocalTreasuryNotePreimageTx(
-    inputBalance,
-    beneficiary,
-  );
+  const { notePreimageTx, encodedLength, encodedProposal, encodedHash } =
+    useLocalTreasuryNotePreimageTx(inputBalance, beneficiary);
 
   return (
     <Popup title="Create Treasury Proposal" onClose={onClose}>
       <SignerWithBalance />
       {balanceField}
       {beneficiaryField}
+      {encodedProposal && (
+        <ExtrinsicInfo
+          preimageHash={encodedHash}
+          callData={encodedProposal}
+          preimageLength={encodedLength || 0}
+        />
+      )}
+      <InsufficientBalanceTips byteLength={encodedLength} onlyPreimage />
       <div className="flex justify-end">
         <NotePreimageButton notePreimageTx={notePreimageTx} />
       </div>

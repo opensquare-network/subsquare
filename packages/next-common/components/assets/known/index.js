@@ -8,13 +8,19 @@ import {
   AssetIconPas,
   AssetIconHdx,
   AssetIconPlaceholder,
+  AssetIconBnc,
+  AssetIconBsx,
 } from "@osn/icons/subsquare";
+import { foreignAssetInfo } from "next-common/utils/consts/foreignAssets";
 
 const knownAssetHubAssetsMap = Object.freeze({
   [Chains.polkadotAssetHub]: knownPolkadotAssetHubAssets,
-  [Chains.westendAssetHub]: [],
   [Chains.kusamaAssetHub]: [],
+  [Chains.westendAssetHub]: [],
   [Chains.paseoAssetHub]: [],
+  [Chains.westend]: [],
+  [Chains.kusama]: [],
+  [Chains.paseo]: [],
 });
 
 export function useKnownAssetHubAssets() {
@@ -33,6 +39,9 @@ const assetHubChainNativeTokenIconMap = {
   [Chains.paseoAssetHub]: AssetIconPas,
   [Chains.paseo]: AssetIconPas,
   [Chains.hydradx]: AssetIconHdx,
+  [Chains.bifrost]: AssetIconBnc,
+  [Chains.bifrostPolkadot]: AssetIconBnc,
+  [Chains.basilisk]: AssetIconBsx,
 };
 
 export function useNativeTokenIcon() {
@@ -44,4 +53,17 @@ export default function useKnownAssetHubAssetIcon(assetId) {
   const assets = useKnownAssetHubAssets();
   const targetAsset = (assets || []).find((asset) => asset.assetId === assetId);
   return targetAsset?.icon;
+}
+
+const knownForeignAssetsMap = Object.freeze({
+  [Chains.polkadotAssetHub]: foreignAssetInfo,
+  [Chains.kusamaAssetHub]: foreignAssetInfo,
+  [Chains.kusama]: foreignAssetInfo,
+});
+
+export function useKnownForeignAssetIcon(assetId) {
+  const chain = useChain();
+  const foreignAssets = knownForeignAssetsMap[chain] || {};
+
+  return foreignAssets[assetId]?.icon || AssetIconPlaceholder;
 }

@@ -1,5 +1,13 @@
 import { useEffect, useState } from "react";
 
+function decodeMetadataField(rawOnchainField) {
+  try {
+    return rawOnchainField.toUtf8();
+  } catch (e) {
+    return rawOnchainField.toHuman();
+  }
+}
+
 export default function useQueryAllAssetMetadata(api) {
   const [allMetadata, setAllMetadata] = useState();
 
@@ -12,8 +20,8 @@ export default function useQueryAllAssetMetadata(api) {
       const normalizedMetadataArr = entries.map(([key, metadata]) => {
         return {
           assetId: key.args[0].toNumber(),
-          symbol: metadata.symbol.toHuman(),
-          name: metadata.name.toHuman(),
+          symbol: decodeMetadataField(metadata.symbol),
+          name: decodeMetadataField(metadata.name),
           decimals: metadata.decimals.toNumber(),
           isFrozen: metadata.isFrozen.toJSON(),
         };

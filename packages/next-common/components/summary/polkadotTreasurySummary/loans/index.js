@@ -2,7 +2,6 @@ import SummaryLabelLinkItem from "../common/summaryLabelLinkItem";
 import FiatPriceLabel from "../common/fiatPriceLabel";
 import SummaryItem from "next-common/components/summary/layout/item";
 import { toPrecision } from "next-common/utils";
-import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 import { useChainSettings } from "next-common/context/chain";
 import ValueDisplay from "next-common/components/valueDisplay";
 import BigNumber from "bignumber.js";
@@ -10,7 +9,6 @@ import { usePolkadotTreasury } from "next-common/context/treasury/polkadotTreasu
 
 function LoansItemList() {
   const {
-    loanCentrifugeUsdcBalance,
     loanBifrostDotBalance,
     loadPendulumDotBalance,
     loanHydrationDotBalance,
@@ -26,17 +24,6 @@ function LoansItemList() {
 
   return (
     <div className="flex flex-col gap-[4px]">
-      <SummaryLabelLinkItem
-        label="Centrifuge"
-        href={"https://polkadot.subsquare.io/referenda/1122"}
-      >
-        <ValueDisplay
-          value={toPrecision(loanCentrifugeUsdcBalance, SYMBOL_DECIMALS.USDC)}
-          symbol="USDC"
-          className={"text12Medium text-textPrimary"}
-          tooltipClassName={"inline-flex items-center"}
-        />
-      </SummaryLabelLinkItem>
       <SummaryLabelLinkItem
         label="Bifrost"
         href="https://polkadot.subsquare.io/referenda/432"
@@ -76,7 +63,6 @@ function LoansItemList() {
 
 export default function Loans() {
   const {
-    loanCentrifugeUsdcBalance,
     loanBifrostDotBalance,
     loadPendulumDotBalance,
     loanHydrationDotBalance,
@@ -90,7 +76,6 @@ export default function Loans() {
             .plus(loadPendulumDotBalance)
             .plus(loanHydrationDotBalance)
             .toString()}
-          usdtBalance={loanCentrifugeUsdcBalance}
         />
         <LoansItemList />
       </div>

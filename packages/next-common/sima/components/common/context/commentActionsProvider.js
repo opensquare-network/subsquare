@@ -4,6 +4,7 @@ import {
   useCreateProposalCommentReply,
   useReplaceProposalComment,
 } from "next-common/sima/actions/comment";
+import { useDeleteProposalComment } from "next-common/sima/actions/deleteComment";
 import { useProposalCommentUpVote } from "next-common/sima/actions/upVote";
 import { useProposalCommentCancelUpVote } from "next-common/sima/actions/cancelUpVote";
 import { useGetComment } from "next-common/noSima/actions/comment";
@@ -15,6 +16,7 @@ export function SimaProposalCommentActionsProvider({ children }) {
   const upVoteComment = useProposalCommentUpVote();
   const cancelUpVoteComment = useProposalCommentCancelUpVote();
   const updateComment = useReplaceProposalComment();
+  const deleteComment = useDeleteProposalComment();
 
   return (
     <CommentActionsContext.Provider
@@ -26,6 +28,7 @@ export function SimaProposalCommentActionsProvider({ children }) {
         upVoteComment,
         cancelUpVoteComment,
         updateComment,
+        deleteComment,
       }}
     >
       {children}

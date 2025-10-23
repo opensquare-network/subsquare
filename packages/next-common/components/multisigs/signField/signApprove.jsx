@@ -1,18 +1,13 @@
 import { SystemSignature } from "@osn/icons/subsquare";
 import styled, { css } from "styled-components";
+import Tooltip from "next-common/components/tooltip";
+import { useSignApprovePopup } from "../context/signApprovePopupContext";
+import { useMultisigListFetchFunc } from "next-common/components/multisigs/actions/composeCallPopup/fetchMultisigList";
+import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
+import { useEffect, useState, useCallback } from "react";
 import { useContextApi } from "next-common/context/api";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useCallback, useEffect, useState } from "react";
-import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
-import Tooltip from "next-common/components/tooltip";
-import { newSuccessToast } from "next-common/store/reducers/toastSlice";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchMultisigList10Times,
-  fetchMultisigsCount10Times,
-} from "../common";
-import { myMultisigsSelector } from "next-common/store/reducers/multisigSlice";
-import { useChain, useChainSettings } from "next-common/context/chain";
+import { useChainSettings } from "next-common/context/chain";
 import { sortAddresses } from "@polkadot/util-crypto";
 import { isSameAddress } from "next-common/utils";
 
@@ -40,16 +35,14 @@ export const Wrapper = styled.div`
   }
 `;
 
-export default function SignApprove({ multisig = {} }) {
+export function useSignApprove(multisig) {
   const api = useContextApi();
   const address = useRealAddress();
   const { threshold, signatories, when: maybeTimepoint, callHash } = multisig;
-  const dispatch = useDispatch();
   const [isDisabled, setIsDisabled] = useState(false);
-  const myMultisigs = useSelector(myMultisigsSelector);
-  const { page = 1 } = myMultisigs || {};
-  const chain = useChain();
   const { ss58Format } = useChainSettings();
+  const fetchMultisigListFunc = useMultisigListFetchFunc();
+  const { visible, setVisible } = useSignApprovePopup();
 
   const getTxFunc = useCallback(() => {
     if (!api || !address) {
@@ -81,21 +74,17 @@ export default function SignApprove({ multisig = {} }) {
     maybeTimepoint,
   ]);
 
-  const onFinalized = () => {
-    setIsDisabled(false);
-    dispatch(newSuccessToast("Multisig status will be updated in seconds"));
-    fetchMultisigList10Times(dispatch, chain, address, page).then(() => {
-      // updated 10 time, do nothing
-    });
-    fetchMultisigsCount10Times(dispatch, chain, address).then(() => {
-      // updated 10 time, do nothing
-    });
-  };
-
   const { doSubmit, isSubmitting } = useTxSubmission({
     getTxFunc,
-    onFinalized,
+    onInBlock: () => {
+      if (visible) {
+        setVisible(false);
+      }
+      setIsDisabled(false);
+    },
     onCancelled: () => setIsDisabled(false),
+    onTxError: () => setIsDisabled(false),
+    onFinalized: fetchMultisigListFunc,
   });
 
   useEffect(() => {
@@ -104,9 +93,28 @@ export default function SignApprove({ multisig = {} }) {
     }
   }, [isSubmitting]);
 
+  return {
+    doSubmit,
+    isDisabled,
+  };
+}
+
+export default function SignApprove({ multisig = {} }) {
+  const { doSubmit, isDisabled } = useSignApprove(multisig);
+  const { setCurrentMultisig, setVisible } = useSignApprovePopup();
+
+  const handleClick = useCallback(() => {
+    if (multisig?.call) {
+      setCurrentMultisig(multisig);
+      setVisible(true);
+    } else {
+      doSubmit();
+    }
+  }, [doSubmit, multisig, setCurrentMultisig, setVisible]);
+
   return (
     <Tooltip content="Approve">
-      <Wrapper disabled={isDisabled} onClick={doSubmit}>
+      <Wrapper disabled={isDisabled} onClick={handleClick}>
         <SystemSignature role="button" className="w-4 h-4" />
       </Wrapper>
     </Tooltip>

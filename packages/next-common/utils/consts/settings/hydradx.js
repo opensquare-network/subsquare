@@ -85,7 +85,7 @@ const hydradx = {
   identity: "hydradx",
   symbol: "HDX",
   decimals: 12,
-  blockTime: 12000,
+  blockTime: 6000,
   hasElections: true,
   ss58Format: 0,
   avatar: ProjectIconHydrationLight,
@@ -107,9 +107,15 @@ const hydradx = {
       bounties: false,
       spends: true,
     },
+    council: {
+      archived: true,
+    },
   }),
   integrations: {
     subscan: true,
+  },
+  referendaActions: {
+    startFrom: 98,
   },
   cssVarsLight: {
     theme100: "rgba(229,62,118,0.10)",
@@ -146,6 +152,9 @@ const hydradx = {
     referenda: true,
   },
   preimage: hydrationPreimageSettings,
+  openSquare: {
+    voting: "hydration",
+  },
 };
 
 export default hydradx;

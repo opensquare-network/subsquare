@@ -56,7 +56,7 @@ function ViewEvidence({ evidence, who }) {
 }
 
 function Rank({ address }) {
-  const member = useCollectiveMember(address);
+  const { member } = useCollectiveMember(address);
   if (!member) {
     return null;
   }

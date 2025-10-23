@@ -4,6 +4,8 @@ export function useAssetsTransfersHistoryFromColumn() {
   return {
     name: "From",
     style: { textAlign: "left", minWidth: "212px" },
-    render: (item) => <AddressUser key={item.from} add={item.from} />,
+    render: (item) => (
+      <AddressUser key={item.from} add={item.from} link="/assets" />
+    ),
   };
 }

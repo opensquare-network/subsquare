@@ -1,6 +1,6 @@
 import LegendItem from "../../legend/item";
 
-export default function ThresholdCurvesGov2TallyLegend({ isFellowship }) {
+export default function ThresholdCurvesGov2TallyLegend({ showAyeNay }) {
   return (
     <div className="flex justify-center flex-wrap">
       <LegendItem color="var(--purple500)">Support</LegendItem>
@@ -12,7 +12,7 @@ export default function ThresholdCurvesGov2TallyLegend({ isFellowship }) {
         Current Approval
       </LegendItem>
 
-      {!isFellowship && (
+      {showAyeNay && (
         <>
           <LegendItem square color="var(--green300)">
             Aye

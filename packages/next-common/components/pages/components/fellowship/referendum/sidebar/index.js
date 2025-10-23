@@ -3,7 +3,7 @@ import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarW
 import FellowshipTally from "./tally";
 import Gov2Status from "../../../gov2/sidebar/status";
 import { usePost } from "next-common/context/post";
-import { gov2VotingState } from "next-common/utils/consts/state";
+import { gov2VotingStates } from "next-common/utils/consts/state";
 import { InlineWrapper } from "next-common/components/detail/sidebar/styled";
 import Popup from "../votePopup";
 import PrimaryButton from "next-common/lib/button/primary";
@@ -81,7 +81,7 @@ export default function FellowshipReferendumSideBar() {
   const post = usePost();
   const [showVote, setShowVote] = useState(false);
   const referendumIndex = post?.referendumIndex;
-  const isVoting = gov2VotingState.includes(post?.state?.name);
+  const isVoting = gov2VotingStates.includes(post?.state?.name);
 
   return (
     <RightBarWrapper>

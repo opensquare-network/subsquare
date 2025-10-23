@@ -16,6 +16,8 @@ import CircleStepper from "next-common/components/step";
 import SigningTip from "../common/signingTip";
 import InsufficientBalanceTips from "../common/insufficientBalanceTips";
 import PreviousButton from "../../newProposalButton/previousButton";
+import { isZkverifyChain } from "next-common/utils/chain";
+import { useChain } from "next-common/context/chain";
 
 export function NewTreasuryReferendumInnerPopup() {
   const { onClose } = usePopupParams();
@@ -32,7 +34,7 @@ export function NewTreasuryReferendumInnerPopup() {
 
   return (
     <Popup title="Create Treasury Proposal" onClose={onClose}>
-      <SignerWithBalance />
+      <SignerWithBalance supportedMultisig={false} />
       {balanceField}
       {beneficiaryField}
       {trackField}
@@ -53,13 +55,23 @@ export function NewTreasuryReferendumInnerPopup() {
   );
 }
 
+function useDefaultTreasuryReferendumTrackId() {
+  const chain = useChain();
+  if (isZkverifyChain(chain)) {
+    return 33;
+  }
+
+  return null;
+}
+
 export function NewTreasuryReferendumInnerPopupContent() {
   const { goBack } = useStepContainer();
   const { value: inputBalance, component: balanceField } = useBalanceField();
   const { value: beneficiary, component: beneficiaryField } =
     useAddressComboField();
+  const defaultTrackId = useDefaultTreasuryReferendumTrackId();
   const { value: trackId, component: trackField } =
-    useAutoSelectTreasuryTrackField(inputBalance);
+    useAutoSelectTreasuryTrackField(inputBalance, defaultTrackId);
   const { value: enactment, component: enactmentField } =
     useEnactmentBlocksField(trackId);
 
@@ -86,7 +98,7 @@ export function NewTreasuryReferendumInnerPopupContent() {
         currentStep={1}
         loading={isLoading}
       />
-      <SignerWithBalance showTransferable />
+      <SignerWithBalance showTransferable supportedMultisig={false} />
       {balanceField}
       {beneficiaryField}
       {trackField}

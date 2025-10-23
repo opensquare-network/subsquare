@@ -10,11 +10,7 @@ import OverviewSummary from "next-common/components/summary/overviewSummary";
 import AllianceOverviewSummary from "next-common/components/summary/allianceOverviewSummary";
 import CentrifugeOverviewSummary from "next-common/components/summary/centrifugeOverviewSummary";
 import OffChainVoting from "next-common/components/summary/externalInfo/offChainVoting";
-import Bounties from "next-common/components/summary/externalInfo/bounties";
-import {
-  hasDefinedBounties,
-  hasDefinedOffChainVoting,
-} from "next-common/utils/summaryExternalInfo";
+import { hasDefinedBounties } from "next-common/utils/summaryExternalInfo";
 import { HeadContent, TitleExtra } from "next-common/components/overview";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchRecentProposalsProps } from "next-common/services/serverSide/recentProposals";
@@ -28,6 +24,40 @@ import { BasicDataProvider } from "next-common/context/centrifuge/basicData";
 import { DailyExtrinsicsProvider } from "next-common/context/centrifuge/DailyExtrinsics";
 import { TokenPricesProvider } from "next-common/context/centrifuge/tokenPrices";
 import { backendApi } from "next-common/services/nextApi";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import { votingSpace } from "next-common/utils/opensquareVoting";
+import generateLayoutRawTitle from "next-common/utils/generateLayoutRawTitle";
+
+const ConfirmingReferendaStats = dynamicClientOnly(() =>
+  import("next-common/components/overview/confirmingReferendaStats"),
+);
+
+const CoretimeStats = dynamicClientOnly(() =>
+  import("next-common/components/overview/coretimeStats"),
+);
+
+function ExternalInfo() {
+  const { modules } = useChainSettings();
+
+  if (
+    !votingSpace &&
+    !hasDefinedBounties() &&
+    !modules?.referenda &&
+    !modules?.coretime
+  ) {
+    return null;
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="grid grid-cols-2 gap-[16px] max-md:grid-cols-1">
+        <OffChainVoting />
+      </div>
+      <ConfirmingReferendaStats />
+      <CoretimeStats />
+    </div>
+  );
+}
 
 function DefaultOverviewPage() {
   const chain = useChain();
@@ -42,24 +72,6 @@ function DefaultOverviewPage() {
     },
   ];
 
-  if (chain === "interlay" || chain === "kintsugi") {
-    tabs.push({
-      value: "escrow",
-      label: "Escrow",
-      url: "/escrow",
-    });
-  }
-
-  let externalInfo = null;
-  if (hasDefinedOffChainVoting() || hasDefinedBounties()) {
-    externalInfo = (
-      <div className="grid grid-cols-2 gap-[16px] max-md:grid-cols-1">
-        <OffChainVoting />
-        <Bounties />
-      </div>
-    );
-  }
-
   if (isCentrifugeChain(chain)) {
     return (
       <BasicDataProvider>
@@ -72,7 +84,7 @@ function DefaultOverviewPage() {
               description={chainSettings.description}
               headContent={<HeadContent />}
               summary={<CentrifugeOverviewSummary />}
-              summaryFooter={externalInfo}
+              summaryFooter={<ExternalInfo />}
               tabs={tabs}
             >
               <CentrifugeOverview />
@@ -86,8 +98,8 @@ function DefaultOverviewPage() {
   return (
     <ListLayout
       title={chainSettings.name}
+      seoInfo={{ rawTitle: generateLayoutRawTitle("governance platform") }}
       titleExtra={<TitleExtra />}
-      seoInfo={{ title: "" }}
       description={chainSettings.description}
       headContent={<HeadContent />}
       summary={
@@ -97,7 +109,7 @@ function DefaultOverviewPage() {
           <OverviewSummary />
         )
       }
-      summaryFooter={externalInfo}
+      summaryFooter={<ExternalInfo />}
       tabs={tabs}
     >
       <Overview />

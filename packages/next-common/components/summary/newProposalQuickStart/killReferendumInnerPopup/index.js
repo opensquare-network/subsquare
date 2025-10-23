@@ -62,7 +62,7 @@ export function KillReferendumInnerPopup({
 
   return (
     <Popup title="Kill a referendum" onClose={onClose}>
-      <SignerWithBalance />
+      <SignerWithBalance supportedMultisig={false} />
       {referendumIndexField}
       {trackField}
       <AdvanceSettings>
@@ -147,7 +147,7 @@ export function KillReferendumInnerPopupContent() {
         currentStep={1}
         loading={isLoading}
       />
-      <SignerWithBalance showTransferable />
+      <SignerWithBalance showTransferable supportedMultisig={false} />
       {referendumIndexField}
       {trackField}
       <AdvanceSettings>

@@ -1,4 +1,4 @@
-import PostList from "next-common/components/postList";
+import PolkassemblyDiscussionPostList from "next-common/components/postList/polkassemblyDiscussionPostList";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { withCommonProps } from "next-common/lib";
 import { backendApi } from "next-common/services/nextApi";
@@ -17,9 +17,7 @@ export default function DiscussionsPage({ posts, chain }) {
 
   return (
     <DiscussionsLayout seoInfo={seoInfo} title={category}>
-      <PostList
-        category={category}
-        title="List"
+      <PolkassemblyDiscussionPostList
         titleCount={posts.total}
         items={items}
         pagination={{

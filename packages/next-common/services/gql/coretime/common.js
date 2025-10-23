@@ -29,3 +29,14 @@ export const INDEXER_FIELDS = `
   eventIndex
   extrinsicIndex
 `;
+
+export const CORETIME_CONFIGURATION_FIELDS = `
+  advanceNotice
+  interludeLength
+  leadinLength
+  regionLength
+  idealBulkProportion
+  limitCoresOffered
+  renewalBump
+  contributionTimeout
+`;

@@ -106,7 +106,7 @@ function PaddingBars({
       <div
         key={`padding-${i}`}
         className="h-[24px] w-[4px]"
-        style={{ backgroundColor: paddingItemsColor || "var(--neutral200)" }}
+        style={{ backgroundColor: paddingItemsColor }}
       />,
     );
   }

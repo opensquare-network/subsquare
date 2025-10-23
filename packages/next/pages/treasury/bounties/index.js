@@ -1,36 +1,28 @@
-import PostList from "next-common/components/postList";
+import TreasuryBountiesPostList from "next-common/components/postList/treasyrybountiesPostList";
 import { withCommonProps } from "next-common/lib";
 import normalizeBountyListItem from "next-common/utils/viewfuncs/treasury/normalizeBountyListItem";
-import { useChainSettings } from "next-common/context/chain";
-import { lowerCase } from "lodash-es";
 import ListLayout from "next-common/components/layout/ListLayout";
-import TreasurySummary from "next-common/components/summary/treasurySummary";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { TreasuryProvider } from "next-common/context/treasury";
-import { isPolkadotChain } from "next-common/utils/chain";
-import PolkadotTreasuryStatsOnProposal from "next-common/components/treasury/common/polkadotTreasuryStatsOnProposal";
-import NewBountyButton from "next-common/components/treasury/bounty/newBountyButton";
 import { backendApi } from "next-common/services/nextApi";
 import BountyCardSection from "next-common/components/treasury/bounty/bountyCardSection";
+import { fetchList } from "next-common/services/list";
+import businessCategory from "next-common/utils/consts/business/category";
+import NewBountyButton from "next-common/components/treasury/bounty/newBountyButton";
+import BountiesSummaryPanel from "next-common/components/treasury/bounty/summaryPanel";
 
 export default function BountiesPage({
   activeBounties,
   inactiveBounties,
   chain,
 }) {
-  const chainSettings = useChainSettings();
-
   const items = (inactiveBounties.items || []).map((item) =>
     normalizeBountyListItem(chain, item),
   );
-  const category = "Treasury Bounties";
+  const category = businessCategory.treasuryBounties;
   const seoInfo = { title: category, desc: category };
 
-  const treasurySummaryPanel = isPolkadotChain(chain) ? (
-    <PolkadotTreasuryStatsOnProposal />
-  ) : (
-    <TreasurySummary />
-  );
+  const treasurySummaryPanel = <BountiesSummaryPanel />;
 
   return (
     <TreasuryProvider>
@@ -44,13 +36,6 @@ export default function BountiesPage({
             label: "Bounties",
             url: "/treasury/bounties",
           },
-          chainSettings.integrations?.doTreasury && {
-            value: "statistics",
-            label: "Statistics",
-            url: `https://dotreasury.com/${lowerCase(
-              chainSettings.symbol,
-            )}/bounties`,
-          },
         ].filter(Boolean)}
       >
         {activeBounties && activeBounties.length > 0 && (
@@ -61,17 +46,15 @@ export default function BountiesPage({
             )}
           />
         )}
-        <PostList
-          category={category}
-          title="List"
+        <TreasuryBountiesPostList
           titleCount={inactiveBounties.total}
-          titleExtra={<NewBountyButton />}
           items={items}
           pagination={{
             page: inactiveBounties.page,
             pageSize: inactiveBounties.pageSize,
             total: inactiveBounties.total,
           }}
+          titleExtra={<NewBountyButton />}
         />
       </ListLayout>
     </TreasuryProvider>
@@ -79,15 +62,12 @@ export default function BountiesPage({
 }
 
 export const getServerSideProps = withCommonProps(async (context) => {
-  const [
-    tracksProps,
-    { result: activeBounties },
-    { result: inactiveBounties },
-  ] = await Promise.all([
-    fetchOpenGovTracksProps(),
-    backendApi.fetch("/treasury/bounties/active"),
-    backendApi.fetch("/treasury/bounties/inactive"),
-  ]);
+  const [tracksProps, { result: activeBounties }, inactiveBounties] =
+    await Promise.all([
+      fetchOpenGovTracksProps(),
+      backendApi.fetch("/treasury/bounties/active"),
+      fetchList("/treasury/bounties/inactive", context),
+    ]);
 
   return {
     props: {

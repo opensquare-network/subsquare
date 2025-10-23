@@ -1,5 +1,4 @@
 import { useChain, useChainSettings } from "next-common/context/chain";
-import MultisigsTitle from "./multisigsTitle";
 import { Title } from "./styled";
 import { isKintsugiChain } from "next-common/utils/chain";
 import DepositsTitle from "./depositsTitle";
@@ -45,9 +44,7 @@ export default function AccountSubTabs({ className = "" }) {
   if (hasMultisig) {
     tabs.push({
       value: "multisigs",
-      label({ active }) {
-        return <MultisigsTitle active={active} />;
-      },
+      label: ({ active }) => <TabTitle active={active}>Multisigs</TabTitle>,
       url: "/account/multisigs",
     });
   }
@@ -57,10 +54,8 @@ export default function AccountSubTabs({ className = "" }) {
     ![Chains.collectives, Chains.westendCollectives].includes(chain)
   ) {
     tabs.push({
-      value: "delegated_votes",
-      label: ({ active }) => (
-        <TabTitle active={active}>Delegated Votes</TabTitle>
-      ),
+      value: "delegations",
+      label: ({ active }) => <TabTitle active={active}>Delegations</TabTitle>,
       url: "/account/delegations",
     });
 

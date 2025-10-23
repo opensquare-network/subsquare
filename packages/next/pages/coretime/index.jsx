@@ -20,6 +20,7 @@ import {
   queryCoretimeSalePurchasesChart,
   queryCoretimeSaleRenewalsChart,
 } from "next-common/services/gql/coretime/chart";
+import generateLayoutRawTitle from "next-common/utils/generateLayoutRawTitle";
 
 const isCoretimeSupported = !!getChainSettings(CHAIN).modules?.coretime;
 
@@ -44,11 +45,11 @@ export default function CoretimePage() {
       <Provider store={store}>
         <ChainProvider chain={chain}>
           <ApiProvider>
-            <CoretimeCommonProvider>
-              <CoretimeActiveSaleProvider>
+            <CoretimeActiveSaleProvider>
+              <CoretimeCommonProvider>
                 <CoretimeOverviewPageImpl />
-              </CoretimeActiveSaleProvider>
-            </CoretimeCommonProvider>
+              </CoretimeCommonProvider>
+            </CoretimeActiveSaleProvider>
           </ApiProvider>
         </ChainProvider>
       </Provider>
@@ -61,7 +62,11 @@ function CoretimeOverviewPageImpl() {
   useLoopCoretimeScanHeight();
 
   return (
-    <ListLayout title="Coretime" description={description}>
+    <ListLayout
+      title="Coretime"
+      seoInfo={{ rawTitle: generateLayoutRawTitle("Coretime") }}
+      description={description}
+    >
       <div className="space-y-6">
         <CoretimeSalePanel />
         <CoretimeSalesHistorySection />

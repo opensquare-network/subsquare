@@ -1,5 +1,4 @@
 import Tooltip from "next-common/components/tooltip";
-import { useOnchainData } from "next-common/context/post";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import Popup from "next-common/components/popup/wrapper/Popup";
@@ -10,20 +9,7 @@ const JsonView = dynamic(() => import("next-common/components/jsonView"), {
 });
 const InfoDocs = dynamic(() => import("@osn/icons/subsquare/InfoDocs"));
 
-function BeneficiaryJsonView({ onClose }) {
-  const { proposal } = useOnchainData();
-  const beneficiary = proposal?.call?.args?.find(
-    (item) => item.name === "beneficiary",
-  );
-
-  return (
-    <Popup title="Beneficiary Detail" onClose={onClose}>
-      <JsonView src={beneficiary} />
-    </Popup>
-  );
-}
-
-export default function BeneficiaryDetailButton() {
+export default function BeneficiaryDetailButton({ beneficiaryLocation }) {
   const [showDetail, setShowDetail] = useState(false);
 
   return (
@@ -39,7 +25,9 @@ export default function BeneficiaryDetailButton() {
         />
       </Tooltip>
       {showDetail && (
-        <BeneficiaryJsonView onClose={() => setShowDetail(false)} />
+        <Popup title="Beneficiary Detail" onClose={() => setShowDetail(false)}>
+          <JsonView src={beneficiaryLocation} />
+        </Popup>
       )}
     </>
   );

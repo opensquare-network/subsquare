@@ -19,11 +19,12 @@ export function usePolkassemblyPostData({
   const isMounted = useMountedState();
   const [comments, setComments] = useState([]);
   const [postReactions, setPostReactions] = useState([]);
-  const [loadingComments, setLoadingComments] = useState(false);
+  const [loadingComments, setLoadingComments] = useState(true);
   const [commentsCount, setCommentsCount] = useState(0);
 
   useEffect(() => {
     if (isNil(polkassemblyId) || isNil(polkassemblyPostType)) {
+      setLoadingComments(false);
       return;
     }
 
@@ -33,6 +34,7 @@ export function usePolkassemblyPostData({
       setComments(data.comments);
       setPostReactions(data.postReactions);
       setCommentsCount(data.commentsCount);
+      setLoadingComments(false);
       return;
     }
 
@@ -45,7 +47,7 @@ export function usePolkassemblyPostData({
           postType: polkassemblyPostType,
         },
         {
-          timeout: 6 * 1000,
+          timeout: 12 * 1000,
         },
       )
       .then(({ result }) => {

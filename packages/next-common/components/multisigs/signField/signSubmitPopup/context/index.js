@@ -1,4 +1,10 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+} from "react";
 
 const MultisigSignContext = createContext(null);
 
@@ -13,12 +19,16 @@ export default function MultisigSignProvider({ children, multisig }) {
   const [formType, setFormType] = useState("input");
   const [callDataMap, setCallDataMap] = useState(defaultCallData);
 
-  const setCallData = (type, data) => {
+  const setCallData = useCallback((type, data) => {
     setCallDataMap((prev) => ({
       ...prev,
       [type]: data,
     }));
-  };
+  }, []);
+
+  const stableSetFormType = useCallback((type) => {
+    setFormType(type);
+  }, []);
 
   useEffect(() => {
     return () => {
@@ -31,7 +41,7 @@ export default function MultisigSignProvider({ children, multisig }) {
       value={{
         multisig,
         formType,
-        setFormType,
+        setFormType: stableSetFormType,
         callDataMap,
         setCallData,
       }}

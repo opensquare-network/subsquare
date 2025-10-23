@@ -31,15 +31,18 @@ export default function CreatePromotionReferendaAndVotePopup({
     readOnly: true,
   });
 
-  const currentRank = useMemberRank(who);
-  const [toRank, setToRank] = useState(currentRank + 1);
+  const { rank: evidenceOwnerRank } = useMemberRank(who);
+  const [toRank, setToRank] = useState(evidenceOwnerRank + 1);
   const [enactment] = useState({ after: 100 });
 
-  const requiredRank = useRequiredRankToPromoteMember(currentRank, toRank);
-  const myRank = useMyRank();
+  const requiredRank = useRequiredRankToPromoteMember(
+    evidenceOwnerRank,
+    toRank,
+  );
+  const { rank: myRank } = useMyRank();
 
   const chain = useChain();
-  const action = toRank > currentRank + 1 ? "promoteFast" : "promote";
+  const action = toRank > evidenceOwnerRank + 1 ? "promoteFast" : "promote";
   let trackName = getPromoteTrackNameFromRank(chain, toRank);
   if (action === "promoteFast") {
     trackName = getFastPromoteTrackNameFromRank(chain, toRank);
@@ -77,7 +80,7 @@ export default function CreatePromotionReferendaAndVotePopup({
       {whoField}
       <RankField
         title="To Rank"
-        currentRank={currentRank}
+        currentRank={evidenceOwnerRank}
         selectedRank={toRank}
         setSelectedRank={setToRank}
       />

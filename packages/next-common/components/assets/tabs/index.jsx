@@ -19,16 +19,23 @@ export const TabLabel = ({ label, count, isActive }) => (
   </span>
 );
 
-export default function AssetHubTabs({ children }) {
+export default function AssetHubTabs({ children, customLabels }) {
   const [activeTabId, setActiveTabId] = useActiveTab();
   const [totalCounts] = useTotalCounts();
+
+  const defaultLabels = {
+    [TABS.assets]: "Assets",
+    [TABS.transfers]: "Transfers",
+  };
+
+  const labels = { ...defaultLabels, ...customLabels };
 
   const tabsListItems = [
     {
       value: TABS.assets,
       label: (
         <TabLabel
-          label="Assets"
+          label={labels[TABS.assets]}
           count={totalCounts.assets}
           isActive={activeTabId === TABS.assets}
         />
@@ -38,7 +45,7 @@ export default function AssetHubTabs({ children }) {
       value: TABS.transfers,
       label: (
         <TabLabel
-          label="Transfers"
+          label={labels[TABS.transfers]}
           count={totalCounts.transfers}
           isActive={activeTabId === TABS.transfers}
         />

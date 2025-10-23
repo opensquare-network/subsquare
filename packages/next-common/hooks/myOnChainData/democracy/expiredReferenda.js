@@ -20,7 +20,10 @@ export default function useDemocracyVoteExpiredReferenda() {
 
   return votes.reduce((result, voteItem) => {
     const { referendumIndex, vote, referendumInfo } = voteItem;
-    if (referendumInfo?.ongoing) {
+    if (!referendumInfo) {
+      // referendum is cancelled
+      return [...result, referendumIndex];
+    } else if (referendumInfo?.ongoing) {
       return result;
     } else if (referendumInfo && referendumInfo.finished) {
       const isExpired = isVoteLockExpired(

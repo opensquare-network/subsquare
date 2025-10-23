@@ -10,12 +10,13 @@ const WhalesCurrentList = dynamic(
   },
 );
 
-export default function ReferendaWhalesPage({ title, gov2ReferendaSummary }) {
-  const seoInfo = { title, desc: title };
+export default function ReferendaWhalesPage({ gov2ReferendaSummary }) {
+  const seoInfo = { title: "Referenda Whales", desc: "View the current referenda whales" };
 
   return (
     <ReferendaLayout
-      title={title}
+      title={seoInfo.title}
+      description={seoInfo.desc}
       seoInfo={seoInfo}
       summaryData={gov2ReferendaSummary}
     >

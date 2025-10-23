@@ -6,7 +6,6 @@ import Chains from "../../chains";
 export const gov2Referenda = {
   id: "referenda",
   name: "Referenda",
-  categoryName: "OpenGov referenda",
   categoryId: businessCategory.openGovReferenda,
   routePath: "referenda",
   apiPath: "gov2/referendums",
@@ -15,11 +14,25 @@ export const gov2Referenda = {
 };
 
 export const gov2Fellowship = {
-  id: "fellowship",
-  name: "Fellowship",
-  categoryName: "Fellowship",
+  id: "fellowshipReferenda",
+  name: "Referenda",
   categoryId: businessCategory.fellowship,
   routePath: "fellowship",
   apiPath: "fellowship/referendums",
   formatter: (chain, item) => normalizeFellowshipReferendaListItem(item),
+  getCount: (overview) => overview?.openGov?.fellowship ?? 0,
+};
+
+export const openGovCategory = {
+  id: "openGov",
+  name: "OpenGov",
+  children: [gov2Referenda],
+  getCount: (overview) => overview?.openGov?.referenda ?? 0,
+};
+
+export const fellowshipCategory = {
+  id: "fellowship",
+  name: "Fellowship",
+  children: [gov2Fellowship],
+  getCount: (overview) => overview?.openGov?.fellowship ?? 0,
 };

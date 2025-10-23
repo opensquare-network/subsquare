@@ -5,21 +5,16 @@ import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
 import dayjs from "dayjs";
 import NoData from "next-common/components/noData";
 import { useNavCollapsed } from "next-common/context/nav";
-import { cn } from "next-common/utils";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import { useState } from "react";
 import FellowshipEvidenceContent from "next-common/components/collectives/core/evidenceContent";
+import { cn, isHash } from "next-common/utils";
+import EvidenceLink from "./link";
+import getEvidenceTitle from "next-common/utils/fellowship/getEvidenceTitle";
 
 const getDate = (row) => {
   return dayjs(row?.indexer?.blockTime).format("YYYY/MM/DD") || "";
-};
-
-const getTitle = (row) => {
-  const { wish, rank } = row;
-  const adposition = wish === "Retention" ? "at" : "to";
-  const realRankValue = wish === "Promotion" ? rank + 1 : rank;
-  return `${wish} ${adposition} Rank ${realRankValue}`;
 };
 
 const SubSquareLinks = ({ referenda }) => {
@@ -46,30 +41,38 @@ const SubSquareLinks = ({ referenda }) => {
 const EvidenceItem = ({ row, popupTitle = "" }) => {
   const [open, setOpen] = useState(false);
 
+  const title = getEvidenceTitle({
+    wish: row.wish,
+    rank: row.rank,
+    title: row.title,
+  });
+
   return (
     <>
       <NeutralPanel className="p-6">
-        <div
-          role="button"
+        <EvidenceLink
+          address={row.who}
+          blockHeight={row.indexer.blockHeight}
+          eventIndex={row.indexer.eventIndex}
           className="text16Bold text-textPrimary hover:underline"
-          onClick={() => {
-            setOpen(true);
-          }}
+          tooltipClassName="w-auto max-w-full"
         >
-          {getTitle(row)}
-        </div>
+          {title}
+        </EvidenceLink>
         <div className="text14Medium text-textTertiary mt-1">
           {getDate(row)}
         </div>
         <div className="mt-4 flex items-center gap-x-2">
           <SubSquareLinks referenda={row?.referenda || []} />
-          <ExternalLink
-            href={getIpfsLink(row.cid)}
-            externalIcon={false}
-            className="text-textTertiary hover:text-textSecondary"
-          >
-            <LinkIpfs className="w-5 h-5" />
-          </ExternalLink>
+          {isHash(row.hex) && (
+            <ExternalLink
+              href={getIpfsLink(row.cid)}
+              externalIcon={false}
+              className="text-textTertiary hover:text-textSecondary"
+            >
+              <LinkIpfs className="w-5 h-5" />
+            </ExternalLink>
+          )}
         </div>
       </NeutralPanel>
 

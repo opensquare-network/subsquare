@@ -35,9 +35,9 @@ const assetMetadataQuery = gql`
 `;
 
 const STATESCAN_CHAIN_URL_MAP = Object.freeze({
-  "polkadot-assethub": "https://statemint-gh-api.statescan.io/graphql",
-  "westend-assethub": "https://westmint-gh-api.statescan.io/graphql",
-  "kusama-assethub": "https://statemine-gh-api.statescan.io/graphql",
+  "polkadot-assethub": "https://ahp-gh-api.statescan.io/graphql",
+  westend: "https://westmint-gh-api.statescan.io/graphql",
+  kusama: "https://statemine-gh-api.statescan.io/graphql",
 });
 
 export default function useTransfersHistory(address, page = 0, page_size = 25) {

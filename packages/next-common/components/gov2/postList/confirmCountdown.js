@@ -4,10 +4,10 @@ import CountDown from "../../_CountDown";
 import Wrapper from "./wrapper";
 import getRemaining from "./common";
 import usePercentage from "./usePercentage";
-import useChainOrScanHeight from "next-common/hooks/height";
+import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
 
 export default function ConfirmCountdown({ detail }) {
-  const latestHeight = useChainOrScanHeight();
+  const latestHeight = useAhmLatestHeight();
   const onchain = detail?.onchainData;
   const trackInfo = onchain?.trackInfo;
 

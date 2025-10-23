@@ -35,7 +35,6 @@ export default function TotalTreasury() {
     isUsdcTreasuryBalanceOnAssetHubLoading,
     fellowshipSalaryUsdtBalance,
     isFellowshipSalaryUsdtBalanceLoading,
-    loanCentrifugeUsdcBalance,
     loanBifrostDotBalance,
     loadPendulumDotBalance,
     loanHydrationDotBalance,
@@ -85,7 +84,6 @@ export default function TotalTreasury() {
 
   const totalUsdcBalance = new BigNumber(usdcTreasuryBalanceOnAssetHub || 0)
     .plus(hydrationTreasuryUsdc || 0)
-    .plus(loanCentrifugeUsdcBalance || 0)
     .toString();
 
   return (

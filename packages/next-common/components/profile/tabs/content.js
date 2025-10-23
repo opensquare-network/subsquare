@@ -5,15 +5,16 @@ import ProfileMultisigs from "../multisigs";
 import ProfileDelegation from "../delegation";
 import ProfileDeposits from "../deposits";
 import ProfileTransfers from "../transfers";
-import ProfileIdentityTimeline from "../identityTimeline";
-import ProfileAssets from "../assets";
+import ProfileIdentity from "../identity";
 import { usePathname } from "next/navigation";
 import { usePageProps } from "next-common/context/page";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
-import ProfileFellowshipCore from "../fellowship/core";
-import ProfileFellowshipSalary from "../fellowship/salary";
+import ProfileFellowship from "../fellowship";
 import ProfileProxy from "../proxy";
+import ProfileTreasury from "../treasury";
 import CollectivesProvider from "next-common/context/collectives/collectives";
+import ProfileAssets from "next-common/components/profile/assets";
+import ProfileForeignAssets from "next-common/components/profile/foreignAssets";
 
 export default function useProfileTabContent() {
   const { id } = usePageProps();
@@ -32,37 +33,32 @@ export default function useProfileTabContent() {
   } else if (pathname.startsWith(`/user/${maybeEvmAddress}/transfers`)) {
     return <ProfileTransfers />;
   } else if (pathname.startsWith(`/user/${maybeEvmAddress}/identity`)) {
-    return <ProfileIdentityTimeline />;
+    return <ProfileIdentity />;
   } else if (pathname.startsWith(`/user/${maybeEvmAddress}/assets`)) {
-    return <ProfileAssets />;
-  } else if (pathname === `/user/${maybeEvmAddress}/fellowship`) {
+    return (
+      <div className="flex flex-col gap-[16px]">
+        <ProfileAssets />
+        <ProfileForeignAssets />
+      </div>
+    );
+  } else if (pathname.startsWith(`/user/${maybeEvmAddress}/fellowship`)) {
     return (
       <CollectivesProvider section="fellowship">
-        <ProfileFellowshipCore />
+        <ProfileFellowship />
       </CollectivesProvider>
     );
-  } else if (pathname === `/user/${maybeEvmAddress}/ambassador`) {
+  } else if (pathname.startsWith(`/user/${maybeEvmAddress}/ambassador`)) {
     return (
       <CollectivesProvider section="ambassador">
-        <ProfileFellowshipCore />
-      </CollectivesProvider>
-    );
-  } else if (pathname === `/user/${maybeEvmAddress}/fellowship/salary`) {
-    return (
-      <CollectivesProvider section="fellowship">
-        <ProfileFellowshipSalary />
-      </CollectivesProvider>
-    );
-  } else if (pathname === `/user/${maybeEvmAddress}/ambassador/salary`) {
-    return (
-      <CollectivesProvider section="ambassador">
-        <ProfileFellowshipSalary />
+        <ProfileFellowship />
       </CollectivesProvider>
     );
   } else if (pathname.startsWith(`/user/${maybeEvmAddress}/posted`)) {
     return <Posted />;
   } else if (pathname.startsWith(`/user/${maybeEvmAddress}/proxies`)) {
     return <ProfileProxy />;
+  } else if (pathname.startsWith(`/user/${maybeEvmAddress}/treasury`)) {
+    return <ProfileTreasury />;
   }
 
   return <Posted />;

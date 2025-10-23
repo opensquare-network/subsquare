@@ -104,7 +104,7 @@ export function NewProposalInnerPopup({
 
   return (
     <Popup title="New Proposal" onClose={onClose}>
-      <SignerWithBalance showTransferable />
+      <SignerWithBalance showTransferable supportedMultisig={false} />
       <DetailedTrack trackId={trackId} setTrackId={setTrackId} />
       <PreimageField
         preimageHash={preimageHash}
@@ -161,6 +161,7 @@ export function useNewProposalInnerPopupContent({
     !preimageLength;
 
   const length = usePreimageLength(preimageHash);
+
   useEffect(() => {
     if (length) {
       setPreimageLength(length);
@@ -183,6 +184,7 @@ export function useNewProposalInnerPopupContent({
       enactment,
     );
   }, [api, proposalOrigin, preimageHash, preimageLength, enactment]);
+
   return {
     getTxFunc,
     disabled,
@@ -196,7 +198,7 @@ export function useNewProposalInnerPopupContent({
     },
     component: (
       <>
-        <SignerWithBalance showTransferable />
+        <SignerWithBalance showTransferable supportedMultisig={false} />
         <DetailedTrack trackId={trackId} setTrackId={setTrackId} />
         <PreimageField
           preimageHash={preimageHash}

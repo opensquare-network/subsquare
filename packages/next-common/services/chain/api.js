@@ -1,14 +1,24 @@
 import newApi, { newOriginApi } from "next-common/services/chain/apis/new";
+import getChainSettings from "next-common/utils/consts/settings";
+
+function maybeSetHasher(chain, api) {
+  const { chainApi: { hasher } = {} } = getChainSettings(chain);
+  if (hasher) {
+    api.registry.setHasher(hasher);
+  }
+}
 
 export async function getApi(chain, endpoint) {
   const api = await newApi(chain, endpoint);
   await api.isReady;
+  maybeSetHasher(chain, api);
   return api;
 }
 
 export async function getOriginApi(chain, endpoint) {
   const api = await newOriginApi(chain, endpoint);
   await api.isReady;
+  maybeSetHasher(chain, api);
   return api;
 }
 

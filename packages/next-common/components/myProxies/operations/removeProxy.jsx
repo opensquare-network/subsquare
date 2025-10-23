@@ -6,8 +6,9 @@ import RemoveButton from "next-common/components/removeButton";
 import Tooltip from "next-common/components/tooltip";
 import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
+import { noop } from "lodash-es";
 
-export default function RemoveProxy({ data }) {
+export default function RemoveProxy({ data, onSubmitted = noop }) {
   const api = useContextApi();
   const address = useRealAddress();
   const dispatch = useDispatch();
@@ -29,6 +30,7 @@ export default function RemoveProxy({ data }) {
 
   const { doSubmit, isSubmitting } = useTxSubmission({
     getTxFunc,
+    onSubmitted,
     onFinalized,
     onCancelled: () => setIsDisabled(false),
   });

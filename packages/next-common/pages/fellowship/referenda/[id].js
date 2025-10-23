@@ -23,13 +23,16 @@ import DetailLayout from "next-common/components/layout/DetailLayout";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import { ReferendaPalletProvider } from "next-common/context/referenda/pallet";
 import useSubReferendumInfo from "next-common/hooks/referenda/useSubReferendumInfo";
-import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
 import FellowshipReferendaDetailMultiTabs from "next-common/components/pages/components/tabs/fellowshipReferendaDetailMultiTabs";
+import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
+import { useReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
+import { isNil } from "lodash-es";
+import { CommentsContent } from "next-common/components/detail/common/contentWithComment";
+import { MaybeUseSwitchComment } from "next-common/components/detail/fellowship/fellowshipCommentsWithSwitchTabs";
 
 function FellowshipContent() {
   const post = usePost();
@@ -40,15 +43,15 @@ function FellowshipContent() {
   useSubscribePostDetail(post?.referendumIndex);
 
   return (
-    <MaybeSimaContent>
-      <CollectivesProvider section="fellowship" params={fellowshipParams}>
-        <ContentWithComment>
+    <CollectivesProvider section="fellowship" params={fellowshipParams}>
+      <MaybeUseSwitchComment>
+        <CommentsContent>
           <FellowshipReferendaDetail />
           <FellowshipReferendumSideBar />
           <FellowshipReferendaDetailMultiTabs />
-        </ContentWithComment>
-      </CollectivesProvider>
-    </MaybeSimaContent>
+        </CommentsContent>
+      </MaybeUseSwitchComment>
+    </CollectivesProvider>
   );
 }
 
@@ -104,11 +107,15 @@ function ReferendumNullPage() {
 }
 
 function ReferendumPageWithPost() {
+  const indexer = useReferendumVotingFinishIndexer();
+
   return (
-    <ReferendumPageCommon
-      breadcrumbs={<FellowshipBreadcrumb />}
-      postContent={<FellowshipContent />}
-    />
+    <MigrationConditionalApiProvider indexer={indexer}>
+      <ReferendumPageCommon
+        breadcrumbs={<FellowshipBreadcrumb />}
+        postContent={<FellowshipContent />}
+      />
+    </MigrationConditionalApiProvider>
   );
 }
 
@@ -146,6 +153,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
     tracksProps,
     { result: fellowshipParams = {} },
     { result: fellowshipTracksDetail = {} },
+    { evidence, evidenceComments },
   ] = await Promise.all([
     fetchDetailComments(
       getFellowshipReferendumCommentsUrl(detail?._id),
@@ -154,12 +162,15 @@ export const getServerSideProps = withCommonProps(async (context) => {
     fetchOpenGovTracksProps(),
     backendApi.fetch(fellowshipParamsApi),
     backendApi.fetch(fellowshipTracksApi),
+    getEvidenceProps(detail, context),
   ]);
 
   return {
     props: {
       detail,
       comments: comments ?? EmptyList,
+      evidenceComments: evidenceComments ?? EmptyList,
+      evidence,
 
       ...tracksProps,
       fellowshipParams,
@@ -167,3 +178,30 @@ export const getServerSideProps = withCommonProps(async (context) => {
     },
   };
 });
+
+async function getEvidenceProps(detail, context) {
+  const memberships = detail?.onchainData?.memberships || [];
+  const firstMembership = memberships[0];
+
+  if (isNil(firstMembership) || isNil(firstMembership?.evidence)) {
+    return {
+      evidence: null,
+      evidenceComments: EmptyList,
+    };
+  }
+
+  const [{ result: evidence }, evidenceComments] = await Promise.all([
+    backendApi.fetch(
+      `fellowship/members/${firstMembership?.who}/evidences/${firstMembership?.evidence.cid}`,
+    ),
+    fetchDetailComments(
+      `fellowship/members/${firstMembership?.who}/evidences/${firstMembership?.evidence.cid}/comments`,
+      context,
+    ),
+  ]);
+
+  return {
+    evidence,
+    evidenceComments,
+  };
+}

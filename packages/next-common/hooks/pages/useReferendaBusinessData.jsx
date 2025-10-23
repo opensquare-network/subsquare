@@ -6,6 +6,7 @@ import Link from "next/link";
 import { toPrecision } from "next-common/utils";
 import AddressUser from "next-common/components/user/addressUser";
 import { getTreasuryAllSpendsBusiness } from "next-common/components/pages/components/gov2/business/treasuryAllSpends";
+import TreasuryBountiesTitleTooltip from "next-common/components/referenda/titleTooltip/treasuryBounties";
 
 function extractReferendaLink(call = {}) {
   const { section, method, args = [] } = call;
@@ -61,16 +62,17 @@ function extractBounty(call = {}, chainSettings = {}) {
     return [
       [
         "Link to",
-        <Link
-          key="bounty-link"
-          href={`/treasury/bounties/${bountyId}`}
-        >{`Bounty #${bountyId}`}</Link>,
+        <TreasuryBountiesTitleTooltip key="bounty-link" id={bountyId}>
+          <Link
+            href={`/treasury/bounties/${bountyId}`}
+          >{`Bounty #${bountyId}`}</Link>
+        </TreasuryBountiesTitleTooltip>,
       ],
     ];
   }
 
   const { decimals, symbol } = chainSettings;
-  if ("proposeCurator" === method) {
+  if (["proposeCurator", "approveBountyWithCurator"].includes(method)) {
     const bountyId = args[0].value;
     let curator = args[1].value;
     if (typeof curator === "object" && curator.id) {
@@ -80,16 +82,22 @@ function extractBounty(call = {}, chainSettings = {}) {
     return [
       [
         "Link to",
-        <Link
-          key="bounty-link"
-          href={`/treasury/bounties/${bountyId}`}
-        >{`Bounty #${bountyId}`}</Link>,
+        <TreasuryBountiesTitleTooltip key="bounty-link" id={bountyId}>
+          <Link
+            href={`/treasury/bounties/${bountyId}`}
+          >{`Bounty #${bountyId}`}</Link>
+        </TreasuryBountiesTitleTooltip>,
       ],
       [
         "Curator",
         <AddressUser key="curator" add={curator} color="var(--sapphire500)" />,
       ],
-      ["Fee", `${toPrecision(fee, decimals)} ${symbol}`],
+      [
+        "Fee",
+        <div className="text14Medium" key="fee">
+          {`${toPrecision(fee, decimals)} ${symbol}`}
+        </div>,
+      ],
     ];
   }
 

@@ -1,25 +1,38 @@
 import { Handle, Position, useNodeConnections } from "@xyflow/react";
 import {
-  DisplayUserAddress,
+  CopyableAddress,
   DisplayUserAvatar,
 } from "next-common/components/profile/bio";
 import AddressUser from "next-common/components/user/addressUser";
 import styled from "styled-components";
 import tw from "tailwind-styled-components";
-import useProfileAddress from "next-common/components/profile/useProfileAddress";
-import { useProfileBannerUrl } from "next-common/components/profile/header";
+import { useProfileBannerUrlWithDefault } from "next-common/components/profile/header";
 import { cn } from "next-common/utils";
+import {
+  useContextAddress,
+  useSetContextAddress,
+} from "next-common/context/address";
+import { useCallback } from "react";
+import useFetchUserInfo from "next-common/hooks/profile/useFetchUserInfo";
+import { getBannerUrl } from "next-common/utils/banner";
 
 const NodeWrap = styled.div`
   box-shadow: var(--shadow100);
 `;
 
-function UserAvatar({ address, badge }) {
+export function UserAvatar({ address, badge, size = 40, className = "" }) {
   if (!address) {
     return null;
   }
 
-  const avatar = <DisplayUserAvatar address={address} user={{}} size={40} />;
+  const avatar = (
+    <DisplayUserAvatar
+      address={address}
+      user={{}}
+      size={size}
+      className={className}
+    />
+  );
 
   if (!badge) {
     return avatar;
@@ -45,19 +58,31 @@ ${(p) => {
 `;
 
 function AddressLabel({ data }) {
+  const setSourceAddress = useSetContextAddress();
+  const changeSourceAddress = useCallback(() => {
+    if (data?.address) {
+      setSourceAddress(data?.address);
+    }
+  }, [data?.address, setSourceAddress]);
+
   return (
-    <AddressUser
-      add={data?.address || ""}
-      className="flex text14Medium text-textPrimary"
-      maxWidth={200}
-      showAvatar={false}
-      noTooltip
-    />
+    <span onClick={changeSourceAddress}>
+      <AddressUser
+        add={data?.address || ""}
+        username={data?.username || ""}
+        className="flex text14Medium text-textPrimary"
+        maxWidth={200}
+        showAvatar={false}
+        needHref={false}
+      />
+    </span>
   );
 }
 
 function SelfNode({ data }) {
-  const bannerUrl = useProfileBannerUrl();
+  const { user } = useFetchUserInfo(data?.address);
+  const defaultBannerUrl = useProfileBannerUrlWithDefault();
+  const bannerUrl = getBannerUrl(user?.bannerCid) || defaultBannerUrl;
 
   return (
     <div className="flex flex-col items-center justify-center">
@@ -70,16 +95,11 @@ function SelfNode({ data }) {
           <UserAvatar address={data?.address} badge={data.badge} />
         </div>
       </div>
-      <div className="px-4 py-2 mt-5">
+      <div className="px-4 py-2 mt-5 text-center">
         <div className="flex items-center justify-between h-5">
           <AddressLabel data={data} />
         </div>
-        <DisplayUserAddress
-          showLinks={false}
-          address={data?.address}
-          className="flex-1 items-center [&>*]:flex [&>*]:items-center"
-          ellipsisAddress
-        />
+        <CopyableAddress address={data?.address} ellipsisAddress />
       </div>
     </div>
   );
@@ -94,20 +114,15 @@ function RelativeUserNode({ data }) {
           <AddressLabel data={data} />
           {data?.pure}
         </div>
-        <DisplayUserAddress
-          showLinks={false}
-          address={data?.address}
-          className="flex-1 !items-start [&>*]:flex [&>*]:items-center"
-          ellipsisAddress
-        />
+        <CopyableAddress address={data?.address} ellipsisAddress />
       </div>
     </>
   );
 }
 
 export default function UserNode({ data }) {
-  const profileAddress = useProfileAddress();
-  const isSelf = profileAddress === data?.address;
+  const sourceAddress = useContextAddress();
+  const isSelf = sourceAddress === data?.address;
 
   const sourceConnections = useNodeConnections({ handleType: "source" });
   const targetConnections = useNodeConnections({ handleType: "target" });

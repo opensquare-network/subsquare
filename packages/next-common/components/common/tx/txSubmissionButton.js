@@ -17,7 +17,7 @@ export default function TxSubmissionButton({
   autoClose = true,
 }) {
   const onClose = usePopupOnClose();
-  const { isSubmitting, doSubmit } = useTxSubmission({
+  const { isSubmitting, isWrapping, doSubmit } = useTxSubmission({
     getTxFunc,
     onFinalized,
     onInBlock,
@@ -29,7 +29,7 @@ export default function TxSubmissionButton({
     },
   });
 
-  const isLoading = isSubmitting || loading;
+  const isLoading = isSubmitting || loading || isWrapping;
 
   return (
     <div className="flex justify-end">
@@ -57,7 +57,7 @@ export function useTxSubmissionButton({
   onInBlock = noop,
   onSubmitted = noop,
 }) {
-  const { isSubmitting, doSubmit } = useTxSubmission({
+  const { isSubmitting, isWrapping, doSubmit } = useTxSubmission({
     getTxFunc,
     onFinalized,
     onInBlock,
@@ -65,6 +65,7 @@ export function useTxSubmissionButton({
   });
 
   return {
+    isWrapping,
     isLoading: isSubmitting,
     component: (
       <div className="flex justify-end">
@@ -72,7 +73,7 @@ export function useTxSubmissionButton({
           <LoadingButton>{loadingText}</LoadingButton>
         ) : (
           <PrimaryButton
-            loading={isSubmitting}
+            loading={isSubmitting || isWrapping}
             onClick={doSubmit}
             disabled={disabled}
           >

@@ -1,4 +1,7 @@
+import { blake2AsHex } from "@polkadot/util-crypto";
 import Chains from "./consts/chains";
+import getChainSettings from "./consts/settings";
+import { u8aToHex } from "@polkadot/util";
 
 export async function getBlockHeightFromHash(api, blockHash) {
   const header = await api.rpc.chain.getHeader(blockHash);
@@ -71,6 +74,10 @@ export function isPolkadotChain(chain) {
   return [Chains.polkadot].includes(chain);
 }
 
+export function isZkverifyChain(chain) {
+  return [Chains.zkverifyTestnet].includes(chain);
+}
+
 export function isRelayChain(chain) {
   return [
     Chains.polkadot,
@@ -103,6 +110,10 @@ export function isPaseoPeopleChain(chain) {
 
 export function isLaosChain(chain) {
   return [Chains.laos].includes(chain);
+}
+
+export function isHyperBridgeChain(chain) {
+  return [Chains.hyperBridge].includes(chain);
 }
 
 export function getAssetHubChain(chain) {
@@ -147,7 +158,20 @@ export function getRelayChain(chain) {
     return Chains.paseo;
   } else if (isWestendPeopleChain(chain)) {
     return Chains.westend;
+  } else if (isHyperBridgeChain(chain)) {
+    return Chains.polkadot;
   }
 
   throw new Error("Unsupported relay chain");
+}
+
+export function chainApiHash(...args) {
+  const { chainApi: { hasher } = {} } = getChainSettings(
+    process.env.NEXT_PUBLIC_CHAIN,
+  );
+  if (hasher) {
+    const hash = hasher(...args);
+    return u8aToHex(hash);
+  }
+  return blake2AsHex(...args);
 }

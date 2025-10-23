@@ -13,6 +13,7 @@ import { useRouter } from "next/router";
 import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
 import { useReferendumTimelineData } from "next-common/hooks/pages/timelineData";
 import tabsTooltipContentMap from "./tabsTooltipContentMap";
+import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 
 const Gov2ReferendumCall = dynamicClientOnly(() =>
   import("next-common/components/gov2/referendum/call"),
@@ -30,6 +31,9 @@ const Gov2ReferendaVotesBubble = dynamicClientOnly(() =>
   import("next-common/components/gov2/referendum/votesBubble"),
 );
 const ReferendumReport = dynamicClientOnly(() => import("../referenda/report"));
+const CurvesChartTab = dynamicClientOnly(() =>
+  import("../referenda/curvesChartTab"),
+);
 
 export default function ReferendumDetailMultiTabs() {
   const chain = useChain();
@@ -43,6 +47,7 @@ export default function ReferendumDetailMultiTabs() {
   const { component: timeLineTabSwitchComponent, isCompact } =
     useTimelineTabSwitch();
   const timelineData = useReferendumTimelineData();
+  const indexer = onchainData?.indexer;
 
   const { tabs, activeTabValue } = useMemo(() => {
     const tabs = [
@@ -53,11 +58,11 @@ export default function ReferendumDetailMultiTabs() {
               label: "Call",
               tooltip: tabsTooltipContentMap.call,
               content: (
-                <>
+                <MigrationConditionalApiProvider indexer={indexer}>
                   <ReferendumCallProvider>
                     <Gov2ReferendumCall />
                   </ReferendumCallProvider>
-                </>
+                </MigrationConditionalApiProvider>
               ),
             },
           ]
@@ -93,7 +98,16 @@ export default function ReferendumDetailMultiTabs() {
         ),
       },
       {
-        // lazy: true,
+        lazy: true,
+        value: "curves",
+        label: "Curves",
+        content: (
+          <div className="space-y-4">
+            <CurvesChartTab />
+          </div>
+        ),
+      },
+      {
         value: "statistics",
         label: "Statistics",
         content: (
@@ -123,15 +137,16 @@ export default function ReferendumDetailMultiTabs() {
     const [defaultTab] = tabs;
     return { tabs, activeTabValue: router.query.tab || defaultTab.value };
   }, [
-    chain,
-    hasVotesViewTabs,
-    info,
     proposal?.call,
-    referendumDetailForOGTrack.detail,
-    router.query.tab,
+    indexer,
+    info,
+    timelineData,
     timeLineTabSwitchComponent,
     isCompact,
-    timelineData,
+    hasVotesViewTabs,
+    chain,
+    referendumDetailForOGTrack.detail,
+    router.query.tab,
   ]);
 
   function onTabClick(tab) {

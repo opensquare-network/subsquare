@@ -4,7 +4,7 @@ import Progress from "next-common/components/progress";
 import Tooltip from "next-common/components/tooltip";
 import useCoretimeChainOrScanHeight from "next-common/hooks/coretime/scanHeight";
 import { cn, toPercentage } from "next-common/utils";
-import CoretimeSalePanelChartSkeleton from "./skeleton";
+import { Skeleton } from "next-common/components/skeleton";
 
 export default function CoretimeSalePanelChartPeriodProgress({
   className = "",
@@ -17,7 +17,7 @@ export default function CoretimeSalePanelChartPeriodProgress({
   coretimeSale,
 }) {
   if (isLoading) {
-    return <CoretimeSalePanelChartSkeleton className={cn("h-14", className)} />;
+    return <Skeleton className={cn("h-14 w-full rounded-lg", className)} />;
   }
 
   return (

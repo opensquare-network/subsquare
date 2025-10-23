@@ -44,7 +44,7 @@ const bifrostPolkadot = {
   identity: Chains.bifrostPolkadot,
   symbol: "BNC",
   decimals: 12,
-  blockTime: 12000,
+  blockTime: 6000,
   hasElections: false,
   ss58Format: 0,
   endpoints: DEFAULT_NODES,
@@ -84,6 +84,9 @@ const bifrostPolkadot = {
       domain: "bifrost",
     },
   },
+  referendaActions: {
+    startFrom: 136,
+  },
   cssVarsLight: {
     theme100: "rgba(84,43,251,0.10)",
     theme300: "rgba(84,43,251,0.40)",
@@ -117,6 +120,9 @@ const bifrostPolkadot = {
     referenda: true,
   },
   preimage: bifrostPreimageSettings,
+  openSquare: {
+    voting: "bifrost",
+  },
 };
 
 export default bifrostPolkadot;

@@ -11,13 +11,10 @@ import "next-common/styles/cmdk.css";
 import "next-common/styles/react-datepicker.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import Head from "next/head";
-import ScanStatusComponent from "next-common/components/scanStatus";
 import SystemVersionUpgrade from "next-common/components/systemVersionUpgrade";
 import "@osn/previewer/styles.css";
 import "next-common/styles/markdown.css";
-import useInitMimir from "next-common/hooks/useInitMimir";
 import dynamic from "next/dynamic";
-// import ErrorBoundary from "next-common/components/errorBoundary";
 import PostHogProvider from "next-common/components/postHogProvider";
 
 NProgress.configure({
@@ -48,13 +45,7 @@ const ClientOnlySystemUpgrade = dynamic(
   },
 );
 
-function MyApp({ Component, pageProps }) {
-  if (!process.env.NEXT_PUBLIC_CHAIN) {
-    throw new Error("NEXT_PUBLIC_CHAIN env not set");
-  }
-
-  useInitMimir();
-
+function AppImpl({ Component, pageProps }) {
   const {
     connectedAccount,
     user,
@@ -65,50 +56,40 @@ function MyApp({ Component, pageProps }) {
     navCollapsed,
     navSubmenuVisible,
     pathname,
-    scanHeight,
     ...otherProps
   } = pageProps;
 
   return (
     <PostHogProvider>
-      <>
-        <Head>
-          <meta
-            name="viewport"
-            content="width=device-width, user-scalable=no"
-          />
-        </Head>
-        <Provider store={store}>
-          <GlobalProvider
-            connectedAccount={connectedAccount}
-            user={user}
-            userStatus={userStatus}
-            admins={admins}
-            chain={process.env.NEXT_PUBLIC_CHAIN}
-            themeMode={themeMode}
-            pageProperties={pageProperties}
-            navCollapsed={navCollapsed}
-            navSubmenuVisible={navSubmenuVisible}
-            pathname={pathname}
-          >
-            <ClientOnlySystemUpgrade />
-
-            <ScanStatusComponent scanHeight={scanHeight}>
-              {/* The error boundary is not in use temporarily */}
-              {/* <ErrorBoundary
-                key={resetKey}
-                user={user}
-                onReset={handleErrorReset}
-                isPartialComponent={false}
-              > */}
-              <Component {...otherProps} />
-              {/* </ErrorBoundary> */}
-            </ScanStatusComponent>
-          </GlobalProvider>
-        </Provider>
-      </>
+      <Head>
+        <meta name="viewport" content="width=device-width, user-scalable=no" />
+      </Head>
+      <Provider store={store}>
+        <GlobalProvider
+          connectedAccount={connectedAccount}
+          user={user}
+          userStatus={userStatus}
+          admins={admins}
+          chain={process.env.NEXT_PUBLIC_CHAIN}
+          themeMode={themeMode}
+          pageProperties={pageProperties}
+          navCollapsed={navCollapsed}
+          navSubmenuVisible={navSubmenuVisible}
+          pathname={pathname}
+        >
+          <ClientOnlySystemUpgrade />
+          <Component {...otherProps} />
+        </GlobalProvider>
+      </Provider>
     </PostHogProvider>
   );
+}
+
+function MyApp({ Component, pageProps }) {
+  if (!process.env.NEXT_PUBLIC_CHAIN) {
+    throw new Error("NEXT_PUBLIC_CHAIN env not set");
+  }
+  return <AppImpl Component={Component} pageProps={pageProps} />;
 }
 
 export default MyApp;

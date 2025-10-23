@@ -1,6 +1,6 @@
-import { useUser } from "next-common/context/user";
 import Popup from "../popup/wrapper/Popup";
 import {
+  useCallerAddress,
   useExtensionAccounts,
   useSignerContext,
 } from "../popupWithSigner/context";
@@ -14,6 +14,8 @@ import Loading from "../loading";
 import { addressEllipsis, cn, isSameAddress } from "next-common/utils";
 import { useMemo } from "react";
 import { noop } from "lodash-es";
+import MultiSignerAccounts from "./multiSignerAccounts";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 const DisabledAccountItemWrapper = tw.div`
   flex flex-col gap-[12px] p-[12px] pr-[16px]
@@ -98,17 +100,17 @@ function AccountItem({ disabled, account, onClick }) {
 
 export function OriginAddress({ selected, onSelect = noop }) {
   const onClose = usePopupOnClose();
-  const user = useUser();
+  const realAddress = useRealAddress();
   const extensionAccounts = useExtensionAccounts();
   const account = useMemo(
     () =>
       extensionAccounts.find((item) =>
-        isSameAddress(item.address, user.address),
+        isSameAddress(item.address, realAddress),
       ),
-    [extensionAccounts, user.address],
+    [extensionAccounts, realAddress],
   );
 
-  const disabled = isSameAddress(selected, user.address);
+  const disabled = isSameAddress(selected, realAddress);
 
   return (
     <div className="flex flex-col gap-[12px]">
@@ -200,20 +202,40 @@ export function ProxiedAccounts({ selected, onSelect = noop }) {
   );
 }
 
-export default function SwitchSignerPopup({ onClose }) {
-  const { signerAccount, setProxyAddress } = useSignerContext();
+export default function SwitchSignerPopup({
+  onClose,
+  supportedMultisig = true,
+}) {
+  const { signerAccount, setSelectedProxyAddress, setMultisig } =
+    useSignerContext();
+  const callerAddress = useCallerAddress();
 
   return (
     <Popup title="Select Address" onClose={onClose}>
       <div className="flex flex-col gap-[24px]">
         <OriginAddress
-          selected={signerAccount.proxyAddress}
-          onSelect={() => setProxyAddress()}
+          selected={callerAddress}
+          onSelect={() => {
+            setSelectedProxyAddress();
+            setMultisig();
+          }}
         />
         <ProxiedAccounts
-          selected={signerAccount.proxyAddress}
-          onSelect={(proxyAddress) => setProxyAddress(proxyAddress)}
+          selected={callerAddress}
+          onSelect={(proxyAddress) => {
+            setSelectedProxyAddress(proxyAddress);
+            setMultisig();
+          }}
         />
+        {supportedMultisig && (
+          <MultiSignerAccounts
+            selected={signerAccount.multisig}
+            onSelect={(multisig) => {
+              setSelectedProxyAddress();
+              setMultisig(multisig);
+            }}
+          />
+        )}
       </div>
     </Popup>
   );

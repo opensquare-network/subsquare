@@ -3,8 +3,10 @@ import ListLayout from "../ListLayout";
 import Gov2SummaryFooter from "next-common/components/summary/gov2SummaryFooter";
 import { useUser } from "next-common/context/user";
 import { useRouter } from "next/router";
-import { useChainSettings } from "next-common/context/chain";
+import { useChain, useChainSettings } from "next-common/context/chain";
 import dynamic from "next/dynamic";
+import { DvLabel } from "./tabTitle";
+import Chains from "next-common/utils/consts/chains";
 
 const Gov2Summary = dynamic(
   () => import("next-common/components/summary/gov2Summary"),
@@ -19,14 +21,11 @@ function HeadContent() {
   );
 }
 
-/**
- * @param {import("../ListLayout").ListLayoutProps & {summaryData: Record<string, any>}} props
- * @description layout for referenda page
- */
 export default function ReferendaLayout({ summaryData, ...props }) {
   const user = useUser();
   const router = useRouter();
   const { modules } = useChainSettings();
+  const chain = useChain();
 
   return (
     <ListLayout
@@ -55,6 +54,16 @@ export default function ReferendaLayout({ summaryData, ...props }) {
           value: "statistics",
           label: "Statistics",
           url: "/referenda/statistics",
+        },
+        [Chains.kusama, Chains.polkadot].includes(chain) && {
+          value: "dv",
+          label: (
+            <DvLabel
+              label="DV"
+              active={router.pathname.startsWith("/referenda/dv")}
+            />
+          ),
+          url: "/referenda/dv",
         },
         modules.whales && {
           value: "whales",

@@ -8,10 +8,13 @@ export default function calcDemocracyDelegateVoteLock(
   delegateVote,
   targetVote,
 ) {
-  if (!targetVote || !referendumInfo) {
+  if (!targetVote) {
     throw new Error(
       "No referendumInfo or targetVote provide to calculate democracy vote lock info",
     );
+  } else if (!referendumInfo) {
+    // Referendum was cancelled.
+    return noLockObj;
   }
 
   const referendumEndInfo = getDemocracyEndInfo(referendumInfo);

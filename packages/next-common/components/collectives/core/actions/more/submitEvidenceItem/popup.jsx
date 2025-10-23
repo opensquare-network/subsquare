@@ -113,8 +113,8 @@ function Content() {
     }
 
     const hexDigest = "0x" + Buffer.from(digest).toString("hex");
-    return api.tx[pallet]?.submitEvidence(wish, hexDigest);
-  }, [upload, currentEvidence, address, wish, api.tx, pallet, dispatch]);
+    return api?.tx?.[pallet]?.submitEvidence(wish, hexDigest);
+  }, [upload, currentEvidence, address, wish, api, pallet, dispatch]);
 
   return (
     <>

@@ -12,9 +12,6 @@ import queryCoretimeStatus from "next-common/services/gql/coretime/status";
 import CoretimeCommonProvider from "next-common/context/coretime/common";
 import useLoopCoretimeScanHeight from "next-common/hooks/coretime/useLoopCoretimeScanHeight";
 import RelayInfoProvider from "next-common/context/relayInfo";
-import getMetaDesc from "next-common/utils/post/getMetaDesc";
-import { getBannerUrl } from "next-common/utils/banner";
-import { usePost } from "next-common/context/post";
 import CoretimeSalesDetail from "next-common/components/detail/coretime/sales";
 import BaseLayout from "next-common/components/layout/baseLayout";
 import { cn } from "next-common/utils";
@@ -24,6 +21,9 @@ import {
   queryCoretimeSaleRenewalsChart,
   queryCoretimeSalePurchasesChart,
 } from "next-common/services/gql/coretime/chart";
+import NotFoundDetail from "next-common/components/notFoundDetail";
+import { usePageProps } from "next-common/context/page";
+import generateLayoutRawTitle from "next-common/utils/generateLayoutRawTitle";
 
 const isCoretimeSupported = !!getChainSettings(CHAIN).modules?.coretime;
 
@@ -38,9 +38,21 @@ if (isCoretimeSupported) {
   });
 }
 
-export default function CoretimeSaleDetailPage() {
+export default function CoretimeSaleDetailPage({ coretimeSale }) {
   if (!isCoretimeSupported) {
     return null;
+  }
+  if (!coretimeSale) {
+    return (
+      <NotFoundDetail
+        breadcrumbItems={[
+          {
+            content: "Sales",
+            path: "/coretime/sales",
+          },
+        ]}
+      />
+    );
   }
 
   return (
@@ -48,11 +60,11 @@ export default function CoretimeSaleDetailPage() {
       <Provider store={store}>
         <ChainProvider chain={chain}>
           <ApiProvider>
-            <CoretimeCommonProvider>
-              <CoretimeDetailSaleProvider>
+            <CoretimeDetailSaleProvider>
+              <CoretimeCommonProvider>
                 <CoretimeSalesDetailPageImpl />
-              </CoretimeDetailSaleProvider>
-            </CoretimeCommonProvider>
+              </CoretimeCommonProvider>
+            </CoretimeDetailSaleProvider>
           </ApiProvider>
         </ChainProvider>
       </Provider>
@@ -63,14 +75,11 @@ export default function CoretimeSaleDetailPage() {
 function CoretimeSalesDetailPageImpl() {
   useLoopCoretimeScanHeight();
 
-  const post = usePost();
-
-  const desc = getMetaDesc(post);
+  const { coretimeSale } = usePageProps();
 
   const seoInfo = {
-    title: post?.title,
-    desc,
-    ogImage: getBannerUrl(post?.bannerCid),
+    title: generateLayoutRawTitle(`Coretime Sale #${coretimeSale?.id}`),
+    desc: `Data about coretime sale #${coretimeSale?.id}`,
   };
 
   return (

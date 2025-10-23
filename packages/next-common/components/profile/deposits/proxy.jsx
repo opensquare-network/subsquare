@@ -1,9 +1,9 @@
 import DepositTemplate from "next-common/components/myDeposits/depositTemplate";
-import useProfileOnChainProxies from "next-common/components/profile/proxy/hooks/useProfileOnChainProxies";
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
 import { MenuProxy } from "@osn/icons/subsquare";
 import { MapDataList } from "next-common/components/dataList";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import {
   delegateeColumn,
   typeColumn,
@@ -12,17 +12,37 @@ import {
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
+import {
+  resetProfileProxyDeposits,
+  setProfileProxyDeposits,
+  setProfileProxyDepositsLoading,
+} from "next-common/store/reducers/profile/deposits/proxy";
+import { useContextApi } from "next-common/context/api";
 
 export function useProfileProxyDepositsData() {
+  const api = useContextApi();
+  const dispatch = useDispatch();
   const address = useProfileAddress();
-  const { proxies = [], loading } = useProfileOnChainProxies(address);
-  const total = proxies[0]?.length || 0;
-  return {
-    items: proxies[0],
-    loading,
-    total,
-    balance: proxies[1] ?? 0,
-  };
+
+  useEffect(() => {
+    if (!api || !address || !api.query?.proxy?.proxies) {
+      return;
+    }
+    dispatch(setProfileProxyDepositsLoading(true));
+    api?.query.proxy?.proxies(address).then((result) => {
+      const proxies = result.toJSON() || [];
+      const total = proxies[0]?.length || 0;
+      const balance = proxies[1] ?? 0;
+
+      dispatch(setProfileProxyDepositsLoading(false));
+      return dispatch(
+        setProfileProxyDeposits({ items: proxies[0], total, balance }),
+      );
+    });
+    return () => {
+      dispatch(resetProfileProxyDeposits());
+    };
+  }, [api, address, dispatch]);
 }
 
 export function TotalBalance({ balance }) {
@@ -35,7 +55,7 @@ export function TotalBalance({ balance }) {
   return (
     <div className="inline-flex items-center h-8 mr-3">
       <ValueDisplay
-        className="text14Medium"
+        className="text14Medium text-textPrimary"
         value={toPrecision(balance, decimals)}
         symbol={symbol}
       />

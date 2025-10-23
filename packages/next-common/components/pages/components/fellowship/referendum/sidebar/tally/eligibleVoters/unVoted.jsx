@@ -1,8 +1,11 @@
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import ListTable from "./listTable";
 import columns from "./columns";
+import { useReferendaIsVoting } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 
 export default function UnVoted({ unVotedMembers, isLoading }) {
+  const isVoting = useReferendaIsVoting();
+
   const votedRows = unVotedMembers?.map((item) => {
     return {
       address: item?.address,
@@ -17,7 +20,7 @@ export default function UnVoted({ unVotedMembers, isLoading }) {
     <div>
       <TitleContainer className="text14Bold px-0 pb-3">
         <span>
-          Not yet voted
+          Not {isVoting ? "yet" : ""} voted
           <span className="text-textTertiary text14Medium ml-1">
             {!isLoading && total}
           </span>

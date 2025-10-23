@@ -1,5 +1,8 @@
 import Link from "next/link";
-import { PromptTypes } from "next-common/components/scrollPrompt";
+import {
+  PromptTypes,
+  ScrollPromptItemWrapper,
+} from "next-common/components/scrollPrompt";
 import { CACHE_KEY } from "next-common/utils/constants";
 import { useCookieValue } from "next-common/utils/hooks/useCookieValue";
 import { useMemo } from "react";
@@ -7,6 +10,7 @@ import { useChainSettings } from "next-common/context/chain";
 import { useRouter } from "next/router";
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { isEmpty } from "lodash-es";
 
 const identityPage = "/people";
 const judgementPage = "/people?tab=judgements";
@@ -85,4 +89,21 @@ export default function useSetIdentityPrompt() {
     supportedPeople,
     visible,
   ]);
+}
+export function IdentityPrompt({ onClose }) {
+  const prompt = useSetIdentityPrompt();
+  if (isEmpty(prompt)) {
+    return null;
+  }
+  return (
+    <ScrollPromptItemWrapper
+      prompt={{
+        ...prompt,
+        close: () => {
+          onClose?.();
+          prompt?.close();
+        },
+      }}
+    />
+  );
 }

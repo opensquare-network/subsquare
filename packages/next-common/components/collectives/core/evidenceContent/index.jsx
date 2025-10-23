@@ -33,7 +33,11 @@ export default function FellowshipEvidenceContent({
 
     content = (
       <>
-        <EvidenceExternalLinkWithWish cid={cid} wish={wish} />
+        <EvidenceExternalLinkWithWish
+          cid={cid}
+          wish={wish}
+          evidence={evidence}
+        />
         <IpfsEvidenceContent cid={cid} />
       </>
     );
@@ -42,7 +46,7 @@ export default function FellowshipEvidenceContent({
   return <div className={cn("space-y-4", className)}>{content}</div>;
 }
 
-function LoadingContent() {
+export function LoadingContent() {
   return (
     <div className="flex items-center justify-center gap-x-2 text-textTertiary text14Medium">
       <SystemLoading className="w-5 h-5" />
@@ -51,7 +55,7 @@ function LoadingContent() {
   );
 }
 
-function IpfsEvidenceContent({ cid }) {
+export function IpfsEvidenceContent({ cid }) {
   const { value, loading, error } = useIpfsContent(cid);
 
   return (

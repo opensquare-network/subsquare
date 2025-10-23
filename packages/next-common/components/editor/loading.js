@@ -1,15 +1,5 @@
 import { cn } from "next-common/utils";
-import styled from "styled-components";
-
-const Skeleton = styled.div`
-  border-radius: 4px;
-  background: linear-gradient(
-    90deg,
-    var(--neutral200) 0%,
-    var(--neutral200alpha) 49.5%,
-    var(--neutral200) 100%
-  );
-`;
+import { Skeleton } from "../skeleton";
 
 export default function LoadingEditor({ className = "" }) {
   return (

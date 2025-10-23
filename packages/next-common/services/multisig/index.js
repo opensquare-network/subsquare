@@ -1,6 +1,9 @@
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import getMultisigApiUrl from "./url";
-import getMultisigsQuery, { getMultisigsCountQuery } from "./query";
+import getMultisigsQuery, {
+  getMultisigsCountQuery,
+  getMultisigAddressesQuery,
+} from "./query";
 
 export default async function fetchMultisigs(
   chain,
@@ -9,7 +12,7 @@ export default async function fetchMultisigs(
   pageSize = 15,
 ) {
   // todo: use @apollo/client to query graphql data
-  return await nextApi.fetch(
+  return await backendApi.fetch(
     getMultisigApiUrl(chain),
     {},
     {
@@ -25,7 +28,7 @@ export default async function fetchMultisigs(
 }
 
 export async function fetchMultisigsCount(chain, address) {
-  return await nextApi.fetch(
+  return await backendApi.fetch(
     getMultisigApiUrl(chain),
     {},
     {
@@ -35,6 +38,27 @@ export async function fetchMultisigsCount(chain, address) {
         extensions: {},
         operationName: "MyQuery",
         query: getMultisigsCountQuery(address),
+      }),
+    },
+  );
+}
+
+export async function fetchMultisigAddresses(
+  chain,
+  address,
+  page = 1,
+  pageSize = 10,
+) {
+  return await backendApi.fetch(
+    getMultisigApiUrl(chain),
+    {},
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        extensions: {},
+        operationName: "MyQuery",
+        query: getMultisigAddressesQuery(address, page, pageSize),
       }),
     },
   );

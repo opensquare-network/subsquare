@@ -19,20 +19,33 @@ export default function ProfileFellowshipModuleTabs() {
   const maybeEvmAddress = tryConvertToEvmAddress(id);
 
   const urls = {
-    core: `/user/${maybeEvmAddress}/${section}`,
+    votes: `/user/${maybeEvmAddress}/${section}`,
+    core: `/user/${maybeEvmAddress}/${section}/membership`,
     salary: `/user/${maybeEvmAddress}/${section}/salary`,
   };
 
   const tabs = [
     {
+      value: "votes",
+      label: (
+        <Label className={cn(pathname === urls.votes && "text-textPrimary")}>
+          Votes
+        </Label>
+      ),
+      url: urls.votes,
+      shallow: true,
+      scroll: false,
+    },
+    {
       value: "core",
       label: (
         <Label className={cn(pathname === urls.core && "text-textPrimary")}>
-          Core
+          Membership
         </Label>
       ),
       url: urls.core,
       shallow: true,
+      scroll: false,
     },
     {
       value: "salary",
@@ -43,6 +56,7 @@ export default function ProfileFellowshipModuleTabs() {
       ),
       url: urls.salary,
       shallow: true,
+      scroll: false,
     },
   ];
 

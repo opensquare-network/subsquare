@@ -36,12 +36,20 @@ const polkadot = {
   group: MenuGroups.PolkadotAndParachains,
   links: polkadotLinks,
   postLabels: defaultPostLabels,
-  hasIdentityTimeline: true,
+  hasIdentity: true,
   graphqlApiSubDomain: "dot-gh-api",
   graphql: {
     domain: "dot-gh-api",
     identity: true,
     multisig: false,
+  },
+  subsquareGraphql: {
+    domain: "polkadot-gh-api",
+    coretime: true,
+    intime: {
+      preimage: true,
+      proxy: true,
+    },
   },
   hasMultisig: true,
   multisigApiPrefix: "dot",
@@ -53,8 +61,11 @@ const polkadot = {
     democracy: {
       archived: true,
     },
-    referenda: true,
+    referenda: {
+      displayTreasuryRequesting: true,
+    },
     treasury: {
+      status: true,
       spends: true,
       childBounties: true,
       tips: {
@@ -71,6 +82,7 @@ const polkadot = {
     assethub: true,
     people: true,
     vesting: true,
+    whitelist: true,
   }),
   integrations: {
     doTreasury: true,
@@ -98,6 +110,17 @@ const polkadot = {
   allowWeb2Login: true,
   preimage: polkadotPreimageSettings,
   hotMenu: {
+    referenda: true,
+  },
+  referendaActions: {
+    startFrom: 1584,
+  },
+  supportWalletconnect: true,
+  openSquare: {
+    voting: "polkadot",
+  },
+  ecoNews: true,
+  translations: {
     referenda: true,
   },
 };

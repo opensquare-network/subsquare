@@ -10,7 +10,6 @@ import Signer from "next-common/components/popup/fields/signerField";
 import VoteBalance from "./voteBalance";
 import VotingStatus from "./votingStatus";
 import VoteButton from "next-common/components/popup/voteButton";
-import { wrapWithProxy } from "next-common/utils/sendTransaction";
 import { VoteEnum } from "next-common/utils/voteEnum";
 import { useChainSettings } from "next-common/context/chain";
 import useSubMyDemocracyVote, {
@@ -20,15 +19,13 @@ import { useSignerAccount } from "next-common/components/popupWithSigner/context
 import { useShowVoteSuccessful } from "next-common/components/vote";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
-import { useSendTransaction } from "next-common/hooks/useSendTransaction";
+import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
 
 function PopupContent() {
   const { referendumIndex, onClose } = usePopupParams();
   const dispatch = useDispatch();
   const signerAccount = useSignerAccount();
   const showVoteSuccessful = useShowVoteSuccessful();
-
-  const { sendTxFunc, isSubmitting } = useSendTransaction();
 
   const node = useChainSettings();
   const [loadingState, setLoadingState] = useState();
@@ -51,14 +48,18 @@ function PopupContent() {
     showVoteSuccessful(addressVote);
   }, [api, referendumIndex, signerAccount?.realAddress, showVoteSuccessful]);
 
+  const onInBlock = useCallback(() => {
+    getMyVoteAndShowSuccessful();
+  }, [getMyVoteAndShowSuccessful]);
+
   const showErrorToast = useCallback(
     (message) => dispatch(newErrorToast(message)),
     [dispatch],
   );
 
-  const doVote = useCallback(
-    async (aye) => {
-      if (isSubmitting || isNil(referendumIndex) || !node) {
+  const getTxFunc = useCallback(
+    (aye) => {
+      if (isNil(referendumIndex) || !node) {
         return;
       }
 
@@ -68,6 +69,7 @@ function PopupContent() {
           inputVoteBalance,
           node.decimals,
           "vote balance",
+          true,
         );
       } catch (err) {
         showErrorToast(err.message);
@@ -79,49 +81,33 @@ function PopupContent() {
         return;
       }
 
-      if (!signerAccount) {
-        showErrorToast("Please select an account");
-        return;
-      }
-
-      if (!api) {
-        showErrorToast("Chain network is not connected yet");
-        return;
-      }
-
-      let tx = api.tx.democracy.vote(referendumIndex, {
+      return api.tx.democracy.vote(referendumIndex, {
         aye,
         balance: bnVoteBalance.toString(),
-      });
-
-      if (signerAccount?.proxyAddress) {
-        tx = wrapWithProxy(api, tx, signerAccount.proxyAddress);
-      }
-
-      setLoadingState(aye ? VoteEnum.Aye : VoteEnum.Nay);
-
-      await sendTxFunc({
-        api,
-        tx,
-        onInBlock: () => {
-          getMyVoteAndShowSuccessful();
-        },
-        onSubmitted: onClose,
       });
     },
     [
       api,
       inputVoteBalance,
-      isSubmitting,
-      onClose,
       referendumIndex,
-      signerAccount,
       votingBalance,
-      getMyVoteAndShowSuccessful,
-      sendTxFunc,
       node,
       showErrorToast,
     ],
+  );
+
+  const { doSubmit, isSubmitting } = useTxSubmission({
+    getTxFunc,
+    onInBlock,
+    onSubmitted: onClose,
+  });
+
+  const doVote = useCallback(
+    async (aye) => {
+      setLoadingState(aye ? VoteEnum.Aye : VoteEnum.Nay);
+      await doSubmit(aye);
+    },
+    [doSubmit],
   );
 
   return (

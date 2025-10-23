@@ -1,13 +1,20 @@
-import useSubStorage from "next-common/hooks/common/useSubStorage";
+import { useFellowshipMember } from "./useFellowshipMember";
 
 export function useFellowshipMemberRank(
   address,
   pallet = "fellowshipCollective",
 ) {
-  const { result } = useSubStorage(pallet, "members", [address]);
-  if (result && result.isSome) {
-    return result.unwrap().rank.toNumber();
-  } else {
-    return null;
+  const { member, isLoading } = useFellowshipMember(address, pallet);
+  if (member && member.isSome) {
+    const rank = member.unwrap().rank.toNumber();
+    return {
+      rank,
+      isLoading,
+    };
   }
+
+  return {
+    rank: null,
+    isLoading,
+  };
 }

@@ -2,8 +2,8 @@ import {
   useCoretimeSaleLeadinLength,
   useIsCoretimeSaleLeadinPhase,
 } from "next-common/context/coretime/sale/phases/leadin";
-import { useCoretimeSaleStart } from "next-common/context/coretime/sale/provider";
 import CurrentPhaseEnd from "next-common/components/coretime/salePanel/summary/columns/currentPhase/common";
+import useCoretimeSaleStart from "next-common/hooks/coretime/useCoretimeSaleStart";
 
 function LeadinGuard({ children }) {
   const isLeadinPhase = useIsCoretimeSaleLeadinPhase();

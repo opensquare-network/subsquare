@@ -9,6 +9,7 @@ import { useReferendumVotingFinishIndexer } from "next-common/context/post/refer
 import { isNil } from "lodash-es";
 import { useOnchainData } from "next-common/context/post";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 
 const CleanupPopup = dynamicPopup(() => import("./popup"));
 
@@ -29,7 +30,7 @@ function CleanupPollButton() {
     <>
       <Tooltip content="Clean up votes from storage, no gas">
         <Button
-          className="w-full h-[40px] rounded-lg bg-neutral100 border border-neutral400"
+          className="w-full h-[40px] rounded-lg bg-neutral100 border border-neutral400 text-textPrimary"
           onClick={() => setShowPopup(true)}
         >
           Cleanup Poll
@@ -55,7 +56,9 @@ export default function FellowshipReferendumCleanupPoll() {
   return (
     <MakesureReferendumFinishedGuard>
       <ReferendumVotingProvider>
-        <CleanupPollButton />
+        <MigrationConditionalApiProvider>
+          <CleanupPollButton />
+        </MigrationConditionalApiProvider>
       </ReferendumVotingProvider>
     </MakesureReferendumFinishedGuard>
   );

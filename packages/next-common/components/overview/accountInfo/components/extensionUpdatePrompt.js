@@ -1,4 +1,4 @@
-import { useContextApi } from "next-common/context/api";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 import Prompt from "./prompt";
 import { PromptTypes } from "next-common/components/scrollPrompt";
 import { useConnectedAccount } from "next-common/context/connectedAccount";
@@ -8,6 +8,7 @@ import { useCallback, useEffect, useState } from "react";
 import useChainInfo from "next-common/hooks/connect/useChainInfo";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { createGlobalState } from "react-use";
+import safeLocalStorage from "next-common/utils/safeLocalStorage";
 
 const useIsNeedUpdate = createGlobalState(false);
 
@@ -19,7 +20,7 @@ function getAllCachedProperties(api) {
   const storeKey = getPropertyStoreKey(api.genesisHash);
   let allProperties = {};
   try {
-    const data = localStorage.getItem(storeKey);
+    const data = safeLocalStorage.getItem(storeKey);
     if (data) {
       allProperties = JSON.parse(data);
     }
@@ -45,7 +46,7 @@ function cacheProperties(api, name, { version }) {
   };
 
   const storeKey = getPropertyStoreKey(api.genesisHash);
-  localStorage.setItem(storeKey, JSON.stringify(allProperties));
+  safeLocalStorage.setItem(storeKey, JSON.stringify(allProperties));
 }
 
 function checkPropertiesChange(api, extension) {
@@ -79,7 +80,7 @@ function PromptContent({ onUpdateMeta }) {
 }
 
 export default function ExtensionUpdatePrompt({ isWithCache = true }) {
-  const api = useContextApi();
+  const api = useConditionalContextApi();
   const connectedAccount = useConnectedAccount();
   const [isNeedUpdate, setIsNeedUpdate] = useIsNeedUpdate();
   const { injectedWeb3Extension, loading: isLoadingInjectedWeb3Extension } =
