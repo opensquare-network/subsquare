@@ -6,7 +6,7 @@ export default function AccountCell({ item }) {
     <div className="flex items-center gap-x-2">
       <AddressUser
         key={item.account}
-        add={"13UVJyLnbVp9RBZYFwHZ1tRtfLttPUTpgj8rCiiJaN4P2TMQ"}
+        add={item.account}
         maxWidth={296}
         link="/votes"
       />
