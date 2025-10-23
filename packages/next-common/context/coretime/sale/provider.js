@@ -14,8 +14,8 @@ export default function useCoretimeSale() {
 
 export function useCoretimeSaleInitIndexer() {
   const sale = useCoretimeSale();
-  const isUseRCBlockNumber = useIsCoretimeUseRCBlockNumber(sale?.id);
-  const { relayIndexer = {}, initIndexer = {} } = sale || {};
+  const { id, relayIndexer = {}, initIndexer = {} } = sale || {};
+  const isUseRCBlockNumber = useIsCoretimeUseRCBlockNumber(id);
 
   return isUseRCBlockNumber ? relayIndexer : initIndexer;
 }

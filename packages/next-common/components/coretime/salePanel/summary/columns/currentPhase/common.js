@@ -1,20 +1,17 @@
 import { Item } from "next-common/components/coretime/salePanel/summary/common";
 import useCoretimeChainOrScanHeight from "next-common/hooks/coretime/scanHeight";
+import { useSelector } from "react-redux";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import CountDown from "next-common/components/_CountDown";
 import { toPercentage } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
 import { useCoretimeSaleLeadinLength } from "next-common/context/coretime/sale/phases/leadin";
 import { getEndBlocksTime } from "next-common/components/coretime/salePanel/summary/columns/totalPeriod";
+import { usePageProps } from "next-common/context/page";
+import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import { formatDateTime } from "next-common/components/coretime/sales/history/timeRange";
 import { useMemo } from "react";
-import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import useCoretimeSaleStart from "next-common/hooks/coretime/useCoretimeSaleStart";
-import {
-  useCoretimeSaleInitHeight,
-  useCoretimeSaleInitIndexer,
-} from "next-common/context/coretime/sale/provider";
-import { useSelector } from "react-redux";
 
 export function getCountDownProgress(startHeight, currentHeight, endHeight) {
   if (currentHeight <= startHeight) {
@@ -40,8 +37,8 @@ export default function CurrentPhaseEnd({ startHeight, endHeight }) {
 
   const saleStartHeight = useCoretimeSaleStart();
   const leadinLength = useCoretimeSaleLeadinLength();
-  const initHeight = useCoretimeSaleInitHeight();
-  const initIndexer = useCoretimeSaleInitIndexer();
+  const { coretimeSale } = usePageProps();
+  const initHeight = coretimeSale?.initIndexer?.blockHeight;
   const totalBlockGap = useMemo(
     () => endHeight - initHeight,
     [endHeight, initHeight],
@@ -57,7 +54,7 @@ export default function CurrentPhaseEnd({ startHeight, endHeight }) {
   const isInFixedPriceStage = chainHeight >= saleStartHeight + leadinLength;
   const endInTooltipPrefix = isInFixedPriceStage ? "Estimated: " : "";
   const endInTime = getEndBlocksTime(
-    initIndexer?.blockTime,
+    coretimeSale?.initIndexer?.blockTime,
     blockTime,
     totalBlockGap,
   );
