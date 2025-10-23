@@ -7,6 +7,7 @@ import getChainSettings from "next-common/utils/consts/settings";
 const cachedIdentities = new QuickLRU({ maxSize: 1000 });
 const pendingQueries = new Map();
 const processingQueries = new Map();
+const pendingBountyQueries = new Map();
 
 const delayQuery = debounce(() => {
   if (pendingQueries.size < 1) {
@@ -142,26 +143,12 @@ export const clearCachedIdentitys = (list, clearPending = false) => {
 
     if (clearPending) {
       pendingQueries.delete(idName);
+      pendingBountyQueries.delete(bountyIdName);
     }
   });
 };
 
-export async function fetchBountyIdentity(chain, address) {
-  if (!chain || !address) {
-    return null;
-  }
-
-  const { bountyIdentity } = getChainSettings(chain);
-  if (!bountyIdentity) {
-    return null;
-  }
-
-  const bountyIdName = `bounty/${chain}/${address}`;
-
-  if (cachedIdentities.has(bountyIdName)) {
-    return cachedIdentities.get(bountyIdName);
-  }
-
+async function queryBountyIdentityInfo(address, bountyIdName) {
   try {
     const { result: bountyInfo } = await backendApi.fetch(
       `treasury/addresses/${address}`,
@@ -199,5 +186,33 @@ export async function fetchBountyIdentity(chain, address) {
   } catch (error) {
     console.error("Failed to fetch bounty identity info:", error);
     return null;
+  } finally {
+    pendingBountyQueries.delete(bountyIdName);
   }
+}
+
+export async function fetchBountyIdentity(chain, address) {
+  if (!chain || !address) {
+    return null;
+  }
+
+  const { bountyIdentity } = getChainSettings(chain);
+  if (!bountyIdentity) {
+    return null;
+  }
+
+  const bountyIdName = `bounty/${chain}/${address}`;
+
+  if (cachedIdentities.has(bountyIdName)) {
+    return cachedIdentities.get(bountyIdName);
+  }
+
+  if (pendingBountyQueries.has(bountyIdName)) {
+    return pendingBountyQueries.get(bountyIdName);
+  }
+
+  const requestPromise = queryBountyIdentityInfo(address, bountyIdName);
+  pendingBountyQueries.set(bountyIdName, requestPromise);
+
+  return requestPromise;
 }
