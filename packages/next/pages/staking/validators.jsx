@@ -1,28 +1,25 @@
-import BaseLayout from "next-common/components/layout/baseLayout";
-import { useChainSettings } from "next-common/context/chain";
+import ListLayout from "next-common/components/layout/ListLayout";
 import { withCommonProps } from "next-common/lib";
 import { CHAIN } from "next-common/utils/constants";
 import getChainSettings from "next-common/utils/consts/settings";
-import generateLayoutRawTitle from "next-common/utils/generateLayoutRawTitle";
 
 const isStakingSupported = !!getChainSettings(CHAIN).modules?.staking;
 
-function ValidatorsPageImpl() {
-  const { description } = useChainSettings();
-  return (
-    <BaseLayout
-      seoInfo={{ title: generateLayoutRawTitle("Validators") }}
-      description={description}
-    ></BaseLayout>
-  );
-}
-
-export default function ValidatorsPage() {
+export default function ValidatorsPageImpl() {
   if (!isStakingSupported) {
     return null;
   }
 
-  return <ValidatorsPageImpl />;
+  return (
+    <ListLayout
+      title={"Validators"}
+      seoInfo={{ title: "" }}
+      description={
+        "Displays and manages validators with search, filtering, and sorting features for staking."
+      }
+      summary={null}
+    ></ListLayout>
+  );
 }
 
 export const getServerSideProps = async (ctx) => {

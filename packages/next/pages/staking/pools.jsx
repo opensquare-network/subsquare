@@ -1,28 +1,25 @@
-import BaseLayout from "next-common/components/layout/baseLayout";
-import { useChainSettings } from "next-common/context/chain";
+import ListLayout from "next-common/components/layout/ListLayout";
 import { withCommonProps } from "next-common/lib";
 import { CHAIN } from "next-common/utils/constants";
 import getChainSettings from "next-common/utils/consts/settings";
-import generateLayoutRawTitle from "next-common/utils/generateLayoutRawTitle";
 
 const isStakingSupported = !!getChainSettings(CHAIN).modules?.staking;
-
-function NominationPoolsPageImpl() {
-  const { description } = useChainSettings();
-  return (
-    <BaseLayout
-      seoInfo={{ title: generateLayoutRawTitle("Nomination Pools") }}
-      description={description}
-    ></BaseLayout>
-  );
-}
 
 export default function NominationPoolsPage() {
   if (!isStakingSupported) {
     return null;
   }
 
-  return <NominationPoolsPageImpl />;
+  return (
+    <ListLayout
+      title={"Nomination Pools"}
+      seoInfo={{ title: "" }}
+      description={
+        "Displays and manages nomination pools, allowing users to view, join, and track their staking pools."
+      }
+      summary={null}
+    ></ListLayout>
+  );
 }
 
 export const getServerSideProps = async (ctx) => {
