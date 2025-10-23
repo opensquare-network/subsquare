@@ -77,7 +77,7 @@ function SpendBeneficiary({ beneficiary, beneficiaryLocation }) {
       <div className="text-textTertiary">to</div>
       <div className={cn("grow flex")}>
         {beneficiary ? (
-          <AddressUser add={beneficiary} maxWidth={176} />
+          <AddressUser add={"13UVJyLnbVp9RBZYFwHZ1tRtfLttPUTpgj8rCiiJaN4P2TMQ"} maxWidth={176} />
         ) : (
           <BeneficiaryDetailButton beneficiaryLocation={beneficiaryLocation} />
         )}

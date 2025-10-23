@@ -192,12 +192,8 @@ async function queryBountyIdentityInfo(address, bountyIdName) {
 }
 
 export async function fetchBountyIdentity(chain, address) {
-  if (!chain || !address) {
-    return null;
-  }
-
   const { bountyIdentity } = getChainSettings(chain);
-  if (!bountyIdentity) {
+  if (!chain || !address || !bountyIdentity) {
     return null;
   }
 
