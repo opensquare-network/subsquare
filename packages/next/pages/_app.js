@@ -15,6 +15,7 @@ import SystemVersionUpgrade from "next-common/components/systemVersionUpgrade";
 import "@osn/previewer/styles.css";
 import "next-common/styles/markdown.css";
 import dynamic from "next/dynamic";
+import PostHogProvider from "next-common/components/postHogProvider";
 
 NProgress.configure({
   minimum: 0.3,
@@ -59,7 +60,7 @@ function AppImpl({ Component, pageProps }) {
   } = pageProps;
 
   return (
-    <>
+    <PostHogProvider>
       <Head>
         <meta name="viewport" content="width=device-width, user-scalable=no" />
       </Head>
@@ -80,7 +81,7 @@ function AppImpl({ Component, pageProps }) {
           <Component {...otherProps} />
         </GlobalProvider>
       </Provider>
-    </>
+    </PostHogProvider>
   );
 }
 
