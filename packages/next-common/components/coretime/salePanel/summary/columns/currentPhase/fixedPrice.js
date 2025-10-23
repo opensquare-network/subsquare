@@ -2,7 +2,7 @@ import {
   useCoretimeSaleLeadinEnd,
   useCoretimeSaleLeadinLength,
 } from "next-common/context/coretime/sale/phases/leadin";
-import useCoretimeChainOrScanHeight from "next-common/hooks/coretime/scanHeight";
+import useAlwaysRelayHeight from "next-common/hooks/useAlwaysRelayHeight";
 import CurrentPhaseEnd from "next-common/components/coretime/salePanel/summary/columns/currentPhase/common";
 import useCoretimeSaleEnd from "next-common/context/coretime/hooks/useCoretimeSaleEnd";
 import useCoretimeSaleStart from "next-common/hooks/coretime/useCoretimeSaleStart";
@@ -10,7 +10,7 @@ import useCoretimeSaleStart from "next-common/hooks/coretime/useCoretimeSaleStar
 function FixPricePhaseGuard({ children }) {
   const saleStartHeight = useCoretimeSaleStart();
   const leadinLength = useCoretimeSaleLeadinLength();
-  const chainHeight = useCoretimeChainOrScanHeight();
+  const chainHeight = useAlwaysRelayHeight();
 
   if (chainHeight < saleStartHeight + leadinLength) {
     return null;
