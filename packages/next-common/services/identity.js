@@ -162,7 +162,6 @@ async function queryBountyIdentityInfo(address, bountyIdName) {
         identityInfo = {
           display: `Bounty-${bountyInfo.bountyIndex}`,
           tooltip: `Address of bounty #${bountyInfo.bountyIndex}`,
-          type: "bounty",
         };
       }
 
@@ -170,13 +169,12 @@ async function queryBountyIdentityInfo(address, bountyIdName) {
         identityInfo = {
           display: `Child Bounty-${bountyInfo.parentBountyId}-${bountyInfo.index}`,
           tooltip: `Address of child bounty #${bountyInfo.index} under parent bounty #${bountyInfo.parentBountyId}`,
-          type: "bounty",
         };
       }
 
       if (identityInfo) {
         identity = {
-          info: identityInfo,
+          info: { ...identityInfo, isBountyIdentity: true },
         };
       }
     }

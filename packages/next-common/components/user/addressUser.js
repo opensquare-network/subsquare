@@ -102,13 +102,13 @@ export function AddressUserImpl({
   const showIdentity = useMemo(() => {
     if (
       !hasIdentity ||
-      (!showBountyIdentity && identity?.info?.type === "bounty")
+      (!showBountyIdentity && identity?.info?.isBountyIdentity)
     ) {
       return false;
     }
 
     return true;
-  }, [hasIdentity, identity?.info?.type, showBountyIdentity]);
+  }, [hasIdentity, identity?.info?.isBountyIdentity, showBountyIdentity]);
 
   const noIdentityDisplay = useMemo(() => {
     if (username) {
