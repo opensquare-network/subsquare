@@ -120,6 +120,7 @@ const kusama = {
   },
   supportForeignAssets: true,
   supportAssets: true,
+  bountyIdentity: true,
 };
 
 export default kusama;

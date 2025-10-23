@@ -96,8 +96,19 @@ export function AddressUserImpl({
   needHref = true,
   identityIconClassName = "",
   username = "",
+  showBountyIdentity = true,
 }) {
   const displayAddress = tryConvertToEvmAddress(address);
+  const showIdentity = useMemo(() => {
+    if (
+      !hasIdentity ||
+      (!showBountyIdentity && identity?.info?.isBountyIdentity)
+    ) {
+      return false;
+    }
+
+    return true;
+  }, [hasIdentity, identity?.info?.isBountyIdentity, showBountyIdentity]);
 
   const noIdentityDisplay = useMemo(() => {
     if (username) {
@@ -121,7 +132,7 @@ export function AddressUserImpl({
 
   const userIdentity = useMemo(
     () =>
-      hasIdentity ? (
+      showIdentity ? (
         <UnStyledIdentity
           noTooltip={noTooltip}
           identity={identity}
@@ -133,13 +144,13 @@ export function AddressUserImpl({
         noIdentityDisplay
       ),
     [
-      hasIdentity,
+      showIdentity,
+      noTooltip,
       identity,
       maxWidth,
       ellipsis,
       identityIconClassName,
       noIdentityDisplay,
-      noTooltip,
     ],
   );
 
@@ -172,6 +183,7 @@ function AddressUserComp({
   identityIconClassName = "",
   avatarSize = "",
   username = "",
+  showBountyIdentity = true,
 }) {
   const address = add;
   const { identity, hasIdentity } = useIdentityInfo(address);
@@ -203,6 +215,7 @@ function AddressUserComp({
       identityIconClassName={identityIconClassName}
       className={cn(inlineClassName, className)}
       username={username}
+      showBountyIdentity={showBountyIdentity}
     />
   );
 }
