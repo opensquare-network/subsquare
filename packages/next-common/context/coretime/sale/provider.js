@@ -12,22 +12,20 @@ export default function useCoretimeSale() {
   return sale;
 }
 
-export function useCoretimeSaleInitIndexer() {
-  const sale = useCoretimeSale();
-  const { id, relayIndexer = {}, initIndexer = {} } = sale || {};
-  const isUseRCBlockNumber = useIsCoretimeUseRCBlockNumber(id);
-
-  return isUseRCBlockNumber ? relayIndexer : initIndexer;
-}
-
 export function useCoretimeSaleInitHeight() {
-  const initIndexer = useCoretimeSaleInitIndexer();
+  const sale = useCoretimeSale();
+  const { initIndexer = {} } = sale;
+
   return initIndexer?.blockHeight;
 }
 
-export function useCoretimeSaleRelayIndexerHeight() {
+export function useCoretimeSaleIsUseRCBlockNumber() {
   const sale = useCoretimeSale();
-  return sale?.relayIndexer?.blockHeight;
+  const { id, relayIndexer, initIndexer } = sale;
+  const isUseRCBlockNumber = useIsCoretimeUseRCBlockNumber(id);
+  return isUseRCBlockNumber
+    ? relayIndexer?.blockHeight
+    : initIndexer?.blockHeight;
 }
 
 export function useCoretimeSaleInfo() {

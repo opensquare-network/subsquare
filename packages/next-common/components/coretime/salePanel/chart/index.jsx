@@ -1,6 +1,6 @@
 import { useCoretimeSaleEndWithRelayHeight } from "next-common/context/coretime/hooks/useCoretimeSaleEnd";
 import useCoretimeSale, {
-  useCoretimeSaleInitHeight,
+  useCoretimeSaleIsUseRCBlockNumber,
 } from "next-common/context/coretime/sale/provider";
 import CoretimeSalePanelChartPeriodProgress from "./periodProgress";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
@@ -23,7 +23,7 @@ export default function CoretimeSalePanelChart({ className = "" }) {
   const endSale = useCoretimeSaleEndWithRelayHeight();
   const fixedStart = useCoretimeSaleFixedStart();
 
-  const initBlockHeight = useCoretimeSaleInitHeight();
+  const initBlockHeight = useCoretimeSaleIsUseRCBlockNumber();
 
   const endBlockHeight = endSale?.indexer?.blockHeight;
   const totalBlocks = endBlockHeight - initBlockHeight;
