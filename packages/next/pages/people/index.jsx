@@ -26,21 +26,27 @@ if (isPeopleSupported) {
   });
 }
 
+export const PeopleGlobalProvider = ({ children }) => {
+  return (
+    <RelayInfoProvider>
+      <Provider store={store}>
+        <ChainProvider chain={chain}>
+          <ApiProvider>{children}</ApiProvider>
+        </ChainProvider>
+      </Provider>
+    </RelayInfoProvider>
+  );
+};
+
 export default function PeoplePage() {
   if (!isPeopleSupported) {
     return null;
   }
 
   return (
-    <RelayInfoProvider>
-      <Provider store={store}>
-        <ChainProvider chain={chain}>
-          <ApiProvider>
-            <PeopleOverviewPageImpl />
-          </ApiProvider>
-        </ChainProvider>
-      </Provider>
-    </RelayInfoProvider>
+    <PeopleGlobalProvider>
+      <PeopleOverviewPageImpl />
+    </PeopleGlobalProvider>
   );
 }
 
