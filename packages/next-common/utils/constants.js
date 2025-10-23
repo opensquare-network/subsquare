@@ -163,6 +163,7 @@ export const chain = CHAIN;
 
 export const IS_SERVER = typeof window === "undefined";
 export const IS_PRODUCTION = process.env.NODE_ENV === "production";
+export const IS_DEVELOPMENT = process.env.NODE_ENV === "development";
 
 export const WALLET_TIMEOUT_ERROR_TEXT =
   "The wallet request timed out. Please refresh the page and try again later.";
