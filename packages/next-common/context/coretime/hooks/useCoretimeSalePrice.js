@@ -1,5 +1,5 @@
 import useCoretimeSale from "next-common/context/coretime/sale/provider";
-import useAlwaysRelayHeight from "next-common/hooks/useAlwaysRelayHeight";
+import { useRelayHeight } from "next-common/context/relayInfo";
 import { isNil } from "lodash-es";
 import { getCoretimePriceAt } from "next-common/utils/coretime/price";
 import useCoretimeCustomizedSaleInfo from "next-common/hooks/coretime/useCoretimeCustomizedSaleInfo";
@@ -7,7 +7,7 @@ import useCoretimeCustomizedSaleInfo from "next-common/hooks/coretime/useCoretim
 export default function useCoretimeSalePrice() {
   const sale = useCoretimeSale();
   const { isFinal } = sale;
-  const chainHeight = useAlwaysRelayHeight();
+  const chainHeight = useRelayHeight();
   const saleInfo = useCoretimeCustomizedSaleInfo();
   if (isFinal) {
     return {

@@ -1,3 +1,4 @@
+import { isNil } from "lodash-es";
 import { useChain } from "next-common/context/chain";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import Chains from "next-common/utils/consts/chains";
@@ -10,12 +11,12 @@ export default function useBlockTime() {
   const storeBlockTime = useSelector(blockTimeSelector);
 
   if (Chains.polkadotCoretime === chain) {
-    blockTime = getChainSettings(Chains.polkadot).blockTime;
+    blockTime = getChainSettings(Chains.polkadot)?.blockTime;
   } else if (Chains.kusamaCoretime === chain) {
-    blockTime = getChainSettings(Chains.kusama).blockTime;
+    blockTime = getChainSettings(Chains.kusama)?.blockTime;
   }
 
-  if (!blockTime) {
+  if (isNil(blockTime)) {
     blockTime = storeBlockTime;
   }
 

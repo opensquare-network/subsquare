@@ -2,7 +2,7 @@ import { SystemQuestion } from "@osn/icons/subsquare";
 import ExternalLink from "next-common/components/externalLink";
 import Progress from "next-common/components/progress";
 import Tooltip from "next-common/components/tooltip";
-import useAlwaysRelayHeight from "next-common/hooks/useAlwaysRelayHeight";
+import { useRelayHeight } from "next-common/context/relayInfo";
 import { cn, toPercentage } from "next-common/utils";
 import { Skeleton } from "next-common/components/skeleton";
 
@@ -78,7 +78,7 @@ function RenewalPeriodProgress({
   initBlockHeight,
   coretimeSale,
 }) {
-  const chainHeight = useAlwaysRelayHeight();
+  const chainHeight = useRelayHeight();
 
   let percentage = 0;
   if (coretimeSale?.isFinal || chainHeight >= saleStart) {
@@ -119,7 +119,7 @@ function SalePeriodProgress({
   endBlockHeight,
   coretimeSale,
 }) {
-  const chainHeight = useAlwaysRelayHeight();
+  const chainHeight = useRelayHeight();
   const fixedPosition = toPercentage((fixedStart - saleStart) / saleBlocks, 3);
 
   let percentage = 0;

@@ -1,5 +1,5 @@
 import { Item } from "next-common/components/coretime/salePanel/summary/common";
-import useAlwaysRelayHeight from "next-common/hooks/useAlwaysRelayHeight";
+import { useRelayHeight } from "next-common/context/relayInfo";
 import { useEstimateBlocksTimeWithBlockTime } from "next-common/utils/hooks";
 import CountDown from "next-common/components/_CountDown";
 import { toPercentage } from "next-common/utils";
@@ -31,7 +31,7 @@ export function getCountDownProgress(startHeight, currentHeight, endHeight) {
 }
 
 export default function CurrentPhaseEnd({ startHeight, endHeight }) {
-  const chainHeight = useAlwaysRelayHeight();
+  const chainHeight = useRelayHeight();
   const blockGap = endHeight - chainHeight;
   const blockTime = useBlockTime();
   const estimatedBlocksTime = useEstimateBlocksTimeWithBlockTime(

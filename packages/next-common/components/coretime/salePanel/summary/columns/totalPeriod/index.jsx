@@ -3,7 +3,7 @@ import SummaryItem from "next-common/components/summary/layout/item";
 import { SummaryColumnGap } from "../../common";
 import TotalPeriodCountdown from "./countdown";
 import FieldLoading from "next-common/components/icons/fieldLoading";
-import useAlwaysRelayHeight from "next-common/hooks/useAlwaysRelayHeight";
+import { useRelayHeight } from "next-common/context/relayInfo";
 import { getCountDownProgress } from "../currentPhase/common";
 import StartAt from "./startAt";
 import EndAt from "./endAt";
@@ -42,7 +42,7 @@ export default function TotalPeriod() {
   const initHeight = initIndexer?.blockHeight;
   const { isLoading, indexer: endIndexer } = useCoretimeSaleEnd();
 
-  const chainHeight = useAlwaysRelayHeight();
+  const chainHeight = useRelayHeight();
   const blockTime = useBlockTime();
 
   const endHeight = endIndexer?.blockHeight;
