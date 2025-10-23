@@ -5,7 +5,8 @@ import useCoretimeSale, {
 import CoretimeSalePanelChartPeriodProgress from "./periodProgress";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { Skeleton } from "next-common/components/skeleton";
-import useCoretimeSaleStart, {
+import {
+  useCoretimeSaleStartWithRCBlockNumber,
   useCoretimeSaleFixedStart,
 } from "next-common/hooks/coretime/useCoretimeSaleStart";
 
@@ -18,7 +19,7 @@ const CoretimeSalePanelChartStatistics = dynamicClientOnly(
 
 export default function CoretimeSalePanelChart({ className = "" }) {
   const coretimeSale = useCoretimeSale();
-  const saleStart = useCoretimeSaleStart();
+  const saleStart = useCoretimeSaleStartWithRCBlockNumber();
   const endSale = useCoretimeSaleEnd();
   const fixedStart = useCoretimeSaleFixedStart();
 
