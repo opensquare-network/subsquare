@@ -3,17 +3,16 @@ import SummaryItem from "next-common/components/summary/layout/item";
 import { SummaryColumnGap } from "../../common";
 import TotalPeriodCountdown from "./countdown";
 import FieldLoading from "next-common/components/icons/fieldLoading";
-import useCoretimeChainOrScanHeight from "next-common/hooks/coretime/scanHeight";
-import { useSelector } from "react-redux";
+import useAlwaysRelayHeight from "next-common/hooks/useAlwaysRelayHeight";
 import { getCountDownProgress } from "../currentPhase/common";
-import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import StartAt from "./startAt";
 import EndAt from "./endAt";
 import PassedTime from "./passedTime";
 import TotalTime from "./totalTime";
-import { usePageProps } from "next-common/context/page";
 import useCoretimeSaleEnd from "next-common/context/coretime/hooks/useCoretimeSaleEnd";
 import { estimateBlocksTime } from "next-common/utils";
+import useBlockTime from "next-common/context/coretime/hooks/useBlockTime";
+import { useCoretimeSaleInitIndexer } from "next-common/context/coretime/sale/provider";
 
 export function getEndBlocksTime(initBlocksTime, blockTime, blockGap) {
   return initBlocksTime + blockGap * blockTime;
@@ -39,13 +38,12 @@ function SalePeriodContent({
 const MemoizedSalePeriodContent = memo(SalePeriodContent);
 
 export default function TotalPeriod() {
-  const { coretimeSale } = usePageProps();
-  const { initIndexer = {} } = coretimeSale;
+  const initIndexer = useCoretimeSaleInitIndexer();
   const initHeight = initIndexer?.blockHeight;
   const { isLoading, indexer: endIndexer } = useCoretimeSaleEnd();
 
-  const chainHeight = useCoretimeChainOrScanHeight();
-  const blockTime = useSelector(blockTimeSelector);
+  const chainHeight = useAlwaysRelayHeight();
+  const blockTime = useBlockTime();
 
   const endHeight = endIndexer?.blockHeight;
 
