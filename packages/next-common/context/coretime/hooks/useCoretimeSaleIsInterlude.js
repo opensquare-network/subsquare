@@ -1,9 +1,9 @@
-import { useRelayHeight } from "next-common/context/relayInfo";
+import useCoretimeChainOrScanHeight from "next-common/hooks/coretime/scanHeight";
 import useCoretimeSale from "next-common/context/coretime/sale/provider";
 import { isNil } from "lodash-es";
 
 export default function useCoretimeSaleIsInterlude() {
-  const chainHeight = useRelayHeight();
+  const chainHeight = useCoretimeChainOrScanHeight();
   const sale = useCoretimeSale() || {};
   const {
     initIndexer: { blockHeight: initBlockHeight } = {},

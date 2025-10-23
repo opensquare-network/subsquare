@@ -85,7 +85,9 @@ export function useEstimateTimeFromNowToBlockHeight(blockHeight) {
   return result;
 }
 
-export function useEstimateBlocksTimeWithBlockTime(blocks, blockTime) {
+export function useEstimateBlocksTime(blocks) {
+  const blockTime = useSelector(blockTimeSelector);
+
   const [estimatedTime, setEstimatedTime] = useState("");
 
   useEffect(() => {
@@ -96,10 +98,4 @@ export function useEstimateBlocksTimeWithBlockTime(blocks, blockTime) {
   }, [blockTime, blocks]);
 
   return estimatedTime;
-}
-
-export function useEstimateBlocksTime(blocks) {
-  const blockTime = useSelector(blockTimeSelector);
-
-  return useEstimateBlocksTimeWithBlockTime(blocks, blockTime);
 }
