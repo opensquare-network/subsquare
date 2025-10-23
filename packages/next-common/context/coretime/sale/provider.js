@@ -25,6 +25,11 @@ export function useCoretimeSaleInitHeight() {
   return initIndexer?.blockHeight;
 }
 
+export function useCoretimeSaleRelayIndexerHeight() {
+  const sale = useCoretimeSale();
+  return sale?.relayIndexer?.blockHeight;
+}
+
 export function useCoretimeSaleInfo() {
   const sale = useCoretimeSale();
   const { info = {} } = sale;

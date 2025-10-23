@@ -18,12 +18,20 @@ export default function useCoretimeSaleStart() {
 }
 
 export function useCoretimeSaleStartWithRCBlockNumber() {
-  const sale = useCoretimeSale();
-  return sale.info.saleStart;
+  const { relaySaleStartIndexer, info, id } = useCoretimeSale();
+  const isUseRCBlockNumber = useIsCoretimeUseRCBlockNumber(id);
+
+  if (!isUseRCBlockNumber) {
+    return info.saleStart;
+  }
+
+  return relaySaleStartIndexer?.blockHeight ?? info.saleStart;
 }
 
 export function useCoretimeSaleFixedStart() {
   const sale = useCoretimeSale();
-  const { info: { saleStart: saleStartFromSale, leadinLength } = {} } = sale;
-  return saleStartFromSale + leadinLength;
+  const saleStart = useCoretimeSaleStartWithRCBlockNumber();
+  const { info: { leadinLength } = {} } = sale;
+
+  return saleStart + leadinLength;
 }

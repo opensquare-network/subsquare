@@ -1,9 +1,9 @@
 import { useCoretimeSaleInfo } from "next-common/context/coretime/sale/provider";
-import useCoretimeSaleStart from "next-common/hooks/coretime/useCoretimeSaleStart";
+import { useCoretimeSaleStartWithRCBlockNumber } from "next-common/hooks/coretime/useCoretimeSaleStart";
 
 export default function useCoretimeCustomizedSaleInfo() {
   const info = useCoretimeSaleInfo();
-  const saleStart = useCoretimeSaleStart();
+  const saleStart = useCoretimeSaleStartWithRCBlockNumber();
   return {
     ...info,
     saleStart,
