@@ -27,6 +27,10 @@ if (isPeopleSupported) {
 }
 
 export const PeopleGlobalProvider = ({ children }) => {
+  if (!isPeopleSupported) {
+    return null;
+  }
+
   return (
     <RelayInfoProvider>
       <Provider store={store}>
@@ -39,10 +43,6 @@ export const PeopleGlobalProvider = ({ children }) => {
 };
 
 export default function PeoplePage() {
-  if (!isPeopleSupported) {
-    return null;
-  }
-
   return (
     <PeopleGlobalProvider>
       <PeopleOverviewPageImpl />
