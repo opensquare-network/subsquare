@@ -10,6 +10,12 @@ import usePaginationComponent from "../pagination/usePaginationComponent";
 import ValueDisplay from "../valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
+import ListTitleBar from "../listTitleBar";
+import {
+  DropdownFilterProvider,
+  useCommittedFilterState,
+} from "../dropdownFilter/context";
+import { ValidatorsFilter } from "./filter";
 
 const colAccount = {
   name: "Account",
@@ -78,7 +84,8 @@ function useValidators() {
 
 const PAGE_SIZE = 50;
 
-export default function ValidatorsList() {
+function ValidatorsListImpl() {
+  const [{ active: isActive }] = useCommittedFilterState();
   const { validators, loading } = useValidators();
   const columnsDef = [
     colAccount,
@@ -86,17 +93,37 @@ export default function ValidatorsList() {
     colNominatorCount,
     colTotalStake,
   ];
+  const filteredValidators = useMemo(() => {
+    if (validators) {
+      return isActive ? validators.filter((v) => v.isActive) : validators;
+    }
+    return null;
+  }, [validators, isActive]);
   const { page, component: pagination } = usePaginationComponent(
-    validators?.length || 0,
+    filteredValidators?.length || 0,
     PAGE_SIZE,
   );
   const pagedValidators = useMemo(
-    () => (validators || []).slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE),
-    [validators, page],
+    () =>
+      (filteredValidators || []).slice(
+        (page - 1) * PAGE_SIZE,
+        page * PAGE_SIZE,
+      ),
+    [filteredValidators, page],
   );
 
   return (
-    <div>
+    <div className="flex flex-col gap-[16px]">
+      <div className="flex max-md:flex-col items-center gap-[24px] max-md:px-[24px] max-md:gap-[8px] mr-6 max-md:mr-0">
+        <div className="flex grow justify-between max-md:w-full">
+          <ListTitleBar
+            className={"max-md:-ml-6"}
+            title="List"
+            titleCount={filteredValidators?.length || 0}
+          />
+          <ValidatorsFilter />
+        </div>
+      </div>
       <SecondaryCard>
         <ScrollerX>
           <MapDataList
@@ -109,5 +136,20 @@ export default function ValidatorsList() {
         {pagination}
       </SecondaryCard>
     </div>
+  );
+}
+
+export default function ValidatorsList() {
+  return (
+    <DropdownFilterProvider
+      defaultFilterValues={{
+        active: true,
+      }}
+      emptyFilterValues={{
+        active: false,
+      }}
+    >
+      <ValidatorsListImpl />
+    </DropdownFilterProvider>
   );
 }
