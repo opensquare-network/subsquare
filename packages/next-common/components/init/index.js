@@ -6,8 +6,11 @@ import { useSubscribeChainHead } from "next-common/utils/hooks";
 import useExistentialDeposit from "next-common/utils/hooks/chain/useExistentialDeposit";
 import useStoreDemocracyLockPeriod from "next-common/hooks/democracy/useStoreDemocracyLockPeriod";
 import useStoreConvictionVotingLockPeriod from "next-common/hooks/referenda/useStoreConvictionVotingLockPeriod";
+import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated";
 import { usePageProperties } from "next-common/context/page";
 import { useSubRelayHeight } from "next-common/hooks/relayScanHeight";
+import { useChain } from "next-common/context/chain";
+import { isCoretimeChain } from "next-common/utils/chain";
 
 export function RelayStatusSubscriber() {
   const { relayScanHeight } = usePageProperties();
@@ -20,6 +23,7 @@ export default function BaseInit() {
   useInitApiProviders();
   useUpdateNodesDelay();
 
+  const chain = useChain();
   const api = useContextApi();
   useSubscribeChainHead(api);
   useExistentialDeposit();
@@ -27,5 +31,9 @@ export default function BaseInit() {
   useStoreDemocracyLockPeriod();
   useStoreConvictionVotingLockPeriod();
 
-  return <RelayStatusSubscriber />;
+  if (isAssetHubMigrated() || isCoretimeChain(chain)) {
+    return <RelayStatusSubscriber />;
+  } else {
+    return null;
+  }
 }
