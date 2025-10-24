@@ -116,6 +116,10 @@ export function isHyperBridgeChain(chain) {
   return [Chains.hyperBridge].includes(chain);
 }
 
+export function isCoretimeChain(chain) {
+  return [Chains.kusamaCoretime, Chains.polkadotCoretime].includes(chain);
+}
+
 export function getAssetHubChain(chain) {
   if (isAssetHubChain(chain)) {
     return chain;

@@ -17,14 +17,21 @@ export default function useCoretimeSaleStart() {
   return parseInt(blockHeight + interludeLength / 2 + "");
 }
 
+export function useCoretimeSaleStartWithRCBlockNumber() {
+  const { relaySaleStartIndexer, info, id } = useCoretimeSale();
+  const isUseRCBlockNumber = useIsCoretimeUseRCBlockNumber(id);
+
+  if (!isUseRCBlockNumber) {
+    return info.saleStart;
+  }
+
+  return relaySaleStartIndexer?.blockHeight ?? info.saleStart;
+}
+
 export function useCoretimeSaleFixedStart() {
   const sale = useCoretimeSale();
-  const isUseRCBlockNumber = useIsCoretimeUseRCBlockNumber(sale.id);
-  const saleStart = useCoretimeSaleStart();
-  const { info: { saleStart: saleStartFromSale, leadinLength } = {} } = sale;
-  if (!isUseRCBlockNumber) {
-    return saleStartFromSale + leadinLength;
-  } else {
-    return parseInt(saleStart + leadinLength / 2 + "");
-  }
+  const saleStart = useCoretimeSaleStartWithRCBlockNumber();
+  const { info: { leadinLength } = {} } = sale;
+
+  return saleStart + leadinLength;
 }

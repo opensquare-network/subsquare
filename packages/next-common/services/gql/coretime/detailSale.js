@@ -24,7 +24,16 @@ const GET_CORETIME_SALE = gql`
       initIndexer {
         ${INDEXER_FIELDS}
       }
+      relayIndexer {
+        ${INDEXER_FIELDS}
+      }
       endIndexer {
+        ${INDEXER_FIELDS}
+      }
+      endRelayIndexer {
+        ${INDEXER_FIELDS}
+      }
+      relaySaleStartIndexer {
         ${INDEXER_FIELDS}
       }
       configuration {

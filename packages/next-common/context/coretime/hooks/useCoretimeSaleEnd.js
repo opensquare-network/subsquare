@@ -1,9 +1,10 @@
 import useCoretimeConfiguration from "next-common/context/coretime/configuration";
 import { CORETIME_TIMESLICE_PERIOD } from "next-common/utils/consts/coretime";
 import useCoretimeSale from "next-common/context/coretime/sale/provider";
-import { useRelayHeight } from "next-common/context/relayInfo";
+import { useRelayChainLatestHeight } from "next-common/hooks/relayScanHeight";
 import useCoretimeChainOrScanHeight from "next-common/hooks/coretime/scanHeight";
 import { isNil } from "lodash-es";
+import useIsCoretimeUseRCBlockNumber from "next-common/hooks/coretime/useIsCoretimeUseRCBlockNumber";
 
 function toEven(num) {
   return num % 2 === 0 ? num : num + 1;
@@ -11,7 +12,7 @@ function toEven(num) {
 
 // note that the result is evaluated for active sale
 export default function useCoretimeSaleEnd() {
-  const relayHeight = useRelayHeight();
+  const relayHeight = useRelayChainLatestHeight();
   const sale = useCoretimeSale();
   const configuration = useCoretimeConfiguration();
   const { info: { regionBegin } = {}, isFinal, endIndexer } = sale;
@@ -35,6 +36,43 @@ export default function useCoretimeSaleEnd() {
     isLoading: false,
     indexer: {
       blockHeight: toEven(coretimeHeight + coretimeBlocksGap),
+      blockTime: null, // future block, we have to evaluate the time
+    },
+  };
+}
+
+export function useCoretimeSaleEndWithRelayHeight() {
+  const relayHeight = useRelayChainLatestHeight();
+  const sale = useCoretimeSale();
+  const configuration = useCoretimeConfiguration();
+  const {
+    id,
+    info: { regionBegin } = {},
+    isFinal,
+    endRelayIndexer,
+    endIndexer,
+  } = sale;
+  const isUseRCBlockNumber = useIsCoretimeUseRCBlockNumber(id);
+  const finalEndIndexer = isUseRCBlockNumber ? endRelayIndexer : endIndexer;
+  if (isFinal && finalEndIndexer) {
+    return {
+      isLoading: false,
+      indexer: finalEndIndexer,
+    };
+  } else if (isNil(relayHeight)) {
+    return {
+      isLoading: true,
+    };
+  }
+
+  const relayEndBlock =
+    (regionBegin + 1) * CORETIME_TIMESLICE_PERIOD - configuration.advanceNotice;
+  const relayBlocksGap = relayEndBlock - relayHeight;
+
+  return {
+    isLoading: false,
+    indexer: {
+      blockHeight: toEven(relayHeight + relayBlocksGap),
       blockTime: null, // future block, we have to evaluate the time
     },
   };

@@ -1,9 +1,12 @@
-import useCoretimeSaleEnd from "next-common/context/coretime/hooks/useCoretimeSaleEnd";
-import useCoretimeSale from "next-common/context/coretime/sale/provider";
+import { useCoretimeSaleEndWithRelayHeight } from "next-common/context/coretime/hooks/useCoretimeSaleEnd";
+import useCoretimeSale, {
+  useCoretimeSaleIsUseRCBlockNumber,
+} from "next-common/context/coretime/sale/provider";
 import CoretimeSalePanelChartPeriodProgress from "./periodProgress";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { Skeleton } from "next-common/components/skeleton";
-import useCoretimeSaleStart, {
+import {
+  useCoretimeSaleStartWithRCBlockNumber,
   useCoretimeSaleFixedStart,
 } from "next-common/hooks/coretime/useCoretimeSaleStart";
 
@@ -16,10 +19,11 @@ const CoretimeSalePanelChartStatistics = dynamicClientOnly(
 
 export default function CoretimeSalePanelChart({ className = "" }) {
   const coretimeSale = useCoretimeSale();
-  const { initIndexer: { blockHeight: initBlockHeight } = {} } = coretimeSale;
-  const saleStart = useCoretimeSaleStart();
-  const endSale = useCoretimeSaleEnd();
+  const saleStart = useCoretimeSaleStartWithRCBlockNumber();
+  const endSale = useCoretimeSaleEndWithRelayHeight();
   const fixedStart = useCoretimeSaleFixedStart();
+
+  const initBlockHeight = useCoretimeSaleIsUseRCBlockNumber();
 
   const endBlockHeight = endSale?.indexer?.blockHeight;
   const totalBlocks = endBlockHeight - initBlockHeight;

@@ -11,8 +11,29 @@ export function getCoretimeLeadinFactorAt(when) {
 // https://github.com/paritytech/polkadot-sdk/blob/master/substrate/frame/broker/src/utility_impls.rs#L63
 export function getCoretimePriceAt(blockHeight, saleInfo) {
   const { saleStart, leadinLength, price, endPrice } = saleInfo;
+  const percentageOfLeadin = Math.min(
+    Math.max(blockHeight - saleStart, 0),
+    leadinLength,
+  );
+  const through = percentageOfLeadin / leadinLength;
+  const factor = getCoretimeLeadinFactorAt(through);
+  return BigNumber(factor)
+    .multipliedBy(endPrice || price)
+    .toFixed(0);
+}
+
+// for test purpose, can be removed if no need anymore
+export function getCoretimePriceAtV2(blockHeight, saleInfo) {
+  const { saleStart, leadinLength, price, endPrice } = saleInfo;
   const percentageOfLeadin = Math.min(blockHeight - saleStart, leadinLength);
   const through = percentageOfLeadin / leadinLength;
   const factor = getCoretimeLeadinFactorAt(through);
-  return BigNumber(factor).multipliedBy(endPrice || price).toFixed(0);
+  const finalPrice = BigNumber(factor)
+    .multipliedBy(endPrice || price)
+    .toFixed(0);
+  return {
+    through,
+    factor,
+    price: finalPrice,
+  };
 }
