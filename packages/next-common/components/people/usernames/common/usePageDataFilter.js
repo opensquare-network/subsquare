@@ -16,10 +16,10 @@ export default function usePageDataFilter(sourceData, sourceLoading) {
     setLoading[true];
     const list = sourceData.filter((item) => {
       const matchSearch = querySearch
-        ? item.username.includes(querySearch) ||
-          item.owner.includes(querySearch)
+        ? item?.username?.includes(querySearch) ||
+          item?.owner?.includes(querySearch)
         : true;
-      return matchSearch && item.username.endsWith(authority);
+      return matchSearch && item?.username?.endsWith(authority);
     });
     setList(list);
   }, [authority, querySearch, sourceData]);

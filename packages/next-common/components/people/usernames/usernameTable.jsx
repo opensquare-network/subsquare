@@ -1,17 +1,17 @@
-import AuthoritySelect from "./common/authoritySelect";
-import Copyable from "next-common/components/copyable";
-import usePageDataFilter from "./common/usePageDataFilter";
-import { MapDataList } from "next-common/components/dataList";
-import { useIdentityUsernameInfoOf } from "./common/useUsernameData";
-import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import useSearchComponent from "next-common/components/data/common/useSearchComponent";
-import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
-import { useRouter } from "next/router";
 import {
   addRouterQuery,
   getRouterQuery,
   removeRouterQuery,
 } from "next-common/utils/router";
+import { useRouter } from "next/router";
+import AuthoritySelect from "./common/authoritySelect";
+import usePageDataFilter from "./common/usePageDataFilter";
+import { MapDataList } from "next-common/components/dataList";
+import AddressUser from "next-common/components/user/addressUser";
+import { useIdentityUsernameInfoOf } from "./common/useUsernameData";
+import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
+import useSearchComponent from "next-common/components/data/common/useSearchComponent";
+import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 
 export default function UsernameTable() {
   const router = useRouter();
@@ -68,27 +68,18 @@ export default function UsernameTable() {
 const columnsDef = [
   {
     name: "Account",
-    width: 300,
     render(item) {
-      return (
-        <Copyable className="flex items-center" copyText={item.owner}>
-          <span
-            className="text14Medium text-textPrimary inline-block w-[300px] sm:w-[200px] md:truncate"
-            title={item.owner}
-          >
-            {item.owner}
-          </span>
-        </Copyable>
-      );
+      return <AddressUser add={item.owner} />;
     },
   },
   {
     name: "User Name",
+    width: 300,
     render(item) {
       return (
         <div
           key="name"
-          className="max-w-[200px] sm:max-w-full break-all sm:break-normal whitespace-pre-wrap cursor-pointer"
+          className="w-[200px] sm:w-[300px] text-end sm:text-start break-all sm:break-normal whitespace-pre-wrap truncate"
           title={item.username}
         >
           <span>{item.username}</span>

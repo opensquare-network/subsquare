@@ -1,9 +1,5 @@
 import { useRouter } from "next/router";
-import {
-  getRouterQuery,
-  addRouterQuery,
-  removeRouterQuery,
-} from "next-common/utils/router";
+import { getRouterQuery } from "next-common/utils/router";
 import ChainSocialLinks from "next-common/components/chain/socialLinks";
 import generateLayoutRawTitle from "next-common/utils/generateLayoutRawTitle";
 import BaseLayout from "next-common/components/layout/baseLayout";
@@ -15,7 +11,7 @@ import UsernameTable from "./usernameTable";
 const tabs = [
   {
     value: "usernames",
-    label: "User names",
+    label: "Usernames",
   },
   {
     value: "authority",
@@ -44,11 +40,24 @@ export default function UsernamesPage() {
             <TabsList
               activeTabValue={activeTabValue}
               onTabClick={({ value }) => {
+                const query = router.query;
+                delete query["search"];
+                delete query["authority"];
                 if (value === tabs[0].value) {
-                  removeRouterQuery(router, "tab");
+                  delete query["tab"];
                 } else {
-                  addRouterQuery(router, "tab", value);
+                  query["tab"] = value;
                 }
+                router.replace(
+                  {
+                    pathname: router.pathname,
+                    query,
+                  },
+                  undefined,
+                  {
+                    shallow: true,
+                  },
+                );
               }}
               tabs={tabs}
             />
