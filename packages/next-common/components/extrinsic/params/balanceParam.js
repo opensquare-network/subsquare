@@ -72,7 +72,6 @@ function NativeTokenBalanceParam({ title, setValue }) {
         value={inputText}
         onValueChange={setInputText}
         symbol={symbol}
-        max={MAX_U128}
       />
     </>
   );
