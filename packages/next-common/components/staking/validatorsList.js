@@ -4,7 +4,7 @@ import ScrollerX from "../styled/containers/scrollerX";
 import { AddressUser } from "../user";
 import { useAllValidators } from "next-common/hooks/staking/useAllValidators";
 import { useActiveValidators } from "next-common/hooks/staking/useActiveValidators";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { keyBy } from "lodash-es";
 import { useListPagination } from "../pagination/usePaginationComponent";
 import ValueDisplay from "../valueDisplay";
@@ -16,7 +16,10 @@ import {
   useCommittedFilterState,
 } from "../dropdownFilter/context";
 import { ValidatorsFilter } from "./filter";
-import SearchBox from "../searchBox";
+import { useAsync } from "react-use";
+import { fetchIdentity } from "next-common/services/identity";
+import { getIdentityDisplay } from "next-common/utils/identity";
+import useSearchedValidators from "./search";
 
 const colAccount = {
   name: "Account",
@@ -93,14 +96,40 @@ function useFilteredValidators(validators) {
   }, [validators, isActive]);
 }
 
+function useValidatorsWithIdentity(validators) {
+  const { identity: identityChain } = useChainSettings();
+  return useAsync(async () => {
+    if (!validators) {
+      return null;
+    }
+    return await Promise.all(
+      validators.map(async (validator) => {
+        const identity = await fetchIdentity(identityChain, validator.account);
+        const name = getIdentityDisplay(identity);
+        return {
+          ...validator,
+          name,
+        };
+      }),
+    );
+  }, [identityChain, validators]);
+}
+
 const PAGE_SIZE = 50;
 
 function ValidatorsListImpl() {
-  const [searchValue, setSearchValue] = useState("");
-  const { validators, loading } = useValidators();
+  const { validators } = useValidators();
   const filteredValidators = useFilteredValidators(validators);
+  const {
+    value: validatorsWithIdentity,
+    loading: isLoadingValidatorsWithIdentity,
+  } = useValidatorsWithIdentity(filteredValidators);
+  const { searchedValidators, component: searchBox } = useSearchedValidators(
+    validatorsWithIdentity,
+  );
+
   const { pagedItems: pagedValidators, component: pagination } =
-    useListPagination(filteredValidators, PAGE_SIZE);
+    useListPagination(searchedValidators, PAGE_SIZE);
 
   const columnsDef = [
     colAccount,
@@ -116,15 +145,10 @@ function ValidatorsListImpl() {
           <ListTitleBar
             className={"max-md:-ml-6"}
             title="List"
-            titleCount={filteredValidators?.length || 0}
+            titleCount={searchedValidators?.length || 0}
           />
           <div className="flex items-center gap-2">
-            <SearchBox
-              value={searchValue}
-              setValue={setSearchValue}
-              isDebounce={true}
-              placeholder="Search identity, address"
-            />
+            {searchBox}
             <ValidatorsFilter />
           </div>
         </div>
@@ -134,7 +158,7 @@ function ValidatorsListImpl() {
           <MapDataList
             columnsDef={columnsDef}
             data={pagedValidators}
-            loading={loading}
+            loading={isLoadingValidatorsWithIdentity}
             noDataText="No current validators"
           />
         </ScrollerX>
