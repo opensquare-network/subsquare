@@ -13,7 +13,7 @@ export default function usePageDataFilter(sourceData, sourceLoading) {
   const [list, setList] = useState([]);
 
   useEffect(() => {
-    setLoading[true];
+    setLoading(true);
     const list = sourceData.filter((item) => {
       const matchSearch = querySearch
         ? item?.username?.includes(querySearch) ||
@@ -21,6 +21,7 @@ export default function usePageDataFilter(sourceData, sourceLoading) {
         : true;
       return matchSearch && item?.username?.endsWith(authority);
     });
+    setLoading(false);
     setList(list);
   }, [authority, querySearch, sourceData]);
 

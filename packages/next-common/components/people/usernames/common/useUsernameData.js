@@ -40,6 +40,7 @@ export function useIdentityAuthorityOf() {
 
   useEffect(() => {
     if (!api) return;
+    setLoading(true);
     api.query.identity.authorityOf
       .entries()
       .then((res) => {
