@@ -9,7 +9,7 @@ export default function ApprovedProposal() {
   const { total, totalAmount, loading } = useApprovedProposalStatistics();
 
   return (
-    <SummaryItem title="Approved proposal">
+    <SummaryItem title="Approved Proposal">
       <LoadableContent isLoading={loading}>
         <span>{total}</span>
         <div className="!ml-0 flex flex-col gap-y-1">
