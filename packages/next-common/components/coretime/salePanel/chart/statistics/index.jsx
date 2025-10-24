@@ -2,7 +2,7 @@ import BigNumber from "bignumber.js";
 import { maxBy, range } from "lodash-es";
 import "next-common/components/charts/globalConfig";
 import { useThemeSetting } from "next-common/context/theme";
-import { useRelayHeight } from "next-common/context/relayInfo";
+import { useRelayChainLatestHeight } from "next-common/hooks/relayScanHeight";
 import { cn } from "next-common/utils";
 import { useCallback, useMemo, useState } from "react";
 import { Line } from "react-chartjs-2";
@@ -49,7 +49,7 @@ function StatisticsImpl({
   totalBlocks = 0,
   saleStart,
 }) {
-  const chainHeight = useRelayHeight();
+  const chainHeight = useRelayChainLatestHeight();
 
   const totalBlocksIndex = toIndex(totalBlocks);
   const initBlockHeightIndex = toIndex(initBlockHeight);

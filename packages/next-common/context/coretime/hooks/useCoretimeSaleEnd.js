@@ -1,7 +1,7 @@
 import useCoretimeConfiguration from "next-common/context/coretime/configuration";
 import { CORETIME_TIMESLICE_PERIOD } from "next-common/utils/consts/coretime";
 import useCoretimeSale from "next-common/context/coretime/sale/provider";
-import { useRelayHeight } from "next-common/context/relayInfo";
+import { useRelayChainLatestHeight } from "next-common/hooks/relayScanHeight";
 import useCoretimeChainOrScanHeight from "next-common/hooks/coretime/scanHeight";
 import { isNil } from "lodash-es";
 import useIsCoretimeUseRCBlockNumber from "next-common/hooks/coretime/useIsCoretimeUseRCBlockNumber";
@@ -12,7 +12,7 @@ function toEven(num) {
 
 // note that the result is evaluated for active sale
 export default function useCoretimeSaleEnd() {
-  const relayHeight = useRelayHeight();
+  const relayHeight = useRelayChainLatestHeight();
   const sale = useCoretimeSale();
   const configuration = useCoretimeConfiguration();
   const { info: { regionBegin } = {}, isFinal, endIndexer } = sale;
@@ -42,7 +42,7 @@ export default function useCoretimeSaleEnd() {
 }
 
 export function useCoretimeSaleEndWithRelayHeight() {
-  const relayHeight = useRelayHeight();
+  const relayHeight = useRelayChainLatestHeight();
   const sale = useCoretimeSale();
   const configuration = useCoretimeConfiguration();
   const {
