@@ -4,6 +4,8 @@ import { useChainSettings } from "next-common/context/chain";
 import { useContext, useEffect, useState } from "react";
 import { CallContext } from "../context";
 
+const MAX_U128 = 2n ** 128n - 1n;
+
 function SimpleBalanceParam({ title, setValue }) {
   const [inputText, setInputText] = useState("");
 
@@ -30,7 +32,11 @@ function SimpleBalanceParam({ title, setValue }) {
   return (
     <>
       {title}
-      <CurrencyInput value={inputText} onValueChange={setInputText} />
+      <CurrencyInput
+        value={inputText}
+        onValueChange={setInputText}
+        max={MAX_U128}
+      />
     </>
   );
 }
@@ -66,6 +72,7 @@ function NativeTokenBalanceParam({ title, setValue }) {
         value={inputText}
         onValueChange={setInputText}
         symbol={symbol}
+        max={MAX_U128}
       />
     </>
   );
