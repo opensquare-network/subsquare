@@ -5,10 +5,9 @@ import {
 } from "next-common/utils/router";
 import { useRouter } from "next/router";
 import AuthoritySelect from "./common/authoritySelect";
-import usePageDataFilter from "./common/usePageDataFilter";
 import { MapDataList } from "next-common/components/dataList";
 import AddressUser from "next-common/components/user/addressUser";
-import { useIdentityUsernameInfoOf } from "./common/useUsernameData";
+import useSearchIdentityUsernameData from "./common/useSearchIdentityUsernameData";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import useSearchComponent from "next-common/components/data/common/useSearchComponent";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
@@ -19,13 +18,8 @@ export default function UsernameTable() {
   const { component: SearchBoxComponent } = useSearchComponent({
     placeholder: "Search username or address",
   });
-
-  const { data: sourceData, loading: sourceLoading } =
-    useIdentityUsernameInfoOf();
-  const { loading, data, total, pageComponent } = usePageDataFilter(
-    sourceData,
-    sourceLoading,
-  );
+  const { loading, data, total, pageComponent } =
+    useSearchIdentityUsernameData();
 
   return (
     <div className="flex flex-col gap-y-4">

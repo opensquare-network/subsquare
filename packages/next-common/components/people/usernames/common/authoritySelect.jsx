@@ -3,12 +3,12 @@ import * as RadixSelect from "@radix-ui/react-select";
 import { useMemo } from "react";
 import { cn } from "next-common/utils";
 import { ArrowDown, ArrowUp } from "@osn/icons/subsquare";
-import { useIdentityAuthorityOf } from "./useUsernameData";
+import { useIdentityAuthorityData } from "./useSearchIdentityAuthorityData";
 
 const NONE = "none";
 
 export default function AuthoritySelect({ value = NONE, onChange = noop }) {
-  const { data } = useIdentityAuthorityOf();
+  const { data } = useIdentityAuthorityData();
 
   const options = useMemo(() => {
     return [

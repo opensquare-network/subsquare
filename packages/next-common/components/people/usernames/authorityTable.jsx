@@ -1,20 +1,16 @@
-import usePageDataFilter from "./common/usePageDataFilter";
 import { MapDataList } from "next-common/components/dataList";
-import { useIdentityAuthorityOf } from "./common/useUsernameData";
+import AddressUser from "next-common/components/user/addressUser";
+import useSearchIdentityAuthorityData from "./common/useSearchIdentityAuthorityData";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import useSearchComponent from "next-common/components/data/common/useSearchComponent";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
-import AddressUser from "next-common/components/user/addressUser";
 
 export default function AuthorityTable() {
   const { component: SearchBoxComponent } = useSearchComponent({
     placeholder: "Search name or address",
   });
-  const { data: sourceData, loading: sourceLoading } = useIdentityAuthorityOf();
-  const { loading, data, total, pageComponent } = usePageDataFilter(
-    sourceData,
-    sourceLoading,
-  );
+  const { loading, data, total, pageComponent } =
+    useSearchIdentityAuthorityData();
 
   return (
     <div className="flex flex-col gap-y-4">
