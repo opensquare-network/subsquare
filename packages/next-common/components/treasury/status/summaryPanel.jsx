@@ -6,6 +6,10 @@ import KusamaTreasuryProvider from "next-common/context/treasury/kusamaTreasury"
 import KusamaTreasurySummary from "next-common/components/summary/kusamaTreasurySummary";
 import PolkadotTreasuryProvider from "next-common/context/treasury/polkadotTreasury";
 import PolkadotTreasurySummary from "next-common/components/summary/polkadotTreasurySummary";
+import Divider from "next-common/components/styled/layout/divider";
+import SummaryLayout from "next-common/components/summary/layout/layout";
+import ApprovedProposal from "./summarys/approvedProposal";
+import ApprovedSpend from "./summarys/approvedSpend";
 
 const TotalRequestingAssets = dynamic(
   () => import("next-common/components/totalRequestingAssets"),
@@ -39,6 +43,11 @@ export default function TreasuryStatusSummaryPanel() {
   return (
     <div className="flex flex-col gap-y-4">
       {summaryPanel}
+      <Divider className="w-full" />
+      <SummaryLayout>
+        <ApprovedProposal />
+        <ApprovedSpend />
+      </SummaryLayout>
       <TotalRequestingAssets styleType={PromptTypes.NEUTRAL} />
     </div>
   );
