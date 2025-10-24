@@ -31,10 +31,10 @@ export function getCountDownProgress(startHeight, currentHeight, endHeight) {
 export default function CurrentPhaseEnd({ startHeight, endHeight }) {
   const chainHeight = useCoretimeChainOrScanHeight();
   const blockGap = endHeight - chainHeight;
-  const blockTime = useSelector(blockTimeSelector);
   const estimatedBlocksTime = useEstimateBlocksTime(blockGap);
   const countDownTotal = useEstimateBlocksTime(endHeight - startHeight);
 
+  const blockTime = useSelector(blockTimeSelector);
   const saleStartHeight = useCoretimeSaleStart();
   const leadinLength = useCoretimeSaleLeadinLength();
   const { coretimeSale } = usePageProps();
