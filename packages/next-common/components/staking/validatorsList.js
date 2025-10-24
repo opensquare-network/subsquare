@@ -4,9 +4,9 @@ import ScrollerX from "../styled/containers/scrollerX";
 import { AddressUser } from "../user";
 import { useAllValidators } from "next-common/hooks/staking/useAllValidators";
 import { useActiveValidators } from "next-common/hooks/staking/useActiveValidators";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { keyBy } from "lodash-es";
-import usePaginationComponent from "../pagination/usePaginationComponent";
+import { useListPagination } from "../pagination/usePaginationComponent";
 import ValueDisplay from "../valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
@@ -16,6 +16,7 @@ import {
   useCommittedFilterState,
 } from "../dropdownFilter/context";
 import { ValidatorsFilter } from "./filter";
+import SearchBox from "../searchBox";
 
 const colAccount = {
   name: "Account",
@@ -82,35 +83,31 @@ function useValidators() {
   };
 }
 
+function useFilteredValidators(validators) {
+  const [{ active: isActive }] = useCommittedFilterState();
+  return useMemo(() => {
+    if (validators) {
+      return isActive ? validators.filter((v) => v.isActive) : validators;
+    }
+    return null;
+  }, [validators, isActive]);
+}
+
 const PAGE_SIZE = 50;
 
 function ValidatorsListImpl() {
-  const [{ active: isActive }] = useCommittedFilterState();
+  const [searchValue, setSearchValue] = useState("");
   const { validators, loading } = useValidators();
+  const filteredValidators = useFilteredValidators(validators);
+  const { pagedItems: pagedValidators, component: pagination } =
+    useListPagination(filteredValidators, PAGE_SIZE);
+
   const columnsDef = [
     colAccount,
     colCommission,
     colNominatorCount,
     colTotalStake,
   ];
-  const filteredValidators = useMemo(() => {
-    if (validators) {
-      return isActive ? validators.filter((v) => v.isActive) : validators;
-    }
-    return null;
-  }, [validators, isActive]);
-  const { page, component: pagination } = usePaginationComponent(
-    filteredValidators?.length || 0,
-    PAGE_SIZE,
-  );
-  const pagedValidators = useMemo(
-    () =>
-      (filteredValidators || []).slice(
-        (page - 1) * PAGE_SIZE,
-        page * PAGE_SIZE,
-      ),
-    [filteredValidators, page],
-  );
 
   return (
     <div className="flex flex-col gap-[16px]">
@@ -121,7 +118,15 @@ function ValidatorsListImpl() {
             title="List"
             titleCount={filteredValidators?.length || 0}
           />
-          <ValidatorsFilter />
+          <div className="flex items-center gap-2">
+            <SearchBox
+              value={searchValue}
+              setValue={setSearchValue}
+              isDebounce={true}
+              placeholder="Search identity, address"
+            />
+            <ValidatorsFilter />
+          </div>
         </div>
       </div>
       <SecondaryCard>

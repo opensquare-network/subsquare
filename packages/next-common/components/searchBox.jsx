@@ -6,7 +6,7 @@ import { debounce } from "lodash-es";
 export default function SearchBox({
   value,
   setValue,
-  placeholder = "Search hash",
+  placeholder = "",
   isDebounce = false,
   debounceDelay = 500,
 }) {
