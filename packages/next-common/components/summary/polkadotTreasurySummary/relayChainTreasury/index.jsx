@@ -11,6 +11,11 @@ import SpendPeriod from "./spendPeriod";
 import FiatPriceLabel from "../common/fiatPriceLabel";
 import NativeTokenSymbolAsset from "../common/nativeTokenSymbolAsset";
 import { usePolkadotTreasury } from "next-common/context/treasury/polkadotTreasury";
+import {
+  ToBeAwardedLabel,
+  NextBurnLabel,
+  SpendPeriodLabel,
+} from "../tooltipLables/cycleLabels";
 
 export default function RelayChainTreasury() {
   const {
@@ -36,13 +41,13 @@ export default function RelayChainTreasury() {
             <div>
               <NativeTokenSymbolAsset free={dotTreasuryBalanceOnRelayChain} />
             </div>
-            <SummaryLabelItem label={"To be awarded"}>
+            <SummaryLabelItem label={<ToBeAwardedLabel />}>
               <ToBeAwarded toBeAwarded={toBeAwarded} />
             </SummaryLabelItem>
-            <SummaryLabelItem label={"Next burn"}>
+            <SummaryLabelItem label={<NextBurnLabel />}>
               <NextBurn free={dotTreasuryBalanceOnRelayChain} />
             </SummaryLabelItem>
-            <SummaryLabelItem label={"Spend period"}>
+            <SummaryLabelItem label={<SpendPeriodLabel />}>
               <SpendPeriod summary={summary} />
               <SpendPeriodCountdown summary={summary} />
             </SummaryLabelItem>
