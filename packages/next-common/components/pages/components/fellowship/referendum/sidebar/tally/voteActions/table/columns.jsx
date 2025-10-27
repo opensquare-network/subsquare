@@ -1,9 +1,11 @@
 import { cn } from "next-common/utils";
+import Loading from "next-common/components/loading";
 import Tooltip from "next-common/components/tooltip";
 import { AddressUser } from "next-common/components/user";
 import FellowshipRank from "next-common/components/fellowship/rank";
 import ExplorerLink from "next-common/components/links/explorerLink";
 import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
+import { useQueryFellowshipMemberRank } from "../useFellowshipReferendaActions";
 import { formatDateTime } from "next-common/components/coretime/sales/history/timeRange";
 import {
   ChangeVoteWrapper,
@@ -84,16 +86,22 @@ function ImpactVotesField({ data: { maxImpactVotes, formatData } }) {
   );
 }
 
+const AddressWithRank = ({ who }) => {
+  const { rank, loading } = useQueryFellowshipMemberRank(who);
+
+  return (
+    <div className="flex items-center gap-x-2">
+      {loading ? <Loading /> : <FellowshipRank rank={rank} />}
+      <AddressUser add={who} />
+    </div>
+  );
+};
+
 export const desktopColumns = [
   {
     name: "Account",
     className: "",
-    render: ({ who, rank }) => (
-      <div className="flex items-center gap-x-4">
-        <FellowshipRank rank={rank} />
-        <AddressUser add={who} />
-      </div>
-    ),
+    render: ({ who }) => <AddressWithRank who={who} />,
   },
   {
     name: "Action",
@@ -134,7 +142,7 @@ export const mobileColumns = [
   {
     name: "Account",
     className: "",
-    render: ({ who }) => <AddressUser key="who" add={who} />,
+    render: ({ who }) => <AddressWithRank key={who} add={who} />,
   },
   {
     render: (data) => (

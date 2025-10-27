@@ -1,78 +1,25 @@
-import { useContextApi } from "next-common/context/api";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 import useQueryVoteActions from "./useQueryVoteActions";
-import { useOnchainData } from "next-common/context/post";
-import { useEffect, useMemo, useState, useCallback } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/router";
 
 export default function useFellowshipReferendaActions() {
-  const {
-    loading,
-    data: voteRankActions,
-    maxImpactVotes,
-  } = useFellowshipReferendaActionsWithRank();
+  const router = useRouter();
+  const { loading, voteActions = [] } = useQueryVoteActions(router.query.id);
+  const maxImpactVotes = useMaxImpactVotes(voteActions);
 
   const data = useMemo(
     () =>
-      voteRankActions.map((item) => {
+      voteActions.map((item) => {
         return {
           ...item,
           formatData: formatVoteActionData(item),
           maxImpactVotes,
         };
       }),
-    [maxImpactVotes, voteRankActions],
+    [maxImpactVotes, voteActions],
   );
-  return { loading: loading, voteActions: data };
-}
-
-function useFellowshipReferendaActionsWithRank() {
-  const api = useContextApi();
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const { referendumIndex } = useOnchainData();
-
-  const { loading: sourceLoading, voteActions = [] } =
-    useQueryVoteActions(referendumIndex);
-  const maxImpactVotes = useMaxImpactVotes(voteActions);
-
-  const fetchMemberRanks = useCallback(
-    async (actions) => {
-      if (!api || !actions.length) {
-        setData([]);
-        setLoading(false);
-        return;
-      }
-
-      setLoading(true);
-      const rankedActions = await Promise.all(
-        actions.map(async (item) => {
-          const rank = await api.query.fellowshipCollective
-            .members(item.who)
-            .then((rank) => {
-              return rank.toJSON()?.rank;
-            })
-            .catch(() => null);
-          return {
-            ...item,
-            rank,
-          };
-        }),
-      ).finally(() => {
-        setLoading(false);
-      });
-      setData(rankedActions);
-    },
-    [api],
-  );
-
-  useEffect(() => {
-    fetchMemberRanks(voteActions);
-  }, [fetchMemberRanks, voteActions]);
-
-  return {
-    loading: loading || sourceLoading,
-    data,
-    maxImpactVotes,
-  };
+  return { loading, voteActions: data };
 }
 
 const formatVoteActionData = ({ type, who, data: { vote, preVote } }) => {
@@ -114,3 +61,27 @@ const useMaxImpactVotes = (voteActions) => {
   );
   return maxImpactVotes;
 };
+
+export function useQueryFellowshipMemberRank(address) {
+  const api = useConditionalContextApi();
+  const [rank, setRank] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!api?.query?.fellowshipCollective) {
+      return;
+    }
+    setLoading(true);
+    api.query.fellowshipCollective
+      ?.members(address)
+      .then((rank) => {
+        setRank(rank.toJSON().rank);
+      })
+      .catch(() => {
+        setRank(null);
+      })
+      .finally(() => setLoading(false));
+  }, [api?.query?.fellowshipCollective, address]);
+
+  return { rank, loading };
+}
