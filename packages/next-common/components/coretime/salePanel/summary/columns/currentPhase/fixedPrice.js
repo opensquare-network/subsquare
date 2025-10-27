@@ -4,11 +4,11 @@ import {
 } from "next-common/context/coretime/sale/phases/leadin";
 import { useRelayChainLatestHeight } from "next-common/hooks/relayScanHeight";
 import CurrentPhaseEnd from "next-common/components/coretime/salePanel/summary/columns/currentPhase/common";
-import { useCoretimeSaleEndWithRelayHeight } from "next-common/context/coretime/hooks/useCoretimeSaleEnd";
-import { useCoretimeSaleStartWithRCBlockNumber } from "next-common/hooks/coretime/useCoretimeSaleStart";
+import useCoretimeSaleEnd from "next-common/context/coretime/hooks/useCoretimeSaleEnd";
+import useCoretimeSaleStart from "next-common/hooks/coretime/useCoretimeSaleStart";
 
 function FixPricePhaseGuard({ children }) {
-  const saleStartHeight = useCoretimeSaleStartWithRCBlockNumber();
+  const saleStartHeight = useCoretimeSaleStart();
   const leadinLength = useCoretimeSaleLeadinLength();
   const chainHeight = useRelayChainLatestHeight();
 
@@ -21,7 +21,7 @@ function FixPricePhaseGuard({ children }) {
 
 export default function MaybeFixedPriceEnd() {
   const leadinEnd = useCoretimeSaleLeadinEnd();
-  const { isLoading, indexer } = useCoretimeSaleEndWithRelayHeight();
+  const { isLoading, indexer } = useCoretimeSaleEnd();
 
   if (isLoading) {
     return null;

@@ -9,7 +9,7 @@ import { getEndBlocksTime } from "next-common/components/coretime/salePanel/summ
 import { usePageProps } from "next-common/context/page";
 import { formatDateTime } from "next-common/components/coretime/sales/history/timeRange";
 import { useMemo } from "react";
-import { useCoretimeSaleStartWithRCBlockNumber } from "next-common/hooks/coretime/useCoretimeSaleStart";
+import useCoretimeSaleStart from "next-common/hooks/coretime/useCoretimeSaleStart";
 import useRelayChainBlockTime from "next-common/context/coretime/hooks/useRelayChainBlockTime";
 
 export function getCountDownProgress(startHeight, currentHeight, endHeight) {
@@ -40,7 +40,7 @@ export default function CurrentPhaseEnd({ startHeight, endHeight }) {
     blockTime,
   );
 
-  const saleStartHeight = useCoretimeSaleStartWithRCBlockNumber();
+  const saleStartHeight = useCoretimeSaleStart();
   const leadinLength = useCoretimeSaleLeadinLength();
   const { coretimeSale } = usePageProps();
   const initHeight = coretimeSale?.relayIndexer?.blockHeight;

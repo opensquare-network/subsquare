@@ -1,7 +1,7 @@
 import { useCoretimeSaleRelayIndexerHeight } from "next-common/context/coretime/sale/provider";
 import { useIsCoretimeSaleInterludePhase } from "next-common/context/coretime/sale/phases/interlude";
 import CurrentPhaseEnd from "next-common/components/coretime/salePanel/summary/columns/currentPhase/common";
-import { useCoretimeSaleStartWithRCBlockNumber } from "next-common/hooks/coretime/useCoretimeSaleStart";
+import useCoretimeSaleStart from "next-common/hooks/coretime/useCoretimeSaleStart";
 
 function InterludeGuard({ children }) {
   const isInterludePhase = useIsCoretimeSaleInterludePhase();
@@ -13,7 +13,7 @@ function InterludeGuard({ children }) {
 }
 
 export default function MaybeInterludeEnd() {
-  const saleStartHeight = useCoretimeSaleStartWithRCBlockNumber();
+  const saleStartHeight = useCoretimeSaleStart();
   const relayIndexerHeight = useCoretimeSaleRelayIndexerHeight();
 
   return (

@@ -1,7 +1,7 @@
 import { useRelayChainLatestHeight } from "next-common/hooks/relayScanHeight";
 import useCoretimeSale from "next-common/context/coretime/sale/provider";
 import { isNil } from "lodash-es";
-import { useCoretimeSaleStartWithRCBlockNumber } from "next-common/hooks/coretime/useCoretimeSaleStart";
+import useCoretimeSaleStart from "next-common/hooks/coretime/useCoretimeSaleStart";
 import { useCoretimeSaleLeadinLength } from "next-common/context/coretime/sale/phases/leadin";
 
 export const Phases = Object.freeze({
@@ -12,7 +12,7 @@ export const Phases = Object.freeze({
 
 export default function useCoretimeSalePhase() {
   const chainHeight = useRelayChainLatestHeight();
-  const saleStart = useCoretimeSaleStartWithRCBlockNumber();
+  const saleStart = useCoretimeSaleStart();
   const leadinLength = useCoretimeSaleLeadinLength();
   const sale = useCoretimeSale();
   const { relayIndexer: { blockHeight: relayBlockHeight } = {} } = sale;

@@ -9,7 +9,7 @@ import EndAt from "./endAt";
 import PassedTime from "./passedTime";
 import TotalTime from "./totalTime";
 import { usePageProps } from "next-common/context/page";
-import { useCoretimeSaleEndWithRelayHeight } from "next-common/context/coretime/hooks/useCoretimeSaleEnd";
+import useCoretimeSaleEnd from "next-common/context/coretime/hooks/useCoretimeSaleEnd";
 import { estimateBlocksTime } from "next-common/utils";
 import { useCoretimeSaleIsUseRCBlockNumber } from "next-common/context/coretime/sale/provider";
 import { useRelayChainLatestHeight } from "next-common/hooks/relayScanHeight";
@@ -45,8 +45,7 @@ export default function TotalPeriod() {
   const initHeight = isUseRCBlockNumber
     ? relayIndexer?.blockHeight
     : initIndexer?.blockHeight;
-  const { isLoading, indexer: endIndexer } =
-    useCoretimeSaleEndWithRelayHeight();
+  const { isLoading, indexer: endIndexer } = useCoretimeSaleEnd();
 
   const chainHeight = useRelayChainLatestHeight();
   const blockTime = useRelayChainBlockTime();
