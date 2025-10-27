@@ -13,6 +13,7 @@ import useToBeAwarded from "next-common/hooks/useToBeAwarded";
 import BalanceWithFiat from "./balanceWithFiat";
 import useSpendPeriodSummary from "./useSpendPeriodSummary";
 import { useFiatPriceSnapshot } from "next-common/hooks/useFiatPrice";
+import SpendPeriodLabelTip from "../labelTips/spendPeriod";
 
 export function AvailableItem({ free, isLoading, price }) {
   return (
@@ -49,7 +50,7 @@ function SpendPeriodItem() {
   const summary = useSpendPeriodSummary();
   return (
     <SummaryItem
-      title="Spend Period"
+      title={<SpendPeriodLabelTip />}
       suffix={<TreasurySummarySpendPeriodCountDown summary={summary} />}
     >
       <SpendPeriod summary={summary} />
