@@ -4,7 +4,7 @@ import ScrollerX from "../styled/containers/scrollerX";
 import { AddressUser } from "../user";
 import { useAllValidators } from "next-common/hooks/staking/useAllValidators";
 import { useActiveValidators } from "next-common/hooks/staking/useActiveValidators";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { keyBy } from "lodash-es";
 import { useListPagination } from "../pagination/usePaginationComponent";
 import ValueDisplay from "../valueDisplay";
@@ -196,15 +196,8 @@ function ValidatorsListImpl() {
     return sorted;
   }, [searchedValidators, sortedColumn]);
 
-  const {
-    pagedItems: pagedValidators,
-    component: pagination,
-    setPage,
-  } = useListPagination(sortedValidators, PAGE_SIZE);
-
-  useEffect(() => {
-    setPage(1);
-  }, [searchedValidators, setPage]);
+  const { pagedItems: pagedValidators, component: pagination } =
+    useListPagination(sortedValidators, PAGE_SIZE);
 
   return (
     <div className="flex flex-col gap-[16px]">

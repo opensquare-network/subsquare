@@ -37,5 +37,9 @@ export function useListPagination(items, pageSize) {
     [items, pageSize, page],
   );
 
+  useEffect(() => {
+    setPage(1);
+  }, [items, setPage]);
+
   return { page, setPage, pagedItems, component };
 }
