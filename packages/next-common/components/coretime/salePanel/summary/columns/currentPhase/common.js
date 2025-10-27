@@ -1,17 +1,16 @@
 import { Item } from "next-common/components/coretime/salePanel/summary/common";
-import useCoretimeChainOrScanHeight from "next-common/hooks/coretime/scanHeight";
-import { useSelector } from "react-redux";
-import { useEstimateBlocksTime } from "next-common/utils/hooks";
+import { useRelayChainLatestHeight } from "next-common/hooks/relayScanHeight";
+import { useEstimateBlocksTimeWithBlockTime } from "next-common/utils/hooks";
 import CountDown from "next-common/components/_CountDown";
 import { toPercentage } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
 import { useCoretimeSaleLeadinLength } from "next-common/context/coretime/sale/phases/leadin";
 import { getEndBlocksTime } from "next-common/components/coretime/salePanel/summary/columns/totalPeriod";
 import { usePageProps } from "next-common/context/page";
-import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import { formatDateTime } from "next-common/components/coretime/sales/history/timeRange";
 import { useMemo } from "react";
-import useCoretimeSaleStart from "next-common/hooks/coretime/useCoretimeSaleStart";
+import { useCoretimeSaleStartWithRCBlockNumber } from "next-common/hooks/coretime/useCoretimeSaleStart";
+import useRelayChainBlockTime from "next-common/context/coretime/hooks/useRelayChainBlockTime";
 
 export function getCountDownProgress(startHeight, currentHeight, endHeight) {
   if (currentHeight <= startHeight) {
@@ -29,16 +28,22 @@ export function getCountDownProgress(startHeight, currentHeight, endHeight) {
 }
 
 export default function CurrentPhaseEnd({ startHeight, endHeight }) {
-  const chainHeight = useCoretimeChainOrScanHeight();
+  const chainHeight = useRelayChainLatestHeight();
   const blockGap = endHeight - chainHeight;
-  const estimatedBlocksTime = useEstimateBlocksTime(blockGap);
-  const countDownTotal = useEstimateBlocksTime(endHeight - startHeight);
+  const blockTime = useRelayChainBlockTime();
+  const estimatedBlocksTime = useEstimateBlocksTimeWithBlockTime(
+    blockGap,
+    blockTime,
+  );
+  const countDownTotal = useEstimateBlocksTimeWithBlockTime(
+    endHeight - startHeight,
+    blockTime,
+  );
 
-  const blockTime = useSelector(blockTimeSelector);
-  const saleStartHeight = useCoretimeSaleStart();
+  const saleStartHeight = useCoretimeSaleStartWithRCBlockNumber();
   const leadinLength = useCoretimeSaleLeadinLength();
   const { coretimeSale } = usePageProps();
-  const initHeight = coretimeSale?.initIndexer?.blockHeight;
+  const initHeight = coretimeSale?.relayIndexer?.blockHeight;
   const totalBlockGap = useMemo(
     () => endHeight - initHeight,
     [endHeight, initHeight],
@@ -54,7 +59,7 @@ export default function CurrentPhaseEnd({ startHeight, endHeight }) {
   const isInFixedPriceStage = chainHeight >= saleStartHeight + leadinLength;
   const endInTooltipPrefix = isInFixedPriceStage ? "Estimated: " : "";
   const endInTime = getEndBlocksTime(
-    coretimeSale?.initIndexer?.blockTime,
+    coretimeSale?.relayIndexer?.blockTime,
     blockTime,
     totalBlockGap,
   );

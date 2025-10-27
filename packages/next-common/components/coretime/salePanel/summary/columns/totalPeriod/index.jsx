@@ -3,17 +3,17 @@ import SummaryItem from "next-common/components/summary/layout/item";
 import { SummaryColumnGap } from "../../common";
 import TotalPeriodCountdown from "./countdown";
 import FieldLoading from "next-common/components/icons/fieldLoading";
-import useCoretimeChainOrScanHeight from "next-common/hooks/coretime/scanHeight";
-import { useSelector } from "react-redux";
 import { getCountDownProgress } from "../currentPhase/common";
-import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import StartAt from "./startAt";
 import EndAt from "./endAt";
 import PassedTime from "./passedTime";
 import TotalTime from "./totalTime";
 import { usePageProps } from "next-common/context/page";
-import useCoretimeSaleEnd from "next-common/context/coretime/hooks/useCoretimeSaleEnd";
+import { useCoretimeSaleEndWithRelayHeight } from "next-common/context/coretime/hooks/useCoretimeSaleEnd";
 import { estimateBlocksTime } from "next-common/utils";
+import { useCoretimeSaleIsUseRCBlockNumber } from "next-common/context/coretime/sale/provider";
+import { useRelayChainLatestHeight } from "next-common/hooks/relayScanHeight";
+import useRelayChainBlockTime from "next-common/context/coretime/hooks/useRelayChainBlockTime";
 
 export function getEndBlocksTime(initBlocksTime, blockTime, blockGap) {
   return initBlocksTime + blockGap * blockTime;
@@ -40,12 +40,16 @@ const MemoizedSalePeriodContent = memo(SalePeriodContent);
 
 export default function TotalPeriod() {
   const { coretimeSale } = usePageProps();
-  const { initIndexer = {} } = coretimeSale;
-  const initHeight = initIndexer?.blockHeight;
-  const { isLoading, indexer: endIndexer } = useCoretimeSaleEnd();
+  const { initIndexer = {}, relayIndexer = {}, id } = coretimeSale;
+  const isUseRCBlockNumber = useCoretimeSaleIsUseRCBlockNumber(id);
+  const initHeight = isUseRCBlockNumber
+    ? relayIndexer?.blockHeight
+    : initIndexer?.blockHeight;
+  const { isLoading, indexer: endIndexer } =
+    useCoretimeSaleEndWithRelayHeight();
 
-  const chainHeight = useCoretimeChainOrScanHeight();
-  const blockTime = useSelector(blockTimeSelector);
+  const chainHeight = useRelayChainLatestHeight();
+  const blockTime = useRelayChainBlockTime();
 
   const endHeight = endIndexer?.blockHeight;
 

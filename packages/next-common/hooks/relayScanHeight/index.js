@@ -7,7 +7,7 @@ const useRelayHeightState = createGlobalState(null);
 
 export function useRelayChainLatestHeight() {
   const [relayScanHeight] = useRelayHeightState();
-  return relayScanHeight;
+  return relayScanHeight + 28800 + 28800;
 }
 
 export function useSetRelayHeight() {

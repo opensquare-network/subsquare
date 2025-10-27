@@ -19,6 +19,12 @@ export function useCoretimeSaleInitHeight() {
   return initIndexer?.blockHeight;
 }
 
+export function useCoretimeSaleRelayIndexerHeight() {
+  const sale = useCoretimeSale();
+  const { relayIndexer = {} } = sale;
+  return relayIndexer?.blockHeight;
+}
+
 export function useCoretimeSaleIsUseRCBlockNumber() {
   const sale = useCoretimeSale();
   const { id, relayIndexer, initIndexer } = sale;

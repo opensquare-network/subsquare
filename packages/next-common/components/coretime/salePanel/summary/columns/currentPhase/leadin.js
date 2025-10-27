@@ -3,7 +3,7 @@ import {
   useIsCoretimeSaleLeadinPhase,
 } from "next-common/context/coretime/sale/phases/leadin";
 import CurrentPhaseEnd from "next-common/components/coretime/salePanel/summary/columns/currentPhase/common";
-import useCoretimeSaleStart from "next-common/hooks/coretime/useCoretimeSaleStart";
+import { useCoretimeSaleStartWithRCBlockNumber } from "next-common/hooks/coretime/useCoretimeSaleStart";
 
 function LeadinGuard({ children }) {
   const isLeadinPhase = useIsCoretimeSaleLeadinPhase();
@@ -15,7 +15,7 @@ function LeadinGuard({ children }) {
 }
 
 export default function MaybeLeadinEnd() {
-  const saleStartHeight = useCoretimeSaleStart();
+  const saleStartHeight = useCoretimeSaleStartWithRCBlockNumber();
   const leadinLength = useCoretimeSaleLeadinLength();
 
   return (

@@ -2,15 +2,15 @@ import {
   useCoretimeSaleLeadinEnd,
   useCoretimeSaleLeadinLength,
 } from "next-common/context/coretime/sale/phases/leadin";
-import useCoretimeChainOrScanHeight from "next-common/hooks/coretime/scanHeight";
+import { useRelayChainLatestHeight } from "next-common/hooks/relayScanHeight";
 import CurrentPhaseEnd from "next-common/components/coretime/salePanel/summary/columns/currentPhase/common";
-import useCoretimeSaleEnd from "next-common/context/coretime/hooks/useCoretimeSaleEnd";
-import useCoretimeSaleStart from "next-common/hooks/coretime/useCoretimeSaleStart";
+import { useCoretimeSaleEndWithRelayHeight } from "next-common/context/coretime/hooks/useCoretimeSaleEnd";
+import { useCoretimeSaleStartWithRCBlockNumber } from "next-common/hooks/coretime/useCoretimeSaleStart";
 
 function FixPricePhaseGuard({ children }) {
-  const saleStartHeight = useCoretimeSaleStart();
+  const saleStartHeight = useCoretimeSaleStartWithRCBlockNumber();
   const leadinLength = useCoretimeSaleLeadinLength();
-  const chainHeight = useCoretimeChainOrScanHeight();
+  const chainHeight = useRelayChainLatestHeight();
 
   if (chainHeight < saleStartHeight + leadinLength) {
     return null;
@@ -21,7 +21,8 @@ function FixPricePhaseGuard({ children }) {
 
 export default function MaybeFixedPriceEnd() {
   const leadinEnd = useCoretimeSaleLeadinEnd();
-  const { isLoading, indexer } = useCoretimeSaleEnd();
+  const { isLoading, indexer } = useCoretimeSaleEndWithRelayHeight();
+
   if (isLoading) {
     return null;
   }
