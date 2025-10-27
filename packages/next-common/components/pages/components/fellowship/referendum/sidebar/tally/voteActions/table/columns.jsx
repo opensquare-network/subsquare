@@ -1,16 +1,17 @@
-import { AddressUser } from "next-common/components/user";
 import { cn } from "next-common/utils";
+import Tooltip from "next-common/components/tooltip";
+import { AddressUser } from "next-common/components/user";
+import FellowshipRank from "next-common/components/fellowship/rank";
 import ExplorerLink from "next-common/components/links/explorerLink";
 import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
-import Tooltip from "next-common/components/tooltip";
 import { formatDateTime } from "next-common/components/coretime/sales/history/timeRange";
 import {
   ChangeVoteWrapper,
   VoteDetailRow,
   VoteLabel,
 } from "next-common/components/pages/components/gov2/sidebar/tally/voteActions/table/fields/detail";
-import { ProgressDisplay } from "next-common/components/pages/components/gov2/sidebar/tally/voteActions/table/fields/impact";
 import { VOTE_TYPE_CONFIG } from "next-common/components/pages/components/gov2/sidebar/tally/voteActions/common";
+import { ProgressDisplay } from "next-common/components/pages/components/gov2/sidebar/tally/voteActions/table/fields/impact";
 
 function ActionField({ data: { indexer, formatData } }) {
   return (
@@ -87,7 +88,12 @@ export const desktopColumns = [
   {
     name: "Account",
     className: "",
-    render: ({ who }) => <AddressUser add={who} />,
+    render: ({ who, rank }) => (
+      <div className="flex items-center gap-x-4">
+        <FellowshipRank rank={rank} />
+        <AddressUser add={who} />
+      </div>
+    ),
   },
   {
     name: "Action",

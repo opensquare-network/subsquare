@@ -1,24 +1,78 @@
+import { useContextApi } from "next-common/context/api";
 import useQueryVoteActions from "./useQueryVoteActions";
 import { useOnchainData } from "next-common/context/post";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 
 export default function useFellowshipReferendaActions() {
-  const { referendumIndex } = useOnchainData();
-  const { loading, voteActions = [] } = useQueryVoteActions(referendumIndex);
-  const maxImpactVotes = useMaxImpactVotes(voteActions);
+  const {
+    loading,
+    data: voteRankActions,
+    maxImpactVotes,
+  } = useFellowshipReferendaActionsWithRank();
 
   const data = useMemo(
     () =>
-      voteActions.map((item) => {
+      voteRankActions.map((item) => {
         return {
           ...item,
           formatData: formatVoteActionData(item),
           maxImpactVotes,
         };
       }),
-    [maxImpactVotes, voteActions],
+    [maxImpactVotes, voteRankActions],
   );
-  return { loading, voteActions: data };
+  return { loading: loading, voteActions: data };
+}
+
+function useFellowshipReferendaActionsWithRank() {
+  const api = useContextApi();
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { referendumIndex } = useOnchainData();
+
+  const { loading: sourceLoading, voteActions = [] } =
+    useQueryVoteActions(referendumIndex);
+  const maxImpactVotes = useMaxImpactVotes(voteActions);
+
+  const fetchMemberRanks = useCallback(
+    async (actions) => {
+      if (!api || !actions.length) {
+        setData([]);
+        setLoading(false);
+        return;
+      }
+
+      setLoading(true);
+      const rankedActions = await Promise.all(
+        actions.map(async (item) => {
+          const rank = await api.query.fellowshipCollective
+            .members(item.who)
+            .then((rank) => {
+              return rank.toJSON()?.rank;
+            })
+            .catch(() => null);
+          return {
+            ...item,
+            rank,
+          };
+        }),
+      ).finally(() => {
+        setLoading(false);
+      });
+      setData(rankedActions);
+    },
+    [api],
+  );
+
+  useEffect(() => {
+    fetchMemberRanks(voteActions);
+  }, [fetchMemberRanks, voteActions]);
+
+  return {
+    loading: loading || sourceLoading,
+    data,
+    maxImpactVotes,
+  };
 }
 
 const formatVoteActionData = ({ type, who, data: { vote, preVote } }) => {
