@@ -91,13 +91,19 @@ function useValidators() {
 }
 
 function useFilteredValidators(validators) {
-  const [{ active: isActive }] = useCommittedFilterState();
+  const [{ active: isActive, not100Commission, hasIdentity }] =
+    useCommittedFilterState();
   return useMemo(() => {
-    if (validators) {
-      return isActive ? validators.filter((v) => v.isActive) : validators;
+    if (!validators) {
+      return null;
     }
-    return null;
-  }, [validators, isActive]);
+    let filtered = isActive ? validators.filter((v) => v.isActive) : validators;
+    filtered = not100Commission
+      ? filtered.filter((v) => v.commission < 1000000000)
+      : filtered;
+    filtered = hasIdentity ? filtered.filter((v) => v.name) : filtered;
+    return filtered;
+  }, [validators, isActive, not100Commission, hasIdentity]);
 }
 
 function useValidatorsWithIdentity(validators) {
@@ -129,15 +135,14 @@ const columnsDef = [
 ];
 
 function ValidatorsListImpl() {
-  const { validators } = useValidators();
-  const filteredValidators = useFilteredValidators(validators);
+  const { validators, loading: isLoadingValidators } = useValidators();
   const {
     value: validatorsWithIdentity,
     loading: isLoadingValidatorsWithIdentity,
-  } = useValidatorsWithIdentity(filteredValidators);
-  const { searchedValidators, component: searchBox } = useSearchedValidators(
-    validatorsWithIdentity,
-  );
+  } = useValidatorsWithIdentity(validators);
+  const filteredValidators = useFilteredValidators(validatorsWithIdentity);
+  const { searchedValidators, component: searchBox } =
+    useSearchedValidators(filteredValidators);
   const { sortedColumn, columns } = useColumns(columnsDef, "", true);
   const sortedValidators = useMemo(() => {
     if (!searchedValidators) {
@@ -192,7 +197,7 @@ function ValidatorsListImpl() {
           <MapDataList
             columnsDef={columns}
             data={pagedValidators}
-            loading={isLoadingValidatorsWithIdentity}
+            loading={isLoadingValidators || isLoadingValidatorsWithIdentity}
             noDataText="No current validators"
           />
         </ScrollerX>
@@ -207,9 +212,13 @@ export default function ValidatorsList() {
     <DropdownFilterProvider
       defaultFilterValues={{
         active: true,
+        not100Commission: true,
+        hasIdentity: true,
       }}
       emptyFilterValues={{
         active: false,
+        not100Commission: false,
+        hasIdentity: false,
       }}
     >
       <ValidatorsListImpl />
