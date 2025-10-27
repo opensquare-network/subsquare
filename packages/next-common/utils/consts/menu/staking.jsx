@@ -1,6 +1,6 @@
 import {
   ArrowRight,
-  MenuCouncil,
+  MenuStaking,
   MenuAuthorities,
   MenuData,
   MenuRegistrars,
@@ -11,7 +11,7 @@ export const stakingMenu = {
   name: "Staking",
   value: "staking",
   pathname: "/staking",
-  icon: <MenuCouncil />,
+  icon: <MenuStaking />,
   extra: <ArrowRight className="text-navigationTextTertiary" />,
   type: NAV_MENU_TYPE.subspace,
   items: [
