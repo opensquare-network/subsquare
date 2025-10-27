@@ -14,8 +14,8 @@ const tabs = [
     label: "Usernames",
   },
   {
-    value: "authority",
-    label: "Authority",
+    value: "authorities",
+    label: "Authorities",
   },
 ];
 
@@ -35,34 +35,32 @@ export default function UsernamesPage() {
           <ChainSocialLinks className="mt-2" />
         </div>
 
-        {tabs?.length > 0 && (
-          <div className={cn("px-12 mx-auto max-w-[1200px]", "max-sm:px-6")}>
-            <TabsList
-              activeTabValue={activeTabValue}
-              onTabClick={({ value }) => {
-                const query = router.query;
-                delete query["search"];
-                delete query["authority"];
-                if (value === tabs[0].value) {
-                  delete query["tab"];
-                } else {
-                  query["tab"] = value;
-                }
-                router.replace(
-                  {
-                    pathname: router.pathname,
-                    query,
-                  },
-                  undefined,
-                  {
-                    shallow: true,
-                  },
-                );
-              }}
-              tabs={tabs}
-            />
-          </div>
-        )}
+        <div className={cn("px-12 mx-auto max-w-[1200px]", "max-sm:px-6")}>
+          <TabsList
+            activeTabValue={activeTabValue}
+            onTabClick={({ value }) => {
+              const query = router.query;
+              delete query["search"];
+              delete query["authority"];
+              if (value === tabs[0].value) {
+                delete query["tab"];
+              } else {
+                query["tab"] = value;
+              }
+              router.replace(
+                {
+                  pathname: router.pathname,
+                  query,
+                },
+                undefined,
+                {
+                  shallow: true,
+                },
+              );
+            }}
+            tabs={tabs}
+          />
+        </div>
       </div>
 
       <div className="flex-1">

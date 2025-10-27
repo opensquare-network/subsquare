@@ -12,6 +12,32 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import useSearchComponent from "next-common/components/data/common/useSearchComponent";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 
+const columnsDef = [
+  {
+    name: "Username",
+    render: (item) => (
+      <div
+        key="name"
+        className="w-[200px] sm:w-full  text-end sm:text-start break-all sm:break-normal whitespace-pre-wrap truncate"
+        title={item.username}
+      >
+        <span>{item.username}</span>
+      </div>
+    ),
+  },
+  {
+    name: "Account",
+    width: 300,
+    render: (item) => <AddressUser add={item.owner} />,
+  },
+  {
+    name: "Provider",
+    width: 160,
+    className: "text-end",
+    render: (item) => item.provider,
+  },
+];
+
 export default function UsernameTable() {
   const router = useRouter();
   const authority = getRouterQuery(router, "authority");
@@ -58,35 +84,3 @@ export default function UsernameTable() {
     </div>
   );
 }
-
-const columnsDef = [
-  {
-    name: "Account",
-    render(item) {
-      return <AddressUser add={item.owner} />;
-    },
-  },
-  {
-    name: "User Name",
-    width: 300,
-    render(item) {
-      return (
-        <div
-          key="name"
-          className="w-[200px] sm:w-[300px] text-end sm:text-start break-all sm:break-normal whitespace-pre-wrap truncate"
-          title={item.username}
-        >
-          <span>{item.username}</span>
-        </div>
-      );
-    },
-  },
-  {
-    name: "Provider",
-    width: 160,
-    className: "text-end",
-    render(item) {
-      return item.provider;
-    },
-  },
-];

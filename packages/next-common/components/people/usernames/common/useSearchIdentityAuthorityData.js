@@ -10,7 +10,7 @@ export default function useSearchIdentityAuthorityData() {
   const router = useRouter();
   const querySearch = getRouterQuery(router, "search");
   const [list, setList] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const { data: sourceData, loading: sourceLoading } =
     useIdentityAuthorityData();
 

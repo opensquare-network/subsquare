@@ -8,7 +8,7 @@ import usePaginationComponent from "next-common/components/pagination/usePaginat
 
 export function useIdentityUsernameInfoOf() {
   const api = useContextApi();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -66,7 +66,7 @@ export default function useSearchIdentityUsernameData() {
     });
 
     setLoading(false);
-    setList(list);
+    setList(list.sort((a, b) => a.username?.localeCompare(b.username)));
   }, [authority, querySearch, sourceData]);
 
   const {

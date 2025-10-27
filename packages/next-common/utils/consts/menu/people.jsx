@@ -29,7 +29,7 @@ export const peopleMenu = {
       icon: <MenuData />,
     },
     {
-      name: "User names",
+      name: "Usernames",
       value: "usernames",
       pathname: "/people/usernames",
       icon: <InfoUsers />,

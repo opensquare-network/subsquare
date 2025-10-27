@@ -5,6 +5,32 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import useSearchComponent from "next-common/components/data/common/useSearchComponent";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 
+const columnsDef = [
+  {
+    name: "Account",
+    render: (item) => <AddressUser add={item.accountId} />,
+  },
+  {
+    name: "Name",
+    width: 300,
+    render: (item) => (
+      <div
+        key="name"
+        className="max-w-[200px] sm:max-w-full break-all sm:break-normal whitespace-pre-wrap capitalize"
+        title={item.username}
+      >
+        {item.username}
+      </div>
+    ),
+  },
+  {
+    name: "Allocation",
+    width: 160,
+    className: "text-end",
+    render: (item) => item.allocation,
+  },
+];
+
 export default function AuthorityTable() {
   const { component: SearchBoxComponent } = useSearchComponent({
     placeholder: "Search name or address",
@@ -37,35 +63,3 @@ export default function AuthorityTable() {
     </div>
   );
 }
-
-const columnsDef = [
-  {
-    name: "Account",
-    render(item) {
-      return <AddressUser add={item.accountId} />;
-    },
-  },
-  {
-    name: "User Name",
-    width: 300,
-    render(item) {
-      return (
-        <div
-          key="name"
-          className="max-w-[200px] sm:max-w-full break-all sm:break-normal whitespace-pre-wrap capitalize"
-          title={item.username}
-        >
-          {item.username}
-        </div>
-      );
-    },
-  },
-  {
-    name: "Allocation",
-    width: 160,
-    className: "text-end",
-    render(item) {
-      return item.allocation;
-    },
-  },
-];
