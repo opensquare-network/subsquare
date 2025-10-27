@@ -5,14 +5,12 @@ import { isNil } from "lodash-es";
 export default function useCoretimeSaleIsInterlude() {
   const chainHeight = useRelayChainLatestHeight();
   const sale = useCoretimeSale() || {};
-  const {
-    relayIndexer: { blockHeight: relayBlockHeight } = {},
-    info: { saleStart } = {},
-  } = sale;
+  const { relayIndexer = {}, info: { saleStart } = {} } = sale;
 
+  const relayBlockHeight = relayIndexer?.blockHeight;
   const isLoading = isNil(chainHeight);
 
-  const isHistoricalSale = "endIndexer" in sale;
+  const isHistoricalSale = sale.isFinal;
   if (isHistoricalSale) {
     return {
       isLoading: false,
