@@ -9,6 +9,9 @@ const GET_CORETIME_SALE_RENEWALS_CHART = gql`
         indexer {
           blockHeight
         }
+        relayIndexer {
+          blockHeight
+        }
         who
       }
     }
@@ -21,6 +24,9 @@ const GET_CORETIME_SALE_PURCHASES_CHART = gql`
       items {
         price
         indexer {
+          blockHeight
+        }
+        relayIndexer {
           blockHeight
         }
         who
