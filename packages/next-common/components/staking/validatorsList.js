@@ -4,7 +4,7 @@ import ScrollerX from "../styled/containers/scrollerX";
 import { AddressUser } from "../user";
 import { useAllValidators } from "next-common/hooks/staking/useAllValidators";
 import { useActiveValidators } from "next-common/hooks/staking/useActiveValidators";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { keyBy } from "lodash-es";
 import { useListPagination } from "../pagination/usePaginationComponent";
 import ValueDisplay from "../valueDisplay";
@@ -136,6 +136,25 @@ const columnsDef = [
   colTotalStake,
 ];
 
+function Header({ count, children }) {
+  return (
+    <div className="flex max-md:flex-col items-center gap-[24px] max-md:px-[24px] max-md:gap-[8px] mr-6 max-md:mr-0">
+      <div className="flex grow justify-between max-md:w-full">
+        <ListTitleBar
+          className={"max-md:-ml-6"}
+          title="List"
+          titleCount={count}
+        />
+        <div className="flex items-center gap-2">
+          <div className="max-md:hidden">{children}</div>
+          <ValidatorsFilter />
+        </div>
+      </div>
+      <div className="md:hidden w-full">{children}</div>
+    </div>
+  );
+}
+
 function ValidatorsListImpl() {
   const { validators, loading: isLoadingValidators } = useValidators();
   const {
@@ -145,6 +164,7 @@ function ValidatorsListImpl() {
   const filteredValidators = useFilteredValidators(validatorsWithIdentity);
   const { searchedValidators, component: searchBox } =
     useSearchedValidators(filteredValidators);
+
   const { sortedColumn, columns } = useColumns(columnsDef, "", true);
   const sortedValidators = useMemo(() => {
     if (!searchedValidators) {
@@ -176,24 +196,19 @@ function ValidatorsListImpl() {
     return sorted;
   }, [searchedValidators, sortedColumn]);
 
-  const { pagedItems: pagedValidators, component: pagination } =
-    useListPagination(sortedValidators, PAGE_SIZE);
+  const {
+    pagedItems: pagedValidators,
+    component: pagination,
+    setPage,
+  } = useListPagination(sortedValidators, PAGE_SIZE);
+
+  useEffect(() => {
+    setPage(1);
+  }, [searchedValidators, setPage]);
 
   return (
     <div className="flex flex-col gap-[16px]">
-      <div className="flex max-md:flex-col items-center gap-[24px] max-md:px-[24px] max-md:gap-[8px] mr-6 max-md:mr-0">
-        <div className="flex grow justify-between max-md:w-full">
-          <ListTitleBar
-            className={"max-md:-ml-6"}
-            title="List"
-            titleCount={sortedValidators?.length || 0}
-          />
-          <div className="flex items-center gap-2">
-            {searchBox}
-            <ValidatorsFilter />
-          </div>
-        </div>
-      </div>
+      <Header count={searchedValidators?.length || 0}>{searchBox}</Header>
       <SecondaryCard>
         <ScrollerX>
           <MapDataList

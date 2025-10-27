@@ -28,7 +28,7 @@ export default function usePaginationComponent(total, pageSize = 10) {
 }
 
 export function useListPagination(items, pageSize) {
-  const { page, component } = usePaginationComponent(
+  const { page, setPage, component } = usePaginationComponent(
     items?.length || 0,
     pageSize,
   );
@@ -37,5 +37,5 @@ export function useListPagination(items, pageSize) {
     [items, pageSize, page],
   );
 
-  return { pagedItems, component };
+  return { page, setPage, pagedItems, component };
 }
