@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useState } from "react";
 import SortableColumn from "./sortableColumn";
 
@@ -9,30 +9,33 @@ export default function useColumns(
 ) {
   const [sortedColumn, setSortedColumn] = useState(defaultSortedColumn);
 
-  const columns = (columnsData || []).map((col) => {
-    if (!col.sortable) {
-      return col;
-    }
+  const columns = useMemo(
+    () =>
+      (columnsData || []).map((col) => {
+        if (!col.sortable) {
+          return col;
+        }
 
-    return {
-      name: (
-        <SortableColumn
-          name={col.name}
-          sorted={sortedColumn === col.name}
-          onClick={() => {
-            if (allowUnsort && sortedColumn === col.name) {
-              setSortedColumn(defaultSortedColumn || "");
-              return;
-            }
+        return {
+          ...col,
+          name: (
+            <SortableColumn
+              name={col.name}
+              sorted={sortedColumn === col.name}
+              onClick={() => {
+                if (allowUnsort && sortedColumn === col.name) {
+                  setSortedColumn(defaultSortedColumn || "");
+                  return;
+                }
 
-            setSortedColumn(col.name);
-          }}
-        />
-      ),
-      style: col.style,
-      className: col.className,
-    };
-  });
+                setSortedColumn(col.name);
+              }}
+            />
+          ),
+        };
+      }),
+    [columnsData, sortedColumn, allowUnsort, defaultSortedColumn],
+  );
 
   return { sortedColumn, columns };
 }

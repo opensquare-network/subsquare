@@ -20,6 +20,7 @@ import { useAsync } from "react-use";
 import { fetchIdentity } from "next-common/services/identity";
 import { getIdentityDisplay } from "next-common/utils/identity";
 import useSearchedValidators from "./search";
+import useColumns from "../styledList/useColumns";
 
 const colAccount = {
   name: "Account",
@@ -30,6 +31,7 @@ const colAccount = {
 const colCommission = {
   name: "Commission",
   style: { textAlign: "left", width: "140px", minWidth: "140px" },
+  sortable: true,
   render: (item) => (
     <span className="text-textPrimary">{item.commission / 10000000}%</span>
   ),
@@ -48,6 +50,7 @@ function TotalStake({ item }) {
 const colTotalStake = {
   name: "Total Stake",
   style: { textAlign: "right", width: "140px", minWidth: "140px" },
+  sortable: true,
   render: (item) => <TotalStake item={item} />,
 };
 
@@ -61,6 +64,7 @@ function NominatorCount({ item }) {
 const colNominatorCount = {
   name: "Nominator Count",
   style: { textAlign: "left", width: "140px", minWidth: "140px" },
+  sortable: true,
   render: (item) => <NominatorCount item={item} />,
 };
 
@@ -117,6 +121,13 @@ function useValidatorsWithIdentity(validators) {
 
 const PAGE_SIZE = 50;
 
+const columnsDef = [
+  colAccount,
+  colCommission,
+  colNominatorCount,
+  colTotalStake,
+];
+
 function ValidatorsListImpl() {
   const { validators } = useValidators();
   const filteredValidators = useFilteredValidators(validators);
@@ -127,16 +138,39 @@ function ValidatorsListImpl() {
   const { searchedValidators, component: searchBox } = useSearchedValidators(
     validatorsWithIdentity,
   );
+  const { sortedColumn, columns } = useColumns(columnsDef, "", true);
+  const sortedValidators = useMemo(() => {
+    if (!searchedValidators) {
+      return null;
+    }
+    if (!sortedColumn) {
+      return searchedValidators;
+    }
+    const sorted = [...searchedValidators];
+    sorted.sort((a, b) => {
+      let aValue, bValue;
+      switch (sortedColumn) {
+        case colCommission.name:
+          aValue = a.commission;
+          bValue = b.commission;
+          return bValue - aValue;
+        case colNominatorCount.name:
+          aValue = a.nominatorCount || 0;
+          bValue = b.nominatorCount || 0;
+          return bValue - aValue;
+        case colTotalStake.name:
+          aValue = BigInt(a.total) || 0n;
+          bValue = BigInt(b.total) || 0n;
+          return bValue - aValue > 0n ? 1 : bValue - aValue < 0n ? -1 : 0;
+        default:
+          return 0;
+      }
+    });
+    return sorted;
+  }, [searchedValidators, sortedColumn]);
 
   const { pagedItems: pagedValidators, component: pagination } =
-    useListPagination(searchedValidators, PAGE_SIZE);
-
-  const columnsDef = [
-    colAccount,
-    colCommission,
-    colNominatorCount,
-    colTotalStake,
-  ];
+    useListPagination(sortedValidators, PAGE_SIZE);
 
   return (
     <div className="flex flex-col gap-[16px]">
@@ -145,7 +179,7 @@ function ValidatorsListImpl() {
           <ListTitleBar
             className={"max-md:-ml-6"}
             title="List"
-            titleCount={searchedValidators?.length || 0}
+            titleCount={sortedValidators?.length || 0}
           />
           <div className="flex items-center gap-2">
             {searchBox}
@@ -156,7 +190,7 @@ function ValidatorsListImpl() {
       <SecondaryCard>
         <ScrollerX>
           <MapDataList
-            columnsDef={columnsDef}
+            columnsDef={columns}
             data={pagedValidators}
             loading={isLoadingValidatorsWithIdentity}
             noDataText="No current validators"
