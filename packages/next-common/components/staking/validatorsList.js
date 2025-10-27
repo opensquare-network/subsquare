@@ -33,7 +33,9 @@ const colCommission = {
   style: { textAlign: "left", width: "140px", minWidth: "140px" },
   sortable: true,
   render: (item) => (
-    <span className="text-textPrimary">{item.commission / 10000000}%</span>
+    <span className="text-textPrimary">
+      {(item.commission / 10000000).toFixed(2)}%
+    </span>
   ),
 };
 
@@ -164,8 +166,8 @@ function ValidatorsListImpl() {
           bValue = b.nominatorCount || 0;
           return bValue - aValue;
         case colTotalStake.name:
-          aValue = BigInt(a.total) || 0n;
-          bValue = BigInt(b.total) || 0n;
+          aValue = BigInt(a.total || 0);
+          bValue = BigInt(b.total || 0);
           return bValue - aValue > 0n ? 1 : bValue - aValue < 0n ? -1 : 0;
         default:
           return 0;
