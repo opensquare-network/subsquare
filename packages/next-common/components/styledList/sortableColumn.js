@@ -3,6 +3,7 @@ import { cn } from "next-common/utils";
 
 export default function SortableColumn({
   name,
+  sortDirection,
   sorted = true,
   onClick,
   className,
@@ -16,7 +17,14 @@ export default function SortableColumn({
         className,
       )}
     >
-      {sorted && <SortedSVG className="max-sm:hidden" />}
+      {sorted && (
+        <SortedSVG
+          className={cn(
+            "max-sm:hidden",
+            sortDirection === "asc" && "transform rotate-180 scale-x-[-1]",
+          )}
+        />
+      )}
       <span>{name}</span>
     </div>
   );

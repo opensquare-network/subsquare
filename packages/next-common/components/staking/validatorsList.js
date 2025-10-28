@@ -165,7 +165,12 @@ function ValidatorsListImpl() {
   const { searchedValidators, component: searchBox } =
     useSearchedValidators(filteredValidators);
 
-  const { sortedColumn, columns } = useColumns(columnsDef, "", true);
+  const { sortedColumn, sortDirection, columns } = useColumns(
+    columnsDef,
+    "",
+    true,
+    true,
+  );
   const sortedValidators = useMemo(() => {
     if (!searchedValidators) {
       return null;
@@ -175,26 +180,31 @@ function ValidatorsListImpl() {
     }
     const sorted = [...searchedValidators];
     sorted.sort((a, b) => {
-      let aValue, bValue;
+      let aValue, bValue, diff;
       switch (sortedColumn) {
         case colCommission.name:
           aValue = a.commission;
           bValue = b.commission;
-          return bValue - aValue;
+          diff = bValue - aValue;
+          break;
         case colNominatorCount.name:
           aValue = a.nominatorCount || 0;
           bValue = b.nominatorCount || 0;
-          return bValue - aValue;
+          diff = bValue - aValue;
+          break;
         case colTotalStake.name:
           aValue = BigInt(a.total || 0);
           bValue = BigInt(b.total || 0);
-          return bValue - aValue > 0n ? 1 : bValue - aValue < 0n ? -1 : 0;
+          diff = bValue - aValue > 0n ? 1 : bValue - aValue < 0n ? -1 : 0;
+          break;
         default:
-          return 0;
+          diff = 0;
+          break;
       }
+      return sortDirection === "asc" ? -diff : diff;
     });
     return sorted;
-  }, [searchedValidators, sortedColumn]);
+  }, [searchedValidators, sortedColumn, sortDirection]);
 
   const { pagedItems: pagedValidators, component: pagination } =
     useListPagination(sortedValidators, PAGE_SIZE);

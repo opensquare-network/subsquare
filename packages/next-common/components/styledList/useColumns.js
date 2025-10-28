@@ -6,8 +6,10 @@ export default function useColumns(
   columnsData,
   defaultSortedColumn,
   allowUnsort = false,
+  allowBidirectionalSort = false,
 ) {
   const [sortedColumn, setSortedColumn] = useState(defaultSortedColumn);
+  const [sortDirection, setSortDirection] = useState("desc");
 
   const columns = useMemo(
     () =>
@@ -22,20 +24,57 @@ export default function useColumns(
             <SortableColumn
               name={col.name}
               sorted={sortedColumn === col.name}
+              sortDirection={sortDirection}
               onClick={() => {
-                if (allowUnsort && sortedColumn === col.name) {
-                  setSortedColumn(defaultSortedColumn || "");
+                if (sortedColumn !== col.name) {
+                  setSortedColumn(col.name);
+                  setSortDirection("desc");
                   return;
                 }
 
-                setSortedColumn(col.name);
+                if (!allowBidirectionalSort) {
+                  if (allowUnsort) {
+                    setSortedColumn(defaultSortedColumn || "");
+                    setSortDirection("desc");
+                  }
+                  return;
+                }
+
+                if (sortDirection === "desc") {
+                  setSortDirection("asc");
+                  return;
+                }
+
+                if (sortDirection === "asc") {
+                  if (!allowUnsort) {
+                    setSortDirection("desc");
+                    return;
+                  }
+
+                  if (!defaultSortedColumn) {
+                    setSortedColumn("");
+                    setSortDirection("desc");
+                    return;
+                  }
+
+                  setSortedColumn(defaultSortedColumn);
+                  setSortDirection("desc");
+                  return;
+                }
               }}
             />
           ),
         };
       }),
-    [columnsData, sortedColumn, allowUnsort, defaultSortedColumn],
+    [
+      columnsData,
+      sortedColumn,
+      defaultSortedColumn,
+      sortDirection,
+      allowUnsort,
+      allowBidirectionalSort,
+    ],
   );
 
-  return { sortedColumn, columns };
+  return { sortedColumn, sortDirection, columns };
 }
