@@ -1,4 +1,5 @@
 import SortedSVG from "./sorted.svg";
+import SortedAscSVG from "./sorted_asc.svg";
 import { cn } from "next-common/utils";
 
 export default function SortableColumn({
@@ -17,14 +18,12 @@ export default function SortableColumn({
         className,
       )}
     >
-      {sorted && (
-        <SortedSVG
-          className={cn(
-            "max-sm:hidden",
-            sortDirection === "asc" && "transform rotate-180 scale-x-[-1]",
-          )}
-        />
-      )}
+      {sorted &&
+        (sortDirection === "asc" ? (
+          <SortedAscSVG className="max-sm:hidden" />
+        ) : (
+          <SortedSVG className="max-sm:hidden" />
+        ))}
       <span>{name}</span>
     </div>
   );
