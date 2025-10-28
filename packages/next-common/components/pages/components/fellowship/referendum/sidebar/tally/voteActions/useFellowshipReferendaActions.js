@@ -2,8 +2,10 @@ import { useConditionalContextApi } from "next-common/context/migration/conditio
 import useQueryVoteActions from "./useQueryVoteActions";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
+import { useFellowshipMembersRankState } from "./useActionMembersRank";
 
 export default function useFellowshipReferendaActions() {
+  const [rankMap] = useFellowshipMembersRankState();
   const router = useRouter();
   const { loading, voteActions = [] } = useQueryVoteActions(router.query.id);
   const maxImpactVotes = useMaxImpactVotes(voteActions);
@@ -15,9 +17,10 @@ export default function useFellowshipReferendaActions() {
           ...item,
           formatData: formatVoteActionData(item),
           maxImpactVotes,
+          rank: rankMap[item.who] || null,
         };
       }),
-    [maxImpactVotes, voteActions],
+    [maxImpactVotes, voteActions, rankMap],
   );
   return { loading, voteActions: data };
 }
