@@ -5,7 +5,6 @@ import TreasuryStatusSummaryPanel from "next-common/components/treasury/status/s
 import TreasuryStatusTabContent from "next-common/components/treasury/status/tabContent";
 import ApprovedPanel from "next-common/components/treasury/status/approvedPanel";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 
 const seoInfo = { title: "Treasury Status", desc: "Treasury Status" };
 
@@ -18,9 +17,6 @@ export default function TreasuryStatusPage() {
         summary={<TreasuryStatusSummaryPanel />}
       >
         <div className="flex flex-col gap-y-4">
-          <TitleContainer className="justify-start">
-            <span>Approved</span>
-          </TitleContainer>
           <ApprovedPanel />
           <TreasuryStatusTabContent />
         </div>
