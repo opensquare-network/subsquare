@@ -11,6 +11,7 @@ import SpendPeriod from "next-common/components/summary/polkadotTreasurySummary/
 import FiatPriceLabel from "../common/fiatPriceLabel";
 import NativeTokenSymbolAsset from "next-common/components/summary/polkadotTreasurySummary/common/nativeTokenSymbolAsset";
 import { useKusamaTreasuryContext } from "next-common/context/treasury/kusamaTreasury";
+import SpendPeriodLabelTip from "../../labelTips/spendPeriod";
 
 export default function RelayChainTreasury() {
   const {
@@ -38,13 +39,13 @@ export default function RelayChainTreasury() {
                 free={nativeTreasuryBalanceOnRelayChain}
               />
             </div>
-            <SummaryLabelItem label={"To be awarded"}>
+            <SummaryLabelItem label="To be awarded">
               <ToBeAwarded toBeAwarded={toBeAwarded} />
             </SummaryLabelItem>
-            <SummaryLabelItem label={"Next burn"}>
+            <SummaryLabelItem label="Next burn">
               <NextBurn free={nativeTreasuryBalanceOnRelayChain} />
             </SummaryLabelItem>
-            <SummaryLabelItem label={"Spend period"}>
+            <SummaryLabelItem label={<SpendPeriodLabelTip />}>
               <SpendPeriod summary={summary} />
               <SpendPeriodCountdown summary={summary} />
             </SummaryLabelItem>

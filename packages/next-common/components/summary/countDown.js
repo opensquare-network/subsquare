@@ -1,7 +1,7 @@
 import CountDownOrigin from "../_CountDown";
 import { cn } from "next-common/utils";
 
-const CountDown = ({ percent = 0, size = 56 }) => {
+const CountDown = ({ percent = 0, size = 56, width = 8 }) => {
   let percentInt = parseInt(percent);
   if (isNaN(percentInt) || percentInt < 0) {
     percentInt = 0;
@@ -11,7 +11,7 @@ const CountDown = ({ percent = 0, size = 56 }) => {
     <div className="relative" style={{ width: size, height: size }}>
       <CountDownOrigin
         size={size}
-        width={8}
+        width={width}
         numerator={percentInt}
         denominator={100}
         backgroundColor="var(--theme100)"
