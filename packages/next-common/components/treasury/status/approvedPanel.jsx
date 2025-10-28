@@ -7,8 +7,8 @@ export default function ApprovedPanel() {
   return (
     <NeutralPanel className="p-6 space-y-4">
       <SummaryLayout>
-        <ApprovedProposal />
         <ApprovedSpend />
+        <ApprovedProposal />
       </SummaryLayout>
     </NeutralPanel>
   );
