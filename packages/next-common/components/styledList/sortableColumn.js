@@ -1,4 +1,4 @@
-import SortedSVG from "./sorted.svg";
+import SortedDescSVG from "./sorted_desc.svg";
 import SortedAscSVG from "./sorted_asc.svg";
 import { cn } from "next-common/utils";
 
@@ -22,7 +22,7 @@ export default function SortableColumn({
         (sortDirection === "asc" ? (
           <SortedAscSVG className="max-sm:hidden" />
         ) : (
-          <SortedSVG className="max-sm:hidden" />
+          <SortedDescSVG className="max-sm:hidden" />
         ))}
       <span>{name}</span>
     </div>
