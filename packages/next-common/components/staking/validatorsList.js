@@ -39,21 +39,19 @@ const colCommission = {
   ),
 };
 
-function TotalStake({ item }) {
+function StakeValue({ value }) {
   const { symbol, decimals } = useChainSettings();
-  if (item.total === undefined) {
+  if (value === undefined) {
     return <span className="text-textTertiary">-</span>;
   }
-  return (
-    <ValueDisplay value={toPrecision(item.total, decimals)} symbol={symbol} />
-  );
+  return <ValueDisplay value={toPrecision(value, decimals)} symbol={symbol} />;
 }
 
 const colTotalStake = {
   name: "Total Stake",
   style: { textAlign: "right", width: "140px", minWidth: "140px" },
   sortable: true,
-  render: (item) => <TotalStake item={item} />,
+  render: (item) => <StakeValue value={item.total} />,
 };
 
 function NominatorCount({ item }) {
@@ -68,6 +66,13 @@ const colNominatorCount = {
   style: { textAlign: "left", width: "140px", minWidth: "140px" },
   sortable: true,
   render: (item) => <NominatorCount item={item} />,
+};
+
+const colSelfStake = {
+  name: "Self Stake",
+  style: { textAlign: "left", width: "140px", minWidth: "140px" },
+  sortable: true,
+  render: (item) => <StakeValue value={item.own} />,
 };
 
 function useValidators() {
@@ -133,6 +138,7 @@ const columnsDef = [
   colAccount,
   colCommission,
   colNominatorCount,
+  colSelfStake,
   colTotalStake,
 ];
 
@@ -195,6 +201,11 @@ function ValidatorsListImpl() {
         case colTotalStake.name:
           aValue = BigInt(a.total || 0);
           bValue = BigInt(b.total || 0);
+          diff = bValue - aValue > 0n ? 1 : bValue - aValue < 0n ? -1 : 0;
+          break;
+        case colSelfStake.name:
+          aValue = BigInt(a.own || 0);
+          bValue = BigInt(b.own || 0);
           diff = bValue - aValue > 0n ? 1 : bValue - aValue < 0n ? -1 : 0;
           break;
         default:
