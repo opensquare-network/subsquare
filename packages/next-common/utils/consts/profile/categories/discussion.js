@@ -10,6 +10,7 @@ export const discussionCategory = {
     {
       id: "posts",
       name: "Posts",
+      categoryName: "Discussions",
       categoryId: businessCategory.discussions,
       routePath: "discussions",
       apiPath: "posts",
@@ -18,6 +19,7 @@ export const discussionCategory = {
     {
       id: "comments",
       name: "Comments",
+      categoryName: "Comments",
       categoryId: "Comments",
       routePath: "comments",
       apiPath: "comments",
@@ -26,6 +28,7 @@ export const discussionCategory = {
     {
       id: "polkassemblyDiscussions",
       name: "Polkassembly posts",
+      categoryName: "Polkassembly Discussions",
       categoryId: businessCategory.polkassemblyDiscussions,
       routePath: "polkassembly/discussions",
       apiPath: "polkassembly-discussions",

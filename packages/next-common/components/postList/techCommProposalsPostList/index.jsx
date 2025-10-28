@@ -6,6 +6,7 @@ import { ListWrapper } from "../styled";
 import PostItem from "./postItem";
 
 export default function TechCommProposalsPostList({
+  title = "List",
   titleCount = null,
   items,
   pagination,
@@ -15,7 +16,7 @@ export default function TechCommProposalsPostList({
   return (
     <ListWrapper>
       <ListTitleBar
-        title="Tech. Comm. proposals"
+        title={title}
         titleCount={titleCount}
         titleExtra={titleExtra}
         link={link}

@@ -19,6 +19,7 @@ export function NewTreasuryProposalButton() {
 }
 
 export default function TreasuryProposalsPostList({
+  title = "List",
   titleCount,
   items,
   pagination,
@@ -28,7 +29,7 @@ export default function TreasuryProposalsPostList({
     <>
       <ListWrapper>
         <ListTitleBar
-          title="Proposed treasury proposals"
+          title={title}
           link="/treasury/proposals"
           titleCount={titleCount}
           titleExtra={titleExtra}

@@ -33,6 +33,7 @@ const InnerList = ({ secondCategory, data, pagination }) => {
   if (secondCategory.categoryId === businessCategory.fellowship) {
     return (
       <FellowshipReferendaPostList
+        title={secondCategory.categoryName}
         titleCount={titleCount}
         items={items}
         pagination={pagination}
@@ -43,6 +44,7 @@ const InnerList = ({ secondCategory, data, pagination }) => {
   if (secondCategory.categoryId === businessCategory.treasuryBounties) {
     return (
       <TreasuryBountiesPostList
+        title={secondCategory.categoryName}
         titleCount={titleCount}
         items={items}
         pagination={pagination}
@@ -53,6 +55,7 @@ const InnerList = ({ secondCategory, data, pagination }) => {
   if (secondCategory.categoryId === businessCategory.treasuryTips) {
     return (
       <TreasuryTipsPostList
+        title={secondCategory.categoryName}
         titleCount={titleCount}
         items={items}
         pagination={pagination}
@@ -63,6 +66,7 @@ const InnerList = ({ secondCategory, data, pagination }) => {
   if (secondCategory.categoryId === businessCategory.treasuryProposals) {
     return (
       <TreasuryProposalsPostList
+        title={secondCategory.categoryName}
         titleCount={titleCount}
         items={items}
         pagination={pagination}
@@ -73,6 +77,7 @@ const InnerList = ({ secondCategory, data, pagination }) => {
   if (secondCategory.categoryId === businessCategory.openGovReferenda) {
     return (
       <ReferendaPostList
+        title={secondCategory.categoryName}
         titleCount={titleCount}
         items={items}
         pagination={pagination}
@@ -84,6 +89,7 @@ const InnerList = ({ secondCategory, data, pagination }) => {
   if (secondCategory.categoryId === businessCategory.democracyReferenda) {
     return (
       <DemocracyReferendaPostList
+        title={secondCategory.categoryName}
         titleCount={titleCount}
         items={items}
         pagination={pagination}
@@ -95,6 +101,7 @@ const InnerList = ({ secondCategory, data, pagination }) => {
   if (secondCategory.categoryId === businessCategory.democracyProposals) {
     return (
       <DemocracyPublicProposalsPostList
+        title={secondCategory.categoryName}
         titleCount={titleCount}
         items={items}
         pagination={pagination}
@@ -106,6 +113,7 @@ const InnerList = ({ secondCategory, data, pagination }) => {
   if (secondCategory.categoryId === businessCategory.democracyExternals) {
     return (
       <DemocracyExternalProposalsPostList
+        title={secondCategory.categoryName}
         titleCount={titleCount}
         items={items}
         pagination={pagination}
@@ -117,6 +125,7 @@ const InnerList = ({ secondCategory, data, pagination }) => {
   if (secondCategory.categoryId === businessCategory.councilMotions) {
     return (
       <CouncilMotionsPostList
+        title={secondCategory.categoryName}
         titleCount={titleCount}
         items={items}
         pagination={pagination}
@@ -128,6 +137,7 @@ const InnerList = ({ secondCategory, data, pagination }) => {
   if (secondCategory.categoryId === businessCategory.tcProposals) {
     return (
       <TechCommProposalsPostList
+        title={secondCategory.categoryName}
         titleCount={titleCount}
         items={items}
         pagination={pagination}
@@ -138,6 +148,7 @@ const InnerList = ({ secondCategory, data, pagination }) => {
   if (secondCategory.categoryId === businessCategory.discussions) {
     return (
       <DiscussionPostList
+        title={secondCategory.categoryName}
         titleCount={titleCount}
         items={items}
         pagination={pagination}
@@ -147,6 +158,7 @@ const InnerList = ({ secondCategory, data, pagination }) => {
   if (secondCategory.categoryId === businessCategory.polkassemblyDiscussions) {
     return (
       <PolkassemblyDiscussionPostList
+        title={secondCategory.categoryName}
         titleCount={titleCount}
         items={items}
         pagination={pagination}

@@ -10,6 +10,7 @@ export const collectivesCategory = {
     {
       id: "councilMotions",
       name: "Council Motions",
+      categoryName: "Council motions",
       categoryId: businessCategory.councilMotions,
       routePath: "council/motions",
       apiPath: "council-motions",
@@ -19,6 +20,7 @@ export const collectivesCategory = {
     {
       id: "techCommProposals",
       name: "Tech. Comm. Proposals",
+      categoryName: "Tech. Comm. proposals",
       categoryId: businessCategory.tcProposals,
       routePath: "techcomm/proposals",
       apiPath: "techcomm-proposals",

@@ -6,6 +6,7 @@ import { ListWrapper } from "next-common/components/postList/styled";
 import PostItem from "./postItem";
 
 export default function DemocracyPublicProposalsPostList({
+  title = "List",
   titleCount = null,
   items,
   pagination,
@@ -15,8 +16,8 @@ export default function DemocracyPublicProposalsPostList({
   return (
     <ListWrapper>
       <ListTitleBar
+        title={title}
         titleExtra={titleExtra}
-        title="Proposed democracy proposals"
         titleCount={titleCount}
         link={link}
       />
