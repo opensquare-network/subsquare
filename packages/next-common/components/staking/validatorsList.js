@@ -21,11 +21,25 @@ import { fetchIdentity } from "next-common/services/identity";
 import { getIdentityDisplay } from "next-common/utils/identity";
 import useSearchedValidators from "./search";
 import useColumns from "../styledList/useColumns";
+import SignalIndicator from "../icons/signalIndicator";
+import Tooltip from "../tooltip";
 
 const colAccount = {
   name: "Account",
   style: { textAlign: "left", minWidth: "240px" },
-  render: (item) => <AddressUser key="account" add={item.account} />,
+  render: (item) => {
+    return (
+      <div className="flex items-center gap-2">
+        <Tooltip content={item.isActive ? "Active" : "Inactive"}>
+          <SignalIndicator
+            className="w-[16px] h-[16px]"
+            active={item.isActive}
+          />
+        </Tooltip>
+        <AddressUser key="account" add={item.account} />;
+      </div>
+    );
+  },
 };
 
 const colCommission = {
