@@ -1,7 +1,6 @@
-import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
-import useQueryVoteActions from "./useQueryVoteActions";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useRouter } from "next/router";
+import useQueryVoteActions from "./useQueryVoteActions";
 import { useFellowshipMembersRankState } from "./useActionMembersRank";
 
 export default function useFellowshipReferendaActions() {
@@ -64,27 +63,3 @@ const useMaxImpactVotes = (voteActions) => {
   );
   return maxImpactVotes;
 };
-
-export function useQueryFellowshipMemberRank(address) {
-  const api = useConditionalContextApi();
-  const [rank, setRank] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (!api?.query?.fellowshipCollective) {
-      return;
-    }
-    setLoading(true);
-    api.query.fellowshipCollective
-      ?.members(address)
-      .then((rank) => {
-        setRank(rank.toJSON().rank);
-      })
-      .catch(() => {
-        setRank(null);
-      })
-      .finally(() => setLoading(false));
-  }, [api?.query?.fellowshipCollective, address]);
-
-  return { rank, loading };
-}
