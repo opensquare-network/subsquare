@@ -36,7 +36,7 @@ const colAccount = {
             active={item.isActive}
           />
         </Tooltip>
-        <AddressUser key="account" add={item.account} />;
+        <AddressUser key="account" add={item.account} />
       </div>
     );
   },
