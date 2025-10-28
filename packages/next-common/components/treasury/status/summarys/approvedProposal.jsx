@@ -14,7 +14,7 @@ export default function ApprovedProposal() {
     <SummaryItem
       title={
         <Tooltip content="Total number and amount of approved treasury proposals.">
-          Approved Proposal
+          Proposal
         </Tooltip>
       }
     >

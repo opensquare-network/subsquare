@@ -14,7 +14,7 @@ export default function ApprovedSpend() {
     <SummaryItem
       title={
         <Tooltip content="Total number and amount of approved spend items.">
-          Approved Spend
+          Spend
         </Tooltip>
       }
     >
