@@ -15,7 +15,13 @@ export default function SpendPeriod() {
           <div className="space-x-1">
             <SpendPeriodContent summary={summary} />
           </div>
-          <TreasurySummarySpendPeriodCountDown summary={summary} />
+          <div className="[&_div]:text12Medium">
+            <TreasurySummarySpendPeriodCountDown
+              size={40}
+              width={5}
+              summary={summary}
+            />
+          </div>
         </div>
       </LoadableContent>
     </SummaryItem>
