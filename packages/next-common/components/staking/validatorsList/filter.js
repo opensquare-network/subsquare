@@ -1,6 +1,11 @@
+import { useMemo } from "react";
 import { DropdownFilter } from "next-common/components/dropdownFilter";
-import { useStagedFilterState } from "next-common/components/dropdownFilter/context";
-import Toggle from "../toggle";
+import {
+  DropdownFilterProvider,
+  useCommittedFilterState,
+  useStagedFilterState,
+} from "next-common/components/dropdownFilter/context";
+import Toggle from "../../toggle";
 
 export function ValidatorsFilter() {
   const [filters, setFilters] = useStagedFilterState();
@@ -39,5 +44,40 @@ export function ValidatorsFilter() {
         />
       </div>
     </DropdownFilter>
+  );
+}
+
+export function useFilteredValidators(validators) {
+  const [{ active: isActive, not100Commission, hasIdentity }] =
+    useCommittedFilterState();
+  return useMemo(() => {
+    if (!validators) {
+      return null;
+    }
+    let filtered = isActive ? validators.filter((v) => v.isActive) : validators;
+    filtered = not100Commission
+      ? filtered.filter((v) => v.commission < 1000000000)
+      : filtered;
+    filtered = hasIdentity ? filtered.filter((v) => v.name) : filtered;
+    return filtered;
+  }, [validators, isActive, not100Commission, hasIdentity]);
+}
+
+export function ValidatorsFilterProvider({ children }) {
+  return (
+    <DropdownFilterProvider
+      defaultFilterValues={{
+        active: true,
+        not100Commission: true,
+        hasIdentity: true,
+      }}
+      emptyFilterValues={{
+        active: false,
+        not100Commission: false,
+        hasIdentity: false,
+      }}
+    >
+      {children}
+    </DropdownFilterProvider>
   );
 }

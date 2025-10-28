@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import SearchBox from "../searchBox";
+import SearchBox from "../../searchBox";
 
 export default function useSearchedValidators(validatorsWithIdentity) {
   const [searchValue, setSearchValue] = useState("");
