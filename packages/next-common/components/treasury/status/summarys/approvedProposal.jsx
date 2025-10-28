@@ -4,14 +4,27 @@ import SummaryLabelItem from "next-common/components/summary/polkadotTreasurySum
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useApprovedProposalStatistics } from "../hooks/useApprovedProposal";
 import { toPrecision } from "next-common/utils";
+import Link from "next/link";
+import Tooltip from "next-common/components/tooltip";
 
 export default function ApprovedProposal() {
   const { total, totalAmount, loading } = useApprovedProposalStatistics();
 
   return (
-    <SummaryItem title="Approved Proposal">
+    <SummaryItem
+      title={
+        <Tooltip content="Total number and amount of approved treasury proposals.">
+          Approved Proposal
+        </Tooltip>
+      }
+    >
       <LoadableContent isLoading={loading}>
-        <span>{total}</span>
+        <Link
+          href="/treasury/proposals"
+          className="text-textPrimary hover:underline"
+        >
+          {total}
+        </Link>
         <div className="!ml-0 flex flex-col gap-y-1">
           <SummaryLabelItem label={"Total"}>
             <ValueDisplay

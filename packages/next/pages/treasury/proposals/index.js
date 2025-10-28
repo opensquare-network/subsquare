@@ -73,7 +73,10 @@ export default function ProposalsPage({ proposals: ssrProposals, chain }) {
 }
 
 export const getServerSideProps = withCommonProps(async (context) => {
-  const proposals = await fetchList("treasury/proposals", context);
+  const proposals = await fetchList(
+    "treasury/proposals?status=Approved",
+    context,
+  );
   const tracksProps = await fetchOpenGovTracksProps();
 
   return {
