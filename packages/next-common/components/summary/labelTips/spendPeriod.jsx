@@ -16,7 +16,12 @@ export default function SpendPeriodLabelTip() {
     <span className="flex items-center gap-x-1">
       Spend period
       <Tooltip
-        content={<>Duration of one treasury funding cycle.{wikiLink}</>}
+        content={
+          <>
+            Approved treasury funds are released at the end of each spend
+            period.{wikiLink}
+          </>
+        }
       ></Tooltip>
     </span>
   );
