@@ -6,6 +6,7 @@ import Chains from "../../chains";
 export const gov2Referenda = {
   id: "referenda",
   name: "Referenda",
+  categoryName: "OpenGov referenda",
   categoryId: businessCategory.openGovReferenda,
   routePath: "referenda",
   apiPath: "gov2/referendums",
@@ -16,6 +17,7 @@ export const gov2Referenda = {
 export const gov2Fellowship = {
   id: "fellowshipReferenda",
   name: "Referenda",
+  categoryName: "Fellowship referenda",
   categoryId: businessCategory.fellowship,
   routePath: "fellowship",
   apiPath: "fellowship/referendums",

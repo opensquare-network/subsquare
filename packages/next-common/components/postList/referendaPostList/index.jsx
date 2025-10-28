@@ -7,6 +7,7 @@ import businessCategory from "next-common/utils/consts/business/category";
 import PostItem from "./postItem";
 
 export default function ReferendaPostList({
+  title = "List",
   items,
   pagination,
   titleCount,
@@ -16,7 +17,7 @@ export default function ReferendaPostList({
   return (
     <ListWrapper>
       <ListTitleBar
-        title="OpenGov referenda"
+        title={title}
         link={link}
         titleCount={titleCount}
         titleExtra={titleExtra}

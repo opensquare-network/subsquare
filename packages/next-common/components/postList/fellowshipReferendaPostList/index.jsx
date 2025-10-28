@@ -7,6 +7,7 @@ import businessCategory from "next-common/utils/consts/business/category";
 import PostItem from "./postItem";
 
 export default function FellowshipReferendaPostList({
+  title = "List",
   items,
   pagination,
   titleCount,
@@ -15,7 +16,7 @@ export default function FellowshipReferendaPostList({
   return (
     <ListWrapper>
       <ListTitleBar
-        title="Fellowship referenda"
+        title={title}
         titleCount={titleCount}
         titleExtra={titleExtra}
         link="/fellowship"
