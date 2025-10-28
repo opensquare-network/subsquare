@@ -18,7 +18,7 @@ export default function SpendPeriod() {
           <div className="[&_div]:text12Medium">
             <TreasurySummarySpendPeriodCountDown
               size={40}
-              width={5}
+              width={4}
               summary={summary}
             />
           </div>
