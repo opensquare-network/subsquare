@@ -46,7 +46,7 @@ function NextBurnItem({ free, isLoading }) {
   );
 }
 
-export function SpendPeriodItem() {
+function SpendPeriodItem() {
   const summary = useSpendPeriodSummary();
   return (
     <SummaryItem
