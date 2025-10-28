@@ -13,9 +13,10 @@ export default function ApprovedSpend() {
   return (
     <SummaryItem
       title={
-        <Tooltip content="Total number and amount of approved spend items.">
+        <div className="flex items-center gap-x-1">
           Spend
-        </Tooltip>
+          <Tooltip content="Total number and amount of approved spend items."></Tooltip>
+        </div>
       }
     >
       <LoadableContent isLoading={loading}>

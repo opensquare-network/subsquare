@@ -13,9 +13,10 @@ export default function ApprovedProposal() {
   return (
     <SummaryItem
       title={
-        <Tooltip content="Total number and amount of approved treasury proposals.">
+        <div className="flex items-center gap-x-1">
           Proposal
-        </Tooltip>
+          <Tooltip content="Total number and amount of approved treasury proposals."></Tooltip>
+        </div>
       }
     >
       <LoadableContent isLoading={loading}>

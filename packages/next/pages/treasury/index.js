@@ -19,7 +19,7 @@ export default function TreasuryStatusPage() {
       >
         <div className="flex flex-col gap-y-4">
           <TitleContainer className="justify-start">
-            <span>Approved Treasury</span>
+            <span>Approved</span>
           </TitleContainer>
           <ApprovedPanel />
           <TreasuryStatusTabContent />
