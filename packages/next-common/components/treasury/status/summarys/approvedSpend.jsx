@@ -15,7 +15,7 @@ export default function ApprovedSpend() {
       title={
         <div className="flex items-center gap-x-1">
           Spend
-          <Tooltip content="Total number and amount of approved spend items."></Tooltip>
+          <Tooltip content="Approved proposals users need to claim manually"></Tooltip>
         </div>
       }
     >

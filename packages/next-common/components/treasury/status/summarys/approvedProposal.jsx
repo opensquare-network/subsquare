@@ -15,7 +15,7 @@ export default function ApprovedProposal() {
       title={
         <div className="flex items-center gap-x-1">
           Proposal
-          <Tooltip content="Total number and amount of approved treasury proposals."></Tooltip>
+          <Tooltip content="Approved proposals which will be allocated to beneficiaries automatically by the end of the spend priod"></Tooltip>
         </div>
       }
     >

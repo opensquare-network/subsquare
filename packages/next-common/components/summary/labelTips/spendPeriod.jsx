@@ -18,8 +18,8 @@ export default function SpendPeriodLabelTip() {
       <Tooltip
         content={
           <>
-            Approved treasury funds are released at the end of each spend
-            period.{wikiLink}
+            Approved proposals will be awarded at the end of each spend period.
+            {wikiLink}
           </>
         }
       ></Tooltip>
