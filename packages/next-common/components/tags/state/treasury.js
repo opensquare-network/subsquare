@@ -154,6 +154,7 @@ const spendStateTagMap = {
   Paid: PositiveTag,
   Processed: PositiveTag,
   Voided: NegativeTag,
+  Expired: NegativeTag,
 };
 
 const spendTooltipMap = {
