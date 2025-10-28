@@ -9,7 +9,7 @@ export default function ApprovedPanel() {
   return (
     <>
       <TitleContainer className="justify-start">
-        <span>Approved</span>
+        <span>To be awarded</span>
       </TitleContainer>
       <NeutralPanel className="p-6 space-y-4">
         <SummaryLayout>
