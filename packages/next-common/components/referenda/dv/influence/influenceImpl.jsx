@@ -16,7 +16,7 @@ const InfluencePageSize = 10;
 export default function InfluenceImpl() {
   const isMobile = useIsMobile();
   const [page, setPage] = useState(1);
-  const filteredReferenda = useFilteredDvReferenda();
+  const { filteredReferenda, loading } = useFilteredDvReferenda();
   const votes = useFilteredDvVotes();
   const router = useRouter();
 
@@ -51,6 +51,7 @@ export default function InfluenceImpl() {
         delegateReferendumVotesMap={delegateReferendumVotesMap}
       />
       <Component
+        loading={loading}
         list={pageFilteredReferenda}
         delegateReferendumVotesMap={delegateReferendumVotesMap}
       />

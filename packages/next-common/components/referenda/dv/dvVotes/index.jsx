@@ -16,6 +16,7 @@ import {
 } from "next-common/context/referenda/dv";
 import NoData from "next-common/components/noData";
 import MaybeVotesRoleTabs from "../common/maybeRoleTabs";
+import Loading from "next-common/components/loading";
 
 const SPACE = 1;
 
@@ -46,7 +47,7 @@ export function DvReferendaVotesImpl({ delegates = [] }) {
   const [showLeft, setShowLeft] = useState(false);
   const [showRight, setShowRight] = useState(false);
   const { width } = useWindowSize();
-  const filteredReferenda = useFilteredDvReferenda();
+  const { filteredReferenda, loading } = useFilteredDvReferenda();
   const filteredVotes = useFilteredDvVotes();
 
   const votesByReferendum = useMemo(
@@ -89,6 +90,14 @@ export function DvReferendaVotesImpl({ delegates = [] }) {
       handleGradientBlanketVisible(scrollerXRef.current);
     }
   }, [scrollerXRef, width, handleGradientBlanketVisible]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center py-4">
+        <Loading size={20} />
+      </div>
+    );
+  }
 
   if (isMobile) {
     return (

@@ -8,11 +8,8 @@ import InfluenceValue from "./influenceValue";
 import { InfluenceLabel } from "./styled";
 import { PostTitleImpl } from "next-common/components/profile/votingHistory/common";
 import TrackTag from "./trackTag";
-import { fetchReferendumData } from "next-common/services/referendaData";
-import { useAsync } from "react-use";
 import DataListItem from "next-common/components/dataList/item";
 import LoadableContent from "next-common/components/common/loadableContent";
-import FieldLoading from "next-common/components/icons/fieldLoading";
 import { cn } from "next-common/utils";
 
 const columns = [
@@ -49,9 +46,11 @@ const columns = [
 export default function InfluenceDesktopList({
   list = [],
   delegateReferendumVotesMap,
+  loading,
 }) {
   return (
     <DataList
+      loading={loading}
       title="Influence"
       noDataText="No influence"
       columns={columns}
@@ -59,7 +58,7 @@ export default function InfluenceDesktopList({
       renderItem={(_, idx) => (
         <ListRow
           key={idx}
-          row={list[idx]}
+          referendumDetail={list[idx]}
           delegateReferendumVotesMap={delegateReferendumVotesMap}
         />
       )}
@@ -67,11 +66,9 @@ export default function InfluenceDesktopList({
   );
 }
 
-function ListRow({ row, delegateReferendumVotesMap }) {
+function ListRow({ referendumDetail, delegateReferendumVotesMap }) {
   const { symbol, decimals } = useChainSettings();
-  const { value: referendumDetail, loading } = useAsync(async () => {
-    return await fetchReferendumData(row.referendumIndex);
-  }, [row.referendumIndex]);
+  const { referendumIndex, track, tally, state } = referendumDetail;
 
   return (
     <DataListItem
@@ -81,43 +78,28 @@ function ListRow({ row, delegateReferendumVotesMap }) {
       row={[
         <PostTitleImpl
           key="title"
-          referendumIndex={row.referendumIndex}
+          referendumIndex={referendumIndex}
           className={cn(
             "text14Medium flex items-center [&>a]:truncate [&>a]:max-w-full [&>a]:whitespace-nowrap",
-            loading && "[&>a>span]:flex",
           )}
-          title={
-            loading ? (
-              <FieldLoading className="flex h-5" />
-            ) : (
-              getGov2ReferendumTitle(referendumDetail)
-            )
-          }
-          url={`/referenda/${row.referendumIndex}`}
+          title={getGov2ReferendumTitle(referendumDetail)}
+          url={`/referenda/${referendumIndex}`}
         />,
-        <TrackTag key="track" id={row.track} />,
-        <LoadableContent key="votesSummary" isLoading={loading}>
-          <PostVotesSummary
-            tally={referendumDetail?.onchainData?.tally}
-            decimals={decimals}
-            symbol={symbol}
-          />
+        <TrackTag key="track" id={track} />,
+        <LoadableContent key="votesSummary">
+          <PostVotesSummary tally={tally} decimals={decimals} symbol={symbol} />
         </LoadableContent>,
-        <StateTag key="state" state={row?.state} />,
-        <LoadableContent key="influence" isLoading={loading}>
+        <StateTag key="state" state={state} />,
+        <LoadableContent key="influence">
           <InfluenceValue
             referendum={referendumDetail}
-            referendumVotes={
-              delegateReferendumVotesMap[row.referendumIndex] || []
-            }
+            referendumVotes={delegateReferendumVotesMap[referendumIndex] || []}
           />
         </LoadableContent>,
-        <LoadableContent key="action" isLoading={loading}>
+        <LoadableContent key="action">
           <ActionButton
             referendum={referendumDetail}
-            referendumVotes={
-              delegateReferendumVotesMap[row.referendumIndex] || []
-            }
+            referendumVotes={delegateReferendumVotesMap[referendumIndex] || []}
             key="action"
           />
         </LoadableContent>,

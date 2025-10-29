@@ -1,8 +1,6 @@
 import { usePageProps } from "next-common/context/page";
 import { getTrackApprovalCurve } from "next-common/context/post/gov2/curve";
-import { fetchReferendumData } from "next-common/services/referendaData";
 import { useMemo } from "react";
-import { useAsync } from "react-use";
 import { getInfluence } from "./useInfluence";
 import { toPercentage } from "next-common/utils";
 
@@ -16,25 +14,11 @@ export function useInfluenceStatistic({
     [allReferendum],
   );
 
-  const {
-    value: referendumList = [],
-    loading,
-    error,
-  } = useAsync(
-    async () =>
-      await Promise.all(
-        allReferendum.map((referendum) =>
-          fetchReferendumData(referendum.referendumIndex),
-        ),
-      ),
-    [allReferendum],
-  );
-
   const influenceList = useMemo(() => {
     if (!cohort) {
       return [];
     }
-    return referendumList.map((referendum) => {
+    return allReferendum.map((referendum) => {
       const approvalCurve = getTrackApprovalCurve(referendum.trackInfo);
       const referendumVotes =
         delegateReferendumVotesMap[referendum.referendumIndex];
@@ -45,7 +29,7 @@ export function useInfluenceStatistic({
         approvalCurve,
       );
     });
-  }, [referendumList, delegateReferendumVotesMap, cohort]);
+  }, [allReferendum, delegateReferendumVotesMap, cohort]);
 
   const statistic = useMemo(() => {
     const influenceCount = influenceList.filter(
@@ -61,7 +45,5 @@ export function useInfluenceStatistic({
 
   return {
     statistic,
-    loading,
-    error,
   };
 }
