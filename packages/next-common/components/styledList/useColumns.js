@@ -2,14 +2,36 @@ import React, { useMemo } from "react";
 import { useState } from "react";
 import SortableColumn from "./sortableColumn";
 
+function getSortDirections(sortable) {
+  if (sortable === true || sortable === "desc") {
+    return ["desc"];
+  }
+  if (sortable === "asc") {
+    return ["asc"];
+  }
+  if (sortable === "asc,desc") {
+    return ["asc", "desc"];
+  }
+  if (sortable === "desc,asc") {
+    return ["desc", "asc"];
+  }
+  throw new Error(`Invalid sortable value: ${sortable}`);
+}
+
 export default function useColumns(
   columnsData,
   defaultSortedColumn,
   allowUnsort = false,
-  allowBidirectionalSort = false,
 ) {
+  const defaultSortedColumnInfo = columnsData.find(
+    (col) => col.name === defaultSortedColumn,
+  );
+  const defaultSortDirection = defaultSortedColumnInfo
+    ? getSortDirections(defaultSortedColumnInfo.sortable)[0]
+    : "desc";
+
   const [sortedColumn, setSortedColumn] = useState(defaultSortedColumn);
-  const [sortDirection, setSortDirection] = useState("desc");
+  const [sortDirection, setSortDirection] = useState(defaultSortDirection);
 
   const columns = useMemo(
     () =>
@@ -25,40 +47,46 @@ export default function useColumns(
               name={col.name}
               sorted={sortedColumn === col.name}
               sortDirection={sortDirection}
+              sortDirectionIcon={col.sortDirectionIcon}
               onClick={() => {
+                const sortDirections = getSortDirections(col.sortable);
                 if (sortedColumn !== col.name) {
                   setSortedColumn(col.name);
-                  setSortDirection("desc");
+                  setSortDirection(sortDirections[0]);
                   return;
                 }
 
-                if (!allowBidirectionalSort) {
+                if (sortDirections.length === 1) {
                   if (allowUnsort) {
-                    setSortedColumn(defaultSortedColumn || "");
-                    setSortDirection("desc");
+                    if (defaultSortedColumn) {
+                      setSortedColumn(defaultSortedColumn);
+                      setSortDirection(defaultSortDirection);
+                      return;
+                    }
+
+                    setSortedColumn("");
+                    return;
                   }
+                }
+
+                if (sortDirection === sortDirections[0]) {
+                  setSortDirection(sortDirections[1]);
                   return;
                 }
 
-                if (sortDirection === "desc") {
-                  setSortDirection("asc");
-                  return;
-                }
-
-                if (sortDirection === "asc") {
+                if (sortDirection === sortDirections[1]) {
                   if (!allowUnsort) {
-                    setSortDirection("desc");
+                    setSortDirection(sortDirections[0]);
                     return;
                   }
 
                   if (!defaultSortedColumn) {
                     setSortedColumn("");
-                    setSortDirection("desc");
                     return;
                   }
 
                   setSortedColumn(defaultSortedColumn);
-                  setSortDirection("desc");
+                  setSortDirection(defaultSortDirection);
                   return;
                 }
               }}
@@ -70,9 +98,9 @@ export default function useColumns(
       columnsData,
       sortedColumn,
       defaultSortedColumn,
+      defaultSortDirection,
       sortDirection,
       allowUnsort,
-      allowBidirectionalSort,
     ],
   );
 

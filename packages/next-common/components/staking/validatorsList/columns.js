@@ -26,7 +26,8 @@ export const colAccount = {
 export const colCommission = {
   name: "Commission",
   style: { textAlign: "left", width: "140px", minWidth: "140px" },
-  sortable: true,
+  sortable: "asc",
+  sortDirectionIcon: "right",
   render: (item) => (
     <span className="text-textPrimary">
       {(item.commission / 10000000).toFixed(2)}%
@@ -45,7 +46,7 @@ function StakeValue({ value }) {
 export const colTotalStake = {
   name: "Total Stake",
   style: { textAlign: "right", width: "140px", minWidth: "140px" },
-  sortable: true,
+  sortable: "desc,asc",
   render: (item) => <StakeValue value={item.total} />,
 };
 
@@ -58,14 +59,16 @@ function NominatorCount({ item }) {
 
 export const colNominatorCount = {
   name: "Nominator Count",
-  style: { textAlign: "left", width: "140px", minWidth: "140px" },
-  sortable: true,
+  style: { textAlign: "left", width: "160px", minWidth: "160px" },
+  sortable: "desc,asc",
+  sortDirectionIcon: "right",
   render: (item) => <NominatorCount item={item} />,
 };
 
 export const colSelfStake = {
   name: "Self Stake",
   style: { textAlign: "left", width: "140px", minWidth: "140px" },
-  sortable: true,
+  sortable: "desc,asc",
+  sortDirectionIcon: "right",
   render: (item) => <StakeValue value={item.own} />,
 };

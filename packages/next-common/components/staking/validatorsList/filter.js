@@ -11,7 +11,7 @@ export function ValidatorsFilter() {
   const [filters, setFilters] = useStagedFilterState();
   const isActive = filters?.active || false;
   const hasIdentity = filters?.hasIdentity || false;
-  const not100Commission = filters?.not100Commission || false;
+  const no100Commission = filters?.no100Commission || false;
 
   const setIsActive = (active) => {
     setFilters({ ...filters, active });
@@ -19,8 +19,8 @@ export function ValidatorsFilter() {
   const setHasIdentity = (hasIdentity) => {
     setFilters({ ...filters, hasIdentity });
   };
-  const setNot100Commission = (not100Commission) => {
-    setFilters({ ...filters, not100Commission });
+  const setNo100Commission = (no100Commission) => {
+    setFilters({ ...filters, no100Commission });
   };
 
   return (
@@ -35,12 +35,12 @@ export function ValidatorsFilter() {
       </div>
       <div className="flex items-center text12Medium">
         <span className="text-textPrimary my-[12px] w-full">
-          Not 100% commission
+          No 100% commission
         </span>
         <Toggle
           size="small"
-          isOn={not100Commission}
-          onToggle={setNot100Commission}
+          isOn={no100Commission}
+          onToggle={setNo100Commission}
         />
       </div>
     </DropdownFilter>
@@ -48,19 +48,19 @@ export function ValidatorsFilter() {
 }
 
 export function useFilteredValidators(validators) {
-  const [{ active: isActive, not100Commission, hasIdentity }] =
+  const [{ active: isActive, no100Commission, hasIdentity }] =
     useCommittedFilterState();
   return useMemo(() => {
     if (!validators) {
       return null;
     }
     let filtered = isActive ? validators.filter((v) => v.isActive) : validators;
-    filtered = not100Commission
+    filtered = no100Commission
       ? filtered.filter((v) => v.commission < 1000000000)
       : filtered;
     filtered = hasIdentity ? filtered.filter((v) => v.name) : filtered;
     return filtered;
-  }, [validators, isActive, not100Commission, hasIdentity]);
+  }, [validators, isActive, no100Commission, hasIdentity]);
 }
 
 export function ValidatorsFilterProvider({ children }) {
@@ -68,12 +68,12 @@ export function ValidatorsFilterProvider({ children }) {
     <DropdownFilterProvider
       defaultFilterValues={{
         active: true,
-        not100Commission: true,
+        no100Commission: true,
         hasIdentity: true,
       }}
       emptyFilterValues={{
         active: false,
-        not100Commission: false,
+        no100Commission: false,
         hasIdentity: false,
       }}
     >

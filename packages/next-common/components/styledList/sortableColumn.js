@@ -5,6 +5,7 @@ import { cn } from "next-common/utils";
 export default function SortableColumn({
   name,
   sortDirection,
+  sortDirectionIcon = "left",
   sorted = true,
   onClick,
   className,
@@ -15,6 +16,7 @@ export default function SortableColumn({
       onClick={onClick}
       className={cn(
         "max-sm:pointer-events-none inline-flex items-center gap-2",
+        sortDirectionIcon === "right" && "flex-row-reverse",
         className,
       )}
     >

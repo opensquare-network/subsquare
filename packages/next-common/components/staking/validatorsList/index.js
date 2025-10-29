@@ -63,7 +63,6 @@ function ValidatorsListImpl() {
     columnsDef,
     "",
     true,
-    true,
   );
   const sortedValidators = useMemo(() => {
     if (!searchedValidators) {
