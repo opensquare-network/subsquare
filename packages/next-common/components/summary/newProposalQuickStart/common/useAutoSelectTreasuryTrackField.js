@@ -3,6 +3,7 @@ import { usePageProps } from "next-common/context/page";
 import AutoSelectTreasuryTrack from "next-common/components/popup/fields/autoSelectTreasuryTrack";
 import { isCollectivesChain } from "next-common/utils/chain";
 import { useChain, useChainSettings } from "next-common/context/chain";
+import BigNumber from "bignumber.js";
 
 export const AutoSelectTreasuryTrackErrors = {
   OverMax: "OverMax",
@@ -25,8 +26,8 @@ export default function useAutoSelectTreasuryTrackField(
   const error = useMemo(() => {
     if (
       requestAmount &&
-      !treasuryProposalTracks.some(
-        (track) => track.max >= parseFloat(requestAmount),
+      !treasuryProposalTracks.some((track) =>
+        new BigNumber(requestAmount).lte(track.max),
       )
     ) {
       return AutoSelectTreasuryTrackErrors.OverMax;
