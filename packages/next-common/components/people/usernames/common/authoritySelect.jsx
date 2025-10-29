@@ -4,7 +4,6 @@ import { useMemo, useState } from "react";
 import { cn } from "next-common/utils";
 import { ArrowDown, ArrowUp } from "@osn/icons/subsquare";
 import { useIdentityAuthorityData } from "./useSearchIdentityAuthorityData";
-import Loading from "next-common/components/loading";
 
 const NONE = "none";
 
@@ -26,6 +25,10 @@ export default function AuthoritySelect({ value = NONE, onChange = noop }) {
     return options?.find((item) => item.value === (value || NONE))?.label;
   }, [options, value]);
 
+  if (loading) {
+    return null;
+  }
+
   return (
     <RadixSelect.Root
       value={value}
@@ -36,11 +39,7 @@ export default function AuthoritySelect({ value = NONE, onChange = noop }) {
       disabled={loading}
     >
       <RadixSelect.Trigger className="text12Medium flex justify-between items-center min-w-5 w-[160px] h-[28px] bg-neutral100 border border-neutral400 cursor-pointer text-textPrimary rounded-md p-1.5 pl-4">
-        {loading ? (
-          <Loading />
-        ) : (
-          <span className="capitalize">{selectedLabel}</span>
-        )}
+        <span>{selectedLabel}</span>
         <ArrowDown
           className={cn(
             open && "rotate-180",
@@ -66,7 +65,7 @@ export default function AuthoritySelect({ value = NONE, onChange = noop }) {
             {options.map((item) => (
               <RadixSelect.Item
                 className={cn(
-                  "px-6 py-2 hover:bg-neutral200 cursor-pointer w-[160px] text12Medium capitalize",
+                  "px-6 py-2 hover:bg-neutral200 cursor-pointer w-[160px] text12Medium",
                   "data-[highlighted]:bg-neutral200 data-[highlighted]:outline-none",
                   item.value === value && "bg-neutral200 ",
                 )}

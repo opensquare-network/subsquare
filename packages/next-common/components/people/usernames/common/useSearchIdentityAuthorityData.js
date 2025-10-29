@@ -21,8 +21,8 @@ export default function useSearchIdentityAuthorityData() {
 
     const list = sourceData.filter((item) => {
       return querySearch
-        ? item?.username?.toLowerCase().includes(searchLower) ||
-            isSameAddress(item?.accountId, querySearch)
+        ? item?.suffix?.toLowerCase().includes(searchLower) ||
+            isSameAddress(item?.authority, querySearch)
         : true;
     });
 
@@ -53,21 +53,20 @@ export default function useSearchIdentityAuthorityData() {
 
 export function useIdentityAuthorityData() {
   const api = useContextApi();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
   useEffect(() => {
     if (!api) return;
-    setLoading(true);
     api.query.identity.authorityOf
       .entries()
       .then((res) => {
         const list = res.map(([key, value]) => {
-          const username = hexToString(key.args[0].toString());
-          const { accountId, allocation } = value.unwrap();
+          const suffix = hexToString(key.args[0].toString());
+          const { accountId: authority, allocation } = value.unwrap();
           return {
-            username,
-            accountId: accountId?.toString(),
+            suffix,
+            authority: authority?.toString(),
             allocation: allocation?.toString(),
           };
         });

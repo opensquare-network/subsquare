@@ -14,7 +14,6 @@ export function useIdentityUsernameInfoOf() {
 
   useEffect(() => {
     if (!api) return;
-    setLoading(true);
     api.query.identity.usernameInfoOf
       .entries()
       .then((list) => {

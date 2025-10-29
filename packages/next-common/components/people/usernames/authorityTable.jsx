@@ -7,19 +7,19 @@ import { TitleContainer } from "next-common/components/styled/containers/titleCo
 
 const columnsDef = [
   {
-    name: "Account",
-    render: (item) => <AddressUser add={item.accountId} />,
+    name: "Authority",
+    render: (item) => <AddressUser add={item.authority} />,
   },
   {
-    name: "Name",
+    name: "Suffix",
     width: 300,
     render: (item) => (
       <div
         key="name"
-        className="max-w-[200px] sm:max-w-full break-all sm:break-normal whitespace-pre-wrap capitalize"
-        title={item.username}
+        className="max-w-[200px] sm:max-w-full break-all sm:break-normal whitespace-pre-wrap"
+        title={item.suffix}
       >
-        {item.username}
+        {item.suffix}
       </div>
     ),
   },
@@ -33,7 +33,7 @@ const columnsDef = [
 
 export default function AuthorityTable() {
   const { component: SearchBoxComponent } = useSearchComponent({
-    placeholder: "Search name or address",
+    placeholder: "Search suffix or authority",
   });
   const { loading, data, total, pageComponent } =
     useSearchIdentityAuthorityData();

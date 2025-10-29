@@ -42,7 +42,7 @@ export default function UsernameTable() {
   const router = useRouter();
   const authority = getRouterQuery(router, "authority");
   const { component: SearchBoxComponent } = useSearchComponent({
-    placeholder: "Search username or address",
+    placeholder: "Search username or account",
   });
   const { loading, data, total, pageComponent } =
     useSearchIdentityUsernameData();
@@ -50,7 +50,7 @@ export default function UsernameTable() {
   return (
     <div className="flex flex-col gap-y-4">
       <div>
-        <TitleContainer>
+        <TitleContainer className="h-7">
           <span className="inline-flex items-center">
             List
             <span className="text-textTertiary text16Medium ml-1">
