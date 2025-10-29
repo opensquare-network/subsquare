@@ -3,11 +3,6 @@ import { createContext, useContext } from "react";
 import { useAsync } from "react-use";
 import { backendApi } from "next-common/services/nextApi";
 
-export const DV_DATA_TYPE = {
-  ALL_REFERENDA: "referenda",
-  TRACK_REFERENDA: "track",
-};
-
 const DvReferendaDataContext = createContext();
 
 export default function DvReferendaDataProvider({ children }) {
@@ -22,17 +17,17 @@ export default function DvReferendaDataProvider({ children }) {
     }
     return await backendApi
       .fetch(`/dv/cohorts/${cohort.id}/referenda`)
-      .then((res) => {
-        const list = res.result.map(({ tally, state, trackInfo, ...item }) => {
+      .then((res) =>
+        res.result.map(({ tally, state, trackInfo, ...item }) => {
           return {
             ...item,
+            tally,
+            state,
             trackInfo,
             onchainData: { tally, state, trackInfo },
-            state,
           };
-        });
-        return list.filter((item) => cohort.tracks.includes(item.track));
-      });
+        }),
+      );
   }, [cohort]);
 
   return (
