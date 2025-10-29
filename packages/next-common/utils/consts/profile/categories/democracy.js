@@ -11,6 +11,7 @@ export const democracyCategory = {
     {
       id: "referendums",
       name: "Referenda",
+      categoryName: "Proposed democracy referenda",
       categoryId: businessCategory.democracyReferenda,
       routePath: "democracy/referenda",
       apiPath: "referendums",
@@ -19,6 +20,7 @@ export const democracyCategory = {
     {
       id: "externals",
       name: "Externals",
+      categoryName: "Proposed democracy externals",
       categoryId: businessCategory.democracyExternals,
       routePath: "democracy/externals",
       apiPath: "external-proposals",
@@ -28,6 +30,7 @@ export const democracyCategory = {
     {
       id: "proposals",
       name: "Proposals",
+      categoryName: "Proposed democracy proposals",
       categoryId: businessCategory.democracyProposals,
       routePath: "democracy/proposals",
       apiPath: "public-proposals",

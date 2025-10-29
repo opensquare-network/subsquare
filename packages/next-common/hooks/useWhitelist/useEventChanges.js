@@ -11,7 +11,6 @@ export default function useEventChanges(checks, filter, startValue) {
   const [state, setState] = useState();
   const memoChecks = useMemoValue(checks);
   const { blockHash, events } = useEventTrigger(memoChecks);
-  // console.log(events);
 
   // when startValue changes, we do a full refresh
   useEffect(() => {

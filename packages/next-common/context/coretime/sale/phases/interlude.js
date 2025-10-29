@@ -1,11 +1,11 @@
-import useCoretimeChainOrScanHeight from "next-common/hooks/coretime/scanHeight";
-import { useCoretimeSaleInitHeight } from "next-common/context/coretime/sale/provider";
+import { useRelayChainLatestHeight } from "next-common/hooks/relayScanHeight";
+import { useCoretimeSaleRelayIndexerHeight } from "next-common/context/coretime/sale/provider";
 import useCoretimeSaleStart from "next-common/hooks/coretime/useCoretimeSaleStart";
 
 export function useIsCoretimeSaleInterludePhase() {
-  const chainHeight = useCoretimeChainOrScanHeight();
+  const chainHeight = useRelayChainLatestHeight();
   const saleStartHeight = useCoretimeSaleStart();
-  const initHeight = useCoretimeSaleInitHeight();
+  const relayIndexerHeight = useCoretimeSaleRelayIndexerHeight();
 
-  return chainHeight >= initHeight && chainHeight < saleStartHeight;
+  return chainHeight >= relayIndexerHeight && chainHeight < saleStartHeight;
 }

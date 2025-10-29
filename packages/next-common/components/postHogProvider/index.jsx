@@ -21,7 +21,7 @@ function PostHogProviderImpl({ children, posthogKey }) {
         }
       },
       debug: IS_DEVELOPMENT,
-      capture_pageleave: false,
+      capture_pageleave: true,
       session_recording: {
         recordCrossOriginIframes: true,
         blockSelector: ".ph-block-image",

@@ -11,6 +11,7 @@ export const treasuryCategory = {
     {
       id: "proposals",
       name: "Proposed Proposals",
+      categoryName: "Proposed treasury proposals",
       categoryId: businessCategory.treasuryProposals,
       routePath: "treasury/proposals",
       apiPath: "treasury-proposals",
@@ -19,6 +20,7 @@ export const treasuryCategory = {
     {
       id: "bounties",
       name: "Bounties",
+      categoryName: "Proposed treasury bounties",
       categoryId: businessCategory.treasuryBounties,
       routePath: "treasury/bounties",
       apiPath: "bounties",
@@ -28,6 +30,7 @@ export const treasuryCategory = {
     {
       id: "tips",
       name: "Proposed Tips",
+      categoryName: "Proposed treasury tips",
       categoryId: businessCategory.treasuryTips,
       routePath: "treasury/tips",
       apiPath: "tips",

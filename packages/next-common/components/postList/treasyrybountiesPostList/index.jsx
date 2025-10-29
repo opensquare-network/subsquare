@@ -6,6 +6,7 @@ import { ListWrapper } from "../styled";
 import PostItem from "./postItem";
 
 export default function TreasuryBountiesPostList({
+  title = "List",
   titleCount = null,
   items,
   pagination,
@@ -14,7 +15,7 @@ export default function TreasuryBountiesPostList({
   return (
     <ListWrapper>
       <ListTitleBar
-        title="Proposed treasury bounties"
+        title={title}
         titleCount={titleCount}
         titleExtra={titleExtra}
         link="/treasury/bounties"

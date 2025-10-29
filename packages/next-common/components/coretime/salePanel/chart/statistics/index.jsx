@@ -2,7 +2,7 @@ import BigNumber from "bignumber.js";
 import { maxBy, range } from "lodash-es";
 import "next-common/components/charts/globalConfig";
 import { useThemeSetting } from "next-common/context/theme";
-import useCoretimeChainOrScanHeight from "next-common/hooks/coretime/scanHeight";
+import { useRelayChainLatestHeight } from "next-common/hooks/relayScanHeight";
 import { cn } from "next-common/utils";
 import { useCallback, useMemo, useState } from "react";
 import { Line } from "react-chartjs-2";
@@ -49,12 +49,12 @@ function StatisticsImpl({
   totalBlocks = 0,
   saleStart,
 }) {
-  const chainHeight = useCoretimeChainOrScanHeight();
+  const chainHeight = useRelayChainLatestHeight();
 
   const totalBlocksIndex = toIndex(totalBlocks);
   const initBlockHeightIndex = toIndex(initBlockHeight);
   const saleStartIndex = toIndex(saleStart);
-  const chainHeightIndex = toIndex(chainHeight);
+  const relayHeightIndex = toIndex(chainHeight);
 
   const indexes = useMemo(() => range(0, totalBlocksIndex), [totalBlocksIndex]);
 
@@ -67,10 +67,10 @@ function StatisticsImpl({
 
     return Math.max(
       0,
-      Math.min(chainHeightIndex - initBlockHeightIndex, endIndex),
+      Math.min(relayHeightIndex - initBlockHeightIndex, endIndex),
     );
   }, [
-    chainHeightIndex,
+    relayHeightIndex,
     coretimeSale?.isFinal,
     initBlockHeightIndex,
     totalBlocksIndex,
