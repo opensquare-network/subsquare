@@ -91,6 +91,7 @@ function MobileTable({ voteActions, loading, listKey }) {
   const columns = useMemo(() => {
     return [{ name: null }, { name: null }, { name: null }, { name: null }];
   }, []);
+  console.log(voteActions);
 
   const rows = useMemo(() => {
     return voteActions?.map((item) => {
