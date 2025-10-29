@@ -1,10 +1,10 @@
 import useQueryVoteActions from "./useQueryVoteActions";
-import { useRouter } from "next/router";
+import { useOnchainData } from "next-common/context/post";
 import { useMemo } from "react";
 
 export default function useFellowshipReferendaActions() {
-  const router = useRouter();
-  const { loading, voteActions = [] } = useQueryVoteActions(router.query.id);
+  const { referendumIndex } = useOnchainData();
+  const { loading, voteActions = [] } = useQueryVoteActions(referendumIndex);
   const maxImpactVotes = useMaxImpactVotes(voteActions);
 
   const data = useMemo(
