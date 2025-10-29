@@ -29,19 +29,19 @@ export const peopleMenu = {
       icon: <MenuData />,
     },
     {
-      name: "Usernames",
-      value: "usernames",
-      pathname: "/people/usernames",
-      icon: <InfoUsers />,
+      name: "Registrars",
+      value: "registrars",
+      pathname: "/people/registrars",
+      icon: <MenuRegistrars />,
     },
     {
       type: "divider",
     },
     {
-      name: "Registrars",
-      value: "registrars",
-      pathname: "/people/registrars",
-      icon: <MenuRegistrars />,
+      name: "Usernames",
+      value: "usernames",
+      pathname: "/people/usernames",
+      icon: <InfoUsers />,
     },
   ],
 };
