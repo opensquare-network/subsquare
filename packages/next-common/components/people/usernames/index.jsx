@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
 import { getRouterQuery } from "next-common/utils/router";
-import ChainSocialLinks from "next-common/components/chain/socialLinks";
 import generateLayoutRawTitle from "next-common/utils/generateLayoutRawTitle";
 import BaseLayout from "next-common/components/layout/baseLayout";
 import { cn } from "next-common/utils";
@@ -13,12 +12,13 @@ const tabs = [
   {
     value: "usernames",
     label: "Usernames",
-    description: "",
+    description:
+      "Usernames are issued by username authorities and it's independent of the identity information functionality.",
   },
   {
     value: "authorities",
     label: "Authorities",
-    description: "",
+    description: "Username authorities can issue usernames.",
   },
 ];
 
@@ -43,7 +43,6 @@ export default function UsernamesPage() {
             <h3 className="text20Bold text-textPrimary">{label}</h3>
           </div>
           <p className="text14Medium text-textTertiary">{description}</p>
-          <ChainSocialLinks className="mt-2" />
         </div>
 
         <div className={cn("px-12 mx-auto max-w-[1200px]", "max-sm:px-6")}>
