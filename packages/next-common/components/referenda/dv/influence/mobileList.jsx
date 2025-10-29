@@ -34,34 +34,33 @@ export default function InfluenceMobileList({
     return (
       <ListRow
         key={row.referendumIndex}
-        row={row}
+        referendumDetail={row}
         delegateReferendumVotesMap={delegateReferendumVotesMap}
       />
     );
   });
 }
 
-function ListRow({ row, delegateReferendumVotesMap }) {
+function ListRow({ referendumDetail, delegateReferendumVotesMap }) {
   const { symbol, decimals } = useChainSettings();
+  const { referendumIndex, track, tally, state } = referendumDetail;
 
   return (
-    <div key={row.referendumIndex}>
+    <div key={referendumIndex}>
       <div className="flex items-center gap-2 h-6">
         <PostTitleImpl
           key="title"
-          referendumIndex={row.referendumIndex}
-          title={getGov2ReferendumTitle(row)}
-          url={`/referenda/${row.referendumIndex}`}
+          referendumIndex={referendumIndex}
+          title={getGov2ReferendumTitle(referendumDetail)}
+          url={`/referenda/${referendumIndex}`}
           className={cn(
             "text14Medium flex flex-1 items-center [&>a]:truncate [&>a]:flex-1",
           )}
         />
         <LoadableContent key="action">
           <ActionButton
-            referendum={row}
-            referendumVotes={
-              delegateReferendumVotesMap[row.referendumIndex] || []
-            }
+            referendum={referendumDetail}
+            referendumVotes={delegateReferendumVotesMap[referendumIndex] || []}
           />
         </LoadableContent>
       </div>
@@ -71,14 +70,14 @@ function ListRow({ row, delegateReferendumVotesMap }) {
         items={[
           {
             label: "Track",
-            value: <TrackTag key="track" id={row.track} />,
+            value: <TrackTag key="track" id={track} />,
           },
           {
             label: "Vote Bar",
             value: (
               <LoadableContent key="votesSummary">
                 <PostVotesSummary
-                  tally={row?.onchainData?.tally}
+                  tally={tally}
                   decimals={decimals}
                   symbol={symbol}
                 />
@@ -87,16 +86,16 @@ function ListRow({ row, delegateReferendumVotesMap }) {
           },
           {
             label: "Status",
-            value: <StateTag state={row.state} />,
+            value: <StateTag state={state} />,
           },
           {
             label: "Influence",
             value: (
               <LoadableContent key="influence">
                 <InfluenceValue
-                  referendum={row}
+                  referendum={referendumDetail}
                   referendumVotes={
-                    delegateReferendumVotesMap?.[row.referendumIndex] || []
+                    delegateReferendumVotesMap?.[referendumIndex] || []
                   }
                 />
               </LoadableContent>

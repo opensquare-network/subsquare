@@ -58,7 +58,7 @@ export default function InfluenceDesktopList({
       renderItem={(_, idx) => (
         <ListRow
           key={idx}
-          row={list[idx]}
+          referendumDetail={list[idx]}
           delegateReferendumVotesMap={delegateReferendumVotesMap}
         />
       )}
@@ -66,9 +66,9 @@ export default function InfluenceDesktopList({
   );
 }
 
-function ListRow({ row, delegateReferendumVotesMap }) {
+function ListRow({ referendumDetail, delegateReferendumVotesMap }) {
   const { symbol, decimals } = useChainSettings();
-  const referendumDetail = row;
+  const { referendumIndex, track, tally, state } = referendumDetail;
 
   return (
     <DataListItem
@@ -78,36 +78,28 @@ function ListRow({ row, delegateReferendumVotesMap }) {
       row={[
         <PostTitleImpl
           key="title"
-          referendumIndex={row.referendumIndex}
+          referendumIndex={referendumIndex}
           className={cn(
             "text14Medium flex items-center [&>a]:truncate [&>a]:max-w-full [&>a]:whitespace-nowrap",
           )}
           title={getGov2ReferendumTitle(referendumDetail)}
-          url={`/referenda/${row.referendumIndex}`}
+          url={`/referenda/${referendumIndex}`}
         />,
-        <TrackTag key="track" id={row.track} />,
+        <TrackTag key="track" id={track} />,
         <LoadableContent key="votesSummary">
-          <PostVotesSummary
-            tally={referendumDetail?.onchainData?.tally}
-            decimals={decimals}
-            symbol={symbol}
-          />
+          <PostVotesSummary tally={tally} decimals={decimals} symbol={symbol} />
         </LoadableContent>,
-        <StateTag key="state" state={row?.state} />,
+        <StateTag key="state" state={state} />,
         <LoadableContent key="influence">
           <InfluenceValue
             referendum={referendumDetail}
-            referendumVotes={
-              delegateReferendumVotesMap[row.referendumIndex] || []
-            }
+            referendumVotes={delegateReferendumVotesMap[referendumIndex] || []}
           />
         </LoadableContent>,
         <LoadableContent key="action">
           <ActionButton
             referendum={referendumDetail}
-            referendumVotes={
-              delegateReferendumVotesMap[row.referendumIndex] || []
-            }
+            referendumVotes={delegateReferendumVotesMap[referendumIndex] || []}
             key="action"
           />
         </LoadableContent>,
