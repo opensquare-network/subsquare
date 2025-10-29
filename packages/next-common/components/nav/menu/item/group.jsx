@@ -9,6 +9,7 @@ import { useUpdateEffect } from "react-use";
 import NavMenuItemItem from "./item";
 import NavMenuDivider from "../../divider";
 import { sumBy } from "lodash-es";
+import { NAV_MENU_TYPE } from "next-common/utils/constants";
 
 const childActived = (menu = [], pathname) => {
   for (const menuItem of menu) {
@@ -71,7 +72,9 @@ export default function NavMenuItemGroup({
           <HoverCard.Trigger>
             <NavMenuItemItem
               item={{
-                ...omit(menu, "pathname"),
+                ...(menu.type === NAV_MENU_TYPE.subspace
+                  ? menu
+                  : omit(menu, "pathname")),
                 name: startCase(capitalize(menu.name)),
                 activeCount:
                   sumBy(

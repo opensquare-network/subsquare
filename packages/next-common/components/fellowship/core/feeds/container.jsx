@@ -2,7 +2,7 @@ import { FilterContainer } from "next-common/components/styled/containers/titleC
 import FellowshipCoreFeedsList from "./list";
 import { useState, useEffect } from "react";
 import useEventFilter from "next-common/hooks/fellowship/useEventFilter";
-import SearchBox from "next-common/components/preImages/searchBox";
+import SearchBox from "next-common/components/searchBox";
 import { useRouter } from "next/router";
 import { objectToQueryString } from "next-common/utils/url";
 import FilterButton from "next-common/components/filterButton";
@@ -53,7 +53,7 @@ function FellowshipCoreFeedsFilter({ feeds = {} }) {
         <SearchBox
           value={searchValue}
           setValue={setSearchValue}
-          placeholder={"Search address"}
+          placeholder="Search address"
         />
         <FilterButton
           className="max-md:w-full md:w-[67px]"

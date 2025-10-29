@@ -6,7 +6,7 @@ import { debounce } from "lodash-es";
 export default function SearchBox({
   value,
   setValue,
-  placeholder = "Search hash",
+  placeholder = "",
   isDebounce = false,
   debounceDelay = 500,
 }) {
@@ -32,6 +32,7 @@ export default function SearchBox({
   return (
     <div className="flex items-center gap-x-2 max-md:w-full text12Normal">
       <Input
+        className="w-full"
         size="small"
         placeholder={placeholder}
         prefix={<SystemSearch className="text-textTertiary w-5 h-5" />}
