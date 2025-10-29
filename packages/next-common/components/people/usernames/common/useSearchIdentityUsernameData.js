@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { getRouterQuery } from "next-common/utils/router";
 import { defaultPageSize } from "next-common/utils/constants";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
+import { isSameAddress } from "next-common/utils";
 
 export function useIdentityUsernameInfoOf() {
   const api = useContextApi();
@@ -55,7 +56,7 @@ export default function useSearchIdentityUsernameData() {
     const list = sourceData.filter((item) => {
       const matchSearch = querySearch
         ? item?.username?.toLowerCase().includes(searchLower) ||
-          item?.owner?.toLowerCase().includes(searchLower)
+          isSameAddress(item?.owner, querySearch)
         : true;
 
       const matchAuthority = authority

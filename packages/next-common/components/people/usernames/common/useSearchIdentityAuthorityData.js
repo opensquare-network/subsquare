@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { getRouterQuery } from "next-common/utils/router";
 import { defaultPageSize } from "next-common/utils/constants";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
+import { isSameAddress } from "next-common/utils";
 
 export default function useSearchIdentityAuthorityData() {
   const router = useRouter();
@@ -21,7 +22,7 @@ export default function useSearchIdentityAuthorityData() {
     const list = sourceData.filter((item) => {
       return querySearch
         ? item?.username?.toLowerCase().includes(searchLower) ||
-            item?.accountId?.toLowerCase().includes(searchLower)
+            isSameAddress(item?.accountId, querySearch)
         : true;
     });
 
