@@ -34,7 +34,6 @@ export const getServerSideProps = withReferendaCommonProps(async () => {
       await Promise.all([
         backendApi.fetch(`/dv/cohorts/${activeCohort.id}`),
         backendApi.fetch(`/dv/cohorts/${activeCohort.id}/votes`),
-        backendApi.fetch(`/dv/cohorts/${activeCohort.id}/referenda`),
       ]);
     cohort = cohortResult;
     votes = votesResult;
