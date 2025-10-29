@@ -28,21 +28,16 @@ export const getServerSideProps = withReferendaCommonProps(async () => {
   const activeCohort = cohorts?.find((cohort) => isNil(cohort.endIndexer));
   let cohort = null;
   let votes = [];
-  let referenda = [];
 
   if (activeCohort) {
-    const [
-      { result: cohortResult },
-      { result: votesResult },
-      { result: referendaResult },
-    ] = await Promise.all([
-      backendApi.fetch(`/dv/cohorts/${activeCohort.id}`),
-      backendApi.fetch(`/dv/cohorts/${activeCohort.id}/votes`),
-      backendApi.fetch(`/dv/cohorts/${activeCohort.id}/referenda`),
-    ]);
+    const [{ result: cohortResult }, { result: votesResult }] =
+      await Promise.all([
+        backendApi.fetch(`/dv/cohorts/${activeCohort.id}`),
+        backendApi.fetch(`/dv/cohorts/${activeCohort.id}/votes`),
+        backendApi.fetch(`/dv/cohorts/${activeCohort.id}/referenda`),
+      ]);
     cohort = cohortResult;
     votes = votesResult;
-    referenda = referendaResult;
   }
 
   return {
@@ -51,7 +46,6 @@ export const getServerSideProps = withReferendaCommonProps(async () => {
       cohorts,
       cohortsCount,
       votes,
-      referenda,
     },
   };
 });
