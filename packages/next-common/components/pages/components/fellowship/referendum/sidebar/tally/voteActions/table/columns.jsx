@@ -11,6 +11,7 @@ import {
 } from "next-common/components/pages/components/gov2/sidebar/tally/voteActions/table/fields/detail";
 import { ProgressDisplay } from "next-common/components/pages/components/gov2/sidebar/tally/voteActions/table/fields/impact";
 import { VOTE_TYPE_CONFIG } from "next-common/components/pages/components/gov2/sidebar/tally/voteActions/common";
+import FellowshipRank from "next-common/components/fellowship/rank";
 
 function ActionField({ data: { indexer, formatData } }) {
   return (
@@ -83,11 +84,20 @@ function ImpactVotesField({ data: { maxImpactVotes, formatData } }) {
   );
 }
 
+const AddressWithRank = ({ who, rank }) => {
+  return (
+    <div className="flex items-center gap-x-2">
+      <FellowshipRank rank={rank} />
+      <AddressUser add={who} />
+    </div>
+  );
+};
+
 export const desktopColumns = [
   {
     name: "Account",
     className: "",
-    render: ({ who }) => <AddressUser add={who} />,
+    render: ({ who, rank }) => <AddressWithRank who={who} rank={rank} />,
   },
   {
     name: "Action",
@@ -128,7 +138,7 @@ export const mobileColumns = [
   {
     name: "Account",
     className: "",
-    render: ({ who }) => <AddressUser key="who" add={who} />,
+    render: ({ who, rank }) => <AddressWithRank who={who} rank={rank} />,
   },
   {
     render: (data) => (
