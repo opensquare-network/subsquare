@@ -97,10 +97,7 @@ export const getServerSideProps = withReferendaCommonProps(async (context) => {
     };
   }
 
-  const [{ result: votes }] = await Promise.all([
-    backendApi.fetch(`${baseUrl}/votes`),
-  ]);
-
+  const { result: votes } = await backendApi.fetch(`${baseUrl}/votes`);
   return {
     props: {
       id,
