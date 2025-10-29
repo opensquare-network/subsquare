@@ -7,6 +7,7 @@ const FellowshipVoteActionsPopup = dynamicPopup(() => import("./popup"));
 
 export default function VoteActions() {
   const [showVoteActions, setShowVoteActions] = useState(false);
+
   return (
     <>
       <Tooltip

@@ -1,6 +1,6 @@
-import { useMemo } from "react";
-import { useRouter } from "next/router";
 import useQueryVoteActions from "./useQueryVoteActions";
+import { useRouter } from "next/router";
+import { useMemo } from "react";
 
 export default function useFellowshipReferendaActions() {
   const router = useRouter();
