@@ -17,7 +17,7 @@ export default function AuthoritySelect({ value = NONE, onChange = noop }) {
         value: NONE,
         label: "All Authority",
       },
-      ...data.map(({ username }) => ({ label: username, value: username })),
+      ...data.map(({ suffix }) => ({ label: suffix, value: suffix })),
     ];
   }, [data]);
 
