@@ -59,7 +59,7 @@ export function useFilteredPools(pools) {
     let filtered = pools;
     if (status) {
       filtered = filtered.filter(
-        (pool) => pool.value.state?.toLowerCase() === status.toLowerCase(),
+        (pool) => pool.state?.toLowerCase() === status.toLowerCase(),
       );
     }
     return filtered;

@@ -15,10 +15,16 @@ export function useBondedPools() {
       ?.entries()
       .then((pools) => {
         const normalizedPools = pools
-          .map(([key, value]) => ({
-            poolId: key.args[0].toString(),
-            value: value.toJSON(),
-          }))
+          .map(([key, value]) => {
+            const poolId = key.args[0].toString();
+            const valueData = value.toJSON() || {};
+            const { roles, ...rest } = valueData;
+            return {
+              poolId,
+              ...rest,
+              roles: [roles] || [],
+            };
+          })
           .sort((a, b) => a.poolId - b.poolId);
         setPools(normalizedPools);
       })

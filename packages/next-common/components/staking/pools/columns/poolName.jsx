@@ -5,7 +5,7 @@ export default function PoolNameColumn({ poolId }) {
   const { name, loading } = usePoolMetadata(poolId);
 
   return (
-    <p
+    <div
       title={name}
       className="flex-1 overflow-hidden text-textPrimary flex line-clamp-1 mr-4 text14Medium"
     >
@@ -15,6 +15,6 @@ export default function PoolNameColumn({ poolId }) {
       <div className="cursor-pointer hover:underline truncate break-words max-w-[280px]">
         <LoadableContent isLoading={loading}>{name}</LoadableContent>
       </div>
-    </p>
+    </div>
   );
 }

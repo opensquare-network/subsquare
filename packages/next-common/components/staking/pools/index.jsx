@@ -7,11 +7,19 @@ import {
   StakingFilterProvider,
   useFilteredPools,
 } from "../filter";
+import { useListPagination } from "next-common/components/pagination/usePaginationComponent";
+
+const PAGE_SIZE = 50;
 
 function PoolsImpl() {
   const { pools, loading } = useBondedPools();
   const filteredPools = useFilteredPools(pools);
   const count = filteredPools?.length || 0;
+
+  const { pagedItems: pagedPools, component: pagination } = useListPagination(
+    filteredPools,
+    PAGE_SIZE,
+  );
 
   return (
     <div className="flex flex-col gap-4">
@@ -24,7 +32,8 @@ function PoolsImpl() {
         <StakingFilter />
       </div>
       <SecondaryCard>
-        <PoolsTableList list={filteredPools} loading={loading} />
+        <PoolsTableList list={pagedPools} loading={loading} />
+        {pagination}
       </SecondaryCard>
     </div>
   );
