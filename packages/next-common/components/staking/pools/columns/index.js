@@ -73,11 +73,19 @@ function MaybePoolNameOrRoles({ value }) {
 }
 
 function RolesColumn({ value = {} }) {
-  const addresses = Object.entries(value);
+  const addresses = Object.entries(value).filter(
+    ([, address]) => !isNil(address),
+  );
+
   return (
     <div>
       {addresses.map(([role, address]) => (
-        <AddressUser key={`${role}-${address}`} add={address} />
+        <div key={`${role}-${address}`} className="flex items-center gap-x-2">
+          <span className="text14Medium text-textTertiary w-[68px]">
+            {role}
+          </span>
+          <AddressUser add={address} />
+        </div>
       ))}
     </div>
   );
