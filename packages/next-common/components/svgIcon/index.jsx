@@ -8,7 +8,7 @@ import svgHtml, { nameList } from "./config";
 export function IconTemplate() {
   return (
     <svg
-      className="absolute opacity-0 pointer-events-none"
+      className="absolute w-0 h-0 opacity-0 pointer-events-none"
       aria-hidden="true"
       dangerouslySetInnerHTML={{ __html: svgHtml }}
     ></svg>
@@ -25,7 +25,11 @@ export function IconTemplate() {
 export default function Icon({ name, className }) {
   if (!nameList.includes(name)) {
     if (process.env.NODE_ENV === "development") {
-      console.error(`Icon "${name}" is not defined. Available icons: ${nameList.join(", ")}`);
+      console.error(
+        `Icon "${name}" is not defined. Available icons: ${nameList.join(
+          ", ",
+        )}`,
+      );
     }
     return null;
   }
