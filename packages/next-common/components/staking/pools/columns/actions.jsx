@@ -2,7 +2,7 @@ import { SystemMore } from "@osn/icons/subsquare";
 import * as Popover from "@radix-ui/react-popover";
 import { MenuDelegation } from "@osn/icons/subsquare";
 import { isNil } from "lodash-es";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { ActionIconButton } from "next-common/components/multisigs/styled";
 import {
   OptionItem,
@@ -20,12 +20,50 @@ const ClaimPayoutPopup = dynamicPopup(() =>
   import("next-common/components/staking/actions/claimPayoutPopup"),
 );
 
-export default function CellActions({ value }) {
+export default function CellActions({ value, myPool }) {
   const [showJoinPopup, setShowJoinPopup] = useState(false);
   const [showBondExtraPopup, setShowBondExtraPopup] = useState(false);
   const [showClaimPayoutPopup, setShowClaimPayoutPopup] = useState(false);
 
-  if (isNil(value.poolId)) {
+  const items = useMemo(() => {
+    if (!value) {
+      return [];
+    }
+    return [
+      isNil(myPool) && (
+        <OptionItem
+          key="join-pool"
+          disabled={value.state !== "Open"}
+          className="flex items-center grow gap-x-2"
+          onClick={() => setShowJoinPopup(true)}
+        >
+          <MenuDelegation className="w-5 h-5" /> Join Pool
+        </OptionItem>
+      ),
+      !isNil(myPool) && String(myPool.poolId) === String(value?.poolId) && (
+        <OptionItem
+          key="bond-extra"
+          disabled={value.state !== "Open"}
+          className="flex items-center grow gap-x-2"
+          onClick={() => setShowBondExtraPopup(true)}
+        >
+          <MenuDelegation className="w-5 h-5" /> Bond Extra
+        </OptionItem>
+      ),
+      !isNil(myPool) && (
+        <OptionItem
+          key="claim-payout"
+          disabled={value.state !== "Open"}
+          className="flex items-center grow gap-x-2"
+          onClick={() => setShowClaimPayoutPopup(true)}
+        >
+          <MenuDelegation className="w-5 h-5" /> Claim Payout
+        </OptionItem>
+      ),
+    ].filter(Boolean);
+  }, [myPool, value]);
+
+  if (isNil(value.poolId) || !items.length) {
     return null;
   }
 
@@ -42,27 +80,7 @@ export default function CellActions({ value }) {
         <Popover.Portal>
           <Popover.Content side="top" align="end" sideOffset={5}>
             <OptionWrapper className="static !shadow-200 text14Medium">
-              <OptionItem
-                disabled={value.state !== "Open"}
-                className="flex items-center grow gap-x-2"
-                onClick={() => setShowJoinPopup(true)}
-              >
-                <MenuDelegation className="w-5 h-5" /> Join Pool
-              </OptionItem>
-              <OptionItem
-                disabled={value.state !== "Open"}
-                className="flex items-center grow gap-x-2"
-                onClick={() => setShowBondExtraPopup(true)}
-              >
-                <MenuDelegation className="w-5 h-5" /> Bond Extra
-              </OptionItem>
-              <OptionItem
-                disabled={value.state !== "Open"}
-                className="flex items-center grow gap-x-2"
-                onClick={() => setShowClaimPayoutPopup(true)}
-              >
-                <MenuDelegation className="w-5 h-5" /> Claim Payout
-              </OptionItem>
+              {items}
             </OptionWrapper>
           </Popover.Content>
         </Popover.Portal>

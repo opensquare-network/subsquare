@@ -4,8 +4,8 @@ import useSubStorage from "next-common/hooks/common/useSubStorage";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useEffect, useState } from "react";
 
-export default function useMyPool() {
-  const [rewardLoading, setRewardLoading] = useState(true);
+export default function useMyPool(rewardPools = false) {
+  const [rewardLoading, setRewardLoading] = useState(false);
   const [result, setResult] = useState(null);
   const api = useContextApi();
   const realAddress = useRealAddress();
@@ -20,13 +20,18 @@ export default function useMyPool() {
       return;
     }
 
-    const jsonPoolMember = poolMember.toJSON();
+    const jsonPoolMember = poolMember?.toJSON() || {};
+
+    if (!rewardPools) {
+      setResult(jsonPoolMember);
+      return;
+    }
 
     setRewardLoading(true);
     api?.query?.nominationPools
       ?.rewardPools?.(jsonPoolMember.poolId)
       .then((rewardResult) => {
-        const jsonRewardResult = rewardResult.toJSON();
+        const jsonRewardResult = rewardResult?.toJSON() || {};
         const claimable = BigNumber(jsonPoolMember.lastRecordedRewardCounter)
           .minus(BigNumber(jsonRewardResult.lastRecordedRewardCounter))
           .times(jsonPoolMember.points);
@@ -37,7 +42,7 @@ export default function useMyPool() {
         });
       })
       .finally(() => setRewardLoading(false));
-  }, [api, poolMember]);
+  }, [api, poolMember, rewardPools]);
 
   return {
     result,

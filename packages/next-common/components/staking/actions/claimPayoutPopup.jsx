@@ -22,7 +22,7 @@ function ClaimPayoutPopupContent() {
   const { onClose } = usePopupParams();
   const api = useContextApi();
   const { symbol, decimals } = useChainSettings();
-  const { result, loading } = useMyPool();
+  const { result, loading } = useMyPool(true);
 
   const getTxFunc = useCallback(() => {
     if (!api || !api.tx.nominationPools) {
