@@ -15,7 +15,7 @@ import {
   AssetIconVdot,
   AssetIconHdx,
 } from "@osn/icons/subsquare";
-import { AssetIconBnc } from "next-common/components/svgIcon";
+import { AssetIconBnc } from "next-common/components/injectIcon";
 
 export const foreignAssetWETH = {
   id: "0xd7dee8acf39d719622ad2115fe9a82860651bd8053e7f7a6e1461f678b6caa7e",
