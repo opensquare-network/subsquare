@@ -8,10 +8,10 @@ import {
   AssetIconPas,
   AssetIconHdx,
   AssetIconPlaceholder,
-  AssetIconBnc,
   AssetIconBsx,
 } from "@osn/icons/subsquare";
 import { foreignAssetInfo } from "next-common/utils/consts/foreignAssets";
+import { AssetIconBnc } from "next-common/components/svgIcon";
 
 const knownAssetHubAssetsMap = Object.freeze({
   [Chains.polkadotAssetHub]: knownPolkadotAssetHubAssets,
