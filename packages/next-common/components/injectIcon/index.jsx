@@ -1,5 +1,6 @@
 import { cn } from "next-common/utils";
 import { injectSvgHtml, injectIconNames } from "./config";
+import { IS_DEVELOPMENT } from "next-common/utils/constants";
 
 export function InjectIconTemplate() {
   return (
@@ -13,7 +14,7 @@ export function InjectIconTemplate() {
 
 export default function InjectIcon({ name, className }) {
   if (!injectIconNames.includes(name)) {
-    if (process.env.NODE_ENV === "development") {
+    if (IS_DEVELOPMENT) {
       console.error(
         `Icon "${name}" is not defined. Available icons: ${injectIconNames.join(
           ", ",
