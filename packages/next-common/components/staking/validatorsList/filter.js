@@ -26,7 +26,7 @@ export function ValidatorsFilter() {
   return (
     <DropdownFilter className="w-[240px]">
       <div className="flex items-center text12Medium">
-        <span className="text-textPrimary my-[12px] w-full">Active</span>
+        <span className="text-textPrimary my-[12px] w-full">Active only</span>
         <Toggle size="small" isOn={isActive} onToggle={setIsActive} />
       </div>
       <div className="flex items-center text12Medium">
