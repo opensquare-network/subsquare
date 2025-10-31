@@ -13,7 +13,7 @@ export default function PoolNameColumn({ poolId }) {
         #{poolId}
       </span>
       <div className="cursor-pointer hover:underline truncate break-words max-w-[280px]">
-        <LoadableContent isLoading={loading}>{name}</LoadableContent>
+        <LoadableContent isLoading={loading}>{name || "-"}</LoadableContent>
       </div>
     </div>
   );

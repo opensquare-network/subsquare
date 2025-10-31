@@ -5,6 +5,7 @@ import PoolNameColumn from "./poolName";
 import { toPrecision } from "next-common/utils";
 import { isNil } from "lodash-es";
 import { AddressUser } from "next-common/components/user";
+import CellActions from "./actions";
 
 const columns = [
   {
@@ -16,7 +17,7 @@ const columns = [
   {
     key: "totalBonded",
     name: "Total Bonded",
-    className: "text-right w-[120px]",
+    className: "text-right",
     width: 120,
     render: (data) => (
       <EmptyGuard value={data.points}>
@@ -27,7 +28,7 @@ const columns = [
   {
     key: "members",
     name: "Members",
-    className: "text-right w-[120px]",
+    className: "text-right",
     width: 120,
     render: (data) => (
       <EmptyGuard value={data.memberCounter}>{data.memberCounter}</EmptyGuard>
@@ -36,13 +37,20 @@ const columns = [
   {
     key: "status",
     name: "Status",
-    className: "text-right w-[120px]",
+    className: "text-right",
     width: 120,
     render: (data) => (
       <EmptyGuard value={data.state}>
         <PoolsTag state={data.state} />
       </EmptyGuard>
     ),
+  },
+  {
+    key: "actions",
+    name: "",
+    className: "text-right",
+    width: 60,
+    render: (data) => <CellActions value={data} />,
   },
 ];
 
