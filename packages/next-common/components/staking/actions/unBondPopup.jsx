@@ -13,26 +13,41 @@ import AdvanceSettings from "next-common/components/summary/newProposalQuickStar
 import EstimatedGas from "next-common/components/estimatedGas";
 import { checkTransferAmount } from "next-common/utils/checkTransferAmount";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import BigNumber from "bignumber.js";
+import { toPrecision } from "next-common/utils";
 
 function UnBondPopupContent() {
-  const { onClose } = usePopupParams();
+  const { onClose, bonded } = usePopupParams();
   const api = useContextApi();
   const [amount, setAmount] = useState();
   const { decimals, symbol } = useChainSettings();
   const realAddress = useRealAddress();
 
-  const { getTxFuncForSubmit, getTxFuncForFee } = useTxBuilder(() => {
-    if (!api || !api.tx.nominationPools) {
-      return;
-    }
+  const { getTxFuncForSubmit, getTxFuncForFee } = useTxBuilder(
+    (toastError) => {
+      if (!api || !api.tx.nominationPools) {
+        return;
+      }
 
-    const checkedAmount = checkTransferAmount({
-      transferAmount: amount,
-      decimals,
-    });
+      const checkedAmount = checkTransferAmount({
+        transferAmount: amount,
+        decimals,
+      });
 
-    return api.tx.nominationPools.unbond(realAddress, checkedAmount);
-  }, [api, amount, realAddress]);
+      if (BigNumber(checkedAmount).gt(bonded)) {
+        toastError(
+          `Amount must be less than or equal to your bonded amount of ${toPrecision(
+            bonded,
+            decimals,
+          )} ${symbol}`,
+        );
+        return;
+      }
+
+      return api.tx.nominationPools.unbond(realAddress, checkedAmount);
+    },
+    [api, amount, realAddress, bonded, decimals, symbol],
+  );
 
   return (
     <div className="space-y-4">
@@ -54,9 +69,9 @@ function UnBondPopupContent() {
   );
 }
 
-export default function UnBondPopup({ onClose }) {
+export default function UnBondPopup({ onClose, bonded }) {
   return (
-    <SignerPopupWrapper onClose={onClose}>
+    <SignerPopupWrapper bonded={bonded} onClose={onClose}>
       <Popup title="Unbond Pool" onClose={onClose}>
         <UnBondPopupContent />
       </Popup>

@@ -16,9 +16,7 @@ const JoinPopup = dynamicPopup(() =>
 const BondExtraPopup = dynamicPopup(() =>
   import("next-common/components/staking/actions/bondExtraPopup"),
 );
-const ClaimPayoutPopup = dynamicPopup(() =>
-  import("next-common/components/staking/actions/claimPayoutPopup"),
-);
+
 const UnBondPopup = dynamicPopup(() =>
   import("next-common/components/staking/actions/unBondPopup"),
 );
@@ -26,7 +24,6 @@ const UnBondPopup = dynamicPopup(() =>
 export default function CellActions({ value, myPool }) {
   const [showJoinPopup, setShowJoinPopup] = useState(false);
   const [showBondExtraPopup, setShowBondExtraPopup] = useState(false);
-  const [showClaimPayoutPopup, setShowClaimPayoutPopup] = useState(false);
   const [showUnBondPopup, setShowUnBondPopup] = useState(false);
 
   const items = useMemo(() => {
@@ -52,26 +49,6 @@ export default function CellActions({ value, myPool }) {
           onClick={() => setShowBondExtraPopup(true)}
         >
           <MenuDelegation className="w-5 h-5" /> Bond Extra
-        </OptionItem>
-      ),
-      !isNil(myPool) && (
-        <OptionItem
-          key="claim-payout"
-          disabled={value.state !== "Open"}
-          className="flex items-center grow gap-x-2"
-          onClick={() => setShowClaimPayoutPopup(true)}
-        >
-          <MenuDelegation className="w-5 h-5" /> Claim Payout
-        </OptionItem>
-      ),
-      !isNil(myPool) && (
-        <OptionItem
-          key="unbond"
-          disabled={value.state !== "Open"}
-          className="flex items-center grow gap-x-2"
-          onClick={() => setShowUnBondPopup(true)}
-        >
-          <MenuDelegation className="w-5 h-5" /> Unbond
         </OptionItem>
       ),
     ].filter(Boolean);
@@ -109,12 +86,6 @@ export default function CellActions({ value, myPool }) {
         <BondExtraPopup
           poolId={value.poolId}
           onClose={() => setShowBondExtraPopup(false)}
-        />
-      )}
-      {showClaimPayoutPopup && (
-        <ClaimPayoutPopup
-          poolId={value.poolId}
-          onClose={() => setShowClaimPayoutPopup(false)}
         />
       )}
       {showUnBondPopup && (
