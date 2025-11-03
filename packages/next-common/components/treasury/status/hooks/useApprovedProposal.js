@@ -28,7 +28,7 @@ export default function useApprovedProposal() {
 
 export function useApprovedProposalStatistics() {
   const { decimals } = useChainSettings();
-  const { result, loading } = useApprovedProposal();
+  const { result, loading: loadingProposal } = useApprovedProposal();
   const { price: fiatPrice, loading: fiatPriceLoading } =
     useFiatPriceSnapshot();
 
@@ -40,7 +40,7 @@ export function useApprovedProposalStatistics() {
         return acc.plus(amountInFiat ?? 0);
       }, BigNumber(0)),
       total: result?.total || 0,
-      loading: loading || fiatPriceLoading,
+      loading: loadingProposal || fiatPriceLoading,
     };
-  }, [result, loading, decimals, fiatPrice, fiatPriceLoading]);
+  }, [result, loadingProposal, decimals, fiatPrice, fiatPriceLoading]);
 }

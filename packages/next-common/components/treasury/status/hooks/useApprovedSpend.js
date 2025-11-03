@@ -25,7 +25,7 @@ export default function useApprovedSpend() {
 }
 
 export function useApprovedSpendStatistics() {
-  const { result, loading } = useApprovedSpend();
+  const { result, loading: loadingSpend } = useApprovedSpend();
   const { decimals } = useChainSettings();
   const { price: fiatPrice, loading: fiatPriceLoading } =
     useFiatPriceSnapshot();
@@ -52,6 +52,6 @@ export function useApprovedSpendStatistics() {
   return {
     totalAmount,
     total: result?.total || 0,
-    loading: loading || fiatPriceLoading,
+    loading: loadingSpend || fiatPriceLoading,
   };
 }
