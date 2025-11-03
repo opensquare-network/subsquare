@@ -1,4 +1,3 @@
-import { cn } from "next-common/utils";
 import { injectSvgHtml, injectIconNames } from "./config";
 import { IS_DEVELOPMENT } from "next-common/utils/constants";
 
@@ -25,7 +24,13 @@ export default function InjectIcon({ name, className }) {
   }
 
   return (
-    <svg className={cn("w-4 h-4", className)} aria-hidden="true">
+    <svg
+      className={className}
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
       <use xlinkHref={`#${name}`} />
     </svg>
   );
