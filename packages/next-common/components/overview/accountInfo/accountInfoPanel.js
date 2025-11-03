@@ -245,8 +245,6 @@ const transferEnabledChains = [
   Chains.paseo,
 ];
 
-const relayChainTeleportEnabledChains = [];
-
 const paraChainTeleportEnabledChains = [Chains.collectives];
 
 export function AccountHead({ width }) {
@@ -266,11 +264,6 @@ export function AccountHead({ width }) {
           <OnlyChains chains={transferEnabledChains}>
             <TransferButton />
           </OnlyChains>
-          <OnlyChains chains={relayChainTeleportEnabledChains}>
-            <CollectivesApiProvider>
-              <TeleportButton />
-            </CollectivesApiProvider>
-          </OnlyChains>
           <OnlyChains chains={paraChainTeleportEnabledChains}>
             <RelayChainApiProvider>
               <ParaChainTeleportButton />
@@ -279,7 +272,6 @@ export function AccountHead({ width }) {
           <OnlyChains
             chains={[
               ...transferEnabledChains,
-              ...relayChainTeleportEnabledChains,
               ...paraChainTeleportEnabledChains,
             ]}
           >
