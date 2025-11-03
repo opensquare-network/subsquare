@@ -7,6 +7,7 @@ const Common = tw.span`
   text12Medium text-textPrimaryContrast
   rounded
   capitalize
+  cursor-default
 `;
 
 export const CommonTag = Common;

@@ -6,7 +6,7 @@ const treasurySpendStatusOptions = [
   { value: "", label: "All" },
   { value: "approved", label: "Approved" },
   { value: "paid", label: "Paid" },
-  { value: "processed", label: "Processed" },
+  { value: "expired", label: "Expired" },
   { value: "voided", label: "Voided" },
 ];
 

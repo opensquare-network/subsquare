@@ -56,9 +56,7 @@ export function CollectiveTag({ state, args }) {
   if (tooltipText) {
     return (
       <Tooltip content={tooltipText}>
-        <Tag className="cursor-pointer" args={args}>
-          {state}
-        </Tag>
+        <Tag args={args}>{state}</Tag>
       </Tooltip>
     );
   }

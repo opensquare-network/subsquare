@@ -167,7 +167,7 @@ const spendTooltipMap = {
 export function TreasuryTag({ state }) {
   const Tag = stateTagMap[state] || ClosedTag;
   return (
-    <Tooltip className="cursor-pointer" content={treasuryTooltipMap[state]}>
+    <Tooltip content={treasuryTooltipMap[state]}>
       <Tag>{state}</Tag>
     </Tooltip>
   );
@@ -180,7 +180,7 @@ export function TipTag({ state }) {
   }
 
   return (
-    <Tooltip className="cursor-pointer" content={tipTooltipMap[state]}>
+    <Tooltip content={tipTooltipMap[state]}>
       <Tag>{state}</Tag>
     </Tooltip>
   );
@@ -189,7 +189,7 @@ export function TipTag({ state }) {
 export function BountyTag({ state }) {
   let Tag = bountyStateTagMap[state] || ClosedTag;
   return (
-    <Tooltip className="cursor-pointer" content={bountyTooltipMap[state]}>
+    <Tooltip content={bountyTooltipMap[state]}>
       <Tag>{state}</Tag>
     </Tooltip>
   );
@@ -198,7 +198,7 @@ export function BountyTag({ state }) {
 export function ChildBountyTag({ state }) {
   let Tag = childBountyStateTagMap[state] || ClosedTag;
   return (
-    <Tooltip className="cursor-pointer" content={childBountyTooltipMap[state]}>
+    <Tooltip content={childBountyTooltipMap[state]}>
       <Tag>{state}</Tag>
     </Tooltip>
   );
@@ -207,7 +207,7 @@ export function ChildBountyTag({ state }) {
 export function SpendTag({ state }) {
   let Tag = spendStateTagMap[state] || ClosedTag;
   return (
-    <Tooltip className="cursor-pointer" content={spendTooltipMap[state]}>
+    <Tooltip content={spendTooltipMap[state]}>
       <Tag>{state}</Tag>
     </Tooltip>
   );
