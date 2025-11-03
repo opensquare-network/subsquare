@@ -26,14 +26,37 @@ export function getBeneficiariesProposalColumn() {
 
 export function getBeneficiariesAwardedColumn() {
   return {
-    name: "Awarded",
+    name: "Awarded (at proposal)",
+    style: {
+      textAlign: "right",
+      width: "180px",
+    },
+    cellRender(data) {
+      return (
+        <ValueDisplay
+          value={data.totalBenefitFiatValue || 0}
+          symbol=""
+          prefix="$"
+        />
+      );
+    },
+  };
+}
+
+export function getBeneficiariesAwardedFinalColumn() {
+  return {
+    name: "Awarded (at claim)",
     style: {
       textAlign: "right",
       width: "160px",
     },
     cellRender(data) {
       return (
-        <ValueDisplay value={data.totalBenefitFiatValue} symbol="" prefix="$" />
+        <ValueDisplay
+          value={data.totalBenefitFiatValueAtFinal || 0}
+          symbol=""
+          prefix="$"
+        />
       );
     },
   };

@@ -10,12 +10,14 @@ import {
   getBeneficiariesIdColumn,
   getBeneficiariesProposalColumn,
   getBeneficiariesAwardedColumn,
+  getBeneficiariesAwardedFinalColumn,
 } from "./columns";
 
 const columns = [
   getBeneficiariesIdColumn(),
   getBeneficiariesProposalColumn(),
   getBeneficiariesAwardedColumn(),
+  getBeneficiariesAwardedFinalColumn(),
 ];
 
 export default function TreasuryStatusTabContent() {
