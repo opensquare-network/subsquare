@@ -19,7 +19,6 @@ import { useState } from "react";
 import { OnlyChains } from "next-common/components/common/onlyChain";
 import Chains from "next-common/utils/consts/chains";
 import { RelayChainApiProvider } from "next-common/context/relayChain";
-import { CollectivesApiProvider } from "next-common/context/collectives/api";
 import useAccountUrl from "next-common/hooks/account/useAccountUrl";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import { isNil } from "lodash-es";
@@ -32,9 +31,6 @@ import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
 import { AvatarImg } from "next-common/components/user/styled";
 import Gravatar from "next-common/components/gravatar";
 
-const RelayChainTeleportPopup = dynamic(
-  import("./relayChainTeleportPopup").then((mod) => mod.default),
-);
 const ParaChainTeleportPopup = dynamic(() =>
   import("next-common/components/assets/paraChainTeleportPopup").then(
     (mod) => mod.default,
@@ -210,18 +206,6 @@ function CrosschainButton({ onClick }) {
         <SystemCrosschain width={20} height={20} />
       </IconButton>
     </Tooltip>
-  );
-}
-
-function TeleportButton() {
-  const [showPopup, setShowPopup] = useState(false);
-  return (
-    <>
-      <CrosschainButton onClick={() => setShowPopup(true)} />
-      {showPopup && (
-        <RelayChainTeleportPopup onClose={() => setShowPopup(false)} />
-      )}
-    </>
   );
 }
 
