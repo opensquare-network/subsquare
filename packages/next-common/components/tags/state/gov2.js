@@ -71,7 +71,7 @@ export function Gov2ReferendaTag({ state, args }) {
   if (tooltipText) {
     return (
       <Tooltip content={tooltipText}>
-        <Tag className="cursor-pointer">{state}</Tag>
+        <Tag>{state}</Tag>
       </Tooltip>
     );
   }
