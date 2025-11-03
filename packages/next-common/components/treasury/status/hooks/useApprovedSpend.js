@@ -2,7 +2,7 @@ import nextApi from "next-common/services/nextApi";
 import { useAsync } from "react-use";
 import { EmptyList } from "next-common/utils/constants";
 import { useMemo } from "react";
-import BigNumber from "bignumber.js";
+import useSumExtractedAssetKinds from "../utils/useSumExtractedAssetKinds";
 
 export default function useApprovedSpend() {
   const { value: result, loading } = useAsync(async () => {
@@ -22,15 +22,15 @@ export default function useApprovedSpend() {
 
 export function useApprovedSpendStatistics() {
   const { result, loading } = useApprovedSpend();
+  const totalAmount = useSumExtractedAssetKinds(
+    result?.items?.map((item) => item.extracted) ?? [],
+  );
 
   return useMemo(() => {
     return {
-      totalAmount: result?.items?.reduce(
-        (acc, item) => acc.plus(item?.fiatValue ?? 0),
-        BigNumber(0),
-      ),
+      totalAmount,
       total: result?.total || 0,
-      loading,
+      loading: loading,
     };
-  }, [result, loading]);
+  }, [result, loading, totalAmount]);
 }

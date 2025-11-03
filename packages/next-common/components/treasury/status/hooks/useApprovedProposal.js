@@ -3,6 +3,9 @@ import { useAsync } from "react-use";
 import { EmptyList } from "next-common/utils/constants";
 import { useMemo } from "react";
 import BigNumber from "bignumber.js";
+import { useFiatPriceSnapshot } from "next-common/hooks/useFiatPrice";
+import { toPrecision } from "next-common/utils";
+import { useChainSettings } from "next-common/context/chain";
 
 export default function useApprovedProposal() {
   const { value: result, loading } = useAsync(async () => {
@@ -24,16 +27,19 @@ export default function useApprovedProposal() {
 }
 
 export function useApprovedProposalStatistics() {
+  const { decimals } = useChainSettings();
   const { result, loading } = useApprovedProposal();
+  const { price: fiatPrice } = useFiatPriceSnapshot();
 
   return useMemo(() => {
     return {
-      totalAmount: result?.items?.reduce(
-        (acc, item) => acc.plus(item?.fiatValue ?? 0),
-        BigNumber(0),
-      ),
+      totalAmount: result?.items?.reduce((acc, item) => {
+        const value = toPrecision(item?.onchainData?.value, decimals);
+        const amountInFiat = BigNumber(value).multipliedBy(fiatPrice ?? 0);
+        return acc.plus(amountInFiat ?? 0);
+      }, BigNumber(0)),
       total: result?.total || 0,
       loading,
     };
-  }, [result, loading]);
+  }, [result, loading, decimals, fiatPrice]);
 }
