@@ -19,11 +19,15 @@ const BondExtraPopup = dynamicPopup(() =>
 const ClaimPayoutPopup = dynamicPopup(() =>
   import("next-common/components/staking/actions/claimPayoutPopup"),
 );
+const UnBondPopup = dynamicPopup(() =>
+  import("next-common/components/staking/actions/unBondPopup"),
+);
 
 export default function CellActions({ value, myPool }) {
   const [showJoinPopup, setShowJoinPopup] = useState(false);
   const [showBondExtraPopup, setShowBondExtraPopup] = useState(false);
   const [showClaimPayoutPopup, setShowClaimPayoutPopup] = useState(false);
+  const [showUnBondPopup, setShowUnBondPopup] = useState(false);
 
   const items = useMemo(() => {
     if (!value) {
@@ -58,6 +62,16 @@ export default function CellActions({ value, myPool }) {
           onClick={() => setShowClaimPayoutPopup(true)}
         >
           <MenuDelegation className="w-5 h-5" /> Claim Payout
+        </OptionItem>
+      ),
+      !isNil(myPool) && (
+        <OptionItem
+          key="unbond"
+          disabled={value.state !== "Open"}
+          className="flex items-center grow gap-x-2"
+          onClick={() => setShowUnBondPopup(true)}
+        >
+          <MenuDelegation className="w-5 h-5" /> Unbond
         </OptionItem>
       ),
     ].filter(Boolean);
@@ -101,6 +115,12 @@ export default function CellActions({ value, myPool }) {
         <ClaimPayoutPopup
           poolId={value.poolId}
           onClose={() => setShowClaimPayoutPopup(false)}
+        />
+      )}
+      {showUnBondPopup && (
+        <UnBondPopup
+          poolId={value.poolId}
+          onClose={() => setShowUnBondPopup(false)}
         />
       )}
     </>

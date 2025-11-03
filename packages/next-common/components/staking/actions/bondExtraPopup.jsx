@@ -15,6 +15,21 @@ import AdvanceSettings from "next-common/components/summary/newProposalQuickStar
 import EstimatedGas from "next-common/components/estimatedGas";
 import BigNumber from "bignumber.js";
 import { checkTransferAmount } from "next-common/utils/checkTransferAmount";
+import CommonSelectField from "next-common/components/popup/fields/commonSelectField";
+
+const FREE_BALANCE_TYPE = "FreeBalance";
+const REWARDS_TYPE = "Rewards";
+
+const TYPE_OPTIONS = [
+  {
+    label: "Free Balance",
+    value: FREE_BALANCE_TYPE,
+  },
+  {
+    label: "Rewards",
+    value: REWARDS_TYPE,
+  },
+];
 
 function BondExtraPopupContent() {
   const { onClose } = usePopupParams();
@@ -22,6 +37,7 @@ function BondExtraPopupContent() {
   const { minJoinBond, loading: minJoinBondLoading } = useMinJoin();
   const [amount, setAmount] = useState();
   const { decimals, symbol } = useChainSettings();
+  const [type, setType] = useState(TYPE_OPTIONS[0].value);
 
   const { getTxFuncForSubmit, getTxFuncForFee } = useTxBuilder(
     (toastError) => {
@@ -44,22 +60,35 @@ function BondExtraPopupContent() {
         return;
       }
 
-      return api.tx.nominationPools.bondExtra({
-        FreeBalance: checkedAmount,
-      });
+      const extra =
+        type === FREE_BALANCE_TYPE
+          ? {
+              FreeBalance: checkedAmount,
+            }
+          : "Rewards";
+
+      return api.tx.nominationPools.bondExtra(extra);
     },
-    [api, amount, minJoinBond],
+    [api, amount, minJoinBond, type],
   );
 
   return (
     <div className="space-y-4">
       <SignerWithBalance showTransferable />
-      <BalanceField
-        title="Amount"
-        inputBalance={amount}
-        setInputBalance={setAmount}
-        symbol={symbol}
+      <CommonSelectField
+        title="Type"
+        options={TYPE_OPTIONS}
+        value={type}
+        setValue={(value) => setType(value)}
       />
+      {type === FREE_BALANCE_TYPE && (
+        <BalanceField
+          title="Amount"
+          inputBalance={amount}
+          setInputBalance={setAmount}
+          symbol={symbol}
+        />
+      )}
       <AdvanceSettings>
         <EstimatedGas getTxFunc={getTxFuncForFee} />
       </AdvanceSettings>
