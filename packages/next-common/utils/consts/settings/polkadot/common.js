@@ -20,3 +20,15 @@ const polkadotCommonCfg = {
 };
 
 export default polkadotCommonCfg;
+
+export const subscanPolkadotAssethubDomain = "assethub-polkadot";
+export const statescanPolkadotAssethubDomain = "assethub-polkadot";
+
+export const polkadotAssethubMigration = {
+  migrated: true,
+  timestamp: 1759844124000, // todo
+  subscanAssethubDomain: subscanPolkadotAssethubDomain,
+  statescanAssethubDomain: statescanPolkadotAssethubDomain,
+  relayBlockTime: 6000,
+  graphqlApiSubDomain: "ahp-gh-api",
+};
