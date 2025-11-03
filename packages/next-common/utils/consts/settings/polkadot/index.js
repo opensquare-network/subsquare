@@ -129,6 +129,8 @@ const polkadot = {
   translations: {
     referenda: true,
   },
+  supportForeignAssets: true,
+  supportAssets: true,
   bountyIdentity: true,
 };
 
