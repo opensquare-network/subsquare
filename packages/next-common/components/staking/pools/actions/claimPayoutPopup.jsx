@@ -7,7 +7,7 @@ import SecondaryButton from "next-common/lib/button/secondary";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import EstimatedGas from "next-common/components/estimatedGas";
-import useMyPool from "../context/myPool";
+import { useMyPool } from "../context/myPool";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
 import LoadableContent from "next-common/components/common/loadableContent";

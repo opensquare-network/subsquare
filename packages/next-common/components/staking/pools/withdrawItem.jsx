@@ -6,9 +6,9 @@ import useSubStorage from "next-common/hooks/common/useSubStorage";
 import { toPrecision } from "next-common/utils";
 import { useMemo, useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import { SystemMenu } from "@osn/icons/subsquare";
-import { ActionIconButton } from "next-common/components/multisigs/styled";
+import { TrackRetention } from "@osn/icons/subsquare";
 import { useMyPool } from "./context/myPool";
+import IconButton from "next-common/components/iconButton";
 
 const UnbondingPopup = dynamicPopup(() =>
   import("next-common/components/staking/pools/actions/unbondingPopup"),
@@ -24,12 +24,16 @@ export default function WithdrawItem() {
     () => poolMember?.unbondingEras || {},
     [poolMember?.unbondingEras],
   );
+  const unbondingList = useMemo(
+    () => Object.entries(unbondingEras),
+    [unbondingEras],
+  );
 
   const statistics = useMemo(() => {
     let total = BigNumber(0);
     let active = BigNumber(0);
     let inactive = BigNumber(0);
-    Object.entries(unbondingEras)?.forEach(([era, amount]) => {
+    unbondingList?.forEach(([era, amount]) => {
       total = total.plus(amount);
       if (era >= activeEra) {
         inactive = inactive.plus(amount);
@@ -42,7 +46,7 @@ export default function WithdrawItem() {
       active,
       inactive,
     };
-  }, [unbondingEras, activeEra]);
+  }, [unbondingList, activeEra]);
 
   return (
     <>
@@ -52,9 +56,11 @@ export default function WithdrawItem() {
             value={toPrecision(statistics.total, decimals)}
             symbol={symbol}
           />
-          <ActionIconButton className="w-6 h-6" onClick={() => setOpen(true)}>
-            <SystemMenu className="w-4 h-4" />
-          </ActionIconButton>
+          {unbondingList?.length > 0 && (
+            <IconButton onClick={() => setOpen(true)}>
+              <TrackRetention className="w-4 h-4" />
+            </IconButton>
+          )}
         </div>
       </SummaryItem>
       {open && (

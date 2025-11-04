@@ -1,4 +1,3 @@
-import SecondaryButton from "next-common/lib/button/secondary";
 import Tooltip from "next-common/components/tooltip";
 import SummaryItem from "next-common/components/summary/layout/item";
 import ValueDisplay from "next-common/components/valueDisplay";
@@ -7,6 +6,8 @@ import { useChainSettings } from "next-common/context/chain";
 import { isNil } from "lodash-es";
 import { useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import IconButton from "next-common/components/iconButton";
+import { TrackPromotion } from "@osn/icons/subsquare";
 
 const ClaimPayoutPopup = dynamicPopup(() =>
   import("next-common/components/staking/pools/actions/claimPayoutPopup"),
@@ -15,15 +16,11 @@ const ClaimPayoutPopup = dynamicPopup(() =>
 export default function ClaimableItem({ claimable }) {
   const { decimals, symbol } = useChainSettings();
 
-  if (isNil(claimable)) {
-    return null;
-  }
-
   return (
     <SummaryItem title="Claimable">
       <div className="flex items-center gap-2">
         <ValueDisplay
-          value={toPrecision(claimable, decimals)}
+          value={toPrecision(claimable || 0, decimals)}
           symbol={symbol}
         />
         <ClaimButton claimable={claimable} />
@@ -34,6 +31,7 @@ export default function ClaimableItem({ claimable }) {
 
 function ClaimButton({ claimable }) {
   const [open, setOpen] = useState(false);
+
   if (isNil(claimable) || claimable.lte(0)) {
     return null;
   }
@@ -41,13 +39,9 @@ function ClaimButton({ claimable }) {
   return (
     <>
       <Tooltip content="Claim your claimable rewards">
-        <SecondaryButton
-          size="small"
-          className="h-6"
-          onClick={() => setOpen(true)}
-        >
-          Claim
-        </SecondaryButton>
+        <IconButton onClick={() => setOpen(true)}>
+          <TrackPromotion className="w-4 h-4" />
+        </IconButton>
       </Tooltip>
 
       {open && <ClaimPayoutPopup onClose={() => setOpen(false)} />}

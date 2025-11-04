@@ -38,7 +38,10 @@ export default function CellActions({ value }) {
     hasMyPool && Number(value.poolId) === Number(poolMember?.poolId);
   const isDisabled = hasMyPool && !isMyPool;
 
-  if (isDisabled || value.state !== "Open") {
+  const isStateNeeActions =
+    value.state === "Open" || (hasMyPool && value.state === "Destroying");
+
+  if (isDisabled || !isStateNeeActions) {
     return (
       <div className="flex justify-end">
         <ActionIconButton className={"opacity-50 cursor-default"}>
