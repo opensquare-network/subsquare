@@ -6,7 +6,7 @@ import {
   StakingFilter,
   StakingFilterProvider,
   useFilteredPools,
-} from "../filter";
+} from "./filter";
 import { useListPagination } from "next-common/components/pagination/usePaginationComponent";
 import ListLayout from "next-common/components/layout/ListLayout";
 import PoolsSummary from "./summary";
