@@ -7,6 +7,7 @@ import formatTime from "next-common/utils/viewfuncs/formatDate";
 export default function useTreasuryBurntChartData() {
   const { decimals, symbol } = useChainSettings();
   const { burntChart } = usePageProps();
+
   if (
     isNil(burntChart) ||
     isNil(burntChart?.result) ||
