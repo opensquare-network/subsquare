@@ -1,13 +1,9 @@
 import { useMemo } from "react";
 import PoolsTag from "next-common/components/tags/state/pools";
-import { isNil } from "lodash-es";
 import CellActions from "../columns/actions";
-import {
-  MaybePoolNameOrRoles,
-  EmptyGuard,
-  TotalBondedColumn,
-} from "../columns";
+import { EmptyGuard, TotalBondedColumn, RolesColumn } from "../columns";
 import useMyPool from "./useMyPool";
+import PoolNameColumn from "../columns/poolName";
 
 export default function usePoolsColumns() {
   const { result: myPool } = useMyPool();
@@ -18,7 +14,7 @@ export default function usePoolsColumns() {
         key: "poolId",
         name: "Pool ID",
         className: "flex-1",
-        render: (data) => <MaybePoolNameOrRoles value={data} />,
+        render: (data) => <PoolNameColumn poolId={data.poolId} />,
       },
       {
         key: "totalBonded",
@@ -28,6 +24,17 @@ export default function usePoolsColumns() {
         render: (data) => (
           <EmptyGuard value={data.points}>
             <TotalBondedColumn value={data.points} />
+          </EmptyGuard>
+        ),
+      },
+      {
+        key: "Nominees",
+        name: "Nominees",
+        className: "text-right",
+        width: 120,
+        render: (data) => (
+          <EmptyGuard value={data.roles}>
+            <RolesColumn value={data} />
           </EmptyGuard>
         ),
       },
@@ -55,15 +62,13 @@ export default function usePoolsColumns() {
       },
     ];
 
-    if (isNil(myPool)) {
-      columns.push({
-        key: "actions",
-        name: "",
-        className: "text-right",
-        width: 60,
-        render: (data) => <CellActions value={data} />,
-      });
-    }
+    columns.push({
+      key: "actions",
+      name: "",
+      className: "text-right",
+      width: 60,
+      render: (data) => <CellActions value={data} myPool={myPool} />,
+    });
 
     return columns;
   }, [myPool]);

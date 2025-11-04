@@ -17,6 +17,7 @@ export default function useMyPool(rewardPools = false) {
 
   const getRewardResult = useCallback(
     async (jsonPoolMember) => {
+      setRewardLoading(true);
       api?.call?.nominationPoolsApi
         ?.pendingRewards(realAddress)
         .then((pendingRewards) => {

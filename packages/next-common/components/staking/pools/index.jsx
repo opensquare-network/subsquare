@@ -1,5 +1,5 @@
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import { useBondedPools } from "./hooks/useBondedPools";
+import { useBondedPools, useSortedPools } from "./hooks/useBondedPools";
 import PoolsTableList from "./table";
 import ListTitleBar from "next-common/components/listTitleBar";
 import {
@@ -14,28 +14,32 @@ import useMyPool from "./hooks/useMyPool";
 
 const PAGE_SIZE = 50;
 
-function PoolsImpl() {
+function PoolsImpl({ myPool }) {
   const { pools, loading } = useBondedPools();
   const filteredPools = useFilteredPools(pools);
-  const count = filteredPools?.length || 0;
+  const sortedPools = useSortedPools({
+    pools: filteredPools,
+    myPoolId: myPool?.poolId,
+  });
+  const count = sortedPools?.length || 0;
 
   const { pagedItems: pagedPools, component: pagination } = useListPagination(
-    filteredPools,
+    sortedPools,
     PAGE_SIZE,
   );
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-between">
-        <ListTitleBar
-          className={"max-md:-ml-6 mr-6"}
-          title="List"
-          titleCount={count}
-        />
+      <div className="flex items-center justify-between mr-6">
+        <ListTitleBar title="List" titleCount={count} />
         <StakingFilter />
       </div>
-      <SecondaryCard>
-        <PoolsTableList list={pagedPools} loading={loading} />
+      <SecondaryCard className="!pl-0">
+        <PoolsTableList
+          myPoolId={myPool?.poolId}
+          list={pagedPools}
+          loading={loading}
+        />
         {pagination}
       </SecondaryCard>
     </div>
@@ -55,7 +59,7 @@ export default function PoolsContent() {
       summary={myPool && <PoolsSummary myPool={myPool} />}
     >
       <StakingFilterProvider>
-        <PoolsImpl />
+        <PoolsImpl myPool={myPool} />
       </StakingFilterProvider>
     </ListLayout>
   );
