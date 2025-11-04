@@ -39,7 +39,7 @@ function ClaimButton({ claimable }) {
   return (
     <>
       <Tooltip content="Claim your claimable rewards">
-        <IconButton onClick={() => setOpen(true)}>
+        <IconButton role="button" onClick={() => setOpen(true)}>
           <TrackPromotion className="w-4 h-4" />
         </IconButton>
       </Tooltip>

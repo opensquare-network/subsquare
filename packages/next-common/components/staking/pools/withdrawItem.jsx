@@ -57,7 +57,7 @@ export default function WithdrawItem() {
             symbol={symbol}
           />
           {unbondingList?.length > 0 && (
-            <IconButton onClick={() => setOpen(true)}>
+            <IconButton role="button" onClick={() => setOpen(true)}>
               <TrackRetention className="w-4 h-4" />
             </IconButton>
           )}

@@ -27,6 +27,9 @@ function PoolsImpl() {
   const { pagedItems: pagedPools, component: pagination } = useListPagination(
     sortedPools,
     PAGE_SIZE,
+    {
+      buttonMode: true,
+    },
   );
 
   return (

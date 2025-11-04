@@ -15,11 +15,11 @@ import { useTxBuilder } from "next-common/hooks/useTxBuilder";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Divider from "next-common/components/styled/layout/divider";
 import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
-import { ActionIconButton } from "next-common/components/multisigs/styled";
 import { SystemTransfer } from "@osn/icons/subsquare";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { isNumber } from "lodash-es";
 import Signer from "next-common/components/popup/fields/signerField";
+import PrimaryButton from "next-common/lib/button/primary";
 
 function UnbondingPopupContent() {
   const { unbondingEras = {}, activeEra } = usePopupParams();
@@ -118,13 +118,15 @@ function WithdrawButtonImpl({ era }) {
   });
   return (
     <div className="flex justify-end">
-      <ActionIconButton
+      <PrimaryButton
         onClick={doSubmit}
         disabled={isSubmitting || isWrapping}
         loading={isSubmitting || isWrapping}
+        size="small"
+        className="w-6 h-6 p-0"
       >
         <SystemTransfer className="w-4 h-4" />
-      </ActionIconButton>
+      </PrimaryButton>
     </div>
   );
 }
