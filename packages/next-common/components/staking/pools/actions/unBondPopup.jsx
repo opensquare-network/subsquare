@@ -4,7 +4,7 @@ import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPop
 import Signer from "next-common/components/popup/fields/signerField";
 import { useContextApi } from "next-common/context/api";
 import { useChainSettings } from "next-common/context/chain";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import BalanceField from "next-common/components/popup/fields/balanceField";
 import { useTxBuilder } from "next-common/hooks/useTxBuilder";
 import SecondaryButton from "next-common/lib/button/secondary";
@@ -15,13 +15,16 @@ import { checkTransferAmount } from "next-common/utils/checkTransferAmount";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import BigNumber from "bignumber.js";
 import { toPrecision } from "next-common/utils";
+import { useMyPool } from "../context/myPool";
 
 function UnBondPopupContent() {
-  const { onClose, bonded } = usePopupParams();
+  const { onClose } = usePopupParams();
   const api = useContextApi();
   const [amount, setAmount] = useState();
   const { decimals, symbol } = useChainSettings();
   const realAddress = useRealAddress();
+  const { poolMember } = useMyPool();
+  const bonded = useMemo(() => poolMember?.points || 0, [poolMember?.points]);
 
   const { getTxFuncForSubmit, getTxFuncForFee } = useTxBuilder(
     (toastError) => {
@@ -51,7 +54,12 @@ function UnBondPopupContent() {
 
   return (
     <div className="space-y-4">
-      <Signer />
+      <Signer
+        noSwitchSigner
+        balanceName="Bonded"
+        balance={bonded}
+        isBalanceLoading={false}
+      />
       <BalanceField
         title="Amount"
         inputBalance={amount}
@@ -69,9 +77,9 @@ function UnBondPopupContent() {
   );
 }
 
-export default function UnBondPopup({ onClose, bonded }) {
+export default function UnBondPopup({ onClose }) {
   return (
-    <SignerPopupWrapper bonded={bonded} onClose={onClose}>
+    <SignerPopupWrapper onClose={onClose}>
       <Popup title="Unbond Pool" onClose={onClose}>
         <UnBondPopupContent />
       </Popup>

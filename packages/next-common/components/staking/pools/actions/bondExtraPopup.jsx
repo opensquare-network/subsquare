@@ -1,7 +1,6 @@
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
-import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useContextApi } from "next-common/context/api";
 import { useChainSettings } from "next-common/context/chain";
 import { useMinJoin } from "next-common/components/staking/pools/hooks/useMinJoin";
@@ -16,6 +15,9 @@ import EstimatedGas from "next-common/components/estimatedGas";
 import BigNumber from "bignumber.js";
 import { checkTransferAmount } from "next-common/utils/checkTransferAmount";
 import CommonSelectField from "next-common/components/popup/fields/commonSelectField";
+import useAccountTransferrable from "next-common/hooks/useAccountTransferrable";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import Signer from "next-common/components/popup/fields/signerField";
 
 const FREE_BALANCE_TYPE = "FreeBalance";
 const REWARDS_TYPE = "Rewards";
@@ -34,10 +36,14 @@ const TYPE_OPTIONS = [
 function BondExtraPopupContent() {
   const { onClose } = usePopupParams();
   const api = useContextApi();
+  const realAddress = useRealAddress();
   const { minJoinBond, loading: minJoinBondLoading } = useMinJoin();
   const [amount, setAmount] = useState();
   const { decimals, symbol } = useChainSettings();
   const [type, setType] = useState(TYPE_OPTIONS[0].value);
+
+  const { transferrable, isLoading: isLoadingTransferrable } =
+    useAccountTransferrable(api, realAddress);
 
   const { getTxFuncForSubmit, getTxFuncForFee } = useTxBuilder(
     (toastError) => {
@@ -48,6 +54,7 @@ function BondExtraPopupContent() {
       const checkedAmount = checkTransferAmount({
         transferAmount: amount,
         decimals,
+        transferrable,
       });
 
       if (BigNumber(checkedAmount).lt(minJoinBond)) {
@@ -74,7 +81,13 @@ function BondExtraPopupContent() {
 
   return (
     <div className="space-y-4">
-      <SignerWithBalance showTransferable />
+      <Signer
+        title="Origin"
+        balance={transferrable}
+        isBalanceLoading={isLoadingTransferrable}
+        noSwitchSigner
+        showTransferable
+      />
       <CommonSelectField
         title="Type"
         options={TYPE_OPTIONS}

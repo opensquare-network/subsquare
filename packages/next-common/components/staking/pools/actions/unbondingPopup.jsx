@@ -46,7 +46,7 @@ function UnbondingPopupContent() {
 
   return (
     <div className="space-y-4">
-      <Signer />
+      <Signer noSwitchSigner />
       <SummaryLayout>
         <SummaryItem title="Total">
           <ValueDisplay

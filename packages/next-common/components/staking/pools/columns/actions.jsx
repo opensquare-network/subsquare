@@ -1,6 +1,6 @@
 import {
-  MenuDelegation,
   SystemMore,
+  SystemPlus,
   SystemUpload,
   TrackFastPromotion,
 } from "@osn/icons/subsquare";
@@ -65,7 +65,7 @@ function CellActionsImpl({ value }) {
           className="flex items-center grow gap-x-2"
           onClick={() => setShowJoinPopup(true)}
         >
-          <MenuDelegation className="w-5 h-5" /> Join
+          <SystemPlus className="w-5 h-5" /> Join
         </OptionItem>
       ),
       !isNil(poolMember) && (

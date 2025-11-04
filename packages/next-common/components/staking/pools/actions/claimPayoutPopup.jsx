@@ -1,7 +1,6 @@
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
-import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useContextApi } from "next-common/context/api";
 import { useCallback } from "react";
 import SecondaryButton from "next-common/lib/button/secondary";
@@ -17,6 +16,7 @@ import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import BigNumber from "bignumber.js";
 import Tooltip from "next-common/components/tooltip";
+import Signer from "next-common/components/popup/fields/signerField";
 
 function ClaimPayoutPopupContent() {
   const { onClose } = usePopupParams();
@@ -36,7 +36,7 @@ function ClaimPayoutPopupContent() {
 
   return (
     <div className="space-y-4">
-      <SignerWithBalance showTransferable />
+      <Signer noSwitchSigner />
       <SummaryLayout>
         <SummaryItem title="Bonded">
           <LoadableContent isLoading={loading}>
