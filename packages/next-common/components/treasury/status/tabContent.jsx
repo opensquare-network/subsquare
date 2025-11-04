@@ -10,40 +10,51 @@ import {
   getBeneficiariesIdColumn,
   getBeneficiariesProposalColumn,
   getBeneficiariesAwardedColumn,
-  getBeneficiariesAwardedFinalColumn,
 } from "./columns";
-
-const columns = [
-  getBeneficiariesIdColumn(),
-  getBeneficiariesProposalColumn(),
-  getBeneficiariesAwardedColumn(),
-  getBeneficiariesAwardedFinalColumn(),
-];
+import BeneficiaryFilter from "./beneficiaryFilter";
+import { useCommittedFilterState } from "next-common/components/dropdownFilter/context";
 
 export default function TreasuryStatusTabContent() {
   const [page, setPage] = useState(1);
+  const [{ sort_by }] = useCommittedFilterState();
   const { value: beneficiaries, loading } = useAsync(async () => {
     const { result } = await backendApi.fetch("/treasury/beneficiaries", {
+      ...(sort_by ? { sort_by } : {}),
       page,
       pageSize: defaultPageSize,
     });
     return result || EmptyList;
-  }, [page]);
+  }, [sort_by, page]);
+
+  const columns = useMemo(() => {
+    return [
+      getBeneficiariesIdColumn(),
+      getBeneficiariesProposalColumn(),
+      getBeneficiariesAwardedColumn(
+        sort_by === "awarded_value"
+          ? "Awarded (value at awarded time)"
+          : "Awarded (value at proposed time)",
+      ),
+    ];
+  }, [sort_by]);
 
   const rows = useMemo(() => {
     return beneficiaries?.items?.map((beneficiary) =>
       columns.map((column) => column.cellRender?.(beneficiary)),
     );
-  }, [beneficiaries]);
+  }, [columns, beneficiaries]);
 
   return (
     <div>
-      <TitleContainer className="mb-4 justify-start">
-        Beneficiaries
-        <span className="text14Medium text-textTertiary ml-1">
-          {beneficiaries?.total}
-        </span>
-      </TitleContainer>
+      <div className="flex flex-wrap max-md:flex-col md:items-center gap-[12px] max-md:gap-[16px] justify-between pr-6">
+        <TitleContainer className="mb-4 justify-start">
+          Beneficiaries
+          <span className="text14Medium text-textTertiary ml-1">
+            {beneficiaries?.total}
+          </span>
+        </TitleContainer>
+        <BeneficiaryFilter />
+      </div>
       <SecondaryCard>
         <DataList
           noDataText="No Data"

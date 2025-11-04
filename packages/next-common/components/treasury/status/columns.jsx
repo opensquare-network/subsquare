@@ -1,4 +1,5 @@
 import { pick } from "lodash-es";
+import { useCommittedFilterState } from "next-common/components/dropdownFilter/context";
 import Tooltip from "next-common/components/tooltip";
 import { AddressUser } from "next-common/components/user";
 import ValueDisplay from "next-common/components/valueDisplay";
@@ -24,40 +25,37 @@ export function getBeneficiariesProposalColumn() {
   };
 }
 
-export function getBeneficiariesAwardedColumn() {
+function AwardedValue({ data }) {
+  const [{ sort_by }] = useCommittedFilterState();
+
+  if (sort_by === "awarded_value") {
+    return (
+      <ValueDisplay
+        value={data.totalBenefitFiatValueAtFinal || 0}
+        symbol=""
+        prefix="$"
+      />
+    );
+  }
+
+  return (
+    <ValueDisplay
+      value={data.totalBenefitFiatValue || 0}
+      symbol=""
+      prefix="$"
+    />
+  );
+}
+
+export function getBeneficiariesAwardedColumn(name = "Awarded") {
   return {
-    name: "Awarded (at proposal)",
+    name,
     style: {
       textAlign: "right",
       width: "180px",
     },
     cellRender(data) {
-      return (
-        <ValueDisplay
-          value={data.totalBenefitFiatValue || 0}
-          symbol=""
-          prefix="$"
-        />
-      );
-    },
-  };
-}
-
-export function getBeneficiariesAwardedFinalColumn() {
-  return {
-    name: "Awarded (at claim)",
-    style: {
-      textAlign: "right",
-      width: "160px",
-    },
-    cellRender(data) {
-      return (
-        <ValueDisplay
-          value={data.totalBenefitFiatValueAtFinal || 0}
-          symbol=""
-          prefix="$"
-        />
-      );
+      return <AwardedValue data={data} />;
     },
   };
 }
