@@ -2,7 +2,7 @@ import BigNumber from "bignumber.js";
 import { useContextApi } from "next-common/context/api";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export default function useMyPool(rewardPools = false) {
   const [rewardLoading, setRewardLoading] = useState(false);
@@ -13,6 +13,22 @@ export default function useMyPool(rewardPools = false) {
     "nominationPools",
     "poolMembers",
     [realAddress],
+  );
+
+  const getRewardResult = useCallback(
+    async (jsonPoolMember) => {
+      api?.call?.nominationPoolsApi
+        ?.pendingRewards(realAddress)
+        .then((pendingRewards) => {
+          const claimable = BigNumber(pendingRewards);
+          setResult({
+            ...jsonPoolMember,
+            claimable,
+          });
+        })
+        .finally(() => setRewardLoading(false));
+    },
+    [api, realAddress],
   );
 
   useEffect(() => {
@@ -27,29 +43,8 @@ export default function useMyPool(rewardPools = false) {
       return;
     }
 
-    setRewardLoading(true);
-    api?.query?.nominationPools
-      ?.rewardPools?.(jsonPoolMember.poolId)
-      .then((rewardResult) => {
-        const jsonRewardResult = rewardResult?.toJSON() || {};
-        const myLastRecordedRewardCounter = BigNumber(
-          jsonPoolMember.lastRecordedRewardCounter,
-        );
-        const poolLastRecordedRewardCounter = BigNumber(
-          jsonRewardResult.lastRecordedRewardCounter,
-        );
-
-        const claimable = poolLastRecordedRewardCounter
-          .minus(myLastRecordedRewardCounter)
-          .times(jsonPoolMember.points);
-
-        setResult({
-          ...jsonPoolMember,
-          claimable,
-        });
-      })
-      .finally(() => setRewardLoading(false));
-  }, [api, poolMember, rewardPools]);
+    getRewardResult(poolMember?.toJSON() || {});
+  }, [api, poolMember, rewardPools, getRewardResult]);
 
   return {
     result,
