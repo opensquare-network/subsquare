@@ -3,6 +3,7 @@ import { usePageProps } from "next-common/context/page";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecisionNumber } from "next-common/utils";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
+import BigNumber from "bignumber.js";
 
 export default function useTreasuryBurntChartData() {
   const { decimals, symbol } = useChainSettings();
@@ -21,7 +22,15 @@ export default function useTreasuryBurntChartData() {
   const BAR_THICKNESS = 7;
   const BAR_GAP = 10;
 
-  const items = burntChart.result;
+  let items = burntChart.result
+    .map((bar) => ({
+      date: formatTime(bar.timestamp, "YYYY-MM-DD"),
+      brunt: toPrecisionNumber(bar.amount || 0, decimals),
+    }))
+    .reverse();
+
+  items.forEach(() => BigNumber(items[0].brunt).isZero() && items.shift());
+
   const labels = items.map(() => "");
   const datasets = [
     {
@@ -29,7 +38,7 @@ export default function useTreasuryBurntChartData() {
       barPercentage,
       barThickness: BAR_THICKNESS,
       maxBarThickness: BAR_THICKNESS,
-      data: items.map((item) => toPrecisionNumber(item.amount || 0, decimals)),
+      data: items.map((item) => item.brunt),
       backgroundColor: "#FCB3AD",
     },
   ];
@@ -48,11 +57,11 @@ export default function useTreasuryBurntChartData() {
         callbacks: {
           title(itemsInTooltip) {
             const idx = itemsInTooltip[0].dataIndex;
-            return formatTime(items[idx]?.timestamp, "YYYY-MM-DD");
+            return items[idx]?.date;
           },
           label(tooltipItem) {
             const idx = tooltipItem.dataIndex;
-            const burnt = toPrecisionNumber(items[idx]?.amount || 0, decimals);
+            const burnt = items[idx]?.brunt;
             return `Burnt: ${burnt} ${symbol}`;
           },
         },
