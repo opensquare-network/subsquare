@@ -30,9 +30,9 @@ export default function TreasuryStatusTabContent() {
     return [
       getBeneficiariesIdColumn(),
       getBeneficiariesProposalColumn(),
-      sortBy === "proposed_value"
-        ? getBeneficiariesValueAtProposedTimeColumn()
-        : getBeneficiariesValueAtAwardedTimeColumn(),
+      sortBy === "awarded_value"
+        ? getBeneficiariesValueAtAwardedTimeColumn()
+        : getBeneficiariesValueAtProposedTimeColumn(),
     ];
   }, [sortBy]);
 
