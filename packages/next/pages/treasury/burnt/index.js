@@ -5,7 +5,6 @@ import { TreasuryProvider } from "next-common/context/treasury";
 import businessCategory from "next-common/utils/consts/business/category";
 import { backendApi } from "next-common/services/nextApi";
 import { fetchList } from "next-common/services/list";
-import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import TreasuryBurnt from "next-common/components/treasury/burnt";
 
 export default function TreasuryBurntPage() {
@@ -26,16 +25,17 @@ export default function TreasuryBurntPage() {
 }
 
 export const getServerSideProps = withCommonProps(async (context) => {
-  const [{ result: burntSummary }, burntList] = await Promise.all([
-    fetchOpenGovTracksProps(),
+  const [{ result: burntSummary }, burntList, burntChart] = await Promise.all([
     backendApi.fetch("/treasury/burnt/summary"),
     fetchList("/treasury/burnt", context),
+    backendApi.fetch("/treasury/burnt/chart"),
   ]);
 
   return {
     props: {
-      burntSummary,
-      burntList,
+      burntSummary: burntSummary ?? null,
+      burntList: burntList ?? null,
+      burntChart: burntChart ?? null,
     },
   };
 });
