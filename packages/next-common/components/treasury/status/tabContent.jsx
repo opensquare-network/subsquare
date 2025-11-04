@@ -51,7 +51,7 @@ export default function TreasuryStatusTabContent() {
             {beneficiaries?.total}
           </span>
         </TitleContainer>
-        {sortByComponent}
+        <div className="max-md:px-6">{sortByComponent}</div>
       </div>
       <SecondaryCard>
         <DataList
