@@ -1,5 +1,4 @@
 import { pick } from "lodash-es";
-import { useCommittedFilterState } from "next-common/components/dropdownFilter/context";
 import Tooltip from "next-common/components/tooltip";
 import { AddressUser } from "next-common/components/user";
 import ValueDisplay from "next-common/components/valueDisplay";
@@ -25,37 +24,49 @@ export function getBeneficiariesProposalColumn() {
   };
 }
 
-function AwardedValue({ data }) {
-  const [{ sort_by }] = useCommittedFilterState();
-
-  if (sort_by === "awarded_value") {
-    return (
-      <ValueDisplay
-        value={data.totalBenefitFiatValueAtFinal || 0}
-        symbol=""
-        prefix="$"
-      />
-    );
-  }
-
+function AwardedValueTitle({ tooltip }) {
   return (
-    <ValueDisplay
-      value={data.totalBenefitFiatValue || 0}
-      symbol=""
-      prefix="$"
-    />
+    <div className="inline-flex items-center gap-x-1">
+      <span className="text-textTertiary">Value</span>
+      <Tooltip content={tooltip} />
+    </div>
   );
 }
 
-export function getBeneficiariesAwardedColumn(name = "Awarded") {
+export function getBeneficiariesValueAtAwardedTimeColumn() {
   return {
-    name,
+    name: <AwardedValueTitle tooltip="Value at awarded time" />,
     style: {
       textAlign: "right",
       width: "180px",
     },
     cellRender(data) {
-      return <AwardedValue data={data} />;
+      return (
+        <ValueDisplay
+          value={data.totalBenefitFiatValueAtFinal || 0}
+          symbol=""
+          prefix="$"
+        />
+      );
+    },
+  };
+}
+
+export function getBeneficiariesValueAtProposedTimeColumn() {
+  return {
+    name: <AwardedValueTitle tooltip="Value at proposed time" />,
+    style: {
+      textAlign: "right",
+      width: "180px",
+    },
+    cellRender(data) {
+      return (
+        <ValueDisplay
+          value={data.totalBenefitFiatValue || 0}
+          symbol=""
+          prefix="$"
+        />
+      );
     },
   };
 }

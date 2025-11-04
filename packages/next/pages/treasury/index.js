@@ -5,7 +5,6 @@ import TreasuryStatusSummaryPanel from "next-common/components/treasury/status/s
 import TreasuryStatusTabContent from "next-common/components/treasury/status/tabContent";
 import ApprovedPanel from "next-common/components/treasury/status/approvedPanel";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import { DropdownUrlFilterProvider } from "next-common/components/dropdownFilter/context";
 
 const seoInfo = { title: "Treasury Status", desc: "Treasury Status" };
 
@@ -19,12 +18,7 @@ export default function TreasuryStatusPage() {
       >
         <div className="flex flex-col gap-y-4">
           <ApprovedPanel />
-          <DropdownUrlFilterProvider
-            defaultFilterValues={{ sort_by: "proposed_value" }}
-            shallow={true}
-          >
-            <TreasuryStatusTabContent />
-          </DropdownUrlFilterProvider>
+          <TreasuryStatusTabContent />
         </div>
       </ListLayout>
     </TreasuryProvider>

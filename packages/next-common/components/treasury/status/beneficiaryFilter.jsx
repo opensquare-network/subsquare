@@ -1,19 +1,14 @@
 import Select from "next-common/components/select";
-import { DropdownFilter } from "next-common/components/dropdownFilter";
-import { useStagedFilterState } from "next-common/components/dropdownFilter/context";
+import { useState } from "react";
 
 const beneficiarySortByOptions = [
   { value: "proposed_value", label: "Value at proposed time" },
   { value: "awarded_value", label: "Value at awarded time" },
 ];
 
-function BeneficiarySortBySelect() {
-  const [beneficiarySortByFilter, setBeneficiarySortByFilter] =
-    useStagedFilterState();
-  const sortBy = beneficiarySortByFilter?.sort_by || "proposed_value";
-
-  const handleSortByChange = ({ value: sortBy }) => {
-    setBeneficiarySortByFilter({ ...beneficiarySortByFilter, sort_by: sortBy });
+function BeneficiarySortBySelect({ sortBy, setSortBy }) {
+  const handleSortByChange = ({ value }) => {
+    setSortBy(value);
   };
 
   return (
@@ -27,13 +22,19 @@ function BeneficiarySortBySelect() {
   );
 }
 
-export default function BeneficiaryFilter() {
+function BeneficiarySortBy({ sortBy, setSortBy }) {
   return (
-    <DropdownFilter>
-      <div className="flex items-center text12Medium">
-        <span className="text-textPrimary my-[12px] w-[144px]">Sort by</span>
-        <BeneficiarySortBySelect />
-      </div>
-    </DropdownFilter>
+    <div className="flex items-center text12Medium gap-[8px]">
+      <span className="text-textSecondary text12Medium">Sort by</span>
+      <BeneficiarySortBySelect sortBy={sortBy} setSortBy={setSortBy} />
+    </div>
   );
+}
+
+export function useBeneficiarySortBy() {
+  const [sortBy, setSortBy] = useState("proposed_value");
+
+  const component = <BeneficiarySortBy sortBy={sortBy} setSortBy={setSortBy} />;
+
+  return { sortBy, setSortBy, component };
 }
