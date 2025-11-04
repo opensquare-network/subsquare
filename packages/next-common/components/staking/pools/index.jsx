@@ -8,6 +8,9 @@ import {
   useFilteredPools,
 } from "../filter";
 import { useListPagination } from "next-common/components/pagination/usePaginationComponent";
+import ListLayout from "next-common/components/layout/ListLayout";
+import PoolsSummary from "./summary";
+import useMyPool from "./hooks/useMyPool";
 
 const PAGE_SIZE = 50;
 
@@ -25,7 +28,7 @@ function PoolsImpl() {
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
         <ListTitleBar
-          className={"max-md:-ml-6"}
+          className={"max-md:-ml-6 mr-6"}
           title="List"
           titleCount={count}
         />
@@ -39,10 +42,21 @@ function PoolsImpl() {
   );
 }
 
-export default function Pools() {
+export default function PoolsContent() {
+  const { result: myPool } = useMyPool(true);
+
   return (
-    <StakingFilterProvider>
-      <PoolsImpl />
-    </StakingFilterProvider>
+    <ListLayout
+      title={"Nomination Pools"}
+      seoInfo={{ title: "" }}
+      description={
+        "Displays and manages nomination pools, allowing users to view, join, and track their staking pools."
+      }
+      summary={myPool && <PoolsSummary myPool={myPool} />}
+    >
+      <StakingFilterProvider>
+        <PoolsImpl />
+      </StakingFilterProvider>
+    </ListLayout>
   );
 }

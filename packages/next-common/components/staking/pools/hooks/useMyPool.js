@@ -32,8 +32,15 @@ export default function useMyPool(rewardPools = false) {
       ?.rewardPools?.(jsonPoolMember.poolId)
       .then((rewardResult) => {
         const jsonRewardResult = rewardResult?.toJSON() || {};
-        const claimable = BigNumber(jsonPoolMember.lastRecordedRewardCounter)
-          .minus(BigNumber(jsonRewardResult.lastRecordedRewardCounter))
+        const myLastRecordedRewardCounter = BigNumber(
+          jsonPoolMember.lastRecordedRewardCounter,
+        );
+        const poolLastRecordedRewardCounter = BigNumber(
+          jsonRewardResult.lastRecordedRewardCounter,
+        );
+
+        const claimable = poolLastRecordedRewardCounter
+          .minus(myLastRecordedRewardCounter)
           .times(jsonPoolMember.points);
 
         setResult({

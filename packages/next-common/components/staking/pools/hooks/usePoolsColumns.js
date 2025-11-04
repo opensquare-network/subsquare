@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import PoolsTag from "next-common/components/tags/state/pools";
+import { isNil } from "lodash-es";
 import CellActions from "../columns/actions";
 import {
   MaybePoolNameOrRoles,
@@ -9,10 +10,10 @@ import {
 import useMyPool from "./useMyPool";
 
 export default function usePoolsColumns() {
-  const { result: myPool, loading: myPoolLoading } = useMyPool();
+  const { result: myPool } = useMyPool();
 
   return useMemo(() => {
-    return [
+    const columns = [
       {
         key: "poolId",
         name: "Pool ID",
@@ -52,19 +53,18 @@ export default function usePoolsColumns() {
           </EmptyGuard>
         ),
       },
-      {
+    ];
+
+    if (isNil(myPool)) {
+      columns.push({
         key: "actions",
         name: "",
         className: "text-right",
         width: 60,
-        render: (data) => (
-          <CellActions
-            myPool={myPool}
-            myPoolLoading={myPoolLoading}
-            value={data}
-          />
-        ),
-      },
-    ];
-  }, [myPool, myPoolLoading]);
+        render: (data) => <CellActions value={data} />,
+      });
+    }
+
+    return columns;
+  }, [myPool]);
 }
