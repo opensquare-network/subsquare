@@ -10,16 +10,17 @@ import {
 import { useListPagination } from "next-common/components/pagination/usePaginationComponent";
 import ListLayout from "next-common/components/layout/ListLayout";
 import PoolsSummary from "./summary";
-import useMyPool from "./hooks/useMyPool";
+import { MyPoolProvider, useMyPool } from "./context/myPool";
 
 const PAGE_SIZE = 50;
 
-function PoolsImpl({ myPool }) {
+function PoolsImpl() {
+  const { poolMember } = useMyPool();
   const { pools, loading } = useBondedPools();
   const filteredPools = useFilteredPools(pools);
   const sortedPools = useSortedPools({
     pools: filteredPools,
-    myPoolId: myPool?.poolId,
+    myPoolId: poolMember?.poolId,
   });
   const count = sortedPools?.length || 0;
 
@@ -35,19 +36,15 @@ function PoolsImpl({ myPool }) {
         <StakingFilter />
       </div>
       <SecondaryCard className="!pl-0">
-        <PoolsTableList
-          myPoolId={myPool?.poolId}
-          list={pagedPools}
-          loading={loading}
-        />
+        <PoolsTableList list={pagedPools} loading={loading} />
         {pagination}
       </SecondaryCard>
     </div>
   );
 }
 
-export default function PoolsContent() {
-  const { result: myPool } = useMyPool(true);
+function PoolsContentImpl() {
+  const { poolMember } = useMyPool();
 
   return (
     <ListLayout
@@ -56,11 +53,19 @@ export default function PoolsContent() {
       description={
         "Displays and manages nomination pools, allowing users to view, join, and track their staking pools."
       }
-      summary={myPool && <PoolsSummary myPool={myPool} />}
+      summary={poolMember && <PoolsSummary />}
     >
       <StakingFilterProvider>
-        <PoolsImpl myPool={myPool} />
+        <PoolsImpl />
       </StakingFilterProvider>
     </ListLayout>
+  );
+}
+
+export default function PoolsContent() {
+  return (
+    <MyPoolProvider>
+      <PoolsContentImpl />
+    </MyPoolProvider>
   );
 }

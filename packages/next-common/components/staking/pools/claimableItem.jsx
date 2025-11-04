@@ -9,7 +9,7 @@ import { useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 
 const ClaimPayoutPopup = dynamicPopup(() =>
-  import("next-common/components/staking/actions/claimPayoutPopup"),
+  import("next-common/components/staking/pools/actions/claimPayoutPopup"),
 );
 
 export default function ClaimableItem({ claimable }) {

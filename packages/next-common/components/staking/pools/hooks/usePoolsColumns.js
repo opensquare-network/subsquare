@@ -2,12 +2,9 @@ import { useMemo } from "react";
 import PoolsTag from "next-common/components/tags/state/pools";
 import CellActions from "../columns/actions";
 import { EmptyGuard, TotalBondedColumn, RolesColumn } from "../columns";
-import useMyPool from "./useMyPool";
 import PoolNameColumn from "../columns/poolName";
 
 export default function usePoolsColumns() {
-  const { result: myPool } = useMyPool();
-
   return useMemo(() => {
     const columns = [
       {
@@ -67,9 +64,9 @@ export default function usePoolsColumns() {
       name: "",
       className: "text-right",
       width: 60,
-      render: (data) => <CellActions value={data} myPool={myPool} />,
+      render: (data) => <CellActions value={data} />,
     });
 
     return columns;
-  }, [myPool]);
+  }, []);
 }

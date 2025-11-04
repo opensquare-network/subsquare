@@ -2,13 +2,12 @@ import DataList from "next-common/components/dataList";
 import usePoolsColumns from "./hooks/usePoolsColumns";
 import { useMemo } from "react";
 import { MineTagOnListView } from "next-common/components/delegation/delegate/common/mineTag";
+import { useMyPool } from "./context/myPool";
 
-export default function PoolsTableList({
-  myPoolId,
-  list = [],
-  loading = false,
-}) {
+export default function PoolsTableList({ list = [], loading = false }) {
+  const { poolMember } = useMyPool();
   const columns = usePoolsColumns();
+  const myPoolId = poolMember?.poolId;
 
   const rows = useMemo(
     () =>

@@ -8,7 +8,7 @@ import SecondaryButton from "next-common/lib/button/secondary";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import EstimatedGas from "next-common/components/estimatedGas";
-import useMyPool from "../pools/hooks/useMyPool";
+import useMyPool from "../context/myPool";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
 import LoadableContent from "next-common/components/common/loadableContent";
@@ -22,7 +22,7 @@ function ClaimPayoutPopupContent() {
   const { onClose } = usePopupParams();
   const api = useContextApi();
   const { symbol, decimals } = useChainSettings();
-  const { result, loading } = useMyPool(true);
+  const { poolMember, claimable, loading } = useMyPool();
 
   const getTxFunc = useCallback(() => {
     if (!api || !api.tx.nominationPools) {
@@ -32,7 +32,7 @@ function ClaimPayoutPopupContent() {
     return api.tx.nominationPools.claimPayout();
   }, [api]);
 
-  const hasClaimable = result && BigNumber(result?.claimable).gt(0);
+  const hasClaimable = claimable && BigNumber(claimable).gt(0);
 
   return (
     <div className="space-y-4">
@@ -41,7 +41,7 @@ function ClaimPayoutPopupContent() {
         <SummaryItem title="Bonded">
           <LoadableContent isLoading={loading}>
             <ValueDisplay
-              value={toPrecision(result?.points, decimals)}
+              value={toPrecision(poolMember?.points, decimals)}
               symbol={symbol}
             />
           </LoadableContent>
@@ -49,7 +49,7 @@ function ClaimPayoutPopupContent() {
         <SummaryItem title="Claimable">
           <LoadableContent isLoading={loading}>
             <ValueDisplay
-              value={toPrecision(result?.claimable, decimals)}
+              value={toPrecision(claimable, decimals)}
               symbol={symbol}
             />
           </LoadableContent>

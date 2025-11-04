@@ -1,4 +1,9 @@
-import { MenuDelegation, SystemMore } from "@osn/icons/subsquare";
+import {
+  MenuDelegation,
+  SystemMore,
+  SystemUpload,
+  TrackFastPromotion,
+} from "@osn/icons/subsquare";
 import { isNil } from "lodash-es";
 import { useMemo, useState } from "react";
 import * as Popover from "@radix-ui/react-popover";
@@ -8,26 +13,29 @@ import {
 } from "next-common/components/internalDropdown/styled";
 import { ActionIconButton } from "next-common/components/multisigs/styled";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import { useMyPool } from "../context/myPool";
 
 const JoinPopup = dynamicPopup(() =>
-  import("next-common/components/staking/actions/joinPopup"),
+  import("next-common/components/staking/pools/actions/joinPopup"),
 );
 
 const BondExtraPopup = dynamicPopup(() =>
-  import("next-common/components/staking/actions/bondExtraPopup"),
+  import("next-common/components/staking/pools/actions/bondExtraPopup"),
 );
 
 const UnbondPopup = dynamicPopup(() =>
-  import("next-common/components/staking/actions/unBondPopup"),
+  import("next-common/components/staking/pools/actions/unBondPopup"),
 );
 
-export default function CellActions({ value, myPool }) {
+export default function CellActions({ value }) {
+  const { poolMember } = useMyPool();
   if (isNil(value)) {
     return null;
   }
 
-  const hasMyPool = !isNil(myPool);
-  const isMyPool = hasMyPool && Number(value.poolId) === Number(myPool?.poolId);
+  const hasMyPool = !isNil(poolMember);
+  const isMyPool =
+    hasMyPool && Number(value.poolId) === Number(poolMember?.poolId);
   const isDisabled = hasMyPool && !isMyPool;
 
   if (isDisabled || value.state !== "Open") {
@@ -40,17 +48,18 @@ export default function CellActions({ value, myPool }) {
     );
   }
 
-  return <CellActionsImpl value={value} myPool={myPool} />;
+  return <CellActionsImpl value={value} />;
 }
 
-function CellActionsImpl({ value, myPool }) {
+function CellActionsImpl({ value }) {
+  const { poolMember } = useMyPool();
   const [showJoinPopup, setShowJoinPopup] = useState(false);
   const [showBondExtraPopup, setShowBondExtraPopup] = useState(false);
   const [showUnbondPopup, setShowUnbondPopup] = useState(false);
 
   const menuItems = useMemo(() => {
     return [
-      isNil(myPool) && (
+      isNil(poolMember) && (
         <OptionItem
           key="join"
           className="flex items-center grow gap-x-2"
@@ -59,26 +68,26 @@ function CellActionsImpl({ value, myPool }) {
           <MenuDelegation className="w-5 h-5" /> Join
         </OptionItem>
       ),
-      !isNil(myPool) && (
+      !isNil(poolMember) && (
         <OptionItem
           key="bondExtra"
           className="flex items-center grow gap-x-2"
           onClick={() => setShowBondExtraPopup(true)}
         >
-          <MenuDelegation className="w-5 h-5" /> Bond Extra
+          <TrackFastPromotion className="w-5 h-5" /> Bond Extra
         </OptionItem>
       ),
-      !isNil(myPool) && (
+      !isNil(poolMember) && (
         <OptionItem
           key="unbond"
           className="flex items-center grow gap-x-2"
           onClick={() => setShowUnbondPopup(true)}
         >
-          <MenuDelegation className="w-5 h-5" /> Unbond
+          <SystemUpload className="w-5 h-5" /> Unbond
         </OptionItem>
       ),
     ].filter(Boolean);
-  }, [myPool]);
+  }, [poolMember]);
 
   return (
     <>

@@ -10,7 +10,6 @@ import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import DataList from "next-common/components/dataList";
-import SecondaryButton from "next-common/lib/button/secondary";
 import { useContextApi } from "next-common/context/api";
 import { useTxBuilder } from "next-common/hooks/useTxBuilder";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
@@ -90,9 +89,6 @@ export default function UnbondingPopup({ onClose, unbondingEras }) {
     >
       <Popup title="Unbonding Pool" onClose={onClose}>
         <UnbondingPopupContent />
-        <div className="flex justify-end">
-          <SecondaryButton onClick={onClose}>Cancel</SecondaryButton>
-        </div>
       </Popup>
     </SignerPopupWrapper>
   );
@@ -100,7 +96,7 @@ export default function UnbondingPopup({ onClose, unbondingEras }) {
 
 function WithdrawButton({ era }) {
   const { activeEra } = usePopupParams();
-  if (era >= activeEra) {
+  if (era > activeEra) {
     return null;
   }
   return <WithdrawButtonImpl era={era} />;

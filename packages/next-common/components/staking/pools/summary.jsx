@@ -6,25 +6,27 @@ import SummaryItem from "next-common/components/summary/layout/item";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
+import { useMyPool } from "./context/myPool";
 
-export default function PoolsSummary({ myPool }) {
+export default function PoolsSummary() {
+  const { poolMember, claimable } = useMyPool();
   const { decimals, symbol } = useChainSettings();
-  if (isNil(myPool)) {
+  if (isNil(poolMember)) {
     return null;
   }
 
   return (
     <SummaryLayout>
-      <SummaryItem title="My Pool">#{myPool?.poolId}</SummaryItem>
+      <SummaryItem title="My Pool">#{poolMember?.poolId}</SummaryItem>
       <SummaryItem title="Bonded">
         <ValueDisplay
-          value={toPrecision(myPool?.points, decimals)}
+          value={toPrecision(poolMember?.points, decimals)}
           symbol={symbol}
         />
       </SummaryItem>
 
-      <ClaimableItem claimable={myPool?.claimable} />
-      <WithdrawItem unbondingEras={myPool?.unbondingEras} />
+      <ClaimableItem claimable={claimable} />
+      <WithdrawItem unbondingEras={poolMember?.unbondingEras} />
     </SummaryLayout>
   );
 }

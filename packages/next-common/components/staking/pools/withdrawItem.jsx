@@ -8,16 +8,22 @@ import { useMemo, useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { SystemMenu } from "@osn/icons/subsquare";
 import { ActionIconButton } from "next-common/components/multisigs/styled";
+import { useMyPool } from "./context/myPool";
 
 const UnbondingPopup = dynamicPopup(() =>
-  import("next-common/components/staking/actions/unbondingPopup"),
+  import("next-common/components/staking/pools/actions/unbondingPopup"),
 );
 
-export default function WithdrawItem({ unbondingEras }) {
+export default function WithdrawItem() {
+  const { poolMember } = useMyPool();
   const [open, setOpen] = useState(false);
   const { decimals, symbol } = useChainSettings();
   const { result } = useSubStorage("staking", "activeEra");
   const activeEra = result?.value?.index?.toNumber();
+  const unbondingEras = useMemo(
+    () => poolMember?.unbondingEras || {},
+    [poolMember?.unbondingEras],
+  );
 
   const statistics = useMemo(() => {
     let total = BigNumber(0);
