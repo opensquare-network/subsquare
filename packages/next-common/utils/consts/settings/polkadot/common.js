@@ -26,7 +26,7 @@ export const statescanPolkadotAssethubDomain = "assethub-polkadot";
 
 export const polkadotAssethubMigration = {
   migrated: true,
-  timestamp: 1759844124000, // todo
+  timestamp: 1762239840000,
   subscanAssethubDomain: subscanPolkadotAssethubDomain,
   statescanAssethubDomain: statescanPolkadotAssethubDomain,
   relayBlockTime: 6000,
