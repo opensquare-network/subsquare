@@ -2,6 +2,7 @@ import { usePageProps } from "next-common/context/page";
 import SummaryItem from "./layout/item";
 import SummaryLayout from "./layout/layout";
 import { isNil } from "lodash-es";
+import SpendPeriod from "next-common/components/treasury/status/summarys/spendPeriod";
 
 export default function TreasuryProposalsSummary() {
   const { proposalsSummary } = usePageProps();
@@ -18,6 +19,7 @@ export default function TreasuryProposalsSummary() {
       <SummaryItem title="Proposed">{detail?.Proposed ?? 0}</SummaryItem>
       <SummaryItem title="Approved">{detail?.Approved ?? 0}</SummaryItem>
       <SummaryItem title="Rejected">{detail?.Rejected ?? 0}</SummaryItem>
+      <SpendPeriod />
     </SummaryLayout>
   );
 }

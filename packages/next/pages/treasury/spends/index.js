@@ -53,7 +53,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
   return {
     props: {
       spends,
-      spendsSummary,
+      spendsSummary: spendsSummary ?? null,
       ...tracksProps,
     },
   };

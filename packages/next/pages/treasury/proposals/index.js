@@ -76,7 +76,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
   return {
     props: {
       proposals,
-      proposalsSummary,
+      proposalsSummary: proposalsSummary ?? null,
       ...tracksProps,
     },
   };
