@@ -1,4 +1,5 @@
 import { isNil } from "lodash-es";
+import { useTheme } from "styled-components";
 import { usePageProps } from "next-common/context/page";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecisionNumber } from "next-common/utils";
@@ -6,6 +7,7 @@ import formatTime from "next-common/utils/viewfuncs/formatDate";
 import BigNumber from "bignumber.js";
 
 export default function useTreasuryBurntChartData() {
+  const { isDark } = useTheme();
   const { decimals, symbol } = useChainSettings();
   const { burntChart } = usePageProps();
 
@@ -36,7 +38,7 @@ export default function useTreasuryBurntChartData() {
         barThickness: BAR_THICKNESS,
         maxBarThickness: BAR_THICKNESS,
         data: items.map((item) => item.burnt),
-        backgroundColor: "#FCB3AD",
+        backgroundColor: isDark ? "#E6007A" : "#FCB3AD",
       },
     ],
   };
