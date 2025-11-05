@@ -4,8 +4,22 @@ import SummaryItem from "./layout/item";
 import SummaryLayout from "./layout/layout";
 import SummaryLabelItem from "./polkadotTreasurySummary/common/summaryLabelItem";
 import { isNil } from "lodash-es";
+import { isKintsugiChain } from "next-common/utils/chain";
+import { useChain } from "next-common/context/chain";
+import TreasurySummary from "./treasurySummary";
+import isHydradx from "next-common/utils/isHydradx";
 
 export default function TreasurySpendsSummary() {
+  const chain = useChain();
+
+  if (isKintsugiChain(chain) || isHydradx(chain)) {
+    return <TreasurySummary />;
+  }
+
+  return <TreasurySpendsSummaryImpl />;
+}
+
+function TreasurySpendsSummaryImpl() {
   const { spendsSummary } = usePageProps();
 
   if (isNil(spendsSummary)) {
