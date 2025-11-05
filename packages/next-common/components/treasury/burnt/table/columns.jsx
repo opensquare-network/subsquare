@@ -10,13 +10,13 @@ function TimeCell({ item }) {
   const { indexer } = item || {};
   return (
     <div className="flex flex-col gap-[4px]">
-      <div className="text-textTertiary">
+      <div className="text-textPrimary">
         {dayjs(indexer?.blockTime).format("YYYY-MM-DD HH:mm:ss")}
       </div>
       <ExplorerLink indexer={indexer} className="hover:underline">
         <BlockHeight
           number={indexer?.blockHeight}
-          contentClassName="hover:underline"
+          contentClassName="hover:underline text-textDisabled"
         />
       </ExplorerLink>
     </div>
