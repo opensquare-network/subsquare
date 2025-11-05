@@ -7,6 +7,7 @@ import { isNil } from "lodash-es";
 
 export default function TreasurySpendsSummary() {
   const { spendsSummary } = usePageProps();
+
   if (isNil(spendsSummary)) {
     return null;
   }

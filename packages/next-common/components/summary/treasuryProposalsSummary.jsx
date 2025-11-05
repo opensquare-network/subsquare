@@ -16,7 +16,7 @@ export default function TreasuryProposalsSummary() {
     <SummaryLayout>
       <SummaryItem title="Total">{totalProposalsCount}</SummaryItem>
       <SummaryItem title="Proposed">{detail?.Proposed ?? 0}</SummaryItem>
-      <SummaryItem title="To Be Awarded">{detail?.Approved ?? 0}</SummaryItem>
+      <SummaryItem title="Approved">{detail?.Approved ?? 0}</SummaryItem>
       <SummaryItem title="Rejected">{detail?.Rejected ?? 0}</SummaryItem>
     </SummaryLayout>
   );
