@@ -3,7 +3,6 @@ import TreasuryProposalsPostList, {
   NewTreasuryProposalButton,
 } from "next-common/components/postList/treasuryProposalsPostList";
 import { withCommonProps } from "next-common/lib";
-import TreasurySummary from "next-common/components/summary/treasurySummary";
 import normalizeTreasuryProposalListItem from "next-common/utils/viewfuncs/treasury/normalizeProposalListItem";
 import { useChainSettings } from "next-common/context/chain";
 import ListLayout from "next-common/components/layout/ListLayout";
@@ -13,9 +12,9 @@ import {
   TreasuryProvider,
   useTreasuryProposalListUrl,
 } from "next-common/context/treasury";
-import { isPolkadotChain } from "next-common/utils/chain";
-import PolkadotTreasuryStatsOnProposal from "next-common/components/treasury/common/polkadotTreasuryStatsOnProposal";
 import businessCategory from "next-common/utils/consts/business/category";
+import TreasuryProposalsSummary from "next-common/components/summary/treasuryProposalsSummary";
+import { backendApi } from "next-common/services/nextApi";
 
 export default function ProposalsPage({ proposals: ssrProposals, chain }) {
   const [proposals, setProposals] = useState(ssrProposals);
@@ -32,18 +31,12 @@ export default function ProposalsPage({ proposals: ssrProposals, chain }) {
   const pallet = "treasury";
   const treasuryProposalListUrl = useTreasuryProposalListUrl(pallet);
 
-  const treasurySummaryPanel = isPolkadotChain(chain) ? (
-    <PolkadotTreasuryStatsOnProposal />
-  ) : (
-    <TreasurySummary />
-  );
-
   return (
     <TreasuryProvider pallet={pallet}>
       <ListLayout
         seoInfo={seoInfo}
         title={category}
-        summary={treasurySummaryPanel}
+        summary={<TreasuryProposalsSummary />}
         tabs={[
           {
             value: "proposals",
@@ -73,12 +66,17 @@ export default function ProposalsPage({ proposals: ssrProposals, chain }) {
 }
 
 export const getServerSideProps = withCommonProps(async (context) => {
-  const proposals = await fetchList("treasury/proposals", context);
-  const tracksProps = await fetchOpenGovTracksProps();
+  const [proposals, tracksProps, { result: proposalsSummary }] =
+    await Promise.all([
+      fetchList("treasury/proposals", context),
+      fetchOpenGovTracksProps(),
+      backendApi.fetch("treasury/proposals/summary"),
+    ]);
 
   return {
     props: {
       proposals,
+      proposalsSummary,
       ...tracksProps,
     },
   };

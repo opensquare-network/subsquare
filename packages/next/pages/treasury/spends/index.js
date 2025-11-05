@@ -2,15 +2,14 @@ import { withCommonProps } from "next-common/lib";
 import { fetchList } from "next-common/services/list";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ListLayout from "next-common/components/layout/ListLayout";
-import TreasurySummary from "next-common/components/summary/treasurySummary";
 import TreasurySpendsPostList from "next-common/components/postList/treasurySpendsPostList";
 import normalizeTreasurySpendListItem from "next-common/utils/viewfuncs/treasury/normalizeTreasurySpendListItem";
 import { TreasuryProvider } from "next-common/context/treasury";
-import { isPolkadotChain } from "next-common/utils/chain";
-import PolkadotTreasuryStatsOnProposal from "next-common/components/treasury/common/polkadotTreasuryStatsOnProposal";
 import { DropdownUrlFilterProvider } from "next-common/components/dropdownFilter/context";
 import { upperFirst } from "lodash-es";
 import businessCategory from "next-common/utils/consts/business/category";
+import TreasurySpendsSummary from "next-common/components/summary/treasurySpendsSummary";
+import { backendApi } from "next-common/services/nextApi";
 
 export default function ProposalsPage({ spends: pagedSpends, chain }) {
   const { items, total, page, pageSize } = pagedSpends;
@@ -20,18 +19,12 @@ export default function ProposalsPage({ spends: pagedSpends, chain }) {
   const category = businessCategory.treasurySpends;
   const seoInfo = { title: category, desc: category };
 
-  const treasurySummaryPanel = isPolkadotChain(chain) ? (
-    <PolkadotTreasuryStatsOnProposal />
-  ) : (
-    <TreasurySummary />
-  );
-
   return (
     <TreasuryProvider>
       <ListLayout
         seoInfo={seoInfo}
         title={category}
-        summary={treasurySummaryPanel}
+        summary={<TreasurySpendsSummary />}
       >
         <DropdownUrlFilterProvider
           defaultFilterValues={{ status: "" }}
@@ -51,12 +44,16 @@ export default function ProposalsPage({ spends: pagedSpends, chain }) {
 export const getServerSideProps = withCommonProps(async (context) => {
   const { status } = context.query;
   const query = status ? { status: upperFirst(status) } : {};
-  const spends = await fetchList("treasury/spends", context, query);
-  const tracksProps = await fetchOpenGovTracksProps();
+  const [spends, tracksProps, { result: spendsSummary }] = await Promise.all([
+    await fetchList("treasury/spends", context, query),
+    await fetchOpenGovTracksProps(),
+    await backendApi.fetch("treasury/spends/summary"),
+  ]);
 
   return {
     props: {
       spends,
+      spendsSummary,
       ...tracksProps,
     },
   };
