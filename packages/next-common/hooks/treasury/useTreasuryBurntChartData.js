@@ -9,42 +9,39 @@ export default function useTreasuryBurntChartData() {
   const { decimals, symbol } = useChainSettings();
   const { burntChart } = usePageProps();
 
-  if (
-    isNil(burntChart) ||
-    isNil(burntChart?.result) ||
-    burntChart?.result.length === 0
-  ) {
+  if (isNil(burntChart?.result) || burntChart.result.length === 0) {
     return { chartData: null, options: undefined, totalWidth: 0 };
   }
 
-  const categoryPercentage = 1;
-  const barPercentage = 1;
   const BAR_THICKNESS = 7;
   const BAR_GAP = 10;
 
   let items = burntChart.result
     .map((bar) => ({
       date: formatTime(bar.timestamp, "YYYY-MM-DD"),
-      brunt: toPrecisionNumber(bar.amount || 0, decimals),
+      burnt: toPrecisionNumber(bar.amount || 0, decimals),
     }))
     .reverse();
 
-  items.forEach(() => BigNumber(items[0].brunt).isZero() && items.shift());
+  while (items.length > 0 && BigNumber(items[0].burnt).isZero()) {
+    items.shift();
+  }
 
-  const labels = items.map(() => "");
-  const datasets = [
-    {
-      categoryPercentage,
-      barPercentage,
-      barThickness: BAR_THICKNESS,
-      maxBarThickness: BAR_THICKNESS,
-      data: items.map((item) => item.brunt),
-      backgroundColor: "#FCB3AD",
-    },
-  ];
+  const chartData = {
+    labels: items.map(() => ""),
+    datasets: [
+      {
+        categoryPercentage: 1,
+        barPercentage: 1,
+        barThickness: BAR_THICKNESS,
+        maxBarThickness: BAR_THICKNESS,
+        data: items.map((item) => item.burnt),
+        backgroundColor: "#FCB3AD",
+      },
+    ],
+  };
 
-  const chartData = { labels, datasets };
-  const totalWidth = labels.length * (BAR_THICKNESS + BAR_GAP);
+  const totalWidth = items.length * (BAR_THICKNESS + BAR_GAP);
 
   const options = {
     animation: { duration: 0 },
@@ -61,7 +58,7 @@ export default function useTreasuryBurntChartData() {
           },
           label(tooltipItem) {
             const idx = tooltipItem.dataIndex;
-            const burnt = items[idx]?.brunt;
+            const burnt = items[idx]?.burnt;
             return `Burnt: ${burnt} ${symbol}`;
           },
         },
