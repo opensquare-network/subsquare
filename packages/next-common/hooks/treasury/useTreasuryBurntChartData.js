@@ -2,7 +2,7 @@ import { isNil } from "lodash-es";
 import { useTheme } from "styled-components";
 import { usePageProps } from "next-common/context/page";
 import { useChainSettings } from "next-common/context/chain";
-import { toPrecisionNumber } from "next-common/utils";
+import { toPrecisionNumber, abbreviateBigNumber } from "next-common/utils";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
 import BigNumber from "bignumber.js";
 
@@ -61,7 +61,7 @@ export default function useTreasuryBurntChartData() {
           label(tooltipItem) {
             const idx = tooltipItem.dataIndex;
             const burnt = items[idx]?.burnt;
-            return `Burnt: ${burnt} ${symbol}`;
+            return `Burnt: ≈${abbreviateBigNumber(burnt)} ${symbol}`;
           },
         },
       },
