@@ -5,9 +5,10 @@ import { useChainSettings } from "next-common/context/chain";
 import { toPrecisionNumber, abbreviateBigNumber } from "next-common/utils";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
 import BigNumber from "bignumber.js";
+import { useThemeSetting } from "next-common/context/theme";
 
 export default function useTreasuryBurntChartData() {
-  const { isDark } = useTheme();
+  const themeSettings = useThemeSetting();
   const { decimals, symbol } = useChainSettings();
   const { burntChart } = usePageProps();
 
@@ -38,7 +39,7 @@ export default function useTreasuryBurntChartData() {
         barThickness: BAR_THICKNESS,
         maxBarThickness: BAR_THICKNESS,
         data: items.map((item) => item.burnt),
-        backgroundColor: isDark ? "#E6007A" : "#FCB3AD",
+        backgroundColor: themeSettings.theme500,
       },
     ],
   };

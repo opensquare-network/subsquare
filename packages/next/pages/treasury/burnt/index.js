@@ -1,25 +1,19 @@
 import { withCommonProps } from "next-common/lib";
 import { useChainSettings } from "next-common/context/chain";
-import ListLayout from "next-common/components/layout/ListLayout";
-import { TreasuryProvider } from "next-common/context/treasury";
-import businessCategory from "next-common/utils/consts/business/category";
 import { backendApi } from "next-common/services/nextApi";
 import { fetchList } from "next-common/services/list";
 import TreasuryBurnt from "next-common/components/treasury/burnt";
+import { TreasuryProvider } from "next-common/context/treasury";
 
 export default function TreasuryBurntPage() {
   const chainSettings = useChainSettings();
   if (!chainSettings?.modules?.treasury?.burnt) {
     return null;
   }
-  const category = businessCategory.treasuryBurnt;
-  const seoInfo = { title: category, desc: category };
 
   return (
     <TreasuryProvider>
-      <ListLayout seoInfo={seoInfo} title={category}>
-        <TreasuryBurnt />
-      </ListLayout>
+      <TreasuryBurnt />
     </TreasuryProvider>
   );
 }
