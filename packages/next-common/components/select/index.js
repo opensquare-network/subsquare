@@ -130,6 +130,7 @@ function Select({
       disabled={disabled}
       onClick={handleShowOptions}
       itemHeight={theItemHeight}
+      role="button"
     >
       <SelectInner>
         <div className="overflow-hidden">
