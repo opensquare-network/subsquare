@@ -2,37 +2,16 @@ import { useMemo } from "react";
 import dayjs from "dayjs";
 import Tooltip from "next-common/components/tooltip";
 import SummaryItem from "next-common/components/summary/layout/item";
-import { usePageProps } from "next-common/context/page";
+import useTimeScopeData from "./useTimeScopeData";
 
 export default function TimeScopeSummary() {
-  const { burntChart, burntList } = usePageProps();
-
-  const chartData = burntChart?.result || [];
-  const earliestChartItem = chartData[chartData.length - 1];
-  const latestChartItem = chartData[0];
-
-  const listItems = burntList?.items || [];
-  const latestListItem = listItems[0];
-  const earliestListItem = listItems[listItems.length - 1];
-
-  const startBlockTime = earliestChartItem?.timestamp;
-  const endBlockTime = latestChartItem?.timestamp;
-
-  const startBlockHeight = earliestListItem?.indexer?.blockHeight;
-  const endBlockHeight = latestListItem?.indexer?.blockHeight;
-
-  const valueText = useMemo(() => {
-    if (!startBlockTime && !endBlockTime) {
-      return "-";
-    }
-    const startStr = startBlockTime
-      ? dayjs(startBlockTime).format("YYYY-MM-DD")
-      : "-";
-    const endStr = endBlockTime
-      ? dayjs(endBlockTime).format("YYYY-MM-DD")
-      : "-";
-    return `${startStr} ~ ${endStr}`;
-  }, [startBlockTime, endBlockTime]);
+  const {
+    startBlockTime,
+    endBlockTime,
+    startBlockHeight,
+    endBlockHeight,
+    valueText,
+  } = useTimeScopeData();
 
   const tooltipContent = useMemo(() => {
     return (
