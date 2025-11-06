@@ -8,42 +8,38 @@ import SummaryItem from "next-common/components/summary/layout/item";
 import useTreasuryBurn from "next-common/utils/hooks/useTreasuryBurn";
 import useTreasuryFree from "next-common/utils/hooks/useTreasuryFree";
 import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
-import useSpendPeriodSummary from "next-common/components/summary/treasurySummary/useSpendPeriodSummary";
+import { usePageProps } from "next-common/context/page";
+import {
+  useSpendPeriod,
+  useLastSpendPeriod,
+} from "next-common/components/summary/treasurySummary/useSpendPeriodSummary";
+import { useSelector } from "react-redux";
+import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 
 export default function NextBurnSummary() {
   const { symbol, decimals } = useChainSettings();
   const api = useConditionalContextApi();
   const { free } = useTreasuryFree(api);
   const nextBurn = useTreasuryBurn(api, free || 0);
-  const summary = useSpendPeriodSummary();
+  const { burntChart } = usePageProps();
+  const spendPeriod = useSpendPeriod(api);
+  const lastBurnBlockHeight = useLastSpendPeriod(api);
+  const blockTime = useSelector(blockTimeSelector);
+  const lastBurnTime = burntChart?.result?.[0]?.timestamp;
 
-  // console.log("::::summary", summary);
-
-  const nextBurnTime = useMemo(() => {
-    if (!summary?.spendPeriod) {
+  const nextBurnBlockHeight = useMemo(() => {
+    if (!lastBurnBlockHeight || !spendPeriod) {
       return null;
     }
+    return Number(lastBurnBlockHeight) + spendPeriod;
+  }, [lastBurnBlockHeight, spendPeriod]);
 
-    const spendPeriodArray = summary.spendPeriod;
-    let totalMs = 0;
-
-    for (let i = 0; i < spendPeriodArray.length; i += 2) {
-      const value = parseInt(spendPeriodArray[i], 10);
-      const unit = spendPeriodArray[i + 1];
-
-      if (unit === "days" || unit === "day") {
-        totalMs += value * 24 * 60 * 60 * 1000;
-      } else if (unit === "hrs" || unit === "hr") {
-        totalMs += value * 60 * 60 * 1000;
-      } else if (unit === "mins" || unit === "min") {
-        totalMs += value * 60 * 1000;
-      } else if (unit === "secs" || unit === "sec") {
-        totalMs += value * 1000;
-      }
+  const nextBurnTime = useMemo(() => {
+    if (!lastBurnTime || !blockTime || !spendPeriod) {
+      return null;
     }
-
-    return Date.now() + totalMs;
-  }, [summary]);
+    return new Date(lastBurnTime).getTime() + spendPeriod * blockTime;
+  }, [lastBurnTime, blockTime, spendPeriod]);
 
   const tooltipContent = useMemo(() => {
     if (!nextBurnTime) {
@@ -52,12 +48,13 @@ export default function NextBurnSummary() {
 
     return (
       <div className="space-y-1">
-        <div>
-          Next Burn Time: {dayjs(nextBurnTime).format("YYYY-MM-DD HH:mm:ss")}
-        </div>
+        {nextBurnBlockHeight && (
+          <div>#{nextBurnBlockHeight?.toLocaleString()}</div>
+        )}
+        <div>Next Burn Time: {dayjs(nextBurnTime).format("YYYY-MM-DD")}</div>
       </div>
     );
-  }, [nextBurnTime]);
+  }, [nextBurnTime, nextBurnBlockHeight]);
 
   return (
     <SummaryItem title="Next Burn">
