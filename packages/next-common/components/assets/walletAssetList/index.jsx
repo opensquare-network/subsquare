@@ -7,6 +7,7 @@ import Assets from "./assets";
 import Transfers from "./transfers";
 import { AssetHubTabsProvider } from "next-common/components/assets/context/assetHubTabsProvider";
 import ForeignAssets from "next-common/components/assets/foreignAssets";
+import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 
 export function Title({ assetsCount }) {
   return (
@@ -21,17 +22,19 @@ export function Title({ assetsCount }) {
 
 export default function WalletAssetList() {
   return (
-    <AssetHubTabsProvider>
-      <ListLayout seoInfo={{ title: "" }} headContent={<HeadContent />}>
-        <div className="flex flex-col gap-[16px]">
-          <NativeAsset />
-          <AssetHubTabs>
-            <Assets />
-            <Transfers />
-          </AssetHubTabs>
-          <ForeignAssets />
-        </div>
-      </ListLayout>
-    </AssetHubTabsProvider>
+    <MigrationConditionalApiProvider>
+      <AssetHubTabsProvider>
+        <ListLayout seoInfo={{ title: "" }} headContent={<HeadContent />}>
+          <div className="flex flex-col gap-[16px]">
+            <NativeAsset />
+            <AssetHubTabs>
+              <Assets />
+              <Transfers />
+            </AssetHubTabs>
+            <ForeignAssets />
+          </div>
+        </ListLayout>
+      </AssetHubTabsProvider>
+    </MigrationConditionalApiProvider>
   );
 }

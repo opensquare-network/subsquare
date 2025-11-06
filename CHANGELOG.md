@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file.
 
+# 5.5.0
+
+Date:
+2025-11-05. [Code diff](https://github.com/opensquare-network/subsquare/compare/5e0a3790c0caa61c5004b0ed13e1027bb4008962...88b397a52108f6864027e42faa64e7c1686b5991).
+
+- Add a new `/assets` route after assethub migration to show account assets and all onchain assets info including native
+  and foreign assets.
+- Implement a treasury status page on which we show treasury assets info, to be awarded info, spend period info and the
+  list of treasury beneficiaries.
+- Fix coretime chart and summary data by using relay chain block number for calculations. Check
+  code [here](https://github.com/opensquare-network/subsquare/commit/43f1078b1bc5996906ce46dc23ec00647b3142bb).
+- Add an assets tab on the user profile page to show user assets.
+- Support polkadot assethub migration.
+- Support deleting sima comments on the referendum detail page.
+- Support data tracking with [posthog](https://posthog.com/).
+- Show bounty info as identity info if an address is the beneficiary address of a bounty.
+- Support a new `Expired` state for treasury spends. It means time is over expiration time of a not paid treasury spend.
+- Show identity usernames and authorities under people route.
+- Fellowship:
+    - Show rank of fellowship members on the fellowship referenda actions popup.
+    - Improve the track selection for the fellowship treasury spend referenda template.
+- Fix the DV cohort page crash caused by track info missing of referenda.
+- Fix styles and code refactor.
+
 # 5.4.4
 
 Date:

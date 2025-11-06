@@ -1,6 +1,7 @@
 import { usePageProps } from "next-common/context/page";
 import { createContext, useContext, useMemo, useState } from "react";
 import { isNil } from "lodash-es";
+import { useDvReferendaData } from "./dvReferendaDataProvider";
 
 export const DV_DATA_TYPE = {
   ALL_REFERENDA: "referenda",
@@ -41,10 +42,11 @@ export function useDvReferenda() {
 }
 
 export function useFilteredDvReferenda() {
-  const { referenda = [], cohort } = usePageProps();
+  const { cohort } = usePageProps();
+  const { referendaData: referenda, loading } = useDvReferendaData();
   const { countType } = useDvReferenda();
 
-  return useMemo(() => {
+  const filteredReferenda = useMemo(() => {
     if (countType === DV_DATA_TYPE.TRACK_REFERENDA) {
       return referenda.filter((referendum) =>
         cohort?.tracks?.includes(referendum.track),
@@ -52,12 +54,14 @@ export function useFilteredDvReferenda() {
     }
     return referenda;
   }, [referenda, countType, cohort]);
+  return { filteredReferenda, loading };
 }
 
 export function useFilteredDvVotes() {
   const { votes = [], cohort } = usePageProps();
   const { countType } = useDvReferenda();
-  const referenda = useFilteredDvReferenda();
+  const { filteredReferenda: referenda } = useFilteredDvReferenda();
+
   const ids = useMemo(() => {
     return referenda
       .filter((referendum) => cohort?.tracks?.includes(referendum.track))

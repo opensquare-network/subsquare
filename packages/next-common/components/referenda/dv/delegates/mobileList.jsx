@@ -12,14 +12,22 @@ import { AddressUser } from "next-common/components/user";
 import { Divider } from "../../trackPanel/lineItem";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
+import Loading from "next-common/components/loading";
 
 export default function DelegatesMobileList({ delegates }) {
-  const referenda = useFilteredDvReferenda();
+  const { filteredReferenda, loading } = useFilteredDvReferenda();
   const count = useDvReferendaCount();
 
+  if (loading) {
+    return (
+      <div className="flex justify-center py-4">
+        <Loading size={20} />
+      </div>
+    );
+  }
   return delegates.map((delegate) => {
     const winCount = delegate.userVotes.filter((vote) =>
-      isWin(vote, referenda),
+      isWin(vote, filteredReferenda),
     ).length;
 
     return (

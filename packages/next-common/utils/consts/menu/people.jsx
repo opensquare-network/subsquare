@@ -4,6 +4,7 @@ import {
   MenuAuthorities,
   MenuData,
   MenuRegistrars,
+  InfoUsers,
 } from "@osn/icons/subsquare";
 import { NAV_MENU_TYPE } from "next-common/utils/constants";
 
@@ -28,13 +29,19 @@ export const peopleMenu = {
       icon: <MenuData />,
     },
     {
-      type: "divider",
-    },
-    {
       name: "Registrars",
       value: "registrars",
       pathname: "/people/registrars",
       icon: <MenuRegistrars />,
+    },
+    {
+      type: "divider",
+    },
+    {
+      name: "Usernames",
+      value: "usernames",
+      pathname: "/people/usernames",
+      icon: <InfoUsers />,
     },
   ],
 };

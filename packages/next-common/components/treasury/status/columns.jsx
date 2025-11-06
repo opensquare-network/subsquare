@@ -24,16 +24,48 @@ export function getBeneficiariesProposalColumn() {
   };
 }
 
-export function getBeneficiariesAwardedColumn() {
+function AwardedValueTitle({ tooltip }) {
+  return (
+    <div className="inline-flex items-center gap-x-1">
+      <span className="text-textTertiary">Value</span>
+      <Tooltip content={tooltip} />
+    </div>
+  );
+}
+
+export function getBeneficiariesValueAtAwardedTimeColumn() {
   return {
-    name: "Awarded",
+    name: <AwardedValueTitle tooltip="Value at awarded time" />,
     style: {
       textAlign: "right",
-      width: "160px",
+      width: "180px",
     },
     cellRender(data) {
       return (
-        <ValueDisplay value={data.totalBenefitFiatValue} symbol="" prefix="$" />
+        <ValueDisplay
+          value={data.totalBenefitFiatValueAtFinal || 0}
+          symbol=""
+          prefix="$"
+        />
+      );
+    },
+  };
+}
+
+export function getBeneficiariesValueAtProposedTimeColumn() {
+  return {
+    name: <AwardedValueTitle tooltip="Value at proposed time" />,
+    style: {
+      textAlign: "right",
+      width: "180px",
+    },
+    cellRender(data) {
+      return (
+        <ValueDisplay
+          value={data.totalBenefitFiatValue || 0}
+          symbol=""
+          prefix="$"
+        />
       );
     },
   };

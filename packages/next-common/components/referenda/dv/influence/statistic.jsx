@@ -8,18 +8,18 @@ import { useMemo } from "react";
 export default function InfluenceStatistic({
   delegateReferendumVotesMap = {},
 }) {
-  const allReferendum = useFilteredDvReferenda();
-  const { statistic, loading, error } = useInfluenceStatistic({
+  const { filteredReferenda, loading } = useFilteredDvReferenda();
+  const { statistic } = useInfluenceStatistic({
     delegateReferendumVotesMap,
-    allReferendum,
+    allReferendum: filteredReferenda,
   });
 
   const allReferendumCount = useMemo(
-    () => allReferendum.length,
-    [allReferendum],
+    () => filteredReferenda.length,
+    [filteredReferenda],
   );
 
-  if (loading || error || !allReferendumCount) {
+  if (!allReferendumCount || loading) {
     return null;
   }
 
