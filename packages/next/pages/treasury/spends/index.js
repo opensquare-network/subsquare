@@ -9,7 +9,6 @@ import { DropdownUrlFilterProvider } from "next-common/components/dropdownFilter
 import { upperFirst } from "lodash-es";
 import businessCategory from "next-common/utils/consts/business/category";
 import TreasurySpendsSummary from "next-common/components/summary/treasurySpendsSummary";
-import { backendApi } from "next-common/services/nextApi";
 
 export default function ProposalsPage({ spends: pagedSpends, chain }) {
   const { items, total, page, pageSize } = pagedSpends;
@@ -44,16 +43,14 @@ export default function ProposalsPage({ spends: pagedSpends, chain }) {
 export const getServerSideProps = withCommonProps(async (context) => {
   const { status } = context.query;
   const query = status ? { status: upperFirst(status) } : {};
-  const [spends, tracksProps, { result: spendsSummary }] = await Promise.all([
+  const [spends, tracksProps] = await Promise.all([
     await fetchList("treasury/spends", context, query),
     await fetchOpenGovTracksProps(),
-    await backendApi.fetch("treasury/spends/summary"),
   ]);
 
   return {
     props: {
       spends,
-      spendsSummary: spendsSummary ?? null,
       ...tracksProps,
     },
   };

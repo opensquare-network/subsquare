@@ -14,7 +14,6 @@ import {
 } from "next-common/context/treasury";
 import businessCategory from "next-common/utils/consts/business/category";
 import TreasuryProposalsSummary from "next-common/components/summary/treasuryProposalsSummary";
-import { backendApi } from "next-common/services/nextApi";
 
 export default function ProposalsPage({ proposals: ssrProposals, chain }) {
   const [proposals, setProposals] = useState(ssrProposals);
@@ -66,17 +65,14 @@ export default function ProposalsPage({ proposals: ssrProposals, chain }) {
 }
 
 export const getServerSideProps = withCommonProps(async (context) => {
-  const [proposals, tracksProps, { result: proposalsSummary }] =
-    await Promise.all([
-      fetchList("treasury/proposals", context),
-      fetchOpenGovTracksProps(),
-      backendApi.fetch("treasury/proposals/summary"),
-    ]);
+  const [proposals, tracksProps] = await Promise.all([
+    fetchList("treasury/proposals", context),
+    fetchOpenGovTracksProps(),
+  ]);
 
   return {
     props: {
       proposals,
-      proposalsSummary: proposalsSummary ?? null,
       ...tracksProps,
     },
   };
