@@ -1,5 +1,4 @@
 import { isNil } from "lodash-es";
-import { useTheme } from "styled-components";
 import { usePageProps } from "next-common/context/page";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecisionNumber, abbreviateBigNumber } from "next-common/utils";
