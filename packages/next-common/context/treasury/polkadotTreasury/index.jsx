@@ -21,13 +21,13 @@ export default function PolkadotTreasuryProvider({ children }) {
   const api = useContextApi();
   const {
     treasuryAccount,
-    relayChainFree,
-    native: nativeTreasuryBalance,
-    nativeLoading: isNativeTreasuryBalanceLoading,
-    usdt: usdtTreasuryBalance,
-    usdtLoading: isUsdtTreasuryBalanceLoading,
-    usdc: usdcTreasuryBalance,
-    usdcLoading: isUsdcTreasuryBalanceLoading,
+    relayChainTreasuryBalance: nativeTreasuryBalanceOnRelayChain,
+    isNativeLoading: isNativeTreasuryBalanceOnRelayChainLoading,
+    totalNativeFree,
+    totalUsdtBalance,
+    isUsdtLoading,
+    totalUsdcBalance,
+    isUsdcLoading,
   } = usePolkadotTreasuryTotal(api);
 
   const {
@@ -66,20 +66,28 @@ export default function PolkadotTreasuryProvider({ children }) {
   return (
     <PolkadotTreasuryContext.Provider
       value={{
+        // treasury account address
         treasuryAccount,
-        relayChainFree,
-        nativeTreasuryBalance,
-        isNativeTreasuryBalanceLoading,
+        nativeTreasuryBalanceOnRelayChain,
+        isNativeTreasuryBalanceOnRelayChainLoading,
+
+        // total balances
+        totalNativeFree,
+        totalUsdtBalance,
+        isUsdtLoading,
+        totalUsdcBalance,
+        isUsdcLoading,
+
         dotTreasuryBalanceOnAssetHub,
         isDotTreasuryBalanceOnAssetHubLoading,
+
+        // fellowship treasury
         fellowshipTreasuryDotBalance,
         isFellowshipTreasuryDotBalanceLoading,
         fellowshipSalaryUsdtBalance,
         isFellowshipSalaryUsdtBalanceLoading,
-        usdtTreasuryBalance,
-        isUsdtTreasuryBalanceLoading,
-        usdcTreasuryBalance,
-        isUsdcTreasuryBalanceLoading,
+
+        // loans
         loanBifrostDotBalance: 10000000000000000,
         loadPendulumDotBalance: 500000000000000,
         loanHydrationDotBalance: 10000000000000000,

@@ -8,13 +8,13 @@ import { isNil } from "lodash-es";
 import useToBeAwarded from "next-common/hooks/useToBeAwarded";
 import NextBurn from "./nextBurn";
 import SpendPeriod from "./spendPeriod";
-import SpendPeriodLabelTip from "../../labelTips/spendPeriod";
 import { usePolkadotTreasury } from "next-common/context/treasury/polkadotTreasury";
+import SpendPeriodLabelTip from "../../labelTips/spendPeriod";
 
 export default function TreasuryStatus() {
   const summary = useSpendPeriodSummary();
   const toBeAwarded = useToBeAwarded();
-  const { nativeTreasuryBalance } = usePolkadotTreasury();
+  const { nativeTreasuryBalanceOnRelayChain } = usePolkadotTreasury();
 
   return (
     <SummaryItem title="Treasury Status">
@@ -25,7 +25,7 @@ export default function TreasuryStatus() {
               <ToBeAwarded toBeAwarded={toBeAwarded} />
             </SummaryLabelItem>
             <SummaryLabelItem label="Next burn">
-              <NextBurn free={nativeTreasuryBalance} />
+              <NextBurn free={nativeTreasuryBalanceOnRelayChain} />
             </SummaryLabelItem>
             <SummaryLabelItem label={<SpendPeriodLabelTip />}>
               <SpendPeriod summary={summary} />

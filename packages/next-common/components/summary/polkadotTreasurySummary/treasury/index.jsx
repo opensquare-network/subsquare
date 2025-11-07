@@ -35,32 +35,29 @@ function TreasurySummary({
 
 export default function Treasury() {
   const {
-    nativeTreasuryBalance,
-    isNativeTreasuryBalanceLoading,
-    usdtTreasuryBalance,
-    isUsdtTreasuryBalanceLoading,
-    usdcTreasuryBalance,
-    isUsdcTreasuryBalanceLoading,
+    isNativeLoading,
+    totalNativeFree,
+    totalUsdtBalance,
+    isUsdtLoading,
+    totalUsdcBalance,
+    isUsdcLoading,
   } = usePolkadotTreasury();
 
-  const isLoading =
-    isNativeTreasuryBalanceLoading ||
-    isUsdtTreasuryBalanceLoading ||
-    isUsdcTreasuryBalanceLoading;
+  const isLoading = isNativeLoading || isUsdtLoading || isUsdcLoading;
 
   return (
     <SummaryItem title="Treasury">
       <LoadableContent isLoading={isLoading}>
         <div className="flex flex-col gap-[4px]">
           <FiatPriceLabel
-            free={nativeTreasuryBalance}
-            usdtBalance={usdtTreasuryBalance}
-            usdcBalance={usdcTreasuryBalance}
+            free={totalNativeFree}
+            usdtBalance={totalUsdtBalance}
+            usdcBalance={totalUsdcBalance}
           />
           <TreasurySummary
-            nativeTreasuryBalance={nativeTreasuryBalance}
-            usdtTreasuryBalance={usdtTreasuryBalance}
-            usdcTreasuryBalance={usdcTreasuryBalance}
+            nativeTreasuryBalance={totalNativeFree}
+            usdtTreasuryBalance={totalUsdtBalance}
+            usdcTreasuryBalance={totalUsdcBalance}
           />
         </div>
       </LoadableContent>

@@ -17,13 +17,14 @@ const usdcAsset = getAssetBySymbol("USDC");
 export default function usePolkadotTreasuryTotal(api) {
   const {
     treasuryAccount,
-    free: relayChainFree,
-    isLoading: isRelayChainFreeLoading,
-    usdt: relayChainUsdt,
-    isLoading: isRelayChainUsdtLoading,
-    usdc: relayChainUsdc,
-    isLoading: isRelayChainUsdcLoading,
+    free: nativeFree,
+    isLoading: isNativeFreeLoading,
+    usdt: usdtBalance,
+    isLoading: isUsdtBalanceLoading,
+    usdc: usdcBalance,
+    isLoading: isUsdcBalanceLoading,
   } = useRelayChainTreasuryFreeTotal(api);
+
   const {
     nativeTreasuryBalanceOnAssetHub,
     isNativeTreasuryBalanceOnAssetHubLoading,
@@ -33,34 +34,36 @@ export default function usePolkadotTreasuryTotal(api) {
     isUsdcTreasuryBalanceOnAssetHubLoading,
   } = useAssetHubTreasuryFreeTotal();
 
-  const sumNative = useMemo(() => {
-    return BigNumber(relayChainFree)
+  const totalNativeFree = useMemo(() => {
+    return BigNumber(nativeFree)
       .plus(nativeTreasuryBalanceOnAssetHub)
       .toString();
-  }, [relayChainFree, nativeTreasuryBalanceOnAssetHub]);
-  const sumUsdt = useMemo(() => {
-    return BigNumber(relayChainUsdt)
+  }, [nativeFree, nativeTreasuryBalanceOnAssetHub]);
+
+  const totalUsdtBalance = useMemo(() => {
+    return BigNumber(usdtBalance)
       .plus(usdtTreasuryBalanceOnAssetHub)
       .toString();
-  }, [relayChainUsdt, usdtTreasuryBalanceOnAssetHub]);
-  const sumUsdc = useMemo(() => {
-    return BigNumber(relayChainUsdc)
+  }, [usdtBalance, usdtTreasuryBalanceOnAssetHub]);
+
+  const totalUsdcBalance = useMemo(() => {
+    return BigNumber(usdcBalance)
       .plus(usdcTreasuryBalanceOnAssetHub)
       .toString();
-  }, [relayChainUsdc, usdcTreasuryBalanceOnAssetHub]);
+  }, [usdcBalance, usdcTreasuryBalanceOnAssetHub]);
 
   return {
     treasuryAccount,
-    relayChainFree,
-    native: sumNative,
-    nativeLoading:
-      isRelayChainFreeLoading || isNativeTreasuryBalanceOnAssetHubLoading,
-    usdt: sumUsdt,
-    usdtLoading:
-      isRelayChainUsdtLoading || isUsdtTreasuryBalanceOnAssetHubLoading,
-    usdc: sumUsdc,
-    usdcLoading:
-      isRelayChainUsdcLoading || isUsdcTreasuryBalanceOnAssetHubLoading,
+    relayChainTreasuryBalance: nativeFree,
+    totalNativeFree,
+    isNativeLoading:
+      isNativeFreeLoading || isNativeTreasuryBalanceOnAssetHubLoading,
+    totalUsdtBalance,
+    isUsdtLoading:
+      isUsdtBalanceLoading || isUsdtTreasuryBalanceOnAssetHubLoading,
+    totalUsdcBalance,
+    isUsdcLoading:
+      isUsdcBalanceLoading || isUsdcTreasuryBalanceOnAssetHubLoading,
   };
 }
 
