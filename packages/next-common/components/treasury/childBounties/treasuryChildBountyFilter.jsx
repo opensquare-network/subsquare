@@ -1,6 +1,5 @@
 import Select from "next-common/components/select";
-import { DropdownFilter } from "next-common/components/dropdownFilter";
-import { useStagedFilterState } from "next-common/components/dropdownFilter/context";
+import { useCommittedFilterState } from "next-common/components/dropdownFilter/context";
 
 const treasuryChildBountyStatusOptions = [
   { value: "", label: "All" },
@@ -13,13 +12,12 @@ const treasuryChildBountyStatusOptions = [
   { value: "claimed", label: "Claimed" },
 ];
 
-function TreasuryChildBountyStatusSelect() {
-  const [treasuryChildBountyFilter, setTreasuryChildBountyFilter] =
-    useStagedFilterState();
-  const status = treasuryChildBountyFilter?.status || "";
+export default function TreasuryChildBountyStatusSelect() {
+  const [committedFilter, setCommittedFilter] = useCommittedFilterState();
+  const status = committedFilter?.status || "";
 
   const handleStatusChange = ({ value: status }) => {
-    setTreasuryChildBountyFilter({ ...treasuryChildBountyFilter, status });
+    setCommittedFilter({ status });
   };
 
   return (
@@ -30,16 +28,5 @@ function TreasuryChildBountyStatusSelect() {
       options={treasuryChildBountyStatusOptions}
       onChange={handleStatusChange}
     />
-  );
-}
-
-export default function TreasuryChildBountyFilter() {
-  return (
-    <DropdownFilter>
-      <div className="flex items-center text12Medium">
-        <span className="text-textPrimary my-[12px] w-[144px]">Status</span>
-        <TreasuryChildBountyStatusSelect />
-      </div>
-    </DropdownFilter>
   );
 }
