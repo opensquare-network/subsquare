@@ -4,7 +4,7 @@ import { usePageProps } from "next-common/context/page";
 import { MapDataList } from "next-common/components/dataList";
 import Pagination from "next-common/components/pagination";
 import { useNavCollapsed } from "next-common/context/nav";
-import { mobileColumns, desktopColumns } from "./columns";
+import columns from "./columns";
 
 export default function TreasuryBurntTable() {
   const { burntList } = usePageProps();
@@ -18,14 +18,14 @@ export default function TreasuryBurntTable() {
     <div className="flex flex-col gap-y-4">
       <MapDataList
         className={cn(navCollapsed ? "max-sm:hidden" : "max-md:hidden")}
-        columnsDef={desktopColumns}
+        columnsDef={columns}
         data={rowsData}
         loading={loading}
         getRowKey={(row) => row?._id}
       />
       <MapDataList
         className={cn("hidden", navCollapsed ? "max-sm:block" : "max-md:block")}
-        columnsDef={mobileColumns}
+        columnsDef={columns}
         data={rowsData}
         loading={loading}
         getRowKey={(row) => row?._id}

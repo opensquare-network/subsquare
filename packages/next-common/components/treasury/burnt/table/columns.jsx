@@ -39,17 +39,13 @@ function EventIdCell({ item }) {
   );
 }
 
-function AmountCell({ value, decimals, symbol }) {
-  return (
-    <ValueDisplay value={toPrecision(value || 0, decimals)} symbol={symbol} />
-  );
-}
-
 function ValueCell({ item }) {
   const { decimals, symbol } = useChainSettings();
-
   return (
-    <AmountCell value={item?.balance} decimals={decimals} symbol={symbol} />
+    <ValueDisplay
+      value={toPrecision(item?.balance || 0, decimals)}
+      symbol={symbol}
+    />
   );
 }
 
@@ -64,15 +60,14 @@ function PercentCell({ item }) {
 function RemnantCell({ item }) {
   const { decimals, symbol } = useChainSettings();
   return (
-    <AmountCell
-      value={item?.treasuryBalance}
-      decimals={decimals}
+    <ValueDisplay
+      value={toPrecision(item?.treasuryBalance || 0, decimals)}
       symbol={symbol}
     />
   );
 }
 
-export const desktopColumns = [
+const columns = [
   {
     name: "Time",
     className: "min-w-[200px] text-left",
@@ -100,30 +95,4 @@ export const desktopColumns = [
   },
 ];
 
-export const mobileColumns = [
-  {
-    name: "Time",
-    className: "text-left",
-    render: (item) => <TimeCell item={item} />,
-  },
-  {
-    name: "Event ID",
-    className: "text-left",
-    render: (item) => <EventIdCell item={item} />,
-  },
-  {
-    name: "Value",
-    className: "text-right",
-    render: (item) => <ValueCell item={item} />,
-  },
-  {
-    name: "Per",
-    className: "text-right",
-    render: (item) => <PercentCell item={item} />,
-  },
-  {
-    name: "Remnant",
-    className: "text-right",
-    render: (item) => <RemnantCell item={item} />,
-  },
-];
+export default columns;
