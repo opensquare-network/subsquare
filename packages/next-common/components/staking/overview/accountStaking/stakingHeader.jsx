@@ -1,42 +1,22 @@
 import { isNil } from "lodash-es";
-import Avatar from "next-common/components/avatar";
-import Copyable from "next-common/components/copyable";
 import { AddressUser } from "next-common/components/user";
 import { useMyPool } from "next-common/hooks/staking/useMyPool";
 import { usePoolAccounts } from "next-common/hooks/staking/usePoolAccount";
-import { addressEllipsis, cn } from "next-common/utils";
-
-const DisplayUserAvatar = ({ address }) => {
-  return <Avatar address={address} size={40} />;
-};
-
-const DisplayUser = ({ address }) => {
-  return (
-    <AddressUser
-      add={address}
-      showAvatar={false}
-      className="text14Medium text-textPrimary"
-    />
-  );
-};
+import { usePoolMetadata } from "next-common/hooks/staking/usePoolMetadata";
+import { cn } from "next-common/utils";
 
 function PoolAccount({ poolId }) {
-  const { stash } = usePoolAccounts(poolId);
+  const { stash, reward } = usePoolAccounts(poolId);
+  const { metadata } = usePoolMetadata(poolId);
 
   return (
     <div className="flex gap-[12px]">
-      <DisplayUserAvatar address={stash} />
       <div className="flex flex-col">
-        <DisplayUser address={stash} />
-        <Copyable className="max-md:hidden text-textTertiary text14Medium inline-flex items-center">
-          {stash}
-        </Copyable>
-        <Copyable
-          className="md:hidden text-textTertiary text14Medium"
-          copyText={stash}
-        >
-          {addressEllipsis(stash)}
-        </Copyable>
+        <span>{metadata}</span>
+        <div className="flex gap-3">
+          <AddressUser add={stash} className="text12Medium" />
+          <AddressUser add={reward} className="text12Medium" />
+        </div>
       </div>
     </div>
   );
