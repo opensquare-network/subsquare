@@ -3,7 +3,6 @@ import {
   StatemintFellowShipTreasuryAccount,
   StatemintTreasuryAccount,
 } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
-import useTreasuryFree from "next-common/utils/hooks/useTreasuryFree";
 import { createContext, useContext } from "react";
 import useQueryAmbassadorBalance, {
   AmbassadorAccount,
@@ -20,11 +19,6 @@ const PolkadotTreasuryContext = createContext();
 
 export default function PolkadotTreasuryProvider({ children }) {
   const api = useContextApi();
-  const {
-    free: dotTreasuryBalanceOnRelayChain,
-    isLoading: isDotTreasuryBalanceOnRelayChainLoading,
-  } = useTreasuryFree(api);
-
   const {
     treasuryAccount,
     relayChainFree,
@@ -76,8 +70,6 @@ export default function PolkadotTreasuryProvider({ children }) {
         relayChainFree,
         nativeTreasuryBalance,
         isNativeTreasuryBalanceLoading,
-        dotTreasuryBalanceOnRelayChain,
-        isDotTreasuryBalanceOnRelayChainLoading,
         dotTreasuryBalanceOnAssetHub,
         isDotTreasuryBalanceOnAssetHubLoading,
         fellowshipTreasuryDotBalance,
