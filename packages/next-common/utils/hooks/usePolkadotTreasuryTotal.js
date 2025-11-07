@@ -55,6 +55,7 @@ export default function usePolkadotTreasuryTotal(api) {
   return {
     treasuryAccount,
     relayChainTreasuryBalance: nativeFree,
+    isRelayChainTreasuryBalanceLoading: isNativeFreeLoading,
     totalNativeFree,
     isNativeLoading:
       isNativeFreeLoading || isNativeTreasuryBalanceOnAssetHubLoading,

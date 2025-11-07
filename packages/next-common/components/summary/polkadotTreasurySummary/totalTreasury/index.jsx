@@ -23,15 +23,14 @@ export default function TotalTreasury() {
   const [navCollapsed] = useNavCollapsed();
 
   const {
-    isDotTreasuryBalanceOnRelayChainLoading,
-    totalNativeFree,
-    isDotTreasuryBalanceOnAssetHubLoading,
+    isDotTreasuryTotalBalanceLoading,
+    dotTreasuryTotalBalance,
+    dotTreasuryTotalUsdtBalance,
+    isDotTreasuryTotalUsdtLoading,
+    dotTreasuryTotalUsdcBalance,
+    isDotTreasuryTotalUsdcLoading,
     fellowshipTreasuryDotBalance,
     isFellowshipTreasuryDotBalanceLoading,
-    totalUsdtBalance: totalUsdtBalanceOnAssetHubAndRelayChain,
-    isUsdtLoading: isUsdtLoadingOnAssetHubAndRelayChain,
-    totalUsdcBalance: totalUsdcBalanceOnAssetHubAndRelayChain,
-    isUsdcLoading: isUsdcLoadingOnAssetHubAndRelayChain,
     fellowshipSalaryUsdtBalance,
     isFellowshipSalaryUsdtBalanceLoading,
     loanBifrostDotBalance,
@@ -54,10 +53,9 @@ export default function TotalTreasury() {
     useMythTokenAssets();
 
   const isTotalAssetsLoading =
-    isDotTreasuryBalanceOnRelayChainLoading ||
-    isDotTreasuryBalanceOnAssetHubLoading ||
-    isUsdtLoadingOnAssetHubAndRelayChain ||
-    isUsdcLoadingOnAssetHubAndRelayChain ||
+    isDotTreasuryTotalBalanceLoading ||
+    isDotTreasuryTotalUsdtLoading ||
+    isDotTreasuryTotalUsdcLoading ||
     isFellowshipTreasuryDotBalanceLoading ||
     isFellowshipSalaryUsdtBalanceLoading ||
     isHydrationTreasuryLoading ||
@@ -65,7 +63,7 @@ export default function TotalTreasury() {
     isMythTokenBalanceLoading ||
     isAmbassadorUsdtBalanceLoading;
 
-  const totalDotBalance = new BigNumber(totalNativeFree || 0)
+  const totalDotBalance = new BigNumber(dotTreasuryTotalBalance || 0)
     .plus(fellowshipTreasuryDotBalance || 0)
     .plus(hydrationTreasuryDot || 0)
     .plus(loanBifrostDotBalance || 0)
@@ -74,17 +72,13 @@ export default function TotalTreasury() {
     .plus(dotTreasuryBalanceOnBounties || 0)
     .toString();
 
-  const totalUsdtBalance = new BigNumber(
-    totalUsdtBalanceOnAssetHubAndRelayChain || 0,
-  )
+  const totalUsdtBalance = new BigNumber(dotTreasuryTotalUsdtBalance || 0)
     .plus(hydrationTreasuryUsdt || 0)
     .plus(fellowshipSalaryUsdtBalance || 0)
     .plus(ambassadorUsdtBalance || 0)
     .toString();
 
-  const totalUsdcBalance = new BigNumber(
-    totalUsdcBalanceOnAssetHubAndRelayChain || 0,
-  )
+  const totalUsdcBalance = new BigNumber(dotTreasuryTotalUsdcBalance || 0)
     .plus(hydrationTreasuryUsdc || 0)
     .toString();
 

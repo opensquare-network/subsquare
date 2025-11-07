@@ -14,11 +14,20 @@ import SpendPeriodLabelTip from "../../labelTips/spendPeriod";
 export default function TreasuryStatus() {
   const summary = useSpendPeriodSummary();
   const toBeAwarded = useToBeAwarded();
-  const { nativeTreasuryBalanceOnRelayChain } = usePolkadotTreasury();
+  const {
+    nativeTreasuryBalanceOnRelayChain,
+    isRelayChainTreasuryBalanceLoading,
+  } = usePolkadotTreasury();
 
   return (
     <SummaryItem title="Treasury Status">
-      <LoadableContent isLoading={isNil(toBeAwarded) || isNil(summary)}>
+      <LoadableContent
+        isLoading={
+          isRelayChainTreasuryBalanceLoading ||
+          isNil(toBeAwarded) ||
+          isNil(summary)
+        }
+      >
         <div className="flex flex-col gap-[4px]">
           <div className="!ml-0 flex flex-col gap-y-1">
             <SummaryLabelItem label="To be awarded">

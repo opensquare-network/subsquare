@@ -22,12 +22,13 @@ export default function PolkadotTreasuryProvider({ children }) {
   const {
     treasuryAccount,
     relayChainTreasuryBalance: nativeTreasuryBalanceOnRelayChain,
-    isNativeLoading: isNativeTreasuryBalanceOnRelayChainLoading,
-    totalNativeFree,
-    totalUsdtBalance,
-    isUsdtLoading,
-    totalUsdcBalance,
-    isUsdcLoading,
+    isRelayChainTreasuryBalanceLoading,
+    isNativeLoading: isDotTreasuryTotalBalanceLoading,
+    totalNativeFree: dotTreasuryTotalBalance,
+    totalUsdtBalance: dotTreasuryTotalUsdtBalance,
+    isUsdtLoading: isDotTreasuryTotalUsdtLoading,
+    totalUsdcBalance: dotTreasuryTotalUsdcBalance,
+    isUsdcLoading: isDotTreasuryTotalUsdcLoading,
   } = usePolkadotTreasuryTotal(api);
 
   const {
@@ -69,14 +70,15 @@ export default function PolkadotTreasuryProvider({ children }) {
         // treasury account address
         treasuryAccount,
         nativeTreasuryBalanceOnRelayChain,
-        isNativeTreasuryBalanceOnRelayChainLoading,
+        isRelayChainTreasuryBalanceLoading,
 
         // total balances
-        totalNativeFree,
-        totalUsdtBalance,
-        isUsdtLoading,
-        totalUsdcBalance,
-        isUsdcLoading,
+        dotTreasuryTotalBalance,
+        isDotTreasuryTotalBalanceLoading,
+        dotTreasuryTotalUsdtBalance,
+        isDotTreasuryTotalUsdtLoading,
+        dotTreasuryTotalUsdcBalance,
+        isDotTreasuryTotalUsdcLoading,
 
         dotTreasuryBalanceOnAssetHub,
         isDotTreasuryBalanceOnAssetHubLoading,
