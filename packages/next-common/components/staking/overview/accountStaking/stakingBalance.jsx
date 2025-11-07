@@ -1,3 +1,47 @@
+import { AccountBalanceItem } from "next-common/components/overview/accountInfo/components/accountBalances";
+import CollapsePanel from "next-common/components/overview/accountInfo/components/collapsePanel";
+import WindowSizeProvider from "next-common/context/windowSize";
+import { useMyPool } from "next-common/hooks/staking/useMyPool";
+
 export default function StakingBalance() {
-  return <div></div>;
+  const { balances, loading } = useMyPool();
+
+  const inPoolBalance = (
+    (balances?.active || 0n) +
+    (balances?.unlocking || 0n) +
+    (balances?.unlocked || 0n)
+  )?.toString();
+
+  return (
+    <div className="flex flex-col gap-2">
+      <WindowSizeProvider>
+        <CollapsePanel
+          className="w-[300px]"
+          labelItem={
+            <AccountBalanceItem
+              title="In pool"
+              value={inPoolBalance}
+              isLoading={loading}
+            />
+          }
+        >
+          <AccountBalanceItem
+            title="Active"
+            value={(balances?.active || 0n)?.toString()}
+            isLoading={loading}
+          />
+          <AccountBalanceItem
+            title="Unbonding"
+            value={(balances?.unlocking || 0n)?.toString()}
+            isLoading={loading}
+          />
+          <AccountBalanceItem
+            title="Unbonded"
+            value={(balances?.unlocked || 0n)?.toString()}
+            isLoading={loading}
+          />
+        </CollapsePanel>
+      </WindowSizeProvider>
+    </div>
+  );
 }
