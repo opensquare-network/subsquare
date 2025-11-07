@@ -3,11 +3,17 @@ import dayjs from "dayjs";
 import Tooltip from "next-common/components/tooltip";
 import ValueDisplay from "next-common/components/valueDisplay";
 import SummaryItem from "next-common/components/summary/layout/item";
+import LoadableContent from "next-common/components/common/loadableContent";
 import useNextBurnData from "./useNextBurnData";
 
 export default function NextBurnSummary() {
-  const { symbol, nextBurnAmount, nextBurnBlockHeight, nextBurnTime } =
-    useNextBurnData();
+  const {
+    symbol,
+    nextBurnAmount,
+    nextBurnBlockHeight,
+    nextBurnTime,
+    isLoading,
+  } = useNextBurnData();
 
   const tooltipContent = useMemo(() => {
     if (!nextBurnTime) {
@@ -27,7 +33,9 @@ export default function NextBurnSummary() {
   return (
     <SummaryItem title="Next Burn">
       <div className="flex flex-col gap-[4px]">
-        <ValueDisplay value={nextBurnAmount} symbol={symbol} />
+        <LoadableContent isLoading={isLoading}>
+          <ValueDisplay value={nextBurnAmount} symbol={symbol} />
+        </LoadableContent>
         {nextBurnTime && (
           <Tooltip content={tooltipContent}>
             <div className="text12Medium text-textTertiary">

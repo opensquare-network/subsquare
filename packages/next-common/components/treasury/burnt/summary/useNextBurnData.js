@@ -15,13 +15,15 @@ import { toPrecision } from "next-common/utils";
 export default function useNextBurnData() {
   const { symbol, decimals } = useChainSettings();
   const api = useConditionalContextApi();
-  const { free } = useTreasuryFree(api);
+  const { free, isLoading: isFreeLoading } = useTreasuryFree(api);
   const nextBurnAmount = useTreasuryBurn(api, free || 0);
   const { burntChart } = usePageProps();
   const spendPeriod = useSpendPeriod(api);
   const lastBurnBlockHeight = useLastSpendPeriod(api);
   const blockTime = useSelector(blockTimeSelector);
   const lastBurnTime = burntChart?.result?.[0]?.timestamp;
+
+  const isLoading = !api || isFreeLoading || !spendPeriod || !blockTime;
 
   const nextBurnBlockHeight = useMemo(() => {
     if (!lastBurnBlockHeight || !spendPeriod) {
@@ -45,5 +47,6 @@ export default function useNextBurnData() {
     nextBurnAmount: toPrecision(nextBurnAmount, decimals),
     nextBurnBlockHeight,
     nextBurnTime,
+    isLoading,
   };
 }
