@@ -29,11 +29,11 @@ export default function PolkadotTreasuryProvider({ children }) {
     treasuryAccount,
     relayChainFree,
     native: nativeTreasuryBalance,
-    isLoading: isNativeTreasuryBalanceLoading,
+    nativeLoading: isNativeTreasuryBalanceLoading,
     usdt: usdtTreasuryBalance,
-    isUsdtLoading: isUsdtTreasuryBalanceLoading,
+    usdtLoading: isUsdtTreasuryBalanceLoading,
     usdc: usdcTreasuryBalance,
-    isUsdcLoading: isUsdcTreasuryBalanceLoading,
+    usdcLoading: isUsdcTreasuryBalanceLoading,
   } = usePolkadotTreasuryTotal(api);
 
   const {

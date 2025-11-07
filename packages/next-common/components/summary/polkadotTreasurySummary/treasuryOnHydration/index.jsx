@@ -12,36 +12,7 @@ import { useHydrationTreasurySummary } from "../context/treasuryOnHydration";
 import TokenSymbolAsset from "../common/tokenSymbolAsset";
 import { toPrecision } from "next-common/utils";
 import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
-import Tooltip from "next-common/components/tooltip";
-
-function AddressLink({ account, index }) {
-  return (
-    <Link
-      className="text12Medium"
-      href={`https://hydration.subscan.io/account/${account}`}
-      target="_blank"
-      rel="noreferrer"
-    >
-      <Tooltip
-        content={`Treasury stablecoin acquisition #${index}`}
-        className="flex flex-nowrap whitespace-nowrap"
-      >
-        <span className="text-textTertiary hover:underline">Addr #{index}</span>
-        <i className="text-textTertiary">&nbsp;↗</i>
-      </Tooltip>
-    </Link>
-  );
-}
-
-function AddressLinks() {
-  return (
-    <div className="gap-x-1 grid grid-cols-3 max-sm:grid-cols-2">
-      <AddressLink account={PolkadotTreasuryOnHydrationAccount1} index={1} />
-      <AddressLink account={PolkadotTreasuryOnHydrationAccount2} index={2} />
-      <AddressLink account={PolkadotTreasuryOnHydrationAccount4} index={3} />
-    </div>
-  );
-}
+import AddressLinks from "next-common/components/styled/addressLinks";
 
 export default function TreasuryOnHydration() {
   const { dot, usdt, usdc, isLoading } = useHydrationTreasurySummary();
@@ -75,10 +46,31 @@ export default function TreasuryOnHydration() {
               amount={toPrecision(usdt, SYMBOL_DECIMALS.USDT)}
               symbol="USDT"
             />
-            <AddressLinks />
+            <TreasuryOnHydrationAddressLinks />
           </div>
         </div>
       </LoadableContent>
     </SummaryItem>
+  );
+}
+
+function TreasuryOnHydrationAddressLinks() {
+  return (
+    <AddressLinks
+      items={[
+        {
+          href: `https://hydration.subscan.io/account/${PolkadotTreasuryOnHydrationAccount1}`,
+          tooltip: "Treasury stablecoin acquisition #1",
+        },
+        {
+          href: `https://hydration.subscan.io/account/${PolkadotTreasuryOnHydrationAccount2}`,
+          tooltip: "Treasury stablecoin acquisition #2",
+        },
+        {
+          href: `https://hydration.subscan.io/account/${PolkadotTreasuryOnHydrationAccount4}`,
+          tooltip: "Treasury stablecoin acquisition #3",
+        },
+      ]}
+    />
   );
 }

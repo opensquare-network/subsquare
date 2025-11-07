@@ -1,5 +1,4 @@
 import LoadableContent from "next-common/components/common/loadableContent";
-import Link from "next/link";
 import { usePolkadotTreasury } from "next-common/context/treasury/polkadotTreasury";
 import TokenSymbolAsset from "../common/tokenSymbolAsset";
 import NativeTokenSymbolAsset from "../common/nativeTokenSymbolAsset";
@@ -8,8 +7,8 @@ import SummaryItem from "next-common/components/summary/layout/item";
 import { StatemintTreasuryAccount } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
 import { toPrecision } from "next-common/utils";
 import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
-import Tooltip from "next-common/components/tooltip";
 import { useChain } from "next-common/context/chain";
+import AddressLinks from "next-common/components/styled/addressLinks";
 
 function TreasurySummary({
   nativeTreasuryBalance,
@@ -28,7 +27,7 @@ function TreasurySummary({
           amount={toPrecision(usdtTreasuryBalance, SYMBOL_DECIMALS.USDT)}
           symbol="USDT"
         />
-        <AddressLinks />
+        <TreasuryAddressLinks />
       </div>
     </div>
   );
@@ -69,32 +68,21 @@ export default function Treasury() {
   );
 }
 
-function AddressLink({ account, index }) {
+function TreasuryAddressLinks() {
   const chain = useChain();
-  return (
-    <Link
-      className="text12Medium"
-      href={`https://assethub-${chain}.statescan.io/#/accounts/${account}`}
-      target="_blank"
-      rel="noreferrer"
-    >
-      <Tooltip
-        content={`Treasury account #${index}`}
-        className="flex flex-nowrap whitespace-nowrap"
-      >
-        <span className="text-textTertiary hover:underline">Addr #{index}</span>
-        <i className="text-textTertiary">&nbsp;↗</i>
-      </Tooltip>
-    </Link>
-  );
-}
-
-function AddressLinks() {
   const { treasuryAccount } = usePolkadotTreasury();
   return (
-    <div className="gap-x-1 grid grid-cols-3 max-sm:grid-cols-2">
-      <AddressLink account={treasuryAccount} index={1} />
-      <AddressLink account={StatemintTreasuryAccount} index={2} />
-    </div>
+    <AddressLinks
+      items={[
+        {
+          href: `https://assethub-${chain}.statescan.io/#/accounts/${treasuryAccount}`,
+          tooltip: "Treasury account #1",
+        },
+        {
+          href: `https://assethub-${chain}.statescan.io/#/accounts/${StatemintTreasuryAccount}`,
+          tooltip: "Treasury account #2",
+        },
+      ]}
+    />
   );
 }
