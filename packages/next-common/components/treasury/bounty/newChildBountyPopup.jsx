@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from "react";
 import SimpleTxPopup from "next-common/components/simpleTxPopup";
-import { useContextApi } from "next-common/context/api";
 import AmountInputWithHint from "next-common/components/popup/fields/amountInputWithHint";
 import { useChainSettings } from "next-common/context/chain";
 import { useOnchainData } from "next-common/context/post";
@@ -12,6 +11,7 @@ import { toPrecision } from "next-common/utils";
 import TextAreaField from "next-common/components/popup/fields/textAreaField";
 import { getEventData } from "next-common/utils/sendTransaction";
 import { useRouter } from "next/router";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
 function useTextField({ title, placeholder }) {
   const [text, setText] = useState("");
@@ -54,7 +54,7 @@ export default function NewChildBountyPopup({ bountyIndex, onClose }) {
   const router = useRouter();
   const dispatch = useDispatch();
   const { decimals } = useChainSettings();
-  const api = useContextApi();
+  const api = useConditionalContextApi();
   const { address } = useOnchainData();
   const { transferrable, isLoading } = useAccountDeathTransferrable(
     api,

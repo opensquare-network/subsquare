@@ -1,9 +1,9 @@
 import React, { useCallback } from "react";
 import SimpleTxPopup from "next-common/components/simpleTxPopup";
-import { useContextApi } from "next-common/context/api";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
 export default function ClaimPopup({ childBounty, onClose }) {
-  const api = useContextApi();
+  const api = useConditionalContextApi();
 
   const getTxFunc = useCallback(async () => {
     return api.tx.childBounties.claimChildBounty(

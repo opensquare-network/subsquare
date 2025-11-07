@@ -4,28 +4,32 @@ import { useState } from "react";
 import NewChildBountyPopup from "./newChildBountyPopup";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Tooltip from "next-common/components/tooltip";
-import { useContextApi } from "next-common/context/api";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
 import { isSameAddress } from "next-common/utils";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
 export default function NewChildBountyButton() {
   const address = useRealAddress();
   const [showPopup, setShowPopup] = useState(false);
   const onChain = useOnchainData();
-  const api = useContextApi();
+  const api = useConditionalContextApi();
 
   const { bountyIndex } = onChain;
 
   // Get bounty status
-  const { result: onchainBounty } = useSubStorage("bounties", "bounties", [
-    bountyIndex,
-  ]);
+  const { result: onchainBounty } = useSubStorage(
+    "bounties",
+    "bounties",
+    [bountyIndex],
+    { api },
+  );
 
   // Get child bounty count
   const { result: onchainChildBountyCount } = useSubStorage(
     "childBounties",
     "parentChildBounties",
     [bountyIndex],
+    { api },
   );
   if (!onchainBounty || onchainBounty.isNone) {
     return null;

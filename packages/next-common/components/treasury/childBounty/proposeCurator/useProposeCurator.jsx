@@ -2,7 +2,6 @@ import TxSubmissionButton from "next-common/components/common/tx/txSubmissionBut
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
-import { useContextApi } from "next-common/context/api";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -11,12 +10,13 @@ import { useOnchainData } from "next-common/context/post";
 import useFeeAmount from "./useFeeAmount";
 import useSubAddressBalance from "next-common/utils/hooks/useSubAddressBalance";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
 function PopupContent() {
   const { decimals, symbol } = useChainSettings();
   const signerAccount = useSignerAccount();
   const address = signerAccount?.realAddress;
-  const api = useContextApi();
+  const api = useConditionalContextApi();
   const dispatch = useDispatch();
 
   const {
