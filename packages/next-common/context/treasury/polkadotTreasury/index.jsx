@@ -1,7 +1,5 @@
 import { useContextApi } from "next-common/context/api";
-import useQueryAssetHubAssets from "next-common/hooks/assetHub/useQueryAssetHubAssets";
 import {
-  getAssetBySymbol,
   StatemintFellowShipTreasuryAccount,
   StatemintTreasuryAccount,
 } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
@@ -16,6 +14,7 @@ import {
   useQueryBounties,
 } from "./hooks/useQueryBountiesData";
 import useQueryFellowshipSalaryBalance from "./hooks/useQueryFellowshipSalaryBalance";
+import usePolkadotTreasuryTotal from "next-common/utils/hooks/usePolkadotTreasuryTotal";
 
 const PolkadotTreasuryContext = createContext();
 
@@ -25,6 +24,17 @@ export default function PolkadotTreasuryProvider({ children }) {
     free: dotTreasuryBalanceOnRelayChain,
     isLoading: isDotTreasuryBalanceOnRelayChainLoading,
   } = useTreasuryFree(api);
+
+  const {
+    treasuryAccount,
+    relayChainFree,
+    native: nativeTreasuryBalance,
+    isLoading: isNativeTreasuryBalanceLoading,
+    usdt: usdtTreasuryBalance,
+    isUsdtLoading: isUsdtTreasuryBalanceLoading,
+    usdc: usdcTreasuryBalance,
+    isUsdcLoading: isUsdcTreasuryBalanceLoading,
+  } = usePolkadotTreasuryTotal(api);
 
   const {
     free: fellowshipTreasuryDotBalance,
@@ -40,16 +50,6 @@ export default function PolkadotTreasuryProvider({ children }) {
     free: dotTreasuryBalanceOnAssetHub,
     isLoading: isDotTreasuryBalanceOnAssetHubLoading,
   } = useQueryAssetHubTreasuryFree(StatemintTreasuryAccount);
-
-  const {
-    balance: usdtTreasuryBalanceOnAssetHub,
-    isLoading: isUsdtTreasuryBalanceOnAssetHubLoading,
-  } = useTreasuryAccountAssetBalance("USDT");
-
-  const {
-    balance: usdcTreasuryBalanceOnAssetHub,
-    isLoading: isUsdcTreasuryBalanceOnAssetHubLoading,
-  } = useTreasuryAccountAssetBalance("USDC");
 
   const {
     bounties,
@@ -72,6 +72,10 @@ export default function PolkadotTreasuryProvider({ children }) {
   return (
     <PolkadotTreasuryContext.Provider
       value={{
+        treasuryAccount,
+        relayChainFree,
+        nativeTreasuryBalance,
+        isNativeTreasuryBalanceLoading,
         dotTreasuryBalanceOnRelayChain,
         isDotTreasuryBalanceOnRelayChainLoading,
         dotTreasuryBalanceOnAssetHub,
@@ -80,10 +84,10 @@ export default function PolkadotTreasuryProvider({ children }) {
         isFellowshipTreasuryDotBalanceLoading,
         fellowshipSalaryUsdtBalance,
         isFellowshipSalaryUsdtBalanceLoading,
-        usdtTreasuryBalanceOnAssetHub,
-        isUsdtTreasuryBalanceOnAssetHubLoading,
-        usdcTreasuryBalanceOnAssetHub,
-        isUsdcTreasuryBalanceOnAssetHubLoading,
+        usdtTreasuryBalance,
+        isUsdtTreasuryBalanceLoading,
+        usdcTreasuryBalance,
+        isUsdcTreasuryBalanceLoading,
         loanBifrostDotBalance: 10000000000000000,
         loadPendulumDotBalance: 500000000000000,
         loanHydrationDotBalance: 10000000000000000,
@@ -97,11 +101,6 @@ export default function PolkadotTreasuryProvider({ children }) {
       {children}
     </PolkadotTreasuryContext.Provider>
   );
-}
-
-function useTreasuryAccountAssetBalance(symbol) {
-  const asset = getAssetBySymbol(symbol);
-  return useQueryAssetHubAssets(asset.id, StatemintTreasuryAccount);
 }
 
 export function usePolkadotTreasury() {
