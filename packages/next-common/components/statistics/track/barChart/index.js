@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 import "../../../charts/globalConfig";
 import { useTheme } from "styled-components";
@@ -67,14 +67,34 @@ export default function BarChart({
   minWidth,
   slider,
   height = 256,
+  defaultScrollRight = false,
+  hideScrollbar = false,
 }) {
   const options = useOptions(userOptions);
   const legendItems =
     customLegend || data?.datasets?.filter((item) => item.legend !== false);
 
+  const scrollRef = useRef(null);
+
+  useEffect(() => {
+    if (!defaultScrollRight || !scrollRef?.current) {
+      return;
+    }
+
+    const el = scrollRef.current;
+    el.scrollLeft = el.scrollWidth - el.clientWidth;
+  }, [defaultScrollRight, data, minWidth, height]);
+
+  const scrollbarClass = hideScrollbar
+    ? "scrollbar-hidden"
+    : "scrollbar-pretty";
+
   return (
     <div>
-      <div className="overflow-x-auto overflow-y-hidden scrollbar-pretty">
+      <div
+        ref={scrollRef}
+        className={`overflow-x-auto overflow-y-hidden ${scrollbarClass}`}
+      >
         <div style={{ height, minWidth }}>
           <Bar data={data} options={options} />
         </div>
