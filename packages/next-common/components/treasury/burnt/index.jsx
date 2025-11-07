@@ -16,10 +16,10 @@ export default function TreasuryBurnt() {
       title={category}
       summary={<TreasuryBurntSummary />}
     >
+      <TitleContainer className="mb-4 !px-6 !text16Bold">
+        <span>Burnt</span>
+      </TitleContainer>
       <SecondaryCard className="space-y-4 flex flex-col text-textPrimary relative">
-        <TitleContainer className="mb-4 !px-0 !text20Bold">
-          <span>Burnt</span>
-        </TitleContainer>
         <TreasuryBurntChart />
         <TreasuryBurntTable />
       </SecondaryCard>
