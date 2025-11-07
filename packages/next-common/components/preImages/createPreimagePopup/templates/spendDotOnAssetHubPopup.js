@@ -20,13 +20,7 @@ const getAssetKindParam = () => {
     V4: {
       location: {
         parents: 0,
-        interior: {
-          X1: [
-            {
-              Parachain: 1000,
-            },
-          ],
-        },
+        interior: "Here",
       },
       assetId: {
         parents: 1,
