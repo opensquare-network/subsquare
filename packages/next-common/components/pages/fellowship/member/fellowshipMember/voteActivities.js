@@ -57,6 +57,29 @@ function AttendancePercentage({ heatmap }) {
   );
 }
 
+function WinPercentage({ heatmap }) {
+  const totalEligible = heatmap.length;
+  const totalWon = useMemo(
+    () => heatmap.filter((item) => item?.vote?.isWin).length,
+    [heatmap],
+  );
+  const percentage = totalEligible > 0 ? totalWon / totalEligible : 0;
+  return (
+    <Tooltip
+      content={
+        <div>
+          <div>Total Referenda(Eligible): {totalEligible}</div>
+          <div>Win: {totalWon}</div>
+        </div>
+      }
+    >
+      <span className="text14Medium text-textTertiary">{`${(
+        percentage * 100
+      ).toFixed(2)}%`}</span>
+    </Tooltip>
+  );
+}
+
 export default function VoteActivities() {
   const { id: address } = usePageProps();
   const api = useContextApi();
@@ -96,8 +119,13 @@ export default function VoteActivities() {
 
   return (
     <SecondaryCard>
-      <CardTitle>
-        Participation Rate <AttendancePercentage heatmap={heatmapInRange} />
+      <CardTitle className="flex flex-wrap">
+        <div className="after:content-['·'] after:mx-2 after:text-textTertiary">
+          Participation Rate <AttendancePercentage heatmap={heatmapInRange} />
+        </div>
+        <div>
+          Win Rate <WinPercentage heatmap={heatmapInRange} />
+        </div>
       </CardTitle>
       <div className="flex flex-col gap-[16px]">
         <Heatmap
