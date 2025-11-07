@@ -166,7 +166,7 @@ export default function WalletConnectProvider({ children }) {
       return [];
     }
 
-    const walletConnectAccounts = Object.values(session.namespaces)
+    const walletConnectAccounts = Object.values(session.namespaces || {})
       .map((namespace) => namespace.accounts)
       .flat();
 
