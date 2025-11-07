@@ -18,6 +18,7 @@ import { OffChainArticleActionsProvider } from "next-common/noSima/context/artic
 import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 import { TreasuryProvider } from "next-common/context/treasury";
 import TreasuryChildBountiesDetailMultiTabs from "next-common/components/pages/components/tabs/treasuryChildBountiesDetailMultiTabs";
+import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 
 function ChildBountyContent() {
   const post = usePost();
@@ -59,16 +60,18 @@ function ChildBountyPageImpl() {
     ["PendingPayout", "Claimed"].includes(post?.onchainData?.state?.state);
 
   return (
-    <DetailLayout
-      seoInfo={{
-        title: post?.title,
-        desc,
-        ogImage: getBannerUrl(post?.bannerCid),
-      }}
-      hasSidebar={showRightSidePanel}
-    >
-      <ChildBountyContentWithNullGuard />
-    </DetailLayout>
+    <MigrationConditionalApiProvider indexer={post.onchainData.indexer}>
+      <DetailLayout
+        seoInfo={{
+          title: post?.title,
+          desc,
+          ogImage: getBannerUrl(post?.bannerCid),
+        }}
+        hasSidebar={showRightSidePanel}
+      >
+        <ChildBountyContentWithNullGuard />
+      </DetailLayout>
+    </MigrationConditionalApiProvider>
   );
 }
 

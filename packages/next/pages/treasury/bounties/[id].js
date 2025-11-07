@@ -27,6 +27,7 @@ import {
 import TreasuryBountiesDetailMultiTabs from "next-common/components/pages/components/tabs/treasuryBountiesDetailMultiTabs";
 import Appendants from "next-common/components/appendants/bounty";
 import { BountyAppendantsProvider } from "next-common/context/bountyAppendants";
+import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 
 function useBountyCurator(bountyIndex) {
   const status = useBountyStatus(bountyIndex);
@@ -49,20 +50,22 @@ function BountyContent() {
   const curatorParams = useCuratorMultisigAddress(curator);
 
   return (
-    <OffChainArticleActionsProvider>
-      <OffChainCommentActionsProvider>
-        <CuratorProvider curator={curator} params={curatorParams}>
-          <ContentWithComment>
-            <BountyAppendantsProvider>
-              <BountyDetail />
-              <Appendants />
-            </BountyAppendantsProvider>
-            <BountySidebar />
-            <TreasuryBountiesDetailMultiTabs />
-          </ContentWithComment>
-        </CuratorProvider>
-      </OffChainCommentActionsProvider>
-    </OffChainArticleActionsProvider>
+    <MigrationConditionalApiProvider indexer={detail.onchainData.indexer}>
+      <OffChainArticleActionsProvider>
+        <OffChainCommentActionsProvider>
+          <CuratorProvider curator={curator} params={curatorParams}>
+            <ContentWithComment>
+              <BountyAppendantsProvider>
+                <BountyDetail />
+                <Appendants />
+              </BountyAppendantsProvider>
+              <BountySidebar />
+              <TreasuryBountiesDetailMultiTabs />
+            </ContentWithComment>
+          </CuratorProvider>
+        </OffChainCommentActionsProvider>
+      </OffChainArticleActionsProvider>
+    </MigrationConditionalApiProvider>
   );
 }
 

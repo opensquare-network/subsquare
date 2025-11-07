@@ -4,6 +4,7 @@ import PrimaryButton from "next-common/lib/button/primary";
 import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
 const Popup = dynamicPopup(() => import("./popup"));
 
@@ -12,12 +13,15 @@ export default function Claim() {
   const [showPopup, setShowPopup] = useState(false);
   const chainHeight = useAhmLatestHeight();
   const { parentBountyId, index } = useOnchainData();
+  const api = useConditionalContextApi();
 
   const { loading, result: onChainStorage } = useSubStorage(
     "childBounties",
     "childBounties",
     [parentBountyId, index],
+    { api },
   );
+
   if (loading || !onChainStorage?.isSome) {
     return null;
   }
