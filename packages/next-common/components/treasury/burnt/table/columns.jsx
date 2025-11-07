@@ -4,7 +4,6 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import BlockHeight from "next-common/components/identityTimeline/timeline/blockHeight";
 import { useChainSettings } from "next-common/context/chain";
-import { SystemDate } from "@osn/icons/subsquare";
 
 function TimeCell({ item }) {
   const { indexer } = item || {};
@@ -18,22 +17,6 @@ function TimeCell({ item }) {
           number={indexer?.blockHeight}
           contentClassName="hover:underline text-textDisabled"
         />
-      </ExplorerLink>
-    </div>
-  );
-}
-
-function EventIdCell({ item }) {
-  const indexer = item?.indexer || {};
-  const label = `${indexer?.blockHeight}-${indexer?.eventIndex}`;
-
-  return (
-    <div className="inline-flex items-center gap-x-1">
-      <SystemDate className="w-4 h-4 text-textDisabled [&_path]:stroke-2" />
-      <ExplorerLink indexer={indexer}>
-        <span className="text14Medium hover:underline text-textPrimary">
-          {label}
-        </span>
       </ExplorerLink>
     </div>
   );
@@ -74,18 +57,13 @@ const columns = [
     render: (item) => <TimeCell item={item} />,
   },
   {
-    name: "Event ID",
-    className: "min-w-[160px] text-left",
-    render: (item) => <EventIdCell item={item} />,
-  },
-  {
     name: "Value",
-    className: "min-w-[160px] text-right",
+    className: "min-w-[160px] text-center",
     render: (item) => <ValueCell item={item} />,
   },
   {
     name: "Per",
-    className: "min-w-[80px] text-right",
+    className: "min-w-[80px] text-center",
     render: (item) => <PercentCell item={item} />,
   },
   {
