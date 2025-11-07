@@ -1,5 +1,4 @@
 import SummaryItem from "next-common/components/summary/layout/item";
-import { useContextApi } from "next-common/context/api";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
@@ -11,6 +10,7 @@ import FieldLoading from "next-common/components/icons/fieldLoading";
 import { useBountiesSummary } from "next-common/hooks/treasury/bounty/useBountiesSummary";
 import { isNil, lowerCase } from "lodash-es";
 import PriceDisplay from "next-common/components/summary/treasurySummary/priceDisplay";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
 export function BountiesSummaryPanelImpl() {
   const { symbol, decimals } = useChainSettings();
@@ -58,7 +58,7 @@ export function BountiesSummaryPanelImpl() {
 }
 
 export default function BountiesSummaryPanel() {
-  const api = useContextApi();
+  const api = useConditionalContextApi();
 
   if (!api) {
     return <FieldLoading />;
