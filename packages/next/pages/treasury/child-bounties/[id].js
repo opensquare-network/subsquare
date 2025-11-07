@@ -27,15 +27,17 @@ function ChildBountyContent() {
   );
 
   return (
-    <OffChainArticleActionsProvider>
-      <OffChainCommentActionsProvider>
-        <ContentWithComment>
-          <ChildBountyDetail />
-          <ChildBountySidebar />
-          <TreasuryChildBountiesDetailMultiTabs />
-        </ContentWithComment>
-      </OffChainCommentActionsProvider>
-    </OffChainArticleActionsProvider>
+    <MigrationConditionalApiProvider indexer={post?.indexer}>
+      <OffChainArticleActionsProvider>
+        <OffChainCommentActionsProvider>
+          <ContentWithComment>
+            <ChildBountyDetail />
+            <ChildBountySidebar />
+            <TreasuryChildBountiesDetailMultiTabs />
+          </ContentWithComment>
+        </OffChainCommentActionsProvider>
+      </OffChainArticleActionsProvider>
+    </MigrationConditionalApiProvider>
   );
 }
 
@@ -60,18 +62,16 @@ function ChildBountyPageImpl() {
     ["PendingPayout", "Claimed"].includes(post?.onchainData?.state?.state);
 
   return (
-    <MigrationConditionalApiProvider indexer={post.onchainData.indexer}>
-      <DetailLayout
-        seoInfo={{
-          title: post?.title,
-          desc,
-          ogImage: getBannerUrl(post?.bannerCid),
-        }}
-        hasSidebar={showRightSidePanel}
-      >
-        <ChildBountyContentWithNullGuard />
-      </DetailLayout>
-    </MigrationConditionalApiProvider>
+    <DetailLayout
+      seoInfo={{
+        title: post?.title,
+        desc,
+        ogImage: getBannerUrl(post?.bannerCid),
+      }}
+      hasSidebar={showRightSidePanel}
+    >
+      <ChildBountyContentWithNullGuard />
+    </DetailLayout>
   );
 }
 

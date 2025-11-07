@@ -50,7 +50,7 @@ function BountyContent() {
   const curatorParams = useCuratorMultisigAddress(curator);
 
   return (
-    <MigrationConditionalApiProvider indexer={detail.onchainData.indexer}>
+    <MigrationConditionalApiProvider indexer={detail?.indexer}>
       <OffChainArticleActionsProvider>
         <OffChainCommentActionsProvider>
           <CuratorProvider curator={curator} params={curatorParams}>
