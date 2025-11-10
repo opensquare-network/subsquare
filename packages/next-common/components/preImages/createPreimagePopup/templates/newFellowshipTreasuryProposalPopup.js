@@ -40,16 +40,28 @@ const getAssetKindParam = () => {
 const getBeneficiaryParam = (beneficiary) => {
   return {
     V4: {
-      parents: 0,
-      interior: {
-        X1: [
-          {
-            AccountId32: {
-              network: null,
-              id: "0x" + addressToPublicKey(beneficiary),
+      location: {
+        parents: 1,
+        interior: {
+          X1: [
+            {
+              Parachain: 1000,
             },
-          },
-        ],
+          ],
+        },
+      },
+      accountId: {
+        parents: 0,
+        interior: {
+          X1: [
+            {
+              AccountId32: {
+                network: null,
+                id: "0x" + addressToPublicKey(beneficiary),
+              },
+            },
+          ],
+        },
       },
     },
   };
