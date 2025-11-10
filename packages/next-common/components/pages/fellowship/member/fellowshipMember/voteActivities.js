@@ -56,11 +56,11 @@ function AttendancePercentage({ total, votedTotal }) {
   );
 }
 
-function WinPercentage({ total, winTotal }) {
+function WinPercentage({ votedTotal, winTotal }) {
   if (!winTotal) {
     return null;
   }
-  const percentage = total > 0 ? winTotal / total : 0;
+  const percentage = votedTotal > 0 ? winTotal / votedTotal : 0;
 
   return (
     <div className="before:content-['·'] before:mx-2 before:text-textTertiary">
@@ -68,7 +68,7 @@ function WinPercentage({ total, winTotal }) {
       <Tooltip
         content={
           <div>
-            <div>Total Referenda(Voted): {total}</div>
+            <div>Total Referenda(Voted): {votedTotal}</div>
             <div>Win: {winTotal}</div>
           </div>
         }
@@ -88,13 +88,14 @@ function VoteTitle({ heatmapInRange }) {
     [heatmapInRange],
   );
   const winTotal = useMemo(
-    () => heatmapInRange.filter((item) => item?.vote?.isWin).length,
+    () =>
+      heatmapInRange.filter((item) => item?.vote?.isWin && item.isFinal).length,
     [heatmapInRange],
   );
   return (
     <CardTitle className="flex flex-wrap">
       <AttendancePercentage total={rangeTotal} votedTotal={votedTotal} />
-      <WinPercentage total={votedTotal} winTotal={winTotal} />
+      <WinPercentage votedTotal={votedTotal} winTotal={winTotal} />
     </CardTitle>
   );
 }
