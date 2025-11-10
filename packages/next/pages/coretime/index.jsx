@@ -11,10 +11,8 @@ import { CHAIN } from "next-common/utils/constants";
 import getChainSettings from "next-common/utils/consts/settings";
 import queryCoretimeCurrentSale from "next-common/services/gql/coretime/currentSale";
 import { CoretimeActiveSaleProvider } from "next-common/context/coretime/sale";
-import queryCoretimeConfiguration from "next-common/services/gql/coretime/configuration";
-import queryCoretimeStatus from "next-common/services/gql/coretime/status";
+import getCoretimeCommonProps from "next-common/services/serverSide/getCoretimeCommonProps";
 import CoretimeCommonProvider from "next-common/context/coretime/common";
-import useLoopCoretimeScanHeight from "next-common/hooks/coretime/useLoopCoretimeScanHeight";
 import RelayInfoProvider from "next-common/context/relayInfo";
 import {
   queryCoretimeSalePurchasesChart,
@@ -59,7 +57,6 @@ export default function CoretimePage() {
 
 function CoretimeOverviewPageImpl() {
   const { description } = useChainSettings();
-  useLoopCoretimeScanHeight();
 
   return (
     <ListLayout
@@ -85,8 +82,7 @@ export const getServerSideProps = async (ctx) => {
   return withCommonProps(async () => {
     const sale = await queryCoretimeCurrentSale();
     const id = sale?.id;
-    const configuration = await queryCoretimeConfiguration();
-    const status = await queryCoretimeStatus();
+    const commonProps = await getCoretimeCommonProps();
     const coretimeSaleRenewalsChart = await queryCoretimeSaleRenewalsChart(id, {
       limit: sale?.renewalCount,
     });
@@ -98,10 +94,10 @@ export const getServerSideProps = async (ctx) => {
     );
 
     return {
+      ...(commonProps || {}),
       props: {
+        ...(commonProps?.props || {}),
         coretimeSale: sale,
-        configuration,
-        status,
         coretimeSaleRenewalsChart,
         coretimeSalePurchasesChart,
       },
