@@ -20,13 +20,13 @@ import { useRouter } from "next/router";
 import WarningIcon from "next-common/assets/imgs/icons/warning.svg";
 import { WarningMessage } from "next-common/components/setting/styled";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
-import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
+import { useContextApi } from "next-common/context/api";
 
 function PopupContent() {
   const dispatch = useDispatch();
   const router = useRouter();
   const { decimals, symbol } = useChainSettings();
-  const api = useConditionalContextApi();
+  const api = useContextApi();
 
   const signerAccount = useSignerAccount();
   const address = signerAccount?.realAddress;

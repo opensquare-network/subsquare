@@ -10,13 +10,13 @@ import { useOnchainData } from "next-common/context/post";
 import useFeeAmount from "./useFeeAmount";
 import useSubAddressBalance from "next-common/utils/hooks/useSubAddressBalance";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
-import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
+import { useContextApi } from "next-common/context/api";
 
 function PopupContent() {
   const { decimals, symbol } = useChainSettings();
   const signerAccount = useSignerAccount();
   const address = signerAccount?.realAddress;
-  const api = useConditionalContextApi();
+  const api = useContextApi();
   const dispatch = useDispatch();
 
   const {

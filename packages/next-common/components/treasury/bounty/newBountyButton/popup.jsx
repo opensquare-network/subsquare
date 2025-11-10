@@ -12,12 +12,12 @@ import { getEventData } from "next-common/utils/sendTransaction";
 import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
+import { useContextApi } from "next-common/context/api";
 
 export default function NewBountyPopup({ onClose }) {
   const router = useRouter();
   const { decimals, symbol } = useChainSettings();
-  const api = useConditionalContextApi();
+  const api = useContextApi();
   const dispatch = useDispatch();
   const [inputAmount, setInputAmount] = useState("");
   const [inputDescription, setInputDescription] = useState("");
