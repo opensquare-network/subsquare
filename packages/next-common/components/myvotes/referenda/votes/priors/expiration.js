@@ -1,8 +1,8 @@
-import useChainOrScanHeight from "next-common/hooks/height";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
+import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
 
 export default function Expiration({ unlockAt }) {
-  const latestHeight = useChainOrScanHeight();
+  const latestHeight = useAhmLatestHeight();
   const estimatedBlocksTime = useEstimateBlocksTime(
     Math.abs(unlockAt - latestHeight),
   );
