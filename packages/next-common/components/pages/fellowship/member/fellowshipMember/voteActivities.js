@@ -13,6 +13,7 @@ import Tooltip from "next-common/components/tooltip";
 import { useReferendaFellowshipPallet } from "next-common/context/collectives/collectives";
 import { usePageProps } from "next-common/context/page";
 import useReferendaSlider from "./referendaSlider";
+import { WinRateTooltip } from "next-common/components/referenda/dv/delegates/desktopList";
 
 function LoadingCard() {
   return (
@@ -34,17 +35,22 @@ function NoReferenda() {
   );
 }
 
-function AttendancePercentage({ total, votedTotal }) {
-  const percentage = votedTotal > 0 ? votedTotal / total : 0;
+function AttendancePercentage({ heatmap }) {
+  const totalEligible = heatmap.length;
+  const totalVoted = useMemo(
+    () => heatmap.filter((item) => item.isVoted).length,
+    [heatmap],
+  );
+  const percentage = totalEligible > 0 ? totalVoted / totalEligible : 0;
 
   return (
-    <div>
-      Participation Rate{" "}
+    <div className="flex items-center gap-1">
+      Participation Rate
       <Tooltip
         content={
           <div>
-            <div>Total Referenda(Eligible): {total}</div>
-            <div>Voted: {votedTotal}</div>
+            <div>Total Referenda(Eligible): {totalEligible}</div>
+            <div>Voted: {totalVoted}</div>
           </div>
         }
       >
@@ -56,19 +62,28 @@ function AttendancePercentage({ total, votedTotal }) {
   );
 }
 
-function WinPercentage({ votedTotal, winTotal }) {
+function WinPercentage({ heatmap }) {
+  const votedTotal = useMemo(
+    () => heatmap.filter((item) => item.isFinal).length,
+    [heatmap],
+  );
+  const winTotal = useMemo(
+    () => heatmap.filter((item) => item?.vote?.isWin && item.isFinal).length,
+    [heatmap],
+  );
+  const percentage = votedTotal > 0 ? winTotal / votedTotal : 0;
+
   if (!winTotal) {
     return null;
   }
-  const percentage = votedTotal > 0 ? winTotal / votedTotal : 0;
 
   return (
-    <div className="before:content-['·'] before:mx-2 before:text-textTertiary">
-      Win Rate{" "}
+    <div className="flex items-center gap-1 before:content-['·'] before:mx-2 before:text-textTertiary">
+      Win Rate <WinRateTooltip />
       <Tooltip
         content={
           <div>
-            <div>Total Referenda(Voted): {votedTotal}</div>
+            <div>Total Referenda(Voted & Finalized): {votedTotal}</div>
             <div>Win: {winTotal}</div>
           </div>
         }
@@ -78,25 +93,6 @@ function WinPercentage({ votedTotal, winTotal }) {
         ).toFixed(2)}%`}</span>
       </Tooltip>
     </div>
-  );
-}
-
-function VoteTitle({ heatmapInRange }) {
-  const rangeTotal = heatmapInRange.length;
-  const votedTotal = useMemo(
-    () => heatmapInRange.filter((item) => item.isVoted).length,
-    [heatmapInRange],
-  );
-  const winTotal = useMemo(
-    () =>
-      heatmapInRange.filter((item) => item?.vote?.isWin && item.isFinal).length,
-    [heatmapInRange],
-  );
-  return (
-    <CardTitle className="flex flex-wrap">
-      <AttendancePercentage total={rangeTotal} votedTotal={votedTotal} />
-      <WinPercentage votedTotal={votedTotal} winTotal={winTotal} />
-    </CardTitle>
   );
 }
 
@@ -139,7 +135,10 @@ export default function VoteActivities() {
 
   return (
     <SecondaryCard>
-      <VoteTitle heatmapInRange={heatmapInRange} />
+      <CardTitle className="flex flex-wrap">
+        <AttendancePercentage heatmap={heatmapInRange} />
+        <WinPercentage heatmap={heatmapInRange} />
+      </CardTitle>
       <div className="flex flex-col gap-[16px]">
         <Heatmap
           heatmap={heatmap}
