@@ -1,4 +1,7 @@
-import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
+import {
+  useConditionalContextApi,
+  MigrationConditionalApiProvider,
+} from "next-common/context/migration/conditionalApi";
 import Prompt from "./prompt";
 import { PromptTypes } from "next-common/components/scrollPrompt";
 import { useConnectedAccount } from "next-common/context/connectedAccount";
@@ -80,6 +83,14 @@ function PromptContent({ onUpdateMeta }) {
 }
 
 export default function ExtensionUpdatePrompt({ isWithCache = true }) {
+  return (
+    <MigrationConditionalApiProvider>
+      <ExtensionUpdatePromptImpl isWithCache={isWithCache} />
+    </MigrationConditionalApiProvider>
+  );
+}
+
+function ExtensionUpdatePromptImpl({ isWithCache = true }) {
   const api = useConditionalContextApi();
   const connectedAccount = useConnectedAccount();
   const [isNeedUpdate, setIsNeedUpdate] = useIsNeedUpdate();

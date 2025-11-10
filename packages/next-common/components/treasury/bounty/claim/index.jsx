@@ -1,7 +1,6 @@
 import { usePostState } from "next-common/context/post";
 import ClaimedInfo from "./ClaimedInfo";
 import Claim from "./claim";
-import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 
 export default function BountyClaim() {
   const state = usePostState();
@@ -9,9 +8,5 @@ export default function BountyClaim() {
     return <ClaimedInfo />;
   }
 
-  return (
-    <MigrationConditionalApiProvider>
-      <Claim />
-    </MigrationConditionalApiProvider>
-  );
+  return <Claim />;
 }
