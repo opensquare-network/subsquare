@@ -24,13 +24,19 @@ export default function BaseInitSubscribers() {
   const subscribers = useMemo(() => {
     const subscribers = [];
     if (isAssetHubMigrated() || isCoretimeChain(chain)) {
-      subscribers.push(<RelayStatusSubscriber />);
+      subscribers.push(<RelayStatusSubscriber key="relay-status-subscriber" />);
     }
     if (isCoretimeChain(chain)) {
-      subscribers.push(<CoretimeStatusSubscriber />);
+      subscribers.push(
+        <CoretimeStatusSubscriber key="coretime-status-subscriber" />,
+      );
     }
     return subscribers;
   }, [chain]);
 
-  return <>{subscribers}</>;
+  if (!subscribers?.length) {
+    return null;
+  }
+
+  return subscribers;
 }
