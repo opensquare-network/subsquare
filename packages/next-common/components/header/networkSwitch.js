@@ -6,19 +6,27 @@ import { ArrowDown } from "@osn/icons/subsquare";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { useWindowSize } from "react-use";
 import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
-import { useChainSettings } from "next-common/context/chain";
+import { useChain, useChainSettings } from "next-common/context/chain";
 import SecondaryButton from "next-common/lib/button/secondary";
 import * as Popover from "@radix-ui/react-popover";
 import { NeutralPanel } from "../styled/containers/neutralPanel";
 import { cn } from "next-common/utils";
 import { useScanHeight } from "next-common/hooks/scanHeight";
+import { useCoretimeScanHeight } from "next-common/hooks/coretimeScanHeight";
+import { isCoretimeChain } from "next-common/utils/chain";
 
 const NetworkOptions = dynamicClientOnly(() => import("./networkOptions"));
 
 function useHeaderHeight() {
+  const chain = useChain();
   const nodesHeight = useScanHeight();
   const chainHeight = useSelector(latestHeightSelector);
   const { noScan } = useChainSettings();
+  const coretimeScanHeight = useCoretimeScanHeight();
+
+  if (isCoretimeChain(chain)) {
+    return coretimeScanHeight;
+  }
 
   return noScan ? chainHeight : nodesHeight;
 }

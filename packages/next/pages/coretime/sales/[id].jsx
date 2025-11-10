@@ -7,10 +7,7 @@ import { commonReducers } from "next-common/store/reducers";
 import { CHAIN } from "next-common/utils/constants";
 import getChainSettings from "next-common/utils/consts/settings";
 import { CoretimeDetailSaleProvider } from "next-common/context/coretime/sale";
-import queryCoretimeConfiguration from "next-common/services/gql/coretime/configuration";
-import queryCoretimeStatus from "next-common/services/gql/coretime/status";
 import CoretimeCommonProvider from "next-common/context/coretime/common";
-import useLoopCoretimeScanHeight from "next-common/hooks/coretime/useLoopCoretimeScanHeight";
 import RelayInfoProvider from "next-common/context/relayInfo";
 import CoretimeSalesDetail from "next-common/components/detail/coretime/sales";
 import BaseLayout from "next-common/components/layout/baseLayout";
@@ -24,6 +21,7 @@ import {
 import NotFoundDetail from "next-common/components/notFoundDetail";
 import { usePageProps } from "next-common/context/page";
 import generateLayoutRawTitle from "next-common/utils/generateLayoutRawTitle";
+import getCoretimeCommonProps from "next-common/services/serverSide/getCoretimeCommonProps";
 
 const isCoretimeSupported = !!getChainSettings(CHAIN).modules?.coretime;
 
@@ -73,8 +71,6 @@ export default function CoretimeSaleDetailPage({ coretimeSale }) {
 }
 
 function CoretimeSalesDetailPageImpl() {
-  useLoopCoretimeScanHeight();
-
   const { coretimeSale } = usePageProps();
 
   const seoInfo = {
@@ -104,9 +100,8 @@ export const getServerSideProps = async (ctx) => {
   const { id } = ctx.query;
 
   return withCommonProps(async () => {
+    const commonProps = await getCoretimeCommonProps();
     const coretimeSale = await queryCoretimeDetailSale(id);
-    const configuration = await queryCoretimeConfiguration();
-    const status = await queryCoretimeStatus();
     const coretimeSaleRenewalsChart = await queryCoretimeSaleRenewalsChart(id, {
       limit: coretimeSale?.renewalCount,
     });
@@ -118,10 +113,10 @@ export const getServerSideProps = async (ctx) => {
     );
 
     return {
+      ...(commonProps || {}),
       props: {
+        ...(commonProps?.props || {}),
         coretimeSale,
-        configuration,
-        status,
         coretimeSaleRenewalsChart,
         coretimeSalePurchasesChart,
       },
