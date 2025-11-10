@@ -64,7 +64,7 @@ function AttendancePercentage({ heatmap }) {
 
 function WinPercentage({ heatmap }) {
   const votedTotal = useMemo(
-    () => heatmap.filter((item) => item.isFinal).length,
+    () => heatmap.filter((item) => item.isVoted && item.isFinal).length,
     [heatmap],
   );
   const winTotal = useMemo(
