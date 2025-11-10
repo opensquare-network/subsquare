@@ -6,13 +6,13 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Tooltip from "next-common/components/tooltip";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
 import { isSameAddress } from "next-common/utils";
-import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
+import { useContextApi } from "next-common/context/api";
 
 export default function NewChildBountyButton() {
   const address = useRealAddress();
   const [showPopup, setShowPopup] = useState(false);
   const onChain = useOnchainData();
-  const api = useConditionalContextApi();
+  const api = useContextApi();
 
   const { bountyIndex } = onChain;
 
@@ -50,7 +50,7 @@ export default function NewChildBountyButton() {
 
   const isCurator = isSameAddress(curator, address);
   const maxActiveChildBountyCount =
-    api?.consts.childBounties.maxActiveChildBountyCount.toNumber() ||
+    api?.consts?.childBounties?.maxActiveChildBountyCount.toNumber() ||
     Number.MAX_VALUE;
 
   if (!isCurator) {
