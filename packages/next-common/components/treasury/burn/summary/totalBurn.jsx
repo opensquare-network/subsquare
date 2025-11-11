@@ -9,7 +9,7 @@ export default function TotalBurnSummary() {
   const { symbol, decimals } = useChainSettings();
 
   return (
-    <SummaryItem title="Total Burn">
+    <SummaryItem title="Total Burnt">
       <ValueDisplay
         value={toPrecision(burnSummary?.totalBurnt, decimals)}
         symbol={symbol}
