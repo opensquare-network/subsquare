@@ -31,6 +31,11 @@ const config = {
         destination: "/treasury/burn",
         permanent: false,
       },
+      {
+        source: "/assethub",
+        destination: "/assets",
+        permanent: false,
+      },
     ];
   },
   async rewrites() {
