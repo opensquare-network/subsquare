@@ -1,5 +1,5 @@
 import { backendApi } from "next-common/services/nextApi";
-import getMultisigApiUrl from "./url";
+import getMultisigApiUrl, { getRelayChainMultisigApiUrl } from "./url";
 import getMultisigsQuery, {
   getMultisigsCountQuery,
   getMultisigAddressesQuery,
@@ -44,13 +44,13 @@ export async function fetchMultisigsCount(chain, address) {
 }
 
 export async function fetchMultisigAddresses(
-  chain,
+  apiUrl,
   address,
   page = 1,
   pageSize = 10,
 ) {
   return await backendApi.fetch(
-    getMultisigApiUrl(chain),
+    apiUrl,
     {},
     {
       method: "POST",
@@ -62,4 +62,47 @@ export async function fetchMultisigAddresses(
       }),
     },
   );
+}
+
+export async function fetchMergedMultisigAddresses(chain, address) {
+  const relayChainApiUrl = getRelayChainMultisigApiUrl(chain);
+  const assethubApiUrl = getMultisigApiUrl(chain);
+
+  const [relayResult, assethubResult] = await Promise.all([
+    relayChainApiUrl
+      ? fetchMultisigAddresses(relayChainApiUrl, address, 1, 100)
+      : Promise.resolve({ result: null }),
+    fetchMultisigAddresses(assethubApiUrl, address, 1, 100),
+  ]);
+
+  const relayChainAddresses =
+    relayResult?.result?.data?.multisigAddresses?.multisigAddresses || [];
+  const assethubAddresses =
+    assethubResult?.result?.data?.multisigAddresses?.multisigAddresses || [];
+
+  const addressMap = new Map();
+  assethubAddresses?.forEach((item) => {
+    addressMap.set(item.address, item);
+  });
+
+  relayChainAddresses?.forEach((item) => {
+    if (addressMap.has(item.address)) {
+      return;
+    }
+
+    addressMap.set(item.address, item);
+  });
+
+  const allMergedAddresses = Array.from(addressMap.values());
+
+  return {
+    result: {
+      data: {
+        multisigAddresses: {
+          multisigAddresses: allMergedAddresses,
+          total: allMergedAddresses.length,
+        },
+      },
+    },
+  };
 }

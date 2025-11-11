@@ -59,6 +59,7 @@ const polkadot = {
   },
   hasMultisig: true,
   multisigApiPrefix: "ahp-gh-api",
+  relayChainMultisigApiPrefix: "dot-multisig-api",
   useVoteCall: true,
   description:
     "Polkadot empowers blockchain networks to work together under the protection of shared security.",

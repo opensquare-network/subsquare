@@ -13,3 +13,12 @@ export default function getMultisigApiUrl(chain) {
 
   return `https://${settings.multisigApiPrefix}-multisig-api.statescan.io/graphql`;
 }
+
+export function getRelayChainMultisigApiUrl(chain) {
+  const settings = getChainSettings(chain);
+  if (!settings?.relayChainMultisigApiPrefix || !settings?.assetHubMigration) {
+    return null;
+  }
+
+  return `https://${settings.relayChainMultisigApiPrefix}.statescan.io/graphql`;
+}
