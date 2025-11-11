@@ -3,16 +3,16 @@ import { usePageProps } from "next-common/context/page";
 import { formatTimeDuration } from "next-common/utils/viewfuncs/formatTimeDuration";
 
 export default function useTimeScopeData() {
-  const { burntChart, burntList } = usePageProps();
+  const { burnChart, burnList } = usePageProps();
 
-  const chartData = burntChart?.result || [];
+  const chartData = burnChart?.result || [];
   const earliestChartItem = chartData[chartData.length - 1];
   const latestChartItem = chartData[0];
 
   const startBlockTime = earliestChartItem?.timestamp;
   const endBlockTime = latestChartItem?.timestamp;
 
-  const listItems = burntList?.items || [];
+  const listItems = burnList?.items || [];
   const latestListItem = listItems[0];
   const earliestListItem = listItems[listItems.length - 1];
 

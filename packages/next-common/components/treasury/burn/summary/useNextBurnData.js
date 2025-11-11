@@ -17,11 +17,11 @@ export default function useNextBurnData() {
   const api = useConditionalContextApi();
   const { free, isLoading: isFreeLoading } = useTreasuryFree(api);
   const nextBurnAmount = useTreasuryBurn(api, free || 0);
-  const { burntChart } = usePageProps();
+  const { burnChart } = usePageProps();
   const spendPeriod = useSpendPeriod(api);
   const lastBurnBlockHeight = useLastSpendPeriod(api);
   const blockTime = useSelector(blockTimeSelector);
-  const lastBurnTime = burntChart?.result?.[0]?.timestamp;
+  const lastBurnTime = burnChart?.result?.[0]?.timestamp;
 
   const isLoading = !api || isFreeLoading || !spendPeriod || !blockTime;
 
