@@ -55,7 +55,7 @@ const kintsugi = {
   decimals: 12,
   blockTime: 12000,
   hasElections: false,
-  ss58Format: 2092,
+  ss58Format: 42,
   endpoints,
   avatar: ProjectIconKintsugiLight,
   darkAvatar: ProjectIconKintsugiDark,
