@@ -12,9 +12,9 @@ import { isEmpty } from "lodash-es";
 import { OnlyChains } from "next-common/components/common/onlyChain";
 import { AssetHubMetadataProvider } from "../context/assetHubMetadataContext";
 
-function useAssetHubManagePrompt() {
+function useAssetsManagePrompt() {
   const [visible, setVisible] = useCookieValue(
-    CACHE_KEY.assetHubPromptVisible,
+    CACHE_KEY.assetsPromptVisible,
     true,
   );
 
@@ -26,13 +26,13 @@ function useAssetHubManagePrompt() {
       return {};
     }
     return {
-      key: CACHE_KEY.assetHubPromptVisible,
+      key: CACHE_KEY.assetsPromptVisible,
       message: (
         <div>
-          You have {assetsAmount} assets on AssetHub. Manage{" "}
+          You have {assetsAmount} assets. Manage{" "}
           {assetsAmount > 1 ? "them" : "it"}
           &nbsp;
-          <Link className="underline" href="/assethub">
+          <Link className="underline" href="/assets">
             here
           </Link>
         </div>
@@ -43,18 +43,18 @@ function useAssetHubManagePrompt() {
   }, [assetsAmount, setVisible, visible]);
 }
 
-export default function AssetHubManagePrompt({ onClose }) {
+export default function AssetsManagePrompt({ onClose }) {
   return (
     <OnlyChains chains={[Chains.polkadex, Chains.kusama]}>
       <AssetHubMetadataProvider>
-        <AssetHubManagePromptImpl onClose={onClose} />
+        <AssetsManagePromptImpl onClose={onClose} />
       </AssetHubMetadataProvider>
     </OnlyChains>
   );
 }
 
-function AssetHubManagePromptImpl({ onClose }) {
-  const prompt = useAssetHubManagePrompt();
+function AssetsManagePromptImpl({ onClose }) {
+  const prompt = useAssetsManagePrompt();
   if (isEmpty(prompt)) {
     return null;
   }
