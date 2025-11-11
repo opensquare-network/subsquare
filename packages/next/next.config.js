@@ -29,7 +29,7 @@ const config = {
       {
         source: "/treasury/burnt",
         destination: "/treasury/burn",
-        permanent: true,
+        permanent: false,
       },
     ];
   },
