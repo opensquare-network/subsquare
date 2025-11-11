@@ -5,26 +5,11 @@ import {
   colTransferrable,
 } from "next-common/components/assets/assetsList";
 import { useMyNativeAsset } from "next-common/hooks/assets/useMyNativeAsset";
-import { useMemo } from "react";
-import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated";
 import { colToken } from "./columns/token";
-import { colActions } from "./columns/actions";
-
-function useColumnsDef() {
-  const isMigrated = isAssetHubMigrated();
-
-  return useMemo(() => {
-    if (isMigrated) {
-      return [colToken, colTotal, colTransferrable];
-    }
-
-    return [colToken, colTotal, colTransferrable, colActions];
-  }, [isMigrated]);
-}
 
 export default function NativeAssetList() {
   const { loading, value } = useMyNativeAsset();
-  const columnsDef = useColumnsDef();
+  const columnsDef = [colToken, colTotal, colTransferrable];
 
   return (
     <div className="relative">
