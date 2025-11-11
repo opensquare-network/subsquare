@@ -68,13 +68,13 @@ export async function fetchMergedMultisigAddresses(chain, address) {
   const relayChainApiUrl = getRelayChainMultisigApiUrl(chain);
   const assethubApiUrl = getMultisigApiUrl(chain);
 
-  const [relayResult, assethubResult] = await Promise.all([
+  const [relayChainResult, assethubResult] = await Promise.all([
     fetchMultisigAddresses(relayChainApiUrl, address, 1, 100),
     fetchMultisigAddresses(assethubApiUrl, address, 1, 100),
   ]);
 
   const relayChainAddresses =
-    relayResult?.result?.data?.multisigAddresses?.multisigAddresses || [];
+    relayChainResult?.result?.data?.multisigAddresses?.multisigAddresses || [];
   const assethubAddresses =
     assethubResult?.result?.data?.multisigAddresses?.multisigAddresses || [];
 
