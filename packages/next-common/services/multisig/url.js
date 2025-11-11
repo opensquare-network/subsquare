@@ -7,7 +7,7 @@ export default function getMultisigApiUrl(chain) {
     throw new Error(`Can not find multisig settings for ${chain}`);
   }
 
-  if (isAssetHubMigrated(chain)) {
+  if (isAssetHubMigrated()) {
     return `https://${settings.multisigApiPrefix}.statescan.io/graphql`;
   }
 
@@ -16,7 +16,7 @@ export default function getMultisigApiUrl(chain) {
 
 export function getRelayChainMultisigApiUrl(chain) {
   const settings = getChainSettings(chain);
-  if (!settings?.relayChainMultisigApiPrefix || !settings?.assetHubMigration) {
+  if (!settings?.relayChainMultisigApiPrefix && !isAssetHubMigrated()) {
     return null;
   }
 

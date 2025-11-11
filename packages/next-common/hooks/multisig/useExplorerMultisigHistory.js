@@ -6,6 +6,7 @@ import { useAsync } from "react-use";
 import { useMemo } from "react";
 import getMultisigApiUrl from "next-common/services/multisig/url";
 import { useChainSettings } from "next-common/context/chain";
+import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated";
 
 export default function useExplorerMultisigHistory(
   chain,
@@ -15,10 +16,7 @@ export default function useExplorerMultisigHistory(
 ) {
   const chainSettings = useChainSettings();
   const { value: allData, loading } = useAsync(async () => {
-    if (
-      !chainSettings?.assetHubMigration &&
-      !chainSettings?.relayChainMultisigApiPrefix
-    ) {
+    if (!isAssetHubMigrated() && !chainSettings?.relayChainMultisigApiPrefix) {
       const { result } = await fetchMultisigAddresses(
         getMultisigApiUrl(chain),
         address,
@@ -30,7 +28,7 @@ export default function useExplorerMultisigHistory(
 
     const { result } = await fetchMergedMultisigAddresses(chain, address);
     return result?.data?.multisigAddresses;
-  }, [chain, address]);
+  }, [chain, address, chainSettings]);
 
   const paginatedData = useMemo(() => {
     if (!allData?.multisigAddresses) {
