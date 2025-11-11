@@ -77,7 +77,7 @@ const polkadot = {
       tips: {
         archived: true,
       },
-      burnt: true,
+      burn: true,
     },
     council: {
       archived: true,

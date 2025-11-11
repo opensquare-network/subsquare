@@ -78,7 +78,7 @@ export function getTreasuryMenu(summary) {
         archived: treasury?.tips?.archived,
         activeCount: activeTips,
       },
-      treasury?.burnt && {
+      treasury?.burn && {
         value: "burn",
         name: Names.burn,
         pathname: "/treasury/burn",

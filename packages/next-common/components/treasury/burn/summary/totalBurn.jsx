@@ -4,14 +4,14 @@ import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import SummaryItem from "next-common/components/summary/layout/item";
 
-export default function TotalBurntSummary() {
-  const { burntSummary } = usePageProps();
+export default function TotalBurnSummary() {
+  const { burnSummary } = usePageProps();
   const { symbol, decimals } = useChainSettings();
 
   return (
-    <SummaryItem title="Total Burnt">
+    <SummaryItem title="Total Burn">
       <ValueDisplay
-        value={toPrecision(burntSummary?.totalBurnt, decimals)}
+        value={toPrecision(burnSummary?.totalBurnt, decimals)}
         symbol={symbol}
       />
     </SummaryItem>
