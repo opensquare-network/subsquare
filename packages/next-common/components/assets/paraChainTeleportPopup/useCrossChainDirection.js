@@ -6,7 +6,7 @@ import { isAssetHubChain } from "next-common/utils/chain";
 import { capitalize } from "lodash-es";
 import { useChain } from "next-common/context/chain";
 import Select from "next-common/components/select";
-import { useRelayChain } from "next-common/hooks/useRelayChain";
+import { useAssetHubChain } from "next-common/hooks/useAssetHubChain";
 
 const SystemCrosschain = dynamic(() =>
   import("@osn/icons/subsquare/SystemCrosschain"),
@@ -45,8 +45,8 @@ export function getChainName(chain) {
 
 export default function useCrossChainDirection() {
   const currChain = useChain();
-  const relayChain = useRelayChain();
-  const [sourceChain, setSourceChain] = useState(relayChain);
+  const assetHubChain = useAssetHubChain();
+  const [sourceChain, setSourceChain] = useState(assetHubChain);
   const [destinationChain, setDestinationChain] = useState(currChain);
 
   const component = (
