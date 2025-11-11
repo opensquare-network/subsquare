@@ -9,7 +9,6 @@ import { getAllianceMenu } from "./alliance";
 import { getReferendaMenu } from "./referenda";
 import { getFellowshipMenu } from "./fellowship";
 import { getAmbassadorMenu } from "next-common/utils/consts/menu/ambassador";
-import { assetHubMenu } from "./assetHub";
 import { getCommunityCouncilMenu } from "./communityCouncil";
 import { CHAIN } from "next-common/utils/constants";
 import preImages from "./preImages";
@@ -40,7 +39,6 @@ export function getHomeMenu({
   } = getChainSettings(CHAIN);
 
   const integrationsMenu = [
-    modules?.assethub && !isAssetHubMigrated() && assetHubMenu,
     modules?.assethub && isAssetHubMigrated() && assetsMenu,
     modules?.coretime && coretimeMenu,
     modules?.people && peopleMenu,
