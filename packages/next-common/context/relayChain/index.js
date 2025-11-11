@@ -11,10 +11,10 @@ export function RelayChainApiProvider({ children }) {
   const relayChainSettings = getChainSettings(relayChain);
 
   useEffect(() => {
-    getChainApi(relayChainSettings?.endpoints?.map?.((item) => item.url)).then(
-      setApi,
-    );
-  }, [relayChainSettings.endpoints]);
+    getChainApi(
+      relayChainSettings?.relayChainEndpoints?.map?.((item) => item.url),
+    ).then(setApi);
+  }, [relayChainSettings.relayChainEndpoints]);
 
   return (
     <RelayChainApiContext.Provider value={api}>

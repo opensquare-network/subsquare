@@ -1,49 +1,45 @@
-import { useContextApi } from "next-common/context/api";
-import { useCallback } from "react";
+import { useMemo } from "react";
 import useSubStorage from "../common/useSubStorage";
+import useNow from "../useNow";
+import { useRelayChainApi } from "next-common/context/relayChain";
+import { useContextApi } from "next-common/context/api";
 
 export function useEraTimeLeft() {
   const api = useContextApi();
-  const { loading, result: activeEra } = useSubStorage(
+  const relayApi = useRelayChainApi();
+  const { loading, result: _activeEra } = useSubStorage(
     "staking",
     "activeEra",
     [],
   );
+  const nowTimestamp = useNow(60 * 1000);
+  const activeEra = _activeEra?.toJSON();
 
-  const get = useCallback(async () => {
-    if (!loading) {
-      return;
+  return useMemo(() => {
+    if (!api || !relayApi || loading) {
+      return { loading: true };
     }
 
-    const expectedBlockTime = api.consts.babe.expectedBlockTime;
-    const epochDuration = api.consts.babe.epochDuration;
-    const sessionsPerEra = api.consts.staking.sessionsPerEra;
+    const expectedBlockTime = relayApi.consts.babe.expectedBlockTime.toNumber();
+    const epochDuration = relayApi.consts.babe.epochDuration.toNumber();
+    const sessionsPerEra = api.consts.staking.sessionsPerEra.toNumber();
 
-    // Get timestamp of era start and convert to seconds
-    const start = activeEra.start / 1000n;
+    const start = activeEra.start;
+    const eraDurationBlocks = epochDuration * sessionsPerEra;
+    const eraDuration = eraDurationBlocks * expectedBlockTime;
+    const end = start + eraDuration;
+    const timeleft = Math.max(0, end - nowTimestamp);
 
-    // Store the duration of an era in block numbers
-    const eraDurationBlocks = epochDuration * BigInt(sessionsPerEra);
-
-    // Estimate the duration of the era in seconds
-    const eraDuration = Number((eraDurationBlocks * expectedBlockTime) / 1000n);
-
-    // Estimate the end time of the era
-    const end = Number(start) + eraDuration;
-
-    // Estimate remaining time of era
-    const timeleft = Math.max(0, end - Date.now());
-
-    // Percentage of eraDuration
     const percentage = eraDuration / 100;
     const percentRemaining = timeleft === 0 ? 100 : timeleft / percentage;
     const percentSurpassed = timeleft === 0 ? 0 : 100 - percentRemaining;
 
-    return { timeleft, end, percentSurpassed, percentRemaining };
-  }, [api, activeEra, loading]);
-
-  return {
-    get,
-    loading,
-  };
+    return {
+      loading: false,
+      timeleft,
+      end,
+      percentSurpassed,
+      percentRemaining,
+    };
+  }, [api, relayApi, activeEra, loading, nowTimestamp]);
 }
