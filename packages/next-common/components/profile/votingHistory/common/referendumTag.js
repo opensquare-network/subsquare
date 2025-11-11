@@ -37,12 +37,8 @@ function DemocracyTag({ proposal, vote }) {
 
   const { referendumInfo } = vote || {};
   if (referendumInfo) {
-    return (
-      <DemocracyReferendumTag
-        state={capitalize(Object.keys(referendumInfo)[0])}
-        args={Object.values(referendumInfo)[0]}
-      />
-    );
+    const [state, args] = Object.entries(referendumInfo || {})[0] || [];
+    return <DemocracyReferendumTag state={capitalize(state)} args={args} />;
   }
 
   return null;
