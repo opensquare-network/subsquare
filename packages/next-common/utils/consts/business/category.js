@@ -7,7 +7,7 @@ const businessCategory = {
   treasuryChildBounties: "Treasury Child Bounties",
   councilMotions: "Council Motions",
   treasuryCouncilMotions: "Treasury Council Motions",
-  treasuryBurnt: "Treasury Burnt",
+  treasuryBurn: "Treasury Burn",
   tcProposals: "Tech. Comm. Proposals",
   democracyProposals: "Democracy Public Proposals",
   democracyExternals: "Democracy External Proposals",

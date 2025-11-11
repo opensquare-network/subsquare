@@ -7,7 +7,7 @@ import ListLayout from "next-common/components/layout/ListLayout";
 import businessCategory from "next-common/utils/consts/business/category";
 
 export default function TreasuryBurnt() {
-  const category = businessCategory.treasuryBurnt;
+  const category = businessCategory.treasuryBurn;
   const seoInfo = { title: category, desc: category };
 
   return (

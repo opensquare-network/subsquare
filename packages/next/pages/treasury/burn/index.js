@@ -5,7 +5,7 @@ import { fetchList } from "next-common/services/list";
 import TreasuryBurnt from "next-common/components/treasury/burnt";
 import { TreasuryProvider } from "next-common/context/treasury";
 
-export default function TreasuryBurntPage() {
+export default function TreasuryBurnPage() {
   const chainSettings = useChainSettings();
   if (!chainSettings?.modules?.treasury?.burnt) {
     return null;
