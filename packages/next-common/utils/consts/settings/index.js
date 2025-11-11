@@ -49,6 +49,7 @@ import kusamaPeople from "./kusamaPeople";
 import paseoPeople from "./paseoPeople";
 import westendPeople from "./westendPeople";
 import hyperBridge from "./hyperBridge";
+import acurast from "./acurast";
 
 const settingsMap = {
   polkadot,
@@ -70,6 +71,7 @@ const settingsMap = {
   karura,
   khala,
   kintsugi,
+  acurast,
   laos,
   [laosTestnet.value]: laosTestnet,
   litentry,
