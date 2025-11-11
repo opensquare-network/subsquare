@@ -4,6 +4,7 @@ import teleportFromRelayChainToParaChain, {
   getParaChainId,
 } from "./teleportFromRelayChainToParaChain";
 import teleportFromParaChainToRelayChain from "./teleportFromParaChainToRelayChain";
+import teleportFromParaChainToParaChain from "./teleportFromParaChainToParaChain";
 import { useCallback } from "react";
 import { useAssetHubApi } from "next-common/hooks/chain/useAssetHubApi";
 import { useChain } from "next-common/context/chain";
@@ -63,9 +64,15 @@ export function useGetTeleportTxFunc({
           transferToAddress,
           amount,
         });
+      } else {
+        const paraChainId = getParaChainId(destinationChain);
+        return teleportFromParaChainToParaChain({
+          sourceApi,
+          transferToAddress,
+          amount,
+          paraChainId,
+        });
       }
-
-      throw new Error("Unsupported teleport direction");
     },
     [sourceApi, sourceChain, destinationChain],
   );
