@@ -16,7 +16,7 @@ export default function getMultisigApiUrl(chain) {
 
 export function getRelayChainMultisigApiUrl(chain) {
   const settings = getChainSettings(chain);
-  if (!settings?.relayChainMultisigApiPrefix && !isAssetHubMigrated()) {
+  if (!settings?.relayChainMultisigApiPrefix || !isAssetHubMigrated()) {
     return null;
   }
 

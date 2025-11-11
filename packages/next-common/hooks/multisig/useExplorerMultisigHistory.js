@@ -16,7 +16,7 @@ export default function useExplorerMultisigHistory(
 ) {
   const chainSettings = useChainSettings();
   const { value: allData, loading } = useAsync(async () => {
-    if (!isAssetHubMigrated() && !chainSettings?.relayChainMultisigApiPrefix) {
+    if (!chainSettings?.relayChainMultisigApiPrefix || !isAssetHubMigrated()) {
       const { result } = await fetchMultisigAddresses(
         getMultisigApiUrl(chain),
         address,

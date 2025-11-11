@@ -69,9 +69,7 @@ export async function fetchMergedMultisigAddresses(chain, address) {
   const assethubApiUrl = getMultisigApiUrl(chain);
 
   const [relayResult, assethubResult] = await Promise.all([
-    relayChainApiUrl
-      ? fetchMultisigAddresses(relayChainApiUrl, address, 1, 100)
-      : Promise.resolve({ result: null }),
+    fetchMultisigAddresses(relayChainApiUrl, address, 1, 100),
     fetchMultisigAddresses(assethubApiUrl, address, 1, 100),
   ]);
 
