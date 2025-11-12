@@ -142,7 +142,7 @@ function RegistrarUserAddress({ item, index }) {
   return (
     <div className="flex items-center gap-x-2">
       <span className="text-textPrimary text14Medium inline-block w-6">
-        #{index + 1}
+        #{index}
       </span>
       <AddressUser key={`account-${item.account}`} add={item.account} />
     </div>
