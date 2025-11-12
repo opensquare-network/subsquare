@@ -1,16 +1,11 @@
-import { useRelayChain } from "next-common/hooks/useRelayChain";
-import getChainSettings from "next-common/utils/consts/settings";
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { useRelayChainEndpoints } from "next-common/hooks/useRelayChain";
+import { createContext, useContext, useEffect, useState } from "react";
 import { getChainApi, getChainApiAt } from "next-common/utils/getChainApi";
 
 const RelayChainBlockApiContext = createContext(null);
 
 function useRelayChainApi() {
-  const relayChain = useRelayChain();
-  const endpointUrls = useMemo(() => {
-    const relayChainSettings = getChainSettings(relayChain);
-    return relayChainSettings?.endpoints?.map?.((item) => item.url);
-  }, [relayChain]);
+  const endpointUrls = useRelayChainEndpoints();
   const [relayChainApi, setRelayChainApi] = useState(null);
 
   useEffect(() => {
