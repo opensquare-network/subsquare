@@ -37,6 +37,7 @@ import laos from "./consts/settings/laos";
 import paseoPeople from "./consts/settings/paseoPeople";
 import westendPeople from "./consts/settings/westendPeople";
 import hyperBridge from "./consts/settings/hyperBridge";
+import acurast from "./consts/settings/acurast";
 
 const optionalNodes =
   process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? [development] : [];
@@ -49,6 +50,7 @@ export const nodes = [
   // kusamaAssetHub,
   kusamaPeople,
   acala,
+  acurast,
   ajuna,
   astar,
   basilisk,
