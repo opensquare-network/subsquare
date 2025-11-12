@@ -74,9 +74,9 @@ const kintsugi = {
     },
     technicalCommittee: false,
     advanced: {
-      data: false,
+      data: true,
     },
-    proxy: false,
+    proxy: true,
   }),
   cssVarsLight: {
     theme100: "rgba(145,190,2,0.1)",
@@ -98,10 +98,10 @@ const kintsugi = {
     navigationBorder: "var(--neutral300)",
   },
   wallets: {
-    walletconnect: false,
+    walletconnect: true,
   },
   multisigWallets: {
-    signet: true,
+    signet: false,
   },
   allowWeb2Login: true,
 };
