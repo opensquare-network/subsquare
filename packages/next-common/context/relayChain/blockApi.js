@@ -1,21 +1,8 @@
-import { useRelayChainEndpoints } from "next-common/hooks/useRelayChain";
 import { createContext, useContext, useEffect, useState } from "react";
-import { getChainApi, getChainApiAt } from "next-common/utils/getChainApi";
+import { getChainApiAt } from "next-common/utils/getChainApi";
+import { RelayChainApiProvider, useRelayChainApi } from ".";
 
 const RelayChainBlockApiContext = createContext(null);
-
-function useRelayChainApi() {
-  const endpointUrls = useRelayChainEndpoints();
-  const [relayChainApi, setRelayChainApi] = useState(null);
-
-  useEffect(() => {
-    if (endpointUrls?.length) {
-      getChainApi(endpointUrls).then(setRelayChainApi);
-    }
-  }, [endpointUrls]);
-
-  return relayChainApi;
-}
 
 function useBlockHeightOrHashApi(relayChainApi, blockHeightOrHash) {
   const [api, setApi] = useState(null);
@@ -30,6 +17,16 @@ function useBlockHeightOrHashApi(relayChainApi, blockHeightOrHash) {
 }
 
 export function RelayChainBlockApiProvider({ children, blockHeightOrHash }) {
+  return (
+    <RelayChainApiProvider>
+      <RelayChainBlockApiProviderImpl blockHeightOrHash={blockHeightOrHash}>
+        {children}
+      </RelayChainBlockApiProviderImpl>
+    </RelayChainApiProvider>
+  );
+}
+
+function RelayChainBlockApiProviderImpl({ children, blockHeightOrHash }) {
   const relayChainApi = useRelayChainApi();
   const api = useBlockHeightOrHashApi(relayChainApi, blockHeightOrHash);
 
@@ -40,7 +37,6 @@ export function RelayChainBlockApiProvider({ children, blockHeightOrHash }) {
       }
     };
   }, [relayChainApi]);
-
   return (
     <RelayChainBlockApiContext.Provider value={api}>
       {children}
