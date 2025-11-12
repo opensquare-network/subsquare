@@ -2,7 +2,6 @@ import { useChain } from "next-common/context/chain";
 import { getRelayChain } from "next-common/utils/chain";
 import getChainSettings from "next-common/utils/consts/settings";
 import { useMemo } from "react";
-import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated";
 
 export function useRelayChain() {
   const chain = useChain();
@@ -14,7 +13,7 @@ export function useRelayChainEndpoints() {
 
   const endpointConfig = useMemo(() => {
     const relayChainSettings = getChainSettings(relayChain);
-    if (isAssetHubMigrated()) {
+    if (relayChainSettings?.assethubMigration) {
       return relayChainSettings?.relayChainEndpoints;
     }
     return relayChainSettings?.endpoints;
