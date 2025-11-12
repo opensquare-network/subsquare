@@ -1,28 +1,26 @@
 import { useEffect } from "react";
-import useForeignAssetTransfers from "./useForeignAssetTransfers";
+import useTransfersHistory from "next-common/utils/hooks/useTransfersHistory";
 import { defaultPageSize } from "next-common/utils/constants";
 import {
   useTransfersHistoryContext,
   useTotalCounts,
 } from "next-common/components/assethubMigrationAssets/context/assetHubTabsProvider";
 
-const useQueryForeignAssetTransfers = (address, page) => {
+const useQueryTransfersHistory = (address, page) => {
   const [state, setState] = useTransfersHistoryContext();
   const [, setTotalCount] = useTotalCounts();
-  const { value, total, loading } = useForeignAssetTransfers(
+  const { value, total, loading, error } = useTransfersHistory(
     address,
     page,
     defaultPageSize,
   );
 
   useEffect(() => {
-    if (loading) {
-      return;
+    if (!loading && !error && value) {
+      setState({ list: value, total });
+      setTotalCount("transfers", total);
     }
-
-    setState({ list: value, total });
-    setTotalCount("transfers", total);
-  }, [loading, value, total, setState, setTotalCount]);
+  }, [loading, error, value, total, setState, setTotalCount]);
 
   return {
     list: state.list,
@@ -31,4 +29,4 @@ const useQueryForeignAssetTransfers = (address, page) => {
   };
 };
 
-export default useQueryForeignAssetTransfers;
+export default useQueryTransfersHistory;

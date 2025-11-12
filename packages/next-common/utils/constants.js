@@ -134,7 +134,7 @@ export const CACHE_KEY = {
   ambassadorDemotionExpireRemindVisible:
     "ambassador-demotion-expire-remind-visible",
   extensionUpdateMetadata: "extensionUpdateMetadata",
-  assetHubPromptVisible: "asset-hub-management-prompt-visible",
+  assetsPromptVisible: "assets-management-prompt-visible",
   multisigManagementPromptVisible: "multisig-management-prompt-visible",
   requestJudgementPrompt: "request-judgement-prompt",
   walletConnectSession: "walletconnect-session",
@@ -151,7 +151,7 @@ export const ADDRESS_CACHE_KEYS = [
   CACHE_KEY.ambassadorDemotionExpiredVisible,
   CACHE_KEY.ambassadorDemotionExpireRemindVisible,
   CACHE_KEY.extensionUpdateMetadata,
-  CACHE_KEY.assetHubPromptVisible,
+  CACHE_KEY.assetsPromptVisible,
   CACHE_KEY.multisigManagementPromptVisible,
   CACHE_KEY.requestJudgementPrompt,
   CACHE_KEY.setIdentityPromptVisible,
