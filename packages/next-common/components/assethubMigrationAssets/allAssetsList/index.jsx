@@ -2,7 +2,7 @@ import { useMemo, useEffect, useState } from "react";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 import AssetsList from "next-common/components/assethubMigrationAssets/allAssetsList/assetsList";
-import useAllAssets from "next-common/components/assethubMigrationAssets/useAllAssets";
+import useAllAssets from "next-common/components/assethubMigrationAssets/allAssetsList/useAllAssets";
 import useSearchAllAssets, {
   SearchInput,
 } from "next-common/components/assethubMigrationAssets/allAssetsList/useSearchAllAssets";

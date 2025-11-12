@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import useQueryAllAssetDetail from "next-common/hooks/assets/useQueryAllAssetDetail";
-import { useKnownAssetHubAssets } from "./known";
+import { useKnownAssetHubAssets } from "../known";
 import useAllAssetMetadata from "next-common/components/assethubMigrationAssets/context/assetMetadata";
 
 export default function useAllAssets() {
