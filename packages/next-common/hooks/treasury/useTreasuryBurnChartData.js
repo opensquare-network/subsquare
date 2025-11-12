@@ -7,27 +7,27 @@ import BigNumber from "bignumber.js";
 import { useTheme } from "styled-components";
 import { useThemeSetting } from "next-common/context/theme";
 
-export default function useTreasuryBurntChartData() {
+export default function useTreasuryBurnChartData() {
   const { decimals, symbol } = useChainSettings();
-  const { burntChart } = usePageProps();
+  const { burnChart } = usePageProps();
   const { isDark } = useTheme();
   const themeSettings = useThemeSetting();
 
-  if (isNil(burntChart?.result) || burntChart.result.length === 0) {
+  if (isNil(burnChart?.result) || burnChart.result.length === 0) {
     return { chartData: null, options: undefined, totalWidth: 0 };
   }
 
   const BAR_THICKNESS = 7;
   const BAR_GAP = 10;
 
-  let items = burntChart.result
+  let items = burnChart.result
     .map((bar) => ({
       date: formatTime(bar.timestamp, "YYYY-MM-DD"),
-      burnt: toPrecisionNumber(bar.amount || 0, decimals),
+      burn: toPrecisionNumber(bar.amount || 0, decimals),
     }))
     .reverse();
 
-  while (items.length > 0 && BigNumber(items[0].burnt).isZero()) {
+  while (items.length > 0 && BigNumber(items[0].burn).isZero()) {
     items.shift();
   }
 
@@ -39,7 +39,7 @@ export default function useTreasuryBurntChartData() {
         barPercentage: 1,
         barThickness: BAR_THICKNESS,
         maxBarThickness: BAR_THICKNESS,
-        data: items.map((item) => item.burnt),
+        data: items.map((item) => item.burn),
         backgroundColor: isDark ? themeSettings.theme500 : "#FCB3AD",
       },
     ],
@@ -62,8 +62,8 @@ export default function useTreasuryBurntChartData() {
           },
           label(tooltipItem) {
             const idx = tooltipItem.dataIndex;
-            const burnt = items[idx]?.burnt;
-            return `Burnt: ≈${abbreviateBigNumber(burnt)} ${symbol}`;
+            const burn = items[idx]?.burn;
+            return `Burnt: ≈${abbreviateBigNumber(burn)} ${symbol}`;
           },
         },
       },

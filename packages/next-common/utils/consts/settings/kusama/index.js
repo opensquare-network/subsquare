@@ -69,7 +69,7 @@ const kusama = {
       tips: {
         archived: true,
       },
-      burnt: true,
+      burn: true,
     },
     council: {
       archived: true,

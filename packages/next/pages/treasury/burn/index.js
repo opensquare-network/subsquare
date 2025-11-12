@@ -2,24 +2,24 @@ import { withCommonProps } from "next-common/lib";
 import { useChainSettings } from "next-common/context/chain";
 import { backendApi } from "next-common/services/nextApi";
 import { fetchList } from "next-common/services/list";
-import TreasuryBurnt from "next-common/components/treasury/burnt";
+import TreasuryBurn from "next-common/components/treasury/burn";
 import { TreasuryProvider } from "next-common/context/treasury";
 
-export default function TreasuryBurntPage() {
+export default function TreasuryBurnPage() {
   const chainSettings = useChainSettings();
-  if (!chainSettings?.modules?.treasury?.burnt) {
+  if (!chainSettings?.modules?.treasury?.burn) {
     return null;
   }
 
   return (
     <TreasuryProvider>
-      <TreasuryBurnt />
+      <TreasuryBurn />
     </TreasuryProvider>
   );
 }
 
 export const getServerSideProps = withCommonProps(async (context) => {
-  const [{ result: burntSummary }, burntList, burntChart] = await Promise.all([
+  const [{ result: burnSummary }, burnList, burnChart] = await Promise.all([
     backendApi.fetch("/treasury/burnt/summary"),
     fetchList("/treasury/burnt", context),
     backendApi.fetch("/treasury/burnt/chart"),
@@ -27,9 +27,9 @@ export const getServerSideProps = withCommonProps(async (context) => {
 
   return {
     props: {
-      burntSummary: burntSummary ?? null,
-      burntList: burntList ?? null,
-      burntChart: burntChart ?? null,
+      burnSummary: burnSummary ?? null,
+      burnList: burnList ?? null,
+      burnChart: burnChart ?? null,
     },
   };
 });

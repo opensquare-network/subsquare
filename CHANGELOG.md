@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+# 5.5.1
+
+Date:
+2025-11-11. [Code diff](https://github.com/opensquare-network/subsquare/compare/7672ed5bf2a626fd95aa6837697f9f190a4d1306...d3b894815e090ebe2e304b04f2b7ac43b8b438de).
+
+- Add treasury burn page to show treasury burn status and history.
+- Assethub migration
+    - Fix confirmation countdown on the referenda list page after AHM.
+    - Correct polkadot treasury balance calculation after AHM.
+    - Fix child bounty claim after AHM. We need to correct the API instance.
+    - Fix treasury request time calculation on the referendum detail page.
+    - Fix account vote lock expiration by OpenGov prior lock.
+- Add a state filter for child bounties.
+- Fix the block height when we enter into coretime space. We use the data from backend stream API.
+- Improve the filter for treasury spend and move the select component out of the filter popup.
+- Fellowship: show win rate for fellowship member votes on the profile page.
+- Tech: Fix SVG ID conflicts and optimize SVG reusability.
+- Code refactor and fix styles.
+
 # 5.5.0
 
 Date:

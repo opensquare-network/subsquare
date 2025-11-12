@@ -6,13 +6,13 @@ import Pagination from "next-common/components/pagination";
 import { useNavCollapsed } from "next-common/context/nav";
 import columns from "./columns";
 
-export default function TreasuryBurntTable() {
-  const { burntList } = usePageProps();
+export default function TreasuryBurnTable() {
+  const { burnList } = usePageProps();
   const [navCollapsed] = useNavCollapsed();
 
-  const loading = isNil(burntList) || isNil(burntList.items);
-  const rowsData = burntList?.items || [];
-  const total = burntList?.total || 0;
+  const loading = isNil(burnList) || isNil(burnList.items);
+  const rowsData = burnList?.items || [];
+  const total = burnList?.total || 0;
 
   return (
     <div className="flex flex-col gap-y-4">
@@ -31,8 +31,8 @@ export default function TreasuryBurntTable() {
         getRowKey={(row) => row?._id}
       />
       <Pagination
-        page={burntList?.page}
-        pageSize={burntList?.pageSize}
+        page={burnList?.page}
+        pageSize={burnList?.pageSize}
         total={total}
       />
     </div>

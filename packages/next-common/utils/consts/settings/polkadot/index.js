@@ -77,7 +77,7 @@ const polkadot = {
       tips: {
         archived: true,
       },
-      burnt: true,
+      burn: true,
     },
     council: {
       archived: true,
@@ -108,7 +108,7 @@ const polkadot = {
   },
   treasuryProposalTracks: polkadotTreasuryTracks,
   newProposalQuickStart: {
-    usdxTreasuryProposal: true,
+    usdxTreasuryProposal: false,
     spendDotOnAssetHubProposal: false,
     cancelReferendum: true,
     killReferendum: true,
