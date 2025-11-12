@@ -50,6 +50,7 @@ export const nodes = [
   // kusamaAssetHub,
   kusamaPeople,
   acala,
+  acurast,
   ajuna,
   astar,
   basilisk,
@@ -83,7 +84,6 @@ export const nodes = [
   paseo,
   // paseoAssetHub,
   paseoPeople,
-  acurast,
   ...optionalNodes,
 ];
 
