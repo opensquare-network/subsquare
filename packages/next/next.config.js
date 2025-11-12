@@ -36,6 +36,11 @@ const config = {
         destination: "/assets",
         permanent: false,
       },
+      {
+        source: "/foreign-assets",
+        destination: "/assets?tab=foreign_assets",
+        permanent: false,
+      },
     ];
   },
   async rewrites() {
