@@ -9,7 +9,7 @@ import { ProxyTip } from "next-common/components/overview/accountInfo/accountInf
 import ExtensionUpdatePrompt from "next-common/components/overview/accountInfo/components/extensionUpdatePrompt";
 import AddressUser from "next-common/components/user/addressUser";
 
-export default function HeadContent() {
+export default function AssetsAccountHeader() {
   const address = useRealAddress();
   const user = useUser();
 

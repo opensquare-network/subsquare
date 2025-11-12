@@ -3,7 +3,7 @@ import Assets from "next-common/components/assethubMigrationAssets/account/asset
 import Transfers from "next-common/components/assethubMigrationAssets/account/transfers";
 import ForeignAssets from "next-common/components/assethubMigrationAssets/foreignAssets";
 import AssetHubTabs from "next-common/components/assethubMigrationAssets/tabs/index";
-import AssetsAccountHeader from "next-common/components/assethubMigrationAssets/account/headContent";
+import AssetsAccountHeader from "next-common/components/assethubMigrationAssets/account/header";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
 
 export default function AssetsAccount() {
