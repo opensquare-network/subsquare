@@ -1,11 +1,11 @@
 import ListLayout from "next-common/components/layout/ListLayout";
-import { AssetHubTabsProvider } from "next-common/components/assets/context/assetHubTabsProvider";
+import { AssetHubTabsProvider } from "next-common/components/assethubMigrationAssets/context/assetHubTabsProvider";
 import HeaderTabs from "./headerTabs";
 import AssetsAccount from "./account";
 import AllAssetsList from "./allAssetsList";
 import ForeignAssetsList from "./allForeignAssetsList";
 import { AssetsTabProvider, useAssetsTab } from "./context/assetsTab";
-import { AssetMetadataProvider } from "next-common/components/assets/context/assetMetadata";
+import { AssetMetadataProvider } from "next-common/components/assethubMigrationAssets/context/assetMetadata";
 
 const TITLE_MAPS = Object.freeze({
   account: "Account assets",

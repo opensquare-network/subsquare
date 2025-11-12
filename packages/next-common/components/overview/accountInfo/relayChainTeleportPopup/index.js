@@ -9,14 +9,14 @@ import AdvanceSettings from "next-common/components/summary/newProposalQuickStar
 import Signer from "next-common/components/popup/fields/signerField";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
-import useNativeTransferAmount from "next-common/components/assets/paraChainTeleportPopup/useNativeTransferAmount";
+import useNativeTransferAmount from "next-common/components/assethubMigrationAssets/paraChainTeleportPopup/useNativeTransferAmount";
 import {
   useChainApi,
   useGetTeleportTxFunc,
-} from "next-common/components/assets/paraChainTeleportPopup/crossChainApi";
+} from "next-common/components/assethubMigrationAssets/paraChainTeleportPopup/crossChainApi";
 import ExistentialDeposit from "next-common/components/popup/fields/existentialDepositField";
 import dynamic from "next/dynamic";
-import { Chain } from "next-common/components/assets/paraChainTeleportPopup/useCrossChainDirection";
+import { Chain } from "next-common/components/assethubMigrationAssets/paraChainTeleportPopup/useCrossChainDirection";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import ChainIcon from "next-common/components/header/chainIcon";
 import getChainSettings from "next-common/utils/consts/settings";

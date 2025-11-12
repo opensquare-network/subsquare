@@ -4,7 +4,7 @@ import { CHAIN } from "../constants";
 import {
   AssetHubParaId,
   CollectivesParaId,
-} from "next-common/components/assets/paraChainTeleportPopup/teleportFromRelayChainToParaChain";
+} from "next-common/components/assethubMigrationAssets/paraChainTeleportPopup/teleportFromRelayChainToParaChain";
 import Chainspolyfill from "../consts/settingsPolyfill/chainsPolyfill";
 
 export const BridgeParaId = 1002;
