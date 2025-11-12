@@ -103,7 +103,8 @@ const kintsugi = {
   multisigWallets: {
     signet: false,
   },
-  allowWeb2Login: true,
+  sima: true,
+  allowWeb2Login: false,
 };
 
 export default kintsugi;
