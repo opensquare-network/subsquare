@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useActiveEra } from "./useActiveEra";
-import { useMyPool } from "next-common/components/staking/pools/context/myPool";
+import { useMyPool } from "next-common/context/staking/myPool";
 
 export function useMyPoolBalance(myPool) {
   const { activeEra } = useActiveEra();

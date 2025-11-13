@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useMemo } from "react";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
 import { isNil } from "lodash-es";
@@ -6,24 +6,21 @@ import { isNil } from "lodash-es";
 export const MyPoolContext = createContext(null);
 
 function MyPoolProviderImpl({ children, realAddress }) {
-  const [jsonPoolMember, setJsonPoolMember] = useState(null);
-  const { result: poolMember, loading: poolMemberLoading } = useSubStorage(
+  const { result: poolMemberOpt, loading } = useSubStorage(
     "nominationPools",
     "poolMembers",
     [realAddress],
   );
-
-  useEffect(() => {
-    if (poolMember && !poolMember.isNone) {
-      setJsonPoolMember(poolMember?.toJSON() || null);
-    }
-  }, [poolMember]);
+  const poolMember = useMemo(
+    () => poolMemberOpt?.toJSON() || null,
+    [poolMemberOpt],
+  );
 
   return (
     <MyPoolContext.Provider
       value={{
-        poolMember: jsonPoolMember,
-        loading: poolMemberLoading,
+        poolMember,
+        loading,
       }}
     >
       {children}

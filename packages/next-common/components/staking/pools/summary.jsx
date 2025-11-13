@@ -6,7 +6,7 @@ import SummaryItem from "next-common/components/summary/layout/item";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
-import { useMyPool } from "./context/myPool";
+import { useMyPool } from "next-common/context/staking/myPool";
 import { useRewardClaimable } from "./hooks/useRewardClaimable";
 
 export default function PoolsSummary() {

@@ -2,7 +2,7 @@ import DataList from "next-common/components/dataList";
 import usePoolsColumns from "./hooks/usePoolsColumns";
 import { useMemo } from "react";
 import { MineTagOnListView } from "next-common/components/delegation/delegate/common/mineTag";
-import { useMyPool } from "./context/myPool";
+import { useMyPool } from "next-common/context/staking/myPool";
 
 export default function PoolsTableList({ list = [], loading = false }) {
   const { poolMember } = useMyPool();
