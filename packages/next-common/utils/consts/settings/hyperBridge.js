@@ -119,6 +119,9 @@ const hyperBridge = {
     treasurySpendProposal: true,
   },
   supportWalletconnect: true,
+  multisigWallets: {
+    mimir: true,
+  },
   allowWeb2Login: false,
   hotMenu: {
     referenda: true,
