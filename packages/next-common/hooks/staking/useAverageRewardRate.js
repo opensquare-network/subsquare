@@ -1,7 +1,7 @@
 import BigNumber from "bignumber.js";
 import { useContextApi } from "next-common/context/api";
-import { useRelayChainApi } from "next-common/context/relayChain";
 import { useAsync } from "react-use";
+import { useGlobalRelayChainApi } from "../useGlobalRelayChainApi";
 
 export function getEraPerDay({ api, relayApi }) {
   const expectedBlockTime = relayApi.consts.babe.expectedBlockTime.toNumber();
@@ -62,7 +62,7 @@ export async function getAverageEraValidatorReward({ api, relayApi }) {
 
 export function useAverageRewardRate() {
   const api = useContextApi();
-  const relayApi = useRelayChainApi();
+  const relayApi = useGlobalRelayChainApi();
 
   return useAsync(async () => {
     if (!api || !relayApi) {

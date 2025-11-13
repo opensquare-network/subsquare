@@ -1,12 +1,12 @@
 import { useMemo } from "react";
 import useSubStorage from "../common/useSubStorage";
 import useNow from "../useNow";
-import { useRelayChainApi } from "next-common/context/relayChain";
+import { useGlobalRelayChainApi } from "../useGlobalRelayChainApi";
 import { useContextApi } from "next-common/context/api";
 
 export function useEraTimeLeft() {
   const api = useContextApi();
-  const relayApi = useRelayChainApi();
+  const relayApi = useGlobalRelayChainApi();
   const { loading, result: _activeEra } = useSubStorage(
     "staking",
     "activeEra",

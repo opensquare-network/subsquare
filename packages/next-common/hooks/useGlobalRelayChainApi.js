@@ -14,14 +14,6 @@ export function useGlobalRelayChainApi() {
     },
     [endpoints],
   );
-
-  const { result: api, loading } = useGlobalCachedFetch(
-    fetchDataFunc,
-    "relayChainApi",
-  );
-
-  return {
-    api,
-    loading,
-  };
+  const { result: api } = useGlobalCachedFetch(fetchDataFunc, "relayChainApi");
+  return api;
 }
