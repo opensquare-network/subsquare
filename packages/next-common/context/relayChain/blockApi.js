@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { getChainApiAt } from "next-common/utils/getChainApi";
 import { RelayChainApiProvider, useRelayChainApi } from ".";
-import { useRelayChainBlockNumber } from "next-common/utils/gov2/useRelayChainBlockNumber";
 
 const RelayChainBlockApiContext = createContext(null);
 
@@ -17,30 +16,20 @@ function useBlockHeightOrHashApi(relayChainApi, blockHeightOrHash) {
   return api;
 }
 
-export function RelayChainBlockApiProvider({ children, blockHeight }) {
+export function RelayChainBlockApiProvider({ children, blockHeightOrHash }) {
   return (
     <RelayChainApiProvider>
-      <RelayChainBlockApiProviderImpl blockHeight={blockHeight}>
+      <RelayChainBlockApiProviderImpl blockHeightOrHash={blockHeightOrHash}>
         {children}
       </RelayChainBlockApiProviderImpl>
     </RelayChainApiProvider>
   );
 }
 
-function RelayChainBlockApiProviderImpl({ children, blockHeight }) {
-  const { relayChainBlockNumber: blockHeightOrHash } =
-    useRelayChainBlockNumber(blockHeight);
-
+function RelayChainBlockApiProviderImpl({ children, blockHeightOrHash }) {
   const relayChainApi = useRelayChainApi();
   const api = useBlockHeightOrHashApi(relayChainApi, blockHeightOrHash);
 
-  useEffect(() => {
-    return () => {
-      if (relayChainApi) {
-        relayChainApi.disconnect?.();
-      }
-    };
-  }, [relayChainApi]);
   return (
     <RelayChainBlockApiContext.Provider value={api}>
       {children}
