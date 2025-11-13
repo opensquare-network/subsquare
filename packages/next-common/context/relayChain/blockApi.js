@@ -30,6 +30,14 @@ function RelayChainBlockApiProviderImpl({ children, blockHeightOrHash }) {
   const relayChainApi = useRelayChainApi();
   const api = useBlockHeightOrHashApi(relayChainApi, blockHeightOrHash);
 
+  useEffect(() => {
+    return () => {
+      if (relayChainApi) {
+        relayChainApi.disconnect?.();
+      }
+    };
+  }, [relayChainApi]);
+
   return (
     <RelayChainBlockApiContext.Provider value={api}>
       {children}
