@@ -3,7 +3,6 @@ import SummaryLayout from "./layout/layout";
 import { isKintsugiChain } from "next-common/utils/chain";
 import { useChain } from "next-common/context/chain";
 import TreasurySummary from "./treasurySummary";
-import isHydradx from "next-common/utils/isHydradx";
 import { useAsync } from "react-use";
 import { backendApi } from "next-common/services/nextApi";
 import LoadableContent from "../common/loadableContent";
@@ -18,11 +17,9 @@ function getFirstDayOfCurrentMonth() {
   return `${year}.${month}.${day}`;
 }
 
-function ClaimedThisMonthTooltip() {
-  const tooltipContent = `Start from ${getFirstDayOfCurrentMonth()}`;
-
+function ClaimedThisMonthTitle() {
   return (
-    <Tooltip content={tooltipContent}>
+    <Tooltip content={`Start from ${getFirstDayOfCurrentMonth()}`}>
       <span>Claimed this month</span>
     </Tooltip>
   );
@@ -30,8 +27,7 @@ function ClaimedThisMonthTooltip() {
 
 export default function TreasuryChildBountiesSummary() {
   const chain = useChain();
-
-  if (isKintsugiChain(chain) || isHydradx(chain)) {
+  if (isKintsugiChain(chain)) {
     return <TreasurySummary />;
   }
 
@@ -63,7 +59,7 @@ function TreasuryChildBountiesSummaryImpl() {
             fiatValue={detail?.Claimed?.fiatValue ?? 0}
           />
         </SummaryItem>
-        <SummaryItem title={<ClaimedThisMonthTooltip />}>
+        <SummaryItem title={<ClaimedThisMonthTitle />}>
           <FiatValueItem
             count={detail?.ClaimedThisMonth?.proposalsCount ?? 0}
             fiatValue={detail?.ClaimedThisMonth?.fiatValue ?? 0}
