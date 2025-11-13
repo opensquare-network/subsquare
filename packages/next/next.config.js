@@ -26,6 +26,21 @@ const config = {
         destination: "/democracy/referenda",
         permanent: true,
       },
+      {
+        source: "/treasury/burnt",
+        destination: "/treasury/burn",
+        permanent: false,
+      },
+      {
+        source: "/assethub",
+        destination: "/assets",
+        permanent: false,
+      },
+      {
+        source: "/foreign-assets",
+        destination: "/assets?tab=foreign_assets",
+        permanent: false,
+      },
     ];
   },
   async rewrites() {

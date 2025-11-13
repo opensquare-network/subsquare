@@ -9,6 +9,7 @@ const KusamaTreasuryContext = createContext();
 export default function KusamaTreasuryProvider({ children }) {
   const api = useContextApi();
   const {
+    treasuryAccount,
     free: nativeTreasuryBalanceOnRelayChain,
     isLoading: isNativeTreasuryBalanceOnRelayChainLoading,
   } = useTreasuryFree(api);
@@ -21,6 +22,7 @@ export default function KusamaTreasuryProvider({ children }) {
   return (
     <KusamaTreasuryContext.Provider
       value={{
+        treasuryAccount,
         nativeTreasuryBalanceOnRelayChain,
         isNativeTreasuryBalanceOnRelayChainLoading,
         nativeTreasuryBalanceOnAssetHub,

@@ -1,4 +1,3 @@
-import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 import Prompt from "./prompt";
 import { PromptTypes } from "next-common/components/scrollPrompt";
 import { useConnectedAccount } from "next-common/context/connectedAccount";
@@ -9,6 +8,7 @@ import useChainInfo from "next-common/hooks/connect/useChainInfo";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { createGlobalState } from "react-use";
 import safeLocalStorage from "next-common/utils/safeLocalStorage";
+import { useContextApi } from "next-common/context/api";
 
 const useIsNeedUpdate = createGlobalState(false);
 
@@ -80,7 +80,7 @@ function PromptContent({ onUpdateMeta }) {
 }
 
 export default function ExtensionUpdatePrompt({ isWithCache = true }) {
-  const api = useConditionalContextApi();
+  const api = useContextApi();
   const connectedAccount = useConnectedAccount();
   const [isNeedUpdate, setIsNeedUpdate] = useIsNeedUpdate();
   const { injectedWeb3Extension, loading: isLoadingInjectedWeb3Extension } =

@@ -8,10 +8,14 @@ import BountyProposeCuratorButton from "next-common/components/treasury/bounty/p
 import BountyAcceptCuratorButton from "next-common/components/treasury/bounty/acceptCurator/button";
 import BountySidebarActionTip from "next-common/components/treasury/common/bountySidebarActionTip";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
 function BountySidebar() {
   const { address, bountyIndex } = useOnchainData();
-  const { result } = useSubStorage("bounties", "bounties", [bountyIndex]);
+  const api = useConditionalContextApi();
+  const { result } = useSubStorage("bounties", "bounties", [bountyIndex], {
+    api,
+  });
 
   if (!address) {
     return null;

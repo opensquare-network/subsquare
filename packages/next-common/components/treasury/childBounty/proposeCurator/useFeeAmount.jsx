@@ -1,5 +1,5 @@
-import { formatBalance } from "next-common/components/assets/assetsList";
-import BalanceDisplay from "next-common/components/assets/balanceDisplay";
+import { formatBalance } from "next-common/components/assethubMigrationAssets/assetsList";
+import BalanceDisplay from "next-common/components/assethubMigrationAssets/balanceDisplay";
 import Loading from "next-common/components/loading";
 import PopupLabel from "next-common/components/popup/label";
 import CurrencyInput from "next-common/components/currencyInput";

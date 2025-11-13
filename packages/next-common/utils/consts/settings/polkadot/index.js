@@ -59,6 +59,7 @@ const polkadot = {
   },
   hasMultisig: true,
   multisigApiPrefix: "ahp-gh-api",
+  relayChainMultisigApiPrefix: "dot-multisig-api",
   useVoteCall: true,
   description:
     "Polkadot empowers blockchain networks to work together under the protection of shared security.",
@@ -77,6 +78,7 @@ const polkadot = {
       tips: {
         archived: true,
       },
+      burn: true,
     },
     council: {
       archived: true,
@@ -108,8 +110,8 @@ const polkadot = {
   },
   treasuryProposalTracks: polkadotTreasuryTracks,
   newProposalQuickStart: {
-    usdxTreasuryProposal: true,
-    spendDotOnAssetHubProposal: true,
+    usdxTreasuryProposal: false,
+    spendDotOnAssetHubProposal: false,
     cancelReferendum: true,
     killReferendum: true,
   },

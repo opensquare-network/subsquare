@@ -31,7 +31,7 @@ import { AvatarImg } from "next-common/components/user/styled";
 import Gravatar from "next-common/components/gravatar";
 
 const ParaChainTeleportPopup = dynamic(() =>
-  import("next-common/components/assets/paraChainTeleportPopup").then(
+  import("next-common/components/paraChainTeleportPopup").then(
     (mod) => mod.default,
   ),
 );

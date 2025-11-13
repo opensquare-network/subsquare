@@ -9,13 +9,17 @@ import ProposeCurator from "next-common/components/treasury/childBounty/proposeC
 import BountyAcceptCuratorButton from "next-common/components/treasury/bounty/acceptCurator/button";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
 import BountySidebarActionTip from "next-common/components/treasury/common/bountySidebarActionTip";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
 function ChildBountySidebarActionTip() {
   const { parentBountyId, index: childBountyId } = useOnchainData();
-  const { result } = useSubStorage("childBounties", "childBounties", [
-    parentBountyId,
-    childBountyId,
-  ]);
+  const api = useConditionalContextApi();
+  const { result } = useSubStorage(
+    "childBounties",
+    "childBounties",
+    [parentBountyId, childBountyId],
+    { api },
+  );
 
   const { status } = (result?.isSome && result?.unwrap?.()) || {};
   const showActionTip =

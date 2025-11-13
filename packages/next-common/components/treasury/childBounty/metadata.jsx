@@ -16,6 +16,7 @@ import {
   SideInfoItemValue,
 } from "next-common/components/detail/common/sidebar";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
 const Info = styled.div`
   display: flex;
@@ -28,10 +29,13 @@ const WRAPPER_WIDTH = 300;
 function MetaGuard({ children }) {
   const state = usePostState();
   const { parentBountyId, index: childBountyId } = useOnchainData();
-  const { result } = useSubStorage("childBounties", "childBounties", [
-    parentBountyId,
-    childBountyId,
-  ]);
+  const api = useConditionalContextApi();
+  const { result } = useSubStorage(
+    "childBounties",
+    "childBounties",
+    [parentBountyId, childBountyId],
+    { api },
+  );
 
   const shouldShow = useMemo(() => {
     if (result?.isSome) {

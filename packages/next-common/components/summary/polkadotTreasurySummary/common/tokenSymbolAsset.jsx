@@ -1,7 +1,7 @@
 import AssetIcon from "next-common/components/icons/assetIcon";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { cn } from "next-common/utils";
-import { useNativeTokenIcon } from "next-common/components/assets/known";
+import { useNativeTokenIcon } from "next-common/components/assethubMigrationAssets/known";
 import { useMemo } from "react";
 
 export default function TokenSymbolAsset({
