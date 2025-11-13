@@ -26,7 +26,7 @@ export default function useAutoSelectTreasuryTrackField(
   const error = useMemo(() => {
     if (
       requestAmount &&
-      !treasuryProposalTracks?.some((track) =>
+      !(treasuryProposalTracks || []).some((track) =>
         new BigNumber(requestAmount).lte(track.max),
       )
     ) {
