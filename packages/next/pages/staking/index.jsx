@@ -7,6 +7,7 @@ import NoWalletConnected from "next-common/components/noWalletConnected";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import AccountStaking from "next-common/components/staking/overview/accountStaking";
 import { RelayChainApiProvider } from "next-common/context/relayChain";
+import { MyPoolProvider } from "next-common/components/staking/pools/context/myPool";
 
 const isStakingSupported = !!getChainSettings(CHAIN).modules?.staking;
 
@@ -19,20 +20,22 @@ export default function StakingPage() {
 
   return (
     <RelayChainApiProvider>
-      <ListLayout
-        title={"Overview"}
-        seoInfo={{ title: "" }}
-        description={"An overview of your staking status, rewards."}
-        summary={<StakingOverviewSummary />}
-      >
-        {!realAddress ? (
-          <div className="h-full flex items-center justify-center">
-            <NoWalletConnected text="Connect wallet to participate in staking." />
-          </div>
-        ) : (
-          <AccountStaking />
-        )}
-      </ListLayout>
+      <MyPoolProvider>
+        <ListLayout
+          title={"Overview"}
+          seoInfo={{ title: "" }}
+          description={"An overview of your staking status, rewards."}
+          summary={<StakingOverviewSummary />}
+        >
+          {!realAddress ? (
+            <div className="h-full flex items-center justify-center">
+              <NoWalletConnected text="Connect wallet to participate in staking." />
+            </div>
+          ) : (
+            <AccountStaking />
+          )}
+        </ListLayout>
+      </MyPoolProvider>
     </RelayChainApiProvider>
   );
 }

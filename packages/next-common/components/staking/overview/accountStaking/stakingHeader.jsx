@@ -1,7 +1,7 @@
 import { isNil } from "lodash-es";
 import Avatar from "next-common/components/avatar";
 import { AddressUser } from "next-common/components/user";
-import { useMyPool } from "next-common/hooks/staking/useMyPool";
+import { useMyPoolInfo } from "next-common/hooks/staking/useMyPool";
 import { usePoolAccounts } from "next-common/hooks/staking/usePoolAccount";
 import { usePoolMetadata } from "next-common/hooks/staking/usePoolMetadata";
 import { cn } from "next-common/utils";
@@ -35,7 +35,7 @@ function PoolAccount({ poolId }) {
 }
 
 export default function StakingHeader({ width }) {
-  const { myPool, loading } = useMyPool();
+  const { myPool, loading } = useMyPoolInfo();
 
   if (loading || isNil(myPool)) {
     return null;

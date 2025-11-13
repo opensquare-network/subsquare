@@ -1,10 +1,10 @@
 import { AccountBalanceItem } from "next-common/components/overview/accountInfo/components/accountBalances";
 import CollapsePanel from "next-common/components/overview/accountInfo/components/collapsePanel";
 import WindowSizeProvider from "next-common/context/windowSize";
-import { useMyPool } from "next-common/hooks/staking/useMyPool";
+import { useMyPoolInfo } from "next-common/hooks/staking/useMyPool";
 
 export default function StakingBalance() {
-  const { balances, loading } = useMyPool();
+  const { balances, loading } = useMyPoolInfo();
 
   const inPoolBalance = (
     (balances?.active || 0n) +

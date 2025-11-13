@@ -1,17 +1,12 @@
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import useSubStorage from "../common/useSubStorage";
 import { useMemo } from "react";
 import { useActiveEra } from "./useActiveEra";
+import { useMyPool } from "next-common/components/staking/pools/context/myPool";
 
-export function useMyPool() {
-  const realAddress = useRealAddress();
+export function useMyPoolBalance(myPool) {
   const { activeEra } = useActiveEra();
-  const { result, loading } = useSubStorage("nominationPools", "poolMembers", [
-    realAddress,
-  ]);
-  const myPool = result?.toJSON();
-  const balances = useMemo(() => {
-    if (!myPool) {
+
+  return useMemo(() => {
+    if (!myPool || !activeEra) {
       return null;
     }
     const active = BigInt(myPool.points);
@@ -36,9 +31,14 @@ export function useMyPool() {
       unlocked,
     };
   }, [myPool, activeEra]);
+}
+
+export function useMyPoolInfo() {
+  const { poolMember, loading } = useMyPool();
+  const balances = useMyPoolBalance(poolMember);
 
   return {
-    myPool,
+    myPool: poolMember,
     balances,
     loading,
   };

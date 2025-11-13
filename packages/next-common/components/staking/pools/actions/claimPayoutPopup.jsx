@@ -17,12 +17,15 @@ import { toPrecision } from "next-common/utils";
 import BigNumber from "bignumber.js";
 import Tooltip from "next-common/components/tooltip";
 import Signer from "next-common/components/popup/fields/signerField";
+import { useRewardClaimable } from "../hooks/useRewardClaimable";
 
 function ClaimPayoutPopupContent() {
   const { onClose } = usePopupParams();
   const api = useContextApi();
   const { symbol, decimals } = useChainSettings();
-  const { poolMember, claimable, loading } = useMyPool();
+  const { poolMember, loading: poolMemberLoading } = useMyPool();
+  const { claimable, loading: claimableLoading } = useRewardClaimable();
+  const loading = poolMemberLoading || claimableLoading;
 
   const getTxFunc = useCallback(() => {
     if (!api || !api.tx.nominationPools) {

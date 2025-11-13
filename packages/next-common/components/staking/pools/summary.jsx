@@ -7,9 +7,11 @@ import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useMyPool } from "./context/myPool";
+import { useRewardClaimable } from "./hooks/useRewardClaimable";
 
 export default function PoolsSummary() {
-  const { poolMember, claimable } = useMyPool();
+  const { poolMember } = useMyPool();
+  const { claimable } = useRewardClaimable();
   const { decimals, symbol } = useChainSettings();
   if (isNil(poolMember)) {
     return null;
