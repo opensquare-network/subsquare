@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { getChainApiAt } from "next-common/utils/getChainApi";
 import { RelayChainApiProvider, useRelayChainApi } from ".";
+import { useRelayChainBlockNumber } from "next-common/utils/gov2/useRelayChainBlockNumber";
 
 const RelayChainBlockApiContext = createContext(null);
 
@@ -16,17 +17,20 @@ function useBlockHeightOrHashApi(relayChainApi, blockHeightOrHash) {
   return api;
 }
 
-export function RelayChainBlockApiProvider({ children, blockHeightOrHash }) {
+export function RelayChainBlockApiProvider({ children, blockHeight }) {
   return (
     <RelayChainApiProvider>
-      <RelayChainBlockApiProviderImpl blockHeightOrHash={blockHeightOrHash}>
+      <RelayChainBlockApiProviderImpl blockHeight={blockHeight}>
         {children}
       </RelayChainBlockApiProviderImpl>
     </RelayChainApiProvider>
   );
 }
 
-function RelayChainBlockApiProviderImpl({ children, blockHeightOrHash }) {
+function RelayChainBlockApiProviderImpl({ children, blockHeight }) {
+  const { relayChainBlockNumber: blockHeightOrHash } =
+    useRelayChainBlockNumber(blockHeight);
+
   const relayChainApi = useRelayChainApi();
   const api = useBlockHeightOrHashApi(relayChainApi, blockHeightOrHash);
 

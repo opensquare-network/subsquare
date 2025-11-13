@@ -15,7 +15,6 @@ import { RelayChainBlockApiProvider } from "next-common/context/relayChain/block
 import useReferendumVotingFinishHeight, {
   useReferendaIsVoting,
 } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
-import { useRelayChainBlockNumber } from "next-common/utils/gov2/useRelayChainBlockNumber";
 
 export default function RelayChainCall() {
   const { call, isLoading } = useContext(RawCallContext);
@@ -45,14 +44,13 @@ export default function RelayChainCall() {
 function RelayChainBlockLoader({ children }) {
   const blockHeight = useReferendumVotingFinishHeight();
   const isVoting = useReferendaIsVoting();
-  const { relayChainBlockNumber } = useRelayChainBlockNumber(blockHeight);
 
-  if (!isVoting && !relayChainBlockNumber) {
+  if (!isVoting && !blockHeight) {
     return null;
   }
 
   return (
-    <RelayChainBlockApiProvider blockHeightOrHash={relayChainBlockNumber}>
+    <RelayChainBlockApiProvider blockHeight={blockHeight}>
       {children}
     </RelayChainBlockApiProvider>
   );
