@@ -10,7 +10,7 @@ import {
 import { useListPagination } from "next-common/components/pagination/usePaginationComponent";
 import ListLayout from "next-common/components/layout/ListLayout";
 import PoolsSummary from "./summary";
-import { MyPoolProvider, useMyPool } from "./context/myPool";
+import { MyPoolProvider, useMyPool } from "next-common/context/staking/myPool";
 
 const PAGE_SIZE = 50;
 

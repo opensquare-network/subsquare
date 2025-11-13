@@ -7,7 +7,7 @@ import NoWalletConnected from "next-common/components/noWalletConnected";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import AccountStaking from "next-common/components/staking/overview/accountStaking";
 import { RelayChainApiProvider } from "next-common/context/relayChain";
-import { MyPoolProvider } from "next-common/components/staking/pools/context/myPool";
+import { MyPoolProvider } from "next-common/context/staking/myPool";
 
 const isStakingSupported = !!getChainSettings(CHAIN).modules?.staking;
 
