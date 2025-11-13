@@ -1,6 +1,6 @@
 import SummaryItem from "./layout/item";
 import SummaryLayout from "./layout/layout";
-import { isKintsugiChain } from "next-common/utils/chain";
+import { isPolkadotChain, isKusamaChain } from "next-common/utils/chain";
 import { useChain } from "next-common/context/chain";
 import TreasurySummary from "./treasurySummary";
 import { useAsync } from "react-use";
@@ -27,42 +27,43 @@ function ClaimedThisMonthTitle() {
 
 export default function TreasuryChildBountiesSummary() {
   const chain = useChain();
-  if (isKintsugiChain(chain)) {
-    return <TreasurySummary />;
+  if (isPolkadotChain(chain) || isKusamaChain(chain)) {
+    return <TreasuryChildBountiesSummaryImpl />;
   }
 
-  return <TreasuryChildBountiesSummaryImpl />;
+  return <TreasurySummary />;
 }
 
 function TreasuryChildBountiesSummaryImpl() {
-  // TODO: api data
   const { value: childBountiesSummary, loading } = useAsync(async () => {
-    const { result } = await backendApi.fetch("treasury/childBounties/summary");
+    const { result } = await backendApi.fetch(
+      "treasury/child-bounties/summary",
+    );
     return result;
   }, []);
 
-  const { totalProposalsCount, detail = {} } = childBountiesSummary ?? {};
+  const { totalChildBountiesCount, detail = {} } = childBountiesSummary ?? {};
 
   return (
     <LoadableContent isLoading={loading}>
       <SummaryLayout>
-        <SummaryItem title="Total">{totalProposalsCount ?? 0}</SummaryItem>
+        <SummaryItem title="Total">{totalChildBountiesCount ?? 0}</SummaryItem>
         <SummaryItem title="PendingPayout">
           <FiatValueItem
-            count={detail?.PendingPayout?.proposalsCount ?? 0}
+            count={detail?.PendingPayout?.count ?? 0}
             fiatValue={detail?.PendingPayout?.fiatValue ?? 0}
           />
         </SummaryItem>
         <SummaryItem title="Claimed">
           <FiatValueItem
-            count={detail?.Claimed?.proposalsCount ?? 0}
+            count={detail?.Claimed?.count ?? 0}
             fiatValue={detail?.Claimed?.fiatValue ?? 0}
           />
         </SummaryItem>
         <SummaryItem title={<ClaimedThisMonthTitle />}>
           <FiatValueItem
-            count={detail?.ClaimedThisMonth?.proposalsCount ?? 0}
-            fiatValue={detail?.ClaimedThisMonth?.fiatValue ?? 0}
+            count={detail?.ClaimedInOneMonth?.count ?? 0}
+            fiatValue={detail?.ClaimedInOneMonth?.fiatValue ?? 0}
           />
         </SummaryItem>
       </SummaryLayout>
