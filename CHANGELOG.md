@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 # 5.5.2
 
 Date:
-2025-11-11. [Code diff](https://github.com/opensquare-network/subsquare/compare/37bbf119219e1a6e5d5977fc7835a98fd9d39aa6...cddf028bef33f0f35ccdb915e9f9623f1980b1e8).
+2025-11-13. [Code diff](https://github.com/opensquare-network/subsquare/compare/37bbf119219e1a6e5d5977fc7835a98fd9d39aa6...cddf028bef33f0f35ccdb915e9f9623f1980b1e8).
 
 - Fellowship: fix teleport between collectives and assethub.
 - Support acurast chain.
