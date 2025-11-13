@@ -16,7 +16,7 @@ export function useEraTimeLeft() {
   const activeEra = _activeEra?.toJSON();
 
   return useMemo(() => {
-    if (!api || !relayApi || loading) {
+    if (!api || !relayApi || loading || !activeEra) {
       return { loading: true };
     }
 
