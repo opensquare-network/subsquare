@@ -2,16 +2,12 @@ import { SystemYes, SystemNo, SystemVoteAbstain } from "@osn/icons/subsquare";
 import { PostProvider, usePostState } from "next-common/context/post";
 import { useReferendumTally } from "next-common/hooks/referenda/useReferendumInfo";
 import { useInfluence } from "next-common/hooks/referenda/useInfluence";
-import { useIsReferendumFinalState } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
-import { isNil } from "lodash-es";
 import Tooltip from "next-common/components/tooltip";
 import { gov2State } from "next-common/utils/consts/state";
 
-export function InfluenceValueImpl({ referendumVotes }) {
+export function InfluenceValueImpl({ referendumVotes, isFinal }) {
   const tally = useReferendumTally();
   const { hasInfluence, isPass } = useInfluence(tally, referendumVotes);
-  const finalState = useIsReferendumFinalState();
-  const isFinal = !isNil(finalState);
   const stateName = usePostState();
 
   if (!tally) {
@@ -65,7 +61,10 @@ export default function InfluenceValue({ referendum, referendumVotes = [] }) {
 
   return (
     <PostProvider post={referendum}>
-      <InfluenceValueImpl referendumVotes={referendumVotes} />
+      <InfluenceValueImpl
+        referendumVotes={referendumVotes}
+        isFinal={referendum.isFinal}
+      />
     </PostProvider>
   );
 }
