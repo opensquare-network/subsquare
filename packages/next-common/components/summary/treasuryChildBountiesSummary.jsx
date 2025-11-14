@@ -10,6 +10,27 @@ import { FiatValueItem } from "./treasurySpendsSummary";
 import Tooltip from "next-common/components/tooltip";
 import { useRouter } from "next/router";
 
+function useChildBountiesSummaryData() {
+  const router = useRouter();
+  const parent = router?.query?.parentBountyId;
+  const apiUrl = parent
+    ? `treasury/bounty/${parent}/child-bounties/summary`
+    : "treasury/child-bounties/summary";
+
+  const { value: childBountiesSummary, loading } = useAsync(async () => {
+    const { result } = await backendApi.fetch(apiUrl);
+    return result;
+  }, [apiUrl]);
+
+  const { totalChildBountiesCount, detail = {} } = childBountiesSummary ?? {};
+
+  return {
+    totalChildBountiesCount,
+    detail,
+    loading,
+  };
+}
+
 function getFirstDayOfCurrentMonth() {
   const now = new Date();
   const year = now.getFullYear();
@@ -26,27 +47,9 @@ function ClaimedThisMonthTitle() {
   );
 }
 
-export default function TreasuryChildBountiesSummary() {
-  const chain = useChain();
-  if (isPolkadotChain(chain) || isKusamaChain(chain)) {
-    return <TreasuryChildBountiesSummaryImpl />;
-  }
-
-  return <TreasurySummary />;
-}
-
 function TreasuryChildBountiesSummaryImpl() {
-  const router = useRouter();
-  const parent = router?.query?.parentBountyId;
-  const { value: childBountiesSummary, loading } = useAsync(async () => {
-    const { result } = await backendApi.fetch(
-      "treasury/child-bounties/summary",
-      parent && { parent },
-    );
-    return result;
-  }, [parent]);
-
-  const { totalChildBountiesCount, detail = {} } = childBountiesSummary ?? {};
+  const { totalChildBountiesCount, detail, loading } =
+    useChildBountiesSummaryData();
 
   return (
     <LoadableContent isLoading={loading}>
@@ -73,4 +76,13 @@ function TreasuryChildBountiesSummaryImpl() {
       </SummaryLayout>
     </LoadableContent>
   );
+}
+
+export default function TreasuryChildBountiesSummary() {
+  const chain = useChain();
+  if (isPolkadotChain(chain) || isKusamaChain(chain)) {
+    return <TreasuryChildBountiesSummaryImpl />;
+  }
+
+  return <TreasurySummary />;
 }
