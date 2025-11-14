@@ -97,7 +97,12 @@ export default function ListLayout({
       </div>
 
       <div className="flex-1">
-        <div className={cn("px-6 py-6 mx-auto max-w-[1200px]", "max-sm:px-0")}>
+        <div
+          className={cn(
+            "h-full px-6 py-6 mx-auto max-w-[1200px]",
+            "max-sm:px-0",
+          )}
+        >
           {children}
         </div>
       </div>

@@ -36,7 +36,7 @@ function TrackPanel({ className = "" }) {
       (isOthersExceedMax(categorizedTracks) ||
         isOnlyOthersCategory(categorizedTracks, otherCategoryMaxCount))
     ) {
-      categorizedTracks.others = Object.values(categorizedTracks).flat();
+      categorizedTracks.others = Object.values(categorizedTracks || {}).flat();
       setIsOthersExceeding(true);
     }
 

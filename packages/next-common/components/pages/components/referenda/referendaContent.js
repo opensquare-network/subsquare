@@ -13,7 +13,6 @@ import ReferendaAppendants from "next-common/components/appendants/referenda";
 import { ReferendaAppendantsProvider } from "next-common/context/referendaAppendants";
 import ThresholdCurvePopup from "next-common/components/gov2/referendum/curvePopup";
 import { ReferendaContentWrapper } from "next-common/components/layout/DetailLayout/referendaDetailLayout";
-import useWindowSize from "next-common/utils/hooks/useWindowSize";
 
 export function ReferendumContent() {
   const indexer = useReferendumVotingFinishIndexer();
@@ -26,7 +25,6 @@ export function ReferendumContent() {
 }
 
 function ReferendumContentInContext() {
-  const { width } = useWindowSize();
   const dispatch = useDispatch();
   useSubReferendumInfo();
 
@@ -45,11 +43,15 @@ function ReferendumContentInContext() {
             <ReferendaAppendants />
           </ReferendaAppendantsProvider>
           <ThresholdCurvePopup />
-          {width < 1024 ? <Gov2Sidebar /> : null}
+          <div className="md:hidden">
+            <Gov2Sidebar />
+          </div>
           <ReferendumDetailMultiTabs />
         </ContentWithComment>
       </ReferendaContentWrapper>
-      {width > 1024 ? <Gov2Sidebar /> : null}
+      <div className="max-md:hidden">
+        <Gov2Sidebar />
+      </div>
     </MaybeSimaContent>
   );
 }

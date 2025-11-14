@@ -1,0 +1,83 @@
+import { useState, memo } from "react";
+import { isNil } from "lodash-es";
+import { addressEllipsis } from "next-common/utils";
+import { useChainSettings } from "next-common/context/chain";
+import { InfoDocs } from "@osn/icons/subsquare";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+import { cn } from "next-common/utils";
+import Tooltip from "next-common/components/tooltip";
+import { ForeignAssetLink } from "next-common/components/assethubMigrationAssets/assetLink";
+
+const LocationDetailPopup = dynamicPopup(() =>
+  import("next-common/components/callDetailPopup"),
+);
+
+function LocationInfoIcon({ location }) {
+  const [showDetail, setShowDetail] = useState(false);
+  if (!location) {
+    return null;
+  }
+
+  return (
+    <>
+      <InfoDocs
+        role="button"
+        className={cn("w-5 h-5 cursor-pointer", "[&_path]:fill-textSecondary")}
+        onClick={() => setShowDetail(true)}
+      />
+      {showDetail && (
+        <LocationDetailPopup
+          tableViewData={location}
+          jsonViewData={location}
+          hasTreeViewData={false}
+          setShow={setShowDetail}
+          title="Location"
+        />
+      )}
+    </>
+  );
+}
+
+export const Location = memo(LocationInfoIcon);
+
+function AssetIDWithoutLink({ assetId }) {
+  return (
+    <span className="text-textTertiary">
+      <Tooltip content={assetId}>{addressEllipsis(assetId)}</Tooltip>
+    </span>
+  );
+}
+
+function AssetIDWithLink({ assetId }) {
+  return (
+    <ForeignAssetLink assetId={assetId} className="text14Medium">
+      {isNil(assetId) ? (
+        "-"
+      ) : (
+        <Tooltip content={assetId}>
+          <span className="text-theme500">{addressEllipsis(assetId)}</span>
+        </Tooltip>
+      )}
+    </ForeignAssetLink>
+  );
+}
+
+export function AssetID({ assetId }) {
+  const { supportForeignAssets = false } = useChainSettings();
+  if (!supportForeignAssets) {
+    return <AssetIDWithoutLink assetId={assetId} />;
+  }
+
+  return <AssetIDWithLink assetId={assetId} />;
+}
+
+export const colId = {
+  name: "Location & ID",
+  style: { textAlign: "left", width: "120px", minWidth: "120px" },
+  render: (item) => (
+    <div className="flex items-center gap-x-2">
+      <Location location={item.location} />
+      <AssetID assetId={item.assetId} />
+    </div>
+  ),
+};

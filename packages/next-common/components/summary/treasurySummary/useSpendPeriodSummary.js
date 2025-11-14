@@ -8,7 +8,7 @@ import { useTreasuryPallet } from "next-common/context/treasury";
 import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
 
-function useSpendPeriod(api) {
+export function useSpendPeriod(api) {
   const pallet = useTreasuryPallet();
   const [spendPeriod, setSpendPeriod] = useState(null);
 
@@ -23,7 +23,7 @@ function useSpendPeriod(api) {
   return spendPeriod;
 }
 
-function useLastSpendPeriod(api) {
+export function useLastSpendPeriod(api) {
   const pallet = useTreasuryPallet();
   const [lastSpendPeriod, setLastSpendPeriod] = useState(null);
 
@@ -56,7 +56,9 @@ export default function useSpendPeriodSummary() {
 
     let goneBlocks;
     if (lastSpendPeriod) {
-      goneBlocks = new BigNumber(latestHeight).minus(lastSpendPeriod).toNumber();
+      goneBlocks = new BigNumber(latestHeight)
+        .minus(lastSpendPeriod)
+        .toNumber();
     } else {
       goneBlocks = new BigNumber(latestHeight).mod(spendPeriod).toNumber();
     }

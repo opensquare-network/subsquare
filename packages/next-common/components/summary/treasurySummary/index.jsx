@@ -2,18 +2,15 @@ import useTreasuryFree from "../../../utils/hooks/useTreasuryFree";
 import { useChain } from "../../../context/chain";
 import TreasurySummaryNextBurn from "./nextBurn";
 import { isKintsugiChain } from "next-common/utils/chain";
-import SpendPeriod from "next-common/components/summary/treasurySummary/spendPeriod";
+import SpendPeriod from "next-common/components/treasury/status/summarys/spendPeriod";
 import LoadableContent from "next-common/components/common/loadableContent";
 import { isNil } from "lodash-es";
-import TreasurySummarySpendPeriodCountDown from "./spendPeriodCountDown";
 import { useContextApi } from "next-common/context/api";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
 import useToBeAwarded from "next-common/hooks/useToBeAwarded";
 import BalanceWithFiat from "./balanceWithFiat";
-import useSpendPeriodSummary from "./useSpendPeriodSummary";
 import { useFiatPriceSnapshot } from "next-common/hooks/useFiatPrice";
-import SpendPeriodLabelTip from "../labelTips/spendPeriod";
 
 export function AvailableItem({ free, isLoading, price }) {
   return (
@@ -46,18 +43,6 @@ function NextBurnItem({ free, isLoading }) {
   );
 }
 
-function SpendPeriodItem() {
-  const summary = useSpendPeriodSummary();
-  return (
-    <SummaryItem
-      title={<SpendPeriodLabelTip />}
-      suffix={<TreasurySummarySpendPeriodCountDown summary={summary} />}
-    >
-      <SpendPeriod summary={summary} />
-    </SummaryItem>
-  );
-}
-
 export default function TreasurySummary() {
   const chain = useChain();
   const { price } = useFiatPriceSnapshot();
@@ -69,7 +54,7 @@ export default function TreasurySummary() {
       <AvailableItem free={free} isLoading={isLoading} price={price} />
       {!isKintsugiChain(chain) && <ToBeAwardedItem price={price} />}
       <NextBurnItem free={free} isLoading={isLoading} />
-      {!isKintsugiChain(chain) && <SpendPeriodItem />}
+      {!isKintsugiChain(chain) && <SpendPeriod />}
     </SummaryLayout>
   );
 }

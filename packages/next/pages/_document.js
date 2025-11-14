@@ -3,6 +3,7 @@ import { ServerStyleSheet } from "styled-components";
 import light from "next-common/styles/light";
 import dark from "next-common/styles/dark";
 import getChainSettings from "next-common/utils/consts/settings";
+import { InjectIconTemplate } from "next-common/components/injectIcon";
 
 const chain = process.env.NEXT_PUBLIC_CHAIN;
 const chainSettings = getChainSettings(chain);
@@ -92,6 +93,7 @@ export default class MyDocument extends Document {
           />
         </Head>
         <body>
+          <InjectIconTemplate />
           <Main />
           <NextScript />
         </body>

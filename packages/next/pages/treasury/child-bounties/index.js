@@ -2,7 +2,7 @@ import TreasuryChildBountiesPostList from "next-common/components/postList/treas
 import { withCommonProps } from "next-common/lib";
 import { toTreasuryChildBountyListItem } from "next-common/utils/viewfuncs";
 import { useChain } from "next-common/context/chain";
-import { isNil } from "lodash-es";
+import { isNil, upperFirst } from "lodash-es";
 import ListLayout from "next-common/components/layout/ListLayout";
 import TreasurySummary from "next-common/components/summary/treasurySummary";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
@@ -10,6 +10,7 @@ import { fetchList } from "next-common/services/list";
 import { TreasuryProvider } from "next-common/context/treasury";
 import { isPolkadotChain } from "next-common/utils/chain";
 import PolkadotTreasuryStatsOnProposal from "next-common/components/treasury/common/polkadotTreasuryStatsOnProposal";
+import { DropdownUrlFilterProvider } from "next-common/components/dropdownFilter/context";
 
 export default function ChildBountiesPage({ bounties }) {
   const chain = useChain();
@@ -40,24 +41,41 @@ export default function ChildBountiesPage({ bounties }) {
           },
         ].filter(Boolean)}
       >
-        <TreasuryChildBountiesPostList
-          titleCount={bounties.total}
-          items={items}
-          pagination={{
-            page: bounties.page,
-            pageSize: bounties.pageSize,
-            total: bounties.total,
-          }}
-        />
+        <DropdownUrlFilterProvider
+          defaultFilterValues={{ status: "" }}
+          shallow={false}
+        >
+          <TreasuryChildBountiesPostList
+            titleCount={bounties.total}
+            items={items}
+            pagination={{
+              page: bounties.page,
+              pageSize: bounties.pageSize,
+              total: bounties.total,
+            }}
+          />
+        </DropdownUrlFilterProvider>
       </ListLayout>
     </TreasuryProvider>
   );
 }
 
 export const getServerSideProps = withCommonProps(async (context) => {
-  const { parentBountyId } = context.query;
-  const params = isNil(parentBountyId) ? null : { parent: parentBountyId };
-  const bounties = await fetchList("treasury/child-bounties", context, params);
+  const { parentBountyId, status } = context.query;
+  const params = {};
+  if (!isNil(parentBountyId)) {
+    params.parent = parentBountyId;
+  }
+
+  if (status) {
+    params.status = upperFirst(status);
+  }
+
+  const bounties = await fetchList(
+    "treasury/child-bounties",
+    context,
+    Object.keys(params).length > 0 ? params : null,
+  );
   const tracksProps = await fetchOpenGovTracksProps();
 
   return {

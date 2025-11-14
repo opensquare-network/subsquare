@@ -7,7 +7,6 @@ import { useCallback } from "react";
 import useFeeAmount from "../../childBounty/proposeCurator/useFeeAmount";
 import useSubAddressBalance from "next-common/utils/hooks/useSubAddressBalance";
 import { useDispatch } from "react-redux";
-import { useContextApi } from "next-common/context/api";
 import { useChainSettings } from "next-common/context/chain";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import useAutoSelectTreasuryTrackField from "next-common/components/summary/newProposalQuickStart/common/useAutoSelectTreasuryTrackField";
@@ -21,6 +20,7 @@ import { useRouter } from "next/router";
 import WarningIcon from "next-common/assets/imgs/icons/warning.svg";
 import { WarningMessage } from "next-common/components/setting/styled";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
+import { useContextApi } from "next-common/context/api";
 
 function PopupContent() {
   const dispatch = useDispatch();

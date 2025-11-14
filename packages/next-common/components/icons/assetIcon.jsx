@@ -1,6 +1,6 @@
 import { find } from "lodash-es";
-import knownPolkadotAssetHubAssets from "../assets/known/polkadot";
-import { useNativeTokenIcon } from "next-common/components/assets/known";
+import knownPolkadotAssetHubAssets from "../assethubMigrationAssets/known/polkadot";
+import { useNativeTokenIcon } from "next-common/components/assethubMigrationAssets/known";
 
 export default function AssetIcon({ symbol, className = "", type = "" }) {
   const NativeAssetIcon = useNativeTokenIcon();

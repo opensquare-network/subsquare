@@ -2,7 +2,7 @@ import { DelegationPrompt } from "./useDelegationPrompt";
 import { AvatarPrompt } from "./useSetAvatarPrompt";
 import { IdentityPrompt } from "./useSetIdentityPrompt";
 import { MultisigPrompt } from "./useMultisigPrompt";
-import AssetHubManagePrompt from "./useAssetHubManagePrompt";
+import AssetsManagePrompt from "./useAssetsManagePrompt";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { animate } from "framer-motion";
 import { useWindowSize } from "react-use";
@@ -18,7 +18,7 @@ const promptComponents = [
   AvatarPrompt,
   IdentityPrompt,
   MultisigPrompt,
-  AssetHubManagePrompt,
+  AssetsManagePrompt,
   AccountUnlockBalancePrompt,
 ];
 

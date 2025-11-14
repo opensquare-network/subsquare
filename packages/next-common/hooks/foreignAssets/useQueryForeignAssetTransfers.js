@@ -4,7 +4,7 @@ import { defaultPageSize } from "next-common/utils/constants";
 import {
   useTransfersHistoryContext,
   useTotalCounts,
-} from "next-common/components/assets/context/assetHubTabsProvider";
+} from "next-common/components/assethubMigrationAssets/context/assetHubTabsProvider";
 
 const useQueryForeignAssetTransfers = (address, page) => {
   const [state, setState] = useTransfersHistoryContext();

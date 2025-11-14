@@ -1,7 +1,7 @@
 import { usePageProps } from "next-common/context/page";
-import AssetHubTabs from "next-common/components/assets/tabs/index";
-import { AssetHubTabsProvider } from "next-common/components/assets/context/assetHubTabsProvider";
-import { TABS } from "next-common/components/assets/context/assetHubTabsProvider";
+import AssetHubTabs from "next-common/components/assethubMigrationAssets/tabs/index";
+import { AssetHubTabsProvider } from "next-common/components/assethubMigrationAssets/context/assetHubTabsProvider";
+import { TABS } from "next-common/components/assethubMigrationAssets/context/assetHubTabsProvider";
 import {
   ProfileForeignAssetsProvider,
   useProfileForeignAssetsContext,

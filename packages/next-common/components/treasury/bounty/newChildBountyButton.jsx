@@ -4,9 +4,9 @@ import { useState } from "react";
 import NewChildBountyPopup from "./newChildBountyPopup";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Tooltip from "next-common/components/tooltip";
-import { useContextApi } from "next-common/context/api";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
 import { isSameAddress } from "next-common/utils";
+import { useContextApi } from "next-common/context/api";
 
 export default function NewChildBountyButton() {
   const address = useRealAddress();
@@ -17,15 +17,19 @@ export default function NewChildBountyButton() {
   const { bountyIndex } = onChain;
 
   // Get bounty status
-  const { result: onchainBounty } = useSubStorage("bounties", "bounties", [
-    bountyIndex,
-  ]);
+  const { result: onchainBounty } = useSubStorage(
+    "bounties",
+    "bounties",
+    [bountyIndex],
+    { api },
+  );
 
   // Get child bounty count
   const { result: onchainChildBountyCount } = useSubStorage(
     "childBounties",
     "parentChildBounties",
     [bountyIndex],
+    { api },
   );
   if (!onchainBounty || onchainBounty.isNone) {
     return null;
@@ -46,7 +50,7 @@ export default function NewChildBountyButton() {
 
   const isCurator = isSameAddress(curator, address);
   const maxActiveChildBountyCount =
-    api?.consts.childBounties.maxActiveChildBountyCount.toNumber() ||
+    api?.consts?.childBounties?.maxActiveChildBountyCount.toNumber() ||
     Number.MAX_VALUE;
 
   if (!isCurator) {

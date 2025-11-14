@@ -11,3 +11,9 @@ export function fetchRelayScanHeight() {
     return resp?.result?.value;
   });
 }
+
+export function fetchCoretimeChainHeight() {
+  return backendApi.fetch("inspect/coretime-scan-height").then((resp) => {
+    return resp?.result?.value;
+  });
+}

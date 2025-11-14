@@ -1,6 +1,5 @@
 import Select from "next-common/components/select";
-import { DropdownFilter } from "next-common/components/dropdownFilter";
-import { useStagedFilterState } from "next-common/components/dropdownFilter/context";
+import { useCommittedFilterState } from "next-common/components/dropdownFilter/context";
 
 const treasurySpendStatusOptions = [
   { value: "", label: "All" },
@@ -10,12 +9,12 @@ const treasurySpendStatusOptions = [
   { value: "voided", label: "Voided" },
 ];
 
-function TreasurySpendStatusSelect() {
-  const [treasurySpendFilter, setTreasurySpendFilter] = useStagedFilterState();
-  const status = treasurySpendFilter?.status || "";
+export default function TreasurySpendFilter() {
+  const [committedFilter, setCommittedFilter] = useCommittedFilterState();
+  const status = committedFilter?.status || "";
 
   const handleStatusChange = ({ value: status }) => {
-    setTreasurySpendFilter({ ...treasurySpendFilter, status });
+    setCommittedFilter({ status });
   };
 
   return (
@@ -26,16 +25,5 @@ function TreasurySpendStatusSelect() {
       options={treasurySpendStatusOptions}
       onChange={handleStatusChange}
     />
-  );
-}
-
-export default function TreasurySpendFilter() {
-  return (
-    <DropdownFilter>
-      <div className="flex items-center text12Medium">
-        <span className="text-textPrimary my-[12px] w-[144px]">Status</span>
-        <TreasurySpendStatusSelect />
-      </div>
-    </DropdownFilter>
   );
 }

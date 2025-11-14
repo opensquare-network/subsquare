@@ -1,12 +1,12 @@
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import BalanceField from "next-common/components/popup/fields/balanceField";
 import PopupWithSigner from "next-common/components/popupWithSigner";
-import { useContextApi } from "next-common/context/api";
 import { useChainSettings } from "next-common/context/chain";
 import { useOnchainData } from "next-common/context/post";
 import { toPrecision } from "next-common/utils";
 import { useCallback, useState } from "react";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
 export function useAcceptCuratorPopup(pallet = "bounties", params = []) {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,7 +34,7 @@ function PopupContent({ pallet = "bounties", params = [] } = {}) {
   const { symbol, decimals } = useChainSettings();
   const { meta } = onchainData;
   const { curatorDeposit } = meta || {};
-  const api = useContextApi();
+  const api = useConditionalContextApi();
 
   const getTxFunc = useCallback(() => {
     if (!api?.tx?.[pallet]) {

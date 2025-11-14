@@ -3,7 +3,6 @@ import CurrencyInput from "next-common/components/currencyInput";
 import Labeled from "next-common/components/Labeled";
 import SimpleTxPopup from "next-common/components/simpleTxPopup";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
-import { useContextApi } from "next-common/context/api";
 import { useChainSettings } from "next-common/context/chain";
 import useBountyBond from "next-common/hooks/treasury/bounty/useBountyBond";
 import Input from "next-common/lib/input";
@@ -13,6 +12,7 @@ import { getEventData } from "next-common/utils/sendTransaction";
 import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useContextApi } from "next-common/context/api";
 
 export default function NewBountyPopup({ onClose }) {
   const router = useRouter();

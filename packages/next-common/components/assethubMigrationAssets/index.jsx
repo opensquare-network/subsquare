@@ -1,11 +1,26 @@
 import ListLayout from "next-common/components/layout/ListLayout";
-import { AssetHubTabsProvider } from "next-common/components/assets/context/assetHubTabsProvider";
-import HeaderTabs from "./headerTabs";
+import { AssetHubTabsProvider } from "next-common/components/assethubMigrationAssets/context/assetHubTabsProvider";
 import AssetsAccount from "./account";
 import AllAssetsList from "./allAssetsList";
 import ForeignAssetsList from "./allForeignAssetsList";
 import { AssetsTabProvider, useAssetsTab } from "./context/assetsTab";
-import { AssetMetadataProvider } from "next-common/components/assets/context/assetMetadata";
+import { AssetMetadataProvider } from "next-common/components/assethubMigrationAssets/context/assetMetadata";
+import Tabs from "next-common/components/tabs";
+
+const TABS = Object.freeze([
+  {
+    value: "account",
+    label: "Account",
+  },
+  {
+    value: "assets",
+    label: "Assets",
+  },
+  {
+    value: "foreign_assets",
+    label: "Foreign Assets",
+  },
+]);
 
 const TITLE_MAPS = Object.freeze({
   account: "Account assets",
@@ -18,6 +33,23 @@ const DESCRIPTION_MAPS = Object.freeze({
   assets: "All no fungible assets info",
   ["foreign_assets"]: "All foreign assets info",
 });
+
+function HeaderTabs() {
+  const { activeValue, setActiveValue } = useAssetsTab();
+
+  return (
+    <div className="space-y-4 px-12 max-w-[1200px] max-sm:px-6 mx-auto">
+      <Tabs
+        activeTabValue={activeValue}
+        tabs={TABS}
+        tabsContentClassName="hidden"
+        onTabClick={(tab) => {
+          setActiveValue(tab.value);
+        }}
+      />
+    </div>
+  );
+}
 
 function AssetsContent() {
   const { activeValue } = useAssetsTab();

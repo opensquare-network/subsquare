@@ -1,23 +1,26 @@
 import { useOnchainData } from "next-common/context/post";
 import { useState } from "react";
 import PrimaryButton from "next-common/lib/button/primary";
-import useChainOrScanHeight from "next-common/hooks/height";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
+import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
 const ClaimPopup = dynamicPopup(() => import("./popup"));
 
 export default function Claim() {
   const onChain = useOnchainData();
   const { bountyIndex } = onChain;
+  const api = useConditionalContextApi();
   const { loading, result: onChainStorage } = useSubStorage(
     "bounties",
     "bounties",
     [bountyIndex],
+    { api },
   );
 
   const [showPopup, setShowPopup] = useState(false);
-  const chainHeight = useChainOrScanHeight();
+  const chainHeight = useAhmLatestHeight();
 
   if (loading || !onChainStorage?.isSome) {
     return null;

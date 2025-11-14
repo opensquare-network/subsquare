@@ -12,10 +12,10 @@ import {
   AssetIconPlmc,
   AssetIconDot,
   AssetIconGlmr,
-  AssetIconBnc,
   AssetIconVdot,
   AssetIconHdx,
 } from "@osn/icons/subsquare";
+import { AssetIconBnc } from "next-common/components/injectIcon";
 
 export const foreignAssetWETH = {
   id: "0xd7dee8acf39d719622ad2115fe9a82860651bd8053e7f7a6e1461f678b6caa7e",
@@ -58,8 +58,6 @@ export const foreignAssetEQ = {
     icon: AssetIconEq,
   },
 };
-
-
 
 export const foreignAssetGLMR = {
   id: "0xba6468a58aa39fc03d251517f3f562504693463b20a76b57f547d72a191f8d49",

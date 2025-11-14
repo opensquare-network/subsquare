@@ -1,7 +1,6 @@
 import { useContextApi } from "next-common/context/api";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-import useMapKeys from "./useMapKeys";
 import useEventChanges from "./useEventChanges";
 
 const OPT_HASH = {
@@ -33,11 +32,20 @@ function filter(records) {
 export default function useWhitelist() {
   const api = useContextApi();
 
-  const startValue = useMapKeys(
-    api?.query?.whitelist?.whitelistedCall,
-    [],
-    OPT_HASH,
-  );
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    if (api?.query?.whitelist?.whitelistedCall) {
+      setLoading(true);
+      api?.query?.whitelist?.whitelistedCall
+        .keys()
+        .then((keys) => setData(OPT_HASH.transform(keys)))
+        .catch(console.error)
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+  }, [api?.query?.whitelist?.whitelistedCall]);
 
   const hashes = useEventChanges(
     [
@@ -45,9 +53,12 @@ export default function useWhitelist() {
       api?.events?.whitelist?.WhitelistedCallRemoved,
     ],
     filter,
-    startValue,
+    data,
   );
 
   const list = useMemo(() => hashes?.map((h) => h.toHex()), [hashes]);
-  return list || [];
+  return {
+    loading,
+    list,
+  };
 }

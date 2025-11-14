@@ -5,42 +5,50 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import { InfoDocs } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
 
-export default function List({ data, setShowArgumentsDetail }) {
+import DataList from "next-common/components/dataList";
+import useColumns from "next-common/components/styledList/useColumns";
+
+export default function List({ data, setShowArgumentsDetail, loading }) {
+  const { columns } = useColumns([
+    {
+      name: "Hash",
+      style: { textAlign: "left" },
+    },
+    {
+      name: "Preimage",
+      style: { textAlign: "right" },
+    },
+  ]);
+
+  const rows = (data || []).map((hash) => {
+    return [
+      <div key={hash} className="text14Medium flex-1 w-full">
+        <Copyable className="flex items-center" copyText={hash}>
+          <span
+            title={hash}
+            className="text14Medium text-textPrimary inline-block w-[300px] sm:w-[200px] truncate"
+          >
+            {hash}
+          </span>
+        </Copyable>
+      </div>,
+      <div
+        key="preimage"
+        className="text14Medium flex-1 w-full flex md:justify-end"
+      >
+        <PreImage hash={hash} setShowArgumentsDetail={setShowArgumentsDetail} />
+      </div>,
+    ];
+  });
+
   return (
     <SecondaryCard>
-      <div className="datalist-head flex items-center pb-3 border-b border-neutral300 max-md:hidden">
-        <div className="text-textTertiary text14Medium flex-1 w-full">Hash</div>
-        <div className="text-textTertiary text14Medium flex-1 w-full text-end">
-          Preimage
-        </div>
-      </div>
-      <div className="w-full scrollbar-hidden overflow-auto text-textPrimary bg-neutral100">
-        {data.map((hash) => (
-          <div
-            key={hash}
-            className="datalist-item border-b border-neutral300 group/datalist-item w-full flex items-center py-4 max-md:block relative"
-          >
-            <div className="relative datalist-desktop-item w-full flex flex-col sm:flex-row gap-2 sm:gap-0 items-center">
-              <div className="text14Medium flex-1 w-full">
-                <Copyable className="flex items-center" copyText={hash}>
-                  <span
-                    title={hash}
-                    className="text14Medium text-textPrimary inline-block w-[300px] sm:w-[200px] truncate"
-                  >
-                    {hash}
-                  </span>
-                </Copyable>
-              </div>
-              <div className="text14Medium flex-1 w-full flex md:justify-end">
-                <PreImage
-                  hash={hash}
-                  setShowArgumentsDetail={setShowArgumentsDetail}
-                />
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+      <DataList
+        columns={columns}
+        rows={rows}
+        noDataText="No current whitelist"
+        loading={loading}
+      />
     </SecondaryCard>
   );
 }

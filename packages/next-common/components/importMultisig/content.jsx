@@ -17,6 +17,8 @@ const STEPS = {
   SUBMIT_MULTISIG: 2,
 };
 
+const PAGE_SIZE = 10;
+
 export default function ImportMultisigContent({ onClose = noop }) {
   const [step, setStep] = useState(STEPS.SELECT_MULTISIG);
   const [selectedMultisigAddress, setSelectedMultisigAddress] = useState(null);
@@ -27,6 +29,7 @@ export default function ImportMultisigContent({ onClose = noop }) {
     chain,
     address,
     page,
+    PAGE_SIZE,
   );
 
   if (loading) {
@@ -51,6 +54,7 @@ export default function ImportMultisigContent({ onClose = noop }) {
         page={page}
         setPage={setPage}
         total={total}
+        pageSize={PAGE_SIZE}
       />
     );
   }
@@ -75,6 +79,7 @@ function MultisigSelectImpl({
   total = 0,
   page = 1,
   setPage = noop,
+  pageSize = 10,
   onContinue = noop,
   selected,
   setSelected = noop,
@@ -123,6 +128,7 @@ function MultisigSelectImpl({
       page={page}
       setPage={setPage}
       total={total}
+      pageSize={pageSize}
     />
   );
 }

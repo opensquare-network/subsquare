@@ -10,6 +10,7 @@ export const Names = {
   bounties: "Bounties",
   childBounties: "Child Bounties",
   tips: "Tips",
+  burn: "Burn",
 };
 
 export function getTreasuryMenu(summary) {
@@ -76,6 +77,11 @@ export function getTreasuryMenu(summary) {
         extraMatchNavMenuActivePathnames: ["/treasury/tips/[id]"],
         archived: treasury?.tips?.archived,
         activeCount: activeTips,
+      },
+      treasury?.burn && {
+        value: "burn",
+        name: Names.burn,
+        pathname: "/treasury/burn",
       },
     ].filter(Boolean),
   };

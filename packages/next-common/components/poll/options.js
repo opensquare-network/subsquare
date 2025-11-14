@@ -120,7 +120,7 @@ export default function PollOptions({
   setSelectedOption,
   selectable,
 }) {
-  const totalVotesCount = Object.values(votes)
+  const totalVotesCount = Object.values(votes || {})
     .map((item) => (anonymous ? item : item.length))
     .reduce((prev, curr) => prev + curr, 0);
 

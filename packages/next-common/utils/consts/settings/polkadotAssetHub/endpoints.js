@@ -1,9 +1,5 @@
 const polkadotAssetHubNodes = [
   {
-    name: "OnFinality",
-    url: "wss://statemint.api.onfinality.io/public-ws",
-  },
-  {
     name: "Parity",
     url: "wss://polkadot-asset-hub-rpc.polkadot.io",
   },
@@ -14,6 +10,10 @@ const polkadotAssetHubNodes = [
   {
     name: "IBP2",
     url: "wss://asset-hub-polkadot.dotters.network",
+  },
+  {
+    name: "OnFinality",
+    url: "wss://statemint.api.onfinality.io/public-ws",
   },
   {
     name: "LuckyFriday",
