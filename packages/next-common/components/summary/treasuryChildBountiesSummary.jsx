@@ -8,6 +8,7 @@ import { backendApi } from "next-common/services/nextApi";
 import LoadableContent from "../common/loadableContent";
 import { FiatValueItem } from "./treasurySpendsSummary";
 import Tooltip from "next-common/components/tooltip";
+import { useRouter } from "next/router";
 
 function getFirstDayOfCurrentMonth() {
   const now = new Date();
@@ -35,12 +36,15 @@ export default function TreasuryChildBountiesSummary() {
 }
 
 function TreasuryChildBountiesSummaryImpl() {
+  const router = useRouter();
+  const parent = router?.query?.parentBountyId;
   const { value: childBountiesSummary, loading } = useAsync(async () => {
     const { result } = await backendApi.fetch(
       "treasury/child-bounties/summary",
+      parent && { parent },
     );
     return result;
-  }, []);
+  }, [parent]);
 
   const { totalChildBountiesCount, detail = {} } = childBountiesSummary ?? {};
 
