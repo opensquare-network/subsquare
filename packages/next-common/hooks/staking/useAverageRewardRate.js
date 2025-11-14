@@ -53,7 +53,7 @@ export async function getAverageEraValidatorReward({ api, relayApi }) {
     );
 
   const totalReward = erasValidatorRewardOpt
-    .map((v) => v.unwrap().toBigInt() || 0n)
+    .map((v) => BigInt(v.toJSON() || 0))
     .reduce((prev, current) => prev + current, 0n);
 
   const reward = totalReward / BigInt(eras.length);
@@ -73,6 +73,7 @@ export function useAverageRewardRate() {
     const totalIssuance = totalIssuanceOpt.toBigInt();
 
     const erasPerDay = getEraPerDay({ api, relayApi });
+
     const averageEraValidatorReward = await getAverageEraValidatorReward({
       api,
       relayApi,
