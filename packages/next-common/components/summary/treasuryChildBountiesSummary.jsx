@@ -14,7 +14,7 @@ function useChildBountiesSummaryData() {
   const router = useRouter();
   const parent = router?.query?.parentBountyId;
   const apiUrl = parent
-    ? `treasury/bounty/${parent}/child-bounties/summary`
+    ? `treasury/bounties/${parent}/child-bounties/summary`
     : "treasury/child-bounties/summary";
 
   const { value: childBountiesSummary, loading } = useAsync(async () => {
