@@ -41,19 +41,15 @@ function ProjectSummary({
   spendsLoading,
 }) {
   const { priceType } = usePriceType();
-  const proposalsTotal = useMemo(() => {
-    return proposals?.reduce(
-      (acc, proposal) => acc.plus(BigNumber(proposal.fiatValue)),
-      BigNumber(0),
-    );
-  }, [proposals]);
 
-  const spendsTotal = useMemo(() => {
-    return spends?.reduce(
-      (acc, spend) => acc.plus(BigNumber(spend.fiatValue)),
-      BigNumber(0),
-    );
-  }, [spends]);
+  const proposalsTotal = useMemo(
+    () => calcTotalByPriceType(proposals, priceType),
+    [proposals, priceType],
+  );
+  const spendsTotal = useMemo(
+    () => calcTotalByPriceType(spends, priceType),
+    [spends, priceType],
+  );
 
   return (
     <SummaryLayout>
@@ -80,4 +76,17 @@ function ProjectSummary({
       </SummaryItem>
     </SummaryLayout>
   );
+}
+
+function calcTotalByPriceType(list, priceType) {
+  if (!list?.length) {
+    return BigNumber(0);
+  }
+  return list.reduce((acc, item) => {
+    const proportion = item.proportion ?? 1;
+    const value = BigNumber(item[priceType] ?? 0)
+      .times(proportion)
+      .toFixed(2);
+    return acc.plus(value);
+  }, BigNumber(0));
 }

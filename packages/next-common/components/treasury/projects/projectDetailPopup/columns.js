@@ -1,6 +1,8 @@
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { PostTitleImpl } from "next-common/components/profile/votingHistory/common";
+import { usePriceType } from "../context/projectProvider";
+import BigNumber from "bignumber.js";
 
 const ProposalTitleColumnsDef = {
   name: "Title",
@@ -43,10 +45,16 @@ export const proposalColumnsDef = [ProposalTitleColumnsDef, RequestColumnsDef];
 export const spendColumnsDef = [SpendTitleColumnsDef, RequestColumnsDef];
 
 function RequestCol({ proposal }) {
+  const { priceType } = usePriceType();
   const proportion = proposal.proportion < 1 ? proposal.proportion * 100 : null;
+
+  const value = BigNumber(proposal[priceType] ?? 0)
+    .times(proposal.proportion)
+    .toFixed(2);
+
   return (
     <ValueDisplay
-      value={toPrecision(proposal.fiatValue)}
+      value={toPrecision(value)}
       symbol=""
       prefix="$"
       className="text14Medium text-textPrimary"
