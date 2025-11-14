@@ -14,7 +14,7 @@ import {
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { useChainApi, useGetTeleportTxFunc } from "./crossChainApi";
-import useCrossChainDirection from "./useCrossChainDirection";
+import useCrossChainTeleport from "./useCrossChainTeleport";
 import useNativeTransferAmount from "./useNativeTransferAmount";
 import PeopleApiProvider from "next-common/context/people/api";
 import CoretimeApiProvider from "next-common/context/coretime/api";
@@ -24,8 +24,8 @@ function PopupContent() {
   const {
     sourceChain,
     destinationChain,
-    component: crossChainDirection,
-  } = useCrossChainDirection();
+    component: crossChainTeleport,
+  } = useCrossChainTeleport();
   const sourceApi = useChainApi(sourceChain);
   const destinationApi = useChainApi(destinationChain);
   const getTeleportTx = useGetTeleportTxFunc({
@@ -86,7 +86,7 @@ function PopupContent() {
   return (
     <>
       <ConnectedUserOrigin />
-      {crossChainDirection}
+      {crossChainTeleport}
       {addressComboField}
       {transferAmountField}
       <AdvanceSettings>
