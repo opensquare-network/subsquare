@@ -4,12 +4,13 @@ import { useReferendumTally } from "next-common/hooks/referenda/useReferendumInf
 import { useInfluence } from "next-common/hooks/referenda/useInfluence";
 import Tooltip from "next-common/components/tooltip";
 import { gov2FinalState, gov2State } from "next-common/utils/consts/state";
+import { useMemo } from "react";
 
 export function InfluenceValueImpl({ referendumVotes }) {
   const tally = useReferendumTally();
   const { hasInfluence, isPass } = useInfluence(tally, referendumVotes);
   const stateName = usePostState();
-  const isFinal = getReferendumFinalState(stateName);
+  const isFinal = useMemo(() => isReferendumFinalState(stateName), [stateName]);
 
   if (!tally) {
     return null;
@@ -67,7 +68,7 @@ export default function InfluenceValue({ referendum, referendumVotes = [] }) {
   );
 }
 
-function getReferendumFinalState(stateName) {
+function isReferendumFinalState(stateName) {
   return [...gov2FinalState, gov2State.Rejected, gov2State.Executed].includes(
     stateName,
   );
