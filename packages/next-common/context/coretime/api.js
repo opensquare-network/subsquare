@@ -9,23 +9,23 @@ import getChainSettings from "next-common/utils/consts/settings";
 import { getChainApi } from "next-common/utils/getChainApi";
 import Chains from "next-common/utils/consts/chains";
 
-const PeopleApiContext = createContext(null);
+const CoretimeApiContext = createContext(null);
 
-export default function PeopleApiProvider({ children }) {
+export default function CoretimeApiProvider({ children }) {
   const [api, setApi] = useState(null);
   const chain = useChain();
-  const peopleChain = useMemo(() => getPeopleChain(chain), [chain]);
+  const coretimeChain = useMemo(() => getCoretimeChain(chain), [chain]);
 
   useEffect(() => {
-    if (peopleChain) {
-      const endpointUrls = getChainSettings(peopleChain)?.endpoints?.map(
+    if (coretimeChain) {
+      const endpointUrls = getChainSettings(coretimeChain)?.endpoints?.map(
         (item) => item.url,
       );
       if (endpointUrls?.length > 0) {
         getChainApi(endpointUrls).then(setApi);
       }
     }
-  }, [peopleChain]);
+  }, [coretimeChain]);
 
   useEffect(() => {
     return () => {
@@ -36,24 +36,24 @@ export default function PeopleApiProvider({ children }) {
   }, [api]);
 
   return (
-    <PeopleApiContext.Provider value={{ api }}>
+    <CoretimeApiContext.Provider value={{ api }}>
       {children}
-    </PeopleApiContext.Provider>
+    </CoretimeApiContext.Provider>
   );
 }
 
-export function usePeopleApi() {
-  const { api } = useContext(PeopleApiContext) || {};
+export function useCoretimeApi() {
+  const { api } = useContext(CoretimeApiContext) || {};
   return api;
 }
 
-export function getPeopleChain(chain) {
+export function getCoretimeChain(chain) {
   if (isPolkadotChain(chain) || isCollectivesChain(chain)) {
-    return Chains.polkadotPeople;
+    return Chains.polkadotCoretime;
   }
 
   if (isKusamaChain(chain)) {
-    return Chains.kusamaPeople;
+    return Chains.kusamaCoretime;
   }
 
   return null;

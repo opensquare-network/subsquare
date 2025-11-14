@@ -37,6 +37,12 @@ const ParaChainTeleportPopup = dynamic(() =>
   ),
 );
 
+const ParaChainTeleportOnRelayChainPopup = dynamic(() =>
+  import("next-common/components/paraChainTeleportPopup/teleport").then(
+    (mod) => mod.default,
+  ),
+);
+
 const SystemCrosschain = dynamic(
   import("@osn/icons/subsquare").then((mod) => mod.SystemCrosschain),
 );
@@ -221,6 +227,20 @@ function ParaChainTeleportButton() {
   );
 }
 
+function ParaChainTeleportOnRelayChainButton() {
+  const [showPopup, setShowPopup] = useState(false);
+  return (
+    <>
+      <CrosschainButton onClick={() => setShowPopup(true)} />
+      {showPopup && (
+        <ParaChainTeleportOnRelayChainPopup
+          onClose={() => setShowPopup(false)}
+        />
+      )}
+    </>
+  );
+}
+
 const transferEnabledChains = [
   Chains.polkadot,
   Chains.kusama,
@@ -230,6 +250,11 @@ const transferEnabledChains = [
 ];
 
 const paraChainTeleportEnabledChains = [Chains.collectives];
+
+const paraChainTeleportOnRelayChainEnabledChains = [
+  Chains.polkadot,
+  Chains.kusama,
+];
 
 export function AccountHead({ width }) {
   return (
@@ -248,6 +273,11 @@ export function AccountHead({ width }) {
           <OnlyChains chains={transferEnabledChains}>
             <TransferButton />
           </OnlyChains>
+          <OnlyChains chains={paraChainTeleportOnRelayChainEnabledChains}>
+            <RelayChainApiProvider>
+              <ParaChainTeleportOnRelayChainButton />
+            </RelayChainApiProvider>
+          </OnlyChains>
           <OnlyChains chains={paraChainTeleportEnabledChains}>
             <RelayChainApiProvider>
               <ParaChainTeleportButton />
@@ -257,6 +287,7 @@ export function AccountHead({ width }) {
             chains={[
               ...transferEnabledChains,
               ...paraChainTeleportEnabledChains,
+              ...paraChainTeleportOnRelayChainEnabledChains,
             ]}
           >
             <div className="w-[1px] h-[16px] bg-neutral300"></div>

@@ -8,11 +8,17 @@ import teleportFromParaChainToParaChain from "./teleportFromParaChainToParaChain
 import { useCallback } from "react";
 import { useAssetHubApi } from "next-common/hooks/chain/useAssetHubApi";
 import { useChain } from "next-common/context/chain";
-import { isRelayChain } from "next-common/utils/chain";
+import {
+  isRelayChain,
+  isPeopleChain,
+  isCoretimeChain,
+} from "next-common/utils/chain";
 import { useRelayChain } from "next-common/hooks/useRelayChain";
 import { useAssetHubChain } from "next-common/hooks/useAssetHubChain";
 import Chains from "next-common/utils/consts/chains";
 import { useCollectivesApi } from "next-common/context/collectives/api";
+import { usePeopleApi } from "next-common/context/people/api";
+import { useCoretimeApi } from "next-common/context/coretime/api";
 
 export function useChainApi(chain) {
   const currChain = useChain();
@@ -26,6 +32,10 @@ export function useChainApi(chain) {
 
   const collectivesApi = useCollectivesApi();
 
+  const peopleApi = usePeopleApi();
+
+  const coretimeApi = useCoretimeApi();
+
   if (chain === currChain) {
     return currChainApi;
   } else if (chain === relayChain) {
@@ -34,6 +44,10 @@ export function useChainApi(chain) {
     return assetHubApi;
   } else if (chain === Chains.collectives) {
     return collectivesApi;
+  } else if (isPeopleChain(chain)) {
+    return peopleApi;
+  } else if (isCoretimeChain(chain)) {
+    return coretimeApi;
   }
 
   throw new Error("Unsupported chain");
