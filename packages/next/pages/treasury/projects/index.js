@@ -2,25 +2,23 @@ import { withCommonProps } from "next-common/lib";
 import { TreasuryProvider } from "next-common/context/treasury";
 import ListLayout from "next-common/components/layout/ListLayout";
 import TreasuryStatusSummaryPanel from "next-common/components/treasury/status/summaryPanel";
-import TreasuryStatusTabContent from "next-common/components/treasury/status/tabContent";
-import ApprovedPanel from "next-common/components/treasury/status/approvedPanel";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import TreasuryProjects from "next-common/components/treasury/projects";
 import panelTabs from "next-common/components/treasury/status/panelTabs";
 
-const seoInfo = { title: "Treasury Status", desc: "Treasury Status" };
+const seoInfo = { title: "Treasury Projects", desc: "Treasury Projects" };
 
-export default function TreasuryStatusPage() {
+export default function TreasuryProjectsPage() {
   return (
     <TreasuryProvider>
       <ListLayout
         seoInfo={seoInfo}
-        title="Treasury Status"
+        title="Treasury Projects"
         summary={<TreasuryStatusSummaryPanel />}
         tabs={panelTabs}
       >
         <div className="flex flex-col gap-y-4">
-          <ApprovedPanel />
-          <TreasuryStatusTabContent />
+          <TreasuryProjects />
         </div>
       </ListLayout>
     </TreasuryProvider>
