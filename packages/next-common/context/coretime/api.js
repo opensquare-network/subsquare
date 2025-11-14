@@ -47,7 +47,7 @@ export function useCoretimeApi() {
   return api;
 }
 
-export function getCoretimeChain(chain) {
+function getCoretimeChain(chain) {
   if (isPolkadotChain(chain) || isCollectivesChain(chain)) {
     return Chains.polkadotCoretime;
   }

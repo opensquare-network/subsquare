@@ -47,7 +47,7 @@ export function usePeopleApi() {
   return api;
 }
 
-export function getPeopleChain(chain) {
+function getPeopleChain(chain) {
   if (isPolkadotChain(chain) || isCollectivesChain(chain)) {
     return Chains.polkadotPeople;
   }
