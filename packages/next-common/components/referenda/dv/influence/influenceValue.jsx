@@ -3,12 +3,13 @@ import { PostProvider, usePostState } from "next-common/context/post";
 import { useReferendumTally } from "next-common/hooks/referenda/useReferendumInfo";
 import { useInfluence } from "next-common/hooks/referenda/useInfluence";
 import Tooltip from "next-common/components/tooltip";
-import { gov2State } from "next-common/utils/consts/state";
+import { gov2FinalState, gov2State } from "next-common/utils/consts/state";
 
-export function InfluenceValueImpl({ referendumVotes, isFinal }) {
+export function InfluenceValueImpl({ referendumVotes }) {
   const tally = useReferendumTally();
   const { hasInfluence, isPass } = useInfluence(tally, referendumVotes);
   const stateName = usePostState();
+  const isFinal = getReferendumFinalState(stateName);
 
   if (!tally) {
     return null;
@@ -61,10 +62,13 @@ export default function InfluenceValue({ referendum, referendumVotes = [] }) {
 
   return (
     <PostProvider post={referendum}>
-      <InfluenceValueImpl
-        referendumVotes={referendumVotes}
-        isFinal={referendum.isFinal}
-      />
+      <InfluenceValueImpl referendumVotes={referendumVotes} />
     </PostProvider>
+  );
+}
+
+function getReferendumFinalState(stateName) {
+  return [...gov2FinalState, gov2State.Rejected, gov2State.Executed].includes(
+    stateName,
   );
 }
