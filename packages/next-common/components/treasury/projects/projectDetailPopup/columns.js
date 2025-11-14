@@ -1,9 +1,5 @@
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
-import {
-  SpendTag,
-  TreasuryTag,
-} from "next-common/components/tags/state/treasury";
 import { PostTitleImpl } from "next-common/components/profile/votingHistory/common";
 
 const ProposalTitleColumnsDef = {
@@ -39,36 +35,22 @@ const SpendTitleColumnsDef = {
 const RequestColumnsDef = {
   name: "Request",
   style: { textAlign: "right", width: "120px" },
-  render: (proposal) => (
+  render: (proposal) => <RequestCol proposal={proposal} />,
+};
+
+export const proposalColumnsDef = [ProposalTitleColumnsDef, RequestColumnsDef];
+
+export const spendColumnsDef = [SpendTitleColumnsDef, RequestColumnsDef];
+
+function RequestCol({ proposal }) {
+  const proportion = proposal.proportion < 1 ? proposal.proportion * 100 : null;
+  return (
     <ValueDisplay
       value={toPrecision(proposal.fiatValue)}
       symbol=""
       prefix="$"
       className="text14Medium text-textPrimary"
+      tooltipOtherContent={proportion && `Project proportion: ${proportion}%`}
     />
-  ),
-};
-
-const ProposalStatusColumnsDef = {
-  name: "Status",
-  style: { textAlign: "right", width: "120px" },
-  render: (proposal) => <TreasuryTag state={proposal.status} />,
-};
-
-const SpendStatusColumnsDef = {
-  name: "Status",
-  style: { textAlign: "right", width: "120px" },
-  render: (spend) => <SpendTag state={spend.status} />,
-};
-
-export const proposalColumnsDef = [
-  ProposalTitleColumnsDef,
-  RequestColumnsDef,
-  ProposalStatusColumnsDef,
-];
-
-export const spendColumnsDef = [
-  SpendTitleColumnsDef,
-  RequestColumnsDef,
-  SpendStatusColumnsDef,
-];
+  );
+}

@@ -3,8 +3,10 @@ import { colors } from "./doughnutChart";
 import BigNumber from "bignumber.js";
 import ProjectDoughnutChart from "./doughnutChart";
 import ProjectIndicators from "./projectIndicators";
+import { usePriceType } from "../context/projectProvider";
 
 export default function ProjectStatisticsChart({ projects, totalFiat }) {
+  const { priceType } = usePriceType();
   const data = useMemo(() => {
     if (!projects?.length) {
       return null;
@@ -13,10 +15,10 @@ export default function ProjectStatisticsChart({ projects, totalFiat }) {
       (_, index) => colors[index % colors.length],
     );
     const projectNames = projects.map((project) => project.name);
-    const projectFiatAtFinals = projects.map((project) => project.fiatAtFinal);
+    const projectFiatAtFinals = projects.map((project) => project[priceType]);
     const projectPercentages = projects.map(
       (project) =>
-        BigNumber(project.fiatAtFinal)
+        BigNumber(project[priceType])
           .dividedBy(totalFiat)
           .multipliedBy(100)
           .toFixed(2) + "%",
@@ -36,7 +38,7 @@ export default function ProjectStatisticsChart({ projects, totalFiat }) {
         },
       ],
     };
-  }, [projects, totalFiat]);
+  }, [projects, totalFiat, priceType]);
 
   return (
     <div className="flex flex-wrap gap-6 w-1/2 max-sm:w-full max-sm:flex-col">

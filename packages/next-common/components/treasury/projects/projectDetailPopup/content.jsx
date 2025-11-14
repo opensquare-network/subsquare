@@ -4,47 +4,16 @@ import Tabs from "next-common/components/tabs";
 import { useMemo, useState } from "react";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
-import ProjectProposalsList from "./proposalsList";
-import ProjectSpendsList from "./spendsList";
-import useProposals from "../hooks/useProposals";
-import useSpends from "../hooks/useSpends";
 import BigNumber from "bignumber.js";
 import LoadableContent from "next-common/components/common/loadableContent";
-
-const TAB_VALUES = {
-  proposals: "proposals",
-  spends: "spends",
-};
+import { usePriceType } from "../context/projectProvider";
+import usePopupDetailTabs, { TAB_VALUES } from "../hooks/usePopupDetailTabs";
 
 export default function ProjectContent({ project }) {
-  const { proposals: proposalIndexes, spends: spendIndexes } = project;
+  const { proposals: proposalList, spends: spendList } = project;
   const [activeTabId, setActiveTabId] = useState(TAB_VALUES.proposals);
-  const { proposals, loading: proposalsLoading } =
-    useProposals(proposalIndexes);
-  const { spends, loading: spendsLoading } = useSpends(spendIndexes);
-
-  const tabs = useMemo(
-    () => [
-      {
-        value: TAB_VALUES.proposals,
-        label: "Proposals",
-        activeCount: proposals?.length,
-        content: (
-          <ProjectProposalsList
-            proposals={proposals}
-            loading={proposalsLoading}
-          />
-        ),
-      },
-      {
-        value: TAB_VALUES.spends,
-        label: "Spends",
-        activeCount: spends?.length,
-        content: <ProjectSpendsList spends={spends} loading={spendsLoading} />,
-      },
-    ],
-    [proposals, spends, proposalsLoading, spendsLoading],
-  );
+  const { tabs, proposals, spends, proposalsLoading, spendsLoading } =
+    usePopupDetailTabs({ proposalList, spendList });
 
   return (
     <>
@@ -58,7 +27,7 @@ export default function ProjectContent({ project }) {
       <Tabs
         tabs={tabs}
         activeTabValue={activeTabId}
-        onTabClick={(item) => setActiveTabId(item.value)}
+        onTabClick={(tab) => setActiveTabId(tab.value)}
       />
     </>
   );
@@ -71,6 +40,7 @@ function ProjectSummary({
   proposalsLoading,
   spendsLoading,
 }) {
+  const { priceType } = usePriceType();
   const proposalsTotal = useMemo(() => {
     return proposals?.reduce(
       (acc, proposal) => acc.plus(BigNumber(proposal.fiatValue)),
@@ -89,7 +59,7 @@ function ProjectSummary({
     <SummaryLayout>
       <SummaryItem title="Total">
         <ValueDisplay
-          value={toPrecision(project.fiatAtFinal)}
+          value={toPrecision(project[priceType])}
           symbol=""
           prefix="$"
         />

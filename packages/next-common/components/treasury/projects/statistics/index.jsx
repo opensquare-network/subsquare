@@ -1,40 +1,37 @@
 import BigNumber from "bignumber.js";
 import { useMemo } from "react";
-import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import ProjectSummary from "./summary";
 import { Skeleton } from "next-common/components/skeleton";
 import ProjectStatisticsChart from "./chart";
-import useTreasuryProjects from "../hooks/useProjects";
+import { usePriceType, useProjects } from "../context/projectProvider";
 
 export default function Statistics() {
-  const { projects, loading } = useTreasuryProjects();
+  const { projects, loading } = useProjects();
+  const { priceType } = usePriceType();
 
   const totalFiat = useMemo(() => {
     if (!projects?.length) {
       return BigNumber(0);
     }
     return projects.reduce(
-      (acc, project) => acc.plus(BigNumber(project.fiatAtFinal)),
+      (acc, project) => acc.plus(BigNumber(project[priceType])),
       BigNumber(0),
     );
-  }, [projects]);
+  }, [projects, priceType]);
 
   return (
-    <div>
-      <TitleContainer className="justify-start mb-4">Wallet</TitleContainer>
-      <SecondaryCard className="flex gap-6 max-sm:flex-col">
-        <ProjectSummary
-          totalFiat={totalFiat}
-          projects={projects}
-          loading={loading}
-        />
-        {loading ? (
-          <Skeleton className="w-full rounded-lg h-[120px]" />
-        ) : (
-          <ProjectStatisticsChart projects={projects} totalFiat={totalFiat} />
-        )}
-      </SecondaryCard>
-    </div>
+    <SecondaryCard className="flex gap-6 max-sm:flex-col">
+      <ProjectSummary
+        totalFiat={totalFiat}
+        projects={projects}
+        loading={loading}
+      />
+      {loading ? (
+        <Skeleton className="w-full rounded-lg h-[120px]" />
+      ) : (
+        <ProjectStatisticsChart projects={projects} totalFiat={totalFiat} />
+      )}
+    </SecondaryCard>
   );
 }
