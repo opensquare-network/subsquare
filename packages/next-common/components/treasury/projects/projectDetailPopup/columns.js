@@ -39,7 +39,7 @@ const SpendTitleColumnsDef = {
 
 const RequestColumnsDef = {
   name: "Request",
-  style: { textAlign: "right", width: "160px" },
+  style: { textAlign: "right", width: "100px" },
   render: (proposal) => <RequestCol proposal={proposal} />,
 };
 
@@ -72,9 +72,9 @@ function RequestCol({ proposal }) {
 
   return (
     <Tooltip
-      content={`Total: ${formatNum(totalValue)} Proportion: ${formatNum(
+      content={`Total ${formatNum(totalValue)}, ${proportion}%(${formatNum(
         value,
-      )}(${proportion}%)`}
+      )}) fund`}
     >
       <ValueDisplay
         value={toPrecision(value)}
