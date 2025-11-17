@@ -106,7 +106,7 @@ function ChainSeparator() {
       <ArrowLineLeft
         width={24}
         height={24}
-        className="[&_path]:fill-textPrimary rotate-180"
+        className="text-textPrimary rotate-180"
       />
     </div>
   );
