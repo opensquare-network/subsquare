@@ -98,6 +98,7 @@ const hyperBridge = {
   },
   hasMultisig: true,
   multisigApiPrefix: "nexus-gh-api",
+  graphqlApiSubDomain: "nexus-gh-api",
   cssVarsLight: {
     theme100: "rgba(47,62,198,0.10)",
     theme300: "rgba(47,62,198,0.40)",
