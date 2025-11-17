@@ -22,7 +22,7 @@ import Tooltip from "next-common/components/tooltip";
 
 function TooltipDisabledGuard({ disabled, children }) {
   return disabled ? (
-    <Tooltip content="Source and destination chains are the same">
+    <Tooltip content="Source and destination should be different chains">
       {children}
     </Tooltip>
   ) : (
