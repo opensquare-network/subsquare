@@ -5,7 +5,7 @@ import ListTitleBar from "../listTitleBar";
 import List from "./list";
 
 export default function Whitelist() {
-  const data = useWhitelist();
+  const { list, loading } = useWhitelist();
   const [showArgumentsDetail, setShowArgumentsDetail] = useState();
 
   return (
@@ -15,11 +15,15 @@ export default function Whitelist() {
           <ListTitleBar
             className={"max-md:-ml-6"}
             title="List"
-            titleCount={data?.length || 0}
+            titleCount={list?.length || 0}
           />
         </div>
       </div>
-      <List data={data} setShowArgumentsDetail={setShowArgumentsDetail} />
+      <List
+        data={list}
+        loading={loading}
+        setShowArgumentsDetail={setShowArgumentsDetail}
+      />
       {showArgumentsDetail && (
         <PreImageDetailPopup
           setShow={() => setShowArgumentsDetail(null)}

@@ -3294,10 +3294,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/icons@npm:^1.233.0":
-  version: 1.233.0
-  resolution: "@osn/icons@npm:1.233.0"
-  checksum: 258cc30e94bbc93d4747da90f38ee62caa14373e91a7eb0e689c7ca854a6fd823ad0c186dca919c6e08a9c2be8e32ef88daffde0b61442a1b1edbd76352b06b2
+"@osn/icons@npm:^1.234.0":
+  version: 1.234.0
+  resolution: "@osn/icons@npm:1.234.0"
+  checksum: 804067117e3133c55eab9024f4ff6fb9f070d2731f42c82c45b56a18a4d8e8138da2fabd3aed1047608d0637543d0e294bccdaf925c2b9ccfcda091d2e9e5a1c
   languageName: node
   linkType: hard
 
@@ -6156,7 +6156,7 @@ __metadata:
     "@next/bundle-analyzer": 15.3.0
     "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.233.0
+    "@osn/icons": ^1.234.0
     "@svgr/webpack": ^7.0.0
     "@types/lodash-es": ^4.17.12
     bignumber.js: ^9.0.2
@@ -6194,7 +6194,7 @@ __metadata:
     "@interlay/monetary-js": ^0.5.3
     "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.233.0
+    "@osn/icons": ^1.234.0
     "@polkadot/util-crypto": ^13.5.1
     "@svgr/webpack": ^7.0.0
     "@types/lodash-es": ^4.17.12
@@ -6230,7 +6230,7 @@ __metadata:
     "@next/bundle-analyzer": 15.3.0
     "@next/env": ^13.3.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.233.0
+    "@osn/icons": ^1.234.0
     "@svgr/webpack": ^7.0.0
     "@types/lodash-es": ^4.17.12
     bignumber.js: ^9.0.2
@@ -13212,13 +13212,13 @@ __metadata:
   linkType: hard
 
 "js-yaml@npm:^4.1.0":
-  version: 4.1.0
-  resolution: "js-yaml@npm:4.1.0"
+  version: 4.1.1
+  resolution: "js-yaml@npm:4.1.1"
   dependencies:
     argparse: ^2.0.1
   bin:
     js-yaml: bin/js-yaml.js
-  checksum: c7830dfd456c3ef2c6e355cc5a92e6700ceafa1d14bba54497b34a99f0376cecbb3e9ac14d3e5849b426d5a5140709a66237a8c991c675431271c4ce5504151a
+  checksum: ea2339c6930fe048ec31b007b3c90be2714ab3e7defcc2c27ebf30c74fd940358f29070b4345af0019ef151875bf3bc3f8644bea1bab0372652b5044813ac02d
   languageName: node
   linkType: hard
 
@@ -14203,7 +14203,7 @@ __metadata:
     "@mimirdev/apps-inject": ^3.2.0
     "@mimirdev/apps-sdk": ^3.1.0
     "@osn/eslint-config": ^1.0.2
-    "@osn/icons": ^1.233.0
+    "@osn/icons": ^1.234.0
     "@osn/polkadot-react-identicon": ^1.0.10
     "@osn/previewer": ^2.0.2
     "@osn/provider-options": 1.1.0

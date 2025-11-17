@@ -6,7 +6,7 @@ import {
   Value,
 } from "next-common/components/referenda/tally/styled";
 import SymbolValue from "next-common/components/pages/components/gov2/sidebar/tally/values/symbolValue";
-import { useOnchainData } from "next-common/context/post";
+import { useOnchainData, usePost } from "next-common/context/post";
 import { usePageProps } from "next-common/context/page";
 import useSubAddressBalance from "next-common/utils/hooks/useSubAddressBalance";
 import { InfoDocs, InfoUser, SystemCoins } from "@osn/icons/subsquare";
@@ -14,6 +14,9 @@ import AddressUser from "next-common/components/user/addressUser";
 import Tooltip from "next-common/components/tooltip";
 import Copyable from "next-common/components/copyable";
 import LoadableContent from "next-common/components/common/loadableContent";
+import { FormatFiatValue } from "next-common/components/pages/components/gov2/business/valueDisplayWithFiatValue";
+import { useChainSettings } from "next-common/context/chain";
+import { useMemo } from "react";
 
 export function CardDetailTitle({ title }) {
   return (
@@ -64,7 +67,7 @@ function BountySidebarBalance() {
       <CardDetailRow
         icon={<SystemCoins />}
         title="Balance"
-        value={<SymbolValue value={balance} />}
+        value={<BountyBalanceSymbolValue balance={balance} />}
         isLoading={isLoading}
       />
       <CardDetailRow
@@ -82,6 +85,22 @@ function BountySidebarBalance() {
         }
       />
     </SecondaryCardDetail>
+  );
+}
+
+function BountyBalanceSymbolValue({ balance }) {
+  const { symbol } = useChainSettings();
+  const post = usePost();
+
+  const tooltipOtherContent = useMemo(() => {
+    if (post?.state !== "Active") {
+      return null;
+    }
+    return <FormatFiatValue amount={balance} symbol={symbol} />;
+  }, [balance, post?.state, symbol]);
+
+  return (
+    <SymbolValue value={balance} tooltipOtherContent={tooltipOtherContent} />
   );
 }
 
