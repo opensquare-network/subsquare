@@ -38,7 +38,7 @@ export default function ProjectIndicators({ data, projects = [] }) {
           className="flex justify-between items-center cursor-pointer hover:underline"
           onClick={() => handleProjectClick(label)}
         >
-          <div>
+          <div className="flex items-center">
             <span
               className="w-[12px] h-[12px] rounded-[2px] inline-block mr-2"
               style={{ backgroundColor: backgroundColor[index] }}
