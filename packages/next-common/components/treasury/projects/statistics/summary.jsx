@@ -27,7 +27,7 @@ export default function ProjectStatisticsSummary({
   }, [projects]);
 
   return (
-    <SummaryLayout className="w-1/2 grid-cols-2 max-sm:w-full max-sm:flex-col">
+    <SummaryLayout className="w-auto grid-cols-1 max-sm:w-full max-sm:flex-col">
       <SummaryItem title="Category Total">
         <LoadableContent isLoading={loading}>
           <ValueDisplay value={toPrecision(totalFiat)} symbol="" prefix="$" />
@@ -36,16 +36,6 @@ export default function ProjectStatisticsSummary({
       <SummaryItem title="Proposals Total">
         <LoadableContent isLoading={loading}>
           <ValueDisplay value={counts.allCount} symbol="" />
-        </LoadableContent>
-      </SummaryItem>
-      <SummaryItem title="Proposals">
-        <LoadableContent isLoading={loading}>
-          <ValueDisplay value={counts.proposalsCount} symbol="" />
-        </LoadableContent>
-      </SummaryItem>
-      <SummaryItem title="Spends">
-        <LoadableContent isLoading={loading}>
-          <ValueDisplay value={counts.spendsCount} symbol="" />
         </LoadableContent>
       </SummaryItem>
     </SummaryLayout>

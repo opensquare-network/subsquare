@@ -3,6 +3,9 @@ import { toPrecision } from "next-common/utils";
 import { PostTitleImpl } from "next-common/components/profile/votingHistory/common";
 import { usePriceType } from "../context/projectProvider";
 import BigNumber from "bignumber.js";
+import { isNil } from "lodash-es";
+import Tooltip from "next-common/components/tooltip";
+import { useMemo } from "react";
 
 const ProposalTitleColumnsDef = {
   name: "Title",
@@ -36,7 +39,7 @@ const SpendTitleColumnsDef = {
 
 const RequestColumnsDef = {
   name: "Request",
-  style: { textAlign: "right", width: "120px" },
+  style: { textAlign: "right", width: "160px" },
   render: (proposal) => <RequestCol proposal={proposal} />,
 };
 
@@ -48,17 +51,36 @@ function RequestCol({ proposal }) {
   const { priceType } = usePriceType();
   const proportion = proposal.proportion < 1 ? proposal.proportion * 100 : null;
 
-  const value = BigNumber(proposal[priceType] ?? 0)
-    .times(proposal.proportion)
-    .toFixed(2);
+  const totalValue = useMemo(() => {
+    return BigNumber(proposal[priceType] ?? 0);
+  }, [proposal[priceType]]);
+
+  const value = useMemo(() => {
+    return totalValue.times(proposal.proportion).toFixed(2);
+  }, [totalValue, proposal.proportion]);
+
+  if (isNil(proportion)) {
+    return (
+      <ValueDisplay
+        value={toPrecision(value)}
+        symbol=""
+        prefix="$"
+        className="text14Medium text-textPrimary"
+      />
+    );
+  }
 
   return (
-    <ValueDisplay
-      value={toPrecision(value)}
-      symbol=""
-      prefix="$"
-      className="text14Medium text-textPrimary"
-      tooltipOtherContent={proportion && `Project proportion: ${proportion}%`}
-    />
+    <Tooltip
+      content={`Total: ${totalValue} proportion: ${value}(${proportion}%)`}
+    >
+      <ValueDisplay
+        value={toPrecision(value)}
+        symbol=""
+        prefix="$"
+        className="text14Medium text-textPrimary"
+        showTooltip={false}
+      />
+    </Tooltip>
   );
 }

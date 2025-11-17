@@ -21,7 +21,7 @@ export default function Statistics() {
   }, [projects, priceType]);
 
   return (
-    <SecondaryCard className="flex gap-6 max-sm:flex-col">
+    <SecondaryCard className="flex gap-6 justify-start max-sm:flex-col">
       <ProjectSummary
         totalFiat={totalFiat}
         projects={projects}
