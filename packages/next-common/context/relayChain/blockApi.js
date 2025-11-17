@@ -37,6 +37,7 @@ function RelayChainBlockApiProviderImpl({ children, blockHeightOrHash }) {
       }
     };
   }, [relayChainApi]);
+
   return (
     <RelayChainBlockApiContext.Provider value={api}>
       {children}

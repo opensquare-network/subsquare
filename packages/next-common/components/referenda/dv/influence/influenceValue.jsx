@@ -2,17 +2,15 @@ import { SystemYes, SystemNo, SystemVoteAbstain } from "@osn/icons/subsquare";
 import { PostProvider, usePostState } from "next-common/context/post";
 import { useReferendumTally } from "next-common/hooks/referenda/useReferendumInfo";
 import { useInfluence } from "next-common/hooks/referenda/useInfluence";
-import { useIsReferendumFinalState } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
-import { isNil } from "lodash-es";
 import Tooltip from "next-common/components/tooltip";
-import { gov2State } from "next-common/utils/consts/state";
+import { gov2FinalState, gov2State } from "next-common/utils/consts/state";
+import { useMemo } from "react";
 
 export function InfluenceValueImpl({ referendumVotes }) {
   const tally = useReferendumTally();
   const { hasInfluence, isPass } = useInfluence(tally, referendumVotes);
-  const finalState = useIsReferendumFinalState();
-  const isFinal = !isNil(finalState);
   const stateName = usePostState();
+  const isFinal = useMemo(() => isReferendumFinalState(stateName), [stateName]);
 
   if (!tally) {
     return null;
@@ -67,5 +65,11 @@ export default function InfluenceValue({ referendum, referendumVotes = [] }) {
     <PostProvider post={referendum}>
       <InfluenceValueImpl referendumVotes={referendumVotes} />
     </PostProvider>
+  );
+}
+
+function isReferendumFinalState(stateName) {
+  return [...gov2FinalState, gov2State.Rejected, gov2State.Executed].includes(
+    stateName,
   );
 }
