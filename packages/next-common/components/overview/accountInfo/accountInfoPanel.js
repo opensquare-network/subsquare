@@ -254,6 +254,8 @@ const paraChainTeleportEnabledChains = [Chains.collectives];
 const paraChainTeleportOnRelayChainEnabledChains = [
   Chains.polkadot,
   Chains.kusama,
+  Chains.paseo,
+  Chains.westend,
 ];
 
 export function AccountHead({ width }) {

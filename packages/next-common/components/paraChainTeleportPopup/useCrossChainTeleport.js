@@ -15,22 +15,18 @@ const POLKADOT_PARACHAINS = Object.freeze([
   {
     name: "Asset Hub",
     value: Chains.polkadotAssetHub,
-    id: 1000,
   },
   {
     name: "Collectives",
     value: Chains.collectives,
-    id: 1001,
   },
   {
     name: "People",
     value: Chains.polkadotPeople,
-    id: 1004,
   },
   {
     name: "Coretime",
     value: Chains.polkadotCoretime,
-    id: 1005,
   },
 ]);
 
@@ -38,23 +34,44 @@ const KUSAMA_PARACHAINS = Object.freeze([
   {
     name: "Asset Hub",
     value: Chains.kusamaAssetHub,
-    id: 1000,
   },
   {
     name: "People",
     value: Chains.kusamaPeople,
-    id: 1004,
   },
   {
     name: "Coretime",
     value: Chains.kusamaCoretime,
-    id: 1005,
+  },
+]);
+
+const PASEO_PARACHAINS = Object.freeze([
+  {
+    name: "Asset Hub",
+    value: Chains.paseoAssetHub,
+  },
+  {
+    name: "People",
+    value: Chains.paseoPeople,
+  },
+]);
+
+const WESTEND_PARACHAINS = Object.freeze([
+  {
+    name: "Asset Hub",
+    value: Chains.westendAssetHub,
+  },
+  {
+    name: "People",
+    value: Chains.westendPeople,
   },
 ]);
 
 const PARACHAIN_MAP = Object.freeze({
   [Chains.polkadot]: POLKADOT_PARACHAINS,
   [Chains.kusama]: KUSAMA_PARACHAINS,
+  [Chains.paseo]: PASEO_PARACHAINS,
+  [Chains.westend]: WESTEND_PARACHAINS,
 });
 
 function ChainSelector({ title, value, options = [], onChange }) {
@@ -81,12 +98,6 @@ function transformToChainOptions(chain) {
     value,
     id,
   }));
-}
-
-function disableChainOption(options, disabledChain) {
-  return options.map((option) =>
-    option.value === disabledChain ? { ...option, disabled: true } : option,
-  );
 }
 
 function ChainSeparator() {
@@ -116,16 +127,6 @@ export default function useCrossChainTeleport() {
     () => allChainOptions[1]?.value || "",
   );
 
-  const sourceChainOptions = useMemo(
-    () => disableChainOption(allChainOptions, destinationChain),
-    [allChainOptions, destinationChain],
-  );
-
-  const destinationChainOptions = useMemo(
-    () => disableChainOption(allChainOptions, sourceChain),
-    [allChainOptions, sourceChain],
-  );
-
   const handleSourceChainChange = useCallback(
     ({ value }) => setSourceChain(value),
     [],
@@ -141,14 +142,14 @@ export default function useCrossChainTeleport() {
       <ChainSelector
         title="Source Chain"
         value={sourceChain}
-        options={sourceChainOptions}
+        options={allChainOptions}
         onChange={handleSourceChainChange}
       />
       <ChainSeparator />
       <ChainSelector
         title="Destination Chain"
         value={destinationChain}
-        options={destinationChainOptions}
+        options={allChainOptions}
         onChange={handleDestinationChainChange}
       />
     </div>

@@ -1,14 +1,24 @@
-import { isAssetHubChain } from "next-common/utils/chain";
+import {
+  isAssetHubChain,
+  isPeopleChain,
+  isCoretimeChain,
+} from "next-common/utils/chain";
 import Chains from "next-common/utils/consts/chains";
 
 export const AssetHubParaId = 1000;
 export const CollectivesParaId = 1001;
+export const PeopleParaId = 1004;
+export const CoretimeParaId = 1005;
 
 export function getParaChainId(chain) {
   if (isAssetHubChain(chain)) {
     return AssetHubParaId;
   } else if (chain === Chains.collectives) {
     return CollectivesParaId;
+  } else if (isPeopleChain(chain)) {
+    return PeopleParaId;
+  } else if (isCoretimeChain(chain)) {
+    return CoretimeParaId;
   }
   throw new Error("Unsupported para chain");
 }

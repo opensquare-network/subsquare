@@ -11,13 +11,24 @@ import {
   newErrorToast,
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { useChainApi, useGetTeleportTxFunc } from "./crossChainApi";
 import useCrossChainTeleport from "./useCrossChainTeleport";
 import useNativeTransferAmount from "./useNativeTransferAmount";
 import PeopleApiProvider from "next-common/context/people/api";
 import CoretimeApiProvider from "next-common/context/coretime/api";
+import Tooltip from "next-common/components/tooltip";
+
+function TooltipDisabledGuard({ disabled, children }) {
+  return disabled ? (
+    <Tooltip content="Source and destination chains are the same">
+      {children}
+    </Tooltip>
+  ) : (
+    children
+  );
+}
 
 function PopupContent() {
   const { onClose } = usePopupParams();
@@ -83,6 +94,10 @@ function PopupContent() {
     });
   }, [sourceApi, dispatch, getTxFunc, sendTxFunc, onClose]);
 
+  const submitDisabled = useMemo(() => {
+    return sourceChain === destinationChain;
+  }, [sourceChain, destinationChain]);
+
   return (
     <>
       <ConnectedUserOrigin />
@@ -93,9 +108,15 @@ function PopupContent() {
         <ExistentialDeposit destApi={destinationApi} />
       </AdvanceSettings>
       <div className="flex justify-end">
-        <PrimaryButton loading={isSubmitting} onClick={doSubmit}>
-          Submit
-        </PrimaryButton>
+        <TooltipDisabledGuard disabled={submitDisabled}>
+          <PrimaryButton
+            loading={isSubmitting}
+            onClick={doSubmit}
+            disabled={submitDisabled}
+          >
+            Submit
+          </PrimaryButton>
+        </TooltipDisabledGuard>
       </div>
     </>
   );
