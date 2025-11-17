@@ -180,7 +180,7 @@ export function ValuePanel({ registry, name, type, typeName, value }) {
   }
 
   let valueComponent = null;
-  const val = value.toJSON();
+  const val = value?.toJSON();
 
   if (accountTypes.includes(type)) {
     valueComponent = (

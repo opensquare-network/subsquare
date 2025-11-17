@@ -8,9 +8,9 @@ export default function TuplePanel({ registry, name, type, values, sub }) {
         {name ? `${name}: ${type}` : type}
       </span>
       <IndentPanel className="gap-[8px]">
-        {(sub || []).map((item) => (
+        {(sub || []).map((item, index) => (
           <ValuePanel
-            key={item.name}
+            key={`tuple-${item.name}-${index}`}
             name={item.name}
             value={values[item.name]}
             type={item.type}
