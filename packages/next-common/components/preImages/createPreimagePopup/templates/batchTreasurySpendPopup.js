@@ -8,7 +8,7 @@ import { InfoMessage } from "next-common/components/setting/styled";
 import { getAssetBySymbol } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import NotePreimageButton from "../notePreimageButton";
-import { USDxBalance } from "../fields/useUSDxBalanceField";
+import { MultiSymbolBalance } from "../fields/useMultiSymbolBalanceField";
 import {
   useExtensionAccounts,
   usePopupParams,
@@ -22,6 +22,7 @@ import { useMemorizer } from "next-common/utils/useMemorizer";
 import SubtractIcon from "next-common/components/callTreeView/subtract";
 import IconButton from "next-common/components/iconButton";
 import PlusIcon from "next-common/components/callTreeView/plus";
+import { useChainSettings } from "next-common/context/chain";
 
 const getAssetKindParam = (assetId) => {
   return {
@@ -42,6 +43,21 @@ const getAssetKindParam = (assetId) => {
             },
           ],
         },
+      },
+    },
+  };
+};
+
+const getNativeKindParam = () => {
+  return {
+    V4: {
+      location: {
+        parents: 0,
+        interior: "Here",
+      },
+      assetId: {
+        parents: 0,
+        interior: "Here",
       },
     },
   };
@@ -73,6 +89,7 @@ const getBeneficiaryParam = (beneficiary) => {
 
 export function useBatchTreasurySpendsNotePreimageTx(spendInputs) {
   const api = useContextApi();
+  const { symbol: nativeSymbol, decimals: nativeDecimals } = useChainSettings();
 
   return useMemo(() => {
     if (!api) {
@@ -88,19 +105,29 @@ export function useBatchTreasurySpendsNotePreimageTx(spendInputs) {
             throw new Error("Invalid beneficiary");
           }
 
-          const asset = getAssetBySymbol(symbol);
-          if (!asset) {
-            throw new Error("Invalid asset");
+          if (symbol === nativeSymbol) {
+            const bnValue = checkInputValue(inputBalance, nativeDecimals);
+            return api.tx.treasury.spend(
+              getNativeKindParam(),
+              bnValue.toFixed(),
+              getBeneficiaryParam(beneficiary),
+              validFrom ? parseInt(validFrom) : null,
+            );
+          } else {
+            const asset = getAssetBySymbol(symbol);
+            if (!asset) {
+              throw new Error("Invalid asset");
+            }
+
+            const bnValue = checkInputValue(inputBalance, asset.decimals);
+
+            return api.tx.treasury.spend(
+              getAssetKindParam(asset.id),
+              bnValue.toFixed(),
+              getBeneficiaryParam(beneficiary),
+              validFrom ? parseInt(validFrom) : null,
+            );
           }
-
-          const bnValue = checkInputValue(inputBalance, asset.decimals);
-
-          return api.tx.treasury.spend(
-            getAssetKindParam(asset.id),
-            bnValue.toFixed(),
-            getBeneficiaryParam(beneficiary),
-            validFrom ? parseInt(validFrom) : null,
-          );
         },
       );
       const proposal = api.tx.utility.batch(spendTxs);
@@ -108,7 +135,7 @@ export function useBatchTreasurySpendsNotePreimageTx(spendInputs) {
     } catch (e) {
       return {};
     }
-  }, [api, spendInputs]);
+  }, [api, spendInputs, nativeSymbol, nativeDecimals]);
 }
 
 function RemovePayoutButton({ onClick }) {
@@ -198,7 +225,7 @@ function useBatchSpendInputs() {
                 Please input an AssetHub address as the beneficiary
               </InfoMessage>
             </div>
-            <USDxBalance
+            <MultiSymbolBalance
               inputBalance={input["inputBalance"]}
               setInputBalance={memoCallback(
                 (value) => updateSpendInput(input.index, "inputBalance", value),
