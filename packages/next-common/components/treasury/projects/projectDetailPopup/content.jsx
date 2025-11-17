@@ -10,7 +10,7 @@ import usePopupDetailTabs, { TAB_VALUES } from "../hooks/usePopupDetailTabs";
 
 export default function ProjectContent({ project }) {
   const { proposals: proposalList, spends: spendList } = project;
-  const [activeTabId, setActiveTabId] = useState(TAB_VALUES.proposals);
+  const [activeTabId, setActiveTabId] = useState(TAB_VALUES.spends);
   const { tabs, proposals, spends, proposalsLoading, spendsLoading } =
     usePopupDetailTabs({ proposalList, spendList });
 
@@ -51,6 +51,11 @@ function ProjectSummary({
           prefix="$"
         />
       </SummaryItem>
+      <SummaryItem title="Spends" className="[&_div]:flex">
+        <LoadableContent isLoading={spendsLoading}>
+          <ValueDisplay value={toPrecision(spendsTotal)} symbol="" prefix="$" />
+        </LoadableContent>
+      </SummaryItem>
       <SummaryItem title="Proposals" className="[&_div]:flex">
         <LoadableContent isLoading={proposalsLoading}>
           <ValueDisplay
@@ -58,11 +63,6 @@ function ProjectSummary({
             symbol=""
             prefix="$"
           />
-        </LoadableContent>
-      </SummaryItem>
-      <SummaryItem title="Spends" className="[&_div]:flex">
-        <LoadableContent isLoading={spendsLoading}>
-          <ValueDisplay value={toPrecision(spendsTotal)} symbol="" prefix="$" />
         </LoadableContent>
       </SummaryItem>
     </SummaryLayout>

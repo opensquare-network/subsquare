@@ -37,18 +37,6 @@ export default function usePopupDetailTabs({ proposalList, spendList }) {
   const tabs = useMemo(
     () => [
       {
-        value: TAB_VALUES.proposals,
-        label: "Proposals",
-        activeCount: normalizedProposals?.length,
-        content: (
-          <ProjectProposalsList
-            proposals={normalizedProposals}
-            loading={proposalsLoading}
-            proposalList={proposalList}
-          />
-        ),
-      },
-      {
         value: TAB_VALUES.spends,
         label: "Spends",
         activeCount: normalizedSpends?.length,
@@ -57,6 +45,18 @@ export default function usePopupDetailTabs({ proposalList, spendList }) {
             spends={normalizedSpends}
             loading={spendsLoading}
             spendList={spendList}
+          />
+        ),
+      },
+      {
+        value: TAB_VALUES.proposals,
+        label: "Proposals",
+        activeCount: normalizedProposals?.length,
+        content: (
+          <ProjectProposalsList
+            proposals={normalizedProposals}
+            loading={proposalsLoading}
+            proposalList={proposalList}
           />
         ),
       },
