@@ -51,7 +51,7 @@ function ProjectSummary({
           prefix="$"
         />
       </SummaryItem>
-      <SummaryItem title="Proposals">
+      <SummaryItem title="Proposals" className="[&_div]:flex">
         <LoadableContent isLoading={proposalsLoading}>
           <ValueDisplay
             value={toPrecision(proposalsTotal)}
@@ -60,7 +60,7 @@ function ProjectSummary({
           />
         </LoadableContent>
       </SummaryItem>
-      <SummaryItem title="Spends">
+      <SummaryItem title="Spends" className="[&_div]:flex">
         <LoadableContent isLoading={spendsLoading}>
           <ValueDisplay value={toPrecision(spendsTotal)} symbol="" prefix="$" />
         </LoadableContent>
