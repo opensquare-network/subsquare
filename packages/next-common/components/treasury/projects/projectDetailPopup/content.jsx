@@ -6,7 +6,6 @@ import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
 import BigNumber from "bignumber.js";
 import LoadableContent from "next-common/components/common/loadableContent";
-import { usePriceType } from "../context/projectProvider";
 import usePopupDetailTabs, { TAB_VALUES } from "../hooks/usePopupDetailTabs";
 
 export default function ProjectContent({ project }) {
@@ -40,22 +39,17 @@ function ProjectSummary({
   proposalsLoading,
   spendsLoading,
 }) {
-  const { priceType } = usePriceType();
-
   const proposalsTotal = useMemo(
-    () => calcTotalByPriceType(proposals, priceType),
-    [proposals, priceType],
+    () => calcTotal(proposals.map((proposal) => proposal.fiatAtFinal)),
+    [proposals],
   );
-  const spendsTotal = useMemo(
-    () => calcTotalByPriceType(spends, priceType),
-    [spends, priceType],
-  );
+  const spendsTotal = useMemo(() => calcTotal(spends), [spends]);
 
   return (
     <SummaryLayout>
       <SummaryItem title="Total">
         <ValueDisplay
-          value={toPrecision(project[priceType])}
+          value={toPrecision(project.fiatAtFinal)}
           symbol=""
           prefix="$"
         />
@@ -78,13 +72,13 @@ function ProjectSummary({
   );
 }
 
-function calcTotalByPriceType(list, priceType) {
+function calcTotal(list) {
   if (!list?.length) {
     return BigNumber(0);
   }
   return list.reduce((acc, item) => {
     const proportion = item.proportion ?? 1;
-    const value = BigNumber(item[priceType] ?? 0)
+    const value = BigNumber(item.fiatAtFinal ?? 0)
       .times(proportion)
       .toFixed(2);
     return acc.plus(value);

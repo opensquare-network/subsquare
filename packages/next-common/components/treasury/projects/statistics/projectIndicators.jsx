@@ -1,6 +1,5 @@
 import { useState, useCallback } from "react";
-import ValueDisplay from "next-common/components/valueDisplay";
-import { toPrecision } from "next-common/utils";
+import { formatNum } from "next-common/utils";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 
 const ProjectProposalsPopup = dynamicPopup(() =>
@@ -32,11 +31,11 @@ export default function ProjectIndicators({ data, projects = [] }) {
   const { name, percentage, backgroundColor, data: fiatAtFinals } = datasets[0];
 
   return (
-    <div className="flex flex-1 flex-col gap-y-[2px] justify-center">
+    <div className="flex flex-1 flex-col gap-y-2 justify-center text12Medium">
       {labels.map((label, index) => (
         <div
           key={index}
-          className="flex justify-between items-center cursor-pointer"
+          className="flex justify-between items-center cursor-pointer hover:underline"
           onClick={() => handleProjectClick(label)}
         >
           <div>
@@ -44,17 +43,12 @@ export default function ProjectIndicators({ data, projects = [] }) {
               className="w-[12px] h-[12px] rounded-[2px] inline-block mr-2"
               style={{ backgroundColor: backgroundColor[index] }}
             />
-            <span className="text12Medium text-textPrimary">{name[index]}</span>
-            <ValueDisplay
-              className="text12Medium text-textPrimary ml-1"
-              value={toPrecision(fiatAtFinals[index])}
-              symbol=""
-              prefix="$"
-            />
+            <span className="text-textPrimary">{name[index]}</span>
+            <span className="text-textPrimary ml-1">
+              {formatNum(fiatAtFinals[index])}
+            </span>
           </div>
-          <span className="text12Medium text-textSecondary">
-            {percentage[index]}
-          </span>
+          <span className="text-textSecondary">{percentage[index]}</span>
         </div>
       ))}
       {showProjectProposalsPopup && (
