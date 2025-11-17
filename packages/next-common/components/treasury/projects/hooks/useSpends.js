@@ -1,4 +1,5 @@
 import { useAsync } from "react-use";
+import dayjs from "dayjs";
 import { backendApi } from "next-common/services/nextApi";
 import normalizeTreasurySpendListItem from "next-common/utils/viewfuncs/treasury/normalizeTreasurySpendListItem";
 import { useChain } from "next-common/context/chain";
@@ -20,7 +21,10 @@ export default function useSpends(spendIndexes = []) {
           ? normalizeTreasurySpendListItem(chain, result.value)
           : null,
       )
-      .filter(Boolean);
+      .filter(Boolean)
+      .sort(
+        (a, b) => dayjs(b.updatedAt).valueOf() - dayjs(a.updatedAt).valueOf(),
+      );
   }, [spendIndexes, chain]);
 
   return { spends, loading };
