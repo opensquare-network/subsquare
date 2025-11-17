@@ -2,6 +2,8 @@ import {
   isCollectivesChain,
   isKusamaChain,
   isPolkadotChain,
+  isWestendChain,
+  isPaseoChain,
 } from "next-common/utils/chain";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useChain } from "../chain";
@@ -54,6 +56,14 @@ function getPeopleChain(chain) {
 
   if (isKusamaChain(chain)) {
     return Chains.kusamaPeople;
+  }
+
+  if (isWestendChain(chain)) {
+    return Chains.westendPeople;
+  }
+
+  if (isPaseoChain(chain)) {
+    return Chains.paseoPeople;
   }
 
   return null;
