@@ -5,6 +5,7 @@ import TreasuryStatusSummaryPanel from "next-common/components/treasury/status/s
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import TreasuryProjects from "next-common/components/treasury/projects";
 import panelTabs from "next-common/components/treasury/status/panelTabs";
+import { backendApi } from "next-common/services/nextApi";
 
 const seoInfo = { title: "Treasury Projects", desc: "Treasury Projects" };
 
@@ -27,9 +28,11 @@ export default function TreasuryProjectsPage() {
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const tracksProps = await fetchOpenGovTracksProps();
+  const { result } = await backendApi.fetch("/treasury/status/projects");
 
   return {
     props: {
+      projects: result ?? [],
       ...tracksProps,
     },
   };

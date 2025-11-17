@@ -1,12 +1,12 @@
 import BigNumber from "bignumber.js";
 import { useMemo } from "react";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import { Skeleton } from "next-common/components/skeleton";
 import ProjectStatisticsChart from "./chart";
-import { usePriceType, useProjects } from "../context/projectProvider";
+import { usePriceType } from "../context/projectProvider";
+import { usePageProps } from "next-common/context/page";
 
 export default function Statistics() {
-  const { projects, loading } = useProjects();
+  const { projects = [] } = usePageProps();
   const { priceType } = usePriceType();
 
   const totalFiat = useMemo(() => {
@@ -21,11 +21,7 @@ export default function Statistics() {
 
   return (
     <SecondaryCard className="flex gap-6 justify-start w-full max-sm:flex-col">
-      {loading ? (
-        <Skeleton className="w-full rounded-lg h-[120px]" />
-      ) : (
-        <ProjectStatisticsChart projects={projects} totalFiat={totalFiat} />
-      )}
+      <ProjectStatisticsChart projects={projects} totalFiat={totalFiat} />
     </SecondaryCard>
   );
 }

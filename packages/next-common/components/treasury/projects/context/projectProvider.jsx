@@ -1,5 +1,4 @@
 import { createContext, useContext, useState } from "react";
-import useTreasuryProjects from "../hooks/useProjects";
 
 export const PRICE_TYPE = {
   FIAT_AT_SUBMISSION: "fiatAtSubmission",
@@ -10,12 +9,9 @@ const ProjectContext = createContext(null);
 
 export default function ProjectProvider({ children }) {
   const [priceType, setPriceType] = useState(PRICE_TYPE.FIAT_AT_SUBMISSION);
-  const { projects, loading } = useTreasuryProjects();
 
   return (
-    <ProjectContext.Provider
-      value={{ projects, loading, priceType, setPriceType }}
-    >
+    <ProjectContext.Provider value={{ priceType, setPriceType }}>
       {children}
     </ProjectContext.Provider>
   );
@@ -23,11 +19,6 @@ export default function ProjectProvider({ children }) {
 
 export function useProjectContext() {
   return useContext(ProjectContext);
-}
-
-export function useProjects() {
-  const { projects, loading } = useProjectContext();
-  return { projects, loading };
 }
 
 export function usePriceType() {
