@@ -2,7 +2,7 @@ import PopupLabel from "../label";
 import CurrencyInput from "next-common/components/currencyInput";
 import { toPrecision } from "next-common/utils";
 import useApiProperties from "next-common/hooks/useApiProperties";
-import FieldLoading from "next-common/components/icons/fieldLoading";
+import { Skeleton } from "next-common/components/skeleton";
 
 export default function ExistentialDeposit({ destApi, title }) {
   const { decimals, isLoading } = useApiProperties(destApi);
@@ -12,7 +12,7 @@ export default function ExistentialDeposit({ destApi, title }) {
     <div>
       <PopupLabel text={title || "Destination Existential Deposit"} />
       {loading ? (
-        <FieldLoading />
+        <Skeleton className="h-[40px]" />
       ) : (
         <CurrencyInput
           disabled
