@@ -18,6 +18,7 @@ import useCrossChainTeleport from "./useCrossChainTeleport";
 import useNativeTransferAmount from "./useNativeTransferAmount";
 import PeopleApiProvider from "next-common/context/people/api";
 import CoretimeApiProvider from "next-common/context/coretime/api";
+import { CollectivesApiProvider } from "next-common/context/collectives/api";
 import Tooltip from "next-common/components/tooltip";
 
 function TooltipDisabledGuard({ disabled, children }) {
@@ -127,7 +128,9 @@ export default function ParaChainTeleportPopup(props) {
     <PopupWithSigner title="Cross-chain" {...props}>
       <PeopleApiProvider>
         <CoretimeApiProvider>
-          <PopupContent />
+          <CollectivesApiProvider>
+            <PopupContent />
+          </CollectivesApiProvider>
         </CoretimeApiProvider>
       </PeopleApiProvider>
     </PopupWithSigner>
