@@ -6,7 +6,7 @@ import { toPrecision } from "next-common/utils";
 export default function ProjectStatisticsSummary({ totalFiat }) {
   return (
     <SummaryLayout className="w-auto grid-cols-1 max-sm:w-full max-sm:grid-cols-1">
-      <SummaryItem title="Category Total" className="justify-start">
+      <SummaryItem title="Total" className="justify-start">
         <ValueDisplay
           className="text-textPrimary text20Bold"
           value={toPrecision(totalFiat)}
