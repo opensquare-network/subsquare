@@ -20,13 +20,7 @@ const getAssetKindParam = (assetId) => {
     V4: {
       location: {
         parents: 0,
-        interior: {
-          X1: [
-            {
-              Parachain: 1000,
-            },
-          ],
-        },
+        interior: "Here",
       },
       assetId: {
         parents: 0,
@@ -50,13 +44,7 @@ const getBeneficiaryParam = (beneficiary) => {
     V4: {
       location: {
         parents: 0,
-        interior: {
-          X1: [
-            {
-              Parachain: 1000,
-            },
-          ],
-        },
+        interior: "Here",
       },
       accountId: {
         parents: 0,
