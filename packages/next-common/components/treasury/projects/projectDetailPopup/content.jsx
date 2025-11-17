@@ -39,10 +39,7 @@ function ProjectSummary({
   proposalsLoading,
   spendsLoading,
 }) {
-  const proposalsTotal = useMemo(
-    () => calcTotal(proposals.map((proposal) => proposal.fiatAtFinal)),
-    [proposals],
-  );
+  const proposalsTotal = useMemo(() => calcTotal(proposals), [proposals]);
   const spendsTotal = useMemo(() => calcTotal(spends), [spends]);
 
   return (
