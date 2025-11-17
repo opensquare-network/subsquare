@@ -1,5 +1,5 @@
 import ValueDisplay from "next-common/components/valueDisplay";
-import { toPrecision } from "next-common/utils";
+import { formatNum, toPrecision } from "next-common/utils";
 import { PostTitleImpl } from "next-common/components/profile/votingHistory/common";
 import { usePriceType } from "../context/projectProvider";
 import BigNumber from "bignumber.js";
@@ -53,7 +53,7 @@ function RequestCol({ proposal }) {
 
   const totalValue = useMemo(() => {
     return BigNumber(proposal[priceType] ?? 0);
-  }, [proposal[priceType]]);
+  }, [proposal, priceType]);
 
   const value = useMemo(() => {
     return totalValue.times(proposal.proportion).toFixed(2);
@@ -72,7 +72,9 @@ function RequestCol({ proposal }) {
 
   return (
     <Tooltip
-      content={`Total: ${totalValue} proportion: ${value}(${proportion}%)`}
+      content={`Total: ${formatNum(totalValue)} proportion: ${formatNum(
+        value,
+      )}(${proportion}%)`}
     >
       <ValueDisplay
         value={toPrecision(value)}

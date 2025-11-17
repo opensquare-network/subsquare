@@ -27,16 +27,16 @@ function ProjectStatisticsHeader() {
     { value: PRICE_TYPE.FIAT_AT_FINAL, label: "Fiat at Final" },
   ];
   return (
-    <div className="flex justify-between items-center mr-6">
+    <div className="flex justify-between items-center mr-6 max-sm:flex-col max-sm:gap-y-2 max-sm:items-start">
       <TitleContainer className="justify-start">Wallet</TitleContainer>
-      <div className="flex items-center gap-x-2">
+      <div className="flex items-center gap-x-2 max-sm:ml-6">
         <div className="flex items-center gap-x-1">
           <span className="text12Medium text-textSecondary">Price Type:</span>
           <Tooltip content="The price type of the projects" />
         </div>
         <Select
           small
-          className="w-[200px] text12Medium"
+          className="w-[160px] text12Medium"
           value={priceType}
           options={priceTypeOptions}
           onChange={(item) => setPriceType(item.value)}

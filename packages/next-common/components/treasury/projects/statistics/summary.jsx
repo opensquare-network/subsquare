@@ -27,7 +27,7 @@ export default function ProjectStatisticsSummary({
   }, [projects]);
 
   return (
-    <SummaryLayout className="w-auto grid-cols-1 max-sm:w-full max-sm:flex-col">
+    <SummaryLayout className="w-auto grid-cols-1 max-sm:w-full max-sm:grid-cols-1">
       <SummaryItem title="Category Total">
         <LoadableContent isLoading={loading}>
           <ValueDisplay value={toPrecision(totalFiat)} symbol="" prefix="$" />

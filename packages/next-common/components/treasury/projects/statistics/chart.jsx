@@ -4,6 +4,7 @@ import BigNumber from "bignumber.js";
 import ProjectDoughnutChart from "./doughnutChart";
 import ProjectIndicators from "./projectIndicators";
 import { usePriceType } from "../context/projectProvider";
+import ProjectSummary from "./summary";
 
 export default function ProjectStatisticsChart({ projects, totalFiat }) {
   const { priceType } = usePriceType();
@@ -41,8 +42,9 @@ export default function ProjectStatisticsChart({ projects, totalFiat }) {
   }, [projects, totalFiat, priceType]);
 
   return (
-    <div className="flex flex-wrap gap-6 w-1/2 max-sm:w-full max-sm:flex-col">
-      <div className="flex items-center justify-center">
+    <div className="flex flex-wrap gap-6 w-full max-sm:flex-col">
+      <div className="flex items-center w-1/2 max-sm:w-full justify-between">
+        <ProjectSummary totalFiat={totalFiat} projects={projects} />
         <ProjectDoughnutChart data={data} />
       </div>
       <ProjectIndicators data={data} projects={projects} />
