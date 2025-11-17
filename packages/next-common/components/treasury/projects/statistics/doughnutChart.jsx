@@ -32,7 +32,7 @@ const options = {
           const name = item.dataset.name[item.dataIndex];
           const percentage = item.dataset.percentage[item.dataIndex];
           const count = item.dataset.data[item.dataIndex];
-          return `${name}: ${formatNum(count)} (${percentage})`;
+          return [name, `${formatNum(count)} (${percentage})`];
         },
       },
     },
@@ -46,7 +46,7 @@ export default function ProjectDoughnutChart({ data }) {
   }
 
   return (
-    <div style={{ width: 160, height: 120 }}>
+    <div style={{ width: 160, height: 80 }}>
       <Doughnut data={data} options={options} />
     </div>
   );
