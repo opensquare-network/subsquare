@@ -37,7 +37,7 @@ export function getState(api, proposal) {
     encodedProposal = proposal.method.toHex();
     encodedLength = Math.ceil((encodedProposal.length - 2) / 2);
     encodedHash = chainApiHash(encodedProposal);
-    notePreimageTx = api.tx.preimage.notePreimage(encodedProposal);
+    notePreimageTx = proposal; //api.tx.preimage.notePreimage(encodedProposal);
   }
 
   return {

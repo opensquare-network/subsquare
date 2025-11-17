@@ -32,6 +32,16 @@ export function SpendUSDxTreasuryButton({ onClick }) {
   );
 }
 
+export function BatchSpendTreasuryButton({ onClick }) {
+  return (
+    <ChoiceButton
+      name="Batch treasury spend"
+      description="Create multiple treasury spends in a single batch proposal"
+      onClick={onClick}
+    />
+  );
+}
+
 export function SpendDotOnAssetHubButton({ onClick }) {
   return (
     <ChoiceButton
