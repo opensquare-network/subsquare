@@ -72,7 +72,7 @@ function RequestCol({ proposal }) {
 
   return (
     <Tooltip
-      content={`Total: ${formatNum(totalValue)} proportion: ${formatNum(
+      content={`Total: ${formatNum(totalValue)} Proportion: ${formatNum(
         value,
       )}(${proportion}%)`}
     >
