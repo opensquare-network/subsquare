@@ -1,19 +1,11 @@
 const defaultKusamaNodes = [
   {
-    name: "Parity",
-    url: "wss://kusama-rpc.polkadot.io",
-  },
-  {
     name: "IBP1",
     url: "wss://rpc.ibp.network/kusama",
   },
   {
     name: "Stakeworld",
     url: "wss://ksm-rpc.stakeworld.io",
-  },
-  {
-    name: "SubQuery",
-    url: "wss://kusama.rpc.subquery.network/public/ws",
   },
   {
     name: "OnFinality",
@@ -25,7 +17,7 @@ const defaultKusamaNodes = [
   },
   {
     name: "Dwellir",
-    url: "wss://kusama-rpc.dwellir.com",
+    url: "wss://kusama-rpc.n.dwellir.com",
   },
   {
     name: "Allnodes",
@@ -42,6 +34,18 @@ const defaultKusamaNodes = [
   {
     name: "LuckyFriday",
     url: "wss://rpc-kusama.luckyfriday.io",
+  },
+  {
+    name: "Blockops",
+    url: "wss://kusama-public-rpc.blockops.network/ws",
+  },
+  {
+    name: "RadiumBlock",
+    url: "wss://kusama.public.curie.radiumblock.co/ws",
+  },
+  {
+    name: "light client",
+    url: "light://substrate-connect/kusama",
   },
 ];
 
