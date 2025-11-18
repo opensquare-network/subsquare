@@ -14,6 +14,8 @@ import DateOnlySelectModal from "next-common/components/calendar/dateSelectModal
 import { useChainSettings } from "next-common/context/chain";
 import dayjs from "dayjs";
 import IconButton from "next-common/components/iconButton";
+import Select from "next-common/components/select";
+import NumberInput from "next-common/lib/input/number";
 
 const PROMPT_WIKI_LINK =
   "https://wiki.polkadot.network/docs/learn-guides-treasury#specifying-validfrom-optional";
@@ -49,15 +51,38 @@ function ValidFromFieldWarning() {
   );
 }
 
-export default function ValidFromField({ title = "", value, setValue }) {
-  const [shouldShowWarning, setShouldShowWarning] = useState(false);
+const modeOptions = [
+  { label: <span>Date</span>, value: "date" },
+  {
+    label: <span className="whitespace-nowrap">Block</span>,
+    value: "block",
+  },
+];
+
+function ModeSelect({ mode, setMode }) {
+  return (
+    <div className="flex items-center gap-2 text12Medium text-textTertiary">
+      <span>Mode</span>
+      <Select
+        small
+        itemHeight={24}
+        className="!py-2 text12Medium w-[80px]"
+        options={modeOptions}
+        value={mode}
+        onChange={({ value }) => setMode(value)}
+      />
+    </div>
+  );
+}
+
+function DateModeInput({ value, setValue }) {
   const latestHeight = useChainOrScanHeight();
   const [showDateSelectModal, setShowDateSelectModal] = useState(false);
   const { blockTime } = useChainSettings();
 
   const onSelectDate = useCallback(
     (selectedDate) => {
-      const now = dayjs().startOf("day").valueOf();
+      const now = dayjs().valueOf();
       const selectedTime = selectedDate.getTime();
       const diffInMs = selectedTime - now;
       const estimatedBlocks = Math.ceil(diffInMs / blockTime);
@@ -72,6 +97,50 @@ export default function ValidFromField({ title = "", value, setValue }) {
   const date = value
     ? new Date(Date.now() + (parseInt(value) - latestHeight) * blockTime)
     : null;
+
+  return (
+    <>
+      <Input
+        placeholder="Immediately"
+        value={date ? dayjs(date).format("YYYY-MM-DD HH:mm") : ""}
+        symbol={
+          value ? (
+            <IconButton onClick={() => setValue("")}>Clear Date</IconButton>
+          ) : (
+            <IconButton onClick={() => setShowDateSelectModal(true)}>
+              Select Date
+            </IconButton>
+          )
+        }
+        disabled
+      />
+      {showDateSelectModal && (
+        <DateOnlySelectModal
+          onClose={() => setShowDateSelectModal(false)}
+          defaultSelectedDate={date}
+          onSelect={onSelectDate}
+        />
+      )}
+    </>
+  );
+}
+
+function BlockModeInput({ value, setValue }) {
+  return (
+    <NumberInput
+      value={value}
+      placeholder="Immediately"
+      symbol="Block Height"
+      onValueChange={setValue}
+      controls={false}
+    />
+  );
+}
+
+export default function ValidFromField({ title = "", value, setValue }) {
+  const [shouldShowWarning, setShouldShowWarning] = useState(false);
+  const latestHeight = useChainOrScanHeight();
+  const [mode, setMode] = useState("date");
 
   useDebounce(
     () => {
@@ -92,36 +161,21 @@ export default function ValidFromField({ title = "", value, setValue }) {
     <div>
       <div className="flex justify-between items-center mb-[8px]">
         <PopupLabel text={title} />
+        <ModeSelect mode={mode} setMode={setMode} />
       </div>
       <div className="flex items-center gap-[8px]">
         <div className="flex flex-col w-full">
-          <Input
-            placeholder="Immediately"
-            value={date ? dayjs(date).format("YYYY-MM-DD") : ""}
-            symbol={
-              value ? (
-                <IconButton onClick={() => setValue("")}>Clear Date</IconButton>
-              ) : (
-                <IconButton onClick={() => setShowDateSelectModal(true)}>
-                  Select Date
-                </IconButton>
-              )
-            }
-            disabled
-          />
+          {mode === "date" ? (
+            <DateModeInput value={value} setValue={setValue} />
+          ) : (
+            <BlockModeInput value={value} setValue={setValue} />
+          )}
         </div>
       </div>
       <ValidFromFieldPrompt>
         {value ? PROMPT_EDITABLE_CONTENT : PROMPT_DISABLE_CONTENT}
       </ValidFromFieldPrompt>
       {shouldShowWarning && <ValidFromFieldWarning />}
-      {showDateSelectModal && (
-        <DateOnlySelectModal
-          onClose={() => setShowDateSelectModal(false)}
-          defaultSelectedDate={date}
-          onSelect={onSelectDate}
-        />
-      )}
     </div>
   );
 }
