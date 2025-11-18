@@ -8,7 +8,7 @@ import { InfoMessage } from "next-common/components/setting/styled";
 import { getAssetBySymbol } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import NotePreimageButton from "../notePreimageButton";
-import { MultiSymbolBalance } from "../fields/useMultiSymbolBalanceField";
+import { MultiSymbolBalance } from "../fields/multiSymbolBalance";
 import {
   useExtensionAccounts,
   usePopupParams,
