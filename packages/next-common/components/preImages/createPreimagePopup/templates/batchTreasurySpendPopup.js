@@ -198,7 +198,7 @@ export function useBatchSpendInputs() {
     );
   };
 
-  const memoCallback = useMemorizer();
+  const memorize = useMemorizer();
 
   const component = (
     <>
@@ -210,7 +210,7 @@ export function useBatchSpendInputs() {
                 title="Beneficiary"
                 defaultAddress={input["beneficiary"]}
                 extensionAccounts={extensionAccounts}
-                setAddress={memoCallback(
+                setAddress={memorize(
                   (value) =>
                     updateSpendInput(input.index, "beneficiary", value),
                   [input.index, "beneficiary"],
@@ -230,12 +230,12 @@ export function useBatchSpendInputs() {
             </div>
             <MultiSymbolBalance
               inputBalance={input["inputBalance"]}
-              setInputBalance={memoCallback(
+              setInputBalance={memorize(
                 (value) => updateSpendInput(input.index, "inputBalance", value),
                 [input.index, "inputBalance"],
               )}
               symbol={input["symbol"]}
-              setSymbol={memoCallback(
+              setSymbol={memorize(
                 (value) => updateSpendInput(input.index, "symbol", value),
                 [input.index, "symbol"],
               )}
@@ -243,7 +243,7 @@ export function useBatchSpendInputs() {
             <ValidFromField
               title="Valid From"
               value={input["validFrom"]}
-              setValue={memoCallback(
+              setValue={memorize(
                 (value) => updateSpendInput(input.index, "validFrom", value),
                 [input.index, "validFrom"],
               )}
