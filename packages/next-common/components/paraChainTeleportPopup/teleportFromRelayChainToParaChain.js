@@ -31,39 +31,41 @@ function getTeleportParamsFromRelayChainToParaChain({
 }) {
   return [
     {
-      V3: {
-        interior: {
-          X1: {
-            ParaChain: paraChainId,
-          },
-        },
+      V4: {
         parents: 0,
-      },
-    },
-    {
-      V3: {
         interior: {
-          X1: {
-            AccountId32: {
-              id: api.createType("AccountId32", transferToAddress).toHex(),
-              network: null,
+          X1: [
+            {
+              ParaChain: paraChainId,
             },
-          },
+          ],
         },
-        parents: 0,
       },
     },
     {
-      V3: [
+      V4: {
+        parents: 0,
+        interior: {
+          X1: [
+            {
+              AccountId32: {
+                id: api.createType("AccountId32", transferToAddress).toHex(),
+                network: null,
+              },
+            },
+          ],
+        },
+      },
+    },
+    {
+      V4: [
         {
+          id: {
+            parents: 0,
+            interior: "Here",
+          },
           fun: {
             Fungible: amount,
-          },
-          id: {
-            Concrete: {
-              interior: "Here",
-              parents: 0,
-            },
           },
         },
       ],

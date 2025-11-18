@@ -12,10 +12,6 @@ const defaultKusamaNodes = [
     url: "wss://ksm-rpc.stakeworld.io",
   },
   {
-    name: "SubQuery",
-    url: "wss://kusama.rpc.subquery.network/public/ws",
-  },
-  {
     name: "OnFinality",
     url: "wss://kusama.api.onfinality.io/public-ws",
   },
@@ -25,7 +21,7 @@ const defaultKusamaNodes = [
   },
   {
     name: "Dwellir",
-    url: "wss://kusama-rpc.dwellir.com",
+    url: "wss://kusama-rpc.n.dwellir.com",
   },
   {
     name: "Allnodes",
@@ -42,6 +38,14 @@ const defaultKusamaNodes = [
   {
     name: "LuckyFriday",
     url: "wss://rpc-kusama.luckyfriday.io",
+  },
+  {
+    name: "Blockops",
+    url: "wss://kusama-public-rpc.blockops.network/ws",
+  },
+  {
+    name: "RadiumBlock",
+    url: "wss://kusama.public.curie.radiumblock.co/ws",
   },
 ];
 

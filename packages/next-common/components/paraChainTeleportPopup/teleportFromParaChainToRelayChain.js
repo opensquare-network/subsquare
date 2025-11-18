@@ -5,32 +5,32 @@ function getTeleportParamsFromParaChainToRelayChain({
 }) {
   return [
     {
-      V3: {
+      V4: {
         parents: 1,
         interior: "Here",
       },
     },
     {
-      V3: {
+      V4: {
         parents: 0,
         interior: {
-          X1: {
-            AccountId32: {
-              id: api.createType("AccountId32", transferToAddress).toHex(),
-              network: null,
+          X1: [
+            {
+              AccountId32: {
+                id: api.createType("AccountId32", transferToAddress).toHex(),
+                network: null,
+              },
             },
-          },
+          ],
         },
       },
     },
     {
-      V3: [
+      V4: [
         {
           id: {
-            Concrete: {
-              parents: 1,
-              interior: "Here",
-            },
+            parents: 1,
+            interior: "Here",
           },
           fun: {
             Fungible: amount,

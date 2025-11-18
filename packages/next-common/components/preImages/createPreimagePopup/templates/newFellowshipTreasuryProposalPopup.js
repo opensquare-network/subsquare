@@ -18,22 +18,20 @@ import ExtrinsicInfo from "../../newPreimagePopup/info";
 
 const getAssetKindParam = () => {
   return {
-    V3: {
+    V4: {
       location: {
         parents: 1,
         interior: {
-          X1: {
-            Parachain: 1000,
-          },
+          X1: [
+            {
+              Parachain: 1000,
+            },
+          ],
         },
       },
       assetId: {
-        Concrete: {
-          parents: 1,
-          interior: {
-            here: null,
-          },
-        },
+        parents: 1,
+        interior: "Here",
       },
     },
   };
@@ -41,15 +39,17 @@ const getAssetKindParam = () => {
 
 const getBeneficiaryParam = (beneficiary) => {
   return {
-    V3: {
+    V4: {
       parents: 0,
       interior: {
-        X1: {
-          AccountId32: {
-            network: null,
-            id: "0x" + addressToPublicKey(beneficiary),
+        X1: [
+          {
+            AccountId32: {
+              network: null,
+              id: "0x" + addressToPublicKey(beneficiary),
+            },
           },
-        },
+        ],
       },
     },
   };
