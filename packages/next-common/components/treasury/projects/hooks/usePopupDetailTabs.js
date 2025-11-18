@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import ProjectProposalsList from "../projectDetailPopup/proposalsList";
 import ProjectSpendsList from "../projectDetailPopup/spendsList";
+import ProjectChildBountiesList from "../projectDetailPopup/childBountiesList";
 import useProposals from "./useProposals";
 import useSpends from "./useSpends";
 import BigNumber from "bignumber.js";
@@ -8,21 +9,31 @@ import { toPrecision } from "next-common/utils";
 import { CHAIN } from "next-common/utils/constants";
 import getChainSettings from "next-common/utils/consts/settings";
 import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
+import useChildBounties from "./usechildBounties";
 
 export const TAB_VALUES = {
   proposals: "proposals",
   spends: "spends",
+  childBounties: "childBounties",
 };
 
-export default function usePopupDetailTabs({ proposalList, spendList }) {
-  const { proposalIndexes, spendIndexes } = useFormatIndexes({
-    proposalList,
-    spendList,
-  });
+export default function usePopupDetailTabs({
+  proposalList,
+  spendList,
+  childBountyList,
+}) {
+  const { proposalIndexes, spendIndexes, childBountyIndexes } =
+    useFormatIndexes({
+      proposalList,
+      spendList,
+      childBountyList,
+    });
 
   const { proposals, loading: proposalsLoading } =
     useProposals(proposalIndexes);
   const { spends, loading: spendsLoading } = useSpends(spendIndexes);
+  const { childBounties, loading: childBountiesLoading } =
+    useChildBounties(childBountyIndexes);
 
   const normalizedProposals = useMemo(
     () => normalizeProposals(proposals, proposalList),
@@ -32,6 +43,11 @@ export default function usePopupDetailTabs({ proposalList, spendList }) {
   const normalizedSpends = useMemo(
     () => normalizeSpends(spends, spendList),
     [spends, spendList],
+  );
+
+  const normalizedChildBounties = useMemo(
+    () => normalizeChildBounties(childBounties, childBountyList),
+    [childBounties, childBountyList],
   );
 
   const tabs = useMemo(
@@ -44,7 +60,6 @@ export default function usePopupDetailTabs({ proposalList, spendList }) {
           <ProjectSpendsList
             spends={normalizedSpends}
             loading={spendsLoading}
-            spendList={spendList}
           />
         ),
       },
@@ -56,7 +71,17 @@ export default function usePopupDetailTabs({ proposalList, spendList }) {
           <ProjectProposalsList
             proposals={normalizedProposals}
             loading={proposalsLoading}
-            proposalList={proposalList}
+          />
+        ),
+      },
+      {
+        value: TAB_VALUES.childBounties,
+        label: "Child Bounties",
+        activeCount: normalizedChildBounties?.length,
+        content: (
+          <ProjectChildBountiesList
+            childBounties={normalizedChildBounties}
+            loading={childBountiesLoading}
           />
         ),
       },
@@ -64,22 +89,49 @@ export default function usePopupDetailTabs({ proposalList, spendList }) {
     [
       normalizedProposals,
       normalizedSpends,
+      normalizedChildBounties,
       proposalsLoading,
       spendsLoading,
-      proposalList,
-      spendList,
+      childBountiesLoading,
     ],
   );
 
   return {
     tabs,
+    // list
     proposals: normalizedProposals,
     spends: normalizedSpends,
-    proposalsLoading,
-    spendsLoading,
+    childBounties: normalizedChildBounties,
+    // indexes
     proposalIndexes,
     spendIndexes,
+    childBountyIndexes,
+    // loading
+    proposalsLoading,
+    spendsLoading,
+    childBountiesLoading,
   };
+}
+
+function normalizeChildBounties(childBounties, childBountyList) {
+  const proportionMap = new Map(
+    childBountyList?.map((c) => [c.id, c.proportion]),
+  );
+  return childBounties?.map((childBounty) => {
+    const proportion = proportionMap.get(childBounty.id) ?? 1;
+    const { submission: submissionPrice, final: finalPrice } =
+      childBounty.onchainData?.price ?? {};
+    const value = BigNumber(childBounty.dValue);
+    const fiatAtSubmission = value.times(submissionPrice).toFixed(2);
+    const fiatAtFinal = value.times(finalPrice).toFixed(2);
+
+    return {
+      ...childBounty,
+      proportion,
+      fiatAtSubmission,
+      fiatAtFinal,
+    };
+  });
 }
 
 function normalizeProposals(proposals, proposalList) {
@@ -117,13 +169,18 @@ function normalizeSpends(spends, spendList) {
   });
 }
 
-function useFormatIndexes({ proposalList, spendList }) {
+function useFormatIndexes({
+  proposalList = [],
+  spendList = [],
+  childBountyList = [],
+}) {
   return useMemo(() => {
     return {
       proposalIndexes: proposalList.map((proposal) => proposal.id),
       spendIndexes: spendList.map((spend) => spend.id),
+      childBountyIndexes: childBountyList.map((childBounty) => childBounty.id),
     };
-  }, [proposalList, spendList]);
+  }, [proposalList, spendList, childBountyList]);
 }
 
 function getSpendAmount(spend) {

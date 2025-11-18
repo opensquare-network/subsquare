@@ -36,6 +36,21 @@ const SpendTitleColumnsDef = {
   ),
 };
 
+const ChildBountyTitleColumnsDef = {
+  name: "Title",
+  className: "flex-1 whitespace-nowrap overflow-hidden text-ellipsis pr-2",
+  style: { textAlign: "left" },
+  render: (childBounty) => (
+    <PostTitleImpl
+      url={`/treasury/child-bounties/${childBounty.index}`}
+      title={childBounty.title}
+      noLink={false}
+      className="text14Medium flex items-center [&>a]:truncate [&>a]:max-w-full [&>a]:whitespace-nowrap [&>a]:hover:underline"
+      referendumIndex={childBounty.index}
+    />
+  ),
+};
+
 const RequestColumnsDef = {
   name: "Request",
   style: { textAlign: "right", width: "100px" },
@@ -46,12 +61,17 @@ export const proposalColumnsDef = [ProposalTitleColumnsDef, RequestColumnsDef];
 
 export const spendColumnsDef = [SpendTitleColumnsDef, RequestColumnsDef];
 
+export const childBountyColumnsDef = [
+  ChildBountyTitleColumnsDef,
+  RequestColumnsDef,
+];
+
 function RequestCol({ proposal }) {
   const proportion = proposal.proportion < 1 ? proposal.proportion * 100 : null;
 
   const totalValue = useMemo(() => {
     return BigNumber(proposal.fiatAtFinal ?? 0);
-  }, [proposal]);
+  }, [proposal.fiatAtFinal]);
 
   const value = useMemo(() => {
     return totalValue.times(proposal.proportion).toFixed(2);

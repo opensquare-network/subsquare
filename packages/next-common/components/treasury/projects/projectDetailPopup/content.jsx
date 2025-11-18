@@ -9,10 +9,21 @@ import LoadableContent from "next-common/components/common/loadableContent";
 import usePopupDetailTabs, { TAB_VALUES } from "../hooks/usePopupDetailTabs";
 
 export default function ProjectContent({ project }) {
-  const { proposals: proposalList, spends: spendList } = project;
+  const {
+    proposals: proposalList,
+    spends: spendList,
+    childBounties: childBountyList = [],
+  } = project;
   const [activeTabId, setActiveTabId] = useState(TAB_VALUES.spends);
-  const { tabs, proposals, spends, proposalsLoading, spendsLoading } =
-    usePopupDetailTabs({ proposalList, spendList });
+  const {
+    tabs,
+    proposals,
+    spends,
+    proposalsLoading,
+    spendsLoading,
+    childBounties,
+    childBountiesLoading,
+  } = usePopupDetailTabs({ proposalList, spendList, childBountyList });
 
   return (
     <>
@@ -22,6 +33,8 @@ export default function ProjectContent({ project }) {
         proposals={proposals}
         proposalsLoading={proposalsLoading}
         spendsLoading={spendsLoading}
+        childBounties={childBounties}
+        childBountiesLoading={childBountiesLoading}
       />
       <Tabs
         tabs={tabs}
@@ -38,10 +51,15 @@ function ProjectSummary({
   spends,
   proposalsLoading,
   spendsLoading,
+  childBounties,
+  childBountiesLoading,
 }) {
   const proposalsTotal = useMemo(() => calcTotal(proposals), [proposals]);
   const spendsTotal = useMemo(() => calcTotal(spends), [spends]);
-
+  const childBountiesTotal = useMemo(
+    () => calcTotal(childBounties),
+    [childBounties],
+  );
   return (
     <SummaryLayout>
       <SummaryItem title="Total">
@@ -60,6 +78,15 @@ function ProjectSummary({
         <LoadableContent isLoading={proposalsLoading}>
           <ValueDisplay
             value={toPrecision(proposalsTotal)}
+            symbol=""
+            prefix="$"
+          />
+        </LoadableContent>
+      </SummaryItem>
+      <SummaryItem title="Child Bounties" className="[&_div]:flex">
+        <LoadableContent isLoading={childBountiesLoading}>
+          <ValueDisplay
+            value={toPrecision(childBountiesTotal)}
             symbol=""
             prefix="$"
           />
