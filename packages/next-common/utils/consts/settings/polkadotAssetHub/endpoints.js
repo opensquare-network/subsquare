@@ -21,7 +21,7 @@ const polkadotAssetHubNodes = [
   },
   {
     name: "Dwellir",
-    url: "wss://asset-hub-polkadot-rpc.dwellir.com",
+    url: "wss://asset-hub-polkadot-rpc.n.dwellir.com",
   },
   {
     name: "Dwellir Tunisia",
