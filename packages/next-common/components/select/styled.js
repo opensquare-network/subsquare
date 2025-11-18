@@ -52,4 +52,12 @@ export const OptionWrapper = styled.div`
       color: var(--textPrimary);
       background-color: var(--neutral200);
     `}
+
+  ${(p) =>
+    p.disabled &&
+    css`
+      color: var(--textDisabled);
+      cursor: not-allowed !important;
+      pointer-events: none !important;
+    `}
 `;
