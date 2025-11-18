@@ -1,5 +1,9 @@
 const defaultKusamaNodes = [
   {
+    name: "Parity",
+    url: "wss://kusama-rpc.polkadot.io",
+  },
+  {
     name: "IBP1",
     url: "wss://rpc.ibp.network/kusama",
   },

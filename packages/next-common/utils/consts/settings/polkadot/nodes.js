@@ -1,5 +1,9 @@
 const defaultPolkadotNodes = [
   {
+    name: "Parity",
+    url: "wss://rpc.polkadot.io",
+  },
+  {
     name: "IBP1",
     url: "wss://rpc.ibp.network/polkadot",
   },
