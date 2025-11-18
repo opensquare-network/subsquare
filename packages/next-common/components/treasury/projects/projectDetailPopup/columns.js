@@ -4,52 +4,45 @@ import { PostTitleImpl } from "next-common/components/profile/votingHistory/comm
 import BigNumber from "bignumber.js";
 import { isNil } from "lodash-es";
 import Tooltip from "next-common/components/tooltip";
-import { useMemo } from "react";
 
-const ProposalTitleColumnsDef = {
-  name: "Title",
-  className: "flex-1 whitespace-nowrap overflow-hidden text-ellipsis pr-2",
-  style: { textAlign: "left" },
-  render: (proposal) => (
-    <PostTitleImpl
-      url={`/treasury/proposals/${proposal.proposalIndex}`}
-      title={proposal.title}
-      noLink={false}
-      className="text14Medium flex items-center [&>a]:truncate [&>a]:max-w-full [&>a]:whitespace-nowrap [&>a]:hover:underline"
-      referendumIndex={proposal.proposalIndex}
-    />
-  ),
-};
+function createTitleColumnDef({ baseUrl, getIndex, getTitle }) {
+  return {
+    name: "Title",
+    className: "flex-1 whitespace-nowrap overflow-hidden text-ellipsis pr-2",
+    style: { textAlign: "left" },
+    render: (item) => {
+      const index = getIndex(item);
+      const title = getTitle(item);
+      return (
+        <PostTitleImpl
+          url={`${baseUrl}/${index}`}
+          title={title}
+          noLink={false}
+          className="text14Medium flex items-center [&>a]:truncate [&>a]:max-w-full [&>a]:whitespace-nowrap [&>a]:hover:underline"
+          referendumIndex={index}
+        />
+      );
+    },
+  };
+}
 
-const SpendTitleColumnsDef = {
-  name: "Title",
-  className: "flex-1 whitespace-nowrap overflow-hidden text-ellipsis pr-2",
-  style: { textAlign: "left" },
-  render: (spend) => (
-    <PostTitleImpl
-      url={`/treasury/spends/${spend.index}`}
-      title={spend.title}
-      noLink={false}
-      className="text14Medium flex items-center [&>a]:truncate [&>a]:max-w-full [&>a]:whitespace-nowrap [&>a]:hover:underline"
-      referendumIndex={spend.index}
-    />
-  ),
-};
+const ProposalTitleColumnsDef = createTitleColumnDef({
+  baseUrl: "/treasury/proposals",
+  getIndex: (proposal) => proposal.proposalIndex,
+  getTitle: (proposal) => proposal.title,
+});
 
-const ChildBountyTitleColumnsDef = {
-  name: "Title",
-  className: "flex-1 whitespace-nowrap overflow-hidden text-ellipsis pr-2",
-  style: { textAlign: "left" },
-  render: (childBounty) => (
-    <PostTitleImpl
-      url={`/treasury/child-bounties/${childBounty.index}`}
-      title={childBounty.title}
-      noLink={false}
-      className="text14Medium flex items-center [&>a]:truncate [&>a]:max-w-full [&>a]:whitespace-nowrap [&>a]:hover:underline"
-      referendumIndex={childBounty.index}
-    />
-  ),
-};
+const SpendTitleColumnsDef = createTitleColumnDef({
+  baseUrl: "/treasury/spends",
+  getIndex: (spend) => spend.index,
+  getTitle: (spend) => spend.title,
+});
+
+const ChildBountyTitleColumnsDef = createTitleColumnDef({
+  baseUrl: "/treasury/child-bounties",
+  getIndex: (childBounty) => childBounty.index,
+  getTitle: (childBounty) => childBounty.title,
+});
 
 const RequestColumnsDef = {
   name: "Request",
@@ -68,14 +61,8 @@ export const childBountyColumnsDef = [
 
 function RequestCol({ proposal }) {
   const proportion = proposal.proportion < 1 ? proposal.proportion * 100 : null;
-
-  const totalValue = useMemo(() => {
-    return BigNumber(proposal.fiatAtFinal ?? 0);
-  }, [proposal.fiatAtFinal]);
-
-  const value = useMemo(() => {
-    return totalValue.times(proposal.proportion).toFixed(2);
-  }, [totalValue, proposal.proportion]);
+  const totalValue = BigNumber(proposal.fiatAtFinal ?? 0);
+  const value = totalValue.times(proposal.proportion).toFixed(2);
 
   if (isNil(proportion)) {
     return (

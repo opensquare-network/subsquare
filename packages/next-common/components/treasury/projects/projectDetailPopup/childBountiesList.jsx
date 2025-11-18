@@ -1,4 +1,4 @@
-import { MapDataList } from "next-common/components/dataList";
+import ProjectItemsList from "./itemsList";
 import { childBountyColumnsDef } from "./columns";
 
 export default function ProjectChildBountiesList({
@@ -6,11 +6,11 @@ export default function ProjectChildBountiesList({
   loading = false,
 }) {
   return (
-    <MapDataList
-      noDataText="No child bounties"
+    <ProjectItemsList
+      items={childBounties}
       loading={loading}
-      data={childBounties}
       columnsDef={childBountyColumnsDef}
+      noDataText="No child bounties"
     />
   );
 }

@@ -60,38 +60,47 @@ function ProjectSummary({
     () => calcTotal(childBounties),
     [childBounties],
   );
+
+  const summaryItems = [
+    {
+      title: "Total",
+      value: project.fiatAtFinal,
+      loading: false,
+    },
+    {
+      title: "Spends",
+      value: spendsTotal,
+      loading: spendsLoading,
+    },
+    {
+      title: "Proposals",
+      value: proposalsTotal,
+      loading: proposalsLoading,
+    },
+    {
+      title: "Child Bounties",
+      value: childBountiesTotal,
+      loading: childBountiesLoading,
+    },
+  ];
+
   return (
     <SummaryLayout>
-      <SummaryItem title="Total">
-        <ValueDisplay
-          value={toPrecision(project.fiatAtFinal)}
-          symbol=""
-          prefix="$"
-        />
-      </SummaryItem>
-      <SummaryItem title="Spends" className="[&_div]:flex">
-        <LoadableContent isLoading={spendsLoading}>
-          <ValueDisplay value={toPrecision(spendsTotal)} symbol="" prefix="$" />
-        </LoadableContent>
-      </SummaryItem>
-      <SummaryItem title="Proposals" className="[&_div]:flex">
-        <LoadableContent isLoading={proposalsLoading}>
-          <ValueDisplay
-            value={toPrecision(proposalsTotal)}
-            symbol=""
-            prefix="$"
-          />
-        </LoadableContent>
-      </SummaryItem>
-      <SummaryItem title="Child Bounties" className="[&_div]:flex">
-        <LoadableContent isLoading={childBountiesLoading}>
-          <ValueDisplay
-            value={toPrecision(childBountiesTotal)}
-            symbol=""
-            prefix="$"
-          />
-        </LoadableContent>
-      </SummaryItem>
+      {summaryItems.map(({ title, value, loading }) => (
+        <SummaryItem
+          key={title}
+          title={title}
+          className="[&>div>div:last-child]:flex"
+        >
+          {loading ? (
+            <LoadableContent isLoading={loading}>
+              <ValueDisplay value={toPrecision(value)} symbol="" prefix="$" />
+            </LoadableContent>
+          ) : (
+            <ValueDisplay value={toPrecision(value)} symbol="" prefix="$" />
+          )}
+        </SummaryItem>
+      ))}
     </SummaryLayout>
   );
 }
