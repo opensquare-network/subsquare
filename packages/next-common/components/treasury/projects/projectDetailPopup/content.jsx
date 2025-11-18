@@ -12,7 +12,7 @@ export default function ProjectContent({ project }) {
   const {
     proposals: proposalList,
     spends: spendList,
-    childBounties: childBountyList = [],
+    childBounties: childBountyList,
   } = project;
   const [activeTabId, setActiveTabId] = useState(TAB_VALUES.spends);
   const {
@@ -77,12 +77,12 @@ function ProjectSummary({
       value: proposalsTotal,
       loading: proposalsLoading,
     },
-    {
+    childBounties?.length > 0 && {
       title: "Child Bounties",
       value: childBountiesTotal,
       loading: childBountiesLoading,
     },
-  ];
+  ].filter(Boolean);
 
   return (
     <SummaryLayout>

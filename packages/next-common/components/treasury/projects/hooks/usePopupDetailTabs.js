@@ -23,11 +23,21 @@ export default function usePopupDetailTabs({
   spendList,
   childBountyList,
 }) {
+  const normalizedProposalList = useMemo(
+    () => proposalList ?? [],
+    [proposalList],
+  );
+  const normalizedSpendList = useMemo(() => spendList ?? [], [spendList]);
+  const normalizedChildBountyList = useMemo(
+    () => childBountyList ?? [],
+    [childBountyList],
+  );
+
   const { proposalIndexes, spendIndexes, childBountyIndexes } =
     useFormatIndexes({
-      proposalList,
-      spendList,
-      childBountyList,
+      proposalList: normalizedProposalList,
+      spendList: normalizedSpendList,
+      childBountyList: normalizedChildBountyList,
     });
 
   const { items: proposals, loading: proposalsLoading } = useTreasuryItems({
@@ -50,56 +60,57 @@ export default function usePopupDetailTabs({
     });
 
   const normalizedProposals = useMemo(
-    () => normalizeProposals(proposals, proposalList),
-    [proposals, proposalList],
+    () => normalizeProposals(proposals, normalizedProposalList),
+    [proposals, normalizedProposalList],
   );
 
   const normalizedSpends = useMemo(
-    () => normalizeSpends(spends, spendList),
-    [spends, spendList],
+    () => normalizeSpends(spends, normalizedSpendList),
+    [spends, normalizedSpendList],
   );
 
   const normalizedChildBounties = useMemo(
-    () => normalizeChildBounties(childBounties, childBountyList),
-    [childBounties, childBountyList],
+    () => normalizeChildBounties(childBounties, normalizedChildBountyList),
+    [childBounties, normalizedChildBountyList],
   );
 
   const tabs = useMemo(
-    () => [
-      {
-        value: TAB_VALUES.spends,
-        label: "Spends",
-        activeCount: normalizedSpends?.length,
-        content: (
-          <ProjectSpendsList
-            spends={normalizedSpends}
-            loading={spendsLoading}
-          />
-        ),
-      },
-      {
-        value: TAB_VALUES.proposals,
-        label: "Proposals",
-        activeCount: normalizedProposals?.length,
-        content: (
-          <ProjectProposalsList
-            proposals={normalizedProposals}
-            loading={proposalsLoading}
-          />
-        ),
-      },
-      {
-        value: TAB_VALUES.childBounties,
-        label: "Child Bounties",
-        activeCount: normalizedChildBounties?.length,
-        content: (
-          <ProjectChildBountiesList
-            childBounties={normalizedChildBounties}
-            loading={childBountiesLoading}
-          />
-        ),
-      },
-    ],
+    () =>
+      [
+        {
+          value: TAB_VALUES.spends,
+          label: "Spends",
+          activeCount: normalizedSpends?.length,
+          content: (
+            <ProjectSpendsList
+              spends={normalizedSpends}
+              loading={spendsLoading}
+            />
+          ),
+        },
+        {
+          value: TAB_VALUES.proposals,
+          label: "Proposals",
+          activeCount: normalizedProposals?.length,
+          content: (
+            <ProjectProposalsList
+              proposals={normalizedProposals}
+              loading={proposalsLoading}
+            />
+          ),
+        },
+        normalizedChildBounties?.length > 0 && {
+          value: TAB_VALUES.childBounties,
+          label: "Child Bounties",
+          activeCount: normalizedChildBounties?.length,
+          content: (
+            <ProjectChildBountiesList
+              childBounties={normalizedChildBounties}
+              loading={childBountiesLoading}
+            />
+          ),
+        },
+      ].filter(Boolean),
     [
       normalizedProposals,
       normalizedSpends,
@@ -183,16 +194,12 @@ function normalizeSpends(spends, spendList) {
   });
 }
 
-function useFormatIndexes({
-  proposalList = [],
-  spendList = [],
-  childBountyList = [],
-}) {
+function useFormatIndexes({ proposalList, spendList, childBountyList }) {
   return useMemo(() => {
     return {
-      proposalIndexes: proposalList.map((proposal) => proposal.id),
-      spendIndexes: spendList.map((spend) => spend.id),
-      childBountyIndexes: childBountyList.map((childBounty) => childBounty.id),
+      proposalIndexes: proposalList?.map((proposal) => proposal.id),
+      spendIndexes: spendList?.map((spend) => spend.id),
+      childBountyIndexes: childBountyList?.map((childBounty) => childBounty.id),
     };
   }, [proposalList, spendList, childBountyList]);
 }
