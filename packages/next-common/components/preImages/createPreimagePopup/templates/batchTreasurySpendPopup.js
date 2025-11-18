@@ -48,7 +48,7 @@ const getAssetKindParam = (assetId) => {
   };
 };
 
-const getNativeKindParam = () => {
+const getNativeAssetKindParam = () => {
   return {
     V4: {
       location: {
@@ -108,7 +108,7 @@ export function useBatchTreasurySpendsNotePreimageTx(spendInputs) {
           if (symbol === nativeSymbol) {
             const bnValue = checkInputValue(inputBalance, nativeDecimals);
             return api.tx.treasury.spend(
-              getNativeKindParam(),
+              getNativeAssetKindParam(),
               bnValue.toFixed(),
               getBeneficiaryParam(beneficiary),
               validFrom ? parseInt(validFrom) : null,
