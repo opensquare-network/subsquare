@@ -9,10 +9,21 @@ import LoadableContent from "next-common/components/common/loadableContent";
 import usePopupDetailTabs, { TAB_VALUES } from "../hooks/usePopupDetailTabs";
 
 export default function ProjectContent({ project }) {
-  const { proposals: proposalList, spends: spendList } = project;
+  const {
+    proposals: proposalList,
+    spends: spendList,
+    childBounties: childBountyList,
+  } = project;
   const [activeTabId, setActiveTabId] = useState(TAB_VALUES.spends);
-  const { tabs, proposals, spends, proposalsLoading, spendsLoading } =
-    usePopupDetailTabs({ proposalList, spendList });
+  const {
+    tabs,
+    proposals,
+    spends,
+    proposalsLoading,
+    spendsLoading,
+    childBounties,
+    childBountiesLoading,
+  } = usePopupDetailTabs({ proposalList, spendList, childBountyList });
 
   return (
     <>
@@ -22,6 +33,8 @@ export default function ProjectContent({ project }) {
         proposals={proposals}
         proposalsLoading={proposalsLoading}
         spendsLoading={spendsLoading}
+        childBounties={childBounties}
+        childBountiesLoading={childBountiesLoading}
       />
       <Tabs
         tabs={tabs}
@@ -38,33 +51,56 @@ function ProjectSummary({
   spends,
   proposalsLoading,
   spendsLoading,
+  childBounties,
+  childBountiesLoading,
 }) {
   const proposalsTotal = useMemo(() => calcTotal(proposals), [proposals]);
   const spendsTotal = useMemo(() => calcTotal(spends), [spends]);
+  const childBountiesTotal = useMemo(
+    () => calcTotal(childBounties),
+    [childBounties],
+  );
+
+  const summaryItems = [
+    {
+      title: "Total",
+      value: project.fiatAtFinal,
+      loading: false,
+    },
+    {
+      title: "Spends",
+      value: spendsTotal,
+      loading: spendsLoading,
+    },
+    {
+      title: "Proposals",
+      value: proposalsTotal,
+      loading: proposalsLoading,
+    },
+    childBounties?.length > 0 && {
+      title: "Child Bounties",
+      value: childBountiesTotal,
+      loading: childBountiesLoading,
+    },
+  ].filter(Boolean);
 
   return (
     <SummaryLayout>
-      <SummaryItem title="Total">
-        <ValueDisplay
-          value={toPrecision(project.fiatAtFinal)}
-          symbol=""
-          prefix="$"
-        />
-      </SummaryItem>
-      <SummaryItem title="Spends" className="[&_div]:flex">
-        <LoadableContent isLoading={spendsLoading}>
-          <ValueDisplay value={toPrecision(spendsTotal)} symbol="" prefix="$" />
-        </LoadableContent>
-      </SummaryItem>
-      <SummaryItem title="Proposals" className="[&_div]:flex">
-        <LoadableContent isLoading={proposalsLoading}>
-          <ValueDisplay
-            value={toPrecision(proposalsTotal)}
-            symbol=""
-            prefix="$"
-          />
-        </LoadableContent>
-      </SummaryItem>
+      {summaryItems.map(({ title, value, loading }) => (
+        <SummaryItem
+          key={title}
+          title={title}
+          className="[&>div>div:last-child]:flex"
+        >
+          {loading ? (
+            <LoadableContent isLoading={loading}>
+              <ValueDisplay value={toPrecision(value)} symbol="" prefix="$" />
+            </LoadableContent>
+          ) : (
+            <ValueDisplay value={toPrecision(value)} symbol="" prefix="$" />
+          )}
+        </SummaryItem>
+      ))}
     </SummaryLayout>
   );
 }

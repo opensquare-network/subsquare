@@ -1,4 +1,4 @@
-import { MapDataList } from "next-common/components/dataList";
+import ProjectItemsList from "./itemsList";
 import { proposalColumnsDef } from "./columns";
 
 export default function ProjectProposalsList({
@@ -6,11 +6,11 @@ export default function ProjectProposalsList({
   loading = false,
 }) {
   return (
-    <MapDataList
-      noDataText="No proposals"
+    <ProjectItemsList
+      items={proposals}
       loading={loading}
-      data={proposals}
       columnsDef={proposalColumnsDef}
+      noDataText="No proposals"
     />
   );
 }
