@@ -9,7 +9,7 @@ const westendRelayChainNodes = [
   },
   {
     name: "Dwellir",
-    url: "wss://westend-rpc.dwellir.com",
+    url: "wss://westend-rpc.n.dwellir.com",
   },
   {
     name: "Dwellir Tunisia",
@@ -19,16 +19,16 @@ const westendRelayChainNodes = [
     name: "RadiumBlock",
     url: "wss://westend.public.curie.radiumblock.co/ws",
   },
+  {
+    name: "light client",
+    url: "light://substrate-connect/westend",
+  },
 ];
 
 const westendAssetHubNodes = [
   { name: "Parity", url: "wss://westend-asset-hub-rpc.polkadot.io" },
-  { name: "Dwellir", url: "wss://asset-hub-westend-rpc.dwellir.com" },
+  { name: "Dwellir", url: "wss://asset-hub-westend-rpc.n.dwellir.com" },
   { name: "Dwellir Tunisia", url: "wss://westmint-rpc-tn.dwellir.com" },
-  {
-    name: "Permanence DAO EU",
-    url: "wss://asset-hub-westend.rpc.permanence.io",
-  },
 ];
 
 export { westendRelayChainNodes, westendAssetHubNodes };
