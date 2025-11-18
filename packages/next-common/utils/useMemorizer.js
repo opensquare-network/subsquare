@@ -12,7 +12,7 @@ export function useMemorizer() {
           return item.obj;
         }
       }
-      setObjects([...objects, { obj, keys }]);
+      setObjects((prev) => [...prev, { obj, keys }]);
       return obj;
     },
     [objects],
