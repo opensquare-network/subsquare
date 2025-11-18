@@ -52,10 +52,6 @@ const defaultPolkadotNodes = [
     url: "wss://spectrum-03.simplystaking.xyz/cG9sa2Fkb3QtMDMtOTFkMmYwZGYtcG9sa2Fkb3Q/LjwBJpV3dIKyWQ/polkadot/mainnet/",
   },
   {
-    name: "light client",
-    url: "light://substrate-connect/polkadot",
-  },
-  {
     name: "LuckyFriday",
     url: "wss://rpc-polkadot.luckyfriday.io",
   },

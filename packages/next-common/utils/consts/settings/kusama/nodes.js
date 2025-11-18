@@ -43,10 +43,6 @@ const defaultKusamaNodes = [
     name: "RadiumBlock",
     url: "wss://kusama.public.curie.radiumblock.co/ws",
   },
-  {
-    name: "light client",
-    url: "light://substrate-connect/kusama",
-  },
 ];
 
 export default defaultKusamaNodes;
