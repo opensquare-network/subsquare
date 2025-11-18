@@ -56,7 +56,7 @@ const getNativeKindParam = () => {
         interior: "Here",
       },
       assetId: {
-        parents: 0,
+        parents: 1,
         interior: "Here",
       },
     },
