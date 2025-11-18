@@ -153,9 +153,9 @@ function ProposalTemplateQuickStart() {
       {!isCollectivesChain(chain) && !isShibuyaChain(chain) && (
         <SpendLocalTreasury />
       )}
-      <BatchTreasurySpend />
       <SpendUSDxTreasury />
       <SpendDotOnAssetHub />
+      <BatchTreasurySpend />
       <NewRemark />
       <CancelReferendum />
       <KillReferendum />

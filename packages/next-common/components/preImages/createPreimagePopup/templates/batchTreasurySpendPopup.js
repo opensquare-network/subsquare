@@ -130,7 +130,10 @@ export function useBatchTreasurySpendsNotePreimageTx(spendInputs) {
           }
         },
       );
-      const proposal = api.tx.utility.batch(spendTxs);
+      let proposal = spendTxs[0];
+      if (spendTxs.length > 1) {
+        proposal = api.tx.utility.batch(spendTxs);
+      }
       return getState(api, proposal);
     } catch (e) {
       return {};
