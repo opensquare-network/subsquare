@@ -20,7 +20,7 @@ import SigningTip from "../common/signingTip";
 import InsufficientBalanceTips from "../common/insufficientBalanceTips";
 import PreviousButton from "../../newProposalButton/previousButton";
 
-function getTokenAmount(inputBalance) {
+export function getTokenAmount(inputBalance) {
   // 1 DOT = 10 USDx
   const nativeTokenPrice = 10;
   const tokenAmount = new BigNumber(inputBalance || 0)

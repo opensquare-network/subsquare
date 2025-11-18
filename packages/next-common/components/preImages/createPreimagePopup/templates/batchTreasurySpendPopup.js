@@ -159,7 +159,7 @@ function AddPayoutButton({ onClick }) {
   );
 }
 
-function useBatchSpendInputs() {
+export function useBatchSpendInputs() {
   const [index, setIndex] = useState(1);
   const [spendInputs, setSpendInputs] = useState([
     {
@@ -262,7 +262,7 @@ function useBatchSpendInputs() {
   };
 }
 
-function PopupContent() {
+function BatchTreasurySpendPopupContent() {
   const { spendInputs, component: batchSpendInputsComponent } =
     useBatchSpendInputs();
 
@@ -292,7 +292,7 @@ export default function BatchTreasurySpendPopup() {
   const { onClose } = usePopupParams();
   return (
     <Popup title="Create Multi-Spends Treasury Proposal" onClose={onClose}>
-      <PopupContent />
+      <BatchTreasurySpendPopupContent />
     </Popup>
   );
 }
