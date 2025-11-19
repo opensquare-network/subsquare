@@ -9,6 +9,7 @@ import {
   FooterLogoDark,
 } from "@osn/icons/subsquare";
 import Tooltip from "next-common/components/tooltip";
+import SystemChainsBlockHeight from "next-common/components/systemChainsBlockHeight";
 
 export default function Footer() {
   const contactLinks = [
@@ -67,6 +68,7 @@ export default function Footer() {
         <div className={cn("max-sm:mt-3 max-sm:mb-4")}>
           <ThemeToggleGroup />
         </div>
+        <SystemChainsBlockHeight />
       </div>
     </div>
   );
