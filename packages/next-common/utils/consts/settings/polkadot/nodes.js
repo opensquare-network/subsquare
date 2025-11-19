@@ -8,13 +8,13 @@ const defaultPolkadotNodes = [
     url: "wss://rpc.ibp.network/polkadot",
   },
   {
+    name: "IBP2",
+    url: "wss://polkadot.dotters.network",
+  },
+  {
     name: "Stakeworld",
     url: "wss://dot-rpc.stakeworld.io",
   },
-  // {
-  //   name: "IBP2",
-  //   url: "wss://polkadot.dotters.network",
-  // },
   {
     name: "SubQuery",
     url: "wss://polkadot.rpc.subquery.network/public/ws",
@@ -29,7 +29,7 @@ const defaultPolkadotNodes = [
   },
   {
     name: "Dwellir",
-    url: "wss://polkadot-rpc.dwellir.com",
+    url: "wss://polkadot-rpc.n.dwellir.com",
   },
   {
     name: "Helixstreet",
@@ -47,13 +47,13 @@ const defaultPolkadotNodes = [
     name: "Dwellir Tunisia",
     url: "wss://polkadot-rpc-tn.dwellir.com",
   },
-  // {
-  //   name: "Automata 1RPC",
-  //   url: "wss://1rpc.io/dot",
-  // },
   {
-    name: "RockX",
-    url: "wss://rockx-dot.w3node.com/polka-public-dot/ws",
+    name: "RadiumBlock",
+    url: "wss://polkadot.public.curie.radiumblock.co/ws",
+  },
+  {
+    name: "Simply Staking",
+    url: "wss://spectrum-03.simplystaking.xyz/cG9sa2Fkb3QtMDMtOTFkMmYwZGYtcG9sa2Fkb3Q/LjwBJpV3dIKyWQ/polkadot/mainnet/",
   },
   {
     name: "LuckyFriday",

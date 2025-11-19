@@ -1,14 +1,24 @@
-import { isAssetHubChain } from "next-common/utils/chain";
+import {
+  isAssetHubChain,
+  isPeopleChain,
+  isCoretimeChain,
+} from "next-common/utils/chain";
 import Chains from "next-common/utils/consts/chains";
 
 export const AssetHubParaId = 1000;
 export const CollectivesParaId = 1001;
+export const PeopleParaId = 1004;
+export const CoretimeParaId = 1005;
 
 export function getParaChainId(chain) {
   if (isAssetHubChain(chain)) {
     return AssetHubParaId;
   } else if (chain === Chains.collectives) {
     return CollectivesParaId;
+  } else if (isPeopleChain(chain)) {
+    return PeopleParaId;
+  } else if (isCoretimeChain(chain)) {
+    return CoretimeParaId;
   }
   throw new Error("Unsupported para chain");
 }
@@ -21,39 +31,41 @@ function getTeleportParamsFromRelayChainToParaChain({
 }) {
   return [
     {
-      V3: {
-        interior: {
-          X1: {
-            ParaChain: paraChainId,
-          },
-        },
+      V4: {
         parents: 0,
-      },
-    },
-    {
-      V3: {
         interior: {
-          X1: {
-            AccountId32: {
-              id: api.createType("AccountId32", transferToAddress).toHex(),
-              network: null,
+          X1: [
+            {
+              ParaChain: paraChainId,
             },
-          },
+          ],
         },
-        parents: 0,
       },
     },
     {
-      V3: [
+      V4: {
+        parents: 0,
+        interior: {
+          X1: [
+            {
+              AccountId32: {
+                id: api.createType("AccountId32", transferToAddress).toHex(),
+                network: null,
+              },
+            },
+          ],
+        },
+      },
+    },
+    {
+      V4: [
         {
+          id: {
+            parents: 0,
+            interior: "Here",
+          },
           fun: {
             Fungible: amount,
-          },
-          id: {
-            Concrete: {
-              interior: "Here",
-              parents: 0,
-            },
           },
         },
       ],

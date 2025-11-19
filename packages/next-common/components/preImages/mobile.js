@@ -12,7 +12,6 @@ import dynamicPopup from "next-common/lib/dynamic/popup";
 import Loading from "next-common/components/loading";
 import { cn } from "next-common/utils";
 import { FixedSizeList } from "react-window";
-import { convertTicket } from "./common";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 
 const PreimageDetailPopup = dynamicPopup(() => import("./preImageDetailPopup"));
@@ -49,7 +48,7 @@ const OldPreimageItem = React.memo(OldPreimageItemComp);
 function Item({ hash, preimage, isStatusLoaded, isBytesLoaded, index }) {
   const dispatch = useDispatch();
   const [showArgumentsDetail, setShowArgumentsDetail] = useState(null);
-  const deposit = convertTicket(preimage?.ticket || preimage?.deposit);
+  const deposit = preimage?.ticket || preimage?.deposit;
 
   return (
     <>

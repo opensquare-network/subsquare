@@ -55,7 +55,7 @@ function TreasurySpendsSummaryImpl() {
   );
 }
 
-function FiatValueItem({ count, fiatValue }) {
+export function FiatValueItem({ count, fiatValue }) {
   return (
     <div className="flex flex-col">
       {count ?? 0}

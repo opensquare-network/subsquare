@@ -187,6 +187,7 @@ function Select({
                   <Option
                     key={option.value}
                     active={value === option.value}
+                    disabled={option?.disabled}
                     ref={value === option.value ? selectedOptionRef : undefined}
                     onClick={() => onChange(option)}
                     height={theItemHeight}

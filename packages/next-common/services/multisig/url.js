@@ -1,5 +1,6 @@
 import getChainSettings from "next-common/utils/consts/settings";
 import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated";
+import Chains from "next-common/utils/consts/chains";
 
 export default function getMultisigApiUrl(chain) {
   const settings = getChainSettings(chain);
@@ -7,7 +8,7 @@ export default function getMultisigApiUrl(chain) {
     throw new Error(`Can not find multisig settings for ${chain}`);
   }
 
-  if (isAssetHubMigrated()) {
+  if (isAssetHubMigrated() || chain === Chains.hyperBridge) {
     return `https://${settings.multisigApiPrefix}.statescan.io/graphql`;
   }
 

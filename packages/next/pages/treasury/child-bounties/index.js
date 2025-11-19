@@ -1,38 +1,27 @@
 import TreasuryChildBountiesPostList from "next-common/components/postList/treasuryChildBountiesPostList";
 import { withCommonProps } from "next-common/lib";
 import { toTreasuryChildBountyListItem } from "next-common/utils/viewfuncs";
-import { useChain } from "next-common/context/chain";
 import { isNil, upperFirst } from "lodash-es";
 import ListLayout from "next-common/components/layout/ListLayout";
-import TreasurySummary from "next-common/components/summary/treasurySummary";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchList } from "next-common/services/list";
 import { TreasuryProvider } from "next-common/context/treasury";
-import { isPolkadotChain } from "next-common/utils/chain";
-import PolkadotTreasuryStatsOnProposal from "next-common/components/treasury/common/polkadotTreasuryStatsOnProposal";
 import { DropdownUrlFilterProvider } from "next-common/components/dropdownFilter/context";
+import TreasuryChildBountiesSummary from "next-common/components/summary/treasuryChildBountiesSummary";
 
 export default function ChildBountiesPage({ bounties }) {
-  const chain = useChain();
-
   const items = (bounties.items || []).map((item) =>
     toTreasuryChildBountyListItem(item),
   );
   const category = "Treasury Child Bounties";
   const seoInfo = { title: category, desc: category };
 
-  const treasurySummaryPanel = isPolkadotChain(chain) ? (
-    <PolkadotTreasuryStatsOnProposal />
-  ) : (
-    <TreasurySummary />
-  );
-
   return (
     <TreasuryProvider>
       <ListLayout
         seoInfo={seoInfo}
         title={category}
-        summary={treasurySummaryPanel}
+        summary={<TreasuryChildBountiesSummary />}
         tabs={[
           {
             value: "child_bounties",
