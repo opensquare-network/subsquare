@@ -5,7 +5,7 @@ const Statistics = dynamic(() => import("./statistics"), {
 
 const CATEGORY_VALUES = {
   WALLET: "wallet",
-  MULTISIG_TOOLS: "Multisig_Tools",
+  MULTISIG_TOOLS: "multisig_tools",
 };
 
 const categories = [
