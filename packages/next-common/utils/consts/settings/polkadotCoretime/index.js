@@ -35,6 +35,14 @@ const polkadotCoretime = {
       name: "OnFinality",
       url: "wss://coretime-polkadot.api.onfinality.io/public-ws",
     },
+    {
+      name: "Dwellir",
+      url: "wss://coretime-polkadot-rpc.n.dwellir.com",
+    },
+    {
+      name: "Stakeworld",
+      url: "wss://dot-rpc.stakeworld.io/coretime",
+    },
   ],
   integrations: {
     subscan: {

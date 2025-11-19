@@ -9,6 +9,7 @@ import Tooltip from "next-common/components/tooltip";
 import { useRelayToParachainDecode } from "next-common/utils/gov2/useRelayToParachainDecode";
 import { getParachain } from "next-common/utils/gov2/relayToParachainDecodeSupport";
 import { getChainSettingsPolyfill } from "next-common/utils/consts/settingsPolyfill";
+import { RelayChainApiProvider } from "next-common/context/relayChain";
 
 export default function RelayToParaChainCall() {
   const { call } = useContext(RawCallContext);
@@ -20,7 +21,11 @@ export default function RelayToParaChainCall() {
   if (!supportedParachainCalls.length) {
     return null;
   }
-  return <ParachainChainDecodeCall calls={supportedParachainCalls} />;
+  return (
+    <RelayChainApiProvider>
+      <ParachainChainDecodeCall calls={supportedParachainCalls} />
+    </RelayChainApiProvider>
+  );
 }
 
 function ParachainChainDecodeCall({ calls }) {

@@ -1,7 +1,7 @@
 import {
   CollectivesParaId,
   AssetHubParaId,
-} from "next-common/components/assets/paraChainTeleportPopup/teleportFromRelayChainToParaChain";
+} from "next-common/components/paraChainTeleportPopup/teleportFromRelayChainToParaChain";
 import { extractTransactCallBytesArr } from "./relayChainCall";
 import {
   BridgeParaId,

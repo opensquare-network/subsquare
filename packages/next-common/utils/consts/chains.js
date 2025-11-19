@@ -52,6 +52,7 @@ const Chains = {
   laos: "laos",
   laosTestnet: "laos-testnet",
   hyperBridge: "hyperbridge",
+  acurast: "acurast",
 };
 
 export default Chains;

@@ -1,4 +1,4 @@
-import NoWalletConnected from "next-common/components/assets/noWalletConnected";
+import NoWalletConnected from "next-common/components/assethubMigrationAssets/noWalletConnected";
 import { withCommonProps } from "next-common/lib";
 import useExistentialDeposit from "next-common/utils/hooks/chain/useExistentialDeposit";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";

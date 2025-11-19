@@ -1,4 +1,10 @@
-import { isCollectivesChain, isPolkadotChain } from "next-common/utils/chain";
+import {
+  isCollectivesChain,
+  isKusamaChain,
+  isPolkadotChain,
+  isWestendChain,
+  isPaseoChain,
+} from "next-common/utils/chain";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useChain } from "../chain";
 import getChainSettings from "next-common/utils/consts/settings";
@@ -46,6 +52,18 @@ export function usePeopleApi() {
 function getPeopleChain(chain) {
   if (isPolkadotChain(chain) || isCollectivesChain(chain)) {
     return Chains.polkadotPeople;
+  }
+
+  if (isKusamaChain(chain)) {
+    return Chains.kusamaPeople;
+  }
+
+  if (isWestendChain(chain)) {
+    return Chains.westendPeople;
+  }
+
+  if (isPaseoChain(chain)) {
+    return Chains.paseoPeople;
   }
 
   return null;

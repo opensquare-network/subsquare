@@ -12,12 +12,8 @@ export default function DemocracyTag({ post, onchainInfo }) {
       />
     );
   } else if (onchainInfo) {
-    return (
-      <DemocracyReferendumTag
-        state={capitalize(Object.keys(onchainInfo)[0])}
-        args={Object.values(onchainInfo)[0]}
-      />
-    );
+    const [state, args] = Object.entries(onchainInfo || {})[0] || [];
+    return <DemocracyReferendumTag state={capitalize(state)} args={args} />;
   }
 
   return null;

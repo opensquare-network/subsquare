@@ -12,7 +12,7 @@ import { useState } from "react";
 import TreasurySpendValueDisplay from "next-common/components/gov2/business/treasurySpendValueDisplay";
 import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import FieldLoading from "next-common/components/icons/fieldLoading";
-import useChainOrScanHeight from "next-common/hooks/height";
+import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
 import BeneficiaryDetailButton from "./beneficiaryDetailButton";
 import { FormatFiatValue } from "./valueDisplayWithFiatValue";
 
@@ -140,7 +140,7 @@ function Spend({
 }
 
 function Time({ validFrom, className = "" }) {
-  const currentHeight = useChainOrScanHeight();
+  const currentHeight = useAhmLatestHeight();
 
   let content;
   let tooltipContent;
@@ -205,7 +205,7 @@ function PassedTime({ validFrom }) {
 }
 
 function FutureTime({ validFrom }) {
-  const currentHeight = useChainOrScanHeight();
+  const currentHeight = useAhmLatestHeight();
   if (isNaN(currentHeight)) {
     return <FieldLoading size={14} />;
   }

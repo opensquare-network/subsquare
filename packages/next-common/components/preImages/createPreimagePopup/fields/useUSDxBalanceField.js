@@ -1,9 +1,10 @@
 import { useState } from "react";
 import USDxBalanceField from "next-common/components/popup/fields/usdxBalanceField";
-import useAssetHubTreasuryBalance from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
+import { useTreasuryAssetBalance } from "next-common/hooks/treasury/useAssetBalance";
 import Loading from "next-common/components/loading";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
+import { TreasuryProvider } from "next-common/context/treasury";
 
 export function TreasuryBalance({ symbol, isLoading, treasuryBalance }) {
   return (
@@ -23,7 +24,7 @@ function USDxBalance({ inputBalance, setInputBalance, symbol, setSymbol }) {
     balance: treasuryBalance,
     decimals: treasuryBalanceDecimals,
     loading: isTreasuryBalanceLoading,
-  } = useAssetHubTreasuryBalance(symbol);
+  } = useTreasuryAssetBalance(symbol);
 
   return (
     <USDxBalanceField
@@ -53,12 +54,14 @@ export default function useUSDxBalanceField() {
   return {
     value: [inputBalance, symbol],
     component: (
-      <USDxBalance
-        inputBalance={inputBalance}
-        setInputBalance={setInputBalance}
-        symbol={symbol}
-        setSymbol={setSymbol}
-      />
+      <TreasuryProvider>
+        <USDxBalance
+          inputBalance={inputBalance}
+          setInputBalance={setInputBalance}
+          symbol={symbol}
+          setSymbol={setSymbol}
+        />
+      </TreasuryProvider>
     ),
   };
 }

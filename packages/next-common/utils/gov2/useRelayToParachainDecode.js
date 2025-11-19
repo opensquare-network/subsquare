@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useContextApi } from "next-common/context/api";
+import { useRelayChainApi } from "next-common/context/relayChain";
 import { getParachainsBlockNumber } from "./getParachainsBlockNumber";
 import { getParachainApi } from "./getParachainApi";
 import useReferendumVotingFinishHeight, {
@@ -19,7 +19,7 @@ const cacheParachainApi = (parachainIdNumber, blockHeight) => {
 
 export function useRelayToParachainDecode(calls) {
   const [results, setResults] = useState([]);
-  const api = useContextApi();
+  const api = useRelayChainApi();
   const blockHeight = useReferendumVotingFinishHeight();
   const isVoting = useReferendaIsVoting();
 
