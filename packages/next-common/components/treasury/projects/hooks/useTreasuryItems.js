@@ -9,33 +9,29 @@ export default function useTreasuryItems({
   normalizeItem,
 }) {
   const chain = useChain();
-  const { value: items = [], loading } = useAsync(
-    async () => {
-      if (!indexes?.length) {
-        return [];
-      }
+  const { value: items = [], loading } = useAsync(async () => {
+    if (!indexes?.length) {
+      return [];
+    }
 
-      const results = await Promise.allSettled(
-        indexes.map(async (index) => {
-          const { result } = await backendApi.fetch(`${apiPath}/${index}`);
-          return result;
-        }),
+    const results = await Promise.allSettled(
+      indexes.map(async (index) => {
+        const { result } = await backendApi.fetch(`${apiPath}/${index}`);
+        return result;
+      }),
+    );
+
+    return results
+      .map((result) =>
+        result.status === "fulfilled"
+          ? normalizeItem(chain, result.value)
+          : null,
+      )
+      .filter(Boolean)
+      .sort(
+        (a, b) => dayjs(b.updatedAt).valueOf() - dayjs(a.updatedAt).valueOf(),
       );
-
-      return results
-        .map((result) =>
-          result.status === "fulfilled"
-            ? normalizeItem(chain, result.value)
-            : null,
-        )
-        .filter(Boolean)
-        .sort(
-          (a, b) => dayjs(b.updatedAt).valueOf() - dayjs(a.updatedAt).valueOf(),
-        );
-    },
-    [indexes, apiPath, normalizeItem, chain],
-  );
+  }, [indexes, apiPath, normalizeItem, chain]);
 
   return { items, loading };
 }
-
