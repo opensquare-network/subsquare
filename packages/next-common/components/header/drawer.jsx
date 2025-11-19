@@ -118,7 +118,7 @@ export default function SidebarAccount() {
 
       <Title>NETWORK</Title>
       <NetworkSwitch activeNode={node} />
-      {node?.hideHeight ? null : <Title>NODE</Title>}
+      <Title>NODE</Title>
       <NodeSwitch />
       <Title>ACCOUNT</Title>
       {!user && (
