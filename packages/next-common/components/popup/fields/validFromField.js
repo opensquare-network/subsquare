@@ -61,8 +61,7 @@ const modeOptions = [
 
 function ModeSelect({ mode, setMode }) {
   return (
-    <div className="flex items-center gap-2 text12Medium text-textTertiary mb-[8px]">
-      <span>Mode</span>
+    <div className="mb-[8px]">
       <Select
         small
         itemHeight={24}
