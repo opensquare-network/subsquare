@@ -37,7 +37,7 @@ function getTooltipLabel(item, currentDataset) {
 }
 
 export default function CyclesChart({ values }) {
-  const height = (values.length + 1) * 30;
+  const height = 180;
   const categoryPercentage = 0.6;
   const barPercentage = 1;
 
