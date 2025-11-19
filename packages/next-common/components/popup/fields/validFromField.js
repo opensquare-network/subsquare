@@ -1,7 +1,6 @@
 import Input from "next-common/lib/input";
 import PopupLabel from "../label";
-import Toggle from "next-common/components/toggle";
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import Link from "next/link";
 import {
   InfoMessage,
@@ -11,6 +10,11 @@ import { SystemWarning } from "@osn/icons/subsquare";
 import useChainOrScanHeight from "next-common/hooks/height";
 import BigNumber from "bignumber.js";
 import { useDebounce } from "react-use";
+import DateOnlySelectModal from "next-common/components/calendar/dateSelectModal/dateOnlySelectModal";
+import { useChainSettings } from "next-common/context/chain";
+import dayjs from "dayjs";
+import IconButton from "next-common/components/iconButton";
+import Select from "next-common/components/select";
 import NumberInput from "next-common/lib/input/number";
 
 const PROMPT_WIKI_LINK =
@@ -22,27 +26,11 @@ const PROMPT_EDITABLE_CONTENT =
 const WARNING_CONTENT =
   "We suggest a future block height in case of the payment expiration.";
 
-function ValidFromFieldToggleSwitch({ isEditable, setIsEditable }) {
-  return (
-    <div className="flex items-center gap-[8px]">
-      <span className="text-textSecondary text12Medium whitespace-nowrap">
-        Edit Mode
-      </span>
-      <Toggle
-        size="small"
-        isOn={isEditable}
-        onToggle={() => setIsEditable(!isEditable)}
-      />
-    </div>
-  );
-}
-
-function ValidFromFieldPrompt({ isEditable }) {
-  const content = isEditable ? PROMPT_EDITABLE_CONTENT : PROMPT_DISABLE_CONTENT;
+function ValidFromFieldPrompt({ children }) {
   return (
     <InfoMessage className="mt-[8px]">
       <span className="text-textSecondary text14Medium">
-        {content}&nbsp;
+        {children}&nbsp;
         <Link className="underline" href={PROMPT_WIKI_LINK}>
           Wiki
         </Link>
@@ -63,18 +51,99 @@ function ValidFromFieldWarning() {
   );
 }
 
+const modeOptions = [
+  { label: <span>Date</span>, value: "date" },
+  {
+    label: <span className="whitespace-nowrap">Block</span>,
+    value: "block",
+  },
+];
+
+function ModeSelect({ mode, setMode }) {
+  return (
+    <div className="mb-[8px]">
+      <Select
+        small
+        itemHeight={24}
+        className="!py-2 text12Medium w-[80px]"
+        options={modeOptions}
+        value={mode}
+        onChange={({ value }) => setMode(value)}
+      />
+    </div>
+  );
+}
+
+function DateModeInput({ value, setValue }) {
+  const latestHeight = useChainOrScanHeight();
+  const [showDateSelectModal, setShowDateSelectModal] = useState(false);
+  const { blockTime } = useChainSettings();
+
+  const onSelectDate = useCallback(
+    (selectedDate) => {
+      const now = dayjs().valueOf();
+      const selectedTime = selectedDate.getTime();
+      const diffInMs = selectedTime - now;
+      const estimatedBlocks = Math.ceil(diffInMs / blockTime);
+
+      const estimatedBlockHeight = latestHeight + estimatedBlocks;
+      setValue(estimatedBlockHeight.toString());
+      setShowDateSelectModal(false);
+    },
+    [blockTime, latestHeight, setValue],
+  );
+
+  const date = value
+    ? new Date(Date.now() + (parseInt(value) - latestHeight) * blockTime)
+    : null;
+
+  return (
+    <>
+      <Input
+        placeholder="Immediately"
+        value={date ? dayjs(date).format("YYYY-MM-DD HH:mm") : ""}
+        symbol={
+          value ? (
+            <IconButton onClick={() => setValue("")}>Clear Date</IconButton>
+          ) : (
+            <IconButton onClick={() => setShowDateSelectModal(true)}>
+              Select Date
+            </IconButton>
+          )
+        }
+        disabled
+      />
+      {showDateSelectModal && (
+        <DateOnlySelectModal
+          onClose={() => setShowDateSelectModal(false)}
+          defaultSelectedDate={date}
+          onSelect={onSelectDate}
+        />
+      )}
+    </>
+  );
+}
+
+function BlockModeInput({ value, setValue }) {
+  return (
+    <NumberInput
+      value={value}
+      placeholder="Immediately"
+      symbol="Block Height"
+      onValueChange={setValue}
+      controls={false}
+    />
+  );
+}
+
 export default function ValidFromField({ title = "", value, setValue }) {
-  const [isEditable, setIsEditable] = useState(false);
   const [shouldShowWarning, setShouldShowWarning] = useState(false);
   const latestHeight = useChainOrScanHeight();
-
-  useEffect(() => {
-    setValue("");
-  }, [isEditable, setValue]);
+  const [mode, setMode] = useState("date");
 
   useDebounce(
     () => {
-      if (isEditable && value && /^\d+$/.test(value)) {
+      if (value && /^\d+$/.test(value)) {
         const inputNumber = new BigNumber(value);
         const latestHeightBN = new BigNumber(latestHeight);
 
@@ -84,32 +153,27 @@ export default function ValidFromField({ title = "", value, setValue }) {
       }
     },
     500,
-    [value, isEditable, latestHeight],
+    [value, latestHeight],
   );
-
-  const placeholder = isEditable ? "Please input a block height..." : "";
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-[8px]">
+      <div className="flex justify-between items-center">
         <PopupLabel text={title} />
-        <ValidFromFieldToggleSwitch
-          isEditable={isEditable}
-          setIsEditable={setIsEditable}
-        />
+        <ModeSelect mode={mode} setMode={setMode} />
       </div>
-      {isEditable ? (
-        <NumberInput
-          value={value}
-          placeholder={placeholder}
-          symbol="Block Height"
-          onValueChange={setValue}
-          controls={false}
-        />
-      ) : (
-        <Input value="None" symbol="Block Height" disabled />
-      )}
-      <ValidFromFieldPrompt isEditable={isEditable} />
+      <div className="flex items-center gap-[8px]">
+        <div className="flex flex-col w-full">
+          {mode === "date" ? (
+            <DateModeInput value={value} setValue={setValue} />
+          ) : (
+            <BlockModeInput value={value} setValue={setValue} />
+          )}
+        </div>
+      </div>
+      <ValidFromFieldPrompt>
+        {value ? PROMPT_EDITABLE_CONTENT : PROMPT_DISABLE_CONTENT}
+      </ValidFromFieldPrompt>
       {shouldShowWarning && <ValidFromFieldWarning />}
     </div>
   );
