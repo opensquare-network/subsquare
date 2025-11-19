@@ -42,11 +42,11 @@ function SupplyStaked() {
 }
 
 function AverageRewardRate() {
-  const { value: rate, loading } = useAverageRewardRate();
+  const rate = useAverageRewardRate();
 
   return (
     <SummaryItem title="Average Reward Rate">
-      <LoadableContent isLoading={loading || isNil(rate)} size={16}>
+      <LoadableContent isLoading={isNil(rate)} size={16}>
         <span>{rate?.toFixed(2)}%</span>
       </LoadableContent>
     </SummaryItem>

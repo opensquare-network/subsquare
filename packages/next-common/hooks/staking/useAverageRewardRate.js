@@ -1,7 +1,8 @@
 import BigNumber from "bignumber.js";
 import { useContextApi } from "next-common/context/api";
-import { useAsync } from "react-use";
+import { useCallback } from "react";
 import { useGlobalRelayChainApi } from "../useGlobalRelayChainApi";
+import createGlobalCachedFetch from "next-common/utils/createGlobalCachedFetch";
 
 export function getEraPerDay({ api, relayApi }) {
   const expectedBlockTime = relayApi.consts.babe.expectedBlockTime.toNumber();
@@ -60,59 +61,64 @@ export async function getAverageEraValidatorReward({ api, relayApi }) {
   return { days, reward };
 }
 
+const { useGlobalCachedFetch } = createGlobalCachedFetch();
+
 export function useAverageRewardRate() {
   const api = useContextApi();
   const relayApi = useGlobalRelayChainApi();
 
-  return useAsync(async () => {
-    if (!api || !relayApi) {
-      return null;
-    }
+  const fetchRate = useCallback(
+    async (setResult) => {
+      if (!api || !relayApi) {
+        setResult(null);
+        return;
+      }
 
-    const totalIssuanceOpt = await api.query.balances.totalIssuance();
-    const totalIssuance = totalIssuanceOpt.toBigInt();
+      const totalIssuanceOpt = await api.query.balances.totalIssuance();
+      const totalIssuance = totalIssuanceOpt.toBigInt();
+      const erasPerDay = getEraPerDay({ api, relayApi });
+      const averageEraValidatorReward = await getAverageEraValidatorReward({
+        api,
+        relayApi,
+      });
 
-    const erasPerDay = getEraPerDay({ api, relayApi });
+      if (
+        totalIssuance === 0n ||
+        erasPerDay === 0 ||
+        averageEraValidatorReward.reward === 0n
+      ) {
+        setResult(0);
+        return;
+      }
 
-    const averageEraValidatorReward = await getAverageEraValidatorReward({
-      api,
-      relayApi,
-    });
+      const currentEraOpt = await api.query.staking.currentEra();
 
-    if (
-      totalIssuance === 0n ||
-      erasPerDay === 0 ||
-      averageEraValidatorReward.reward === 0n
-    ) {
-      return 0;
-    }
+      const currentEra = currentEraOpt.toJSON();
+      const era = Math.max(currentEra - 1, 0);
+      const lastTotalStakeOpt = await api.query.staking.erasTotalStake(era);
 
-    const currentEraOpt = await api.query.staking.currentEra();
-    const currentEra = currentEraOpt.toJSON();
-    const era = Math.max(currentEra - 1, 0);
-    const lastTotalStakeOpt = await api.query.staking.erasTotalStake(era);
-    const lastTotalStake = lastTotalStakeOpt.toBigInt();
+      const lastTotalStake = lastTotalStakeOpt.toBigInt();
+      const supplyStaked =
+        lastTotalStake === 0n || totalIssuance === 0n
+          ? 0
+          : Number(lastTotalStake) / Number(totalIssuance);
+      const averageRewardPerDay =
+        averageEraValidatorReward.reward * BigInt(erasPerDay);
+      const dayRewardRate =
+        totalIssuance === 0n
+          ? 0
+          : new BigNumber(averageRewardPerDay)
+              .div(new BigNumber(totalIssuance).div(100))
+              .toNumber();
+      const inflationToStakers = dayRewardRate * 365;
+      const rate =
+        supplyStaked === 0 ? 0 : Number(inflationToStakers) / supplyStaked;
 
-    const supplyStaked =
-      lastTotalStake === 0n || totalIssuance === 0n
-        ? 0
-        : Number(lastTotalStake) / Number(totalIssuance);
+      setResult(rate);
+    },
+    [api, relayApi],
+  );
 
-    const averageRewardPerDay =
-      averageEraValidatorReward.reward * BigInt(erasPerDay);
-
-    const dayRewardRate =
-      totalIssuance === 0n
-        ? 0
-        : new BigNumber(averageRewardPerDay)
-            .div(new BigNumber(totalIssuance).div(100))
-            .toNumber();
-
-    const inflationToStakers = dayRewardRate * 365;
-
-    const rate =
-      supplyStaked === 0 ? 0 : Number(inflationToStakers) / supplyStaked;
-
-    return rate;
-  }, [api, relayApi]);
+  const { result: rate } = useGlobalCachedFetch(fetchRate, "averageRewardRate");
+  return rate;
 }
