@@ -203,7 +203,7 @@ export function useBatchSpendInputs() {
     <>
       {spendInputs.map((input) => (
         <TreasuryProvider key={input.index}>
-          <div className="flex flex-col gap-4 border border-gray200 rounded-lg p-4 mb-4">
+          <div className="flex flex-col gap-4 border border-gray200 rounded-lg p-4 mb-4 max-sm:-mx-4">
             <div className="flex flex-col gap-[8px]">
               <AddressComboField
                 title="Beneficiary"
