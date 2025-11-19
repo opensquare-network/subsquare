@@ -4,7 +4,6 @@ import SubmissionDeposit from "../../newProposalPopup/submissionDeposit";
 import CreateProposalSubmitButton, {
   useCreateProposalSubmitButton,
 } from "../common/createProposalSubmitButton";
-import { InfoMessage } from "next-common/components/setting/styled";
 import AdvanceSettings from "../common/advanceSettings";
 import BigNumber from "bignumber.js";
 import Popup from "next-common/components/popup/wrapper/Popup";
@@ -68,12 +67,7 @@ export function NewUSDxTreasuryReferendumInnerPopupContent() {
       />
       <SignerWithBalance showTransferable supportedMultisig={false} />
       {usdxBalanceField}
-      <div className="flex flex-col gap-[8px]">
-        {beneficiaryField}
-        <InfoMessage>
-          Please input an AssetHub address as the beneficiary
-        </InfoMessage>
-      </div>
+      <div className="flex flex-col gap-[8px]">{beneficiaryField}</div>
       {trackField}
       <AdvanceSettings>
         {validFromField}
@@ -110,12 +104,7 @@ function PopupContent() {
     <>
       <SignerWithBalance supportedMultisig={false} />
       {usdxBalanceField}
-      <div className="flex flex-col gap-[8px]">
-        {beneficiaryField}
-        <InfoMessage>
-          Please input an AssetHub address as the beneficiary
-        </InfoMessage>
-      </div>
+      <div className="flex flex-col gap-[8px]">{beneficiaryField}</div>
       {trackField}
       <AdvanceSettings>
         {validFromField}

@@ -4,7 +4,6 @@ import SubmissionDeposit from "../../newProposalPopup/submissionDeposit";
 import CreateProposalSubmitButton, {
   useCreateProposalSubmitButton,
 } from "../common/createProposalSubmitButton";
-import { InfoMessage } from "next-common/components/setting/styled";
 import AdvanceSettings from "../common/advanceSettings";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import { useSpendDotOnAssetHubPreimageTx } from "next-common/components/preImages/createPreimagePopup/templates/spendDotOnAssetHubPopup";
@@ -57,12 +56,7 @@ export function SpendDotOnAssetHubReferendumInnerPopupContent() {
       />
       <SignerWithBalance showTransferable supportedMultisig={false} />
       {balanceField}
-      <div className="flex flex-col gap-[8px]">
-        {beneficiaryField}
-        <InfoMessage>
-          Please input an AssetHub address as the beneficiary
-        </InfoMessage>
-      </div>
+      <div className="flex flex-col gap-[8px]">{beneficiaryField}</div>
       {trackField}
       <AdvanceSettings>
         {validFromField}
@@ -97,12 +91,7 @@ function PopupContent() {
     <>
       <SignerWithBalance supportedMultisig={false} />
       {balanceField}
-      <div className="flex flex-col gap-[8px]">
-        {beneficiaryField}
-        <InfoMessage>
-          Please input an AssetHub address as the beneficiary
-        </InfoMessage>
-      </div>
+      <div className="flex flex-col gap-[8px]">{beneficiaryField}</div>
       {trackField}
       <AdvanceSettings>
         {validFromField}

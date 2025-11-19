@@ -61,7 +61,7 @@ const modeOptions = [
 
 function ModeSelect({ mode, setMode }) {
   return (
-    <div className="flex items-center gap-2 text12Medium text-textTertiary">
+    <div className="flex items-center gap-2 text12Medium text-textTertiary mb-[8px]">
       <span>Mode</span>
       <Select
         small
@@ -159,7 +159,7 @@ export default function ValidFromField({ title = "", value, setValue }) {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-[8px]">
+      <div className="flex justify-between items-center">
         <PopupLabel text={title} />
         <ModeSelect mode={mode} setMode={setMode} />
       </div>

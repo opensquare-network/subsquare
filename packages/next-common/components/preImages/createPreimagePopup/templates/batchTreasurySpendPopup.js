@@ -4,7 +4,6 @@ import { getState } from "next-common/components/preImages/newPreimagePopup";
 import { useContextApi } from "next-common/context/api";
 import { checkInputValue } from "next-common/utils";
 import { addressToPublicKey } from "next-common/utils/address";
-import { InfoMessage } from "next-common/components/setting/styled";
 import { getAssetBySymbol } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import NotePreimageButton from "../notePreimageButton";
@@ -224,9 +223,6 @@ export function useBatchSpendInputs() {
                   )
                 }
               />
-              <InfoMessage>
-                Please input an AssetHub address as the beneficiary
-              </InfoMessage>
             </div>
             <MultiSymbolBalance
               inputBalance={input["inputBalance"]}
