@@ -5,12 +5,12 @@ import { backendApi } from "next-common/services/nextApi";
 import { fellowshipStatisticsMembershipApi } from "next-common/services/url";
 import BigNumber from "bignumber.js";
 import { getRankSalary } from "next-common/utils/fellowship/getRankSalary";
-import { useFellowshipParams } from "next-common/hooks/fellowship/useFellowshipParams";
 import StatisticsMembershipSummaryItems from "./summaryItems";
 import {
   LoadingContent,
   translateCollectiveMembersRankData,
 } from "next-common/components/fellowship/statistics/common";
+import { usePageProps } from "next-common/context/page";
 
 function getRankSalaryData(data, members = []) {
   const { activeSalary = [], passiveSalary = [] } = data;
@@ -35,7 +35,7 @@ function getRankSalaryData(data, members = []) {
 }
 
 export default function StatisticsMembershipSummary({ members = [] }) {
-  const { isLoading: fellowshipParamsLoading, params } = useFellowshipParams();
+  const { fellowshipParams: params } = usePageProps();
 
   const [summaryData, setSummaryData] = useState(null);
   const membershipApi = fellowshipStatisticsMembershipApi;
@@ -55,30 +55,18 @@ export default function StatisticsMembershipSummary({ members = [] }) {
     }, []);
 
   useEffect(() => {
-    if (
-      value &&
-      params &&
-      members &&
-      !fellowshipMembershipLoading &&
-      !fellowshipParamsLoading
-    ) {
+    if (value && params && members && !fellowshipMembershipLoading) {
       const salaryData = getRankSalaryData(params, members);
       setSummaryData({
         ...value,
         ...salaryData,
       });
     }
-  }, [
-    value,
-    params,
-    members,
-    fellowshipMembershipLoading,
-    fellowshipParamsLoading,
-  ]);
+  }, [value, params, members, fellowshipMembershipLoading]);
 
   return (
     <SecondaryCard>
-      {fellowshipMembershipLoading || fellowshipParamsLoading ? (
+      {fellowshipMembershipLoading ? (
         <LoadingContent />
       ) : (
         <StatisticsMembershipSummaryItems summaryData={summaryData} />
