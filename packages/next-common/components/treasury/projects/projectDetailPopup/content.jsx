@@ -34,6 +34,9 @@ export default function ProjectContent({ project }) {
         spendsLoading={spendsLoading}
         childBounties={childBounties}
         childBountiesLoading={childBountiesLoading}
+        spendList={spendList}
+        proposalList={proposalList}
+        childBountyList={childBountyList}
       />
       <ProjectTabsList tabs={tabs} />
     </>
@@ -69,6 +72,9 @@ function ProjectSummary({
   spendsLoading,
   childBounties,
   childBountiesLoading,
+  spendList,
+  proposalList,
+  childBountyList,
 }) {
   const proposalsTotal = useMemo(() => calcTotal(proposals), [proposals]);
   const spendsTotal = useMemo(() => calcTotal(spends), [spends]);
@@ -83,17 +89,17 @@ function ProjectSummary({
       value: project.fiatAtFinal,
       loading: false,
     },
-    spends?.length > 0 && {
+    spendList?.length > 0 && {
       title: "Spends",
       value: spendsTotal,
       loading: spendsLoading,
     },
-    proposals?.length > 0 && {
+    proposalList?.length > 0 && {
       title: "Proposals",
       value: proposalsTotal,
       loading: proposalsLoading,
     },
-    childBounties?.length > 0 && {
+    childBountyList?.length > 0 && {
       title: "Child Bounties",
       value: childBountiesTotal,
       loading: childBountiesLoading,
