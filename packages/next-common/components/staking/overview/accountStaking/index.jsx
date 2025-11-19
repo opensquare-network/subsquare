@@ -5,6 +5,7 @@ import StakingHeader from "./stakingHeader";
 import StakingBalance from "./stakingBalance";
 import Divider from "next-common/components/styled/layout/divider";
 import { useMyPool } from "next-common/context/staking/myPool";
+import Link from "next/link";
 
 function AccountStakingImpl() {
   const { width } = useWindowSize();
@@ -25,8 +26,14 @@ function AccountStakingImpl() {
 function AccountStakingEmpty() {
   return (
     <NeutralPanel className="p-6">
-      <div className="text-center text14Medium text-textSecondary">
-        You are not participating in any nomination pool.
+      <div className="text-center text14Medium text-textTertiary">
+        You are not participating in any nomination pool.{" "}
+        <Link
+          className="cursor-pointer text-theme500 hover:underline"
+          href="/staking/pools"
+        >
+          Join a pool
+        </Link>
       </div>
     </NeutralPanel>
   );
