@@ -1,8 +1,4 @@
-import { Fragment } from "react";
 import dynamic from "next/dynamic";
-import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
-import Tooltip from "next-common/components/tooltip";
-
 const Statistics = dynamic(() => import("./statistics"), {
   ssr: false,
 });
@@ -25,14 +21,10 @@ const categories = [
 
 export default function TreasuryProjects() {
   return categories.map((category) => (
-    <Fragment key={category.value}>
-      <TitleContainer className="justify-start">
-        <div className="flex gap-x-1">
-          {category.label}
-          <Tooltip content="The prices are calculated at awarded time."></Tooltip>
-        </div>
-      </TitleContainer>
-      <Statistics category={category.value} />
-    </Fragment>
+    <Statistics
+      key={category.value}
+      label={category.label}
+      category={category.value}
+    />
   ));
 }

@@ -4,8 +4,10 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import ProjectStatisticsChart from "./chart";
 import { usePageProps } from "next-common/context/page";
 import { lowerCase } from "lodash-es";
+import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
+import Tooltip from "next-common/components/tooltip";
 
-export default function Statistics({ category }) {
+export default function Statistics({ label, category }) {
   const { projects = [] } = usePageProps();
 
   const categoryProjects = useMemo(() => {
@@ -24,12 +26,24 @@ export default function Statistics({ category }) {
     );
   }, [categoryProjects]);
 
+  if (categoryProjects?.length === 0) {
+    return null;
+  }
+
   return (
-    <SecondaryCard className="flex gap-6 justify-start w-full max-sm:flex-col">
-      <ProjectStatisticsChart
-        projects={categoryProjects}
-        totalFiat={totalFiat}
-      />
-    </SecondaryCard>
+    <>
+      <TitleContainer className="justify-start">
+        <div className="flex gap-x-1">
+          {label}
+          <Tooltip content="The prices are calculated at awarded time."></Tooltip>
+        </div>
+      </TitleContainer>
+      <SecondaryCard className="flex gap-6 justify-start w-full max-sm:flex-col">
+        <ProjectStatisticsChart
+          projects={categoryProjects}
+          totalFiat={totalFiat}
+        />
+      </SecondaryCard>
+    </>
   );
 }
