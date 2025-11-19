@@ -77,7 +77,7 @@ export default function usePopupDetailTabs({
   const tabs = useMemo(
     () =>
       [
-        {
+        normalizedSpends?.length > 0 && {
           value: TAB_VALUES.spends,
           label: "Spends",
           activeCount: normalizedSpends?.length,
@@ -88,7 +88,7 @@ export default function usePopupDetailTabs({
             />
           ),
         },
-        {
+        normalizedProposals?.length > 0 && {
           value: TAB_VALUES.proposals,
           label: "Proposals",
           activeCount: normalizedProposals?.length,
