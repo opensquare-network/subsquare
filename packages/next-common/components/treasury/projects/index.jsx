@@ -1,21 +1,30 @@
 import dynamic from "next/dynamic";
-import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
-import Tooltip from "next-common/components/tooltip";
-
 const Statistics = dynamic(() => import("./statistics"), {
   ssr: false,
 });
 
+const CATEGORY_VALUES = {
+  WALLET: "wallet",
+  MULTISIG_TOOLS: "multisig_tools",
+};
+
+const categories = [
+  {
+    label: "Wallet",
+    value: CATEGORY_VALUES.WALLET,
+  },
+  {
+    label: "Multisig Tools",
+    value: CATEGORY_VALUES.MULTISIG_TOOLS,
+  },
+];
+
 export default function TreasuryProjects() {
-  return (
-    <>
-      <TitleContainer className="justify-start">
-        <div className="flex gap-x-1">
-          Wallet
-          <Tooltip content="The prices are calculated at awarded time."></Tooltip>
-        </div>
-      </TitleContainer>
-      <Statistics />
-    </>
-  );
+  return categories.map((category) => (
+    <Statistics
+      key={category.value}
+      label={category.label}
+      category={category.value}
+    />
+  ));
 }
