@@ -15,12 +15,14 @@ import {
   NewRemarkButton,
   CancelReferendumButton,
   KillReferendumButton,
+  BatchSpendTreasuryButton,
 } from "./templateButtons";
 import { isCollectivesChain, isShibuyaChain } from "next-common/utils/chain";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import ForwardPopupProvider, {
   useForwardPopupContext,
 } from "next-common/context/forwardPopup";
+import BatchTreasurySpendPopup from "./templates/batchTreasurySpendPopup";
 
 export function QuickStart({ children }) {
   return (
@@ -45,6 +47,24 @@ function FellowshipTreasurySpend() {
   return (
     <FellowshipTreasurySpendButton
       onClick={() => setForwardPopup(<NewFellowshipTreasuryProposalPopup />)}
+    />
+  );
+}
+
+function BatchTreasurySpend() {
+  const { setForwardPopup } = useForwardPopupContext();
+  const {
+    treasuryProposalTracks,
+    newProposalQuickStart: { usdxTreasuryProposal } = {},
+  } = useChainSettings();
+
+  if (!treasuryProposalTracks || !usdxTreasuryProposal) {
+    return null;
+  }
+
+  return (
+    <BatchSpendTreasuryButton
+      onClick={() => setForwardPopup(<BatchTreasurySpendPopup />)}
     />
   );
 }
@@ -135,6 +155,7 @@ function ProposalTemplateQuickStart() {
       )}
       <SpendUSDxTreasury />
       <SpendDotOnAssetHub />
+      <BatchTreasurySpend />
       <NewRemark />
       <CancelReferendum />
       <KillReferendum />

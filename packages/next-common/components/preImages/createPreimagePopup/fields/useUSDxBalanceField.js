@@ -19,7 +19,12 @@ export function TreasuryBalance({ symbol, isLoading, treasuryBalance }) {
   );
 }
 
-function USDxBalance({ inputBalance, setInputBalance, symbol, setSymbol }) {
+export function USDxBalance({
+  inputBalance,
+  setInputBalance,
+  symbol,
+  setSymbol,
+}) {
   const {
     balance: treasuryBalance,
     decimals: treasuryBalanceDecimals,

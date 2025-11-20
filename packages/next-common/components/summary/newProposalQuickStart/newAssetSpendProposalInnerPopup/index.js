@@ -12,7 +12,6 @@ import useAutoSelectTreasuryTrackField, {
   AutoSelectTreasuryTrackErrors,
 } from "../common/useAutoSelectTreasuryTrackField";
 import useValidFromField from "next-common/components/preImages/createPreimagePopup/fields/useValidFromField";
-import { InfoMessage } from "next-common/components/setting/styled";
 import useBalanceField from "next-common/components/preImages/createPreimagePopup/fields/useBalanceField";
 import { useDefaultTrackId } from "../../newProposalPopup/useTrackDetail";
 import { useSubmissionDeposit } from "../common/useSubmissionDeposit";
@@ -93,12 +92,7 @@ export function NewAssetSpendProposalInnerPopup() {
     <Popup title="Create Treasury Proposal" onClose={onClose}>
       <SignerWithBalance supportedMultisig={false} />
       {balanceField}
-      <div className="flex flex-col gap-[8px]">
-        {beneficiaryField}
-        <InfoMessage>
-          Please input an AssetHub address as the beneficiary
-        </InfoMessage>
-      </div>
+      <div className="flex flex-col gap-[8px]">{beneficiaryField}</div>
       {trackField}
       <AdvanceSettings>
         {validFromField}
