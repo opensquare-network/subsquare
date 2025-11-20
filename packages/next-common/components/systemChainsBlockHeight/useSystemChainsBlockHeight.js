@@ -9,6 +9,8 @@ import { useState, useEffect, useMemo } from "react";
 import { useChain } from "next-common/context/chain";
 import { useChainSettings } from "next-common/context/chain";
 import { useAssetHubChain } from "next-common/hooks/useAssetHubChain";
+import { useSubScanHeightStream } from "next-common/hooks/scanHeight/useSubScanHeightStream";
+import getChainSettings from "next-common/utils/consts/settings";
 
 function useSubscribeChainBlockHeight(api) {
   const [latestHeight, setLatestHeight] = useState(null);
@@ -55,10 +57,20 @@ export function usePeopleBlockHeight() {
   return useSubscribeChainBlockHeight(peopleApi);
 }
 
-// TODO: fetch height from backend api.
 export function useCoretimeBlockHeight() {
-  const coretimeApi = useCoretimeApi();
-  return useSubscribeChainBlockHeight(coretimeApi);
+  const chain = useChain();
+  const coretimeChain = getCoretimeChain(chain);
+  const { blockTime } = getChainSettings(coretimeChain);
+  const [coretimeScanHeight, setCoretimeScanHeight] = useState(null);
+  const interval = parseInt(blockTime) || 12000;
+
+  useSubScanHeightStream({
+    url: `stream/coretime-chain-height?interval=${interval}`,
+    timeout: 10 * interval,
+    callback: setCoretimeScanHeight,
+  });
+
+  return coretimeScanHeight;
 }
 
 export default function useSystemChainsBlockHeight() {
@@ -107,5 +119,4 @@ export default function useSystemChainsBlockHeight() {
     coretimeBlockHeight,
     modules?.coretime,
   ]);
-
 }
