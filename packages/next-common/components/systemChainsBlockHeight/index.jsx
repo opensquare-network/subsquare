@@ -6,13 +6,14 @@ import SecondaryButton from "next-common/lib/button/secondary";
 import Tooltip from "next-common/components/tooltip";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { isRelayChain } from "next-common/utils/chain";
+import { useAssetHubChain } from "next-common/hooks/useAssetHubChain";
 
 const SystemChainsBlockHeightPopup = dynamicPopup(() => import("./popup"));
 
 function SystemChainsBlockHeightImpl() {
   const [show, setShow] = useState(false);
   const latestHeight = useChainOrScanHeight();
-  const chain = useChain();
+  const chain = useAssetHubChain();
 
   return (
     <div>
