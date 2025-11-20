@@ -48,7 +48,15 @@ export default function Footer() {
       </div>
 
       <div className={cn("flex items-center gap-x-6", "max-sm:flex-col")}>
-        <ul className={cn("flex", "text14Medium", "max-sm:mt-2.5")}>
+        <ul
+          className={cn("flex items-center", "text14Medium", "max-sm:mt-2.5")}
+        >
+          <li
+            key="block-height"
+            className="inline-flex items-center after:content-['·'] after:mx-2 after:text-textTertiary"
+          >
+            <SystemChainsBlockHeight />
+          </li>
           {contactLinks.map((contact) => (
             <li
               key={contact.name}
@@ -68,7 +76,6 @@ export default function Footer() {
         <div className={cn("max-sm:mt-3 max-sm:mb-4")}>
           <ThemeToggleGroup />
         </div>
-        <SystemChainsBlockHeight />
       </div>
     </div>
   );

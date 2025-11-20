@@ -6,21 +6,18 @@ import SecondaryButton from "next-common/lib/button/secondary";
 import Tooltip from "next-common/components/tooltip";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { isRelayChain } from "next-common/utils/chain";
-import { useAssetHubChain } from "next-common/hooks/useAssetHubChain";
 
 const SystemChainsBlockHeightPopup = dynamicPopup(() => import("./popup"));
 
 function SystemChainsBlockHeightImpl() {
   const [show, setShow] = useState(false);
   const latestHeight = useChainOrScanHeight();
-  const chain = useAssetHubChain();
 
   return (
     <div>
       <Tooltip content="View more system chains' block height">
         <SecondaryButton
-          className="max-sm:w-full max-sm:justify-between"
-          iconLeft={<ChainIcon chain={chain} />}
+          className="max-sm:w-full max-sm:justify-between border-none text-textSecondary hover:text-textPrimary pr-0"
           onClick={() => setShow(true)}
         >
           {`#${latestHeight?.toLocaleString()}`}
