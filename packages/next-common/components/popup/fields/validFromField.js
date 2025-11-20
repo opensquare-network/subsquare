@@ -7,7 +7,7 @@ import {
   WarningMessage,
 } from "next-common/components/setting/styled";
 import { SystemWarning } from "@osn/icons/subsquare";
-import useChainOrScanHeight from "next-common/hooks/height";
+import { useRelayChainLatestHeight } from "next-common/hooks/relayScanHeight";
 import BigNumber from "bignumber.js";
 import { useDebounce } from "react-use";
 import DateOnlySelectModal from "next-common/components/calendar/dateSelectModal/dateOnlySelectModal";
@@ -75,7 +75,7 @@ function ModeSelect({ mode, setMode }) {
 }
 
 function DateModeInput({ value, setValue }) {
-  const latestHeight = useChainOrScanHeight();
+  const latestHeight = useRelayChainLatestHeight();
   const [showDateSelectModal, setShowDateSelectModal] = useState(false);
   const { blockTime } = useChainSettings();
 
@@ -138,7 +138,7 @@ function BlockModeInput({ value, setValue }) {
 
 export default function ValidFromField({ title = "", value, setValue }) {
   const [shouldShowWarning, setShouldShowWarning] = useState(false);
-  const latestHeight = useChainOrScanHeight();
+  const latestHeight = useRelayChainLatestHeight();
   const [mode, setMode] = useState("date");
 
   useDebounce(
