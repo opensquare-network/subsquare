@@ -1,5 +1,4 @@
 import { useState } from "react";
-import ChainIcon from "next-common/components/header/chainIcon";
 import { useChain } from "next-common/context/chain";
 import useChainOrScanHeight from "next-common/hooks/height";
 import SecondaryButton from "next-common/lib/button/secondary";
