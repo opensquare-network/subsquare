@@ -35,6 +35,7 @@ export default function ProjectIndicators({ data, projects = [] }) {
       {labels.map((label, index) => (
         <div
           key={index}
+          role="button"
           className="flex justify-between items-center cursor-pointer hover:underline"
           onClick={() => handleProjectClick(label)}
         >
