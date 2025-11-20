@@ -10,7 +10,7 @@ const CATEGORY_VALUES = {
 
 const categories = [
   {
-    label: "Wallet",
+    label: "Wallets",
     value: CATEGORY_VALUES.WALLET,
   },
   {
