@@ -13,7 +13,7 @@ import ExternalLink from "next-common/components/externalLink";
 import { getRelayChain } from "next-common/utils/chain";
 import { isEmpty } from "lodash-es";
 
-export function sortIdentityTimelineByBlocktime(data) {
+export function sortIdentityTimeline(data) {
   if (isEmpty(data)) {
     return [];
   }
@@ -76,7 +76,7 @@ function useIdentityTimeline() {
       })
       .then((result) => {
         if (isMounted()) {
-          const sortedTimeline = sortIdentityTimelineByBlocktime(
+          const sortedTimeline = sortIdentityTimeline(
             result.data?.identityTimeline,
           );
           dispatch(setProfileIdentityTimeline(sortedTimeline));
