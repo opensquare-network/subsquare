@@ -1,5 +1,6 @@
 import { queryPeopleIdentityTimeline } from "next-common/services/gql/identity";
 import { useCallback, useState, useEffect } from "react";
+import { sortIdentityTimelineByBlocktime } from "next-common/components/profile/identityTimeline";
 
 export default function usePeopleChainIdentityTimeline(account) {
   const [isLoading, setIsLoading] = useState(true);
@@ -10,8 +11,8 @@ export default function usePeopleChainIdentityTimeline(account) {
 
     try {
       const result = await queryPeopleIdentityTimeline(account);
-
-      setData(result?.data);
+      const sortedTimeline = sortIdentityTimelineByBlocktime(result?.data);
+      setData(sortedTimeline);
     } catch (e) {
       console.error(e);
       setData(null);
