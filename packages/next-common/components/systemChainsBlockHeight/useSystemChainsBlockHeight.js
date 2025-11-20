@@ -1,8 +1,5 @@
 import { usePeopleApi, getPeopleChain } from "next-common/context/people/api";
-import {
-  useCoretimeApi,
-  getCoretimeChain,
-} from "next-common/context/coretime/api";
+import { getCoretimeChain } from "next-common/context/coretime/api";
 import { useRelayChainLatestHeight } from "next-common/hooks/relayScanHeight";
 import useChainOrScanHeight from "next-common/hooks/height";
 import { useState, useEffect, useMemo } from "react";
@@ -52,6 +49,12 @@ function useSubscribeChainBlockHeight(api) {
   return latestHeight;
 }
 
+export function useHasCoretime() {
+  const { modules } = useChainSettings();
+
+  return !!modules?.coretime;
+}
+
 export function usePeopleBlockHeight() {
   const peopleApi = usePeopleApi();
   return useSubscribeChainBlockHeight(peopleApi);
@@ -59,15 +62,24 @@ export function usePeopleBlockHeight() {
 
 export function useCoretimeBlockHeight() {
   const chain = useChain();
-  const coretimeChain = getCoretimeChain(chain);
-  const { blockTime } = getChainSettings(coretimeChain);
+  const hasCoretime = useHasCoretime();
   const [coretimeScanHeight, setCoretimeScanHeight] = useState(null);
-  const interval = parseInt(blockTime) || 12000;
+
+  const interval = useMemo(() => {
+    if (!hasCoretime) {
+      return null;
+    }
+
+    const coretimeChain = getCoretimeChain(chain);
+    const blockTime = getChainSettings(coretimeChain)?.blockTime;
+    return parseInt(blockTime) || 12000;
+  }, [chain, hasCoretime]);
 
   useSubScanHeightStream({
     url: `stream/coretime-chain-height?interval=${interval}`,
     timeout: 10 * interval,
     callback: setCoretimeScanHeight,
+    enabled: hasCoretime,
   });
 
   return coretimeScanHeight;
@@ -79,7 +91,7 @@ export default function useSystemChainsBlockHeight() {
   const peopleBlockHeight = usePeopleBlockHeight();
   const coretimeBlockHeight = useCoretimeBlockHeight();
   const chain = useChain();
-  const { modules } = useChainSettings();
+  const hasCoretime = useHasCoretime();
   const assetHubChain = useAssetHubChain();
 
   return useMemo(() => {
@@ -101,7 +113,7 @@ export default function useSystemChainsBlockHeight() {
       },
     ];
 
-    if (modules?.coretime) {
+    if (hasCoretime) {
       chains.push({
         network: "Coretime",
         chain: getCoretimeChain(chain),
@@ -117,6 +129,6 @@ export default function useSystemChainsBlockHeight() {
     assetHubBlockHeight,
     peopleBlockHeight,
     coretimeBlockHeight,
-    modules?.coretime,
+    hasCoretime,
   ]);
 }

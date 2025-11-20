@@ -1,7 +1,9 @@
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import PeopleApiProvider from "next-common/context/people/api";
 import CoretimeApiProvider from "next-common/context/coretime/api";
-import useSystemChainsBlockHeight from "./useSystemChainsBlockHeight";
+import useSystemChainsBlockHeight, {
+  useHasCoretime,
+} from "./useSystemChainsBlockHeight";
 import { MapDataList } from "next-common/components/dataList";
 import FieldLoading from "next-common/components/icons/fieldLoading";
 import ChainIcon from "next-common/components/header/chainIcon";
@@ -51,12 +53,18 @@ function PopupContent() {
 }
 
 export default function SystemChainsBlockHeightPopup({ setShow }) {
+  const hasCoretime = useHasCoretime();
+
   return (
     <Popup title="Block Height" onClose={() => setShow(false)}>
       <PeopleApiProvider>
-        <CoretimeApiProvider>
+        {hasCoretime ? (
+          <CoretimeApiProvider>
+            <PopupContent />
+          </CoretimeApiProvider>
+        ) : (
           <PopupContent />
-        </CoretimeApiProvider>
+        )}
       </PeopleApiProvider>
     </Popup>
   );
