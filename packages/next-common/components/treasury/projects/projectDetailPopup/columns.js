@@ -77,9 +77,9 @@ function RequestCol({ proposal }) {
 
   return (
     <Tooltip
-      content={`Total ${formatNum(totalValue)}, ${proportion}%(${formatNum(
-        value,
-      )}) fund`}
+      content={`Total ${formatNum(totalValue)}, ${proportion.toFixed(
+        2,
+      )}%(${formatNum(value)}) fund`}
     >
       <ValueDisplay
         value={toPrecision(value)}
