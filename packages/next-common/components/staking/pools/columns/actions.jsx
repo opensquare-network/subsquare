@@ -13,7 +13,7 @@ import {
 } from "next-common/components/internalDropdown/styled";
 import { ActionIconButton } from "next-common/components/multisigs/styled";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import { useMyPool } from "../context/myPool";
+import { useMyPool } from "next-common/context/staking/myPool";
 
 const JoinPopup = dynamicPopup(() =>
   import("next-common/components/staking/pools/actions/joinPopup"),

@@ -7,7 +7,7 @@ import { toPrecision } from "next-common/utils";
 import { useMemo, useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { TrackRetention } from "@osn/icons/subsquare";
-import { useMyPool } from "./context/myPool";
+import { useMyPool } from "next-common/context/staking/myPool";
 import IconButton from "next-common/components/iconButton";
 
 const UnbondingPopup = dynamicPopup(() =>
