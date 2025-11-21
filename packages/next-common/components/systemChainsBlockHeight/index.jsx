@@ -14,7 +14,7 @@ function SystemChainsBlockHeightImpl() {
 
   return (
     <div>
-      <Tooltip content="View more system chains' block height">
+      <Tooltip content="Click to see more system chains' status">
         <SecondaryButton
           className="max-sm:w-full max-sm:justify-between border-none text-textSecondary hover:text-textPrimary pr-0"
           onClick={() => setShow(true)}
