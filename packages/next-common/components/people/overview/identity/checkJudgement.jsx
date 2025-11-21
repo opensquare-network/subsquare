@@ -5,6 +5,7 @@ import { isIdentityEmpty } from "next-common/components/people/common";
 import PrimaryButton from "next-common/lib/button/primary";
 import { isEmpty } from "lodash-es";
 import { useRouter } from "next/router";
+import useDefaultRegistrar from "next-common/components/people/overview/hooks/useDefaultRegistrar";
 
 const RequestJudgementPopup = dynamicPopup(
   () => import("next-common/components/requestJudgementPopup"),
@@ -14,8 +15,7 @@ const RequestJudgementPopup = dynamicPopup(
 );
 
 // TODO: default subsquare registrar index.
-const SUBSQUARE_REGISTRAR_INDEX = "2";
-
+const SUBSQUARE_REGISTRAR_INDEX = "0";
 const VERIFIED_STATUSES = ["Reasonable", "KnownGood"];
 
 function isPendingRequestBySubsquare(judgements) {
@@ -27,6 +27,17 @@ function isPendingRequestBySubsquare(judgements) {
 function isVerifiedStatus(judgements) {
   return judgements?.some((judgement) =>
     VERIFIED_STATUSES.includes(judgement.status),
+  );
+}
+
+function RequestJudgementPopupImpl({ onClose }) {
+  const defaultRegistrar = useDefaultRegistrar(SUBSQUARE_REGISTRAR_INDEX);
+
+  return (
+    <RequestJudgementPopup
+      onClose={onClose}
+      defaultRegistrar={defaultRegistrar}
+    />
   );
 }
 
@@ -51,9 +62,9 @@ function RequestJudgement() {
   return (
     <div>
       <PrimaryButton className="w-auto" onClick={handleOpenPopup}>
-        Request Subsquare Judgement
+        Request Judgement
       </PrimaryButton>
-      {showPopup && <RequestJudgementPopup onClose={handleClosePopup} />}
+      {showPopup && <RequestJudgementPopupImpl onClose={handleClosePopup} />}
     </div>
   );
 }

@@ -26,8 +26,10 @@ const StyledSignerWithBalance = styled.div`
   }
 `;
 
-export default function RequestJudgementPopupContent() {
-  const [value, setValue] = useState();
+export default function RequestJudgementPopupContent({
+  defaultRegistrar = null,
+}) {
+  const [value, setValue] = useState(defaultRegistrar);
   const { symbol, decimals } = useChainSettings();
   const { registrars, isLoading } = useRegistrarContext();
   const api = useContextApi();
