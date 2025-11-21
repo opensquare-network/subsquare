@@ -123,6 +123,7 @@ const kusama = {
   supportForeignAssets: true,
   supportAssets: true,
   bountyIdentity: true,
+  hideHeight: true,
 };
 
 export default kusama;

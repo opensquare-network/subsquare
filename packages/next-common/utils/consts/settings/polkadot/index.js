@@ -134,6 +134,7 @@ const polkadot = {
   supportForeignAssets: true,
   supportAssets: true,
   bountyIdentity: true,
+  hideHeight: true,
 };
 
 export default polkadot;

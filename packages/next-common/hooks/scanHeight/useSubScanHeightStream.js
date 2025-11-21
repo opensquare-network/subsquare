@@ -2,10 +2,19 @@ import { useEffect, useState } from "react";
 import { sleep } from "next-common/utils";
 import { noop } from "lodash-es";
 
-export function useSubScanHeightStream({ url, timeout, callback = noop }) {
+export function useSubScanHeightStream({
+  url,
+  timeout,
+  callback = noop,
+  enabled = true,
+}) {
   const [reconnect, setReconnect] = useState(0);
 
   useEffect(() => {
+    if (!enabled) {
+      return;
+    }
+
     let aborted = false;
 
     fetch(new URL(url, process.env.NEXT_PUBLIC_BACKEND_API_END_POINT))
@@ -56,5 +65,5 @@ export function useSubScanHeightStream({ url, timeout, callback = noop }) {
     return () => {
       aborted = true;
     };
-  }, [reconnect, url, timeout, callback]);
+  }, [reconnect, url, timeout, callback, enabled]);
 }

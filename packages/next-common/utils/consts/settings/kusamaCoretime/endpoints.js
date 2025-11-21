@@ -21,7 +21,11 @@ const kusamaCoretimeNodes = [
   },
   {
     name: "Dwellir",
-    url: "wss://coretime-kusama-rpc.dwellir.com",
+    url: "wss://coretime-kusama-rpc.n.dwellir.com",
+  },
+  {
+    name: "OnFinality",
+    url: "wss://coretime-kusama.api.onfinality.io/public-ws",
   },
 ];
 

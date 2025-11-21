@@ -1,8 +1,11 @@
 import { useMemo } from "react";
 import ProjectProposalsList from "../projectDetailPopup/proposalsList";
 import ProjectSpendsList from "../projectDetailPopup/spendsList";
-import useProposals from "./useProposals";
-import useSpends from "./useSpends";
+import ProjectChildBountiesList from "../projectDetailPopup/childBountiesList";
+import useTreasuryItems from "./useTreasuryItems";
+import normalizeTreasuryProposalListItem from "next-common/utils/viewfuncs/treasury/normalizeProposalListItem";
+import normalizeTreasurySpendListItem from "next-common/utils/viewfuncs/treasury/normalizeTreasurySpendListItem";
+import normalizeChildBountyListItem from "next-common/utils/viewfuncs/treasury/normalizeChildBountyListItem";
 import BigNumber from "bignumber.js";
 import { toPrecision } from "next-common/utils";
 import { CHAIN } from "next-common/utils/constants";
@@ -12,93 +15,170 @@ import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 export const TAB_VALUES = {
   proposals: "proposals",
   spends: "spends",
+  childBounties: "childBounties",
 };
 
-export default function usePopupDetailTabs({ proposalList, spendList }) {
-  const { proposalIndexes, spendIndexes } = useFormatIndexes({
-    proposalList,
-    spendList,
+export default function usePopupDetailTabs({
+  proposalList,
+  spendList,
+  childBountyList,
+}) {
+  const normalizedProposalList = useMemo(
+    () => proposalList ?? [],
+    [proposalList],
+  );
+  const normalizedSpendList = useMemo(() => spendList ?? [], [spendList]);
+  const normalizedChildBountyList = useMemo(
+    () => childBountyList ?? [],
+    [childBountyList],
+  );
+
+  const { proposalIndexes, spendIndexes, childBountyIndexes } =
+    useFormatIndexes({
+      proposalList: normalizedProposalList,
+      spendList: normalizedSpendList,
+      childBountyList: normalizedChildBountyList,
+    });
+
+  const { items: proposals, loading: proposalsLoading } = useTreasuryItems({
+    indexes: proposalIndexes,
+    apiPath: "/treasury/proposals",
+    normalizeItem: normalizeTreasuryProposalListItem,
   });
 
-  const { proposals, loading: proposalsLoading } =
-    useProposals(proposalIndexes);
-  const { spends, loading: spendsLoading } = useSpends(spendIndexes);
+  const { items: spends, loading: spendsLoading } = useTreasuryItems({
+    indexes: spendIndexes,
+    apiPath: "/treasury/spends",
+    normalizeItem: normalizeTreasurySpendListItem,
+  });
+
+  const { items: childBounties, loading: childBountiesLoading } =
+    useTreasuryItems({
+      indexes: childBountyIndexes,
+      apiPath: "/treasury/child-bounties",
+      normalizeItem: normalizeChildBountyListItem,
+    });
 
   const normalizedProposals = useMemo(
-    () => normalizeProposals(proposals, proposalList),
-    [proposals, proposalList],
+    () => normalizeProposals(proposals, normalizedProposalList),
+    [proposals, normalizedProposalList],
   );
 
   const normalizedSpends = useMemo(
-    () => normalizeSpends(spends, spendList),
-    [spends, spendList],
+    () => normalizeSpends(spends, normalizedSpendList),
+    [spends, normalizedSpendList],
+  );
+
+  const normalizedChildBounties = useMemo(
+    () => normalizeChildBounties(childBounties, normalizedChildBountyList),
+    [childBounties, normalizedChildBountyList],
   );
 
   const tabs = useMemo(
-    () => [
-      {
-        value: TAB_VALUES.spends,
-        label: "Spends",
-        activeCount: normalizedSpends?.length,
-        content: (
-          <ProjectSpendsList
-            spends={normalizedSpends}
-            loading={spendsLoading}
-            spendList={spendList}
-          />
-        ),
-      },
-      {
-        value: TAB_VALUES.proposals,
-        label: "Proposals",
-        activeCount: normalizedProposals?.length,
-        content: (
-          <ProjectProposalsList
-            proposals={normalizedProposals}
-            loading={proposalsLoading}
-            proposalList={proposalList}
-          />
-        ),
-      },
-    ],
+    () =>
+      [
+        normalizedSpendList?.length > 0 && {
+          value: TAB_VALUES.spends,
+          label: "Spends",
+          activeCount: normalizedSpendList?.length,
+          content: (
+            <ProjectSpendsList
+              spends={normalizedSpends}
+              loading={spendsLoading}
+            />
+          ),
+        },
+        normalizedProposalList?.length > 0 && {
+          value: TAB_VALUES.proposals,
+          label: "Proposals",
+          activeCount: normalizedProposalList?.length,
+          content: (
+            <ProjectProposalsList
+              proposals={normalizedProposals}
+              loading={proposalsLoading}
+            />
+          ),
+        },
+        normalizedChildBountyList?.length > 0 && {
+          value: TAB_VALUES.childBounties,
+          label: "Child Bounties",
+          activeCount: normalizedChildBountyList?.length,
+          content: (
+            <ProjectChildBountiesList
+              childBounties={normalizedChildBounties}
+              loading={childBountiesLoading}
+            />
+          ),
+        },
+      ].filter(Boolean),
     [
       normalizedProposals,
       normalizedSpends,
+      normalizedChildBounties,
+      normalizedProposalList,
+      normalizedSpendList,
+      normalizedChildBountyList,
       proposalsLoading,
       spendsLoading,
-      proposalList,
-      spendList,
+      childBountiesLoading,
     ],
   );
 
   return {
     tabs,
+    // list
     proposals: normalizedProposals,
     spends: normalizedSpends,
-    proposalsLoading,
-    spendsLoading,
+    childBounties: normalizedChildBounties,
+    // indexes
     proposalIndexes,
     spendIndexes,
+    childBountyIndexes,
+    // loading
+    proposalsLoading,
+    spendsLoading,
+    childBountiesLoading,
   };
 }
 
-function normalizeProposals(proposals, proposalList) {
-  const proportionMap = new Map(proposalList.map((p) => [p.id, p.proportion]));
-  return proposals.map((proposal) => {
-    const proportion = proportionMap.get(proposal.proposalIndex) ?? 1;
+function normalizeItemsWithPrice(items, itemList, getItemId) {
+  if (!items) {
+    return items;
+  }
+  const proportionMap = new Map(
+    itemList?.map((item) => [item.id, item.proportion]),
+  );
+  return items.map((item) => {
+    const proportion = proportionMap.get(getItemId(item)) ?? 1;
     const { submission: submissionPrice, final: finalPrice } =
-      proposal.onchainData?.price ?? {};
-    const value = BigNumber(proposal.dValue);
+      item.onchainData?.price ?? {};
+    const value = BigNumber(item.dValue);
     const fiatAtSubmission = value.times(submissionPrice).toFixed(2);
     const fiatAtFinal = value.times(finalPrice).toFixed(2);
 
     return {
-      ...proposal,
+      ...item,
       proportion,
       fiatAtSubmission,
       fiatAtFinal,
     };
   });
+}
+
+function normalizeChildBounties(childBounties, childBountyList) {
+  return normalizeItemsWithPrice(
+    childBounties,
+    childBountyList,
+    (childBounty) => childBounty.id,
+  );
+}
+
+function normalizeProposals(proposals, proposalList) {
+  return normalizeItemsWithPrice(
+    proposals,
+    proposalList,
+    (proposal) => proposal.proposalIndex,
+  );
 }
 
 function normalizeSpends(spends, spendList) {
@@ -117,13 +197,14 @@ function normalizeSpends(spends, spendList) {
   });
 }
 
-function useFormatIndexes({ proposalList, spendList }) {
+function useFormatIndexes({ proposalList, spendList, childBountyList }) {
   return useMemo(() => {
     return {
-      proposalIndexes: proposalList.map((proposal) => proposal.id),
-      spendIndexes: spendList.map((spend) => spend.id),
+      proposalIndexes: proposalList?.map((proposal) => proposal.id),
+      spendIndexes: spendList?.map((spend) => spend.id),
+      childBountyIndexes: childBountyList?.map((childBounty) => childBounty.id),
     };
-  }, [proposalList, spendList]);
+  }, [proposalList, spendList, childBountyList]);
 }
 
 function getSpendAmount(spend) {

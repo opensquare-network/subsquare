@@ -41,7 +41,7 @@ export default function ProjectStatisticsChart({ projects, totalFiat }) {
 
   return (
     <div className="flex flex-wrap gap-6 w-full max-sm:flex-col">
-      <div className="flex items-center w-1/2 max-sm:w-full justify-between">
+      <div className="flex items-center w-1/2 max-sm:w-full justify-between h-20">
         <ProjectSummary totalFiat={totalFiat} />
         <ProjectDoughnutChart data={data} />
       </div>

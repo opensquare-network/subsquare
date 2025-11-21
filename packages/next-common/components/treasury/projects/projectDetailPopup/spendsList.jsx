@@ -1,11 +1,11 @@
-import { MapDataList } from "next-common/components/dataList";
+import ProjectItemsList from "./itemsList";
 import { spendColumnsDef } from "./columns";
 
 export default function ProjectSpendsList({ spends = [], loading = false }) {
   return (
-    <MapDataList
+    <ProjectItemsList
+      items={spends}
       loading={loading}
-      data={spends}
       columnsDef={spendColumnsDef}
       noDataText="No spends"
     />

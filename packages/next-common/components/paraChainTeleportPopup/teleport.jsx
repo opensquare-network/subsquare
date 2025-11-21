@@ -11,21 +11,33 @@ import {
   newErrorToast,
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { useChainApi, useGetTeleportTxFunc } from "./crossChainApi";
-import useCrossChainDirection from "./useCrossChainDirection";
+import useCrossChainTeleport from "./useCrossChainTeleport";
 import useNativeTransferAmount from "./useNativeTransferAmount";
 import PeopleApiProvider from "next-common/context/people/api";
 import CoretimeApiProvider from "next-common/context/coretime/api";
+import { CollectivesApiProvider } from "next-common/context/collectives/api";
+import Tooltip from "next-common/components/tooltip";
+
+function TooltipDisabledGuard({ disabled, children }) {
+  return disabled ? (
+    <Tooltip content="Source and destination should be different chains">
+      {children}
+    </Tooltip>
+  ) : (
+    children
+  );
+}
 
 function PopupContent() {
   const { onClose } = usePopupParams();
   const {
     sourceChain,
     destinationChain,
-    component: crossChainDirection,
-  } = useCrossChainDirection();
+    component: crossChainTeleport,
+  } = useCrossChainTeleport();
   const sourceApi = useChainApi(sourceChain);
   const destinationApi = useChainApi(destinationChain);
   const getTeleportTx = useGetTeleportTxFunc({
@@ -83,19 +95,29 @@ function PopupContent() {
     });
   }, [sourceApi, dispatch, getTxFunc, sendTxFunc, onClose]);
 
+  const submitDisabled = useMemo(() => {
+    return sourceChain === destinationChain;
+  }, [sourceChain, destinationChain]);
+
   return (
     <>
       <ConnectedUserOrigin />
-      {crossChainDirection}
+      {crossChainTeleport}
       {addressComboField}
       {transferAmountField}
       <AdvanceSettings>
         <ExistentialDeposit destApi={destinationApi} />
       </AdvanceSettings>
       <div className="flex justify-end">
-        <PrimaryButton loading={isSubmitting} onClick={doSubmit}>
-          Submit
-        </PrimaryButton>
+        <TooltipDisabledGuard disabled={submitDisabled}>
+          <PrimaryButton
+            loading={isSubmitting}
+            onClick={doSubmit}
+            disabled={submitDisabled}
+          >
+            Submit
+          </PrimaryButton>
+        </TooltipDisabledGuard>
       </div>
     </>
   );
@@ -106,7 +128,9 @@ export default function ParaChainTeleportPopup(props) {
     <PopupWithSigner title="Cross-chain" {...props}>
       <PeopleApiProvider>
         <CoretimeApiProvider>
-          <PopupContent />
+          <CollectivesApiProvider>
+            <PopupContent />
+          </CollectivesApiProvider>
         </CoretimeApiProvider>
       </PeopleApiProvider>
     </PopupWithSigner>

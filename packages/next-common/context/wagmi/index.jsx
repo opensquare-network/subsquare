@@ -33,6 +33,9 @@ export const wagmiConfig = createConfig({
     injected(),
     coinbaseWallet({
       appName: "subsquare",
+      preference: {
+        telemetry: false,
+      },
     }),
   ],
   transports: {
