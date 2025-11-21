@@ -9,12 +9,12 @@ export default function useDefaultRegistrar(defaultRegistrarIndex) {
   const [dafaultValue, setDefaultValue] = useState(null);
 
   const selectableRegistrars = useMemo(() => {
-    if (isEmpty(registrars) || isEmpty(data)) {
+    if (isEmpty(registrars)) {
       return [];
     }
 
     return registrars?.filter(
-      (s) => !data.some((r) => r.account === s.account),
+      (s) => !data?.some((r) => r.account === s.account),
     );
   }, [data, registrars]);
 
