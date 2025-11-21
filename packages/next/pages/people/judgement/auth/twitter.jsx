@@ -8,6 +8,7 @@ import { withCommonProps } from "next-common/lib";
 import getChainSettings from "next-common/utils/consts/settings";
 import PrimaryButton from "next-common/lib/button/primary";
 import KvList from "next-common/components/listInfo/kvList";
+import Link from "next/link";
 
 const isPeopleSupported = !!getChainSettings(CHAIN).modules?.people;
 
@@ -49,9 +50,9 @@ function PageImpl() {
             ]}
           />
           <div className="flex justify-end">
-            <a href="/people/judgement">
+            <Link href="/people/judgement">
               <PrimaryButton>Go to Judgement Detail</PrimaryButton>
-            </a>
+            </Link>
           </div>
         </div>
         <div className="pt-4 grid grid-cols-1  gap-4"></div>
