@@ -1,7 +1,6 @@
 import Popup from "../../popup/wrapper/Popup";
 import { noop } from "lodash-es";
 import "../globalConfig";
-import ThresholdCurvesGov2TallyLegend from "./legend/gov2TallyLegend";
 import {
   useApprovalThreshold,
   useSupportThreshold,
@@ -12,7 +11,8 @@ import FellowshipCurveChart from "./fellowshipCurveChart";
 import Flex from "next-common/components/styled/flex";
 import HowOpenGovWorks from "next-common/components/howOpenGovWorks";
 import ConfirmationEstimation from "./gov2TallyPopup/confirmationEstimation";
-
+import useVoteSearch from "next-common/components/pages/components/fellowship/referendum/sidebar/tally/voteActions/useVoteSearch";
+import VoteActionsTable from "next-common/components/pages/components/fellowship/referendum/sidebar/tally/voteActions/table";
 export default function ThresholdCurvesFellowshipTallyPopup({
   closeFunc = noop,
   supportPerbill = 0,
@@ -21,11 +21,11 @@ export default function ThresholdCurvesFellowshipTallyPopup({
 }) {
   const approvalThreshold = useApprovalThreshold();
   const supportThreshold = useSupportThreshold();
+  const { search, searchBtn, searchBar } = useVoteSearch();
 
   return (
     <Popup title="Threshold Curves" className="w-[960px]" onClose={closeFunc}>
       <FellowshipCurveChart />
-      <ThresholdCurvesGov2TallyLegend showAyeNay={false} />
 
       <Flex className="flex max-sm:flex-col grow gap-[16px]">
         <ThresholdApprovalCard
@@ -47,6 +47,15 @@ export default function ThresholdCurvesFellowshipTallyPopup({
 
       <div className="mt-[16px]">
         <HowOpenGovWorks anchor="referenda" />
+      </div>
+
+      <div>
+        <div className="flex justify-between text-textPrimary text14Bold pb-4">
+          <span>Actions</span> {searchBtn}
+        </div>
+
+        {searchBar}
+        <VoteActionsTable listHeight={300} search={search} />
       </div>
     </Popup>
   );
