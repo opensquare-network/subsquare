@@ -7,9 +7,9 @@ const scope = "tweet.read users.read offline.access";
 const client_id = process.env.NEXT_PUBLIC_X_CLIENT_ID;
 const redirect_uri = location.origin + "/people/judgement/auth/twitter";
 
-function generateAuthLink(data = {}) {
+function generateAuthLink(state = {}) {
   const params = new URLSearchParams({
-    state: encodeURIComponent(JSON.stringify(data)),
+    state: encodeURIComponent(JSON.stringify(state)),
     client_id,
     redirect_uri,
     scope,
@@ -42,9 +42,10 @@ export default function Twitter() {
           <span className=" text14Bold w-32">Username:</span>
           <span className="truncate text-textTertiary">@QuinnGao</span>
         </div>
-        <a href={link}>
-          <PrimaryButton size="small">Connect Twitter</PrimaryButton>
-        </a>
+        <PrimaryButton size="small" onClick={() => window.open(link)}>
+          Connect Twitter
+        </PrimaryButton>
+        {/* </a> */}
       </div>
     </div>
   );

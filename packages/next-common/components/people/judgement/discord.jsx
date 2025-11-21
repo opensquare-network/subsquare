@@ -41,9 +41,10 @@ export default function Discord() {
             pending@example.com
           </span>
         </div>
-        <a href={link}>
-          <PrimaryButton size="small">Connect Discord</PrimaryButton>
-        </a>
+
+        <PrimaryButton onClick={() => window.open(link)} size="small">
+          Connect Discord
+        </PrimaryButton>
       </div>
     </div>
   );

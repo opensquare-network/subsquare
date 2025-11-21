@@ -1,8 +1,10 @@
 import { LinkElement } from "@osn/icons/subsquare";
 import { ClosedTag } from "next-common/components/tags/state/styled";
 import PrimaryButton from "next-common/lib/button/primary";
-import SecondaryButton from "next-common/lib/button/secondary";
 import Copyable from "next-common/components/copyable";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
+import { useDispatch } from "react-redux";
+import { useState } from "react";
 
 export default function Email() {
   return (
@@ -18,7 +20,7 @@ export default function Email() {
             <ClosedTag>Pending</ClosedTag>
           </div>
         </div>
-        <PrimaryButton size="small">Verify</PrimaryButton>
+        <VerifyButton />
       </div>
       <div className="flex gap-4 pb-2">
         <div className="flex items-center ">
@@ -32,13 +34,14 @@ export default function Email() {
           Step 1: Join Verify Room
         </label>
         <div className="flex flex-col sm:flex-row gap-2">
-          <a
-            className="text-textTertiary "
-            href="https://matrix.to/#/#Subsquare-Identity-Verify:matrix.org"
-          >
-            #Subsquare-Identity-Verify:matrix.org
-          </a>
-          <SecondaryButton size="small">copy</SecondaryButton>
+          <Copyable copyText="XXX-XXX-1234">
+            <a
+              className="text-theme500 underline "
+              href="https://matrix.to/#/#Subsquare-Identity-Verify:matrix.org"
+            >
+              https://matrix.to/#/#Subsquare-Identity-Verify:matrix.org
+            </a>
+          </Copyable>
         </div>
       </div>
       <div>
@@ -61,5 +64,22 @@ export default function Email() {
         </div>
       </div>
     </div>
+  );
+}
+
+function VerifyButton() {
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const verifyCode = async () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      dispatch(newSuccessToast("Verify element successfully"));
+    }, 1500);
+  };
+  return (
+    <PrimaryButton size="small" onClick={verifyCode} loading={loading}>
+      Verify
+    </PrimaryButton>
   );
 }

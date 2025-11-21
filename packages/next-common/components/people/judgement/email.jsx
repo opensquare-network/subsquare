@@ -4,8 +4,11 @@ import PrimaryButton from "next-common/lib/button/primary";
 import SecondaryButton from "next-common/lib/button/secondary";
 import Input from "next-common/lib/input";
 import { useState, useEffect } from "react";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
+import { useDispatch } from "react-redux";
 
 export default function Email() {
+  const [code, setCode] = useState("");
   return (
     <div className="w-full space-y-2 text14Medium text-textPrimary">
       <div className="flex justify-between">
@@ -40,16 +43,37 @@ export default function Email() {
           Enter Verification Code
         </label>
         <div className="flex flex-col sm:flex-row gap-2">
-          <Input className="w-full" placeholder="Enter 6-digit code" />
-
-          <PrimaryButton>Verify</PrimaryButton>
+          <Input
+            className="w-full"
+            placeholder="Enter 6-digit code"
+            onChange={(e) => setCode(e.target.value)}
+          />
+          <VerifyButton code={code} />
         </div>
       </div>
     </div>
   );
 }
 
+function VerifyButton({ code }) {
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const verifyCode = async () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      dispatch(newSuccessToast("Verify code successfully"));
+    }, 1500);
+  };
+  return (
+    <PrimaryButton onClick={verifyCode} loading={loading} disabled={!code}>
+      Verify
+    </PrimaryButton>
+  );
+}
+
 function SendCode() {
+  const dispatch = useDispatch();
   const [countdown, setCountdown] = useState(0);
   const [loading, setLoading] = useState(false);
 
@@ -65,6 +89,7 @@ function SendCode() {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
+      dispatch(newSuccessToast("Send email successfully"));
       setCountdown(60);
     }, 1500);
   };

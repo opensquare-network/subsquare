@@ -11,6 +11,8 @@ import Email from "./email";
 import Discord from "./discord";
 import Twitter from "./twitter";
 import Element from "./element";
+import { useState, useEffect } from "react";
+import Loading from "next-common/components/loading";
 export const tabs = [
   {
     value: "Judgement",
@@ -22,6 +24,13 @@ export const tabs = [
 
 export default function JudgementPage() {
   const address = useRealAddress();
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+  }, []);
+
   return (
     <PeopleCommonProvider>
       <ListLayout
@@ -31,17 +40,16 @@ export default function JudgementPage() {
         headContent={<ChainSocialLinks />}
       >
         <div className="bg-neutral100 border-b border-neutral300 p-4 rounded-lg ">
-          <div className="pb-3">
+          <div className="pb-3 flex gap-2">
             <Account account={{ address }} addressClassName="!text14Medium" />
           </div>
-          <SummaryLayout>
+          <SummaryLayout className="grid-cols-3">
             <SummaryItem title="Verified">
               <span>0</span>
             </SummaryItem>
             <SummaryItem title="Pending">
               <span>{0}</span>
             </SummaryItem>
-
             <SummaryItem title="TotalSocials">
               <span>
                 {0}
@@ -50,20 +58,26 @@ export default function JudgementPage() {
             </SummaryItem>
           </SummaryLayout>
         </div>
-        <div className="pt-4 grid grid-cols-1  gap-4">
-          <div className="bg-neutral100 border-b border-neutral300 p-4 rounded-lg flex">
-            <Email />
+        {loading ? (
+          <div className="bg-neutral100 border-b border-neutral300 p-4 rounded-lg flex justify-center">
+            <Loading size="24" />
           </div>
-          <div className="bg-neutral100 border-b border-neutral300 p-4 rounded-lg flex">
-            <Element />
+        ) : (
+          <div className="pt-4 grid grid-cols-1  gap-4">
+            <div className="bg-neutral100 border-b border-neutral300 p-4 rounded-lg flex">
+              <Email />
+            </div>
+            <div className="bg-neutral100 border-b border-neutral300 p-4 rounded-lg flex">
+              <Element />
+            </div>
+            <div className="bg-neutral100 border-b border-neutral300 p-4 rounded-lg flex">
+              <Discord />
+            </div>
+            <div className="bg-neutral100 border-b border-neutral300 p-4 rounded-lg flex">
+              <Twitter />
+            </div>
           </div>
-          <div className="bg-neutral100 border-b border-neutral300 p-4 rounded-lg flex">
-            <Discord />
-          </div>
-          <div className="bg-neutral100 border-b border-neutral300 p-4 rounded-lg flex">
-            <Twitter />
-          </div>
-        </div>
+        )}
       </ListLayout>
     </PeopleCommonProvider>
   );

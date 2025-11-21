@@ -21,12 +21,11 @@ export const peopleMenu = {
       value: "overview",
       pathname: "/people",
       icon: <MenuAuthorities />,
-    },
-    {
-      name: "Judgement",
-      value: "judgement",
-      pathname: "/people/judgement",
-      icon: <MenuData />,
+      extraMatchNavMenuActivePathnames: [
+        "/people/judgement",
+        "/people/judgement/auth/discord",
+        "/people/judgement/auth/twitter",
+      ],
     },
     {
       name: "Identities",
