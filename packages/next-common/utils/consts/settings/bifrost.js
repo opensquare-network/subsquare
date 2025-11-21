@@ -23,10 +23,6 @@ const DEFAULT_BIFROST_NODES = [
     name: "LiebiUS",
     url: "wss://us.bifrost-rpc.liebi.com/ws",
   },
-  {
-    name: "RadiumBlock",
-    url: "wss://bifrost.public.curie.radiumblock.co/ws",
-  },
 ];
 
 const links = [
