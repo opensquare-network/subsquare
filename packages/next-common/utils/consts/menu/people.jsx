@@ -23,6 +23,12 @@ export const peopleMenu = {
       icon: <MenuAuthorities />,
     },
     {
+      name: "Judgement",
+      value: "judgement",
+      pathname: "/people/judgement",
+      icon: <MenuData />,
+    },
+    {
       name: "Identities",
       value: "identities",
       pathname: "/people/identities",
