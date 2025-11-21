@@ -15,8 +15,8 @@ const RequestJudgementPopup = dynamicPopup(
 );
 
 // TODO: default subsquare registrar index.
-const SUBSQUARE_REGISTRAR_INDEX = "0";
-const VERIFIED_STATUSES = ["Reasonable", "KnownGood"];
+const SUBSQUARE_REGISTRAR_INDEX = "1";
+const NO_ACTION_REQUIRED_STATUSES = ["Reasonable", "KnownGood", "Erroneous"];
 
 function isPendingRequestBySubsquare(judgements) {
   return judgements?.some(
@@ -24,9 +24,9 @@ function isPendingRequestBySubsquare(judgements) {
   );
 }
 
-function isVerifiedStatus(judgements) {
+function isNoActionRequired(judgements) {
   return judgements?.some((judgement) =>
-    VERIFIED_STATUSES.includes(judgement.status),
+    NO_ACTION_REQUIRED_STATUSES.includes(judgement.status),
   );
 }
 
@@ -87,16 +87,13 @@ function CheckSubsquareJudgement() {
 
 export default function CheckJudgement() {
   const { judgements, isLoading } = useIdentityInfoContext();
-  if (isLoading) {
+
+  if (isLoading || isNoActionRequired(judgements)) {
     return null;
   }
 
   if (isEmpty(judgements)) {
     return <RequestJudgement />;
-  }
-
-  if (isVerifiedStatus(judgements)) {
-    return null;
   }
 
   if (isPendingRequestBySubsquare(judgements)) {
