@@ -31,8 +31,8 @@ export default function Statistics({ label, category }) {
   }
 
   return (
-    <>
-      <TitleContainer className="justify-start">
+    <div>
+      <TitleContainer className="justify-start mb-4">
         <div className="flex gap-x-1">
           {label}
           <Tooltip content="The prices are calculated at awarded time."></Tooltip>
@@ -44,6 +44,6 @@ export default function Statistics({ label, category }) {
           totalFiat={totalFiat}
         />
       </SecondaryCard>
-    </>
+    </div>
   );
 }

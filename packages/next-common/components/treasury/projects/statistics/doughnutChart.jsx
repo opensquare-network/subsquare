@@ -1,6 +1,5 @@
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { formatNum } from "next-common/utils";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -25,16 +24,7 @@ const options = {
       display: false,
     },
     tooltip: {
-      displayColors: false,
-      callbacks: {
-        title: () => "",
-        label(item) {
-          const name = item.dataset.name[item.dataIndex];
-          const percentage = item.dataset.percentage[item.dataIndex];
-          const count = item.dataset.data[item.dataIndex];
-          return [name, `${formatNum(count)} (${percentage})`];
-        },
-      },
+      enabled: false,
     },
   },
   cutout: "50%",

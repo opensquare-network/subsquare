@@ -44,12 +44,10 @@ export default function ProjectStatisticsChart({ projects, totalFiat }) {
   }, [projects, totalFiat]);
 
   return (
-    <div className="flex flex-wrap gap-6 w-full max-sm:flex-col">
-      <div className="flex items-center w-1/2 max-sm:w-full justify-between h-20">
-        <ProjectSummary totalFiat={totalFiat} />
-        <ProjectDoughnutChart data={data} />
-      </div>
+    <div className="grid grid-cols-3 w-full max-sm:grid-cols-1 items-center">
+      <ProjectSummary totalFiat={totalFiat} />
       <ProjectIndicators data={data} projects={projects} />
+      <ProjectDoughnutChart data={data} />
     </div>
   );
 }
