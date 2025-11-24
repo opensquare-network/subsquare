@@ -4,7 +4,6 @@ import { RELATIONSHIP_NODE_TYPE } from "next-common/utils/constants";
 import useFetchIdentityInfo from "next-common/hooks/useFetchIdentityInfo";
 import useMaybeContextMultisigAddress from "./useMaybeContextMultisigAddress";
 import {
-  PureProxy,
   rootNodeId,
   createRelationship,
   BadgeInfo,
@@ -21,9 +20,12 @@ function createProxiesRelationship(rootNode, proxies = []) {
     nodeIdPrefix: "proxie",
     edgeIdPrefix: "root-proxies",
     nodeDataMapper: (item) => {
-      if (rootNode?.data?.address === item.delegator && item.isPure) {
+      if (rootNode?.data?.address === item.delegator) {
         rootNode.data.pure = (
-          <PureProxy className="inline-flex absolute h-5 right-2 top-2" />
+          <DynamicPureProxy
+            address={item.delegator}
+            className="inline-flex absolute h-5 right-2 top-2"
+          />
         );
       }
       return {
@@ -54,7 +56,7 @@ function createReceivedProxiesRelationship(rootNode, receivedProxies = []) {
       address: item.delegator,
       value: item.type,
       badge: <BadgeInfo address={item.delegator} />,
-      // pure: <PureProxy />,
+      pure: <DynamicPureProxy address={item.delegator} />,
     }),
     edgeDataMapper: (data) => ({
       type: RELATIONSHIP_NODE_TYPE.Proxy,

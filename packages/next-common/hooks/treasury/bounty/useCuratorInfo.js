@@ -1,6 +1,6 @@
 import { isNil } from "lodash-es";
 import { useContextApi } from "next-common/context/api";
-import { useIsPureProxy } from "next-common/hooks/profile/useFetchProfileProxies";
+import useIsPureProxy from "next-common/hooks/useIsPureProxy";
 import { useMemo } from "react";
 import { useAsync } from "react-use";
 import { fetchMultisigData } from "./useCuratorMultisigAddress";
@@ -31,7 +31,7 @@ export default function useCuratorInfo(address) {
     return proxies || [];
   }, []);
 
-  const { isPure, isLoading: isPureLoading } = useIsPureProxy(address);
+  const { isPure, loading: isPureLoading } = useIsPureProxy(address);
 
   const { value: multisigData, loading: multisigLoading } = useAsync(
     async () => await fetchMultisigData(address),
