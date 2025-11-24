@@ -25,7 +25,6 @@ export default function useIsPureProxy(address) {
       const { result } = await backendApi.fetch(`/proxies/pure/${address}`);
       return !!result;
     } catch (error) {
-      console.error("Failed to check pure proxy:", error);
       return false;
     }
   }, [address, isSupportedChain, isValidAddress]);
