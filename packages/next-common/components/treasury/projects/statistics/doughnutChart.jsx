@@ -39,6 +39,10 @@ export default function ProjectDoughnutChart({ data }) {
               context.dataset.percentage?.[context.dataIndex] ?? "";
             return percentage;
           },
+          font: {
+            size: 11,
+            weight: 500,
+          },
           color: textPrimary,
           backgroundColor: null,
           stretch: 1,
@@ -52,10 +56,11 @@ export default function ProjectDoughnutChart({ data }) {
           left: 2,
           right: 2,
           top: 1,
-          bottom: 1,
+          bottom: 0,
         },
       },
       cutout: "45%",
+      rotation: 5,
     }),
     [textPrimary],
   );
