@@ -1,8 +1,10 @@
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { formatNum } from "next-common/utils";
+import Outlabels from "@energiency/chartjs-plugin-piechart-outlabels";
+import { useThemeSetting } from "next-common/context/theme";
+import { useMemo } from "react";
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(ArcElement, Tooltip, Legend, Outlabels);
 
 export const colors = [
   "#EB558999",
@@ -14,39 +16,61 @@ export const colors = [
   "#2196F399",
 ];
 
-const options = {
-  responsive: true,
-  maintainAspectRatio: false,
-  animation: {
-    duration: 0,
-  },
-  plugins: {
-    legend: {
-      display: false,
-    },
-    tooltip: {
-      displayColors: false,
-      callbacks: {
-        title: () => "",
-        label(item) {
-          const name = item.dataset.name[item.dataIndex];
-          const percentage = item.dataset.percentage[item.dataIndex];
-          const count = item.dataset.data[item.dataIndex];
-          return [name, `${formatNum(count)} (${percentage})`];
+export default function ProjectDoughnutChart({ data }) {
+  const { textPrimary } = useThemeSetting();
+
+  const options = useMemo(
+    () => ({
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: {
+        duration: 0,
+      },
+      plugins: {
+        legend: {
+          display: false,
+        },
+        tooltip: {
+          enabled: false,
+        },
+        outlabels: {
+          text: (context) => {
+            const percentage =
+              context.dataset.percentage?.[context.dataIndex] ?? "";
+            return percentage;
+          },
+          font: {
+            size: 11,
+            weight: 500,
+          },
+          color: textPrimary,
+          backgroundColor: null,
+          stretch: 1,
+          lineWidth: 1,
+          borderRadius: 0,
+          borderWidth: 0,
         },
       },
-    },
-  },
-  cutout: "80%",
-};
+      layout: {
+        padding: {
+          left: 2,
+          right: 2,
+          top: 1,
+          bottom: 0,
+        },
+      },
+      cutout: "45%",
+      rotation: 5,
+    }),
+    [textPrimary],
+  );
 
-export default function ProjectDoughnutChart({ data }) {
   if (!data) {
     return null;
   }
 
   return (
-    <div style={{ width: 160, height: 80 }}>
+    <div style={{ width: 180, height: 110 }}>
       <Doughnut data={data} options={options} />
     </div>
   );

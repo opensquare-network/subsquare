@@ -25,11 +25,15 @@ const categories = [
 ];
 
 export default function TreasuryProjects() {
-  return categories.map((category) => (
-    <Statistics
-      key={category.value}
-      label={category.label}
-      category={category.value}
-    />
-  ));
+  return (
+    <div className="grid grid-cols-2 gap-6 max-sm:grid-cols-1">
+      {categories.map((category) => (
+        <Statistics
+          key={category.value}
+          label={category.label}
+          category={category.value}
+        />
+      ))}
+    </div>
+  );
 }
