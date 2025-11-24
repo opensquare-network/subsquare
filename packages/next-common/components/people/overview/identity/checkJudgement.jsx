@@ -60,12 +60,12 @@ function RequestJudgement() {
   }
 
   return (
-    <div>
+    <>
       <PrimaryButton className="w-auto" onClick={handleOpenPopup}>
         Request Judgement
       </PrimaryButton>
       {showPopup && <RequestJudgementPopupImpl onClose={handleClosePopup} />}
-    </div>
+    </>
   );
 }
 
@@ -77,17 +77,18 @@ function CheckSubsquareJudgement() {
   }, [router]);
 
   return (
-    <div>
-      <PrimaryButton className="w-auto" onClick={handleCheckJudgement}>
-        Check Your Judgement
-      </PrimaryButton>
-    </div>
+    <PrimaryButton
+      className="w-auto"
+      size="small"
+      onClick={handleCheckJudgement}
+    >
+      Check Your Judgement
+    </PrimaryButton>
   );
 }
 
 export default function CheckJudgement() {
   const { judgements, isLoading } = useIdentityInfoContext();
-
   if (isLoading || isNoActionRequired(judgements)) {
     return null;
   }
