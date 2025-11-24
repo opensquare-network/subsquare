@@ -8,6 +8,7 @@ import { useMemo, useState } from "react";
 import Pagination from "next-common/components/pagination";
 import {
   getBeneficiariesIdColumn,
+  getBeneficiariesTagsColumn,
   getBeneficiariesProposalColumn,
   getBeneficiariesValueAtAwardedTimeColumn,
   getBeneficiariesValueAtProposedTimeColumn,
@@ -29,6 +30,7 @@ export default function TreasuryStatusTabContent() {
   const columns = useMemo(() => {
     return [
       getBeneficiariesIdColumn(),
+      getBeneficiariesTagsColumn(),
       getBeneficiariesProposalColumn(),
       sortBy === "awarded_value"
         ? getBeneficiariesValueAtAwardedTimeColumn()
