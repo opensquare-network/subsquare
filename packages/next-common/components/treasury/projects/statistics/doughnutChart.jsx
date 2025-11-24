@@ -37,7 +37,7 @@ const options = {
       },
     },
   },
-  cutout: "80%",
+  cutout: "50%",
 };
 
 export default function ProjectDoughnutChart({ data }) {
