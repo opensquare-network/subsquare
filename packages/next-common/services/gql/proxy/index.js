@@ -5,7 +5,7 @@ import { GET_PROXIES } from "next-common/services/gql/proxy/consts";
 export async function queryProxies({ delegator = null, delegatee = null }) {
   const proxiesClient = getProxiesClient();
   if (!proxiesClient) {
-    throw new Error("Intime module is not supported");
+    throw new Error("Proxies client is not supported");
   }
 
   let variables = {};
