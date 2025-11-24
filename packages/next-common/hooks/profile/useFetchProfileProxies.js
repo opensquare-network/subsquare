@@ -1,60 +1,36 @@
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
 import { queryProxies } from "next-common/services/gql/proxy";
 import { useCallback, useState, useEffect } from "react";
-import { defaultPageSize } from "next-common/utils/constants";
 
-// Fetch all proxies by front-end for a given address without pagination.
 export default function useFetchProfileProxies({
   delegator,
   delegatee,
-  pageSize = defaultPageSize,
-  isActive = true,
+  // isActive = true,
 }) {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState({ items: [], total: 0 });
 
   const fetchData = useCallback(async () => {
     setIsLoading(true);
-    let allItems = [];
-    let currentPage = 1;
-    let total = 0;
 
     try {
-      while (allItems.length < total || currentPage === 1) {
-        const result = await queryProxies(
-          { isActive, delegator, delegatee },
-          currentPage,
-          pageSize,
-        );
-
-        const pageData = result?.data;
-
-        if (!pageData) {
-          break;
-        }
-
-        total = pageData.total || 0;
-        const items = pageData.items || [];
-        allItems = [...allItems, ...items];
-
-        if (items.length < pageSize || allItems.length >= total) {
-          break;
-        }
-
-        currentPage += 1;
-      }
+      const result = await queryProxies({ delegator, delegatee });
+      const items = (result || []).map((item) => {
+        item["type"] = item?.proxyType;
+        return item;
+      });
 
       setData({
-        items: allItems,
-        total,
+        items,
+        total: items?.length || 0,
       });
     } catch (e) {
       console.error(e);
-      setData({ items: allItems, total });
+      setData({ items: [], total: 0 });
     } finally {
       setIsLoading(false);
     }
-  }, [isActive, delegator, delegatee, pageSize]);
+  }, [delegator, delegatee]);
 
   useEffect(() => {
     fetchData();
@@ -70,7 +46,6 @@ export function useFetchMyProfileProxies() {
   const profileAddress = useProfileAddress();
   const { data, isLoading } = useFetchProfileProxies({
     delegator: profileAddress,
-    pageSize: 100,
   });
 
   return {
@@ -83,7 +58,6 @@ export function useFetchReceivedProfileProxies() {
   const profileAddress = useProfileAddress();
   const { data, isLoading } = useFetchProfileProxies({
     delegatee: profileAddress,
-    pageSize: 100,
   });
 
   return {
@@ -92,38 +66,38 @@ export function useFetchReceivedProfileProxies() {
   };
 }
 
-export function useIsPureProxy(address) {
-  const [isPure, setIsPure] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+export function useIsPureProxy() {
+  // const [isPure, setIsPure] = useState(false);
+  // const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    async function checkIsPure() {
-      if (!address) {
-        setIsPure(false);
-        setIsLoading(false);
-        return;
-      }
+  // useEffect(() => {
+  //   async function checkIsPure() {
+  //     if (!address) {
+  //       setIsPure(false);
+  //       setIsLoading(false);
+  //       return;
+  //     }
 
-      setIsLoading(true);
-      try {
-        const result = await queryProxies(
-          { delegator: address, isActive: true },
-          1,
-          100,
-        );
+  //     setIsLoading(true);
+  //     try {
+  //       const result = await queryProxies(
+  //         { delegator: address, isActive: true },
+  //         1,
+  //         100,
+  //       );
 
-        const isPureProxy =
-          result?.data?.items?.some((item) => item.isPure) || false;
-        setIsPure(isPureProxy);
-      } catch (error) {
-        setIsPure(false);
-      } finally {
-        setIsLoading(false);
-      }
-    }
+  //       const isPureProxy =
+  //         result?.data?.items?.some((item) => item.isPure) || false;
+  //       setIsPure(isPureProxy);
+  //     } catch (error) {
+  //       setIsPure(false);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   }
 
-    checkIsPure();
-  }, [address]);
+  //   checkIsPure();
+  // }, [address]);
 
-  return { isPure, isLoading };
+  return { isPure: false, isLoading: false };
 }

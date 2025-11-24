@@ -15,7 +15,7 @@ const PROXIES_QUERY = gql`
   }
 `;
 
-function getProxiesClient() {
+export function getProxiesClient() {
   const { subsquareGraphql } = getChainSettings(CHAIN);
   if (!hasProxiesGraphQL()) {
     return null;

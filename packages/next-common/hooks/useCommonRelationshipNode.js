@@ -54,7 +54,7 @@ function createReceivedProxiesRelationship(rootNode, receivedProxies = []) {
       address: item.delegator,
       value: item.type,
       badge: <BadgeInfo address={item.delegator} />,
-      pure: <PureProxy />,
+      // pure: <PureProxy />,
     }),
     edgeDataMapper: (data) => ({
       type: RELATIONSHIP_NODE_TYPE.Proxy,
