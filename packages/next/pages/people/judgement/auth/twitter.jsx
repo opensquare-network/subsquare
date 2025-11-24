@@ -7,23 +7,33 @@ import { CHAIN } from "next-common/utils/constants";
 import { withCommonProps } from "next-common/lib";
 import getChainSettings from "next-common/utils/consts/settings";
 import PrimaryButton from "next-common/lib/button/primary";
-import KvList from "next-common/components/listInfo/kvList";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 const isPeopleSupported = !!getChainSettings(CHAIN).modules?.people;
 
-export default function Page() {
+export default function Page({ result }) {
+  const address = useRealAddress();
+  const [time, setTime] = useState(3);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (result?.success) {
+      const timer = setInterval(() => {
+        setTime((prev) => {
+          if (prev === 1) {
+            router.replace("/people/judgement");
+            clearInterval(timer);
+          }
+          return prev - 1;
+        });
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+  }, [result?.success, router]);
   return (
     <PeopleGlobalProvider>
-      <PageImpl />
-    </PeopleGlobalProvider>
-  );
-}
-
-function PageImpl() {
-  const address = useRealAddress();
-  return (
-    <>
       <ListLayout
         title="Subsquare Judgement Verify"
         seoInfo={{
@@ -39,16 +49,15 @@ function PageImpl() {
         }
       >
         <div className=" bg-neutral100 border-b border-neutral300 p-4 rounded-lg  space-y-3">
-          <p className="text16Medium text-center">
-            Verify Your X Account Successfully
-          </p>
-          <KvList
-            data={[
-              ["ID", "12345"],
-              ["Display Name", "quinn"],
-              ["Name", "Quinn"],
-            ]}
-          />
+          {result?.success ? (
+            <p className=" text-center py-4 text-theme300  text14Medium">
+              Verification successful! You will be redirected in {time} seconds…
+            </p>
+          ) : (
+            <p className="text-center py-4 text-theme300  text14Medium">
+              Verify Your X Account Failed
+            </p>
+          )}
           <div className="flex justify-end">
             <Link href="/people/judgement">
               <PrimaryButton>Go to Judgement Detail</PrimaryButton>
@@ -57,7 +66,7 @@ function PageImpl() {
         </div>
         <div className="pt-4 grid grid-cols-1  gap-4"></div>
       </ListLayout>
-    </>
+    </PeopleGlobalProvider>
   );
 }
 
@@ -67,10 +76,23 @@ export const getServerSideProps = async (ctx) => {
       notFound: true,
     };
   }
+  const result = await getVerifyDetail(ctx.query.code);
 
   return withCommonProps(async () => {
     return {
-      props: {},
+      props: {
+        result,
+      },
     };
   })(ctx);
+};
+
+const getVerifyDetail = (code) => {
+  code;
+  // mocked data
+  if (Math.round(Math.random() * 10) % 2 == 0) {
+    return { success: true, message: "Verify success" };
+  } else {
+    return { success: false, message: "Verify error" };
+  }
 };

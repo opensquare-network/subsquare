@@ -45,7 +45,6 @@ export default function Twitter() {
         <PrimaryButton size="small" onClick={() => window.open(link)}>
           Connect Twitter
         </PrimaryButton>
-        {/* </a> */}
       </div>
     </div>
   );
