@@ -35,7 +35,7 @@ export function useActiveValidators() {
     if (loading) {
       return { validators: null, loading: true };
     }
-    const validators = overview.map((item) => item.account);
+    const validators = (overview || []).map((item) => item.account);
     return { validators, loading: false };
   }, [overview, loading]);
 }

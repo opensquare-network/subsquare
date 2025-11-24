@@ -21,7 +21,7 @@ export function ActiveEraProvider({ children }) {
 export function useCurrentEra() {
   const { activeEra, loading } = useContext(ActiveEraContext);
   return {
-    currentEra: activeEra.index,
+    currentEra: activeEra?.index,
     loading,
   };
 }
