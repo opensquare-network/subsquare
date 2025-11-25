@@ -70,7 +70,7 @@ export default function SubIdentitiesImpl({ isEmpty, isLoading }) {
           Add
         </PrimaryButton>
         <PrimaryButton className="w-auto" onClick={openSetSubsPopup}>
-          Edit
+          Batch Edit
         </PrimaryButton>
       </RightWrapper>
 
