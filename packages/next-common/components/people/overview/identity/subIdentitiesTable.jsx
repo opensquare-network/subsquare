@@ -36,7 +36,7 @@ export function SubIdentitiesTableImpl({ subs = [], isLoading, onSuccess }) {
         return [
           <AddressUser key={`Identity-${index}`} add={address} />,
           <div key={`Name-${index}`} className="text-textPrimary text14Medium">
-            <Tooltip content={subName}>
+            <Tooltip content={subName} className="inline-flex items-center">
               <span className="max-w-[220px] truncate inline-block">
                 {subName}
               </span>
@@ -65,7 +65,7 @@ export function SubIdentitiesTableImpl({ subs = [], isLoading, onSuccess }) {
 export default function SubIdentitiesTable({
   subs = [],
   isLoading,
-  onDataChange,
+  retry,
 }) {
   const chain = useChain();
   const { identity: identityChain } = getChainSettings(chain);
@@ -81,8 +81,8 @@ export default function SubIdentitiesTable({
         true,
       );
     }
-    onDataChange?.();
-  }, [identityChain, extensionAccounts, onDataChange]);
+    retry?.();
+  }, [identityChain, extensionAccounts, retry]);
 
   useEffect(() => {
     if (extensionAccounts?.length) {

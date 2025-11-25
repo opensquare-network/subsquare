@@ -64,7 +64,7 @@ export default function SubIdentitiesImpl({ isEmpty, isLoading }) {
 
   return (
     <SignerPopupWrapper>
-      <SubIdentitiesTable subs={subs} isLoading={isSubsLoading} />
+      <SubIdentitiesTable subs={subs} isLoading={isSubsLoading} retry={retrySubs} />
       <RightWrapper className="mt-4 flex gap-x-2">
         <PrimaryButton className="w-auto" onClick={openSetSingleSubPopup}>
           Add
