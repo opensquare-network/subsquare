@@ -248,6 +248,13 @@ function formatResults(results) {
         return formatSearchResult("Identities", value);
       case "fellowshipMembers":
         return formatSearchResult("FellowshipMembers", value);
+      case "treasuryTips":
+        return formatItems(
+          "TreasuryTips",
+          value,
+          (item) => item.hash,
+          (item) => item.hash.substr(0, 6),
+        );
       default:
         return [];
     }
