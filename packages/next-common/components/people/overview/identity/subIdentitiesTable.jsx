@@ -8,7 +8,7 @@ import { clearCachedIdentitys } from "next-common/services/identity";
 import { useExtensionAccounts } from "next-common/components/popupWithSigner/context";
 import { cn } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
-import SubIdentityActions from "next-common/components/people/overview/identity/subIdentityActions/subIdentityActions";
+import SubIdentityActions from "next-common/components/people/overview/identity/subIdentityActions";
 
 const columns = [
   {
@@ -24,7 +24,7 @@ const columns = [
   },
   {
     name: "",
-    width: 120,
+    width: 80,
   },
 ];
 
