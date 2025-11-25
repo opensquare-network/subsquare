@@ -32,7 +32,7 @@ function AccountNominationImpl() {
   } else if (active.length === 0) {
     message = "Waiting for Active Nominations";
   } else {
-    message = "Nominating";
+    message = "Nominating and Earning Rewards";
   }
 
   return (
