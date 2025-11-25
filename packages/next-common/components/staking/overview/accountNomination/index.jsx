@@ -2,11 +2,18 @@ import { isNil } from "lodash-es";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import { useMyStakingLedger } from "next-common/context/staking/myStakingLedger";
-import Link from "next/link";
 import { CurrentEraStakersProvider } from "next-common/context/staking/currentEraStakers";
 import { useValidatorsWithStatus } from "next-common/hooks/staking/useValidatorWithStatus";
 import { cn } from "next-common/utils";
 import LoadableContent from "next-common/components/common/loadableContent";
+import { useState } from "react";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const StartNominatingPopup = dynamicPopup(() =>
+  import(
+    "next-common/components/staking/overview/accountNomination/startNominatingPopup"
+  ),
+);
 
 function AccountNominationImpl() {
   const { width } = useWindowSize();
@@ -55,17 +62,26 @@ function AccountNominationImpl() {
 }
 
 function AccountNominationEmpty() {
+  const [showStartNominatingPopup, setShowStartNominatingPopup] =
+    useState(false);
+
   return (
     <NeutralPanel className="p-6">
       <div className="text-center text14Medium text-textTertiary">
         You are not nominating any validators.{" "}
-        <Link
+        <div
+          role="button"
           className="cursor-pointer text-theme500 hover:underline"
-          href="/staking/validators"
+          onClick={() => setShowStartNominatingPopup(true)}
         >
           Start Nominating
-        </Link>
+        </div>
       </div>
+      {showStartNominatingPopup && (
+        <StartNominatingPopup
+          onClose={() => setShowStartNominatingPopup(false)}
+        />
+      )}
     </NeutralPanel>
   );
 }
