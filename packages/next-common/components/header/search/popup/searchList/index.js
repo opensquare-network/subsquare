@@ -253,6 +253,18 @@ const SearchItem = memo(function ItemContent({ row, onClose }) {
     );
   }
 
+  if (proposalType === SearchType.TREASURY_TIPS) {
+    return (
+      <CommonSearchItem
+        IconComponent={MenuTreasurySpend}
+        title={searchItemTitle}
+        content={content}
+        href={path}
+        onClose={onClose}
+      />
+    );
+  }
+
   if (proposalType === SearchType.FELLOWSHIP_REFERENDA) {
     return (
       <CommonSearchItem
