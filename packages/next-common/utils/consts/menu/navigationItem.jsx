@@ -1,8 +1,8 @@
 import { useIsMacOS } from "next-common/context/page";
 import { useCmdkPaletteVisible } from "next-common/components/cmdk/cmdkPalette";
 import { cn } from "next-common/utils";
-
-export default function NavigationItem() {
+import { MenuNavigation } from "@osn/icons/subsquare";
+export function NavigationItem() {
   const [, setCmdkPaletteVisible] = useCmdkPaletteVisible();
   const isMacOS = useIsMacOS();
 
@@ -23,5 +23,16 @@ export default function NavigationItem() {
         {isMacOS ? "⌘" : "Ctrl +"} K
       </span>
     </span>
+  );
+}
+
+export function NavigationItemIcon() {
+  const [, setCmdkPaletteVisible] = useCmdkPaletteVisible();
+  return (
+    <MenuNavigation
+      onClick={() => {
+        setCmdkPaletteVisible(true);
+      }}
+    />
   );
 }

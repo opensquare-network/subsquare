@@ -5,14 +5,13 @@ import {
   MenuAccount,
   MenuCalendar,
   MenuOffChainVoting,
-  MenuNavigation,
 } from "@osn/icons/subsquare";
 import getChainSettings from "../settings";
 import { CHAIN } from "next-common/utils/constants";
 import { getAccountUrl } from "next-common/hooks/account/useAccountUrl";
 import supportsDelegation from "./supportsDelegation";
 import { votingSpace, votingHost } from "next-common/utils/opensquareVoting";
-import NavigationItem from "./navigationItem";
+import { NavigationItem, NavigationItemIcon } from "./navigationItem";
 
 const chainSettings = getChainSettings(CHAIN);
 
@@ -65,7 +64,7 @@ const votingMenu = {
 const navigationMenu = {
   value: "navigation",
   name: <NavigationItem />,
-  icon: <MenuNavigation />,
+  icon: <NavigationItemIcon />,
 };
 
 const commonMenus = {
