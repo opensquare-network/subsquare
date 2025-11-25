@@ -7,6 +7,7 @@ const CATEGORY_VALUES = {
   WALLET: "wallet",
   MULTISIG_TOOLS: "multisig_tools",
   EXPLORER: "explorer",
+  GOVERNANCE_PLATFORM: "governance_platform",
 };
 
 const categories = [
@@ -21,6 +22,10 @@ const categories = [
   {
     label: "Explorers",
     value: CATEGORY_VALUES.EXPLORER,
+  },
+  {
+    label: "Governance Platforms",
+    value: CATEGORY_VALUES.GOVERNANCE_PLATFORM,
   },
 ];
 
