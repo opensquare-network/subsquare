@@ -14,7 +14,7 @@ export default function NavMenuItem({ collapsed, ...menu } = {}) {
     return <NavMenuDivider />;
   }
 
-  if (items?.length) {
+  if (items?.length && !menu?.hideItemsOnMenu) {
     return (
       <NavMenuItemGroup
         menu={menu}

@@ -141,7 +141,7 @@ function SubMenuItems({ className = "", items = [] }) {
               <NavMenuDivider className="my-4 mx-3" />
             ) : (
               <>
-                {!item?.items?.length && (
+                {(!item?.items?.length || item?.hideItemsOnMenu) && (
                   <div className="ml-2 w-1 h-1 rounded-full bg-textSecondary" />
                 )}
                 <NavMenuItemItem

@@ -88,7 +88,7 @@ function HoverSubMenuItem({ menu }) {
     return <NavMenuDivider />;
   }
 
-  if (!menu?.items?.length) {
+  if (!menu?.items?.length || menu?.hideItemsOnMenu) {
     return <HoverSubMenuLeaf menu={menu} />;
   }
 
