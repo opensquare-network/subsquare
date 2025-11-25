@@ -8,17 +8,35 @@ import TxSubmissionButton from "../common/tx/txSubmissionButton";
 import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import SignerWithBalance from "../signerPopup/signerWithBalance";
-import { noop } from "lodash-es";
+import { noop, isEmpty } from "lodash-es";
 import WindowSizeProvider from "next-common/context/windowSize";
 import RightWrapper from "next-common/components/rightWraper";
 import { SubItem } from "../setSubsPopup/subItem";
 import { SubsDeposit } from "../setSubsPopup/content";
 
-export default function SetSingleSubPopupContent() {
+function useSingleSubAccountOptions(subs) {
+  const extensionAccounts = useExtensionAccounts();
+  const excludeAddresses = useMemo(() => {
+    if (isEmpty(subs)) {
+      return [];
+    }
+
+    return subs.map((sub) => sub[0]);
+  }, [subs]);
+
+  return useMemo(() => {
+    return extensionAccounts?.map((item) => {
+      item["disabled"] = excludeAddresses.includes(item.address);
+      return item;
+    });
+  }, [excludeAddresses, extensionAccounts]);
+}
+
+export default function SetSingleSubPopupContent({ subs }) {
   const { address, currentName, retry = noop } = usePopupParams();
   const api = useContextApi();
   const dispatch = useDispatch();
-  const extensionAccounts = useExtensionAccounts();
+  const options = useSingleSubAccountOptions(subs);
 
   const [sub, setSub] = useState({
     address: address || "",
@@ -70,7 +88,7 @@ export default function SetSingleSubPopupContent() {
           selectedList={[sub.address]}
           updateSubField={updateSubField}
           onRemove={() => {}}
-          extensionAccounts={extensionAccounts}
+          extensionAccounts={options}
           showRemove={false}
         />
 

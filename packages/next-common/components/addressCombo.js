@@ -79,6 +79,16 @@ const Item = styled(Flex)`
     css`
       background: var(--neutral200);
     `}
+  ${(p) =>
+    p.disabled &&
+    css`
+      cursor: not-allowed;
+      opacity: 0.5;
+      pointer-events: none;
+      :hover {
+        background: var(--neutral100);
+      }
+    `}
 `;
 
 const Input = styled.input`
@@ -276,11 +286,13 @@ function AddressComboListOptions({ accounts, address, onSelect, size }) {
   return (
     <Options className="scrollbar-pretty">
       {(accounts || []).map((item, index) => {
+        const isDisabled = !!item.disabled;
         return (
           <Item
             key={index}
-            onClick={() => onSelect(item)}
+            onClick={() => !isDisabled && onSelect(item)}
             selected={isSameAddress(item.address, address)}
+            disabled={isDisabled}
             className={cn(size === "small" && "!h-10")}
           >
             <AddressComboListItemAccount account={item} size={size} />

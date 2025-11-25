@@ -6,7 +6,7 @@ export default function SetSingleSubPopup(props) {
   return (
     <SignerPopupWrapper {...props}>
       <Popup title="Add Sub Identity" {...props}>
-        <SetSingleSubPopupContent />
+        <SetSingleSubPopupContent {...props} />
       </Popup>
     </SignerPopupWrapper>
   );

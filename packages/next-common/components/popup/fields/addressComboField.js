@@ -18,6 +18,7 @@ export default function AddressComboField({
   const accounts = extensionAccounts.map((acc) => ({
     address: acc.address,
     name: acc.meta.name,
+    disabled: acc?.disabled ?? false,
   }));
 
   const [targetAddress, setTargetAddress] = useState(defaultAddress);
