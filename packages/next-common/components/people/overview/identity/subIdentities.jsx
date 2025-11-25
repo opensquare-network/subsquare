@@ -3,7 +3,7 @@ import RightWrapper from "next-common/components/rightWraper";
 import PrimaryButton from "next-common/lib/button/primary";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { useCallback, useState } from "react";
-import SubIdentitiesTable from "../../subTable";
+import SubIdentitiesTable from "./subIdentitiesTable";
 import { AddressUser } from "next-common/components/user";
 import useMyIdentityType from "next-common/hooks/people/useMyIdentityType";
 import Loading from "next-common/components/loading";

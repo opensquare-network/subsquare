@@ -1,6 +1,6 @@
 import useSubIdentities from "next-common/hooks/identity/useSubIdentities";
 import { usePeopleApi } from "next-common/context/people/api";
-import { SubIdentitiesTableImpl } from "next-common/components/people/subTable";
+import { SubIdentitiesTableImpl } from "next-common/components/people/overview/identity/subIdentitiesTable";
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
 
 export default function SubIdentities() {
