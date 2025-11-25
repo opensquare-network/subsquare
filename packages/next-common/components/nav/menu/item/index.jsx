@@ -23,8 +23,10 @@ export default function NavMenuItem({ collapsed, ...menu } = {}) {
         setNavSubmenuVisible={setNavSubmenuVisible}
       />
     );
-  } else {
-    return (
+  }
+
+  return (
+    <li>
       <NavMenuItemItem
         item={menu}
         active={
@@ -33,6 +35,6 @@ export default function NavMenuItem({ collapsed, ...menu } = {}) {
         }
         collapsed={collapsed}
       />
-    );
-  }
+    </li>
+  );
 }

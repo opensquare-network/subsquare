@@ -41,15 +41,13 @@ export default function NavMenu({ collapsed }) {
 
   return (
     <ul>
-      <li>
-        {menu.map((m, idx) => (
-          <NavMenuItem
-            key={`${m.value || ""}-${idx}`}
-            {...m}
-            collapsed={collapsed}
-          />
-        ))}
-      </li>
+      {menu.map((m, idx) => (
+        <NavMenuItem
+          key={`${m.value || ""}-${idx}`}
+          {...m}
+          collapsed={collapsed}
+        />
+      ))}
     </ul>
   );
 }

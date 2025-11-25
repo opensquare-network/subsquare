@@ -15,7 +15,7 @@ import preImages from "./preImages";
 import { partition } from "lodash-es";
 import { getCommunityTreasuryMenu } from "./communityTreasury";
 import getChainSettings from "../settings";
-import { getMoreMenu } from "./more";
+import getArchivedMenu from "./archived";
 import { coretimeMenu } from "./coretime";
 import { peopleMenu } from "./people";
 import whitelist from "./whitelist";
@@ -132,14 +132,14 @@ export function getMainMenu({
     }
   }
 
-  const moreMenu = getMoreMenu({ archivedMenu: archivedModulesMenu });
+  const moreMenu = getArchivedMenu(archivedModulesMenu);
 
   return [
     ...commonMenus.items,
     { type: "divider" },
     ...activeModulesMenu,
     { type: "divider" },
-    moreMenu,
+    ...moreMenu,
   ];
 }
 
