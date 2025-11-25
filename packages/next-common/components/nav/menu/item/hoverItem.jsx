@@ -29,7 +29,7 @@ function HoverSubMenuLeaf({ menu }) {
               "activeCount",
             ) ?? menu.activeCount
           }
-          className=" bg-transparent"
+          className="text-textSecondary bg-transparent"
           active={
             menu.pathname === routePathname ||
             menu?.extraMatchNavMenuActivePathnames?.includes?.(router.pathname)
@@ -56,7 +56,7 @@ function HoverSubMenuGroup({ menu }) {
                 "activeCount",
               ) ?? menu.activeCount
             }
-            className=" bg-transparent"
+            className="bg-transparent"
             extra={
               <span>
                 <ArrowRight
