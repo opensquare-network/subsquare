@@ -1,9 +1,16 @@
 import { useState } from "react";
-import RenameSubPopup from "./renameSubPopup";
-import RemoveSubPopup from "./removeSubPopup";
 import Tooltip from "next-common/components/tooltip";
 import { SystemEdit2, SystemClose } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const RenameSubPopup = dynamicPopup(() => import("./renameSubPopup"), {
+  ssr: false,
+});
+
+const RemoveSubPopup = dynamicPopup(() => import("./removeSubPopup"), {
+  ssr: false,
+});
 
 export default function SubIdentityActions({
   address,
