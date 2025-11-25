@@ -4,8 +4,9 @@ import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import { useMyStakingLedger } from "next-common/context/staking/myStakingLedger";
 import Link from "next/link";
 import { CurrentEraStakersProvider } from "next-common/context/staking/currentEraStakers";
-import Loading from "next-common/components/loading";
 import { useValidatorsWithStatus } from "next-common/hooks/staking/useValidatorWithStatus";
+import { cn } from "next-common/utils";
+import LoadableContent from "next-common/components/common/loadableContent";
 
 function AccountNominationImpl() {
   const { width } = useWindowSize();
@@ -18,18 +19,10 @@ function AccountNominationImpl() {
     return null;
   }
 
-  if (loading) {
-    return (
-      <NeutralPanel className="p-6 text-center">
-        <Loading size={20} />
-      </NeutralPanel>
-    );
-  }
-
   let message = null;
-  if (nominators.length === 0) {
+  if (!nominators?.targets.length) {
     message = "Inactive: No Nominations Set";
-  } else if (active.length === 0) {
+  } else if (!active?.length) {
     message = "Waiting for Active Nominations";
   } else {
     message = "Nominating and Earning Rewards";
@@ -37,7 +30,26 @@ function AccountNominationImpl() {
 
   return (
     <NeutralPanel className="p-6 space-y-4">
-      <div>{message}</div>
+      <div className="flex flex-col gap-2">
+        <div
+          className={cn(
+            "flex justify-between items-start grow gap-4",
+            width > 768 ? "flex-row" : "flex-col",
+          )}
+        >
+          <div className="flex flex-col gap-1">
+            <div className="text12Medium text-textTertiary">
+              Nominator Status
+            </div>
+            <div className="text14Medium text-textPrimary">
+              <LoadableContent loading={loading} size={14}>
+                {message}
+              </LoadableContent>
+            </div>
+          </div>
+          <div className="flex gap-[16px] items-center"></div>
+        </div>
+      </div>
     </NeutralPanel>
   );
 }
