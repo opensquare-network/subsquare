@@ -59,7 +59,7 @@ export function NewPreimageInnerPopup({ onCreated = noop }) {
   const dispatch = useDispatch();
 
   const setProposal = useCallback(
-    ({ isValid, data: tx }) => {
+    ({ isValid, data: tx } = {}) => {
       if (!api) {
         return;
       }
@@ -129,7 +129,7 @@ export default function NewPreimagePopup({ onClose, onCreated = noop }) {
   );
 }
 
-export function useNewPrerimageForm() {
+export function useNewPreimageForm() {
   const api = useContextApi();
   const [
     { encodedHash, encodedLength, encodedProposal, notePreimageTx },
@@ -138,7 +138,7 @@ export function useNewPrerimageForm() {
   const [callState, setCallState] = useState();
 
   const setProposal = useCallback(
-    ({ isValid, data: tx }) => {
+    ({ isValid, data: tx } = {}) => {
       if (!api) {
         return;
       }

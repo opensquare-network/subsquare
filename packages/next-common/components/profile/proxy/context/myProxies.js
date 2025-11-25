@@ -23,5 +23,5 @@ export function MyProxiesProvider({ children }) {
 }
 
 export function useMyProxiesContext() {
-  return useContext(MyProxiesContext);
+  return useContext(MyProxiesContext) || {};
 }
