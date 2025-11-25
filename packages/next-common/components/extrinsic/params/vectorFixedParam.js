@@ -37,7 +37,7 @@ export default function VectorFixedParam({ title, def, value, setValue }) {
   const _setValue = useCallback(
     (valuesOrFunction) => {
       if (typeof valuesOrFunction === "function") {
-        setValue(({ data }) => {
+        setValue(({ data } = {}) => {
           const newData = valuesOrFunction(data);
           const isValid = newData?.every((item) => item?.isValid);
           return {
