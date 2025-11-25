@@ -18,6 +18,13 @@ const SetSubsPopup = dynamicPopup(
   },
 );
 
+const SetSingleSubPopup = dynamicPopup(
+  () => import("next-common/components/setSingleSubPopup"),
+  {
+    ssr: false,
+  },
+);
+
 export default function SubIdentitiesImpl({ isEmpty, isLoading }) {
   const {
     subs,
@@ -25,6 +32,7 @@ export default function SubIdentitiesImpl({ isEmpty, isLoading }) {
     retry: retrySubs,
   } = useSubscribeMySubIdentities();
   const [showSetSubsPopup, setShowSetSubsPopup] = useState(false);
+  const [showSetSingleSubPopup, setShowSetSingleSubPopup] = useState(false);
   const { type, parent } = useMyIdentityType();
   const address = useRealAddress();
   const isSubIdentity = type === "sub";
@@ -32,6 +40,10 @@ export default function SubIdentitiesImpl({ isEmpty, isLoading }) {
 
   const openSetSubsPopup = useCallback(() => {
     setShowSetSubsPopup(true);
+  }, []);
+
+  const openSetSingleSubPopup = useCallback(() => {
+    setShowSetSingleSubPopup(true);
   }, []);
 
   if (isLoading) {
@@ -53,11 +65,22 @@ export default function SubIdentitiesImpl({ isEmpty, isLoading }) {
   return (
     <SignerPopupWrapper>
       <SubIdentitiesTable subs={subs} isLoading={isSubsLoading} />
-      <RightWrapper className="mt-4">
+      <RightWrapper className="mt-4 flex gap-x-2">
+        <PrimaryButton className="w-auto" onClick={openSetSingleSubPopup}>
+          Add
+        </PrimaryButton>
         <PrimaryButton className="w-auto" onClick={openSetSubsPopup}>
           Edit
         </PrimaryButton>
       </RightWrapper>
+
+      {showSetSingleSubPopup && (
+        <SetSingleSubPopup
+          onClose={() => setShowSetSingleSubPopup(false)}
+          subs={subs}
+          retry={retrySubs}
+        />
+      )}
 
       {showSetSubsPopup && (
         <SetSubsPopup
