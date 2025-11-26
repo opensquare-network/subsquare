@@ -3,8 +3,18 @@ import DetailButton from "next-common/components/detailButton";
 import IconButton from "next-common/components/iconButton";
 import PopupLabel from "next-common/components/popup/label";
 import { cn } from "next-common/utils";
+import { useState } from "react";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-export function NominationField({ nominations }) {
+const ValidatorSelectPopup = dynamicPopup(() =>
+  import(
+    "next-common/components/staking/overview/accountNomination/validatorSelectPopup"
+  ),
+);
+
+export function NominationField({ nominations, setNominations }) {
+  const [showValidatorSelectPopup, setShowValidatorSelectPopup] =
+    useState(false);
   const hasNominations = nominations && nominations.length > 0;
   return (
     <div>
@@ -26,15 +36,25 @@ export function NominationField({ nominations }) {
           </div>
         )}
         <div>
-          <DetailButton className="!bg-neutral100" />
+          <DetailButton
+            className="!bg-neutral100"
+            onClick={() => setShowValidatorSelectPopup(true)}
+          />
         </div>
       </div>
       <div className="flex mt-2 justify-end">
-        <IconButton onClick={() => {}}>
+        <IconButton onClick={() => setShowValidatorSelectPopup(true)}>
           <PlusIcon size={12} />
           Add Validators
         </IconButton>
       </div>
+      {showValidatorSelectPopup && (
+        <ValidatorSelectPopup
+          onClose={() => setShowValidatorSelectPopup(false)}
+          nominations={nominations}
+          setNominations={setNominations}
+        />
+      )}
     </div>
   );
 }
