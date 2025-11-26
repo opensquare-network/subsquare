@@ -110,7 +110,7 @@ export default function NavMenuItemGroup({
         <SubMenuItems
           className={cn(
             submenuVisible ? "block" : "hidden",
-            padSubMenuItems && "pl-10 pb-4",
+            padSubMenuItems && "pl-10 pb-2",
           )}
           items={menu.items}
         />
