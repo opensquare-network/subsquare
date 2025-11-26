@@ -34,3 +34,11 @@ export const DOUGHNUT_CONFIG_BY_CATEGORY = {
     padding: 7,
   },
 };
+
+export const LABELS = {
+  [CATEGORY_VALUES.WALLET]: "Wallets",
+  [CATEGORY_VALUES.MULTISIG_TOOLS]: "Multisig Tools",
+  [CATEGORY_VALUES.EXPLORER]: "Explorers",
+  [CATEGORY_VALUES.GOVERNANCE_PLATFORM]: "Governance Platforms",
+  [CATEGORY_VALUES.POLKADOT_CLIENT]: "Polkadot Clients",
+};

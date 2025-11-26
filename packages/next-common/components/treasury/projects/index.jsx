@@ -1,41 +1,38 @@
 import dynamic from "next/dynamic";
-import { CATEGORY_VALUES } from "./const";
+import { usePageProps } from "next-common/context/page";
+import { LABELS } from "./const";
+import { groupBy, isNil } from "lodash-es";
+import { useMemo } from "react";
+import BigNumber from "bignumber.js";
+
 const Statistics = dynamic(() => import("./statistics"), {
   ssr: false,
 });
 
-const categories = [
-  {
-    label: "Wallets",
-    value: CATEGORY_VALUES.WALLET,
-  },
-  {
-    label: "Multisig Tools",
-    value: CATEGORY_VALUES.MULTISIG_TOOLS,
-  },
-  {
-    label: "Explorers",
-    value: CATEGORY_VALUES.EXPLORER,
-  },
-  {
-    label: "Governance Platforms",
-    value: CATEGORY_VALUES.GOVERNANCE_PLATFORM,
-  },
-  {
-    label: "Polkadot Clients",
-    value: CATEGORY_VALUES.POLKADOT_CLIENT,
-  },
-];
-
 export default function TreasuryProjects() {
+  const { projects = [] } = usePageProps();
+
+  const projectsByCategory = useMemo(() => {
+    const grouped = groupBy(projects, "category");
+
+    return Object.entries(grouped)
+      .map(([category, projects]) => ({
+        label: LABELS[category],
+        category,
+        projects,
+        totalFiat: projects.reduce(
+          (acc, project) => acc.plus(BigNumber(project.fiatAtFinal)),
+          BigNumber(0),
+        ),
+      }))
+      .sort((a, b) => b.totalFiat.comparedTo(a.totalFiat))
+      .filter((item) => !isNil(item.label));
+  }, [projects]);
+
   return (
     <div className="grid grid-cols-2 gap-6 max-sm:grid-cols-1">
-      {categories.map((category) => (
-        <Statistics
-          key={category.value}
-          label={category.label}
-          category={category.value}
-        />
+      {projectsByCategory.map((data) => (
+        <Statistics key={data.category} data={data} />
       ))}
     </div>
   );

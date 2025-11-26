@@ -1,33 +1,13 @@
-import BigNumber from "bignumber.js";
-import { useMemo } from "react";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import ProjectStatisticsChart from "./chart";
-import { usePageProps } from "next-common/context/page";
-import { lowerCase } from "lodash-es";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import Tooltip from "next-common/components/tooltip";
 import WindowSizeProvider from "next-common/context/windowSize";
 
-export default function Statistics({ label, category }) {
-  const { projects = [] } = usePageProps();
+export default function Statistics({ data }) {
+  const { label, category, projects = [], totalFiat } = data;
 
-  const categoryProjects = useMemo(() => {
-    return projects
-      .filter((project) => lowerCase(project.category) === lowerCase(category))
-      .sort((a, b) => b.fiatAtFinal - a.fiatAtFinal);
-  }, [projects, category]);
-
-  const totalFiat = useMemo(() => {
-    if (!categoryProjects?.length) {
-      return BigNumber(0);
-    }
-    return categoryProjects.reduce(
-      (acc, project) => acc.plus(BigNumber(project.fiatAtFinal)),
-      BigNumber(0),
-    );
-  }, [categoryProjects]);
-
-  if (categoryProjects?.length === 0) {
+  if (projects?.length === 0 || !totalFiat || !label || !category) {
     return null;
   }
 
@@ -42,7 +22,7 @@ export default function Statistics({ label, category }) {
         </TitleContainer>
         <SecondaryCard className="flex gap-6 justify-start w-full max-sm:flex-col">
           <ProjectStatisticsChart
-            projects={categoryProjects}
+            projects={projects}
             totalFiat={totalFiat}
             category={category}
           />
