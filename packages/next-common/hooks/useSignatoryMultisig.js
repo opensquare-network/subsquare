@@ -1,23 +1,12 @@
-import { useMemo } from "react";
 import { backendApi } from "next-common/services/nextApi";
 import { useAsync } from "react-use";
-import { isAddress } from "@polkadot/util-crypto";
-import { useChain } from "next-common/context/chain";
-import { isKusamaChain, isPolkadotChain } from "next-common/utils/chain";
+import { useIsRelativesApiAvailable } from "next-common/hooks/useIsPureProxy";
 
 export default function useSignatoryMultisig(address) {
-  const chain = useChain();
-
-  const isSupportedChain = useMemo(() => {
-    return isKusamaChain(chain) || isPolkadotChain(chain);
-  }, [chain]);
-
-  const isValidAddress = useMemo(() => {
-    return address !== "" && isAddress(address);
-  }, [address]);
+  const isRelativesApiAvailable = useIsRelativesApiAvailable(address);
 
   const { value: result, loading } = useAsync(async () => {
-    if (!isSupportedChain || !isValidAddress) {
+    if (!isRelativesApiAvailable) {
       return false;
     }
 
@@ -33,7 +22,7 @@ export default function useSignatoryMultisig(address) {
     } catch (error) {
       return null;
     }
-  }, [address, isSupportedChain, isValidAddress]);
+  }, [address, isRelativesApiAvailable]);
 
   return { result, loading };
 }
