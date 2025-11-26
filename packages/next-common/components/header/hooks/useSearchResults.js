@@ -7,6 +7,7 @@ import {
   getChildBountyDisplayIndex,
   getChildBountyIndex,
 } from "next-common/utils/viewfuncs/treasury/childBounty";
+import { isEmpty } from "lodash-es";
 
 export const ItemType = {
   CATEGORY: "category",
@@ -114,17 +115,13 @@ function useSearchResults() {
   const requestCallback = useCallback(
     (result, signal, searchValue) => {
       if (!signal.aborted && lastSearchValueRef.current === searchValue) {
-        setResults((prev) => {
-          // Set to false as soon as the first non-empty result is encountered.
-          const isEmpty = (formatResults(result) ?? []).length === 0;
-          if (prev === null && !isEmpty) {
-            setIsLoading(false);
-          }
-          return {
-            ...prev,
-            ...result,
-          };
-        });
+        if (!isEmpty(formatResults(result))) {
+          setIsLoading(false);
+        }
+        setResults((prev) => ({
+          ...prev,
+          ...result,
+        }));
       }
     },
     [lastSearchValueRef],
