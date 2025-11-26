@@ -3,18 +3,9 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import Outlabels from "@energiency/chartjs-plugin-piechart-outlabels";
 import { useThemeSetting } from "next-common/context/theme";
 import { useMemo } from "react";
+import { DOUGHNUT_CONFIG_BY_CATEGORY } from "../const";
 
 ChartJS.register(ArcElement, Tooltip, Legend, Outlabels);
-
-export const colors = [
-  "#EB558999",
-  "#785DF399",
-  "#E47E5299",
-  "#4CAF9199",
-  "#0F6FFF99",
-  "#FF980080",
-  "#2196F399",
-];
 
 export default function ProjectDoughnutChart({ data }) {
   const { textPrimary } = useThemeSetting();
@@ -45,10 +36,11 @@ export default function ProjectDoughnutChart({ data }) {
           },
           color: textPrimary,
           backgroundColor: null,
-          stretch: 1,
           lineWidth: 1,
           borderRadius: 0,
           borderWidth: 0,
+          padding: 0,
+          ...(DOUGHNUT_CONFIG_BY_CATEGORY[data?.category] ?? {}),
         },
       },
       layout: {
@@ -62,7 +54,7 @@ export default function ProjectDoughnutChart({ data }) {
       cutout: "45%",
       rotation: 5,
     }),
-    [textPrimary],
+    [textPrimary, data?.category],
   );
 
   if (!data) {
