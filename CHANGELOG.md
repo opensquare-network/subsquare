@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+# 5.5.4
+
+Date:
+2025-11-26. [Code diff](https://github.com/opensquare-network/subsquare/compare/a15344be902f48348bf30d5836520b0454d15ec2...81ebc44243a859ab3e3a737f0c2f0dcdda5bf812).
+
+- Add explorers, multisig tools and governance platforms treasury fund statistics on the treasury projects page.
+- Index and save pure accounts to subsquare database. And in fronted, we use subsquare backend API to get pure account
+  info taking place of the old explorer API.
+- Redesign the block height component and show block height on footer for relay chains.
+- Add batch treasury spends template on the referenda page.
+- Fellowship: load fellowship related data from backend API to improve the performance of the fellowship statistics
+  page.
+- Fix the sort of identity timeline by ordering by time instead of block height. Ordering by block height is incorrect
+  after AHM.
+- Update bifrost kusama endpoints.
+- Improve coinbase telemetry options to remove console errors.
+- Improve sub menu styles.
+
 # 5.5.3
 
 Date:
