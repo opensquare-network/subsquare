@@ -19,7 +19,7 @@ export default function TreasuryProjects() {
       .map(([category, projects]) => ({
         label: LABELS[category],
         category,
-        projects,
+        projects: projects.sort((a, b) => b.fiatAtFinal - a.fiatAtFinal),
         totalFiat: projects.reduce(
           (acc, project) => acc.plus(BigNumber(project.fiatAtFinal)),
           BigNumber(0),
