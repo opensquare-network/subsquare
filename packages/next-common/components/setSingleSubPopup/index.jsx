@@ -1,12 +1,12 @@
 import Popup from "../popup/wrapper/Popup";
 import SignerPopupWrapper from "../popupWithSigner/signerPopupWrapper";
-import SetSubsPopupContent from "./content";
+import SetSingleSubPopupContent from "./content";
 
-export default function SetSubsPopup(props) {
+export default function SetSingleSubPopup(props) {
   return (
     <SignerPopupWrapper {...props}>
-      <Popup title="Batch Edit" {...props}>
-        <SetSubsPopupContent />
+      <Popup title="Add Sub Identity" {...props}>
+        <SetSingleSubPopupContent {...props} />
       </Popup>
     </SignerPopupWrapper>
   );
