@@ -31,6 +31,6 @@ export const DOUGHNUT_CONFIG_BY_CATEGORY = {
   },
   polkadot_client: {
     stretch: 10,
-    padding: 8,
+    padding: 7,
   },
 };
