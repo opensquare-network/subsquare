@@ -1,35 +1,36 @@
-import { gql } from "@apollo/client";
-import { useMultisigQuery } from "next-common/hooks/apollo";
-import { useEffect, useState } from "react";
-
-const GET_MULTISIG_ADDRESS = gql`
-  query GetMultisigAddress($account: String!) {
-    multisigAddress(account: $account) {
-      signatories
-      threshold
-    }
-  }
-`;
+import { useMemo } from "react";
+import { backendApi } from "next-common/services/nextApi";
+import { useAsync } from "react-use";
+import { isAddress } from "@polkadot/util-crypto";
+import { useChain } from "next-common/context/chain";
+import { isKusamaChain, isPolkadotChain } from "next-common/utils/chain";
 
 export default function useMultisigAddress(address) {
-  const [result, setResult] = useState(null);
-  const { data, loading } = useMultisigQuery(GET_MULTISIG_ADDRESS, {
-    variables: {
-      account: address,
-    },
-  });
+  const chain = useChain();
 
-  useEffect(() => {
-    if (loading || !address) {
-      return;
+  const isSupportedChain = useMemo(() => {
+    return isKusamaChain(chain) || isPolkadotChain(chain);
+  }, [chain]);
+
+  const isValidAddress = useMemo(() => {
+    return address !== "" && isAddress(address);
+  }, [address]);
+
+  const { value: result, loading } = useAsync(async () => {
+    if (!isSupportedChain || !isValidAddress) {
+      return false;
     }
 
-    const { multisigAddress } = data || {};
-    setResult(multisigAddress);
-  }, [address, data, loading]);
+    try {
+      const { result } = await backendApi.fetch(
+        `/multisig/addresses/${address}`,
+      );
 
-  return {
-    result,
-    loading,
-  };
+      return result ?? null;
+    } catch (error) {
+      return null;
+    }
+  }, [address, isSupportedChain, isValidAddress]);
+
+  return { result, loading };
 }
