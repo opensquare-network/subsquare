@@ -179,9 +179,9 @@ const SearchItem = memo(function ItemContent({ row, onClose }) {
 
   const { index, displayIndex, title, content, noDisplayIndex } = row;
   const path = getSearchItemPath(proposalType, index);
-  let searchItemTitle = `#${displayIndex || index} · ${title}`;
-  if (noDisplayIndex) {
-    searchItemTitle = title;
+  let searchItemTitle = title;
+  if (!noDisplayIndex) {
+    searchItemTitle = `#${displayIndex || index} · ${title}`;
   }
 
   if (proposalType === SearchType.REFERENDA) {
