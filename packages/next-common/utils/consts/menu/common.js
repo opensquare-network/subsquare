@@ -3,11 +3,15 @@ import {
   MenuDiscussions,
   MenuDelegation,
   MenuAccount,
+  MenuCalendar,
+  MenuOffChainVoting,
 } from "@osn/icons/subsquare";
 import getChainSettings from "../settings";
 import { CHAIN } from "next-common/utils/constants";
 import { getAccountUrl } from "next-common/hooks/account/useAccountUrl";
 import supportsDelegation from "./supportsDelegation";
+import { votingSpace, votingHost } from "next-common/utils/opensquareVoting";
+import { NavigationItem, NavigationItemIcon } from "./navigationItem";
 
 const chainSettings = getChainSettings(CHAIN);
 
@@ -44,8 +48,27 @@ export const discussionsMenu = {
   icon: <MenuDiscussions />,
 };
 
+const calendarMenu = {
+  value: "calendar",
+  name: "Calendar",
+  pathname: "/calendar",
+  icon: <MenuCalendar />,
+};
+const votingMenu = {
+  value: "offChainVoting",
+  name: "Off-chain Voting",
+  pathname: `${votingHost}/space/${votingSpace}`,
+  icon: <MenuOffChainVoting />,
+};
+
+const navigationMenu = {
+  value: "navigation",
+  name: <NavigationItem />,
+  icon: <NavigationItemIcon />,
+};
+
 const commonMenus = {
-  items: [overviewMenu, accountMenu],
+  items: [overviewMenu, calendarMenu, accountMenu],
 };
 
 if (chainSettings.modules.discussions) {
@@ -66,5 +89,10 @@ if (supportsDelegation()) {
     icon: <MenuDelegation />,
   });
 }
+
+if (votingSpace) {
+  commonMenus.items.push(votingMenu);
+}
+commonMenus.items.push(navigationMenu);
 
 export default commonMenus;
