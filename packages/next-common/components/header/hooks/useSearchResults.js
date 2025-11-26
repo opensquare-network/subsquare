@@ -19,6 +19,7 @@ const formatItems = (
   items,
   indexKeyOrGetIndexFn,
   displayIndexKeyOrGetIndexFn,
+  noDisplayIndex = false,
 ) => {
   if (!items || (items || []).length <= 0) {
     return [];
@@ -52,6 +53,7 @@ const formatItems = (
           : "-",
         proposalType,
         type: ItemType.ITEM,
+        noDisplayIndex,
       };
     }),
   ];
@@ -246,12 +248,7 @@ function formatResults(results) {
       case "fellowshipMembers":
         return formatSearchResult("FellowshipMembers", value);
       case "treasuryTips":
-        return formatItems(
-          "TreasuryTips",
-          value,
-          (item) => item.hash,
-          (item) => item.hash.substr(0, 6),
-        );
+        return formatItems("TreasuryTips", value, "hash", "hash", true);
       default:
         return [];
     }
