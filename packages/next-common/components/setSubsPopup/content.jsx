@@ -25,6 +25,30 @@ const defaultSub = {
   name: "",
 };
 
+export function SubIdentityDepositDisplay({ deposit, isLoading }) {
+  const chainSettings = useChainSettings();
+
+  return (
+    <>
+      <Label>Deposit</Label>
+      <CurrencyInput
+        disabled
+        value={
+          isLoading ? "" : toPrecision(deposit || 0, chainSettings.decimals)
+        }
+        prefix={<LoadableContent isLoading={isLoading} />}
+        symbol={chainSettings.symbol}
+      />
+    </>
+  );
+}
+
+function SubsDeposit({ selectedList }) {
+  const { deposit, isLoading } = useSetSubsDeposit(selectedList);
+
+  return <SubIdentityDepositDisplay deposit={deposit} isLoading={isLoading} />;
+}
+
 export default function SetSubsPopupContent() {
   const { subs, retry = noop } = usePopupParams();
   const api = useContextApi();
@@ -129,27 +153,5 @@ function AddSubsButton({ addSub }) {
         <span>Add Sub</span>
       </div>
     </RightWrapper>
-  );
-}
-
-export function SubsDeposit({ selectedList }) {
-  const chainSettings = useChainSettings();
-  const { deposit, isLoading: isDepositLoading } =
-    useSetSubsDeposit(selectedList);
-
-  return (
-    <>
-      <Label>Deposit</Label>
-      <CurrencyInput
-        disabled
-        value={
-          isDepositLoading
-            ? ""
-            : toPrecision(deposit || 0, chainSettings.decimals)
-        }
-        prefix={<LoadableContent isLoading={isDepositLoading} />}
-        symbol={chainSettings.symbol}
-      />
-    </>
   );
 }

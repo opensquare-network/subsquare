@@ -12,7 +12,8 @@ import { noop, isEmpty } from "lodash-es";
 import WindowSizeProvider from "next-common/context/windowSize";
 import RightWrapper from "next-common/components/rightWraper";
 import { SubItem } from "../setSubsPopup/subItem";
-import { SubsDeposit } from "../setSubsPopup/content";
+import { SubIdentityDepositDisplay } from "../setSubsPopup/content";
+import { useSubAccountDeposit } from "next-common/hooks/people/useSetSubsDeposit";
 
 function useSingleSubAccountOptions(subs) {
   const extensionAccounts = useExtensionAccounts();
@@ -30,6 +31,12 @@ function useSingleSubAccountOptions(subs) {
       return item;
     });
   }, [excludeAddresses, extensionAccounts]);
+}
+
+function SingleSubDeposit() {
+  const { deposit, isLoading } = useSubAccountDeposit();
+
+  return <SubIdentityDepositDisplay deposit={deposit} isLoading={isLoading} />;
 }
 
 export default function SetSingleSubPopupContent({ subs }) {
@@ -60,10 +67,6 @@ export default function SetSingleSubPopupContent({ subs }) {
     return !sub.address || !sub.name;
   }, [sub]);
 
-  const singleSubAddress = useMemo(() => {
-    return sub.address ? [sub.address] : [];
-  }, [sub.address]);
-
   const getTxFunc = useCallback(() => {
     if (!api?.tx?.identity || !sub.address || !sub.name) {
       return null;
@@ -92,7 +95,7 @@ export default function SetSingleSubPopupContent({ subs }) {
           showRemove={false}
         />
 
-        <SubsDeposit selectedList={singleSubAddress} />
+        <SingleSubDeposit />
 
         <RightWrapper>
           <TxSubmissionButton
