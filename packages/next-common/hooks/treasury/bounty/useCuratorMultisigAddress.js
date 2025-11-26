@@ -4,21 +4,36 @@ import { useContextApi } from "next-common/context/api";
 import { isNil } from "lodash-es";
 import getChainSettings from "next-common/utils/consts/settings";
 import { CHAIN } from "next-common/utils/constants";
+import { fetchMultisigAddress } from "next-common/hooks/useMultisigAddress";
 
 const EMPTY_RESULT = {
   badge: "",
   signatories: [],
+  threshold: undefined,
 };
 
-export async function fetchMultisigData(currentAddress) {
-  if (isNil(currentAddress)) {
+function transformMultisigAddressData(multisigAddress) {
+  if (!multisigAddress) {
     return EMPTY_RESULT;
   }
 
-  const { graphqlApiSubDomain } = getChainSettings(CHAIN);
+  const signatoriesList = multisigAddress?.signatories || [];
+  const threshold = multisigAddress?.threshold;
+  const badgeCount =
+    threshold && signatoriesList.length > 0
+      ? `${threshold}/${signatoriesList.length}`
+      : "";
 
-  if (!graphqlApiSubDomain) {
-    console.error("Unsupported chain");
+  return {
+    badge: badgeCount,
+    signatories: signatoriesList,
+    threshold,
+  };
+}
+
+export async function fetchMultisigDataFromGraphql(address) {
+  const { graphqlApiSubDomain } = getChainSettings(CHAIN);
+  if (isNil(address) || !graphqlApiSubDomain) {
     return EMPTY_RESULT;
   }
 
@@ -31,7 +46,7 @@ export async function fetchMultisigData(currentAddress) {
       },
       body: JSON.stringify({
         operationName: "GetMultisigAddress",
-        variables: { account: currentAddress },
+        variables: { account: address },
         query: `query GetMultisigAddress($account: String!) {
                 multisigAddress(account: $account) {
                   signatories
@@ -47,18 +62,25 @@ export async function fetchMultisigData(currentAddress) {
 
     const result = await response.json();
     const { multisigAddress = {} } = result?.data || {};
-    const signatoriesList = multisigAddress?.signatories || [];
-    const badgeCount = multisigAddress
-      ? `${multisigAddress.threshold}/${signatoriesList.length}`
-      : "";
 
-    return {
-      badge: badgeCount,
-      signatories: signatoriesList,
-      threshold: multisigAddress?.threshold,
-    };
+    return transformMultisigAddressData(multisigAddress);
   } catch (error) {
-    console.error(error);
+    console.error("Error fetching multisig data from GraphQL:", error);
+    return EMPTY_RESULT;
+  }
+}
+
+export async function fetchMultisigData(address) {
+  if (isNil(address)) {
+    return EMPTY_RESULT;
+  }
+
+  try {
+    const result = await fetchMultisigAddress(address);
+
+    return transformMultisigAddressData(result);
+  } catch (error) {
+    console.error("Error fetching multisig data from Backend API:", error);
     return EMPTY_RESULT;
   }
 }
