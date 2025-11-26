@@ -110,7 +110,7 @@ export default function NavMenuItemGroup({
         <SubMenuItems
           className={cn(
             submenuVisible ? "block" : "hidden",
-            padSubMenuItems && "pl-[64px] pb-4",
+            padSubMenuItems && "pl-10 pb-4",
           )}
           items={menu.items}
         />
@@ -141,15 +141,13 @@ function SubMenuItems({ className = "", items = [] }) {
               <NavMenuDivider className="my-4 mx-3" />
             ) : (
               <>
-                {(!item?.items?.length || item?.hideItemsOnMenu) && (
-                  <div className="ml-2 w-1 h-1 rounded-full bg-textSecondary" />
-                )}
+                <div className="ml-1 w-1 h-1 rounded-full bg-textSecondary" />
                 <NavMenuItemItem
                   item={item}
                   items={item.items}
                   active={active}
                   className={cn(
-                    "text-textSecondary bg-transparent",
+                    "bg-transparent",
                     active && "bg-transparent text-theme500",
                   )}
                 />

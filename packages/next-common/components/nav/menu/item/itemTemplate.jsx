@@ -23,7 +23,7 @@ export default function NavMenuItemTemplate({
       className={cn(
         "group/menu-item",
         "text-navigationText",
-        "w-full h-10 flex px-2 py-2.5 gap-x-4 items-center rounded-lg cursor-pointer text14Medium",
+        "w-full h-10 flex px-2 py-2.5 gap-x-2.5 items-center rounded-lg cursor-pointer text14Medium",
         "hover:text-theme500",
         active && "text-theme500 bg-navigationActive",
         className,

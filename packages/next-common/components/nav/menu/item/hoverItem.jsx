@@ -29,7 +29,7 @@ function HoverSubMenuLeaf({ menu }) {
               "activeCount",
             ) ?? menu.activeCount
           }
-          className="text-textSecondary bg-transparent"
+          className="bg-transparent"
           active={
             menu.pathname === routePathname ||
             menu?.extraMatchNavMenuActivePathnames?.includes?.(router.pathname)
@@ -47,7 +47,8 @@ function HoverSubMenuGroup({ menu }) {
   return (
     <HoverCard.Root openDelay={0} closeDelay={0}>
       <HoverCard.Trigger asChild>
-        <li>
+        <li className="pl-2 w-full h-10 flex px-2 py-2.5 items-center rounded-lg cursor-pointer text14Medium">
+          <div className="w-1 h-1 rounded-full bg-textSecondary" />
           <NavMenuItemTemplate
             name={startCase(capitalize(menu.name))}
             activeCount={
@@ -56,7 +57,7 @@ function HoverSubMenuGroup({ menu }) {
                 "activeCount",
               ) ?? menu.activeCount
             }
-            className="bg-transparent"
+            className="bg-transparent pr-0"
             extra={
               <span>
                 <ArrowRight
