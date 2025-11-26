@@ -40,7 +40,7 @@ export default function ProjectDoughnutChart({ data }) {
           borderRadius: 0,
           borderWidth: 0,
           padding: 0,
-          ...(DOUGHNUT_CONFIG_BY_CATEGORY[data.category] ?? {}),
+          ...(DOUGHNUT_CONFIG_BY_CATEGORY[data?.category] ?? {}),
         },
       },
       layout: {
@@ -54,7 +54,7 @@ export default function ProjectDoughnutChart({ data }) {
       cutout: "45%",
       rotation: 5,
     }),
-    [textPrimary, data.category],
+    [textPrimary, data?.category],
   );
 
   if (!data) {
