@@ -1,43 +1,39 @@
-import { gql } from "@apollo/client";
-import { useMultisigQuery } from "next-common/hooks/apollo";
-import { useEffect, useState } from "react";
-
-const GET_MULTISIG_ADDRESSES = gql`
-  query MyQuery($limit: Int!, $offset: Int!, $signatory: String) {
-    multisigAddresses(limit: $limit, offset: $offset, signatory: $signatory) {
-      limit
-      multisigAddresses {
-        address
-        signatories
-        threshold
-      }
-      offset
-      total
-    }
-  }
-`;
+import { useMemo } from "react";
+import { backendApi } from "next-common/services/nextApi";
+import { useAsync } from "react-use";
+import { isAddress } from "@polkadot/util-crypto";
+import { useChain } from "next-common/context/chain";
+import { isKusamaChain, isPolkadotChain } from "next-common/utils/chain";
 
 export default function useSignatoryMultisig(address) {
-  const [result, setResult] = useState(null);
-  const { data, loading } = useMultisigQuery(GET_MULTISIG_ADDRESSES, {
-    variables: {
-      signatory: address,
-      limit: 100,
-      offset: 0,
-    },
-  });
+  const chain = useChain();
 
-  useEffect(() => {
-    if (loading || !address) {
-      return;
+  const isSupportedChain = useMemo(() => {
+    return isKusamaChain(chain) || isPolkadotChain(chain);
+  }, [chain]);
+
+  const isValidAddress = useMemo(() => {
+    return address !== "" && isAddress(address);
+  }, [address]);
+
+  const { value: result, loading } = useAsync(async () => {
+    if (!isSupportedChain || !isValidAddress) {
+      return false;
     }
 
-    const { multisigAddresses } = data || {};
-    setResult(multisigAddresses);
-  }, [address, data, loading]);
+    try {
+      const { result } = await backendApi.fetch(
+        `/multisig/signatories/${address}/addresses`,
+      );
 
-  return {
-    result,
-    loading,
-  };
+      return {
+        multisigAddresses: result ?? [],
+        total: result?.length ?? 0,
+      };
+    } catch (error) {
+      return null;
+    }
+  }, [address, isSupportedChain, isValidAddress]);
+
+  return { result, loading };
 }
