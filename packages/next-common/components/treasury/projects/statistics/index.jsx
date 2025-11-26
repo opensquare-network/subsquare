@@ -44,6 +44,7 @@ export default function Statistics({ label, category }) {
           <ProjectStatisticsChart
             projects={categoryProjects}
             totalFiat={totalFiat}
+            category={category}
           />
         </SecondaryCard>
       </div>

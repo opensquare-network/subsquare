@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { colors } from "./doughnutChart";
+import { colors } from "../const";
 import BigNumber from "bignumber.js";
 import ProjectDoughnutChart from "./doughnutChart";
 import ProjectIndicators from "./projectIndicators";
@@ -7,7 +7,11 @@ import ProjectSummary from "./summary";
 import { useThemeSetting } from "next-common/context/theme";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 
-export default function ProjectStatisticsChart({ projects, totalFiat }) {
+export default function ProjectStatisticsChart({
+  projects,
+  totalFiat,
+  category,
+}) {
   const { neutral100 } = useThemeSetting();
   const isMobile = useIsMobile();
 
@@ -29,6 +33,7 @@ export default function ProjectStatisticsChart({ projects, totalFiat }) {
     );
 
     return {
+      category,
       labels: projectNames,
       datasets: [
         {
@@ -46,7 +51,7 @@ export default function ProjectStatisticsChart({ projects, totalFiat }) {
         },
       ],
     };
-  }, [projects, totalFiat, neutral100]);
+  }, [projects, totalFiat, neutral100, category]);
 
   if (isMobile) {
     return (

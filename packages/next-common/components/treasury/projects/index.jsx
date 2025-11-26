@@ -1,14 +1,8 @@
 import dynamic from "next/dynamic";
+import { CATEGORY_VALUES } from "./const";
 const Statistics = dynamic(() => import("./statistics"), {
   ssr: false,
 });
-
-const CATEGORY_VALUES = {
-  WALLET: "wallet",
-  MULTISIG_TOOLS: "multisig_tools",
-  EXPLORER: "explorer",
-  GOVERNANCE_PLATFORM: "governance_platform",
-};
 
 const categories = [
   {
@@ -26,6 +20,10 @@ const categories = [
   {
     label: "Governance Platforms",
     value: CATEGORY_VALUES.GOVERNANCE_PLATFORM,
+  },
+  {
+    label: "Polkadot Clients",
+    value: CATEGORY_VALUES.POLKADOT_CLIENT,
   },
 ];
 
