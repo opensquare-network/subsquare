@@ -5,7 +5,7 @@ import Tooltip from "next-common/components/tooltip";
 import WindowSizeProvider from "next-common/context/windowSize";
 
 export default function Statistics({ data }) {
-  const { label, category, projects = [], totalFiat } = data;
+  const { label, category, projects = [], totalFiat } = data ?? {};
 
   if (projects?.length === 0 || !totalFiat || !label || !category) {
     return null;
