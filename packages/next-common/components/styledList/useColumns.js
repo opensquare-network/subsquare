@@ -24,7 +24,7 @@ export default function useColumns(
   allowUnsort = false,
 ) {
   const defaultSortedColumnInfo = columnsData.find(
-    (col) => col.name === defaultSortedColumn,
+    (col) => defaultSortedColumn && col.name === defaultSortedColumn,
   );
   const defaultSortDirection = defaultSortedColumnInfo
     ? getSortDirections(defaultSortedColumnInfo.sortable)[0]
