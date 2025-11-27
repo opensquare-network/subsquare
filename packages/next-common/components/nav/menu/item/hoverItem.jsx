@@ -1,5 +1,5 @@
 import { cn } from "next-common/utils";
-import { startCase, capitalize, sumBy } from "lodash-es";
+import { startCase, capitalize, sumBy, omit } from "lodash-es";
 import { useRouter } from "next/router";
 import { ArrowRight } from "@osn/icons/subsquare";
 import * as HoverCard from "@radix-ui/react-hover-card";
@@ -23,6 +23,7 @@ function HoverSubMenuLeaf({ menu }) {
         <div className="w-1 h-1 rounded-full bg-textSecondary" />
         <NavMenuItemTemplate
           name={startCase(capitalize(menu.name))}
+          {...omit(menu, "name", "icon")}
           activeCount={
             sumBy(
               (menu?.items || []).filter((item) => !item.excludeToSumActives),
