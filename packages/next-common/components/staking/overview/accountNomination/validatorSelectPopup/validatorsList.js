@@ -33,7 +33,7 @@ function Header({ children }) {
   );
 }
 
-function ValidatorsListImpl({ nominations, setNominations }) {
+function ValidatorsListImpl({ nominees, setNominees }) {
   const { validators, loading: isLoadingValidators } = useValidators();
   const {
     value: validatorsWithIdentity,
@@ -45,14 +45,14 @@ function ValidatorsListImpl({ nominations, setNominations }) {
       return null;
     }
     return filteredValidators.filter(
-      (v) => !nominations || !nominations.includes(v.account),
+      (v) => !nominees || !nominees.includes(v.account),
     );
-  }, [filteredValidators, nominations]);
+  }, [filteredValidators, nominees]);
   const { searchedValidators, component: searchBox } = useSearchedValidators(
     skipSelectedValidators,
   );
 
-  const canAdd = (nominations?.length || 0) < 16;
+  const canAdd = (nominees?.length || 0) < 16;
   const columnsDef = useMemo(
     () => [
       colAccount,
@@ -73,7 +73,7 @@ function ValidatorsListImpl({ nominations, setNominations }) {
               if (!canAdd) {
                 return;
               }
-              setNominations((prev) => {
+              setNominees((prev) => {
                 if (prev.includes(item.account)) {
                   return prev;
                 }
@@ -87,7 +87,7 @@ function ValidatorsListImpl({ nominations, setNominations }) {
         ),
       },
     ],
-    [canAdd, setNominations],
+    [canAdd, setNominees],
   );
 
   const { sortedColumn, sortDirection, columns } = useColumns(
@@ -141,13 +141,10 @@ function ValidatorsListImpl({ nominations, setNominations }) {
   );
 }
 
-export default function ValidatorsList({ nominations, setNominations }) {
+export default function ValidatorsList({ nominees, setNominees }) {
   return (
     <ValidatorsFilterProvider>
-      <ValidatorsListImpl
-        nominations={nominations}
-        setNominations={setNominations}
-      />
+      <ValidatorsListImpl nominees={nominees} setNominees={setNominees} />
     </ValidatorsFilterProvider>
   );
 }

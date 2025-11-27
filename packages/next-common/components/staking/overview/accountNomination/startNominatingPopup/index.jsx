@@ -5,13 +5,17 @@ import useAccountTransferrable from "next-common/hooks/useAccountTransferrable";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Signer from "next-common/components/popup/fields/signerField";
 import CommonSelectField from "next-common/components/popup/fields/commonSelectField";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import AddressCombo from "next-common/components/addressCombo";
 import { useExtensionAccounts } from "next-common/components/popupWithSigner/context";
-import { cn } from "next-common/utils";
+import { cn, toPrecisionNumber } from "next-common/utils";
 import { NominationField } from "./nominationField";
 import { BondField } from "./bondField";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import BigNumber from "bignumber.js";
+import useSubStorage from "next-common/hooks/common/useSubStorage";
+import { useChainSettings } from "next-common/context/chain";
+import ErrorMessage from "next-common/components/styled/errorMessage";
 
 const payoutDestinationOptions = [
   { label: "Compound", value: "compound" },
@@ -36,8 +40,34 @@ function StartNominatingPopupContent() {
   const extensionAccounts = useExtensionAccounts();
   const [payoutDestination, setPayoutDestination] = useState("compound");
   const [customPayoutAddress, setCustomPayoutAddress] = useState("");
-  const [nominations, setNominations] = useState([]);
+  const [nominees, setNominees] = useState([]);
   const [bondAmount, setBondAmount] = useState("");
+  const { decimals } = useChainSettings();
+  const { result: minNominatorBond, loading: isLoadingMinNominatorBond } =
+    useSubStorage("staking", "minNominatorBond", []);
+  const minBond = toPrecisionNumber(minNominatorBond, decimals);
+
+  const lessThanMinBond =
+    !isLoadingMinNominatorBond && new BigNumber(bondAmount).lt(minBond);
+  const lessThan16Nominees = nominees?.length !== 16;
+  const hasNominees = nominees && nominees.length > 0;
+
+  const notMeetMinBond = bondAmount && lessThanMinBond;
+  const notEnoughNominees = hasNominees && lessThan16Nominees;
+
+  const canSubmit =
+    bondAmount &&
+    !isLoadingMinNominatorBond &&
+    !lessThanMinBond &&
+    hasNominees &&
+    !lessThan16Nominees;
+
+  let errorMessage = "";
+  if (notEnoughNominees) {
+    errorMessage = "Please select 16 validators to nominate.";
+  } else if (notMeetMinBond) {
+    errorMessage = `Minimum bond amount is ${minBond} units.`;
+  }
 
   const isCustomPayout = !["compound", "this_account"].includes(
     payoutDestination,
@@ -46,6 +76,57 @@ function StartNominatingPopupContent() {
 
   const { transferrable, isLoading: isLoadingTransferrable } =
     useAccountTransferrable(api, realAddress);
+
+  const getTxFunc = useCallback(() => {
+    if (!api) {
+      return;
+    }
+
+    if (payoutDestination === "another_account" && !customPayoutAddress) {
+      throw new Error("Please enter payout address.");
+    }
+
+    if (nominees.length !== 16) {
+      throw new Error("Please select 16 validators to nominate.");
+    }
+
+    if (!bondAmount) {
+      throw new Error("Please enter bond amount.");
+    }
+
+    if (new BigNumber(bondAmount).lt(minBond)) {
+      throw new Error(`Minimum bond amount is ${minBond} units.`);
+    }
+
+    const bond = new BigNumber(bondAmount)
+      .times(Math.pow(10, decimals))
+      .toFixed(0);
+
+    let payee;
+    if (payoutDestination === "compound") {
+      payee = { Staked: null };
+    } else if (payoutDestination === "this_account") {
+      payee = { Account: realAddress };
+    } else if (payoutDestination === "another_account") {
+      payee = { Account: customPayoutAddress };
+    } else {
+      throw new Error("Invalid payout destination.");
+    }
+
+    return api.tx.utility.batchAll([
+      api.tx.staking.bond(bond, payee),
+      api.tx.staking.nominate(nominees),
+    ]);
+  }, [
+    api,
+    nominees,
+    bondAmount,
+    customPayoutAddress,
+    payoutDestination,
+    realAddress,
+    minBond,
+    decimals,
+  ]);
 
   return (
     <div className="space-y-4">
@@ -71,13 +152,11 @@ function StartNominatingPopupContent() {
           placeholder="Enter payout address"
         />
       </div>
-      <NominationField
-        nominations={nominations}
-        setNominations={setNominations}
-      />
+      <NominationField nominees={nominees} setNominees={setNominees} />
       <BondField bondAmount={bondAmount} setBondAmount={setBondAmount} />
+      {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
       <div className="flex justify-end">
-        <TxSubmissionButton getTxFunc={() => {}} />
+        <TxSubmissionButton disabled={!canSubmit} getTxFunc={getTxFunc} />
       </div>
     </div>
   );

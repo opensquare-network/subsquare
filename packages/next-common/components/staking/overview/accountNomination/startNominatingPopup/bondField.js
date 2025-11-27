@@ -17,8 +17,8 @@ export function BondField({ bondAmount, setBondAmount }) {
       maxAmount={transferrable}
       isLoading={isLoadingTransferrable}
       decimals={decimals}
-      inputBalance={bondAmount}
-      setInputBalance={setBondAmount}
+      inputAmount={bondAmount}
+      setInputAmount={setBondAmount}
       symbol={symbol}
     />
   );

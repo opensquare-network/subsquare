@@ -12,10 +12,10 @@ const ValidatorSelectPopup = dynamicPopup(() =>
   ),
 );
 
-export function NominationField({ nominations, setNominations }) {
+export function NominationField({ nominees, setNominees }) {
   const [showValidatorSelectPopup, setShowValidatorSelectPopup] =
     useState(false);
-  const hasNominations = nominations && nominations.length > 0;
+  const hasNominations = nominees && nominees.length > 0;
   return (
     <div>
       <PopupLabel text="Nominate" />
@@ -28,7 +28,7 @@ export function NominationField({ nominations, setNominations }) {
       >
         {hasNominations ? (
           <div className="text-textPrimary text14Medium">
-            {nominations?.length || 0} validators selected
+            {nominees?.length || 0} validators selected
           </div>
         ) : (
           <div className="text-textTertiary text14Medium">
@@ -51,8 +51,8 @@ export function NominationField({ nominations, setNominations }) {
       {showValidatorSelectPopup && (
         <ValidatorSelectPopup
           onClose={() => setShowValidatorSelectPopup(false)}
-          nominations={nominations}
-          setNominations={setNominations}
+          nominees={nominees}
+          setNominees={setNominees}
         />
       )}
     </div>
