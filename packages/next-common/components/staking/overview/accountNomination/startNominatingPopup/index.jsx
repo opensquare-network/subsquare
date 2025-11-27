@@ -1,7 +1,6 @@
 import Popup from "next-common/components/popup/wrapper/Popup";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 import { useContextApi } from "next-common/context/api";
-import useAccountTransferrable from "next-common/hooks/useAccountTransferrable";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Signer from "next-common/components/popup/fields/signerField";
 import CommonSelectField from "next-common/components/popup/fields/commonSelectField";
@@ -74,9 +73,6 @@ function StartNominatingPopupContent() {
   );
   let payoutAddress = isCustomPayout ? customPayoutAddress : realAddress;
 
-  const { transferrable, isLoading: isLoadingTransferrable } =
-    useAccountTransferrable(api, realAddress);
-
   const getTxFunc = useCallback(() => {
     if (!api) {
       return;
@@ -130,13 +126,7 @@ function StartNominatingPopupContent() {
 
   return (
     <div className="space-y-4">
-      <Signer
-        title="Origin"
-        balance={transferrable}
-        isBalanceLoading={isLoadingTransferrable}
-        noSwitchSigner
-        showTransferable
-      />
+      <Signer title="Origin" noSwitchSigner showTransferable />
       <div className="space-y-2">
         <PayoutDestinationSelect
           value={payoutDestination}
