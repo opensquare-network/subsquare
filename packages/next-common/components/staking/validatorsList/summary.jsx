@@ -6,6 +6,17 @@ import useActiveValidatorsCount from "next-common/hooks/staking/useActiveValidat
 import useMaxValidatorsCount from "next-common/hooks/staking/useMaxValidatorsCount";
 import useAverageCommission from "next-common/hooks/staking/useAverageCommission";
 import { useMemo } from "react";
+import Tooltip from "next-common/components/tooltip";
+import { SystemInfo } from "@osn/icons/subsquare";
+
+function TooltipWrapper({ content, children }) {
+  return (
+    <div className="inline-flex items-center justify-start space-x-1">
+      {children}
+      <Tooltip content={content} icon={<SystemInfo width={16} height={16} />} />
+    </div>
+  );
+}
 
 function AverageCommission() {
   const { averageCommission, loading } = useAverageCommission();
@@ -20,7 +31,9 @@ function AverageCommission() {
   return (
     <SummaryItem title="Average Commission">
       <LoadableContent isLoading={loading} size={16}>
-        <span>{commission ?? 0}%</span>
+        <TooltipWrapper content="Excludes 100% commission">
+          <span>{commission ?? 0}%</span>
+        </TooltipWrapper>
       </LoadableContent>
     </SummaryItem>
   );
@@ -57,7 +70,6 @@ function ActiveValidators() {
   );
 }
 
-// TODO: tooltips
 export default function StakingValidatorsSummary() {
   return (
     <SummaryLayout>
