@@ -128,7 +128,7 @@ export default function BTreeMapParam({ title, def, value, setValue = noop }) {
             <PlusIcon size={12} />
             Add
           </IconButton>
-          <IconButton onClick={_rowRemove}>
+          <IconButton disabled={params.length === 0} onClick={_rowRemove}>
             <SubtractIcon size={12} />
             Remove
           </IconButton>
