@@ -5,6 +5,9 @@ import { isNil } from "lodash-es";
 import getChainSettings from "next-common/utils/consts/settings";
 import { CHAIN } from "next-common/utils/constants";
 import { fetchMultisigAddress } from "next-common/hooks/useMultisigAddress";
+import { isKusamaChain, isPolkadotChain } from "next-common/utils/chain";
+
+const chain = process.env.NEXT_PUBLIC_CHAIN;
 
 const EMPTY_RESULT = {
   badge: "",
@@ -76,9 +79,12 @@ export async function fetchMultisigData(address) {
   }
 
   try {
-    const result = await fetchMultisigAddress(address);
+    if (isKusamaChain(chain) || isPolkadotChain(chain)) {
+      const result = await fetchMultisigAddress(address);
+      return transformMultisigAddressData(result);
+    }
 
-    return transformMultisigAddressData(result);
+    return fetchMultisigDataFromGraphql(address);
   } catch (error) {
     console.error("Error fetching multisig data from Backend API:", error);
     return EMPTY_RESULT;
