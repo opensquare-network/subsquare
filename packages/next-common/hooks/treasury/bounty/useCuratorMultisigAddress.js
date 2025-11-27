@@ -6,8 +6,7 @@ import getChainSettings from "next-common/utils/consts/settings";
 import { CHAIN } from "next-common/utils/constants";
 import { fetchMultisigAddress } from "next-common/hooks/useMultisigAddress";
 import { isKusamaChain, isPolkadotChain } from "next-common/utils/chain";
-
-const chain = process.env.NEXT_PUBLIC_CHAIN;
+import getMultisigApiUrl from "next-common/services/multisig/url";
 
 const EMPTY_RESULT = {
   badge: "",
@@ -35,14 +34,13 @@ function transformMultisigAddressData(multisigAddress) {
 }
 
 export async function fetchMultisigDataFromGraphql(address) {
-  const { graphqlApiSubDomain } = getChainSettings(CHAIN);
-  if (isNil(address) || !graphqlApiSubDomain) {
+  const { multisigApiPrefix } = getChainSettings(CHAIN);
+  if (isNil(address) || !multisigApiPrefix) {
     return EMPTY_RESULT;
   }
 
   try {
-    const url = `https://${graphqlApiSubDomain}.statescan.io/graphql`;
-    const response = await fetch(url, {
+    const response = await fetch(getMultisigApiUrl(CHAIN), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -79,7 +77,7 @@ export async function fetchMultisigData(address) {
   }
 
   try {
-    if (isKusamaChain(chain) || isPolkadotChain(chain)) {
+    if (isKusamaChain(CHAIN) || isPolkadotChain(CHAIN)) {
       const result = await fetchMultisigAddress(address);
       return transformMultisigAddressData(result);
     }
