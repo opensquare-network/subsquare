@@ -24,13 +24,13 @@ export const DOUGHNUT_CONFIG_BY_CATEGORY = {
     stretch: 1,
   },
   explorer: {
-    stretch: 5,
+    stretch: 1,
   },
   governance_platform: {
     stretch: 1,
   },
   polkadot_client: {
-    stretch: 10,
+    stretch: 8,
     padding: 7,
   },
 };

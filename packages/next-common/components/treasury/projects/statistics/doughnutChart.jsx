@@ -62,7 +62,7 @@ export default function ProjectDoughnutChart({ data }) {
   }
 
   return (
-    <div style={{ width: 180, height: 110 }}>
+    <div style={{ width: 190, height: 110 }}>
       <Doughnut data={data} options={options} />
     </div>
   );
