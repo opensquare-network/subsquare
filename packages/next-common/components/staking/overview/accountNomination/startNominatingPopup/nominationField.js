@@ -28,11 +28,11 @@ export function NominationField({ nominations, setNominations }) {
       >
         {hasNominations ? (
           <div className="text-textPrimary text14Medium">
-            {nominations?.length || 0} Validators
+            {nominations?.length || 0} validators selected
           </div>
         ) : (
           <div className="text-textTertiary text14Medium">
-            No Validators Selected
+            Please add validators
           </div>
         )}
         <div>
