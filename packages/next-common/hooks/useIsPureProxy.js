@@ -5,7 +5,7 @@ import { useChain } from "next-common/context/chain";
 import { isKusamaChain, isPolkadotChain } from "next-common/utils/chain";
 import { useMemo } from "react";
 
-export default function useIsPureProxy(address) {
+export function useIsRelativesApiAvailable(address) {
   const chain = useChain();
 
   const isSupportedChain = useMemo(() => {
@@ -16,8 +16,16 @@ export default function useIsPureProxy(address) {
     return address !== "" && isAddress(address);
   }, [address]);
 
+  return useMemo(() => {
+    return isSupportedChain && isValidAddress;
+  }, [isSupportedChain, isValidAddress]);
+}
+
+export default function useIsPureProxy(address) {
+  const isRelativesApiAvailable = useIsRelativesApiAvailable(address);
+
   const { value: isPure, loading } = useAsync(async () => {
-    if (!isSupportedChain || !isValidAddress) {
+    if (!isRelativesApiAvailable) {
       return false;
     }
 
@@ -27,7 +35,7 @@ export default function useIsPureProxy(address) {
     } catch (error) {
       return false;
     }
-  }, [address, isSupportedChain, isValidAddress]);
+  }, [address, isRelativesApiAvailable]);
 
   return { isPure: isPure ?? false, loading };
 }
