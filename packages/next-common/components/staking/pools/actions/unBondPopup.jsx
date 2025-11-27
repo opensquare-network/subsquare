@@ -15,7 +15,7 @@ import { checkTransferAmount } from "next-common/utils/checkTransferAmount";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import BigNumber from "bignumber.js";
 import { toPrecision } from "next-common/utils";
-import { useMyPool } from "../context/myPool";
+import { useMyPool } from "next-common/context/staking/myPool";
 
 function UnBondPopupContent() {
   const { onClose } = usePopupParams();

@@ -7,7 +7,7 @@ import SecondaryButton from "next-common/lib/button/secondary";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import EstimatedGas from "next-common/components/estimatedGas";
-import { useMyPool } from "../context/myPool";
+import { useMyPool } from "next-common/context/staking/myPool";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
 import LoadableContent from "next-common/components/common/loadableContent";
@@ -17,12 +17,15 @@ import { toPrecision } from "next-common/utils";
 import BigNumber from "bignumber.js";
 import Tooltip from "next-common/components/tooltip";
 import Signer from "next-common/components/popup/fields/signerField";
+import { useRewardClaimable } from "../hooks/useRewardClaimable";
 
 function ClaimPayoutPopupContent() {
   const { onClose } = usePopupParams();
   const api = useContextApi();
   const { symbol, decimals } = useChainSettings();
-  const { poolMember, claimable, loading } = useMyPool();
+  const { poolMember, loading: poolMemberLoading } = useMyPool();
+  const { claimable, loading: claimableLoading } = useRewardClaimable();
+  const loading = poolMemberLoading || claimableLoading;
 
   const getTxFunc = useCallback(() => {
     if (!api || !api.tx.nominationPools) {

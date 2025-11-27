@@ -3,7 +3,6 @@ import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import { AddressUser } from "next-common/components/user";
 import Copyable from "next-common/components/copyable";
-import tw from "tailwind-styled-components";
 import { useRouter } from "next/router";
 import { addressEllipsis, cn } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
@@ -23,7 +22,7 @@ import useAccountUrl from "next-common/hooks/account/useAccountUrl";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import { isNil } from "lodash-es";
 import Link from "next/link";
-import Button from "next-common/lib/button";
+import { IconButton } from "next-common/components/styled/iconButton";
 import AccountPanelQuickAccess from "./components/accountPanelQuickAccess";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Avatar from "next-common/components/avatar";
@@ -108,17 +107,6 @@ export function Account() {
     </div>
   );
 }
-
-const IconButton = tw(Button)`
-  flex
-  justify-center
-  items-center
-  p-0
-  w-[32px]
-  h-[32px]
-  rounded-[8px]
-  bg-neutral200
-`;
 
 export function ProxyTip() {
   const user = useUser();

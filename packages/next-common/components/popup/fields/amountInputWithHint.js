@@ -7,7 +7,7 @@ import Tooltip from "next-common/components/tooltip";
 
 function MaxAmountHint({ title, value, isLoading, decimals }) {
   return (
-    <div className="flex gap-[8px] items-center mb-[8px]">
+    <div className="flex gap-[8px] items-center">
       <span className="text12Medium text-textTertiary leading-none">
         {title}
       </span>
