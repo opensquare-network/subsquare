@@ -28,6 +28,7 @@ import RawParam from "./rawParam";
 import CidParam from "./cidParam";
 import KeyValueParam from "./keyValueParam";
 import { useContextApi } from "next-common/context/api";
+import BTreeMapParam from "./btreeMapParam";
 
 const SPECIAL_TYPES = [
   "AccountId",
@@ -66,6 +67,7 @@ const componentDef = [
   { c: Hash512Param, t: ["H512"] },
   { c: KeyValueParam, t: ["KeyValue"] },
   { c: VectorParam, t: ["Vec<KeyValue>"] },
+  { c: BTreeMapParam, t: ["BTreeMap"] },
   { c: AmountParam, t: ["Moment", "MomentOf"] },
   { c: NullParam, t: ["Null"] },
   { c: CallParam, t: ["OpaqueCall"] },
@@ -112,6 +114,9 @@ function fromDef({ displayName, info, lookupName, sub, type }) {
 
     case TypeDefInfo.BTreeSet:
       return "BTreeSet";
+
+    case TypeDefInfo.BTreeMap:
+      return "BTreeMap";
 
     case TypeDefInfo.Tuple:
       return components[type] === AccountParam ? type : "Tuple";
@@ -197,8 +202,8 @@ export default function Param({ name, def, indent = false, value, setValue }) {
 
   const title = (
     <span className="text12Bold text-textPrimary whitespace-nowrap overflow-hidden">
-      {name && `${name}:`} {def.type}
-      {def.typeName && ` (${def.typeName})`}
+      {name && `${name}:`} {def?.type}
+      {def?.typeName && ` (${def?.typeName})`}
     </span>
   );
 
