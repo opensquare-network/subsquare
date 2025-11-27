@@ -3,6 +3,7 @@ import { withCommonProps } from "next-common/lib";
 import { CHAIN } from "next-common/utils/constants";
 import getChainSettings from "next-common/utils/consts/settings";
 import ValidatorsList from "next-common/components/staking/validatorsList";
+import StakingValidatorsSummary from "next-common/components/staking/validatorsList/summary";
 
 const isStakingSupported = !!getChainSettings(CHAIN).modules?.staking;
 
@@ -18,7 +19,7 @@ export default function ValidatorsPageImpl() {
       description={
         "Displays and manages validators with search, filtering, and sorting features for staking."
       }
-      summary={null}
+      summary={<StakingValidatorsSummary />}
     >
       <ValidatorsList />
     </ListLayout>
