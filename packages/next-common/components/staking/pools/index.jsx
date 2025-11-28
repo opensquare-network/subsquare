@@ -20,7 +20,7 @@ function PoolsImpl() {
   const { poolMember } = useMyPool();
   const { pools, loading } = useBondedPools();
   const filteredPools = useFilteredPools(pools);
-  
+
   const columnsData = usePoolsColumns();
   const { sortedColumn, sortDirection, columns } = useColumns(
     columnsData,
