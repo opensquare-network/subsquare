@@ -83,11 +83,15 @@ function ExecutionTimeColumnContent({ height }) {
     return "-";
   }
 
+  let content;
+
   if (isTime) {
-    return dayjs(timestamp).format("YYYY-MM-DD HH:mm:ss");
+    content = dayjs(timestamp).format("YYYY-MM-DD HH:mm:ss");
+  } else {
+    content = <Duration time={timestamp} />;
   }
 
-  return <Duration time={timestamp} />;
+  return <Tooltip content={`#${height?.toLocaleString()}`}>{content}</Tooltip>;
 }
 
 function PeriodicColumnContent({ periodic, blockNumber }) {
