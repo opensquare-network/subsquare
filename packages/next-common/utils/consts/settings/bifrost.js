@@ -3,6 +3,7 @@ import { defaultPostLabels } from "./common";
 import dynamic from "next/dynamic";
 import { mergeChainModules } from "./common/modules";
 import bifrostPreimageSettings from "next-common/utils/consts/settings/common/preimage/bifrost";
+import bifrostKusamaTracks from "./bifrostKusamaTracks";
 
 const ProjectIconBifrostKusamaDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconBifrostKusamaDark"),
@@ -144,6 +145,7 @@ const bifrost = {
   openSquare: {
     voting: "bifrost",
   },
+  treasuryProposalTracks: bifrostKusamaTracks,
 };
 
 export default bifrost;
