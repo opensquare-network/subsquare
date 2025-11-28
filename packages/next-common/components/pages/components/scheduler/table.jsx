@@ -1,11 +1,14 @@
 import { MapDataList } from "next-common/components/dataList";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import useSchedulerAgendas from "next-common/hooks/useSchedulerAgendas";
+import { useSchedulerAgendasWithScanHeight } from "next-common/hooks/useSchedulerAgendas";
 import { useColumnsDef } from "./columns";
 import { ExecutionTimeProvider } from "./context";
+import { usePageProps } from "next-common/context/page";
 
 export default function SchedulerTable() {
-  const { filteredData = [], loading } = useSchedulerAgendas();
+  const { scanHeight } = usePageProps();
+  const { filteredData = [], loading } =
+    useSchedulerAgendasWithScanHeight(scanHeight);
 
   return (
     <ExecutionTimeProvider>

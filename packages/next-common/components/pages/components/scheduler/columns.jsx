@@ -22,7 +22,8 @@ export function useExecutionTimeColumn() {
   return useMemo(
     () => ({
       name: <ExecutionTimeButton />,
-      className: "min-w-[150px]",
+      width: 220,
+      className: "min-w-[200px]",
       render: ({ blockNumber }) => (
         <ExecutionTimeColumnContent height={blockNumber} />
       ),

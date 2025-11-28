@@ -1,14 +1,10 @@
 import { useEffect, useState } from "react";
 import { useContextApi } from "next-common/context/api";
-import useBestNumber from "./useBestNumber";
 
 export default function useSchedulerAgendas() {
   const api = useContextApi();
   const [loading, setLoading] = useState(true);
-  const [filteredData, setFilteredData] = useState([]);
   const [data, setData] = useState([]);
-
-  const bestNumber = useBestNumber();
 
   useEffect(() => {
     if (!api) {
@@ -44,9 +40,19 @@ export default function useSchedulerAgendas() {
       .finally(() => setLoading(false));
   }, [api]);
 
+  return {
+    data,
+    loading,
+  };
+}
+
+export function useSchedulerAgendasWithScanHeight(scanHeight) {
+  const { data, loading } = useSchedulerAgendas();
+  const [filteredData, setFilteredData] = useState([]);
+
   useEffect(() => {
-    setFilteredData(data.filter((item) => item.blockNumber > bestNumber));
-  }, [data, bestNumber]);
+    setFilteredData(data.filter((item) => item.blockNumber > scanHeight));
+  }, [data, scanHeight]);
 
   return {
     data,
