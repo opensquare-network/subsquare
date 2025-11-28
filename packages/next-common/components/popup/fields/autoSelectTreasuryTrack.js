@@ -8,6 +8,7 @@ export default function AutoSelectTreasuryTrack({
   requestAmount,
   trackId,
   setTrackId,
+  customTrackError = null,
 }) {
   const { treasuryProposalTracks } = useChainSettings();
 
@@ -24,5 +25,10 @@ export default function AutoSelectTreasuryTrack({
     }
   }, [requestAmount, setTrackId, treasuryProposalTracks]);
 
-  return <DetailedTrack trackId={trackId} setTrackId={setTrackId} />;
+  return (
+    <>
+      <DetailedTrack trackId={trackId} setTrackId={setTrackId} />
+      {customTrackError}
+    </>
+  );
 }
