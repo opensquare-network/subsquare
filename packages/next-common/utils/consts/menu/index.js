@@ -25,6 +25,7 @@ import { NAV_MENU_TYPE } from "next-common/utils/constants";
 import { isArray } from "lodash-es";
 import { assetsMenu } from "./assets";
 import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated";
+import { calendarMenu } from "./calendar";
 
 export function getHomeMenu({
   summary = {},
@@ -64,6 +65,7 @@ export function getHomeMenu({
         modules?.whitelist && whitelist,
         ...integrationsMenu,
         (modules?.proxy || modules?.vesting || hasMultisig) && Data,
+        calendarMenu,
       ].filter(Boolean),
     ),
   ].filter(Boolean);

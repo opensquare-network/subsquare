@@ -3,7 +3,6 @@ import {
   MenuDiscussions,
   MenuDelegation,
   MenuAccount,
-  MenuCalendar,
   MenuOffChainVoting,
 } from "@osn/icons/subsquare";
 import getChainSettings from "../settings";
@@ -48,12 +47,6 @@ export const discussionsMenu = {
   icon: <MenuDiscussions />,
 };
 
-const calendarMenu = {
-  value: "calendar",
-  name: "Calendar",
-  pathname: "/calendar",
-  icon: <MenuCalendar />,
-};
 const votingMenu = {
   value: "offChainVoting",
   name: "Off-chain Voting",
@@ -68,7 +61,7 @@ const navigationMenu = {
 };
 
 const commonMenus = {
-  items: [overviewMenu, calendarMenu, accountMenu],
+  items: [overviewMenu, accountMenu],
 };
 
 if (chainSettings.modules.discussions) {
