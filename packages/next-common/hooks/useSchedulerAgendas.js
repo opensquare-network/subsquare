@@ -25,7 +25,6 @@ export default function useSchedulerAgendas() {
 
                 return {
                   ...json,
-                  raw: unwrapped,
                   maybeId: maybeIdHuman,
                   originRole,
                   blockNumber,
