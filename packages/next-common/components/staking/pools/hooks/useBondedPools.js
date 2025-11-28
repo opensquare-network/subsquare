@@ -34,15 +34,51 @@ export function useBondedPools() {
   return { pools, loading };
 }
 
-export function useSortedPools({ pools = [], myPoolId }) {
+export function useSortedPools({
+  pools = [],
+  myPoolId,
+  sortedColumn,
+  sortDirection,
+}) {
   return useMemo(() => {
-    return pools.sort((a, b) => {
-      if (myPoolId && Number(a.poolId) === Number(myPoolId)) {
-        return -1;
-      } else if (myPoolId && Number(b.poolId) === Number(myPoolId)) {
-        return 1;
+    const sorted = [...pools];
+
+    if (sortedColumn) {
+      sorted.sort((a, b) => {
+        let aValue, bValue, diff;
+
+        switch (sortedColumn) {
+          case "Total Bonded":
+            aValue = BigInt(a.points || 0);
+            bValue = BigInt(b.points || 0);
+            diff = bValue - aValue > 0n ? 1 : bValue - aValue < 0n ? -1 : 0;
+            break;
+          case "Members":
+            aValue = a.memberCounter || 0;
+            bValue = b.memberCounter || 0;
+            diff = bValue - aValue;
+            break;
+          default:
+            diff = 0;
+            break;
+        }
+
+        return sortDirection === "asc" ? -diff : diff;
+      });
+    } else {
+      sorted.sort((a, b) => a.poolId - b.poolId);
+    }
+
+    if (myPoolId) {
+      const myPoolIndex = sorted.findIndex(
+        (pool) => Number(pool.poolId) === Number(myPoolId),
+      );
+      if (myPoolIndex > 0) {
+        const [myPool] = sorted.splice(myPoolIndex, 1);
+        sorted.unshift(myPool);
       }
-      return a.poolId - b.poolId;
-    });
-  }, [pools, myPoolId]);
+    }
+
+    return sorted;
+  }, [pools, myPoolId, sortedColumn, sortDirection]);
 }

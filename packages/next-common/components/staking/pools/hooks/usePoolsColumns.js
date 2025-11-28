@@ -18,6 +18,7 @@ export default function usePoolsColumns() {
         name: "Total Bonded",
         className: "text-right",
         width: 120,
+        sortable: "desc,asc",
         render: (data) => (
           <EmptyGuard value={data.points}>
             <TotalBondedColumn value={data.points} />
@@ -40,6 +41,8 @@ export default function usePoolsColumns() {
         name: "Members",
         className: "text-right",
         width: 120,
+        sortable: "desc,asc",
+        sortDirectionIcon: "right",
         render: (data) => (
           <EmptyGuard value={data.memberCounter}>
             {data.memberCounter}
