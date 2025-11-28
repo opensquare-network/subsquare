@@ -11,6 +11,8 @@ import { useListPagination } from "next-common/components/pagination/usePaginati
 import ListLayout from "next-common/components/layout/ListLayout";
 import PoolsSummary from "./summary";
 import { MyPoolProvider, useMyPool } from "next-common/context/staking/myPool";
+import usePoolsColumns from "./hooks/usePoolsColumns";
+import useColumns from "next-common/components/styledList/useColumns";
 
 const PAGE_SIZE = 50;
 
@@ -18,9 +20,19 @@ function PoolsImpl() {
   const { poolMember } = useMyPool();
   const { pools, loading } = useBondedPools();
   const filteredPools = useFilteredPools(pools);
+
+  const columnsData = usePoolsColumns();
+  const { sortedColumn, sortDirection, columns } = useColumns(
+    columnsData,
+    "Members",
+    true,
+  );
+
   const sortedPools = useSortedPools({
     pools: filteredPools,
     myPoolId: poolMember?.poolId,
+    sortedColumn,
+    sortDirection,
   });
   const count = sortedPools?.length || 0;
 
@@ -39,7 +51,7 @@ function PoolsImpl() {
         <StakingFilter />
       </div>
       <SecondaryCard className="!pl-0">
-        <PoolsTableList list={pagedPools} loading={loading} />
+        <PoolsTableList list={pagedPools} loading={loading} columns={columns} />
         {pagination}
       </SecondaryCard>
     </div>

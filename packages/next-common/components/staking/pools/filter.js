@@ -1,9 +1,7 @@
 import {
   DropdownFilterProvider,
   useCommittedFilterState,
-  useStagedFilterState,
 } from "next-common/components/dropdownFilter/context";
-import { DropdownFilter } from "next-common/components/dropdownFilter";
 import Select from "next-common/components/select";
 import { useMemo } from "react";
 
@@ -15,33 +13,28 @@ const poolsStatusOptions = [
 ];
 
 export function StakingFilter() {
-  const [filters, setFilters] = useStagedFilterState();
-  const status = filters?.status || "";
+  const [committedFilter, setCommittedFilter] = useCommittedFilterState();
+  const status = committedFilter?.status || "";
 
-  const handleStatusChange = (option) => {
-    setFilters({ ...filters, status: option.value });
+  const handleStatusChange = ({ value: status }) => {
+    setCommittedFilter({ status });
   };
 
   return (
-    <DropdownFilter className="w-[240px]">
-      <div className="flex items-center text12Medium">
-        <span className="text-textPrimary my-[12px] w-full">Status</span>
-        <Select
-          small
-          className="w-[144px] text12Medium"
-          options={poolsStatusOptions}
-          value={status}
-          onChange={handleStatusChange}
-        />
-      </div>
-    </DropdownFilter>
+    <Select
+      small
+      className="w-[144px] text12Medium"
+      options={poolsStatusOptions}
+      value={status}
+      onChange={handleStatusChange}
+    />
   );
 }
 
 export function StakingFilterProvider({ children }) {
   return (
     <DropdownFilterProvider
-      defaultFilterValues={{ status: "" }}
+      defaultFilterValues={{ status: "open" }}
       emptyFilterValues={{ status: "" }}
     >
       {children}
