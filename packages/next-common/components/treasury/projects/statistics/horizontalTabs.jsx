@@ -3,6 +3,7 @@ import "../../../charts/globalConfig";
 import { useMemo, useState } from "react";
 import BarChart from "./barChart";
 import useChartData from "../hooks/useChartData";
+import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 
 export default function HorizontalTabs({ categories = [] }) {
   const [activeTabValue, setActiveTabValue] = useState(categories[0]?.value);
@@ -23,7 +24,7 @@ export default function HorizontalTabs({ categories = [] }) {
   );
 
   return (
-    <div>
+    <div className="flex flex-col gap-4">
       <TabsList
         className="mx-6"
         activeTabValue={activeTabValue}
@@ -45,9 +46,17 @@ export default function HorizontalTabs({ categories = [] }) {
 function HorizontalTabsContent({ data = {} }) {
   const chartData = useChartData(data);
 
+  const height = useMemo(() => {
+    return data?.projects?.length * 10 + 80;
+  }, [data]);
+
   if (!chartData) {
     return null;
   }
 
-  return <BarChart data={chartData} />;
+  return (
+    <SecondaryCard>
+      <BarChart data={chartData} height={height} />
+    </SecondaryCard>
+  );
 }

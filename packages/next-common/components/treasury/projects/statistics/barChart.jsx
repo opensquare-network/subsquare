@@ -60,7 +60,7 @@ export function useOptions(userOptions) {
   return deepmerge(options, userOptions);
 }
 
-export default function BarChart({ data, userOptions = {}, height = 484 }) {
+export default function BarChart({ data, userOptions = {}, height = 184 }) {
   const options = useOptions(userOptions);
 
   return (
