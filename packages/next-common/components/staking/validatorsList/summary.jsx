@@ -9,11 +9,14 @@ import { useMemo } from "react";
 import Tooltip from "next-common/components/tooltip";
 import { SystemInfo } from "@osn/icons/subsquare";
 
-function TooltipWrapper({ content, children }) {
+function AverageCommissionTitle() {
   return (
     <div className="inline-flex items-center justify-start space-x-1">
-      {children}
-      <Tooltip content={content} icon={<SystemInfo width={16} height={16} />} />
+      <span>Average Commission</span>
+      <Tooltip
+        content="Excludes 100% commission"
+        icon={<SystemInfo width={16} height={16} />}
+      />
     </div>
   );
 }
@@ -29,11 +32,9 @@ function AverageCommission() {
   }, [averageCommission, loading]);
 
   return (
-    <SummaryItem title="Average Commission">
+    <SummaryItem title={<AverageCommissionTitle />}>
       <LoadableContent isLoading={loading} size={16}>
-        <TooltipWrapper content="Excludes 100% commission">
-          <span>{commission ?? 0}%</span>
-        </TooltipWrapper>
+        <span>{commission ?? 0}%</span>
       </LoadableContent>
     </SummaryItem>
   );
@@ -51,8 +52,12 @@ function TotalValidators() {
   return (
     <SummaryItem title="Total Validators">
       <LoadableContent isLoading={loading} size={16}>
-        <span>{allValidators?.length ?? 0}</span>
-        <span className="text-textTertiary">/ {maxCount}</span>
+        <Tooltip content="Total validator count">
+          <span>{allValidators?.length ?? 0}</span>
+        </Tooltip>
+        <Tooltip content="Maximum validator count">
+          <span className="text-textTertiary">/ {maxCount}</span>
+        </Tooltip>
       </LoadableContent>
     </SummaryItem>
   );
