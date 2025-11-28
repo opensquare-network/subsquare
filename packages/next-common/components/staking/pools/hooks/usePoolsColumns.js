@@ -42,7 +42,6 @@ export default function usePoolsColumns() {
         className: "text-right",
         width: 120,
         sortable: "desc,asc",
-        sortDirectionIcon: "right",
         render: (data) => (
           <EmptyGuard value={data.memberCounter}>
             {data.memberCounter}
