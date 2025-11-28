@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import { useContextApi } from "next-common/context/api";
+import useBestNumber from "./useBestNumber";
 
 export default function useSchedulerAgendas() {
   const api = useContextApi();
   const [loading, setLoading] = useState(true);
+  const [filteredData, setFilteredData] = useState([]);
   const [data, setData] = useState([]);
+
+  const bestNumber = useBestNumber();
 
   useEffect(() => {
     if (!api) {
@@ -20,9 +24,13 @@ export default function useSchedulerAgendas() {
                 const json = value.toJSON();
                 const unwrapped = value.unwrap();
                 const originRole = unwrapped?.origin?.value?.type;
+                const maybeId = unwrapped?.maybeId?.unwrapOr(null);
+                const maybeIdHuman = maybeId?.toHuman();
 
                 return {
                   ...json,
+                  raw: unwrapped,
+                  maybeId: maybeIdHuman,
                   originRole,
                   blockNumber,
                 };
@@ -36,8 +44,13 @@ export default function useSchedulerAgendas() {
       .finally(() => setLoading(false));
   }, [api]);
 
+  useEffect(() => {
+    setFilteredData(data.filter((item) => item.blockNumber > bestNumber));
+  }, [data, bestNumber]);
+
   return {
     data,
+    filteredData,
     loading,
   };
 }

@@ -4,12 +4,12 @@ import useSchedulerAgendas from "next-common/hooks/useSchedulerAgendas";
 import columnsDef from "./columns";
 
 export default function SchedulerTable() {
-  const { data = [], loading } = useSchedulerAgendas();
+  const { filteredData = [], loading } = useSchedulerAgendas();
 
   return (
     <SecondaryCard>
       <MapDataList
-        data={data}
+        data={filteredData}
         columnsDef={columnsDef}
         noDataText="No scheduled calls"
         loading={loading}
