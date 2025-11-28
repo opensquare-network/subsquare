@@ -1,20 +1,34 @@
 import Tooltip from "next-common/components/tooltip";
-import SwitchableTime from "next-common/components/time/switchableTime";
 import useBlockTimestamp from "next-common/hooks/common/useBlockTimestamp";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import { useSelector } from "react-redux";
 import { formatTimeDuration } from "next-common/utils/viewfuncs/formatTimeDuration";
 import CallColumnContent from "./callColumnContent";
+import { useMemo } from "react";
+import Duration from "next-common/components/duration";
+import dayjs from "dayjs";
+import { useExecutionTimeContext } from "./context";
 
-export function ExecutionTimeColumn() {
-  return {
-    name: "Execution Time",
-    key: "executionTime",
-    width: 220,
-    render: ({ blockNumber }) => (
-      <ExecutionTimeColumnContent height={blockNumber} />
-    ),
-  };
+function ExecutionTimeButton() {
+  const { isTime, toggleIsTime } = useExecutionTimeContext();
+  return (
+    <button className="text-theme500" onClick={toggleIsTime}>
+      {isTime ? "Time" : "Age"}
+    </button>
+  );
+}
+
+export function useExecutionTimeColumn() {
+  return useMemo(
+    () => ({
+      name: <ExecutionTimeButton />,
+      className: "min-w-[150px]",
+      render: ({ blockNumber }) => (
+        <ExecutionTimeColumnContent height={blockNumber} />
+      ),
+    }),
+    [],
+  );
 }
 
 export function PeriodicColumn() {
@@ -49,22 +63,30 @@ export function CallColumn() {
   };
 }
 
-const columnDefs = [
-  ExecutionTimeColumn(),
-  PeriodicColumn(),
-  OriginColumn(),
-  CallColumn(),
-];
+const staticColumns = [PeriodicColumn(), OriginColumn(), CallColumn()];
 
-export default columnDefs;
+export function useColumnsDef() {
+  const executionTimeColumn = useExecutionTimeColumn();
+
+  return useMemo(
+    () => [executionTimeColumn, ...staticColumns],
+    [executionTimeColumn],
+  );
+}
 
 function ExecutionTimeColumnContent({ height }) {
+  const { isTime } = useExecutionTimeContext();
   const { timestamp } = useBlockTimestamp(height);
-  return (
-    <div className="[&_span]:text14Medium [&_span]:text-textPrimary">
-      <SwitchableTime timestamp={timestamp} />
-    </div>
-  );
+
+  if (!timestamp) {
+    return "-";
+  }
+
+  if (isTime) {
+    return dayjs(timestamp).format("YYYY-MM-DD HH:mm:ss");
+  }
+
+  return <Duration time={timestamp} />;
 }
 
 function PeriodicColumnContent({ periodic, blockNumber }) {
