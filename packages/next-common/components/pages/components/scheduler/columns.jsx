@@ -8,6 +8,8 @@ import { useMemo } from "react";
 import Duration from "next-common/components/duration";
 import dayjs from "dayjs";
 import { useExecutionTimeContext } from "./context";
+import { useRelayChainBlockApi } from "next-common/context/relayChain/blockApi";
+import LoadableContent from "next-common/components/common/loadableContent";
 
 function ExecutionTimeButton() {
   const { isTime, toggleIsTime } = useExecutionTimeContext();
@@ -76,10 +78,11 @@ export function useColumnsDef() {
 }
 
 function ExecutionTimeColumnContent({ height }) {
+  const api = useRelayChainBlockApi();
   const { isTime } = useExecutionTimeContext();
-  const { timestamp } = useBlockTimestamp(height);
+  const { timestamp, isLoading } = useBlockTimestamp(height, api);
 
-  if (!timestamp) {
+  if (!timestamp && !isLoading) {
     return "-";
   }
 
@@ -91,7 +94,11 @@ function ExecutionTimeColumnContent({ height }) {
     content = <Duration time={timestamp} />;
   }
 
-  return <Tooltip content={`#${height?.toLocaleString()}`}>{content}</Tooltip>;
+  return (
+    <LoadableContent size={20} isLoading={isLoading}>
+      <Tooltip content={`#${height?.toLocaleString()}`}>{content}</Tooltip>
+    </LoadableContent>
+  );
 }
 
 function PeriodicColumnContent({ periodic, blockNumber }) {
