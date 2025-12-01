@@ -95,7 +95,7 @@ function ExecutionTimeColumnContent({ height }) {
   }
 
   return (
-    <LoadableContent size={20} isLoading={isLoading}>
+    <LoadableContent size={16} isLoading={isLoading && !timestamp}>
       <Tooltip content={`#${height?.toLocaleString()}`}>{content}</Tooltip>
     </LoadableContent>
   );
