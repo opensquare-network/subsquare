@@ -88,7 +88,7 @@ function HorizontalTabsContent({ data = {} }) {
 
   return (
     <>
-      <SecondaryCard>
+      <SecondaryCard className="[&>div:first-child]:mb-4">
         <ProjectStatisticsSummary totalFiat={data?.totalFiat} />
         <BarChart data={mergedData} height={height} onClick={handleBarClick} />
       </SecondaryCard>
