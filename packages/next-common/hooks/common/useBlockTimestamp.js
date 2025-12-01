@@ -6,8 +6,9 @@ import { getBlockTimeByHeight } from "next-common/utils/blockTime";
 import BigNumber from "bignumber.js";
 import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
 
-export default function useBlockTimestamp(height) {
-  const api = useContextApi();
+export default function useBlockTimestamp(height, specifiedApi = null) {
+  const contextApi = useContextApi();
+  const api = specifiedApi ?? contextApi;
   const oneBlockTime = useSelector(blockTimeSelector);
   const chainHeight = useAhmLatestHeight();
   const [timestamp, setTimestamp] = useState(null);
