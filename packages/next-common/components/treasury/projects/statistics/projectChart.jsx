@@ -3,12 +3,16 @@ import { Bar } from "react-chartjs-2";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import Outlabels from "@energiency/chartjs-plugin-piechart-outlabels";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 import {
   useProjectBarChartOptions,
   useProjectDoughnutChartOptions,
 } from "../hooks/useProjectChartConfig";
 import "../../../charts/globalConfig";
 import { noop } from "lodash-es";
+import { labelUnderlinePlugin } from "./labelUnderlinePlugin";
+import useBarLeftPadding from "../hooks/useBarLeftPadding";
+import useProjectChartOptions from "../hooks/useProjectChartOptions";
 
 ChartJS.register(ArcElement, Tooltip, Legend, Outlabels);
 
@@ -16,6 +20,31 @@ export const PROJECT_CHART_TYPES = {
   BAR: "bar",
   DOUGHNUT: "doughnut",
 };
+
+function useProjectChartMeta(type, height) {
+  const Component = useMemo(() => {
+    if (type === PROJECT_CHART_TYPES.BAR) {
+      return Bar;
+    }
+    return Doughnut;
+  }, [type]);
+
+  const plugins =
+    type === PROJECT_CHART_TYPES.BAR
+      ? [ChartDataLabels, labelUnderlinePlugin]
+      : [];
+
+  const defaultStyle =
+    type === PROJECT_CHART_TYPES.DOUGHNUT
+      ? { width: 190, height: 110 }
+      : { height: height || 184 };
+
+  return {
+    Component,
+    plugins,
+    defaultStyle,
+  };
+}
 
 export default function ProjectChart({
   type = PROJECT_CHART_TYPES.DOUGHNUT,
@@ -28,50 +57,28 @@ export default function ProjectChart({
 }) {
   const barOptions = useProjectBarChartOptions(userOptions);
   const doughnutOptions = useProjectDoughnutChartOptions(category, userOptions);
+  const barLeftPadding = useBarLeftPadding(type, data);
+  const finalOptions = useProjectChartOptions({
+    type,
+    barOptions,
+    doughnutOptions,
+    barLeftPadding,
+    data,
+    onClick,
+  });
 
-  const finalOptions = useMemo(() => {
-    const baseOptions =
-      type === PROJECT_CHART_TYPES.BAR ? barOptions : doughnutOptions;
-
-    if (type === PROJECT_CHART_TYPES.BAR) {
-      return {
-        ...baseOptions,
-        onClick: (event, elements) => {
-          if (elements.length > 0) {
-            const element = elements[0];
-            const datasetIndex = element.datasetIndex;
-            const index = element.index;
-            const label = data?.labels?.[index];
-            const value = data?.datasets?.[datasetIndex]?.data?.[index];
-
-            onClick({ label, value, index, datasetIndex, element });
-          }
-        },
-      };
-    }
-
-    return baseOptions;
-  }, [type, barOptions, doughnutOptions, onClick, data]);
-
-  const Component = useMemo(() => {
-    if (type === PROJECT_CHART_TYPES.BAR) {
-      return Bar;
-    }
-    return Doughnut;
-  }, [type]);
+  const { Component, plugins, defaultStyle } = useProjectChartMeta(
+    type,
+    height,
+  );
 
   if (!Component || !data) {
     return null;
   }
 
-  const defaultStyle =
-    type === PROJECT_CHART_TYPES.DOUGHNUT
-      ? { width: 190, height: 110 }
-      : { height: height || 184 };
-
   return (
     <div style={{ ...defaultStyle, ...style }}>
-      <Component data={data} options={finalOptions} />
+      <Component data={data} options={finalOptions} plugins={plugins} />
     </div>
   );
 }

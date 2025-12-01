@@ -13,10 +13,6 @@ export function useProjectBarChartOptions(userOptions = {}) {
       indexAxis: "y",
       responsive: true,
       maintainAspectRatio: false,
-      onHover: (event, elements) => {
-        event.native.target.style.cursor =
-          elements.length > 0 ? "pointer" : "default";
-      },
       plugins: {
         legend: {
           display: false,
@@ -52,6 +48,7 @@ export function useProjectBarChartOptions(userOptions = {}) {
             display: false,
           },
           ticks: {
+            display: false,
             font: {
               size: 12,
               weight: 500,
