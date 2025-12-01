@@ -3,6 +3,8 @@ import { PROJECT_CHART_TYPES } from "../statistics/projectChart";
 import { formatNum } from "next-common/utils";
 import { useThemeSetting } from "next-common/context/theme";
 
+const BAR_LEFT_PADDING = 8;
+
 export default function useProjectChartOptions({
   type,
   barOptions,
@@ -12,6 +14,7 @@ export default function useProjectChartOptions({
   onClick,
 }) {
   const { textPrimary } = useThemeSetting();
+
   return useMemo(() => {
     const baseOptions =
       type === PROJECT_CHART_TYPES.BAR ? barOptions : doughnutOptions;
@@ -33,7 +36,9 @@ export default function useProjectChartOptions({
           datalabels: {
             ...(options.plugins?.datalabels || {}),
             anchor: "start",
-            align: "start",
+            align: "end",
+            offset: -barLeftPadding - BAR_LEFT_PADDING,
+            textAlign: "left",
             clamp: false,
             clip: false,
             color: textPrimary,

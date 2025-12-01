@@ -28,16 +28,14 @@ export const labelUnderlinePlugin = {
     }
 
     const ctx = chart.ctx;
-    const baseX = element.base;
     const y = element.y;
 
     ctx.save();
     ctx.font = "500 12px Inter";
     const textWidth = ctx.measureText(labelText).width;
 
-    const padding = 8;
-    const startX = baseX - textWidth - padding;
-    const endX = baseX - padding;
+    const startX = 4;
+    const endX = startX + textWidth;
     const lineY = y + 4;
 
     const datalabelsColor = chart.options?.plugins?.datalabels?.color;
