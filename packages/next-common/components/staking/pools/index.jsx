@@ -9,7 +9,7 @@ import {
 } from "./filter";
 import { useListPagination } from "next-common/components/pagination/usePaginationComponent";
 import ListLayout from "next-common/components/layout/ListLayout";
-import PoolsSummary from "./summary";
+import StakingPoolsSummary from "./summary";
 import { MyPoolProvider, useMyPool } from "next-common/context/staking/myPool";
 import usePoolsColumns from "./hooks/usePoolsColumns";
 import useColumns from "next-common/components/styledList/useColumns";
@@ -59,8 +59,6 @@ function PoolsImpl() {
 }
 
 function PoolsContentImpl() {
-  const { poolMember } = useMyPool();
-
   return (
     <ListLayout
       title={"Nomination Pools"}
@@ -68,7 +66,7 @@ function PoolsContentImpl() {
       description={
         "Displays and manages nomination pools, allowing users to view, join, and track their staking pools."
       }
-      summary={poolMember && <PoolsSummary />}
+      summary={<StakingPoolsSummary />}
     >
       <StakingFilterProvider>
         <PoolsImpl />
