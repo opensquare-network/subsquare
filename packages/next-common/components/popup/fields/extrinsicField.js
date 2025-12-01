@@ -59,7 +59,7 @@ export function useExtrinsicField({
   const [extrinsic, setExtrinsic] = useState(null);
 
   const setValue = useCallback(
-    ({ isValid, data }) => {
+    ({ isValid, data } = {}) => {
       if (!api || !isValid) {
         setExtrinsic(null);
         return;

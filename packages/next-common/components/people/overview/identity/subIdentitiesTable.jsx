@@ -1,13 +1,14 @@
 import DataList from "next-common/components/dataList";
 import AddressUser from "next-common/components/user/addressUser";
 import AddressDisplay from "next-common/components/user/addressDisplay";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { useChain } from "next-common/context/chain";
 import getChainSettings from "next-common/utils/consts/settings";
 import { clearCachedIdentitys } from "next-common/services/identity";
-import { useExtensionAccounts } from "../popupWithSigner/context";
+import { useExtensionAccounts } from "next-common/components/popupWithSigner/context";
 import { cn } from "next-common/utils";
-import Tooltip from "../tooltip";
+import Tooltip from "next-common/components/tooltip";
+import SubIdentityActions from "next-common/components/people/overview/identity/subIdentityActions";
 
 const columns = [
   {
@@ -21,9 +22,13 @@ const columns = [
   {
     name: "Address",
   },
+  {
+    name: "",
+    width: 80,
+  },
 ];
 
-export function SubIdentitiesTableImpl({ subs = [], isLoading }) {
+export function SubIdentitiesTableImpl({ subs = [], isLoading, onSuccess }) {
   return (
     <DataList
       columns={columns}
@@ -31,7 +36,7 @@ export function SubIdentitiesTableImpl({ subs = [], isLoading }) {
         return [
           <AddressUser key={`Identity-${index}`} add={address} />,
           <div key={`Name-${index}`} className="text-textPrimary text14Medium">
-            <Tooltip content={subName}>
+            <Tooltip content={subName} className="inline-flex items-center">
               <span className="max-w-[220px] truncate inline-block">
                 {subName}
               </span>
@@ -43,6 +48,12 @@ export function SubIdentitiesTableImpl({ subs = [], isLoading }) {
           >
             <AddressDisplay address={address} />
           </div>,
+          <SubIdentityActions
+            key={`Actions-${address}`}
+            address={address}
+            currentName={subName}
+            onSuccess={onSuccess}
+          />,
         ];
       })}
       loading={isLoading && subs.length <= 0}
@@ -51,10 +62,23 @@ export function SubIdentitiesTableImpl({ subs = [], isLoading }) {
   );
 }
 
-export default function SubIdentitiesTable({ subs = [], isLoading }) {
+export default function SubIdentitiesTable({ subs = [], isLoading, retry }) {
   const chain = useChain();
   const { identity: identityChain } = getChainSettings(chain);
   const extensionAccounts = useExtensionAccounts();
+
+  const handleSuccess = useCallback(() => {
+    if (extensionAccounts?.length) {
+      clearCachedIdentitys(
+        extensionAccounts.map(({ address }) => ({
+          chain: identityChain,
+          address,
+        })),
+        true,
+      );
+    }
+    retry?.();
+  }, [identityChain, extensionAccounts, retry]);
 
   useEffect(() => {
     if (extensionAccounts?.length) {
@@ -74,7 +98,11 @@ export default function SubIdentitiesTable({ subs = [], isLoading }) {
         "border-b border-neutral300": subs?.length === 0,
       })}
     >
-      <SubIdentitiesTableImpl subs={subs} isLoading={isLoading} />
+      <SubIdentitiesTableImpl
+        subs={subs}
+        isLoading={isLoading}
+        onSuccess={handleSuccess}
+      />
     </div>
   );
 }

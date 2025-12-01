@@ -7,6 +7,7 @@ import {
   getChildBountyDisplayIndex,
   getChildBountyIndex,
 } from "next-common/utils/viewfuncs/treasury/childBounty";
+import { isEmpty } from "lodash-es";
 
 export const ItemType = {
   CATEGORY: "category",
@@ -18,6 +19,7 @@ const formatItems = (
   items,
   indexKeyOrGetIndexFn,
   displayIndexKeyOrGetIndexFn,
+  noDisplayIndex = false,
 ) => {
   if (!items || (items || []).length <= 0) {
     return [];
@@ -51,6 +53,7 @@ const formatItems = (
           : "-",
         proposalType,
         type: ItemType.ITEM,
+        noDisplayIndex,
       };
     }),
   ];
@@ -114,17 +117,13 @@ function useSearchResults() {
   const requestCallback = useCallback(
     (result, signal, searchValue) => {
       if (!signal.aborted && lastSearchValueRef.current === searchValue) {
-        setResults((prev) => {
-          // Set to false as soon as the first non-empty result is encountered.
-          const isEmpty = (formatResults(result) ?? []).length === 0;
-          if (prev === null && !isEmpty) {
-            setIsLoading(false);
-          }
-          return {
-            ...prev,
-            ...result,
-          };
-        });
+        if (!isEmpty(formatResults(result))) {
+          setIsLoading(false);
+        }
+        setResults((prev) => ({
+          ...prev,
+          ...result,
+        }));
       }
     },
     [lastSearchValueRef],
@@ -248,6 +247,8 @@ function formatResults(results) {
         return formatSearchResult("Identities", value);
       case "fellowshipMembers":
         return formatSearchResult("FellowshipMembers", value);
+      case "treasuryTips":
+        return formatItems("TreasuryTips", value, "hash", "hash", true);
       default:
         return [];
     }

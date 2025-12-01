@@ -177,9 +177,12 @@ const SearchItem = memo(function ItemContent({ row, onClose }) {
     );
   }
 
-  const { index, displayIndex, title, content } = row;
+  const { index, displayIndex, title, content, noDisplayIndex } = row;
   const path = getSearchItemPath(proposalType, index);
-  const searchItemTitle = `#${displayIndex || index} · ${title}`;
+  let searchItemTitle = title;
+  if (!noDisplayIndex) {
+    searchItemTitle = `#${displayIndex || index} · ${title}`;
+  }
 
   if (proposalType === SearchType.REFERENDA) {
     return (
@@ -242,6 +245,18 @@ const SearchItem = memo(function ItemContent({ row, onClose }) {
   }
 
   if (proposalType === SearchType.TREASURY_SPENDS) {
+    return (
+      <CommonSearchItem
+        IconComponent={MenuTreasurySpend}
+        title={searchItemTitle}
+        content={content}
+        href={path}
+        onClose={onClose}
+      />
+    );
+  }
+
+  if (proposalType === SearchType.TREASURY_TIPS) {
     return (
       <CommonSearchItem
         IconComponent={MenuTreasurySpend}

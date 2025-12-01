@@ -68,6 +68,7 @@ const westend = {
     mimir: true,
   },
   supportAssets: true,
+  hideHeight: true,
 };
 
 export default westend;

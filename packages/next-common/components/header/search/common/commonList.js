@@ -11,6 +11,7 @@ export const SearchType = {
   IDENTITIES: "Identities",
   TREASURY_PROPOSALS: "TreasuryProposals",
   TREASURY_SPENDS: "TreasurySpends",
+  TREASURY_TIPS: "TreasuryTips",
   FELLOWSHIP_REFERENDA: "FellowshipReferenda",
   FELLOWSHIP_TREASURY_SPENDS: "FellowshipTreasurySpends",
   FELLOWSHIP_MEMBERS: "FellowshipMembers",
@@ -30,6 +31,8 @@ export function getSearchItemPath(proposalType, index) {
       return `/treasury/proposals/${index}`;
     case SearchType.TREASURY_SPENDS:
       return `/treasury/spends/${index}`;
+    case SearchType.TREASURY_TIPS:
+      return `/treasury/tips/${index}`;
     case SearchType.FELLOWSHIP_REFERENDA:
       return `/fellowship/referenda/${index}`;
     case SearchType.FELLOWSHIP_TREASURY_SPENDS:
@@ -57,6 +60,8 @@ export function getCategoryPath(proposalType) {
       return "/treasury/proposals";
     case SearchType.TREASURY_SPENDS:
       return "/treasury/spends";
+    case SearchType.TREASURY_TIPS:
+      return "/treasury/tips";
     case SearchType.FELLOWSHIP_REFERENDA:
       return "/fellowship/referenda";
     case SearchType.FELLOWSHIP_TREASURY_SPENDS:
@@ -99,6 +104,8 @@ export function getCategoryName(proposalType) {
       return "Treasury Proposals";
     case SearchType.TREASURY_SPENDS:
       return "Treasury Spends";
+    case SearchType.TREASURY_TIPS:
+      return "Treasury Tips";
     case SearchType.FELLOWSHIP_REFERENDA:
       return "Fellowship Referenda";
     case SearchType.FELLOWSHIP_TREASURY_SPENDS:

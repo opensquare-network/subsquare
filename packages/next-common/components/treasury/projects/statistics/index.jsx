@@ -1,25 +1,33 @@
-import BigNumber from "bignumber.js";
-import { useMemo } from "react";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import ProjectStatisticsChart from "./chart";
-import { usePageProps } from "next-common/context/page";
+import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
+import Tooltip from "next-common/components/tooltip";
+import WindowSizeProvider from "next-common/context/windowSize";
 
-export default function Statistics() {
-  const { projects = [] } = usePageProps();
+export default function Statistics({ data }) {
+  const { label, category, projects = [], totalFiat } = data ?? {};
 
-  const totalFiat = useMemo(() => {
-    if (!projects?.length) {
-      return BigNumber(0);
-    }
-    return projects.reduce(
-      (acc, project) => acc.plus(BigNumber(project.fiatAtFinal)),
-      BigNumber(0),
-    );
-  }, [projects]);
+  if (projects?.length === 0 || !totalFiat || !label || !category) {
+    return null;
+  }
 
   return (
-    <SecondaryCard className="flex gap-6 justify-start w-full max-sm:flex-col">
-      <ProjectStatisticsChart projects={projects} totalFiat={totalFiat} />
-    </SecondaryCard>
+    <WindowSizeProvider>
+      <div>
+        <TitleContainer className="justify-start mb-4">
+          <div className="flex gap-x-1">
+            {label}
+            <Tooltip content="The prices are calculated at awarded time."></Tooltip>
+          </div>
+        </TitleContainer>
+        <SecondaryCard className="flex gap-6 justify-start w-full max-sm:flex-col">
+          <ProjectStatisticsChart
+            projects={projects}
+            totalFiat={totalFiat}
+            category={category}
+          />
+        </SecondaryCard>
+      </div>
+    </WindowSizeProvider>
   );
 }

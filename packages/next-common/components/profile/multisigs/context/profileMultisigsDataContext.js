@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { fetchMultisigData } from "next-common/hooks/treasury/bounty/useCuratorMultisigAddress";
+import { fetchMultisigDataFromGraphql } from "next-common/hooks/treasury/bounty/useCuratorMultisigAddress";
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
 import { useAsync } from "react-use";
 
@@ -9,7 +9,7 @@ export default function ProfileMultisigsDataProvider({ children }) {
   const address = useProfileAddress();
 
   const { value, loading } = useAsync(
-    async () => await fetchMultisigData(address),
+    async () => await fetchMultisigDataFromGraphql(address),
     [address],
   );
 

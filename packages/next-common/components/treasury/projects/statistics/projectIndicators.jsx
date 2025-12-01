@@ -28,13 +28,14 @@ export default function ProjectIndicators({ data, projects = [] }) {
   }
 
   const { labels, datasets } = data;
-  const { name, percentage, backgroundColor, data: fiatAtFinals } = datasets[0];
+  const { name, backgroundColor, data: fiatAtFinals } = datasets[0];
 
   return (
     <div className="flex flex-1 flex-col gap-y-2 justify-center text12Medium">
       {labels.map((label, index) => (
         <div
           key={index}
+          role="button"
           className="flex justify-between items-center cursor-pointer hover:underline"
           onClick={() => handleProjectClick(label)}
         >
@@ -48,7 +49,6 @@ export default function ProjectIndicators({ data, projects = [] }) {
               {formatNum(fiatAtFinals[index])}
             </span>
           </div>
-          <span className="text-textSecondary">{percentage[index]}</span>
         </div>
       ))}
       {showProjectProposalsPopup && (

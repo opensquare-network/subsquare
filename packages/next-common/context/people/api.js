@@ -49,7 +49,7 @@ export function usePeopleApi() {
   return api;
 }
 
-function getPeopleChain(chain) {
+export function getPeopleChain(chain) {
   if (isPolkadotChain(chain) || isCollectivesChain(chain)) {
     return Chains.polkadotPeople;
   }

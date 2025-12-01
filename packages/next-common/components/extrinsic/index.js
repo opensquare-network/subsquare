@@ -49,7 +49,12 @@ export function getExtrinsicValues(value) {
   }
 
   if (Array.isArray(value.data)) {
-    return value.data.map((v) => getExtrinsicValues(v));
+    const v = value.data.map((v) => getExtrinsicValues(v));
+    // handle normalizeExtrinsicValue for BTreeMapParam
+    if (value.normalizeExtrinsicValue) {
+      return value.normalizeExtrinsicValue(v);
+    }
+    return v;
   }
 
   if (typeof value.data === "object") {

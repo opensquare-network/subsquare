@@ -17,19 +17,6 @@ export default function TabTitle({ active, className = "", children }) {
   );
 }
 
-function NewTag() {
-  return (
-    <span className="inline-flex items-center text-theme500 bg-theme100 text12Medium px-2 py-[2px] rounded-[10px] ml-2">
-      New
-    </span>
-  );
-}
-
 export function DvLabel({ label, active }) {
-  return (
-    <TabTitle active={active}>
-      {label}
-      <NewTag />
-    </TabTitle>
-  );
+  return <TabTitle active={active}>{label}</TabTitle>;
 }

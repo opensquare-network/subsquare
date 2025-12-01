@@ -14,6 +14,7 @@ export function SubItem({
   updateSubField,
   onRemove,
   extensionAccounts,
+  showRemove = true,
 }) {
   const isMobile = useIsMobile();
   return (
@@ -46,18 +47,20 @@ export function SubItem({
             }}
           />
         </div>
-        <div className="flex items-end">
-          <Tooltip content="Remove">
-            <SecondaryButton
-              className="w-10 h-10 !px-0"
-              onClick={() => {
-                onRemove(subId);
-              }}
-            >
-              <SystemSubtract className="w-6 h-6" />
-            </SecondaryButton>
-          </Tooltip>
-        </div>
+        {showRemove && (
+          <div className="flex items-end">
+            <Tooltip content="Remove">
+              <SecondaryButton
+                className="w-10 h-10 !px-0"
+                onClick={() => {
+                  onRemove(subId);
+                }}
+              >
+                <SystemSubtract className="w-6 h-6" />
+              </SecondaryButton>
+            </Tooltip>
+          </div>
+        )}
       </div>
       <Divider className={cn("my-2 hidden", isMobile && "block")} />
     </div>

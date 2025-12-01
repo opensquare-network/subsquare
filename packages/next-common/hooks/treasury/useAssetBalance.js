@@ -2,12 +2,14 @@ import { useContextApi } from "next-common/context/api";
 import { useEffect, useState } from "react";
 import { getAssetBySymbol } from "./useAssetHubTreasuryBalance";
 import { useTreasuryAccount } from "next-common/utils/hooks/useTreasuryFree";
+import { useChainSettings } from "next-common/context/chain";
 
 export default function useAssetBalance(account, symbol) {
   const api = useContextApi();
   const [decimals, setDecimals] = useState(0);
   const [loading, setLoading] = useState(true);
   const [balance, setBalance] = useState(0);
+  const { symbol: nativeSymbol, decimals: nativeDecimals } = useChainSettings();
 
   useEffect(() => {
     if (!api) {
@@ -19,6 +21,16 @@ export default function useAssetBalance(account, symbol) {
     }
 
     setLoading(true);
+
+    if (symbol === nativeSymbol) {
+      setDecimals(nativeDecimals);
+      api.query.system.account(account).then((data) => {
+        const accountInfo = data?.toJSON();
+        setBalance(accountInfo?.data?.free);
+        setLoading(false);
+      });
+      return;
+    }
 
     const asset = getAssetBySymbol(symbol);
     if (!asset) {
@@ -32,7 +44,7 @@ export default function useAssetBalance(account, symbol) {
       setBalance(assetInfo?.balance);
       setLoading(false);
     });
-  }, [api, account, symbol]);
+  }, [api, account, symbol, nativeSymbol, nativeDecimals]);
 
   return {
     balance,

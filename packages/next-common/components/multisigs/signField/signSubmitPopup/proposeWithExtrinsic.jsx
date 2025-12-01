@@ -24,7 +24,7 @@ export default function ProposeWithExtrinsic() {
   );
 
   const setValue = useCallback(
-    ({ isValid, data }) => {
+    ({ isValid, data } = {}) => {
       if (!api || !isValid || !setCallData) {
         setCallHash(null);
         return;

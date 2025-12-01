@@ -15,7 +15,7 @@ import preImages from "./preImages";
 import { partition } from "lodash-es";
 import { getCommunityTreasuryMenu } from "./communityTreasury";
 import getChainSettings from "../settings";
-import { getMoreMenu } from "./more";
+import getArchivedMenu from "./archived";
 import { coretimeMenu } from "./coretime";
 import { peopleMenu } from "./people";
 import { stakingMenu } from "./staking";
@@ -26,6 +26,7 @@ import { NAV_MENU_TYPE } from "next-common/utils/constants";
 import { isArray } from "lodash-es";
 import { assetsMenu } from "./assets";
 import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated";
+import { calendarMenu } from "./calendar";
 
 export function getHomeMenu({
   summary = {},
@@ -66,6 +67,7 @@ export function getHomeMenu({
         modules?.whitelist && whitelist,
         ...integrationsMenu,
         (modules?.proxy || modules?.vesting || hasMultisig) && Data,
+        calendarMenu,
       ].filter(Boolean),
     ),
   ].filter(Boolean);
@@ -134,14 +136,14 @@ export function getMainMenu({
     }
   }
 
-  const moreMenu = getMoreMenu({ archivedMenu: archivedModulesMenu });
+  const moreMenu = getArchivedMenu(archivedModulesMenu);
 
   return [
     ...commonMenus.items,
     { type: "divider" },
     ...activeModulesMenu,
     { type: "divider" },
-    moreMenu,
+    ...moreMenu,
   ];
 }
 

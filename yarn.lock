@@ -1750,6 +1750,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@energiency/chartjs-plugin-piechart-outlabels@npm:^1.3.5":
+  version: 1.3.5
+  resolution: "@energiency/chartjs-plugin-piechart-outlabels@npm:1.3.5"
+  peerDependencies:
+    chart.js: "> 3"
+  checksum: afa996e5fe4cb33b129f8fc0fd22c884507b6933a221fb9495bf1963fb90daa587e8fbfc61ef081e7d55f0c292e9c86abbe189f4d7b318ec6bbb54d2b70bd159
+  languageName: node
+  linkType: hard
+
 "@esbuild/aix-ppc64@npm:0.21.5":
   version: 0.21.5
   resolution: "@esbuild/aix-ppc64@npm:0.21.5"
@@ -14199,6 +14208,7 @@ __metadata:
   resolution: "next-common@workspace:packages/next-common"
   dependencies:
     "@apollo/client": ^3.8.8
+    "@energiency/chartjs-plugin-piechart-outlabels": ^1.3.5
     "@interlay/monetary-js": 0.5.4
     "@mimirdev/apps-inject": ^3.2.0
     "@mimirdev/apps-sdk": ^3.1.0
@@ -14431,9 +14441,9 @@ __metadata:
   linkType: hard
 
 "node-forge@npm:^1.3.1":
-  version: 1.3.1
-  resolution: "node-forge@npm:1.3.1"
-  checksum: 08fb072d3d670599c89a1704b3e9c649ff1b998256737f0e06fbd1a5bf41cae4457ccaee32d95052d80bbafd9ffe01284e078c8071f0267dc9744e51c5ed42a9
+  version: 1.3.2
+  resolution: "node-forge@npm:1.3.2"
+  checksum: b6f905b0fcc39a2d59598e12ca2c071bfd760e56a9163aab8da7f8d6622547f8db60cfb2aefc39277d5a13af32e58573674b38107a2d4df7c243e12794839546
   languageName: node
   linkType: hard
 

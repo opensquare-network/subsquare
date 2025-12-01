@@ -2,6 +2,43 @@
 
 All notable changes to this project will be documented in this file.
 
+# 5.5.4
+
+Date:
+2025-11-26. [Code diff](https://github.com/opensquare-network/subsquare/compare/a15344be902f48348bf30d5836520b0454d15ec2...81ebc44243a859ab3e3a737f0c2f0dcdda5bf812).
+
+- Add explorers, multisig tools and governance platforms treasury fund statistics on the treasury projects page.
+- Index and save pure accounts to subsquare database. And in fronted, we use subsquare backend API to get pure account
+  info taking place of the old explorer API.
+- Redesign the block height component and show block height on footer for relay chains.
+- Add batch treasury spends template on the referenda page.
+- Fellowship: load fellowship related data from backend API to improve the performance of the fellowship statistics
+  page.
+- Fix the sort of identity timeline by ordering by time instead of block height. Ordering by block height is incorrect
+  after AHM.
+- Update bifrost kusama endpoints.
+- Improve coinbase telemetry options to remove console errors.
+- Improve sub menu styles.
+
+# 5.5.3
+
+Date:
+2025-11-19. [Code diff](https://github.com/opensquare-network/subsquare/compare/8a53fcbb937ff060ed254b102dc21987c0187d91...e5e33f6d24dad6e6e6f5012340456b6fc12a46f4).
+
+- Improve the summary on the child bounty list page for polkadot and kusama. So users can see the related total, pending
+  payout, claimed info.
+- Add treasury funded project statistics page for polkadot and show wallet related data.
+- Support teleporting tokens between system para chains.
+- Fix USDx spend referenda templates due to assethub migration, and upgrade XCM v3 to v4.
+- Fix cross-chain call data extraction from a referendum call.
+- Support multisig natively and enable mimir for hyperbridge.
+- Show fiat value balance when hover on bounty detail page.
+- Fix referenda DV influence data due to backend API refactor.
+- Update RPC endpoints for relay and system para chains.
+- Fellowship: improve fellowship statistics page performance by preloading members data from server API and improve the
+  UI layout.
+- Fix styles and code refactor.
+
 # 5.5.2
 
 Date:

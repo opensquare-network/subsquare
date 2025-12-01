@@ -31,23 +31,28 @@ function useHeaderHeight() {
   return noScan ? chainHeight : nodesHeight;
 }
 
+function NetworkEntryWithBlockHeight() {
+  const nodesHeight = useHeaderHeight();
+  if (!nodesHeight) {
+    return <Loading size={16} />;
+  }
+
+  return <span>{`#${nodesHeight?.toLocaleString()}`}</span>;
+}
+
+function NetworkEntryWithChainName({ activeNode }) {
+  return <div>{activeNode?.name}</div>;
+}
+
 export default function NetworkSwitch({ activeNode }) {
   const [show, setShow] = useState(false);
   const windowSize = useWindowSize();
-  const nodesHeight = useHeaderHeight();
 
   useEffect(() => {
     if (windowSize.width && windowSize.width <= 768) {
       setShow(false);
     }
   }, [windowSize]);
-
-  let heightComponent;
-  if (nodesHeight) {
-    heightComponent = <span>{`#${nodesHeight?.toLocaleString()}`}</span>;
-  } else {
-    heightComponent = <Loading size={16} />;
-  }
 
   return (
     <Popover.Root open={show} onOpenChange={setShow}>
@@ -61,9 +66,9 @@ export default function NetworkSwitch({ activeNode }) {
           }}
         >
           {activeNode?.hideHeight ? (
-            <div>{activeNode?.name}</div>
+            <NetworkEntryWithChainName activeNode={activeNode} />
           ) : (
-            heightComponent
+            <NetworkEntryWithBlockHeight />
           )}
         </SecondaryButton>
       </Popover.Trigger>

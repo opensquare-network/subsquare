@@ -1,12 +1,12 @@
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import Tabs from "next-common/components/tabs";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
 import BigNumber from "bignumber.js";
 import LoadableContent from "next-common/components/common/loadableContent";
-import usePopupDetailTabs, { TAB_VALUES } from "../hooks/usePopupDetailTabs";
+import usePopupDetailTabs from "../hooks/usePopupDetailTabs";
 
 export default function ProjectContent({ project }) {
   const {
@@ -14,7 +14,6 @@ export default function ProjectContent({ project }) {
     spends: spendList,
     childBounties: childBountyList,
   } = project;
-  const [activeTabId, setActiveTabId] = useState(TAB_VALUES.spends);
   const {
     tabs,
     proposals,
@@ -35,13 +34,33 @@ export default function ProjectContent({ project }) {
         spendsLoading={spendsLoading}
         childBounties={childBounties}
         childBountiesLoading={childBountiesLoading}
+        spendList={spendList}
+        proposalList={proposalList}
+        childBountyList={childBountyList}
       />
-      <Tabs
-        tabs={tabs}
-        activeTabValue={activeTabId}
-        onTabClick={(tab) => setActiveTabId(tab.value)}
-      />
+      <ProjectTabsList tabs={tabs} />
     </>
+  );
+}
+
+function ProjectTabsList({ tabs }) {
+  const [activeTabId, setActiveTabId] = useState(tabs[0]?.value);
+  useEffect(() => {
+    if (tabs?.length > 0) {
+      setActiveTabId(tabs[0]?.value);
+    }
+  }, [tabs]);
+
+  if (tabs?.length === 0) {
+    return null;
+  }
+
+  return (
+    <Tabs
+      tabs={tabs}
+      activeTabValue={activeTabId}
+      onTabClick={(tab) => setActiveTabId(tab.value)}
+    />
   );
 }
 
@@ -53,6 +72,9 @@ function ProjectSummary({
   spendsLoading,
   childBounties,
   childBountiesLoading,
+  spendList,
+  proposalList,
+  childBountyList,
 }) {
   const proposalsTotal = useMemo(() => calcTotal(proposals), [proposals]);
   const spendsTotal = useMemo(() => calcTotal(spends), [spends]);
@@ -67,17 +89,17 @@ function ProjectSummary({
       value: project.fiatAtFinal,
       loading: false,
     },
-    {
+    spendList?.length > 0 && {
       title: "Spends",
       value: spendsTotal,
       loading: spendsLoading,
     },
-    {
+    proposalList?.length > 0 && {
       title: "Proposals",
       value: proposalsTotal,
       loading: proposalsLoading,
     },
-    childBounties?.length > 0 && {
+    childBountyList?.length > 0 && {
       title: "Child Bounties",
       value: childBountiesTotal,
       loading: childBountiesLoading,

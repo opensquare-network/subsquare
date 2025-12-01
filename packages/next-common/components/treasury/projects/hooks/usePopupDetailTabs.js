@@ -77,10 +77,10 @@ export default function usePopupDetailTabs({
   const tabs = useMemo(
     () =>
       [
-        {
+        normalizedSpendList?.length > 0 && {
           value: TAB_VALUES.spends,
           label: "Spends",
-          activeCount: normalizedSpends?.length,
+          activeCount: normalizedSpendList?.length,
           content: (
             <ProjectSpendsList
               spends={normalizedSpends}
@@ -88,10 +88,10 @@ export default function usePopupDetailTabs({
             />
           ),
         },
-        {
+        normalizedProposalList?.length > 0 && {
           value: TAB_VALUES.proposals,
           label: "Proposals",
-          activeCount: normalizedProposals?.length,
+          activeCount: normalizedProposalList?.length,
           content: (
             <ProjectProposalsList
               proposals={normalizedProposals}
@@ -99,10 +99,10 @@ export default function usePopupDetailTabs({
             />
           ),
         },
-        normalizedChildBounties?.length > 0 && {
+        normalizedChildBountyList?.length > 0 && {
           value: TAB_VALUES.childBounties,
           label: "Child Bounties",
-          activeCount: normalizedChildBounties?.length,
+          activeCount: normalizedChildBountyList?.length,
           content: (
             <ProjectChildBountiesList
               childBounties={normalizedChildBounties}
@@ -115,6 +115,9 @@ export default function usePopupDetailTabs({
       normalizedProposals,
       normalizedSpends,
       normalizedChildBounties,
+      normalizedProposalList,
+      normalizedSpendList,
+      normalizedChildBountyList,
       proposalsLoading,
       spendsLoading,
       childBountiesLoading,

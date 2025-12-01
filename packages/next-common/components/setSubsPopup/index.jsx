@@ -5,7 +5,7 @@ import SetSubsPopupContent from "./content";
 export default function SetSubsPopup(props) {
   return (
     <SignerPopupWrapper {...props}>
-      <Popup title="Edit" {...props}>
+      <Popup title="Batch Edit" {...props}>
         <SetSubsPopupContent />
       </Popup>
     </SignerPopupWrapper>
