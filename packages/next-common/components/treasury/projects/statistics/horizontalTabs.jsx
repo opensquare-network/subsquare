@@ -1,16 +1,12 @@
 import TabsList from "next-common/components/tabs/list";
 import "../../../charts/globalConfig";
-import { useMemo, useState, useCallback } from "react";
+import { useMemo, useState } from "react";
 import BarChart from "./barChart";
 import useChartData from "../hooks/useChartData";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { colors } from "../const";
 import ProjectStatisticsSummary from "./summary";
-import dynamicPopup from "next-common/lib/dynamic/popup";
-
-const ProjectProposalsPopup = dynamicPopup(() =>
-  import("../projectDetailPopup"),
-);
+import useProjectChartInteraction from "../hooks/useProjectChartInteraction";
 
 export default function HorizontalTabs({ categories = [] }) {
   const [activeTabValue, setActiveTabValue] = useState(categories[0]?.category);
@@ -51,20 +47,8 @@ export default function HorizontalTabs({ categories = [] }) {
 
 function HorizontalTabsContent({ data = {} }) {
   const chartData = useChartData(data);
-  const [showProjectProposalsPopup, setShowProjectProposalsPopup] =
-    useState(false);
-  const [selectedProject, setSelectedProject] = useState(null);
-
-  const handleBarClick = useCallback(
-    ({ label }) => {
-      const project = data?.projects?.find((p) => p.name === label);
-      if (!project) {
-        return;
-      }
-      setSelectedProject(project);
-      setShowProjectProposalsPopup(true);
-    },
-    [data],
+  const { handleBarClick, ProjectProposalsPopup } = useProjectChartInteraction(
+    data?.projects || [],
   );
 
   const barThickness = 20;
@@ -108,12 +92,7 @@ function HorizontalTabsContent({ data = {} }) {
         <ProjectStatisticsSummary totalFiat={data?.totalFiat} />
         <BarChart data={mergedData} height={height} onClick={handleBarClick} />
       </SecondaryCard>
-      {showProjectProposalsPopup && (
-        <ProjectProposalsPopup
-          onClose={() => setShowProjectProposalsPopup(false)}
-          selectedProject={selectedProject}
-        />
-      )}
+      {ProjectProposalsPopup}
     </>
   );
 }
