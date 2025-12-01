@@ -140,6 +140,7 @@ export const CACHE_KEY = {
   walletConnectSession: "walletconnect-session",
   totalRequestingAssets: "total-requesting-assets",
   dvApplyPromptVisible: "dv-apply-prompt-visible",
+  polkadotVault: "polkadot-vault",
 };
 
 export const ADDRESS_CACHE_KEYS = [

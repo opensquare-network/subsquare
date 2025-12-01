@@ -1,0 +1,18 @@
+import { useWeb3WalletView } from "next-common/hooks/connect/useWeb3WalletView";
+import WalletOption from "./walletOption";
+
+export default function PolkadotVault({ wallet, selected }) {
+  const { setView } = useWeb3WalletView();
+
+  return (
+    <WalletOption
+      installed
+      selected={selected}
+      logo={<wallet.logo className={wallet.title} alt={wallet.title} />}
+      title={wallet.title}
+      onClick={() => {
+        setView("polkadot-vault");
+      }}
+    />
+  );
+}
