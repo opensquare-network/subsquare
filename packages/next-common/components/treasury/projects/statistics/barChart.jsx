@@ -3,6 +3,7 @@ import "../../../charts/globalConfig";
 import { useTheme } from "styled-components";
 import deepmerge from "deepmerge";
 import { formatNum } from "next-common/utils";
+import { useMemo } from "react";
 
 export function useOptions(userOptions) {
   const theme = useTheme();
@@ -28,7 +29,7 @@ export function useOptions(userOptions) {
             return `${item.label}`;
           },
           label: (item) => {
-            const percentage = item.dataset.percentage[item.datasetIndex];
+            const percentage = item.dataset.percentage[item.dataIndex];
             return `${formatNum(item.raw)} (${percentage})`;
           },
         },
@@ -69,8 +70,34 @@ export function useOptions(userOptions) {
   return deepmerge(options, userOptions);
 }
 
-export default function BarChart({ data, userOptions = {}, height = 184 }) {
-  const options = useOptions(userOptions);
+export default function BarChart({
+  data,
+  userOptions = {},
+  height = 184,
+  onClick,
+}) {
+  const baseOptions = useOptions(userOptions);
+
+  const options = useMemo(() => {
+    if (!onClick) {
+      return baseOptions;
+    }
+
+    return {
+      ...baseOptions,
+      onClick: (event, elements) => {
+        if (elements.length > 0) {
+          const element = elements[0];
+          const datasetIndex = element.datasetIndex;
+          const index = element.index;
+          const label = data?.labels?.[index];
+          const value = data?.datasets?.[datasetIndex]?.data?.[index];
+
+          onClick({ label, value, index, datasetIndex, element });
+        }
+      },
+    };
+  }, [baseOptions, onClick, data]);
 
   return (
     <div style={{ height }}>
