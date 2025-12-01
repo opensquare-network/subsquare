@@ -22,8 +22,7 @@ export default function useBarLeftPadding(type, data) {
       return undefined;
     }
 
-    ctx.font =
-      "500 12px Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif";
+    ctx.font = "500 12px Inter";
 
     let maxWidth = 0;
     const dataset = data?.datasets?.[0] || {};

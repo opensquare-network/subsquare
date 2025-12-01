@@ -88,11 +88,10 @@ export default function useProjectChartOptions({
                 }
               },
             },
-            font: () =>
-              options.plugins?.datalabels?.font || {
-                size: 12,
-                weight: 500,
-              },
+            font: () => ({
+              size: 12,
+              weight: 500,
+            }),
           },
         },
       };

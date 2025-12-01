@@ -32,8 +32,7 @@ export const labelUnderlinePlugin = {
     const y = element.y;
 
     ctx.save();
-    ctx.font =
-      "500 12px Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif";
+    ctx.font = "500 12px Inter";
     const textWidth = ctx.measureText(labelText).width;
 
     const padding = 8;
