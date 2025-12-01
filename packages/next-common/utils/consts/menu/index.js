@@ -12,6 +12,7 @@ import { getAmbassadorMenu } from "next-common/utils/consts/menu/ambassador";
 import { getCommunityCouncilMenu } from "./communityCouncil";
 import { CHAIN } from "next-common/utils/constants";
 import preImages from "./preImages";
+import scheduler from "./scheduler";
 import { partition } from "lodash-es";
 import { getCommunityTreasuryMenu } from "./communityTreasury";
 import getChainSettings from "../settings";
@@ -64,6 +65,7 @@ export function getHomeMenu({
     getAdvancedMenu(
       [
         modules?.preimages && preImages,
+        modules?.scheduler && scheduler,
         modules?.whitelist && whitelist,
         ...integrationsMenu,
         (modules?.proxy || modules?.vesting || hasMultisig) && Data,

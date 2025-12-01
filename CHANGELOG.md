@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+# 5.5.5
+
+Date:
+2025-12-01. [Code diff](https://github.com/opensquare-network/subsquare/compare/5a4fa25f78c92a22d1f0ff63ce400ad0464a22b3...41c860def6c6f57adcf821bc349248e08e82de26).
+
+- Add scheduler page to show scheduled calls.
+- Search:
+    - Support searching tips by tip title.
+    - Improve search loading so content which doesn't depend on RPC connection can show first.
+- Add treasury fund statistics for polkadot host clients including Gossamer and KAGOME.
+- Refactor and improve treasury fund projects page style.
+- Index all history multisig addresses and save their related info to the database. Then we query multisig info with
+  subsquare backend API, not from explorer API.
+- Preimage:
+    - Tech: support btreemap in preimage construction.
+    - Disable the remove button when unnecessary.
+- Bifrost: correct track selection in the treasury spend referenda template.
+- Move calendar under the advanced menu from the main menu.
+- Upgrade dependencies and improve style.
+
 # 5.5.4
 
 Date:
