@@ -4,22 +4,23 @@ import { useMemo, useState } from "react";
 import BarChart from "./barChart";
 import useChartData from "../hooks/useChartData";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
+import { colors } from "../const";
+import ProjectStatisticsSummary from "./summary";
 
 export default function HorizontalTabs({ categories = [] }) {
-  const [activeTabValue, setActiveTabValue] = useState(categories[0]?.value);
+  const [activeTabValue, setActiveTabValue] = useState(categories[0]?.category);
 
   const tabs = useMemo(
     () =>
       categories.map((category) => ({
-        key: category.value,
-        value: category.value,
+        value: category.category,
         label: category.label,
       })),
     [categories],
   );
 
   const activeCategory = useMemo(
-    () => categories.find((category) => category.value === activeTabValue),
+    () => categories.find((category) => category.category === activeTabValue),
     [categories, activeTabValue],
   );
 
@@ -46,17 +47,33 @@ export default function HorizontalTabs({ categories = [] }) {
 function HorizontalTabsContent({ data = {} }) {
   const chartData = useChartData(data);
 
+  const mergedData = useMemo(() => {
+    if (!chartData) {
+      return null;
+    }
+    return {
+      ...chartData,
+      datasets: [
+        {
+          ...chartData.datasets[0],
+          backgroundColor: colors[1],
+        },
+      ],
+    };
+  }, [chartData]);
+
   const height = useMemo(() => {
-    return data?.projects?.length * 10 + 80;
+    return data?.projects?.length * 8 + 60;
   }, [data]);
 
-  if (!chartData) {
+  if (!mergedData) {
     return null;
   }
 
   return (
     <SecondaryCard>
-      <BarChart data={chartData} height={height} />
+      <ProjectStatisticsSummary totalFiat={data?.totalFiat} />
+      <BarChart data={mergedData} height={height} />
     </SecondaryCard>
   );
 }

@@ -2,6 +2,7 @@ import { Bar } from "react-chartjs-2";
 import "../../../charts/globalConfig";
 import { useTheme } from "styled-components";
 import deepmerge from "deepmerge";
+import { formatNum } from "next-common/utils";
 
 export function useOptions(userOptions) {
   const theme = useTheme();
@@ -20,9 +21,17 @@ export function useOptions(userOptions) {
         display: false,
       },
       tooltip: {
-        position: "average",
         displayColors: false,
-        xAlign: "left",
+        callbacks: {
+          title: (items) => {
+            const item = items[0];
+            return `${item.label}`;
+          },
+          label: (item) => {
+            const percentage = item.dataset.percentage[item.datasetIndex];
+            return `${formatNum(item.raw)} (${percentage})`;
+          },
+        },
       },
     },
     scales: {

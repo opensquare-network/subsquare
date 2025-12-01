@@ -3,6 +3,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import Outlabels from "@energiency/chartjs-plugin-piechart-outlabels";
 import { useThemeSetting } from "next-common/context/theme";
 import { useMemo } from "react";
+import "../../../charts/globalConfig";
 import { DOUGHNUT_CONFIG_BY_CATEGORY } from "../const";
 
 ChartJS.register(ArcElement, Tooltip, Legend, Outlabels);
@@ -23,6 +24,9 @@ export default function ProjectDoughnutChart({ data }) {
         },
         tooltip: {
           enabled: false,
+        },
+        annotation: {
+          display: false,
         },
         outlabels: {
           text: (context) => {
