@@ -14,6 +14,7 @@ export const CATEGORY_VALUES = {
   EXPLORER: "explorer",
   GOVERNANCE_PLATFORM: "governance_platform",
   POLKADOT_CLIENT: "polkadot_client",
+  MARKETING: "marketing",
 };
 
 export const DOUGHNUT_CONFIG_BY_CATEGORY = {
@@ -35,10 +36,19 @@ export const DOUGHNUT_CONFIG_BY_CATEGORY = {
   },
 };
 
-export const LABELS = {
+export const GRID_LABELS = {
   [CATEGORY_VALUES.WALLET]: "Wallets",
   [CATEGORY_VALUES.MULTISIG_TOOLS]: "Multisig Tools",
   [CATEGORY_VALUES.EXPLORER]: "Explorers",
   [CATEGORY_VALUES.GOVERNANCE_PLATFORM]: "Governance Platforms",
   [CATEGORY_VALUES.POLKADOT_CLIENT]: "Polkadot Clients",
+};
+
+export const HORIZONTAL_LABELS = {
+  [CATEGORY_VALUES.MARKETING]: "Marketing",
+};
+
+export const LABELS = {
+  ...GRID_LABELS,
+  ...HORIZONTAL_LABELS,
 };
