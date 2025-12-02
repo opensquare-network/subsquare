@@ -49,7 +49,7 @@ function AccountNominationImpl() {
               Nominator Status
             </div>
             <div className="text14Medium text-textPrimary">
-              <LoadableContent loading={loading} size={14}>
+              <LoadableContent isLoading={loading} size={14}>
                 {message}
               </LoadableContent>
             </div>
