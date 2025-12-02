@@ -55,10 +55,6 @@ export default function useSubStorage(
     () => async () => {
       if (subs[key]) {
         subs[key].count++;
-        if (subs[key].delayCleanup) {
-          clearTimeout(subs[key].delayCleanup);
-          subs[key].delayCleanup = null;
-        }
         return;
       }
 
@@ -102,6 +98,7 @@ export default function useSubStorage(
       if (subs[key]) {
         subs[key].count--;
         subs[key].delayCleanup = setTimeout(() => {
+          subs[key].delayCleanup = null;
           if (subs[key].count === 0) {
             subs[key].unsub?.();
             delete subs[key];
