@@ -62,22 +62,18 @@ export default function createGlobalCachedFetch() {
         ref = refs[key];
       } else {
         ref.count++;
-        if (ref.cleanupTimeout) {
-          clearTimeout(ref.cleanupTimeout);
-          ref.cleanupTimeout = undefined;
-        }
       }
 
       return () => {
-        const ref = refs[key];
-        if (!ref) {
-          return;
-        }
-        ref.count--;
-        if (ref.count > 0) {
-          return;
-        }
-        ref.cleanupTimeout = setTimeout(() => {
+        setTimeout(() => {
+          const ref = refs[key];
+          if (!ref) {
+            return;
+          }
+          ref.count--;
+          if (ref.count > 0) {
+            return;
+          }
           delete refs[key];
           cleanup();
         }, 1000);

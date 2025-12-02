@@ -23,9 +23,7 @@ export function useValidatorsWithStatus(validators) {
         waiting.push(validator);
         return;
       }
-      if (
-        !(stakerInfo.othersStakers ?? []).find((o) => o.who === realAddress)
-      ) {
+      if (!(stakerInfo.otherStakers ?? []).find((o) => o.who === realAddress)) {
         inactive.push(validator);
         return;
       }

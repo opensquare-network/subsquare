@@ -9,6 +9,7 @@ import LoadableContent from "next-common/components/common/loadableContent";
 import { useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import NominatorQuickActions from "./quickActions";
+import { StopNominationButton } from "./stopNominationButton";
 
 const StartNominatingPopup = dynamicPopup(() =>
   import(
@@ -50,13 +51,14 @@ function AccountNominationImpl() {
               Nominator Status
             </div>
             <div className="text14Medium text-textPrimary">
-              <LoadableContent loading={loading} size={14}>
+              <LoadableContent isLoading={loading} size={14}>
                 {message}
               </LoadableContent>
             </div>
           </div>
           <div className="flex gap-[16px] items-center">
             <NominatorQuickActions />
+            <StopNominationButton />
           </div>
         </div>
       </div>

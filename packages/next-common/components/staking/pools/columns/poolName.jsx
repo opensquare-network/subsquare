@@ -1,5 +1,5 @@
 import { cn } from "next-common/utils";
-import { usePoolMetadata } from "../hooks/usePoolMetadata";
+import { usePoolMetadata } from "next-common/hooks/staking/usePoolMetadata";
 import LoadableContent from "next-common/components/common/loadableContent";
 
 export default function PoolNameColumn({ poolId, className }) {
