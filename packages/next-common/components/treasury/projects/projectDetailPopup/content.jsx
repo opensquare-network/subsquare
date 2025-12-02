@@ -13,6 +13,7 @@ export default function ProjectContent({ project }) {
     proposals: proposalList,
     spends: spendList,
     childBounties: childBountyList,
+    tips: tipList,
   } = project;
   const {
     tabs,
@@ -22,7 +23,9 @@ export default function ProjectContent({ project }) {
     spendsLoading,
     childBounties,
     childBountiesLoading,
-  } = usePopupDetailTabs({ proposalList, spendList, childBountyList });
+    tips,
+    tipsLoading,
+  } = usePopupDetailTabs({ proposalList, spendList, childBountyList, tipList });
 
   return (
     <>
@@ -30,13 +33,16 @@ export default function ProjectContent({ project }) {
         project={project}
         spends={spends}
         proposals={proposals}
+        tips={tips}
         proposalsLoading={proposalsLoading}
         spendsLoading={spendsLoading}
+        tipsLoading={tipsLoading}
         childBounties={childBounties}
         childBountiesLoading={childBountiesLoading}
         spendList={spendList}
         proposalList={proposalList}
         childBountyList={childBountyList}
+        tipList={tipList}
       />
       <ProjectTabsList tabs={tabs} />
     </>
@@ -75,6 +81,9 @@ function ProjectSummary({
   spendList,
   proposalList,
   childBountyList,
+  tips,
+  tipsLoading,
+  tipList,
 }) {
   const proposalsTotal = useMemo(() => calcTotal(proposals), [proposals]);
   const spendsTotal = useMemo(() => calcTotal(spends), [spends]);
@@ -82,6 +91,7 @@ function ProjectSummary({
     () => calcTotal(childBounties),
     [childBounties],
   );
+  const tipsTotal = useMemo(() => calcTotal(tips), [tips]);
 
   const summaryItems = [
     {
@@ -103,6 +113,11 @@ function ProjectSummary({
       title: "Child Bounties",
       value: childBountiesTotal,
       loading: childBountiesLoading,
+    },
+    tipList?.length > 0 && {
+      title: "Tips",
+      value: tipsTotal,
+      loading: tipsLoading,
     },
   ].filter(Boolean);
 
