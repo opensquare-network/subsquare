@@ -1,10 +1,12 @@
 import BigNumber from "bignumber.js";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import EstimatedGas from "next-common/components/estimatedGas";
 import BalanceField from "next-common/components/popup/fields/balanceField";
 import Signer from "next-common/components/popup/fields/signerField";
 import TextInputField from "next-common/components/popup/fields/textInputField";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import { useContextApi } from "next-common/context/api";
 import { useChainSettings } from "next-common/context/chain";
 import { useMyStakingLedger } from "next-common/context/staking/myStakingLedger";
@@ -43,6 +45,9 @@ function StopNominatingPopupContent() {
         isLoading={loading}
         text={`Stop Nominating ${nominators?.targets.length || 0} Validators`}
       />
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getTxFunc} />
+      </AdvanceSettings>
       <div className="flex justify-end">
         <TxSubmissionButton disabled={loading} getTxFunc={getTxFunc} />
       </div>
