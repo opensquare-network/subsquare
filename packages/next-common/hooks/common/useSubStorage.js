@@ -95,18 +95,25 @@ export default function useSubStorage(
     subscribe();
 
     return () => {
-      if (subs[key]) {
-        subs[key].count--;
-        subs[key].delayCleanup = setTimeout(() => {
-          subs[key].delayCleanup = null;
-          if (subs[key].count === 0) {
-            subs[key].unsub?.();
-            delete subs[key];
-
-            cleanup();
-          }
-        }, 0);
+      if (!subs[key]) {
+        return;
       }
+      subs[key].count--;
+      if (subs[key].delayCleanup) {
+        return;
+      }
+      subs[key].delayCleanup = setTimeout(() => {
+        if (!subs[key]) {
+          return;
+        }
+        subs[key].delayCleanup = null;
+        if (subs[key].count === 0) {
+          subs[key].unsub?.();
+          delete subs[key];
+
+          cleanup();
+        }
+      }, 0);
     };
   }, [api, key, subscribe, pallet, storage, cleanup]);
 
