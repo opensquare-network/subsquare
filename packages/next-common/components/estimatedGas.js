@@ -21,7 +21,8 @@ export default function EstimatedGas({ getTxFunc }) {
     if (typeof getTxFunc !== "function") {
       return;
     }
-    (async () => await getTxFunc())()
+    Promise.resolve()
+      .then(getTxFunc)
       .then(setTx)
       .catch(() => setTx(null));
   }, [getTxFunc]);
