@@ -3,7 +3,7 @@ import Popup from "next-common/components/popup/wrapper/Popup";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 import Signer from "next-common/components/popup/fields/signerField";
 import { useContextApi } from "next-common/context/api";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useTxBuilder } from "next-common/hooks/useTxBuilder";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
@@ -164,6 +164,28 @@ function PayeePopupContent() {
     }
   }, [destination, customAddress, isLoading]);
 
+  const isUnchanged = useMemo(() => {
+    if (isLoading) {
+      return true;
+    }
+
+    if (payoutDestination !== destination) {
+      return false;
+    }
+
+    if (payoutDestination === PAYOUT_DESTINATION.ANOTHER_ACCOUNT) {
+      return customPayoutAddress === customAddress;
+    }
+
+    return true;
+  }, [
+    isLoading,
+    payoutDestination,
+    destination,
+    customPayoutAddress,
+    customAddress,
+  ]);
+
   const { getTxFuncForSubmit, getTxFuncForFee } = useTxBuilder(
     (toastError) => {
       if (!api?.tx?.staking) {
@@ -219,7 +241,7 @@ function PayeePopupContent() {
         <SecondaryButton onClick={onClose}>Cancel</SecondaryButton>
         <TxSubmissionButton
           getTxFunc={getTxFuncForSubmit}
-          disabled={isLoading}
+          disabled={isLoading || isUnchanged}
         />
       </div>
     </div>
