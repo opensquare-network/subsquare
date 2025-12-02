@@ -8,6 +8,8 @@ export const colors = [
   "#2196F399",
 ];
 
+export const FIXED_LABEL_WIDTH = 140;
+
 export const CATEGORY_VALUES = {
   WALLET: "wallet",
   MULTISIG_TOOLS: "multisig_tools",
