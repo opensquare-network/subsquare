@@ -1,5 +1,6 @@
 import { useContextApi } from "next-common/context/api";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect } from "react";
+import useDeepMemo from "../useDeepMemo";
 import { createGlobalState } from "react-use";
 import { useChain } from "next-common/context/chain";
 import { isNil } from "lodash-es";
@@ -43,21 +44,15 @@ export default function useSubStorage(
   const { callback, api = contextApi } = options;
   const chain = useChain();
 
-  const filteredParams = (Array.isArray(params) ? params : [params]).filter(
-    (param) => !isNil(param),
-  );
-  const key = useMemo(() => {
-    return `${chain}-${pallet}-${storage}-${filteredParams
-      .map((param) =>
-        typeof param === "string" ? param : JSON.stringify(param),
-      )
-      .join("-")}`;
-  }, [chain, pallet, storage, filteredParams]);
+  const normalizedParams = Array.isArray(params) ? params : [params];
+  const key = `${chain}-${pallet}-${storage}-${JSON.stringify(
+    normalizedParams,
+  )}`;
 
   const { loading, result, setResult, cleanup } = useCachedResult(key);
 
-  const subscribe = useCallback(
-    async () => {
+  const subscribe = useDeepMemo(
+    () => async () => {
       if (subs[key]) {
         subs[key].count++;
         return;
@@ -76,14 +71,14 @@ export default function useSubStorage(
 
       try {
         subs[key].unsub = await queryStorage(
-          ...filteredParams,
+          ...normalizedParams,
           (subscribeResult) => setResult(subscribeResult),
         );
       } catch (e) {
         setResult();
       }
     }, // eslint-disable-next-line react-hooks/exhaustive-deps
-    [api, pallet, storage, key, setResult, ...filteredParams],
+    [api, pallet, storage, key, setResult, ...normalizedParams],
   );
 
   useEffect(() => {

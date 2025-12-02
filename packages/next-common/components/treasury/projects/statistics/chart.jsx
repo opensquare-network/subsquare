@@ -1,58 +1,16 @@
-import { useMemo } from "react";
-import { colors } from "../const";
-import BigNumber from "bignumber.js";
 import ProjectDoughnutChart from "./doughnutChart";
 import ProjectIndicators from "./projectIndicators";
 import ProjectSummary from "./summary";
-import { useThemeSetting } from "next-common/context/theme";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
+import useChartData from "../hooks/useChartData";
 
 export default function ProjectStatisticsChart({
   projects,
   totalFiat,
   category,
 }) {
-  const { neutral100 } = useThemeSetting();
   const isMobile = useIsMobile();
-
-  const data = useMemo(() => {
-    if (!projects?.length) {
-      return null;
-    }
-    const projectColors = projects.map(
-      (_, index) => colors[index % colors.length],
-    );
-    const projectNames = projects.map((project) => project.name);
-    const projectFiatAtFinals = projects.map((project) => project.fiatAtFinal);
-    const projectPercentages = projects.map(
-      (project) =>
-        BigNumber(project.fiatAtFinal)
-          .dividedBy(totalFiat)
-          .multipliedBy(100)
-          .toFixed(2) + "%",
-    );
-
-    return {
-      category,
-      labels: projectNames,
-      datasets: [
-        {
-          label: "Projects",
-          data: projectFiatAtFinals,
-          name: projectNames,
-          backgroundColor: projectColors,
-          borderColor: neutral100,
-          borderWidth: 3,
-          hoverBorderColor: neutral100,
-          hoverBorderWidth: 3,
-          borderRadius: 5,
-          spacing: 0,
-          percentage: projectPercentages,
-        },
-      ],
-    };
-  }, [projects, totalFiat, neutral100, category]);
-
+  const data = useChartData({ projects, totalFiat, category });
   if (isMobile) {
     return (
       <ProjectStatisticsChartMobile

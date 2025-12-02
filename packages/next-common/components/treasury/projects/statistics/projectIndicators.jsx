@@ -1,27 +1,9 @@
-import { useState, useCallback } from "react";
 import { formatNum } from "next-common/utils";
-import dynamicPopup from "next-common/lib/dynamic/popup";
-
-const ProjectProposalsPopup = dynamicPopup(() =>
-  import("../projectDetailPopup"),
-);
+import useProjectChartInteraction from "../hooks/useProjectChartInteraction";
 
 export default function ProjectIndicators({ data, projects = [] }) {
-  const [showProjectProposalsPopup, setShowProjectProposalsPopup] =
-    useState(false);
-  const [selectedProject, setSelectedProject] = useState(null);
-
-  const handleProjectClick = useCallback(
-    (label) => {
-      const project = projects.find((p) => p.name === label);
-      if (!project) {
-        return;
-      }
-      setSelectedProject(project);
-      setShowProjectProposalsPopup(true);
-    },
-    [projects],
-  );
+  const { handleProjectClick, ProjectProposalsPopup } =
+    useProjectChartInteraction(projects);
 
   if (!data) {
     return null;
@@ -51,12 +33,7 @@ export default function ProjectIndicators({ data, projects = [] }) {
           </div>
         </div>
       ))}
-      {showProjectProposalsPopup && (
-        <ProjectProposalsPopup
-          onClose={() => setShowProjectProposalsPopup(false)}
-          selectedProject={selectedProject}
-        />
-      )}
+      {ProjectProposalsPopup}
     </div>
   );
 }
