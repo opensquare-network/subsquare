@@ -103,7 +103,7 @@ export default function useSubStorage(
         return;
       }
       subs[key].delayCleanup = setTimeout(() => {
-        if (!subs[key]) {
+        if (!subs[key] || !subs[key].delayCleanup) {
           return;
         }
         subs[key].delayCleanup = null;
