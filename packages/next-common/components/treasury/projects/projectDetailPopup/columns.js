@@ -4,6 +4,7 @@ import { PostTitleImpl } from "next-common/components/profile/votingHistory/comm
 import BigNumber from "bignumber.js";
 import { isNil } from "lodash-es";
 import Tooltip from "next-common/components/tooltip";
+import Link from "next/link";
 
 function createTitleColumnDef({ baseUrl, getIndex, getTitle }) {
   return {
@@ -44,6 +45,14 @@ const ChildBountyTitleColumnsDef = createTitleColumnDef({
   getTitle: (childBounty) => childBounty.title,
 });
 
+const TipTitleColumnsDef = {
+  name: "Title",
+  style: { textAlign: "left" },
+  render: (item) => {
+    return <Link href={`/treasury/tips/${item.hash}`}>{item.title}</Link>;
+  },
+};
+
 const RequestColumnsDef = {
   name: "Request",
   style: { textAlign: "right", width: "100px" },
@@ -58,6 +67,8 @@ export const childBountyColumnsDef = [
   ChildBountyTitleColumnsDef,
   RequestColumnsDef,
 ];
+
+export const tipColumnsDef = [TipTitleColumnsDef, RequestColumnsDef];
 
 function RequestCol({ proposal }) {
   const proportion = proposal.proportion < 1 ? proposal.proportion * 100 : null;
