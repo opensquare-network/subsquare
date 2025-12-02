@@ -181,11 +181,14 @@ function normalizeItemsWithPrice(items, itemList, getItemId) {
   );
   return items.map((item) => {
     const proportion = proportionMap.get(getItemId(item)) ?? 1;
-    const { submission: submissionPrice, final: finalPrice } =
-      item.onchainData?.price ?? {};
+    const {
+      submission: submissionPrice,
+      final: finalPrice,
+      current: currentPrice,
+    } = item.onchainData?.price ?? {};
     const value = BigNumber(item.dValue);
     const fiatAtSubmission = value.times(submissionPrice).toFixed(2);
-    const fiatAtFinal = value.times(finalPrice).toFixed(2);
+    const fiatAtFinal = value.times(finalPrice ?? currentPrice).toFixed(2);
 
     return {
       ...item,
@@ -251,7 +254,11 @@ function useFormatIndexes({
 function getSpendAmount(spend) {
   const { decimals } = getChainSettings(CHAIN);
   const { assetKind, amount } = spend?.extracted ?? {};
-  const { submission: submissionPrice, final: finalPrice } = spend?.price ?? {};
+  const {
+    submission: submissionPrice,
+    final: finalPrice,
+    current: currentPrice,
+  } = spend?.price ?? {};
 
   let fiatAtSubmission = BigNumber(0);
   let fiatAtFinal = BigNumber(0);
@@ -262,7 +269,7 @@ function getSpendAmount(spend) {
       .times(submissionPrice)
       .dividedBy(nativeAccuracy);
     fiatAtFinal = BigNumber(toPrecision(amount, decimals))
-      .times(finalPrice)
+      .times(finalPrice ?? currentPrice)
       .dividedBy(nativeAccuracy);
   } else if (SYMBOL_DECIMALS[assetKind?.symbol]) {
     const amountInFiat = BigNumber(
