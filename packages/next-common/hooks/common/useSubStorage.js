@@ -95,18 +95,11 @@ export default function useSubStorage(
     subscribe();
 
     return () => {
-      if (!subs[key]) {
-        return;
-      }
-      subs[key].count--;
-      if (subs[key].delayCleanup) {
-        return;
-      }
-      subs[key].delayCleanup = setTimeout(() => {
-        if (!subs[key] || !subs[key].delayCleanup) {
+      setTimeout(() => {
+        if (!subs[key]) {
           return;
         }
-        subs[key].delayCleanup = null;
+        subs[key].count--;
         if (subs[key].count === 0) {
           subs[key].unsub?.();
           delete subs[key];
