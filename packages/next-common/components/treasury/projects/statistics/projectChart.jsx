@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { Bar, Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import Outlabels from "@energiency/chartjs-plugin-piechart-outlabels";
@@ -18,29 +18,8 @@ export const PROJECT_CHART_TYPES = {
   DOUGHNUT: "doughnut",
 };
 
-function useProjectChartMeta(type, height) {
-  const Component = useMemo(() => {
-    if (type === PROJECT_CHART_TYPES.BAR) {
-      return Bar;
-    }
-    return Doughnut;
-  }, [type]);
-
-  const defaultStyle =
-    type === PROJECT_CHART_TYPES.DOUGHNUT
-      ? { width: 190, height: 110 }
-      : { height: height || 184 };
-
-  return {
-    Component,
-    defaultStyle,
-  };
-}
-
-export default function ProjectChart({
-  type = PROJECT_CHART_TYPES.DOUGHNUT,
+function ProjectBarChart({
   data,
-  category,
   userOptions = {},
   height,
   onClick = noop,
@@ -48,16 +27,8 @@ export default function ProjectChart({
 }) {
   const chartRef = useRef(null);
   const [labelPositions, setLabelPositions] = useState([]);
-
   const barOptions = useProjectBarChartOptions(userOptions);
-  const doughnutOptions = useProjectDoughnutChartOptions(category, userOptions);
-  const options =
-    type === PROJECT_CHART_TYPES.BAR ? barOptions : doughnutOptions;
-
-  const { Component, plugins, defaultStyle } = useProjectChartMeta(
-    type,
-    height,
-  );
+  const defaultStyle = { height: height || 184 };
 
   const handleLabelClick = useCallback(
     (position) => {
@@ -74,10 +45,6 @@ export default function ProjectChart({
   );
 
   useEffect(() => {
-    if (type !== PROJECT_CHART_TYPES.BAR) {
-      return;
-    }
-
     const calculatePositions = () => {
       const chart = chartRef.current;
       if (!chart) {
@@ -121,9 +88,9 @@ export default function ProjectChart({
         resizeObserver.disconnect();
       }
     };
-  }, [type, data]);
+  }, [data]);
 
-  if (!Component || !data) {
+  if (!data) {
     return null;
   }
 
@@ -135,18 +102,62 @@ export default function ProjectChart({
       <div style={{ width: FIXED_LABEL_WIDTH }}>
         <BarLabels
           labels={labelPositions}
-          type={type}
+          type={PROJECT_CHART_TYPES.BAR}
           onClick={handleLabelClick}
         />
       </div>
       <div className="flex-1">
-        <Component
-          ref={chartRef}
-          data={data}
-          options={options}
-          plugins={plugins}
-        />
+        <Bar ref={chartRef} data={data} options={barOptions} />
       </div>
     </div>
+  );
+}
+
+function ProjectDoughnutChart({ data, category, userOptions = {}, style }) {
+  const doughnutOptions = useProjectDoughnutChartOptions(category, userOptions);
+  const defaultStyle = { width: 190, height: 110 };
+
+  if (!data) {
+    return null;
+  }
+
+  return (
+    <div
+      className="relative flex gap-x-2"
+      style={{ ...defaultStyle, ...style }}
+    >
+      <Doughnut data={data} options={doughnutOptions} />
+    </div>
+  );
+}
+
+export default function ProjectChart({
+  type = PROJECT_CHART_TYPES.DOUGHNUT,
+  data,
+  category,
+  userOptions = {},
+  height,
+  onClick = noop,
+  style,
+}) {
+  if (type === PROJECT_CHART_TYPES.BAR) {
+    return (
+      <ProjectBarChart
+        data={data}
+        userOptions={userOptions}
+        height={height}
+        onClick={onClick}
+        style={style}
+      />
+    );
+  }
+
+  return (
+    <ProjectDoughnutChart
+      data={data}
+      category={category}
+      userOptions={userOptions}
+      style={style}
+    />
   );
 }
