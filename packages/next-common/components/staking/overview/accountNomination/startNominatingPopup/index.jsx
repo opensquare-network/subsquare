@@ -15,6 +15,8 @@ import BigNumber from "bignumber.js";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
 import { useChainSettings } from "next-common/context/chain";
 import ErrorMessage from "next-common/components/styled/errorMessage";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 const payoutDestinationOptions = [
   { label: "Compound", value: "compound" },
@@ -132,19 +134,24 @@ function StartNominatingPopupContent() {
           value={payoutDestination}
           setValue={setPayoutDestination}
         />
-        <AddressCombo
-          key={payoutDestination}
-          className={cn(!isCustomPayout && "!bg-neutral200 !border-0")}
-          accounts={extensionAccounts}
-          address={payoutAddress}
-          setAddress={setCustomPayoutAddress}
-          readOnly={!isCustomPayout}
-          placeholder="Enter payout address"
-        />
+        {payoutDestination !== "compound" && (
+          <AddressCombo
+            key={payoutDestination}
+            className={cn(!isCustomPayout && "!bg-neutral200 !border-0")}
+            accounts={extensionAccounts}
+            address={payoutAddress}
+            setAddress={setCustomPayoutAddress}
+            readOnly={!isCustomPayout}
+            placeholder="Enter payout address"
+          />
+        )}
       </div>
       <NominationField nominees={nominees} setNominees={setNominees} />
       <BondField bondAmount={bondAmount} setBondAmount={setBondAmount} />
       {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getTxFunc} />
+      </AdvanceSettings>
       <div className="flex justify-end">
         <TxSubmissionButton disabled={!canSubmit} getTxFunc={getTxFunc} />
       </div>
