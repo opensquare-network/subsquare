@@ -14,49 +14,110 @@ import AddressCombo from "next-common/components/addressCombo";
 import { useExtensionAccounts } from "next-common/components/popupWithSigner/context";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
-const payoutDestinationOptions = [
-  { label: "Compound", value: "compound" },
-  { label: "To your account", value: "this_account" },
-  { label: "To another account", value: "another_account" },
-  { label: "None", value: "none" },
+const PAYOUT_DESTINATION = {
+  COMPOUND: "compound",
+  THIS_ACCOUNT: "this_account",
+  ANOTHER_ACCOUNT: "another_account",
+  NONE: "none",
+};
+
+const PAYEE_TYPE = {
+  NONE: "none",
+  STAKED: "staked",
+  STASH: "stash",
+  ACCOUNT: "account",
+};
+
+function createPayoutOptionLabel(title, description) {
+  return (
+    <div className="flex flex-col overflow-hidden">
+      <div className="text14Medium text-textPrimary whitespace-nowrap">
+        {title}
+      </div>
+      <div className="text12Medium text-textTertiary whitespace-nowrap">
+        {description}
+      </div>
+    </div>
+  );
+}
+
+const PAYOUT_DESTINATION_OPTIONS = [
+  {
+    label: createPayoutOptionLabel(
+      "Compound",
+      "Add payouts to your existing staked balance automatically.",
+    ),
+    value: PAYOUT_DESTINATION.COMPOUND,
+  },
+  {
+    label: createPayoutOptionLabel(
+      "To your account",
+      "Payouts are sent to your account as free balance.",
+    ),
+    value: PAYOUT_DESTINATION.THIS_ACCOUNT,
+  },
+  {
+    label: createPayoutOptionLabel(
+      "To another account",
+      "Send payouts to another account as free balance.",
+    ),
+    value: PAYOUT_DESTINATION.ANOTHER_ACCOUNT,
+  },
+  {
+    label: createPayoutOptionLabel("None", "Have no payout destination set."),
+    value: PAYOUT_DESTINATION.NONE,
+  },
 ];
 
 function parsePayeeData(payeeData, currentAddress) {
-  if ("none" in payeeData) {
-    return { destination: "none" };
+  if (PAYEE_TYPE.NONE in payeeData) {
+    return { destination: PAYOUT_DESTINATION.NONE };
   }
 
-  if ("staked" in payeeData) {
-    return { destination: "compound" };
+  if (PAYEE_TYPE.STAKED in payeeData) {
+    return { destination: PAYOUT_DESTINATION.COMPOUND };
   }
 
-  if ("stash" in payeeData) {
-    return { destination: "this_account" };
+  if (PAYEE_TYPE.STASH in payeeData) {
+    return { destination: PAYOUT_DESTINATION.THIS_ACCOUNT };
   }
 
-  if ("account" in payeeData) {
+  if (PAYEE_TYPE.ACCOUNT in payeeData) {
     const accountAddress = payeeData.account;
     const isCurrentAccount = accountAddress === currentAddress;
 
     return {
-      destination: isCurrentAccount ? "this_account" : "another_account",
+      destination: isCurrentAccount
+        ? PAYOUT_DESTINATION.THIS_ACCOUNT
+        : PAYOUT_DESTINATION.ANOTHER_ACCOUNT,
       customAddress: isCurrentAccount ? null : accountAddress,
     };
   }
 
-  return { destination: "compound" };
+  return { destination: PAYOUT_DESTINATION.COMPOUND };
+}
+
+function buildPayeeParam(destination, realAddress, customAddress) {
+  const payeeMap = {
+    [PAYOUT_DESTINATION.NONE]: "None",
+    [PAYOUT_DESTINATION.COMPOUND]: { Staked: null },
+    [PAYOUT_DESTINATION.THIS_ACCOUNT]: { Account: realAddress },
+    [PAYOUT_DESTINATION.ANOTHER_ACCOUNT]: { Account: customAddress },
+  };
+
+  return payeeMap[destination];
 }
 
 function useCurrentPayee(address) {
   const api = useContextApi();
   const [payeeInfo, setPayeeInfo] = useState({
-    destination: "compound",
+    destination: PAYOUT_DESTINATION.COMPOUND,
     customAddress: null,
     isLoading: true,
   });
 
   useEffect(() => {
-    if (!api || !api.query.staking || !address) {
+    if (!api?.query?.staking || !address) {
       return;
     }
 
@@ -105,25 +166,25 @@ function PayeePopupContent() {
 
   const { getTxFuncForSubmit, getTxFuncForFee } = useTxBuilder(
     (toastError) => {
-      if (!api || !api.tx.staking) {
+      if (!api?.tx?.staking) {
         return;
       }
 
-      if (payoutDestination === "another_account" && !customPayoutAddress) {
+      if (
+        payoutDestination === PAYOUT_DESTINATION.ANOTHER_ACCOUNT &&
+        !customPayoutAddress
+      ) {
         toastError("Please enter payout address.");
         return;
       }
 
-      let payee;
-      if (payoutDestination === "none") {
-        payee = "None";
-      } else if (payoutDestination === "compound") {
-        payee = { Staked: null };
-      } else if (payoutDestination === "this_account") {
-        payee = { Account: realAddress };
-      } else if (payoutDestination === "another_account") {
-        payee = { Account: customPayoutAddress };
-      } else {
+      const payee = buildPayeeParam(
+        payoutDestination,
+        realAddress,
+        customPayoutAddress,
+      );
+
+      if (!payee) {
         toastError("Invalid payout destination.");
         return;
       }
@@ -137,12 +198,13 @@ function PayeePopupContent() {
     <div className="space-y-4">
       <Signer noSwitchSigner />
       <CommonSelectField
-        title="Payout Destination"
-        options={payoutDestinationOptions}
+        title="Destination"
+        options={PAYOUT_DESTINATION_OPTIONS}
         value={payoutDestination}
         setValue={setPayoutDestination}
+        itemHeight={56}
       />
-      {payoutDestination === "another_account" && (
+      {payoutDestination === PAYOUT_DESTINATION.ANOTHER_ACCOUNT && (
         <AddressCombo
           key={payoutDestination}
           accounts={extensionAccounts}
