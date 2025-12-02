@@ -95,16 +95,18 @@ export default function useSubStorage(
     subscribe();
 
     return () => {
-      if (subs[key]) {
+      setTimeout(() => {
+        if (!subs[key]) {
+          return;
+        }
         subs[key].count--;
-
         if (subs[key].count === 0) {
           subs[key].unsub?.();
           delete subs[key];
 
           cleanup();
         }
-      }
+      }, 0);
     };
   }, [api, key, subscribe, pallet, storage, cleanup]);
 
