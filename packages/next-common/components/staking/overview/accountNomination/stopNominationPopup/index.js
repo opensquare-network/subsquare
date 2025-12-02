@@ -6,6 +6,7 @@ import Signer from "next-common/components/popup/fields/signerField";
 import TextInputField from "next-common/components/popup/fields/textInputField";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
+import { InfoMessage } from "next-common/components/setting/styled";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import { useContextApi } from "next-common/context/api";
 import { useChainSettings } from "next-common/context/chain";
@@ -45,6 +46,9 @@ function StopNominatingPopupContent() {
         isLoading={loading}
         text={`Stop Nominating ${nominators?.targets.length || 0} Validators`}
       />
+      <InfoMessage>
+        Once unbonding, your funds will become available after 28 days.
+      </InfoMessage>
       <AdvanceSettings>
         <EstimatedGas getTxFunc={getTxFunc} />
       </AdvanceSettings>
