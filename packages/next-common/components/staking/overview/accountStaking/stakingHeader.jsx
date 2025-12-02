@@ -10,13 +10,13 @@ import { UnBondButton } from "./unbondButton";
 
 function PoolAccount({ poolId }) {
   const { stash, reward } = usePoolAccounts(poolId);
-  const { metadata } = usePoolMetadata(poolId);
+  const { name } = usePoolMetadata(poolId);
 
   return (
     <div className="flex gap-[12px]">
       <Avatar address={stash} size={40} />
       <div className="flex flex-col">
-        <span>{metadata}</span>
+        <span>{name}</span>
         <div className="flex gap-2 ">
           <AddressUser
             showAvatar={false}

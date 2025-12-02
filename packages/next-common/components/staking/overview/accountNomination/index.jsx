@@ -8,6 +8,7 @@ import { cn } from "next-common/utils";
 import LoadableContent from "next-common/components/common/loadableContent";
 import { useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import { StopNominationButton } from "./stopNominationButton";
 
 const StartNominatingPopup = dynamicPopup(() =>
   import(
@@ -54,7 +55,9 @@ function AccountNominationImpl() {
               </LoadableContent>
             </div>
           </div>
-          <div className="flex gap-[16px] items-center"></div>
+          <div className="flex gap-[16px] items-center">
+            <StopNominationButton />
+          </div>
         </div>
       </div>
     </NeutralPanel>
