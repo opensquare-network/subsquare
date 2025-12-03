@@ -1,7 +1,6 @@
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
-import Signer from "next-common/components/popup/fields/signerField";
 import { useContextApi } from "next-common/context/api";
 import { useChainSettings } from "next-common/context/chain";
 import { useState } from "react";

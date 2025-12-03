@@ -2,11 +2,11 @@ import Tooltip from "next-common/components/tooltip";
 import { IconButton } from "next-common/components/styled/iconButton";
 import { TrackPromotion } from "@osn/icons/subsquare";
 import { useState } from "react";
-// import dynamicPopup from "next-common/lib/dynamic/popup";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-// const ClaimPayoutPopup = dynamicPopup(() =>
-//   import("next-common/components/staking/pools/actions/claimPayoutPopup"),
-// );
+const ClaimPayoutPopup = dynamicPopup(() =>
+  import("./claimPopup"),
+);
 
 export default function ClaimButton() {
   const [showPopup, setShowPopup] = useState(false);
@@ -22,11 +22,7 @@ export default function ClaimButton() {
         </IconButton>
       </Tooltip>
 
-      {showPopup && (
-        <>
-          {/* <ClaimPayoutPopup onClose={() => setShowPopup(false)} /> */}
-        </>
-      )}
+      {showPopup && <ClaimPayoutPopup onClose={() => setShowPopup(false)} />}
     </>
   );
 }
