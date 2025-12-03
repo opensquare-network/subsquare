@@ -75,7 +75,7 @@ function StakingBalance() {
           className="w-[300px]"
           labelItem={
             <AccountBalanceItem
-              title="In staking"
+              title="In nominating"
               value={total?.toString() || 0}
               isLoading={loading}
             />

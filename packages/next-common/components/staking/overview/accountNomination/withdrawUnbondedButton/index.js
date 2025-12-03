@@ -9,7 +9,7 @@ export default function WithdrawUnbondedButton() {
     <>
       <div
         role="button"
-        className="text-theme500 text12Medium cursor-pointer"
+        className="text-theme500 text12Medium cursor-pointer mb-1"
         onClick={() => setShowWithdrawUnbondedPopup(true)}
       >
         Withdraw
