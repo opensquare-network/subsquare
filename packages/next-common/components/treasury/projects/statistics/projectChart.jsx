@@ -106,7 +106,10 @@ function ProjectBarChart({
           onClick={handleLabelClick}
         />
       </div>
-      <div className="flex-1">
+      <div
+        className="flex-1"
+        style={{ width: `calc(100% - ${FIXED_LABEL_WIDTH}px)` }}
+      >
         <Bar ref={chartRef} data={data} options={barOptions} />
       </div>
     </div>

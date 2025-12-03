@@ -11,7 +11,7 @@ export default function ProjectProposalsPopup({
   }
 
   return (
-    <Popup title="Project Proposals" onClose={onClose}>
+    <Popup title={`${selectedProject.name} Proposals`} onClose={onClose}>
       <ProjectContent project={selectedProject} />
     </Popup>
   );

@@ -6,17 +6,18 @@ import { isNil } from "lodash-es";
 import Tooltip from "next-common/components/tooltip";
 import Link from "next/link";
 
-function createTitleColumnDef({ baseUrl, getIndex, getTitle }) {
+function createTitleColumnDef({ getIndex, getTitle, getDetailLink }) {
   return {
     name: "Title",
     className: "flex-1 whitespace-nowrap overflow-hidden text-ellipsis pr-2",
     style: { textAlign: "left" },
     render: (item) => {
+      const detailLink = getDetailLink(item);
       const index = getIndex(item);
       const title = getTitle(item);
       return (
         <PostTitleImpl
-          url={`${baseUrl}/${index}`}
+          url={detailLink}
           title={title}
           noLink={false}
           className="text14Medium flex items-center [&>a]:truncate [&>a]:max-w-full [&>a]:whitespace-nowrap [&>a]:hover:underline"
@@ -28,19 +29,19 @@ function createTitleColumnDef({ baseUrl, getIndex, getTitle }) {
 }
 
 const ProposalTitleColumnsDef = createTitleColumnDef({
-  baseUrl: "/treasury/proposals",
+  getDetailLink: (proposal) => proposal.detailLink,
   getIndex: (proposal) => proposal.proposalIndex,
   getTitle: (proposal) => proposal.title,
 });
 
 const SpendTitleColumnsDef = createTitleColumnDef({
-  baseUrl: "/treasury/spends",
+  getDetailLink: (spend) => spend.detailLink,
   getIndex: (spend) => spend.index,
   getTitle: (spend) => spend.title,
 });
 
 const ChildBountyTitleColumnsDef = createTitleColumnDef({
-  baseUrl: "/treasury/child-bounties",
+  getDetailLink: (childBounty) => childBounty.detailLink,
   getIndex: (childBounty) => childBounty.index,
   getTitle: (childBounty) => childBounty.title,
 });

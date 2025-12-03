@@ -5,7 +5,11 @@ import { PROJECT_CHART_TYPES } from "./projectChart";
 import { FIXED_LABEL_WIDTH } from "../const";
 
 const LabelContainer = tw.div`
-  absolute -translate-y-1/2 cursor-pointer pointer-events-auto text-textPrimary text12Medium flex items-center gap-1 hover:underline
+  absolute -translate-y-1/2
+  cursor-pointer pointer-events-auto 
+  text-textPrimary text12Medium 
+  flex items-center gap-1 
+  hover:underline
 `;
 
 const Label = tw.span`
