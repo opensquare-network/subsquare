@@ -91,7 +91,7 @@ function StakingBalance() {
             value={unlocking?.toString() || 0}
             isLoading={loading}
           />
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 max-sm:items-end max-sm:gap-0 max-sm:flex-col">
             <AccountBalanceItem
               title="Unbonded"
               value={unlocked?.toString() || 0}
