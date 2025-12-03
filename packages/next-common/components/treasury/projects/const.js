@@ -18,6 +18,7 @@ export const CATEGORY_VALUES = {
   POLKADOT_CLIENT: "polkadot_client",
   MARKETING: "marketing",
   EVENT: "event",
+  EDUCATION: "education",
 };
 
 export const DOUGHNUT_CONFIG_BY_CATEGORY = {
@@ -50,6 +51,7 @@ export const GRID_LABELS = {
 export const HORIZONTAL_LABELS = {
   [CATEGORY_VALUES.MARKETING]: "Marketing",
   [CATEGORY_VALUES.EVENT]: "Events",
+  [CATEGORY_VALUES.EDUCATION]: "Education",
 };
 
 export const LABELS = {
