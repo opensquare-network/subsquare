@@ -13,7 +13,8 @@ import Divider from "next-common/components/styled/layout/divider";
 import WindowSizeProvider from "next-common/context/windowSize";
 import CollapsePanel from "next-common/components/overview/accountInfo/components/collapsePanel";
 import { AccountBalanceItem } from "next-common/components/overview/accountInfo/components/accountBalances";
-import { useCurrentEra } from "next-common/context/staking/activeEra";
+import useStakingBalance from "./useStakingBalance";
+import WithdrawUnbondedButton from "./withdrawUnbondedButton";
 
 const StartNominatingPopup = dynamicPopup(() =>
   import(
@@ -64,35 +65,6 @@ function Header({ width }) {
   );
 }
 
-function useStakingBalance() {
-  const { ledger, loading: loadingLedger } = useMyStakingLedger();
-  const { currentEra, loading: loadingCurrentEra } = useCurrentEra();
-
-  const loading = loadingLedger || loadingCurrentEra;
-  if (loading) {
-    return {
-      loading: true,
-      total: 0n,
-      active: 0n,
-      unlocking: 0n,
-      unlocked: 0n,
-    };
-  }
-
-  const total = BigInt(ledger?.total || 0);
-  const active = BigInt(ledger?.active || 0);
-
-  const unlocking = (ledger?.unlocking || []).reduce((sum, item) => {
-    if (item.era > currentEra) {
-      return sum + BigInt(item.value || 0);
-    }
-    return sum;
-  }, 0n);
-  const unlocked = total - active - unlocking;
-
-  return { loading, total, active, unlocking, unlocked };
-}
-
 function StakingBalance() {
   const { loading, total, active, unlocking, unlocked } = useStakingBalance();
 
@@ -115,15 +87,18 @@ function StakingBalance() {
             isLoading={loading}
           />
           <AccountBalanceItem
-            title="Unlocking"
+            title="Unbonding"
             value={unlocking?.toString() || 0}
             isLoading={loading}
           />
-          <AccountBalanceItem
-            title="Unlocked"
-            value={unlocked?.toString() || 0}
-            isLoading={loading}
-          />
+          <div className="flex items-center gap-2">
+            <AccountBalanceItem
+              title="Unbonded"
+              value={unlocked?.toString() || 0}
+              isLoading={loading}
+            />
+            {unlocked > 0n && <WithdrawUnbondedButton />}
+          </div>
         </CollapsePanel>
       </WindowSizeProvider>
     </div>
