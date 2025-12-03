@@ -24,7 +24,6 @@ function createPayoutExtrinsic(api, details, maxBatchSize = 40) {
     return null;
   }
 
-  // Create payoutStakers calls
   const extrinsics = details
     .slice(0, maxBatchSize)
     .map(({ validatorId, era }) =>
@@ -35,12 +34,10 @@ function createPayoutExtrinsic(api, details, maxBatchSize = 40) {
     return extrinsics[0];
   }
 
-  // Use utility.batchAll for better atomicity
   if (api.tx.utility?.batchAll) {
     return api.tx.utility.batchAll(extrinsics);
   }
 
-  // Fallback to utility.batch
   if (api.tx.utility?.batch) {
     return api.tx.utility.batch(extrinsics);
   }
@@ -55,7 +52,6 @@ function ClaimPopupContent() {
   const { decimals, symbol } = useChainSettings();
 
   const rewardData = useUnclaimedRewards(realAddress);
-  // console.log("::::rewardData", rewardData);
 
   const maxBatchSize = useMemo(() => {
     const maxNominators =
