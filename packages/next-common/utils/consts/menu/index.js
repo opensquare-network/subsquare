@@ -1,4 +1,4 @@
-import commonMenus from "./common";
+import { getCommonMenus } from "./common";
 import { getDemocracyMenu } from "./democracy";
 import { getTreasuryMenu } from "./treasury";
 import { getCouncilMenu } from "./council";
@@ -6,7 +6,6 @@ import { getTechCommMenu } from "./tc";
 import { getFinancialCouncilMenu } from "./financialCouncil";
 import { getAdvisoryCommitteeMenu } from "./advisoryCouncil";
 import { getAllianceMenu } from "./alliance";
-import { getReferendaMenu } from "./referenda";
 import { getFellowshipMenu } from "./fellowship";
 import { getAmbassadorMenu } from "next-common/utils/consts/menu/ambassador";
 import { getCommunityCouncilMenu } from "./communityCouncil";
@@ -33,14 +32,12 @@ import { votingSpace } from "next-common/utils/opensquareVoting";
 
 export function getHomeMenu({
   summary = {},
-  tracks = [],
   ambassadorTracks = [],
   currentTrackId,
 } = {}) {
   const {
     modules,
     hasMultisig = false,
-    hotMenu = {},
   } = getChainSettings(CHAIN);
 
   const integrationsMenu = [
@@ -50,8 +47,6 @@ export function getHomeMenu({
   ].filter(Boolean);
 
   const menuItems = [
-    modules?.referenda &&
-      getReferendaMenu(tracks, currentTrackId, hotMenu.referenda),
     modules?.fellowship && getFellowshipMenu(summary, currentTrackId),
     modules?.ambassador && getAmbassadorMenu(ambassadorTracks, currentTrackId),
     modules?.democracy && getDemocracyMenu(summary),
@@ -95,9 +90,16 @@ export function getMainMenu({
   ambassadorTracks = [],
   currentTrackId,
 } = {}) {
+  const { hotMenu = {} } = getChainSettings(CHAIN);
+  
+  const commonMenus = getCommonMenus({
+    tracks,
+    currentTrackId,
+    hotMenu,
+  });
+
   const modulesMenu = getHomeMenu({
     summary,
-    tracks,
     fellowshipTracks,
     ambassadorTracks,
     currentTrackId,

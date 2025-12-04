@@ -8,6 +8,7 @@ import getChainSettings from "../settings";
 import { CHAIN } from "next-common/utils/constants";
 import { getAccountUrl } from "next-common/hooks/account/useAccountUrl";
 import supportsDelegation from "./supportsDelegation";
+import { getReferendaMenu } from "./referenda";
 
 const chainSettings = getChainSettings(CHAIN);
 
@@ -44,27 +45,39 @@ export const discussionsMenu = {
   icon: <MenuDiscussions />,
 };
 
-const commonMenus = {
-  items: [overviewMenu, accountMenu],
-};
+export function getCommonMenus({
+  tracks = [],
+  currentTrackId,
+  hotMenu = {},
+} = {}) {
+  const commonMenus = {
+    items: [overviewMenu, accountMenu],
+  };
 
-if (chainSettings.modules.discussions) {
-  commonMenus.items.push(discussionsMenu);
+  if (chainSettings.modules?.referenda) {
+    commonMenus.items.push(
+      getReferendaMenu(tracks, currentTrackId, hotMenu.referenda),
+    );
+  }
+
+  if (chainSettings.modules.discussions) {
+    commonMenus.items.push(discussionsMenu);
+  }
+
+  if (supportsDelegation()) {
+    commonMenus.items.push({
+      value: "delegation",
+      name: "Delegation",
+      pathname: "/delegation",
+      extraMatchNavMenuActivePathnames: [
+        "/delegation/statistics",
+        "/delegation/mine",
+        "/delegation/mine/received",
+        "/delegation/mine/delegations",
+      ],
+      icon: <MenuDelegation />,
+    });
+  }
+
+  return commonMenus;
 }
-
-if (supportsDelegation()) {
-  commonMenus.items.push({
-    value: "delegation",
-    name: "Delegation",
-    pathname: "/delegation",
-    extraMatchNavMenuActivePathnames: [
-      "/delegation/statistics",
-      "/delegation/mine",
-      "/delegation/mine/received",
-      "/delegation/mine/delegations",
-    ],
-    icon: <MenuDelegation />,
-  });
-}
-
-export default commonMenus;
