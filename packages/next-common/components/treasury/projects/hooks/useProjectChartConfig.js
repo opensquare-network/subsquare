@@ -13,6 +13,9 @@ export function useProjectBarChartOptions(userOptions = {}) {
       indexAxis: "y",
       responsive: true,
       maintainAspectRatio: false,
+      animation: {
+        duration: 0,
+      },
       plugins: {
         legend: {
           display: false,
