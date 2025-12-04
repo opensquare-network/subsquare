@@ -1,4 +1,3 @@
-import BigNumber from "bignumber.js";
 import { useContextApi } from "next-common/context/api";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useEffect, useState } from "react";
@@ -18,7 +17,7 @@ export function useRewardClaimable() {
     api?.call?.nominationPoolsApi
       ?.pendingRewards(realAddress)
       .then((pendingRewards) => {
-        const claimable = BigNumber(pendingRewards);
+        const claimable = BigInt(pendingRewards);
         setClaimable(claimable);
       })
       .finally(() => setLoading(false));

@@ -3,14 +3,18 @@ import CollapsePanel from "next-common/components/overview/accountInfo/component
 import WindowSizeProvider from "next-common/context/windowSize";
 import { useMyPoolInfo } from "next-common/hooks/staking/useMyPool";
 import PoolWithdrawUnbondedButton from "./withdrawUnbondedButton";
+import { useRewardClaimable } from "../../pools/hooks/useRewardClaimable";
+import ClaimPoolRewardButton from "./claimRewardButton";
 
 export default function StakingBalance() {
   const { myPool, balances, loading } = useMyPoolInfo();
+  const { claimable } = useRewardClaimable();
 
   const inPoolBalance = (
     (balances?.active || 0n) +
     (balances?.unlocking || 0n) +
-    (balances?.unlocked || 0n)
+    (balances?.unlocked || 0n) +
+    (claimable || 0n)
   )?.toString();
 
   return (
@@ -36,7 +40,7 @@ export default function StakingBalance() {
             value={(balances?.unlocking || 0n)?.toString()}
             isLoading={loading}
           />
-          <div className="flex items-center gap-2 max-sm:items-end max-sm:gap-0 max-sm:flex-col">
+          <div className="flex items-center gap-2 max-sm:items-end max-sm:gap-0 max-sm:flex-col mb-1">
             <AccountBalanceItem
               title="Unbonded"
               value={(balances?.unlocked || 0n)?.toString()}
@@ -44,6 +48,16 @@ export default function StakingBalance() {
             />
             {balances?.unlocked > 0n && (
               <PoolWithdrawUnbondedButton poolId={myPool?.poolId} />
+            )}
+          </div>
+          <div className="flex items-center gap-2 max-sm:items-end max-sm:gap-0 max-sm:flex-col">
+            <AccountBalanceItem
+              title="Reward"
+              value={claimable?.toString()}
+              isLoading={loading}
+            />
+            {claimable > 0n && (
+              <ClaimPoolRewardButton poolId={myPool?.poolId} />
             )}
           </div>
         </CollapsePanel>

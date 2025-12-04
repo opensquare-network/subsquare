@@ -1,5 +1,11 @@
 import { useState } from "react";
-import PoolWithdrawUnbondedPopup from "../WithdrawUnbondedPopup";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const PoolWithdrawUnbondedPopup = dynamicPopup(() =>
+  import(
+    "next-common/components/staking/overview/accountStaking/withdrawUnbondedPopup"
+  ),
+);
 
 export default function PoolWithdrawUnbondedButton({ poolId }) {
   const [showWithdrawUnbondedPopup, setShowWithdrawUnbondedPopup] =
