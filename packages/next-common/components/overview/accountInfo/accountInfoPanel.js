@@ -167,7 +167,7 @@ function TransferButton() {
 
 function AccountButton() {
   const router = useRouter();
-  const url = useAccountUrl() || "";
+  const url = useAccountUrl();
 
   if (router.pathname.startsWith("/account")) {
     return null;
