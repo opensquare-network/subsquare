@@ -6,7 +6,7 @@ import { cn, isExternalLink } from "next-common/utils";
 
 export default function PostItemTitle({
   data = {},
-  href,
+  href = "",
   className = "",
   ellipsis = false,
 }) {

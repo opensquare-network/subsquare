@@ -5,7 +5,7 @@ import { cn, isExternalLink } from "next-common/utils";
 import React from "react";
 export default function ListPostTitle({
   data = {},
-  href,
+  href = "",
   className = "",
   ellipsis = false,
 }) {

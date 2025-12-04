@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export default function SummaryLabelLinkItem({ label, href, children }) {
+export default function SummaryLabelLinkItem({ label, href = "", children }) {
   return (
     <div className="flex gap-[4px]">
       <Link

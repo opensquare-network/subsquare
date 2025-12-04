@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Tooltip from "next-common/components/tooltip";
 
-export function AddressLink({ tooltip, href, label }) {
+export function AddressLink({ tooltip, href = "", label }) {
   return (
     <Link className="text12Medium" href={href} target="_blank" rel="noreferrer">
       <Tooltip content={tooltip} className="flex flex-nowrap whitespace-nowrap">

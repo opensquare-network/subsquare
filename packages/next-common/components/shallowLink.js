@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-export default function ShallowLink({ href, children, ...props }) {
+export default function ShallowLink({ href = "", children, ...props }) {
   const router = useRouter();
   const currPathname = router.asPath.split("?")[0];
   const toPathname = href.split("?")[0];

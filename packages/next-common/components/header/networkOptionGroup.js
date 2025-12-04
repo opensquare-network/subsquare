@@ -71,7 +71,7 @@ export default function NetworkOptionGroup({ groupName, activeNode, setShow }) {
   );
 }
 
-function Option({ onClick, item, isActive, href }) {
+function Option({ onClick, item, isActive, href = "" }) {
   let content = (
     <>
       <ChainIcon chain={item.value} />

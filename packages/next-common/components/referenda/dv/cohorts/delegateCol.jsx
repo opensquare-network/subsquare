@@ -18,7 +18,7 @@ export default function DelegateCol({ row }) {
       {row.announcementLink && (
         <Link
           target="_blank"
-          href={row.announcementLink}
+          href={row.announcementLink || ""}
           className="[&_path]:fill-textTertiary [&_path]:hover:fill-textSecondary"
         >
           <LinkMedium className="w-5 h-5" />

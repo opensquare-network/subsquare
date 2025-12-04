@@ -10,7 +10,7 @@ const Title = styled.span`
 `;
 
 export function PostTitleImpl({
-  url,
+  url = "",
   referendumIndex,
   title,
   noLink,

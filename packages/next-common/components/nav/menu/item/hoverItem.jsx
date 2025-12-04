@@ -17,7 +17,7 @@ function HoverSubMenuLeaf({ menu }) {
     <li>
       <Link
         className="pl-2 w-full h-10 flex px-2 py-2.5 items-center rounded-lg cursor-pointer text14Medium"
-        href={menu.pathname}
+        href={menu.pathname || ""}
         target={menu.isExternal ? "_blank" : "_self"}
       >
         <div className="w-1 h-1 rounded-full bg-textSecondary" />

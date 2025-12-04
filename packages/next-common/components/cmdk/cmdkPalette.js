@@ -13,7 +13,7 @@ import { createGlobalState } from "react-use";
 export const useCmdkPaletteVisible = createGlobalState(false);
 
 function renderCommandPaletteLink(props) {
-  const { href, children, ...restProps } = props ?? {};
+  const { href = "", children, ...restProps } = props ?? {};
 
   if (isExternalLink(href)) {
     return (

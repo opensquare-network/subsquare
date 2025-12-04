@@ -4,7 +4,7 @@ import { ArrowExternalLinkWiki } from "@osn/icons/subsquare";
 import Tooltip from "next-common/components/tooltip";
 import Link from "next/link";
 
-function PolkadotWikiLink({ href }) {
+function PolkadotWikiLink({ href = "" }) {
   return (
     <Tooltip content="Polkadot Wiki" className="ml-2 hover:cursor-pointer">
       <Link href={href} target="_blank">

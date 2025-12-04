@@ -128,7 +128,7 @@ function EcoNewsScroll({ data }) {
               <Link
                 className={"sm:line-clamp-1 line-clamp-2 hover:underline"}
                 title={item.content}
-                href={item.link}
+                href={item.link || ""}
                 target="_block"
               >
                 {item.content}

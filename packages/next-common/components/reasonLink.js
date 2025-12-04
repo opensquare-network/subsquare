@@ -27,7 +27,7 @@ export default function ReasonLink({ text, hideText = false }) {
 
             return (
               <Link
-                key={link}
+                key={link || ""}
                 className="relative bottom-0.5 [&_svg]:inline"
                 href={link}
                 target="_blank"

@@ -23,7 +23,7 @@ const Link = styled.a`
   line-height: 16px;
 `;
 
-export default function Item({ title, href }) {
+export default function Item({ title, href = "" }) {
   return (
     <Wrapper>
       <Link href={href} target="_blank" rel="noreferrer">

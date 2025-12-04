@@ -4,7 +4,7 @@ import { MobileHiddenInfo } from "../styled";
 import LinkInfo from "next-common/components/styled/linkInfo";
 import Gov2TrackTag from "next-common/components/gov2/trackTag";
 
-export default function PostItemTrack({ data, href }) {
+export default function PostItemTrack({ data, href = "" }) {
   if (!data.trackName) {
     return null;
   }

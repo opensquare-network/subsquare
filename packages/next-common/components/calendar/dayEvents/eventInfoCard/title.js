@@ -215,7 +215,7 @@ function getTitle(event) {
   const timeText = dayjs(event?.indexer?.blockTime).format("HH:mm");
   const title = getEventTitle(event);
   const postUrls = getPostUrlsByEvent(event);
-  const postUrl = postUrls[event.type];
+  const postUrl = postUrls[event.type] || "";
 
   return (
     <span>

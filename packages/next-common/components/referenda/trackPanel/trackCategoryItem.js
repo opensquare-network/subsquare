@@ -8,7 +8,7 @@ function TrackCategoryItem({ item }) {
     <TrackTooltip trackId={item.id} activeCount={item.activeCount}>
       <span className="leading-4 px-2 py-[2px] bg-neutral200 rounded-[8px]">
         <Link
-          href={item.path}
+          href={item.path || ""}
           className="hover:underline hover:decoration-neutral500"
           onClick={(e) => {
             e.stopPropagation();

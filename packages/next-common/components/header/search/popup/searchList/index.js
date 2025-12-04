@@ -20,7 +20,7 @@ import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 import { FellowshipTagByRank } from "next-common/components/profile/fellowshipTagInfo";
 import AddressAvatar from "next-common/components/user/addressAvatar";
 
-function SearchItemCategory({ href, category, onClose }) {
+function SearchItemCategory({ href = "", category, onClose }) {
   return (
     <Link
       href={href}
@@ -37,7 +37,13 @@ function SearchItemCategory({ href, category, onClose }) {
   );
 }
 
-function CommonSearchItem({ IconComponent, href, title, content, onClose }) {
+function CommonSearchItem({
+  IconComponent,
+  href = "",
+  title,
+  content,
+  onClose,
+}) {
   return (
     <Link
       href={href}

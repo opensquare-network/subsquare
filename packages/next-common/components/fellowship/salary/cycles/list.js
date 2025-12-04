@@ -63,7 +63,7 @@ const actionColumn = {
   width: 80,
   className: "text-right",
   cellRender(data, { resolveActionColLink }) {
-    const link = resolveActionColLink?.(data);
+    const link = resolveActionColLink?.(data) || "";
 
     return (
       <Tooltip content="View Detail">
