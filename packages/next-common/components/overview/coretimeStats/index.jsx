@@ -1,7 +1,7 @@
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { useChainSettings } from "next-common/context/chain";
 import { colorStyle, PromptTypes } from "next-common/components/scrollPrompt";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { SystemClose } from "@osn/icons/subsquare";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";

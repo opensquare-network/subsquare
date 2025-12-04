@@ -5,7 +5,7 @@ import Divider from "next-common/components/styled/layout/divider";
 import { useChain } from "next-common/context/chain";
 import { isCollectivesChain } from "next-common/utils/chain";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { isAddressInGroup } from "next-common/utils";
 import { useMemo } from "react";
 import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";

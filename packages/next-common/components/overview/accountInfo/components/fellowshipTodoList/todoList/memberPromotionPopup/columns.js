@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { isNil, startCase } from "lodash-es";
 import { useMemo, useState } from "react";
 import { AddressUser } from "next-common/components/user";

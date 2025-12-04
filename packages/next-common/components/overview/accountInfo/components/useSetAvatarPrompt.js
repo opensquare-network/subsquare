@@ -6,7 +6,7 @@ import {
 import { useIsWeb3User, useUser } from "next-common/context/user";
 import { CACHE_KEY } from "next-common/utils/constants";
 import { useCookieValue } from "next-common/utils/hooks/useCookieValue";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { useMemo } from "react";
 
 export default function useSetAvatarPrompt() {

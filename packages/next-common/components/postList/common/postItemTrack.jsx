@@ -1,5 +1,5 @@
 import React from "react";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { MobileHiddenInfo } from "../styled";
 import LinkInfo from "next-common/components/styled/linkInfo";
 import Gov2TrackTag from "next-common/components/gov2/trackTag";

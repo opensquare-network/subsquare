@@ -1,7 +1,7 @@
 import { useOnchainData } from "../../../context/post";
 import { NavigationWrapper } from "./navigators";
 import React from "react";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import TreasuryBountiesTitleTooltip from "next-common/components/referenda/titleTooltip/treasuryBounties";
 export default function ReferendaReferendumTreasuryBountiesNavigation() {
   const onchainData = useOnchainData();

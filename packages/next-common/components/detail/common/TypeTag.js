@@ -2,7 +2,7 @@ import React from "react";
 import { usePost } from "../../../context/post";
 import { detailPageCategory } from "../../../utils/consts/business/category";
 import { DemocracyTag, TreasuryTag } from "../../tags/business";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import Gov2TrackTag from "../../gov2/trackTag";
 import LinkInfo from "../../styled/linkInfo";
 

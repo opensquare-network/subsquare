@@ -5,7 +5,7 @@ import { usePageProps } from "next-common/context/page";
 import { useMemo } from "react";
 import FieldLoading from "next-common/components/icons/fieldLoading";
 import { cn } from "next-common/utils";
-import Link from "next/link";
+import Link from "next-common/components/link";
 
 function useFellowshipTracks() {
   const { section } = useCollectivesContext();

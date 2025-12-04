@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "next-common/components/link";
 import KvList from "next-common/components/listInfo/kvList";
 import styled from "styled-components";
 

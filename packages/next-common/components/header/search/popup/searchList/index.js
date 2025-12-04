@@ -13,7 +13,7 @@ import {
   MenuTreasurySpend,
   MenuTreasuryProposal,
 } from "@osn/icons/subsquare";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { ItemType } from "next-common/components/header/hooks/useSearchResults";
 import IdentityIcon from "next-common/components/Identity/identityIcon";
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";

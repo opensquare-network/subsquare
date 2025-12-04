@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import styled from "styled-components";
 import SubLink from "next-common/components/styled/subLink";
 import { useDetailType } from "next-common/context/page";

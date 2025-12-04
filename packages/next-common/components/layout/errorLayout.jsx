@@ -6,7 +6,7 @@ import {
 } from "@osn/icons/subsquare";
 import ThemeModeProvider from "next-common/context/theme";
 import SecondaryButton from "next-common/lib/button/secondary";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import ExternalLink from "../externalLink";
 import { memo } from "react";
 import { cn } from "next-common/utils";

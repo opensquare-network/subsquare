@@ -10,7 +10,7 @@ import FellowshipCommonEvent, {
 } from "../feeds/fellowshipCommonEvent";
 import { cn } from "next-common/utils";
 import { GreyPanel } from "../styled/containers/greyPanel";
-import Link from "next/link";
+import Link from "next-common/components/link";
 
 const ITEM_HEIGHT = 53;
 const MOBILE_ITEM_HEIGHT = 96;

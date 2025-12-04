@@ -6,7 +6,7 @@ import { usePageProps } from "next-common/context/page";
 import { useDvDelegateGuardians } from "next-common/context/referenda/dv";
 import { cn } from "next-common/utils";
 import { isKusamaChain, isPolkadotChain } from "next-common/utils/chain";
-import Link from "next/link";
+import Link from "next-common/components/link";
 
 export default function DvInfoPanel() {
   const { cohort, cohorts } = usePageProps();

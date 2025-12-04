@@ -6,7 +6,7 @@ import { useChainSettings } from "next-common/context/chain";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import Copyable from "next-common/components/copyable";
-import Link from "next/link";
+import Link from "next-common/components/link";
 
 const Text = tw.span`text-textPrimary`;
 

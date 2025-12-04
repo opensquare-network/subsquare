@@ -10,7 +10,7 @@ import { myReferendaDelegationsSelector } from "next-common/store/reducers/myOnC
 import { useAllMyBeenDelegatedList } from "next-common/utils/hooks/referenda/useAllBeenDelegatedList";
 import useFetchMyReferendaDelegations from "next-common/utils/hooks/referenda/useFetchMyReferendaDelegations";
 import { useSelector } from "react-redux";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { cn } from "next-common/utils";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useSubDemocracyDelegating from "next-common/utils/hooks/referenda/useSubDemocracyDelegating";

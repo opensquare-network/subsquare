@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "next-common/components/link";
 
 export default function SummaryLabelLinkItem({ label, href, children }) {
   return (

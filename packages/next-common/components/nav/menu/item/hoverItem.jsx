@@ -5,7 +5,7 @@ import { ArrowRight } from "@osn/icons/subsquare";
 import * as HoverCard from "@radix-ui/react-hover-card";
 import NavMenuDivider from "../../divider";
 import { isChildActive } from "./group";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import NavMenuItemTemplate, {
   NavMenuItemTemplateContent,
 } from "./itemTemplate";
