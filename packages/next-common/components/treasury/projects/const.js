@@ -19,6 +19,7 @@ export const CATEGORY_VALUES = {
   MARKETING: "marketing",
   EVENT: "event",
   EDUCATION: "education",
+  HACKTHON: "hackthon",
 };
 
 export const DOUGHNUT_CONFIG_BY_CATEGORY = {
@@ -52,6 +53,7 @@ export const HORIZONTAL_LABELS = {
   [CATEGORY_VALUES.MARKETING]: "Marketing",
   [CATEGORY_VALUES.EVENT]: "Events",
   [CATEGORY_VALUES.EDUCATION]: "Education",
+  [CATEGORY_VALUES.HACKTHON]: "Hackthons",
 };
 
 export const LABELS = {
