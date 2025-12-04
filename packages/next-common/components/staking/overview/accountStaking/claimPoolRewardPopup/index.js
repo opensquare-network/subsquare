@@ -46,11 +46,11 @@ function ClaimPoolRewardPopupContent() {
   );
 }
 
-export default function ClaimPoolRewardPopup({ poolId, onClose }) {
+export default function ClaimPoolRewardPopup({ onClose }) {
   return (
     <SignerPopupWrapper onClose={onClose}>
       <Popup title="Claim Reward" onClose={onClose}>
-        <ClaimPoolRewardPopupContent poolId={poolId} />
+        <ClaimPoolRewardPopupContent />
       </Popup>
     </SignerPopupWrapper>
   );

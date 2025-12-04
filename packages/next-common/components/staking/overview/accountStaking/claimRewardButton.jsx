@@ -7,7 +7,7 @@ const ClaimPoolRewardPopup = dynamicPopup(() =>
   ),
 );
 
-export default function ClaimPoolRewardButton({ poolId }) {
+export default function ClaimPoolRewardButton() {
   const [showClaimPopup, setShowClaimPopup] = useState(false);
 
   return (
@@ -20,10 +20,7 @@ export default function ClaimPoolRewardButton({ poolId }) {
         Claim
       </div>
       {showClaimPopup && (
-        <ClaimPoolRewardPopup
-          poolId={poolId}
-          onClose={() => setShowClaimPopup(false)}
-        />
+        <ClaimPoolRewardPopup onClose={() => setShowClaimPopup(false)} />
       )}
     </>
   );

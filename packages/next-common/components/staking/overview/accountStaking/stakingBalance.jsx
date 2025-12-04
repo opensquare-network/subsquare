@@ -56,9 +56,7 @@ export default function StakingBalance() {
               value={claimable?.toString()}
               isLoading={loading}
             />
-            {claimable > 0n && (
-              <ClaimPoolRewardButton poolId={myPool?.poolId} />
-            )}
+            {claimable > 0n && <ClaimPoolRewardButton />}
           </div>
         </CollapsePanel>
       </WindowSizeProvider>
