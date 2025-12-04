@@ -1,6 +1,6 @@
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
 import { cn } from "next-common/utils";
-import Link from "next/link";
+import Link from "next-common/components/link";
 
 export default function FellowshipSalaryStatsDetailLink({
   index,

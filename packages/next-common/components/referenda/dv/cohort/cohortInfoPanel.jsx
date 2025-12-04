@@ -5,7 +5,7 @@ import { useChain } from "next-common/context/chain";
 import { usePageProps } from "next-common/context/page";
 import { cn } from "next-common/utils";
 import { isKusamaChain, isPolkadotChain } from "next-common/utils/chain";
-import Link from "next/link";
+import Link from "next-common/components/link";
 
 export default function CohortInfoPanel() {
   const { cohort } = usePageProps();

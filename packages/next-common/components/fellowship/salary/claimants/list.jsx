@@ -4,7 +4,7 @@ import FellowshipRank from "../../rank";
 import { has, isNil } from "lodash-es";
 import AddressUser from "next-common/components/user/addressUser";
 import FellowshipSalaryMemberIsRegistered from "./isRegistered";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";

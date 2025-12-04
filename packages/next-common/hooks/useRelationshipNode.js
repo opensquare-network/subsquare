@@ -1,6 +1,6 @@
 import useMultisigAddress from "next-common/hooks/useMultisigAddress";
 import Tooltip from "next-common/components/tooltip";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import useIsPureProxy from "next-common/hooks/useIsPureProxy";
 
 export const rootNodeId = "rootNode";

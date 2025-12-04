@@ -1,7 +1,7 @@
 import { cn } from "next-common/utils";
 import { useMemo, useRef } from "react";
 import Tooltip from "next-common/components/tooltip";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { useCollectivesSection } from "next-common/context/collectives/collectives";
 import { useValueFromBatchResult } from "next-common/context/batch";
 import { startCase } from "lodash-es";

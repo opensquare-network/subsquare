@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "next-common/components/link";
 import Tooltip from "next-common/components/tooltip";
 
 export function AddressLink({ tooltip, href, label }) {

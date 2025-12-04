@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import CommandPalette, { filterItems, getItemIndex } from "@osn/react-cmdk";
 import { useTheme } from "styled-components";
 import { useEventListener } from "../../utils/hooks/useEventListener";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { isExternalLink } from "../../utils";
 import commonMenus from "../../utils/consts/menu/common";
 import { useIsMacOS, usePageProps } from "next-common/context/page";

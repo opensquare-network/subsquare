@@ -3,7 +3,7 @@ import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { usePostOnChainData } from "next-common/context/post";
 import { NavigationWrapper } from "next-common/components/detail/navigation/navigators";
 import React from "react";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import TriangleRight from "next-common/assets/imgs/icons/arrow-triangle-right.svg";
 
 function MotionNavigator({ index }) {

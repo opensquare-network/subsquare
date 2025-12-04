@@ -3,7 +3,7 @@ import { isNil } from "lodash-es";
 import { NavigationWrapper } from "./navigators";
 import TriangleRight from "../../../assets/imgs/icons/arrow-triangle-right.svg";
 import React from "react";
-import Link from "next/link";
+import Link from "next-common/components/link";
 
 export function TreasuryProposalLink({ proposalIndex }) {
   return (

@@ -2,7 +2,7 @@ import React from "react";
 import getTreasurySpendBusiness from "next-common/components/pages/components/gov2/business/treasurySpend";
 import { useChainSettings } from "next-common/context/chain";
 import { useOnchainData } from "next-common/context/post";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { toPrecision } from "next-common/utils";
 import AddressUser from "next-common/components/user/addressUser";
 import { getTreasuryAllSpendsBusiness } from "next-common/components/pages/components/gov2/business/treasuryAllSpends";

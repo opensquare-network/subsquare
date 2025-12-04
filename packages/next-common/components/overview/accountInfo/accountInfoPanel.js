@@ -22,7 +22,7 @@ import { RelayChainApiProvider } from "next-common/context/relayChain";
 import useAccountUrl from "next-common/hooks/account/useAccountUrl";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import { isNil } from "lodash-es";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import Button from "next-common/lib/button";
 import AccountPanelQuickAccess from "./components/accountPanelQuickAccess";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";

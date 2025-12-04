@@ -2,7 +2,7 @@ import { useOnchainData } from "../../../../context/post";
 import LinkInfo from "../../../styled/linkInfo";
 import Gov2TrackTag from "../../../gov2/trackTag";
 import React from "react";
-import Link from "next/link";
+import Link from "next-common/components/link";
 
 export default function ReferendaTrack({ section = "referenda" }) {
   const onchain = useOnchainData();

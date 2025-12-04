@@ -3,7 +3,7 @@ import {
   VIEW_TYPE,
 } from "next-common/context/relationship/selectViewType";
 import { cn } from "next-common/utils";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import SubmergeLogo from "next-common/assets/imgs/icons/submerge-logo.svg";
 
 export default function PoweredBy() {

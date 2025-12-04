@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import Timeline from "next-common/components/timeline";
 import { isMotionEnded } from "next-common/utils";
 import { findLastIndex } from "lodash-es";

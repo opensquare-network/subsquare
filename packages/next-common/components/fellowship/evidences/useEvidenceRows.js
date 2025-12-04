@@ -2,7 +2,7 @@ import { AddressUser } from "next-common/components/user";
 import FellowshipRank from "next-common/components/fellowship/rank";
 import EvidenceLink from "next-common/components/profile/fellowship/core/evidence/link";
 import { isNil } from "lodash-es";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import getEvidenceTitle from "next-common/utils/fellowship/getEvidenceTitle";
 import { MineTagOnListView } from "next-common/components/delegation/delegate/common/mineTag";
 import { isSameAddress } from "next-common/utils";

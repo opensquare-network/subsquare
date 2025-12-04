@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { useDispatch } from "react-redux";
 import { useAnimate } from "framer-motion";
 import { SystemPlus } from "@osn/icons/subsquare";

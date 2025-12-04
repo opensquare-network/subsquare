@@ -5,7 +5,7 @@ import SummaryItem from "next-common/components/summary/layout/item";
 import { toPrecision } from "next-common/utils";
 import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 import { AmbassadorAccount } from "next-common/context/treasury/polkadotTreasury/hooks/useQueryAmbassadorBalance";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import TokenSymbolAsset from "../common/tokenSymbolAsset";
 
 export default function Ambassador() {

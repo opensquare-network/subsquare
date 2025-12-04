@@ -1,5 +1,5 @@
 import { usePostOnChainData } from "next-common/context/post";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import Flex from "next-common/components/styled/flex";
 import SymbolBalance from "next-common/components/values/symbolBalance";
 import Copyable from "next-common/components/copyable";

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { isNil } from "lodash-es";
 import {
   useAssetLink,

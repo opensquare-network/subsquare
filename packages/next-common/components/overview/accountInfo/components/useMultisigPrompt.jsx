@@ -4,7 +4,7 @@ import {
 } from "next-common/components/scrollPrompt";
 import { CACHE_KEY } from "next-common/utils/constants";
 import { useCookieValue } from "next-common/utils/hooks/useCookieValue";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { useMemo } from "react";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useExplorerMultisigHistory from "next-common/hooks/multisig/useExplorerMultisigHistory";

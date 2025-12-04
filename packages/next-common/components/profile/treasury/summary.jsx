@@ -6,7 +6,7 @@ import { AddressUser } from "next-common/components/user";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { usePageProps } from "next-common/context/page";
 import { CHAIN } from "next-common/utils/constants";
-import Link from "next/link";
+import Link from "next-common/components/link";
 
 export default function ProfileTreasurySummary() {
   const { beneficiariesSummary } = usePageProps();

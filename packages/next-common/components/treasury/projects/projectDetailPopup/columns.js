@@ -4,7 +4,7 @@ import { PostTitleImpl } from "next-common/components/profile/votingHistory/comm
 import BigNumber from "bignumber.js";
 import { isNil } from "lodash-es";
 import Tooltip from "next-common/components/tooltip";
-import Link from "next/link";
+import Link from "next-common/components/link";
 
 function createTitleColumnDef({ getIndex, getTitle, getDetailLink }) {
   return {
