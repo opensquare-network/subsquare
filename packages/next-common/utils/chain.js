@@ -168,9 +168,11 @@ export function getRelayChain(chain) {
     return Chains.westend;
   } else if (isHyperBridgeChain(chain)) {
     return Chains.polkadot;
+  } else if (isBifrostChain(chain)) {
+    return Chains.basilisk;
   }
 
-  throw new Error("Unsupported relay chain");
+  // throw new Error("Unsupported relay chain");
 }
 
 export function chainApiHash(...args) {
