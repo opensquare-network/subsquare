@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { noop } from "lodash-es";
 import StandardVoteStatus from "next-common/components/pages/components/referenda/popup/standardVoteStatus";
 import SplitVoteStatus from "next-common/components/pages/components/referenda/popup/splitVoteStatus";
@@ -153,6 +153,7 @@ export default function PopupContent() {
   const showVoteSuccessful = useShowVoteSuccessful();
   const signerAccount = useSignerAccount();
   const { update } = useUpdateVotesFromServer(referendumIndex);
+  const hasShownSuccessRef = useRef(false);
 
   const api = useContextApi();
   const { isLoading: votingIsLoading, balance: votingBalance } =
@@ -168,7 +169,15 @@ export default function PopupContent() {
     signerAccount?.realAddress,
   );
 
+  const resetSuccessFlag = useCallback(() => {
+    hasShownSuccessRef.current = false;
+  }, []);
+
   const getMyVoteAndShowSuccessful = useCallback(async () => {
+    if (hasShownSuccessRef.current) {
+      return;
+    }
+
     const { vote: addressVote, delegations } =
       (await getReferendaDirectVote(
         api,
@@ -178,6 +187,7 @@ export default function PopupContent() {
       )) || {};
 
     if (addressVote) {
+      hasShownSuccessRef.current = true;
       showVoteSuccessful(addressVote, delegations);
     }
   }, [
@@ -195,6 +205,7 @@ export default function PopupContent() {
       <VotePanel
         referendumIndex={referendumIndex}
         onInBlock={() => {
+          resetSuccessFlag();
           getMyVoteAndShowSuccessful();
           update();
         }}

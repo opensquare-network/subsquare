@@ -55,6 +55,7 @@ const polkadot = {
     intime: {
       preimage: true,
       proxy: true,
+      referendaVotes: true,
     },
   },
   hasMultisig: true,
