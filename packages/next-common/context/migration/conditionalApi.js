@@ -18,7 +18,7 @@ function useIsKusamaFellowship() {
   );
 }
 
-function useConditionalApi(indexer, onlyContextApi = false) {
+function useConditionalApi(indexer) {
   const [conditionalApi, setConditionalApi] = useState(null);
   const [blockApi, setBlockApi] = useState(null);
   const {
@@ -59,49 +59,31 @@ function useConditionalApi(indexer, onlyContextApi = false) {
   }, [endpointUrls]);
 
   useEffect(() => {
-    if (!conditionalApi || isNil(indexer) || onlyContextApi) {
+    if (!conditionalApi || isNil(indexer)) {
       return;
     }
 
     getChainApiAt(conditionalApi, indexer?.blockHeight).then(setBlockApi);
-  }, [conditionalApi, indexer, onlyContextApi]);
+  }, [conditionalApi, indexer]);
 
-  return onlyContextApi || isNil(indexer) ? conditionalApi : blockApi;
+  return isNil(indexer) ? conditionalApi : blockApi;
 }
 
 const ConditionalApiContext = createContext(null);
 
-function DefaultContextApiProvider({
-  indexer,
-  onlyContextApi = false,
-  children,
-}) {
+function DefaultContextApiProvider({ indexer, children }) {
   const [blockApi, setBlockApi] = useState(null);
   const contextApi = useContextApi();
 
   useEffect(() => {
-    if (!contextApi || isNil(indexer) || onlyContextApi) {
+    if (!contextApi || isNil(indexer)) {
       return;
     }
 
     getChainApiAt(contextApi, indexer?.blockHeight).then(setBlockApi);
-  }, [contextApi, indexer, onlyContextApi]);
+  }, [contextApi, indexer]);
 
-  const api = onlyContextApi || isNil(indexer) ? contextApi : blockApi;
-
-  return (
-    <ConditionalApiContext.Provider value={api}>
-      {children}
-    </ConditionalApiContext.Provider>
-  );
-}
-
-function ConditionalContextApiProvider({
-  indexer,
-  onlyContextApi = false,
-  children,
-}) {
-  const api = useConditionalApi(indexer, onlyContextApi);
+  const api = isNil(indexer) ? contextApi : blockApi;
 
   return (
     <ConditionalApiContext.Provider value={api}>
@@ -110,27 +92,27 @@ function ConditionalContextApiProvider({
   );
 }
 
-export function MigrationConditionalApiProvider({
-  indexer,
-  onlyContextApi = false,
-  children,
-}) {
+function ConditionalContextApiProvider({ indexer, children }) {
+  const api = useConditionalApi(indexer);
+
+  return (
+    <ConditionalApiContext.Provider value={api}>
+      {children}
+    </ConditionalApiContext.Provider>
+  );
+}
+
+export function MigrationConditionalApiProvider({ indexer, children }) {
   if (isAssetHubMigrated()) {
     return (
-      <ConditionalContextApiProvider
-        indexer={indexer}
-        onlyContextApi={onlyContextApi}
-      >
+      <ConditionalContextApiProvider indexer={indexer}>
         {children}
       </ConditionalContextApiProvider>
     );
   }
 
   return (
-    <DefaultContextApiProvider
-      indexer={indexer}
-      onlyContextApi={onlyContextApi}
-    >
+    <DefaultContextApiProvider indexer={indexer}>
       {children}
     </DefaultContextApiProvider>
   );

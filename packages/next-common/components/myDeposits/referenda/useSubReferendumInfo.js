@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useMountedState } from "react-use";
-import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
+import { useContextApi } from "next-common/context/api";
 
 export default function useSubReferendumInfo(pallet, referendumIndex) {
-  const api = useConditionalContextApi();
+  const api = useContextApi();
   const isMounted = useMountedState();
   const [info, setInfo] = useState();
 
