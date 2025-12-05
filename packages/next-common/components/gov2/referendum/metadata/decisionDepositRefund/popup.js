@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
-import { isNil } from "lodash-es";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import { isNil } from "lodash-es";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import useSigner from "next-common/components/common/tx/useSigner";
 import ReferendumIndexRow from "next-common/components/gov2/referendum/metadata/refund/referendumIndexRow";
