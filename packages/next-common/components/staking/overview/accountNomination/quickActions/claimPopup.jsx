@@ -95,7 +95,7 @@ function ClaimPopupContent() {
   return (
     <div className="space-y-4">
       <Signer noSwitchSigner />
-      <SummaryLayout>
+      <SummaryLayout className="grid-cols-2">
         <SummaryItem title="Total Claimable">
           <LoadableContent isLoading={loading}>
             <ValueDisplay value={displayAmount} symbol={symbol} />
