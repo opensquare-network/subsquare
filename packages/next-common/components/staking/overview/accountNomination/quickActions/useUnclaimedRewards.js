@@ -1,130 +1,348 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useContextApi } from "next-common/context/api";
-import { BN } from "@polkadot/util";
 
-/**
- * Hook to query unclaimed staking rewards for a nominator address
- * Following the implementation from polkadot.js apps
- */
-export default function useUnclaimedRewards(address) {
+const PERBILL = 1_000_000_000n;
+
+async function findNominatorStake(
+  api,
+  era,
+  validator,
+  nominatorAddress,
+  pageCount,
+) {
+  for (let page = 0; page < (pageCount || 1); page++) {
+    const exposure = await api.query.staking.erasStakersPaged(
+      era,
+      validator,
+      page,
+    );
+
+    const exposureJson = exposure.toJSON();
+    const nominator = exposureJson.others?.find(
+      (n) => n.who === nominatorAddress,
+    );
+
+    if (nominator) {
+      return {
+        stake: BigInt(nominator.value),
+        page,
+      };
+    }
+  }
+
+  return null;
+}
+
+async function calculateValidatorReward(
+  api,
+  era,
+  validator,
+  nominatorAddress,
+  totalEraReward,
+  validatorPoints,
+  totalPoints,
+  validatorPrefsJson,
+  overviewJson,
+) {
+  const validatorTotalPayout = (totalEraReward * validatorPoints) / totalPoints;
+  const commissionPerbill = BigInt(validatorPrefsJson.commission);
+  const commissionPayout = (validatorTotalPayout * commissionPerbill) / PERBILL;
+  const leftoverPayout = validatorTotalPayout - commissionPayout;
+
+  const totalStake = BigInt(overviewJson.total);
+  const pageCount = overviewJson.pageCount || 0;
+
+  const nominatorStake = await findNominatorStake(
+    api,
+    era,
+    validator,
+    nominatorAddress,
+    pageCount,
+  );
+
+  if (!nominatorStake || nominatorStake.stake === 0n) {
+    return null;
+  }
+
+  const reward = (leftoverPayout * nominatorStake.stake) / totalStake;
+
+  return {
+    era,
+    validator,
+    reward: reward.toString(),
+    page: nominatorStake.page,
+  };
+}
+
+async function getNominatorValidators(api, nominatorAddress) {
+  const nominatorInfo = await api.query.staking.nominators(nominatorAddress);
+
+  if (!nominatorInfo.isSome) {
+    return [];
+  }
+
+  const nominatorJson = nominatorInfo.unwrap().toJSON();
+  return nominatorJson.targets || [];
+}
+
+async function checkUnclaimedRewards(api, eras, validators) {
+  const checkQueries = [];
+  const checkQueryMap = [];
+
+  for (const era of eras) {
+    for (const validator of validators) {
+      checkQueries.push(
+        api.query.staking.erasStakersOverview(era, validator),
+        api.query.staking.claimedRewards(era, validator),
+      );
+      checkQueryMap.push({ era, validator });
+    }
+  }
+
+  const checkResults = await Promise.all(checkQueries);
+  const unclaimedMap = new Map();
+  const overviewCache = new Map();
+
+  for (let i = 0; i < checkQueryMap.length; i++) {
+    const { era, validator } = checkQueryMap[i];
+    const baseIdx = i * 2;
+    const overview = checkResults[baseIdx];
+    const claimedRewards = checkResults[baseIdx + 1];
+
+    if (!overview.isSome) {
+      continue;
+    }
+
+    const overviewData = overview.unwrap();
+    const pageCount = overviewData.pageCount?.toNumber() || 1;
+    const claimedPages = claimedRewards.toJSON();
+    const claimedCount = claimedPages ? claimedPages.length : 0;
+
+    if (claimedCount < pageCount) {
+      if (!unclaimedMap.has(era)) {
+        unclaimedMap.set(era, new Set());
+      }
+      unclaimedMap.get(era).add(validator);
+
+      const cacheKey = `${era}-${validator}`;
+      overviewCache.set(cacheKey, overview);
+    }
+  }
+
+  return { unclaimedMap, overviewCache };
+}
+
+async function batchQueryEraRewards(api, eras) {
+  const rewardQueries = eras.map((era) =>
+    api.query.staking.erasValidatorReward(era),
+  );
+  const pointsQueries = eras.map((era) =>
+    api.query.staking.erasRewardPoints(era),
+  );
+
+  const [rewardResults, pointsResults] = await Promise.all([
+    Promise.all(rewardQueries),
+    Promise.all(pointsQueries),
+  ]);
+
+  return { rewardResults, pointsResults };
+}
+
+async function batchQueryValidatorPrefs(api, unclaimedMap) {
+  const validatorQueries = [];
+  const queryMap = [];
+
+  for (const [era, validators] of unclaimedMap.entries()) {
+    for (const validator of validators) {
+      validatorQueries.push(
+        api.query.staking.erasValidatorPrefs(era, validator),
+      );
+      queryMap.push({ era, validator });
+    }
+  }
+
+  const validatorResults = await Promise.all(validatorQueries);
+  return { validatorResults, queryMap };
+}
+
+async function calculateAllErasRewardsBatch(api, nominatorAddress) {
+  const currentEraOpt = await api.query.staking.currentEra();
+  if (!currentEraOpt.isSome) {
+    return { result: [], totalRewards: "0", details: [] };
+  }
+
+  const currentEra = currentEraOpt.unwrap().toNumber();
+  const historyDepth = api.consts.staking.historyDepth.toNumber();
+  const startEra = Math.max(0, currentEra - historyDepth + 1);
+
+  const validators = await getNominatorValidators(api, nominatorAddress);
+  if (validators.length === 0) {
+    return { result: [], totalRewards: "0", details: [] };
+  }
+
+  const allEras = [];
+  for (let era = startEra; era <= currentEra; era++) {
+    allEras.push(era);
+  }
+
+  const { unclaimedMap, overviewCache } = await checkUnclaimedRewards(
+    api,
+    allEras,
+    validators,
+  );
+
+  const eras = Array.from(unclaimedMap.keys()).sort((a, b) => a - b);
+  if (eras.length === 0) {
+    return { result: [], totalRewards: "0", details: [] };
+  }
+
+  const { rewardResults, pointsResults } = await batchQueryEraRewards(
+    api,
+    eras,
+  );
+  const { validatorResults, queryMap } = await batchQueryValidatorPrefs(
+    api,
+    unclaimedMap,
+  );
+
+  const eraResults = [];
+
+  for (let eraIdx = 0; eraIdx < eras.length; eraIdx++) {
+    const era = eras[eraIdx];
+    const eraReward = rewardResults[eraIdx];
+
+    if (!eraReward.isSome) {
+      continue;
+    }
+
+    const totalEraReward = BigInt(eraReward.unwrap().toString());
+    const rewardPointsJson = pointsResults[eraIdx].toJSON();
+    const totalPoints = BigInt(rewardPointsJson.total);
+    let eraTotal = 0n;
+
+    const validatorsToProcess = Array.from(unclaimedMap.get(era) || []);
+
+    for (const validator of validatorsToProcess) {
+      const queryIdx = queryMap.findIndex(
+        (q) => q.era === era && q.validator === validator,
+      );
+
+      if (queryIdx === -1) continue;
+
+      const validatorPoints = rewardPointsJson.individual[validator];
+      if (!validatorPoints || validatorPoints === 0) {
+        continue;
+      }
+
+      const cacheKey = `${era}-${validator}`;
+      const overview = overviewCache.get(cacheKey);
+
+      if (!overview || !overview.isSome) {
+        continue;
+      }
+
+      try {
+        const reward = await calculateValidatorReward(
+          api,
+          era,
+          validator,
+          nominatorAddress,
+          totalEraReward,
+          BigInt(validatorPoints),
+          totalPoints,
+          validatorResults[queryIdx].toJSON(),
+          overview.unwrap().toJSON(),
+        );
+
+        if (reward && BigInt(reward.reward) > 0n) {
+          eraTotal += BigInt(reward.reward);
+
+          if (!eraResults.find((r) => r.era === era)) {
+            eraResults.push({
+              era,
+              unClaimedRewards: "0",
+              validators: [],
+            });
+          }
+
+          const eraResult = eraResults.find((r) => r.era === era);
+          eraResult.validators.push({
+            validatorId: validator,
+            reward: reward.reward,
+            page: reward.page,
+          });
+        }
+      } catch (error) {
+        continue;
+      }
+    }
+
+    if (eraTotal > 0n) {
+      const eraResult = eraResults.find((r) => r.era === era);
+      if (eraResult) {
+        eraResult.unClaimedRewards = eraTotal.toString();
+      }
+    }
+  }
+
+  const totalRewards = eraResults.reduce(
+    (sum, item) => sum + BigInt(item.unClaimedRewards),
+    0n,
+  );
+
+  const details = eraResults.flatMap((eraResult) =>
+    eraResult.validators.map((v) => ({
+      era: eraResult.era,
+      validatorId: v.validatorId,
+      page: v.page,
+    })),
+  );
+
+  return {
+    result: eraResults,
+    totalRewards: totalRewards.toString(),
+    details,
+  };
+}
+
+export default function useUnclaimedRewards(nominatorAddress) {
   const api = useContextApi();
-  const [data, setData] = useState({
-    amount: new BN(0),
-    isLoading: true,
-    error: null,
-  });
+  const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!api || !address) {
-      setData({ amount: new BN(0), isLoading: false, error: null });
+    if (!api || !nominatorAddress) {
+      setLoading(false);
       return;
     }
 
     let cancelled = false;
 
-    async function fetchUnclaimedRewards() {
+    const fetchResult = async () => {
       try {
-        setData({ amount: new BN(0), isLoading: true, error: null });
-
-        // Get historical eras (limit to last 84 eras to avoid performance issues)
-        const MAX_ERAS = 84;
-        const allEras = await api.derive.staking.erasHistoric();
-
-        if (!allEras || allEras.length === 0) {
-          if (!cancelled) {
-            setData({ amount: new BN(0), isLoading: false, error: null });
-          }
-          return;
-        }
-
-        // Limit to recent eras
-        const recentEras = allEras.slice(-1 * MAX_ERAS);
-
-        // Get staking ledger to check which rewards have been claimed
-        const ledgerOpt = await api.query.staking.ledger(address);
-        const ledger = ledgerOpt.unwrapOr(null);
-
-        if (!ledger) {
-          if (!cancelled) {
-            setData({ amount: new BN(0), isLoading: false, error: null });
-          }
-          return;
-        }
-
-        // Get claimed rewards (combines legacy and current claimed rewards)
-        const claimedRewards = [
-          ...(ledger.legacyClaimedRewards || ledger.claimedRewards || []),
-        ];
-
-        // Filter out eras that have already been claimed
-        const unclaimedEras = recentEras.filter(
-          (era) => !claimedRewards.some((claimed) => era.eq(claimed)),
-        );
-
-        if (unclaimedEras.length === 0) {
-          if (!cancelled) {
-            setData({ amount: new BN(0), isLoading: false, error: null });
-          }
-          return;
-        }
-
-        // Calculate total unclaimed rewards
-        let totalUnclaimed = new BN(0);
-
-        // Query rewards for each era individually to avoid timeout
-        // Using Promise.all to query in parallel but with smaller batches
-        const rewardPromises = unclaimedEras.map((era) =>
-          api.derive.staking.stakerRewards(address, era).catch((err) => {
-            console.warn(
-              `Failed to fetch rewards for era ${era.toString()}:`,
-              err,
-            );
-            return null;
-          }),
-        );
-
-        const rewards = await Promise.all(rewardPromises);
-        console.log(":::rewards", rewards);
-
-        // Sum up all unclaimed rewards
-        rewards.forEach((reward) => {
-          if (reward && !reward.eraReward.isZero()) {
-            // Sum up all validator rewards for this nominator
-            Object.values(reward.validators || {}).forEach(
-              (validatorReward) => {
-                if (validatorReward?.value) {
-                  totalUnclaimed = totalUnclaimed.add(validatorReward.value);
-                }
-              },
-            );
-          }
-        });
+        setLoading(true);
+        const data = await calculateAllErasRewardsBatch(api, nominatorAddress);
 
         if (!cancelled) {
-          setData({
-            amount: totalUnclaimed,
-            isLoading: false,
-            error: null,
-          });
+          setResult(data);
         }
-      } catch (e) {
-        console.error("Error fetching unclaimed rewards:", e);
+      } catch (error) {
         if (!cancelled) {
-          setData({
-            amount: new BN(0),
-            isLoading: false,
-            error: e.message,
-          });
+          setResult({ result: [], totalRewards: "0", details: [] });
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
         }
       }
-    }
+    };
 
-    fetchUnclaimedRewards();
+    fetchResult();
 
     return () => {
       cancelled = true;
     };
-  }, [api, address]);
+  }, [api, nominatorAddress]);
 
-  return data;
+  return { result, loading };
 }
