@@ -41,7 +41,6 @@ export default function SubmissionDepositRefund({ pallet = "referenda" }) {
         <RefundPopup
           referendumIndex={referendumIndex}
           pallet={pallet}
-          deposit={deposit}
           onClose={() => setShowPopup(false)}
         />
       )}

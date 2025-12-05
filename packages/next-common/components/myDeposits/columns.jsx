@@ -68,7 +68,6 @@ function SubmissionDepositRefundButton({ pallet, referendumIndex }) {
         <SubmissionDepositRefundPopup
           referendumIndex={referendumIndex}
           pallet={pallet}
-          deposit={deposit}
           onClose={() => setShowPopup(false)}
         />
       )}
@@ -120,7 +119,6 @@ function DecisionDepositRefundButton({ pallet, referendumIndex }) {
         <DecisionDepositRefundPopup
           referendumIndex={referendumIndex}
           pallet={pallet}
-          deposit={deposit}
           onClose={() => setShowPopup(false)}
         />
       )}
