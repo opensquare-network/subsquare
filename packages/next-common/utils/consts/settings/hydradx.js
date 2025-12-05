@@ -106,6 +106,9 @@ const hydradx = {
     treasury: {
       bounties: false,
       spends: true,
+      tips: {
+        archived: true,
+      },
     },
     council: {
       archived: true,
