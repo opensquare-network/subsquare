@@ -10,7 +10,7 @@ const StopNominationPopup = dynamicPopup(() =>
   ),
 );
 
-export function StopNominationButton() {
+export default function StopNominationButton() {
   const [showStopNominationPopup, setShowStopNominationPopup] = useState(false);
   return (
     <>

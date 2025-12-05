@@ -2,6 +2,7 @@ import BondButton from "./bondButton";
 import ClaimButton from "./claimButton";
 import UnBondButton from "./unBondButton";
 import PayeeButton from "./payeeButton";
+import StopNominationButton from "./stopNominationButton";
 
 export default function NominatorQuickActions() {
   return (
@@ -11,6 +12,7 @@ export default function NominatorQuickActions() {
         <BondButton />
         <UnBondButton />
         <PayeeButton />
+        <StopNominationButton />
       </div>
     </div>
   );

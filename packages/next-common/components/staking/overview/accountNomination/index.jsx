@@ -9,7 +9,6 @@ import LoadableContent from "next-common/components/common/loadableContent";
 import { useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import NominatorQuickActions from "./quickActions";
-import { StopNominationButton } from "./quickActions/stopNominationButton";
 import Divider from "next-common/components/styled/layout/divider";
 import WindowSizeProvider from "next-common/context/windowSize";
 import CollapsePanel from "next-common/components/overview/accountInfo/components/collapsePanel";
@@ -60,7 +59,6 @@ function Header({ width }) {
         </div>
         <div className="flex gap-[16px] items-center">
           <NominatorQuickActions />
-          <StopNominationButton />
         </div>
       </div>
     </div>
