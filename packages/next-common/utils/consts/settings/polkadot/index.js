@@ -65,6 +65,7 @@ const polkadot = {
     "Polkadot empowers blockchain networks to work together under the protection of shared security.",
   modules: mergeChainModules({
     whales: true,
+    scheduler: true,
     democracy: {
       archived: true,
     },

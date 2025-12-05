@@ -60,6 +60,7 @@ const kusama = {
     },
     fellowship: true,
     whales: true,
+    scheduler: true,
     democracy: {
       archived: true,
     },
