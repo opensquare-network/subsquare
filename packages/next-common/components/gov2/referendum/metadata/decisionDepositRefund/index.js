@@ -6,10 +6,12 @@ import { RefundWrapper } from "../styled";
 import { isNil } from "lodash-es";
 import BigNumber from "bignumber.js";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
+import { useReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 
 const RefundPopup = dynamicPopup(() => import("./popup"));
 
-export default function DecisionDepositRefund({ pallet = "referenda" }) {
+function DecisionDepositRefundImpl({ pallet }) {
   const { referendumIndex } = useOnchainData();
   const [showPopup, setShowPopup] = useState(false);
   const info = useSubReferendumInfo(pallet, referendumIndex);
@@ -45,5 +47,15 @@ export default function DecisionDepositRefund({ pallet = "referenda" }) {
         />
       )}
     </RefundWrapper>
+  );
+}
+
+export default function DecisionDepositRefund({ pallet = "referenda" }) {
+  const indexer = useReferendumVotingFinishIndexer();
+
+  return (
+    <MigrationConditionalApiProvider indexer={indexer} onlyContextApi={true}>
+      <DecisionDepositRefundImpl pallet={pallet} />
+    </MigrationConditionalApiProvider>
   );
 }
