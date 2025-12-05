@@ -1,9 +1,5 @@
 const polkadotAssetHubNodes = [
   {
-    name: "OnFinality",
-    url: "wss://statemint.api.onfinality.io/public-ws",
-  },
-  {
     name: "Parity",
     url: "wss://polkadot-asset-hub-rpc.polkadot.io",
   },
@@ -16,12 +12,16 @@ const polkadotAssetHubNodes = [
     url: "wss://asset-hub-polkadot.dotters.network",
   },
   {
+    name: "OnFinality",
+    url: "wss://statemint.api.onfinality.io/public-ws",
+  },
+  {
     name: "LuckyFriday",
     url: "wss://rpc-asset-hub-polkadot.luckyfriday.io",
   },
   {
     name: "Dwellir",
-    url: "wss://asset-hub-polkadot-rpc.dwellir.com",
+    url: "wss://asset-hub-polkadot-rpc.n.dwellir.com",
   },
   {
     name: "Dwellir Tunisia",

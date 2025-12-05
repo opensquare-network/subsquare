@@ -28,6 +28,19 @@ const list = [
   { label: "Github Name", valueKey: "github" },
 ];
 
+const renderIdentityInfo = (value) => {
+  if (isNil(value)) return "-";
+
+  if (typeof value === "object") {
+    const keys = Object.keys(value);
+    if (keys.length > 0) {
+      return value[keys[0]] || "-";
+    }
+  }
+
+  return value || "-";
+};
+
 export default function IdentityPropList({ identityInfo, className = "" }) {
   if (isNil(identityInfo)) return null;
 
@@ -39,7 +52,7 @@ export default function IdentityPropList({ identityInfo, className = "" }) {
         <div key={item.label} className="flex max-sm:justify-between">
           <IdentityPropListLabel>{item.label}</IdentityPropListLabel>
           <IdentityPropListValue>
-            {identityInfo[item.valueKey] ?? "-"}
+            {renderIdentityInfo(identityInfo[item.valueKey])}
           </IdentityPropListValue>
         </div>
       ))}

@@ -3,7 +3,7 @@ import RightWrapper from "next-common/components/rightWraper";
 import PrimaryButton from "next-common/lib/button/primary";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { useCallback, useState } from "react";
-import SubIdentitiesTable from "../../subTable";
+import SubIdentitiesTable from "./subIdentitiesTable";
 import { AddressUser } from "next-common/components/user";
 import useMyIdentityType from "next-common/hooks/people/useMyIdentityType";
 import Loading from "next-common/components/loading";
@@ -18,6 +18,13 @@ const SetSubsPopup = dynamicPopup(
   },
 );
 
+const SetSingleSubPopup = dynamicPopup(
+  () => import("next-common/components/setSingleSubPopup"),
+  {
+    ssr: false,
+  },
+);
+
 export default function SubIdentitiesImpl({ isEmpty, isLoading }) {
   const {
     subs,
@@ -25,6 +32,7 @@ export default function SubIdentitiesImpl({ isEmpty, isLoading }) {
     retry: retrySubs,
   } = useSubscribeMySubIdentities();
   const [showSetSubsPopup, setShowSetSubsPopup] = useState(false);
+  const [showSetSingleSubPopup, setShowSetSingleSubPopup] = useState(false);
   const { type, parent } = useMyIdentityType();
   const address = useRealAddress();
   const isSubIdentity = type === "sub";
@@ -32,6 +40,10 @@ export default function SubIdentitiesImpl({ isEmpty, isLoading }) {
 
   const openSetSubsPopup = useCallback(() => {
     setShowSetSubsPopup(true);
+  }, []);
+
+  const openSetSingleSubPopup = useCallback(() => {
+    setShowSetSingleSubPopup(true);
   }, []);
 
   if (isLoading) {
@@ -52,12 +64,23 @@ export default function SubIdentitiesImpl({ isEmpty, isLoading }) {
 
   return (
     <SignerPopupWrapper>
-      <SubIdentitiesTable subs={subs} isLoading={isSubsLoading} />
-      <RightWrapper className="mt-4">
+      <SubIdentitiesTable subs={subs} isLoading={isSubsLoading} retry={retrySubs} />
+      <RightWrapper className="mt-4 flex gap-x-2">
+        <PrimaryButton className="w-auto" onClick={openSetSingleSubPopup}>
+          Add
+        </PrimaryButton>
         <PrimaryButton className="w-auto" onClick={openSetSubsPopup}>
-          Edit
+          Batch Edit
         </PrimaryButton>
       </RightWrapper>
+
+      {showSetSingleSubPopup && (
+        <SetSingleSubPopup
+          onClose={() => setShowSetSingleSubPopup(false)}
+          subs={subs}
+          retry={retrySubs}
+        />
+      )}
 
       {showSetSubsPopup && (
         <SetSubsPopup

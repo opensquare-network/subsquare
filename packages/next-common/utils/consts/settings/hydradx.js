@@ -107,9 +107,15 @@ const hydradx = {
       bounties: false,
       spends: true,
     },
+    council: {
+      archived: true,
+    },
   }),
   integrations: {
     subscan: true,
+  },
+  referendaActions: {
+    startFrom: 98,
   },
   cssVarsLight: {
     theme100: "rgba(229,62,118,0.10)",

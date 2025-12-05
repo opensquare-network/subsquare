@@ -44,6 +44,7 @@ function EvidencePageNotFoundImpl({ props }) {
       },
       {
         content: "Evidences",
+        path: "/fellowship/evidences",
       },
     ],
     [props.who],

@@ -1,12 +1,16 @@
 import { InfoDocs } from "@osn/icons/subsquare";
-import { noop } from "lodash-es";
 import Tooltip from "next-common/components/tooltip";
 import { cn } from "next-common/utils";
 import { FellowshipCoreFeedEventLabel } from "./shared";
+import { useState } from "react";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-export default function FellowshipCoreFeedsParamsChangedEvent({
-  setComparePopupVisible = noop,
-}) {
+const FellowshipCoreFeedsCompareParamsChangesPopup = dynamicPopup(() =>
+  import("../compareParamsChangesPopup"),
+);
+
+export default function FellowshipCoreFeedsParamsChangedEvent({ feed }) {
+  const [comparePopupVisible, setComparePopupVisible] = useState(false);
   return (
     <>
       <span className="text-textPrimary">
@@ -28,6 +32,15 @@ export default function FellowshipCoreFeedsParamsChangedEvent({
           }}
         />
       </Tooltip>
+
+      {comparePopupVisible && (
+        <FellowshipCoreFeedsCompareParamsChangesPopup
+          feed={feed}
+          onClose={() => {
+            setComparePopupVisible(false);
+          }}
+        />
+      )}
     </>
   );
 }

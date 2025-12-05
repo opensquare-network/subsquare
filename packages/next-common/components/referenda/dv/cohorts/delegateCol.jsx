@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { LinkMedium } from "@osn/icons/subsquare";
 import { isNil } from "lodash-es";
 import BigNumber from "bignumber.js";

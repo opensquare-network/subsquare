@@ -35,7 +35,7 @@ export default function FellowshipApplicationTag({ state }) {
   if (content) {
     return (
       <Tooltip content={content}>
-        <Tag className="cursor-pointer">{formattedViewMap[state]}</Tag>
+        <Tag>{formattedViewMap[state]}</Tag>
       </Tooltip>
     );
   }

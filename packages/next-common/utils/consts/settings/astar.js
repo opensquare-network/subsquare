@@ -26,10 +26,6 @@ const nodes = [
     url: "wss://rpc.astar.network",
   },
   {
-    name: "Blast",
-    url: "wss://astar.public.blastapi.io",
-  },
-  {
     name: "Dwellir",
     url: "wss://astar-rpc.dwellir.com",
   },

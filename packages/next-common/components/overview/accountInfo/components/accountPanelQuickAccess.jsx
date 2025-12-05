@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import { useChainSettings } from "next-common/context/chain";
 import SecondaryButton from "next-common/lib/button/secondary";
-import Link from "next/link";
+import Link from "next-common/components/link";
 
 const MenuProxy = dynamic(
   import("@osn/icons/subsquare").then((mod) => mod.MenuProxy),

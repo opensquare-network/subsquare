@@ -3,7 +3,6 @@ import { OptionWrapper } from "next-common/components/internalDropdown/styled";
 import { SystemMore } from "@osn/icons/subsquare";
 import copy from "copy-to-clipboard";
 import { useComment } from "../comment/context";
-import nextApi from "next-common/services/nextApi";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useRouter } from "next/router";
@@ -15,36 +14,46 @@ import {
   EditMenuItem,
   CopyMenuItem,
 } from "next-common/components/articleMoreMenu/common";
+import { useCurrentCommentAnchor } from "../comment/useCommentAnchor";
+import { usePost } from "next-common/context/post";
+import { useCommentActions } from "next-common/sima/context/commentActions";
 
-const DeletePopup = dynamicPopup(() =>
-  import("next-common/components/deletePopup"),
+const MaybeSimaDeletePopup = dynamicPopup(() =>
+  import("next-common/components/deletePopup/maybeSima"),
 );
 
-export default function CommentMoreMenu({ editable, setIsEdit }) {
+export default function CommentMoreMenu({
+  editable,
+  setIsEdit,
+  customDeleteComment,
+}) {
   const dispatch = useDispatch();
   const comment = useComment();
+  const post = usePost();
   const [show, setShow] = useState(false);
   const ref = useRef();
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const router = useRouter();
   const isAdmin = useIsAdmin();
+  const currentCommentAnchor = useCurrentCommentAnchor();
+  const { deleteComment: deleteCommentAction } = useCommentActions();
 
   useClickAway(ref, () => setShow(false));
 
   const onCopy = () => {
     copy(
-      `${window.location.origin}${window.location.pathname}${window.location.search}#${comment.height}`,
+      `${window.location.origin}${window.location.pathname}${window.location.search}#${currentCommentAnchor}`,
     );
   };
 
   const deleteComment = useCallback(async () => {
-    const { error } = await nextApi.delete(`comments/${comment._id}`);
+    const { error } = await deleteCommentAction(post, comment);
     if (error) {
       dispatch(newErrorToast(error.message));
       return;
     }
     router.replace(router.asPath);
-  }, [comment._id, dispatch, router]);
+  }, [deleteCommentAction, post, comment, dispatch, router]);
 
   return (
     <div ref={ref} className=" relative">
@@ -62,7 +71,7 @@ export default function CommentMoreMenu({ editable, setIsEdit }) {
               }}
             />
           )}
-          {comment?.dataSource !== "sima" && (editable || isAdmin) && (
+          {(editable || isAdmin) && (
             <DeleteMenuItem
               onClick={() => {
                 setShowDeletePopup(true);
@@ -75,10 +84,11 @@ export default function CommentMoreMenu({ editable, setIsEdit }) {
         </OptionWrapper>
       )}
       {showDeletePopup && (
-        <DeletePopup
+        <MaybeSimaDeletePopup
           itemName="comment"
           setShow={setShowDeletePopup}
-          deletePost={deleteComment}
+          deletePost={customDeleteComment || deleteComment}
+          isSima={comment.dataSource === "sima"}
         />
       )}
     </div>

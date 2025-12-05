@@ -77,13 +77,17 @@ export default function CheckUnFinalizedBase({
   }, [isUnFinalized, checkServerPostAvailable, router]);
 
   if (isNotFound) {
-    return <NotFound />;
+    return (
+      <Wrapper className={"w-full p-4"}>
+        <NotFound className="p-0" />
+      </Wrapper>
+    );
   }
 
   return (
-    <Wrapper>
+    <Wrapper className={"w-full p-4"}>
       <Loading />
-      {isUnFinalized && (
+      {
         <>
           <H2>Waiting for block confirmation</H2>
           <P>
@@ -91,7 +95,7 @@ export default function CheckUnFinalizedBase({
             page will update automatically once it’s confirmed.
           </P>
         </>
-      )}
+      }
     </Wrapper>
   );
 }

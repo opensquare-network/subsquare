@@ -1,24 +1,31 @@
-import { proxyClient } from "next-common/hooks/apollo";
-import { GET_PROXIES } from "./consts";
-import { defaultPageSize } from "next-common/utils/constants";
+import { getProxiesClient } from "next-common/hooks/useAllGraphqlProxies";
+import { isNil } from "lodash-es";
+import { GET_PROXIES } from "next-common/services/gql/proxy/consts";
 
-export async function queryProxies(
-  { delegatee, delegator, isActive, isPure },
-  page = 1,
-  pageSize = defaultPageSize,
-) {
-  const { data } =
-    (await proxyClient?.query?.({
+export async function queryProxies({ delegator = null, delegatee = null }) {
+  const proxiesClient = getProxiesClient();
+  if (!proxiesClient) {
+    throw new Error("Proxies client is not supported");
+  }
+
+  let variables = {};
+  if (!isNil(delegator)) {
+    variables["delegator"] = delegator;
+  }
+
+  if (!isNil(delegatee)) {
+    variables["delegatee"] = delegatee;
+  }
+
+  try {
+    const { data } = await proxiesClient.query({
       query: GET_PROXIES,
-      variables: {
-        limit: pageSize,
-        offset: (page - 1) * pageSize,
-        delegatee,
-        delegator,
-        isActive,
-        isPure,
-      },
-    })) || {};
+      fetchPolicy: "no-cache",
+      variables,
+    });
 
-  return { data: data?.proxies };
+    return data?.proxies;
+  } catch (e) {
+    return null;
+  }
 }

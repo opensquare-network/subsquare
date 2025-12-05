@@ -12,10 +12,9 @@ import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
-import CollectiveProvider, {
-  collectivePallets,
-} from "next-common/context/collective";
+import CollectiveProvider from "next-common/context/collective";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
+import useTechcommPallet from "next-common/hooks/techcomm/useTechcommPallet";
 
 function TechCommMotionContent() {
   const motion = usePost();
@@ -61,8 +60,9 @@ function ProposalPageImpl() {
 }
 
 export default function ProposalPage({ motion }) {
+  const pallet = useTechcommPallet();
   return (
-    <CollectiveProvider pallet={collectivePallets.technicalCommittee}>
+    <CollectiveProvider pallet={pallet}>
       <PostProvider post={motion}>
         <ProposalPageImpl />
       </PostProvider>

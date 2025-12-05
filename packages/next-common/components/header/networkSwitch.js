@@ -6,40 +6,53 @@ import { ArrowDown } from "@osn/icons/subsquare";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { useWindowSize } from "react-use";
 import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
-import { useChainSettings } from "next-common/context/chain";
+import { useChain, useChainSettings } from "next-common/context/chain";
 import SecondaryButton from "next-common/lib/button/secondary";
 import * as Popover from "@radix-ui/react-popover";
 import { NeutralPanel } from "../styled/containers/neutralPanel";
 import { cn } from "next-common/utils";
 import { useScanHeight } from "next-common/hooks/scanHeight";
+import { useCoretimeScanHeight } from "next-common/hooks/coretimeScanHeight";
+import { isCoretimeChain } from "next-common/utils/chain";
 
 const NetworkOptions = dynamicClientOnly(() => import("./networkOptions"));
 
 function useHeaderHeight() {
+  const chain = useChain();
   const nodesHeight = useScanHeight();
   const chainHeight = useSelector(latestHeightSelector);
   const { noScan } = useChainSettings();
+  const coretimeScanHeight = useCoretimeScanHeight();
+
+  if (isCoretimeChain(chain)) {
+    return coretimeScanHeight;
+  }
 
   return noScan ? chainHeight : nodesHeight;
+}
+
+function NetworkEntryWithBlockHeight() {
+  const nodesHeight = useHeaderHeight();
+  if (!nodesHeight) {
+    return <Loading size={16} />;
+  }
+
+  return <span>{`#${nodesHeight?.toLocaleString()}`}</span>;
+}
+
+function NetworkEntryWithChainName({ activeNode }) {
+  return <div>{activeNode?.name}</div>;
 }
 
 export default function NetworkSwitch({ activeNode }) {
   const [show, setShow] = useState(false);
   const windowSize = useWindowSize();
-  const nodesHeight = useHeaderHeight();
 
   useEffect(() => {
     if (windowSize.width && windowSize.width <= 768) {
       setShow(false);
     }
   }, [windowSize]);
-
-  let heightComponent;
-  if (nodesHeight) {
-    heightComponent = <span>{`#${nodesHeight?.toLocaleString()}`}</span>;
-  } else {
-    heightComponent = <Loading size={16} />;
-  }
 
   return (
     <Popover.Root open={show} onOpenChange={setShow}>
@@ -53,9 +66,9 @@ export default function NetworkSwitch({ activeNode }) {
           }}
         >
           {activeNode?.hideHeight ? (
-            <div>{activeNode?.name}</div>
+            <NetworkEntryWithChainName activeNode={activeNode} />
           ) : (
-            heightComponent
+            <NetworkEntryWithBlockHeight />
           )}
         </SecondaryButton>
       </Popover.Trigger>

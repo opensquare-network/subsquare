@@ -2,6 +2,234 @@
 
 All notable changes to this project will be documented in this file.
 
+# 5.5.5
+
+Date:
+2025-12-01. [Code diff](https://github.com/opensquare-network/subsquare/compare/5a4fa25f78c92a22d1f0ff63ce400ad0464a22b3...41c860def6c6f57adcf821bc349248e08e82de26).
+
+- Add scheduler page to show scheduled calls.
+- Search:
+    - Support searching tips by tip title.
+    - Improve search loading so content which doesn't depend on RPC connection can show first.
+- Add treasury fund statistics for polkadot host clients including Gossamer and KAGOME.
+- Refactor and improve treasury fund projects page style.
+- Index all history multisig addresses and save their related info to the database. Then we query multisig info with
+  subsquare backend API, not from explorer API.
+- Preimage:
+    - Tech: support btreemap in preimage construction.
+    - Disable the remove button when unnecessary.
+- Bifrost: correct track selection in the treasury spend referenda template.
+- Move calendar under the advanced menu from the main menu.
+- Upgrade dependencies and improve style.
+
+# 5.5.4
+
+Date:
+2025-11-26. [Code diff](https://github.com/opensquare-network/subsquare/compare/a15344be902f48348bf30d5836520b0454d15ec2...81ebc44243a859ab3e3a737f0c2f0dcdda5bf812).
+
+- Add explorers, multisig tools and governance platforms treasury fund statistics on the treasury projects page.
+- Index and save pure accounts to subsquare database. And in fronted, we use subsquare backend API to get pure account
+  info taking place of the old explorer API.
+- Redesign the block height component and show block height on footer for relay chains.
+- Add batch treasury spends template on the referenda page.
+- Fellowship: load fellowship related data from backend API to improve the performance of the fellowship statistics
+  page.
+- Fix the sort of identity timeline by ordering by time instead of block height. Ordering by block height is incorrect
+  after AHM.
+- Update bifrost kusama endpoints.
+- Improve coinbase telemetry options to remove console errors.
+- Improve sub menu styles.
+
+# 5.5.3
+
+Date:
+2025-11-19. [Code diff](https://github.com/opensquare-network/subsquare/compare/8a53fcbb937ff060ed254b102dc21987c0187d91...e5e33f6d24dad6e6e6f5012340456b6fc12a46f4).
+
+- Improve the summary on the child bounty list page for polkadot and kusama. So users can see the related total, pending
+  payout, claimed info.
+- Add treasury funded project statistics page for polkadot and show wallet related data.
+- Support teleporting tokens between system para chains.
+- Fix USDx spend referenda templates due to assethub migration, and upgrade XCM v3 to v4.
+- Fix cross-chain call data extraction from a referendum call.
+- Support multisig natively and enable mimir for hyperbridge.
+- Show fiat value balance when hover on bounty detail page.
+- Fix referenda DV influence data due to backend API refactor.
+- Update RPC endpoints for relay and system para chains.
+- Fellowship: improve fellowship statistics page performance by preloading members data from server API and improve the
+  UI layout.
+- Fix styles and code refactor.
+
+# 5.5.2
+
+Date:
+2025-11-13. [Code diff](https://github.com/opensquare-network/subsquare/compare/37bbf119219e1a6e5d5977fc7835a98fd9d39aa6...cddf028bef33f0f35ccdb915e9f9623f1980b1e8).
+
+- Fellowship: fix teleport between collectives and assethub.
+- Support acurast chain.
+- Fix loading state and empty data placeholder for whitelist.
+- Refactor: cleanup useless code for route `/assethub`.
+- Support native token transfer on assets page.
+- Import multisig addresses import from both relay chain and assethub explorer API.
+- Fix a page crash when inputting number on the treasury referendum template popup. We added a guard when getting
+  treasury tracks.
+- Code refactor.
+
+# 5.5.1
+
+Date:
+2025-11-11. [Code diff](https://github.com/opensquare-network/subsquare/compare/7672ed5bf2a626fd95aa6837697f9f190a4d1306...d3b894815e090ebe2e304b04f2b7ac43b8b438de).
+
+- Add treasury burn page to show treasury burn status and history.
+- Assethub migration
+    - Fix confirmation countdown on the referenda list page after AHM.
+    - Correct polkadot treasury balance calculation after AHM.
+    - Fix child bounty claim after AHM. We need to correct the API instance.
+    - Fix treasury request time calculation on the referendum detail page.
+    - Fix account vote lock expiration by OpenGov prior lock.
+- Add a state filter for child bounties.
+- Fix the block height when we enter into coretime space. We use the data from backend stream API.
+- Improve the filter for treasury spend and move the select component out of the filter popup.
+- Fellowship: show win rate for fellowship member votes on the profile page.
+- Tech: Fix SVG ID conflicts and optimize SVG reusability.
+- Code refactor and fix styles.
+
+# 5.5.0
+
+Date:
+2025-11-05. [Code diff](https://github.com/opensquare-network/subsquare/compare/5e0a3790c0caa61c5004b0ed13e1027bb4008962...88b397a52108f6864027e42faa64e7c1686b5991).
+
+- Add a new `/assets` route after assethub migration to show account assets and all onchain assets info including native
+  and foreign assets.
+- Implement a treasury status page on which we show treasury assets info, to be awarded info, spend period info and the
+  list of treasury beneficiaries.
+- Fix coretime chart and summary data by using relay chain block number for calculations. Check
+  code [here](https://github.com/opensquare-network/subsquare/commit/43f1078b1bc5996906ce46dc23ec00647b3142bb).
+- Add an assets tab on the user profile page to show user assets.
+- Support polkadot assethub migration.
+- Support deleting sima comments on the referendum detail page.
+- Support data tracking with [posthog](https://posthog.com/).
+- Show bounty info as identity info if an address is the beneficiary address of a bounty.
+- Support a new `Expired` state for treasury spends. It means time is over expiration time of a not paid treasury spend.
+- Show identity usernames and authorities under people route.
+- Fellowship:
+    - Show rank of fellowship members on the fellowship referenda actions popup.
+    - Improve the track selection for the fellowship treasury spend referenda template.
+- Fix the DV cohort page crash caused by track info missing of referenda.
+- Fix styles and code refactor.
+
+# 5.4.4
+
+Date:
+2025-10-21. [Code diff](https://github.com/opensquare-network/subsquare/compare/c4161977cc7a8fb0c50199e64d35698cb4ccf207...c93d1ad6977471261528bdc1b324c91e6a665f45).
+
+- Support kusama assethub migration.
+    - Support fellowship business is still in relay chain which other businesses are in assethub.
+    - Fix account votes unlock issue caused by assethub migration.
+    - Fix treasury spend period countdown after assethub migration. New countdown is calculated by the `lastSpendPeriod`
+      storage.
+- Fellowship:
+    - Fix api for querying fellowship members.
+    - Support fellowship referenda actions so users can see all tally affected votes by members.
+    - Fix the page crash by the cleanup pool action.
+- Support post content translations for referenda.
+- Add a treasury status page to show treasury balances and all beneficiaries.
+- Support replying comments from polkassembly.
+- Support hyperbridge and support keccakAsU8a hasher.
+- Improve treasury spend payout button status. Disable the payout button when invalid and show related tooltip.
+- Add whitelist page to show all whitelisted calls.
+- Move fellowship category out of the OpenGov menu on the profile page.
+- Fix kusama DV address for trustless core.
+- Fix page title of the overview page.
+- Archive council module for hydration.
+- Fix styles and upgrade dependencies.
+
+# 5.4.3
+
+Date:
+2025-10-11. [Code diff](https://github.com/opensquare-network/subsquare/compare/0d1a5c15e462d9c6cef3d70cd15fc5a2ff4e3e57...d4edbebf11d54051923378e9d88ecfd0ffed4e07).
+
+- Support kusama assethub migration.
+    - Index relay chain for fellowship business and assethub for other governance related business.
+    - Fronted configs and use relay chain API for fellowship pages.
+- A better design for bounty summary. We show the total value and bounty numbers of different status.
+- Show treasury beneficiary status on user profile page.
+- Fellowship: enable search for collectives chain and users can search fellowship members, referenda, treasury spends.
+- Show related bounty info and link on the referendum detail page if the referendum is related to a bounty.
+- Correct zkverify mainnet ss58 format.
+- Improve tooltip for bounty funded status tag.
+- Refactor referenda curves related code to reduce coupling.
+- Style improvements and other code refactor.
+
+# 5.4.2
+
+Date:
+2025-09-28. [Code diff](https://github.com/opensquare-network/subsquare/compare/5ce5c40cbc2e7452d8a9e4de92d83de6ccb8a819...b0c8769265ed2489719126a9daa0c6e7185b0537).
+
+- Support for multisig templates. Users can quickly create a call to transfer/batch transfer/add a proxy/remove a proxy.
+- Add eco news on the overview page, so users can report/see the latest eco news. Admins can manage news.
+- Show the call popup when users are approving a multisig if there is call info, so users can confirm the multisig call.
+- Fix deposit tab number on the profile page, so users can see the correct deposits number.
+- Use paseo assethub API for paseo multisigs after assethub migration.
+- Add a component to sort referenda by index desc.
+- Support zkverify mainnet.
+- Enable OpenGov actions for hydration, bifrost-polkadot and zkverify.
+- Add an award countdown component on the treasury proposal list.
+- Fix OpenGov referendum curve chart when a referendum vote finished before the deciding period end.
+- Update dependency to wagmi.
+
+# 5.4.1
+
+Date:
+2025-09-22. [Code diff](https://github.com/opensquare-network/subsquare/compare/c3afd2a8e965c67b397fb31a86d18275961fa04d...37a8251b4043bb9061f0558411c11ebee0959178).
+
+- [Big] Add a consolidated feeds for fellowship:
+    - Index and save referenda related feeds to the database.
+    - Add API for latest feeds and paged feeds data.
+    - Show the latest feeds panel on the overview page and develop a new feeds page including referenda, membership and
+      salary related feeds.
+- Add transfer relationships to profile relatives chart for polkadot.
+- Decentralized voices
+    - Add a statistics message on the influence panel, so users can see how many referenda are affected by the DV
+      program.
+    - Show the description panel for on each DV cohort detail page.
+- Improve pagination component to solve some UX issues.
+- Show the 404 component when referendum id error on the referendum detail page.
+- Guard invalid address for the profile page and the fellowship evidence detail page.
+- Fix page title for coretime and people page.
+- Add code guard for democracy call when extracting remarks.
+- Fix user's banner does not change when switching addresses on the profile relatives popup.
+- Style fixes and code refactor.
+
+# 5.4.0
+
+Date:
+2025-09-13. [Code diff](https://github.com/opensquare-network/subsquare/compare/a1113c82465b04faa0ac8e196508d1821a21d967...124ffc47dc551c44dd9d10a1a7c7dfa179c7f24f).
+
+- [Medium] Add decentralized voices page for OpenGov referenda.
+    - A table to show DV delegates participation and win rate, comparison of Aye/Nay/Abstain votes.
+    - A heatmap to show votes of referenda.
+    - Influence to referenda by DV delegations.
+    - Data are divided by DAOs and guardians.
+    - History DV cohorts are shown, and we can see details of history cohort.
+- Show more multisig info on the profile page. If an address is a multisig address, we show its multisigs and its
+  composition as a multisig including signatories and threshold.
+- Assethub migration support
+    - Fix confirmation estimation.
+    - Fix deciding progress percentage calculation.
+    - Fix preparing blocks calculation.
+    - Fix referendum enactment status calculation.
+    - Fix the referenda countdown component status calculation.
+- Add intime-scan package to index on-chain business following the latest block, not finalized block, so we can get the
+  latest on-chain data in fronted without waiting for the block confirmation.
+    - Support preimage latest onchain data indexing and fronted integration.
+    - Support proxy latest onchain data indexing and fronted integration.
+- Add next config headers to fix clickjacking.
+- Support autofocus for the votes popup search input.
+- Refactor more menu related code on the referendum detail page and the discussion post menu to reduce code coupling
+- Fix delegation page with democracy query param.
+- Show component 404 instead of redirecting users to 404 page for evidence detail page.
+- Style fixes and dependencies upgration.
+
 # 5.3.3
 
 Date:

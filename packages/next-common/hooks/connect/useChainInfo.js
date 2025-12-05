@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { getSpecTypes } from "@polkadot/types-known";
 import { formatBalance, isNumber } from "@polkadot/util";
 import { base64Encode } from "@polkadot/util-crypto";
-import { useContextApi } from "next-common/context/api";
 import { useChainSettings } from "next-common/context/chain";
+import { useContextApi } from "next-common/context/api";
 
 export default function useChainInfo() {
   const api = useContextApi();

@@ -7,8 +7,11 @@ import defaultPolkadotNodes from "next-common/utils/consts/settings/polkadot/nod
 import polkadotLinks from "next-common/utils/consts/settings/polkadot/links";
 import polkadotTreasuryTracks from "next-common/utils/consts/settings/polkadot/tracks";
 import { mergeChainModules } from "../common/modules";
-import polkadotCommonCfg from "next-common/utils/consts/settings/polkadot/common";
+import polkadotCommonCfg, {
+  polkadotAssethubMigration,
+} from "next-common/utils/consts/settings/polkadot/common";
 import polkadotPreimageSettings from "next-common/utils/consts/settings/common/preimage/polkadot";
+import polkadotAssetHubNodes from "next-common/utils/consts/settings/polkadotAssetHub/endpoints";
 
 const ProjectIconPolkadotDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconPolkadotDark"),
@@ -29,7 +32,10 @@ const polkadot = {
   ...polkadotCommonCfg,
   hasElections: true,
   blockTime: 6000,
-  endpoints: defaultPolkadotNodes,
+  assethubBlockTime: 12000,
+  assethubMigration: polkadotAssethubMigration,
+  endpoints: polkadotAssetHubNodes,
+  relayChainEndpoints: defaultPolkadotNodes,
   avatar: ProjectIconPolkadotLight,
   darkAvatar: ProjectIconPolkadotDark,
   networkIcon: NetworkPolkadot,
@@ -53,7 +59,8 @@ const polkadot = {
     },
   },
   hasMultisig: true,
-  multisigApiPrefix: "dot",
+  multisigApiPrefix: "ahp-gh-api",
+  relayChainMultisigApiPrefix: "dot-multisig-api",
   useVoteCall: true,
   description:
     "Polkadot empowers blockchain networks to work together under the protection of shared security.",
@@ -66,11 +73,13 @@ const polkadot = {
       displayTreasuryRequesting: true,
     },
     treasury: {
+      status: true,
       spends: true,
       childBounties: true,
       tips: {
         archived: true,
       },
+      burn: true,
     },
     council: {
       archived: true,
@@ -82,6 +91,7 @@ const polkadot = {
     assethub: true,
     people: true,
     vesting: true,
+    whitelist: true,
   }),
   integrations: {
     doTreasury: true,
@@ -101,7 +111,7 @@ const polkadot = {
   treasuryProposalTracks: polkadotTreasuryTracks,
   newProposalQuickStart: {
     usdxTreasuryProposal: true,
-    spendDotOnAssetHubProposal: true,
+    spendDotOnAssetHubProposal: false,
     cancelReferendum: true,
     killReferendum: true,
   },
@@ -118,6 +128,14 @@ const polkadot = {
   openSquare: {
     voting: "polkadot",
   },
+  ecoNews: true,
+  translations: {
+    referenda: true,
+  },
+  supportForeignAssets: true,
+  supportAssets: true,
+  bountyIdentity: true,
+  hideHeight: true,
 };
 
 export default polkadot;

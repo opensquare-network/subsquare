@@ -21,23 +21,13 @@ const Wrapper = styled.div`
   }
 `;
 
-export default function CommentList({
-  category,
-  items,
-  pagination,
-  create = null,
-  summary,
-}) {
+export default function CommentList({ items, pagination }) {
   return (
     <Wrapper className="max-w-full">
-      <TitleContainer>
-        {category}
-        {create}
-      </TitleContainer>
-      {summary}
-      <MaybeEmpty items={items} type={category}>
+      <TitleContainer>Comments</TitleContainer>
+      <MaybeEmpty items={items} type="comments">
         {items.map((item, index) => (
-          <CommentSimple key={index} data={item} type={category} />
+          <CommentSimple key={index} data={item} />
         ))}
       </MaybeEmpty>
       {pagination && <Pagination {...pagination} />}

@@ -3,6 +3,7 @@ import { createContext, useContext, useState } from "react";
 export const VIEW_TYPE = {
   COMMON: "common",
   DELEGATION: "delegation",
+  TRANSFER: "transfer",
 };
 
 export const RelationshipViewTypeContext = createContext();

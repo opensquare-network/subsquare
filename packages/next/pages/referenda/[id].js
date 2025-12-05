@@ -16,6 +16,7 @@ import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWr
 import CheckUnFinalized from "next-common/components/pages/components/gov2/checkUnFinalized";
 import ReferendaBreadcrumb from "next-common/components/referenda/breadcrumb";
 import DetailLayout from "next-common/components/layout/DetailLayout/referendaDetailLayout";
+import DefaultDetailLayout from "next-common/components/layout/DetailLayout";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
@@ -23,6 +24,7 @@ import { usePageProps } from "next-common/context/page";
 import { ReferendumContent } from "next-common/components/pages/components/referenda/referendaContent";
 import { ReferendaPalletProvider } from "next-common/context/referenda/pallet";
 import WindowSizeProvider from "next-common/context/windowSize";
+import NotFoundDetail from "next-common/components/notFoundDetail";
 
 function UnFinalizedBreadcrumb({ id }) {
   return (
@@ -62,11 +64,22 @@ function ReferendumPageCommon({ breadcrumbs, postContent }) {
 
 function ReferendumNullPage() {
   const { id } = usePageProps();
+  const detail = usePost();
+  const desc = getMetaDesc(detail);
+  const seoInfo = {
+    title: detail?.title,
+    desc,
+    ogImage: getBannerUrl(detail?.bannerCid),
+  };
+
   return (
-    <ReferendumPageCommon
+    <DefaultDetailLayout
+      hasSidebar
+      seoInfo={seoInfo}
       breadcrumbs={<UnFinalizedBreadcrumb id={id} />}
-      postContent={<CheckUnFinalized id={id} />}
-    />
+    >
+      <CheckUnFinalized id={id} />
+    </DefaultDetailLayout>
   );
 }
 
@@ -81,6 +94,22 @@ function ReferendumPageWithPost() {
 
 function ReferendumPageImpl() {
   const detail = usePost();
+  const { id } = usePageProps();
+
+  if (!/^\d+$/.test(id)) {
+    return (
+      <NotFoundDetail
+        hasSidebar
+        customId={id}
+        breadcrumbItems={[
+          {
+            path: "/referenda",
+            content: "Referenda",
+          },
+        ]}
+      />
+    );
+  }
 
   if (!detail) {
     return <ReferendumNullPage />;
@@ -103,6 +132,10 @@ export default function ReferendumPage({ detail }) {
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
+
+  if (!/^\d+$/.test(id)) {
+    return getNullDetailProps(id, { voteStats: {} });
+  }
 
   const { result: detail } = await backendApi.fetch(
     gov2ReferendumsDetailApi(id),

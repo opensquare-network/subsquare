@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { cn } from "next-common/utils";
 
 /**

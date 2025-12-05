@@ -6,7 +6,7 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { cn } from "next-common/utils";
 import KvList from "next-common/components/listInfo/kvList";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { getChildBountyIndex } from "next-common/utils/viewfuncs/treasury/childBounty";
 
 export default function ChildBountiesTable({ childBounties }) {

@@ -7,7 +7,7 @@ export default function Influence() {
   return (
     <WindowSizeProvider>
       <TabsTitle className="mx-6">Influence</TabsTitle>
-      <SecondaryCard>
+      <SecondaryCard className="flex flex-col gap-y-4">
         <InfluenceImpl />
       </SecondaryCard>
     </WindowSizeProvider>

@@ -6,13 +6,15 @@ import {
 import AddressUser from "next-common/components/user/addressUser";
 import styled from "styled-components";
 import tw from "tailwind-styled-components";
-import { useProfileBannerUrl } from "next-common/components/profile/header";
+import { useProfileBannerUrlWithDefault } from "next-common/components/profile/header";
 import { cn } from "next-common/utils";
 import {
   useContextAddress,
   useSetContextAddress,
 } from "next-common/context/address";
 import { useCallback } from "react";
+import useFetchUserInfo from "next-common/hooks/profile/useFetchUserInfo";
+import { getBannerUrl } from "next-common/utils/banner";
 
 const NodeWrap = styled.div`
   box-shadow: var(--shadow100);
@@ -67,6 +69,7 @@ function AddressLabel({ data }) {
     <span onClick={changeSourceAddress}>
       <AddressUser
         add={data?.address || ""}
+        username={data?.username || ""}
         className="flex text14Medium text-textPrimary"
         maxWidth={200}
         showAvatar={false}
@@ -77,7 +80,9 @@ function AddressLabel({ data }) {
 }
 
 function SelfNode({ data }) {
-  const bannerUrl = useProfileBannerUrl();
+  const { user } = useFetchUserInfo(data?.address);
+  const defaultBannerUrl = useProfileBannerUrlWithDefault();
+  const bannerUrl = getBannerUrl(user?.bannerCid) || defaultBannerUrl;
 
   return (
     <div className="flex flex-col items-center justify-center">

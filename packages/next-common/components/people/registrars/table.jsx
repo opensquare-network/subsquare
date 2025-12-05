@@ -7,7 +7,7 @@ import { toPrecision } from "next-common/utils";
 import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
 import Tooltip from "next-common/components/tooltip";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { isNil } from "lodash-es";
 import { memo, useMemo } from "react";
 import { getRelayChain } from "next-common/utils/chain";
@@ -142,7 +142,7 @@ function RegistrarUserAddress({ item, index }) {
   return (
     <div className="flex items-center gap-x-2">
       <span className="text-textPrimary text14Medium inline-block w-6">
-        #{index + 1}
+        #{index}
       </span>
       <AddressUser key={`account-${item.account}`} add={item.account} />
     </div>

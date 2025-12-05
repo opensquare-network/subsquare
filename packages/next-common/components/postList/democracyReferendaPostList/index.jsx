@@ -6,6 +6,7 @@ import { ListWrapper } from "next-common/components/postList/styled";
 import PostItem from "./postItem";
 
 export default function DemocracyReferendaPostList({
+  title = "List",
   titleCount = null,
   items,
   pagination,
@@ -13,7 +14,7 @@ export default function DemocracyReferendaPostList({
 }) {
   return (
     <ListWrapper>
-      <ListTitleBar title="List" titleCount={titleCount} link={link} />
+      <ListTitleBar title={title} titleCount={titleCount} link={link} />
       <MaybeEmpty items={items} type={businessCategory.democracyReferenda}>
         {items.map((data, index) => (
           <PostItem key={index} data={data} />

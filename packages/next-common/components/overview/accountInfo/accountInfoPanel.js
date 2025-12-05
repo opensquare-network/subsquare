@@ -19,11 +19,10 @@ import { useState } from "react";
 import { OnlyChains } from "next-common/components/common/onlyChain";
 import Chains from "next-common/utils/consts/chains";
 import { RelayChainApiProvider } from "next-common/context/relayChain";
-import { CollectivesApiProvider } from "next-common/context/collectives/api";
 import useAccountUrl from "next-common/hooks/account/useAccountUrl";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import { isNil } from "lodash-es";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import Button from "next-common/lib/button";
 import AccountPanelQuickAccess from "./components/accountPanelQuickAccess";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
@@ -32,11 +31,14 @@ import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
 import { AvatarImg } from "next-common/components/user/styled";
 import Gravatar from "next-common/components/gravatar";
 
-const RelayChainTeleportPopup = dynamic(
-  import("./relayChainTeleportPopup").then((mod) => mod.default),
-);
 const ParaChainTeleportPopup = dynamic(() =>
-  import("next-common/components/assets/paraChainTeleportPopup").then(
+  import("next-common/components/paraChainTeleportPopup").then(
+    (mod) => mod.default,
+  ),
+);
+
+const ParaChainTeleportOnRelayChainPopup = dynamic(() =>
+  import("next-common/components/paraChainTeleportPopup/teleport").then(
     (mod) => mod.default,
   ),
 );
@@ -213,18 +215,6 @@ function CrosschainButton({ onClick }) {
   );
 }
 
-function TeleportButton() {
-  const [showPopup, setShowPopup] = useState(false);
-  return (
-    <>
-      <CrosschainButton onClick={() => setShowPopup(true)} />
-      {showPopup && (
-        <RelayChainTeleportPopup onClose={() => setShowPopup(false)} />
-      )}
-    </>
-  );
-}
-
 function ParaChainTeleportButton() {
   const [showPopup, setShowPopup] = useState(false);
   return (
@@ -232,6 +222,20 @@ function ParaChainTeleportButton() {
       <CrosschainButton onClick={() => setShowPopup(true)} />
       {showPopup && (
         <ParaChainTeleportPopup onClose={() => setShowPopup(false)} />
+      )}
+    </>
+  );
+}
+
+function ParaChainTeleportOnRelayChainButton() {
+  const [showPopup, setShowPopup] = useState(false);
+  return (
+    <>
+      <CrosschainButton onClick={() => setShowPopup(true)} />
+      {showPopup && (
+        <ParaChainTeleportOnRelayChainPopup
+          onClose={() => setShowPopup(false)}
+        />
       )}
     </>
   );
@@ -245,9 +249,18 @@ const transferEnabledChains = [
   Chains.paseo,
 ];
 
-const relayChainTeleportEnabledChains = [Chains.polkadot, Chains.kusama];
-
 const paraChainTeleportEnabledChains = [Chains.collectives];
+
+const paraChainTeleportOnRelayChainEnabledChains = [
+  Chains.polkadot,
+  Chains.kusama,
+  Chains.paseo,
+  Chains.westend,
+  Chains.polkadotPeople,
+  Chains.kusamaPeople,
+  Chains.paseoPeople,
+  Chains.westendPeople,
+];
 
 export function AccountHead({ width }) {
   return (
@@ -266,10 +279,10 @@ export function AccountHead({ width }) {
           <OnlyChains chains={transferEnabledChains}>
             <TransferButton />
           </OnlyChains>
-          <OnlyChains chains={relayChainTeleportEnabledChains}>
-            <CollectivesApiProvider>
-              <TeleportButton />
-            </CollectivesApiProvider>
+          <OnlyChains chains={paraChainTeleportOnRelayChainEnabledChains}>
+            <RelayChainApiProvider>
+              <ParaChainTeleportOnRelayChainButton />
+            </RelayChainApiProvider>
           </OnlyChains>
           <OnlyChains chains={paraChainTeleportEnabledChains}>
             <RelayChainApiProvider>
@@ -279,8 +292,8 @@ export function AccountHead({ width }) {
           <OnlyChains
             chains={[
               ...transferEnabledChains,
-              ...relayChainTeleportEnabledChains,
               ...paraChainTeleportEnabledChains,
+              ...paraChainTeleportOnRelayChainEnabledChains,
             ]}
           >
             <div className="w-[1px] h-[16px] bg-neutral300"></div>

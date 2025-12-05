@@ -5,6 +5,7 @@ import { defaultPostLabels } from "./common";
 import MenuGroups from "./menuGroups";
 import { mergeChainModules } from "./common/modules";
 import bifrostPreimageSettings from "next-common/utils/consts/settings/common/preimage/bifrost";
+import bifrostPolkadotTracks from "./bifrostPolkadotTracks";
 
 const ProjectIconBifrostPolkadotDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconBifrostPolkadotDark"),
@@ -84,6 +85,9 @@ const bifrostPolkadot = {
       domain: "bifrost",
     },
   },
+  referendaActions: {
+    startFrom: 136,
+  },
   cssVarsLight: {
     theme100: "rgba(84,43,251,0.10)",
     theme300: "rgba(84,43,251,0.40)",
@@ -120,6 +124,7 @@ const bifrostPolkadot = {
   openSquare: {
     voting: "bifrost",
   },
+  treasuryProposalTracks: bifrostPolkadotTracks,
 };
 
 export default bifrostPolkadot;

@@ -36,7 +36,7 @@ export default function ProposeWithInputHex() {
   );
 
   const setValue = useCallback(
-    ({ isValid, data }) => {
+    ({ isValid, data } = {}) => {
       if (!api || !setCallData) {
         return;
       }

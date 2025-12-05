@@ -4,6 +4,7 @@ import FellowshipSalaryCommon from "next-common/components/fellowship/salary/com
 import FellowshipSalaryFeedsContainer from "next-common/components/fellowship/salary/feeds/container";
 import { withFellowshipSalaryCommonProps } from "next-common/services/serverSide/fellowship/common";
 import { fellowshipSalaryFeedsApi } from "next-common/services/url";
+import { getFeedsEvent } from "next-common/utils/fellowship/getFeedsEvent";
 
 export default function FellowshipSalaryFeedsPage({ fellowshipSalaryFeeds }) {
   return (
@@ -21,7 +22,7 @@ export const getServerSideProps = withFellowshipSalaryCommonProps(
       page_size: defaultPageSize,
     };
     if (event) {
-      Object.assign(query, { event });
+      Object.assign(query, { event: getFeedsEvent("salary", event) });
     }
     if (who) {
       Object.assign(query, { who });

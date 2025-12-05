@@ -1,10 +1,13 @@
-import { debounce } from "lodash-es";
+import { debounce, isEmpty } from "lodash-es";
 import { Deferred } from "next-common/utils/deferred";
 import QuickLRU from "quick-lru";
+import { backendApi } from "next-common/services/nextApi";
+import getChainSettings from "next-common/utils/consts/settings";
 
 const cachedIdentities = new QuickLRU({ maxSize: 1000 });
 const pendingQueries = new Map();
 const processingQueries = new Map();
+const pendingBountyQueries = new Map();
 
 const delayQuery = debounce(() => {
   if (pendingQueries.size < 1) {
@@ -112,6 +115,18 @@ export function getCachedIdentity(chain, address) {
   return cachedIdentities.get(idName) || null;
 }
 
+/**
+ * @description sync, get bounty identity from cache
+ */
+export function getCachedBountyIdentity(chain, address) {
+  if (!chain || !address) {
+    return null;
+  }
+
+  const bountyIdName = `bounty/${chain}/${address}`;
+  return cachedIdentities.get(bountyIdName) || null;
+}
+
 export const getIdentity = getCachedIdentity;
 
 export const clearCachedIdentitys = (list, clearPending = false) => {
@@ -121,9 +136,77 @@ export const clearCachedIdentitys = (list, clearPending = false) => {
     }
 
     const idName = `${item.chain}/${item.address}`;
+    const bountyIdName = `bounty/${item.chain}/${item.address}`;
+
     cachedIdentities.delete(idName);
+    cachedIdentities.delete(bountyIdName);
+
     if (clearPending) {
       pendingQueries.delete(idName);
+      pendingBountyQueries.delete(bountyIdName);
     }
   });
 };
+
+async function queryBountyIdentityInfo(address, bountyIdName) {
+  try {
+    const { result: bountyInfo } = await backendApi.fetch(
+      `treasury/addresses/${address}`,
+    );
+
+    let identity = null;
+    if (!isEmpty(bountyInfo)) {
+      let identityInfo = null;
+
+      if (bountyInfo?.type === "bounty") {
+        identityInfo = {
+          display: `Bounty-${bountyInfo.bountyIndex}`,
+          tooltip: `Address of bounty #${bountyInfo.bountyIndex}`,
+        };
+      }
+
+      if (bountyInfo?.type === "childBounty") {
+        identityInfo = {
+          display: `Child Bounty-${bountyInfo.parentBountyId}-${bountyInfo.index}`,
+          tooltip: `Address of child bounty #${bountyInfo.index} under parent bounty #${bountyInfo.parentBountyId}`,
+        };
+      }
+
+      if (identityInfo) {
+        identity = {
+          info: { ...identityInfo, isBountyIdentity: true },
+        };
+      }
+    }
+
+    cachedIdentities.set(bountyIdName, identity);
+    return identity;
+  } catch (error) {
+    console.error("Failed to fetch bounty identity info:", error);
+    return null;
+  } finally {
+    pendingBountyQueries.delete(bountyIdName);
+  }
+}
+
+export async function fetchBountyIdentity(chain, address) {
+  const { bountyIdentity } = getChainSettings(chain);
+  if (!chain || !address || !bountyIdentity) {
+    return null;
+  }
+
+  const bountyIdName = `bounty/${chain}/${address}`;
+
+  if (cachedIdentities.has(bountyIdName)) {
+    return cachedIdentities.get(bountyIdName);
+  }
+
+  if (pendingBountyQueries.has(bountyIdName)) {
+    return pendingBountyQueries.get(bountyIdName);
+  }
+
+  const requestPromise = queryBountyIdentityInfo(address, bountyIdName);
+  pendingBountyQueries.set(bountyIdName, requestPromise);
+
+  return requestPromise;
+}

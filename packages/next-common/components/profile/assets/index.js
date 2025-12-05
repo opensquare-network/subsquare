@@ -4,10 +4,10 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { usePageProps } from "next-common/context/page";
-import { AssetMetadataProvider } from "next-common/components/assets/context/assetMetadata";
-import AssetHubTabs from "next-common/components/assets/tabs/index";
-import AssetsTransfersHistory from "next-common/components/assets/transferHistory/index";
-import { AssetHubTabsProvider } from "next-common/components/assets/context/assetHubTabsProvider";
+import { AssetMetadataProvider } from "next-common/components/assethubMigrationAssets/context/assetMetadata";
+import AssetHubTabs from "next-common/components/assethubMigrationAssets/tabs/index";
+import AssetsTransfersHistory from "next-common/components/assethubMigrationAssets/transferHistory/index";
+import { AssetHubTabsProvider } from "next-common/components/assethubMigrationAssets/context/assetHubTabsProvider";
 import { useChain } from "next-common/context/chain";
 import { isAssetHubChain } from "next-common/utils/chain";
 

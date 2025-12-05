@@ -16,6 +16,10 @@ export default function IdentityIcon({
   className = "",
   iconClassName = "",
 }) {
+  if (identity?.info?.isBountyIdentity) {
+    return null;
+  }
+
   const statusIconMap = {
     NOT_VERIFIED: (
       <>

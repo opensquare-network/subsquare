@@ -5,7 +5,7 @@ import useMySalaryClaimant from "next-common/hooks/fellowship/salary/useMySalary
 import useSalaryFellowshipPeriods from "next-common/hooks/fellowship/salary/useSalaryFellowshipPeriods";
 import { useCalcPeriodBlocks } from "next-common/hooks/useCalcPeriodBlocks";
 import { ONE_DAY } from "next-common/utils/constants";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import Prompt from "../prompt";
 
 export default function CollectivesSalaryRegisterWarning({ section, status }) {

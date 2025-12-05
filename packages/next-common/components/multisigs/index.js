@@ -10,6 +10,8 @@ import { NeutralPanel } from "../styled/containers/neutralPanel";
 import { useRouter } from "next/router";
 import { AccountsTitle, HistoryTitle } from "./styled";
 import { MultisigAccountsProvider } from "./context/multisigAccountsContext";
+import { SignApprovePopupProvider } from "./context/signApprovePopupContext";
+import { SignCancelPopupProvider } from "./context/signCancelPopupContext";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 const MultisigAccountsList = dynamic(() => import("./multisigAccountsList"), {
@@ -65,15 +67,19 @@ export default function Multisigs() {
         <WithPageWidth>
           <CallPopupProvider>
             <SignSubmitPopupProvider>
-              <NeutralPanel className="p-6">
-                <MultisigAccountsProvider userAddress={realAddress}>
-                  <Tabs
-                    tabs={tabs}
-                    activeTabValue={activeTabValue}
-                    onTabClick={onTabClick}
-                  />
-                </MultisigAccountsProvider>
-              </NeutralPanel>
+              <SignApprovePopupProvider>
+                <SignCancelPopupProvider>
+                  <NeutralPanel className="p-6">
+                    <MultisigAccountsProvider userAddress={realAddress}>
+                      <Tabs
+                        tabs={tabs}
+                        activeTabValue={activeTabValue}
+                        onTabClick={onTabClick}
+                      />
+                    </MultisigAccountsProvider>
+                  </NeutralPanel>
+                </SignCancelPopupProvider>
+              </SignApprovePopupProvider>
             </SignSubmitPopupProvider>
           </CallPopupProvider>
         </WithPageWidth>

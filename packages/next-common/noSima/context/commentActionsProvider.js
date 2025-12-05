@@ -7,6 +7,7 @@ import {
 } from "../actions/comment";
 import { useOffChainCommentUpVote } from "../actions/upVote";
 import { useOffChainCommentCancelUpVote } from "../actions/cancelUpVote";
+import { useDeleteOffChainComment } from "../actions/deleteComment";
 
 export function OffChainCommentActionsProvider({ children }) {
   const getComment = useGetComment();
@@ -15,6 +16,7 @@ export function OffChainCommentActionsProvider({ children }) {
   const createCommentReply = useCreateOffChainCommentReply();
   const upVoteComment = useOffChainCommentUpVote();
   const cancelUpVoteComment = useOffChainCommentCancelUpVote();
+  const deleteComment = useDeleteOffChainComment();
 
   return (
     <CommentActionsContext.Provider
@@ -26,6 +28,7 @@ export function OffChainCommentActionsProvider({ children }) {
         createCommentReply,
         upVoteComment,
         cancelUpVoteComment,
+        deleteComment,
       }}
     >
       {children}

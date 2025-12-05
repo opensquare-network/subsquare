@@ -11,6 +11,15 @@ import { useSelector } from "react-redux";
 import { useMountedState } from "react-use";
 import ExternalLink from "next-common/components/externalLink";
 import { getRelayChain } from "next-common/utils/chain";
+import { isEmpty } from "lodash-es";
+
+export function sortIdentityTimeline(data) {
+  if (isEmpty(data)) {
+    return [];
+  }
+
+  return data?.sort((a, b) => a.indexer.blockTime - b.indexer.blockTime);
+}
 
 function useIdentityUrl() {
   const chain = useChain();
@@ -67,7 +76,10 @@ function useIdentityTimeline() {
       })
       .then((result) => {
         if (isMounted()) {
-          dispatch(setProfileIdentityTimeline(result.data?.identityTimeline));
+          const sortedTimeline = sortIdentityTimeline(
+            result.data?.identityTimeline,
+          );
+          dispatch(setProfileIdentityTimeline(sortedTimeline));
         }
       })
       .catch((error) => console.error(error));

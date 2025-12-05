@@ -3,7 +3,7 @@ import { usePostOnChainData } from "../../../context/post";
 import { useDetailType } from "../../../context/page";
 import { detailPageCategory } from "../../../utils/consts/business/category";
 import React from "react";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import TriangleRight from "../../../assets/imgs/icons/arrow-triangle-right.svg";
 import { useChain } from "../../../context/chain";
 import { getMotionId, shortMotionId } from "../../../utils/motion";

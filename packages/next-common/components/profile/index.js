@@ -13,9 +13,11 @@ import WindowSizeProvider from "next-common/context/windowSize";
 import AvatarPermissionsProvider from "./header/context/avatarPermissionsContext";
 import ProfileUserInfoProvider from "./header/context/profileUserInfoContext";
 import ProfileMultisigsActiveProvider from "next-common/components/profile/multisigs/context/profileMultisigsActiveContext";
+import NoData from "../noData";
 
 function ProfilePageImpl() {
   useFetchProfileData();
+  const address = useProfileAddress();
 
   const tabs = useProfileTabs();
   const tabContent = useProfileTabContent();
@@ -25,14 +27,10 @@ function ProfilePageImpl() {
       <ProfileUserInfoProvider>
         <ProfileLayout
           pageHeader={<ProfileHeaderWithBanner />}
-          header={
-            <>
-              <Bio />
-            </>
-          }
+          header={<Bio />}
           tabs={tabs}
         >
-          {tabContent}
+          {address ? tabContent : <NoData text="No profile data" />}
         </ProfileLayout>
       </ProfileUserInfoProvider>
     </AvatarPermissionsProvider>
@@ -46,7 +44,6 @@ export default function ProfilePage() {
     dispatch(setProfileTransfers(null));
     dispatch(setProfileIdentityTimeline(null));
   }, [dispatch, address]);
-
   return (
     <ProfileMultisigsActiveProvider>
       <WindowSizeProvider>

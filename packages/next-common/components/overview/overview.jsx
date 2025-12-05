@@ -10,14 +10,15 @@ import PolkadotTreasuryStats from "./polkadotTreasuryStats";
 import { isPolkadotChain, isKusamaChain } from "next-common/utils/chain";
 import KusamaTreasuryStats from "./kusamaTreasuryStats";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import OnlyChain from "next-common/components/common/onlyChain";
+import Chains from "next-common/utils/consts/chains";
+import EcoNews from "./ecoNews";
+
+const MultipleColumnCard = dynamicClientOnly(() =>
+  import("./fellowship/multipleColumnCard"),
+);
 
 const AccountInfo = dynamicClientOnly(() => import("./accountInfo"));
-const FellowshipFinanceOverview = dynamicClientOnly(() =>
-  import("./fellowship/finance"),
-);
-const FellowshipApplicationGuide = dynamicClientOnly(() =>
-  import("./fellowship/fellowshipApplicationGuide"),
-);
 
 function ConditionTreasuryStats() {
   const chain = useChain();
@@ -36,6 +37,7 @@ export default function Overview() {
   return (
     <div className="space-y-6">
       <AccountInfo />
+      <EcoNews />
 
       <WithPallet pallet="fellowshipCore">
         <CollectivesProvider section="fellowship">
@@ -47,17 +49,9 @@ export default function Overview() {
         <ConditionTreasuryStats />
       </WithPallet>
 
-      <WithPallet pallet="fellowshipTreasury">
-        <WithPallet pallet="fellowshipSalary">
-          <FellowshipFinanceOverview />
-        </WithPallet>
-      </WithPallet>
-
-      <WithPallet pallet="fellowshipCore">
-        <CollectivesProvider section="fellowship">
-          <FellowshipApplicationGuide />
-        </CollectivesProvider>
-      </WithPallet>
+      <OnlyChain chain={Chains.collectives}>
+        <MultipleColumnCard />
+      </OnlyChain>
 
       {/* <WithPallet pallet="fellowshipSalary">
         <FellowshipSalaryOverview />
@@ -67,10 +61,7 @@ export default function Overview() {
         <FellowshipTreasuryStats />
       </WithPallet> */}
 
-      <div>
-        <RecentProposals />
-        {/* news */}
-      </div>
+      <RecentProposals />
     </div>
   );
 }

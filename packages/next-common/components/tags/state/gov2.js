@@ -1,19 +1,14 @@
 import React, { useMemo } from "react";
-import styled from "styled-components";
 import { gov2State } from "../../../utils/consts/state";
 import {
   ActiveTag,
-  BaseTag,
   ClosedTag,
   NegativeTag,
   PositiveTag,
   StartTag,
+  QueueingTag,
 } from "./styled";
 import Tooltip from "next-common/components/tooltip";
-
-const QueueingTag = styled(BaseTag)`
-  background-color: var(--orange500);
-`;
 
 const gov2ReferendaTagMap = {
   [gov2State.Submitted]: StartTag,
@@ -22,6 +17,7 @@ const gov2ReferendaTagMap = {
   [gov2State.Deciding]: ActiveTag,
   [gov2State.Confirming]: PositiveTag,
   [gov2State.Approved]: PositiveTag,
+  [gov2State.Executed]: PositiveTag,
   [gov2State.Cancelled]: NegativeTag,
   [gov2State.Killed]: NegativeTag,
   [gov2State.Timeout]: ClosedTag,
@@ -39,7 +35,7 @@ const gov2ReferendaTagMap = {
 const tooltipTextMap = {
   [gov2State.Submitted]:
     "Referendum has been submitted and is awaiting initial review",
-  [gov2State.Preparing]: " Placing a decision deposit for the voting process",
+  [gov2State.Preparing]: "Placing a decision deposit for the voting process",
   [gov2State.Queueing]: "Waiting in line for processing or voting to begin",
   [gov2State.Deciding]: "Currently open for voting",
   [gov2State.Confirming]: "Waiting for final checks before vote ends",
@@ -56,23 +52,26 @@ const tooltipTextMap = {
   ConfirmAborted: "Final checks failed or were manually stopped",
   Confirmed: "All checks passed; ready for execution",
   Ongoing: "Process is active and awaiting next stage",
+  ExecutedWithError: "Vote passed but call executed with error",
 };
 
 export function Gov2ReferendaTag({ state, args }) {
-  let Tag = gov2ReferendaTagMap[state] || ClosedTag;
+  const { Tag, tooltipText } = useMemo(() => {
+    let Tag = gov2ReferendaTagMap[state] || ClosedTag;
+    let tooltipText = tooltipTextMap[state];
 
-  if (state === gov2State.Executed) {
-    Tag = args?.isOk ? PositiveTag : NegativeTag;
-  }
+    if (state === gov2State.Executed && !args?.isOk) {
+      Tag = NegativeTag;
+      tooltipText = tooltipTextMap.ExecutedWithError;
+    }
 
-  const tooltipText = useMemo(() => {
-    return tooltipTextMap[state];
-  }, [state]);
+    return { Tag, tooltipText };
+  }, [args?.isOk, state]);
 
   if (tooltipText) {
     return (
       <Tooltip content={tooltipText}>
-        <Tag className="cursor-pointer">{state}</Tag>
+        <Tag>{state}</Tag>
       </Tooltip>
     );
   }

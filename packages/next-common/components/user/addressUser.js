@@ -1,6 +1,6 @@
 import React, { memo, useMemo } from "react";
 import { UnStyledIdentity } from "../Identity";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { AvatarWrapper, UserWrapper } from "./styled";
 import AddressDisplay from "./addressDisplay";
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";
@@ -15,6 +15,8 @@ import { isExternalLink } from "next-common/utils";
 import ExternalLink from "../externalLink";
 import { cn } from "next-common/utils";
 import UserDisplay from "./userDisplay";
+import { isPolkadotAddress } from "next-common/utils/viewfuncs";
+import { isEthereumAddress } from "@polkadot/util-crypto";
 
 export function UserAddressLink({ address, link, needHref, children }) {
   const displayAddress = tryConvertToEvmAddress(address);
@@ -94,8 +96,19 @@ export function AddressUserImpl({
   needHref = true,
   identityIconClassName = "",
   username = "",
+  showBountyIdentity = true,
 }) {
   const displayAddress = tryConvertToEvmAddress(address);
+  const showIdentity = useMemo(() => {
+    if (
+      !hasIdentity ||
+      (!showBountyIdentity && identity?.info?.isBountyIdentity)
+    ) {
+      return false;
+    }
+
+    return true;
+  }, [hasIdentity, identity?.info?.isBountyIdentity, showBountyIdentity]);
 
   const noIdentityDisplay = useMemo(() => {
     if (username) {
@@ -119,7 +132,7 @@ export function AddressUserImpl({
 
   const userIdentity = useMemo(
     () =>
-      hasIdentity ? (
+      showIdentity ? (
         <UnStyledIdentity
           noTooltip={noTooltip}
           identity={identity}
@@ -131,13 +144,13 @@ export function AddressUserImpl({
         noIdentityDisplay
       ),
     [
-      hasIdentity,
+      showIdentity,
+      noTooltip,
       identity,
       maxWidth,
       ellipsis,
       identityIconClassName,
       noIdentityDisplay,
-      noTooltip,
     ],
   );
 
@@ -170,6 +183,7 @@ function AddressUserComp({
   identityIconClassName = "",
   avatarSize = "",
   username = "",
+  showBountyIdentity = true,
 }) {
   const address = add;
   const { identity, hasIdentity } = useIdentityInfo(address);
@@ -177,8 +191,11 @@ function AddressUserComp({
   const inlineClassName = "text14Medium text-textPrimary";
   const maxWidth = useWidth(showAvatar, identity, propMaxWidth);
 
-  if (!address) {
-    return <DeletedAccount />;
+  if (
+    !address ||
+    (!isPolkadotAddress(address) && !isEthereumAddress(address))
+  ) {
+    return <DeletedAccount address={address} />;
   }
 
   return (
@@ -198,6 +215,7 @@ function AddressUserComp({
       identityIconClassName={identityIconClassName}
       className={cn(inlineClassName, className)}
       username={username}
+      showBountyIdentity={showBountyIdentity}
     />
   );
 }

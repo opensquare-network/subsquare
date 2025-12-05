@@ -2,8 +2,7 @@ import { isNil } from "lodash-es";
 import { AddressUser } from "next-common/components/user";
 import { cn } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
-import LoadableReferendumTitle from "../common/loadableReferendumTitle";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import VoteStatus from "../common/voteStatus";
 
 export function AccountColumn({ delegates }) {
@@ -34,11 +33,7 @@ export function VoteStatusColumn({ title = "", col }) {
   return (
     <div className="w-16">
       <ColumnHeader className="text-center">
-        <Tooltip
-          content={
-            <LoadableReferendumTitle referendumIndex={col.referendumIndex} />
-          }
-        >
+        <Tooltip content={col.title}>
           <Link
             className="truncate cursor-pointer hover:underline"
             href={`/referenda/${col.referendumIndex}`}

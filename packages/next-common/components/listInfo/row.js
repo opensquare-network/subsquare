@@ -27,6 +27,7 @@ const Header = styled.div`
 const Content = styled.div`
   width: 100%;
   display: flex;
+  overflow: hidden;
   align-items: center;
   font-style: normal;
   font-weight: normal;

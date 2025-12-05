@@ -6,13 +6,15 @@ import ProfileDelegation from "../delegation";
 import ProfileDeposits from "../deposits";
 import ProfileTransfers from "../transfers";
 import ProfileIdentity from "../identity";
-import ProfileAssets from "../assets";
 import { usePathname } from "next/navigation";
 import { usePageProps } from "next-common/context/page";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import ProfileFellowship from "../fellowship";
 import ProfileProxy from "../proxy";
+import ProfileTreasury from "../treasury";
 import CollectivesProvider from "next-common/context/collectives/collectives";
+import ProfileAssets from "next-common/components/profile/assets";
+import ProfileForeignAssets from "next-common/components/profile/foreignAssets";
 
 export default function useProfileTabContent() {
   const { id } = usePageProps();
@@ -33,7 +35,12 @@ export default function useProfileTabContent() {
   } else if (pathname.startsWith(`/user/${maybeEvmAddress}/identity`)) {
     return <ProfileIdentity />;
   } else if (pathname.startsWith(`/user/${maybeEvmAddress}/assets`)) {
-    return <ProfileAssets />;
+    return (
+      <div className="flex flex-col gap-[16px]">
+        <ProfileAssets />
+        <ProfileForeignAssets />
+      </div>
+    );
   } else if (pathname.startsWith(`/user/${maybeEvmAddress}/fellowship`)) {
     return (
       <CollectivesProvider section="fellowship">
@@ -50,6 +57,8 @@ export default function useProfileTabContent() {
     return <Posted />;
   } else if (pathname.startsWith(`/user/${maybeEvmAddress}/proxies`)) {
     return <ProfileProxy />;
+  } else if (pathname.startsWith(`/user/${maybeEvmAddress}/treasury`)) {
+    return <ProfileTreasury />;
   }
 
   return <Posted />;

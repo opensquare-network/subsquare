@@ -9,6 +9,7 @@ import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider } from "next-common/context/post";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import NotFoundDetail from "next-common/components/notFoundDetail";
+import { PolkassemblyCommentRepliesProvider } from "next-common/hooks/polkassembly/usePolkassemblyCommentReply";
 
 export default function PostDetailPage({ detail }) {
   if (!detail) {
@@ -43,11 +44,16 @@ function PostsPageImpl({ detail }) {
         }}
       >
         <DetailItem postReactions={postReactions} />
-        <PolkassemblyComments
-          isLoading={loadingComments}
-          comments={comments}
-          paId={polkassemblyId}
-        />
+        <PolkassemblyCommentRepliesProvider
+          polkassemblyPostType="discussion"
+          polkassemblyId={polkassemblyId}
+        >
+          <PolkassemblyComments
+            isLoading={loadingComments}
+            comments={comments}
+            paId={polkassemblyId}
+          />
+        </PolkassemblyCommentRepliesProvider>
       </DetailLayout>
     </PostProvider>
   );

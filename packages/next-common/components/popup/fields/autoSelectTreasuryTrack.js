@@ -2,11 +2,13 @@ import { isNil } from "lodash-es";
 import { useChainSettings } from "next-common/context/chain";
 import { useEffect } from "react";
 import DetailedTrack from "./detailedTrackField";
+import BigNumber from "bignumber.js";
 
 export default function AutoSelectTreasuryTrack({
   requestAmount,
   trackId,
   setTrackId,
+  customTrackError = null,
 }) {
   const { treasuryProposalTracks } = useChainSettings();
 
@@ -15,12 +17,18 @@ export default function AutoSelectTreasuryTrack({
       return;
     }
     const track = treasuryProposalTracks.find(
-      (track) => isNil(track.max) || track.max >= parseFloat(requestAmount),
+      (track) =>
+        isNil(track.max) || new BigNumber(requestAmount).lte(track.max),
     );
     if (track) {
       setTrackId(track?.id);
     }
   }, [requestAmount, setTrackId, treasuryProposalTracks]);
 
-  return <DetailedTrack trackId={trackId} setTrackId={setTrackId} />;
+  return (
+    <>
+      <DetailedTrack trackId={trackId} setTrackId={setTrackId} />
+      {customTrackError}
+    </>
+  );
 }

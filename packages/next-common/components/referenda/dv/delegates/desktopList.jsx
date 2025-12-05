@@ -36,7 +36,7 @@ const columns = [
 
 export default function DelegatesDesktopList({ delegates }) {
   const count = useDvReferendaCount();
-  const filteredReferenda = useFilteredDvReferenda();
+  const { filteredReferenda, loading } = useFilteredDvReferenda();
 
   const rows = delegates.map((delegate) => {
     const winCount = delegate.userVotes.filter((vote) =>
@@ -73,14 +73,14 @@ export default function DelegatesDesktopList({ delegates }) {
     <DataList
       columns={columns}
       rows={rows}
-      loading={false}
+      loading={loading}
       noDataText="No delegates"
       bordered={false}
     />
   );
 }
 
-function WinRateTooltip() {
+export function WinRateTooltip() {
   return (
     <Tooltip content="A win = referendum finished && ((aye vote && referendum approval) || (nay vote && no referendum approval))" />
   );

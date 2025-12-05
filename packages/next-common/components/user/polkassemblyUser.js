@@ -7,7 +7,7 @@ import Avatar from "../avatar";
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 import { useWidth } from "./util";
 import Gravatar from "../gravatar";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import ExternalLink from "../externalLink";
 import { cn } from "next-common/utils";
 

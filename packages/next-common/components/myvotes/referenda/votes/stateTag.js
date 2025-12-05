@@ -12,12 +12,8 @@ export default function MyReferendaVoteTag({ post, onchainInfo }) {
       />
     );
   } else if (onchainInfo) {
-    return (
-      <Gov2ReferendaTag
-        state={capitalize(Object.keys(onchainInfo)[0])}
-        args={Object.values(onchainInfo)[0]}
-      />
-    );
+    const [state, args] = Object.entries(onchainInfo || {})[0] || [];
+    return <Gov2ReferendaTag state={capitalize(state)} args={args} />;
   }
 
   return null;

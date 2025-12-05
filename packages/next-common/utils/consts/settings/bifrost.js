@@ -3,6 +3,7 @@ import { defaultPostLabels } from "./common";
 import dynamic from "next/dynamic";
 import { mergeChainModules } from "./common/modules";
 import bifrostPreimageSettings from "next-common/utils/consts/settings/common/preimage/bifrost";
+import bifrostKusamaTracks from "./bifrostKusamaTracks";
 
 const ProjectIconBifrostKusamaDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconBifrostKusamaDark"),
@@ -22,10 +23,6 @@ const DEFAULT_BIFROST_NODES = [
   {
     name: "LiebiUS",
     url: "wss://us.bifrost-rpc.liebi.com/ws",
-  },
-  {
-    name: "RadiumBlock",
-    url: "wss://bifrost.public.curie.radiumblock.co/ws",
   },
 ];
 
@@ -148,6 +145,7 @@ const bifrost = {
   openSquare: {
     voting: "bifrost",
   },
+  treasuryProposalTracks: bifrostKusamaTracks,
 };
 
 export default bifrost;

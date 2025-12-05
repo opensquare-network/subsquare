@@ -17,12 +17,45 @@ const config = {
       ssr: true,
     },
   },
+  // This is required to support PostHog trailing slash API requests
+  skipTrailingSlashRedirect: true,
   async redirects() {
     return [
       {
         source: "/democracy/referendums",
         destination: "/democracy/referenda",
         permanent: true,
+      },
+      {
+        source: "/treasury/burnt",
+        destination: "/treasury/burn",
+        permanent: false,
+      },
+      {
+        source: "/assethub",
+        destination: "/assets",
+        permanent: false,
+      },
+      {
+        source: "/foreign-assets",
+        destination: "/assets?tab=foreign_assets",
+        permanent: false,
+      },
+    ];
+  },
+  async rewrites() {
+    return [
+      {
+        source: "/ingest/static/:path*",
+        destination: "https://us-assets.i.posthog.com/static/:path*",
+      },
+      {
+        source: "/ingest/:path*",
+        destination: "https://us.i.posthog.com/:path*",
+      },
+      {
+        source: "/ingest/decide",
+        destination: "https://us.i.posthog.com/decide",
       },
     ];
   },
@@ -58,6 +91,10 @@ const config = {
         use: "raw-loader",
       },
     );
+
+    // Fix MetaMask SDK React Native dependency issue
+    config.resolve.alias["@react-native-async-storage/async-storage"] = false;
+
     return config;
   },
   async headers() {

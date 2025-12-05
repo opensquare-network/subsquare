@@ -1,5 +1,6 @@
 import Pagination from "next-common/components/pagination/index.js";
 import ListTitleBar from "../../listTitleBar";
+import TreasuryChildBountyFilter from "next-common/components/treasury/childBounties/treasuryChildBountyFilter";
 import MaybeEmpty from "next-common/components/emptyList";
 import businessCategory from "next-common/utils/consts/business/category";
 import { ListWrapper } from "../styled";
@@ -16,6 +17,7 @@ export default function TreasuryChildBountiesPostList({
         title="List"
         titleCount={titleCount}
         link="/treasury/child-bounties"
+        titleExtra={<TreasuryChildBountyFilter />}
       />
       <MaybeEmpty items={items} type={businessCategory.treasuryChildBounties}>
         {items.map((data, index) => (

@@ -77,5 +77,5 @@ export default function useTreasuryFree(api) {
     }
   }, [api, chain, treasuryAccount]);
 
-  return { free, isLoading };
+  return { free, treasuryAccount, isLoading };
 }

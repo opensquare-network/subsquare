@@ -11,9 +11,14 @@ const statescanDomainMap = {
   [Chains.kusamaAssetHub]: "assethub-kusama",
   [Chains.westendAssetHub]: "assethub-westend",
   [Chains.paseoAssetHub]: "assethub-paseo",
+  [Chains.hyperBridge]: "nexus",
 };
 
-export default function StatescanLink({ indexer, children }) {
+export default function StatescanLink({
+  indexer,
+  children,
+  customDomain = null,
+}) {
   const chain = useChain();
   const { integrations, assethubMigration = {} } = useChainSettings();
 
@@ -34,6 +39,10 @@ export default function StatescanLink({ indexer, children }) {
     domain = assethubMigration?.statescanAssethubDomain || null;
   } else if (integrations?.statescan) {
     domain = statescanDomainMap[chain] || chain;
+  }
+
+  if (customDomain) {
+    domain = customDomain;
   }
   if (!domain) {
     return null;

@@ -28,6 +28,7 @@ const tooltipTextMap = {
   Approved: "Vote passed successfully",
   Disapproved: "Vote failed to pass",
   Executed: "Vote passed and action taken",
+  ExecutedWithError: "Vote passed but call executed with error",
   Closed: "Voting ended with no further action",
 
   // timeline
@@ -36,24 +37,26 @@ const tooltipTextMap = {
 };
 
 export function CollectiveTag({ state, args }) {
-  let Tag = stateTagMap[state] || MotionTag;
-  if ((state || "").startsWith("Voting")) {
-    Tag = ActiveTag;
-  }
-  if ("Executed" === state && args?.isOk === false) {
-    Tag = NegativeTag;
-  }
+  const { Tag, tooltipText } = useMemo(() => {
+    let Tag = stateTagMap[state] || MotionTag;
+    let tooltipText = tooltipTextMap[state];
 
-  const tooltipText = useMemo(() => {
-    return tooltipTextMap[state];
-  }, [state]);
+    if ((state || "").startsWith("Voting")) {
+      Tag = ActiveTag;
+    }
+
+    if ("Executed" === state && !args?.isOk) {
+      Tag = NegativeTag;
+      tooltipText = tooltipTextMap.ExecutedWithError;
+    }
+
+    return { Tag, tooltipText };
+  }, [args?.isOk, state]);
 
   if (tooltipText) {
     return (
       <Tooltip content={tooltipText}>
-        <Tag className="cursor-pointer" args={args}>
-          {state}
-        </Tag>
+        <Tag args={args}>{state}</Tag>
       </Tooltip>
     );
   }

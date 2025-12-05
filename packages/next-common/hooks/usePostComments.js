@@ -8,38 +8,66 @@ import { useDetailType } from "next-common/context/page";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { PolkassemblyChains } from "next-common/utils/polkassembly";
 import { cloneDeep } from "lodash-es";
+import { usePolkassemblyCommentRepliesContext } from "./polkassembly/usePolkassemblyCommentReply";
 
 function getShouldReadPolkassemblyComments(chain) {
   return PolkassemblyChains.includes(chain);
 }
 
-function mergeComments(polkassemblyComments, subsquareComments) {
+function mergeComments(
+  polkassemblyComments,
+  subsquareComments,
+  polkassemblyCommentReplies,
+) {
   const filteredPolkassemblyComments = [];
   const newSubsquareComments = cloneDeep(subsquareComments);
+
   for (const polkaItem of polkassemblyComments ?? []) {
+    let mergedReplies = polkaItem.replies || [];
+    if (polkassemblyCommentReplies?.[polkaItem.id]) {
+      const replies = polkassemblyCommentReplies[polkaItem.id];
+      mergedReplies = [
+        ...mergedReplies,
+        ...replies.map((r) => ({
+          ...r,
+          comment_source: "subsquare-reply-to-polkassembly-comment",
+        })),
+      ];
+    }
+    mergedReplies.sort(
+      (a, b) =>
+        dayjs(a.createdAt || a.created_at).unix() -
+        dayjs(b.createdAt || b.created_at).unix(),
+    );
+
     const subsquareItem = newSubsquareComments.find(
       (item) => item._id === polkaItem.id,
     );
 
-    if (subsquareItem) {
-      subsquareItem.replies = subsquareItem.replies || [];
-      subsquareItem.replies.push(
-        ...polkaItem.replies
-          .filter((r) => r.comment_source !== "subsquare")
-          .map((r) => ({
-            ...r,
-            comment_source: "polkassembly",
-          })),
-      );
-      subsquareItem.replies.sort(
-        (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
-      );
-    } else {
+    if (!subsquareItem) {
       filteredPolkassemblyComments.push({
         ...polkaItem,
+        replies: mergedReplies,
         comment_source: "polkassembly",
       });
+      continue;
     }
+
+    subsquareItem.replies = subsquareItem.replies || [];
+    subsquareItem.replies.push(
+      ...mergedReplies
+        .filter((r) => r.comment_source !== "subsquare")
+        .map((r) => ({
+          ...r,
+          comment_source:
+            r.comment_source === "subsquare-reply-to-polkassembly-comment"
+              ? "subsquare-reply-to-polkassembly-comment"
+              : "polkassembly",
+        })),
+    );
+    subsquareItem.replies.sort(
+      (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
+    );
   }
 
   return [
@@ -52,37 +80,50 @@ export function usePostCommentsData() {
   const comments = useComments();
   const chain = useChain();
   const post = usePost();
-  const polkassemblyPostData = usePolkassemblyPostData(post);
+  const {
+    loadingComments: isPolkassemblyCommentsLoading,
+    comments: polkassemblyComments,
+  } = usePolkassemblyPostData(post);
+  const { polkassemblyCommentReplies, isPolkassemblyCommentRepliesLoading } =
+    usePolkassemblyCommentRepliesContext();
 
   const [commentsData, setCommentsData] = useState(comments);
   const shouldReadPolkassemblyComments =
     getShouldReadPolkassemblyComments(chain);
 
+  const isLoading =
+    isPolkassemblyCommentsLoading || isPolkassemblyCommentRepliesLoading;
+
   useEffect(() => {
-    if (shouldReadPolkassemblyComments) {
-      if (!polkassemblyPostData.loadingComments) {
-        const data = { ...comments };
-
-        data.items = mergeComments(
-          polkassemblyPostData.comments,
-          comments.items,
-        );
-
-        setCommentsData(data);
-      }
-    } else {
+    if (!shouldReadPolkassemblyComments) {
       setCommentsData(comments);
+      return;
     }
+
+    if (isLoading) {
+      return;
+    }
+
+    const data = { ...comments };
+
+    data.items = mergeComments(
+      polkassemblyComments,
+      comments.items,
+      polkassemblyCommentReplies,
+    );
+
+    setCommentsData(data);
   }, [
     comments,
-    polkassemblyPostData.loadingComments,
-    polkassemblyPostData.comments,
+    polkassemblyComments,
     shouldReadPolkassemblyComments,
+    polkassemblyCommentReplies,
+    isLoading,
   ]);
 
   return {
     commentsData,
-    loading: polkassemblyPostData.loadingComments,
+    loading: isLoading,
   };
 }
 

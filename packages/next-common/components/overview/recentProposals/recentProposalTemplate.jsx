@@ -3,7 +3,7 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import Tabs from "next-common/components/tabs";
 import { cn } from "next-common/utils";
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import Pagination from "next-common/components/pagination";
 import { backendApi } from "next-common/services/nextApi";
 import { recentProposalFetchParams } from "next-common/services/serverSide/recentProposals";
@@ -151,6 +151,7 @@ function TableTemplate({
           <Pagination
             page={page}
             pageSize={recentProposalFetchParams.pageSize}
+            buttonMode
             total={result?.total || 0}
             onPageChange={(e, newPage) => {
               e.preventDefault();

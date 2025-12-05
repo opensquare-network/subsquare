@@ -8,6 +8,7 @@ export default function AddressComboField({
   extensionAccounts,
   setAddress,
   title = "Address",
+  status,
   placeholder,
   readOnly = false,
   canEdit = true,
@@ -17,6 +18,7 @@ export default function AddressComboField({
   const accounts = extensionAccounts.map((acc) => ({
     address: acc.address,
     name: acc.meta.name,
+    disabled: acc?.disabled ?? false,
   }));
 
   const [targetAddress, setTargetAddress] = useState(defaultAddress);
@@ -27,7 +29,7 @@ export default function AddressComboField({
 
   return (
     <div>
-      <PopupLabel text={title} />
+      <PopupLabel text={title} status={status} />
       <AddressCombo
         address={targetAddress}
         setAddress={setTargetAddress}

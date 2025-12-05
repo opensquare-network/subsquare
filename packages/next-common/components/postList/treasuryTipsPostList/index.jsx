@@ -20,6 +20,7 @@ export function NewTipButtonExtra() {
 }
 
 export default function TreasuryTipsPostList({
+  title = "List",
   titleCount = null,
   items,
   pagination,
@@ -29,7 +30,7 @@ export default function TreasuryTipsPostList({
     <>
       <ListWrapper>
         <ListTitleBar
-          title="List"
+          title={title}
           link="/treasury/tips"
           titleCount={titleCount}
           titleExtra={titleExtra}

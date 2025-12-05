@@ -6,6 +6,7 @@ import { ListWrapper } from "next-common/components/postList/styled";
 import PostItem from "./postItem";
 
 export default function CouncilMotionsPostList({
+  title = "List",
   titleCount = null,
   items,
   pagination,
@@ -15,8 +16,8 @@ export default function CouncilMotionsPostList({
   return (
     <ListWrapper>
       <ListTitleBar
+        title={title}
         titleExtra={titleExtra}
-        title="List"
         titleCount={titleCount}
         link={link}
       />

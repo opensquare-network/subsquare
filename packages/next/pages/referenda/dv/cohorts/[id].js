@@ -11,8 +11,10 @@ import { isNil } from "lodash-es";
 import Breadcrumbs from "next-common/components/layout/DetailLayout/breadcrumbs";
 import CountBySelect from "next-common/components/referenda/dv/common/countBySelect";
 import DvDataTypeProvider from "next-common/context/referenda/dv";
+import DvReferendaDataProvider from "next-common/context/referenda/dv/dvReferendaDataProvider";
 import NotFound from "next-common/components/notFound";
 import Influence from "next-common/components/referenda/dv/influence";
+import CohortInfoPanel from "next-common/components/referenda/dv/cohort/cohortInfoPanel";
 
 function NilCohortPage() {
   const seoInfo = {
@@ -43,21 +45,24 @@ export default function CohortPage() {
   return (
     <SectionLayout seoInfo={seoInfo}>
       <DvDataTypeProvider>
-        <CountBySelect
-          className="mx-0 mb-4"
-          selectClassName="max-sm:ml-12 mr-6"
-        >
-          <Breadcrumbs
-            className="mb-0 flex-1"
-            breadcrumbs={<CohortBreadcrumb />}
-          />
-        </CountBySelect>
-        <div className="flex flex-col gap-y-4">
-          <Overview />
-          <DelegatesSection />
-          <DvReferendaVotes />
-          <Influence />
-        </div>
+        <DvReferendaDataProvider>
+          <CountBySelect
+            className="mx-0 mb-4"
+            selectClassName="max-sm:ml-12 mr-6"
+          >
+            <Breadcrumbs
+              className="mb-0 flex-1"
+              breadcrumbs={<CohortBreadcrumb />}
+            />
+          </CountBySelect>
+          <div className="flex flex-col gap-y-4">
+            <CohortInfoPanel />
+            <Overview />
+            <DelegatesSection />
+            <DvReferendaVotes />
+            <Influence />
+          </div>
+        </DvReferendaDataProvider>
       </DvDataTypeProvider>
     </SectionLayout>
   );
@@ -92,17 +97,12 @@ export const getServerSideProps = withReferendaCommonProps(async (context) => {
     };
   }
 
-  const [{ result: votes }, { result: referenda }] = await Promise.all([
-    backendApi.fetch(`${baseUrl}/votes`),
-    backendApi.fetch(`${baseUrl}/referenda`),
-  ]);
-
+  const { result: votes } = await backendApi.fetch(`${baseUrl}/votes`);
   return {
     props: {
       id,
       cohort,
       votes,
-      referenda,
     },
   };
 });

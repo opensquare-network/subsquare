@@ -2,7 +2,7 @@ import Tooltip from "next-common/components/tooltip";
 import { useMeasure } from "react-use";
 import { startCase } from "lodash-es";
 import AddressUser from "next-common/components/user/addressUser";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { cn } from "next-common/utils";
 import {
   BatchProvider,

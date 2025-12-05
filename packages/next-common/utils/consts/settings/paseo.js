@@ -34,7 +34,7 @@ const paseo = {
   navPreferDark: true,
   links: paseoLinks,
   hasMultisig: true,
-  multisigApiPrefix: "paseo",
+  multisigApiPrefix: "ahs-gh-api",
   graphqlApiSubDomain: "paseo-gh-api",
   postLabels: defaultPostLabels,
   description:
@@ -65,6 +65,7 @@ const paseo = {
   },
   allowWeb2Login: true,
   preimage: polkadotPreimageSettings,
+  hideHeight: true,
 };
 
 export default paseo;

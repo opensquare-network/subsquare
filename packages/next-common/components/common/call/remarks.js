@@ -6,6 +6,7 @@ import ToggleCollapsed from "next-common/toggleCollapsed";
 import { isHex, hexToString } from "@polkadot/util";
 
 const RemarkWrapper = styled.div`
+  width: 100%;
   .markdown-body {
     color: inherit;
     word-break: break-word;

@@ -1,12 +1,13 @@
 import { useState, useMemo, useRef, useCallback } from "react";
 import { backendApi } from "next-common/services/nextApi";
-import useRefCallback from "next-common/hooks/useRefCallback";
 import { markdownToText } from "next-common/components/header/search/utils";
 import useSearchIdentities from "next-common/components/header/hooks/useSearchIdentities";
+import useSearchFellowshipMembers from "next-common/components/header/hooks/useSearchFellowshipMembers";
 import {
   getChildBountyDisplayIndex,
   getChildBountyIndex,
 } from "next-common/utils/viewfuncs/treasury/childBounty";
+import { isEmpty } from "lodash-es";
 
 export const ItemType = {
   CATEGORY: "category",
@@ -18,8 +19,9 @@ const formatItems = (
   items,
   indexKeyOrGetIndexFn,
   displayIndexKeyOrGetIndexFn,
+  noDisplayIndex = false,
 ) => {
-  if ((items?.length || []) <= 0) {
+  if (!items || (items || []).length <= 0) {
     return [];
   }
 
@@ -51,8 +53,26 @@ const formatItems = (
           : "-",
         proposalType,
         type: ItemType.ITEM,
+        noDisplayIndex,
       };
     }),
+  ];
+};
+
+const formatSearchResult = (proposalType, value) => {
+  if (!value?.length) {
+    return [];
+  }
+  return [
+    {
+      proposalType,
+      type: ItemType.CATEGORY,
+    },
+    ...(value || []).map((item) => ({
+      ...item,
+      proposalType,
+      type: ItemType.ITEM,
+    })),
   ];
 };
 
@@ -61,7 +81,9 @@ function useSearchResults() {
   const [isLoading, setIsLoading] = useState(false);
   const abortControllerRef = useRef(null);
   const lastSearchValueRef = useRef("");
-  const [fetchIdentities, isIdentitiesLoading] = useSearchIdentities();
+  const [fetchIdentities] = useSearchIdentities();
+
+  const { search: searchFellowshipMembers } = useSearchFellowshipMembers();
 
   const combineIdentitiesRequest = useCallback(
     async (searchValue) => {
@@ -92,48 +114,75 @@ function useSearchResults() {
     );
   }, []);
 
-  const fetch = useRefCallback(async (searchValue) => {
-    if (searchValue === lastSearchValueRef.current && results !== null) {
-      return;
-    }
-
-    try {
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
+  const requestCallback = useCallback(
+    (result, signal, searchValue) => {
+      if (!signal.aborted && lastSearchValueRef.current === searchValue) {
+        if (!isEmpty(formatResults(result))) {
+          setIsLoading(false);
+        }
+        setResults((prev) => ({
+          ...prev,
+          ...result,
+        }));
       }
+    },
+    [lastSearchValueRef],
+  );
 
-      abortControllerRef.current = new AbortController();
-      const signal = abortControllerRef.current.signal; //avoid race and data leakage
-
-      setIsLoading(true);
-      lastSearchValueRef.current = searchValue;
-
-      const [{ value: apiResult }, { value: identitiesResult }] =
-        await Promise.allSettled([
-          baseSearchDataRequest(searchValue, signal),
-          combineIdentitiesRequest(searchValue),
-        ]);
-
-      const endIdentities = (identitiesResult || []).map((item, index) => ({
-        index,
-        content: item?.account,
-        title: item?.fullDisplay ?? "-",
-      }));
-
-      if (!signal.aborted) {
-        setResults({
-          ...apiResult?.result,
-          identities: endIdentities,
-        });
-      }
-    } finally {
+  const fetch = useCallback(
+    async (searchValue) => {
       if (searchValue === lastSearchValueRef.current) {
-        setIsLoading(false);
+        return;
       }
-    }
-  });
 
-  const clearResults = useRefCallback(() => {
+      try {
+        if (abortControllerRef.current) {
+          abortControllerRef.current.abort();
+        }
+
+        abortControllerRef.current = new AbortController();
+        const signal = abortControllerRef.current.signal; //avoid race and data leakage
+
+        setResults(null);
+        setIsLoading(true);
+        lastSearchValueRef.current = searchValue;
+
+        const promises = [
+          baseSearchDataRequest(searchValue, signal).then((apiResult) =>
+            requestCallback(apiResult?.result || {}, signal, searchValue),
+          ),
+          combineIdentitiesRequest(searchValue).then((identitiesResult) =>
+            requestCallback(
+              { identities: identitiesResult || [] },
+              signal,
+              searchValue,
+            ),
+          ),
+          searchFellowshipMembers(searchValue).then((fellowshipMembers) =>
+            requestCallback(
+              { fellowshipMembers: fellowshipMembers || [] },
+              signal,
+              searchValue,
+            ),
+          ),
+        ];
+
+        await Promise.allSettled(promises);
+      } finally {
+        if (searchValue === lastSearchValueRef.current) {
+          setIsLoading(false);
+        }
+      }
+    },
+    [
+      baseSearchDataRequest,
+      combineIdentitiesRequest,
+      searchFellowshipMembers,
+      requestCallback,
+    ],
+  );
+
+  const clearResults = useCallback(() => {
     setResults(null);
     lastSearchValueRef.current = "";
 
@@ -141,46 +190,67 @@ function useSearchResults() {
       abortControllerRef.current.abort();
       abortControllerRef.current = null;
     }
-  });
+  }, [abortControllerRef, lastSearchValueRef]);
 
-  const totalList = useMemo(() => {
-    if (!results) return null;
-
-    return Object.entries(results).flatMap(([key, value]) => {
-      switch (key) {
-        case "openGovReferenda":
-          return formatItems("Referenda", value, "referendumIndex");
-        case "democracyReferenda":
-          return formatItems("DemocracyReferenda", value, "referendumIndex");
-        case "bounties":
-          return formatItems("Bounties", value, "bountyIndex");
-        case "childBounties": {
-          return formatItems(
-            "ChildBounties",
-            value,
-            getChildBountyIndex,
-            getChildBountyDisplayIndex,
-          );
-        }
-        case "identities":
-          return formatItems("Identities", value, "index");
-        case "treasuryProposals":
-          return formatItems("TreasuryProposals", value, "proposalIndex");
-        case "treasurySpends":
-          return formatItems("TreasurySpends", value, "index");
-        default:
-          return [];
-      }
-    });
-  }, [results]);
+  const totalList = useMemo(() => formatResults(results), [results]);
 
   return {
     totalList,
     fetch,
-    isLoading: isLoading || isIdentitiesLoading,
+    isLoading,
     setResults,
     clearResults,
   };
 }
 
 export default useSearchResults;
+
+function formatResults(results) {
+  if (!results) return null;
+
+  const priorityKeys = ["fellowshipMembers"];
+  const allEntries = Object.entries(results);
+  const priorityEntries = priorityKeys
+    .map((key) => [key, results[key]])
+    .filter(([, value]) => value !== undefined);
+
+  const otherEntries = allEntries.filter(
+    ([key]) => !priorityKeys.includes(key),
+  );
+  const orderedEntries = [...priorityEntries, ...otherEntries];
+
+  return orderedEntries.flatMap(([key, value]) => {
+    switch (key) {
+      case "openGovReferenda":
+        return formatItems("Referenda", value, "referendumIndex");
+      case "democracyReferenda":
+        return formatItems("DemocracyReferenda", value, "referendumIndex");
+      case "bounties":
+        return formatItems("Bounties", value, "bountyIndex");
+      case "childBounties": {
+        return formatItems(
+          "ChildBounties",
+          value,
+          getChildBountyIndex,
+          getChildBountyDisplayIndex,
+        );
+      }
+      case "treasuryProposals":
+        return formatItems("TreasuryProposals", value, "proposalIndex");
+      case "treasurySpends":
+        return formatItems("TreasurySpends", value, "index");
+      case "fellowshipReferenda":
+        return formatItems("FellowshipReferenda", value, "referendumIndex");
+      case "fellowshipTreasurySpends":
+        return formatItems("FellowshipTreasurySpends", value, "index");
+      case "identities":
+        return formatSearchResult("Identities", value);
+      case "fellowshipMembers":
+        return formatSearchResult("FellowshipMembers", value);
+      case "treasuryTips":
+        return formatItems("TreasuryTips", value, "hash", "hash", true);
+      default:
+        return [];
+    }
+  });
+}

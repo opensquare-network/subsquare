@@ -14,6 +14,7 @@ export default function Items({
   page,
   onPageChange = null,
   shallow = false,
+  buttonMode = false,
 }) {
   let key = 0;
   const items = [];
@@ -28,6 +29,7 @@ export default function Items({
           page={group[j] + 1}
           key={key++}
           onPageChange={onPageChange}
+          buttonMode={buttonMode}
         />,
       );
     }

@@ -17,6 +17,7 @@ import { NewUSDxTreasuryReferendumInnerPopupContent } from "../newProposalQuickS
 import { SpendDotOnAssetHubReferendumInnerPopupContent } from "../newProposalQuickStart/spendDotOnAssetHubPopup";
 import { NewTreasurySpendReferendumInnerPopupContent } from "../newProposalQuickStart/createTreasurySpendReferendumInnerPopupContent";
 import { isZkverifyChain } from "next-common/utils/chain";
+import { BatchTreasurySpendsReferendumInnerPopupContent } from "../newProposalQuickStart/batchTreasurySpendsPopup";
 
 const useQuickStartItems = () => {
   const {
@@ -54,6 +55,12 @@ const useQuickStartItems = () => {
         description: "Create a treasury spend with assets on AssetHub",
         buttonSuffix: <InfoPopoular className="w-4 h-4 ml-2" />,
         content: NewUSDxTreasuryReferendumInnerPopupContent,
+      });
+      items.push({
+        name: "Batch treasury spends",
+        description:
+          "Create multiple treasury spends in a single batch proposal",
+        content: BatchTreasurySpendsReferendumInnerPopupContent,
       });
     }
     if (treasuryProposalTracks && spendDotOnAssetHubProposal) {

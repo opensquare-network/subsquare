@@ -132,6 +132,20 @@ export const useEvidenceCommentActions = (realPost = null) => {
         data,
       );
     },
+    deleteComment: async (post, comment) => {
+      const indexer = getIndexer(post);
+      const entity = {
+        action: "delete_comment",
+        indexer,
+        cid: comment.cid,
+        timestamp: Date.now(),
+      };
+      const data = await signSimaMessage(entity);
+      return await backendApi.delete(
+        `${getBaseApiUrl(post)}/comments/${comment.cid}`,
+        data,
+      );
+    },
   };
 };
 
