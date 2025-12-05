@@ -172,7 +172,7 @@ export function getRelayChain(chain) {
     return chain;
   }
 
-  // throw new Error("Unsupported relay chain");
+  throw new Error("Unsupported relay chain");
 }
 
 export function chainApiHash(...args) {
