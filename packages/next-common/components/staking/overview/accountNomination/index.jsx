@@ -72,7 +72,7 @@ function StakingBalance() {
     <div className="flex flex-col gap-2">
       <WindowSizeProvider>
         <CollapsePanel
-          className="w-[300px]"
+          className="w-[300px] [&>*:not(:last-child)]:mb-1"
           labelItem={
             <AccountBalanceItem
               title="In nominating"

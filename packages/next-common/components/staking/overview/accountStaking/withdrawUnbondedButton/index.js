@@ -15,7 +15,7 @@ export default function PoolWithdrawUnbondedButton({ poolId }) {
     <>
       <div
         role="button"
-        className="text-theme500 text12Medium cursor-pointer mb-1"
+        className="text-theme500 text12Medium cursor-pointer"
         onClick={() => setShowWithdrawUnbondedPopup(true)}
       >
         Withdraw
