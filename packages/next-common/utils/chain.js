@@ -169,7 +169,7 @@ export function getRelayChain(chain) {
   } else if (isHyperBridgeChain(chain)) {
     return Chains.polkadot;
   } else if (isBifrostChain(chain)) {
-    return Chains.basilisk;
+    return chain;
   }
 
   // throw new Error("Unsupported relay chain");
