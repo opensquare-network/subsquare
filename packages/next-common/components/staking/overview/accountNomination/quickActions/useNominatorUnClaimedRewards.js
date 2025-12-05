@@ -305,7 +305,7 @@ async function calculateAllErasRewardsBatch(api, nominatorAddress) {
   };
 }
 
-export default function useUnclaimedRewards(nominatorAddress) {
+export default function useNominatorUnClaimedRewards(nominatorAddress) {
   const api = useContextApi();
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(true);

@@ -17,7 +17,7 @@ import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
 import LoadableContent from "next-common/components/common/loadableContent";
 import Tooltip from "next-common/components/tooltip";
-import useUnclaimedRewards from "./useUnclaimedRewards";
+import useNominatorUnClaimedRewards from "./useNominatorUnClaimedRewards";
 
 function createPayoutExtrinsic(api, details, maxBatchSize = 40) {
   if (!api?.tx?.staking?.payoutStakers || !details || details.length === 0) {
@@ -88,7 +88,7 @@ function ClaimPopupContent() {
   const realAddress = useRealAddress();
   const { decimals, symbol } = useChainSettings();
 
-  const { result, loading } = useUnclaimedRewards(realAddress);
+  const { result, loading } = useNominatorUnClaimedRewards(realAddress);
   const { getTxFuncForSubmit, getTxFuncForFee, displayAmount, hasRewards } =
     useClaimRewardsTx(result);
 
