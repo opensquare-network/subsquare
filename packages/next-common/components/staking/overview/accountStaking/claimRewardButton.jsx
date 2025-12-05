@@ -14,7 +14,7 @@ export default function ClaimPoolRewardButton() {
     <>
       <div
         role="button"
-        className="text-theme500 text12Medium cursor-pointer mb-1"
+        className="text-theme500 text12Medium cursor-pointer"
         onClick={() => setShowClaimPopup(true)}
       >
         Claim

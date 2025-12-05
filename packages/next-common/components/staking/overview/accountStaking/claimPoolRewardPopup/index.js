@@ -9,12 +9,12 @@ import { useContextApi } from "next-common/context/api";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import { useCallback } from "react";
-import { useRewardClaimable } from "next-common/components/staking/pools/hooks/useRewardClaimable";
+import { useMyPoolRewardContext } from "next-common/context/staking/poolReward";
 
 function ClaimPoolRewardPopupContent() {
   const api = useContextApi();
   const { decimals, symbol } = useChainSettings();
-  const { claimable, loading: isClaimableLoading } = useRewardClaimable();
+  const { claimable, loading: isClaimableLoading } = useMyPoolRewardContext();
 
   const getTxFunc = useCallback(async () => {
     if (!api) {
