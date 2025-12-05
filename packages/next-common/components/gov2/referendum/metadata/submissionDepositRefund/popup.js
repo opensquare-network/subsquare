@@ -1,11 +1,11 @@
 import React, { useCallback } from "react";
 import { isNil } from "lodash-es";
-import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import useSigner from "next-common/components/common/tx/useSigner";
 import ReferendumIndexRow from "next-common/components/gov2/referendum/metadata/refund/referendumIndexRow";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
+import DesignatedPersonSignature from "../designatedPersonSignature";
 
 function Content() {
   const { referendumIndex, pallet = "referenda" } = usePopupParams();
@@ -24,7 +24,7 @@ function Content() {
     <>
       {component}
       <ReferendumIndexRow referendumIndex={referendumIndex} />
-      <TxSubmissionButton getTxFunc={getTxFunc} />
+      <DesignatedPersonSignature getTxFunc={getTxFunc} />
     </>
   );
 }
