@@ -16,7 +16,7 @@ export function StopNominationButton() {
     <>
       <Tooltip content="Stop Nominating">
         <IconButton
-          className="text-theme500 bg-theme100"
+          className="text-theme500 bg-theme100 [&_svg_path]:stroke-theme500"
           onClick={() => setShowStopNominationPopup(true)}
         >
           <SystemVoteNay className="w-5 h-5" />

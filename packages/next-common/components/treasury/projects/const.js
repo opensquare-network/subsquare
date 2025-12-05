@@ -8,6 +8,8 @@ export const colors = [
   "#2196F399",
 ];
 
+export const FIXED_LABEL_WIDTH = 140;
+
 export const CATEGORY_VALUES = {
   WALLET: "wallet",
   MULTISIG_TOOLS: "multisig_tools",
@@ -15,6 +17,8 @@ export const CATEGORY_VALUES = {
   GOVERNANCE_PLATFORM: "governance_platform",
   POLKADOT_CLIENT: "polkadot_client",
   MARKETING: "marketing",
+  EVENT: "event",
+  EDUCATION: "education",
 };
 
 export const DOUGHNUT_CONFIG_BY_CATEGORY = {
@@ -46,6 +50,8 @@ export const GRID_LABELS = {
 
 export const HORIZONTAL_LABELS = {
   [CATEGORY_VALUES.MARKETING]: "Marketing",
+  [CATEGORY_VALUES.EVENT]: "Events",
+  [CATEGORY_VALUES.EDUCATION]: "Education",
 };
 
 export const LABELS = {

@@ -9,7 +9,13 @@ import LoadableContent from "next-common/components/common/loadableContent";
 import { useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import NominatorQuickActions from "./quickActions";
-import { StopNominationButton } from "./stopNominationButton";
+import { StopNominationButton } from "./quickActions/stopNominationButton";
+import Divider from "next-common/components/styled/layout/divider";
+import WindowSizeProvider from "next-common/context/windowSize";
+import CollapsePanel from "next-common/components/overview/accountInfo/components/collapsePanel";
+import { AccountBalanceItem } from "next-common/components/overview/accountInfo/components/accountBalances";
+import useStakingBalance from "./useStakingBalance";
+import WithdrawUnbondedButton from "./withdrawUnbondedButton";
 
 const StartNominatingPopup = dynamicPopup(() =>
   import(
@@ -17,8 +23,7 @@ const StartNominatingPopup = dynamicPopup(() =>
   ),
 );
 
-function AccountNominationImpl() {
-  const { width } = useWindowSize();
+function Header({ width }) {
   const { nominators } = useMyStakingLedger();
   const { active, loading } = useValidatorsWithStatus(
     nominators?.targets || [],
@@ -38,30 +43,82 @@ function AccountNominationImpl() {
   }
 
   return (
-    <NeutralPanel className="p-6 space-y-4">
-      <div className="flex flex-col gap-2">
-        <div
-          className={cn(
-            "flex justify-between items-start grow gap-4",
-            width > 768 ? "flex-row" : "flex-col",
-          )}
-        >
-          <div className="flex flex-col gap-1">
-            <div className="text12Medium text-textTertiary">
-              Nominator Status
-            </div>
-            <div className="text14Medium text-textPrimary">
-              <LoadableContent isLoading={loading} size={14}>
-                {message}
-              </LoadableContent>
-            </div>
-          </div>
-          <div className="flex gap-[16px] items-center">
-            <NominatorQuickActions />
-            <StopNominationButton />
+    <div className="flex flex-col gap-2">
+      <div
+        className={cn(
+          "flex justify-between items-start grow gap-4",
+          width > 768 ? "flex-row" : "flex-col",
+        )}
+      >
+        <div className="flex flex-col gap-1">
+          <div className="text12Medium text-textTertiary">Nominator Status</div>
+          <div className="text14Medium text-textPrimary">
+            <LoadableContent isLoading={loading} size={14}>
+              {message}
+            </LoadableContent>
           </div>
         </div>
+        <div className="flex gap-[16px] items-center">
+          <NominatorQuickActions />
+          <StopNominationButton />
+        </div>
       </div>
+    </div>
+  );
+}
+
+function StakingBalance() {
+  const { loading, total, active, unlocking, unlocked } = useStakingBalance();
+
+  return (
+    <div className="flex flex-col gap-2">
+      <WindowSizeProvider>
+        <CollapsePanel
+          className="w-[300px] [&>*:not(:last-child)]:mb-1"
+          labelItem={
+            <AccountBalanceItem
+              title="In nominating"
+              value={total?.toString() || 0}
+              isLoading={loading}
+            />
+          }
+        >
+          <AccountBalanceItem
+            title="Active"
+            value={active?.toString() || 0}
+            isLoading={loading}
+          />
+          <AccountBalanceItem
+            title="Unbonding"
+            value={unlocking?.toString() || 0}
+            isLoading={loading}
+          />
+          <div className="flex items-center gap-2 max-sm:items-end max-sm:gap-0 max-sm:flex-col">
+            <AccountBalanceItem
+              title="Unbonded"
+              value={unlocked?.toString() || 0}
+              isLoading={loading}
+            />
+            {unlocked > 0n && <WithdrawUnbondedButton />}
+          </div>
+        </CollapsePanel>
+      </WindowSizeProvider>
+    </div>
+  );
+}
+
+function AccountNominationImpl() {
+  const { width } = useWindowSize();
+
+  if (isNil(width)) {
+    return null;
+  }
+
+  return (
+    <NeutralPanel className="p-6 space-y-4">
+      <Header width={width} />
+      <Divider />
+      <StakingBalance />
     </NeutralPanel>
   );
 }

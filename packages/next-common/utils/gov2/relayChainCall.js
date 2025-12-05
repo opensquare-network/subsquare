@@ -12,7 +12,7 @@ export function isFromParaToRelayChain(xcmLocation) {
   return false;
 }
 
-// `messageArg` are a group of XCM instructions in v3 and v4
+// `messageArg` are a group of XCM instructions in v3, v4 and v5
 export function extractTransactCallBytesArr(messageArg) {
   let instructions;
 
@@ -20,6 +20,8 @@ export function extractTransactCallBytesArr(messageArg) {
     instructions = messageArg?.asV3;
   } else if (messageArg?.isV4) {
     instructions = messageArg?.asV4;
+  } else if (messageArg?.isV5) {
+    instructions = messageArg?.asV5;
   }
 
   if (!Array.isArray(instructions)) {
