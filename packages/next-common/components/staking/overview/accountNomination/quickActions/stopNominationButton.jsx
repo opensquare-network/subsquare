@@ -4,11 +4,7 @@ import { SystemVoteNay } from "@osn/icons/subsquare";
 import { useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const StopNominationPopup = dynamicPopup(() =>
-  import(
-    "next-common/components/staking/overview/accountNomination/stopNominationPopup"
-  ),
-);
+const StopNominationPopup = dynamicPopup(() => import("./stopNominationPopup"));
 
 export default function StopNominationButton() {
   const [showStopNominationPopup, setShowStopNominationPopup] = useState(false);
