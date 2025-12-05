@@ -8,6 +8,7 @@ import { useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import IconButton from "next-common/components/iconButton";
 import { TrackPromotion } from "@osn/icons/subsquare";
+import BigNumber from "bignumber.js";
 
 const ClaimPayoutPopup = dynamicPopup(() =>
   import("next-common/components/staking/pools/actions/claimPayoutPopup"),
@@ -32,7 +33,7 @@ export default function ClaimableItem({ claimable }) {
 function ClaimButton({ claimable }) {
   const [open, setOpen] = useState(false);
 
-  if (isNil(claimable) || claimable.lte(0)) {
+  if (isNil(claimable) || BigNumber(claimable).lte(0)) {
     return null;
   }
 

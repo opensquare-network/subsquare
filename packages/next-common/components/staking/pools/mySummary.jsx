@@ -7,7 +7,7 @@ import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useMyPool } from "next-common/context/staking/myPool";
-import { useRewardClaimable } from "./hooks/useRewardClaimable";
+import { useRewardClaimable } from "next-common/hooks/staking/useRewardClaimable";
 
 // Only for `my` Pools summary, may move to overview?
 export default function PoolsSummary() {
