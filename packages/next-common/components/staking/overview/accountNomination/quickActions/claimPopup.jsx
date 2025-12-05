@@ -18,6 +18,25 @@ import SummaryItem from "next-common/components/summary/layout/item";
 import LoadableContent from "next-common/components/common/loadableContent";
 import Tooltip from "next-common/components/tooltip";
 import useNominatorUnClaimedRewards from "./useNominatorUnClaimedRewards";
+import { InfoMessage } from "next-common/components/setting/styled";
+
+function Alerts() {
+  return (
+    <InfoMessage>
+      <p className="text-textSecondary text12Medium">
+        Claiming a payout claims on behalf of every nominator backing the
+        validator for the era you are claiming for. For this reason transaction
+        fees are usually higher, and most nominators rely on the validator to
+        claim on their behalf. Validators usually claim payouts on behalf of
+        their nominators.
+        <br />
+        <br />
+        If you decide not to claim here, it is likely you will receive your
+        payouts within 1-2 days of them becoming available.
+      </p>
+    </InfoMessage>
+  );
+}
 
 function createPayoutExtrinsic(api, details, maxBatchSize = 40) {
   if (!api?.tx?.staking?.payoutStakers || !details || details.length === 0) {
@@ -121,6 +140,7 @@ function ClaimPopupContent() {
           </SummaryItem>
         )}
       </SummaryLayout>
+      <Alerts />
       <AdvanceSettings>
         <EstimatedGas getTxFunc={getTxFuncForFee} />
       </AdvanceSettings>
