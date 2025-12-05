@@ -16,7 +16,10 @@ export default function LoadableItem({
   return (
     <div className={cn("flex flex-col grow", className)}>
       <span
-        className={cn("text-textTertiary text12Medium mb-1", titleClassName)}
+        className={cn(
+          "text-textTertiary text12Medium mb-1 whitespace-nowrap",
+          titleClassName,
+        )}
       >
         {title}
       </span>

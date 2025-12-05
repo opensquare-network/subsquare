@@ -28,6 +28,9 @@ import { isArray } from "lodash-es";
 import { assetsMenu } from "./assets";
 import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated";
 import { calendarMenu } from "./calendar";
+import { votingMenu } from "./voting";
+import { navigationMenu } from "./navigation";
+import { votingSpace } from "next-common/utils/opensquareVoting";
 
 export function getHomeMenu({
   summary = {},
@@ -70,6 +73,8 @@ export function getHomeMenu({
         ...integrationsMenu,
         (modules?.proxy || modules?.vesting || hasMultisig) && Data,
         calendarMenu,
+        votingSpace && votingMenu,
+        navigationMenu,
       ].filter(Boolean),
     ),
   ].filter(Boolean);
