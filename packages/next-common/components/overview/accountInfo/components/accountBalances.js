@@ -57,7 +57,6 @@ export function AccountBalanceItem({ value, title, isLoading, className }) {
     <div
       className={cn(
         "group",
-        "[&:not(:last-child)]:mb-1",
         "flex items-center",
         isMobile && "w-full inline-flex flex-col",
         className,

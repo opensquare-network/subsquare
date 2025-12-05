@@ -17,7 +17,7 @@ import { toPrecision } from "next-common/utils";
 import BigNumber from "bignumber.js";
 import Tooltip from "next-common/components/tooltip";
 import Signer from "next-common/components/popup/fields/signerField";
-import { useRewardClaimable } from "../hooks/useRewardClaimable";
+import { useRewardClaimable } from "next-common/hooks/staking/useRewardClaimable";
 
 function ClaimPayoutPopupContent() {
   const { onClose } = usePopupParams();

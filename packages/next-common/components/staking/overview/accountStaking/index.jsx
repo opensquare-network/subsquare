@@ -6,6 +6,7 @@ import StakingBalance from "./stakingBalance";
 import Divider from "next-common/components/styled/layout/divider";
 import { useMyPool } from "next-common/context/staking/myPool";
 import Link from "next/link";
+import { MyPoolRewardProvider } from "next-common/context/staking/poolReward";
 
 function AccountStakingImpl() {
   const { width } = useWindowSize();
@@ -15,11 +16,13 @@ function AccountStakingImpl() {
   }
 
   return (
-    <NeutralPanel className="p-6 space-y-4">
-      <StakingHeader width={width} />
-      <Divider />
-      <StakingBalance />
-    </NeutralPanel>
+    <MyPoolRewardProvider>
+      <NeutralPanel className="p-6 space-y-4">
+        <StakingHeader width={width} />
+        <Divider />
+        <StakingBalance />
+      </NeutralPanel>
+    </MyPoolRewardProvider>
   );
 }
 
