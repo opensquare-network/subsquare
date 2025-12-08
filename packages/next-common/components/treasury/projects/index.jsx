@@ -51,7 +51,7 @@ export default function TreasuryProjects() {
 
 function GridChart({ categories }) {
   return (
-    <div className="grid grid-cols-2 gap-6 max-sm:grid-cols-1">
+    <div className="grid grid-cols-2 gap-x-6 gap-y-4 max-sm:grid-cols-1">
       {categories.map((data) => (
         <Statistics key={data.category} data={data} />
       ))}
