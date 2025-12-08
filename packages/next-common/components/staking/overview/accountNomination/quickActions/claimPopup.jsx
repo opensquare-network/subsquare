@@ -20,10 +20,7 @@ import Tooltip from "next-common/components/tooltip";
 import useNominatorUnClaimedRewards from "./useNominatorUnClaimedRewards";
 import { InfoMessage } from "next-common/components/setting/styled";
 import { useDispatch } from "react-redux";
-import {
-  newErrorToast,
-  newSuccessToast,
-} from "next-common/store/reducers/toastSlice";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 
 function Alerts() {
   return (
