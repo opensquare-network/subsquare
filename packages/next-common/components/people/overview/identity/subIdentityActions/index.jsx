@@ -3,6 +3,8 @@ import Tooltip from "next-common/components/tooltip";
 import { SystemEdit2, SystemClose } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import useProfileAddress from "next-common/components/profile/useProfileAddress";
 
 const RenameSubPopup = dynamicPopup(() => import("./renameSubPopup"), {
   ssr: false,
@@ -19,6 +21,11 @@ export default function SubIdentityActions({
 }) {
   const [showRenamePopup, setShowRenamePopup] = useState(false);
   const [showRemovePopup, setShowRemovePopup] = useState(false);
+  const realAddress = useRealAddress();
+  const profileAddress = useProfileAddress();
+  if (realAddress !== profileAddress) {
+    return null;
+  }
 
   return (
     <>
