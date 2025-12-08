@@ -5,6 +5,7 @@ import { cn } from "next-common/utils";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
+import { isSameAddress } from "next-common/utils";
 
 const RenameSubPopup = dynamicPopup(() => import("./renameSubPopup"), {
   ssr: false,
@@ -23,7 +24,7 @@ export default function SubIdentityActions({
   const [showRemovePopup, setShowRemovePopup] = useState(false);
   const realAddress = useRealAddress();
   const profileAddress = useProfileAddress();
-  if (realAddress !== profileAddress) {
+  if (!isSameAddress(realAddress, profileAddress)) {
     return null;
   }
 
