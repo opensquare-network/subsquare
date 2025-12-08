@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
 import CoreFellowshipMemberInfoWrapper from "./infoWrapper";
 import CoreFellowshipMemberInfoTitle from "./title";

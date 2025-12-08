@@ -62,5 +62,6 @@ function getChartData(projectsByCategory = [], categories = {}) {
     .map(([value]) =>
       projectsByCategory.find((item) => item.category === value),
     )
+    .sort((a, b) => b.totalFiat.comparedTo(a.totalFiat))
     .filter(Boolean);
 }

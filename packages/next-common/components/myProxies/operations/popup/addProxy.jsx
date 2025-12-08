@@ -8,7 +8,7 @@ import useAddressComboField from "next-common/components/preImages/createPreimag
 import Select from "next-common/components/select";
 import NumberInput from "next-common/lib/input/number";
 import { InfoMessage } from "next-common/components/setting/styled";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { useProxyTypeOptions } from "../../hooks/useProxyTypeOptions";
 import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";

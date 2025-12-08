@@ -1,6 +1,6 @@
 import React from "react";
 import { ItemLink, ItemWrapper } from "./styled";
-import Link from "next/link";
+import Link from "next-common/components/link";
 
 export default function IndexItem({ index, itemName = "Index", baseUrl = "" }) {
   return (

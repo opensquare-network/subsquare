@@ -1,6 +1,6 @@
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import { VoteItem } from "./voteItem";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { useChainSettings } from "next-common/context/chain";
 import DelegationStatus from "./delegationStatus";
 import tw from "tailwind-styled-components";

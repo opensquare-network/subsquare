@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import { UnStyledIdentity } from "../Identity";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import DeletedAccount from "./deletedAccount";
 import UserDisplay from "./userDisplay";
 import { AvatarWrapper, UserWrapper } from "./styled";

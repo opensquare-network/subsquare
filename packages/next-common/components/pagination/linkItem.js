@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { useRouter } from "next/router";
 
 export default function LinkItem({ children, shallow, page }) {

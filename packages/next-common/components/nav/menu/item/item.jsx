@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { isExternalLink } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
 import { useNavMenuType } from "next-common/context/nav";

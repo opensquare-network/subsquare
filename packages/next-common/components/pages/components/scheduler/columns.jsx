@@ -1,5 +1,7 @@
 import Tooltip from "next-common/components/tooltip";
-import useBlockTimestamp from "next-common/hooks/common/useBlockTimestamp";
+import useBlockTimestamp, {
+  useCalculatedBlockTimestamp,
+} from "next-common/hooks/common/useBlockTimestamp";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import { useSelector } from "react-redux";
 import { formatTimeDuration } from "next-common/utils/viewfuncs/formatTimeDuration";
@@ -8,8 +10,6 @@ import { useMemo } from "react";
 import Duration from "next-common/components/duration";
 import dayjs from "dayjs";
 import { useExecutionTimeContext } from "./context";
-import { useRelayChainBlockApi } from "next-common/context/relayChain/blockApi";
-import LoadableContent from "next-common/components/common/loadableContent";
 
 function ExecutionTimeButton() {
   const { isTime, toggleIsTime } = useExecutionTimeContext();
@@ -78,11 +78,10 @@ export function useColumnsDef() {
 }
 
 function ExecutionTimeColumnContent({ height }) {
-  const api = useRelayChainBlockApi();
   const { isTime } = useExecutionTimeContext();
-  const { timestamp, isLoading } = useBlockTimestamp(height, api);
+  const timestamp = useCalculatedBlockTimestamp(height);
 
-  if (!timestamp && !isLoading) {
+  if (!timestamp) {
     return "-";
   }
 
@@ -94,11 +93,7 @@ function ExecutionTimeColumnContent({ height }) {
     content = <Duration time={timestamp} />;
   }
 
-  return (
-    <LoadableContent size={16} isLoading={isLoading && !timestamp}>
-      <Tooltip content={`#${height?.toLocaleString()}`}>{content}</Tooltip>
-    </LoadableContent>
-  );
+  return <Tooltip content={`#${height?.toLocaleString()}`}>{content}</Tooltip>;
 }
 
 function PeriodicColumnContent({ periodic, blockNumber }) {

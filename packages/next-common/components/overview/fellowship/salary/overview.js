@@ -1,7 +1,7 @@
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import FellowshipSalaryStats from "next-common/components/overview/fellowship/salary/stats";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import FellowshipSalaryStatsActiveCycleDetailLink from "./detailLink/activeCycle";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 

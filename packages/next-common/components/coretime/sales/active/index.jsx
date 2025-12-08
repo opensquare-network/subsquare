@@ -3,7 +3,7 @@ import { TitleContainer } from "next-common/components/styled/containers/titleCo
 import Divider from "next-common/components/styled/layout/divider";
 import CoretimeSaleSummary from "next-common/components/coretime/salePanel/summary";
 import useCoretimeSale from "next-common/context/coretime/sale/provider";
-import Link from "next/link";
+import Link from "next-common/components/link";
 
 function ViewDetail({ id }) {
   const href = `/coretime/sales/${id}`;

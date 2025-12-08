@@ -6,7 +6,7 @@ import {
   isPeopleChain,
 } from "next-common/utils/chain";
 import { find } from "lodash-es";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { cn } from "next-common/utils";
 import { useChain } from "next-common/context/chain";
 

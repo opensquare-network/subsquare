@@ -1,5 +1,5 @@
 import { useChainSettings } from "next-common/context/chain";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import ChainLogoEventBackground from "./eventBackground";
 import { cn } from "next-common/utils";
 
