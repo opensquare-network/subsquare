@@ -20,7 +20,7 @@ import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 import { FellowshipTagByRank } from "next-common/components/profile/fellowshipTagInfo";
 import AddressAvatar from "next-common/components/user/addressAvatar";
 
-function handleClick(e, onClose) {
+function handleLinkClick(e, onClose) {
   e.stopPropagation();
   if (e.metaKey || e.ctrlKey) {
     return;
@@ -34,7 +34,7 @@ function SearchItemCategory({ href, category, onClose }) {
       href={href}
       className="cursor-pointer"
       onClick={(e) => {
-        handleClick(e, onClose);
+        handleLinkClick(e, onClose);
       }}
     >
       <div className="h-9 px-2 py-2.5 rounded-[6px] flex items-center text12Medium text-textTertiary">
@@ -50,7 +50,7 @@ function CommonSearchItem({ IconComponent, href, title, content, onClose }) {
       href={href}
       className="cursor-pointer"
       onClick={(e) => {
-        handleClick(e, onClose);
+        handleLinkClick(e, onClose);
       }}
     >
       <div
