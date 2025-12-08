@@ -21,6 +21,7 @@ import useNominatorUnClaimedRewards from "./useNominatorUnClaimedRewards";
 import { InfoMessage } from "next-common/components/setting/styled";
 import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
+import FoldableContent from "next-common/components/foldableContent";
 
 function Alerts() {
   return (
@@ -133,8 +134,10 @@ function ClaimPopupContent() {
         </SummaryItem>
         {!loading && result?.result && result.result.length > 0 && (
           <SummaryItem title="Rewards by Era">
-            <div className="space-y-1">
-              {result.result.map((item) => (
+            <FoldableContent
+              items={result.result}
+              threshold={5}
+              renderItem={(item) => (
                 <div
                   key={item.era}
                   className="flex items-center space-x-1 text14Medium"
@@ -146,13 +149,13 @@ function ClaimPopupContent() {
                     showVerySmallNumber={true}
                   />
                 </div>
-              ))}
-            </div>
+              )}
+            />
           </SummaryItem>
         )}
       </SummaryLayout>
       <Alerts />
-      <AdvanceSettings>
+      <AdvanceSettings defaultShow>
         <EstimatedGas getTxFunc={getTxFuncForFee} />
       </AdvanceSettings>
       <div className="flex justify-between">

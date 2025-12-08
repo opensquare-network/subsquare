@@ -4,8 +4,8 @@ import { cn } from "next-common/utils";
 import Divider from "next-common/components/styled/layout/divider";
 import SecondaryButton from "next-common/lib/button/secondary";
 
-export default function AdvanceSettings({ children }) {
-  const [showAdvanced, setShowAdvanced] = useState(false);
+export default function AdvanceSettings({ children, defaultShow = false }) {
+  const [showAdvanced, setShowAdvanced] = useState(defaultShow);
   return (
     <>
       <div className="flex items-center justify-center w-full gap-4">
