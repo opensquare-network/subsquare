@@ -40,7 +40,7 @@ export default function StakingBalance() {
             value={(balances?.unlocking || 0n)?.toString()}
             isLoading={loading}
           />
-          <div className="flex items-center gap-2 max-sm:items-end max-sm:gap-0 max-sm:flex-col">
+          <div className="flex items-center gap-2 max-sm:items-end max-sm:gap-0 max-sm:flex-col mb-1">
             <AccountBalanceItem
               title="Unbonded"
               value={(balances?.unlocked || 0n)?.toString()}
