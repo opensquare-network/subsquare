@@ -34,7 +34,9 @@ export default function TreasuryProjects() {
 
   const categories = useMemo(() => {
     return {
-      grid: getChartData(projectsByCategory, GRID_LABELS),
+      grid: getChartData(projectsByCategory, GRID_LABELS).sort((a, b) =>
+        b.totalFiat.comparedTo(a.totalFiat),
+      ),
       horizontal: getChartData(projectsByCategory, HORIZONTAL_LABELS),
     };
   }, [projectsByCategory]);
@@ -62,6 +64,5 @@ function getChartData(projectsByCategory = [], categories = {}) {
     .map(([value]) =>
       projectsByCategory.find((item) => item.category === value),
     )
-    .sort((a, b) => b.totalFiat.comparedTo(a.totalFiat))
     .filter(Boolean);
 }
