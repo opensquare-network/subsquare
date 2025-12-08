@@ -17,20 +17,24 @@ import { useChainSettings } from "next-common/context/chain";
 import ErrorMessage from "next-common/components/styled/errorMessage";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import EstimatedGas from "next-common/components/estimatedGas";
+import {
+  PAYOUT_DESTINATION,
+  PAYOUT_DESTINATION_OPTIONS,
+  buildPayeeParam,
+} from "next-common/components/staking/overview/accountNomination/quickActions/payoutDestination";
 
-const payoutDestinationOptions = [
-  { label: "Compound", value: "compound" },
-  { label: "To your account", value: "this_account" },
-  { label: "To another account", value: "another_account" },
-];
+const START_NOMINATING_PAYOUT_OPTIONS = PAYOUT_DESTINATION_OPTIONS.filter(
+  (option) => option.value !== PAYOUT_DESTINATION.NONE,
+);
 
 function PayoutDestinationSelect({ value, setValue }) {
   return (
     <CommonSelectField
       title="Payout Destination"
-      options={payoutDestinationOptions}
+      options={START_NOMINATING_PAYOUT_OPTIONS}
       value={value}
       setValue={setValue}
+      itemHeight={56}
     />
   );
 }
@@ -39,7 +43,9 @@ function StartNominatingPopupContent() {
   const api = useContextApi();
   const realAddress = useRealAddress();
   const extensionAccounts = useExtensionAccounts();
-  const [payoutDestination, setPayoutDestination] = useState("compound");
+  const [payoutDestination, setPayoutDestination] = useState(
+    PAYOUT_DESTINATION.COMPOUND,
+  );
   const [customPayoutAddress, setCustomPayoutAddress] = useState("");
   const [nominees, setNominees] = useState([]);
   const [bondAmount, setBondAmount] = useState("");
@@ -69,9 +75,10 @@ function StartNominatingPopupContent() {
     errorMessage = `Minimum bond amount is ${minBond} units.`;
   }
 
-  const isCustomPayout = !["compound", "this_account"].includes(
-    payoutDestination,
-  );
+  const isCustomPayout = ![
+    PAYOUT_DESTINATION.COMPOUND,
+    PAYOUT_DESTINATION.THIS_ACCOUNT,
+  ].includes(payoutDestination);
   let payoutAddress = isCustomPayout ? customPayoutAddress : realAddress;
 
   const getTxFunc = useCallback(() => {
@@ -79,7 +86,10 @@ function StartNominatingPopupContent() {
       return;
     }
 
-    if (payoutDestination === "another_account" && !customPayoutAddress) {
+    if (
+      payoutDestination === PAYOUT_DESTINATION.ANOTHER_ACCOUNT &&
+      !customPayoutAddress
+    ) {
       throw new Error("Please enter payout address.");
     }
 
@@ -99,14 +109,13 @@ function StartNominatingPopupContent() {
       .times(Math.pow(10, decimals))
       .toFixed(0);
 
-    let payee;
-    if (payoutDestination === "compound") {
-      payee = { Staked: null };
-    } else if (payoutDestination === "this_account") {
-      payee = { Account: realAddress };
-    } else if (payoutDestination === "another_account") {
-      payee = { Account: customPayoutAddress };
-    } else {
+    const payee = buildPayeeParam(
+      payoutDestination,
+      realAddress,
+      customPayoutAddress,
+    );
+
+    if (!payee) {
       throw new Error("Invalid payout destination.");
     }
 
@@ -133,7 +142,7 @@ function StartNominatingPopupContent() {
           value={payoutDestination}
           setValue={setPayoutDestination}
         />
-        {payoutDestination !== "compound" && (
+        {payoutDestination !== PAYOUT_DESTINATION.COMPOUND && (
           <AddressCombo
             key={payoutDestination}
             className={cn(!isCustomPayout && "!bg-neutral200 !border-0")}
