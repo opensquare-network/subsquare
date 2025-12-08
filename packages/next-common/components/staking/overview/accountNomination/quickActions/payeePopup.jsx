@@ -21,11 +21,13 @@ import {
 } from "next-common/components/staking/overview/accountNomination/quickActions/payoutDestination";
 import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
+import { Skeleton } from "next-common/components/skeleton";
+import PopupLabel from "next-common/components/popup/label";
 
 function useCurrentPayee(address) {
   const api = useContextApi();
   const [payeeInfo, setPayeeInfo] = useState({
-    destination: PAYOUT_DESTINATION.COMPOUND,
+    destination: null,
     customAddress: null,
     isLoading: true,
   });
@@ -69,8 +71,8 @@ function PayeePopupContent() {
   const { destination, customAddress, isLoading } =
     useCurrentPayee(realAddress);
 
-  const [payoutDestination, setPayoutDestination] = useState(destination);
-  const [customPayoutAddress, setCustomPayoutAddress] = useState(customAddress);
+  const [payoutDestination, setPayoutDestination] = useState(null);
+  const [customPayoutAddress, setCustomPayoutAddress] = useState(null);
 
   useEffect(() => {
     if (!isLoading) {
@@ -157,20 +159,29 @@ function PayeePopupContent() {
   return (
     <div className="space-y-4">
       <Signer noSwitchSigner />
-      <CommonSelectField
-        title="Destination"
-        options={PAYOUT_DESTINATION_OPTIONS}
-        value={payoutDestination}
-        setValue={setPayoutDestination}
-        itemHeight={56}
-      />
-      {payoutDestination === PAYOUT_DESTINATION.ANOTHER_ACCOUNT && (
-        <AddressCombo
-          key={payoutDestination}
-          accounts={extensionAccounts}
-          address={customPayoutAddress}
-          setAddress={setCustomPayoutAddress}
-        />
+      {isLoading ? (
+        <div>
+          <PopupLabel text="Destination" />
+          <Skeleton className="h-[56px] w-full rounded-md border border-neutral400" />
+        </div>
+      ) : (
+        <>
+          <CommonSelectField
+            title="Destination"
+            options={PAYOUT_DESTINATION_OPTIONS}
+            value={payoutDestination}
+            setValue={setPayoutDestination}
+            itemHeight={56}
+          />
+          {payoutDestination === PAYOUT_DESTINATION.ANOTHER_ACCOUNT && (
+            <AddressCombo
+              key={payoutDestination}
+              accounts={extensionAccounts}
+              address={customPayoutAddress}
+              setAddress={setCustomPayoutAddress}
+            />
+          )}
+        </>
       )}
       <AdvanceSettings>
         <EstimatedGas getTxFunc={getTxFuncForFee} />

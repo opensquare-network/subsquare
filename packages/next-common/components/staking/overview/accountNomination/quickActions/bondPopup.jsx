@@ -69,7 +69,7 @@ function BondPopupContent() {
 export default function BondPopup({ onClose }) {
   return (
     <SignerPopupWrapper onClose={onClose}>
-      <Popup title="Add to Bond" onClose={onClose}>
+      <Popup title="Bond Extra" onClose={onClose}>
         <BondPopupContent />
       </Popup>
     </SignerPopupWrapper>
