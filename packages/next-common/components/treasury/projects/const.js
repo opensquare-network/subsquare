@@ -54,7 +54,7 @@ export const HORIZONTAL_LABELS = {
   [CATEGORY_VALUES.MARKETING]: "Marketing",
   [CATEGORY_VALUES.EVENT]: "Events",
   [CATEGORY_VALUES.EDUCATION]: "Education",
-  [CATEGORY_VALUES.HACKTHON]: "Hackthons",
+  [CATEGORY_VALUES.HACKTHON]: "Hackathons",
   [CATEGORY_VALUES.OTHER_DEVELOPMENT]: "Other Developments",
 };
 
