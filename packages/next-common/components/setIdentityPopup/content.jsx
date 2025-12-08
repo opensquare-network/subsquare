@@ -95,6 +95,7 @@ export default function SetIdentityPopupContent() {
     }
 
     const info = formatIdentityInfo(identityInfo);
+    console.log(info);
 
     return api.tx.identity.setIdentity(info);
   }, [identityInfo, api]);

@@ -12,7 +12,7 @@ const WalletTypes = {
   OKX_WALLET: "okx wallet",
   COINBASE_WALLET: "coinbase wallet",
   WALLETCONNECT: "walletconnect",
-  POLKADOT_VAULT: "polkadot vault",
+  POLKADOT_VAULT: "polkadot-vault",
 };
 
 export default WalletTypes;

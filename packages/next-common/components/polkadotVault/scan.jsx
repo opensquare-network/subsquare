@@ -5,6 +5,7 @@ import SecondaryButton from "next-common/lib/button/secondary";
 import QrScanner from "qr-scanner";
 import { usePolkadotVaultAccounts } from "next-common/context/polkadotVault";
 import { useChain } from "next-common/context/chain";
+import WalletTypes from "next-common/utils/consts/walletTypes";
 
 export default function Scan({ onClose }) {
   const [isScanning, setIsScanning] = useState(false);
@@ -95,12 +96,19 @@ function ScanPopup({ onClose }) {
             return;
           }
 
+          const name =
+            "Vault:" + address.slice(0, 4) + "..." + address.slice(-4);
+
           const success = addAccount(address, {
             raw: str,
             address,
             publicKey: pubkey,
-            name: "Vault Account",
-            source: "polkadot-vault",
+            name: name,
+            source: WalletTypes.POLKADOT_VAULT,
+            meta: {
+              name,
+              source: WalletTypes.POLKADOT_VAULT,
+            },
           });
 
           if (success) {
@@ -220,19 +228,15 @@ function ScanPopup({ onClose }) {
           <div className="absolute inset-0 border-2 border-green-400 border-dashed rounded-lg m-4 animate-pulse"></div>
         </div>
 
-        <div className="text-center text12Medium text-textTertiary">
-          {/* {``} */}
-        </div>
-
-        <SecondaryButton size="small" onClick={_onClose} className="w-full">
-          Cancel
-        </SecondaryButton>
-
         {error && (
           <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
             <div className="text-sm text-red-600">{error}</div>
           </div>
         )}
+
+        <SecondaryButton size="small" onClick={_onClose} className="w-full">
+          Cancel
+        </SecondaryButton>
       </div>
     </Popup>
   );

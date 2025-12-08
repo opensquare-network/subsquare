@@ -11,7 +11,7 @@ import { cn } from "next-common/utils";
 
 export default function ScanResult() {
   const [web3Login, web3Loading] = useWeb3Login();
-  const [selectedAddress, setSelectedAddress] = useState();
+  const [selectedAccount, setSelectedAccount] = useState();
   const { removeAccount } = usePolkadotVaultAccounts();
 
   const { accounts } = usePolkadotVaultAccounts();
@@ -26,25 +26,25 @@ export default function ScanResult() {
         <Item
           item={item}
           key={item.address}
-          isSelected={item.address === selectedAddress}
+          isSelected={item.address === selectedAccount}
           onClick={(address) => {
-            setSelectedAddress(address);
+            setSelectedAccount(address);
           }}
           onDelete={(address) => {
-            if (address === selectedAddress) {
-              setSelectedAddress("");
+            if (address === selectedAccount) {
+              setSelectedAccount("");
             }
             removeAccount(address);
           }}
         />
       ))}
-      {selectedAddress && (
+      {selectedAccount && (
         <div className="mt-3">
           <PrimaryButton
             className="w-full"
             onClick={() => {
               web3Login({
-                account: { address: selectedAddress },
+                account: { address: selectedAccount },
                 wallet: WalletTypes.POLKADOT_VAULT,
               });
             }}

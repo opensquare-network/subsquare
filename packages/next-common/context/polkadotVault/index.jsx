@@ -2,9 +2,10 @@ import { createContext, useContext, useCallback, useMemo } from "react";
 import { useLocalStorage } from "react-use";
 import { noop } from "lodash-es";
 import { encodeAddressToChain } from "next-common/services/address";
-import { useChain } from "./chain";
 import { isSameAddress } from "next-common/utils";
 import { CACHE_KEY } from "next-common/utils/constants";
+import { VaultSignerProvider } from "./vaultSignerProvider";
+import { useChain } from "../chain";
 
 const defaultContext = {
   accounts: [],
@@ -125,7 +126,7 @@ export function PolkadotVaultProvider({ children }) {
 
   return (
     <PolkadotVaultContext.Provider value={contextValue}>
-      {children}
+      <VaultSignerProvider>{children}</VaultSignerProvider>
     </PolkadotVaultContext.Provider>
   );
 }

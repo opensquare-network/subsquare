@@ -31,11 +31,11 @@ export default function GlobalProvider({
 }) {
   return (
     <WagmiProvider>
-      <PolkadotVaultProvider>
-        <ReactQueryClientProvider>
-          <ThemeModeProvider defaultThemeMode={themeMode}>
-            <ChainProvider chain={chain}>
-              <UserProvider user={user} userStatus={userStatus}>
+      <ReactQueryClientProvider>
+        <ThemeModeProvider defaultThemeMode={themeMode}>
+          <ChainProvider chain={chain}>
+            <UserProvider user={user} userStatus={userStatus}>
+              <PolkadotVaultProvider>
                 <PageLoadingProvider>
                   <AdminProvider admins={admins}>
                     <NavProvider
@@ -63,11 +63,11 @@ export default function GlobalProvider({
                     </NavProvider>
                   </AdminProvider>
                 </PageLoadingProvider>
-              </UserProvider>
-            </ChainProvider>
-          </ThemeModeProvider>
-        </ReactQueryClientProvider>
-      </PolkadotVaultProvider>
+              </PolkadotVaultProvider>
+            </UserProvider>
+          </ChainProvider>
+        </ThemeModeProvider>
+      </ReactQueryClientProvider>
     </WagmiProvider>
   );
 }
