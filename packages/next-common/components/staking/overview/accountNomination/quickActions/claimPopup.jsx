@@ -15,13 +15,13 @@ import EstimatedGas from "next-common/components/estimatedGas";
 import ValueDisplay from "next-common/components/valueDisplay";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
-import LoadableContent from "next-common/components/common/loadableContent";
 import Tooltip from "next-common/components/tooltip";
 import useNominatorUnClaimedRewards from "./useNominatorUnClaimedRewards";
 import { InfoMessage } from "next-common/components/setting/styled";
 import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import FoldableContent from "next-common/components/foldableContent";
+import FieldLoading from "next-common/components/icons/fieldLoading";
 
 function Alerts() {
   return (
@@ -38,6 +38,15 @@ function Alerts() {
         payouts within 1-2 days of them becoming available.
       </p>
     </InfoMessage>
+  );
+}
+
+function LoadingContent() {
+  return (
+    <div className="flex items-center justify-center whitespace-nowrap gap-x-2 text-textTertiary text14Medium py-2">
+      <FieldLoading size={24} />
+      This process may take a while
+    </div>
   );
 }
 
@@ -128,9 +137,11 @@ function ClaimPopupContent() {
       <Signer noSwitchSigner />
       <SummaryLayout className="grid-cols-2">
         <SummaryItem title="Total Claimable">
-          <LoadableContent isLoading={loading}>
+          {loading ? (
+            <LoadingContent />
+          ) : (
             <ValueDisplay value={displayAmount} symbol={symbol} />
-          </LoadableContent>
+          )}
         </SummaryItem>
         {!loading && result?.result && result.result.length > 0 && (
           <SummaryItem title="Rewards by Era">
