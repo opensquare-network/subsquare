@@ -2,7 +2,6 @@ import ListLayout from "next-common/components/layout/ListLayout";
 import { withCommonProps } from "next-common/lib";
 import SchedulerTable from "next-common/components/pages/components/scheduler/table";
 import { fetchScanHeight } from "next-common/services/fetchScanHeight";
-import { RelayChainBlockApiProvider } from "next-common/context/relayChain/blockApi";
 
 export default function SchedulerPage() {
   const seoInfo = {
@@ -15,9 +14,7 @@ export default function SchedulerPage() {
       title={seoInfo.title}
       description={seoInfo.desc}
     >
-      <RelayChainBlockApiProvider>
-        <SchedulerTable />
-      </RelayChainBlockApiProvider>
+      <SchedulerTable />
     </ListLayout>
   );
 }
