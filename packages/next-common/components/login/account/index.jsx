@@ -14,7 +14,7 @@ import {
   setLoginResult,
 } from "next-common/store/reducers/userSlice";
 import useForm from "next-common/utils/hooks/useForm";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useAsyncFn } from "react-use";

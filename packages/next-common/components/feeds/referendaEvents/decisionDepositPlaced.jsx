@@ -1,5 +1,5 @@
 import AddressUser from "next-common/components/user/addressUser";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import tw from "tailwind-styled-components";
 import Tooltip from "next-common/components/tooltip";
 import LoadableFellowshipReferendumTitle from "next-common/components/feeds/loadableFellowshipReferendumTitle";

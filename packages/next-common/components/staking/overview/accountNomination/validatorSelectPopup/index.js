@@ -27,7 +27,7 @@ function SelectedValidators({ nominees, setNominees }) {
             key={nominee}
             className="flex gap-2 items-center text-textPrimary text14Medium rounded-full px-2 py-1 border border-neutral300 bg-neutral100"
           >
-            <AddressUser maxWidth={120} add={nominee} />
+            <AddressUser add={nominee} />
             <div
               role="button"
               className="cursor-pointer p-1 [&_svg_path]:stroke-textTertiary [&_svg_path]:hover:stroke-theme500"

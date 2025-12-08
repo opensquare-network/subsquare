@@ -3,7 +3,7 @@ import {
   extractLinks,
   getLinkIcon,
 } from "../utils/viewfuncs/tip";
-import Link from "next/link";
+import Link from "next-common/components/link";
 
 export default function ReasonLink({ text, hideText = false }) {
   if (!text) {

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { TitleContainer } from "./styled/containers/titleContainer";
-import Link from "next/link";
+import Link from "next-common/components/link";
 
 const TitleLink = styled.span`
   &:hover {

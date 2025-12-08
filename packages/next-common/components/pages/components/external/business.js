@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "next-common/components/link";
 import MultiKVList from "next-common/components/listInfo/multiKVList";
 import { shortMotionId } from "next-common/utils/motion";
 import Copyable from "next-common/components/copyable";

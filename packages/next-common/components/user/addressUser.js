@@ -1,6 +1,6 @@
 import React, { memo, useMemo } from "react";
 import { UnStyledIdentity } from "../Identity";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { AvatarWrapper, UserWrapper } from "./styled";
 import AddressDisplay from "./addressDisplay";
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";

@@ -1,7 +1,7 @@
 import SummaryItem from "next-common/components/summary/layout/item";
 import { useFellowshipSalaryStats } from "next-common/hooks/fellowship/salary/useFellowshipSalaryStats";
 import { isNil } from "lodash-es";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import FellowshipSalaryStatsDetailLink from "next-common/components/overview/fellowship/salary/detailLink";
 import SalaryCycleStatus from "./status";
 

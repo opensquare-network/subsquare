@@ -53,7 +53,7 @@ const paseo = {
     assethub: true,
     people: true,
     vesting: true,
-    staking: true,
+    scheduler: true,
   }),
   integrations: {
     statescan: true,

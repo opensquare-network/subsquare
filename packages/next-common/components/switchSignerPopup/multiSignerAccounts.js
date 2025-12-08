@@ -8,7 +8,7 @@ import { normalizeAddress } from "next-common/utils/address";
 import { ArrowRight } from "@osn/icons/subsquare";
 import { usePopupOnClose } from "next-common/context/popup";
 import { useMultisigAccounts } from "../multisigs/context/multisigAccountsContext";
-import Link from "next/link";
+import Link from "next-common/components/link";
 
 export default function MultiSignerAccounts({ selected, onSelect = noop }) {
   const onClose = usePopupOnClose();

@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { ReferendaTrackColors } from "./colors";
 import { startCase } from "lodash-es";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import tw from "tailwind-styled-components";
 
 const Box = styled.div`

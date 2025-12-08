@@ -1,7 +1,7 @@
 import useVoteBalance from "next-common/hooks/account/useVoteBalance";
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import useFetchMyReferendaVoting from "next-common/components/myvotes/referenda/useFetchMyReferendaVoting";
 import { createGlobalState } from "react-use";
 import { PromptTypes } from "next-common/components/scrollPrompt";

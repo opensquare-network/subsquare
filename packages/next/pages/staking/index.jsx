@@ -40,8 +40,8 @@ function MyStaking() {
 
   return (
     <>
-      <AccountStaking />
       <AccountNomination />
+      <AccountStaking />
     </>
   );
 }

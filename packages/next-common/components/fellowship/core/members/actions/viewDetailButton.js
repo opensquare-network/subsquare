@@ -1,5 +1,5 @@
 import { useCollectivesSection } from "next-common/context/collectives/collectives";
-import Link from "next/link";
+import Link from "next-common/components/link";
 
 export default function ViewDetailButton({ address }) {
   const section = useCollectivesSection();

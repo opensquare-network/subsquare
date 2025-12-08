@@ -1,5 +1,5 @@
 import React from "react";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { useChainSettings } from "next-common/context/chain";
 
 export default function DemocracyDelegationLink() {

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "next-common/components/link";
 
 export function useProfileFellowshipSalaryPaymentCycleColumn(props = {}) {
   return {

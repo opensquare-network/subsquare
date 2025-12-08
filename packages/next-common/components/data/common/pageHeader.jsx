@@ -2,7 +2,7 @@ import { TitleContainer } from "next-common/components/styled/containers/titleCo
 import { useDataTabsContext } from "../context/tabs";
 import { ArrowExternalLinkWiki } from "@osn/icons/subsquare";
 import Tooltip from "next-common/components/tooltip";
-import Link from "next/link";
+import Link from "next-common/components/link";
 
 function PolkadotWikiLink({ href }) {
   return (

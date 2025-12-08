@@ -6,7 +6,7 @@ import { useChainSettings } from "next-common/context/chain";
 import ValueDisplay from "./valueDisplay";
 import usePromptVisibility from "next-common/hooks/usePromptVisibility";
 import useTreasuryRequesting from "next-common/hooks/useTreasuryRequesting";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
 

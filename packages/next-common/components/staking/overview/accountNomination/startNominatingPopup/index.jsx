@@ -56,22 +56,21 @@ function StartNominatingPopupContent() {
 
   const lessThanMinBond =
     !isLoadingMinNominatorBond && new BigNumber(bondAmount).lt(minBond);
-  const lessThan16Nominees = nominees?.length !== 16;
+  const atLeastOneNominee = nominees?.length < 1;
   const hasNominees = nominees && nominees.length > 0;
 
   const notMeetMinBond = bondAmount && lessThanMinBond;
-  const notEnoughNominees = hasNominees && lessThan16Nominees;
-
+  const notEnoughNominees = hasNominees && atLeastOneNominee;
   const canSubmit =
     bondAmount &&
     !isLoadingMinNominatorBond &&
     !lessThanMinBond &&
     hasNominees &&
-    !lessThan16Nominees;
+    !atLeastOneNominee;
 
   let errorMessage = "";
   if (notEnoughNominees) {
-    errorMessage = "Please select 16 validators to nominate.";
+    errorMessage = "Please select at least one nominee.";
   } else if (notMeetMinBond) {
     errorMessage = `Minimum bond amount is ${minBond} units.`;
   }
@@ -94,8 +93,8 @@ function StartNominatingPopupContent() {
       throw new Error("Please enter payout address.");
     }
 
-    if (nominees.length !== 16) {
-      throw new Error("Please select 16 validators to nominate.");
+    if (nominees.length < 1) {
+      throw new Error("Please select at least one nominee.");
     }
 
     if (!bondAmount) {

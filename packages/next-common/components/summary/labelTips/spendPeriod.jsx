@@ -1,5 +1,5 @@
 import Tooltip from "next-common/components/tooltip";
-import Link from "next/link";
+import Link from "next-common/components/link";
 
 export default function SpendPeriodLabelTip() {
   const wikiLink = (

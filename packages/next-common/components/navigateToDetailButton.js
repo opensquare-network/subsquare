@@ -1,6 +1,6 @@
 import { ArrowRight } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
-import Link from "next/link";
+import Link from "next-common/components/link";
 
 export default function NavigateToDetailButton({ href }) {
   return (
