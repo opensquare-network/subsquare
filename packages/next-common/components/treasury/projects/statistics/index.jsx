@@ -20,7 +20,7 @@ export default function Statistics({ data }) {
             <Tooltip content="The prices are calculated at awarded time."></Tooltip>
           </div>
         </TitleContainer>
-        <SecondaryCard className="flex gap-6 justify-start w-full max-sm:flex-col">
+        <SecondaryCard className="flex gap-x-6 gap-y-4 justify-start w-full max-sm:flex-col">
           <ProjectStatisticsChart
             projects={projects}
             totalFiat={totalFiat}
