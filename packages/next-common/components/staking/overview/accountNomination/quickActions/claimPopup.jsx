@@ -19,6 +19,11 @@ import LoadableContent from "next-common/components/common/loadableContent";
 import Tooltip from "next-common/components/tooltip";
 import useNominatorUnClaimedRewards from "./useNominatorUnClaimedRewards";
 import { InfoMessage } from "next-common/components/setting/styled";
+import { useDispatch } from "react-redux";
+import {
+  newErrorToast,
+  newSuccessToast,
+} from "next-common/store/reducers/toastSlice";
 
 function Alerts() {
   return (
@@ -104,12 +109,21 @@ function useClaimRewardsTx(rewardsData) {
 
 function ClaimPopupContent() {
   const { onClose } = usePopupParams();
+  const dispatch = useDispatch();
   const realAddress = useRealAddress();
   const { decimals, symbol } = useChainSettings();
 
   const { result, loading } = useNominatorUnClaimedRewards(realAddress);
   const { getTxFuncForSubmit, getTxFuncForFee, displayAmount, hasRewards } =
     useClaimRewardsTx(result);
+
+  const handleInBlock = () => {
+    dispatch(
+      newSuccessToast(
+        `Rewards claimed successfully! ${displayAmount} ${symbol} has been added to your account.`,
+      ),
+    );
+  };
 
   return (
     <div className="space-y-4">
@@ -150,6 +164,7 @@ function ClaimPopupContent() {
           <TxSubmissionButton
             disabled={!hasRewards}
             getTxFunc={getTxFuncForSubmit}
+            onInBlock={handleInBlock}
           />
         </Tooltip>
       </div>

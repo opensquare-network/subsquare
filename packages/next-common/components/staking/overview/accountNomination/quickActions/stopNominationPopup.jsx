@@ -13,12 +13,16 @@ import { useChainSettings } from "next-common/context/chain";
 import { useMyStakingLedger } from "next-common/context/staking/myStakingLedger";
 import { toPrecision } from "next-common/utils";
 import { useCallback } from "react";
+import { useDispatch } from "react-redux";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 
 function StopNominatingPopupContent() {
+  const dispatch = useDispatch();
   const api = useContextApi();
   const { decimals, symbol } = useChainSettings();
   const { ledger, nominators, loading } = useMyStakingLedger();
   const bond = ledger?.active || 0;
+  const validatorCount = nominators?.targets.length || 0;
 
   const getTxFunc = useCallback(() => {
     if (new BigNumber(bond).isZero()) {
@@ -29,6 +33,14 @@ function StopNominatingPopupContent() {
       api.tx.staking.unbond(bond),
     ]);
   }, [api, bond]);
+
+  const handleInBlock = useCallback(() => {
+    const bondAmount = toPrecision(bond, decimals);
+    const message = new BigNumber(bond).isZero()
+      ? `Successfully stopped nominating ${validatorCount} validators.`
+      : `Successfully stopped nominating ${validatorCount} validators and unbonded ${bondAmount} ${symbol}.`;
+    dispatch(newSuccessToast(message));
+  }, [dispatch, bond, decimals, symbol, validatorCount]);
 
   return (
     <div className="space-y-4">
@@ -44,7 +56,7 @@ function StopNominatingPopupContent() {
         title="Un-nominate"
         disabled={true}
         isLoading={loading}
-        text={`Stop Nominating ${nominators?.targets.length || 0} Validators`}
+        text={`Stop Nominating ${validatorCount} Validators`}
       />
       <InfoMessage>
         Once unbonding, your funds will become available after 28 days.
@@ -53,7 +65,11 @@ function StopNominatingPopupContent() {
         <EstimatedGas getTxFunc={getTxFunc} />
       </AdvanceSettings>
       <div className="flex justify-end">
-        <TxSubmissionButton disabled={loading} getTxFunc={getTxFunc} />
+        <TxSubmissionButton
+          disabled={loading}
+          getTxFunc={getTxFunc}
+          onInBlock={handleInBlock}
+        />
       </div>
     </div>
   );

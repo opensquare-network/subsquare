@@ -19,6 +19,8 @@ import {
   parsePayeeData,
   buildPayeeParam,
 } from "next-common/components/staking/overview/accountNomination/quickActions/payoutDestination";
+import { useDispatch } from "react-redux";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 
 function useCurrentPayee(address) {
   const api = useContextApi();
@@ -59,6 +61,7 @@ function useCurrentPayee(address) {
 
 function PayeePopupContent() {
   const { onClose } = usePopupParams();
+  const dispatch = useDispatch();
   const api = useContextApi();
   const realAddress = useRealAddress();
   const extensionAccounts = useExtensionAccounts();
@@ -128,6 +131,29 @@ function PayeePopupContent() {
     [api, payoutDestination, customPayoutAddress, realAddress],
   );
 
+  const getDestinationLabel = () => {
+    switch (payoutDestination) {
+      case PAYOUT_DESTINATION.COMPOUND:
+        return "Compound";
+      case PAYOUT_DESTINATION.THIS_ACCOUNT:
+        return "To your account";
+      case PAYOUT_DESTINATION.ANOTHER_ACCOUNT:
+        return "To another account";
+      case PAYOUT_DESTINATION.NONE:
+        return "None";
+      default:
+        return "";
+    }
+  };
+
+  const handleInBlock = () => {
+    dispatch(
+      newSuccessToast(
+        `Payout destination updated successfully to "${getDestinationLabel()}".`,
+      ),
+    );
+  };
+
   return (
     <div className="space-y-4">
       <Signer noSwitchSigner />
@@ -154,6 +180,7 @@ function PayeePopupContent() {
         <TxSubmissionButton
           getTxFunc={getTxFuncForSubmit}
           disabled={isLoading || isUnchanged}
+          onInBlock={handleInBlock}
         />
       </div>
     </div>

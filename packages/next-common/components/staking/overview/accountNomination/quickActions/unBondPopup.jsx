@@ -15,9 +15,12 @@ import { checkTransferAmount } from "next-common/utils/checkTransferAmount";
 import BigNumber from "bignumber.js";
 import { toPrecision } from "next-common/utils";
 import { useMyStakingLedger } from "next-common/context/staking/myStakingLedger";
+import { useDispatch } from "react-redux";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 
 function UnBondPopupContent() {
   const { onClose } = usePopupParams();
+  const dispatch = useDispatch();
   const api = useContextApi();
   const [amount, setAmount] = useState();
   const { decimals, symbol } = useChainSettings();
@@ -50,6 +53,14 @@ function UnBondPopupContent() {
     [api, amount, bonded, decimals, symbol],
   );
 
+  const handleInBlock = () => {
+    dispatch(
+      newSuccessToast(
+        `Successfully unbonded ${amount} ${symbol}. Your funds will be available after the unbonding period.`,
+      ),
+    );
+  };
+
   return (
     <div className="space-y-4">
       <Signer
@@ -69,7 +80,10 @@ function UnBondPopupContent() {
       </AdvanceSettings>
       <div className="flex justify-between">
         <SecondaryButton onClick={onClose}>Cancel</SecondaryButton>
-        <TxSubmissionButton getTxFunc={getTxFuncForSubmit} />
+        <TxSubmissionButton
+          getTxFunc={getTxFuncForSubmit}
+          onInBlock={handleInBlock}
+        />
       </div>
     </div>
   );

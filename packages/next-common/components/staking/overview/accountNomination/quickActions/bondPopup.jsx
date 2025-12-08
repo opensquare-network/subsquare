@@ -12,9 +12,12 @@ import AdvanceSettings from "next-common/components/summary/newProposalQuickStar
 import EstimatedGas from "next-common/components/estimatedGas";
 import { checkTransferAmount } from "next-common/utils/checkTransferAmount";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
+import { useDispatch } from "react-redux";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 
 function BondPopupContent() {
   const { onClose } = usePopupParams();
+  const dispatch = useDispatch();
   const api = useContextApi();
   const [amount, setAmount] = useState();
   const { decimals, symbol } = useChainSettings();
@@ -32,6 +35,14 @@ function BondPopupContent() {
     return api.tx.staking.bondExtra(checkedAmount);
   }, [api, amount, decimals]);
 
+  const handleInBlock = () => {
+    dispatch(
+      newSuccessToast(
+        `Successfully bonded ${amount} ${symbol} to your staking balance.`,
+      ),
+    );
+  };
+
   return (
     <div className="space-y-4">
       <SignerWithBalance noSwitchSigner />
@@ -46,7 +57,10 @@ function BondPopupContent() {
       </AdvanceSettings>
       <div className="flex justify-between">
         <SecondaryButton onClick={onClose}>Cancel</SecondaryButton>
-        <TxSubmissionButton getTxFunc={getTxFuncForSubmit} />
+        <TxSubmissionButton
+          getTxFunc={getTxFuncForSubmit}
+          onInBlock={handleInBlock}
+        />
       </div>
     </div>
   );
