@@ -135,7 +135,10 @@ export function Locked() {
 export default function AccountBalances() {
   return (
     <WindowSizeProvider>
-      <CollapsePanel className="w-[300px]" labelItem={<TotalBalance />}>
+      <CollapsePanel
+        className="w-[300px] [&>*:not(:last-child)]:mb-1"
+        labelItem={<TotalBalance />}
+      >
         <Transferrable />
         <Reserved />
         <Locked />

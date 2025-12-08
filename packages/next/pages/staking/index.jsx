@@ -30,11 +30,11 @@ function MyStaking() {
     );
   }
 
-  if (poolMember) {
+  if (poolMember && !nominators) {
     return <AccountStaking />;
   }
 
-  if (nominators) {
+  if (nominators && !poolMember) {
     return <AccountNomination />;
   }
 
