@@ -11,7 +11,6 @@ export function VaultSignerProvider({ children }) {
     <VaultScanContext.Provider
       value={{
         setOptions: (data) => {
-          console.log(data);
           setOptions(data);
           ++qrId;
         },

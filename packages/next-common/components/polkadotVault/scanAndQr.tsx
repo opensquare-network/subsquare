@@ -36,7 +36,6 @@ function Qr({ address, className, genesisHash, isHashed, onSignature, payload }:
   );
 
 
-  console.log("payload", payload)
 
   return (
     <>

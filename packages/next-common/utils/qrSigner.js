@@ -10,7 +10,6 @@ export class QrSigner {
   }
 
   async signPayload(payload) {
-    console.log("payload", payload);
     return new Promise((resolve, reject) => {
       const isQrHashed = payload.method.length > 5000;
       const wrapper = this.#registry.createType("ExtrinsicPayload", payload, {
