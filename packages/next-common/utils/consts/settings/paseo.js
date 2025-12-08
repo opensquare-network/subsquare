@@ -54,6 +54,7 @@ const paseo = {
     people: true,
     vesting: true,
     scheduler: true,
+    staking: true,
   }),
   integrations: {
     statescan: true,
