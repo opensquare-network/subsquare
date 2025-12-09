@@ -1,9 +1,4 @@
-import {
-  SystemMore,
-  SystemPlus,
-  SystemUpload,
-  TrackFastPromotion,
-} from "@osn/icons/subsquare";
+import { SystemMore, SystemPlus, SystemSubtract } from "@osn/icons/subsquare";
 import { isNil } from "lodash-es";
 import { useMemo, useState } from "react";
 import * as Popover from "@radix-ui/react-popover";
@@ -77,7 +72,7 @@ function CellActionsImpl({ value }) {
           className="flex items-center grow gap-x-2"
           onClick={() => setShowBondExtraPopup(true)}
         >
-          <TrackFastPromotion className="w-5 h-5" /> Bond Extra
+          <SystemPlus className="w-5 h-5" /> Bond Extra
         </OptionItem>
       ),
       !isNil(poolMember) && (
@@ -86,7 +81,7 @@ function CellActionsImpl({ value }) {
           className="flex items-center grow gap-x-2"
           onClick={() => setShowUnbondPopup(true)}
         >
-          <SystemUpload className="w-5 h-5" /> Unbond
+          <SystemSubtract className="w-5 h-5" /> Unbond
         </OptionItem>
       ),
     ].filter(Boolean);
