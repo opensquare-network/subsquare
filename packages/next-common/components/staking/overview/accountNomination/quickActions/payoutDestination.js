@@ -85,7 +85,7 @@ export function buildPayeeParam(destination, realAddress, customAddress) {
   const payeeMap = {
     [PAYOUT_DESTINATION.NONE]: "None",
     [PAYOUT_DESTINATION.COMPOUND]: { Staked: null },
-    [PAYOUT_DESTINATION.THIS_ACCOUNT]: { Account: realAddress },
+    [PAYOUT_DESTINATION.THIS_ACCOUNT]: { Stash: null },
     [PAYOUT_DESTINATION.ANOTHER_ACCOUNT]: { Account: customAddress },
   };
 
