@@ -11,7 +11,7 @@ export default function BondButton() {
 
   return (
     <>
-      <Tooltip content="Bond">
+      <Tooltip content="Bond Extra">
         <IconButton
           className="text-theme500 bg-theme100"
           onClick={() => setShowPopup(true)}

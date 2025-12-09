@@ -11,7 +11,7 @@ export default function PayeeButton() {
 
   return (
     <>
-      <Tooltip content="Payee">
+      <Tooltip content="Set Payee">
         <IconButton
           className="text-theme500 bg-theme100"
           onClick={() => setShowPopup(true)}
