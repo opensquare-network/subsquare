@@ -8,8 +8,18 @@ function getStorageReturnType(api, storage) {
     return lookup.getTypeDef(typeId);
   }
 
-  if (entryType.isMap || entryType.isDoubleMap || entryType.isNMap) {
+  if (entryType.isMap) {
     const { value } = entryType.asMap;
+    return lookup.getTypeDef(value);
+  }
+
+  if (entryType.isDoubleMap) {
+    const { value } = entryType.asDoubleMap;
+    return lookup.getTypeDef(value);
+  }
+
+  if (entryType.isNMap) {
+    const { value } = entryType.asNMap;
     return lookup.getTypeDef(value);
   }
 
