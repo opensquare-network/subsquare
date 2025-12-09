@@ -42,14 +42,7 @@ export async function subStorageRpc(api, storage, args = [], callback) {
         try {
           const rawData = change.unwrap();
 
-          decodedValue = api.registry.createTypeUnsafe(
-            returnType.type,
-            [rawData],
-            {
-              isPedantic: false,
-            },
-          );
-
+          decodedValue = api.createType(returnType.type, rawData);
           if (storage.creator.meta.modifier.isOptional) {
             decodedValue = api.createType(
               `Option<${returnType.lookupName}>`,
