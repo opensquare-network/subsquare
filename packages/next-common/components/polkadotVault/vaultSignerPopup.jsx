@@ -1,9 +1,10 @@
 import Popup from "../popup/wrapper/Popup";
-import { QrDisplayPayload, QrScanSignature } from "@polkadot/react-qr";
+import { QrDisplayPayload } from "@polkadot/react-qr";
 import { useState, useCallback, useEffect } from "react";
 import { QrSigner } from "next-common/utils/qrSigner";
 import { BN } from "@polkadot/util";
 import { useUser } from "next-common/context/user";
+import QrScannerComponent from "./scanner";
 
 const CMD_HASH = 1;
 const CMD_MORTAL = 2;
@@ -29,7 +30,6 @@ export default function VaultSignerPopup({
   ] = useState({});
 
   const start = useCallback(async () => {
-    onStarted?.();
     try {
       const options = {
         assetId: undefined,
@@ -40,29 +40,20 @@ export default function VaultSignerPopup({
         signer: new QrSigner(api.registry, setQrState),
       };
       setSigned(false);
-      await tx.signAsync(address, options);
-      const unsub = await tx.send((result) => {
-        const { status, txHash } = result;
-
-        if (status.isBroadcast) {
-          onSubmitted?.(result, txHash.toHex());
-        }
-
-        if (status.isInBlock) {
-          onInBlock?.(result, txHash.toHex());
-        }
-
-        if (status.isFinalized) {
-          onFinalized?.(result, txHash.toHex());
-          unsub && unsub();
-        }
+      const signedTx = await tx.signAsync(address, options);
+      sendSignedTxWithEvents(api, signedTx, {
+        onStarted,
+        onSubmitted,
+        onInBlock,
+        onFinalized,
+        onError,
       });
     } catch (error) {
       onError(error);
     }
   }, [
     address,
-    api?.registry,
+    api,
     onError,
     onFinalized,
     onInBlock,
@@ -101,7 +92,6 @@ export default function VaultSignerPopup({
   return (
     <Popup title="Authorize Transaction" onClose={_onClose}>
       <div>
-        <p>Scan the QR code with your vault app</p>
         <Qr
           qrAddress={qrAddress}
           isQrHashed={isQrHashed}
@@ -115,8 +105,20 @@ export default function VaultSignerPopup({
 }
 
 function Qr({ qrAddress, genesisHash, isQrHashed, onSignature, qrPayload }) {
+  const onScan = (res) => {
+    if (res?.data) {
+      onSignature({
+        signature: `0x${res.data}`,
+      });
+    }
+  };
+
   return (
-    <div>
+    <div className=" space-y-4">
+      <p className="text14Bold pb-1">
+        1. Scan the QR code to sign in Polkadot Vault.
+      </p>
+
       <div className="w-150px">
         <QrDisplayPayload
           className="flex justify-center"
@@ -129,10 +131,58 @@ function Qr({ qrAddress, genesisHash, isQrHashed, onSignature, qrPayload }) {
           payload={qrPayload}
         />
       </div>
-      <p>Show Sign QR code</p>
+      <p className="text14Bold pb-1">
+        2. Show the signed QR code for the app to scan
+      </p>
       <div className="p-4 bg-neutral-100 rounded-md">
-        <QrScanSignature onScan={onSignature} />
+        <QrScannerComponent onScan={onScan} />
       </div>
     </div>
   );
+}
+
+async function sendSignedTxWithEvents(api, signedTx, callbacks = {}) {
+  const { onStarted, onError, onSubmitted, onInBlock, onFinalized } = callbacks;
+
+  try {
+    onStarted?.();
+
+    const txHash = await api.rpc.author.submitExtrinsic(signedTx);
+    onSubmitted?.(txHash.toHex());
+
+    const unsubNew = await api.rpc.chain.subscribeNewHeads(async (header) => {
+      const bh = header.hash;
+      const block = await api.rpc.chain.getBlock(bh);
+
+      const found = block.block.extrinsics.find(
+        (ex) => ex.hash.toHex() === txHash.toHex(),
+      );
+
+      if (found) {
+        onInBlock?.(bh.toHex());
+        unsubNew();
+      }
+    });
+
+    const unsubFinalized = await api.rpc.chain.subscribeFinalizedHeads(
+      async (header) => {
+        const bh = header.hash;
+        const block = await api.rpc.chain.getBlock(bh);
+        const events = await api.query.system.events.at(bh);
+
+        block.block.extrinsics.forEach((ex, index) => {
+          if (ex.hash.toHex() === txHash.toHex()) {
+            onFinalized?.({
+              blockHash: bh.toHex(),
+              extrinsicIndex: index,
+              events,
+            });
+            unsubFinalized();
+          }
+        });
+      },
+    );
+  } catch (err) {
+    onError?.(err);
+  }
 }
