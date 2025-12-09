@@ -97,16 +97,13 @@ function CommonSearchItem({ IconComponent, href, title, content, onClose }) {
 function IdentitySearchItem({ address, name, onClose }) {
   const { identity, hasIdentity } = useIdentityInfo(address);
 
-  const title = (
-    <span className="flex">
-      {hasIdentity && (
-        <>
-          <IdentityIcon identity={identity} />
-          &nbsp;
-        </>
-      )}
+  const title = hasIdentity ? (
+    <span className="flex items-center gap-1">
+      <IdentityIcon identity={identity} />
       {name}
     </span>
+  ) : (
+    <span>{name}</span>
   );
 
   return (
@@ -124,18 +121,13 @@ function MemberSearchItem({ address, rank, name, onClose }) {
   const { identity, hasIdentity } = useIdentityInfo(address);
 
   const title = (
-    <div className="flex items-center gap-2">
-      <span className="flex">
-        {hasIdentity && (
-          <>
-            <IdentityIcon identity={identity} />
-            &nbsp;
-          </>
-        )}
+    <span className="flex items-center gap-2">
+      <span className="flex items-center gap-1">
+        {hasIdentity && <IdentityIcon identity={identity} />}
         {name}
       </span>
       <FellowshipTagByRank rank={rank} type="fellowship" />
-    </div>
+    </span>
   );
 
   return (
