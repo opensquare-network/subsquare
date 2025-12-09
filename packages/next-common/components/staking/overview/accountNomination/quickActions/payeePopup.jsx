@@ -201,7 +201,7 @@ function PayeePopupContent() {
 export default function PayeePopup({ onClose }) {
   return (
     <SignerPopupWrapper onClose={onClose}>
-      <Popup title="Update Payout Destination" onClose={onClose}>
+      <Popup title="Set Payee Destination" onClose={onClose}>
         <PayeePopupContent />
       </Popup>
     </SignerPopupWrapper>
