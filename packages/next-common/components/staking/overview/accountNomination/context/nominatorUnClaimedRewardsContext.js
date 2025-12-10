@@ -34,7 +34,7 @@ export function useNominatorUnClaimedRewardsContext() {
 }
 
 export function useUpdateNominatorUnClaimedRewards() {
-  const { fetch } = useNominatorUnClaimedRewardsContext() || {};
+  const { fetch } = useNominatorUnClaimedRewardsContext();
   const fetchRef = useRef(fetch);
 
   useEffect(() => {
