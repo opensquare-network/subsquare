@@ -13,7 +13,10 @@ import EstimatedGas from "next-common/components/estimatedGas";
 import ValueDisplay from "next-common/components/valueDisplay";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
-import { useNominatorUnClaimedRewardsContext } from "../context/nominatorUnClaimedRewardsContext";
+import {
+  useNominatorUnClaimedRewardsContext,
+  useFetchNominatorUnClaimedRewards2Times,
+} from "../context/nominatorUnClaimedRewardsContext";
 import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import FieldLoading from "next-common/components/icons/fieldLoading";
@@ -102,6 +105,7 @@ function ClaimEraPopupContent({ eraData, onBack }) {
   const dispatch = useDispatch();
   const { decimals, symbol } = useChainSettings();
   const { getTxFuncForSubmit, getTxFuncForFee } = useClaimEraRewardsTx(eraData);
+  const fetchRewards2Times = useFetchNominatorUnClaimedRewards2Times();
 
   const displayAmount = toPrecision(eraData.unClaimedRewards, decimals);
 
@@ -111,6 +115,7 @@ function ClaimEraPopupContent({ eraData, onBack }) {
         `Era ${eraData.era} rewards claimed successfully! ${displayAmount} ${symbol} has been added to your account.`,
       ),
     );
+    fetchRewards2Times();
     onBack();
   };
 
