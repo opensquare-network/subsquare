@@ -1,4 +1,10 @@
-import { createContext, useContext, useCallback } from "react";
+import {
+  createContext,
+  useContext,
+  useCallback,
+  useRef,
+  useEffect,
+} from "react";
 import useNominatorUnClaimedRewards from "../quickActions/useNominatorUnClaimedRewards";
 import { sleep } from "next-common/utils";
 import { defaultBlockTime } from "next-common/utils/constants";
@@ -27,19 +33,24 @@ export function useNominatorUnClaimedRewardsContext() {
   return context;
 }
 
-export function useFetchNominatorUnClaimedRewards2Times() {
+export function useUpdateNominatorUnClaimedRewards() {
   const { fetch } = useNominatorUnClaimedRewardsContext() || {};
+  const fetchRef = useRef(fetch);
 
-  return useCallback(async () => {
-    if (!fetch) return;
+  useEffect(() => {
+    fetchRef.current = fetch;
+  }, [fetch]);
 
+  const update = useCallback(async () => {
     const blockTime =
       getChainSettings(process.env.NEXT_PUBLIC_CHAIN).blockTime ||
       defaultBlockTime;
 
     for (let i = 0; i < 2; i++) {
-      await fetch();
+      await fetchRef.current?.();
       await sleep(blockTime);
     }
-  }, [fetch]);
+  }, []);
+
+  return { update };
 }

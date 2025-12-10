@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useContextApi } from "next-common/context/api";
 import { useTxBuilder } from "next-common/hooks/useTxBuilder";
 import { useChainSettings } from "next-common/context/chain";
@@ -15,11 +15,10 @@ import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
 import {
   useNominatorUnClaimedRewardsContext,
-  useFetchNominatorUnClaimedRewards2Times,
+  useUpdateNominatorUnClaimedRewards,
 } from "../context/nominatorUnClaimedRewardsContext";
 import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
-import FieldLoading from "next-common/components/icons/fieldLoading";
 import PrimaryButton from "next-common/lib/button/primary";
 import { InfoMessage } from "next-common/components/setting/styled";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
@@ -39,15 +38,6 @@ function Alerts() {
         payouts within 1-2 days of them becoming available.
       </p>
     </InfoMessage>
-  );
-}
-
-function LoadingContent() {
-  return (
-    <div className="flex items-center justify-center whitespace-nowrap gap-x-2 text-textTertiary text14Medium py-2">
-      <FieldLoading size={24} />
-      This process may take a while
-    </div>
   );
 }
 
@@ -105,19 +95,16 @@ function ClaimEraPopupContent({ eraData, onBack }) {
   const dispatch = useDispatch();
   const { decimals, symbol } = useChainSettings();
   const { getTxFuncForSubmit, getTxFuncForFee } = useClaimEraRewardsTx(eraData);
-  const fetchRewards2Times = useFetchNominatorUnClaimedRewards2Times();
+  const { update } = useUpdateNominatorUnClaimedRewards();
 
   const displayAmount = toPrecision(eraData.unClaimedRewards, decimals);
 
-  const handleInBlock = () => {
+  const handleInBlock = useCallback(() => {
     dispatch(
-      newSuccessToast(
-        `Era ${eraData.era} rewards claimed successfully! ${displayAmount} ${symbol} has been added to your account.`,
-      ),
+      newSuccessToast("Claimed successfully, data updates may take a while."),
     );
-    fetchRewards2Times();
-    onBack();
-  };
+    update();
+  }, [dispatch, update]);
 
   return (
     <div className="space-y-4">
@@ -145,28 +132,19 @@ function ClaimEraPopupContent({ eraData, onBack }) {
 }
 
 function RewardsListContent({ onClaimClick }) {
-  const { result, loading } = useNominatorUnClaimedRewardsContext() || {};
-  const hasRewards = result?.result && result.result.length > 0;
+  const { result } = useNominatorUnClaimedRewardsContext();
 
   return (
     <div className="space-y-4">
-      {loading ? (
-        <LoadingContent />
-      ) : hasRewards ? (
-        <div className="space-y-2 overflow-y-scroll max-h-[400px] scrollbar-pretty">
-          {result.result.map((eraData) => (
-            <EraRewardItem
-              key={eraData.era}
-              eraData={eraData}
-              onClaimClick={onClaimClick}
-            />
-          ))}
-        </div>
-      ) : (
-        <div className="text-center text-textTertiary text14Medium py-4">
-          No claimable rewards
-        </div>
-      )}
+      <div className="space-y-2 overflow-y-scroll max-h-[400px] scrollbar-pretty">
+        {result?.result?.map((eraData) => (
+          <EraRewardItem
+            key={eraData.era}
+            eraData={eraData}
+            onClaimClick={onClaimClick}
+          />
+        ))}
+      </div>
       <Alerts />
     </div>
   );
