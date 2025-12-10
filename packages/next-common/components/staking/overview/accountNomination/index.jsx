@@ -73,37 +73,35 @@ function StakingBalance() {
 
   return (
     <div className="flex flex-col gap-2">
-      <WindowSizeProvider>
-        <CollapsePanel
-          className="w-[300px] [&>*:not(:last-child)]:mb-1"
-          labelItem={
-            <AccountBalanceItem
-              title="In nominating"
-              value={total?.toString() || 0}
-              isLoading={loading}
-            />
-          }
-        >
+      <CollapsePanel
+        className="w-[300px] [&>*:not(:last-child)]:mb-1"
+        labelItem={
           <AccountBalanceItem
-            title="Active"
-            value={active?.toString() || 0}
+            title="In nominating"
+            value={total?.toString() || 0}
             isLoading={loading}
           />
+        }
+      >
+        <AccountBalanceItem
+          title="Active"
+          value={active?.toString() || 0}
+          isLoading={loading}
+        />
+        <AccountBalanceItem
+          title="Unbonding"
+          value={unlocking?.toString() || 0}
+          isLoading={loading}
+        />
+        <div className="flex items-center gap-2 max-sm:items-end max-sm:gap-0 max-sm:flex-col">
           <AccountBalanceItem
-            title="Unbonding"
-            value={unlocking?.toString() || 0}
+            title="Unbonded"
+            value={unlocked?.toString() || 0}
             isLoading={loading}
           />
-          <div className="flex items-center gap-2 max-sm:items-end max-sm:gap-0 max-sm:flex-col">
-            <AccountBalanceItem
-              title="Unbonded"
-              value={unlocked?.toString() || 0}
-              isLoading={loading}
-            />
-            {unlocked > 0n && <WithdrawUnbondedButton />}
-          </div>
-        </CollapsePanel>
-      </WindowSizeProvider>
+          {unlocked > 0n && <WithdrawUnbondedButton />}
+        </div>
+      </CollapsePanel>
     </div>
   );
 }
@@ -171,8 +169,10 @@ export default function AccountNomination() {
   }
 
   return (
-    <CurrentEraStakersProvider>
-      <AccountNominationImpl />
-    </CurrentEraStakersProvider>
+    <WindowSizeProvider>
+      <CurrentEraStakersProvider>
+        <AccountNominationImpl />
+      </CurrentEraStakersProvider>
+    </WindowSizeProvider>
   );
 }
