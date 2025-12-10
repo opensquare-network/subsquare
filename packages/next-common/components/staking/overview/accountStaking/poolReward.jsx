@@ -1,15 +1,9 @@
-// import ValueDisplay from "next-common/components/valueDisplay";
-// import { useChainSettings } from "next-common/context/chain";
-// import ClaimPoolRewardButton from "./claimRewardButton";
 import { useMyPoolRewardContext } from "next-common/context/staking/poolReward";
-// import { toPrecision } from "next-common/utils";
 import { AccountBalanceItem } from "next-common/components/overview/accountInfo/components/accountBalances";
 import ClaimPoolRewardButton from "./claimRewardButton";
 import CompoundPoolRewardButton from "./compoundRewardButton";
-// import LoadableContent from "next-common/components/common/loadableContent";
 
 export default function PoolReward() {
-  // const { decimals, symbol } = useChainSettings();
   const { claimable, loading } = useMyPoolRewardContext();
 
   if (loading && claimable === 0n) {
