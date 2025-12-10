@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useContextApi } from "next-common/context/api";
 import { useTxBuilder } from "next-common/hooks/useTxBuilder";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
@@ -14,7 +13,7 @@ import EstimatedGas from "next-common/components/estimatedGas";
 import ValueDisplay from "next-common/components/valueDisplay";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
-import useNominatorUnClaimedRewards from "./useNominatorUnClaimedRewards";
+import { useNominatorUnClaimedRewardsContext } from "../context/nominatorUnClaimedRewardsContext";
 import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import FieldLoading from "next-common/components/icons/fieldLoading";
@@ -141,27 +140,11 @@ function ClaimEraPopupContent({ eraData, onBack }) {
 }
 
 function RewardsListContent({ onClaimClick }) {
-  const realAddress = useRealAddress();
-  const { decimals, symbol } = useChainSettings();
-
-  const { result, loading } = useNominatorUnClaimedRewards(realAddress);
-
-  const totalClaimable = result?.totalRewards
-    ? toPrecision(result.totalRewards, decimals)
-    : "0";
-
+  const { result, loading } = useNominatorUnClaimedRewardsContext() || {};
   const hasRewards = result?.result && result.result.length > 0;
 
   return (
     <div className="space-y-4">
-      <SummaryLayout>
-        {!loading && (
-          <SummaryItem title="Total Claimable">
-            <ValueDisplay value={totalClaimable} symbol={symbol} />
-          </SummaryItem>
-        )}
-      </SummaryLayout>
-
       {loading ? (
         <LoadingContent />
       ) : hasRewards ? (
@@ -199,7 +182,6 @@ function ClaimPopupContent() {
   return <RewardsListContent onClaimClick={setSelectedEra} />;
 }
 
-// TODO: move data to panel(context: data、refetch)
 export default function ClaimPopup({ onClose }) {
   return (
     <SignerPopupWrapper onClose={onClose}>

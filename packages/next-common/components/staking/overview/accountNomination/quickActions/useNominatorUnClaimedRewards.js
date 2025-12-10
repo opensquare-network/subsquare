@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useContextApi } from "next-common/context/api";
 
 const PERBILL = 1_000_000_000n;
@@ -310,39 +310,26 @@ export default function useNominatorUnClaimedRewards(nominatorAddress) {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  const fetch = useCallback(async () => {
     if (!api || !nominatorAddress) {
       setLoading(false);
       return;
     }
 
-    let cancelled = false;
-
-    const fetchResult = async () => {
-      try {
-        setLoading(true);
-        const data = await calculateAllErasRewardsBatch(api, nominatorAddress);
-
-        if (!cancelled) {
-          setResult(data);
-        }
-      } catch (error) {
-        if (!cancelled) {
-          setResult({ result: [], totalRewards: "0", details: [] });
-        }
-      } finally {
-        if (!cancelled) {
-          setLoading(false);
-        }
-      }
-    };
-
-    fetchResult();
-
-    return () => {
-      cancelled = true;
-    };
+    try {
+      setLoading(true);
+      const data = await calculateAllErasRewardsBatch(api, nominatorAddress);
+      setResult(data);
+    } catch (error) {
+      setResult({ result: [], totalRewards: "0", details: [] });
+    } finally {
+      setLoading(false);
+    }
   }, [api, nominatorAddress]);
 
-  return { result, loading };
+  useEffect(() => {
+    fetch();
+  }, [fetch]);
+
+  return { result, loading, fetch };
 }

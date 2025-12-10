@@ -15,6 +15,9 @@ import CollapsePanel from "next-common/components/overview/accountInfo/component
 import { AccountBalanceItem } from "next-common/components/overview/accountInfo/components/accountBalances";
 import useStakingBalance from "./useStakingBalance";
 import WithdrawUnbondedButton from "./withdrawUnbondedButton";
+import { NominatorUnClaimedRewardsProvider } from "./context/nominatorUnClaimedRewardsContext";
+import NominatorReward from "./nominatorReward";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 const StartNominatingPopup = dynamicPopup(() =>
   import(
@@ -107,17 +110,27 @@ function StakingBalance() {
 
 function AccountNominationImpl() {
   const { width } = useWindowSize();
+  const realAddress = useRealAddress();
 
   if (isNil(width)) {
     return null;
   }
 
   return (
-    <NeutralPanel className="p-6 space-y-4">
-      <Header width={width} />
-      <Divider />
-      <StakingBalance />
-    </NeutralPanel>
+    <NominatorUnClaimedRewardsProvider nominatorAddress={realAddress}>
+      <NeutralPanel className="p-6 space-y-4">
+        <Header width={width} />
+        <Divider />
+        <div className="flex max-lg:flex-col w-full gap-2">
+          <div className="flex-1 max-lg:flex-none min-w-0">
+            <StakingBalance />
+          </div>
+          <div className="flex-1 max-lg:flex-none min-w-0">
+            <NominatorReward />
+          </div>
+        </div>
+      </NeutralPanel>
+    </NominatorUnClaimedRewardsProvider>
   );
 }
 
