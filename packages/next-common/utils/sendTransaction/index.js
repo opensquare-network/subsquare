@@ -1,7 +1,7 @@
 import getOriginForExtension from "next-common/utils/extension/origin";
 import { sortAddresses } from "@polkadot/util-crypto";
 
-export { sendSubstrateTx } from "./sendSubstrateTx";
+export { signAndSendSubstrateTx } from "./sendSubstrateTx";
 export { sendEvmTx } from "./sendEvmTx";
 export { maybeSendMimirTx } from "./sendMimirTx";
 export { maybeSendSignetTx } from "./sendSignetTx";

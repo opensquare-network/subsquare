@@ -10,7 +10,7 @@ import {
   maybeSendMimirTx,
   maybeSendSignetTx,
   sendEvmTx,
-  sendSubstrateTx,
+  signAndSendSubstrateTx,
   sendHydraDXMultiFeeEvmTx,
 } from "next-common/utils/sendTransaction";
 import { isEthereumAddress } from "@polkadot/util-crypto";
@@ -279,7 +279,7 @@ export function useSendTransaction() {
           return;
         }
 
-        await sendSubstrateTx({
+        await signAndSendSubstrateTx({
           api,
           tx,
           onStarted,
