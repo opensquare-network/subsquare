@@ -37,7 +37,9 @@ export default function TreasuryProjects() {
       grid: getChartData(projectsByCategory, GRID_LABELS).sort((a, b) =>
         b.totalFiat.comparedTo(a.totalFiat),
       ),
-      horizontal: getChartData(projectsByCategory, HORIZONTAL_LABELS),
+      horizontal: getChartData(projectsByCategory, HORIZONTAL_LABELS).sort(
+        (a, b) => b.totalFiat.comparedTo(a.totalFiat),
+      ),
     };
   }, [projectsByCategory]);
 
