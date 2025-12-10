@@ -33,7 +33,7 @@ export default function HorizontalTabs({ categories = [] }) {
   );
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-y-6">
       <TabsList
         className="mx-6"
         activeTabValue={activeTabValue}
