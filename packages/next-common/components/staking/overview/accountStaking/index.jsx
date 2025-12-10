@@ -13,16 +13,30 @@ import { NominatorStatus } from "../accountNomination";
 import { usePoolAccounts } from "next-common/hooks/staking/usePoolAccount";
 import { useStakingLedgers } from "next-common/hooks/useStakingLedgers";
 import { CurrentEraStakersProvider } from "next-common/context/staking/currentEraStakers";
+import { cn } from "next-common/utils";
+import CheckNomineesButton from "../accountNomination/checkNomineesButton";
 
 function PoolNominatorStatus({ stash, isLoading }) {
+  const { width } = useWindowSize();
   const { nominators } = useStakingLedgers(stash);
+
   return (
-    <NominatorStatus
-      title="Pool Status"
-      nominator={stash}
-      nominees={nominators?.targets || []}
-      isLoading={isLoading}
-    />
+    <div
+      className={cn(
+        "flex justify-between items-start grow gap-4",
+        width > 768 ? "flex-row" : "flex-col",
+      )}
+    >
+      <NominatorStatus
+        title="Pool Status"
+        nominator={stash}
+        nominees={nominators?.targets || []}
+        isLoading={isLoading}
+      />
+      <div className="flex gap-[16px] items-center">
+        <CheckNomineesButton nominator={stash} />
+      </div>
+    </div>
   );
 }
 
