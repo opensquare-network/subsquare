@@ -7,6 +7,8 @@ import Divider from "next-common/components/styled/layout/divider";
 import { useMyPool } from "next-common/context/staking/myPool";
 import Link from "next/link";
 import { MyPoolRewardProvider } from "next-common/context/staking/poolReward";
+import PoolReward from "./poolReward";
+import WindowSizeProvider from "next-common/context/windowSize";
 
 function AccountStakingImpl() {
   const { width } = useWindowSize();
@@ -17,11 +19,20 @@ function AccountStakingImpl() {
 
   return (
     <MyPoolRewardProvider>
-      <NeutralPanel className="p-6 space-y-4">
-        <StakingHeader width={width} />
-        <Divider />
-        <StakingBalance />
-      </NeutralPanel>
+      <WindowSizeProvider>
+        <NeutralPanel className="p-6 space-y-4">
+          <StakingHeader width={width} />
+          <Divider />
+          <div className="flex max-lg:flex-col w-full gap-2">
+            <div className="flex-1 max-lg:flex-none min-w-0">
+              <StakingBalance />
+            </div>
+            <div className="flex-1 max-lg:flex-none min-w-0">
+              <PoolReward />
+            </div>
+          </div>
+        </NeutralPanel>
+      </WindowSizeProvider>
     </MyPoolRewardProvider>
   );
 }
