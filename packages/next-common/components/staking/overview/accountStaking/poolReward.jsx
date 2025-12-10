@@ -26,7 +26,9 @@ export default function PoolReward() {
           isLoading={loading}
           title="Unclaimed Rewards"
           className={"inline-flex flex-row items-center justify-between"}
-          titleClassName={"mb-0 text14Medium text-textTertiary flex-1 w-[90px]"}
+          titleClassName={
+            "mb-0 text14Medium text-textTertiary flex-1 min-w-[90px]"
+          }
           valueClassName="text14Medium min-w-[100px] ml-5 inline-flex justify-end"
         />
       </div>
