@@ -5,6 +5,7 @@ import { QrSigner } from "next-common/utils/qrSigner";
 import { BN } from "@polkadot/util";
 import { useUser } from "next-common/context/user";
 import QrScannerComponent from "./scanner";
+import { sendSubstrateTx } from "next-common/utils/sendTransaction";
 
 const CMD_HASH = 1;
 const CMD_MORTAL = 2;
@@ -40,8 +41,9 @@ export default function VaultSignerPopup({
         signer: new QrSigner(api.registry, setQrState),
       };
       setSigned(false);
-      const signedTx = await tx.signAsync(address, options);
-      sendSignedTxWithEvents(api, signedTx, {
+      await tx.signAsync(address, options);
+      await sendSubstrateTx({
+        tx,
         onStarted,
         onSubmitted,
         onInBlock,
@@ -79,27 +81,28 @@ export default function VaultSignerPopup({
     }
   }, [api, start, tx]);
 
-  if (!tx || !genesisHash || signed || !qrAddress) {
-    return null;
-  }
-
   const _onClose = () => {
     qrReject?.(new Error("Rejected by user"));
     setQrState({});
     onClose?.();
   };
 
+  if (!tx || !genesisHash || signed || !qrAddress) {
+    return null;
+  }
   return (
     <Popup title="Authorize Transaction" onClose={_onClose}>
-      <div>
-        <Qr
-          qrAddress={qrAddress}
-          isQrHashed={isQrHashed}
-          genesisHash={genesisHash}
-          qrPayload={qrPayload}
-          onSignature={_addQrSignature}
-        />
-      </div>
+      {qrAddress && (
+        <div>
+          <Qr
+            qrAddress={qrAddress}
+            isQrHashed={isQrHashed}
+            genesisHash={genesisHash}
+            qrPayload={qrPayload}
+            onSignature={_addQrSignature}
+          />
+        </div>
+      )}
     </Popup>
   );
 }
@@ -139,50 +142,4 @@ function Qr({ qrAddress, genesisHash, isQrHashed, onSignature, qrPayload }) {
       </div>
     </div>
   );
-}
-
-async function sendSignedTxWithEvents(api, signedTx, callbacks = {}) {
-  const { onStarted, onError, onSubmitted, onInBlock, onFinalized } = callbacks;
-
-  try {
-    onStarted?.();
-
-    const txHash = await api.rpc.author.submitExtrinsic(signedTx);
-    onSubmitted?.(txHash.toHex());
-
-    const unsubNew = await api.rpc.chain.subscribeNewHeads(async (header) => {
-      const bh = header.hash;
-      const block = await api.rpc.chain.getBlock(bh);
-
-      const found = block.block.extrinsics.find(
-        (ex) => ex.hash.toHex() === txHash.toHex(),
-      );
-
-      if (found) {
-        onInBlock?.(bh.toHex());
-        unsubNew();
-      }
-    });
-
-    const unsubFinalized = await api.rpc.chain.subscribeFinalizedHeads(
-      async (header) => {
-        const bh = header.hash;
-        const block = await api.rpc.chain.getBlock(bh);
-        const events = await api.query.system.events.at(bh);
-
-        block.block.extrinsics.forEach((ex, index) => {
-          if (ex.hash.toHex() === txHash.toHex()) {
-            onFinalized?.({
-              blockHash: bh.toHex(),
-              extrinsicIndex: index,
-              events,
-            });
-            unsubFinalized();
-          }
-        });
-      },
-    );
-  } catch (err) {
-    onError?.(err);
-  }
 }

@@ -16,11 +16,14 @@ export function VaultSignerProvider({ children }) {
         },
       }}
     >
-      <VaultSignerPopup
-        qrId={qrId}
-        {...options}
-        onClose={() => setOptions({})}
-      />
+      {options.tx && (
+        <VaultSignerPopup
+          key={qrId}
+          qrId={qrId}
+          {...options}
+          onClose={() => setOptions({})}
+        />
+      )}
       {children}
     </VaultScanContext.Provider>
   );
