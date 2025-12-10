@@ -15,6 +15,7 @@ import CollapsePanel from "next-common/components/overview/accountInfo/component
 import { AccountBalanceItem } from "next-common/components/overview/accountInfo/components/accountBalances";
 import useStakingBalance from "./useStakingBalance";
 import WithdrawUnbondedButton from "./withdrawUnbondedButton";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 const StartNominatingPopup = dynamicPopup(() =>
   import(
@@ -22,23 +23,40 @@ const StartNominatingPopup = dynamicPopup(() =>
   ),
 );
 
-function Header({ width }) {
-  const { nominators } = useMyStakingLedger();
+export function NominatorStatus({ title, nominator, nominees, isLoading }) {
   const { active, loading } = useValidatorsWithStatus(
-    nominators?.targets || [],
+    nominator,
+    nominees || [],
   );
 
-  if (isNil(width)) {
-    return null;
-  }
-
   let message = null;
-  if (!nominators?.targets.length) {
+  if (!nominees.length) {
     message = "Inactive: No Nominations Set";
   } else if (!active?.length) {
     message = "Waiting for Active Nominations";
   } else {
     message = "Nominating and Earning Rewards";
+  }
+  return (
+    <div className="flex flex-col gap-1">
+      <div className="text12Medium text-textTertiary">
+        {title || "Nominator Status"}
+      </div>
+      <div className="text14Medium text-textPrimary">
+        <LoadableContent isLoading={isLoading || loading} size={14}>
+          {message}
+        </LoadableContent>
+      </div>
+    </div>
+  );
+}
+
+function Header({ width }) {
+  const realAddress = useRealAddress();
+  const { nominators } = useMyStakingLedger();
+
+  if (isNil(width)) {
+    return null;
   }
 
   return (
@@ -49,14 +67,10 @@ function Header({ width }) {
           width > 768 ? "flex-row" : "flex-col",
         )}
       >
-        <div className="flex flex-col gap-1">
-          <div className="text12Medium text-textTertiary">Nominator Status</div>
-          <div className="text14Medium text-textPrimary">
-            <LoadableContent isLoading={loading} size={14}>
-              {message}
-            </LoadableContent>
-          </div>
-        </div>
+        <NominatorStatus
+          nominees={nominators?.targets || []}
+          nominator={realAddress}
+        />
         <div className="flex gap-[16px] items-center">
           <NominatorQuickActions />
         </div>

@@ -9,9 +9,29 @@ import Link from "next/link";
 import { MyPoolRewardProvider } from "next-common/context/staking/poolReward";
 import PoolReward from "./poolReward";
 import WindowSizeProvider from "next-common/context/windowSize";
+import { NominatorStatus } from "../accountNomination";
+import { usePoolAccounts } from "next-common/hooks/staking/usePoolAccount";
+import { useStakingLedgers } from "next-common/hooks/useStakingLedgers";
+import { CurrentEraStakersProvider } from "next-common/context/staking/currentEraStakers";
+
+function PoolNominatorStatus({ stash, isLoading }) {
+  const { nominators } = useStakingLedgers(stash);
+  return (
+    <NominatorStatus
+      title="Pool Status"
+      nominator={stash}
+      nominees={nominators?.targets || []}
+      isLoading={isLoading}
+    />
+  );
+}
 
 function AccountStakingImpl() {
   const { width } = useWindowSize();
+  const { poolMember } = useMyPool();
+  const { stash, loading: loadingPoolAccounts } = usePoolAccounts(
+    poolMember?.poolId,
+  );
 
   if (isNil(width)) {
     return null;
@@ -19,20 +39,27 @@ function AccountStakingImpl() {
 
   return (
     <MyPoolRewardProvider>
-      <WindowSizeProvider>
-        <NeutralPanel className="p-6 space-y-4">
-          <StakingHeader width={width} />
-          <Divider />
-          <div className="flex max-lg:flex-col w-full gap-2">
-            <div className="flex-1 max-lg:flex-none min-w-0">
-              <StakingBalance />
+      <CurrentEraStakersProvider>
+        <WindowSizeProvider>
+          <NeutralPanel className="p-6 space-y-4">
+            <StakingHeader width={width} />
+            <Divider />
+            <PoolNominatorStatus
+              stash={stash}
+              isLoading={loadingPoolAccounts}
+            />
+            <Divider />
+            <div className="flex max-lg:flex-col w-full gap-2">
+              <div className="flex-1 max-lg:flex-none min-w-0">
+                <StakingBalance />
+              </div>
+              <div className="flex-1 max-lg:flex-none min-w-0">
+                <PoolReward />
+              </div>
             </div>
-            <div className="flex-1 max-lg:flex-none min-w-0">
-              <PoolReward />
-            </div>
-          </div>
-        </NeutralPanel>
-      </WindowSizeProvider>
+          </NeutralPanel>
+        </WindowSizeProvider>
+      </CurrentEraStakersProvider>
     </MyPoolRewardProvider>
   );
 }

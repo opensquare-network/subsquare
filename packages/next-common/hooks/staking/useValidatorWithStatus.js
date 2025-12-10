@@ -1,10 +1,8 @@
 import { isNil } from "lodash-es";
 import { useCurrentEraStakers } from "next-common/context/staking/currentEraStakers";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useMemo } from "react";
 
-export function useValidatorsWithStatus(validators) {
-  const realAddress = useRealAddress();
+export function useValidatorsWithStatus(nominator, validators) {
   const { eraStakers, loading } = useCurrentEraStakers();
   return useMemo(() => {
     if (loading) {
@@ -23,7 +21,7 @@ export function useValidatorsWithStatus(validators) {
         waiting.push(validator);
         return;
       }
-      if (!(stakerInfo.otherStakers ?? []).find((o) => o.who === realAddress)) {
+      if (!(stakerInfo.otherStakers ?? []).find((o) => o.who === nominator)) {
         inactive.push(validator);
         return;
       }
@@ -31,5 +29,5 @@ export function useValidatorsWithStatus(validators) {
     });
 
     return { waiting, inactive, active, loading: false };
-  }, [eraStakers, loading, validators, realAddress]);
+  }, [eraStakers, loading, validators, nominator]);
 }
