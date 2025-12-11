@@ -15,6 +15,8 @@ import { AccountBalanceItem } from "next-common/components/overview/accountInfo/
 import useStakingBalance from "./useStakingBalance";
 import WithdrawUnbondedButton from "./withdrawUnbondedButton";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import Tooltip from "next-common/components/tooltip";
+import { AddressUser } from "next-common/components/user";
 
 const StartNominatingPopup = dynamicPopup(() =>
   import(
@@ -34,7 +36,25 @@ export function NominatorStatus({ title, nominator, nominees }) {
   } else if (!active?.length) {
     message = "Waiting for Active Nominations";
   } else {
-    message = "Nominating and Earning Rewards";
+    message = (
+      <div className="flex items-center gap-2">
+        <span>Nominating and Earning Rewards</span>
+        <Tooltip
+          content={
+            <div className="flex gap-2 text-textPrimaryContrast text12Medium">
+              <span>Elected by</span>
+              {(active || []).map((validator) => (
+                <AddressUser
+                  className="text-textPrimaryContrast text12Medium"
+                  key={validator}
+                  add={validator}
+                />
+              ))}
+            </div>
+          }
+        />
+      </div>
+    );
   }
   return (
     <div className="flex flex-col gap-1">
