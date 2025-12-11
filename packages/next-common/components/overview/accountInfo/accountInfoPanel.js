@@ -235,6 +235,7 @@ const transferEnabledChains = [
   Chains.westend,
   Chains.rococo,
   Chains.paseo,
+  Chains.hyperBridge,
 ];
 
 const paraChainTeleportEnabledChains = [Chains.collectives];

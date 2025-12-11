@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+# 5.5.6
+
+Date:
+2025-12-08. [Code diff](https://github.com/opensquare-network/subsquare/compare/beb08415bc5857256c8b04ab25cdd080266660ed...1abba322306aa49c273240451471749798ec3714).
+
+- Add more projects to treasury statistics. Categories include marketing, events, education, hackathons, and other
+  developments. Projects include Inter Miami, Conor Daly, Sub0, etc.
+- Fix bugs in hook `useSubStorage` to prevent wrong data subscription.
+- Correct submission and decision refund button status on the referendum detail page.
+- Use intime votes data from subsquare graphql API for active referenda. Data from the API is served by intime indexing
+  scripts, so we don't have to wait block finalization.
+- Refactor menus:
+    - Move off-chain voting and navigation menus under the advanced menu.
+    - Move up the referenda menu under the account menu so users can see it more easily.
+- Support XCM v5 decode so we can show cross-chain calls on the referendum detail page if a call is written with XCM v5.
+- Archive tips module for hydration to fix the account deposits loading bug.
+- Not show sub identity related buttons if not right user.
+- Search UX enhancement: not close the search popup when we try to click a search result proposal in a new tab.
+- Scheduler: 1. Fix timestamp calculation on the scheduler page; 2. Only turn on scheduler for selected chains.
+- Improve external link handling when hovering menu items. We add a guard to prevent null link value.
+- Upgrade next.js to 15.4.8.
+
 # 5.5.5
 
 Date:

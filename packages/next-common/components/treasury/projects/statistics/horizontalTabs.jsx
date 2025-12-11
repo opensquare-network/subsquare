@@ -7,6 +7,7 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import { colors } from "../const";
 import ProjectStatisticsSummary from "./summary";
 import useProjectChartInteraction from "../hooks/useProjectChartInteraction";
+import HorizontalTabLabel from "./horizontalTabLabel";
 
 export default function HorizontalTabs({ categories = [] }) {
   const [activeTabValue, setActiveTabValue] = useState(categories[0]?.category);
@@ -15,9 +16,15 @@ export default function HorizontalTabs({ categories = [] }) {
     () =>
       categories.map((category) => ({
         value: category.category,
-        label: category.label,
+        label: (
+          <HorizontalTabLabel
+            category={category}
+            categories={categories}
+            isActive={activeTabValue === category.category}
+          />
+        ),
       })),
-    [categories],
+    [categories, activeTabValue],
   );
 
   const activeCategory = useMemo(
@@ -26,7 +33,7 @@ export default function HorizontalTabs({ categories = [] }) {
   );
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-y-6">
       <TabsList
         className="mx-6"
         activeTabValue={activeTabValue}

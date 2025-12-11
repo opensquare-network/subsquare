@@ -262,15 +262,14 @@ function getSpendAmount(spend) {
 
   let fiatAtSubmission = BigNumber(0);
   let fiatAtFinal = BigNumber(0);
-  const nativeAccuracy = Math.pow(10, decimals);
 
   if (assetKind?.type === "native") {
-    fiatAtSubmission = BigNumber(toPrecision(amount, decimals))
-      .times(submissionPrice)
-      .dividedBy(nativeAccuracy);
-    fiatAtFinal = BigNumber(toPrecision(amount, decimals))
-      .times(finalPrice ?? currentPrice)
-      .dividedBy(nativeAccuracy);
+    fiatAtSubmission = BigNumber(toPrecision(amount, decimals)).times(
+      submissionPrice,
+    );
+    fiatAtFinal = BigNumber(toPrecision(amount, decimals)).times(
+      finalPrice ?? currentPrice,
+    );
   } else if (SYMBOL_DECIMALS[assetKind?.symbol]) {
     const amountInFiat = BigNumber(
       toPrecision(amount, SYMBOL_DECIMALS[assetKind?.symbol]),

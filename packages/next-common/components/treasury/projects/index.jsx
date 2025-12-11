@@ -34,8 +34,12 @@ export default function TreasuryProjects() {
 
   const categories = useMemo(() => {
     return {
-      grid: getChartData(projectsByCategory, GRID_LABELS),
-      horizontal: getChartData(projectsByCategory, HORIZONTAL_LABELS),
+      grid: getChartData(projectsByCategory, GRID_LABELS).sort((a, b) =>
+        b.totalFiat.comparedTo(a.totalFiat),
+      ),
+      horizontal: getChartData(projectsByCategory, HORIZONTAL_LABELS).sort(
+        (a, b) => b.totalFiat.comparedTo(a.totalFiat),
+      ),
     };
   }, [projectsByCategory]);
 
@@ -49,7 +53,7 @@ export default function TreasuryProjects() {
 
 function GridChart({ categories }) {
   return (
-    <div className="grid grid-cols-2 gap-6 max-sm:grid-cols-1">
+    <div className="grid grid-cols-2 gap-x-6 gap-y-4 max-sm:grid-cols-1">
       {categories.map((data) => (
         <Statistics key={data.category} data={data} />
       ))}
@@ -62,6 +66,5 @@ function getChartData(projectsByCategory = [], categories = {}) {
     .map(([value]) =>
       projectsByCategory.find((item) => item.category === value),
     )
-    .sort((a, b) => b.totalFiat.comparedTo(a.totalFiat))
     .filter(Boolean);
 }
