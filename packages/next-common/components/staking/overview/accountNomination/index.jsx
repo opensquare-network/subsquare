@@ -2,7 +2,6 @@ import { isNil } from "lodash-es";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import { useMyStakingLedger } from "next-common/context/staking/myStakingLedger";
-import { CurrentEraStakersProvider } from "next-common/context/staking/currentEraStakers";
 import { useValidatorsWithStatus } from "next-common/hooks/staking/useValidatorWithStatus";
 import { cn } from "next-common/utils";
 import LoadableContent from "next-common/components/common/loadableContent";
@@ -23,7 +22,7 @@ const StartNominatingPopup = dynamicPopup(() =>
   ),
 );
 
-export function NominatorStatus({ title, nominator, nominees, isLoading }) {
+export function NominatorStatus({ title, nominator, nominees }) {
   const { active, loading } = useValidatorsWithStatus(
     nominator,
     nominees || [],
@@ -43,7 +42,7 @@ export function NominatorStatus({ title, nominator, nominees, isLoading }) {
         {title || "Nominator Status"}
       </div>
       <div className="text14Medium text-textPrimary">
-        <LoadableContent isLoading={isLoading || loading} size={14}>
+        <LoadableContent isLoading={loading} size={14}>
           {message}
         </LoadableContent>
       </div>
@@ -54,10 +53,6 @@ export function NominatorStatus({ title, nominator, nominees, isLoading }) {
 function Header({ width }) {
   const realAddress = useRealAddress();
   const { nominators } = useMyStakingLedger();
-
-  if (isNil(width)) {
-    return null;
-  }
 
   return (
     <div className="flex flex-col gap-2">
@@ -119,7 +114,7 @@ function StakingBalance() {
   );
 }
 
-function AccountNominationImpl() {
+export default function AccountNomination() {
   const { width } = useWindowSize();
 
   if (isNil(width)) {
@@ -135,7 +130,7 @@ function AccountNominationImpl() {
   );
 }
 
-function AccountNominationEmpty() {
+export function AccountNominationEmpty() {
   const [showStartNominatingPopup, setShowStartNominatingPopup] =
     useState(false);
 
@@ -157,23 +152,5 @@ function AccountNominationEmpty() {
         />
       )}
     </NeutralPanel>
-  );
-}
-
-export default function AccountNomination() {
-  const { nominators, loading } = useMyStakingLedger();
-
-  if (loading) {
-    return null;
-  }
-
-  if (isNil(nominators)) {
-    return <AccountNominationEmpty />;
-  }
-
-  return (
-    <CurrentEraStakersProvider>
-      <AccountNominationImpl />
-    </CurrentEraStakersProvider>
   );
 }

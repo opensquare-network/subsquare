@@ -1,13 +1,13 @@
 import { useContext } from "react";
-import { useCurrentEra } from "./activeEra";
-import { CurrentEraStakersOverviewProvider } from "./currentEraStakersOverview";
+import { useActiveEra } from "./activeEra";
+import { ActiveEraStakersOverviewProvider } from "./currentEraStakersOverview";
 import { EraStakersContext, EraStakersProvider } from "./eraStakers";
 import { useActiveValidators } from "./stakersOverview";
 
-function CurrentEraStakersProviderImpl({ children }) {
-  const { currentEra, loading: isCurrentEraLoading } = useCurrentEra();
+function ActiveEraStakersProviderImpl({ children }) {
+  const { activeEraIndex, loading: isActiveEraLoading } = useActiveEra();
   const { validators, loading: isValidatorsLoading } = useActiveValidators();
-  if (isCurrentEraLoading || isValidatorsLoading) {
+  if (isActiveEraLoading || isValidatorsLoading) {
     return (
       <EraStakersContext.Provider value={{ eraStakers: null, loading: true }}>
         {children}
@@ -15,21 +15,21 @@ function CurrentEraStakersProviderImpl({ children }) {
     );
   }
   return (
-    <EraStakersProvider eraIndex={currentEra} validators={validators}>
+    <EraStakersProvider eraIndex={activeEraIndex} validators={validators}>
       {children}
     </EraStakersProvider>
   );
 }
 
-export function CurrentEraStakersProvider({ children }) {
+export function ActiveEraStakersProvider({ children }) {
   return (
-    <CurrentEraStakersOverviewProvider>
-      <CurrentEraStakersProviderImpl>{children}</CurrentEraStakersProviderImpl>
-    </CurrentEraStakersOverviewProvider>
+    <ActiveEraStakersOverviewProvider>
+      <ActiveEraStakersProviderImpl>{children}</ActiveEraStakersProviderImpl>
+    </ActiveEraStakersOverviewProvider>
   );
 }
 
-export function useCurrentEraStakers() {
+export function useActiveEraStakers() {
   const { eraStakers, loading } = useContext(EraStakersContext);
   return { eraStakers, loading };
 }

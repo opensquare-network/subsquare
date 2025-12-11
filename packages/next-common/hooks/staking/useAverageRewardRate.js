@@ -33,16 +33,16 @@ export async function getAverageEraValidatorReward({ api, relayApi }) {
   const maxSupportedDays = historyDepth === 0 ? 0 : historyDepth / erasPerDay;
   const days = maxSupportedDays > 30 ? 30 : 15;
 
-  const currentEraOpt = await api.query.staking.currentEra();
-  const currentEra = currentEraOpt.toJSON();
+  const activeEraOpt = await api.query.staking.activeEra();
+  const activeEraIndex = activeEraOpt.toJSON()?.index;
 
   const endEra = Math.max(
-    currentEra - erasPerDay * days,
-    Math.max(0, currentEra - historyDepth),
+    activeEraIndex - erasPerDay * days,
+    Math.max(0, activeEraIndex - historyDepth),
   );
 
   const eras = [];
-  let thisEra = currentEra - 1;
+  let thisEra = activeEraIndex - 1;
   do {
     eras.push(thisEra.toString());
     thisEra = thisEra - 1;
@@ -91,10 +91,10 @@ export function useAverageRewardRate() {
         return;
       }
 
-      const currentEraOpt = await api.query.staking.currentEra();
+      const activeEraOpt = await api.query.staking.activeEra();
 
-      const currentEra = currentEraOpt.toJSON();
-      const era = Math.max(currentEra - 1, 0);
+      const activeEraIndex = activeEraOpt.toJSON()?.index;
+      const era = Math.max(activeEraIndex - 1, 0);
       const lastTotalStakeOpt = await api.query.staking.erasTotalStake(era);
 
       const lastTotalStake = lastTotalStakeOpt.toBigInt();

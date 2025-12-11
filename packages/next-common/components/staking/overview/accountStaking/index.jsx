@@ -12,11 +12,10 @@ import WindowSizeProvider from "next-common/context/windowSize";
 import { NominatorStatus } from "../accountNomination";
 import { usePoolAccounts } from "next-common/hooks/staking/usePoolAccount";
 import { useStakingLedgers } from "next-common/hooks/useStakingLedgers";
-import { CurrentEraStakersProvider } from "next-common/context/staking/currentEraStakers";
 import { cn } from "next-common/utils";
 import CheckNomineesButton from "../accountNomination/checkNomineesButton";
 
-function PoolNominatorStatus({ stash, isLoading }) {
+function PoolNominatorStatus({ stash }) {
   const { width } = useWindowSize();
   const { nominators } = useStakingLedgers(stash);
 
@@ -31,7 +30,6 @@ function PoolNominatorStatus({ stash, isLoading }) {
         title="Pool Status"
         nominator={stash}
         nominees={nominators?.targets || []}
-        isLoading={isLoading}
       />
       <div className="flex gap-[16px] items-center">
         <CheckNomineesButton nominator={stash} />
@@ -40,12 +38,8 @@ function PoolNominatorStatus({ stash, isLoading }) {
   );
 }
 
-function AccountStakingImpl() {
+function AccountStakingImpl({ stash }) {
   const { width } = useWindowSize();
-  const { poolMember } = useMyPool();
-  const { stash, loading: loadingPoolAccounts } = usePoolAccounts(
-    poolMember?.poolId,
-  );
 
   if (isNil(width)) {
     return null;
@@ -53,32 +47,38 @@ function AccountStakingImpl() {
 
   return (
     <MyPoolRewardProvider>
-      <CurrentEraStakersProvider>
-        <WindowSizeProvider>
-          <NeutralPanel className="p-6 space-y-4">
-            <StakingHeader width={width} />
-            <Divider />
-            <PoolNominatorStatus
-              stash={stash}
-              isLoading={loadingPoolAccounts}
-            />
-            <Divider />
-            <div className="flex max-lg:flex-col w-full gap-2">
-              <div className="flex-1 max-lg:flex-none min-w-0">
-                <StakingBalance />
-              </div>
-              <div className="flex-1 max-lg:flex-none min-w-0">
-                <PoolReward />
-              </div>
+      <WindowSizeProvider>
+        <NeutralPanel className="p-6 space-y-4">
+          <StakingHeader width={width} />
+          <Divider />
+          <PoolNominatorStatus stash={stash} />
+          <Divider />
+          <div className="flex max-lg:flex-col w-full gap-2">
+            <div className="flex-1 max-lg:flex-none min-w-0">
+              <StakingBalance />
             </div>
-          </NeutralPanel>
-        </WindowSizeProvider>
-      </CurrentEraStakersProvider>
+            <div className="flex-1 max-lg:flex-none min-w-0">
+              <PoolReward />
+            </div>
+          </div>
+        </NeutralPanel>
+      </WindowSizeProvider>
     </MyPoolRewardProvider>
   );
 }
 
-function AccountStakingEmpty() {
+export default function AccountStaking() {
+  const { poolMember } = useMyPool();
+  const { stash, loading } = usePoolAccounts(poolMember?.poolId);
+
+  if (loading) {
+    return null;
+  }
+
+  return <AccountStakingImpl stash={stash} />;
+}
+
+export function AccountStakingEmpty() {
   return (
     <NeutralPanel className="p-6">
       <div className="text-center text14Medium text-textTertiary">
@@ -92,18 +92,4 @@ function AccountStakingEmpty() {
       </div>
     </NeutralPanel>
   );
-}
-
-export default function AccountStaking() {
-  const { poolMember, loading } = useMyPool();
-
-  if (loading) {
-    return null;
-  }
-
-  if (isNil(poolMember)) {
-    return <AccountStakingEmpty />;
-  }
-
-  return <AccountStakingImpl />;
 }

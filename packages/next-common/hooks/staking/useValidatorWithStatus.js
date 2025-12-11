@@ -1,12 +1,12 @@
 import { isNil } from "lodash-es";
-import { useCurrentEraStakers } from "next-common/context/staking/currentEraStakers";
+import { useActiveEraStakers } from "next-common/context/staking/currentEraStakers";
 import { useMemo } from "react";
 
 export function useValidatorsWithStatus(nominator, validators) {
-  const { eraStakers, loading } = useCurrentEraStakers();
+  const { eraStakers, loading } = useActiveEraStakers();
   return useMemo(() => {
     if (loading) {
-      return { statuses: null, loading: true };
+      return { loading: true };
     }
 
     const waiting = [];
