@@ -5,10 +5,20 @@ import { usePopupOnClose } from "next-common/context/popup";
 import { useStakingLedgers } from "next-common/hooks/useStakingLedgers";
 import ValidatorsList from "./validatorsList";
 import Loading from "next-common/components/loading";
+import { useValidatorsWithStatus } from "next-common/hooks/staking/useValidatorWithStatus";
 
 function NomineeListPopupContent({ nominator }) {
   const onClose = usePopupOnClose();
-  const { nominators, loading } = useStakingLedgers(nominator);
+  const { nominators, loading: isNomineesLoading } =
+    useStakingLedgers(nominator);
+  const nominees = nominators?.targets || [];
+
+  const { active, loading: isNomineesStatusLoading } = useValidatorsWithStatus(
+    nominator,
+    nominees || [],
+  );
+
+  const loading = isNomineesLoading || isNomineesStatusLoading;
 
   if (loading) {
     return (
@@ -20,7 +30,8 @@ function NomineeListPopupContent({ nominator }) {
   return (
     <div className="flex flex-col gap-4 text14Medium">
       <ValidatorsList
-        nominees={nominators?.targets || []}
+        nominees={nominees}
+        activeNominees={active || []}
         isLoading={loading}
       />
       <div className="flex justify-end">

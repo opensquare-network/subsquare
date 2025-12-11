@@ -55,7 +55,7 @@ function MyStaking() {
     return (
       <ActiveEraStakersProvider>
         <AccountNomination />
-        {/* <AccountStaking /> */}
+        <AccountStaking />
       </ActiveEraStakersProvider>
     );
   }

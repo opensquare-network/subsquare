@@ -7,10 +7,9 @@ import {
   useValidators,
   useValidatorsWithIdentity,
 } from "../../../validatorsList/hooks";
+import { SystemVoteAye, SystemVoteNay } from "@osn/icons/subsquare";
 
-const columnsDef = [colAccount, colCommission];
-
-function ValidatorsListImpl({ nominees, isLoading }) {
+function ValidatorsListImpl({ nominees, activeNominees, isLoading }) {
   const { validators, loading: isLoadingValidators } = useValidators();
   const nomineeValidators = useMemo(() => {
     if (!validators) {
@@ -22,6 +21,27 @@ function ValidatorsListImpl({ nominees, isLoading }) {
     value: validatorsWithIdentity,
     loading: isLoadingValidatorsWithIdentity,
   } = useValidatorsWithIdentity(nomineeValidators);
+
+  const columnsDef = useMemo(
+    () => [
+      colAccount,
+      colCommission,
+      {
+        name: "Elected",
+        style: { textAlign: "right", width: "80px", minWidth: "80px" },
+        render: (item) => (
+          <div className="inline-block">
+            {activeNominees.includes(item.account) ? (
+              <SystemVoteAye className="w-5 h-5" />
+            ) : (
+              <SystemVoteNay className="w-5 h-5" />
+            )}
+          </div>
+        ),
+      },
+    ],
+    [activeNominees],
+  );
 
   const { sortedColumn, sortDirection, columns } = useColumns(
     columnsDef,
@@ -67,10 +87,18 @@ function ValidatorsListImpl({ nominees, isLoading }) {
   );
 }
 
-export default function ValidatorsList({ nominees, isLoading }) {
+export default function ValidatorsList({
+  nominees,
+  activeNominees,
+  isLoading,
+}) {
   return (
     <ValidatorsFilterProvider>
-      <ValidatorsListImpl nominees={nominees} isLoading={isLoading} />
+      <ValidatorsListImpl
+        nominees={nominees}
+        activeNominees={activeNominees}
+        isLoading={isLoading}
+      />
     </ValidatorsFilterProvider>
   );
 }
