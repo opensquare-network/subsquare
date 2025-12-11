@@ -91,7 +91,6 @@ export function useHydrationCurrencyBalance(currencyId, accountAddress) {
 
   const fetchBalance = useCallback(async () => {
     if (!api?.rpc?.state || !callParams) {
-      setLoading(false);
       return;
     }
 
