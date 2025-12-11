@@ -33,7 +33,7 @@ export default function BarLabels({
     <LabelContainer
       title={`${position.label} ${formatNum(position.value)}`}
       style={{
-        left: `${position.x}px`,
+        left: 0,
         top: `${position.y}px`,
         maxWidth: FIXED_LABEL_WIDTH,
       }}
