@@ -24,6 +24,8 @@ export const CATEGORY_VALUES = {
   HACKTHON: "hackthon",
   OTHER_DEVELOPMENT: "other_development",
   MEDIA: "media",
+  BUSINESS_DEVELOPMENT: "business_development",
+  ECOSYSTEM: "ecosystem",
 };
 
 export const DOUGHNUT_CONFIG_BY_CATEGORY = {
@@ -62,6 +64,8 @@ export const HORIZONTAL_LABELS = {
   [CATEGORY_VALUES.HACKTHON]: "Hackathons",
   [CATEGORY_VALUES.MEDIA]: "Media",
   [CATEGORY_VALUES.OTHER_DEVELOPMENT]: "Other Developments",
+  [CATEGORY_VALUES.BUSINESS_DEVELOPMENT]: "BD",
+  [CATEGORY_VALUES.ECOSYSTEM]: "Ecosystem",
 };
 
 export const LABELS = {
