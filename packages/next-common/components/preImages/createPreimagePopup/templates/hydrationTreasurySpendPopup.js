@@ -12,6 +12,7 @@ import ExtrinsicInfo from "../../newPreimagePopup/info";
 import AmountInputWithHint from "next-common/components/popup/fields/amountInputWithHint";
 import useHydrationCurrencyInfo from "next-common/hooks/useHydrationCurrencyInfo";
 import { TreasuryProvider } from "next-common/context/treasury";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 const HOLLAR_CURRENCY = {
   id: 222,
@@ -35,13 +36,18 @@ export function useHydrationTreasurySpendPreimageTx(inputBalance, beneficiary) {
     }
 
     try {
-      const proposal = api.tx.currencies.transfer(
+      const transferTx = api.tx.currencies.transfer(
         beneficiary,
         HOLLAR_CURRENCY.id,
         bnValue.toFixed(),
       );
+      const proposal = api.tx.dispatcher.dispatchWithExtraGas(
+        transferTx,
+        1000000,
+      );
+      const treasuryProposal = api.tx.dispatcher.dispatchAsTreasury(proposal);
 
-      return getState(api, proposal);
+      return getState(api, treasuryProposal);
     } catch (e) {
       console.error(e);
       return {};
@@ -51,8 +57,9 @@ export function useHydrationTreasurySpendPreimageTx(inputBalance, beneficiary) {
 
 function PopupContent() {
   const [inputBalance, setInputBalance] = useState("");
+  const realAddress = useRealAddress();
   const { value: beneficiary, component: beneficiaryField } =
-    useAddressComboField();
+    useAddressComboField({ defaultAddress: realAddress });
   const { data: currencyInfo, loading } = useHydrationCurrencyInfo(
     HOLLAR_CURRENCY.id,
   );
