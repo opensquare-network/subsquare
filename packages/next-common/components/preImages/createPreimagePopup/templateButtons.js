@@ -52,6 +52,16 @@ export function SpendDotOnAssetHubButton({ onClick }) {
   );
 }
 
+export function HydrationTreasurySpendButton({ onClick }) {
+  return (
+    <ChoiceButton
+      name="HOLLAR treasury proposal"
+      description="Create a treasury spend with HOLLAR currency"
+      onClick={onClick}
+    />
+  );
+}
+
 export function NewRemarkButton({ onClick }) {
   return (
     <ChoiceButton
