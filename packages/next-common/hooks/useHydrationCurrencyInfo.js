@@ -133,7 +133,7 @@ export default function useHydrationCurrencyInfo(currencyId) {
   const loading = metadataLoading || balanceLoading;
 
   const data = useMemo(() => {
-    if (!metadata) {
+    if (!metadata || loading) {
       return null;
     }
 
@@ -143,7 +143,7 @@ export default function useHydrationCurrencyInfo(currencyId) {
       name: metadata.name,
       treasuryBalance: balance || "0",
     };
-  }, [metadata, balance]);
+  }, [metadata, loading, balance]);
 
   return { data, loading };
 }
