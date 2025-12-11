@@ -91,7 +91,7 @@ export function useSendTransaction() {
   const signerAccount = useSignerAccount();
   const setSigner = useSetSigner();
   const { sdk: signetSdk } = useSignetSdk();
-  const { setOptions: sendVaultTX } = useVaultSigner();
+  const { sendVaultTx } = useVaultSigner();
 
   // const { signWcTx } = useWalletConnect();
   const buildPayload = useWalletConnectBuildPayload();
@@ -264,7 +264,7 @@ export function useSendTransaction() {
           return;
         }
         if (shouldSendPolkadotVaultConnectTx(signerAccount)) {
-          await sendVaultTX({
+          await sendVaultTx({
             api,
             tx,
             onStarted: () => {
@@ -295,7 +295,7 @@ export function useSendTransaction() {
         setIsSubmitting(false);
       }
     },
-    [buildPayload, dispatch, signerAccount, signetSdk, setSigner, sendVaultTX],
+    [buildPayload, dispatch, signerAccount, signetSdk, setSigner, sendVaultTx],
   );
 
   return {

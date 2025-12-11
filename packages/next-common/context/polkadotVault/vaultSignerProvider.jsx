@@ -1,27 +1,58 @@
 import VaultSignerPopup from "next-common/components/polkadotVault/vaultSignerPopup";
-import { useState, createContext, useContext } from "react";
+import VaultSignMessagePopup from "next-common/components/polkadotVault/vaultSignMessagePopup";
+import { useState, createContext, useContext, useCallback } from "react";
 
 const VaultScanContext = createContext();
 let qrId = 0;
 
 export function VaultSignerProvider({ children }) {
-  const [options, setOptions] = useState({});
+  const [txOptions, sendVaultTx] = useState({});
+  const [messageOptions, setMessageOptions] = useState(null);
+
+  const signMessage = useCallback(({ address, genesisHash, message }) => {
+    return new Promise((resolve, reject) => {
+      if (!address) {
+        return reject(new Error("Address is empty"));
+      }
+      if (!genesisHash) {
+        return reject(new Error("GenesisHash is empty"));
+      }
+      if (!message) {
+        return reject(new Error("Message is empty"));
+      }
+
+      setMessageOptions({
+        resolve,
+        reject,
+        address,
+        genesisHash,
+        message,
+      });
+    });
+  }, []);
 
   return (
     <VaultScanContext.Provider
       value={{
-        setOptions: (data) => {
-          setOptions(data);
+        sendVaultTx: (data) => {
+          sendVaultTx(data);
           ++qrId;
         },
+        signMessage,
       }}
     >
-      {options.tx && (
+      {txOptions.tx && (
         <VaultSignerPopup
           key={qrId}
           qrId={qrId}
-          {...options}
-          onClose={() => setOptions({})}
+          {...txOptions}
+          onClose={() => sendVaultTx({})}
+        />
+      )}
+      {messageOptions && (
+        <VaultSignMessagePopup
+          {...messageOptions}
+          onClose={() => setMessageOptions(null)}
         />
       )}
       {children}
