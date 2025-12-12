@@ -4,11 +4,11 @@ import {
   useCallback,
   useRef,
   useEffect,
+  useState,
+  useMemo,
 } from "react";
 import useNominatorUnClaimedRewards from "../quickActions/useNominatorUnClaimedRewards";
 import { sleep } from "next-common/utils";
-import { defaultBlockTime } from "next-common/utils/constants";
-import getChainSettings from "next-common/utils/consts/settings";
 
 const NominatorUnClaimedRewardsContext = createContext(null);
 
@@ -18,11 +18,15 @@ export function NominatorUnClaimedRewardsProvider({
 }) {
   const { result, loading, fetch } =
     useNominatorUnClaimedRewards(nominatorAddress);
+  const [isUpdating, setIsUpdating] = useState(false);
+
+  const contextValue = useMemo(
+    () => ({ result, loading, fetch, isUpdating, setIsUpdating }),
+    [result, loading, fetch, isUpdating],
+  );
 
   return (
-    <NominatorUnClaimedRewardsContext.Provider
-      value={{ result, loading, fetch }}
-    >
+    <NominatorUnClaimedRewardsContext.Provider value={contextValue}>
       {children}
     </NominatorUnClaimedRewardsContext.Provider>
   );
@@ -34,21 +38,22 @@ export function useNominatorUnClaimedRewardsContext() {
 }
 
 export function useUpdateNominatorUnClaimedRewards() {
-  const { fetch } = useNominatorUnClaimedRewardsContext();
+  const { fetch, setIsUpdating } = useNominatorUnClaimedRewardsContext();
   const fetchRef = useRef(fetch);
+  const setIsUpdatingRef = useRef(setIsUpdating);
 
   useEffect(() => {
     fetchRef.current = fetch;
-  }, [fetch]);
+    setIsUpdatingRef.current = setIsUpdating;
+  }, [fetch, setIsUpdating]);
 
   const update = useCallback(async () => {
-    const blockTime =
-      getChainSettings(process.env.NEXT_PUBLIC_CHAIN).blockTime ||
-      defaultBlockTime;
-
-    for (let i = 0; i < 2; i++) {
+    setIsUpdatingRef.current?.(true);
+    try {
+      await sleep(100);
       await fetchRef.current?.();
-      await sleep(blockTime);
+    } finally {
+      setIsUpdatingRef.current?.(false);
     }
   }, []);
 

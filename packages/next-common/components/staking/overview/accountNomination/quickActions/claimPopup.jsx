@@ -100,9 +100,8 @@ function ClaimEraPopupContent({ eraData, onBack }) {
   const displayAmount = toPrecision(eraData.unClaimedRewards, decimals);
 
   const handleInBlock = useCallback(() => {
-    dispatch(
-      newSuccessToast("Claimed successfully, data updates may take a while."),
-    );
+    dispatch(newSuccessToast("Claimed successfully, refreshing rewards..."));
+
     update();
   }, [dispatch, update]);
 
@@ -132,18 +131,24 @@ function ClaimEraPopupContent({ eraData, onBack }) {
 }
 
 function RewardsListContent({ onClaimClick }) {
-  const { result } = useNominatorUnClaimedRewardsContext();
+  const { result, isUpdating } = useNominatorUnClaimedRewardsContext();
 
   return (
     <div className="space-y-4">
       <div className="space-y-2 overflow-y-scroll max-h-[400px] scrollbar-pretty">
-        {result?.result?.map((eraData) => (
-          <EraRewardItem
-            key={eraData.era}
-            eraData={eraData}
-            onClaimClick={onClaimClick}
-          />
-        ))}
+        {isUpdating ? (
+          <div className="flex items-center justify-center py-8 text-textTertiary text14Medium">
+            Refreshing rewards...
+          </div>
+        ) : (
+          result?.result?.map((eraData) => (
+            <EraRewardItem
+              key={eraData.era}
+              eraData={eraData}
+              onClaimClick={onClaimClick}
+            />
+          ))
+        )}
       </div>
       <Alerts />
     </div>

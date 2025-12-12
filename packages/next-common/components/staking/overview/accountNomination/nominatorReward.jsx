@@ -3,9 +3,10 @@ import ClaimNominatorRewardButton from "./quickActions/claimButton";
 import RewardPanel from "../rewardPanel";
 
 export default function NominatorReward() {
-  const { result, loading } = useNominatorUnClaimedRewardsContext();
+  const { result, loading, isUpdating } = useNominatorUnClaimedRewardsContext();
   const totalRewards = result?.totalRewards || "0";
-  if (loading || totalRewards === "0") {
+
+  if (loading || isUpdating || totalRewards === "0") {
     return null;
   }
 
