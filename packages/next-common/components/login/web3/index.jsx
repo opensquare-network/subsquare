@@ -4,12 +4,18 @@ import LoginWeb3EVM from "./evm";
 import LoginWeb3Substrate from "./substrate";
 import { useUnmount } from "react-use";
 import LoginWeb3WalletConnect from "./walletconnect";
+import LoginWeb3PolkadotVault from "./polkadotVault";
 import { useChainSettings } from "next-common/context/chain";
 
 export default function LoginWeb3({ setIsWeb3 = noop }) {
   const chainSettings = useChainSettings();
-  const { isSubstrateView, isEVMView, isWalletConnectView, resetView } =
-    useWeb3WalletView();
+  const {
+    isSubstrateView,
+    isEVMView,
+    isWalletConnectView,
+    isPolkadotVaultView,
+    resetView,
+  } = useWeb3WalletView();
 
   useUnmount(resetView);
 
@@ -20,6 +26,7 @@ export default function LoginWeb3({ setIsWeb3 = noop }) {
       {isEVMView && <LoginWeb3EVM />}
 
       {isWalletConnectView && <LoginWeb3WalletConnect />}
+      {isPolkadotVaultView && <LoginWeb3PolkadotVault />}
 
       {chainSettings?.allowWeb2Login && (
         <div className="text-center text14Medium text-textSecondary">

@@ -10,6 +10,7 @@ import WalletOption from "../../walletOption";
 import { WalletOptionsWrapper } from "../styled";
 import shouldEnableEvmWallets from "next-common/utils/shouldEnableEvmWallets";
 import WalletConnectWallet from "../../walletConnectWallet";
+import PolkadotVault from "../../polkadotVault";
 
 export default function WalletSubstrateSingleSigOptions({
   selectedWallet,
@@ -58,6 +59,18 @@ export default function WalletSubstrateSingleSigOptions({
         if (wallet.extensionName === WalletTypes.WALLETCONNECT) {
           return (
             <WalletConnectWallet
+              key={wallet.extensionName}
+              wallet={wallet}
+              onClick={() => {
+                onSelect(wallet);
+              }}
+              selected={selected}
+            />
+          );
+        }
+        if (wallet.extensionName === WalletTypes.POLKADOT_VAULT) {
+          return (
+            <PolkadotVault
               key={wallet.extensionName}
               wallet={wallet}
               onClick={() => {

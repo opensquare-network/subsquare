@@ -13,6 +13,7 @@ import {
   WalletOkx,
   WalletCoinbase,
   WalletWalletconnect,
+  WalletPolkadotVaultLight,
 } from "@osn/icons/subsquare";
 
 export const polkadotJs = {
@@ -111,6 +112,13 @@ export const walletConnect = {
   logo: WalletWalletconnect,
 };
 
+export const polkadotVaultWallet = {
+  extensionName: WalletTypes.POLKADOT_VAULT,
+  title: "Polkadot Vault",
+  installUrl: "https://vault.novasama.io/",
+  logo: WalletPolkadotVaultLight,
+};
+
 export const allWallets = [
   polkadotJs,
   subWallet,
@@ -125,4 +133,5 @@ export const allWallets = [
   okxWallet,
   coinbaseWallet,
   walletConnect,
+  polkadotVaultWallet,
 ];
