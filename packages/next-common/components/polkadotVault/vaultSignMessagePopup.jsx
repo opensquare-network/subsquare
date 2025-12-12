@@ -3,6 +3,7 @@ import Popup from "../popup/wrapper/Popup";
 import QrScannerComponent from "./scanner";
 import { QrDisplayPayload } from "@polkadot/react-qr";
 import { u8aWrapBytes } from "@polkadot/util";
+import { blake2AsHex } from "@polkadot/util-crypto";
 
 export default function VaultSignMessagePopup({
   onClose,
@@ -12,7 +13,9 @@ export default function VaultSignMessagePopup({
   genesisHash,
   message,
 }) {
-  const messageBytes = useMemo(() => u8aWrapBytes(message), [message]);
+  const messageBytes = useMemo(() => {
+    return u8aWrapBytes(blake2AsHex(message));
+  }, [message]);
 
   const onScan = ({ data }) => {
     if (data) {
