@@ -17,7 +17,5 @@ export function getGov2TreasuryProposalTitle(detail) {
     return title;
   }
 
-  const trackName = detail?.onchainData?.track?.name;
-  const parsedTrackName = startCase(trackName);
-  return `[${parsedTrackName}] Referendum #${detail?.onchainData?.gov2Referendum}`;
+  return `Treasury proposal #${detail?.proposalIndex}`;
 }
