@@ -43,13 +43,15 @@ export function NominatorStatus({ title, nominator, nominees }) {
           content={
             <div className="flex gap-2 text-textPrimaryContrast text12Medium">
               <span>Elected by</span>
-              {(active || []).map((validator) => (
-                <AddressUser
-                  className="text-textPrimaryContrast text12Medium"
-                  key={validator}
-                  add={validator}
-                />
-              ))}
+              <div className="flex flex-col gap-1">
+                {(active || []).map((validator) => (
+                  <AddressUser
+                    className="text-textPrimaryContrast text12Medium"
+                    key={validator}
+                    add={validator}
+                  />
+                ))}
+              </div>
             </div>
           }
         />
