@@ -76,6 +76,7 @@ function ValidatorsListImpl({ nominees, activeNominees, isLoading }) {
   return (
     <div className="flex flex-col gap-[16px]">
       <MapDataList
+        contentClassName="max-h-[480px] overflow-y-auto"
         columnsDef={columns}
         data={sortedValidators}
         loading={
