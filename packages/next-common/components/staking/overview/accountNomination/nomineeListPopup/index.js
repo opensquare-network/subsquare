@@ -35,7 +35,7 @@ function NomineeListPopupContent({ nominator }) {
         isLoading={loading}
       />
       <div className="flex justify-end">
-        <PrimaryButton onClick={onClose}>Confirm</PrimaryButton>
+        <PrimaryButton onClick={onClose}>Close</PrimaryButton>
       </div>
     </div>
   );
