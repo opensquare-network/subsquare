@@ -26,7 +26,7 @@ function ProjectBarChart({
   style,
 }) {
   const chartRef = useRef(null);
-  const [labelPositions, setLabelPositions] = useState([]);
+  const [labels, setLabels] = useState([]);
   const barOptions = useProjectBarChartOptions(userOptions);
   const defaultStyle = { height: height || 184 };
 
@@ -45,7 +45,7 @@ function ProjectBarChart({
   );
 
   useEffect(() => {
-    const calculatePositions = () => {
+    const calculateLabels = () => {
       const chart = chartRef.current;
       if (!chart) {
         return;
@@ -59,27 +59,29 @@ function ProjectBarChart({
       const chartArea = chart.chartArea;
       const labelX = chartArea?.left ? 8 : 4;
 
-      const positions = meta.data.map((element, index) => {
+      const labels = meta.data.map((element, index) => {
         const label = data?.labels?.[index];
         const value = data?.datasets?.[0]?.data?.[index];
+        const nameAbbr = data?.datasets?.[0]?.nameAbbrs?.[index];
 
         return {
           x: labelX,
           y: element.y,
+          nameAbbr,
           label,
           value,
           index,
         };
       });
 
-      setLabelPositions(positions);
+      setLabels(labels);
     };
 
     const chart = chartRef.current;
     let resizeObserver = null;
 
     if (chart?.canvas) {
-      resizeObserver = new ResizeObserver(calculatePositions);
+      resizeObserver = new ResizeObserver(calculateLabels);
       resizeObserver.observe(chart.canvas);
     }
 
@@ -101,7 +103,7 @@ function ProjectBarChart({
     >
       <div style={{ width: FIXED_LABEL_WIDTH }}>
         <BarLabels
-          labels={labelPositions}
+          labels={labels}
           type={PROJECT_CHART_TYPES.BAR}
           onClick={handleLabelClick}
         />

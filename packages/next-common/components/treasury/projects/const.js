@@ -32,7 +32,7 @@ export const DOUGHNUT_CONFIG_BY_CATEGORY = {
   wallet: {
     stretch: 1,
   },
-  multisig_tools: {
+  multisig_tool: {
     stretch: 1,
   },
   explorer: {
