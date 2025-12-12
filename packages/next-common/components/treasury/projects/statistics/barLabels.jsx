@@ -31,6 +31,7 @@ export default function BarLabels({
 
   return labels.map((position) => (
     <LabelContainer
+      title={`${position.label} ${formatNum(position.value)}`}
       style={{
         left: `${position.x}px`,
         top: `${position.y}px`,

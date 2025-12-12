@@ -1,9 +1,9 @@
 import { useMyStakingLedger } from "next-common/context/staking/myStakingLedger";
-import { useCurrentEra } from "next-common/context/staking/activeEra";
+import { useActiveEra } from "next-common/context/staking/activeEra";
 
 export default function useStakingBalance() {
   const { ledger, loading: loadingLedger } = useMyStakingLedger();
-  const { currentEra, loading: loadingCurrentEra } = useCurrentEra();
+  const { activeEraIndex, loading: loadingCurrentEra } = useActiveEra();
 
   const loading = loadingLedger || loadingCurrentEra;
   if (loading) {
@@ -20,7 +20,7 @@ export default function useStakingBalance() {
   const active = BigInt(ledger?.active || 0);
 
   const unlocking = (ledger?.unlocking || []).reduce((sum, item) => {
-    if (item.era > currentEra) {
+    if (item.era > activeEraIndex) {
       return sum + BigInt(item.value || 0);
     }
     return sum;

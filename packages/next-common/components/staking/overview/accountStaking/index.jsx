@@ -9,8 +9,36 @@ import Link from "next/link";
 import { MyPoolRewardProvider } from "next-common/context/staking/poolReward";
 import PoolReward from "./poolReward";
 import WindowSizeProvider from "next-common/context/windowSize";
+import { NominatorStatus } from "../accountNomination";
+import { usePoolAccounts } from "next-common/hooks/staking/usePoolAccount";
+import { useStakingLedgers } from "next-common/hooks/useStakingLedgers";
+import { cn } from "next-common/utils";
+import CheckNomineesButton from "../accountNomination/checkNomineesButton";
 
-function AccountStakingImpl() {
+function PoolNominatorStatus({ stash }) {
+  const { width } = useWindowSize();
+  const { nominators } = useStakingLedgers(stash);
+
+  return (
+    <div
+      className={cn(
+        "flex justify-between items-start grow gap-4",
+        width > 768 ? "flex-row" : "flex-col",
+      )}
+    >
+      <NominatorStatus
+        title="Pool Status"
+        nominator={stash}
+        nominees={nominators?.targets || []}
+      />
+      <div className="flex gap-[16px] items-center">
+        <CheckNomineesButton nominator={stash} />
+      </div>
+    </div>
+  );
+}
+
+function AccountStakingImpl({ stash }) {
   const { width } = useWindowSize();
 
   if (isNil(width)) {
@@ -22,6 +50,8 @@ function AccountStakingImpl() {
       <WindowSizeProvider>
         <NeutralPanel className="p-6 space-y-4">
           <StakingHeader width={width} />
+          <Divider />
+          <PoolNominatorStatus stash={stash} />
           <Divider />
           <div className="flex max-lg:flex-col w-full gap-2">
             <div className="flex-1 max-lg:flex-none min-w-0">
@@ -37,7 +67,18 @@ function AccountStakingImpl() {
   );
 }
 
-function AccountStakingEmpty() {
+export default function AccountStaking() {
+  const { poolMember } = useMyPool();
+  const { stash, loading } = usePoolAccounts(poolMember?.poolId);
+
+  if (loading) {
+    return null;
+  }
+
+  return <AccountStakingImpl stash={stash} />;
+}
+
+export function AccountStakingEmpty() {
   return (
     <NeutralPanel className="p-6">
       <div className="text-center text14Medium text-textTertiary">
@@ -51,18 +92,4 @@ function AccountStakingEmpty() {
       </div>
     </NeutralPanel>
   );
-}
-
-export default function AccountStaking() {
-  const { poolMember, loading } = useMyPool();
-
-  if (loading) {
-    return null;
-  }
-
-  if (isNil(poolMember)) {
-    return <AccountStakingEmpty />;
-  }
-
-  return <AccountStakingImpl />;
 }

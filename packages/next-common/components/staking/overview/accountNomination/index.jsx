@@ -2,7 +2,6 @@ import { isNil } from "lodash-es";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import { useMyStakingLedger } from "next-common/context/staking/myStakingLedger";
-import { CurrentEraStakersProvider } from "next-common/context/staking/currentEraStakers";
 import { useValidatorsWithStatus } from "next-common/hooks/staking/useValidatorWithStatus";
 import { cn } from "next-common/utils";
 import LoadableContent from "next-common/components/common/loadableContent";
@@ -15,9 +14,11 @@ import CollapsePanel from "next-common/components/overview/accountInfo/component
 import { AccountBalanceItem } from "next-common/components/overview/accountInfo/components/accountBalances";
 import useStakingBalance from "./useStakingBalance";
 import WithdrawUnbondedButton from "./withdrawUnbondedButton";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import Tooltip from "next-common/components/tooltip";
+import { AddressUser } from "next-common/components/user";
 import { NominatorUnClaimedRewardsProvider } from "./context/nominatorUnClaimedRewardsContext";
 import NominatorReward from "./nominatorReward";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 const StartNominatingPopup = dynamicPopup(() =>
   import(
@@ -25,24 +26,57 @@ const StartNominatingPopup = dynamicPopup(() =>
   ),
 );
 
-function Header({ width }) {
-  const { nominators } = useMyStakingLedger();
+export function NominatorStatus({ title, nominator, nominees }) {
   const { active, loading } = useValidatorsWithStatus(
-    nominators?.targets || [],
+    nominator,
+    nominees || [],
   );
 
-  if (isNil(width)) {
-    return null;
-  }
-
   let message = null;
-  if (!nominators?.targets.length) {
+  if (!nominees.length) {
     message = "Inactive: No Nominations Set";
   } else if (!active?.length) {
     message = "Waiting for Active Nominations";
   } else {
-    message = "Nominating and Earning Rewards";
+    message = (
+      <div className="flex items-center gap-2">
+        <span>Nominating and Earning Rewards</span>
+        <Tooltip
+          content={
+            <div className="flex gap-2 text-textPrimaryContrast text12Medium">
+              <span>Elected by</span>
+              <div className="flex flex-col gap-1">
+                {(active || []).map((validator) => (
+                  <AddressUser
+                    className="text-textPrimaryContrast text12Medium"
+                    key={validator}
+                    add={validator}
+                  />
+                ))}
+              </div>
+            </div>
+          }
+        />
+      </div>
+    );
   }
+  return (
+    <div className="flex flex-col gap-1">
+      <div className="text12Medium text-textTertiary">
+        {title || "Nominator Status"}
+      </div>
+      <div className="text14Medium text-textPrimary">
+        <LoadableContent isLoading={loading} size={14}>
+          {message}
+        </LoadableContent>
+      </div>
+    </div>
+  );
+}
+
+function Header({ width }) {
+  const realAddress = useRealAddress();
+  const { nominators } = useMyStakingLedger();
 
   return (
     <div className="flex flex-col gap-2">
@@ -52,14 +86,10 @@ function Header({ width }) {
           width > 768 ? "flex-row" : "flex-col",
         )}
       >
-        <div className="flex flex-col gap-1">
-          <div className="text12Medium text-textTertiary">Nominator Status</div>
-          <div className="text14Medium text-textPrimary">
-            <LoadableContent isLoading={loading} size={14}>
-              {message}
-            </LoadableContent>
-          </div>
-        </div>
+        <NominatorStatus
+          nominees={nominators?.targets || []}
+          nominator={realAddress}
+        />
         <div className="flex gap-[16px] items-center">
           <NominatorQuickActions />
         </div>
@@ -106,7 +136,7 @@ function StakingBalance() {
   );
 }
 
-function AccountNominationImpl() {
+export default function AccountNomination() {
   const { width } = useWindowSize();
   const realAddress = useRealAddress();
 
@@ -115,24 +145,26 @@ function AccountNominationImpl() {
   }
 
   return (
-    <NominatorUnClaimedRewardsProvider nominatorAddress={realAddress}>
-      <NeutralPanel className="p-6 space-y-4">
-        <Header width={width} />
-        <Divider />
-        <div className="flex max-lg:flex-col w-full gap-2">
-          <div className="flex-1 max-lg:flex-none min-w-0">
-            <StakingBalance />
+    <WindowSizeProvider>
+      <NominatorUnClaimedRewardsProvider nominatorAddress={realAddress}>
+        <NeutralPanel className="p-6 space-y-4">
+          <Header width={width} />
+          <Divider />
+          <div className="flex max-lg:flex-col w-full gap-2">
+            <div className="flex-1 max-lg:flex-none min-w-0">
+              <StakingBalance />
+            </div>
+            <div className="flex-1 max-lg:flex-none min-w-0">
+              <NominatorReward />
+            </div>
           </div>
-          <div className="flex-1 max-lg:flex-none min-w-0">
-            <NominatorReward />
-          </div>
-        </div>
-      </NeutralPanel>
-    </NominatorUnClaimedRewardsProvider>
+        </NeutralPanel>
+      </NominatorUnClaimedRewardsProvider>
+    </WindowSizeProvider>
   );
 }
 
-function AccountNominationEmpty() {
+export function AccountNominationEmpty() {
   const [showStartNominatingPopup, setShowStartNominatingPopup] =
     useState(false);
 
@@ -154,25 +186,5 @@ function AccountNominationEmpty() {
         />
       )}
     </NeutralPanel>
-  );
-}
-
-export default function AccountNomination() {
-  const { nominators, loading } = useMyStakingLedger();
-
-  if (loading) {
-    return null;
-  }
-
-  if (isNil(nominators)) {
-    return <AccountNominationEmpty />;
-  }
-
-  return (
-    <WindowSizeProvider>
-      <CurrentEraStakersProvider>
-        <AccountNominationImpl />
-      </CurrentEraStakersProvider>
-    </WindowSizeProvider>
   );
 }

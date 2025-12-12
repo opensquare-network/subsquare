@@ -18,10 +18,10 @@ export function ActiveEraProvider({ children }) {
   );
 }
 
-export function useCurrentEra() {
+export function useActiveEra() {
   const { activeEra, loading } = useContext(ActiveEraContext);
   return {
-    currentEra: activeEra?.index,
+    activeEraIndex: activeEra?.index,
     loading,
   };
 }

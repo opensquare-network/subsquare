@@ -5,13 +5,18 @@ import getChainSettings from "next-common/utils/consts/settings";
 import StakingOverviewSummary from "next-common/components/staking/overview/summary";
 import NoWalletConnected from "next-common/components/noWalletConnected";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import AccountStaking from "next-common/components/staking/overview/accountStaking";
-import AccountNomination from "next-common/components/staking/overview/accountNomination";
+import AccountStaking, {
+  AccountStakingEmpty,
+} from "next-common/components/staking/overview/accountStaking";
+import AccountNomination, {
+  AccountNominationEmpty,
+} from "next-common/components/staking/overview/accountNomination";
 import { RelayChainApiProvider } from "next-common/context/relayChain";
 import { MyPoolProvider, useMyPool } from "next-common/context/staking/myPool";
 import { MyStakingLedgerProvider } from "next-common/context/staking/myStakingLedger";
 import { useMyStakingLedger } from "next-common/context/staking/myStakingLedger";
 import Loading from "next-common/components/loading";
+import { ActiveEraStakersProvider } from "next-common/context/staking/currentEraStakers";
 
 const isStakingSupported = !!getChainSettings(CHAIN).modules?.staking;
 
@@ -31,17 +36,34 @@ function MyStaking() {
   }
 
   if (poolMember && !nominators) {
-    return <AccountStaking />;
+    return (
+      <ActiveEraStakersProvider>
+        <AccountStaking />
+      </ActiveEraStakersProvider>
+    );
   }
 
   if (nominators && !poolMember) {
-    return <AccountNomination />;
+    return (
+      <ActiveEraStakersProvider>
+        <AccountNomination />
+      </ActiveEraStakersProvider>
+    );
+  }
+
+  if (poolMember && nominators) {
+    return (
+      <ActiveEraStakersProvider>
+        <AccountNomination />
+        <AccountStaking />
+      </ActiveEraStakersProvider>
+    );
   }
 
   return (
     <>
-      <AccountNomination />
-      <AccountStaking />
+      <AccountNominationEmpty />
+      <AccountStakingEmpty />
     </>
   );
 }
