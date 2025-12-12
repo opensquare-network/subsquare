@@ -10,7 +10,7 @@ import useColumns from "next-common/components/styledList/useColumns";
 import VirtualList from "next-common/components/dataList/virtualList";
 import { desktopColumns, mobileColumns } from "./columns";
 
-function VoteActionsTable({ search = "" }) {
+function VoteActionsTable({ search = "", listHeight = 600 }) {
   const { loading, voteActions } = useFellowshipReferendaActions();
   const [sortedColumn, setSortedColumn] = useState("");
 
@@ -35,28 +35,29 @@ function VoteActionsTable({ search = "" }) {
             voteActions={sortedVoteActions}
             listKey={`desktop-${search}-${sortedColumn}`}
             loading={loading}
+            listHeight={listHeight}
           />
         </div>
         <div className="hidden max-md:block">
           <MobileTable
+            listHeight={listHeight}
             voteActions={sortedVoteActions}
             loading={loading}
             listKey={`mobile-${search}-${sortedColumn}`}
           />
         </div>
       </>
-      {/* <Table
-        search={search}
-        loading={loading}
-        setSortedColumn={setSortedColumn}
-        sortedVoteActions={sortedVoteActions}
-        sortedColumn={sortedColumn}
-      /> */}
     </>
   );
 }
 
-function DesktopTable({ voteActions, listKey, setSortedColumn, loading }) {
+function DesktopTable({
+  listHeight,
+  voteActions,
+  listKey,
+  setSortedColumn,
+  loading,
+}) {
   const getItemSize = useDesktopItemSize(voteActions);
   const { sortedColumn, columns } = useColumns(desktopColumns, "", true);
   useEffect(() => {
@@ -77,7 +78,7 @@ function DesktopTable({ voteActions, listKey, setSortedColumn, loading }) {
       loading={loading}
       variableSize={true}
       getItemSize={getItemSize}
-      listHeight={600}
+      listHeight={listHeight}
       overscanCount={3}
       noDataText="No data"
       className="scrollbar-hidden h-full"
@@ -85,7 +86,7 @@ function DesktopTable({ voteActions, listKey, setSortedColumn, loading }) {
   );
 }
 
-function MobileTable({ voteActions, loading, listKey }) {
+function MobileTable({ listHeight, voteActions, loading, listKey }) {
   const getItemSize = useMobileItemSize(voteActions);
 
   const columns = useMemo(() => {
@@ -117,7 +118,7 @@ function MobileTable({ voteActions, loading, listKey }) {
       loading={loading}
       variableSize={true}
       getItemSize={getItemSize}
-      listHeight={600}
+      listHeight={listHeight}
       overscanCount={3}
       noDataText="No data"
     />
