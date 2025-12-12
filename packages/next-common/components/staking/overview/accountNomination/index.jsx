@@ -17,6 +17,8 @@ import WithdrawUnbondedButton from "./withdrawUnbondedButton";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Tooltip from "next-common/components/tooltip";
 import { AddressUser } from "next-common/components/user";
+import { NominatorUnClaimedRewardsProvider } from "./context/nominatorUnClaimedRewardsContext";
+import NominatorReward from "./nominatorReward";
 
 const StartNominatingPopup = dynamicPopup(() =>
   import(
@@ -101,54 +103,64 @@ function StakingBalance() {
 
   return (
     <div className="flex flex-col gap-2">
-      <WindowSizeProvider>
-        <CollapsePanel
-          className="w-[300px] [&>*:not(:last-child)]:mb-1"
-          labelItem={
-            <AccountBalanceItem
-              title="In nominating"
-              value={total?.toString() || 0}
-              isLoading={loading}
-            />
-          }
-        >
+      <CollapsePanel
+        className="w-[300px] [&>*:not(:last-child)]:mb-1"
+        labelItem={
           <AccountBalanceItem
-            title="Active"
-            value={active?.toString() || 0}
+            title="In nominating"
+            value={total?.toString() || 0}
             isLoading={loading}
           />
+        }
+      >
+        <AccountBalanceItem
+          title="Active"
+          value={active?.toString() || 0}
+          isLoading={loading}
+        />
+        <AccountBalanceItem
+          title="Unbonding"
+          value={unlocking?.toString() || 0}
+          isLoading={loading}
+        />
+        <div className="flex items-center gap-2 max-sm:items-end max-sm:gap-0 max-sm:flex-col">
           <AccountBalanceItem
-            title="Unbonding"
-            value={unlocking?.toString() || 0}
+            title="Unbonded"
+            value={unlocked?.toString() || 0}
             isLoading={loading}
           />
-          <div className="flex items-center gap-2 max-sm:items-end max-sm:gap-0 max-sm:flex-col">
-            <AccountBalanceItem
-              title="Unbonded"
-              value={unlocked?.toString() || 0}
-              isLoading={loading}
-            />
-            {unlocked > 0n && <WithdrawUnbondedButton />}
-          </div>
-        </CollapsePanel>
-      </WindowSizeProvider>
+          {unlocked > 0n && <WithdrawUnbondedButton />}
+        </div>
+      </CollapsePanel>
     </div>
   );
 }
 
 export default function AccountNomination() {
   const { width } = useWindowSize();
+  const realAddress = useRealAddress();
 
   if (isNil(width)) {
     return null;
   }
 
   return (
-    <NeutralPanel className="p-6 space-y-4">
-      <Header width={width} />
-      <Divider />
-      <StakingBalance />
-    </NeutralPanel>
+    <WindowSizeProvider>
+      <NominatorUnClaimedRewardsProvider nominatorAddress={realAddress}>
+        <NeutralPanel className="p-6 space-y-4">
+          <Header width={width} />
+          <Divider />
+          <div className="flex max-lg:flex-col w-full gap-2">
+            <div className="flex-1 max-lg:flex-none min-w-0">
+              <StakingBalance />
+            </div>
+            <div className="flex-1 max-lg:flex-none min-w-0">
+              <NominatorReward />
+            </div>
+          </div>
+        </NeutralPanel>
+      </NominatorUnClaimedRewardsProvider>
+    </WindowSizeProvider>
   );
 }
 
