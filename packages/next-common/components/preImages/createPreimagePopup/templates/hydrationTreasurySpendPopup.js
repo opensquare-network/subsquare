@@ -13,12 +13,7 @@ import AmountInputWithHint from "next-common/components/popup/fields/amountInput
 import useHydrationCurrencyInfo from "next-common/hooks/useHydrationCurrencyInfo";
 import { TreasuryProvider } from "next-common/context/treasury";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-
-const HOLLAR_CURRENCY = {
-  id: 222,
-  symbol: "HOLLAR",
-  decimals: 18,
-};
+import { HOLLAR_CURRENCY } from "next-common/utils/consts/hydration";
 
 export function useHydrationTreasurySpendPreimageTx(inputBalance, beneficiary) {
   const api = useContextApi();
