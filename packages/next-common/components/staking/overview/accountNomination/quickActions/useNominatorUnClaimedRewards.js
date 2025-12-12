@@ -10,14 +10,16 @@ async function findNominatorStake(
   nominatorAddress,
   pageCount,
 ) {
+  // Parallel query all pages at once
+  const pageQueries = [];
   for (let page = 0; page < (pageCount || 1); page++) {
-    const exposure = await api.query.staking.erasStakersPaged(
-      era,
-      validator,
-      page,
-    );
+    pageQueries.push(api.query.staking.erasStakersPaged(era, validator, page));
+  }
 
-    const exposureJson = exposure.toJSON();
+  const exposures = await Promise.all(pageQueries);
+
+  for (let page = 0; page < exposures.length; page++) {
+    const exposureJson = exposures[page].toJSON();
     const nominator = exposureJson.others?.find(
       (n) => n.who === nominatorAddress,
     );
@@ -159,18 +161,22 @@ async function batchQueryEraRewards(api, eras) {
 async function batchQueryValidatorPrefs(api, unclaimedMap) {
   const validatorQueries = [];
   const queryMap = [];
+  const queryIndexMap = new Map();
 
+  let index = 0;
   for (const [era, validators] of unclaimedMap.entries()) {
     for (const validator of validators) {
       validatorQueries.push(
         api.query.staking.erasValidatorPrefs(era, validator),
       );
       queryMap.push({ era, validator });
+      queryIndexMap.set(`${era}-${validator}`, index);
+      index++;
     }
   }
 
   const validatorResults = await Promise.all(validatorQueries);
-  return { validatorResults, queryMap };
+  return { validatorResults, queryMap, queryIndexMap };
 }
 
 async function calculateAllErasRewardsBatch(api, nominatorAddress) {
@@ -205,12 +211,12 @@ async function calculateAllErasRewardsBatch(api, nominatorAddress) {
     api,
     eras,
   );
-  const { validatorResults, queryMap } = await batchQueryValidatorPrefs(
+  const { validatorResults, queryIndexMap } = await batchQueryValidatorPrefs(
     api,
     unclaimedMap,
   );
 
-  const eraResults = [];
+  const eraResultsMap = new Map();
 
   for (let eraIdx = 0; eraIdx < eras.length; eraIdx++) {
     const era = eras[eraIdx];
@@ -223,32 +229,30 @@ async function calculateAllErasRewardsBatch(api, nominatorAddress) {
     const totalEraReward = BigInt(eraReward.unwrap().toString());
     const rewardPointsJson = pointsResults[eraIdx].toJSON();
     const totalPoints = BigInt(rewardPointsJson.total);
-    let eraTotal = 0n;
 
     const validatorsToProcess = Array.from(unclaimedMap.get(era) || []);
 
-    for (const validator of validatorsToProcess) {
-      const queryIdx = queryMap.findIndex(
-        (q) => q.era === era && q.validator === validator,
-      );
+    // Parallel process all validators for this era
+    const rewardPromises = validatorsToProcess.map(async (validator) => {
+      const cacheKey = `${era}-${validator}`;
+      const queryIdx = queryIndexMap.get(cacheKey);
 
-      if (queryIdx === -1) continue;
+      if (queryIdx === undefined) return null;
 
       const validatorPoints = rewardPointsJson.individual[validator];
       if (!validatorPoints || validatorPoints === 0) {
-        continue;
+        return null;
       }
 
-      const cacheKey = `${era}-${validator}`;
       const overview = overviewCache.get(cacheKey);
       const claimedPages = claimedRewardsCache.get(cacheKey) || [];
 
       if (!overview || !overview.isSome) {
-        continue;
+        return null;
       }
 
       try {
-        const reward = await calculateValidatorReward(
+        return await calculateValidatorReward(
           api,
           era,
           validator,
@@ -260,37 +264,37 @@ async function calculateAllErasRewardsBatch(api, nominatorAddress) {
           overview.unwrap().toJSON(),
           claimedPages,
         );
-
-        if (reward && BigInt(reward.reward) > 0n) {
-          eraTotal += BigInt(reward.reward);
-
-          if (!eraResults.find((r) => r.era === era)) {
-            eraResults.push({
-              era,
-              unClaimedRewards: "0",
-              validators: [],
-            });
-          }
-
-          const eraResult = eraResults.find((r) => r.era === era);
-          eraResult.validators.push({
-            validatorId: validator,
-            reward: reward.reward,
-            page: reward.page,
-          });
-        }
       } catch (error) {
-        continue;
+        return null;
+      }
+    });
+
+    const rewards = await Promise.all(rewardPromises);
+
+    let eraTotal = 0n;
+    const validatorRewards = [];
+
+    for (const reward of rewards) {
+      if (reward && BigInt(reward.reward) > 0n) {
+        eraTotal += BigInt(reward.reward);
+        validatorRewards.push({
+          validatorId: reward.validator,
+          reward: reward.reward,
+          page: reward.page,
+        });
       }
     }
 
     if (eraTotal > 0n) {
-      const eraResult = eraResults.find((r) => r.era === era);
-      if (eraResult) {
-        eraResult.unClaimedRewards = eraTotal.toString();
-      }
+      eraResultsMap.set(era, {
+        era,
+        unClaimedRewards: eraTotal.toString(),
+        validators: validatorRewards,
+      });
     }
   }
+
+  const eraResults = Array.from(eraResultsMap.values());
 
   const totalRewards = eraResults.reduce(
     (sum, item) => sum + BigInt(item.unClaimedRewards),
