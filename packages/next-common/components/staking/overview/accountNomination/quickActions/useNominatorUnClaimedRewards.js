@@ -339,7 +339,18 @@ export default function useNominatorUnClaimedRewards(nominatorAddress) {
   }, [api, nominatorAddress]);
 
   useEffect(() => {
-    fetch();
+    let cancelled = false;
+
+    const runFetch = async () => {
+      if (cancelled) return;
+      await fetch();
+    };
+
+    runFetch();
+
+    return () => {
+      cancelled = true;
+    };
   }, [fetch]);
 
   return { result, loading, fetch };
