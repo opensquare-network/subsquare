@@ -17,15 +17,15 @@ export function useActiveValidators() {
     async (setResult) => {
       if (
         !api ||
-        !api.query.staking?.currentEra ||
+        !api.query.staking?.activeEra ||
         !api.query.staking?.erasStakersOverview
       ) {
         return;
       }
 
       try {
-        const currentEra = await api.query.staking.currentEra();
-        const eraIndex = currentEra.toJSON();
+        const activeEra = await api.query.staking.activeEra();
+        const eraIndex = activeEra.toJSON()?.index;
         const stakerOverview =
           await api.query.staking.erasStakersOverview.entries(eraIndex);
         const normalizedStakerOverview = stakerOverview.map(

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 export function useTotalStake() {
   const api = useContextApi();
   const [loading, setLoading] = useState(true);
-  const [currentEra, setCurrentEra] = useState(null);
+  const [activeEraIndex, setActiveEraIndex] = useState(null);
   const [totalStake, setTotalStake] = useState(null);
 
   useEffect(() => {
@@ -14,8 +14,8 @@ export function useTotalStake() {
 
     let unsub = null;
     api.query.staking
-      .currentEra((currentEra) => {
-        setCurrentEra(currentEra.toJSON());
+      .activeEra((activeEra) => {
+        setActiveEraIndex(activeEra.toJSON()?.index);
       })
       .then((_unsub) => {
         unsub = _unsub;
@@ -29,13 +29,13 @@ export function useTotalStake() {
   }, [api]);
 
   useEffect(() => {
-    if (!api || !currentEra) {
+    if (!api || !activeEraIndex) {
       return;
     }
 
     let unsub = null;
     api.query.staking
-      .erasTotalStake(currentEra, (eraTotalStake) => {
+      .erasTotalStake(activeEraIndex, (eraTotalStake) => {
         setTotalStake(eraTotalStake.toJSON());
         setLoading(false);
       })
@@ -48,11 +48,11 @@ export function useTotalStake() {
         unsub();
       }
     };
-  }, [api, currentEra]);
+  }, [api, activeEraIndex]);
 
   return {
     loading,
     totalStake,
-    currentEra,
+    activeEraIndex,
   };
 }

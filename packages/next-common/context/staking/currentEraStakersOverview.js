@@ -1,11 +1,11 @@
-import { ActiveEraProvider, useCurrentEra } from "./activeEra";
+import { ActiveEraProvider, useActiveEra } from "./activeEra";
 import {
   StakersOverviewContext,
   StakersOverviewProvider,
 } from "./stakersOverview";
 
-function CurrentEraStakersOverviewProviderImpl({ children }) {
-  const { currentEra, loading } = useCurrentEra();
+function ActiveEraStakersOverviewProviderImpl({ children }) {
+  const { activeEraIndex, loading } = useActiveEra();
   if (loading) {
     return (
       <StakersOverviewContext.Provider
@@ -16,18 +16,18 @@ function CurrentEraStakersOverviewProviderImpl({ children }) {
     );
   }
   return (
-    <StakersOverviewProvider eraIndex={currentEra}>
+    <StakersOverviewProvider eraIndex={activeEraIndex}>
       {children}
     </StakersOverviewProvider>
   );
 }
 
-export function CurrentEraStakersOverviewProvider({ children }) {
+export function ActiveEraStakersOverviewProvider({ children }) {
   return (
     <ActiveEraProvider>
-      <CurrentEraStakersOverviewProviderImpl>
+      <ActiveEraStakersOverviewProviderImpl>
         {children}
-      </CurrentEraStakersOverviewProviderImpl>
+      </ActiveEraStakersOverviewProviderImpl>
     </ActiveEraProvider>
   );
 }

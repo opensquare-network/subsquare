@@ -12,6 +12,7 @@ export function useValidators() {
     useAllValidators();
   const { validators: activeValidators, loading: isActiveValidatorsLoading } =
     useActiveValidators();
+
   const validators = useMemo(() => {
     if (!allValidators || !activeValidators) {
       return null;
