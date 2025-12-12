@@ -43,6 +43,7 @@ async function calculateValidatorReward(
   totalPoints,
   validatorPrefsJson,
   overviewJson,
+  claimedPages = [],
 ) {
   const validatorTotalPayout = (totalEraReward * validatorPoints) / totalPoints;
   const commissionPerbill = BigInt(validatorPrefsJson.commission);
@@ -61,6 +62,11 @@ async function calculateValidatorReward(
   );
 
   if (!nominatorStake || nominatorStake.stake === 0n) {
+    return null;
+  }
+
+  // Check if the page containing this nominator has already been claimed
+  if (claimedPages.includes(nominatorStake.page)) {
     return null;
   }
 
@@ -102,6 +108,7 @@ async function checkUnclaimedRewards(api, eras, validators) {
   const checkResults = await Promise.all(checkQueries);
   const unclaimedMap = new Map();
   const overviewCache = new Map();
+  const claimedRewardsCache = new Map();
 
   for (let i = 0; i < checkQueryMap.length; i++) {
     const { era, validator } = checkQueryMap[i];
@@ -126,10 +133,11 @@ async function checkUnclaimedRewards(api, eras, validators) {
 
       const cacheKey = `${era}-${validator}`;
       overviewCache.set(cacheKey, overview);
+      claimedRewardsCache.set(cacheKey, claimedPages || []);
     }
   }
 
-  return { unclaimedMap, overviewCache };
+  return { unclaimedMap, overviewCache, claimedRewardsCache };
 }
 
 async function batchQueryEraRewards(api, eras) {
@@ -185,11 +193,8 @@ async function calculateAllErasRewardsBatch(api, nominatorAddress) {
     allEras.push(era);
   }
 
-  const { unclaimedMap, overviewCache } = await checkUnclaimedRewards(
-    api,
-    allEras,
-    validators,
-  );
+  const { unclaimedMap, overviewCache, claimedRewardsCache } =
+    await checkUnclaimedRewards(api, allEras, validators);
 
   const eras = Array.from(unclaimedMap.keys()).sort((a, b) => a - b);
   if (eras.length === 0) {
@@ -236,6 +241,7 @@ async function calculateAllErasRewardsBatch(api, nominatorAddress) {
 
       const cacheKey = `${era}-${validator}`;
       const overview = overviewCache.get(cacheKey);
+      const claimedPages = claimedRewardsCache.get(cacheKey) || [];
 
       if (!overview || !overview.isSome) {
         continue;
@@ -252,6 +258,7 @@ async function calculateAllErasRewardsBatch(api, nominatorAddress) {
           totalPoints,
           validatorResults[queryIdx].toJSON(),
           overview.unwrap().toJSON(),
+          claimedPages,
         );
 
         if (reward && BigInt(reward.reward) > 0n) {
