@@ -52,6 +52,16 @@ export function SpendDotOnAssetHubButton({ onClick }) {
   );
 }
 
+export function HydrationTreasurySpendButton({ onClick }) {
+  return (
+    <ChoiceButton
+      name="Stable treasury spend proposal"
+      description="Create a treasury spend with stable currency"
+      onClick={onClick}
+    />
+  );
+}
+
 export function NewRemarkButton({ onClick }) {
   return (
     <ChoiceButton
