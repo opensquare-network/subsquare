@@ -131,14 +131,14 @@ function ClaimEraPopupContent({ eraData, onBack }) {
 }
 
 function RewardsListContent({ onClaimClick }) {
-  const { result, isUpdating } = useNominatorUnClaimedRewardsContext();
+  const { result, loading } = useNominatorUnClaimedRewardsContext();
 
   return (
     <div className="space-y-4">
       <div className="space-y-2 overflow-y-scroll max-h-[400px] scrollbar-pretty">
-        {isUpdating ? (
+        {loading ? (
           <div className="flex items-center justify-center py-8 text-textTertiary text14Medium">
-            Refreshing rewards...
+            Loading rewards...
           </div>
         ) : (
           result?.result?.map((eraData) => (
