@@ -51,3 +51,17 @@ export function ValidatorsColumn({ poolId }) {
 
   return <Tooltip content={content}>{validators.length}</Tooltip>;
 }
+
+export function CommissionColumn({ value }) {
+  if (isNil(value) || isNil(value.current)) {
+    return <span className="text-textTertiary">0.00%</span>;
+  }
+
+  const commissionValue = value.current[0];
+  if (isNil(commissionValue)) {
+    return <span className="text-textTertiary">0.00%</span>;
+  }
+
+  const commissionPercent = (commissionValue / 10000000).toFixed(2);
+  return <span className="text-textPrimary">{commissionPercent}%</span>;
+}
