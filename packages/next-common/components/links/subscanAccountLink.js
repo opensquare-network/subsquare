@@ -1,15 +1,20 @@
 import { useChain, useChainSettings } from "next-common/context/chain";
 import IconLink from "./iconLink";
 import { LinkSubscan } from "@osn/icons/subsquare";
+import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated";
+import { isRelayChain } from "next-common/utils/chain";
+import { useMemo } from "react";
 
-export default function SubScanAccountLink({ address }) {
+function SubScanAccountLinkImpl({ address }) {
   const chain = useChain();
   const { integrations } = useChainSettings();
-  if (!integrations?.subscan) {
-    return null;
-  }
+  const domain = useMemo(() => {
+    if (isRelayChain(chain) && isAssetHubMigrated()) {
+      return `assethub-${chain}`;
+    }
 
-  const domain = integrations.subscan.domain || chain;
+    return integrations?.subscan?.domain || chain;
+  }, [chain, integrations]);
 
   return (
     <IconLink
@@ -17,4 +22,13 @@ export default function SubScanAccountLink({ address }) {
       icon={<LinkSubscan className="w-5 h-5" />}
     />
   );
+}
+
+export default function SubScanAccountLink({ address }) {
+  const { integrations } = useChainSettings();
+  if (!integrations?.subscan) {
+    return null;
+  }
+
+  return <SubScanAccountLinkImpl address={address} />;
 }
