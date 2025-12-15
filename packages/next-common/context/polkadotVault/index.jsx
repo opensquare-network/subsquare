@@ -1,7 +1,6 @@
-import { createContext, useContext, useCallback, useMemo } from "react";
+import { createContext, useContext, useCallback } from "react";
 import { useLocalStorage } from "react-use";
 import { noop } from "lodash-es";
-import { encodeAddressToChain } from "next-common/services/address";
 import { isSameAddress } from "next-common/utils";
 import { CACHE_KEY } from "next-common/utils/constants";
 import { VaultSignerProvider } from "./vaultSignerProvider";
@@ -12,27 +11,16 @@ const defaultContext = {
   addAccount: noop,
   removeAccount: noop,
   updateAccount: noop,
-  clearAccounts: noop,
-  getAccount: noop,
 };
 
 const PolkadotVaultContext = createContext(defaultContext);
 
 export function PolkadotVaultProvider({ children }) {
   const chain = useChain();
-  const [cache, setAccounts] = useLocalStorage(
-    CACHE_KEY.polkadotVault + chain,
+  const [cacheAccounts, setCacheAccounts] = useLocalStorage(
+    `${CACHE_KEY.polkadotVault}-${chain}`,
     [],
   );
-
-  const accounts = useMemo(() => {
-    return cache.map((item) => {
-      return {
-        ...item,
-        address: encodeAddressToChain(item.address, chain),
-      };
-    });
-  }, [cache, chain]);
 
   const addAccount = useCallback(
     (address, info) => {
@@ -41,7 +29,7 @@ export function PolkadotVaultProvider({ children }) {
         return false;
       }
 
-      const existingAccount = accounts?.find((item) =>
+      const existingAccount = cacheAccounts.find((item) =>
         isSameAddress(item.address, address),
       );
 
@@ -51,10 +39,10 @@ export function PolkadotVaultProvider({ children }) {
       }
 
       const newAccount = { ...info, address };
-      setAccounts((prevAccounts) => [...(prevAccounts || []), newAccount]);
+      setCacheAccounts([...(cacheAccounts || []), newAccount]);
       return true;
     },
-    [accounts, setAccounts],
+    [cacheAccounts, setCacheAccounts],
   );
 
   const updateAccount = useCallback(
@@ -63,7 +51,7 @@ export function PolkadotVaultProvider({ children }) {
         console.warn("Invalid address or info provided to updateAccount");
         return false;
       }
-      setAccounts((prevAccounts) => {
+      setCacheAccounts((prevAccounts) => {
         const index = prevAccounts.findIndex((item) =>
           isSameAddress(item.address, oldAddress),
         );
@@ -73,7 +61,7 @@ export function PolkadotVaultProvider({ children }) {
         return prevAccounts;
       });
     },
-    [setAccounts],
+    [setCacheAccounts],
   );
 
   const removeAccount = useCallback(
@@ -83,7 +71,7 @@ export function PolkadotVaultProvider({ children }) {
         return false;
       }
 
-      setAccounts((prevAccounts) => {
+      setCacheAccounts((prevAccounts) => {
         if (!prevAccounts) return [];
 
         const filteredAccounts = prevAccounts.filter(
@@ -98,30 +86,14 @@ export function PolkadotVaultProvider({ children }) {
       });
       return true;
     },
-    [setAccounts],
-  );
-
-  const clearAccounts = useCallback(() => {
-    setAccounts([]);
-  }, [setAccounts]);
-
-  const getAccount = useCallback(
-    (address) => {
-      if (!address) return null;
-      return (
-        accounts?.find((item) => isSameAddress(item.address, address)) || null
-      );
-    },
-    [accounts],
+    [setCacheAccounts],
   );
 
   const contextValue = {
-    accounts: accounts || [],
+    accounts: cacheAccounts,
     addAccount,
     removeAccount,
     updateAccount,
-    clearAccounts,
-    getAccount,
   };
 
   return (
@@ -142,13 +114,12 @@ export const usePolkadotVault = () => {
 };
 
 export const usePolkadotVaultAccounts = () => {
-  const { accounts, addAccount, removeAccount, updateAccount, clearAccounts } =
+  const { accounts, addAccount, removeAccount, updateAccount } =
     usePolkadotVault();
   return {
     accounts,
     addAccount,
     removeAccount,
     updateAccount,
-    clearAccounts,
   };
 };
