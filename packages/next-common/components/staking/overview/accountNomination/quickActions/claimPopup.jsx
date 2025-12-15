@@ -1,9 +1,7 @@
-import { useMemo } from "react";
+import { useState, useCallback } from "react";
 import { useContextApi } from "next-common/context/api";
 import { useTxBuilder } from "next-common/hooks/useTxBuilder";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useChainSettings } from "next-common/context/chain";
-import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { toPrecision } from "next-common/utils";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import Popup from "next-common/components/popup/wrapper/Popup";
@@ -15,13 +13,15 @@ import EstimatedGas from "next-common/components/estimatedGas";
 import ValueDisplay from "next-common/components/valueDisplay";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
-import Tooltip from "next-common/components/tooltip";
-import useNominatorUnClaimedRewards from "./useNominatorUnClaimedRewards";
-import { InfoMessage } from "next-common/components/setting/styled";
+import {
+  useNominatorUnClaimedRewardsContext,
+  useUpdateNominatorUnClaimedRewards,
+} from "../context/nominatorUnClaimedRewardsContext";
 import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
-import FoldableContent from "next-common/components/foldableContent";
-import FieldLoading from "next-common/components/icons/fieldLoading";
+import PrimaryButton from "next-common/lib/button/primary";
+import { InfoMessage } from "next-common/components/setting/styled";
+import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 
 function Alerts() {
   return (
@@ -41,146 +41,133 @@ function Alerts() {
   );
 }
 
-function LoadingContent() {
+function useClaimEraRewardsTx(eraData) {
+  const api = useContextApi();
+
+  const { getTxFuncForSubmit, getTxFuncForFee } = useTxBuilder(() => {
+    if (!api?.tx?.staking?.payoutStakers || !eraData?.validators?.length) {
+      return null;
+    }
+
+    const extrinsics = eraData.validators.map(({ validatorId }) =>
+      api.tx.staking.payoutStakers(validatorId, eraData.era),
+    );
+
+    if (extrinsics.length === 1) {
+      return extrinsics[0];
+    }
+
+    if (api.tx.utility?.batchAll) {
+      return api.tx.utility.batchAll(extrinsics);
+    }
+
+    if (api.tx.utility?.batch) {
+      return api.tx.utility.batch(extrinsics);
+    }
+
+    return extrinsics[0];
+  }, [api, eraData]);
+
+  return { getTxFuncForSubmit, getTxFuncForFee };
+}
+
+function EraRewardItem({ eraData, onClaimClick }) {
+  const { decimals, symbol } = useChainSettings();
+
   return (
-    <div className="flex items-center justify-center whitespace-nowrap gap-x-2 text-textTertiary text14Medium py-2">
-      <FieldLoading size={24} />
-      This process may take a while
-    </div>
+    <GreyPanel className="flex items-center justify-between py-2 px-4">
+      <div className="flex items-center gap-x-2 text14Medium">
+        <span className="text-textPrimary">Era {eraData.era}</span>
+        <ValueDisplay
+          value={toPrecision(eraData.unClaimedRewards, decimals)}
+          symbol={symbol}
+          showVerySmallNumber
+        />
+      </div>
+      <PrimaryButton size="small" onClick={() => onClaimClick(eraData)}>
+        Claim
+      </PrimaryButton>
+    </GreyPanel>
   );
 }
 
-function createPayoutExtrinsic(api, details, maxBatchSize = 40) {
-  if (!api?.tx?.staking?.payoutStakers || !details || details.length === 0) {
-    return null;
-  }
-
-  const extrinsics = details
-    .slice(0, maxBatchSize)
-    .map(({ validatorId, era }) =>
-      api.tx.staking.payoutStakers(validatorId, era),
-    );
-
-  if (extrinsics.length === 0) {
-    return null;
-  }
-
-  if (extrinsics.length === 1) {
-    return extrinsics[0];
-  }
-
-  if (api.tx.utility?.batchAll) {
-    return api.tx.utility.batchAll(extrinsics);
-  }
-
-  if (api.tx.utility?.batch) {
-    return api.tx.utility.batch(extrinsics);
-  }
-
-  return extrinsics[0];
-}
-
-function useClaimRewardsTx(rewardsData) {
-  const api = useContextApi();
-  const { decimals } = useChainSettings();
-
-  const maxBatchSize = useMemo(() => {
-    const maxNominators =
-      api?.consts?.staking?.maxNominatorRewardedPerValidator?.toNumber() || 64;
-    return Math.floor((36 * 64) / maxNominators);
-  }, [api]);
-
-  const { getTxFuncForSubmit, getTxFuncForFee } = useTxBuilder(() => {
-    if (!rewardsData?.details || rewardsData.details.length === 0) {
-      return null;
-    }
-    return createPayoutExtrinsic(api, rewardsData.details, maxBatchSize);
-  }, [api, rewardsData?.details, maxBatchSize]);
-
-  const displayAmount = useMemo(() => {
-    if (!rewardsData?.totalRewards || rewardsData.totalRewards === "0") {
-      return "0";
-    }
-    return toPrecision(rewardsData.totalRewards, decimals);
-  }, [rewardsData?.totalRewards, decimals]);
-
-  const hasRewards = rewardsData?.details && rewardsData.details.length > 0;
-
-  return {
-    getTxFuncForSubmit,
-    getTxFuncForFee,
-    displayAmount,
-    hasRewards,
-  };
-}
-
-function ClaimPopupContent() {
-  const { onClose } = usePopupParams();
+function ClaimEraPopupContent({ eraData, onBack }) {
   const dispatch = useDispatch();
-  const realAddress = useRealAddress();
   const { decimals, symbol } = useChainSettings();
+  const { getTxFuncForSubmit, getTxFuncForFee } = useClaimEraRewardsTx(eraData);
+  const { update } = useUpdateNominatorUnClaimedRewards();
 
-  const { result, loading } = useNominatorUnClaimedRewards(realAddress);
-  const { getTxFuncForSubmit, getTxFuncForFee, displayAmount, hasRewards } =
-    useClaimRewardsTx(result);
+  const displayAmount = toPrecision(eraData.unClaimedRewards, decimals);
 
-  const handleInBlock = () => {
-    dispatch(
-      newSuccessToast(
-        `Rewards claimed successfully! ${displayAmount} ${symbol} has been added to your account.`,
-      ),
-    );
-  };
+  const handleInBlock = useCallback(() => {
+    dispatch(newSuccessToast("Claimed successfully, refreshing rewards..."));
+
+    update();
+  }, [dispatch, update]);
 
   return (
     <div className="space-y-4">
       <Signer noSwitchSigner />
-      <SummaryLayout className="grid-cols-2">
-        <SummaryItem title="Total Claimable">
-          {loading ? (
-            <LoadingContent />
-          ) : (
-            <ValueDisplay value={displayAmount} symbol={symbol} />
-          )}
+      <SummaryLayout>
+        <SummaryItem title="Era">
+          <span className="text14Medium text-textPrimary">{eraData.era}</span>
         </SummaryItem>
-        {!loading && result?.result && result.result.length > 0 && (
-          <SummaryItem title="Rewards by Era">
-            <FoldableContent
-              items={result.result}
-              threshold={5}
-              renderItem={(item) => (
-                <div
-                  key={item.era}
-                  className="flex items-center space-x-1 text14Medium"
-                >
-                  <span className="text-textSecondary">Era {item.era}: </span>
-                  <ValueDisplay
-                    value={toPrecision(item.unClaimedRewards, decimals)}
-                    symbol={symbol}
-                    showVerySmallNumber={true}
-                  />
-                </div>
-              )}
-            />
-          </SummaryItem>
-        )}
+        <SummaryItem title="Claimable Rewards">
+          <ValueDisplay value={displayAmount} symbol={symbol} />
+        </SummaryItem>
       </SummaryLayout>
-      <Alerts />
       <AdvanceSettings defaultShow>
         <EstimatedGas getTxFunc={getTxFuncForFee} />
       </AdvanceSettings>
-      <div className="flex justify-between">
-        <SecondaryButton onClick={onClose}>Cancel</SecondaryButton>
-        <Tooltip content={!hasRewards && "No claimable rewards"}>
-          <TxSubmissionButton
-            disabled={!hasRewards}
-            getTxFunc={getTxFuncForSubmit}
-            onInBlock={handleInBlock}
-          />
-        </Tooltip>
+      <div className="flex justify-end gap-x-4">
+        <SecondaryButton onClick={onBack}>Back</SecondaryButton>
+        <TxSubmissionButton
+          getTxFunc={getTxFuncForSubmit}
+          onInBlock={handleInBlock}
+        />
       </div>
     </div>
   );
+}
+
+function RewardsListContent({ onClaimClick }) {
+  const { result, loading } = useNominatorUnClaimedRewardsContext();
+
+  return (
+    <div className="space-y-4">
+      <div className="space-y-2 overflow-y-scroll max-h-[400px] scrollbar-pretty">
+        {loading ? (
+          <div className="flex items-center justify-center py-8 text-textTertiary text14Medium">
+            Loading rewards...
+          </div>
+        ) : (
+          result?.result?.map((eraData) => (
+            <EraRewardItem
+              key={eraData.era}
+              eraData={eraData}
+              onClaimClick={onClaimClick}
+            />
+          ))
+        )}
+      </div>
+      <Alerts />
+    </div>
+  );
+}
+
+function ClaimPopupContent() {
+  const [selectedEra, setSelectedEra] = useState(null);
+
+  if (selectedEra) {
+    return (
+      <ClaimEraPopupContent
+        eraData={selectedEra}
+        onBack={() => setSelectedEra(null)}
+      />
+    );
+  }
+
+  return <RewardsListContent onClaimClick={setSelectedEra} />;
 }
 
 export default function ClaimPopup({ onClose }) {
