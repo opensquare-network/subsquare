@@ -5,15 +5,6 @@ import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated"
 import { isRelayChain } from "next-common/utils/chain";
 import { useMemo } from "react";
 
-function SubScanAccountLinkWrapper({ children }) {
-  const { integrations } = useChainSettings();
-  if (!integrations?.subscan) {
-    return null;
-  }
-
-  return children;
-}
-
 function SubScanAccountLinkImpl({ address }) {
   const chain = useChain();
   const { integrations } = useChainSettings();
@@ -34,9 +25,10 @@ function SubScanAccountLinkImpl({ address }) {
 }
 
 export default function SubScanAccountLink({ address }) {
-  return (
-    <SubScanAccountLinkWrapper>
-      <SubScanAccountLinkImpl address={address} />
-    </SubScanAccountLinkWrapper>
-  );
+  const { integrations } = useChainSettings();
+  if (!integrations?.subscan) {
+    return null;
+  }
+
+  return <SubScanAccountLinkImpl address={address} />;
 }
