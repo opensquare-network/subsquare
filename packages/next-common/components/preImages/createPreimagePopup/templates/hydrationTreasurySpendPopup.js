@@ -13,19 +13,24 @@ import AmountInputWithHint from "next-common/components/popup/fields/amountInput
 import useHydrationCurrencyInfo from "next-common/hooks/useHydrationCurrencyInfo";
 import { TreasuryProvider } from "next-common/context/treasury";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { HOLLAR_CURRENCY } from "next-common/utils/consts/hydration";
+import { STABLE_CURRENCY } from "next-common/utils/consts/hydration";
+import { isNil } from "lodash-es";
 
-export function useHydrationTreasurySpendPreimageTx(inputBalance, beneficiary) {
+export function useHydrationTreasurySpendPreimageTx(
+  inputBalance,
+  decimals,
+  beneficiary,
+) {
   const api = useContextApi();
 
   return useMemo(() => {
-    if (!api || !inputBalance || !beneficiary) {
+    if (!api || !inputBalance || !beneficiary || isNil(decimals)) {
       return {};
     }
 
     let bnValue;
     try {
-      bnValue = checkInputValue(inputBalance, HOLLAR_CURRENCY.decimals);
+      bnValue = checkInputValue(inputBalance, decimals);
     } catch (err) {
       return {};
     }
@@ -33,7 +38,7 @@ export function useHydrationTreasurySpendPreimageTx(inputBalance, beneficiary) {
     try {
       const transferTx = api.tx.currencies.transfer(
         beneficiary,
-        HOLLAR_CURRENCY.id,
+        STABLE_CURRENCY.id,
         bnValue.toFixed(),
       );
       const proposal = api.tx.dispatcher.dispatchWithExtraGas(
@@ -47,7 +52,7 @@ export function useHydrationTreasurySpendPreimageTx(inputBalance, beneficiary) {
       console.error(e);
       return {};
     }
-  }, [api, inputBalance, beneficiary]);
+  }, [api, inputBalance, decimals, beneficiary]);
 }
 
 function PopupContent() {
@@ -56,11 +61,15 @@ function PopupContent() {
   const { value: beneficiary, component: beneficiaryField } =
     useAddressComboField({ defaultAddress: realAddress });
   const { data: currencyInfo, loading } = useHydrationCurrencyInfo(
-    HOLLAR_CURRENCY.id,
+    STABLE_CURRENCY.id,
   );
 
   const { notePreimageTx, encodedLength, encodedProposal, encodedHash } =
-    useHydrationTreasurySpendPreimageTx(inputBalance, beneficiary);
+    useHydrationTreasurySpendPreimageTx(
+      inputBalance,
+      currencyInfo?.decimals,
+      beneficiary,
+    );
 
   return (
     <>
@@ -70,8 +79,8 @@ function PopupContent() {
         hintLabel="Available"
         hintTooltip="Available treasury balance"
         maxAmount={currencyInfo?.treasuryBalance}
-        decimals={HOLLAR_CURRENCY.decimals}
-        symbol={HOLLAR_CURRENCY.symbol}
+        decimals={currencyInfo?.decimals}
+        symbol={currencyInfo?.symbol}
         isLoading={loading}
         inputAmount={inputBalance}
         setInputAmount={setInputBalance}
@@ -96,7 +105,7 @@ function PopupContent() {
 export default function HydrationTreasurySpendPopup() {
   const { onClose } = usePopupParams();
   return (
-    <Popup title="Spend HOLLAR from treasury" onClose={onClose}>
+    <Popup title="Stable treasury spend proposal" onClose={onClose}>
       <TreasuryProvider>
         <PopupContent />
       </TreasuryProvider>

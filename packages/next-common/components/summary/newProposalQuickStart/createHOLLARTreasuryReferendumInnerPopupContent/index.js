@@ -10,7 +10,7 @@ import SigningTip from "../common/signingTip";
 import InsufficientBalanceTips from "../common/insufficientBalanceTips";
 import PreviousButton from "../../newProposalButton/previousButton";
 import { useHydrationTreasurySpendPreimageTx } from "next-common/components/preImages/createPreimagePopup/templates/hydrationTreasurySpendPopup";
-import { HOLLAR_CURRENCY } from "next-common/utils/consts/hydration";
+import { STABLE_CURRENCY } from "next-common/utils/consts/hydration";
 import useHydrationCurrencyInfo from "next-common/hooks/useHydrationCurrencyInfo";
 import { useState } from "react";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
@@ -27,7 +27,7 @@ function NewHOLLARTreasuryReferendumInnerPopupContentImpl() {
   const { value: beneficiary, component: beneficiaryField } =
     useAddressComboField({ defaultAddress: realAddress });
   const { data: currencyInfo, loading } = useHydrationCurrencyInfo(
-    HOLLAR_CURRENCY.id,
+    STABLE_CURRENCY.id,
   );
   const { value: trackId, component: trackField } =
     useTrackField(treasurerTrackId);
@@ -35,7 +35,11 @@ function NewHOLLARTreasuryReferendumInnerPopupContentImpl() {
     useEnactmentBlocksField(trackId);
 
   const { encodedHash, encodedLength, notePreimageTx } =
-    useHydrationTreasurySpendPreimageTx(inputBalance, beneficiary);
+    useHydrationTreasurySpendPreimageTx(
+      inputBalance,
+      currencyInfo?.decimals,
+      beneficiary,
+    );
 
   const { isLoading, component: submitButton } = useCreateProposalSubmitButton({
     trackId,
@@ -64,8 +68,8 @@ function NewHOLLARTreasuryReferendumInnerPopupContentImpl() {
         hintLabel="Available"
         hintTooltip="Available treasury balance"
         maxAmount={currencyInfo?.treasuryBalance}
-        decimals={HOLLAR_CURRENCY.decimals}
-        symbol={HOLLAR_CURRENCY.symbol}
+        decimals={currencyInfo?.decimals}
+        symbol={currencyInfo?.symbol}
         isLoading={loading}
         inputAmount={inputBalance}
         setInputAmount={setInputBalance}

@@ -1,5 +1,3 @@
-export const HOLLAR_CURRENCY = {
+export const STABLE_CURRENCY = {
   id: 222,
-  symbol: "HOLLAR",
-  decimals: 18,
 };

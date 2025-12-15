@@ -55,8 +55,8 @@ export function SpendDotOnAssetHubButton({ onClick }) {
 export function HydrationTreasurySpendButton({ onClick }) {
   return (
     <ChoiceButton
-      name="HOLLAR treasury proposal"
-      description="Create a treasury spend with HOLLAR currency"
+      name="Stable treasury spend proposal"
+      description="Create a treasury spend with stable currency"
       onClick={onClick}
     />
   );

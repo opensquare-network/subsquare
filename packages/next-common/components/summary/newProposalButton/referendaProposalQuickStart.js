@@ -52,8 +52,8 @@ const useQuickStartItems = () => {
     });
     if (isHydrationChain(chain)) {
       items.push({
-        name: "HOLLAR treasury proposal",
-        description: "Create a treasury spend with HOLLAR currency",
+        name: "Stable treasury spend proposal",
+        description: "Create a treasury spend with stable currency",
         content: NewHOLLARTreasuryReferendumInnerPopupContent,
       });
     }
