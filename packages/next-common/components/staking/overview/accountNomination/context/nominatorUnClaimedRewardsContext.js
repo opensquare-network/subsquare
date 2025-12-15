@@ -5,7 +5,6 @@ import {
   useRef,
   useEffect,
   useState,
-  useMemo,
 } from "react";
 import useNominatorUnClaimedRewards from "../quickActions/useNominatorUnClaimedRewards";
 import { sleep } from "next-common/utils";
@@ -20,13 +19,10 @@ export function NominatorUnClaimedRewardsProvider({
     useNominatorUnClaimedRewards(nominatorAddress);
   const [isUpdating, setIsUpdating] = useState(false);
 
-  const contextValue = useMemo(
-    () => ({ result, loading, fetch, isUpdating, setIsUpdating }),
-    [result, loading, fetch, isUpdating],
-  );
-
   return (
-    <NominatorUnClaimedRewardsContext.Provider value={contextValue}>
+    <NominatorUnClaimedRewardsContext.Provider
+      value={{ result, loading, fetch, isUpdating, setIsUpdating }}
+    >
       {children}
     </NominatorUnClaimedRewardsContext.Provider>
   );
