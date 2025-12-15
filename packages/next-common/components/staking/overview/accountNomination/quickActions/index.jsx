@@ -2,11 +2,9 @@ import BondButton from "./bondButton";
 import UnBondButton from "./unBondButton";
 import PayeeButton from "./payeeButton";
 import StopNominationButton from "./stopNominationButton";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import CheckNomineesButton from "../checkNomineesButton";
+import ModifyNomineesButton from "../modifyNomineesButton";
 
 export default function NominatorQuickActions() {
-  const realAddress = useRealAddress();
   return (
     <div className="flex flex-col gap-[12px]">
       <div className="flex gap-[16px] items-center">
@@ -14,7 +12,7 @@ export default function NominatorQuickActions() {
         <UnBondButton />
         <PayeeButton />
         <StopNominationButton />
-        <CheckNomineesButton nominator={realAddress} />
+        <ModifyNomineesButton />
       </div>
     </div>
   );
