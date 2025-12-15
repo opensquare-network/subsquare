@@ -1,6 +1,6 @@
 import PoolsTag from "next-common/components/tags/state/pools";
 import CellActions from "../columns/actions";
-import { EmptyGuard, TotalBondedColumn, RolesColumn } from "../columns";
+import { EmptyGuard, TotalBondedColumn, ValidatorsColumn } from "../columns";
 import PoolNameColumn from "../columns/poolName";
 
 export const poolColumns = [
@@ -23,15 +23,11 @@ export const poolColumns = [
     ),
   },
   {
-    key: "Nominees",
-    name: "Nominees",
+    key: "validators",
+    name: "Validators",
     className: "text-right",
     width: 120,
-    render: (data) => (
-      <EmptyGuard value={data.roles}>
-        <RolesColumn value={data} />
-      </EmptyGuard>
-    ),
+    render: (data) => <ValidatorsColumn poolId={data.poolId} />,
   },
   {
     key: "members",
