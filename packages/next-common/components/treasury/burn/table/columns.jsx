@@ -4,23 +4,8 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import BlockHeight from "next-common/components/identityTimeline/timeline/blockHeight";
 import { useChainSettings } from "next-common/context/chain";
-
-function TimeCell({ item }) {
-  const { indexer } = item || {};
-  return (
-    <div className="flex flex-col gap-[4px]">
-      <div className="text-textPrimary">
-        {dayjs(indexer?.blockTime).format("YYYY-MM-DD HH:mm:ss")}
-      </div>
-      <ExplorerLink indexer={indexer} className="hover:underline">
-        <BlockHeight
-          number={indexer?.blockHeight}
-          contentClassName="hover:underline text-textDisabled"
-        />
-      </ExplorerLink>
-    </div>
-  );
-}
+import Duration from "next-common/components/duration";
+import { useState, useMemo } from "react";
 
 function ValueCell({ item }) {
   const { decimals, symbol } = useChainSettings();
@@ -50,27 +35,66 @@ function RemnantCell({ item }) {
   );
 }
 
-const columns = [
-  {
-    name: "Time",
-    className: "min-w-[200px] text-left",
-    render: (item) => <TimeCell item={item} />,
-  },
-  {
-    name: "Value",
-    className: "min-w-[160px] text-center",
-    render: (item) => <ValueCell item={item} />,
-  },
-  {
-    name: "Per",
-    className: "min-w-[80px] text-center",
-    render: (item) => <PercentCell item={item} />,
-  },
-  {
-    name: "Remnant",
-    className: "min-w-[160px] text-right",
-    render: (item) => <RemnantCell item={item} />,
-  },
-];
+const useTimeColumn = () => {
+  const [isTime, setIsTime] = useState(true);
+  return {
+    name: (
+      <button
+        className="text-theme500"
+        onClick={() => {
+          setIsTime(!isTime);
+        }}
+      >
+        {isTime ? "Time" : "Age"}
+      </button>
+    ),
+    className: "min-w-[150px]",
+    render(item) {
+      const { indexer } = item || {};
+      const time = item?.indexer?.blockTime;
 
-export default columns;
+      return (
+        <div className="flex flex-col gap-[4px]">
+          <div className="text-textPrimary">
+            {isTime ? (
+              dayjs(time).format("YYYY-MM-DD HH:mm:ss")
+            ) : (
+              <Duration time={time} />
+            )}
+          </div>
+          <ExplorerLink indexer={indexer} className="hover:underline">
+            <BlockHeight
+              number={indexer?.blockHeight}
+              contentClassName="hover:underline text-textDisabled"
+            />
+          </ExplorerLink>
+        </div>
+      );
+    },
+  };
+};
+
+export const useTreasuryBurnTableColumns = () => {
+  const timeCol = useTimeColumn();
+  return useMemo(
+    () => [
+      timeCol,
+      {
+        name: "Value",
+        className: "min-w-[160px] text-center",
+        render: (item) => <ValueCell item={item} />,
+      },
+      {
+        name: "Per",
+        className: "min-w-[80px] text-center",
+        render: (item) => <PercentCell item={item} />,
+      },
+      {
+        name: "Remnant",
+        className: "min-w-[160px] text-right",
+        render: (item) => <RemnantCell item={item} />,
+      },
+    ],
+    [timeCol],
+  );
+};
