@@ -55,7 +55,7 @@ const useTimeColumn = () => {
 
       return (
         <div className="flex flex-col gap-[4px]">
-          <div className="text-textPrimary">
+          <div className="text-textPrimary h-5">
             {isTime ? (
               dayjs(time).format("YYYY-MM-DD HH:mm:ss")
             ) : (
