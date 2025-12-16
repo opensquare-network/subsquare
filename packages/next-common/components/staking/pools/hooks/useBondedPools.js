@@ -58,6 +58,11 @@ export function useSortedPools({
             bValue = b.memberCounter || 0;
             diff = bValue - aValue;
             break;
+          case "Commission":
+            aValue = a.commission?.current?.[0] || 0;
+            bValue = b.commission?.current?.[0] || 0;
+            diff = bValue - aValue;
+            break;
           default:
             diff = 0;
             break;
