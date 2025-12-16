@@ -5,6 +5,7 @@ import {
   useTotalCounts,
   TABS,
 } from "next-common/components/assethubMigrationAssets/context/assetHubTabsProvider";
+import { useHasHydrationAssets } from "next-common/components/profile/hydrationAssets";
 
 export const TabLabel = ({ label, count, isActive }) => (
   <span
@@ -22,6 +23,7 @@ export const TabLabel = ({ label, count, isActive }) => (
 export default function AssetHubTabs({ children, customLabels }) {
   const [activeTabId, setActiveTabId] = useActiveTab();
   const [totalCounts] = useTotalCounts();
+  const showHydrationTab = useHasHydrationAssets();
 
   const defaultLabels = {
     [TABS.assets]: "Assets",
@@ -52,6 +54,18 @@ export default function AssetHubTabs({ children, customLabels }) {
       ),
     },
   ];
+
+  if (showHydrationTab) {
+    tabsListItems.push({
+      value: TABS.hydration,
+      label: (
+        <TabLabel
+          label={labels[TABS.hydration]}
+          isActive={activeTabId === TABS.hydration}
+        />
+      ),
+    });
+  }
 
   return (
     <>

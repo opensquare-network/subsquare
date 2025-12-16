@@ -4,6 +4,7 @@ import { useCallback } from "react";
 export const TABS = Object.freeze({
   assets: 1,
   transfers: 2,
+  hydration: 3,
 });
 
 const [useActiveTabContext, ActiveTabProvider] = createStateContext(

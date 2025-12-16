@@ -137,6 +137,9 @@ const polkadot = {
   supportAssets: true,
   bountyIdentity: true,
   hideHeight: true,
+  ecoAssets: {
+    hydration: true,
+  },
 };
 
 export default polkadot;
