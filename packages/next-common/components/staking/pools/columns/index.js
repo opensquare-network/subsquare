@@ -33,8 +33,8 @@ export function ValidatorsColumn({ poolId }) {
     return (
       <div className="flex flex-col gap-y-1 max-h-[400px] overflow-y-auto">
         {validators.map((validator) => (
-          <div key={validator} className="text12Medium text-white">
-            <AddressUser className="text12Medium text-white" add={validator} />
+          <div key={validator} className="text12Medium">
+            <AddressUser className="text12Medium" add={validator} />
           </div>
         ))}
       </div>
@@ -42,7 +42,7 @@ export function ValidatorsColumn({ poolId }) {
   }, [validators]);
 
   if (isStashLoading || isNominatorsLoading) {
-    return <span className="text-textTertiary">-</span>;
+    return null;
   }
 
   if (validators.length === 0) {
