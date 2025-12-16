@@ -7,7 +7,7 @@ import { useChain } from "next-common/context/chain";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import QrScannerComponent from "./scanner";
 
-export default function Scan({ onClose }) {
+export default function ScanAddress({ onClose }) {
   const [isScanning, setIsScanning] = useState(false);
 
   const stopScan = useCallback(() => {

@@ -1,4 +1,4 @@
-import VaultSignerPopup from "next-common/components/polkadotVault/vaultSignerPopup";
+import VaultSignTxPopup from "next-common/components/polkadotVault/vaultSignTxPopup";
 import VaultSignMessagePopup from "next-common/components/polkadotVault/vaultSignMessagePopup";
 import { useState, createContext, useContext, useCallback } from "react";
 
@@ -42,7 +42,7 @@ export function VaultSignerProvider({ children }) {
       }}
     >
       {txOptions.tx && (
-        <VaultSignerPopup
+        <VaultSignTxPopup
           key={qrId}
           qrId={qrId}
           {...txOptions}

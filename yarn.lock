@@ -6496,7 +6496,6 @@ __metadata:
     nprogress: ^0.2.0
     pluralize: ^8.0.0
     posthog-js: ^1.240.1
-    qr-scanner: ^1.4.2
     raw-loader: ^4.0.2
     react: ^18.2.0
     react-dom: ^18.2.0
@@ -14559,6 +14558,7 @@ __metadata:
     md5: ^2.3.0
     multiformats: ^13.1.0
     next: 15.4.7
+    qr-scanner: ^1.4.2
     qrcode: ^1.5.4
     query-string: ^9.0.0
     quick-lru: ^7.0.0

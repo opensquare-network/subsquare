@@ -10,7 +10,7 @@ import { sendSubstrateTx } from "next-common/utils/sendTransaction";
 const CMD_HASH = 1;
 const CMD_MORTAL = 2;
 
-export default function VaultSignerPopup({
+export default function VaultSignTxPopup({
   tx,
   api,
   qrId,

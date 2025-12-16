@@ -9,7 +9,7 @@ import PrimaryButton from "next-common/lib/button/primary";
 import { useState } from "react";
 import { cn } from "next-common/utils";
 
-export default function ScanResult() {
+export default function ScanAddressResult() {
   const [web3Login, web3Loading] = useWeb3Login();
   const [selectedAccount, setSelectedAccount] = useState();
   const { removeAccount } = usePolkadotVaultAccounts();
