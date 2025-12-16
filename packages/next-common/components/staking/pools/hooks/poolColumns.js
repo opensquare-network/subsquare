@@ -28,13 +28,6 @@ export const poolColumns = [
     ),
   },
   {
-    key: "validators",
-    name: "Validators",
-    className: "text-right",
-    width: 120,
-    render: (data) => <ValidatorsColumn poolId={data.poolId} />,
-  },
-  {
     key: "commission",
     name: "Commission",
     className: "text-right",
@@ -45,6 +38,13 @@ export const poolColumns = [
         <CommissionColumn value={data.commission} />
       </EmptyGuard>
     ),
+  },
+  {
+    key: "validators",
+    name: "Validators",
+    className: "text-right",
+    width: 120,
+    render: (data) => <ValidatorsColumn poolId={data.poolId} />,
   },
   {
     key: "members",
