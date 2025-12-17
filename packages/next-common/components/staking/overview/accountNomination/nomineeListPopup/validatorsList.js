@@ -3,13 +3,17 @@ import { useMemo } from "react";
 import { ValidatorsFilterProvider } from "../../../validatorsList/filter";
 import useColumns from "../../../../styledList/useColumns";
 import { colAccount, colCommission } from "../../../validatorsList/columns";
-import {
-  useValidators,
-  useValidatorsWithIdentity,
-} from "../../../validatorsList/hooks";
+import { useValidators } from "next-common/context/staking/validators";
+import { useValidatorsWithIdentity } from "../../../validatorsList/hooks";
 import { SystemVoteAye, SystemVoteNay } from "@osn/icons/subsquare";
 
-function ValidatorsListImpl({ nominees, activeNominees, isLoading }) {
+function ValidatorsListImpl({
+  nominees,
+  activeNominees,
+  isLoading,
+  titleClassName,
+  contentClassName,
+}) {
   const { validators, loading: isLoadingValidators } = useValidators();
   const nomineeValidators = useMemo(() => {
     if (!validators) {
@@ -74,9 +78,10 @@ function ValidatorsListImpl({ nominees, activeNominees, isLoading }) {
   }, [validatorsWithIdentity, sortedColumn, sortDirection]);
 
   return (
-    <div className="flex flex-col gap-[16px]">
+    <div className="flex flex-col w-full">
       <MapDataList
-        contentClassName="max-h-[480px] overflow-y-auto"
+        titleClassName={titleClassName}
+        contentClassName={contentClassName}
         columnsDef={columns}
         data={sortedValidators}
         loading={
@@ -92,6 +97,8 @@ export default function ValidatorsList({
   nominees,
   activeNominees,
   isLoading,
+  titleClassName,
+  contentClassName,
 }) {
   return (
     <ValidatorsFilterProvider>
@@ -99,6 +106,8 @@ export default function ValidatorsList({
         nominees={nominees}
         activeNominees={activeNominees}
         isLoading={isLoading}
+        titleClassName={titleClassName}
+        contentClassName={contentClassName}
       />
     </ValidatorsFilterProvider>
   );

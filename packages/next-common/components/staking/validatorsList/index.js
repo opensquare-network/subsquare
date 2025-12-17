@@ -18,7 +18,11 @@ import {
   colSelfStake,
   colTotalStake,
 } from "./columns";
-import { useValidators, useValidatorsWithIdentity } from "./hooks";
+import { useValidatorsWithIdentity } from "./hooks";
+import {
+  ValidatorsProvider,
+  useValidators,
+} from "next-common/context/staking/validators";
 
 const PAGE_SIZE = 50;
 
@@ -127,8 +131,10 @@ function ValidatorsListImpl() {
 
 export default function ValidatorsList() {
   return (
-    <ValidatorsFilterProvider>
-      <ValidatorsListImpl />
-    </ValidatorsFilterProvider>
+    <ValidatorsProvider>
+      <ValidatorsFilterProvider>
+        <ValidatorsListImpl />
+      </ValidatorsFilterProvider>
+    </ValidatorsProvider>
   );
 }

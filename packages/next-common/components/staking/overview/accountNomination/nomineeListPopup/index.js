@@ -6,6 +6,7 @@ import { useStakingLedgers } from "next-common/hooks/useStakingLedgers";
 import ValidatorsList from "./validatorsList";
 import Loading from "next-common/components/loading";
 import { useValidatorsWithStatus } from "next-common/hooks/staking/useValidatorWithStatus";
+import { ValidatorsProvider } from "next-common/context/staking/validators";
 
 function NomineeListPopupContent({ nominator }) {
   const onClose = usePopupOnClose();
@@ -43,10 +44,12 @@ function NomineeListPopupContent({ nominator }) {
 
 export default function NomineeListPopup({ onClose, nominator }) {
   return (
-    <SignerPopupWrapper onClose={onClose}>
-      <Popup title="Nominees List" onClose={onClose}>
-        <NomineeListPopupContent nominator={nominator} />
-      </Popup>
-    </SignerPopupWrapper>
+    <ValidatorsProvider>
+      <SignerPopupWrapper onClose={onClose}>
+        <Popup title="Nominees List" onClose={onClose}>
+          <NomineeListPopupContent nominator={nominator} />
+        </Popup>
+      </SignerPopupWrapper>
+    </ValidatorsProvider>
   );
 }
