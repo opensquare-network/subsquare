@@ -1,12 +1,12 @@
 import Tab from "next-common/components/tab";
 
-export const STATS_TAB_ID = "stats";
+export const CATEGORIZED_TAB_ID = "categorized";
 export const TABLE_TAB_ID = "table";
 
 const tabs = [
   {
-    tabId: STATS_TAB_ID,
-    tabTitle: "Stats",
+    tabId: CATEGORIZED_TAB_ID,
+    tabTitle: "Categorized",
   },
   {
     tabId: TABLE_TAB_ID,
@@ -23,7 +23,7 @@ export default function ViewTypeTabs({ selectedTabId, setSelectedTabId }) {
           setSelectedTabId(tabId);
         }}
         className="h-8 rounded p-1"
-        btnClassName="w-[80px] px-4 py-2 rounded max-sm:max-w-[110px]"
+        btnClassName="w-[100px] px-4 py-2 rounded max-sm:max-w-[110px]"
         tabs={tabs}
       />
     </div>
