@@ -20,7 +20,7 @@ export default function useTableViewColumnsDef() {
       ),
     },
     {
-      name: "Requested",
+      name: "Request",
       style: {
         width: "160px",
         textAlign: "right",
