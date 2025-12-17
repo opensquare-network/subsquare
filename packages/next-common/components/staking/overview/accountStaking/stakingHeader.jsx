@@ -13,7 +13,7 @@ function PoolAccount({ poolId }) {
   const { name } = usePoolMetadata(poolId);
 
   return (
-    <div className="flex gap-[12px]">
+    <div className="flex gap-[12px] text-textPrimary">
       <Avatar address={stash} size={40} />
       <div className="flex flex-col">
         <span>{name}</span>

@@ -18,16 +18,19 @@ export function useMyPoolBalance(myPool) {
     );
     let unlocking = 0n;
     let unlocked = 0n;
+    const unlockingEntries = [];
     for (const { era, value } of unbonding) {
       if (activeEra && era <= activeEra.index) {
         unlocked += value;
       } else {
         unlocking += value;
+        unlockingEntries.push({ era, value });
       }
     }
     return {
       active,
       unlocking,
+      unlockingEntries,
       unlocked,
     };
   }, [myPool, activeEra]);

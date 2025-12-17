@@ -46,7 +46,13 @@ export function AccountBalanceFiatValue({ value, className }) {
   );
 }
 
-export function AccountBalanceItem({ value, title, isLoading, className }) {
+export function AccountBalanceItem({
+  value,
+  title,
+  isLoading,
+  className,
+  tooltipContent,
+}) {
   const isMobile = useIsMobile();
 
   if (!isLoading && isNaN(value)) {
@@ -70,6 +76,7 @@ export function AccountBalanceItem({ value, title, isLoading, className }) {
           className={"inline-flex flex-row items-center justify-between"}
           titleClassName={"mb-0 text14Medium text-textTertiary flex-1 w-[90px]"}
           valueClassName="text14Medium min-w-[100px] ml-5 inline-flex justify-end"
+          tooltipContent={tooltipContent}
         />
         <AccountBalanceFiatValue
           value={value}

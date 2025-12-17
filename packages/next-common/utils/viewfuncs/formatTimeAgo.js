@@ -2,21 +2,22 @@ import dayjs from "dayjs";
 import { formatTimeDuration } from "./formatTimeDuration";
 
 export function formatTimeAgo(
-  input,
+  targetTime,
   {
+    referenceTime,
     futurePrefix = "in",
     pastSuffix = "ago",
     slice = 1,
     showSeconds = false,
   } = {},
 ) {
-  const date = dayjs(input);
+  const date = dayjs(targetTime);
 
-  if (!input || !date.isValid()) {
+  if (!targetTime || !date.isValid()) {
     return "unknown time";
   }
 
-  const now = dayjs();
+  const now = dayjs(referenceTime);
 
   const diffInSeconds = Math.abs(now.diff(date, "second"));
   if (diffInSeconds < 60) {
