@@ -81,7 +81,7 @@ function Item({ item, onClick, onDelete, isSelected }) {
           </div>
         </div>
       </div>
-      <Button>
+      <Button className="bg-neutral300 hover:bg-neutral400 p-[7px]">
         <SystemTrash
           onClick={() => {
             onDelete(item.address);

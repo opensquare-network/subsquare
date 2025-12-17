@@ -10,7 +10,6 @@ const defaultContext = {
   accounts: [],
   addAccount: noop,
   removeAccount: noop,
-  updateAccount: noop,
 };
 
 const PolkadotVaultContext = createContext(defaultContext);
@@ -45,25 +44,6 @@ export function PolkadotVaultProvider({ children }) {
     [cacheAccounts, setCacheAccounts],
   );
 
-  const updateAccount = useCallback(
-    (oldAddress, newInfo) => {
-      if (!oldAddress || !newInfo) {
-        console.warn("Invalid address or info provided to updateAccount");
-        return false;
-      }
-      setCacheAccounts((prevAccounts) => {
-        const index = prevAccounts.findIndex((item) =>
-          isSameAddress(item.address, oldAddress),
-        );
-        if (index >= 0) {
-          prevAccounts[index] = { ...prevAccounts[index], ...newInfo };
-        }
-        return prevAccounts;
-      });
-    },
-    [setCacheAccounts],
-  );
-
   const removeAccount = useCallback(
     (address) => {
       if (!address) {
@@ -74,26 +54,21 @@ export function PolkadotVaultProvider({ children }) {
       setCacheAccounts((prevAccounts) => {
         if (!prevAccounts) return [];
 
-        const filteredAccounts = prevAccounts.filter(
-          (item) => !isSameAddress(item.address, address),
+        const filteredAccounts = cacheAccounts.filter(
+          (item) => item.address !== address,
         );
-        if (filteredAccounts.length === prevAccounts.length) {
-          console.warn(`Account with address ${address} not found`);
-          return prevAccounts;
-        }
 
         return filteredAccounts;
       });
       return true;
     },
-    [setCacheAccounts],
+    [cacheAccounts, setCacheAccounts],
   );
 
   const contextValue = {
     accounts: cacheAccounts,
     addAccount,
     removeAccount,
-    updateAccount,
   };
 
   return (
@@ -114,12 +89,10 @@ export const usePolkadotVault = () => {
 };
 
 export const usePolkadotVaultAccounts = () => {
-  const { accounts, addAccount, removeAccount, updateAccount } =
-    usePolkadotVault();
+  const { accounts, addAccount, removeAccount } = usePolkadotVault();
   return {
     accounts,
     addAccount,
     removeAccount,
-    updateAccount,
   };
 };
