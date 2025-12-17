@@ -2,6 +2,7 @@ import { useChainSettings } from "next-common/context/chain";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { cn, toPrecision } from "next-common/utils";
 import LoadableContent from "next-common/components/common/loadableContent";
+import Tooltip from "next-common/components/tooltip";
 
 export default function LoadableItem({
   title,
@@ -10,6 +11,7 @@ export default function LoadableItem({
   className,
   titleClassName,
   valueClassName,
+  tooltipContent,
 }) {
   const { symbol, decimals } = useChainSettings();
 
@@ -25,7 +27,20 @@ export default function LoadableItem({
       </span>
       <LoadableContent isLoading={isLoading}>
         <div className={cn("text-textPrimary text16Bold", valueClassName)}>
-          <ValueDisplay value={toPrecision(value, decimals)} symbol={symbol} />
+          {tooltipContent ? (
+            <Tooltip content={tooltipContent}>
+              <ValueDisplay
+                value={toPrecision(value, decimals)}
+                symbol={symbol}
+                showTooltip={false}
+              />
+            </Tooltip>
+          ) : (
+            <ValueDisplay
+              value={toPrecision(value, decimals)}
+              symbol={symbol}
+            />
+          )}
         </div>
       </LoadableContent>
     </div>

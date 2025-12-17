@@ -1,15 +1,10 @@
+import useNow from "next-common/hooks/useNow";
 import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
-import { useEffect, useState } from "react";
 
-export default function Duration({ time }) {
-  const [duration, setDuration] = useState();
-
-  useEffect(() => {
-    if (!time) {
-      return;
-    }
-    setDuration(formatTimeAgo(time));
-  }, [time]);
-
-  return <span>{duration}</span>;
+export default function Duration({ time, slice = 1 }) {
+  const now = useNow();
+  if (!time) {
+    return;
+  }
+  return <span>{formatTimeAgo(time, { referenceTime: now, slice })}</span>;
 }
