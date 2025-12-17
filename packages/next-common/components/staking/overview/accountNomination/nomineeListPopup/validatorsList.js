@@ -3,10 +3,8 @@ import { useMemo } from "react";
 import { ValidatorsFilterProvider } from "../../../validatorsList/filter";
 import useColumns from "../../../../styledList/useColumns";
 import { colAccount, colCommission } from "../../../validatorsList/columns";
-import {
-  useValidators,
-  useValidatorsWithIdentity,
-} from "../../../validatorsList/hooks";
+import { useValidators } from "next-common/context/staking/validators";
+import { useValidatorsWithIdentity } from "../../../validatorsList/hooks";
 import { SystemVoteAye, SystemVoteNay } from "@osn/icons/subsquare";
 
 function ValidatorsListImpl({ nominees, activeNominees, isLoading }) {

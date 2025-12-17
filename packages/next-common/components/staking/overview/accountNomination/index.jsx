@@ -20,6 +20,7 @@ import { AddressUser } from "next-common/components/user";
 import { NominatorUnClaimedRewardsProvider } from "./context/nominatorUnClaimedRewardsContext";
 import NominatorReward from "./nominatorReward";
 import { UnbondingTooltip } from "../accountStaking/stakingBalance";
+import { ValidatorsProvider } from "next-common/context/staking/validators";
 
 const StartNominatingPopup = dynamicPopup(() =>
   import(
@@ -154,20 +155,22 @@ export default function AccountNomination() {
 
   return (
     <WindowSizeProvider>
-      <NominatorUnClaimedRewardsProvider nominatorAddress={realAddress}>
-        <NeutralPanel className="p-6 space-y-4">
-          <Header width={width} />
-          <Divider />
-          <div className="flex max-lg:flex-col w-full gap-2">
-            <div className="flex-1 max-lg:flex-none min-w-0">
-              <StakingBalance />
+      <ValidatorsProvider>
+        <NominatorUnClaimedRewardsProvider nominatorAddress={realAddress}>
+          <NeutralPanel className="p-6 space-y-4">
+            <Header width={width} />
+            <Divider />
+            <div className="flex max-lg:flex-col w-full gap-2">
+              <div className="flex-1 max-lg:flex-none min-w-0">
+                <StakingBalance />
+              </div>
+              <div className="flex-1 max-lg:flex-none min-w-0">
+                <NominatorReward />
+              </div>
             </div>
-            <div className="flex-1 max-lg:flex-none min-w-0">
-              <NominatorReward />
-            </div>
-          </div>
-        </NeutralPanel>
-      </NominatorUnClaimedRewardsProvider>
+          </NeutralPanel>
+        </NominatorUnClaimedRewardsProvider>
+      </ValidatorsProvider>
     </WindowSizeProvider>
   );
 }
