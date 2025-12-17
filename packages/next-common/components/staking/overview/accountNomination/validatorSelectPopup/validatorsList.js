@@ -14,10 +14,7 @@ import { colAccount, colCommission } from "../../../validatorsList/columns";
 import { useValidatorsWithIdentity } from "../../../validatorsList/hooks";
 import { SystemPlus } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
-import {
-  ValidatorsProvider,
-  useValidators,
-} from "next-common/context/staking/validators";
+import { useValidators } from "next-common/context/staking/validators";
 
 const PAGE_SIZE = 10;
 
@@ -144,10 +141,8 @@ function ValidatorsListImpl({ nominees, setNominees }) {
 
 export default function ValidatorsList({ nominees, setNominees }) {
   return (
-    <ValidatorsProvider>
-      <ValidatorsFilterProvider>
-        <ValidatorsListImpl nominees={nominees} setNominees={setNominees} />
-      </ValidatorsFilterProvider>
-    </ValidatorsProvider>
+    <ValidatorsFilterProvider>
+      <ValidatorsListImpl nominees={nominees} setNominees={setNominees} />
+    </ValidatorsFilterProvider>
   );
 }

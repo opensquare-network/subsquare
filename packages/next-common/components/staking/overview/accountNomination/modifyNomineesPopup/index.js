@@ -10,9 +10,11 @@ import EstimatedGas from "next-common/components/estimatedGas";
 import { useMyStakingLedger } from "next-common/context/staking/myStakingLedger";
 import PopupLabel from "next-common/components/popup/label";
 import { cn } from "next-common/utils";
-import DetailButton from "next-common/components/detailButton";
 import IconButton from "next-common/components/iconButton";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import { useValidatorsWithStatus } from "next-common/hooks/staking/useValidatorWithStatus";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import ValidatorsList from "../nomineeListPopup/validatorsList";
 
 const ValidatorSelectPopup = dynamicPopup(() =>
   import(
@@ -22,6 +24,7 @@ const ValidatorSelectPopup = dynamicPopup(() =>
 
 function ModifyNomineesPopupContent() {
   const api = useContextApi();
+  const realAddress = useRealAddress();
   const [nominees, setNominees] = useState([]);
   const [showValidatorSelectPopup, setShowValidatorSelectPopup] =
     useState(false);
@@ -30,6 +33,11 @@ function ModifyNomineesPopupContent() {
   useEffect(() => {
     setNominees(nominators?.targets || []);
   }, [nominators]);
+
+  const { active, loading: isNomineesStatusLoading } = useValidatorsWithStatus(
+    realAddress,
+    nominees || [],
+  );
 
   const atLeastOneNominee = nominees?.length < 1;
   const hasNominees = nominees && nominees.length > 0;
@@ -62,29 +70,27 @@ function ModifyNomineesPopupContent() {
     <div className="space-y-4">
       <Signer title="Origin" noSwitchSigner showTransferable />
       <div>
-        <PopupLabel text="Nominate" />
+        <PopupLabel text="Nominees" />
         <div
           className={cn(
-            "flex pl-[16px] pr-[8px] py-[12px] rounded-[8px]",
-            "items-center justify-between",
+            "flex px-[16px] py-[12px] rounded-[8px]",
+            "justify-between",
             "border border-neutral200 bg-neutral200",
           )}
         >
           {hasNominees ? (
-            <div className="text-textPrimary text14Medium">
-              {nominees?.length || 0} validators selected
-            </div>
+            <ValidatorsList
+              titleClassName="bg-neutral200"
+              contentClassName="max-h-[480px] overflow-y-auto bg-neutral200"
+              nominees={nominees}
+              activeNominees={active || []}
+              isLoading={isNomineesStatusLoading}
+            />
           ) : (
             <div className="text-textTertiary text14Medium">
               Please add validators
             </div>
           )}
-          <div>
-            <DetailButton
-              className="!bg-neutral100"
-              onClick={() => setShowValidatorSelectPopup(true)}
-            />
-          </div>
         </div>
         <div className="flex mt-2 justify-end">
           <IconButton onClick={() => setShowValidatorSelectPopup(true)}>
