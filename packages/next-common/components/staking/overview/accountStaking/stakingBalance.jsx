@@ -28,7 +28,7 @@ export function UnbondingTooltip({ unlocking, unlockingEntries }) {
       </div>
       <Divider className="my-1 !bg-textSecondaryContrast" />
       {(unlockingEntries || []).map((item) => (
-        <div key={item.index} className="flex justify-between">
+        <div key={item.era} className="flex justify-between">
           <div className="min-w-[128px]">
             <UnlocksDuration era={item.era} />
           </div>
