@@ -1,7 +1,7 @@
 import { MapDataList } from "next-common/components/dataList";
 import { usePageProps } from "next-common/context/page";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import useTableViewColumnsDef from "../hooks/useTableViewColumnsDef";
+import useTableViewColumnsDef from "./hooks/useTableViewColumnsDef";
 import { useMemo } from "react";
 
 export default function TreasuryProjectsTableView() {
