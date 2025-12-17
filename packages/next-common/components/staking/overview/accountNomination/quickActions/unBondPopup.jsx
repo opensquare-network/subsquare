@@ -5,7 +5,7 @@ import Signer from "next-common/components/popup/fields/signerField";
 import { useContextApi } from "next-common/context/api";
 import { useChainSettings } from "next-common/context/chain";
 import { useState } from "react";
-import BalanceField from "next-common/components/popup/fields/balanceField";
+import AmountInputWithHint from "next-common/components/popup/fields/amountInputWithHint";
 import { useTxBuilder } from "next-common/hooks/useTxBuilder";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
@@ -17,6 +17,7 @@ import { toPrecision } from "next-common/utils";
 import { useMyStakingLedger } from "next-common/context/staking/myStakingLedger";
 import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
+import ErrorMessage from "next-common/components/styled/errorMessage";
 
 function UnBondPopupContent() {
   const { onClose } = usePopupParams();
@@ -24,8 +25,13 @@ function UnBondPopupContent() {
   const api = useContextApi();
   const [amount, setAmount] = useState();
   const { decimals, symbol } = useChainSettings();
-  const { ledger } = useMyStakingLedger();
+  const { ledger, loading } = useMyStakingLedger();
   const bonded = ledger?.active || 0;
+
+  const exceedMax =
+    amount &&
+    bonded &&
+    BigNumber(amount).gt(BigNumber(bonded).div(Math.pow(10, decimals)));
 
   const { getTxFuncForSubmit, getTxFuncForFee } = useTxBuilder(
     (toastError) => {
@@ -63,18 +69,21 @@ function UnBondPopupContent() {
 
   return (
     <div className="space-y-4">
-      <Signer
-        noSwitchSigner
-        balanceName="Bonded"
-        balance={bonded}
-        isBalanceLoading={false}
-      />
-      <BalanceField
+      <Signer noSwitchSigner />
+      <AmountInputWithHint
         title="Amount"
-        inputBalance={amount}
-        setInputBalance={setAmount}
+        hintLabel="Bonded"
+        maxAmount={bonded}
+        inputAmount={amount}
+        setInputAmount={setAmount}
+        isLoading={loading}
+        decimals={decimals}
         symbol={symbol}
+        hintTooltip={`${BigNumber(bonded)
+          .div(Math.pow(10, decimals))
+          .toString()} ${symbol} is bonded.`}
       />
+      {exceedMax && <ErrorMessage>Amount exceeds bonded balance</ErrorMessage>}
       <AdvanceSettings>
         <EstimatedGas getTxFunc={getTxFuncForFee} />
       </AdvanceSettings>
@@ -83,6 +92,7 @@ function UnBondPopupContent() {
         <TxSubmissionButton
           getTxFunc={getTxFuncForSubmit}
           onInBlock={handleInBlock}
+          disabled={exceedMax}
         />
       </div>
     </div>

@@ -1,4 +1,25 @@
 import useSubStorage from "next-common/hooks/common/useSubStorage";
+import {
+  hexToU8a,
+  isHex,
+  compactStripLength,
+  u8aToString,
+} from "@polkadot/util";
+
+function decodePoolName(input) {
+  if (!input || !isHex(input)) {
+    return input || "";
+  }
+
+  try {
+    const bytes = hexToU8a(input);
+    const [, stripped] = compactStripLength(bytes);
+    return u8aToString(stripped);
+  } catch (error) {
+    console.error("Error decoding metadata:", error);
+    return input;
+  }
+}
 
 export function usePoolMetadata(poolId) {
   const { result: metadata, loading } = useSubStorage(
@@ -7,29 +28,5 @@ export function usePoolMetadata(poolId) {
     [poolId],
   );
 
-  return { name: decodeText(metadata?.toHuman()), loading };
-}
-
-function decodeText(input) {
-  if (input && input.startsWith("0x")) {
-    return hexToText(input);
-  }
-
-  return input;
-}
-
-function hexToText(hex) {
-  if (!hex) {
-    return "";
-  }
-
-  const hexString = hex.slice(2);
-
-  let bytes = [];
-  for (let i = 0; i < hexString.length; i += 2) {
-    bytes.push(parseInt(hexString.substr(i, 2), 16));
-  }
-
-  let decodedString = new TextDecoder("utf-8").decode(new Uint8Array(bytes));
-  return decodedString;
+  return { name: decodePoolName(metadata?.toHex()), loading };
 }

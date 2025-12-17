@@ -32,7 +32,7 @@ export const poolColumns = [
     name: "Commission",
     className: "text-right",
     width: 120,
-    sortable: "desc,asc",
+    sortable: "asc,desc",
     render: (data) => (
       <EmptyGuard value={data.commission}>
         <CommissionColumn value={data.commission} />
