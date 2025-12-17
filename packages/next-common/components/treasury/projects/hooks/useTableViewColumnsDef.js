@@ -1,4 +1,4 @@
-import { LABELS } from "../const";
+import { TABLE_VIEW_LABELS } from "../const";
 import ValueDisplay from "next-common/components/valueDisplay";
 import useProjectChartInteraction from "./useProjectChartInteraction";
 import { usePageProps } from "next-common/context/page";
@@ -16,7 +16,9 @@ export default function useTableViewColumnsDef() {
         textAlign: "right",
       },
       render: (item) => (
-        <span className="text-textTertiary">{LABELS[item.category]}</span>
+        <span className="text-textTertiary">
+          {TABLE_VIEW_LABELS[item.category]}
+        </span>
       ),
     },
     {
