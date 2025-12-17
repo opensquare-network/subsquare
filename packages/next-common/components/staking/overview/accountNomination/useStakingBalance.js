@@ -18,14 +18,13 @@ export default function useStakingBalance() {
 
   const total = BigInt(ledger?.total || 0);
   const active = BigInt(ledger?.active || 0);
-
-  const unlocking = (ledger?.unlocking || []).reduce((sum, item) => {
-    if (item.era > activeEraIndex) {
-      return sum + BigInt(item.value || 0);
-    }
-    return sum;
+  const unlockingEntries = (ledger?.unlocking || []).filter(
+    (item) => item.era > activeEraIndex,
+  );
+  const unlocking = unlockingEntries.reduce((sum, item) => {
+    return sum + BigInt(item.value || 0);
   }, 0n);
   const unlocked = total - active - unlocking;
 
-  return { loading, total, active, unlocking, unlocked };
+  return { loading, total, active, unlocking, unlocked, unlockingEntries };
 }

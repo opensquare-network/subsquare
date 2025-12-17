@@ -19,6 +19,7 @@ import Tooltip from "next-common/components/tooltip";
 import { AddressUser } from "next-common/components/user";
 import { NominatorUnClaimedRewardsProvider } from "./context/nominatorUnClaimedRewardsContext";
 import NominatorReward from "./nominatorReward";
+import { UnbondingTooltip } from "../accountStaking/stakingBalance";
 
 const StartNominatingPopup = dynamicPopup(() =>
   import(
@@ -99,7 +100,8 @@ function Header({ width }) {
 }
 
 function StakingBalance() {
-  const { loading, total, active, unlocking, unlocked } = useStakingBalance();
+  const { loading, total, active, unlocking, unlocked, unlockingEntries } =
+    useStakingBalance();
 
   return (
     <div className="flex flex-col gap-2">
@@ -122,6 +124,12 @@ function StakingBalance() {
           title="Unbonding"
           value={unlocking?.toString() || 0}
           isLoading={loading}
+          tooltipContent={
+            <UnbondingTooltip
+              unlocking={unlocking}
+              unlockingEntries={unlockingEntries}
+            />
+          }
         />
         <div className="flex items-center gap-2 max-sm:items-end max-sm:gap-0 max-sm:flex-col">
           <AccountBalanceItem
