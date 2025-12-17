@@ -146,6 +146,10 @@ const bifrost = {
     voting: "bifrost",
   },
   treasuryProposalTracks: bifrostKusamaTracks,
+  vaultWalletConfig: {
+    relayChainGenesisHash:
+      "0x9f28c6a68e0fc9646eff64935684f6eeeece527e37bbe1f213d22caa1d9d6bed",
+  },
 };
 
 export default bifrost;

@@ -124,6 +124,10 @@ const kusama = {
   supportAssets: true,
   bountyIdentity: true,
   hideHeight: true,
+  vaultWalletConfig: {
+    relayChainGenesisHash:
+      "0xb0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafe",
+  },
 };
 
 export default kusama;

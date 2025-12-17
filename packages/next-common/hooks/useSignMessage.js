@@ -44,7 +44,8 @@ export function useSignMessage() {
         return signature;
       }
       if (walletName === WalletTypes.POLKADOT_VAULT) {
-        const genesisHash = chainSetting?.vaultWallet?.relayChainGenesisHash;
+        const genesisHash =
+          chainSetting?.vaultWalletConfig?.relayChainGenesisHash;
 
         if (!genesisHash) {
           throw new Error(
@@ -76,7 +77,7 @@ export function useSignMessage() {
       return signature;
     },
     [
-      chainSetting?.vaultWallet?.relayChainGenesisHash,
+      chainSetting?.vaultWalletConfig?.relayChainGenesisHash,
       injectedWeb3,
       signMessage,
       signWcMessage,
