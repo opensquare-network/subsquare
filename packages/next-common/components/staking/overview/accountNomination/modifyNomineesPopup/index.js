@@ -81,7 +81,7 @@ function ModifyNomineesPopupContent() {
           {hasNominees ? (
             <ValidatorsList
               titleClassName="bg-neutral200"
-              contentClassName="max-h-[480px] overflow-y-auto bg-neutral200"
+              contentClassName="bg-neutral200"
               nominees={nominees}
               activeNominees={active || []}
               isLoading={isNomineesStatusLoading}
