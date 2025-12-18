@@ -7,9 +7,6 @@ export const NATIVE_ASSET_ID = "0";
 export const HUB_ID = "1";
 export const TRILL = 12;
 export const QUINTILL = 18;
-export const GHO_SYMBOL = "HOLLAR";
-export const GDOT_STABLESWAP_ASSET_ID = "690";
-export const GETH_STABLESWAP_ASSET_ID = "4200";
 
 export const bannedAssets = ["1000042"];
 
@@ -41,16 +38,6 @@ export const ASSETHUB_ID_BLACKLIST = [
   "50000033",
   "50000034",
 ];
-
-export const PASEO_WS_URL = "wss://paseo-rpc.play.hydration.cloud";
-export const TESTNET_URL = ["wss://rpc.nice.hydration.cloud", PASEO_WS_URL];
-
-export const isPaseoRpcUrl = (rpcUrl) => rpcUrl === PASEO_WS_URL;
-
-export const isTestnetRpcUrl = (rpcUrl) => {
-  const dataEnv = TESTNET_URL.includes(rpcUrl) ? "testnet" : "mainnet";
-  return dataEnv === "testnet";
-};
 
 export const TYPE_MAPPING = {
   aave: "Aave",

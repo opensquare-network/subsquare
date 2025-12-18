@@ -2,7 +2,7 @@ import BigNumber from "bignumber.js";
 import { BN } from "@polkadot/util";
 import { BN_NAN, TRILL, QUINTILL } from "./constants";
 
-export function normalizeBigNumber(value) {
+function normalizeBigNumber(value) {
   if (value == null) return null;
 
   if (BigNumber.isBigNumber(value)) return value;

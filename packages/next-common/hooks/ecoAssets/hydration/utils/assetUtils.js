@@ -1,7 +1,7 @@
 import { isNil } from "lodash-es";
 import { findNestedKey } from "@galacticcouncil/sdk";
 
-export const internalIds = new Map([
+const internalIds = new Map([
   ["9999", "1000106"],
   ["100", "1000053"],
   ["482", undefined],
@@ -123,27 +123,6 @@ export const external = [
     internalId: "1000038",
   },
 ];
-
-function numToBuffer(num) {
-  const arr = new Uint8Array(4);
-  for (let i = 0; i < 4; i++) arr.set([num / 0x100 ** i], 3 - i);
-  return Buffer.from(arr);
-}
-
-export function getAddressFromAssetId(assetId) {
-  try {
-    const tokenAddress = Buffer.from(
-      "0000000000000000000000000000000100000000",
-      "hex",
-    );
-    const assetIdBuffer = numToBuffer(+assetId);
-    assetIdBuffer.copy(tokenAddress, 16);
-
-    return "0x" + tokenAddress.toString("hex");
-  } catch {
-    return "";
-  }
-}
 
 export const fallbackAsset = {
   id: "",
