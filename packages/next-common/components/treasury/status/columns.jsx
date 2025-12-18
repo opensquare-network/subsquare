@@ -1,7 +1,8 @@
-import { pick } from "lodash-es";
+import { isEmpty, pick } from "lodash-es";
 import Tooltip from "next-common/components/tooltip";
 import { AddressUser } from "next-common/components/user";
 import ValueDisplay from "next-common/components/valueDisplay";
+import { cn } from "next-common/utils";
 
 export function getBeneficiariesIdColumn() {
   return {
@@ -71,6 +72,42 @@ export function getBeneficiariesValueAtProposedTimeColumn() {
   };
 }
 
+export function getBeneficiariesTagsColumn() {
+  return {
+    name: "Tags",
+    style: {
+      width: "180px",
+    },
+    cellRender(data) {
+      return <BeneficiariesTags tags={data.tags} />;
+    },
+  };
+}
+
+function BeneficiariesTags({ tags = [] }) {
+  if (isEmpty(tags)) {
+    return <span className="text14Medium text-textTertiary">-</span>;
+  }
+
+  return (
+    <Tooltip content={tags.join(", ")}>
+      <div className="max-w-[160px] truncate">
+        {tags.map((tag) => (
+          <span
+            key={tag}
+            className={cn(
+              "text14Medium text-textTertiary capitalize",
+              "after:content-[','] after:inline-block",
+              "last:after:content-['']",
+            )}
+          >
+            {tag}
+          </span>
+        ))}
+      </div>
+    </Tooltip>
+  );
+}
 const proposalKeys = {
   bounties: {
     key: "B",
