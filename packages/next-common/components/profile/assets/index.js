@@ -14,6 +14,10 @@ import {
 import { useChain } from "next-common/context/chain";
 import { isAssetHubChain } from "next-common/utils/chain";
 import ProfileHydrationAssets from "next-common/components/profile/hydrationAssets";
+import {
+  HydrationBalanceProvider,
+  useHydrationBalance,
+} from "next-common/components/profile/hydrationAssets/context/hydrationBalanceContext";
 
 function ProfileAssetsInContext() {
   const chain = useChain();
@@ -58,12 +62,17 @@ function ProfileTransfers() {
   );
 }
 
-export default function ProfileAssets() {
+function ProfileAssetsContent() {
+  const { showHydrationAssets } = useHydrationBalance();
+
   return (
     <AssetHubTabsProvider>
       <AssetMetadataProvider>
         <div className="flex flex-col gap-[16px]">
-          <AssetHubTabs customLabels={{ [TABS.hydration]: "Hydration" }}>
+          <AssetHubTabs
+            customLabels={{ [TABS.hydration]: "Hydration" }}
+            showHydrationTab={showHydrationAssets}
+          >
             <ProfileAssetsInContext />
             <ProfileTransfers />
             <ProfileHydrationAssets />
@@ -71,5 +80,13 @@ export default function ProfileAssets() {
         </div>
       </AssetMetadataProvider>
     </AssetHubTabsProvider>
+  );
+}
+
+export default function ProfileAssets() {
+  return (
+    <HydrationBalanceProvider>
+      <ProfileAssetsContent />
+    </HydrationBalanceProvider>
   );
 }
