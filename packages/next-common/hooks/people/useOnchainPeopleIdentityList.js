@@ -67,7 +67,6 @@ export default function useOnchainPeopleIdentityList() {
     const subsMap = subEntries.reduce((result, [key, subsOf]) => {
       const address = getAddressFromStorageKey(key);
       result[address] = subsOf.toJSON();
-
       return result;
     }, {});
 
@@ -82,7 +81,7 @@ export default function useOnchainPeopleIdentityList() {
 
         return {
           address,
-          ...storageValue?.toJSON(),
+          ...storageValue?.toHuman(),
           status,
           subIdentities: getSubIdentity(subsMap, address),
         };
