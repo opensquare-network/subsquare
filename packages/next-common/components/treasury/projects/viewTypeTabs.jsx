@@ -23,7 +23,7 @@ export default function ViewTypeTabs({ selectedTabId, setSelectedTabId }) {
           setSelectedTabId(tabId);
         }}
         className="h-8 rounded p-1"
-        btnClassName="w-[100px] px-4 py-2 rounded max-sm:max-w-[110px]"
+        btnClassName="w-[100px] px-4 py-2 rounded max-sm:max-w-[110px] text12Medium"
         tabs={tabs}
       />
     </div>

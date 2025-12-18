@@ -2,6 +2,7 @@ import { pick } from "lodash-es";
 import Tooltip from "next-common/components/tooltip";
 import { AddressUser } from "next-common/components/user";
 import ValueDisplay from "next-common/components/valueDisplay";
+import BeneficiariesTags from "./beneficiariesTags";
 
 export function getBeneficiariesIdColumn() {
   return {
@@ -67,6 +68,18 @@ export function getBeneficiariesValueAtProposedTimeColumn() {
           prefix="$"
         />
       );
+    },
+  };
+}
+
+export function getBeneficiariesTagsColumn() {
+  return {
+    name: "Tags",
+    style: {
+      width: "220px",
+    },
+    cellRender(data) {
+      return <BeneficiariesTags tags={data.tags} maxWidth={220} />;
     },
   };
 }
