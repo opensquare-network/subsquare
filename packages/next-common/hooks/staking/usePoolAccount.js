@@ -2,7 +2,7 @@ import { bnToU8a, stringToU8a, u8aConcat } from "@polkadot/util";
 import { encodeAddress } from "@polkadot/util-crypto";
 import { isNil } from "lodash-es";
 import { useContextApi } from "next-common/context/api";
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 
 const createAccount = (index, poolId, poolsPalletId, ss58Format) => {
   const key = u8aConcat(
@@ -17,17 +17,24 @@ const createAccount = (index, poolId, poolsPalletId, ss58Format) => {
 
 export function usePoolAccounts(poolId) {
   const api = useContextApi();
-  const [stash, setStash] = useState(null);
-  const [reward, setReward] = useState(null);
 
-  useEffect(() => {
+  return useMemo(() => {
     if (!api || isNil(poolId)) {
-      return;
+      return { stash: null, reward: null };
     }
     const poolsPalletId = api.consts.nominationPools.palletId;
-    setStash(createAccount(0, poolId, poolsPalletId, api.registry.chainSS58));
-    setReward(createAccount(1, poolId, poolsPalletId, api.registry.chainSS58));
+    const stash = createAccount(
+      0,
+      poolId,
+      poolsPalletId,
+      api.registry.chainSS58,
+    );
+    const reward = createAccount(
+      1,
+      poolId,
+      poolsPalletId,
+      api.registry.chainSS58,
+    );
+    return { stash, reward };
   }, [api, poolId]);
-
-  return { stash, reward };
 }

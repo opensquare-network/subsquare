@@ -37,7 +37,14 @@ function PoolNominatorStatus({ stash }) {
   );
 }
 
-function AccountStakingImpl({ stash }) {
+export default function AccountStaking() {
+  const { poolMember } = useMyPool();
+  const { stash } = usePoolAccounts(poolMember?.poolId);
+
+  if (!stash) {
+    return null;
+  }
+
   return (
     <WindowSizeProvider>
       <MyPoolRewardProvider>
@@ -58,17 +65,6 @@ function AccountStakingImpl({ stash }) {
       </MyPoolRewardProvider>
     </WindowSizeProvider>
   );
-}
-
-export default function AccountStaking() {
-  const { poolMember } = useMyPool();
-  const { stash, loading } = usePoolAccounts(poolMember?.poolId);
-
-  if (loading) {
-    return null;
-  }
-
-  return <AccountStakingImpl stash={stash} />;
 }
 
 export function AccountStakingEmpty() {

@@ -1,12 +1,13 @@
 import { useMemo } from "react";
-import { useActiveEra } from "./useActiveEra";
 import { useMyPool } from "next-common/context/staking/myPool";
+import { useActiveEra } from "next-common/context/staking/activeEra";
+import { isNil } from "lodash-es";
 
 export function useMyPoolBalance(myPool) {
-  const { activeEra } = useActiveEra();
+  const { activeEraIndex, loading } = useActiveEra();
 
   return useMemo(() => {
-    if (!myPool || !activeEra) {
+    if (!myPool || loading || isNil(activeEraIndex)) {
       return null;
     }
     const active = BigInt(myPool.points);
@@ -20,7 +21,7 @@ export function useMyPoolBalance(myPool) {
     let unlocked = 0n;
     const unlockingEntries = [];
     for (const { era, value } of unbonding) {
-      if (activeEra && era <= activeEra.index) {
+      if (era <= activeEraIndex) {
         unlocked += value;
       } else {
         unlocking += value;
@@ -33,7 +34,7 @@ export function useMyPoolBalance(myPool) {
       unlockingEntries,
       unlocked,
     };
-  }, [myPool, activeEra]);
+  }, [myPool, activeEraIndex, loading]);
 }
 
 export function useMyPoolInfo() {
