@@ -1,6 +1,4 @@
-import { isNil } from "lodash-es";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
-import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import { useMyStakingLedger } from "next-common/context/staking/myStakingLedger";
 import { useValidatorsWithStatus } from "next-common/hooks/staking/useValidatorWithStatus";
 import { cn } from "next-common/utils";
@@ -9,7 +7,9 @@ import { useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import NominatorQuickActions from "./quickActions";
 import Divider from "next-common/components/styled/layout/divider";
-import WindowSizeProvider from "next-common/context/windowSize";
+import WindowSizeProvider, {
+  useWindowWidthContext,
+} from "next-common/context/windowSize";
 import CollapsePanel from "next-common/components/overview/accountInfo/components/collapsePanel";
 import { AccountBalanceItem } from "next-common/components/overview/accountInfo/components/accountBalances";
 import useStakingBalance from "./useStakingBalance";
@@ -76,9 +76,10 @@ export function NominatorStatus({ title, nominator, nominees }) {
   );
 }
 
-function Header({ width }) {
+function Header() {
   const realAddress = useRealAddress();
   const { nominators } = useMyStakingLedger();
+  const width = useWindowWidthContext();
 
   return (
     <div className="flex flex-col gap-2">
@@ -146,19 +147,14 @@ function StakingBalance() {
 }
 
 export default function AccountNomination() {
-  const { width } = useWindowSize();
   const realAddress = useRealAddress();
-
-  if (isNil(width)) {
-    return null;
-  }
 
   return (
     <WindowSizeProvider>
       <ValidatorsProvider>
         <NominatorUnClaimedRewardsProvider nominatorAddress={realAddress}>
           <NeutralPanel className="p-6 space-y-4">
-            <Header width={width} />
+            <Header />
             <Divider />
             <div className="flex max-lg:flex-col w-full gap-2">
               <div className="flex-1 max-lg:flex-none min-w-0">

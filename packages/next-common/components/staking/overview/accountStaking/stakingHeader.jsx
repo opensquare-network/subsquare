@@ -7,6 +7,7 @@ import { usePoolMetadata } from "next-common/hooks/staking/usePoolMetadata";
 import { cn } from "next-common/utils";
 import { BondButton } from "./bondButton";
 import { UnBondButton } from "./unbondButton";
+import { useWindowWidthContext } from "next-common/context/windowSize";
 
 function PoolAccount({ poolId }) {
   const { stash, reward } = usePoolAccounts(poolId);
@@ -34,8 +35,9 @@ function PoolAccount({ poolId }) {
   );
 }
 
-export default function StakingHeader({ width }) {
+export default function StakingHeader() {
   const { myPool, loading } = useMyPoolInfo();
+  const width = useWindowWidthContext();
 
   if (loading || isNil(myPool)) {
     return null;

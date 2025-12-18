@@ -1,4 +1,3 @@
-import { isNil } from "lodash-es";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
 import StakingHeader from "./stakingHeader";
@@ -39,17 +38,11 @@ function PoolNominatorStatus({ stash }) {
 }
 
 function AccountStakingImpl({ stash }) {
-  const { width } = useWindowSize();
-
-  if (isNil(width)) {
-    return null;
-  }
-
   return (
-    <MyPoolRewardProvider>
-      <WindowSizeProvider>
+    <WindowSizeProvider>
+      <MyPoolRewardProvider>
         <NeutralPanel className="p-6 space-y-4">
-          <StakingHeader width={width} />
+          <StakingHeader />
           <Divider />
           <PoolNominatorStatus stash={stash} />
           <Divider />
@@ -62,8 +55,8 @@ function AccountStakingImpl({ stash }) {
             </div>
           </div>
         </NeutralPanel>
-      </WindowSizeProvider>
-    </MyPoolRewardProvider>
+      </MyPoolRewardProvider>
+    </WindowSizeProvider>
   );
 }
 
