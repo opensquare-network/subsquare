@@ -9,9 +9,9 @@ import useOnchainPeopleIdentityInfo from "next-common/hooks/people/useOnchainPeo
 
 export default function OnchainPeopleIdentitiesPage() {
   const { description } = useChainSettings();
-  const { data: identitieList, isLoading } = useOnchainPeopleIdentityList();
+  const { data: identityList, isLoading } = useOnchainPeopleIdentityList();
   const { stats, isLoading: isSummaryLoading } =
-    useOnchainPeopleIdentityInfo(identitieList);
+    useOnchainPeopleIdentityInfo(identityList);
 
   return (
     <ListLayout
@@ -27,7 +27,7 @@ export default function OnchainPeopleIdentitiesPage() {
       tabs={tabs}
     >
       <div className="space-y-6">
-        <IdentitiesTable identitieList={identitieList} isLoading={isLoading} />
+        <IdentitiesTable identityList={identityList} isLoading={isLoading} />
       </div>
     </ListLayout>
   );

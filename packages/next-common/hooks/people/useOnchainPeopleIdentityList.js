@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useContextApi } from "next-common/context/api";
 import useCall from "next-common/utils/hooks/useCall";
 
@@ -37,6 +37,18 @@ function isDepositZero(storageValue) {
 
   return deposit === 0;
 }
+function getAddressFromStorageKey(storageKey) {
+  if (storageKey.args[0]) {
+    return storageKey.args[0].toString();
+  }
+}
+const getSubIdentity = (subsMap, address) => {
+  return (subsMap[address]?.[1] || []).map((address) => {
+    return {
+      address,
+    };
+  });
+};
 
 export default function useOnchainPeopleIdentityList() {
   const [isLoading, setIsLoading] = useState(true);
@@ -46,11 +58,18 @@ export default function useOnchainPeopleIdentityList() {
     api?.query?.identity?.identityOf?.entries,
     [],
   );
+  const { value: subEntries, loaded: subMapLoaded } = useCall(
+    api?.query?.identity?.subsOf?.entries,
+    [],
+  );
 
-  useEffect(() => {
-    if (!loaded) {
-      return;
-    }
+  const getIdentityData = useCallback(() => {
+    const subsMap = subEntries.reduce((result, [key, subsOf]) => {
+      const address = getAddressFromStorageKey(key);
+      result[address] = subsOf.toJSON();
+
+      return result;
+    }, {});
 
     const results = (value || [])
       .map(([storageKey, storageValue]) => {
@@ -65,13 +84,21 @@ export default function useOnchainPeopleIdentityList() {
           address,
           ...storageValue?.toJSON(),
           status,
+          subIdentities: getSubIdentity(subsMap, address),
         };
       })
       ?.filter(Boolean);
 
     setData(results);
     setIsLoading(false);
-  }, [loaded, value]);
+  }, [subEntries, value]);
+
+  useEffect(() => {
+    if (!loaded || !subMapLoaded) {
+      return;
+    }
+    getIdentityData();
+  }, [getIdentityData, loaded, subMapLoaded]);
 
   return {
     isLoading,
