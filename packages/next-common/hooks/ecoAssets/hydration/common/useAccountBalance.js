@@ -16,12 +16,12 @@ export default function useAccountBalance(
   const { all = [], native, shareTokens = [] } = allAssets ?? {};
   const sdk = useHydrationSDK();
 
-  const fetchBalance = useCallback(async () => {
+  const fetchBalance = useCallback(async (isCancelled) => {
     const { client } = sdk ?? {};
     const { balanceV2 } = client ?? {};
     const followedAssets = [...shareTokens];
     const followedErc20Tokens = [];
-    if (allAssetsLoading || !sdk) {
+    if (allAssetsLoading || !sdk || isCancelled()) {
       return;
     }
 
@@ -36,6 +36,8 @@ export default function useAccountBalance(
         }
       }
       const systemBalanceObj = await balanceV2.getSystemBalance(address);
+      if (isCancelled()) return;
+      
       const tokenBalanceObj = await Promise.all(
         followedAssets.map(async (asset) => {
           const balance = await balanceV2.getTokenBalance(address, asset.id);
@@ -50,19 +52,36 @@ export default function useAccountBalance(
           return { balance, asset };
         }),
       );
+      if (isCancelled()) return;
 
-      setSystemBalance(systemBalanceObj);
-      setTokenBalances(tokenBalanceObj);
-      setErc20Balances(erc20BalanceObj);
+      if (!isCancelled()) {
+        setSystemBalance(systemBalanceObj);
+        setTokenBalances(tokenBalanceObj);
+        setErc20Balances(erc20BalanceObj);
+      }
     } catch (error) {
-      console.error("Error fetching account balance:", error);
+      if (!isCancelled()) {
+        console.error("Error fetching account balance:", error);
+        setSystemBalance(null);
+        setTokenBalances([]);
+        setErc20Balances([]);
+      }
     } finally {
-      setIsLoading(false);
+      if (!isCancelled()) {
+        setIsLoading(false);
+      }
     }
   }, [address, all, allAssetsLoading, sdk, shareTokens]);
 
   useEffect(() => {
-    fetchBalance();
+    let cancelled = false;
+    const isCancelled = () => cancelled;
+    
+    fetchBalance(isCancelled);
+    
+    return () => {
+      cancelled = true;
+    };
   }, [fetchBalance]);
 
   const balances = useMemo(() => {

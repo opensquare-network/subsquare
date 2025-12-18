@@ -77,25 +77,43 @@ export default function useAssetsTotal(address) {
 
   const { ctx } = sdk ?? {};
 
-  const fetchData = useCallback(async () => {
-    if (allAssetsLoading || accountBalanceLoading || !ctx || !sdk) {
+  const fetchData = useCallback(async (isCancelled) => {
+    if (allAssetsLoading || accountBalanceLoading || !ctx || !sdk || isCancelled()) {
       return;
     }
 
     setIsLoading(true);
     try {
       await ctx.pool.syncRegistry(external);
+      if (isCancelled()) return;
+
       const totalBalance = await calculateTotalBalance(sdk, balances);
-      setAssetsBalance(totalBalance);
+      if (isCancelled()) return;
+
+      if (!isCancelled()) {
+        setAssetsBalance(totalBalance);
+      }
     } catch (error) {
-      console.error(error);
+      if (!isCancelled()) {
+        console.error("Error calculating assets total:", error);
+        setAssetsBalance("0");
+      }
     } finally {
-      setIsLoading(false);
+      if (!isCancelled()) {
+        setIsLoading(false);
+      }
     }
   }, [allAssetsLoading, accountBalanceLoading, ctx, balances, sdk]);
 
   useEffect(() => {
-    fetchData();
+    let cancelled = false;
+    const isCancelled = () => cancelled;
+
+    fetchData(isCancelled);
+
+    return () => {
+      cancelled = true;
+    };
   }, [fetchData]);
 
   return { balance: assetsBalance, isLoading };

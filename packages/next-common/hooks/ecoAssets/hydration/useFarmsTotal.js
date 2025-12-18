@@ -51,8 +51,12 @@ const useAllXYKDeposits = (address) => {
         const index = asset.id;
         const shares = depositNft.data.shares;
         const ratio = BigNumber(shares).div(shareTokenIssuance);
+        const spotPrice =
+          shareTokeSpotPrices.data?.find(
+            (price) => price.tokenIn === asset.id,
+          )?.spotPrice ?? 1;
         const amountUSD = scaleHuman(shareTokenIssuance, asset.decimals)
-          .multipliedBy(shareTokeSpotPrices.data?.[0]?.spotPrice ?? 1)
+          .multipliedBy(spotPrice)
           .times(ratio);
 
         const [assetA, assetB] = pool.tokens.map((token) => {

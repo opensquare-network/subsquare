@@ -47,7 +47,7 @@ export function useOmniPoolTokens() {
       setIsLoading(true);
       let omnipoolTokens = [];
       const pools = await getTargetTypePools(api, TYPE_MAPPING.omnipool);
-      pools?.map((pool) => {
+      pools?.forEach((pool) => {
         const tokens = pool?.tokens ?? [];
         for (const tokenRaw of tokens) {
           const token = {

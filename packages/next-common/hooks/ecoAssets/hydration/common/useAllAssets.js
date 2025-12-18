@@ -23,8 +23,8 @@ export default function useAllAssets() {
   const [allAssets, setAllAssets] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchAllAssets = useCallback(async () => {
-    if (!client || !api) {
+  const fetchAllAssets = useCallback(async (isCancelled) => {
+    if (!client || !api || isCancelled()) {
       return;
     }
 
@@ -118,21 +118,34 @@ export default function useAllAssets() {
         { shareTokens: [], shareTokensMap: new Map([]) },
       );
 
-      setAllAssets({
-        ...allAssets,
-        shareTokensRaw,
-        shareTokens,
-        shareTokensMap,
-      });
+      if (!isCancelled()) {
+        setAllAssets({
+          ...allAssets,
+          shareTokensRaw,
+          shareTokens,
+          shareTokensMap,
+        });
+      }
     } catch (error) {
-      console.error("Error fetching assets:", error);
+      if (!isCancelled()) {
+        console.error("Error fetching assets:", error);
+      }
     } finally {
-      setLoading(false);
+      if (!isCancelled()) {
+        setLoading(false);
+      }
     }
   }, [api, client]);
 
   useEffect(() => {
-    fetchAllAssets();
+    let cancelled = false;
+    const isCancelled = () => cancelled;
+    
+    fetchAllAssets(isCancelled);
+    
+    return () => {
+      cancelled = true;
+    };
   }, [fetchAllAssets]);
 
   return { allAssets, loading };

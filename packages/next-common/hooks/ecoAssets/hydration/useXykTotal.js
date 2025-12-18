@@ -38,7 +38,7 @@ export default function useXykTotal(address) {
   );
 
   const xykTotal = useMemo(() => {
-    if (!shareTokenBalances || !spotPrices.data || isLoading) return BN_NAN;
+    if (!shareTokenBalances || !spotPrices.data || isLoading) return "0";
     return shareTokenBalances.reduce((acc, { asset, balance }) => {
       const transferable = BigNumber(balance.transferable);
 

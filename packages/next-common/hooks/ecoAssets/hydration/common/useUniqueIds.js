@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useHydrationApi } from "next-common/hooks/chain/useHydrationApi";
+import { useHydrationApi } from "next-common/hooks/ecoAssets/hydration/context/hydrationSDKContext";
 
 export default function useUniqueIds() {
   const [data, setData] = useState(null);

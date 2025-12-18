@@ -1,5 +1,5 @@
 import useUniqueIds from "./useUniqueIds";
-import { useHydrationApi } from "next-common/hooks/chain/useHydrationApi";
+import { useHydrationApi } from "next-common/hooks/ecoAssets/hydration/context/hydrationSDKContext";
 import { useEffect, useState, useCallback } from "react";
 import { parseNfts, parceLiquidityPositions, parseDepositData } from "../utils";
 

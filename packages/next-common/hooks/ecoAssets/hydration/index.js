@@ -28,11 +28,16 @@ export default function useHydrationTotalAssetsBalance(address) {
       return "0";
     }
 
-    return BigNumber(assetsTotal)
-      .plus(farmsTotal)
-      .plus(lpTotal)
-      .plus(xykTotal)
-      .minus(borrowsTotal)
+    const values = [assetsTotal, farmsTotal, lpTotal, xykTotal, borrowsTotal];
+    if (values.some((v) => v === null || v === undefined)) {
+      return "0";
+    }
+
+    return BigNumber(assetsTotal || 0)
+      .plus(farmsTotal || 0)
+      .plus(lpTotal || 0)
+      .plus(xykTotal || 0)
+      .minus(borrowsTotal || 0)
       .toString();
   }, [isLoading, assetsTotal, farmsTotal, lpTotal, xykTotal, borrowsTotal]);
 
