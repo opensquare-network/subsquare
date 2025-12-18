@@ -2,7 +2,7 @@ import React from "react";
 import useFellowshipReferendaCurveChartData from "./useFellowshipReferendaCurveChartData";
 import { Line } from "react-chartjs-2";
 import hoverLinePlugin from "next-common/components/charts/plugins/hoverLine";
-import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import { useWindowWidthContext } from "next-common/context/windowSize";
 import { useReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 import useFellowshipCurveChartOptions from "./useFellowshipCurveChartOptions";
@@ -18,7 +18,7 @@ export default function FellowshipCurveChart() {
 }
 
 function FellowshipCurveChartWithContext() {
-  const { width } = useWindowSize();
+  const width = useWindowWidthContext();
   const { labels, datasets, supportData, approvalData } =
     useFellowshipReferendaCurveChartData();
   const options = useFellowshipCurveChartOptions(

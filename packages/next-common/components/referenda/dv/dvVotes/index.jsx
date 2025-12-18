@@ -1,7 +1,7 @@
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import { useWindowWidthContext } from "next-common/context/windowSize";
 import { TabsTitle } from "../common/styled";
 import { VoteIndicator } from "../common/voteIndicator";
 import Divider from "next-common/components/styled/layout/divider";
@@ -43,7 +43,7 @@ export function DvReferendaVotesImpl({ delegates = [] }) {
   const scrollerXRef = useRef();
   const [showLeft, setShowLeft] = useState(false);
   const [showRight, setShowRight] = useState(false);
-  const { width } = useWindowSize();
+  const width = useWindowWidthContext();
   const { filteredReferenda, loading } = useFilteredDvReferenda();
   const filteredVotes = useFilteredDvVotes();
 

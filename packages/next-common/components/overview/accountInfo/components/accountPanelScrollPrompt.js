@@ -5,7 +5,7 @@ import { MultisigPrompt } from "./useMultisigPrompt";
 import AssetsManagePrompt from "./useAssetsManagePrompt";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { animate } from "framer-motion";
-import { useWindowSize } from "react-use";
+import { useWindowWidthContext } from "next-common/context/windowSize";
 import { Fragment } from "react";
 import AccountUnlockBalancePrompt from "./accountUnlockBalancePrompt";
 
@@ -24,7 +24,7 @@ const promptComponents = [
 
 export default function AccountPanelScrollPrompt() {
   const wrapperRef = useRef();
-  const { width } = useWindowSize();
+  const width = useWindowWidthContext();
   const isMobile = width < 768;
   const [total, setTotal] = useState(0);
   const pauseRef = useRef(false);

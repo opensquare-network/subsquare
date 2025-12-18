@@ -1,6 +1,6 @@
 import { useMemo, useEffect, useState } from "react";
 import { isNil } from "lodash-es";
-import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import { useWindowWidthContext } from "next-common/context/windowSize";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 import MobileForeignAssetsList from "./mobileForeignAssetsList";
 import DesktopForeignAssetsList from "./desktopForeignAssetsList";
@@ -26,7 +26,7 @@ function ForeignAssetsTitle({ assetsCount, loading }) {
 
 export default function ForeignAssetsList() {
   const { allForeignAssets, loading } = useAllForeignAssetsContext();
-  const { width } = useWindowSize();
+  const width = useWindowWidthContext();
   const [searchValue, setSearchValue] = useState("");
   const filteredAssets = useSearchAllForeignAssets(
     allForeignAssets,

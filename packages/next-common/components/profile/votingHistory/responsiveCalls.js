@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import nextApi from "next-common/services/nextApi";
 import { usePageProps } from "next-common/context/page";
 import { ListCard } from "./styled";
-import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import { useWindowWidthContext } from "next-common/context/windowSize";
 import VoteCallsList from "./voteCallsList";
 import FellowshipVoteCallsList from "./fellowshipVoteCallsList";
 import MobileVoteCallsList from "./mobile/voteCallsList";
@@ -15,7 +15,7 @@ export default function ResponsiveCalls() {
   const [data, setData] = useState();
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const { width } = useWindowSize();
+  const width = useWindowWidthContext();
   const module = useModuleName();
   const isFellowship = useIsFellowship();
 
