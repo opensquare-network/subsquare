@@ -1,5 +1,5 @@
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
-import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import { useWindowWidthContext } from "next-common/context/windowSize";
 import StakingHeader from "./stakingHeader";
 import StakingBalance from "./stakingBalance";
 import Divider from "next-common/components/styled/layout/divider";
@@ -7,7 +7,6 @@ import { useMyPool } from "next-common/context/staking/myPool";
 import Link from "next/link";
 import { MyPoolRewardProvider } from "next-common/context/staking/poolReward";
 import PoolReward from "./poolReward";
-import WindowSizeProvider from "next-common/context/windowSize";
 import { NominatorStatus } from "../accountNomination";
 import { usePoolAccounts } from "next-common/hooks/staking/usePoolAccount";
 import { useStakingLedgers } from "next-common/hooks/useStakingLedgers";
@@ -15,7 +14,7 @@ import { cn } from "next-common/utils";
 import CheckNomineesButton from "../accountNomination/checkNomineesButton";
 
 function PoolNominatorStatus({ stash }) {
-  const { width } = useWindowSize();
+  const width = useWindowWidthContext();
   const { nominators } = useStakingLedgers(stash);
 
   return (
@@ -46,24 +45,22 @@ export default function AccountStaking() {
   }
 
   return (
-    <WindowSizeProvider>
-      <MyPoolRewardProvider>
-        <NeutralPanel className="p-6 space-y-4">
-          <StakingHeader />
-          <Divider />
-          <PoolNominatorStatus stash={stash} />
-          <Divider />
-          <div className="flex max-lg:flex-col w-full gap-2">
-            <div className="flex-1 max-lg:flex-none min-w-0">
-              <StakingBalance />
-            </div>
-            <div className="flex-1 max-lg:flex-none min-w-0">
-              <PoolReward />
-            </div>
+    <MyPoolRewardProvider>
+      <NeutralPanel className="p-6 space-y-4">
+        <StakingHeader />
+        <Divider />
+        <PoolNominatorStatus stash={stash} />
+        <Divider />
+        <div className="flex max-lg:flex-col w-full gap-2">
+          <div className="flex-1 max-lg:flex-none min-w-0">
+            <StakingBalance />
           </div>
-        </NeutralPanel>
-      </MyPoolRewardProvider>
-    </WindowSizeProvider>
+          <div className="flex-1 max-lg:flex-none min-w-0">
+            <PoolReward />
+          </div>
+        </div>
+      </NeutralPanel>
+    </MyPoolRewardProvider>
   );
 }
 

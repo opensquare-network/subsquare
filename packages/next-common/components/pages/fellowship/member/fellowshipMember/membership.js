@@ -18,7 +18,6 @@ import FellowshipRank from "next-common/components/fellowship/rank";
 import Divider from "next-common/components/styled/layout/divider";
 import Period from "next-common/components/fellowship/params/period";
 import { cn } from "next-common/utils";
-import WindowSizeProvider from "next-common/context/windowSize";
 import { Skeleton } from "next-common/components/skeleton";
 import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
 
@@ -34,32 +33,30 @@ export default function Membership() {
     useMemberWithStatus(member);
 
   return (
-    <WindowSizeProvider>
-      <SecondaryCard>
-        <CardTitle>Status</CardTitle>
+    <SecondaryCard>
+      <CardTitle>Status</CardTitle>
 
-        {isLoading ? (
-          <MembershipLoading />
-        ) : activeMember ? (
-          <div className="gap-y-4 flex flex-col">
-            <ProfileFellowshipStatisticsInfoImpl
-              rank={activeMember?.rank}
-              isRankLoading={isLoading || isNil(activeMember)}
-            />
+      {isLoading ? (
+        <MembershipLoading />
+      ) : activeMember ? (
+        <div className="gap-y-4 flex flex-col">
+          <ProfileFellowshipStatisticsInfoImpl
+            rank={activeMember?.rank}
+            isRankLoading={isLoading || isNil(activeMember)}
+          />
 
-            <Divider />
+          <Divider />
 
-            <PeriodProgress
-              fellowshipParams={fellowshipParams}
-              activeMember={activeMember}
-              isLoading={isLoading || isNil(activeMember)}
-            />
-          </div>
-        ) : (
-          <NotImported />
-        )}
-      </SecondaryCard>
-    </WindowSizeProvider>
+          <PeriodProgress
+            fellowshipParams={fellowshipParams}
+            activeMember={activeMember}
+            isLoading={isLoading || isNil(activeMember)}
+          />
+        </div>
+      ) : (
+        <NotImported />
+      )}
+    </SecondaryCard>
   );
 }
 

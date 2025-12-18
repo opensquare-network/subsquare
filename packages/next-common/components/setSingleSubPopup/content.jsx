@@ -9,7 +9,6 @@ import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import SignerWithBalance from "../signerPopup/signerWithBalance";
 import { noop, isEmpty } from "lodash-es";
-import WindowSizeProvider from "next-common/context/windowSize";
 import RightWrapper from "next-common/components/rightWraper";
 import { SubItem } from "../setSubsPopup/subItem";
 import { SubIdentityDepositDisplay } from "../setSubsPopup/content";
@@ -81,31 +80,29 @@ export default function SetSingleSubPopupContent({ subs }) {
   }, [dispatch, retry]);
 
   return (
-    <WindowSizeProvider>
-      <div className="space-y-4">
-        <SignerWithBalance />
+    <div className="space-y-4">
+      <SignerWithBalance />
 
-        <SubItem
-          subId={0}
-          sub={sub}
-          selectedList={[sub.address]}
-          updateSubField={updateSubField}
-          onRemove={() => {}}
-          extensionAccounts={options}
-          showRemove={false}
+      <SubItem
+        subId={0}
+        sub={sub}
+        selectedList={[sub.address]}
+        updateSubField={updateSubField}
+        onRemove={() => {}}
+        extensionAccounts={options}
+        showRemove={false}
+      />
+
+      <SingleSubDeposit />
+
+      <RightWrapper>
+        <TxSubmissionButton
+          disabled={submitIsDisabled}
+          title="Submit"
+          getTxFunc={getTxFunc}
+          onInBlock={onInBlock}
         />
-
-        <SingleSubDeposit />
-
-        <RightWrapper>
-          <TxSubmissionButton
-            disabled={submitIsDisabled}
-            title="Submit"
-            getTxFunc={getTxFunc}
-            onInBlock={onInBlock}
-          />
-        </RightWrapper>
-      </div>
-    </WindowSizeProvider>
+      </RightWrapper>
+    </div>
   );
 }

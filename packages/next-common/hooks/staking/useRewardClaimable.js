@@ -6,7 +6,7 @@ export function useRewardClaimable() {
   const api = useContextApi();
   const realAddress = useRealAddress();
   const [claimable, setClaimable] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!api) {

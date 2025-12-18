@@ -17,9 +17,7 @@ import { MyStakingLedgerProvider } from "next-common/context/staking/myStakingLe
 import { useMyStakingLedger } from "next-common/context/staking/myStakingLedger";
 import Loading from "next-common/components/loading";
 import { ActiveEraStakersProvider } from "next-common/context/staking/currentEraStakers";
-import WindowSizeProvider, {
-  useWindowWidthContext,
-} from "next-common/context/windowSize";
+import { useWindowWidthContext } from "next-common/context/windowSize";
 
 const isStakingSupported = !!getChainSettings(CHAIN).modules?.staking;
 
@@ -80,30 +78,28 @@ export default function StakingPage() {
   }
 
   return (
-    <WindowSizeProvider>
-      <RelayChainApiProvider>
-        <MyPoolProvider>
-          <MyStakingLedgerProvider>
-            <ListLayout
-              title={"Overview"}
-              seoInfo={{ title: "" }}
-              description={"An overview of your staking status, rewards."}
-              summary={<StakingOverviewSummary />}
-            >
-              {!realAddress ? (
-                <div className="h-full flex items-center justify-center">
-                  <NoWalletConnected text="Connect wallet to participate in staking." />
-                </div>
-              ) : (
-                <div className="space-y-6">
-                  <MyStaking />
-                </div>
-              )}
-            </ListLayout>
-          </MyStakingLedgerProvider>
-        </MyPoolProvider>
-      </RelayChainApiProvider>
-    </WindowSizeProvider>
+    <RelayChainApiProvider>
+      <MyPoolProvider>
+        <MyStakingLedgerProvider>
+          <ListLayout
+            title={"Overview"}
+            seoInfo={{ title: "" }}
+            description={"An overview of your staking status, rewards."}
+            summary={<StakingOverviewSummary />}
+          >
+            {!realAddress ? (
+              <div className="h-full flex items-center justify-center">
+                <NoWalletConnected text="Connect wallet to participate in staking." />
+              </div>
+            ) : (
+              <div className="space-y-6">
+                <MyStaking />
+              </div>
+            )}
+          </ListLayout>
+        </MyStakingLedgerProvider>
+      </MyPoolProvider>
+    </RelayChainApiProvider>
   );
 }
 

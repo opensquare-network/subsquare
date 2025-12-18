@@ -6,9 +6,7 @@ import BigNumber from "bignumber.js";
 import { abbreviateBigNumber } from "next-common/utils";
 import { useNavCollapsed } from "next-common/context/nav";
 import { cn } from "next-common/utils";
-import WindowSizeProvider, {
-  useWindowWidthContext,
-} from "next-common/context/windowSize";
+import { useWindowWidthContext } from "next-common/context/windowSize";
 import { useChainSettings } from "next-common/context/chain";
 
 export function useIsMobile() {
@@ -141,15 +139,13 @@ export function Locked() {
 
 export default function AccountBalances() {
   return (
-    <WindowSizeProvider>
-      <CollapsePanel
-        className="w-[300px] [&>*:not(:last-child)]:mb-1"
-        labelItem={<TotalBalance />}
-      >
-        <Transferrable />
-        <Reserved />
-        <Locked />
-      </CollapsePanel>
-    </WindowSizeProvider>
+    <CollapsePanel
+      className="w-[300px] [&>*:not(:last-child)]:mb-1"
+      labelItem={<TotalBalance />}
+    >
+      <Transferrable />
+      <Reserved />
+      <Locked />
+    </CollapsePanel>
   );
 }

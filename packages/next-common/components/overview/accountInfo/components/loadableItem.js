@@ -25,8 +25,8 @@ export default function LoadableItem({
       >
         {title}
       </span>
-      <LoadableContent isLoading={isLoading}>
-        <div className={cn("text-textPrimary text16Bold", valueClassName)}>
+      <div className={cn("text-textPrimary text16Bold", valueClassName)}>
+        <LoadableContent size={16} isLoading={isLoading}>
           {tooltipContent ? (
             <Tooltip content={tooltipContent}>
               <ValueDisplay
@@ -41,8 +41,8 @@ export default function LoadableItem({
               symbol={symbol}
             />
           )}
-        </div>
-      </LoadableContent>
+        </LoadableContent>
+      </div>
     </div>
   );
 }

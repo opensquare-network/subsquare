@@ -7,9 +7,7 @@ import { useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import NominatorQuickActions from "./quickActions";
 import Divider from "next-common/components/styled/layout/divider";
-import WindowSizeProvider, {
-  useWindowWidthContext,
-} from "next-common/context/windowSize";
+import { useWindowWidthContext } from "next-common/context/windowSize";
 import CollapsePanel from "next-common/components/overview/accountInfo/components/collapsePanel";
 import { AccountBalanceItem } from "next-common/components/overview/accountInfo/components/accountBalances";
 import useStakingBalance from "./useStakingBalance";
@@ -150,24 +148,22 @@ export default function AccountNomination() {
   const realAddress = useRealAddress();
 
   return (
-    <WindowSizeProvider>
-      <ValidatorsProvider>
-        <NominatorUnClaimedRewardsProvider nominatorAddress={realAddress}>
-          <NeutralPanel className="p-6 space-y-4">
-            <Header />
-            <Divider />
-            <div className="flex max-lg:flex-col w-full gap-2">
-              <div className="flex-1 max-lg:flex-none min-w-0">
-                <StakingBalance />
-              </div>
-              <div className="flex-1 max-lg:flex-none min-w-0">
-                <NominatorReward />
-              </div>
+    <ValidatorsProvider>
+      <NominatorUnClaimedRewardsProvider nominatorAddress={realAddress}>
+        <NeutralPanel className="p-6 space-y-4">
+          <Header />
+          <Divider />
+          <div className="flex max-lg:flex-col w-full gap-2">
+            <div className="flex-1 max-lg:flex-none min-w-0">
+              <StakingBalance />
             </div>
-          </NeutralPanel>
-        </NominatorUnClaimedRewardsProvider>
-      </ValidatorsProvider>
-    </WindowSizeProvider>
+            <div className="flex-1 max-lg:flex-none min-w-0">
+              <NominatorReward />
+            </div>
+          </div>
+        </NeutralPanel>
+      </NominatorUnClaimedRewardsProvider>
+    </ValidatorsProvider>
   );
 }
 
