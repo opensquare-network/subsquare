@@ -12,5 +12,5 @@ export default function getTreasuryProposalTitle(item) {
     return `[${parsedTrackName}] Referendum #${item?.onchainData?.gov2Referendum}`;
   }
 
-  return "--";
+  return `Untitled - treasury proposal #${item?.proposalIndex}`;
 }

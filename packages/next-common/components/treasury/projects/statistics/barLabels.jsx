@@ -29,20 +29,20 @@ export default function BarLabels({
     return null;
   }
 
-  return labels.map((position) => (
+  return labels.map((label) => (
     <LabelContainer
-      title={`${position.label} ${formatNum(position.value)}`}
+      title={`${label.label} ${formatNum(label.value)}`}
       style={{
-        left: `${position.x}px`,
-        top: `${position.y}px`,
+        left: 0,
+        top: `${label.y}px`,
         maxWidth: FIXED_LABEL_WIDTH,
       }}
-      key={position.index}
-      onClick={() => onClick(position)}
+      key={label.index}
+      onClick={() => onClick(label)}
       role="button"
     >
-      <Label>{position.label}</Label>
-      <Value>{formatNum(position.value)}</Value>
+      <Label>{label.nameAbbr ?? label.label}</Label>
+      <Value>{formatNum(label.value)}</Value>
     </LabelContainer>
   ));
 }

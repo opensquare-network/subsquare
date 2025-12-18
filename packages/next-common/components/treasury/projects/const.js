@@ -32,7 +32,7 @@ export const DOUGHNUT_CONFIG_BY_CATEGORY = {
   wallet: {
     stretch: 1,
   },
-  multisig_tools: {
+  multisig_tool: {
     stretch: 1,
   },
   explorer: {
@@ -71,4 +71,9 @@ export const HORIZONTAL_LABELS = {
 export const LABELS = {
   ...GRID_LABELS,
   ...HORIZONTAL_LABELS,
+};
+
+export const TABLE_VIEW_LABELS = {
+  ...LABELS,
+  [CATEGORY_VALUES.OTHER_DEVELOPMENT]: "Development",
 };
