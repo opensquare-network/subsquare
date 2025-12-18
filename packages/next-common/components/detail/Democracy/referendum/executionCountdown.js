@@ -13,12 +13,10 @@ import { useChainSettings } from "next-common/context/chain";
 function ExecutionCountdown() {
   const onchain = useOnchainData();
   const { willExecuteAt } = onchain;
-
   const blockHeight = useChainOrScanHeight();
   const estimatedBlocksTime = useEstimateBlocksTime(
     willExecuteAt - blockHeight,
   );
-
   const voteFinishedHeight = useDemocracyVoteFinishedHeight();
   if (!willExecuteAt || !blockHeight || blockHeight >= willExecuteAt) {
     return;
