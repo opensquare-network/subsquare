@@ -1,5 +1,5 @@
 import { useCallback, useState, useEffect } from "react";
-import { useHydrationApi } from "next-common/hooks/ecoAssets/hydration/context/hydrationSDKContext";
+import { useHydrationApi } from "next-common/hooks/chain/useHydrationApi";
 import BigNumber from "bignumber.js";
 
 export default function useTotalIssuances() {
