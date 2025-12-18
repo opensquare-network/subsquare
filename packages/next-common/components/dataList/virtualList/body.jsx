@@ -41,6 +41,7 @@ export default function VirtualListBody({
         )}
       >
         <DataListItem
+          itemClassName="py-0"
           row={row}
           columnClassNames={columnClassNames}
           columnStyles={columnStyles}
@@ -62,10 +63,7 @@ export default function VirtualListBody({
 
   return (
     <div
-      className={cn(
-        "datalist-body group/datalist-body",
-        "divide-y divide-neutral300 border-b border-neutral300",
-      )}
+      className={cn("divide-y divide-neutral300 border-b border-neutral300")}
     >
       <ListComponent
         ref={bodyRef}
