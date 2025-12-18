@@ -7,16 +7,29 @@ import CountDown from "next-common/components/_CountDown";
 import React from "react";
 import useDemocracyVoteFinishedHeight from "next-common/context/post/democracy/referendum/voteFinishedHeight";
 import useChainOrScanHeight from "next-common/hooks/height";
+import { useDemocracyReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
+import { useChainSettings } from "next-common/context/chain";
 
 export default function ExecutionCountdown() {
+  const { assethubMigration = {} } = useChainSettings();
+  const migrationBlockTime = assethubMigration?.timestamp || 0;
+
   const onchain = useOnchainData();
-  const { willExecuteAt } = onchain;
+  const { willExecuteAt, timeline } = onchain;
+  const indexer = useDemocracyReferendumVotingFinishIndexer(timeline);
+
   const blockHeight = useChainOrScanHeight();
   const estimatedBlocksTime = useEstimateBlocksTime(
     willExecuteAt - blockHeight,
   );
+
   const voteFinishedHeight = useDemocracyVoteFinishedHeight();
-  if (!willExecuteAt || !blockHeight || blockHeight >= willExecuteAt) {
+  if (
+    !willExecuteAt ||
+    !blockHeight ||
+    blockHeight >= willExecuteAt ||
+    indexer.blockTime < migrationBlockTime
+  ) {
     return;
   }
 
