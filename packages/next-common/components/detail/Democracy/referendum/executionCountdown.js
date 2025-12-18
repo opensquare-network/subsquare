@@ -1,4 +1,4 @@
-import { useOnchainData } from "next-common/context/post";
+import { useOnchainData, usePostState } from "next-common/context/post";
 import { CountDownWrapper } from "next-common/components/detail/common/styled";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import { bigNumber2Locale } from "next-common/utils";
@@ -7,8 +7,10 @@ import CountDown from "next-common/components/_CountDown";
 import React from "react";
 import useDemocracyVoteFinishedHeight from "next-common/context/post/democracy/referendum/voteFinishedHeight";
 import useChainOrScanHeight from "next-common/hooks/height";
+import { useDemocracyReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
+import { useChainSettings } from "next-common/context/chain";
 
-export default function ExecutionCountdown() {
+function ExecutionCountdown() {
   const onchain = useOnchainData();
   const { willExecuteAt } = onchain;
   const blockHeight = useChainOrScanHeight();
@@ -34,4 +36,21 @@ export default function ExecutionCountdown() {
       <span>{shortText}</span>
     </CountDownWrapper>
   );
+}
+
+export default function ExecutionCountdownGuard() {
+  const { timeline } = useOnchainData();
+  const indexer = useDemocracyReferendumVotingFinishIndexer(timeline);
+  const { assethubMigration = {} } = useChainSettings();
+  const migrationBlockTime = assethubMigration?.timestamp || 0;
+  const state = usePostState();
+
+  if (
+    ["Executed"].includes(state) ||
+    (migrationBlockTime && indexer.blockTime < migrationBlockTime)
+  ) {
+    return;
+  }
+
+  return <ExecutionCountdown />;
 }
