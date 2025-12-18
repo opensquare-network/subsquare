@@ -1,4 +1,4 @@
-import { useOnchainData } from "next-common/context/post";
+import { useOnchainData, usePostState } from "next-common/context/post";
 import { CountDownWrapper } from "next-common/components/detail/common/styled";
 import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import { bigNumber2Locale } from "next-common/utils";
@@ -10,13 +10,9 @@ import useChainOrScanHeight from "next-common/hooks/height";
 import { useDemocracyReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import { useChainSettings } from "next-common/context/chain";
 
-export default function ExecutionCountdown() {
-  const { assethubMigration = {} } = useChainSettings();
-  const migrationBlockTime = assethubMigration?.timestamp || 0;
-
+function ExecutionCountdown() {
   const onchain = useOnchainData();
-  const { willExecuteAt, timeline } = onchain;
-  const indexer = useDemocracyReferendumVotingFinishIndexer(timeline);
+  const { willExecuteAt } = onchain;
 
   const blockHeight = useChainOrScanHeight();
   const estimatedBlocksTime = useEstimateBlocksTime(
@@ -24,12 +20,7 @@ export default function ExecutionCountdown() {
   );
 
   const voteFinishedHeight = useDemocracyVoteFinishedHeight();
-  if (
-    !willExecuteAt ||
-    !blockHeight ||
-    blockHeight >= willExecuteAt ||
-    indexer.blockTime < migrationBlockTime
-  ) {
+  if (!willExecuteAt || !blockHeight || blockHeight >= willExecuteAt) {
     return;
   }
 
@@ -47,4 +38,18 @@ export default function ExecutionCountdown() {
       <span>{shortText}</span>
     </CountDownWrapper>
   );
+}
+
+export default function ExecutionCountdownGuide() {
+  const { timeline } = useOnchainData();
+  const indexer = useDemocracyReferendumVotingFinishIndexer(timeline);
+  const { assethubMigration = {} } = useChainSettings();
+  const migrationBlockTime = assethubMigration?.timestamp || 0;
+  const state = usePostState();
+
+  if (["Executed"].includes(state) || indexer.blockTime < migrationBlockTime) {
+    return;
+  }
+
+  return <ExecutionCountdown />;
 }
