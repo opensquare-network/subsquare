@@ -19,11 +19,7 @@ export const TabLabel = ({ label, count, isActive }) => (
   </span>
 );
 
-export default function AssetHubTabs({
-  children,
-  customLabels,
-  showHydrationTab = false,
-}) {
+export default function AssetHubTabs({ children, customLabels }) {
   const [activeTabId, setActiveTabId] = useActiveTab();
   const [totalCounts] = useTotalCounts();
 
@@ -56,18 +52,6 @@ export default function AssetHubTabs({
       ),
     },
   ];
-
-  if (showHydrationTab) {
-    tabsListItems.push({
-      value: TABS.hydration,
-      label: (
-        <TabLabel
-          label={labels[TABS.hydration]}
-          isActive={activeTabId === TABS.hydration}
-        />
-      ),
-    });
-  }
 
   return (
     <>

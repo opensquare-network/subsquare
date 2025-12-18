@@ -7,17 +7,9 @@ import { usePageProps } from "next-common/context/page";
 import { AssetMetadataProvider } from "next-common/components/assethubMigrationAssets/context/assetMetadata";
 import AssetHubTabs from "next-common/components/assethubMigrationAssets/tabs/index";
 import AssetsTransfersHistory from "next-common/components/assethubMigrationAssets/transferHistory/index";
-import {
-  AssetHubTabsProvider,
-  TABS,
-} from "next-common/components/assethubMigrationAssets/context/assetHubTabsProvider";
+import { AssetHubTabsProvider } from "next-common/components/assethubMigrationAssets/context/assetHubTabsProvider";
 import { useChain } from "next-common/context/chain";
 import { isAssetHubChain } from "next-common/utils/chain";
-import ProfileHydrationAssets from "next-common/components/profile/hydrationAssets";
-import {
-  HydrationBalanceProvider,
-  useHydrationBalance,
-} from "next-common/components/profile/hydrationAssets/context/hydrationBalanceContext";
 
 function ProfileAssetsInContext() {
   const chain = useChain();
@@ -62,31 +54,17 @@ function ProfileTransfers() {
   );
 }
 
-function ProfileAssetsContent() {
-  const { showHydrationAssets } = useHydrationBalance();
-
+export default function ProfileAssets() {
   return (
     <AssetHubTabsProvider>
       <AssetMetadataProvider>
         <div className="flex flex-col gap-[16px]">
-          <AssetHubTabs
-            customLabels={{ [TABS.hydration]: "Hydration" }}
-            showHydrationTab={showHydrationAssets}
-          >
+          <AssetHubTabs>
             <ProfileAssetsInContext />
             <ProfileTransfers />
-            <ProfileHydrationAssets />
           </AssetHubTabs>
         </div>
       </AssetMetadataProvider>
     </AssetHubTabsProvider>
-  );
-}
-
-export default function ProfileAssets() {
-  return (
-    <HydrationBalanceProvider>
-      <ProfileAssetsContent />
-    </HydrationBalanceProvider>
   );
 }
