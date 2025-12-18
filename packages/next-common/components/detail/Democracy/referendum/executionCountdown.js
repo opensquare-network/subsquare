@@ -38,14 +38,17 @@ function ExecutionCountdown() {
   );
 }
 
-export default function ExecutionCountdownGuide() {
+export default function ExecutionCountdownGuard() {
   const { timeline } = useOnchainData();
   const indexer = useDemocracyReferendumVotingFinishIndexer(timeline);
   const { assethubMigration = {} } = useChainSettings();
   const migrationBlockTime = assethubMigration?.timestamp || 0;
   const state = usePostState();
 
-  if (["Executed"].includes(state) || indexer.blockTime < migrationBlockTime) {
+  if (
+    ["Executed"].includes(state) ||
+    (migrationBlockTime && indexer.blockTime < migrationBlockTime)
+  ) {
     return;
   }
 
