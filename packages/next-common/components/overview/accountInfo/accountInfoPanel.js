@@ -19,7 +19,7 @@ import { OnlyChains } from "next-common/components/common/onlyChain";
 import Chains from "next-common/utils/consts/chains";
 import { RelayChainApiProvider } from "next-common/context/relayChain";
 import useAccountUrl from "next-common/hooks/account/useAccountUrl";
-import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import { useWindowWidthContext } from "next-common/context/windowSize";
 import { isNil } from "lodash-es";
 import Link from "next/link";
 import { IconButton } from "next-common/components/styled/iconButton";
@@ -296,7 +296,7 @@ export function AccountHead({ width }) {
 }
 
 export default function AccountInfoPanel() {
-  const { width } = useWindowSize();
+  const width = useWindowWidthContext();
 
   if (isNil(width)) {
     return null;

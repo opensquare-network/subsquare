@@ -17,6 +17,7 @@ import { MyStakingLedgerProvider } from "next-common/context/staking/myStakingLe
 import { useMyStakingLedger } from "next-common/context/staking/myStakingLedger";
 import Loading from "next-common/components/loading";
 import { ActiveEraStakersProvider } from "next-common/context/staking/currentEraStakers";
+import { useWindowWidthContext } from "next-common/context/windowSize";
 
 const isStakingSupported = !!getChainSettings(CHAIN).modules?.staking;
 
@@ -24,8 +25,9 @@ function MyStaking() {
   const { poolMember, loading: isMyPoolLoading } = useMyPool();
   const { nominators, loading: isMyStakingLedgerLoading } =
     useMyStakingLedger();
+  const width = useWindowWidthContext();
 
-  const loading = isMyPoolLoading || isMyStakingLedgerLoading;
+  const loading = isMyPoolLoading || isMyStakingLedgerLoading || !width;
 
   if (loading) {
     return (

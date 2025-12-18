@@ -8,7 +8,7 @@ import {
   useAmbassadorMemberData,
   useFellowshipMemberData,
 } from "../context/memberDataContext";
-import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import { useWindowWidthContext } from "next-common/context/windowSize";
 import { isNil } from "lodash-es";
 import AccountBalances from "./accountBalances";
 
@@ -102,7 +102,7 @@ function CollectivesAccountInfoDesktop() {
 }
 
 export default function CollectivesAccountInfo() {
-  const { width } = useWindowSize();
+  const width = useWindowWidthContext();
 
   if (isNil(width)) {
     return null;

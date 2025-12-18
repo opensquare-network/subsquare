@@ -1,7 +1,6 @@
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import { usePageProps } from "next-common/context/page";
-import WindowSizeProvider from "next-common/context/windowSize";
 import UserAccountProvider from "next-common/context/user/account";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 import { cn } from "next-common/utils";
@@ -19,7 +18,7 @@ const DelegationGuide = dynamic(
   },
 );
 
-function DemocracyBioContent() {
+export default function DemocracyBio() {
   const isMobile = useIsMobile();
   const { user, id } = usePageProps();
   const address =
@@ -45,13 +44,5 @@ function DemocracyBioContent() {
         <DelegationGuide />
       </DelegationGuideProvider>
     </>
-  );
-}
-
-export default function DemocracyBio() {
-  return (
-    <WindowSizeProvider>
-      <DemocracyBioContent />
-    </WindowSizeProvider>
   );
 }

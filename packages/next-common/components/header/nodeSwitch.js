@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import useWindowSize from "../../utils/hooks/useWindowSize";
+import { useWindowSizeContext } from "next-common/context/windowSize";
 import {
   currentNodeSelector,
   nodesSelector,
@@ -63,7 +63,7 @@ const Select = styled.div`
 export default function NodeSwitch({ small }) {
   const [show, setShow] = useState(false);
   const ref = useRef();
-  const windowSize = useWindowSize();
+  const windowSize = useWindowSizeContext();
   const chainSettings = useChainSettings();
   const currentNode = useSelector(currentNodeSelector);
   const nodes = useSelector(nodesSelector);

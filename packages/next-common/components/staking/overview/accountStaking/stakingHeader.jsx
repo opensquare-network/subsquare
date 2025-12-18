@@ -7,16 +7,22 @@ import { usePoolMetadata } from "next-common/hooks/staking/usePoolMetadata";
 import { cn } from "next-common/utils";
 import { BondButton } from "./bondButton";
 import { UnBondButton } from "./unbondButton";
+import { useWindowWidthContext } from "next-common/context/windowSize";
+import FieldLoading from "next-common/components/icons/fieldLoading";
 
 function PoolAccount({ poolId }) {
   const { stash, reward } = usePoolAccounts(poolId);
-  const { name } = usePoolMetadata(poolId);
+  const { name, loading } = usePoolMetadata(poolId);
 
   return (
     <div className="flex gap-[12px] text-textPrimary">
       <Avatar address={stash} size={40} />
       <div className="flex flex-col">
-        <span>{name}</span>
+        {loading ? (
+          <FieldLoading size={24} />
+        ) : (
+          <span className="text16Medium">{name}</span>
+        )}
         <div className="flex gap-2 ">
           <AddressUser
             showAvatar={false}
@@ -34,8 +40,9 @@ function PoolAccount({ poolId }) {
   );
 }
 
-export default function StakingHeader({ width }) {
+export default function StakingHeader() {
   const { myPool, loading } = useMyPoolInfo();
+  const width = useWindowWidthContext();
 
   if (loading || isNil(myPool)) {
     return null;

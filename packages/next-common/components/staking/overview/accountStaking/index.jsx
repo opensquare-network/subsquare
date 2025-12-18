@@ -1,6 +1,5 @@
-import { isNil } from "lodash-es";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
-import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import { useWindowWidthContext } from "next-common/context/windowSize";
 import StakingHeader from "./stakingHeader";
 import StakingBalance from "./stakingBalance";
 import Divider from "next-common/components/styled/layout/divider";
@@ -8,7 +7,6 @@ import { useMyPool } from "next-common/context/staking/myPool";
 import Link from "next/link";
 import { MyPoolRewardProvider } from "next-common/context/staking/poolReward";
 import PoolReward from "./poolReward";
-import WindowSizeProvider from "next-common/context/windowSize";
 import { NominatorStatus } from "../accountNomination";
 import { usePoolAccounts } from "next-common/hooks/staking/usePoolAccount";
 import { useStakingLedgers } from "next-common/hooks/useStakingLedgers";
@@ -16,7 +14,7 @@ import { cn } from "next-common/utils";
 import CheckNomineesButton from "../accountNomination/checkNomineesButton";
 
 function PoolNominatorStatus({ stash }) {
-  const { width } = useWindowSize();
+  const width = useWindowWidthContext();
   const { nominators } = useStakingLedgers(stash);
 
   return (
@@ -38,44 +36,32 @@ function PoolNominatorStatus({ stash }) {
   );
 }
 
-function AccountStakingImpl({ stash }) {
-  const { width } = useWindowSize();
+export default function AccountStaking() {
+  const { poolMember } = useMyPool();
+  const { stash } = usePoolAccounts(poolMember?.poolId);
 
-  if (isNil(width)) {
+  if (!stash) {
     return null;
   }
 
   return (
     <MyPoolRewardProvider>
-      <WindowSizeProvider>
-        <NeutralPanel className="p-6 space-y-4">
-          <StakingHeader width={width} />
-          <Divider />
-          <PoolNominatorStatus stash={stash} />
-          <Divider />
-          <div className="flex max-lg:flex-col w-full gap-2">
-            <div className="flex-1 max-lg:flex-none min-w-0">
-              <StakingBalance />
-            </div>
-            <div className="flex-1 max-lg:flex-none min-w-0">
-              <PoolReward />
-            </div>
+      <NeutralPanel className="p-6 space-y-4">
+        <StakingHeader />
+        <Divider />
+        <PoolNominatorStatus stash={stash} />
+        <Divider />
+        <div className="flex max-lg:flex-col w-full gap-2">
+          <div className="flex-1 max-lg:flex-none min-w-0">
+            <StakingBalance />
           </div>
-        </NeutralPanel>
-      </WindowSizeProvider>
+          <div className="flex-1 max-lg:flex-none min-w-0">
+            <PoolReward />
+          </div>
+        </div>
+      </NeutralPanel>
     </MyPoolRewardProvider>
   );
-}
-
-export default function AccountStaking() {
-  const { poolMember } = useMyPool();
-  const { stash, loading } = usePoolAccounts(poolMember?.poolId);
-
-  if (loading) {
-    return null;
-  }
-
-  return <AccountStakingImpl stash={stash} />;
 }
 
 export function AccountStakingEmpty() {

@@ -1,11 +1,11 @@
 import React from "react";
 import { isNil } from "lodash-es";
-import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import { useWindowWidthContext } from "next-common/context/windowSize";
 import MobileAssetsList from "./mobileAssetsList";
 import PCAssetsList from "./pcAssetList";
 
 export default function AssetsList({ assets }) {
-  const { width } = useWindowSize();
+  const width = useWindowWidthContext();
 
   if (isNil(width)) {
     return null;
