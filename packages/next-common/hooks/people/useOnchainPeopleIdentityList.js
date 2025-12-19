@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useContextApi } from "next-common/context/api";
 import useCall from "next-common/utils/hooks/useCall";
+import { hexToString } from "@polkadot/util";
 
 function matchJudgementStatus(storageValue) {
   const unwrappedValue = storageValue?.unwrap() || {};
@@ -78,17 +79,20 @@ export default function useOnchainPeopleIdentityList() {
 
         const address = storageKey?.args[0]?.toString();
         const status = matchJudgementStatus(storageValue);
-
         const storageData = storageValue?.toHuman();
+        const nameRaw = storageData.info.display.Raw || "";
+        const name = nameRaw?.startsWith("0x") ? hexToString(nameRaw) : nameRaw;
+
         return {
           address,
-          name: storageData.info.display.Raw,
+          name,
           ...storageData,
           status,
           subIdentities: getSubIdentity(subsMap, address),
         };
       })
-      ?.filter(Boolean);
+      ?.filter(Boolean)
+      .sort((a, b) => a.name.localeCompare(b.name));
 
     setData(results);
     setIsLoading(false);
