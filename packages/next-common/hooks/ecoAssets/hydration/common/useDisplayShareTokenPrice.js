@@ -29,7 +29,7 @@ export default function useDisplayShareTokenPrice(ids) {
       (acc, shareToken) => {
         const { poolAddress } = shareToken ?? {};
 
-        if (!poolAddress) return acc;
+        if (!poolAddress || !xykPools || !xykPools.length) return acc;
 
         const pool = xykPools.find((pool) => poolAddress === pool.address);
 
