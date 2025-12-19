@@ -3,7 +3,7 @@ import { useCallback, useState, useEffect } from "react";
 import useAllAssets from "./common/useAllAssets";
 import useAccountBalance from "./common/useAccountBalance";
 import { useHydrationSDK } from "next-common/hooks/ecoAssets/hydration/context/hydrationSDKContext";
-import { external } from "../utils/assetUtils";
+import { external } from "./utils/assetUtils";
 
 export async function queryAssetPrice(sdk, assetIn, assetOut = "10") {
   if (!assetIn || !assetOut || !sdk) {
