@@ -47,7 +47,7 @@ const polkadotPeople = {
   group: null,
   noScan: true,
   integrations: {
-    statescan: true,
+    statescan: false,
     subscan: {
       domain: "people-polkadot",
     },
