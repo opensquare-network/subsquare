@@ -21,7 +21,7 @@ function Socials({ info }) {
 
 export const desktopColumns = [
   {
-    name: "Proxies",
+    name: "Account",
     className: "text-left",
     render: (item) => (
       <AddressUser key={`account-${item.address}`} add={item.address} />
