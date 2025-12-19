@@ -1,8 +1,9 @@
 import BigNumber from "bignumber.js";
 import { useCallback, useState, useEffect } from "react";
-import useAllAssets, { external } from "./common/useAllAssets";
+import useAllAssets from "./common/useAllAssets";
 import useAccountBalance from "./common/useAccountBalance";
 import { useHydrationSDK } from "next-common/hooks/ecoAssets/hydration/context/hydrationSDKContext";
+import { external } from "../utils/assetUtils";
 
 export async function queryAssetPrice(sdk, assetIn, assetOut = "10") {
   if (!assetIn || !assetOut || !sdk) {
@@ -77,33 +78,42 @@ export default function useAssetsTotal(address) {
 
   const { ctx } = sdk ?? {};
 
-  const fetchData = useCallback(async (isCancelled) => {
-    if (allAssetsLoading || accountBalanceLoading || !ctx || !sdk || isCancelled()) {
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      await ctx.pool.syncRegistry(external);
-      if (isCancelled()) return;
-
-      const totalBalance = await calculateTotalBalance(sdk, balances);
-      if (isCancelled()) return;
-
-      if (!isCancelled()) {
-        setAssetsBalance(totalBalance);
+  const fetchData = useCallback(
+    async (isCancelled) => {
+      if (
+        allAssetsLoading ||
+        accountBalanceLoading ||
+        !ctx ||
+        !sdk ||
+        isCancelled()
+      ) {
+        return;
       }
-    } catch (error) {
-      if (!isCancelled()) {
-        console.error("Error calculating assets total:", error);
-        setAssetsBalance("0");
+
+      setIsLoading(true);
+      try {
+        await ctx.pool.syncRegistry(external);
+        if (isCancelled()) return;
+
+        const totalBalance = await calculateTotalBalance(sdk, balances);
+        if (isCancelled()) return;
+
+        if (!isCancelled()) {
+          setAssetsBalance(totalBalance);
+        }
+      } catch (error) {
+        if (!isCancelled()) {
+          console.error("Error calculating assets total:", error);
+          setAssetsBalance("0");
+        }
+      } finally {
+        if (!isCancelled()) {
+          setIsLoading(false);
+        }
       }
-    } finally {
-      if (!isCancelled()) {
-        setIsLoading(false);
-      }
-    }
-  }, [allAssetsLoading, accountBalanceLoading, ctx, balances, sdk]);
+    },
+    [allAssetsLoading, accountBalanceLoading, ctx, balances, sdk],
+  );
 
   useEffect(() => {
     let cancelled = false;
