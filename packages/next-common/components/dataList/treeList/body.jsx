@@ -23,11 +23,10 @@ export default function TreeDataListBody({
           {children && (
             <button
               disabled={!children.length}
-              className="flex-1 justify-center border border-neutral400 rounded-[4px] cursor-pointer p-[5px] disabled:bg-neutral200"
+              className="flex-1 justify-center border border-neutral400 rounded-[4px] cursor-pointer p-[5px] disabled:cursor-default disabled:bg-neutral200"
               onClick={() => toggleRowExpansion(idx)}
             >
               <ArrowUp
-                role="button"
                 className={cn(
                   "[&_path]:stroke-textPrimary w-4 h-4",
                   !isExpanded && "rotate-180",
