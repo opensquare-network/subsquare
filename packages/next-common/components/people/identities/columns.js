@@ -1,11 +1,8 @@
 import AddressUser from "next-common/components/user/addressUser";
-import {
-  LinkEmail,
-  LinkTwitter,
-  LinkWebsite,
-  LinkElement,
-} from "@osn/icons/subsquare";
-import Link from "next-common/components/link";
+import MailLink from "next-common/components/links/mailLink";
+import WebLink from "next-common/components/links/webLink";
+import ElementLink from "next-common/components/links/elementLink";
+import TwitterLink from "next-common/components/links/twitterLink";
 
 function Socials({ info }) {
   const email = info?.email?.Raw;
@@ -14,26 +11,10 @@ function Socials({ info }) {
   const matrix = info?.matrix?.Raw;
   return (
     <div className="flex gap-1">
-      {email && (
-        <Link href={`mailto:${email}`}>
-          <LinkEmail className="text-textSecondary hover:text-textPrimary w-4 h-4 md:w-5 md:h-5" />
-        </Link>
-      )}
-      {twitter && (
-        <Link target="_blank" href={`https://x.com/${twitter}`}>
-          <LinkTwitter className="text-textSecondary hover:text-textPrimary w-4 h-4 md:w-5 md:h-5" />
-        </Link>
-      )}
-      {web && (
-        <Link href={web}>
-          <LinkWebsite className="text-textSecondary hover:text-textPrimary w-4 h-4 md:w-5 md:h-5" />
-        </Link>
-      )}
-      {matrix && (
-        <Link href={`https://matrix.to/#/${matrix}`}>
-          <LinkElement className="text-textSecondary hover:text-textPrimary w-4 h-4 md:w-5 md:h-5" />
-        </Link>
-      )}
+      {email && <MailLink email={email} />}
+      {web && <WebLink website={web} />}
+      {matrix && <ElementLink riot={matrix} />}
+      {twitter && <TwitterLink twitter={twitter} />}
     </div>
   );
 }

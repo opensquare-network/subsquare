@@ -11,15 +11,15 @@ import useSearchComponent from "next-common/components/data/common/useSearchComp
 import { useDebounce } from "react-use";
 
 export default function OnchainIdentitiesTable({ identityList, isLoading }) {
-  const { component: SearchBoxComponent } = useSearchComponent({
-    placeholder: "Search by identity address",
-  });
+  const { component: SearchBoxComponent } = useSearchComponent();
   const [debouncedSearchValue, setDebouncedSearchValue] = useState("");
   const router = useRouter();
   const searchIdentityList = useMemo(() => {
     return (
-      identityList?.filter((item) =>
-        item.address.includes(debouncedSearchValue),
+      identityList?.filter(
+        (item) =>
+          item.address.includes(debouncedSearchValue) ||
+          item?.name?.includes(debouncedSearchValue),
       ) || []
     );
   }, [debouncedSearchValue, identityList]);

@@ -79,9 +79,11 @@ export default function useOnchainPeopleIdentityList() {
         const address = storageKey?.args[0]?.toString();
         const status = matchJudgementStatus(storageValue);
 
+        const storageData = storageValue?.toHuman();
         return {
           address,
-          ...storageValue?.toHuman(),
+          name: storageData.info.display.Raw,
+          ...storageData,
           status,
           subIdentities: getSubIdentity(subsMap, address),
         };
