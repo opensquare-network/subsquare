@@ -18,7 +18,10 @@ function useSearchAndPagination(identityList = []) {
   const searchIdentityList = useMemo(() => {
     return (identityList || []).filter(
       ({ address = "", name = "" }) =>
-        address === debouncedSearchValue || name.includes(debouncedSearchValue),
+        address === debouncedSearchValue ||
+        name
+          .toLocaleLowerCase()
+          .includes(debouncedSearchValue.toLocaleLowerCase()),
     );
   }, [debouncedSearchValue, identityList]);
   const total = searchIdentityList.length;
