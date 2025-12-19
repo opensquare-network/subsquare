@@ -12,16 +12,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aave/math-utils@npm:^1.36.2":
-  version: 1.36.2
-  resolution: "@aave/math-utils@npm:1.36.2"
-  peerDependencies:
-    bignumber.js: ^9.x
-    tslib: ^2.4.x
-  checksum: 99382fb6f2112a032c3241f071ec5e0f68d5bdcf9540d985e192a77ec2eb1ed5fdcbd05043b75c56a061bf524b3953e8d6d1bda473bc0c28575f092969d78df5
-  languageName: node
-  linkType: hard
-
 "@adraffy/ens-normalize@npm:1.10.1":
   version: 1.10.1
   resolution: "@adraffy/ens-normalize@npm:1.10.1"
@@ -12627,13 +12617,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"immer@npm:^11.0.1":
-  version: 11.0.1
-  resolution: "immer@npm:11.0.1"
-  checksum: eecf16ae11535439e0c32d83d03d10f2df10f1fbbbc975ed24530d358bfad3aeff0134b113c4fa1f13be261cfc38a01e391274a061b842fb99bbb0649db85325
-  languageName: node
-  linkType: hard
-
 "immer@npm:^9.0.16":
   version: 9.0.21
   resolution: "immer@npm:9.0.21"
@@ -14461,7 +14444,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "next-common@workspace:packages/next-common"
   dependencies:
-    "@aave/math-utils": ^1.36.2
     "@apollo/client": ^3.8.8
     "@energiency/chartjs-plugin-piechart-outlabels": ^1.3.5
     "@galacticcouncil/api-augment": ^0.9.0
@@ -14513,7 +14495,6 @@ __metadata:
     framer-motion: ^11.2.10
     graphql: ^16.8.1
     graphql-request: ^7.1.0
-    immer: ^11.0.1
     is-ipfs: ^8.0.1
     is-utf8: ^0.2.1
     lodash-es: ^4.17.21

@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
-import { USD_DECIMALS } from "@aave/math-utils";
 import BigNumber from "bignumber.js";
 import { useHydrationSDK } from "next-common/hooks/ecoAssets/hydration/context/hydrationSDKContext";
+import { USD_DECIMALS } from "./utils/constants";
 
 export default function useBorrowsTotal(address) {
   const sdk = useHydrationSDK();
