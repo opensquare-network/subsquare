@@ -7,7 +7,6 @@ import CountDown from "next-common/components/_CountDown";
 import React from "react";
 import useDemocracyVoteFinishedHeight from "next-common/context/post/democracy/referendum/voteFinishedHeight";
 import useChainOrScanHeight from "next-common/hooks/height";
-import { useDemocracyReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import { useChainSettings } from "next-common/context/chain";
 
 function ExecutionCountdown() {
@@ -39,8 +38,7 @@ function ExecutionCountdown() {
 }
 
 export default function ExecutionCountdownGuard() {
-  const { timeline } = useOnchainData();
-  const indexer = useDemocracyReferendumVotingFinishIndexer(timeline);
+  const { indexer } = useOnchainData();
   const { assethubMigration = {} } = useChainSettings();
   const migrationBlockTime = assethubMigration?.timestamp || 0;
   const state = usePostState();
