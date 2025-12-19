@@ -1,6 +1,6 @@
 import { cn } from "next-common/utils";
 import DataListItem from "../item";
-import { ArrowUp } from "@osn/icons/subsquare";
+import { ArrowUp, SystemSubtract } from "@osn/icons/subsquare";
 
 export default function TreeDataListBody({
   rows = [],
@@ -26,12 +26,20 @@ export default function TreeDataListBody({
               className="flex-1 justify-center border border-neutral400 rounded-[4px] cursor-pointer p-[5px] disabled:cursor-default disabled:bg-neutral200"
               onClick={() => toggleRowExpansion(idx)}
             >
-              <ArrowUp
-                className={cn(
-                  "[&_path]:stroke-textPrimary w-4 h-4",
-                  !isExpanded && "rotate-180",
-                )}
-              />
+              {children.length ? (
+                <ArrowUp
+                  className={cn(
+                    "[&_path]:stroke-textPrimary w-4 h-4",
+                    !isExpanded && "rotate-180",
+                  )}
+                />
+              ) : (
+                <div className="p-0.5">
+                  <SystemSubtract
+                    className={cn("[&_path]:stroke-textPrimary w-3 h-3")}
+                  />
+                </div>
+              )}
             </button>
           )}
 
