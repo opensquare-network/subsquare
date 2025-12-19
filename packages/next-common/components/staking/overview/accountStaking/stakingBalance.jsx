@@ -17,27 +17,31 @@ export function UnbondingTooltip({ unlocking, unlockingEntries }) {
 
   return (
     <div className="text-textPrimaryContrast text12Medium">
-      <div className="flex gap-1">
-        <div className="min-w-[128px]">Total</div>
-        <NumberWithComma
-          value={BigNumber(unlocking || 0n)
-            .dividedBy(Math.pow(10, decimals))
-            .toFixed()}
-          symbol={symbol}
-        />
-      </div>
-      <Divider className="my-1 !bg-textSecondaryContrast" />
-      {(unlockingEntries || []).map((item) => (
-        <div key={item.era} className="flex justify-between">
-          <div className="min-w-[128px]">
-            <UnlocksDuration era={item.era} />
+      {unlockingEntries?.length > 1 && (
+        <>
+          <div className="flex gap-1">
+            <NumberWithComma
+              value={BigNumber(unlocking || 0n)
+                .dividedBy(Math.pow(10, decimals))
+                .toFixed()}
+              symbol={symbol}
+            />
+            <div>in total</div>
           </div>
+          <Divider className="my-1 !bg-textSecondaryContrast" />
+        </>
+      )}
+      {(unlockingEntries || []).map((item) => (
+        <div key={item.era} className="flex justify-between min-w-[188px]">
           <NumberWithComma
             value={BigNumber(item.value || 0n)
               .dividedBy(Math.pow(10, decimals))
               .toFixed()}
             symbol={symbol}
           />
+          <div>
+            <UnlocksDuration era={item.era} />
+          </div>
         </div>
       ))}
     </div>
