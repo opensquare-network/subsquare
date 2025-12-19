@@ -4,33 +4,39 @@ import { defaultPageSize } from "next-common/utils/constants";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import { desktopColumns, mobileColumns } from "../columns";
+import { desktopColumns, mobileColumns } from "./columns";
 import { useNavCollapsed } from "next-common/context/nav";
 import { cn } from "next-common/utils";
 import useSearchComponent from "next-common/components/data/common/useSearchComponent";
 import { useDebounce } from "react-use";
 
-export default function OnchainIdentitiesTable({ identityList, isLoading }) {
-  const { component: SearchBoxComponent } = useSearchComponent();
-  const [debouncedSearchValue, setDebouncedSearchValue] = useState("");
+function useSearchAndPagination(identityList = []) {
   const router = useRouter();
+  const [debouncedSearchValue, setDebouncedSearchValue] = useState("");
+  const { component: SearchBoxComponent } = useSearchComponent();
+
   const searchIdentityList = useMemo(() => {
-    return (
-      identityList?.filter(
-        (item) =>
-          item.address.includes(debouncedSearchValue) ||
-          item?.name?.includes(debouncedSearchValue),
-      ) || []
+    return (identityList || []).filter(
+      ({ address = "", name = "" }) =>
+        address === debouncedSearchValue || name.includes(debouncedSearchValue),
     );
   }, [debouncedSearchValue, identityList]);
+  const total = searchIdentityList.length;
 
-  const total = searchIdentityList.length || 0;
-  const [navCollapsed] = useNavCollapsed();
   const {
     page,
-    component: pageComponent,
+    component: PageComponent,
     setPage,
   } = usePaginationComponent(total, defaultPageSize);
+
+  useDebounce(
+    () => {
+      setDebouncedSearchValue(router.query.search || "");
+      setPage(1);
+    },
+    500,
+    [router.query.search],
+  );
 
   const currentPageData = useMemo(() => {
     if (!identityList) {
@@ -43,14 +49,17 @@ export default function OnchainIdentitiesTable({ identityList, isLoading }) {
     return searchIdentityList.slice(startIndex, endIndex);
   }, [identityList, page, searchIdentityList]);
 
-  useDebounce(
-    () => {
-      setDebouncedSearchValue(router.query.search || "");
-      setPage(1);
-    },
-    500,
-    [router.query.search],
-  );
+  return {
+    SearchBoxComponent,
+    PageComponent: total > 0 ? PageComponent : null,
+    currentPageData,
+  };
+}
+
+export default function OnchainIdentitiesTable({ identityList, isLoading }) {
+  const [navCollapsed] = useNavCollapsed();
+  const { SearchBoxComponent, PageComponent, currentPageData } =
+    useSearchAndPagination(identityList);
 
   return (
     <>
@@ -77,7 +86,7 @@ export default function OnchainIdentitiesTable({ identityList, isLoading }) {
             noDataText="No identities"
             treeKey="subIdentities"
           />
-          {total > 0 && pageComponent}
+          {PageComponent}
         </SecondaryCard>
       </div>
     </>
