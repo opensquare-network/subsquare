@@ -1,99 +1,100 @@
 import BigNumber from "bignumber.js";
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import useAccountPositions from "./common/useAccountPosition";
 import useLiquidityPositionData from "./common/useLiquidityPositionData";
 import { useAllAssetsFunc } from "./common/useAllAssets";
-import useTotalIssuances from "./common/useTotalIssuances";
-import { useXYKSDKPools } from "./common/useHydrationPools";
-import useDisplayShareTokenPrice from "./common/useDisplayShareTokenPrice";
-import { scaleHuman, BN_0 } from "./utils";
+import { useHydrationSDK } from "./context/hydrationSDKContext";
+import { queryAssetPrice } from "./useAssetsTotal";
+import { BN_0 } from "./utils";
 
 const useAllXYKDeposits = (address) => {
   const { data: accountPositions } = useAccountPositions(address);
   const { xykDeposits = [] } = accountPositions ?? {};
   const { getShareTokenByAddress } = useAllAssetsFunc();
-  const issuances = useTotalIssuances();
+  const sdk = useHydrationSDK();
+  const [data, setData] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
 
-  const depositNftsData = xykDeposits.reduce((acc, depositNft) => {
-    const asset = getShareTokenByAddress(depositNft.data.ammPoolId.toString());
+  const depositsKey = useMemo(() => {
+    return JSON.stringify(xykDeposits.map(d => d.id));
+  }, [xykDeposits]);
 
-    if (asset)
-      acc.push({
-        asset,
-        depositNft,
-      });
-    return acc;
-  }, []);
+  useEffect(() => {
+    let cancelled = false;
 
-  const uniqAssetIds = [
-    ...new Set(depositNftsData.map((deposit) => deposit.asset.id)),
-  ];
-
-  const shareTokeSpotPrices = useDisplayShareTokenPrice(uniqAssetIds);
-  const { data: xykPools, isLoading: isXykPoolsLoading } = useXYKSDKPools();
-
-  const isLoading =
-    isXykPoolsLoading ||
-    issuances.isLoading ||
-    shareTokeSpotPrices.isInitialLoading;
-
-  const data = useMemo(() => {
-    if (isLoading) {
-      return {};
-    }
-    return depositNftsData.reduce((acc, deposit) => {
-      const { asset, depositNft } = deposit;
-      const shareTokenIssuance = issuances?.data?.get(asset.id);
-
-      const pool = xykPools?.find((pool) => pool.address === asset.poolAddress);
-
-      if (shareTokenIssuance && pool) {
-        const index = asset.id;
-        const shares = depositNft.data.shares;
-        const ratio = BigNumber(shares).div(shareTokenIssuance);
-        const spotPrice =
-          shareTokeSpotPrices.data?.find(
-            (price) => price.tokenIn === asset.id,
-          )?.spotPrice ?? 1;
-        const amountUSD = scaleHuman(shareTokenIssuance, asset.decimals)
-          .multipliedBy(spotPrice)
-          .times(ratio);
-
-        const [assetA, assetB] = pool.tokens.map((token) => {
-          const amount = scaleHuman(
-            BigNumber(token.balance).times(ratio),
-            token.decimals,
-          );
-
-          return {
-            id: token.id,
-            symbol: token.symbol,
-            decimals: token.decimals,
-            amount,
-          };
-        });
-
-        acc[index] = [
-          ...(acc[index] ?? []),
-          {
-            assetA,
-            assetB,
-            amountUSD,
-            assetId: asset.id,
-            depositId: depositNft.id,
-          },
-        ];
+    const calculateDeposits = async () => {
+      if (!xykDeposits.length || !sdk || !getShareTokenByAddress) {
+        if (!cancelled) {
+          setData({});
+          setIsLoading(false);
+        }
+        return;
       }
 
-      return acc;
-    }, {});
-  }, [
-    depositNftsData,
-    issuances?.data,
-    xykPools,
-    shareTokeSpotPrices?.data,
-    isLoading,
-  ]);
+      if (!cancelled) {
+        setIsLoading(true);
+      }
+
+      try {
+        const result = {};
+
+        for (const depositNft of xykDeposits) {
+          if (cancelled) break;
+
+          const asset = getShareTokenByAddress(
+            depositNft.data.ammPoolId.toString(),
+          );
+
+          if (!asset) {
+            continue;
+          }
+
+          const shares = BigNumber(depositNft.data.shares.toString());
+          const spotPrice = await queryAssetPrice(sdk, asset.id, "10");
+
+          if (cancelled) break;
+
+          if (!spotPrice || isNaN(spotPrice)) {
+            continue;
+          }
+
+          const amountUSD = shares
+            .shiftedBy(-asset.decimals)
+            .multipliedBy(spotPrice);
+
+          const index = asset.id;
+          result[index] = [
+            ...(result[index] ?? []),
+            {
+              amountUSD,
+              assetId: asset.id,
+              depositId: depositNft.id,
+            },
+          ];
+        }
+
+        if (!cancelled) {
+          setData(result);
+        }
+      } catch (error) {
+        if (!cancelled) {
+          console.error("Error calculating XYK deposits:", error);
+          setData({});
+        }
+      } finally {
+        if (!cancelled) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    calculateDeposits();
+
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [depositsKey, sdk]);
 
   return { data, isLoading };
 };

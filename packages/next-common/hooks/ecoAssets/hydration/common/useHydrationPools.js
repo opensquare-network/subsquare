@@ -3,35 +3,6 @@ import { HUB_ID, TYPE_MAPPING } from "../utils";
 import { getTargetTypePools } from "../utils/assetUtils";
 import { useHydrationSDK } from "next-common/hooks/ecoAssets/hydration/context/hydrationSDKContext";
 
-export function useXYKSDKPools() {
-  const sdk = useHydrationSDK();
-  const { api } = sdk ?? {};
-  const [pools, setPools] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const fetchPools = useCallback(async () => {
-    if (!api) {
-      return null;
-    }
-
-    try {
-      setIsLoading(true);
-      const pools = await getTargetTypePools(api, TYPE_MAPPING.xyk);
-      setPools(pools);
-    } catch (error) {
-      console.error("Error fetching XYK pools:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [api]);
-
-  useEffect(() => {
-    fetchPools();
-  }, [fetchPools]);
-
-  return { data: pools, isLoading };
-}
-
 export function useOmniPoolTokens() {
   const sdk = useHydrationSDK();
   const { api } = sdk ?? {};
