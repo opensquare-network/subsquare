@@ -111,13 +111,7 @@ export default function useLiquidityPositionData() {
         (n) => new BigNumber(n.toString()),
       );
       const price = nom.div(denom);
-
-      const shares = position.shares;
-
       const positionPrice = scale(price, "q");
-
-      let lernaOutResult = "-1";
-      let liquidityOutResult = "-1";
 
       const params = [
         omnipoolAsset.balance.toString(),
@@ -130,63 +124,29 @@ export default function useLiquidityPositionData() {
         options?.fee ?? "0",
       ];
 
-      lernaOutResult = calculate_liquidity_lrna_out.apply(this, params);
-      liquidityOutResult = calculate_liquidity_out.apply(this, params);
-
-      const lrna =
-        lernaOutResult !== "-1" ? new BigNumber(lernaOutResult) : BN_NAN;
-      const lrnaShifted = lrna.shiftedBy(-hub.decimals);
-
-      const value =
-        liquidityOutResult !== "-1"
-          ? new BigNumber(liquidityOutResult)
-          : BN_NAN;
-      const valueShifted = value.shiftedBy(-meta.decimals);
+      const lernaOutResult = calculate_liquidity_lrna_out.apply(this, params);
+      const liquidityOutResult = calculate_liquidity_out.apply(this, params);
 
       let valueDisplay = BN_NAN;
-      let valueDisplayWithoutLrna = BN_NAN;
-      let lrnaDisplay = BN_NAN;
-      let totalValue = value;
-      let totalValueShifted = valueShifted;
-
-      const amount = position.amount;
-      const amountShifted = BigNumber(amount).shiftedBy(-meta.decimals);
-      const amountDisplay = amountShifted.times(spotPrice);
 
       if (liquidityOutResult !== "-1") {
+        const value = new BigNumber(liquidityOutResult);
+        const valueShifted = value.shiftedBy(-meta.decimals);
         valueDisplay = valueShifted.times(spotPrice);
 
-        valueDisplayWithoutLrna = valueDisplay;
-
-        if (lrnaShifted.gt(0)) {
-          lrnaDisplay = lrnaShifted.times(hubPrice);
-          valueDisplay = valueDisplay.plus(lrnaDisplay);
-
-          totalValueShifted = valueDisplay.div(spotPrice);
-          totalValue = scale(valueDisplay.div(spotPrice), meta.decimals);
+        if (lernaOutResult !== "-1") {
+          const lrna = new BigNumber(lernaOutResult);
+          const lrnaShifted = lrna.shiftedBy(-hub.decimals);
+          
+          if (lrnaShifted.gt(0)) {
+            const lrnaDisplay = lrnaShifted.times(hubPrice);
+            valueDisplay = valueDisplay.plus(lrnaDisplay);
+          }
         }
       }
 
       return {
-        id: position.id,
-        symbol: meta.symbol,
-        name: meta.name,
-        assetId: position.assetId,
-        lrna,
-        lrnaShifted,
-        lrnaDisplay,
-        value,
-        valueShifted,
         valueDisplay,
-        valueDisplayWithoutLrna,
-        price: position.price,
-        amount,
-        amountDisplay,
-        amountShifted,
-        shares,
-        totalValue,
-        totalValueShifted,
-        meta,
       };
     },
     [

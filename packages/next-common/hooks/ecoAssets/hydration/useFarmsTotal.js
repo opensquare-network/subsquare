@@ -67,8 +67,6 @@ const useAllXYKDeposits = (address) => {
             ...(result[index] ?? []),
             {
               amountUSD,
-              assetId: asset.id,
-              depositId: depositNft.id,
             },
           ];
         }
@@ -115,10 +113,7 @@ const useAllOmnipoolDeposits = (address) => {
 
           memo[index] = [
             ...(memo[index] ?? []),
-            {
-              ...positionData,
-              depositId: position.depositId,
-            },
+            positionData,
           ];
         }
 

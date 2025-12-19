@@ -135,18 +135,10 @@ export default function useAccountPositions(address) {
       });
     });
 
-    const isAnyPositions =
-      !!xykDeposits.length ||
-      !!omnipoolDeposits.length ||
-      !!liquidityPositions.length;
-
     setData({
       omnipoolDeposits,
       xykDeposits,
       liquidityPositions,
-      accountAssetsMap,
-      accountAddress: address,
-      isAnyPositions,
       depositLiquidityPositions,
     });
 
