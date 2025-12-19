@@ -140,7 +140,7 @@ function useAllFarmDeposits(address) {
 }
 
 export default function useFarmsTotal(address) {
-  const { omnipool, xyk } = useAllFarmDeposits(address);
+  const { omnipool, xyk, isLoading } = useAllFarmDeposits(address);
 
   const total = useMemo(() => {
     let poolsTotal = BN_0;
@@ -166,5 +166,5 @@ export default function useFarmsTotal(address) {
     return poolsTotal.toString();
   }, [omnipool, xyk]);
 
-  return { isLoading: !total, balance: total };
+  return { isLoading, balance: total };
 }
