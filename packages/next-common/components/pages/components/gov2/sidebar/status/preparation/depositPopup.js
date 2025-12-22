@@ -8,7 +8,7 @@ import Input from "next-common/lib/input";
 import Signer from "next-common/components/popup/fields/signerField";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
-import { useContextApi } from "next-common/context/api";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 import { useReferendaPallet } from "next-common/context/referenda/pallet";
 import CurrencyInput from "next-common/components/currencyInput";
 import BalanceProvider, {
@@ -20,7 +20,7 @@ import BigNumber from "bignumber.js";
 
 function PopupContent() {
   const { onClose } = usePopupParams();
-  const api = useContextApi();
+  const api = useConditionalContextApi();
   const node = useChainSettings();
   const { referendumIndex, trackInfo: track } = usePostOnChainData();
   const pallet = useReferendaPallet();
@@ -47,7 +47,7 @@ function PopupContent() {
         />
       </div>
       <BalanceTip />
-      <TxSubmissionButton getTxFunc={getTxFunc} onClose={onClose} />
+      <TxSubmissionButton api={api} getTxFunc={getTxFunc} onClose={onClose} />
     </>
   );
 }
