@@ -6,14 +6,11 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import { desktopColumns, mobileColumns } from "./columns";
 import { useNavCollapsed } from "next-common/context/nav";
 import { cn } from "next-common/utils";
-import useSearchComponent from "next-common/components/data/common/useSearchComponent";
 import { useDebounce } from "react-use";
 import Input from "next-common/lib/input";
 import { SystemSearch } from "@osn/icons/subsquare";
 
 function useSearchAndPagination(identityList = [], querySearch = "") {
-  const { component: SearchBoxComponent } = useSearchComponent();
-
   const searchIdentityList = useMemo(() => {
     return (identityList || []).filter(
       ({ address = "", name = "", subIdentities }) => {
@@ -70,7 +67,6 @@ function useSearchAndPagination(identityList = [], querySearch = "") {
   }, [identityList, page, searchIdentityList]);
 
   return {
-    SearchBoxComponent,
     PageComponent: total > 0 ? PageComponent : null,
     currentPageData,
   };
