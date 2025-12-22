@@ -47,7 +47,7 @@ function PopupContent() {
         />
       </div>
       <BalanceTip />
-      <TxSubmissionButton getTxFunc={getTxFunc} onClose={onClose} />
+      <TxSubmissionButton api={api} getTxFunc={getTxFunc} onClose={onClose} />
     </>
   );
 }
