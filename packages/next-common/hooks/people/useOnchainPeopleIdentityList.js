@@ -106,7 +106,7 @@ export default function useOnchainPeopleIdentityList() {
 
           return {
             address,
-            name: storageData.info.display?.Raw || "",
+            name: storageData.info.display || "",
             ...storageData,
             status,
             subIdentities: await getSubIdentity(subsMap, address, api),
