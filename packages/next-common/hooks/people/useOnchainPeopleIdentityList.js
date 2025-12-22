@@ -43,17 +43,37 @@ function getAddressFromStorageKey(storageKey) {
     return storageKey.args[0].toString();
   }
 }
-const getSubIdentity = (subsMap, address) => {
-  return (subsMap[address]?.[1] || []).map((address) => {
-    return {
-      address,
-    };
+const getSubIdentityName = async (api, address) => {
+  if (!api?.query?.identity?.superOf) {
+    return "";
+  }
+  const identity = await api.query.identity
+    .identityOf(address)
+    .then((res) => res.toHuman());
+  if (identity?.info?.display?.Raw) {
+    return identity.info.display.Raw;
+  }
+  const superOf = await api?.query?.identity?.superOf(address);
+  const subName = superOf.unwrap()?.[1];
+  return subName?.toHuman()?.Raw || "";
+};
+
+const getSubIdentity = async (subsMap, address, api) => {
+  const subAddresses = subsMap[address]?.[1] || [];
+  if (subAddresses.length === 0) {
+    return [];
+  }
+  const subIdentityPromises = subAddresses.map(async (subAddress) => {
+    const name = await getSubIdentityName(api, subAddress);
+    return { address: subAddress, name };
   });
+
+  return await Promise.all(subIdentityPromises);
 };
 
 export default function useOnchainPeopleIdentityList() {
   const [isLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
   const api = useContextApi();
   const { value, loaded } = useCall(
     api?.query?.identity?.identityOf?.entries,
@@ -64,39 +84,44 @@ export default function useOnchainPeopleIdentityList() {
     [],
   );
 
-  const getIdentityData = useCallback(() => {
+  const getIdentityData = useCallback(async () => {
     const subsMap = subEntries.reduce((result, [key, subsOf]) => {
       const address = getAddressFromStorageKey(key);
       result[address] = subsOf.toJSON();
       return result;
     }, {});
 
-    const results = (value || [])
-      .map(([storageKey, storageValue]) => {
-        if (isDepositZero(storageValue)) {
-          return null;
-        }
+    const results = (
+      await Promise.all(
+        (value || []).map(async ([storageKey, storageValue]) => {
+          if (isDepositZero(storageValue)) {
+            return null;
+          }
 
-        const address = storageKey?.args[0]?.toString();
-        const status = matchJudgementStatus(storageValue);
-        const storageData = storageValue?.toHuman();
-        const nameRaw = storageData.info.display.Raw || "";
-        const name = nameRaw?.startsWith("0x") ? hexToString(nameRaw) : nameRaw;
+          const address = storageKey?.args[0]?.toString();
+          const status = matchJudgementStatus(storageValue);
+          const storageData = storageValue?.toHuman();
+          const nameRaw = storageData.info.display.Raw || "";
+          const name = nameRaw?.startsWith("0x")
+            ? hexToString(nameRaw)
+            : nameRaw;
 
-        return {
-          address,
-          name,
-          ...storageData,
-          status,
-          subIdentities: getSubIdentity(subsMap, address),
-        };
-      })
+          return {
+            address,
+            name,
+            ...storageData,
+            status,
+            subIdentities: await getSubIdentity(subsMap, address, api),
+          };
+        }),
+      )
+    )
       ?.filter(Boolean)
       .sort((a, b) => a.name.localeCompare(b.name));
 
     setData(results);
     setIsLoading(false);
-  }, [subEntries, value]);
+  }, [api, subEntries, value]);
 
   useEffect(() => {
     if (!loaded || !subMapLoaded) {

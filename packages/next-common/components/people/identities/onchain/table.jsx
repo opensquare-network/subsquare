@@ -2,28 +2,46 @@ import TreeMapDataList from "next-common/components/dataList/treeList";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 import { defaultPageSize } from "next-common/utils/constants";
 import { useMemo, useState } from "react";
-import { useRouter } from "next/router";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { desktopColumns, mobileColumns } from "./columns";
 import { useNavCollapsed } from "next-common/context/nav";
 import { cn } from "next-common/utils";
 import useSearchComponent from "next-common/components/data/common/useSearchComponent";
 import { useDebounce } from "react-use";
+import Input from "next-common/lib/input";
+import { SystemSearch } from "@osn/icons/subsquare";
 
-function useSearchAndPagination(identityList = []) {
-  const router = useRouter();
-  const [debouncedSearchValue, setDebouncedSearchValue] = useState("");
+function useSearchAndPagination(identityList = [], querySearch = "") {
   const { component: SearchBoxComponent } = useSearchComponent();
 
   const searchIdentityList = useMemo(() => {
     return (identityList || []).filter(
-      ({ address = "", name = "" }) =>
-        address === debouncedSearchValue ||
-        name
-          .toLocaleLowerCase()
-          .includes(debouncedSearchValue.toLocaleLowerCase()),
+      ({ address = "", name = "", subIdentities }) => {
+        if (
+          address === querySearch ||
+          name.toLocaleLowerCase().includes(querySearch.toLocaleLowerCase())
+        ) {
+          return true;
+        }
+
+        if (subIdentities?.length) {
+          if (
+            subIdentities.find(
+              ({ address = "", name = "" }) =>
+                address === querySearch ||
+                name
+                  .toLocaleLowerCase()
+                  .includes(querySearch.toLocaleLowerCase()),
+            )
+          ) {
+            return true;
+          }
+        }
+
+        return false;
+      },
     );
-  }, [debouncedSearchValue, identityList]);
+  }, [identityList, querySearch]);
   const total = searchIdentityList.length;
 
   const {
@@ -34,11 +52,10 @@ function useSearchAndPagination(identityList = []) {
 
   useDebounce(
     () => {
-      setDebouncedSearchValue(router.query.search || "");
       setPage(1);
     },
     500,
-    [router.query.search],
+    [querySearch],
   );
 
   const currentPageData = useMemo(() => {
@@ -61,12 +78,23 @@ function useSearchAndPagination(identityList = []) {
 
 export default function OnchainIdentitiesTable({ identityList, isLoading }) {
   const [navCollapsed] = useNavCollapsed();
-  const { SearchBoxComponent, PageComponent, currentPageData } =
-    useSearchAndPagination(identityList);
+  const [querySearch, setQuerySearch] = useState("");
+  const { PageComponent, currentPageData } = useSearchAndPagination(
+    identityList,
+    querySearch,
+  );
 
   return (
     <>
-      {SearchBoxComponent}
+      <Input
+        className={cn("mt-4 mx-6")}
+        prefix={
+          <SystemSearch width={24} height={24} className="text-textTertiary" />
+        }
+        placeholder={"Search by identity name or address"}
+        value={querySearch}
+        onChange={(e) => setQuerySearch(e.target.value)}
+      />
       <div className="flex flex-col gap-y-4">
         <SecondaryCard className="space-y-2">
           <TreeMapDataList
