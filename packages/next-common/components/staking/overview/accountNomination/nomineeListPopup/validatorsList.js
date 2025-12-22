@@ -5,11 +5,9 @@ import useColumns from "../../../../styledList/useColumns";
 import { colAccount, colCommission } from "../../../validatorsList/columns";
 import { useValidators } from "next-common/context/staking/validators";
 import { useValidatorsWithIdentity } from "../../../validatorsList/hooks";
-import { SystemVoteAye, SystemVoteNay } from "@osn/icons/subsquare";
 
 function ValidatorsListImpl({
   nominees,
-  activeNominees,
   isLoading,
   titleClassName,
   contentClassName,
@@ -29,22 +27,12 @@ function ValidatorsListImpl({
   const columnsDef = useMemo(
     () => [
       colAccount,
-      colCommission,
       {
-        name: "Elected",
-        style: { textAlign: "right", width: "80px", minWidth: "80px" },
-        render: (item) => (
-          <div className="inline-block">
-            {activeNominees.includes(item.account) ? (
-              <SystemVoteAye className="w-5 h-5" />
-            ) : (
-              <SystemVoteNay className="w-5 h-5" />
-            )}
-          </div>
-        ),
+        ...colCommission,
+        style: { ...colCommission.style, textAlign: "right" },
       },
     ],
-    [activeNominees],
+    [],
   );
 
   const { sortedColumn, sortDirection, columns } = useColumns(
