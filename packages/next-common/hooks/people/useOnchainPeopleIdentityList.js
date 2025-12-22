@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useContextApi } from "next-common/context/api";
 import useCall from "next-common/utils/hooks/useCall";
 import { hexToString } from "@polkadot/util";
+import { convertIdentity } from "../identity/useIdentityOf";
 
 function matchJudgementStatus(storageValue) {
   const unwrappedValue = storageValue?.unwrap() || {};
@@ -49,13 +50,13 @@ const getSubIdentityName = async (api, address) => {
   }
   const identity = await api.query.identity
     .identityOf(address)
-    .then((res) => res.toHuman());
-  if (identity?.info?.display?.Raw) {
+    .then((res) => res.toJSON());
+  if (identity?.info?.display?.raw) {
     return identity.info.display.Raw;
   }
   const superOf = await api?.query?.identity?.superOf(address);
   const subName = superOf.unwrap()?.[1];
-  return subName?.toHuman()?.Raw || "";
+  return subName.toJSON().raw;
 };
 
 const getSubIdentity = async (subsMap, address, api) => {
@@ -65,7 +66,7 @@ const getSubIdentity = async (subsMap, address, api) => {
   }
   const subIdentityPromises = subAddresses.map(async (subAddress) => {
     const nameRaw = await getSubIdentityName(api, subAddress);
-    const name = nameRaw?.startsWith("0x") ? hexToString(nameRaw) : nameRaw;
+    const name = nameRaw ? hexToString(nameRaw) : nameRaw;
     return { address: subAddress, name };
   });
 
@@ -101,15 +102,11 @@ export default function useOnchainPeopleIdentityList() {
 
           const address = storageKey?.args[0]?.toString();
           const status = matchJudgementStatus(storageValue);
-          const storageData = storageValue?.toHuman();
-          const nameRaw = storageData.info.display.Raw || "";
-          const name = nameRaw?.startsWith("0x")
-            ? hexToString(nameRaw)
-            : nameRaw;
+          const storageData = convertIdentity(storageValue);
 
           return {
             address,
-            name,
+            name: storageData.info.display.raw || "",
             ...storageData,
             status,
             subIdentities: await getSubIdentity(subsMap, address, api),
