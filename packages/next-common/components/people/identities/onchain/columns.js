@@ -5,10 +5,10 @@ import ElementLink from "next-common/components/links/elementLink";
 import TwitterLink from "next-common/components/links/twitterLink";
 
 function Socials({ info }) {
-  const email = info?.email?.Raw;
-  const twitter = info?.twitter?.Raw;
-  const web = info?.web?.Raw;
-  const matrix = info?.matrix?.Raw;
+  const email = info?.email;
+  const twitter = info?.twitter;
+  const web = info?.web;
+  const matrix = info?.matrix;
   return (
     <div className="flex gap-1">
       {email && <MailLink email={email} />}
