@@ -57,7 +57,10 @@ export default function useOnchainPeopleIdentityInfo(identityData) {
       });
 
       setStats(newStats);
-      setIsLoading(false);
+      // update in next rerender
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 0);
     } catch (err) {
       setIsLoading(false);
     }

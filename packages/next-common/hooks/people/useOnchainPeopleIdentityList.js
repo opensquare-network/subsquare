@@ -52,7 +52,7 @@ const getSubIdentityName = async (api, address) => {
     .identityOf(address)
     .then((res) => res.toJSON());
   if (identity?.info?.display?.raw) {
-    return identity.info.display.Raw;
+    return identity.info.display.raw;
   }
   const superOf = await api?.query?.identity?.superOf(address);
   const subName = superOf.unwrap()?.[1];
@@ -106,7 +106,7 @@ export default function useOnchainPeopleIdentityList() {
 
           return {
             address,
-            name: storageData.info.display.raw || "",
+            name: storageData.info.display?.Raw || "",
             ...storageData,
             status,
             subIdentities: await getSubIdentity(subsMap, address, api),
