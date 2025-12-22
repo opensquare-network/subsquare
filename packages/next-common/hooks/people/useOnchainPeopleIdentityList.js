@@ -64,7 +64,8 @@ const getSubIdentity = async (subsMap, address, api) => {
     return [];
   }
   const subIdentityPromises = subAddresses.map(async (subAddress) => {
-    const name = await getSubIdentityName(api, subAddress);
+    const nameRaw = await getSubIdentityName(api, subAddress);
+    const name = nameRaw?.startsWith("0x") ? hexToString(nameRaw) : nameRaw;
     return { address: subAddress, name };
   });
 
