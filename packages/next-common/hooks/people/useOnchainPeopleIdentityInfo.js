@@ -60,7 +60,7 @@ export default function useOnchainPeopleIdentityInfo(identityData) {
       // update in next rerender
       setTimeout(() => {
         setIsLoading(false);
-      }, 0);
+      }, 2000);
     } catch (err) {
       setIsLoading(false);
     }
