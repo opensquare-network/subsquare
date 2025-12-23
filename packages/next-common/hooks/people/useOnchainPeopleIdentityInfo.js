@@ -2,7 +2,10 @@ import { useState, useEffect } from "react";
 import { useContextApi } from "next-common/context/api";
 import useCall from "next-common/utils/hooks/useCall";
 
-export default function useOnchainPeopleIdentityInfo(identityData) {
+export default function useOnchainPeopleIdentityInfo(
+  identityData,
+  identityDataLoading,
+) {
   const [isLoading, setIsLoading] = useState(true);
   const [stats, setStats] = useState({
     directCount: 0,
@@ -18,7 +21,7 @@ export default function useOnchainPeopleIdentityInfo(identityData) {
   );
 
   useEffect(() => {
-    if (!superLoaded || !identityData) {
+    if (!superLoaded || identityDataLoading || !identityData) {
       return;
     }
 
@@ -57,14 +60,11 @@ export default function useOnchainPeopleIdentityInfo(identityData) {
       });
 
       setStats(newStats);
-      // update in next rerender
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 2000);
+      setIsLoading(false);
     } catch (err) {
       setIsLoading(false);
     }
-  }, [superLoaded, superValue, identityData]);
+  }, [superLoaded, superValue, identityData, identityDataLoading]);
 
   return {
     isLoading,

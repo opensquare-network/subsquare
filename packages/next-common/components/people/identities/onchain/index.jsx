@@ -10,8 +10,10 @@ import useOnchainPeopleIdentityInfo from "next-common/hooks/people/useOnchainPeo
 export default function OnchainPeopleIdentitiesPage() {
   const { description } = useChainSettings();
   const { data: identityList, isLoading } = useOnchainPeopleIdentityList();
-  const { stats, isLoading: isSummaryLoading } =
-    useOnchainPeopleIdentityInfo(identityList);
+  const { stats, isLoading: isSummaryLoading } = useOnchainPeopleIdentityInfo(
+    identityList,
+    isLoading,
+  );
 
   return (
     <ListLayout
