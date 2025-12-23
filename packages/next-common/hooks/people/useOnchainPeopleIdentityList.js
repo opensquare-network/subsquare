@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useContextApi } from "next-common/context/api";
 import useCall from "next-common/utils/hooks/useCall";
 import { hexToString } from "@polkadot/util";
-import { convertIdentity } from "../identity/useIdentityOf";
+import { convertJudgements } from "../identity/useIdentityOf";
 
 function matchJudgementStatus(storageValue) {
   const unwrappedValue = storageValue?.unwrap() || {};
@@ -55,8 +55,7 @@ const getSubIdentityName = async (api, address) => {
     return identity.info.display.raw;
   }
   const superOf = await api?.query?.identity?.superOf(address);
-  const subName = superOf.unwrap()?.[1];
-  return subName.toJSON().raw;
+  return superOf?.toJSON()?.[1]?.raw || "";
 };
 
 const getSubIdentity = async (subsMap, address, api) => {
@@ -71,6 +70,26 @@ const getSubIdentity = async (subsMap, address, api) => {
   });
 
   return await Promise.all(subIdentityPromises);
+};
+
+const convertIdentity = (identity) => {
+  const { info } = identity.toJSON();
+  const unwrapped = identity.unwrap();
+  return {
+    info: {
+      display: hexToString(info.display.raw),
+      legal: hexToString(info.legal.raw),
+      web: hexToString(info.web.raw),
+      matrix: hexToString(info.matrix.raw),
+      email: hexToString(info.email.raw),
+      pgpFingerprint: null,
+      image: hexToString(info.image.raw),
+      twitter: hexToString(info.twitter.raw),
+      github: hexToString(info.github.raw),
+      discord: hexToString(info.discord.raw),
+    },
+    judgements: convertJudgements(unwrapped),
+  };
 };
 
 export default function useOnchainPeopleIdentityList() {
@@ -103,10 +122,11 @@ export default function useOnchainPeopleIdentityList() {
           const address = storageKey?.args[0]?.toString();
           const status = matchJudgementStatus(storageValue);
           const storageData = convertIdentity(storageValue);
+          const display = storageData.info.display || "";
 
           return {
             address,
-            name: storageData.info.display || "",
+            name: display,
             ...storageData,
             status,
             subIdentities: await getSubIdentity(subsMap, address, api),
