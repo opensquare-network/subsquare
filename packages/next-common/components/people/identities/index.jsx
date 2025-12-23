@@ -6,6 +6,12 @@ import OnchainPeopleIdentitiesPage from "./onchain";
 import IdentitiesSummary from "./summary";
 import PeopleCommonProvider from "../common/commonProvider";
 import generateLayoutRawTitle from "next-common/utils/generateLayoutRawTitle";
+import {
+  isKusamaPeopleChain,
+  isPaseoPeopleChain,
+  isPolkadotPeopleChain,
+  isWestendPeopleChain,
+} from "next-common/utils/chain";
 
 export const tabs = [
   {
@@ -17,9 +23,14 @@ export const tabs = [
 ];
 
 export default function PeopleIdentitiesPageImpl() {
-  const { description, integrations } = useChainSettings();
+  const { description, value: chain } = useChainSettings();
 
-  if (!integrations?.statescan) {
+  if (
+    isPolkadotPeopleChain(chain) ||
+    isKusamaPeopleChain(chain) ||
+    isWestendPeopleChain(chain) ||
+    isPaseoPeopleChain(chain)
+  ) {
     return (
       <PeopleCommonProvider>
         <OnchainPeopleIdentitiesPage />
