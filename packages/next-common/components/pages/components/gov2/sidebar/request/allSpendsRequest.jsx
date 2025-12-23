@@ -49,9 +49,10 @@ export default function AllSpendsRequest() {
   );
 }
 
-function Spend({ assetKind, amount, symbol, type }) {
+function Spend({ assetKind, amount, symbol, type, decimals }) {
   symbol = symbol || assetKind?.symbol;
   type = type || assetKind?.type;
+  decimals = decimals || assetKind?.decimals;
 
   return (
     <div className="flex items-center gap-x-2">
@@ -60,6 +61,7 @@ function Spend({ assetKind, amount, symbol, type }) {
         type={type}
         amount={amount}
         symbol={symbol}
+        decimals={decimals}
         className="text14Medium text-textPrimary"
         tooltipOtherContent={
           <FormatFiatValue amount={amount} symbol={symbol} />

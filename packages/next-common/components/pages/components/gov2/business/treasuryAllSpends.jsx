@@ -94,11 +94,13 @@ function Spend({
   validFrom,
   after,
   symbol,
+  decimals,
   type,
   className = "",
 } = {}) {
   symbol = symbol || assetKind?.symbol;
   type = type || assetKind?.type;
+  decimals = decimals || assetKind?.decimals;
 
   beneficiary =
     typeof beneficiary === "string" ? beneficiary : beneficiary?.address;
@@ -120,6 +122,7 @@ function Spend({
           amount={amount}
           symbol={symbol}
           type={type}
+          decimals={decimals}
           tooltipOtherContent={
             <FormatFiatValue amount={amount} symbol={symbol} />
           }
