@@ -1,3 +1,5 @@
+"use client";
+
 import { createContext, useContext, useMemo } from "react";
 import BigNumber from "bignumber.js";
 import useHydrationTotalAssetsBalance from "next-common/hooks/ecoAssets/hydration";

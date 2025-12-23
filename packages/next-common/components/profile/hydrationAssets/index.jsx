@@ -1,3 +1,5 @@
+"use client";
+
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { useHydrationBalanceContext } from "next-common/components/profile/hydrationAssets/context/hydrationBalanceContext";
 import SummaryItem from "next-common/components/summary/layout/item";

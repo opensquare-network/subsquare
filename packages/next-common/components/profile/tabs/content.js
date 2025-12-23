@@ -1,4 +1,5 @@
 import React from "react";
+import dynamic from "next/dynamic";
 import Posted from "../posted";
 import VotingHistory from "../votingHistory";
 import ProfileMultisigs from "../multisigs";
@@ -15,7 +16,11 @@ import ProfileTreasury from "../treasury";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import ProfileAssets from "next-common/components/profile/assets";
 import ProfileForeignAssets from "next-common/components/profile/foreignAssets";
-import ProfileHydrationAssets from "next-common/components/profile/hydrationAssets";
+
+const ProfileHydrationAssets = dynamic(
+  () => import("next-common/components/profile/hydrationAssets"),
+  { ssr: false },
+);
 
 export default function useProfileTabContent() {
   const { id } = usePageProps();
