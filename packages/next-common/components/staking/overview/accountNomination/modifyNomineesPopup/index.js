@@ -15,6 +15,7 @@ import dynamicPopup from "next-common/lib/dynamic/popup";
 import { useValidatorsWithStatus } from "next-common/hooks/staking/useValidatorWithStatus";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import ValidatorsList from "../nomineeListPopup/validatorsList";
+import Tooltip from "next-common/components/tooltip";
 
 const ValidatorSelectPopup = dynamicPopup(() =>
   import(
@@ -52,6 +53,11 @@ function ModifyNomineesPopupContent() {
   let errorMessage = "";
   if (notEnoughNominees) {
     errorMessage = "Please select at least one nominee.";
+  }
+
+  let submissionMessage = "";
+  if (!nomineesChanged) {
+    submissionMessage = "No changes made to nominees.";
   }
 
   const getTxFunc = useCallback(() => {
@@ -110,7 +116,9 @@ function ModifyNomineesPopupContent() {
         <EstimatedGas getTxFunc={getTxFunc} />
       </AdvanceSettings>
       <div className="flex justify-end">
-        <TxSubmissionButton disabled={!canSubmit} getTxFunc={getTxFunc} />
+        <Tooltip content={submissionMessage}>
+          <TxSubmissionButton disabled={!canSubmit} getTxFunc={getTxFunc} />
+        </Tooltip>
       </div>
     </div>
   );
