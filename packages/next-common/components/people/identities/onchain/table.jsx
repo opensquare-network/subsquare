@@ -1,69 +1,121 @@
-import DataList from "next-common/components/dataList";
+import TreeMapDataList from "next-common/components/dataList/treeList";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 import { defaultPageSize } from "next-common/utils/constants";
-import { useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/router";
+import { useMemo, useState } from "react";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import AddressUser from "next-common/components/user/addressUser";
-import columns from "../columns";
+import { desktopColumns, mobileColumns } from "./columns";
+import { useNavCollapsed } from "next-common/context/nav";
+import { cn } from "next-common/utils";
+import { useDebounce } from "react-use";
+import Input from "next-common/lib/input";
+import { SystemSearch } from "@osn/icons/subsquare";
 
-export default function OnchainIdentitiesTable({ identitieList, isLoading }) {
-  const router = useRouter();
-  const [total, setTotal] = useState(0);
+function useSearchAndPagination(identityList = [], querySearch = "") {
+  const searchIdentityList = useMemo(() => {
+    return (identityList || []).filter(
+      ({ address = "", name = "", subIdentities }) => {
+        if (
+          address === querySearch ||
+          name.toLocaleLowerCase().includes(querySearch.toLocaleLowerCase())
+        ) {
+          return true;
+        }
+
+        if (subIdentities?.length) {
+          if (
+            subIdentities.find(
+              ({ address = "", name = "" }) =>
+                address === querySearch ||
+                name
+                  .toLocaleLowerCase()
+                  .includes(querySearch.toLocaleLowerCase()),
+            )
+          ) {
+            return true;
+          }
+        }
+
+        return false;
+      },
+    );
+  }, [identityList, querySearch]);
+  const total = searchIdentityList.length;
+
   const {
     page,
-    component: pageComponent,
+    component: PageComponent,
     setPage,
   } = usePaginationComponent(total, defaultPageSize);
 
+  useDebounce(
+    () => {
+      setPage(1);
+    },
+    500,
+    [querySearch],
+  );
+
   const currentPageData = useMemo(() => {
-    if (!identitieList) {
+    if (!identityList) {
       return [];
     }
 
     const startIndex = (page - 1) * defaultPageSize;
     const endIndex = startIndex + defaultPageSize;
 
-    return identitieList.slice(startIndex, endIndex);
-  }, [identitieList, page]);
+    return searchIdentityList.slice(startIndex, endIndex);
+  }, [identityList, page, searchIdentityList]);
 
-  useEffect(() => {
-    setTotal(identitieList?.length || 0);
-  }, [identitieList]);
+  return {
+    PageComponent: total > 0 ? PageComponent : null,
+    currentPageData,
+  };
+}
 
-  useEffect(() => {
-    if (router.query) {
-      setPage(1);
-    }
-  }, [router.query, setPage]);
+export default function OnchainIdentitiesTable({ identityList, isLoading }) {
+  const [navCollapsed] = useNavCollapsed();
+  const [querySearch, setQuerySearch] = useState("");
+  const { PageComponent, currentPageData } = useSearchAndPagination(
+    identityList,
+    querySearch,
+  );
 
   return (
-    <div className="flex flex-col gap-y-4">
-      <SecondaryCard className="space-y-2">
-        <DataList
-          columns={columns}
-          rows={(currentPageData || [])?.map((item, index) => {
-            return [
-              <AddressUser key={`account-${index}`} add={item.address} />,
-              <div
-                key={`subsCount-${index}`}
-                className="text-textPrimary text14Medium"
-              >
-                -
-              </div>,
-              <div
-                key={`latestUpdate-${index}`}
-                className="text-textTertiary text14Medium"
-              >
-                -
-              </div>,
-            ];
-          })}
-          loading={isLoading}
-          noDataText="No identities"
-        />
-        {total > 0 && pageComponent}
-      </SecondaryCard>
-    </div>
+    <>
+      <Input
+        className={cn("mt-4 mx-6")}
+        prefix={
+          <SystemSearch width={24} height={24} className="text-textTertiary" />
+        }
+        placeholder={"Search by identity name or address"}
+        value={querySearch}
+        onChange={(e) => setQuerySearch(e.target.value)}
+      />
+      <div className="flex flex-col gap-y-4">
+        <SecondaryCard className="space-y-2">
+          <TreeMapDataList
+            className={cn(navCollapsed ? "max-sm:hidden" : "max-md:hidden")}
+            columnsDef={desktopColumns}
+            data={currentPageData}
+            loading={isLoading}
+            noDataText="No identities"
+            treeKey="subIdentities"
+          />
+
+          <TreeMapDataList
+            className={cn(
+              "hidden",
+              navCollapsed ? "max-sm:block" : "max-md:block",
+            )}
+            columnsDef={mobileColumns}
+            data={currentPageData}
+            loading={isLoading}
+            noDataText="No identities"
+            treeKey="subIdentities"
+          />
+          {PageComponent}
+        </SecondaryCard>
+      </div>
+    </>
   );
 }
