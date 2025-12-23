@@ -35,7 +35,10 @@ export default function PostListTreasuryAllSpends({
   return <MultiSpends spends={resolvedSpends} showFaitPrice={showFaitPrice} />;
 }
 
-function OnlyOneSpend({ spend: { type, amount, symbol }, showFaitPrice }) {
+function OnlyOneSpend({
+  spend: { type, amount, symbol, decimals },
+  showFaitPrice,
+}) {
   return (
     <div className="text-textPrimary">
       <TreasurySpendValueDisplay
@@ -43,6 +46,7 @@ function OnlyOneSpend({ spend: { type, amount, symbol }, showFaitPrice }) {
         type={type}
         amount={amount}
         symbol={symbol}
+        decimals={decimals}
         tooltipOtherContent={
           showFaitPrice && (
             <ValueFiatPriceDisplay amount={amount} symbol={symbol} />
@@ -64,6 +68,7 @@ const SpendValue = ({ spend, showFaitPrice }) => {
         type={spend.type}
         chain={spend.chain}
         symbol={spend.symbol}
+        decimals={spend.decimals}
       />
 
       {showFaitPrice && (
