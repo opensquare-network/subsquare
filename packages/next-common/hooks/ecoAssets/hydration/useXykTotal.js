@@ -62,7 +62,7 @@ export default function useXykTotal(address) {
           const transferable = BigNumber(balance.transferable);
 
           if (transferable.gt(0)) {
-            const spotPrice = await queryAssetPrice(sdk, asset.id, "10");
+            const spotPrice = await queryAssetPrice(sdk, asset.id);
 
             if (cancelled) break;
 

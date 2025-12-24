@@ -11,6 +11,7 @@ const HydrationBalanceContext = createContext(null);
 function HydrationBalanceProviderImpl({ children }) {
   const address = useProfileAddress();
   const { balance, isLoading } = useHydrationTotalAssetsBalance(address);
+  console.log(":::::::Hydration balance:", balance, isLoading);
 
   const hasBalance = useMemo(() => {
     if (isLoading || !balance) {

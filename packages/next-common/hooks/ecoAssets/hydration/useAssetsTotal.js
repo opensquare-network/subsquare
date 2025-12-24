@@ -4,8 +4,9 @@ import useAllAssets from "./common/useAllAssets";
 import useAccountBalance from "./common/useAccountBalance";
 import { useHydrationSDK } from "next-common/hooks/ecoAssets/hydration/context/hydrationSDKContext";
 import { external } from "./utils/assetUtils";
+import { USDT_ASSET_ID } from "./utils/constants";
 
-export async function queryAssetPrice(sdk, assetIn, assetOut = "10") {
+export async function queryAssetPrice(sdk, assetIn, assetOut = USDT_ASSET_ID) {
   if (!assetIn || !assetOut || !sdk) {
     return NaN;
   }
@@ -46,7 +47,7 @@ async function calculateTotalBalance(sdk, balances) {
 
       const total = new BigNumber(balance.total).shiftedBy(-asset.decimals);
 
-      const spotPrice = await queryAssetPrice(sdk, asset.id, "10");
+      const spotPrice = await queryAssetPrice(sdk, asset.id);
 
       if (!spotPrice || isNaN(spotPrice)) {
         continue;

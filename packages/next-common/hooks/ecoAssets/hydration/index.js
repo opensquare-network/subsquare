@@ -5,6 +5,7 @@ import useXykTotal from "./useXykTotal";
 import useBorrowsTotal from "./useBorrowsTotal";
 import BigNumber from "bignumber.js";
 import { useMemo } from "react";
+import { isNil } from "lodash-es";
 
 export default function useHydrationTotalAssetsBalance(address) {
   const { balance: assetsTotal, isLoading: assetsIsLoading } =
@@ -29,7 +30,7 @@ export default function useHydrationTotalAssetsBalance(address) {
     }
 
     const values = [assetsTotal, farmsTotal, lpTotal, xykTotal, borrowsTotal];
-    if (values.some((v) => v === null || v === undefined)) {
+    if (values.some((v) => isNil(v))) {
       return "0";
     }
 

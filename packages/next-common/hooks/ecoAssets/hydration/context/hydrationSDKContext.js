@@ -19,7 +19,6 @@ export function HydrationSDKProvider({ children }) {
     api: null,
     sdk: null,
     isInitializing: true,
-    error: null,
   });
   const hydrationEndpoints = useMemo(() => {
     const { endpoints } = getChainSettings(Chains.hydradx);
@@ -48,7 +47,6 @@ export function HydrationSDKProvider({ children }) {
             api: apiInstance,
             sdk: sdkInstance,
             isInitializing: false,
-            error: null,
           });
         }
       } catch (error) {
@@ -58,7 +56,6 @@ export function HydrationSDKProvider({ children }) {
             api: null,
             sdk: null,
             isInitializing: false,
-            error: error.message,
           });
         }
       }
@@ -69,7 +66,7 @@ export function HydrationSDKProvider({ children }) {
     return () => {
       isMounted = false;
       if (apiInstance) {
-        apiInstance.disconnect().catch(console.error);
+        apiInstance.disconnect();
       }
     };
   }, [hydrationEndpoints]);
@@ -83,7 +80,6 @@ export function HydrationSDKProvider({ children }) {
 
 export function useHydrationSDKContext() {
   const context = useContext(HydrationSDKContext);
-
   return context;
 }
 

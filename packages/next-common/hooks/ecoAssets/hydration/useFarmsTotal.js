@@ -50,7 +50,7 @@ const useAllXYKDeposits = (address) => {
           }
 
           const shares = BigNumber(depositNft.data.shares.toString());
-          const spotPrice = await queryAssetPrice(sdk, asset.id, "10");
+          const spotPrice = await queryAssetPrice(sdk, asset.id);
 
           if (cancelled) break;
 
