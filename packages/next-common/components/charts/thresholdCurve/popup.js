@@ -15,7 +15,7 @@ import {
 import Loading from "../../loading";
 import { noop, range } from "lodash-es";
 import HowOpenGovWorks from "next-common/components/howOpenGovWorks";
-import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import { useWindowWidthContext } from "next-common/context/windowSize";
 
 const Center = styled(Flex)`
   justify-content: center;
@@ -56,7 +56,7 @@ export default function ThresholdCurvesPopup({
   supportData = [],
   approvalData = [],
 }) {
-  const { width } = useWindowSize();
+  const width = useWindowWidthContext();
   const theme = useTheme();
 
   const list = range(labels.length).map((n) => {

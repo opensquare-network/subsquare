@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ArrowTriangleDown } from "@osn/icons/subsquare";
 import { isNil } from "lodash-es";
-import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import { useWindowWidthContext } from "next-common/context/windowSize";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { cn } from "next-common/utils";
 
@@ -15,7 +15,7 @@ export default function CollapsePanel({
   labelItem,
 }) {
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
-  const { width } = useWindowSize();
+  const width = useWindowWidthContext();
 
   const toggleCollapse = () => setIsCollapsed((prev) => !prev);
 

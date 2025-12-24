@@ -36,19 +36,19 @@ export default function RenameSubPopup({
     <Popup title="Rename Sub Identity" onClose={onClose}>
       <div className="space-y-4">
         <div>
-          <PopupLabel text="Identity"/>
+          <PopupLabel text="Identity" />
           <GreyPanel className="py-3 px-4 gap-4">
             <Account account={{ address }} />
           </GreyPanel>
         </div>
         <div>
-          <PopupLabel text="Current Name"/>
+          <PopupLabel text="Current Name" />
           <div className="text14Medium text-textPrimary p-3 bg-neutral200 rounded">
             {currentName}
           </div>
         </div>
         <div>
-          <PopupLabel text="New Name"/>
+          <PopupLabel text="New Name" />
           <Input
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
@@ -56,9 +56,7 @@ export default function RenameSubPopup({
           />
         </div>
         <div className="flex justify-end gap-x-2">
-          <SecondaryButton onClick={onClose}>
-            Cancel
-          </SecondaryButton>
+          <SecondaryButton onClick={onClose}>Cancel</SecondaryButton>
           <TxSubmissionButton
             size="small"
             title="Confirm"

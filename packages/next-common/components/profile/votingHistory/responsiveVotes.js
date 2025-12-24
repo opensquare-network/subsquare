@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { backendApi } from "next-common/services/nextApi";
 import { usePageProps } from "next-common/context/page";
 import { ListCard } from "./styled";
-import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import { useWindowWidthContext } from "next-common/context/windowSize";
 import VotesList from "./votesList";
 import MobileFellowshipVotesList from "./mobile/fellowshipVotesList";
 import { isNil } from "lodash-es";
@@ -21,7 +21,7 @@ export default function ResponsiveVotes() {
     data?.total || 0,
     data?.pageSize || 25,
   );
-  const { width } = useWindowSize();
+  const width = useWindowWidthContext();
   const [showVoteDetail, setShowVoteDetail] = useState(null);
   const module = useModuleName();
   const isFellowship = useIsFellowship();

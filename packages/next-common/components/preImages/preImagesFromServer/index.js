@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { useAsync } from "react-use";
 import ListTitleBar from "next-common/components/listTitleBar";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import SearchBox from "../searchBox";
+import SearchBox from "../../searchBox";
 import MyDeposit from "../myDeposit";
 import { queryPreimages } from "./gql";
 import { isSameAddress } from "next-common/utils";
@@ -93,6 +93,7 @@ export default function PreImagesList() {
           value={searchValue}
           setValue={setSearchValue}
           isDebounce={true}
+          placeholder="Search hash"
         />
       </div>
       <div className="max-md:hidden">

@@ -2,7 +2,7 @@ import { sortBy } from "lodash-es";
 import ListTitleBar from "next-common/components/listTitleBar";
 import DesktopList from "./desktop";
 import MobileList from "./mobile";
-import SearchBox from "./searchBox";
+import SearchBox from "../searchBox";
 import { useMemo, useState } from "react";
 import MyDeposit from "./myDeposit";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
@@ -68,6 +68,7 @@ export default function PreImagesList() {
           value={searchValue}
           setValue={setSearchValue}
           isDebounce={true}
+          placeholder="Search hash"
         />
       </div>
       <div className="max-md:hidden">

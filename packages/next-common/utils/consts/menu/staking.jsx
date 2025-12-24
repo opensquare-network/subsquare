@@ -1,0 +1,39 @@
+import {
+  MenuStaking,
+  MenuStakingValidator,
+  MenuStakingPool,
+  MenuOverview,
+} from "@osn/icons/subsquare";
+import { NAV_MENU_TYPE } from "next-common/utils/constants";
+
+export const stakingMenu = {
+  name: "Staking",
+  value: "staking",
+  pathname: "/staking",
+  icon: <MenuStaking />,
+  extra: <span />,
+  type: NAV_MENU_TYPE.subspace,
+  items: [
+    {
+      name: "Overview",
+      value: "overview",
+      pathname: "/staking",
+      icon: <MenuOverview />,
+    },
+    {
+      type: "divider",
+    },
+    {
+      name: "Validators",
+      value: "validators",
+      pathname: "/staking/validators",
+      icon: <MenuStakingValidator />,
+    },
+    {
+      name: "Pools",
+      value: "pools",
+      pathname: "/staking/pools",
+      icon: <MenuStakingPool />,
+    },
+  ],
+};

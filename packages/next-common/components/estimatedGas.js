@@ -21,7 +21,10 @@ export default function EstimatedGas({ getTxFunc }) {
     if (typeof getTxFunc !== "function") {
       return;
     }
-    Promise.resolve(getTxFunc()).then(setTx);
+    Promise.resolve()
+      .then(getTxFunc)
+      .then(setTx)
+      .catch(() => setTx(null));
   }, [getTxFunc]);
 
   useEffect(() => {

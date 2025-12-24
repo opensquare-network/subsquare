@@ -6,9 +6,7 @@ import BigNumber from "bignumber.js";
 import { abbreviateBigNumber } from "next-common/utils";
 import { useNavCollapsed } from "next-common/context/nav";
 import { cn } from "next-common/utils";
-import WindowSizeProvider, {
-  useWindowWidthContext,
-} from "next-common/context/windowSize";
+import { useWindowWidthContext } from "next-common/context/windowSize";
 import { useChainSettings } from "next-common/context/chain";
 
 export function useIsMobile() {
@@ -46,7 +44,13 @@ export function AccountBalanceFiatValue({ value, className }) {
   );
 }
 
-export function AccountBalanceItem({ value, title, isLoading, className }) {
+export function AccountBalanceItem({
+  value,
+  title,
+  isLoading,
+  className,
+  tooltipContent,
+}) {
   const isMobile = useIsMobile();
 
   if (!isLoading && isNaN(value)) {
@@ -57,7 +61,6 @@ export function AccountBalanceItem({ value, title, isLoading, className }) {
     <div
       className={cn(
         "group",
-        "[&:not(:last-child)]:mb-1",
         "flex items-center",
         isMobile && "w-full inline-flex flex-col",
         className,
@@ -71,6 +74,7 @@ export function AccountBalanceItem({ value, title, isLoading, className }) {
           className={"inline-flex flex-row items-center justify-between"}
           titleClassName={"mb-0 text14Medium text-textTertiary flex-1 w-[90px]"}
           valueClassName="text14Medium min-w-[100px] ml-5 inline-flex justify-end"
+          tooltipContent={tooltipContent}
         />
         <AccountBalanceFiatValue
           value={value}
@@ -135,12 +139,13 @@ export function Locked() {
 
 export default function AccountBalances() {
   return (
-    <WindowSizeProvider>
-      <CollapsePanel className="w-[300px]" labelItem={<TotalBalance />}>
-        <Transferrable />
-        <Reserved />
-        <Locked />
-      </CollapsePanel>
-    </WindowSizeProvider>
+    <CollapsePanel
+      className="w-[300px] [&>*:not(:last-child)]:mb-1"
+      labelItem={<TotalBalance />}
+    >
+      <Transferrable />
+      <Reserved />
+      <Locked />
+    </CollapsePanel>
   );
 }

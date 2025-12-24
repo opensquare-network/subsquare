@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { useRouter } from "next/router";
-import useWindowSize from "../../utils/hooks/useWindowSize.js";
+import { useWindowSizeContext } from "next-common/context/windowSize";
 import Relative from "../styled/relative";
 import Flex from "../styled/flex";
 import { useIsLoggedIn, useUser } from "../../context/user";
@@ -71,7 +71,7 @@ export default function HeaderAccount() {
   const router = useRouter();
   const [show, setShow] = useState(false);
   const ref = useRef();
-  const windowSize = useWindowSize();
+  const windowSize = useWindowSizeContext();
   const isMounted = useMountedState();
   const { openLoginPopup } = useLoginPopup();
   const menu = useAccountMenu();

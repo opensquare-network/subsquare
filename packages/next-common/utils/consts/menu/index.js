@@ -18,6 +18,7 @@ import getChainSettings from "../settings";
 import getArchivedMenu from "./archived";
 import { coretimeMenu } from "./coretime";
 import { peopleMenu } from "./people";
+import { stakingMenu } from "./staking";
 import whitelist from "./whitelist";
 import Data from "./data";
 import getAdvancedMenu from "next-common/utils/consts/menu/advanced";
@@ -35,10 +36,7 @@ export function getHomeMenu({
   ambassadorTracks = [],
   currentTrackId,
 } = {}) {
-  const {
-    modules,
-    hasMultisig = false,
-  } = getChainSettings(CHAIN);
+  const { modules, hasMultisig = false } = getChainSettings(CHAIN);
 
   const integrationsMenu = [
     modules?.assethub && isAssetHubMigrated() && assetsMenu,
@@ -58,6 +56,7 @@ export function getHomeMenu({
     modules?.advisoryCommittee && getAdvisoryCommitteeMenu(summary),
     modules?.alliance && getAllianceMenu(summary),
     modules?.communityCouncil && getCommunityCouncilMenu(summary),
+    modules?.staking && stakingMenu,
     getAdvancedMenu(
       [
         modules?.preimages && preImages,
@@ -91,7 +90,7 @@ export function getMainMenu({
   currentTrackId,
 } = {}) {
   const { hotMenu = {} } = getChainSettings(CHAIN);
-  
+
   const commonMenus = getCommonMenus({
     tracks,
     currentTrackId,

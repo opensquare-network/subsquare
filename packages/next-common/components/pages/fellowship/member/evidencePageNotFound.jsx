@@ -2,10 +2,9 @@ import { useMemo } from "react";
 import NotFoundDetail from "next-common/components/notFoundDetail";
 import AddressUser from "next-common/components/user/addressUser";
 import { useRouter } from "next/router";
-import WindowSizeProvider from "next-common/context/windowSize";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 
-function EvidencePageNotFoundImpl({ props }) {
+export default function EvidencePageNotFound({ props }) {
   const isMobile = useIsMobile();
   const router = useRouter();
   const evidenceId = router.query.evidenceId;
@@ -60,13 +59,5 @@ function EvidencePageNotFoundImpl({ props }) {
       customId={`#${evidenceId}`}
       breadcrumbItems={responsiveBreadcrumbItems}
     />
-  );
-}
-
-export default function EvidencePageNotFound({ props }) {
-  return (
-    <WindowSizeProvider>
-      <EvidencePageNotFoundImpl props={props} />
-    </WindowSizeProvider>
   );
 }

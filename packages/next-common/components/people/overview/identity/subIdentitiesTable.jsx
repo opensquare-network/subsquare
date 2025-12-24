@@ -62,11 +62,7 @@ export function SubIdentitiesTableImpl({ subs = [], isLoading, onSuccess }) {
   );
 }
 
-export default function SubIdentitiesTable({
-  subs = [],
-  isLoading,
-  retry,
-}) {
+export default function SubIdentitiesTable({ subs = [], isLoading, retry }) {
   const chain = useChain();
   const { identity: identityChain } = getChainSettings(chain);
   const extensionAccounts = useExtensionAccounts();

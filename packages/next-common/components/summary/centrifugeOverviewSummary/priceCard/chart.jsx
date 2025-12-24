@@ -2,7 +2,7 @@ import { Line } from "react-chartjs-2";
 import "../../../charts/globalConfig";
 import dayjs from "dayjs";
 import { noop, merge } from "lodash-es";
-import { useWindowSize } from "react-use";
+import { useWindowWidthContext } from "next-common/context/windowSize";
 import { useThemeSetting } from "next-common/context/theme";
 import { bnToLocaleString } from "next-common/utils/bn";
 
@@ -13,7 +13,7 @@ export default function PriceCardContentChart({
 }) {
   const themeSettings = useThemeSetting();
 
-  const { width } = useWindowSize();
+  const width = useWindowWidthContext();
 
   const prices = data || [];
 

@@ -2,7 +2,7 @@ import { SystemClose } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAnimate } from "framer-motion";
-import { useWindowSize } from "react-use";
+import { useWindowWidthContext } from "next-common/context/windowSize";
 
 export const PromptTypes = {
   INFO: "info",
@@ -45,7 +45,7 @@ export default function ScrollPrompt({
   pageSize = 2,
   defaultStep = 1,
 }) {
-  const { width } = useWindowSize();
+  const width = useWindowWidthContext();
   const isMobile = width < 768;
   const step = defaultStep;
   const [promptPages, setPromptPages] = useState([]);
@@ -156,7 +156,7 @@ export default function ScrollPrompt({
 }
 
 export function ScrollPromptItemWrapper({ prompt }) {
-  const { width } = useWindowSize();
+  const width = useWindowWidthContext();
   const isMobile = width < 768;
   return (
     <div
