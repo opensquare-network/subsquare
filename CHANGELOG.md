@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+# 5.5.7
+
+Date:
+2025-12-24. [Code diff](https://github.com/opensquare-network/subsquare/compare/7e9cd02755641baf290a68ea1b1ceff80d354d61...3465bf51d768bb2e509f22635977230708826a60).
+
+- Treasury statistics:
+    - Add media/BD category to treasury funded project statistics.
+    - Add more projects to all categories.
+    - Add vertical bars on treasury projects category tab to show fund total amount comparison.
+    - Add a table view for all funded projects.
+    - Add tags to some treasury beneficiary address.
+- Change the way to query all on-chain identities and show all identities in a tree view.
+- Enable transfer for hyperbridge.
+- Add a `translate="no"` attribute to `ValueDisplay` to prevent page crash when translating some pages.
+- Add a stable spend referenda template for hydration and show the request amount on the referendum detail page.
+- Correct subscan link after assethub migration for polkadot and kusama.
+- Click to switch between concrete time and gap for treasury burn time column.
+- Fix a style bug to remove the unnecessary scroll bar when there are few votes.
+- Fix the execution count down component on the democracy referendum detail page due to assethub migration.
+- Fix kusama fellowship referendum decision deposit.
+- Remove multisig for centrifuge/interlay/khala/phala/litmus.
+- Upgrade dependencies and fix styles.
+
 # 5.5.6
 
 Date:
