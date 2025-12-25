@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useContextApi } from "next-common/context/api";
 import useCall from "next-common/utils/hooks/useCall";
 import { hexToString } from "@polkadot/util";
-import { convertIdentity } from "../identity/useIdentityOf";
+import { convertIdentity } from "next-common/hooks/identity/identityFetch";
 
 function matchJudgementStatus(storageValue) {
   const unwrappedValue = storageValue?.unwrap() || {};
