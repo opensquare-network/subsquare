@@ -1,11 +1,16 @@
 import { useMemo } from "react";
 import BigNumber from "bignumber.js";
 import { Doughnut } from "react-chartjs-2";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import Outlabels from "@energiency/chartjs-plugin-piechart-outlabels";
+import "../../../../charts/globalConfig";
 import { usePageProps } from "next-common/context/page";
 import { useThemeSetting } from "next-common/context/theme";
 import CuratorIndicators from "./curatorIndicators";
 import CuratorSummary from "./curatorSummary";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
+
+ChartJS.register(ArcElement, Tooltip, Legend, Outlabels);
 
 const colors = [
   "#EB558999",
@@ -101,6 +106,7 @@ function useDoughnutChartOptions() {
           borderRadius: 0,
           borderWidth: 0,
           padding: 0,
+          stretch: 1,
         },
       },
       layout: {
@@ -124,7 +130,7 @@ function DoughnutChart({ data, category }) {
     return null;
   }
   return (
-    <div className="relative flex gap-x-2" style={{ width: 190, height: 110 }}>
+    <div className="relative flex gap-x-2 w-[190px] h-[110px]">
       <Doughnut data={data} options={doughnutOptions} />
     </div>
   );
@@ -133,7 +139,7 @@ function DoughnutChart({ data, category }) {
 function Chart({ curators, totalFiat, category }) {
   const data = useChartData({ curators, totalFiat, category });
   return (
-    <div className="flex w-full items-center">
+    <div className="grid grid-cols-3 w-full items-center">
       <CuratorSummary totalFiat={totalFiat} />
       <CuratorIndicators data={data} curators={curators} />
       <DoughnutChart data={data} />
