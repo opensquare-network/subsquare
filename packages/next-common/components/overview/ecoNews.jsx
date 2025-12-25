@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { useDispatch } from "react-redux";
 import { useAnimate } from "framer-motion";
 import { SystemPlus } from "@osn/icons/subsquare";
@@ -13,7 +13,7 @@ import Bar from "next-common/components/fellowship/feeds/bar";
 import EditPopup from "next-common/components/news/common/editPopup";
 import { useEcoNewsData } from "next-common/components/news/common/hooks";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
-import { useWindowSize } from "react-use";
+import { useWindowWidthContext } from "next-common/context/windowSize";
 import { useChainSettings } from "next-common/context/chain";
 
 const LINE_HEIGHT = 20;
@@ -55,7 +55,7 @@ function EcoNewsScroll({ data }) {
   const needScroll = SHOW_TOTAL < list.length;
   const [containerRef, animate] = useAnimate();
   const pauseRef = useRef(false);
-  const { width } = useWindowSize();
+  const width = useWindowWidthContext();
   const itemHeight = useMemo(() => {
     if (width < 768) {
       return LINE_HEIGHT * 2 + ITEM_PADDING;

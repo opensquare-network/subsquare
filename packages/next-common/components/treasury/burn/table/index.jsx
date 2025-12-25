@@ -4,11 +4,12 @@ import { usePageProps } from "next-common/context/page";
 import { MapDataList } from "next-common/components/dataList";
 import Pagination from "next-common/components/pagination";
 import { useNavCollapsed } from "next-common/context/nav";
-import columns from "./columns";
+import { useTreasuryBurnTableColumns } from "./columns";
 
 export default function TreasuryBurnTable() {
   const { burnList } = usePageProps();
   const [navCollapsed] = useNavCollapsed();
+  const columns = useTreasuryBurnTableColumns();
 
   const loading = isNil(burnList) || isNil(burnList.items);
   const rowsData = burnList?.items || [];

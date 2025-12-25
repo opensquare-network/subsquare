@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import styled from "styled-components";
 import EventTag from "./eventTag";
 import FoldButton from "./foldButton";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import TooltipOrigin from "../../../tooltip";
 import { EventType, getPostUrlsByEvent } from "./utils";
 import { hashEllipsis } from "../../../../utils";

@@ -16,8 +16,9 @@ import { NewTreasuryReferendumInnerPopupContent } from "../newProposalQuickStart
 import { NewUSDxTreasuryReferendumInnerPopupContent } from "../newProposalQuickStart/createUSDxTreasuryProposalPopup";
 import { SpendDotOnAssetHubReferendumInnerPopupContent } from "../newProposalQuickStart/spendDotOnAssetHubPopup";
 import { NewTreasurySpendReferendumInnerPopupContent } from "../newProposalQuickStart/createTreasurySpendReferendumInnerPopupContent";
-import { isZkverifyChain } from "next-common/utils/chain";
+import { isHydrationChain, isZkverifyChain } from "next-common/utils/chain";
 import { BatchTreasurySpendsReferendumInnerPopupContent } from "../newProposalQuickStart/batchTreasurySpendsPopup";
+import { NewHOLLARTreasuryReferendumInnerPopupContent } from "../newProposalQuickStart/createHOLLARTreasuryReferendumInnerPopupContent";
 
 const useQuickStartItems = () => {
   const {
@@ -49,6 +50,13 @@ const useQuickStartItems = () => {
         "Approve a treasury proposal and funds will be paid out automatically by treasury award period",
       content: NewTreasuryReferendumInnerPopupContent,
     });
+    if (isHydrationChain(chain)) {
+      items.push({
+        name: "Stable treasury spend proposal",
+        description: "Create a treasury spend with stable currency",
+        content: NewHOLLARTreasuryReferendumInnerPopupContent,
+      });
+    }
     if (treasuryProposalTracks && usdxTreasuryProposal) {
       items.push({
         name: "USDx treasury proposal",

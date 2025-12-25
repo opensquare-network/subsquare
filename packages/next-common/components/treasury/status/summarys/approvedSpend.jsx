@@ -4,7 +4,7 @@ import SummaryLabelItem from "next-common/components/summary/polkadotTreasurySum
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useApprovedSpendStatistics } from "../hooks/useApprovedSpend";
 import { toPrecision } from "next-common/utils";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import Tooltip from "next-common/components/tooltip";
 
 export default function ApprovedSpend() {

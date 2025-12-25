@@ -1,5 +1,5 @@
 import { ArrowUp, ArrowDown } from "@osn/icons/subsquare";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { useRouter } from "next/router";
 import { pickBy, omit } from "lodash-es";
 import Tooltip from "next-common/components/tooltip";

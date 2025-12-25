@@ -2,6 +2,51 @@
 
 All notable changes to this project will be documented in this file.
 
+# 5.5.7
+
+Date:
+2025-12-24. [Code diff](https://github.com/opensquare-network/subsquare/compare/7e9cd02755641baf290a68ea1b1ceff80d354d61...3465bf51d768bb2e509f22635977230708826a60).
+
+- Treasury statistics:
+    - Add media/BD category to treasury funded project statistics.
+    - Add more projects to all categories.
+    - Add vertical bars on treasury projects category tab to show fund total amount comparison.
+    - Add a table view for all funded projects.
+    - Add tags to some treasury beneficiary address.
+- Change the way to query all on-chain identities and show all identities in a tree view.
+- Enable transfer for hyperbridge.
+- Add a `translate="no"` attribute to `ValueDisplay` to prevent page crash when translating some pages.
+- Add a stable spend referenda template for hydration and show the request amount on the referendum detail page.
+- Correct subscan link after assethub migration for polkadot and kusama.
+- Click to switch between concrete time and gap for treasury burn time column.
+- Fix a style bug to remove the unnecessary scroll bar when there are few votes.
+- Fix the execution count down component on the democracy referendum detail page due to assethub migration.
+- Fix kusama fellowship referendum decision deposit.
+- Remove multisig for centrifuge/interlay/khala/phala/litmus.
+- Upgrade dependencies and fix styles.
+
+# 5.5.6
+
+Date:
+2025-12-08. [Code diff](https://github.com/opensquare-network/subsquare/compare/beb08415bc5857256c8b04ab25cdd080266660ed...1abba322306aa49c273240451471749798ec3714).
+
+- Add more projects to treasury statistics. Categories include marketing, events, education, hackathons, and other
+  developments. Projects include Inter Miami, Conor Daly, Sub0, etc.
+- Fix bugs in hook `useSubStorage` to prevent wrong data subscription.
+- Correct submission and decision refund button status on the referendum detail page.
+- Use intime votes data from subsquare graphql API for active referenda. Data from the API is served by intime indexing
+  scripts, so we don't have to wait block finalization.
+- Refactor menus:
+    - Move off-chain voting and navigation menus under the advanced menu.
+    - Move up the referenda menu under the account menu so users can see it more easily.
+- Support XCM v5 decode so we can show cross-chain calls on the referendum detail page if a call is written with XCM v5.
+- Archive tips module for hydration to fix the account deposits loading bug.
+- Not show sub identity related buttons if not right user.
+- Search UX enhancement: not close the search popup when we try to click a search result proposal in a new tab.
+- Scheduler: 1. Fix timestamp calculation on the scheduler page; 2. Only turn on scheduler for selected chains.
+- Improve external link handling when hovering menu items. We add a guard to prevent null link value.
+- Upgrade next.js to 15.4.8.
+
 # 5.5.5
 
 Date:

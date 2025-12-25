@@ -1,7 +1,7 @@
 import { backendApi } from "next-common/services/nextApi";
 import { useAsync } from "react-use";
 import ScrollFeeds from "next-common/components/scrollFeeds";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import NoData from "next-common/components/noData";

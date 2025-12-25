@@ -8,20 +8,31 @@ export const colors = [
   "#2196F399",
 ];
 
+export const FIXED_LABEL_WIDTH = 140;
+
 export const CATEGORY_VALUES = {
   WALLET: "wallet",
   MULTISIG_TOOLS: "multisig_tools",
+  MULTISIG_TOOL: "multisig_tool",
   EXPLORER: "explorer",
   GOVERNANCE_PLATFORM: "governance_platform",
   POLKADOT_CLIENT: "polkadot_client",
   MARKETING: "marketing",
+  EVENT: "event",
+  EDUCATION: "education",
+  HACKATHON: "hackathon",
+  HACKTHON: "hackthon",
+  OTHER_DEVELOPMENT: "other_development",
+  MEDIA: "media",
+  BUSINESS_DEVELOPMENT: "business_development",
+  ECOSYSTEM: "ecosystem",
 };
 
 export const DOUGHNUT_CONFIG_BY_CATEGORY = {
   wallet: {
     stretch: 1,
   },
-  multisig_tools: {
+  multisig_tool: {
     stretch: 1,
   },
   explorer: {
@@ -39,6 +50,7 @@ export const DOUGHNUT_CONFIG_BY_CATEGORY = {
 export const GRID_LABELS = {
   [CATEGORY_VALUES.WALLET]: "Wallets",
   [CATEGORY_VALUES.MULTISIG_TOOLS]: "Multisig Tools",
+  [CATEGORY_VALUES.MULTISIG_TOOL]: "Multisig Tools",
   [CATEGORY_VALUES.EXPLORER]: "Explorers",
   [CATEGORY_VALUES.GOVERNANCE_PLATFORM]: "Governance Platforms",
   [CATEGORY_VALUES.POLKADOT_CLIENT]: "Polkadot Clients",
@@ -46,9 +58,22 @@ export const GRID_LABELS = {
 
 export const HORIZONTAL_LABELS = {
   [CATEGORY_VALUES.MARKETING]: "Marketing",
+  [CATEGORY_VALUES.EVENT]: "Events",
+  [CATEGORY_VALUES.EDUCATION]: "Education",
+  [CATEGORY_VALUES.HACKATHON]: "Hackathons",
+  [CATEGORY_VALUES.HACKTHON]: "Hackathons",
+  [CATEGORY_VALUES.MEDIA]: "Media",
+  [CATEGORY_VALUES.OTHER_DEVELOPMENT]: "Other Developments",
+  [CATEGORY_VALUES.BUSINESS_DEVELOPMENT]: "BD",
+  [CATEGORY_VALUES.ECOSYSTEM]: "Ecosystem",
 };
 
 export const LABELS = {
   ...GRID_LABELS,
   ...HORIZONTAL_LABELS,
+};
+
+export const TABLE_VIEW_LABELS = {
+  ...LABELS,
+  [CATEGORY_VALUES.OTHER_DEVELOPMENT]: "Development",
 };

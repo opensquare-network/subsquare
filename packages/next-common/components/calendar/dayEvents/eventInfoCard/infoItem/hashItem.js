@@ -1,6 +1,6 @@
 import React from "react";
 import { ItemLink, ItemWrapper } from "./styled";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { hashEllipsis } from "../../../../../utils";
 
 export default function HashItem({ hash, itemName = "Hash", baseUrl = "" }) {

@@ -1,11 +1,11 @@
 import { memo } from "react";
 import DesktopList from "next-common/components/multisigs/desktop";
 import MobileList from "next-common/components/multisigs/mobile";
-import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import { useWindowWidthContext } from "next-common/context/windowSize";
 import { CallPopupInContext } from "next-common/components/multisigs/callPopup";
 
 function CommonMultisigsTable({ multisigs, isLoading }) {
-  const { width } = useWindowSize();
+  const width = useWindowWidthContext();
 
   return (
     <div>

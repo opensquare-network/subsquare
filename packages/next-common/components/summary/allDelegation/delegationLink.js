@@ -1,5 +1,5 @@
 import { useChainSettings } from "next-common/context/chain";
-import Link from "next/link";
+import Link from "next-common/components/link";
 
 export default function ReferendaDelegationLink() {
   const {

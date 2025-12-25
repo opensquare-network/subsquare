@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import { useWindowWidthContext } from "next-common/context/windowSize";
 import SymbolBalance from "next-common/components/values/symbolBalance";
 import Flex from "next-common/components/styled/flex";
 import { StatisticTitleContainer } from "next-common/components/styled/containers/titleContainer";
@@ -75,7 +75,7 @@ function Threshold({ tipsLength }) {
 }
 
 export default function TipperList({ tipHash }) {
-  const { width: windowWidth } = useWindowSize();
+  const windowWidth = useWindowWidthContext();
   const { tipMeta } = useTipMeta(tipHash);
   const tips = tipMeta?.tips || [];
 

@@ -2,7 +2,7 @@ import { isNil } from "lodash-es";
 import { AddressUser } from "next-common/components/user";
 import { cn } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import VoteStatus from "../common/voteStatus";
 
 export function AccountColumn({ delegates }) {

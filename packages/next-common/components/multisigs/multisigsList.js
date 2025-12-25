@@ -1,4 +1,4 @@
-import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import { useWindowWidthContext } from "next-common/context/windowSize";
 import DesktopList from "./desktop";
 import MobileList from "./mobile";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,7 +16,7 @@ import SignApprovePopupInContext from "next-common/components/multisigs/signFiel
 import SignCancelPopupInContext from "next-common/components/multisigs/signField/signCancelPopup";
 
 export default function MultisigsList() {
-  const { width } = useWindowSize();
+  const width = useWindowWidthContext();
   const dispatch = useDispatch();
   const chain = useChain();
   const realAddress = useRealAddress();

@@ -3,9 +3,9 @@ import { TreasuryProvider } from "next-common/context/treasury";
 import ListLayout from "next-common/components/layout/ListLayout";
 import TreasuryStatusSummaryPanel from "next-common/components/treasury/status/summaryPanel";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import TreasuryProjects from "next-common/components/treasury/projects";
 import panelTabs from "next-common/components/treasury/status/panelTabs";
 import { backendApi } from "next-common/services/nextApi";
+import TreasuryProjectsContent from "next-common/components/treasury/projects/index";
 
 const seoInfo = { title: "Treasury Projects", desc: "Treasury Projects" };
 
@@ -18,9 +18,7 @@ export default function TreasuryProjectsPage() {
         summary={<TreasuryStatusSummaryPanel />}
         tabs={panelTabs}
       >
-        <div className="flex flex-col gap-y-4">
-          <TreasuryProjects />
-        </div>
+        <TreasuryProjectsContent />
       </ListLayout>
     </TreasuryProvider>
   );

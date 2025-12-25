@@ -21,12 +21,17 @@ export default function ProjectIndicators({ data, projects = [] }) {
           className="flex justify-between items-center cursor-pointer hover:underline"
           onClick={() => handleProjectClick(label)}
         >
-          <div className="flex items-center">
+          <div
+            className="flex items-center"
+            title={`${name[index]} ${formatNum(fiatAtFinals[index])}`}
+          >
             <span
               className="w-[12px] h-[12px] rounded-[2px] inline-block mr-2"
               style={{ backgroundColor: backgroundColor[index] }}
             />
-            <span className="text-textPrimary">{name[index]}</span>
+            <span className="text-textPrimary">
+              {projects?.[index]?.nameAbbr ?? name[index]}
+            </span>
             <span className="text-textPrimary ml-1">
               {formatNum(fiatAtFinals[index])}
             </span>

@@ -18,7 +18,6 @@ import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import SignerWithBalance from "../signerPopup/signerWithBalance";
 import { Label } from "../popup/styled";
 import { noop } from "lodash-es";
-import WindowSizeProvider from "next-common/context/windowSize";
 
 const defaultSub = {
   address: "",
@@ -105,38 +104,34 @@ export default function SetSubsPopupContent() {
   }, [dispatch, retry]);
 
   return (
-    <WindowSizeProvider>
-      <div className="space-y-4">
-        <SignerWithBalance />
+    <div className="space-y-4">
+      <SignerWithBalance />
 
-        {subsList.map((sub, index) => (
-          <SubItem
-            key={index}
-            subId={index}
-            sub={sub}
-            selectedList={addressList}
-            updateSubField={(field, value) =>
-              updateSubField(index, field, value)
-            }
-            onRemove={() => removeSub(index)}
-            extensionAccounts={extensionAccounts}
-          />
-        ))}
+      {subsList.map((sub, index) => (
+        <SubItem
+          key={index}
+          subId={index}
+          sub={sub}
+          selectedList={addressList}
+          updateSubField={(field, value) => updateSubField(index, field, value)}
+          onRemove={() => removeSub(index)}
+          extensionAccounts={extensionAccounts}
+        />
+      ))}
 
-        <AddSubsButton addSub={addSub} />
+      <AddSubsButton addSub={addSub} />
 
-        <SubsDeposit selectedList={addressList} />
+      <SubsDeposit selectedList={addressList} />
 
-        <RightWrapper>
-          <TxSubmissionButton
-            disabled={submitIsDisabled}
-            title="Submit"
-            getTxFunc={getTxFunc}
-            onInBlock={onInBlock}
-          />
-        </RightWrapper>
-      </div>
-    </WindowSizeProvider>
+      <RightWrapper>
+        <TxSubmissionButton
+          disabled={submitIsDisabled}
+          title="Submit"
+          getTxFunc={getTxFunc}
+          onInBlock={onInBlock}
+        />
+      </RightWrapper>
+    </div>
   );
 }
 

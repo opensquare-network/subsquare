@@ -25,7 +25,6 @@ import WithAddress from "next-common/components/common/withAddress";
 import { VoteSuccessfulProvider } from "next-common/components/vote";
 import VoteSuccessfulPopup from "next-common/components/pages/components/gov2/votePopup/voteSuccessful";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import WindowSizeProvider from "next-common/context/windowSize";
 
 const NestedVotesPopup = dynamicPopup(() =>
   import("next-common/components/democracy/nestedVotesPopup"),
@@ -90,73 +89,67 @@ function Vote({ referendumIndex }) {
   }
 
   return (
-    <WindowSizeProvider>
-      <RightBarWrapper>
-        <SecondaryCardDetail>
-          <Title className="!px-0">
-            <span>Votes</span>
-            <div>{isElectorateLoading ? <Loading size={16} /> : null}</div>
-          </Title>
+    <RightBarWrapper>
+      <SecondaryCardDetail>
+        <Title className="!px-0">
+          <span>Votes</span>
+          <div>{isElectorateLoading ? <Loading size={16} /> : null}</div>
+        </Title>
 
-          <VoteBar
-            tally={tally}
-            electorate={electorate}
-            threshold={threshold}
-          />
-          <TallyInfo tally={tally} />
+        <VoteBar tally={tally} electorate={electorate} threshold={threshold} />
+        <TallyInfo tally={tally} />
 
-          {finishedResult}
-          {!isVoteFinished &&
-            (isPassing ? (
-              <PassStatus>Passing</PassStatus>
-            ) : (
-              <RejectStatus>Failing</RejectStatus>
-            ))}
+        {finishedResult}
+        {!isVoteFinished &&
+          (isPassing ? (
+            <PassStatus>Passing</PassStatus>
+          ) : (
+            <RejectStatus>Failing</RejectStatus>
+          ))}
 
-          <div className="flex items-center justify-between mt-4">
-            <div className="text12Medium text-textPrimary">Votes</div>
-            <div className="flex items-center gap-x-3">
-              <SubLink onClick={() => setShowNestedVotesList(true)}>
-                Nested
-              </SubLink>
-              <SubLink onClick={() => setShowFlattenedVotesList(true)}>
-                Flattened
-              </SubLink>
-              {useVoteCall && <Calls />}
-            </div>
+        <div className="flex items-center justify-between mt-4">
+          <div className="text12Medium text-textPrimary">Votes</div>
+          <div className="flex items-center gap-x-3">
+            <SubLink onClick={() => setShowNestedVotesList(true)}>
+              Nested
+            </SubLink>
+            <SubLink onClick={() => setShowFlattenedVotesList(true)}>
+              Flattened
+            </SubLink>
+            {useVoteCall && <Calls />}
           </div>
-        </SecondaryCardDetail>
+        </div>
+      </SecondaryCardDetail>
 
-        <WithAddress>
-          <MyVote />
-        </WithAddress>
+      <WithAddress>
+        <MyVote />
+      </WithAddress>
 
-        {!isVoteFinished && !hideActionButtons && (
-          <PrimaryButton
-            onClick={() => {
-              setShowVote(true);
-            }}
-          >
-            Vote
-          </PrimaryButton>
-        )}
+      {!isVoteFinished && !hideActionButtons && (
+        <PrimaryButton
+          onClick={() => {
+            setShowVote(true);
+          }}
+        >
+          Vote
+        </PrimaryButton>
+      )}
 
-        <VoteSuccessfulProvider VoteSuccessfulPopup={VoteSuccessfulPopup}>
-          {showVote && (
-            <VotePopup
-              onClose={() => setShowVote(false)}
-              referendumIndex={referendumIndex}
-            />
-          )}
-        </VoteSuccessfulProvider>
-        {showFlattenedVotesList && (
-          <FlattenedVotesPopup setShowVoteList={setShowFlattenedVotesList} />
+      <VoteSuccessfulProvider VoteSuccessfulPopup={VoteSuccessfulPopup}>
+        {showVote && (
+          <VotePopup
+            onClose={() => setShowVote(false)}
+            referendumIndex={referendumIndex}
+          />
         )}
-        {showNestedVotesList && (
-          <NestedVotesPopup setShowVoteList={setShowNestedVotesList} />
-        )}
-      </RightBarWrapper>
-    </WindowSizeProvider>
+      </VoteSuccessfulProvider>
+      {showFlattenedVotesList && (
+        <FlattenedVotesPopup setShowVoteList={setShowFlattenedVotesList} />
+      )}
+      {showNestedVotesList && (
+        <NestedVotesPopup setShowVoteList={setShowNestedVotesList} />
+      )}
+    </RightBarWrapper>
   );
 }
 

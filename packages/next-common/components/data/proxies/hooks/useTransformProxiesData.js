@@ -22,7 +22,7 @@ export default function useTransformProxiesData(data = [], initialLoading) {
         });
 
         return acc;
-      }, {}),
+      }, {}) ?? [],
     );
 
     setResult(transformedData);

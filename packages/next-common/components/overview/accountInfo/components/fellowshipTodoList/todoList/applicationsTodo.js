@@ -1,7 +1,7 @@
 import useIsAdmin from "next-common/hooks/useIsAdmin";
 import { TodoContent, TodoTag, TodoWrapper } from "./styled";
 import { usePageProps } from "next-common/context/page";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { useIsCollectivesMember } from "../context/hooks/mine";
 import pluralize from "pluralize";
 import LinkButton from "next-common/components/styled/linkButton";

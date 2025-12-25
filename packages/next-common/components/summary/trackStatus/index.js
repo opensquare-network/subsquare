@@ -9,7 +9,7 @@ import { useCommonPreparingBucketStatusProps } from "next-common/components/refe
 import { useCommonOngoingBucketStatusProps } from "next-common/components/referenda/tracks/tracksStatus/ongoingBucketStatus";
 import { Arrow } from "next-common/components/referenda/tracks/tracksStatus/trackStatusItem";
 import BucketStatusLayout from "next-common/components/referenda/tracks/tracksStatus/bucketStatusLayout";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import useGroupedReferendaInTrack from "./useGroupedReferendaInTrack";
 
 function PreparingBucketStatus({ preparing, queueing }) {

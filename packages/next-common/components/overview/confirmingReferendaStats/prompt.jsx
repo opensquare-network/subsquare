@@ -1,5 +1,5 @@
 import { SystemClose } from "@osn/icons/subsquare";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { colorStyle, PromptTypes } from "next-common/components/scrollPrompt";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 

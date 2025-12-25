@@ -1,33 +1,22 @@
-import { createContext, useContext } from "react";
+import { useContext } from "react";
 import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import { createSingletonContextProvider } from "../singleton";
 
-const WindowSizeContext = createContext({});
+const { Context: WindowSizeContext, Provider: WindowSizeProvider } =
+  createSingletonContextProvider(useWindowSize);
 
-export default function WindowSizeProvider({ children }) {
-  const { width, height } = useWindowSize();
+export default WindowSizeProvider;
 
-  return (
-    <WindowSizeContext.Provider
-      value={{
-        width,
-        height,
-      }}
-    >
-      {children}
-    </WindowSizeContext.Provider>
-  );
+export function useWindowSizeContext() {
+  return useContext(WindowSizeContext) || {};
 }
 
 export function useWindowWidthContext() {
-  const { width } = useContext(WindowSizeContext);
+  const { width } = useWindowSizeContext();
   return width;
 }
 
 export function useWindowHeightContext() {
-  const { height } = useContext(WindowSizeContext);
+  const { height } = useWindowSizeContext();
   return height;
-}
-
-export function useWindowSizeContext() {
-  return useContext(WindowSizeContext);
 }

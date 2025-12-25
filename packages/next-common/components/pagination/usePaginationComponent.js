@@ -1,8 +1,12 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Pagination from "next-common/components/pagination/index";
 import { useRouter } from "next/router";
 
-export default function usePaginationComponent(total, pageSize = 10) {
+export default function usePaginationComponent(
+  total,
+  pageSize = 10,
+  options = {},
+) {
   const router = useRouter();
   const [page, setPage] = useState(parseInt(router.query.page || 1));
   useEffect(() => {
@@ -21,8 +25,27 @@ export default function usePaginationComponent(total, pageSize = 10) {
       onPageChange={onPageChange}
       total={total}
       pageSize={pageSize}
+      {...options}
     />
   );
 
   return { page, setPage, component };
+}
+
+export function useListPagination(items, pageSize, options) {
+  const { page, setPage, component } = usePaginationComponent(
+    items?.length || 0,
+    pageSize,
+    options,
+  );
+  const pagedItems = useMemo(
+    () => (items || []).slice((page - 1) * pageSize, page * pageSize),
+    [items, pageSize, page],
+  );
+
+  useEffect(() => {
+    setPage(1);
+  }, [items, setPage]);
+
+  return { page, setPage, pagedItems, component };
 }

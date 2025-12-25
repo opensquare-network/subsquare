@@ -2,7 +2,7 @@ import { useDemotionPeriod } from "next-common/components/collectives/core/membe
 import { useSelector } from "react-redux";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import BigNumber from "bignumber.js";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import Prompt from "./prompt";
 import { PromptTypes } from "next-common/components/scrollPrompt";
 import { CACHE_KEY } from "next-common/utils/constants";

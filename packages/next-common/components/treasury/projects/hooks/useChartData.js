@@ -14,6 +14,7 @@ export default function useChartData({ projects, totalFiat, category }) {
       (_, index) => colors[index % colors.length],
     );
     const projectNames = projects.map((project) => project.name);
+    const projectNameAbbrs = projects.map((project) => project.nameAbbr);
     const projectFiatAtFinals = projects.map((project) => project.fiatAtFinal);
     const projectPercentages = projects.map(
       (project) =>
@@ -31,6 +32,7 @@ export default function useChartData({ projects, totalFiat, category }) {
           label: "Projects",
           data: projectFiatAtFinals,
           name: projectNames,
+          nameAbbrs: projectNameAbbrs,
           backgroundColor: projectColors,
           borderColor: neutral100,
           borderWidth: 3,

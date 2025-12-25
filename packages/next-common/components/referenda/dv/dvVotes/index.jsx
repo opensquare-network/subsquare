@@ -1,8 +1,7 @@
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
-import WindowSizeProvider from "next-common/context/windowSize";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import { useWindowWidthContext } from "next-common/context/windowSize";
 import { TabsTitle } from "../common/styled";
 import { VoteIndicator } from "../common/voteIndicator";
 import Divider from "next-common/components/styled/layout/divider";
@@ -25,11 +24,9 @@ export default function DvReferendaVotes() {
     <div className="flex flex-col gap-y-4">
       <TabsTitle>Votes</TabsTitle>
       <NeutralPanel className="p-6">
-        <WindowSizeProvider>
-          <MaybeVotesRoleTabs component={MaybeEmptyDelegates} />
-          <Divider />
-          <VoteIndicator />
-        </WindowSizeProvider>
+        <MaybeVotesRoleTabs component={MaybeEmptyDelegates} />
+        <Divider />
+        <VoteIndicator />
       </NeutralPanel>
     </div>
   );
@@ -46,7 +43,7 @@ export function DvReferendaVotesImpl({ delegates = [] }) {
   const scrollerXRef = useRef();
   const [showLeft, setShowLeft] = useState(false);
   const [showRight, setShowRight] = useState(false);
-  const { width } = useWindowSize();
+  const width = useWindowWidthContext();
   const { filteredReferenda, loading } = useFilteredDvReferenda();
   const filteredVotes = useFilteredDvVotes();
 

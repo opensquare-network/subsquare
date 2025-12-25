@@ -15,6 +15,7 @@ import PageLoadingProvider from "./pageLoading";
 import WalletConnectProvider from "./walletconnect";
 import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 import { PolkadotVaultProvider } from "./polkadotVault";
+import WindowSizeProvider from "./windowSize";
 
 export default function GlobalProvider({
   user,
@@ -30,44 +31,46 @@ export default function GlobalProvider({
   pathname,
 }) {
   return (
-    <WagmiProvider>
-      <ReactQueryClientProvider>
-        <ThemeModeProvider defaultThemeMode={themeMode}>
-          <ChainProvider chain={chain}>
-            <UserProvider user={user} userStatus={userStatus}>
-              <PolkadotVaultProvider>
-                <PageLoadingProvider>
-                  <AdminProvider admins={admins}>
-                    <NavProvider
-                      navCollapsed={navCollapsed}
-                      navSubmenuVisible={navSubmenuVisible}
-                      pathname={pathname}
-                    >
-                      <PageProvider pageProperties={pageProperties}>
-                        <ApiProvider>
-                          <MigrationConditionalApiProvider>
-                            <ConnectedAccountProvider
-                              connectedAccount={connectedAccount}
-                            >
-                              <WalletConnectProvider>
-                                <UserAccountProvider>
-                                  <SignetContextProvider>
-                                    {children}
-                                  </SignetContextProvider>
-                                </UserAccountProvider>
-                              </WalletConnectProvider>
-                            </ConnectedAccountProvider>
-                          </MigrationConditionalApiProvider>
-                        </ApiProvider>
-                      </PageProvider>
-                    </NavProvider>
-                  </AdminProvider>
-                </PageLoadingProvider>
-              </PolkadotVaultProvider>
-            </UserProvider>
-          </ChainProvider>
-        </ThemeModeProvider>
-      </ReactQueryClientProvider>
-    </WagmiProvider>
+    <WindowSizeProvider>
+      <WagmiProvider>
+        <ReactQueryClientProvider>
+          <ThemeModeProvider defaultThemeMode={themeMode}>
+            <ChainProvider chain={chain}>
+              <UserProvider user={user} userStatus={userStatus}>
+                <PolkadotVaultProvider>
+                  <PageLoadingProvider>
+                    <AdminProvider admins={admins}>
+                      <NavProvider
+                        navCollapsed={navCollapsed}
+                        navSubmenuVisible={navSubmenuVisible}
+                        pathname={pathname}
+                      >
+                        <PageProvider pageProperties={pageProperties}>
+                          <ApiProvider>
+                            <MigrationConditionalApiProvider>
+                              <ConnectedAccountProvider
+                                connectedAccount={connectedAccount}
+                              >
+                                <WalletConnectProvider>
+                                  <UserAccountProvider>
+                                    <SignetContextProvider>
+                                      {children}
+                                    </SignetContextProvider>
+                                  </UserAccountProvider>
+                                </WalletConnectProvider>
+                              </ConnectedAccountProvider>
+                            </MigrationConditionalApiProvider>
+                          </ApiProvider>
+                        </PageProvider>
+                      </NavProvider>
+                    </AdminProvider>
+                  </PageLoadingProvider>
+                </PolkadotVaultProvider>
+              </UserProvider>
+            </ChainProvider>
+          </ThemeModeProvider>
+        </ReactQueryClientProvider>
+      </WagmiProvider>
+    </WindowSizeProvider>
   );
 }

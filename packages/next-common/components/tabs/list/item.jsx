@@ -1,7 +1,7 @@
 import { isFunction } from "lodash-es";
 import Tooltip from "next-common/components/tooltip";
 import { cn, isExternalLink } from "next-common/utils";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { isValidElement } from "react";
 import TitleSuffix from "next-common/components/titleSuffix";
 

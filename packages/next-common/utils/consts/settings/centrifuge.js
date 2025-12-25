@@ -91,8 +91,6 @@ const centrifuge = {
   postLabels: difference(defaultPostLabels, [PostLabel.TechComm]),
   description: "Real-world DeFi: The on-chain ecosystem for structured credit.",
   useVoteCall: true,
-  hasMultisig: true,
-  multisigApiPrefix: "cfg",
   modules: mergeChainModules({
     discussions: false,
     treasury: {

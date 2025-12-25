@@ -2,7 +2,6 @@ import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import { usePageProps } from "next-common/context/page";
 import AssetInfo from "next-common/components/profile/bio/assetInfo";
-import WindowSizeProvider from "next-common/context/windowSize";
 import UserAccountProvider from "next-common/context/user/account";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 import { cn } from "next-common/utils";
@@ -20,7 +19,7 @@ const DelegationGuide = dynamic(
   },
 );
 
-function OpenGovBioContent() {
+export default function OpenGovBio() {
   const isMobile = useIsMobile();
   const { user, id } = usePageProps();
   const address =
@@ -51,13 +50,5 @@ function OpenGovBioContent() {
         </DelegationGuideProvider>
       )}
     </>
-  );
-}
-
-export default function OpenGovBio() {
-  return (
-    <WindowSizeProvider>
-      <OpenGovBioContent />
-    </WindowSizeProvider>
   );
 }

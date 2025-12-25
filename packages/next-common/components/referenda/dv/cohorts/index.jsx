@@ -1,5 +1,4 @@
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
-import WindowSizeProvider from "next-common/context/windowSize";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 import { usePageProps } from "next-common/context/page";
 import CohortsHistoryDesktopList from "./desktopList";
@@ -18,10 +17,8 @@ export default function Cohorts() {
   const { cohorts = [] } = usePageProps();
 
   return (
-    <WindowSizeProvider>
-      <NeutralPanel className="p-6">
-        <CohortsHistoryImpl dataRows={cohorts} />
-      </NeutralPanel>
-    </WindowSizeProvider>
+    <NeutralPanel className="p-6">
+      <CohortsHistoryImpl dataRows={cohorts} />
+    </NeutralPanel>
   );
 }

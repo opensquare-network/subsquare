@@ -1,4 +1,4 @@
-import commonMenus from "./common";
+import { getCommonMenus } from "./common";
 import { getDemocracyMenu } from "./democracy";
 import { getTreasuryMenu } from "./treasury";
 import { getCouncilMenu } from "./council";
@@ -6,7 +6,6 @@ import { getTechCommMenu } from "./tc";
 import { getFinancialCouncilMenu } from "./financialCouncil";
 import { getAdvisoryCommitteeMenu } from "./advisoryCouncil";
 import { getAllianceMenu } from "./alliance";
-import { getReferendaMenu } from "./referenda";
 import { getFellowshipMenu } from "./fellowship";
 import { getAmbassadorMenu } from "next-common/utils/consts/menu/ambassador";
 import { getCommunityCouncilMenu } from "./communityCouncil";
@@ -19,6 +18,7 @@ import getChainSettings from "../settings";
 import getArchivedMenu from "./archived";
 import { coretimeMenu } from "./coretime";
 import { peopleMenu } from "./people";
+import { stakingMenu } from "./staking";
 import whitelist from "./whitelist";
 import Data from "./data";
 import getAdvancedMenu from "next-common/utils/consts/menu/advanced";
@@ -27,18 +27,16 @@ import { isArray } from "lodash-es";
 import { assetsMenu } from "./assets";
 import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated";
 import { calendarMenu } from "./calendar";
+import { votingMenu } from "./voting";
+import { navigationMenu } from "./navigation";
+import { votingSpace } from "next-common/utils/opensquareVoting";
 
 export function getHomeMenu({
   summary = {},
-  tracks = [],
   ambassadorTracks = [],
   currentTrackId,
 } = {}) {
-  const {
-    modules,
-    hasMultisig = false,
-    hotMenu = {},
-  } = getChainSettings(CHAIN);
+  const { modules, hasMultisig = false } = getChainSettings(CHAIN);
 
   const integrationsMenu = [
     modules?.assethub && isAssetHubMigrated() && assetsMenu,
@@ -47,8 +45,6 @@ export function getHomeMenu({
   ].filter(Boolean);
 
   const menuItems = [
-    modules?.referenda &&
-      getReferendaMenu(tracks, currentTrackId, hotMenu.referenda),
     modules?.fellowship && getFellowshipMenu(summary, currentTrackId),
     modules?.ambassador && getAmbassadorMenu(ambassadorTracks, currentTrackId),
     modules?.democracy && getDemocracyMenu(summary),
@@ -60,6 +56,7 @@ export function getHomeMenu({
     modules?.advisoryCommittee && getAdvisoryCommitteeMenu(summary),
     modules?.alliance && getAllianceMenu(summary),
     modules?.communityCouncil && getCommunityCouncilMenu(summary),
+    modules?.staking && stakingMenu,
     getAdvancedMenu(
       [
         modules?.preimages && preImages,
@@ -68,6 +65,8 @@ export function getHomeMenu({
         ...integrationsMenu,
         (modules?.proxy || modules?.vesting || hasMultisig) && Data,
         calendarMenu,
+        votingSpace && votingMenu,
+        navigationMenu,
       ].filter(Boolean),
     ),
   ].filter(Boolean);
@@ -90,9 +89,16 @@ export function getMainMenu({
   ambassadorTracks = [],
   currentTrackId,
 } = {}) {
+  const { hotMenu = {} } = getChainSettings(CHAIN);
+
+  const commonMenus = getCommonMenus({
+    tracks,
+    currentTrackId,
+    hotMenu,
+  });
+
   const modulesMenu = getHomeMenu({
     summary,
-    tracks,
     fellowshipTracks,
     ambassadorTracks,
     currentTrackId,

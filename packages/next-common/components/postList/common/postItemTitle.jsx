@@ -1,7 +1,7 @@
 import React from "react";
 import { isNil } from "lodash-es";
 import ReasonLink from "next-common/components/reasonLink";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { cn, isExternalLink } from "next-common/utils";
 
 export default function PostItemTitle({

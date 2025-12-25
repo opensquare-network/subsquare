@@ -24,7 +24,7 @@ const endpoints = [
   },
   {
     name: "IBP1",
-    url: "wss://hydration.ibp.network/",
+    url: "wss://hydration.ibp.network",
   },
   {
     name: "Helikon",
@@ -32,11 +32,11 @@ const endpoints = [
   },
   {
     name: "IBP2",
-    url: "wss://hydration.dotters.network/",
+    url: "wss://hydration.dotters.network",
   },
   {
     name: "Dwellir",
-    url: "wss://hydration-rpc.n.dwellir.com/",
+    url: "wss://hydration-rpc.n.dwellir.com",
   },
 ];
 
@@ -106,6 +106,9 @@ const hydradx = {
     treasury: {
       bounties: false,
       spends: true,
+      tips: {
+        archived: true,
+      },
     },
     council: {
       archived: true,

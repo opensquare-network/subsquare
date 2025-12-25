@@ -3,14 +3,12 @@ import {
   MenuDiscussions,
   MenuDelegation,
   MenuAccount,
-  MenuOffChainVoting,
 } from "@osn/icons/subsquare";
 import getChainSettings from "../settings";
 import { CHAIN } from "next-common/utils/constants";
 import { getAccountUrl } from "next-common/hooks/account/useAccountUrl";
 import supportsDelegation from "./supportsDelegation";
-import { votingSpace, votingHost } from "next-common/utils/opensquareVoting";
-import { NavigationItem, NavigationItemIcon } from "./navigationItem";
+import { getReferendaMenu } from "./referenda";
 
 const chainSettings = getChainSettings(CHAIN);
 
@@ -47,45 +45,39 @@ export const discussionsMenu = {
   icon: <MenuDiscussions />,
 };
 
-const votingMenu = {
-  value: "offChainVoting",
-  name: "Off-chain Voting",
-  pathname: `${votingHost}/space/${votingSpace}`,
-  icon: <MenuOffChainVoting />,
-};
+export function getCommonMenus({
+  tracks = [],
+  currentTrackId,
+  hotMenu = {},
+} = {}) {
+  const commonMenus = {
+    items: [overviewMenu, accountMenu],
+  };
 
-const navigationMenu = {
-  value: "navigation",
-  name: <NavigationItem />,
-  icon: <NavigationItemIcon />,
-};
+  if (chainSettings.modules?.referenda) {
+    commonMenus.items.push(
+      getReferendaMenu(tracks, currentTrackId, hotMenu.referenda),
+    );
+  }
 
-const commonMenus = {
-  items: [overviewMenu, accountMenu],
-};
+  if (chainSettings.modules.discussions) {
+    commonMenus.items.push(discussionsMenu);
+  }
 
-if (chainSettings.modules.discussions) {
-  commonMenus.items.push(discussionsMenu);
+  if (supportsDelegation()) {
+    commonMenus.items.push({
+      value: "delegation",
+      name: "Delegation",
+      pathname: "/delegation",
+      extraMatchNavMenuActivePathnames: [
+        "/delegation/statistics",
+        "/delegation/mine",
+        "/delegation/mine/received",
+        "/delegation/mine/delegations",
+      ],
+      icon: <MenuDelegation />,
+    });
+  }
+
+  return commonMenus;
 }
-
-if (supportsDelegation()) {
-  commonMenus.items.push({
-    value: "delegation",
-    name: "Delegation",
-    pathname: "/delegation",
-    extraMatchNavMenuActivePathnames: [
-      "/delegation/statistics",
-      "/delegation/mine",
-      "/delegation/mine/received",
-      "/delegation/mine/delegations",
-    ],
-    icon: <MenuDelegation />,
-  });
-}
-
-if (votingSpace) {
-  commonMenus.items.push(votingMenu);
-}
-commonMenus.items.push(navigationMenu);
-
-export default commonMenus;

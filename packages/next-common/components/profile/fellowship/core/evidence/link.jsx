@@ -1,7 +1,7 @@
 import Tooltip from "next-common/components/tooltip";
 import { cn, isHash } from "next-common/utils";
 import { getCidByEvidence } from "next-common/utils/collective/getCidByEvidence";
-import Link from "next/link";
+import Link from "next-common/components/link";
 
 export default function EvidenceLink({
   address,

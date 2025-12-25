@@ -1,7 +1,7 @@
 import Input from "next-common/lib/input";
 import PopupLabel from "../label";
 import { useCallback, useState } from "react";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import {
   InfoMessage,
   WarningMessage,

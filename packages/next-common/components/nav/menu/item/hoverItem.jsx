@@ -1,11 +1,11 @@
-import { cn } from "next-common/utils";
+import { cn, isExternalLink } from "next-common/utils";
 import { startCase, capitalize, sumBy, omit } from "lodash-es";
 import { useRouter } from "next/router";
 import { ArrowRight } from "@osn/icons/subsquare";
 import * as HoverCard from "@radix-ui/react-hover-card";
 import NavMenuDivider from "../../divider";
 import { isChildActive } from "./group";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import NavMenuItemTemplate, {
   NavMenuItemTemplateContent,
 } from "./itemTemplate";
@@ -13,17 +13,15 @@ import NavMenuItemTemplate, {
 function HoverSubMenuLeaf({ menu }) {
   const router = useRouter();
   const routePathname = router.asPath.split("?")[0];
-  return (
-    <li>
-      <Link
-        className="pl-2 w-full h-10 flex px-2 py-2.5 items-center rounded-lg cursor-pointer text14Medium"
-        href={menu.pathname}
-        target={menu.isExternal ? "_blank" : "_self"}
-      >
+  const isExternal = isExternalLink(menu?.pathname);
+  const content = (
+    <>
+      <span className="pl-2 w-full h-10 flex px-2 py-2.5 items-center rounded-lg cursor-pointer text14Medium">
         <div className="w-1 h-1 rounded-full bg-textSecondary" />
         <NavMenuItemTemplate
-          name={startCase(capitalize(menu.name))}
+          name={menu.name}
           {...omit(menu, "name", "icon")}
+          isExternal={isExternal}
           activeCount={
             sumBy(
               (menu?.items || []).filter((item) => !item.excludeToSumActives),
@@ -36,6 +34,16 @@ function HoverSubMenuLeaf({ menu }) {
             menu?.extraMatchNavMenuActivePathnames?.includes?.(router.pathname)
           }
         />
+      </span>
+    </>
+  );
+  if (!menu.pathname) {
+    return <li>{content}</li>;
+  }
+  return (
+    <li>
+      <Link href={menu.pathname} target={isExternal ? "_blank" : "_self"}>
+        {content}
       </Link>
     </li>
   );

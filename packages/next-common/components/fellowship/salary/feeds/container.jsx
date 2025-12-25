@@ -1,6 +1,6 @@
 import { FilterContainer } from "next-common/components/styled/containers/titleContainer";
 import FellowshipSalaryFeedsList from "next-common/components/fellowship/salary/feeds/list";
-import SearchBox from "next-common/components/preImages/searchBox";
+import SearchBox from "next-common/components/searchBox";
 import FilterButton from "next-common/components/filterButton";
 import { useEffect, useState } from "react";
 import useEventFilter from "next-common/hooks/fellowship/useEventFilter";
@@ -51,7 +51,7 @@ function FellowshipSalaryFeedsFilter({ feeds = {} }) {
         <SearchBox
           value={searchValue}
           setValue={setSearchValue}
-          placeholder={"Search address"}
+          placeholder="Search address"
         />
         <FilterButton
           className="max-md:w-full md:w-[67px]"

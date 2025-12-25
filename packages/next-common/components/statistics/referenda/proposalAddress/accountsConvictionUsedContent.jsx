@@ -12,7 +12,7 @@ import { groupBy } from "lodash-es";
 import { ConvictionSupport } from "next-common/utils/referendumCommon";
 import { useNavCollapsed } from "next-common/context/nav";
 import { cn } from "next-common/utils";
-import { useWindowSize } from "react-use";
+import { useWindowWidthContext } from "next-common/context/windowSize";
 import { useEffect, useState } from "react";
 
 const convictions = Object.values(ConvictionSupport);
@@ -27,7 +27,7 @@ export default function AccountsConvictionUsedContent() {
   const allNayVotes = useSelector(allNaySelector);
   const allAbstainVotes = useSelector(allAbstainSelector);
   const [navCollapsed] = useNavCollapsed();
-  const { width } = useWindowSize();
+  const width = useWindowWidthContext();
   const [barChartKey, setBarChartKey] = useState(0);
 
   useEffect(() => {

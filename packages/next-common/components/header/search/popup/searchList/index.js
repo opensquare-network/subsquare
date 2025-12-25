@@ -13,12 +13,20 @@ import {
   MenuTreasurySpend,
   MenuTreasuryProposal,
 } from "@osn/icons/subsquare";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { ItemType } from "next-common/components/header/hooks/useSearchResults";
 import IdentityIcon from "next-common/components/Identity/identityIcon";
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 import { FellowshipTagByRank } from "next-common/components/profile/fellowshipTagInfo";
 import AddressAvatar from "next-common/components/user/addressAvatar";
+
+function handleLinkClick(e, onClose) {
+  e.stopPropagation();
+  if (e.metaKey || e.ctrlKey) {
+    return;
+  }
+  onClose?.();
+}
 
 function SearchItemCategory({ href, category, onClose }) {
   return (
@@ -26,8 +34,7 @@ function SearchItemCategory({ href, category, onClose }) {
       href={href}
       className="cursor-pointer"
       onClick={(e) => {
-        e.stopPropagation();
-        onClose?.();
+        handleLinkClick(e, onClose);
       }}
     >
       <div className="h-9 px-2 py-2.5 rounded-[6px] flex items-center text12Medium text-textTertiary">
@@ -43,8 +50,7 @@ function CommonSearchItem({ IconComponent, href, title, content, onClose }) {
       href={href}
       className="cursor-pointer"
       onClick={(e) => {
-        e.stopPropagation();
-        onClose?.();
+        handleLinkClick(e, onClose);
       }}
     >
       <div
@@ -91,16 +97,13 @@ function CommonSearchItem({ IconComponent, href, title, content, onClose }) {
 function IdentitySearchItem({ address, name, onClose }) {
   const { identity, hasIdentity } = useIdentityInfo(address);
 
-  const title = (
-    <span className="flex">
-      {hasIdentity && (
-        <>
-          <IdentityIcon identity={identity} />
-          &nbsp;
-        </>
-      )}
+  const title = hasIdentity ? (
+    <span className="flex items-center gap-1">
+      <IdentityIcon identity={identity} />
       {name}
     </span>
+  ) : (
+    <span>{name}</span>
   );
 
   return (
@@ -118,18 +121,13 @@ function MemberSearchItem({ address, rank, name, onClose }) {
   const { identity, hasIdentity } = useIdentityInfo(address);
 
   const title = (
-    <div className="flex items-center gap-2">
-      <span className="flex">
-        {hasIdentity && (
-          <>
-            <IdentityIcon identity={identity} />
-            &nbsp;
-          </>
-        )}
+    <span className="flex items-center gap-2">
+      <span className="flex items-center gap-1">
+        {hasIdentity && <IdentityIcon identity={identity} />}
         {name}
       </span>
       <FellowshipTagByRank rank={rank} type="fellowship" />
-    </div>
+    </span>
   );
 
   return (

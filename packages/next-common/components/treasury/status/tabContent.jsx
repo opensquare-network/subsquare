@@ -11,6 +11,7 @@ import {
   getBeneficiariesProposalColumn,
   getBeneficiariesValueAtAwardedTimeColumn,
   getBeneficiariesValueAtProposedTimeColumn,
+  getBeneficiariesTagsColumn,
 } from "./columns";
 import { useBeneficiarySortBy } from "./beneficiaryFilter";
 
@@ -29,6 +30,7 @@ export default function TreasuryStatusTabContent() {
   const columns = useMemo(() => {
     return [
       getBeneficiariesIdColumn(),
+      getBeneficiariesTagsColumn(),
       getBeneficiariesProposalColumn(),
       sortBy === "awarded_value"
         ? getBeneficiariesValueAtAwardedTimeColumn()

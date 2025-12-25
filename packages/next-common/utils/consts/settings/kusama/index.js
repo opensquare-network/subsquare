@@ -45,6 +45,7 @@ const kusama = {
     intime: {
       preimage: true,
       proxy: true,
+      referendaVotes: true,
     },
   },
   postLabels: defaultPostLabels,
@@ -60,6 +61,7 @@ const kusama = {
     },
     fellowship: true,
     whales: true,
+    scheduler: true,
     democracy: {
       archived: true,
     },
