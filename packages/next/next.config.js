@@ -71,6 +71,14 @@ const config = {
       type: "webassembly/async",
     });
 
+    // Explicitly declare that the target environment supports async/await
+    if (!isServer) {
+      config.output.environment = {
+        ...config.output.environment,
+        asyncFunction: true,
+      };
+    }
+
     // For server-side, exclude Hydration WASM modules to avoid build errors
     if (isServer) {
       config.externals = config.externals || [];
