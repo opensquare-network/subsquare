@@ -71,15 +71,26 @@ const config = {
       type: "webassembly/async",
     });
 
+    // Explicitly declare that the target environment supports async/await
+    if (!isServer) {
+      config.output.environment = {
+        ...config.output.environment,
+        asyncFunction: true,
+      };
+    }
+
     // For server-side, exclude Hydration WASM modules to avoid build errors
     if (isServer) {
       config.externals = config.externals || [];
       if (Array.isArray(config.externals)) {
         config.externals.push({
-          "@galacticcouncil/math-omnipool": "commonjs @galacticcouncil/math-omnipool",
+          "@galacticcouncil/math-omnipool":
+            "commonjs @galacticcouncil/math-omnipool",
           "@galacticcouncil/math-xyk": "commonjs @galacticcouncil/math-xyk",
-          "@galacticcouncil/math-stableswap": "commonjs @galacticcouncil/math-stableswap",
-          "@galacticcouncil/math-liquidity-mining": "commonjs @galacticcouncil/math-liquidity-mining",
+          "@galacticcouncil/math-stableswap":
+            "commonjs @galacticcouncil/math-stableswap",
+          "@galacticcouncil/math-liquidity-mining":
+            "commonjs @galacticcouncil/math-liquidity-mining",
         });
       }
     }
@@ -101,9 +112,7 @@ const config = {
             );
             if (filteredWarnings.length > 0) {
               throw new Error(
-                filteredWarnings
-                  .map((warning) => warning.message)
-                  .join("\n\n"),
+                filteredWarnings.map((warning) => warning.message).join("\n\n"),
               );
             }
           });
