@@ -65,7 +65,7 @@ function useChartData({ curators, totalFiat, category }) {
   return data;
 }
 
-function useProjectDoughnutChartOptions() {
+function useDoughnutChartOptions() {
   const { textPrimary } = useThemeSetting();
 
   return useMemo(
@@ -119,7 +119,7 @@ function useProjectDoughnutChartOptions() {
 }
 
 function DoughnutChart({ data, category }) {
-  const doughnutOptions = useProjectDoughnutChartOptions(category);
+  const doughnutOptions = useDoughnutChartOptions(category);
   if (!data) {
     return null;
   }
