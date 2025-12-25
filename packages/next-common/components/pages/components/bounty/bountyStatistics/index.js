@@ -1,17 +1,9 @@
 import CuratorChart from "./curatorChart";
 
-function GridCharts() {
+export default function BountyStatistics() {
   return (
     <div className="flex">
       <CuratorChart />
     </div>
-  );
-}
-
-export default function BountyStatistics() {
-  return (
-    <>
-      <GridCharts />
-    </>
   );
 }
