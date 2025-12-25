@@ -2,13 +2,10 @@ import { AddressUser } from "next-common/components/user";
 import { formatNum } from "next-common/utils";
 import { useState } from "react";
 import CuratorProposalsPopup from "./curatorDetailPopup";
-import { usePost } from "next-common/context/post";
 
 export default function CuratorIndicators({ data, curators = [] }) {
-  const post = usePost();
   const [showDetail, setShowDetail] = useState(false);
-  const [proposals, setProposals] = useState([]);
-  const [totalFiat, setTotalFiat] = useState(0);
+  const [curator, setCurator] = useState({});
 
   if (!data) {
     return null;
@@ -27,11 +24,7 @@ export default function CuratorIndicators({ data, curators = [] }) {
           onClick={() => {
             setShowDetail(true);
             const curator = curators.find((item) => item.address === label);
-            const proposals = curator.childBounties || [];
-            setProposals(
-              proposals.map((item) => `${post?.bountyIndex}_${item}`),
-            );
-            setTotalFiat(curator.totalPayoutFiatValue);
+            setCurator(curator);
           }}
         >
           <div
@@ -57,8 +50,7 @@ export default function CuratorIndicators({ data, curators = [] }) {
       ))}
       {showDetail && (
         <CuratorProposalsPopup
-          proposals={proposals}
-          totalFiat={totalFiat}
+          data={curator}
           onClose={() => setShowDetail(false)}
         />
       )}

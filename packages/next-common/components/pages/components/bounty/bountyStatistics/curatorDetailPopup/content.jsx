@@ -9,6 +9,7 @@ import { childBountyColumnsDef } from "./columns";
 import { useAsync } from "react-use";
 import { backendApi } from "next-common/services/nextApi";
 import ItemsList from "./itemsList";
+import { usePost } from "next-common/context/post";
 
 export function PostTitle({ url, index, title, noLink, className }) {
   return (
@@ -25,12 +26,20 @@ export function PostTitle({ url, index, title, noLink, className }) {
   );
 }
 
-export default function CuratorContent({ proposals, totalFiat }) {
+export default function CuratorContent({ data }) {
+  const post = usePost();
+  const parentBountyId = post.bountyIndex;
+
   const { value: childBounties, loading: childBountiesLoading } =
     useAsync(async () => {
+      if (!data?.childBounties?.length) {
+        return [];
+      }
       const { result } = await backendApi.fetch(
         "treasury/child-bounties?simple=true&" +
-          proposals.map((id) => "ids=" + id).join("&"),
+          data.childBounties
+            .map((index) => "ids=" + `${parentBountyId}_${index}`)
+            .join("&"),
       );
       if (!result) {
         return [];
@@ -38,11 +47,11 @@ export default function CuratorContent({ proposals, totalFiat }) {
       return result.map((item) =>
         normalizeChildBountyListItem(process.env.NEXT_PUBLIC_CHAIN, item),
       );
-    }, [proposals]);
+    }, [data, parentBountyId]);
 
   return (
     <>
-      <CuratorSummary totalFiat={totalFiat} />
+      <CuratorSummary totalFiat={data?.totalPayoutFiatValue || 0} />
       <ItemsList
         items={childBounties}
         loading={childBountiesLoading}
