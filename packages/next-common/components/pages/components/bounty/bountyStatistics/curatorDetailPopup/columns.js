@@ -34,7 +34,7 @@ export const RequestColumnsDef = {
   style: { textAlign: "right", width: "100px" },
   render: (item) => (
     <ValueDisplay
-      value={item.fiatValue}
+      value={item.payoutFiatValue}
       symbol=""
       prefix="$"
       className="text14Medium text-textPrimary"

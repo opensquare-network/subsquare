@@ -38,15 +38,25 @@ export default function CuratorContent({ data }) {
       const { result } = await backendApi.fetch(
         "treasury/child-bounties?simple=true&" +
           data.childBounties
-            .map((index) => "ids=" + `${parentBountyId}_${index}`)
+            .map((item) => "ids=" + `${parentBountyId}_${item.index}`)
             .join("&"),
       );
       if (!result) {
         return [];
       }
-      return result.map((item) =>
-        normalizeChildBountyListItem(process.env.NEXT_PUBLIC_CHAIN, item),
-      );
+      return result.map((item) => {
+        const payout =
+          data?.childBounties?.find((payout) => payout.index === item.index) ||
+          {};
+        const normalizedChildBounty = normalizeChildBountyListItem(
+          process.env.NEXT_PUBLIC_CHAIN,
+          item,
+        );
+        return {
+          ...normalizedChildBounty,
+          ...payout,
+        };
+      });
     }, [data, parentBountyId]);
 
   return (
