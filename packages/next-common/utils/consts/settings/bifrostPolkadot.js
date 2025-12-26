@@ -125,6 +125,10 @@ const bifrostPolkadot = {
     voting: "bifrost",
   },
   treasuryProposalTracks: bifrostPolkadotTracks,
+  vaultWalletConfig: {
+    relayChainGenesisHash:
+      "0x262e1b2ad728475fd6fe88e62d34c200abe6fd693931ddad144059b1eb884e5b",
+  },
 };
 
 export default bifrostPolkadot;

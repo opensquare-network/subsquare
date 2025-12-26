@@ -13,6 +13,7 @@ import { withTimeout } from "next-common/utils/withTimeout";
 import { WALLET_TIMEOUT_ERROR_TEXT } from "next-common/utils/constants";
 import { useChainSettings } from "next-common/context/chain";
 import { useWalletConnectAccounts } from "next-common/hooks/connect/useWalletConnectAccounts";
+import { usePolkadotVault } from "next-common/context/polkadotVault";
 
 export function useSubstrateAccounts({
   wallet,
@@ -26,6 +27,7 @@ export function useSubstrateAccounts({
   const signetAccounts = useSignetAccounts();
   const walletconnectAccounts = useWalletConnectAccounts();
   const [loading, setLoading] = useState(defaultLoading);
+  const { accounts: vaultAccounts } = usePolkadotVault();
 
   const [accounts, setAccounts] = useState([]);
 
@@ -87,6 +89,10 @@ export function useSubstrateAccounts({
     ],
   );
 
+  const loadPolkadotVaultAccounts = useCallback(() => {
+    setAccounts(vaultAccounts);
+  }, [vaultAccounts]);
+
   const loadSignetVault = useCallback(() => {
     setAccounts(signetAccounts);
   }, [signetAccounts, setAccounts]);
@@ -118,6 +124,10 @@ export function useSubstrateAccounts({
           await loadWalletconnectAccounts();
           break;
         }
+        case WalletTypes.POLKADOT_VAULT: {
+          await loadPolkadotVaultAccounts();
+          break;
+        }
         default: {
           break;
         }
@@ -125,7 +135,12 @@ export function useSubstrateAccounts({
 
       setLoading(false);
     },
-    [loadPolkadotAccounts, loadSignetVault, loadWalletconnectAccounts],
+    [
+      loadPolkadotAccounts,
+      loadPolkadotVaultAccounts,
+      loadSignetVault,
+      loadWalletconnectAccounts,
+    ],
   );
 
   useEffect(() => {
