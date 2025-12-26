@@ -1,11 +1,8 @@
 import { useEffect, useState } from "react";
 import { useContextApi } from "next-common/context/api";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import {
-  convertIdentity,
-  InitIdentityInfo,
-  useIdentityOf,
-} from "next-common/hooks/identity/useIdentityOf";
+import { useIdentityOf } from "next-common/hooks/identity/useIdentityOf";
+import { fetchIdentityOf } from "../identity/identityFetch";
 
 function useSuperOfIdentityDisplayName(identity) {
   const address = useRealAddress();
@@ -36,14 +33,10 @@ function useSuperOfIdentityDisplayName(identity) {
           return;
         }
 
-        const identityResult = await api.query.identity
-          ?.identityOf(superOfResult.parentAddress)
-          .then((parentResult) => {
-            if (!parentResult?.isNone) {
-              const result = convertIdentity(parentResult);
-              return result?.info || InitIdentityInfo;
-            }
-          });
+        const identityResult = await fetchIdentityOf(
+          superOfResult.parentAddress,
+        ).then((res) => res.info);
+
         if (identityResult.display && superOfResult.subDisplay) {
           setSubDisplay(
             `${identityResult.display}/${superOfResult.subDisplay}`,
