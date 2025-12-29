@@ -20,7 +20,7 @@ const Value = tw.span`
 export default function BarLabel({ label, onClick = noop }) {
   return (
     <LabelContainer
-      title={`${label.label} ${formatNum(label.value)}`}
+      title={`${label.name || label.label} ${formatNum(label.value)}`}
       key={label.index}
       onClick={() => onClick(label)}
       role="button"

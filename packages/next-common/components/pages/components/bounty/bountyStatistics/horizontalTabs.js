@@ -3,6 +3,7 @@ import TabsList from "next-common/components/tabs/list";
 import HorizontalTabLabel from "./horizontalTabLabel";
 import "../../../../charts/globalConfig";
 import CategoriesList from "./categoriesList";
+import BeneficiariesList from "./beneficiariesList";
 
 export default function HorizontalTabs() {
   const [activeTabValue, setActiveTabValue] = useState("categories");
@@ -10,11 +11,20 @@ export default function HorizontalTabs() {
   const tabs = useMemo(
     () => [
       {
-        value: "Categories",
+        value: "categories",
         label: (
           <HorizontalTabLabel
             label="Categories"
             isActive={activeTabValue === "categories"}
+          />
+        ),
+      },
+      {
+        value: "beneficiaries",
+        label: (
+          <HorizontalTabLabel
+            label="Beneficiaries"
+            isActive={activeTabValue === "beneficiaries"}
           />
         ),
       },
@@ -38,6 +48,9 @@ export default function HorizontalTabs() {
 }
 
 function HorizontalTabsContent({ tabValue }) {
+  if (tabValue === "beneficiaries") {
+    return <BeneficiariesList />;
+  }
   if (tabValue === "categories") {
     return <CategoriesList />;
   }
