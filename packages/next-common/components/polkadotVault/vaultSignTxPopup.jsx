@@ -1,13 +1,11 @@
 import Popup from "../popup/wrapper/Popup";
-import { QrDisplayPayload, QrScanSignature } from "@polkadot/react-qr";
 import { useState, useCallback, useEffect } from "react";
 import { QrSigner } from "next-common/utils/qrSigner";
 import { BN } from "@polkadot/util";
 import { useUser } from "next-common/context/user";
 import { sendSubstrateTx } from "next-common/utils/sendTransaction";
-
-const CMD_HASH = 1;
-const CMD_MORTAL = 2;
+import { CMD_HASH, CMD_MORTAL } from "./const";
+import DisplayPayloadAndScanContent from "./displayPayloadAndScanContent";
 
 export default function VaultSignTxPopup({
   tx,
@@ -118,29 +116,15 @@ function Qr({ qrAddress, genesisHash, isQrHashed, onSignature, qrPayload }) {
   };
 
   return (
-    <div className=" space-y-4">
-      <p className="text14Bold pb-1">
-        1. Scan the QR code to sign in Polkadot Vault.
-      </p>
-
-      <div className="w-150px">
-        <QrDisplayPayload
-          className="flex justify-center"
-          style={{
-            width: 200,
-          }}
-          address={qrAddress}
-          cmd={isQrHashed ? CMD_HASH : CMD_MORTAL}
-          genesisHash={genesisHash}
-          payload={qrPayload}
-        />
-      </div>
-      <p className="text14Bold pb-1">
-        2. Show the signed QR code for the app to scan
-      </p>
-      <div className="p-4 bg-neutral-100 rounded-md">
-        <QrScanSignature onScan={onScan} onError={onError} size={200} />
-      </div>
-    </div>
+    <DisplayPayloadAndScanContent
+      payloadParams={{
+        address: qrAddress,
+        cmd: isQrHashed ? CMD_HASH : CMD_MORTAL,
+        payload: qrPayload,
+        genesisHash,
+      }}
+      onScan={onScan}
+      onError={onError}
+    />
   );
 }

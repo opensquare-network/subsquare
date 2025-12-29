@@ -8,7 +8,7 @@ const VaultScanContext = createContext();
 let qrId = 0;
 
 export function VaultSignerProvider({ children }) {
-  const [txOptions, sendVaultTx] = useState({});
+  const [txOptions, setTxOptions] = useState({});
   const [messageOptions, setMessageOptions] = useState(null);
   const { accounts } = usePolkadotVault();
 
@@ -48,7 +48,7 @@ export function VaultSignerProvider({ children }) {
     <VaultScanContext.Provider
       value={{
         sendVaultTx: (data) => {
-          sendVaultTx(data);
+          setTxOptions(data);
           ++qrId;
         },
         signMessage,
@@ -59,7 +59,7 @@ export function VaultSignerProvider({ children }) {
           key={qrId}
           qrId={qrId}
           {...txOptions}
-          onClose={() => sendVaultTx({})}
+          onClose={() => setTxOptions({})}
         />
       )}
       {messageOptions && (

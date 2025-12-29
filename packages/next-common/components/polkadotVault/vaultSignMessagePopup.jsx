@@ -1,8 +1,9 @@
 import { useMemo } from "react";
 import Popup from "../popup/wrapper/Popup";
-import { QrDisplayPayload, QrScanSignature } from "@polkadot/react-qr";
 import { u8aWrapBytes } from "@polkadot/util";
 import { blake2AsHex } from "@polkadot/util-crypto";
+import { CMD_SIGN_MESSAGE } from "./const";
+import DisplayPayloadAndScaner from "./displayPayloadAndScanContent";
 
 export default function VaultSignMessagePopup({
   onClose,
@@ -33,27 +34,16 @@ export default function VaultSignMessagePopup({
 
   return (
     <Popup title="Signature Request" onClose={_onClose}>
-      <div className=" space-y-4">
-        <p className="text14Bold pb-1">
-          1. Scan the QR code to sign in Polkadot Vault.
-        </p>
-
-        <div className="flex justify-center">
-          <QrDisplayPayload
-            address={address}
-            cmd={3}
-            payload={messageBytes}
-            genesisHash={genesisHash}
-            size={200}
-          />
-        </div>
-        <p className="text14Bold pb-1">
-          2. Show the signed QR code for the app to scan
-        </p>
-        <div className="p-4 bg-neutral-100 rounded-md">
-          <QrScanSignature onScan={onScan} onError={onError} size={200} />
-        </div>
-      </div>
+      <DisplayPayloadAndScaner
+        payloadParams={{
+          address,
+          cmd: CMD_SIGN_MESSAGE,
+          payload: messageBytes,
+          genesisHash,
+        }}
+        onScan={onScan}
+        onError={onError}
+      />
     </Popup>
   );
 }

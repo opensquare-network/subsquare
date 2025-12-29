@@ -94,11 +94,14 @@ function ScanPopup({ onClose }) {
       className="w-[300px]"
     >
       <div className="space-y-3 flex flex-col items-center">
-        <QrScanAddress
-          onScan={onScanSuccess}
-          onError={(err) => setError(err.message)}
-          size={200}
-        />
+        <div className="rounded-xl border border-neutral300 overflow-hidden p-4">
+          <QrScanAddress
+            onScan={onScanSuccess}
+            onError={(err) => setError(err.message)}
+            size={200}
+          />
+        </div>
+
         {error && (
           <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
             <div className="text-sm text-red-600">{error}</div>
