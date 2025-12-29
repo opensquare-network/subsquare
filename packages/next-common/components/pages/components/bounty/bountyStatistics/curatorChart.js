@@ -7,7 +7,7 @@ import "../../../../charts/globalConfig";
 import { usePageProps } from "next-common/context/page";
 import { useThemeSetting } from "next-common/context/theme";
 import CuratorIndicators from "./curatorIndicators";
-import CuratorSummary from "./curatorSummary";
+import Summary from "./summary";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 
 ChartJS.register(ArcElement, Tooltip, Legend, Outlabels);
@@ -140,7 +140,7 @@ function Chart({ curators, totalFiat, category }) {
   const data = useChartData({ curators, totalFiat, category });
   return (
     <div className="grid grid-cols-3 w-full items-center max-sm:grid-cols-1 max-sm:gap-y-4">
-      <CuratorSummary totalFiat={totalFiat} />
+      <Summary totalFiat={totalFiat} />
       <CuratorIndicators data={data} curators={curators} />
       <DoughnutChart data={data} />
     </div>

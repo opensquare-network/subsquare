@@ -1,6 +1,6 @@
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { usePageProps } from "next-common/context/page";
-import CuratorSummary from "./curatorSummary";
+import Summary from "./summary";
 import BigNumber from "bignumber.js";
 import BarLabel from "./barChart/barLabel";
 import { useMemo, useRef, useState } from "react";
@@ -26,7 +26,7 @@ export default function BeneficiariesList() {
 
   return (
     <SecondaryCard className="[&>div:first-child]:mb-4">
-      <CuratorSummary totalFiat={totalFiat} />
+      <Summary totalFiat={totalFiat} />
       <BarChart categories={beneficiaries} totalFiat={totalFiat} />
     </SecondaryCard>
   );
