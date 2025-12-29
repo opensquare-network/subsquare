@@ -10,6 +10,7 @@ import { decodeAddress } from "@polkadot/util-crypto";
 import { addressEllipsis } from "next-common/utils";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { colorStyle, PromptTypes } from "next-common/components/scrollPrompt";
+import { normalizeAddress } from "next-common/utils/address";
 
 export default function ScanAddress({ onClose }) {
   const [isScanning, setIsScanning] = useState(false);
@@ -60,17 +61,24 @@ function ScanPopup({ onClose }) {
           return;
         }
 
-        const publicKey = Buffer.from(decodeAddress(address)).toString("hex");
+        const normalizedAddress = normalizeAddress(address);
 
-        const accountName = name || "Vault:" + addressEllipsis(address, 4, 4);
+        const publicKey = Buffer.from(
+          decodeAddress(normalizedAddress),
+        ).toString("hex");
+
+        const accountName =
+          name || "Vault:" + addressEllipsis(normalizedAddress, 4, 4);
 
         const raw = genesisHash
-          ? `substrate:${address}:${genesisHash}${name ? `:${name}` : ""}`
-          : `substrate:${address}`;
+          ? `substrate:${normalizedAddress}:${genesisHash}${
+              name ? `:${name}` : ""
+            }`
+          : `substrate:${normalizedAddress}`;
 
-        addAccount(address, {
+        addAccount(normalizedAddress, {
           raw,
-          address,
+          address: normalizedAddress,
           publicKey,
           name: accountName,
           source: WalletTypes.POLKADOT_VAULT,

@@ -10,8 +10,10 @@ export default function DisplayPayloadAndScanContent({
   return (
     <div className=" space-y-4">
       <GreyPanel className="text14Medium text-textSecondary px-4 py-2.5">
-        1. Scan the QR code to sign in Polkadot Vault. <br /> 2. Show the signed
-        QR code for the app to scan
+        <ol className="list-inside list-decimal">
+          <li>Scan the QR code to sign in Polkadot Vault.</li>
+          <li>Show the signed QR code for the app to scan</li>
+        </ol>
       </GreyPanel>
 
       <div className="flex justify-evenly items-center">
