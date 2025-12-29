@@ -102,7 +102,6 @@ const centrifuge = {
   }),
   integrations: {
     subscan: true,
-    doTreasury: true,
     discourseForum: {
       link: "https://gov.centrifuge.io",
     },
