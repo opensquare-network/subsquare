@@ -1,7 +1,7 @@
 import { AddressUser } from "next-common/components/user";
 import { formatNum } from "next-common/utils";
 import { useState } from "react";
-import CuratorProposalsPopup from "./curatorDetailPopup";
+import ProposalsPopup from "./proposalsPopup";
 
 export default function CuratorIndicators({ data, curators = [] }) {
   const [showDetail, setShowDetail] = useState(false);
@@ -49,7 +49,8 @@ export default function CuratorIndicators({ data, curators = [] }) {
         </div>
       ))}
       {showDetail && (
-        <CuratorProposalsPopup
+        <ProposalsPopup
+          title="Curator Proposals"
           data={curator}
           onClose={() => setShowDetail(false)}
         />

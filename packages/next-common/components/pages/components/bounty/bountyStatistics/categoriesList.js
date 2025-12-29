@@ -9,7 +9,7 @@ import { formatNum } from "next-common/utils";
 import { useTheme } from "styled-components";
 import { Bar } from "react-chartjs-2";
 import { useElementRect } from "next-common/hooks/useElementRect";
-import CuratorProposalsPopup from "./curatorDetailPopup";
+import ProposalsPopup from "./proposalsPopup";
 
 export default function CategoriesList() {
   const { statistics } = usePageProps();
@@ -51,7 +51,8 @@ function BarLabels({ labels, categories }) {
         />
       ))}
       {showDetail && (
-        <CuratorProposalsPopup
+        <ProposalsPopup
+          title="Category Proposals"
           data={category}
           onClose={() => setShowDetail(false)}
         />

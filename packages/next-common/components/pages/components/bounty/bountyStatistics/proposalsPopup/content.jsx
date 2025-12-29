@@ -26,7 +26,7 @@ export function PostTitle({ url, index, title, noLink, className }) {
   );
 }
 
-export default function CuratorContent({ data }) {
+export default function PopupContent({ data }) {
   const post = usePost();
   const parentBountyId = post.bountyIndex;
 
@@ -61,7 +61,7 @@ export default function CuratorContent({ data }) {
 
   return (
     <>
-      <CuratorSummary totalFiat={data?.totalPayoutFiatValue || 0} />
+      <Summary totalFiat={data?.totalPayoutFiatValue || 0} />
       <ItemsList
         items={childBounties}
         loading={childBountiesLoading}
@@ -72,7 +72,7 @@ export default function CuratorContent({ data }) {
   );
 }
 
-function CuratorSummary({ totalFiat }) {
+function Summary({ totalFiat }) {
   return (
     <SummaryLayout>
       <SummaryItem title="Total" className="[&>div>div:last-child]:flex">
