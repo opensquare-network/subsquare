@@ -7,6 +7,9 @@ import { useChain } from "next-common/context/chain";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import { QrScanAddress } from "@polkadot/react-qr";
 import { decodeAddress } from "@polkadot/util-crypto";
+import { addressEllipsis } from "next-common/utils";
+import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
+import { colorStyle, PromptTypes } from "next-common/components/scrollPrompt";
 
 export default function ScanAddress({ onClose }) {
   const [isScanning, setIsScanning] = useState(false);
@@ -59,8 +62,7 @@ function ScanPopup({ onClose }) {
 
         const publicKey = Buffer.from(decodeAddress(address)).toString("hex");
 
-        const accountName =
-          name || "Vault:" + address.slice(0, 4) + "..." + address.slice(-4);
+        const accountName = name || "Vault:" + addressEllipsis(address, 4, 4);
 
         const raw = genesisHash
           ? `substrate:${address}:${genesisHash}${name ? `:${name}` : ""}`
@@ -80,7 +82,7 @@ function ScanPopup({ onClose }) {
         });
         onClose();
       } catch (err) {
-        setError("Error processing substrate QR code: " + err.message);
+        setError("Error processing substrate address");
       }
     },
     [addAccount, onClose],
@@ -94,7 +96,7 @@ function ScanPopup({ onClose }) {
       className="w-[300px]"
     >
       <div className="space-y-3 flex flex-col items-center">
-        <div className="rounded-xl border border-neutral300 overflow-hidden p-4">
+        <div className="rounded-xl border border-neutral300 overflow-hidden p-4 w-full flex items-center justify-center">
           <QrScanAddress
             onScan={onScanSuccess}
             onError={(err) => setError(err.message)}
@@ -103,12 +105,15 @@ function ScanPopup({ onClose }) {
         </div>
 
         {error && (
-          <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-            <div className="text-sm text-red-600">{error}</div>
-          </div>
+          <GreyPanel
+            className="text14Medium px-4 py-2.5 whitespace-normal max-w-full overflow-auto"
+            style={colorStyle[PromptTypes.ERROR]}
+          >
+            {error}
+          </GreyPanel>
         )}
 
-        <SecondaryButton size="small" onClick={onClose} className="w-[200px]">
+        <SecondaryButton size="small" onClick={onClose} className="w-full">
           Cancel
         </SecondaryButton>
       </div>

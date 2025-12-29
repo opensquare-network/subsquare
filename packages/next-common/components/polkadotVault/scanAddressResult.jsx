@@ -1,18 +1,33 @@
 import { SystemTrash } from "@osn/icons/subsquare";
 import { WalletGroupTitle } from "next-common/components/wallet/options/styled";
-import Avatar from "next-common/components/avatar";
-import Button from "next-common/lib/button";
 import { useWeb3Login } from "next-common/hooks/connect/useWeb3Login";
 import { usePolkadotVaultAccounts } from "next-common/context/polkadotVault";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import PrimaryButton from "next-common/lib/button/primary";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { cn } from "next-common/utils";
+import AccountItem from "../switchAccount/accountItem";
+import { isSameAddress } from "next-common/utils";
 
 export default function ScanAddressResult() {
   const [web3Login, web3Loading] = useWeb3Login();
   const [selectedAccount, setSelectedAccount] = useState();
   const { removeAccount } = usePolkadotVaultAccounts();
+
+  const onClick = useCallback((account) => {
+    setSelectedAccount(account.address);
+  }, []);
+
+  const onRemoveAccount = useCallback(
+    (address) => {
+      removeAccount(address);
+
+      if (isSameAddress(address, selectedAccount)) {
+        setSelectedAccount(null);
+      }
+    },
+    [removeAccount, selectedAccount],
+  );
 
   const { accounts } = usePolkadotVaultAccounts();
   if (!accounts.length) {
@@ -20,74 +35,40 @@ export default function ScanAddressResult() {
   }
 
   return (
-    <div className=" space-y-2">
+    <div className="space-y-3 text14Medium">
       <WalletGroupTitle>Select Your Scan Result</WalletGroupTitle>
-      {accounts?.map((item) => (
-        <Item
-          item={item}
-          key={item.address}
-          isSelected={item.address === selectedAccount}
-          onClick={(address) => {
-            setSelectedAccount(address);
-          }}
-          onDelete={(address) => {
-            if (address === selectedAccount) {
-              setSelectedAccount("");
-            }
-            removeAccount(address);
-          }}
+      {accounts.map((account) => (
+        <AccountItem
+          className={cn(
+            isSameAddress(account.address, selectedAccount) && "bg-neutral200",
+          )}
+          user={account}
+          key={account?.address}
+          onClick={() => onClick(account)}
+          suffix={
+            <span
+              className="text12Medium text-textTertiary"
+              onClick={() => onRemoveAccount(account.address)}
+            >
+              <SystemTrash />
+            </span>
+          }
         />
       ))}
       {selectedAccount && (
-        <div className="mt-3">
-          <PrimaryButton
-            className="w-full"
-            onClick={() => {
-              web3Login({
-                account: { address: selectedAccount },
-                wallet: WalletTypes.POLKADOT_VAULT,
-              });
-            }}
-            disabled={web3Loading}
-          >
-            Next
-          </PrimaryButton>
-        </div>
-      )}
-    </div>
-  );
-}
-
-function Item({ item, onClick, onDelete, isSelected }) {
-  return (
-    <div
-      key={item.address}
-      className={cn(
-        "h-16 justify-between pl-3 pr-2.5 border border-neutral400 rounded-lg p-2 border-b flex items-center gap-3",
-        isSelected && " bg-neutral200",
-      )}
-    >
-      <div
-        className="flex gap-1 cursor-pointer"
-        onClick={() => {
-          onClick(item.address);
-        }}
-      >
-        <Avatar size={40} address={item.address} />
-        <div className="text-textPrimary text14Medium">
-          <div className="text14Medium text-textPrimary">{item.name}</div>
-          <div className="break-all text-textTertiary text12Medium inline-flex items-center">
-            {item.address}
-          </div>
-        </div>
-      </div>
-      <Button className="bg-neutral300 hover:bg-neutral400 p-[7px]">
-        <SystemTrash
+        <PrimaryButton
+          className="w-full"
           onClick={() => {
-            onDelete(item.address);
+            web3Login({
+              account: { address: selectedAccount },
+              wallet: WalletTypes.POLKADOT_VAULT,
+            });
           }}
-        />
-      </Button>
+          disabled={web3Loading}
+        >
+          Next
+        </PrimaryButton>
+      )}
     </div>
   );
 }
