@@ -1,3 +1,4 @@
+import { sortBy } from "lodash-es";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { usePageProps } from "next-common/context/page";
 import Summary from "./summary";
@@ -13,11 +14,12 @@ import { AddressUser } from "next-common/components/user";
 
 export default function BeneficiariesList() {
   const { statistics } = usePageProps();
-  const beneficiaries = Object.entries(statistics.beneficiaries).map(
-    ([beneficiary, data]) => ({
+  const beneficiaries = sortBy(
+    Object.entries(statistics.beneficiaries).map(([beneficiary, data]) => ({
       beneficiary,
       ...data,
-    }),
+    })),
+    (item) => -item.totalPayoutFiatValue,
   );
   const totalFiat = Object.values(statistics.beneficiaries).reduce(
     (acc, beneficiary) => acc.plus(beneficiary.totalPayoutFiatValue),

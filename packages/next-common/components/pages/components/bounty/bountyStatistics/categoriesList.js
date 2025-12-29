@@ -1,3 +1,4 @@
+import { sortBy } from "lodash-es";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { usePageProps } from "next-common/context/page";
 import Summary from "./summary";
@@ -13,11 +14,12 @@ import ProposalsPopup from "./proposalsPopup";
 
 export default function CategoriesList() {
   const { statistics } = usePageProps();
-  const categories = Object.entries(statistics.categories).map(
-    ([category, data]) => ({
+  const categories = sortBy(
+    Object.entries(statistics.categories).map(([category, data]) => ({
       category,
       ...data,
-    }),
+    })),
+    (item) => -item.totalPayoutFiatValue,
   );
   const totalFiat = Object.values(statistics.categories).reduce(
     (acc, category) => acc.plus(category.totalPayoutFiatValue),
