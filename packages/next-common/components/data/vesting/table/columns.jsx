@@ -2,9 +2,9 @@ import AddressUser from "next-common/components/user/addressUser";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
-import useChainOrScanHeight from "next-common/hooks/height";
 import Tooltip from "next-common/components/tooltip";
 import { isNil } from "lodash-es";
+import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
 
 function Balance({ value, className = "" }) {
   const { decimals, symbol } = useChainSettings();
@@ -20,7 +20,7 @@ function Balance({ value, className = "" }) {
 }
 
 function StartingBlock({ startingBlock }) {
-  const latestHeight = useChainOrScanHeight();
+  const latestHeight = useAhmLatestHeight();
   const content = startingBlock.toLocaleString();
 
   if (isNil(latestHeight) || startingBlock > latestHeight) {
