@@ -40,8 +40,6 @@ export function getHomeMenu({
 
   const integrationsMenu = [
     modules?.assethub && isAssetHubMigrated() && assetsMenu,
-    modules?.coretime && coretimeMenu,
-    modules?.people && peopleMenu,
   ].filter(Boolean);
 
   const menuItems = [
@@ -57,6 +55,8 @@ export function getHomeMenu({
     modules?.alliance && getAllianceMenu(summary),
     modules?.communityCouncil && getCommunityCouncilMenu(summary),
     modules?.staking && stakingMenu,
+    modules?.people && peopleMenu,
+    modules?.coretime && coretimeMenu,
     getAdvancedMenu(
       [
         modules?.preimages && preImages,
