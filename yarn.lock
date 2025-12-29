@@ -7036,13 +7036,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/offscreencanvas@npm:^2019.6.4":
-  version: 2019.7.3
-  resolution: "@types/offscreencanvas@npm:2019.7.3"
-  checksum: 53a394a65ae08eddff6e0a2a8db72abecc94f41fc8fee166e8900075d3c1ca32540ddf5b4836c37357d53a0253a03fea4d781b2db543e3f08bc1cdc2dc0fefb5
-  languageName: node
-  linkType: hard
-
 "@types/prop-types@npm:*":
   version: 15.7.5
   resolution: "@types/prop-types@npm:15.7.5"
@@ -14619,7 +14612,6 @@ __metadata:
     md5: ^2.3.0
     multiformats: ^13.1.0
     next: 15.4.10
-    qr-scanner: ^1.4.2
     qrcode: ^1.5.4
     query-string: ^9.0.0
     quick-lru: ^7.0.0
@@ -15832,15 +15824,6 @@ __metadata:
   version: 1.3.0
   resolution: "pure-color@npm:1.3.0"
   checksum: 646d8bed6e6eab89affdd5e2c11f607a85b631a7fb03c061dfa658eb4dc4806881a15feed2ac5fd8c0bad8c00c632c640d5b1cb8b9a972e6e947393a1329371b
-  languageName: node
-  linkType: hard
-
-"qr-scanner@npm:^1.4.2":
-  version: 1.4.2
-  resolution: "qr-scanner@npm:1.4.2"
-  dependencies:
-    "@types/offscreencanvas": ^2019.6.4
-  checksum: 554855c1d61cc9f502162d43d76d0cd03d6df77b0ecbfcae2c0f936c31cbd1ac45e673857b91628dde1d3f5156eca6651c4973187fa061ae9ec7ec07a95f7738
   languageName: node
   linkType: hard
 
