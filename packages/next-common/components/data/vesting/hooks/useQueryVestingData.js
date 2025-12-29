@@ -3,7 +3,7 @@ import useCall from "next-common/utils/hooks/useCall";
 import { useContextApi } from "next-common/context/api";
 import { isNil, isInteger } from "lodash-es";
 import BigNumber from "bignumber.js";
-import useLatestHeightSnapshot from "next-common/components/fellowship/collective/hook/useLatestHeightSnapshot";
+import useAhmLatestHeightSnapshot from "next-common/hooks/ahm/useAhmLatestHeightSnapshot";
 
 function getUnlockableData(latestHeight, startingBlock, perBlock, locked) {
   if (isNil(latestHeight) || startingBlock > latestHeight) {
@@ -41,13 +41,13 @@ export default function useQueryVestingData() {
   const api = useContextApi();
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState(null);
-  const { latestHeight, isLoading: isLatestHeightLoading } =
-    useLatestHeightSnapshot();
+  const { latestHeight, isLoading: isHeightLoading } =
+    useAhmLatestHeightSnapshot();
 
   const { value, loaded } = useCall(api?.query?.vesting?.vesting?.entries, []);
 
   useEffect(() => {
-    if (!loaded || isLatestHeightLoading) {
+    if (!loaded || isHeightLoading || !latestHeight) {
       return;
     }
 
@@ -87,7 +87,7 @@ export default function useQueryVestingData() {
 
     setData(results);
     setIsLoading(false);
-  }, [value, loaded, latestHeight, isLatestHeightLoading]);
+  }, [value, loaded, latestHeight, isHeightLoading]);
 
   return {
     data,
