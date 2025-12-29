@@ -5,7 +5,7 @@ import { formatNum } from "next-common/utils";
 const LabelContainer = tw.div`
   cursor-pointer pointer-events-auto
   text-textPrimary text12Medium
-  flex items-center gap-1
+  flex items-center gap-2 justify-between
   hover:underline
 `;
 
