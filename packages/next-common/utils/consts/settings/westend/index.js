@@ -65,16 +65,13 @@ const westend = {
   },
   sima: true,
   supportWalletconnect: true,
+  supportPolkadotVault: true,
   allowWeb2Login: true,
   multisigWallets: {
     mimir: true,
   },
   supportAssets: true,
   hideHeight: true,
-  vaultWallet: {
-    relayChainGenesisHash:
-      "0xe143f23803ac50e8f6f8e62695d1ce9e4e1d68aa36c1cd2cfd15340213f3423e",
-  },
 };
 
 export default westend;

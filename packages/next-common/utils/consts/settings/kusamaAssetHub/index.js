@@ -47,6 +47,7 @@ const kusamaAssetHub = {
   },
   allowWeb2Login: true,
   supportWalletconnect: true,
+  supportPolkadotVault: true,
   graphqlApiSubDomain: "statemine-gh-api",
   supportForeignAssets: true,
   supportAssets: true,

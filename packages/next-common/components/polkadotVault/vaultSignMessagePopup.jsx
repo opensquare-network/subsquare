@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import Popup from "../popup/wrapper/Popup";
-import QrScannerComponent from "./scanner";
-import { QrDisplayPayload } from "@polkadot/react-qr";
+import { QrDisplayPayload, QrScanSignature } from "@polkadot/react-qr";
 import { u8aWrapBytes } from "@polkadot/util";
 import { blake2AsHex } from "@polkadot/util-crypto";
 
@@ -17,12 +16,15 @@ export default function VaultSignMessagePopup({
     return u8aWrapBytes(blake2AsHex(message));
   }, [message]);
 
-  const onScan = ({ data }) => {
-    if (data) {
-      const signature = `0x${data}`;
+  const onScan = ({ signature }) => {
+    if (signature) {
       onClose();
       resolve({ signature });
     }
+  };
+
+  const onError = (error) => {
+    reject?.(error);
   };
   const _onClose = () => {
     reject?.(new Error("Rejected by user"));
@@ -49,7 +51,7 @@ export default function VaultSignMessagePopup({
           2. Show the signed QR code for the app to scan
         </p>
         <div className="p-4 bg-neutral-100 rounded-md">
-          <QrScannerComponent onScan={onScan} />
+          <QrScanSignature onScan={onScan} onError={onError} size={200} />
         </div>
       </div>
     </Popup>

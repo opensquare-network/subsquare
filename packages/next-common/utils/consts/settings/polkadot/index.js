@@ -127,6 +127,7 @@ const polkadot = {
     startFrom: 1584,
   },
   supportWalletconnect: true,
+  supportPolkadotVault: true,
   openSquare: {
     voting: "polkadot",
   },
@@ -138,10 +139,6 @@ const polkadot = {
   supportAssets: true,
   bountyIdentity: true,
   hideHeight: true,
-  vaultWalletConfig: {
-    relayChainGenesisHash:
-      "0x91b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3",
-  },
   ecoAssets: {
     hydration: true,
   },

@@ -37,20 +37,20 @@ export default function GlobalProvider({
           <ThemeModeProvider defaultThemeMode={themeMode}>
             <ChainProvider chain={chain}>
               <UserProvider user={user} userStatus={userStatus}>
-                <PolkadotVaultProvider>
-                  <PageLoadingProvider>
-                    <AdminProvider admins={admins}>
-                      <NavProvider
-                        navCollapsed={navCollapsed}
-                        navSubmenuVisible={navSubmenuVisible}
-                        pathname={pathname}
-                      >
-                        <PageProvider pageProperties={pageProperties}>
-                          <ApiProvider>
-                            <MigrationConditionalApiProvider>
-                              <ConnectedAccountProvider
-                                connectedAccount={connectedAccount}
-                              >
+                <PageLoadingProvider>
+                  <AdminProvider admins={admins}>
+                    <NavProvider
+                      navCollapsed={navCollapsed}
+                      navSubmenuVisible={navSubmenuVisible}
+                      pathname={pathname}
+                    >
+                      <PageProvider pageProperties={pageProperties}>
+                        <ApiProvider>
+                          <MigrationConditionalApiProvider>
+                            <ConnectedAccountProvider
+                              connectedAccount={connectedAccount}
+                            >
+                              <PolkadotVaultProvider>
                                 <WalletConnectProvider>
                                   <UserAccountProvider>
                                     <SignetContextProvider>
@@ -58,14 +58,14 @@ export default function GlobalProvider({
                                     </SignetContextProvider>
                                   </UserAccountProvider>
                                 </WalletConnectProvider>
-                              </ConnectedAccountProvider>
-                            </MigrationConditionalApiProvider>
-                          </ApiProvider>
-                        </PageProvider>
-                      </NavProvider>
-                    </AdminProvider>
-                  </PageLoadingProvider>
-                </PolkadotVaultProvider>
+                              </PolkadotVaultProvider>
+                            </ConnectedAccountProvider>
+                          </MigrationConditionalApiProvider>
+                        </ApiProvider>
+                      </PageProvider>
+                    </NavProvider>
+                  </AdminProvider>
+                </PageLoadingProvider>
               </UserProvider>
             </ChainProvider>
           </ThemeModeProvider>

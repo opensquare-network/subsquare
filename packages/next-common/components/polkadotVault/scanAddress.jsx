@@ -5,7 +5,8 @@ import SecondaryButton from "next-common/lib/button/secondary";
 import { usePolkadotVaultAccounts } from "next-common/context/polkadotVault";
 import { useChain } from "next-common/context/chain";
 import WalletTypes from "next-common/utils/consts/walletTypes";
-import QrScannerComponent from "./scanner";
+import { QrScanAddress } from "@polkadot/react-qr";
+import { decodeAddress } from "@polkadot/util-crypto";
 
 export default function ScanAddress({ onClose }) {
   const [isScanning, setIsScanning] = useState(false);
@@ -42,47 +43,44 @@ function ScanPopup({ onClose }) {
   const [error, setError] = useState("");
 
   const onScanSuccess = useCallback(
-    (result) => {
-      const str = result.data;
-      if (!str || typeof str !== "string") {
-        setError("Invalid QR code data");
+    (scanned) => {
+      if (!scanned.isAddress) {
+        setError("QR code must be a substrate address format");
         return;
       }
 
-      if (str.startsWith("substrate:")) {
-        try {
-          const parts = str.split(":");
-          if (parts.length < 3) {
-            setError("Invalid substrate QR code format");
-            return;
-          }
+      try {
+        const { content: address, genesisHash, name } = scanned;
 
-          const [, address, pubkey] = parts;
-          if (!address || !pubkey) {
-            setError("Missing address or public key in QR code");
-            return;
-          }
-
-          const name =
-            "Vault:" + address.slice(0, 4) + "..." + address.slice(-4);
-
-          addAccount(address, {
-            raw: str,
-            address,
-            publicKey: pubkey,
-            name: name,
-            source: WalletTypes.POLKADOT_VAULT,
-            meta: {
-              name,
-              source: WalletTypes.POLKADOT_VAULT,
-            },
-          });
-          onClose();
-        } catch (err) {
-          setError("Error processing substrate QR code: " + err.message);
+        if (!address) {
+          setError("Missing address in QR code");
+          return;
         }
-      } else {
-        setError("QR code must be a substrate address format");
+
+        const publicKey = Buffer.from(decodeAddress(address)).toString("hex");
+
+        const accountName =
+          name || "Vault:" + address.slice(0, 4) + "..." + address.slice(-4);
+
+        const raw = genesisHash
+          ? `substrate:${address}:${genesisHash}${name ? `:${name}` : ""}`
+          : `substrate:${address}`;
+
+        addAccount(address, {
+          raw,
+          address,
+          publicKey,
+          name: accountName,
+          source: WalletTypes.POLKADOT_VAULT,
+          meta: {
+            name: accountName,
+            source: WalletTypes.POLKADOT_VAULT,
+            genesisHash,
+          },
+        });
+        onClose();
+      } catch (err) {
+        setError("Error processing substrate QR code: " + err.message);
       }
     },
     [addAccount, onClose],
@@ -96,7 +94,11 @@ function ScanPopup({ onClose }) {
       className="w-[300px]"
     >
       <div className="space-y-3 flex flex-col items-center">
-        <QrScannerComponent onScan={onScanSuccess} onError={() => {}} />
+        <QrScanAddress
+          onScan={onScanSuccess}
+          onError={(err) => setError(err.message)}
+          size={200}
+        />
         {error && (
           <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
             <div className="text-sm text-red-600">{error}</div>

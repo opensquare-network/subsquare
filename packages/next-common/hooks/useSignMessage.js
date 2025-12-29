@@ -11,10 +11,8 @@ import useInjectedWeb3 from "./connect/useInjectedWeb3";
 import { useWalletConnect } from "next-common/context/walletconnect";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import { useVaultSigner } from "next-common/context/polkadotVault/vaultSignerProvider";
-import { useChainSettings } from "next-common/context/chain";
 
 export function useSignMessage() {
-  const chainSetting = useChainSettings();
   const { injectedWeb3 } = useInjectedWeb3();
   const { signMessage } = useEVMSignMessage();
   const { signWcMessage } = useWalletConnect();
@@ -44,19 +42,9 @@ export function useSignMessage() {
         return signature;
       }
       if (walletName === WalletTypes.POLKADOT_VAULT) {
-        const genesisHash =
-          chainSetting?.vaultWalletConfig?.relayChainGenesisHash;
-
-        if (!genesisHash) {
-          throw new Error(
-            "Not found `vaultWallet.relayChainGenesisHash` on chain setting",
-          );
-        }
-
         const { signature } = await vaultSignMessage({
           address,
           message,
-          genesisHash,
         });
         return signature;
       }
@@ -76,12 +64,6 @@ export function useSignMessage() {
 
       return signature;
     },
-    [
-      chainSetting?.vaultWalletConfig?.relayChainGenesisHash,
-      injectedWeb3,
-      signMessage,
-      signWcMessage,
-      vaultSignMessage,
-    ],
+    [injectedWeb3, signMessage, signWcMessage, vaultSignMessage],
   );
 }

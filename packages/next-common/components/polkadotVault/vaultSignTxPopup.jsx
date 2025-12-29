@@ -1,10 +1,9 @@
 import Popup from "../popup/wrapper/Popup";
-import { QrDisplayPayload } from "@polkadot/react-qr";
+import { QrDisplayPayload, QrScanSignature } from "@polkadot/react-qr";
 import { useState, useCallback, useEffect } from "react";
 import { QrSigner } from "next-common/utils/qrSigner";
 import { BN } from "@polkadot/util";
 import { useUser } from "next-common/context/user";
-import QrScannerComponent from "./scanner";
 import { sendSubstrateTx } from "next-common/utils/sendTransaction";
 
 const CMD_HASH = 1;
@@ -108,12 +107,14 @@ export default function VaultSignTxPopup({
 }
 
 function Qr({ qrAddress, genesisHash, isQrHashed, onSignature, qrPayload }) {
-  const onScan = (res) => {
-    if (res?.data) {
-      onSignature({
-        signature: `0x${res.data}`,
-      });
+  const onScan = ({ signature }) => {
+    if (signature) {
+      onSignature({ signature });
     }
+  };
+
+  const onError = (error) => {
+    console.error("QR scan error:", error);
   };
 
   return (
@@ -138,7 +139,7 @@ function Qr({ qrAddress, genesisHash, isQrHashed, onSignature, qrPayload }) {
         2. Show the signed QR code for the app to scan
       </p>
       <div className="p-4 bg-neutral-100 rounded-md">
-        <QrScannerComponent onScan={onScan} />
+        <QrScanSignature onScan={onScan} onError={onError} size={200} />
       </div>
     </div>
   );

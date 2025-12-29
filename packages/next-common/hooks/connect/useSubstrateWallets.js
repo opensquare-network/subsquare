@@ -28,7 +28,7 @@ export function useSubstrateWallets() {
     !isSubstrateThroughEvm && polkagateSnap,
     !isSubstrateThroughEvm && nova,
     chainSettings?.supportWalletconnect && walletConnect,
-    chainSettings.vaultWalletConfig && polkadotVaultWallet,
+    chainSettings?.supportPolkadotVault && polkadotVaultWallet,
   ].filter(Boolean);
   let multiSigWallets = [];
 
