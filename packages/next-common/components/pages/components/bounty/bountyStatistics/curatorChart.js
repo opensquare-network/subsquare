@@ -155,7 +155,7 @@ export default function CuratorChart() {
       ...data,
     }),
   );
-  const totalFiat = statistics.categories.curator.totalPayoutFiatValue;
+  const totalFiat = statistics.categories.curator?.totalPayoutFiatValue || 0;
   return (
     <SecondaryCard className="flex flex-col gap-y-4">
       <div className="text-textPrimary text14Bold">Curators</div>
