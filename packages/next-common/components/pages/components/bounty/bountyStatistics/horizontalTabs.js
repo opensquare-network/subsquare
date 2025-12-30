@@ -33,7 +33,7 @@ export default function HorizontalTabs() {
   );
 
   return (
-    <div className="flex flex-col gap-y-6">
+    <div className="flex flex-col gap-y-6 p-4 py-6">
       <TabsList
         className="mx-6"
         activeTabValue={activeTabValue}

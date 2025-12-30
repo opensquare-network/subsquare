@@ -1,5 +1,4 @@
 import { sortBy } from "lodash-es";
-import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { usePageProps } from "next-common/context/page";
 import Summary from "./summary";
 import BigNumber from "bignumber.js";
@@ -31,10 +30,10 @@ export default function BeneficiariesList() {
   );
 
   return (
-    <SecondaryCard className="[&>div:first-child]:mb-4">
+    <div className="[&>div:first-child]:mb-4">
       <Summary totalFiat={totalFiat} />
       <Chart dataItems={beneficiaries} totalFiat={totalFiat} />
-    </SecondaryCard>
+    </div>
   );
 }
 

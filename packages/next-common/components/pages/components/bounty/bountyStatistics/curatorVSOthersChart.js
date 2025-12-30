@@ -1,5 +1,4 @@
 import { omit } from "lodash-es";
-import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { usePageProps } from "next-common/context/page";
 import Summary from "./summary";
 import DoughnutChart from "./doughnut/doughnutChart";
@@ -10,15 +9,15 @@ import { useMemo, useState } from "react";
 
 const ProposalsPopup = dynamicPopup(() => import("./proposalsPopup"));
 
-export default function CuratorVSOthersChart() {
+export default function CuratorVSOtherChart() {
   const { statistics } = usePageProps();
   const totalCuratorFiat = Number(
     statistics.categories.curator?.totalPayoutFiatValue || 0,
   );
-  const totalOthersFiat = Object.values(
+  const totalOtherFiat = Object.values(
     omit(statistics.categories, "curator"),
   ).reduce((acc, category) => acc + Number(category.totalPayoutFiatValue), 0);
-  const totalFiat = totalCuratorFiat + totalOthersFiat;
+  const totalFiat = totalCuratorFiat + totalOtherFiat;
 
   const categories = useMemo(
     () => [
@@ -28,23 +27,23 @@ export default function CuratorVSOthersChart() {
         childBounties: statistics.categories.curator?.childBounties || [],
       },
       {
-        name: "Others",
-        totalPayoutFiatValue: totalOthersFiat,
+        name: "Other",
+        totalPayoutFiatValue: totalOtherFiat,
         childBounties: Object.values(
           omit(statistics.categories, "curator"),
         ).flatMap((category) => category.childBounties || []),
       },
     ],
-    [statistics.categories, totalCuratorFiat, totalOthersFiat],
+    [statistics.categories, totalCuratorFiat, totalOtherFiat],
   );
 
   return (
-    <SecondaryCard className="flex flex-col gap-y-4">
+    <div className="flex flex-col gap-y-4 p-4 py-6">
       <div className="text-textPrimary text14Bold">All</div>
       <div className="flex gap-x-6 gap-y-4 justify-start w-full max-sm:flex-col">
         <Chart categories={categories} totalFiat={totalFiat} />
       </div>
-    </SecondaryCard>
+    </div>
   );
 }
 

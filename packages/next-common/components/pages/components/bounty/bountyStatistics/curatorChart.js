@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { usePageProps } from "next-common/context/page";
 import Summary from "./summary";
-import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import DoughnutChart from "./doughnut/doughnutChart";
 import useChartData from "./doughnut/useChartData";
 import Indicators from "./indicators";
@@ -46,11 +45,11 @@ export default function CuratorChart() {
   );
   const totalFiat = statistics.categories.curator?.totalPayoutFiatValue || 0;
   return (
-    <SecondaryCard className="flex flex-col gap-y-4">
+    <div className="flex flex-col gap-y-4 p-4 py-6">
       <div className="text-textPrimary text14Bold">Curators</div>
       <div className="flex gap-x-6 gap-y-4 justify-start w-full max-sm:flex-col">
         <Chart curators={curators} totalFiat={totalFiat} />
       </div>
-    </SecondaryCard>
+    </div>
   );
 }

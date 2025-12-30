@@ -1,5 +1,4 @@
 import { omit, sortBy } from "lodash-es";
-import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { usePageProps } from "next-common/context/page";
 import Summary from "./summary";
 import BigNumber from "bignumber.js";
@@ -17,7 +16,7 @@ export default function CategoriesList() {
   const categories = useMemo(
     () =>
       sortBy(
-        Object.entries(omit(statistics.categories, "others")).map(
+        Object.entries(omit(statistics.categories, "other")).map(
           ([key, value]) => ({
             key,
             ...value,
@@ -33,10 +32,10 @@ export default function CategoriesList() {
   );
 
   return (
-    <SecondaryCard className="[&>div:first-child]:mb-4">
+    <div className="[&>div:first-child]:mb-4">
       <Summary totalFiat={totalFiat} />
       <Chart categories={categories} totalFiat={totalFiat} />
-    </SecondaryCard>
+    </div>
   );
 }
 
