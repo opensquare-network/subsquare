@@ -40,9 +40,9 @@ function BarLabels({ labels }) {
 
   return (
     <div className="flex flex-col gap-1">
-      {labels.map((label) => (
+      {labels.map((label, i) => (
         <BarLabel
-          key={label}
+          key={i}
           label={label}
           onClick={(label) => {
             setCategory(label.data);
