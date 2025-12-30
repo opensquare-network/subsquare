@@ -33,6 +33,7 @@ import { HydradxAssets } from "next-common/utils/hydradx";
 import { sendWalletConnectTx } from "next-common/utils/sendTransaction/sendWalletConnectTx";
 import { useWalletConnectBuildPayload } from "next-common/hooks/useWalletConnectBuildPayload";
 import { useVaultSigner } from "next-common/context/polkadotVault/vaultSignerProvider";
+import { useWalletConnect } from "next-common/context/walletconnect";
 
 function shouldSendEvmTx(signerAccount) {
   const isWalletMetamask = signerAccount?.meta?.source === WalletTypes.METAMASK;
@@ -93,7 +94,7 @@ export function useSendTransaction() {
   const { sdk: signetSdk } = useSignetSdk();
   const { sendVaultTx } = useVaultSigner();
 
-  // const { signWcTx } = useWalletConnect();
+  const { signWcTx } = useWalletConnect();
   const buildPayload = useWalletConnectBuildPayload();
 
   const sendTxFunc = useCallback(
@@ -254,6 +255,7 @@ export function useSendTransaction() {
             tx,
             signerAddress: signerAccount?.address,
             buildPayload,
+            signWcTx,
             onStarted,
             onInBlock: _onInBlock,
             onSubmitted: _onSubmitted,
@@ -295,7 +297,15 @@ export function useSendTransaction() {
         setIsSubmitting(false);
       }
     },
-    [buildPayload, dispatch, signerAccount, signetSdk, setSigner, sendVaultTx],
+    [
+      buildPayload,
+      dispatch,
+      signerAccount,
+      signetSdk,
+      setSigner,
+      sendVaultTx,
+      signWcTx,
+    ],
   );
 
   return {
