@@ -6,16 +6,21 @@ import HorizontalTabs from "./horizontalTabs";
 
 export default function BountyStatistics() {
   return (
-    <StatisticsDiv className="flex flex-col">
-      <div className="sm:flex">
-        <CuratorVSOthersChart />
+    <div className="flex flex-col gap-y-4">
+      <div className="flex items-center">
+        <span className="text-textPrimary text14Bold">Statistics</span>
       </div>
-      <Divider />
-      <div className="sm:flex">
-        <CuratorChart />
-      </div>
-      <Divider />
-      <HorizontalTabs />
-    </StatisticsDiv>
+      <StatisticsDiv className="flex flex-col">
+        <div className="sm:flex">
+          <CuratorVSOthersChart />
+        </div>
+        <Divider />
+        <div className="sm:flex">
+          <CuratorChart />
+        </div>
+        <Divider />
+        <HorizontalTabs />
+      </StatisticsDiv>
+    </div>
   );
 }
