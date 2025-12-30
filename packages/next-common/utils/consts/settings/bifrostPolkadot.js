@@ -116,7 +116,6 @@ const bifrostPolkadot = {
     killReferendum: true,
   },
   supportWalletconnect: true,
-  supportPolkadotVault: true,
   allowWeb2Login: false,
   hotMenu: {
     referenda: true,
