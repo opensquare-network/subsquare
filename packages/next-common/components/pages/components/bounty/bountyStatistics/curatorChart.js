@@ -1,148 +1,37 @@
-import { useMemo } from "react";
-import BigNumber from "bignumber.js";
-import { Doughnut } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import Outlabels from "@energiency/chartjs-plugin-piechart-outlabels";
-import "../../../../charts/globalConfig";
+import { useState } from "react";
 import { usePageProps } from "next-common/context/page";
-import { useThemeSetting } from "next-common/context/theme";
-import CuratorIndicators from "./curatorIndicators";
 import Summary from "./summary";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
+import DoughnutChart from "./doughnut/doughnutChart";
+import useChartData from "./doughnut/useChartData";
+import Indicators from "./indicators";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-ChartJS.register(ArcElement, Tooltip, Legend, Outlabels);
+const ProposalsPopup = dynamicPopup(() => import("./proposalsPopup"));
 
-const colors = [
-  "#EB558999",
-  "#785DF399",
-  "#E47E5299",
-  "#4CAF9199",
-  "#0F6FFF99",
-  "#FF980080",
-  "#2196F399",
-];
-
-function useChartData({ curators, totalFiat, category }) {
-  const { neutral100 } = useThemeSetting();
-
-  const data = useMemo(() => {
-    if (!curators?.length) {
-      return null;
-    }
-    const curatorColors = curators.map(
-      (_, index) => colors[index % colors.length],
-    );
-    const curatorNames = curators.map((curator) => curator.address);
-    const curatorNameAbbrs = curators.map((curator) => curator.address);
-    const curatorFiatAtFinals = curators.map(
-      (curator) => curator.totalPayoutFiatValue,
-    );
-    const curatorPercentages = curators.map(
-      (curator) =>
-        BigNumber(curator.totalPayoutFiatValue)
-          .dividedBy(totalFiat)
-          .multipliedBy(100)
-          .toFixed(2) + "%",
-    );
-
-    return {
-      category,
-      labels: curatorNames,
-      datasets: [
-        {
-          label: "Curators",
-          data: curatorFiatAtFinals,
-          name: curatorNames,
-          nameAbbrs: curatorNameAbbrs,
-          backgroundColor: curatorColors,
-          borderColor: neutral100,
-          borderWidth: 3,
-          hoverBorderColor: neutral100,
-          hoverBorderWidth: 3,
-          borderRadius: 5,
-          spacing: 0,
-          percentage: curatorPercentages,
-        },
-      ],
-    };
-  }, [curators, totalFiat, neutral100, category]);
-
-  return data;
-}
-
-function useDoughnutChartOptions() {
-  const { textPrimary } = useThemeSetting();
-
-  return useMemo(
-    () => ({
-      responsive: true,
-      maintainAspectRatio: false,
-      animation: {
-        duration: 0,
-      },
-      plugins: {
-        legend: {
-          display: false,
-        },
-        tooltip: {
-          enabled: false,
-        },
-        annotation: {
-          display: false,
-        },
-        outlabels: {
-          text: (context) => {
-            const percentage =
-              context.dataset.percentage?.[context.dataIndex] ?? "";
-            return percentage;
-          },
-          font: {
-            size: 11,
-            weight: 500,
-          },
-          color: textPrimary,
-          backgroundColor: null,
-          lineWidth: 1,
-          borderRadius: 0,
-          borderWidth: 0,
-          padding: 0,
-          stretch: 1,
-        },
-      },
-      layout: {
-        padding: {
-          left: 2,
-          right: 2,
-          top: 1,
-          bottom: 0,
-        },
-      },
-      cutout: "45%",
-      rotation: 5,
-    }),
-    [textPrimary],
-  );
-}
-
-function DoughnutChart({ data, category }) {
-  const doughnutOptions = useDoughnutChartOptions(category);
-  if (!data) {
-    return null;
-  }
-  return (
-    <div className="relative flex gap-x-2 w-[190px] h-[110px]">
-      <Doughnut data={data} options={doughnutOptions} />
-    </div>
-  );
-}
-
-function Chart({ curators, totalFiat, category }) {
-  const data = useChartData({ curators, totalFiat, category });
+function Chart({ curators, totalFiat }) {
+  const [showDetail, setShowDetail] = useState(false);
+  const [curator, setCurator] = useState({});
+  const data = useChartData({ dataItems: curators, totalFiat });
   return (
     <div className="grid grid-cols-3 w-full items-center max-sm:grid-cols-1 max-sm:gap-y-4">
       <Summary totalFiat={totalFiat} />
-      <CuratorIndicators data={data} curators={curators} />
+      <Indicators
+        data={data}
+        isAddress={true}
+        onClick={(index) => {
+          setShowDetail(true);
+          setCurator(curators[index]);
+        }}
+      />
       <DoughnutChart data={data} />
+      {showDetail && (
+        <ProposalsPopup
+          title="Curator Proposals"
+          data={curator}
+          onClose={() => setShowDetail(false)}
+        />
+      )}
     </div>
   );
 }
@@ -151,7 +40,7 @@ export default function CuratorChart() {
   const { statistics } = usePageProps();
   const curators = Object.entries(statistics.curators).map(
     ([address, data]) => ({
-      address,
+      name: address,
       ...data,
     }),
   );
@@ -160,7 +49,7 @@ export default function CuratorChart() {
     <SecondaryCard className="flex flex-col gap-y-4">
       <div className="text-textPrimary text14Bold">Curators</div>
       <div className="flex gap-x-6 gap-y-4 justify-start w-full max-sm:flex-col">
-        <Chart curators={curators} totalFiat={totalFiat} category="curator" />
+        <Chart curators={curators} totalFiat={totalFiat} />
       </div>
     </SecondaryCard>
   );
