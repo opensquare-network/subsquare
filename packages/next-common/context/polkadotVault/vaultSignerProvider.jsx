@@ -1,48 +1,21 @@
 import VaultSignTxPopup from "next-common/components/polkadotVault/vaultSignTxPopup";
 import VaultSignMessagePopup from "next-common/components/polkadotVault/vaultSignMessagePopup";
-import { useState, createContext, useContext, useCallback } from "react";
-import { usePolkadotVault } from "next-common/context/polkadotVault";
-import { isSameAddress } from "next-common/utils";
+import { useState, createContext, useContext } from "react";
+import { useVaultSignMessage } from "./useVaultSignMessage";
 
 const VaultScanContext = createContext();
 let qrId = 0;
 
 export function VaultSignerProvider({ children }) {
-  const [txOptions, setTxOptions] = useState({});
-  const [messageOptions, setMessageOptions] = useState(null);
-  const { accounts } = usePolkadotVault();
+  const [txOptions, setTxOptions] = useState(null);
 
-  const signMessage = useCallback(
-    ({ address, message }) => {
-      return new Promise((resolve, reject) => {
-        if (!address) {
-          return reject(new Error("Address is empty"));
-        }
-        const account = accounts.find((account) =>
-          isSameAddress(account.address, address),
-        );
-        if (!account) {
-          return reject(new Error("Account not found"));
-        }
-        const genesisHash = account.meta?.genesisHash;
-        if (!genesisHash) {
-          return reject(new Error("GenesisHash is empty"));
-        }
-        if (!message) {
-          return reject(new Error("Message is empty"));
-        }
-
-        setMessageOptions({
-          resolve,
-          reject,
-          address,
-          genesisHash,
-          message,
-        });
-      });
-    },
-    [accounts],
-  );
+  const {
+    signMessage,
+    isSigning,
+    signingRequest,
+    completeSignature,
+    cancelSignature,
+  } = useVaultSignMessage();
 
   return (
     <VaultScanContext.Provider
@@ -51,23 +24,27 @@ export function VaultSignerProvider({ children }) {
           setTxOptions(data);
           ++qrId;
         },
+        isSigning,
         signMessage,
       }}
     >
-      {txOptions.tx && (
+      {txOptions?.tx && (
         <VaultSignTxPopup
           key={qrId}
           qrId={qrId}
           {...txOptions}
-          onClose={() => setTxOptions({})}
+          onClose={() => setTxOptions(null)}
         />
       )}
-      {messageOptions && (
+
+      {signingRequest && (
         <VaultSignMessagePopup
-          {...messageOptions}
-          onClose={() => setMessageOptions(null)}
+          {...signingRequest}
+          onComplete={completeSignature}
+          onCancel={cancelSignature}
         />
       )}
+
       {children}
     </VaultScanContext.Provider>
   );

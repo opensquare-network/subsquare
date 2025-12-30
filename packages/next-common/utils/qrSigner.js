@@ -3,6 +3,8 @@ import { blake2AsU8a } from "@polkadot/util-crypto";
 export class QrSigner {
   #registry;
   #setState;
+  #currentResolve = null;
+  #currentReject = null;
 
   constructor(registry, setState) {
     this.#registry = registry;
@@ -10,7 +12,14 @@ export class QrSigner {
   }
 
   async signPayload(payload) {
+    if (this.#currentResolve || this.#currentReject) {
+      this.#currentReject?.(new Error("New signing request started"));
+      this.#clear();
+    }
     return new Promise((resolve, reject) => {
+      this.#currentResolve = resolve;
+      this.#currentReject = reject;
+
       const isQrHashed = payload.method.length > 5000;
       const wrapper = this.#registry.createType("ExtrinsicPayload", payload, {
         version: payload.version,
@@ -24,9 +33,26 @@ export class QrSigner {
         isQrHashed,
         qrAddress: payload.address,
         qrPayload,
-        qrReject: reject,
-        qrResolve: resolve,
       });
     });
+  }
+
+  resolveSignature(result) {
+    if (this.#currentResolve) {
+      this.#currentResolve(result);
+      this.#clear();
+    }
+  }
+
+  rejectSignature(error) {
+    if (this.#currentReject) {
+      this.#currentReject(error);
+      this.#clear();
+    }
+  }
+
+  #clear() {
+    this.#currentResolve = null;
+    this.#currentReject = null;
   }
 }

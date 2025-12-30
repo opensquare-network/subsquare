@@ -1,5 +1,5 @@
 import Popup from "../popup/wrapper/Popup";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
 import { QrSigner } from "next-common/utils/qrSigner";
 import { BN } from "@polkadot/util";
 import { useUser } from "next-common/context/user";
@@ -22,23 +22,36 @@ export default function VaultSignTxPopup({
   const user = useUser();
   const address = user?.address;
   const genesisHash = api?.genesisHash;
-  const [
-    { isQrHashed, qrAddress, qrPayload, qrResolve, qrReject },
-    setQrState,
-  ] = useState({});
+  const [{ isQrHashed, qrAddress, qrPayload }, setQrState] = useState({});
 
-  const start = useCallback(async () => {
+  const qrSigner = useMemo(() => {
+    if (!api?.registry) {
+      return null;
+    }
+    return new QrSigner(api.registry, setQrState);
+  }, [api]);
+
+  const signAsyncOptions = useMemo(() => {
+    if (!qrSigner) {
+      return null;
+    }
+    return {
+      assetId: undefined,
+      feeAsset: null,
+      nonce: -1,
+      tip: new BN("0"),
+      withSignedTransaction: true,
+      signer: qrSigner,
+    };
+  }, [qrSigner]);
+
+  const startTransaction = useCallback(async () => {
+    if (!signAsyncOptions) {
+      return;
+    }
     try {
-      const options = {
-        assetId: undefined,
-        feeAsset: null,
-        nonce: -1,
-        tip: new BN("0"),
-        withSignedTransaction: true,
-        signer: new QrSigner(api.registry, setQrState),
-      };
       setSigned(false);
-      await tx.signAsync(address, options);
+      await tx.signAsync(address, signAsyncOptions);
       await sendSubstrateTx({
         tx,
         onStarted,
@@ -52,34 +65,35 @@ export default function VaultSignTxPopup({
     }
   }, [
     address,
-    api,
     onError,
     onFinalized,
     onInBlock,
     onStarted,
     onSubmitted,
     tx,
+    signAsyncOptions,
   ]);
 
-  const _addQrSignature = useCallback(
+  const onQrSignedCallback = useCallback(
     ({ signature }) => {
-      qrResolve?.({
+      qrSigner.resolveSignature?.({
         id: qrId,
         signature: signature,
-      }),
-        setSigned(true);
+      });
+      setSigned(true);
+      onClose?.();
     },
-    [qrId, qrResolve],
+    [qrId, qrSigner, onClose],
   );
 
   useEffect(() => {
     if (api && tx) {
-      start();
+      startTransaction();
     }
-  }, [api, start, tx]);
+  }, [api, startTransaction, tx]);
 
   const _onClose = () => {
-    qrReject?.(new Error("Rejected by user"));
+    qrSigner.rejectSignature?.(new Error("Rejected by user"));
     setQrState({});
     onClose?.();
   };
@@ -96,7 +110,7 @@ export default function VaultSignTxPopup({
             isQrHashed={isQrHashed}
             genesisHash={genesisHash}
             qrPayload={qrPayload}
-            onSignature={_addQrSignature}
+            onSignature={onQrSignedCallback}
           />
         </div>
       )}

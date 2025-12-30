@@ -4,11 +4,11 @@ import { u8aWrapBytes } from "@polkadot/util";
 import { blake2AsHex } from "@polkadot/util-crypto";
 import { CMD_SIGN_MESSAGE } from "./const";
 import DisplayPayloadAndScaner from "./displayPayloadAndScanContent";
+import { noop } from "lodash-es";
 
 export default function VaultSignMessagePopup({
-  onClose,
-  resolve,
-  reject,
+  onComplete = noop,
+  onCancel = noop,
   address,
   genesisHash,
   message,
@@ -19,17 +19,15 @@ export default function VaultSignMessagePopup({
 
   const onScan = ({ signature }) => {
     if (signature) {
-      onClose();
-      resolve({ signature });
+      onComplete({ signature });
     }
   };
 
   const onError = (error) => {
-    reject?.(error);
+    onCancel?.(error);
   };
   const _onClose = () => {
-    reject?.(new Error("Rejected by user"));
-    onClose();
+    onCancel?.(new Error("Rejected by user"));
   };
 
   return (
