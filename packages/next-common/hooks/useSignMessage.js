@@ -9,11 +9,14 @@ import { metamask, walletConnect } from "next-common/utils/consts/connect";
 import { findInjectedExtension } from "next-common/hooks/connect/useInjectedWeb3Extension";
 import useInjectedWeb3 from "./connect/useInjectedWeb3";
 import { useWalletConnect } from "next-common/context/walletconnect";
+import WalletTypes from "next-common/utils/consts/walletTypes";
+import { useVaultSigner } from "next-common/context/polkadotVault/vaultSignerProvider";
 
 export function useSignMessage() {
   const { injectedWeb3 } = useInjectedWeb3();
   const { signMessage } = useEVMSignMessage();
   const { signWcMessage } = useWalletConnect();
+  const { signMessage: vaultSignMessage } = useVaultSigner();
 
   return useCallback(
     async (message, address, walletName) => {
@@ -38,6 +41,13 @@ export function useSignMessage() {
 
         return signature;
       }
+      if (walletName === WalletTypes.POLKADOT_VAULT) {
+        const { signature } = await vaultSignMessage({
+          address,
+          message,
+        });
+        return signature;
+      }
 
       const extension = findInjectedExtension(walletName, injectedWeb3);
       if (!extension) {
@@ -54,6 +64,6 @@ export function useSignMessage() {
 
       return signature;
     },
-    [injectedWeb3, signMessage, signWcMessage],
+    [injectedWeb3, signMessage, signWcMessage, vaultSignMessage],
   );
 }

@@ -127,6 +127,7 @@ const polkadot = {
     startFrom: 1584,
   },
   supportWalletconnect: true,
+  supportPolkadotVault: true,
   openSquare: {
     voting: "polkadot",
   },

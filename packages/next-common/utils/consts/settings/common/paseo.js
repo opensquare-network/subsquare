@@ -50,6 +50,7 @@ export const paseoCommonSettings = {
   navLogoDark: ProjectLogoPaseoDark,
   group: MenuGroups.Paseo,
   supportWalletconnect: true,
+  supportPolkadotVault: true,
 };
 
 export const paseoRelayChainNodes = [

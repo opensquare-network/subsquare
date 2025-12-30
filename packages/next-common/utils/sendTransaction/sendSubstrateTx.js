@@ -77,7 +77,7 @@ export function createSendTxEventHandler({
   };
 }
 
-export async function sendSubstrateTx({
+export async function signAndSendSubstrateTx({
   api,
   tx,
   onStarted = noop,
@@ -106,6 +106,31 @@ export async function sendSubstrateTx({
       }),
     );
 
+    onSubmitted();
+  } catch (e) {
+    onError(e);
+  }
+}
+
+export async function sendSubstrateTx({
+  tx,
+  onStarted = noop,
+  onFinalized = noop,
+  onInBlock = noop,
+  onSubmitted = noop,
+  onError = noop,
+}) {
+  onStarted();
+
+  try {
+    const unsub = await tx.send(
+      createSendTxEventHandler({
+        onFinalized,
+        onInBlock,
+        onError,
+        unsub: () => unsub?.(),
+      }),
+    );
     onSubmitted();
   } catch (e) {
     onError(e);

@@ -51,6 +51,7 @@ const polkadotAssetHub = {
   },
   allowWeb2Login: true,
   supportWalletconnect: true,
+  supportPolkadotVault: true,
   graphqlApiSubDomain: "ahp-gh-api",
   supportForeignAssets: true,
   supportAssets: true,

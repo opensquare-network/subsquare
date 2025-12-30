@@ -43,6 +43,7 @@ const westendAssetHub = {
     },
   },
   supportWalletconnect: true,
+  supportPolkadotVault: true,
   allowWeb2Login: true,
   supportAssets: true,
 };

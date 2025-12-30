@@ -14,6 +14,7 @@ import UserAccountProvider from "./user/account";
 import PageLoadingProvider from "./pageLoading";
 import WalletConnectProvider from "./walletconnect";
 import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
+import { PolkadotVaultProvider } from "./polkadotVault";
 import WindowSizeProvider from "./windowSize";
 
 export default function GlobalProvider({
@@ -49,13 +50,15 @@ export default function GlobalProvider({
                             <ConnectedAccountProvider
                               connectedAccount={connectedAccount}
                             >
-                              <WalletConnectProvider>
-                                <UserAccountProvider>
-                                  <SignetContextProvider>
-                                    {children}
-                                  </SignetContextProvider>
-                                </UserAccountProvider>
-                              </WalletConnectProvider>
+                              <PolkadotVaultProvider>
+                                <WalletConnectProvider>
+                                  <UserAccountProvider>
+                                    <SignetContextProvider>
+                                      {children}
+                                    </SignetContextProvider>
+                                  </UserAccountProvider>
+                                </WalletConnectProvider>
+                              </PolkadotVaultProvider>
                             </ConnectedAccountProvider>
                           </MigrationConditionalApiProvider>
                         </ApiProvider>

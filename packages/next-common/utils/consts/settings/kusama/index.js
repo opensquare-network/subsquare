@@ -115,6 +115,7 @@ const kusama = {
     startFrom: 538,
   },
   supportWalletconnect: true,
+  supportPolkadotVault: true,
   openSquare: {
     voting: "kusama",
   },

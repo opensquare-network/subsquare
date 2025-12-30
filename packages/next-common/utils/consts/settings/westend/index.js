@@ -29,6 +29,7 @@ const westend = {
   multisigApiPrefix: "westmint-gh-api",
   endpoints: westendAssetHubNodes,
   relayChainEndpoints: westendRelayChainNodes,
+
   avatar: ProjectIconWestendLight,
   darkAvatar: ProjectIconWestendDark,
   group: MenuGroups.WestendAndParachains,
@@ -64,6 +65,7 @@ const westend = {
   },
   sima: true,
   supportWalletconnect: true,
+  supportPolkadotVault: true,
   allowWeb2Login: true,
   multisigWallets: {
     mimir: true,
