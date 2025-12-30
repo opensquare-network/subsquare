@@ -22,7 +22,7 @@ export async function sendWalletConnectTx({
       version: payload.version,
     });
 
-    tx.addSignature(signerAddress, signature, rawPayload);
+    tx.addSignature(signerAddress, signature, rawPayload.toU8a());
 
     const unsub = await tx.send(
       createSendTxEventHandler({
