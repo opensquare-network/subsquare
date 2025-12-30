@@ -1,109 +1,80 @@
-import AddressUser from "next-common/components/user/addressUser";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
+import AddressUser from "next-common/components/user/addressUser";
 import { toPrecision } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
-import { isNil } from "lodash-es";
-import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
+import DetailButton from "next-common/components/detailButton";
 
-function Balance({ value, className = "" }) {
+export function Balance({
+  value,
+  className = "",
+  showTooltip = true,
+  showSymbol = true,
+}) {
   const { decimals, symbol } = useChainSettings();
 
   return (
     <ValueDisplay
-      key="value"
       value={toPrecision(value, decimals)}
-      symbol={symbol}
+      symbol={showSymbol ? symbol : null}
       className={className}
+      showTooltip={showTooltip}
     />
   );
 }
 
-function StartingBlock({ startingBlock }) {
-  const latestHeight = useAhmLatestHeight();
-  const content = startingBlock.toLocaleString();
-
-  if (isNil(latestHeight) || startingBlock > latestHeight) {
-    return (
-      <Tooltip content="Not started">
-        <span className="text-textTertiary">{content}</span>
-      </Tooltip>
-    );
-  }
-
-  return <div className="text-textPrimary">{content}</div>;
+function BalanceColumn({ currentBalanceInLock, totalVesting }) {
+  return (
+    <div className="flex flex-col gap-y-1">
+      <div className="text-textPrimary text14Medium">
+        <Tooltip content="Current Balance in Lock">
+          <Balance
+            value={currentBalanceInLock}
+            showTooltip={false}
+            showSymbol={false}
+          />
+        </Tooltip>
+        <span className="mx-1 text-textTertiary">/</span>
+        <Tooltip content="Total Balance by Vesting">
+          <Balance value={totalVesting} showTooltip={false} />
+        </Tooltip>
+      </div>
+    </div>
+  );
 }
 
-const addressColumn = {
-  key: "address",
-  name: "Address",
-  className: "text-left",
-  render: ({ address }) => <AddressUser add={address} />,
-};
-
-const startingBlockColumn = {
-  key: "startingBlock",
-  name: "Starting Block",
-  style: { textAlign: "right", width: "160px", minWidth: "160px" },
-  render: ({ startingBlock }) => (
-    <StartingBlock startingBlock={startingBlock} />
-  ),
-};
-
-const perBlockColumn = {
-  key: "perBlock",
-  name: "Per Block",
-  style: { textAlign: "right", width: "160px", minWidth: "160px" },
-  render: ({ perBlock }) => <Balance value={perBlock} />,
-};
-
-const lockedColumn = {
-  key: "locked",
-  name: "Locked",
-  style: { textAlign: "right", width: "160px", minWidth: "160px" },
-  render: ({ locked }) => <Balance value={locked} />,
-};
-
-const desktopUnlockableColumn = {
-  key: "unlockable",
-  name: "Unlockable",
-  style: { textAlign: "right", width: "160px", minWidth: "160px" },
-  render: ({ unlockableBalance, unlockablePercentage }) => (
-    <Tooltip content={<Balance value={unlockableBalance} />}>
-      {unlockablePercentage}%
+function ActionColumn({ onCheckDetail }) {
+  return (
+    <Tooltip content="Show All Schedules">
+      <DetailButton onClick={onCheckDetail} />
     </Tooltip>
-  ),
-};
+  );
+}
 
-const mobileUnlockableColumn = {
-  key: "unlockable",
-  name: "Unlockable",
-  style: { textAlign: "right", width: "160px", minWidth: "160px" },
-  render: ({ unlockableBalance, unlockablePercentage }) => (
-    <div className="flex flex-wrap flex-col items-end">
-      <p>{unlockablePercentage}%</p>
-      {Number(unlockablePercentage) !== 0 && (
-        <Balance
-          value={unlockableBalance}
-          className="text12Medium text-textTertiary"
-        />
-      )}
-    </div>
-  ),
-};
-
-export const desktopColumns = [
-  addressColumn,
-  lockedColumn,
-  startingBlockColumn,
-  perBlockColumn,
-  desktopUnlockableColumn,
-];
-
-export const mobileColumns = [
-  addressColumn,
-  lockedColumn,
-  startingBlockColumn,
-  perBlockColumn,
-  mobileUnlockableColumn,
+export const columns = [
+  {
+    name: "Account",
+    style: { textAlign: "left", minWidth: "240px" },
+    render: (item) => <AddressUser add={item.account} key={item.account} />,
+  },
+  {
+    name: "Balance",
+    style: { textAlign: "left", minWidth: "240px" },
+    render: (item) => (
+      <BalanceColumn
+        currentBalanceInLock={item.currentBalanceInLock}
+        totalVesting={item.totalVesting}
+      />
+    ),
+  },
+  {
+    name: "Unlockable",
+    style: { textAlign: "left", minWidth: "180px" },
+    render: (item) => <Balance value={item.unlockable} />,
+  },
+  {
+    name: "Actions",
+    style: { textAlign: "right", width: "120px" },
+    render: (item) => <ActionColumn onCheckDetail={item.onCheckDetail} />,
+  },
 ];

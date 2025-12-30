@@ -21,8 +21,8 @@ export default function useFilterAllVesting(vesting = [], initialLoading) {
     let filteredVesting = searchedVesting;
 
     if (isMyRelated && address) {
-      filteredVesting = searchedVesting.filter(({ address: vestingAddress }) =>
-        isSameAddress(vestingAddress, address),
+      filteredVesting = searchedVesting.filter(({ account }) =>
+        isSameAddress(account, address),
       );
     }
 
