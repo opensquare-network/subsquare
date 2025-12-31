@@ -1,6 +1,24 @@
 import { MapDataList } from "next-common/components/dataList";
 import { Balance } from "next-common/components/data/vesting/table/columns";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
+import Tooltip from "next-common/components/tooltip";
+import { isNil } from "lodash-es";
+import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
+
+function StartingBlock({ startingBlock }) {
+  const latestHeight = useAhmLatestHeight();
+  const content = Number(startingBlock)?.toLocaleString();
+
+  if (isNil(latestHeight) || startingBlock > latestHeight) {
+    return (
+      <Tooltip content="Not started">
+        <span className="text-textTertiary">{content}</span>
+      </Tooltip>
+    );
+  }
+
+  return <div className="text-textPrimary">{content}</div>;
+}
 
 const columns = [
   {
@@ -16,11 +34,7 @@ const columns = [
   {
     name: "Starting Block",
     style: { textAlign: "right", minWidth: "100px" },
-    render: (item) => (
-      <span className="text-textSecondary">
-        {Number(item?.startingBlock)?.toLocaleString()}
-      </span>
-    ),
+    render: (item) => <StartingBlock startingBlock={item?.startingBlock} />,
   },
   {
     name: "Unlockable",
