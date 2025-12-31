@@ -1,22 +1,21 @@
-import { mobileColumns, desktopColumns } from "./columns";
+import { getColumns } from "./columns";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 import { defaultPageSize } from "next-common/utils/constants";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import useQueryVestingData from "next-common/components/data/vesting/hooks/useQueryVestingData";
+import useAllVestingData from "../hooks/useAllVestingData";
 import { MapDataList } from "next-common/components/dataList";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import { useRouter } from "next/router";
-import useFilterAllVesting from "../hooks/useFilterAllVesting";
 import TableHeader from "next-common/components/data/common/tableHeader";
-import { useNavCollapsed } from "next-common/context/nav";
-import { cn } from "next-common/utils";
+import VestingDetailPopup from "../popup";
+import useFilterAllVesting from "../hooks/useFilterAllVesting";
 
-export default function VestingExplorerTable() {
-  const { data, isLoading: loading } = useQueryVestingData();
+export default function NewVestingExplorerTable() {
+  const { data, isLoading: loading, sortField, sortDirection, onSort } = useAllVestingData();
   const router = useRouter();
   const [dataList, setDataList] = useState([]);
-  const [navCollapsed] = useNavCollapsed();
+  const [selectedAccount, setSelectedAccount] = useState(null);
   const { filteredVesting, total, isLoading } = useFilterAllVesting(
     data,
     loading,
@@ -44,32 +43,46 @@ export default function VestingExplorerTable() {
     }
   }, [router.query, setPage]);
 
-  return (
-    <div className="flex flex-col gap-y-4">
-      <TableHeader total={total} loading={isLoading} />
-      <SecondaryCard className="space-y-2">
-        <ScrollerX>
-          <MapDataList
-            className={cn(navCollapsed ? "max-sm:hidden" : "max-md:hidden")}
-            columnsDef={desktopColumns}
-            data={dataList}
-            loading={isLoading}
-            noDataText="No data"
-          />
+  const dataListWithActions = useMemo(() => {
+    return dataList?.map((item) => ({
+      ...item,
+      onCheckDetail: () => setSelectedAccount(item.account),
+    }));
+  }, [dataList]);
 
-          <MapDataList
-            className={cn(
-              "hidden",
-              navCollapsed ? "max-sm:block" : "max-md:block",
-            )}
-            columnsDef={mobileColumns}
-            data={dataList}
-            loading={isLoading}
-            noDataText="No data"
-          />
-        </ScrollerX>
-        {total > 0 && pageComponent}
-      </SecondaryCard>
-    </div>
+  const selectedData = useMemo(() => {
+    if (!selectedAccount) return null;
+    return data.find((item) => item.account === selectedAccount);
+  }, [selectedAccount, data]);
+
+  const columns = useMemo(() => {
+    return getColumns({ sortField, sortDirection, onSort });
+  }, [sortField, sortDirection, onSort]);
+
+  return (
+    <>
+      <div className="flex flex-col gap-y-4">
+        <TableHeader total={total} loading={isLoading} />
+        <SecondaryCard className="space-y-2">
+          <ScrollerX>
+            <MapDataList
+              columnsDef={columns}
+              data={dataListWithActions}
+              loading={isLoading}
+              noDataText="No vesting data"
+            />
+          </ScrollerX>
+          {total > 0 && pageComponent}
+        </SecondaryCard>
+      </div>
+
+      {selectedAccount && (
+        <VestingDetailPopup
+          account={selectedAccount}
+          data={selectedData}
+          onClose={() => setSelectedAccount(null)}
+        />
+      )}
+    </>
   );
 }
