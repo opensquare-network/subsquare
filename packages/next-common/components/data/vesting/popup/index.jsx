@@ -61,7 +61,7 @@ export default function VestingDetailPopup({ account, data, onClose }) {
         </div>
 
         <div>
-          <div className="text14Bold mt-0 mb-4">
+          <div className="text-textPrimary text14Bold mt-0 mb-4">
             Schedules
             {!!data?.schedules?.length && (
               <span className="text14Medium text-textTertiary ml-1">

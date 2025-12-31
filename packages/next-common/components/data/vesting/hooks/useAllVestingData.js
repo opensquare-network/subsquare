@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import { useContextApi } from "next-common/context/api";
 import useAhmLatestHeightSnapshot from "next-common/hooks/ahm/useAhmLatestHeightSnapshot";
 import { hexToString } from "@polkadot/util";
@@ -85,6 +85,8 @@ export default function useAllVestingData() {
     useAhmLatestHeightSnapshot();
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [sortField, setSortField] = useState("unlockable");
+  const [sortDirection, setSortDirection] = useState("desc");
 
   const fetchData = useCallback(async () => {
     if (!api || !latestHeight) {
@@ -138,9 +140,7 @@ export default function useAllVestingData() {
         });
       });
 
-      const results = Array.from(accountsMap.values()).sort((a, b) => {
-        return Number(BigInt(b.unlockable) - BigInt(a.unlockable));
-      });
+      const results = Array.from(accountsMap.values());
 
       setData(results);
       setIsLoading(false);
@@ -159,8 +159,48 @@ export default function useAllVestingData() {
     fetchData();
   }, [fetchData, isHeightLoading]);
 
+  const sortedData = useMemo(() => {
+    if (!data || data.length === 0) {
+      return data;
+    }
+
+    const sorted = [...data].sort((a, b) => {
+      let aValue, bValue;
+
+      if (sortField === "unlockable") {
+        aValue = BigInt(a.unlockable);
+        bValue = BigInt(b.unlockable);
+      } else if (sortField === "currentBalanceInLock") {
+        aValue = BigInt(a.currentBalanceInLock);
+        bValue = BigInt(b.currentBalanceInLock);
+      } else {
+        return 0;
+      }
+
+      const diff = sortDirection === "asc" 
+        ? Number(aValue - bValue)
+        : Number(bValue - aValue);
+
+      return diff;
+    });
+
+    return sorted;
+  }, [data, sortField, sortDirection]);
+
+  const handleSort = useCallback((field) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      setSortField(field);
+      setSortDirection("desc");
+    }
+  }, [sortField, sortDirection]);
+
   return {
-    data,
+    data: sortedData,
     isLoading,
+    sortField,
+    sortDirection,
+    onSort: handleSort,
   };
 }

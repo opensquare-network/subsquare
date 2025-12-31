@@ -4,6 +4,7 @@ import AddressUser from "next-common/components/user/addressUser";
 import { toPrecision } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
 import DetailButton from "next-common/components/detailButton";
+import SortableColumn from "next-common/components/styledList/sortableColumn";
 
 export function Balance({
   value,
@@ -44,11 +45,7 @@ function BalanceColumn({ currentBalanceInLock, totalVesting }) {
 }
 
 function SchedulesCountColumn({ count }) {
-  return (
-    <span className="text-textPrimary text14Medium">
-      {count}
-    </span>
-  );
+  return <span className="text-textPrimary text14Medium">{count}</span>;
 }
 
 function ActionColumn({ onCheckDetail }) {
@@ -59,35 +56,51 @@ function ActionColumn({ onCheckDetail }) {
   );
 }
 
-export const columns = [
-  {
-    name: "Account",
-    style: { textAlign: "left", minWidth: "240px" },
-    render: (item) => <AddressUser add={item.account} key={item.account} />,
-  },
-  {
-    name: "Balance",
-    style: { textAlign: "left", minWidth: "240px" },
-    render: (item) => (
-      <BalanceColumn
-        currentBalanceInLock={item.currentBalanceInLock}
-        totalVesting={item.totalVesting}
-      />
-    ),
-  },
-  {
-    name: "Schedules",
-    style: { textAlign: "left", minWidth: "100px" },
-    render: (item) => <SchedulesCountColumn count={item.schedulesCount} />,
-  },
-  {
-    name: "Unlockable",
-    style: { textAlign: "left", minWidth: "180px" },
-    render: (item) => <Balance value={item.unlockable} />,
-  },
-  {
-    name: "Actions",
-    style: { textAlign: "right", width: "120px" },
-    render: (item) => <ActionColumn onCheckDetail={item.onCheckDetail} />,
-  },
-];
+export function getColumns({ sortField, sortDirection, onSort }) {
+  return [
+    {
+      name: "Account",
+      style: { textAlign: "left", minWidth: "240px" },
+      render: (item) => <AddressUser add={item.account} key={item.account} />,
+    },
+    {
+      name: (
+        <SortableColumn
+          name="Balance"
+          sortDirection={sortDirection}
+          sorted={sortField === "currentBalanceInLock"}
+          onClick={() => onSort("currentBalanceInLock")}
+        />
+      ),
+      style: { textAlign: "left", minWidth: "240px" },
+      render: (item) => (
+        <BalanceColumn
+          currentBalanceInLock={item.currentBalanceInLock}
+          totalVesting={item.totalVesting}
+        />
+      ),
+    },
+    {
+      name: "Schedules",
+      style: { textAlign: "left", minWidth: "100px" },
+      render: (item) => <SchedulesCountColumn count={item.schedulesCount} />,
+    },
+    {
+      name: (
+        <SortableColumn
+          name="Unlockable"
+          sortDirection={sortDirection}
+          sorted={sortField === "unlockable"}
+          onClick={() => onSort("unlockable")}
+        />
+      ),
+      style: { textAlign: "left", minWidth: "180px" },
+      render: (item) => <Balance value={item.unlockable} />,
+    },
+    {
+      name: "Actions",
+      style: { textAlign: "right", width: "120px" },
+      render: (item) => <ActionColumn onCheckDetail={item.onCheckDetail} />,
+    },
+  ];
+}

@@ -1,4 +1,4 @@
-import { columns } from "./columns";
+import { getColumns } from "./columns";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 import { defaultPageSize } from "next-common/utils/constants";
 import { useEffect, useState, useMemo } from "react";
@@ -12,7 +12,7 @@ import VestingDetailPopup from "../popup";
 import useFilterAllVesting from "../hooks/useFilterAllVesting";
 
 export default function NewVestingExplorerTable() {
-  const { data, isLoading: loading } = useAllVestingData();
+  const { data, isLoading: loading, sortField, sortDirection, onSort } = useAllVestingData();
   const router = useRouter();
   const [dataList, setDataList] = useState([]);
   const [selectedAccount, setSelectedAccount] = useState(null);
@@ -54,6 +54,10 @@ export default function NewVestingExplorerTable() {
     if (!selectedAccount) return null;
     return data.find((item) => item.account === selectedAccount);
   }, [selectedAccount, data]);
+
+  const columns = useMemo(() => {
+    return getColumns({ sortField, sortDirection, onSort });
+  }, [sortField, sortDirection, onSort]);
 
   return (
     <>
