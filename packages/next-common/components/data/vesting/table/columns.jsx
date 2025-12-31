@@ -43,6 +43,14 @@ function BalanceColumn({ currentBalanceInLock, totalVesting }) {
   );
 }
 
+function SchedulesCountColumn({ count }) {
+  return (
+    <span className="text-textPrimary text14Medium">
+      {count}
+    </span>
+  );
+}
+
 function ActionColumn({ onCheckDetail }) {
   return (
     <Tooltip content="Show All Schedules">
@@ -66,6 +74,11 @@ export const columns = [
         totalVesting={item.totalVesting}
       />
     ),
+  },
+  {
+    name: "Schedules",
+    style: { textAlign: "left", minWidth: "100px" },
+    render: (item) => <SchedulesCountColumn count={item.schedulesCount} />,
   },
   {
     name: "Unlockable",
