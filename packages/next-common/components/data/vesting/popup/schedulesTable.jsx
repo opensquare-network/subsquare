@@ -56,7 +56,6 @@ export default function SchedulesTable({ schedules }) {
         data={schedules}
         loading={false}
         noDataText="No schedules"
-        contentClassName="max-h-[212px] overflow-y-scroll scrollbar-pretty"
       />
     </ScrollerX>
   );
