@@ -1,7 +1,6 @@
 import { noop } from "lodash-es";
 import useInjectedWeb3 from "next-common/hooks/connect/useInjectedWeb3";
 import { findInjectedExtension } from "next-common/hooks/connect/useInjectedWeb3Extension";
-import { useSignetAccounts } from "next-common/context/signet";
 import { newWarningToast } from "next-common/store/reducers/toastSlice";
 import ChainTypes from "next-common/utils/consts/chainTypes";
 import WalletTypes from "next-common/utils/consts/walletTypes";
@@ -24,7 +23,6 @@ export function useSubstrateAccounts({
   const isMounted = useMountedState();
   const { substrateThroughEthereumAddress, chainType } = useChainSettings();
   const { injectedWeb3, loading: loadingWeb3 } = useInjectedWeb3();
-  const signetAccounts = useSignetAccounts();
   const walletconnectAccounts = useWalletConnectAccounts();
   const [loading, setLoading] = useState(defaultLoading);
   const { accounts: vaultAccounts } = usePolkadotVault();
@@ -93,10 +91,6 @@ export function useSubstrateAccounts({
     setAccounts(vaultAccounts);
   }, [vaultAccounts]);
 
-  const loadSignetVault = useCallback(() => {
-    setAccounts(signetAccounts);
-  }, [signetAccounts, setAccounts]);
-
   const loadWalletconnectAccounts = useCallback(() => {
     setAccounts(walletconnectAccounts);
   }, [walletconnectAccounts, setAccounts]);
@@ -114,10 +108,6 @@ export function useSubstrateAccounts({
         case WalletTypes.MIMIR:
         case WalletTypes.NOVA: {
           await loadPolkadotAccounts(wallet);
-          break;
-        }
-        case WalletTypes.SIGNET: {
-          await loadSignetVault();
           break;
         }
         case WalletTypes.WALLETCONNECT: {
@@ -138,7 +128,6 @@ export function useSubstrateAccounts({
     [
       loadPolkadotAccounts,
       loadPolkadotVaultAccounts,
-      loadSignetVault,
       loadWalletconnectAccounts,
     ],
   );

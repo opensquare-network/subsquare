@@ -8,7 +8,6 @@ import isMixedChain from "next-common/utils/isMixedChain";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import {
   maybeSendMimirTx,
-  maybeSendSignetTx,
   sendEvmTx,
   signAndSendSubstrateTx,
   sendHydraDXMultiFeeEvmTx,
@@ -19,14 +18,12 @@ import { useCallback, useState } from "react";
 import {
   newErrorToast,
   newPendingToast,
-  newSuccessToast,
   newToastId,
   newWarningToast,
   removeToast,
   updatePendingToast,
 } from "next-common/store/reducers/toastSlice";
 import { noop } from "lodash-es";
-import { useSignetSdk } from "next-common/context/signet";
 import { isEmptyFunc } from "next-common/utils/isEmptyFunc";
 import isHydradx from "next-common/utils/isHydradx";
 import { HydradxAssets } from "next-common/utils/hydradx";
@@ -45,10 +42,6 @@ function shouldSendEvmTx(signerAccount) {
   );
   const isWalletTalisman = signerAccount?.meta?.source === WalletTypes.TALISMAN;
   return isMixedChain() && isEvmAddr && isWalletTalisman;
-}
-
-function shouldSendSignetTx(signerAccount) {
-  return signerAccount?.meta?.source === WalletTypes.SIGNET;
 }
 
 function shouldSendMimirTx(signerAccount) {
@@ -91,7 +84,6 @@ export function useSendTransaction() {
   const dispatch = useDispatch();
   const signerAccount = useSignerAccount();
   const setSigner = useSetSigner();
-  const { sdk: signetSdk } = useSignetSdk();
   const { sendVaultTx } = useVaultSigner();
 
   const { signWcTx } = useWalletConnect();
@@ -195,29 +187,6 @@ export function useSendTransaction() {
           }
         }
 
-        if (shouldSendSignetTx(signerAccount)) {
-          const handled = await maybeSendSignetTx({
-            sdk: signetSdk,
-            tx,
-            onStarted: () => {
-              dispatch(newPendingToast(toastId, "Waiting for signing..."));
-            },
-            onSubmitted: () => {
-              dispatch(newSuccessToast("Multisig transaction submitted"));
-              setIsSubmitting(false);
-              onSubmitted();
-            },
-            onEnded: () => {
-              dispatch(removeToast(toastId));
-              setIsSubmitting(false);
-            },
-            onError,
-          });
-          if (handled) {
-            return;
-          }
-        }
-
         if (shouldSendEvmTx(signerAccount)) {
           const hydradxMultiFee = await shouldSendHydraDXMultiFeeTx(
             api,
@@ -297,15 +266,7 @@ export function useSendTransaction() {
         setIsSubmitting(false);
       }
     },
-    [
-      buildPayload,
-      dispatch,
-      signerAccount,
-      signetSdk,
-      setSigner,
-      sendVaultTx,
-      signWcTx,
-    ],
+    [buildPayload, dispatch, signerAccount, setSigner, sendVaultTx, signWcTx],
   );
 
   return {

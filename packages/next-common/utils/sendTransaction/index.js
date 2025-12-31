@@ -4,7 +4,6 @@ import { sortAddresses } from "@polkadot/util-crypto";
 export { signAndSendSubstrateTx, sendSubstrateTx } from "./sendSubstrateTx";
 export { sendEvmTx } from "./sendEvmTx";
 export { maybeSendMimirTx } from "./sendMimirTx";
-export { maybeSendSignetTx } from "./sendSignetTx";
 export { sendHydraDXMultiFeeEvmTx } from "./sendHydraDXMultiFeeEvmTx";
 
 export async function getSigner(signerAddress) {
