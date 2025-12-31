@@ -139,7 +139,7 @@ export default function useAllVestingData() {
       });
 
       const results = Array.from(accountsMap.values()).sort((a, b) => {
-        return Number(BigInt(b.totalVesting) - BigInt(a.totalVesting));
+        return Number(BigInt(b.unlockable) - BigInt(a.unlockable));
       });
 
       setData(results);
