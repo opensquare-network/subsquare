@@ -7,6 +7,7 @@ const WalletTypes = {
   POLKAGATE_SNAP: "polkagate-snap",
   NOVA: "nova",
   MIMIR: "mimir",
+  SIGNET: "signet",
   PHANTOM: "phantom",
   OKX_WALLET: "okx wallet",
   COINBASE_WALLET: "coinbase wallet",

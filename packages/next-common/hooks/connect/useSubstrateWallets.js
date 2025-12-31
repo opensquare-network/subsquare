@@ -7,6 +7,7 @@ import {
   polkagateSnap,
   nova,
   mimir,
+  signet,
   walletConnect,
   polkadotVaultWallet,
 } from "next-common/utils/consts/connect";
@@ -34,9 +35,10 @@ export function useSubstrateWallets() {
   if (isEvmChain()) {
     multiSigWallets = [];
   } else {
-    multiSigWallets = [chainSettings?.multisigWallets?.mimir && mimir].filter(
-      Boolean,
-    );
+    multiSigWallets = [
+      chainSettings?.multisigWallets?.signet && signet,
+      chainSettings?.multisigWallets?.mimir && mimir,
+    ].filter(Boolean);
   }
 
   const allWallets = [...singleSigWallets, ...multiSigWallets];
