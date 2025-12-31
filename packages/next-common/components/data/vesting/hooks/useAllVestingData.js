@@ -177,9 +177,10 @@ export default function useAllVestingData() {
         return 0;
       }
 
-      const diff = sortDirection === "asc" 
-        ? Number(aValue - bValue)
-        : Number(bValue - aValue);
+      const diff =
+        sortDirection === "asc"
+          ? Number(aValue - bValue)
+          : Number(bValue - aValue);
 
       return diff;
     });
@@ -187,14 +188,17 @@ export default function useAllVestingData() {
     return sorted;
   }, [data, sortField, sortDirection]);
 
-  const handleSort = useCallback((field) => {
-    if (sortField === field) {
-      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
-    } else {
-      setSortField(field);
-      setSortDirection("desc");
-    }
-  }, [sortField, sortDirection]);
+  const handleSort = useCallback(
+    (field) => {
+      if (sortField === field) {
+        setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+      } else {
+        setSortField(field);
+        setSortDirection("desc");
+      }
+    },
+    [sortField, sortDirection],
+  );
 
   return {
     data: sortedData,
