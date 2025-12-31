@@ -97,7 +97,6 @@ const kusama = {
     },
   },
   multisigWallets: {
-    signet: true,
     mimir: true,
   },
   treasuryProposalTracks: kusamaTreasuryTracks,

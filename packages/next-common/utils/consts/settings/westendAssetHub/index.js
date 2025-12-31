@@ -34,9 +34,6 @@ const westendAssetHub = {
   },
   description:
     "System parachain on Westend network for creating and sending tokens and NFTs.",
-  multisigWallets: {
-    signet: true,
-  },
   modules: {
     proxy: {
       provider: "chain",

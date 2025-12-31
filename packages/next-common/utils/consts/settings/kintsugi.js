@@ -109,9 +109,6 @@ const kintsugi = {
   wallets: {
     walletconnect: false,
   },
-  multisigWallets: {
-    signet: true,
-  },
   allowWeb2Login: true,
   openSquare: {
     voting: "kintsugi",

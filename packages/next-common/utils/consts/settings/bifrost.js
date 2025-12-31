@@ -129,7 +129,6 @@ const bifrost = {
     navigationBorder: "var(--neutral300)",
   },
   multisigWallets: {
-    signet: true,
     mimir: true,
   },
   newProposalQuickStart: {

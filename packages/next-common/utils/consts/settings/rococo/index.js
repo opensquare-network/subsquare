@@ -77,9 +77,6 @@ const rococo = {
       link: "https://forum.polkadot.network",
     },
   },
-  multisigWallets: {
-    signet: true,
-  },
   treasuryProposalTracks: rococoTreasuryTracks,
   newProposalQuickStart: {
     cancelReferendum: true,

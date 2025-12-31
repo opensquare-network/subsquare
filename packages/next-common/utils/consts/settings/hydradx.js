@@ -142,7 +142,6 @@ const hydradx = {
   chainType: ChainTypes.MIXED,
   ethereumNetwork,
   multisigWallets: {
-    signet: true,
     mimir: true,
   },
   treasuryProposalTracks: hydradxTreasuryTracks,

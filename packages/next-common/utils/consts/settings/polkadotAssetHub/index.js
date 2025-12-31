@@ -41,7 +41,6 @@ const polkadotAssetHub = {
     "System parachain on Polkadot network for creating and sending tokens and NFTs.",
   ...polkadotAssetHubThemeVars,
   multisigWallets: {
-    signet: true,
     mimir: true,
   },
   modules: {
