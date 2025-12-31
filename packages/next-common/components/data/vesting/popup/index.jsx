@@ -7,7 +7,7 @@ import SchedulesTable from "./schedulesTable";
 
 function SummaryItem({ label, value }) {
   return (
-    <div className="flex items-center justify-end gap-2 max-sm:flex-col max-sm:gap-1 max-sm:items-start">
+    <div className="flex items-center justify-between gap-2 max-sm:flex-col max-sm:gap-1 max-sm:items-start">
       <span className="text-textSecondary text14Medium max-sm:text12Medium">
         {label}:
       </span>

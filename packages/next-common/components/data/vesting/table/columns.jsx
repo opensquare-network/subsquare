@@ -44,14 +44,22 @@ function BalanceColumn({ currentBalanceInLock, totalVesting }) {
   );
 }
 
-function SchedulesCountColumn({ count }) {
-  return <span className="text-textPrimary text14Medium">{count}</span>;
+function SchedulesCountColumn({ count, onClick }) {
+  return (
+    <span
+      role="button"
+      onClick={onClick}
+      className="text-textPrimary text14Medium cursor-pointer hover:text-theme500"
+    >
+      {count}
+    </span>
+  );
 }
 
-function ActionColumn({ onCheckDetail }) {
+function ActionColumn({ onClick }) {
   return (
     <Tooltip content="Show All Schedules">
-      <DetailButton onClick={onCheckDetail} />
+      <DetailButton onClick={onClick} />
     </Tooltip>
   );
 }
@@ -83,7 +91,12 @@ export function getColumns({ sortField, sortDirection, onSort }) {
     {
       name: "Schedules",
       style: { textAlign: "left", minWidth: "100px" },
-      render: (item) => <SchedulesCountColumn count={item.schedulesCount} />,
+      render: (item) => (
+        <SchedulesCountColumn
+          count={item.schedulesCount}
+          onClick={item.onCheckDetail}
+        />
+      ),
     },
     {
       name: (
@@ -100,7 +113,7 @@ export function getColumns({ sortField, sortDirection, onSort }) {
     {
       name: "Actions",
       style: { textAlign: "right", width: "120px" },
-      render: (item) => <ActionColumn onCheckDetail={item.onCheckDetail} />,
+      render: (item) => <ActionColumn onClick={item.onCheckDetail} />,
     },
   ];
 }
