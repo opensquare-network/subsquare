@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import { useContextApi } from "next-common/context/api";
 import useAhmLatestHeightSnapshot from "next-common/hooks/ahm/useAhmLatestHeightSnapshot";
-import BigNumber from "bignumber.js";
 import { hexToString } from "@polkadot/util";
 
-export function positiveOr0(v = 0n) {
+function positiveOr0(v = 0n) {
   return v > 0n ? v : 0n;
 }
 
-export function getCurrencyLockedByVesting(locks) {
+function getCurrencyLockedByVesting(locks) {
   const vestingLock = locks.find(
     (item) => hexToString(item.id.toHex()).trim() === "vesting",
   );
@@ -19,7 +18,7 @@ export function getCurrencyLockedByVesting(locks) {
   return vestingLock.amount.toBigInt();
 }
 
-export function calculateVestingInfo(
+function calculateVestingInfo(
   schedules,
   currentHeight,
   balancesLockedByVesting,
@@ -28,7 +27,7 @@ export function calculateVestingInfo(
   const balancesLockedBigInt = BigInt(balancesLockedByVesting || 0);
 
   let totalLockedNow = 0n;
-  let totalToUnlock = 0n;
+  let totalMatureNow = 0n;
   let totalVesting = 0n;
 
   const schedulesWithDetails = schedules.map((schedule) => {
@@ -40,9 +39,9 @@ export function calculateVestingInfo(
     const unlockableNow = vestedBlockCount * perBlock;
     const lockedNow = locked > unlockableNow ? locked - unlockableNow : 0n;
 
-    totalToUnlock = totalToUnlock + unlockableNow;
-    totalLockedNow = totalLockedNow + lockedNow;
-    totalVesting = totalVesting + locked;
+    totalLockedNow += lockedNow;
+    totalMatureNow += unlockableNow;
+    totalVesting += locked;
 
     return {
       startingBlock: startingBlock.toString(),
@@ -59,14 +58,11 @@ export function calculateVestingInfo(
       : 0n;
 
   const schedulesWithUnlockable = schedulesWithDetails.map((schedule) => {
-    const lockedNow = BigInt(schedule.lockedNow);
-    const locked = BigInt(schedule.locked);
-    const theoreticalMature = locked - lockedNow;
+    const unlockableNow = BigInt(schedule.unlockableNow);
 
     let unlockable = 0n;
-    if (totalLockedNow < totalVesting) {
-      unlockable =
-        (totalUnlockable * theoreticalMature) / (totalVesting - totalLockedNow);
+    if (totalMatureNow > 0n && unlockableNow > 0n) {
+      unlockable = (totalUnlockable * unlockableNow) / totalMatureNow;
     }
 
     return {
@@ -77,7 +73,7 @@ export function calculateVestingInfo(
 
   return {
     totalLockedNow: totalLockedNow.toString(),
-    totalToUnlock: totalToUnlock.toString(),
+    totalUnlockable: totalUnlockable.toString(),
     totalVesting: totalVesting.toString(),
     schedules: schedulesWithUnlockable,
   };
@@ -137,18 +133,15 @@ export default function useAllVestingData() {
           const vestingInfo = calculateVestingInfo(
             item.schedules,
             latestHeight,
-            balancesLockedByVesting.toString(),
+            balancesLockedByVesting,
           );
-
-          const unlockable = BigNumber(balancesLockedByVesting.toString())
-            .minus(vestingInfo.totalLockedNow)
-            .toString();
 
           accountsMap.set(item.account, {
             account: item.account,
             currentBalanceInLock: balancesLockedByVesting.toString(),
             totalVesting: vestingInfo.totalVesting,
-            unlockable: BigNumber.max(0, unlockable).toString(),
+            totalLockedNow: vestingInfo.totalLockedNow,
+            unlockable: vestingInfo.totalUnlockable,
             schedules: vestingInfo.schedules,
             schedulesCount: item.schedules.length,
           });
@@ -156,7 +149,7 @@ export default function useAllVestingData() {
 
         if (!cancelled) {
           const results = Array.from(accountsMap.values()).sort((a, b) => {
-            return new BigNumber(b.totalVesting).comparedTo(a.totalVesting);
+            return Number(BigInt(b.totalVesting) - BigInt(a.totalVesting));
           });
           setData(results);
           setIsLoading(false);
