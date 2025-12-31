@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useContextApi } from "next-common/context/api";
 import useAhmLatestHeightSnapshot from "next-common/hooks/ahm/useAhmLatestHeightSnapshot";
 import { hexToString } from "@polkadot/util";
@@ -86,89 +86,78 @@ export default function useAllVestingData() {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    if (!api || isHeightLoading || !latestHeight) {
+  const fetchData = useCallback(async () => {
+    if (!api || !latestHeight) {
       return;
     }
 
-    let cancelled = false;
+    try {
+      setIsLoading(true);
 
-    async function fetchData() {
-      try {
-        setIsLoading(true);
+      const entries = await api.query.vesting.vesting.entries();
 
-        const entries = await api.query.vesting.vesting.entries();
+      const accountsData = [];
+      const accounts = [];
 
-        if (cancelled) return;
-
-        const accountsData = [];
-        const accounts = [];
-
-        for (const [storageKey, optionalStorage] of entries) {
-          if (optionalStorage.isNone) {
-            continue;
-          }
-
-          const account = storageKey.args[0].toString();
-          const schedules = optionalStorage.unwrap();
-
-          accounts.push(account);
-          accountsData.push({
-            account,
-            schedules,
-          });
+      for (const [storageKey, optionalStorage] of entries) {
+        if (optionalStorage.isNone) {
+          continue;
         }
 
-        if (cancelled) return;
+        const account = storageKey.args[0].toString();
+        const schedules = optionalStorage.unwrap();
 
-        const locksMulti = await api.query.balances.locks.multi(accounts);
-
-        if (cancelled) return;
-
-        const accountsMap = new Map();
-        accountsData.forEach((item, index) => {
-          const locks = locksMulti[index];
-          const balancesLockedByVesting = getCurrencyLockedByVesting(locks);
-
-          const vestingInfo = calculateVestingInfo(
-            item.schedules,
-            latestHeight,
-            balancesLockedByVesting,
-          );
-
-          accountsMap.set(item.account, {
-            account: item.account,
-            currentBalanceInLock: balancesLockedByVesting.toString(),
-            totalVesting: vestingInfo.totalVesting,
-            totalLockedNow: vestingInfo.totalLockedNow,
-            unlockable: vestingInfo.totalUnlockable,
-            schedules: vestingInfo.schedules,
-            schedulesCount: item.schedules.length,
-          });
+        accounts.push(account);
+        accountsData.push({
+          account,
+          schedules,
         });
-
-        if (!cancelled) {
-          const results = Array.from(accountsMap.values()).sort((a, b) => {
-            return Number(BigInt(b.totalVesting) - BigInt(a.totalVesting));
-          });
-          setData(results);
-          setIsLoading(false);
-        }
-      } catch (error) {
-        if (!cancelled) {
-          console.error("Error fetching vesting data:", error);
-          setData([]);
-          setIsLoading(false);
-        }
       }
+
+      const locksMulti = await api.query.balances.locks.multi(accounts);
+
+      const accountsMap = new Map();
+      accountsData.forEach((item, index) => {
+        const locks = locksMulti[index];
+        const balancesLockedByVesting = getCurrencyLockedByVesting(locks);
+
+        const vestingInfo = calculateVestingInfo(
+          item.schedules,
+          latestHeight,
+          balancesLockedByVesting,
+        );
+
+        accountsMap.set(item.account, {
+          account: item.account,
+          currentBalanceInLock: balancesLockedByVesting.toString(),
+          totalVesting: vestingInfo.totalVesting,
+          totalLockedNow: vestingInfo.totalLockedNow,
+          unlockable: vestingInfo.totalUnlockable,
+          schedules: vestingInfo.schedules,
+          schedulesCount: item.schedules.length,
+        });
+      });
+
+      const results = Array.from(accountsMap.values()).sort((a, b) => {
+        return Number(BigInt(b.totalVesting) - BigInt(a.totalVesting));
+      });
+
+      setData(results);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error fetching vesting data:", error);
+      setData([]);
+      setIsLoading(false);
+    }
+  }, [api, latestHeight]);
+
+  useEffect(() => {
+    if (isHeightLoading) {
+      return;
     }
 
     fetchData();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [api, latestHeight, isHeightLoading]);
+  }, [fetchData, isHeightLoading]);
 
   return {
     data,
