@@ -1,4 +1,4 @@
-import { omit, sortBy } from "lodash-es";
+import { sortBy } from "lodash-es";
 import { usePageProps } from "next-common/context/page";
 import Summary from "./summary";
 import BigNumber from "bignumber.js";
@@ -16,12 +16,10 @@ export default function CategoriesList() {
   const categories = useMemo(
     () =>
       sortBy(
-        Object.entries(omit(statistics.categories, "other")).map(
-          ([key, value]) => ({
-            key,
-            ...value,
-          }),
-        ),
+        Object.entries(statistics.categories).map(([key, value]) => ({
+          key,
+          ...value,
+        })),
         (item) => -item.totalPayoutFiatValue,
       ),
     [statistics],
