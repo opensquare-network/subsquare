@@ -110,7 +110,6 @@ const phala = {
     navigationBorder: "rgba(39,42,58,1)",
   },
   multisigWallets: {
-    signet: true,
     mimir: true,
   },
   allowWeb2Login: true,

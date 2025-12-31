@@ -37,7 +37,6 @@ const kusamaAssetHub = {
     "System parachain on Kusama network for creating and sending tokens and NFTs.",
   ...kusamaAssetHubThemeVars,
   multisigWallets: {
-    signet: true,
     mimir: true,
   },
   modules: {

@@ -100,9 +100,6 @@ const kintsugi = {
   wallets: {
     walletconnect: true,
   },
-  multisigWallets: {
-    signet: false,
-  },
   sima: true,
   allowWeb2Login: false,
 };

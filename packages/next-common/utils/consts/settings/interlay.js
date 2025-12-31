@@ -108,9 +108,6 @@ const interlay = {
   wallets: {
     walletconnect: false,
   },
-  multisigWallets: {
-    signet: true,
-  },
   allowWeb2Login: true,
   openSquare: {
     voting: "interlay",

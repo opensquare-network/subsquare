@@ -121,7 +121,6 @@ const acala = {
     navigationBorder: "var(--neutral300)",
   },
   multisigWallets: {
-    signet: true,
     mimir: true,
   },
   allowWeb2Login: true,

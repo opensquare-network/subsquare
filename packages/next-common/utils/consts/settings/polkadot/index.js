@@ -107,7 +107,6 @@ const polkadot = {
     },
   },
   multisigWallets: {
-    signet: true,
     mimir: true,
   },
   treasuryProposalTracks: polkadotTreasuryTracks,
