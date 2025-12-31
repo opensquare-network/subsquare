@@ -8,7 +8,6 @@ import {
   WalletPolkagateSnap,
   WalletSubwallet,
   WalletTailsman,
-  WalletSignet,
   WalletPhantom,
   WalletOkx,
   WalletCoinbase,
@@ -77,13 +76,6 @@ export const mimir = {
   logo: WalletMimir,
 };
 
-export const signet = {
-  extensionName: WalletTypes.SIGNET,
-  title: "Signet",
-  installUrl: "https://www.talisman.xyz/signet",
-  logo: WalletSignet,
-};
-
 export const phantom = {
   extensionName: WalletTypes.PHANTOM,
   title: "Phantom",
@@ -128,7 +120,6 @@ export const allWallets = [
   polkagateSnap,
   nova,
   mimir,
-  signet,
   phantom,
   okxWallet,
   coinbaseWallet,

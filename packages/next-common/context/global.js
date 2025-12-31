@@ -7,7 +7,6 @@ import NavProvider from "./nav";
 import { AdminProvider } from "./admin";
 import { ConnectedAccountProvider } from "./connectedAccount";
 import ApiProvider from "next-common/context/api";
-import { SignetContextProvider } from "./signet";
 import WagmiProvider from "./wagmi";
 import ReactQueryClientProvider from "./reactQuery";
 import UserAccountProvider from "./user/account";
@@ -53,9 +52,7 @@ export default function GlobalProvider({
                               <PolkadotVaultProvider>
                                 <WalletConnectProvider>
                                   <UserAccountProvider>
-                                    <SignetContextProvider>
-                                      {children}
-                                    </SignetContextProvider>
+                                    {children}
                                   </UserAccountProvider>
                                 </WalletConnectProvider>
                               </PolkadotVaultProvider>
