@@ -2,6 +2,7 @@ import { useUser } from "next-common/context/user";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import MaybePolkadotSigner from "./maybePolkadotSigner";
 import MaybeMetamaskSigner from "./maybeMetamaskSigner";
+import MaybeSignetSigner from "./maybeSignetSigner";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount";
 import CanBeAnyWalletSigner from "./canBeAnyWalletSigner";
 import { isKeyRegisteredUser } from "next-common/utils";
@@ -25,6 +26,10 @@ function PopupImpl({ children }) {
 
   if (lastConnectedAccount?.wallet === WalletTypes.METAMASK) {
     return <MaybeMetamaskSigner>{children}</MaybeMetamaskSigner>;
+  }
+
+  if (lastConnectedAccount?.wallet === WalletTypes.SIGNET) {
+    return <MaybeSignetSigner>{children}</MaybeSignetSigner>;
   }
 
   if (lastConnectedAccount?.wallet === WalletTypes.WALLETCONNECT) {
