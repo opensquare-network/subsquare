@@ -9,15 +9,15 @@ import { useMemo, useState } from "react";
 
 const ProposalsPopup = dynamicPopup(() => import("./proposalsPopup"));
 
-export default function CuratorVSOtherChart() {
+export default function CuratorVSOthersChart() {
   const { statistics } = usePageProps();
   const totalCuratorFiat = Number(
     statistics.categories.curator?.totalPayoutFiatValue || 0,
   );
-  const totalOtherFiat = Object.values(
+  const totalOthersFiat = Object.values(
     omit(statistics.categories, "curator"),
   ).reduce((acc, category) => acc + Number(category.totalPayoutFiatValue), 0);
-  const totalFiat = totalCuratorFiat + totalOtherFiat;
+  const totalFiat = totalCuratorFiat + totalOthersFiat;
 
   const categories = useMemo(
     () => [
@@ -27,14 +27,14 @@ export default function CuratorVSOtherChart() {
         childBounties: statistics.categories.curator?.childBounties || [],
       },
       {
-        name: "Other",
-        totalPayoutFiatValue: totalOtherFiat,
+        name: "Others",
+        totalPayoutFiatValue: totalOthersFiat,
         childBounties: Object.values(
           omit(statistics.categories, "curator"),
         ).flatMap((category) => category.childBounties || []),
       },
     ],
-    [statistics.categories, totalCuratorFiat, totalOtherFiat],
+    [statistics.categories, totalCuratorFiat, totalOthersFiat],
   );
 
   return (
