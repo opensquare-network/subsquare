@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file.
 
+# 6.0.0
+
+Date:
+2026-01-04. [Code diff](https://github.com/opensquare-network/subsquare/compare/31b96ed6c02d28b97e11dce31dc031f3a4cf706c...8c858a58a685af72b443799735552d306dbf3cf9).
+
+- [Big] Support staking,
+  code [here](https://github.com/opensquare-network/subsquare/commit/a3d467d6dac020a5e6ce1d5d00f97a9bdba17a80):
+    - Show all validators.
+    - Show all staking pools.
+    - Support connected user to bond balances, set nominations, join staking pools, claim rewards, etc.
+- [Medium] Support polkadot vault(parity signer),
+  code [here](https://github.com/opensquare-network/subsquare/commit/cdafb731e55951b61a35baade7aa92e581b1eba8).
+- [Medium] Show total hydration asset value on the polkadot user profile page.
+- [Medium] Refactor vesting data table and aggregate vesting data by address not by schedules.
+- Move coretime and people menu out of the advanced menu.
+- Walletconnect:
+    - Fix bad signature issue.
+    - Fix high CPU usage issue by walletconnect.
+- Remove support of signet.
+- Refactor the code to query identity to improve stability.
+- Fix child bounty page crash due to null data return by balance subscription.
+- Remove dotreasury setting from centrifuge.
+- Upgrade dependencies and fix styles.
+
 # 5.5.7
 
 Date:
