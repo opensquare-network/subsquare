@@ -5,6 +5,7 @@ import { toPrecision } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
 import DetailButton from "next-common/components/detailButton";
 import SortableColumn from "next-common/components/styledList/sortableColumn";
+import DoVest from "./doVest";
 
 export function Balance({
   value,
@@ -56,11 +57,14 @@ function SchedulesCountColumn({ count, onClick }) {
   );
 }
 
-function ActionColumn({ onClick }) {
+function ActionColumn({ onClick, account, unlockable }) {
   return (
-    <Tooltip content="Show All Schedules">
-      <DetailButton onClick={onClick} />
-    </Tooltip>
+    <div className="flex items-center justify-end gap-x-4">
+      <Tooltip content="Show All Schedules">
+        <DetailButton onClick={onClick} />
+      </Tooltip>
+      <DoVest account={account} unlockable={unlockable} />
+    </div>
   );
 }
 
@@ -113,7 +117,13 @@ export function getColumns({ sortField, sortDirection, onSort }) {
     {
       name: "Actions",
       style: { textAlign: "right", width: "120px" },
-      render: (item) => <ActionColumn onClick={item.onCheckDetail} />,
+      render: (item) => (
+        <ActionColumn
+          onClick={item.onCheckDetail}
+          account={item.account}
+          unlockable={item.unlockable}
+        />
+      ),
     },
   ];
 }

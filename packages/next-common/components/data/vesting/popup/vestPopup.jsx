@@ -1,0 +1,76 @@
+import { useCallback } from "react";
+import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import Popup from "next-common/components/popup/wrapper/Popup";
+import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
+import { usePopupParams } from "next-common/components/popupWithSigner/context";
+import Signer from "next-common/components/popup/fields/signerField";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
+import SummaryLayout from "next-common/components/summary/layout/layout";
+import SummaryItem from "next-common/components/summary/layout/item";
+import ValueDisplay from "next-common/components/valueDisplay";
+import AddressUser from "next-common/components/user/addressUser";
+import SecondaryButton from "next-common/lib/button/secondary";
+import { useContextApi } from "next-common/context/api";
+import { useChainSettings } from "next-common/context/chain";
+import { useVestingContext } from "next-common/context/vesting";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { isSameAddress, toPrecision } from "next-common/utils";
+import { useVestPopup } from "../context/vestPopupContext";
+
+function VestPopupContent() {
+  const { account, unlockable } = useVestPopup();
+  const { onClose } = usePopupParams();
+  const api = useContextApi();
+  const { symbol, decimals } = useChainSettings();
+  const realAddress = useRealAddress();
+  const { update } = useVestingContext();
+
+  const getTxFunc = useCallback(() => {
+    if (!api || !api.tx.vesting) {
+      return;
+    }
+
+    const isSelf = isSameAddress(account, realAddress);
+    return isSelf ? api.tx.vesting.vest() : api.tx.vesting.vestOther(account);
+  }, [api, account, realAddress]);
+
+  const onInBlock = useCallback(() => {
+    update();
+    onClose();
+  }, [update, onClose]);
+
+  return (
+    <div className="space-y-4">
+      <Signer noSwitchSigner />
+      <SummaryLayout>
+        <SummaryItem title="Account">
+          <AddressUser add={account} />
+        </SummaryItem>
+        <SummaryItem title="Unlockable">
+          <ValueDisplay
+            value={toPrecision(unlockable, decimals)}
+            symbol={symbol}
+          />
+        </SummaryItem>
+      </SummaryLayout>
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getTxFunc} />
+      </AdvanceSettings>
+      <div className="flex justify-end gap-x-4">
+        <SecondaryButton onClick={onClose}>Cancel</SecondaryButton>
+        <TxSubmissionButton getTxFunc={getTxFunc} onInBlock={onInBlock} />
+      </div>
+    </div>
+  );
+}
+
+export default function VestPopup({ onClose }) {
+  return (
+    <SignerPopupWrapper onClose={onClose}>
+      <Popup title="Vest" onClose={onClose} wide>
+        <VestPopupContent />
+      </Popup>
+    </SignerPopupWrapper>
+  );
+}
