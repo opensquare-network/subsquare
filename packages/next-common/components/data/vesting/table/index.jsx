@@ -11,7 +11,7 @@ import {
 } from "next-common/context/vesting";
 import { defaultPageSize } from "next-common/utils/constants";
 import { getColumns } from "./columns";
-import VestingDetailPopup from "../popup";
+import VestingDetailPopup from "../popup/detailPopup";
 import VestPopup from "../popup/vestPopup";
 import useFilterAllVesting from "../hooks/useFilterAllVesting";
 import { VestPopupProvider, useVestPopup } from "../context/vestPopupContext";
