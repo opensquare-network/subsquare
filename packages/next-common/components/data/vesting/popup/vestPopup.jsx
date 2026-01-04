@@ -1,4 +1,5 @@
 import { useCallback } from "react";
+import { useDispatch } from "react-redux";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
@@ -16,11 +17,13 @@ import { useChainSettings } from "next-common/context/chain";
 import { useVestingContext } from "next-common/context/vesting";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { isSameAddress, toPrecision } from "next-common/utils";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useVestPopup } from "../context/vestPopupContext";
 
 function VestPopupContent() {
   const { account, unlockable } = useVestPopup();
   const { onClose } = usePopupParams();
+  const dispatch = useDispatch();
   const api = useContextApi();
   const { symbol, decimals } = useChainSettings();
   const realAddress = useRealAddress();
@@ -31,14 +34,16 @@ function VestPopupContent() {
       return;
     }
 
-    const isSelf = isSameAddress(account, realAddress);
-    return isSelf ? api.tx.vesting.vest() : api.tx.vesting.vestOther(account);
+    return isSameAddress(account, realAddress)
+      ? api.tx.vesting.vest()
+      : api.tx.vesting.vestOther(account);
   }, [api, account, realAddress]);
 
   const onInBlock = useCallback(() => {
+    dispatch(newSuccessToast("Vest successfully"));
     update();
     onClose();
-  }, [update, onClose]);
+  }, [dispatch, update, onClose]);
 
   return (
     <div className="space-y-4">
