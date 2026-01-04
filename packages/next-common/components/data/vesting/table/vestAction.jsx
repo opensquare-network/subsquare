@@ -1,11 +1,11 @@
 import { useCallback } from "react";
 import { SystemSignature } from "@osn/icons/subsquare";
-import Tooltip from "next-common/components/tooltip";
 import { cn } from "next-common/utils";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useVestPopup } from "../context/vestPopupContext";
+import { useVestPopup } from "next-common/components/data/vesting/context/vestPopupContext";
+import Tooltip from "next-common/components/tooltip";
 
-function DoVestImpl({ account, unlockable }) {
+function VestActionImpl({ account, unlockable }) {
   const { showVestPopup } = useVestPopup();
   const hasUnlockable = unlockable && BigInt(unlockable) > 0n;
 
@@ -37,11 +37,11 @@ function DoVestImpl({ account, unlockable }) {
   );
 }
 
-export default function DoVest({ account, unlockable }) {
+export default function VestAction({ account, unlockable }) {
   const realAddress = useRealAddress();
   if (!realAddress) {
     return null;
   }
 
-  return <DoVestImpl account={account} unlockable={unlockable} />;
+  return <VestActionImpl account={account} unlockable={unlockable} />;
 }

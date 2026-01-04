@@ -5,7 +5,7 @@ import { toPrecision } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
 import DetailButton from "next-common/components/detailButton";
 import SortableColumn from "next-common/components/styledList/sortableColumn";
-import DoVest from "./doVest";
+import VestAction from "./vestAction";
 
 export function Balance({
   value,
@@ -63,7 +63,7 @@ function ActionColumn({ onClick, account, unlockable }) {
       <Tooltip content="Show All Schedules">
         <DetailButton onClick={onClick} />
       </Tooltip>
-      <DoVest account={account} unlockable={unlockable} />
+      <VestAction account={account} unlockable={unlockable} />
     </div>
   );
 }
