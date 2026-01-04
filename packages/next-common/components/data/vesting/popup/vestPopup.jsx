@@ -52,7 +52,7 @@ function VestPopupContent() {
         <SummaryItem title="Account">
           <AddressUser add={account} />
         </SummaryItem>
-        <SummaryItem title="Unlockable">
+        <SummaryItem title="Estimated Unlockable">
           <ValueDisplay
             value={toPrecision(unlockable, decimals)}
             symbol={symbol}
