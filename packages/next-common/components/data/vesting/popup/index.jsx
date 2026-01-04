@@ -4,10 +4,16 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import SchedulesTable from "./schedulesTable";
+import { cn } from "next-common/utils";
 
-function SummaryItem({ label, value }) {
+function SummaryItem({ label, value, className = "" }) {
   return (
-    <div className="flex items-center justify-between gap-2 max-sm:flex-col max-sm:gap-1 max-sm:items-start">
+    <div
+      className={cn(
+        "flex items-center justify-between gap-2 max-sm:flex-col max-sm:gap-1 max-sm:items-start",
+        className,
+      )}
+    >
       <span className="text-textSecondary text14Medium max-sm:text12Medium">
         {label}:
       </span>
@@ -31,6 +37,7 @@ export default function VestingDetailPopup({ account, data, onClose }) {
             <SummaryItem
               label="Account"
               value={<AddressUser add={account} />}
+              className="justify-start"
             />
             <SummaryItem
               label="Current Balance in Lock"
