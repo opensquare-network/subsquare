@@ -124,6 +124,14 @@ export function isCoretimeChain(chain) {
   return [Chains.kusamaCoretime, Chains.polkadotCoretime].includes(chain);
 }
 
+export function isPolkadotCoretimeChain(chain) {
+  return [Chains.polkadotCoretime].includes(chain);
+}
+
+export function isKusamaCoretimeChain(chain) {
+  return [Chains.kusamaCoretime].includes(chain);
+}
+
 export function isBifrostChain(chain) {
   return [Chains.bifrostPolkadot, Chains.bifrost].includes(chain);
 }
@@ -172,6 +180,10 @@ export function getRelayChain(chain) {
     return Chains.westend;
   } else if (isHyperBridgeChain(chain)) {
     return Chains.polkadot;
+  } else if (isPolkadotCoretimeChain(chain)) {
+    return Chains.polkadot;
+  } else if (isKusamaCoretimeChain(chain)) {
+    return Chains.kusama;
   }
 
   throw new Error("Unsupported relay chain");
