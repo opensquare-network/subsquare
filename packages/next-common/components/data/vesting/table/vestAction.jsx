@@ -30,7 +30,7 @@ function VestActionImpl({ account, unlockable }) {
         )}
       >
         <SystemUnlock
-          className={cn("w-4 h-4 text-textSecondary", !hasUnlockable && "text-textDisabled")}
+          className={cn("w-4 h-4", !hasUnlockable && "text-textDisabled")}
         />
       </div>
     </Tooltip>
