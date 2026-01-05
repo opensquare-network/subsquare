@@ -1,10 +1,7 @@
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
-import Popup from "next-common/components/popup/wrapper/Popup";
-import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
-import Signer from "next-common/components/popup/fields/signerField";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import EstimatedGas from "next-common/components/estimatedGas";
 import SummaryLayout from "next-common/components/summary/layout/layout";
@@ -19,6 +16,8 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { isSameAddress, toPrecision } from "next-common/utils";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useVestPopup } from "../context/vestPopupContext";
+import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
+import PopupWithSigner from "next-common/components/popupWithSigner";
 
 function VestPopupContent() {
   const { account, unlockable } = useVestPopup();
@@ -47,7 +46,7 @@ function VestPopupContent() {
 
   return (
     <div className="space-y-4">
-      <Signer noSwitchSigner />
+      <SignerWithBalance noSwitchSigner />
       <SummaryLayout>
         <SummaryItem title="Account">
           <AddressUser add={account} />
@@ -72,10 +71,8 @@ function VestPopupContent() {
 
 export default function VestPopup({ onClose }) {
   return (
-    <SignerPopupWrapper onClose={onClose}>
-      <Popup title="Vest" onClose={onClose} wide>
-        <VestPopupContent />
-      </Popup>
-    </SignerPopupWrapper>
+    <PopupWithSigner onClose={onClose} title="Vest">
+      <VestPopupContent />
+    </PopupWithSigner>
   );
 }
