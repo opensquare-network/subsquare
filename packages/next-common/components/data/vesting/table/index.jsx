@@ -12,9 +12,11 @@ import {
 import { defaultPageSize } from "next-common/utils/constants";
 import { getColumns } from "./columns";
 import VestingDetailPopup from "../popup/detailPopup";
-import VestPopup from "../popup/vestPopup";
 import useFilterAllVesting from "../hooks/useFilterAllVesting";
 import { VestPopupProvider, useVestPopup } from "../context/vestPopupContext";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const VestPopup = dynamicPopup(() => import("../popup/vestPopup"));
 
 function VestingExplorerTableContent() {
   const {
