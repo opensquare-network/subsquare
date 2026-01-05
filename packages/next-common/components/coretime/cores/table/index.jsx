@@ -5,7 +5,8 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import { isNil } from "lodash-es";
 import { usePageProps } from "next-common/context/page";
 import { useContextApi } from "next-common/context/api";
-import columnsDef from "./columnsDef";
+import { useTimeColumnsDef } from "../hooks/useColumnsDef";
+import { SwitchTimeProvider } from "../context/switchTimeContext";
 
 export default function CoretimeCoresTable() {
   const contextApi = useContextApi();
@@ -22,15 +23,19 @@ export default function CoretimeCoresTable() {
     );
   }, [cores, coretimeSale, blocksPerTimesliceRelayChain]);
 
+  const columnsDef = useTimeColumnsDef();
+
   return (
-    <SecondaryCard>
-      <MapDataList
-        columnsDef={columnsDef}
-        data={formattedCores}
-        loading={loading}
-        noDataText="No cores"
-      />
-    </SecondaryCard>
+    <SwitchTimeProvider>
+      <SecondaryCard>
+        <MapDataList
+          columnsDef={columnsDef}
+          data={formattedCores}
+          loading={loading}
+          noDataText="No cores"
+        />
+      </SecondaryCard>
+    </SwitchTimeProvider>
   );
 }
 
