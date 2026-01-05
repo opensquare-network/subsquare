@@ -1,22 +1,26 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
+import { isNil } from "lodash-es";
 
 export default function useAhmLatestHeightSnapshot() {
   const ahmLatestHeight = useAhmLatestHeight();
-  const [snapshotHeight, setSnapshotHeight] = useState(null);
+  const snapshotRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (!ahmLatestHeight || !isLoading) {
+    if (isNil(ahmLatestHeight) || !isNil(snapshotRef.current)) {
       return;
     }
 
-    setSnapshotHeight(ahmLatestHeight);
+    snapshotRef.current = ahmLatestHeight;
     setIsLoading(false);
-  }, [isLoading, ahmLatestHeight]);
+  }, [ahmLatestHeight]);
 
-  return {
-    isLoading,
-    latestHeight: snapshotHeight,
-  };
+  return useMemo(
+    () => ({
+      isLoading,
+      latestHeight: snapshotRef.current,
+    }),
+    [isLoading],
+  );
 }

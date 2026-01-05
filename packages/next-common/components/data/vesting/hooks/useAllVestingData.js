@@ -213,12 +213,15 @@ export default function useAllVestingData() {
     fetchData(true);
   }, [fetchData]);
 
-  return {
-    data: sortedData,
-    isLoading,
-    sortField,
-    sortDirection,
-    onSort: handleSort,
-    update,
-  };
+  return useMemo(
+    () => ({
+      data: sortedData,
+      isLoading,
+      sortField,
+      sortDirection,
+      onSort: handleSort,
+      update,
+    }),
+    [sortedData, isLoading, sortField, sortDirection, handleSort, update],
+  );
 }
