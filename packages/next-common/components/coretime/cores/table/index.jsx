@@ -7,7 +7,7 @@ import { usePageProps } from "next-common/context/page";
 import { useContextApi } from "next-common/context/api";
 import columnsDef from "./columnsDef";
 
-export default function CoretimeBrokerTable() {
+export default function CoretimeCoresTable() {
   const contextApi = useContextApi();
   const { coretimeSale } = usePageProps();
   const { cores = [], loading } = useAllCoreBrokers();
@@ -28,7 +28,7 @@ export default function CoretimeBrokerTable() {
         columnsDef={columnsDef}
         data={formattedCores}
         loading={loading}
-        noDataText="No brokers"
+        noDataText="No cores"
       />
     </SecondaryCard>
   );

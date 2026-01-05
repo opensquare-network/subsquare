@@ -1,6 +1,6 @@
 import TaskColumn from "./taskColumn";
 import TimeColumn from "./timeColumn";
-import CoretimeBrokerTag from "next-common/components/tags/state/coretimeBroker";
+import CoretimeCoresTag from "next-common/components/tags/state/coretimeCores";
 
 const columnsDef = [
   {
@@ -30,7 +30,7 @@ const columnsDef = [
     name: "Type",
     key: "type",
     className: "w-[180px] text-right",
-    render: (item) => <CoretimeBrokerTag state={item.occupancyType} />,
+    render: (item) => <CoretimeCoresTag state={item.occupancyType} />,
   },
 ];
 

@@ -13,7 +13,7 @@ import getCoretimeCommonProps from "next-common/services/serverSide/getCoretimeC
 import CoretimeCommonProvider from "next-common/context/coretime/common";
 import RelayInfoProvider from "next-common/context/relayInfo";
 import generateLayoutRawTitle from "next-common/utils/generateLayoutRawTitle";
-import CoretimeBroker from "next-common/components/coretime/broker";
+import CoretimeCores from "next-common/components/coretime/cores";
 
 const isCoretimeSupported = !!getChainSettings(CHAIN).modules?.coretime;
 
@@ -28,7 +28,7 @@ if (isCoretimeSupported) {
   });
 }
 
-export default function CoretimePage() {
+export default function CoretimeCoresPage() {
   if (!isCoretimeSupported) {
     return null;
   }
@@ -40,7 +40,7 @@ export default function CoretimePage() {
           <ApiProvider>
             <CoretimeActiveSaleProvider>
               <CoretimeCommonProvider>
-                <CoretimeOverviewPageImpl />
+                <CoretimeCoresPageImpl />
               </CoretimeCommonProvider>
             </CoretimeActiveSaleProvider>
           </ApiProvider>
@@ -50,7 +50,7 @@ export default function CoretimePage() {
   );
 }
 
-function CoretimeOverviewPageImpl() {
+function CoretimeCoresPageImpl() {
   const title = "Cores";
   const description = "Status of coretime cores";
 
@@ -64,7 +64,7 @@ function CoretimeOverviewPageImpl() {
       description={description}
     >
       <div className="space-y-6">
-        <CoretimeBroker />
+        <CoretimeCores />
       </div>
     </ListLayout>
   );

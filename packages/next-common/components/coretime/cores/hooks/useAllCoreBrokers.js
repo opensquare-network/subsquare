@@ -39,6 +39,19 @@ export default function useBrokerStatus() {
     }
   }, [contextApi]);
 
+  const statusResult = useMemo(() => status?.unwrap()?.toJSON(), [status]);
+
+  const cores = useMemo(() => {
+    const reservationMap = buildTaskMap(reservations);
+    const leaseMap = buildTaskMap(leases);
+
+    return workloads.map((workload) => ({
+      ...workload,
+      lease: leaseMap[workload.taskId] ?? null,
+      occupancyType: getCoreTimeType(workload, reservationMap, leaseMap),
+    }));
+  }, [workloads, leases, reservations]);
+
   const loading = useMemo(
     () =>
       isStatusLoading ||
@@ -47,25 +60,6 @@ export default function useBrokerStatus() {
       workloadLoading,
     [isStatusLoading, isLeasesLoading, isReservationsLoading, workloadLoading],
   );
-
-  const statusResult = useMemo(() => {
-    const json = status?.unwrap()?.toJSON();
-    return json;
-  }, [status]);
-
-  const cores = useMemo(() => {
-    const reservationMap = buildTaskMap(reservations);
-    const leaseMap = buildTaskMap(leases);
-
-    return workloads.map((workload) => {
-      const jsonData = {
-        ...workload,
-        lease: leaseMap[workload.taskId] ?? null,
-        occupancyType: getCoreTimeType(workload, reservationMap, leaseMap),
-      };
-      return jsonData;
-    });
-  }, [workloads, leases, reservations]);
 
   return {
     cores,

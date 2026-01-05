@@ -26,24 +26,7 @@ export default function TaskColumn({ item }) {
 
 function TaskContent({ taskId }) {
   const activeChain = useChain();
-  let chains;
-  if (Chains.polkadotCoretime === activeChain) {
-    chains = {
-      1000: Chains.polkadotAssetHub,
-      1001: Chains.collectives,
-      1002: Chainspolyfill.polkadotBridge,
-      1004: Chains.polkadotPeople,
-      1005: Chains.polkadotCoretime,
-    };
-  } else if (Chains.kusamaCoretime === activeChain) {
-    chains = {
-      1000: Chains.kusamaAssetHub,
-      1001: Chains.collectives,
-      1002: Chainspolyfill.kusamaBridge,
-      1004: Chains.kusamaPeople,
-      1005: Chains.kusamaCoretime,
-    };
-  }
+  let chains = getChains(activeChain);
 
   if (isNil(taskId)) {
     return "-";
@@ -58,8 +41,30 @@ function ChainInfo({ chain }) {
   const { name } = getChainSettingsPolyfill(chain);
   return (
     <div className="flex items-center gap-x-1">
-      <ChainIcon chain={chain} />{" "}
+      <ChainIcon chain={chain} />
       <span className="text-textPrimary">{name}</span>
     </div>
   );
+}
+
+function getChains(chain) {
+  if (Chains.polkadotCoretime === chain) {
+    return {
+      1000: Chains.polkadotAssetHub,
+      1001: Chains.collectives,
+      1002: Chainspolyfill.polkadotBridge,
+      1004: Chains.polkadotPeople,
+      1005: Chains.polkadotCoretime,
+    };
+  } else if (Chains.kusamaCoretime === chain) {
+    return {
+      1000: Chains.kusamaAssetHub,
+      1001: Chains.collectives,
+      1002: Chainspolyfill.kusamaBridge,
+      1004: Chains.kusamaPeople,
+      1005: Chains.kusamaCoretime,
+    };
+  }
+
+  return null;
 }
