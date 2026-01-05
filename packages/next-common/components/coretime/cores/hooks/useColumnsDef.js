@@ -4,11 +4,11 @@ import CoretimeCoresTag from "next-common/components/tags/state/coretimeCores";
 import { useMemo } from "react";
 import { useSwitchTime } from "../context/switchTimeContext";
 
-function TimeHeaderButton() {
+function TimeHeaderButton({ name = "Time", timeName = "Age" }) {
   const { isTime, toggleIsTime } = useSwitchTime();
   return (
     <button className="text-theme500" onClick={toggleIsTime}>
-      {isTime ? "Time" : "Age"}
+      {isTime ? name : timeName}
     </button>
   );
 }
@@ -28,12 +28,12 @@ export function useTimeColumnsDef() {
         render: (item) => <TaskColumn item={item} />,
       },
       {
-        name: <TimeHeaderButton />,
+        name: <TimeHeaderButton name="Start time" timeName="Start age" />,
         key: "startTime",
         render: (item) => <TimeColumn height={item.startRelayBlock} />,
       },
       {
-        name: <TimeHeaderButton />,
+        name: <TimeHeaderButton name="End time" timeName="End age" />,
         key: "endTime",
         render: (item) => (
           <TimeColumn type={item.occupancyType} height={item.endRelayBlock} />
