@@ -10,10 +10,6 @@ export const CoreTimeTypes = {
 };
 
 export default function useBrokerStatus() {
-  const { result: status, loading: isStatusLoading } = useSubStorage(
-    "broker",
-    "status",
-  );
   const { result: leases, loading: isLeasesLoading } = useSubStorage(
     "broker",
     "leases",
@@ -39,8 +35,6 @@ export default function useBrokerStatus() {
     }
   }, [contextApi]);
 
-  const statusResult = useMemo(() => status?.unwrap()?.toJSON(), [status]);
-
   const cores = useMemo(() => {
     const reservationMap = buildTaskMap(reservations);
     const leaseMap = buildTaskMap(leases);
@@ -53,19 +47,14 @@ export default function useBrokerStatus() {
   }, [workloads, leases, reservations]);
 
   const loading = useMemo(
-    () =>
-      isStatusLoading ||
-      isLeasesLoading ||
-      isReservationsLoading ||
-      workloadLoading,
-    [isStatusLoading, isLeasesLoading, isReservationsLoading, workloadLoading],
+    () => isLeasesLoading || isReservationsLoading || workloadLoading,
+    [isLeasesLoading, isReservationsLoading, workloadLoading],
   );
 
   return {
     cores,
     workloads,
     loading,
-    status: statusResult,
   };
 }
 
