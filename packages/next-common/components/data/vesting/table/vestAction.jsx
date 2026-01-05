@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import Unlock from "next-common/components/icons/unlock";
+import { SystemSignature } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useVestPopup } from "next-common/components/data/vesting/context/vestPopupContext";
@@ -29,8 +29,8 @@ function VestActionImpl({ account, unlockable }) {
             : "border-neutral400 cursor-pointer",
         )}
       >
-        <Unlock
-          className={cn("w-4 h-4 text-textSecondary", !hasUnlockable && "text-textDisabled")}
+        <SystemSignature
+          className={cn("w-4 h-4", !hasUnlockable && "text-textDisabled")}
         />
       </div>
     </Tooltip>
