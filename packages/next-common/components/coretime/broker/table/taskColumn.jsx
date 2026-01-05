@@ -3,6 +3,8 @@ import Chains from "next-common/utils/consts/chains";
 import { isNil } from "lodash-es";
 import { getChainSettingsPolyfill } from "next-common/utils/consts/settingsPolyfill";
 import ChainIcon from "next-common/components/header/chainIcon";
+import { useChain } from "next-common/context/chain";
+import Chainspolyfill from "next-common/utils/consts/settingsPolyfill/chainsPolyfill";
 
 export default function TaskColumn({ item }) {
   let content;
@@ -23,17 +25,29 @@ export default function TaskColumn({ item }) {
 }
 
 function TaskContent({ taskId }) {
-  const chains = {
-    1000: Chains.polkadotAssetHub,
-    1001: Chains.collectives,
-    1002: Chains.polkadotBridge,
-    1004: Chains.polkadotPeople,
-    1005: Chains.polkadotCoretime,
-  };
+  const activeChain = useChain();
+  let chains;
+  if (Chains.polkadotCoretime === activeChain) {
+    chains = {
+      1000: Chains.polkadotAssetHub,
+      1001: Chains.collectives,
+      1002: Chainspolyfill.polkadotBridge,
+      1004: Chains.polkadotPeople,
+      1005: Chains.polkadotCoretime,
+    };
+  } else if (Chains.kusamaCoretime === activeChain) {
+    chains = {
+      1000: Chains.kusamaAssetHub,
+      1001: Chains.collectives,
+      1002: Chainspolyfill.kusamaBridge,
+      1004: Chains.kusamaPeople,
+      1005: Chains.kusamaCoretime,
+    };
+  }
 
   if (isNil(taskId)) {
     return "-";
-  } else if (!chains[taskId]) {
+  } else if (!chains?.[taskId]) {
     return taskId;
   }
   const chain = chains[taskId];

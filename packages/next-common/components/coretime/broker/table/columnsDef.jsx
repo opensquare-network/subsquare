@@ -22,7 +22,9 @@ const columnsDef = [
   {
     name: "End time",
     key: "endTime",
-    render: (item) => <TimeColumn height={item.endRelayBlock} />,
+    render: (item) => (
+      <TimeColumn type={item.occupancyType} height={item.endRelayBlock} />
+    ),
   },
   {
     name: "Type",

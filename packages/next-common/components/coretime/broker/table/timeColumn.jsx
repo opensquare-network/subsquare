@@ -4,9 +4,13 @@ import { isNil } from "lodash-es";
 import { calculateBlockTimestamp } from "next-common/hooks/common/useBlockTimestamp";
 import dayjs from "dayjs";
 import Tooltip from "next-common/components/tooltip";
+import { useSelector } from "react-redux";
+import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
+import { CoreTimeTypes } from "../hooks/useAllCoreBrokers";
 
-export default function TimeColumn({ height }) {
-  const blockTime = useRelayChainBlockTime();
+export default function TimeColumn({ height, type }) {
+  const blockTime = useSelector(blockTimeSelector);
+  const relayChainBlockTime = useRelayChainBlockTime();
 
   const { latestHeight, isLoading } = useAhmLatestHeightSnapshot();
   if (isNil(height) || isLoading) {
@@ -15,7 +19,7 @@ export default function TimeColumn({ height }) {
 
   const formattedDate = calculateBlockTimestamp(
     height,
-    blockTime,
+    type === CoreTimeTypes.Lease ? blockTime : relayChainBlockTime,
     latestHeight,
   );
 
