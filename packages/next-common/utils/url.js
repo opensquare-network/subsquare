@@ -23,3 +23,7 @@ export function objectToQueryString(obj) {
   });
   return searchParams.toString();
 }
+
+export function trimEndSlash(url) {
+  return url.replace(/\/+$/, "");
+}
