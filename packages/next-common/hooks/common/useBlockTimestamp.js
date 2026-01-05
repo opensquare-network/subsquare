@@ -52,7 +52,7 @@ export function useCalculatedBlockTimestamp(height) {
   }, [height, oneBlockTime, chainHeight]);
 }
 
-function calculateBlockTimestamp(height, oneBlockTime, chainHeight) {
+export function calculateBlockTimestamp(height, oneBlockTime, chainHeight) {
   const now = new Date().getTime();
   const heightDiff = height - chainHeight;
   return BigNumber(oneBlockTime).multipliedBy(heightDiff).plus(now).toNumber();
