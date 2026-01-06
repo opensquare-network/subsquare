@@ -88,68 +88,77 @@ export default function useAllVestingData() {
   const [sortField, setSortField] = useState("unlockable");
   const [sortDirection, setSortDirection] = useState("desc");
 
-  const fetchData = useCallback(async () => {
-    if (!api || !latestHeight) {
-      return;
-    }
-
-    try {
-      setIsLoading(true);
-
-      const entries = await api.query.vesting.vesting.entries();
-
-      const accountsData = [];
-      const accounts = [];
-
-      for (const [storageKey, optionalStorage] of entries) {
-        if (optionalStorage.isNone) {
-          continue;
-        }
-
-        const account = storageKey.args[0].toString();
-        const schedules = optionalStorage.unwrap();
-
-        accounts.push(account);
-        accountsData.push({
-          account,
-          schedules,
-        });
+  const fetchData = useCallback(
+    async (silent = false) => {
+      if (!api || !latestHeight) {
+        return;
       }
 
-      const locksMulti = await api.query.balances.locks.multi(accounts);
+      try {
+        if (!silent) {
+          setIsLoading(true);
+        }
 
-      const accountsMap = new Map();
-      accountsData.forEach((item, index) => {
-        const locks = locksMulti[index];
-        const balancesLockedByVesting = getCurrencyLockedByVesting(locks);
+        const entries = await api.query.vesting.vesting.entries();
 
-        const vestingInfo = calculateVestingInfo(
-          item.schedules,
-          latestHeight,
-          balancesLockedByVesting,
-        );
+        const accountsData = [];
+        const accounts = [];
 
-        accountsMap.set(item.account, {
-          account: item.account,
-          currentBalanceInLock: balancesLockedByVesting.toString(),
-          totalVesting: vestingInfo.totalVesting,
-          totalLockedNow: vestingInfo.totalLockedNow,
-          unlockable: vestingInfo.totalUnlockable,
-          schedules: vestingInfo.schedules,
-          schedulesCount: item.schedules.length,
+        for (const [storageKey, optionalStorage] of entries) {
+          if (optionalStorage.isNone) {
+            continue;
+          }
+
+          const account = storageKey.args[0].toString();
+          const schedules = optionalStorage.unwrap();
+
+          accounts.push(account);
+          accountsData.push({
+            account,
+            schedules,
+          });
+        }
+
+        const locksMulti = await api.query.balances.locks.multi(accounts);
+
+        const accountsMap = new Map();
+        accountsData.forEach((item, index) => {
+          const locks = locksMulti[index];
+          const balancesLockedByVesting = getCurrencyLockedByVesting(locks);
+
+          const vestingInfo = calculateVestingInfo(
+            item.schedules,
+            latestHeight,
+            balancesLockedByVesting,
+          );
+
+          accountsMap.set(item.account, {
+            account: item.account,
+            currentBalanceInLock: balancesLockedByVesting.toString(),
+            totalVesting: vestingInfo.totalVesting,
+            totalLockedNow: vestingInfo.totalLockedNow,
+            unlockable: vestingInfo.totalUnlockable,
+            schedules: vestingInfo.schedules,
+            schedulesCount: item.schedules.length,
+          });
         });
-      });
 
-      const results = Array.from(accountsMap.values());
+        const results = Array.from(accountsMap.values());
 
-      setData(results);
-      setIsLoading(false);
-    } catch (error) {
-      console.error("Error fetching vesting data:", error);
-      setData([]);
-      setIsLoading(false);
-    }
-  }, [api, latestHeight]);
+        setData(results);
+        if (!silent) {
+          setIsLoading(false);
+        }
+      } catch (error) {
+        console.error("Error fetching vesting data:", error);
+        if (!silent) {
+          setData([]);
+          setIsLoading(false);
+        }
+      }
+    },
+    [api, latestHeight],
+  );
 
   useEffect(() => {
     if (isHeightLoading) {
@@ -200,11 +209,19 @@ export default function useAllVestingData() {
     [sortField, sortDirection],
   );
 
-  return {
-    data: sortedData,
-    isLoading,
-    sortField,
-    sortDirection,
-    onSort: handleSort,
-  };
+  const update = useCallback(() => {
+    fetchData(true);
+  }, [fetchData]);
+
+  return useMemo(
+    () => ({
+      data: sortedData,
+      isLoading,
+      sortField,
+      sortDirection,
+      onSort: handleSort,
+      update,
+    }),
+    [sortedData, isLoading, sortField, sortDirection, handleSort, update],
+  );
 }

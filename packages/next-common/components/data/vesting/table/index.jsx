@@ -1,18 +1,31 @@
-import { getColumns } from "./columns";
-import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
-import { defaultPageSize } from "next-common/utils/constants";
 import { useEffect, useState, useMemo } from "react";
-import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import useAllVestingData from "../hooks/useAllVestingData";
-import { MapDataList } from "next-common/components/dataList";
-import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import { useRouter } from "next/router";
+import { MapDataList } from "next-common/components/dataList";
+import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
+import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
+import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import TableHeader from "next-common/components/data/common/tableHeader";
-import VestingDetailPopup from "../popup";
+import {
+  VestingProvider,
+  useVestingContext,
+} from "next-common/context/vesting";
+import { defaultPageSize } from "next-common/utils/constants";
+import { getColumns } from "./columns";
+import VestingDetailPopup from "../popup/detailPopup";
 import useFilterAllVesting from "../hooks/useFilterAllVesting";
+import { VestPopupProvider, useVestPopup } from "../context/vestPopupContext";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 
-export default function NewVestingExplorerTable() {
-  const { data, isLoading: loading, sortField, sortDirection, onSort } = useAllVestingData();
+const VestPopup = dynamicPopup(() => import("../popup/vestPopup"));
+
+function VestingExplorerTableContent() {
+  const {
+    data,
+    isLoading: loading,
+    sortField,
+    sortDirection,
+    onSort,
+  } = useVestingContext();
   const router = useRouter();
   const [dataList, setDataList] = useState([]);
   const [selectedAccount, setSelectedAccount] = useState(null);
@@ -84,5 +97,25 @@ export default function NewVestingExplorerTable() {
         />
       )}
     </>
+  );
+}
+
+function VestPopupInContext() {
+  const { visible, hideVestPopup } = useVestPopup();
+  if (!visible) {
+    return null;
+  }
+
+  return <VestPopup onClose={hideVestPopup} />;
+}
+
+export default function VestingExplorerTable() {
+  return (
+    <VestingProvider>
+      <VestPopupProvider>
+        <VestingExplorerTableContent />
+        <VestPopupInContext />
+      </VestPopupProvider>
+    </VestingProvider>
   );
 }
