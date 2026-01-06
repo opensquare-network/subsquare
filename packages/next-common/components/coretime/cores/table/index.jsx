@@ -5,7 +5,7 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import { isNil } from "lodash-es";
 import { usePageProps } from "next-common/context/page";
 import { useContextApi } from "next-common/context/api";
-import { useTimeColumnsDef } from "../hooks/useColumnsDef";
+import { useColumnsDef } from "../hooks/useColumnsDef";
 import { SwitchTimeProvider } from "../context/switchTimeContext";
 
 export default function CoretimeCoresTable() {
@@ -30,7 +30,7 @@ export default function CoretimeCoresTable() {
       .sort((a, b) => a.coreIndex - b.coreIndex);
   }, [cores, coretimeSale, blocksPerTimesliceRelayChain]);
 
-  const columnsDef = useTimeColumnsDef();
+  const columnsDef = useColumnsDef();
 
   return (
     <SwitchTimeProvider>
@@ -38,6 +38,7 @@ export default function CoretimeCoresTable() {
         <TreeMapDataList
           columnsDef={columnsDef}
           data={formattedCores}
+          contentClassName="[&_.pb-4]:!pl-[54px]"
           loading={loading}
           treeKey="workplans"
           noDataText="No cores"

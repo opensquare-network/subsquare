@@ -131,6 +131,7 @@ export function formatWorkplan(entries = []) {
     }
 
     return {
+      isWorkplan: true,
       coreIndex: core,
       timeslice,
       ...info,

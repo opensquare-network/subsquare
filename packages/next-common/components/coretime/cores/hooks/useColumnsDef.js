@@ -13,14 +13,15 @@ function TimeHeaderButton({ name = "Time", timeName = "Age" }) {
   );
 }
 
-export function useTimeColumnsDef() {
+export function useColumnsDef() {
   return useMemo(
     () => [
       {
         name: "Core",
         key: "core",
         className: "w-[120px] text-left",
-        render: (item) => <div>#{item.coreIndex}</div>,
+        render: (item) =>
+          item.isWorkplan ? null : <div>#{item.coreIndex}</div>,
       },
       {
         name: "Task",
