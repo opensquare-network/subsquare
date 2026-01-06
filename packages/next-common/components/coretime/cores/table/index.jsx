@@ -94,6 +94,7 @@ function formartRow(
     const period = Math.floor(core.lease.until / configuration.regionLength);
     const endTimeSlice = period * configuration.regionLength;
     const endRelayBlock = endTimeSlice * blocksPerTimesliceRelayChain;
+
     return {
       ...core,
       startRelayBlock: null,

@@ -52,6 +52,7 @@ export default function useBrokerStatus() {
         .filter((w) => w.coreIndex === workload.coreIndex)
         .map((w) => ({
           ...w,
+          lease: leaseMap[workload.taskId] ?? null,
           occupancyType: getCoreTimeType(w, reservationMap, leaseMap),
         })),
     }));
