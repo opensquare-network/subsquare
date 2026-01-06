@@ -19,16 +19,21 @@ export default function useBrokerStatus() {
 
   const contextApi = useContextApi();
   const [workloads, setWorkloads] = useState([]);
+  const [workplans, setWorkplans] = useState([]);
   const [workloadLoading, setWorkloadLoading] = useState(false);
 
   useEffect(() => {
     if (contextApi) {
       setWorkloadLoading(true);
-      contextApi?.query?.broker?.workload
-        ?.entries?.()
-        .then((entries) => {
-          const workloads = formatWorkload(entries);
+      Promise.all([
+        contextApi?.query?.broker?.workplan?.entries?.(),
+        contextApi?.query?.broker?.workload?.entries?.(),
+      ])
+        .then(([workplanEntries, workloadEntries]) => {
+          const workplans = formatWorkplan(workplanEntries);
+          const workloads = formatWorkload(workloadEntries);
           setWorkloads(workloads);
+          setWorkplans(workplans);
         })
         .catch(console.error)
         .finally(() => setWorkloadLoading(false));
@@ -43,8 +48,15 @@ export default function useBrokerStatus() {
       ...workload,
       lease: leaseMap[workload.taskId] ?? null,
       occupancyType: getCoreTimeType(workload, reservationMap, leaseMap),
+      workplans: workplans
+        .filter((w) => w.coreIndex === workload.coreIndex)
+        .map((w) => ({
+          ...w,
+          lease: leaseMap[w.taskId] ?? null,
+          occupancyType: getCoreTimeType(w, reservationMap, leaseMap),
+        })),
     }));
-  }, [workloads, leases, reservations]);
+  }, [workloads, leases, reservations, workplans]);
 
   const loading = useMemo(
     () => isLeasesLoading || isReservationsLoading || workloadLoading,
@@ -75,6 +87,58 @@ function formatWorkload(workloads = []) {
     }
 
     return data;
+  });
+}
+
+export function formatWorkplan(entries = []) {
+  return entries.flatMap(([key, value]) => {
+    if (!value || !value.isSome) {
+      return null;
+    }
+
+    const scheduleItems = value.unwrap();
+
+    if (!scheduleItems || scheduleItems.length === 0) {
+      return null;
+    }
+
+    return scheduleItems.map((scheduleItem, index) => {
+      const args = key.args?.[index];
+      if (!args || args.length < 2) {
+        return null;
+      }
+
+      const timeslice = args[0]?.toNumber();
+      const core = args[1]?.toNumber();
+
+      if (timeslice === undefined || core === undefined) {
+        return null;
+      }
+
+      const assignment = scheduleItem?.assignment;
+
+      const info = {};
+
+      if (assignment?.isTask) {
+        info.isTask = true;
+        info.taskId = assignment?.asTask?.toNumber?.();
+      } else if (assignment?.isPool) {
+        info.isPool = true;
+      } else {
+        info.isIdle = true;
+      }
+
+      if (assignment?.mask) {
+        info.mask = assignment.mask.toHex();
+      }
+
+      return {
+        isWorkplan: true,
+        coreIndex: core,
+        timeslice,
+        ...info,
+      };
+    });
   });
 }
 
