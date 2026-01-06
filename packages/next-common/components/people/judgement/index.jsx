@@ -10,6 +10,7 @@ import SummaryItem from "next-common/components/summary/layout/item";
 import Email from "./email";
 import Discord from "./discord";
 import Twitter from "./twitter";
+import Github from "./github";
 import Element from "./element";
 import Loading from "next-common/components/loading";
 import useMyJudgementRequest from "../hooks/useMyJudgementRequest";
@@ -82,6 +83,11 @@ export default function JudgementPage() {
               {myJudgementRequest?.info?.twitter && (
                 <div className="bg-neutral100 border-b border-neutral300 p-4 rounded-lg flex">
                   <Twitter request={myJudgementRequest} />
+                </div>
+              )}
+              {myJudgementRequest?.info?.github && (
+                <div className="bg-neutral100 border-b border-neutral300 p-4 rounded-lg flex">
+                  <Github request={myJudgementRequest} />
                 </div>
               )}
             </>

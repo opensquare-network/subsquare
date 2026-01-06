@@ -4,5 +4,6 @@ export const PeopleSocialType = Object.freeze({
   discord: "discord",
   email: "email",
   twitter: "twitter",
+  github: "github",
   element: "element",
 });
