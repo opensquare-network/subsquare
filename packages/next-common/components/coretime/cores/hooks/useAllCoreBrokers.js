@@ -52,7 +52,7 @@ export default function useBrokerStatus() {
         .filter((w) => w.coreIndex === workload.coreIndex)
         .map((w) => ({
           ...w,
-          lease: leaseMap[workload.taskId] ?? null,
+          lease: leaseMap[w.taskId] ?? null,
           occupancyType: getCoreTimeType(w, reservationMap, leaseMap),
         })),
     }));
@@ -92,18 +92,6 @@ function formatWorkload(workloads = []) {
 
 export function formatWorkplan(entries = []) {
   return entries.flatMap(([key, value]) => {
-    const args = key.args?.[0];
-    if (!args || args.length < 2) {
-      return null;
-    }
-
-    const timeslice = args[0]?.toNumber();
-    const core = args[1]?.toNumber();
-
-    if (timeslice === undefined || core === undefined) {
-      return null;
-    }
-
     if (!value || !value.isSome) {
       return null;
     }
@@ -114,29 +102,43 @@ export function formatWorkplan(entries = []) {
       return null;
     }
 
-    const assignment = scheduleItems[0]?.assignment;
+    return scheduleItems.map((scheduleItem, index) => {
+      const args = key.args?.[index];
+      if (!args || args.length < 2) {
+        return null;
+      }
 
-    const info = {};
+      const timeslice = args[0]?.toNumber();
+      const core = args[1]?.toNumber();
 
-    if (assignment?.isTask) {
-      info.isTask = true;
-      info.taskId = assignment?.asTask?.toNumber?.();
-    } else if (assignment?.isPool) {
-      info.isPool = true;
-    } else {
-      info.isIdle = true;
-    }
+      if (timeslice === undefined || core === undefined) {
+        return null;
+      }
 
-    if (assignment?.mask) {
-      info.mask = assignment.mask.toHex();
-    }
+      const assignment = scheduleItem?.assignment;
 
-    return {
-      isWorkplan: true,
-      coreIndex: core,
-      timeslice,
-      ...info,
-    };
+      const info = {};
+
+      if (assignment?.isTask) {
+        info.isTask = true;
+        info.taskId = assignment?.asTask?.toNumber?.();
+      } else if (assignment?.isPool) {
+        info.isPool = true;
+      } else {
+        info.isIdle = true;
+      }
+
+      if (assignment?.mask) {
+        info.mask = assignment.mask.toHex();
+      }
+
+      return {
+        isWorkplan: true,
+        coreIndex: core,
+        timeslice,
+        ...info,
+      };
+    });
   });
 }
 
