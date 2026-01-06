@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import { useVestPopup } from "next-common/components/data/vesting/context/vestPopupContext";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import Tooltip from "next-common/components/tooltip";
 
 function VestButtonImpl({ account, unlockable }) {
   const { showVestPopup } = useVestPopup();
@@ -10,6 +11,7 @@ function VestButtonImpl({ account, unlockable }) {
     if (!hasUnlockable) {
       return;
     }
+
     showVestPopup(account, unlockable);
   }, [hasUnlockable, showVestPopup, account, unlockable]);
 
@@ -19,7 +21,11 @@ function VestButtonImpl({ account, unlockable }) {
       disabled={!hasUnlockable}
       className="text-theme500 text14Medium !ml-2 disabled:text-textDisabled disabled:cursor-not-allowed"
     >
-      Vest
+      {!hasUnlockable ? (
+        <Tooltip content="No unlockable balance">Vest</Tooltip>
+      ) : (
+        "Vest"
+      )}
     </button>
   );
 }
