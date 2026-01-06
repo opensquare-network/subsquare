@@ -67,7 +67,7 @@ export default function JudgementPage() {
             <>
               {myJudgementRequest?.info?.email && (
                 <div className="bg-neutral100 border-b border-neutral300 p-4 rounded-lg flex">
-                  <Email />
+                  <Email request={myJudgementRequest} />
                 </div>
               )}
               {myJudgementRequest?.info?.element && (
