@@ -10,7 +10,7 @@ export default function CoreDetailPopup({ core, onClose = noop }) {
   }
 
   return (
-    <Popup title={`Core #${core.coreIndex}`} onClose={onClose}>
+    <Popup title={`Core #${core.coreIndex} plans`} onClose={onClose}>
       <MapDataList
         columnsDef={columnsDef}
         data={core.workplans}
