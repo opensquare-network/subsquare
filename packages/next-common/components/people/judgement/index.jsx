@@ -11,8 +11,9 @@ import Email from "./email";
 import Discord from "./discord";
 import Twitter from "./twitter";
 import Element from "./element";
-import { useState, useEffect } from "react";
 import Loading from "next-common/components/loading";
+import useMyJudgementRequest from "../hooks/useMyJudgementRequest";
+
 export const tabs = [
   {
     value: "Judgement",
@@ -24,12 +25,10 @@ export const tabs = [
 
 export default function JudgementPage() {
   const address = useRealAddress();
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 1500);
-  }, []);
+  const { value, loading: isLoadingMyJudgementRequest } =
+    useMyJudgementRequest();
+
+  const myJudgementRequest = value?.items[0] || null;
 
   return (
     <PeopleCommonProvider>
@@ -58,26 +57,36 @@ export default function JudgementPage() {
             </SummaryItem>
           </SummaryLayout>
         </div>
-        {loading ? (
-          <div className="bg-neutral100 border-b border-neutral300 p-4 rounded-lg flex justify-center">
-            <Loading size="24" />
-          </div>
-        ) : (
-          <div className="pt-4 grid grid-cols-1  gap-4">
-            <div className="bg-neutral100 border-b border-neutral300 p-4 rounded-lg flex">
-              <Email />
+        <div className="pt-4 grid grid-cols-1 gap-4">
+          {isLoadingMyJudgementRequest ? (
+            <div className="p-4 flex justify-center">
+              <Loading size="24" />
             </div>
-            <div className="bg-neutral100 border-b border-neutral300 p-4 rounded-lg flex">
-              <Element />
-            </div>
-            <div className="bg-neutral100 border-b border-neutral300 p-4 rounded-lg flex">
-              <Discord />
-            </div>
-            <div className="bg-neutral100 border-b border-neutral300 p-4 rounded-lg flex">
-              <Twitter />
-            </div>
-          </div>
-        )}
+          ) : (
+            <>
+              {myJudgementRequest?.info?.email && (
+                <div className="bg-neutral100 border-b border-neutral300 p-4 rounded-lg flex">
+                  <Email />
+                </div>
+              )}
+              {myJudgementRequest?.info?.element && (
+                <div className="bg-neutral100 border-b border-neutral300 p-4 rounded-lg flex">
+                  <Element />
+                </div>
+              )}
+              {myJudgementRequest?.info?.discord && (
+                <div className="bg-neutral100 border-b border-neutral300 p-4 rounded-lg flex">
+                  <Discord request={myJudgementRequest} />
+                </div>
+              )}
+              {myJudgementRequest?.info?.twitter && (
+                <div className="bg-neutral100 border-b border-neutral300 p-4 rounded-lg flex">
+                  <Twitter />
+                </div>
+              )}
+            </>
+          )}
+        </div>
       </ListLayout>
     </PeopleCommonProvider>
   );

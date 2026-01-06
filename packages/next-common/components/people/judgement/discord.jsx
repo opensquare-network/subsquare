@@ -1,25 +1,84 @@
 import { LinkDiscord } from "@osn/icons/subsquare";
 import { ClosedTag } from "next-common/components/tags/state/styled";
 import PrimaryButton from "next-common/lib/button/primary";
-import { useMemo } from "react";
+import { backendApi } from "next-common/services/nextApi";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { trimEndSlash } from "next-common/utils/url";
+import { useCallback, useEffect, useState } from "react";
+import { PEOPLE_JUDGEMENT_AUTH_MESSAGE_TYPE, PeopleSocialType } from "./consts";
 
-function generateDiscordAuthLink(state = {}) {
-  const client_id = process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID;
-  const redirect_uri = location.origin + "/people/judgement/auth/discord";
-
-  const params = new URLSearchParams({
-    client_id,
-    redirect_uri,
-    response_type: "code",
-    scope: "identify",
-    state: encodeURIComponent(JSON.stringify(state)),
-  });
-
-  return `https://discord.com/oauth2/authorize?${params.toString()}`;
+function isDiscordOpenerMessage(data) {
+  return (
+    data?.type === PEOPLE_JUDGEMENT_AUTH_MESSAGE_TYPE &&
+    data?.provider === PeopleSocialType.discord
+  );
 }
 
-export default function Discord() {
-  const link = useMemo(() => generateDiscordAuthLink(), []);
+function useGetDiscordAuthLink() {
+  const [loading, setLoading] = useState(false);
+  const realAddress = useRealAddress();
+  const getDiscordAuthLink = useCallback(async () => {
+    if (!realAddress) {
+      return "";
+    }
+    setLoading(true);
+    try {
+      const { result } = await backendApi.fetch(
+        `people/judgement/auth/discord/auth-url?who=${realAddress}&redirectUri=${trimEndSlash(
+          process.env.NEXT_PUBLIC_SITE_URL,
+        )}/people/judgement/auth/discord`,
+      );
+      return result.url;
+    } finally {
+      setLoading(false);
+    }
+  }, [realAddress]);
+
+  return {
+    loading,
+    getDiscordAuthLink,
+  };
+}
+
+export default function Discord({ request }) {
+  const { loading, getDiscordAuthLink } = useGetDiscordAuthLink();
+  const realAddress = useRealAddress();
+
+  const isVerified = request?.verification?.discord === true;
+
+  const [connected, setConnected] = useState(isVerified);
+
+  useEffect(() => {
+    setConnected(isVerified);
+  }, [isVerified]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const handleMessage = (event) => {
+      if (event.origin !== window.location.origin) {
+        return;
+      }
+
+      const data = event.data;
+      if (!isDiscordOpenerMessage(data)) {
+        return;
+      }
+
+      if (data?.ok && data?.who && data.who === realAddress) {
+        setConnected(true);
+      }
+    };
+
+    window.addEventListener("message", handleMessage);
+
+    return () => {
+      window.removeEventListener("message", handleMessage);
+    };
+  }, [realAddress]);
+
   return (
     <div className="w-full space-y-2 text14Medium text-textPrimary">
       <div className="flex justify-between">
@@ -30,7 +89,7 @@ export default function Discord() {
             <h1>Discord</h1>
           </div>
           <div>
-            <ClosedTag>Pending</ClosedTag>
+            <ClosedTag>{connected ? "Connected" : "Pending"}</ClosedTag>
           </div>
         </div>
       </div>
@@ -38,11 +97,19 @@ export default function Discord() {
         <div className="flex items-center ">
           <span className=" text14Bold w-32">Username:</span>
           <span className="truncate text-textTertiary">
-            pending@example.com
+            {request?.info?.discord}
           </span>
         </div>
 
-        <PrimaryButton onClick={() => window.open(link)} size="small">
+        <PrimaryButton
+          loading={loading}
+          disabled={connected}
+          onClick={async () => {
+            const link = await getDiscordAuthLink();
+            window.open(link);
+          }}
+          size="small"
+        >
           Connect Discord
         </PrimaryButton>
       </div>
