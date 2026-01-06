@@ -81,7 +81,7 @@ export default function JudgementPage() {
               )}
               {myJudgementRequest?.info?.twitter && (
                 <div className="bg-neutral100 border-b border-neutral300 p-4 rounded-lg flex">
-                  <Twitter />
+                  <Twitter request={myJudgementRequest} />
                 </div>
               )}
             </>
