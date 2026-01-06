@@ -7,6 +7,7 @@ import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
 import NoData from "next-common/components/noData";
 import Loading from "next-common/components/loading";
+import VestButton from "./vestButton";
 
 function ProfileVestingSummaryContent() {
   const { data } = useProfileVestingContext();
@@ -34,6 +35,7 @@ function ProfileVestingSummaryContent() {
           value={toPrecision(data.unlockable, decimals)}
           symbol={symbol}
         />
+        <VestButton account={data.account} unlockable={data.unlockable} />
       </SummaryItem>
     </SummaryLayout>
   );
