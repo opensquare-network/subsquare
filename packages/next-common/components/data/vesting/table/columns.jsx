@@ -73,7 +73,9 @@ export function getColumns({ sortField, sortDirection, onSort }) {
     {
       name: "Account",
       style: { textAlign: "left", minWidth: "240px" },
-      render: (item) => <AddressUser add={item.account} key={item.account} />,
+      render: (item) => (
+        <AddressUser add={item.account} key={item.account} link="/vesting" />
+      ),
     },
     {
       name: (

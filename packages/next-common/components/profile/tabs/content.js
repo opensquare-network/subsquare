@@ -16,6 +16,7 @@ import ProfileTreasury from "../treasury";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import ProfileAssets from "next-common/components/profile/assets";
 import ProfileForeignAssets from "next-common/components/profile/foreignAssets";
+import ProfileVesting from "next-common/components/profile/vesting";
 
 const ProfileHydrationAssets = dynamic(
   () => import("next-common/components/profile/hydrationAssets"),
@@ -48,6 +49,8 @@ export default function useProfileTabContent() {
         <ProfileHydrationAssets />
       </div>
     );
+  } else if (pathname.startsWith(`/user/${maybeEvmAddress}/vesting`)) {
+    return <ProfileVesting />;
   } else if (pathname.startsWith(`/user/${maybeEvmAddress}/fellowship`)) {
     return (
       <CollectivesProvider section="fellowship">

@@ -101,12 +101,13 @@ function VestingExplorerTableContent() {
 }
 
 function VestPopupInContext() {
+  const { update } = useVestingContext();
   const { visible, hideVestPopup } = useVestPopup();
   if (!visible) {
     return null;
   }
 
-  return <VestPopup onClose={hideVestPopup} />;
+  return <VestPopup onClose={hideVestPopup} update={update} />;
 }
 
 export default function VestingExplorerTable() {

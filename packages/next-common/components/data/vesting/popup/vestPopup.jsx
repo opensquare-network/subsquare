@@ -11,7 +11,6 @@ import AddressUser from "next-common/components/user/addressUser";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { useContextApi } from "next-common/context/api";
 import { useChainSettings } from "next-common/context/chain";
-import { useVestingContext } from "next-common/context/vesting";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { isSameAddress, toPrecision } from "next-common/utils";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
@@ -19,14 +18,13 @@ import { useVestPopup } from "../context/vestPopupContext";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 
-function VestPopupContent() {
+export function VestPopupContent({ update }) {
   const { account, unlockable } = useVestPopup();
   const { onClose } = usePopupParams();
   const dispatch = useDispatch();
   const api = useContextApi();
   const { symbol, decimals } = useChainSettings();
   const realAddress = useRealAddress();
-  const { update } = useVestingContext();
 
   const getTxFunc = useCallback(() => {
     if (!api || !api.tx.vesting) {
@@ -69,10 +67,10 @@ function VestPopupContent() {
   );
 }
 
-export default function VestPopup({ onClose }) {
+export default function VestPopup({ onClose, update }) {
   return (
     <PopupWithSigner onClose={onClose} title="Vest">
-      <VestPopupContent />
+      <VestPopupContent update={update} />
     </PopupWithSigner>
   );
 }

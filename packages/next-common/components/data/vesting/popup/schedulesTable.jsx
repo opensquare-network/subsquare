@@ -48,13 +48,13 @@ const columns = [
   },
 ];
 
-export default function SchedulesTable({ schedules }) {
+export default function SchedulesTable({ schedules, loading = false }) {
   return (
     <ScrollerX>
       <MapDataList
         columnsDef={columns}
         data={schedules}
-        loading={false}
+        loading={loading}
         noDataText="No schedules"
       />
     </ScrollerX>

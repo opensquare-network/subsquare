@@ -7,7 +7,7 @@ function positiveOr0(v = 0n) {
   return v > 0n ? v : 0n;
 }
 
-function getCurrencyLockedByVesting(locks) {
+export function getCurrencyLockedByVesting(locks) {
   const vestingLock = locks.find(
     (item) => hexToString(item.id.toHex()).trim() === "vesting",
   );
@@ -18,7 +18,7 @@ function getCurrencyLockedByVesting(locks) {
   return vestingLock.amount.toBigInt();
 }
 
-function calculateVestingInfo(
+export function calculateVestingInfo(
   schedules,
   currentHeight,
   balancesLockedByVesting,
