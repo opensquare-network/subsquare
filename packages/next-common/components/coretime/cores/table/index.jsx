@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import TreeMapDataList from "next-common/components/dataList/treeList";
+import { MapDataList } from "next-common/components/dataList";
 import useAllCoreBrokers, { CoreTimeTypes } from "../hooks/useAllCoreBrokers";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { isNil } from "lodash-es";
@@ -35,12 +35,11 @@ export default function CoretimeCoresTable() {
   return (
     <SwitchTimeProvider>
       <SecondaryCard>
-        <TreeMapDataList
+        <MapDataList
           columnsDef={columnsDef}
           data={formattedCores}
           contentClassName="[&_.pb-4]:!pl-[54px]"
           loading={loading}
-          treeKey="workplans"
           noDataText="No cores"
         />
       </SecondaryCard>
