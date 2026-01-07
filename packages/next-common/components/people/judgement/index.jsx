@@ -14,6 +14,7 @@ import Github from "./github";
 import Element from "./element";
 import Loading from "next-common/components/loading";
 import useMyJudgementRequest from "../hooks/useMyJudgementRequest";
+import { PeopleSocialType } from "./consts";
 
 export const tabs = [
   {
@@ -31,6 +32,17 @@ export default function JudgementPage() {
 
   const request = value?.items[0] || null;
 
+  const allSocialTypes = Object.values(PeopleSocialType);
+  const info = request?.info || {};
+  const verification = request?.verification || {};
+  const totalSocials = allSocialTypes.filter((key) =>
+    Boolean(info[key]),
+  ).length;
+  const verifiedSocials = allSocialTypes.filter(
+    (key) => Boolean(info[key]) && verification?.[key] === true,
+  ).length;
+  const pendingSocials = totalSocials - verifiedSocials;
+
   return (
     <PeopleCommonProvider>
       <ListLayout
@@ -45,15 +57,15 @@ export default function JudgementPage() {
           </div>
           <SummaryLayout className="grid-cols-3">
             <SummaryItem title="Verified">
-              <span>0</span>
+              <span>{verifiedSocials}</span>
             </SummaryItem>
             <SummaryItem title="Pending">
-              <span>{0}</span>
+              <span>{pendingSocials}</span>
             </SummaryItem>
-            <SummaryItem title="TotalSocials">
+            <SummaryItem title="Total Socials">
               <span>
-                {0}
-                <SummaryGreyText> / {0}</SummaryGreyText>
+                {totalSocials}
+                <SummaryGreyText> / {allSocialTypes.length}</SummaryGreyText>
               </span>
             </SummaryItem>
           </SummaryLayout>
