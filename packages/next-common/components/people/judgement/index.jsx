@@ -2,11 +2,6 @@ import ListLayout from "next-common/components/layout/ListLayout";
 import ChainSocialLinks from "next-common/components/chain/socialLinks";
 import PeopleCommonProvider from "next-common/components/people/common/commonProvider";
 import generateLayoutRawTitle from "next-common/utils/generateLayoutRawTitle";
-import Account from "next-common/components/account";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { SummaryGreyText } from "next-common/components/summary/styled";
-import SummaryLayout from "next-common/components/summary/layout/layout";
-import SummaryItem from "next-common/components/summary/layout/item";
 import Email from "./email";
 import Discord from "./discord";
 import Twitter from "./twitter";
@@ -14,7 +9,7 @@ import Github from "./github";
 import Element from "./element";
 import Loading from "next-common/components/loading";
 import useMyJudgementRequest from "../hooks/useMyJudgementRequest";
-import { PeopleSocialType } from "./consts";
+import JudgementSummary from "./summary";
 
 export const tabs = [
   {
@@ -26,22 +21,10 @@ export const tabs = [
 ];
 
 export default function JudgementPage() {
-  const address = useRealAddress();
   const { value, loading: isLoadingMyJudgementRequest } =
     useMyJudgementRequest();
 
   const request = value?.items[0] || null;
-
-  const allSocialTypes = Object.values(PeopleSocialType);
-  const info = request?.info || {};
-  const verification = request?.verification || {};
-  const totalSocials = allSocialTypes.filter((key) =>
-    Boolean(info[key]),
-  ).length;
-  const verifiedSocials = allSocialTypes.filter(
-    (key) => Boolean(info[key]) && verification?.[key] === true,
-  ).length;
-  const pendingSocials = totalSocials - verifiedSocials;
 
   return (
     <PeopleCommonProvider>
@@ -51,25 +34,7 @@ export default function JudgementPage() {
         description={"Subsquare judgement"}
         headContent={<ChainSocialLinks />}
       >
-        <div className="bg-neutral100 border-b border-neutral300 p-4 rounded-lg ">
-          <div className="pb-3 flex gap-2">
-            <Account account={{ address }} addressClassName="!text14Medium" />
-          </div>
-          <SummaryLayout className="grid-cols-3">
-            <SummaryItem title="Verified">
-              <span>{verifiedSocials}</span>
-            </SummaryItem>
-            <SummaryItem title="Pending">
-              <span>{pendingSocials}</span>
-            </SummaryItem>
-            <SummaryItem title="Total Socials">
-              <span>
-                {totalSocials}
-                <SummaryGreyText> / {allSocialTypes.length}</SummaryGreyText>
-              </span>
-            </SummaryItem>
-          </SummaryLayout>
-        </div>
+        <JudgementSummary request={request} />
         <div className="pt-4 grid grid-cols-1 gap-4">
           {isLoadingMyJudgementRequest && !request ? (
             <div className="p-4 flex justify-center">
