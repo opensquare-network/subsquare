@@ -81,7 +81,6 @@ const phala = {
     "Phala Network, an off-chain compute network powered by Secure Enclaves, can be utilized to build the MEV core stack with minimal trust assumptions.",
   useVoteCall: true,
   hasMultisig: true,
-  multisigApiPrefix: "phala",
   modules: mergeChainModules({
     treasury: {
       childBounties: true,
@@ -111,7 +110,6 @@ const phala = {
     navigationBorder: "rgba(39,42,58,1)",
   },
   multisigWallets: {
-    signet: true,
     mimir: true,
   },
   allowWeb2Login: true,

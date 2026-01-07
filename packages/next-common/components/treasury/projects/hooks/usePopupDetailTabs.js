@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import ProjectProposalsList from "../projectDetailPopup/proposalsList";
 import ProjectSpendsList from "../projectDetailPopup/spendsList";
 import ProjectChildBountiesList from "../projectDetailPopup/childBountiesList";
+import ProjectTipsList from "../projectDetailPopup/tipsList";
 import useTreasuryItems from "./useTreasuryItems";
 import normalizeTreasuryProposalListItem from "next-common/utils/viewfuncs/treasury/normalizeProposalListItem";
 import normalizeTreasurySpendListItem from "next-common/utils/viewfuncs/treasury/normalizeTreasurySpendListItem";
@@ -11,17 +12,20 @@ import { toPrecision } from "next-common/utils";
 import { CHAIN } from "next-common/utils/constants";
 import getChainSettings from "next-common/utils/consts/settings";
 import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
+import normalizeTipListItem from "next-common/utils/viewfuncs/treasury/normalizeTipListItem";
 
 export const TAB_VALUES = {
   proposals: "proposals",
   spends: "spends",
   childBounties: "childBounties",
+  tips: "tips",
 };
 
 export default function usePopupDetailTabs({
   proposalList,
   spendList,
   childBountyList,
+  tipList,
 }) {
   const normalizedProposalList = useMemo(
     () => proposalList ?? [],
@@ -32,12 +36,14 @@ export default function usePopupDetailTabs({
     () => childBountyList ?? [],
     [childBountyList],
   );
+  const normalizedTipList = useMemo(() => tipList ?? [], [tipList]);
 
-  const { proposalIndexes, spendIndexes, childBountyIndexes } =
+  const { proposalIndexes, spendIndexes, childBountyIndexes, tipIndexes } =
     useFormatIndexes({
       proposalList: normalizedProposalList,
       spendList: normalizedSpendList,
       childBountyList: normalizedChildBountyList,
+      tipList: normalizedTipList,
     });
 
   const { items: proposals, loading: proposalsLoading } = useTreasuryItems({
@@ -59,6 +65,12 @@ export default function usePopupDetailTabs({
       normalizeItem: normalizeChildBountyListItem,
     });
 
+  const { items: tips, loading: tipsLoading } = useTreasuryItems({
+    indexes: tipIndexes,
+    apiPath: "/treasury/tips",
+    normalizeItem: normalizeTipListItem,
+  });
+
   const normalizedProposals = useMemo(
     () => normalizeProposals(proposals, normalizedProposalList),
     [proposals, normalizedProposalList],
@@ -72,6 +84,11 @@ export default function usePopupDetailTabs({
   const normalizedChildBounties = useMemo(
     () => normalizeChildBounties(childBounties, normalizedChildBountyList),
     [childBounties, normalizedChildBountyList],
+  );
+
+  const normalizedTips = useMemo(
+    () => normalizeTips(tips, normalizedTipList),
+    [tips, normalizedTipList],
   );
 
   const tabs = useMemo(
@@ -110,17 +127,28 @@ export default function usePopupDetailTabs({
             />
           ),
         },
+        normalizedTipList?.length > 0 && {
+          value: TAB_VALUES.tips,
+          label: "Tips",
+          activeCount: normalizedTipList?.length,
+          content: (
+            <ProjectTipsList tips={normalizedTips} loading={tipsLoading} />
+          ),
+        },
       ].filter(Boolean),
     [
       normalizedProposals,
       normalizedSpends,
       normalizedChildBounties,
+      normalizedTips,
       normalizedProposalList,
       normalizedSpendList,
       normalizedChildBountyList,
       proposalsLoading,
       spendsLoading,
       childBountiesLoading,
+      normalizedTipList,
+      tipsLoading,
     ],
   );
 
@@ -130,14 +158,17 @@ export default function usePopupDetailTabs({
     proposals: normalizedProposals,
     spends: normalizedSpends,
     childBounties: normalizedChildBounties,
+    tips: normalizedTips,
     // indexes
     proposalIndexes,
     spendIndexes,
     childBountyIndexes,
+    tipIndexes,
     // loading
     proposalsLoading,
     spendsLoading,
     childBountiesLoading,
+    tipsLoading,
   };
 }
 
@@ -150,11 +181,14 @@ function normalizeItemsWithPrice(items, itemList, getItemId) {
   );
   return items.map((item) => {
     const proportion = proportionMap.get(getItemId(item)) ?? 1;
-    const { submission: submissionPrice, final: finalPrice } =
-      item.onchainData?.price ?? {};
+    const {
+      submission: submissionPrice,
+      final: finalPrice,
+      current: currentPrice,
+    } = item.onchainData?.price ?? {};
     const value = BigNumber(item.dValue);
     const fiatAtSubmission = value.times(submissionPrice).toFixed(2);
-    const fiatAtFinal = value.times(finalPrice).toFixed(2);
+    const fiatAtFinal = value.times(finalPrice ?? currentPrice).toFixed(2);
 
     return {
       ...item,
@@ -171,6 +205,10 @@ function normalizeChildBounties(childBounties, childBountyList) {
     childBountyList,
     (childBounty) => childBounty.id,
   );
+}
+
+function normalizeTips(tips, tipList) {
+  return normalizeItemsWithPrice(tips, tipList, (tip) => tip.hash);
 }
 
 function normalizeProposals(proposals, proposalList) {
@@ -197,32 +235,41 @@ function normalizeSpends(spends, spendList) {
   });
 }
 
-function useFormatIndexes({ proposalList, spendList, childBountyList }) {
+function useFormatIndexes({
+  proposalList,
+  spendList,
+  childBountyList,
+  tipList,
+}) {
   return useMemo(() => {
     return {
       proposalIndexes: proposalList?.map((proposal) => proposal.id),
       spendIndexes: spendList?.map((spend) => spend.id),
       childBountyIndexes: childBountyList?.map((childBounty) => childBounty.id),
+      tipIndexes: tipList?.map((tip) => tip.hash),
     };
-  }, [proposalList, spendList, childBountyList]);
+  }, [proposalList, spendList, childBountyList, tipList]);
 }
 
 function getSpendAmount(spend) {
   const { decimals } = getChainSettings(CHAIN);
   const { assetKind, amount } = spend?.extracted ?? {};
-  const { submission: submissionPrice, final: finalPrice } = spend?.price ?? {};
+  const {
+    submission: submissionPrice,
+    final: finalPrice,
+    current: currentPrice,
+  } = spend?.price ?? {};
 
   let fiatAtSubmission = BigNumber(0);
   let fiatAtFinal = BigNumber(0);
-  const nativeAccuracy = Math.pow(10, decimals);
 
   if (assetKind?.type === "native") {
-    fiatAtSubmission = BigNumber(toPrecision(amount, decimals))
-      .times(submissionPrice)
-      .dividedBy(nativeAccuracy);
-    fiatAtFinal = BigNumber(toPrecision(amount, decimals))
-      .times(finalPrice)
-      .dividedBy(nativeAccuracy);
+    fiatAtSubmission = BigNumber(toPrecision(amount, decimals)).times(
+      submissionPrice,
+    );
+    fiatAtFinal = BigNumber(toPrecision(amount, decimals)).times(
+      finalPrice ?? currentPrice,
+    );
   } else if (SYMBOL_DECIMALS[assetKind?.symbol]) {
     const amountInFiat = BigNumber(
       toPrecision(amount, SYMBOL_DECIMALS[assetKind?.symbol]),

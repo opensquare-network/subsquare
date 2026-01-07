@@ -7,7 +7,7 @@ import { toPrecision } from "next-common/utils";
 import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
 import Tooltip from "next-common/components/tooltip";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { isNil } from "lodash-es";
 import { memo, useMemo } from "react";
 import { getRelayChain } from "next-common/utils/chain";

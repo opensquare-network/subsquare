@@ -18,12 +18,35 @@ import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import SignerWithBalance from "../signerPopup/signerWithBalance";
 import { Label } from "../popup/styled";
 import { noop } from "lodash-es";
-import WindowSizeProvider from "next-common/context/windowSize";
 
 const defaultSub = {
   address: "",
   name: "",
 };
+
+export function SubIdentityDepositDisplay({ deposit, isLoading }) {
+  const chainSettings = useChainSettings();
+
+  return (
+    <>
+      <Label>Deposit</Label>
+      <CurrencyInput
+        disabled
+        value={
+          isLoading ? "" : toPrecision(deposit || 0, chainSettings.decimals)
+        }
+        prefix={<LoadableContent isLoading={isLoading} />}
+        symbol={chainSettings.symbol}
+      />
+    </>
+  );
+}
+
+function SubsDeposit({ selectedList }) {
+  const { deposit, isLoading } = useSetSubsDeposit(selectedList);
+
+  return <SubIdentityDepositDisplay deposit={deposit} isLoading={isLoading} />;
+}
 
 export default function SetSubsPopupContent() {
   const { subs, retry = noop } = usePopupParams();
@@ -81,38 +104,34 @@ export default function SetSubsPopupContent() {
   }, [dispatch, retry]);
 
   return (
-    <WindowSizeProvider>
-      <div className="space-y-4">
-        <SignerWithBalance />
+    <div className="space-y-4">
+      <SignerWithBalance />
 
-        {subsList.map((sub, index) => (
-          <SubItem
-            key={index}
-            subId={index}
-            sub={sub}
-            selectedList={addressList}
-            updateSubField={(field, value) =>
-              updateSubField(index, field, value)
-            }
-            onRemove={() => removeSub(index)}
-            extensionAccounts={extensionAccounts}
-          />
-        ))}
+      {subsList.map((sub, index) => (
+        <SubItem
+          key={index}
+          subId={index}
+          sub={sub}
+          selectedList={addressList}
+          updateSubField={(field, value) => updateSubField(index, field, value)}
+          onRemove={() => removeSub(index)}
+          extensionAccounts={extensionAccounts}
+        />
+      ))}
 
-        <AddSubsButton addSub={addSub} />
+      <AddSubsButton addSub={addSub} />
 
-        <SubsDeposit selectedList={addressList} />
+      <SubsDeposit selectedList={addressList} />
 
-        <RightWrapper>
-          <TxSubmissionButton
-            disabled={submitIsDisabled}
-            title="Submit"
-            getTxFunc={getTxFunc}
-            onInBlock={onInBlock}
-          />
-        </RightWrapper>
-      </div>
-    </WindowSizeProvider>
+      <RightWrapper>
+        <TxSubmissionButton
+          disabled={submitIsDisabled}
+          title="Submit"
+          getTxFunc={getTxFunc}
+          onInBlock={onInBlock}
+        />
+      </RightWrapper>
+    </div>
   );
 }
 
@@ -129,27 +148,5 @@ function AddSubsButton({ addSub }) {
         <span>Add Sub</span>
       </div>
     </RightWrapper>
-  );
-}
-
-export function SubsDeposit({ selectedList }) {
-  const chainSettings = useChainSettings();
-  const { deposit, isLoading: isDepositLoading } =
-    useSetSubsDeposit(selectedList);
-
-  return (
-    <>
-      <Label>Deposit</Label>
-      <CurrencyInput
-        disabled
-        value={
-          isDepositLoading
-            ? ""
-            : toPrecision(deposit || 0, chainSettings.decimals)
-        }
-        prefix={<LoadableContent isLoading={isDepositLoading} />}
-        symbol={chainSettings.symbol}
-      />
-    </>
   );
 }

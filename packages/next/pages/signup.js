@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Input from "next-common/lib/input";

@@ -2,14 +2,14 @@ import { Line } from "react-chartjs-2";
 import "next-common/components/summary/centrifugeOverviewSummary/priceCard/chart";
 import dayjs from "dayjs";
 import { noop } from "lodash-es";
-import { useWindowSize } from "react-use";
+import { useWindowWidthContext } from "next-common/context/windowSize";
 import { useThemeSetting } from "next-common/context/theme";
 import { bnToLocaleString } from "next-common/utils/bn";
 
 export default function PriceCardContentChart({ data = [], onHover = noop }) {
   const themeSettings = useThemeSetting();
 
-  const { width } = useWindowSize();
+  const width = useWindowWidthContext();
 
   const labels = data.map?.(({ time }) => time) || [];
   const counts = data.map?.(({ count }) => count) || [];

@@ -26,6 +26,7 @@ const kusamaCoretime = {
   },
   allowWeb2Login: true,
   supportWalletconnect: true,
+  supportPolkadotVault: true,
 };
 
 export default kusamaCoretime;

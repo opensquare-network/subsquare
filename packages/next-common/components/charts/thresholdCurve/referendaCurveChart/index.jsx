@@ -1,7 +1,7 @@
 import useReferendumCurveData from "next-common/utils/hooks/referenda/detail/useReferendumCurveData";
 import { Line } from "react-chartjs-2";
 import hoverLinePlugin from "next-common/components/charts/plugins/hoverLine";
-import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import { useWindowWidthContext } from "next-common/context/windowSize";
 import { useRef } from "react";
 import CustomXTickLabels from "./curveChartCustomXTickLabels";
 import ApprovalBubbleArea from "./approvalBubbleArea";
@@ -17,7 +17,7 @@ export default function ReferendaCurveChart({ showVoter, showAyeNay }) {
   const { referendumIndex } = useOnchainData();
   useFetchReferendaTallyHistory(referendumIndex);
 
-  const { width } = useWindowSize();
+  const width = useWindowWidthContext();
   const chartRef = useRef();
   const chartWrapper = useRef();
   const { labels, supportData, approvalData, totalHours } =

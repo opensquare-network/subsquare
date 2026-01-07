@@ -40,6 +40,7 @@ export function getTreasuryMenu(summary) {
       treasury?.status && {
         value: "status",
         name: Names.status,
+        isNew: true,
         pathname: "/treasury",
       },
       treasury?.spends && {

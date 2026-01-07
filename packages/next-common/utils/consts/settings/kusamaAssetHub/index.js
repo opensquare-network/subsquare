@@ -37,7 +37,6 @@ const kusamaAssetHub = {
     "System parachain on Kusama network for creating and sending tokens and NFTs.",
   ...kusamaAssetHubThemeVars,
   multisigWallets: {
-    signet: true,
     mimir: true,
   },
   modules: {
@@ -47,6 +46,7 @@ const kusamaAssetHub = {
   },
   allowWeb2Login: true,
   supportWalletconnect: true,
+  supportPolkadotVault: true,
   graphqlApiSubDomain: "statemine-gh-api",
   supportForeignAssets: true,
   supportAssets: true,

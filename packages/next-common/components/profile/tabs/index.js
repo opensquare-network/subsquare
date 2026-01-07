@@ -30,6 +30,7 @@ export default function useProfileTabs() {
       fellowship: hasFellowship,
       democracy,
       proxy,
+      vesting,
     },
     integrations,
     hasMultisig,
@@ -150,6 +151,16 @@ export default function useProfileTabs() {
       value: "assets",
       url: `${prefix}assets`,
       root: `${prefix}assets`,
+    });
+  }
+
+  if (vesting) {
+    tabs.push({
+      label({ active }) {
+        return <TabTitle active={active}>Vesting</TabTitle>;
+      },
+      value: "vesting",
+      url: `${prefix}vesting`,
     });
   }
 

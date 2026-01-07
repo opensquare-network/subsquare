@@ -6,7 +6,7 @@ import { CACHE_KEY } from "next-common/utils/constants";
 import { useCookieValue } from "next-common/utils/hooks/useCookieValue";
 import Chains from "next-common/utils/consts/chains";
 import useAssetsFromAssetHub from "../hook/useAssetsFromAssetHub";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { useMemo } from "react";
 import { isEmpty } from "lodash-es";
 import { OnlyChains } from "next-common/components/common/onlyChain";

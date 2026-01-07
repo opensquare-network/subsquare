@@ -1,6 +1,6 @@
 import React from "react";
 import { useOnchainData } from "../../../context/post";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { NavigationWrapper } from "../navigation/navigators";
 import { useChain } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";

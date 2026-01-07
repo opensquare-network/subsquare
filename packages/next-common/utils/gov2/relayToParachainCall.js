@@ -13,6 +13,10 @@ export function isXcmPallet(call) {
   return call.section === "xcmPallet" && call.method === "send";
 }
 
+export function isPolkadotXcmPallet(call) {
+  return call.section === "polkadotXcm" && call.method === "send";
+}
+
 export function isForceBatch(call) {
   return call.section === "utility" && call.method === "forceBatch";
 }
@@ -60,12 +64,14 @@ export function isSupportedParachainCall(parachainId) {
 }
 
 export function isSupportedCallVersion(xcmLocation) {
-  // todo: currently we only support xcm v4 and v3, but we need to support more versions
-  return xcmLocation?.isV4 || xcmLocation?.isV3;
+  // todo: currently we only support xcm v5, v4 and v3, but we need to support more versions
+  return xcmLocation?.isV5 || xcmLocation?.isV4 || xcmLocation?.isV3;
 }
 
 function getLocation(xcmLocation) {
-  if (xcmLocation?.isV4) {
+  if (xcmLocation?.isV5) {
+    return xcmLocation.asV5;
+  } else if (xcmLocation?.isV4) {
     return xcmLocation.asV4;
   } else if (xcmLocation?.isV3) {
     return xcmLocation.asV3;
@@ -81,7 +87,7 @@ export function parseParachain(xcmLocation) {
   if (!location?.interior?.isX1) {
     return null;
   }
-  if (xcmLocation.isV4) {
+  if (xcmLocation.isV5 || xcmLocation.isV4) {
     return location.interior.asX1.find((item) => item.isParachain)?.asParachain;
   } else if (xcmLocation.isV3) {
     return location.interior.asX1.asParachain;
@@ -116,7 +122,7 @@ export function findAllSupportedParachainCalls(call) {
 function findAllXcmPallets(call) {
   const results = [];
 
-  if (isXcmPallet(call)) {
+  if (isXcmPallet(call) || isPolkadotXcmPallet(call)) {
     results.push(call);
     return results;
   }

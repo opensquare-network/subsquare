@@ -110,7 +110,7 @@ export default function WalletConnectProvider({ children }) {
   }, [provider]);
 
   const connect = useCallback(async () => {
-    if (!provider) {
+    if (!provider || !chainId) {
       return;
     }
 

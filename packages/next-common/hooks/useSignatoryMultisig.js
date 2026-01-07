@@ -1,43 +1,28 @@
-import { gql } from "@apollo/client";
-import { useMultisigQuery } from "next-common/hooks/apollo";
-import { useEffect, useState } from "react";
-
-const GET_MULTISIG_ADDRESSES = gql`
-  query MyQuery($limit: Int!, $offset: Int!, $signatory: String) {
-    multisigAddresses(limit: $limit, offset: $offset, signatory: $signatory) {
-      limit
-      multisigAddresses {
-        address
-        signatories
-        threshold
-      }
-      offset
-      total
-    }
-  }
-`;
+import { backendApi } from "next-common/services/nextApi";
+import { useAsync } from "react-use";
+import { useIsRelativesApiAvailable } from "next-common/hooks/useIsPureProxy";
 
 export default function useSignatoryMultisig(address) {
-  const [result, setResult] = useState(null);
-  const { data, loading } = useMultisigQuery(GET_MULTISIG_ADDRESSES, {
-    variables: {
-      signatory: address,
-      limit: 100,
-      offset: 0,
-    },
-  });
+  const isRelativesApiAvailable = useIsRelativesApiAvailable(address);
 
-  useEffect(() => {
-    if (loading || !address) {
-      return;
+  const { value: result, loading } = useAsync(async () => {
+    if (!isRelativesApiAvailable) {
+      return false;
     }
 
-    const { multisigAddresses } = data || {};
-    setResult(multisigAddresses);
-  }, [address, data, loading]);
+    try {
+      const { result } = await backendApi.fetch(
+        `/multisig/signatories/${address}/addresses`,
+      );
 
-  return {
-    result,
-    loading,
-  };
+      return {
+        multisigAddresses: result ?? [],
+        total: result?.length ?? 0,
+      };
+    } catch (error) {
+      return null;
+    }
+  }, [address, isRelativesApiAvailable]);
+
+  return { result, loading };
 }

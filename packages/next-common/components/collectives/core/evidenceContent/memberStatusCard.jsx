@@ -3,7 +3,7 @@ import FellowshipRank from "next-common/components/fellowship/rank";
 import Tooltip from "next-common/components/tooltip";
 import { AddressUser } from "next-common/components/user";
 import { cn } from "next-common/utils";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import CoreFellowshipMemberDemotionPeriod from "../member/demotionPeriod";
 import CoreFellowshipMemberPromotionPeriod from "../member/promotionPeriod";
 

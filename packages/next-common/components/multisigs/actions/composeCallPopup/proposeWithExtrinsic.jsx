@@ -18,7 +18,7 @@ export default function ProposeWithExtrinsic() {
 
   const { timepoint, isTimepointLoading } = useTimepoint(callHash);
 
-  const setValue = useCallback(({ isValid, data }) => {
+  const setValue = useCallback(({ isValid, data } = {}) => {
     if (!isValid || !data) {
       setExtrinsic(null);
       setCallHash(null);

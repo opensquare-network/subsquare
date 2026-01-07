@@ -1,6 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useContextApi } from "next-common/context/api";
 import useCall from "next-common/utils/hooks/useCall";
+import { hexToString } from "@polkadot/util";
+import { convertIdentity } from "next-common/hooks/identity/identityFetch";
 
 function matchJudgementStatus(storageValue) {
   const unwrappedValue = storageValue?.unwrap() || {};
@@ -37,41 +39,94 @@ function isDepositZero(storageValue) {
 
   return deposit === 0;
 }
+function getAddressFromStorageKey(storageKey) {
+  if (storageKey.args[0]) {
+    return storageKey.args[0].toString();
+  }
+}
+const getSubIdentityName = async (api, address) => {
+  if (!api?.query?.identity?.superOf) {
+    return "";
+  }
+  const identity = await api.query.identity
+    .identityOf(address)
+    .then((res) => res.toJSON());
+  if (identity?.info?.display?.raw) {
+    return identity.info.display.raw;
+  }
+  const superOf = await api?.query?.identity?.superOf(address);
+  return superOf?.toJSON()?.[1]?.raw || "";
+};
+
+const getSubIdentity = async (subsMap, address, api) => {
+  const subAddresses = subsMap[address]?.[1] || [];
+  if (subAddresses.length === 0) {
+    return [];
+  }
+  const subIdentityPromises = subAddresses.map(async (subAddress) => {
+    const nameRaw = await getSubIdentityName(api, subAddress);
+    const name = nameRaw ? hexToString(nameRaw) : nameRaw;
+    return { address: subAddress, name };
+  });
+
+  return await Promise.all(subIdentityPromises);
+};
 
 export default function useOnchainPeopleIdentityList() {
   const [isLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
   const api = useContextApi();
   const { value, loaded } = useCall(
     api?.query?.identity?.identityOf?.entries,
     [],
   );
+  const { value: subEntries, loaded: subMapLoaded } = useCall(
+    api?.query?.identity?.subsOf?.entries,
+    [],
+  );
 
-  useEffect(() => {
-    if (!loaded) {
-      return;
-    }
+  const getIdentityData = useCallback(async () => {
+    const subsMap = subEntries.reduce((result, [key, subsOf]) => {
+      const address = getAddressFromStorageKey(key);
+      result[address] = subsOf.toJSON();
+      return result;
+    }, {});
 
-    const results = (value || [])
-      .map(([storageKey, storageValue]) => {
-        if (isDepositZero(storageValue)) {
-          return null;
-        }
+    const results = (
+      await Promise.all(
+        (value || []).map(async ([storageKey, storageValue]) => {
+          if (isDepositZero(storageValue)) {
+            return null;
+          }
 
-        const address = storageKey?.args[0]?.toString();
-        const status = matchJudgementStatus(storageValue);
+          const address = storageKey?.args[0]?.toString();
+          const status = matchJudgementStatus(storageValue);
+          const storageData = convertIdentity(storageValue);
+          const display = storageData.info.display || "";
 
-        return {
-          address,
-          ...storageValue?.toJSON(),
-          status,
-        };
-      })
-      ?.filter(Boolean);
+          return {
+            address,
+            name: display,
+            ...storageData,
+            status,
+            subIdentities: await getSubIdentity(subsMap, address, api),
+          };
+        }),
+      )
+    )
+      ?.filter(Boolean)
+      .sort((a, b) => a.name.localeCompare(b.name));
 
     setData(results);
     setIsLoading(false);
-  }, [loaded, value]);
+  }, [api, subEntries, value]);
+
+  useEffect(() => {
+    if (!loaded || !subMapLoaded) {
+      return;
+    }
+    getIdentityData();
+  }, [getIdentityData, loaded, subMapLoaded]);
 
   return {
     isLoading,

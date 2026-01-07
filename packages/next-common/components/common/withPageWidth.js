@@ -1,7 +1,7 @@
-import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import { useWindowWidthContext } from "next-common/context/windowSize";
 import { isNil } from "lodash-es";
 
 export default function WithPageWidth({ children }) {
-  const { width } = useWindowSize();
+  const width = useWindowWidthContext();
   return isNil(width) ? null : children;
 }

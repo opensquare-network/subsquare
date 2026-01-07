@@ -7,12 +7,5 @@ import { useAssetsTransfersHistoryTimeAgeColumn } from "next-common/components/a
 
 export const useForeignAssetTransfersColumnsDef = () => {
   const timeAgeColumn = useAssetsTransfersHistoryTimeAgeColumn();
-  return [
-    colToken,
-    colId,
-    colFrom,
-    colTo,
-    timeAgeColumn,
-    colAmount,
-  ];
+  return [colToken, colId, colFrom, colTo, timeAgeColumn, colAmount];
 };

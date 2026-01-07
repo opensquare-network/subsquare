@@ -4,7 +4,7 @@ import Loading from "../loading";
 import ChainIcon from "./chainIcon";
 import { ArrowDown } from "@osn/icons/subsquare";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
-import { useWindowSize } from "react-use";
+import { useWindowSizeContext } from "next-common/context/windowSize";
 import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import SecondaryButton from "next-common/lib/button/secondary";
@@ -46,7 +46,7 @@ function NetworkEntryWithChainName({ activeNode }) {
 
 export default function NetworkSwitch({ activeNode }) {
   const [show, setShow] = useState(false);
-  const windowSize = useWindowSize();
+  const windowSize = useWindowSizeContext();
 
   useEffect(() => {
     if (windowSize.width && windowSize.width <= 768) {

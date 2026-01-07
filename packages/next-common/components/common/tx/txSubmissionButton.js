@@ -6,6 +6,7 @@ import useTxSubmission from "./useTxSubmission";
 import { usePopupOnClose } from "next-common/context/popup";
 
 export default function TxSubmissionButton({
+  api,
   loading = false,
   loadingText,
   disabled = false,
@@ -18,6 +19,7 @@ export default function TxSubmissionButton({
 }) {
   const onClose = usePopupOnClose();
   const { isSubmitting, isWrapping, doSubmit } = useTxSubmission({
+    api,
     getTxFunc,
     onFinalized,
     onInBlock,

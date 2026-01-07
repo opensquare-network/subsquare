@@ -1,5 +1,5 @@
 import SummaryItem from "next-common/components/summary/layout/item";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import LoadableContent from "next-common/components/common/loadableContent";
 import NativeTokenSymbolAsset from "../common/nativeTokenSymbolAsset";
 import FiatPriceLabel from "../common/fiatPriceLabel";

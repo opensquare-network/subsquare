@@ -1,5 +1,5 @@
 import React from "react";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { ItemLink, ItemWrapper } from "./styled";
 
 export default function TrackItem({ track, trackName, baseUrl = "" }) {

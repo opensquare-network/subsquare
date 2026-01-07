@@ -41,7 +41,6 @@ const polkadotAssetHub = {
     "System parachain on Polkadot network for creating and sending tokens and NFTs.",
   ...polkadotAssetHubThemeVars,
   multisigWallets: {
-    signet: true,
     mimir: true,
   },
   modules: {
@@ -51,6 +50,7 @@ const polkadotAssetHub = {
   },
   allowWeb2Login: true,
   supportWalletconnect: true,
+  supportPolkadotVault: true,
   graphqlApiSubDomain: "ahp-gh-api",
   supportForeignAssets: true,
   supportAssets: true,

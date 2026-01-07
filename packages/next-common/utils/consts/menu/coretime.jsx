@@ -3,6 +3,7 @@ import {
   MenuCoretime,
   MenuOverview,
   MenuHistory,
+  MenuTracks,
 } from "@osn/icons/subsquare";
 import { NAV_MENU_TYPE } from "next-common/utils/constants";
 
@@ -26,6 +27,12 @@ export const coretimeMenu = {
       pathname: "/coretime/sales",
       icon: <MenuHistory />,
       extraMatchNavMenuActivePathnames: ["/coretime/sales/[id]"],
+    },
+    {
+      name: "Cores",
+      value: "cores",
+      pathname: "/coretime/cores",
+      icon: <MenuTracks />,
     },
   ],
 };

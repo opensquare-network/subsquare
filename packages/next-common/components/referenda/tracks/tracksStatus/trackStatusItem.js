@@ -3,7 +3,7 @@ import { startCase } from "lodash-es";
 import useReferendaTrackDetail from "next-common/hooks/referenda/useReferendaTrackDetail";
 import PreparingBucketStatus from "./preparingBucketStatus";
 import OngoingBucketStatus from "./ongoingBucketStatus";
-import Link from "next/link";
+import Link from "next-common/components/link";
 
 const ArrowRight = dynamic(() => import("@osn/icons/subsquare/ArrowRight"));
 

@@ -1,6 +1,6 @@
 import React from "react";
 import Tooltip from "../../tooltip";
-import Link from "next/link";
+import Link from "next-common/components/link";
 
 export default function ActiveValue({ tooltip, href, value }) {
   return (

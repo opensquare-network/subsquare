@@ -61,6 +61,7 @@ const kusamaPeople = {
   },
   allowWeb2Login: true,
   supportWalletconnect: true,
+  supportPolkadotVault: true,
 };
 
 export default kusamaPeople;

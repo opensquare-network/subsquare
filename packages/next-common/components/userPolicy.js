@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import ErrorText from "next-common/components/ErrorText";
 import {
   SystemCheckboxDisabled,

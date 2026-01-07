@@ -1,6 +1,6 @@
 import { ArrowRight } from "@osn/icons/subsquare";
 import dayjs from "dayjs";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import DvStatusTag from "next-common/components/tags/state/dv";
 import Tooltip from "next-common/components/tooltip";
 import ValueDisplay from "next-common/components/valueDisplay";

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "next-common/components/link";
 import tw from "tailwind-styled-components";
 
 const LinkButton = tw(Link)`

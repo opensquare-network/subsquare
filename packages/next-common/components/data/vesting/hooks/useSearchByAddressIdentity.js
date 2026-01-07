@@ -21,7 +21,7 @@ export default function useSearchByAddressIdentity(
   );
 
   useEffect(() => {
-    const allAddresses = allItems?.map((item) => item.address);
+    const allAddresses = allItems?.map((item) => item.account);
 
     const fetchIdentities = async () => {
       const identities = await fetchBatchIdentities(
@@ -43,13 +43,13 @@ export default function useSearchByAddressIdentity(
 
     if (isAddress(debouncedSearchValue)) {
       return allItems?.filter(
-        ({ address }) =>
-          address.toLowerCase() === debouncedSearchValue.toLowerCase(),
+        ({ account }) =>
+          account.toLowerCase() === debouncedSearchValue.toLowerCase(),
       );
     }
 
-    return allItems?.filter(({ address }) => {
-      const identityMatch = identityMapping[address]
+    return allItems?.filter(({ account }) => {
+      const identityMatch = identityMapping[account]
         ?.toLowerCase()
         .includes(search);
 

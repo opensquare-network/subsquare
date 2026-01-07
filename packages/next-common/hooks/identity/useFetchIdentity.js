@@ -1,17 +1,10 @@
 import { useEffect, useState } from "react";
-import {
-  convertIdentity,
-  InitIdentityInfo,
-  InitIdentityJudgements,
-} from "./useIdentityOf";
+import { defaultIdentityOfData, fetchIdentityOf } from "./identityFetch";
 
 export function useFetchIdentity(api, address) {
   const [isLoading, setIsLoading] = useState(true);
 
-  const [identity, setIdentity] = useState({
-    info: InitIdentityInfo,
-    judgements: InitIdentityJudgements,
-  });
+  const [identity, setIdentity] = useState(defaultIdentityOfData);
 
   useEffect(() => {
     if (!api || !address) {
@@ -20,21 +13,11 @@ export function useFetchIdentity(api, address) {
     async function fetchIdentity() {
       try {
         setIsLoading(true);
-        const apiResult = await api.query?.identity.identityOf(address);
-        if (apiResult && !apiResult.isNone) {
-          setIdentity(convertIdentity(apiResult));
-        } else {
-          setIdentity({
-            info: InitIdentityInfo,
-            judgements: InitIdentityJudgements,
-          });
-        }
+        const data = await fetchIdentityOf(api, address);
+        setIdentity(data);
       } catch (error) {
         console.error(error);
-        setIdentity({
-          info: InitIdentityInfo,
-          judgements: InitIdentityJudgements,
-        });
+        setIdentity(defaultIdentityOfData);
       } finally {
         setIsLoading(false);
       }

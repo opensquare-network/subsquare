@@ -5,7 +5,7 @@ import NavMenu from "./menu";
 import tw from "tailwind-styled-components";
 import HeaderDrawer from "../header/drawer";
 import { ArrowFold, SystemClose, SystemMenu } from "@osn/icons/subsquare";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { useNavCollapsed } from "next-common/context/nav";
 import { useScrollLock } from "next-common/utils/hooks/useScrollLock";
 import { useEffect, useMemo } from "react";

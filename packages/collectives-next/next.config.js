@@ -26,18 +26,60 @@ const config = {
       },
     ];
   },
-  webpack(config, { dev }) {
+  webpack(config, { dev, isServer }) {
+    // Enable WASM support for Hydration SDK (from next-common dependency)
+    config.experiments = {
+      ...config.experiments,
+      asyncWebAssembly: true,
+    };
+
+    config.module.rules.push({
+      test: /\.wasm$/,
+      type: "webassembly/async",
+    });
+
+    // Explicitly declare that the target environment supports async/await
+    if (!isServer) {
+      config.output.environment = {
+        ...config.output.environment,
+        asyncFunction: true,
+      };
+    }
+
+    // For server-side, exclude Hydration WASM modules to avoid build errors
+    if (isServer) {
+      config.externals = config.externals || [];
+      if (Array.isArray(config.externals)) {
+        config.externals.push({
+          "@galacticcouncil/math-omnipool":
+            "commonjs @galacticcouncil/math-omnipool",
+          "@galacticcouncil/math-xyk": "commonjs @galacticcouncil/math-xyk",
+          "@galacticcouncil/math-stableswap":
+            "commonjs @galacticcouncil/math-stableswap",
+          "@galacticcouncil/math-liquidity-mining":
+            "commonjs @galacticcouncil/math-liquidity-mining",
+        });
+      }
+    }
+
     // Treat warnings as errors if we're not in development.
     if (!dev) {
       config.optimization.minimizer = config.optimization.minimizer || [];
       config.optimization.minimizer.push({
         apply(compiler) {
           compiler.hooks.afterEmit.tap("AfterEmitPlugin", (compilation) => {
-            if (compilation.warnings.length > 0) {
+            // Filter out WASM async/await warnings from Hydration SDK
+            const filteredWarnings = compilation.warnings.filter(
+              (warning) =>
+                !(
+                  warning.message.includes("asyncWebAssembly") ||
+                  (warning.message.includes("async/await") &&
+                    warning.message.includes("@galacticcouncil"))
+                ),
+            );
+            if (filteredWarnings.length > 0) {
               throw new Error(
-                compilation.warnings
-                  .map((warning) => warning.message)
-                  .join("\n\n"),
+                filteredWarnings.map((warning) => warning.message).join("\n\n"),
               );
             }
           });

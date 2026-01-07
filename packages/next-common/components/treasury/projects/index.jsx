@@ -1,35 +1,20 @@
-import dynamic from "next/dynamic";
-const Statistics = dynamic(() => import("./statistics"), {
-  ssr: false,
-});
+import { useState } from "react";
+import { CATEGORIZED_TAB_ID, TABLE_TAB_ID } from "./viewTypeTabs";
+import HeaderBar from "./headerBar";
+import StatisticsView from "./statisticsView";
+import TableView from "./tableView";
 
-const CATEGORY_VALUES = {
-  WALLET: "wallet",
-  MULTISIG_TOOLS: "multisig_tools",
-  EXPLORER: "explorer",
-};
+export default function TreasuryProjectsContent() {
+  const [selectedTabId, setSelectedTabId] = useState(CATEGORIZED_TAB_ID);
 
-const categories = [
-  {
-    label: "Wallets",
-    value: CATEGORY_VALUES.WALLET,
-  },
-  {
-    label: "Multisig Tools",
-    value: CATEGORY_VALUES.MULTISIG_TOOLS,
-  },
-  {
-    label: "Explorers",
-    value: CATEGORY_VALUES.EXPLORER,
-  },
-];
-
-export default function TreasuryProjects() {
-  return categories.map((category) => (
-    <Statistics
-      key={category.value}
-      label={category.label}
-      category={category.value}
-    />
-  ));
+  return (
+    <div className="flex flex-col gap-y-6">
+      <HeaderBar
+        selectedTabId={selectedTabId}
+        setSelectedTabId={setSelectedTabId}
+      />
+      {selectedTabId === CATEGORIZED_TAB_ID && <StatisticsView />}
+      {selectedTabId === TABLE_TAB_ID && <TableView />}
+    </div>
+  );
 }

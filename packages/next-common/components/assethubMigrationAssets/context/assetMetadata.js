@@ -20,9 +20,7 @@ function DataUpdater({ children }) {
 export function AssetMetadataProvider({ children }) {
   return (
     <InnerProvider>
-      <DataUpdater>
-        {children}
-      </DataUpdater>
+      <DataUpdater>{children}</DataUpdater>
     </InnerProvider>
   );
 }

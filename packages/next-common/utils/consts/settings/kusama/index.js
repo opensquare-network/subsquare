@@ -45,6 +45,7 @@ const kusama = {
     intime: {
       preimage: true,
       proxy: true,
+      referendaVotes: true,
     },
   },
   postLabels: defaultPostLabels,
@@ -60,6 +61,7 @@ const kusama = {
     },
     fellowship: true,
     whales: true,
+    scheduler: true,
     democracy: {
       archived: true,
     },
@@ -95,7 +97,6 @@ const kusama = {
     },
   },
   multisigWallets: {
-    signet: true,
     mimir: true,
   },
   treasuryProposalTracks: kusamaTreasuryTracks,
@@ -113,6 +114,7 @@ const kusama = {
     startFrom: 538,
   },
   supportWalletconnect: true,
+  supportPolkadotVault: true,
   openSquare: {
     voting: "kusama",
   },

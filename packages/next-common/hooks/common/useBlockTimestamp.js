@@ -1,13 +1,14 @@
 import { useSelector } from "react-redux";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import { useContextApi } from "next-common/context/api";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getBlockTimeByHeight } from "next-common/utils/blockTime";
 import BigNumber from "bignumber.js";
 import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
 
-export default function useBlockTimestamp(height) {
-  const api = useContextApi();
+export default function useBlockTimestamp(height, specifiedApi = null) {
+  const contextApi = useContextApi();
+  const api = specifiedApi ?? contextApi;
   const oneBlockTime = useSelector(blockTimeSelector);
   const chainHeight = useAhmLatestHeight();
   const [timestamp, setTimestamp] = useState(null);
@@ -37,4 +38,22 @@ export default function useBlockTimestamp(height) {
     isEstimated,
     isLoading,
   };
+}
+
+export function useCalculatedBlockTimestamp(height) {
+  const oneBlockTime = useSelector(blockTimeSelector);
+  const chainHeight = useAhmLatestHeight();
+
+  return useMemo(() => {
+    if (!oneBlockTime || !chainHeight || !height) {
+      return null;
+    }
+    return calculateBlockTimestamp(height, oneBlockTime, chainHeight);
+  }, [height, oneBlockTime, chainHeight]);
+}
+
+export function calculateBlockTimestamp(height, oneBlockTime, chainHeight) {
+  const now = new Date().getTime();
+  const heightDiff = height - chainHeight;
+  return BigNumber(oneBlockTime).multipliedBy(heightDiff).plus(now).toNumber();
 }

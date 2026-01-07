@@ -3,7 +3,7 @@ import { FellowshipFeedEventLabel } from "next-common/components/fellowship/feed
 import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
 
 export function FellowshipRegisteredFeedContent({ amount, index }) {

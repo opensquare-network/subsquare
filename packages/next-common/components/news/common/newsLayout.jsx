@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { useIsLoggedIn } from "next-common/context/user";
 import Toast from "next-common/components/toast";
 import PrimaryButton from "next-common/lib/button/primary";

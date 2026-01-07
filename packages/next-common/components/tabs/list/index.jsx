@@ -1,7 +1,7 @@
 import { cn } from "next-common/utils";
 import { forwardRef, useEffect, useRef, useState } from "react";
 import _TabsListItem from "./item";
-import { useWindowSize } from "react-use";
+import { useWindowWidthContext } from "next-common/context/windowSize";
 import { useRouter } from "next/router";
 import { find, isNil } from "lodash-es";
 import { GradientBlanket } from "next-common/components/styled/tabList";
@@ -21,7 +21,7 @@ function TabsListImpl(
   const [showLeft, setShowLeft] = useState(false);
   const [showRight, setShowRight] = useState(false);
   const listRef = useRef();
-  const { width } = useWindowSize();
+  const width = useWindowWidthContext();
 
   useEffect(() => {
     if (listRef.current) {

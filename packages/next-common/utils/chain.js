@@ -116,8 +116,16 @@ export function isHyperBridgeChain(chain) {
   return [Chains.hyperBridge].includes(chain);
 }
 
+export function isHydrationChain(chain) {
+  return [Chains.hydradx, Chains.hydradxTestnet].includes(chain);
+}
+
 export function isCoretimeChain(chain) {
   return [Chains.kusamaCoretime, Chains.polkadotCoretime].includes(chain);
+}
+
+export function isBifrostChain(chain) {
+  return [Chains.bifrostPolkadot, Chains.bifrost].includes(chain);
 }
 
 export function getAssetHubChain(chain) {

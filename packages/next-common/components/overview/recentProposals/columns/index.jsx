@@ -8,7 +8,7 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { CHAIN } from "next-common/utils/constants";
 import getChainSettings from "next-common/utils/consts/settings";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
 import businessCategory from "next-common/utils/consts/business/category";
 import { getMotionStateArgs } from "next-common/utils/collective/result";

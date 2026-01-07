@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { Index } from "../styled";
 import styled from "styled-components";
 import { cn } from "next-common/utils";

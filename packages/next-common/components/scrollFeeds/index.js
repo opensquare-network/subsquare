@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAnimate } from "framer-motion";
-import { useWindowSize } from "react-use";
+import { useWindowWidthContext } from "next-common/context/windowSize";
 import FellowshipFeedSuffix from "../fellowship/feeds/suffix";
 import FellowshipFeedLeadingBar from "../fellowship/feeds/leading";
 import { AddressUser } from "../user";
@@ -10,7 +10,7 @@ import FellowshipCommonEvent, {
 } from "../feeds/fellowshipCommonEvent";
 import { cn } from "next-common/utils";
 import { GreyPanel } from "../styled/containers/greyPanel";
-import Link from "next/link";
+import Link from "next-common/components/link";
 
 const ITEM_HEIGHT = 53;
 const MOBILE_ITEM_HEIGHT = 96;
@@ -21,7 +21,7 @@ export default function ScrollFeeds({
   pageSize = 6,
   defaultStep = 1,
 }) {
-  const { width } = useWindowSize();
+  const width = useWindowWidthContext();
   const isMobile = width < 768;
   const step = defaultStep;
   const [feedPages, setFeedPages] = useState([]);
@@ -142,7 +142,7 @@ export default function ScrollFeeds({
 }
 
 function ScrollFeedItem({ item, isLast, isFirst }) {
-  const { width } = useWindowSize();
+  const width = useWindowWidthContext();
   const isMobile = width < 768;
   const showUserInfo = item?.showUserInfo ?? true;
   const who = item?.args?.who;

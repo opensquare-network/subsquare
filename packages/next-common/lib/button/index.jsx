@@ -1,6 +1,6 @@
 import { SystemLoading } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
-import { forwardRef } from "react";
+import { forwardRef, useMemo } from "react";
 
 const Button = forwardRef(_Button);
 
@@ -21,6 +21,13 @@ function _Button(props, ref) {
     iconRight,
     ...attrs
   } = props ?? {};
+
+  const content = useMemo(() => {
+    if (typeof children === "string") {
+      return <span>{children}</span>;
+    }
+    return children;
+  }, [children]);
 
   const smallSize = size === "small";
   const iconSize = size === "icon" || loading;
@@ -68,7 +75,7 @@ function _Button(props, ref) {
               {iconLeft}
             </span>
           )}
-          {children}
+          {content}
           {iconRight && (
             <span className="icon-right inline-flex ml-1">{iconRight}</span>
           )}

@@ -2,6 +2,113 @@
 
 All notable changes to this project will be documented in this file.
 
+# 6.0.0
+
+Date:
+2026-01-04. [Code diff](https://github.com/opensquare-network/subsquare/compare/31b96ed6c02d28b97e11dce31dc031f3a4cf706c...8c858a58a685af72b443799735552d306dbf3cf9).
+
+- [Big] Support staking,
+  code [here](https://github.com/opensquare-network/subsquare/commit/a3d467d6dac020a5e6ce1d5d00f97a9bdba17a80):
+    - Show all validators.
+    - Show all staking pools.
+    - Support connected user to bond balances, set nominations, join staking pools, claim rewards, etc.
+- [Medium] Support polkadot vault(parity signer),
+  code [here](https://github.com/opensquare-network/subsquare/commit/cdafb731e55951b61a35baade7aa92e581b1eba8).
+- [Medium] Show total hydration asset value on the polkadot user profile page.
+- [Medium] Refactor vesting data table and aggregate vesting data by address not by schedules.
+- Move coretime and people menu out of the advanced menu.
+- Walletconnect:
+    - Fix bad signature issue.
+    - Fix high CPU usage issue by walletconnect.
+- Remove support of signet.
+- Refactor the code to query identity to improve stability.
+- Fix child bounty page crash due to null data return by balance subscription.
+- Remove dotreasury setting from centrifuge.
+- Upgrade dependencies and fix styles.
+
+# 5.5.7
+
+Date:
+2025-12-24. [Code diff](https://github.com/opensquare-network/subsquare/compare/7e9cd02755641baf290a68ea1b1ceff80d354d61...3465bf51d768bb2e509f22635977230708826a60).
+
+- Treasury statistics:
+    - Add media/BD category to treasury funded project statistics.
+    - Add more projects to all categories.
+    - Add vertical bars on treasury projects category tab to show fund total amount comparison.
+    - Add a table view for all funded projects.
+    - Add tags to some treasury beneficiary address.
+- Change the way to query all on-chain identities and show all identities in a tree view.
+- Enable transfer for hyperbridge.
+- Add a `translate="no"` attribute to `ValueDisplay` to prevent page crash when translating some pages.
+- Add a stable spend referenda template for hydration and show the request amount on the referendum detail page.
+- Correct subscan link after assethub migration for polkadot and kusama.
+- Click to switch between concrete time and gap for treasury burn time column.
+- Fix a style bug to remove the unnecessary scroll bar when there are few votes.
+- Fix the execution count down component on the democracy referendum detail page due to assethub migration.
+- Fix kusama fellowship referendum decision deposit.
+- Remove multisig for centrifuge/interlay/khala/phala/litmus.
+- Upgrade dependencies and fix styles.
+
+# 5.5.6
+
+Date:
+2025-12-08. [Code diff](https://github.com/opensquare-network/subsquare/compare/beb08415bc5857256c8b04ab25cdd080266660ed...1abba322306aa49c273240451471749798ec3714).
+
+- Add more projects to treasury statistics. Categories include marketing, events, education, hackathons, and other
+  developments. Projects include Inter Miami, Conor Daly, Sub0, etc.
+- Fix bugs in hook `useSubStorage` to prevent wrong data subscription.
+- Correct submission and decision refund button status on the referendum detail page.
+- Use intime votes data from subsquare graphql API for active referenda. Data from the API is served by intime indexing
+  scripts, so we don't have to wait block finalization.
+- Refactor menus:
+    - Move off-chain voting and navigation menus under the advanced menu.
+    - Move up the referenda menu under the account menu so users can see it more easily.
+- Support XCM v5 decode so we can show cross-chain calls on the referendum detail page if a call is written with XCM v5.
+- Archive tips module for hydration to fix the account deposits loading bug.
+- Not show sub identity related buttons if not right user.
+- Search UX enhancement: not close the search popup when we try to click a search result proposal in a new tab.
+- Scheduler: 1. Fix timestamp calculation on the scheduler page; 2. Only turn on scheduler for selected chains.
+- Improve external link handling when hovering menu items. We add a guard to prevent null link value.
+- Upgrade next.js to 15.4.8.
+
+# 5.5.5
+
+Date:
+2025-12-01. [Code diff](https://github.com/opensquare-network/subsquare/compare/5a4fa25f78c92a22d1f0ff63ce400ad0464a22b3...41c860def6c6f57adcf821bc349248e08e82de26).
+
+- Add scheduler page to show scheduled calls.
+- Search:
+    - Support searching tips by tip title.
+    - Improve search loading so content which doesn't depend on RPC connection can show first.
+- Add treasury fund statistics for polkadot host clients including Gossamer and KAGOME.
+- Refactor and improve treasury fund projects page style.
+- Index all history multisig addresses and save their related info to the database. Then we query multisig info with
+  subsquare backend API, not from explorer API.
+- Preimage:
+    - Tech: support btreemap in preimage construction.
+    - Disable the remove button when unnecessary.
+- Bifrost: correct track selection in the treasury spend referenda template.
+- Move calendar under the advanced menu from the main menu.
+- Upgrade dependencies and improve style.
+
+# 5.5.4
+
+Date:
+2025-11-26. [Code diff](https://github.com/opensquare-network/subsquare/compare/a15344be902f48348bf30d5836520b0454d15ec2...81ebc44243a859ab3e3a737f0c2f0dcdda5bf812).
+
+- Add explorers, multisig tools and governance platforms treasury fund statistics on the treasury projects page.
+- Index and save pure accounts to subsquare database. And in fronted, we use subsquare backend API to get pure account
+  info taking place of the old explorer API.
+- Redesign the block height component and show block height on footer for relay chains.
+- Add batch treasury spends template on the referenda page.
+- Fellowship: load fellowship related data from backend API to improve the performance of the fellowship statistics
+  page.
+- Fix the sort of identity timeline by ordering by time instead of block height. Ordering by block height is incorrect
+  after AHM.
+- Update bifrost kusama endpoints.
+- Improve coinbase telemetry options to remove console errors.
+- Improve sub menu styles.
+
 # 5.5.3
 
 Date:

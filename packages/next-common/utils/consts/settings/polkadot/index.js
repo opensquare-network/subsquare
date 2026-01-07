@@ -43,9 +43,9 @@ const polkadot = {
   links: polkadotLinks,
   postLabels: defaultPostLabels,
   hasIdentity: true,
-  graphqlApiSubDomain: "dot-gh-api",
+  graphqlApiSubDomain: "d-gh-api",
   graphql: {
-    domain: "dot-gh-api",
+    domain: "d-gh-api",
     identity: true,
     multisig: false,
   },
@@ -55,6 +55,7 @@ const polkadot = {
     intime: {
       preimage: true,
       proxy: true,
+      referendaVotes: true,
     },
   },
   hasMultisig: true,
@@ -65,6 +66,7 @@ const polkadot = {
     "Polkadot empowers blockchain networks to work together under the protection of shared security.",
   modules: mergeChainModules({
     whales: true,
+    scheduler: true,
     democracy: {
       archived: true,
     },
@@ -91,6 +93,7 @@ const polkadot = {
     people: true,
     vesting: true,
     whitelist: true,
+    staking: true,
   }),
   integrations: {
     doTreasury: true,
@@ -104,7 +107,6 @@ const polkadot = {
     },
   },
   multisigWallets: {
-    signet: true,
     mimir: true,
   },
   treasuryProposalTracks: polkadotTreasuryTracks,
@@ -124,6 +126,7 @@ const polkadot = {
     startFrom: 1584,
   },
   supportWalletconnect: true,
+  supportPolkadotVault: true,
   openSquare: {
     voting: "polkadot",
   },
@@ -135,6 +138,9 @@ const polkadot = {
   supportAssets: true,
   bountyIdentity: true,
   hideHeight: true,
+  ecoAssets: {
+    hydration: true,
+  },
 };
 
 export default polkadot;

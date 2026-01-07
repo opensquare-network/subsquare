@@ -16,13 +16,19 @@ import {
   CancelReferendumButton,
   KillReferendumButton,
   BatchSpendTreasuryButton,
+  HydrationTreasurySpendButton,
 } from "./templateButtons";
-import { isCollectivesChain, isShibuyaChain } from "next-common/utils/chain";
+import {
+  isCollectivesChain,
+  isHydrationChain,
+  isShibuyaChain,
+} from "next-common/utils/chain";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import ForwardPopupProvider, {
   useForwardPopupContext,
 } from "next-common/context/forwardPopup";
 import BatchTreasurySpendPopup from "./templates/batchTreasurySpendPopup";
+import HydrationTreasurySpendPopup from "./templates/hydrationTreasurySpendPopup";
 
 export function QuickStart({ children }) {
   return (
@@ -105,6 +111,16 @@ function SpendDotOnAssetHub() {
   );
 }
 
+function HydrationTreasurySpend() {
+  const { setForwardPopup } = useForwardPopupContext();
+
+  return (
+    <HydrationTreasurySpendButton
+      onClick={() => setForwardPopup(<HydrationTreasurySpendPopup />)}
+    />
+  );
+}
+
 function NewRemark() {
   const { setForwardPopup } = useForwardPopupContext();
   return (
@@ -153,6 +169,7 @@ function ProposalTemplateQuickStart() {
       {!isCollectivesChain(chain) && !isShibuyaChain(chain) && (
         <SpendLocalTreasury />
       )}
+      {isHydrationChain(chain) && <HydrationTreasurySpend />}
       <SpendUSDxTreasury />
       <SpendDotOnAssetHub />
       <BatchTreasurySpend />

@@ -4,7 +4,6 @@ import PrimaryButton from "next-common/lib/button/primary";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { ArrowDown } from "@osn/icons/subsquare";
 import { ActionIconButton, MultisigAccount, SignatorieAccount } from "./styled";
-import WindowSizeProvider from "next-common/context/windowSize";
 import IndentPanel from "../callTreeView/indentPanel";
 import { cn } from "next-common/utils";
 import Tooltip from "../tooltip";
@@ -53,15 +52,13 @@ export default function MultisigAccountsList() {
   const { multisigs = [], isLoading } = useMultisigAccounts();
 
   return (
-    <WindowSizeProvider>
-      <div className="flex flex-col gap-y-4">
-        <MultisigAccountList
-          multisigs={multisigs}
-          isLoading={isLoading && multisigs.length === 0}
-        />
-        <AddMultisigButton />
-      </div>
-    </WindowSizeProvider>
+    <div className="flex flex-col gap-y-4">
+      <MultisigAccountList
+        multisigs={multisigs}
+        isLoading={isLoading && multisigs.length === 0}
+      />
+      <AddMultisigButton />
+    </div>
   );
 }
 

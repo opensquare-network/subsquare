@@ -1,4 +1,5 @@
 import React from "react";
+import dynamic from "next/dynamic";
 import Posted from "../posted";
 import VotingHistory from "../votingHistory";
 import ProfileMultisigs from "../multisigs";
@@ -15,6 +16,12 @@ import ProfileTreasury from "../treasury";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import ProfileAssets from "next-common/components/profile/assets";
 import ProfileForeignAssets from "next-common/components/profile/foreignAssets";
+import ProfileVesting from "next-common/components/profile/vesting";
+
+const ProfileHydrationAssets = dynamic(
+  () => import("next-common/components/profile/hydrationAssets"),
+  { ssr: false },
+);
 
 export default function useProfileTabContent() {
   const { id } = usePageProps();
@@ -39,8 +46,11 @@ export default function useProfileTabContent() {
       <div className="flex flex-col gap-[16px]">
         <ProfileAssets />
         <ProfileForeignAssets />
+        <ProfileHydrationAssets />
       </div>
     );
+  } else if (pathname.startsWith(`/user/${maybeEvmAddress}/vesting`)) {
+    return <ProfileVesting />;
   } else if (pathname.startsWith(`/user/${maybeEvmAddress}/fellowship`)) {
     return (
       <CollectivesProvider section="fellowship">

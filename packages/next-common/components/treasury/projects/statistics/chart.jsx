@@ -1,51 +1,43 @@
-import { useMemo } from "react";
-import { colors } from "./doughnutChart";
-import BigNumber from "bignumber.js";
 import ProjectDoughnutChart from "./doughnutChart";
 import ProjectIndicators from "./projectIndicators";
 import ProjectSummary from "./summary";
+import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
+import useChartData from "../hooks/useChartData";
 
-export default function ProjectStatisticsChart({ projects, totalFiat }) {
-  const data = useMemo(() => {
-    if (!projects?.length) {
-      return null;
-    }
-    const projectColors = projects.map(
-      (_, index) => colors[index % colors.length],
+export default function ProjectStatisticsChart({
+  projects,
+  totalFiat,
+  category,
+}) {
+  const isMobile = useIsMobile();
+  const data = useChartData({ projects, totalFiat, category });
+  if (isMobile) {
+    return (
+      <ProjectStatisticsChartMobile
+        data={data}
+        projects={projects}
+        totalFiat={totalFiat}
+      />
     );
-    const projectNames = projects.map((project) => project.name);
-    const projectFiatAtFinals = projects.map((project) => project.fiatAtFinal);
-    const projectPercentages = projects.map(
-      (project) =>
-        BigNumber(project.fiatAtFinal)
-          .dividedBy(totalFiat)
-          .multipliedBy(100)
-          .toFixed(2) + "%",
-    );
-
-    return {
-      labels: projectNames,
-      datasets: [
-        {
-          label: "Projects",
-          data: projectFiatAtFinals,
-          name: projectNames,
-          backgroundColor: projectColors,
-          borderColor: projectColors,
-          borderWidth: 0,
-          percentage: projectPercentages,
-        },
-      ],
-    };
-  }, [projects, totalFiat]);
+  }
 
   return (
-    <div className="flex flex-wrap gap-6 w-full max-sm:flex-col">
-      <div className="flex items-center w-1/2 max-sm:w-full justify-between h-20">
-        <ProjectSummary totalFiat={totalFiat} />
-        <ProjectDoughnutChart data={data} />
-      </div>
+    <div className="grid grid-cols-3 w-full max-md:grid-cols-1 max-md:gap-y-4 items-center">
+      <ProjectSummary totalFiat={totalFiat} />
       <ProjectIndicators data={data} projects={projects} />
+      <ProjectDoughnutChart data={data} />
+    </div>
+  );
+}
+
+function ProjectStatisticsChartMobile({ data, projects, totalFiat }) {
+  return (
+    <div className="flex flex-col gap-y-4 items-center">
+      <div className="flex justify-between w-full">
+        <ProjectSummary totalFiat={totalFiat} />
+        <ProjectIndicators data={data} projects={projects} />
+      </div>
+      <ProjectDoughnutChart data={data} />
     </div>
   );
 }

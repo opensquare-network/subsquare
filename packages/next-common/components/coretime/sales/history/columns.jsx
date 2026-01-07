@@ -1,7 +1,7 @@
 import SecondaryButton from "next-common/lib/button/secondary";
 import { ArrowRight } from "@osn/icons/subsquare";
 import Tooltip from "next-common/components/tooltip";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import {
   CoretimeSalesHistoryTimeRange,
   CoretimeSalesHistoryTimeBlock,

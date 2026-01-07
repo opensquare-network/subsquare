@@ -62,7 +62,7 @@ export default function VectorParam({ title, def, value, setValue = noop }) {
   const _setValue = useCallback(
     (valuesOrFunction) => {
       if (typeof valuesOrFunction === "function") {
-        setValue(({ data }) => {
+        setValue(({ data } = {}) => {
           const newData = valuesOrFunction(data);
           const isValid = newData?.every((item) => item?.isValid);
           return {
@@ -91,7 +91,7 @@ export default function VectorParam({ title, def, value, setValue = noop }) {
             <PlusIcon size={12} />
             Add
           </IconButton>
-          <IconButton onClick={_rowRemove}>
+          <IconButton disabled={params.length === 0} onClick={_rowRemove}>
             <SubtractIcon size={12} />
             Remove
           </IconButton>
