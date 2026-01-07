@@ -29,7 +29,7 @@ export default function JudgementPage() {
   const { value, loading: isLoadingMyJudgementRequest } =
     useMyJudgementRequest();
 
-  const myJudgementRequest = value?.items[0] || null;
+  const request = value?.items[0] || null;
 
   return (
     <PeopleCommonProvider>
@@ -59,35 +59,35 @@ export default function JudgementPage() {
           </SummaryLayout>
         </div>
         <div className="pt-4 grid grid-cols-1 gap-4">
-          {isLoadingMyJudgementRequest ? (
+          {isLoadingMyJudgementRequest && !request ? (
             <div className="p-4 flex justify-center">
               <Loading size="24" />
             </div>
           ) : (
             <>
-              {myJudgementRequest?.info?.email && (
+              {request?.info?.email && (
                 <div className="bg-neutral100 border-b border-neutral300 p-4 rounded-lg flex">
-                  <Email />
+                  <Email request={request} />
                 </div>
               )}
-              {myJudgementRequest?.info?.element && (
+              {request?.info?.element && (
                 <div className="bg-neutral100 border-b border-neutral300 p-4 rounded-lg flex">
                   <Element />
                 </div>
               )}
-              {myJudgementRequest?.info?.discord && (
+              {request?.info?.discord && (
                 <div className="bg-neutral100 border-b border-neutral300 p-4 rounded-lg flex">
-                  <Discord request={myJudgementRequest} />
+                  <Discord request={request} />
                 </div>
               )}
-              {myJudgementRequest?.info?.twitter && (
+              {request?.info?.twitter && (
                 <div className="bg-neutral100 border-b border-neutral300 p-4 rounded-lg flex">
-                  <Twitter request={myJudgementRequest} />
+                  <Twitter request={request} />
                 </div>
               )}
-              {myJudgementRequest?.info?.github && (
+              {request?.info?.github && (
                 <div className="bg-neutral100 border-b border-neutral300 p-4 rounded-lg flex">
-                  <Github request={myJudgementRequest} />
+                  <Github request={request} />
                 </div>
               )}
             </>
