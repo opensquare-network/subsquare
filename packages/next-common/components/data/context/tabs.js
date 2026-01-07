@@ -17,14 +17,6 @@ function generateTabs() {
     });
   }
 
-  if (modules?.vesting) {
-    TABS.push({
-      tabId: "/vesting",
-      tabTitle: "Vesting",
-      pageTitle: "Vesting Explorer",
-    });
-  }
-
   if (hasMultisig) {
     TABS.push({
       tabId: "/multisigs",

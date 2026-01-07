@@ -21,6 +21,7 @@ import { peopleMenu } from "./people";
 import { stakingMenu } from "./staking";
 import whitelist from "./whitelist";
 import Data from "./data";
+import vesting from "./vesting";
 import getAdvancedMenu from "next-common/utils/consts/menu/advanced";
 import { NAV_MENU_TYPE } from "next-common/utils/constants";
 import { isArray } from "lodash-es";
@@ -60,10 +61,11 @@ export function getHomeMenu({
     getAdvancedMenu(
       [
         modules?.preimages && preImages,
+        ...integrationsMenu,
+        modules?.vesting && vesting,
         modules?.scheduler && scheduler,
         modules?.whitelist && whitelist,
-        ...integrationsMenu,
-        (modules?.proxy || modules?.vesting || hasMultisig) && Data,
+        (modules?.proxy || hasMultisig) && Data,
         calendarMenu,
         votingSpace && votingMenu,
         navigationMenu,
