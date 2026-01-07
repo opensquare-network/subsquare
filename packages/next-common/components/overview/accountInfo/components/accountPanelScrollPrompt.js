@@ -8,6 +8,7 @@ import { animate } from "framer-motion";
 import { useWindowWidthContext } from "next-common/context/windowSize";
 import { Fragment } from "react";
 import AccountUnlockBalancePrompt from "./accountUnlockBalancePrompt";
+import VestingUnlockablePrompt from "./vestingUnlockablePrompt";
 
 const ITEM_HEIGHT = 40;
 const MOBILE_ITEM_HEIGHT = 60;
@@ -20,6 +21,7 @@ const promptComponents = [
   MultisigPrompt,
   AssetsManagePrompt,
   AccountUnlockBalancePrompt,
+  VestingUnlockablePrompt,
 ];
 
 export default function AccountPanelScrollPrompt() {

@@ -12,7 +12,7 @@ function PromptContent({ unlockable, symbol, decimals, address }) {
   return (
     <div>
       You have {toPrecision(unlockable, decimals)} {symbol} unlockable from
-      vesting. Vest{" "}
+      vesting, vest it{" "}
       <Link className="underline" href={`/user/${address}/vesting`}>
         here
       </Link>

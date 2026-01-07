@@ -12,7 +12,6 @@ import { NeutralPanel } from "next-common/components/styled/containers/neutralPa
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import AccountPanelScrollPrompt from "./components/accountPanelScrollPrompt";
 import ExtensionUpdatePrompt from "./components/extensionUpdatePrompt";
-import VestingUnlockablePrompt from "./components/vestingUnlockablePrompt";
 import { useAccountTransferPopup } from "./hook/useAccountTransferPopup";
 import dynamic from "next/dynamic";
 import { useState } from "react";
@@ -310,7 +309,6 @@ export default function AccountInfoPanel() {
       <Divider />
       <AccountBalances />
       <ExtensionUpdatePrompt />
-      <VestingUnlockablePrompt />
       <AccountPanelScrollPrompt />
     </NeutralPanel>
   );
