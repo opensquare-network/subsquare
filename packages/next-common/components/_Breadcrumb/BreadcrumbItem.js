@@ -1,5 +1,6 @@
 import Link from "next-common/components/link";
 import { cn } from "next-common/utils";
+import { isNil } from "lodash-es";
 
 /**
  * @param {import('./types').BreadcrumbItemProps} props
@@ -16,7 +17,7 @@ function BreadcrumbItem(props) {
     );
   }
 
-  if (!children) {
+  if (isNil(children)) {
     return null;
   }
 
