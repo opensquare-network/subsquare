@@ -2,47 +2,82 @@ import { useChainSettings } from "next-common/context/chain";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useAddressVestingData from "next-common/hooks/useAddressVestingData";
 import { toPrecision } from "next-common/utils";
-import { CACHE_KEY } from "next-common/utils/constants";
 import { PromptTypes } from "next-common/components/scrollPrompt";
-import Prompt from "./prompt";
 import Link from "next-common/components/link";
+import ValueDisplay from "next-common/components/valueDisplay";
+import { createGlobalState } from "react-use";
+import { ScrollPromptItemWrapper } from "next-common/components/scrollPrompt";
+import { isEmpty } from "lodash-es";
 
-function PromptContent({ unlockable, address }) {
+const useMode = createGlobalState(true);
+
+function useVestingUnlockablePrompt(realAddress) {
+  const [visible, setVisible] = useMode(true);
   const { decimals, symbol } = useChainSettings();
-
-  return (
-    <div>
-      You have {toPrecision(unlockable, decimals)} {symbol} unlockable from
-      vesting, vest it{" "}
-      <Link className="underline" href={`/user/${address}/vesting`}>
-        here
-      </Link>
-    </div>
-  );
-}
-
-function VestingUnlockablePromptImpl() {
-  const realAddress = useRealAddress();
   const { data, isLoading } = useAddressVestingData(realAddress);
-  if (isLoading || !data || !data.unlockable || BigInt(data.unlockable) <= 0n) {
+
+  if (!visible) {
+    return {};
+  }
+
+  const unlockable = data?.unlockable;
+  if (isLoading || !unlockable || BigInt(unlockable) <= 0n) {
+    return {};
+  }
+
+  return {
+    key: "VestingUnlockablePrompt",
+    message: (
+      <div>
+        You have&nbsp;
+        {
+          <ValueDisplay
+            className="text14Bold"
+            value={toPrecision(unlockable.toString(), decimals)}
+            decimals={decimals}
+          />
+        }
+        &nbsp;{symbol} unlockable from vesting, vest it&nbsp;
+        <Link className="underline" href={`/user/${realAddress}/vesting`}>
+          here
+        </Link>
+      </div>
+    ),
+    type: PromptTypes.INFO,
+    close: () => setVisible(false),
+  };
+}
+
+function VestingUnlockablePromptWithAddress({ realAddress, onClose }) {
+  const prompt = useVestingUnlockablePrompt(realAddress);
+  if (isEmpty(prompt)) {
     return null;
   }
 
   return (
-    <Prompt
-      cacheKey={CACHE_KEY.vestingUnlockablePrompt}
-      type={PromptTypes.INFO}
-    >
-      <PromptContent unlockable={data.unlockable} address={realAddress} />
-    </Prompt>
+    <ScrollPromptItemWrapper
+      prompt={{
+        ...prompt,
+        close: () => {
+          onClose?.();
+          prompt?.close?.();
+        },
+      }}
+    />
   );
 }
 
-export default function VestingUnlockablePrompt() {
+export default function VestingUnlockablePrompt({ onClose }) {
   const { modules } = useChainSettings();
-  if (!modules?.vesting) {
+  const realAddress = useRealAddress();
+  if (!modules?.vesting || !realAddress) {
     return null;
   }
 
-  return <VestingUnlockablePromptImpl />;
+  return (
+    <VestingUnlockablePromptWithAddress
+      realAddress={realAddress}
+      onClose={onClose}
+    />
+  );
 }
