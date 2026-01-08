@@ -5,55 +5,69 @@ import { toPrecision } from "next-common/utils";
 import { PromptTypes } from "next-common/components/scrollPrompt";
 import Link from "next-common/components/link";
 import ValueDisplay from "next-common/components/valueDisplay";
-import { createGlobalState } from "react-use";
 import { ScrollPromptItemWrapper } from "next-common/components/scrollPrompt";
 import { isEmpty } from "lodash-es";
-
-const useMode = createGlobalState(true);
+import { CACHE_KEY } from "next-common/utils/constants";
+import { useCookieValue } from "next-common/utils/hooks/useCookieValue";
+import { useMemo } from "react";
 
 function useVestingUnlockablePrompt(realAddress) {
-  const [visible, setVisible] = useMode(true);
+  const [visible, setVisible] = useCookieValue(
+    CACHE_KEY.vestingUnlockablePrompt,
+    true,
+  );
+
   const { decimals, symbol } = useChainSettings();
   const { data, isLoading } = useAddressVestingData(realAddress);
 
-  if (!visible) {
-    return {};
-  }
-
   const unlockable = data?.unlockable;
-  if (isLoading || !unlockable || BigInt(unlockable) <= 0n) {
-    return {};
-  }
 
-  return {
-    key: "VestingUnlockablePrompt",
-    message: (
-      <div>
-        You have&nbsp;
-        {
-          <ValueDisplay
-            className="text14Bold"
-            value={toPrecision(unlockable.toString(), decimals)}
-            decimals={decimals}
-          />
-        }
-        &nbsp;{symbol} unlockable from vesting, vest it&nbsp;
-        <Link className="underline" href={`/user/${realAddress}/vesting`}>
-          here
-        </Link>
-      </div>
-    ),
-    type: PromptTypes.INFO,
-    close: () => setVisible(false),
-  };
+  return useMemo(() => {
+    if (!visible) {
+      return {};
+    }
+
+    if (isLoading || !unlockable || BigInt(unlockable) <= 0n) {
+      return {};
+    }
+
+    return {
+      key: CACHE_KEY.vestingUnlockablePrompt,
+      message: (
+        <div>
+          You have&nbsp;
+          {
+            <ValueDisplay
+              className="text14Bold"
+              value={toPrecision(unlockable.toString(), decimals)}
+              decimals={decimals}
+            />
+          }
+          &nbsp;{symbol} unlockable from vesting, vest it&nbsp;
+          <Link className="underline" href={`/user/${realAddress}/vesting`}>
+            here
+          </Link>
+        </div>
+      ),
+      type: PromptTypes.INFO,
+      close: () => setVisible(false, { expires: 15 }),
+    };
+  }, [
+    decimals,
+    isLoading,
+    realAddress,
+    setVisible,
+    symbol,
+    unlockable,
+    visible,
+  ]);
 }
 
-function VestingUnlockablePromptWithAddress({ realAddress, onClose }) {
+function VestingUnlockablePromptImpl({ realAddress, onClose }) {
   const prompt = useVestingUnlockablePrompt(realAddress);
   if (isEmpty(prompt)) {
     return null;
   }
-
   return (
     <ScrollPromptItemWrapper
       prompt={{
@@ -75,9 +89,6 @@ export default function VestingUnlockablePrompt({ onClose }) {
   }
 
   return (
-    <VestingUnlockablePromptWithAddress
-      realAddress={realAddress}
-      onClose={onClose}
-    />
+    <VestingUnlockablePromptImpl realAddress={realAddress} onClose={onClose} />
   );
 }
