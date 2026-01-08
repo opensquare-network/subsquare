@@ -18,7 +18,6 @@ export default function TreasuryStatusTabContent() {
   const [page, setPage] = useState(1);
   const { value: beneficiaries, loading } = useAsync(async () => {
     const { result } = await backendApi.fetch("/treasury/beneficiaries", {
-      sort_by: "awarded_value",
       page,
       pageSize: defaultPageSize,
     });
