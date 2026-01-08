@@ -15,7 +15,10 @@ export default function JudgementPageContent() {
 
   return (
     <>
-      <JudgementSummary request={request} />
+      <JudgementSummary
+        request={request}
+        loading={isLoadingMyJudgementRequest}
+      />
       <div className="pt-4 grid grid-cols-1 gap-4">
         {isLoadingMyJudgementRequest && !request ? (
           <div className="p-4 flex justify-center">
@@ -28,7 +31,7 @@ export default function JudgementPageContent() {
                 <Email request={request} />
               </div>
             )}
-            {request?.info?.element && (
+            {request?.info?.matrix && (
               <div className="bg-neutral100 border-b border-neutral300 p-4 rounded-lg flex">
                 <Element />
               </div>

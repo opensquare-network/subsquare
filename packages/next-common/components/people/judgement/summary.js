@@ -4,8 +4,9 @@ import { SummaryGreyText } from "next-common/components/summary/styled";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
 import Account from "next-common/components/account";
+import LoadableContent from "next-common/components/common/loadableContent";
 
-export default function JudgementSummary({ request }) {
+export default function JudgementSummary({ request, loading }) {
   const address = useRealAddress();
 
   const allSocialTypes = Object.values(PeopleSocialType);
@@ -26,16 +27,22 @@ export default function JudgementSummary({ request }) {
       </div>
       <SummaryLayout className="grid-cols-3">
         <SummaryItem title="Verified">
-          <span>{verifiedSocials}</span>
+          <LoadableContent isLoading={loading}>
+            <span>{verifiedSocials}</span>
+          </LoadableContent>
         </SummaryItem>
         <SummaryItem title="Pending">
-          <span>{pendingSocials}</span>
+          <LoadableContent isLoading={loading}>
+            <span>{pendingSocials}</span>
+          </LoadableContent>
         </SummaryItem>
         <SummaryItem title="Total Socials">
-          <span>
-            {totalSocials}
-            <SummaryGreyText> / {allSocialTypes.length}</SummaryGreyText>
-          </span>
+          <LoadableContent isLoading={loading}>
+            <span>
+              {totalSocials}
+              <SummaryGreyText> / {allSocialTypes.length}</SummaryGreyText>
+            </span>
+          </LoadableContent>
         </SummaryItem>
       </SummaryLayout>
     </div>
