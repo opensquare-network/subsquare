@@ -6,37 +6,33 @@ import { useAsync } from "react-use";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { useMemo, useState } from "react";
 import Pagination from "next-common/components/pagination";
+import Tooltip from "next-common/components/tooltip";
 import {
   getBeneficiariesIdColumn,
   getBeneficiariesProposalColumn,
   getBeneficiariesValueAtAwardedTimeColumn,
-  getBeneficiariesValueAtProposedTimeColumn,
   getBeneficiariesTagsColumn,
 } from "./columns";
-import { useBeneficiarySortBy } from "./beneficiaryFilter";
 
 export default function TreasuryStatusTabContent() {
   const [page, setPage] = useState(1);
-  const { sortBy, component: sortByComponent } = useBeneficiarySortBy();
   const { value: beneficiaries, loading } = useAsync(async () => {
     const { result } = await backendApi.fetch("/treasury/beneficiaries", {
-      ...(sortBy ? { sort_by: sortBy } : {}),
+      sort_by: "awarded_value",
       page,
       pageSize: defaultPageSize,
     });
     return result || EmptyList;
-  }, [sortBy, page]);
+  }, [page]);
 
   const columns = useMemo(() => {
     return [
       getBeneficiariesIdColumn(),
       getBeneficiariesTagsColumn(),
       getBeneficiariesProposalColumn(),
-      sortBy === "awarded_value"
-        ? getBeneficiariesValueAtAwardedTimeColumn()
-        : getBeneficiariesValueAtProposedTimeColumn(),
+      getBeneficiariesValueAtAwardedTimeColumn(),
     ];
-  }, [sortBy]);
+  }, []);
 
   const rows = useMemo(() => {
     return beneficiaries?.items?.map((beneficiary) =>
@@ -47,13 +43,13 @@ export default function TreasuryStatusTabContent() {
   return (
     <div>
       <div className="flex flex-wrap max-md:flex-col md:items-center gap-[12px] max-md:gap-[16px] justify-between pr-6 mb-4">
-        <TitleContainer className="justify-start">
+        <TitleContainer className="justify-start inline-flex items-center gap-x-1">
           Beneficiaries
+          <Tooltip content="The prices are calculated at awarded time."></Tooltip>
           <span className="text14Medium text-textTertiary ml-1">
             {beneficiaries?.total}
           </span>
         </TitleContainer>
-        <div className="max-md:px-6">{sortByComponent}</div>
       </div>
       <SecondaryCard>
         <DataList
