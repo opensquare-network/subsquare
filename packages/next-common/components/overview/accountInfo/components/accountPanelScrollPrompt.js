@@ -31,7 +31,7 @@ export default function AccountPanelScrollPrompt() {
   const [total, setTotal] = useState(0);
   const pauseRef = useRef(false);
 
-  const pageSize = total >= 2 ? 2 : 1;
+  const pageSize = total > 2 ? 2 : 1;
 
   const wrapperHeight = useMemo(() => {
     if (!total) {
