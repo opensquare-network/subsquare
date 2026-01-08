@@ -53,25 +53,6 @@ export function getBeneficiariesValueAtAwardedTimeColumn() {
   };
 }
 
-export function getBeneficiariesValueAtProposedTimeColumn() {
-  return {
-    name: <AwardedValueTitle tooltip="Value at proposed time" />,
-    style: {
-      textAlign: "right",
-      width: "180px",
-    },
-    cellRender(data) {
-      return (
-        <ValueDisplay
-          value={data.totalBenefitFiatValue || 0}
-          symbol=""
-          prefix="$"
-        />
-      );
-    },
-  };
-}
-
 export function getBeneficiariesTagsColumn() {
   return {
     name: "Tags",
