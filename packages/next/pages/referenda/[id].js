@@ -82,11 +82,11 @@ function ReferendumNullPage() {
   );
 }
 
-function ReferendumPageWithPost() {
+function ReferendumPageWithPost({ id }) {
   return (
     <ReferendumPageCommon
       breadcrumbs={<ReferendaBreadcrumb />}
-      postContent={<ReferendumContent />}
+      postContent={<ReferendumContent key={id} />}
     />
   );
 }
@@ -114,7 +114,7 @@ function ReferendumPageImpl() {
     return <ReferendumNullPage />;
   }
 
-  return <ReferendumPageWithPost />;
+  return <ReferendumPageWithPost id={id} />;
 }
 
 export default function ReferendumPage({ detail }) {
