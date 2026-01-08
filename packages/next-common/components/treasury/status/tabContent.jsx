@@ -13,8 +13,11 @@ import {
   getBeneficiariesValueAtAwardedTimeColumn,
   getBeneficiariesTagsColumn,
 } from "./columns";
+import { isPolkadotChain } from "next-common/utils/chain";
+import { useChain } from "next-common/context/chain";
 
 export default function TreasuryStatusTabContent() {
+  const chain = useChain();
   const [page, setPage] = useState(1);
   const { value: beneficiaries, loading } = useAsync(async () => {
     const { result } = await backendApi.fetch("/treasury/beneficiaries", {
@@ -24,14 +27,16 @@ export default function TreasuryStatusTabContent() {
     return result || EmptyList;
   }, [page]);
 
+  const isSupportTag = useMemo(() => isPolkadotChain(chain), [chain]);
+
   const columns = useMemo(() => {
     return [
       getBeneficiariesIdColumn(),
-      getBeneficiariesTagsColumn(),
+      isSupportTag && getBeneficiariesTagsColumn(),
       getBeneficiariesProposalColumn(),
       getBeneficiariesValueAtAwardedTimeColumn(),
-    ];
-  }, []);
+    ].filter(Boolean);
+  }, [isSupportTag]);
 
   const rows = useMemo(() => {
     return beneficiaries?.items?.map((beneficiary) =>
