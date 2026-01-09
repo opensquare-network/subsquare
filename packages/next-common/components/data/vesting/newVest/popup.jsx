@@ -7,11 +7,13 @@ import AddressComboField from "next-common/components/popup/fields/addressComboF
 import BalanceField from "next-common/components/popup/fields/balanceField";
 import PopupLabel from "next-common/components/popup/label";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import EstimatedGas from "next-common/components/estimatedGas";
 import { useContextApi } from "next-common/context/api";
 import { useChainSettings } from "next-common/context/chain";
 import { useExtensionAccounts } from "next-common/components/popupWithSigner/context";
 import { checkInputValue } from "next-common/utils";
 import NumberInput from "next-common/lib/input/number";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 
 function PopupContent() {
   const dispatch = useDispatch();
@@ -88,6 +90,35 @@ function PopupContent() {
     showErrorToast,
   ]);
 
+  const getEstimateTxFunc = useCallback(() => {
+    if (
+      !api ||
+      !targetAddress ||
+      !lockedAmount ||
+      !startingBlock ||
+      !perBlock
+    ) {
+      return;
+    }
+
+    let bnLockedAmount;
+    let bnPerBlock;
+    try {
+      bnLockedAmount = checkInputValue(lockedAmount, decimals, "locked amount");
+      bnPerBlock = checkInputValue(perBlock, decimals, "per block amount");
+    } catch {
+      return;
+    }
+
+    const schedule = {
+      locked: bnLockedAmount.toString(),
+      perBlock: bnPerBlock.toString(),
+      startingBlock: parseInt(startingBlock),
+    };
+
+    return api.tx.vesting.vestedTransfer(targetAddress, schedule);
+  }, [api, targetAddress, lockedAmount, startingBlock, perBlock, decimals]);
+
   return (
     <>
       <SignerWithBalance noSwitchSigner />
@@ -122,7 +153,9 @@ function PopupContent() {
           controls={false}
         />
       </div>
-
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getEstimateTxFunc} />
+      </AdvanceSettings>
       <TxSubmissionButton title="Submit" getTxFunc={getTxFunc} />
     </>
   );
