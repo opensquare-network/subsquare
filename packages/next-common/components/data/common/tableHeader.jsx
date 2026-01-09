@@ -7,6 +7,7 @@ export default function TableHeader({
   total,
   loading,
   showMyRelated = true,
+  extra = null,
 }) {
   const { component: SearchBoxComponent } = useSearchComponent();
 
@@ -14,13 +15,18 @@ export default function TableHeader({
 
   return (
     <div>
-      <HeaderContent title={title} total={total} loading={loading} />
+      <HeaderContent
+        title={title}
+        total={total}
+        loading={loading}
+        extra={extra}
+      />
       {SearchBoxComponent}
     </div>
   );
 }
 
-export function TableName({ title, total, loading }) {
+export function TableName({ title, total, loading, extra = null }) {
   return (
     <TitleContainer>
       <span className="inline-flex items-center">
@@ -29,16 +35,20 @@ export function TableName({ title, total, loading }) {
           {!loading && total}
         </span>
       </span>
+      {extra}
     </TitleContainer>
   );
 }
 
-export function TableNameSwitch({ title, total, loading }) {
+export function TableNameSwitch({ title, total, loading, extra = null }) {
   const { component: MyRelatedSwitchComponent } = useMyRelatedSwitch();
   return (
     <TitleContainer>
       <TableName title={title} total={total} loading={loading} />
-      {MyRelatedSwitchComponent}
+      <div className="inline-flex">
+        {MyRelatedSwitchComponent}
+        {extra}
+      </div>
     </TitleContainer>
   );
 }

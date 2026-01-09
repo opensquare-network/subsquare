@@ -15,6 +15,7 @@ import VestingDetailPopup from "../popup/detailPopup";
 import useFilterAllVesting from "../hooks/useFilterAllVesting";
 import { VestPopupProvider, useVestPopup } from "../context/vestPopupContext";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import NewVest from "next-common/components/data/vesting/newVest";
 
 const VestPopup = dynamicPopup(() => import("../popup/vestPopup"));
 
@@ -75,7 +76,7 @@ function VestingExplorerTableContent() {
   return (
     <>
       <div className="flex flex-col gap-y-4">
-        <TableHeader total={total} loading={isLoading} />
+        <TableHeader total={total} loading={isLoading} extra={<NewVest />} />
         <SecondaryCard className="space-y-2">
           <ScrollerX>
             <MapDataList

@@ -4,7 +4,7 @@ import Loading from "next-common/components/loading";
 import PopupLabel from "../label";
 import CurrencyInput from "next-common/components/currencyInput";
 
-function TransferrableBalance({ value, isLoading, decimals }) {
+export function TransferrableBalance({ value, isLoading, decimals }) {
   return (
     <div className="flex gap-[8px] items-center mb-[8px]">
       <span className="text14Medium text-textTertiary leading-none">
