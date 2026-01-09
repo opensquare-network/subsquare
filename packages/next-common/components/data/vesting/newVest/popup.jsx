@@ -21,15 +21,86 @@ import AdvanceSettings from "next-common/components/summary/newProposalQuickStar
 import useVestedTransferForm from "./useVestedTransferForm";
 import VestingInfoMessage from "./vestingInfoMessage";
 import { TransferrableBalance } from "next-common/components/popup/fields/transferAmountField";
+import { useChain } from "next-common/context/chain";
+import { isRelayChain } from "next-common/utils/chain";
+import { SystemQuestion } from "@osn/icons/subsquare";
+import { useRelayChainLatestHeight } from "next-common/hooks/relayScanHeight";
+import useChainOrScanHeight from "next-common/hooks/height";
 
-function PopupContent() {
-  const dispatch = useDispatch();
-  const { decimals, symbol } = useChainSettings();
-  const extensionAccounts = useExtensionAccounts();
+function StartingCurrentHeightStatus() {
+  const height = useChainOrScanHeight();
+  if (!height) {
+    return null;
+  }
+
+  return (
+    <span className="text14Medium text-textTertiary">
+      Current Height: {height.toLocaleString()}
+    </span>
+  );
+}
+
+function StartingRelayHeightStatus() {
+  const height = useRelayChainLatestHeight();
+  if (!height) {
+    return null;
+  }
+
+  return (
+    <span className="text14Medium text-textTertiary">
+      Relay Chain Height: {height.toLocaleString()}
+    </span>
+  );
+}
+
+function StartingHeightStatus() {
+  const chain = useChain();
+  if (!isRelayChain(chain)) {
+    return <StartingCurrentHeightStatus />;
+  }
+
+  return <StartingRelayHeightStatus />;
+}
+
+function StartingHeight() {
+  const chain = useChain();
+  if (!isRelayChain(chain)) {
+    return "Starting Height";
+  }
+
+  return (
+    <div className="inline-flex items-center space-x-1">
+      <span>Starting Height</span>
+      <Tooltip content="Vested transfer is determined by the Relay Chain block height">
+        <SystemQuestion className="w-4 h-4 [&_path]:fill-textTertiary" />
+      </Tooltip>
+    </div>
+  );
+}
+
+function TransferrableStatus() {
   const signerAccount = useSignerAccount();
   const signerAddress = signerAccount?.realAddress;
   const { value: balance, loading: balanceLoading } =
     useSubBalanceInfo(signerAddress);
+  const { decimals } = useChainSettings();
+  if (!signerAddress) {
+    return null;
+  }
+
+  return (
+    <TransferrableBalance
+      value={balance?.transferrable}
+      isLoading={balanceLoading}
+      decimals={decimals}
+    />
+  );
+}
+
+function PopupContent() {
+  const dispatch = useDispatch();
+  const { symbol } = useChainSettings();
+  const extensionAccounts = useExtensionAccounts();
   const { update: updateVestingData } = useVestingContext();
 
   const {
@@ -51,14 +122,6 @@ function PopupContent() {
     updateVestingData();
   }, [dispatch, updateVestingData]);
 
-  const transferrableStatus = signerAddress && (
-    <TransferrableBalance
-      value={balance?.transferrable}
-      isLoading={balanceLoading}
-      decimals={decimals}
-    />
-  );
-
   return (
     <>
       <SignerWithBalance noSwitchSigner />
@@ -69,7 +132,7 @@ function PopupContent() {
         placeholder="Please fill the address or select another one..."
       />
       <div>
-        <PopupLabel text="Locked Amount" status={transferrableStatus} />
+        <PopupLabel text="Locked Amount" status={<TransferrableStatus />} />
         <CurrencyInput
           value={lockedAmount}
           onValueChange={setLockedAmount}
@@ -87,10 +150,13 @@ function PopupContent() {
         />
       </div>
       <div>
-        <PopupLabel text="Starting Block" />
+        <PopupLabel
+          text={<StartingHeight />}
+          status={<StartingHeightStatus />}
+        />
         <NumberInput
           value={startingBlock}
-          placeholder="Block number"
+          placeholder="Starting height"
           onValueChange={setStartingBlock}
           controls={false}
         />
