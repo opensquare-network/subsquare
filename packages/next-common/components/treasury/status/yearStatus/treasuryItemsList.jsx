@@ -40,7 +40,19 @@ export default function TreasuryItemsList({
   });
 
   const normalizedData = useMemo(
-    () => normalize(treasuryItems, pagedItems),
+    () =>
+      normalize(
+        treasuryItems.map((item) => {
+          const pagedItem =
+            pagedItems.find(
+              (pagedItem) => pagedItem.bountyIndex === item.index,
+            ) ?? {};
+          return {
+            ...item,
+            ...pagedItem,
+          };
+        }),
+      ),
     [treasuryItems, pagedItems, normalize],
   );
 

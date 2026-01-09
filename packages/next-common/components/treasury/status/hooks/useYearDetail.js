@@ -6,6 +6,7 @@ import ProposalsList from "../yearStatus/proposalsList";
 import SpendsList from "../yearStatus/spendsList";
 import ChildBountiesList from "../yearStatus/childBountiesList";
 import TipsList from "../yearStatus/tipsList";
+import BountiesList from "../yearStatus/bountiesList";
 
 export default function useYearDetail(year) {
   const { value: yearDetail, loading } = useAsync(async () => {
@@ -79,6 +80,7 @@ export function useYearSummary(detail) {
         label: "Bounties",
         activeCount: detail?.bounties?.items?.length,
         total: detail?.bounties?.totalFiatValueAtFinal,
+        content: <BountiesList bounties={detail?.bounties?.items} />,
       },
     ].filter((item) => item.activeCount > 0);
   }, [detail]);

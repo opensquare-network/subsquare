@@ -207,6 +207,15 @@ export function normalizeChildBounties(childBounties, childBountyList) {
   );
 }
 
+export function normalizeBounties(bounties = []) {
+  return bounties.map((bounty) => ({
+    ...bounty,
+    proportion: 1,
+    fiatAtSubmission: bounty.fiatValue,
+    fiatAtFinal: bounty.fiatValueAtFinal,
+  }));
+}
+
 export function normalizeTips(tips, tipList) {
   return normalizeItemsWithPrice(tips, tipList, (tip) => tip.hash);
 }
