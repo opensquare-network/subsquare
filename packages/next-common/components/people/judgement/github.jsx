@@ -1,0 +1,26 @@
+import { LinkGithub } from "@osn/icons/subsquare";
+import usePeopleJudgementSocialAuth from "./hooks/usePeopleJudgementSocialAuth";
+import PeopleJudgementSocialConnect from "./socialConnect";
+import { PeopleSocialType } from "./consts";
+
+export default function Github({ request }) {
+  const isVerified = request?.verification?.github === true;
+
+  const { loading, connected, openAuthWindow } = usePeopleJudgementSocialAuth({
+    provider: PeopleSocialType.github,
+    authUrlPath: "people/judgement/auth/github/auth-url",
+    redirectPath: "/people/judgement/auth/github",
+    isVerified,
+  });
+
+  return (
+    <PeopleJudgementSocialConnect
+      icon={<LinkGithub className="text-[#4f46e5]" />}
+      title="GitHub"
+      username={request?.info?.github}
+      connected={connected}
+      loading={loading}
+      onConnect={openAuthWindow}
+    />
+  );
+}

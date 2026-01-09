@@ -1,0 +1,25 @@
+import { LinkDiscord } from "@osn/icons/subsquare";
+import usePeopleJudgementSocialAuth from "./hooks/usePeopleJudgementSocialAuth";
+import PeopleJudgementSocialConnect from "./socialConnect";
+import { PeopleSocialType } from "./consts";
+
+export default function Discord({ request }) {
+  const isVerified = request?.verification?.discord === true;
+  const { loading, connected, openAuthWindow } = usePeopleJudgementSocialAuth({
+    provider: PeopleSocialType.discord,
+    authUrlPath: "people/judgement/auth/discord/auth-url",
+    redirectPath: "/people/judgement/auth/discord",
+    isVerified,
+  });
+
+  return (
+    <PeopleJudgementSocialConnect
+      icon={<LinkDiscord className="text-[#4f46e5]" />}
+      title="Discord"
+      username={request?.info?.discord}
+      connected={connected}
+      loading={loading}
+      onConnect={openAuthWindow}
+    />
+  );
+}
