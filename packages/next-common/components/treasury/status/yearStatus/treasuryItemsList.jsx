@@ -2,6 +2,7 @@ import { useMemo, useEffect } from "react";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 import { MapDataList } from "next-common/components/dataList";
 import useTreasuryItems from "../../projects/hooks/useTreasuryItems";
+import { isEmpty } from "lodash-es";
 
 export default function TreasuryItemsList({
   items = [],
@@ -16,7 +17,7 @@ export default function TreasuryItemsList({
     page,
     component: pagination,
     setPage,
-  } = usePaginationComponent(items.length, pageSize);
+  } = usePaginationComponent(items.length, pageSize, { buttonMode: true });
 
   useEffect(() => {
     setPage(1);
@@ -32,7 +33,7 @@ export default function TreasuryItemsList({
     [pagedItems, getIndex],
   );
 
-  const { items: treasuryItems } = useTreasuryItems({
+  const { items: treasuryItems, loading } = useTreasuryItems({
     indexes,
     apiPath,
     normalizeItem,
@@ -45,7 +46,11 @@ export default function TreasuryItemsList({
 
   return (
     <>
-      <MapDataList data={normalizedData} columnsDef={columnsDef} />
+      <MapDataList
+        data={normalizedData}
+        columnsDef={columnsDef}
+        loading={isEmpty(normalizedData) && loading}
+      />
       {pagination}
     </>
   );
