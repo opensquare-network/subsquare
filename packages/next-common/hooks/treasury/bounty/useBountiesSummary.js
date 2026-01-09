@@ -54,14 +54,14 @@ export function useBountiesSummary() {
     )
       .then(async (bounties) =>
         Promise.all(
-          bounties.map((bountie) => {
-            const address = bountie?.onchainData?.address;
+          bounties.map((bounty) => {
+            const address = bounty?.onchainData?.address;
             if (address) {
               return api?.query?.system
                 ?.account(address)
-                .then((res) => [bountie.state, res.data.free]);
+                .then((res) => [bounty?.state, res.data.free]);
             }
-            return [bountie.state, bountie?.onchainData?.value || 0];
+            return [bounty?.state, bounty?.onchainData?.value || 0];
           }),
         ),
       )

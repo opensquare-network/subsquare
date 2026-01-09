@@ -7,6 +7,7 @@ import { usePageProps } from "next-common/context/page";
 import useBountyTimelineData from "next-common/components/pages/components/bounty/useBountyTimelineData";
 import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
 import tabsTooltipContentMap from "./tabsTooltipContentMap";
+import BountyStatistics from "next-common/components/pages/components/bounty/bountyStatistics";
 
 const Metadata = dynamicClientOnly(() =>
   import("next-common/components/treasury/bounty/metadata"),
@@ -21,7 +22,7 @@ const ChildBountiesTable = dynamicClientOnly(() =>
 export default function TreasuryBountiesDetailMultiTabs() {
   const router = useRouter();
   const detail = usePost();
-  const { childBounties } = usePageProps();
+  const { childBounties, statistics } = usePageProps();
   const timelineData = useBountyTimelineData(detail?.onchainData);
   const { component: timeLineTabSwitch, isCompact } = useTimelineTabSwitch();
   const { tabs, activeTabValue } = useMemo(() => {
@@ -59,7 +60,12 @@ export default function TreasuryBountiesDetailMultiTabs() {
           </div>
         ),
       },
-    ];
+      statistics && {
+        value: "statistics",
+        label: "Statistics",
+        content: <BountyStatistics />,
+      },
+    ].filter(Boolean);
     const [defaultTab] = tabs;
     return { tabs, activeTabValue: router.query.tab || defaultTab.value };
   }, [
@@ -71,6 +77,7 @@ export default function TreasuryBountiesDetailMultiTabs() {
     router.query.tab,
     timeLineTabSwitch,
     timelineData,
+    statistics,
   ]);
 
   function handleTabClick(tab) {
