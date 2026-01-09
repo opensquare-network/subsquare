@@ -1,3 +1,5 @@
+import { useCallback } from "react";
+import { useDispatch } from "react-redux";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import AddressComboField from "next-common/components/popup/fields/addressComboField";
@@ -11,6 +13,8 @@ import {
   useSignerAccount,
 } from "next-common/components/popupWithSigner/context";
 import { useSubBalanceInfo } from "next-common/hooks/balance/useSubBalanceInfo";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
+import { useVestingContext } from "next-common/context/vesting";
 import CurrencyInput from "next-common/components/currencyInput";
 import NumberInput from "next-common/lib/input/number";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
@@ -19,12 +23,14 @@ import VestingInfoMessage from "./vestingInfoMessage";
 import { TransferrableBalance } from "next-common/components/popup/fields/transferAmountField";
 
 function PopupContent() {
+  const dispatch = useDispatch();
   const { decimals, symbol } = useChainSettings();
   const extensionAccounts = useExtensionAccounts();
   const signerAccount = useSignerAccount();
   const signerAddress = signerAccount?.realAddress;
   const { value: balance, loading: balanceLoading } =
     useSubBalanceInfo(signerAddress);
+  const { update: updateVestingData } = useVestingContext();
 
   const {
     targetAddress,
@@ -39,6 +45,11 @@ function PopupContent() {
     getEstimateTxFunc,
     disabledReason,
   } = useVestedTransferForm();
+
+  const onInBlock = useCallback(() => {
+    dispatch(newSuccessToast("Vested transfer successful"));
+    updateVestingData();
+  }, [dispatch, updateVestingData]);
 
   const transferrableStatus = signerAddress && (
     <TransferrableBalance
@@ -68,12 +79,11 @@ function PopupContent() {
       </div>
       <div>
         <PopupLabel text="Per Block" />
-        <NumberInput
+        <CurrencyInput
           value={perBlock}
           placeholder="Amount unlocked per block"
           onValueChange={setPerBlock}
           symbol={symbol}
-          controls={false}
         />
       </div>
       <div>
@@ -99,6 +109,7 @@ function PopupContent() {
           <TxSubmissionButton
             title="Submit"
             getTxFunc={getTxFunc}
+            onInBlock={onInBlock}
             disabled={!!disabledReason}
           />
         </Tooltip>
