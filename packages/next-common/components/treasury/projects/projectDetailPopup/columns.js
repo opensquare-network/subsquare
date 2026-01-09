@@ -46,6 +46,12 @@ const ChildBountyTitleColumnsDef = createTitleColumnDef({
   getTitle: (childBounty) => childBounty.title,
 });
 
+const BountyTitleColumnsDef = createTitleColumnDef({
+  getDetailLink: (bounty) => bounty.detailLink,
+  getIndex: (bounty) => bounty.bountyIndex,
+  getTitle: (bounty) => bounty.title,
+});
+
 const TipTitleColumnsDef = {
   name: "Title",
   style: { textAlign: "left" },
@@ -70,6 +76,8 @@ export const childBountyColumnsDef = [
 ];
 
 export const tipColumnsDef = [TipTitleColumnsDef, RequestColumnsDef];
+
+export const bountyColumnsDef = [BountyTitleColumnsDef, RequestColumnsDef];
 
 function RequestCol({ proposal }) {
   const proportion = proposal.proportion < 1 ? proposal.proportion * 100 : null;
