@@ -24,8 +24,7 @@ function VestingStatusMessage({ vestingStatus, symbol, decimals }) {
   if (status === VestingStatus.NOT_STARTED) {
     return (
       <span>
-        0 {symbol} available, {lockedDisplay} {symbol} locked (vesting not
-        started yet).
+        {lockedDisplay} {symbol} locked (vesting not started yet).
       </span>
     );
   }

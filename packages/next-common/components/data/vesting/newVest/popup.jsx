@@ -26,7 +26,7 @@ import { isRelayChain } from "next-common/utils/chain";
 import { SystemQuestion } from "@osn/icons/subsquare";
 import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
 
-function StartingHeightStatus() {
+function StartingHeightStatus({ onHeightClick }) {
   const chain = useChain();
   const height = useAhmLatestHeight();
 
@@ -38,7 +38,13 @@ function StartingHeightStatus() {
 
   return (
     <span className="text14Medium text-textTertiary">
-      {label}: {height.toLocaleString()}
+      {label}:{" "}
+      <span
+        className="cursor-pointer text-textPrimary"
+        onClick={() => onHeightClick?.(height)}
+      >
+        {height.toLocaleString()}
+      </span>
     </span>
   );
 }
@@ -133,7 +139,11 @@ function PopupContent() {
       <div>
         <PopupLabel
           text={<StartingHeight />}
-          status={<StartingHeightStatus />}
+          status={
+            <StartingHeightStatus
+              onHeightClick={(height) => setStartingBlock(height)}
+            />
+          }
         />
         <NumberInput
           value={startingBlock}
