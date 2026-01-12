@@ -199,7 +199,7 @@ function normalizeItemsWithPrice(items, itemList, getItemId) {
   });
 }
 
-export function normalizeChildBounties(childBounties, childBountyList) {
+function normalizeChildBounties(childBounties, childBountyList) {
   return normalizeItemsWithPrice(
     childBounties,
     childBountyList,
@@ -207,20 +207,11 @@ export function normalizeChildBounties(childBounties, childBountyList) {
   );
 }
 
-export function normalizeBounties(bounties = []) {
-  return bounties.map((bounty) => ({
-    ...bounty,
-    proportion: 1,
-    fiatAtSubmission: bounty.fiatValue,
-    fiatAtFinal: bounty.fiatValueAtFinal,
-  }));
-}
-
-export function normalizeTips(tips, tipList) {
+function normalizeTips(tips, tipList) {
   return normalizeItemsWithPrice(tips, tipList, (tip) => tip.hash);
 }
 
-export function normalizeProposals(proposals, proposalList = []) {
+function normalizeProposals(proposals, proposalList = []) {
   return normalizeItemsWithPrice(
     proposals,
     proposalList,
@@ -228,7 +219,7 @@ export function normalizeProposals(proposals, proposalList = []) {
   );
 }
 
-export function normalizeSpends(spends, spendList = []) {
+function normalizeSpends(spends, spendList = []) {
   const proportionMap = new Map(spendList.map((s) => [s.id, s.proportion]));
   return spends.map((spend) => {
     const proportion = proportionMap.get(spend.index) ?? 1;

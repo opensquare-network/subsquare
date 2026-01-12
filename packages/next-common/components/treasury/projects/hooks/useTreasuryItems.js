@@ -1,6 +1,6 @@
 import { useAsync } from "react-use";
 import dayjs from "dayjs";
-import { fetchTreasuryItemData } from "next-common/services/treasuryItemsData";
+import { backendApi } from "next-common/services/nextApi";
 import { useChain } from "next-common/context/chain";
 
 export default function useTreasuryItems({
@@ -16,7 +16,8 @@ export default function useTreasuryItems({
 
     const results = await Promise.allSettled(
       indexes.map(async (index) => {
-        return await fetchTreasuryItemData(apiPath, index);
+        const { result } = await backendApi.fetch(`${apiPath}/${index}`);
+        return result;
       }),
     );
 

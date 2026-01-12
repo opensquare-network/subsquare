@@ -18,7 +18,7 @@ export const PROJECT_CHART_TYPES = {
   DOUGHNUT: "doughnut",
 };
 
-export function ProjectBarChart({
+function ProjectBarChart({
   data,
   userOptions = {},
   height,
