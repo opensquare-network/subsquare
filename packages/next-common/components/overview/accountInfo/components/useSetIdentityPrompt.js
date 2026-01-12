@@ -5,15 +5,48 @@ import {
 } from "next-common/components/scrollPrompt";
 import { CACHE_KEY } from "next-common/utils/constants";
 import { useCookieValue } from "next-common/utils/hooks/useCookieValue";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useChainSettings } from "next-common/context/chain";
 import { useRouter } from "next/router";
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { isEmpty } from "lodash-es";
+import useMyJudgementRequest from "next-common/components/people/hooks/useMyJudgementRequest";
+import RequestJudgementPopup from "next-common/components/requestJudgementPopup";
 
 const identityPage = "/people";
-const judgementPage = "/people?tab=judgements";
+
+function RequestJudgementPromptContent() {
+  const [showPopup, setShowPopup] = useState(false);
+
+  return (
+    <div>
+      Your on-chain identity is not verified yet.&nbsp;
+      <span
+        role="button"
+        className="cursor-pointer underline text14Medium"
+        onClick={() => setShowPopup(true)}
+      >
+        Request judgement
+      </span>
+      {showPopup && (
+        <RequestJudgementPopup onClose={() => setShowPopup(false)} />
+      )}
+    </div>
+  );
+}
+
+function NavigateToJudgementPagePrompt() {
+  return (
+    <div>
+      Actions is required to verify your identity social accounts.&nbsp;
+      <Link className="underline text14Medium" href="/people/judgement">
+        Go to Judgement page
+      </Link>
+      .
+    </div>
+  );
+}
 
 export default function useSetIdentityPrompt() {
   const router = useRouter();
@@ -25,7 +58,6 @@ export default function useSetIdentityPrompt() {
   const supportedPeople = modules?.people;
 
   const isPeoplePage = pathName?.startsWith(identityPage);
-  const isJudgementPage = router.asPath?.startsWith(judgementPage);
 
   const isNotVerified = useMemo(() => {
     return identity?.info?.status === "NOT_VERIFIED";
@@ -41,22 +73,21 @@ export default function useSetIdentityPrompt() {
 
   const [visible, setVisible] = useCookieValue(cacheKey, true);
 
+  const { value: myJudgementRequest, loading: isLoadingMyJudgementRequest } =
+    useMyJudgementRequest();
+
   return useMemo(() => {
     if (!visible || !supportedPeople) {
       return {};
     }
 
     let message;
-    if (hasIdentity && isNotVerified && !isJudgementPage) {
-      message = (
-        <div>
-          Your on-chain identity is not verified yet. Request judgements&nbsp;
-          <Link className="underline text14Medium" href={judgementPage}>
-            here
-          </Link>
-          .
-        </div>
-      );
+    if (hasIdentity && isNotVerified && isLoadingMyJudgementRequest === false) {
+      if (myJudgementRequest) {
+        message = <NavigateToJudgementPagePrompt />;
+      } else {
+        message = <RequestJudgementPromptContent />;
+      }
     } else if (!hasIdentity && !isPeoplePage) {
       message = (
         <div>
@@ -82,12 +113,13 @@ export default function useSetIdentityPrompt() {
   }, [
     cacheKey,
     hasIdentity,
-    isJudgementPage,
     isNotVerified,
     isPeoplePage,
     setVisible,
     supportedPeople,
     visible,
+    isLoadingMyJudgementRequest,
+    myJudgementRequest,
   ]);
 }
 export function IdentityPrompt({ onClose }) {

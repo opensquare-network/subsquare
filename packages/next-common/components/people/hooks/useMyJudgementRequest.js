@@ -11,10 +11,10 @@ export default function useMyJudgementRequest() {
     }
 
     const { result } = await backendApi.fetch(
-      `people/judgement/requests/pending?who=${realAddress}`,
+      `people/judgement/requests/pending?who=${"12ZBQqk7SD9qA7qPwpzAND6ZznXtgZuCMFWZr8xpdsVdbeva"}`,
     );
     if (result) {
-      return result;
+      return result.items[0] || null;
     }
 
     return null;
