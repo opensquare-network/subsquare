@@ -69,7 +69,7 @@ export default function useVestedTransferForm() {
       return "Please input a target address";
     }
     if (!lockedAmount) {
-      return "Please input locked amount";
+      return "Please input amount";
     }
     if (!perBlock) {
       return "Please input per block amount";

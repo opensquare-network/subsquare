@@ -113,7 +113,7 @@ function PopupContent() {
         placeholder="Please fill the address or select another one..."
       />
       <div>
-        <PopupLabel text="Locked Amount" status={<TransferrableStatus />} />
+        <PopupLabel text="Amount" status={<TransferrableStatus />} />
         <CurrencyInput
           value={lockedAmount}
           onValueChange={setLockedAmount}
