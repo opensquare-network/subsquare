@@ -2,6 +2,65 @@ import { InfoMessage } from "next-common/components/setting/styled";
 import { useChainSettings } from "next-common/context/chain";
 import { checkInputValue, toPrecision } from "next-common/utils";
 import useUnlockDuration from "./useUnlockDuration";
+import useVestingStatus, { VestingStatus } from "./useVestingStatus";
+
+function VestingStatusMessage({ vestingStatus, symbol, decimals }) {
+  if (!vestingStatus) {
+    return null;
+  }
+
+  const { available, locked, status } = vestingStatus;
+  const availableDisplay = toPrecision(available, decimals);
+  const lockedDisplay = toPrecision(locked, decimals);
+
+  if (status === VestingStatus.FULLY_UNLOCKED) {
+    return (
+      <span>
+        All {availableDisplay} {symbol} will be immediately available.
+      </span>
+    );
+  }
+
+  if (status === VestingStatus.NOT_STARTED) {
+    return (
+      <span>
+        0 {symbol} available, {lockedDisplay} {symbol} locked (vesting not
+        started yet).
+      </span>
+    );
+  }
+
+  // partial
+  return (
+    <span>
+      {availableDisplay} {symbol} immediately available, {lockedDisplay}{" "}
+      {symbol} locked.
+    </span>
+  );
+}
+
+function RemainingDurationMessage({
+  vestingStatus,
+  perBlockDisplay,
+  symbol,
+  blockTimeSeconds,
+}) {
+  if (!vestingStatus || vestingStatus.status === VestingStatus.FULLY_UNLOCKED) {
+    return null;
+  }
+
+  const { remainingDuration } = vestingStatus;
+  if (!remainingDuration) {
+    return null;
+  }
+
+  return (
+    <span>
+      It will take {remainingDuration} to fully unlock, with {perBlockDisplay}{" "}
+      {symbol} unlocked per block ({blockTimeSeconds}s).
+    </span>
+  );
+}
 
 export default function VestingInfoMessage({
   targetAddress,
@@ -14,6 +73,7 @@ export default function VestingInfoMessage({
     lockedAmount,
     perBlock,
   );
+  const vestingStatus = useVestingStatus(lockedAmount, perBlock, startingBlock);
 
   const isValid =
     targetAddress &&
@@ -26,17 +86,24 @@ export default function VestingInfoMessage({
     return null;
   }
 
+  const perBlockDisplay = toPrecision(
+    checkInputValue(perBlock, decimals, "perBlock"),
+    decimals,
+  );
+
   return (
     <InfoMessage className="flex flex-col gap-1 !items-start">
-      <span>
-        The funds will be transferred immediately, but locked in the target
-        account.
-      </span>
-      <span>
-        It will take {unlockDuration} to fully unlock, with{" "}
-        {toPrecision(checkInputValue(perBlock, decimals, "perBlock"), decimals)}{" "}
-        {symbol} unlocked per block ({blockTimeSeconds}s).
-      </span>
+      <VestingStatusMessage
+        vestingStatus={vestingStatus}
+        symbol={symbol}
+        decimals={decimals}
+      />
+      <RemainingDurationMessage
+        vestingStatus={vestingStatus}
+        perBlockDisplay={perBlockDisplay}
+        symbol={symbol}
+        blockTimeSeconds={blockTimeSeconds}
+      />
     </InfoMessage>
   );
 }

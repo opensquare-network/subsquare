@@ -24,42 +24,23 @@ import { TransferrableBalance } from "next-common/components/popup/fields/transf
 import { useChain } from "next-common/context/chain";
 import { isRelayChain } from "next-common/utils/chain";
 import { SystemQuestion } from "@osn/icons/subsquare";
-import { useRelayChainLatestHeight } from "next-common/hooks/relayScanHeight";
-import useChainOrScanHeight from "next-common/hooks/height";
-
-function StartingCurrentHeightStatus() {
-  const height = useChainOrScanHeight();
-  if (!height) {
-    return null;
-  }
-
-  return (
-    <span className="text14Medium text-textTertiary">
-      Current Height: {height.toLocaleString()}
-    </span>
-  );
-}
-
-function StartingRelayHeightStatus() {
-  const height = useRelayChainLatestHeight();
-  if (!height) {
-    return null;
-  }
-
-  return (
-    <span className="text14Medium text-textTertiary">
-      Relay Chain Height: {height.toLocaleString()}
-    </span>
-  );
-}
+import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
 
 function StartingHeightStatus() {
   const chain = useChain();
-  if (!isRelayChain(chain)) {
-    return <StartingCurrentHeightStatus />;
+  const height = useAhmLatestHeight();
+
+  if (!height) {
+    return null;
   }
 
-  return <StartingRelayHeightStatus />;
+  const label = isRelayChain(chain) ? "Relay Chain Height" : "Current Height";
+
+  return (
+    <span className="text14Medium text-textTertiary">
+      {label}: {height.toLocaleString()}
+    </span>
+  );
 }
 
 function StartingHeight() {
