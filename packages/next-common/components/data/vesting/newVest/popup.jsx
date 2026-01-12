@@ -8,10 +8,7 @@ import TxSubmissionButton from "next-common/components/common/tx/txSubmissionBut
 import EstimatedGas from "next-common/components/estimatedGas";
 import Tooltip from "next-common/components/tooltip";
 import { useChainSettings } from "next-common/context/chain";
-import {
-  useExtensionAccounts,
-  useSignerAccount,
-} from "next-common/components/popupWithSigner/context";
+import { useExtensionAccounts } from "next-common/components/popupWithSigner/context";
 import { useSubBalanceInfo } from "next-common/hooks/balance/useSubBalanceInfo";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useVestingContext } from "next-common/context/vesting";
