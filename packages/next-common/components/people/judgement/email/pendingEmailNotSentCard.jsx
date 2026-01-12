@@ -4,6 +4,7 @@ import SecondaryButton from "next-common/lib/button/secondary";
 import EmailCardHeader from "./emailCardHeader";
 import EmailAddressRow from "./emailAddressRow";
 import useSendJudgementEmailCode from "./hooks/useSendJudgementEmailCode";
+import Tooltip from "next-common/components/tooltip";
 
 export default function PendingEmailNotSentCard({ request, email, onSent }) {
   const [error, setError] = useState("");
@@ -21,9 +22,15 @@ export default function PendingEmailNotSentCard({ request, email, onSent }) {
         tag={<ClosedTag>Pending</ClosedTag>}
         actions={
           <div className="flex gap-2 items-center">
-            <SecondaryButton loading={sending} onClick={sendCode} size="small">
-              Send code
-            </SecondaryButton>
+            <Tooltip content="Click to send verification code to your mailbox">
+              <SecondaryButton
+                loading={sending}
+                onClick={sendCode}
+                size="small"
+              >
+                Send code
+              </SecondaryButton>
+            </Tooltip>
           </div>
         }
       />

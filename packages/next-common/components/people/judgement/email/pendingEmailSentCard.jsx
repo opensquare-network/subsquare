@@ -8,6 +8,7 @@ import EmailAddressRow from "./emailAddressRow";
 import EmailVerificationTips from "./emailVerificationTips";
 import useSendJudgementEmailCode from "./hooks/useSendJudgementEmailCode";
 import useVerifyJudgementEmailCode from "./hooks/useVerifyJudgementEmailCode";
+import Tooltip from "next-common/components/tooltip";
 
 export default function PendingEmailSentCard({
   request,
@@ -39,28 +40,37 @@ export default function PendingEmailSentCard({
     },
   });
 
+  let message = "Click to verify the code";
+  if (!canVerify) {
+    message = "Please enter the verification code to verify";
+  }
+
   return (
     <div className="w-full space-y-2 text14Medium text-textPrimary">
       <EmailCardHeader
         tag={<ClosedTag>Pending</ClosedTag>}
         actions={
           <div className="flex gap-2 items-center">
-            <SecondaryButton
-              loading={sending}
-              onClick={sendCode}
-              disabled={countdown > 0}
-              size="small"
-            >
-              Resend{countdown > 0 ? ` ${countdown}s` : ""}
-            </SecondaryButton>
-            <PrimaryButton
-              onClick={verifyCode}
-              loading={verifying}
-              disabled={!canVerify}
-              size="small"
-            >
-              Start verify
-            </PrimaryButton>
+            <Tooltip content="Click to re-send verification code to your mailbox">
+              <SecondaryButton
+                loading={sending}
+                onClick={sendCode}
+                disabled={countdown > 0}
+                size="small"
+              >
+                Resend{countdown > 0 ? ` ${countdown}s` : ""}
+              </SecondaryButton>
+            </Tooltip>
+            <Tooltip content={message}>
+              <PrimaryButton
+                onClick={verifyCode}
+                loading={verifying}
+                disabled={!canVerify}
+                size="small"
+              >
+                Verify code
+              </PrimaryButton>
+            </Tooltip>
           </div>
         }
       />
