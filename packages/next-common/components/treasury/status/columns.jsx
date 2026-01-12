@@ -57,10 +57,10 @@ export function getBeneficiariesTagsColumn() {
   return {
     name: "Tags",
     style: {
-      width: "220px",
+      width: "320px",
     },
     cellRender(data) {
-      return <BeneficiariesTags tags={data.tags} maxWidth={220} />;
+      return <BeneficiariesTags tags={data.tags} maxWidth={320} />;
     },
   };
 }
