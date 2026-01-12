@@ -1,7 +1,10 @@
 import { useCallback, useMemo, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useContextApi } from "next-common/context/api";
 import { useChainSettings } from "next-common/context/chain";
 import { checkInputValue } from "next-common/utils";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import BigNumber from "bignumber.js";
 
 function buildSchedule(lockedAmount, perBlock, startingBlock, decimals) {
   const bnLockedAmount = checkInputValue(
@@ -18,7 +21,8 @@ function buildSchedule(lockedAmount, perBlock, startingBlock, decimals) {
   };
 }
 
-export default function useVestedTransferForm() {
+export default function useVestedTransferForm(transferrable) {
+  const dispatch = useDispatch();
   const api = useContextApi();
   const { decimals } = useChainSettings();
 
@@ -28,6 +32,13 @@ export default function useVestedTransferForm() {
   const [perBlock, setPerBlock] = useState("");
 
   const getTxFunc = useCallback(() => {
+    const bnLockedAmount = checkInputValue(lockedAmount, decimals, "amount");
+    const bnTransferrable = new BigNumber(transferrable || 0);
+    if (bnTransferrable.lt(bnLockedAmount)) {
+      dispatch(newErrorToast("Insufficient balance"));
+      return;
+    }
+
     const schedule = buildSchedule(
       lockedAmount,
       perBlock,
@@ -35,7 +46,16 @@ export default function useVestedTransferForm() {
       decimals,
     );
     return api.tx.vesting.vestedTransfer(targetAddress, schedule);
-  }, [api, targetAddress, lockedAmount, startingBlock, perBlock, decimals]);
+  }, [
+    api,
+    targetAddress,
+    lockedAmount,
+    startingBlock,
+    perBlock,
+    decimals,
+    transferrable,
+    dispatch,
+  ]);
 
   const getEstimateTxFunc = useCallback(() => {
     if (

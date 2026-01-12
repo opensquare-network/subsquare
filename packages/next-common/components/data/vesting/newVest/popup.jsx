@@ -25,6 +25,7 @@ import { useChain } from "next-common/context/chain";
 import { isRelayChain } from "next-common/utils/chain";
 import { SystemQuestion } from "@osn/icons/subsquare";
 import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 function StartingHeightStatus({ onHeightClick }) {
   const chain = useChain();
@@ -65,30 +66,14 @@ function StartingHeight() {
   );
 }
 
-function TransferrableStatus() {
-  const signerAccount = useSignerAccount();
-  const signerAddress = signerAccount?.realAddress;
-  const { value: balance, loading: balanceLoading } =
-    useSubBalanceInfo(signerAddress);
-  const { decimals } = useChainSettings();
-  if (!signerAddress) {
-    return null;
-  }
-
-  return (
-    <TransferrableBalance
-      value={balance?.transferrable}
-      isLoading={balanceLoading}
-      decimals={decimals}
-    />
-  );
-}
-
 function PopupContent() {
   const dispatch = useDispatch();
-  const { symbol } = useChainSettings();
+  const { symbol, decimals } = useChainSettings();
   const extensionAccounts = useExtensionAccounts();
   const { update: updateVestingData } = useVestingContext();
+  const realAddress = useRealAddress();
+  const { value: balance, loading: balanceLoading } =
+    useSubBalanceInfo(realAddress);
 
   const {
     targetAddress,
@@ -102,7 +87,7 @@ function PopupContent() {
     getTxFunc,
     getEstimateTxFunc,
     disabledReason,
-  } = useVestedTransferForm();
+  } = useVestedTransferForm(balance?.transferrable);
 
   const onInBlock = useCallback(() => {
     dispatch(newSuccessToast("Vested transfer successful"));
@@ -119,7 +104,16 @@ function PopupContent() {
         placeholder="Please fill the address or select another one..."
       />
       <div>
-        <PopupLabel text="Amount" status={<TransferrableStatus />} />
+        <PopupLabel
+          text="Amount"
+          status={
+            <TransferrableBalance
+              value={balance?.transferrable}
+              isLoading={balanceLoading}
+              decimals={decimals}
+            />
+          }
+        />
         <CurrencyInput
           value={lockedAmount}
           onValueChange={setLockedAmount}

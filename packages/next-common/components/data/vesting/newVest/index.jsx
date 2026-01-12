@@ -1,11 +1,16 @@
 import PrimaryButton from "next-common/lib/button/primary";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { useState } from "react";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 const Popup = dynamicPopup(() => import("./popup"));
 
 export default function NewVest() {
   const [showPopup, setShowPopup] = useState(false);
+  const realAddress = useRealAddress();
+  if (!realAddress) {
+    return null;
+  }
 
   return (
     <>
