@@ -1,5 +1,3 @@
-import { spendColumnsDef } from "../../projects/projectDetailPopup/columns";
-import { normalizeSpends } from "../../projects/hooks/usePopupDetailTabs";
 import normalizeTreasurySpendListItem from "next-common/utils/viewfuncs/treasury/normalizeTreasurySpendListItem";
 import TreasuryItemsList from "./treasuryItemsList";
 
@@ -10,8 +8,6 @@ export default function SpendsList({ spends = [] }) {
       getIndex={(spend) => spend.index}
       apiPath="/treasury/spends"
       normalizeItem={normalizeTreasurySpendListItem}
-      normalize={normalizeSpends}
-      columnsDef={spendColumnsDef}
     />
   );
 }
