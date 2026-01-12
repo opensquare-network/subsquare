@@ -2,6 +2,7 @@ import {
   ClosedTag,
   PositiveTag,
 } from "next-common/components/tags/state/styled";
+import Tooltip from "next-common/components/tooltip";
 import PrimaryButton from "next-common/lib/button/primary";
 
 export default function PeopleJudgementSocialConnect({
@@ -12,6 +13,11 @@ export default function PeopleJudgementSocialConnect({
   loading,
   onConnect,
 }) {
+  let message = `Click to verify your ${title} account`;
+  if (connected) {
+    message = `${title} account already verified`;
+  }
+
   return (
     <div className="w-full space-y-2 text14Medium text-textPrimary">
       <div className="flex justify-between">
@@ -23,7 +29,7 @@ export default function PeopleJudgementSocialConnect({
           </div>
           <div>
             {connected ? (
-              <PositiveTag>Connected</PositiveTag>
+              <PositiveTag>Verified</PositiveTag>
             ) : (
               <ClosedTag>Pending</ClosedTag>
             )}
@@ -37,14 +43,16 @@ export default function PeopleJudgementSocialConnect({
           <span className="truncate text-textTertiary">{username}</span>
         </div>
 
-        <PrimaryButton
-          loading={loading}
-          disabled={connected}
-          onClick={onConnect}
-          size="small"
-        >
-          Connect {title}
-        </PrimaryButton>
+        <Tooltip content={message}>
+          <PrimaryButton
+            loading={loading}
+            disabled={connected}
+            onClick={onConnect}
+            size="small"
+          >
+            Verify {title}
+          </PrimaryButton>
+        </Tooltip>
       </div>
     </div>
   );

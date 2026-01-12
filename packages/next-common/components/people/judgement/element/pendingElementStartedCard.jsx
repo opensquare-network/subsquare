@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ClosedTag } from "next-common/components/tags/state/styled";
 import PrimaryButton from "next-common/lib/button/primary";
 import Input from "next-common/lib/input";
+import Tooltip from "next-common/components/tooltip";
 import ElementCardHeader from "./elementCardHeader";
 import ElementAddressRow from "./elementAddressRow";
 import ElementVerificationTips from "./elementVerificationTips";
@@ -31,9 +32,11 @@ export default function PendingElementStartedCard({
         tag={<ClosedTag>Pending</ClosedTag>}
         actions={
           <div className="flex gap-2 items-center">
-            <PrimaryButton onClick={verify} loading={verifying} size="small">
-              {"I've finished the verification"}
-            </PrimaryButton>
+            <Tooltip content="Click to confirm you have finished the verification">
+              <PrimaryButton onClick={verify} loading={verifying} size="small">
+                Confirm finished
+              </PrimaryButton>
+            </Tooltip>
           </div>
         }
       />

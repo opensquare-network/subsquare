@@ -4,6 +4,7 @@ import SecondaryButton from "next-common/lib/button/secondary";
 import ElementCardHeader from "./elementCardHeader";
 import ElementAccountRow from "./elementAddressRow";
 import useStartElementVerification from "./hooks/useStartElementVerification";
+import Tooltip from "next-common/components/tooltip";
 
 export default function PendingElementNotStartedCard({
   request,
@@ -25,13 +26,15 @@ export default function PendingElementNotStartedCard({
         tag={<ClosedTag>Pending</ClosedTag>}
         actions={
           <div className="flex gap-2 items-center">
-            <SecondaryButton
-              loading={starting}
-              onClick={startVerify}
-              size="small"
-            >
-              Start verify
-            </SecondaryButton>
+            <Tooltip content="Start verifying your Element account">
+              <SecondaryButton
+                loading={starting}
+                onClick={startVerify}
+                size="small"
+              >
+                Start verify
+              </SecondaryButton>
+            </Tooltip>
           </div>
         }
       />
