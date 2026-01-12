@@ -8,6 +8,7 @@ import Tooltip from "next-common/components/tooltip";
 import { isPolkadotChain } from "next-common/utils/chain";
 import { useYearsDatasets } from "../hooks/useYearsDatasets";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import { isEmpty } from "lodash-es";
 
 const YearStatusDetailPopup = dynamicPopup(() => import("./detailPopup"));
 
@@ -25,6 +26,10 @@ function YearStatusImpl() {
     setShowYearDetailPopup(false);
     setSelectedYear(null);
   }, []);
+
+  if (isEmpty(summaryTotalFiat)) {
+    return null;
+  }
 
   return (
     <>
