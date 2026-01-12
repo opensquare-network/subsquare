@@ -1,18 +1,100 @@
 import { useMemo, useEffect } from "react";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 import { MapDataList } from "next-common/components/dataList";
-import { isEmpty } from "lodash-es";
+import { isEmpty, isNil } from "lodash-es";
 import useYearStatusColumnsDef from "../hooks/useYearStatusColumnsDef";
+import normalizeTreasuryChildBountyListItem from "next-common/utils/viewfuncs/treasury/normalizeChildBountyListItem";
+import normalizeTreasuryBountyListItem from "next-common/utils/viewfuncs/treasury/normalizeBountyListItem";
+import normalizeTreasuryProposalListItem from "next-common/utils/viewfuncs/treasury/normalizeProposalListItem";
+import normalizeTreasurySpendListItem from "next-common/utils/viewfuncs/treasury/normalizeTreasurySpendListItem";
+import normalizeTipListItem from "next-common/utils/viewfuncs/treasury/normalizeTipListItem";
 
 const pageSize = 10;
 
+export const TYPES = {
+  TIPS: "tips",
+  BOUNTIES: "bounties",
+  CHILD_BOUNTIES: "childBounties",
+  PROPOSALS: "proposals",
+  SPENDS: "spends",
+};
+
+const TYPES_MAP = {
+  [TYPES.TIPS]: {
+    getIndex: (tip) => ({
+      displayIndex: tip.hash,
+      requestIndex: tip.hash,
+    }),
+    apiPath: "/treasury/tips",
+    normalizeItem: normalizeTipListItem,
+  },
+  [TYPES.BOUNTIES]: {
+    getIndex: (bounty) => ({
+      requestIndex: bounty.bountyIndex,
+    }),
+    apiPath: "/treasury/bounties",
+    normalizeItem: normalizeTreasuryBountyListItem,
+  },
+  [TYPES.CHILD_BOUNTIES]: {
+    getIndex: (childBounty) => {
+      const { parentBountyId, index, blockHeight, hasSameParentAndIndex } =
+        childBounty;
+      const indexes = [parentBountyId, index];
+      if (hasSameParentAndIndex) {
+        indexes.push(blockHeight);
+      }
+      return {
+        displayIndex: [parentBountyId, index].join("_"),
+        requestIndex: indexes.join("_"),
+      };
+    },
+    apiPath: "/treasury/child-bounties",
+    normalizeItem: normalizeTreasuryChildBountyListItem,
+  },
+  [TYPES.PROPOSALS]: {
+    getIndex: (proposal) => ({
+      requestIndex: proposal.proposalIndex,
+    }),
+    apiPath: "/treasury/proposals",
+    normalizeItem: normalizeTreasuryProposalListItem,
+  },
+  [TYPES.SPENDS]: {
+    getIndex: (spend) => ({
+      requestIndex: spend.index,
+    }),
+    apiPath: "/treasury/spends",
+    normalizeItem: normalizeTreasurySpendListItem,
+  },
+};
+
 export default function TreasuryItemsList({
+  items = [],
+  pageSize: customPageSize = pageSize,
+  type,
+}) {
+  const typeFormat = useMemo(() => TYPES_MAP[type], [type]);
+
+  if (isNil(typeFormat)) {
+    return null;
+  }
+
+  return (
+    <TreasuryItemsListImpl
+      items={items}
+      {...typeFormat}
+      type={type}
+      pageSize={customPageSize}
+    />
+  );
+}
+
+function TreasuryItemsListImpl({
   items = [],
   getIndex,
   apiPath,
   normalizeItem,
+  type,
   pageSize: customPageSize = pageSize,
-  isTip = false,
 }) {
   const {
     page,
@@ -35,7 +117,7 @@ export default function TreasuryItemsList({
     getIndex,
     apiPath,
     normalizeItem,
-    isTip,
+    type,
   });
 
   return (

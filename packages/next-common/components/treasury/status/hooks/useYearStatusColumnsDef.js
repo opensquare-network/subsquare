@@ -6,6 +6,7 @@ import Link from "next-common/components/link";
 import BigNumber from "bignumber.js";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
+import { TYPES } from "../yearStatus/treasuryItemsList";
 
 const RequestColumnsDef = {
   name: "Request",
@@ -13,13 +14,19 @@ const RequestColumnsDef = {
   render: (item) => <RequestCol item={item} />,
 };
 
-function PostTitle({ index, apiPath, normalizeItem, isTip = false }) {
+function PostTitle({
+  displayIndex,
+  requestIndex,
+  apiPath,
+  normalizeItem,
+  type,
+}) {
   const { value: data, loading } = useAsync(async () => {
-    const response = await fetchTreasuryItemData(apiPath, index);
+    const response = await fetchTreasuryItemData(apiPath, requestIndex);
     return normalizeItem(null, response);
-  }, [index, apiPath, normalizeItem]);
+  }, [requestIndex, apiPath, normalizeItem]);
 
-  if (isTip) {
+  if (type === TYPES.TIPS) {
     const tipTitle = data?.title || data?.hash;
     return (
       <Link
@@ -34,7 +41,7 @@ function PostTitle({ index, apiPath, normalizeItem, isTip = false }) {
 
   return (
     <div className="flex gap-x-1">
-      <span>#{index}</span>
+      <span>#{displayIndex ?? requestIndex}</span>
       <span className="text-textTertiary">·</span>
       <LoadableContent size={20} isLoading={loading}>
         <Link
@@ -49,24 +56,20 @@ function PostTitle({ index, apiPath, normalizeItem, isTip = false }) {
   );
 }
 
-function createTitleColumnDef({
-  getIndex,
-  apiPath,
-  normalizeItem,
-  isTip = false,
-}) {
+function createTitleColumnDef({ getIndex, apiPath, normalizeItem, type }) {
   return {
     name: "Title",
     className: "flex-1 whitespace-nowrap overflow-hidden text-ellipsis pr-2",
     style: { textAlign: "left" },
     render: (item) => {
-      const index = getIndex(item);
+      const { displayIndex, requestIndex } = getIndex(item);
       return (
         <PostTitle
-          index={index}
+          displayIndex={displayIndex ?? requestIndex}
+          requestIndex={requestIndex}
           apiPath={apiPath}
           normalizeItem={normalizeItem}
-          isTip={isTip}
+          type={type}
         />
       );
     },
@@ -90,11 +93,11 @@ export default function useYearStatusColumnsDef({
   getIndex,
   apiPath,
   normalizeItem,
-  isTip = false,
+  type,
 }) {
   const titleColumnDef = useMemo(
-    () => createTitleColumnDef({ getIndex, apiPath, normalizeItem, isTip }),
-    [getIndex, apiPath, normalizeItem, isTip],
+    () => createTitleColumnDef({ getIndex, apiPath, normalizeItem, type }),
+    [getIndex, apiPath, normalizeItem, type],
   );
 
   return useMemo(() => [titleColumnDef, RequestColumnsDef], [titleColumnDef]);

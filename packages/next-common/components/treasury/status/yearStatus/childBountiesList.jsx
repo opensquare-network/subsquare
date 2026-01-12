@@ -6,8 +6,13 @@ export default function ChildBountiesList({ childBounties = [] }) {
     <TreasuryItemsList
       items={childBounties}
       getIndex={(childBounty) => {
-        const { parentBountyId, index, blockHeight } = childBounty;
-        return [parentBountyId, index, blockHeight].filter(Boolean).join("_");
+        const { parentBountyId, index, blockHeight, hasSameParentAndIndex } =
+          childBounty;
+        const indexes = [parentBountyId, index];
+        if (hasSameParentAndIndex) {
+          indexes.push(blockHeight);
+        }
+        return indexes.join("_");
       }}
       apiPath="/treasury/child-bounties"
       normalizeItem={normalizeTreasuryChildBountyListItem}

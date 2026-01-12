@@ -2,11 +2,7 @@ import { useMemo } from "react";
 import { useAsync } from "react-use";
 import { backendApi } from "next-common/services/nextApi";
 import { isNil } from "lodash-es";
-import ProposalsList from "../yearStatus/proposalsList";
-import SpendsList from "../yearStatus/spendsList";
-import ChildBountiesList from "../yearStatus/childBountiesList";
-import TipsList from "../yearStatus/tipsList";
-import BountiesList from "../yearStatus/bountiesList";
+import TreasuryItemsList, { TYPES } from "../yearStatus/treasuryItemsList";
 
 export default function useYearDetail(year) {
   const { value: yearDetail, loading } = useAsync(async () => {
@@ -50,28 +46,45 @@ export function useYearSummary(detail) {
         label: "Proposals",
         activeCount: detail?.treasuryProposals?.items?.length,
         total: detail?.treasuryProposals?.totalFiatValueAtFinal,
-        content: <ProposalsList proposals={detail?.treasuryProposals?.items} />,
+        content: (
+          <TreasuryItemsList
+            type={TYPES.PROPOSALS}
+            items={detail?.treasuryProposals?.items}
+          />
+        ),
       },
       {
         value: "spends",
         label: "Spends",
         activeCount: detail?.spends?.items?.length,
         total: detail?.spends?.totalFiatValueAtFinal,
-        content: <SpendsList spends={detail?.spends?.items} />,
+        content: (
+          <TreasuryItemsList
+            type={TYPES.SPENDS}
+            items={detail?.spends?.items}
+          />
+        ),
       },
       {
         value: "tips",
         label: "Tips",
         activeCount: detail?.tips?.items?.length,
         total: detail?.tips?.totalFiatValueAtFinal,
-        content: <TipsList tips={detail?.tips?.items} loading={false} />,
+        content: (
+          <TreasuryItemsList type={TYPES.TIPS} items={detail?.tips?.items} />
+        ),
       },
       {
         value: "bounties",
         label: "Bounties",
         activeCount: detail?.bounties?.items?.length,
         total: detail?.bounties?.totalFiatValueAtFinal,
-        content: <BountiesList bounties={detail?.bounties?.items} />,
+        content: (
+          <TreasuryItemsList
+            type={TYPES.BOUNTIES}
+            items={detail?.bounties?.items}
+          />
+        ),
       },
       {
         value: "childBounties",
@@ -79,7 +92,10 @@ export function useYearSummary(detail) {
         activeCount: detail?.childBounties?.items?.length,
         total: detail?.childBounties?.totalFiatValueAtFinal,
         content: (
-          <ChildBountiesList childBounties={detail?.childBounties?.items} />
+          <TreasuryItemsList
+            type={TYPES.CHILD_BOUNTIES}
+            items={detail?.childBounties?.items}
+          />
         ),
       },
     ].filter((item) => item.activeCount > 0);
