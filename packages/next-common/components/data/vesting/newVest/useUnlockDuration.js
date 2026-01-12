@@ -1,25 +1,15 @@
 import { useMemo } from "react";
 import { useChainSettings } from "next-common/context/chain";
 import { checkInputValue } from "next-common/utils";
+import { formatTimeDuration } from "next-common/utils/viewfuncs/formatTimeDuration";
 import BigNumber from "bignumber.js";
 
 export function formatDuration(seconds) {
-  const minutes = seconds.div(60).integerValue();
-  const hours = minutes.div(60).integerValue();
-  const days = hours.div(24).integerValue();
-
-  if (days.gte(1)) {
-    return `~${days.toString()} days`;
-  } else if (hours.gte(1)) {
-    return `~${hours.toString()} hours`;
-  } else if (minutes.gte(1)) {
-    return `~${minutes.toString()} minutes`;
-  } else {
-    return `~${seconds.toString()} seconds`;
-  }
+  const ms = seconds.times(1000).toNumber();
+  return formatTimeDuration(ms, { slice: 2 });
 }
 
-export function calcUnlockDuration(
+function calcUnlockDuration(
   lockedAmount,
   perBlock,
   decimals,
