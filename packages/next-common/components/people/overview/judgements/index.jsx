@@ -11,6 +11,7 @@ import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPop
 import { useIdentityInfoContext } from "next-common/context/people/identityInfoContext";
 import { isIdentityEmpty } from "next-common/components/people/common";
 import Divider from "next-common/components/styled/layout/divider";
+import useMyJudgementRequest from "../../hooks/useMyJudgementRequest";
 
 const RequestJudgementPopup = dynamicPopup(
   () => import("next-common/components/requestJudgementPopup"),
@@ -24,7 +25,15 @@ function RequestJudgements() {
   const { info, isLoading } = useIdentityInfoContext();
   const isEmpty = isIdentityEmpty(info);
 
-  if (isLoading || isEmpty) {
+  const { value: myJudgementRequest, loading: isLoadingMyJudgementRequest } =
+    useMyJudgementRequest();
+
+  if (
+    isLoading ||
+    isEmpty ||
+    isLoadingMyJudgementRequest ||
+    !!myJudgementRequest
+  ) {
     return null;
   }
 

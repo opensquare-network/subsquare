@@ -11,7 +11,7 @@ export default function useMyJudgementRequest() {
     }
 
     const { result } = await backendApi.fetch(
-      `people/judgement/requests/pending?who=${"12ZBQqk7SD9qA7qPwpzAND6ZznXtgZuCMFWZr8xpdsVdbeva"}`,
+      `people/judgement/requests/pending?who=${realAddress}`,
     );
     if (result) {
       return result.items[0] || null;
