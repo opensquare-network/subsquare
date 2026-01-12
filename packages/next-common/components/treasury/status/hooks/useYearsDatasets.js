@@ -3,9 +3,9 @@ import { useMemo } from "react";
 import { colors } from "next-common/components/treasury/projects/const";
 import useYears from "./useYears";
 
-const barThickness = 20;
+const barThickness = 16;
 const barGap = 8;
-const padding = 12;
+const padding = 24;
 
 export function useYearsDatasets() {
   const { years, loading } = useYears();
@@ -31,11 +31,8 @@ export function useYearsDatasets() {
   }, [years]);
 
   const height = useMemo(() => {
-    if (isNil(datasets)) {
-      return padding * 2;
-    }
-    const yearCount = datasets?.labels?.length || 0;
-    if (yearCount === 0) {
+    const yearCount = datasets?.labels?.length ?? 0;
+    if (isNil(datasets) || yearCount === 0) {
       return padding * 2;
     }
     return padding + (barThickness + barGap) * yearCount - barGap + padding;

@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 import { Bar } from "react-chartjs-2";
 import { isNil, noop } from "lodash-es";
+import "next-common/components/charts/globalConfig";
 import { useBarChartOptions } from "../hooks/useChartSetting";
 import BarLabels from "next-common/components/treasury/projects/statistics/barLabels";
 import { PROJECT_CHART_TYPES } from "next-common/components/treasury/projects/statistics/projectChart";
