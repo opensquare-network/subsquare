@@ -31,10 +31,10 @@ export function useYearSummary(detail) {
 
     return {
       total: detail?.totalFiatValueAtFinal,
-      bounties: detail?.bounties?.totalFiatValueAtFinal,
       proposals: detail?.treasuryProposals?.totalFiatValueAtFinal,
       spends: detail?.spends?.totalFiatValueAtFinal,
       tips: detail?.tips?.totalFiatValueAtFinal,
+      bounties: detail?.bounties?.totalFiatValueAtFinal,
       childBounties: detail?.childBounties?.totalFiatValueAtFinal,
     };
   }, [detail]);
@@ -60,15 +60,6 @@ export function useYearSummary(detail) {
         content: <SpendsList spends={detail?.spends?.items} />,
       },
       {
-        value: "childBounties",
-        label: "Child Bounties",
-        activeCount: detail?.childBounties?.items?.length,
-        total: detail?.childBounties?.totalFiatValueAtFinal,
-        content: (
-          <ChildBountiesList childBounties={detail?.childBounties?.items} />
-        ),
-      },
-      {
         value: "tips",
         label: "Tips",
         activeCount: detail?.tips?.items?.length,
@@ -81,6 +72,15 @@ export function useYearSummary(detail) {
         activeCount: detail?.bounties?.items?.length,
         total: detail?.bounties?.totalFiatValueAtFinal,
         content: <BountiesList bounties={detail?.bounties?.items} />,
+      },
+      {
+        value: "childBounties",
+        label: "Child Bounties",
+        activeCount: detail?.childBounties?.items?.length,
+        total: detail?.childBounties?.totalFiatValueAtFinal,
+        content: (
+          <ChildBountiesList childBounties={detail?.childBounties?.items} />
+        ),
       },
     ].filter((item) => item.activeCount > 0);
   }, [detail]);

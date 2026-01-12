@@ -4,15 +4,15 @@ import ProjectStatisticsSummary from "next-common/components/treasury/projects/s
 import YearStatusBarChart from "./barChart";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { useChain } from "next-common/context/chain";
+import Tooltip from "next-common/components/tooltip";
 import { isPolkadotChain } from "next-common/utils/chain";
-import Loading from "next-common/components/loading";
 import { useYearsDatasets } from "../hooks/useYearsDatasets";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 
 const YearStatusDetailPopup = dynamicPopup(() => import("./detailPopup"));
 
 function YearStatusImpl() {
-  const { datasets, height, summaryTotalFiat, loading } = useYearsDatasets();
+  const { datasets, height, summaryTotalFiat } = useYearsDatasets();
   const [showYearDetailPopup, setShowYearDetailPopup] = useState(false);
   const [selectedYear, setSelectedYear] = useState(null);
 
@@ -26,14 +26,11 @@ function YearStatusImpl() {
     setSelectedYear(null);
   }, []);
 
-  if (loading) {
-    return <Loading />;
-  }
-
   return (
     <>
-      <TitleContainer className="justify-start">
+      <TitleContainer className="justify-start gap-x-1">
         <div className="text-textPrimary text14Bold">Year Status</div>
+        <Tooltip content="The prices are calculated at awarded time."></Tooltip>
       </TitleContainer>
       <SecondaryCard className="[&>div:first-child]:mb-4">
         <ProjectStatisticsSummary totalFiat={summaryTotalFiat?.totalFiat} />

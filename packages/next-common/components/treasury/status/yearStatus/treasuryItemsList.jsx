@@ -45,7 +45,7 @@ export default function TreasuryItemsList({
         treasuryItems.map((item) => {
           const pagedItem =
             pagedItems.find(
-              (pagedItem) => pagedItem.bountyIndex === item.index,
+              (pagedItem) => getIndex(pagedItem) === item.index,
             ) ?? {};
           return {
             ...item,
@@ -53,7 +53,7 @@ export default function TreasuryItemsList({
           };
         }),
       ),
-    [treasuryItems, pagedItems, normalize],
+    [treasuryItems, pagedItems, normalize, getIndex],
   );
 
   return (
