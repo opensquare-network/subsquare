@@ -16,7 +16,6 @@ import { useState } from "react";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import AmountInputWithHint from "next-common/components/popup/fields/amountInputWithHint";
 import { TreasuryProvider } from "next-common/context/treasury";
-import useTrackField from "../common/useTrackField";
 
 const treasurerTrackId = 5;
 
@@ -29,10 +28,8 @@ function NewHOLLARTreasuryReferendumInnerPopupContentImpl() {
   const { data: currencyInfo, loading } = useHydrationCurrencyInfo(
     STABLE_CURRENCY.id,
   );
-  const { value: trackId, component: trackField } =
-    useTrackField(treasurerTrackId);
   const { value: enactment, component: enactmentField } =
-    useEnactmentBlocksField(trackId);
+    useEnactmentBlocksField(treasurerTrackId);
 
   const { encodedHash, encodedLength, notePreimageTx } =
     useHydrationTreasurySpendPreimageTx(
@@ -42,7 +39,7 @@ function NewHOLLARTreasuryReferendumInnerPopupContentImpl() {
     );
 
   const { isLoading, component: submitButton } = useCreateProposalSubmitButton({
-    trackId,
+    trackId: treasurerTrackId,
     enactment,
     encodedHash,
     encodedLength,
@@ -75,7 +72,6 @@ function NewHOLLARTreasuryReferendumInnerPopupContentImpl() {
         setInputAmount={setInputBalance}
       />
       <div className="flex flex-col gap-[8px]">{beneficiaryField}</div>
-      {trackField}
       <AdvanceSettings>
         {enactmentField}
         <SubmissionDeposit />
