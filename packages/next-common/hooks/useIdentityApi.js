@@ -1,0 +1,30 @@
+import { useEffect, useState } from "react";
+import { useContextApi } from "next-common/context/api";
+import { getPeopleChain } from "next-common/context/people/api";
+import { useChain } from "next-common/context/chain";
+import { getChainApi } from "next-common/utils/getChainApi";
+import getChainSettings from "next-common/utils/consts/settings";
+
+export function useIdentityApi() {
+  const chain = useChain();
+  const defaultApi = useContextApi();
+  const [peopleApi, setPeopleApi] = useState(null);
+  const peopleChain = getPeopleChain(chain);
+
+  useEffect(() => {
+    if (!peopleChain) {
+      return;
+    }
+    const endpointUrls = getChainSettings(peopleChain)?.endpoints?.map(
+      (item) => item.url,
+    );
+    if (endpointUrls?.length > 0) {
+      getChainApi(endpointUrls).then(setPeopleApi);
+    }
+  }, [peopleChain]);
+
+  if (!peopleChain) {
+    return defaultApi;
+  }
+  return peopleApi;
+}
