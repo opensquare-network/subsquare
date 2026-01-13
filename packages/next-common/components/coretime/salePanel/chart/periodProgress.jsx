@@ -2,9 +2,9 @@ import { SystemQuestion } from "@osn/icons/subsquare";
 import ExternalLink from "next-common/components/externalLink";
 import Progress from "next-common/components/progress";
 import Tooltip from "next-common/components/tooltip";
-import useChainOrScanHeight from "next-common/hooks/height";
+import { useRelayChainLatestHeight } from "next-common/hooks/relayScanHeight";
 import { cn, toPercentage } from "next-common/utils";
-import CoretimeSalePanelChartSkeleton from "./skeleton";
+import { Skeleton } from "next-common/components/skeleton";
 
 export default function CoretimeSalePanelChartPeriodProgress({
   className = "",
@@ -17,7 +17,7 @@ export default function CoretimeSalePanelChartPeriodProgress({
   coretimeSale,
 }) {
   if (isLoading) {
-    return <CoretimeSalePanelChartSkeleton className={cn("h-14", className)} />;
+    return <Skeleton className={cn("h-14 w-full rounded-lg", className)} />;
   }
 
   return (
@@ -78,7 +78,7 @@ function RenewalPeriodProgress({
   initBlockHeight,
   coretimeSale,
 }) {
-  const chainHeight = useChainOrScanHeight();
+  const chainHeight = useRelayChainLatestHeight();
 
   let percentage = 0;
   if (coretimeSale?.isFinal || chainHeight >= saleStart) {
@@ -119,7 +119,7 @@ function SalePeriodProgress({
   endBlockHeight,
   coretimeSale,
 }) {
-  const chainHeight = useChainOrScanHeight();
+  const chainHeight = useRelayChainLatestHeight();
   const fixedPosition = toPercentage((fixedStart - saleStart) / saleBlocks, 3);
 
   let percentage = 0;

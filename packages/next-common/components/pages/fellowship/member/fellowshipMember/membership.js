@@ -6,7 +6,7 @@ import { usePageProps } from "next-common/context/page";
 import rankToIndex from "next-common/utils/fellowship/rankToIndex";
 import SummaryItem from "next-common/components/summary/layout/item";
 import SummaryLayout from "next-common/components/summary/layout/layout";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { fellowshipStatisticsUsersApi } from "next-common/services/url";
 import { useMemberWithStatus } from "next-common/components/fellowship/collective/hook/useFellowshipCoreMembersFilter";
 import CoreFellowshipMemberDemotionPeriod from "next-common/components/collectives/core/member/demotionPeriod";
@@ -18,8 +18,7 @@ import FellowshipRank from "next-common/components/fellowship/rank";
 import Divider from "next-common/components/styled/layout/divider";
 import Period from "next-common/components/fellowship/params/period";
 import { cn } from "next-common/utils";
-import WindowSizeProvider from "next-common/context/windowSize";
-import CoretimeSalePanelChartSkeleton from "next-common/components/coretime/salePanel/chart/skeleton";
+import { Skeleton } from "next-common/components/skeleton";
 import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
 
 export default function Membership() {
@@ -34,32 +33,30 @@ export default function Membership() {
     useMemberWithStatus(member);
 
   return (
-    <WindowSizeProvider>
-      <SecondaryCard>
-        <CardTitle>Status</CardTitle>
+    <SecondaryCard>
+      <CardTitle>Status</CardTitle>
 
-        {isLoading ? (
-          <MembershipLoading />
-        ) : activeMember ? (
-          <div className="gap-y-4 flex flex-col">
-            <ProfileFellowshipStatisticsInfoImpl
-              rank={activeMember?.rank}
-              isRankLoading={isLoading || isNil(activeMember)}
-            />
+      {isLoading ? (
+        <MembershipLoading />
+      ) : activeMember ? (
+        <div className="gap-y-4 flex flex-col">
+          <ProfileFellowshipStatisticsInfoImpl
+            rank={activeMember?.rank}
+            isRankLoading={isLoading || isNil(activeMember)}
+          />
 
-            <Divider />
+          <Divider />
 
-            <PeriodProgress
-              fellowshipParams={fellowshipParams}
-              activeMember={activeMember}
-              isLoading={isLoading || isNil(activeMember)}
-            />
-          </div>
-        ) : (
-          <NotImported />
-        )}
-      </SecondaryCard>
-    </WindowSizeProvider>
+          <PeriodProgress
+            fellowshipParams={fellowshipParams}
+            activeMember={activeMember}
+            isLoading={isLoading || isNil(activeMember)}
+          />
+        </div>
+      ) : (
+        <NotImported />
+      )}
+    </SecondaryCard>
   );
 }
 
@@ -71,7 +68,7 @@ function useUserStatisticsData(address) {
       return;
     }
 
-    const resp = await nextApi.fetch(statisticsApi);
+    const resp = await backendApi.fetch(statisticsApi);
 
     return resp?.result;
   }, [address, statisticsApi]);
@@ -179,9 +176,9 @@ function NotImported() {
 function MembershipLoading() {
   return (
     <>
-      <CoretimeSalePanelChartSkeleton className="h-5" />
-      <CoretimeSalePanelChartSkeleton className="h-5 mt-2" />
-      <CoretimeSalePanelChartSkeleton className="h-5 w-1/2 mt-2" />
+      <Skeleton className="h-5" />
+      <Skeleton className="h-5 mt-2" />
+      <Skeleton className="h-5 w-1/2 mt-2" />
     </>
   );
 }

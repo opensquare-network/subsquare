@@ -7,6 +7,7 @@ const Common = tw.span`
   text12Medium text-textPrimaryContrast
   rounded
   capitalize
+  cursor-default
 `;
 
 export const CommonTag = Common;
@@ -38,6 +39,10 @@ export const ClosedTag = styled(Common)`
 export const ThemedTag = tw(Common)`
 bg-theme100
 !text-theme500
+`;
+
+export const QueueingTag = styled(Common)`
+  background-color: var(--orange500);
 `;
 
 export const BaseTag = Common;

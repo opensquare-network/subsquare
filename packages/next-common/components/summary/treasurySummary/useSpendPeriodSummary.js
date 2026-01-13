@@ -4,31 +4,71 @@ import { useEffect, useState } from "react";
 import { useMountedState } from "react-use";
 import BigNumber from "bignumber.js";
 import { estimateBlocksTime } from "next-common/utils";
-import useChainOrScanHeight from "next-common/hooks/height";
-import { useContextApi } from "next-common/context/api";
 import { useTreasuryPallet } from "next-common/context/treasury";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
+import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
 
-export default function useSpendPeriodSummary() {
-  const api = useContextApi();
-  const blockHeight = useChainOrScanHeight();
-  const [summary, setSummary] = useState({});
-  const isMounted = useMountedState();
-  const blockTime = useSelector(blockTimeSelector);
+export function useSpendPeriod(api) {
   const pallet = useTreasuryPallet();
+  const [spendPeriod, setSpendPeriod] = useState(null);
 
   useEffect(() => {
     if (!api || !api.consts || !api.consts[pallet]?.spendPeriod) {
       return;
     }
 
-    const spendPeriod = api.consts[pallet].spendPeriod.toNumber();
-    const goneBlocks = new BigNumber(blockHeight).mod(spendPeriod).toNumber();
+    setSpendPeriod(api.consts[pallet].spendPeriod.toNumber());
+  }, [api, pallet]);
+
+  return spendPeriod;
+}
+
+export function useLastSpendPeriod(api) {
+  const pallet = useTreasuryPallet();
+  const [lastSpendPeriod, setLastSpendPeriod] = useState(null);
+
+  useEffect(() => {
+    if (!api || !api.query || !api.query[pallet]?.lastSpendPeriod) {
+      return;
+    }
+
+    api.query[pallet].lastSpendPeriod().then((result) => {
+      setLastSpendPeriod(result?.toString() || null);
+    });
+  }, [api, pallet]);
+
+  return lastSpendPeriod;
+}
+
+export default function useSpendPeriodSummary() {
+  const api = useConditionalContextApi();
+  const latestHeight = useAhmLatestHeight();
+  const [summary, setSummary] = useState({});
+  const isMounted = useMountedState();
+  const blockTime = useSelector(blockTimeSelector);
+  const lastSpendPeriod = useLastSpendPeriod(api);
+  const spendPeriod = useSpendPeriod(api);
+
+  useEffect(() => {
+    if (!api || !spendPeriod || !blockTime) {
+      return;
+    }
+
+    let goneBlocks;
+    if (lastSpendPeriod) {
+      goneBlocks = new BigNumber(latestHeight)
+        .minus(lastSpendPeriod)
+        .toNumber();
+    } else {
+      goneBlocks = new BigNumber(latestHeight).mod(spendPeriod).toNumber();
+    }
+
     const progress = new BigNumber(goneBlocks)
       .div(spendPeriod)
       .multipliedBy(100)
       .toNumber();
 
-    if (!spendPeriod || !goneBlocks || !blockTime) {
+    if (!goneBlocks) {
       return;
     }
 
@@ -46,7 +86,7 @@ export default function useSpendPeriodSummary() {
         ),
       });
     }
-  }, [api, blockHeight, blockTime, isMounted, pallet]);
+  }, [api, latestHeight, blockTime, isMounted, lastSpendPeriod, spendPeriod]);
 
   return summary;
 }

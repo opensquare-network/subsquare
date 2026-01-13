@@ -3,15 +3,10 @@ import { backendApi } from "next-common/services/nextApi";
 import { parsePreImageCall } from "next-common/components/proposal/preImage";
 
 async function getHexByRestful(hash) {
-  const abortController = new AbortController();
-  setTimeout(() => {
-    abortController.abort();
-  }, 15 * 1000);
-
   const { result, error } = await backendApi.fetch(
     `preimages/${hash}`,
     {},
-    { signal: abortController.signal },
+    { timeout: 15 * 1000 },
   );
   if (error) {
     return null;
@@ -24,7 +19,7 @@ export default async function getCallByPreimageHash(api, hash) {
   let hex = await getHexByRestful(hash);
   if (!hex) {
     const call = await queryPreimageAtBlock(api, hash);
-    hex = call.toHex();
+    hex = call ? call.toHex() : null;
   }
 
   if (hex) {

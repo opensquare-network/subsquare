@@ -10,8 +10,12 @@ export default function NotePreimageButton({ notePreimageTx }) {
       disabled={!notePreimageTx}
       getTxFunc={() => notePreimageTx}
       onInBlock={() => {
-        dispatch(newSuccessToast("Preimage created"));
         dispatch(incPreImagesTrigger());
+        dispatch(
+          newSuccessToast(
+            "Preimage created. Data will be refreshed in seconds.",
+          ),
+        );
       }}
     />
   );

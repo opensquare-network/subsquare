@@ -8,12 +8,16 @@ export default function TreasurySpendValueDisplay({
   type,
   amount,
   symbol,
+  decimals,
   showTooltip,
+  tooltipOtherContent,
 }) {
-  let { decimals } = useChainSettings();
+  let { decimals: chainDecimals } = useChainSettings();
 
-  if (type !== "native") {
-    decimals = SYMBOL_DECIMALS[symbol];
+  if (type === "native") {
+    decimals = chainDecimals;
+  } else {
+    decimals = decimals || SYMBOL_DECIMALS[symbol];
   }
 
   return (
@@ -22,6 +26,7 @@ export default function TreasurySpendValueDisplay({
       symbol={symbol}
       showTooltip={showTooltip}
       className={cn("inline-flex", className)}
+      tooltipOtherContent={tooltipOtherContent}
     />
   );
 }

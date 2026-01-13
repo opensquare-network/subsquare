@@ -1,3 +1,4 @@
+import useIsCoretimeUseRCBlockNumber from "next-common/hooks/coretime/useIsCoretimeUseRCBlockNumber";
 import { createStateContext } from "react-use";
 
 const [useSharedCoretimeSale, Provider] = createStateContext({});
@@ -11,18 +12,26 @@ export default function useCoretimeSale() {
   return sale;
 }
 
-export function useCoretimeSaleStart() {
-  const sale = useCoretimeSale();
-  const { info: { saleStart } = {} } = sale;
-
-  return saleStart;
-}
-
 export function useCoretimeSaleInitHeight() {
   const sale = useCoretimeSale();
   const { initIndexer = {} } = sale;
 
   return initIndexer?.blockHeight;
+}
+
+export function useCoretimeSaleRelayIndexerHeight() {
+  const sale = useCoretimeSale();
+  const { relayIndexer = {} } = sale;
+  return relayIndexer?.blockHeight;
+}
+
+export function useCoretimeSaleIsUseRCBlockNumber() {
+  const sale = useCoretimeSale();
+  const { id, relayIndexer, initIndexer } = sale;
+  const isUseRCBlockNumber = useIsCoretimeUseRCBlockNumber(id);
+  return isUseRCBlockNumber
+    ? relayIndexer?.blockHeight
+    : initIndexer?.blockHeight;
 }
 
 export function useCoretimeSaleInfo() {
@@ -34,6 +43,17 @@ export function useCoretimeSaleInfo() {
   }
 
   return info;
+}
+
+export function useCoretimeSaleConfiguration() {
+  const sale = useCoretimeSale();
+  const { configuration } = sale;
+
+  if (!configuration) {
+    throw new Error("Coretime sale configuration should be available");
+  }
+
+  return configuration;
 }
 
 export { useSharedCoretimeSale };

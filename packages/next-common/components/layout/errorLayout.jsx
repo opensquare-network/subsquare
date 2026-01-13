@@ -6,7 +6,7 @@ import {
 } from "@osn/icons/subsquare";
 import ThemeModeProvider from "next-common/context/theme";
 import SecondaryButton from "next-common/lib/button/secondary";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import ExternalLink from "../externalLink";
 import { memo } from "react";
 import { cn } from "next-common/utils";
@@ -50,10 +50,15 @@ export const ContactWithUs = memo(function ContactWithUs({ className = "" }) {
   );
 });
 
-export default function ErrorLayout({ icon, title, description }) {
+export default function ErrorLayout({ icon, title, description, className }) {
   return (
     <ThemeModeProvider defaultThemeMode="system">
-      <div className="h-screen flex flex-col items-center justify-center gap-y-6 text-textPrimary text14Medium">
+      <div
+        className={cn(
+          "h-screen flex flex-col items-center justify-center gap-y-6 text-textPrimary text14Medium",
+          className,
+        )}
+      >
         {icon}
 
         <div className="flex flex-col items-center">

@@ -25,7 +25,7 @@ export default function ListTabs() {
 
   const router = useRouter();
   const prefix = "/delegation/mine";
-  const tab = router.asPath.replace(prefix, "");
+  const tab = router.pathname.replace(prefix, "");
 
   useEffect(() => {
     if (tab === "" || tab === "/") {

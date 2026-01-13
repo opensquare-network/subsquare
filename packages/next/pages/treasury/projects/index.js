@@ -1,0 +1,39 @@
+import { withCommonProps } from "next-common/lib";
+import { TreasuryProvider } from "next-common/context/treasury";
+import ListLayout from "next-common/components/layout/ListLayout";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
+import panelTabs from "next-common/components/treasury/status/panelTabs";
+import { backendApi } from "next-common/services/nextApi";
+import TreasuryProjectsContent from "next-common/components/treasury/projects/index";
+
+const seoInfo = {
+  title: "Treasury Projects",
+  desc: "Shows treasury funded projects",
+};
+
+export default function TreasuryProjectsPage() {
+  return (
+    <TreasuryProvider>
+      <ListLayout
+        seoInfo={seoInfo}
+        title={seoInfo.title}
+        description={seoInfo.desc}
+        tabs={panelTabs}
+      >
+        <TreasuryProjectsContent />
+      </ListLayout>
+    </TreasuryProvider>
+  );
+}
+
+export const getServerSideProps = withCommonProps(async (context) => {
+  const tracksProps = await fetchOpenGovTracksProps();
+  const { result } = await backendApi.fetch("/treasury/status/projects");
+
+  return {
+    props: {
+      projects: result ?? [],
+      ...tracksProps,
+    },
+  };
+});

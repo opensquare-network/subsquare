@@ -1,33 +1,7 @@
 import React, { useState } from "react";
-import styled from "styled-components";
-import Flex from "next-common/components/styled/flex";
 import ThumbsUp from "next-common/components/thumbsUp";
-import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import PolkassemblyUser from "next-common/components/user/polkassemblyUser";
-
-const Wrapper = styled(Flex)`
-  align-items: flex-start;
-  flex-wrap: wrap;
-`;
-
-const GreyWrapper = styled(GreyPanel)`
-  flex-flow: wrap;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  line-height: 22px;
-  padding: 8px 12px;
-  margin-top: 16px;
-`;
-
-const GreyItem = styled.div`
-  display: inline-block;
-  margin-right: 12px;
-
-  > .username {
-    color: var(--textSecondary);
-  }
-`;
+import { Wrapper, GreyWrapper, GreyItem } from "./styled";
 
 export default function PolkassemblyActions({ reactions, extraActions }) {
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);

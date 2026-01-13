@@ -1,9 +1,13 @@
-import { PromptTypes } from "next-common/components/scrollPrompt";
+import { isEmpty } from "lodash-es";
+import {
+  PromptTypes,
+  ScrollPromptItemWrapper,
+} from "next-common/components/scrollPrompt";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import { isKintsugiChain } from "next-common/utils/chain";
 import { CACHE_KEY } from "next-common/utils/constants";
 import { useCookieValue } from "next-common/utils/hooks/useCookieValue";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { useMemo } from "react";
 
 export default function useDelegationPrompt() {
@@ -39,4 +43,23 @@ export default function useDelegationPrompt() {
       close: () => setVisible(false, { expires: 15 }),
     };
   }, [setVisible, hasDelegation, visible]);
+}
+
+export function DelegationPrompt({ onClose }) {
+  const prompt = useDelegationPrompt();
+  if (isEmpty(prompt)) {
+    return null;
+  }
+
+  return (
+    <ScrollPromptItemWrapper
+      prompt={{
+        ...prompt,
+        close: () => {
+          onClose?.();
+          prompt?.close();
+        },
+      }}
+    />
+  );
 }

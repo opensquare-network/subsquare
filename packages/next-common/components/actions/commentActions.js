@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { CommentContextMenu } from "../contentMenu";
+import CommentMoreMenu from "../articleMoreMenu/commentMoreMenu";
 import ThumbsUp from "../thumbsUp";
 import ReplyButton from "./replyButton";
 import ThumbUpList from "./thumbUpList";
@@ -10,7 +10,6 @@ import { useUser } from "next-common/context/user";
 import useMentionList from "next-common/utils/hooks/useMentionList";
 import { getFocusEditor, getOnReply } from "next-common/utils/post";
 import { useChain } from "next-common/context/chain";
-import { useComments } from "next-common/context/post/comments";
 import { noop } from "lodash-es";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
@@ -18,6 +17,10 @@ import { useComment } from "../comment/context";
 import { useCommentActions } from "next-common/sima/context/commentActions";
 import { useFindMyUpVote } from "next-common/sima/actions/common";
 import useCanEditComment from "next-common/hooks/useCanEditComment";
+import {
+  useRootCommentContext,
+  useRootCommentData,
+} from "../comment/rootComment";
 
 function useMyUpVote(reactions) {
   const findMyUpVote = useFindMyUpVote();
@@ -31,7 +34,7 @@ function useShouldUseSima(comment) {
 
 function SimaCommentContextMenu({ setIsEdit }) {
   const canEditComment = useCanEditComment();
-  return <CommentContextMenu editable={canEditComment} setIsEdit={setIsEdit} />;
+  return <CommentMoreMenu editable={canEditComment} setIsEdit={setIsEdit} />;
 }
 
 function MaybeSimaCommentContextMenu({ setIsEdit }) {
@@ -41,7 +44,7 @@ function MaybeSimaCommentContextMenu({ setIsEdit }) {
   if (shouldUseSima) {
     return <SimaCommentContextMenu setIsEdit={setIsEdit} />;
   }
-  return <CommentContextMenu editable={ownComment} setIsEdit={setIsEdit} />;
+  return <CommentMoreMenu editable={ownComment} setIsEdit={setIsEdit} />;
 }
 
 function useIsOwnComment() {
@@ -52,11 +55,8 @@ function useIsOwnComment() {
 }
 
 export default function CommentActions({
-  reloadComment = noop,
   scrollToNewReplyComment = noop,
   setShowReplies = noop,
-  replyToCommentId,
-  replyToComment,
   setIsEdit,
 }) {
   const comment = useComment();
@@ -76,9 +76,8 @@ export default function CommentActions({
     user?.preference?.editor || "markdown",
   );
   const [isReply, setIsReply] = useState(false);
-  const comments = useComments();
 
-  const users = useMentionList(post, comments);
+  const users = useMentionList();
 
   const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
@@ -103,6 +102,7 @@ export default function CommentActions({
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
 
   const { upVoteComment, cancelUpVoteComment } = useCommentActions();
+  const { reloadRootComment } = useRootCommentContext();
 
   const toggleThumbUp = async () => {
     if (!user || ownComment || thumbUpLoading) {
@@ -120,7 +120,7 @@ export default function CommentActions({
       }
 
       if (result) {
-        await reloadComment();
+        await reloadRootComment();
       }
       if (error) {
         dispatch(newErrorToast(error.message));
@@ -133,6 +133,8 @@ export default function CommentActions({
       setThumbUpLoading(false);
     }
   };
+
+  const replyToComment = useRootCommentData();
 
   return (
     <>
@@ -154,8 +156,7 @@ export default function CommentActions({
       {showThumbsUpList && <ThumbUpList reactions={reactions} />}
       {isReply && (
         <CommentEditor
-          commentId={replyToCommentId}
-          comment={replyToComment}
+          replyToComment={replyToComment}
           ref={editorWrapperRef}
           setQuillRef={setQuillRef}
           isReply={isReply}
@@ -163,7 +164,7 @@ export default function CommentActions({
             setIsReply(false);
             if (reload) {
               setShowReplies(true);
-              await reloadComment();
+              await reloadRootComment();
               scrollToNewReplyComment();
             }
           }}

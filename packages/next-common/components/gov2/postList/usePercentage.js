@@ -1,9 +1,9 @@
 import { isNil } from "lodash-es";
 import { useMemo } from "react";
-import useChainOrScanHeight from "next-common/hooks/height";
+import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
 
 export default function usePercentage(startHeight, period) {
-  const latestHeight = useChainOrScanHeight();
+  const latestHeight = useAhmLatestHeight();
   const end = startHeight + period;
 
   return useMemo(() => {

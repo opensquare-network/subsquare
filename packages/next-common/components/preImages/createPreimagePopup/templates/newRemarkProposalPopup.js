@@ -6,6 +6,8 @@ import Popup from "next-common/components/popup/wrapper/Popup";
 import NotePreimageButton from "../notePreimageButton";
 import useRemarkField from "../fields/useRemarkField";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
+import InsufficientBalanceTips from "next-common/components/summary/newProposalQuickStart/common/insufficientBalanceTips";
+import ExtrinsicInfo from "../../newPreimagePopup/info";
 
 export function useRemarkNotePreimageTx(remark) {
   const api = useContextApi();
@@ -27,12 +29,21 @@ export function useRemarkNotePreimageTx(remark) {
 export default function NewRemarkProposalPopup() {
   const { onClose } = usePopupParams();
   const { value: remark, component: remarkField } = useRemarkField();
-  const { notePreimageTx } = useRemarkNotePreimageTx(remark);
+  const { notePreimageTx, encodedLength, encodedProposal, encodedHash } =
+    useRemarkNotePreimageTx(remark);
 
   return (
     <Popup title="New Remark Proposal" onClose={onClose}>
       <SignerWithBalance />
       {remarkField}
+      {encodedProposal && (
+        <ExtrinsicInfo
+          preimageHash={encodedHash}
+          callData={encodedProposal}
+          preimageLength={encodedLength || 0}
+        />
+      )}
+      <InsufficientBalanceTips byteLength={encodedLength} onlyPreimage />
       <div className="flex justify-end">
         <NotePreimageButton notePreimageTx={notePreimageTx} />
       </div>

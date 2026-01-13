@@ -1,29 +1,23 @@
 import { useEffect, useState } from "react";
-import extractVoteInfo from "next-common/utils/democracy/referendum";
 import getElectorate from "next-common/utils/democracy/electorate";
-import useChainOrScanHeight from "next-common/hooks/height";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
-export default function useMaybeFetchElectorate(
-  referendum,
-  referendumStatus,
-  api,
-) {
+export default function useMaybeFetchElectorate(referendumStatus) {
+  const api = useConditionalContextApi();
   const [electorate, setElectorate] = useState(0);
-  const nowHeight = useChainOrScanHeight();
 
-  const { voteFinishedHeight } = extractVoteInfo(referendum?.timeline);
   const possibleElectorate = referendumStatus?.tally?.electorate;
 
   useEffect(() => {
     if (possibleElectorate) {
       setElectorate(possibleElectorate);
-    } else if (api) {
-      const height = voteFinishedHeight || nowHeight;
-      getElectorate(api, height).then((electorate) =>
-        setElectorate(electorate),
-      );
+      return;
     }
-  }, [api, voteFinishedHeight, nowHeight, possibleElectorate]);
+
+    if (api) {
+      getElectorate(api).then((electorate) => setElectorate(electorate));
+    }
+  }, [api, possibleElectorate]);
 
   return electorate;
 }

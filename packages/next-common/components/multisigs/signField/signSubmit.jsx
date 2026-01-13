@@ -1,27 +1,21 @@
 import { SystemSignature } from "@osn/icons/subsquare";
 import { Wrapper } from "./signApprove";
-import { useState } from "react";
 import Tooltip from "next-common/components/tooltip";
-import dynamicPopup from "next-common/lib/dynamic/popup";
-
-const SignSubmitPopup = dynamicPopup(() => import("./signSubmitPopup"));
+import { useSignSubmitPopup } from "../context/signSubmitPopupContext";
 
 export default function SignSubmit({ multisig = {} }) {
-  const [isShowSignSubmitPopup, setIsShowSignSubmitPopup] = useState(false);
+  const { setVisible, setCurrentMultisig } = useSignSubmitPopup();
+
+  const handleClick = () => {
+    setVisible(true);
+    setCurrentMultisig(multisig);
+  };
 
   return (
-    <>
-      <Tooltip content="Approve">
-        <Wrapper onClick={() => setIsShowSignSubmitPopup(true)}>
-          <SystemSignature role="button" className="w-4 h-4" />
-        </Wrapper>
-      </Tooltip>
-      {isShowSignSubmitPopup && (
-        <SignSubmitPopup
-          onClose={() => setIsShowSignSubmitPopup(false)}
-          multisig={multisig}
-        />
-      )}
-    </>
+    <Tooltip content="Approve">
+      <Wrapper onClick={handleClick}>
+        <SystemSignature role="button" className="w-4 h-4" />
+      </Wrapper>
+    </Tooltip>
   );
 }

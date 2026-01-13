@@ -11,12 +11,11 @@ import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
-import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 import CollectiveProvider, {
   collectivePallets,
 } from "next-common/context/collective";
 import AstarMotionDetail from "next-common/components/pages/components/motion/astar/astarMotionDetail";
+import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
 
 function CommunityCouncilMotionContent() {
   const motion = usePost();
@@ -24,13 +23,11 @@ function CommunityCouncilMotionContent() {
   motion.status = motion.state?.state;
 
   return (
-    <OffChainArticleActionsProvider>
-      <OffChainCommentActionsProvider>
-        <ContentWithComment>
-          <AstarMotionDetail />
-        </ContentWithComment>
-      </OffChainCommentActionsProvider>
-    </OffChainArticleActionsProvider>
+    <MaybeSimaContent>
+      <ContentWithComment>
+        <AstarMotionDetail />
+      </ContentWithComment>
+    </MaybeSimaContent>
   );
 }
 

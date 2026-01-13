@@ -9,7 +9,7 @@ import kintsugi from "./consts/settings/kintsugi";
 import phala from "./consts/settings/phala";
 import centrifuge from "./consts/settings/centrifuge";
 // import kabocha from "./consts/settings/kabocha";
-import crust from "./consts/settings/crust";
+// import crust from "./consts/settings/crust";
 import litentry from "./consts/settings/litentry";
 import basilisk from "./consts/settings/basilisk";
 import hydradx from "./consts/settings/hydradx";
@@ -21,32 +21,36 @@ import collectives from "./consts/settings/collectives";
 import bifrostPolkadot from "./consts/settings/bifrostPolkadot";
 import vara from "./consts/settings/vara";
 import westend from "./consts/settings/westend";
-import polkadotAssetHub from "next-common/utils/consts/settings/polkadotAssetHub";
+// import polkadotAssetHub from "next-common/utils/consts/settings/polkadotAssetHub";
 import polkadotPeople from "next-common/utils/consts/settings/polkadotPeople";
-import westendAssetHub from "next-common/utils/consts/settings/westendAssetHub";
-import kusamaAssetHub from "next-common/utils/consts/settings/kusamaAssetHub";
+// import westendAssetHub from "next-common/utils/consts/settings/westendAssetHub";
+// import kusamaAssetHub from "next-common/utils/consts/settings/kusamaAssetHub";
 import kusamaPeople from "next-common/utils/consts/settings/kusamaPeople";
 // import shibuya from "next-common/utils/consts/settings/shibuya";
 import astar from "next-common/utils/consts/settings/astar";
+import zkverify from "./consts/settings/zkverify";
 import zkverifyTestnet from "./consts/settings/zkverifyTestnet";
 import paseo from "./consts/settings/paseo";
 import ajuna from "./consts/settings/ajuna";
 import laos from "./consts/settings/laos";
-import paseoAssetHub from "./consts/settings/paseoAssetHub";
+// import paseoAssetHub from "./consts/settings/paseoAssetHub";
 import paseoPeople from "./consts/settings/paseoPeople";
 import westendPeople from "./consts/settings/westendPeople";
+import hyperBridge from "./consts/settings/hyperBridge";
+import acurast from "./consts/settings/acurast";
 
 const optionalNodes =
   process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? [development] : [];
 
 export const nodes = [
   polkadot,
-  polkadotAssetHub,
+  // polkadotAssetHub,
   polkadotPeople,
   kusama,
-  kusamaAssetHub,
+  // kusamaAssetHub,
   kusamaPeople,
   acala,
+  acurast,
   ajuna,
   astar,
   basilisk,
@@ -57,10 +61,11 @@ export const nodes = [
   collectives,
   // crab,
   westend,
-  westendAssetHub,
+  // westendAssetHub,
   westendPeople,
-  crust,
+  // crust,
   hydradx,
+  hyperBridge,
   interlay,
   // kabocha,
   karura,
@@ -74,9 +79,10 @@ export const nodes = [
   // rococo,
   // shibuya,
   vara,
+  zkverify,
   zkverifyTestnet,
   paseo,
-  paseoAssetHub,
+  // paseoAssetHub,
   paseoPeople,
   ...optionalNodes,
 ];
@@ -93,7 +99,7 @@ export const defaultBlockTime = 12000;
 export const defaultPageSize = 25;
 
 export const DEFAULT_SEO_INFO = {
-  title: "SubSquare | governance platform",
+  title: `SubSquare | ${process.env.NEXT_PUBLIC_CHAIN} governance platform`,
   desc: "A platform that scans and normalizes the blockchain governance data. It enables community members to propose, vote proposals and discuss the corresponding topics.",
 };
 
@@ -118,7 +124,9 @@ export const CACHE_KEY = {
   navSubmenuVisible: "nav-submenu-visible",
   connectedAccount: "connected-account",
   delegationPromptVisible: "delegation-prompt-visible",
+  multisigPromptVisible: "multisig-prompt-visible",
   setAvatarPromptVisible: "set-avatar-prompt-visible",
+  setIdentityPromptVisible: "set-identity-prompt-visible",
   fellowshipDemotionExpiredVisible: "fellowship-demotion-expired-visible",
   fellowshipDemotionExpireRemindVisible:
     "fellowship-demotion-expire-remind-visible",
@@ -126,22 +134,30 @@ export const CACHE_KEY = {
   ambassadorDemotionExpireRemindVisible:
     "ambassador-demotion-expire-remind-visible",
   extensionUpdateMetadata: "extensionUpdateMetadata",
-  assetHubPromptVisible: "asset-hub-management-prompt-visible",
-  multisigPromptVisible: "multisig-management-prompt-visible",
-
+  assetsPromptVisible: "assets-management-prompt-visible",
+  multisigManagementPromptVisible: "multisig-management-prompt-visible",
+  requestJudgementPrompt: "request-judgement-prompt",
   walletConnectSession: "walletconnect-session",
+  totalRequestingAssets: "total-requesting-assets",
+  dvApplyPromptVisible: "dv-apply-prompt-visible",
+  polkadotVault: "polkadot-vault",
+  vestingUnlockablePrompt: "vesting-unlockable-prompt",
 };
 
 export const ADDRESS_CACHE_KEYS = [
   CACHE_KEY.delegationPromptVisible,
+  CACHE_KEY.multisigPromptVisible,
   CACHE_KEY.setAvatarPromptVisible,
   CACHE_KEY.fellowshipDemotionExpiredVisible,
   CACHE_KEY.fellowshipDemotionExpireRemindVisible,
   CACHE_KEY.ambassadorDemotionExpiredVisible,
   CACHE_KEY.ambassadorDemotionExpireRemindVisible,
   CACHE_KEY.extensionUpdateMetadata,
-  CACHE_KEY.assetHubPromptVisible,
-  CACHE_KEY.multisigPromptVisible,
+  CACHE_KEY.assetsPromptVisible,
+  CACHE_KEY.multisigManagementPromptVisible,
+  CACHE_KEY.requestJudgementPrompt,
+  CACHE_KEY.setIdentityPromptVisible,
+  CACHE_KEY.vestingUnlockablePrompt,
 ];
 
 export const CHAIN = process.env.NEXT_PUBLIC_CHAIN;
@@ -152,6 +168,7 @@ export const chain = CHAIN;
 
 export const IS_SERVER = typeof window === "undefined";
 export const IS_PRODUCTION = process.env.NODE_ENV === "production";
+export const IS_DEVELOPMENT = process.env.NODE_ENV === "development";
 
 export const WALLET_TIMEOUT_ERROR_TEXT =
   "The wallet request timed out. Please refresh the page and try again later.";
@@ -175,10 +192,13 @@ export const NAV_MENU_TYPE = {
   main: "main",
   subspace: "subspace",
   archived: "archived",
+  group: "group",
 };
 
 export const RELATIONSHIP_NODE_TYPE = {
   Multisig: "Multisig",
   Proxy: "Proxy",
   Identity: "Identity",
+  Delegation: "Delegation",
+  Transfer: "Transfer",
 };

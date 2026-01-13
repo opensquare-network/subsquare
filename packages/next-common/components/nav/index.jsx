@@ -5,28 +5,34 @@ import NavMenu from "./menu";
 import tw from "tailwind-styled-components";
 import HeaderDrawer from "../header/drawer";
 import { ArrowFold, SystemClose, SystemMenu } from "@osn/icons/subsquare";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { useNavCollapsed } from "next-common/context/nav";
 import { useScrollLock } from "next-common/utils/hooks/useScrollLock";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import ChainLogo from "./logo";
 import Chains from "next-common/utils/consts/chains";
 import { useThemeSetting } from "next-common/context/theme";
 import useDetectDevice from "next-common/components/header/hooks/useDetectDevice";
+import { useMountedState } from "react-use";
+import { useIsMobileDevice } from "next-common/hooks/useIsMobileDevice";
 
 export default function Nav() {
-  const isMobileDevice = useDetectDevice();
+  const isMobileFromUA = useIsMobileDevice();
+  const isMobileFromDetect = useDetectDevice();
+  const isMounted = useMountedState();
+
+  const isMobileDevice = useMemo(() => {
+    if (!isMounted()) {
+      return isMobileFromUA;
+    }
+
+    return isMobileFromDetect;
+  }, [isMobileFromDetect, isMobileFromUA, isMounted]);
 
   return (
     <>
-      {isMobileDevice ? (
-        <NavMobile />
-      ) : (
-        <>
-          <NavDesktop />
-          <NavMobile />
-        </>
-      )}
+      {!isMobileDevice && <NavDesktop />}
+      <NavMobile />
     </>
   );
 }

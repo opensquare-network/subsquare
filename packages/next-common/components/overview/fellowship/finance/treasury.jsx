@@ -1,5 +1,5 @@
 import SummaryItem from "next-common/components/summary/layout/item";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import LoadableContent from "next-common/components/common/loadableContent";
 import NativeTokenSymbolAsset from "next-common/components/summary/polkadotTreasurySummary/common/nativeTokenSymbolAsset";
 import FiatPriceLabel from "next-common/components/summary/polkadotTreasurySummary/common/fiatPriceLabel";
@@ -27,7 +27,7 @@ export default function FellowshipTreasury() {
   const Title = (
     <>
       <Link
-        href={`https://assethub-polkadot.subscan.io/account/${StatemintFellowShipTreasuryAccount}`}
+        href={`https://assethub-polkadot.statescan.io/#/accounts/${StatemintFellowShipTreasuryAccount}`}
         className="text12Medium text-textTertiary hover:underline"
         target="_blank"
         rel="noreferrer"

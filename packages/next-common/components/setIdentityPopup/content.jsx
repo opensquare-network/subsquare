@@ -103,8 +103,8 @@ export default function SetIdentityPopupContent() {
     dispatch(newSuccessToast("Set identity successfully"));
   }, [dispatch]);
 
-  const hasErrors = Object.values(errors).some((error) => !!error);
-  const isEmpty = Object.values(identityInfo).every((value) => !value);
+  const hasErrors = Object.values(errors || {}).some((error) => !!error);
+  const isEmpty = Object.values(identityInfo || {}).every((value) => !value);
 
   const isDisabled = hasErrors || isEmpty || !identityInfo?.display;
 
@@ -147,7 +147,7 @@ function InputField({ field, identityInfo, onFieldChange, errors, setErrors }) {
 
   return (
     <div>
-      <Label>{field.title}</Label>
+      <Label className="mb-2">{field.title}</Label>
       <Input
         ref={inputRef}
         name={field.key}

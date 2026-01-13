@@ -1,10 +1,8 @@
 import React, { createContext, useContext, useEffect, useReducer } from "react";
 import { useDetailType } from "../page";
 import { detailPageCategory } from "../../utils/consts/business/category";
-import {
-  getGov2ReferendumTitle,
-  getGov2TreasuryProposalTitle,
-} from "../../utils/gov2/title";
+import { getGov2ReferendumTitle } from "../../utils/gov2/title";
+import getTreasuryProposalTitle from "next-common/utils/viewfuncs/treasury/getTreasuryProposalTitle";
 import getAnnouncementTitle from "../../utils/alliance/title";
 import sortTimeline from "next-common/utils/timeline/sort";
 
@@ -59,7 +57,7 @@ export function usePostTitle() {
   ) {
     title = getGov2ReferendumTitle(post);
   } else if (detailPageCategory.TREASURY_PROPOSAL === type) {
-    title = getGov2TreasuryProposalTitle(post);
+    title = getTreasuryProposalTitle(post);
   } else if (detailPageCategory.ALLIANCE_ANNOUNCEMENT === type) {
     title = getAnnouncementTitle(post);
   }
@@ -98,4 +96,17 @@ export function useTimelineData() {
   const onchainData = useOnchainData();
   const timeline = onchainData?.timeline || [];
   return sortTimeline(timeline);
+}
+
+export function useReferendumApprovedOrThrow() {
+  const onchainData = useOnchainData();
+  if (!onchainData?.approved) {
+    throw new Error("No approved data when call useReferendumApprovedOrThrow");
+  }
+  return onchainData?.approved;
+}
+
+export function useReferendumApprovedHeightOrThrow() {
+  const approved = useReferendumApprovedOrThrow();
+  return approved[0];
 }

@@ -1,24 +1,21 @@
 import useQueryExistentialDeposit from "next-common/utils/hooks/chain/useQueryExistentialDeposit";
-import useSubStorage from "../common/useSubStorage";
 import calcTransferable from "next-common/utils/account/transferable";
-import bigAdd from "next-common/utils/math/bigAdd";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
+import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
 
 export function useSubBalanceInfo(address) {
   const existentialDeposit = useQueryExistentialDeposit();
+  const api = useConditionalContextApi();
 
-  const { result, loading } = useSubStorage("system", "account", [address]);
-  const info = result?.data?.toJSON();
+  const [balance, loading, resultJsonInfo] = useAddressBalance(api, address);
 
-  if (!info) {
+  if (!balance || !resultJsonInfo) {
     return {
       value: null,
       loading,
     };
   }
-
-  const { free, reserved } = info;
-  const balance = bigAdd(free, reserved) || 0;
-  const transferrable = calcTransferable(info, existentialDeposit);
+  const transferrable = calcTransferable(resultJsonInfo, existentialDeposit);
 
   return {
     value: {

@@ -5,6 +5,7 @@ import Params from "./params";
 import SectionSelect from "./sectionSelect";
 import { useObjectItemState } from "next-common/hooks/useItemState";
 import { useContextApi } from "next-common/context/api";
+import { CallContext } from "./context";
 
 function getParams({ meta }) {
   return meta.args.map(({ name, type, typeName }) => ({
@@ -48,7 +49,12 @@ export function getExtrinsicValues(value) {
   }
 
   if (Array.isArray(value.data)) {
-    return value.data.map((v) => getExtrinsicValues(v));
+    const v = value.data.map((v) => getExtrinsicValues(v));
+    // handle normalizeExtrinsicValue for BTreeMapParam
+    if (value.normalizeExtrinsicValue) {
+      return value.normalizeExtrinsicValue(v);
+    }
+    return v;
   }
 
   if (typeof value.data === "object") {
@@ -133,11 +139,15 @@ export default function Extrinsic({
         methodName={methodName}
         setMethodName={setMethodName}
       />
-      <Params
-        params={callState?.extrinsic?.params}
-        value={callValues}
-        setValue={setCallValues}
-      />
+      <CallContext.Provider
+        value={{ section: sectionName, method: methodName }}
+      >
+        <Params
+          params={callState?.extrinsic?.params}
+          value={callValues}
+          setValue={setCallValues}
+        />
+      </CallContext.Provider>
     </div>
   );
 }

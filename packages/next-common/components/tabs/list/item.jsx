@@ -1,7 +1,7 @@
 import { isFunction } from "lodash-es";
 import Tooltip from "next-common/components/tooltip";
 import { cn, isExternalLink } from "next-common/utils";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { isValidElement } from "react";
 import TitleSuffix from "next-common/components/titleSuffix";
 
@@ -18,6 +18,7 @@ export default function TabsListItem({
   onClick,
   url = "",
   shallow,
+  scroll,
 }) {
   const isFunctionLabel = isFunction(label);
   const isStringLabel = isValidElement(label);
@@ -55,6 +56,7 @@ export default function TabsListItem({
         href={url}
         target={isExternalLink(url) ? "_blank" : "_self"}
         shallow={shallow}
+        scroll={scroll}
       >
         {content}
       </Link>

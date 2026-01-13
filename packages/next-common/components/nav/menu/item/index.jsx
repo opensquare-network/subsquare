@@ -14,7 +14,7 @@ export default function NavMenuItem({ collapsed, ...menu } = {}) {
     return <NavMenuDivider />;
   }
 
-  if (items?.length) {
+  if (items?.length && !menu?.hideItemsOnMenu) {
     return (
       <NavMenuItemGroup
         menu={menu}
@@ -23,8 +23,10 @@ export default function NavMenuItem({ collapsed, ...menu } = {}) {
         setNavSubmenuVisible={setNavSubmenuVisible}
       />
     );
-  } else {
-    return (
+  }
+
+  return (
+    <li>
       <NavMenuItemItem
         item={menu}
         active={
@@ -33,6 +35,6 @@ export default function NavMenuItem({ collapsed, ...menu } = {}) {
         }
         collapsed={collapsed}
       />
-    );
-  }
+    </li>
+  );
 }

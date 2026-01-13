@@ -4,45 +4,22 @@ import { FellowshipFeedItems } from "next-common/components/fellowship/feeds/lis
 import Pagination from "next-common/components/pagination";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
 import { usePageProps } from "next-common/context/page";
-import { backendApi } from "next-common/services/nextApi";
-import {
-  ambassadorCoreFeedsApiUri,
-  fellowshipCoreFeedsApiUri,
-} from "next-common/services/url";
-import { defaultPageSize } from "next-common/utils/constants";
+import useFellowshipCoreFeeds from "next-common/hooks/fellowship/core/useFellowshipCoreFeeds";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { useAsync } from "react-use";
 
 export default function ProfileFellowshipCoreFeeds({
   showUserInfo = true,
   noDataText = "",
+  firstPageFeeds,
 }) {
-  const { id: address } = usePageProps();
   const router = useRouter();
   const [page, setPage] = useState(parseInt(router.query.page || 1));
 
-  let feedsApi;
-  const { section } = useCollectivesContext();
-  if (section === "fellowship") {
-    feedsApi = fellowshipCoreFeedsApiUri;
-  } else if (section === "ambassador") {
-    feedsApi = ambassadorCoreFeedsApiUri;
-  }
-
-  const { value = {}, loading } = useAsync(async () => {
-    if (!feedsApi) {
-      return;
-    }
-
-    const resp = await backendApi.fetch(feedsApi, {
-      who: address,
-      page,
-      pageSize: defaultPageSize,
-    });
-
-    return resp?.result;
-  }, [page, address, feedsApi]);
+  const { value = {}, loading } = useFellowshipCoreFeeds({
+    page,
+    firstPageFeeds,
+  });
 
   const rows = createFellowshipCoreFeedsRows(value?.items, { showUserInfo });
 
@@ -65,4 +42,20 @@ export default function ProfileFellowshipCoreFeeds({
       />
     </div>
   );
+}
+
+export function ProfileFellowshipCoreFeedsServerFirst(props) {
+  const { fellowshipFeeds, ambassadorFeeds } = usePageProps();
+  const { section } = useCollectivesContext();
+  if (section === "fellowship" && fellowshipFeeds?.items?.length > 0) {
+    return (
+      <ProfileFellowshipCoreFeeds {...props} firstPageFeeds={fellowshipFeeds} />
+    );
+  }
+  if (section === "ambassador" && ambassadorFeeds?.items?.length > 0) {
+    return (
+      <ProfileFellowshipCoreFeeds {...props} firstPageFeeds={ambassadorFeeds} />
+    );
+  }
+  return <ProfileFellowshipCoreFeeds {...props} />;
 }

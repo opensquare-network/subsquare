@@ -3,7 +3,9 @@ import { westendAssetHubNodes } from "next-common/utils/consts/settings/westend/
 import dynamic from "next/dynamic";
 import polkadotLinks from "next-common/utils/consts/settings/polkadot/links";
 import MenuGroups from "next-common/utils/consts/settings/menuGroups";
-import westendCommonCfg from "next-common/utils/consts/settings/westend/common";
+import westendCommonCfg, {
+  westendAssethubMigration,
+} from "next-common/utils/consts/settings/westend/common";
 
 const ProjectIconWestendAssethub = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconWestendAssethub"),
@@ -15,8 +17,8 @@ const westendAssetHub = {
   value: name,
   name: "Asset Hub",
   ...westendCommonCfg,
-  blockTime: 12000,
-  assetHubMigrated: true,
+  blockTime: 6000,
+  assethubMigration: westendAssethubMigration,
   endpoints: westendAssetHubNodes,
   avatar: ProjectIconWestendAssethub,
   darkAvatar: ProjectIconWestendAssethub,
@@ -32,16 +34,15 @@ const westendAssetHub = {
   },
   description:
     "System parachain on Westend network for creating and sending tokens and NFTs.",
-  multisigWallets: {
-    signet: true,
-  },
   modules: {
     proxy: {
       provider: "chain",
     },
   },
   supportWalletconnect: true,
+  supportPolkadotVault: true,
   allowWeb2Login: true,
+  supportAssets: true,
 };
 
 export default westendAssetHub;

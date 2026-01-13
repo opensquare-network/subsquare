@@ -6,8 +6,8 @@ export default function useSubAddressBalance(address) {
   const [balance, setBalance] = useState(0);
   const { loading } = useSubStorage("system", "account", [address], {
     callback: useCallback((account) => {
-      const balance = new BigNumber(account.data.free.toJSON())
-        .plus(account.data.reserved.toJSON())
+      const balance = new BigNumber(account?.data?.free?.toJSON() || 0)
+        .plus(account?.data?.reserved?.toJSON() || 0)
         .toString();
       setBalance(balance);
     }, []),

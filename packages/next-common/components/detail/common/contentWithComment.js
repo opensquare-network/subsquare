@@ -5,8 +5,10 @@ import {
 import { DropdownUrlFilterProvider } from "next-common/components/dropdownFilter/context";
 import useCommentComponent from "next-common/components/useCommentComponent";
 import { useDetailType, usePageProps } from "next-common/context/page";
+import { usePost } from "next-common/context/post";
 import { CommentsProvider } from "next-common/context/post/comments";
 import { EditorProvider } from "next-common/context/post/editor";
+import { PolkassemblyCommentRepliesProvider } from "next-common/hooks/polkassembly/usePolkassemblyCommentReply";
 import { usePostCommentsData } from "next-common/hooks/usePostComments";
 import { usePostCommentsFilteredData } from "next-common/hooks/usePostCommentsFilteredData";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
@@ -26,7 +28,7 @@ function CommentsWithFilterContent({ children }) {
   );
 }
 
-function CommentsContent({ children }) {
+export function CommentsContent({ children }) {
   const { commentsData, loading } = usePostCommentsData();
   const { component, focusEditor } = useCommentComponent({
     commentsData,
@@ -44,6 +46,7 @@ function CommentsContent({ children }) {
 export default function ContentWithComment({ children }) {
   const { comments } = usePageProps();
   const detailType = useDetailType();
+  const post = usePost();
 
   let content;
   if (
@@ -62,5 +65,14 @@ export default function ContentWithComment({ children }) {
     content = <CommentsContent>{children}</CommentsContent>;
   }
 
-  return <CommentsProvider comments={comments}>{content}</CommentsProvider>;
+  return (
+    <CommentsProvider comments={comments}>
+      <PolkassemblyCommentRepliesProvider
+        polkassemblyId={post.polkassemblyId}
+        polkassemblyPostType={post.polkassemblyPostType}
+      >
+        {content}
+      </PolkassemblyCommentRepliesProvider>
+    </CommentsProvider>
+  );
 }

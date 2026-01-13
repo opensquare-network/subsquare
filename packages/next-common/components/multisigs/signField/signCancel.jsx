@@ -5,27 +5,20 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useCallback, useState, useEffect } from "react";
 import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
 import Tooltip from "next-common/components/tooltip";
-import { newSuccessToast } from "next-common/store/reducers/toastSlice";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchMultisigList10Times,
-  fetchMultisigsCount10Times,
-} from "../common";
-import { myMultisigsSelector } from "next-common/store/reducers/multisigSlice";
-import { useChain, useChainSettings } from "next-common/context/chain";
+import { useChainSettings } from "next-common/context/chain";
 import { sortAddresses } from "@polkadot/util-crypto";
 import { isSameAddress } from "next-common/utils";
+import { useMultisigListFetchFunc } from "../actions/composeCallPopup/fetchMultisigList";
+import { useSignCancelPopup } from "../context/signCancelPopupContext";
 
-export default function SignCancel({ multisig = {} }) {
+export function useSignCancel(multisig) {
   const api = useContextApi();
   const address = useRealAddress();
   const { threshold, signatories, when: timepoint, callHash } = multisig;
-  const dispatch = useDispatch();
   const [isDisabled, setIsDisabled] = useState(false);
-  const myMultisigs = useSelector(myMultisigsSelector);
-  const { page = 1 } = myMultisigs || {};
-  const chain = useChain();
   const { ss58Format } = useChainSettings();
+  const fetchMultisigListFunc = useMultisigListFetchFunc();
+  const { visible, setVisible } = useSignCancelPopup();
 
   const getTxFunc = useCallback(() => {
     if (!api || !address) {
@@ -43,21 +36,17 @@ export default function SignCancel({ multisig = {} }) {
       callHash,
     );
   }, [api, address, threshold, signatories, ss58Format, callHash, timepoint]);
-
-  const onFinalized = () => {
-    setIsDisabled(false);
-    dispatch(newSuccessToast("Multisig status will be updated in seconds"));
-    fetchMultisigList10Times(dispatch, chain, address, page).then(() => {
-      // updated 10 time, do nothing
-    });
-    fetchMultisigsCount10Times(dispatch, chain, address).then(() => {
-      // updated 10 time, do nothing
-    });
-  };
-
   const { doSubmit, isSubmitting } = useTxSubmission({
     getTxFunc,
-    onFinalized,
+    onInBlock: () => {
+      if (visible) {
+        setVisible(false);
+      }
+      setIsDisabled(false);
+    },
+    onCancelled: () => setIsDisabled(false),
+    onTxError: () => setIsDisabled(false),
+    onFinalized: fetchMultisigListFunc,
   });
 
   useEffect(() => {
@@ -66,9 +55,28 @@ export default function SignCancel({ multisig = {} }) {
     }
   }, [isSubmitting]);
 
+  return {
+    doSubmit,
+    isDisabled,
+  };
+}
+
+export default function SignCancel({ multisig = {} }) {
+  const { doSubmit, isDisabled } = useSignCancel(multisig);
+  const { setCurrentMultisig, setVisible } = useSignCancelPopup();
+
+  const handleClick = useCallback(() => {
+    if (multisig?.call) {
+      setCurrentMultisig(multisig);
+      setVisible(true);
+    } else {
+      doSubmit();
+    }
+  }, [doSubmit, multisig, setCurrentMultisig, setVisible]);
+
   return (
     <Tooltip content="Cancel">
-      <Wrapper disabled={isDisabled} onClick={doSubmit}>
+      <Wrapper disabled={isDisabled} onClick={handleClick}>
         <SystemClose role="button" className="w-4 h-4" />
       </Wrapper>
     </Tooltip>

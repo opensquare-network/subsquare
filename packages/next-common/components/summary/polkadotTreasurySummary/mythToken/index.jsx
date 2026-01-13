@@ -1,7 +1,7 @@
 import SummaryItem from "next-common/components/summary/layout/item";
 import { toPrecision } from "next-common/utils";
 import LoadableContent from "next-common/components/common/loadableContent";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import FiatPriceLabel from "../common/fiatPriceLabel";
 import {
   useMythTokenAssets,
@@ -42,7 +42,7 @@ export default function MythToken() {
               <MythTokenAsset balance={mythTokenBalance} />
               <Link
                 className="text12Medium"
-                href={`https://assethub-polkadot.subscan.io/account/${MythTokenAccount}`}
+                href={`https://assethub-polkadot.statescan.io/#/accounts/${MythTokenAccount}`}
                 target="_blank"
                 rel="noreferrer"
               >

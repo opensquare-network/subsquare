@@ -35,11 +35,18 @@ function SearchInputWithPopup({ shortcut = true, type }) {
             handleSearch();
           }
         }}
-        onFocus={() => {
+        onMouseDown={(e) => {
+          e.preventDefault();
+        }}
+        onFocus={(e) => {
+          e.preventDefault();
           setFocus(true);
           setShowSearchPopup(true);
         }}
-        onBlur={() => setFocus(false)}
+        onBlur={(e) => {
+          e.preventDefault();
+          setFocus(false);
+        }}
         prefix={<SystemSearch className="[&_path]:fill-textTertiary" />}
         suffix={
           shortcut && (

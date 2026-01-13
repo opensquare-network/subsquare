@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { usePageProps } from "next-common/context/page";
 import { NewPreimageButton, NewProposalFromPreimageButton } from "./common";
-import { useNewPrerimageForm } from "next-common/components/preImages/newPreimagePopup";
+import { useNewPreimageForm } from "next-common/components/preImages/newPreimagePopup";
 import { useStepContainer } from "next-common/context/stepContainer";
 import CircleStepper from "next-common/components/step";
 import { useTxSubmissionButton } from "next-common/components/common/tx/txSubmissionButton";
-import Button from "next-common/lib/button";
 import { useNewProposalInnerPopupContent } from "../newProposalPopup";
 import { usePopupOnClose } from "next-common/context/popup";
 import SigningTip from "next-common/components/summary/newProposalQuickStart/common/signingTip";
+import PreviousButton from "./previousButton";
 
 const useCreatePrimage = () => {
   const {
@@ -16,7 +16,7 @@ const useCreatePrimage = () => {
     encodedLength,
     notePreimageTx,
     component: newPreimageForm,
-  } = useNewPrerimageForm();
+  } = useNewPreimageForm();
   const [preimage, setPreimage] = useState(null);
   const { isLoading, component } = useTxSubmissionButton({
     loadingText: "Submit",
@@ -90,19 +90,12 @@ function NewPreimageContent() {
       {!preimageData ? form : proposalForm}
       <SigningTip />
       <div className="flex justify-between">
-        <Button
-          className={`border-neutral400 hover:border-neutral500 ${
-            proposalLoading || isLoading
-              ? " cursor-not-allowed text-textDisabled border-neutral300"
-              : ""
-          }`}
-          disabled={proposalLoading || isLoading}
+        <PreviousButton
+          isLoading={proposalLoading || isLoading}
           onClick={() => {
             preimageData ? clearPreimageData() : goBack();
           }}
-        >
-          Previous
-        </Button>
+        />
         {!preimageData ? button : proposalButton}
       </div>
     </>
@@ -133,20 +126,10 @@ const NewProposalContent = () => {
         currentStep={1}
         loading={proposalLoading}
       />
-      <>{proposalForm}</>
+      {proposalForm}
       <SigningTip />
       <div className="flex justify-between">
-        <Button
-          className={`border-neutral400 hover:border-neutral500 ${
-            proposalLoading
-              ? " cursor-not-allowed text-textDisabled border-neutral300"
-              : ""
-          }`}
-          disabled={proposalLoading}
-          onClick={goBack}
-        >
-          Previous
-        </Button>
+        <PreviousButton isLoading={proposalLoading} onClick={goBack} />
         {proposalButton}
       </div>
     </>

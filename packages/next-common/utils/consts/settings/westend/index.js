@@ -6,7 +6,9 @@ import capitalize from "../../../capitalize";
 import Chains from "../../chains";
 import { westendRelayChainNodes, westendAssetHubNodes } from "./nodes";
 import { mergeChainModules } from "../common/modules";
-import westendCommonCfg from "next-common/utils/consts/settings/westend/common";
+import westendCommonCfg, {
+  westendAssethubMigration,
+} from "next-common/utils/consts/settings/westend/common";
 
 const ProjectIconWestendDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconWestendDark"),
@@ -22,15 +24,19 @@ const westend = {
   name: capitalize(name),
   ...westendCommonCfg,
   blockTime: 6000,
-  assetHubMigrated: true,
+  assethubBlockTime: 12000,
+  assethubMigration: westendAssethubMigration,
+  multisigApiPrefix: "westmint-gh-api",
   endpoints: westendAssetHubNodes,
   relayChainEndpoints: westendRelayChainNodes,
+
   avatar: ProjectIconWestendLight,
   darkAvatar: ProjectIconWestendDark,
   group: MenuGroups.WestendAndParachains,
   links: polkadotLinks,
   postLabels: defaultPostLabels,
   description: "Westend is the primary test network of Polkadot.",
+  hasMultisig: true,
   modules: mergeChainModules({
     referenda: true,
     democracy: false,
@@ -39,8 +45,18 @@ const westend = {
     assethub: true,
     people: true,
     vesting: true,
+    staking: true,
+    scheduler: true,
+    treasury: {
+      spends: true,
+      proposals: true,
+      bounties: false,
+      childBounties: false,
+      tips: false,
+    },
   }),
   integrations: {
+    statescan: true,
     subscan: true,
   },
   newProposalQuickStart: {
@@ -49,7 +65,13 @@ const westend = {
   },
   sima: true,
   supportWalletconnect: true,
+  supportPolkadotVault: true,
   allowWeb2Login: true,
+  multisigWallets: {
+    mimir: true,
+  },
+  supportAssets: true,
+  hideHeight: true,
 };
 
 export default westend;

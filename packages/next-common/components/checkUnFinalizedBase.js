@@ -77,21 +77,25 @@ export default function CheckUnFinalizedBase({
   }, [isUnFinalized, checkServerPostAvailable, router]);
 
   if (isNotFound) {
-    return <NotFound />;
+    return (
+      <Wrapper className={"w-full p-4"}>
+        <NotFound className="p-0" />
+      </Wrapper>
+    );
   }
 
   return (
-    <Wrapper>
+    <Wrapper className={"w-full p-4"}>
       <Loading />
-      {isUnFinalized && (
+      {
         <>
           <H2>Waiting for block confirmation</H2>
           <P>
-            We find the proposal on chain but not finalized. This page will be
-            refreshed when it gets finalized.
+            Your proposal is on-chain, but the block hasn’t finalized yet. This
+            page will update automatically once it’s confirmed.
           </P>
         </>
-      )}
+      }
     </Wrapper>
   );
 }

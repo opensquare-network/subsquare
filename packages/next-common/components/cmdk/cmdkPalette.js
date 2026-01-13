@@ -2,9 +2,9 @@ import { useState, useMemo } from "react";
 import CommandPalette, { filterItems, getItemIndex } from "@osn/react-cmdk";
 import { useTheme } from "styled-components";
 import { useEventListener } from "../../utils/hooks/useEventListener";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { isExternalLink } from "../../utils";
-import commonMenus from "../../utils/consts/menu/common";
+import { getCommonMenus } from "../../utils/consts/menu/common";
 import { useIsMacOS, usePageProps } from "next-common/context/page";
 import { getHomeMenu } from "next-common/utils/consts/menu";
 import { SystemMenu } from "@osn/icons/subsquare";
@@ -43,6 +43,7 @@ export default function CMDKPalette() {
 
   const { tracks, fellowshipTracks } = usePageProps();
   const homeMenus = getHomeMenu({ tracks, fellowshipTracks });
+  const commonMenus = getCommonMenus({ tracks });
 
   const foldedMenu = homeMenus
     .filter((menu) => menu.name)

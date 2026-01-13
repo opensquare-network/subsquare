@@ -1,4 +1,4 @@
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import Cookies from "cookies";
 
 export async function getPostVotesAndMine(detail, context) {
@@ -15,9 +15,11 @@ export async function getPostVotesAndMine(detail, context) {
 
   let votes = null;
   let myVote = null;
-  if (detail.poll) {
-    ({ result: votes } = await nextApi.fetch(`polls/${detail.poll._id}/votes`));
-    ({ result: myVote } = await nextApi.fetch(
+  if (detail?.poll) {
+    ({ result: votes } = await backendApi.fetch(
+      `polls/${detail.poll._id}/votes`,
+    ));
+    ({ result: myVote } = await backendApi.fetch(
       `polls/${detail.poll._id}/myvote`,
       {},
       options,

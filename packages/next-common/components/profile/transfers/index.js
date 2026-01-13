@@ -11,6 +11,7 @@ import {
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useMountedState } from "react-use";
+import { getStatescanDomain } from "next-common/utils/statescan";
 
 const DEFAULT_PAGE_SIZE = 25;
 
@@ -21,6 +22,7 @@ export default function ProfileTransfers() {
   const transfers = useSelector(profileTransfersSelector);
   const [page, setPage] = useState(1);
   const isMounted = useMountedState();
+  const domain = getStatescanDomain(chain);
 
   useEffect(() => {
     if (!address) {
@@ -28,7 +30,7 @@ export default function ProfileTransfers() {
     }
 
     fetch(
-      `https://${chain}-api.statescan.io/accounts/${address}/transfers?page=${
+      `https://${domain}-api.statescan.io/accounts/${address}/transfers?page=${
         page - 1
       }&page_size=${DEFAULT_PAGE_SIZE}`,
     )
@@ -44,7 +46,7 @@ export default function ProfileTransfers() {
         }
       })
       .catch((error) => console.error(error));
-  }, [address, chain, page, isMounted, dispatch]);
+  }, [address, domain, page, isMounted, dispatch]);
 
   return (
     <SecondaryCard>

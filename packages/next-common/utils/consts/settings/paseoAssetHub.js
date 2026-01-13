@@ -4,6 +4,8 @@ import {
   paseoLinks,
   paseoThemeVars,
   paseoCommonSettings,
+  paseoAssethubMigration,
+  paseoAssetHubNodes,
 } from "./common/paseo";
 
 const ProjectIconPaseoAssetHub = dynamic(() =>
@@ -14,41 +16,19 @@ const NetworkIconPaseoAssetHub = dynamic(() =>
   import("@osn/icons/subsquare/NetworkPaseoAssethubLight"),
 );
 
-const endpoints = [
-  {
-    name: "IBP1",
-    url: "wss://sys.ibp.network/asset-hub-paseo",
-  },
-  {
-    name: "IBP2",
-    url: "wss://asset-hub-paseo.dotters.network",
-  },
-  {
-    name: "Dwellir",
-    url: "wss://asset-hub-paseo-rpc.dwellir.com",
-  },
-  {
-    name: "StakeWorld",
-    url: "wss://pas-rpc.stakeworld.io/assethub",
-  },
-  {
-    name: "TurboFlakes",
-    url: "wss://sys.turboflakes.io/asset-hub-paseo",
-  },
-];
-
 const paseoAssetHub = {
   ...paseoCommonSettings,
   value: Chains.paseoAssetHub,
   name: "Asset Hub",
   blockTime: 12000,
+  assethubMigration: paseoAssethubMigration,
   description:
     "System parachain on Paseo network for creating and sending tokens and NFTs.",
   avatar: ProjectIconPaseoAssetHub,
   darkAvatar: NetworkIconPaseoAssetHub,
   links: paseoLinks,
   ...paseoThemeVars,
-  endpoints,
+  endpoints: paseoAssetHubNodes,
   noScan: true,
   integrations: {
     statescan: true,

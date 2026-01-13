@@ -10,9 +10,13 @@ import getDetailPageProperties, { getIdProperty } from "./pages/detail";
 import fetchProfile from "next-common/lib/fetchProfile";
 import fetchUserStatus from "next-common/lib/fetchUserStatus";
 import { adminsApi } from "next-common/services/url";
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { getConnectedAccount } from "next-common/services/serverSide/getConnectedAccount";
-import { fetchScanHeight } from "next-common/services/fetchScanHeight";
+import {
+  fetchRelayScanHeight,
+  fetchScanHeight,
+} from "next-common/services/fetchScanHeight";
+import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated";
 
 async function defaultGetServerSideProps() {
   return { props: {} };
@@ -45,9 +49,14 @@ export function withCommonProps(
       getServerSideProps(context),
       fetchProfile(context?.req),
       fetchUserStatus(context),
-      nextApi.fetch(adminsApi),
+      backendApi.fetch(adminsApi),
       fetchScanHeight(),
     ]);
+
+    let relayScanHeight = null;
+    if (isAssetHubMigrated()) {
+      relayScanHeight = await fetchRelayScanHeight();
+    }
 
     if (context.resolvedUrl?.startsWith("/settings/") && !user) {
       const { unsubscribe } = context.query;
@@ -72,11 +81,12 @@ export function withCommonProps(
         navSubmenuVisible: navSubmenuVisible || "{}",
         ...listPageProperties,
         ...detailPageProperties,
-        scanHeight: scanHeight ?? null,
         pageProperties: {
           ...listPageProperties,
           ...detailPageProperties,
           userAgent,
+          scanHeight: scanHeight ?? null,
+          relayScanHeight: relayScanHeight ?? null,
           props: {
             ...getIdProperty(context),
             ...(props?.props || {}),

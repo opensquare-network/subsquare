@@ -36,8 +36,12 @@ const polkadotPeople = {
       url: "wss://rpc-people-polkadot.luckyfriday.io",
     },
     {
-      name: "RadiumBlock",
-      url: "wss://people-polkadot.public.curie.radiumblock.co/ws",
+      name: "Dwellir",
+      url: "wss://people-polkadot-rpc.n.dwellir.com",
+    },
+    {
+      name: "Stakeworld",
+      url: "wss://dot-rpc.stakeworld.io/people",
     },
   ],
   group: null,
@@ -52,6 +56,8 @@ const polkadotPeople = {
     mimir: true,
   },
   allowWeb2Login: true,
+  supportWalletconnect: true,
+  supportPolkadotVault: true,
 };
 
 export default polkadotPeople;

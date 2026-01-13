@@ -7,6 +7,10 @@ async function queryPreimageByLen(blockApi, hash, len) {
 }
 
 async function queryFromPreimageFor(blockApi, toQueryHash) {
+  if (!blockApi.query?.preimage?.preimageFor) {
+    return null;
+  }
+
   const entries = await blockApi.query.preimage.preimageFor.entries();
   for (const [storageKey, rawPreimage] of entries) {
     const key = storageKey.args[0];

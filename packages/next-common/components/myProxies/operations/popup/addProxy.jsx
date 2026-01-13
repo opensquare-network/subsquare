@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
@@ -8,15 +8,15 @@ import useAddressComboField from "next-common/components/preImages/createPreimag
 import Select from "next-common/components/select";
 import NumberInput from "next-common/lib/input/number";
 import { InfoMessage } from "next-common/components/setting/styled";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { useProxyTypeOptions } from "../../hooks/useProxyTypeOptions";
 import { useDispatch } from "react-redux";
-import {
-  newErrorToast,
-  newSuccessToast,
-} from "next-common/store/reducers/toastSlice";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { isSameAddress } from "next-common/utils";
+import { useTxBuilder } from "next-common/hooks/useTxBuilder";
+import EstimatedGas from "next-common/components/estimatedGas";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 
 export function DelayBlocksField({ value, setValue }) {
   const PROXY_WIKI_LINK =
@@ -47,7 +47,7 @@ export function DelayBlocksField({ value, setValue }) {
   );
 }
 
-function ProxyTypeSelector({ proxyType, setProxyType }) {
+export function ProxyTypeSelector({ proxyType, setProxyType }) {
   const { options, isLoading } = useProxyTypeOptions();
 
   if (isLoading) {
@@ -75,9 +75,7 @@ function ProxyTypeSelector({ proxyType, setProxyType }) {
   );
 }
 
-// TODO: delay options
-// TODO: advance settings
-function PopupContent() {
+export function AddProxyFields({ previousButton }) {
   const api = useContextApi();
   const signerAccount = useSignerAccount();
   const address = signerAccount?.realAddress;
@@ -88,42 +86,64 @@ function PopupContent() {
   // const [delay, setDelay] = useState(0);
   const delay = 0;
 
-  const getTxFunc = useCallback(() => {
-    if (!api || !address) {
-      return;
-    }
+  const { getTxFuncForSubmit, getTxFuncForFee } = useTxBuilder(
+    (toastError) => {
+      if (!api || !address) {
+        return;
+      }
 
-    if (!proxyType) {
-      dispatch(newErrorToast("The proxy type is required"));
-      return;
-    }
+      if (!proxyType) {
+        toastError("The proxy type is required");
+        return;
+      }
 
-    if (!proxyAccount) {
-      dispatch(newErrorToast("The proxy account is required"));
-      return;
-    }
+      if (!proxyAccount) {
+        toastError("The proxy account is required");
+        return;
+      }
 
-    if (isSameAddress(address, proxyAccount)) {
-      dispatch(newErrorToast("Cannot set yourself as proxy"));
-      return;
-    }
+      if (isSameAddress(address, proxyAccount)) {
+        toastError("Cannot set yourself as proxy");
+        return;
+      }
 
-    return api.tx.proxy.addProxy(proxyAccount, proxyType, delay);
-  }, [api, address, proxyAccount, proxyType, delay, dispatch]);
+      return api.tx.proxy.addProxy(proxyAccount, proxyType, delay);
+    },
+    [api, address, proxyType, proxyAccount, delay],
+  );
 
   const onFinalized = () => {
     dispatch(newSuccessToast("Added successfully"));
   };
 
   return (
-    <div className="space-y-4">
-      <SignerWithBalance />
+    <>
       <ProxyTypeSelector proxyType={proxyType} setProxyType={setProxyType} />
       {proxyAccountField}
       {/* <AdvanceSettings>
-          <DelayBlocksField value={delay} setValue={setDelay} />
-        </AdvanceSettings> */}
-      <TxSubmissionButton getTxFunc={getTxFunc} onFinalized={onFinalized} />
+      <DelayBlocksField value={delay} setValue={setDelay} />
+    </AdvanceSettings> */}
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getTxFuncForFee} />
+      </AdvanceSettings>
+      <div className="flex justify-between">
+        {previousButton}
+        <TxSubmissionButton
+          getTxFunc={getTxFuncForSubmit}
+          onFinalized={onFinalized}
+        />
+      </div>
+    </>
+  );
+}
+
+// TODO: delay options
+// TODO: advance settings
+function PopupContent() {
+  return (
+    <div className="space-y-4">
+      <SignerWithBalance />
+      <AddProxyFields />
     </div>
   );
 }

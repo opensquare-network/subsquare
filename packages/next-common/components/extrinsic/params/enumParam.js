@@ -38,7 +38,7 @@ export default function EnumParam({ title, def, value, setValue }) {
   const setItemValue = useCallback(
     (valuesOrFunction) => {
       if (typeof valuesOrFunction === "function") {
-        setValue(({ data }) => {
+        setValue(({ data } = {}) => {
           const newData = valuesOrFunction(data?.[enumType]);
           let isValid = true;
           if (newData !== undefined) {

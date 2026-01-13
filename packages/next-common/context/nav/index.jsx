@@ -75,15 +75,18 @@ const menu = getMainMenu();
 export function useNavMenuType() {
   return useContext(NavMenuTypeContext);
 }
-function NavMenuTypeProvider({ pathname, children }) {
+
+import { useRouter } from "next/router";
+function NavMenuTypeProvider({ children }) {
+  const router = useRouter();
   const matchMenu = useMemo(() => {
     return (
-      matchNewMenu(menu, pathname) || {
+      matchNewMenu(menu, router.pathname) || {
         type: NAV_MENU_TYPE.main,
         menu: null,
       }
     );
-  }, [pathname]);
+  }, [router.pathname]);
   const [navMenuType, setNavMenuType] = useState(matchMenu);
 
   useIsomorphicLayoutEffect(() => {

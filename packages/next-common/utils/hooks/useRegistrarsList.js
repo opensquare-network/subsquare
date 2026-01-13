@@ -3,8 +3,7 @@ import { queryPeopleRegistrarsFromApi } from "next-common/services/gql/identity"
 import { useContextApi } from "next-common/context/api";
 import { useChainSettings } from "next-common/context/chain";
 
-export default function useRegistrarsList() {
-  const api = useContextApi();
+export function useSpecifyApiRegistrarsList(api) {
   const [storageRegistrarsResult, setStorageRegistrarsResult] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [chainRegistrars, setChainRegistrars] = useState([]);
@@ -80,4 +79,9 @@ export default function useRegistrarsList() {
     isLoading,
     total: storageRegistrars?.length ?? 0,
   };
+}
+
+export default function useRegistrarsList() {
+  const api = useContextApi();
+  return useSpecifyApiRegistrarsList(api);
 }

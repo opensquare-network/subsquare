@@ -20,6 +20,7 @@ import AdvanceSettings from "../newProposalQuickStart/common/advanceSettings";
 import { usePreimageWithHash } from "next-common/hooks/usePreimageHashes";
 import CallTree from "next-common/components/proposal/callTree";
 import Loading from "next-common/components/loading";
+import InsufficientBalanceTips from "../newProposalQuickStart/common/insufficientBalanceTips";
 
 export function useProposalOrigin(trackId) {
   const track = useTrackDetail(trackId);
@@ -103,7 +104,7 @@ export function NewProposalInnerPopup({
 
   return (
     <Popup title="New Proposal" onClose={onClose}>
-      <SignerWithBalance />
+      <SignerWithBalance showTransferable supportedMultisig={false} />
       <DetailedTrack trackId={trackId} setTrackId={setTrackId} />
       <PreimageField
         preimageHash={preimageHash}
@@ -160,6 +161,7 @@ export function useNewProposalInnerPopupContent({
     !preimageLength;
 
   const length = usePreimageLength(preimageHash);
+
   useEffect(() => {
     if (length) {
       setPreimageLength(length);
@@ -182,6 +184,7 @@ export function useNewProposalInnerPopupContent({
       enactment,
     );
   }, [api, proposalOrigin, preimageHash, preimageLength, enactment]);
+
   return {
     getTxFunc,
     disabled,
@@ -195,7 +198,7 @@ export function useNewProposalInnerPopupContent({
     },
     component: (
       <>
-        <SignerWithBalance />
+        <SignerWithBalance showTransferable supportedMultisig={false} />
         <DetailedTrack trackId={trackId} setTrackId={setTrackId} />
         <PreimageField
           preimageHash={preimageHash}
@@ -214,6 +217,7 @@ export function useNewProposalInnerPopupContent({
           <EnactmentBlocks track={track} setEnactment={setEnactment} />
           <SubmissionDeposit />
         </AdvanceSettings>
+        <InsufficientBalanceTips byteLength={preimageLength} />
       </>
     ),
   };

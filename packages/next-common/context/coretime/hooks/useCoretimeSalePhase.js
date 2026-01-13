@@ -1,6 +1,8 @@
-import useChainOrScanHeight from "next-common/hooks/height";
+import { useRelayChainLatestHeight } from "next-common/hooks/relayScanHeight";
 import useCoretimeSale from "next-common/context/coretime/sale/provider";
 import { isNil } from "lodash-es";
+import useCoretimeSaleStart from "next-common/hooks/coretime/useCoretimeSaleStart";
+import { useCoretimeSaleLeadinLength } from "next-common/context/coretime/sale/phases/leadin";
 
 export const Phases = Object.freeze({
   Interlude: "Interlude",
@@ -9,12 +11,11 @@ export const Phases = Object.freeze({
 });
 
 export default function useCoretimeSalePhase() {
-  const chainHeight = useChainOrScanHeight();
+  const chainHeight = useRelayChainLatestHeight();
+  const saleStart = useCoretimeSaleStart();
+  const leadinLength = useCoretimeSaleLeadinLength();
   const sale = useCoretimeSale();
-  const {
-    initIndexer: { blockHeight: initBlockHeight } = {},
-    info: { saleStart, leadinLength } = {},
-  } = sale;
+  const { relayIndexer: { blockHeight: relayBlockHeight } = {} } = sale;
 
   const isLoading = isNil(chainHeight);
   if (sale.isFinal) {
@@ -30,7 +31,7 @@ export default function useCoretimeSalePhase() {
   }
 
   let phase;
-  if (chainHeight >= initBlockHeight && chainHeight <= saleStart) {
+  if (chainHeight >= relayBlockHeight && chainHeight <= saleStart) {
     phase = Phases.Interlude;
   } else if (
     chainHeight > saleStart &&

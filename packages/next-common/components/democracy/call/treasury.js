@@ -1,8 +1,8 @@
 import React from "react";
-import Link from "next/link";
+import Link from "next-common/components/link";
 
 export default function extractTreasuryFields(call = {}) {
-  const { section, method, args = [] } = call;
+  const { section, method, args = [] } = call || {};
   if (
     "treasury" !== section ||
     !["approveProposal", "rejectProposal"].includes(method)

@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { useChain } from "../../context/chain";
 import { usePathname } from "next/navigation";
-import useMultisigAddress from "next-common/hooks/useMultisigAddress";
+import { useMultisigAddressFromGraphql } from "next-common/hooks/useMultisigAddress";
 import { LinkMimir } from "@osn/icons/subsquare";
 import IconLink from "./iconLink";
 
 function useIsMultiSigAccount(address) {
   const [isMultiSigAccount, setIsMultiSigAccount] = useState(false);
-  const { result, loading } = useMultisigAddress(address);
+  const { result, loading } = useMultisigAddressFromGraphql(address);
 
   useEffect(() => {
     if (loading) {

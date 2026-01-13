@@ -4,14 +4,18 @@ import Link from "./link";
 import { isNil } from "lodash-es";
 import { useChain } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
+import { isCollectivesChain } from "next-common/utils/chain";
+import { getStatescanDomain } from "next-common/utils/statescan";
 
 function getDomain(chain, indexer) {
   const { blockTime } = indexer || {};
-  let prefix = chain;
+  let prefix = getStatescanDomain(chain);
   if ([Chains.polkadot, Chains.polkadotPeople].includes(chain)) {
     prefix = blockTime >= 1722256998000 ? "people-polkadot" : "polkadot";
   } else if ([Chains.kusama, Chains.kusamaPeople].includes(chain)) {
     prefix = blockTime >= 1716111336000 ? "people-kusama" : "kusama";
+  } else if (isCollectivesChain(chain)) {
+    prefix = Chains.polkadot;
   }
   return `https://${prefix}.statescan.io/#`;
 }

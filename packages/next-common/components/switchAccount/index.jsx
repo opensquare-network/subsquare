@@ -12,7 +12,6 @@ import { useExtensionAccounts } from "next-common/components/popupWithSigner/con
 import { useConnectedAccountContext } from "next-common/context/connectedAccount";
 import { useWeb3Login } from "next-common/hooks/connect/useWeb3Login";
 import NoData from "next-common/components/noData";
-import WindowSizeProvider from "next-common/context/windowSize";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 
 function PopupTitle() {
@@ -136,20 +135,18 @@ function PopupContent() {
 
 export default function SwitchAccount({ onClose, onOpenLogin }) {
   return (
-    <WindowSizeProvider>
-      <SignerPopupWrapper>
-        <Popup
-          title={<PopupTitle />}
-          showCloseIcon={false}
-          onClose={onClose}
-          className="flex flex-col space-y-6 p-12 !mb-0 max-sm:!p-6 max-h-[76vh]"
-          style={{ maxWidth: "76vh" }}
-        >
-          <PopupContent />
-          <TextDivider />
-          <ChangeWallet onClick={onOpenLogin} />
-        </Popup>
-      </SignerPopupWrapper>
-    </WindowSizeProvider>
+    <SignerPopupWrapper>
+      <Popup
+        title={<PopupTitle />}
+        showCloseIcon={false}
+        onClose={onClose}
+        className="flex flex-col space-y-6 p-12 !mb-0 max-sm:!p-6 max-h-[76vh]"
+        style={{ maxWidth: "76vh" }}
+      >
+        <PopupContent />
+        <TextDivider />
+        <ChangeWallet onClick={onOpenLogin} />
+      </Popup>
+    </SignerPopupWrapper>
   );
 }

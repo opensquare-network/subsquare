@@ -1,15 +1,6 @@
-import styled from "styled-components";
 import Avatar from "./avatar";
 import { cn } from "next-common/utils";
-
-const Skeleton = styled.div`
-  border-radius: 4px;
-  background: linear-gradient(
-    90deg,
-    var(--neutral300-80) 0%,
-    var(--neutral300-20) 100%
-  );
-`;
+import { Skeleton } from "./skeleton";
 
 export default function AddressInfoLoading({ address, size = "default" }) {
   const avatarSize = size === "default" ? 40 : 24;

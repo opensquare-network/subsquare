@@ -32,11 +32,31 @@ export function SpendUSDxTreasuryButton({ onClick }) {
   );
 }
 
+export function BatchSpendTreasuryButton({ onClick }) {
+  return (
+    <ChoiceButton
+      name="Batch treasury spends"
+      description="Create multiple treasury spends in a single batch proposal"
+      onClick={onClick}
+    />
+  );
+}
+
 export function SpendDotOnAssetHubButton({ onClick }) {
   return (
     <ChoiceButton
       name="Spend DOT on AssetHub"
       description="Create a treasury spend with DOT asset on AssetHub"
+      onClick={onClick}
+    />
+  );
+}
+
+export function HydrationTreasurySpendButton({ onClick }) {
+  return (
+    <ChoiceButton
+      name="Stable treasury spend proposal"
+      description="Create a treasury spend with stable currency"
       onClick={onClick}
     />
   );

@@ -6,12 +6,15 @@ import AddressUser from "next-common/components/user/addressUser";
 import { useChainSettings } from "next-common/context/chain";
 import { useNavCollapsed } from "next-common/context/nav";
 import useBlockTimestamp from "next-common/hooks/common/useBlockTimestamp";
-import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import { cn } from "next-common/utils";
 import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 import { useState } from "react";
-import { useSelector } from "react-redux";
 import TreasurySpendValueDisplay from "next-common/components/gov2/business/treasurySpendValueDisplay";
+import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
+import FieldLoading from "next-common/components/icons/fieldLoading";
+import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
+import BeneficiaryDetailButton from "./beneficiaryDetailButton";
+import { FormatFiatValue } from "./valueDisplayWithFiatValue";
 
 const separateNumber = 5;
 
@@ -64,17 +67,40 @@ function AllSpends({ onchain }) {
   );
 }
 
+function SpendBeneficiary({ beneficiary, beneficiaryLocation }) {
+  if (!beneficiary && !beneficiaryLocation) {
+    return null;
+  }
+
+  return (
+    <>
+      <div className="text-textTertiary">to</div>
+      <div className={cn("grow flex")}>
+        {beneficiary ? (
+          <AddressUser add={beneficiary} maxWidth={176} />
+        ) : (
+          <BeneficiaryDetailButton beneficiaryLocation={beneficiaryLocation} />
+        )}
+      </div>
+    </>
+  );
+}
+
 function Spend({
   beneficiary,
+  beneficiaryLocation,
   assetKind,
   amount,
   validFrom,
+  after,
   symbol,
+  decimals,
   type,
   className = "",
 } = {}) {
   symbol = symbol || assetKind?.symbol;
   type = type || assetKind?.type;
+  decimals = decimals || assetKind?.decimals;
 
   beneficiary =
     typeof beneficiary === "string" ? beneficiary : beneficiary?.address;
@@ -96,22 +122,28 @@ function Spend({
           amount={amount}
           symbol={symbol}
           type={type}
+          decimals={decimals}
+          tooltipOtherContent={
+            <FormatFiatValue amount={amount} symbol={symbol} />
+          }
         />
-
-        <div className="text-textTertiary">to</div>
-
-        <div className={cn("grow flex")}>
-          <AddressUser add={beneficiary} maxWidth={176} />
-        </div>
+        <SpendBeneficiary
+          beneficiary={beneficiary}
+          beneficiaryLocation={beneficiaryLocation}
+        />
       </div>
 
-      <Time validFrom={validFrom} />
+      {!isNil(validFrom) ? (
+        <Time validFrom={validFrom} />
+      ) : (
+        <After after={after} />
+      )}
     </div>
   );
 }
 
 function Time({ validFrom, className = "" }) {
-  const currentHeight = useSelector(latestHeightSelector);
+  const currentHeight = useAhmLatestHeight();
 
   let content;
   let tooltipContent;
@@ -137,10 +169,38 @@ function Time({ validFrom, className = "" }) {
   );
 }
 
+function After({ after, className = "" }) {
+  const votingFinishHeight = useReferendumVotingFinishHeight();
+  if (!isNil(votingFinishHeight) && after > 0) {
+    return (
+      <Time validFrom={votingFinishHeight + after} className={className} />
+    );
+  }
+
+  let content;
+  let tooltipContent;
+  if (isNil(after) || after === 0) {
+    content = "immediately";
+    tooltipContent = "Can be claimed immediately after approval";
+  } else {
+    content = <AfterTime after={after} futurePrefix="after" />;
+    tooltipContent = `After ${after} blocks`;
+  }
+
+  return (
+    <Tooltip
+      content={tooltipContent}
+      className={cn("text-textTertiary", className)}
+    >
+      {content}
+    </Tooltip>
+  );
+}
+
 function PassedTime({ validFrom }) {
   const { timestamp } = useBlockTimestamp(validFrom);
 
-  if (!timestamp) {
+  if (isNaN(timestamp)) {
     return null;
   }
 
@@ -148,10 +208,17 @@ function PassedTime({ validFrom }) {
 }
 
 function FutureTime({ validFrom }) {
-  const currentHeight = useSelector(latestHeightSelector);
-  const { blockTime } = useChainSettings();
+  const currentHeight = useAhmLatestHeight();
+  if (isNaN(currentHeight)) {
+    return <FieldLoading size={14} />;
+  }
+  return <AfterTime after={validFrom - currentHeight} />;
+}
 
-  return formatTimeAgo(dayjs().add((validFrom - currentHeight) * blockTime), {
+function AfterTime({ after, futurePrefix }) {
+  const { blockTime } = useChainSettings();
+  return formatTimeAgo(dayjs().add(after * blockTime), {
+    futurePrefix,
     slice: 2,
   });
 }

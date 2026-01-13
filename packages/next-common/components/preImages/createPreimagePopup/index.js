@@ -15,12 +15,20 @@ import {
   NewRemarkButton,
   CancelReferendumButton,
   KillReferendumButton,
+  BatchSpendTreasuryButton,
+  HydrationTreasurySpendButton,
 } from "./templateButtons";
-import { isCollectivesChain, isShibuyaChain } from "next-common/utils/chain";
+import {
+  isCollectivesChain,
+  isHydrationChain,
+  isShibuyaChain,
+} from "next-common/utils/chain";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import ForwardPopupProvider, {
   useForwardPopupContext,
 } from "next-common/context/forwardPopup";
+import BatchTreasurySpendPopup from "./templates/batchTreasurySpendPopup";
+import HydrationTreasurySpendPopup from "./templates/hydrationTreasurySpendPopup";
 
 export function QuickStart({ children }) {
   return (
@@ -45,6 +53,24 @@ function FellowshipTreasurySpend() {
   return (
     <FellowshipTreasurySpendButton
       onClick={() => setForwardPopup(<NewFellowshipTreasuryProposalPopup />)}
+    />
+  );
+}
+
+function BatchTreasurySpend() {
+  const { setForwardPopup } = useForwardPopupContext();
+  const {
+    treasuryProposalTracks,
+    newProposalQuickStart: { usdxTreasuryProposal } = {},
+  } = useChainSettings();
+
+  if (!treasuryProposalTracks || !usdxTreasuryProposal) {
+    return null;
+  }
+
+  return (
+    <BatchSpendTreasuryButton
+      onClick={() => setForwardPopup(<BatchTreasurySpendPopup />)}
     />
   );
 }
@@ -81,6 +107,16 @@ function SpendDotOnAssetHub() {
   return (
     <SpendDotOnAssetHubButton
       onClick={() => setForwardPopup(<SpendDotOnAssetHubPopup />)}
+    />
+  );
+}
+
+function HydrationTreasurySpend() {
+  const { setForwardPopup } = useForwardPopupContext();
+
+  return (
+    <HydrationTreasurySpendButton
+      onClick={() => setForwardPopup(<HydrationTreasurySpendPopup />)}
     />
   );
 }
@@ -133,8 +169,10 @@ function ProposalTemplateQuickStart() {
       {!isCollectivesChain(chain) && !isShibuyaChain(chain) && (
         <SpendLocalTreasury />
       )}
+      {isHydrationChain(chain) && <HydrationTreasurySpend />}
       <SpendUSDxTreasury />
       <SpendDotOnAssetHub />
+      <BatchTreasurySpend />
       <NewRemark />
       <CancelReferendum />
       <KillReferendum />

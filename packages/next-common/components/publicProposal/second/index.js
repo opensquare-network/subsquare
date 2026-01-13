@@ -13,7 +13,6 @@ import useMaxDeposits from "./useMaxDeposits";
 import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarWrapper";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import AddressUser from "next-common/components/user/addressUser";
-import { useContextApi } from "next-common/context/api";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 
 const SecondPopup = dynamicPopup(() => import("./popup"));
@@ -85,18 +84,14 @@ export default function Second({
   proposalIndex,
   hasTurnIntoReferendum,
   hasCanceled,
-  atBlockHeight,
 }) {
   const [showPopup, setShowPopup] = useState(false);
   const [expand, setExpand] = useState(false);
   const maxDeposits = useMaxDeposits();
 
-  const api = useContextApi();
   const [triggerUpdate, setTriggerUpdate] = useState(0);
   const [seconds, depositRequired, isLoadingSeconds] = useDepositOf(
-    api,
     proposalIndex,
-    atBlockHeight,
     triggerUpdate,
   );
   const reachedMaxDeposits = maxDeposits <= seconds.length;

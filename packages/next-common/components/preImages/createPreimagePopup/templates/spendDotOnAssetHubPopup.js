@@ -4,7 +4,6 @@ import { getState } from "next-common/components/preImages/newPreimagePopup";
 import { useContextApi } from "next-common/context/api";
 import { checkInputValue } from "next-common/utils";
 import { addressToPublicKey } from "next-common/utils/address";
-import { InfoMessage } from "next-common/components/setting/styled";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import NotePreimageButton from "../notePreimageButton";
 import useAssetHubDotBalanceField from "../fields/useAssetHubDotBalanceField";
@@ -12,6 +11,8 @@ import useAddressComboField from "../fields/useAddressComboField";
 import useValidFromField from "../fields/useValidFromField";
 import { useChainSettings } from "next-common/context/chain";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
+import InsufficientBalanceTips from "next-common/components/summary/newProposalQuickStart/common/insufficientBalanceTips";
+import ExtrinsicInfo from "../../newPreimagePopup/info";
 
 const getAssetKindParam = () => {
   return {
@@ -28,7 +29,7 @@ const getAssetKindParam = () => {
       },
       assetId: {
         parents: 1,
-        interior: "here",
+        interior: "Here",
       },
     },
   };
@@ -37,16 +38,28 @@ const getAssetKindParam = () => {
 const getBeneficiaryParam = (beneficiary) => {
   return {
     V4: {
-      parents: 0,
-      interior: {
-        X1: [
-          {
-            AccountId32: {
-              network: null,
-              id: "0x" + addressToPublicKey(beneficiary),
+      location: {
+        parents: 0,
+        interior: {
+          X1: [
+            {
+              Parachain: 1000,
             },
-          },
-        ],
+          ],
+        },
+      },
+      accountId: {
+        parents: 0,
+        interior: {
+          X1: [
+            {
+              AccountId32: {
+                network: null,
+                id: "0x" + addressToPublicKey(beneficiary),
+              },
+            },
+          ],
+        },
       },
     },
   };
@@ -95,23 +108,23 @@ function PopupContent() {
     useAddressComboField();
   const { value: validFrom, component: validFromField } = useValidFromField();
 
-  const { notePreimageTx } = useSpendDotOnAssetHubPreimageTx(
-    inputBalance,
-    beneficiary,
-    validFrom,
-  );
+  const { notePreimageTx, encodedLength, encodedProposal, encodedHash } =
+    useSpendDotOnAssetHubPreimageTx(inputBalance, beneficiary, validFrom);
 
   return (
     <>
       <SignerWithBalance />
       {balanceField}
-      <div className="flex flex-col gap-[8px]">
-        {beneficiaryField}
-        <InfoMessage>
-          Please input an AssetHub address as the beneficiary
-        </InfoMessage>
-      </div>
+      <div className="flex flex-col gap-[8px]">{beneficiaryField}</div>
       {validFromField}
+      {encodedProposal && (
+        <ExtrinsicInfo
+          preimageHash={encodedHash}
+          callData={encodedProposal}
+          preimageLength={encodedLength || 0}
+        />
+      )}
+      <InsufficientBalanceTips byteLength={encodedLength} onlyPreimage />
       <div className="flex justify-end">
         <NotePreimageButton notePreimageTx={notePreimageTx} />
       </div>

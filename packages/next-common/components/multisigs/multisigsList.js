@@ -1,4 +1,4 @@
-import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import { useWindowWidthContext } from "next-common/context/windowSize";
 import DesktopList from "./desktop";
 import MobileList from "./mobile";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,12 +9,14 @@ import {
   myMultisigsSelector,
 } from "next-common/store/reducers/multisigSlice";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { ListCard } from "next-common/components/overview/styled";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 import { CallPopupInContext } from "next-common/components/multisigs/callPopup";
+import SignSubmitPopupInContext from "next-common/components/multisigs/signField/signSubmitPopup";
+import SignApprovePopupInContext from "next-common/components/multisigs/signField/signApprovePopup";
+import SignCancelPopupInContext from "next-common/components/multisigs/signField/signCancelPopup";
 
 export default function MultisigsList() {
-  const { width } = useWindowSize();
+  const width = useWindowWidthContext();
   const dispatch = useDispatch();
   const chain = useChain();
   const realAddress = useRealAddress();
@@ -37,7 +39,7 @@ export default function MultisigsList() {
   }, [fetchMyMultisigsData]);
 
   return (
-    <ListCard>
+    <>
       {width > 1024 ? (
         <DesktopList multisigs={multisigs} isLoading={isLoading} />
       ) : (
@@ -45,6 +47,9 @@ export default function MultisigsList() {
       )}
       {pageComponent}
       <CallPopupInContext />
-    </ListCard>
+      <SignSubmitPopupInContext />
+      <SignApprovePopupInContext />
+      <SignCancelPopupInContext />
+    </>
   );
 }

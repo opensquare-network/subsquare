@@ -39,6 +39,8 @@ export const getServerSideProps = withCommonProps(async (context) => {
     page_size: pageSize = defaultPageSize,
     status: statusQuery = "",
     is_treasury = "",
+    ongoing = "",
+    sort = "",
   } = context.query;
 
   const status = upperFirst(camelCase(statusQuery));
@@ -54,8 +56,10 @@ export const getServerSideProps = withCommonProps(async (context) => {
       page,
       pageSize,
       is_treasury,
+      ongoing,
       status,
       simple: true,
+      sort,
     }),
     backendApi.fetch(gov2ReferendumsSummaryApi),
     backendApi.fetch(gov2TracksApi),
@@ -69,6 +73,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
       gov2ReferendaSummary: gov2ReferendaSummary ?? {},
       status,
       isTreasury: is_treasury,
+      ongoing,
       ...tracksProps,
     },
   };

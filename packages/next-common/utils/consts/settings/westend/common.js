@@ -19,4 +19,15 @@ const westendCommonCfg = {
   ...westendThemeVars,
 };
 
+export const subscanWestendAssethubDomain = "assethub-westend";
+export const statescanWestendAssethubDomain = "assethub-westend";
+
+export const westendAssethubMigration = {
+  migrated: true,
+  timestamp: 1747307424000,
+  subscanAssethubDomain: subscanWestendAssethubDomain,
+  statescanAssethubDomain: statescanWestendAssethubDomain,
+  relayBlockTime: 6000,
+};
+
 export default westendCommonCfg;

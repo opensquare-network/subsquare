@@ -5,7 +5,11 @@ import kusamaTreasuryTracks from "next-common/utils/consts/settings/kusama/track
 import { defaultPostLabels } from "../common";
 import MenuGroups from "../menuGroups";
 import { mergeChainModules } from "../common/modules";
-import kusamaCommonCfg from "next-common/utils/consts/settings/kusama/common";
+import kusamaCommonCfg, {
+  kusamaAssethubMigration,
+} from "next-common/utils/consts/settings/kusama/common";
+import kusamaPreimageSettings from "next-common/utils/consts/settings/common/preimage/kusama";
+import kusamaAssetHubNodes from "next-common/utils/consts/settings/kusamaAssetHub/endpoints";
 
 const ProjectIconKusamaDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconKusamaDark"),
@@ -20,7 +24,10 @@ const kusama = {
   ...kusamaCommonCfg,
   hasElections: true,
   blockTime: 6000,
-  endpoints: defaultKusamaNodes,
+  assethubBlockTime: 12000,
+  assethubMigration: kusamaAssethubMigration,
+  endpoints: kusamaAssetHubNodes,
+  relayChainEndpoints: defaultKusamaNodes,
   avatar: ProjectIconKusamaLight,
   darkAvatar: ProjectIconKusamaDark,
   navPreferDark: true,
@@ -32,25 +39,40 @@ const kusama = {
     identity: true,
     multisig: false,
   },
+  subsquareGraphql: {
+    domain: "kusama-gh-api",
+    coretime: true,
+    intime: {
+      preimage: true,
+      proxy: true,
+      referendaVotes: true,
+    },
+  },
   postLabels: defaultPostLabels,
   useVoteCall: true,
   hasMultisig: true,
-  multisigApiPrefix: "kusama",
+  multisigApiPrefix: "statemine-gh-api",
+  relayChainMultisigApiPrefix: "ksm-gh-api",
   description:
     "Kusama is a scalable multi-chain network for radical innovation and early stage Polkadot deployments. Expect Chaos. No promises.",
   modules: mergeChainModules({
-    referenda: true,
+    referenda: {
+      displayTreasuryRequesting: true,
+    },
     fellowship: true,
     whales: true,
+    scheduler: true,
     democracy: {
       archived: true,
     },
     treasury: {
+      status: true,
       spends: true,
       childBounties: true,
       tips: {
         archived: true,
       },
+      burn: true,
     },
     council: {
       archived: true,
@@ -75,7 +97,6 @@ const kusama = {
     },
   },
   multisigWallets: {
-    signet: true,
     mimir: true,
   },
   treasuryProposalTracks: kusamaTreasuryTracks,
@@ -85,6 +106,26 @@ const kusama = {
   },
   sima: true,
   allowWeb2Login: true,
+  hotMenu: {
+    referenda: true,
+  },
+  preimage: kusamaPreimageSettings,
+  referendaActions: {
+    startFrom: 538,
+  },
+  supportWalletconnect: true,
+  supportPolkadotVault: true,
+  openSquare: {
+    voting: "kusama",
+  },
+  ecoNews: true,
+  translations: {
+    referenda: true,
+  },
+  supportForeignAssets: true,
+  supportAssets: true,
+  bountyIdentity: true,
+  hideHeight: true,
 };
 
 export default kusama;

@@ -19,7 +19,6 @@ export const SideInfoItemValue = styled.div`
   display: flex;
   justify-content: right;
   flex-grow: 1;
-  font-weight: 400;
 
   > a {
     color: var(--sapphire500);

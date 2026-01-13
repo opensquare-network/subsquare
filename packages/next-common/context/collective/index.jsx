@@ -30,6 +30,7 @@ export const collectivePallets = Object.freeze({
   financialCouncil: "financialCouncil", // acala and karura
   generalCouncil: "generalCouncil", // acala and karura, same as council in other chains
   technicalCommittee: "technicalCommittee",
+  technicalCollective: "technicalCollective", // hyperbridge
   treasuryCouncilCollective: "treasuryCouncilCollective", // moonriver
   council: "council",
 });

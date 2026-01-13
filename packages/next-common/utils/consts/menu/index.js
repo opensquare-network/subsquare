@@ -1,4 +1,4 @@
-import commonMenus from "./common";
+import { getCommonMenus } from "./common";
 import { getDemocracyMenu } from "./democracy";
 import { getTreasuryMenu } from "./treasury";
 import { getCouncilMenu } from "./council";
@@ -6,40 +6,44 @@ import { getTechCommMenu } from "./tc";
 import { getFinancialCouncilMenu } from "./financialCouncil";
 import { getAdvisoryCommitteeMenu } from "./advisoryCouncil";
 import { getAllianceMenu } from "./alliance";
-import { getReferendaMenu } from "./referenda";
 import { getFellowshipMenu } from "./fellowship";
 import { getAmbassadorMenu } from "next-common/utils/consts/menu/ambassador";
-import { assetHubMenu } from "./assetHub";
 import { getCommunityCouncilMenu } from "./communityCouncil";
 import { CHAIN } from "next-common/utils/constants";
 import preImages from "./preImages";
+import scheduler from "./scheduler";
 import { partition } from "lodash-es";
 import { getCommunityTreasuryMenu } from "./communityTreasury";
 import getChainSettings from "../settings";
-import { getMoreMenu } from "./more";
+import getArchivedMenu from "./archived";
 import { coretimeMenu } from "./coretime";
 import { peopleMenu } from "./people";
+import { stakingMenu } from "./staking";
+import whitelist from "./whitelist";
 import Data from "./data";
+import vesting from "./vesting";
 import getAdvancedMenu from "next-common/utils/consts/menu/advanced";
 import { NAV_MENU_TYPE } from "next-common/utils/constants";
 import { isArray } from "lodash-es";
+import { assetsMenu } from "./assets";
+import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated";
+import { calendarMenu } from "./calendar";
+import { votingMenu } from "./voting";
+import { navigationMenu } from "./navigation";
+import { votingSpace } from "next-common/utils/opensquareVoting";
 
 export function getHomeMenu({
   summary = {},
-  tracks = [],
   ambassadorTracks = [],
   currentTrackId,
 } = {}) {
   const { modules, hasMultisig = false } = getChainSettings(CHAIN);
 
   const integrationsMenu = [
-    modules?.assethub && assetHubMenu,
-    modules?.coretime && coretimeMenu,
-    modules?.people && peopleMenu,
+    modules?.assethub && isAssetHubMigrated() && assetsMenu,
   ].filter(Boolean);
 
   const menuItems = [
-    modules?.referenda && getReferendaMenu(tracks, currentTrackId),
     modules?.fellowship && getFellowshipMenu(summary, currentTrackId),
     modules?.ambassador && getAmbassadorMenu(ambassadorTracks, currentTrackId),
     modules?.democracy && getDemocracyMenu(summary),
@@ -51,11 +55,20 @@ export function getHomeMenu({
     modules?.advisoryCommittee && getAdvisoryCommitteeMenu(summary),
     modules?.alliance && getAllianceMenu(summary),
     modules?.communityCouncil && getCommunityCouncilMenu(summary),
+    modules?.staking && stakingMenu,
+    modules?.people && peopleMenu,
+    modules?.coretime && coretimeMenu,
     getAdvancedMenu(
       [
         modules?.preimages && preImages,
         ...integrationsMenu,
-        (modules?.proxy || modules?.vesting || hasMultisig) && Data,
+        modules?.vesting && vesting,
+        modules?.scheduler && scheduler,
+        modules?.whitelist && whitelist,
+        (modules?.proxy || hasMultisig) && Data,
+        calendarMenu,
+        votingSpace && votingMenu,
+        navigationMenu,
       ].filter(Boolean),
     ),
   ].filter(Boolean);
@@ -78,9 +91,16 @@ export function getMainMenu({
   ambassadorTracks = [],
   currentTrackId,
 } = {}) {
+  const { hotMenu = {} } = getChainSettings(CHAIN);
+
+  const commonMenus = getCommonMenus({
+    tracks,
+    currentTrackId,
+    hotMenu,
+  });
+
   const modulesMenu = getHomeMenu({
     summary,
-    tracks,
     fellowshipTracks,
     ambassadorTracks,
     currentTrackId,
@@ -124,20 +144,22 @@ export function getMainMenu({
     }
   }
 
-  const moreMenu = getMoreMenu({ archivedMenu: archivedModulesMenu });
+  const moreMenu = getArchivedMenu(archivedModulesMenu);
 
   return [
     ...commonMenus.items,
     { type: "divider" },
     ...activeModulesMenu,
     { type: "divider" },
-    moreMenu,
+    ...moreMenu,
   ];
 }
 
 const matchedMenuItem = (menu, pathname) => {
   for (const menuItem of menu) {
-    const matched = menuItem.pathname === pathname;
+    const matched =
+      menuItem.pathname === pathname ||
+      menuItem?.extraMatchNavMenuActivePathnames?.includes?.(pathname);
     if (menuItem?.items?.length) {
       const findItem = matchedMenuItem(menuItem.items, pathname);
       if (findItem) {
@@ -149,13 +171,24 @@ const matchedMenuItem = (menu, pathname) => {
     }
   }
 };
-const isSubSpaceNavMenu = (type) => type === NAV_MENU_TYPE.subspace;
+
+function matchedGroupMenu(menu, pathname) {
+  return isNavGroupMenu(menu.type) && menu?.pathname === pathname;
+}
+
+const isSubSpaceNavMenu = (type) =>
+  type === NAV_MENU_TYPE.subspace || type === "archived";
+
+const isNavGroupMenu = (type) => type === NAV_MENU_TYPE.group;
+
 export function matchNewMenu(menu, pathname) {
   if (!isArray(menu)) {
     return null;
   }
   for (const menuItem of menu) {
-    if (isSubSpaceNavMenu(menuItem.type) || menuItem.type === "archived") {
+    if (matchedGroupMenu(menuItem, pathname)) {
+      return null;
+    } else if (isSubSpaceNavMenu(menuItem.type)) {
       const findMenu = matchedMenuItem(menuItem.items, pathname);
       if (findMenu) {
         return {

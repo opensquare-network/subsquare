@@ -1,6 +1,7 @@
 import Chains from "../../chains";
 import normalizeDiscussionListItem from "../../../viewfuncs/discussion/normalizeDiscussionListItem";
 import normalizePolkassemblyDiscussionListItem from "../../../viewfuncs/discussion/normalizePaListItem";
+import businessCategory from "../../business/category";
 
 export const discussionCategory = {
   id: "discussions",
@@ -10,7 +11,7 @@ export const discussionCategory = {
       id: "posts",
       name: "Posts",
       categoryName: "Discussions",
-      categoryId: "Discussions",
+      categoryId: businessCategory.discussions,
       routePath: "discussions",
       apiPath: "posts",
       formatter: normalizeDiscussionListItem,
@@ -28,7 +29,7 @@ export const discussionCategory = {
       id: "polkassemblyDiscussions",
       name: "Polkassembly posts",
       categoryName: "Polkassembly Discussions",
-      categoryId: "Polkassembly Discussions",
+      categoryId: businessCategory.polkassemblyDiscussions,
       routePath: "polkassembly/discussions",
       apiPath: "polkassembly-discussions",
       formatter: normalizePolkassemblyDiscussionListItem,

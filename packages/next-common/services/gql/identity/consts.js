@@ -47,6 +47,9 @@ export const GET_IDENTITIES_REGISTRARS = gql`
         request
         lastGivenIndexer {
           blockTime
+          blockHeight
+          extrinsicIndex
+          chain
         }
         __typename
       }

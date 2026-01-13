@@ -1,18 +1,16 @@
-import useChainOrScanHeight from "next-common/hooks/height";
+import { useRelayChainLatestHeight } from "next-common/hooks/relayScanHeight";
 import useCoretimeSale from "next-common/context/coretime/sale/provider";
 import { isNil } from "lodash-es";
 
 export default function useCoretimeSaleIsInterlude() {
-  const chainHeight = useChainOrScanHeight();
+  const chainHeight = useRelayChainLatestHeight();
   const sale = useCoretimeSale() || {};
-  const {
-    initIndexer: { blockHeight: initBlockHeight } = {},
-    info: { saleStart } = {},
-  } = sale;
+  const { relayIndexer = {}, info: { saleStart } = {} } = sale;
 
+  const relayBlockHeight = relayIndexer?.blockHeight;
   const isLoading = isNil(chainHeight);
 
-  const isHistoricalSale = "endIndexer" in sale;
+  const isHistoricalSale = sale.isFinal;
   if (isHistoricalSale) {
     return {
       isLoading: false,
@@ -21,7 +19,7 @@ export default function useCoretimeSaleIsInterlude() {
   }
 
   const isInterludePhase =
-    chainHeight >= initBlockHeight && chainHeight <= saleStart;
+    chainHeight >= relayBlockHeight && chainHeight <= saleStart;
 
   return {
     isLoading,

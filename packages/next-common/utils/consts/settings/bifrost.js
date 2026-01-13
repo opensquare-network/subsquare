@@ -2,6 +2,8 @@ import MenuGroups from "./menuGroups";
 import { defaultPostLabels } from "./common";
 import dynamic from "next/dynamic";
 import { mergeChainModules } from "./common/modules";
+import bifrostPreimageSettings from "next-common/utils/consts/settings/common/preimage/bifrost";
+import bifrostKusamaTracks from "./bifrostKusamaTracks";
 
 const ProjectIconBifrostKusamaDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconBifrostKusamaDark"),
@@ -21,10 +23,6 @@ const DEFAULT_BIFROST_NODES = [
   {
     name: "LiebiUS",
     url: "wss://us.bifrost-rpc.liebi.com/ws",
-  },
-  {
-    name: "RadiumBlock",
-    url: "wss://bifrost.public.curie.radiumblock.co/ws",
   },
 ];
 
@@ -71,7 +69,7 @@ const bifrost = {
   identity: "bifrost",
   symbol: "BNC",
   decimals: 12,
-  blockTime: 12000,
+  blockTime: 6000,
   hasElections: false,
   ss58Format: 0,
   endpoints: DEFAULT_BIFROST_NODES,
@@ -131,7 +129,6 @@ const bifrost = {
     navigationBorder: "var(--neutral300)",
   },
   multisigWallets: {
-    signet: true,
     mimir: true,
   },
   newProposalQuickStart: {
@@ -140,6 +137,14 @@ const bifrost = {
   },
   supportWalletconnect: true,
   allowWeb2Login: false,
+  hotMenu: {
+    referenda: true,
+  },
+  preimage: bifrostPreimageSettings,
+  openSquare: {
+    voting: "bifrost",
+  },
+  treasuryProposalTracks: bifrostKusamaTracks,
 };
 
 export default bifrost;

@@ -7,7 +7,11 @@ import {
   paseoLinks,
   paseoThemeVars,
   paseoCommonSettings,
+  paseoAssethubMigration,
+  paseoRelayChainNodes,
+  paseoAssetHubNodes,
 } from "./common/paseo";
+import polkadotPreimageSettings from "next-common/utils/consts/settings/common/preimage/polkadot";
 
 const ProjectIconPaseoDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconPaseoDark"),
@@ -16,41 +20,21 @@ const ProjectIconPaseoLight = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconPaseoLight"),
 );
 
-const nodes = [
-  {
-    name: "Amforc",
-    url: "wss://paseo.rpc.amforc.com",
-  },
-  {
-    name: "IBP1",
-    url: "wss://rpc.ibp.network/paseo",
-  },
-  {
-    name: "StakeWorld",
-    url: "wss://pas-rpc.stakeworld.io",
-  },
-  {
-    name: "Dwellir",
-    url: "wss://paseo-rpc.dwellir.com",
-  },
-  {
-    name: "IBP2",
-    url: "wss://paseo.dotters.network",
-  },
-];
-
 const paseo = {
   ...paseoCommonSettings,
   value: Chains.paseo,
   name: capitalize(Chains.paseo),
   blockTime: 6000,
-  endpoints: nodes,
+  assethubBlockTime: 12000,
+  endpoints: paseoAssetHubNodes,
+  relayChainEndpoints: paseoRelayChainNodes,
+  assethubMigration: paseoAssethubMigration,
   avatar: ProjectIconPaseoLight,
   darkAvatar: ProjectIconPaseoDark,
   navPreferDark: true,
   links: paseoLinks,
   hasMultisig: true,
-  multisigApiPrefix: "paseo",
+  multisigApiPrefix: "ahs-gh-api",
   graphqlApiSubDomain: "paseo-gh-api",
   postLabels: defaultPostLabels,
   description:
@@ -69,8 +53,11 @@ const paseo = {
     assethub: true,
     people: true,
     vesting: true,
+    scheduler: true,
+    staking: true,
   }),
   integrations: {
+    statescan: true,
     subscan: true,
   },
   sima: true,
@@ -79,6 +66,8 @@ const paseo = {
     mimir: true,
   },
   allowWeb2Login: true,
+  preimage: polkadotPreimageSettings,
+  hideHeight: true,
 };
 
 export default paseo;

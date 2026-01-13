@@ -37,17 +37,17 @@ export function useDepositSections(
         referenda: hasReferenda,
         fellowship: hasFellowship,
         democracy: hasDemocracy,
-        treasury: hasTreasury,
+        treasury: treasurySettings,
         proxy,
       },
     } = chainSettings;
 
     const hasDemocracyModule = hasDemocracy && !hasDemocracy?.archived;
 
-    const hasTreasuryTips = hasTreasury?.tips && !hasTreasury?.tips?.archived;
+    const { proposals, bounties, childBounties, tips } = treasurySettings;
+    const hasTreasury = proposals || bounties || childBounties || tips === true;
 
     const hasProfileProxyDeposits = proxy && isProfilePage;
-
     const hasMyProxyDeposits = proxy && isAccountPage;
 
     const sections = [
@@ -63,7 +63,7 @@ export function useDepositSections(
         activeCount: democracy.activeCount,
         content: <DepositTemplate key="democracy" {...democracy} />,
       },
-      hasTreasuryTips && {
+      hasTreasury && {
         activeCount: treasury.activeCount,
         content: <DepositTemplate key="treasury" {...treasury} />,
       },

@@ -2,7 +2,7 @@ import { TitleContainer } from "next-common/components/styled/containers/titleCo
 import { useDataTabsContext } from "../context/tabs";
 import { ArrowExternalLinkWiki } from "@osn/icons/subsquare";
 import Tooltip from "next-common/components/tooltip";
-import Link from "next/link";
+import Link from "next-common/components/link";
 
 function PolkadotWikiLink({ href }) {
   return (
@@ -17,6 +17,18 @@ function PolkadotWikiLink({ href }) {
     </Tooltip>
   );
 }
+
+export function PageHeaderTitle({ title, href = "" }) {
+  return (
+    <div className="w-full py-6 flex items-center justify-center">
+      <TitleContainer className="!text20Bold">
+        {title}
+        <PolkadotWikiLink href={href} />
+      </TitleContainer>
+    </div>
+  );
+}
+
 export default function PageHeader({ href = "" }) {
   const { title = "" } = useDataTabsContext();
 

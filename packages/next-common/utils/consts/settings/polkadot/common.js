@@ -16,8 +16,19 @@ const polkadotCommonCfg = {
   ss58Format: 0,
   navLogo: ProjectLogoPolkadotLight,
   navLogoDark: ProjectLogoPolkadotDark,
-  supportWalletconnect: true,
   ...polkadotThemeVars,
 };
 
 export default polkadotCommonCfg;
+
+export const subscanPolkadotAssethubDomain = "assethub-polkadot";
+export const statescanPolkadotAssethubDomain = "assethub-polkadot";
+
+export const polkadotAssethubMigration = {
+  migrated: true,
+  timestamp: 1762239840000,
+  subscanAssethubDomain: subscanPolkadotAssethubDomain,
+  statescanAssethubDomain: statescanPolkadotAssethubDomain,
+  relayBlockTime: 6000,
+  graphqlApiSubDomain: "ahp-gh-api",
+};

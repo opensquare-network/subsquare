@@ -7,14 +7,14 @@ import ExtensionUpdatePrompt from "./components/extensionUpdatePrompt";
 import CollectivesSalaryWarnings from "./components/collectivesSalaryWarnings";
 import useMemberData from "./hook/useMemberData";
 import MemberDataProvider from "./context/memberDataContext";
-import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import { useWindowWidthContext } from "next-common/context/windowSize";
 import { isNil } from "lodash-es";
 import FellowshipTodoList from "./components/fellowshipTodoList";
 
 export default function CollectivesAccountInfoPanel() {
   const fellowshipMemberData = useMemberData("fellowship");
   const ambassadorMemberData = useMemberData("ambassador");
-  const { width } = useWindowSize();
+  const width = useWindowWidthContext();
 
   if (isNil(width)) {
     return null;

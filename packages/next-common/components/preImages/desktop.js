@@ -8,11 +8,12 @@ import {
   incPreImagesTrigger,
   preImagesTriggerSelector,
 } from "next-common/store/reducers/preImagesSlice";
-import FieldLoading from "../icons/fieldLoading";
+import FieldLoading from "next-common/components/icons/fieldLoading";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import DataList from "next-common/components/dataList";
 import { Deposit, Hash, Proposal, Status } from "./fields";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 
 const PreimageDetailPopup = dynamicPopup(() => import("./preImageDetailPopup"));
 
@@ -53,7 +54,14 @@ function useCreatePreimageRow(
           hash={hash}
           count={preimage.count}
           status={preimage.statusName}
-          onUnnoteInBlock={() => dispatch(incPreImagesTrigger())}
+          onUnnoteInBlock={() => {
+            dispatch(incPreImagesTrigger());
+            dispatch(
+              newSuccessToast(
+                "Preimage unnoted. Data will be refreshed in seconds.",
+              ),
+            );
+          }}
           triggerUpdate={triggerUpdate}
         />
       )

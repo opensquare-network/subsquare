@@ -39,6 +39,39 @@ function getNonCoreFellowshipMembersMenu() {
   };
 }
 
+function getFellowshipEvidencesMenu(overviewSummary) {
+  const { modules } = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
+  if (!modules?.fellowship?.core) {
+    return null;
+  }
+
+  const fellowshipEvidences = overviewSummary?.fellowshipEvidences || {};
+
+  return {
+    value: "fellowship-evidences",
+    name: "Evidences",
+    pathname: "/fellowship/evidences",
+    activeCount: fellowshipEvidences.active || 0,
+    extraMatchNavMenuActivePathnames: [
+      "/fellowship/members/[id]/evidences/[evidenceId]",
+    ],
+  };
+}
+
+function getFellowshipFeedsMenu() {
+  const { modules } = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
+  if (!modules?.fellowship?.core) {
+    return null;
+  }
+
+  return {
+    value: "fellowship-feeds",
+    name: "Feeds",
+    pathname: "/fellowship/feeds",
+    extraMatchNavMenuActivePathnames: ["/fellowship/feeds"],
+  };
+}
+
 function getFellowshipSalaryMenu() {
   const { modules } = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
   if (!modules?.fellowship?.core) {
@@ -181,12 +214,14 @@ export function getFellowshipMenu(overviewSummary, currentTrackId) {
     items: [
       getNonCoreFellowshipMembersMenu(),
       getFellowshipMembersMenu(),
-      getFellowshipSalaryMenu(),
       getFellowshipReferendaMenu(
         fellowshipTracks,
         currentTrackId,
         totalActiveCount,
       ),
+      getFellowshipEvidencesMenu(overviewSummary),
+      getFellowshipFeedsMenu(),
+      getFellowshipSalaryMenu(),
       getFellowshipTreasuryMenu(overviewSummary),
       getFellowshipApplicationsMenu(overviewSummary),
       getFellowshipStatisticsMenu(),

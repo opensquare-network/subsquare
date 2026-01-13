@@ -6,7 +6,8 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import { cn } from "next-common/utils";
 import KvList from "next-common/components/listInfo/kvList";
-import Link from "next/link";
+import Link from "next-common/components/link";
+import { getChildBountyIndex } from "next-common/utils/viewfuncs/treasury/childBounty";
 
 export default function ChildBountiesTable({ childBounties }) {
   const { decimals, symbol } = useChainSettings();
@@ -29,7 +30,7 @@ export default function ChildBountiesTable({ childBounties }) {
         <div className="flex-1 w-full">
           <Anchor
             className="!text-textPrimary"
-            href={`/treasury/child-bounties/${bounty.parentBountyId}_${bounty.index}`}
+            href={`/treasury/child-bounties/${getChildBountyIndex(bounty)}`}
             title={bounty.title}
           >
             {bounty.title}

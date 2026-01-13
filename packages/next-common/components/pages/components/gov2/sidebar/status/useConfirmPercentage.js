@@ -1,19 +1,19 @@
 import {
+  useConfirming,
   useConfirmingStarted,
   useDecidingSince,
-  useConfirmingAborted,
 } from "next-common/context/post/gov2/referendum";
-import { useConfirm } from "next-common/context/post/gov2/track";
+import { useConfirmPeriod } from "next-common/context/post/gov2/track";
 import { isNil } from "lodash-es";
 import { useDecisionBlocks } from "./useDecisionPercentage";
 import { useMemo } from "react";
-import useChainOrScanHeight from "next-common/hooks/height";
+import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
 
 // get confirm remaining blocks
 export function useConfirmRemaining() {
-  const latestHeight = useChainOrScanHeight();
+  const latestHeight = useAhmLatestHeight();
   const confirmingAt = useConfirmingStarted();
-  const confirmPeriod = useConfirm();
+  const confirmPeriod = useConfirmPeriod();
   if (isNil(latestHeight) || latestHeight <= confirmingAt) {
     return 0;
   }
@@ -40,7 +40,7 @@ export function useConfirmStartPercentage() {
 
 export function useConfirmEndPercentage() {
   const period = useDecisionBlocks();
-  const confirmPeriod = useConfirm();
+  const confirmPeriod = useConfirmPeriod();
   return (confirmPeriod / period) * 100;
 }
 
@@ -58,27 +58,20 @@ export function calcConfirmStartPercentage(
 }
 
 export function useConfirmPercentage() {
-  const latestHeight = useChainOrScanHeight();
+  const latestHeight = useAhmLatestHeight();
 
-  const confirmPeriod = useConfirm();
+  const confirmPeriod = useConfirmPeriod();
   const confirmStart = useConfirmingStarted();
-  const confirmAbortedHeight = useConfirmingAborted();
+  const confirmFinishHeight = useConfirming();
 
   return useMemo(() => {
-    if (
-      isNil(latestHeight) ||
-      latestHeight <= confirmStart ||
-      (!isNil(confirmAbortedHeight) && confirmAbortedHeight > confirmStart)
-    ) {
+    if (isNil(latestHeight) || latestHeight <= confirmStart) {
       return 0;
-    }
-
-    const finishHeight = confirmStart + confirmPeriod;
-    if (latestHeight >= finishHeight) {
+    } else if (latestHeight >= confirmFinishHeight) {
       return 100;
     }
 
     const gone = latestHeight - confirmStart;
     return Number((gone / confirmPeriod) * 100).toFixed(2);
-  }, [latestHeight, confirmAbortedHeight, confirmStart, confirmPeriod]);
+  }, [latestHeight, confirmStart, confirmPeriod, confirmFinishHeight]);
 }

@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import Avatar from "./avatar";
 import Flex from "./styled/flex";
@@ -13,6 +13,7 @@ import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { useClickAway } from "react-use";
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 import AddressInfoLoading from "./addressInfo";
+import { noop } from "lodash-es";
 
 const Wrapper = Relative;
 
@@ -77,6 +78,16 @@ const Item = styled(Flex)`
     p.selected &&
     css`
       background: var(--neutral200);
+    `}
+  ${(p) =>
+    p.disabled &&
+    css`
+      cursor: not-allowed;
+      opacity: 0.5;
+      pointer-events: none;
+      :hover {
+        background: var(--neutral100);
+      }
     `}
 `;
 
@@ -275,11 +286,13 @@ function AddressComboListOptions({ accounts, address, onSelect, size }) {
   return (
     <Options className="scrollbar-pretty">
       {(accounts || []).map((item, index) => {
+        const isDisabled = !!item.disabled;
         return (
           <Item
             key={index}
-            onClick={() => onSelect(item)}
+            onClick={() => !isDisabled && onSelect(item)}
             selected={isSameAddress(item.address, address)}
+            disabled={isDisabled}
             className={cn(size === "small" && "!h-10")}
           >
             <AddressComboListItemAccount account={item} size={size} />
@@ -300,6 +313,7 @@ export default function AddressCombo({
   canEdit = true,
   size = "default",
   placeholder = "Please fill the address or select another one...",
+  rightContent = null,
 }) {
   const [show, setShow] = useState(false);
   const [inputAddress, setInputAddress] = useState(
@@ -352,6 +366,26 @@ export default function AddressCombo({
     setShow(false);
   };
 
+  const rightContentComponent = useMemo(() => {
+    if (readOnly) {
+      return null;
+    }
+
+    if (rightContent) {
+      return rightContent;
+    }
+
+    return (
+      <CaretContent
+        show={show}
+        onClick={(e) => {
+          setShow(!show);
+          e.stopPropagation();
+        }}
+      />
+    );
+  }, [readOnly, show, rightContent]);
+
   return (
     <Wrapper ref={ref}>
       <Select
@@ -376,16 +410,9 @@ export default function AddressCombo({
           edit={edit && canEdit}
           size={size}
         />
-        {(accounts || []).length > 0 && !readOnly && (
-          <span
-            onClick={(e) => {
-              setShow(!show);
-              e.stopPropagation();
-            }}
-          >
-            <Caret down={!show} />
-          </span>
-        )}
+        {((accounts || []).length > 0 || rightContent) &&
+          !readOnly &&
+          rightContentComponent}
       </Select>
       {show && (accounts || []).length > 0 && (
         <AddressComboListOptions
@@ -402,5 +429,13 @@ export default function AddressCombo({
         </div>
       )}
     </Wrapper>
+  );
+}
+
+function CaretContent({ show, onClick = noop }) {
+  return (
+    <span onClick={onClick}>
+      <Caret down={!show} />
+    </span>
   );
 }

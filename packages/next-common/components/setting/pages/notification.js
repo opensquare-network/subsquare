@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import { usePageProps } from "next-common/context/page";
 import { useRouter } from "next/router";
 import { useUpdateEffect } from "react-use";
+import { NotificationProvider } from "./context";
 
 export default function Notification({ children }) {
   const { unsubscribe } = usePageProps();
@@ -50,13 +51,15 @@ export default function Notification({ children }) {
   }
 
   return (
-    <SettingLayout>
-      <Channels showLoginToUnsubscribe={showLoginToUnsubscribe} />
-      <SettingSection>
-        <TitleContainer>Notification Settings</TitleContainer>
-        <DiscussionEventsSubscription />
-        {children}
-      </SettingSection>
-    </SettingLayout>
+    <NotificationProvider>
+      <SettingLayout>
+        <Channels showLoginToUnsubscribe={showLoginToUnsubscribe} />
+        <SettingSection>
+          <TitleContainer>Notification Settings</TitleContainer>
+          <DiscussionEventsSubscription />
+          {children}
+        </SettingSection>
+      </SettingLayout>
+    </NotificationProvider>
   );
 }

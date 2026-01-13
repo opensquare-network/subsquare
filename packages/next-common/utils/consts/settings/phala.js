@@ -16,7 +16,7 @@ const ProjectLogoPhalaDark = dynamic(() =>
 const DEFAULT_PHALA_NODES = [
   {
     name: "Dwellir",
-    url: "wss://phala-rpc.dwellir.com",
+    url: "wss://phala-rpc.n.dwellir.com",
   },
   {
     name: "Helikon",
@@ -27,16 +27,8 @@ const DEFAULT_PHALA_NODES = [
     url: "wss://phala.api.onfinality.io/public-ws",
   },
   {
-    name: "Phala",
-    url: "wss://api.phala.network/ws",
-  },
-  {
     name: "RadiumBlock",
     url: "wss://phala.public.curie.radiumblock.co/ws",
-  },
-  {
-    name: "Rockx",
-    url: "wss://rockx-phala.w3node.com/polka-public-phala/ws",
   },
 ];
 
@@ -89,7 +81,6 @@ const phala = {
     "Phala Network, an off-chain compute network powered by Secure Enclaves, can be utilized to build the MEV core stack with minimal trust assumptions.",
   useVoteCall: true,
   hasMultisig: true,
-  multisigApiPrefix: "phala",
   modules: mergeChainModules({
     treasury: {
       childBounties: true,
@@ -119,7 +110,6 @@ const phala = {
     navigationBorder: "rgba(39,42,58,1)",
   },
   multisigWallets: {
-    signet: true,
     mimir: true,
   },
   allowWeb2Login: true,

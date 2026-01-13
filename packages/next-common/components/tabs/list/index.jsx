@@ -1,9 +1,10 @@
 import { cn } from "next-common/utils";
 import { forwardRef, useEffect, useRef, useState } from "react";
 import _TabsListItem from "./item";
-import { useWindowSize } from "react-use";
+import { useWindowWidthContext } from "next-common/context/windowSize";
 import { useRouter } from "next/router";
 import { find, isNil } from "lodash-es";
+import { GradientBlanket } from "next-common/components/styled/tabList";
 
 const SPACE = 1;
 
@@ -20,7 +21,7 @@ function TabsListImpl(
   const [showLeft, setShowLeft] = useState(false);
   const [showRight, setShowRight] = useState(false);
   const listRef = useRef();
-  const { width } = useWindowSize();
+  const width = useWindowWidthContext();
 
   useEffect(() => {
     if (listRef.current) {
@@ -65,22 +66,6 @@ function TabsListImpl(
 
       {find(tabs, { value: activeTabValue })?.extra}
     </div>
-  );
-}
-
-function GradientBlanket({ className = "", reversed = false }) {
-  return (
-    <div
-      className={cn(
-        "absolute inset-y-0 w-24 pointer-events-none",
-        "bg-gradient-to-r from-white to-transparent dark:from-[#212433]",
-        "transition-opacity delay-0",
-        "opacity-0",
-        !reversed ? "left-0" : "right-0",
-        reversed && "rotate-180",
-        className,
-      )}
-    />
   );
 }
 

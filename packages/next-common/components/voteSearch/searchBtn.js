@@ -10,6 +10,7 @@ export default function SearchBtn({ showSearch, setShowSearch, setSearch }) {
           ? "[&_path]:fill-textSecondary"
           : "[&_path]:fill-textTertiary",
       )}
+      role="button"
       onClick={() => {
         const show = !showSearch;
         setShowSearch(show);

@@ -1,0 +1,156 @@
+import ValueDisplay from "next-common/components/valueDisplay";
+import { toPrecision } from "next-common/utils";
+import Tabs from "next-common/components/tabs";
+import { useEffect, useMemo, useState } from "react";
+import SummaryLayout from "next-common/components/summary/layout/layout";
+import SummaryItem from "next-common/components/summary/layout/item";
+import BigNumber from "bignumber.js";
+import LoadableContent from "next-common/components/common/loadableContent";
+import usePopupDetailTabs from "../hooks/usePopupDetailTabs";
+
+export default function ProjectContent({ project }) {
+  const {
+    proposals: proposalList,
+    spends: spendList,
+    childBounties: childBountyList,
+    tips: tipList,
+  } = project;
+  const {
+    tabs,
+    proposals,
+    spends,
+    proposalsLoading,
+    spendsLoading,
+    childBounties,
+    childBountiesLoading,
+    tips,
+    tipsLoading,
+  } = usePopupDetailTabs({ proposalList, spendList, childBountyList, tipList });
+
+  return (
+    <>
+      <ProjectSummary
+        project={project}
+        spends={spends}
+        proposals={proposals}
+        tips={tips}
+        proposalsLoading={proposalsLoading}
+        spendsLoading={spendsLoading}
+        tipsLoading={tipsLoading}
+        childBounties={childBounties}
+        childBountiesLoading={childBountiesLoading}
+        spendList={spendList}
+        proposalList={proposalList}
+        childBountyList={childBountyList}
+        tipList={tipList}
+      />
+      <ProjectTabsList tabs={tabs} />
+    </>
+  );
+}
+
+function ProjectTabsList({ tabs }) {
+  const [activeTabId, setActiveTabId] = useState(tabs[0]?.value);
+  useEffect(() => {
+    if (tabs?.length > 0) {
+      setActiveTabId(tabs[0]?.value);
+    }
+  }, [tabs]);
+
+  if (tabs?.length === 0) {
+    return null;
+  }
+
+  return (
+    <Tabs
+      tabs={tabs}
+      activeTabValue={activeTabId}
+      onTabClick={(tab) => setActiveTabId(tab.value)}
+    />
+  );
+}
+
+function ProjectSummary({
+  project,
+  proposals,
+  spends,
+  proposalsLoading,
+  spendsLoading,
+  childBounties,
+  childBountiesLoading,
+  spendList,
+  proposalList,
+  childBountyList,
+  tips,
+  tipsLoading,
+  tipList,
+}) {
+  const proposalsTotal = useMemo(() => calcTotal(proposals), [proposals]);
+  const spendsTotal = useMemo(() => calcTotal(spends), [spends]);
+  const childBountiesTotal = useMemo(
+    () => calcTotal(childBounties),
+    [childBounties],
+  );
+  const tipsTotal = useMemo(() => calcTotal(tips), [tips]);
+
+  const summaryItems = [
+    {
+      title: "Total",
+      value: project.fiatAtFinal,
+      loading: false,
+    },
+    spendList?.length > 0 && {
+      title: "Spends",
+      value: spendsTotal,
+      loading: spendsLoading,
+    },
+    proposalList?.length > 0 && {
+      title: "Proposals",
+      value: proposalsTotal,
+      loading: proposalsLoading,
+    },
+    childBountyList?.length > 0 && {
+      title: "Child Bounties",
+      value: childBountiesTotal,
+      loading: childBountiesLoading,
+    },
+    tipList?.length > 0 && {
+      title: "Tips",
+      value: tipsTotal,
+      loading: tipsLoading,
+    },
+  ].filter(Boolean);
+
+  return (
+    <SummaryLayout>
+      {summaryItems.map(({ title, value, loading }) => (
+        <SummaryItem
+          key={title}
+          title={title}
+          className="[&>div>div:last-child]:flex"
+        >
+          {loading ? (
+            <LoadableContent isLoading={loading}>
+              <ValueDisplay value={toPrecision(value)} symbol="" prefix="$" />
+            </LoadableContent>
+          ) : (
+            <ValueDisplay value={toPrecision(value)} symbol="" prefix="$" />
+          )}
+        </SummaryItem>
+      ))}
+    </SummaryLayout>
+  );
+}
+
+function calcTotal(list) {
+  if (!list?.length) {
+    return BigNumber(0);
+  }
+  return list.reduce((acc, item) => {
+    const proportion = item.proportion ?? 1;
+    const value = BigNumber(item.fiatAtFinal ?? 0)
+      .times(proportion)
+      .toFixed(2);
+    return acc.plus(value);
+  }, BigNumber(0));
+}

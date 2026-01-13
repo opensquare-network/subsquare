@@ -1,18 +1,20 @@
-import PostList from "next-common/components/postList";
+import ReferendaPostList from "next-common/components/postList/referendaPostList";
 import normalizeGov2ReferendaListItem from "next-common/utils/gov2/list/normalizeReferendaListItem";
-import businessCategory from "next-common/utils/consts/business/category";
-import NewProposalButton from "next-common/components/summary/newProposalButton";
 import { usePageProps } from "next-common/context/page";
 import { useMemo, useState } from "react";
 import { useActiveReferendaContext } from "next-common/context/activeReferenda";
 import { getOpenGovReferendaPosts } from "next-common/utils/posts";
 import { createStateContext, useAsync } from "react-use";
-import ReferendaListFilter from "./filter";
 import useMyReferendaVotes from "next-common/hooks/referenda/useMyReferendaVotes";
 import { UnVotedOnlyProvider, useUnVotedOnlyContext } from "./unVotedContext";
+import ReferendaListFilter from "next-common/components/referenda/list/filter";
+import NewProposalButton from "next-common/components/summary/newProposalButton";
+import SortButton from "next-common/components/referenda/list/sortButton";
 
 const [useIsTreasuryState, IsTreasuryStateProvider] = createStateContext(false);
-export { useIsTreasuryState };
+const [useIsOngoingState, IsOngoingStateProvider] = createStateContext(false);
+
+export { useIsTreasuryState, useIsOngoingState };
 
 function useUnVotedActiveReferenda() {
   const { activeReferenda, isLoadingActiveReferenda } =
@@ -46,6 +48,7 @@ function useMyUnVotedReferendaPosts() {
     useUnVotedActiveReferenda();
   const { status } = usePageProps();
   const [isTreasury] = useIsTreasuryState();
+  const [ongoing] = useIsOngoingState();
 
   const { value: referenda, loading: isLoadingReferendaPosts } =
     useAsync(async () => {
@@ -55,12 +58,14 @@ function useMyUnVotedReferendaPosts() {
       return await getOpenGovReferendaPosts(unVotedActiveReferenda, {
         status,
         is_treasury: isTreasury,
+        ongoing,
       });
     }, [
       unVotedActiveReferenda,
       isLoadingUnVotedActiveReferenda,
       status,
       isTreasury,
+      ongoing,
     ]);
 
   const isLoading = isLoadingReferendaPosts || isLoadingUnVotedActiveReferenda;
@@ -79,23 +84,24 @@ function WithFilterPostList({
 }) {
   const { tracks } = usePageProps();
 
-  const items = (posts || []).map((item) =>
-    normalizeGov2ReferendaListItem(item, tracks),
-  );
+  const items = useMemo(() => {
+    return (posts || []).map((item) =>
+      normalizeGov2ReferendaListItem(item, tracks),
+    );
+  }, [posts, tracks]);
 
   return (
-    <PostList
-      title="List"
+    <ReferendaPostList
+      items={items}
+      pagination={pagination}
       titleCount={isUnVotedOnlyLoading ? "Filtering un-voted..." : total}
       titleExtra={
         <div className="flex items-center gap-x-2">
+          <SortButton />
           <ReferendaListFilter isUnVotedOnlyLoading={isUnVotedOnlyLoading} />
           <NewProposalButton />
         </div>
       }
-      category={businessCategory.openGovReferenda}
-      items={items}
-      pagination={pagination}
     />
   );
 }
@@ -175,13 +181,15 @@ function ReferendaListImpl() {
 }
 
 export function ReferendaList() {
-  const { isTreasury } = usePageProps();
+  const { isTreasury, ongoing } = usePageProps();
 
   return (
     <IsTreasuryStateProvider initialValue={isTreasury === "true"}>
-      <UnVotedOnlyProvider>
-        <ReferendaListImpl />
-      </UnVotedOnlyProvider>
+      <IsOngoingStateProvider initialValue={ongoing === "true"}>
+        <UnVotedOnlyProvider>
+          <ReferendaListImpl />
+        </UnVotedOnlyProvider>
+      </IsOngoingStateProvider>
     </IsTreasuryStateProvider>
   );
 }

@@ -4,11 +4,15 @@ import { noop } from "lodash-es";
 import SignerPopupWrapper from "../popupWithSigner/signerPopupWrapper";
 import { GeneralProxiesProvider } from "next-common/context/proxy";
 
-export default function SelectProxyAccountPopup({ onClose, onSelect = noop }) {
+export default function SelectProxyAccountPopup({
+  userAddress,
+  onClose,
+  onSelect = noop,
+}) {
   return (
     <SignerPopupWrapper onClose={onClose}>
       <Popup title="Select Address" onClose={onClose}>
-        <GeneralProxiesProvider>
+        <GeneralProxiesProvider userAddress={userAddress}>
           <div className="flex flex-col gap-[24px]">
             <ProxiedAccounts onSelect={onSelect} />
           </div>

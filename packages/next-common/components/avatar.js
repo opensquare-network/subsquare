@@ -11,6 +11,7 @@ import useAvatarInfo from "next-common/hooks/useAvatarInfo";
 import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
 import { AvatarImg } from "./user/styled";
 import { SystemAvatarDefault } from "@osn/icons/subsquare";
+import { cssSize } from "next-common/utils/cssUtils";
 
 const StyledIdenticon = styled(Identicon)`
   circle:first-child {
@@ -22,16 +23,16 @@ const Wrapper = styled.span`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: ${(props) => props.size};
-  height: ${(props) => props.size};
+  width: ${(p) => cssSize(p.size)};
+  height: ${(p) => cssSize(p.size)};
   border-radius: 50%;
   background-color: var(--neutral200);
 `;
 
 const ImgWrapper = styled.img`
-  width: ${(props) => props.size};
-  max-width: ${(props) => props.size};
-  height: ${(props) => props.size};
+  width: ${(p) => cssSize(p.size)};
+  max-width: ${(p) => cssSize(p.size)};
+  height: ${(p) => cssSize(p.size)};
   border-radius: 50%;
 `;
 
@@ -40,13 +41,12 @@ export default function Avatar({ address, size = "24px" }) {
   const theme = "polkadot";
   const addressAvatarMap = useAddressAvatarMap();
 
-  const normalizedSize = isNaN(size) ? size : `${size}px`;
-  const avatarSize = `calc(${normalizedSize} / 10 * 9)`;
+  const avatarSize = `calc(${cssSize(size)} / 10 * 9)`;
 
   const [avatarCid] = useAvatarInfo(address);
 
   if (avatarCid) {
-    return <AvatarImg src={getIpfsLink(avatarCid)} size={normalizedSize} />;
+    return <AvatarImg src={getIpfsLink(avatarCid)} size={size} />;
   }
 
   const maybeEvmAddress = tryConvertToEvmAddress(address);
@@ -54,7 +54,7 @@ export default function Avatar({ address, size = "24px" }) {
   const image = addressAvatarMap?.get(maybeEvmAddress);
   if (image) {
     return (
-      <Wrapper size={normalizedSize}>
+      <Wrapper size={size}>
         <ImgWrapper size={avatarSize} src={image} alt={maybeEvmAddress} />
       </Wrapper>
     );
@@ -62,7 +62,7 @@ export default function Avatar({ address, size = "24px" }) {
 
   if (isEthereumAddress(maybeEvmAddress)) {
     return (
-      <Wrapper size={normalizedSize}>
+      <Wrapper size={size}>
         <ImgWrapper
           size={avatarSize}
           src={makeBlockie(maybeEvmAddress)}
@@ -76,12 +76,12 @@ export default function Avatar({ address, size = "24px" }) {
     return (
       <StyledIdenticon
         value={address}
-        size={normalizedSize}
+        size={size}
         theme={theme}
         themeObj={themeObj}
       />
     );
   }
 
-  return <SystemAvatarDefault width={normalizedSize} height={normalizedSize} />;
+  return <SystemAvatarDefault width={size} height={size} />;
 }

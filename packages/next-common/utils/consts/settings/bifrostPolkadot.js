@@ -4,6 +4,8 @@ import bifrost from "./bifrost";
 import { defaultPostLabels } from "./common";
 import MenuGroups from "./menuGroups";
 import { mergeChainModules } from "./common/modules";
+import bifrostPreimageSettings from "next-common/utils/consts/settings/common/preimage/bifrost";
+import bifrostPolkadotTracks from "./bifrostPolkadotTracks";
 
 const ProjectIconBifrostPolkadotDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconBifrostPolkadotDark"),
@@ -43,7 +45,7 @@ const bifrostPolkadot = {
   identity: Chains.bifrostPolkadot,
   symbol: "BNC",
   decimals: 12,
-  blockTime: 12000,
+  blockTime: 6000,
   hasElections: false,
   ss58Format: 0,
   endpoints: DEFAULT_NODES,
@@ -83,6 +85,9 @@ const bifrostPolkadot = {
       domain: "bifrost",
     },
   },
+  referendaActions: {
+    startFrom: 136,
+  },
   cssVarsLight: {
     theme100: "rgba(84,43,251,0.10)",
     theme300: "rgba(84,43,251,0.40)",
@@ -103,7 +108,6 @@ const bifrostPolkadot = {
     navigationBorder: "var(--neutral300)",
   },
   multisigWallets: {
-    signet: true,
     mimir: true,
   },
   newProposalQuickStart: {
@@ -112,6 +116,14 @@ const bifrostPolkadot = {
   },
   supportWalletconnect: true,
   allowWeb2Login: false,
+  hotMenu: {
+    referenda: true,
+  },
+  preimage: bifrostPreimageSettings,
+  openSquare: {
+    voting: "bifrost",
+  },
+  treasuryProposalTracks: bifrostPolkadotTracks,
 };
 
 export default bifrostPolkadot;

@@ -11,6 +11,8 @@ import { isPostEdited } from "next-common/utils/post";
 import Tabs from "./tabs";
 import ContentSummary from "./contentSummary";
 import PostDataSource from "./postDataSource";
+import PostContentTranslations from "./postContentTranslations";
+import useShowTranslations from "next-common/hooks/useShowTranslations";
 
 const Wrapper = styled.div`
   :hover {
@@ -20,21 +22,27 @@ const Wrapper = styled.div`
   }
 `;
 
-const BannerImage = styled.img`
-  width: 100%;
-  margin-bottom: 1rem;
-`;
+export function BannerImage({ bannerCid }) {
+  const bannerUrl = getBannerUrl(bannerCid);
+  if (!bannerUrl) {
+    return null;
+  }
 
-export default function ArticleContent({ setIsEdit, className = "" }) {
+  return <img src={bannerUrl} className="w-full mb-4" alt="banner image" />;
+}
+
+export default function ArticleContent({
+  setIsEdit,
+  className = "",
+  isFold = false,
+}) {
   const post = usePost();
-  const bannerUrl = getBannerUrl(post.bannerCid);
+  const showTranslations = useShowTranslations();
 
   const postContent = (
     <>
-      {bannerUrl && <BannerImage src={bannerUrl} alt="banner image" />}
-
-      <PostContent post={post} />
-
+      <BannerImage bannerCid={post.bannerCid} />
+      <PostContent post={post} isFold={isFold} />
       {isPostEdited(post) && (
         <div className="mt-4 text12Medium text-textTertiary">Edited</div>
       )}
@@ -52,6 +60,11 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
       label: "AI Summary",
       content: <ContentSummary />,
     },
+    showTranslations && {
+      value: "content_translations",
+      label: "Translations",
+      content: <PostContentTranslations post={post} isFold={isFold} />,
+    },
   ].filter(Boolean);
   const [activeValue, setActiveValue] = useState(tabs[0].value);
 
@@ -66,7 +79,7 @@ export default function ArticleContent({ setIsEdit, className = "" }) {
 
       {post.content && (
         <div className="mt-6">
-          {post.contentSummary?.summary ? (
+          {post.contentSummary?.summary || showTranslations ? (
             <Tabs
               activeTabValue={activeValue}
               tabs={tabs}

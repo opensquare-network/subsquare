@@ -65,7 +65,6 @@ const khala = {
     "Khala Network is the canary network of Phala launched on Kusama and is responsible for the technical and economic testing of Phala Network.",
   useVoteCall: true,
   hasMultisig: true,
-  multisigApiPrefix: "khala",
   modules: mergeChainModules({
     treasury: {
       childBounties: true,
@@ -94,7 +93,6 @@ const khala = {
     navigationBorder: "rgba(39,42,58,1)",
   },
   multisigWallets: {
-    signet: true,
     mimir: true,
   },
   allowWeb2Login: true,

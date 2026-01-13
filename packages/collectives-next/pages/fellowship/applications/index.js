@@ -2,8 +2,7 @@ import { withCommonProps } from "next-common/lib";
 import { backendApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import ListLayout from "next-common/components/layout/ListLayout";
-import PostList from "next-common/components/postList";
-import businessCategory from "next-common/utils/consts/business/category";
+import FellowshipApplicationPostList from "next-common/components/postList/fellowshipApplicationPostList";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import normalizeFellowshipApplicationListItem from "next-common/utils/viewfuncs/fellowshipApplication/normalizeFellowshipApplicationListItem";
 import PrimaryButton from "next-common/lib/button/primary";
@@ -48,11 +47,9 @@ export default function FellowshipApplicationsPage({ posts }) {
       title="Applications"
       description="Applications to join fellowship"
     >
-      <PostList
-        title="List"
+      <FellowshipApplicationPostList
         titleCount={posts.total}
         titleExtra={<NewFellowshipApplicationButton />}
-        category={businessCategory.fellowshipApplications}
         items={items}
         pagination={{
           page: posts.page,

@@ -4,7 +4,7 @@ import {
   InfoPopoular,
   SystemNewProposal,
 } from "@osn/icons/subsquare";
-import { useChainSettings } from "next-common/context/chain";
+import { useChainSettings, useChain } from "next-common/context/chain";
 import SecondaryButton from "next-common/lib/button/secondary";
 import Divider from "next-common/components/styled/layout/divider";
 import { useStepContainer } from "next-common/context/stepContainer";
@@ -15,6 +15,10 @@ import { KillReferendumInnerPopupContent } from "../newProposalQuickStart/killRe
 import { NewTreasuryReferendumInnerPopupContent } from "../newProposalQuickStart/createTreasuryProposalPopup";
 import { NewUSDxTreasuryReferendumInnerPopupContent } from "../newProposalQuickStart/createUSDxTreasuryProposalPopup";
 import { SpendDotOnAssetHubReferendumInnerPopupContent } from "../newProposalQuickStart/spendDotOnAssetHubPopup";
+import { NewTreasurySpendReferendumInnerPopupContent } from "../newProposalQuickStart/createTreasurySpendReferendumInnerPopupContent";
+import { isHydrationChain, isZkverifyChain } from "next-common/utils/chain";
+import { BatchTreasurySpendsReferendumInnerPopupContent } from "../newProposalQuickStart/batchTreasurySpendsPopup";
+import { NewHOLLARTreasuryReferendumInnerPopupContent } from "../newProposalQuickStart/createHOLLARTreasuryReferendumInnerPopupContent";
 
 const useQuickStartItems = () => {
   const {
@@ -24,24 +28,47 @@ const useQuickStartItems = () => {
       spendDotOnAssetHubProposal,
       cancelReferendum,
       killReferendum,
+      treasurySpendProposal,
     } = {},
   } = useChainSettings();
 
+  const chain = useChain();
+
   return useMemo(() => {
-    const items = [
-      {
-        name: "Treasury proposal local",
+    const items = [];
+    if (treasuryProposalTracks && treasurySpendProposal) {
+      items.push({
+        name: "Treasury spend",
         description:
-          "Create a treasury spend of native token that is locally available",
-        content: NewTreasuryReferendumInnerPopupContent,
-      },
-    ];
+          "Approve a treasury spend which can be claimed immediately, without waiting for award period",
+        content: NewTreasurySpendReferendumInnerPopupContent,
+      });
+    }
+    items.push({
+      name: "Treasury proposal",
+      description:
+        "Approve a treasury proposal and funds will be paid out automatically by treasury award period",
+      content: NewTreasuryReferendumInnerPopupContent,
+    });
+    if (isHydrationChain(chain)) {
+      items.push({
+        name: "Stable treasury spend proposal",
+        description: "Create a treasury spend with stable currency",
+        content: NewHOLLARTreasuryReferendumInnerPopupContent,
+      });
+    }
     if (treasuryProposalTracks && usdxTreasuryProposal) {
       items.push({
         name: "USDx treasury proposal",
         description: "Create a treasury spend with assets on AssetHub",
         buttonSuffix: <InfoPopoular className="w-4 h-4 ml-2" />,
         content: NewUSDxTreasuryReferendumInnerPopupContent,
+      });
+      items.push({
+        name: "Batch treasury spends",
+        description:
+          "Create multiple treasury spends in a single batch proposal",
+        content: BatchTreasurySpendsReferendumInnerPopupContent,
       });
     }
     if (treasuryProposalTracks && spendDotOnAssetHubProposal) {
@@ -52,7 +79,7 @@ const useQuickStartItems = () => {
       });
     }
     items.push({
-      name: "Remark",
+      name: isZkverifyChain(chain) ? "Remark (Wish for Change)" : "Remark",
       description: "Create a remark proposal",
       content: NewRemarkReferendumInnerPopupContent,
     });
@@ -78,9 +105,11 @@ const useQuickStartItems = () => {
     };
   }, [
     cancelReferendum,
+    chain,
     killReferendum,
     spendDotOnAssetHubProposal,
     treasuryProposalTracks,
+    treasurySpendProposal,
     usdxTreasuryProposal,
   ]);
 };

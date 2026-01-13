@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import PostList from "next-common/components/postList";
+import TreasuryProposalsPostList, {
+  NewTreasuryProposalButton,
+} from "next-common/components/postList/treasuryProposalsPostList";
 import { withCommonProps } from "next-common/lib";
-import TreasurySummary from "next-common/components/summary/treasurySummary";
 import normalizeTreasuryProposalListItem from "next-common/utils/viewfuncs/treasury/normalizeProposalListItem";
 import { useChainSettings } from "next-common/context/chain";
 import ListLayout from "next-common/components/layout/ListLayout";
@@ -11,37 +12,30 @@ import {
   TreasuryProvider,
   useTreasuryProposalListUrl,
 } from "next-common/context/treasury";
-import NewTreasuryProposal from "next-common/components/treasury/proposal/newTreasuryProposal";
-import { isPolkadotChain } from "next-common/utils/chain";
-import PolkadotTreasuryStatsOnProposal from "next-common/components/treasury/common/polkadotTreasuryStatsOnProposal";
+import businessCategory from "next-common/utils/consts/business/category";
+import TreasuryProposalsSummary from "next-common/components/summary/treasuryProposalsSummary";
 
 export default function ProposalsPage({ proposals: ssrProposals, chain }) {
   const [proposals, setProposals] = useState(ssrProposals);
   useEffect(() => setProposals(ssrProposals), [ssrProposals]);
-  const { integrations, showNewTreasuryProposalButton } = useChainSettings();
+  const { integrations } = useChainSettings();
 
   const items = (proposals.items || []).map((item) =>
     normalizeTreasuryProposalListItem(chain, item),
   );
 
-  const category = "Treasury Proposals";
+  const category = businessCategory.treasuryProposals;
   const seoInfo = { title: category, desc: category };
 
   const pallet = "treasury";
   const treasuryProposalListUrl = useTreasuryProposalListUrl(pallet);
-
-  const treasurySummaryPanel = isPolkadotChain(chain) ? (
-    <PolkadotTreasuryStatsOnProposal />
-  ) : (
-    <TreasurySummary />
-  );
 
   return (
     <TreasuryProvider pallet={pallet}>
       <ListLayout
         seoInfo={seoInfo}
         title={category}
-        summary={treasurySummaryPanel}
+        summary={<TreasuryProposalsSummary />}
         tabs={[
           {
             value: "proposals",
@@ -55,16 +49,7 @@ export default function ProposalsPage({ proposals: ssrProposals, chain }) {
           },
         ].filter(Boolean)}
       >
-        <PostList
-          titleExtra={
-            showNewTreasuryProposalButton && (
-              <div className="flex justify-end">
-                <NewTreasuryProposal />
-              </div>
-            )
-          }
-          category={category}
-          title="List"
+        <TreasuryProposalsPostList
           titleCount={proposals.total}
           items={items}
           pagination={{
@@ -72,6 +57,7 @@ export default function ProposalsPage({ proposals: ssrProposals, chain }) {
             pageSize: proposals.pageSize,
             total: proposals.total,
           }}
+          titleExtra={<NewTreasuryProposalButton />}
         />
       </ListLayout>
     </TreasuryProvider>
@@ -79,8 +65,10 @@ export default function ProposalsPage({ proposals: ssrProposals, chain }) {
 }
 
 export const getServerSideProps = withCommonProps(async (context) => {
-  const proposals = await fetchList("treasury/proposals", context);
-  const tracksProps = await fetchOpenGovTracksProps();
+  const [proposals, tracksProps] = await Promise.all([
+    fetchList("treasury/proposals", context),
+    fetchOpenGovTracksProps(),
+  ]);
 
   return {
     props: {

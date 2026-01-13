@@ -1,4 +1,5 @@
 import Chains from "next-common/utils/consts/chains";
+import { STATICS_CDN_URL } from "next-common/utils/consts/statics";
 
 const CHAIN_COVER_FILENAMES_MAP = {
   [Chains.hydradx]: {
@@ -10,6 +11,10 @@ const CHAIN_COVER_FILENAMES_MAP = {
     small: "hydration-small.jpg",
   },
   [Chains.zkverifyTestnet]: {
+    large: "zkverify.jpg",
+    small: "zkverify-small.jpg",
+  },
+  [Chains.zkverify]: {
     large: "zkverify.jpg",
     small: "zkverify-small.jpg",
   },
@@ -28,7 +33,7 @@ const CHAIN_COVER_FILENAMES_MAP = {
 };
 
 function resolveCoversRepoFilepathUrl(filename) {
-  return `https://cdn.jsdelivr.net/gh/opensquare-network/subsquare-static/covers/${filename}`;
+  return `${STATICS_CDN_URL}/covers/${filename}`;
 }
 
 function getCoverFilenames(chainValue) {

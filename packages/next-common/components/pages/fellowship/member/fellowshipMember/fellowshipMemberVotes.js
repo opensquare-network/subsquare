@@ -1,7 +1,7 @@
 import { isNil } from "lodash-es";
 import { useCallback, useEffect, useState } from "react";
 import { backendApi } from "next-common/services/nextApi";
-import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import { useWindowWidthContext } from "next-common/context/windowSize";
 import MobileFellowshipVotesList from "./mobileFellowshipVotesList";
 import FellowshipVotesList from "next-common/components/profile/votingHistory/fellowshipVotesList";
 import { useCollectivesSection } from "next-common/context/collectives/collectives";
@@ -17,7 +17,7 @@ export default function FellowshipMemberVotes({ address }) {
     data?.total || 0,
     data?.pageSize || 25,
   );
-  const { width } = useWindowSize();
+  const width = useWindowWidthContext();
   const section = useCollectivesSection();
 
   const fetchData = useCallback(

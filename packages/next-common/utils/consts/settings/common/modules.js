@@ -37,6 +37,7 @@ const base = {
   advisoryCommittee: false,
   alliance: false,
   preimages: true,
+  scheduler: false,
   coretime: false,
   assethub: false,
   proxy: {

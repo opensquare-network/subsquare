@@ -14,7 +14,7 @@ export default function MultiProgress({
         ...item,
         percentage: ensureMax100(item.percentage),
         start: ensureMax100(item.start),
-        end: ensureMax100(item.end),
+        length: ensureMax100(item.length),
       };
     });
   }, [progressItems]);
@@ -30,7 +30,7 @@ export default function MultiProgress({
             content={item.tooltipContent}
             className="absolute inset-0"
             style={{
-              width: Math.abs(Number(item.end) || 0) + "%",
+              width: Math.abs(Number(item.length) || 0) + "%",
               left: (Number(item.start) || 0) + "%",
             }}
           >

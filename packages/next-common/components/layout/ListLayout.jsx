@@ -43,13 +43,14 @@ export default function ListLayout({
   summaryFooter,
   tabs = [],
   header,
+  customTabs = null,
 }) {
   const seoTitle = usePageTitle(
     seoInfoProp.title ?? title ?? "governance platform",
   );
 
   const seoInfo = {
-    title: "Subsquare | " + seoTitle,
+    title: seoInfoProp.rawTitle ?? "Subsquare | " + seoTitle,
     desc: description || seoInfoProp.desc,
   };
 
@@ -92,10 +93,16 @@ export default function ListLayout({
             <TabsList tabs={tabs} />
           </div>
         )}
+        {customTabs}
       </div>
 
       <div className="flex-1">
-        <div className={cn("px-6 py-6 mx-auto max-w-[1200px]", "max-sm:px-0")}>
+        <div
+          className={cn(
+            "h-full px-6 py-6 mx-auto max-w-[1200px]",
+            "max-sm:px-0",
+          )}
+        >
           {children}
         </div>
       </div>

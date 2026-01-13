@@ -32,31 +32,31 @@ export function CommonIdentitiesSummaryCard({
   return (
     <SummaryLayout className={className}>
       <SummaryItem title="Direct Identities">
-        <LoadableContent isLoading={isLoading}>
-          {identityDetail?.directCount}
+        <LoadableContent size={16} isLoading={isLoading}>
+          <span className="text16Bold">{identityDetail?.directCount}</span>
         </LoadableContent>
-        <div className="flex flex-col gap-y-0.5 mt-1">
+        <div className="flex flex-col gap-1  mt-1">
           {IdentityList.map((item) => (
             <div
               key={item.identity.info.status}
-              className="flex gap-x-2 items-center"
+              className="flex gap-x-2 items-center "
             >
               <IdentityIcon identity={item.identity} />
               <span className="text-textTertiary text12Medium">
                 {item.lanel}
               </span>
-              <span className="text-textPrimary text12Medium">
-                <LoadableContent isLoading={isLoading}>
+              <LoadableContent size={16} isLoading={isLoading}>
+                <span className="text-textPrimary text12Medium">
                   {item.count}
-                </LoadableContent>
-              </span>
+                </span>
+              </LoadableContent>
             </div>
           ))}
         </div>
       </SummaryItem>
       <SummaryItem title="Sub Identities">
         <LoadableContent isLoading={isLoading}>
-          {identityDetail?.subCount}
+          <span className="text16Bold">{identityDetail?.subCount}</span>
         </LoadableContent>
       </SummaryItem>
     </SummaryLayout>

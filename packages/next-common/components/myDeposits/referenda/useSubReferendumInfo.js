@@ -8,7 +8,7 @@ export default function useSubReferendumInfo(pallet, referendumIndex) {
   const [info, setInfo] = useState();
 
   useEffect(() => {
-    if (!api) {
+    if (!api?.query?.[pallet]) {
       return;
     }
 

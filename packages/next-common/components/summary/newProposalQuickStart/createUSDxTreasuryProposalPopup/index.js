@@ -4,7 +4,6 @@ import SubmissionDeposit from "../../newProposalPopup/submissionDeposit";
 import CreateProposalSubmitButton, {
   useCreateProposalSubmitButton,
 } from "../common/createProposalSubmitButton";
-import { InfoMessage } from "next-common/components/setting/styled";
 import AdvanceSettings from "../common/advanceSettings";
 import BigNumber from "bignumber.js";
 import Popup from "next-common/components/popup/wrapper/Popup";
@@ -15,11 +14,12 @@ import useValidFromField from "next-common/components/preImages/createPreimagePo
 import useAutoSelectTreasuryTrackField from "../common/useAutoSelectTreasuryTrackField";
 import useEnactmentBlocksField from "../common/useEnactmentBlocksField";
 import { useStepContainer } from "next-common/context/stepContainer";
-import Button from "next-common/lib/button";
 import CircleStepper from "next-common/components/step";
 import SigningTip from "../common/signingTip";
+import InsufficientBalanceTips from "../common/insufficientBalanceTips";
+import PreviousButton from "../../newProposalButton/previousButton";
 
-function getTokenAmount(inputBalance) {
+export function getTokenAmount(inputBalance) {
   // 1 DOT = 10 USDx
   const nativeTokenPrice = 10;
   const tokenAmount = new BigNumber(inputBalance || 0)
@@ -65,33 +65,19 @@ export function NewUSDxTreasuryReferendumInnerPopupContent() {
         currentStep={1}
         loading={isLoading}
       />
-      <SignerWithBalance />
+      <SignerWithBalance showTransferable supportedMultisig={false} />
       {usdxBalanceField}
-      <div className="flex flex-col gap-[8px]">
-        {beneficiaryField}
-        <InfoMessage>
-          Please input an AssetHub address as the beneficiary
-        </InfoMessage>
-      </div>
+      <div className="flex flex-col gap-[8px]">{beneficiaryField}</div>
       {trackField}
       <AdvanceSettings>
         {validFromField}
         {enactmentField}
         <SubmissionDeposit />
       </AdvanceSettings>
+      <InsufficientBalanceTips byteLength={encodedLength} />
       <SigningTip />
       <div className="flex justify-between">
-        <Button
-          className={`border-neutral400 hover:border-neutral500 ${
-            isLoading
-              ? " cursor-not-allowed text-textDisabled border-neutral300"
-              : ""
-          }`}
-          disabled={isLoading}
-          onClick={goBack}
-        >
-          Previous
-        </Button>
+        <PreviousButton isLoading={isLoading} onClick={goBack} />
         {submitButton}
       </div>
     </>
@@ -116,14 +102,9 @@ function PopupContent() {
 
   return (
     <>
-      <SignerWithBalance />
+      <SignerWithBalance supportedMultisig={false} />
       {usdxBalanceField}
-      <div className="flex flex-col gap-[8px]">
-        {beneficiaryField}
-        <InfoMessage>
-          Please input an AssetHub address as the beneficiary
-        </InfoMessage>
-      </div>
+      <div className="flex flex-col gap-[8px]">{beneficiaryField}</div>
       {trackField}
       <AdvanceSettings>
         {validFromField}

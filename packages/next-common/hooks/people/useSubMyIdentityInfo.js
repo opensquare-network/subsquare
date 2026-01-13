@@ -1,78 +1,8 @@
 import { useEffect, useState } from "react";
 import { useContextApi } from "next-common/context/api";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import useSubStorage from "next-common/hooks/common/useSubStorage";
-
-const InitIdentityInfo = {
-  display: null,
-  legal: null,
-  email: null,
-  matrix: null,
-  web: null,
-  twitter: null,
-  github: null,
-  discord: null,
-};
-
-const InitIdentityJudgements = [];
-
-const extractRaw = (field) => {
-  if (!field || field === "None") {
-    return null;
-  }
-
-  return field?.Raw || field || null;
-};
-
-function convertJudgements(identityOf) {
-  const judgements = identityOf?.judgements?.toHuman() || [];
-  if (!judgements || judgements.length === 0) {
-    return [];
-  }
-
-  return judgements?.map((judgement) => {
-    const [index, statusField] = judgement;
-    const isFeePaid =
-      typeof statusField === "object" &&
-      Object.entries(statusField)?.[0]?.[0] === "FeePaid";
-    const status = isFeePaid ? "FeePaid" : statusField;
-    const fee = isFeePaid ? Object.entries(statusField)?.[0]?.[1] : null;
-
-    return {
-      index,
-      status,
-      fee,
-    };
-  });
-}
-
-function convertIdentityInfo(identityOf) {
-  const info = identityOf?.info?.toHuman() || {};
-
-  return {
-    display: extractRaw(info?.display),
-    legal: extractRaw(info?.legal),
-    email: extractRaw(info?.email),
-    matrix: extractRaw(info?.matrix),
-    web: extractRaw(info?.web),
-    twitter: extractRaw(info?.twitter),
-    github: extractRaw(info?.github),
-    discord: extractRaw(info?.discord),
-  };
-}
-
-function convertIdentity(identity) {
-  const unwrapped = identity.unwrap();
-  const identityOf = Array.isArray(unwrapped) ? unwrapped[0] : unwrapped;
-
-  const identityInfo = convertIdentityInfo(identityOf);
-  const judgements = convertJudgements(identityOf);
-
-  return {
-    info: identityInfo,
-    judgements,
-  };
-}
+import { useIdentityOf } from "next-common/hooks/identity/useIdentityOf";
+import { fetchIdentityOf } from "../identity/identityFetch";
 
 function useSuperOfIdentityDisplayName(identity) {
   const address = useRealAddress();
@@ -103,14 +33,10 @@ function useSuperOfIdentityDisplayName(identity) {
           return;
         }
 
-        const identityResult = await api.query.identity
-          ?.identityOf(superOfResult.parentAddress)
-          .then((parentResult) => {
-            if (!parentResult?.isNone) {
-              const result = convertIdentity(parentResult);
-              return result?.info || InitIdentityInfo;
-            }
-          });
+        const identityResult = await fetchIdentityOf(
+          superOfResult.parentAddress,
+        ).then((res) => res.info);
+
         if (identityResult.display && superOfResult.subDisplay) {
           setSubDisplay(
             `${identityResult.display}/${superOfResult.subDisplay}`,
@@ -134,61 +60,10 @@ function useSuperOfIdentityDisplayName(identity) {
   };
 }
 
-function useAddressIdentityInfo(address) {
-  const api = useContextApi();
-  const { result, loading: isLoading } = useSubStorage(
-    "identity",
-    "identityOf",
-    [address],
-  );
-
-  const [identity, setIdentity] = useState({
-    info: InitIdentityInfo,
-    judgements: InitIdentityJudgements,
-  });
-
-  useEffect(() => {
-    if (!api || !address) {
-      return;
-    }
-
-    async function fetchIdentity() {
-      if (!result || result.isNone) {
-        try {
-          // Subscription may have data returned as isNone. Here, to avoid errors, we need to get the data again.
-          const apiResult = await api.query?.identity.identityOf(address);
-          if (apiResult && !apiResult.isNone) {
-            setIdentity(convertIdentity(apiResult));
-          } else {
-            setIdentity({
-              info: InitIdentityInfo,
-              judgements: InitIdentityJudgements,
-            });
-          }
-        } catch (error) {
-          console.error(error);
-          setIdentity({
-            info: InitIdentityInfo,
-            judgements: InitIdentityJudgements,
-          });
-        }
-      } else {
-        setIdentity(convertIdentity(result));
-      }
-    }
-
-    fetchIdentity();
-  }, [address, api, result]);
-
-  return {
-    ...identity,
-    isLoading,
-  };
-}
-
 export default function useSubMyIdentityInfo() {
+  const api = useContextApi();
   const address = useRealAddress();
-  const { info, judgements, isLoading } = useAddressIdentityInfo(address);
+  const { info, judgements, isLoading } = useIdentityOf(api, address);
   const { result: superResult } = useSuperOfIdentityDisplayName(info);
 
   return {

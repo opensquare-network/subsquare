@@ -2,11 +2,11 @@ import BigNumber from "bignumber.js";
 import { maxBy, range } from "lodash-es";
 import "next-common/components/charts/globalConfig";
 import { useThemeSetting } from "next-common/context/theme";
-import useChainOrScanHeight from "next-common/hooks/height";
+import { useRelayChainLatestHeight } from "next-common/hooks/relayScanHeight";
 import { cn } from "next-common/utils";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Line } from "react-chartjs-2";
-import CoretimeSalePanelChartSkeleton from "../skeleton";
+import { Skeleton } from "next-common/components/skeleton";
 import {
   useCoretimeStatisticsPriceDataset,
   useCoretimeStatisticsRenewalsDataset,
@@ -27,7 +27,7 @@ export default function CoretimeSalePanelChartStatistics({
   isLoading,
 }) {
   if (isLoading) {
-    return <CoretimeSalePanelChartSkeleton className={className} />;
+    return <Skeleton className={cn("w-full rounded-lg ", className)} />;
   }
 
   return (
@@ -48,14 +48,13 @@ function StatisticsImpl({
   initBlockHeight,
   totalBlocks = 0,
   saleStart,
-  fixedStart,
 }) {
-  const chainHeight = useChainOrScanHeight();
+  const chainHeight = useRelayChainLatestHeight();
 
   const totalBlocksIndex = toIndex(totalBlocks);
   const initBlockHeightIndex = toIndex(initBlockHeight);
   const saleStartIndex = toIndex(saleStart);
-  const chainHeightIndex = toIndex(chainHeight);
+  const relayHeightIndex = toIndex(chainHeight);
 
   const indexes = useMemo(() => range(0, totalBlocksIndex), [totalBlocksIndex]);
 
@@ -68,10 +67,10 @@ function StatisticsImpl({
 
     return Math.max(
       0,
-      Math.min(chainHeightIndex - initBlockHeightIndex, endIndex),
+      Math.min(relayHeightIndex - initBlockHeightIndex, endIndex),
     );
   }, [
-    chainHeightIndex,
+    relayHeightIndex,
     coretimeSale?.isFinal,
     initBlockHeightIndex,
     totalBlocksIndex,
@@ -93,9 +92,7 @@ function StatisticsImpl({
   const priceDataset = useCoretimeStatisticsPriceDataset({
     initBlockHeightIndex,
     saleStart,
-    fixedStart,
-    coretimeSale,
-    totalBlocks,
+    totalBlocksIndex,
   });
 
   const maxPrice = Number(
@@ -185,78 +182,98 @@ function StatisticsImpl({
     priceDataset,
   ]);
 
+  const externalTooltip = useCallback((context) => {
+    const { chart, tooltip } = context;
+
+    if (tooltip.opacity === 0) {
+      setTooltipData(null);
+      return;
+    }
+
+    const position = chart.canvas.getBoundingClientRect();
+    const dataPoint = tooltip.dataPoints[0];
+    const data = dataPoint.dataset.data[dataPoint.dataIndex];
+
+    setTooltipPos((prev) => {
+      const next = {
+        x: toIndex(position.left) + tooltip.caretX,
+        y: toIndex(position.top) + tooltip.caretY,
+      };
+      return prev.x === next.x && prev.y === next.y ? prev : next;
+    });
+
+    setTooltipData((prev) => {
+      const next = {
+        source: dataPoint.dataset.source,
+        blockHeight: data.indexer?.blockHeight,
+        price: dataPoint.parsed.y,
+        who: data.who,
+      };
+      return onextEquals(prev, next) ? prev : next;
+    });
+  }, []);
+
+  function onextEquals(a, b) {
+    if (!a || !b) return false;
+    return (
+      a.source === b.source &&
+      a.blockHeight === b.blockHeight &&
+      a.price === b.price &&
+      a.who === b.who
+    );
+  }
+
   /** @type {import("chart.js").ChartOptions} */
-  const options = {
-    clip: false,
-    responsive: true,
-    maintainAspectRatio: false,
-    animation: false,
-    layout: {
-      autoPadding: false,
-      padding: CHART_LAYOUT_PADDING,
-    },
-    scales: {
-      x: {
-        display: false,
-        ticks: {
-          source: "auto",
-          // Disabled rotation for performance
-          maxRotation: 0,
-          autoSkip: true,
+  const options = useMemo(() => {
+    return {
+      clip: false,
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: false,
+      layout: {
+        autoPadding: false,
+        padding: CHART_LAYOUT_PADDING,
+      },
+      scales: {
+        x: {
+          display: false,
+          ticks: {
+            source: "auto",
+            // Disabled rotation for performance
+            maxRotation: 0,
+            autoSkip: true,
+          },
+        },
+        y: {
+          display: false,
+          min: 0,
+          max: maxPrice,
         },
       },
-      y: {
-        display: false,
-        min: 0,
-        max: maxPrice,
-      },
-    },
-    plugins: {
-      legend: {
-        display: false,
-      },
-      tooltip: {
-        enabled: false,
-        external(context) {
-          const { chart, tooltip } = context;
-
-          if (tooltip.opacity === 0) {
-            setTooltipData(null);
-            return;
-          }
-
-          const position = chart.canvas.getBoundingClientRect();
-          const dataPoint = tooltip.dataPoints[0];
-          const data = dataPoint.dataset.data[dataPoint.dataIndex];
-
-          setTooltipPos({
-            x: toIndex(position.left) + tooltip.caretX,
-            y: toIndex(position.top) + tooltip.caretY,
-          });
-
-          setTooltipData({
-            source: dataPoint.dataset.source,
-            blockHeight: data.indexer?.blockHeight,
-            price: dataPoint.parsed.y,
-            who: data.who,
-          });
+      plugins: {
+        legend: {
+          display: false,
         },
-      },
-      annotation: {
-        annotations: {
-          line1: {
-            type: "line",
-            xMin: renewalPeriodIndexes,
-            xMax: renewalPeriodIndexes,
-            borderColor: theme.neutral500,
-            borderWidth: 1,
-            borderDash: [3, 3],
-            drawTime: "beforeDatasetsDraw",
+        tooltip: {
+          enabled: false,
+          external: externalTooltip,
+        },
+        annotation: {
+          annotations: {
+            line1: {
+              type: "line",
+              xMin: renewalPeriodIndexes,
+              xMax: renewalPeriodIndexes,
+              borderColor: theme.neutral500,
+              borderWidth: 1,
+              borderDash: [3, 3],
+              drawTime: "beforeDatasetsDraw",
+            },
           },
         },
       },
-    },
-  };
+    };
+  }, [externalTooltip, maxPrice, renewalPeriodIndexes, theme.neutral500]);
 
   return (
     <div className={cn("w-full relative", className)}>

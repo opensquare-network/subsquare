@@ -14,7 +14,7 @@ export default function CallsVotes() {
     <>
       <Tooltip
         contentClassName="max-w-[240px]"
-        content="Shows the on-chain transaction that the proposal will execute."
+        content="On-chain vote transactions that may affect the tally"
       >
         <Button onClick={() => setShowCallsVotes(true)}>Calls</Button>
       </Tooltip>

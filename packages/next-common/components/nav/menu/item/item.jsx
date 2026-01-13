@@ -1,8 +1,7 @@
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { isExternalLink } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
-import NavMenuItemGroup from "./group";
-import { useNavMenuType, useNavSubmenuVisible } from "next-common/context/nav";
+import { useNavMenuType } from "next-common/context/nav";
 import NavMenuItemTemplate from "./itemTemplate";
 import { useRouter } from "next/router";
 import { NAV_MENU_TYPE } from "next-common/utils/constants";
@@ -15,10 +14,8 @@ export default function NavMenuItemItem({
   onClick,
   className = "",
   hoverTooltipLabel = true,
-  items,
 }) {
   const isExternal = isExternalLink(item?.pathname);
-  const [navSubmenuVisible, setNavSubmenuVisible] = useNavSubmenuVisible();
   const [, setNavMenuType] = useNavMenuType();
   const router = useRouter();
 
@@ -32,6 +29,7 @@ export default function NavMenuItemItem({
         icon={item?.icon}
         name={item?.name}
         isNew={item?.isNew}
+        isHot={item?.isHot}
         extra={item?.extra || extra}
         collapsed={collapsed}
         onClick={() => {
@@ -48,23 +46,13 @@ export default function NavMenuItemItem({
     );
   }
 
-  if (items?.length && !item?.hideItemsOnMenu) {
-    return (
-      <NavMenuItemGroup
-        menu={item}
-        navSubmenuVisible={navSubmenuVisible}
-        setNavSubmenuVisible={setNavSubmenuVisible}
-        padSubMenuItems={false}
-      />
-    );
-  }
-
   let content = (
     <NavMenuItemTemplate
       className={className}
       icon={item?.icon}
       name={item?.name}
       isNew={item?.isNew}
+      isHot={item?.isHot}
       activeCount={item?.activeCount}
       extra={item?.extra || extra}
       collapsed={collapsed}

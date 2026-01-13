@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "next-common/components/link";
 import useAccountUrl from "next-common/hooks/account/useAccountUrl";
 
 export default function ManageAccountButton() {

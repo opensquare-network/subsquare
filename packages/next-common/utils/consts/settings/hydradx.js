@@ -4,6 +4,8 @@ import Chains from "../chains";
 import { defaultPostLabels } from "./common";
 import MenuGroups from "./menuGroups";
 import { mergeChainModules } from "./common/modules";
+import hydrationPreimageSettings from "next-common/utils/consts/settings/common/preimage/hydration";
+import hydradxTreasuryTracks from "./hydradxTracks";
 
 const ProjectIconHydrationDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconHydrationDark"),
@@ -22,7 +24,7 @@ const endpoints = [
   },
   {
     name: "IBP1",
-    url: "wss://hydradx.paras.ibp.network",
+    url: "wss://hydration.ibp.network",
   },
   {
     name: "Helikon",
@@ -30,11 +32,11 @@ const endpoints = [
   },
   {
     name: "IBP2",
-    url: "wss://hydration.dotters.network/",
+    url: "wss://hydration.dotters.network",
   },
   {
     name: "Dwellir",
-    url: "wss://hydradx-rpc.dwellir.com",
+    url: "wss://hydration-rpc.n.dwellir.com",
   },
 ];
 
@@ -83,7 +85,7 @@ const hydradx = {
   identity: "hydradx",
   symbol: "HDX",
   decimals: 12,
-  blockTime: 12000,
+  blockTime: 6000,
   hasElections: true,
   ss58Format: 0,
   avatar: ProjectIconHydrationLight,
@@ -104,10 +106,19 @@ const hydradx = {
     treasury: {
       bounties: false,
       spends: true,
+      tips: {
+        archived: true,
+      },
+    },
+    council: {
+      archived: true,
     },
   }),
   integrations: {
     subscan: true,
+  },
+  referendaActions: {
+    startFrom: 98,
   },
   cssVarsLight: {
     theme100: "rgba(229,62,118,0.10)",
@@ -131,11 +142,21 @@ const hydradx = {
   chainType: ChainTypes.MIXED,
   ethereumNetwork,
   multisigWallets: {
-    signet: true,
     mimir: true,
+  },
+  treasuryProposalTracks: hydradxTreasuryTracks,
+  newProposalQuickStart: {
+    treasurySpendProposal: true,
   },
   supportWalletconnect: true,
   allowWeb2Login: false,
+  hotMenu: {
+    referenda: true,
+  },
+  preimage: hydrationPreimageSettings,
+  openSquare: {
+    voting: "hydration",
+  },
 };
 
 export default hydradx;

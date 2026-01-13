@@ -4,12 +4,11 @@ import Gravatar from "../gravatar";
 import { AvatarImg } from "./styled";
 
 export const AvatarDisplay = ({ address, emailMd5, avatarCid, size }) => {
-  const normalizedSize = isNaN(size) ? size : `${size}px`;
   return avatarCid ? (
-    <AvatarImg src={getIpfsLink(avatarCid)} size={normalizedSize} />
+    <AvatarImg src={getIpfsLink(avatarCid)} size={size} />
   ) : address ? (
-    <Avatar address={address} size={normalizedSize} />
+    <Avatar address={address} size={size} />
   ) : (
-    <Gravatar emailMd5={emailMd5} size={normalizedSize} />
+    <Gravatar emailMd5={emailMd5} size={size} />
   );
 };

@@ -2,7 +2,7 @@ import Tooltip from "next-common/components/tooltip";
 import { useMeasure } from "react-use";
 import { startCase } from "lodash-es";
 import AddressUser from "next-common/components/user/addressUser";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { cn } from "next-common/utils";
 import {
   BatchProvider,
@@ -106,7 +106,7 @@ function PaddingBars({
       <div
         key={`padding-${i}`}
         className="h-[24px] w-[4px]"
-        style={{ backgroundColor: paddingItemsColor || "var(--neutral200)" }}
+        style={{ backgroundColor: paddingItemsColor }}
       />,
     );
   }

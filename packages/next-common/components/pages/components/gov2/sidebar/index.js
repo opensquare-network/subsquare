@@ -1,4 +1,4 @@
-import { gov2VotingState } from "next-common/utils/consts/state";
+import { gov2VotingStates } from "next-common/utils/consts/state";
 import { useEffect, useState } from "react";
 import Gov2Status from "./status";
 import Gov2Tally from "./tally";
@@ -16,15 +16,19 @@ import Request from "./request";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import AllSpendsRequest from "./request/allSpendsRequest";
 import { useFetchVotesFromServer } from "next-common/utils/gov2/useVotesFromServer";
+import useIsScrolling from "next-common/hooks/useIsScrolling";
+import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 
 const VotePopup = dynamicPopup(() => import("../votePopup"));
 
 export default function Gov2Sidebar() {
+  const isScrolling = useIsScrolling(100, 1000);
+  const isMobile = useIsMobile();
   const detail = usePost();
   const [showVote, setShowVote] = useState(false);
   const referendumIndex = detail?.referendumIndex;
   const trackId = detail?.track;
-  const isVoting = gov2VotingState.includes(detail?.state?.name);
+  const isVoting = gov2VotingStates.includes(detail?.state?.name);
   const { hideActionButtons } = useChainSettings();
   const { fetch: fetchVotesFromServer } =
     useFetchVotesFromServer(referendumIndex);
@@ -34,7 +38,7 @@ export default function Gov2Sidebar() {
   }, [fetchVotesFromServer]);
 
   return (
-    <RightBarWrapper>
+    <RightBarWrapper className="relative">
       <Request />
       <AllSpendsRequest />
       <Gov2Status />
@@ -44,7 +48,11 @@ export default function Gov2Sidebar() {
       </WithAddress>
 
       {isVoting && !hideActionButtons && (
-        <InlineWrapper>
+        <InlineWrapper
+          className={`${
+            isMobile ? (isScrolling ? "translate-y-full" : "") : ""
+          } transition-transform fixed bottom-0 left-0 right-0 p-6 z-[1] border-t border-neutral300 bg-neutral100 shadow-shadow200 rounded-t-xl sm:relative sm:p-0 sm:translate-y-0`}
+        >
           <PrimaryButton
             style={{ width: "100%" }}
             onClick={() => {

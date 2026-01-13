@@ -2,7 +2,6 @@ import { useChain, useChainSettings } from "next-common/context/chain";
 import useProfileAddress from "../useProfileAddress";
 import { useEffect } from "react";
 import IdentityTimeline from "next-common/components/identityTimeline";
-import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { useDispatch } from "react-redux";
 import {
   profileIdentityTimelineSelector,
@@ -11,6 +10,16 @@ import {
 import { useSelector } from "react-redux";
 import { useMountedState } from "react-use";
 import ExternalLink from "next-common/components/externalLink";
+import { getRelayChain } from "next-common/utils/chain";
+import { isEmpty } from "lodash-es";
+
+export function sortIdentityTimeline(data) {
+  if (isEmpty(data)) {
+    return [];
+  }
+
+  return data?.sort((a, b) => a.indexer.blockTime - b.indexer.blockTime);
+}
 
 function useIdentityUrl() {
   const chain = useChain();
@@ -67,7 +76,10 @@ function useIdentityTimeline() {
       })
       .then((result) => {
         if (isMounted()) {
-          dispatch(setProfileIdentityTimeline(result.data?.identityTimeline));
+          const sortedTimeline = sortIdentityTimeline(
+            result.data?.identityTimeline,
+          );
+          dispatch(setProfileIdentityTimeline(sortedTimeline));
         }
       })
       .catch((error) => console.error(error));
@@ -78,23 +90,24 @@ function useIdentityTimeline() {
 
 export default function ProfileIdentityTimeline() {
   const chain = useChain();
+  const relayChain = getRelayChain(chain);
   const address = useProfileAddress();
   const timeline = useIdentityTimeline();
   const hasTimeline = timeline && timeline.length > 0;
 
   return (
-    <SecondaryCard>
+    <>
       <IdentityTimeline timelineData={timeline} />
       {hasTimeline && (
         <div className="flex w-full justify-end mt-[24px]">
           <ExternalLink
             className="text14Medium text-theme500"
-            href={`https://${chain}.statescan.io/#/accounts/${address}?sub=identity_timeline&tab=identity`}
+            href={`https://${relayChain}.statescan.io/#/accounts/${address}?sub=identity_timeline&tab=identity`}
           >
             View More
           </ExternalLink>
         </div>
       )}
-    </SecondaryCard>
+    </>
   );
 }

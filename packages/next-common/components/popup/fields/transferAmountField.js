@@ -1,10 +1,10 @@
-import { formatBalance } from "next-common/components/assets/assetsList";
-import BalanceDisplay from "next-common/components/assets/balanceDisplay";
+import { formatBalance } from "next-common/components/assethubMigrationAssets/assetsList";
+import BalanceDisplay from "next-common/components/assethubMigrationAssets/balanceDisplay";
 import Loading from "next-common/components/loading";
 import PopupLabel from "../label";
 import CurrencyInput from "next-common/components/currencyInput";
 
-function TransferrableBalance({ value, isLoading, decimals }) {
+export function TransferrableBalance({ value, isLoading, decimals }) {
   return (
     <div className="flex gap-[8px] items-center mb-[8px]">
       <span className="text14Medium text-textTertiary leading-none">
@@ -27,8 +27,9 @@ export default function TransferAmount({
   transferFromAddress,
   transferAmount,
   setTransferAmount,
+  showBalance = true,
 }) {
-  const balanceStatus = !!transferFromAddress && (
+  const balanceStatus = !!transferFromAddress && showBalance && (
     <TransferrableBalance
       value={transferrable}
       isLoading={isLoading}

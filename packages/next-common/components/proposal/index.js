@@ -2,11 +2,10 @@ import styled from "styled-components";
 import { useState } from "react";
 import BigNumber from "bignumber.js";
 import { hexToString } from "@polkadot/util";
-import { hexEllipsis, toPrecision } from "../../utils";
+import { hexEllipsis } from "../../utils";
 import LargeDataPlaceHolder from "./largeDataPlaceHolder";
 import { hexIsValidUTF8 } from "../../utils/utf8validate";
 import { useChain } from "../../context/chain";
-import getChainSettings from "../../utils/consts/settings";
 import needCheckUtf8 from "./needCheckUtf8";
 import { ThemedTag } from "../tags/state/styled";
 import { InfoDocs } from "@osn/icons/subsquare";
@@ -74,9 +73,7 @@ export function convertProposalForTableView(proposal, chain) {
     return {};
   }
 
-  const { decimals, symbol } = getChainSettings(chain);
   const { section, method } = proposal;
-  const isTreasurySpend = "treasury" === section && "spend" === method;
 
   if (!section || !method) {
     return {};
@@ -86,10 +83,6 @@ export function convertProposalForTableView(proposal, chain) {
     ...proposal,
     args: Object.fromEntries(
       (proposal.args || []).map((arg) => {
-        if (isTreasurySpend && arg.name === "amount") {
-          return [arg.name, `${toPrecision(arg.value, decimals)} ${symbol}`];
-        }
-
         switch (arg.type) {
           case "OrmlTraitsChangeU128":
             {

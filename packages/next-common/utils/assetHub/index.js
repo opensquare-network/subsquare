@@ -1,4 +1,7 @@
 import { getChainApi } from "../getChainApi";
+import getChainSettings from "../consts/settings";
+import { CHAIN } from "next-common/utils/constants";
+import { getAssetHubChain } from "next-common/utils/chain";
 
 let api = null;
 
@@ -7,13 +10,12 @@ export async function getAssetHubApi() {
     return api;
   }
 
-  const wsAssetHubEndpoint = process.env.NEXT_PUBLIC_WS_ASSET_HUB_ENDPOINTS;
-  if (!wsAssetHubEndpoint) {
-    return null;
+  const chain = getAssetHubChain(CHAIN);
+  const { endpoints } = getChainSettings(chain);
+  const assetHubEndpoints = endpoints?.map((item) => item.url);
+  if (!assetHubEndpoints) {
+    throw new Error("AssetHub endpoints not found");
   }
 
-  const endpoints = wsAssetHubEndpoint.split(";");
-  api = getChainApi(endpoints);
-
-  return api;
+  return getChainApi(assetHubEndpoints);
 }

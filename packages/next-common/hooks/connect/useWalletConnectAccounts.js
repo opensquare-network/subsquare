@@ -4,21 +4,23 @@ import { normalizedSubstrateAccounts } from "next-common/utils/substrate";
 import { useEffect, useState } from "react";
 
 export function useWalletConnectAccounts() {
-  const { fetchAddresses } = useWalletConnect();
+  const { fetchAddresses, session } = useWalletConnect();
   const [accounts, setAccounts] = useState([]);
 
   useEffect(() => {
-    fetchAddresses().then((addresses) => {
-      setAccounts(
-        normalizedSubstrateAccounts(
-          addresses.map((address) => {
-            return { address };
-          }),
-          WalletTypes.WALLETCONNECT,
-        ),
-      );
-    });
-  }, [fetchAddresses]);
+    if (session) {
+      fetchAddresses().then((addresses) => {
+        if (addresses && addresses.length > 0) {
+          setAccounts(
+            normalizedSubstrateAccounts(
+              addresses.map((address) => ({ address })),
+              WalletTypes.WALLETCONNECT,
+            ),
+          );
+        }
+      });
+    }
+  }, [session, fetchAddresses]);
 
   return accounts;
 }

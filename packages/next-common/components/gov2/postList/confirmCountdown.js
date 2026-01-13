@@ -4,16 +4,17 @@ import CountDown from "../../_CountDown";
 import Wrapper from "./wrapper";
 import getRemaining from "./common";
 import usePercentage from "./usePercentage";
-import useChainOrScanHeight from "next-common/hooks/height";
+import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
+import { isNil } from "lodash-es";
 
 export default function ConfirmCountdown({ detail }) {
-  const latestHeight = useChainOrScanHeight();
+  const latestHeight = useAhmLatestHeight();
   const onchain = detail?.onchainData;
   const trackInfo = onchain?.trackInfo;
 
   const confirmPeriod = trackInfo?.confirmPeriod;
-  const confirmSince = onchain?.lastConfirmStartedAt?.blockHeight;
-  const confirmEnd = confirmSince + confirmPeriod;
+  const confirmEnd = onchain.info?.deciding?.confirming;
+  const confirmSince = confirmEnd - confirmPeriod;
 
   const confirmRemaining = getRemaining(
     latestHeight,
@@ -21,6 +22,10 @@ export default function ConfirmCountdown({ detail }) {
     confirmPeriod,
   );
   const confirmPercentage = usePercentage(confirmSince, confirmPeriod);
+
+  if (isNil(confirmEnd)) {
+    return null;
+  }
 
   return (
     <Wrapper>

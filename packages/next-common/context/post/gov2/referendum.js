@@ -1,5 +1,7 @@
 import { useOnchainData, useTimelineData } from "../index";
-import { findLastIndex, findLast } from "lodash-es";
+import { findLast, findLastIndex, isNil } from "lodash-es";
+import { useConfirmPeriod } from "next-common/context/post/gov2/track";
+import { gov2State } from "next-common/utils/consts/state";
 
 export function useDecidingSince() {
   const onchain = useOnchainData();
@@ -17,12 +19,13 @@ export function useConfirming() {
 }
 
 export function useConfirmingStarted() {
-  const timeline = useTimelineData();
-  const startedItem = findLast(
-    timeline,
-    (item) => item.name === "ConfirmStarted",
-  );
-  return startedItem?.indexer?.blockHeight;
+  const confirming = useConfirming();
+  const period = useConfirmPeriod();
+  if (isNil(confirming) || isNil(period)) {
+    return null;
+  }
+
+  return confirming - period;
 }
 
 export function useConfirmedHeight() {
@@ -44,19 +47,21 @@ export function useConfirmingAborted() {
 export function useConfirmTimelineData() {
   const timeline = useTimelineData();
   return timeline.filter((item) => {
-    return ["ConfirmStarted", "ConfirmAborted", "Confirmed"].includes(
-      item.name,
-    );
+    return [
+      "ConfirmStarted",
+      "ConfirmAborted",
+      "Confirmed",
+      gov2State.Rejected,
+    ].includes(item.name);
   });
 }
 
-export function useConfirmTimelineFailPairs() {
-  let pairs = [];
+export function useConfirmTimelineFinishedPairs() {
+  let pairs;
 
   const confirms = useConfirmTimelineData();
-  const lastAbortedIndex = findLastIndex(
-    confirms || [],
-    (confirm) => confirm.name === "ConfirmAborted",
+  const lastAbortedIndex = findLastIndex(confirms || [], (confirm) =>
+    ["ConfirmAborted", "Confirmed", gov2State.Rejected].includes(confirm?.name),
   );
 
   const arrStartedAndAborted = confirms.slice(

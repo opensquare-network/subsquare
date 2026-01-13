@@ -1,11 +1,12 @@
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { cn } from "next-common/utils";
+import { isNil } from "lodash-es";
 
 /**
  * @param {import('./types').BreadcrumbItemProps} props
  */
 function BreadcrumbItem(props) {
-  const { children, separator = "/", path } = props ?? {};
+  const { children, separator = "/", path, className = "" } = props ?? {};
 
   let content = children;
   if (path) {
@@ -16,7 +17,7 @@ function BreadcrumbItem(props) {
     );
   }
 
-  if (!children) {
+  if (isNil(children)) {
     return null;
   }
 
@@ -27,6 +28,7 @@ function BreadcrumbItem(props) {
         "[&:not(:last-child)]:min-w-fit",
         "text14Medium text-textPrimary last:text-textTertiary",
         "overflow-hidden whitespace-nowrap overflow-ellipsis",
+        className,
       )}
     >
       <span>{content}</span>

@@ -12,10 +12,9 @@ import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
-import CollectiveProvider, {
-  collectivePallets,
-} from "next-common/context/collective";
+import CollectiveProvider from "next-common/context/collective";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
+import useTechcommPallet from "next-common/hooks/techcomm/useTechcommPallet";
 
 function TechCommMotionContent() {
   const motion = usePost();
@@ -60,8 +59,9 @@ function TechCommProposalPageImpl() {
 }
 
 export default function TechCommProposalPage({ motion }) {
+  const pallet = useTechcommPallet();
   return (
-    <CollectiveProvider pallet={collectivePallets.technicalCommittee}>
+    <CollectiveProvider pallet={pallet}>
       <PostProvider post={motion}>
         <TechCommProposalPageImpl />
       </PostProvider>

@@ -38,11 +38,11 @@ export function usePostCommentsFilteredData() {
 
   const accountList = useMemo(() => {
     let accounts = commentsData?.items.map(({ author }) => author?.address);
-    
+
     return Array.isArray(accounts) ? Array.from(accounts) : [];
   }, [commentsData]);
 
-  const { identities, isCommentWithIdenticalAddress, loadingAddressIdentity } =
+  const { identities, isCommentWithIdenticalAddress } =
     usePostCommentsFilterByAddressIdentity(accountList);
 
   useEffect(() => {
@@ -188,6 +188,6 @@ export function usePostCommentsFilteredData() {
 
   return {
     commentsData: filteredComments,
-    loading: commentsLoading || loadingAddressIdentity,
+    loading: commentsLoading,
   };
 }

@@ -3,14 +3,14 @@ import { CHAIN } from "next-common/utils/constants";
 import getChainSettings from "next-common/utils/consts/settings";
 import { defaultOptions } from "./common";
 
-const { modules } = getChainSettings(CHAIN);
+const { subsquareGraphql } = getChainSettings(CHAIN);
 
 /** @type {ApolloClient<InMemoryCache> | undefined} */
 export let coretimeClient;
 
-if (modules?.coretime) {
+if (subsquareGraphql && subsquareGraphql.coretime) {
   coretimeClient = new ApolloClient({
-    uri: `https://${CHAIN}-gh-api.subsquare.io/graphql`,
+    uri: `https://${subsquareGraphql.domain}.subsquare.io/graphql`,
     cache: new InMemoryCache(),
     defaultOptions,
   });

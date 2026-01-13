@@ -10,7 +10,7 @@ import {
 import ListLayout from "next-common/components/layout/ListLayout";
 import Gov2Summary from "next-common/components/summary/gov2Summary";
 import normalizeAmbassadorReferendaListItem from "next-common/utils/gov2/list/normalizeAmbassadorReferendaListItem";
-import PostList from "next-common/components/postList";
+import AmbassadorReferendaPostList from "next-common/components/postList/ambassadorReferendaPostList";
 import businessCategory from "next-common/utils/consts/business/category";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import { isCollectivesChain } from "next-common/utils/chain";
@@ -23,7 +23,7 @@ export default function AmbassadorReferendaPage({
   ambassadorSummary,
 }) {
   const chain = useChain();
-  const title = "Ambassador Referenda";
+  const title = businessCategory.ambassadorReferenda;
   const seoInfo = { title, desc: title };
 
   const items = (posts.items || []).map((item) =>
@@ -39,10 +39,8 @@ export default function AmbassadorReferendaPage({
         summary={<Gov2Summary summary={ambassadorSummary} />}
         titleExtra={isCollectivesChain(chain) && <AmbassadorTrackSelect />}
       >
-        <PostList
-          title="List"
+        <AmbassadorReferendaPostList
           titleCount={posts.total}
-          category={businessCategory.ambassadorReferenda}
           items={items}
           pagination={{
             page: posts.page,

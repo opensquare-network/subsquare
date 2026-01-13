@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { noop } from "lodash-es";
 import StandardVoteStatus from "next-common/components/pages/components/referenda/popup/standardVoteStatus";
 import SplitVoteStatus from "next-common/components/pages/components/referenda/popup/splitVoteStatus";
@@ -28,6 +28,8 @@ import useSplitAbstainVote from "./voteHooks/useSplitAbstainVote";
 import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
 import useReferendaVotingBalance from "next-common/hooks/referenda/useReferendaVotingBalance";
 import { useUpdateVotesFromServer } from "next-common/utils/gov2/useVotesFromServer";
+import EstimatedGas from "next-common/components/estimatedGas";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 
 function VotePanel({
   referendumIndex,
@@ -47,39 +49,48 @@ function VotePanel({
     addressVote?.delegating && addressVote?.delegating?.voted;
   const isDelegated = !!addressVote?.delegating;
 
-  const { StandardVoteComponent, getStandardVoteTx } = useStandardVote({
-    module: "convictionVoting",
-    referendumIndex,
-    isAye: tabIndex === Aye,
-    addressVoteDelegations: addressVote?.delegations,
-    isLoading,
-    votingBalance,
-    showReUseLocks: true,
-  });
-  const { SplitVoteComponent, getSplitVoteTx } = useSplitVote({
-    module: "convictionVoting",
-    referendumIndex,
-    isLoading,
-    votingBalance,
-  });
-  const { SplitAbstainVoteComponent, getSplitAbstainVoteTx } =
-    useSplitAbstainVote({
+  const { StandardVoteComponent, getStandardVoteTx, getStandardVoteFeeTx } =
+    useStandardVote({
+      module: "convictionVoting",
+      referendumIndex,
+      isAye: tabIndex === Aye,
+      addressVoteDelegations: addressVote?.delegations,
+      isLoading,
+      votingBalance,
+      showReUseLocks: true,
+    });
+  const { SplitVoteComponent, getSplitVoteTx, getSplitVoteFeeTx } =
+    useSplitVote({
+      module: "convictionVoting",
       referendumIndex,
       isLoading,
       votingBalance,
     });
+  const {
+    SplitAbstainVoteComponent,
+    getSplitAbstainVoteTx,
+    getSplitAbstainVoteFeeTx,
+  } = useSplitAbstainVote({
+    referendumIndex,
+    isLoading,
+    votingBalance,
+  });
 
   let voteComponent = null;
   let getVoteTx = null;
+  let getVoteFeeTx = null;
   if (tabIndex === Aye || tabIndex === Nay) {
     voteComponent = StandardVoteComponent;
     getVoteTx = getStandardVoteTx;
+    getVoteFeeTx = getStandardVoteFeeTx;
   } else if (tabIndex === Split) {
     voteComponent = SplitVoteComponent;
     getVoteTx = getSplitVoteTx;
+    getVoteFeeTx = getSplitVoteFeeTx;
   } else if (tabIndex === SplitAbstain) {
     voteComponent = SplitAbstainVoteComponent;
     getVoteTx = getSplitAbstainVoteTx;
+    getVoteFeeTx = getSplitAbstainVoteFeeTx;
   }
 
   const { doSubmit, isSubmitting } = useTxSubmission({
@@ -121,10 +132,13 @@ function VotePanel({
       )}
       {hasDelegatedVote && <StandardVoteStatus votes={votes} />}
       {addressVoteIsLoading && <LoadingVoteStatus />}
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getVoteFeeTx} />
+      </AdvanceSettings>
 
       {!isDelegated && (
         // Address is not allow to vote directly when it is in delegate mode
-        <div style={{ textAlign: "right" }}>
+        <div className="flex flex-col gap-y-2 items-end">
           <PrimaryButton loading={isLoading} onClick={doSubmit}>
             Submit
           </PrimaryButton>
@@ -139,6 +153,7 @@ export default function PopupContent() {
   const showVoteSuccessful = useShowVoteSuccessful();
   const signerAccount = useSignerAccount();
   const { update } = useUpdateVotesFromServer(referendumIndex);
+  const hasShownSuccessRef = useRef(false);
 
   const api = useContextApi();
   const { isLoading: votingIsLoading, balance: votingBalance } =
@@ -154,7 +169,15 @@ export default function PopupContent() {
     signerAccount?.realAddress,
   );
 
+  const resetSuccessFlag = useCallback(() => {
+    hasShownSuccessRef.current = false;
+  }, []);
+
   const getMyVoteAndShowSuccessful = useCallback(async () => {
+    if (hasShownSuccessRef.current) {
+      return;
+    }
+
     const { vote: addressVote, delegations } =
       (await getReferendaDirectVote(
         api,
@@ -164,6 +187,7 @@ export default function PopupContent() {
       )) || {};
 
     if (addressVote) {
+      hasShownSuccessRef.current = true;
       showVoteSuccessful(addressVote, delegations);
     }
   }, [
@@ -181,6 +205,7 @@ export default function PopupContent() {
       <VotePanel
         referendumIndex={referendumIndex}
         onInBlock={() => {
+          resetSuccessFlag();
           getMyVoteAndShowSuccessful();
           update();
         }}

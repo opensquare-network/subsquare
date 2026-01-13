@@ -10,7 +10,7 @@ import {
   maybeSendMimirTx,
   maybeSendSignetTx,
   sendEvmTx,
-  sendSubstrateTx,
+  signAndSendSubstrateTx,
   sendHydraDXMultiFeeEvmTx,
 } from "next-common/utils/sendTransaction";
 import { isEthereumAddress } from "@polkadot/util-crypto";
@@ -30,9 +30,10 @@ import { useSignetSdk } from "next-common/context/signet";
 import { isEmptyFunc } from "next-common/utils/isEmptyFunc";
 import isHydradx from "next-common/utils/isHydradx";
 import { HydradxAssets } from "next-common/utils/hydradx";
-import { useWalletConnect } from "next-common/context/walletconnect";
 import { sendWalletConnectTx } from "next-common/utils/sendTransaction/sendWalletConnectTx";
 import { useWalletConnectBuildPayload } from "next-common/hooks/useWalletConnectBuildPayload";
+import { useVaultSigner } from "next-common/context/polkadotVault/vaultSignerProvider";
+import { useWalletConnect } from "next-common/context/walletconnect";
 
 function shouldSendEvmTx(signerAccount) {
   const isWalletMetamask = signerAccount?.meta?.source === WalletTypes.METAMASK;
@@ -56,6 +57,9 @@ function shouldSendMimirTx(signerAccount) {
 
 function shouldSendWalletConnectTx(signerAccount) {
   return signerAccount?.meta?.source === WalletTypes.WALLETCONNECT;
+}
+function shouldSendPolkadotVaultConnectTx(signerAccount) {
+  return signerAccount?.meta?.source === WalletTypes.POLKADOT_VAULT;
 }
 
 async function shouldSendHydraDXMultiFeeTx(api, signerAccount) {
@@ -88,6 +92,7 @@ export function useSendTransaction() {
   const signerAccount = useSignerAccount();
   const setSigner = useSetSigner();
   const { sdk: signetSdk } = useSignetSdk();
+  const { sendVaultTx } = useVaultSigner();
 
   const { signWcTx } = useWalletConnect();
   const buildPayload = useWalletConnectBuildPayload();
@@ -100,6 +105,7 @@ export function useSendTransaction() {
       onSubmitted = noop,
       onFinalized = noop,
       onCancelled = noop,
+      onTxError = noop,
     }) => {
       if (!api) {
         dispatch(newErrorToast("Chain api cannot be empty"));
@@ -167,6 +173,7 @@ export function useSendTransaction() {
         } else {
           dispatch(newErrorToast(e.message));
         }
+        onTxError?.(e);
       };
 
       setIsSubmitting(true);
@@ -258,8 +265,23 @@ export function useSendTransaction() {
 
           return;
         }
+        if (shouldSendPolkadotVaultConnectTx(signerAccount)) {
+          await sendVaultTx({
+            api,
+            tx,
+            onStarted: () => {
+              dispatch(newPendingToast(toastId, "Waiting for signing..."));
+            },
+            onInBlock: _onInBlock,
+            onSubmitted: _onSubmitted,
+            onFinalized: _onFinalized,
+            onError,
+            signerAddress: signerAccount?.address,
+          });
+          return;
+        }
 
-        await sendSubstrateTx({
+        await signAndSendSubstrateTx({
           api,
           tx,
           onStarted,
@@ -275,7 +297,15 @@ export function useSendTransaction() {
         setIsSubmitting(false);
       }
     },
-    [buildPayload, dispatch, signWcTx, signerAccount, signetSdk, setSigner],
+    [
+      buildPayload,
+      dispatch,
+      signerAccount,
+      signetSdk,
+      setSigner,
+      sendVaultTx,
+      signWcTx,
+    ],
   );
 
   return {

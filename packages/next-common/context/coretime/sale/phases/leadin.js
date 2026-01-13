@@ -1,7 +1,6 @@
-import useCoretimeSale, {
-  useCoretimeSaleStart,
-} from "next-common/context/coretime/sale/provider";
-import useChainOrScanHeight from "next-common/hooks/height";
+import useCoretimeSale from "next-common/context/coretime/sale/provider";
+import { useRelayChainLatestHeight } from "next-common/hooks/relayScanHeight";
+import useCoretimeSaleStart from "next-common/hooks/coretime/useCoretimeSaleStart";
 
 export function useCoretimeSaleLeadinLength() {
   const sale = useCoretimeSale();
@@ -19,7 +18,7 @@ export function useCoretimeSaleLeadinEnd() {
 export function useIsCoretimeSaleLeadinPhase() {
   const saleStartHeight = useCoretimeSaleStart();
   const leadinLength = useCoretimeSaleLeadinLength();
-  const chainHeight = useChainOrScanHeight();
+  const chainHeight = useRelayChainLatestHeight();
 
   return (
     chainHeight >= saleStartHeight &&

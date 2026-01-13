@@ -1,7 +1,8 @@
+import { sortBy } from "lodash-es";
 import ListTitleBar from "next-common/components/listTitleBar";
 import DesktopList from "./desktop";
 import MobileList from "./mobile";
-import SearchBox from "./searchBox";
+import SearchBox from "../searchBox";
 import { useMemo, useState } from "react";
 import MyDeposit from "./myDeposit";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
@@ -32,19 +33,21 @@ export default function PreImagesList() {
 
   let filteredData = useMemo(
     () =>
-      (data || []).filter(({ data: [hash, status], method }) => {
-        if (!hash.includes(searchValue.toLowerCase())) {
-          return false;
-        }
+      sortBy(data || [], (item) => item.data[0]).filter(
+        ({ data: [hash, status], method }) => {
+          if (!hash.includes(searchValue.toLowerCase())) {
+            return false;
+          }
 
-        const { deposit, ticket } = parseStatus(status, method);
-        const [who] = ticket || deposit || [];
-        if (isMyDepositOn && realAddress) {
-          return isSameAddress(who, realAddress);
-        } else {
-          return true;
-        }
-      }),
+          const { deposit, ticket } = parseStatus(status, method);
+          const [who] = ticket || deposit || [];
+          if (isMyDepositOn && realAddress) {
+            return isSameAddress(who, realAddress);
+          } else {
+            return true;
+          }
+        },
+      ),
     [data, searchValue, isMyDepositOn, realAddress],
   );
 
@@ -65,6 +68,7 @@ export default function PreImagesList() {
           value={searchValue}
           setValue={setSearchValue}
           isDebounce={true}
+          placeholder="Search hash"
         />
       </div>
       <div className="max-md:hidden">

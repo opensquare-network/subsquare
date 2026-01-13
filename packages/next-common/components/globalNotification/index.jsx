@@ -1,7 +1,7 @@
 import Notification from "./notification";
 import { CACHE_KEY } from "next-common/utils/constants";
 import { useMemo } from "react";
-import Link from "next/link";
+import Link from "next-common/components/link";
 import { myMultisigsCountSelector } from "next-common/store/reducers/multisigSlice";
 import { useSelector } from "react-redux";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
@@ -59,7 +59,7 @@ export default function MultisigManageNotification() {
     const transactionContent = myMultisigsCount > 1 ? "multisigs" : "multisig";
 
     return (
-      <Notification cacheKey={CACHE_KEY.multisigPromptVisible}>
+      <Notification cacheKey={CACHE_KEY.multisigManagementPromptVisible}>
         You have {myMultisigsCount} active {transactionContent}, &nbsp;
         {needApprovalCount} of &nbsp;
         {manageContent} need your approval.

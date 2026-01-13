@@ -1,15 +1,24 @@
-import React from "react";
+import React, { useMemo } from "react";
 import getRemaining from "./common";
 import Wrapper from "./wrapper";
 import CountDown from "../../_CountDown";
 import TimeDuration from "../../TimeDuration";
 import usePercentage from "./usePercentage";
-import FellowshipTimeoutCountdown from "next-common/components/gov2/postList/timeoutCountdown/fellowshipTimeoutCountdown";
 import ReferendaTimeoutCountdown from "next-common/components/gov2/postList/timeoutCountdown/referendaTimeoutCountdown";
-import useChainOrScanHeight from "next-common/hooks/height";
+import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
 
-export default function PreparingCountdown({ detail, isFellowship = false }) {
-  const latestHeight = useChainOrScanHeight();
+export function useRemaining(detail) {
+  const latestHeight = useAhmLatestHeight();
+  return useMemo(() => {
+    const onchain = detail?.onchainData;
+    const trackInfo = onchain?.trackInfo;
+    const preparePeriod = trackInfo?.preparePeriod;
+    const submitted = onchain?.info?.submitted;
+    return getRemaining(latestHeight, submitted, preparePeriod);
+  }, [detail?.onchainData, latestHeight]);
+}
+
+export function PreparingCountdownImpl({ detail }) {
   const onchain = detail?.onchainData;
   const trackInfo = onchain?.trackInfo;
 
@@ -17,17 +26,8 @@ export default function PreparingCountdown({ detail, isFellowship = false }) {
   const submitted = onchain?.info?.submitted;
   const prepareEnd = submitted + preparePeriod;
   const hasPutDecisionDeposit = onchain?.info?.decisionDeposit;
-
-  const remaining = getRemaining(latestHeight, submitted, preparePeriod);
+  const remaining = useRemaining(detail);
   const preparePercentage = usePercentage(submitted, preparePeriod);
-
-  if (remaining <= 0) {
-    return isFellowship ? (
-      <FellowshipTimeoutCountdown detail={detail} />
-    ) : (
-      <ReferendaTimeoutCountdown detail={detail} />
-    );
-  }
 
   return (
     <Wrapper>
@@ -52,4 +52,14 @@ export default function PreparingCountdown({ detail, isFellowship = false }) {
       />
     </Wrapper>
   );
+}
+
+export default function PreparingCountdown({ detail }) {
+  const remaining = useRemaining(detail);
+
+  if (remaining <= 0) {
+    return <ReferendaTimeoutCountdown detail={detail} />;
+  }
+
+  return <PreparingCountdownImpl detail={detail} />;
 }

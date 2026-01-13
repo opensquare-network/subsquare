@@ -1,5 +1,5 @@
 import { cn } from "next-common/utils";
-import { startCase, capitalize, noop, omit } from "lodash-es";
+import { startCase, capitalize, noop, omit, sumBy } from "lodash-es";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { ArrowDown } from "@osn/icons/subsquare";
@@ -8,17 +8,16 @@ import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 import { useUpdateEffect } from "react-use";
 import NavMenuItemItem from "./item";
 import NavMenuDivider from "../../divider";
-import { sumBy } from "lodash-es";
+import { NAV_MENU_TYPE } from "next-common/utils/constants";
+import HoverMenuItem from "./hoverItem";
 
-const childActived = (menu = [], pathname) => {
-  for (const menuItem of menu) {
+export const isChildActive = (menuItems = [], pathname) => {
+  return menuItems.some((menuItem) => {
     if (menuItem?.items?.length) {
-      if (childActived(menuItem.items, pathname)) {
-        return true;
-      }
+      return isChildActive(menuItem.items, pathname);
     }
     return menuItem.pathname === pathname;
-  }
+  });
 };
 
 export default function NavMenuItemGroup({
@@ -32,37 +31,34 @@ export default function NavMenuItemGroup({
   const router = useRouter();
   const firstPath = "/" + router.asPath.split("/").filter(Boolean)[0];
 
-  const [submenuVisible, setSubmenuVisible] = useState(
-    collapsed
+  const getSubmenuVisibility = () => {
+    return collapsed
       ? false
-      : firstPath === menu.pathname || navSubmenuVisible?.[menu.name],
-  );
+      : firstPath === menu.pathname || navSubmenuVisible?.[menu.name];
+  };
+
+  const [submenuVisible, setSubmenuVisible] = useState(getSubmenuVisibility);
 
   useUpdateEffect(() => {
-    setSubmenuVisible(
-      collapsed
-        ? false
-        : firstPath === menu.pathname || navSubmenuVisible?.[menu.name],
-    );
+    setSubmenuVisible(getSubmenuVisibility());
   }, [collapsed]);
 
-  function toggleChildMenu() {
+  const toggleChildMenu = () => {
     if (collapsed) {
-      const defaultPagePath = menu.items[0]?.pathname;
+      const defaultPagePath = menu.items?.[0]?.pathname;
       if (defaultPagePath) {
         router.push(defaultPagePath);
       }
-
       return;
     }
 
-    setSubmenuVisible(!submenuVisible);
-
+    const newVisibility = !submenuVisible;
+    setSubmenuVisible(newVisibility);
     setNavSubmenuVisible({
       ...navSubmenuVisible,
-      [menu.name]: !submenuVisible,
+      [menu.name]: newVisibility,
     });
-  }
+  };
 
   return (
     <ul>
@@ -71,7 +67,9 @@ export default function NavMenuItemGroup({
           <HoverCard.Trigger>
             <NavMenuItemItem
               item={{
-                ...omit(menu, "pathname"),
+                ...(menu.type === NAV_MENU_TYPE.subspace
+                  ? menu
+                  : omit(menu, "pathname")),
                 name: startCase(capitalize(menu.name)),
                 activeCount:
                   sumBy(
@@ -88,7 +86,7 @@ export default function NavMenuItemGroup({
                 menu.extraMatchNavMenuActivePathnames?.includes?.(
                   router.pathname,
                 ) ||
-                childActived(menu?.items, router.pathname)
+                isChildActive(menu?.items, router.pathname)
               }
               extra={
                 <span>
@@ -106,29 +104,16 @@ export default function NavMenuItemGroup({
 
           {collapsed && !sm && (
             <HoverCard.Content side="right" align="start" alignOffset={-8}>
-              <div className="pl-6">
-                <div className="py-2.5 px-4 bg-navigationBg w-[268px] rounded-lg max-h-screen overflow-y-scroll scrollbar-pretty border border-navigationBorder">
-                  <NavMenuItemItem
-                    item={{
-                      name: startCase(capitalize(menu.name)),
-                      activeCount:
-                        sumBy(menu?.items, "activeCount") ?? menu.activeCount,
-                    }}
-                    className="pointer-events-none"
-                  />
-                  <NavMenuDivider />
-                  <SubMenuItems items={menu.items} />
-                </div>
-              </div>
+              <HoverMenuItem menu={menu} />
             </HoverCard.Content>
           )}
         </HoverCard.Root>
       </li>
-      {!!menu.items?.length && (
+      {menu.items?.length > 0 && (
         <SubMenuItems
           className={cn(
             submenuVisible ? "block" : "hidden",
-            padSubMenuItems && "pl-9",
+            padSubMenuItems && "pl-10 pb-2",
           )}
           items={menu.items}
         />
@@ -154,16 +139,22 @@ function SubMenuItems({ className = "", items = [] }) {
           matchActivePathnames.includes(routePath);
 
         return (
-          <li key={idx}>
+          <li key={idx} className="w-full flex items-center">
             {item?.type === "divider" ? (
-              <NavMenuDivider />
+              <NavMenuDivider className="my-4 mx-3" />
             ) : (
-              <NavMenuItemItem
-                item={item}
-                items={item.items}
-                active={active}
-                className={active && "bg-transparent"}
-              />
+              <>
+                <div className="ml-1 w-1 h-1 rounded-full bg-textSecondary" />
+                <NavMenuItemItem
+                  item={item}
+                  items={item.items}
+                  active={active}
+                  className={cn(
+                    "bg-transparent",
+                    active && "bg-transparent text-theme500",
+                  )}
+                />
+              </>
             )}
           </li>
         );

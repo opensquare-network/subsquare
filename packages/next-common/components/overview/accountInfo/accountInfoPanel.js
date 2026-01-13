@@ -3,7 +3,6 @@ import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import { AddressUser } from "next-common/components/user";
 import Copyable from "next-common/components/copyable";
-import tw from "tailwind-styled-components";
 import { useRouter } from "next/router";
 import { addressEllipsis, cn } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
@@ -11,30 +10,34 @@ import AccountBalances from "next-common/components/overview/accountInfo/compone
 import Divider from "next-common/components/styled/layout/divider";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
-import { AvatarDisplay } from "next-common/components/user/avatarDisplay";
 import AccountPanelScrollPrompt from "./components/accountPanelScrollPrompt";
 import ExtensionUpdatePrompt from "./components/extensionUpdatePrompt";
-import AssetHubManagePrompt from "./components/assetHubManagePrompt";
 import { useAccountTransferPopup } from "./hook/useAccountTransferPopup";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import { OnlyChains } from "next-common/components/common/onlyChain";
 import Chains from "next-common/utils/consts/chains";
 import { RelayChainApiProvider } from "next-common/context/relayChain";
-import { CollectivesApiProvider } from "next-common/context/collectives/api";
 import useAccountUrl from "next-common/hooks/account/useAccountUrl";
-import useWindowSize from "next-common/utils/hooks/useWindowSize";
+import { useWindowWidthContext } from "next-common/context/windowSize";
 import { isNil } from "lodash-es";
 import Link from "next/link";
-import Button from "next-common/lib/button";
+import { IconButton } from "next-common/components/styled/iconButton";
 import AccountPanelQuickAccess from "./components/accountPanelQuickAccess";
-import AccountUnlockBalancePrompt from "./components/accountUnlockBalancePrompt";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import Avatar from "next-common/components/avatar";
+import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
+import { AvatarImg } from "next-common/components/user/styled";
+import Gravatar from "next-common/components/gravatar";
 
-const RelayChainTeleportPopup = dynamic(
-  import("./relayChainTeleportPopup").then((mod) => mod.default),
-);
 const ParaChainTeleportPopup = dynamic(() =>
-  import("next-common/components/assets/paraChainTeleportPopup").then(
+  import("next-common/components/paraChainTeleportPopup").then(
+    (mod) => mod.default,
+  ),
+);
+
+const ParaChainTeleportOnRelayChainPopup = dynamic(() =>
+  import("next-common/components/paraChainTeleportPopup/teleport").then(
     (mod) => mod.default,
   ),
 );
@@ -54,19 +57,21 @@ const SystemTransfer = dynamic(
 
 const DisplayUserAvatar = () => {
   const user = useUser();
-  return (
-    <AvatarDisplay
-      avatarCid={user?.avatarCid}
-      address={user?.address}
-      emailMd5={user?.emailMd5}
-      size={40}
-    />
-  );
+  if (user?.proxyAddress) {
+    return <Avatar address={user?.proxyAddress} size={40} />;
+  }
+  if (user?.avatarCid) {
+    return <AvatarImg src={getIpfsLink(user?.avatarCid)} size={40} />;
+  }
+  if (user?.address) {
+    return <Avatar address={user?.address} size={40} />;
+  }
+  return <Gravatar emailMd5={user?.emailMd5} size={40} />;
 };
 
 const DisplayUser = () => {
   const user = useUser();
-  const address = user?.address;
+  const address = useRealAddress();
   if (isPolkadotAddress(address) || isEthereumAddress(address)) {
     return (
       <AddressUser
@@ -81,8 +86,8 @@ const DisplayUser = () => {
 };
 
 export function Account() {
-  const user = useUser();
-  const maybeEvmAddress = tryConvertToEvmAddress(user?.address);
+  const realAddress = useRealAddress();
+  const maybeEvmAddress = tryConvertToEvmAddress(realAddress);
 
   return (
     <div className="flex gap-[12px]">
@@ -103,17 +108,6 @@ export function Account() {
   );
 }
 
-const IconButton = tw(Button)`
-  flex
-  justify-center
-  items-center
-  p-0
-  w-[32px]
-  h-[32px]
-  rounded-[8px]
-  bg-neutral200
-`;
-
 export function ProxyTip() {
   const user = useUser();
   const proxyAddress = user?.proxyAddress;
@@ -133,7 +127,7 @@ export function ProxyTip() {
         />
       </div>
       <span className="text14Medium text-textSecondary">
-        , all your transactions will be submitted on behalf of this proxy
+        , all your transactions will be submitted on behalf of this proxied
         address.
       </span>
     </div>
@@ -209,18 +203,6 @@ function CrosschainButton({ onClick }) {
   );
 }
 
-function TeleportButton() {
-  const [showPopup, setShowPopup] = useState(false);
-  return (
-    <>
-      <CrosschainButton onClick={() => setShowPopup(true)} />
-      {showPopup && (
-        <RelayChainTeleportPopup onClose={() => setShowPopup(false)} />
-      )}
-    </>
-  );
-}
-
 function ParaChainTeleportButton() {
   const [showPopup, setShowPopup] = useState(false);
   return (
@@ -233,16 +215,41 @@ function ParaChainTeleportButton() {
   );
 }
 
+function ParaChainTeleportOnRelayChainButton() {
+  const [showPopup, setShowPopup] = useState(false);
+  return (
+    <>
+      <CrosschainButton onClick={() => setShowPopup(true)} />
+      {showPopup && (
+        <ParaChainTeleportOnRelayChainPopup
+          onClose={() => setShowPopup(false)}
+        />
+      )}
+    </>
+  );
+}
+
 const transferEnabledChains = [
   Chains.polkadot,
   Chains.kusama,
   Chains.westend,
   Chains.rococo,
+  Chains.paseo,
+  Chains.hyperBridge,
 ];
 
-const relayChainTeleportEnabledChains = [Chains.polkadot, Chains.kusama];
-
 const paraChainTeleportEnabledChains = [Chains.collectives];
+
+const paraChainTeleportOnRelayChainEnabledChains = [
+  Chains.polkadot,
+  Chains.kusama,
+  Chains.paseo,
+  Chains.westend,
+  Chains.polkadotPeople,
+  Chains.kusamaPeople,
+  Chains.paseoPeople,
+  Chains.westendPeople,
+];
 
 export function AccountHead({ width }) {
   return (
@@ -261,10 +268,10 @@ export function AccountHead({ width }) {
           <OnlyChains chains={transferEnabledChains}>
             <TransferButton />
           </OnlyChains>
-          <OnlyChains chains={relayChainTeleportEnabledChains}>
-            <CollectivesApiProvider>
-              <TeleportButton />
-            </CollectivesApiProvider>
+          <OnlyChains chains={paraChainTeleportOnRelayChainEnabledChains}>
+            <RelayChainApiProvider>
+              <ParaChainTeleportOnRelayChainButton />
+            </RelayChainApiProvider>
           </OnlyChains>
           <OnlyChains chains={paraChainTeleportEnabledChains}>
             <RelayChainApiProvider>
@@ -274,8 +281,8 @@ export function AccountHead({ width }) {
           <OnlyChains
             chains={[
               ...transferEnabledChains,
-              ...relayChainTeleportEnabledChains,
               ...paraChainTeleportEnabledChains,
+              ...paraChainTeleportOnRelayChainEnabledChains,
             ]}
           >
             <div className="w-[1px] h-[16px] bg-neutral300"></div>
@@ -288,8 +295,8 @@ export function AccountHead({ width }) {
   );
 }
 
-export function CommonAccountInfoPanel() {
-  const { width } = useWindowSize();
+export default function AccountInfoPanel() {
+  const width = useWindowWidthContext();
 
   if (isNil(width)) {
     return null;
@@ -302,13 +309,7 @@ export function CommonAccountInfoPanel() {
       <Divider />
       <AccountBalances />
       <ExtensionUpdatePrompt />
-      <AccountUnlockBalancePrompt />
-      <AssetHubManagePrompt />
       <AccountPanelScrollPrompt />
     </NeutralPanel>
   );
-}
-
-export default function AccountInfoPanel() {
-  return <CommonAccountInfoPanel />;
 }

@@ -8,19 +8,22 @@ import {
   gov2ReferendumsDetailApi,
   gov2ReferendumsVoteStatsApi,
   gov2TracksApi,
+  gov2ReferendaAppendantApi,
 } from "next-common/services/url";
 import { EmptyList } from "next-common/utils/constants";
 import Breadcrumb from "next-common/components/_Breadcrumb";
 import BreadcrumbWrapper from "next-common/components/detail/common/BreadcrumbWrapper";
 import CheckUnFinalized from "next-common/components/pages/components/gov2/checkUnFinalized";
 import ReferendaBreadcrumb from "next-common/components/referenda/breadcrumb";
-import DetailLayout from "next-common/components/layout/DetailLayout";
+import DetailLayout from "next-common/components/layout/DetailLayout/referendaDetailLayout";
+import DefaultDetailLayout from "next-common/components/layout/DetailLayout";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { usePageProps } from "next-common/context/page";
 import { ReferendumContent } from "next-common/components/pages/components/referenda/referendaContent";
 import { ReferendaPalletProvider } from "next-common/context/referenda/pallet";
+import NotFoundDetail from "next-common/components/notFoundDetail";
 
 function UnFinalizedBreadcrumb({ id }) {
   return (
@@ -60,31 +63,58 @@ function ReferendumPageCommon({ breadcrumbs, postContent }) {
 
 function ReferendumNullPage() {
   const { id } = usePageProps();
+  const detail = usePost();
+  const desc = getMetaDesc(detail);
+  const seoInfo = {
+    title: detail?.title,
+    desc,
+    ogImage: getBannerUrl(detail?.bannerCid),
+  };
+
   return (
-    <ReferendumPageCommon
+    <DefaultDetailLayout
+      hasSidebar
+      seoInfo={seoInfo}
       breadcrumbs={<UnFinalizedBreadcrumb id={id} />}
-      postContent={<CheckUnFinalized id={id} />}
-    />
+    >
+      <CheckUnFinalized id={id} />
+    </DefaultDetailLayout>
   );
 }
 
-function ReferendumPageWithPost() {
+function ReferendumPageWithPost({ id }) {
   return (
     <ReferendumPageCommon
       breadcrumbs={<ReferendaBreadcrumb />}
-      postContent={<ReferendumContent />}
+      postContent={<ReferendumContent key={id} />}
     />
   );
 }
 
 function ReferendumPageImpl() {
   const detail = usePost();
+  const { id } = usePageProps();
+
+  if (!/^\d+$/.test(id)) {
+    return (
+      <NotFoundDetail
+        hasSidebar
+        customId={id}
+        breadcrumbItems={[
+          {
+            path: "/referenda",
+            content: "Referenda",
+          },
+        ]}
+      />
+    );
+  }
 
   if (!detail) {
     return <ReferendumNullPage />;
   }
 
-  return <ReferendumPageWithPost />;
+  return <ReferendumPageWithPost id={id} />;
 }
 
 export default function ReferendumPage({ detail }) {
@@ -99,6 +129,10 @@ export default function ReferendumPage({ detail }) {
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
+
+  if (!/^\d+$/.test(id)) {
+    return getNullDetailProps(id, { voteStats: {} });
+  }
 
   const { result: detail } = await backendApi.fetch(
     gov2ReferendumsDetailApi(id),
@@ -117,6 +151,10 @@ export const getServerSideProps = withCommonProps(async (context) => {
   );
   const { result: tracksDetail } = await backendApi.fetch(gov2TracksApi);
 
+  const { result: appendants } = await backendApi.fetch(
+    gov2ReferendaAppendantApi(id),
+  );
+
   const tracksProps = await fetchOpenGovTracksProps();
 
   return {
@@ -125,6 +163,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
       voteStats: voteStats ?? {},
       comments: comments ?? EmptyList,
       tracksDetail: tracksDetail ?? null,
+      appendants: appendants ?? [],
 
       ...tracksProps,
     },

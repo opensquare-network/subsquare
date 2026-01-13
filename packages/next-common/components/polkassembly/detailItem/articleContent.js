@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import PolkassemblyActions from "next-common/components/polkassembly/actions";
+import PolkassemblyActions from "../actions";
 import { MarkdownPreviewer } from "@osn/previewer";
 import NoData from "next-common/components/noData";
 import { usePost } from "next-common/context/post";
@@ -8,6 +8,7 @@ import { useState } from "react";
 import Tabs from "next-common/components/tabs";
 import Divider from "next-common/components/styled/layout/divider";
 import PostDataSource from "next-common/components/postDataSource";
+import correctionIpfsEndpointPlugin from "next-common/utils/previewerPlugins/correctionIpfsEndpoint";
 
 const EditedLabel = styled.div`
   margin-top: 8px;
@@ -27,6 +28,7 @@ export default function ArticleContent({ postReactions, className = "" }) {
         markedOptions={{
           breaks: true,
         }}
+        plugins={[correctionIpfsEndpointPlugin()]}
       />
 
       {post.createdAt !== post.updatedAt && <EditedLabel>Edited</EditedLabel>}

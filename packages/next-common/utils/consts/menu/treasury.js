@@ -1,14 +1,16 @@
 import { MenuTreasury } from "@osn/icons/subsquare";
 import getChainSettings from "../settings";
-import { CHAIN } from "next-common/utils/constants";
+import { CHAIN, NAV_MENU_TYPE } from "next-common/utils/constants";
 
 export const Names = {
+  status: "Status",
   treasury: "TREASURY",
   proposals: "Proposals",
   spends: "Spends",
   bounties: "Bounties",
   childBounties: "Child Bounties",
   tips: "Tips",
+  burn: "Burn",
 };
 
 export function getTreasuryMenu(summary) {
@@ -33,7 +35,14 @@ export function getTreasuryMenu(summary) {
     icon: <MenuTreasury />,
     pathname: "/treasury",
     activeCount: totalActiveCount,
+    type: NAV_MENU_TYPE.group,
     items: [
+      treasury?.status && {
+        value: "status",
+        name: Names.status,
+        isNew: true,
+        pathname: "/treasury",
+      },
       treasury?.spends && {
         value: "spends",
         name: Names.spends,
@@ -69,6 +78,11 @@ export function getTreasuryMenu(summary) {
         extraMatchNavMenuActivePathnames: ["/treasury/tips/[id]"],
         archived: treasury?.tips?.archived,
         activeCount: activeTips,
+      },
+      treasury?.burn && {
+        value: "burn",
+        name: Names.burn,
+        pathname: "/treasury/burn",
       },
     ].filter(Boolean),
   };

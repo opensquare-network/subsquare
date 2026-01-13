@@ -14,6 +14,7 @@ import useBannerSubmission from "next-common/hooks/profile/banner/useBannerSubmi
 import useBannerReset from "next-common/hooks/profile/banner/useBannerReset";
 import { noop } from "lodash-es";
 import { useProfileUserInfoContext } from "next-common/components/profile/header/context/profileUserInfoContext";
+import BannerTemplate from "./bannerTemplate";
 
 export default function ProfileBannerEditPopupContent({ closePopup = noop }) {
   const { isProxyAccount: isProxy } = useAvatarPermissionsContext();
@@ -22,6 +23,7 @@ export default function ProfileBannerEditPopupContent({ closePopup = noop }) {
   const { fetch, user } = useProfileUserInfoContext();
 
   const [bannerCid, setBannerCid] = useState(user?.bannerCid);
+  const [templateCid, setTemplateCid] = useState(null);
 
   const [imageFile, setImageFile] = useState(null);
   const [imageDataUrl, setImageDataUrl] = useState(null);
@@ -30,11 +32,13 @@ export default function ProfileBannerEditPopupContent({ closePopup = noop }) {
   const { setBanner, isLoading, uploading } = useBannerSubmission(
     imageFile,
     proxyAddress,
+    templateCid,
   );
 
   useEffect(() => {
     setImageFile(null);
     setImageDataUrl(null);
+    setTemplateCid(null);
   }, [bannerCid]);
 
   const save = async () => {
@@ -80,7 +84,10 @@ export default function ProfileBannerEditPopupContent({ closePopup = noop }) {
         )}
         <EditBanner
           setImageDataUrl={setImageDataUrl}
-          setImageFile={setImageFile}
+          setImageFile={(file) => {
+            setImageFile(file);
+            setTemplateCid(null);
+          }}
         >
           <SecondaryButton
             iconLeft={<SystemUpload className="w-4 h-4" />}
@@ -96,6 +103,15 @@ export default function ProfileBannerEditPopupContent({ closePopup = noop }) {
         resolution. Max 2 MB in JPEG or PNG format
       </GreyPanel>
 
+      <BannerTemplate
+        templateCid={templateCid}
+        onSelect={(url, cid) => {
+          setTemplateCid(cid);
+          setImageDataUrl(url);
+          setImageFile(null);
+        }}
+      />
+
       <div className="flex justify-end gap-x-2">
         <SecondaryButton
           onClick={reset}
@@ -106,7 +122,7 @@ export default function ProfileBannerEditPopupContent({ closePopup = noop }) {
         </SecondaryButton>
         <PrimaryButton
           onClick={save}
-          disabled={uploading || isLoading || !imageFile}
+          disabled={uploading || isLoading || !(imageFile || templateCid)}
           loading={uploading || isLoading}
         >
           Save Change

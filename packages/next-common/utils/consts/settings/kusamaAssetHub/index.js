@@ -4,7 +4,9 @@ import dynamic from "next/dynamic";
 import kusamaLinks from "next-common/utils/consts/settings/kusama/links";
 import MenuGroups from "next-common/utils/consts/settings/menuGroups";
 import { kusamaAssetHubThemeVars } from "next-common/utils/consts/settings/kusamaAssetHub/theme";
-import kusamaCommonCfg from "next-common/utils/consts/settings/kusama/common";
+import kusamaCommonCfg, {
+  kusamaAssethubMigration,
+} from "next-common/utils/consts/settings/kusama/common";
 
 const ProjectIconKusamaAssethub = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconKusamaAssethub"),
@@ -17,6 +19,7 @@ const kusamaAssetHub = {
   name: "Asset Hub",
   ...kusamaCommonCfg,
   blockTime: 12000,
+  assethubMigration: kusamaAssethubMigration,
   endpoints: kusamaAssetHubNodes,
   avatar: ProjectIconKusamaAssethub,
   darkAvatar: ProjectIconKusamaAssethub,
@@ -34,7 +37,6 @@ const kusamaAssetHub = {
     "System parachain on Kusama network for creating and sending tokens and NFTs.",
   ...kusamaAssetHubThemeVars,
   multisigWallets: {
-    signet: true,
     mimir: true,
   },
   modules: {
@@ -43,6 +45,11 @@ const kusamaAssetHub = {
     },
   },
   allowWeb2Login: true,
+  supportWalletconnect: true,
+  supportPolkadotVault: true,
+  graphqlApiSubDomain: "statemine-gh-api",
+  supportForeignAssets: true,
+  supportAssets: true,
 };
 
 export default kusamaAssetHub;

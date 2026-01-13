@@ -26,7 +26,7 @@ if (isPeopleSupported) {
   });
 }
 
-export default function PeoplePage() {
+export const PeopleGlobalProvider = ({ children }) => {
   if (!isPeopleSupported) {
     return null;
   }
@@ -35,12 +35,18 @@ export default function PeoplePage() {
     <RelayInfoProvider>
       <Provider store={store}>
         <ChainProvider chain={chain}>
-          <ApiProvider>
-            <PeopleOverviewPageImpl />
-          </ApiProvider>
+          <ApiProvider>{children}</ApiProvider>
         </ChainProvider>
       </Provider>
     </RelayInfoProvider>
+  );
+};
+
+export default function PeoplePage() {
+  return (
+    <PeopleGlobalProvider>
+      <PeopleOverviewPageImpl />
+    </PeopleGlobalProvider>
   );
 }
 

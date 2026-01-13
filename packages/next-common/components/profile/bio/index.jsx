@@ -21,6 +21,7 @@ import RightPanelContainer from "next-common/components/profile/bio/rightPanelCo
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 import UserAccountProvider from "next-common/context/user/account";
 import AccountInfoPanel from "next-common/components/profile/bio/accountInfoPanel";
+import BioContainer from "./bioContainer";
 
 const Username = styled.span`
   font-weight: 700;
@@ -56,7 +57,7 @@ export const DisplayUserAvatar = ({ address, user, size = 48 }) => (
   />
 );
 
-export const DisplayUser = ({ id, className = "" }) => {
+export const DisplayUser = ({ id, className = "", username = "" }) => {
   if (isPolkadotAddress(id) || isEthereumAddress(id)) {
     return (
       <AddressUser
@@ -64,6 +65,7 @@ export const DisplayUser = ({ id, className = "" }) => {
         showAvatar={false}
         className={cn("text16Bold text-textPrimary", className)}
         identityIconClassName="w-4 h-4"
+        username={username}
       />
     );
   }
@@ -71,28 +73,58 @@ export const DisplayUser = ({ id, className = "" }) => {
   return <Username>{id}</Username>;
 };
 
-export const DisplayUserAddress = ({
+export const CopyableAddress = ({
   address,
-  className = "",
-  showLinks = true,
   ellipsisAddress = false,
-  extra = null,
-  accountLinksClassName = "",
+  className = "",
 }) => {
   if (!address) {
     return null;
   }
   const maybeEvmAddress = tryConvertToEvmAddress(address);
-  const displayAddress = ellipsisAddress ? addressEllipsis(address) : address;
+
+  const displayAddress = ellipsisAddress
+    ? addressEllipsis(maybeEvmAddress)
+    : maybeEvmAddress;
+  return (
+    <Copyable copyText={maybeEvmAddress}>
+      <Tertiary className={className}>{displayAddress}</Tertiary>
+    </Copyable>
+  );
+};
+
+export const AccountAdditional = ({
+  address,
+  showLinks = true,
+  children = null,
+  className = "",
+}) => {
+  if (!address) {
+    return null;
+  }
+  const maybeEvmAddress = tryConvertToEvmAddress(address);
+  return (
+    <div className={cn("inline-flex items-center", className)}>
+      {showLinks && <AccountLinks address={maybeEvmAddress} />}
+      {children}
+    </div>
+  );
+};
+
+export const DisplayUserAddress = ({
+  address,
+  className = "",
+  ellipsisAddress = false,
+  children = null,
+}) => {
+  if (!address) {
+    return null;
+  }
   return (
     <AddressWrapper className={className}>
-      <Copyable copyText={maybeEvmAddress}>
-        <Tertiary>{displayAddress}</Tertiary>
-      </Copyable>
-      <div className={cn("inline-flex items-center", accountLinksClassName)}>
-        {showLinks && <AccountLinks address={maybeEvmAddress} />}
-        {extra}
-      </div>
+      <CopyableAddress address={address} ellipsisAddress={ellipsisAddress} />
+      <BioContainer />
+      {children}
     </AddressWrapper>
   );
 };

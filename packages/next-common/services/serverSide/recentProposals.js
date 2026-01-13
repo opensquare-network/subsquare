@@ -1,4 +1,4 @@
-import nextApi from "next-common/services/nextApi";
+import { backendApi } from "next-common/services/nextApi";
 import { CHAIN } from "next-common/utils/constants";
 import { Names as asAdvisoryCommitteeNames } from "next-common/utils/consts/menu/advisoryCouncil";
 import {
@@ -23,7 +23,7 @@ export const recentProposalFetchParams = {
 };
 
 async function fetcher(url) {
-  const resp = await nextApi.fetch(url, recentProposalFetchParams);
+  const resp = await backendApi.fetch(url, recentProposalFetchParams);
   if (resp?.result) {
     return resp.result;
   }

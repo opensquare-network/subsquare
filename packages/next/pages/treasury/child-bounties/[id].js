@@ -4,11 +4,7 @@ import { EmptyList } from "next-common/utils/constants";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
 import ChildBountySidebar from "next-common/components/pages/components/childBounty/sidebar";
-import {
-  PostProvider,
-  useOnchainData,
-  usePost,
-} from "next-common/context/post";
+import { PostProvider, usePost } from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/pages/components/childBounty/checkUnFinalized";
 import ChildBountyDetail from "next-common/components/detail/treasury/childBounty";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
@@ -22,21 +18,26 @@ import { OffChainArticleActionsProvider } from "next-common/noSima/context/artic
 import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 import { TreasuryProvider } from "next-common/context/treasury";
 import TreasuryChildBountiesDetailMultiTabs from "next-common/components/pages/components/tabs/treasuryChildBountiesDetailMultiTabs";
+import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 
 function ChildBountyContent() {
   const post = usePost();
-  useSubscribePostDetail(`${post?.parentBountyId}_${post?.index}`);
+  useSubscribePostDetail(
+    `${post?.parentBountyId}_${post?.index}_${post?.indexer?.blockHeight}`,
+  );
 
   return (
-    <OffChainArticleActionsProvider>
-      <OffChainCommentActionsProvider>
-        <ContentWithComment>
-          <ChildBountyDetail />
-          <ChildBountySidebar />
-          <TreasuryChildBountiesDetailMultiTabs />
-        </ContentWithComment>
-      </OffChainCommentActionsProvider>
-    </OffChainArticleActionsProvider>
+    <MigrationConditionalApiProvider indexer={post?.indexer}>
+      <OffChainArticleActionsProvider>
+        <OffChainCommentActionsProvider>
+          <ContentWithComment>
+            <ChildBountyDetail />
+            <ChildBountySidebar />
+            <TreasuryChildBountiesDetailMultiTabs />
+          </ContentWithComment>
+        </OffChainCommentActionsProvider>
+      </OffChainArticleActionsProvider>
+    </MigrationConditionalApiProvider>
   );
 }
 
@@ -53,7 +54,7 @@ function ChildBountyContentWithNullGuard() {
 
 function ChildBountyPageImpl() {
   const post = usePost();
-  const { address } = useOnchainData();
+  const { address } = post?.onchainData || {};
 
   const desc = getMetaDesc(post);
   const showRightSidePanel =

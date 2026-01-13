@@ -1,7 +1,7 @@
 import React from "react";
 import { isNil } from "lodash-es";
 import TrackTooltip from "./trackTooltip";
-import Link from "next/link";
+import Link from "next-common/components/link";
 
 function TrackCategoryItem({ item }) {
   return (

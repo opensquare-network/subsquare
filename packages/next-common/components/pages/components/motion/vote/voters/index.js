@@ -11,7 +11,8 @@ import { SecondaryCardDetail } from "next-common/components/styled/containers/se
 import AddressUser from "next-common/components/user/addressUser";
 import useCollectiveMotionVotes from "next-common/hooks/collective/useCollectiveVotes";
 import { isMotionEnded, isSameAddress } from "next-common/utils";
-import usePrime from "next-common/utils/hooks/usePrime";
+import { useConditionalContextPrime } from "next-common/utils/hooks/usePrime";
+import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 
 const TipperList = styled.div`
   margin-top: 16px;
@@ -46,8 +47,18 @@ const VoterAddr = styled.div`
 export default function Voters() {
   const onchainData = useOnchainData();
   const motionEnd = isMotionEnded(onchainData);
-  const blockHash = motionEnd ? onchainData?.state?.indexer?.blockHash : null;
-  const prime = usePrime(blockHash);
+  const indexer = motionEnd ? onchainData?.state?.indexer : null;
+
+  return (
+    <MigrationConditionalApiProvider indexer={indexer}>
+      <VotersImpl />
+    </MigrationConditionalApiProvider>
+  );
+}
+
+function VotersImpl() {
+  const onchainData = useOnchainData();
+  const prime = useConditionalContextPrime();
 
   const votes = useCollectiveMotionVotes();
   const ayeVotesCount = votes.filter(([, approval]) => approval).length;

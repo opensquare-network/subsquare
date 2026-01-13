@@ -6,9 +6,8 @@ import {
   fellowshipReferendumsSummaryApi,
   fellowshipTracksApi,
 } from "next-common/services/url";
-import PostList from "next-common/components/postList";
+import FellowshipReferendaPostList from "next-common/components/postList/fellowshipReferendaPostList";
 import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/normalizeFellowshipReferendaListItem";
-import businessCategory from "next-common/utils/consts/business/category";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import NewFellowshipProposalButton from "next-common/components/summary/newFellowshipProposalButton";
 import CollectivesProvider from "next-common/context/collectives/collectives";
@@ -23,6 +22,7 @@ import {
 } from "next-common/components/referenda/list/unVotedContext";
 import FellowshipListLayout from "next-common/components/fellowship/fellowshipListLayout";
 import TrackPanel from "next-common/components/referenda/trackPanel";
+import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 
 function useMyUnVotedReferendaPosts() {
   const [posts, setPosts] = useState();
@@ -74,8 +74,9 @@ function WithFilterPostList({
   );
 
   return (
-    <PostList
-      title="List"
+    <FellowshipReferendaPostList
+      items={items}
+      pagination={pagination}
       titleCount={total}
       titleExtra={
         <div className="flex gap-[12px] items-center">
@@ -90,9 +91,6 @@ function WithFilterPostList({
           <NewFellowshipProposalButton />
         </div>
       }
-      category={businessCategory.fellowship}
-      items={items}
-      pagination={pagination}
     />
   );
 }
@@ -181,12 +179,14 @@ function ReferendaList() {
 
 export default function FellowshipPage({ fellowshipSummary }) {
   return (
-    <CollectivesProvider section="fellowship">
-      <FellowshipListLayout fellowshipSummary={fellowshipSummary}>
-        <TrackPanel className="mb-4" />
-        <ReferendaList />
-      </FellowshipListLayout>
-    </CollectivesProvider>
+    <MigrationConditionalApiProvider>
+      <CollectivesProvider section="fellowship">
+        <FellowshipListLayout fellowshipSummary={fellowshipSummary}>
+          <TrackPanel className="mb-4" />
+          <ReferendaList />
+        </FellowshipListLayout>
+      </CollectivesProvider>
+    </MigrationConditionalApiProvider>
   );
 }
 

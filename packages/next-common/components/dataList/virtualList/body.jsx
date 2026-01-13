@@ -1,6 +1,6 @@
 import { cn } from "next-common/utils";
 import DataListItem from "../item";
-import { FixedSizeList } from "react-window";
+import { FixedSizeList, VariableSizeList } from "react-window";
 import { useRef } from "react";
 import { useDeepCompareEffect } from "react-use";
 
@@ -14,6 +14,8 @@ export default function VirtualListBody({
   itemHeight = 50,
   listHeight = 400,
   overscanCount = 20,
+  variableSize = false,
+  getItemSize,
 }) {
   const bodyRef = useRef();
 
@@ -39,6 +41,7 @@ export default function VirtualListBody({
         )}
       >
         <DataListItem
+          itemClassName="py-0"
           row={row}
           columnClassNames={columnClassNames}
           columnStyles={columnStyles}
@@ -49,24 +52,30 @@ export default function VirtualListBody({
     );
   };
 
+  const ListComponent = variableSize ? VariableSizeList : FixedSizeList;
+  const listProps = variableSize
+    ? {
+        itemSize: getItemSize || (() => itemHeight),
+      }
+    : {
+        itemSize: itemHeight,
+      };
+
   return (
     <div
-      className={cn(
-        "datalist-body group/datalist-body",
-        "divide-y divide-neutral300 border-b border-neutral300",
-      )}
+      className={cn("divide-y divide-neutral300 border-b border-neutral300")}
     >
-      <FixedSizeList
+      <ListComponent
         ref={bodyRef}
         height={listHeight}
         itemCount={rows.length}
-        itemSize={itemHeight}
         className="scrollbar-pretty"
         width="100%"
         overscanCount={overscanCount}
+        {...listProps}
       >
         {renderRow}
-      </FixedSizeList>
+      </ListComponent>
     </div>
   );
 }

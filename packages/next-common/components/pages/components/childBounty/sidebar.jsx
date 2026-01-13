@@ -1,35 +1,34 @@
-import ChildBountyClaim from "next-common/components/treasury/childBounty/claim";
-import Meta from "next-common/components/treasury/childBounty/metadata";
+import ChildBountyClaim, {
+  ChildBountyClaimed,
+} from "next-common/components/treasury/childBounty/claim";
+import ChildBountyMeta from "next-common/components/treasury/childBounty/metadata";
 import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarWrapper";
-import { useOnchainData, usePostState } from "next-common/context/post";
+import { useOnchainData } from "next-common/context/post";
 import ChildBountySidebarBalance from "next-common/components/treasury/childBounty/balance";
 import ProposeCurator from "next-common/components/treasury/childBounty/proposeCurator";
 import BountyAcceptCuratorButton from "next-common/components/treasury/bounty/acceptCurator/button";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
 import BountySidebarActionTip from "next-common/components/treasury/common/bountySidebarActionTip";
-import { useMemo } from "react";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
-export default function ChildBountySidebar() {
-  const state = usePostState();
+function ChildBountySidebarActionTip() {
   const { parentBountyId, index: childBountyId } = useOnchainData();
-  const { result } = useSubStorage("childBounties", "childBounties", [
-    parentBountyId,
-    childBountyId,
-  ]);
+  const api = useConditionalContextApi();
+  const { result } = useSubStorage(
+    "childBounties",
+    "childBounties",
+    [parentBountyId, childBountyId],
+    { api },
+  );
 
   const { status } = (result?.isSome && result?.unwrap?.()) || {};
-
-  const isClaimable = useMemo(() => {
-    if (status?.isPendingPayout) {
-      return true;
-    }
-
-    return ["PendingPayout", "Claimed"].includes(state);
-  }, [state, status]);
-
   const showActionTip =
     status?.isCuratorProposed || status?.isPendingPayout || status?.isAdded;
+  return showActionTip ? <BountySidebarActionTip className="!mt-4" /> : null;
+}
 
+export default function ChildBountySidebar() {
+  const { parentBountyId, index: childBountyId } = useOnchainData();
   return (
     <RightBarWrapper>
       <ChildBountySidebarBalance />
@@ -38,13 +37,10 @@ export default function ChildBountySidebar() {
         pallet="childBounties"
         params={[parentBountyId, childBountyId]}
       />
-      {isClaimable && (
-        <>
-          <Meta />
-          <ChildBountyClaim />
-        </>
-      )}
-      {showActionTip && <BountySidebarActionTip className="!mt-4" />}
+      <ChildBountyMeta />
+      <ChildBountyClaimed />
+      <ChildBountyClaim />
+      <ChildBountySidebarActionTip />
     </RightBarWrapper>
   );
 }

@@ -11,11 +11,10 @@ import { CHAIN } from "next-common/utils/constants";
 import getChainSettings from "next-common/utils/consts/settings";
 import queryCoretimeCurrentSale from "next-common/services/gql/coretime/currentSale";
 import { CoretimeActiveSaleProvider } from "next-common/context/coretime/sale";
-import queryCoretimeConfiguration from "next-common/services/gql/coretime/configuration";
-import queryCoretimeStatus from "next-common/services/gql/coretime/status";
 import CoretimeCommonProvider from "next-common/context/coretime/common";
-import useLoopCoretimeScanHeight from "next-common/hooks/coretime/useLoopCoretimeScanHeight";
 import RelayInfoProvider from "next-common/context/relayInfo";
+import generateLayoutRawTitle from "next-common/utils/generateLayoutRawTitle";
+import getCoretimeCommonProps from "next-common/services/serverSide/getCoretimeCommonProps";
 
 const isCoretimeSupported = !!getChainSettings(CHAIN).modules?.coretime;
 
@@ -40,11 +39,11 @@ export default function CoretimeSalesPage() {
       <Provider store={store}>
         <ChainProvider chain={chain}>
           <ApiProvider>
-            <CoretimeCommonProvider>
-              <CoretimeActiveSaleProvider>
+            <CoretimeActiveSaleProvider>
+              <CoretimeCommonProvider>
                 <CoretimeSalesPageImpl />
-              </CoretimeActiveSaleProvider>
-            </CoretimeCommonProvider>
+              </CoretimeCommonProvider>
+            </CoretimeActiveSaleProvider>
           </ApiProvider>
         </ChainProvider>
       </Provider>
@@ -54,10 +53,12 @@ export default function CoretimeSalesPage() {
 
 function CoretimeSalesPageImpl() {
   const { description } = useChainSettings();
-  useLoopCoretimeScanHeight();
 
   return (
-    <ListLayout title="Coretime" description={description}>
+    <ListLayout
+      seoInfo={{ rawTitle: generateLayoutRawTitle("Coretime Sales") }}
+      description={description}
+    >
       <div className="space-y-6">
         <ActiveCoretimeSale />
         <CoretimeSalesHistory />
@@ -74,14 +75,14 @@ export const getServerSideProps = async (ctx) => {
   }
 
   return withCommonProps(async () => {
+    const commonProps = await getCoretimeCommonProps();
     const sale = await queryCoretimeCurrentSale();
-    const configuration = await queryCoretimeConfiguration();
-    const status = await queryCoretimeStatus();
+
     return {
+      ...(commonProps || {}),
       props: {
+        ...(commonProps?.props || {}),
         coretimeSale: sale,
-        configuration,
-        status,
       },
     };
   })(ctx);
