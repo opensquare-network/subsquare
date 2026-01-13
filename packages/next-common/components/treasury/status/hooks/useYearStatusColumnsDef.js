@@ -11,6 +11,7 @@ import { TYPES } from "../yearStatus/treasuryItemsList";
 const RequestColumnsDef = {
   name: "Request",
   style: { textAlign: "right", width: "100px" },
+  sortable: "desc,asc",
   render: (item) => <RequestCol item={item} />,
 };
 

@@ -3,6 +3,7 @@ import usePaginationComponent from "next-common/components/pagination/usePaginat
 import { MapDataList } from "next-common/components/dataList";
 import { isEmpty, isNil } from "lodash-es";
 import useYearStatusColumnsDef from "../hooks/useYearStatusColumnsDef";
+import useColumns from "next-common/components/styledList/useColumns";
 import normalizeTreasuryChildBountyListItem from "next-common/utils/viewfuncs/treasury/normalizeChildBountyListItem";
 import normalizeTreasuryBountyListItem from "next-common/utils/viewfuncs/treasury/normalizeBountyListItem";
 import normalizeTreasuryProposalListItem from "next-common/utils/viewfuncs/treasury/normalizeProposalListItem";
@@ -96,29 +97,6 @@ function TreasuryItemsListImpl({
   type,
   pageSize: customPageSize = pageSize,
 }) {
-  const {
-    page,
-    component: pagination,
-    setPage,
-  } = usePaginationComponent(items.length, customPageSize, {
-    buttonMode: true,
-  });
-
-  useEffect(() => {
-    setPage(1);
-  }, [items, setPage]);
-
-  const sortedItems = useMemo(
-    () => items?.sort((a, b) => b.fiatValueAtFinal - a.fiatValueAtFinal),
-    [items],
-  );
-
-  const pagedItems = useMemo(
-    () =>
-      sortedItems?.slice((page - 1) * customPageSize, page * customPageSize),
-    [sortedItems, page, customPageSize],
-  );
-
   const columnsDef = useYearStatusColumnsDef({
     getIndex,
     apiPath,
@@ -126,11 +104,49 @@ function TreasuryItemsListImpl({
     type,
   });
 
+  const { sortedColumn, sortDirection, columns } = useColumns(
+    columnsDef,
+    "Request",
+  );
+
+  const sortedItems = useMemo(() => {
+    if (!items || !sortedColumn) {
+      return items;
+    }
+    const sorted = [...items];
+    sorted.sort((a, b) => {
+      let diff = 0;
+      if (sortedColumn === "Request") {
+        diff = (b.fiatValueAtFinal ?? 0) - (a.fiatValueAtFinal ?? 0);
+      }
+      return sortDirection === "asc" ? -diff : diff;
+    });
+    return sorted;
+  }, [items, sortedColumn, sortDirection]);
+
+  const {
+    page,
+    component: pagination,
+    setPage,
+  } = usePaginationComponent(sortedItems?.length || 0, customPageSize, {
+    buttonMode: true,
+  });
+
+  useEffect(() => {
+    setPage(1);
+  }, [sortedItems, setPage]);
+
+  const pagedItems = useMemo(
+    () =>
+      sortedItems?.slice((page - 1) * customPageSize, page * customPageSize),
+    [sortedItems, page, customPageSize],
+  );
+
   return (
     <>
       <MapDataList
         data={pagedItems}
-        columnsDef={columnsDef}
+        columnsDef={columns}
         loading={isEmpty(pagedItems)}
       />
       {pagination}
