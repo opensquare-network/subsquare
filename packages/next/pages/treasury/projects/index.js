@@ -1,21 +1,23 @@
 import { withCommonProps } from "next-common/lib";
 import { TreasuryProvider } from "next-common/context/treasury";
 import ListLayout from "next-common/components/layout/ListLayout";
-import TreasuryStatusSummaryPanel from "next-common/components/treasury/status/summaryPanel";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import panelTabs from "next-common/components/treasury/status/panelTabs";
 import { backendApi } from "next-common/services/nextApi";
 import TreasuryProjectsContent from "next-common/components/treasury/projects/index";
 
-const seoInfo = { title: "Treasury Projects", desc: "Treasury Projects" };
+const seoInfo = {
+  title: "Treasury Projects",
+  desc: "Shows treasury funded projects",
+};
 
 export default function TreasuryProjectsPage() {
   return (
     <TreasuryProvider>
       <ListLayout
         seoInfo={seoInfo}
-        title="Treasury Projects"
-        summary={<TreasuryStatusSummaryPanel />}
+        title={seoInfo.title}
+        description={seoInfo.desc}
         tabs={panelTabs}
       >
         <TreasuryProjectsContent />

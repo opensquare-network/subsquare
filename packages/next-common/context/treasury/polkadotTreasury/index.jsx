@@ -4,9 +4,6 @@ import {
   StatemintTreasuryAccount,
 } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
 import { createContext, useContext } from "react";
-import useQueryAmbassadorBalance, {
-  AmbassadorAccount,
-} from "./hooks/useQueryAmbassadorBalance";
 import { useQueryAssetHubTreasuryFree } from "./hooks/useQueryAssetHubTreasuryFree";
 import {
   useBountiesTotalBalance,
@@ -56,11 +53,6 @@ export default function PolkadotTreasuryProvider({ children }) {
     isLoading: isBountiesTotalBalanceLoading,
   } = useBountiesTotalBalance(bounties, api);
 
-  const {
-    balance: ambassadorUsdtBalance,
-    isLoading: isAmbassadorUsdtBalanceLoading,
-  } = useQueryAmbassadorBalance(AmbassadorAccount);
-
   const isDotTreasuryBalanceOnBountiesLoading =
     isQueryBountiesLoading || isBountiesTotalBalanceLoading;
 
@@ -96,8 +88,6 @@ export default function PolkadotTreasuryProvider({ children }) {
         bountiesCount,
         dotTreasuryBalanceOnBounties,
         isDotTreasuryBalanceOnBountiesLoading,
-        ambassadorUsdtBalance,
-        isAmbassadorUsdtBalanceLoading,
       }}
     >
       {children}

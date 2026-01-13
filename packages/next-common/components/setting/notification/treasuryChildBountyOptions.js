@@ -7,10 +7,13 @@ import {
   useIsOnChainOptionsDisabled,
 } from "./common";
 import { usePageProps } from "next-common/context/page";
+import { useNotificationContext } from "../pages/context";
+import { cn } from "next-common/utils";
 
 export default function TreasuryChildBountyOptions() {
   const disabled = useIsOnChainOptionsDisabled();
   const { subscription } = usePageProps();
+  const { isTelegramChannelOn } = useNotificationContext();
 
   const [treasuryChildBountyAdded, setTreasuryChildBountyAdded] = useState(
     !!subscription.treasuryChildBountyAdded?.isOn,
@@ -41,8 +44,11 @@ export default function TreasuryChildBountyOptions() {
   });
 
   return (
-    <div>
-      <SubLabel>Child bounties</SubLabel>
+    <div className={cn(!isTelegramChannelOn && "hidden")}>
+      <SubLabel>
+        Child bounties{" "}
+        <span className="text-textTertiary">(Telegram notification only)</span>
+      </SubLabel>
       <ToggleItem>
         <div>Child bounties added or canceled</div>
         <Toggle
