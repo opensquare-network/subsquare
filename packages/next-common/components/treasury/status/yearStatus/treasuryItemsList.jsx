@@ -108,9 +108,15 @@ function TreasuryItemsListImpl({
     setPage(1);
   }, [items, setPage]);
 
+  const sortedItems = useMemo(
+    () => items?.sort((a, b) => b.fiatValueAtFinal - a.fiatValueAtFinal),
+    [items],
+  );
+
   const pagedItems = useMemo(
-    () => items?.slice((page - 1) * customPageSize, page * customPageSize),
-    [items, page, customPageSize],
+    () =>
+      sortedItems?.slice((page - 1) * customPageSize, page * customPageSize),
+    [sortedItems, page, customPageSize],
   );
 
   const columnsDef = useYearStatusColumnsDef({
