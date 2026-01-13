@@ -1,6 +1,4 @@
 import React from "react";
-import ScrollerX from "next-common/components/styled/containers/scrollerX";
-import { MapDataList } from "next-common/components/dataList";
 import {
   colId,
   colName,
@@ -8,21 +6,10 @@ import {
   colTotal,
   colTransferrable,
 } from "next-common/components/assethubMigrationAssets/assetsList";
-import useAssetHubTabsAssets from "next-common/components/assethubMigrationAssets/useAssetHubTabsAssets";
+import SubscribedAssetsList from "next-common/components/assethubMigrationAssets/subscribedAssetsList";
 
 const columnsDef = [colToken, colName, colId, colTotal, colTransferrable];
 
 export default function ProfileAssetsList({ address }) {
-  const assets = useAssetHubTabsAssets(address);
-
-  return (
-    <ScrollerX>
-      <MapDataList
-        columnsDef={columnsDef}
-        data={assets}
-        loading={!assets}
-        noDataText="No current assets"
-      />
-    </ScrollerX>
-  );
+  return <SubscribedAssetsList address={address} columnsDef={columnsDef} />;
 }

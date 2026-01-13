@@ -11,8 +11,6 @@ import { useContextApi } from "next-common/context/api";
 import { useTransferAmount } from "next-common/components/popup/fields/useTransferAmount";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import Signer from "next-common/components/popup/fields/signerField";
-import { useMultiAccountsDeps } from "../useSingleAccountAssets";
-import { fetchMultiAccounts } from "next-common/store/reducers/multiAccountsSlice";
 import { isSameAddress } from "next-common/utils";
 
 function PopupContent() {
@@ -33,8 +31,6 @@ function PopupContent() {
 
   const { value: transferToAddress, component: transferToAddressField } =
     useAddressComboField({ title: "To" });
-
-  const { multiAccountKey } = useMultiAccountsDeps(address);
 
   const getTxFunc = useCallback(() => {
     if (!transferToAddress) {
@@ -65,21 +61,13 @@ function PopupContent() {
     getCheckedTransferAmount,
   ]);
 
-  const onInBlock = useCallback(() => {
-    dispatch(fetchMultiAccounts(multiAccountKey, api));
-  }, [dispatch, multiAccountKey, api]);
-
   return (
     <>
       <Signer />
       {transferToAddressField}
       {transferAmountField}
       <div className="flex justify-end">
-        <TxSubmissionButton
-          title="Confirm"
-          getTxFunc={getTxFunc}
-          onInBlock={onInBlock}
-        />
+        <TxSubmissionButton title="Confirm" getTxFunc={getTxFunc} />
       </div>
     </>
   );
