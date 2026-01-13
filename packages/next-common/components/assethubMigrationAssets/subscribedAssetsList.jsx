@@ -9,6 +9,7 @@ import { useNavCollapsed } from "next-common/context/nav";
 import useIsNarrowView from "next-common/hooks/useIsNarrowView";
 import Descriptions from "next-common/components/Descriptions";
 import AssetRow from "./assetRow";
+import NoData from "next-common/components/noData";
 
 function useColumnStyles(columnsDef) {
   return useMemo(() => {
@@ -161,19 +162,58 @@ export default function SubscribedAssetsList({ address, columnsDef }) {
   const { classNames, styles } = useColumnStyles(columnsDef);
   const [loadedAssets, setLoadedAssets] = useState({});
 
-  const loading = !sortedMetadata;
-
   const handleAssetLoaded = useCallback((assetId, hasBalance) => {
     setLoadedAssets((prev) => ({ ...prev, [assetId]: hasBalance }));
   }, []);
 
-  // Update total count when assets are loaded
-  useEffect(() => {
-    if (sortedMetadata) {
-      const count = Object.values(loadedAssets).filter(Boolean).length;
-      setTotalCount("assets", count);
+  // Check if all assets have been loaded
+  const allAssetsLoaded = useMemo(() => {
+    if (!sortedMetadata || sortedMetadata.length === 0) {
+      return false;
     }
-  }, [sortedMetadata, loadedAssets, setTotalCount]);
+    return sortedMetadata.every((asset) => asset.assetId in loadedAssets);
+  }, [sortedMetadata, loadedAssets]);
+
+  // Count assets with balance
+  const assetsWithBalanceCount = useMemo(() => {
+    return Object.values(loadedAssets).filter(Boolean).length;
+  }, [loadedAssets]);
+
+  // Loading state: metadata not ready OR not all assets loaded yet
+  const loading = !sortedMetadata || !allAssetsLoaded;
+
+  // Update total count when all assets are loaded
+  useEffect(() => {
+    if (allAssetsLoaded) {
+      setTotalCount("assets", assetsWithBalanceCount);
+    }
+  }, [allAssetsLoaded, assetsWithBalanceCount, setTotalCount]);
+
+  // Render content based on loading state
+  let content;
+  if (loading) {
+    content = (
+      <SystemLoading className="w-5 h-5 mt-4 mb-2 mx-auto [&_path]:stroke-textDisabled" />
+    );
+  } else if (assetsWithBalanceCount === 0) {
+    content = <NoData showIcon={false} text="No current assets" />;
+  } else {
+    content = (
+      <div className="datalist-body divide-y divide-neutral300 border-b border-neutral300">
+        {sortedMetadata.map((asset) => (
+          <AssetRowItem
+            key={asset.assetId}
+            asset={asset}
+            address={address}
+            columnsDef={columnsDef}
+            classNames={classNames}
+            styles={styles}
+            onLoaded={handleAssetLoaded}
+          />
+        ))}
+      </div>
+    );
+  }
 
   return (
     <ScrollerX>
@@ -183,24 +223,23 @@ export default function SubscribedAssetsList({ address, columnsDef }) {
           classNames={classNames}
           styles={styles}
         />
-        {loading ? (
-          <SystemLoading className="w-5 h-5 mt-4 mb-2 mx-auto [&_path]:stroke-textDisabled" />
-        ) : (
-          <div className="datalist-body divide-y divide-neutral300 border-b border-neutral300">
-            {sortedMetadata.map((asset) => (
-              <AssetRowItem
-                key={asset.assetId}
-                asset={asset}
-                address={address}
-                columnsDef={columnsDef}
-                classNames={classNames}
-                styles={styles}
-                onLoaded={handleAssetLoaded}
-              />
-            ))}
-          </div>
-        )}
+        {content}
       </div>
+      {!allAssetsLoaded && sortedMetadata && (
+        <div className="hidden">
+          {sortedMetadata.map((asset) => (
+            <AssetRowItem
+              key={asset.assetId}
+              asset={asset}
+              address={address}
+              columnsDef={columnsDef}
+              classNames={classNames}
+              styles={styles}
+              onLoaded={handleAssetLoaded}
+            />
+          ))}
+        </div>
+      )}
     </ScrollerX>
   );
 }
