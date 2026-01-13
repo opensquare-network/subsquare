@@ -24,6 +24,10 @@ export default function useAddressVestingData(address) {
           setIsLoading(true);
         }
 
+        if (!api.query?.vesting?.vesting) {
+          return;
+        }
+
         const vestingOption = await api.query.vesting.vesting(address);
 
         if (vestingOption.isNone) {

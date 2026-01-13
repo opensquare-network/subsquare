@@ -4,6 +4,7 @@ import { getPeopleChain } from "next-common/context/people/api";
 import { useChain } from "next-common/context/chain";
 import { getChainApi } from "next-common/utils/getChainApi";
 import getChainSettings from "next-common/utils/consts/settings";
+import { isPeopleChain } from "next-common/utils/chain";
 
 export function useIdentityApi() {
   const chain = useChain();
@@ -12,7 +13,7 @@ export function useIdentityApi() {
   const peopleChain = getPeopleChain(chain);
 
   useEffect(() => {
-    if (!peopleChain) {
+    if (!peopleChain || isPeopleChain(chain)) {
       return;
     }
     const endpointUrls = getChainSettings(peopleChain)?.endpoints?.map(
@@ -21,9 +22,9 @@ export function useIdentityApi() {
     if (endpointUrls?.length > 0) {
       getChainApi(endpointUrls).then(setPeopleApi);
     }
-  }, [peopleChain]);
+  }, [peopleChain, chain]);
 
-  if (!peopleChain) {
+  if (!peopleChain || isPeopleChain(chain)) {
     return defaultApi;
   }
   return peopleApi;
