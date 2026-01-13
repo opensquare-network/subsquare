@@ -1,13 +1,14 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo, useState, useEffect, useCallback } from "react";
 import { SystemLoading } from "@osn/icons/subsquare";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
-import useAssetsWithBalances from "./useAssetsWithBalances";
+import useSortedAssetMetadata from "./useAssetsWithBalances";
 import { useTotalCounts } from "./context/assetHubTabsProvider";
 import { cn } from "next-common/utils";
 import { isNil, last } from "lodash-es";
 import { useNavCollapsed } from "next-common/context/nav";
 import useIsNarrowView from "next-common/hooks/useIsNarrowView";
 import Descriptions from "next-common/components/Descriptions";
+import AssetRow from "./assetRow";
 
 function useColumnStyles(columnsDef) {
   return useMemo(() => {
@@ -118,58 +119,64 @@ function MobileAssetRow({ asset, columnsDef }) {
   );
 }
 
-function AssetsListBody({ assets, columnsDef, classNames, styles }) {
+function AssetRowItem({
+  asset,
+  address,
+  columnsDef,
+  classNames,
+  styles,
+  onLoaded,
+}) {
   const [navCollapsed] = useNavCollapsed();
   const isNarrowView = useIsNarrowView();
 
-  if (!assets || assets.length === 0) {
-    return (
-      <div className="py-4 text-center text-textTertiary">
-        No current assets
-      </div>
-    );
-  }
-
   return (
-    <div className="datalist-body divide-y divide-neutral300 border-b border-neutral300">
-      {assets.map((asset) => (
+    <AssetRow asset={asset} address={address} onLoaded={onLoaded}>
+      {(assetWithBalance) => (
         <div
-          key={asset.assetId}
           className={cn(
             "datalist-item w-full flex items-center py-4",
             navCollapsed ? "max-sm:block" : "max-md:block",
           )}
         >
           {isNarrowView ? (
-            <MobileAssetRow asset={asset} columnsDef={columnsDef} />
+            <MobileAssetRow asset={assetWithBalance} columnsDef={columnsDef} />
           ) : (
             <DesktopAssetRow
-              asset={asset}
+              asset={assetWithBalance}
               columnsDef={columnsDef}
               classNames={classNames}
               styles={styles}
             />
           )}
         </div>
-      ))}
-    </div>
+      )}
+    </AssetRow>
   );
 }
 
 export default function SubscribedAssetsList({ address, columnsDef }) {
-  const { loading, assets, collectors } = useAssetsWithBalances(address);
+  const sortedMetadata = useSortedAssetMetadata();
   const [, setTotalCount] = useTotalCounts();
   const { classNames, styles } = useColumnStyles(columnsDef);
+  const [loadedAssets, setLoadedAssets] = useState({});
 
+  const loading = !sortedMetadata;
+
+  const handleAssetLoaded = useCallback((assetId, hasBalance) => {
+    setLoadedAssets((prev) => ({ ...prev, [assetId]: hasBalance }));
+  }, []);
+
+  // Update total count when assets are loaded
   useEffect(() => {
-    if (!loading && assets) {
-      setTotalCount("assets", assets.length);
+    if (sortedMetadata) {
+      const count = Object.values(loadedAssets).filter(Boolean).length;
+      setTotalCount("assets", count);
     }
-  }, [loading, assets, setTotalCount]);
+  }, [sortedMetadata, loadedAssets, setTotalCount]);
 
   return (
     <ScrollerX>
-      {collectors}
       <div className="datalist w-full text-textPrimary bg-neutral100">
         <AssetsListHeader
           columnsDef={columnsDef}
@@ -179,12 +186,19 @@ export default function SubscribedAssetsList({ address, columnsDef }) {
         {loading ? (
           <SystemLoading className="w-5 h-5 mt-4 mb-2 mx-auto [&_path]:stroke-textDisabled" />
         ) : (
-          <AssetsListBody
-            assets={assets}
-            columnsDef={columnsDef}
-            classNames={classNames}
-            styles={styles}
-          />
+          <div className="datalist-body divide-y divide-neutral300 border-b border-neutral300">
+            {sortedMetadata.map((asset) => (
+              <AssetRowItem
+                key={asset.assetId}
+                asset={asset}
+                address={address}
+                columnsDef={columnsDef}
+                classNames={classNames}
+                styles={styles}
+                onLoaded={handleAssetLoaded}
+              />
+            ))}
+          </div>
         )}
       </div>
     </ScrollerX>
