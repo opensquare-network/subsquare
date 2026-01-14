@@ -211,7 +211,7 @@ function normalizeTips(tips, tipList) {
   return normalizeItemsWithPrice(tips, tipList, (tip) => tip.hash);
 }
 
-function normalizeProposals(proposals, proposalList) {
+function normalizeProposals(proposals, proposalList = []) {
   return normalizeItemsWithPrice(
     proposals,
     proposalList,
@@ -219,7 +219,7 @@ function normalizeProposals(proposals, proposalList) {
   );
 }
 
-function normalizeSpends(spends, spendList) {
+function normalizeSpends(spends, spendList = []) {
   const proportionMap = new Map(spendList.map((s) => [s.id, s.proportion]));
   return spends.map((spend) => {
     const proportion = proportionMap.get(spend.index) ?? 1;
