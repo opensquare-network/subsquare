@@ -30,7 +30,7 @@ function TreasuryFundedProjectSearchItemContent({ row, onClose }) {
           IconComponent={MenuTracks}
           title={
             <div className="flex items-center gap-1 text14Medium text-textPrimary">
-              <span>{project.name}</span>{" "}
+              <span>{project.title}</span>{" "}
               <span className="text-textTertiary">·</span>
               {!isEmpty(project?.links) && (
                 <ProjectLinks links={project?.links} />
@@ -45,7 +45,7 @@ function TreasuryFundedProjectSearchItemContent({ row, onClose }) {
               </span>
             </div>
           }
-          content={project.description}
+          content={project.content}
           onClose={onClose}
         />
       </div>

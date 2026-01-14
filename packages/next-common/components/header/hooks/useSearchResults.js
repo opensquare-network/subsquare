@@ -254,7 +254,7 @@ function formatResults(results) {
       case "projects":
         return formatItems(
           "TreasuryFundedProjects",
-          value,
+          normalizeProjects(value),
           "id",
           "id",
           true,
@@ -264,4 +264,14 @@ function formatResults(results) {
         return [];
     }
   });
+}
+
+function normalizeProjects(projects = []) {
+  return projects
+    .map((project) => ({
+      ...project,
+      title: project.name ?? "-",
+      content: project.description ?? "-",
+    }))
+    .sort((a, b) => b.fiatAtFinal - a.fiatAtFinal);
 }
