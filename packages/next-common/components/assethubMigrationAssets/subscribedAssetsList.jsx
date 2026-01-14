@@ -215,6 +215,10 @@ export default function SubscribedAssetsList({ address, columnsDef }) {
     );
   }
 
+  // Always keep subscriptions active to detect new balance changes
+  const shouldShowHiddenCollectors =
+    sortedMetadata && (loading || assetsWithBalanceCount === 0);
+
   return (
     <ScrollerX>
       <div className="datalist w-full text-textPrimary bg-neutral100">
@@ -225,7 +229,7 @@ export default function SubscribedAssetsList({ address, columnsDef }) {
         />
         {content}
       </div>
-      {!allAssetsLoaded && sortedMetadata && (
+      {shouldShowHiddenCollectors && (
         <div className="hidden">
           {sortedMetadata.map((asset) => (
             <AssetRowItem
