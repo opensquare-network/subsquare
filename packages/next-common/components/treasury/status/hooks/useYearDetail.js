@@ -42,18 +42,6 @@ export function useYearSummary(detail) {
 
     return [
       {
-        value: "proposals",
-        label: "Proposals",
-        activeCount: detail?.treasuryProposals?.items?.length,
-        total: detail?.treasuryProposals?.totalFiatValueAtFinal,
-        content: (
-          <TreasuryItemsList
-            type={TYPES.PROPOSALS}
-            items={detail?.treasuryProposals?.items}
-          />
-        ),
-      },
-      {
         value: "spends",
         label: "Spends",
         activeCount: detail?.spends?.items?.length,
@@ -66,12 +54,15 @@ export function useYearSummary(detail) {
         ),
       },
       {
-        value: "tips",
-        label: "Tips",
-        activeCount: detail?.tips?.items?.length,
-        total: detail?.tips?.totalFiatValueAtFinal,
+        value: "proposals",
+        label: "Proposals",
+        activeCount: detail?.treasuryProposals?.items?.length,
+        total: detail?.treasuryProposals?.totalFiatValueAtFinal,
         content: (
-          <TreasuryItemsList type={TYPES.TIPS} items={detail?.tips?.items} />
+          <TreasuryItemsList
+            type={TYPES.PROPOSALS}
+            items={detail?.treasuryProposals?.items}
+          />
         ),
       },
       {
@@ -96,6 +87,15 @@ export function useYearSummary(detail) {
             type={TYPES.CHILD_BOUNTIES}
             items={detail?.childBounties?.items}
           />
+        ),
+      },
+      {
+        value: "tips",
+        label: "Tips",
+        activeCount: detail?.tips?.items?.length,
+        total: detail?.tips?.totalFiatValueAtFinal,
+        content: (
+          <TreasuryItemsList type={TYPES.TIPS} items={detail?.tips?.items} />
         ),
       },
     ].filter((item) => item.activeCount > 0);

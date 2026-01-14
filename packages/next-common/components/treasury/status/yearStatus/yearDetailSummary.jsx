@@ -14,15 +14,6 @@ export default function YearDetailSummary({ summary }) {
       <SummaryItem title="Total">
         <ValueDisplay value={toPrecision(summary.total)} symbol="" prefix="$" />
       </SummaryItem>
-      {summary.proposals > 0 && (
-        <SummaryItem title="Proposals">
-          <ValueDisplay
-            value={toPrecision(summary.proposals)}
-            symbol=""
-            prefix="$"
-          />
-        </SummaryItem>
-      )}
       {summary.spends > 0 && (
         <SummaryItem title="Spends">
           <ValueDisplay
@@ -32,10 +23,10 @@ export default function YearDetailSummary({ summary }) {
           />
         </SummaryItem>
       )}
-      {summary.tips > 0 && (
-        <SummaryItem title="Tips">
+      {summary.proposals > 0 && (
+        <SummaryItem title="Proposals">
           <ValueDisplay
-            value={toPrecision(summary.tips)}
+            value={toPrecision(summary.proposals)}
             symbol=""
             prefix="$"
           />
@@ -54,6 +45,15 @@ export default function YearDetailSummary({ summary }) {
         <SummaryItem title="Child Bounties">
           <ValueDisplay
             value={toPrecision(summary.childBounties)}
+            symbol=""
+            prefix="$"
+          />
+        </SummaryItem>
+      )}
+      {summary.tips > 0 && (
+        <SummaryItem title="Tips">
+          <ValueDisplay
+            value={toPrecision(summary.tips)}
             symbol=""
             prefix="$"
           />
