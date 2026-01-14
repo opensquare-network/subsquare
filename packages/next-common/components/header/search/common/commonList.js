@@ -15,6 +15,7 @@ export const SearchType = {
   FELLOWSHIP_REFERENDA: "FellowshipReferenda",
   FELLOWSHIP_TREASURY_SPENDS: "FellowshipTreasurySpends",
   FELLOWSHIP_MEMBERS: "FellowshipMembers",
+  TREASURY_FUNDED_PROJECTS: "TreasuryFundedProjects",
 };
 
 export function getSearchItemPath(proposalType, index) {
@@ -70,6 +71,8 @@ export function getCategoryPath(proposalType) {
       return "/";
     case SearchType.FELLOWSHIP_MEMBERS:
       return "/fellowship/members";
+    case SearchType.TREASURY_FUNDED_PROJECTS:
+      return "/treasury/projects";
     default:
       return "/";
   }
@@ -114,6 +117,8 @@ export function getCategoryName(proposalType) {
       return "Identities";
     case SearchType.FELLOWSHIP_MEMBERS:
       return "Fellowship Members";
+    case SearchType.TREASURY_FUNDED_PROJECTS:
+      return "Treasury Funded Projects";
     default:
       return "Unknown";
   }
