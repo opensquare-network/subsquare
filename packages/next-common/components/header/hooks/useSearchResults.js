@@ -210,7 +210,7 @@ export default useSearchResults;
 function formatResults(results) {
   if (!results) return null;
 
-  const priorityKeys = ["fellowshipMembers"];
+  const priorityKeys = ["projects", "fellowshipMembers"];
   const allEntries = Object.entries(results);
   const priorityEntries = priorityKeys
     .map((key) => [key, results[key]])
