@@ -20,7 +20,7 @@ const formatItems = (
   indexKeyOrGetIndexFn,
   displayIndexKeyOrGetIndexFn,
   noDisplayIndex = false,
-  raw = false,
+  includeRaw = false,
 ) => {
   if (!items || (items || []).length <= 0) {
     return [];
@@ -55,7 +55,7 @@ const formatItems = (
         proposalType,
         type: ItemType.ITEM,
         noDisplayIndex,
-        raw: raw ? item : null,
+        raw: includeRaw ? item : null,
       };
     }),
   ];
@@ -254,7 +254,7 @@ function formatResults(results) {
       case "projects":
         return formatItems(
           "TreasuryFundedProjects",
-          normalizeProject(value),
+          value,
           "id",
           "id",
           true,
@@ -264,12 +264,4 @@ function formatResults(results) {
         return [];
     }
   });
-}
-
-function normalizeProject(projects) {
-  return projects.map((project) => ({
-    ...project,
-    title: project.name,
-    content: project.description,
-  }));
 }
