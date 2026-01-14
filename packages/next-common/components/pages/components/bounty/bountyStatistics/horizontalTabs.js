@@ -6,19 +6,19 @@ import CategoriesList from "./categoriesList";
 import BeneficiariesList from "./beneficiariesList";
 
 export default function HorizontalTabs() {
-  const [activeTabValue, setActiveTabValue] = useState("categories");
+  const [activeTabValue, setActiveTabValue] = useState("beneficiaries");
 
   const tabs = useMemo(
     () => [
-      {
-        value: "categories",
-        label: (
-          <HorizontalTabLabel
-            label="Categories"
-            isActive={activeTabValue === "categories"}
-          />
-        ),
-      },
+      // {
+      //   value: "categories",
+      //   label: (
+      //     <HorizontalTabLabel
+      //       label="Categories"
+      //       isActive={activeTabValue === "categories"}
+      //     />
+      //   ),
+      // },
       {
         value: "beneficiaries",
         label: (
