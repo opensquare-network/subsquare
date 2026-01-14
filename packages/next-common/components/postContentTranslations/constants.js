@@ -3,6 +3,7 @@ export const LANGUAGE_CODES = {
   CHINESE_SIMPLIFIED: "zh",
   GERMAN: "de",
   RUSSIAN: "ru",
+  SPANISH: "es",
 };
 
 export const DEFAULT_LANGUAGE_OPTION = {
@@ -23,6 +24,10 @@ export const AVAILABLE_LANGUAGES = [
     label: "Russian",
     value: LANGUAGE_CODES.RUSSIAN,
   },
+  {
+    label: "Spanish",
+    value: LANGUAGE_CODES.SPANISH,
+  },
 ];
 
 export const ALL_LANGUAGE_OPTIONS = [
@@ -35,4 +40,5 @@ export const EDITED_TRANSLATIONS = {
   [LANGUAGE_CODES.CHINESE_SIMPLIFIED]: "已编辑",
   [LANGUAGE_CODES.GERMAN]: "Herausgegeben",
   [LANGUAGE_CODES.RUSSIAN]: "Отредактировано",
+  [LANGUAGE_CODES.SPANISH]: "Editado",
 };

@@ -99,7 +99,7 @@ function TranslationsSelector() {
             {AVAILABLE_LANGUAGES.map((language) => (
               <LanguageOption
                 key={language.value}
-                className="md:basis-1/3 box-border max-md:basis-full"
+                className="md:basis-1/4 box-border max-md:basis-full"
                 onChange={(value) => {
                   setSelectedLanguage(value);
                   setIsDropdownOpen(false);
