@@ -6,7 +6,10 @@ import {
 import { useCallback } from "react";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { useDispatch } from "react-redux";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import {
+  newSuccessToast,
+  newErrorToast,
+} from "next-common/store/reducers/toastSlice";
 import { useContextApi } from "next-common/context/api";
 import { useTransferAmount } from "next-common/components/popup/fields/useTransferAmount";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
@@ -61,13 +64,21 @@ function PopupContent() {
     getCheckedTransferAmount,
   ]);
 
+  const onInBlock = useCallback(() => {
+    dispatch(newSuccessToast("Transfer successfully"));
+  }, [dispatch]);
+
   return (
     <>
       <Signer />
       {transferToAddressField}
       {transferAmountField}
       <div className="flex justify-end">
-        <TxSubmissionButton title="Confirm" getTxFunc={getTxFunc} />
+        <TxSubmissionButton
+          title="Confirm"
+          getTxFunc={getTxFunc}
+          onInBlock={onInBlock}
+        />
       </div>
     </>
   );
