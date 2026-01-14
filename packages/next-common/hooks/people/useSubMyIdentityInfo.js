@@ -34,6 +34,7 @@ function useSuperOfIdentityDisplayName(identity) {
         }
 
         const identityResult = await fetchIdentityOf(
+          api,
           superOfResult.parentAddress,
         ).then((res) => res.info);
 
