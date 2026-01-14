@@ -72,7 +72,7 @@ export function getCategoryPath(proposalType) {
     case SearchType.FELLOWSHIP_MEMBERS:
       return "/fellowship/members";
     case SearchType.TREASURY_FUNDED_PROJECTS:
-      return "/treasury/status/projects";
+      return "/treasury/projects";
     default:
       return "/";
   }
