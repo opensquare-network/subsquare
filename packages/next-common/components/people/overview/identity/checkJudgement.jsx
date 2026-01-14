@@ -6,7 +6,6 @@ import PrimaryButton from "next-common/lib/button/primary";
 import { isEmpty } from "lodash-es";
 import { useRouter } from "next/router";
 import useDefaultRegistrar from "next-common/components/people/overview/hooks/useDefaultRegistrar";
-import useMyJudgementRequest from "../../hooks/useMyJudgementRequest";
 
 const RequestJudgementPopup = dynamicPopup(
   () => import("next-common/components/requestJudgementPopup"),
@@ -56,10 +55,7 @@ function RequestJudgement() {
     setShowPopup(false);
   }, []);
 
-  const { value: request, loading: isLoadingMyJudgementRequest } =
-    useMyJudgementRequest();
-
-  if (isLoading || isInfoEmpty || isLoadingMyJudgementRequest || !!request) {
+  if (isLoading || isInfoEmpty) {
     return null;
   }
 
