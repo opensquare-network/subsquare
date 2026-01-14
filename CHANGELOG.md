@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+# 6.0.1
+
+Date:
+2026-01-14. [Code diff](https://github.com/opensquare-network/subsquare/compare/8c858a58a685af72b443799735552d306dbf3cf9...545a8daec17b69776109c9336b4c38e28a7b5009).
+
+- [Medium] Refactor and enhance vesting related features:
+    - Group and show vesting info including total/unlockable balances by addresses.
+    - Users can check all schedules under an address.
+    - Users can unlock vesting unlockable balances.
+    - Add a new vesting warning in the overview account panel to warn users to unlock their vestings.
+    - Users can do a vested transfer.
+- Add a new page under coretime space to show cores' status.
+- Optimize the menu order under the advanced menu.
+- Bug fixes:
+    - Fix breadcrumb item is not shown when the value is 0.
+    - Fix referendum votes are not refreshed when a new referendum is opened from the searching popup.
+- Remove the ambassador section from the polkadot treasury assets panel.
+- Remove the track select component from the hydration stable spend referenda template.
+- Remove permanence dao RPC.
+- Not send child bounty related notifications via email to reduce resource consumption.
+- Improve the layout of the treasury status panel and move the treasury assets panel to the status page from the
+  summary.
+
 # 6.0.0
 
 Date:
