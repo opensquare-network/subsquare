@@ -6,7 +6,7 @@ import { MenuTracks } from "@osn/icons/subsquare";
 import { CommonSearchItemContent } from "./commonSearchItem";
 
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import { backendApi } from "next-common/services/nextApi";
+import { isEmpty } from "lodash-es";
 
 const ProjectDetailPopup = dynamicPopup(() =>
   import("next-common/components/treasury/projects/projectDetailPopup"),
@@ -18,16 +18,9 @@ export default function TreasuryFundedProjectSearchItem({ row, onClose }) {
   const [showProjectDetailPopup, setShowProjectDetailPopup] = useState(false);
 
   const handleProjectClick = useCallback(async () => {
-    backendApi
-      .fetch(`/treasury/status/projects/detail/${raw.id}`)
-      .then((res) => {
-        setProject(res.result);
-        setShowProjectDetailPopup(true);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, [raw.id]);
+    setProject(raw);
+    setShowProjectDetailPopup(true);
+  }, [raw]);
 
   return (
     <>
@@ -38,8 +31,12 @@ export default function TreasuryFundedProjectSearchItem({ row, onClose }) {
             <div className="flex items-center gap-1 text14Medium text-textPrimary">
               <span>{raw.title}</span>{" "}
               <span className="text-textTertiary">·</span>
-              <ProjectLinks links={raw?.links} />
-              <span className="text-textTertiary">·</span>
+              {!isEmpty(raw?.links) && (
+                <>
+                  <ProjectLinks links={raw?.links} />
+                  <span className="text-textTertiary">·</span>
+                </>
+              )}
               <span className="text-textTertiary">
                 Total funded{" "}
                 <ValueDisplay value={raw.fiatAtFinal} symbol="" prefix="$" />

@@ -207,24 +207,8 @@ function useSearchResults() {
 
 export default useSearchResults;
 
-const treasuryFundedProjects = [
-  {
-    id: "nova",
-    title: "Nova",
-    fiatAtSubmission: "7434293.09",
-    fiatAtFinal: "7471568.17",
-    content:
-      "Nova Wallet: Fast, secure, and feature-rich Polkadot wallet supporting 100+ networks. Amazing UX/UI, community-focused, and open-source.",
-    links: {
-      website: "https://novawallet.io/",
-    },
-  },
-];
-
 function formatResults(results) {
   if (!results) return null;
-
-  results.treasuryFundedProjects = treasuryFundedProjects;
 
   const priorityKeys = ["fellowshipMembers"];
   const allEntries = Object.entries(results);
@@ -267,10 +251,10 @@ function formatResults(results) {
         return formatSearchResult("FellowshipMembers", value);
       case "treasuryTips":
         return formatItems("TreasuryTips", value, "hash", "hash", true);
-      case "treasuryFundedProjects":
+      case "projects":
         return formatItems(
           "TreasuryFundedProjects",
-          value,
+          normalizeProject(value),
           "id",
           "id",
           true,
@@ -280,4 +264,12 @@ function formatResults(results) {
         return [];
     }
   });
+}
+
+function normalizeProject(projects) {
+  return projects.map((project) => ({
+    ...project,
+    title: project.name,
+    content: project.description,
+  }));
 }
