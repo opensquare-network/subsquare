@@ -62,13 +62,27 @@ function TreasuryFundedProjectSearchItemContent({ row, onClose }) {
 function ProjectLinks({ links }) {
   if (!links) return null;
 
+  const twitter = parseTwitterLink(links.twitter);
+
   return (
     <>
-      <div className="flex items-center gap-1">
+      <div
+        className="flex items-center gap-1"
+        onClick={(e) => e.stopPropagation()}
+      >
         {links.website && <WebLink website={links.website} />}
-        {links.twitter && <TwitterLink twitter={links.twitter} />}
+        {twitter && <TwitterLink twitter={twitter} />}
       </div>
       <span className="text-textTertiary">·</span>
     </>
   );
+}
+
+function parseTwitterLink(twitter) {
+  if (!twitter) return null;
+  const url = new URL(twitter);
+  if (url.host.endsWith("twitter.com") || url.host.endsWith("x.com")) {
+    return url.pathname.slice(1);
+  }
+  return null;
 }
