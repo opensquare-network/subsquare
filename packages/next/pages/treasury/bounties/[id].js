@@ -116,11 +116,13 @@ export const getServerSideProps = withCommonProps(async (context) => {
     { result: childBounties },
     { result: tracksDetail },
     { result: appendants },
+    { result: statistics },
   ] = await Promise.all([
     backendApi.fetch(`treasury/bounties/${id}`),
     backendApi.fetch(`treasury/bounties/${id}/child-bounties`, { pageSize: 5 }),
     backendApi.fetch(gov2TracksApi),
     backendApi.fetch(treasuryBountiesAppendantApi(id)),
+    backendApi.fetch(`treasury/bounties/${id}/statistics`),
   ]);
 
   if (!detail) {
@@ -140,7 +142,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
       comments: comments ?? EmptyList,
       tracksDetail: tracksDetail ?? null,
       appendants: appendants ?? [],
-
+      statistics: statistics ?? null,
       ...tracksProps,
     },
   };
