@@ -11,10 +11,6 @@ const PeopleRegistrarsPageImpl = dynamicClientOnly(() =>
 );
 
 export default function PeopleRegistrarsPage() {
-  if (!isPeopleSupported) {
-    return null;
-  }
-
   return (
     <PeopleGlobalProvider>
       <PeopleRegistrarsPageImpl />
