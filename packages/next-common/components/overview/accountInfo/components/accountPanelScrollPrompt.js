@@ -8,6 +8,7 @@ import { animate } from "framer-motion";
 import { useWindowWidthContext } from "next-common/context/windowSize";
 import { Fragment } from "react";
 import AccountUnlockBalancePrompt from "./accountUnlockBalancePrompt";
+import VestingUnlockablePrompt from "./vestingUnlockablePrompt";
 
 const ITEM_HEIGHT = 40;
 const MOBILE_ITEM_HEIGHT = 60;
@@ -20,6 +21,7 @@ const promptComponents = [
   MultisigPrompt,
   AssetsManagePrompt,
   AccountUnlockBalancePrompt,
+  VestingUnlockablePrompt,
 ];
 
 export default function AccountPanelScrollPrompt() {
@@ -43,7 +45,20 @@ export default function AccountPanelScrollPrompt() {
 
   const [random, setRandom] = useState(1);
   useEffect(() => {
-    setTotal(wrapperRef.current.children.length / 2);
+    if (!wrapperRef.current) {
+      return;
+    }
+
+    const updateTotal = () => {
+      setTotal(Math.floor(wrapperRef.current.children.length / 3));
+    };
+
+    updateTotal();
+
+    const observer = new MutationObserver(updateTotal);
+    observer.observe(wrapperRef.current, { childList: true });
+
+    return () => observer.disconnect();
   }, [random]);
 
   const marginTop = useMemo(() => {
@@ -56,6 +71,9 @@ export default function AccountPanelScrollPrompt() {
   const indexRef = useRef(0);
 
   useEffect(() => {
+    indexRef.current = 0;
+    wrapperRef.current?.scrollTo({ top: 0 });
+
     if (total < 2) {
       return;
     }
@@ -64,25 +82,24 @@ export default function AccountPanelScrollPrompt() {
       if (pauseRef.current || !wrapperRef.current) {
         return;
       }
-      if (indexRef.current > total) {
-        wrapperRef.current?.scrollTo({
-          top: 0,
-        });
-        indexRef.current = 1;
-      }
-      const scrollTop = wrapperRef.current?.scrollTop;
 
-      animate(scrollTop, scrollTop + marginTop, {
+      const nextIndex = indexRef.current + 1;
+      const from = indexRef.current * marginTop;
+      const to = nextIndex * marginTop;
+
+      animate(from, to, {
         duration: 1,
-        times: [0, 1],
-        onUpdate: (top) => {
-          wrapperRef.current?.scrollTo({
-            top: top,
-          });
+        onUpdate: (latest) => {
+          wrapperRef.current?.scrollTo({ top: latest });
+        },
+        onComplete: () => {
+          indexRef.current = nextIndex;
+          if (indexRef.current >= total) {
+            indexRef.current -= total;
+            wrapperRef.current?.scrollTo({ top: indexRef.current * marginTop });
+          }
         },
       });
-
-      indexRef.current++;
     }, 6500);
     return () => clearInterval(interval);
   }, [marginTop, total]);
@@ -98,18 +115,20 @@ export default function AccountPanelScrollPrompt() {
       onMouseEnter={() => (pauseRef.current = true)}
       onMouseLeave={() => (pauseRef.current = false)}
     >
-      {[...promptComponents, ...promptComponents].map((Item, index) => {
-        return (
-          <Fragment key={index}>
-            <Item
-              key={random}
-              onClose={() => {
-                setRandom(random + 1);
-              }}
-            />
-          </Fragment>
-        );
-      })}
+      {[...promptComponents, ...promptComponents, ...promptComponents].map(
+        (Item, index) => {
+          return (
+            <Fragment key={index}>
+              <Item
+                key={random}
+                onClose={() => {
+                  setRandom(random + 1);
+                }}
+              />
+            </Fragment>
+          );
+        },
+      )}
     </div>
   );
 }

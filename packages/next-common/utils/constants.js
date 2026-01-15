@@ -142,6 +142,7 @@ export const CACHE_KEY = {
   totalRequestingAssets: "total-requesting-assets",
   dvApplyPromptVisible: "dv-apply-prompt-visible",
   polkadotVault: "polkadot-vault",
+  vestingUnlockablePrompt: "vesting-unlockable-prompt",
 };
 
 export const ADDRESS_CACHE_KEYS = [
@@ -157,6 +158,7 @@ export const ADDRESS_CACHE_KEYS = [
   CACHE_KEY.multisigManagementPromptVisible,
   CACHE_KEY.requestJudgementPrompt,
   CACHE_KEY.setIdentityPromptVisible,
+  CACHE_KEY.vestingUnlockablePrompt,
 ];
 
 export const CHAIN = process.env.NEXT_PUBLIC_CHAIN;

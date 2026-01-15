@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { useContextApi } from "next-common/context/api";
+import { useIdentityApi } from "../useIdentityApi";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useIdentityOf } from "next-common/hooks/identity/useIdentityOf";
 import { fetchIdentityOf } from "../identity/identityFetch";
 
 function useSuperOfIdentityDisplayName(identity) {
   const address = useRealAddress();
-  const api = useContextApi();
+  const api = useIdentityApi();
   const [subDisplay, setSubDisplay] = useState(null);
 
   useEffect(() => {
@@ -34,6 +34,7 @@ function useSuperOfIdentityDisplayName(identity) {
         }
 
         const identityResult = await fetchIdentityOf(
+          api,
           superOfResult.parentAddress,
         ).then((res) => res.info);
 
@@ -61,7 +62,7 @@ function useSuperOfIdentityDisplayName(identity) {
 }
 
 export default function useSubMyIdentityInfo() {
-  const api = useContextApi();
+  const api = useIdentityApi();
   const address = useRealAddress();
   const { info, judgements, isLoading } = useIdentityOf(api, address);
   const { result: superResult } = useSuperOfIdentityDisplayName(info);

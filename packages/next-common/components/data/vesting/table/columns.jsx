@@ -6,6 +6,7 @@ import Tooltip from "next-common/components/tooltip";
 import DetailButton from "next-common/components/detailButton";
 import SortableColumn from "next-common/components/styledList/sortableColumn";
 import VestAction from "./vestAction";
+import { useMemo } from "react";
 
 export function Balance({
   value,
@@ -14,13 +15,23 @@ export function Balance({
   showSymbol = true,
 }) {
   const { decimals, symbol } = useChainSettings();
+  const precisionValue = toPrecision(value, decimals);
+  const prefix = useMemo(() => {
+    const numValue = Number(precisionValue);
+    if (numValue > 0 && numValue.toLocaleString() === "0") {
+      return "≈ ";
+    }
+
+    return null;
+  }, [precisionValue]);
 
   return (
     <ValueDisplay
-      value={toPrecision(value, decimals)}
+      value={precisionValue}
       symbol={showSymbol ? symbol : null}
       className={className}
       showTooltip={showTooltip}
+      prefix={prefix}
     />
   );
 }
