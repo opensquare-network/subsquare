@@ -11,10 +11,6 @@ const PeopleIdentitiesPageImpl = dynamicClientOnly(() =>
 );
 
 export default function PeopleIdentitiesPage() {
-  if (!isPeopleSupported) {
-    return null;
-  }
-
   return (
     <PeopleGlobalProvider>
       <PeopleIdentitiesPageImpl />
