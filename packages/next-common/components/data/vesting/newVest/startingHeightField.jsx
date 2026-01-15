@@ -4,7 +4,7 @@ import PopupLabel from "next-common/components/popup/label";
 import Select from "next-common/components/select";
 import NumberInput from "next-common/lib/input/number";
 import IconButton from "next-common/components/iconButton";
-import DateOnlySelectModal from "next-common/components/calendar/dateSelectModal/dateOnlySelectModal";
+import DateSelectModal from "next-common/components/calendar/dateSelectModal";
 import { useChainSettings } from "next-common/context/chain";
 import dayjs from "dayjs";
 import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
@@ -76,7 +76,7 @@ function DateModeInput({ value, setValue }) {
         disabled
       />
       {showDateSelectModal && (
-        <DateOnlySelectModal
+        <DateSelectModal
           onClose={() => setShowDateSelectModal(false)}
           defaultSelectedDate={date}
           onSelect={onSelectDate}
