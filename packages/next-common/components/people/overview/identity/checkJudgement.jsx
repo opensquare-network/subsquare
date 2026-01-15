@@ -61,7 +61,7 @@ function RequestJudgement() {
 
   return (
     <>
-      <PrimaryButton className="w-auto" onClick={handleOpenPopup}>
+      <PrimaryButton size="small" className="w-auto" onClick={handleOpenPopup}>
         Request Judgement
       </PrimaryButton>
       {showPopup && <RequestJudgementPopupImpl onClose={handleClosePopup} />}

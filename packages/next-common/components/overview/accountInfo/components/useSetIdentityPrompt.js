@@ -5,15 +5,79 @@ import {
 } from "next-common/components/scrollPrompt";
 import { CACHE_KEY } from "next-common/utils/constants";
 import { useCookieValue } from "next-common/utils/hooks/useCookieValue";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useChainSettings } from "next-common/context/chain";
 import { useRouter } from "next/router";
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { isEmpty } from "lodash-es";
+import useMyJudgementRequest from "next-common/components/people/hooks/useMyJudgementRequest";
+import RequestJudgementPopup from "next-common/components/requestJudgementPopup";
+import { useIdentityInfoContext } from "next-common/context/people/identityInfoContext";
 
 const identityPage = "/people";
-const judgementPage = "/people?tab=judgements";
+
+function RequestJudgementPromptContent() {
+  const [showPopup, setShowPopup] = useState(false);
+
+  return (
+    <div>
+      Your on-chain identity is not verified yet.&nbsp;
+      <span
+        role="button"
+        className="cursor-pointer underline text14Medium"
+        onClick={() => setShowPopup(true)}
+      >
+        Request judgement
+      </span>
+      {showPopup && (
+        <RequestJudgementPopup onClose={() => setShowPopup(false)} />
+      )}
+    </div>
+  );
+}
+
+function NavigateToJudgementPagePrompt() {
+  return (
+    <div>
+      Actions is required to verify your identity social accounts.&nbsp;
+      <Link className="underline text14Medium" href="/people/judgement">
+        Go to Judgement page
+      </Link>
+      .
+    </div>
+  );
+}
+
+function analyzeJudgements(judgements) {
+  return {
+    hasPending: judgements.some(({ status }) => ["FeePaid"].includes(status)),
+    hasPositive: judgements.some(({ status }) =>
+      ["KnownGood", "Reasonable"].includes(status),
+    ),
+    hasOutdated: judgements.some(({ status }) => status === "OutOfDate"),
+    hasNegative: judgements.some(({ status }) =>
+      ["LowQuality", "Erroneous"].includes(status),
+    ),
+  };
+}
+
+function useShouldPromptJudgementRequest() {
+  const { judgements } = useIdentityInfoContext();
+
+  if (!judgements || judgements.length === 0) {
+    return true;
+  }
+
+  const { hasPending, hasPositive, hasNegative } =
+    analyzeJudgements(judgements);
+
+  if (hasPending || hasPositive || hasNegative) {
+    return false;
+  }
+
+  return true;
+}
 
 export default function useSetIdentityPrompt() {
   const router = useRouter();
@@ -25,7 +89,6 @@ export default function useSetIdentityPrompt() {
   const supportedPeople = modules?.people;
 
   const isPeoplePage = pathName?.startsWith(identityPage);
-  const isJudgementPage = router.asPath?.startsWith(judgementPage);
 
   const isNotVerified = useMemo(() => {
     return identity?.info?.status === "NOT_VERIFIED";
@@ -41,22 +104,21 @@ export default function useSetIdentityPrompt() {
 
   const [visible, setVisible] = useCookieValue(cacheKey, true);
 
+  const { value: myJudgementRequest } = useMyJudgementRequest();
+  const shouldRequestJudgement = useShouldPromptJudgementRequest();
+
   return useMemo(() => {
     if (!visible || !supportedPeople) {
       return {};
     }
 
     let message;
-    if (hasIdentity && isNotVerified && !isJudgementPage) {
-      message = (
-        <div>
-          Your on-chain identity is not verified yet. Request judgements&nbsp;
-          <Link className="underline text14Medium" href={judgementPage}>
-            here
-          </Link>
-          .
-        </div>
-      );
+    if (hasIdentity && isNotVerified) {
+      if (shouldRequestJudgement) {
+        message = <RequestJudgementPromptContent />;
+      } else if (myJudgementRequest) {
+        message = <NavigateToJudgementPagePrompt />;
+      }
     } else if (!hasIdentity && !isPeoplePage) {
       message = (
         <div>
@@ -82,12 +144,13 @@ export default function useSetIdentityPrompt() {
   }, [
     cacheKey,
     hasIdentity,
-    isJudgementPage,
     isNotVerified,
     isPeoplePage,
     setVisible,
     supportedPeople,
     visible,
+    shouldRequestJudgement,
+    myJudgementRequest,
   ]);
 }
 export function IdentityPrompt({ onClose }) {

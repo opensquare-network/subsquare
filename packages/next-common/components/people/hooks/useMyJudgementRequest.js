@@ -14,7 +14,7 @@ export default function useMyJudgementRequest() {
       `people/judgement/requests/pending?who=${realAddress}`,
     );
     if (result) {
-      return result;
+      return result.items[0] || null;
     }
 
     return null;

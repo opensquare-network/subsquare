@@ -8,10 +8,8 @@ import JudgementSummary from "./summary";
 import Twitter from "./twitter";
 
 export default function JudgementPageContent() {
-  const { value, loading: isLoadingMyJudgementRequest } =
+  const { value: request, loading: isLoadingMyJudgementRequest } =
     useMyJudgementRequest();
-
-  const request = value?.items[0] || null;
 
   return (
     <>
