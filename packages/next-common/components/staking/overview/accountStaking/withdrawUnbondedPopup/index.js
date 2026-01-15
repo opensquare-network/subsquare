@@ -10,19 +10,21 @@ import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import { useCallback } from "react";
 import { useMyPoolInfo } from "next-common/hooks/staking/useMyPool";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
-function PoolWithdrawUnbondedPopupContent({ poolId }) {
+function PoolWithdrawUnbondedPopupContent() {
   const api = useContextApi();
   const { decimals, symbol } = useChainSettings();
   const { balances, loading: isBalanceLoading } = useMyPoolInfo();
   const unlocked = balances?.unlocked || 0n;
+  const realAddress = useRealAddress();
 
   const getTxFunc = useCallback(async () => {
     if (!api) {
       return null;
     }
-    return api.tx.nominationPools.poolWithdrawUnbonded(poolId, 0);
-  }, [api, poolId]);
+    return api.tx.nominationPools.withdrawUnbonded(realAddress, 0);
+  }, [api, realAddress]);
 
   return (
     <div className="space-y-4">
