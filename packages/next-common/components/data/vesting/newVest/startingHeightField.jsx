@@ -155,7 +155,7 @@ export default function StartingHeightField({ value, setValue }) {
           )}
         </div>
       </div>
-      <div className="mt-1 w-full flex justify-end">
+      <div className="mt-2 w-full flex justify-end">
         <StartingHeightStatus onHeightClick={(height) => setValue(height)} />
       </div>
     </div>
