@@ -62,7 +62,7 @@ function DateModeInput({ value, setValue }) {
   return (
     <>
       <Input
-        placeholder="Starting height"
+        placeholder="Starting from"
         value={date ? dayjs(date).format("YYYY-MM-DD HH:mm") : ""}
         symbol={
           value ? (
@@ -90,7 +90,7 @@ function BlockModeInput({ value, setValue }) {
   return (
     <NumberInput
       value={value}
-      placeholder="Starting height"
+      placeholder="Starting from"
       symbol="Block Height"
       onValueChange={setValue}
       controls={false}
@@ -101,12 +101,12 @@ function BlockModeInput({ value, setValue }) {
 function StartingHeightLabel() {
   const chain = useChain();
   if (!isRelayChain(chain)) {
-    return "Starting Height";
+    return "Starting From";
   }
 
   return (
     <div className="inline-flex items-center space-x-1">
-      <span>Starting Height</span>
+      <span>Starting From</span>
       <Tooltip content="Vested transfer is determined by the Relay Chain block height">
         <SystemQuestion className="w-4 h-4 [&_path]:fill-textTertiary" />
       </Tooltip>
