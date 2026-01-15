@@ -41,17 +41,6 @@ function getSocialCounts(info = {}, verification = {}) {
   return { verified, total };
 }
 
-function renderVerificationStatus(verificationValue) {
-  if (verificationValue !== true) {
-    return null;
-  }
-  return (
-    <span className="inline-flex items-center gap-1">
-      <SystemVoteAye className="inline w-4 h-4" />
-    </span>
-  );
-}
-
 function SocialAccountsTooltipContent({ judgementRequest }) {
   const info = judgementRequest?.info || {};
   const verification = judgementRequest?.verification || {};
@@ -70,7 +59,9 @@ function SocialAccountsTooltipContent({ judgementRequest }) {
           </span>
           <span className="break-all">{value}</span>
           <span className="ml-2 text-textPrimaryContrast/80">
-            {renderVerificationStatus(verification?.[type])}
+            {verification?.[type] === true && (
+              <SystemVoteAye className="inline w-4 h-4" />
+            )}
           </span>
         </div>
       ))}
