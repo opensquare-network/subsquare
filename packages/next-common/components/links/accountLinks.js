@@ -5,9 +5,9 @@ import DotreasuryAccountLink from "./dotreasuryAccountLink";
 import StatescanAccountLink from "./statescanAccountLink";
 import SubScanAccountLink from "./subscanAccountLink";
 import ConditionalMimirIcon from "./conditionalMimirIcon";
-import { useChain } from "next-common/context/chain";
-import CouncilorLink from "./councilorLink";
-import Chains from "next-common/utils/consts/chains";
+// import { useChain } from "next-common/context/chain";
+// import CouncilorLink from "./councilorLink";
+// import Chains from "next-common/utils/consts/chains";
 import { useChainSettings } from "next-common/context/chain";
 import IdentityInfoLinks from "./identityInfoLinks";
 
@@ -20,13 +20,13 @@ const Wrapper = styled(Flex)`
 
 export default function AccountLinks({
   address,
-  showCouncilorLink: showCouncilorLinkProp = true,
+  // showCouncilorLink: showCouncilorLinkProp = true,
 }) {
-  const chain = useChain();
+  // const chain = useChain();
   const chainSettings = useChainSettings();
 
-  const showCouncilorLink =
-    showCouncilorLinkProp && [Chains.polkadot, Chains.kusama].includes(chain);
+  // const showCouncilorLink =
+  //   showCouncilorLinkProp && [Chains.polkadot, Chains.kusama].includes(chain);
 
   const showConditionalMimirIcon =
     chainSettings?.multisigWallets?.mimir && chainSettings?.multisigApiPrefix;
@@ -41,7 +41,7 @@ export default function AccountLinks({
       <DotreasuryAccountLink address={address} />
       <SubScanAccountLink address={address} />
       <IdentityInfoLinks address={address} />
-      {showCouncilorLink && <CouncilorLink address={address} />}
+      {/* {showCouncilorLink && <CouncilorLink address={address} />} */}
       {showConditionalMimirIcon && <ConditionalMimirIcon address={address} />}
     </Wrapper>
   );
