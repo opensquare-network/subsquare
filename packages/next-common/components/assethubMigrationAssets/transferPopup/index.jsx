@@ -6,13 +6,14 @@ import {
 import { useCallback } from "react";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { useDispatch } from "react-redux";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import {
+  newSuccessToast,
+  newErrorToast,
+} from "next-common/store/reducers/toastSlice";
 import { useContextApi } from "next-common/context/api";
 import { useTransferAmount } from "next-common/components/popup/fields/useTransferAmount";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import Signer from "next-common/components/popup/fields/signerField";
-import { useMultiAccountsDeps } from "../useSingleAccountAssets";
-import { fetchMultiAccounts } from "next-common/store/reducers/multiAccountsSlice";
 import { isSameAddress } from "next-common/utils";
 
 function PopupContent() {
@@ -33,8 +34,6 @@ function PopupContent() {
 
   const { value: transferToAddress, component: transferToAddressField } =
     useAddressComboField({ title: "To" });
-
-  const { multiAccountKey } = useMultiAccountsDeps(address);
 
   const getTxFunc = useCallback(() => {
     if (!transferToAddress) {
@@ -66,8 +65,8 @@ function PopupContent() {
   ]);
 
   const onInBlock = useCallback(() => {
-    dispatch(fetchMultiAccounts(multiAccountKey, api));
-  }, [dispatch, multiAccountKey, api]);
+    dispatch(newSuccessToast("Transfer successfully"));
+  }, [dispatch]);
 
   return (
     <>
