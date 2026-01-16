@@ -40,14 +40,17 @@ export default function Time({
 
   if (mode === "select") {
     return (
-      <Labeled text={"Time"}>
-        <TimeSelectPicker
-          hour={parseInt(hour) || 0}
-          minute={parseInt(minute) || 0}
-          onHourChange={handleHourChange}
-          onMinuteChange={handleMinuteChange}
-        />
-      </Labeled>
+      <div className="flex items-center gap-4">
+        <span className="text14Bold text-textPrimary">Time</span>
+        <div className="flex-1 flex justify-start">
+          <TimeSelectPicker
+            hour={parseInt(hour) || 0}
+            minute={parseInt(minute) || 0}
+            onHourChange={handleHourChange}
+            onMinuteChange={handleMinuteChange}
+          />
+        </div>
+      </div>
     );
   }
 

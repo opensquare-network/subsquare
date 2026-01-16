@@ -21,7 +21,7 @@ export default function TimeSelectPicker({
 
   return (
     <div className="flex items-center justify-center gap-2 select-none">
-      <div className="w-20">
+      <div className="w-[120px]">
         <Select
           value={hour}
           options={hourOptions}
@@ -31,7 +31,7 @@ export default function TimeSelectPicker({
         />
       </div>
       <span className="text16Medium text-textSecondary">:</span>
-      <div className="w-20">
+      <div className="w-[120px]">
         <Select
           value={minute}
           options={minuteOptions}
