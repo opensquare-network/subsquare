@@ -1,13 +1,13 @@
 import { useEffect, useState, useCallback, useMemo } from "react";
-import { useContextApi } from "next-common/context/api";
 import useAhmLatestHeightSnapshot from "next-common/hooks/ahm/useAhmLatestHeightSnapshot";
 import {
   getCurrencyLockedByVesting,
   calculateVestingInfo,
 } from "next-common/components/data/vesting/hooks/useAllVestingData";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
 export default function useAddressVestingData(address) {
-  const api = useContextApi();
+  const api = useConditionalContextApi();
   const { latestHeight, isLoading: isHeightLoading } =
     useAhmLatestHeightSnapshot();
   const [data, setData] = useState(null);
