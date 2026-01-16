@@ -11,7 +11,11 @@ import {
 import {
   useApprovalThresholdDatasetConfig,
   useSupportThresholdDatasetConfig,
+  useApprovalValueDatasetConfig,
+  useSupportValueDatasetConfig,
 } from "next-common/components/charts/thresholdCurve/utils/dataset";
+import { useFellowshipHistoryTallyValueData } from "next-common/components/charts/thresholdCurve/useFellowshipHistoryTallyValueData";
+import { useMemo } from "react";
 
 function useFellowshipReferendaCurveData() {
   const track = useTrack();
@@ -54,16 +58,42 @@ function useFellowshipReferendaCurveData() {
 }
 
 export default function useFellowshipReferendaCurveChartData() {
-  const { labels, supportData, approvalData } =
+  const { labels, supportData, approvalData, totalHours } =
     useFellowshipReferendaCurveData();
   const supportThresholdConfig = useSupportThresholdDatasetConfig(supportData);
   const approvalThresholdConfig =
     useApprovalThresholdDatasetConfig(approvalData);
 
+  const { historySupportData, historyApprovalData } =
+    useFellowshipHistoryTallyValueData(totalHours);
+
+  const supportHistoryConfig = useSupportValueDatasetConfig(historySupportData);
+  const approvalHistoryConfig =
+    useApprovalValueDatasetConfig(historyApprovalData);
+
+  const datasets = useMemo(
+    () =>
+      [
+        approvalThresholdConfig,
+        supportThresholdConfig,
+        historyApprovalData?.length && approvalHistoryConfig,
+        historySupportData?.length && supportHistoryConfig,
+      ].filter(Boolean),
+    [
+      approvalThresholdConfig,
+      supportThresholdConfig,
+      approvalHistoryConfig,
+      supportHistoryConfig,
+      historyApprovalData?.length,
+      historySupportData?.length,
+    ],
+  );
+
   return {
     labels,
     supportData,
     approvalData,
-    datasets: [approvalThresholdConfig, supportThresholdConfig],
+    datasets,
+    historyApprovalData,
   };
 }

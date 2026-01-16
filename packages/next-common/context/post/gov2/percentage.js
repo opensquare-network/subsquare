@@ -9,6 +9,11 @@ export function useApprovalPercentage(tally) {
     }
 
     const nTotal = new BigNumber(tally.ayes).plus(tally.nays);
+
+    if (nTotal.eq(0)) {
+      return 0;
+    }
+
     return new BigNumber(tally.ayes).div(nTotal).toNumber();
   }, [tally]);
 }
