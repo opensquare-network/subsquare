@@ -36,6 +36,7 @@ const westendPeople = {
     mimir: true,
   },
   allowWeb2Login: true,
+  hideHeight: false,
 };
 
 export default westendPeople;

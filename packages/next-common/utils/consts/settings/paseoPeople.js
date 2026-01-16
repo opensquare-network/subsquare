@@ -40,6 +40,7 @@ const paseoPeople = {
     mimir: true,
   },
   allowWeb2Login: true,
+  hideHeight: false,
 };
 
 export default paseoPeople;

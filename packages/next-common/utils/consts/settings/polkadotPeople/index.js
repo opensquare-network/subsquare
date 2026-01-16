@@ -58,6 +58,7 @@ const polkadotPeople = {
   allowWeb2Login: true,
   supportWalletconnect: true,
   supportPolkadotVault: true,
+  hideHeight: false,
 };
 
 export default polkadotPeople;
