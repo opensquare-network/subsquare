@@ -3,7 +3,6 @@ import { useCallback, useEffect, useSyncExternalStore } from "react";
 import useDeepMemo from "../useDeepMemo";
 import { useChain } from "next-common/context/chain";
 import { isNil } from "lodash-es";
-import { subStorageRpc } from "./subStorageRpc";
 
 const DEFAULT_STATE = { loading: true, result: undefined };
 
@@ -190,10 +189,8 @@ export default function useSubStorage(
       setPendingSubscription(true);
 
       try {
-        const unsub = await subStorageRpc(
-          api,
-          queryStorage,
-          normalizedParams,
+        const unsub = await queryStorage(
+          ...normalizedParams,
           (subscribeResult) => setResult(subscribeResult),
         );
         setSubscription(unsub);
