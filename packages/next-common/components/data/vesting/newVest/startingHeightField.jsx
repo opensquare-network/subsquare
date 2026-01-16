@@ -97,6 +97,7 @@ function DateModeInput({ value, setValue }) {
           onClose={() => setShowDateSelectModal(false)}
           defaultSelectedDate={displayDate}
           onSelect={onSelectDate}
+          mode="select"
         />
       )}
     </>
