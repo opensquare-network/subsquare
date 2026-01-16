@@ -50,6 +50,10 @@ const kusamaPeople = {
   ],
   group: null,
   noScan: true,
+  modules: {
+    ...kusama.modules,
+    vesting: false,
+  },
   integrations: {
     statescan: true,
     subscan: {
@@ -62,6 +66,7 @@ const kusamaPeople = {
   allowWeb2Login: true,
   supportWalletconnect: true,
   supportPolkadotVault: true,
+  hideHeight: false,
 };
 
 export default kusamaPeople;

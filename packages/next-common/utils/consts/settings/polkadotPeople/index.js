@@ -46,6 +46,10 @@ const polkadotPeople = {
   ],
   group: null,
   noScan: true,
+  modules: {
+    ...polkadot.modules,
+    vesting: false,
+  },
   integrations: {
     statescan: true,
     subscan: {
@@ -58,6 +62,7 @@ const polkadotPeople = {
   allowWeb2Login: true,
   supportWalletconnect: true,
   supportPolkadotVault: true,
+  hideHeight: false,
 };
 
 export default polkadotPeople;

@@ -28,6 +28,10 @@ const paseoPeople = {
       url: "wss://people-paseo.dotters.network",
     },
   ],
+  modules: {
+    ...paseo.modules,
+    vesting: false,
+  },
   group: null,
   noScan: true,
   integrations: {
@@ -40,6 +44,7 @@ const paseoPeople = {
     mimir: true,
   },
   allowWeb2Login: true,
+  hideHeight: false,
 };
 
 export default paseoPeople;
