@@ -155,7 +155,7 @@ function StartingHeightStatus({ onHeightClick }) {
 }
 
 export default function StartingHeightField({ value, setValue }) {
-  const [mode, setMode] = useState("block");
+  const [mode, setMode] = useState("date");
 
   return (
     <div>
