@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import Input from "next-common/lib/input";
 import PopupLabel from "next-common/components/popup/label";
 import Select from "next-common/components/select";
@@ -39,6 +39,7 @@ function ModeSelect({ mode, setMode }) {
 function DateModeInput({ value, setValue }) {
   const latestHeight = useAhmLatestHeight();
   const [showDateSelectModal, setShowDateSelectModal] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
   const { blockTime } = useChainSettings();
 
   const onSelectDate = useCallback(
@@ -50,23 +51,39 @@ function DateModeInput({ value, setValue }) {
 
       const estimatedBlockHeight = latestHeight + estimatedBlocks;
       setValue(estimatedBlockHeight.toString());
+      setSelectedDate(selectedDate);
       setShowDateSelectModal(false);
     },
     [blockTime, latestHeight, setValue],
   );
 
-  const date = value
-    ? new Date(Date.now() + (parseInt(value) - latestHeight) * blockTime)
-    : null;
+  const onClearDate = useCallback(() => {
+    setValue("");
+    setSelectedDate(null);
+  }, [setValue]);
+
+  const displayDate = useMemo(() => {
+    if (selectedDate) {
+      return selectedDate;
+    }
+
+    if (value) {
+      return new Date(
+        Date.now() + (parseInt(value) - latestHeight) * blockTime,
+      );
+    }
+
+    return null;
+  }, [selectedDate, value, latestHeight, blockTime]);
 
   return (
     <>
       <Input
         placeholder="Starting from"
-        value={date ? dayjs(date).format("YYYY-MM-DD HH:mm") : ""}
+        value={displayDate ? dayjs(displayDate).format("YYYY-MM-DD HH:mm") : ""}
         symbol={
           value ? (
-            <IconButton onClick={() => setValue("")}>Clear Date</IconButton>
+            <IconButton onClick={onClearDate}>Clear Date</IconButton>
           ) : (
             <IconButton onClick={() => setShowDateSelectModal(true)}>
               Select Date
@@ -78,7 +95,7 @@ function DateModeInput({ value, setValue }) {
       {showDateSelectModal && (
         <DateSelectModal
           onClose={() => setShowDateSelectModal(false)}
-          defaultSelectedDate={date}
+          defaultSelectedDate={displayDate}
           onSelect={onSelectDate}
         />
       )}
