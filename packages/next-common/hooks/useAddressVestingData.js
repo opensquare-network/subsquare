@@ -19,6 +19,10 @@ export default function useAddressVestingData(address) {
         return;
       }
 
+      if (!api.query?.vesting?.vesting) {
+        return;
+      }
+
       try {
         if (!silent) {
           setIsLoading(true);

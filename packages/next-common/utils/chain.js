@@ -154,24 +154,24 @@ export function getRelayChain(chain) {
     return chain;
   } else if (isPolkadotAssetHubChain(chain)) {
     return Chains.polkadot;
-  } else if (isKusamaAssetHubChain(chain)) {
-    return Chains.kusama;
-  } else if (isWestendAssetHubChain(chain)) {
-    return Chains.westend;
-  } else if (isPaseoAssetHubChain(chain)) {
-    return Chains.paseo;
   } else if (isCollectivesChain(chain)) {
     return Chains.polkadot;
   } else if (isPolkadotPeopleChain(chain)) {
     return Chains.polkadot;
-  } else if (isKusamaPeopleChain(chain)) {
-    return Chains.kusama;
-  } else if (isPaseoPeopleChain(chain)) {
-    return Chains.paseo;
-  } else if (isWestendPeopleChain(chain)) {
-    return Chains.westend;
   } else if (isHyperBridgeChain(chain)) {
     return Chains.polkadot;
+  } else if (isKusamaAssetHubChain(chain)) {
+    return Chains.kusama;
+  } else if (isKusamaPeopleChain(chain)) {
+    return Chains.kusama;
+  } else if (isWestendAssetHubChain(chain)) {
+    return Chains.westend;
+  } else if (isWestendPeopleChain(chain)) {
+    return Chains.westend;
+  } else if (isPaseoAssetHubChain(chain)) {
+    return Chains.paseo;
+  } else if (isPaseoPeopleChain(chain)) {
+    return Chains.paseo;
   }
 
   throw new Error("Unsupported relay chain");
