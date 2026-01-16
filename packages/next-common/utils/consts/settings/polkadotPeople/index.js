@@ -46,6 +46,10 @@ const polkadotPeople = {
   ],
   group: null,
   noScan: true,
+  modules: {
+    ...polkadot.modules,
+    vesting: false,
+  },
   integrations: {
     statescan: true,
     subscan: {

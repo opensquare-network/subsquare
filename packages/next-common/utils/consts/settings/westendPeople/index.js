@@ -26,6 +26,10 @@ const westendPeople = {
   ],
   group: null,
   noScan: true,
+  modules: {
+    ...westendCommonCfg.modules,
+    vesting: false,
+  },
   integrations: {
     statescan: false,
     subscan: {

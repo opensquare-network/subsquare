@@ -28,6 +28,10 @@ const paseoPeople = {
       url: "wss://people-paseo.dotters.network",
     },
   ],
+  modules: {
+    ...paseo.modules,
+    vesting: false,
+  },
   group: null,
   noScan: true,
   integrations: {

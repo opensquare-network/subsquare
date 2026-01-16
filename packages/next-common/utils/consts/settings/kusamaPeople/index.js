@@ -50,6 +50,10 @@ const kusamaPeople = {
   ],
   group: null,
   noScan: true,
+  modules: {
+    ...kusama.modules,
+    vesting: false,
+  },
   integrations: {
     statescan: true,
     subscan: {
