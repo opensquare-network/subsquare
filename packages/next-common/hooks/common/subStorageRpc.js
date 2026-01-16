@@ -26,6 +26,37 @@ function getStorageReturnType(api, storage) {
   throw new Error("Unknown storage type");
 }
 
+function createEmptyReturnValue(api, storage) {
+  const returnType = getStorageReturnType(api, storage);
+
+  if (storage.creator.meta.modifier.isOptional) {
+    return api.createType(`Option<${returnType.lookupName}>`, null);
+  }
+
+  const fallback = storage?.creator?.meta?.fallback;
+  const fallbackU8a =
+    fallback && typeof fallback.toU8a === "function"
+      ? fallback.toU8a(true)
+      : null;
+
+  return fallbackU8a
+    ? api.createType(returnType.type, fallbackU8a)
+    : api.createType(returnType.type);
+}
+
+function createReturnValue(api, storage, valueU8a) {
+  let decodedValue = null;
+  const returnType = getStorageReturnType(api, storage);
+  decodedValue = api.createType(returnType.type, valueU8a);
+  if (storage.creator.meta.modifier.isOptional) {
+    decodedValue = api.createType(
+      `Option<${returnType.lookupName}>`,
+      decodedValue,
+    );
+  }
+  return decodedValue;
+}
+
 export async function subStorageRpc(api, storage, args = [], callback) {
   if (!api || !storage || typeof callback !== "function") {
     throw new Error(
@@ -34,41 +65,37 @@ export async function subStorageRpc(api, storage, args = [], callback) {
   }
 
   const storageKey = storage.key(...args);
-  const returnType = getStorageReturnType(api, storage);
 
   const unsubscribe = await api.rpc.state.subscribeStorage(
     [storageKey],
     (changes) => {
       const change = changes[0];
-
       if (!change) {
-        callback(null);
         return;
       }
 
-      let decodedValue = null;
-
-      if (change.isSome) {
-        try {
-          const rawData = change.unwrap();
-
-          decodedValue = api.createType(returnType.type, rawData);
-          if (storage.creator.meta.modifier.isOptional) {
-            decodedValue = api.createType(
-              `Option<${returnType.lookupName}>`,
-              decodedValue,
-            );
-          }
-        } catch (error) {
-          console.error("Error decoding storage value:", error);
-          callback(null);
-          return;
-        }
-      } else if (storage.creator.meta.modifier.isOptional) {
-        decodedValue = api.createType("Option<Null>", null);
+      if (!change.isSome) {
+        callback(createEmptyReturnValue(api, storage));
+        return;
       }
 
-      callback(decodedValue);
+      const rawData = change.unwrap();
+      const valueU8a =
+        rawData && typeof rawData.toU8a === "function"
+          ? rawData.toU8a(true)
+          : rawData;
+
+      if (valueU8a?.length === 0) {
+        callback(createEmptyReturnValue(api, storage));
+        return;
+      }
+
+      try {
+        callback(createReturnValue(api, storage, valueU8a));
+      } catch (error) {
+        console.error("Error decoding storage value:", error);
+        callback(null);
+      }
     },
   );
 
