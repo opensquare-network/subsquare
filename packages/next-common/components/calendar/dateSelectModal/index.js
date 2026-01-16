@@ -10,7 +10,12 @@ import { PopupButtonWrapper } from "../../popup/wrapper";
 
 dayjs.extend(timezone);
 
-function PopupContent({ defaultSelectedDate, onSelect = noop, onClose }) {
+function PopupContent({
+  defaultSelectedDate,
+  onSelect = noop,
+  onClose,
+  mode = "input",
+}) {
   const [date, setDate] = useState(defaultSelectedDate || new Date());
   const hour = dayjs(date).hour();
   const minute = dayjs(date).minute();
@@ -39,7 +44,12 @@ function PopupContent({ defaultSelectedDate, onSelect = noop, onClose }) {
   return (
     <>
       <Day date={date} setDate={onDayChange} />
-      <Time defaultHour={hour} defaultMinute={minute} onChange={onTimeChange} />
+      <Time
+        defaultHour={hour}
+        defaultMinute={minute}
+        onChange={onTimeChange}
+        mode={mode}
+      />
 
       <PopupButtonWrapper>
         <PrimaryButton

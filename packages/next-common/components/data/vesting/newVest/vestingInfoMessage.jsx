@@ -55,7 +55,7 @@ function RemainingDurationMessage({
 
   return (
     <span>
-      It will take {remainingDuration} to fully unlock, with {perBlockDisplay}{" "}
+      The whole vesting period is {remainingDuration}, with {perBlockDisplay}{" "}
       {symbol} unlocked per block ({blockTimeSeconds}s).
     </span>
   );
