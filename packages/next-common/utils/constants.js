@@ -6,7 +6,6 @@ import bifrost from "./consts/settings/bifrost";
 import acala from "./consts/settings/acala";
 import interlay from "./consts/settings/interlay";
 import kintsugi from "./consts/settings/kintsugi";
-import phala from "./consts/settings/phala";
 // import kabocha from "./consts/settings/kabocha";
 // import crust from "./consts/settings/crust";
 import litentry from "./consts/settings/litentry";
@@ -72,7 +71,6 @@ export const nodes = [
   litentry,
   // moonbeam,
   // moonriver,
-  phala,
   // polkadex,
   // rococo,
   // shibuya,
