@@ -6,6 +6,8 @@ import { useWindowWidthContext } from "next-common/context/windowSize";
 import { useReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 import useFellowshipCurveChartOptions from "./useFellowshipCurveChartOptions";
+import { useOnchainData } from "next-common/context/post";
+import useFetchFellowshipReferendaTallyHistory from "next-common/utils/hooks/fellowship/useFetchFellowshipReferendaTallyHistory";
 
 export default function FellowshipCurveChart() {
   const indexer = useReferendumVotingFinishIndexer();
@@ -18,6 +20,9 @@ export default function FellowshipCurveChart() {
 }
 
 function FellowshipCurveChartWithContext() {
+  const { referendumIndex } = useOnchainData();
+  useFetchFellowshipReferendaTallyHistory(referendumIndex);
+
   const width = useWindowWidthContext();
   const { labels, datasets, supportData, approvalData } =
     useFellowshipReferendaCurveChartData();
