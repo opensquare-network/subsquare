@@ -198,7 +198,8 @@ export default function useSubStorage(
         );
         setSubscription(unsub);
       } catch (e) {
-        setResult();
+        console.error("useSubStorage error:", e);
+        // setResult();
         setPendingSubscription(false);
       }
     }, // eslint-disable-next-line react-hooks/exhaustive-deps
