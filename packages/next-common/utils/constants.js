@@ -7,7 +7,6 @@ import acala from "./consts/settings/acala";
 import interlay from "./consts/settings/interlay";
 import kintsugi from "./consts/settings/kintsugi";
 import phala from "./consts/settings/phala";
-import centrifuge from "./consts/settings/centrifuge";
 // import kabocha from "./consts/settings/kabocha";
 // import crust from "./consts/settings/crust";
 import litentry from "./consts/settings/litentry";
@@ -57,7 +56,6 @@ export const nodes = [
   bifrost,
   bifrostPolkadot,
   // calamari,
-  centrifuge,
   collectives,
   // crab,
   westend,
