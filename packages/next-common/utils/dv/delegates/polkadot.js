@@ -219,7 +219,7 @@ export const polkadotDvDelegates = [
     address: "13Q56KnUmLNe8fomKD3hoY38ZwLKZgRGdY4RTovRNFjMSwKw", // Cybergov — AI Agents(Karim)
     slots: [
       {
-        start: { assetHub: 9603193, relay: 27578820 },
+        start: { assetHub: 9603274, relay: 27579005 },
         end: { assetHub: 11238474, relay: 29522352 },
         trackIds: cohort5TrackIds,
         role: "guardian",
