@@ -12,8 +12,11 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { NominatorUnClaimedRewardsProvider } from "next-common/components/staking/overview/accountNomination/context/nominatorUnClaimedRewardsContext";
 import { useNominatorUnClaimedRewardsContext } from "next-common/components/staking/overview/accountNomination/context/nominatorUnClaimedRewardsContext";
 import ClaimNominatorRewardButton from "next-common/components/staking/overview/accountNomination/quickActions/claimButton";
+import { toPrecision } from "next-common/utils";
+import { useChainSettings } from "next-common/context/chain";
 
 function useNominatorClaimRewardPrompt() {
+  const { decimals, symbol } = useChainSettings();
   const [visible, setVisible] = useCookieValue(
     CACHE_KEY.nominatorClaimRewardPrompt,
     true,
@@ -37,13 +40,16 @@ function useNominatorClaimRewardPrompt() {
       type: PromptTypes.INFO,
       message: (
         <div className="flex items-center gap-2">
-          <span>Nomination rewards available to claim.</span>
+          <span>
+            Nomination rewards {toPrecision(totalRewards, decimals)} {symbol}{" "}
+            available to claim.
+          </span>
           <ClaimNominatorRewardButton className="underline" />
         </div>
       ),
       close: () => setVisible(false, { expires: 1 }),
     };
-  }, [loading, setVisible, totalRewards, visible]);
+  }, [loading, setVisible, totalRewards, visible, decimals, symbol]);
 }
 
 function NominatorClaimRewardPromptImpl({ onClose }) {

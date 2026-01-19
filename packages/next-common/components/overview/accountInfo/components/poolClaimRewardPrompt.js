@@ -15,8 +15,11 @@ import {
 import ClaimPoolRewardButton from "next-common/components/staking/overview/accountStaking/claimRewardButton";
 import CompoundPoolRewardButton from "next-common/components/staking/overview/accountStaking/compoundRewardButton";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { useChainSettings } from "next-common/context/chain";
+import { toPrecision } from "next-common/utils";
 
 function usePoolClaimRewardPrompt() {
+  const { decimals, symbol } = useChainSettings();
   const [visible, setVisible] = useCookieValue(
     CACHE_KEY.poolClaimRewardPrompt,
     true,
@@ -38,14 +41,16 @@ function usePoolClaimRewardPrompt() {
       type: PromptTypes.INFO,
       message: (
         <div className="flex items-center gap-2">
-          <span>Pool rewards available.</span>
+          <span>
+            Pool rewards {toPrecision(claimable, decimals)} {symbol} available.
+          </span>
           <ClaimPoolRewardButton className="underline" />
           <CompoundPoolRewardButton className="underline" />
         </div>
       ),
       close: () => setVisible(false, { expires: 1 }),
     };
-  }, [claimable, loading, setVisible, visible]);
+  }, [claimable, loading, setVisible, visible, decimals, symbol]);
 }
 
 function PoolClaimRewardPromptImpl({ onClose }) {
