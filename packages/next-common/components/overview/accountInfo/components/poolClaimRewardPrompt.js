@@ -12,13 +12,12 @@ import {
   MyPoolRewardProvider,
   useMyPoolRewardContext,
 } from "next-common/context/staking/poolReward";
-import ClaimPoolRewardButton from "next-common/components/staking/overview/accountStaking/claimRewardButton";
-import CompoundPoolRewardButton from "next-common/components/staking/overview/accountStaking/compoundRewardButton";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import WithPallet from "next-common/components/common/withPallet";
 import ValueDisplay from "next-common/components/valueDisplay";
+import Link from "next-common/components/link";
 
 function usePoolClaimRewardPrompt() {
   const { decimals, symbol } = useChainSettings();
@@ -44,7 +43,7 @@ function usePoolClaimRewardPrompt() {
       message: (
         <div className="flex items-center gap-2">
           <span>
-            Pool rewards{" "}
+            Staking: there is{" "}
             {
               <ValueDisplay
                 className="text14Bold"
@@ -52,10 +51,11 @@ function usePoolClaimRewardPrompt() {
                 decimals={decimals}
               />
             }{" "}
-            {symbol} available.
+            {symbol} staking pool rewards available to claim. Check it{" "}
+            <Link className="underline" href={"/staking"}>
+              here
+            </Link>
           </span>
-          <ClaimPoolRewardButton className="underline" />
-          <CompoundPoolRewardButton className="underline" />
         </div>
       ),
       close: () => setVisible(false, { expires: 1 }),

@@ -9,7 +9,6 @@ import { useCookieValue } from "next-common/utils/hooks/useCookieValue";
 import { CACHE_KEY } from "next-common/utils/constants";
 
 import useStakingBalance from "next-common/components/staking/overview/accountNomination/useStakingBalance";
-import WithdrawUnbondedButton from "next-common/components/staking/overview/accountNomination/withdrawUnbondedButton";
 import { MyStakingLedgerProvider } from "next-common/context/staking/myStakingLedger";
 import { ActiveEraProvider } from "next-common/context/staking/activeEra";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
@@ -17,6 +16,7 @@ import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import WithPallet from "next-common/components/common/withPallet";
 import ValueDisplay from "next-common/components/valueDisplay";
+import Link from "next-common/components/link";
 
 function useNominatorWithdrawUnbondedPrompt() {
   const { decimals, symbol } = useChainSettings();
@@ -38,7 +38,7 @@ function useNominatorWithdrawUnbondedPrompt() {
       message: (
         <div className="flex items-center gap-2">
           <span>
-            Unlocked nomination balance{" "}
+            Staking: there is{" "}
             {
               <ValueDisplay
                 className="text14Bold"
@@ -46,9 +46,11 @@ function useNominatorWithdrawUnbondedPrompt() {
                 decimals={decimals}
               />
             }{" "}
-            {symbol} available to withdraw.
+            {symbol} nomination unbonded balance available to withdraw. Check it{" "}
+            <Link className="underline" href={"/staking"}>
+              here
+            </Link>
           </span>
-          <WithdrawUnbondedButton className="underline" />
         </div>
       ),
       close: () => setVisible(false, { expires: 1 }),

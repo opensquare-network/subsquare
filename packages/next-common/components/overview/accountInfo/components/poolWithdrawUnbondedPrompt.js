@@ -9,7 +9,6 @@ import { useCookieValue } from "next-common/utils/hooks/useCookieValue";
 import { CACHE_KEY } from "next-common/utils/constants";
 
 import { useMyPoolInfo } from "next-common/hooks/staking/useMyPool";
-import PoolWithdrawUnbondedButton from "next-common/components/staking/overview/accountStaking/withdrawUnbondedButton";
 import { MyPoolProvider } from "next-common/context/staking/myPool";
 import { ActiveEraProvider } from "next-common/context/staking/activeEra";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
@@ -17,6 +16,7 @@ import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import WithPallet from "next-common/components/common/withPallet";
 import ValueDisplay from "next-common/components/valueDisplay";
+import Link from "next-common/components/link";
 
 function usePoolWithdrawUnbondedPrompt() {
   const { decimals, symbol } = useChainSettings();
@@ -43,7 +43,7 @@ function usePoolWithdrawUnbondedPrompt() {
       message: (
         <div className="flex items-center gap-2">
           <span>
-            Unlocked pool balance{" "}
+            Staking: there is{" "}
             {
               <ValueDisplay
                 className="text14Bold"
@@ -51,9 +51,12 @@ function usePoolWithdrawUnbondedPrompt() {
                 decimals={decimals}
               />
             }{" "}
-            {symbol} available to withdraw.
+            {symbol} staking pool unbonded balance available to withdraw. Check
+            it{" "}
+            <Link className="underline" href={"/staking"}>
+              here
+            </Link>
           </span>
-          <PoolWithdrawUnbondedButton className="underline" />
         </div>
       ),
       close: () => setVisible(false, { expires: 1 }),

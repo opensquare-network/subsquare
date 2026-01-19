@@ -11,11 +11,11 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
 import { NominatorUnClaimedRewardsProvider } from "next-common/components/staking/overview/accountNomination/context/nominatorUnClaimedRewardsContext";
 import { useNominatorUnClaimedRewardsContext } from "next-common/components/staking/overview/accountNomination/context/nominatorUnClaimedRewardsContext";
-import ClaimNominatorRewardButton from "next-common/components/staking/overview/accountNomination/quickActions/claimButton";
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import WithPallet from "next-common/components/common/withPallet";
 import ValueDisplay from "next-common/components/valueDisplay";
+import Link from "next-common/components/link";
 
 function useNominatorClaimRewardPrompt() {
   const { decimals, symbol } = useChainSettings();
@@ -43,7 +43,7 @@ function useNominatorClaimRewardPrompt() {
       message: (
         <div className="flex items-center gap-2">
           <span>
-            Nomination rewards{" "}
+            Staking: there is{" "}
             {
               <ValueDisplay
                 className="text14Bold"
@@ -51,9 +51,11 @@ function useNominatorClaimRewardPrompt() {
                 decimals={decimals}
               />
             }{" "}
-            {symbol} available to claim.
+            {symbol} nomination rewards available to claim. Check it{" "}
+            <Link className="underline" href={"/staking"}>
+              here
+            </Link>
           </span>
-          <ClaimNominatorRewardButton className="underline" />
         </div>
       ),
       close: () => setVisible(false, { expires: 1 }),
