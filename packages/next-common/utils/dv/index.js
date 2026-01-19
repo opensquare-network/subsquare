@@ -2,16 +2,16 @@ import chainDvDelegates from "next-common/utils/dv/delegates";
 import { isNil, isNumber } from "lodash-es";
 import { isBeforeAhm } from "next-common/hooks/useCompatibleMigrationHeight";
 
-const getFinalBlockHeight = (blockHeight = null, indexer) => {
-  if (isNil(blockHeight) || isNumber(blockHeight) || isNil(indexer)) {
-    return blockHeight;
+const getFinalBlockHeight = (ahmHeightsOrBlockHeight = null, indexer) => {
+  if (isNil(ahmHeightsOrBlockHeight) || isNumber(ahmHeightsOrBlockHeight) || isNil(indexer)) {
+    return ahmHeightsOrBlockHeight;
   }
 
   if (isBeforeAhm(indexer)) {
-    return blockHeight.relay;
+    return ahmHeightsOrBlockHeight.relay;
   }
 
-  return blockHeight.assetHub;
+  return ahmHeightsOrBlockHeight.assetHub;
 };
 
 function isSlotMatched(slot, trackId, voteFinishedIndexer) {
