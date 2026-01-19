@@ -1,8 +1,25 @@
 import chainDvDelegates from "next-common/utils/dv/delegates";
-import { isNil } from "lodash-es";
+import { isNil, isNumber } from "lodash-es";
+import { isBeforeAhm } from "next-common/hooks/useCompatibleMigrationHeight";
 
-function isSlotMatched(slot, trackId, voteFinishedHeight) {
-  const { start, end, trackIds = [] } = slot;
+const getFinalBlockHeight = (ahmHeightsOrBlockHeight = null, indexer) => {
+  if (isNil(ahmHeightsOrBlockHeight) || isNumber(ahmHeightsOrBlockHeight) || isNil(indexer)) {
+    return ahmHeightsOrBlockHeight;
+  }
+
+  if (isBeforeAhm(indexer)) {
+    return ahmHeightsOrBlockHeight.relay;
+  }
+
+  return ahmHeightsOrBlockHeight.assetHub;
+};
+
+function isSlotMatched(slot, trackId, voteFinishedIndexer) {
+  const { blockHeight: voteFinishedHeight } = voteFinishedIndexer ?? {};
+  const { start: ahmStart, end: ahmEnd, trackIds = [] } = slot;
+
+  const start = getFinalBlockHeight(ahmStart, voteFinishedIndexer);
+  const end = getFinalBlockHeight(ahmEnd, voteFinishedIndexer);
 
   if (!isNil(trackId) && !trackIds.includes(trackId)) {
     return false;
@@ -21,11 +38,11 @@ function isSlotMatched(slot, trackId, voteFinishedHeight) {
   return voteFinishedHeight >= start && voteFinishedHeight < end;
 }
 
-function getMatchedSlot(slots = [], trackId, voteFinishedHeight) {
-  return slots.find((slot) => isSlotMatched(slot, trackId, voteFinishedHeight));
+function getMatchedSlot(slots = [], trackId, voteFinishedIndexer) {
+  return slots.find((slot) => isSlotMatched(slot, trackId, voteFinishedIndexer));
 }
 
-export function getDvCandidates(chain, trackId, voteFinishedHeight) {
+export function getDvCandidates(chain, trackId, voteFinishedIndexer) {
   if (!Object.keys(chainDvDelegates).includes(chain)) {
     return [];
   }
@@ -35,7 +52,7 @@ export function getDvCandidates(chain, trackId, voteFinishedHeight) {
     const matchedSlot = getMatchedSlot(
       candidate.slots || [],
       trackId,
-      voteFinishedHeight,
+      voteFinishedIndexer,
     );
 
     if (matchedSlot) {
@@ -48,7 +65,7 @@ export function getDvCandidates(chain, trackId, voteFinishedHeight) {
   }, []);
 }
 
-export default function getDvAddresses(chain, trackId, voteFinishedHeight) {
+export default function getDvAddresses(chain, trackId, voteFinishedIndexer) {
   if (!Object.keys(chainDvDelegates).includes(chain)) {
     return [];
   }
@@ -57,7 +74,7 @@ export default function getDvAddresses(chain, trackId, voteFinishedHeight) {
   return candidates
     .filter(
       (candidate) =>
-        !!getMatchedSlot(candidate.slots || [], trackId, voteFinishedHeight),
+        !!getMatchedSlot(candidate.slots || [], trackId, voteFinishedIndexer),
     )
     .map((candidate) => candidate.address);
 }

@@ -115,21 +115,33 @@ export const kusamaDvDelegates = [
     address: "HcEbeTviCK33EddVN3mfJ6WymWLyKfFuekjhjn5PFirjJ5F", // SAXEMBERG Governance
     slots: [
       { start: 25732529, end: 27921225, trackIds: cohort3TrackIds }, // cohort 3
-      { start: 29912325, end: null, trackIds: cohort5TrackIds }, // cohort 5
+      {
+        start: { assetHub: 10694143, relay: 29912325 },
+        end: { assetHub: 12723766, relay: 31841214 },
+        trackIds: cohort5TrackIds,
+      }, // cohort 5
     ],
   },
   {
     address: "HYmYudY1cxN6XyY98dd82TckYF2YiPFc6sXmHqMoKifGAje", // Le Nexus
     slots: [
       { start: 25732529, end: 27921225, trackIds: cohort3TrackIds }, // cohort 3
-      { start: 29912325, end: null, trackIds: cohort5TrackIds }, // cohort 5
+      {
+        start: { assetHub: 10694143, relay: 29912325 },
+        end: { assetHub: 12722923, relay: 31840219 },
+        trackIds: cohort5TrackIds,
+      }, // cohort 5
     ],
   },
   {
     address: "ELCdsyWFNC7twEeBcQvdpCmpJhGBgiVeWtaKqRqXGn5ATiA", // PERMANENCE DAO/DV
     slots: [
       { start: 27921280, end: 29911925, trackIds: cohort4TrackIds }, // cohort 4
-      { start: 29912282, end: null, trackIds: cohort5TrackIds }, // cohort 5
+      {
+        start: { assetHub: 10694100, relay: 29912282 },
+        end: { assetHub: 12722902, relay: 31840192 },
+        trackIds: cohort5TrackIds,
+      }, // cohort 5
     ],
   },
   {
@@ -147,7 +159,11 @@ export const kusamaDvDelegates = [
   {
     address: "D8LipdVuWD5tT3jCjt4WmYMfHi1vRVjpfbK9cz2G2HrWRLw", // Trustless Core - Cohort 5
     slots: [
-      { start: 29923134, end: null, trackIds: cohort5TrackIds }, // cohort 5
+      {
+        start: { assetHub: 10703779, relay: 29923134 },
+        end: { assetHub: 12723770, relay: 31841220 },
+        trackIds: cohort5TrackIds,
+      }, // cohort 5
     ],
   },
   {
@@ -159,27 +175,39 @@ export const kusamaDvDelegates = [
   {
     address: "GykHmXkXiMHV2hnsMdZ7xE7zgd9tiwT8k787MovVavAVmTH", // REEEEEEEEEE DAO
     slots: [
-      { start: 29912282, end: null, trackIds: cohort5TrackIds }, // cohort 5
+      {
+        start: { assetHub: 10694100, relay: 29912282 },
+        end: { assetHub: 12722907, relay: 31840199 },
+        trackIds: cohort5TrackIds,
+      }, // cohort 5
     ],
   },
   {
     address: "DvJWp99ooffSqbTaM3sCYCxLUWbz2eEVqra9oeUZZYbMY14", // PBA Alumni Voting DAO
     slots: [
-      { start: 29912340, end: null, trackIds: cohort5TrackIds }, // cohort 5
+      {
+        start: { assetHub: 10694158, relay: 29912340 },
+        end: { assetHub: 12723840, relay: 31841299 },
+        trackIds: cohort5TrackIds,
+      }, // cohort 5
     ],
   },
   {
     address: "EYSyMJjPk5HJb2ZDAYmEpBu7ZgWm7hZ5b1BE88uCifynRgt", // Polkadot Poland DAO
     slots: [
-      { start: 29912374, end: null, trackIds: cohort5TrackIds }, // cohort 5
+      {
+        start: { assetHub: 10694185, relay: 29912374 },
+        end: { assetHub: 12723799, relay: 31841253 },
+        trackIds: cohort5TrackIds,
+      }, // cohort 5
     ],
   },
   {
     address: "FPznjjQJpHieoy3TUruw9YT6DDRETkBxWv3yFEVUMCgn8q8", // The White Rabbit
     slots: [
       {
-        start: 29912374,
-        end: null,
+        start: { assetHub: 10694185, relay: 29912374 },
+        end: { assetHub: 12723805, relay: 31841259 },
         trackIds: cohort5TrackIds,
         role: "guardian",
       }, // cohort 5
@@ -189,8 +217,8 @@ export const kusamaDvDelegates = [
     address: "EvoLanodoqDsgHb98Ymbu41uXXKfCPDKxeM6dXHyJ2JoVus", // Daniel Olano
     slots: [
       {
-        start: 29912400,
-        end: null,
+        start: { assetHub: 10694211, relay: 29912400 },
+        end: { assetHub: 12723828, relay: 31841287 },
         trackIds: cohort5TrackIds,
         role: "guardian",
       }, // cohort 5
@@ -200,8 +228,8 @@ export const kusamaDvDelegates = [
     address: "DuCg7rhST4TX6DWsyePUjntsmJd6UNyQVTHWD5BFjcgmgWp", // Flez
     slots: [
       {
-        start: 29912400,
-        end: null,
+        start: { assetHub: 10694211, relay: 29912400 },
+        end: { assetHub: 12723823, relay: 31841279 },
         trackIds: cohort5TrackIds,
         role: "guardian",
       }, // cohort 5
@@ -211,8 +239,8 @@ export const kusamaDvDelegates = [
     address: "EyPcJsHXv86Snch8GokZLZyrucug3gK1RAghBD2HxvL1YRZ", // Cybergov — AI Agents(Karim)
     slots: [
       {
-        start: 29912423,
-        end: null,
+        start: { assetHub: 10694233, relay: 29912423 },
+        end: { assetHub: 12723864, relay: 31841327 },
         trackIds: cohort5TrackIds,
         role: "guardian",
       }, // cohort 5
@@ -222,8 +250,8 @@ export const kusamaDvDelegates = [
     address: "GNdJk9L6P84JXu6wibTzwPiB3vt2rwMjzGEETchf87uNuyW", // GoverNoun AI (Governance Agent) — AI Agent
     slots: [
       {
-        start: 29912423,
-        end: null,
+        start: { assetHub: 10694233, relay: 29912423 },
+        end: { assetHub: 12723858, relay: 31841321 },
         trackIds: cohort5TrackIds,
         role: "guardian",
       }, // cohort 5
