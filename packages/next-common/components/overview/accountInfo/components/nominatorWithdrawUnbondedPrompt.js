@@ -15,6 +15,7 @@ import { ActiveEraProvider } from "next-common/context/staking/activeEra";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
+import WithPallet from "next-common/components/common/withPallet";
 
 function useNominatorWithdrawUnbondedPrompt() {
   const { decimals, symbol } = useChainSettings();
@@ -73,10 +74,12 @@ export default function NominatorWithdrawUnbondedPrompt({ onClose }) {
   }
 
   return (
-    <MyStakingLedgerProvider>
-      <ActiveEraProvider>
-        <NominatorWithdrawUnbondedPromptImpl onClose={onClose} />
-      </ActiveEraProvider>
-    </MyStakingLedgerProvider>
+    <WithPallet pallet="staking">
+      <MyStakingLedgerProvider>
+        <ActiveEraProvider>
+          <NominatorWithdrawUnbondedPromptImpl onClose={onClose} />
+        </ActiveEraProvider>
+      </MyStakingLedgerProvider>
+    </WithPallet>
   );
 }

@@ -15,6 +15,7 @@ import { ActiveEraProvider } from "next-common/context/staking/activeEra";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
+import WithPallet from "next-common/components/common/withPallet";
 
 function usePoolWithdrawUnbondedPrompt() {
   const { decimals, symbol } = useChainSettings();
@@ -78,10 +79,12 @@ export default function PoolWithdrawUnbondedPrompt({ onClose }) {
   }
 
   return (
-    <MyPoolProvider>
-      <ActiveEraProvider>
-        <PoolWithdrawUnbondedPromptImpl onClose={onClose} />
-      </ActiveEraProvider>
-    </MyPoolProvider>
+    <WithPallet pallet="staking">
+      <MyPoolProvider>
+        <ActiveEraProvider>
+          <PoolWithdrawUnbondedPromptImpl onClose={onClose} />
+        </ActiveEraProvider>
+      </MyPoolProvider>
+    </WithPallet>
   );
 }

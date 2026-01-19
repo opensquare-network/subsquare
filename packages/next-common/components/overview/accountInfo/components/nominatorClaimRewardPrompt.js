@@ -14,6 +14,7 @@ import { useNominatorUnClaimedRewardsContext } from "next-common/components/stak
 import ClaimNominatorRewardButton from "next-common/components/staking/overview/accountNomination/quickActions/claimButton";
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
+import WithPallet from "next-common/components/common/withPallet";
 
 function useNominatorClaimRewardPrompt() {
   const { decimals, symbol } = useChainSettings();
@@ -78,8 +79,10 @@ export default function NominatorClaimRewardPrompt({ onClose }) {
   }
 
   return (
-    <NominatorUnClaimedRewardsProvider nominatorAddress={realAddress}>
-      <NominatorClaimRewardPromptImpl onClose={onClose} />
-    </NominatorUnClaimedRewardsProvider>
+    <WithPallet pallet="staking">
+      <NominatorUnClaimedRewardsProvider nominatorAddress={realAddress}>
+        <NominatorClaimRewardPromptImpl onClose={onClose} />
+      </NominatorUnClaimedRewardsProvider>
+    </WithPallet>
   );
 }

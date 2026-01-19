@@ -17,6 +17,7 @@ import CompoundPoolRewardButton from "next-common/components/staking/overview/ac
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
+import WithPallet from "next-common/components/common/withPallet";
 
 function usePoolClaimRewardPrompt() {
   const { decimals, symbol } = useChainSettings();
@@ -80,8 +81,10 @@ export default function PoolClaimRewardPrompt({ onClose }) {
   }
 
   return (
-    <MyPoolRewardProvider>
-      <PoolClaimRewardPromptImpl onClose={onClose} />
-    </MyPoolRewardProvider>
+    <WithPallet pallet="staking">
+      <MyPoolRewardProvider>
+        <PoolClaimRewardPromptImpl onClose={onClose} />
+      </MyPoolRewardProvider>
+    </WithPallet>
   );
 }
