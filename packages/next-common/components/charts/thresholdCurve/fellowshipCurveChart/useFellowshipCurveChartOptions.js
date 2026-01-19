@@ -1,6 +1,14 @@
 import { useMemo } from "react";
 import { merge } from "lodash-es";
 import {
+  useApprovalPercentage,
+  useSupportPercentage,
+} from "next-common/context/post/gov2/percentage";
+import {
+  useApprovalPercentageLine,
+  useSupportPercentageLine,
+} from "next-common/components/charts/thresholdCurve/annotations";
+import {
   useApprovalPoints,
   useSupportPoints,
 } from "next-common/components/charts/thresholdCurve/annotations";
@@ -8,6 +16,8 @@ import { useThemeSetting } from "next-common/context/theme";
 import useChainOrScanHeight from "next-common/hooks/height";
 import { useBlockSteps } from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
 import { useBeginHeight } from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
+import { useFellowshipReferendumTally } from "next-common/hooks/fellowship/useFellowshipReferendumInfo";
+import useFellowshipPerbill from "next-common/utils/hooks/fellowship/useFellowshipPerbill";
 import { title, commonConfig } from "../utils/options";
 
 function useFellowshipCurveChartDefaultOptions(labels = []) {
@@ -83,6 +93,23 @@ function useFellowshipCurveChartDefaultOptions(labels = []) {
   return options;
 }
 
+export function useFellowshipCurveChartOptionsWithThresholdLine(labels = [], supportData, approvalData) {
+  const currentOptions = useFellowshipCurveChartOptions(labels, supportData, approvalData);
+  const { supportThresholdLine, approvalThresholdLine } = useThresholdLine();
+
+  return merge(currentOptions, {
+    plugins: {
+      annotation: {
+        annotations: {
+          supportThresholdLine,
+          approvalThresholdLine,
+        },
+      },
+    },
+  });
+}
+
+
 export default function useFellowshipCurveChartOptions(
   labels = [],
   supportData,
@@ -130,5 +157,19 @@ const useInnerPoint = (labels, supportData, approvalData) => {
   return {
     supportInnerPoint,
     approvalInnerPoint,
+  };
+};
+
+
+const useThresholdLine = () => {
+  const tally = useFellowshipReferendumTally();
+  const approvalPercentage = useApprovalPercentage(tally);
+  const approvalThresholdLine = useApprovalPercentageLine(approvalPercentage);
+  const supportPerbill = useFellowshipPerbill();
+  const supportPercentage = useSupportPercentage(supportPerbill);
+  const supportThresholdLine = useSupportPercentageLine(supportPercentage);
+  return {
+    approvalThresholdLine,
+    supportThresholdLine,
   };
 };

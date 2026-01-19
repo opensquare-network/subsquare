@@ -1,5 +1,29 @@
 import { useThemeSetting } from "next-common/context/theme";
 
+function percentageLineBase(threshold, borderColor) {
+  return {
+    type: "line",
+    value: threshold * 100,
+    pointStyle: false,
+    fill: false,
+    borderDash: [5, 3],
+    borderColor,
+    borderWidth: 2,
+    pointRadius: 0,
+    pointHoverRadius: 0,
+    scaleID: "y",
+  };
+}
+
+export function useSupportPercentageLine(supportPercentage) {
+  const { purple500 } = useThemeSetting();
+  return percentageLineBase(supportPercentage, purple500);
+}
+export function useApprovalPercentageLine(approvalPercentage) {
+  const { green500 } = useThemeSetting();
+  return percentageLineBase(approvalPercentage, green500);
+}
+
 function outerPointBase(backgroundColor, borderColor, x, y) {
   return {
     type: "point",
