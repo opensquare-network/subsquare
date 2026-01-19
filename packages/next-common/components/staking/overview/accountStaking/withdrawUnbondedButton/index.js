@@ -8,7 +8,7 @@ const PoolWithdrawUnbondedPopup = dynamicPopup(() =>
   ),
 );
 
-export default function PoolWithdrawUnbondedButton({ className, poolId }) {
+export default function PoolWithdrawUnbondedButton({ className }) {
   const [showWithdrawUnbondedPopup, setShowWithdrawUnbondedPopup] =
     useState(false);
 
@@ -23,7 +23,6 @@ export default function PoolWithdrawUnbondedButton({ className, poolId }) {
       </div>
       {showWithdrawUnbondedPopup && (
         <PoolWithdrawUnbondedPopup
-          poolId={poolId}
           onClose={() => setShowWithdrawUnbondedPopup(false)}
         />
       )}

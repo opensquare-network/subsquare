@@ -13,8 +13,12 @@ import WithdrawUnbondedButton from "next-common/components/staking/overview/acco
 import { MyStakingLedgerProvider } from "next-common/context/staking/myStakingLedger";
 import { ActiveEraProvider } from "next-common/context/staking/activeEra";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { useChainSettings } from "next-common/context/chain";
+import { toPrecision } from "next-common/utils";
 
 function useNominatorWithdrawUnbondedPrompt() {
+  const { decimals, symbol } = useChainSettings();
+
   const [visible, setVisible] = useCookieValue(
     CACHE_KEY.nominatorWithdrawUnbondedPrompt,
     true,
@@ -31,13 +35,16 @@ function useNominatorWithdrawUnbondedPrompt() {
       type: PromptTypes.INFO,
       message: (
         <div className="flex items-center gap-2">
-          <span>Unlocked nomination balance available to withdraw.</span>
+          <span>
+            Unlocked nomination balance <b>{toPrecision(unlocked, decimals)}</b>{" "}
+            {symbol} available to withdraw.
+          </span>
           <WithdrawUnbondedButton className="underline" />
         </div>
       ),
       close: () => setVisible(false, { expires: 1 }),
     };
-  }, [loading, setVisible, unlocked, visible]);
+  }, [loading, setVisible, unlocked, visible, decimals, symbol]);
 }
 
 function NominatorWithdrawUnbondedPromptImpl({ onClose }) {

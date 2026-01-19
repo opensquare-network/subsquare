@@ -42,7 +42,8 @@ function usePoolClaimRewardPrompt() {
       message: (
         <div className="flex items-center gap-2">
           <span>
-            Pool rewards {toPrecision(claimable, decimals)} {symbol} available.
+            Pool rewards <b>{toPrecision(claimable, decimals)}</b> {symbol}{" "}
+            available.
           </span>
           <ClaimPoolRewardButton className="underline" />
           <CompoundPoolRewardButton className="underline" />

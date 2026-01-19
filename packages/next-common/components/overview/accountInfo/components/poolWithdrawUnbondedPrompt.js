@@ -13,23 +13,25 @@ import PoolWithdrawUnbondedButton from "next-common/components/staking/overview/
 import { MyPoolProvider } from "next-common/context/staking/myPool";
 import { ActiveEraProvider } from "next-common/context/staking/activeEra";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import { toPrecision } from "next-common/utils";
+import { useChainSettings } from "next-common/context/chain";
 
 function usePoolWithdrawUnbondedPrompt() {
+  const { decimals, symbol } = useChainSettings();
   const [visible, setVisible] = useCookieValue(
     CACHE_KEY.poolWithdrawUnbondedPrompt,
     true,
   );
 
-  const { myPool, balances, loading } = useMyPoolInfo();
+  const { balances, loading } = useMyPoolInfo();
   const unlocked = balances?.unlocked;
-  const poolId = myPool?.poolId;
 
   return useMemo(() => {
     if (!visible) {
       return {};
     }
 
-    if (loading || !unlocked || unlocked <= 0n || !poolId) {
+    if (loading || !unlocked || unlocked <= 0n) {
       return {};
     }
 
@@ -38,13 +40,16 @@ function usePoolWithdrawUnbondedPrompt() {
       type: PromptTypes.INFO,
       message: (
         <div className="flex items-center gap-2">
-          <span>Unlocked pool balance available to withdraw.</span>
-          <PoolWithdrawUnbondedButton className="underline" poolId={poolId} />
+          <span>
+            Unlocked pool balance <b>{toPrecision(unlocked, decimals)}</b>{" "}
+            {symbol} available to withdraw.
+          </span>
+          <PoolWithdrawUnbondedButton className="underline" />
         </div>
       ),
       close: () => setVisible(false, { expires: 1 }),
     };
-  }, [loading, poolId, setVisible, unlocked, visible]);
+  }, [loading, setVisible, unlocked, visible, decimals, symbol]);
 }
 
 function PoolWithdrawUnbondedPromptImpl({ onClose }) {

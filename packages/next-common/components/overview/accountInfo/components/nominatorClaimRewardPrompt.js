@@ -41,8 +41,8 @@ function useNominatorClaimRewardPrompt() {
       message: (
         <div className="flex items-center gap-2">
           <span>
-            Nomination rewards {toPrecision(totalRewards, decimals)} {symbol}{" "}
-            available to claim.
+            Nomination rewards <b>{toPrecision(totalRewards, decimals)}</b>{" "}
+            {symbol} available to claim.
           </span>
           <ClaimNominatorRewardButton className="underline" />
         </div>
