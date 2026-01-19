@@ -1,5 +1,5 @@
 import React from "react";
-import useFellowshipReferendaCurveChartData from "./useFellowshipReferendaCurveChartData";
+import useFellowshipReferendaCurveChartData, { useFellowshipReferendaCurveChartDataWithHistory } from "./useFellowshipReferendaCurveChartData";
 import { Line } from "react-chartjs-2";
 import hoverLinePlugin from "next-common/components/charts/plugins/hoverLine";
 import { useWindowWidthContext } from "next-common/context/windowSize";
@@ -55,7 +55,7 @@ function CollectivesFellowshipCurveChartWithContext() {
 
   const width = useWindowWidthContext();
   const { labels, datasets, supportData, approvalData } =
-    useFellowshipReferendaCurveChartData();
+  useFellowshipReferendaCurveChartDataWithHistory();
   const options = useFellowshipCurveChartOptions(
     labels,
     supportData,

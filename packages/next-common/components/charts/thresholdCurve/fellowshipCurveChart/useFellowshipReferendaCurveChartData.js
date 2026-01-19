@@ -57,7 +57,7 @@ function useFellowshipReferendaCurveData() {
   };
 }
 
-export default function useFellowshipReferendaCurveChartData() {
+export function useFellowshipReferendaCurveChartDataWithHistory() {
   const { labels, supportData, approvalData, totalHours } =
     useFellowshipReferendaCurveData();
   const supportThresholdConfig = useSupportThresholdDatasetConfig(supportData);
@@ -95,5 +95,20 @@ export default function useFellowshipReferendaCurveChartData() {
     approvalData,
     datasets,
     historyApprovalData,
+  };
+}
+
+export default function useFellowshipReferendaCurveChartData() {
+  const { labels, supportData, approvalData } =
+    useFellowshipReferendaCurveData();
+  const supportThresholdConfig = useSupportThresholdDatasetConfig(supportData);
+  const approvalThresholdConfig =
+    useApprovalThresholdDatasetConfig(approvalData);
+
+  return {
+    labels,
+    supportData,
+    approvalData,
+    datasets: [approvalThresholdConfig, supportThresholdConfig],
   };
 }
