@@ -93,13 +93,36 @@ function useFellowshipCurveChartDefaultOptions(labels = []) {
   return options;
 }
 
+export function useFellowshipCurveChartOptionsWithThresholdLine(
+  labels = [],
+  supportData,
+  approvalData,
+) {
+  const currentOptions = useFellowshipCurveChartOptions(
+    labels,
+    supportData,
+    approvalData,
+  );
+  const { supportThresholdLine, approvalThresholdLine } = useThresholdLine();
+
+  return merge(currentOptions, {
+    plugins: {
+      annotation: {
+        annotations: {
+          supportThresholdLine,
+          approvalThresholdLine,
+        },
+      },
+    },
+  });
+}
+
 export default function useFellowshipCurveChartOptions(
   labels = [],
   supportData,
   approvalData,
 ) {
   const options = useFellowshipCurveChartDefaultOptions(labels);
-  const { supportThresholdLine, approvalThresholdLine } = useThresholdLine();
   const { supportInnerPoint, approvalInnerPoint } = useInnerPoint(
     labels,
     supportData,
@@ -110,8 +133,6 @@ export default function useFellowshipCurveChartOptions(
     plugins: {
       annotation: {
         annotations: {
-          lineSupportThreshold: supportThresholdLine,
-          lineApprovalThreshold: approvalThresholdLine,
           pointApprovalInner: approvalInnerPoint,
           pointSupportInner: supportInnerPoint,
         },
