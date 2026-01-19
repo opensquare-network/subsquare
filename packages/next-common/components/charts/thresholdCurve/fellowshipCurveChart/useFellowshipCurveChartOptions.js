@@ -93,8 +93,16 @@ function useFellowshipCurveChartDefaultOptions(labels = []) {
   return options;
 }
 
-export function useFellowshipCurveChartOptionsWithThresholdLine(labels = [], supportData, approvalData) {
-  const currentOptions = useFellowshipCurveChartOptions(labels, supportData, approvalData);
+export function useFellowshipCurveChartOptionsWithThresholdLine(
+  labels = [],
+  supportData,
+  approvalData,
+) {
+  const currentOptions = useFellowshipCurveChartOptions(
+    labels,
+    supportData,
+    approvalData,
+  );
   const { supportThresholdLine, approvalThresholdLine } = useThresholdLine();
 
   return merge(currentOptions, {
@@ -108,7 +116,6 @@ export function useFellowshipCurveChartOptionsWithThresholdLine(labels = [], sup
     },
   });
 }
-
 
 export default function useFellowshipCurveChartOptions(
   labels = [],
@@ -159,7 +166,6 @@ const useInnerPoint = (labels, supportData, approvalData) => {
     approvalInnerPoint,
   };
 };
-
 
 const useThresholdLine = () => {
   const tally = useFellowshipReferendumTally();

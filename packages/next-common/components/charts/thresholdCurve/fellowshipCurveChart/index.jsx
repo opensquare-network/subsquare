@@ -5,7 +5,9 @@ import hoverLinePlugin from "next-common/components/charts/plugins/hoverLine";
 import { useWindowWidthContext } from "next-common/context/windowSize";
 import { useReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
-import useFellowshipCurveChartOptions, { useFellowshipCurveChartOptionsWithThresholdLine } from "./useFellowshipCurveChartOptions";
+import useFellowshipCurveChartOptions, {
+  useFellowshipCurveChartOptionsWithThresholdLine,
+} from "./useFellowshipCurveChartOptions";
 import { useOnchainData } from "next-common/context/post";
 import useFetchFellowshipReferendaTallyHistory from "next-common/utils/hooks/fellowship/useFetchFellowshipReferendaTallyHistory";
 import { isCollectivesChain } from "next-common/utils/chain";
@@ -19,7 +21,11 @@ export default function FellowshipCurveChart() {
 
   return (
     <MigrationConditionalApiProvider indexer={indexer}>
-      {isCollectives ? <CollectivesFellowshipCurveChartWithContext /> : <FellowshipCurveChartWithContext />}
+      {isCollectives ? (
+        <CollectivesFellowshipCurveChartWithContext />
+      ) : (
+        <FellowshipCurveChartWithContext />
+      )}
     </MigrationConditionalApiProvider>
   );
 }
@@ -43,7 +49,6 @@ function FellowshipCurveChartWithContext() {
   );
 }
 
-
 function CollectivesFellowshipCurveChartWithContext() {
   const { referendumIndex } = useOnchainData();
   useFetchFellowshipReferendaTallyHistory(referendumIndex);
@@ -65,4 +70,3 @@ function CollectivesFellowshipCurveChartWithContext() {
     </div>
   );
 }
-
