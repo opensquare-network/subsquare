@@ -5,6 +5,8 @@ import { noop } from "lodash-es";
 import Duration from "../duration";
 import { useComment } from "./context";
 import VoteTag from "./voteTag";
+import { useChain } from "next-common/context/chain";
+import Chains from "next-common/utils/consts/chains";
 
 const CommentItemTemplate = forwardRef(function Comp(
   {
@@ -23,7 +25,14 @@ const CommentItemTemplate = forwardRef(function Comp(
   },
   ref,
 ) {
+  const chain = useChain();
   const comment = useComment();
+
+  const showCommentSource = [
+    Chains.polkadot,
+    Chains.kusama,
+    Chains.collectives,
+  ].includes(chain);
 
   return (
     <div
@@ -51,7 +60,7 @@ const CommentItemTemplate = forwardRef(function Comp(
           <p className="text12Medium text-textTertiary">
             <Duration time={comment.createdAt} />
           </p>
-          {commentSource}
+          {showCommentSource && commentSource}
         </div>
       </div>
 
