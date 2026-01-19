@@ -1,6 +1,7 @@
 import { useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import Tooltip from "next-common/components/tooltip";
+import { cn } from "next-common/utils";
 
 const ClaimPoolRewardPopup = dynamicPopup(() =>
   import(
@@ -8,7 +9,7 @@ const ClaimPoolRewardPopup = dynamicPopup(() =>
   ),
 );
 
-export default function ClaimPoolRewardButton() {
+export default function ClaimPoolRewardButton({ className }) {
   const [showClaimPopup, setShowClaimPopup] = useState(false);
 
   return (
@@ -16,7 +17,7 @@ export default function ClaimPoolRewardButton() {
       <Tooltip content="Claim your staking rewards from the pool to your account">
         <div
           role="button"
-          className="text-theme500 text12Medium cursor-pointer"
+          className={cn("text-theme500 cursor-pointer", className)}
           onClick={() => setShowClaimPopup(true)}
         >
           Claim

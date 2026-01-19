@@ -137,7 +137,7 @@ function StakingBalance() {
             value={unlocked?.toString() || 0}
             isLoading={loading}
           />
-          {unlocked > 0n && <WithdrawUnbondedButton />}
+          {unlocked > 0n && <WithdrawUnbondedButton className="text12Medium" />}
         </div>
       </CollapsePanel>
     </div>

@@ -87,7 +87,10 @@ export default function StakingBalance() {
             isLoading={loading}
           />
           {balances?.unlocked > 0n && (
-            <PoolWithdrawUnbondedButton poolId={myPool?.poolId} />
+            <PoolWithdrawUnbondedButton
+              className="text12Medium"
+              poolId={myPool?.poolId}
+            />
           )}
         </div>
       </CollapsePanel>

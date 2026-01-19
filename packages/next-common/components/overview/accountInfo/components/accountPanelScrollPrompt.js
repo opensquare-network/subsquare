@@ -9,6 +9,10 @@ import { useWindowWidthContext } from "next-common/context/windowSize";
 import { Fragment } from "react";
 import AccountUnlockBalancePrompt from "./accountUnlockBalancePrompt";
 import VestingUnlockablePrompt from "./vestingUnlockablePrompt";
+import NominatorWithdrawUnbondedPrompt from "./nominatorWithdrawUnbondedPrompt";
+import NominatorClaimRewardPrompt from "./nominatorClaimRewardPrompt";
+import PoolWithdrawUnbondedPrompt from "./poolWithdrawUnbondedPrompt";
+import PoolClaimRewardPrompt from "./poolClaimRewardPrompt";
 
 const ITEM_HEIGHT = 40;
 const MOBILE_ITEM_HEIGHT = 60;
@@ -20,6 +24,10 @@ const promptComponents = [
   IdentityPrompt,
   MultisigPrompt,
   AssetsManagePrompt,
+  NominatorWithdrawUnbondedPrompt,
+  NominatorClaimRewardPrompt,
+  PoolWithdrawUnbondedPrompt,
+  PoolClaimRewardPrompt,
   AccountUnlockBalancePrompt,
   VestingUnlockablePrompt,
 ];

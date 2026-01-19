@@ -138,6 +138,11 @@ export const CACHE_KEY = {
   dvApplyPromptVisible: "dv-apply-prompt-visible",
   polkadotVault: "polkadot-vault",
   vestingUnlockablePrompt: "vesting-unlockable-prompt",
+
+  nominatorWithdrawUnbondedPrompt: "nominator-withdraw-unbonded-prompt",
+  nominatorClaimRewardPrompt: "nominator-claim-reward-prompt",
+  poolWithdrawUnbondedPrompt: "pool-withdraw-unbonded-prompt",
+  poolClaimRewardPrompt: "pool-claim-reward-prompt",
 };
 
 export const ADDRESS_CACHE_KEYS = [
@@ -154,6 +159,11 @@ export const ADDRESS_CACHE_KEYS = [
   CACHE_KEY.requestJudgementPrompt,
   CACHE_KEY.setIdentityPromptVisible,
   CACHE_KEY.vestingUnlockablePrompt,
+
+  CACHE_KEY.nominatorWithdrawUnbondedPrompt,
+  CACHE_KEY.nominatorClaimRewardPrompt,
+  CACHE_KEY.poolWithdrawUnbondedPrompt,
+  CACHE_KEY.poolClaimRewardPrompt,
 ];
 
 export const CHAIN = process.env.NEXT_PUBLIC_CHAIN;
