@@ -25,11 +25,14 @@ function usePoolWithdrawUnbondedPrompt() {
   );
 
   const { balances, loading } = useMyPoolInfo();
-  const unlocked = balances?.unlocked || 0n;
-  const unlockedFormatted = toPrecision(unlocked, decimals, 2);
+  const unlocked = balances?.unlocked;
 
   return useMemo(() => {
-    if (!visible || loading || Number(unlockedFormatted) <= 0) {
+    if (!visible) {
+      return {};
+    }
+
+    if (loading || !unlocked || unlocked <= 0n) {
       return {};
     }
 
@@ -39,15 +42,15 @@ function usePoolWithdrawUnbondedPrompt() {
       message: (
         <div className="flex items-center gap-2">
           <span>
-            Unlocked pool balance <b>{unlockedFormatted}</b> {symbol} available
-            to withdraw.
+            Unlocked pool balance <b>{toPrecision(unlocked, decimals)}</b>{" "}
+            {symbol} available to withdraw.
           </span>
           <PoolWithdrawUnbondedButton className="underline" />
         </div>
       ),
       close: () => setVisible(false, { expires: 1 }),
     };
-  }, [loading, setVisible, unlockedFormatted, visible, symbol]);
+  }, [loading, setVisible, unlocked, visible, decimals, symbol]);
 }
 
 function PoolWithdrawUnbondedPromptImpl({ onClose }) {

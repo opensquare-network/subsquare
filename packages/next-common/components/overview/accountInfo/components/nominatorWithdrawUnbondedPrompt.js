@@ -25,10 +25,9 @@ function useNominatorWithdrawUnbondedPrompt() {
     true,
   );
   const { loading, unlocked } = useStakingBalance();
-  const unlockedFormatted = toPrecision(unlocked || 0n, decimals, 2);
 
   return useMemo(() => {
-    if (!visible || loading || Number(unlockedFormatted) <= 0) {
+    if (!visible || loading || !unlocked || unlocked <= 0n) {
       return {};
     }
 
@@ -38,15 +37,15 @@ function useNominatorWithdrawUnbondedPrompt() {
       message: (
         <div className="flex items-center gap-2">
           <span>
-            Unlocked nomination balance <b>{unlockedFormatted}</b> {symbol}{" "}
-            available to withdraw.
+            Unlocked nomination balance <b>{toPrecision(unlocked, decimals)}</b>{" "}
+            {symbol} available to withdraw.
           </span>
           <WithdrawUnbondedButton className="underline" />
         </div>
       ),
       close: () => setVisible(false, { expires: 1 }),
     };
-  }, [loading, setVisible, unlockedFormatted, visible, symbol]);
+  }, [loading, setVisible, unlocked, visible, decimals, symbol]);
 }
 
 function NominatorWithdrawUnbondedPromptImpl({ onClose }) {

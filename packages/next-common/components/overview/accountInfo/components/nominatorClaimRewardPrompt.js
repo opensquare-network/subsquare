@@ -26,10 +26,13 @@ function useNominatorClaimRewardPrompt() {
   const context = useNominatorUnClaimedRewardsContext();
   const { result, loading } = context || {};
   const totalRewards = result?.totalRewards || "0";
-  const totalRewardsFormatted = toPrecision(totalRewards, decimals, 2);
 
   return useMemo(() => {
-    if (!visible || loading || Number(totalRewardsFormatted) <= 0) {
+    if (!visible) {
+      return {};
+    }
+
+    if (loading || totalRewards === "0") {
       return {};
     }
 
@@ -39,15 +42,15 @@ function useNominatorClaimRewardPrompt() {
       message: (
         <div className="flex items-center gap-2">
           <span>
-            Nomination rewards <b>{totalRewardsFormatted}</b> {symbol} available
-            to claim.
+            Nomination rewards <b>{toPrecision(totalRewards, decimals)}</b>{" "}
+            {symbol} available to claim.
           </span>
           <ClaimNominatorRewardButton className="underline" />
         </div>
       ),
       close: () => setVisible(false, { expires: 1 }),
     };
-  }, [loading, setVisible, totalRewardsFormatted, visible, symbol]);
+  }, [loading, setVisible, totalRewards, visible, decimals, symbol]);
 }
 
 function NominatorClaimRewardPromptImpl({ onClose }) {

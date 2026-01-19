@@ -27,10 +27,13 @@ function usePoolClaimRewardPrompt() {
   );
 
   const { claimable, loading } = useMyPoolRewardContext();
-  const claimableFormatted = toPrecision(claimable || 0n, decimals, 2);
 
   return useMemo(() => {
-    if (!visible || loading || Number(claimableFormatted) <= 0) {
+    if (!visible) {
+      return {};
+    }
+
+    if ((loading && claimable === 0n) || !claimable || claimable <= 0n) {
       return {};
     }
 
@@ -40,7 +43,8 @@ function usePoolClaimRewardPrompt() {
       message: (
         <div className="flex items-center gap-2">
           <span>
-            Pool rewards <b>{claimableFormatted}</b> {symbol} available.
+            Pool rewards <b>{toPrecision(claimable, decimals)}</b> {symbol}{" "}
+            available.
           </span>
           <ClaimPoolRewardButton className="underline" />
           <CompoundPoolRewardButton className="underline" />
@@ -48,7 +52,7 @@ function usePoolClaimRewardPrompt() {
       ),
       close: () => setVisible(false, { expires: 1 }),
     };
-  }, [claimableFormatted, loading, setVisible, visible, symbol]);
+  }, [claimable, loading, setVisible, visible, decimals, symbol]);
 }
 
 function PoolClaimRewardPromptImpl({ onClose }) {
