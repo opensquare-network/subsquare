@@ -16,6 +16,7 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import WithPallet from "next-common/components/common/withPallet";
+import ValueDisplay from "next-common/components/valueDisplay";
 
 function usePoolWithdrawUnbondedPrompt() {
   const { decimals, symbol } = useChainSettings();
@@ -42,7 +43,14 @@ function usePoolWithdrawUnbondedPrompt() {
       message: (
         <div className="flex items-center gap-2">
           <span>
-            Unlocked pool balance <b>{toPrecision(unlocked, decimals)}</b>{" "}
+            Unlocked pool balance{" "}
+            {
+              <ValueDisplay
+                className="text14Bold"
+                value={toPrecision(unlocked.toString(), decimals)}
+                decimals={decimals}
+              />
+            }{" "}
             {symbol} available to withdraw.
           </span>
           <PoolWithdrawUnbondedButton className="underline" />

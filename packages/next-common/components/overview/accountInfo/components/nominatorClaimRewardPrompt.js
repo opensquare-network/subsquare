@@ -15,6 +15,7 @@ import ClaimNominatorRewardButton from "next-common/components/staking/overview/
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import WithPallet from "next-common/components/common/withPallet";
+import ValueDisplay from "next-common/components/valueDisplay";
 
 function useNominatorClaimRewardPrompt() {
   const { decimals, symbol } = useChainSettings();
@@ -42,7 +43,14 @@ function useNominatorClaimRewardPrompt() {
       message: (
         <div className="flex items-center gap-2">
           <span>
-            Nomination rewards <b>{toPrecision(totalRewards, decimals)}</b>{" "}
+            Nomination rewards{" "}
+            {
+              <ValueDisplay
+                className="text14Bold"
+                value={toPrecision(totalRewards.toString(), decimals)}
+                decimals={decimals}
+              />
+            }{" "}
             {symbol} available to claim.
           </span>
           <ClaimNominatorRewardButton className="underline" />

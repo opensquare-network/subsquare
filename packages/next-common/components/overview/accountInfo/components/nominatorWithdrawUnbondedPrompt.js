@@ -16,6 +16,7 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import WithPallet from "next-common/components/common/withPallet";
+import ValueDisplay from "next-common/components/valueDisplay";
 
 function useNominatorWithdrawUnbondedPrompt() {
   const { decimals, symbol } = useChainSettings();
@@ -37,7 +38,14 @@ function useNominatorWithdrawUnbondedPrompt() {
       message: (
         <div className="flex items-center gap-2">
           <span>
-            Unlocked nomination balance <b>{toPrecision(unlocked, decimals)}</b>{" "}
+            Unlocked nomination balance{" "}
+            {
+              <ValueDisplay
+                className="text14Bold"
+                value={toPrecision(unlocked.toString(), decimals)}
+                decimals={decimals}
+              />
+            }{" "}
             {symbol} available to withdraw.
           </span>
           <WithdrawUnbondedButton className="underline" />

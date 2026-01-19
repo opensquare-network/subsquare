@@ -18,6 +18,7 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import WithPallet from "next-common/components/common/withPallet";
+import ValueDisplay from "next-common/components/valueDisplay";
 
 function usePoolClaimRewardPrompt() {
   const { decimals, symbol } = useChainSettings();
@@ -43,8 +44,15 @@ function usePoolClaimRewardPrompt() {
       message: (
         <div className="flex items-center gap-2">
           <span>
-            Pool rewards <b>{toPrecision(claimable, decimals)}</b> {symbol}{" "}
-            available.
+            Pool rewards{" "}
+            {
+              <ValueDisplay
+                className="text14Bold"
+                value={toPrecision(claimable.toString(), decimals)}
+                decimals={decimals}
+              />
+            }{" "}
+            {symbol} available.
           </span>
           <ClaimPoolRewardButton className="underline" />
           <CompoundPoolRewardButton className="underline" />
