@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import useFellowshipReferendaActions from "next-common/components/pages/components/fellowship/referendum/sidebar/tally/voteActions/useFellowshipReferendaActions";
 import {
   useBeginHeight,
   useBlockSteps,
@@ -7,13 +6,14 @@ import {
 import FellowshipBubbleItem from "./bubbleItem";
 import { clamp, inRange, last } from "lodash-es";
 import { cn } from "next-common/utils";
+import { useFellowshipReferendaActionsList } from "../../context/fellowshipReferendaActionsContext";
 
 const useApprovalBubbleData = (rangeData, historyApprovalData) => {
   const labelXLength = rangeData[1] - rangeData[0];
   const beginHeight = useBeginHeight();
   const blockStep = useBlockSteps();
 
-  const { loading, voteActions } = useFellowshipReferendaActions();
+  const { loading, voteActions } = useFellowshipReferendaActionsList();
 
   return useMemo(() => {
     if (loading) {

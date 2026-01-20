@@ -11,7 +11,9 @@ import ThresholdApprovalCard from "./thresholdCards/approval";
 import FellowshipCurveChart from "./fellowshipCurveChart";
 import Flex from "next-common/components/styled/flex";
 import HowOpenGovWorks from "next-common/components/howOpenGovWorks";
+import { FellowshipReferendaActionsProvider } from "./context/fellowshipReferendaActionsContext";
 import ConfirmationEstimation from "./gov2TallyPopup/confirmationEstimation";
+import FellowshipActions from "./fellowshipActions";
 
 export default function ThresholdCurvesFellowshipTallyPopup({
   closeFunc = noop,
@@ -24,30 +26,34 @@ export default function ThresholdCurvesFellowshipTallyPopup({
 
   return (
     <Popup title="Threshold Curves" className="w-[960px]" onClose={closeFunc}>
-      <FellowshipCurveChart />
-      <ThresholdCurvesGov2TallyLegend showAyeNay={false} />
+      <FellowshipReferendaActionsProvider>
+        <FellowshipCurveChart />
+        <ThresholdCurvesGov2TallyLegend showAyeNay={false} />
 
-      <Flex className="flex max-sm:flex-col grow gap-[16px]">
-        <ThresholdApprovalCard
-          approvalThreshold={approvalThreshold}
-          approvalPercentage={approvalPercentage}
-        />
+        <Flex className="flex max-sm:flex-col grow gap-[16px]">
+          <ThresholdApprovalCard
+            approvalThreshold={approvalThreshold}
+            approvalPercentage={approvalPercentage}
+          />
 
-        <ThresholdSupportCard
-          supportThreshold={supportThreshold}
-          supportPerbill={supportPerbill}
+          <ThresholdSupportCard
+            supportThreshold={supportThreshold}
+            supportPerbill={supportPerbill}
+            supportPercentage={supportPercentage}
+          />
+        </Flex>
+
+        <ConfirmationEstimation
+          approvePercentage={approvalPercentage}
           supportPercentage={supportPercentage}
         />
-      </Flex>
 
-      <ConfirmationEstimation
-        approvePercentage={approvalPercentage}
-        supportPercentage={supportPercentage}
-      />
+        <FellowshipActions />
 
-      <div className="mt-[16px]">
-        <HowOpenGovWorks anchor="referenda" />
-      </div>
+        <div className="mt-[16px]">
+          <HowOpenGovWorks anchor="referenda" />
+        </div>
+      </FellowshipReferendaActionsProvider>
     </Popup>
   );
 }
