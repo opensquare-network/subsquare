@@ -33,14 +33,18 @@ const useApprovalBubbleData = (rangeData, historyApprovalData) => {
         const blockHeight = item.indexer.blockHeight;
         const currentStep = (blockHeight - beginHeight) / blockStep;
 
+        const itemX = clamp(
+          ((currentStep - rangeData[0]) / labelXLength) * 100,
+          0,
+          100,
+        );
+
         return {
           data,
           rank,
           formatData,
           y: getY(currentStep),
-          x:
-            clamp(((currentStep - rangeData[0]) / labelXLength) * 100, 0, 100) +
-            1,
+          x: itemX,
           index: currentStep,
           hidden: !inRange(currentStep, rangeData[0], rangeData[1]),
         };

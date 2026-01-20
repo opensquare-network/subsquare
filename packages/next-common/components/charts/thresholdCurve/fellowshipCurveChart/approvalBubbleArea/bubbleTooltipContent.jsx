@@ -51,9 +51,14 @@ export default function FellowshipTooltipContent({ formatData, rank }) {
           ),
         },
         {
-          label: "Bare Aye",
+          label: "Bare Aye Impact",
           value: (
-            <span className={cn(isAye && voteColor, "text12Medium")}>
+            <span
+              className={cn(
+                isAye ? voteColor : "text-textSecondaryContrast",
+                "text12Medium",
+              )}
+            >
               {isAye ? "+1" : "0"}
             </span>
           ),
