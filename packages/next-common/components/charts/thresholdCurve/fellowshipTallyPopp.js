@@ -12,6 +12,8 @@ import FellowshipCurveChart from "./fellowshipCurveChart";
 import Flex from "next-common/components/styled/flex";
 import HowOpenGovWorks from "next-common/components/howOpenGovWorks";
 import ConfirmationEstimation from "./gov2TallyPopup/confirmationEstimation";
+import { useState } from "react";
+import AvatarSwitch from "./gov2TallyPopup/avatarSwitch";
 
 export default function ThresholdCurvesFellowshipTallyPopup({
   closeFunc = noop,
@@ -21,10 +23,14 @@ export default function ThresholdCurvesFellowshipTallyPopup({
 }) {
   const approvalThreshold = useApprovalThreshold();
   const supportThreshold = useSupportThreshold();
+  const [showVoter, setShowVoter] = useState(true);
 
   return (
     <Popup title="Threshold Curves" className="w-[960px]" onClose={closeFunc}>
-      <FellowshipCurveChart />
+      <div className="flex items-center justify-end mb-2">
+        <AvatarSwitch value={showVoter} onChange={setShowVoter} />
+      </div>
+      <FellowshipCurveChart showVoter={showVoter} />
       <ThresholdCurvesGov2TallyLegend showAyeNay={false} />
 
       <Flex className="flex max-sm:flex-col grow gap-[16px]">

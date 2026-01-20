@@ -95,6 +95,7 @@ export function useFellowshipReferendaCurveChartDataWithHistory() {
     approvalData,
     datasets,
     historyApprovalData,
+    totalHours,
   };
 }
 
