@@ -27,7 +27,7 @@ function useFellowshipCurveChartDefaultOptions(labels = []) {
     ...commonConfig,
     scales: {
       x: {
-        type: "linear",
+        type: "category",
         display: true,
         ticks: {
           stepSize: 1,
