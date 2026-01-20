@@ -49,7 +49,7 @@ export function UnbondingTooltip({ unlocking, unlockingEntries }) {
 }
 
 export default function StakingBalance() {
-  const { myPool, balances, loading } = useMyPoolInfo();
+  const { balances, loading } = useMyPoolInfo();
 
   const inPoolBalance = (
     (balances?.active || 0n) +
@@ -87,7 +87,7 @@ export default function StakingBalance() {
             isLoading={loading}
           />
           {balances?.unlocked > 0n && (
-            <PoolWithdrawUnbondedButton poolId={myPool?.poolId} />
+            <PoolWithdrawUnbondedButton className="text12Medium" />
           )}
         </div>
       </CollapsePanel>

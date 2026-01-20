@@ -1,6 +1,7 @@
 import { useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import Tooltip from "next-common/components/tooltip";
+import { cn } from "next-common/utils";
 
 const CompoundPoolRewardPopup = dynamicPopup(() =>
   import(
@@ -8,7 +9,7 @@ const CompoundPoolRewardPopup = dynamicPopup(() =>
   ),
 );
 
-export default function CompoundPoolRewardButton() {
+export default function CompoundPoolRewardButton({ className }) {
   const [showCompoundPopup, setShowCompoundPopup] = useState(false);
 
   return (
@@ -16,7 +17,7 @@ export default function CompoundPoolRewardButton() {
       <Tooltip content="Compound your staking rewards back into the staking pool">
         <div
           role="button"
-          className="text-theme500 text12Medium cursor-pointer"
+          className={cn("text-theme500 cursor-pointer", className)}
           onClick={() => setShowCompoundPopup(true)}
         >
           Compound

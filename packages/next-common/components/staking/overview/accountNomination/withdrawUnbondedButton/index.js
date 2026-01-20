@@ -1,5 +1,6 @@
 import { useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import { cn } from "next-common/utils";
 
 const WithdrawUnbondedPopup = dynamicPopup(() =>
   import(
@@ -7,7 +8,7 @@ const WithdrawUnbondedPopup = dynamicPopup(() =>
   ),
 );
 
-export default function WithdrawUnbondedButton() {
+export default function WithdrawUnbondedButton({ className }) {
   const [showWithdrawUnbondedPopup, setShowWithdrawUnbondedPopup] =
     useState(false);
 
@@ -15,7 +16,7 @@ export default function WithdrawUnbondedButton() {
     <>
       <div
         role="button"
-        className="text-theme500 text12Medium cursor-pointer"
+        className={cn("text-theme500 cursor-pointer", className)}
         onClick={() => setShowWithdrawUnbondedPopup(true)}
       >
         Withdraw

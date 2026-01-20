@@ -46,11 +46,11 @@ function PoolWithdrawUnbondedPopupContent() {
   );
 }
 
-export default function PoolWithdrawUnbondedPopup({ poolId, onClose }) {
+export default function PoolWithdrawUnbondedPopup({ onClose }) {
   return (
     <SignerPopupWrapper onClose={onClose}>
       <Popup title="Withdraw Unbonded" onClose={onClose}>
-        <PoolWithdrawUnbondedPopupContent poolId={poolId} />
+        <PoolWithdrawUnbondedPopupContent />
       </Popup>
     </SignerPopupWrapper>
   );
