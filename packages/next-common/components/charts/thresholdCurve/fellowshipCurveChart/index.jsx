@@ -1,4 +1,4 @@
-import React, { useRef, useMemo } from "react";
+import React, { useRef, useMemo, useState } from "react";
 import useFellowshipReferendaCurveChartData, {
   useFellowshipReferendaCurveChartDataWithHistory,
 } from "./useFellowshipReferendaCurveChartData";
@@ -16,6 +16,7 @@ import { isCollectivesChain } from "next-common/utils/chain";
 import { useChain } from "next-common/context/chain";
 import useSlider from "../referendaCurveChart/useSlider";
 import FellowshipApprovalBubbleArea from "./approvalBubbleArea";
+import AvatarSwitch from "../gov2TallyPopup/avatarSwitch";
 
 export default function FellowshipCurveChart({ showVoter }) {
   const indexer = useReferendumVotingFinishIndexer();
@@ -53,9 +54,10 @@ function FellowshipCurveChartWithContext() {
   );
 }
 
-function CollectivesFellowshipCurveChartWithContext({ showVoter = true }) {
+function CollectivesFellowshipCurveChartWithContext() {
   const { referendumIndex } = useOnchainData();
   useFetchFellowshipReferendaTallyHistory(referendumIndex);
+  const [showVoter, setShowVoter] = useState(true);
 
   const width = useWindowWidthContext();
   const chartRef = useRef();
@@ -98,6 +100,9 @@ function CollectivesFellowshipCurveChartWithContext({ showVoter = true }) {
 
   return (
     <div>
+      <div className="flex items-center justify-end mb-2">
+        <AvatarSwitch value={showVoter} onChange={setShowVoter} />
+      </div>
       <div
         ref={chartWrapper}
         style={{ height: width <= 768 ? 144 : 320 }}

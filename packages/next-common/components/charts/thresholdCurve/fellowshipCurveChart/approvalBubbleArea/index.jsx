@@ -57,6 +57,7 @@ const useApprovalBubbleData = (rangeData, historyApprovalData) => {
 };
 
 export default function FellowshipApprovalBubbleArea({
+  visible,
   chartArea,
   historyApprovalData,
   rangeData,
@@ -81,7 +82,10 @@ export default function FellowshipApprovalBubbleArea({
   }, [chartArea]);
 
   return (
-    <div style={style} className={cn("pointer-events-none select-none")}>
+    <div
+      style={style}
+      className={cn("pointer-events-none select-none", !visible && "hidden")}
+    >
       <div className="w-full h-full relative">
         {approvalData?.map(({ x, y, formatData, hidden, rank }, index) => {
           return (
