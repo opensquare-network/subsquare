@@ -13,8 +13,12 @@ export default function SubscribedAssetsList({ address, columnsDef }) {
   }, []);
 
   const allAssetsLoaded = useMemo(() => {
-    if (!sortedMetadata || sortedMetadata.length === 0) {
+    if (!sortedMetadata) {
       return false;
+    }
+
+    if (sortedMetadata.length === 0) {
+      return true;
     }
 
     return sortedMetadata.every((asset) => asset.assetId in loadedAssets);

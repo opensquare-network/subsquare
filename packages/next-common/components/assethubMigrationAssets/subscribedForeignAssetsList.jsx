@@ -13,8 +13,12 @@ export default function SubscribedForeignAssetsList({ address, columnsDef }) {
   }, []);
 
   const allAssetsLoaded = useMemo(() => {
-    if (!sortedMetadata || sortedMetadata.length === 0) {
+    if (!sortedMetadata) {
       return false;
+    }
+
+    if (sortedMetadata.length === 0) {
+      return true;
     }
 
     return sortedMetadata.every((asset) => asset.assetId in loadedAssets);
@@ -32,6 +36,8 @@ export default function SubscribedForeignAssetsList({ address, columnsDef }) {
     }
   }, [allAssetsLoaded, assetsWithBalanceCount, setTotalCount]);
 
+  const showHiddenCollectors = loading || assetsWithBalanceCount === 0;
+
   return (
     <DynamicForeignAssetsTable
       assetsWithBalanceCount={assetsWithBalanceCount}
@@ -40,7 +46,7 @@ export default function SubscribedForeignAssetsList({ address, columnsDef }) {
       columnsDef={columnsDef}
       loading={loading}
       onLoaded={handleAssetLoaded}
-      showHiddenCollectors={!allAssetsLoaded}
+      showHiddenCollectors={showHiddenCollectors}
     />
   );
 }
