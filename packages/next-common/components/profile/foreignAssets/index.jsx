@@ -1,15 +1,12 @@
-import { usePageProps } from "next-common/context/page";
 import AssetHubTabs from "next-common/components/assethubMigrationAssets/tabs/index";
 import { AssetHubTabsProvider } from "next-common/components/assethubMigrationAssets/context/assetHubTabsProvider";
 import { TABS } from "next-common/components/assethubMigrationAssets/context/assetHubTabsProvider";
-import {
-  ProfileForeignAssetsProvider,
-  useProfileForeignAssetsContext,
-} from "./context";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { useChainSettings } from "next-common/context/chain";
 import ProfileForeignAssetsTransfers from "./transfers";
 import ProfileForeignAssetsTable from "./foreignAssetsList";
+import { useTotalCounts } from "next-common/components/assethubMigrationAssets/context/assetHubTabsProvider";
+import { ForeignAssetMetadataProvider } from "next-common/components/assethubMigrationAssets/context/foreignAssetMetadata";
 
 function ForeignAssetsWithTransfers() {
   return (
@@ -21,7 +18,8 @@ function ForeignAssetsWithTransfers() {
 }
 
 function ForeignAssetsHeader() {
-  const { count } = useProfileForeignAssetsContext();
+  const [totalCounts] = useTotalCounts();
+  const count = totalCounts.assets || 0;
 
   return (
     <TitleContainer className="justify-start gap-x-1">
@@ -40,23 +38,18 @@ function ForeignAssetsWithoutTransfers() {
   );
 }
 
-function ProfileForeignAssetsImpl() {
-  const { supportForeignAssets } = useChainSettings();
-  if (!supportForeignAssets) {
-    return <ForeignAssetsWithoutTransfers />;
-  }
-
-  return <ForeignAssetsWithTransfers />;
-}
-
 export default function ProfileForeignAssets() {
-  const { id } = usePageProps();
+  const { supportForeignAssets } = useChainSettings();
 
   return (
     <AssetHubTabsProvider>
-      <ProfileForeignAssetsProvider address={id}>
-        <ProfileForeignAssetsImpl />
-      </ProfileForeignAssetsProvider>
+      <ForeignAssetMetadataProvider>
+        {supportForeignAssets ? (
+          <ForeignAssetsWithTransfers />
+        ) : (
+          <ForeignAssetsWithoutTransfers />
+        )}
+      </ForeignAssetMetadataProvider>
     </AssetHubTabsProvider>
   );
 }
