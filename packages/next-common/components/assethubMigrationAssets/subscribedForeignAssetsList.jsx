@@ -1,10 +1,10 @@
 import { useMemo, useState, useEffect, useCallback } from "react";
-import useSortedAssetMetadata from "./useAssetsWithBalances";
+import useSortedForeignAssetMetadata from "./useForeignAssetsWithBalances";
 import { useTotalCounts } from "./context/assetHubTabsProvider";
-import DynamicAssetsTable from "./dynamicAssetsTable";
+import DynamicForeignAssetsTable from "./dynamicForeignAssetsTable";
 
-export default function SubscribedAssetsList({ address, columnsDef }) {
-  const sortedMetadata = useSortedAssetMetadata();
+export default function SubscribedForeignAssetsList({ address, columnsDef }) {
+  const sortedMetadata = useSortedForeignAssetMetadata();
   const [, setTotalCount] = useTotalCounts();
   const [loadedAssets, setLoadedAssets] = useState({});
 
@@ -39,9 +39,9 @@ export default function SubscribedAssetsList({ address, columnsDef }) {
   const showHiddenCollectors = loading || assetsWithBalanceCount === 0;
 
   return (
-    <DynamicAssetsTable
-      assetsMetadata={sortedMetadata}
+    <DynamicForeignAssetsTable
       assetsWithBalanceCount={assetsWithBalanceCount}
+      assetsMetadata={sortedMetadata || []}
       address={address}
       columnsDef={columnsDef}
       loading={loading}
