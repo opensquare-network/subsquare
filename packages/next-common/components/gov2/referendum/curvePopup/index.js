@@ -28,7 +28,7 @@ const CurveIcon = styled(CurveIconOrigin)`
   }
 `;
 
-const ExpandIcon = styled(SystemExpand)`
+export const ExpandIcon = styled(SystemExpand)`
   cursor: pointer;
   width: 16px;
   height: 16px;
