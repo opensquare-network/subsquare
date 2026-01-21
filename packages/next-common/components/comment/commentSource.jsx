@@ -39,15 +39,11 @@ export function PolkassemblyCommentSource() {
   const type = useDetailType();
   const post = usePost();
 
-  if (!usePolkassemblyBackupData) {
+  if (usePolkassemblyBackupData) {
     return (
       <Tooltip content="Comment from Polkassembly" className="ml-2">
         <LinkPolkassembly
-          className={cn(
-            "w-4 h-4",
-            "[&_path]:fill-textTertiary",
-            "[&_path]:hover:fill-textSecondary",
-          )}
+          className={cn("w-4 h-4", "[&_path]:fill-textTertiary")}
         />
       </Tooltip>
     );
