@@ -7,9 +7,9 @@ import { MigrationConditionalApiProvider } from "next-common/context/migration/c
 import { useFellowshipCurveChartOptionsWithThresholdLine } from "./useFellowshipCurveChartOptions";
 import { isCollectivesChain } from "next-common/utils/chain";
 import { useChain } from "next-common/context/chain";
-import CollectivesFellowshipCurveChartWithContext from "./collectivesFellowshipCurveChartWithContext";
+import { CollectivesFellowshipCurveChartWithContextWrapper } from "./collectivesFellowshipCurveChartWithContext";
 
-export default function FellowshipCurveChart({ showVoter }) {
+export default function FellowshipCurveChart() {
   const indexer = useReferendumVotingFinishIndexer();
   const chain = useChain();
 
@@ -18,7 +18,7 @@ export default function FellowshipCurveChart({ showVoter }) {
   return (
     <MigrationConditionalApiProvider indexer={indexer}>
       {isCollectives ? (
-        <CollectivesFellowshipCurveChartWithContext showVoter={showVoter} />
+        <CollectivesFellowshipCurveChartWithContextWrapper />
       ) : (
         <FellowshipCurveChartWithContext />
       )}

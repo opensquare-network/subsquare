@@ -9,11 +9,13 @@ import AvatarSwitch from "../gov2TallyPopup/avatarSwitch";
 import { useWindowWidthContext } from "next-common/context/windowSize";
 import { Line } from "react-chartjs-2";
 import hoverLinePlugin from "next-common/components/charts/plugins/hoverLine";
+import "next-common/components/charts/globalConfig";
 
-export default function CollectivesFellowshipCurveChartWithContext() {
+export default function CollectivesFellowshipCurveChartWithContext({
+  showVoter = true,
+}) {
   const { referendumIndex } = useOnchainData();
   useFetchFellowshipReferendaTallyHistory(referendumIndex);
-  const [showVoter, setShowVoter] = useState(true);
 
   const width = useWindowWidthContext();
   const chartRef = useRef();
@@ -56,9 +58,6 @@ export default function CollectivesFellowshipCurveChartWithContext() {
 
   return (
     <div>
-      <div className="flex items-center justify-end mb-2">
-        <AvatarSwitch value={showVoter} onChange={setShowVoter} />
-      </div>
       <div
         ref={chartWrapper}
         style={{ height: width <= 768 ? 144 : 320 }}
@@ -78,6 +77,18 @@ export default function CollectivesFellowshipCurveChartWithContext() {
         />
       </div>
       {slider}
+    </div>
+  );
+}
+
+export function CollectivesFellowshipCurveChartWithContextWrapper() {
+  const [showVoter, setShowVoter] = useState(true);
+  return (
+    <div>
+      <div className="flex items-center justify-end mb-2">
+        <AvatarSwitch value={showVoter} onChange={setShowVoter} />
+      </div>
+      <CollectivesFellowshipCurveChartWithContext showVoter={showVoter} />
     </div>
   );
 }
