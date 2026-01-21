@@ -21,8 +21,7 @@ export default function useFinishElementVerification({
     setVerifying(true);
     try {
       const { result, error: startError } = await nextApi.fetch(
-        "people/judgement/requests/pending",
-        { who },
+        `people/judgement/requests/${who}/pending`,
       );
       if (startError) {
         const message = startError.message || "Failed to start verification";
@@ -31,7 +30,7 @@ export default function useFinishElementVerification({
         return;
       }
 
-      const request = result.items[0];
+      const request = result || null;
 
       const isElementVerified = request?.verification.element === true;
       if (isElementVerified) {
