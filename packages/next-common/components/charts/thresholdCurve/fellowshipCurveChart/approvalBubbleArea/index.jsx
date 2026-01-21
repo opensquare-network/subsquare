@@ -16,7 +16,7 @@ const useApprovalBubbleData = (rangeData, historyApprovalData) => {
   const { loading, voteActions } = useFellowshipReferendaActionsList();
 
   return useMemo(() => {
-    if (loading) {
+    if (loading || labelXLength <= 0) {
       return [];
     }
     const getY = (steps) => {
@@ -84,6 +84,10 @@ export default function FellowshipApprovalBubbleArea({
       height: `${heightValue}px`,
     };
   }, [chartArea]);
+
+  if (!chartArea) {
+    return null;
+  }
 
   return (
     <div

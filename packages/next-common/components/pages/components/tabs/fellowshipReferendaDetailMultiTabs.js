@@ -83,6 +83,7 @@ export default function FellowshipReferendaDetailMultiTabs() {
       ...(isCollectives
         ? [
             {
+              lazy: true,
               value: "curves",
               label: "Curves",
               content: <DetailCurveChart />,
