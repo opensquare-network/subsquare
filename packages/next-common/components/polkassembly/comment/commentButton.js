@@ -21,7 +21,7 @@ export default function PolkassemblyCommentButton({ detail, paId, btnRef }) {
   const chain = useChain();
   let type = detailType;
 
-  if (!usePolkassemblyBackupData) {
+  if (usePolkassemblyBackupData) {
     return null;
   }
 

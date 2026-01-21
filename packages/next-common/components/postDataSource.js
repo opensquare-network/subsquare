@@ -18,7 +18,7 @@ export default function PostDataSource() {
   const { usePolkassemblyBackupData } = chainSettings;
 
   const sources = [
-    usePolkassemblyBackupData && {
+    !usePolkassemblyBackupData && {
       label: <LinkPolkassembly />,
       when: PolkassemblyChains.includes(chain),
       link: getPolkassemblyLink(type, post),
