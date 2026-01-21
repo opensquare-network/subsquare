@@ -12,7 +12,7 @@ export default function NominatorReward() {
 
   return (
     <RewardPanel value={totalRewards} isLoading={loading}>
-      <ClaimNominatorRewardButton />
+      <ClaimNominatorRewardButton className="text12Medium" />
     </RewardPanel>
   );
 }

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import { cn } from "next-common/utils";
 
 const PoolWithdrawUnbondedPopup = dynamicPopup(() =>
   import(
@@ -7,7 +8,7 @@ const PoolWithdrawUnbondedPopup = dynamicPopup(() =>
   ),
 );
 
-export default function PoolWithdrawUnbondedButton({ poolId }) {
+export default function PoolWithdrawUnbondedButton({ className }) {
   const [showWithdrawUnbondedPopup, setShowWithdrawUnbondedPopup] =
     useState(false);
 
@@ -15,14 +16,13 @@ export default function PoolWithdrawUnbondedButton({ poolId }) {
     <>
       <div
         role="button"
-        className="text-theme500 text12Medium cursor-pointer"
+        className={cn("text-theme500 cursor-pointer", className)}
         onClick={() => setShowWithdrawUnbondedPopup(true)}
       >
         Withdraw
       </div>
       {showWithdrawUnbondedPopup && (
         <PoolWithdrawUnbondedPopup
-          poolId={poolId}
           onClose={() => setShowWithdrawUnbondedPopup(false)}
         />
       )}

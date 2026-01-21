@@ -20,6 +20,7 @@ const formatItems = (
   indexKeyOrGetIndexFn,
   displayIndexKeyOrGetIndexFn,
   noDisplayIndex = false,
+  includeRaw = false,
 ) => {
   if (!items || (items || []).length <= 0) {
     return [];
@@ -54,6 +55,7 @@ const formatItems = (
         proposalType,
         type: ItemType.ITEM,
         noDisplayIndex,
+        raw: includeRaw ? item : null,
       };
     }),
   ];
@@ -208,7 +210,7 @@ export default useSearchResults;
 function formatResults(results) {
   if (!results) return null;
 
-  const priorityKeys = ["fellowshipMembers"];
+  const priorityKeys = ["projects", "fellowshipMembers"];
   const allEntries = Object.entries(results);
   const priorityEntries = priorityKeys
     .map((key) => [key, results[key]])
@@ -249,8 +251,27 @@ function formatResults(results) {
         return formatSearchResult("FellowshipMembers", value);
       case "treasuryTips":
         return formatItems("TreasuryTips", value, "hash", "hash", true);
+      case "projects":
+        return formatItems(
+          "TreasuryFundedProjects",
+          normalizeProjects(value),
+          "id",
+          "id",
+          true,
+          true,
+        );
       default:
         return [];
     }
   });
+}
+
+function normalizeProjects(projects = []) {
+  return projects
+    .map((project) => ({
+      ...project,
+      title: project.name ?? "-",
+      content: project.description ?? "-",
+    }))
+    .sort((a, b) => b.fiatAtFinal - a.fiatAtFinal);
 }

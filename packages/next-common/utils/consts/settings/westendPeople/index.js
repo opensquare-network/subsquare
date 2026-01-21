@@ -26,6 +26,10 @@ const westendPeople = {
   ],
   group: null,
   noScan: true,
+  modules: {
+    ...westendCommonCfg.modules,
+    vesting: false,
+  },
   integrations: {
     statescan: false,
     subscan: {
@@ -36,6 +40,7 @@ const westendPeople = {
     mimir: true,
   },
   allowWeb2Login: true,
+  hideHeight: false,
 };
 
 export default westendPeople;

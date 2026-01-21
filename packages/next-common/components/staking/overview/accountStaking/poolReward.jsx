@@ -11,8 +11,8 @@ export default function PoolReward() {
 
   return (
     <RewardPanel value={(claimable || 0n)?.toString()} isLoading={loading}>
-      <ClaimPoolRewardButton />
-      <CompoundPoolRewardButton />
+      <ClaimPoolRewardButton className="text12Medium" />
+      <CompoundPoolRewardButton className="text12Medium" />
     </RewardPanel>
   );
 }

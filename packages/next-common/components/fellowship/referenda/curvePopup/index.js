@@ -6,6 +6,9 @@ import {
   useSupportPercentage,
 } from "next-common/context/post/gov2/percentage";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import { useFellowshipReferendumTally } from "next-common/hooks/fellowship/useFellowshipReferendumInfo";
+import useFellowshipPerbill from "next-common/utils/hooks/fellowship/useFellowshipPerbill";
+import { ExpandIcon } from "next-common/components/gov2/referendum/curvePopup";
 
 const ThresholdCurvesFellowshipTallyPopup = dynamicPopup(() =>
   import("next-common/components/charts/thresholdCurve/fellowshipTallyPopp"),
@@ -41,6 +44,30 @@ export default function FellowshipCurvePopupOpener({
       {showThresholdCurveDetailPopup && (
         <ThresholdCurvesFellowshipTallyPopup
           closeFunc={() => setShowThresholdCurveDetailPopup(false)}
+          supportPerbill={supportPerbill}
+          supportPercentage={supportPercentage}
+          approvalPercentage={approvalPercentage}
+        />
+      )}
+    </>
+  );
+}
+
+export function FellowshipCurvePopupExpander() {
+  const [visible, setVisible] = useState(false);
+  const tally = useFellowshipReferendumTally();
+  const supportPerbill = useFellowshipPerbill();
+  const approvalPercentage = useApprovalPercentage(tally);
+  const supportPercentage = useSupportPercentage(supportPerbill);
+
+  return (
+    <>
+      <button onClick={() => setVisible(true)}>
+        <ExpandIcon />
+      </button>
+      {visible && (
+        <ThresholdCurvesFellowshipTallyPopup
+          closeFunc={() => setVisible(false)}
           supportPerbill={supportPerbill}
           supportPercentage={supportPercentage}
           approvalPercentage={approvalPercentage}

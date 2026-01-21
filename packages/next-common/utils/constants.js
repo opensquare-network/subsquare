@@ -6,8 +6,6 @@ import bifrost from "./consts/settings/bifrost";
 import acala from "./consts/settings/acala";
 import interlay from "./consts/settings/interlay";
 import kintsugi from "./consts/settings/kintsugi";
-import phala from "./consts/settings/phala";
-import centrifuge from "./consts/settings/centrifuge";
 // import kabocha from "./consts/settings/kabocha";
 // import crust from "./consts/settings/crust";
 import litentry from "./consts/settings/litentry";
@@ -57,7 +55,6 @@ export const nodes = [
   bifrost,
   bifrostPolkadot,
   // calamari,
-  centrifuge,
   collectives,
   // crab,
   westend,
@@ -74,7 +71,6 @@ export const nodes = [
   litentry,
   // moonbeam,
   // moonriver,
-  phala,
   // polkadex,
   // rococo,
   // shibuya,
@@ -143,6 +139,11 @@ export const CACHE_KEY = {
   dvApplyPromptVisible: "dv-apply-prompt-visible",
   polkadotVault: "polkadot-vault",
   vestingUnlockablePrompt: "vesting-unlockable-prompt",
+
+  nominatorWithdrawUnbondedPrompt: "nominator-withdraw-unbonded-prompt",
+  nominatorClaimRewardPrompt: "nominator-claim-reward-prompt",
+  poolWithdrawUnbondedPrompt: "pool-withdraw-unbonded-prompt",
+  poolClaimRewardPrompt: "pool-claim-reward-prompt",
 };
 
 export const ADDRESS_CACHE_KEYS = [
@@ -159,6 +160,11 @@ export const ADDRESS_CACHE_KEYS = [
   CACHE_KEY.requestJudgementPrompt,
   CACHE_KEY.setIdentityPromptVisible,
   CACHE_KEY.vestingUnlockablePrompt,
+
+  CACHE_KEY.nominatorWithdrawUnbondedPrompt,
+  CACHE_KEY.nominatorClaimRewardPrompt,
+  CACHE_KEY.poolWithdrawUnbondedPrompt,
+  CACHE_KEY.poolClaimRewardPrompt,
 ];
 
 export const CHAIN = process.env.NEXT_PUBLIC_CHAIN;

@@ -56,7 +56,13 @@ function VoteActionsTable({ search = "" }) {
   );
 }
 
-function DesktopTable({ voteActions, listKey, setSortedColumn, loading }) {
+export function DesktopTable({
+  voteActions,
+  listKey,
+  setSortedColumn,
+  loading,
+  listHeight = 600,
+}) {
   const getItemSize = useDesktopItemSize(voteActions);
   const { sortedColumn, columns } = useColumns(desktopColumns, "", true);
   useEffect(() => {
@@ -77,7 +83,7 @@ function DesktopTable({ voteActions, listKey, setSortedColumn, loading }) {
       loading={loading}
       variableSize={true}
       getItemSize={getItemSize}
-      listHeight={600}
+      listHeight={listHeight}
       overscanCount={3}
       noDataText="No data"
       className="scrollbar-hidden h-full"
@@ -85,7 +91,12 @@ function DesktopTable({ voteActions, listKey, setSortedColumn, loading }) {
   );
 }
 
-function MobileTable({ voteActions, loading, listKey }) {
+export function MobileTable({
+  voteActions,
+  loading,
+  listKey,
+  listHeight = 600,
+}) {
   const getItemSize = useMobileItemSize(voteActions);
 
   const columns = useMemo(() => {
@@ -117,7 +128,7 @@ function MobileTable({ voteActions, loading, listKey }) {
       loading={loading}
       variableSize={true}
       getItemSize={getItemSize}
-      listHeight={600}
+      listHeight={listHeight}
       overscanCount={3}
       noDataText="No data"
     />

@@ -9,6 +9,8 @@ import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
 import { useReferendumTimelineData } from "next-common/hooks/pages/timelineData";
 import tabsTooltipContentMap from "./tabsTooltipContentMap";
 import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
+import { useChain } from "next-common/context/chain";
+import { isCollectivesChain } from "next-common/utils/chain";
 
 const Gov2ReferendumMetadata = dynamicClientOnly(() =>
   import("next-common/components/gov2/referendum/metadata"),
@@ -22,7 +24,15 @@ const Gov2ReferendumCall = dynamicClientOnly(() =>
   import("next-common/components/gov2/referendum/call"),
 );
 
+const DetailCurveChart = dynamicClientOnly(() =>
+  import(
+    "next-common/components/charts/thresholdCurve/fellowshipCurveChart/detailCurveChart"
+  ),
+);
+
 export default function FellowshipReferendaDetailMultiTabs() {
+  const chain = useChain();
+  const isCollectives = isCollectivesChain(chain);
   const router = useRouter();
   const info = useReferendumInfo();
   const onchainData = useOnchainData();
@@ -70,6 +80,16 @@ export default function FellowshipReferendaDetailMultiTabs() {
           </div>
         ),
       },
+      ...(isCollectives
+        ? [
+            {
+              lazy: true,
+              value: "curves",
+              label: "Curves",
+              content: <DetailCurveChart />,
+            },
+          ]
+        : []),
     ];
     const [defaultTab] = tabs;
     return { tabs, activeTabValue: router.query.tab || defaultTab.value };
@@ -82,6 +102,7 @@ export default function FellowshipReferendaDetailMultiTabs() {
     timeLineTabSwitchComponent,
     isCompact,
     router.query.tab,
+    isCollectives,
   ]);
 
   function handleTabClick(tab) {

@@ -13,7 +13,7 @@ export function useMyPoolBalance(myPool) {
     const active = BigInt(myPool.points);
     const unbonding = Object.entries(myPool.unbondingEras).map(
       ([era, value]) => ({
-        era,
+        era: Number(era),
         value: BigInt(value),
       }),
     );

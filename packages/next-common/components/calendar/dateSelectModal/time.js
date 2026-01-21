@@ -3,11 +3,14 @@ import Labeled from "../../../components/Labeled";
 import { noop } from "lodash-es";
 import NumberInput from "next-common/lib/input/number";
 import Flex from "../../styled/flex";
+import TimeSelectPicker from "next-common/components/timeSelectPicker";
 
+// mode: "input" | "select"
 export default function Time({
   defaultHour = 0,
   defaultMinute = 0,
   onChange = noop,
+  mode = "input",
 }) {
   const [hour, setHour] = useState(`${defaultHour}`);
   const [minute, setMinute] = useState(`${defaultMinute}`);
@@ -26,6 +29,30 @@ export default function Time({
     onChange(h, m);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hour, minute]);
+
+  const handleHourChange = (value) => {
+    setHour(typeof value === "number" ? `${value}` : value);
+  };
+
+  const handleMinuteChange = (value) => {
+    setMinute(typeof value === "number" ? `${value}` : value);
+  };
+
+  if (mode === "select") {
+    return (
+      <div className="flex items-center gap-4">
+        <span className="text14Bold text-textPrimary">Time</span>
+        <div className="flex-1 flex justify-start">
+          <TimeSelectPicker
+            hour={parseInt(hour) || 0}
+            minute={parseInt(minute) || 0}
+            onHourChange={handleHourChange}
+            onMinuteChange={handleMinuteChange}
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <Labeled text={"Time"}>
