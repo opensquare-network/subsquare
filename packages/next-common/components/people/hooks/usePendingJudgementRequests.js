@@ -8,7 +8,7 @@ export default function usePendingJudgementRequests(page, pageSize) {
     }
 
     const { result } = await backendApi.fetch(
-      `people/judgement/requests/pending?page=${page}&pageSize=${pageSize}`,
+      `people/identities/active-requests?page=${page}&pageSize=${pageSize}`,
     );
 
     return result || null;
