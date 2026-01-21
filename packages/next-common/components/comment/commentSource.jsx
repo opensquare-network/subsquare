@@ -7,6 +7,7 @@ import { cn } from "next-common/utils";
 import { useComment } from "./context";
 import { useDetailType } from "next-common/context/page";
 import { usePost } from "next-common/context/post";
+import { useChainSettings } from "next-common/context/chain";
 
 export default function CommentSource() {
   const comment = useComment();
@@ -32,9 +33,26 @@ export function SubsquareCommentSource() {
 }
 
 export function PolkassemblyCommentSource() {
+  const { usePolkassemblyBackupData } = useChainSettings();
+
   const comment = useComment();
   const type = useDetailType();
   const post = usePost();
+
+  if (!usePolkassemblyBackupData) {
+    return (
+      <Tooltip content="Comment from Polkassembly" className="ml-2">
+        <LinkPolkassembly
+          className={cn(
+            "w-4 h-4",
+            "[&_path]:fill-textTertiary",
+            "[&_path]:hover:fill-textSecondary",
+          )}
+        />
+      </Tooltip>
+    );
+  }
+
   return (
     <Tooltip content="Comment from Polkassembly" className="ml-2">
       <ExternalLink
