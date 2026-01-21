@@ -15,9 +15,10 @@ export default function PostDataSource() {
   const type = useDetailType();
   const chain = useChain();
   const chainSettings = useChainSettings();
+  const { usePolkassemblyBackupData } = chainSettings;
 
   const sources = [
-    {
+    !usePolkassemblyBackupData && {
       label: <LinkPolkassembly />,
       when: PolkassemblyChains.includes(chain),
       link: getPolkassemblyLink(type, post),
@@ -27,7 +28,7 @@ export default function PostDataSource() {
       when: chainSettings.integrations?.subscan,
       link: getSubscanLink(chain, type, post),
     },
-  ].filter((source) => source.when && source.link);
+  ].filter((source) => source && source.when && source.link);
 
   return (
     !!sources.length && (
