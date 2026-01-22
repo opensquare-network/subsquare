@@ -4,7 +4,7 @@ import VerifiedEmailCard from "./verifiedEmailCard";
 
 export default function Email({ request }) {
   const email = request?.info?.email || "";
-  const initialVerified = request?.verification?.email === true;
+  const initialVerified = request?.verifications?.email === true;
   const [verified, setVerified] = useState(initialVerified);
 
   useEffect(() => {

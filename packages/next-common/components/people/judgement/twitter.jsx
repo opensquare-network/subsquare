@@ -4,7 +4,7 @@ import PeopleJudgementSocialConnect from "./socialConnect";
 import { PeopleSocialType } from "./consts";
 
 export default function Twitter({ request }) {
-  const isVerified = request?.verification?.twitter === true;
+  const isVerified = request?.verifications?.twitter === true;
 
   const { loading, connected, openAuthWindow } = usePeopleJudgementSocialAuth({
     provider: PeopleSocialType.twitter,

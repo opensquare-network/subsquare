@@ -7,8 +7,8 @@ export default function PendingElementCard({
   elementAccount,
   onVerified,
 }) {
-  const isVerifying = request?.verification?.element?.verifying === true;
-  const verifyingCode = request?.verification?.element?.code || "";
+  const isVerifying = request?.verifications?.element?.verifying === true;
+  const verifyingCode = request?.verifications?.element?.code || "";
   const [code, setCode] = useState(verifyingCode);
   const [hasStarted, setHasStarted] = useState(isVerifying);
 

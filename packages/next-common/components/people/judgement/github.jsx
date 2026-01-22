@@ -4,7 +4,7 @@ import PeopleJudgementSocialConnect from "./socialConnect";
 import { PeopleSocialType } from "./consts";
 
 export default function Github({ request }) {
-  const isVerified = request?.verification?.github === true;
+  const isVerified = request?.verifications?.github === true;
 
   const { loading, connected, openAuthWindow } = usePeopleJudgementSocialAuth({
     provider: PeopleSocialType.github,

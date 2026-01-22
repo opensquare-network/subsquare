@@ -4,7 +4,7 @@ import PeopleJudgementSocialConnect from "./socialConnect";
 import { PeopleSocialType } from "./consts";
 
 export default function Discord({ request }) {
-  const isVerified = request?.verification?.discord === true;
+  const isVerified = request?.verifications?.discord === true;
   const { loading, connected, openAuthWindow } = usePeopleJudgementSocialAuth({
     provider: PeopleSocialType.discord,
     authUrlPath: "people/judgement/auth/discord/auth-url",

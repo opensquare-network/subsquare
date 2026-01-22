@@ -32,7 +32,7 @@ export default function useFinishElementVerification({
 
       const request = result || null;
 
-      const isElementVerified = request?.verification.element === true;
+      const isElementVerified = request?.verifications.element === true;
       if (isElementVerified) {
         onVerified?.();
       } else {

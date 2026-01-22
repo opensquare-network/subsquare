@@ -32,18 +32,18 @@ function getConfiguredSocialAccounts(info = {}) {
     .filter(Boolean);
 }
 
-function getSocialCounts(info = {}, verification = {}) {
+function getSocialCounts(info = {}, verifications = {}) {
   const configured = getConfiguredSocialAccounts(info);
   const total = configured.length;
   const verified = configured.filter(
-    ({ type }) => verification?.[type] === true,
+    ({ type }) => verifications?.[type] === true,
   ).length;
   return { verified, total };
 }
 
 function SocialAccountsTooltipContent({ judgementRequest }) {
   const info = judgementRequest?.info || {};
-  const verification = judgementRequest?.verification || {};
+  const verifications = judgementRequest?.verifications || {};
   const configured = getConfiguredSocialAccounts(info);
 
   if (!configured.length) {
@@ -59,7 +59,7 @@ function SocialAccountsTooltipContent({ judgementRequest }) {
           </span>
           <span className="break-all">{value}</span>
           <span className="ml-2 text-textPrimaryContrast/80">
-            {verification?.[type] === true && (
+            {verifications?.[type] === true && (
               <SystemVoteAye className="inline w-4 h-4" />
             )}
           </span>
@@ -72,7 +72,7 @@ function SocialAccountsTooltipContent({ judgementRequest }) {
 function SocialAccounts({ judgementRequest }) {
   const { verified, total } = getSocialCounts(
     judgementRequest?.info,
-    judgementRequest?.verification,
+    judgementRequest?.verifications,
   );
 
   return (
@@ -93,7 +93,7 @@ function SocialAccounts({ judgementRequest }) {
 function AllVerified({ judgementRequest }) {
   const { verified, total } = getSocialCounts(
     judgementRequest?.info,
-    judgementRequest?.verification,
+    judgementRequest?.verifications,
   );
 
   const allVerified = total > 0 && verified === total;

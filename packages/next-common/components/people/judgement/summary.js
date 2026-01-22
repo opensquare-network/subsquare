@@ -11,14 +11,14 @@ export default function JudgementSummary({ request, loading }) {
 
   const allSocialTypes = Object.values(PeopleSocialType);
   const info = request?.info || {};
-  const verification = request?.verification || {};
+  const verifications = request?.verifications || {};
   const totalSocials = allSocialTypes.filter((key) =>
     Boolean(info[key === "element" ? "matrix" : key]),
   ).length;
   const verifiedSocials = allSocialTypes.filter(
     (key) =>
       Boolean(info[key === "element" ? "matrix" : key]) &&
-      verification?.[key] === true,
+      verifications?.[key] === true,
   ).length;
   const pendingSocials = totalSocials - verifiedSocials;
 

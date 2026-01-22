@@ -4,7 +4,7 @@ import VerifiedElementCard from "./verifiedElementCard";
 
 export default function Element({ request }) {
   const elementAccount = request?.info?.matrix || "";
-  const initialVerified = request?.verification?.element === true;
+  const initialVerified = request?.verifications?.element === true;
   const [verified, setVerified] = useState(initialVerified);
 
   useEffect(() => {
