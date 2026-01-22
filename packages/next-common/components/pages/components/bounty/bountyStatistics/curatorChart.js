@@ -26,7 +26,8 @@ function Chart({ curators, totalFiat }) {
       <DoughnutChart data={data} />
       {showDetail && (
         <ProposalsPopup
-          title="Curator Proposals"
+          role="Curator"
+          proposalOwner={curator.name}
           data={curator}
           onClose={() => setShowDetail(false)}
         />

@@ -65,7 +65,7 @@ function BarLabels({ dataItems }) {
       ))}
       {showDetail && (
         <ProposalsPopup
-          title={`${startCase(category.key)} Proposals`}
+          role={category.key}
           data={category}
           onClose={() => setShowDetail(false)}
         />

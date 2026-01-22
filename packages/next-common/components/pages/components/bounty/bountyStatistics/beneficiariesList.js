@@ -68,7 +68,8 @@ function BarLabels({ dataItems }) {
       ))}
       {showDetail && (
         <ProposalsPopup
-          title="Beneficiary Proposals"
+          role="Beneficiary"
+          proposalOwner={beneficiary.key}
           data={beneficiary}
           onClose={() => setShowDetail(false)}
         />
