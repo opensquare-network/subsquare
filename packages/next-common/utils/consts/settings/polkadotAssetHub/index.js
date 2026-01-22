@@ -22,7 +22,7 @@ const polkadotAssetHub = {
   value: name,
   name: "Asset Hub",
   ...polkadotCommonCfg,
-  blockTime: 12000,
+  blockTime: 6000,
   assethubMigration: polkadotAssethubMigration,
   endpoints: polkadotAssetHubNodes,
   avatar: ProjectIconPolkadotAssetHub,

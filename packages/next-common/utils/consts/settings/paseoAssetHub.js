@@ -20,7 +20,7 @@ const paseoAssetHub = {
   ...paseoCommonSettings,
   value: Chains.paseoAssetHub,
   name: "Asset Hub",
-  blockTime: 12000,
+  blockTime: 6000,
   assethubMigration: paseoAssethubMigration,
   description:
     "System parachain on Paseo network for creating and sending tokens and NFTs.",
