@@ -10,6 +10,7 @@ import { useAsync } from "react-use";
 import { backendApi } from "next-common/services/nextApi";
 import ItemsList from "./itemsList";
 import { usePost } from "next-common/context/post";
+import { AddressUser } from "next-common/components/user";
 
 export function PostTitle({ url, index, title, noLink, className }) {
   return (
@@ -26,7 +27,7 @@ export function PostTitle({ url, index, title, noLink, className }) {
   );
 }
 
-export default function PopupContent({ data }) {
+export default function PopupContent({ data, proposalOwner, role }) {
   const post = usePost();
   const parentBountyId = post.bountyIndex;
 
@@ -61,7 +62,11 @@ export default function PopupContent({ data }) {
 
   return (
     <>
-      <Summary totalFiat={data?.totalPayoutFiatValue || 0} />
+      <Summary
+        totalFiat={data?.totalPayoutFiatValue || 0}
+        role={role}
+        proposalOwner={proposalOwner}
+      />
       <ItemsList
         items={childBounties}
         loading={childBountiesLoading}
@@ -72,9 +77,14 @@ export default function PopupContent({ data }) {
   );
 }
 
-function Summary({ totalFiat }) {
+function Summary({ totalFiat, role, proposalOwner }) {
   return (
     <SummaryLayout>
+      {proposalOwner && (
+        <SummaryItem title={role} className="[&>div>div:last-child]:flex">
+          <AddressUser add={proposalOwner} className="text14Bold" />
+        </SummaryItem>
+      )}
       <SummaryItem title="Total" className="[&>div>div:last-child]:flex">
         <ValueDisplay value={toPrecision(totalFiat)} symbol="" prefix="$" />
       </SummaryItem>
