@@ -18,7 +18,7 @@ const kusamaAssetHub = {
   value: name,
   name: "Asset Hub",
   ...kusamaCommonCfg,
-  blockTime: 12000,
+  blockTime: 6000,
   assethubMigration: kusamaAssethubMigration,
   endpoints: kusamaAssetHubNodes,
   avatar: ProjectIconKusamaAssethub,
