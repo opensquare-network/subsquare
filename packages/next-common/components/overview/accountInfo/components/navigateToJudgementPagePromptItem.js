@@ -25,7 +25,7 @@ function useNavigateToJudgementPagePromptItem() {
 
   const needAction =
     myJudgementRequest &&
-    Object.values(myJudgementRequest.verification).some(
+    Object.values(myJudgementRequest.verifications).some(
       (verified) => verified !== true,
     );
 
