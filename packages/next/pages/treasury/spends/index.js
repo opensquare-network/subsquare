@@ -9,6 +9,7 @@ import { DropdownUrlFilterProvider } from "next-common/components/dropdownFilter
 import { upperFirst } from "lodash-es";
 import businessCategory from "next-common/utils/consts/business/category";
 import TreasurySpendsSummary from "next-common/components/summary/treasurySpendsSummary";
+import TreasurySpendsPendingNotice from "next-common/components/treasury/spends/treasurySpendsPendingNotice";
 
 export default function ProposalsPage({ spends: pagedSpends, chain }) {
   const { items, total, page, pageSize } = pagedSpends;
@@ -24,6 +25,7 @@ export default function ProposalsPage({ spends: pagedSpends, chain }) {
         seoInfo={seoInfo}
         title={category}
         summary={<TreasurySpendsSummary />}
+        summaryFooter={<TreasurySpendsPendingNotice />}
       >
         <DropdownUrlFilterProvider
           defaultFilterValues={{ status: "" }}
