@@ -14,6 +14,8 @@ const disabledApiRoutes = [
   /^\/api\/overview/,
 ];
 
+const permanentDisabledApiRoutes = [/^\/api\/gov2\/tracks/];
+
 function trimEndSlash(url) {
   return url.replace(/\/+$/, "");
 }
@@ -27,6 +29,13 @@ export function isApiDisabled(req) {
   );
   if (!isDisabledApi) {
     return false;
+  }
+
+  const isPermanentlyDisabled = permanentDisabledApiRoutes.some((route) =>
+    req.url?.match?.(route),
+  );
+  if (isPermanentlyDisabled) {
+    return true;
   }
 
   const isRequestFromSubsquare = req.headers?.referer?.startsWith?.(
