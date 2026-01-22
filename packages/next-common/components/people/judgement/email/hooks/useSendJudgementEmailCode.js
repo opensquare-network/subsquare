@@ -26,7 +26,7 @@ export default function useSendJudgementEmailCode({ who, setError, onSent }) {
       }
 
       const { error: sendError } = await nextApi.post(
-        "people/judgement/auth/email/send-code",
+        "people/verifications/auth/email/send-code",
         { who },
       );
       if (sendError) {

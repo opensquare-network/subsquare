@@ -33,7 +33,7 @@ export default function useVerifyJudgementEmailCode({
       }
 
       const { error: verifyError } = await nextApi.post(
-        "people/judgement/auth/email/verify-code",
+        "people/verifications/auth/email/verify-code",
         { who, code },
       );
       if (verifyError) {

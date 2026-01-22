@@ -8,8 +8,8 @@ export default function Github({ request }) {
 
   const { loading, connected, openAuthWindow } = usePeopleJudgementSocialAuth({
     provider: PeopleSocialType.github,
-    authUrlPath: "people/judgement/auth/github/auth-url",
-    redirectPath: "/people/judgement/auth/github",
+    authUrlPath: "people/verifications/auth/github/auth-url",
+    redirectPath: "/people/verifications/auth/github",
     isVerified,
   });
 

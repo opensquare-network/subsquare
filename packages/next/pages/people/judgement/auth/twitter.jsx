@@ -13,7 +13,7 @@ export default function Page({ code, state, error, errorDescription }) {
       <PeopleJudgementAuthCallbackPage
         provider={PeopleSocialType.twitter}
         providerLabel="Twitter"
-        backendCallbackPath="people/judgement/auth/twitter/callback"
+        backendCallbackPath="people/verifications/auth/twitter/callback"
         code={code}
         state={state}
         error={error}

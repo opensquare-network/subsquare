@@ -25,8 +25,8 @@ export function getPeopleMenu(isAdmin) {
         icon: <MenuAuthorities />,
         extraMatchNavMenuActivePathnames: [
           "/people/judgement",
-          "/people/judgement/auth/discord",
-          "/people/judgement/auth/twitter",
+          "/people/verifications/auth/discord",
+          "/people/verifications/auth/twitter",
         ],
       },
       {

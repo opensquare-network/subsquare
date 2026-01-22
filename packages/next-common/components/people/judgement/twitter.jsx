@@ -8,8 +8,8 @@ export default function Twitter({ request }) {
 
   const { loading, connected, openAuthWindow } = usePeopleJudgementSocialAuth({
     provider: PeopleSocialType.twitter,
-    authUrlPath: "people/judgement/auth/twitter/auth-url",
-    redirectPath: "/people/judgement/auth/twitter",
+    authUrlPath: "people/verifications/auth/twitter/auth-url",
+    redirectPath: "/people/verifications/auth/twitter",
     isVerified,
   });
 

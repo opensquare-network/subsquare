@@ -30,7 +30,7 @@ export default function useStartElementVerification({
       }
 
       const { result, error: startError } = await nextApi.post(
-        "people/judgement/auth/element/start",
+        "people/verifications/auth/element/start",
         { who },
       );
       if (startError) {

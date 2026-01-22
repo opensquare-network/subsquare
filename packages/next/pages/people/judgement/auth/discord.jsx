@@ -13,7 +13,7 @@ export default function Page({ code, state, error, errorDescription }) {
       <PeopleJudgementAuthCallbackPage
         provider={PeopleSocialType.discord}
         providerLabel="Discord"
-        backendCallbackPath="people/judgement/auth/discord/callback"
+        backendCallbackPath="people/verifications/auth/discord/callback"
         code={code}
         state={state}
         error={error}

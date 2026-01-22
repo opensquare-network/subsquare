@@ -7,8 +7,8 @@ export default function Discord({ request }) {
   const isVerified = request?.verifications?.discord === true;
   const { loading, connected, openAuthWindow } = usePeopleJudgementSocialAuth({
     provider: PeopleSocialType.discord,
-    authUrlPath: "people/judgement/auth/discord/auth-url",
-    redirectPath: "/people/judgement/auth/discord",
+    authUrlPath: "people/verifications/auth/discord/auth-url",
+    redirectPath: "/people/verifications/auth/discord",
     isVerified,
   });
 
