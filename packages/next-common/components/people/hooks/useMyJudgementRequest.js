@@ -11,7 +11,7 @@ export default function useMyJudgementRequest() {
     }
 
     const { result } = await backendApi.fetch(
-      `/people/identities/${realAddress}/active-request`,
+      `people/identities/${realAddress}/active-request`,
     );
     if (result) {
       return result || null;

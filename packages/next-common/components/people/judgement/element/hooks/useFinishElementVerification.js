@@ -21,7 +21,7 @@ export default function useFinishElementVerification({
     setVerifying(true);
     try {
       const { result, error: startError } = await nextApi.fetch(
-        `/people/identities/${who}/active-request`,
+        `people/identities/${who}/active-request`,
       );
       if (startError) {
         const message = startError.message || "Failed to start verification";
