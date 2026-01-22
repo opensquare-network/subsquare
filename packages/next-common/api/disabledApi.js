@@ -1,6 +1,6 @@
 const disabledApiRoutes = [
-  { route: /^\/api\/gov2\/referendums/, permanent: true },
-  { route: /^\/api\/gov2\/tracks/ },
+  { route: /^\/api\/gov2\/referendums/ },
+  { route: /^\/api\/gov2\/tracks/, permanent: true },
   { route: /^\/api\/democracy/ },
   { route: /^\/api\/treasury/ },
   { route: /^\/api\/motions/ }, // Council Motions
