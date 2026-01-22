@@ -45,6 +45,7 @@ function BarLabels({ dataItems }) {
     () =>
       dataItems.map((item) => ({
         data: item,
+        name: item.key,
         label: (
           <AddressUser add={item.key} className="text12Medium" noEvent={true} />
         ),
