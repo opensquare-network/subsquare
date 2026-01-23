@@ -10,7 +10,7 @@ import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import ReferendumMetadata from "next-common/components/democracy/metadata";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import useMaybeFetchElectorate from "next-common/utils/hooks/referenda/useMaybeFetchElectorate";
-import useFetchVotes from "next-common/utils/hooks/referenda/useFetchVotes";
+import useFetchVotesWithOngoing from "next-common/utils/hooks/referenda/useFetchVotesWithOngoing";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
 import { useDispatch, useSelector } from "react-redux";
@@ -50,7 +50,7 @@ function ReferendumContent({ timelineData, setTimelineData }) {
 
   useMaybeFetchElectorate(post?.onchainData);
   useDemocracyVotesFromServer(post.referendumIndex);
-  useFetchVotes(post?.onchainData);
+  useFetchVotesWithOngoing(post?.onchainData);
 
   useEffect(() => {
     return () => dispatch(clearVotes());
