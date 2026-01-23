@@ -64,6 +64,16 @@ export async function subStorageRpc(api, storage, args = [], callback) {
     );
   }
 
+  if (!api.rpc) {
+    throw new Error(
+      "API RPC interface is not available, check endpoint connection",
+    );
+  }
+
+  if (!api.rpc.state || !api.rpc.state.subscribeStorage) {
+    throw new Error("API RPC state subscription is not available");
+  }
+
   const storageKey = storage.key(...args);
 
   const unsubscribe = await api.rpc.state.subscribeStorage(
