@@ -41,6 +41,7 @@ export default function useChartData({ dataItems, totalFiat }) {
           percentage: itemPercentages,
         },
       ],
+      rawData: dataItems,
     };
   }, [dataItems, totalFiat, neutral100]);
 

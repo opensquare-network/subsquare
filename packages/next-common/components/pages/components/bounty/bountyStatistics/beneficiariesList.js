@@ -8,6 +8,7 @@ import { useElementRect } from "next-common/hooks/useElementRect";
 import { AddressUser } from "next-common/components/user";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import Bars from "./barChart/bars";
+import { BeneficiaryTooltipContent } from "./beneficiaryTooltipContent";
 
 const ProposalsPopup = dynamicPopup(() => import("./proposalsPopup"));
 
@@ -18,6 +19,7 @@ export default function BeneficiariesList() {
       sortBy(
         Object.entries(statistics.beneficiaries).map(([key, value]) => ({
           key,
+          name: key,
           ...value,
         })),
         (item) => -item.totalPayoutFiatValue,
@@ -37,7 +39,7 @@ export default function BeneficiariesList() {
   );
 }
 
-function BarLabels({ dataItems }) {
+function BarLabels({ dataItems, TooltipContent }) {
   const [showDetail, setShowDetail] = useState(false);
   const [beneficiary, setCategory] = useState({});
 
@@ -64,6 +66,7 @@ function BarLabels({ dataItems }) {
             setCategory(label.data);
             setShowDetail(true);
           }}
+          TooltipContent={TooltipContent}
         />
       ))}
       {showDetail && (
@@ -85,7 +88,10 @@ function Chart({ dataItems, totalFiat }) {
   return (
     <div className="flex items-start gap-x-2">
       <div ref={labelsRef} className="pb-2" style={{ width: "140px" }}>
-        <BarLabels dataItems={dataItems} />
+        <BarLabels
+          dataItems={dataItems}
+          TooltipContent={BeneficiaryTooltipContent}
+        />
       </div>
       <div
         className="flex-1"
