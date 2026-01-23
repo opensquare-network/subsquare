@@ -125,6 +125,7 @@ function ReferendumContentWithNullGuard() {
     <ReferendumContent
       timelineData={timelineData}
       setTimelineData={setTimelineData}
+      key={id}
     />
   );
 }
