@@ -30,7 +30,7 @@ const ChildBountyTitleColumnsDef = createTitleColumnDef({
 });
 
 export const RequestColumnsDef = {
-  name: "Request",
+  name: "Payout",
   style: { textAlign: "right", width: "100px" },
   render: (item) => (
     <ValueDisplay
