@@ -5,6 +5,7 @@ import DoughnutChart from "./doughnut/doughnutChart";
 import useChartData from "./doughnut/useChartData";
 import Indicators from "./indicators";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import { BeneficiaryTooltipContent } from "./beneficiaryTooltipContent";
 
 const ProposalsPopup = dynamicPopup(() => import("./proposalsPopup"));
 
@@ -22,6 +23,7 @@ function Chart({ curators, totalFiat }) {
           setShowDetail(true);
           setCurator(curators[index]);
         }}
+        TooltipContent={BeneficiaryTooltipContent}
       />
       <DoughnutChart data={data} />
       {showDetail && (
