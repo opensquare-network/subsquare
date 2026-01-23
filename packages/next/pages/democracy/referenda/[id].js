@@ -74,7 +74,7 @@ function ReferendumContentContentWithNullGuard() {
     return <CheckUnFinalized id={id} />;
   }
 
-  return <ReferendumContent />;
+  return <ReferendumContent key={id} />;
 }
 
 function DemocracyReferendumPageImpl() {
