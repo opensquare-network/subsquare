@@ -7,10 +7,10 @@ import {
 import { useOnchainData } from "next-common/context/post";
 import { isNil } from "lodash-es";
 import { partition } from "lodash-es";
-import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
+import { useContextApi } from "next-common/context/api";
 
 function useSubFellowshipVotes(pollIndex) {
-  const api = useConditionalContextApi();
+  const api = useContextApi();
   const [fellowshipVotes, setFellowshipVotes] = useState({
     allAye: [],
     allNay: [],
