@@ -33,8 +33,6 @@ import useSubDemocracyReferendumStatus from "next-common/hooks/democracy/useSubD
 import useSetReferendumStatus from "next-common/hooks/democracy/useSetReferendumStatus";
 import { referendumStatusSelector } from "next-common/store/reducers/referendumSlice";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
-import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
-import { useDemocracyReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 
 function ReferendumContent({ timelineData, setTimelineData }) {
   const dispatch = useDispatch();
@@ -119,19 +117,15 @@ function ReferendumContentWithNullGuard() {
   const { id } = usePageProps();
   const [timelineData, setTimelineData] = useState([]);
 
-  const indexer = useDemocracyReferendumVotingFinishIndexer(timelineData);
-
   if (!post) {
     return <CheckUnFinalized id={id} />;
   }
 
   return (
-    <MigrationConditionalApiProvider indexer={indexer}>
-      <ReferendumContent
-        timelineData={timelineData}
-        setTimelineData={setTimelineData}
-      />
-    </MigrationConditionalApiProvider>
+    <ReferendumContent
+      timelineData={timelineData}
+      setTimelineData={setTimelineData}
+    />
   );
 }
 
