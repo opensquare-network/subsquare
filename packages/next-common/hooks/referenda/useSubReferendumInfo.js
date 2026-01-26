@@ -20,7 +20,7 @@ export default function useSubReferendumInfo(pallet = "referenda") {
   const api = useContextApi();
 
   useEffect(() => {
-    if (!api || votingFinishHeight || !api?.query?.referenda) {
+    if (!api || votingFinishHeight || !api?.query?.[pallet]) {
       dispatch(setReferendaReferendumInfo(onchain.info));
       return () => dispatch(clearReferendaReferendumInfo());
     }
