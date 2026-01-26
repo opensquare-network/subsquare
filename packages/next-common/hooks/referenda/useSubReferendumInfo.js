@@ -8,7 +8,7 @@ import {
   setReferendaReferendumInfo,
 } from "../../store/reducers/referenda/info";
 import { triggerFetchVotes } from "next-common/store/reducers/referenda/votes";
-import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
+import { useContextApi } from "next-common/context/api";
 
 export default function useSubReferendumInfo(pallet = "referenda") {
   const onchain = useOnchainData();
@@ -17,10 +17,10 @@ export default function useSubReferendumInfo(pallet = "referenda") {
   const dispatch = useDispatch();
   const votingFinishHeight = useReferendumVotingFinishHeight();
   const isMounted = useMountedState();
-  const api = useConditionalContextApi();
+  const api = useContextApi();
 
   useEffect(() => {
-    if (!api || votingFinishHeight || !api?.query?.referenda) {
+    if (!api || votingFinishHeight || !api?.query?.[pallet]) {
       dispatch(setReferendaReferendumInfo(onchain.info));
       return () => dispatch(clearReferendaReferendumInfo());
     }
