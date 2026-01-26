@@ -35,12 +35,10 @@ function useBountyCuratorFromServer() {
   const { meta } = useOnchainData();
   const status = meta?.status || {};
 
-  if (status.active) {
-    return status.active.curator;
-  } else if (status.pendingPayout) {
-    return status.pendingPayout.curator;
-  }
-  return null;
+  const statusItemWithCurator = Object.values(status).find(
+    (item) => item?.curator,
+  );
+  return statusItemWithCurator?.curator ?? null;
 }
 
 function BountyContent() {

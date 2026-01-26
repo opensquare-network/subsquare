@@ -8,10 +8,10 @@ const ClaimPopup = dynamicPopup(() => import("./popup"));
 
 export default function Claim() {
   const onChain = useOnchainData();
-  const { bountyIndex } = onChain;
+  const { bountyIndex, meta } = onChain;
   const [showPopup, setShowPopup] = useState(false);
   const chainHeight = useAhmLatestHeight();
-  const status = onChain.meta?.status;
+  const { status } = meta || {};
 
   if (!status || !status?.pendingPayout) {
     return null;
