@@ -7,24 +7,16 @@ import NewChildBountyButton from "next-common/components/treasury/bounty/newChil
 import BountyProposeCuratorButton from "next-common/components/treasury/bounty/proposeCurator/button";
 import BountyAcceptCuratorButton from "next-common/components/treasury/bounty/acceptCurator/button";
 import BountySidebarActionTip from "next-common/components/treasury/common/bountySidebarActionTip";
-import useSubStorage from "next-common/hooks/common/useSubStorage";
-import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
+import { has } from "lodash-es";
 
 function BountySidebar() {
-  const { address, bountyIndex } = useOnchainData();
-  const api = useConditionalContextApi();
-  const { result } = useSubStorage("bounties", "bounties", [bountyIndex], {
-    api,
-  });
-
+  const { address, bountyIndex, meta } = useOnchainData();
+  const status = meta?.status || {};
   if (!address) {
     return null;
   }
 
-  const { status } = (result?.isSome && result?.unwrap?.()) || {};
-
-  const showActionTip =
-    status?.isCuratorProposed || status?.isPendingPayout || status?.isActive;
+  const showActionTip = ["curatorProposed", "pendingPayout", "active"].find(item => has(status, item));
 
   return (
     <RightBarWrapper>

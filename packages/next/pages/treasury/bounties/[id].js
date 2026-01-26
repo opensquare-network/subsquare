@@ -3,7 +3,11 @@ import { backendApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import { getBannerUrl } from "next-common/utils/banner";
-import { PostProvider, usePost } from "next-common/context/post";
+import {
+  PostProvider,
+  useOnchainData,
+  usePost,
+} from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/pages/components/bounty/checkUnFinalized";
 import BountyDetail from "next-common/components/detail/treasury/bounty";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
@@ -17,7 +21,6 @@ import BountySidebar from "next-common/components/pages/components/bounty/sideba
 import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
 import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 import { CuratorProvider } from "next-common/context/treasury/bounties";
-import { useBountyStatus } from "next-common/components/treasury/bounty/useBountyStatus";
 import { useCuratorMultisigAddress } from "next-common/hooks/treasury/bounty/useCuratorMultisigAddress";
 import { TreasuryProvider } from "next-common/context/treasury";
 import {
@@ -27,15 +30,15 @@ import {
 import TreasuryBountiesDetailMultiTabs from "next-common/components/pages/components/tabs/treasuryBountiesDetailMultiTabs";
 import Appendants from "next-common/components/appendants/bounty";
 import { BountyAppendantsProvider } from "next-common/context/bountyAppendants";
-import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 
-function useBountyCurator(bountyIndex) {
-  const status = useBountyStatus(bountyIndex);
-  if (status?.isActive) {
-    return status.asActive.curator.toString();
-  }
-  if (status?.isPendingPayout) {
-    return status.asPendingPayout.curator.toString();
+function useBountyCuratorFromServer() {
+  const { meta } = useOnchainData();
+  const status = meta?.status || {};
+
+  if (status.active) {
+    return status.active.curator;
+  } else if (status.pendingPayout) {
+    return status.pendingPayout.curator;
   }
   return null;
 }
@@ -46,26 +49,24 @@ function BountyContent() {
 
   useSubscribePostDetail(bountyIndex);
 
-  const curator = useBountyCurator(bountyIndex);
+  const curator = useBountyCuratorFromServer();
   const curatorParams = useCuratorMultisigAddress(curator);
 
   return (
-    <MigrationConditionalApiProvider indexer={detail?.indexer}>
-      <OffChainArticleActionsProvider>
-        <OffChainCommentActionsProvider>
-          <CuratorProvider curator={curator} params={curatorParams}>
-            <ContentWithComment>
-              <BountyAppendantsProvider>
-                <BountyDetail />
-                <Appendants />
-              </BountyAppendantsProvider>
-              <BountySidebar />
-              <TreasuryBountiesDetailMultiTabs />
-            </ContentWithComment>
-          </CuratorProvider>
-        </OffChainCommentActionsProvider>
-      </OffChainArticleActionsProvider>
-    </MigrationConditionalApiProvider>
+    <OffChainArticleActionsProvider>
+      <OffChainCommentActionsProvider>
+        <CuratorProvider curator={curator} params={curatorParams}>
+          <ContentWithComment>
+            <BountyAppendantsProvider>
+              <BountyDetail />
+              <Appendants />
+            </BountyAppendantsProvider>
+            <BountySidebar />
+            <TreasuryBountiesDetailMultiTabs />
+          </ContentWithComment>
+        </CuratorProvider>
+      </OffChainCommentActionsProvider>
+    </OffChainArticleActionsProvider>
   );
 }
 
