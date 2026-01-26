@@ -27,8 +27,6 @@ import { OffChainCommentActionsProvider } from "next-common/noSima/context/comme
 import { ReferendaPalletProvider } from "next-common/context/referenda/pallet";
 import useSubReferendumInfo from "next-common/hooks/referenda/useSubReferendumInfo";
 import AmbassadorReferendaDetailMultiTabs from "next-common/components/pages/components/tabs/ambassadorReferendaDetailMultiTabs";
-import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
-import { useReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 
 function AmbassadorContent() {
   const post = usePost();
@@ -72,20 +70,16 @@ function ReferendumPageWithPost() {
   const track = useTrack();
   const post = usePost();
 
-  const indexer = useReferendumVotingFinishIndexer();
-
   return (
-    <MigrationConditionalApiProvider indexer={indexer}>
-      <ReferendumPageCommon
-        breadcrumbs={
-          <AmbassadorBreadcrumb
-            track={track}
-            referendumIndex={post?.referendumIndex}
-          />
-        }
-        postContent={<AmbassadorContent />}
-      />
-    </MigrationConditionalApiProvider>
+    <ReferendumPageCommon
+      breadcrumbs={
+        <AmbassadorBreadcrumb
+          track={track}
+          referendumIndex={post?.referendumIndex}
+        />
+      }
+      postContent={<AmbassadorContent />}
+    />
   );
 }
 
