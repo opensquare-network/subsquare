@@ -80,16 +80,34 @@ const ListMore = styled(SubLink)`
   margin-top: 16px !important;
 `;
 
-function SecondButton({ seconds, setShowPopup }) {
+function SecondButton({
+  proposalIndex,
+  depositRequired,
+  seconds,
+  setTriggerUpdate,
+}) {
+  const [showPopup, setShowPopup] = useState(false);
+
   const maxDeposits = useMaxDeposits();
   const reachedMaxDeposits = maxDeposits <= seconds.length;
   if (reachedMaxDeposits) {
     return <Description>Has reached max deposits.</Description>;
   }
   return (
-    <PrimaryButton className="w-full" onClick={() => setShowPopup(true)}>
-      Second
-    </PrimaryButton>
+    <>
+      <PrimaryButton className="w-full" onClick={() => setShowPopup(true)}>
+        Second
+      </PrimaryButton>
+      {showPopup && (
+        <SecondPopup
+          proposalIndex={proposalIndex}
+          depositorUpperBound={seconds.length}
+          depositRequired={depositRequired}
+          onClose={() => setShowPopup(false)}
+          onInBlock={() => setTriggerUpdate(Date.now())}
+        />
+      )}
+    </>
   );
 }
 
@@ -98,7 +116,6 @@ export default function Second({
   hasTurnIntoReferendum,
   hasCanceled,
 }) {
-  const [showPopup, setShowPopup] = useState(false);
   const [expand, setExpand] = useState(false);
 
   const [triggerUpdate, setTriggerUpdate] = useState(0);
@@ -163,7 +180,14 @@ export default function Second({
   } else if (hasCanceled) {
     action = <Description>This proposal has been canceled.</Description>;
   } else {
-    action = <SecondButton seconds={seconds} setShowPopup={setShowPopup} />;
+    action = (
+      <SecondButton
+        proposalIndex={proposalIndex}
+        depositRequired={depositRequired}
+        seconds={seconds}
+        setTriggerUpdate={setTriggerUpdate}
+      />
+    );
   }
 
   const totalSeconds = isLoadingSeconds ? (
@@ -179,26 +203,15 @@ export default function Second({
   );
 
   return (
-    <>
-      <RightBarWrapper>
-        <SecondaryCardDetail>
-          <Title className="!px-0">
-            <div>Second</div>
-            <div>{totalSeconds}</div>
-          </Title>
-          {secondsList}
-        </SecondaryCardDetail>
-        {!node?.hideActionButtons && action}
-      </RightBarWrapper>
-      {showPopup && (
-        <SecondPopup
-          proposalIndex={proposalIndex}
-          depositorUpperBound={seconds.length}
-          depositRequired={depositRequired}
-          onClose={() => setShowPopup(false)}
-          onInBlock={() => setTriggerUpdate(Date.now())}
-        />
-      )}
-    </>
+    <RightBarWrapper>
+      <SecondaryCardDetail>
+        <Title className="!px-0">
+          <div>Second</div>
+          <div>{totalSeconds}</div>
+        </Title>
+        {secondsList}
+      </SecondaryCardDetail>
+      {!node?.hideActionButtons && action}
+    </RightBarWrapper>
   );
 }
