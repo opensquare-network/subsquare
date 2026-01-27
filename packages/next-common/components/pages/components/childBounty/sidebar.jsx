@@ -7,23 +7,13 @@ import { useOnchainData } from "next-common/context/post";
 import ChildBountySidebarBalance from "next-common/components/treasury/childBounty/balance";
 import ProposeCurator from "next-common/components/treasury/childBounty/proposeCurator";
 import BountyAcceptCuratorButton from "next-common/components/treasury/bounty/acceptCurator/button";
-import useSubStorage from "next-common/hooks/common/useSubStorage";
 import BountySidebarActionTip from "next-common/components/treasury/common/bountySidebarActionTip";
-import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
+import { has } from "lodash-es";
 
 function ChildBountySidebarActionTip() {
-  const { parentBountyId, index: childBountyId } = useOnchainData();
-  const api = useConditionalContextApi();
-  const { result } = useSubStorage(
-    "childBounties",
-    "childBounties",
-    [parentBountyId, childBountyId],
-    { api },
-  );
-
-  const { status } = (result?.isSome && result?.unwrap?.()) || {};
-  const showActionTip =
-    status?.isCuratorProposed || status?.isPendingPayout || status?.isAdded;
+  const { meta } = useOnchainData();
+  const { status = {} } = meta || {};
+  const showActionTip = ["curatorProposed", "pendingPayout", "added"].find(item => has(status, item));
   return showActionTip ? <BountySidebarActionTip className="!mt-4" /> : null;
 }
 

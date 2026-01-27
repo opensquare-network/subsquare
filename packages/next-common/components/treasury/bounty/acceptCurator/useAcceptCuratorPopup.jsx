@@ -6,7 +6,7 @@ import { useOnchainData } from "next-common/context/post";
 import { toPrecision } from "next-common/utils";
 import { useCallback, useState } from "react";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
-import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
+import { useContextApi } from "next-common/context/api";
 
 export function useAcceptCuratorPopup(pallet = "bounties", params = []) {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,7 +34,7 @@ function PopupContent({ pallet = "bounties", params = [] } = {}) {
   const { symbol, decimals } = useChainSettings();
   const { meta } = onchainData;
   const { curatorDeposit } = meta || {};
-  const api = useConditionalContextApi();
+  const api = useContextApi();
 
   const getTxFunc = useCallback(() => {
     if (!api?.tx?.[pallet]) {

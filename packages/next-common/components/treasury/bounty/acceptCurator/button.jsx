@@ -1,35 +1,27 @@
-import useSubStorage from "next-common/hooks/common/useSubStorage";
 import PrimaryButton from "next-common/lib/button/primary";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useAcceptCuratorPopup } from "./useAcceptCuratorPopup";
 import Tooltip from "next-common/components/tooltip";
 import { isSameAddress } from "next-common/utils";
 import AddressUser from "next-common/components/user/addressUser";
-import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
+import { useOnchainData } from "next-common/context/post";
+import { has } from "lodash-es";
 
 export default function BountyAcceptCuratorButton({
   pallet = "bounties",
   params = [],
 } = {}) {
-  const storage = pallet;
+  const { meta } = useOnchainData();
+  const { status = {} } = meta || {};
 
   const address = useRealAddress();
   const { showPopupFn, component } = useAcceptCuratorPopup(pallet, params);
 
-  const api = useConditionalContextApi();
-  const { result, loading } = useSubStorage(pallet, storage, params, { api });
-
-  if (loading || result?.isNone) {
+  if (!has(status, "curatorProposed")) {
     return null;
   }
 
-  const { status } = result?.unwrap?.() || {};
-
-  if (!status?.isCuratorProposed) {
-    return null;
-  }
-
-  const curator = status?.asCuratorProposed?.curator?.toString();
+  const curator = status?.curatorProposed?.curator;
 
   const disabled = !isSameAddress(curator, address);
 

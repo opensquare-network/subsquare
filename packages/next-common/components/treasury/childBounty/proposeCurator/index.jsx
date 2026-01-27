@@ -4,43 +4,14 @@ import PrimaryButton from "next-common/lib/button/primary";
 import { useOnchainData } from "next-common/context/post";
 import Tooltip from "next-common/components/tooltip";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import useSubStorage from "next-common/hooks/common/useSubStorage";
 import { isSameAddress } from "next-common/utils";
-import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
+import { has } from "lodash-es";
+import { usePageProps } from "next-common/context/page";
 
-function useSubParentBountyData(bountyIndex) {
-  const api = useConditionalContextApi();
-  const { result, loading } = useSubStorage(
-    "bounties",
-    "bounties",
-    [bountyIndex],
-    { api },
-  );
-  const data = result?.toJSON();
 
-  return {
-    status: data?.status,
-    loading,
-  };
-}
-
-function useSubChildBountyIsAdded(parentBountyId, index) {
-  const api = useConditionalContextApi();
-  const { loading, result: onChainStorage } = useSubStorage(
-    "childBounties",
-    "childBounties",
-    [parentBountyId, index],
-    { api },
-  );
-
-  if (loading || !onChainStorage?.isSome) {
-    return false;
-  }
-  const { status } = onChainStorage.toJSON();
-  if (!status || !("added" in status)) {
-    return false;
-  }
-  return true;
+function getParentBountyStatus(parentBountyData) {
+  const { onchainData } = parentBountyData ?? {};
+  return onchainData?.meta?.status || {};
 }
 
 function isParentBountyCurator(status = {}, address) {
@@ -58,17 +29,18 @@ export default function ProposeCurator() {
   const [disabledTooltip, setDisabledTooltip] = useState("");
   const { showPopupFn, component: ProposeCuratorPopup } =
     useProposeCuratorPopup();
-  const { parentBountyId, index } = useOnchainData();
-  const { status, loading } = useSubParentBountyData(parentBountyId);
-  const isAddedState = useSubChildBountyIsAdded(parentBountyId, index);
+  const { meta } = useOnchainData();
+  const { parentBounty } = usePageProps();
+  const { status = {} } = meta || {};
+  const isAddedState = has(status, "added");
 
   // The dispatch origin for this call must be curator of parent bounty.
   useEffect(() => {
-    if (loading) {
+    if (!parentBounty) {
       return;
     }
-
-    const isParentCurator = isParentBountyCurator(status, address);
+    const parentBountyStatus = getParentBountyStatus(parentBounty);
+    const isParentCurator = isParentBountyCurator(parentBountyStatus, address);
     setIsDisabled(!isParentCurator);
 
     if (!isParentCurator) {
@@ -76,7 +48,7 @@ export default function ProposeCurator() {
         "Only parent bounty curator can propose a curator";
       setDisabledTooltip(disabledTooltipContent);
     }
-  }, [loading, address, status]);
+  }, [address, parentBounty]);
 
   if (!address || !isAddedState) {
     return null;
