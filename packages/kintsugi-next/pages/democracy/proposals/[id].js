@@ -31,7 +31,6 @@ function PublicProposalContent() {
   useSubscribePostDetail(post?.proposalIndex);
 
   const publicProposal = post?.onchainData;
-  const proposalIndex = publicProposal?.proposalIndex;
   const state = publicProposal?.state?.state;
   const isEnded = [
     "Tabled",
@@ -40,8 +39,6 @@ function PublicProposalContent() {
     "Cleared",
     "Removed",
   ].includes(state);
-  const hasTurnIntoReferendum = !isNil(publicProposal.referendumIndex);
-  const hasCanceled = ["Canceled", "Cleared", "Removed"].includes(state);
 
   const timeline = publicProposal?.timeline;
   const indexer = timeline?.[timeline?.length - 1]?.indexer || {};
@@ -62,11 +59,7 @@ function PublicProposalContent() {
       <ContentWithComment>
         <DetailItem />
         <MigrationConditionalApiProvider indexer={lastIndexer}>
-          <Second
-            proposalIndex={proposalIndex}
-            hasTurnIntoReferendum={hasTurnIntoReferendum}
-            hasCanceled={hasCanceled}
-          />
+          <Second />
         </MigrationConditionalApiProvider>
         <DetailMultiTabs
           call={
