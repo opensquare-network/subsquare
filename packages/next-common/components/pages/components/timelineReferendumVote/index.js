@@ -21,17 +21,14 @@ function TimelineOngoingReferendumVoteImpl({ referendum }) {
 function TimelineEndedReferendumVoteImpl({ referendum }) {
   const referendumStatus =
     referendum?.status || referendum?.info?.ongoing || referendum?.meta;
-
-  const tally = referendumStatus?.tally;
   const electorate = referendumStatus?.tally?.electorate;
-  const threshold = referendumStatus?.threshold;
 
   return (
     <VoteBar
       thin={true}
-      tally={tally}
+      tally={referendumStatus?.tally}
       electorate={electorate}
-      threshold={threshold}
+      threshold={referendumStatus?.threshold}
     />
   );
 }
