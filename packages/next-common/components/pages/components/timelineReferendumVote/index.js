@@ -1,11 +1,11 @@
 import VoteBar from "next-common/components/referenda/voteBar";
-import useMaybeFetchReferendumStatus from "./useMaybeFetchReferendumStatus";
+import useReferendumStatus from "./useReferendumStatus";
 import useMaybeFetchElectorate from "./useMaybeFetchElectorate";
 import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 import extractVoteInfo from "next-common/utils/democracy/referendum";
 
-function TimelineReferendumVoteImpl({ referendum }) {
-  const referendumStatus = useMaybeFetchReferendumStatus(referendum);
+function TimelineOngoingReferendumVoteImpl({ referendum }) {
+  const referendumStatus = useReferendumStatus(referendum);
   const electorate = useMaybeFetchElectorate(referendumStatus);
 
   return (
@@ -18,11 +18,36 @@ function TimelineReferendumVoteImpl({ referendum }) {
   );
 }
 
+function TimelineEndedReferendumVoteImpl({ referendum }) {
+  const referendumStatus =
+    referendum?.status || referendum?.info?.ongoing || referendum?.meta;
+
+  const tally = referendumStatus?.tally;
+  const electorate = referendumStatus?.tally?.electorate;
+  const threshold = referendumStatus?.threshold;
+
+  return (
+    <VoteBar
+      thin={true}
+      tally={tally}
+      electorate={electorate}
+      threshold={threshold}
+    />
+  );
+}
+
 export default function TimelineReferendumVote({ referendum }) {
-  const { voteFinishedIndexer } = extractVoteInfo(referendum?.timeline);
+  const { voteFinished, voteFinishedIndexer } = extractVoteInfo(
+    referendum?.timeline,
+  );
+
+  if (voteFinished) {
+    return <TimelineEndedReferendumVoteImpl referendum={referendum} />;
+  }
+
   return (
     <MigrationConditionalApiProvider indexer={voteFinishedIndexer}>
-      <TimelineReferendumVoteImpl referendum={referendum} />
+      <TimelineOngoingReferendumVoteImpl referendum={referendum} />
     </MigrationConditionalApiProvider>
   );
 }
