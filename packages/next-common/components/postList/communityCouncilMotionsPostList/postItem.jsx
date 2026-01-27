@@ -20,8 +20,10 @@ import {
 } from "next-common/components/postList/common";
 import Divider from "next-common/components/styled/layout/divider";
 import { CollectiveTag } from "next-common/components/tags/state/collective";
+import { getMotionStateArgs } from "next-common/utils/collective/result";
 
 export default function PostItem({ data }) {
+  const stateArgs = getMotionStateArgs(data.status);
   return (
     <Wrapper>
       <ContentWrapper>
@@ -40,7 +42,7 @@ export default function PostItem({ data }) {
             <PostItemMalicious isMalicious={data?.isMalicious} />
             <PostItemAISummary data={data} />
           </Footer>
-          <CollectiveTag state={data.status} />
+          <CollectiveTag state={data.status} args={stateArgs} />
         </FooterWrapper>
       </ContentWrapper>
       <PostItemBanner bannerCid={data?.bannerCid} />
