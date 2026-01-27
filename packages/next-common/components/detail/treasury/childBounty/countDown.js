@@ -1,11 +1,11 @@
 import React from "react";
 import { NoticeWrapper } from "../../../styled/containers/titleContainer";
 import TreasuryCountDown from "../../../treasury/common/countdown";
-import useChainOrScanHeight from "next-common/hooks/height";
+import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
 import { isNil } from "lodash-es";
 
 export default function ChildBountyCountDown({ data = {} }) {
-  const chainHeight = useChainOrScanHeight();
+  const chainHeight = useAhmLatestHeight();
   if (data.state?.state !== "PendingPayout" || isNil(chainHeight)) {
     return null;
   }

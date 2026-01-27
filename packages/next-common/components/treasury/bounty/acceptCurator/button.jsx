@@ -5,7 +5,6 @@ import { useAcceptCuratorPopup } from "./useAcceptCuratorPopup";
 import Tooltip from "next-common/components/tooltip";
 import { isSameAddress } from "next-common/utils";
 import AddressUser from "next-common/components/user/addressUser";
-import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
 export default function BountyAcceptCuratorButton({
   pallet = "bounties",
@@ -16,8 +15,7 @@ export default function BountyAcceptCuratorButton({
   const address = useRealAddress();
   const { showPopupFn, component } = useAcceptCuratorPopup(pallet, params);
 
-  const api = useConditionalContextApi();
-  const { result, loading } = useSubStorage(pallet, storage, params, { api });
+  const { result, loading } = useSubStorage(pallet, storage, params);
 
   if (loading || result?.isNone) {
     return null;
