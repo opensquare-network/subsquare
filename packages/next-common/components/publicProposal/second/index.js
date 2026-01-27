@@ -80,6 +80,19 @@ const ListMore = styled(SubLink)`
   margin-top: 16px !important;
 `;
 
+function SecondButton({ seconds, setShowPopup }) {
+  const maxDeposits = useMaxDeposits();
+  const reachedMaxDeposits = maxDeposits <= seconds.length;
+  if (reachedMaxDeposits) {
+    return <Description>Has reached max deposits.</Description>;
+  }
+  return (
+    <PrimaryButton className="w-full" onClick={() => setShowPopup(true)}>
+      Second
+    </PrimaryButton>
+  );
+}
+
 export default function Second({
   proposalIndex,
   hasTurnIntoReferendum,
@@ -87,14 +100,12 @@ export default function Second({
 }) {
   const [showPopup, setShowPopup] = useState(false);
   const [expand, setExpand] = useState(false);
-  const maxDeposits = useMaxDeposits();
 
   const [triggerUpdate, setTriggerUpdate] = useState(0);
   const [seconds, depositRequired, isLoadingSeconds] = useDepositOf(
     proposalIndex,
     triggerUpdate,
   );
-  const reachedMaxDeposits = maxDeposits <= seconds.length;
 
   const node = useChainSettings();
   const secondsCount = countBy(seconds);
@@ -149,16 +160,10 @@ export default function Second({
     action = (
       <Description>This proposal has been turned into referendum.</Description>
     );
-  } else if (reachedMaxDeposits) {
-    action = <Description>Has reached max deposits.</Description>;
   } else if (hasCanceled) {
     action = <Description>This proposal has been canceled.</Description>;
   } else {
-    action = (
-      <PrimaryButton className="w-full" onClick={() => setShowPopup(true)}>
-        Second
-      </PrimaryButton>
-    );
+    action = <SecondButton seconds={seconds} setShowPopup={setShowPopup} />;
   }
 
   const totalSeconds = isLoadingSeconds ? (
