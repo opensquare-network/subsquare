@@ -26,6 +26,13 @@ export function isMotionExecutedSucceed(dispatchResult) {
 }
 
 export function getMotionStateArgs(state = {}) {
+  if (typeof state === "string") {
+    if (state === "Executed") {
+      return { isOk: true };
+    }
+    return null;
+  }
+
   const { state: name, data } = state;
   if (name !== "Executed" || !data) {
     return null;
