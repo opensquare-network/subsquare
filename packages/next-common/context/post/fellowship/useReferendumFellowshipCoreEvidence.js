@@ -2,7 +2,7 @@ import { find } from "lodash-es";
 import { useEffect, useState } from "react";
 import { useOnchainData } from "..";
 import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
-import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
+import { useContextApi } from "next-common/context/api";
 
 export function useReferendumFellowshipCoreEvidenceForWho(who) {
   const pallet = useCoreFellowshipPallet();
@@ -11,14 +11,14 @@ export function useReferendumFellowshipCoreEvidenceForWho(who) {
   const [evidence, setEvidence] = useState("");
   const [loading, setLoading] = useState(true);
 
-  const blockApi = useConditionalContextApi();
+  const api = useContextApi();
 
   useEffect(() => {
-    if (!who || !pallet || !blockApi) {
+    if (!who || !pallet || !api) {
       return;
     }
 
-    blockApi.query[pallet]
+    api.query[pallet]
       ?.memberEvidence(who)
       .then((optional) => {
         if (optional.isNone) {
@@ -30,7 +30,7 @@ export function useReferendumFellowshipCoreEvidenceForWho(who) {
         setEvidence(text);
       })
       .finally(() => setLoading(false));
-  }, [blockApi, who, pallet]);
+  }, [api, who, pallet]);
 
   return {
     wish,

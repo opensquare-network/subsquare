@@ -10,7 +10,6 @@ import Divider from "next-common/components/styled/layout/divider";
 import { SimpleTime } from "next-common/components/postList/common/postItemTime";
 import EvidenceRelatedReferenda from "./evidenceRelatedReferenda";
 import DirectEvidenceContent from "next-common/components/fellowship/evidences/directEvidenceContent";
-import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 import { useReferendumFellowshipCoreEvidenceForWho } from "next-common/context/post/fellowship/useReferendumFellowshipCoreEvidence";
 import FellowshipEvidenceContent from "next-common/components/collectives/core/evidenceContent";
 import CollectivesProvider from "next-common/context/collectives/collectives";
@@ -52,18 +51,10 @@ function OnChainEvidenceImpl() {
 }
 
 function EvidenceContentOnChain() {
-  const { detail } = usePageProps() || {};
-
-  if (!detail?.indexer) {
-    return null;
-  }
-
   return (
-    <MigrationConditionalApiProvider indexer={detail?.indexer}>
-      <CollectivesProvider section="fellowship">
-        <OnChainEvidenceImpl />
-      </CollectivesProvider>
-    </MigrationConditionalApiProvider>
+    <CollectivesProvider section="fellowship">
+      <OnChainEvidenceImpl />
+    </CollectivesProvider>
   );
 }
 
