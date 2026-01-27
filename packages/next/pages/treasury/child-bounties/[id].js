@@ -18,7 +18,6 @@ import { OffChainArticleActionsProvider } from "next-common/noSima/context/artic
 import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 import { TreasuryProvider } from "next-common/context/treasury";
 import TreasuryChildBountiesDetailMultiTabs from "next-common/components/pages/components/tabs/treasuryChildBountiesDetailMultiTabs";
-import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 
 function ChildBountyContent() {
   const post = usePost();
@@ -27,17 +26,15 @@ function ChildBountyContent() {
   );
 
   return (
-    <MigrationConditionalApiProvider indexer={post?.indexer}>
-      <OffChainArticleActionsProvider>
-        <OffChainCommentActionsProvider>
-          <ContentWithComment>
-            <ChildBountyDetail />
-            <ChildBountySidebar />
-            <TreasuryChildBountiesDetailMultiTabs />
-          </ContentWithComment>
-        </OffChainCommentActionsProvider>
-      </OffChainArticleActionsProvider>
-    </MigrationConditionalApiProvider>
+    <OffChainArticleActionsProvider>
+      <OffChainCommentActionsProvider>
+        <ContentWithComment>
+          <ChildBountyDetail />
+          <ChildBountySidebar />
+          <TreasuryChildBountiesDetailMultiTabs />
+        </ContentWithComment>
+      </OffChainCommentActionsProvider>
+    </OffChainArticleActionsProvider>
   );
 }
 
