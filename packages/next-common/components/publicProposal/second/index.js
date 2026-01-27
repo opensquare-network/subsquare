@@ -1,6 +1,6 @@
-import React, { Fragment, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
-import { countBy } from "lodash-es";
+import { countBy, isNil } from "lodash-es";
 import BigNumber from "bignumber.js";
 import Loading from "../../loading";
 import useDepositOf from "../../../utils/hooks/useDepositOf";
@@ -14,6 +14,7 @@ import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarW
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import AddressUser from "next-common/components/user/addressUser";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import { usePost } from "next-common/context/post";
 
 const SecondPopup = dynamicPopup(() => import("./popup"));
 
@@ -80,6 +81,164 @@ const ListMore = styled(SubLink)`
   margin-top: 16px !important;
 `;
 
+export default function Second() {
+  const post = usePost();
+  const publicProposal = post?.onchainData;
+  const proposalIndex = publicProposal?.proposalIndex;
+  const hasTurnIntoReferendum = !isNil(publicProposal.referendumIndex);
+  const state = publicProposal?.state?.state;
+  const hasCanceled = ["Canceled", "Cleared", "Removed"].includes(state);
+
+  if (hasTurnIntoReferendum || hasCanceled) {
+    return (
+      <SecondOfEndedProposal
+        proposalIndex={proposalIndex}
+        hasTurnIntoReferendum={hasTurnIntoReferendum}
+      />
+    );
+  }
+
+  return <SecondOfOngoingProposal proposalIndex={proposalIndex} />;
+}
+
+function TotalSeconds({ seconds, depositRequired, isLoadingSeconds }) {
+  const node = useChainSettings();
+  if (isLoadingSeconds) {
+    return <Loading size={16} />;
+  }
+
+  return (
+    <Tooltip
+      content={`${new BigNumber(depositRequired)
+        .times(seconds.length)
+        .div(Math.pow(10, node.decimals))} ${node?.voteSymbol ?? node?.symbol}`}
+    >
+      {seconds.length}
+    </Tooltip>
+  );
+}
+
+function SecondList({ seconds, depositRequired }) {
+  const [expand, setExpand] = useState(false);
+  const node = useChainSettings();
+
+  const secondsCount = countBy(seconds);
+  const secondsAddress = Object.keys(secondsCount);
+
+  const showFold = !expand && secondsAddress.length > 5;
+  const showData = showFold ? secondsAddress.slice(0, 5) : secondsAddress;
+
+  if (seconds.length === 0) {
+    return (
+      <SecondsList>
+        <NoSeconds>No current seconds</NoSeconds>
+      </SecondsList>
+    );
+  }
+
+  return (
+    <>
+      <SecondsList>
+        {showData.map((address, index) => (
+          <SecondItem key={index}>
+            <AddressUser
+              add={address}
+              className="text12Medium text-textPrimary"
+              maxWidth={148}
+            />
+            <Tooltip
+              content={`${new BigNumber(depositRequired)
+                .times(secondsCount[address])
+                .div(Math.pow(10, node.decimals))} ${
+                node?.voteSymbol ?? node?.symbol
+              }`}
+            >
+              <DepositRequired>{`x${secondsCount[address]}`}</DepositRequired>
+            </Tooltip>
+          </SecondItem>
+        ))}
+      </SecondsList>
+
+      {showFold && (
+        <ListMore onClick={() => setExpand(!expand)}>
+          Show more results
+        </ListMore>
+      )}
+    </>
+  );
+}
+
+function SecondListCard({ seconds, depositRequired, isLoadingSeconds }) {
+  return (
+    <SecondaryCardDetail>
+      <Title className="!px-0">
+        <div>Second</div>
+        <div>
+          <TotalSeconds
+            seconds={seconds}
+            depositRequired={depositRequired}
+            isLoadingSeconds={isLoadingSeconds}
+          />
+        </div>
+      </Title>
+      <SecondList seconds={seconds} depositRequired={depositRequired} />
+    </SecondaryCardDetail>
+  );
+}
+
+function SecondOfEndedProposal({ proposalIndex, hasTurnIntoReferendum }) {
+  //TODO: load deposit data from server side for ended proposal
+  const [seconds, depositRequired, isLoadingSeconds] =
+    useDepositOf(proposalIndex);
+  const node = useChainSettings();
+
+  return (
+    <RightBarWrapper>
+      <SecondListCard
+        seconds={seconds}
+        depositRequired={depositRequired}
+        isLoadingSeconds={isLoadingSeconds}
+      />
+      {!node?.hideActionButtons &&
+        (hasTurnIntoReferendum ? (
+          <Description>
+            This proposal has been turned into referendum.
+          </Description>
+        ) : (
+          <Description>This proposal has been canceled.</Description>
+        ))}
+    </RightBarWrapper>
+  );
+}
+
+function SecondOfOngoingProposal({ proposalIndex }) {
+  const [triggerUpdate, setTriggerUpdate] = useState(0);
+  const [seconds, depositRequired, isLoadingSeconds] = useDepositOf(
+    proposalIndex,
+    triggerUpdate,
+  );
+
+  const node = useChainSettings();
+
+  return (
+    <RightBarWrapper>
+      <SecondListCard
+        seconds={seconds}
+        depositRequired={depositRequired}
+        isLoadingSeconds={isLoadingSeconds}
+      />
+      {!node?.hideActionButtons && (
+        <SecondButton
+          proposalIndex={proposalIndex}
+          depositRequired={depositRequired}
+          seconds={seconds}
+          setTriggerUpdate={setTriggerUpdate}
+        />
+      )}
+    </RightBarWrapper>
+  );
+}
+
 function SecondButton({
   proposalIndex,
   depositRequired,
@@ -108,110 +267,5 @@ function SecondButton({
         />
       )}
     </>
-  );
-}
-
-export default function Second({
-  proposalIndex,
-  hasTurnIntoReferendum,
-  hasCanceled,
-}) {
-  const [expand, setExpand] = useState(false);
-
-  const [triggerUpdate, setTriggerUpdate] = useState(0);
-  const [seconds, depositRequired, isLoadingSeconds] = useDepositOf(
-    proposalIndex,
-    triggerUpdate,
-  );
-
-  const node = useChainSettings();
-  const secondsCount = countBy(seconds);
-  const secondsAddress = Object.keys(secondsCount);
-
-  const showFold = !expand && secondsAddress.length > 5;
-  const showData = showFold ? secondsAddress.slice(0, 5) : secondsAddress;
-
-  let secondsList;
-
-  if (seconds.length === 0) {
-    secondsList = (
-      <SecondsList>
-        <NoSeconds>No current seconds</NoSeconds>
-      </SecondsList>
-    );
-  } else {
-    secondsList = (
-      <Fragment>
-        <SecondsList>
-          {showData.map((address, index) => (
-            <SecondItem key={index}>
-              <AddressUser
-                add={address}
-                className="text12Medium text-textPrimary"
-                maxWidth={148}
-              />
-              <Tooltip
-                content={`${new BigNumber(depositRequired)
-                  .times(secondsCount[address])
-                  .div(Math.pow(10, node.decimals))} ${
-                  node?.voteSymbol ?? node?.symbol
-                }`}
-              >
-                <DepositRequired>{`x${secondsCount[address]}`}</DepositRequired>
-              </Tooltip>
-            </SecondItem>
-          ))}
-        </SecondsList>
-
-        {showFold && (
-          <ListMore onClick={() => setExpand(!expand)}>
-            Show more results
-          </ListMore>
-        )}
-      </Fragment>
-    );
-  }
-
-  let action;
-  if (hasTurnIntoReferendum) {
-    action = (
-      <Description>This proposal has been turned into referendum.</Description>
-    );
-  } else if (hasCanceled) {
-    action = <Description>This proposal has been canceled.</Description>;
-  } else {
-    action = (
-      <SecondButton
-        proposalIndex={proposalIndex}
-        depositRequired={depositRequired}
-        seconds={seconds}
-        setTriggerUpdate={setTriggerUpdate}
-      />
-    );
-  }
-
-  const totalSeconds = isLoadingSeconds ? (
-    <Loading size={16} />
-  ) : (
-    <Tooltip
-      content={`${new BigNumber(depositRequired)
-        .times(seconds.length)
-        .div(Math.pow(10, node.decimals))} ${node?.voteSymbol ?? node?.symbol}`}
-    >
-      {seconds.length}
-    </Tooltip>
-  );
-
-  return (
-    <RightBarWrapper>
-      <SecondaryCardDetail>
-        <Title className="!px-0">
-          <div>Second</div>
-          <div>{totalSeconds}</div>
-        </Title>
-        {secondsList}
-      </SecondaryCardDetail>
-      {!node?.hideActionButtons && action}
-    </RightBarWrapper>
   );
 }

@@ -4,7 +4,6 @@ import { backendApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import Second from "next-common/components/publicProposal/second";
-import { isNil } from "lodash-es";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/democracy/publicProposal/checkUnFinalized";
@@ -28,11 +27,7 @@ function PublicProposalContent() {
   useSubscribePostDetail(post?.proposalIndex);
 
   const publicProposal = post?.onchainData;
-  const proposalIndex = publicProposal?.proposalIndex;
-  const state = publicProposal?.state?.state;
   const isEnded = useIsDemocracyProposalFinished();
-  const hasTurnIntoReferendum = !isNil(publicProposal.referendumIndex);
-  const hasCanceled = ["Canceled", "Cleared", "Removed"].includes(state);
 
   const timeline = publicProposal?.timeline;
   const indexer = timeline?.[timeline?.length - 1]?.indexer || {};
@@ -50,11 +45,7 @@ function PublicProposalContent() {
       <ContentWithComment>
         <DetailItem />
         <MigrationConditionalApiProvider indexer={lastIndexer}>
-          <Second
-            proposalIndex={proposalIndex}
-            hasTurnIntoReferendum={hasTurnIntoReferendum}
-            hasCanceled={hasCanceled}
-          />
+          <Second />
         </MigrationConditionalApiProvider>
         <DemocracyPublicProposalsDetailMultiTabs />
       </ContentWithComment>
