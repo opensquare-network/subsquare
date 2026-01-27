@@ -7,16 +7,17 @@ import NewChildBountyButton from "next-common/components/treasury/bounty/newChil
 import BountyProposeCuratorButton from "next-common/components/treasury/bounty/proposeCurator/button";
 import BountyAcceptCuratorButton from "next-common/components/treasury/bounty/acceptCurator/button";
 import BountySidebarActionTip from "next-common/components/treasury/common/bountySidebarActionTip";
-import { has } from "lodash-es";
+import { useBountyStatus } from "next-common/components/treasury/bounty/useBountyStatus";
 
 function BountySidebar() {
-  const { address, bountyIndex, meta } = useOnchainData();
-  const status = meta?.status || {};
-  if (!address) {
+  const { address, bountyIndex } = useOnchainData();
+  const status = useBountyStatus(bountyIndex);
+  if (!address || !status) {
     return null;
   }
 
-  const showActionTip = ["curatorProposed", "pendingPayout", "active"].find(item => has(status, item));
+  const showActionTip =
+    status?.isCuratorProposed || status?.isPendingPayout || status?.isActive;
 
   return (
     <RightBarWrapper>
