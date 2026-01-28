@@ -82,7 +82,7 @@ export const fetchFellowshipVotesFromServer = async (pollIndex) => {
   const votes = await backendApi
     .fetch(`fellowship/referenda/${pollIndex}/votes`)
     .then((res) => res.result);
-  return normalizeFellowshipVotes(votes);
+  return normalizeFellowshipVotes(votes || []);
 };
 
 export const queryFellowshipVotesOnServerOrChain = async (

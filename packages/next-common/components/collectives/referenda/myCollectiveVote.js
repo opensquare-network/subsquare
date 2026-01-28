@@ -8,6 +8,10 @@ import { Aye, Nay } from "next-common/components/profile/votingHistory/common";
 import ValueDisplay from "next-common/components/valueDisplay";
 import WithAddress from "next-common/components/common/withAddress";
 import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
+import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
+import { useSelector } from "react-redux";
+import { fellowshipVotesSelector } from "next-common/store/reducers/fellowship/votes";
+import { isSameAddress } from "next-common/utils";
 
 function normalizeVote(unwrapped) {
   const isAye = unwrapped.isAye;
@@ -52,8 +56,18 @@ function useMyVote() {
   return vote;
 }
 
-export function MyVote() {
-  const vote = useMyVote();
+function VoteContentWithFinishedReferendum() {
+  const address = useRealAddress();
+  const { allAye = [], allNay = [] } =
+    useSelector(fellowshipVotesSelector) || {};
+  const myVote = [...allAye, ...allNay].find((vote) =>
+    isSameAddress(vote.address, address),
+  );
+
+  return <VoteContent vote={myVote} />;
+}
+
+function VoteContent({ vote }) {
   if (!vote) {
     return null;
   }
@@ -68,6 +82,21 @@ export function MyVote() {
       </div>
     </SecondaryCardDetail>
   );
+}
+
+function MyVoteWithOnchain() {
+  const vote = useMyVote();
+
+  return <VoteContent vote={vote} />;
+}
+
+export function MyVote() {
+  const finishHeight = useReferendumVotingFinishHeight();
+  if (finishHeight) {
+    return <VoteContentWithFinishedReferendum />;
+  }
+
+  return <MyVoteWithOnchain />;
 }
 
 export default function MyCollectiveVote() {
