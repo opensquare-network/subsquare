@@ -9,6 +9,7 @@ import AyeNay from "next-common/components/collective/AyeNay";
 import styled from "styled-components";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import AddressUser from "next-common/components/user/addressUser";
+import { useMemo } from "react";
 import useCollectiveMotionVotes from "next-common/hooks/collective/useCollectiveVotes";
 import { isMotionEnded, isSameAddress } from "next-common/utils";
 import { useConditionalContextPrime } from "next-common/utils/hooks/usePrime";
@@ -51,16 +52,46 @@ export default function Voters() {
 
   return (
     <MigrationConditionalApiProvider indexer={indexer}>
-      <VotersImpl />
+      {motionEnd ? <VotersEnded /> : <VotersOngoing />}
     </MigrationConditionalApiProvider>
   );
 }
 
-function VotersImpl() {
+function normalizeVotesFromVoting(voting) {
+  const { ayes = [], nays = [] } = voting || {};
+  return [
+    ...ayes.map((voter) => [voter, true]),
+    ...nays.map((voter) => [voter, false]),
+  ];
+}
+
+function VotersEnded() {
   const onchainData = useOnchainData();
   const prime = useConditionalContextPrime();
+  const votes = useMemo(
+    () => normalizeVotesFromVoting(onchainData?.voting),
+    [onchainData?.voting],
+  );
+  const threshold = onchainData?.voting?.threshold ?? onchainData?.threshold;
 
+  return <VotersContent votes={votes} threshold={threshold} prime={prime} />;
+}
+
+function VotersOngoing() {
+  const onchainData = useOnchainData();
+  const prime = useConditionalContextPrime();
   const votes = useCollectiveMotionVotes();
+
+  return (
+    <VotersContent
+      votes={votes}
+      threshold={onchainData?.threshold}
+      prime={prime}
+    />
+  );
+}
+
+function VotersContent({ votes = [], threshold, prime }) {
   const ayeVotesCount = votes.filter(([, approval]) => approval).length;
 
   let voteList;
@@ -95,7 +126,7 @@ function VotersImpl() {
         <Flex>
           <span>Votes</span>
           <Statistics>
-            {ayeVotesCount}/{onchainData?.threshold}
+            {ayeVotesCount}/{threshold}
           </Statistics>
         </Flex>
       </StatisticTitleContainer>
