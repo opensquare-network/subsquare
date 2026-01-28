@@ -8,11 +8,13 @@ export default function SignerWithBalance({
   noSwitchSigner,
   showTransferable = false,
   supportedMultisig = true,
+  api = null,
 }) {
   const signerAccount = useSignerAccount();
 
   const { value, loading: loadingBalance } = useSubBalanceInfo(
     signerAccount?.realAddress,
+    api,
   );
 
   const { balance, transferrable } = value || {};

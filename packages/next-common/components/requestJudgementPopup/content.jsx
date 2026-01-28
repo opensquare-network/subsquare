@@ -57,7 +57,7 @@ export default function RequestJudgementPopupContent() {
   return (
     <div className="flex flex-col gap-y-4">
       <StyledSignerWithBalance>
-        <SignerWithBalance />
+        <SignerWithBalance api={api} />
       </StyledSignerWithBalance>
       <div className="text14Bold text-textPrimary">Select a Registrar</div>
 

@@ -3,9 +3,11 @@ import calcTransferable from "next-common/utils/account/transferable";
 import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 import useAddressBalance from "next-common/utils/hooks/useAddressBalance";
 
-export function useSubBalanceInfo(address) {
+export function useSubBalanceInfo(address, specApi = null) {
   const existentialDeposit = useQueryExistentialDeposit();
-  const api = useConditionalContextApi();
+  const conditionalApi = useConditionalContextApi();
+
+  const api = specApi || conditionalApi;
 
   const [balance, loading, resultJsonInfo] = useAddressBalance(api, address);
 
