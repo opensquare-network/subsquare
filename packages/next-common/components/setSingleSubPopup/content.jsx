@@ -81,7 +81,7 @@ export default function SetSingleSubPopupContent({ subs }) {
 
   return (
     <div className="space-y-4">
-      <SignerWithBalance />
+      <SignerWithBalance api={api} />
 
       <SubItem
         subId={0}

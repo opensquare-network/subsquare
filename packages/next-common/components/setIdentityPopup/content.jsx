@@ -110,7 +110,7 @@ export default function SetIdentityPopupContent() {
 
   return (
     <div className="space-y-4">
-      <SignerWithBalance />
+      <SignerWithBalance api={api} />
       {fields.map((field) => (
         <InputField
           key={field.key}
