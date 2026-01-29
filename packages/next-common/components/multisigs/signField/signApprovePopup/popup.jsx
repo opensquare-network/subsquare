@@ -1,6 +1,5 @@
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import ProposeTree from "next-common/components/multisigs/signField/signSubmitPopup/proposeTree";
-import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import { useSignApprove } from "../signApprove";
 import PrimaryButton from "next-common/lib/button/primary";
