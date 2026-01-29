@@ -1,10 +1,4 @@
-import {
-  isCollectivesChain,
-  isKusamaChain,
-  isPolkadotChain,
-  isWestendChain,
-  isPaseoChain,
-} from "next-common/utils/chain";
+import { getRelayChain } from "next-common/utils/chain";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useChain } from "../chain";
 import getChainSettings from "next-common/utils/consts/settings";
@@ -50,19 +44,19 @@ export function usePeopleApi() {
 }
 
 export function getPeopleChain(chain) {
-  if (isPolkadotChain(chain) || isCollectivesChain(chain)) {
+  if (getRelayChain(chain) === Chains.polkadot) {
     return Chains.polkadotPeople;
   }
 
-  if (isKusamaChain(chain)) {
+  if (getRelayChain(chain) === Chains.kusama) {
     return Chains.kusamaPeople;
   }
 
-  if (isWestendChain(chain)) {
+  if (getRelayChain(chain) === Chains.westend) {
     return Chains.westendPeople;
   }
 
-  if (isPaseoChain(chain)) {
+  if (getRelayChain(chain) === Chains.paseo) {
     return Chains.paseoPeople;
   }
 

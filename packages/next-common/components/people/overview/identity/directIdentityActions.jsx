@@ -13,6 +13,7 @@ import { useExtensionAccounts } from "next-common/components/popupWithSigner/con
 import getChainSettings from "next-common/utils/consts/settings";
 import { useCallback, useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import CheckJudgement from "./checkJudgement";
 
 const SetIdentityPopup = dynamicPopup(
   () => import("next-common/components/setIdentityPopup"),
@@ -65,6 +66,7 @@ export function DirectIdentityActions() {
   return (
     <>
       <div className="flex items-center gap-2 text-textPrimary">
+        <CheckJudgement />
         <div
           className={cn(
             "flex justify-center items-center",
@@ -73,11 +75,11 @@ export function DirectIdentityActions() {
           )}
           onClick={() => setShowSetIdentityPopup(true)}
         >
-          <Tooltip content="Edit">
+          <Tooltip content="Edit Identity">
             <SystemEdit2 className="w-[16px] h-[16px]" />
           </Tooltip>
         </div>
-        <Tooltip content="Clear">
+        <Tooltip content="Clear Identity">
           <RemoveButton disabled={isSubmitting} onClick={clearIdentity} />
         </Tooltip>
       </div>

@@ -2,11 +2,14 @@ import Popup from "../popup/wrapper/Popup";
 import SignerPopupWrapper from "../popupWithSigner/signerPopupWrapper";
 import RequestJudgementPopupContent from "./content";
 
-export default function RequestJudgementPopup({ onClose }) {
+export default function RequestJudgementPopup({
+  onClose,
+  defaultRegistrar = null,
+}) {
   return (
     <SignerPopupWrapper onClose={onClose}>
       <Popup title="Request Judgement" onClose={onClose}>
-        <RequestJudgementPopupContent />
+        <RequestJudgementPopupContent defaultRegistrar={defaultRegistrar} />
       </Popup>
     </SignerPopupWrapper>
   );
