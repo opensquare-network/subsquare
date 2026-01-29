@@ -15,7 +15,7 @@ export default function Twitter({ request }) {
 
   return (
     <PeopleJudgementSocialConnect
-      icon={<LinkTwitter className="text-[#4f46e5]" />}
+      Icon={LinkTwitter}
       title="Twitter"
       username={request?.info?.twitter}
       connected={connected}

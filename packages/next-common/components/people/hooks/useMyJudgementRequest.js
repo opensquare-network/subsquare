@@ -1,22 +1,41 @@
 import { backendApi } from "next-common/services/nextApi";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { useAsync } from "react-use";
+import { useCallback, useEffect, useState } from "react";
 
 export default function useMyJudgementRequest() {
   const realAddress = useRealAddress();
+  const [value, setValue] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  return useAsync(async () => {
+  const fetch = useCallback(async () => {
     if (!realAddress) {
-      return null;
+      setValue(null);
+      setLoading(false);
+      return;
     }
 
-    const { result } = await backendApi.fetch(
-      `people/identities/${realAddress}/active-request`,
-    );
-    if (result) {
-      return result || null;
+    setLoading(true);
+    try {
+      const { result } = await backendApi.fetch(
+        `people/identities/${realAddress}/active-request`,
+      );
+      if (result) {
+        setValue(result);
+        return;
+      }
+      setValue(null);
+    } finally {
+      setLoading(false);
     }
-
-    return null;
   }, [realAddress]);
+
+  useEffect(() => {
+    fetch();
+  }, [fetch]);
+
+  return {
+    value,
+    loading,
+    fetch,
+  };
 }

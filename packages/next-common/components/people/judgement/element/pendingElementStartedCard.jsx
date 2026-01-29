@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { ClosedTag } from "next-common/components/tags/state/styled";
-import PrimaryButton from "next-common/lib/button/primary";
-import Input from "next-common/lib/input";
+import { WarningTag } from "next-common/components/tags/state/styled";
+import SecondaryButton from "next-common/lib/button/secondary";
 import Tooltip from "next-common/components/tooltip";
 import ElementCardHeader from "./elementCardHeader";
-import ElementAddressRow from "./elementAddressRow";
+import ElementAddressRow from "./elementAccountRow";
 import ElementVerificationTips from "./elementVerificationTips";
 import useFinishElementVerification from "./hooks/useFinishElementVerification";
+import Copyable from "next-common/components/copyable";
+import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 
 export default function PendingElementStartedCard({
   request,
@@ -29,13 +30,17 @@ export default function PendingElementStartedCard({
   return (
     <div className="w-full space-y-2 text14Medium text-textPrimary">
       <ElementCardHeader
-        tag={<ClosedTag>Pending</ClosedTag>}
+        tag={<WarningTag>Pending</WarningTag>}
         actions={
           <div className="flex gap-2 items-center">
             <Tooltip content="Click to confirm you have finished the verification">
-              <PrimaryButton onClick={verify} loading={verifying} size="small">
+              <SecondaryButton
+                onClick={verify}
+                loading={verifying}
+                size="small"
+              >
                 Confirm finished
-              </PrimaryButton>
+              </SecondaryButton>
             </Tooltip>
           </div>
         }
@@ -48,7 +53,9 @@ export default function PendingElementStartedCard({
       <div>
         <label className=" text14Bold mb-2 block">Verification Code</label>
         <div className="flex flex-col sm:flex-row gap-2">
-          <Input className="w-full" disabled={true} value={verificationCode} />
+          <GreyPanel className="w-full text14Medium text-textPrimary px-3 py-2 border border-neutral400">
+            <Copyable>{verificationCode}</Copyable>
+          </GreyPanel>
         </div>
         {error && <div className="mt-2 text12Medium text-red500">{error}</div>}
       </div>

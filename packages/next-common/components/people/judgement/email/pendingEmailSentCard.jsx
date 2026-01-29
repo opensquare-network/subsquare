@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { ClosedTag } from "next-common/components/tags/state/styled";
-import PrimaryButton from "next-common/lib/button/primary";
+import { WarningTag } from "next-common/components/tags/state/styled";
 import SecondaryButton from "next-common/lib/button/secondary";
 import Input from "next-common/lib/input";
 import EmailCardHeader from "./emailCardHeader";
@@ -48,7 +47,7 @@ export default function PendingEmailSentCard({
   return (
     <div className="w-full space-y-2 text14Medium text-textPrimary">
       <EmailCardHeader
-        tag={<ClosedTag>Pending</ClosedTag>}
+        tag={<WarningTag>Pending</WarningTag>}
         actions={
           <div className="flex gap-2 items-center">
             <Tooltip content="Click to re-send verification code to your mailbox">
@@ -62,14 +61,14 @@ export default function PendingEmailSentCard({
               </SecondaryButton>
             </Tooltip>
             <Tooltip content={message}>
-              <PrimaryButton
+              <SecondaryButton
                 onClick={verifyCode}
                 loading={verifying}
                 disabled={!canVerify}
                 size="small"
               >
                 Verify code
-              </PrimaryButton>
+              </SecondaryButton>
             </Tooltip>
           </div>
         }

@@ -3,6 +3,7 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { trimEndSlash } from "next-common/utils/url";
 import { useCallback, useEffect, useState } from "react";
 import { PEOPLE_JUDGEMENT_AUTH_MESSAGE_TYPE } from "next-common/components/people/judgement/consts";
+import { useJudgementContext } from "../context";
 
 function isJudgementAuthOpenerMessage(data, provider) {
   return (
@@ -17,6 +18,7 @@ export default function usePeopleJudgementSocialAuth({
   redirectPath,
   isVerified,
 }) {
+  const { fetchMyJudgementRequest } = useJudgementContext();
   const realAddress = useRealAddress();
 
   const [loading, setLoading] = useState(false);
@@ -71,6 +73,7 @@ export default function usePeopleJudgementSocialAuth({
 
       if (data?.ok && data?.who && data.who === realAddress) {
         setConnected(true);
+        fetchMyJudgementRequest();
       }
     };
 
@@ -79,7 +82,7 @@ export default function usePeopleJudgementSocialAuth({
     return () => {
       window.removeEventListener("message", handleMessage);
     };
-  }, [provider, realAddress]);
+  }, [provider, realAddress, fetchMyJudgementRequest]);
 
   return {
     loading,

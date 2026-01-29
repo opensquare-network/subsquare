@@ -5,6 +5,7 @@ import generateLayoutRawTitle from "next-common/utils/generateLayoutRawTitle";
 import NoWalletConnected from "next-common/components/noWalletConnected";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import JudgementPageContent from "./content";
+import { JudgementContextProvider } from "./context";
 
 export const tabs = [
   {
@@ -31,7 +32,9 @@ export default function JudgementPage() {
             <NoWalletConnected text="Connect wallet to see your judgement request." />
           </div>
         ) : (
-          <JudgementPageContent />
+          <JudgementContextProvider>
+            <JudgementPageContent />
+          </JudgementContextProvider>
         )}
       </ListLayout>
     </PeopleCommonProvider>

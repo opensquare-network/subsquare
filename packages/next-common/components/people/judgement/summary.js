@@ -1,6 +1,5 @@
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { PeopleSocialType } from "./consts";
-import { SummaryGreyText } from "next-common/components/summary/styled";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
 import Account from "next-common/components/account";
@@ -36,14 +35,6 @@ export default function JudgementSummary({ request, loading }) {
         <SummaryItem title="Pending">
           <LoadableContent isLoading={loading}>
             <span>{pendingSocials}</span>
-          </LoadableContent>
-        </SummaryItem>
-        <SummaryItem title="Total Socials">
-          <LoadableContent isLoading={loading}>
-            <span>
-              {totalSocials}
-              <SummaryGreyText> / {allSocialTypes.length}</SummaryGreyText>
-            </span>
           </LoadableContent>
         </SummaryItem>
       </SummaryLayout>

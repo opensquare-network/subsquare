@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ClosedTag } from "next-common/components/tags/state/styled";
+import { WarningTag } from "next-common/components/tags/state/styled";
 import SecondaryButton from "next-common/lib/button/secondary";
 import EmailCardHeader from "./emailCardHeader";
 import EmailAddressRow from "./emailAddressRow";
@@ -19,7 +19,7 @@ export default function PendingEmailNotSentCard({ request, email, onSent }) {
   return (
     <div className="w-full space-y-2 text14Medium text-textPrimary">
       <EmailCardHeader
-        tag={<ClosedTag>Pending</ClosedTag>}
+        tag={<WarningTag>Pending</WarningTag>}
         actions={
           <div className="flex gap-2 items-center">
             <Tooltip content="Click to send verification code to your mailbox">

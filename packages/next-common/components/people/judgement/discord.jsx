@@ -14,7 +14,7 @@ export default function Discord({ request }) {
 
   return (
     <PeopleJudgementSocialConnect
-      icon={<LinkDiscord className="text-[#4f46e5]" />}
+      Icon={LinkDiscord}
       title="Discord"
       username={request?.info?.discord}
       connected={connected}

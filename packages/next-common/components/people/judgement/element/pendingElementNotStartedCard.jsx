@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { ClosedTag } from "next-common/components/tags/state/styled";
+import { WarningTag } from "next-common/components/tags/state/styled";
 import SecondaryButton from "next-common/lib/button/secondary";
 import ElementCardHeader from "./elementCardHeader";
-import ElementAccountRow from "./elementAddressRow";
+import ElementAccountRow from "./elementAccountRow";
 import useStartElementVerification from "./hooks/useStartElementVerification";
 import Tooltip from "next-common/components/tooltip";
 
@@ -23,7 +23,7 @@ export default function PendingElementNotStartedCard({
   return (
     <div className="w-full space-y-2 text14Medium text-textPrimary">
       <ElementCardHeader
-        tag={<ClosedTag>Pending</ClosedTag>}
+        tag={<WarningTag>Pending</WarningTag>}
         actions={
           <div className="flex gap-2 items-center">
             <Tooltip content="Start verifying your Element account">

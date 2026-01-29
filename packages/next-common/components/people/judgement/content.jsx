@@ -1,24 +1,21 @@
 import Loading from "next-common/components/loading";
-import useMyJudgementRequest from "../hooks/useMyJudgementRequest";
 import Discord from "./discord";
 import Element from "./element";
 import Email from "./email";
 import Github from "./github";
 import JudgementSummary from "./summary";
 import Twitter from "./twitter";
+import { useJudgementContext } from "./context";
 
 export default function JudgementPageContent() {
-  const { value: request, loading: isLoadingMyJudgementRequest } =
-    useMyJudgementRequest();
+  const { myJudgementRequest: request, isLoadingMyJudgementRequest: loading } =
+    useJudgementContext();
 
   return (
     <>
-      <JudgementSummary
-        request={request}
-        loading={isLoadingMyJudgementRequest}
-      />
-      <div className="pt-4 grid grid-cols-1 gap-4">
-        {isLoadingMyJudgementRequest && !request ? (
+      <JudgementSummary request={request} loading={loading} />
+      <div className="pt-4 grid grid-cols-1 gap-4 text-textPrimary">
+        {loading && !request ? (
           <div className="p-4 flex justify-center">
             <Loading size="24" />
           </div>

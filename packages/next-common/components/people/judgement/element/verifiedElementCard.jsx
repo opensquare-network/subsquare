@@ -1,6 +1,6 @@
 import { PositiveTag } from "next-common/components/tags/state/styled";
 import ElementCardHeader from "./elementCardHeader";
-import ElementAccountRow from "./elementAddressRow";
+import ElementAccountRow from "./elementAccountRow";
 
 export default function VerifiedElementCard({ elementAccount }) {
   return (

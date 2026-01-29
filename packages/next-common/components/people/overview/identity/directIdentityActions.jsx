@@ -75,11 +75,11 @@ export function DirectIdentityActions() {
           )}
           onClick={() => setShowSetIdentityPopup(true)}
         >
-          <Tooltip content="Edit">
+          <Tooltip content="Edit Identity">
             <SystemEdit2 className="w-[16px] h-[16px]" />
           </Tooltip>
         </div>
-        <Tooltip content="Clear">
+        <Tooltip content="Clear Identity">
           <RemoveButton disabled={isSubmitting} onClick={clearIdentity} />
         </Tooltip>
       </div>

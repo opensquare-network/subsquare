@@ -15,7 +15,7 @@ export default function Github({ request }) {
 
   return (
     <PeopleJudgementSocialConnect
-      icon={<LinkGithub className="text-[#4f46e5]" />}
+      Icon={LinkGithub}
       title="GitHub"
       username={request?.info?.github}
       connected={connected}
