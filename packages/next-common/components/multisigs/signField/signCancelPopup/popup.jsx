@@ -10,7 +10,7 @@ function SignCancelInnerPopup({ onClose, multisig }) {
   return (
     <Popup title="Multisig" onClose={onClose} maskClosable={false}>
       <SignerWithBalance noSwitchSigner />
-      <ProposeTree callHex={multisig?.callHex} when={multisig?.when} />
+      <ProposeTree callHex={multisig?.callHex} />
       <div className="flex justify-end">
         <PrimaryButton onClick={doSubmit} loading={isDisabled}>
           Cancel

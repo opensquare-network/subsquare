@@ -3,7 +3,7 @@ import CallTree from "next-common/components/proposal/callTree";
 import { useEffect } from "react";
 import { noop } from "lodash-es";
 
-export default function ProposeTree({ callHex, when, setValue = noop }) {
+export default function ProposeTree({ callHex, setValue = noop }) {
   return <ProposeTreeWithContext callHex={callHex} setValue={setValue} />;
 }
 
