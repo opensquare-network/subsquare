@@ -6,7 +6,7 @@ import {
   MenuRegistrars,
   InfoUsers,
   MenuJudgements,
-  MenuAccount,
+  MenuIdentity,
 } from "@osn/icons/subsquare";
 import { NAV_MENU_TYPE } from "next-common/utils/constants";
 
@@ -41,7 +41,7 @@ export function getPeopleMenu({ isAdmin, hasActiveJudgementRequest } = {}) {
         name: "Verifications",
         value: "verifications",
         pathname: "/people/verifications",
-        icon: <MenuAccount />,
+        icon: <MenuIdentity />,
         extraMatchNavMenuActivePathnames: [
           "/people/verifications/auth/discord",
           "/people/verifications/auth/twitter",
