@@ -16,6 +16,7 @@ import useFilterAllVesting from "../hooks/useFilterAllVesting";
 import { VestPopupProvider, useVestPopup } from "../context/vestPopupContext";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import NewVest from "next-common/components/data/vesting/newVest";
+import { PapiProvider } from "next-common/context/papi";
 
 const VestPopup = dynamicPopup(() => import("../popup/vestPopup"));
 
@@ -113,11 +114,13 @@ function VestPopupInContext() {
 
 export default function VestingExplorerTable() {
   return (
-    <VestingProvider>
-      <VestPopupProvider>
-        <VestingExplorerTableContent />
-        <VestPopupInContext />
-      </VestPopupProvider>
-    </VestingProvider>
+    <PapiProvider>
+      <VestingProvider>
+        <VestPopupProvider>
+          <VestingExplorerTableContent />
+          <VestPopupInContext />
+        </VestPopupProvider>
+      </VestingProvider>
+    </PapiProvider>
   );
 }

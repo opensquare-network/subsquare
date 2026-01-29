@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback, useMemo } from "react";
-import { useContextApi } from "next-common/context/api";
+import { useContextPapiApi } from "next-common/context/papi";
 import useAhmLatestHeightSnapshot from "next-common/hooks/ahm/useAhmLatestHeightSnapshot";
 import { hexToString } from "@polkadot/util";
 
@@ -9,13 +9,13 @@ function positiveOr0(v = 0n) {
 
 export function getCurrencyLockedByVesting(locks) {
   const vestingLock = locks.find(
-    (item) => hexToString(item.id.toHex()).trim() === "vesting",
+    (item) => hexToString(item.id.asHex()).trim() === "vesting",
   );
   if (!vestingLock) {
     return 0n;
   }
 
-  return vestingLock.amount.toBigInt();
+  return vestingLock.amount;
 }
 
 export function calculateVestingInfo(
@@ -31,9 +31,9 @@ export function calculateVestingInfo(
   let totalVesting = 0n;
 
   const schedulesWithDetails = schedules.map((schedule) => {
-    const startingBlock = schedule.startingBlock.toBigInt();
-    const perBlock = schedule.perBlock.toBigInt();
-    const locked = schedule.locked.toBigInt();
+    const startingBlock = BigInt(schedule.starting_block);
+    const perBlock = schedule.per_block;
+    const locked = schedule.locked;
 
     const vestedBlockCount = positiveOr0(nowHeightBigInt - startingBlock);
     const unlockableNow = vestedBlockCount * perBlock;
@@ -80,7 +80,7 @@ export function calculateVestingInfo(
 }
 
 export default function useAllVestingData() {
-  const api = useContextApi();
+  const api = useContextPapiApi();
   const { latestHeight, isLoading: isHeightLoading } =
     useAhmLatestHeightSnapshot();
   const [data, setData] = useState([]);
@@ -99,18 +99,14 @@ export default function useAllVestingData() {
           setIsLoading(true);
         }
 
-        const entries = await api.query.vesting.vesting.entries();
+        const entries = await api.query.Vesting.Vesting.getEntries();
 
         const accountsData = [];
         const accounts = [];
 
-        for (const [storageKey, optionalStorage] of entries) {
-          if (optionalStorage.isNone) {
-            continue;
-          }
-
-          const account = storageKey.args[0].toString();
-          const schedules = optionalStorage.unwrap();
+        for (const { keyArgs, value: values } of entries) {
+          const account = keyArgs[0];
+          const schedules = values;
 
           accounts.push(account);
           accountsData.push({
@@ -119,7 +115,9 @@ export default function useAllVestingData() {
           });
         }
 
-        const locksMulti = await api.query.balances.locks.multi(accounts);
+        const locksMulti = await api.query.Balances.Locks.getValues(
+          accounts.map((item) => [item]),
+        );
 
         const accountsMap = new Map();
         accountsData.forEach((item, index) => {
