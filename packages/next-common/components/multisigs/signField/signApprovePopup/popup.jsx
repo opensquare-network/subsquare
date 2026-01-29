@@ -22,9 +22,5 @@ function SignApproveInnerPopup({ onClose, multisig }) {
 }
 
 export default function SignApprovePopup({ onClose, multisig }) {
-  return (
-    <MigrationConditionalApiProvider>
-      <SignApproveInnerPopup onClose={onClose} multisig={multisig} />
-    </MigrationConditionalApiProvider>
-  );
+  return <SignApproveInnerPopup onClose={onClose} multisig={multisig} />;
 }

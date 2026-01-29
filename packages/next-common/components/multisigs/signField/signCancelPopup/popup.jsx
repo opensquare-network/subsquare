@@ -22,9 +22,5 @@ function SignCancelInnerPopup({ onClose, multisig }) {
 }
 
 export default function SignCancelPopup({ onClose, multisig }) {
-  return (
-    <MigrationConditionalApiProvider>
-      <SignCancelInnerPopup onClose={onClose} multisig={multisig} />
-    </MigrationConditionalApiProvider>
-  );
+  return <SignCancelInnerPopup onClose={onClose} multisig={multisig} />;
 }
