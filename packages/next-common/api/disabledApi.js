@@ -1,37 +1,65 @@
 const disabledApiRoutes = [
-  /^\/api\/gov2\/referendums/,
-  /^\/api\/gov2\/tracks/,
-  /^\/api\/democracy/,
-  /^\/api\/treasury/,
-  /^\/api\/motions/, // Council Motions
-  /^\/api\/ambassador/, // Ambassador
-  /^\/api\/tech-comm/, // Technical Committee
-  /^\/api\/alliance/, // Alliance
-  /^\/api\/inancial-motions/,
-  /^\/api\/advisory-motions/,
-  /^\/api\/polkassembly-discussions/,
-  /^\/api\/fellowship/,
-  /^\/api\/overview/,
+  { route: /^\/api\/gov2\/referendums/ },
+  { route: /^\/api\/gov2\/tracks/, permanent: true },
+  { route: /^\/api\/democracy/ },
+  { route: /^\/api\/treasury/ },
+  { route: /^\/api\/motions/ }, // Council Motions
+  { route: /^\/api\/ambassador/ }, // Ambassador
+  { route: /^\/api\/tech-comm/ }, // Technical Committee
+  { route: /^\/api\/alliance/ }, // Alliance
+  { route: /^\/api\/financial-motions/ },
+  { route: /^\/api\/advisory-motions/ },
+  { route: /^\/api\/polkassembly-discussions/ },
+  { route: /^\/api\/fellowship/ },
+  { route: /^\/api\/overview/ },
 ];
 
 function trimEndSlash(url) {
+  if (!url) {
+    return "";
+  }
   return url.replace(/\/+$/, "");
+}
+
+function requireEnv(varName) {
+  const value = process.env[varName];
+  if (!value) {
+    throw new Error(`Environment variable ${varName} is required but not set.`);
+  }
+  return value;
+}
+
+function isFromSubsquare(req) {
+  const referer = req.headers?.referer;
+  if (!referer) {
+    return false;
+  }
+
+  try {
+    return (
+      new URL(referer).origin ===
+      trimEndSlash(requireEnv("NEXT_PUBLIC_API_END_POINT"))
+    );
+  } catch {
+    return false;
+  }
 }
 
 export function isApiDisabled(req) {
   if (req.method !== "GET") {
     return false;
   }
-  const isDisabledApi = disabledApiRoutes.some((route) =>
+  const disableRoute = disabledApiRoutes.find(({ route }) =>
     req.url?.match?.(route),
   );
-  if (!isDisabledApi) {
+  if (!disableRoute) {
     return false;
   }
+  if (disableRoute.permanent) {
+    return true;
+  }
 
-  const isRequestFromSubsquare = req.headers?.referer?.startsWith?.(
-    trimEndSlash(process.env.NEXT_PUBLIC_API_END_POINT),
-  );
+  const isRequestFromSubsquare = isFromSubsquare(req);
   if (isRequestFromSubsquare) {
     console.error(
       "ERROR: Unexpected disabled api request from subsquare frontend, please check!",

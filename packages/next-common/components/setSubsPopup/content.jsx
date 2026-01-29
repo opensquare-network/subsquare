@@ -105,7 +105,7 @@ export default function SetSubsPopupContent() {
 
   return (
     <div className="space-y-4">
-      <SignerWithBalance />
+      <SignerWithBalance api={api} />
 
       {subsList.map((sub, index) => (
         <SubItem

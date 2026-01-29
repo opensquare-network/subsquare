@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import PrimaryButton from "next-common/lib/button/primary";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
-import { useChain } from "next-common/context/chain";
+import { useChain, useChainSettings } from "next-common/context/chain";
 import { getPolkassemblyLink } from "next-common/utils/polkassembly";
 import { useDetailType } from "next-common/context/page";
 
@@ -16,9 +16,14 @@ const Wrapper = styled.div`
 `;
 
 export default function PolkassemblyCommentButton({ detail, paId, btnRef }) {
+  const { usePolkassemblyBackupData } = useChainSettings();
   const detailType = useDetailType();
   const chain = useChain();
   let type = detailType;
+
+  if (usePolkassemblyBackupData) {
+    return null;
+  }
 
   // For external post, use the motion link if it is ref to a motion
   if (type === detailPageCategory.DEMOCRACY_EXTERNAL) {

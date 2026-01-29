@@ -3134,10 +3134,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/env@npm:15.4.10":
-  version: 15.4.10
-  resolution: "@next/env@npm:15.4.10"
-  checksum: b89dd1279a53c69d86630b63cb550cbacaed28b8e423f73c492581a17cb4c1bda4429ab3c19b3ec24c2a65f06e55d954b553c6553ee94eb2867c628a3d291e04
+"@next/env@npm:15.4.11":
+  version: 15.4.11
+  resolution: "@next/env@npm:15.4.11"
+  checksum: 9b05a7919fc31bdfed67fee86c0326baa8f1e7c472209c4d2b1fb72ba5242ad5822ac3d5daf82599243663c36d7ebf5ee6564f47cdfe0c6928ef75b70fa8f6a6
   languageName: node
   linkType: hard
 
@@ -6570,8 +6570,8 @@ __metadata:
     eslint-config-next: ^15.3.5
     http-proxy: ^1.18.1
     localforage: ^1.10.0
-    lodash-es: ^4.17.21
-    next: 15.4.10
+    lodash-es: ^4.17.23
+    next: 15.4.11
     next-common: "workspace:*"
     nprogress: ^0.2.0
     pluralize: ^8.0.0
@@ -6607,8 +6607,8 @@ __metadata:
     eslint: ^8.44.0
     eslint-config-next: ^15.3.5
     http-proxy: ^1.18.1
-    lodash-es: ^4.17.21
-    next: 15.4.10
+    lodash-es: ^4.17.23
+    next: 15.4.11
     next-common: "workspace:*"
     nprogress: ^0.2.0
     raw-loader: ^4.0.2
@@ -6644,8 +6644,8 @@ __metadata:
     eslint-config-next: ^15.3.5
     http-proxy: ^1.18.1
     localforage: ^1.10.0
-    lodash-es: ^4.17.21
-    next: 15.4.10
+    lodash-es: ^4.17.23
+    next: 15.4.11
     next-common: "workspace:*"
     nprogress: ^0.2.0
     pluralize: ^8.0.0
@@ -14241,6 +14241,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash-es@npm:^4.17.23":
+  version: 4.17.23
+  resolution: "lodash-es@npm:4.17.23"
+  checksum: b1bd1d141bbde8ffc72978e34b364065675806b0ca42ab99477d247fb2ae795faeed81db9283bf18ae1f096c2b6611ec0589e0503fa9724bf82e3dce947bad69
+  languageName: node
+  linkType: hard
+
 "lodash.camelcase@npm:^4.3.0":
   version: 4.3.0
   resolution: "lodash.camelcase@npm:4.3.0"
@@ -14305,9 +14312,9 @@ __metadata:
   linkType: hard
 
 "lodash@npm:^4.17.21":
-  version: 4.17.21
-  resolution: "lodash@npm:4.17.21"
-  checksum: eb835a2e51d381e561e508ce932ea50a8e5a68f4ebdd771ea240d3048244a8d13658acbd502cd4829768c56f2e16bdd4340b9ea141297d472517b83868e677f7
+  version: 4.17.23
+  resolution: "lodash@npm:4.17.23"
+  checksum: 7daad39758a72872e94651630fbb54ba76868f904211089721a64516ce865506a759d9ad3d8ff22a2a49a50a09db5d27c36f22762d21766e47e3ba918d6d7bab
   languageName: node
   linkType: hard
 
@@ -14931,11 +14938,11 @@ __metadata:
     graphql-request: ^7.1.0
     is-ipfs: ^8.0.1
     is-utf8: ^0.2.1
-    lodash-es: ^4.17.21
+    lodash-es: ^4.17.23
     marked: ^11.1.1
     md5: ^2.3.0
     multiformats: ^13.1.0
-    next: 15.4.10
+    next: 15.4.11
     qrcode: ^1.5.4
     query-string: ^9.0.0
     quick-lru: ^7.0.0
@@ -14961,11 +14968,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"next@npm:15.4.10":
-  version: 15.4.10
-  resolution: "next@npm:15.4.10"
+"next@npm:15.4.11":
+  version: 15.4.11
+  resolution: "next@npm:15.4.11"
   dependencies:
-    "@next/env": 15.4.10
+    "@next/env": 15.4.11
     "@next/swc-darwin-arm64": 15.4.8
     "@next/swc-darwin-x64": 15.4.8
     "@next/swc-linux-arm64-gnu": 15.4.8
@@ -15016,7 +15023,7 @@ __metadata:
       optional: true
   bin:
     next: dist/bin/next
-  checksum: 11f76f5de9f0e734dd3925a48821e29291d82191a099d2e35695d51acbcbd4ee965d2842748e4a95cfdf55f38e3edb2180fd3be4adbe36b01936a7130ad60a11
+  checksum: ef33e09f61b5d77c908be251f0fdd1695339cba6f25455d0a94666c4925320ef229079ee205c21eacd4a4bc41ec9f8718646030032208822189340028a29fb21
   languageName: node
   linkType: hard
 

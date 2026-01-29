@@ -10,6 +10,7 @@ import Gravatar from "../gravatar";
 import Link from "next-common/components/link";
 import ExternalLink from "../externalLink";
 import { cn } from "next-common/utils";
+import { useChainSettings } from "next-common/context/chain";
 
 function PolkassemblyUser({
   className = "text14Medium text-textPrimary",
@@ -20,6 +21,7 @@ function PolkassemblyUser({
   ellipsis = true,
   showAvatar = true,
 }) {
+  const { usePolkassemblyBackupData } = useChainSettings();
   const address = user?.address;
   const { identity, hasIdentity } = useIdentityInfo(address);
   const maxWidth = useWidth(showAvatar, identity, propMaxWidth);
@@ -51,6 +53,8 @@ function PolkassemblyUser({
       {showAvatar && <AvatarWrapper>{avatar}</AvatarWrapper>}
       {address ? (
         <Link href={`/user/${address}/votes`}>{userIdentity}</Link>
+      ) : usePolkassemblyBackupData ? (
+        userIdentity
       ) : (
         <ExternalLink
           href={user.polkassemblyUserLink}

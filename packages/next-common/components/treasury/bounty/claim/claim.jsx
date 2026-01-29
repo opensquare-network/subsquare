@@ -2,36 +2,27 @@ import { useOnchainData } from "next-common/context/post";
 import { useState } from "react";
 import PrimaryButton from "next-common/lib/button/primary";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import useSubStorage from "next-common/hooks/common/useSubStorage";
 import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
-import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
+import { useBountyStatus } from "next-common/components/treasury/bounty/useBountyStatus";
 
 const ClaimPopup = dynamicPopup(() => import("./popup"));
 
 export default function Claim() {
   const onChain = useOnchainData();
   const { bountyIndex } = onChain;
-  const api = useConditionalContextApi();
-  const { loading, result: onChainStorage } = useSubStorage(
-    "bounties",
-    "bounties",
-    [bountyIndex],
-    { api },
-  );
-
   const [showPopup, setShowPopup] = useState(false);
+  const status = useBountyStatus(bountyIndex);
   const chainHeight = useAhmLatestHeight();
 
-  if (loading || !onChainStorage?.isSome) {
+  if (!status || !status?.isSome) {
     return null;
   }
+  const jsonStatus = status?.toJSON();
 
-  const { status } = onChainStorage.toJSON();
-  if (!status || !status?.pendingPayout) {
+  const { unlockAt } = jsonStatus?.pendingPayout || {};
+  if (!unlockAt) {
     return null;
   }
-
-  const { unlockAt } = status?.pendingPayout || {};
 
   return (
     <>

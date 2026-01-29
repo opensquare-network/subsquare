@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react";
-import extractVoteInfo from "next-common/utils/democracy/referendum";
-import { useContextApi } from "next-common/context/api";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
+import { isNil } from "lodash-es";
 
-export default function useMaybeFetchReferendumStatus(referendum) {
-  const api = useContextApi();
-  const { voteFinished } = extractVoteInfo(referendum?.timeline);
+export default function useReferendumStatus(referendum) {
+  const api = useConditionalContextApi();
   const [referendumStatus, setReferendumStatus] = useState(
     referendum?.status || referendum?.info?.ongoing || referendum?.meta,
   );
 
   useEffect(() => {
-    if (voteFinished) {
+    if (isNil(referendum?.referendumIndex)) {
       return;
     }
     api?.query.democracy
@@ -21,7 +20,7 @@ export default function useMaybeFetchReferendumStatus(referendum) {
           setReferendumStatus(data?.ongoing);
         }
       });
-  }, [api, referendum?.referendumIndex, voteFinished]);
+  }, [api, referendum?.referendumIndex]);
 
   return referendumStatus;
 }

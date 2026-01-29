@@ -7,21 +7,14 @@ import NewChildBountyButton from "next-common/components/treasury/bounty/newChil
 import BountyProposeCuratorButton from "next-common/components/treasury/bounty/proposeCurator/button";
 import BountyAcceptCuratorButton from "next-common/components/treasury/bounty/acceptCurator/button";
 import BountySidebarActionTip from "next-common/components/treasury/common/bountySidebarActionTip";
-import useSubStorage from "next-common/hooks/common/useSubStorage";
-import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
+import { useBountyStatus } from "next-common/components/treasury/bounty/useBountyStatus";
 
 function BountySidebar() {
   const { address, bountyIndex } = useOnchainData();
-  const api = useConditionalContextApi();
-  const { result } = useSubStorage("bounties", "bounties", [bountyIndex], {
-    api,
-  });
-
-  if (!address) {
+  const status = useBountyStatus(bountyIndex);
+  if (!address || !status) {
     return null;
   }
-
-  const { status } = (result?.isSome && result?.unwrap?.()) || {};
 
   const showActionTip =
     status?.isCuratorProposed || status?.isPendingPayout || status?.isActive;

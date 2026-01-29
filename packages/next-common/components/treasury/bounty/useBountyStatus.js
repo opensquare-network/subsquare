@@ -1,14 +1,9 @@
 import useSubStorage from "next-common/hooks/common/useSubStorage";
-import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
 export function useBountyStatus(bountyIndex) {
-  const api = useConditionalContextApi();
-  const { result, loading } = useSubStorage(
-    "bounties",
-    "bounties",
-    [bountyIndex],
-    { api },
-  );
+  const { result, loading } = useSubStorage("bounties", "bounties", [
+    bountyIndex,
+  ]);
   if (loading || result?.isNone) {
     return null;
   }

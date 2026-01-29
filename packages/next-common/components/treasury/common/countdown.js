@@ -4,14 +4,14 @@ import { isNil } from "lodash-es";
 import Loading from "../../loading";
 import Flex from "../../styled/flex";
 import CountDown from "../../_CountDown";
-import useChainOrScanHeight from "next-common/hooks/height";
+import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
 
 export default function TreasuryCountDown({
   startHeight = 0,
   targetHeight = 0,
   prefix = "End",
 }) {
-  const nowHeight = useChainOrScanHeight();
+  const nowHeight = useAhmLatestHeight();
   const estimatedBlocksTime = useEstimateBlocksTime(
     Math.abs(targetHeight - nowHeight),
   );

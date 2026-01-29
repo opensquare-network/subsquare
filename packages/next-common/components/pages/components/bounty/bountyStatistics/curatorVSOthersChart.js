@@ -64,7 +64,7 @@ function Chart({ categories, totalFiat }) {
       <DoughnutChart data={data} />
       {showDetail && (
         <ProposalsPopup
-          title={`${category.name} Proposals`}
+          role={category.name}
           data={category}
           onClose={() => setShowDetail(false)}
         />

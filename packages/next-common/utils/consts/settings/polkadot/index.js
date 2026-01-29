@@ -141,6 +141,7 @@ const polkadot = {
   ecoAssets: {
     hydration: true,
   },
+  usePolkassemblyBackupData: true,
 };
 
 export default polkadot;

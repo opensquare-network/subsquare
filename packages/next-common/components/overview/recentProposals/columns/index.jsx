@@ -90,6 +90,7 @@ export function getStatusTagColumn(props) {
           businessCategory.financialMotions,
           businessCategory.treasuryCouncilMotions,
           businessCategory.openTechCommitteeProposals,
+          businessCategory.communityMotions,
           businessCategory.collective,
         ].includes(category)
       ) {

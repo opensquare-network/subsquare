@@ -1,6 +1,9 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { query } from "next-common/utils/hooks/fellowship/useFellowshipVotes";
-import { useReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
+import { queryFellowshipVotesOnServerOrChain } from "next-common/utils/hooks/fellowship/useFellowshipVotes";
+import {
+  useIsReferendumFinalState,
+  useReferendumVotingFinishIndexer,
+} from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import { useOnchainData } from "next-common/context/post";
 import { isNil } from "lodash-es";
 import { partition } from "lodash-es";
@@ -13,21 +16,24 @@ function useSubFellowshipVotes(pollIndex) {
     allNay: [],
   });
   const [isLoading, setIsLoading] = useState(true);
+  const isReferendumFinalState = useIsReferendumFinalState();
 
   useEffect(() => {
-    if (!api || isNil(pollIndex)) {
+    if (isNil(pollIndex)) {
       return;
     }
-
-    query(api, pollIndex)
+    queryFellowshipVotesOnServerOrChain(api, pollIndex, isReferendumFinalState)
       .then((votes) => {
+        if (isNil(votes)) {
+          return;
+        }
         const [allAye = [], allNay = []] = partition(votes, (v) => v.isAye);
         setFellowshipVotes({ allAye, allNay });
       })
       .finally(() => {
         setIsLoading(false);
       });
-  }, [api, pollIndex]);
+  }, [api, pollIndex, isReferendumFinalState]);
 
   return { votes: fellowshipVotes, isLoading };
 }

@@ -136,6 +136,7 @@ export const CACHE_KEY = {
   navigateToJudgementPagePrompt: "navigate-to-judgement-page-prompt",
   walletConnectSession: "walletconnect-session",
   totalRequestingAssets: "total-requesting-assets",
+  treasurySpendsPendingNotice: "treasury-spends-pending-notice",
   dvApplyPromptVisible: "dv-apply-prompt-visible",
   polkadotVault: "polkadot-vault",
   vestingUnlockablePrompt: "vesting-unlockable-prompt",

@@ -5,7 +5,7 @@ import { EmptyList } from "next-common/utils/constants";
 import Vote from "next-common/components/pages/components/referenda/vote";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import useMaybeFetchElectorate from "next-common/utils/hooks/referenda/useMaybeFetchElectorate";
-import useFetchVotes from "next-common/utils/hooks/referenda/useFetchVotes";
+import useFetchVotesWithOngoing from "next-common/utils/hooks/referenda/useFetchVotesWithOngoing";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
 import CheckUnFinalized from "next-common/components/democracy/referendum/checkUnFinalized";
@@ -23,21 +23,6 @@ import { usePageProps } from "next-common/context/page";
 import useSubDemocracyReferendumStatus from "next-common/hooks/democracy/useSubDemocracyReferendumStatus";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
 import DemocracyReferendaDetailMultiTabs from "next-common/components/pages/components/tabs/democracyReferendaDetailMultiTabs";
-import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
-import { useDemocracyReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
-
-function ReferendumContent() {
-  const post = usePost();
-  const indexer = useDemocracyReferendumVotingFinishIndexer(
-    post?.onchainData?.timeline,
-  );
-
-  return (
-    <MigrationConditionalApiProvider indexer={indexer}>
-      <ReferendumContentContentInContext post={post} />
-    </MigrationConditionalApiProvider>
-  );
-}
 
 function ReferendumContentContentInContext({ post }) {
   const dispatch = useDispatch();
@@ -47,7 +32,7 @@ function ReferendumContentContentInContext({ post }) {
 
   useMaybeFetchElectorate(post?.onchainData);
   useDemocracyVotesFromServer(post.referendumIndex);
-  useFetchVotes(post?.onchainData);
+  useFetchVotesWithOngoing(post?.onchainData);
 
   useEffect(() => {
     return () => {
@@ -74,7 +59,7 @@ function ReferendumContentContentWithNullGuard() {
     return <CheckUnFinalized id={id} />;
   }
 
-  return <ReferendumContent />;
+  return <ReferendumContentContentInContext post={detail} key={id} />;
 }
 
 function DemocracyReferendumPageImpl() {

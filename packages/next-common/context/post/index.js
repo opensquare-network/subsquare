@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useReducer } from "react";
+import { isEqual } from "lodash-es";
 import { useDetailType } from "../page";
 import { detailPageCategory } from "../../utils/consts/business/category";
 import { getGov2ReferendumTitle } from "../../utils/gov2/title";
@@ -28,12 +29,17 @@ export function PostProvider({ children, post }) {
   );
 }
 
-function postReducer(post, action) {
+function postReducer(currentPost, action) {
   if (action.type !== POST_UPDATE_ACTION) {
     throw new Error(`Unknown post action: ${action.type}`);
   }
 
-  return action.post;
+  const newPost = action.post;
+  if (isEqual(currentPost, newPost)) {
+    return currentPost;
+  }
+
+  return newPost;
 }
 
 export function usePostDispatch() {

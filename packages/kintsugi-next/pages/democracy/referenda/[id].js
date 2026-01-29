@@ -10,7 +10,7 @@ import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import ReferendumMetadata from "next-common/components/democracy/metadata";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import useMaybeFetchElectorate from "next-common/utils/hooks/referenda/useMaybeFetchElectorate";
-import useFetchVotes from "next-common/utils/hooks/referenda/useFetchVotes";
+import useFetchVotesWithOngoing from "next-common/utils/hooks/referenda/useFetchVotesWithOngoing";
 import { getBannerUrl } from "next-common/utils/banner";
 import { PostProvider, usePost } from "next-common/context/post";
 import { useDispatch, useSelector } from "react-redux";
@@ -33,8 +33,6 @@ import useSubDemocracyReferendumStatus from "next-common/hooks/democracy/useSubD
 import useSetReferendumStatus from "next-common/hooks/democracy/useSetReferendumStatus";
 import { referendumStatusSelector } from "next-common/store/reducers/referendumSlice";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
-import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
-import { useDemocracyReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 
 function ReferendumContent({ timelineData, setTimelineData }) {
   const dispatch = useDispatch();
@@ -50,7 +48,7 @@ function ReferendumContent({ timelineData, setTimelineData }) {
 
   useMaybeFetchElectorate(post?.onchainData);
   useDemocracyVotesFromServer(post.referendumIndex);
-  useFetchVotes(post?.onchainData);
+  useFetchVotesWithOngoing(post?.onchainData);
 
   useEffect(() => {
     return () => dispatch(clearVotes());
@@ -119,19 +117,16 @@ function ReferendumContentWithNullGuard() {
   const { id } = usePageProps();
   const [timelineData, setTimelineData] = useState([]);
 
-  const indexer = useDemocracyReferendumVotingFinishIndexer(timelineData);
-
   if (!post) {
     return <CheckUnFinalized id={id} />;
   }
 
   return (
-    <MigrationConditionalApiProvider indexer={indexer}>
-      <ReferendumContent
-        timelineData={timelineData}
-        setTimelineData={setTimelineData}
-      />
-    </MigrationConditionalApiProvider>
+    <ReferendumContent
+      timelineData={timelineData}
+      setTimelineData={setTimelineData}
+      key={id}
+    />
   );
 }
 

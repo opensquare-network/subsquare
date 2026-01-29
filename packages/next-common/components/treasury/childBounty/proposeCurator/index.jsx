@@ -6,16 +6,11 @@ import Tooltip from "next-common/components/tooltip";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
 import { isSameAddress } from "next-common/utils";
-import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 
 function useSubParentBountyData(bountyIndex) {
-  const api = useConditionalContextApi();
-  const { result, loading } = useSubStorage(
-    "bounties",
-    "bounties",
-    [bountyIndex],
-    { api },
-  );
+  const { result, loading } = useSubStorage("bounties", "bounties", [
+    bountyIndex,
+  ]);
   const data = result?.toJSON();
 
   return {
@@ -25,12 +20,10 @@ function useSubParentBountyData(bountyIndex) {
 }
 
 function useSubChildBountyIsAdded(parentBountyId, index) {
-  const api = useConditionalContextApi();
   const { loading, result: onChainStorage } = useSubStorage(
     "childBounties",
     "childBounties",
     [parentBountyId, index],
-    { api },
   );
 
   if (loading || !onChainStorage?.isSome) {

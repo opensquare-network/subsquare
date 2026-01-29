@@ -4,27 +4,26 @@ import AssetHubTabs from "next-common/components/assethubMigrationAssets/tabs";
 import { AssetHubTabsProvider } from "next-common/components/assethubMigrationAssets/context/assetHubTabsProvider";
 import { TABS } from "next-common/components/assethubMigrationAssets/context/assetHubTabsProvider";
 import { useChainSettings } from "next-common/context/chain";
-import {
-  MyForeignAssetsProvider,
-  useMyForeignAssetsContext,
-} from "next-common/context/foreignAssets";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
+import { useTotalCounts } from "next-common/components/assethubMigrationAssets/context/assetHubTabsProvider";
+import { ForeignAssetMetadataProvider } from "next-common/components/assethubMigrationAssets/context/foreignAssetMetadata";
 
 function ForeignAssetsWithTransfers() {
   return (
     <AssetHubTabsProvider>
-      <AssetHubTabs customLabels={{ [TABS.assets]: "Foreign Assets" }}>
-        <MyForeignAssetsProvider>
+      <ForeignAssetMetadataProvider>
+        <AssetHubTabs customLabels={{ [TABS.assets]: "Foreign Assets" }}>
           <ForeignAssetsTable />
-        </MyForeignAssetsProvider>
-        <ForeignAssetsTransfers />
-      </AssetHubTabs>
+          <ForeignAssetsTransfers />
+        </AssetHubTabs>
+      </ForeignAssetMetadataProvider>
     </AssetHubTabsProvider>
   );
 }
 
 function ForeignAssetsHeader() {
-  const { count } = useMyForeignAssetsContext();
+  const [totalCounts] = useTotalCounts();
+  const count = totalCounts.assets || 0;
 
   return (
     <TitleContainer className="justify-start gap-x-1">
@@ -36,10 +35,12 @@ function ForeignAssetsHeader() {
 
 function ForeignAssetsWithoutTransfers() {
   return (
-    <MyForeignAssetsProvider>
-      <ForeignAssetsHeader />
-      <ForeignAssetsTable />
-    </MyForeignAssetsProvider>
+    <AssetHubTabsProvider>
+      <ForeignAssetMetadataProvider>
+        <ForeignAssetsHeader />
+        <ForeignAssetsTable />
+      </ForeignAssetMetadataProvider>
+    </AssetHubTabsProvider>
   );
 }
 

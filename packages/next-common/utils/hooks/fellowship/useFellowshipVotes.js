@@ -10,6 +10,8 @@ import {
 } from "next-common/store/reducers/fellowship/votes";
 import { partition } from "lodash-es";
 import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
+import { useIsReferendumFinalState } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
+import { backendApi } from "next-common/services/nextApi";
 
 /**
  * // Fellowship voting storage: (pollIndex, address, VoteRecord)
@@ -68,13 +70,43 @@ export async function query(api, targetPollIndex) {
   return normalized;
 }
 
+export const normalizeFellowshipVotes = (votes) => {
+  return votes.map((vote) => ({
+    ...vote,
+    pollIndex: vote.referendumIndex,
+    address: vote.account,
+  }));
+};
+
+export const fetchFellowshipVotesFromServer = async (pollIndex) => {
+  const votes = await backendApi
+    .fetch(`fellowship/referenda/${pollIndex}/votes`)
+    .then((res) => res.result);
+  return normalizeFellowshipVotes(votes || []);
+};
+
+export const queryFellowshipVotesOnServerOrChain = async (
+  api,
+  pollIndex,
+  isReferendumFinalState,
+) => {
+  if (isReferendumFinalState) {
+    return await fetchFellowshipVotesFromServer(pollIndex);
+  }
+  if (!api) {
+    return null;
+  }
+  return await query(api, pollIndex);
+};
+
 export default function useFellowshipVotes(pollIndex) {
   const api = useConditionalContextApi();
   const dispatch = useDispatch();
   const votesTrigger = useSelector(fellowshipVotesTriggerSelector);
+  const isReferendumFinalState = useIsReferendumFinalState();
 
   useEffect(() => {
-    if (!api || isNil(pollIndex)) {
+    if (isNil(pollIndex)) {
       return;
     }
 
@@ -82,8 +114,11 @@ export default function useFellowshipVotes(pollIndex) {
       dispatch(setIsLoadingFellowshipVotes(true));
     }
 
-    query(api, pollIndex)
+    queryFellowshipVotesOnServerOrChain(api, pollIndex, isReferendumFinalState)
       .then((votes) => {
+        if (isNil(votes)) {
+          return;
+        }
         const [allAye = [], allNay = []] = partition(votes, (v) => v.isAye);
         dispatch(setFellowshipVotes({ allAye, allNay }));
       })
@@ -93,5 +128,5 @@ export default function useFellowshipVotes(pollIndex) {
       dispatch(clearFellowshipVotes());
       dispatch(clearFellowshipVotesTrigger());
     };
-  }, [api, pollIndex, votesTrigger, dispatch]);
+  }, [api, pollIndex, votesTrigger, dispatch, isReferendumFinalState]);
 }

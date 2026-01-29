@@ -85,9 +85,8 @@ const DisplayUser = () => {
   return <div className="text-textPrimary text14Bold">{user?.username}</div>;
 };
 
-export function Account() {
-  const realAddress = useRealAddress();
-  const maybeEvmAddress = tryConvertToEvmAddress(realAddress);
+export function AccountInfoContent({ address }) {
+  const maybeEvmAddress = tryConvertToEvmAddress(address);
 
   return (
     <div className="flex gap-[12px]">
@@ -106,6 +105,11 @@ export function Account() {
       </div>
     </div>
   );
+}
+
+export function Account() {
+  const realAddress = useRealAddress();
+  return <AccountInfoContent address={realAddress} />;
 }
 
 export function ProxyTip() {
