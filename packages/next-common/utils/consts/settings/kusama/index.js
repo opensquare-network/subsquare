@@ -84,6 +84,7 @@ const kusama = {
     assethub: true,
     people: true,
     vesting: true,
+    staking: true,
   }),
   integrations: {
     doTreasury: true,
