@@ -173,7 +173,7 @@ function AuthResultCard({ providerLabel, result, time }) {
         />
       )}
       <div className="flex justify-end">
-        <Link href="/people/judgement">
+        <Link href="/people/verifications">
           <PrimaryButton>Go to Judgement Detail</PrimaryButton>
         </Link>
       </div>

@@ -8,7 +8,7 @@ export default function Discord({ request }) {
   const { loading, connected, openAuthWindow } = usePeopleJudgementSocialAuth({
     provider: PeopleSocialType.discord,
     authUrlPath: "people/verifications/auth/discord/auth-url",
-    redirectPath: "/people/judgement/auth/discord",
+    redirectPath: "/people/verifications/auth/discord",
     isVerified,
   });
 

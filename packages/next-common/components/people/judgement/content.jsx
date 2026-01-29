@@ -1,3 +1,4 @@
+import tw from "tailwind-styled-components";
 import Loading from "next-common/components/loading";
 import Discord from "./discord";
 import Element from "./element";
@@ -6,6 +7,8 @@ import Github from "./github";
 import JudgementSummary from "./summary";
 import Twitter from "./twitter";
 import { useJudgementContext } from "./context";
+
+const SocialAccountWrapper = tw.div`flex bg-neutral100 border-b border-neutral300 p-4 rounded-lg`;
 
 export default function JudgementPageContent() {
   const { myJudgementRequest: request, isLoadingMyJudgementRequest: loading } =
@@ -22,29 +25,29 @@ export default function JudgementPageContent() {
         ) : (
           <>
             {request?.info?.email && (
-              <div className="bg-neutral100 border-b border-neutral300 p-4 rounded-lg flex">
+              <SocialAccountWrapper>
                 <Email request={request} />
-              </div>
+              </SocialAccountWrapper>
             )}
             {request?.info?.matrix && (
-              <div className="bg-neutral100 border-b border-neutral300 p-4 rounded-lg flex">
+              <SocialAccountWrapper>
                 <Element request={request} />
-              </div>
+              </SocialAccountWrapper>
             )}
             {request?.info?.discord && (
-              <div className="bg-neutral100 border-b border-neutral300 p-4 rounded-lg flex">
+              <SocialAccountWrapper>
                 <Discord request={request} />
-              </div>
+              </SocialAccountWrapper>
             )}
             {request?.info?.twitter && (
-              <div className="bg-neutral100 border-b border-neutral300 p-4 rounded-lg flex">
+              <SocialAccountWrapper>
                 <Twitter request={request} />
-              </div>
+              </SocialAccountWrapper>
             )}
             {request?.info?.github && (
-              <div className="bg-neutral100 border-b border-neutral300 p-4 rounded-lg flex">
+              <SocialAccountWrapper>
                 <Github request={request} />
-              </div>
+              </SocialAccountWrapper>
             )}
           </>
         )}
