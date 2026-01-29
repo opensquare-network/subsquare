@@ -19,7 +19,7 @@ export default function ProposeWithInputHex() {
 
   const {
     setCallData,
-    multisig: { callHash, when },
+    multisig: { callHash },
   } = useMultisigSignContext();
 
   const inputCallHash = useMemo(() => {
@@ -63,7 +63,7 @@ export default function ProposeWithInputHex() {
         onChange={(e) => setInputHex(e.target.value)}
       />
       {isMatchCallHash && (
-        <ProposeTree callHex={inputHex} when={when} setValue={setValue} />
+        <ProposeTree callHex={inputHex} setValue={setValue} />
       )}
 
       {!isMatchCallHash && inputHex && (
