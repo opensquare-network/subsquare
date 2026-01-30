@@ -7,16 +7,39 @@ import Github from "./github";
 import JudgementSummary from "./summary";
 import Twitter from "./twitter";
 import { useJudgementContext } from "./context";
+import { PeopleSocialType } from "./consts";
 
 const SocialAccountWrapper = tw.div`flex bg-neutral100 border-b border-neutral300 p-4 rounded-lg`;
+
+function calcVerificationNumbers(request) {
+  const allSocialTypes = Object.values(PeopleSocialType);
+  const info = request?.info || {};
+  const verifications = request?.verifications || {};
+  const totalSocials = allSocialTypes.filter((key) =>
+    Boolean(info[key === "element" ? "matrix" : key]),
+  ).length;
+  const verified = allSocialTypes.filter(
+    (key) =>
+      Boolean(info[key === "element" ? "matrix" : key]) &&
+      verifications?.[key] === true,
+  ).length;
+  const pending = totalSocials - verified;
+  return { verified, pending };
+}
 
 export default function JudgementPageContent() {
   const { myJudgementRequest: request, isLoadingMyJudgementRequest: loading } =
     useJudgementContext();
 
+  const { verified, pending } = calcVerificationNumbers(request);
+
   return (
     <>
-      <JudgementSummary request={request} loading={loading} />
+      <JudgementSummary
+        verified={verified}
+        pending={pending}
+        loading={loading}
+      />
       <div className="pt-4 grid grid-cols-1 gap-4 text-textPrimary">
         {loading && !request ? (
           <div className="p-4 flex justify-center">
