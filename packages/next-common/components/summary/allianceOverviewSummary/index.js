@@ -2,7 +2,10 @@ import { usePageProps } from "next-common/context/page";
 import ActiveValue from "../overviewSummary/activeValue";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
-import { FellowshipCurrentSalaryCycle } from "next-common/components/overview/fellowship/finance/currentSalaryCycle";
+import {
+  FellowshipCurrentSalaryCycle,
+  FellowshipCurrentSalaryCycleLoading,
+} from "next-common/components/overview/fellowship/finance/currentSalaryCycle";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import { isNil } from "lodash-es";
 import { useFellowshipSalaryStats } from "next-common/hooks/fellowship/salary/useFellowshipSalaryStats";
@@ -14,7 +17,7 @@ function FellowshipCurrentSalaryCycleSummary() {
     isNil(fellowshipSalaryStats) ||
     isNil(fellowshipSalaryStats?.cycleIndex)
   ) {
-    return null;
+    return <FellowshipCurrentSalaryCycleLoading />;
   }
 
   const { cycleIndex } = fellowshipSalaryStats;

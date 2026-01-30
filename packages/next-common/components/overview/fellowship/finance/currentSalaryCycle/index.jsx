@@ -4,6 +4,7 @@ import { isNil } from "lodash-es";
 import Link from "next-common/components/link";
 import FellowshipSalaryStatsDetailLink from "next-common/components/overview/fellowship/salary/detailLink";
 import SalaryCycleStatus from "./status";
+import Loading from "next-common/components/loading";
 
 function CurrentSalaryCycle({ cycleIndex }) {
   return (
@@ -17,6 +18,24 @@ function CurrentSalaryCycle({ cycleIndex }) {
       <span>·</span>
       <span>#{cycleIndex}</span>
     </div>
+  );
+}
+
+export function FellowshipCurrentSalaryCycleLoading() {
+  return (
+    <SummaryItem
+      title={
+        <div className="text12Medium text-textTertiary space-x-1">
+          <span className="text12Medium text-textTertiary">
+            Current Salary Cycle
+          </span>
+        </div>
+      }
+    >
+      <div className="flex items-center w-[24px] h-[24px]">
+        <Loading size={18} />
+      </div>
+    </SummaryItem>
   );
 }
 
