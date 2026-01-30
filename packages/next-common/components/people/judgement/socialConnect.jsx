@@ -31,16 +31,18 @@ export default function PeopleJudgementSocialConnect({
           <span className="truncate text-textPrimary">{username}</span>
         </div>
 
-        <Tooltip content={message}>
-          <PrimaryButton
-            loading={loading}
-            disabled={connected}
-            onClick={onConnect}
-            size="small"
-          >
-            Verify
-          </PrimaryButton>
-        </Tooltip>
+        {!connected && (
+          <Tooltip content={message}>
+            <PrimaryButton
+              loading={loading}
+              disabled={connected}
+              onClick={onConnect}
+              size="small"
+            >
+              Verify
+            </PrimaryButton>
+          </Tooltip>
+        )}
       </div>
     </div>
   );
