@@ -13,7 +13,7 @@ function NavigateToJudgementPagePrompt() {
     <div>
       Verify your social accounts for identity judgement.&nbsp;
       <Link className="underline text14Medium" href="/people/verifications">
-        Go to Judgement page
+        Go to Verifications page
       </Link>
       .
     </div>
