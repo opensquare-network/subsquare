@@ -21,10 +21,10 @@ const CallDetailPopup = dynamicPopup(() =>
 );
 
 export default function CallColumnContent({ call }) {
-  if (call?.inline) {
-    return <InlineCallColumnContent hash={call?.inline} />;
-  } else if (call?.lookup) {
-    return <PreimageColumnContent hash={call?.lookup?.hash} />;
+  if (call?.type === "Inline") {
+    return <InlineCallColumnContent hash={call?.value?.asHex()} />;
+  } else if (call?.type === "Lookup") {
+    return <PreimageColumnContent hash={call?.value?.hash.asHex()} />;
   } else {
     return null;
   }

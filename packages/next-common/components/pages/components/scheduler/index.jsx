@@ -2,6 +2,7 @@ import ListLayout from "next-common/components/layout/ListLayout";
 import { withCommonProps } from "next-common/lib";
 import SchedulerTable from "next-common/components/pages/components/scheduler/table";
 import { fetchScanHeight } from "next-common/services/fetchScanHeight";
+import { PapiProvider } from "next-common/context/papi";
 
 export default function SchedulerPage() {
   const seoInfo = {
@@ -14,7 +15,9 @@ export default function SchedulerPage() {
       title={seoInfo.title}
       description={seoInfo.desc}
     >
-      <SchedulerTable />
+      <PapiProvider>
+        <SchedulerTable />
+      </PapiProvider>
     </ListLayout>
   );
 }
