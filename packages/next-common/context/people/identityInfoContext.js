@@ -16,5 +16,5 @@ export default function IdentityInfoProvider({ children }) {
 }
 
 export function useIdentityInfoContext() {
-  return useContext(IdentityInfoContext) || {};
+  return useContext(IdentityInfoContext);
 }
