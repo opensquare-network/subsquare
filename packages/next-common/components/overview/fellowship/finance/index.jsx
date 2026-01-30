@@ -3,7 +3,7 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import FellowshipTreasury from "./treasury";
 import FellowshipSalary from "./salary";
-import FellowshipCurrentSalaryCycle from "./currentSalaryCycle";
+import FellowshipCurrentSalaryCycleSummary from "./currentSalaryCycle";
 import { cn } from "next-common/utils";
 import { useNavCollapsed } from "next-common/context/nav";
 
@@ -23,7 +23,7 @@ export default function FellowshipFinanceOverview() {
       >
         <FellowshipTreasury />
         <FellowshipSalary />
-        <FellowshipCurrentSalaryCycle />
+        <FellowshipCurrentSalaryCycleSummary />
       </SecondaryCard>
     </CollectivesProvider>
   );

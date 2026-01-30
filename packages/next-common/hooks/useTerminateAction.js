@@ -4,6 +4,7 @@ import { OptionItem } from "next-common/components/internalDropdown/styled";
 import dayjs from "dayjs";
 import {
   SystemCancel,
+  SystemClose,
   SystemInvalid,
   SystemTimeout,
 } from "@osn/icons/subsquare";
@@ -12,15 +13,17 @@ import { noop } from "lodash-es";
 import TerminateApplicationPopup from "next-common/components/terminateApplicationPopup";
 import {
   finalStateActionTextMap,
-  finalStateMap,
+  fellowshipApplicationStates,
 } from "next-common/utils/consts/fellowship/application";
 import Tooltip from "next-common/components/tooltip";
 import { usePost } from "next-common/context/post";
 import useIsAdmin from "./useIsAdmin";
+import { useIsPostAuthor } from "next-common/context/post/useIsPostAuthor";
 
 export default function useTerminateAction({ onShowPopup = noop }) {
   const isAdmin = useIsAdmin();
   const post = usePost();
+  const isAuthor = useIsPostAuthor();
   const postType = useDetailType();
   const [showPopup, setShowPopup] = useState(false);
   const [actionType, setActionType] = useState(null);
@@ -33,8 +36,8 @@ export default function useTerminateAction({ onShowPopup = noop }) {
     postType === detailPageCategory.FELLOWSHIP_APPLICATION;
 
   const showTerminateAction =
-    isFellowshipApplicationPost && [finalStateMap.New].includes(post?.status);
-  const canTerminate = isAdmin;
+    isFellowshipApplicationPost &&
+    [fellowshipApplicationStates.New].includes(post?.status);
 
   let actionsComponent = null;
   let popupComponent = null;
@@ -44,26 +47,57 @@ export default function useTerminateAction({ onShowPopup = noop }) {
   }
 
   const supportedActions = [
-    finalStateMap.Rejected,
-    finalStateMap.Invalid,
-    finalStateMap.Timeout,
+    {
+      type: fellowshipApplicationStates.Rejected,
+      disabled: isAdmin,
+      tip: isAdmin ? "" : "Only available to the admins",
+      icon: <SystemCancel />,
+    },
+    {
+      type: fellowshipApplicationStates.Invalid,
+      disabled: isAdmin,
+      tip: isAdmin ? "" : "Only available to the admins",
+      icon: <SystemInvalid />,
+    },
+    {
+      type: fellowshipApplicationStates.TimedOut,
+      disabled: isAdmin && timeoutDisabled,
+      tip: isAdmin
+        ? timeoutDisabled
+          ? ""
+          : "Can only be set timedout 30 days after creation"
+        : "Only available to the admins",
+      icon: <SystemTimeout />,
+    },
+    {
+      type: fellowshipApplicationStates.Closed,
+      disabled: isAdmin || isAuthor,
+      tip:
+        isAdmin || isAuthor
+          ? ""
+          : "Only available to the admins and the author",
+      icon: <SystemClose />,
+    },
   ];
 
   actionsComponent = (
     <>
-      {supportedActions.map((type) => (
-        <TerminateMenuItem
-          key={type}
-          onClick={() => {
-            onShowPopup();
-            setShowPopup(true);
-            setActionType(type);
-          }}
-          disabled={!canTerminate}
-          timeoutDisabled={timeoutDisabled}
-          type={type}
-        />
-      ))}
+      {supportedActions.map(({ type, disabled, tip, icon }) => {
+        return (
+          <TerminateMenuItem
+            key={type}
+            onClick={() => {
+              onShowPopup();
+              setShowPopup(true);
+              setActionType(type);
+            }}
+            disabled={!disabled}
+            tip={tip}
+            type={type}
+            icon={icon}
+          />
+        );
+      })}
     </>
   );
 
@@ -80,43 +114,20 @@ export default function useTerminateAction({ onShowPopup = noop }) {
   };
 }
 
-function TerminateMenuItem({
-  onClick,
-  disabled: propDisabled,
-  type,
-  timeoutDisabled = false,
-}) {
-  let disabled = propDisabled;
-  let tip = "Only available to the admins";
-  if (timeoutDisabled && type === finalStateMap.Timeout) {
-    tip = "Can only be set timedout 30 days after creation";
-    disabled = true;
-  }
-  const content = (
-    <OptionItem
-      className={
-        disabled
-          ? "text-textDisabled [&_path]:fill-textDisabled cursor-not-allowed"
-          : ""
-      }
-      onClick={!disabled ? onClick : noop}
-    >
-      <div className="mr-2">
-        {type === finalStateMap.Rejected && <SystemCancel />}
-        {type === finalStateMap.Invalid && <SystemInvalid />}
-        {type === finalStateMap.Timeout && <SystemTimeout />}
-      </div>
-      <span>{finalStateActionTextMap[type]}</span>
-    </OptionItem>
+function TerminateMenuItem({ onClick, disabled, type, tip, icon }) {
+  return (
+    <Tooltip content={tip} className="w-full">
+      <OptionItem
+        className={
+          disabled
+            ? "text-textDisabled [&_path]:fill-textDisabled cursor-not-allowed hover:bg-transparent"
+            : "hover:bg-neutral200"
+        }
+        onClick={!disabled ? onClick : noop}
+      >
+        <div className="mr-2">{icon}</div>
+        <span>{finalStateActionTextMap[type]}</span>
+      </OptionItem>
+    </Tooltip>
   );
-  if (disabled) {
-    return (
-      <div className="hover:bg-neutral200">
-        <Tooltip content={tip} className="w-full">
-          {content}
-        </Tooltip>
-      </div>
-    );
-  }
-  return content;
 }

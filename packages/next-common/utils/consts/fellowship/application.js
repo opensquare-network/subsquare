@@ -1,39 +1,47 @@
-export const finalStateMap = {
+export const fellowshipApplicationStates = {
   New: "new",
   Inducted: "inducted",
   Rejected: "rejected",
   Invalid: "invalid",
-  Timeout: "timedOut",
+  TimedOut: "timedOut",
+  Closed: "closed",
 };
 
 export const formattedViewMap = {
-  [finalStateMap.New]: "active",
-  [finalStateMap.Inducted]: "inducted",
-  [finalStateMap.Rejected]: "rejected",
-  [finalStateMap.Invalid]: "invalid",
-  [finalStateMap.Timeout]: "timedOut",
+  [fellowshipApplicationStates.New]: "active",
+  [fellowshipApplicationStates.Inducted]: "inducted",
+  [fellowshipApplicationStates.Rejected]: "rejected",
+  [fellowshipApplicationStates.Invalid]: "invalid",
+  [fellowshipApplicationStates.TimedOut]: "timedOut",
+  [fellowshipApplicationStates.Closed]: "closed",
 };
 
 export const finalStateActionTextMap = {
-  [finalStateMap.Rejected]: "Reject",
-  [finalStateMap.Invalid]: "Invalid",
-  [finalStateMap.Timeout]: "Time Out",
+  [fellowshipApplicationStates.Rejected]: "Reject",
+  [fellowshipApplicationStates.Invalid]: "Invalid",
+  [fellowshipApplicationStates.TimedOut]: "Time Out",
+  [fellowshipApplicationStates.Closed]: "Close",
 };
 
 export const terminateApplicationInfo = {
-  [finalStateMap.Rejected]: {
+  [fellowshipApplicationStates.Rejected]: {
     title: "Reject Application",
     confirmText:
       "This will set this application as rejected, and the state can not be reversed.",
   },
-  [finalStateMap.Invalid]: {
+  [fellowshipApplicationStates.Invalid]: {
     title: "Invalidate Application",
     confirmText:
       "This will set this application as invalid, and the state can not be reversed.",
   },
-  [finalStateMap.Timeout]: {
+  [fellowshipApplicationStates.TimedOut]: {
     title: "Time Out Application",
     confirmText:
       "This will set this application as timedout, and the state can not be reversed.",
+  },
+  [fellowshipApplicationStates.Closed]: {
+    title: "Close Application",
+    confirmText:
+      "This will set this application as closed, and the state can not be reversed.",
   },
 };
