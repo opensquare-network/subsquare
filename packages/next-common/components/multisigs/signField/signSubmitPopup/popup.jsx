@@ -8,13 +8,10 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useWeight from "next-common/utils/hooks/common/useWeight";
 import { useChainSettings } from "next-common/context/chain";
 import PopupPropose from "./propose";
-import useCallFromHex, {
-  useCallFromHexIndexer,
-} from "next-common/utils/hooks/useCallFromHex";
+import useCallFromHex from "next-common/utils/hooks/useCallFromHex";
 import { sortAddresses } from "@polkadot/util-crypto";
 import { isSameAddress } from "next-common/utils";
 import MultisigSignProvider, { useMultisigSignContext } from "./context";
-import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { useMultisigListFetchFunc } from "../../actions/composeCallPopup/fetchMultisigList";
 
@@ -103,15 +100,11 @@ export function SignSubmitInnerPopup({ onClose, multisig = {} }) {
 }
 
 export default function SignSubmitPopup({ onClose, multisig = {} }) {
-  const indexer = useCallFromHexIndexer(multisig?.when?.height);
-
   return (
-    <MigrationConditionalApiProvider indexer={indexer}>
-      <SignerPopupWrapper onClose={onClose}>
-        <MultisigSignProvider multisig={multisig}>
-          <SignSubmitInnerPopup onClose={onClose} multisig={multisig} />
-        </MultisigSignProvider>
-      </SignerPopupWrapper>
-    </MigrationConditionalApiProvider>
+    <SignerPopupWrapper onClose={onClose}>
+      <MultisigSignProvider multisig={multisig}>
+        <SignSubmitInnerPopup onClose={onClose} multisig={multisig} />
+      </MultisigSignProvider>
+    </SignerPopupWrapper>
   );
 }

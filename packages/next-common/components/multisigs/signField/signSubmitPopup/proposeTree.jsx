@@ -1,19 +1,10 @@
-import useCallFromHex, {
-  useCallFromHexIndexer,
-} from "next-common/utils/hooks/useCallFromHex";
+import useCallFromHex from "next-common/utils/hooks/useCallFromHex";
 import CallTree from "next-common/components/proposal/callTree";
 import { useEffect } from "react";
 import { noop } from "lodash-es";
-import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 
-export default function ProposeTree({ callHex, when, setValue = noop }) {
-  const indexer = useCallFromHexIndexer(when?.height);
-
-  return (
-    <MigrationConditionalApiProvider indexer={indexer}>
-      <ProposeTreeWithContext callHex={callHex} setValue={setValue} />
-    </MigrationConditionalApiProvider>
-  );
+export default function ProposeTree({ callHex, setValue = noop }) {
+  return <ProposeTreeWithContext callHex={callHex} setValue={setValue} />;
 }
 
 function ProposeTreeWithContext({ callHex, setValue = noop }) {

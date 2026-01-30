@@ -1,6 +1,5 @@
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import ProposeTree from "next-common/components/multisigs/signField/signSubmitPopup/proposeTree";
-import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import { useSignCancel } from "../signCancel";
 import PrimaryButton from "next-common/lib/button/primary";
@@ -11,7 +10,7 @@ function SignCancelInnerPopup({ onClose, multisig }) {
   return (
     <Popup title="Multisig" onClose={onClose} maskClosable={false}>
       <SignerWithBalance noSwitchSigner />
-      <ProposeTree callHex={multisig?.callHex} when={multisig?.when} />
+      <ProposeTree callHex={multisig?.callHex} />
       <div className="flex justify-end">
         <PrimaryButton onClick={doSubmit} loading={isDisabled}>
           Cancel
@@ -22,9 +21,5 @@ function SignCancelInnerPopup({ onClose, multisig }) {
 }
 
 export default function SignCancelPopup({ onClose, multisig }) {
-  return (
-    <MigrationConditionalApiProvider>
-      <SignCancelInnerPopup onClose={onClose} multisig={multisig} />
-    </MigrationConditionalApiProvider>
-  );
+  return <SignCancelInnerPopup onClose={onClose} multisig={multisig} />;
 }

@@ -1,6 +1,4 @@
-import useCallFromHex, {
-  useCallFromHexIndexer,
-} from "next-common/utils/hooks/useCallFromHex";
+import useCallFromHex from "next-common/utils/hooks/useCallFromHex";
 import {
   convertProposalForJsonView,
   convertProposalForTableView,
@@ -9,7 +7,6 @@ import { useChain } from "next-common/context/chain";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import RawCallProvider from "next-common/context/call/raw";
 import { useCallPopup } from "./context/callPopupContext";
-import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 
 const CallDetailPopup = dynamicPopup(() =>
   import("next-common/components/callDetailPopup"),
@@ -17,20 +14,17 @@ const CallDetailPopup = dynamicPopup(() =>
 
 export function CallPopupInContext() {
   const { showPopup, callPopupData, setShowPopup } = useCallPopup();
-  const indexer = useCallFromHexIndexer(callPopupData?.blockHeight);
 
   if (!showPopup || !callPopupData) {
     return null;
   }
 
   return (
-    <MigrationConditionalApiProvider indexer={indexer}>
-      <CallPopup
-        call={callPopupData?.call}
-        callHex={callPopupData?.callHex}
-        setShow={setShowPopup}
-      />
-    </MigrationConditionalApiProvider>
+    <CallPopup
+      call={callPopupData?.call}
+      callHex={callPopupData?.callHex}
+      setShow={setShowPopup}
+    />
   );
 }
 
