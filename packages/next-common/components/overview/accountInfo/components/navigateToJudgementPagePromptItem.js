@@ -11,7 +11,7 @@ import useMyJudgementRequest from "next-common/components/people/hooks/useMyJudg
 function NavigateToJudgementPagePrompt() {
   return (
     <div>
-      Actions is required to verify your identity social accounts.&nbsp;
+      Verify your social accounts for identity judgement.&nbsp;
       <Link className="underline text14Medium" href="/people/verifications">
         Go to Judgement page
       </Link>
