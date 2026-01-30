@@ -84,9 +84,31 @@ export default function useAllVestingData() {
   const { latestHeight, isLoading: isHeightLoading } =
     useAhmLatestHeightSnapshot();
   const [data, setData] = useState([]);
+  const [subData, setSubData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [sortField, setSortField] = useState("unlockable");
   const [sortDirection, setSortDirection] = useState("desc");
+
+  useEffect(() => {
+    if (!api || !latestHeight) {
+      return;
+    }
+
+    const unsub = api.query.Vesting.Vesting.watchEntries().subscribe((item) => {
+      console.log(item, "item");
+      if (item.deltas) {
+        setSubData(item.entries);
+      }
+    });
+
+    return () => {
+      unsub?.unsubscribe();
+    };
+  }, [api, latestHeight]);
+
+  useEffect(() => {
+    console.log(subData, "subData");
+  }, [subData]);
 
   const fetchData = useCallback(
     async (silent = false) => {
@@ -208,8 +230,8 @@ export default function useAllVestingData() {
   );
 
   const update = useCallback(() => {
-    fetchData(true);
-  }, [fetchData]);
+    // fetchData(true);
+  }, []);
 
   return useMemo(
     () => ({
