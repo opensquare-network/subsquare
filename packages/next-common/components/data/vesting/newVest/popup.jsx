@@ -11,7 +11,6 @@ import { useChainSettings } from "next-common/context/chain";
 import { useExtensionAccounts } from "next-common/components/popupWithSigner/context";
 import { useSubBalanceInfo } from "next-common/hooks/balance/useSubBalanceInfo";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
-import { useVestingContext } from "next-common/context/vesting";
 import CurrencyInput from "next-common/components/currencyInput";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import useVestedTransferForm from "./useVestedTransferForm";
@@ -24,7 +23,6 @@ function PopupContent() {
   const dispatch = useDispatch();
   const { symbol, decimals } = useChainSettings();
   const extensionAccounts = useExtensionAccounts();
-  const { update: updateVestingData } = useVestingContext();
   const realAddress = useRealAddress();
   const { value: balance, loading: balanceLoading } =
     useSubBalanceInfo(realAddress);
@@ -45,8 +43,7 @@ function PopupContent() {
 
   const onInBlock = useCallback(() => {
     dispatch(newSuccessToast("Vested transfer successful"));
-    updateVestingData();
-  }, [dispatch, updateVestingData]);
+  }, [dispatch]);
 
   return (
     <>

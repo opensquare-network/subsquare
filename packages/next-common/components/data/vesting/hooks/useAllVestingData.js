@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback, useMemo } from "react";
 import { useContextPapiApi } from "next-common/context/papi";
 import useAhmLatestHeightSnapshot from "next-common/hooks/ahm/useAhmLatestHeightSnapshot";
 import { hexToString } from "@polkadot/util";
+import { isNil } from "lodash-es";
 
 function positiveOr0(v = 0n) {
   return v > 0n ? v : 0n;
@@ -79,114 +80,90 @@ export function calculateVestingInfo(
   };
 }
 
+function processVestingEntries(entries) {
+  return entries.map((entry) => {
+    const args = entry.args ?? entry.keyArgs;
+    const account = args?.[0];
+    const schedules = entry.value;
+    return { account, schedules };
+  });
+}
+
 export default function useAllVestingData() {
   const api = useContextPapiApi();
   const { latestHeight, isLoading: isHeightLoading } =
     useAhmLatestHeightSnapshot();
   const [data, setData] = useState([]);
-  const [subData, setSubData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [sortField, setSortField] = useState("unlockable");
   const [sortDirection, setSortDirection] = useState("desc");
 
   useEffect(() => {
-    if (!api || !latestHeight) {
+    if (!api || isHeightLoading || latestHeight == null) {
       return;
     }
 
-    const unsub = api.query.Vesting.Vesting.watchEntries().subscribe((item) => {
-      console.log(item, "item");
-      if (item.deltas) {
-        setSubData(item.entries);
-      }
-    });
-
-    return () => {
-      unsub?.unsubscribe();
-    };
-  }, [api, latestHeight]);
-
-  useEffect(() => {
-    console.log(subData, "subData");
-  }, [subData]);
-
-  const fetchData = useCallback(
-    async (silent = false) => {
-      if (!api || !latestHeight) {
-        return;
-      }
-
-      try {
-        if (!silent) {
-          setIsLoading(true);
+    const unsub = api.query.Vesting.Vesting.watchEntries().subscribe(
+      async (item) => {
+        const { entries, deltas } = item;
+        if (isNil(deltas)) {
+          return;
         }
 
-        const entries = await api.query.Vesting.Vesting.getEntries();
-
-        const accountsData = [];
-        const accounts = [];
-
-        for (const { keyArgs, value: values } of entries) {
-          const account = keyArgs[0];
-          const schedules = values;
-
-          accounts.push(account);
-          accountsData.push({
-            account,
-            schedules,
-          });
-        }
-
-        const locksMulti = await api.query.Balances.Locks.getValues(
-          accounts.map((item) => [item]),
-        );
-
-        const accountsMap = new Map();
-        accountsData.forEach((item, index) => {
-          const locks = locksMulti[index];
-          const balancesLockedByVesting = getCurrencyLockedByVesting(locks);
-
-          const vestingInfo = calculateVestingInfo(
-            item.schedules,
-            latestHeight,
-            balancesLockedByVesting,
-          );
-
-          accountsMap.set(item.account, {
-            account: item.account,
-            currentBalanceInLock: balancesLockedByVesting.toString(),
-            totalVesting: vestingInfo.totalVesting,
-            totalLockedNow: vestingInfo.totalLockedNow,
-            unlockable: vestingInfo.totalUnlockable,
-            schedules: vestingInfo.schedules,
-            schedulesCount: item.schedules.length,
-          });
-        });
-
-        const results = Array.from(accountsMap.values());
-
-        setData(results);
-        if (!silent) {
-          setIsLoading(false);
-        }
-      } catch (error) {
-        console.error("Error fetching vesting data:", error);
-        if (!silent) {
+        if (!entries || entries.length === 0) {
           setData([]);
           setIsLoading(false);
+          return;
         }
-      }
-    },
-    [api, latestHeight],
-  );
 
-  useEffect(() => {
-    if (isHeightLoading) {
-      return;
-    }
+        const accountsData = processVestingEntries(entries);
+        const accounts = accountsData.map((item) => item.account);
 
-    fetchData();
-  }, [fetchData, isHeightLoading]);
+        try {
+          if (accounts.length > 0) {
+            const locksMulti = await api.query.Balances.Locks.getValues(
+              accounts.map((account) => [account]),
+            );
+
+            const accountsMap = new Map();
+            accountsData.forEach((item, index) => {
+              const locks = locksMulti[index];
+              const balancesLockedByVesting = getCurrencyLockedByVesting(locks);
+
+              const vestingInfo = calculateVestingInfo(
+                item.schedules,
+                latestHeight,
+                balancesLockedByVesting,
+              );
+
+              accountsMap.set(item.account, {
+                account: item.account,
+                currentBalanceInLock: balancesLockedByVesting.toString(),
+                totalVesting: vestingInfo.totalVesting,
+                totalLockedNow: vestingInfo.totalLockedNow,
+                unlockable: vestingInfo.totalUnlockable,
+                schedules: vestingInfo.schedules,
+                schedulesCount: item.schedules.length,
+              });
+            });
+
+            setData(Array.from(accountsMap.values()));
+          } else {
+            setData([]);
+          }
+        } catch (error) {
+          console.error("Error processing vesting data:", error);
+          setData([]);
+        } finally {
+          setIsLoading(false);
+        }
+      },
+    );
+
+    return () => {
+      unsub?.unsubscribe?.();
+    };
+  }, [api, latestHeight, isHeightLoading]);
 
   const sortedData = useMemo(() => {
     if (!data || data.length === 0) {
@@ -229,10 +206,6 @@ export default function useAllVestingData() {
     [sortField, sortDirection],
   );
 
-  const update = useCallback(() => {
-    // fetchData(true);
-  }, []);
-
   return useMemo(
     () => ({
       data: sortedData,
@@ -240,8 +213,7 @@ export default function useAllVestingData() {
       sortField,
       sortDirection,
       onSort: handleSort,
-      update,
     }),
-    [sortedData, isLoading, sortField, sortDirection, handleSort, update],
+    [sortedData, isLoading, sortField, sortDirection, handleSort],
   );
 }

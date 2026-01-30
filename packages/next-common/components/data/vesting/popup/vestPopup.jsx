@@ -18,7 +18,7 @@ import { useVestPopup } from "../context/vestPopupContext";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 
-export function VestPopupContent({ update }) {
+export function VestPopupContent() {
   const { account, unlockable } = useVestPopup();
   const { onClose } = usePopupParams();
   const dispatch = useDispatch();
@@ -38,9 +38,8 @@ export function VestPopupContent({ update }) {
 
   const onInBlock = useCallback(() => {
     dispatch(newSuccessToast("Vest successfully"));
-    update();
     onClose();
-  }, [dispatch, update, onClose]);
+  }, [dispatch, onClose]);
 
   return (
     <div className="space-y-4">
