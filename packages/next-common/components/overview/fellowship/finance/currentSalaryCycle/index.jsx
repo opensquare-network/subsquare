@@ -5,19 +5,8 @@ import Link from "next-common/components/link";
 import FellowshipSalaryStatsDetailLink from "next-common/components/overview/fellowship/salary/detailLink";
 import SalaryCycleStatus from "./status";
 
-export default function FellowshipCurrentSalaryCycle() {
-  const fellowshipSalaryStats = useFellowshipSalaryStats();
-
-  if (
-    isNil(fellowshipSalaryStats) ||
-    isNil(fellowshipSalaryStats?.cycleIndex)
-  ) {
-    return null;
-  }
-
-  const { cycleIndex } = fellowshipSalaryStats;
-
-  const Title = (
+function CurrentSalaryCycle({ cycleIndex }) {
+  return (
     <div className="text12Medium text-textTertiary space-x-1">
       <FellowshipSalaryStatsDetailLink
         index={cycleIndex}
@@ -29,26 +18,44 @@ export default function FellowshipCurrentSalaryCycle() {
       <span>#{cycleIndex}</span>
     </div>
   );
+}
 
+export function FellowshipCurrentSalaryCycle({ cycleIndex, children }) {
   return (
-    <SummaryItem title={Title}>
+    <SummaryItem title={<CurrentSalaryCycle cycleIndex={cycleIndex} />}>
       <div className="flex flex-col gap-1">
         <SalaryCycleStatus />
-        <div className="flex space-x-2">
-          <FellowshipSalaryStatsDetailLink
-            index={cycleIndex}
-            className="text12Medium"
-          >
-            View Detail
-          </FellowshipSalaryStatsDetailLink>
-          <Link
-            href="/fellowship/salary"
-            className="text12Medium text-theme500"
-          >
-            All Cycles
-          </Link>
-        </div>
+        {children}
       </div>
     </SummaryItem>
+  );
+}
+
+export default function FellowshipCurrentSalaryCycleSummary() {
+  const fellowshipSalaryStats = useFellowshipSalaryStats();
+
+  if (
+    isNil(fellowshipSalaryStats) ||
+    isNil(fellowshipSalaryStats?.cycleIndex)
+  ) {
+    return null;
+  }
+
+  const { cycleIndex } = fellowshipSalaryStats;
+
+  return (
+    <FellowshipCurrentSalaryCycle cycleIndex={cycleIndex}>
+      <div className="flex space-x-2">
+        <FellowshipSalaryStatsDetailLink
+          index={cycleIndex}
+          className="text12Medium"
+        >
+          View Detail
+        </FellowshipSalaryStatsDetailLink>
+        <Link href="/fellowship/salary" className="text12Medium text-theme500">
+          All Cycles
+        </Link>
+      </div>
+    </FellowshipCurrentSalaryCycle>
   );
 }
