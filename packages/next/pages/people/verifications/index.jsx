@@ -1,38 +1,38 @@
 import { getPeopleServerSideProps } from "next-common/components/people/common/getServerSideProps";
 import { CHAIN } from "next-common/utils/constants";
-import getChainSettings from "next-common/utils/consts/settings";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import getChainSettings from "next-common/utils/consts/settings";
 import { PeopleGlobalProvider } from "..";
-import useIsAdmin from "next-common/hooks/useIsAdmin";
-import { useRouter } from "next/router";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 const isPeopleSupported = !!getChainSettings(CHAIN).modules?.people;
 
-const JudgementRequestsPageImpl = dynamicClientOnly(() =>
-  import("next-common/components/people/judgementRequests"),
+const PeopleOverviewPageImpl = dynamicClientOnly(() =>
+  import("next-common/components/people/judgement"),
 );
 
-export default function PeopleJudgementRequestsPage() {
+export default function VerificationPage() {
   const router = useRouter();
-  const isAdmin = useIsAdmin();
+  const realAddress = useRealAddress();
 
   useEffect(() => {
-    if (!isAdmin) {
+    if (!realAddress) {
       const timer = setTimeout(() => {
         router.replace("/people");
       }, 3000);
       return () => clearTimeout(timer);
     }
-  }, [isAdmin, router]);
+  }, [realAddress, router]);
 
-  if (!isAdmin) {
-    return <div>Only admins can access this page. redirecting...</div>;
+  if (!realAddress) {
+    return <div>Only connected users can access this page. redirecting...</div>;
   }
 
   return (
     <PeopleGlobalProvider>
-      <JudgementRequestsPageImpl />
+      <PeopleOverviewPageImpl />
     </PeopleGlobalProvider>
   );
 }

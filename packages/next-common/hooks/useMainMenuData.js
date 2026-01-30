@@ -3,11 +3,14 @@ import { getMainMenu } from "next-common/utils/consts/menu";
 import { useUser } from "next-common/context/user";
 import { useMemo } from "react";
 import useIsAdmin from "./useIsAdmin";
+import useHasActiveJudgementRequest from "next-common/components/people/hooks/useHasActiveJudgementRequest";
 
 export default function useMainMenuData() {
   const user = useUser();
   const { tracks, fellowshipTracks, summary, detail, ambassadorTracks } =
     usePageProps();
+  const hasActiveJudgementRequest = useHasActiveJudgementRequest();
+
   const isAdmin = useIsAdmin();
 
   return useMemo(() => {
@@ -18,6 +21,7 @@ export default function useMainMenuData() {
       summary,
       currentTrackId: detail?.track,
       isAdmin,
+      hasActiveJudgementRequest,
     }).filter((item) => {
       if (item.value === "account") {
         // not connect wallet
@@ -33,5 +37,6 @@ export default function useMainMenuData() {
     tracks,
     user?.address,
     isAdmin,
+    hasActiveJudgementRequest,
   ]);
 }

@@ -6,10 +6,11 @@ import {
   MenuRegistrars,
   InfoUsers,
   MenuJudgements,
+  MenuIdentity,
 } from "@osn/icons/subsquare";
 import { NAV_MENU_TYPE } from "next-common/utils/constants";
 
-export function getPeopleMenu(isAdmin) {
+export function getPeopleMenu({ isAdmin, hasActiveJudgementRequest } = {}) {
   return {
     name: "People",
     value: "people",
@@ -23,11 +24,6 @@ export function getPeopleMenu(isAdmin) {
         value: "overview",
         pathname: "/people",
         icon: <MenuAuthorities />,
-        extraMatchNavMenuActivePathnames: [
-          "/people/judgement",
-          "/people/verifications/auth/discord",
-          "/people/verifications/auth/twitter",
-        ],
       },
       {
         name: "Identities",
@@ -41,12 +37,22 @@ export function getPeopleMenu(isAdmin) {
         pathname: "/people/registrars",
         icon: <MenuRegistrars />,
       },
+      hasActiveJudgementRequest && {
+        name: "Verifications",
+        value: "verifications",
+        pathname: "/people/verifications",
+        icon: <MenuIdentity />,
+        extraMatchNavMenuActivePathnames: [
+          "/people/verifications/auth/discord",
+          "/people/verifications/auth/twitter",
+          "/people/verifications/auth/github",
+        ],
+      },
       isAdmin && {
         name: "Judgement Requests",
         value: "judgement-requests",
         pathname: "/people/judgement-requests",
         icon: <MenuJudgements />,
-        adminOnly: true,
       },
       {
         type: "divider",

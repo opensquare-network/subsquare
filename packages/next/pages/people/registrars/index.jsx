@@ -1,4 +1,4 @@
-import { withCommonProps } from "next-common/lib";
+import { getPeopleServerSideProps } from "next-common/components/people/common/getServerSideProps";
 import { CHAIN } from "next-common/utils/constants";
 import getChainSettings from "next-common/utils/consts/settings";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
@@ -25,9 +25,5 @@ export const getServerSideProps = async (ctx) => {
     };
   }
 
-  return withCommonProps(async () => {
-    return {
-      props: {},
-    };
-  })(ctx);
+  return await getPeopleServerSideProps(ctx);
 };

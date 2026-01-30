@@ -6,6 +6,7 @@ import { useIsomorphicLayoutEffect } from "react-use";
 import { matchNewMenu } from "next-common/utils/consts/menu";
 import { useRouter } from "next/router";
 import useIsAdmin from "next-common/hooks/useIsAdmin";
+import useHasActiveJudgementRequest from "next-common/components/people/hooks/useHasActiveJudgementRequest";
 
 const NavCollapsedContext = createContext([]);
 const NavSubmenuVisibleContext = createContext([]);
@@ -80,9 +81,13 @@ export function useNavMenuType() {
 }
 
 function NavMenuTypeProvider({ children }) {
+  const hasActiveJudgementRequest = useHasActiveJudgementRequest();
   const router = useRouter();
   const isAdmin = useIsAdmin();
-  const menu = useMemo(() => getMainMenu({ isAdmin }), [isAdmin]);
+  const menu = useMemo(
+    () => getMainMenu({ isAdmin, hasActiveJudgementRequest }),
+    [isAdmin, hasActiveJudgementRequest],
+  );
 
   const matchMenu = useMemo(() => {
     return (

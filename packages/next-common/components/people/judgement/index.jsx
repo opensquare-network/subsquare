@@ -7,24 +7,19 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import JudgementPageContent from "./content";
 import { JudgementContextProvider } from "./context";
 
-export const tabs = [
-  {
-    value: "Judgement",
-    label: "Judgement",
-    url: "/people/judgement",
-    exactMatch: false,
-  },
-];
-
-export default function JudgementPage() {
+export default function VerificationsPage() {
   const realAddress = useRealAddress();
 
   return (
     <PeopleCommonProvider>
       <ListLayout
-        title="Identity Judgement"
-        seoInfo={{ rawTitle: generateLayoutRawTitle("Identity Judgement") }}
-        description={"My identity judgement request."}
+        title="Identity social account verifications"
+        seoInfo={{
+          rawTitle: generateLayoutRawTitle(
+            "Identity social account verifications",
+          ),
+        }}
+        description={"My identity social account verifications."}
         headContent={<ChainSocialLinks />}
       >
         {!realAddress ? (

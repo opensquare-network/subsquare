@@ -37,6 +37,7 @@ export function getHomeMenu({
   ambassadorTracks = [],
   currentTrackId,
   isAdmin = false,
+  hasActiveJudgementRequest = false,
 } = {}) {
   const { modules, hasMultisig = false } = getChainSettings(CHAIN);
 
@@ -57,7 +58,7 @@ export function getHomeMenu({
     modules?.alliance && getAllianceMenu(summary),
     modules?.communityCouncil && getCommunityCouncilMenu(summary),
     modules?.staking && stakingMenu,
-    modules?.people && getPeopleMenu(isAdmin),
+    modules?.people && getPeopleMenu({ isAdmin, hasActiveJudgementRequest }),
     modules?.coretime && coretimeMenu,
     getAdvancedMenu(
       [
@@ -92,6 +93,7 @@ export function getMainMenu({
   ambassadorTracks = [],
   currentTrackId,
   isAdmin = false,
+  hasActiveJudgementRequest = false,
 } = {}) {
   const { hotMenu = {} } = getChainSettings(CHAIN);
 
@@ -107,6 +109,7 @@ export function getMainMenu({
     ambassadorTracks,
     currentTrackId,
     isAdmin,
+    hasActiveJudgementRequest,
   });
 
   const activeModulesMenu = [];
