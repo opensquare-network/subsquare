@@ -82,7 +82,7 @@ function useRequestJudgementPromptItem() {
     return {
       key: CACHE_KEY.requestJudgementPrompt,
       message: <RequestJudgementPromptContent />,
-      type: PromptTypes.INFO,
+      type: PromptTypes.WARNING,
       close: () => setVisible(false, { expires: 15 }),
     };
   }, [setVisible, shouldRequestJudgement, visible]);

@@ -314,8 +314,8 @@ export default function AccountInfoPanel() {
       <Divider />
       <AccountBalances />
       <ExtensionUpdatePrompt />
-      <AccountPanelScrollPrompt />
       <AccountPanelJudgementScrollPrompt />
+      <AccountPanelScrollPrompt />
     </NeutralPanel>
   );
 }

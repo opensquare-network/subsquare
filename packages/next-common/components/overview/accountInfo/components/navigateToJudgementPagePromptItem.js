@@ -42,7 +42,7 @@ function useNavigateToJudgementPagePromptItem() {
     return {
       key: CACHE_KEY.navigateToJudgementPagePrompt,
       message: <NavigateToJudgementPagePrompt />,
-      type: PromptTypes.INFO,
+      type: PromptTypes.WARNING,
       close: () => setVisible(false, { expires: 15 }),
     };
   }, [needAction, setVisible, visible]);
