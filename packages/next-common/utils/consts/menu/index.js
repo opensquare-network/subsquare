@@ -150,9 +150,9 @@ export function getMainMenu({
     ...commonMenus.items,
     { type: "divider" },
     ...activeModulesMenu,
-    { type: "divider" },
+    moreMenu?.length > 0 && { type: "divider" },
     ...moreMenu,
-  ];
+  ].filter(Boolean);
 }
 
 const matchedMenuItem = (menu, pathname) => {
