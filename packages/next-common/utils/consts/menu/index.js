@@ -17,7 +17,7 @@ import { getCommunityTreasuryMenu } from "./communityTreasury";
 import getChainSettings from "../settings";
 import getArchivedMenu from "./archived";
 import { coretimeMenu } from "./coretime";
-import { peopleMenu } from "./people";
+import { getPeopleMenu } from "./people";
 import { stakingMenu } from "./staking";
 import whitelist from "./whitelist";
 import Data from "./data";
@@ -36,6 +36,8 @@ export function getHomeMenu({
   summary = {},
   ambassadorTracks = [],
   currentTrackId,
+  isAdmin = false,
+  hasActiveJudgementRequest = false,
 } = {}) {
   const { modules, hasMultisig = false } = getChainSettings(CHAIN);
 
@@ -56,7 +58,7 @@ export function getHomeMenu({
     modules?.alliance && getAllianceMenu(summary),
     modules?.communityCouncil && getCommunityCouncilMenu(summary),
     modules?.staking && stakingMenu,
-    modules?.people && peopleMenu,
+    modules?.people && getPeopleMenu({ isAdmin, hasActiveJudgementRequest }),
     modules?.coretime && coretimeMenu,
     getAdvancedMenu(
       [
@@ -90,6 +92,8 @@ export function getMainMenu({
   fellowshipTracks = [],
   ambassadorTracks = [],
   currentTrackId,
+  isAdmin = false,
+  hasActiveJudgementRequest = false,
 } = {}) {
   const { hotMenu = {} } = getChainSettings(CHAIN);
 
@@ -104,6 +108,8 @@ export function getMainMenu({
     fellowshipTracks,
     ambassadorTracks,
     currentTrackId,
+    isAdmin,
+    hasActiveJudgementRequest,
   });
 
   const activeModulesMenu = [];

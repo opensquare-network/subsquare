@@ -39,12 +39,12 @@ export default function GlobalProvider({
               <UserProvider user={user} userStatus={userStatus}>
                 <PageLoadingProvider>
                   <AdminProvider admins={admins}>
-                    <NavProvider
-                      navCollapsed={navCollapsed}
-                      navSubmenuVisible={navSubmenuVisible}
-                      pathname={pathname}
-                    >
-                      <PageProvider pageProperties={pageProperties}>
+                    <PageProvider pageProperties={pageProperties}>
+                      <NavProvider
+                        navCollapsed={navCollapsed}
+                        navSubmenuVisible={navSubmenuVisible}
+                        pathname={pathname}
+                      >
                         <ApiProvider>
                           <MigrationConditionalApiProvider>
                             <ConnectedAccountProvider
@@ -62,8 +62,8 @@ export default function GlobalProvider({
                             </ConnectedAccountProvider>
                           </MigrationConditionalApiProvider>
                         </ApiProvider>
-                      </PageProvider>
-                    </NavProvider>
+                      </NavProvider>
+                    </PageProvider>
                   </AdminProvider>
                 </PageLoadingProvider>
               </UserProvider>

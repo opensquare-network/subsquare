@@ -4,7 +4,7 @@ import { backendApi } from "next-common/services/nextApi";
 import { useAsync } from "react-use";
 import { isPolkadotChain, isKusamaChain } from "next-common/utils/chain";
 
-function useIdentityApi(address = "") {
+function useIdentityApiUrl(address = "") {
   const chain = useChain();
 
   return useMemo(() => {
@@ -22,17 +22,17 @@ function useIdentityApi(address = "") {
 }
 
 export default function useFetchIdentityInfo(address = "") {
-  const identityApi = useIdentityApi(address);
+  const identityApiUrl = useIdentityApiUrl(address);
   const [isLoading, setIsLoading] = useState(true);
 
   const { value } = useAsync(async () => {
     setIsLoading(true);
-    if (!identityApi) {
+    if (!identityApiUrl) {
       return {};
     }
 
     try {
-      const resp = await backendApi.fetch(identityApi);
+      const resp = await backendApi.fetch(identityApiUrl);
       const { subs = [], info } = resp?.result || {};
 
       return {
@@ -44,7 +44,7 @@ export default function useFetchIdentityInfo(address = "") {
     } finally {
       setIsLoading(false);
     }
-  }, [identityApi]);
+  }, [identityApiUrl]);
 
   return {
     data: value,
