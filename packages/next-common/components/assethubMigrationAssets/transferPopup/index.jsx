@@ -29,7 +29,6 @@ function PopupContent() {
     transferrable: asset.transferrable,
     decimals: asset.decimals,
     symbol: asset.symbol,
-    transferFromAddress: address,
   });
 
   const { value: transferToAddress, component: transferToAddressField } =

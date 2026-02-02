@@ -6,8 +6,7 @@ import { checkTransferAmount } from "next-common/utils/checkTransferAmount";
  * @param {Omit<Parameters<typeof TransferAmount>[0], "transferAmount" | "setTransferAmount">} props
  */
 export function useTransferAmount(props = {}) {
-  const { transferrable, decimals, symbol, transferFromAddress, isLoading } =
-    props;
+  const { transferrable, decimals, symbol, isLoading } = props;
 
   const [transferAmount, setTransferAmount] = useState("");
 
@@ -17,7 +16,6 @@ export function useTransferAmount(props = {}) {
       decimals={decimals}
       symbol={symbol}
       isLoading={isLoading}
-      transferFromAddress={transferFromAddress}
       transferAmount={transferAmount}
       setTransferAmount={setTransferAmount}
     />

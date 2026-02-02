@@ -98,7 +98,6 @@ function PopupContent() {
     decimals,
     symbol,
     isLoading: loading,
-    transferFromAddress: address,
   });
   const { value: transferToAddress, component: transferToAddressField } =
     useAddressComboField({ title: "To" });
