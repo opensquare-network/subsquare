@@ -14,10 +14,15 @@ export default function NavMenuItemItem({
   onClick,
   className = "",
   hoverTooltipLabel = true,
+  visible = true,
 }) {
   const isExternal = isExternalLink(item?.pathname);
   const [, setNavMenuType] = useNavMenuType();
   const router = useRouter();
+
+  if (visible === false) {
+    return null;
+  }
 
   if (
     item?.type === NAV_MENU_TYPE.subspace ||

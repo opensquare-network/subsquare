@@ -2,10 +2,9 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
 import Account from "next-common/components/account";
-import LoadableContent from "next-common/components/common/loadableContent";
 import { InfoMessage } from "next-common/components/setting/styled";
 
-export default function JudgementSummary({ verified, pending, loading }) {
+export default function JudgementSummary({ verified, pending }) {
   const address = useRealAddress();
 
   return (
@@ -16,18 +15,14 @@ export default function JudgementSummary({ verified, pending, loading }) {
         </div>
         <SummaryLayout className="grid-cols-3">
           <SummaryItem title="Verified">
-            <LoadableContent isLoading={loading}>
-              <span>{verified}</span>
-            </LoadableContent>
+            <span>{verified}</span>
           </SummaryItem>
           <SummaryItem title="Pending">
-            <LoadableContent isLoading={loading}>
-              <span>{pending}</span>
-            </LoadableContent>
+            <span>{pending}</span>
           </SummaryItem>
         </SummaryLayout>
       </div>
-      {!loading && pending === 0 && (
+      {pending === 0 && (
         <InfoMessage>
           All social account verifications are done. Our registrar will do a
           final check and give the judgement soon.

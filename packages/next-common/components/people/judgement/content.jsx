@@ -1,80 +1,19 @@
-import tw from "tailwind-styled-components";
-import Loading from "next-common/components/loading";
-import Discord from "./discord";
-import Element from "./element";
-import Email from "./email";
-import Github from "./github";
-import JudgementSummary from "./summary";
-import Twitter from "./twitter";
 import { useJudgementContext } from "./context";
-import { PeopleSocialType } from "./consts";
-
-const SocialAccountWrapper = tw.div`flex bg-neutral100 border-b border-neutral300 p-4 rounded-lg`;
-
-function calcVerificationNumbers(request) {
-  const allSocialTypes = Object.values(PeopleSocialType);
-  const info = request?.info || {};
-  const verifications = request?.verifications || {};
-  const totalSocials = allSocialTypes.filter((key) =>
-    Boolean(info[key === "element" ? "matrix" : key]),
-  ).length;
-  const verified = allSocialTypes.filter(
-    (key) =>
-      Boolean(info[key === "element" ? "matrix" : key]) &&
-      verifications?.[key] === true,
-  ).length;
-  const pending = totalSocials - verified;
-  return { verified, pending };
-}
+import ContentVerifications from "./contentVerifications";
+import ContentLoading from "./contentLoading";
+import ContentEmpty from "./contentEmpty";
 
 export default function JudgementPageContent() {
   const { myJudgementRequest: request, isLoadingMyJudgementRequest: loading } =
     useJudgementContext();
 
-  const { verified, pending } = calcVerificationNumbers(request);
+  if (loading) {
+    return <ContentLoading />;
+  }
 
-  return (
-    <>
-      <JudgementSummary
-        verified={verified}
-        pending={pending}
-        loading={loading}
-      />
-      <div className="pt-4 grid grid-cols-1 gap-4 text-textPrimary">
-        {loading && !request ? (
-          <div className="p-4 flex justify-center">
-            <Loading size="24" />
-          </div>
-        ) : (
-          <>
-            {request?.info?.email && (
-              <SocialAccountWrapper>
-                <Email request={request} />
-              </SocialAccountWrapper>
-            )}
-            {request?.info?.matrix && (
-              <SocialAccountWrapper>
-                <Element request={request} />
-              </SocialAccountWrapper>
-            )}
-            {request?.info?.discord && (
-              <SocialAccountWrapper>
-                <Discord request={request} />
-              </SocialAccountWrapper>
-            )}
-            {request?.info?.twitter && (
-              <SocialAccountWrapper>
-                <Twitter request={request} />
-              </SocialAccountWrapper>
-            )}
-            {request?.info?.github && (
-              <SocialAccountWrapper>
-                <Github request={request} />
-              </SocialAccountWrapper>
-            )}
-          </>
-        )}
-      </div>
-    </>
-  );
+  if (!request) {
+    return <ContentEmpty />;
+  }
+
+  return <ContentVerifications request={request} />;
 }

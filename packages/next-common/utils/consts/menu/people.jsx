@@ -37,7 +37,7 @@ export function getPeopleMenu({ isAdmin, hasActiveJudgementRequest } = {}) {
         pathname: "/people/registrars",
         icon: <MenuRegistrars />,
       },
-      hasActiveJudgementRequest && {
+      {
         name: "Verifications",
         value: "verifications",
         pathname: "/people/verifications",
@@ -47,6 +47,7 @@ export function getPeopleMenu({ isAdmin, hasActiveJudgementRequest } = {}) {
           "/people/verifications/auth/twitter",
           "/people/verifications/auth/github",
         ],
+        visible: hasActiveJudgementRequest,
       },
       isAdmin && {
         name: "Judgement Requests",
