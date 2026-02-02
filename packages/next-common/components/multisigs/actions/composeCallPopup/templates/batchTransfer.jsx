@@ -165,7 +165,6 @@ function TransferField({ extensionAccounts = [], onTransferChange = noop }) {
       />
       <TransferAmount
         showBalance={false}
-        transferFromAddress={targetAddress}
         decimals={decimals}
         symbol={symbol}
         transferAmount={transferAmount}

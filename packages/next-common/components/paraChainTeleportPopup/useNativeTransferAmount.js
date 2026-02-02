@@ -21,7 +21,6 @@ export default function useNativeTransferAmount({ api, transferFromAddress }) {
       decimals={decimals}
       symbol={symbol}
       isLoading={isLoading}
-      transferFromAddress={transferFromAddress}
       transferAmount={transferAmount}
       setTransferAmount={setTransferAmount}
     />

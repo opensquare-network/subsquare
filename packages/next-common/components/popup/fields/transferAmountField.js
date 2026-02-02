@@ -24,14 +24,13 @@ export default function TransferAmount({
   decimals,
   symbol,
   isLoading,
-  transferFromAddress,
   transferAmount,
   setTransferAmount,
   showBalance = true,
 }) {
-  const balanceStatus = !!transferFromAddress && showBalance && (
+  const balanceStatus = showBalance && (
     <TransferrableBalance
-      value={transferrable}
+      value={transferrable || 0}
       isLoading={isLoading}
       decimals={decimals}
     />

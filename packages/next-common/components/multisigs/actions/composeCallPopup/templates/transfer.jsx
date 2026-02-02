@@ -50,7 +50,6 @@ function TransferContent() {
       />
       <TransferAmount
         showBalance={false}
-        transferFromAddress={targetAddress}
         transferAmount={transferAmount}
         setTransferAmount={setTransferAmount}
         decimals={decimals}
