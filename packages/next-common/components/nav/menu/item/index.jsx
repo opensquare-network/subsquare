@@ -5,13 +5,17 @@ import NavMenuDivider from "../../divider";
 import { useNavSubmenuVisible } from "next-common/context/nav";
 
 export default function NavMenuItem({ collapsed, ...menu } = {}) {
-  const { type, items } = menu || {};
+  const { type, items, visible = true } = menu || {};
   const router = useRouter();
   const routePathname = router.asPath.split("?")[0];
   const [navSubmenuVisible, setNavSubmenuVisible] = useNavSubmenuVisible();
 
   if (type === "divider") {
     return <NavMenuDivider />;
+  }
+
+  if (visible === false) {
+    return null;
   }
 
   if (items?.length && !menu?.hideItemsOnMenu) {

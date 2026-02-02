@@ -32,6 +32,10 @@ export const NegativeTag = styled(Common)`
   background: var(--red500);
 `;
 
+export const WarningTag = styled(Common)`
+  background: var(--orange500);
+`;
+
 export const ClosedTag = styled(Common)`
   background: var(--neutral500);
 `;

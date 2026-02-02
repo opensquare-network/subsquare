@@ -4,6 +4,9 @@ import { useCookieValue } from "next-common/utils/hooks/useCookieValue";
 import { createContext, useContext, useMemo, useState } from "react";
 import { useIsomorphicLayoutEffect } from "react-use";
 import { matchNewMenu } from "next-common/utils/consts/menu";
+import { useRouter } from "next/router";
+import useIsAdmin from "next-common/hooks/useIsAdmin";
+import useHasActiveJudgementRequest from "next-common/components/people/hooks/useHasActiveJudgementRequest";
 
 const NavCollapsedContext = createContext([]);
 const NavSubmenuVisibleContext = createContext([]);
@@ -29,6 +32,7 @@ export default function NavProvider({
 export function useNavSubmenuVisible() {
   return useContext(NavSubmenuVisibleContext);
 }
+
 function NavCollapsedProvider({ children, value }) {
   try {
     value = JSON.parse(value);
@@ -50,6 +54,7 @@ function NavCollapsedProvider({ children, value }) {
 export function useNavCollapsed() {
   return useContext(NavCollapsedContext);
 }
+
 function NavSubmenuVisibleProvider({ children, value }) {
   try {
     value = JSON.parse(decodeURIComponent(value));
@@ -71,14 +76,19 @@ function NavSubmenuVisibleProvider({ children, value }) {
   );
 }
 
-const menu = getMainMenu();
 export function useNavMenuType() {
   return useContext(NavMenuTypeContext);
 }
 
-import { useRouter } from "next/router";
 function NavMenuTypeProvider({ children }) {
+  const hasActiveJudgementRequest = useHasActiveJudgementRequest();
   const router = useRouter();
+  const isAdmin = useIsAdmin();
+  const menu = useMemo(
+    () => getMainMenu({ isAdmin, hasActiveJudgementRequest }),
+    [isAdmin, hasActiveJudgementRequest],
+  );
+
   const matchMenu = useMemo(() => {
     return (
       matchNewMenu(menu, router.pathname) || {
@@ -86,7 +96,8 @@ function NavMenuTypeProvider({ children }) {
         menu: null,
       }
     );
-  }, [router.pathname]);
+  }, [router.pathname, menu]);
+
   const [navMenuType, setNavMenuType] = useState(matchMenu);
 
   useIsomorphicLayoutEffect(() => {

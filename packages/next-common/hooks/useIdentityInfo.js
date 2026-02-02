@@ -8,7 +8,6 @@ import {
   getCachedBountyIdentity,
 } from "next-common/services/identity";
 import getChainSettings from "next-common/utils/consts/settings";
-import { isPeopleChain } from "next-common/utils/chain";
 import { cloneDeep } from "lodash-es";
 import { isNil } from "lodash-es";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
@@ -20,8 +19,10 @@ const emptyIdentityInfo = {};
 export function useChainAddressIdentityInfo(chain, address, realAddress = "") {
   const { identity: identityChain } = getChainSettings(chain);
 
+  const identityContextData = useIdentityInfoContext();
   const { displayName, info: myIdentityInfo = emptyIdentityInfo } =
-    useIdentityInfoContext() || {};
+    identityContextData || {};
+  const hasIdentityContext = !isNil(identityContextData);
 
   // Render the identity immediately if it's already in cache
   const encodedAddress = encodeAddressToChain(address, identityChain);
@@ -44,7 +45,7 @@ export function useChainAddressIdentityInfo(chain, address, realAddress = "") {
 
     fetchIdentity(identityChain, encodeAddressToChain(address, identityChain))
       .then((identity) => {
-        if (!isPeopleChain(chain) || !isSameAddress(realAddress, address)) {
+        if (!hasIdentityContext || !isSameAddress(realAddress, address)) {
           resolvedIdentity = identity;
           setIdentity(identity);
           return;
@@ -100,11 +101,20 @@ export function useChainAddressIdentityInfo(chain, address, realAddress = "") {
 
         setIsLoading(false);
       });
-  }, [address, identityChain, myIdentityInfo, displayName, chain, realAddress]);
+  }, [
+    address,
+    identityChain,
+    hasIdentityContext,
+    myIdentityInfo,
+    displayName,
+    chain,
+    realAddress,
+  ]);
 
   return {
     identity,
-    hasIdentity: identity && identity?.info?.status !== "NO_ID",
+    hasIdentity:
+      !isNil(identity?.info?.status) && identity.info.status !== "NO_ID",
     isLoading,
   };
 }

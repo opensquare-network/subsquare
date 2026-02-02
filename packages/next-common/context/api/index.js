@@ -20,11 +20,19 @@ export default function ApiProvider({ children }) {
       return;
     }
 
-    getOriginApi(chain, currentEndpoint).then((api) => {
-      if (isMounted()) {
-        setNowApi(api);
-      }
-    });
+    getOriginApi(chain, currentEndpoint)
+      .then((api) => {
+        if (isMounted()) {
+          setNowApi(api);
+        }
+      })
+      .catch((error) => {
+        console.error("Failed to getOriginApi", {
+          chain,
+          currentEndpoint,
+          error,
+        });
+      });
   }, [currentEndpoint, dispatch, endpoints, chain, isMounted]);
 
   return <ApiProviderWithApi api={nowApi}>{children}</ApiProviderWithApi>;

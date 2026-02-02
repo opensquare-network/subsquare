@@ -29,6 +29,7 @@ import Avatar from "next-common/components/avatar";
 import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
 import { AvatarImg } from "next-common/components/user/styled";
 import Gravatar from "next-common/components/gravatar";
+import AccountPanelJudgementScrollPrompt from "./components/accountPanelJudgementScrollPrompt";
 
 const ParaChainTeleportPopup = dynamic(() =>
   import("next-common/components/paraChainTeleportPopup").then(
@@ -313,6 +314,7 @@ export default function AccountInfoPanel() {
       <Divider />
       <AccountBalances />
       <ExtensionUpdatePrompt />
+      <AccountPanelJudgementScrollPrompt />
       <AccountPanelScrollPrompt />
     </NeutralPanel>
   );

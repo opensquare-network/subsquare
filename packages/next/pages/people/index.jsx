@@ -1,7 +1,7 @@
 import { CHAIN } from "next-common/utils/constants";
 import { createStore } from "next-common/store";
 import { commonReducers } from "next-common/store/reducers";
-import { withCommonProps } from "next-common/lib";
+import { getPeopleServerSideProps } from "next-common/components/people/common/getServerSideProps";
 import RelayInfoProvider from "next-common/context/relayInfo";
 import ApiProvider from "next-common/context/api";
 import ChainProvider from "next-common/context/chain";
@@ -57,9 +57,5 @@ export const getServerSideProps = async (ctx) => {
     };
   }
 
-  return withCommonProps(async () => {
-    return {
-      props: {},
-    };
-  })(ctx);
+  return await getPeopleServerSideProps(ctx);
 };

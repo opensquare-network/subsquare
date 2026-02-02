@@ -133,6 +133,7 @@ export const CACHE_KEY = {
   assetsPromptVisible: "assets-management-prompt-visible",
   multisigManagementPromptVisible: "multisig-management-prompt-visible",
   requestJudgementPrompt: "request-judgement-prompt",
+  navigateToJudgementPagePrompt: "navigate-to-judgement-page-prompt",
   walletConnectSession: "walletconnect-session",
   totalRequestingAssets: "total-requesting-assets",
   treasurySpendsPendingNotice: "treasury-spends-pending-notice",
