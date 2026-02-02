@@ -12,6 +12,8 @@ export function TransferrableBalance({ value, isLoading, decimals }) {
       </span>
       {isLoading ? (
         <Loading size={12} />
+      ) : isNaN(value) ? (
+        <span className="text-textTertiary">--</span>
       ) : (
         <BalanceDisplay balance={formatBalance(value, decimals)} />
       )}
@@ -30,7 +32,7 @@ export default function TransferAmount({
 }) {
   const balanceStatus = showBalance && (
     <TransferrableBalance
-      value={transferrable || 0}
+      value={transferrable}
       isLoading={isLoading}
       decimals={decimals}
     />
