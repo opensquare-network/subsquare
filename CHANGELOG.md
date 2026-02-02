@@ -2,6 +2,48 @@
 
 All notable changes to this project will be documented in this file.
 
+# 6.1.0
+
+Date:
+2026-02-02. [Code diff](https://github.com/opensquare-network/subsquare/compare/64aebcf1619a4f13d6101d86ed508315ae550349...0c15a5242399191da0867b69433206a69ba6d084).
+
+- Treasury related:
+    - [Medium] Support bounty total spend statistics and curator fee statistics. Currently we finished bounty #24, #33,
+      #42, #43, #50 and #52.
+    - Add warnings for treasury spends, so users will know how many spends will expire within 7 days and be valid within
+      3 days.
+    - Support searching treasury funded projects.
+- Fellowship:
+    - Show history tally on a fellowship referenda curve chart.
+    - Show vote actions on a fellowship referenda curve chart.
+    - Add curve chart tab on the fellowship referendum detail page.
+    - Enable an applicant to close his/her application to join fellowship.
+    - Improve collectives chain deployment summary items by removing unnecessary alliance and ambassador items and add
+      fellowship application count and salary status.
+- Staking:
+    - Fix withdrawing unbonded balance from a pool.
+    - Enable staking for kusama.
+    - Add notifications to warn users to withdraw unbonded balance or claim rewards.
+- PAPI integration:
+    - Reduce on-chain data query on finished proposals. Work includes:
+        - Fetch votes from server API for a democracy referendum.
+        - Use server saved electorate data for a democracy referendum.
+        - Remove useless `MigrationConditionalApiProvider` on some proposal detail pages including bounty detail page,
+          fellowship/ambassador referendum detail page, multisigs page, democracy referendum detail page.
+- Support post-content translation to Spanish.
+- Refactor the way to fetch connected account assets info. We take advantage of subscription to replace loop query.
+- Fix storage subscription by setting default value.
+- Fix storage subscription error handling.
+- Enable users to set the vesting start time by selecting a date.
+- Update DV cohort 5 end info.
+- Unboard centrifuge and phala network.
+- Use deep equal check to skip state update on various post-detail page.
+- Fix community council motion execution status color for astar.
+- Remove councilor link to dotreasury.
+- Disable posthog temporarily.
+- Not show subsquare icon on comments if there are no comments from polkassembly.
+- Upgrade some dependencies.
+
 # 6.0.1
 
 Date:
