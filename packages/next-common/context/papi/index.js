@@ -1,13 +1,11 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { createClient } from "polkadot-api";
 import { getWsProvider } from "polkadot-api/ws-provider";
-import { CHAIN } from "next-common/utils/constants";
-import getChainSettings from "next-common/utils/consts/settings";
+import { currentNodeSelector } from "next-common/store/reducers/nodeSlice";
+import { useSelector } from "react-redux";
 
-const getPapi = async () => {
-  const settings = getChainSettings(CHAIN);
-  const endpoints = settings.endpoints.map((item) => item.url);
-  const wsProvider = getWsProvider(endpoints);
+const getPapi = async (currentEndpoint) => {
+  const wsProvider = getWsProvider(currentEndpoint);
   const client = await createClient(wsProvider);
   const api = client.getUnsafeApi();
   return {
@@ -19,15 +17,19 @@ const getPapi = async () => {
 const PapiContext = createContext(null);
 
 export function PapiProvider({ children }) {
+  const currentEndpoint = useSelector(currentNodeSelector);
   const [api, setApi] = useState(null);
   const [client, setClient] = useState(null);
 
   useEffect(() => {
-    getPapi().then(({ api, client }) => {
+    if (!currentEndpoint) {
+      return;
+    }
+    getPapi(currentEndpoint).then(({ api, client }) => {
       setApi(api);
       setClient(client);
     });
-  }, []);
+  }, [currentEndpoint]);
 
   useEffect(() => {
     return () => {
