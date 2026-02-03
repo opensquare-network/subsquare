@@ -38,7 +38,7 @@ export function PapiProvider({ children }) {
   useEffect(() => {
     return () => {
       if (client) {
-        client.destroy?.();
+        client?.destroy?.();
       }
     };
   }, [client]);
