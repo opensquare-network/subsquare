@@ -16,7 +16,7 @@ export default function useSchedulerAgendas() {
           entries
             .map(({ keyArgs, value: values }) => {
               const blockNumber = keyArgs[0];
-              const list = values.map((value) => {
+              return values.map((value) => {
                 const originRole = value?.origin?.value?.type ?? null;
                 const maybeId = value?.maybeId ?? null;
 
@@ -27,7 +27,6 @@ export default function useSchedulerAgendas() {
                   blockNumber,
                 };
               });
-              return list;
             })
             .flat()
             .sort((a, b) => a.blockNumber - b.blockNumber),
