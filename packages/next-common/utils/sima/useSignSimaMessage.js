@@ -1,3 +1,4 @@
+import { isEthereumAddress } from "@polkadot/util-crypto";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 import { useSignMessage } from "next-common/hooks/useSignMessage";
 import { useCallback } from "react";
@@ -13,8 +14,11 @@ export default function useSignSimaMessage() {
         throw new Error("Cancelled");
       }
 
-      const address = connectedAccount.address;
+      let address = connectedAccount.address;
       const signerWallet = connectedAccount.wallet;
+      if (signerWallet === "metamask" && !isEthereumAddress(address)) {
+        address = connectedAccount.evmAddress || address;
+      }
       const signature = await signMessage(
         JSON.stringify(entity),
         address,
