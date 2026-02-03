@@ -3,10 +3,17 @@ import { createClient } from "polkadot-api";
 import { getWsProvider } from "polkadot-api/ws-provider";
 import { currentNodeSelector } from "next-common/store/reducers/nodeSlice";
 import { useSelector } from "react-redux";
+import {
+  getMetadata as getCachedMetadata,
+  setMetadata as setCachedMetadata,
+} from "next-common/utils/papiMetadataCache";
 
 const getPapi = async (currentEndpoint) => {
   const wsProvider = getWsProvider(currentEndpoint);
-  const client = await createClient(wsProvider);
+  const client = await createClient(wsProvider, {
+    getMetadata: getCachedMetadata,
+    setMetadata: setCachedMetadata,
+  });
   const api = client.getUnsafeApi();
   return {
     api,
