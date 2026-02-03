@@ -37,11 +37,11 @@ export function PapiProvider({ children }) {
 
   useEffect(() => {
     return () => {
-      if (api) {
-        api.destroy?.();
+      if (client) {
+        client.destroy?.();
       }
     };
-  }, [api]);
+  }, [client]);
 
   return (
     <PapiContext.Provider value={{ api, client }}>
