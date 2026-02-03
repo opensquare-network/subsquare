@@ -1,43 +1,39 @@
 import { useEffect, useState } from "react";
-import { useContextApi } from "next-common/context/api";
+import { useContextPapiApi } from "next-common/context/papi";
 
 export default function useSchedulerAgendas() {
-  const api = useContextApi();
+  const papi = useContextPapiApi();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    if (!api) {
+    if (!papi) {
       return;
     }
-    api.query.scheduler?.agenda
-      ?.entries((entries) => {
+    papi.query.Scheduler.Agenda.getEntries()
+      .then((entries) => {
         setData(
           entries
-            .map(([callKey, values]) => {
-              const blockNumber = callKey.args[0]?.toNumber();
-              const list = values.map((value) => {
-                const json = value.toJSON();
-                const unwrapped = value.unwrap();
-                const originRole = unwrapped?.origin?.value?.type;
-                const maybeId = unwrapped?.maybeId?.unwrapOr(null);
-                const maybeIdHuman = maybeId?.toHuman();
+            .map(({ keyArgs, value: values }) => {
+              const blockNumber = keyArgs[0];
+              return values.map((value) => {
+                const originRole = value?.origin?.value?.type ?? null;
+                const maybeId = value?.maybeId ?? null;
 
                 return {
-                  ...json,
-                  maybeId: maybeIdHuman,
+                  ...value,
+                  maybeId,
                   originRole,
                   blockNumber,
                 };
               });
-              return list;
             })
             .flat()
             .sort((a, b) => a.blockNumber - b.blockNumber),
         );
       })
       .finally(() => setLoading(false));
-  }, [api]);
+  }, [papi]);
 
   return {
     data,

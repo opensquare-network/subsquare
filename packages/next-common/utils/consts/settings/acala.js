@@ -97,6 +97,7 @@ const acala = {
   description: "Cross-chain DeFi Hub for Polkadot, Kusama and beyond.",
   modules: mergeChainModules({
     financialCouncil: true,
+    scheduler: true,
   }),
   integrations: {
     subscan: true,

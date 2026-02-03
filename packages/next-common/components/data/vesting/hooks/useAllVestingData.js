@@ -1,7 +1,8 @@
 import { useEffect, useState, useCallback, useMemo } from "react";
-import { useContextApi } from "next-common/context/api";
+import { useContextPapiApi } from "next-common/context/papi";
 import useAhmLatestHeightSnapshot from "next-common/hooks/ahm/useAhmLatestHeightSnapshot";
 import { hexToString } from "@polkadot/util";
+import { isNil } from "lodash-es";
 
 function positiveOr0(v = 0n) {
   return v > 0n ? v : 0n;
@@ -9,13 +10,13 @@ function positiveOr0(v = 0n) {
 
 export function getCurrencyLockedByVesting(locks) {
   const vestingLock = locks.find(
-    (item) => hexToString(item.id.toHex()).trim() === "vesting",
+    (item) => hexToString(item.id.asHex()).trim() === "vesting",
   );
   if (!vestingLock) {
     return 0n;
   }
 
-  return vestingLock.amount.toBigInt();
+  return vestingLock.amount;
 }
 
 export function calculateVestingInfo(
@@ -31,9 +32,9 @@ export function calculateVestingInfo(
   let totalVesting = 0n;
 
   const schedulesWithDetails = schedules.map((schedule) => {
-    const startingBlock = schedule.startingBlock.toBigInt();
-    const perBlock = schedule.perBlock.toBigInt();
-    const locked = schedule.locked.toBigInt();
+    const startingBlock = BigInt(schedule.starting_block);
+    const perBlock = schedule.per_block;
+    const locked = schedule.locked;
 
     const vestedBlockCount = positiveOr0(nowHeightBigInt - startingBlock);
     const unlockableNow = vestedBlockCount * perBlock;
@@ -79,8 +80,17 @@ export function calculateVestingInfo(
   };
 }
 
+function processVestingEntries(entries) {
+  return entries.map((entry) => {
+    const args = entry.args ?? entry.keyArgs;
+    const account = args?.[0];
+    const schedules = entry.value;
+    return { account, schedules };
+  });
+}
+
 export default function useAllVestingData() {
-  const api = useContextApi();
+  const api = useContextPapiApi();
   const { latestHeight, isLoading: isHeightLoading } =
     useAhmLatestHeightSnapshot();
   const [data, setData] = useState([]);
@@ -88,85 +98,72 @@ export default function useAllVestingData() {
   const [sortField, setSortField] = useState("unlockable");
   const [sortDirection, setSortDirection] = useState("desc");
 
-  const fetchData = useCallback(
-    async (silent = false) => {
-      if (!api || !latestHeight) {
-        return;
-      }
-
-      try {
-        if (!silent) {
-          setIsLoading(true);
-        }
-
-        const entries = await api.query.vesting.vesting.entries();
-
-        const accountsData = [];
-        const accounts = [];
-
-        for (const [storageKey, optionalStorage] of entries) {
-          if (optionalStorage.isNone) {
-            continue;
-          }
-
-          const account = storageKey.args[0].toString();
-          const schedules = optionalStorage.unwrap();
-
-          accounts.push(account);
-          accountsData.push({
-            account,
-            schedules,
-          });
-        }
-
-        const locksMulti = await api.query.balances.locks.multi(accounts);
-
-        const accountsMap = new Map();
-        accountsData.forEach((item, index) => {
-          const locks = locksMulti[index];
-          const balancesLockedByVesting = getCurrencyLockedByVesting(locks);
-
-          const vestingInfo = calculateVestingInfo(
-            item.schedules,
-            latestHeight,
-            balancesLockedByVesting,
-          );
-
-          accountsMap.set(item.account, {
-            account: item.account,
-            currentBalanceInLock: balancesLockedByVesting.toString(),
-            totalVesting: vestingInfo.totalVesting,
-            totalLockedNow: vestingInfo.totalLockedNow,
-            unlockable: vestingInfo.totalUnlockable,
-            schedules: vestingInfo.schedules,
-            schedulesCount: item.schedules.length,
-          });
-        });
-
-        const results = Array.from(accountsMap.values());
-
-        setData(results);
-        if (!silent) {
-          setIsLoading(false);
-        }
-      } catch (error) {
-        console.error("Error fetching vesting data:", error);
-        if (!silent) {
-          setData([]);
-          setIsLoading(false);
-        }
-      }
-    },
-    [api, latestHeight],
-  );
-
   useEffect(() => {
-    if (isHeightLoading) {
+    if (!api || isHeightLoading || latestHeight == null) {
       return;
     }
 
-    fetchData();
-  }, [fetchData, isHeightLoading]);
+    const unsub = api.query.Vesting.Vesting.watchEntries().subscribe(
+      async (item) => {
+        const { entries, deltas } = item;
+        if (isNil(deltas)) {
+          return;
+        }
+
+        if (!entries || entries.length === 0) {
+          setData([]);
+          setIsLoading(false);
+          return;
+        }
+
+        const accountsData = processVestingEntries(entries);
+        const accounts = accountsData.map((item) => item.account);
+
+        try {
+          if (accounts.length > 0) {
+            const locksMulti = await api.query.Balances.Locks.getValues(
+              accounts.map((account) => [account]),
+            );
+
+            const accountsMap = new Map();
+            accountsData.forEach((item, index) => {
+              const locks = locksMulti[index];
+              const balancesLockedByVesting = getCurrencyLockedByVesting(locks);
+
+              const vestingInfo = calculateVestingInfo(
+                item.schedules,
+                latestHeight,
+                balancesLockedByVesting,
+              );
+
+              accountsMap.set(item.account, {
+                account: item.account,
+                currentBalanceInLock: balancesLockedByVesting.toString(),
+                totalVesting: vestingInfo.totalVesting,
+                totalLockedNow: vestingInfo.totalLockedNow,
+                unlockable: vestingInfo.totalUnlockable,
+                schedules: vestingInfo.schedules,
+                schedulesCount: item.schedules.length,
+              });
+            });
+
+            setData(Array.from(accountsMap.values()));
+          } else {
+            setData([]);
+          }
+        } catch (error) {
+          console.error("Error processing vesting data:", error);
+          setData([]);
+        } finally {
+          setIsLoading(false);
+        }
+      },
+    );
+
+    return () => {
+      unsub?.unsubscribe?.();
+    };
+  }, [api, latestHeight, isHeightLoading]);
 
   const sortedData = useMemo(() => {
     if (!data || data.length === 0) {
@@ -209,10 +206,6 @@ export default function useAllVestingData() {
     [sortField, sortDirection],
   );
 
-  const update = useCallback(() => {
-    fetchData(true);
-  }, [fetchData]);
-
   return useMemo(
     () => ({
       data: sortedData,
@@ -220,8 +213,7 @@ export default function useAllVestingData() {
       sortField,
       sortDirection,
       onSort: handleSort,
-      update,
     }),
-    [sortedData, isLoading, sortField, sortDirection, handleSort, update],
+    [sortedData, isLoading, sortField, sortDirection, handleSort],
   );
 }

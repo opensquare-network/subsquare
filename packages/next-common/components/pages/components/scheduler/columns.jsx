@@ -39,7 +39,7 @@ export function PeriodicColumn() {
     key: "interval",
     name: "Interval",
     width: 180,
-    render: ({ maybePeriodic, blockNumber }) => (
+    render: ({ maybe_periodic: maybePeriodic, blockNumber }) => (
       <PeriodicColumnContent
         blockNumber={blockNumber}
         periodic={maybePeriodic}

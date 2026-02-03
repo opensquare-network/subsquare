@@ -103,6 +103,7 @@ const hydradx = {
   description: "Making finance efficient, simple and unstoppable.",
   modules: mergeChainModules({
     referenda: true,
+    scheduler: true,
     treasury: {
       bounties: false,
       spends: true,
