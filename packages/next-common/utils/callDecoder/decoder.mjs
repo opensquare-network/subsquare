@@ -1,3 +1,5 @@
+import { toTypedCallTree } from "./treeBuilder.mjs";
+import { normalizeCallTree } from "./treeNormalize.mjs";
 import {
   getDynamicBuilder,
   getLookupFn,
@@ -6,8 +8,6 @@ import {
   metadata as metadataCodec,
   unifyMetadata,
 } from "@polkadot-api/substrate-bindings";
-import { toTypedCallTree } from "./treeBuilder";
-import { normalizeCallTree } from "./treeNormalize";
 
 export async function getMetadata(client) {
   const metadataRaw = await client._request("state_getMetadata", []);

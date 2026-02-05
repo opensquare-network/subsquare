@@ -121,10 +121,17 @@ export function ValuePanel({ node }) {
   const { symbol, decimals } = useChainSettings();
   const { section, method } = useCallContext() || {};
 
-  const { type, name, rawType, value } = node || {};
+  const {
+    type,
+    section: valSection,
+    method: valMethod,
+    name,
+    rawType,
+    value,
+  } = node || {};
 
   // Handle Call type
-  if (type === "Call") {
+  if (type === "Call" && valSection && valMethod) {
     return <CallPanel call={node} />;
   }
 

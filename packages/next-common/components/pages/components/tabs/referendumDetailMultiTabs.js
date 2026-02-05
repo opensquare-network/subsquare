@@ -14,6 +14,7 @@ import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
 import { useReferendumTimelineData } from "next-common/hooks/pages/timelineData";
 import tabsTooltipContentMap from "./tabsTooltipContentMap";
 import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
+import { PapiProvider } from "next-common/context/papi";
 
 const Gov2ReferendumCall = dynamicClientOnly(() =>
   import("next-common/components/gov2/referendum/call"),
@@ -59,9 +60,11 @@ export default function ReferendumDetailMultiTabs() {
               tooltip: tabsTooltipContentMap.call,
               content: (
                 <MigrationConditionalApiProvider indexer={indexer}>
-                  <ReferendumCallProvider>
-                    <Gov2ReferendumCall />
-                  </ReferendumCallProvider>
+                  <PapiProvider>
+                    <ReferendumCallProvider>
+                      <Gov2ReferendumCall />
+                    </ReferendumCallProvider>
+                  </PapiProvider>
                 </MigrationConditionalApiProvider>
               ),
             },

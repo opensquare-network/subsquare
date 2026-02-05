@@ -5,7 +5,6 @@ import { CallContextProvider } from "./callContext";
 export default function PapiCallTreeView({ proposal }) {
   const { section, method, children } = proposal || {};
 
-  // For papi calls, we may not have docs directly, but we can display section.method
   return (
     <div className="text-textPrimary">
       <div className="flex flex-col text14Medium">

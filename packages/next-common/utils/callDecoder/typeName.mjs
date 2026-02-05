@@ -1,4 +1,5 @@
 function getPathBasedTypeName(metadata, typeId) {
+  // try path-based naming
   if (typeId === undefined || typeId === null) {
     return null;
   }
@@ -8,11 +9,17 @@ function getPathBasedTypeName(metadata, typeId) {
   }
 
   const path = rawLookup.path;
-  if (path[path.length - 1] === "Call" && path.length > 1) {
-    return "Call";
+  const lastSegment = path[path.length - 1];
+
+  // Recognize Call types: if last segment is "Call" or ends with "Call"
+  // (like "RuntimeCall"), and it's the runtime's main Call enum, simplify to "Call"
+  if (lastSegment === "Call" || lastSegment === "RuntimeCall") {
+    // Check if this is a variant enum (the runtime Call type)
+    if (rawLookup.def?.tag === "variant") {
+      return "Call";
+    }
   }
 
-  const lastSegment = path[path.length - 1];
   const lastLower = lastSegment.toLowerCase().replace(/[^a-z0-9]/g, "");
   const segs = [];
   for (let i = 0; i < path.length - 1; i++) {
@@ -35,17 +42,25 @@ function getPathBasedTypeName(metadata, typeId) {
   return lastSegment;
 }
 
+// Get a readable type name from lookup entry and metadata
 export function getTypeName(lookupEntry, metadata, typeId) {
   if (!lookupEntry) return "Unknown";
 
   const { type } = lookupEntry;
 
+  // For generic container types (sequence, option, result, compact, array, tuple),
+  // always construct the generic format instead of using path-based names
+  // This ensures we get "Option<T>" instead of just "Option"
   if (type === "sequence") {
     const innerType = getTypeName(
       lookupEntry.value,
       metadata,
       lookupEntry.value.id,
     );
+    // Special case: Vec<u8> can be represented as "bytes" in some contexts
+    if (innerType === "u8") {
+      return "bytes";
+    }
     return `Vec<${innerType}>`;
   }
 
@@ -66,6 +81,7 @@ export function getTypeName(lookupEntry, metadata, typeId) {
   }
 
   if (type === "compact") {
+    // Compact types have a 'size' field indicating the inner primitive type
     const innerType = lookupEntry.size || "Unknown";
     return `Compact<${innerType}>`;
   }
@@ -100,6 +116,9 @@ export function getTypeName(lookupEntry, metadata, typeId) {
     return `(${types})`;
   }
 
+  // For non-generic types, check if there's a named type alias in metadata
+  // This ensures we use custom type names like "XcmDoubleEncoded"
+  // instead of generic ones like "Vec<u8>" for wrapped types
   const pathBasedName = getPathBasedTypeName(metadata, typeId);
   if (pathBasedName) {
     return pathBasedName;
