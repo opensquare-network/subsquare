@@ -28,9 +28,11 @@ export default function EnumPanel({ node }) {
         </span>
         <div>{variantName}</div>
       </div>
-      <IndentPanel className="gap-[8px]">
-        <ValuePanel node={variantChild} />
-      </IndentPanel>
+      {variantChild.rawType !== "void" && (
+        <IndentPanel className="gap-[8px]">
+          <ValuePanel node={variantChild} />
+        </IndentPanel>
+      )}
     </div>
   );
 }

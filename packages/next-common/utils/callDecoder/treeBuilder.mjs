@@ -268,7 +268,12 @@ function toTypedEnum(
   });
 
   if (variant.type === "void") {
-    delete node.children;
+    node.children = [
+      makeNode(variantName, {
+        name: variantName,
+        rawType: "void",
+      }),
+    ];
   } else if (variantValue !== null && variantValue !== undefined) {
     if (variant.type === "struct") {
       const variantNode = handleStructVariant(
