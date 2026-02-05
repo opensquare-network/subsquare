@@ -14,6 +14,7 @@ import Tooltip from "../tooltip";
 import ProposalChildCalls from "./childCalls";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import PapiCallDetailPopup from "../papiCallDetailPopup";
 
 const CallDetailPopup = dynamicPopup(() => import("../callDetailPopup"));
 
@@ -221,6 +222,7 @@ export default function Proposal({
 }) {
   const chain = useChain();
   const [detailPopupVisible, setDetailPopupVisible] = useState(false);
+  const [papiCallDetailVisible, setPapiCallDetailVisible] = useState(false);
 
   const tableViewData = convertProposalForTableView(call, chain);
   const jsonViewData = convertProposalForJsonView(call, chain);
@@ -259,7 +261,7 @@ export default function Proposal({
                 "[&_path]:stroke-textTertiary [&_path]:hover:stroke-textSecondary",
                 "[&_path]:fill-textTertiary [&_path]:hover:fill-textSecondary",
               )}
-              onClick={() => setDetailPopupVisible(true)}
+              onClick={() => setPapiCallDetailVisible(true)}
             />
           </Tooltip>
         </TagWrapper>
@@ -279,6 +281,9 @@ export default function Proposal({
           hasTreeViewData={!!preImageHash}
           setShow={setDetailPopupVisible}
         />
+      )}
+      {papiCallDetailVisible && (
+        <PapiCallDetailPopup setShow={setPapiCallDetailVisible} />
       )}
     </Wrapper>
   );
