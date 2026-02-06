@@ -9,6 +9,7 @@ import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated"
 import { useRouter } from "next/router";
 import { useChain } from "next-common/context/chain";
 import { isKusamaChain } from "next-common/utils/chain";
+import BlockPapi from "next-common/utils/papiUtils/blockPapi.mjs";
 
 const getPapi = async (endpoint, blockHash = null) => {
   const wsProvider = getWsProvider(endpoint);
@@ -22,11 +23,6 @@ const getPapi = async (endpoint, blockHash = null) => {
     api,
     client,
   };
-};
-
-const getPapiAt = async (client, blockHash) => {
-  const api = client.at(blockHash).getUnsafeApi();
-  return api;
 };
 
 function useIsKusamaFellowship() {
@@ -83,12 +79,15 @@ function useConditionalPapi(indexer) {
   }, [endpointUrls]);
 
   useEffect(() => {
-    if (!conditionalData.client || isNil(indexer)) {
+    if (!conditionalData || isNil(indexer)) {
       return;
     }
 
-    getPapi(endpointUrls[0], indexer?.blockHash).then(setBlockData);
-  }, [conditionalData.client, indexer, endpointUrls]);
+    setBlockData({
+      ...conditionalData,
+      api: new BlockPapi(conditionalData.api, indexer?.blockHash),
+    });
+  }, [conditionalData, indexer]);
 
   return isNil(indexer) ? conditionalData : blockData;
 }
@@ -100,12 +99,11 @@ function DefaultContextPapiProvider({ indexer, children }) {
   const { api: contextApi, client: contextClient } = useContextPapi();
 
   useEffect(() => {
-    if (!contextClient || isNil(indexer)) {
+    if (!contextApi || isNil(indexer)) {
       return;
     }
-
-    getPapiAt(contextClient, indexer?.blockHash).then(setBlockApi);
-  }, [contextClient, indexer]);
+    setBlockApi(new BlockPapi(contextApi, indexer?.blockHash));
+  }, [contextApi, indexer]);
 
   const data = isNil(indexer)
     ? { api: contextApi, client: contextClient }
