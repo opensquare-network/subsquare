@@ -1,5 +1,9 @@
+import { camelCase } from "lodash-es";
+
 export function normalizeCallTree(callTree) {
-  if (!callTree) return callTree;
+  if (!callTree) {
+    return callTree;
+  }
 
   if (
     callTree.type === "Call" &&
@@ -16,8 +20,8 @@ export function normalizeCallTree(callTree) {
     return {
       type: callTree.type,
       name: callTree.name,
-      section: callTree.children[0].name,
-      method: callTree.children[0].children[0].name,
+      section: camelCase(callTree.children[0].name),
+      method: camelCase(callTree.children[0].children[0].name),
       children: callTree.children[0].children[0].children.map((child) =>
         normalizeCallTree(child),
       ),
@@ -34,8 +38,8 @@ export function normalizeCallTree(callTree) {
   ) {
     return {
       type: callTree.type,
-      section: callTree.name,
-      method: callTree.children[0].name,
+      section: camelCase(callTree.name),
+      method: camelCase(callTree.children[0].name),
       children: callTree.children[0].children.map((child) =>
         normalizeCallTree(child),
       ),

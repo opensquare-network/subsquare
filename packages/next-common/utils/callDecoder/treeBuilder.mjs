@@ -1,13 +1,14 @@
 import camelCase from "lodash.camelcase";
 import { Binary } from "polkadot-api";
 import { getTypeName } from "./typeName.mjs";
+import { isNil } from "lodash-es";
 
 function makeNode(typeName, opts) {
   return Object.assign({ type: typeName }, opts || {});
 }
 
 function valueToJson(value) {
-  if (value === null || value === undefined) {
+  if (isNil(value)) {
     return null;
   }
   if (typeof value === "bigint") {
@@ -274,7 +275,7 @@ function toTypedEnum(
         rawType: "void",
       }),
     ];
-  } else if (variantValue !== null && variantValue !== undefined) {
+  } else if (!isNil(variantValue)) {
     if (variant.type === "struct") {
       const variantNode = handleStructVariant(
         variant,
@@ -565,12 +566,10 @@ export function toTypedCallTree(
 
   const typeName = getTypeName(lookupEntry, metadata, resolvedTypeId);
 
-  // Handle null/undefined values
-  if (transformedValue === null || transformedValue === undefined) {
+  if (isNil(transformedValue)) {
     return handleNullValue(typeName, fieldName, lookupEntry.type);
   }
 
-  // Dispatch to appropriate handler based on type
   return dispatchByType(
     lookupEntry,
     transformedValue,
