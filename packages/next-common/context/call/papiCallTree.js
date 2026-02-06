@@ -58,9 +58,9 @@ async function decodeInlineCallHex(client, blockHash, inlineCallHex) {
 function useReferendumCall() {
   const [callTreeData, setCallTreeData] = useState(null);
   const onchainData = useOnchainData();
-  const { proposalHash, indexer, inlineCall } = onchainData || {};
+  const { proposalHash, indexer, inlineCall, proposal } = onchainData || {};
   const { client } = useContextPapi();
-  const blockHash = indexer?.blockHash;
+  const blockHash = proposal?.indexer?.blockHash || indexer?.blockHash;
   const { api } = useContextPapi();
 
   const [loading, setLoading] = useState(true);
