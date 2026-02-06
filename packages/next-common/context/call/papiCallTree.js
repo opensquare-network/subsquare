@@ -1,36 +1,44 @@
 import { createContext, useContext } from "react";
 import { useEffect, useState } from "react";
-import { useContextPapi } from "next-common/context/papi";
 import { useOnchainData } from "next-common/context/post";
 import { Binary } from "polkadot-api";
 import {
   decodeCallTree,
   getBlockMetadata,
 } from "next-common/utils/callDecoder/decoder.mjs";
+import { useConditionalContextPapi } from "../migration/conditionalPapi";
 
 async function fetchPreimage(papi, preimageHash, blockHash) {
-  const status = await papi.query.Preimage.RequestStatusFor.getValue(
-    Binary.fromHex(preimageHash),
-    { at: blockHash },
-  );
+  const [statusFor, requestStatusFor] = await Promise.allSettled([
+    papi.query.Preimage.StatusFor.getValue(Binary.fromHex(preimageHash), {
+      at: blockHash,
+    }),
+    papi.query.Preimage.RequestStatusFor.getValue(
+      Binary.fromHex(preimageHash),
+      { at: blockHash },
+    ),
+  ]);
 
-  if (!status) {
+  if (!statusFor.value && !requestStatusFor.value) {
     return null;
   }
 
-  const preimageLen = status.value.len || status.value.maybe_len;
+  const preimageLen =
+    requestStatusFor?.value?.value?.len ||
+    requestStatusFor?.value?.value?.maybe_len ||
+    statusFor?.value?.value?.len;
 
-  // console.log({
-  //   preimageHash,
-  //   preimageLen,
-  // });
+  try {
+    const preimage = await papi.query.Preimage.PreimageFor.getValue(
+      [Binary.fromHex(preimageHash), preimageLen],
+      { at: blockHash },
+    );
 
-  const preimage = await papi.query.Preimage.PreimageFor.getValue(
-    [Binary.fromHex(preimageHash), preimageLen],
-    { at: blockHash },
-  );
-
-  return preimage;
+    return preimage;
+  } catch (e) {
+    console.error("Error fetching preimage:", e);
+    return null;
+  }
 }
 
 async function getPreimageCall(client, papi, preimageHash, blockHash) {
@@ -59,9 +67,8 @@ function useReferendumCall() {
   const [callTreeData, setCallTreeData] = useState(null);
   const onchainData = useOnchainData();
   const { proposalHash, indexer, inlineCall, proposal } = onchainData || {};
-  const { client } = useContextPapi();
   const blockHash = proposal?.indexer?.blockHash || indexer?.blockHash;
-  const { api } = useContextPapi();
+  const { client, api } = useConditionalContextPapi();
 
   const [loading, setLoading] = useState(true);
 

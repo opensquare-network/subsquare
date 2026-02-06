@@ -16,6 +16,7 @@ import tabsTooltipContentMap from "./tabsTooltipContentMap";
 import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 import { PapiProvider } from "next-common/context/papi";
 import PapiCallTreeProvider from "next-common/context/call/papiCallTree";
+import { MigrationConditionalPapiProvider } from "next-common/context/migration/conditionalPapi";
 
 const Gov2ReferendumCall = dynamicClientOnly(() =>
   import("next-common/components/gov2/referendum/call"),
@@ -62,11 +63,13 @@ export default function ReferendumDetailMultiTabs() {
               content: (
                 <MigrationConditionalApiProvider indexer={indexer}>
                   <PapiProvider>
-                    <PapiCallTreeProvider>
-                      <ReferendumCallProvider>
-                        <Gov2ReferendumCall />
-                      </ReferendumCallProvider>
-                    </PapiCallTreeProvider>
+                    <MigrationConditionalPapiProvider indexer={indexer}>
+                      <PapiCallTreeProvider>
+                        <ReferendumCallProvider>
+                          <Gov2ReferendumCall />
+                        </ReferendumCallProvider>
+                      </PapiCallTreeProvider>
+                    </MigrationConditionalPapiProvider>
                   </PapiProvider>
                 </MigrationConditionalApiProvider>
               ),
