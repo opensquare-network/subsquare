@@ -199,12 +199,12 @@ function handleStructVariant(
 
 function handleArrayVariant(variant, variantValue, lookup, metadata) {
   const children = [];
-  variantValue.forEach((item) => {
+  variantValue.forEach((item, i) => {
     const child = toTypedCallTree(
       item,
       lookup,
       variant.value.id,
-      null,
+      `[${i}]`,
       metadata,
     );
     if (child) children.push(child);
@@ -310,8 +310,14 @@ function createContainerNode(typeName, fieldName, rawType, children = []) {
 
 function processArrayElements(items, elementTypeId, lookup, metadata) {
   const children = [];
-  items.forEach((item) => {
-    const child = toTypedCallTree(item, lookup, elementTypeId, null, metadata);
+  items.forEach((item, i) => {
+    const child = toTypedCallTree(
+      item,
+      lookup,
+      elementTypeId,
+      `[${i}]`,
+      metadata,
+    );
     if (child) children.push(child);
   });
   return children;
