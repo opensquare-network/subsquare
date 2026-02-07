@@ -30,6 +30,7 @@ import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
 import { AvatarImg } from "next-common/components/user/styled";
 import Gravatar from "next-common/components/gravatar";
 import AccountPanelJudgementScrollPrompt from "./components/accountPanelJudgementScrollPrompt";
+import { useChainSettings } from "next-common/context/chain";
 
 const ParaChainTeleportPopup = dynamic(() =>
   import("next-common/components/paraChainTeleportPopup").then(
@@ -301,6 +302,7 @@ export function AccountHead({ width }) {
 }
 
 export default function AccountInfoPanel() {
+  const { hasIdentityVerification } = useChainSettings();
   const width = useWindowWidthContext();
 
   if (isNil(width)) {
@@ -314,7 +316,7 @@ export default function AccountInfoPanel() {
       <Divider />
       <AccountBalances />
       <ExtensionUpdatePrompt />
-      <AccountPanelJudgementScrollPrompt />
+      {hasIdentityVerification && <AccountPanelJudgementScrollPrompt />}
       <AccountPanelScrollPrompt />
     </NeutralPanel>
   );
