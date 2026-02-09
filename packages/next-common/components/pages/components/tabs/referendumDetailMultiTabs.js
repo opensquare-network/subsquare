@@ -63,7 +63,7 @@ export default function ReferendumDetailMultiTabs() {
               content: (
                 <MigrationConditionalApiProvider indexer={indexer}>
                   <PapiProvider>
-                    <MigrationConditionalPapiProvider indexer={indexer}>
+                    <MigrationConditionalPapiProvider>
                       <PapiCallTreeProvider>
                         <ReferendumCallProvider>
                           <Gov2ReferendumCall />

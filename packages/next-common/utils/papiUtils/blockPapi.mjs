@@ -26,7 +26,10 @@ class BlockPapi {
             const [section, method] = fn.path.slice(1, -1);
             // console.log(
             //   `BlockPapi: Calling papi.query.${section}.${method}.getValue with args:`,
-            //   args,
+            //   ...args,
+            //   {
+            //     at: target.blockHash,
+            //   },
             // );
             return fn.papi.query[section][method].getValue(...args, {
               at: target.blockHash,
