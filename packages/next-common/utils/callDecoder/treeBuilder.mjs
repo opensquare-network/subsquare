@@ -35,10 +35,14 @@ function removeEmptyChildren(node) {
 }
 
 function getOriginalFieldTypeId(rawMetadata, fieldName, defaultTypeId) {
-  if (!rawMetadata) return defaultTypeId;
+  if (!rawMetadata) {
+    return defaultTypeId;
+  }
 
   const rawFields = rawMetadata.def?.value;
-  if (!rawFields) return defaultTypeId;
+  if (!rawFields) {
+    return defaultTypeId;
+  }
 
   const rawField = rawFields.find((f) => f.name === fieldName);
   return rawField?.type !== undefined ? rawField.type : defaultTypeId;
@@ -50,7 +54,9 @@ function getRawMetadata(metadata, typeId) {
 
 function getRawVariantFields(metadata, typeId, variantName) {
   const rawMetadata = getRawMetadata(metadata, typeId);
-  if (rawMetadata?.def?.tag !== "variant") return null;
+  if (rawMetadata?.def?.tag !== "variant") {
+    return null;
+  }
 
   const rawVariant = rawMetadata.def.value?.find((v) => v.name === variantName);
   return rawVariant?.fields;
@@ -104,7 +110,9 @@ function tryConvertCompositeToStruct(
   }
 
   const rawFields = rawMetadata.def.value;
-  if (!rawFields) return null;
+  if (!rawFields) {
+    return null;
+  }
 
   if (rawFields.length === 1) {
     return handleSingleFieldComposite(
@@ -435,16 +443,7 @@ function toTypedLookupEntry(
   return toTypedCallTree(value, lookup, lookupEntry.value.id, null, metadata);
 }
 
-function resolveLookupEntry(typeRef, metadata, value, lookup) {
-  if (typeRef && typeof typeRef === "object" && "type" in typeRef) {
-    return {
-      lookupEntry: typeRef,
-      resolvedTypeId: undefined,
-      value,
-    };
-  }
-
-  const resolvedTypeId = typeRef;
+function resolveLookupEntry(resolvedTypeId, metadata, value, lookup) {
   const rawMetadata = getRawMetadata(metadata, resolvedTypeId);
 
   // Try to convert composite types to struct
@@ -464,7 +463,7 @@ function resolveLookupEntry(typeRef, metadata, value, lookup) {
   }
 
   return {
-    lookupEntry: lookup(typeRef),
+    lookupEntry: lookup(resolvedTypeId),
     resolvedTypeId,
     value,
   };

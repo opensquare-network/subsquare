@@ -27,9 +27,11 @@ class BlockPapi {
           //   `BlockPapi: Calling papi.query.${section}.${method}.getValue with args:`,
           //   args,
           // );
-          return fn.papi.query[section][method].getValue(...args, {
-            at: target.blockHash,
-          });
+          return Promise.resolve().then(() =>
+            fn.papi.query[section][method].getValue(...args, {
+              at: target.blockHash,
+            }),
+          );
         };
         fn.path = newPath;
         fn.blockHash = target.blockHash;
