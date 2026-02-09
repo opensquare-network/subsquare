@@ -142,6 +142,7 @@ const polkadot = {
     hydration: true,
   },
   usePolkassemblyBackupData: true,
+  hasIdentityVerification: true,
 };
 
 export default polkadot;
