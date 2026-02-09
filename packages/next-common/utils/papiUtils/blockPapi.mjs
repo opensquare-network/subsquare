@@ -16,23 +16,22 @@ class BlockPapi {
           return Reflect.get(target, prop, receiver);
         }
         const newPath = [...target.path, prop];
-        const fn = (...args) => {
-          assert(fn.path[0] === "query", "First property must be query");
-          assert(
-            fn.path[fn.path.length - 1] === "getValue",
-            "Last method must be getValue",
-          );
-          const [section, method] = fn.path.slice(1, -1);
-          // console.log(
-          //   `BlockPapi: Calling papi.query.${section}.${method}.getValue with args:`,
-          //   args,
-          // );
-          return Promise.resolve().then(() =>
-            fn.papi.query[section][method].getValue(...args, {
+        const fn = (...args) =>
+          Promise.resolve().then(() => {
+            assert(fn.path[0] === "query", "First property must be query");
+            assert(
+              fn.path[fn.path.length - 1] === "getValue",
+              "Last method must be getValue",
+            );
+            const [section, method] = fn.path.slice(1, -1);
+            // console.log(
+            //   `BlockPapi: Calling papi.query.${section}.${method}.getValue with args:`,
+            //   args,
+            // );
+            return fn.papi.query[section][method].getValue(...args, {
               at: target.blockHash,
-            }),
-          );
-        };
+            });
+          });
         fn.path = newPath;
         fn.blockHash = target.blockHash;
         fn.papi = target.papi;
