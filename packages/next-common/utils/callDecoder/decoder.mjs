@@ -31,7 +31,14 @@ export function decodeCallTree(bytes, metadata) {
   const callCodec = dynamicBuilder.buildDefinition(codecType);
   const decodedCall = callCodec.dec(bytes);
 
-  const tree = toTypedCallTree(decodedCall, lookup, codecType, null, metadata);
+  const tree = toTypedCallTree(
+    decodedCall,
+    lookup,
+    codecType,
+    null,
+    null,
+    metadata,
+  );
 
   return normalizeCallTree(tree);
 }

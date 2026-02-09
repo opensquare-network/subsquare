@@ -45,7 +45,9 @@ function getOriginalFieldTypeId(rawMetadata, fieldName, defaultTypeId) {
   }
 
   const rawField = rawFields.find((f) => f.name === fieldName);
-  return rawField?.type !== undefined ? rawField.type : defaultTypeId;
+  return rawField?.type !== undefined
+    ? { typeId: rawField.type, typeName: rawField.typeName }
+    : { typeId: defaultTypeId, typeName: null };
 }
 
 function getRawMetadata(metadata, typeId) {
@@ -144,6 +146,7 @@ function handleLookupEntryVariant(
       variantValue,
       lookup,
       variantTypeId,
+      null,
       variantName,
       metadata,
     );
@@ -160,10 +163,13 @@ function handleLookupEntryVariant(
     variantValue,
     lookup,
     variantTypeId,
+    null,
     variantName,
     metadata,
   );
-  if (child) node.children.push(child);
+  if (child) {
+    node.children.push(child);
+  }
 
   return node;
 }
@@ -186,16 +192,18 @@ function handleStructVariant(
   const rawFields = getRawVariantFields(metadata, typeId, variantName);
 
   for (const [fieldName, typeDef] of Object.entries(variant.value)) {
-    const originalTypeId = getOriginalFieldTypeId(
-      { def: { value: rawFields } },
-      fieldName,
-      typeDef.id,
-    );
+    const { typeId: originalTypeId /*typeName: originalTypeName*/ } =
+      getOriginalFieldTypeId(
+        { def: { value: rawFields } },
+        fieldName,
+        typeDef.id,
+      );
 
     const child = toTypedCallTree(
       variantValue[fieldName],
       lookup,
       originalTypeId,
+      null, //originalTypeName,
       normalizeFieldName(fieldName),
       metadata,
     );
@@ -212,10 +220,13 @@ function handleArrayVariant(variant, variantValue, lookup, metadata) {
       item,
       lookup,
       variant.value.id,
+      null,
       `[${i}]`,
       metadata,
     );
-    if (child) children.push(child);
+    if (child) {
+      children.push(child);
+    }
   });
   return children;
 }
@@ -323,10 +334,13 @@ function processArrayElements(items, elementTypeId, lookup, metadata) {
       item,
       lookup,
       elementTypeId,
+      null,
       `[${i}]`,
       metadata,
     );
-    if (child) children.push(child);
+    if (child) {
+      children.push(child);
+    }
   });
   return children;
 }
@@ -344,16 +358,14 @@ function toTypedStruct(
   const rawMetadata = getRawMetadata(metadata, typeId);
 
   for (const [fName, typeDef] of Object.entries(lookupEntry.value)) {
-    const originalTypeId = getOriginalFieldTypeId(
-      rawMetadata,
-      fName,
-      typeDef.id,
-    );
+    const { typeId: originalTypeId /*typeName: originalTypeName*/ } =
+      getOriginalFieldTypeId(rawMetadata, fName, typeDef.id);
 
     const child = toTypedCallTree(
       value ? value[fName] : undefined,
       lookup,
       originalTypeId,
+      null, //originalTypeName,
       normalizeFieldName(fName),
       metadata,
     );
@@ -379,6 +391,7 @@ function toTypedTuple(
       value && value[i] !== undefined ? value[i] : undefined,
       lookup,
       typeDef.id,
+      null,
       `[${i}]`,
       metadata,
     );
@@ -440,7 +453,14 @@ function toTypedLookupEntry(
   metadata,
   lookupEntry,
 ) {
-  return toTypedCallTree(value, lookup, lookupEntry.value.id, null, metadata);
+  return toTypedCallTree(
+    value,
+    lookup,
+    lookupEntry.value.id,
+    null,
+    null,
+    metadata,
+  );
 }
 
 function resolveLookupEntry(resolvedTypeId, metadata, value, lookup) {
@@ -558,7 +578,8 @@ function dispatchByType(
 export function toTypedCallTree(
   value,
   lookup,
-  typeRef,
+  typeId,
+  typeName = null,
   fieldName = null,
   metadata = null,
 ) {
@@ -567,10 +588,11 @@ export function toTypedCallTree(
     lookupEntry,
     resolvedTypeId,
     value: transformedValue,
-  } = resolveLookupEntry(typeRef, metadata, value, lookup);
+  } = resolveLookupEntry(typeId, metadata, value, lookup);
 
-  const typeName = getTypeName(lookupEntry, metadata, resolvedTypeId);
-
+  if (typeName === null) {
+    typeName = getTypeName(lookupEntry, metadata, resolvedTypeId);
+  }
   if (isNil(transformedValue)) {
     return handleNullValue(typeName, fieldName, lookupEntry.type);
   }
