@@ -1,6 +1,6 @@
 import camelCase from "lodash.camelcase";
 import { Binary } from "polkadot-api";
-import { getTypeName } from "./typeName.mjs";
+import { getTypeName, normalizeOriginalTypeName } from "./typeName.mjs";
 import { isNil } from "lodash-es";
 
 function makeNode(typeName, opts) {
@@ -192,7 +192,7 @@ function handleStructVariant(
   const rawFields = getRawVariantFields(metadata, typeId, variantName);
 
   for (const [fieldName, typeDef] of Object.entries(variant.value)) {
-    const { typeId: originalTypeId /*typeName: originalTypeName*/ } =
+    const { typeId: originalTypeId, typeName: originalTypeName } =
       getOriginalFieldTypeId(
         { def: { value: rawFields } },
         fieldName,
@@ -203,7 +203,7 @@ function handleStructVariant(
       variantValue[fieldName],
       lookup,
       originalTypeId,
-      null, //originalTypeName,
+      normalizeOriginalTypeName(originalTypeName),
       normalizeFieldName(fieldName),
       metadata,
     );
@@ -358,14 +358,14 @@ function toTypedStruct(
   const rawMetadata = getRawMetadata(metadata, typeId);
 
   for (const [fName, typeDef] of Object.entries(lookupEntry.value)) {
-    const { typeId: originalTypeId /*typeName: originalTypeName*/ } =
+    const { typeId: originalTypeId, typeName: originalTypeName } =
       getOriginalFieldTypeId(rawMetadata, fName, typeDef.id);
 
     const child = toTypedCallTree(
       value ? value[fName] : undefined,
       lookup,
       originalTypeId,
-      null, //originalTypeName,
+      normalizeOriginalTypeName(originalTypeName),
       normalizeFieldName(fName),
       metadata,
     );
@@ -437,8 +437,9 @@ function toTypedPrimitive(
   metadata,
   lookupEntry,
   typeName,
+  originalTypeName,
 ) {
-  return makeNode(typeName, {
+  return makeNode(originalTypeName || typeName, {
     name: fieldName,
     rawType: lookupEntry.type,
     value: valueToJson(value),
@@ -508,6 +509,7 @@ function dispatchByType(
   fieldName,
   metadata,
   typeName,
+  originalTypeName,
 ) {
   const handlers = {
     enum: toTypedEnum,
@@ -535,6 +537,7 @@ function dispatchByType(
         metadata,
         lookupEntry,
         typeName,
+        originalTypeName,
       );
     }
     if (
@@ -549,6 +552,7 @@ function dispatchByType(
         metadata,
         lookupEntry,
         typeName,
+        originalTypeName,
       );
     }
 
@@ -572,6 +576,7 @@ function dispatchByType(
     metadata,
     lookupEntry,
     typeName,
+    originalTypeName,
   );
 }
 
@@ -579,7 +584,7 @@ export function toTypedCallTree(
   value,
   lookup,
   typeId,
-  typeName = null,
+  originalTypeName = null,
   fieldName = null,
   metadata = null,
 ) {
@@ -590,9 +595,7 @@ export function toTypedCallTree(
     value: transformedValue,
   } = resolveLookupEntry(typeId, metadata, value, lookup);
 
-  if (typeName === null) {
-    typeName = getTypeName(lookupEntry, metadata, resolvedTypeId);
-  }
+  const typeName = getTypeName(lookupEntry, metadata, resolvedTypeId);
   if (isNil(transformedValue)) {
     return handleNullValue(typeName, fieldName, lookupEntry.type);
   }
@@ -605,6 +608,7 @@ export function toTypedCallTree(
     fieldName,
     metadata,
     typeName,
+    originalTypeName,
   );
 }
 

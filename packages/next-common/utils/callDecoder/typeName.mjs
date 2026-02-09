@@ -127,11 +127,21 @@ export function getTypeName(lookupEntry, metadata, typeId) {
   // primitives / others
   if (type === "primitive") return lookupEntry.value;
   if (type === "void") return "()";
-  if (type === "bitSequence") return "BitSequence";
-  if (type === "AccountId32") return "AccountId32";
-  if (type === "AccountId20") return "AccountId20";
+  // if (type === "bitSequence") return "BitSequence";
+  // if (type === "AccountId32") return "AccountId32";
+  // if (type === "AccountId20") return "AccountId20";
 
   return type;
+}
+
+export function normalizeOriginalTypeName(originalTypeName) {
+  if (!originalTypeName) {
+    return null;
+  }
+  if ([/^BalanceOf<.*>$/].some((regex) => regex.test(originalTypeName))) {
+    return "BalanceOf";
+  }
+  return null;
 }
 
 export default { getTypeName };
