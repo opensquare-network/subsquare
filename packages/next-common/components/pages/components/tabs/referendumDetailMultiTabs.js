@@ -46,6 +46,7 @@ export default function ReferendumDetailMultiTabs() {
   const info = useReferendumInfo();
   const onchainData = useOnchainData();
   const proposal = onchainData?.proposal ?? {};
+  const proposalIndexer = proposal?.indexer || onchainData?.indexer;
   const referendumDetailForOGTrack = useOgTrackerReferendumDetail();
   const { component: timeLineTabSwitchComponent, isCompact } =
     useTimelineTabSwitch();
@@ -63,7 +64,7 @@ export default function ReferendumDetailMultiTabs() {
               content: (
                 <MigrationConditionalApiProvider indexer={indexer}>
                   <PapiProvider>
-                    <MigrationConditionalPapiProvider>
+                    <MigrationConditionalPapiProvider indexer={proposalIndexer}>
                       <PapiCallTreeProvider>
                         <ReferendumCallProvider>
                           <Gov2ReferendumCall />
@@ -146,6 +147,7 @@ export default function ReferendumDetailMultiTabs() {
     const [defaultTab] = tabs;
     return { tabs, activeTabValue: router.query.tab || defaultTab.value };
   }, [
+    proposalIndexer,
     proposal?.call,
     indexer,
     info,

@@ -8,17 +8,10 @@ import {
 } from "next-common/utils/callDecoder/decoder.mjs";
 import { useConditionalContextPapi } from "../migration/conditionalPapi";
 
-async function fetchPreimage(papi, preimageHash, blockHash) {
+async function fetchPreimage(papi, preimageHash) {
   const [statusFor, requestStatusFor] = await Promise.allSettled([
-    papi.query.Preimage.StatusFor.getValue(Binary.fromHex(preimageHash), {
-      at: blockHash,
-    }),
-    papi.query.Preimage.RequestStatusFor.getValue(
-      Binary.fromHex(preimageHash),
-      {
-        at: blockHash,
-      },
-    ),
+    papi.query.Preimage.StatusFor.getValue(Binary.fromHex(preimageHash)),
+    papi.query.Preimage.RequestStatusFor.getValue(Binary.fromHex(preimageHash)),
   ]);
 
   if (!statusFor?.value && !requestStatusFor?.value) {
@@ -31,12 +24,10 @@ async function fetchPreimage(papi, preimageHash, blockHash) {
     statusFor?.value?.value?.len;
 
   try {
-    return await papi.query.Preimage.PreimageFor.getValue(
-      [Binary.fromHex(preimageHash), preimageLen],
-      {
-        at: blockHash,
-      },
-    );
+    return await papi.query.Preimage.PreimageFor.getValue([
+      Binary.fromHex(preimageHash),
+      preimageLen,
+    ]);
   } catch (e) {
     console.error("Error fetching preimage:", e);
     return null;
@@ -44,7 +35,7 @@ async function fetchPreimage(papi, preimageHash, blockHash) {
 }
 
 async function getPreimageCall(client, papi, preimageHash, blockHash) {
-  const preimage = await fetchPreimage(papi, preimageHash, blockHash);
+  const preimage = await fetchPreimage(papi, preimageHash);
   if (!preimage) {
     return null;
   }
