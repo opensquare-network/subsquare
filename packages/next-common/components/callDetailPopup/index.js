@@ -13,7 +13,7 @@ const JsonView = dynamic(() => import("next-common/components/jsonView"), {
 });
 
 function CallTreeOnReferendum() {
-  const { call, isLoading } = useContext(RawCallContext);
+  const { call, isLoading } = useContext(RawCallContext) || {};
   return <CallTree call={call} isLoading={isLoading} />;
 }
 

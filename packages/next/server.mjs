@@ -8,7 +8,11 @@ const projectDir = process.cwd();
 nextEnv.loadEnvConfig(projectDir);
 
 const dev = process.env.NODE_ENV !== "production";
-const app = next({ dev });
+const app = next({
+  dev,
+  webpack: true,
+  turbopack: false,
+});
 const nextHandler = app.getRequestHandler();
 
 const PORT = parseInt(process.env.PORT, 10);
