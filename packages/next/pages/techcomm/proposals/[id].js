@@ -19,6 +19,7 @@ import useTechcommPallet from "next-common/hooks/techcomm/useTechcommPallet";
 function TechCommMotionContent() {
   const motion = usePost();
 
+  // eslint-disable-next-line react-hooks/immutability
   motion.status = motion.state?.state;
 
   return (

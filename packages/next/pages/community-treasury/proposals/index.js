@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import CommunityTreasuryProposalsPostList from "next-common/components/postList/communityTreasuryProposalsPostList";
 import { withCommonProps } from "next-common/lib";
 import TreasurySummary from "next-common/components/summary/treasurySummary";
@@ -13,10 +12,7 @@ import {
 } from "next-common/context/treasury";
 import NewTreasuryProposal from "next-common/components/treasury/proposal/newTreasuryProposal";
 
-export default function ProposalsPage({ proposals: ssrProposals, chain }) {
-  const [proposals, setProposals] = useState(ssrProposals);
-  useEffect(() => setProposals(ssrProposals), [ssrProposals]);
-
+export default function ProposalsPage({ proposals, chain }) {
   const { showNewTreasuryProposalButton } = useChainSettings();
 
   const items = (proposals.items || []).map((item) =>

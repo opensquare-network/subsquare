@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import TreasuryProposalsPostList, {
   NewTreasuryProposalButton,
 } from "next-common/components/postList/treasuryProposalsPostList";
@@ -15,9 +14,7 @@ import {
 import businessCategory from "next-common/utils/consts/business/category";
 import TreasuryProposalsSummary from "next-common/components/summary/treasuryProposalsSummary";
 
-export default function ProposalsPage({ proposals: ssrProposals, chain }) {
-  const [proposals, setProposals] = useState(ssrProposals);
-  useEffect(() => setProposals(ssrProposals), [ssrProposals]);
+export default function ProposalsPage({ proposals, chain }) {
   const { integrations } = useChainSettings();
 
   const items = (proposals.items || []).map((item) =>
