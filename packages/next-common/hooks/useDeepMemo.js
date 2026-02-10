@@ -1,5 +1,4 @@
- 
-
+/* eslint-disable react-hooks/refs */
 import { useRef } from "react";
 import { isEqual } from "lodash-es";
 

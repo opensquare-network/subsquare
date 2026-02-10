@@ -2,7 +2,7 @@ import useReferendumCurveData from "next-common/utils/hooks/referenda/detail/use
 import { Line } from "react-chartjs-2";
 import hoverLinePlugin from "next-common/components/charts/plugins/hoverLine";
 import { useWindowWidthContext } from "next-common/context/windowSize";
-import { useRef } from "react";
+import { useCallback, useRef, useState } from "react";
 import CustomXTickLabels from "./curveChartCustomXTickLabels";
 import ApprovalBubbleArea from "./approvalBubbleArea";
 import { useChartTooltipPlugin } from "./curveChartTooltip";
@@ -18,7 +18,12 @@ export default function ReferendaCurveChart({ showVoter, showAyeNay }) {
   useFetchReferendaTallyHistory(referendumIndex);
 
   const width = useWindowWidthContext();
-  const chartRef = useRef();
+  const [chartInstance, setChartInstance] = useState(null);
+  const chartRef = useCallback((node) => {
+    if (node) {
+      setChartInstance(node);
+    }
+  }, []);
   const chartWrapper = useRef();
   const { labels, supportData, approvalData, totalHours } =
     useReferendumCurveData();
@@ -27,7 +32,7 @@ export default function ReferendaCurveChart({ showVoter, showAyeNay }) {
     rangeData,
     ranging,
     component: slider,
-  } = useSlider(chartRef.current?.chartArea, showAyeNay, totalHours);
+  } = useSlider(chartInstance?.chartArea, showAyeNay, totalHours);
 
   const rangeLabel = labels.slice(rangeData[0], rangeData[1]);
 
@@ -68,7 +73,7 @@ export default function ReferendaCurveChart({ showVoter, showAyeNay }) {
             rangeData={rangeData}
             visible={showVoter && !ranging}
             showAyeNay={showAyeNay}
-            chartArea={chartRef.current?.chartArea}
+            chartArea={chartInstance?.chartArea}
             historyApprovalData={historyApprovalData}
           />
           {tooltip}
@@ -76,7 +81,7 @@ export default function ReferendaCurveChart({ showVoter, showAyeNay }) {
         <CustomXTickLabels
           rangeData={rangeData}
           showAyeNay={showAyeNay}
-          chartArea={chartRef.current?.chartArea}
+          chartArea={chartInstance?.chartArea}
         />
         {slider}
       </div>

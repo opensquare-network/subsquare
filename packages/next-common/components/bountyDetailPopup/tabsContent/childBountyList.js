@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect, useCallback } from "react";
 import useChildBountiesWithPage from "next-common/hooks/useChildBountiesWithPage";
 import DataList from "next-common/components/dataList";
 import Pagination from "next-common/components/pagination";
@@ -29,6 +29,11 @@ function ChildBountyList({ childBounties, bountyIndex, className = "" }) {
     fetchChildBountiesWithPage(page, pageSize);
   }, [page]);
 
+  const onPageChange = useCallback((e, target) => {
+    e.preventDefault();
+    setPage(target);
+  }, []);
+
   const pagination = useMemo(
     () => ({
       page,
@@ -36,13 +41,8 @@ function ChildBountyList({ childBounties, bountyIndex, className = "" }) {
       total: total ?? 0,
       onPageChange,
     }),
-    [page, total],
+    [page, total, onPageChange],
   );
-
-  function onPageChange(e, target) {
-    e.preventDefault();
-    setPage(target);
-  }
 
   const columns = [
     {
