@@ -3,7 +3,7 @@ import { balanceTypes } from "next-common/components/democracy/metadata/normaliz
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
-import { hexToString } from "@polkadot/util";
+import { hexToString } from "viem";
 import { hexIsValidUTF8 } from "next-common/utils/utf8validate";
 import Copyable from "../copyable";
 import CallsPanel from "./callsPanel";
@@ -24,6 +24,13 @@ const LongText = dynamic(() => import("next-common/components/longText"), {
   ssr: false,
 });
 
+export function safeHexToString(hex) {
+  if (!hex.startsWith("0x")) {
+    hex = "0x" + hex;
+  }
+  return hexToString(hex);
+}
+
 // const accountTypes = ["MultiAddress", "AccountId32"];
 const hashTypes = ["H256", "[u8;32]"];
 
@@ -38,7 +45,9 @@ function TextValue({ val }) {
 function HexValue({ hex }) {
   if (hexIsValidUTF8(hex)) {
     return (
-      <span className="break-all whitespace-pre-wrap">{hexToString(hex)}</span>
+      <span className="break-all whitespace-pre-wrap">
+        {safeHexToString(hex)}
+      </span>
     );
   }
   return (
