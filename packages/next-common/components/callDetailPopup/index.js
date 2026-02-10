@@ -35,7 +35,7 @@ function PapiCallTreeOnReferendum() {
 }
 
 function CallTreeOnReferendum() {
-  const rawCallCtx = useContext(RawCallContext);
+  const rawCallCtx = useContext(RawCallContext) || {};
   const papiCallCtx = usePapiCallTree();
   if (papiCallCtx) {
     return <PapiCallTreeOnReferendum />;
