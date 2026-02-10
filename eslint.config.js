@@ -45,12 +45,10 @@ module.exports = [
       ...osnConfig.rules,
       "@next/next/no-img-element": "off",
       "no-unused-vars": ["error", { argsIgnorePattern: "(^_|^req|^context)" }],
-      "react-hooks/exhaustive-deps": "error",
     },
   },
   ...scopeToFiles(
     compat.extends(
-      "eslint:recommended",
       "plugin:react/recommended",
       "plugin:react-hooks/recommended",
     ),
@@ -60,10 +58,7 @@ module.exports = [
     files: nextCommonFiles,
     rules: {
       ...osnConfig.rules,
-      "react/react-in-jsx-scope": "off",
-      "react/jsx-uses-react": "error",
       "react/prop-types": "off",
-      "react-hooks/exhaustive-deps": "error",
     },
     settings: {
       react: {
