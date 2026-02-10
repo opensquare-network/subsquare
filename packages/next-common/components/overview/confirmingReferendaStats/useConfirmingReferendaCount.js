@@ -13,7 +13,7 @@ export default function useConfirmingReferendaCount() {
       const resp = await backendApi.fetch(gov2ReferendumsSummaryApi);
 
       return resp?.result || {};
-    } catch (error) {
+    } catch {
       return null;
     } finally {
       setLoading(false);

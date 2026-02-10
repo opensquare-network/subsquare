@@ -50,6 +50,7 @@ export function TokenSymbol({ type, assetId, symbol }) {
 
   return (
     <div className="flex gap-[8px] items-center text14Medium text-textPrimary">
+      {/* eslint-disable-next-line react-hooks/static-components */}
       <AssetIcon width={24} height={24} />{" "}
       <AssetLink assetId={assetId}>{symbol}</AssetLink>
     </div>

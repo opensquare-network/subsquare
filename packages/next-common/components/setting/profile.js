@@ -105,6 +105,7 @@ function ProfileAvatar({ address }) {
         <div className="flex justify-center">
           <div className="inline-flex relative">
             {imageDataUrl || user?.avatarCid ? (
+              /* eslint-disable-next-line */
               <img
                 className="rounded-full w-[80px] h-[80px] border border-neutral400"
                 src={imageDataUrl || getIpfsLink(user.avatarCid)}

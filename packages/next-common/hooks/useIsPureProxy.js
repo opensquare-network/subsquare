@@ -32,7 +32,7 @@ export default function useIsPureProxy(address) {
     try {
       const { result } = await backendApi.fetch(`/proxies/pure/${address}`);
       return !!result;
-    } catch (error) {
+    } catch {
       return false;
     }
   }, [address, isRelativesApiAvailable]);

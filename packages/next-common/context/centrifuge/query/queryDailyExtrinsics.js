@@ -9,7 +9,7 @@ export default async function queryDailyExtrinsics() {
     });
 
     return data?.dailyExtrinsics;
-  } catch (e) {
+  } catch {
     return null;
   }
 }

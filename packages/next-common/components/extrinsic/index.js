@@ -103,7 +103,7 @@ export default function Extrinsic({
         isValid: true,
         data: tx,
       });
-    } catch (e) {
+    } catch {
       setValue({
         isValid: false,
         data: undefined,

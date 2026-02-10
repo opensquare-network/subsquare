@@ -21,7 +21,7 @@ export function useBondedPools() {
           return {
             poolId,
             ...rest,
-            roles: [roles] || [],
+            roles: (roles && [roles]) || [],
           };
         });
         setPools(normalizedPools);

@@ -16,6 +16,7 @@ import dayjs from "dayjs";
 import IconButton from "next-common/components/iconButton";
 import Select from "next-common/components/select";
 import NumberInput from "next-common/lib/input/number";
+import useNow from "next-common/hooks/useNow";
 
 const PROMPT_WIKI_LINK =
   "https://wiki.polkadot.network/docs/learn-guides-treasury#specifying-validfrom-optional";
@@ -93,8 +94,9 @@ function DateModeInput({ value, setValue }) {
     [blockTime, latestHeight, setValue],
   );
 
+  const now = useNow();
   const date = value
-    ? new Date(Date.now() + (parseInt(value) - latestHeight) * blockTime)
+    ? new Date(now + (parseInt(value) - latestHeight) * blockTime)
     : null;
 
   return (

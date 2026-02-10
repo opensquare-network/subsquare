@@ -12,7 +12,7 @@ export default function useCoretimeCurrentSale() {
       const result = await queryCoretimeCurrentSale();
 
       return result;
-    } catch (error) {
+    } catch {
       return null;
     } finally {
       setLoading(false);

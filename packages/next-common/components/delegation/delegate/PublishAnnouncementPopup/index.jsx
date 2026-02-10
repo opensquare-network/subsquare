@@ -29,7 +29,7 @@ function PopupContent({ onClose, myDelegation, proxyAddress }) {
   const signerAccount = useSignerAccount();
 
   const tab = useModuleTab();
-  const module = tab === Referenda ? "referenda" : "democracy";
+  const moduleName = tab === Referenda ? "referenda" : "democracy";
 
   useEffect(() => {
     if (!myDelegation) {
@@ -49,12 +49,12 @@ function PopupContent({ onClose, myDelegation, proxyAddress }) {
   }, [myDelegation]);
 
   const triggerUpdate = useCallback(() => {
-    if (module === "referenda") {
+    if (moduleName === "referenda") {
       dispatch(setReferendaDelegatesTriggerUpdate());
-    } else if (module === "democracy") {
+    } else if (moduleName === "democracy") {
       dispatch(setDemocracyDelegatesTriggerUpdate());
     }
-  }, [dispatch, module]);
+  }, [dispatch, moduleName]);
 
   const handleSubmit = useCallback(async () => {
     if (!shortDescription) {

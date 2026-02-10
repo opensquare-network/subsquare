@@ -107,7 +107,7 @@ export function createResult(interimResult, optBytes) {
         // for the old style, we set the actual length
         proposalLength = new BN(callLength);
       }
-    } catch (error) {
+    } catch {
       // console.error(error);
 
       proposalError = "Unable to decode preimage bytes into a valid Call";

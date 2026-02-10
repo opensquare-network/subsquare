@@ -202,6 +202,16 @@ function StatisticsImpl({
       return prev.x === next.x && prev.y === next.y ? prev : next;
     });
 
+    function onextEquals(a, b) {
+      if (!a || !b) return false;
+      return (
+        a.source === b.source &&
+        a.blockHeight === b.blockHeight &&
+        a.price === b.price &&
+        a.who === b.who
+      );
+    }
+
     setTooltipData((prev) => {
       const next = {
         source: dataPoint.dataset.source,
@@ -212,16 +222,6 @@ function StatisticsImpl({
       return onextEquals(prev, next) ? prev : next;
     });
   }, []);
-
-  function onextEquals(a, b) {
-    if (!a || !b) return false;
-    return (
-      a.source === b.source &&
-      a.blockHeight === b.blockHeight &&
-      a.price === b.price &&
-      a.who === b.who
-    );
-  }
 
   /** @type {import("chart.js").ChartOptions} */
   const options = useMemo(() => {

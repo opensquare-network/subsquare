@@ -1,5 +1,4 @@
 export default function compareRationals(n1, d1, n2, d2) {
-  // eslint-disable-next-line
   while (true) {
     const q1 = n1.div(d1);
     const q2 = n2.div(d2);

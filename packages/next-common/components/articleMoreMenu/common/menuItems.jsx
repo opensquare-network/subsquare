@@ -62,7 +62,7 @@ export function CopyMenuItem({ onCopy = noop }) {
       onClick={() => {
         try {
           onCopy();
-        } catch (e) {
+        } catch {
           // fixme: we should not ignore
         } finally {
           setCopyState(true);

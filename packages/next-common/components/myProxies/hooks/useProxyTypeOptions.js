@@ -19,7 +19,7 @@ export function useProxyTypeOptions() {
       );
 
       setOptions(proxyTypes);
-    } catch (err) {
+    } catch {
       setOptions([]);
     } finally {
       setIsLoading(false);

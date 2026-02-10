@@ -36,7 +36,7 @@ export function useNavSubmenuVisible() {
 function NavCollapsedProvider({ children, value }) {
   try {
     value = JSON.parse(value);
-  } catch (_) {
+  } catch {
     /* empty */
   }
   const [navCollapsed, setNavCollapsed] = useCookieValue(

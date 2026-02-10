@@ -37,6 +37,7 @@ function TrackPanel({ className = "" }) {
         isOnlyOthersCategory(categorizedTracks, otherCategoryMaxCount))
     ) {
       categorizedTracks.others = Object.values(categorizedTracks || {}).flat();
+      //eslint-disable-next-line react-hooks/set-state-in-render
       setIsOthersExceeding(true);
     }
 
@@ -44,6 +45,7 @@ function TrackPanel({ className = "" }) {
       ![Chains.collectives].includes(chain) &&
       listPageType === listPageCategory.FELLOWSHIP_REFERENDA
     ) {
+      //eslint-disable-next-line react-hooks/set-state-in-render
       setIsOthersExceeding(true);
       return flattenKusamaFellowshipReferenda(
         listPageType,

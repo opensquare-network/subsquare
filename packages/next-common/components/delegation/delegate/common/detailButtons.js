@@ -26,15 +26,15 @@ function RevokeContent({ address }) {
   const signerAccount = useSignerAccount();
   const signMessage = useSignMessage();
   const tab = useModuleTab();
-  const module = tab === Referenda ? "referenda" : "democracy";
+  const moduleName = tab === Referenda ? "referenda" : "democracy";
 
   const triggerUpdate = useCallback(() => {
-    if (module === "referenda") {
+    if (moduleName === "referenda") {
       dispatch(setReferendaDelegatesTriggerUpdate());
-    } else if (module === "democracy") {
+    } else if (moduleName === "democracy") {
       dispatch(setDemocracyDelegatesTriggerUpdate());
     }
-  }, [dispatch, module]);
+  }, [dispatch, moduleName]);
 
   const revokeAnnouncement = useCallback(async () => {
     const proxyAddress = !isSameAddress(address, signerAccount.address)

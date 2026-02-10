@@ -25,17 +25,19 @@ export default function VotingHistorySummary() {
   const { id } = usePageProps();
   const [data, setData] = useState({});
   const { useVoteCall } = useChainSettings();
-  const module = useModuleName();
+  const moduleName = useModuleName();
   const availableTabs = useAvailableModuleTabs();
   const isFellowship = useIsFellowship();
 
   useEffect(() => {
-    backendApi.fetch(`users/${id}/${module}/vote-stats`).then(({ result }) => {
-      if (result) {
-        setData(result);
-      }
-    });
-  }, [id, module]);
+    backendApi
+      .fetch(`users/${id}/${moduleName}/vote-stats`)
+      .then(({ result }) => {
+        if (result) {
+          setData(result);
+        }
+      });
+  }, [id, moduleName]);
 
   return (
     <>

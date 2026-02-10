@@ -176,6 +176,7 @@ function Uploader({ disabled = false, imageCid, onSetImageCid = () => {} }) {
             {currentBanner ? (
               <BannerPreview disabled={disabled}>
                 <div />
+                {/* eslint-disable-next-line */}
                 <img src={getBannerUrl(currentBanner)} />
                 <RemoveBannerButton role="button" onClick={handleRemoveBanner}>
                   <DeleteIcon />

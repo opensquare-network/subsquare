@@ -55,18 +55,16 @@ export function flattenKusamaFellowshipReferenda(
   listPageCategory,
   tracks,
 ) {
-  return (
-    {
-      others: [
-        ...tracks.map(({ id, name, activeCount }) => ({
-          id,
-          name: startCase(name),
-          activeCount,
-          path: combinePathWithId(listPageType, listPageCategory, id),
-        })),
-      ],
-    } ?? {}
-  );
+  return {
+    others: [
+      ...tracks.map(({ id, name, activeCount }) => ({
+        id,
+        name: startCase(name),
+        activeCount,
+        path: combinePathWithId(listPageType, listPageCategory, id),
+      })),
+    ],
+  };
 }
 
 export function getCategorizedTracks(listPageType, listPageCategory, tracks) {

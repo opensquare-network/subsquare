@@ -107,7 +107,7 @@ function Content() {
     let digest;
     try {
       digest = CID.parse(cid).toV0().multihash.digest;
-    } catch (e) {
+    } catch {
       dispatch(newErrorToast("Failed to parse CID digest"));
       return;
     }

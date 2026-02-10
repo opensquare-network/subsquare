@@ -43,7 +43,7 @@ export function RoleTabsImpl({
         ),
       },
     ];
-  }, [activeTabValue, formattedDelegates, cohort]);
+  }, [activeTabValue, formattedDelegates, cohort, Component]);
 
   return (
     <Tabs

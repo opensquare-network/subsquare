@@ -49,7 +49,7 @@ export default function StatisticsMembershipSummary({ members = [] }) {
       try {
         const resp = await backendApi.fetch(membershipApi);
         return resp?.result || {};
-      } catch (error) {
+      } catch {
         return {};
       }
     }, []);

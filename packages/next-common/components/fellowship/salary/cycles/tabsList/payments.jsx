@@ -23,6 +23,7 @@ export function useFellowshipSalaryCyclePaymentsTabItem() {
   const rankColumn = useFellowshipSalaryCycleRankColumn();
 
   const accountColumn = useFellowshipSalaryCycleAccountColumn();
+  // eslint-disable-next-line react-hooks/immutability
   accountColumn.width = 212;
 
   const beneficiaryColumn = useFellowshipSalaryCycleBeneficiaryColumn();
@@ -30,6 +31,7 @@ export function useFellowshipSalaryCyclePaymentsTabItem() {
   const timeAgeColumn = useFellowshipSalaryCycleTimeAgeColumn();
 
   const yearlySalaryColumn = useFellowshipSalaryCycleYearlySalaryColumn();
+  // eslint-disable-next-line react-hooks/immutability
   yearlySalaryColumn.className = "text-right";
 
   const paidColumn = useFellowshipSalaryCyclePaidColumn();

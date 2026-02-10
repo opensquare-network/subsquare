@@ -41,7 +41,6 @@ export function useSubScanHeightStream({
           throw new Error("Reader is null");
         }
 
-        // eslint-disable-next-line no-constant-condition
         while (true) {
           if (controller.signal.aborted) {
             break;

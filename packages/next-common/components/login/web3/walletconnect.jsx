@@ -101,19 +101,12 @@ export default function LoginWeb3WalletConnect() {
         <div className="rounded-xl border border-neutral300 overflow-hidden p-4">
           <div className="" style={{ width: SIZE, height: SIZE }}>
             {qrCode ? (
+              /* eslint-disable-next-line */
               <img src={qrCode} alt="qrcode" />
             ) : (
               <Skeleton className="w-full h-full rounded-lg" />
             )}
           </div>
-
-          {/* <div className="mt-4 inline-flex items-center gap-x-1">
-            <span className="text12Medium text-textTertiary">
-              Recommend Use
-            </span>
-            <WalletSubwallet className="inline-block" />
-            <span className="text14Bold text-textPrimary">SubWallet</span>
-          </div> */}
         </div>
       </div>
     </div>

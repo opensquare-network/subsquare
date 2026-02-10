@@ -22,6 +22,7 @@ const ignores = [
   "**/.next/**",
   "**/.turbo/**",
   "**/dist/**",
+  "**/.yalc/**",
 ];
 
 const withFiles = (configs, files) =>
@@ -60,6 +61,7 @@ module.exports = [
       "react-hooks/preserve-manual-memoization": "off",
       "react-hooks/set-state-in-effect": "off",
       "react/react-in-jsx-scope": "off",
+      "import/no-anonymous-default-export": "off",
     },
     ignores,
   },
@@ -80,6 +82,7 @@ module.exports = [
       "react-hooks/set-state-in-effect": "off",
       "react/prop-types": "off",
       "react/react-in-jsx-scope": "off",
+      "import/no-anonymous-default-export": "off",
     },
     settings: {
       react: {

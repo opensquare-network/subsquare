@@ -261,7 +261,7 @@ export async function calculateAllErasRewardsBatch(api, nominatorAddress) {
           overview.unwrap().toJSON(),
           claimedPages,
         );
-      } catch (error) {
+      } catch {
         return null;
       }
     });

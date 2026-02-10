@@ -32,7 +32,6 @@ const Text = styled.div`
 function CheckBox({ disabled, checked, setChecked, setAgreeError }) {
   return (
     <span
-      role="checkbox"
       className="mr-2"
       onClick={() => {
         if (disabled) {

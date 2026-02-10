@@ -24,7 +24,7 @@ function getAllCachedProperties(api) {
     if (data) {
       allProperties = JSON.parse(data);
     }
-  } catch (e) {
+  } catch {
     // Ignore
   }
   return allProperties;
