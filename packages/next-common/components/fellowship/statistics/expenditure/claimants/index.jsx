@@ -60,7 +60,7 @@ function StatisticsClaimantsTable({ members = [] }) {
         pageSize: defaultPageSize,
       });
       return resp?.result || [];
-    } catch (error) {
+    } catch {
       setTableLoading(false);
       return [];
     }

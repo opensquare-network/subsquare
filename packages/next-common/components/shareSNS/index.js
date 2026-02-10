@@ -90,7 +90,7 @@ export default function Share() {
             onClick={() => {
               try {
                 copy(window.location.href);
-              } catch (e) {
+              } catch {
                 // fixme: ignore
               } finally {
                 setCopyState(true);

@@ -5,7 +5,6 @@ import { getDemocracyTimelineData } from "utils/timeline/democracyUtil";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import SymbolBalance from "next-common/components/values/symbolBalance";
 import formatTime from "next-common/utils/viewfuncs/formatDate";
-import { useEffect, useState } from "react";
 import AddressUser from "next-common/components/user/addressUser";
 import { useIsTimelineCompact } from "next-common/components/detail/detailMultiTabs/timelineModeTabs";
 
@@ -25,8 +24,7 @@ export default function TreasuryProposalTimeline({ treasuryProposal }) {
     return args;
   };
 
-  const [timelineData, setTimelineData] = useState([]);
-  useEffect(() => {
+  const timelineData = useMemo(() => {
     const data = (treasuryProposal?.timeline || []).map((item) => {
       const indexer = item.extrinsicIndexer ?? item.indexer;
       return {
@@ -71,7 +69,7 @@ export default function TreasuryProposalTimeline({ treasuryProposal }) {
         ];
       }) ?? [];
 
-    setTimelineData(sortTimeline([...data, ...publicProposalTimelines]));
+    return sortTimeline([...data, ...publicProposalTimelines]);
   }, [treasuryProposal]);
 
   const isTimelineCompact = useIsTimelineCompact();

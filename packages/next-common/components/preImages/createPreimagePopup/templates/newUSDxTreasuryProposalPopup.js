@@ -83,7 +83,7 @@ export function useUSDxTreasuryNotePreimageTx(
     let bnValue;
     try {
       bnValue = checkInputValue(inputBalance, asset.decimals);
-    } catch (err) {
+    } catch {
       return {};
     }
 

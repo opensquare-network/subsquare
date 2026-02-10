@@ -62,7 +62,7 @@ export function checkIfShouldConvertToEvmAddress(address) {
     ) {
       return true;
     }
-  } catch (e) {
+  } catch {
     // ignore
   }
 

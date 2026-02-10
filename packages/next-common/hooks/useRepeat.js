@@ -1,23 +1,29 @@
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 
 export default function useRepeat(callback, { delay = 0, isStop = false }) {
-  const repeatCallback = useCallback(
-    async (state) => {
-      if (state.stop) {
+  useEffect(() => {
+    if (isStop) return;
+
+    let stopped = false;
+    let timeoutId;
+
+    const run = async () => {
+      if (stopped) {
         return;
       }
       await callback();
-      return setTimeout(() => repeatCallback(state), delay);
-    },
-    [callback, delay],
-  );
-
-  useEffect(() => {
-    if (isStop) return;
-    const state = { stop: false };
-    repeatCallback(state);
-    return () => {
-      state.stop = true;
+      if (!stopped) {
+        timeoutId = setTimeout(run, delay);
+      }
     };
-  }, [isStop, repeatCallback]);
+
+    run();
+
+    return () => {
+      stopped = true;
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [callback, delay, isStop]);
 }

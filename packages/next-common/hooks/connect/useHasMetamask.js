@@ -25,7 +25,7 @@ export function useHasMetamask() {
     return some(ethereum?.providers, (provider) => {
       try {
         return KEY in provider && provider?.[KEY];
-      } catch (error) {
+      } catch {
         return false;
       }
     });

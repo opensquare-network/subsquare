@@ -26,7 +26,7 @@ export function useFellowshipCoreMembers() {
         const data = normalizeCoreCollectiveEntries(coreEntries);
 
         setResult(data);
-      } catch (e) {
+      } catch {
         // ignore
       }
     },

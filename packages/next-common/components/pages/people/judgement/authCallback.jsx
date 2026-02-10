@@ -15,7 +15,7 @@ function notifyOpener(payload) {
 
   try {
     window.opener?.postMessage(payload, window.location.origin);
-  } catch (e) {
+  } catch {
     // ignore
   }
 }
@@ -34,7 +34,7 @@ function useCloseCountdown(seconds, enabled) {
           clearInterval(timer);
           try {
             window.close();
-          } catch (e) {
+          } catch {
             // ignore
           }
           return 0;

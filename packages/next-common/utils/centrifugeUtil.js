@@ -56,7 +56,7 @@ export function checkIfShouldConvertToEvmAddress(address) {
     if (addressHex.endsWith(suffixBytes.toString("hex"))) {
       return true;
     }
-  } catch (e) {
+  } catch {
     // ignore
   }
 

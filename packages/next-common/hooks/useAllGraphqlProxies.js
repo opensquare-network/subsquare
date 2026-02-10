@@ -41,7 +41,7 @@ async function queryProxies() {
     });
 
     return data?.proxies;
-  } catch (e) {
+  } catch {
     return null;
   }
 }

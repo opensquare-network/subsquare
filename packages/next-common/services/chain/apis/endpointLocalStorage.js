@@ -5,7 +5,7 @@ export default function getEndpointFromLocalStorage(chain) {
   let localNodeUrl = null;
   try {
     localNodeUrl = safeLocalStorage.getItem(`nodeUrl-${chain}`);
-  } catch (e) {
+  } catch {
     // ignore parse error
   }
 

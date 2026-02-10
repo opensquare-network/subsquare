@@ -30,7 +30,7 @@ export function useTxBuilder(builder, deps = []) {
   const getTxFuncForFee = useCallback(() => {
     try {
       return buildTx({ showError: false });
-    } catch (error) {
+    } catch {
       return noop;
     }
   }, [buildTx]);

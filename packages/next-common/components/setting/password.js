@@ -30,6 +30,7 @@ export default function Password() {
       const res = await nextApi.post("user/changepassword", formData);
       if (res.result) {
         dispatch(newSuccessToast("Change password successfully!"));
+        // eslint-disable-next-line react-hooks/immutability
         reset();
       } else if (res.error) {
         setChangeErrors(res.error);

@@ -24,7 +24,7 @@ export function useLocalTreasuryNotePreimageTx(inputBalance, beneficiary) {
     let bnValue;
     try {
       bnValue = checkInputValue(inputBalance, decimals);
-    } catch (err) {
+    } catch {
       return {};
     }
 
@@ -32,7 +32,7 @@ export function useLocalTreasuryNotePreimageTx(inputBalance, beneficiary) {
       const spend = api.tx.treasury.spendLocal || api.tx.treasury.spend;
       const proposal = spend(bnValue.toFixed(), beneficiary);
       return getState(api, proposal);
-    } catch (e) {
+    } catch {
       return {};
     }
   }, [api, inputBalance, beneficiary, decimals]);

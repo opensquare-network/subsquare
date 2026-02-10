@@ -233,7 +233,7 @@ export function isSameAddress(addr1, addr2) {
 
   try {
     return encodeAddress(addr1, 42) === encodeAddress(addr2, 42);
-  } catch (e) {
+  } catch {
     return false;
   }
 }

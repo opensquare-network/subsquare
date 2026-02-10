@@ -9,7 +9,7 @@ export function getDispatchError(dispatchError) {
       const error = dispatchError.registry.findMetaError(mod);
 
       message = `${error.section}.${error.name}`;
-    } catch (error) {
+    } catch {
       // swallow
     }
   } else if (dispatchError.isToken) {

@@ -25,7 +25,7 @@ export async function queryProxies({ delegator = null, delegatee = null }) {
     });
 
     return data?.proxies;
-  } catch (e) {
+  } catch {
     return null;
   }
 }

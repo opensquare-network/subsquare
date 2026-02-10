@@ -11,7 +11,7 @@ async function getRpcTime(provider) {
   const startTime = Date.now();
   try {
     await provider.send("system_chain", []);
-  } catch (e) {
+  } catch {
     return "error";
   }
 

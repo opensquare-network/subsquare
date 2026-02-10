@@ -38,7 +38,7 @@ export function useFellowshipCollectiveMembers() {
         const data = normalizeRankedCollectiveEntries(collectiveEntries);
 
         setResult(data);
-      } catch (e) {
+      } catch {
         // ignore
       }
     },

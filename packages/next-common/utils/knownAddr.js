@@ -38,7 +38,7 @@ function createNumMatcher(prefix, name, add) {
             u8aToBn(u8a.subarray(test.length, minLength)),
           )}${add ? ` (${add})` : ""}`
         : null;
-    } catch (e) {
+    } catch {
       return null;
     }
   };

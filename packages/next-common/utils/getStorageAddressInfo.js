@@ -13,7 +13,7 @@ export default function getStorageAddressInfo(key) {
   let info;
   try {
     info = JSON.parse(data);
-  } catch (e) {
+  } catch {
     return;
   }
 

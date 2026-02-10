@@ -10,6 +10,7 @@ export default function TokenSymbolAsset({
   valueClassName,
   type = "",
 }) {
+   
   const NativeAssetIcon = useNativeTokenIcon();
 
   const TokenIcon = useMemo(() => {
@@ -18,6 +19,7 @@ export default function TokenSymbolAsset({
 
   return (
     <div className="flex items-center gap-x-2">
+      {/* eslint-disable-next-line react-hooks/static-components */}
       <TokenIcon symbol={symbol} className="w-4 h-4 flex-none" />
       <ValueDisplay
         value={amount}

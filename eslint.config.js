@@ -17,15 +17,23 @@ const nextAppFiles = [
 
 const nextCommonFiles = ["packages/next-common/**/*.{js,jsx}"];
 
-const scopeToFiles = (configs, files) =>
+const ignores = [
+  "**/node_modules/**",
+  "**/.next/**",
+  "**/.turbo/**",
+  "**/dist/**",
+];
+
+const withFiles = (configs, files) =>
   configs.map((config) => ({
     ...config,
     files,
+    ignores: Array.from(new Set([...(config.ignores || []), ...ignores])),
   }));
 
 module.exports = [
   {
-    ignores: ["**/node_modules/**", "**/.next/**", "**/dist/**"],
+    ignores,
   },
   {
     files: ["**/*.{js,jsx}"],
@@ -38,16 +46,25 @@ module.exports = [
       },
     },
   },
-  ...scopeToFiles([].concat(nextCoreWebVitals), nextAppFiles),
+  ...withFiles(
+    [].concat(nextCoreWebVitals),
+    nextAppFiles.concat(nextCommonFiles),
+  ),
   {
     files: nextAppFiles,
     rules: {
       ...osnConfig.rules,
       "@next/next/no-img-element": "off",
       "no-unused-vars": ["error", { argsIgnorePattern: "(^_|^req|^context)" }],
+      "react-hooks/refs": "off",
+      "react-hooks/preserve-manual-memoization": "off",
+      "react-hooks/set-state-in-effect": "off",
+      "react/react-in-jsx-scope": "off",
     },
+    ignores,
   },
-  ...scopeToFiles(
+  ...withFiles([eslintJs.configs.recommended], nextCommonFiles),
+  ...withFiles(
     compat.extends(
       "plugin:react/recommended",
       "plugin:react-hooks/recommended",
@@ -58,12 +75,17 @@ module.exports = [
     files: nextCommonFiles,
     rules: {
       ...osnConfig.rules,
+      "react-hooks/refs": "off",
+      "react-hooks/preserve-manual-memoization": "off",
+      "react-hooks/set-state-in-effect": "off",
       "react/prop-types": "off",
+      "react/react-in-jsx-scope": "off",
     },
     settings: {
       react: {
         version: "detect",
       },
     },
+    ignores,
   },
 ];

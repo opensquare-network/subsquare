@@ -9,7 +9,7 @@ export default async function queryBasicData() {
     });
 
     return data?.basicData;
-  } catch (e) {
+  } catch {
     return null;
   }
 }

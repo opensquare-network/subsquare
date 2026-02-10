@@ -23,14 +23,14 @@ export default function ResponsiveVotes() {
   );
   const width = useWindowWidthContext();
   const [showVoteDetail, setShowVoteDetail] = useState(null);
-  const module = useModuleName();
+  const moduleName = useModuleName();
   const isFellowship = useIsFellowship();
   const [voteFilter] = useCommittedFilterState();
   const { type: voteType } = voteFilter || {};
 
   useEffect(() => {
     setData();
-  }, [module]);
+  }, [moduleName]);
 
   const fetchData = useCallback(
     (page, pageSize) => {
@@ -45,14 +45,14 @@ export default function ResponsiveVotes() {
       }
 
       backendApi
-        .fetch(`users/${id}/${module}/votes`, query)
+        .fetch(`users/${id}/${moduleName}/votes`, query)
         .then(({ result }) => {
           if (result) {
             setData(result);
           }
         });
     },
-    [id, module, voteType],
+    [id, moduleName, voteType],
   );
 
   useEffect(() => {
