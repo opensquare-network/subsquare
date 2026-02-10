@@ -14,6 +14,9 @@ import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
 import { useReferendumTimelineData } from "next-common/hooks/pages/timelineData";
 import tabsTooltipContentMap from "./tabsTooltipContentMap";
 import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
+import { PapiProvider } from "next-common/context/papi";
+import PapiCallTreeProvider from "next-common/context/call/papiCallTree";
+import { MigrationConditionalPapiProvider } from "next-common/context/migration/conditionalPapi";
 
 const Gov2ReferendumCall = dynamicClientOnly(() =>
   import("next-common/components/gov2/referendum/call"),
@@ -43,6 +46,7 @@ export default function ReferendumDetailMultiTabs() {
   const info = useReferendumInfo();
   const onchainData = useOnchainData();
   const proposal = onchainData?.proposal ?? {};
+  const proposalIndexer = proposal?.indexer || onchainData?.indexer;
   const referendumDetailForOGTrack = useOgTrackerReferendumDetail();
   const { component: timeLineTabSwitchComponent, isCompact } =
     useTimelineTabSwitch();
@@ -59,9 +63,15 @@ export default function ReferendumDetailMultiTabs() {
               tooltip: tabsTooltipContentMap.call,
               content: (
                 <MigrationConditionalApiProvider indexer={indexer}>
-                  <ReferendumCallProvider>
-                    <Gov2ReferendumCall />
-                  </ReferendumCallProvider>
+                  <PapiProvider>
+                    <MigrationConditionalPapiProvider indexer={proposalIndexer}>
+                      <PapiCallTreeProvider>
+                        <ReferendumCallProvider>
+                          <Gov2ReferendumCall />
+                        </ReferendumCallProvider>
+                      </PapiCallTreeProvider>
+                    </MigrationConditionalPapiProvider>
+                  </PapiProvider>
                 </MigrationConditionalApiProvider>
               ),
             },
@@ -137,6 +147,7 @@ export default function ReferendumDetailMultiTabs() {
     const [defaultTab] = tabs;
     return { tabs, activeTabValue: router.query.tab || defaultTab.value };
   }, [
+    proposalIndexer,
     proposal?.call,
     indexer,
     info,

@@ -7,13 +7,40 @@ import dynamic from "next/dynamic";
 import { useContext, useMemo } from "react";
 import { useLocalStorage } from "react-use";
 import { RawCallContext } from "next-common/context/call/raw";
+import PapiCallTreeView from "../papiCallTreeView";
+import Loading from "../loading";
+import { usePapiCallTree } from "next-common/context/call/papiCallTree";
 
 const JsonView = dynamic(() => import("next-common/components/jsonView"), {
   ssr: false,
 });
 
+function PapiCallTreeOnReferendum() {
+  const { callTreeData, isLoading } = usePapiCallTree();
+  if (isLoading) {
+    return (
+      <div className="flex justify-center py-[24px]">
+        <Loading size={20} />
+      </div>
+    );
+  }
+  if (!callTreeData) {
+    return (
+      <div className="flex justify-center py-[24px] text-textTertiary text14Medium">
+        <span>Fail to parse</span>
+      </div>
+    );
+  }
+  return <PapiCallTreeView proposal={callTreeData} isLoading={isLoading} />;
+}
+
 function CallTreeOnReferendum() {
-  const { call, isLoading } = useContext(RawCallContext) || {};
+  const rawCallCtx = useContext(RawCallContext) || {};
+  const papiCallCtx = usePapiCallTree();
+  if (papiCallCtx) {
+    return <PapiCallTreeOnReferendum />;
+  }
+  const { call, isLoading } = rawCallCtx;
   return <CallTree call={call} isLoading={isLoading} />;
 }
 
@@ -55,6 +82,7 @@ export default function CallDetailPopup({
   const setSelectedTabId = setStorageTabId;
 
   const CallTreeComponent = customCallTree || CallTreeOnReferendum;
+  // const CallTreeComponent = CallTreeOnReferendum;
 
   return (
     <Popup title={title} onClose={() => setShow(false)}>
