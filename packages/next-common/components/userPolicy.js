@@ -32,6 +32,8 @@ const Text = styled.div`
 function CheckBox({ disabled, checked, setChecked, setAgreeError }) {
   return (
     <span
+      // eslint-disable-next-line
+      role="checkbox"
       className="mr-2"
       onClick={() => {
         if (disabled) {
