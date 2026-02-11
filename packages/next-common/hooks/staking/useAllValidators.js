@@ -23,7 +23,7 @@ export function useAllValidators() {
         const validatorEntries = await api.query.staking.validators.entries();
         const data = validatorEntries.map(normalizeValidator);
         setResult(data);
-      } catch (e) {
+      } catch {
         // ignore
       }
     },

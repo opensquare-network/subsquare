@@ -23,6 +23,14 @@ function TabsListImpl(
   const listRef = useRef();
   const width = useWindowWidthContext();
 
+  function handleGradientBlanketVisible(target) {
+    const { scrollLeft, scrollWidth, clientWidth } = target;
+    const scrollSpace = scrollWidth - clientWidth;
+
+    setShowLeft(scrollLeft > SPACE);
+    setShowRight(scrollLeft < scrollSpace - SPACE);
+  }
+
   useEffect(() => {
     if (listRef.current) {
       handleGradientBlanketVisible(listRef.current);
@@ -32,14 +40,6 @@ function TabsListImpl(
   function onScroll(event) {
     const target = event.target;
     handleGradientBlanketVisible(target);
-  }
-
-  function handleGradientBlanketVisible(target) {
-    const { scrollLeft, scrollWidth, clientWidth } = target;
-    const scrollSpace = scrollWidth - clientWidth;
-
-    setShowLeft(scrollLeft > SPACE);
-    setShowRight(scrollLeft < scrollSpace - SPACE);
   }
 
   return (

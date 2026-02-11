@@ -31,6 +31,7 @@ function PolkassemblyCommentItemImpl({ isSecondLevel }) {
     }
   }, [hasRouterAnchor]);
 
+  // eslint-disable-next-line react-hooks/immutability
   comment.content = ensurePolkassemblyRelativeLink(comment.content, chain);
 
   let actionsComponent = null;

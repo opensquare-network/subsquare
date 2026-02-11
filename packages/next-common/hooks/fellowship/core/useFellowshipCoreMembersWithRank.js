@@ -51,7 +51,7 @@ export default function useFellowshipCoreMembersWithRank() {
         });
 
         setResult(data);
-      } catch (e) {
+      } catch {
         // ignore
       }
     },

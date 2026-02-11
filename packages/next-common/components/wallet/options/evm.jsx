@@ -35,6 +35,7 @@ export default function WalletEVMOptions({ selectedWallet, onSelect = noop }) {
           if (wallet.logo) {
             icon = <wallet.logo className="w-6 h-6" />;
           } else if (wallet.connector?.icon) {
+            // eslint-disable-next-line
             icon = <img src={wallet.connector?.icon} className="w-6 h-6" />;
           }
 

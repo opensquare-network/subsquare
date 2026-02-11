@@ -6,7 +6,7 @@ export function getConnectedAccount(cookies) {
   let connectedAccount = null;
   try {
     connectedAccount = JSON.parse(decodeURIComponent(cookie));
-  } catch (e) {
+  } catch {
     // ignore
   }
 

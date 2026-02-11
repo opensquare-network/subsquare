@@ -58,7 +58,7 @@ const delayQuery = debounce(async () => {
         resolve(avatar);
       }
     }
-  } catch (e) {
+  } catch {
     // ignore
   }
 }, 500);

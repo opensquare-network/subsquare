@@ -5,6 +5,7 @@ import { stringify } from "@polkadot/util";
 export function useMemoValue(value) {
   const ref = useRef(null);
 
+  // eslint-disable-next-line react-hooks/refs
   return useMemo(() => getMemoValue(ref, value), [ref, value]);
 }
 

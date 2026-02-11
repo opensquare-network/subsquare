@@ -20,7 +20,7 @@ async function extractActiveReferenda(api, entries) {
         let call;
         try {
           call = await extractReferendumCall(api, referendum);
-        } catch (e) {
+        } catch {
           call = null;
         }
 

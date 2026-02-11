@@ -23,7 +23,7 @@ export default function useHasActiveJudgementRequest() {
         return;
       }
       setValue(null);
-    } catch (error) {
+    } catch {
       setValue(null);
     }
   }, [realAddress]);

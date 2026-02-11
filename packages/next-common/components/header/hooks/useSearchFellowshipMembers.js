@@ -29,7 +29,7 @@ function useFellowshipMembers() {
           rank: info.unwrap()?.rank.toNumber(),
         }),
       );
-    } catch (e) {
+    } catch {
       return null;
     }
   }, [api]);

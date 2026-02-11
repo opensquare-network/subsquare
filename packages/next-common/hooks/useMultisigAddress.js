@@ -42,7 +42,7 @@ export async function fetchMultisigAddress(address) {
     const { result } = await backendApi.fetch(`/multisig/addresses/${address}`);
 
     return result ?? null;
-  } catch (error) {
+  } catch {
     return null;
   }
 }

@@ -21,7 +21,7 @@ export function useCancelReferendumNotePreimageTx(referendumIndex) {
     try {
       const proposal = api.tx.referenda.cancel(referendumIndex);
       return getState(api, proposal);
-    } catch (e) {
+    } catch {
       return {};
     }
   }, [api, referendumIndex]);

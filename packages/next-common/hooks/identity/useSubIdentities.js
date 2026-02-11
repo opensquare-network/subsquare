@@ -36,7 +36,7 @@ export default function useSubIdentities(api, address) {
             ];
           });
           setSubs(normalizedSubs);
-        } catch (e) {
+        } catch {
           setSubs([]);
           setSubsDeposit("0");
         } finally {

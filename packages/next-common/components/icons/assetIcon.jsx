@@ -9,6 +9,7 @@ export default function AssetIcon({ symbol, className = "", type = "" }) {
   });
 
   if (type === "native") {
+    // eslint-disable-next-line react-hooks/static-components
     return <NativeAssetIcon className={className} />;
   }
 

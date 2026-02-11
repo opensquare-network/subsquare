@@ -14,7 +14,7 @@ export default function useFetchUserInfo(address) {
     try {
       const result = await backendApi.fetch(`users/${address}`);
       setUser(result?.result ?? null);
-    } catch (e) {
+    } catch {
       setUser(null);
     } finally {
       setIsLoading(false);

@@ -61,7 +61,7 @@ export default function useOnchainPeopleIdentityInfo(
 
       setStats(newStats);
       setIsLoading(false);
-    } catch (err) {
+    } catch {
       setIsLoading(false);
     }
   }, [superLoaded, superValue, identityData, identityDataLoading]);

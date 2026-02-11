@@ -69,6 +69,7 @@ function DateModeInput({ value, setValue }) {
 
     if (value) {
       return new Date(
+        // eslint-disable-next-line react-hooks/purity
         Date.now() + (parseInt(value) - latestHeight) * blockTime,
       );
     }

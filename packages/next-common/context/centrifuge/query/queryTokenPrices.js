@@ -12,7 +12,7 @@ export default async function queryTokenPrices(range) {
     });
 
     return data?.prices;
-  } catch (e) {
+  } catch {
     return null;
   }
 }

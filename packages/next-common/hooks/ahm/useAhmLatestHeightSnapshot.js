@@ -19,6 +19,7 @@ export default function useAhmLatestHeightSnapshot() {
   return useMemo(
     () => ({
       isLoading,
+      // eslint-disable-next-line react-hooks/refs
       latestHeight: snapshotRef.current,
     }),
     [isLoading],

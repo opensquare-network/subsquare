@@ -29,9 +29,12 @@ export default function AmbassadorReferendaDetailMultiTabs() {
   const { component: timeLineTabSwitchComponent, isCompact } =
     useTimelineTabSwitch();
 
+  const proposalCall = proposal?.call;
+  const proposalInline = proposal?.inline;
+
   const { tabs, activeTabValue } = useMemo(() => {
     const tabs = [
-      ...(proposal?.call || proposal.inline
+      ...(proposalCall || proposalInline
         ? [
             {
               value: "call",
@@ -66,8 +69,8 @@ export default function AmbassadorReferendaDetailMultiTabs() {
     return { tabs, activeTabValue: router.query.tab || defaultTab.value };
   }, [
     info,
-    proposal?.call,
-    proposal.inline,
+    proposalCall,
+    proposalInline,
     router.query.tab,
     timeLineTabSwitchComponent,
     isCompact,

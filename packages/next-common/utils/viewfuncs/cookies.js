@@ -75,7 +75,7 @@ export function getCookie(key) {
       if (key === foundKey) {
         break;
       }
-    } catch (e) {
+    } catch {
       // fixme: ignore
     }
   }

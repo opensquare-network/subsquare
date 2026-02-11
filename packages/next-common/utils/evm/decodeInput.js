@@ -54,7 +54,7 @@ export async function decodeInput(data, contractAddress) {
     }
 
     return errorResult;
-  } catch (err) {
+  } catch {
     return errorResult;
   }
 }

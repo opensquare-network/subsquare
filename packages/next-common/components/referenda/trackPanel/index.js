@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { cn } from "next-common/utils";
 import AccordionCard from "next-common/components/styled/containers/accordionCard";
 import { otherCategoryMaxCount } from "./consts";
@@ -21,10 +21,18 @@ function TrackPanel({ className = "" }) {
   const tracks = useTrackList();
   const listPageType = useListPageType();
   const chain = useChain();
-  const [isOthersExceeding, setIsOthersExceeding] = useState(false);
 
-  const trackList = useMemo(() => {
-    if (!tracks) return {};
+  const { trackList, isOthersExceeding } = useMemo(() => {
+    let isOthersExceeding = false;
+    let trackList = {};
+
+    if (!tracks) {
+      return {
+        trackList,
+        isOthersExceeding,
+      };
+    }
+
     const categorizedTracks = getCategorizedTracks(
       listPageType,
       listPageCategory,
@@ -37,22 +45,29 @@ function TrackPanel({ className = "" }) {
         isOnlyOthersCategory(categorizedTracks, otherCategoryMaxCount))
     ) {
       categorizedTracks.others = Object.values(categorizedTracks || {}).flat();
-      setIsOthersExceeding(true);
+      isOthersExceeding = true;
     }
 
     if (
       ![Chains.collectives].includes(chain) &&
       listPageType === listPageCategory.FELLOWSHIP_REFERENDA
     ) {
-      setIsOthersExceeding(true);
-      return flattenKusamaFellowshipReferenda(
+      isOthersExceeding = true;
+      trackList = flattenKusamaFellowshipReferenda(
         listPageType,
         listPageCategory,
         tracks,
       );
+      return {
+        trackList,
+        isOthersExceeding,
+      };
     }
 
-    return categorizedTracks ?? {};
+    return {
+      trackList: categorizedTracks ?? {},
+      isOthersExceeding,
+    };
   }, [listPageType, tracks, chain]);
 
   const inlineClassName = isOthersExceeding

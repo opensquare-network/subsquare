@@ -24,7 +24,7 @@ function getAllCachedProperties(api) {
     if (data) {
       allProperties = JSON.parse(data);
     }
-  } catch (e) {
+  } catch {
     // Ignore
   }
   return allProperties;
@@ -124,6 +124,7 @@ export default function ExtensionUpdatePrompt({ isWithCache = true }) {
     setIsNeedUpdate,
   ]);
 
+  const connectedAccountWallet = connectedAccount?.wallet;
   const updateMeta = useCallback(
     async (def) => {
       if (!injectedWeb3Extension) {
@@ -134,14 +135,14 @@ export default function ExtensionUpdatePrompt({ isWithCache = true }) {
         const extension = await injectedWeb3Extension.enable("subsquare");
         const isOk = await extension.metadata.provide(def);
         if (isOk) {
-          cacheProperties(api, connectedAccount?.wallet, injectedWeb3Extension);
+          cacheProperties(api, connectedAccountWallet, injectedWeb3Extension);
           setTriggerCheck((v) => v + 1);
         }
       } catch (e) {
         console.error(e);
       }
     },
-    [api, injectedWeb3Extension, connectedAccount?.wallet],
+    [api, injectedWeb3Extension, connectedAccountWallet],
   );
 
   if (!isNeedUpdate) {

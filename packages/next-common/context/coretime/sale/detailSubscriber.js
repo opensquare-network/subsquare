@@ -17,7 +17,7 @@ export default function CoretimeDetailSaleSubscriber({ children }) {
     try {
       const newSaleData = await queryCoretimeDetailSale(id);
       setDetailSale(newSaleData);
-    } catch (err) {
+    } catch {
       throw new Error("Subscribe coretime detailSale failed.");
     }
   }, pollInterval);

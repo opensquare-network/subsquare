@@ -1,4 +1,4 @@
-import React, { useRef, useMemo, useState } from "react";
+import React, { useRef, useMemo, useState, useCallback } from "react";
 import { useOnchainData } from "next-common/context/post";
 import useFetchFellowshipReferendaTallyHistory from "next-common/utils/hooks/fellowship/useFetchFellowshipReferendaTallyHistory";
 import { useFellowshipReferendaCurveChartDataWithHistory } from "./useFellowshipReferendaCurveChartData";
@@ -18,8 +18,14 @@ export default function CollectivesFellowshipCurveChartWithContext({
   useFetchFellowshipReferendaTallyHistory(referendumIndex);
 
   const width = useWindowWidthContext();
-  const chartRef = useRef();
+  const [chartInstance, setChartInstance] = useState(null);
   const chartWrapper = useRef();
+
+  const chartRef = useCallback((node) => {
+    if (node) {
+      setChartInstance(node);
+    }
+  }, []);
 
   const {
     labels,
@@ -34,7 +40,7 @@ export default function CollectivesFellowshipCurveChartWithContext({
     rangeData,
     ranging,
     component: slider,
-  } = useSlider(chartRef.current?.chartArea, false, totalHours || 0);
+  } = useSlider(chartInstance?.chartArea, false, totalHours || 0);
 
   const rangeLabel = labels.slice(rangeData[0], rangeData[1]);
 
@@ -72,7 +78,7 @@ export default function CollectivesFellowshipCurveChartWithContext({
         <FellowshipApprovalBubbleArea
           rangeData={rangeData}
           visible={showVoter && !ranging}
-          chartArea={chartRef.current?.chartArea}
+          chartArea={chartInstance?.chartArea}
           historyApprovalData={historyApprovalData}
         />
       </div>

@@ -39,6 +39,7 @@ export default function PolkassemblyCommentActions({
 
   const users = useMentionList();
 
+  // eslint-disable-next-line react-hooks/refs
   const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
 
   const onReply = getOnReply(

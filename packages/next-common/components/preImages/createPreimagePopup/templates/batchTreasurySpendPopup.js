@@ -134,7 +134,7 @@ export function useBatchTreasurySpendsNotePreimageTx(spendInputs) {
         proposal = api.tx.utility.batch(spendTxs);
       }
       return getState(api, proposal);
-    } catch (e) {
+    } catch {
       return {};
     }
   }, [api, spendInputs, nativeSymbol, nativeDecimals]);

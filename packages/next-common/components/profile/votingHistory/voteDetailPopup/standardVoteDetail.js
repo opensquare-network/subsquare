@@ -7,14 +7,14 @@ import DelegationsList from "next-common/components/popup/nestedVotesPopup/deleg
 import { useModuleName } from "../common";
 
 export function StandardVoteDetail({ vote }) {
-  const module = useModuleName();
+  const moduleName = useModuleName();
   const [tabIndex, setTabIndex] = useState(vote.aye ? Aye : Nay);
   const [delegations, setDelegations] = useState([]);
 
   useEffect(() => {
-    const url = `${module === "referenda" ? "gov2" : module}/referendums/${
-      vote?.referendumIndex
-    }/delegation-votes`;
+    const url = `${
+      moduleName === "referenda" ? "gov2" : moduleName
+    }/referendums/${vote?.referendumIndex}/delegation-votes`;
     nextApi
       .fetch(url, {
         target: vote?.account,
@@ -23,7 +23,7 @@ export function StandardVoteDetail({ vote }) {
         if (!result) return;
         setDelegations(result);
       });
-  }, [vote?.referendumIndex, vote?.account, module]);
+  }, [vote?.referendumIndex, vote?.account, moduleName]);
 
   const data = normalizedNestedVote(vote, delegations);
 

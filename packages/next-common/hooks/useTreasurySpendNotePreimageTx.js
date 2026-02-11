@@ -20,7 +20,7 @@ export function useTreasurySpendNotePreimageTx(
     let bnValue;
     try {
       bnValue = checkInputValue(inputBalance, decimals);
-    } catch (err) {
+    } catch {
       return {};
     }
 
@@ -37,7 +37,7 @@ export function useTreasurySpendNotePreimageTx(
         validFrom ? parseInt(validFrom) : null,
       );
       return getState(api, proposal);
-    } catch (e) {
+    } catch {
       return {};
     }
   }, [api, inputBalance, beneficiary, decimals, validFrom]);

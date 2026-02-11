@@ -34,7 +34,7 @@ function TypedComponent({ registry, type, typeName, value }) {
     if (!sub) {
       return null;
     }
-  } catch (e) {
+  } catch {
     return null;
   }
 

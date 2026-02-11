@@ -12,12 +12,12 @@ export default function ReferendaDelegateeDetailPopupRecentVotes({ delegate }) {
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const tab = useModuleTab();
-  const module = tab === Referenda ? "referenda" : "democracy";
+  const moduleName = tab === Referenda ? "referenda" : "democracy";
 
   useEffect(() => {
     setIsLoading(true);
     backendApi
-      .fetch(`users/${delegate.address}/${module}/votes`, {
+      .fetch(`users/${delegate.address}/${moduleName}/votes`, {
         page: 0,
         pageSize: 10,
         includesTitle: 1,
@@ -30,7 +30,7 @@ export default function ReferendaDelegateeDetailPopupRecentVotes({ delegate }) {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [delegate.address, module]);
+  }, [delegate.address, moduleName]);
 
   const columns = [
     {

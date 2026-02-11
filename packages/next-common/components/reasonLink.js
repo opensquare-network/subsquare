@@ -21,7 +21,7 @@ export default function ReasonLink({ text, hideText = false }) {
             let svgIcon;
             try {
               svgIcon = getLinkIcon(link);
-            } catch (e) {
+            } catch {
               svgIcon = defaultLinkSvg;
             }
 

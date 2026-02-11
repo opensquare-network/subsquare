@@ -42,10 +42,12 @@ export default function FellowshipReferendaDetailMultiTabs() {
     useTimelineTabSwitch();
   const timelineData = useReferendumTimelineData();
   const indexer = onchainData?.indexer;
+  const proposalCall = proposal?.call;
+  const proposalInline = proposal?.inline;
 
   const { tabs, activeTabValue } = useMemo(() => {
     const tabs = [
-      ...(proposal?.call || proposal.inline
+      ...(proposalCall || proposalInline
         ? [
             {
               value: "call",
@@ -94,14 +96,14 @@ export default function FellowshipReferendaDetailMultiTabs() {
     const [defaultTab] = tabs;
     return { tabs, activeTabValue: router.query.tab || defaultTab.value };
   }, [
-    proposal?.call,
-    proposal.inline,
+    proposalCall,
+    proposalInline,
     indexer,
     info,
     timelineData,
     timeLineTabSwitchComponent,
     isCompact,
-    router.query.tab,
+    router,
     isCollectives,
   ]);
 

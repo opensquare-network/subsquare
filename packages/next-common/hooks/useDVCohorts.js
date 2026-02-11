@@ -10,7 +10,7 @@ export default function useDVCohorts() {
       setLoading(true);
       const { result: cohorts = [] } = await backendApi.fetch("/dv/cohorts");
       setCohorts(cohorts);
-    } catch (err) {
+    } catch {
       throw new Error("Failed to fetch cohorts");
     } finally {
       setLoading(false);

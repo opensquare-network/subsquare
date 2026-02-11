@@ -30,7 +30,7 @@ export async function prepareEthereum({ ethereum, onError, signerAddress }) {
   if (!isSameChainId(chainId)) {
     try {
       await switchNetwork(chainId);
-    } catch (e) {
+    } catch {
       onError(
         new Error(
           `Cannot switch to chain ${ethereumNetwork.chainName}, please add the network configuration to ${walletName} wallet.`,
@@ -216,7 +216,7 @@ async function dispatchCall({
   const receipt = await sentTx.wait();
   try {
     await handleEvmOnInBlock({ api, receipt, onInBlock });
-  } catch (e) {
+  } catch {
     onInBlock({ receipt });
   }
 }

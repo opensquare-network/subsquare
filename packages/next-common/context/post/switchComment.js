@@ -34,5 +34,5 @@ export function useSwitchCommentTabs() {
   const { switchTabs, activeTab, setActiveTab } =
     React.useContext(SwitchCommentContext) || {};
 
-  return { switchTabs, activeTab, setActiveTab } || {};
+  return { switchTabs, activeTab, setActiveTab };
 }

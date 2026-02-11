@@ -18,7 +18,7 @@ export function useSubAccountDeposit() {
         api.consts.identity?.subAccountDeposit?.toString() || "0";
 
       setDeposit(subAccountDeposit);
-    } catch (e) {
+    } catch {
       setDeposit("0");
     } finally {
       setIsLoading(false);

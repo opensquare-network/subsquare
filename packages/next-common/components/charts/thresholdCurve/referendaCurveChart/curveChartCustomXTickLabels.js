@@ -1,5 +1,5 @@
 import { usePreparingHours } from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
-import { useMemo, useRef } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 const PREPARING_THRESHOLD = 60;
 
@@ -9,7 +9,12 @@ export default function CustomXTickLabels({
   chartArea = {},
 }) {
   const decisionIndex = usePreparingHours();
-  const preparingRef = useRef(null);
+  const [preparingInstance, setPreparingInstance] = useState(null);
+  const preparingRef = useCallback((node) => {
+    if (node) {
+      setPreparingInstance(node);
+    }
+  }, []);
   const labelsLength = rangeData[1] - rangeData[0];
 
   const preparingwidth = useMemo(() => {
@@ -57,7 +62,7 @@ export default function CustomXTickLabels({
           style={{
             width: `${preparingwidth * 100}%`,
             visibility:
-              preparingRef.current?.offsetWidth < PREPARING_THRESHOLD
+              preparingInstance?.offsetWidth < PREPARING_THRESHOLD
                 ? "hidden"
                 : "initial",
           }}

@@ -16,12 +16,12 @@ export default function ResponsiveCalls() {
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const width = useWindowWidthContext();
-  const module = useModuleName();
+  const moduleName = useModuleName();
   const isFellowship = useIsFellowship();
 
   useEffect(() => {
     setData();
-  }, [module]);
+  }, [moduleName]);
 
   const fetchData = useCallback(
     (page, pageSize) => {
@@ -29,7 +29,7 @@ export default function ResponsiveCalls() {
 
       setIsLoading(true);
       nextApi
-        .fetch(`users/${id}/${module}/vote-calls`, {
+        .fetch(`users/${id}/${moduleName}/vote-calls`, {
           page,
           pageSize,
           includesTitle: 1,
@@ -43,7 +43,7 @@ export default function ResponsiveCalls() {
           setIsLoading(false);
         });
     },
-    [id, module],
+    [id, moduleName],
   );
 
   useEffect(() => {

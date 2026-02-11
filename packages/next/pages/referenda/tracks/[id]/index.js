@@ -78,7 +78,7 @@ export default function TrackPage({
   );
 
   function onStatusChange(status) {
-    const q = router.query;
+    const q = { ...router.query };
 
     delete q.page;
     if (status) {

@@ -225,7 +225,7 @@ export async function getFileNameByContractAddress(contractAddress) {
     let resp = await request;
     const respClone = await resp.clone();
     return await respClone.json();
-  } catch (error) {
+  } catch {
     /* empty */
   }
 

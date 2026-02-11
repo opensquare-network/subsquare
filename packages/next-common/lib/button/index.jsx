@@ -22,6 +22,7 @@ function _Button(props, ref) {
     ...attrs
   } = props ?? {};
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const content = useMemo(() => {
     if (typeof children === "string") {
       return <span>{children}</span>;

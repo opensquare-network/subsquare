@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import TreasuryTipsPostList, {
   NewTipButtonExtra,
 } from "next-common/components/postList/treasuryTipsPostList";
@@ -16,10 +15,8 @@ import CollectiveProvider, {
 } from "next-common/context/collective";
 import Chains from "next-common/utils/consts/chains";
 
-export default function TipsPage({ tips: ssrTips }) {
+export default function TipsPage({ tips }) {
   const chain = useChain();
-  const [tips, setTips] = useState(ssrTips);
-  useEffect(() => setTips(ssrTips), [ssrTips]);
   const { integrations, symbol } = useChainSettings();
 
   const items = (tips.items || []).map((item) =>

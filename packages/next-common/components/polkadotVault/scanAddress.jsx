@@ -89,7 +89,7 @@ function ScanPopup({ onClose }) {
           },
         });
         onClose();
-      } catch (err) {
+      } catch {
         setError("Error processing substrate address");
       }
     },

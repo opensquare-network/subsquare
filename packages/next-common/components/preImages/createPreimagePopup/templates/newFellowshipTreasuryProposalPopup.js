@@ -71,7 +71,7 @@ export function useAssetHubNativeTreasuryNotePreimageTx(
     let bnValue;
     try {
       bnValue = checkInputValue(inputBalance, decimals);
-    } catch (err) {
+    } catch {
       return {};
     }
 

@@ -34,9 +34,7 @@ function getTimelineData(args, method) {
         ),
       };
     case "Executed":
-      // eslint-disable-next-line no-case-declarations
       const rawResult = args.result;
-      // eslint-disable-next-line no-case-declarations
       let result;
       if (typeof rawResult === "boolean") {
         result = rawResult;

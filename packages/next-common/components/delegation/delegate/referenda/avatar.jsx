@@ -9,6 +9,7 @@ export function DelegateAvatar({ address }) {
     <div className="flex flex-col">
       <div className="relative w-10 h-10">
         {image ? (
+          // eslint-disable-next-line @next/next/no-img-element
           <img
             className="rounded-full"
             src={image}

@@ -28,10 +28,10 @@ export default function ArticleMoreMenu(props) {
   if (postType === detailPageCategory.FELLOWSHIP_APPLICATION) {
     return <FellowshipApplicationArticleMoreMenu {...props} />;
   }
-  return <_ArticleMoreMenu {...props} />;
+  return <CommonArticleMoreMenu {...props} />;
 }
 
-function _ArticleMoreMenu({ isAuthor, editable, setIsEdit }) {
+function CommonArticleMoreMenu({ isAuthor, editable, setIsEdit }) {
   const [show, setShow] = useState(false);
   const ref = useRef();
   useClickAway(ref, () => setShow(false));

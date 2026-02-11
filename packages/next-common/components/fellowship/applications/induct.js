@@ -27,17 +27,19 @@ function InductButton({ address }) {
     }
   }, [api, address, pallet]);
 
+  const postId = post?.id;
+
   const onInBlock = useCallback(() => {
     dispatch(newSuccessToast("Inducted"));
     nextApi
-      .patch(`fellowship/applications/${post._id}/refresh-status`)
+      .patch(`fellowship/applications/${postId}/refresh-status`)
       .then(({ error }) => {
         if (error) {
           console.error(error);
         }
       });
     router.replace(router.asPath);
-  }, [dispatch, router, post?._id]);
+  }, [dispatch, router, postId]);
 
   const { doSubmit } = useTxSubmission({ getTxFunc, onInBlock });
 

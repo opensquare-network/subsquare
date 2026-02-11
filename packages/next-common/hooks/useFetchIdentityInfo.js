@@ -39,7 +39,7 @@ export default function useFetchIdentityInfo(address = "") {
         subs,
         info,
       };
-    } catch (error) {
+    } catch {
       return {};
     } finally {
       setIsLoading(false);

@@ -19,10 +19,11 @@ export default function DeleteAppendantPopup({
   update,
 }) {
   const dispatch = useDispatch();
+  const appendantId = appendantData?.id;
 
   const deletePost = useCallback(async () => {
     try {
-      const deleteApi = appendantsApi(appendantData?._id);
+      const deleteApi = appendantsApi(appendantId);
       const { result, error } = await nextApi.delete(deleteApi);
 
       if (error) {
@@ -38,7 +39,7 @@ export default function DeleteAppendantPopup({
       dispatch(newErrorToast("An error occurred while deleting"));
       throw e;
     }
-  }, [appendantData?._id, dispatch, update]);
+  }, [appendantId, dispatch, update]);
 
   return (
     <DeletePopup

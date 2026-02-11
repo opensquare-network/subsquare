@@ -2,6 +2,7 @@ import { cn } from "next-common/utils";
 import { getChainSettingsPolyfill } from "next-common/utils/consts/settingsPolyfill";
 
 function Img({ src, className = "" }) {
+  /* eslint-disable-next-line */
   return <img src={src} alt="" className={cn("logo", className)} />;
 }
 

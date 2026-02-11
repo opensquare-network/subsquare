@@ -130,7 +130,7 @@ function ProfileFellowshipMemberInfoPanel({ member, paramsApi }) {
 }
 
 function MemberSalaryItem({ params, isActive, rank, loading }) {
-  const { activeSalary = [], passiveSalary = [] } = params;
+  const { activeSalary, passiveSalary } = params;
 
   const { decimals, symbol } = getSalaryAsset();
 
@@ -144,7 +144,10 @@ function MemberSalaryItem({ params, isActive, rank, loading }) {
           It&apos;s the active salary. Passive salary is{" "}
           <ValueDisplay
             showTooltip={false}
-            value={toPrecision(getRankSalary(passiveSalary, rank), decimals)}
+            value={toPrecision(
+              getRankSalary(passiveSalary || [], rank),
+              decimals,
+            )}
             symbol={symbol}
           />{" "}
           when inactive.
@@ -156,7 +159,7 @@ function MemberSalaryItem({ params, isActive, rank, loading }) {
         It&apos;s the inactive salary. Active salary is{" "}
         <ValueDisplay
           showTooltip={false}
-          value={toPrecision(getRankSalary(activeSalary, rank), decimals)}
+          value={toPrecision(getRankSalary(activeSalary || [], rank), decimals)}
           symbol={symbol}
         />{" "}
         when active.

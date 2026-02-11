@@ -7,6 +7,7 @@ import { OffChainCommentActionsProvider } from "next-common/noSima/context/comme
 export default function MotionContent() {
   const motion = usePost();
 
+  // eslint-disable-next-line react-hooks/immutability
   motion.status = motion.state?.state;
 
   return (

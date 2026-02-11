@@ -11,6 +11,7 @@ export default function PostItemBanner({ bannerCid }) {
   return (
     <MobileHiddenInfo>
       <BannerWrapper>
+        {/* eslint-disable-next-line */}
         <img src={bannerUrl} alt="banner image" />
       </BannerWrapper>
     </MobileHiddenInfo>

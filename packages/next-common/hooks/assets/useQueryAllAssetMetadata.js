@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 function decodeMetadataField(rawOnchainField) {
   try {
     return rawOnchainField.toUtf8();
-  } catch (e) {
+  } catch {
     return rawOnchainField.toHuman();
   }
 }

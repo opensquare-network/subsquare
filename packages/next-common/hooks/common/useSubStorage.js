@@ -202,7 +202,7 @@ export default function useSubStorage(
         // setResult();
         setPendingSubscription(false);
       }
-    }, // eslint-disable-next-line react-hooks/exhaustive-deps
+    },
     [
       api,
       pallet,

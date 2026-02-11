@@ -29,18 +29,20 @@ export default function DemocracyExternalsProposalsDetailMultiTabs() {
   const detail = usePost();
   const router = useRouter();
   const timelineData = useDemocracyExternalProposalTimelineData();
-
-  const external = detail?.onchainData || {};
+  const external = useMemo(() => detail?.onchainData || {}, [detail]);
   const call = external?.preImage?.call;
   const { component: timeLineTabSwitch, isCompact } = useTimelineTabSwitch();
   const indexer = external?.indexer;
+  const externalMotionIndex = external?.motionIndex;
+  const externalPreImageShorten = external?.preImage?.shorten;
+  const externalReferendumIndex = external?.referendumIndex;
 
   const { tabs, activeTabValue } = useMemo(() => {
     const tabs = [
       {
         value: "business",
         label: "Business",
-        content: <Business external={detail?.onchainData} />,
+        content: <Business external={external} />,
       },
       ...(call
         ? [
@@ -53,9 +55,9 @@ export default function DemocracyExternalsProposalsDetailMultiTabs() {
                   <DemocracyReferendumCallProvider>
                     <DemocracyExternalProposalCall
                       call={call}
-                      shorten={external?.preImage?.shorten}
-                      motionIndex={external.motionIndex}
-                      referendumIndex={external.referendumIndex}
+                      shorten={externalPreImageShorten}
+                      motionIndex={externalMotionIndex}
+                      referendumIndex={externalReferendumIndex}
                     />
                   </DemocracyReferendumCallProvider>
                 </MigrationConditionalApiProvider>
@@ -67,7 +69,7 @@ export default function DemocracyExternalsProposalsDetailMultiTabs() {
         value: "metadata",
         label: "Metadata",
         tooltip: tabsTooltipContentMap.metadata,
-        content: <Metadata external={detail?.onchainData} />,
+        content: <Metadata external={external} />,
       },
       {
         value: "timeline",
@@ -85,13 +87,13 @@ export default function DemocracyExternalsProposalsDetailMultiTabs() {
     return { tabs, activeTabValue: router.query.tab || defaultTab.value };
   }, [
     call,
-    detail?.onchainData,
-    external.motionIndex,
-    external?.preImage?.shorten,
-    external.referendumIndex,
+    external,
+    externalMotionIndex,
+    externalPreImageShorten,
+    externalReferendumIndex,
     indexer,
     isCompact,
-    router.query.tab,
+    router,
     timeLineTabSwitch,
     timelineData,
   ]);

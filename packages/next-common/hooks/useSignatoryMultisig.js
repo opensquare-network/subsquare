@@ -19,7 +19,7 @@ export default function useSignatoryMultisig(address) {
         multisigAddresses: result ?? [],
         total: result?.length ?? 0,
       };
-    } catch (error) {
+    } catch {
       return null;
     }
   }, [address, isRelativesApiAvailable]);

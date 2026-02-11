@@ -38,8 +38,8 @@
   "devDependencies": {
     "@osn/eslint-config": "^1.0.2",
     "@types/lodash-es": "^4.17.12",
-    "eslint": "^8.44.0",
-    "eslint-config-next": "^15.5.12",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "^16.1.6",
     "raw-loader": "^4.0.2"
   }
 }

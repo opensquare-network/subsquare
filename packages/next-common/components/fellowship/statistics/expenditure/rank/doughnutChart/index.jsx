@@ -84,7 +84,7 @@ export default function RankDoughnutChart({ members = [] }) {
     try {
       const resp = await backendApi.fetch(ranksApi);
       return resp?.result || [];
-    } catch (error) {
+    } catch {
       setContentLoading(false);
       return [];
     }

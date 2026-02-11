@@ -20,7 +20,7 @@ export function useRemarkNotePreimageTx(remark) {
     try {
       const proposal = api.tx.system.remark(remark);
       return getState(api, proposal);
-    } catch (e) {
+    } catch {
       return {};
     }
   }, [api, remark]);

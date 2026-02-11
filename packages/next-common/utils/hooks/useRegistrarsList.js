@@ -15,6 +15,9 @@ export function useSpecifyApiRegistrarsList(api) {
       try {
         const res = await api?.query?.identity?.registrars();
         setStorageRegistrarsResult(res);
+        if (res) {
+          setIsLoading(false);
+        }
       } catch (error) {
         console.error(error);
         setIsLoading(false);
@@ -28,8 +31,6 @@ export function useSpecifyApiRegistrarsList(api) {
     if (!storageRegistrarsResult) {
       return [];
     }
-
-    setIsLoading(false);
 
     return (storageRegistrarsResult || [])
       .map((registrar, index) => {

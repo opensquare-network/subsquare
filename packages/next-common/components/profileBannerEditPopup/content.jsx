@@ -46,7 +46,7 @@ export default function ProfileBannerEditPopupContent({ closePopup = noop }) {
       await setBanner();
       fetch();
       closePopup();
-    } catch (error) {
+    } catch {
       /** empty */
     }
   };
@@ -57,7 +57,7 @@ export default function ProfileBannerEditPopupContent({ closePopup = noop }) {
       setBannerCid(null);
       fetch();
       closePopup();
-    } catch (error) {
+    } catch {
       /** empty */
     }
   };

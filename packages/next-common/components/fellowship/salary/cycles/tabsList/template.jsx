@@ -49,7 +49,7 @@ export function FellowshipSalaryCycleDetailListTemplateTable({
 }) {
   const [page, setPage] = useState(1);
   const [result, setResult] = useState(api?.initData);
-  const [loading, setLoading] = useState(!api?.initData ?? true);
+  const [loading, setLoading] = useState(!api?.initData);
 
   function fetchData() {
     if (api?.path) {

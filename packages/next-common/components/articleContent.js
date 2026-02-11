@@ -28,6 +28,7 @@ export function BannerImage({ bannerCid }) {
     return null;
   }
 
+  // eslint-disable-next-line
   return <img src={bannerUrl} className="w-full mb-4" alt="banner image" />;
 }
 

@@ -10,6 +10,7 @@ export function useScrollLock(element) {
       initialOverflowRef.current = elm.style.overflow;
 
       if (isLocked) {
+        // eslint-disable-next-line react-hooks/immutability
         elm.style.overflow = "hidden";
       }
     }

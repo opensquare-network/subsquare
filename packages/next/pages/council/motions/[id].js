@@ -20,6 +20,7 @@ import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
 function MotionContent() {
   const motion = usePost();
 
+  // eslint-disable-next-line react-hooks/immutability
   motion.status = motion.state?.state;
 
   return (

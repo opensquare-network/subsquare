@@ -14,6 +14,7 @@ function Token({ assetId, symbol }) {
       )}
     >
       <div className="flex gap-[8px] items-center text14Medium text-textPrimary max-sm:justify-start">
+        {/* eslint-disable-next-line react-hooks/static-components */}
         <AssetIcon width={24} height={24} />
         <ForeignAssetLink
           assetId={assetId}

@@ -7,6 +7,7 @@ export default function Checkbox({ checked, className, onClick = noop }) {
   return (
     <div
       className="flex justify-center items-center gap-[10px]"
+      // eslint-disable-next-line
       role="checkbox"
       onClick={onClick}
     >

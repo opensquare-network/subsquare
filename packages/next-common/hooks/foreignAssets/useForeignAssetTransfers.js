@@ -47,8 +47,11 @@ export default function useForeignAssetTransfers(
   page = 0,
   page_size = 25,
 ) {
-  const { supportForeignAssets, graphqlApiSubDomain, assethubMigration } = useChainSettings();
-  const domain = isAssetHubMigrated() ? assethubMigration.graphqlApiSubDomain : graphqlApiSubDomain;
+  const { supportForeignAssets, graphqlApiSubDomain, assethubMigration } =
+    useChainSettings();
+  const domain = isAssetHubMigrated()
+    ? assethubMigration.graphqlApiSubDomain
+    : graphqlApiSubDomain;
 
   const [value, setValue] = useState([]);
   const [total, setTotal] = useState(0);
@@ -104,7 +107,7 @@ export default function useForeignAssetTransfers(
       });
 
       setValue(transfers);
-    } catch (err) {
+    } catch {
       console.error("Error fetching transfers");
     } finally {
       setLoading(false);

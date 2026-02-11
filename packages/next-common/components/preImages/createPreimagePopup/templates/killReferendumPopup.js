@@ -21,7 +21,7 @@ export function useKillReferendumNotePreimageTx(referendumIndex) {
     try {
       const proposal = api.tx.referenda.kill(referendumIndex);
       return getState(api, proposal);
-    } catch (e) {
+    } catch {
       return {};
     }
   }, [api, referendumIndex]);

@@ -35,6 +35,7 @@ export function DecodeCallItem({
   const beforeContent = beforeElement ? (
     <div className="flex gap-2 items-center">
       {beforeElement}
+      {/* eslint-disable-next-line react-hooks/static-components */}
       <Dot />
     </div>
   ) : null;
@@ -47,6 +48,7 @@ export function DecodeCallItem({
     >
       {beforeContent}
       <NameTag>{section}</NameTag>
+      {/* eslint-disable-next-line react-hooks/static-components */}
       <Dot />
       <div className="flex items-center gap-2">
         <NameTag>{method}</NameTag>

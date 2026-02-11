@@ -19,6 +19,7 @@ export default function useCommentComponent({ commentsData, loading }) {
     user?.preference?.editor || "markdown",
   );
 
+  // eslint-disable-next-line react-hooks/refs
   const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
   const { ensureLogin, ensureConnect } = useEnsureLogin();
   const users = useMentionList(commentsData);

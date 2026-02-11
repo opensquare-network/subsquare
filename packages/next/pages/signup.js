@@ -91,6 +91,33 @@ export default function Signup() {
     router.replace("/");
   }
 
+  const { username, email, password } = formData;
+
+  const showErrorToast = (message) => dispatch(newErrorToast(message));
+
+  const sendVerifyEmail = () => {
+    nextApi
+      .post("user/resendverifyemail")
+      .then(({ result, error }) => {
+        if (result) {
+          if (isMounted()) {
+            startCountdown();
+          }
+          return;
+        }
+        if (isMounted()) {
+          showErrorToast(
+            error?.message ?? "some error occured when sending an Email",
+          );
+        }
+      })
+      .catch(() => {
+        if (isMounted()) {
+          showErrorToast("some error occurred when sending an Email");
+        }
+      });
+  };
+
   const { formData, handleInputChange, handleSubmit } = useForm(
     {
       username: "",
@@ -121,32 +148,6 @@ export default function Signup() {
     },
     () => setErrors(null),
   );
-  const { username, email, password } = formData;
-
-  const showErrorToast = (message) => dispatch(newErrorToast(message));
-
-  const sendVerifyEmail = () => {
-    nextApi
-      .post("user/resendverifyemail")
-      .then(({ result, error }) => {
-        if (result) {
-          if (isMounted()) {
-            startCountdown();
-          }
-          return;
-        }
-        if (isMounted()) {
-          showErrorToast(
-            error?.message ?? "some error occured when sending an Email",
-          );
-        }
-      })
-      .catch(() => {
-        if (isMounted()) {
-          showErrorToast("some error occurred when sending an Email");
-        }
-      });
-  };
 
   useEffect(() => {
     if (user?.emailVerified) {

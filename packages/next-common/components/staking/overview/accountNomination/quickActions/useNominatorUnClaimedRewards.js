@@ -17,7 +17,7 @@ export default function useNominatorUnClaimedRewards(nominatorAddress) {
       setLoading(true);
       const data = await calculateAllErasRewardsBatch(api, nominatorAddress);
       setResult(data);
-    } catch (error) {
+    } catch {
       setResult({ result: [], totalRewards: "0", details: [] });
     } finally {
       setLoading(false);

@@ -49,7 +49,7 @@ export default function useSetIdentityDeposit(identityInfo = {}) {
           BigInt(basicDeposit) + BigInt(byteSize) * BigInt(byteDeposit);
 
         return totalDeposit.toString();
-      } catch (e) {
+      } catch {
         return "0";
       }
     },
@@ -80,7 +80,7 @@ export default function useSetIdentityDeposit(identityInfo = {}) {
       );
 
       setDeposit(totalDeposit);
-    } catch (e) {
+    } catch {
       setDeposit("0");
     } finally {
       setIsLoading(false);

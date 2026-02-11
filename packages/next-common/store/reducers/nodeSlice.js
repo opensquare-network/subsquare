@@ -38,7 +38,7 @@ export function getInitNodeUrl(chain) {
   let localNodeUrl = null;
   try {
     localNodeUrl = safeLocalStorage.getItem(`nodeUrl-${chain}`);
-  } catch (e) {
+  } catch {
     // ignore parse error
   }
 

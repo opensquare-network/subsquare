@@ -60,7 +60,7 @@ export async function queryPreimages() {
     });
 
     return data?.preimages;
-  } catch (e) {
+  } catch {
     return null;
   }
 }

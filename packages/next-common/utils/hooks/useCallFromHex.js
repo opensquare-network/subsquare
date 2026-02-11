@@ -27,7 +27,7 @@ export default function useCallFromHex(callHex) {
     try {
       const bytes = hexToU8a(callHex);
       setCall(blockApi.registry.createType("Call", bytes));
-    } catch (error) {
+    } catch {
       setCall(null);
     } finally {
       setIsLoading(false);

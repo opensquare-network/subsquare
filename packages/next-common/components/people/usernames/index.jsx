@@ -49,7 +49,7 @@ export default function UsernamesPage() {
           <TabsList
             activeTabValue={activeTabValue}
             onTabClick={({ value }) => {
-              const query = router.query;
+              const query = { ...router.query };
               delete query["search"];
               delete query["authority"];
               if (value === tabs[0].value) {
