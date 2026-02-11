@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "node server.mjs",
-    "build": "next build --webpack",
+    "build": "next build --turbopack",
     "start": "NODE_ENV=production node server.mjs",
     "lint": "eslint . --ext .js,.jsx",
     "timeupdater": "pm2 start ecosystem.config.js --only subsquare-time-updater-kintsugi --env production"

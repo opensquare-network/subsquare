@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "node server.mjs",
-    "build": "next build --webpack",
-    "analyze": "ANALYZE=true next build --webpack",
+    "build": "next build --turbopack",
+    "analyze": "next build --turbopack --experimental-analyze",
     "start": "NODE_ENV=production node server.mjs",
     "lint": "eslint . --ext .js,.jsx"
   },
@@ -37,7 +37,6 @@
     "use-deep-compare-effect": "^1.8.1"
   },
   "devDependencies": {
-    "@next/bundle-analyzer": "16.1.6",
     "@osn/eslint-config": "^1.0.2",
     "@types/lodash-es": "^4.17.12",
     "eslint": "^9.0.0",
