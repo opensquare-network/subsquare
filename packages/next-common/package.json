@@ -75,6 +75,7 @@
     "react-datepicker": "^4.8.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
+    "react-is": "^18.3.1",
     "react-json-view": "^1.21.3",
     "react-redux": "^8.0.5",
     "react-scroll": "^1.9.0",

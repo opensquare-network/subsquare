@@ -137,7 +137,7 @@ export default function useLiquidityPositionData() {
         if (lernaOutResult !== "-1") {
           const lrna = new BigNumber(lernaOutResult);
           const lrnaShifted = lrna.shiftedBy(-hub.decimals);
-          
+
           if (lrnaShifted.gt(0)) {
             const lrnaDisplay = lrnaShifted.times(hubPrice);
             valueDisplay = valueDisplay.plus(lrnaDisplay);

@@ -10,8 +10,7 @@ nextEnv.loadEnvConfig(projectDir);
 const dev = process.env.NODE_ENV !== "production";
 const app = next({
   dev,
-  webpack: true,
-  turbopack: false,
+  turbopack: true,
 });
 const nextHandler = app.getRequestHandler();
 
