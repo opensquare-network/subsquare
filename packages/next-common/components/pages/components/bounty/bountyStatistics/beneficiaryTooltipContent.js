@@ -18,10 +18,10 @@ function AccountInfoContent({ address }) {
           className="text12Medium text-textPrimaryContrast"
           noTooltip={true}
         />
-        <div className="max-md:hidden text-textTertiaryContrast text12Medium inline-flex items-center">
+        <div className="max-md:hidden text-textSecondaryContrast text12Medium inline-flex items-center">
           {maybeEvmAddress}
         </div>
-        <div className="md:hidden text-textTertiaryContrast text12Medium">
+        <div className="md:hidden text-textSecondaryContrast text12Medium">
           {addressEllipsis(maybeEvmAddress)}
         </div>
       </div>
