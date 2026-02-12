@@ -113,6 +113,7 @@ export default function SalesHistoryRenewals() {
           page={page}
           total={data?.coretimeSaleRenewals?.total}
           pageSize={pageSize}
+          buttonMode
           onPageChange={(e, newPage) => {
             e.preventDefault();
             setPage(newPage);

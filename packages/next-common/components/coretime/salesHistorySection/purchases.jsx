@@ -105,6 +105,7 @@ export default function SalesHistoryPurchases() {
           page={page}
           total={data?.coretimeSalePurchases?.total}
           pageSize={pageSize}
+          buttonMode
           onPageChange={(e, newPage) => {
             e.preventDefault();
             setPage(newPage);
