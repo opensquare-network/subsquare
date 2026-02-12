@@ -20,7 +20,7 @@ function ToggleButton({ onClick, children }) {
   return (
     <button
       onClick={onClick}
-      className="px-3 py-[6px] text12Medium bg-neutral100 border border-neutral400 rounded-md"
+      className="px-3 py-[6px] text12Medium text-textPrimary bg-neutral100 border border-neutral400 rounded-md"
     >
       {children}
     </button>
