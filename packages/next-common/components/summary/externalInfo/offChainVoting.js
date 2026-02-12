@@ -33,7 +33,7 @@ function VotingProposals() {
   useEffect(() => {
     new Api(votingHost)
       .fetch(`/api/${votingSpace}/proposals/active`)
-      .then(({ result: { items } }) => {
+      .then(({ result: { items = [] } = {} }) => {
         setPosts(
           items.filter((item) =>
             dayjs().subtract(15, "day").isBefore(item.createdAt),
