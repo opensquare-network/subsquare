@@ -30,7 +30,7 @@ export default function useQueryMythTokenBalance(address) {
   }, [api, address]);
 
   useEffect(() => {
-    if (loading || !value) {
+    if (loading) {
       return;
     }
 
