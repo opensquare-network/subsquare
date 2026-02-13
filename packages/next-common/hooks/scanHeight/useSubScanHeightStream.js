@@ -22,6 +22,7 @@ export function useSubScanHeightStream({
 
     const controller = new AbortController();
     let reader = null;
+    let shouldReconnect = false;
 
     (async () => {
       try {
@@ -46,15 +47,17 @@ export function useSubScanHeightStream({
             break;
           }
 
-          const { value, done } = await Promise.race([
+          const { readTimeout, value, done } = await Promise.race([
             reader.read(),
-            new Promise((_, reject) =>
-              setTimeout(
-                () => reject(new Error("Read scan height timeout")),
-                timeout,
-              ),
+            new Promise((resolve) =>
+              setTimeout(() => resolve({ readTimeout: true }), timeout),
             ),
           ]);
+
+          if (readTimeout) {
+            shouldReconnect = true;
+            break;
+          }
 
           if (done) {
             throw new Error("Scan height stream closed");
@@ -78,6 +81,13 @@ export function useSubScanHeightStream({
             }
           } catch (e) {
             console.error("Error parsing scan height data:", e);
+          }
+        }
+
+        if (shouldReconnect) {
+          await sleep(5000);
+          if (!controller.signal.aborted) {
+            setReconnect((prev) => prev + 1);
           }
         }
       } catch (e) {
