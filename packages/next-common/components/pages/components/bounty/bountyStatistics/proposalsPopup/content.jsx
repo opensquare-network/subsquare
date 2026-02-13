@@ -39,7 +39,10 @@ export default function PopupContent({ data, proposalOwner, role }) {
       const { result } = await backendApi.fetch(
         "treasury/child-bounties?simple=true&" +
           data.childBounties
-            .map((item) => "ids=" + `${parentBountyId}_${item.index}`)
+            .map(
+              (item) =>
+                "ids=" + `${parentBountyId}_${item.index}_${item.blockHeight}`,
+            )
             .join("&"),
       );
       if (!result) {
