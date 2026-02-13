@@ -22,6 +22,7 @@ export function useSubScanHeightStream({
 
     const controller = new AbortController();
     let reader = null;
+    let shouldReconnect = false;
 
     (async () => {
       try {
@@ -54,7 +55,8 @@ export function useSubScanHeightStream({
           ]);
 
           if (readTimeout) {
-            throw new Error("Read scan height timeout");
+            shouldReconnect = true;
+            break;
           }
 
           if (done) {
@@ -79,6 +81,13 @@ export function useSubScanHeightStream({
             }
           } catch (e) {
             console.error("Error parsing scan height data:", e);
+          }
+        }
+
+        if (shouldReconnect) {
+          await sleep(5000);
+          if (!controller.signal.aborted) {
+            setReconnect((prev) => prev + 1);
           }
         }
       } catch (e) {
