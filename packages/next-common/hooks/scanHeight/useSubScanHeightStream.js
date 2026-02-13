@@ -46,15 +46,16 @@ export function useSubScanHeightStream({
             break;
           }
 
-          const { value, done } = await Promise.race([
+          const { readTimeout, value, done } = await Promise.race([
             reader.read(),
-            new Promise((_, reject) =>
-              setTimeout(
-                () => reject(new Error("Read scan height timeout")),
-                timeout,
-              ),
+            new Promise((resolve) =>
+              setTimeout(() => resolve({ readTimeout: true }), timeout),
             ),
           ]);
+
+          if (readTimeout) {
+            continue;
+          }
 
           if (done) {
             throw new Error("Scan height stream closed");
