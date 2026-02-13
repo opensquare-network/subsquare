@@ -54,7 +54,7 @@ export function useSubScanHeightStream({
           ]);
 
           if (readTimeout) {
-            continue;
+            throw new Error("Read scan height timeout");
           }
 
           if (done) {
