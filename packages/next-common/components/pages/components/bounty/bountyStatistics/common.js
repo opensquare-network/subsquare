@@ -1,0 +1,1 @@
+export const MAX_CURATORS_FOR_DOUGHNUT = 12;
