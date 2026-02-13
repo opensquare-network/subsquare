@@ -15,6 +15,7 @@ function Chart({ curators, totalFiat }) {
   const [showDetail, setShowDetail] = useState(false);
   const [curator, setCurator] = useState({});
   const data = useChartData({ dataItems: curators, totalFiat });
+  const showDoughnut = curators.length <= MAX_CURATORS_FOR_DOUGHNUT;
   return (
     <div className="grid grid-cols-3 w-full items-center max-sm:grid-cols-1 max-sm:gap-y-4">
       <Summary totalFiat={totalFiat} />
@@ -27,9 +28,7 @@ function Chart({ curators, totalFiat }) {
         }}
         TooltipContent={BeneficiaryTooltipContent}
       />
-      {curators?.length < MAX_CURATORS_FOR_DOUGHNUT && (
-        <DoughnutChart data={data} />
-      )}
+      {showDoughnut && <DoughnutChart data={data} />}
       {showDetail && (
         <ProposalsPopup
           role="Curator"
