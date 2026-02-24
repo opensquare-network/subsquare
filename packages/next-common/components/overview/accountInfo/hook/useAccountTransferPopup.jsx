@@ -3,10 +3,7 @@ import PopupWithSigner from "next-common/components/popupWithSigner";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import { useContextApi } from "next-common/context/api";
-import {
-  newErrorToast,
-  newSuccessToast,
-} from "next-common/store/reducers/toastSlice";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useCallback, useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
@@ -21,6 +18,8 @@ import BigNumber from "bignumber.js";
 import { SystemWarning } from "@osn/icons/subsquare";
 import { WarningMessage } from "next-common/components/setting/styled";
 import { querySystemAccountBalance } from "next-common/utils/hooks/useAddressBalance";
+import { useTxBuilder } from "next-common/hooks/useTxBuilder";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 function useDestinationWarningCheck(amount, address) {
   const [showDestinationWarning, setShowDestinationWarning] = useState(false);
@@ -107,22 +106,25 @@ function PopupContent() {
     transferToAddress,
   );
 
-  const getTxFunc = useCallback(() => {
-    if (!transferToAddress) {
-      dispatch(newErrorToast("Please enter the recipient address"));
-      return;
-    }
+  const { getTxFuncForSubmit, getTxFuncForFee } = useTxBuilder(
+    (toastError) => {
+      if (!transferToAddress) {
+        toastError("Please enter the recipient address");
+        return;
+      }
 
-    let amount;
-    try {
-      amount = getCheckedTransferAmount();
-    } catch (e) {
-      dispatch(newErrorToast(e.message));
-      return;
-    }
+      let amount;
+      try {
+        amount = getCheckedTransferAmount();
+      } catch (e) {
+        toastError(e.message);
+        return;
+      }
 
-    return api.tx.balances?.transferKeepAlive(transferToAddress, amount);
-  }, [dispatch, api, transferToAddress, getCheckedTransferAmount]);
+      return api.tx.balances?.transferKeepAlive(transferToAddress, amount);
+    },
+    [api, transferToAddress, getCheckedTransferAmount],
+  );
 
   const onInBlock = useCallback(() => {
     dispatch(newSuccessToast("Transfer successfully"));
@@ -136,11 +138,12 @@ function PopupContent() {
       {showDestinationWarning && <DestinationTransferWarning />}
       <AdvanceSettings>
         <ExistentialDeposit destApi={api} title="Existential Deposit" />
+        <EstimatedGas getTxFunc={getTxFuncForFee} />
       </AdvanceSettings>
       <div className="flex justify-end">
         <TxSubmissionButton
           title="Confirm"
-          getTxFunc={getTxFunc}
+          getTxFunc={getTxFuncForSubmit}
           onInBlock={onInBlock}
         />
       </div>
