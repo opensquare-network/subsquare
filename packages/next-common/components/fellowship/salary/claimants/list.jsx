@@ -30,7 +30,9 @@ export default function FellowshipSalaryClaimantsList({
 
   const filteredClaimants =
     isNil(rank) && isNil(status)
-      ? claimants
+      ? claimants.filter(
+          (claimant) => !isNil(claimant.rank) && claimant.rank !== 0,
+        )
       : claimants.filter((claimant) => {
           return (
             (isNil(rank) || claimant.rank === rank) &&
