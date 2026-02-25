@@ -17,6 +17,7 @@ import { claimStatsValues, claimantListColumns } from "./utils";
 import Tooltip from "next-common/components/tooltip";
 import { isSameAddress } from "next-common/utils";
 import FieldLoading from "next-common/components/icons/fieldLoading";
+import { SystemVoteAbstain } from "@osn/icons/subsquare";
 
 function SalaryCellTooltip({ isActive, rank, params, children }) {
   const { symbol, decimals } = getSalaryAsset();
@@ -52,7 +53,25 @@ function SalaryCellTooltip({ isActive, rank, params, children }) {
   );
 }
 
-function UnregisteredSalaryCell({ isActive, rank, params }) {
+function ClaimantAmountCell({ claimant }) {
+  const { symbol, decimals } = getSalaryAsset();
+  const status = claimant?.status?.status || {};
+  const registered = has(status, "registered")
+    ? status?.registered
+    : status?.attempted?.registered;
+  const amount = status?.attempted?.amount || registered;
+
+  if (isNil(amount)) {
+    return <SystemVoteAbstain className="inline-block w-4 h-4" />;
+  }
+
+  return <ValueDisplay value={toPrecision(amount, decimals)} symbol={symbol} />;
+}
+
+function ClaimantSalaryCell({ claimant, member, params }) {
+  const isActive = member?.status?.isActive;
+  const rank = claimant?.rank;
+
   const { symbol, decimals } = getSalaryAsset();
   const { activeSalary = [], passiveSalary = [] } = params ?? {};
 
@@ -64,35 +83,6 @@ function UnregisteredSalaryCell({ isActive, rank, params }) {
     <FieldLoading size={16} />
   ) : (
     <ValueDisplay value={toPrecision(salary, decimals)} symbol={symbol} />
-  );
-}
-
-function ClaimantSalaryCell({ claimant, member, params }) {
-  const { symbol, decimals } = getSalaryAsset();
-  const status = claimant?.status?.status || {};
-
-  let claimantSalary;
-  if (has(status, "registered")) {
-    claimantSalary = status?.registered;
-  } else if (has(status, "attempted")) {
-    claimantSalary = status?.attempted?.registered ?? status?.attempted?.amount;
-  }
-
-  if (!isNil(claimantSalary)) {
-    return (
-      <ValueDisplay
-        value={toPrecision(claimantSalary, decimals)}
-        symbol={symbol}
-      />
-    );
-  }
-
-  return (
-    <UnregisteredSalaryCell
-      isActive={member?.status?.isActive}
-      rank={claimant.rank}
-      params={params}
-    />
   );
 }
 
@@ -128,6 +118,7 @@ export default function FellowshipSalaryClaimantsList({
     return [
       <FellowshipRank key={`rank-${address}`} rank={claimant.rank} />,
       <AddressUser key={`address-${address}`} add={address} />,
+      <ClaimantAmountCell key={`amount-${address}`} claimant={claimant} />,
       <SalaryCellTooltip
         key={`salary-${address}`}
         isActive={member?.status?.isActive}

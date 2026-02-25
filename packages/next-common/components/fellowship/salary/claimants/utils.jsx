@@ -20,6 +20,11 @@ export const claimantListColumns = [
     className: "min-w-[200px]",
   },
   {
+    name: "Amount",
+    className: "text-right",
+    width: 180,
+  },
+  {
     name: "Salary",
     className: "text-right",
     width: 160,
