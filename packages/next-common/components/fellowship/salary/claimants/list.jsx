@@ -18,11 +18,6 @@ import Tooltip from "next-common/components/tooltip";
 import { isSameAddress } from "next-common/utils";
 import FieldLoading from "next-common/components/icons/fieldLoading";
 
-function CurrentCycleSalaryCell({ salary }) {
-  const { symbol, decimals } = getSalaryAsset();
-  return <ValueDisplay value={toPrecision(salary, decimals)} symbol={symbol} />;
-}
-
 function SalaryCellTooltip({ isActive, rank, params, children }) {
   const { symbol, decimals } = getSalaryAsset();
   const { activeSalary = [], passiveSalary = [] } = params ?? {};
@@ -73,18 +68,23 @@ function UnregisteredSalaryCell({ isActive, rank, params }) {
 }
 
 function ClaimantSalaryCell({ claimant, member, params }) {
+  const { symbol, decimals } = getSalaryAsset();
   const status = claimant?.status?.status || {};
 
-  let currentCycleSalary;
+  let claimantSalary;
   if (has(status, "registered")) {
-    currentCycleSalary = status?.registered;
+    claimantSalary = status?.registered;
   } else if (has(status, "attempted")) {
-    currentCycleSalary =
-      status?.attempted?.registered ?? status?.attempted?.amount;
+    claimantSalary = status?.attempted?.registered ?? status?.attempted?.amount;
   }
 
-  if (!isNil(currentCycleSalary)) {
-    return <CurrentCycleSalaryCell salary={currentCycleSalary} />;
+  if (!isNil(claimantSalary)) {
+    return (
+      <ValueDisplay
+        value={toPrecision(claimantSalary, decimals)}
+        symbol={symbol}
+      />
+    );
   }
 
   return (
