@@ -8,20 +8,99 @@ import Link from "next-common/components/link";
 import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
+import { getRankSalary } from "next-common/utils/fellowship/getRankSalary";
 import FellowshipSalaryMemberStatus from "./status";
 import useRankFilter from "next-common/hooks/fellowship/useRankFilter";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { useFellowshipSalaryMemberStatusFilter } from "next-common/hooks/fellowship/salary/useFellowshipSalaryStatusFilter";
 import { claimStatsValues, claimantListColumns } from "./utils";
-import { getRankSalary } from "next-common/utils/fellowship/getRankSalary";
+import Tooltip from "next-common/components/tooltip";
+import { isSameAddress } from "next-common/utils";
+import FieldLoading from "next-common/components/icons/fieldLoading";
+
+function CurrentCycleSalaryCell({ salary }) {
+  const { symbol, decimals } = getSalaryAsset();
+  return <ValueDisplay value={toPrecision(salary, decimals)} symbol={symbol} />;
+}
+
+function SalaryCellTooltip({ isActive, rank, params, children }) {
+  const { symbol, decimals } = getSalaryAsset();
+  const { activeSalary = [], passiveSalary = [] } = params ?? {};
+
+  const activeRankSalary = getRankSalary(activeSalary, rank);
+  const passiveRankSalary = getRankSalary(passiveSalary, rank);
+
+  return (
+    <Tooltip
+      content={
+        <div>
+          {!isNil(isActive) && (
+            <div>This member is {isActive ? "active" : "passive"}</div>
+          )}
+          <div className="flex gap-1">
+            <span>Active Salary:</span>
+            <span>
+              {toPrecision(activeRankSalary, decimals)}&nbsp;{symbol}
+            </span>
+          </div>
+          <div className="flex gap-1">
+            <span>Passive Salary:</span>
+            <span>
+              {toPrecision(passiveRankSalary, decimals)}&nbsp;{symbol}
+            </span>
+          </div>
+        </div>
+      }
+    >
+      {children}
+    </Tooltip>
+  );
+}
+
+function UnregisteredSalaryCell({ isActive, rank, params }) {
+  const { symbol, decimals } = getSalaryAsset();
+  const { activeSalary = [], passiveSalary = [] } = params ?? {};
+
+  const activeRankSalary = getRankSalary(activeSalary, rank);
+  const passiveRankSalary = getRankSalary(passiveSalary, rank);
+  const salary = isActive ? activeRankSalary : passiveRankSalary;
+
+  return isNil(isActive) || isNil(salary) ? (
+    <FieldLoading size={16} />
+  ) : (
+    <ValueDisplay value={toPrecision(salary, decimals)} symbol={symbol} />
+  );
+}
+
+function ClaimantSalaryCell({ claimant, member, params }) {
+  const status = claimant?.status?.status || {};
+
+  let currentCycleSalary;
+  if (has(status, "registered")) {
+    currentCycleSalary = status?.registered;
+  } else if (has(status, "attempted")) {
+    currentCycleSalary =
+      status?.attempted?.registered ?? status?.attempted?.amount;
+  }
+
+  if (!isNil(currentCycleSalary)) {
+    return <CurrentCycleSalaryCell salary={currentCycleSalary} />;
+  }
+
+  return (
+    <UnregisteredSalaryCell
+      isActive={member?.status?.isActive}
+      rank={claimant.rank}
+      params={params}
+    />
+  );
+}
 
 export default function FellowshipSalaryClaimantsList({
   claimants = [],
   params = {},
   members = [],
 }) {
-  const { symbol, decimals } = getSalaryAsset();
-
   const ranks = [...new Set(members.map((m) => m.rank))];
   const { rank, component: rankFilterComponent } = useRankFilter(ranks);
 
@@ -40,27 +119,27 @@ export default function FellowshipSalaryClaimantsList({
           );
         });
 
-  const { activeSalary = [], passiveSalary = [] } = params ?? {};
-
   const rows = filteredClaimants?.map((claimant) => {
     const address = claimant?.address;
+    const member = members.find((item) =>
+      isSameAddress(item?.address, address),
+    );
 
     return [
       <FellowshipRank key={`rank-${address}`} rank={claimant.rank} />,
       <AddressUser key={`address-${address}`} add={address} />,
-      <ValueDisplay
-        key={`active-salary-${address}`}
-        value={toPrecision(
-          getRankSalary(activeSalary, claimant.rank),
-          decimals,
-        )}
-        symbol={symbol}
-      />,
-      <ValueDisplay
-        key={`passive-salary-${address}`}
-        value={toPrecision(getRankSalary(passiveSalary, rank), decimals)}
-        symbol={symbol}
-      />,
+      <SalaryCellTooltip
+        key={`salary-${address}`}
+        isActive={member?.status?.isActive}
+        rank={claimant.rank}
+        params={params}
+      >
+        <ClaimantSalaryCell
+          claimant={claimant}
+          member={member}
+          params={params}
+        />
+      </SalaryCellTooltip>,
       <FellowshipSalaryMemberIsRegistered
         key={`isRegistered-${address}`}
         status={claimant?.status?.status}
