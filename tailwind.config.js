@@ -1,7 +1,4 @@
-const path = require("node:path");
 const light = require("./packages/next-common/styles/light").default;
-
-const resolve = (dir) => path.resolve(__dirname, dir);
 
 /**
  * `light.neutral100` -> `{ neutral100: 'var(--neutral100)' }`
@@ -14,14 +11,17 @@ const twThemeVariables = Object.keys(light).reduce((value, key) => {
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: "class",
-  content: [
-    resolve("./packages/next/**/*.{html,js,ts,jsx,tsx,}"),
-    resolve("./packages/next-common/**/*.{html,js,ts,jsx,tsx}"),
-    resolve("./packages/collectives-next/**/*.{html,js,ts,jsx,tsx}"),
-    resolve("./packages/kintsugi-next/**/*.{html,js,ts,jsx,tsx}"),
-    resolve("./packages/next/pages/**/*.{js,jsx,ts,tsx}"), //Add pages explicitly
-    "!**/node_modules/**", //exclude node_modules of all packages
-  ],
+  content: {
+    relative: true,
+    files: [
+      "./packages/next/**/*.{html,js,ts,jsx,tsx}",
+      "./packages/next-common/**/*.{html,js,ts,jsx,tsx}",
+      "./packages/collectives-next/**/*.{html,js,ts,jsx,tsx}",
+      "./packages/kintsugi-next/**/*.{html,js,ts,jsx,tsx}",
+      "!**/node_modules/**",
+      "!**/.next/**",
+    ],
+  },
   theme: {
     screens: {
       sm: "768px",
