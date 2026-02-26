@@ -20,12 +20,12 @@ export const claimantListColumns = [
     className: "min-w-[200px]",
   },
   {
-    name: "Active Salary",
+    name: "Salary",
     className: "text-right",
     width: 160,
   },
   {
-    name: "Passive Salary",
+    name: "Amount",
     className: "text-right",
     width: 160,
   },
