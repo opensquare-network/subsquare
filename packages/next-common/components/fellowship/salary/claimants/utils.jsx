@@ -22,7 +22,7 @@ export const claimantListColumns = [
   {
     name: "Amount",
     className: "text-right",
-    width: 180,
+    width: 160,
   },
   {
     name: "Salary",
