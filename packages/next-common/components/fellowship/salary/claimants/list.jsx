@@ -118,7 +118,6 @@ export default function FellowshipSalaryClaimantsList({
     return [
       <FellowshipRank key={`rank-${address}`} rank={claimant.rank} />,
       <AddressUser key={`address-${address}`} add={address} />,
-      <ClaimantAmountCell key={`amount-${address}`} claimant={claimant} />,
       <SalaryCellTooltip
         key={`salary-${address}`}
         isActive={member?.status?.isActive}
@@ -131,6 +130,7 @@ export default function FellowshipSalaryClaimantsList({
           params={params}
         />
       </SalaryCellTooltip>,
+      <ClaimantAmountCell key={`amount-${address}`} claimant={claimant} />,
       <FellowshipSalaryMemberIsRegistered
         key={`isRegistered-${address}`}
         status={claimant?.status?.status}
