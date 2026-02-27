@@ -4,8 +4,6 @@ import kusama from "./consts/settings/kusama";
 import karura from "./consts/settings/karura";
 import bifrost from "./consts/settings/bifrost";
 import acala from "./consts/settings/acala";
-import interlay from "./consts/settings/interlay";
-import kintsugi from "./consts/settings/kintsugi";
 // import kabocha from "./consts/settings/kabocha";
 // import crust from "./consts/settings/crust";
 import litentry from "./consts/settings/litentry";
@@ -63,10 +61,10 @@ export const nodes = [
   // crust,
   hydradx,
   hyperBridge,
-  interlay,
+  // interlay,
   // kabocha,
   karura,
-  kintsugi,
+  // kintsugi,
   laos,
   litentry,
   // moonbeam,
