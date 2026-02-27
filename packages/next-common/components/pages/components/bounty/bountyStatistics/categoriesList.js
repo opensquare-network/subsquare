@@ -1,4 +1,4 @@
-import { sortBy } from "lodash-es";
+import { isEmpty, sortBy } from "lodash-es";
 import { usePageProps } from "next-common/context/page";
 import Summary from "./summary";
 import BigNumber from "bignumber.js";
@@ -57,10 +57,12 @@ function BarLabels({ dataItems }) {
         <BarLabel
           key={i}
           label={label}
-          onClick={(label) => {
-            setCategory(label.data);
-            setShowDetail(true);
-          }}
+          {...(!isEmpty(label.data.childBounties) && {
+            onClick: (label) => {
+              setCategory(label.data);
+              setShowDetail(true);
+            },
+          })}
         />
       ))}
       {showDetail && (

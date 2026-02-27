@@ -14,17 +14,19 @@ export const AvatarWrapper = styled(Flex)`
 
 export const UserWrapper = styled(Flex)`
   max-width: 100%;
-  a {
-    &:hover {
-      text-decoration: underline;
-    }
-  }
 
   ${(p) =>
-    p.noEvent &&
-    css`
-      pointer-events: none;
-    `}
+    p.noEvent
+      ? css`
+          pointer-events: none;
+        `
+      : css`
+          a {
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+        `}
 `;
 
 export const AvatarImg = styled.img`
