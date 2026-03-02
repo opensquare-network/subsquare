@@ -3983,10 +3983,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@osn/icons@npm:^1.235.3":
-  version: 1.235.3
-  resolution: "@osn/icons@npm:1.235.3"
-  checksum: 10c0/6a7746be11fffc5ca7b9a1b75a6ab3428673de3455c0e4788842be9f0dcfca8d5b36c5b5fb636ff145f7dc59a13f7cfd6b26706b3bc220bd62717cbbca4bb1d7
+"@osn/icons@npm:^1.235.4":
+  version: 1.235.4
+  resolution: "@osn/icons@npm:1.235.4"
+  peerDependencies:
+    react: ">=18"
+    react-dom: ">=18"
+  peerDependenciesMeta:
+    react-dom:
+      optional: true
+  checksum: 10c0/ee9b57399009151e06c145fa14eeee01caad091a90529ab4de97bb5af8c23dcdbf824cb3473d6a961f097e432256ea5dd59fb3709209b98436e2c471b2d21a82
   languageName: node
   linkType: hard
 
@@ -7343,7 +7349,7 @@ __metadata:
   dependencies:
     "@next/env": "npm:^16.1.6"
     "@osn/eslint-config": "npm:^1.0.2"
-    "@osn/icons": "npm:^1.235.3"
+    "@osn/icons": "npm:^1.235.4"
     "@svgr/webpack": "npm:^7.0.0"
     "@types/lodash-es": "npm:^4.17.12"
     bignumber.js: "npm:^9.0.2"
@@ -7384,7 +7390,7 @@ __metadata:
     "@interlay/monetary-js": "npm:^0.5.3"
     "@next/env": "npm:^16.1.6"
     "@osn/eslint-config": "npm:^1.0.2"
-    "@osn/icons": "npm:^1.235.3"
+    "@osn/icons": "npm:^1.235.4"
     "@polkadot/util-crypto": "npm:^13.5.9"
     "@svgr/webpack": "npm:^7.0.0"
     "@types/lodash-es": "npm:^4.17.12"
@@ -7422,7 +7428,7 @@ __metadata:
   dependencies:
     "@next/env": "npm:^16.1.6"
     "@osn/eslint-config": "npm:^1.0.2"
-    "@osn/icons": "npm:^1.235.3"
+    "@osn/icons": "npm:^1.235.4"
     "@svgr/webpack": "npm:^7.0.0"
     "@types/lodash-es": "npm:^4.17.12"
     bignumber.js: "npm:^9.0.2"
@@ -16172,7 +16178,7 @@ __metadata:
     "@mimirdev/apps-inject": "npm:^3.2.0"
     "@mimirdev/apps-sdk": "npm:^3.1.0"
     "@osn/eslint-config": "npm:^1.0.2"
-    "@osn/icons": "npm:^1.235.3"
+    "@osn/icons": "npm:^1.235.4"
     "@osn/polkadot-react-identicon": "npm:^1.0.10"
     "@osn/previewer": "npm:^2.0.2"
     "@osn/provider-options": "npm:1.1.0"
