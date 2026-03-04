@@ -7,7 +7,7 @@ import nextApi from "next-common/services/nextApi";
 import { Label, LabelWrapper } from "next-common/components/post/styled";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import ErrorText from "next-common/components/ErrorText";
-import PrimaryButton from "next-common/lib/button/primary";
+import SplitProxyMenuButton from "next-common/components/splitProxyMenuButton";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { useUser } from "next-common/context/user";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
@@ -15,6 +15,7 @@ import Editor, { useEditorUploading } from "next-common/components/editor";
 import { getContentField } from "next-common/utils/sima/utils";
 import useSignSimaMessage from "next-common/utils/sima/useSignSimaMessage";
 import AdvancedForm from "next-common/components/post/advanced/form";
+import { getRealField } from "next-common/sima/actions/common";
 
 const Wrapper = styled(NeutralPanel)`
   color: var(--textPrimary);
@@ -68,15 +69,15 @@ export default function SimaPostCreate() {
   const [isAdvanced, setIsAdvanced] = useState(false);
   const [formValue, setFormValue] = useState({});
 
-  const createPost = async () => {
+  const createPost = async (proxyAddress) => {
     setCreating(true);
-
     try {
       const entity = {
         action: "new_discussion",
         title,
         ...getContentField(content, contentType),
         timestamp: Date.now(),
+        ...(proxyAddress ? { real: getRealField(proxyAddress) } : {}),
       };
       const data = await signSimaMessage(entity);
 
@@ -163,13 +164,13 @@ export default function SimaPostCreate() {
       />
 
       <ButtonWrapper>
-        <PrimaryButton
+        <SplitProxyMenuButton
+          action="Create"
           loading={creating}
-          onClick={createPost}
           disabled={isDisableCreate}
-        >
-          Create
-        </PrimaryButton>
+          onClick={createPost}
+          onClickAsProxy={createPost}
+        />
       </ButtonWrapper>
     </Wrapper>
   );
