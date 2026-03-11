@@ -18,9 +18,16 @@ const getFellowshipEvidencesServerSideProps = withCommonProps(async () => {
     backendApi.fetch(ambassadorMembersApiUri),
   ]);
 
+  const memberAddrSet = new Set(
+    (fellowshipMembers || []).map((m) => m.address),
+  );
+  const evidencesOfMembers = (evidences || []).filter((evidence) =>
+    memberAddrSet.has(evidence.address),
+  );
+
   return {
     props: {
-      evidences,
+      evidences: evidencesOfMembers,
       summary: summary ?? {},
       fellowshipMembers: fellowshipMembers ?? null,
       ambassadorMembers: ambassadorMembers ?? null,
