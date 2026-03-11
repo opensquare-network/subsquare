@@ -8,7 +8,7 @@ import { mergeChainModules } from "../common/modules";
 import kusamaCommonCfg, {
   kusamaAssethubMigration,
 } from "next-common/utils/consts/settings/kusama/common";
-import kusamaPreimageSettings from "next-common/utils/consts/settings/common/preimage/kusama";
+import { kusamaAssethubPreimageSettings } from "next-common/utils/consts/settings/common/preimage/kusama";
 import kusamaAssetHubNodes from "next-common/utils/consts/settings/kusamaAssetHub/endpoints";
 
 const ProjectIconKusamaDark = dynamic(() =>
@@ -110,7 +110,7 @@ const kusama = {
   hotMenu: {
     referenda: true,
   },
-  preimage: kusamaPreimageSettings,
+  preimage: kusamaAssethubPreimageSettings,
   referendaActions: {
     startFrom: 538,
   },
