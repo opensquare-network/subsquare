@@ -15,12 +15,21 @@ function deposit(items, bytes) {
   return v1.plus(v2).toString();
 }
 
+function systemParaDeposit(items, bytes) {
+  return deposit(items, bytes) / 100;
+}
+
 const preimageBaseDeposit = deposit(2, 64);
 const preimageByteDeposit = deposit(0, 1);
 
 const kusamaPreimageSettings = {
   baseDeposit: preimageBaseDeposit,
   byteDeposit: preimageByteDeposit,
+};
+
+export const kusamaAssethubPreimageSettings = {
+  baseDeposit: systemParaDeposit(2, 64),
+  byteDeposit: systemParaDeposit(0, 1),
 };
 
 export default kusamaPreimageSettings;

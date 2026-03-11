@@ -10,7 +10,7 @@ import { mergeChainModules } from "../common/modules";
 import polkadotCommonCfg, {
   polkadotAssethubMigration,
 } from "next-common/utils/consts/settings/polkadot/common";
-import polkadotPreimageSettings from "next-common/utils/consts/settings/common/preimage/polkadot";
+import { polkadotAssethubPreimageSettings } from "next-common/utils/consts/settings/common/preimage/polkadot";
 import polkadotAssetHubNodes from "next-common/utils/consts/settings/polkadotAssetHub/endpoints";
 
 const ProjectIconPolkadotDark = dynamic(() =>
@@ -118,7 +118,7 @@ const polkadot = {
   },
   sima: true,
   allowWeb2Login: true,
-  preimage: polkadotPreimageSettings,
+  preimage: polkadotAssethubPreimageSettings,
   hotMenu: {
     referenda: true,
   },
