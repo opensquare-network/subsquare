@@ -15,6 +15,7 @@ import { getRealField } from "next-common/sima/actions/common";
 import usePostProxyAuthor from "next-common/hooks/usePostProxyAuthor";
 import { useIsPostAuthor } from "next-common/context/post/useIsPostAuthor";
 import useShouldUseSimaPostEdit from "next-common/sima/hooks/useShouldUseSimaPostEdit";
+import useIsAdmin from "next-common/hooks/useIsAdmin";
 
 const UploaderWrapper = styled.div`
   margin-top: 16px;
@@ -23,12 +24,14 @@ const UploaderWrapper = styled.div`
 function SimaEditInput({ update, ...props }) {
   const proxyAuthor = usePostProxyAuthor();
   const isAuthor = useIsPostAuthor();
+  const isAdmin = useIsAdmin();
+  const isUpdateAsProxy = !isAuthor && !isAdmin;
   return (
     <EditInput
       {...props}
-      updateButtonText={isAuthor ? "Update" : "Update as a proxy"}
+      updateButtonText={isUpdateAsProxy ? "Update as a proxy" : "Update"}
       update={(content, contentType) =>
-        update(content, contentType, !isAuthor ? proxyAuthor : undefined)
+        update(content, contentType, isUpdateAsProxy ? proxyAuthor : undefined)
       }
     />
   );
