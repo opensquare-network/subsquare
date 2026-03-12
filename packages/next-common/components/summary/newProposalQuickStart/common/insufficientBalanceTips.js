@@ -77,7 +77,34 @@ export function PreImageBalanceTips({ preimageDeposit, transferrable }) {
   );
 }
 
-export function SubmissionBalanceTips({ api, preimageDeposit, transferrable }) {
+export function SubmissionBalanceTips({ api, transferrable }) {
+  const submissionDeposit = useMemo(
+    () => api?.consts?.referenda?.submissionDeposit?.toString() || 0,
+    [api],
+  );
+  const isSubmissionDepositSufficient =
+    BigInt(submissionDeposit) < BigInt(transferrable);
+
+  return (
+    <BalanceTipsWrapper>
+      <div className="space-y-1">
+        <DepositItem
+          text="Submission Deposit:"
+          deposit={submissionDeposit}
+          yes={isSubmissionDepositSufficient}
+        />
+      </div>
+      <Divider />
+      <DepositCheckTip pass={isSubmissionDepositSufficient} />
+    </BalanceTipsWrapper>
+  );
+}
+
+export function CreatePreimageAndSubmissionBalanceTips({
+  api,
+  preimageDeposit,
+  transferrable,
+}) {
   const submissionDeposit = useMemo(
     () => api?.consts?.referenda?.submissionDeposit?.toString() || 0,
     [api],
@@ -107,7 +134,11 @@ export function SubmissionBalanceTips({ api, preimageDeposit, transferrable }) {
   );
 }
 
-function BalanceTipsContent({ onlyPreimage = false, byteLength }) {
+function BalanceTipsContent({
+  preimageOnly = false,
+  submissionOnly = false,
+  byteLength,
+}) {
   const api = useContextApi();
   const signerAccount = useSignerAccount();
   const { transferrable } = useAccountTransferrable(
@@ -116,7 +147,7 @@ function BalanceTipsContent({ onlyPreimage = false, byteLength }) {
   );
   const preimageDeposit = usePreimageDeposit(byteLength);
 
-  if (onlyPreimage) {
+  if (preimageOnly) {
     return (
       <PreImageBalanceTips
         preimageDeposit={preimageDeposit}
@@ -124,8 +155,11 @@ function BalanceTipsContent({ onlyPreimage = false, byteLength }) {
       />
     );
   }
+  if (submissionOnly) {
+    return <SubmissionBalanceTips api={api} transferrable={transferrable} />;
+  }
   return (
-    <SubmissionBalanceTips
+    <CreatePreimageAndSubmissionBalanceTips
       api={api}
       preimageDeposit={preimageDeposit}
       transferrable={transferrable}
@@ -135,14 +169,16 @@ function BalanceTipsContent({ onlyPreimage = false, byteLength }) {
 
 export default function InsufficientBalanceTips({
   byteLength,
-  onlyPreimage = false,
+  preimageOnly = false,
+  submissionOnly = false,
 }) {
   return (
     <WithApi>
       <PreimageDepositSettingGuard>
         <BalanceTipsContent
           byteLength={byteLength}
-          onlyPreimage={onlyPreimage}
+          preimageOnly={preimageOnly}
+          submissionOnly={submissionOnly}
         />
       </PreimageDepositSettingGuard>
     </WithApi>
