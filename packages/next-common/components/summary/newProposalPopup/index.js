@@ -133,7 +133,7 @@ export function useNewProposalInnerPopupContent({
   track: _track,
   preimageHash: _preimageHash,
   preimageLength: _preimageLength,
-  onlySubmission,
+  submissionOnly,
 }) {
   const api = useContextApi();
   const router = useRouter();
@@ -220,7 +220,7 @@ export function useNewProposalInnerPopupContent({
         </AdvanceSettings>
         <InsufficientBalanceTips
           byteLength={preimageLength}
-          onlySubmission={onlySubmission}
+          submissionOnly={submissionOnly}
         />
       </>
     ),

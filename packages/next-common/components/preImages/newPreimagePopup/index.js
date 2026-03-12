@@ -94,7 +94,7 @@ export function NewPreimageInnerPopup({ onCreated = noop }) {
             />
           )}
         </div>
-        <InsufficientBalanceTips byteLength={encodedLength} onlyPreimage />
+        <InsufficientBalanceTips byteLength={encodedLength} preimageOnly />
       </div>
     );
   }

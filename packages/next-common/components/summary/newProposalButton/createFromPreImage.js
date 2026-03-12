@@ -43,7 +43,7 @@ const useCreateProposal = ({
   track,
   preimageHash,
   preimageLength,
-  onlySubmission,
+  submissionOnly = false,
 }) => {
   const onClose = usePopupOnClose();
   const { getTxFunc, disabled, onInBlock, component } =
@@ -51,7 +51,7 @@ const useCreateProposal = ({
       track,
       preimageHash,
       preimageLength,
-      onlySubmission,
+      submissionOnly,
     });
   const { isLoading, component: button } = useTxSubmissionButton({
     loadingText: "Submit",
@@ -121,7 +121,7 @@ const NewProposalContent = () => {
     button: proposalButton,
   } = useCreateProposal({
     track: period,
-    onlySubmission: true,
+    submissionOnly: true,
   });
 
   return (

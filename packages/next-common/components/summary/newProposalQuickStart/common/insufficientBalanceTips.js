@@ -135,8 +135,8 @@ export function CreatePreimageAndSubmissionBalanceTips({
 }
 
 function BalanceTipsContent({
-  onlyPreimage = false,
-  onlySubmission = false,
+  preimageOnly = false,
+  submissionOnly = false,
   byteLength,
 }) {
   const api = useContextApi();
@@ -147,7 +147,7 @@ function BalanceTipsContent({
   );
   const preimageDeposit = usePreimageDeposit(byteLength);
 
-  if (onlyPreimage) {
+  if (preimageOnly) {
     return (
       <PreImageBalanceTips
         preimageDeposit={preimageDeposit}
@@ -155,7 +155,7 @@ function BalanceTipsContent({
       />
     );
   }
-  if (onlySubmission) {
+  if (submissionOnly) {
     return <SubmissionBalanceTips api={api} transferrable={transferrable} />;
   }
   return (
@@ -169,16 +169,16 @@ function BalanceTipsContent({
 
 export default function InsufficientBalanceTips({
   byteLength,
-  onlyPreimage = false,
-  onlySubmission = false,
+  preimageOnly = false,
+  submissionOnly = false,
 }) {
   return (
     <WithApi>
       <PreimageDepositSettingGuard>
         <BalanceTipsContent
           byteLength={byteLength}
-          onlyPreimage={onlyPreimage}
-          onlySubmission={onlySubmission}
+          preimageOnly={preimageOnly}
+          submissionOnly={submissionOnly}
         />
       </PreimageDepositSettingGuard>
     </WithApi>

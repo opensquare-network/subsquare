@@ -125,7 +125,7 @@ export default function NewFellowshipTreasuryProposalPopup() {
           />
         )}
       </AdvanceSettings>
-      <InsufficientBalanceTips byteLength={encodedLength} onlyPreimage />
+      <InsufficientBalanceTips byteLength={encodedLength} preimageOnly />
       <div className="flex justify-end">
         <NotePreimageButton notePreimageTx={notePreimageTx} />
       </div>
