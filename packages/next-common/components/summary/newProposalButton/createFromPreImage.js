@@ -39,10 +39,20 @@ const useCreatePrimage = () => {
   };
 };
 
-const useCreateProposal = ({ track, preimageHash, preimageLength }) => {
+const useCreateProposal = ({
+  track,
+  preimageHash,
+  preimageLength,
+  onlySubmission,
+}) => {
   const onClose = usePopupOnClose();
   const { getTxFunc, disabled, onInBlock, component } =
-    useNewProposalInnerPopupContent({ track, preimageHash, preimageLength });
+    useNewProposalInnerPopupContent({
+      track,
+      preimageHash,
+      preimageLength,
+      onlySubmission,
+    });
   const { isLoading, component: button } = useTxSubmissionButton({
     loadingText: "Submit",
     getTxFunc,
@@ -111,6 +121,7 @@ const NewProposalContent = () => {
     button: proposalButton,
   } = useCreateProposal({
     track: period,
+    onlySubmission: true,
   });
 
   return (
