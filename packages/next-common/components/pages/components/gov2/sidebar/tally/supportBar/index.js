@@ -7,6 +7,7 @@ import { isNil } from "lodash-es";
 import TooltipOrigin from "next-common/components/tooltip";
 import BigNumber from "bignumber.js";
 import Percentage from "next-common/components/referenda/tally/support/percentage";
+import { useSupportCurve } from "next-common/context/post/gov2/curve";
 
 const Wrapper = styled.div`
   margin-top: 21px;
@@ -70,6 +71,9 @@ export default function SupportBar({ supportPerbill }) {
   // progress max value in perbill
   const [progressMax, setProgressMax] = useState(null);
 
+  const supportCalculator = useSupportCurve();
+  const minSupport = supportCalculator(1);
+
   useEffect(() => {
     if (supportThreshold) {
       setThreshold(supportThreshold * Math.pow(10, 9));
@@ -125,7 +129,15 @@ export default function SupportBar({ supportPerbill }) {
         </Tooltip>
       </ProgressBarWrapper>
       <ul className="text12Medium">
-        <li>0.0%</li>
+        <li>
+          <Tooltip
+            content={`Requires at least ~${
+              minSupport * 100
+            }% of total voting power, decreasing to this minimum over time.`}
+          >
+            <span>{minSupport * 100}%</span>
+          </Tooltip>
+        </li>
         <li>
           <TooltipOrigin
             className="cursor-pointer"
