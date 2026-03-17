@@ -131,9 +131,8 @@ export default function SupportBar({ supportPerbill }) {
       <ul className="text12Medium">
         <li>
           <Tooltip
-            content={`Requires at least ~${
-              minSupport * 100
-            }% of total voting power, decreasing to this minimum over time.`}
+            contentClassName="max-w-[240px]"
+            content="The minimum percentage of support needed at the time of decision end."
           >
             <span>{minSupport * 100}%</span>
           </Tooltip>
@@ -142,7 +141,7 @@ export default function SupportBar({ supportPerbill }) {
           <TooltipOrigin
             className="cursor-pointer"
             contentClassName="max-w-[240px]"
-            content="The minimum percentage of support needed for the proposal to pass."
+            content="Current minimum percentage of support needed for the proposal to pass."
           >
             <div className=" flex flex-col">
               <Percentage perbill={threshold} />
