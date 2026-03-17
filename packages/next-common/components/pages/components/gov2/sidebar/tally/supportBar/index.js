@@ -129,7 +129,7 @@ export default function SupportBar({ supportPerbill }) {
         </Tooltip>
       </ProgressBarWrapper>
       <ul className="text12Medium">
-        <li>
+        <li className="flex items-start">
           <Tooltip
             contentClassName="max-w-[240px]"
             content="The minimum percentage of support needed at the time of decision end."
