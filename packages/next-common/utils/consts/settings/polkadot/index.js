@@ -43,9 +43,9 @@ const polkadot = {
   links: polkadotLinks,
   postLabels: defaultPostLabels,
   hasIdentity: true,
-  graphqlApiSubDomain: "d-gh-api",
+  graphqlApiSubDomain: "dd-gh-api",
   graphql: {
-    domain: "d-gh-api",
+    domain: "dd-gh-api",
     identity: true,
     multisig: false,
   },
