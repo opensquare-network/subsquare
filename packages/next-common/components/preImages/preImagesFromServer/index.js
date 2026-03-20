@@ -24,6 +24,7 @@ function useServerPreimages() {
     if (!preimages) {
       return null;
     }
+
     return preimages.map((item) => {
       if (!api || !api.registry) {
         return item;

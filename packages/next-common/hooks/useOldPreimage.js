@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { useAsync } from "react-use";
 
 import { Option } from "@polkadot/types";
 import {
@@ -12,6 +13,31 @@ import {
 } from "@polkadot/util";
 import useCall from "next-common/utils/hooks/useCall.js";
 import { useContextApi } from "next-common/context/api";
+import { useContextPapi } from "next-common/context/papi";
+import {
+  decodeCallTree,
+  getMetadata,
+} from "next-common/utils/callDecoder/decoder.mjs";
+
+const metadataCache = new WeakMap();
+
+async function getPapiMetadata(client) {
+  if (!client) {
+    return null;
+  }
+
+  let metadataPromise = metadataCache.get(client);
+  if (!metadataPromise) {
+    metadataPromise = getMetadata(client).catch((error) => {
+      metadataCache.delete(client);
+      throw error;
+    });
+
+    metadataCache.set(client, metadataPromise);
+  }
+
+  return metadataPromise;
+}
 
 /**
  * @internal Determine if we are working with current generation (H256,u32)
@@ -83,7 +109,7 @@ export function getPreimageHash(api, hashOrBounded) {
 
 /** @internal Creates a final result */
 export function createResult(interimResult, optBytes) {
-  const callData = isU8a(optBytes) ? optBytes : optBytes.unwrapOr(null);
+  const callData = getCallData(optBytes);
   let proposal = null;
   let proposalError = null;
   let proposalWarning = null;
@@ -123,6 +149,56 @@ export function createResult(interimResult, optBytes) {
     proposalLength: proposalLength || interimResult.proposalLength,
     proposalWarning,
   });
+}
+
+export function getCallData(optBytes) {
+  if (!optBytes) {
+    return null;
+  }
+
+  return isU8a(optBytes) ? optBytes : optBytes.unwrapOr(null);
+}
+
+export function createPapiResult(interimResult, proposal, callData) {
+  let proposalWarning = null;
+  let proposalLength;
+  const callLength = callData.length;
+
+  if (interimResult.proposalLength) {
+    const storeLength = interimResult.proposalLength.toNumber();
+
+    if (callLength !== storeLength) {
+      proposalWarning = `Decoded call length does not match on-chain stored preimage length (${formatNumber(
+        callLength,
+      )} bytes vs ${formatNumber(storeLength)} bytes)`;
+    }
+  } else {
+    proposalLength = new BN(callLength);
+  }
+
+  return objectSpread({}, interimResult, {
+    isCompleted: true,
+    proposal,
+    proposalError: null,
+    proposalLength: proposalLength || interimResult.proposalLength,
+    proposalWarning,
+  });
+}
+
+export async function decodePreimageWithPapi(interimResult, optBytes, client) {
+  const callData = getCallData(optBytes);
+  if (!callData || !client) {
+    return null;
+  }
+
+  const metadata = await getPapiMetadata(client);
+  if (!metadata) {
+    return null;
+  }
+
+  const proposal = decodeCallTree(callData, metadata);
+
+  return createPapiResult(interimResult, proposal, callData);
 }
 
 /** @internal Helper to unwrap a deposit tuple into a structure */
@@ -188,6 +264,7 @@ function getBytesParams(interimResult, optStatus) {
 
 export default function useOldPreimage(hashOrBounded) {
   const api = useContextApi();
+  const { client } = useContextPapi();
 
   // retrieve the status using only the hash of the image
   const { inlineData, paramsStatus, resultPreimageHash } = useMemo(
@@ -215,28 +292,68 @@ export default function useOldPreimage(hashOrBounded) {
     { cacheKey: `usePreimage/preimageFor/${hashOrBounded}` },
   );
 
+  const { value: papiResult, loading: papiLoading } = useAsync(async () => {
+    if (!client) {
+      return null;
+    }
+
+    try {
+      if (resultPreimageFor && optBytes) {
+        return await decodePreimageWithPapi(
+          resultPreimageFor,
+          optBytes,
+          client,
+        );
+      }
+
+      if (resultPreimageHash && inlineData) {
+        return await decodePreimageWithPapi(
+          resultPreimageHash,
+          inlineData,
+          client,
+        );
+      }
+    } catch {
+      return null;
+    }
+
+    return null;
+  }, [client, resultPreimageFor, optBytes, resultPreimageHash, inlineData]);
+
+  const resolvedBytesLoaded = inlineData ? true : isBytesLoaded;
+  const hasBytesToDecode = Boolean(
+    (resultPreimageFor && optBytes) || (resultPreimageHash && inlineData),
+  );
+
   // extract all the preimage info we have retrieved
   return useMemo(
     () => [
-      resultPreimageFor
-        ? optBytes
-          ? createResult(resultPreimageFor, optBytes)
-          : resultPreimageFor
-        : resultPreimageHash
-        ? inlineData
-          ? createResult(resultPreimageHash, inlineData)
+      papiResult ||
+        (resultPreimageFor
+          ? optBytes
+            ? createResult(resultPreimageFor, optBytes)
+            : resultPreimageFor
           : resultPreimageHash
-        : undefined,
+          ? inlineData
+            ? createResult(resultPreimageHash, inlineData)
+            : resultPreimageHash
+          : undefined),
       isStatusLoaded,
-      isBytesLoaded,
+      hasBytesToDecode
+        ? Boolean(client) && resolvedBytesLoaded && !papiLoading
+        : resolvedBytesLoaded,
     ],
     [
+      client,
       inlineData,
       optBytes,
+      papiLoading,
+      papiResult,
       resultPreimageHash,
       resultPreimageFor,
+      resolvedBytesLoaded,
+      hasBytesToDecode,
       isStatusLoaded,
-      isBytesLoaded,
     ],
   );
 }

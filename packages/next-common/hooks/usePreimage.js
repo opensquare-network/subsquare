@@ -1,10 +1,16 @@
 import { useMemo } from "react";
+import { useAsync } from "react-use";
 
 import { Option } from "@polkadot/types";
 import { BN_ZERO, objectSpread } from "@polkadot/util";
 import useCall from "next-common/utils/hooks/useCall.js";
-import { createResult, getPreimageHash } from "./useOldPreimage";
+import {
+  createResult,
+  decodePreimageWithPapi,
+  getPreimageHash,
+} from "./useOldPreimage";
 import { useContextApi } from "next-common/context/api";
+import { useContextPapi } from "next-common/context/papi";
 
 /** @internal Helper to unwrap a ticket tuple into a structure */
 function convertTicket(ticket) {
@@ -69,6 +75,7 @@ export function getBytesParams(interimResult, optStatus) {
 
 export default function usePreimage(hashOrBounded) {
   const api = useContextApi();
+  const { client } = useContextPapi();
 
   // retrieve the status using only the hash of the image
   const { inlineData, paramsStatus, resultPreimageHash } = useMemo(
@@ -96,28 +103,68 @@ export default function usePreimage(hashOrBounded) {
     { cacheKey: `usePreimage/preimageFor/${hashOrBounded}` },
   );
 
+  const { value: papiResult, loading: papiLoading } = useAsync(async () => {
+    if (!client) {
+      return null;
+    }
+
+    try {
+      if (resultPreimageFor && optBytes) {
+        return await decodePreimageWithPapi(
+          resultPreimageFor,
+          optBytes,
+          client,
+        );
+      }
+
+      if (resultPreimageHash && inlineData) {
+        return await decodePreimageWithPapi(
+          resultPreimageHash,
+          inlineData,
+          client,
+        );
+      }
+    } catch {
+      return null;
+    }
+
+    return null;
+  }, [client, resultPreimageFor, optBytes, resultPreimageHash, inlineData]);
+
+  const resolvedBytesLoaded = inlineData ? true : isBytesLoaded;
+  const hasBytesToDecode = Boolean(
+    (resultPreimageFor && optBytes) || (resultPreimageHash && inlineData),
+  );
+
   // extract all the preimage info we have retrieved
   return useMemo(
     () => [
-      resultPreimageFor
-        ? optBytes
-          ? createResult(resultPreimageFor, optBytes)
-          : resultPreimageFor
-        : resultPreimageHash
-        ? inlineData
-          ? createResult(resultPreimageHash, inlineData)
+      papiResult ||
+        (resultPreimageFor
+          ? optBytes
+            ? createResult(resultPreimageFor, optBytes)
+            : resultPreimageFor
           : resultPreimageHash
-        : undefined,
+          ? inlineData
+            ? createResult(resultPreimageHash, inlineData)
+            : resultPreimageHash
+          : undefined),
       isStatusLoaded,
-      isBytesLoaded,
+      hasBytesToDecode
+        ? Boolean(client) && resolvedBytesLoaded && !papiLoading
+        : resolvedBytesLoaded,
     ],
     [
+      client,
       inlineData,
       optBytes,
+      papiLoading,
+      papiResult,
       resultPreimageHash,
       resultPreimageFor,
+      resolvedBytesLoaded,
+      hasBytesToDecode,
       isStatusLoaded,
-      isBytesLoaded,
     ],
   );
 }
