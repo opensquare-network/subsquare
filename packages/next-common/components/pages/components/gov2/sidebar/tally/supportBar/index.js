@@ -134,7 +134,7 @@ export default function SupportBar({ supportPerbill }) {
             contentClassName="max-w-[240px]"
             content="The minimum percentage of support needed at the time of decision end."
           >
-            <span>{minSupport * 100}%</span>
+            <span>{(minSupport * 100).toFixed(2)}%</span>
           </Tooltip>
         </li>
         <li>
