@@ -10,7 +10,7 @@ import extractFellowshipPromote from "next-common/components/common/call/fellows
 import extractFellowshipApprove from "next-common/components/common/call/fellowshipApprove";
 import dynamic from "next/dynamic";
 import isHydradx from "next-common/utils/isHydradx";
-import { useChain } from "next-common/context/chain";
+import { useChain, useChainSettings } from "next-common/context/chain";
 import {
   isCollectivesChain,
   isKusamaChain,
@@ -36,6 +36,7 @@ const RelayToParachainCall = dynamic(
 
 export default function Gov2ReferendumCall() {
   const chain = useChain();
+  const { enablePapi } = useChainSettings();
   const onchainData = useOnchainData();
   const proposal = onchainData?.proposal ?? {};
   const inlineCall = onchainData?.inlineCall || {};
@@ -98,11 +99,15 @@ export default function Gov2ReferendumCall() {
     data.push(<EvmCall key="evm-call" call={callData} />);
   }
 
-  if (isCollectivesChain(chain) && callData) {
+  if (!enablePapi && isCollectivesChain(chain) && callData) {
     data.push(<RelayChainCall key="relay-chain-call" />);
   }
 
-  if ((isPolkadotChain(chain) || isKusamaChain(chain)) && callData) {
+  if (
+    !enablePapi &&
+    (isPolkadotChain(chain) || isKusamaChain(chain)) &&
+    callData
+  ) {
     data.push(<RelayToParachainCall key="relay-to-parachain-call" />);
   }
 

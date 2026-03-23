@@ -7,7 +7,7 @@ import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import ReferendumCallProvider from "next-common/context/referenda/call";
 import useOgTrackerReferendumDetail from "next-common/hooks/referenda/useOgTrackerReferendumDetail";
 import { isPolkadotChain } from "next-common/utils/chain";
-import { useChain } from "next-common/context/chain";
+import { useChain, useChainSettings } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
 import { useRouter } from "next/router";
 import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
@@ -38,8 +38,31 @@ const CurvesChartTab = dynamicClientOnly(() =>
   import("../referenda/curvesChartTab"),
 );
 
+function LegacyReferendumCallTab({ indexer }) {
+  return (
+    <MigrationConditionalApiProvider indexer={indexer}>
+      <ReferendumCallProvider>
+        <Gov2ReferendumCall />
+      </ReferendumCallProvider>
+    </MigrationConditionalApiProvider>
+  );
+}
+
+function PapiReferendumCallTab({ indexer }) {
+  return (
+    <PapiProvider>
+      <MigrationConditionalPapiProvider indexer={indexer}>
+        <PapiCallTreeProvider>
+          <Gov2ReferendumCall />
+        </PapiCallTreeProvider>
+      </MigrationConditionalPapiProvider>
+    </PapiProvider>
+  );
+}
+
 export default function ReferendumDetailMultiTabs() {
   const chain = useChain();
+  const { enablePapi } = useChainSettings();
   const hasVotesViewTabs = ![Chains.kintsugi, Chains.interlay].includes(chain);
   const router = useRouter();
 
@@ -61,18 +84,10 @@ export default function ReferendumDetailMultiTabs() {
               value: "call",
               label: "Call",
               tooltip: tabsTooltipContentMap.call,
-              content: (
-                <MigrationConditionalApiProvider indexer={indexer}>
-                  <PapiProvider>
-                    <MigrationConditionalPapiProvider indexer={proposalIndexer}>
-                      <PapiCallTreeProvider>
-                        <ReferendumCallProvider>
-                          <Gov2ReferendumCall />
-                        </ReferendumCallProvider>
-                      </PapiCallTreeProvider>
-                    </MigrationConditionalPapiProvider>
-                  </PapiProvider>
-                </MigrationConditionalApiProvider>
+              content: enablePapi ? (
+                <PapiReferendumCallTab indexer={proposalIndexer} />
+              ) : (
+                <LegacyReferendumCallTab indexer={indexer} />
               ),
             },
           ]
@@ -150,6 +165,7 @@ export default function ReferendumDetailMultiTabs() {
     proposalIndexer,
     proposal?.call,
     indexer,
+    enablePapi,
     info,
     timelineData,
     timeLineTabSwitchComponent,
