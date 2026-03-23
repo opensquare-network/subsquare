@@ -53,7 +53,7 @@ function addLengthWarning(item, proposal, callLength) {
 
   return {
     ...item,
-    proposal,
+    proposal: proposalWarning ? null : proposal,
     proposalWarning,
   };
 }
