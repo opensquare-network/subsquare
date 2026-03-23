@@ -3,12 +3,19 @@ import PreImagesListFromServer from "next-common/components/preImages/preImagesF
 import PreImagesList from "next-common/components/preImages/preImagesList";
 import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
 import PreImagesFooter from "next-common/components/preImages/footer";
-import { hasPreimagesGraphQL } from "next-common/utils/env/preimage";
 import { PapiProvider } from "next-common/context/papi";
+import { useChainSettings } from "next-common/context/chain";
+import { hasPreimagesGraphQL } from "next-common/utils/env/preimage";
 
 export default function PreimagesPage() {
   const title = "Preimages";
   const seoInfo = { title, desc: title };
+  const { enablePapi } = useChainSettings();
+  const content = hasPreimagesGraphQL() ? (
+    <PreImagesListFromServer />
+  ) : (
+    <PreImagesList />
+  );
 
   return (
     <ListLayout
@@ -17,13 +24,7 @@ export default function PreimagesPage() {
       description="Preimage can be submitted and stored on-chain against the hash later, upon the proposal's dispatch."
       summaryFooter={<PreImagesFooter />}
     >
-      <PapiProvider>
-        {hasPreimagesGraphQL() ? (
-          <PreImagesListFromServer />
-        ) : (
-          <PreImagesList />
-        )}
-      </PapiProvider>
+      {enablePapi ? <PapiProvider>{content}</PapiProvider> : content}
     </ListLayout>
   );
 }

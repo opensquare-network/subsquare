@@ -143,6 +143,7 @@ const polkadot = {
   },
   usePolkassemblyBackupData: true,
   hasIdentityVerification: true,
+  enablePapi: true,
 };
 
 export default polkadot;

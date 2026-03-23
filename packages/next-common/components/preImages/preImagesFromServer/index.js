@@ -7,8 +7,6 @@ import MyDeposit from "../myDeposit";
 import { queryPreimages } from "./gql";
 import { isSameAddress } from "next-common/utils";
 import DesktopList from "./desktop";
-import { useContextApi } from "next-common/context/api";
-import { parsePreImageCall } from "next-common/components/proposal/preImage";
 import { formatNumber } from "@polkadot/util";
 import MobileList from "./mobile";
 import { getPreimageTicket } from "./common";
@@ -57,35 +55,33 @@ function addLengthWarning(item, proposal, callLength) {
   };
 }
 
-function decodeWithLegacyApi(item, api) {
-  if (!api || !api.registry) {
-    return item;
-  }
-
-  const proposal = parsePreImageCall(item.hex, api);
-  if (!proposal) {
-    return {
-      ...item,
-      proposalError: "Unable to decode preimage bytes into a valid Call",
-    };
-  }
-
-  return addLengthWarning(item, proposal, proposal.encodedLength);
+function addDecodeError(item, proposalError) {
+  return {
+    ...item,
+    proposalError,
+  };
 }
 
 function useServerPreimages() {
   const trigger = useSelector(preImagesTriggerSelector);
-  const api = useContextApi();
   const { client } = useContextPapi();
   const { value: parsedPreimages, loading } = useAsync(async () => {
     const preimages = await queryPreimages();
-    if (!preimages || !client) {
+    if (!preimages) {
       return null;
+    }
+
+    if (!client) {
+      return preimages.map((item) =>
+        addDecodeError(item, "PAPI decode is not available"),
+      );
     }
 
     const metadata = await getPapiMetadata(client);
     if (!metadata) {
-      return null;
+      return preimages.map((item) =>
+        addDecodeError(item, "Unable to load metadata for PAPI decode"),
+      );
     }
 
     return preimages.map((item) => {
@@ -102,17 +98,13 @@ function useServerPreimages() {
 
         return addLengthWarning(item, proposal, callData.length);
       } catch {
-        if (api?.registry) {
-          return decodeWithLegacyApi(item, api);
-        }
-
-        return {
-          ...item,
-          proposalError: "Unable to decode preimage bytes into a valid Call",
-        };
+        return addDecodeError(
+          item,
+          "Unable to decode preimage bytes into a valid Call",
+        );
       }
     });
-  }, [api, trigger, client]);
+  }, [trigger, client]);
 
   return { value: parsedPreimages, loading };
 }

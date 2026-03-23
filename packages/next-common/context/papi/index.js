@@ -51,13 +51,16 @@ export function PapiProvider({ children }) {
 }
 
 export function useContextPapiApi() {
-  const { api } = useContext(PapiContext);
-  return api;
+  const context = useContext(PapiContext);
+  return context?.api;
 }
 
 export function useContextPapi() {
-  const { api, client } = useContext(PapiContext);
-  return { api, client };
+  const context = useContext(PapiContext);
+  return {
+    api: context?.api,
+    client: context?.client,
+  };
 }
 
 export default PapiContext;

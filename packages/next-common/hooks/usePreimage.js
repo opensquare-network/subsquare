@@ -6,11 +6,13 @@ import { BN_ZERO, objectSpread } from "@polkadot/util";
 import useCall from "next-common/utils/hooks/useCall.js";
 import {
   createResult,
+  createPapiErrorResult,
   decodePreimageWithPapi,
   getPreimageHash,
 } from "./useOldPreimage";
 import { useContextApi } from "next-common/context/api";
 import { useContextPapi } from "next-common/context/papi";
+import { useChainSettings } from "next-common/context/chain";
 
 /** @internal Helper to unwrap a ticket tuple into a structure */
 function convertTicket(ticket) {
@@ -76,6 +78,7 @@ export function getBytesParams(interimResult, optStatus) {
 export default function usePreimage(hashOrBounded) {
   const api = useContextApi();
   const { client } = useContextPapi();
+  const { enablePapi } = useChainSettings();
 
   // retrieve the status using only the hash of the image
   const { inlineData, paramsStatus, resultPreimageHash } = useMemo(
@@ -104,32 +107,52 @@ export default function usePreimage(hashOrBounded) {
   );
 
   const { value: papiResult, loading: papiLoading } = useAsync(async () => {
-    if (!client) {
+    if (!enablePapi) {
       return null;
+    }
+
+    const decodeTarget =
+      resultPreimageFor && optBytes
+        ? [resultPreimageFor, optBytes]
+        : resultPreimageHash && inlineData
+        ? [resultPreimageHash, inlineData]
+        : null;
+
+    if (!decodeTarget) {
+      return null;
+    }
+
+    const [interimResult, bytes] = decodeTarget;
+
+    if (!client) {
+      return createPapiErrorResult(
+        interimResult,
+        "PAPI decode is not available",
+      );
     }
 
     try {
-      if (resultPreimageFor && optBytes) {
-        return await decodePreimageWithPapi(
-          resultPreimageFor,
-          optBytes,
-          client,
-        );
-      }
-
-      if (resultPreimageHash && inlineData) {
-        return await decodePreimageWithPapi(
-          resultPreimageHash,
-          inlineData,
-          client,
-        );
-      }
+      return (
+        (await decodePreimageWithPapi(interimResult, bytes, client)) ||
+        createPapiErrorResult(
+          interimResult,
+          "Unable to load metadata for PAPI decode",
+        )
+      );
     } catch {
-      return null;
+      return createPapiErrorResult(
+        interimResult,
+        "Unable to decode preimage bytes into a valid Call",
+      );
     }
-
-    return null;
-  }, [client, resultPreimageFor, optBytes, resultPreimageHash, inlineData]);
+  }, [
+    client,
+    enablePapi,
+    resultPreimageFor,
+    optBytes,
+    resultPreimageHash,
+    inlineData,
+  ]);
 
   const resolvedBytesLoaded = inlineData ? true : isBytesLoaded;
   const hasBytesToDecode = Boolean(
@@ -139,23 +162,26 @@ export default function usePreimage(hashOrBounded) {
   // extract all the preimage info we have retrieved
   return useMemo(
     () => [
-      papiResult ||
-        (resultPreimageFor
-          ? optBytes
-            ? createResult(resultPreimageFor, optBytes)
-            : resultPreimageFor
+      enablePapi
+        ? papiResult || resultPreimageFor || resultPreimageHash || undefined
+        : resultPreimageFor
+        ? optBytes
+          ? createResult(resultPreimageFor, optBytes)
+          : resultPreimageFor
+        : resultPreimageHash
+        ? inlineData
+          ? createResult(resultPreimageHash, inlineData)
           : resultPreimageHash
-          ? inlineData
-            ? createResult(resultPreimageHash, inlineData)
-            : resultPreimageHash
-          : undefined),
+        : undefined,
       isStatusLoaded,
       hasBytesToDecode
-        ? Boolean(client) && resolvedBytesLoaded && !papiLoading
+        ? enablePapi
+          ? resolvedBytesLoaded && !papiLoading
+          : resolvedBytesLoaded
         : resolvedBytesLoaded,
     ],
     [
-      client,
+      enablePapi,
       inlineData,
       optBytes,
       papiLoading,
