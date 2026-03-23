@@ -119,59 +119,6 @@ function getDocsArray(value) {
   return Array.isArray(value) && value.length > 0 ? value : null;
 }
 
-function getLookupEntry(metadata, typeId) {
-  if (!Number.isInteger(typeId)) {
-    return null;
-  }
-
-  return metadata?.lookup?.[typeId] ?? null;
-}
-
-function getFieldDocsCandidates(metadata, fields = []) {
-  const candidates = [];
-
-  for (const field of fields) {
-    const label = field.name || field.typeName || `type:${field.type}`;
-    const fieldDocs = getDocsArray(field.docs);
-    if (fieldDocs) {
-      candidates.push({
-        source: `field:${label}`,
-        docs: fieldDocs,
-      });
-    }
-
-    const fieldTypeDocs = getDocsArray(
-      getLookupEntry(metadata, field.type)?.docs,
-    );
-    if (fieldTypeDocs) {
-      candidates.push({
-        source: `fieldType:${label}`,
-        docs: fieldTypeDocs,
-      });
-    }
-  }
-
-  return candidates;
-}
-
-function getCallDocCandidates(metadata, pallet, callsLookup, callVariant) {
-  return [
-    {
-      source: "variant",
-      docs: getDocsArray(callVariant?.docs),
-    },
-    {
-      source: "callsLookup",
-      docs: getDocsArray(callsLookup?.docs),
-    },
-    {
-      source: "pallet",
-      docs: getDocsArray(pallet?.docs),
-    },
-    ...getFieldDocsCandidates(metadata, callVariant?.fields),
-  ].filter(({ docs }) => docs);
-}
-
 function getCallDocs(metadata, section, method) {
   const normalizedSection = normalizeCallName(section);
   const normalizedMethod = normalizeCallName(method);
@@ -194,14 +141,7 @@ function getCallDocs(metadata, section, method) {
     ({ name }) => normalizeCallName(name) === normalizedMethod,
   );
 
-  const docCandidates = getCallDocCandidates(
-    metadata,
-    pallet,
-    callsLookup,
-    callVariant,
-  );
-
-  return docCandidates[0]?.docs ?? null;
+  return getDocsArray(callVariant?.docs);
 }
 
 function attachCallDocs(node, metadata) {
