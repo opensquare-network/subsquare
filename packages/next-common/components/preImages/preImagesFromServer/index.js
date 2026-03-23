@@ -13,6 +13,9 @@ import { getPreimageTicket } from "./common";
 import { preImagesTriggerSelector } from "next-common/store/reducers/preImagesSlice";
 import { useSelector } from "react-redux";
 import { useContextPapi } from "next-common/context/papi";
+import { useContextApi } from "next-common/context/api";
+import { parsePreImageCall } from "next-common/components/proposal/preImage";
+import { useChainSettings } from "next-common/context/chain";
 import {
   decodeCallTreeWithInfo,
   getMetadata,
@@ -62,13 +65,39 @@ function addDecodeError(item, proposalError) {
   };
 }
 
+function decodeWithLegacyApi(item, api) {
+  if (!item.hex) {
+    return { ...item, proposalWarning: "No preimage bytes found" };
+  }
+
+  if (!api?.registry) {
+    return addDecodeError(item, "Legacy decode is not available");
+  }
+
+  const proposal = parsePreImageCall(item.hex, api);
+  if (!proposal) {
+    return addDecodeError(
+      item,
+      "Unable to decode preimage bytes into a valid Call",
+    );
+  }
+
+  return addLengthWarning(item, proposal, proposal.encodedLength);
+}
+
 function useServerPreimages() {
   const trigger = useSelector(preImagesTriggerSelector);
+  const { enablePapi } = useChainSettings();
+  const api = useContextApi();
   const { client } = useContextPapi();
   const { value: parsedPreimages, loading } = useAsync(async () => {
     const preimages = await queryPreimages();
     if (!preimages) {
       return null;
+    }
+
+    if (!enablePapi) {
+      return preimages.map((item) => decodeWithLegacyApi(item, api));
     }
 
     if (!client) {
@@ -104,7 +133,7 @@ function useServerPreimages() {
         );
       }
     });
-  }, [trigger, client]);
+  }, [trigger, client, enablePapi, api]);
 
   return { value: parsedPreimages, loading };
 }
