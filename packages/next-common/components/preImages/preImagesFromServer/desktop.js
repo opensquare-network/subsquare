@@ -8,6 +8,7 @@ import { Deposit, Hash, Proposal, Status } from "../fields";
 import { useDispatch } from "react-redux";
 import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
 import { getPreimageTicket, getPreimageLen, getPreimageStatus } from "./common";
+import FieldLoading from "next-common/components/icons/fieldLoading";
 
 const PreimageDetailPopup = dynamicPopup(() =>
   import("../preImageDetailPopup"),
@@ -52,13 +53,17 @@ export default function DesktopList({ data, loading }) {
         proposal={preimage.proposal}
         setShowArgumentsDetail={setShowArgumentsDetail}
       />,
-      <Proposal
-        key="proposal"
-        proposal={preimage.proposal}
-        proposalError={preimage.proposalError}
-        proposalWarning={preimage.proposalWarning}
-        setShowArgumentsDetail={setShowArgumentsDetail}
-      />,
+      preimage.isApiLoading ? (
+        <FieldLoading key="proposal-loading" />
+      ) : (
+        <Proposal
+          key="proposal"
+          proposal={preimage.proposal}
+          proposalError={preimage.proposalError}
+          proposalWarning={preimage.proposalWarning}
+          setShowArgumentsDetail={setShowArgumentsDetail}
+        />
+      ),
       ticket && (
         <Deposit
           key="deposit"

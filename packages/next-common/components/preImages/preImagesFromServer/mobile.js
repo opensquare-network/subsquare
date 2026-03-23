@@ -10,6 +10,7 @@ import Loading from "next-common/components/loading";
 import { cn } from "next-common/utils";
 import { FixedSizeList } from "react-window";
 import { getPreimageTicket, getPreimageLen, getPreimageStatus } from "./common";
+import FieldLoading from "next-common/components/icons/fieldLoading";
 
 const PreimageDetailPopup = dynamicPopup(() =>
   import("../preImageDetailPopup"),
@@ -28,13 +29,17 @@ function Item({ preimage, index }) {
     <>
       <PreimageMobileListItemTemplate
         title={
-          <Proposal
-            key="proposal"
-            proposal={preimage.proposal}
-            proposalError={preimage.proposalError}
-            proposalWarning={preimage.proposalWarning}
-            setShowArgumentsDetail={setShowArgumentsDetail}
-          />
+          preimage.isApiLoading ? (
+            <FieldLoading />
+          ) : (
+            <Proposal
+              key="proposal"
+              proposal={preimage.proposal}
+              proposalError={preimage.proposalError}
+              proposalWarning={preimage.proposalWarning}
+              setShowArgumentsDetail={setShowArgumentsDetail}
+            />
+          )
         }
         titleExtra={
           <DetailButton

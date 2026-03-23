@@ -65,12 +65,23 @@ function addDecodeError(item, proposalError) {
   };
 }
 
+function addApiLoading(item) {
+  return {
+    ...item,
+    isApiLoading: true,
+  };
+}
+
 function decodeWithLegacyApi(item, api) {
   if (!item.hex) {
     return { ...item, proposalWarning: "No preimage bytes found" };
   }
 
-  if (!api?.registry) {
+  if (!api) {
+    return addApiLoading(item);
+  }
+
+  if (!api.registry) {
     return addDecodeError(item, "Legacy decode is not available");
   }
 
