@@ -3,15 +3,14 @@ import { useDispatch } from "react-redux";
 import tw from "tailwind-styled-components";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
-import FieldLoading from "../../icons/fieldLoading";
 import { Deposit, Hash, Proposal, Status } from "../fields";
 import DetailButton from "../../detailButton";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import Loading from "next-common/components/loading";
 import { cn } from "next-common/utils";
 import { FixedSizeList } from "react-window";
-import { useContextApi } from "next-common/context/api";
 import { getPreimageTicket, getPreimageLen, getPreimageStatus } from "./common";
+import FieldLoading from "next-common/components/icons/fieldLoading";
 
 const PreimageDetailPopup = dynamicPopup(() =>
   import("../preImageDetailPopup"),
@@ -20,8 +19,6 @@ const PreimageDetailPopup = dynamicPopup(() =>
 const FieldName = tw.span`text-textTertiary`;
 
 function Item({ preimage, index }) {
-  const api = useContextApi();
-  const isApiLoading = !api;
   const dispatch = useDispatch();
   const [showArgumentsDetail, setShowArgumentsDetail] = useState(null);
   const statusName = getPreimageStatus(preimage);
@@ -32,7 +29,7 @@ function Item({ preimage, index }) {
     <>
       <PreimageMobileListItemTemplate
         title={
-          isApiLoading ? (
+          preimage.isApiLoading ? (
             <FieldLoading />
           ) : (
             <Proposal
