@@ -95,17 +95,18 @@ export function Proposal({
   if (proposalError) {
     return <span className="text-red500 font-medium">{proposalError}</span>;
   }
+
+  if (proposalWarning) {
+    return (
+      <span className="text-orange500 font-medium">{proposalWarning}</span>
+    );
+  }
+
   const { section, method, meta, docs } = proposal || {};
   const doc = meta?.docs[0]?.toJSON() || docs?.[0];
 
   if (!section || !method) {
-    if (!proposalWarning) {
-      return null;
-    }
-
-    return (
-      <span className="text-orange500 font-medium">{proposalWarning}</span>
-    );
+    return null;
   }
 
   return (
@@ -116,11 +117,7 @@ export function Proposal({
           onClick={() => setShowArgumentsDetail(proposal)}
         >{`${section}.${method}`}</span>
       </div>
-      {proposalWarning ? (
-        <span className="text-orange500 text-[12px] leading-[16px] max-md:text-[14px] max-md:leading-[20px]">
-          {proposalWarning}
-        </span>
-      ) : doc ? (
+      {doc ? (
         <span className="text-textSecondary text-[12px] leading-[16px] max-md:text-[14px] max-md:whitespace-nowrap max-md:overflow-hidden max-md:text-ellipsis max-md:leading-[20px]">
           {doc}
         </span>
