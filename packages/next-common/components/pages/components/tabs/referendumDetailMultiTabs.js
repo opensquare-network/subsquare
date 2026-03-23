@@ -53,7 +53,11 @@ function PapiReferendumCallTab({ indexer }) {
     <PapiProvider>
       <MigrationConditionalPapiProvider indexer={indexer}>
         <PapiCallTreeProvider>
-          <Gov2ReferendumCall />
+          <MigrationConditionalApiProvider indexer={indexer}>
+            <ReferendumCallProvider>
+              <Gov2ReferendumCall />
+            </ReferendumCallProvider>
+          </MigrationConditionalApiProvider>
         </PapiCallTreeProvider>
       </MigrationConditionalPapiProvider>
     </PapiProvider>
