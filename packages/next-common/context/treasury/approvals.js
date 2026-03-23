@@ -1,22 +1,22 @@
 import { createContext, useContext, useMemo } from "react";
 import useCall from "next-common/utils/hooks/useCall";
-import { useContextApi } from "../api";
-import { useTreasuryPallet } from "./index";
+import { useTreasuryPapiPallet } from "./index";
+import { useContextPapiApi } from "../papi";
 
 export const TreasuryApprovalsContext = createContext(null);
 
 export function TreasuryApprovalsProvider({ children }) {
-  const api = useContextApi();
-  const pallet = useTreasuryPallet();
+  const papi = useContextPapiApi();
+  const papiPallet = useTreasuryPapiPallet();
 
   const approvalsQuery = useMemo(() => {
-    return api?.query?.[pallet]?.approvals;
-  }, [api, pallet]);
+    return papi?.query?.[papiPallet]?.Approvals?.getValue;
+  }, [papi, papiPallet]);
 
   const { value: rawApprovals } = useCall(approvalsQuery, []);
   const approvalsList = useMemo(() => {
     if (!rawApprovals) return [];
-    return rawApprovals.toJSON() || [];
+    return rawApprovals || [];
   }, [rawApprovals]);
 
   return (

@@ -1,3 +1,4 @@
+import { capitalize } from "lodash-es";
 import { createContext, useContext } from "react";
 
 const TreasuryContext = createContext(null);
@@ -18,6 +19,11 @@ export function useTreasuryPallet() {
   }
 
   return pallet;
+}
+
+export function useTreasuryPapiPallet() {
+  const pallet = useTreasuryPallet();
+  return capitalize(pallet);
 }
 
 export function useTreasuryProposalListUrl(pallet) {

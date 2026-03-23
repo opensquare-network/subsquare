@@ -1,4 +1,5 @@
 import { useOnchainData } from "next-common/context/post";
+import { PapiProvider } from "next-common/context/papi";
 import { TreasuryApprovalsProvider } from "next-common/context/treasury/approvals";
 import useAwardCountDown from "next-common/hooks/treasury/proposal/useAwardCountDown";
 
@@ -6,9 +7,11 @@ export default function TreasuryAwardCountDown() {
   const { proposalIndex } = useOnchainData();
 
   return (
-    <TreasuryApprovalsProvider>
-      <TreasuryAwardCountDownImpl proposalIndex={proposalIndex} />
-    </TreasuryApprovalsProvider>
+    <PapiProvider>
+      <TreasuryApprovalsProvider>
+        <TreasuryAwardCountDownImpl proposalIndex={proposalIndex} />
+      </TreasuryApprovalsProvider>
+    </PapiProvider>
   );
 }
 
