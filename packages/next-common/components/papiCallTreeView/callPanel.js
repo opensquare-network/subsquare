@@ -7,7 +7,8 @@ import { CallContextProvider } from "./callContext";
 
 export default function CallPanel({ call, callIndex }) {
   const [folded, setFolded] = useState(true);
-  const { section, method, children } = call || {};
+  const { section, method, children, docs } = call || {};
+  const doc = docs?.[0];
 
   return (
     <div>
@@ -17,6 +18,11 @@ export default function CallPanel({ call, callIndex }) {
             {isNil(callIndex) ? "call: Call" : `${callIndex}: Call: Call`}
           </span>
           <span className="font-medium leading-[20px] truncate">{`${section}.${method}`}</span>
+          {doc ? (
+            <span className="text-textTertiary text-[12px] leading-[16px]">
+              {doc}
+            </span>
+          ) : null}
         </div>
         <div className="flex flex-col justify-end">
           <FoldButton setFolded={setFolded} folded={folded} />

@@ -14,44 +14,105 @@ import MobileList from "./mobile";
 import { getPreimageTicket } from "./common";
 import { preImagesTriggerSelector } from "next-common/store/reducers/preImagesSlice";
 import { useSelector } from "react-redux";
+import { useContextPapi } from "next-common/context/papi";
+import {
+  decodeCallTreeWithInfo,
+  getMetadata,
+} from "next-common/utils/callDecoder/decoder.mjs";
+import { Binary } from "polkadot-api";
+
+const metadataCache = new WeakMap();
+
+async function getPapiMetadata(client) {
+  if (!client) {
+    return null;
+  }
+
+  let metadataPromise = metadataCache.get(client);
+  if (!metadataPromise) {
+    metadataPromise = getMetadata(client).catch((error) => {
+      metadataCache.delete(client);
+      throw error;
+    });
+
+    metadataCache.set(client, metadataPromise);
+  }
+
+  return metadataPromise;
+}
+
+function addLengthWarning(item, proposal, callLength) {
+  const storeLength = item.requested?.maybeLen || item.unrequested?.len;
+  const proposalWarning =
+    typeof storeLength === "number" && callLength !== storeLength
+      ? `Decoded call length does not match on-chain stored preimage length (${formatNumber(
+          callLength,
+        )} bytes vs ${formatNumber(storeLength)} bytes)`
+      : null;
+
+  return {
+    ...item,
+    proposal,
+    proposalWarning,
+  };
+}
+
+function decodeWithLegacyApi(item, api) {
+  if (!api || !api.registry) {
+    return item;
+  }
+
+  const proposal = parsePreImageCall(item.hex, api);
+  if (!proposal) {
+    return {
+      ...item,
+      proposalError: "Unable to decode preimage bytes into a valid Call",
+    };
+  }
+
+  return addLengthWarning(item, proposal, proposal.encodedLength);
+}
 
 function useServerPreimages() {
   const trigger = useSelector(preImagesTriggerSelector);
   const api = useContextApi();
-  const { value: preimages, loading } = useAsync(queryPreimages, [trigger]);
+  const { client } = useContextPapi();
+  const { value: parsedPreimages, loading } = useAsync(async () => {
+    const preimages = await queryPreimages();
+    if (!preimages || !client) {
+      return null;
+    }
 
-  const parsedPreimages = useMemo(() => {
-    if (!preimages) {
+    const metadata = await getPapiMetadata(client);
+    if (!metadata) {
       return null;
     }
 
     return preimages.map((item) => {
-      if (!api || !api.registry) {
-        return item;
-      }
       if (!item.hex) {
         return { ...item, proposalWarning: "No preimage bytes found" };
       }
-      const proposal = parsePreImageCall(item.hex, api);
-      if (proposal) {
-        const callLength = proposal.encodedLength;
-        const storeLength = item.requested?.maybeLen || item.unrequested?.len;
-        if (callLength !== storeLength) {
-          return {
-            ...item,
-            proposalWarning: `Decoded call length does not match on-chain stored preimage length (${formatNumber(
-              callLength,
-            )} bytes vs ${formatNumber(storeLength)} bytes)`,
-          };
+
+      try {
+        const callBytes = Binary.fromHex(item.hex).asBytes();
+        const { proposal, callData } = decodeCallTreeWithInfo(
+          callBytes,
+          metadata,
+        );
+
+        return addLengthWarning(item, proposal, callData.length);
+      } catch {
+        if (api?.registry) {
+          return decodeWithLegacyApi(item, api);
         }
-        return { ...item, proposal };
+
+        return {
+          ...item,
+          proposalError: "Unable to decode preimage bytes into a valid Call",
+        };
       }
-      return {
-        ...item,
-        proposalError: "Unable to decode preimage bytes into a valid Call",
-      };
     });
-  }, [preimages, api]);
+  }, [api, trigger, client]);
 
   return { value: parsedPreimages, loading };
 }

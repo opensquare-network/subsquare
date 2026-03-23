@@ -95,8 +95,8 @@ export function Proposal({
   if (proposalError) {
     return <span className="text-red500 font-medium">{proposalError}</span>;
   }
-  const { section, method, meta } = proposal || {};
-  const doc = meta?.docs[0]?.toJSON();
+  const { section, method, meta, docs } = proposal || {};
+  const doc = meta?.docs[0]?.toJSON() || docs?.[0];
 
   if (!section || !method) {
     if (!proposalWarning) {

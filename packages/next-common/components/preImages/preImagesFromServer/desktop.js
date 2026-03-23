@@ -5,8 +5,6 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import DataList from "next-common/components/dataList";
 import { Deposit, Hash, Proposal, Status } from "../fields";
-import { useContextApi } from "next-common/context/api";
-import FieldLoading from "next-common/components/icons/fieldLoading";
 import { useDispatch } from "react-redux";
 import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
 import { getPreimageTicket, getPreimageLen, getPreimageStatus } from "./common";
@@ -17,8 +15,6 @@ const PreimageDetailPopup = dynamicPopup(() =>
 
 export default function DesktopList({ data, loading }) {
   const dispatch = useDispatch();
-  const api = useContextApi();
-  const isApiLoading = !api;
   const [showArgumentsDetail, setShowArgumentsDetail] = useState(null);
 
   const { columns } = useColumns([
@@ -56,17 +52,13 @@ export default function DesktopList({ data, loading }) {
         proposal={preimage.proposal}
         setShowArgumentsDetail={setShowArgumentsDetail}
       />,
-      isApiLoading ? (
-        <FieldLoading />
-      ) : (
-        <Proposal
-          key="proposal"
-          proposal={preimage.proposal}
-          proposalError={preimage.proposalError}
-          proposalWarning={preimage.proposalWarning}
-          setShowArgumentsDetail={setShowArgumentsDetail}
-        />
-      ),
+      <Proposal
+        key="proposal"
+        proposal={preimage.proposal}
+        proposalError={preimage.proposalError}
+        proposalWarning={preimage.proposalWarning}
+        setShowArgumentsDetail={setShowArgumentsDetail}
+      />,
       ticket && (
         <Deposit
           key="deposit"

@@ -1,7 +1,9 @@
 import ListLayout from "next-common/components/layout/ListLayout";
+import PreImagesListFromServer from "next-common/components/preImages/preImagesFromServer";
 import PreImagesList from "next-common/components/preImages/preImagesList";
 import { getServerSidePropsWithTracks } from "next-common/services/serverSide";
 import PreImagesFooter from "next-common/components/preImages/footer";
+import { hasPreimagesGraphQL } from "next-common/utils/env/preimage";
 import { PapiProvider } from "next-common/context/papi";
 
 export default function PreimagesPage() {
@@ -16,7 +18,11 @@ export default function PreimagesPage() {
       summaryFooter={<PreImagesFooter />}
     >
       <PapiProvider>
-        <PreImagesList />
+        {hasPreimagesGraphQL() ? (
+          <PreImagesListFromServer />
+        ) : (
+          <PreImagesList />
+        )}
       </PapiProvider>
     </ListLayout>
   );

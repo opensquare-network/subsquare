@@ -2,9 +2,11 @@ import { toTypedCallTree } from "./treeBuilder.mjs";
 import { normalizeCallTree } from "./treeNormalize.mjs";
 import {
   getDynamicBuilder,
+  getLookupCodecBuilder,
   getLookupFn,
 } from "@polkadot-api/metadata-builders";
 import {
+  Bin,
   metadata as metadataCodec,
   unifyMetadata,
 } from "@polkadot-api/substrate-bindings";
@@ -19,7 +21,15 @@ export async function getBlockMetadata(client, blockHash) {
   return unifyMetadata(metadataCodec.dec(metadataRaw));
 }
 
-export function decodeCallTree(bytes, metadata) {
+function isSameBytes(left, right) {
+  if (left.length !== right.length) {
+    return false;
+  }
+
+  return left.every((value, index) => value === right[index]);
+}
+
+function getCallCodecs(metadata) {
   const lookup = getLookupFn(metadata);
   const dynamicBuilder = getDynamicBuilder(lookup);
 
@@ -29,7 +39,197 @@ export function decodeCallTree(bytes, metadata) {
   }
 
   const callCodec = dynamicBuilder.buildDefinition(codecType);
-  const decodedCall = callCodec.dec(bytes);
+
+  const optionLookupId = -1;
+  const optionLookup = (id) => {
+    if (id === optionLookupId) {
+      return {
+        id,
+        type: "option",
+        value: lookup(codecType),
+      };
+    }
+
+    return lookup(id);
+  };
+
+  const optionCallCodec = getLookupCodecBuilder(optionLookup)(optionLookupId);
+
+  return {
+    lookup,
+    codecType,
+    callCodec,
+    optionCallCodec,
+  };
+}
+
+function getWrappedCallCandidates(bytes) {
+  const candidates = [bytes];
+
+  try {
+    const unwrappedBytes = Bin().dec(bytes).asBytes();
+    if (!isSameBytes(unwrappedBytes, bytes)) {
+      candidates.push(unwrappedBytes);
+    }
+  } catch {
+    // The input is not SCALE-encoded Bytes; keep the raw bytes only.
+  }
+
+  return candidates;
+}
+
+function decodeCallData(bytes, metadata) {
+  const { callCodec, optionCallCodec, ...rest } = getCallCodecs(metadata);
+
+  for (const candidate of getWrappedCallCandidates(bytes)) {
+    try {
+      return {
+        ...rest,
+        decodedCall: callCodec.dec(candidate),
+        callData: candidate,
+      };
+    } catch {
+      // Try the next shape.
+    }
+
+    try {
+      const optionCall = optionCallCodec.dec(candidate);
+      if (optionCall !== undefined) {
+        return {
+          ...rest,
+          decodedCall: optionCall,
+          callData: callCodec.enc(optionCall),
+        };
+      }
+    } catch {
+      // Try the next shape.
+    }
+  }
+
+  throw new Error("Unable to decode bytes into Call or wrapped Call data");
+}
+
+function normalizeCallName(name) {
+  return String(name || "")
+    .replace(/[_\s-]/g, "")
+    .toLowerCase();
+}
+
+function getDocsArray(value) {
+  return Array.isArray(value) && value.length > 0 ? value : null;
+}
+
+function getLookupEntry(metadata, typeId) {
+  if (!Number.isInteger(typeId)) {
+    return null;
+  }
+
+  return metadata?.lookup?.[typeId] ?? null;
+}
+
+function getFieldDocsCandidates(metadata, fields = []) {
+  const candidates = [];
+
+  for (const field of fields) {
+    const label = field.name || field.typeName || `type:${field.type}`;
+    const fieldDocs = getDocsArray(field.docs);
+    if (fieldDocs) {
+      candidates.push({
+        source: `field:${label}`,
+        docs: fieldDocs,
+      });
+    }
+
+    const fieldTypeDocs = getDocsArray(
+      getLookupEntry(metadata, field.type)?.docs,
+    );
+    if (fieldTypeDocs) {
+      candidates.push({
+        source: `fieldType:${label}`,
+        docs: fieldTypeDocs,
+      });
+    }
+  }
+
+  return candidates;
+}
+
+function getCallDocCandidates(metadata, pallet, callsLookup, callVariant) {
+  return [
+    {
+      source: "variant",
+      docs: getDocsArray(callVariant?.docs),
+    },
+    {
+      source: "callsLookup",
+      docs: getDocsArray(callsLookup?.docs),
+    },
+    {
+      source: "pallet",
+      docs: getDocsArray(pallet?.docs),
+    },
+    ...getFieldDocsCandidates(metadata, callVariant?.fields),
+  ].filter(({ docs }) => docs);
+}
+
+function getCallDocs(metadata, section, method) {
+  const normalizedSection = normalizeCallName(section);
+  const normalizedMethod = normalizeCallName(method);
+
+  const pallet = metadata?.pallets?.find(
+    ({ name }) => normalizeCallName(name) === normalizedSection,
+  );
+
+  const callsType = pallet?.calls?.type;
+  if (callsType === undefined) {
+    return null;
+  }
+
+  const callsLookup = metadata?.lookup?.[callsType];
+  if (callsLookup?.def?.tag !== "variant") {
+    return null;
+  }
+
+  const callVariant = callsLookup.def.value?.find(
+    ({ name }) => normalizeCallName(name) === normalizedMethod,
+  );
+
+  const docCandidates = getCallDocCandidates(
+    metadata,
+    pallet,
+    callsLookup,
+    callVariant,
+  );
+
+  return docCandidates[0]?.docs ?? null;
+}
+
+function attachCallDocs(node, metadata) {
+  if (!node || typeof node !== "object") {
+    return node;
+  }
+
+  if (node.type === "Call" && node.section && node.method) {
+    const docs = getCallDocs(metadata, node.section, node.method);
+    if (docs) {
+      node.docs = docs;
+    }
+  }
+
+  if (Array.isArray(node.children)) {
+    node.children = node.children.map((child) =>
+      attachCallDocs(child, metadata),
+    );
+  }
+
+  return node;
+}
+
+export function decodeCallTreeWithInfo(bytes, metadata) {
+  const { decodedCall, lookup, codecType, callData } = decodeCallData(
+    bytes,
+    metadata,
+  );
 
   const tree = toTypedCallTree(
     decodedCall,
@@ -40,5 +240,12 @@ export function decodeCallTree(bytes, metadata) {
     metadata,
   );
 
-  return normalizeCallTree(tree);
+  return {
+    proposal: attachCallDocs(normalizeCallTree(tree), metadata),
+    callData,
+  };
+}
+
+export function decodeCallTree(bytes, metadata) {
+  return decodeCallTreeWithInfo(bytes, metadata).proposal;
 }

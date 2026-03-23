@@ -3,14 +3,12 @@ import { useDispatch } from "react-redux";
 import tw from "tailwind-styled-components";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
-import FieldLoading from "../../icons/fieldLoading";
 import { Deposit, Hash, Proposal, Status } from "../fields";
 import DetailButton from "../../detailButton";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import Loading from "next-common/components/loading";
 import { cn } from "next-common/utils";
 import { FixedSizeList } from "react-window";
-import { useContextApi } from "next-common/context/api";
 import { getPreimageTicket, getPreimageLen, getPreimageStatus } from "./common";
 
 const PreimageDetailPopup = dynamicPopup(() =>
@@ -20,8 +18,6 @@ const PreimageDetailPopup = dynamicPopup(() =>
 const FieldName = tw.span`text-textTertiary`;
 
 function Item({ preimage, index }) {
-  const api = useContextApi();
-  const isApiLoading = !api;
   const dispatch = useDispatch();
   const [showArgumentsDetail, setShowArgumentsDetail] = useState(null);
   const statusName = getPreimageStatus(preimage);
@@ -32,17 +28,13 @@ function Item({ preimage, index }) {
     <>
       <PreimageMobileListItemTemplate
         title={
-          isApiLoading ? (
-            <FieldLoading />
-          ) : (
-            <Proposal
-              key="proposal"
-              proposal={preimage.proposal}
-              proposalError={preimage.proposalError}
-              proposalWarning={preimage.proposalWarning}
-              setShowArgumentsDetail={setShowArgumentsDetail}
-            />
-          )
+          <Proposal
+            key="proposal"
+            proposal={preimage.proposal}
+            proposalError={preimage.proposalError}
+            proposalWarning={preimage.proposalWarning}
+            setShowArgumentsDetail={setShowArgumentsDetail}
+          />
         }
         titleExtra={
           <DetailButton
