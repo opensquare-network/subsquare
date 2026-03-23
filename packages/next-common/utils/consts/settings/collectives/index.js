@@ -21,9 +21,9 @@ const collectives = {
   postLabels: [PostLabel.Motion, PostLabel.Announcement],
   hasFellowshipParams: true,
   hasIdentity: true,
-  graphqlApiSubDomain: "dd-gh-api",
+  graphqlApiSubDomain: "ddd-gh-api",
   graphql: {
-    domain: "d-gh-api",
+    domain: "ddd-gh-api",
     identity: true,
     multisig: false,
   },
