@@ -4,6 +4,7 @@ import { useContextPapiApi } from "next-common/context/papi";
 import { useSelector } from "react-redux";
 import { useAsync } from "react-use";
 import { createCombinedHashes } from "./usePreimageHashesCommon";
+import { isNil } from "lodash-es";
 
 const papiMethodMap = {
   statusFor: "StatusFor",
@@ -19,7 +20,7 @@ function normalizeVariantName(type) {
 }
 
 function normalizePrimitiveValue(value) {
-  if (value === null || value === undefined) {
+  if (isNil(value)) {
     return value;
   }
 

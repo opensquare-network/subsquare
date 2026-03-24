@@ -1,11 +1,12 @@
 import IndentPanel from "./indentPanel";
 import { ValuePanel } from "./valuePanel";
+import { isNil } from "lodash-es";
 
 export default function OptionPanel({ node }) {
   const { name, type, children, value } = node || {};
 
   // If value is null/undefined, it's None
-  if (value === null || value === undefined) {
+  if (isNil(value)) {
     return (
       <div className="flex flex-col px-[16px] py-[8px] bg-neutral200 rounded-[4px]">
         <span className="text-textTertiary truncate">

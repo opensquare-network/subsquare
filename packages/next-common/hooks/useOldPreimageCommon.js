@@ -12,6 +12,7 @@ import {
   decodeCallTree,
   getMetadata,
 } from "next-common/utils/callDecoder/decoder.mjs";
+import { isNil } from "lodash-es";
 
 const metadataCache = new WeakMap();
 
@@ -84,7 +85,7 @@ function createPreimageHashResult(hashOrBounded, options = {}) {
 }
 
 function unwrapMaybeValue(value) {
-  if (value === null || value === undefined) {
+  if (isNil(value)) {
     return null;
   }
 
