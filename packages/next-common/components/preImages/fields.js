@@ -95,13 +95,20 @@ export function Proposal({
   if (proposalError) {
     return <span className="text-red500 font-medium">{proposalError}</span>;
   }
+
   if (proposalWarning) {
     return (
       <span className="text-orange500 font-medium">{proposalWarning}</span>
     );
   }
-  const { section, method, meta } = proposal || {};
-  const doc = meta?.docs[0]?.toJSON();
+
+  const { section, method, meta, docs } = proposal || {};
+  const doc = meta?.docs[0]?.toJSON() || docs?.[0];
+
+  if (!section || !method) {
+    return null;
+  }
+
   return (
     <div className="flex flex-col max-md:overflow-hidden">
       <div>
@@ -110,9 +117,11 @@ export function Proposal({
           onClick={() => setShowArgumentsDetail(proposal)}
         >{`${section}.${method}`}</span>
       </div>
-      <span className="text-textSecondary text-[12px] leading-[16px] max-md:text-[14px] max-md:whitespace-nowrap max-md:overflow-hidden max-md:text-ellipsis max-md:leading-[20px]">
-        {doc}
-      </span>
+      {doc ? (
+        <span className="text-textSecondary text-[12px] leading-[16px] max-md:text-[14px] max-md:whitespace-nowrap max-md:overflow-hidden max-md:text-ellipsis max-md:leading-[20px]">
+          {doc}
+        </span>
+      ) : null}
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { useAsync } from "react-use";
 
 import { Option } from "@polkadot/types";
 import {
@@ -12,6 +13,32 @@ import {
 } from "@polkadot/util";
 import useCall from "next-common/utils/hooks/useCall.js";
 import { useContextApi } from "next-common/context/api";
+import { useContextPapi } from "next-common/context/papi";
+import { useChainSettings } from "next-common/context/chain";
+import {
+  decodeCallTree,
+  getMetadata,
+} from "next-common/utils/callDecoder/decoder.mjs";
+
+const metadataCache = new WeakMap();
+
+async function getPapiMetadata(client) {
+  if (!client) {
+    return null;
+  }
+
+  let metadataPromise = metadataCache.get(client);
+  if (!metadataPromise) {
+    metadataPromise = getMetadata(client).catch((error) => {
+      metadataCache.delete(client);
+      throw error;
+    });
+
+    metadataCache.set(client, metadataPromise);
+  }
+
+  return metadataPromise;
+}
 
 /**
  * @internal Determine if we are working with current generation (H256,u32)
@@ -83,7 +110,7 @@ export function getPreimageHash(api, hashOrBounded) {
 
 /** @internal Creates a final result */
 export function createResult(interimResult, optBytes) {
-  const callData = isU8a(optBytes) ? optBytes : optBytes.unwrapOr(null);
+  const callData = getCallData(optBytes);
   let proposal = null;
   let proposalError = null;
   let proposalWarning = null;
@@ -123,6 +150,66 @@ export function createResult(interimResult, optBytes) {
     proposalLength: proposalLength || interimResult.proposalLength,
     proposalWarning,
   });
+}
+
+export function getCallData(optBytes) {
+  if (!optBytes) {
+    return null;
+  }
+
+  return isU8a(optBytes) ? optBytes : optBytes.unwrapOr(null);
+}
+
+export function createPapiResult(interimResult, proposal, callData) {
+  let proposalWarning = null;
+  let proposalLength;
+  const callLength = callData.length;
+
+  if (interimResult.proposalLength) {
+    const storeLength = interimResult.proposalLength.toNumber();
+
+    if (callLength !== storeLength) {
+      proposalWarning = `Decoded call length does not match on-chain stored preimage length (${formatNumber(
+        callLength,
+      )} bytes vs ${formatNumber(storeLength)} bytes)`;
+    }
+  } else {
+    proposalLength = new BN(callLength);
+  }
+
+  return objectSpread({}, interimResult, {
+    isCompleted: true,
+    proposal,
+    proposalError: null,
+    proposalLength: proposalLength || interimResult.proposalLength,
+    proposalWarning,
+  });
+}
+
+export function createPapiErrorResult(interimResult, proposalError) {
+  return objectSpread({}, interimResult, {
+    isCompleted: true,
+    proposal: null,
+    proposalError,
+    proposalLength: interimResult.proposalLength,
+    proposalWarning: null,
+  });
+}
+
+export async function decodePreimageWithPapi(interimResult, optBytes, client) {
+  const callData = getCallData(optBytes);
+  if (!callData || !client) {
+    return null;
+  }
+
+  const metadata = await getPapiMetadata(client);
+  if (!metadata) {
+    return null;
+  }
+
+  const proposal = decodeCallTree(callData, metadata);
+
+  return createPapiResult(interimResult, proposal, callData);
 }
 
 /** @internal Helper to unwrap a deposit tuple into a structure */
@@ -188,6 +275,8 @@ function getBytesParams(interimResult, optStatus) {
 
 export default function useOldPreimage(hashOrBounded) {
   const api = useContextApi();
+  const { client } = useContextPapi();
+  const { enablePapi } = useChainSettings();
 
   // retrieve the status using only the hash of the image
   const { inlineData, paramsStatus, resultPreimageHash } = useMemo(
@@ -215,10 +304,65 @@ export default function useOldPreimage(hashOrBounded) {
     { cacheKey: `usePreimage/preimageFor/${hashOrBounded}` },
   );
 
+  const { value: papiResult, loading: papiLoading } = useAsync(async () => {
+    if (!enablePapi) {
+      return null;
+    }
+
+    const decodeTarget =
+      resultPreimageFor && optBytes
+        ? [resultPreimageFor, optBytes]
+        : resultPreimageHash && inlineData
+        ? [resultPreimageHash, inlineData]
+        : null;
+
+    if (!decodeTarget) {
+      return null;
+    }
+
+    const [interimResult, bytes] = decodeTarget;
+
+    if (!client) {
+      return createPapiErrorResult(
+        interimResult,
+        "PAPI decode is not available",
+      );
+    }
+
+    try {
+      return (
+        (await decodePreimageWithPapi(interimResult, bytes, client)) ||
+        createPapiErrorResult(
+          interimResult,
+          "Unable to load metadata for PAPI decode",
+        )
+      );
+    } catch {
+      return createPapiErrorResult(
+        interimResult,
+        "Unable to decode preimage bytes into a valid Call",
+      );
+    }
+  }, [
+    client,
+    enablePapi,
+    resultPreimageFor,
+    optBytes,
+    resultPreimageHash,
+    inlineData,
+  ]);
+
+  const resolvedBytesLoaded = inlineData ? true : isBytesLoaded;
+  const hasBytesToDecode = Boolean(
+    (resultPreimageFor && optBytes) || (resultPreimageHash && inlineData),
+  );
+
   // extract all the preimage info we have retrieved
   return useMemo(
     () => [
-      resultPreimageFor
+      enablePapi
+        ? papiResult || resultPreimageFor || resultPreimageHash || undefined
+        : resultPreimageFor
         ? optBytes
           ? createResult(resultPreimageFor, optBytes)
           : resultPreimageFor
@@ -228,15 +372,23 @@ export default function useOldPreimage(hashOrBounded) {
           : resultPreimageHash
         : undefined,
       isStatusLoaded,
-      isBytesLoaded,
+      hasBytesToDecode
+        ? enablePapi
+          ? resolvedBytesLoaded && !papiLoading
+          : resolvedBytesLoaded
+        : resolvedBytesLoaded,
     ],
     [
+      enablePapi,
       inlineData,
       optBytes,
+      papiLoading,
+      papiResult,
       resultPreimageHash,
       resultPreimageFor,
+      resolvedBytesLoaded,
+      hasBytesToDecode,
       isStatusLoaded,
-      isBytesLoaded,
     ],
   );
 }
