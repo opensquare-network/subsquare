@@ -10,6 +10,7 @@ import { fetchList } from "next-common/services/list";
 import businessCategory from "next-common/utils/consts/business/category";
 import NewBountyButton from "next-common/components/treasury/bounty/newBountyButton";
 import BountiesSummaryPanel from "next-common/components/treasury/bounty/summaryPanel";
+import { PapiProvider } from "next-common/context/papi";
 
 export default function BountiesPage({
   activeBounties,
@@ -26,37 +27,39 @@ export default function BountiesPage({
 
   return (
     <TreasuryProvider>
-      <ListLayout
-        seoInfo={seoInfo}
-        title={category}
-        summary={treasurySummaryPanel}
-        tabs={[
-          {
-            value: "bounties",
-            label: "Bounties",
-            url: "/treasury/bounties",
-          },
-        ].filter(Boolean)}
-      >
-        {activeBounties && activeBounties.length > 0 && (
-          <BountyCardSection
-            category={category}
-            activeBounties={activeBounties?.map((item) =>
-              normalizeBountyListItem(chain, item),
-            )}
+      <PapiProvider>
+        <ListLayout
+          seoInfo={seoInfo}
+          title={category}
+          summary={treasurySummaryPanel}
+          tabs={[
+            {
+              value: "bounties",
+              label: "Bounties",
+              url: "/treasury/bounties",
+            },
+          ].filter(Boolean)}
+        >
+          {activeBounties && activeBounties.length > 0 && (
+            <BountyCardSection
+              category={category}
+              activeBounties={activeBounties?.map((item) =>
+                normalizeBountyListItem(chain, item),
+              )}
+            />
+          )}
+          <TreasuryBountiesPostList
+            titleCount={inactiveBounties.total}
+            items={items}
+            pagination={{
+              page: inactiveBounties.page,
+              pageSize: inactiveBounties.pageSize,
+              total: inactiveBounties.total,
+            }}
+            titleExtra={<NewBountyButton />}
           />
-        )}
-        <TreasuryBountiesPostList
-          titleCount={inactiveBounties.total}
-          items={items}
-          pagination={{
-            page: inactiveBounties.page,
-            pageSize: inactiveBounties.pageSize,
-            total: inactiveBounties.total,
-          }}
-          titleExtra={<NewBountyButton />}
-        />
-      </ListLayout>
+        </ListLayout>
+      </PapiProvider>
     </TreasuryProvider>
   );
 }

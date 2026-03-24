@@ -30,6 +30,7 @@ import {
 import TreasuryBountiesDetailMultiTabs from "next-common/components/pages/components/tabs/treasuryBountiesDetailMultiTabs";
 import Appendants from "next-common/components/appendants/bounty";
 import { BountyAppendantsProvider } from "next-common/context/bountyAppendants";
+import { PapiProvider } from "next-common/context/papi";
 
 function useBountyCuratorFromServer() {
   const { meta } = useOnchainData();
@@ -76,7 +77,11 @@ function BountyContentWithNullGuard() {
     return <CheckUnFinalized id={id} />;
   }
 
-  return <BountyContent />;
+  return (
+    <PapiProvider>
+      <BountyContent />
+    </PapiProvider>
+  );
 }
 
 function BountyPageImpl() {

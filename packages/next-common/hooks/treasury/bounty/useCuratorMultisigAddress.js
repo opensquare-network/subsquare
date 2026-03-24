@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useChainSettings } from "next-common/context/chain";
-import { useContextApi } from "next-common/context/api";
+import { useContextPapiApi } from "next-common/context/papi";
 import { isNil } from "lodash-es";
 import getChainSettings from "next-common/utils/consts/settings";
 import { CHAIN } from "next-common/utils/constants";
@@ -91,7 +91,7 @@ export async function fetchMultisigData(address) {
 
 export function useCuratorMultisigAddress(address) {
   const { graphqlApiSubDomain } = useChainSettings();
-  const api = useContextApi();
+  const papi = useContextPapiApi();
 
   const [badge, setBadge] = useState(null);
   const [signatories, setSignatories] = useState([]);
@@ -111,9 +111,9 @@ export function useCuratorMultisigAddress(address) {
         const { badge: initialBadge, signatories: initialSignatories } =
           await fetchMultisigData(address);
 
-        if (initialSignatories.length === 0 && api) {
-          const data = await api.query.proxy.proxies(address);
-          const [proxies] = data.toJSON() || [];
+        if (initialSignatories.length === 0 && papi) {
+          const data = await papi.query.Proxy.Proxies.getValue(address);
+          const [proxies] = data || [];
 
           if (proxies.length === 1) {
             const proxyDelegateAddress = proxies[0]?.delegate || "";
@@ -145,7 +145,7 @@ export function useCuratorMultisigAddress(address) {
     }
 
     loadData();
-  }, [address, graphqlApiSubDomain, api]);
+  }, [address, graphqlApiSubDomain, papi]);
 
   return { badge, signatories, delegateAddress, loading, error };
 }
