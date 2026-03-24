@@ -1,4 +1,10 @@
-import { createContext, useCallback, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { createClient } from "polkadot-api";
 import { getWsProvider } from "polkadot-api/ws-provider";
 import { currentNodeSelector } from "next-common/store/reducers/nodeSlice";
@@ -64,12 +70,12 @@ export function PapiProvider({ children }) {
 }
 
 export function useContextPapiApi() {
-  const { api } = useContext(PapiContext);
-  return api;
+  const context = useContext(PapiContext);
+  return context?.api;
 }
 
 export function useContextPapi() {
-  const { api, client, pallets } = useContext(PapiContext);
+  const context = useContext(PapiContext);
 
   const checkPallet = useCallback(
     (palletName, storageName) => {
@@ -77,7 +83,7 @@ export function useContextPapi() {
         return false;
       }
 
-      const pallet = pallets?.find((item) => item.name === palletName);
+      const pallet = context?.pallets?.find((item) => item.name === palletName);
 
       if (!pallet) {
         return false;
@@ -91,10 +97,10 @@ export function useContextPapi() {
         (item) => item.name === storageName,
       );
     },
-    [pallets],
+    [context?.pallets],
   );
 
-  return { api, client, checkPallet };
+  return { api: context?.api, client: context?.client, checkPallet };
 }
 
 export default PapiContext;

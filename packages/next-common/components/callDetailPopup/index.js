@@ -10,6 +10,7 @@ import { RawCallContext } from "next-common/context/call/raw";
 import PapiCallTreeView from "../papiCallTreeView";
 import Loading from "../loading";
 import { usePapiCallTree } from "next-common/context/call/papiCallTree";
+import { useChainSettings } from "next-common/context/chain";
 
 const JsonView = dynamic(() => import("next-common/components/jsonView"), {
   ssr: false,
@@ -34,14 +35,20 @@ function PapiCallTreeOnReferendum() {
   return <PapiCallTreeView proposal={callTreeData} isLoading={isLoading} />;
 }
 
-function CallTreeOnReferendum() {
+function LegacyCallTreeOnReferendum() {
   const rawCallCtx = useContext(RawCallContext) || {};
-  const papiCallCtx = usePapiCallTree();
-  if (papiCallCtx) {
-    return <PapiCallTreeOnReferendum />;
-  }
   const { call, isLoading } = rawCallCtx;
   return <CallTree call={call} isLoading={isLoading} />;
+}
+
+function ConfiguredCallTreeOnReferendum() {
+  const { enablePapi } = useChainSettings();
+
+  return enablePapi ? (
+    <PapiCallTreeOnReferendum />
+  ) : (
+    <LegacyCallTreeOnReferendum />
+  );
 }
 
 export default function CallDetailPopup({
@@ -81,7 +88,7 @@ export default function CallDetailPopup({
     tabs.find((item) => item.tabId === storageTabId)?.tabId || tabs[0].tabId;
   const setSelectedTabId = setStorageTabId;
 
-  const CallTreeComponent = customCallTree || CallTreeOnReferendum;
+  const CallTreeComponent = customCallTree || ConfiguredCallTreeOnReferendum;
   // const CallTreeComponent = CallTreeOnReferendum;
 
   return (
