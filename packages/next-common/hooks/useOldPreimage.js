@@ -1,216 +1,10 @@
 import { useMemo } from "react";
-import { useAsync } from "react-use";
 
 import { Option } from "@polkadot/types";
-import {
-  BN,
-  BN_ZERO,
-  formatNumber,
-  isString,
-  isU8a,
-  objectSpread,
-  u8aToHex,
-} from "@polkadot/util";
+import { BN_ZERO, objectSpread } from "@polkadot/util";
 import useCall from "next-common/utils/hooks/useCall.js";
 import { useContextApi } from "next-common/context/api";
-import { useContextPapi } from "next-common/context/papi";
-import { useChainSettings } from "next-common/context/chain";
-import {
-  decodeCallTree,
-  getMetadata,
-} from "next-common/utils/callDecoder/decoder.mjs";
-
-const metadataCache = new WeakMap();
-
-async function getPapiMetadata(client) {
-  if (!client) {
-    return null;
-  }
-
-  let metadataPromise = metadataCache.get(client);
-  if (!metadataPromise) {
-    metadataPromise = getMetadata(client).catch((error) => {
-      metadataCache.delete(client);
-      throw error;
-    });
-
-    metadataCache.set(client, metadataPromise);
-  }
-
-  return metadataPromise;
-}
-
-/**
- * @internal Determine if we are working with current generation (H256,u32)
- * or previous generation H256 params to the preimageFor storage entry
- */
-export function getParamType(api) {
-  if (
-    api?.query.preimage &&
-    api?.query.preimage.preimageFor &&
-    api?.query.preimage.preimageFor.creator.meta.type.isMap
-  ) {
-    const { type } = api.registry.lookup.getTypeDef(
-      api.query.preimage.preimageFor.creator.meta.type.asMap.key,
-    );
-
-    if (type === "H256") {
-      return "hash";
-    } else if (type === "(H256,u32)") {
-      return "hashAndLen";
-    } else {
-      // we are clueless :()
-    }
-  }
-
-  return "unknown";
-}
-
-/** @internal Unwraps a passed preimage hash into components */
-export function getPreimageHash(api, hashOrBounded) {
-  let proposalHash;
-  let inlineData;
-
-  if (isString(hashOrBounded)) {
-    proposalHash = hashOrBounded;
-  } else if (isU8a(hashOrBounded)) {
-    proposalHash = hashOrBounded.toHex();
-  } else {
-    const bounded = hashOrBounded;
-
-    if (bounded.isInline) {
-      inlineData = bounded.asInline.toU8a(true);
-      proposalHash = u8aToHex(api?.registry.hash(inlineData));
-    } else if (hashOrBounded.isLegacy) {
-      proposalHash = hashOrBounded.asLegacy.hash_.toHex();
-    } else if (hashOrBounded.isLookup) {
-      proposalHash = hashOrBounded.asLookup.hash_.toHex();
-    } else {
-      console.error(
-        `Unhandled FrameSupportPreimagesBounded type ${hashOrBounded.type}`,
-      );
-    }
-  }
-
-  return {
-    inlineData,
-    paramsStatus: proposalHash && [proposalHash],
-    proposalHash,
-    resultPreimageHash: proposalHash && {
-      count: 0,
-      isCompleted: false,
-      isHashParam: getParamType(api) === "hash",
-      proposalHash,
-      proposalLength: inlineData && new BN(inlineData.length),
-      registry: api?.registry,
-      status: null,
-    },
-  };
-}
-
-/** @internal Creates a final result */
-export function createResult(interimResult, optBytes) {
-  const callData = getCallData(optBytes);
-  let proposal = null;
-  let proposalError = null;
-  let proposalWarning = null;
-  let proposalLength;
-
-  if (callData) {
-    try {
-      proposal = interimResult.registry.createType("Call", callData);
-
-      const callLength = proposal.encodedLength;
-
-      if (interimResult.proposalLength) {
-        const storeLength = interimResult.proposalLength.toNumber();
-
-        if (callLength !== storeLength) {
-          proposalWarning = `Decoded call length does not match on-chain stored preimage length (${formatNumber(
-            callLength,
-          )} bytes vs ${formatNumber(storeLength)} bytes)`;
-        }
-      } else {
-        // for the old style, we set the actual length
-        proposalLength = new BN(callLength);
-      }
-    } catch {
-      // console.error(error);
-
-      proposalError = "Unable to decode preimage bytes into a valid Call";
-    }
-  } else {
-    proposalWarning = "No preimage bytes found";
-  }
-
-  return objectSpread({}, interimResult, {
-    isCompleted: true,
-    proposal,
-    proposalError,
-    proposalLength: proposalLength || interimResult.proposalLength,
-    proposalWarning,
-  });
-}
-
-export function getCallData(optBytes) {
-  if (!optBytes) {
-    return null;
-  }
-
-  return isU8a(optBytes) ? optBytes : optBytes.unwrapOr(null);
-}
-
-export function createPapiResult(interimResult, proposal, callData) {
-  let proposalWarning = null;
-  let proposalLength;
-  const callLength = callData.length;
-
-  if (interimResult.proposalLength) {
-    const storeLength = interimResult.proposalLength.toNumber();
-
-    if (callLength !== storeLength) {
-      proposalWarning = `Decoded call length does not match on-chain stored preimage length (${formatNumber(
-        callLength,
-      )} bytes vs ${formatNumber(storeLength)} bytes)`;
-    }
-  } else {
-    proposalLength = new BN(callLength);
-  }
-
-  return objectSpread({}, interimResult, {
-    isCompleted: true,
-    proposal,
-    proposalError: null,
-    proposalLength: proposalLength || interimResult.proposalLength,
-    proposalWarning,
-  });
-}
-
-export function createPapiErrorResult(interimResult, proposalError) {
-  return objectSpread({}, interimResult, {
-    isCompleted: true,
-    proposal: null,
-    proposalError,
-    proposalLength: interimResult.proposalLength,
-    proposalWarning: null,
-  });
-}
-
-export async function decodePreimageWithPapi(interimResult, optBytes, client) {
-  const callData = getCallData(optBytes);
-  if (!callData || !client) {
-    return null;
-  }
-
-  const metadata = await getPapiMetadata(client);
-  if (!metadata) {
-    return null;
-  }
-
-  const proposal = decodeCallTree(callData, metadata);
-
-  return createPapiResult(interimResult, proposal, callData);
-}
+import { createResult, getPreimageHash } from "./useOldPreimageCommon";
 
 /** @internal Helper to unwrap a deposit tuple into a structure */
 function convertDeposit(deposit) {
@@ -275,8 +69,6 @@ function getBytesParams(interimResult, optStatus) {
 
 export default function useOldPreimage(hashOrBounded) {
   const api = useContextApi();
-  const { client } = useContextPapi();
-  const { enablePapi } = useChainSettings();
 
   // retrieve the status using only the hash of the image
   const { inlineData, paramsStatus, resultPreimageHash } = useMemo(
@@ -304,65 +96,10 @@ export default function useOldPreimage(hashOrBounded) {
     { cacheKey: `usePreimage/preimageFor/${hashOrBounded}` },
   );
 
-  const { value: papiResult, loading: papiLoading } = useAsync(async () => {
-    if (!enablePapi) {
-      return null;
-    }
-
-    const decodeTarget =
-      resultPreimageFor && optBytes
-        ? [resultPreimageFor, optBytes]
-        : resultPreimageHash && inlineData
-        ? [resultPreimageHash, inlineData]
-        : null;
-
-    if (!decodeTarget) {
-      return null;
-    }
-
-    const [interimResult, bytes] = decodeTarget;
-
-    if (!client) {
-      return createPapiErrorResult(
-        interimResult,
-        "PAPI decode is not available",
-      );
-    }
-
-    try {
-      return (
-        (await decodePreimageWithPapi(interimResult, bytes, client)) ||
-        createPapiErrorResult(
-          interimResult,
-          "Unable to load metadata for PAPI decode",
-        )
-      );
-    } catch {
-      return createPapiErrorResult(
-        interimResult,
-        "Unable to decode preimage bytes into a valid Call",
-      );
-    }
-  }, [
-    client,
-    enablePapi,
-    resultPreimageFor,
-    optBytes,
-    resultPreimageHash,
-    inlineData,
-  ]);
-
-  const resolvedBytesLoaded = inlineData ? true : isBytesLoaded;
-  const hasBytesToDecode = Boolean(
-    (resultPreimageFor && optBytes) || (resultPreimageHash && inlineData),
-  );
-
   // extract all the preimage info we have retrieved
   return useMemo(
     () => [
-      enablePapi
-        ? papiResult || resultPreimageFor || resultPreimageHash || undefined
-        : resultPreimageFor
+      resultPreimageFor
         ? optBytes
           ? createResult(resultPreimageFor, optBytes)
           : resultPreimageFor
@@ -372,22 +109,14 @@ export default function useOldPreimage(hashOrBounded) {
           : resultPreimageHash
         : undefined,
       isStatusLoaded,
-      hasBytesToDecode
-        ? enablePapi
-          ? resolvedBytesLoaded && !papiLoading
-          : resolvedBytesLoaded
-        : resolvedBytesLoaded,
+      inlineData ? true : isBytesLoaded,
     ],
     [
-      enablePapi,
       inlineData,
       optBytes,
-      papiLoading,
-      papiResult,
       resultPreimageHash,
       resultPreimageFor,
-      resolvedBytesLoaded,
-      hasBytesToDecode,
+      isBytesLoaded,
       isStatusLoaded,
     ],
   );
