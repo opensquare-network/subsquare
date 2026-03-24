@@ -1,0 +1,91 @@
+import { useEffect, useState } from "react";
+import { u8aConcat } from "@polkadot/util";
+import { Kintsugi, Interlay } from "@interlay/monetary-js";
+import { Binary } from "polkadot-api";
+import Chains from "next-common/utils/consts/chains";
+import { useChain } from "next-common/context/chain";
+import { useTreasuryPapiPallet } from "next-common/context/treasury";
+import { encodeAddressToChain } from "next-common/services/address";
+import isEvmChain from "next-common/utils/isEvmChain";
+
+const EMPTY_U8A_32 = new Uint8Array(32);
+const TREASURY_DEFAULT_PALLET_ID = Binary.fromText("py/trsry").asBytes();
+
+async function getPalletIdBytes(papi, pallet) {
+  const palletId = await papi?.constants?.[pallet]?.PalletId?.();
+  return palletId?.asBytes?.() || TREASURY_DEFAULT_PALLET_ID;
+}
+
+export function useTreasuryAccountWithPapi(papi) {
+  const [account, setAccount] = useState();
+  const chain = useChain();
+  const pallet = useTreasuryPapiPallet();
+
+  useEffect(() => {
+    if (Chains.kintsugi === chain) {
+      setAccount("a3cgeH7D28bBsHY4hGLzxkMFUcFQmjGgDa2kmxg3D9Z6AyhtL");
+      return;
+    } else if (Chains.interlay === chain) {
+      setAccount("wd9yNSwR7YL4Y4PEtY4pUxYR2jeVdsgwyoN8fwVc9196VMAt4");
+      return;
+    } else if (Chains.collectives === chain) {
+      // For collectives chain, return the treasury account on Polkadot AssetHub
+      setAccount("16VcQSRcMFy6ZHVjBvosKmo7FKqTb8ZATChDYo8ibutzLnos");
+      return;
+    }
+
+    if (!papi) {
+      return;
+    }
+
+    getPalletIdBytes(papi, pallet).then((palletIdBytes) => {
+      const treasuryAccount = u8aConcat(
+        "modl",
+        palletIdBytes,
+        EMPTY_U8A_32,
+      ).subarray(0, 32);
+
+      if (isEvmChain()) {
+        setAccount(treasuryAccount);
+      } else {
+        setAccount(encodeAddressToChain(treasuryAccount, chain));
+      }
+    });
+  }, [papi, chain, pallet]);
+
+  return account;
+}
+
+export default function useTreasuryFreeWithPapi(papi) {
+  const chain = useChain();
+  const [free, setFree] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const treasuryAccount = useTreasuryAccountWithPapi(papi);
+
+  useEffect(() => {
+    if (!treasuryAccount || !papi) {
+      return;
+    }
+
+    if ([Chains.kintsugi, Chains.interlay].includes(chain)) {
+      const token =
+        Chains.kintsugi === chain ? Kintsugi.ticker : Interlay.ticker;
+
+      papi.query.Tokens.Accounts.getValue(treasuryAccount, { token }).then(
+        (accountData) => {
+          setFree(accountData ? accountData.free.toString() : "0");
+          setIsLoading(false);
+        },
+      );
+    } else {
+      papi?.query?.System?.Account?.getValue?.(treasuryAccount).then(
+        (accountData) => {
+          setFree(accountData ? accountData.data.free.toString() : "0");
+          setIsLoading(false);
+        },
+      );
+    }
+  }, [papi, chain, treasuryAccount]);
+
+  return { free, treasuryAccount, isLoading };
+}
