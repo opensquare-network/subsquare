@@ -4,10 +4,11 @@ import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { useContextApi } from "next-common/context/api";
 import { isValidPreimageHash } from "next-common/utils";
-import { createResult, getPreimageHash } from "./useOldPreimage";
-import { getBytesParams } from "./usePreimage";
+import { createResult, getPreimageHash } from "./useOldPreimageCommon";
+import { getBytesParams } from "./usePreimageCommon";
+import { createCombinedHashes } from "./usePreimageHashesCommon";
 
-function usePreimageHashesCommon(method) {
+export function usePreimageHashesCommon(method) {
   const trigger = useSelector(preImagesTriggerSelector);
   const api = useContextApi();
 
@@ -44,27 +45,21 @@ export function usePreimageHashes() {
   return usePreimageHashesCommon("requestStatusFor");
 }
 
-export function useCombinedPreimageHashes() {
+export function useCombinedPreimageHashesLegacy() {
   const { hashes: oldHashes, loading: oldLoading } = useOldPreimageHashes();
   const { hashes: newHashes, loading: newLoading } = usePreimageHashes();
 
-  const combinedLoading = oldLoading || newLoading;
+  return {
+    hashes: useMemo(
+      () => createCombinedHashes(oldHashes, newHashes),
+      [oldHashes, newHashes],
+    ),
+    loading: oldLoading || newLoading,
+  };
+}
 
-  const hashes = useMemo(() => {
-    const hashes = newHashes.map((data) => ({
-      data,
-      method: "requestStatusFor",
-    }));
-    for (const item of oldHashes) {
-      const [oldHash] = item;
-      if (!newHashes.some(([newHash]) => newHash === oldHash)) {
-        hashes.push({ data: item, method: "statusFor" });
-      }
-    }
-    return hashes;
-  }, [oldHashes, newHashes]);
-
-  return { hashes, loading: combinedLoading };
+export function useCombinedPreimageHashes() {
+  return useCombinedPreimageHashesLegacy();
 }
 
 export function usePreimageWithHash(hash) {

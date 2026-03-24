@@ -2,7 +2,10 @@ import useColumns from "next-common/components/styledList/useColumns";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { useState } from "react";
 import useOldPreimage from "next-common/hooks/useOldPreimage";
+import useOldPreimagePapi from "next-common/hooks/useOldPreimagePapi";
 import usePreimage from "next-common/hooks/usePreimage";
+import usePreimagePapi from "next-common/hooks/usePreimagePapi";
+import { useChainSettings } from "next-common/context/chain";
 import { useDispatch, useSelector } from "react-redux";
 import {
   incPreImagesTrigger,
@@ -92,6 +95,24 @@ function useCreatePreimageRow(
 }
 
 function PreimageRow({ DataListItem, hash, setShowArgumentsDetail }) {
+  const { enablePapi } = useChainSettings();
+
+  return enablePapi ? (
+    <PapiPreimageRow
+      DataListItem={DataListItem}
+      hash={hash}
+      setShowArgumentsDetail={setShowArgumentsDetail}
+    />
+  ) : (
+    <LegacyPreimageRow
+      DataListItem={DataListItem}
+      hash={hash}
+      setShowArgumentsDetail={setShowArgumentsDetail}
+    />
+  );
+}
+
+function LegacyPreimageRow({ DataListItem, hash, setShowArgumentsDetail }) {
   const [preimage, isStatusLoaded, isBytesLoaded] = usePreimage(hash);
   const row = useCreatePreimageRow(
     hash,
@@ -103,8 +124,50 @@ function PreimageRow({ DataListItem, hash, setShowArgumentsDetail }) {
   return <DataListItem row={row} />;
 }
 
+function PapiPreimageRow({ DataListItem, hash, setShowArgumentsDetail }) {
+  const [preimage, isStatusLoaded, isBytesLoaded] = usePreimagePapi(hash);
+  const row = useCreatePreimageRow(
+    hash,
+    preimage,
+    isStatusLoaded,
+    isBytesLoaded,
+    setShowArgumentsDetail,
+  );
+  return <DataListItem row={row} />;
+}
+
 function OldPreimageRow({ DataListItem, hash, setShowArgumentsDetail }) {
+  const { enablePapi } = useChainSettings();
+
+  return enablePapi ? (
+    <PapiOldPreimageRow
+      DataListItem={DataListItem}
+      hash={hash}
+      setShowArgumentsDetail={setShowArgumentsDetail}
+    />
+  ) : (
+    <LegacyOldPreimageRow
+      DataListItem={DataListItem}
+      hash={hash}
+      setShowArgumentsDetail={setShowArgumentsDetail}
+    />
+  );
+}
+
+function LegacyOldPreimageRow({ DataListItem, hash, setShowArgumentsDetail }) {
   const [preimage, isStatusLoaded, isBytesLoaded] = useOldPreimage(hash);
+  const row = useCreatePreimageRow(
+    hash,
+    preimage,
+    isStatusLoaded,
+    isBytesLoaded,
+    setShowArgumentsDetail,
+  );
+  return <DataListItem row={row} />;
+}
+
+function PapiOldPreimageRow({ DataListItem, hash, setShowArgumentsDetail }) {
+  const [preimage, isStatusLoaded, isBytesLoaded] = useOldPreimagePapi(hash);
   const row = useCreatePreimageRow(
     hash,
     preimage,

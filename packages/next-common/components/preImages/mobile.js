@@ -1,7 +1,10 @@
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import React, { useState, useEffect, useRef } from "react";
 import usePreimage from "next-common/hooks/usePreimage";
+import usePreimagePapi from "next-common/hooks/usePreimagePapi";
 import useOldPreimage from "next-common/hooks/useOldPreimage";
+import useOldPreimagePapi from "next-common/hooks/useOldPreimagePapi";
+import { useChainSettings } from "next-common/context/chain";
 import { useDispatch } from "react-redux";
 import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
 import FieldLoading from "../icons/fieldLoading";
@@ -19,6 +22,16 @@ const PreimageDetailPopup = dynamicPopup(() => import("./preImageDetailPopup"));
 const FieldName = tw.span`text-textTertiary`;
 
 function PreimageItemComp({ hash, index }) {
+  const { enablePapi } = useChainSettings();
+
+  return enablePapi ? (
+    <PapiPreimageItemComp hash={hash} index={index} />
+  ) : (
+    <LegacyPreimageItemComp hash={hash} index={index} />
+  );
+}
+
+function LegacyPreimageItemComp({ hash, index }) {
   const [preimage, isStatusLoaded, isBytesLoaded] = usePreimage(hash);
   return (
     <Item
@@ -30,8 +43,45 @@ function PreimageItemComp({ hash, index }) {
     />
   );
 }
+
+function PapiPreimageItemComp({ hash, index }) {
+  const [preimage, isStatusLoaded, isBytesLoaded] = usePreimagePapi(hash);
+  return (
+    <Item
+      hash={hash}
+      preimage={preimage}
+      isStatusLoaded={isStatusLoaded}
+      isBytesLoaded={isBytesLoaded}
+      index={index}
+    />
+  );
+}
+
 function OldPreimageItemComp({ hash, index }) {
+  const { enablePapi } = useChainSettings();
+
+  return enablePapi ? (
+    <PapiOldPreimageItemComp hash={hash} index={index} />
+  ) : (
+    <LegacyOldPreimageItemComp hash={hash} index={index} />
+  );
+}
+
+function LegacyOldPreimageItemComp({ hash, index }) {
   const [preimage, isStatusLoaded, isBytesLoaded] = useOldPreimage(hash);
+  return (
+    <Item
+      hash={hash}
+      preimage={preimage}
+      isStatusLoaded={isStatusLoaded}
+      isBytesLoaded={isBytesLoaded}
+      index={index}
+    />
+  );
+}
+
+function PapiOldPreimageItemComp({ hash, index }) {
+  const [preimage, isStatusLoaded, isBytesLoaded] = useOldPreimagePapi(hash);
   return (
     <Item
       hash={hash}

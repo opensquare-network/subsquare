@@ -7,7 +7,9 @@ import { useMemo, useState } from "react";
 import MyDeposit from "./myDeposit";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { isSameAddress } from "next-common/utils";
-import { useCombinedPreimageHashes } from "next-common/hooks/usePreimageHashes";
+import { useCombinedPreimageHashesLegacy } from "next-common/hooks/usePreimageHashes";
+import { useCombinedPreimageHashesPapi } from "next-common/hooks/usePreimageHashesPapi";
+import { useChainSettings } from "next-common/context/chain";
 
 function parseStatus(status, method) {
   const statusName = Object.keys(status || {})[0];
@@ -25,29 +27,31 @@ function parseStatus(status, method) {
   };
 }
 
-export default function PreImagesList() {
-  const { hashes: data, loading } = useCombinedPreimageHashes();
+function filterPreimages(data, searchValue, isMyDepositOn, realAddress) {
+  return sortBy(data || [], (item) => item.data[0]).filter(
+    ({ data: [hash, status], method }) => {
+      if (!hash.includes(searchValue.toLowerCase())) {
+        return false;
+      }
+
+      const { deposit, ticket } = parseStatus(status, method);
+      const [who] = ticket || deposit || [];
+      if (isMyDepositOn && realAddress) {
+        return isSameAddress(who, realAddress);
+      }
+
+      return true;
+    },
+  );
+}
+
+function PreImagesListContent({ data, loading }) {
   const [searchValue, setSearchValue] = useState("");
   const [isMyDepositOn, setIsMyDepositOn] = useState(false);
   const realAddress = useRealAddress();
 
-  let filteredData = useMemo(
-    () =>
-      sortBy(data || [], (item) => item.data[0]).filter(
-        ({ data: [hash, status], method }) => {
-          if (!hash.includes(searchValue.toLowerCase())) {
-            return false;
-          }
-
-          const { deposit, ticket } = parseStatus(status, method);
-          const [who] = ticket || deposit || [];
-          if (isMyDepositOn && realAddress) {
-            return isSameAddress(who, realAddress);
-          } else {
-            return true;
-          }
-        },
-      ),
+  const filteredData = useMemo(
+    () => filterPreimages(data, searchValue, isMyDepositOn, realAddress),
     [data, searchValue, isMyDepositOn, realAddress],
   );
 
@@ -79,4 +83,20 @@ export default function PreImagesList() {
       </div>
     </div>
   );
+}
+
+export function LegacyPreImagesList() {
+  const { hashes: data, loading } = useCombinedPreimageHashesLegacy();
+  return <PreImagesListContent data={data} loading={loading} />;
+}
+
+export function PapiPreImagesList() {
+  const { hashes: data, loading } = useCombinedPreimageHashesPapi();
+  return <PreImagesListContent data={data} loading={loading} />;
+}
+
+export default function PreImagesList() {
+  const { enablePapi } = useChainSettings();
+
+  return enablePapi ? <PapiPreImagesList /> : <LegacyPreImagesList />;
 }

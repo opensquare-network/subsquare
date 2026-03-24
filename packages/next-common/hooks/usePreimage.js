@@ -1,84 +1,12 @@
 import { useMemo } from "react";
-import { useAsync } from "react-use";
 
-import { Option } from "@polkadot/types";
-import { BN_ZERO, objectSpread } from "@polkadot/util";
 import useCall from "next-common/utils/hooks/useCall.js";
-import {
-  createResult,
-  createPapiErrorResult,
-  decodePreimageWithPapi,
-  getPreimageHash,
-} from "./useOldPreimage";
 import { useContextApi } from "next-common/context/api";
-import { useContextPapi } from "next-common/context/papi";
-import { useChainSettings } from "next-common/context/chain";
-
-/** @internal Helper to unwrap a ticket tuple into a structure */
-function convertTicket(ticket) {
-  return ticket
-    ? {
-        amount: ticket[1],
-        who: ticket[0].toString(),
-      }
-    : undefined;
-}
-
-/** @internal Returns the parameters required for a call to bytes */
-export function getBytesParams(interimResult, optStatus) {
-  const result = objectSpread({}, interimResult, {
-    status: optStatus.unwrapOr(null),
-  });
-
-  if (result.status) {
-    if (result.status.isRequested) {
-      const asRequested = result.status.asRequested;
-
-      if (asRequested instanceof Option) {
-        // FIXME Cannot recall how to deal with these
-        // (unlike Unrequested below, didn't have an example)
-      } else {
-        const { count, maybeTicket, maybeLen } = asRequested;
-
-        result.count = count.toNumber();
-        result.ticket = convertTicket(maybeTicket.unwrapOr(null));
-        result.proposalLength = maybeLen.unwrapOr(BN_ZERO);
-        result.statusName = "requested";
-      }
-    } else if (result.status.isUnrequested) {
-      const asUnrequested = result.status.asUnrequested;
-
-      if (asUnrequested instanceof Option) {
-        result.ticket = convertTicket(
-          // old-style conversion
-          asUnrequested.unwrapOr(null),
-        );
-      } else {
-        const { ticket, len } = result.status.asUnrequested;
-
-        result.ticket = convertTicket(ticket);
-        result.proposalLength = len;
-        result.statusName = "unrequested";
-      }
-    } else {
-      console.error(
-        `Unhandled PalletPreimageRequestStatus type: ${result.status.type}`,
-      );
-    }
-  }
-
-  return {
-    paramsBytes: result.isHashParam
-      ? [result.proposalHash]
-      : [[result.proposalHash, result.proposalLength || BN_ZERO]],
-    resultPreimageFor: result,
-  };
-}
+import { createResult, getPreimageHash } from "./useOldPreimageCommon";
+import { getBytesParams } from "./usePreimageCommon";
 
 export default function usePreimage(hashOrBounded) {
   const api = useContextApi();
-  const { client } = useContextPapi();
-  const { enablePapi } = useChainSettings();
 
   // retrieve the status using only the hash of the image
   const { inlineData, paramsStatus, resultPreimageHash } = useMemo(
@@ -106,65 +34,10 @@ export default function usePreimage(hashOrBounded) {
     { cacheKey: `usePreimage/preimageFor/${hashOrBounded}` },
   );
 
-  const { value: papiResult, loading: papiLoading } = useAsync(async () => {
-    if (!enablePapi) {
-      return null;
-    }
-
-    const decodeTarget =
-      resultPreimageFor && optBytes
-        ? [resultPreimageFor, optBytes]
-        : resultPreimageHash && inlineData
-        ? [resultPreimageHash, inlineData]
-        : null;
-
-    if (!decodeTarget) {
-      return null;
-    }
-
-    const [interimResult, bytes] = decodeTarget;
-
-    if (!client) {
-      return createPapiErrorResult(
-        interimResult,
-        "PAPI decode is not available",
-      );
-    }
-
-    try {
-      return (
-        (await decodePreimageWithPapi(interimResult, bytes, client)) ||
-        createPapiErrorResult(
-          interimResult,
-          "Unable to load metadata for PAPI decode",
-        )
-      );
-    } catch {
-      return createPapiErrorResult(
-        interimResult,
-        "Unable to decode preimage bytes into a valid Call",
-      );
-    }
-  }, [
-    client,
-    enablePapi,
-    resultPreimageFor,
-    optBytes,
-    resultPreimageHash,
-    inlineData,
-  ]);
-
-  const resolvedBytesLoaded = inlineData ? true : isBytesLoaded;
-  const hasBytesToDecode = Boolean(
-    (resultPreimageFor && optBytes) || (resultPreimageHash && inlineData),
-  );
-
   // extract all the preimage info we have retrieved
   return useMemo(
     () => [
-      enablePapi
-        ? papiResult || resultPreimageFor || resultPreimageHash || undefined
-        : resultPreimageFor
+      resultPreimageFor
         ? optBytes
           ? createResult(resultPreimageFor, optBytes)
           : resultPreimageFor
@@ -174,22 +47,14 @@ export default function usePreimage(hashOrBounded) {
           : resultPreimageHash
         : undefined,
       isStatusLoaded,
-      hasBytesToDecode
-        ? enablePapi
-          ? resolvedBytesLoaded && !papiLoading
-          : resolvedBytesLoaded
-        : resolvedBytesLoaded,
+      inlineData ? true : isBytesLoaded,
     ],
     [
-      enablePapi,
       inlineData,
       optBytes,
-      papiLoading,
-      papiResult,
       resultPreimageHash,
       resultPreimageFor,
-      resolvedBytesLoaded,
-      hasBytesToDecode,
+      isBytesLoaded,
       isStatusLoaded,
     ],
   );
