@@ -1,29 +1,29 @@
 import { useMemo } from "react";
-import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 import { usePageProps } from "next-common/context/page";
 import {
-  useSpendPeriod,
-  useLastSpendPeriod,
-} from "next-common/components/summary/treasurySummary/useSpendPeriodSummary";
+  useSpendPeriodWithPapi,
+  useLastSpendPeriodWithPapi,
+} from "next-common/components/summary/treasurySummary/useSpendPeriodSummaryWithPapi";
 import { useSelector } from "react-redux";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
-import useTreasuryBurn from "next-common/utils/hooks/useTreasuryBurn";
-import useTreasuryFree from "next-common/utils/hooks/useTreasuryFree";
+import useTreasuryBurnWithPapi from "next-common/utils/hooks/useTreasuryBurnWithPapi";
+import useTreasuryFreeWithPapi from "next-common/utils/hooks/useTreasuryFreeWithPapi";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
+import { useContextPapiApi } from "next-common/context/papi";
 
 export default function useNextBurnData() {
   const { symbol, decimals } = useChainSettings();
-  const api = useConditionalContextApi();
-  const { free, isLoading: isFreeLoading } = useTreasuryFree(api);
-  const nextBurnAmount = useTreasuryBurn(api, free || 0);
+  const papi = useContextPapiApi();
+  const { free, isLoading: isFreeLoading } = useTreasuryFreeWithPapi(papi);
+  const nextBurnAmount = useTreasuryBurnWithPapi(papi, free || 0);
   const { burnChart } = usePageProps();
-  const spendPeriod = useSpendPeriod(api);
-  const lastBurnBlockHeight = useLastSpendPeriod(api);
+  const spendPeriod = useSpendPeriodWithPapi(papi);
+  const lastBurnBlockHeight = useLastSpendPeriodWithPapi(papi);
   const blockTime = useSelector(blockTimeSelector);
   const lastBurnTime = burnChart?.result?.[0]?.timestamp;
 
-  const isLoading = !api || isFreeLoading || !spendPeriod || !blockTime;
+  const isLoading = !papi || isFreeLoading || !spendPeriod || !blockTime;
 
   const nextBurnBlockHeight = useMemo(() => {
     if (!lastBurnBlockHeight || !spendPeriod) {
