@@ -67,7 +67,7 @@ function getWrappedCallCandidates(bytes) {
   const candidates = [bytes];
 
   try {
-    const unwrappedBytes = Bin().dec(bytes).asBytes();
+    const unwrappedBytes = decodeExact(Bin(), bytes).asBytes();
     if (!isSameBytes(unwrappedBytes, bytes)) {
       candidates.push(unwrappedBytes);
     }
@@ -78,14 +78,27 @@ function getWrappedCallCandidates(bytes) {
   return candidates;
 }
 
+function decodeExact(codec, bytes) {
+  const decodedValue = codec.dec(bytes);
+  const encodedBytes = codec.enc(decodedValue);
+
+  if (!isSameBytes(encodedBytes, bytes)) {
+    throw new Error("Codec decoded only part of the input bytes");
+  }
+
+  return decodedValue;
+}
+
 function decodeCallData(bytes, metadata) {
   const { callCodec, optionCallCodec, ...rest } = getCallCodecs(metadata);
 
   for (const candidate of getWrappedCallCandidates(bytes)) {
     try {
+      const decodedCall = decodeExact(callCodec, candidate);
+
       return {
         ...rest,
-        decodedCall: callCodec.dec(candidate),
+        decodedCall,
         callData: candidate,
       };
     } catch {
@@ -93,7 +106,7 @@ function decodeCallData(bytes, metadata) {
     }
 
     try {
-      const optionCall = optionCallCodec.dec(candidate);
+      const optionCall = decodeExact(optionCallCodec, candidate);
       if (optionCall !== undefined) {
         return {
           ...rest,
