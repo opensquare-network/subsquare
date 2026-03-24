@@ -3,7 +3,7 @@ import { StatisticTitleContainer } from "next-common/components/styled/container
 import Flex from "next-common/components/styled/flex";
 import { useOnchainData, usePostState } from "next-common/context/post";
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
@@ -15,8 +15,7 @@ import {
   SideInfoItemName,
   SideInfoItemValue,
 } from "next-common/components/detail/common/sidebar";
-import useSubStorage from "next-common/hooks/common/useSubStorage";
-import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
+import { useContextPapiApi } from "next-common/context/papi";
 
 const Info = styled.div`
   display: flex;
@@ -29,23 +28,32 @@ const WRAPPER_WIDTH = 300;
 function MetaGuard({ children }) {
   const state = usePostState();
   const { parentBountyId, index: childBountyId } = useOnchainData();
-  const api = useConditionalContextApi();
-  const { result } = useSubStorage(
-    "childBounties",
-    "childBounties",
-    [parentBountyId, childBountyId],
-    { api },
-  );
+  const papi = useContextPapiApi();
+  const [result, setResult] = useState(null);
+
+  useEffect(() => {
+    if (!papi || !parentBountyId || !childBountyId) {
+      return;
+    }
+
+    const sub = papi.query.ChildBounties.ChildBounties.watchValue(
+      parentBountyId,
+      childBountyId,
+    ).subscribe((value) => {
+      setResult(value ?? null);
+    });
+
+    return () => {
+      sub?.unsubscribe?.();
+    };
+  }, [papi, parentBountyId, childBountyId]);
 
   const shouldShow = useMemo(() => {
-    if (result?.isSome) {
-      const unwrapped = result.unwrap();
-      if (unwrapped.status.isPendingPayout) {
-        return true;
-      }
-    } else {
-      return ["PendingPayout", "Claimed"].includes(state);
+    if (result?.status?.type === "PendingPayout") {
+      return true;
     }
+
+    return ["PendingPayout", "Claimed"].includes(state);
   }, [state, result]);
 
   return shouldShow ? children : null;
