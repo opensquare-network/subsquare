@@ -8,7 +8,7 @@ import {
 import SymbolValue from "next-common/components/pages/components/gov2/sidebar/tally/values/symbolValue";
 import { useOnchainData, usePost } from "next-common/context/post";
 import { usePageProps } from "next-common/context/page";
-import useSubAddressBalance from "next-common/utils/hooks/useSubAddressBalance";
+import useSubAddressBalanceWithPapi from "next-common/utils/hooks/useSubAddressBalanceWithPapi";
 import { InfoDocs, InfoUser, SystemCoins } from "@osn/icons/subsquare";
 import AddressUser from "next-common/components/user/addressUser";
 import Tooltip from "next-common/components/tooltip";
@@ -54,7 +54,7 @@ export function CopyableAddress({ address }) {
 
 function BountySidebarBalance() {
   const { address } = useOnchainData();
-  const { balance, isLoading } = useSubAddressBalance(address);
+  const { balance, isLoading } = useSubAddressBalanceWithPapi(address);
   const { childBounties } = usePageProps();
 
   if (!address) {

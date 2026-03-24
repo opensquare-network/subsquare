@@ -5,9 +5,32 @@ import useSpendPeriodSummary from "next-common/components/summary/treasurySummar
 import SpendPeriodContent from "next-common/components/summary/treasurySummary/spendPeriod";
 import { isEmpty } from "lodash-es";
 import LoadableContent from "next-common/components/common/loadableContent";
+import useSpendPeriodSummaryWithPapi from "next-common/components/summary/treasurySummary/useSpendPeriodSummaryWithPapi";
 
 export default function SpendPeriod() {
   const summary = useSpendPeriodSummary();
+  return (
+    <SummaryItem title={<SpendPeriodLabelTip />}>
+      <LoadableContent isLoading={isEmpty(summary)}>
+        <div className="flex items-center gap-x-4">
+          <div className="space-x-1">
+            <SpendPeriodContent summary={summary} />
+          </div>
+          <div className="[&_div]:text12Medium">
+            <TreasurySummarySpendPeriodCountDown
+              size={40}
+              width={4}
+              summary={summary}
+            />
+          </div>
+        </div>
+      </LoadableContent>
+    </SummaryItem>
+  );
+}
+
+export function SpendPeriodWithPapi() {
+  const summary = useSpendPeriodSummaryWithPapi();
   return (
     <SummaryItem title={<SpendPeriodLabelTip />}>
       <LoadableContent isLoading={isEmpty(summary)}>

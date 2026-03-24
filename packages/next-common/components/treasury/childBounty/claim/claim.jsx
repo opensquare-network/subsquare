@@ -3,7 +3,7 @@ import { useState } from "react";
 import PrimaryButton from "next-common/lib/button/primary";
 import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import useSubStorage from "next-common/hooks/common/useSubStorage";
+import { useChildBountyStatus } from "../useChildBountyStatus";
 
 const Popup = dynamicPopup(() => import("./popup"));
 
@@ -13,22 +13,12 @@ export default function Claim() {
   const chainHeight = useAhmLatestHeight();
   const { parentBountyId, index } = useOnchainData();
 
-  const { loading, result: onChainStorage } = useSubStorage(
-    "childBounties",
-    "childBounties",
-    [parentBountyId, index],
-  );
-
-  if (loading || !onChainStorage?.isSome) {
+  const status = useChildBountyStatus(parentBountyId, index);
+  if (status?.type !== "PendingPayout") {
     return null;
   }
 
-  const { status } = onChainStorage.toJSON();
-  if (!status || !status?.pendingPayout) {
-    return null;
-  }
-
-  const { unlockAt } = status?.pendingPayout || {};
+  const { unlock_at: unlockAt } = status?.value || {};
 
   return (
     <>

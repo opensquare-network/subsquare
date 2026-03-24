@@ -9,7 +9,7 @@ export default function BountyProposeCuratorButton() {
   const { bountyIndex } = useOnchainData();
 
   const status = useBountyStatus(bountyIndex);
-  if (!status?.isFunded) {
+  if (status?.type !== "Funded") {
     return null;
   }
 

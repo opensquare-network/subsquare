@@ -1,62 +1,82 @@
+import BigNumber from "bignumber.js";
 import { useOnchainData } from "next-common/context/post";
 import PrimaryButton from "next-common/lib/button/primary";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NewChildBountyPopup from "./newChildBountyPopup";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Tooltip from "next-common/components/tooltip";
-import useSubStorage from "next-common/hooks/common/useSubStorage";
 import { isSameAddress } from "next-common/utils";
-import { useContextApi } from "next-common/context/api";
+import { useContextPapiApi } from "next-common/context/papi";
+import { useBountyStatus } from "./useBountyStatus";
+
+function useParentChildBountiesCount(bountyIndex) {
+  const papi = useContextPapiApi();
+  const [count, setCount] = useState(null);
+
+  useEffect(() => {
+    if (!papi || !bountyIndex) {
+      return;
+    }
+
+    const sub = papi.query.ChildBounties.ParentChildBounties.watchValue(
+      bountyIndex,
+    ).subscribe((value) => {
+      setCount(value ?? 0);
+    });
+
+    return () => {
+      sub?.unsubscribe?.();
+    };
+  }, [papi, bountyIndex]);
+
+  return count;
+}
+
+function useMaxActiveChildBountyCount() {
+  const papi = useContextPapiApi();
+  const [count, setCount] = useState(Number.MAX_VALUE);
+
+  useEffect(() => {
+    if (!papi) {
+      return;
+    }
+
+    papi.constants.ChildBounties.MaxActiveChildBountyCount().then((value) => {
+      setCount(value ?? Number.MAX_VALUE);
+    });
+  }, [papi]);
+
+  return count;
+}
 
 export default function NewChildBountyButton() {
   const address = useRealAddress();
   const [showPopup, setShowPopup] = useState(false);
   const onChain = useOnchainData();
-  const api = useContextApi();
 
   const { bountyIndex } = onChain;
-
-  // Get bounty status
-  const { result: onchainBounty } = useSubStorage(
-    "bounties",
-    "bounties",
-    [bountyIndex],
-    { api },
-  );
-
-  // Get child bounty count
-  const { result: onchainChildBountyCount } = useSubStorage(
-    "childBounties",
-    "parentChildBounties",
-    [bountyIndex],
-    { api },
-  );
-  if (!onchainBounty || onchainBounty.isNone) {
-    return null;
-  }
-  const onchainBountyStatus = onchainBounty?.unwrap()?.status;
-  const childBountiesCount = onchainChildBountyCount?.toJSON();
+  const status = useBountyStatus(bountyIndex);
+  const childBountiesCount = useParentChildBountiesCount(bountyIndex);
+  const maxActiveChildBountyCount = useMaxActiveChildBountyCount();
 
   // New bounty button is only available when the bounty is active
-  const isActive = onchainBountyStatus?.isActive;
-  if (!isActive) {
+  if (status?.type !== "Active") {
     return null;
   }
 
-  const curator = onchainBountyStatus.asActive.curator?.toString();
+  const curator = status?.value?.curator;
 
   let disabled = false;
   let disabledTooltip = "";
 
   const isCurator = isSameAddress(curator, address);
-  const maxActiveChildBountyCount =
-    api?.consts?.childBounties?.maxActiveChildBountyCount.toNumber() ||
-    Number.MAX_VALUE;
 
   if (!isCurator) {
     disabled = true;
     disabledTooltip = "Only curators can create a child bounty";
-  } else if (childBountiesCount >= maxActiveChildBountyCount) {
+  } else if (
+    new BigNumber(childBountiesCount ?? 0).gte(maxActiveChildBountyCount)
+  ) {
     disabled = true;
     disabledTooltip = `This bounty has ${childBountiesCount} active child bounties which reach the max limit`;
   }

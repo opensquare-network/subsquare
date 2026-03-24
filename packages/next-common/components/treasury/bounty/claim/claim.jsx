@@ -14,12 +14,11 @@ export default function Claim() {
   const status = useBountyStatus(bountyIndex);
   const chainHeight = useAhmLatestHeight();
 
-  if (!status || !status?.isSome) {
+  if (status?.type !== "PendingPayout") {
     return null;
   }
-  const jsonStatus = status?.toJSON();
 
-  const { unlockAt } = jsonStatus?.pendingPayout || {};
+  const { unlock_at: unlockAt } = status?.value || {};
   if (!unlockAt) {
     return null;
   }

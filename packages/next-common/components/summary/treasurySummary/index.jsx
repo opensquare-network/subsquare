@@ -2,7 +2,9 @@ import useTreasuryFree from "../../../utils/hooks/useTreasuryFree";
 import { useChain } from "../../../context/chain";
 import TreasurySummaryNextBurn from "./nextBurn";
 import { isKintsugiChain } from "next-common/utils/chain";
-import SpendPeriod from "next-common/components/treasury/status/summarys/spendPeriod";
+import SpendPeriod, {
+  SpendPeriodWithPapi,
+} from "next-common/components/treasury/status/summarys/spendPeriod";
 import LoadableContent from "next-common/components/common/loadableContent";
 import { isNil } from "lodash-es";
 import { useContextApi } from "next-common/context/api";
@@ -11,6 +13,8 @@ import SummaryItem from "next-common/components/summary/layout/item";
 import useToBeAwarded from "next-common/hooks/useToBeAwarded";
 import BalanceWithFiat from "./balanceWithFiat";
 import { useFiatPriceSnapshot } from "next-common/hooks/useFiatPrice";
+import { PapiProvider, useContextPapiApi } from "next-common/context/papi";
+import useTreasuryFreeWithPapi from "next-common/utils/hooks/useTreasuryFreeWithPapi";
 
 export function AvailableItem({ free, isLoading, price }) {
   return (
@@ -56,5 +60,29 @@ export default function TreasurySummary() {
       <NextBurnItem free={free} isLoading={isLoading} />
       {!isKintsugiChain(chain) && <SpendPeriod />}
     </SummaryLayout>
+  );
+}
+
+export function TreasurySummaryWithPapi() {
+  const chain = useChain();
+  const { price } = useFiatPriceSnapshot();
+  const papi = useContextPapiApi();
+  const { free, isLoading } = useTreasuryFreeWithPapi(papi);
+
+  return (
+    <SummaryLayout>
+      <AvailableItem free={free} isLoading={isLoading} price={price} />
+      {!isKintsugiChain(chain) && <ToBeAwardedItem price={price} />}
+      <NextBurnItem free={free} isLoading={isLoading} />
+      {!isKintsugiChain(chain) && <SpendPeriodWithPapi />}
+    </SummaryLayout>
+  );
+}
+
+export function PapiTreasurySummary() {
+  return (
+    <PapiProvider>
+      <TreasurySummaryWithPapi />
+    </PapiProvider>
   );
 }

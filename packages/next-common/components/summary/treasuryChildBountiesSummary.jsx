@@ -2,7 +2,7 @@ import SummaryItem from "./layout/item";
 import SummaryLayout from "./layout/layout";
 import { isPolkadotChain, isKusamaChain } from "next-common/utils/chain";
 import { useChain } from "next-common/context/chain";
-import TreasurySummary from "./treasurySummary";
+import { PapiTreasurySummary } from "./treasurySummary";
 import { useAsync } from "react-use";
 import { backendApi } from "next-common/services/nextApi";
 import LoadableContent from "../common/loadableContent";
@@ -84,5 +84,5 @@ export default function TreasuryChildBountiesSummary() {
     return <TreasuryChildBountiesSummaryImpl />;
   }
 
-  return <TreasurySummary />;
+  return <PapiTreasurySummary />;
 }

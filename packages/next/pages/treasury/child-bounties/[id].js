@@ -18,6 +18,7 @@ import { OffChainArticleActionsProvider } from "next-common/noSima/context/artic
 import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 import { TreasuryProvider } from "next-common/context/treasury";
 import TreasuryChildBountiesDetailMultiTabs from "next-common/components/pages/components/tabs/treasuryChildBountiesDetailMultiTabs";
+import { PapiProvider } from "next-common/context/papi";
 
 function ChildBountyContent() {
   const post = usePost();
@@ -29,9 +30,11 @@ function ChildBountyContent() {
     <OffChainArticleActionsProvider>
       <OffChainCommentActionsProvider>
         <ContentWithComment>
-          <ChildBountyDetail />
-          <ChildBountySidebar />
-          <TreasuryChildBountiesDetailMultiTabs />
+          <PapiProvider>
+            <ChildBountyDetail />
+            <ChildBountySidebar />
+            <TreasuryChildBountiesDetailMultiTabs />
+          </PapiProvider>
         </ContentWithComment>
       </OffChainCommentActionsProvider>
     </OffChainArticleActionsProvider>

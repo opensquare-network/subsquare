@@ -2,7 +2,7 @@ import { SecondaryCardDetail } from "next-common/components/styled/containers/se
 import { Value } from "next-common/components/referenda/tally/styled";
 import SymbolValue from "next-common/components/pages/components/gov2/sidebar/tally/values/symbolValue";
 import { useOnchainData } from "next-common/context/post";
-import useSubAddressBalance from "next-common/utils/hooks/useSubAddressBalance";
+import useSubAddressBalanceWithPapi from "next-common/utils/hooks/useSubAddressBalanceWithPapi";
 import { InfoUser, SystemCoins } from "@osn/icons/subsquare";
 import {
   CardDetailTitle,
@@ -12,7 +12,7 @@ import {
 
 function ChildBountySidebarBalance() {
   const { address } = useOnchainData();
-  const { balance, isLoading } = useSubAddressBalance(address);
+  const { balance, isLoading } = useSubAddressBalanceWithPapi(address);
 
   if (!address) {
     return null;
