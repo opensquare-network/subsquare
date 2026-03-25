@@ -1,6 +1,6 @@
 import SummaryItem from "./layout/item";
 import SummaryLayout from "./layout/layout";
-import SpendPeriod from "next-common/components/treasury/status/summarys/spendPeriod";
+import { SpendPeriodWithPapi } from "next-common/components/treasury/status/summarys/spendPeriod";
 import { useChain } from "next-common/context/chain";
 import { isKintsugiChain } from "next-common/utils/chain";
 import { TreasurySummaryWithPapi } from "./treasurySummary";
@@ -33,7 +33,7 @@ function TreasuryProposalsSummaryImpl() {
         <SummaryItem title="Proposed">{detail?.Proposed ?? 0}</SummaryItem>
         <SummaryItem title="Approved">{detail?.Approved ?? 0}</SummaryItem>
         <SummaryItem title="Rejected">{detail?.Rejected ?? 0}</SummaryItem>
-        <SpendPeriod />
+        <SpendPeriodWithPapi />
       </SummaryLayout>
     </LoadableContent>
   );
