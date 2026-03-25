@@ -3,7 +3,7 @@ import SummaryLayout from "./layout/layout";
 import SpendPeriod from "next-common/components/treasury/status/summarys/spendPeriod";
 import { useChain } from "next-common/context/chain";
 import { isKintsugiChain } from "next-common/utils/chain";
-import TreasurySummary from "./treasurySummary";
+import { TreasurySummaryWithPapi } from "./treasurySummary";
 import { backendApi } from "next-common/services/nextApi";
 import { useAsync } from "react-use";
 import LoadableContent from "../common/loadableContent";
@@ -12,7 +12,7 @@ export default function TreasuryProposalsSummary() {
   const chain = useChain();
 
   if (isKintsugiChain(chain)) {
-    return <TreasurySummary />;
+    return <TreasurySummaryWithPapi />;
   }
 
   return <TreasuryProposalsSummaryImpl />;

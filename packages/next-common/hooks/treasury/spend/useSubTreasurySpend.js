@@ -1,37 +1,33 @@
-import { useContextApi } from "next-common/context/api";
 import { useEffect, useState } from "react";
 import { isNil } from "lodash-es";
-import { useTreasuryPallet } from "next-common/context/treasury";
+import {
+  useTreasuryPapiPallet,
+} from "next-common/context/treasury";
+import { useContextPapiApi } from "next-common/context/papi";
 
 export default function useSubTreasurySpend(index) {
-  const api = useContextApi();
+  const papi = useContextPapiApi();
   const [loading, setLoading] = useState(true);
   const [spend, setSpend] = useState();
-  const treasuryPallet = useTreasuryPallet();
+  const treasuryPallet = useTreasuryPapiPallet();
 
   useEffect(() => {
-    if (!api || isNil(index)) {
+    if (!papi || isNil(index)) {
       return;
     }
 
-    let unsub;
-    api.query[treasuryPallet]
-      .spends(index, (optional) => {
-        if (!optional || optional.isNone) {
-          return;
-        }
-
-        setSpend(optional.unwrap().toJSON());
-      })
-      .then((result) => (unsub = result))
-      .finally(() => setLoading(false));
+    setLoading(true);
+    const sub = papi.query[treasuryPallet].Spends.watchValue(index).subscribe(
+      (value) => {
+        setSpend(value ?? null);
+        setLoading(false);
+      },
+    );
 
     return () => {
-      if (unsub) {
-        unsub();
-      }
+      sub?.unsubscribe?.();
     };
-  }, [api, index, treasuryPallet]);
+  }, [papi, index, treasuryPallet]);
 
   return { spend, loading };
 }
