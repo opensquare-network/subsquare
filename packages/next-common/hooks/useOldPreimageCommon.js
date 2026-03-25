@@ -183,33 +183,33 @@ export function getPapiPreimageHash(hashOrBounded) {
 /** @internal Creates a final result */
 export function createResult(interimResult, optBytes) {
   const callData = getCallData(optBytes);
+  if (!callData) {
+    return createNoPreimageBytesResult(interimResult);
+  }
+
   let proposal = null;
   let proposalError = null;
   let proposalWarning = null;
   let proposalLength;
 
-  if (callData) {
-    try {
-      proposal = interimResult.registry.createType("Call", callData);
+  try {
+    proposal = interimResult.registry.createType("Call", callData);
 
-      const callLength = proposal.encodedLength;
+    const callLength = proposal.encodedLength;
 
-      if (interimResult.proposalLength) {
-        const storeLength = interimResult.proposalLength.toNumber();
+    if (interimResult.proposalLength) {
+      const storeLength = interimResult.proposalLength.toNumber();
 
-        if (callLength !== storeLength) {
-          proposalWarning = `Decoded call length does not match on-chain stored preimage length (${formatNumber(
-            callLength,
-          )} bytes vs ${formatNumber(storeLength)} bytes)`;
-        }
-      } else {
-        proposalLength = new BN(callLength);
+      if (callLength !== storeLength) {
+        proposalWarning = `Decoded call length does not match on-chain stored preimage length (${formatNumber(
+          callLength,
+        )} bytes vs ${formatNumber(storeLength)} bytes)`;
       }
-    } catch {
-      proposalError = "Unable to decode preimage bytes into a valid Call";
+    } else {
+      proposalLength = new BN(callLength);
     }
-  } else {
-    return createNoPreimageBytesResult(interimResult);
+  } catch {
+    proposalError = "Unable to decode preimage bytes into a valid Call";
   }
 
   return objectSpread({}, interimResult, {

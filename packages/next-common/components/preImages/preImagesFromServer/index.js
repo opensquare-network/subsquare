@@ -83,16 +83,16 @@ function addNoPreimageBytes(item) {
 }
 
 function decodeWithLegacyApi(item, api) {
-  if (!item.hex) {
-    return addNoPreimageBytes(item);
-  }
-
   if (!api) {
     return addApiLoading(item);
   }
 
   if (!api.registry) {
     return addDecodeError(item, "Legacy decode is not available");
+  }
+
+  if (!item.hex) {
+    return addNoPreimageBytes(item);
   }
 
   const proposal = parsePreImageCall(item.hex, api);

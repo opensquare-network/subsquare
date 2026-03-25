@@ -4,11 +4,7 @@ import { Option } from "@polkadot/types";
 import { BN_ZERO, objectSpread } from "@polkadot/util";
 import useCall from "next-common/utils/hooks/useCall.js";
 import { useContextApi } from "next-common/context/api";
-import {
-  createNoPreimageBytesResult,
-  createResult,
-  getPreimageHash,
-} from "./useOldPreimageCommon";
+import { createResult, getPreimageHash } from "./useOldPreimageCommon";
 
 /** @internal Helper to unwrap a deposit tuple into a structure */
 function convertDeposit(deposit) {
@@ -101,29 +97,32 @@ export default function useOldPreimage(hashOrBounded) {
   );
 
   // extract all the preimage info we have retrieved
-  return useMemo(
-    () => [
-      resultPreimageFor
-        ? optBytes
-          ? createResult(resultPreimageFor, optBytes)
-          : isBytesLoaded
-          ? createNoPreimageBytesResult(resultPreimageFor)
-          : resultPreimageFor
-        : resultPreimageHash
-        ? inlineData
-          ? createResult(resultPreimageHash, inlineData)
-          : resultPreimageHash
-        : undefined,
-      isStatusLoaded,
-      inlineData ? true : isBytesLoaded,
-    ],
-    [
-      inlineData,
-      optBytes,
-      resultPreimageHash,
-      resultPreimageFor,
-      isBytesLoaded,
-      isStatusLoaded,
-    ],
-  );
+  return useMemo(() => {
+    let result;
+
+    if (resultPreimageFor) {
+      if (optBytes) {
+        result = createResult(resultPreimageFor, optBytes);
+      } else {
+        result = resultPreimageFor;
+      }
+    } else if (resultPreimageHash) {
+      if (inlineData) {
+        result = createResult(resultPreimageHash, inlineData);
+      } else {
+        result = resultPreimageHash;
+      }
+    }
+
+    const isPreimageLoaded = Boolean(inlineData) || isBytesLoaded;
+
+    return [result, isStatusLoaded, isPreimageLoaded];
+  }, [
+    inlineData,
+    optBytes,
+    resultPreimageHash,
+    resultPreimageFor,
+    isBytesLoaded,
+    isStatusLoaded,
+  ]);
 }

@@ -4,7 +4,6 @@ import { useAsync } from "react-use";
 import { Binary } from "polkadot-api";
 import { useContextPapi } from "next-common/context/papi";
 import {
-  createNoPreimageBytesResult,
   createPapiErrorResult,
   createPapiLoadingResult,
   decodePreimageWithPapi,
@@ -93,31 +92,34 @@ export default function usePreimagePapi(hashOrBounded) {
     (resultPreimageFor && optBytes) || (resultPreimageHash && inlineData),
   );
   const isApiLoading = Boolean(papiResult?.isApiLoading);
-  const resolvedResult =
-    papiResult ||
-    (resultPreimageFor
-      ? optBytes
-        ? resultPreimageFor
-        : !bytesLoading
-        ? createNoPreimageBytesResult(resultPreimageFor)
-        : resultPreimageFor
-      : resultPreimageHash || undefined);
+  let resolvedResult = papiResult;
 
-  return useMemo(
-    () => [
-      resolvedResult,
-      isStatusLoaded,
-      hasBytesToDecode
-        ? resolvedBytesLoaded && !papiLoading && !isApiLoading
-        : resolvedBytesLoaded,
-    ],
-    [
-      isApiLoading,
-      resolvedResult,
-      isStatusLoaded,
-      hasBytesToDecode,
-      resolvedBytesLoaded,
-      papiLoading,
-    ],
-  );
+  if (!resolvedResult) {
+    if (resultPreimageFor) {
+      if (optBytes) {
+        resolvedResult = resultPreimageFor;
+      } else {
+        resolvedResult = resultPreimageFor;
+      }
+    } else {
+      resolvedResult = resultPreimageHash || undefined;
+    }
+  }
+
+  return useMemo(() => {
+    let isPreimageLoaded = resolvedBytesLoaded;
+
+    if (hasBytesToDecode) {
+      isPreimageLoaded = resolvedBytesLoaded && !papiLoading && !isApiLoading;
+    }
+
+    return [resolvedResult, isStatusLoaded, isPreimageLoaded];
+  }, [
+    isApiLoading,
+    resolvedResult,
+    isStatusLoaded,
+    hasBytesToDecode,
+    resolvedBytesLoaded,
+    papiLoading,
+  ]);
 }

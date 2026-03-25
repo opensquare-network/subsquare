@@ -124,31 +124,36 @@ export default function useOldPreimagePapi(hashOrBounded) {
     (resultPreimageFor && optBytes) || (resultPreimageHash && inlineData),
   );
   const isApiLoading = Boolean(papiResult?.isApiLoading);
-  const resolvedResult =
-    papiResult ||
-    (resultPreimageFor
-      ? optBytes
-        ? resultPreimageFor
-        : !bytesLoading
-        ? createNoPreimageBytesResult(resultPreimageFor)
-        : resultPreimageFor
-      : resultPreimageHash || undefined);
+  let resolvedResult = papiResult;
 
-  return useMemo(
-    () => [
-      resolvedResult,
-      isStatusLoaded,
-      hasBytesToDecode
-        ? resolvedBytesLoaded && !papiLoading && !isApiLoading
-        : resolvedBytesLoaded,
-    ],
-    [
-      isApiLoading,
-      resolvedResult,
-      isStatusLoaded,
-      hasBytesToDecode,
-      resolvedBytesLoaded,
-      papiLoading,
-    ],
-  );
+  if (!resolvedResult) {
+    if (resultPreimageFor) {
+      if (optBytes) {
+        resolvedResult = resultPreimageFor;
+      } else if (!bytesLoading) {
+        resolvedResult = createNoPreimageBytesResult(resultPreimageFor);
+      } else {
+        resolvedResult = resultPreimageFor;
+      }
+    } else {
+      resolvedResult = resultPreimageHash || undefined;
+    }
+  }
+
+  return useMemo(() => {
+    let isPreimageLoaded = resolvedBytesLoaded;
+
+    if (hasBytesToDecode) {
+      isPreimageLoaded = resolvedBytesLoaded && !papiLoading && !isApiLoading;
+    }
+
+    return [resolvedResult, isStatusLoaded, isPreimageLoaded];
+  }, [
+    isApiLoading,
+    resolvedResult,
+    isStatusLoaded,
+    hasBytesToDecode,
+    resolvedBytesLoaded,
+    papiLoading,
+  ]);
 }
