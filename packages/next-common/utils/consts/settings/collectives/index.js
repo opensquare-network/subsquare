@@ -56,6 +56,7 @@ const collectives = {
   sima: true,
   allowWeb2Login: false,
   supportPolkadotVault: true,
+  enablePapi: true,
   ...collectivesThemes,
 };
 
