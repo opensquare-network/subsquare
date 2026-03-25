@@ -4,7 +4,11 @@ import { Option } from "@polkadot/types";
 import { BN_ZERO, objectSpread } from "@polkadot/util";
 import useCall from "next-common/utils/hooks/useCall.js";
 import { useContextApi } from "next-common/context/api";
-import { createResult, getPreimageHash } from "./useOldPreimageCommon";
+import {
+  createNoPreimageBytesResult,
+  createResult,
+  getPreimageHash,
+} from "./useOldPreimageCommon";
 
 /** @internal Helper to unwrap a deposit tuple into a structure */
 function convertDeposit(deposit) {
@@ -102,6 +106,8 @@ export default function useOldPreimage(hashOrBounded) {
       resultPreimageFor
         ? optBytes
           ? createResult(resultPreimageFor, optBytes)
+          : isBytesLoaded
+          ? createNoPreimageBytesResult(resultPreimageFor)
           : resultPreimageFor
         : resultPreimageHash
         ? inlineData

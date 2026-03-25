@@ -72,9 +72,19 @@ function addApiLoading(item) {
   };
 }
 
+function addNoPreimageBytes(item) {
+  return {
+    ...item,
+    proposal: null,
+    proposalError: null,
+    proposalLength: 0,
+    proposalWarning: "No preimage bytes found",
+  };
+}
+
 function decodeWithLegacyApi(item, api) {
   if (!item.hex) {
-    return { ...item, proposalWarning: "No preimage bytes found" };
+    return addNoPreimageBytes(item);
   }
 
   if (!api) {
@@ -124,7 +134,7 @@ function useServerPreimages() {
 
     return preimages.map((item) => {
       if (!item.hex) {
-        return { ...item, proposalWarning: "No preimage bytes found" };
+        return addNoPreimageBytes(item);
       }
 
       try {

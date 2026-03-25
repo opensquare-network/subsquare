@@ -4,6 +4,7 @@ import { useAsync } from "react-use";
 import { Binary } from "polkadot-api";
 import { useContextPapi } from "next-common/context/papi";
 import {
+  createNoPreimageBytesResult,
   createPapiErrorResult,
   createPapiLoadingResult,
   decodePreimageWithPapi,
@@ -92,10 +93,19 @@ export default function usePreimagePapi(hashOrBounded) {
     (resultPreimageFor && optBytes) || (resultPreimageHash && inlineData),
   );
   const isApiLoading = Boolean(papiResult?.isApiLoading);
+  const resolvedResult =
+    papiResult ||
+    (resultPreimageFor
+      ? optBytes
+        ? resultPreimageFor
+        : !bytesLoading
+        ? createNoPreimageBytesResult(resultPreimageFor)
+        : resultPreimageFor
+      : resultPreimageHash || undefined);
 
   return useMemo(
     () => [
-      papiResult || resultPreimageFor || resultPreimageHash || undefined,
+      resolvedResult,
       isStatusLoaded,
       hasBytesToDecode
         ? resolvedBytesLoaded && !papiLoading && !isApiLoading
@@ -103,9 +113,7 @@ export default function usePreimagePapi(hashOrBounded) {
     ],
     [
       isApiLoading,
-      papiResult,
-      resultPreimageFor,
-      resultPreimageHash,
+      resolvedResult,
       isStatusLoaded,
       hasBytesToDecode,
       resolvedBytesLoaded,

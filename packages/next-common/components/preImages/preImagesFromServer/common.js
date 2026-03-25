@@ -8,7 +8,12 @@ export function getPreimageTicket(preimage) {
 }
 
 export function getPreimageLen(preimage) {
-  return preimage.requested?.maybeLen || preimage.unrequested?.len;
+  const len =
+    preimage.requested?.maybeLen ??
+    preimage.unrequested?.len ??
+    preimage.proposalLength;
+
+  return typeof len?.toNumber === "function" ? len.toNumber() : len;
 }
 
 export function getPreimageStatus(preimage) {

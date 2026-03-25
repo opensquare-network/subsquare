@@ -2,6 +2,7 @@ import { Binary } from "polkadot-api";
 import { blake2AsHex } from "@polkadot/util-crypto";
 import {
   BN,
+  BN_ZERO,
   formatNumber,
   isString,
   isU8a,
@@ -208,7 +209,7 @@ export function createResult(interimResult, optBytes) {
       proposalError = "Unable to decode preimage bytes into a valid Call";
     }
   } else {
-    proposalWarning = "No preimage bytes found";
+    return createNoPreimageBytesResult(interimResult);
   }
 
   return objectSpread({}, interimResult, {
@@ -220,12 +221,42 @@ export function createResult(interimResult, optBytes) {
   });
 }
 
+export function createNoPreimageBytesResult(interimResult) {
+  return objectSpread({}, interimResult, {
+    isCompleted: true,
+    proposal: null,
+    proposalError: null,
+    proposalLength: interimResult.proposalLength || BN_ZERO,
+    proposalWarning: "No preimage bytes found",
+  });
+}
+
 export function getCallData(optBytes) {
   if (!optBytes) {
     return null;
   }
 
-  return isU8a(optBytes) ? optBytes : optBytes.unwrapOr?.(null) ?? optBytes;
+  const callData = isU8a(optBytes)
+    ? optBytes
+    : optBytes.unwrapOr?.(null) ?? optBytes;
+
+  if (!callData) {
+    return null;
+  }
+
+  if (isU8a(callData) && callData.length === 0) {
+    return null;
+  }
+
+  if (isString(callData) && callData === "0x") {
+    return null;
+  }
+
+  if (typeof callData?.toHex === "function" && callData.toHex() === "0x") {
+    return null;
+  }
+
+  return callData;
 }
 
 export function createPapiResult(interimResult, proposal, callData) {

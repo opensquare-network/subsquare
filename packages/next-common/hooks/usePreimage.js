@@ -2,7 +2,11 @@ import { useMemo } from "react";
 
 import useCall from "next-common/utils/hooks/useCall.js";
 import { useContextApi } from "next-common/context/api";
-import { createResult, getPreimageHash } from "./useOldPreimageCommon";
+import {
+  createNoPreimageBytesResult,
+  createResult,
+  getPreimageHash,
+} from "./useOldPreimageCommon";
 import { getBytesParams } from "./usePreimageCommon";
 
 export default function usePreimage(hashOrBounded) {
@@ -40,6 +44,8 @@ export default function usePreimage(hashOrBounded) {
       resultPreimageFor
         ? optBytes
           ? createResult(resultPreimageFor, optBytes)
+          : isBytesLoaded
+          ? createNoPreimageBytesResult(resultPreimageFor)
           : resultPreimageFor
         : resultPreimageHash
         ? inlineData
