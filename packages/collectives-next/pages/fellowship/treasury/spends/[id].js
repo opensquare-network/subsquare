@@ -11,14 +11,17 @@ import TreasurySpendPayout from "next-common/components/detail/treasury/spend/pa
 import { CommonSpendPageWrapper } from "pages/treasury/spends/[id]";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
 import FellowshipTreasurySpendsDetailMultiTabs from "next-common/components/pages/components/tabs/fellowshipTreasurySpendsDetailMultiTabs";
+import { PapiProvider } from "next-common/context/papi";
 
 function TreasurySpendContent() {
   return (
     <MaybeSimaContent>
       <ContentWithComment>
-        <FellowshipTreasurySpendDetail />
-        <TreasurySpendPayout />
-        <FellowshipTreasurySpendsDetailMultiTabs />
+        <PapiProvider>
+          <FellowshipTreasurySpendDetail />
+          <TreasurySpendPayout />
+          <FellowshipTreasurySpendsDetailMultiTabs />
+        </PapiProvider>
       </ContentWithComment>
     </MaybeSimaContent>
   );

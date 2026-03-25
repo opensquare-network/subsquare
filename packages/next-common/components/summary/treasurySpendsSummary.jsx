@@ -4,7 +4,7 @@ import SummaryLayout from "./layout/layout";
 import SummaryLabelItem from "./polkadotTreasurySummary/common/summaryLabelItem";
 import { isKintsugiChain } from "next-common/utils/chain";
 import { useChain } from "next-common/context/chain";
-import TreasurySummary from "./treasurySummary";
+import { PapiTreasurySummary } from "./treasurySummary";
 import isHydradx from "next-common/utils/isHydradx";
 import { useAsync } from "react-use";
 import { backendApi } from "next-common/services/nextApi";
@@ -14,7 +14,7 @@ export default function TreasurySpendsSummary() {
   const chain = useChain();
 
   if (isKintsugiChain(chain) || isHydradx(chain)) {
-    return <TreasurySummary />;
+    return <PapiTreasurySummary />;
   }
 
   return <TreasurySpendsSummaryImpl />;

@@ -13,6 +13,7 @@ import {
 } from "next-common/context/treasury";
 import businessCategory from "next-common/utils/consts/business/category";
 import TreasuryProposalsSummary from "next-common/components/summary/treasuryProposalsSummary";
+import { PapiProvider } from "next-common/context/papi";
 
 export default function ProposalsPage({ proposals, chain }) {
   const { integrations } = useChainSettings();
@@ -29,34 +30,36 @@ export default function ProposalsPage({ proposals, chain }) {
 
   return (
     <TreasuryProvider pallet={pallet}>
-      <ListLayout
-        seoInfo={seoInfo}
-        title={category}
-        summary={<TreasuryProposalsSummary />}
-        tabs={[
-          {
-            value: "proposals",
-            label: "Proposals",
-            url: treasuryProposalListUrl,
-          },
-          integrations?.doTreasury && {
-            value: "statistics",
-            label: "Statistics",
-            url: `https://${chain}.dotreasury.com`,
-          },
-        ].filter(Boolean)}
-      >
-        <TreasuryProposalsPostList
-          titleCount={proposals.total}
-          items={items}
-          pagination={{
-            page: proposals.page,
-            pageSize: proposals.pageSize,
-            total: proposals.total,
-          }}
-          titleExtra={<NewTreasuryProposalButton />}
-        />
-      </ListLayout>
+      <PapiProvider>
+        <ListLayout
+          seoInfo={seoInfo}
+          title={category}
+          summary={<TreasuryProposalsSummary />}
+          tabs={[
+            {
+              value: "proposals",
+              label: "Proposals",
+              url: treasuryProposalListUrl,
+            },
+            integrations?.doTreasury && {
+              value: "statistics",
+              label: "Statistics",
+              url: `https://${chain}.dotreasury.com`,
+            },
+          ].filter(Boolean)}
+        >
+          <TreasuryProposalsPostList
+            titleCount={proposals.total}
+            items={items}
+            pagination={{
+              page: proposals.page,
+              pageSize: proposals.pageSize,
+              total: proposals.total,
+            }}
+            titleExtra={<NewTreasuryProposalButton />}
+          />
+        </ListLayout>
+      </PapiProvider>
     </TreasuryProvider>
   );
 }

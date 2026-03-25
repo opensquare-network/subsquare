@@ -2,7 +2,7 @@ import SummaryLayout from "next-common/components/summary/layout/layout";
 import ApprovedProposal from "./summarys/approvedProposal";
 import ApprovedSpend from "./summarys/approvedSpend";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
-import SpendPeriod from "./summarys/spendPeriod";
+import { SpendPeriodWithPapi } from "./summarys/spendPeriod";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 
 export default function ApprovedPanel() {
@@ -15,7 +15,7 @@ export default function ApprovedPanel() {
         <SummaryLayout>
           <ApprovedSpend />
           <ApprovedProposal />
-          <SpendPeriod />
+          <SpendPeriodWithPapi />
         </SummaryLayout>
       </NeutralPanel>
     </>

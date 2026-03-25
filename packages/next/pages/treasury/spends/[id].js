@@ -20,6 +20,7 @@ import {
 } from "next-common/context/treasury";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
 import TreasurySpendsDetailMultiTabs from "next-common/components/pages/components/tabs/treasurySpendsDetailMultiTabs";
+import { PapiProvider } from "next-common/context/papi";
 
 function TreasurySpendContent() {
   const detail = usePost();
@@ -28,9 +29,11 @@ function TreasurySpendContent() {
   return (
     <MaybeSimaContent>
       <ContentWithComment>
-        <TreasurySpendDetail />
-        <TreasurySpendPayout />
-        <TreasurySpendsDetailMultiTabs />
+        <PapiProvider>
+          <TreasurySpendDetail />
+          <TreasurySpendPayout />
+          <TreasurySpendsDetailMultiTabs />
+        </PapiProvider>
       </ContentWithComment>
     </MaybeSimaContent>
   );
