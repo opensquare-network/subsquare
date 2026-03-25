@@ -4,7 +4,11 @@ import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { useContextApi } from "next-common/context/api";
 import { isValidPreimageHash } from "next-common/utils";
-import { createResult, getPreimageHash } from "./useOldPreimageCommon";
+import {
+  createNoPreimageBytesResult,
+  createResult,
+  getPreimageHash,
+} from "./useOldPreimageCommon";
 import { getBytesParams } from "./usePreimageCommon";
 import { createCombinedHashes } from "./usePreimageHashesCommon";
 
@@ -85,7 +89,11 @@ export function usePreimageWithHash(hash) {
     [optStatus, resultPreimageHash],
   );
 
-  const { value: optBytes, loading: bytesLoading } = useCall(
+  const {
+    value: optBytes,
+    loaded: isBytesLoaded,
+    loading: bytesLoading,
+  } = useCall(
     paramsBytes && api?.query.preimage?.preimageFor,
     paramsBytes ? paramsBytes : [undefined],
     { cacheKey: `usePreimage/preimageFor/${hash}` },
@@ -97,6 +105,8 @@ export function usePreimageWithHash(hash) {
       resultPreimageFor
         ? optBytes
           ? createResult(resultPreimageFor, optBytes)
+          : isBytesLoaded
+          ? createNoPreimageBytesResult(resultPreimageFor)
           : resultPreimageFor
         : resultPreimageHash
         ? inlineData
@@ -110,6 +120,7 @@ export function usePreimageWithHash(hash) {
       optBytes,
       resultPreimageHash,
       inlineData,
+      isBytesLoaded,
       bytesLoading,
       optLoading,
     ],

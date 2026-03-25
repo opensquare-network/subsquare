@@ -10,6 +10,7 @@ import {
   BN_ZERO,
 } from "@polkadot/util";
 import useCall from "./useCall";
+import { getCallData } from "../useOldPreimageCommon";
 
 export default function usePreimage(hashOrBounded) {
   const api = useContextApi();
@@ -104,7 +105,7 @@ function getPreimageHash(api, hashOrBounded) {
 
 /** @internal Creates a final result */
 function createResult(api, interimResult, optBytes) {
-  const callData = isU8a(optBytes) ? optBytes : optBytes.unwrapOr(null);
+  const callData = getCallData(optBytes);
 
   const result = (preimage) =>
     objectSpread({}, interimResult, {

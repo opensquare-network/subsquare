@@ -5,7 +5,9 @@ import { Binary } from "polkadot-api";
 import { useContextPapi } from "next-common/context/papi";
 import {
   convertPapiDepositTuple,
+  createNoPreimageBytesResult,
   createPapiErrorResult,
+  createPapiLoadingResult,
   decodePreimageWithPapi,
   fetchPapiPreimageBytes,
   getPapiPreimageHash,
@@ -95,10 +97,7 @@ export default function useOldPreimagePapi(hashOrBounded) {
     const [interimResult, bytes] = decodeTarget;
 
     if (!client) {
-      return createPapiErrorResult(
-        interimResult,
-        "PAPI decode is not available",
-      );
+      return createPapiLoadingResult(interimResult);
     }
 
     try {
@@ -124,23 +123,37 @@ export default function useOldPreimagePapi(hashOrBounded) {
   const hasBytesToDecode = Boolean(
     (resultPreimageFor && optBytes) || (resultPreimageHash && inlineData),
   );
+  const isApiLoading = Boolean(papiResult?.isApiLoading);
+  let resolvedResult = papiResult;
 
-  return useMemo(
-    () => [
-      papiResult || resultPreimageFor || resultPreimageHash || undefined,
-      isStatusLoaded,
-      hasBytesToDecode
-        ? resolvedBytesLoaded && !papiLoading
-        : resolvedBytesLoaded,
-    ],
-    [
-      papiResult,
-      resultPreimageFor,
-      resultPreimageHash,
-      isStatusLoaded,
-      hasBytesToDecode,
-      resolvedBytesLoaded,
-      papiLoading,
-    ],
-  );
+  if (!resolvedResult) {
+    if (resultPreimageFor) {
+      if (optBytes) {
+        resolvedResult = resultPreimageFor;
+      } else if (!bytesLoading) {
+        resolvedResult = createNoPreimageBytesResult(resultPreimageFor);
+      } else {
+        resolvedResult = resultPreimageFor;
+      }
+    } else {
+      resolvedResult = resultPreimageHash || undefined;
+    }
+  }
+
+  return useMemo(() => {
+    let isPreimageLoaded = resolvedBytesLoaded;
+
+    if (hasBytesToDecode) {
+      isPreimageLoaded = resolvedBytesLoaded && !papiLoading && !isApiLoading;
+    }
+
+    return [resolvedResult, isStatusLoaded, isPreimageLoaded];
+  }, [
+    isApiLoading,
+    resolvedResult,
+    isStatusLoaded,
+    hasBytesToDecode,
+    resolvedBytesLoaded,
+    papiLoading,
+  ]);
 }

@@ -2,7 +2,11 @@ import { useMemo } from "react";
 
 import useCall from "next-common/utils/hooks/useCall.js";
 import { useContextApi } from "next-common/context/api";
-import { createResult, getPreimageHash } from "./useOldPreimageCommon";
+import {
+  createNoPreimageBytesResult,
+  createResult,
+  getPreimageHash,
+} from "./useOldPreimageCommon";
 import { getBytesParams } from "./usePreimageCommon";
 
 export default function usePreimage(hashOrBounded) {
@@ -35,27 +39,34 @@ export default function usePreimage(hashOrBounded) {
   );
 
   // extract all the preimage info we have retrieved
-  return useMemo(
-    () => [
-      resultPreimageFor
-        ? optBytes
-          ? createResult(resultPreimageFor, optBytes)
-          : resultPreimageFor
-        : resultPreimageHash
-        ? inlineData
-          ? createResult(resultPreimageHash, inlineData)
-          : resultPreimageHash
-        : undefined,
-      isStatusLoaded,
-      inlineData ? true : isBytesLoaded,
-    ],
-    [
-      inlineData,
-      optBytes,
-      resultPreimageHash,
-      resultPreimageFor,
-      isBytesLoaded,
-      isStatusLoaded,
-    ],
-  );
+  return useMemo(() => {
+    let result;
+
+    if (resultPreimageFor) {
+      if (optBytes) {
+        result = createResult(resultPreimageFor, optBytes);
+      } else if (isBytesLoaded) {
+        result = createNoPreimageBytesResult(resultPreimageFor);
+      } else {
+        result = resultPreimageFor;
+      }
+    } else if (resultPreimageHash) {
+      if (inlineData) {
+        result = createResult(resultPreimageHash, inlineData);
+      } else {
+        result = resultPreimageHash;
+      }
+    }
+
+    const isPreimageLoaded = Boolean(inlineData) || isBytesLoaded;
+
+    return [result, isStatusLoaded, isPreimageLoaded];
+  }, [
+    inlineData,
+    optBytes,
+    resultPreimageHash,
+    resultPreimageFor,
+    isBytesLoaded,
+    isStatusLoaded,
+  ]);
 }
