@@ -112,9 +112,7 @@ function useServerPreimages() {
     }
 
     if (!client) {
-      return preimages.map((item) =>
-        addDecodeError(item, "PAPI decode is not available"),
-      );
+      return preimages.map((item) => addApiLoading(item));
     }
 
     const metadata = await getPapiMetadata(client);

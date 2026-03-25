@@ -5,6 +5,7 @@ import { Binary } from "polkadot-api";
 import { useContextPapi } from "next-common/context/papi";
 import {
   createPapiErrorResult,
+  createPapiLoadingResult,
   decodePreimageWithPapi,
   fetchPapiPreimageBytes,
   getPapiPreimageHash,
@@ -64,10 +65,7 @@ export default function usePreimagePapi(hashOrBounded) {
     const [interimResult, bytes] = decodeTarget;
 
     if (!client) {
-      return createPapiErrorResult(
-        interimResult,
-        "PAPI decode is not available",
-      );
+      return createPapiLoadingResult(interimResult);
     }
 
     try {
@@ -93,16 +91,18 @@ export default function usePreimagePapi(hashOrBounded) {
   const hasBytesToDecode = Boolean(
     (resultPreimageFor && optBytes) || (resultPreimageHash && inlineData),
   );
+  const isApiLoading = Boolean(papiResult?.isApiLoading);
 
   return useMemo(
     () => [
       papiResult || resultPreimageFor || resultPreimageHash || undefined,
       isStatusLoaded,
       hasBytesToDecode
-        ? resolvedBytesLoaded && !papiLoading
+        ? resolvedBytesLoaded && !papiLoading && !isApiLoading
         : resolvedBytesLoaded,
     ],
     [
+      isApiLoading,
       papiResult,
       resultPreimageFor,
       resultPreimageHash,

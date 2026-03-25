@@ -264,6 +264,17 @@ export function createPapiErrorResult(interimResult, proposalError) {
   });
 }
 
+export function createPapiLoadingResult(interimResult) {
+  return objectSpread({}, interimResult, {
+    isApiLoading: true,
+    isCompleted: false,
+    proposal: null,
+    proposalError: null,
+    proposalLength: interimResult.proposalLength,
+    proposalWarning: null,
+  });
+}
+
 export async function decodePreimageWithPapi(interimResult, optBytes, client) {
   const callData = getCallData(optBytes);
   if (!callData || !client) {
