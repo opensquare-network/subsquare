@@ -1,4 +1,4 @@
-import { capitalize } from "lodash-es";
+import { upperFirst } from "lodash-es";
 import { createContext, useContext } from "react";
 
 const TreasuryContext = createContext(null);
@@ -23,7 +23,7 @@ export function useTreasuryPallet() {
 
 export function useTreasuryPapiPallet() {
   const pallet = useTreasuryPallet();
-  return capitalize(pallet);
+  return upperFirst(pallet);
 }
 
 export function useTreasuryProposalListUrl(pallet) {
