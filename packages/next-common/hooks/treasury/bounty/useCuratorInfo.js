@@ -1,5 +1,5 @@
 import { isNil } from "lodash-es";
-import { useContextApi } from "next-common/context/api";
+import { useContextPapiApi } from "next-common/context/papi";
 import useIsPureProxy from "next-common/hooks/useIsPureProxy";
 import { useMemo } from "react";
 import { useAsync } from "react-use";
@@ -18,18 +18,18 @@ const EMPTY_CURATOR = {
 };
 
 export default function useCuratorInfo(address) {
-  const api = useContextApi();
+  const papi = useContextPapiApi();
 
   const { value: proxies, loading: proxiesLoading } = useAsync(async () => {
-    if (isNil(address)) {
+    if (!papi || isNil(address)) {
       return EMPTY_CURATOR.proxies;
     }
 
-    const data = await api.query.proxy.proxies(address);
-    const [proxies] = data.toJSON() || [];
+    const data = await papi.query.Proxy.Proxies.getValue(address);
+    const [proxies] = data || [];
 
     return proxies || [];
-  }, []);
+  }, [address, papi]);
 
   const { isPure, loading: isPureLoading } = useIsPureProxy(address);
 

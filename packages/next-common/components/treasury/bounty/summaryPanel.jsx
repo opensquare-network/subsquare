@@ -4,13 +4,13 @@ import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import Tooltip from "next-common/components/tooltip";
 import LoadableContent from "next-common/components/common/loadableContent";
-import TreasurySummary from "next-common/components/summary/treasurySummary";
+import { TreasurySummaryWithPapi } from "next-common/components/summary/treasurySummary";
 // import FiatPriceLabel from "next-common/components/summary/polkadotTreasurySummary/common/fiatPriceLabel";
 import FieldLoading from "next-common/components/icons/fieldLoading";
 import { useBountiesSummary } from "next-common/hooks/treasury/bounty/useBountiesSummary";
 import { isNil, lowerCase } from "lodash-es";
 import PriceDisplay from "next-common/components/summary/treasurySummary/priceDisplay";
-import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
+import { useContextPapi } from "next-common/context/papi";
 
 export function BountiesSummaryPanelImpl() {
   const { symbol, decimals } = useChainSettings();
@@ -58,14 +58,14 @@ export function BountiesSummaryPanelImpl() {
 }
 
 export default function BountiesSummaryPanel() {
-  const api = useConditionalContextApi();
+  const { api: papi, checkPallet } = useContextPapi();
 
-  if (!api) {
+  if (!papi) {
     return <FieldLoading />;
   }
 
-  if (!api.query?.bounties?.bounties) {
-    return <TreasurySummary />;
+  if (!checkPallet("Bounties", "Bounties")) {
+    return <TreasurySummaryWithPapi />;
   }
 
   return (

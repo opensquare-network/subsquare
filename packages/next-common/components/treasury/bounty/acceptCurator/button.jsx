@@ -1,33 +1,42 @@
-import useSubStorage from "next-common/hooks/common/useSubStorage";
 import PrimaryButton from "next-common/lib/button/primary";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useAcceptCuratorPopup } from "./useAcceptCuratorPopup";
 import Tooltip from "next-common/components/tooltip";
 import { isSameAddress } from "next-common/utils";
 import AddressUser from "next-common/components/user/addressUser";
+import { useContextPapiApi } from "next-common/context/papi";
+import { useEffect, useState } from "react";
 
 export default function BountyAcceptCuratorButton({
-  pallet = "bounties",
+  pallet = "Bounties",
   params = [],
 } = {}) {
+  const [result, setResult] = useState(null);
   const storage = pallet;
 
   const address = useRealAddress();
-  const { showPopupFn, component } = useAcceptCuratorPopup(pallet, params);
+  const { showPopupFn, component } = useAcceptCuratorPopup(
+    pallet.toLocaleLowerCase(),
+    params,
+  );
+  const papi = useContextPapiApi();
 
-  const { result, loading } = useSubStorage(pallet, storage, params);
+  useEffect(() => {
+    if (!papi) {
+      return;
+    }
+    papi.query[pallet]?.[storage]
+      ?.getValue(...params)
+      .then((result) => setResult(result));
+  }, [papi, pallet, storage, params]);
 
-  if (loading || result?.isNone) {
+  const { status } = result || {};
+
+  if (status?.type !== "CuratorProposed") {
     return null;
   }
 
-  const { status } = result?.unwrap?.() || {};
-
-  if (!status?.isCuratorProposed) {
-    return null;
-  }
-
-  const curator = status?.asCuratorProposed?.curator?.toString();
+  const curator = status?.value?.curator;
 
   const disabled = !isSameAddress(curator, address);
 

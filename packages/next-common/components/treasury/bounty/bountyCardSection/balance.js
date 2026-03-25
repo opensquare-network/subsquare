@@ -1,11 +1,11 @@
 import React from "react";
-import useSubAddressBalance from "next-common/utils/hooks/useSubAddressBalance";
+import useSubAddressBalanceWithPapi from "next-common/utils/hooks/useSubAddressBalanceWithPapi";
 import LoadableContent from "next-common/components/common/loadableContent";
 import { isNil } from "lodash-es";
 import PriceDisplay from "next-common/components/summary/treasurySummary/priceDisplay";
 
 function Balance({ address }) {
-  const { balance, isLoading } = useSubAddressBalance(address);
+  const { balance, isLoading } = useSubAddressBalanceWithPapi(address);
 
   if (isNil(balance)) return null;
 

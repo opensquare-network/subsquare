@@ -16,8 +16,9 @@ function BountySidebar() {
     return null;
   }
 
-  const showActionTip =
-    status?.isCuratorProposed || status?.isPendingPayout || status?.isActive;
+  const showActionTip = ["CuratorProposed", "PendingPayout", "Active"].includes(
+    status?.type,
+  );
 
   return (
     <RightBarWrapper>

@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js";
-import { useContextApi } from "next-common/context/api";
+import { useContextPapiApi } from "next-common/context/papi";
 import { usePageProps } from "next-common/context/page";
 import { backendApi } from "next-common/services/nextApi";
 import { useEffect, useState } from "react";
@@ -8,7 +8,7 @@ import { mapValues, groupBy, toNumber } from "lodash-es";
 const STATUSES = ["Active", "Funded", "Proposed", "Approved"];
 
 export function useBountiesSummary() {
-  const api = useContextApi();
+  const papi = useContextPapiApi();
   const { activeBounties = [] } = usePageProps();
   const [isLoading, setIsLoading] = useState(true);
   const [groupedTotal, setGroupedTotal] = useState(null);
@@ -16,16 +16,14 @@ export function useBountiesSummary() {
   const [allBounties, setAllBounties] = useState([]);
 
   useEffect(() => {
-    if (!api) {
+    if (!papi) {
       return;
     }
 
-    setIsLoading(true);
-    api?.query.bounties?.bounties
-      ?.entries()
+    papi.query.Bounties.Bounties.getEntries()
       .then((result) => {
-        const bounties = result.map(([entryIndex, value]) => {
-          const [id] = entryIndex.toHuman() || [];
+        const bounties = result.map(({ keyArgs, value }) => {
+          const [id] = keyArgs || [];
           return [id, value];
         });
         setAllBounties(bounties);
@@ -33,10 +31,10 @@ export function useBountiesSummary() {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [api]);
+  }, [papi]);
 
   useEffect(() => {
-    if (!allBounties.length) {
+    if (!papi || !allBounties.length) {
       return;
     }
     Promise.all(
@@ -57,9 +55,10 @@ export function useBountiesSummary() {
           bounties.map((bounty) => {
             const address = bounty?.onchainData?.address;
             if (address) {
-              return api?.query?.system
-                ?.account(address)
-                .then((res) => [bounty?.state, res.data.free]);
+              return papi.query.System.Account.getValue(address).then((res) => [
+                bounty?.state,
+                res.data.free,
+              ]);
             }
             return [bounty?.state, bounty?.onchainData?.value || 0];
           }),
@@ -101,7 +100,7 @@ export function useBountiesSummary() {
 
         setGroupedTotal(finalGroupedTotal);
       });
-  }, [allBounties, activeBounties, api]);
+  }, [allBounties, activeBounties, papi]);
 
   return {
     groupedTotal,

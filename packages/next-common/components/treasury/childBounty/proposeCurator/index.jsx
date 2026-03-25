@@ -4,14 +4,31 @@ import PrimaryButton from "next-common/lib/button/primary";
 import { useOnchainData } from "next-common/context/post";
 import Tooltip from "next-common/components/tooltip";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import useSubStorage from "next-common/hooks/common/useSubStorage";
 import { isSameAddress } from "next-common/utils";
+import { useContextPapiApi } from "next-common/context/papi";
 
 function useSubParentBountyData(bountyIndex) {
-  const { result, loading } = useSubStorage("bounties", "bounties", [
-    bountyIndex,
-  ]);
-  const data = result?.toJSON();
+  const papi = useContextPapiApi();
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!papi || !bountyIndex) {
+      return;
+    }
+
+    setLoading(true);
+    const sub = papi.query.Bounties.Bounties.watchValue(bountyIndex).subscribe(
+      (result) => {
+        setData(result ?? null);
+        setLoading(false);
+      },
+    );
+
+    return () => {
+      sub?.unsubscribe?.();
+    };
+  }, [papi, bountyIndex]);
 
   return {
     status: data?.status,
@@ -20,27 +37,33 @@ function useSubParentBountyData(bountyIndex) {
 }
 
 function useSubChildBountyIsAdded(parentBountyId, index) {
-  const { loading, result: onChainStorage } = useSubStorage(
-    "childBounties",
-    "childBounties",
-    [parentBountyId, index],
-  );
+  const papi = useContextPapiApi();
+  const [isAdded, setIsAdded] = useState(false);
 
-  if (loading || !onChainStorage?.isSome) {
-    return false;
-  }
-  const { status } = onChainStorage.toJSON();
-  if (!status || !("added" in status)) {
-    return false;
-  }
-  return true;
+  useEffect(() => {
+    if (!papi || !parentBountyId || !index) {
+      return;
+    }
+
+    const sub = papi.query.ChildBounties.ChildBounties.watchValue(
+      parentBountyId,
+      index,
+    ).subscribe((result) => {
+      setIsAdded(result?.status?.type === "Added");
+    });
+
+    return () => {
+      sub?.unsubscribe?.();
+    };
+  }, [papi, parentBountyId, index]);
+
+  return isAdded;
 }
 
 function isParentBountyCurator(status = {}, address) {
-  for (const item of Object.values(status)) {
-    if (item?.curator && isSameAddress(item.curator, address)) {
-      return true;
-    }
+  const { curator } = status?.value ?? {};
+  if (curator && isSameAddress(curator, address)) {
+    return true;
   }
   return false;
 }
