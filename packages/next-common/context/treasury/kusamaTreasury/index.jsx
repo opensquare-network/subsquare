@@ -1,6 +1,6 @@
 import { KusamaAssetHubAccount } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
 import { createContext, useContext } from "react";
-import { useQueryAssetHubTreasuryFree } from "next-common/context/treasury/polkadotTreasury/hooks/useQueryAssetHubTreasuryFree";
+import { useQueryAssetHubTreasuryFreeWithPapi } from "../polkadotTreasury/hooks/useQueryAssetHubTreasuryFreeWithPapi";
 import useTreasuryFreeWithPapi from "next-common/utils/hooks/useTreasuryFreeWithPapi";
 import { PapiProvider, useContextPapiApi } from "next-common/context/papi";
 
@@ -25,7 +25,7 @@ function KusamaTreasuryProviderInner({ children }) {
   const {
     free: nativeTreasuryBalanceOnAssetHub,
     isLoading: isNativeTreasuryBalanceOnAssetHubLoading,
-  } = useQueryAssetHubTreasuryFree(KusamaAssetHubAccount);
+  } = useQueryAssetHubTreasuryFreeWithPapi(KusamaAssetHubAccount);
 
   return (
     <KusamaTreasuryContext.Provider

@@ -7,7 +7,7 @@ import {
   StatemintTreasuryAccount,
 } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
 import useQueryAssetHubAssets from "next-common/hooks/assetHub/useQueryAssetHubAssets";
-import { useQueryAssetHubTreasuryFree } from "next-common/context/treasury/polkadotTreasury/hooks/useQueryAssetHubTreasuryFree";
+import { useQueryAssetHubTreasuryFreeWithPapi } from "next-common/context/treasury/polkadotTreasury/hooks/useQueryAssetHubTreasuryFreeWithPapi";
 import BigNumber from "bignumber.js";
 import { useTreasuryAccountWithPapi } from "./useTreasuryFreeWithPapi";
 
@@ -77,7 +77,7 @@ function useAssetHubTreasuryFreeTotal() {
   const {
     free: nativeTreasuryBalanceOnAssetHub,
     isLoading: isNativeTreasuryBalanceOnAssetHubLoading,
-  } = useQueryAssetHubTreasuryFree(StatemintTreasuryAccount);
+  } = useQueryAssetHubTreasuryFreeWithPapi(StatemintTreasuryAccount);
 
   const {
     balance: usdtTreasuryBalanceOnAssetHub,
@@ -118,11 +118,12 @@ function useRelayChainTreasuryFreeTotal(papi) {
       const token =
         Chains.kintsugi === chain ? Kintsugi.ticker : Interlay.ticker;
 
-      papi.query.Tokens.Accounts.getValue(treasuryAccount, { token })
-        .then((accountData) => {
+      papi.query.Tokens.Accounts.getValue(treasuryAccount, { token }).then(
+        (accountData) => {
           setFree(accountData ? accountData.free.toString() : "0");
           setIsLoading(false);
-        });
+        },
+      );
     } else {
       papi?.query?.System?.Account?.getValue?.(treasuryAccount).then(
         (accountData) => {

@@ -3,7 +3,7 @@ import {
   StatemintTreasuryAccount,
 } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
 import { createContext, useContext } from "react";
-import { useQueryAssetHubTreasuryFree } from "./hooks/useQueryAssetHubTreasuryFree";
+import { useQueryAssetHubTreasuryFreeWithPapi } from "./hooks/useQueryAssetHubTreasuryFreeWithPapi";
 import {
   useBountiesTotalBalance,
   useQueryBounties,
@@ -39,7 +39,7 @@ function PolkadotTreasuryProviderInner({ children }) {
   const {
     free: fellowshipTreasuryDotBalance,
     isLoading: isFellowshipTreasuryDotBalanceLoading,
-  } = useQueryAssetHubTreasuryFree(StatemintFellowShipTreasuryAccount);
+  } = useQueryAssetHubTreasuryFreeWithPapi(StatemintFellowShipTreasuryAccount);
 
   const {
     balance: fellowshipSalaryUsdtBalance,
@@ -49,7 +49,7 @@ function PolkadotTreasuryProviderInner({ children }) {
   const {
     free: dotTreasuryBalanceOnAssetHub,
     isLoading: isDotTreasuryBalanceOnAssetHubLoading,
-  } = useQueryAssetHubTreasuryFree(StatemintTreasuryAccount);
+  } = useQueryAssetHubTreasuryFreeWithPapi(StatemintTreasuryAccount);
 
   const {
     bounties,
