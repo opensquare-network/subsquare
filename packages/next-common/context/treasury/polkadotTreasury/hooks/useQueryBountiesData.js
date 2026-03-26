@@ -86,13 +86,7 @@ export function useBountiesTotalBalance(bounties, papi) {
   }, [bounties, papi]);
 
   useEffect(() => {
-    if (!papi || !bounties) {
-      return;
-    }
-
-    if (bounties.length === 0) {
-      setTotalBalance(0);
-      setIsLoading(false);
+    if (!papi || !bounties || bounties?.length === 0) {
       return;
     }
 

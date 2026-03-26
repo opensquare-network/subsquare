@@ -3,17 +3,17 @@ import SummaryItem from "next-common/components/summary/layout/item";
 import SummaryLabelItem from "../common/summaryLabelItem";
 import SpendPeriodCountdown from "./spendPeriodCountdown";
 import ToBeAwarded from "./toBeAwarded";
-import useSpendPeriodSummary from "next-common/components/summary/treasurySummary/useSpendPeriodSummary";
+import useSpendPeriodSummaryWithPapi from "../../treasurySummary/useSpendPeriodSummaryWithPapi";
 import { isNil } from "lodash-es";
-import useToBeAwarded from "next-common/hooks/useToBeAwarded";
+import useToBeAwardedWithPapi from "next-common/hooks/useToBeAwardedWithPapi";
 import NextBurn from "./nextBurn";
 import SpendPeriod from "./spendPeriod";
 import { usePolkadotTreasury } from "next-common/context/treasury/polkadotTreasury";
 import SpendPeriodLabelTip from "../../labelTips/spendPeriod";
 
 export default function TreasuryStatus() {
-  const summary = useSpendPeriodSummary();
-  const toBeAwarded = useToBeAwarded();
+  const summary = useSpendPeriodSummaryWithPapi();
+  const toBeAwarded = useToBeAwardedWithPapi();
   const {
     nativeTreasuryBalanceOnRelayChain,
     isRelayChainTreasuryBalanceLoading,
