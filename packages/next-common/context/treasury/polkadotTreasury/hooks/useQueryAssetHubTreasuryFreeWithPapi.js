@@ -10,7 +10,6 @@ export function useQueryAccountFreeWithPapi(papi, address) {
       return;
     }
 
-    setIsLoading(true);
     papi.query.System.Account.getValue(address)
       .then((value) => {
         setFree(value?.data?.free?.toString?.() || 0);

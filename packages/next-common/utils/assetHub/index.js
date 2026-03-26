@@ -34,7 +34,9 @@ export async function getAssetHubPapi() {
     return papiApi;
   }
 
-  const { api } = await getPapi(getAssetHubEndpoints());
+  const assetHubEndpoints = getAssetHubEndpoints();
+
+  const { api } = await getPapi(assetHubEndpoints);
 
   papiApi = api;
 
