@@ -5,35 +5,9 @@ import {
   useEffect,
   useState,
 } from "react";
-import { createClient } from "polkadot-api";
-import { getWsProvider } from "polkadot-api/ws-provider";
 import { currentNodeSelector } from "next-common/store/reducers/nodeSlice";
 import { useSelector } from "react-redux";
-import {
-  getMetadata as getCachedMetadata,
-  setMetadata,
-} from "next-common/utils/papiMetadataCache";
-import {
-  metadata as metadataCodec,
-  unifyMetadata,
-} from "@polkadot-api/substrate-bindings";
-
-const getPapi = async (currentEndpoint) => {
-  const wsProvider = getWsProvider(currentEndpoint);
-  const client = await createClient(wsProvider, {
-    getMetadata: getCachedMetadata,
-    setMetadata,
-  });
-  const api = client.getUnsafeApi();
-  const metadataRaw = await client._request("state_getMetadata", []);
-  const metadata = unifyMetadata(metadataCodec.dec(metadataRaw));
-  const pallets = metadata?.pallets ?? [];
-  return {
-    api,
-    client,
-    pallets,
-  };
-};
+import { getPapiWithPallets } from "next-common/services/chain/papi";
 
 const PapiContext = createContext(null);
 
@@ -47,11 +21,13 @@ export function PapiProvider({ children }) {
     if (!currentEndpoint) {
       return;
     }
-    getPapi(currentEndpoint).then(({ api, client, pallets }) => {
-      setApi(api);
-      setClient(client);
-      setPallets(pallets);
-    });
+    getPapiWithPallets(currentEndpoint).then(
+      ({ api, client, pallets }) => {
+        setApi(api);
+        setClient(client);
+        setPallets(pallets);
+      },
+    );
   }, [currentEndpoint]);
 
   useEffect(() => {

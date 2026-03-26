@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import { Kintsugi, Interlay } from "@interlay/monetary-js";
 import Chains from "next-common/utils/consts/chains";
 import { useChain } from "next-common/context/chain";
-import { useTreasuryAccount } from "./useTreasuryFree";
 import {
   getAssetBySymbol,
   StatemintTreasuryAccount,
@@ -10,20 +9,21 @@ import {
 import useQueryAssetHubAssets from "next-common/hooks/assetHub/useQueryAssetHubAssets";
 import { useQueryAssetHubTreasuryFree } from "next-common/context/treasury/polkadotTreasury/hooks/useQueryAssetHubTreasuryFree";
 import BigNumber from "bignumber.js";
+import { useTreasuryAccountWithPapi } from "./useTreasuryFreeWithPapi";
 
 const usdtAsset = getAssetBySymbol("USDT");
 const usdcAsset = getAssetBySymbol("USDC");
 
-export default function usePolkadotTreasuryTotal(api) {
+export default function usePolkadotTreasuryTotal(papi) {
   const {
     treasuryAccount,
     free: nativeFree,
     isLoading: isNativeFreeLoading,
     usdt: usdtBalance,
-    isLoading: isUsdtBalanceLoading,
+    isUsdtLoading: isUsdtBalanceLoading,
     usdc: usdcBalance,
-    isLoading: isUsdcBalanceLoading,
-  } = useRelayChainTreasuryFreeTotal(api);
+    isUsdcLoading: isUsdcBalanceLoading,
+  } = useRelayChainTreasuryFreeTotal(papi);
 
   const {
     nativeTreasuryBalanceOnAssetHub,
@@ -99,7 +99,7 @@ function useAssetHubTreasuryFreeTotal() {
   };
 }
 
-function useRelayChainTreasuryFreeTotal(api) {
+function useRelayChainTreasuryFreeTotal(papi) {
   const chain = useChain();
   const [free, setFree] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
@@ -107,10 +107,10 @@ function useRelayChainTreasuryFreeTotal(api) {
   const [usdcBalance, setUsdcBalance] = useState(0);
   const [usdtLoading, setUsdtLoading] = useState(true);
   const [usdcLoading, setUsdcLoading] = useState(true);
-  const treasuryAccount = useTreasuryAccount(api);
+  const treasuryAccount = useTreasuryAccountWithPapi(papi);
 
   useEffect(() => {
-    if (!treasuryAccount || !api) {
+    if (!treasuryAccount || !papi) {
       return;
     }
 
@@ -118,32 +118,35 @@ function useRelayChainTreasuryFreeTotal(api) {
       const token =
         Chains.kintsugi === chain ? Kintsugi.ticker : Interlay.ticker;
 
-      api.query.tokens
-        .accounts(treasuryAccount, { token })
+      papi.query.Tokens.Accounts.getValue(treasuryAccount, { token })
         .then((accountData) => {
           setFree(accountData ? accountData.free.toString() : "0");
           setIsLoading(false);
         });
     } else {
-      api?.query.system.account?.(treasuryAccount).then((accountData) => {
-        setFree(accountData ? accountData.data.free.toString() : "0");
-        setIsLoading(false);
-      });
+      papi?.query?.System?.Account?.getValue?.(treasuryAccount).then(
+        (accountData) => {
+          setFree(accountData ? accountData.data.free.toString() : "0");
+          setIsLoading(false);
+        },
+      );
     }
 
-    api.query.assets.account(usdtAsset.id, treasuryAccount).then((data) => {
-      const unwrappedData = data.unwrap();
-      const balance = unwrappedData.balance.toString();
-      setUsdtBalance(balance);
+    Promise.allSettled([
+      papi.query.Assets.Account.getValue(usdtAsset.id, treasuryAccount),
+      papi.query.Assets.Account.getValue(usdcAsset.id, treasuryAccount),
+    ]).then(([usdtData, usdcData]) => {
+      if (usdtData.status === "fulfilled") {
+        setUsdtBalance(usdtData.value?.balance?.toString?.() || 0);
+      }
       setUsdtLoading(false);
-    });
-    api.query.assets.account(usdcAsset.id, treasuryAccount).then((data) => {
-      const unwrappedData = data.unwrap();
-      const balance = unwrappedData.balance.toString();
-      setUsdcBalance(balance);
+
+      if (usdcData.status === "fulfilled") {
+        setUsdcBalance(usdcData.value?.balance?.toString?.() || 0);
+      }
       setUsdcLoading(false);
     });
-  }, [api, chain, treasuryAccount]);
+  }, [papi, chain, treasuryAccount]);
 
   return {
     treasuryAccount,

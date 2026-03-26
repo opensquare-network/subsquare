@@ -11,6 +11,13 @@ export async function querySystemAccountBalance(api, address) {
     .toString();
 }
 
+export async function querySystemAccountBalanceWithPapi(papi, address) {
+  const account = await papi.query.System.Account.getValue(address);
+  return new BigNumber(account?.data?.free?.toString?.() || 0)
+    .plus(account?.data?.reserved?.toString?.() || 0)
+    .toString();
+}
+
 export default function useAddressBalance(api, address) {
   const chain = useChain();
   const symbol = useSymbol();
