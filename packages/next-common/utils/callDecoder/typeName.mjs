@@ -72,6 +72,21 @@ export function getTypeName(lookupEntry, metadata, typeId) {
     ) {
       return "H256";
     }
+    if (
+      lookupEntry.len === 20 &&
+      lookupEntry.value.type === "primitive" &&
+      lookupEntry.value.value === "u8"
+    ) {
+      return "H160";
+    }
+    if (
+      lookupEntry.len === 4 &&
+      lookupEntry.value.type === "primitive" &&
+      lookupEntry.value.value === "u64"
+    ) {
+      return "U256";
+    }
+
     const innerType = getTypeName(
       lookupEntry.value,
       metadata,
