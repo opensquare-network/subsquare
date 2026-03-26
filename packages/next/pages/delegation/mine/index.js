@@ -1,12 +1,15 @@
 import { withCommonProps } from "next-common/lib";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import MyDelegation from "next-common/components/delegation/my-delegation";
 import DelegationLayout from "next-common/components/delegation/layout";
+import MyDelegation from "next-common/components/delegation/my-delegation";
+import { PapiProvider } from "next-common/context/papi";
 
 export default function MyDelegationPage() {
   return (
     <DelegationLayout>
-      <MyDelegation />
+      <PapiProvider>
+        <MyDelegation />
+      </PapiProvider>
     </DelegationLayout>
   );
 }
