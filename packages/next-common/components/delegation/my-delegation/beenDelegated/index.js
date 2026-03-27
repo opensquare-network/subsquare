@@ -4,7 +4,7 @@ import {
   useModuleTab,
 } from "next-common/components/profile/votingHistory/common";
 import useBeenDelegatedWithPapi from "next-common/hooks/useBeenDelegatedWithPapi";
-import { useMaybeServerAllMyBeenDelegatedListWithPapi } from "next-common/utils/hooks/referenda/useAllBeenDelegatedListWithPapi";
+import { useMaybeServerAllMyBeenDelegatedList } from "next-common/utils/hooks/referenda/useAllBeenDelegatedList";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { TabContentWrapper } from "next-common/components/profile/delegation/common/styled";
 import ReferendaBeenDelegatedSummary from "next-common/components/profile/delegation/beenDelegated/referendaBeenDelegatedSummary";
@@ -14,7 +14,7 @@ import DemocracyDelegators from "next-common/components/profile/delegation/beenD
 
 function OpenGovBeenDelegated() {
   const { beenDelegatedList, isLoading } =
-    useMaybeServerAllMyBeenDelegatedListWithPapi();
+    useMaybeServerAllMyBeenDelegatedList();
 
   return (
     <TabContentWrapper>
