@@ -1,7 +1,7 @@
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import React, { useState, useEffect, useRef } from "react";
-import usePreimage from "next-common/hooks/usePreimage";
-import usePreimagePapi from "next-common/hooks/usePreimagePapi";
+import usePreimage from "next-common/hooks/usePreimageNew";
+import usePreimagePapi from "next-common/hooks/usePreimagePapiNew";
 import useOldPreimage from "next-common/hooks/useOldPreimage";
 import useOldPreimagePapi from "next-common/hooks/useOldPreimagePapi";
 import { useChainSettings } from "next-common/context/chain";

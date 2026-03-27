@@ -158,6 +158,7 @@ const hydradx = {
   openSquare: {
     voting: "hydration",
   },
+  enablePapi: true,
 };
 
 export default hydradx;
