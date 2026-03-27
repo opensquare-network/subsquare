@@ -1,33 +1,41 @@
-import useCall from "next-common/utils/hooks/useCall";
 import { useCallback, useEffect, useState } from "react";
 import { backendApi } from "next-common/services/nextApi";
 import BigNumber from "bignumber.js";
-import { querySystemAccountBalance } from "next-common/utils/hooks/useAddressBalance";
+import { querySystemAccountBalanceWithPapi } from "next-common/utils/hooks/useAddressBalance";
 import bigAdd from "next-common/utils/math/bigAdd";
+import { isNil } from "lodash-es";
 
 function filterBountiesData(items) {
   return items.filter((item) => {
-    const { isFunded, isCuratorProposed, isActive } =
-      item?.bounty?.status || {};
-    return isFunded || isCuratorProposed || isActive;
+    const status = item?.status?.type;
+    return ["Funded", "CuratorProposed", "Active"].includes(status);
   });
 }
 
-export function useQueryBounties(api) {
+export function useQueryBounties(papi) {
   const [bounties, setBounties] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const { loaded, value } = useCall(api?.derive.bounties?.bounties);
 
   useEffect(() => {
-    if (!api || !loaded) {
+    if (!papi) {
       return;
     }
 
-    const filteredData = filterBountiesData(value);
-
-    setBounties(filteredData);
-    setIsLoading(!loaded);
-  }, [api, loaded, value]);
+    setIsLoading(true);
+    papi.query.Bounties.Bounties.getEntries()
+      .then((entries) => {
+        const filteredData = filterBountiesData(
+          entries.map(({ keyArgs, value }) => ({
+            index: keyArgs?.[0],
+            ...value,
+          })),
+        );
+        setBounties(filteredData);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [papi]);
 
   return {
     bounties,
@@ -36,7 +44,7 @@ export function useQueryBounties(api) {
   };
 }
 
-export function useBountiesTotalBalance(bounties, api) {
+export function useBountiesTotalBalance(bounties, papi) {
   const [isLoading, setIsLoading] = useState(true);
   const [totalBalance, setTotalBalance] = useState(0);
 
@@ -44,8 +52,10 @@ export function useBountiesTotalBalance(bounties, api) {
     try {
       const balances = await Promise.all(
         bounties.map(async (bounty) => {
-          const id = bounty?.index?.toJSON();
-          if (!id) return new BigNumber(0);
+          const id = bounty?.index;
+          if (isNil(id)) {
+            return new BigNumber(0);
+          }
 
           try {
             const response = await backendApi.fetch(`treasury/bounties/${id}`);
@@ -57,7 +67,7 @@ export function useBountiesTotalBalance(bounties, api) {
               return new BigNumber(metadataValue);
             }
 
-            return await querySystemAccountBalance(api, address);
+            return await querySystemAccountBalanceWithPapi(papi, address);
           } catch (error) {
             throw new Error(
               `Error fetching balance for bounty index ${id}: ${error}`,
@@ -73,15 +83,15 @@ export function useBountiesTotalBalance(bounties, api) {
     } finally {
       setIsLoading(false);
     }
-  }, [bounties, api]);
+  }, [bounties, papi]);
 
   useEffect(() => {
-    if (!api || !bounties || bounties?.length === 0) {
+    if (!papi || !bounties || bounties?.length === 0) {
       return;
     }
 
     fetchBalances();
-  }, [fetchBalances, api, bounties]);
+  }, [fetchBalances, papi, bounties]);
 
   return {
     balance: totalBalance,

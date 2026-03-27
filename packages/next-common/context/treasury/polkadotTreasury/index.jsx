@@ -1,21 +1,29 @@
-import { useContextApi } from "next-common/context/api";
 import {
   StatemintFellowShipTreasuryAccount,
   StatemintTreasuryAccount,
 } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
 import { createContext, useContext } from "react";
-import { useQueryAssetHubTreasuryFree } from "./hooks/useQueryAssetHubTreasuryFree";
+import { useQueryAssetHubTreasuryFreeWithPapi } from "./hooks/useQueryAssetHubTreasuryFreeWithPapi";
 import {
   useBountiesTotalBalance,
   useQueryBounties,
 } from "./hooks/useQueryBountiesData";
 import useQueryFellowshipSalaryBalance from "./hooks/useQueryFellowshipSalaryBalance";
 import usePolkadotTreasuryTotal from "next-common/utils/hooks/usePolkadotTreasuryTotal";
+import { PapiProvider, useContextPapiApi } from "next-common/context/papi";
 
 const PolkadotTreasuryContext = createContext();
 
 export default function PolkadotTreasuryProvider({ children }) {
-  const api = useContextApi();
+  return (
+    <PapiProvider>
+      <PolkadotTreasuryProviderInner>{children}</PolkadotTreasuryProviderInner>
+    </PapiProvider>
+  );
+}
+
+function PolkadotTreasuryProviderInner({ children }) {
+  const papi = useContextPapiApi();
   const {
     treasuryAccount,
     relayChainTreasuryBalance: nativeTreasuryBalanceOnRelayChain,
@@ -26,12 +34,12 @@ export default function PolkadotTreasuryProvider({ children }) {
     isUsdtLoading: isDotTreasuryTotalUsdtLoading,
     totalUsdcBalance: dotTreasuryTotalUsdcBalance,
     isUsdcLoading: isDotTreasuryTotalUsdcLoading,
-  } = usePolkadotTreasuryTotal(api);
+  } = usePolkadotTreasuryTotal(papi);
 
   const {
     free: fellowshipTreasuryDotBalance,
     isLoading: isFellowshipTreasuryDotBalanceLoading,
-  } = useQueryAssetHubTreasuryFree(StatemintFellowShipTreasuryAccount);
+  } = useQueryAssetHubTreasuryFreeWithPapi(StatemintFellowShipTreasuryAccount);
 
   const {
     balance: fellowshipSalaryUsdtBalance,
@@ -41,17 +49,17 @@ export default function PolkadotTreasuryProvider({ children }) {
   const {
     free: dotTreasuryBalanceOnAssetHub,
     isLoading: isDotTreasuryBalanceOnAssetHubLoading,
-  } = useQueryAssetHubTreasuryFree(StatemintTreasuryAccount);
+  } = useQueryAssetHubTreasuryFreeWithPapi(StatemintTreasuryAccount);
 
   const {
     bounties,
     bountiesCount,
     isLoading: isQueryBountiesLoading,
-  } = useQueryBounties(api);
+  } = useQueryBounties(papi);
   const {
     balance: dotTreasuryBalanceOnBounties,
     isLoading: isBountiesTotalBalanceLoading,
-  } = useBountiesTotalBalance(bounties, api);
+  } = useBountiesTotalBalance(bounties, papi);
 
   const isDotTreasuryBalanceOnBountiesLoading =
     isQueryBountiesLoading || isBountiesTotalBalanceLoading;
