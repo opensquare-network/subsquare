@@ -1,10 +1,10 @@
 import useColumns from "next-common/components/styledList/useColumns";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { useState } from "react";
-import useOldPreimage from "next-common/hooks/useOldPreimage";
-import useOldPreimagePapi from "next-common/hooks/useOldPreimagePapi";
-import usePreimage from "next-common/hooks/usePreimage";
-import usePreimagePapi from "next-common/hooks/usePreimagePapi";
+import useOldPreimage from "next-common/hooks/useOldPreimageNew";
+import useOldPreimagePapi from "next-common/hooks/useOldPreimagePapiNew";
+import usePreimage from "next-common/hooks/usePreimageNew";
+import usePreimagePapi from "next-common/hooks/usePreimagePapiNew";
 import { useChainSettings } from "next-common/context/chain";
 import { useDispatch, useSelector } from "react-redux";
 import {

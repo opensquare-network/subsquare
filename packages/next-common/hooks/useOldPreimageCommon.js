@@ -103,7 +103,7 @@ function unwrapMaybeValue(value) {
 
 export function toPreimageLength(value) {
   const unwrappedValue = unwrapMaybeValue(value);
-  if (unwrappedValue === null || unwrappedValue === undefined) {
+  if (isNil(unwrappedValue)) {
     return null;
   }
 
@@ -116,7 +116,7 @@ export function toPreimageLength(value) {
 
 export function toPreimageCount(value) {
   const unwrappedValue = unwrapMaybeValue(value);
-  if (unwrappedValue === null || unwrappedValue === undefined) {
+  if (isNil(unwrappedValue)) {
     return undefined;
   }
 
