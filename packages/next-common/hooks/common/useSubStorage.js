@@ -151,7 +151,7 @@ export default function useSubStorage(
 
   const paramsKey = normalizedParams
     .map((p) => {
-      if (p === null || p === undefined) return "null";
+      if (isNil(p)) return "null";
       if (typeof p === "object") {
         try {
           return JSON.stringify(p);

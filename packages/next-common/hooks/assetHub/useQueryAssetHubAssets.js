@@ -1,21 +1,40 @@
-import { useAssetHubApi } from "next-common/hooks/chain/useAssetHubApi";
-import useCall from "next-common/utils/hooks/useCall";
+import { useAssetHubPapi } from "next-common/hooks/chain/useAssetHubApi";
+import { useEffect, useState } from "react";
 
 export default function useQueryAssetHubAssets(assetId, address) {
-  const api = useAssetHubApi();
+  const papi = useAssetHubPapi();
+  const [state, setState] = useState({
+    isLoading: true,
+    balance: 0,
+    decimals: 0,
+  });
 
-  const { loaded: isAccountLoaded, value: account } = useCall(
-    api?.query.assets?.account,
-    [assetId, address],
-  );
-  const { loaded: isMetaLoaded, value: meta } = useCall(
-    api?.query.assets?.metadata,
-    [assetId],
-  );
+  useEffect(() => {
+    if (!papi || !assetId || !address) {
+      return;
+    }
 
-  return {
-    isLoading: !isAccountLoaded || !isMetaLoaded,
-    balance: account?.toJSON()?.balance || 0,
-    decimals: meta?.toJSON()?.decimals || 0,
-  };
+    setState((prev) => ({ ...prev, isLoading: true }));
+
+    Promise.all([
+      papi.query.Assets.Account.getValue(assetId, address),
+      papi.query.Assets.Metadata.getValue(assetId),
+    ])
+      .then(([account, meta]) => {
+        setState({
+          isLoading: false,
+          balance: account?.balance?.toString?.() || 0,
+          decimals: meta?.decimals || 0,
+        });
+      })
+      .catch(() => {
+        setState({
+          isLoading: false,
+          balance: 0,
+          decimals: 0,
+        });
+      });
+  }, [papi, assetId, address]);
+
+  return state;
 }

@@ -1,3 +1,4 @@
+import { isNil } from "lodash-es";
 import { toTypedCallTree } from "./treeBuilder.mjs";
 import { normalizeCallTree } from "./treeNormalize.mjs";
 import {
@@ -141,7 +142,7 @@ function getCallDocs(metadata, section, method) {
   );
 
   const callsType = pallet?.calls?.type;
-  if (callsType === undefined) {
+  if (isNil(callsType)) {
     return null;
   }
 

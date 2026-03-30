@@ -57,3 +57,41 @@ export default function DemocracySummaryDelegationInfo({ delegating }) {
     </GreyInfoPanel>
   );
 }
+
+export function DemocracySummaryDelegationInfoWithPapi({ delegating }) {
+  const node = useChainSettings();
+  if (!delegating) {
+    return <div />;
+  }
+
+  const conviction = Conviction[delegating.conviction.type];
+  const balance = Number(delegating.balance);
+
+  return (
+    <GreyInfoPanel className="overflow-x-auto !flex-nowrap whitespace-nowrap scrollbar-hidden !rounded">
+      <Item>
+        <span>Delegating to</span>
+        <AddressUser add={delegating.target} />
+        <ValueDisplay
+          value={toPrecision(balance * conviction, node.decimals)}
+          symbol={node.symbol}
+        />
+      </Item>
+
+      <Item>
+        <span>Conviction</span>
+        <TextSecondary>
+          <VoteLabel conviction={conviction} />
+        </TextSecondary>
+      </Item>
+
+      <Item>
+        <span>Capital</span>
+        <ValueDisplay
+          value={toPrecision(balance, node.decimals)}
+          symbol={node.symbol}
+        />
+      </Item>
+    </GreyInfoPanel>
+  );
+}
