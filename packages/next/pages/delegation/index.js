@@ -3,7 +3,7 @@ import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import DelegationLayout from "next-common/components/delegation/layout";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { GeneralProxiesProvider } from "next-common/context/proxy";
-
+import { PapiProvider } from "next-common/context/papi";
 const DelegateContainer = dynamicClientOnly(() =>
   import("next-common/components/delegation/delegate/container"),
 );
@@ -12,7 +12,9 @@ export default function ReferendaPage() {
   return (
     <DelegationLayout>
       <GeneralProxiesProvider>
-        <DelegateContainer />
+        <PapiProvider>
+          <DelegateContainer />
+        </PapiProvider>
       </GeneralProxiesProvider>
     </DelegationLayout>
   );

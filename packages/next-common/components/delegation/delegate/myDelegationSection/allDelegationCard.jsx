@@ -7,16 +7,16 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import AllBeenDelegatedInfo from "next-common/components/summary/allDelegation/allBeenDelegatedInfo";
 import AllMyDelegationInfo from "next-common/components/summary/allDelegation/allMyDelegationInfo";
 import { myReferendaDelegationsSelector } from "next-common/store/reducers/myOnChainData/referenda/myReferendaDelegations";
-import { useAllMyBeenDelegatedList } from "next-common/utils/hooks/referenda/useAllBeenDelegatedList";
-import useFetchMyReferendaDelegations from "next-common/utils/hooks/referenda/useFetchMyReferendaDelegations";
-import { useSelector } from "react-redux";
 import Link from "next-common/components/link";
 import { cn } from "next-common/utils";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import useSubDemocracyDelegating from "next-common/utils/hooks/referenda/useSubDemocracyDelegating";
-import useBeenDelegated from "next-common/hooks/useBeenDelegated";
+import useSubDemocracyDelegatingWithPapi from "next-common/utils/hooks/referenda/useSubDemocracyDelegatingWithPapi";
+import useBeenDelegatedWithPapi from "next-common/hooks/useBeenDelegatedWithPapi";
 import BeenDelegatedInfo from "next-common/components/summary/democracyBeenDelegated/beenDelegatedInfo";
-import DemocracySummaryDelegationInfo from "next-common/components/summary/democracySummaryDelegation/democracySummaryDelegationInfo";
+import { DemocracySummaryDelegationInfoWithPapi } from "next-common/components/summary/democracySummaryDelegation/democracySummaryDelegationInfo";
+import { useSelector } from "react-redux";
+import { useAllMyBeenDelegatedList } from "next-common/utils/hooks/referenda/useAllBeenDelegatedList";
+import useFetchMyReferendaDelegations from "next-common/utils/hooks/referenda/useFetchMyReferendaDelegations";
 
 export default function AllDelegationCard() {
   const moduleTab = useModuleTab();
@@ -80,8 +80,9 @@ function AllReferendaDelegationsContent() {
 
 function AllDemocracyDelegationsContent() {
   const realAddress = useRealAddress();
-  const { delegating } = useSubDemocracyDelegating(realAddress);
-  const { delegations, beenDelegatedList } = useBeenDelegated(realAddress);
+  const { delegating } = useSubDemocracyDelegatingWithPapi(realAddress);
+  const { delegations, beenDelegatedList } =
+    useBeenDelegatedWithPapi(realAddress);
 
   const hasDelegating = !!delegating;
   const hasBeenDelegated = !!beenDelegatedList?.length;
@@ -93,7 +94,7 @@ function AllDemocracyDelegationsContent() {
   return (
     <AllDelegationContainer linkToMyDelegations={hasDelegating}>
       {hasDelegating && (
-        <DemocracySummaryDelegationInfo delegating={delegating} />
+        <DemocracySummaryDelegationInfoWithPapi delegating={delegating} />
       )}
 
       {hasBeenDelegated && (
