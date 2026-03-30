@@ -1,6 +1,8 @@
+import { isNil } from "lodash-es";
+
 function getPathBasedTypeName(metadata, typeId) {
   // try path-based naming
-  if (typeId === undefined || typeId === null) {
+  if (isNil(typeId)) {
     return null;
   }
   const rawLookup = metadata?.lookup?.[typeId];
