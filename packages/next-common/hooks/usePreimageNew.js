@@ -27,7 +27,7 @@ function parseRequestStatus(optStatus) {
 
   if (status.isRequested) {
     const req = status.asRequested;
-    // 旧版 runtime：asRequested 是 Option，无结构化字段
+    // Older versions: asRequested is an option with no structured fields.
     if (req instanceof Option) {
       return { status, statusName: "requested" };
     }
@@ -42,7 +42,7 @@ function parseRequestStatus(optStatus) {
 
   if (status.isUnrequested) {
     const unreq = status.asUnrequested;
-    // 旧版 runtime：asUnrequested 是 Option
+    // Older versions, asUnrequested is an option.
     if (unreq instanceof Option) {
       return {
         status,

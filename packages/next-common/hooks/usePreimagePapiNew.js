@@ -21,7 +21,7 @@ const papiPreimageResultCache = new Map();
 function parsePapiRequestStatus(rawStatus) {
   if (!rawStatus) return { status: null };
 
-  const statusName = getPapiStatusName(rawStatus); // 首字母小写
+  const statusName = getPapiStatusName(rawStatus); // Lowercase first letter
   const { type, value = {} } = rawStatus;
   const result = { status: rawStatus, statusName };
 
