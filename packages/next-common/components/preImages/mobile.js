@@ -2,8 +2,8 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import React, { useState, useEffect, useRef } from "react";
 import usePreimage from "next-common/hooks/usePreimageNew";
 import usePreimagePapi from "next-common/hooks/usePreimagePapiNew";
-import useOldPreimage from "next-common/hooks/useOldPreimage";
-import useOldPreimagePapi from "next-common/hooks/useOldPreimagePapi";
+import useOldPreimage from "next-common/hooks/useOldPreimageNew";
+import useOldPreimagePapi from "next-common/hooks/useOldPreimagePapiNew";
 import { useChainSettings } from "next-common/context/chain";
 import { useDispatch } from "react-redux";
 import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";

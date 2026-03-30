@@ -1,7 +1,7 @@
 import useColumns from "next-common/components/styledList/useColumns";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { useState } from "react";
-import useOldPreimage from "next-common/hooks/useOldPreimage";
+import useOldPreimage from "next-common/hooks/useOldPreimageNew";
 import useOldPreimagePapi from "next-common/hooks/useOldPreimagePapiNew";
 import usePreimage from "next-common/hooks/usePreimageNew";
 import usePreimagePapi from "next-common/hooks/usePreimagePapiNew";

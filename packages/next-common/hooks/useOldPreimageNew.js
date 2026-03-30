@@ -14,14 +14,14 @@ import {
   resolveInlinePreimage,
 } from "./usePreimageNewCommon";
 
-const preimageResultCache = new Map();
+const oldPreimageResultCache = new Map();
 
-function parseTicket(rawTicket) {
-  if (!rawTicket) return undefined;
-  return { who: rawTicket[0].toString(), amount: rawTicket[1] };
+function parseDeposit(rawDeposit) {
+  if (!rawDeposit) return undefined;
+  return { who: rawDeposit[0].toString(), amount: rawDeposit[1] };
 }
 
-function parseRequestStatus(optStatus) {
+function parseStatusFor(optStatus) {
   const status = optStatus.unwrapOr(null);
   if (!status) return { status: null };
 
@@ -35,8 +35,8 @@ function parseRequestStatus(optStatus) {
       status,
       statusName: "requested",
       count: req.count.toNumber(),
-      ticket: parseTicket(req.maybeTicket.unwrapOr(null)),
-      proposalLength: req.maybeLen.unwrapOr(BN_ZERO),
+      deposit: parseDeposit(req.deposit.unwrapOr(null)),
+      proposalLength: req.len.unwrapOr(BN_ZERO),
     };
   }
 
@@ -47,13 +47,13 @@ function parseRequestStatus(optStatus) {
       return {
         status,
         statusName: "unrequested",
-        ticket: parseTicket(unreq.unwrapOr(null)),
+        deposit: parseDeposit(unreq.unwrapOr(null)),
       };
     }
     return {
       status,
       statusName: "unrequested",
-      ticket: parseTicket(unreq.ticket),
+      deposit: parseDeposit(unreq.deposit),
       proposalLength: unreq.len,
     };
   }
@@ -62,13 +62,13 @@ function parseRequestStatus(optStatus) {
   return { status };
 }
 
-async function fetchPreimage(proposalHash, api, hashOnly) {
+async function fetchOldPreimage(proposalHash, api, hashOnly) {
   const base = buildBaseResult(proposalHash, hashOnly, api.registry, null);
 
-  if (!api.query.preimage?.requestStatusFor) return base;
+  if (!api.query.preimage?.statusFor) return base;
 
-  const optStatus = await api.query.preimage.requestStatusFor(proposalHash);
-  const parsedStatus = parseRequestStatus(optStatus);
+  const optStatus = await api.query.preimage.statusFor(proposalHash);
+  const parsedStatus = parseStatusFor(optStatus);
   const withStatus = { ...base, ...parsedStatus };
 
   if (!parsedStatus.status) return withStatus;
@@ -93,7 +93,7 @@ async function fetchPreimage(proposalHash, api, hashOnly) {
   return buildCompletedResult(withStatus, decoded);
 }
 
-export default function usePreimage(hashOrBounded) {
+export default function useOldPreimage(hashOrBounded) {
   const api = useContextApi();
 
   const { value, loading } = useAsync(async () => {
@@ -102,18 +102,18 @@ export default function usePreimage(hashOrBounded) {
     const { proposalHash, inlineData } = parseHashOrBounded(hashOrBounded, api);
     if (!proposalHash) return null;
 
-    if (preimageResultCache.has(proposalHash)) {
-      return preimageResultCache.get(proposalHash);
+    if (oldPreimageResultCache.has(proposalHash)) {
+      return oldPreimageResultCache.get(proposalHash);
     }
 
     const hashOnly = isHashOnlyStorageKey(api);
 
     const result = inlineData
       ? resolveInlinePreimage(proposalHash, hashOnly, api, inlineData)
-      : await fetchPreimage(proposalHash, api, hashOnly);
+      : await fetchOldPreimage(proposalHash, api, hashOnly);
 
     if (result?.isCompleted) {
-      preimageResultCache.set(proposalHash, result);
+      oldPreimageResultCache.set(proposalHash, result);
     }
 
     return result;
