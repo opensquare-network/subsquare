@@ -89,8 +89,6 @@ export async function resolveInlinePapiPreimage(
 
 // ── polkadot-js shared (used by usePreimage + useOldPreimage) ────────────────
 
-// 将任意 hashOrBounded 输入统一为 { proposalHash, inlineData? }
-// inline hash 通过 api.registry.hash 计算
 export function parseHashOrBounded(hashOrBounded, api) {
   if (isString(hashOrBounded)) {
     return { proposalHash: hashOrBounded };
@@ -120,7 +118,6 @@ export function parseHashOrBounded(hashOrBounded, api) {
   return {};
 }
 
-// 判断 preimageFor 存储的 key 类型：H256-only（旧版）还是 (H256, u32)（新版）
 export function isHashOnlyStorageKey(api) {
   if (!api?.query.preimage?.preimageFor?.creator.meta.type.isMap) {
     return false;
