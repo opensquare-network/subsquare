@@ -32,7 +32,7 @@ export function safeHexToString(hex) {
 }
 
 // const accountTypes = ["MultiAddress", "AccountId32"];
-const hashTypes = ["H256", "[u8;32]"];
+const hashTypes = ["H256", "[u8;32]", "H160", "[u8;20]"];
 
 function TextValue({ val }) {
   return (

@@ -11,13 +11,19 @@ export default function ArrayPanel({ node }) {
           {name ? `${name}: ${type}` : type}
         </span>
       </div>
-      <IndentPanel className="gap-[8px]">
-        {(children || [])
-          .filter((child) => child !== null && child !== undefined)
-          .map((child, i) => (
-            <ValuePanel key={i} node={child} />
-          ))}
-      </IndentPanel>
+      {(children || []).length > 0 ? (
+        <IndentPanel className="gap-[8px]">
+          {(children || [])
+            .filter((child) => child !== null && child !== undefined)
+            .map((child, i) => (
+              <ValuePanel key={i} node={child} />
+            ))}
+        </IndentPanel>
+      ) : (
+        <IndentPanel className="gap-[8px]">
+          <span className="text-textTertiary">Empty</span>
+        </IndentPanel>
+      )}
     </div>
   );
 }
