@@ -16,13 +16,27 @@ import AddressUser from "../user/addressUser";
 import { useCallContext } from "./callContext";
 import interlay from "next-common/utils/consts/settings/interlay";
 import kintsugi from "next-common/utils/consts/settings/kintsugi";
-import { isNil } from "lodash-es";
+import { isNil, omit } from "lodash-es";
 import EnumPanel from "./enumPanel";
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 
 const LongText = dynamic(() => import("next-common/components/longText"), {
   ssr: false,
 });
+
+function u64ArrayToU256(arr) {
+  if (arr.length !== 4) {
+    throw new Error("Expected array of 4 u64 values");
+  }
+
+  const n =
+    BigInt(arr[0]) |
+    (BigInt(arr[1]) << 64n) |
+    (BigInt(arr[2]) << 128n) |
+    (BigInt(arr[3]) << 192n);
+
+  return "0x" + n.toString(16).padStart(64, "0");
+}
 
 export function safeHexToString(hex) {
   if (!hex.startsWith("0x")) {
@@ -193,6 +207,24 @@ export function ValuePanel({ node }) {
   }
 
   if (rawType === "array") {
+    if (
+      type === "[u64; 4]" &&
+      Array.isArray(node.children) &&
+      node.children.length === 4
+    ) {
+      const value = u64ArrayToU256(node.children.map((child) => child.value));
+      return (
+        <ValuePanel
+          node={{
+            ...omit(node, ["children"]),
+            rawType: "primitive",
+            type: "U256",
+            value,
+          }}
+        />
+      );
+    }
+
     return <ArrayPanel node={node} />;
   }
 
