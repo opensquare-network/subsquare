@@ -1,13 +1,11 @@
 import { last } from "lodash-es";
 import BigNumber from "bignumber.js";
-import {
-  useBeginHeight,
-  useBlockSteps,
-} from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
+import { useBlockSteps } from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
 import { useMemo } from "react";
 import { useReferendaTallyHistory } from "next-common/store/reducers/referenda/thresholdCurves";
 import { isEmpty } from "lodash-es";
-import useChainOrScanHeight from "next-common/hooks/height";
+import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
+import { useDecidingSince } from "next-common/context/post/gov2/referendum";
 
 function calcFromOneTallyData(tally) {
   const { ayes, nays, support, issuance } = tally;
@@ -46,6 +44,7 @@ export function calcDataFromTallyHistory(
   const endHeight = Math.min(latestHeight, rangeEndHeight);
 
   let iterHeight = beginHeight;
+
   while (iterHeight <= endHeight) {
     const tally =
       tallyHistory.findLast(
@@ -70,18 +69,18 @@ export function calcDataFromTallyHistory(
 
 export default function useHistoryTallyValueData(totalHours) {
   const tallyHistory = useReferendaTallyHistory();
-  const latestHeight = useChainOrScanHeight();
+  const latestHeight = useAhmLatestHeight();
   const blockStep = useBlockSteps();
-  const beginHeight = useBeginHeight();
-  const rangeEndHeight = beginHeight + blockStep * totalHours;
+  const decidingSince = useDecidingSince();
+  const rangeEndHeight = decidingSince + blockStep * totalHours;
 
   return useMemo(() => {
     return calcDataFromTallyHistory(
       tallyHistory,
-      beginHeight,
+      decidingSince,
       latestHeight,
       blockStep,
       rangeEndHeight,
     );
-  }, [tallyHistory, beginHeight, latestHeight, blockStep, rangeEndHeight]);
+  }, [tallyHistory, decidingSince, latestHeight, blockStep, rangeEndHeight]);
 }
