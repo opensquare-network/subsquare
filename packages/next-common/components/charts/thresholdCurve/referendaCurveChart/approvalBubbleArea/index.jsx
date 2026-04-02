@@ -8,19 +8,36 @@ import BubbleItem from "./bubbleItem";
 import useShowVoteActions from "next-common/hooks/useShowVoteActions";
 import { clamp, inRange, last } from "lodash-es";
 import { cn } from "next-common/utils";
+import { useTimelineData } from "next-common/context/post";
+import { useChainSettings } from "next-common/context/chain";
 
 export default function ApprovalBubbleArea(props) {
   const showVoteActions = useShowVoteActions();
-  if (!showVoteActions || !props.chartArea) {
+  if (
+    !showVoteActions ||
+    !props.chartArea ||
+    !props.historyApprovalData?.length
+  ) {
     return null;
   }
   return <ApprovalBubbleAreaImpl {...props} />;
+}
+
+function useDecisionStartedIndexer() {
+  const timeline = useTimelineData();
+
+  return (timeline ?? []).find((item) => item.name === "DecisionStarted")
+    ?.indexer;
 }
 
 const useApprovalBubbleData = (rangeData, historyApprovalData) => {
   const labelXLength = rangeData[1] - rangeData[0];
   const beginHeight = useBeginHeight();
   const blockStep = useBlockSteps();
+  const decisionStarted = useDecisionStartedIndexer();
+  const startedTime = decisionStarted?.blockTime;
+  const { assethubMigration } = useChainSettings();
+  const useTimeAxis = assethubMigration?.migrated;
 
   const { loading, voteActions } = useReferendumActions();
 
@@ -36,11 +53,16 @@ const useApprovalBubbleData = (rangeData, historyApprovalData) => {
       }
     };
     return voteActions
-      .sort((a, b) => a.indexer.blockHeight - b.indexer.blockHeight)
+      .sort((a, b) =>
+        useTimeAxis
+          ? a.indexer.blockTime - b.indexer.blockTime
+          : a.indexer.blockHeight - b.indexer.blockHeight,
+      )
       .map((item) => {
         const { data, type, who } = item;
-        const blockHeight = item.indexer.blockHeight;
-        const currentStep = (blockHeight - beginHeight) / blockStep;
+        const currentStep = useTimeAxis
+          ? (item.indexer.blockTime - startedTime) / (3600 * 1000)
+          : (item.indexer.blockHeight - beginHeight) / blockStep;
 
         return {
           data,
@@ -55,13 +77,15 @@ const useApprovalBubbleData = (rangeData, historyApprovalData) => {
         };
       });
   }, [
-    beginHeight,
-    blockStep,
     historyApprovalData,
     loading,
     labelXLength,
     rangeData,
     voteActions,
+    startedTime,
+    beginHeight,
+    blockStep,
+    useTimeAxis,
   ]);
 };
 

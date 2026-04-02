@@ -15,6 +15,9 @@ import { useBlockSteps } from "next-common/utils/hooks/referenda/detail/useRefer
 import { useMemo } from "react";
 import useChainOrScanHeight from "next-common/hooks/height";
 import useReferendumCurveData from "next-common/utils/hooks/referenda/detail/useReferendumCurveData";
+import useLatestBlockTime from "next-common/utils/hooks/useBlockTime";
+import useDecisionStartedTime from "next-common/utils/hooks/referenda/detail/useDecisionStartedTime";
+import { useChainSettings } from "next-common/context/chain";
 
 export default function useInnerPoints(labels) {
   const approvalThreshold = useApprovalThreshold();
@@ -42,13 +45,30 @@ export default function useInnerPoints(labels) {
 export function useCurrentHeightPoints() {
   const { supportData, approvalData, labels } = useReferendumCurveData();
   const currentHeight = useChainOrScanHeight();
+  const currentTime = useLatestBlockTime();
   const steps = useBlockSteps();
   const beginHeight = useBeginHeight();
+  const startedTime = useDecisionStartedTime();
+  const { assethubMigration } = useChainSettings();
+  const useTimeAxis = assethubMigration?.migrated;
 
   const xValue = useMemo(() => {
+    if (useTimeAxis && startedTime && currentTime) {
+      const index = Math.floor((currentTime - startedTime) / (3600 * 1000));
+      return Math.min(index, labels.length - 1);
+    }
+
     const index = Math.floor((currentHeight - beginHeight) / steps);
     return Math.min(index, labels.length - 1);
-  }, [beginHeight, currentHeight, labels.length, steps]);
+  }, [
+    useTimeAxis,
+    beginHeight,
+    currentHeight,
+    currentTime,
+    labels.length,
+    startedTime,
+    steps,
+  ]);
 
   const [, supportInnerPoint] = useSupportPoints(
     xValue,

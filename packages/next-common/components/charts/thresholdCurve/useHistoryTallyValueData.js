@@ -7,7 +7,12 @@ import {
 import { useMemo } from "react";
 import { useReferendaTallyHistory } from "next-common/store/reducers/referenda/thresholdCurves";
 import { isEmpty } from "lodash-es";
+import useLatestBlockTime from "next-common/utils/hooks/useBlockTime";
+import useDecisionStartedTime from "next-common/utils/hooks/referenda/detail/useDecisionStartedTime";
 import useChainOrScanHeight from "next-common/hooks/height";
+import { useChainSettings } from "next-common/context/chain";
+
+const oneHour = 3600 * 1000;
 
 function calcFromOneTallyData(tally) {
   const { ayes, nays, support, issuance } = tally;
@@ -50,7 +55,8 @@ export function calcDataFromTallyHistory(
     const tally =
       tallyHistory.findLast(
         (tally) => tally.indexer.blockHeight <= iterHeight,
-      ) || last(tallyHistory);
+      ) ||
+      last(tallyHistory);
 
     let { currentSupport, currentApprove } = calcFromOneTallyData(tally.tally);
     historySupportData.push(currentSupport);
@@ -68,14 +74,71 @@ export function calcDataFromTallyHistory(
   };
 }
 
+export function calcDataFromTallyHistoryByTime(
+  tallyHistory,
+  startedTime,
+  latestTime,
+  rangeEndTime,
+) {
+  let historySupportData = [];
+  let historyApprovalData = [];
+  let historyAyesData = [];
+  let historyNaysData = [];
+  if (!tallyHistory || !startedTime || !latestTime || isEmpty(tallyHistory)) {
+    return {
+      historySupportData,
+      historyApprovalData,
+      historyAyesData,
+      historyNaysData,
+    };
+  }
+
+  const endTime = Math.min(latestTime, rangeEndTime);
+
+  let iterTime = startedTime;
+  while (iterTime <= endTime) {
+    const tally =
+      tallyHistory.findLast((item) => item.indexer.blockTime <= iterTime) ||
+      last(tallyHistory);
+
+    let { currentSupport, currentApprove } = calcFromOneTallyData(tally.tally);
+    historySupportData.push(currentSupport);
+    historyApprovalData.push(currentApprove);
+    historyAyesData.push(tally.tally.ayes);
+    historyNaysData.push(tally.tally.nays);
+    iterTime += oneHour;
+  }
+
+  return {
+    historySupportData,
+    historyApprovalData,
+    historyAyesData,
+    historyNaysData,
+  };
+}
+
 export default function useHistoryTallyValueData(totalHours) {
   const tallyHistory = useReferendaTallyHistory();
   const latestHeight = useChainOrScanHeight();
+  const latestTime = useLatestBlockTime();
   const blockStep = useBlockSteps();
   const beginHeight = useBeginHeight();
+  const startedTime = useDecisionStartedTime();
+  const { assethubMigration } = useChainSettings();
+  const useTimeAxis = assethubMigration?.migrated;
   const rangeEndHeight = beginHeight + blockStep * totalHours;
+  const rangeEndTime = startedTime + totalHours * oneHour;
 
   return useMemo(() => {
+    if (useTimeAxis) {
+      return calcDataFromTallyHistoryByTime(
+        tallyHistory,
+        startedTime,
+        latestTime,
+        rangeEndTime,
+      );
+    }
+
     return calcDataFromTallyHistory(
       tallyHistory,
       beginHeight,
@@ -83,5 +146,15 @@ export default function useHistoryTallyValueData(totalHours) {
       blockStep,
       rangeEndHeight,
     );
-  }, [tallyHistory, beginHeight, latestHeight, blockStep, rangeEndHeight]);
+  }, [
+    useTimeAxis,
+    tallyHistory,
+    startedTime,
+    latestTime,
+    rangeEndTime,
+    beginHeight,
+    latestHeight,
+    blockStep,
+    rangeEndHeight,
+  ]);
 }
