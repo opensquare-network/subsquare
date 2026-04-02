@@ -21,7 +21,7 @@
     "cookies": "^0.8.0",
     "dayjs": "^1.10.7",
     "http-proxy": "^1.18.1",
-    "lodash-es": "^4.17.23",
+    "lodash-es": "^4.18.1",
     "next": "16.1.7",
     "next-common": "workspace:*",
     "nprogress": "^0.2.0",
