@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 import { useReferendumActions } from "next-common/components/pages/components/gov2/sidebar/tally/voteActions/table";
-import { useBlockSteps } from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
 import BubbleItem from "./bubbleItem";
 import useShowVoteActions from "next-common/hooks/useShowVoteActions";
 import { clamp, inRange, last } from "lodash-es";
@@ -24,7 +23,6 @@ function useDecisionStartedIndexer() {
 
 const useApprovalBubbleData = (rangeData, historyApprovalData) => {
   const labelXLength = rangeData[1] - rangeData[0];
-  const blockStep = useBlockSteps();
   const decisionStarted = useDecisionStartedIndexer();
   const startedTime = decisionStarted?.blockTime;
 
