@@ -1,11 +1,12 @@
 import { last } from "lodash-es";
 import BigNumber from "bignumber.js";
-import { useBlockSteps } from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
 import { useMemo } from "react";
 import { useReferendaTallyHistory } from "next-common/store/reducers/referenda/thresholdCurves";
 import { isEmpty } from "lodash-es";
-import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
-import { useDecidingSince } from "next-common/context/post/gov2/referendum";
+import useLatestBlockTime from "next-common/utils/hooks/useBlockTime";
+import useDecisionStartedTime from "next-common/utils/hooks/referenda/detail/useDecisionStartedTime";
+
+const oneHour = 3600 * 1000;
 
 function calcFromOneTallyData(tally) {
   const { ayes, nays, support, issuance } = tally;
@@ -23,16 +24,15 @@ function calcFromOneTallyData(tally) {
 
 export function calcDataFromTallyHistory(
   tallyHistory,
-  beginHeight,
-  latestHeight,
-  blockStep,
-  rangeEndHeight,
+  startedTime,
+  latestTime,
+  rangeEndTime,
 ) {
   let historySupportData = [];
   let historyApprovalData = [];
   let historyAyesData = [];
   let historyNaysData = [];
-  if (!tallyHistory || !beginHeight || isEmpty(tallyHistory)) {
+  if (!tallyHistory || !startedTime || !latestTime || isEmpty(tallyHistory)) {
     return {
       historySupportData,
       historyApprovalData,
@@ -41,22 +41,20 @@ export function calcDataFromTallyHistory(
     };
   }
 
-  const endHeight = Math.min(latestHeight, rangeEndHeight);
+  const endTime = Math.min(latestTime, rangeEndTime);
 
-  let iterHeight = beginHeight;
-
-  while (iterHeight <= endHeight) {
+  let iterTime = startedTime;
+  while (iterTime <= endTime) {
     const tally =
-      tallyHistory.findLast(
-        (tally) => tally.indexer.blockHeight <= iterHeight,
-      ) || last(tallyHistory);
+      tallyHistory.findLast((item) => item.indexer.blockTime <= iterTime) ||
+      last(tallyHistory);
 
     let { currentSupport, currentApprove } = calcFromOneTallyData(tally.tally);
     historySupportData.push(currentSupport);
     historyApprovalData.push(currentApprove);
     historyAyesData.push(tally.tally.ayes);
     historyNaysData.push(tally.tally.nays);
-    iterHeight += blockStep;
+    iterTime += oneHour;
   }
 
   return {
@@ -69,18 +67,16 @@ export function calcDataFromTallyHistory(
 
 export default function useHistoryTallyValueData(totalHours) {
   const tallyHistory = useReferendaTallyHistory();
-  const latestHeight = useAhmLatestHeight();
-  const blockStep = useBlockSteps();
-  const decidingSince = useDecidingSince();
-  const rangeEndHeight = decidingSince + blockStep * totalHours;
+  const latestTime = useLatestBlockTime();
+  const startedTime = useDecisionStartedTime();
+  const rangeEndTime = startedTime + totalHours * oneHour;
 
   return useMemo(() => {
     return calcDataFromTallyHistory(
       tallyHistory,
-      decidingSince,
-      latestHeight,
-      blockStep,
-      rangeEndHeight,
+      startedTime,
+      latestTime,
+      rangeEndTime,
     );
-  }, [tallyHistory, decidingSince, latestHeight, blockStep, rangeEndHeight]);
+  }, [tallyHistory, startedTime, latestTime, rangeEndTime]);
 }
