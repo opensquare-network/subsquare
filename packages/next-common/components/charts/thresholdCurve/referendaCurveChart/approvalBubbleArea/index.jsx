@@ -8,7 +8,11 @@ import { useTimelineData } from "next-common/context/post";
 
 export default function ApprovalBubbleArea(props) {
   const showVoteActions = useShowVoteActions();
-  if (!showVoteActions || !props.chartArea) {
+  if (
+    !showVoteActions ||
+    !props.chartArea ||
+    !props.historyApprovalData?.length
+  ) {
     return null;
   }
   return <ApprovalBubbleAreaImpl {...props} />;
