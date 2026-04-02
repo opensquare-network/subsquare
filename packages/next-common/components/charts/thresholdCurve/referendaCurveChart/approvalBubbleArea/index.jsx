@@ -1,10 +1,15 @@
 import { useMemo } from "react";
 import { useReferendumActions } from "next-common/components/pages/components/gov2/sidebar/tally/voteActions/table";
+import {
+  useBeginHeight,
+  useBlockSteps,
+} from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
 import BubbleItem from "./bubbleItem";
 import useShowVoteActions from "next-common/hooks/useShowVoteActions";
 import { clamp, inRange, last } from "lodash-es";
 import { cn } from "next-common/utils";
 import { useTimelineData } from "next-common/context/post";
+import { useChainSettings } from "next-common/context/chain";
 
 export default function ApprovalBubbleArea(props) {
   const showVoteActions = useShowVoteActions();
@@ -27,8 +32,12 @@ function useDecisionStartedIndexer() {
 
 const useApprovalBubbleData = (rangeData, historyApprovalData) => {
   const labelXLength = rangeData[1] - rangeData[0];
+  const beginHeight = useBeginHeight();
+  const blockStep = useBlockSteps();
   const decisionStarted = useDecisionStartedIndexer();
   const startedTime = decisionStarted?.blockTime;
+  const { assethubMigration } = useChainSettings();
+  const useTimeAxis = assethubMigration?.migrated;
 
   const { loading, voteActions } = useReferendumActions();
 
@@ -44,11 +53,16 @@ const useApprovalBubbleData = (rangeData, historyApprovalData) => {
       }
     };
     return voteActions
-      .sort((a, b) => a.indexer.blockTime - b.indexer.blockTime)
+      .sort((a, b) =>
+        useTimeAxis
+          ? a.indexer.blockTime - b.indexer.blockTime
+          : a.indexer.blockHeight - b.indexer.blockHeight,
+      )
       .map((item) => {
         const { data, type, who } = item;
-        const blockTime = item.indexer.blockTime;
-        const currentStep = (blockTime - startedTime) / (3600 * 1000);
+        const currentStep = useTimeAxis
+          ? (item.indexer.blockTime - startedTime) / (3600 * 1000)
+          : (item.indexer.blockHeight - beginHeight) / blockStep;
 
         return {
           data,
@@ -69,6 +83,9 @@ const useApprovalBubbleData = (rangeData, historyApprovalData) => {
     rangeData,
     voteActions,
     startedTime,
+    beginHeight,
+    blockStep,
+    useTimeAxis,
   ]);
 };
 
