@@ -12,6 +12,8 @@ import {
 import { InfoPlus } from "@osn/icons/subsquare";
 import { noop } from "lodash-es";
 import { useReferendaIsVoting } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
+import Tooltip from "next-common/components/tooltip";
+import { cn } from "next-common/utils";
 
 export function LinkMenuItem({ onClick }) {
   return (
@@ -141,13 +143,29 @@ export function AppendMenuItem({ onClick }) {
   );
 }
 
-export function SpamMenuItem({ onClick }) {
-  return (
-    <OptionItem onClick={onClick}>
+export function SpamMenuItem({ onClick, disabled }) {
+  const item = (
+    <OptionItem
+      onClick={disabled ? undefined : onClick}
+      className={cn(
+        disabled &&
+          "text-textDisabled [&_path]:fill-textDisabled cursor-not-allowed hover:bg-transparent",
+      )}
+    >
       <div className="mr-2">
         <SystemFlag />
       </div>
       <span>Spam</span>
     </OptionItem>
   );
+
+  if (disabled) {
+    return (
+      <Tooltip content="Already marked as spam" className="w-full">
+        {item}
+      </Tooltip>
+    );
+  }
+
+  return item;
 }

@@ -82,6 +82,7 @@ export function CommentContextMenu() {
           <CopyMenuItem onCopy={onCopy} />
           {isAdmin && (
             <SpamMenuItem
+              disabled={!!comment.spam}
               onClick={() => {
                 setShowSpamPopup(true);
                 setShow(false);

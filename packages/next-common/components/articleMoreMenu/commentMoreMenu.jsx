@@ -103,6 +103,7 @@ export default function CommentMoreMenu({
           )}
           {isAdmin && (
             <SpamMenuItem
+              disabled={!!comment.spam}
               onClick={() => {
                 setShowSpamPopup(true);
                 setShow(false);
