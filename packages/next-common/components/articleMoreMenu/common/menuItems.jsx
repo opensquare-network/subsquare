@@ -140,3 +140,14 @@ export function AppendMenuItem({ onClick }) {
     </OptionItem>
   );
 }
+
+export function SpamMenuItem({ onClick }) {
+  return (
+    <OptionItem onClick={onClick}>
+      <div className="mr-2">
+        <SystemFlag />
+      </div>
+      <span>Spam</span>
+    </OptionItem>
+  );
+}

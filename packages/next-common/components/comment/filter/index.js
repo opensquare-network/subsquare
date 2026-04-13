@@ -14,6 +14,7 @@ export const emptyFilterValues = {
 export const defaultFilterValues = {
   ...emptyFilterValues,
   hide_deleted: true,
+  hide_spam: true,
 };
 
 function DropdownCommentFilter() {

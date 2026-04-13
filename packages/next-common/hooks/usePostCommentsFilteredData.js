@@ -19,6 +19,10 @@ function isDeletedComment(comment) {
   return comment?.content?.trim?.() !== "[Deleted]";
 }
 
+function isSpamComment(comment) {
+  return !comment?.spam;
+}
+
 function is0Balance(comment) {
   return BigNumber(comment?.balance || 0).lte(0);
 }
@@ -137,6 +141,14 @@ export function usePostCommentsFilteredData() {
         flag = flag && isDeletedComment(item);
       }
 
+      if (filterParams.hide_spam) {
+        if (item.replies?.length) {
+          item.replies = filter(item.replies, isSpamComment);
+        }
+
+        flag = flag && isSpamComment(item);
+      }
+
       if (filterParams.show_dv_only) {
         flag = flag && isDVAddress(item?.author?.address);
       }
@@ -176,6 +188,7 @@ export function usePostCommentsFilteredData() {
     mergedComments,
     filterParams.comments_sort_by,
     filterParams.hide_deleted,
+    filterParams.hide_spam,
     filterParams.show_dv_only,
     filterParams.show_voters_only,
     filterParams.hide_0,

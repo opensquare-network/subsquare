@@ -26,6 +26,10 @@ export const optionItems = [
     key: "hide_deleted",
     name: "Hide [Deleted] comments",
   },
+  {
+    key: "hide_spam",
+    name: "Hide spam comments",
+  },
 ];
 
 export default function CommentFilterOptions() {
