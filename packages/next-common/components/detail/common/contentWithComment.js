@@ -31,7 +31,7 @@ function CommentsWithFilterContent({ children }) {
   );
 }
 
-function DiscussionCommentsWithFilterContent({ children }) {
+export function DiscussionCommentsWithFilterContent({ children }) {
   const { commentsData, loading } = usePostCommentsSimpleFilteredData();
   const { component, focusEditor } = useCommentComponent({
     commentsData,
