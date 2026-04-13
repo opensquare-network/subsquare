@@ -32,6 +32,46 @@ export const optionItems = [
   },
 ];
 
+export const discussionOptionItems = [
+  {
+    key: "hide_deleted",
+    name: "Hide [Deleted] comments",
+  },
+  {
+    key: "hide_spam",
+    name: "Hide spam comments",
+  },
+];
+
+export function DiscussionCommentFilterOptions() {
+  const [filterState, setFilterState] = useStagedCommentFilterParams();
+
+  const handleCheckboxChange = (item) => {
+    setFilterState({
+      ...filterState,
+      [item.key]: !filterState[item.key],
+    });
+  };
+
+  return discussionOptionItems.map((item) => (
+    <Tooltip key={item.key}>
+      <div
+        className={cn(
+          "flex justify-between text12Medium",
+          "cursor-pointer whitespace-nowrap select-none",
+        )}
+        onClick={() => handleCheckboxChange(item)}
+      >
+        <div className="cursor-[inherit]">{item.name}</div>
+        <Checkbox
+          checked={filterState[item.key] ?? emptyFilterValues[item.key]}
+          className="w-5 h-5 cursor-[inherit]"
+        />
+      </div>
+    </Tooltip>
+  ));
+}
+
 export default function CommentFilterOptions() {
   const api = useContextApi();
   const disabledOptions = {

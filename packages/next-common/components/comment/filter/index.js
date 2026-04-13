@@ -4,7 +4,10 @@ import { detailPageCategory } from "next-common/utils/consts/business/category";
 import usePostCommentsFilterReady from "next-common/hooks/usePostCommentsFilterReady";
 import { DropdownFilter } from "next-common/components/dropdownFilter";
 import CommentsSorter, { defaultSortBy, sortByQueryName } from "./sorter";
-import CommentFilterOptions, { optionItems } from "./options";
+import CommentFilterOptions, {
+  optionItems,
+  DiscussionCommentFilterOptions,
+} from "./options";
 
 export const emptyFilterValues = {
   [sortByQueryName]: defaultSortBy,
@@ -13,6 +16,16 @@ export const emptyFilterValues = {
 
 export const defaultFilterValues = {
   ...emptyFilterValues,
+  hide_deleted: true,
+  hide_spam: true,
+};
+
+export const discussionEmptyFilterValues = {
+  hide_deleted: false,
+  hide_spam: false,
+};
+
+export const discussionDefaultFilterValues = {
   hide_deleted: true,
   hide_spam: true,
 };
@@ -40,6 +53,24 @@ function InnerCommentsFilter() {
   );
 }
 
+function DropdownDiscussionCommentFilter() {
+  return (
+    <DropdownFilter>
+      <div className="flex flex-col py-[10px] gap-[4px] w-[200px]">
+        <DiscussionCommentFilterOptions />
+      </div>
+    </DropdownFilter>
+  );
+}
+
+export function DiscussionCommentsFilter() {
+  return (
+    <div className="flex items-center gap-x-2">
+      <DropdownDiscussionCommentFilter />
+    </div>
+  );
+}
+
 export default function CommentsFilter() {
   const detailType = useDetailType();
 
@@ -50,5 +81,5 @@ export default function CommentsFilter() {
     return <InnerCommentsFilter />;
   }
 
-  return null;
+  return <DiscussionCommentsFilter />;
 }
