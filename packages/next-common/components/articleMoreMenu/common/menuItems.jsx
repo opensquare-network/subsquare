@@ -160,11 +160,7 @@ export function SpamMenuItem({ onClick, disabled }) {
   );
 
   if (disabled) {
-    return (
-      <Tooltip content="Already marked as spam" className="w-full">
-        {item}
-      </Tooltip>
-    );
+    return <Tooltip content="Already marked as spam">{item}</Tooltip>;
   }
 
   return item;
