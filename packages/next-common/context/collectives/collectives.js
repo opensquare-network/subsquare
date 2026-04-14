@@ -38,6 +38,8 @@ export function useRankedCollectivePallet() {
   const section = useCollectivesSection();
   if ("ambassador" === section) {
     return "ambassadorCollective";
+  } else if ("secretary" === section) {
+    return "secretaryCollective";
   } else if ("fellowship" === section) {
     return "fellowshipCollective";
   } else {
@@ -51,6 +53,8 @@ export function useSalaryFellowshipPallet() {
   const section = useCollectivesSection();
   if ("ambassador" === section) {
     return "ambassadorSalary";
+  } else if ("secretary" === section) {
+    return "secretarySalary";
   } else if ("fellowship" === section) {
     return "fellowshipSalary";
   } else {
