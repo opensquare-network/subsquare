@@ -15,7 +15,7 @@ export default {
     },
     {
       name: "IBP1",
-      url: "wss://sys.ibp.network/bridgehub-polkadot",
+      url: "wss://bridge-hub-polkadot.ibp.network",
     },
     {
       name: "IBP2",
