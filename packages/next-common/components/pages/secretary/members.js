@@ -141,6 +141,10 @@ function SecretaryMembersList() {
 }
 
 function SecretaryMembersContent() {
+  const title = "Secretary Members";
+  const description =
+    "The Secretary Members are an operational body responsible for executing governance decisions and coordinating administrative workflows for the Polkadot ecosystem. It operates on-chain through the Polkadot Collectives system chain and supports governance execution through defined operational processes.";
+
   return (
     <DropdownUrlFilterProvider
       defaultFilterValues={{
@@ -152,11 +156,11 @@ function SecretaryMembersContent() {
     >
       <ListLayout
         seoInfo={{
-          title: "Secretary Members",
-          desc: "Secretary collective members and salary by rank.",
+          title: title,
+          desc: description,
         }}
-        title="Secretary Members"
-        description="Secretary collective members and salary by rank."
+        title={title}
+        description={description}
         tabs={[
           {
             value: "members",
