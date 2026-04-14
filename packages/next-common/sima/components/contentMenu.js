@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import styled from "styled-components";
 import { useClickAway } from "react-use";
 import { OptionWrapper } from "next-common/components/internalDropdown/styled";
@@ -16,7 +16,19 @@ import {
   EditMenuItem,
   CopyMenuItem,
   UnlinkMenuItem,
+  SpamMenuItem,
 } from "next-common/components/articleMoreMenu/common";
+import useIsAdmin from "next-common/hooks/useIsAdmin";
+import { useDispatch } from "react-redux";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
+import { useRouter } from "next/router";
+import { useMarkSpamComment } from "next-common/noSima/actions/markSpamComment";
+import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+
+const MarkAsSpamPopup = dynamicPopup(() =>
+  import("next-common/components/markAsSpamPopup"),
+);
 
 const Wrapper = styled.div`
   position: relative;
@@ -31,7 +43,13 @@ const Wrapper = styled.div`
 export function CommentContextMenu() {
   const comment = useComment();
   const [show, setShow] = useState(false);
+  const [showSpamPopup, setShowSpamPopup] = useState(false);
   const ref = useRef();
+  const isAdmin = useIsAdmin();
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const markSpamAction = useMarkSpamComment();
+  const { ensureLogin } = useEnsureLogin();
 
   useClickAway(ref, () => setShow(false));
 
@@ -40,6 +58,18 @@ export function CommentContextMenu() {
       `${window.location.origin}${window.location.pathname}${window.location.search}#${comment.cid}`,
     );
   };
+
+  const markAsSpam = useCallback(async () => {
+    if (!(await ensureLogin())) {
+      return;
+    }
+    const { error } = await markSpamAction(comment);
+    if (error) {
+      dispatch(newErrorToast(error.message));
+      return;
+    }
+    router.replace(router.asPath);
+  }, [ensureLogin, markSpamAction, comment, dispatch, router]);
 
   return (
     <Wrapper ref={ref}>
@@ -50,7 +80,19 @@ export function CommentContextMenu() {
       {show && (
         <OptionWrapper>
           <CopyMenuItem onCopy={onCopy} />
+          {isAdmin && (
+            <SpamMenuItem
+              disabled={!!comment.spam}
+              onClick={() => {
+                setShowSpamPopup(true);
+                setShow(false);
+              }}
+            />
+          )}
         </OptionWrapper>
+      )}
+      {showSpamPopup && (
+        <MarkAsSpamPopup setShow={setShowSpamPopup} onConfirm={markAsSpam} />
       )}
     </Wrapper>
   );

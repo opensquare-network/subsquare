@@ -13,13 +13,20 @@ import {
   DeleteMenuItem,
   EditMenuItem,
   CopyMenuItem,
+  SpamMenuItem,
 } from "next-common/components/articleMoreMenu/common";
 import { useCurrentCommentAnchor } from "../comment/useCommentAnchor";
 import { usePost } from "next-common/context/post";
 import { useCommentActions } from "next-common/sima/context/commentActions";
+import { useMarkSpamComment } from "next-common/noSima/actions/markSpamComment";
+import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 
 const MaybeSimaDeletePopup = dynamicPopup(() =>
   import("next-common/components/deletePopup/maybeSima"),
+);
+
+const MarkAsSpamPopup = dynamicPopup(() =>
+  import("next-common/components/markAsSpamPopup"),
 );
 
 export default function CommentMoreMenu({
@@ -33,10 +40,13 @@ export default function CommentMoreMenu({
   const [show, setShow] = useState(false);
   const ref = useRef();
   const [showDeletePopup, setShowDeletePopup] = useState(false);
+  const [showSpamPopup, setShowSpamPopup] = useState(false);
   const router = useRouter();
   const isAdmin = useIsAdmin();
   const currentCommentAnchor = useCurrentCommentAnchor();
   const { deleteComment: deleteCommentAction } = useCommentActions();
+  const markSpamAction = useMarkSpamComment();
+  const { ensureLogin } = useEnsureLogin();
 
   useClickAway(ref, () => setShow(false));
 
@@ -54,6 +64,18 @@ export default function CommentMoreMenu({
     }
     router.replace(router.asPath);
   }, [deleteCommentAction, post, comment, dispatch, router]);
+
+  const markAsSpam = useCallback(async () => {
+    if (!(await ensureLogin())) {
+      return;
+    }
+    const { error } = await markSpamAction(comment);
+    if (error) {
+      dispatch(newErrorToast(error.message));
+      return;
+    }
+    router.replace(router.asPath);
+  }, [ensureLogin, markSpamAction, comment, dispatch, router]);
 
   return (
     <div ref={ref} className=" relative">
@@ -79,6 +101,15 @@ export default function CommentMoreMenu({
               }}
             />
           )}
+          {isAdmin && (
+            <SpamMenuItem
+              disabled={!!comment.spam}
+              onClick={() => {
+                setShowSpamPopup(true);
+                setShow(false);
+              }}
+            />
+          )}
 
           <CopyMenuItem onCopy={onCopy} />
         </OptionWrapper>
@@ -90,6 +121,9 @@ export default function CommentMoreMenu({
           deletePost={customDeleteComment || deleteComment}
           isSima={comment.dataSource === "sima"}
         />
+      )}
+      {showSpamPopup && (
+        <MarkAsSpamPopup setShow={setShowSpamPopup} onConfirm={markAsSpam} />
       )}
     </div>
   );

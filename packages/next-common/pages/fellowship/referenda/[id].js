@@ -31,7 +31,12 @@ import FellowshipReferendaDetailMultiTabs from "next-common/components/pages/com
 import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 import { useReferendumVotingFinishIndexer } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import { isNil } from "lodash-es";
-import { CommentsContent } from "next-common/components/detail/common/contentWithComment";
+import { DiscussionCommentsWithFilterContent } from "next-common/components/detail/common/contentWithComment";
+import { DropdownUrlFilterProvider } from "next-common/components/dropdownFilter/context";
+import {
+  discussionDefaultFilterValues,
+  discussionEmptyFilterValues,
+} from "next-common/components/comment/filter";
 import { MaybeUseSwitchComment } from "next-common/components/detail/fellowship/fellowshipCommentsWithSwitchTabs";
 
 function FellowshipContent() {
@@ -45,11 +50,16 @@ function FellowshipContent() {
   return (
     <CollectivesProvider section="fellowship" params={fellowshipParams}>
       <MaybeUseSwitchComment>
-        <CommentsContent>
-          <FellowshipReferendaDetail />
-          <FellowshipReferendumSideBar />
-          <FellowshipReferendaDetailMultiTabs />
-        </CommentsContent>
+        <DropdownUrlFilterProvider
+          defaultFilterValues={discussionDefaultFilterValues}
+          emptyFilterValues={discussionEmptyFilterValues}
+        >
+          <DiscussionCommentsWithFilterContent>
+            <FellowshipReferendaDetail />
+            <FellowshipReferendumSideBar />
+            <FellowshipReferendaDetailMultiTabs />
+          </DiscussionCommentsWithFilterContent>
+        </DropdownUrlFilterProvider>
       </MaybeUseSwitchComment>
     </CollectivesProvider>
   );
