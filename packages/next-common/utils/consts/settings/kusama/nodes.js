@@ -5,7 +5,11 @@ const defaultKusamaNodes = [
   },
   {
     name: "IBP1",
-    url: "wss://rpc.ibp.network/kusama",
+    url: "wss://kusama.ibp.network",
+  },
+  {
+    name: "IBP2",
+    url: "wss://kusama.dotters.network",
   },
   {
     name: "Stakeworld",
@@ -30,10 +34,6 @@ const defaultKusamaNodes = [
   {
     name: "Dwellir Tunisia",
     url: "wss://kusama-rpc-tn.dwellir.com",
-  },
-  {
-    name: "IBP2",
-    url: "wss://kusama.dotters.network",
   },
   {
     name: "LuckyFriday",
