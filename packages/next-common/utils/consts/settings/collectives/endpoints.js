@@ -5,7 +5,11 @@ export const collectivesEndpoints = [
   },
   {
     name: "IBP1",
-    url: "wss://sys.ibp.network/collectives-polkadot",
+    url: "wss://collectives-polkadot.ibp.network",
+  },
+  {
+    name: "IBP2",
+    url: "wss://collectives-polkadot.dotters.network",
   },
   {
     name: "LuckyFriday",
@@ -16,16 +20,12 @@ export const collectivesEndpoints = [
     url: "wss://collectives.api.onfinality.io/public-ws",
   },
   {
-    name: "Dewllir",
+    name: "Dwellir",
     url: "wss://polkadot-collectives-rpc.dwellir.com",
   },
   {
-    name: "Dewllir Tunisia",
+    name: "Dwellir Tunisia",
     url: "wss://polkadot-collectives-rpc-tn.dwellir.com/",
-  },
-  {
-    name: "IBP2",
-    url: "wss://sys.dotters.network/collectives-polkadot",
   },
   {
     name: "RadiumBlock",
