@@ -146,33 +146,33 @@ function SecretaryMembersContent() {
     "The Secretary Members are an operational body responsible for executing governance decisions and coordinating administrative workflows for the Polkadot ecosystem. It operates on-chain through the Polkadot Collectives system chain and supports governance execution through defined operational processes.";
 
   return (
-    <DropdownUrlFilterProvider
-      defaultFilterValues={{
-        rank: null,
+    <ListLayout
+      seoInfo={{
+        title: title,
+        desc: description,
       }}
-      emptyFilterValues={{
-        rank: null,
-      }}
+      title={title}
+      description={description}
+      tabs={[
+        {
+          value: "members",
+          label: "Members",
+          url: "/secretary/members",
+          exactMatch: true,
+        },
+      ]}
     >
-      <ListLayout
-        seoInfo={{
-          title: title,
-          desc: description,
+      <DropdownUrlFilterProvider
+        defaultFilterValues={{
+          rank: null,
         }}
-        title={title}
-        description={description}
-        tabs={[
-          {
-            value: "members",
-            label: "Members",
-            url: "/secretary/members",
-            exactMatch: true,
-          },
-        ]}
+        emptyFilterValues={{
+          rank: null,
+        }}
       >
         <SecretaryMembersList />
-      </ListLayout>
-    </DropdownUrlFilterProvider>
+      </DropdownUrlFilterProvider>
+    </ListLayout>
   );
 }
 
