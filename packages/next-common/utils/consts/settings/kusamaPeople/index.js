@@ -21,15 +21,15 @@ const kusamaPeople = {
     },
     {
       name: "IBP1",
-      url: "wss://sys.ibp.network/people-kusama",
-    },
-    {
-      name: "OnFinality",
-      url: "wss://people-kusama.api.onfinality.io/public-ws",
+      url: "wss://people-kusama.ibp.network",
     },
     {
       name: "IBP2",
       url: "wss://people-kusama.dotters.network",
+    },
+    {
+      name: "OnFinality",
+      url: "wss://people-kusama.api.onfinality.io/public-ws",
     },
     {
       name: "Dwellir",
