@@ -21,7 +21,7 @@ const polkadotCoretime = {
     },
     {
       name: "IBP1",
-      url: "wss://sys.ibp.network/coretime-polkadot",
+      url: "wss://coretime-polkadot.ibp.network",
     },
     {
       name: "IBP2",

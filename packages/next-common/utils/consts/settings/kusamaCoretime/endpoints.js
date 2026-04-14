@@ -5,15 +5,15 @@ const kusamaCoretimeNodes = [
   },
   {
     name: "IBP1",
-    url: "wss://sys.ibp.network/coretime-kusama",
-  },
-  {
-    name: "Stakeworld",
-    url: "wss://ksm-rpc.stakeworld.io/coretime",
+    url: "wss://coretime-kusama.ibp.network",
   },
   {
     name: "IBP2",
     url: "wss://coretime-kusama.dotters.network",
+  },
+  {
+    name: "Stakeworld",
+    url: "wss://ksm-rpc.stakeworld.io/coretime",
   },
   {
     name: "LuckyFriday",

@@ -5,7 +5,7 @@ const polkadotAssetHubNodes = [
   },
   {
     name: "IBP1",
-    url: "wss://sys.ibp.network/asset-hub-polkadot",
+    url: "wss://asset-hub-polkadot.ibp.network",
   },
   {
     name: "IBP2",

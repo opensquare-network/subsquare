@@ -15,7 +15,7 @@ export default {
     },
     {
       name: "IBP1",
-      url: "wss://sys.ibp.network/bridgehub-kusama",
+      url: "wss://bridge-hub-kusama.ibp.network",
     },
     {
       name: "IBP2",

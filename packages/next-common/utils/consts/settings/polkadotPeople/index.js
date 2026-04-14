@@ -21,15 +21,15 @@ const polkadotPeople = {
     },
     {
       name: "IBP1",
-      url: "wss://sys.ibp.network/people-polkadot",
-    },
-    {
-      name: "OnFinality",
-      url: "wss://people-polkadot.api.onfinality.io/public-ws",
+      url: "wss://people-polkadot.ibp.network",
     },
     {
       name: "IBP2",
       url: "wss://people-polkadot.dotters.network",
+    },
+    {
+      name: "OnFinality",
+      url: "wss://people-polkadot.api.onfinality.io/public-ws",
     },
     {
       name: "LuckyFriday",

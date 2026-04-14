@@ -24,20 +24,12 @@ const westendCollectivesEndpoints = [
     url: "wss://westend-collectives-rpc.polkadot.io/",
   },
   {
-    name: "IBP1",
-    url: "wss://sys.ibp.network/collectives-westend",
-  },
-  {
     name: "Dwellir",
     url: "wss://collectives-westend-rpc.dwellir.com",
   },
   {
     name: "Dwellir Tunisia",
     url: "wss://westend-collectives-rpc-tn.dwellir.com",
-  },
-  {
-    name: "IBP2",
-    url: "wss://sys.dotters.network/collectives-westend",
   },
 ];
 
