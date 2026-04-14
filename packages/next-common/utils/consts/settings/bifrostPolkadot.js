@@ -26,14 +26,6 @@ const DEFAULT_NODES = [
     name: "LiebiEU",
     url: "wss://eu.bifrost-polkadot-rpc.liebi.com/ws",
   },
-  {
-    name: "IBP1",
-    url: "wss://bifrost-polkadot.ibp.network",
-  },
-  {
-    name: "IBP2",
-    url: "wss://bifrost-polkadot.dotters.network",
-  },
 ];
 
 const links = bifrost.links;
