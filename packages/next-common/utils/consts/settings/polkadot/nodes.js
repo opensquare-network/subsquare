@@ -5,7 +5,7 @@ const defaultPolkadotNodes = [
   },
   {
     name: "IBP1",
-    url: "wss://rpc.ibp.network/polkadot",
+    url: "wss://polkadot.ibp.network",
   },
   {
     name: "IBP2",
