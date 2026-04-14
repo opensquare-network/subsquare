@@ -54,6 +54,7 @@ function InputImpl(
 
     suffix = (
       <button
+        type="button"
         onClick={() => {
           setPasswordVisible(!passwordVisible);
         }}
