@@ -21,7 +21,7 @@ const paseoPeople = {
     },
     {
       name: "IBP1",
-      url: "wss://sys.ibp.network/people-paseo",
+      url: "wss://people-paseo.ibp.network",
     },
     {
       name: "IBP2",
