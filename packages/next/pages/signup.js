@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Link from "next-common/components/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/router";
 import Input from "next-common/lib/input";
 import { useMountedState } from "react-use";
@@ -91,9 +91,10 @@ export default function Signup() {
     router.replace("/");
   }
 
-  const { username, email, password } = formData;
-
-  const showErrorToast = (message) => dispatch(newErrorToast(message));
+  const showErrorToast = useCallback(
+    (message) => dispatch(newErrorToast(message)),
+    [dispatch],
+  );
 
   const sendVerifyEmail = () => {
     nextApi
@@ -149,6 +150,8 @@ export default function Signup() {
     () => setErrors(null),
   );
 
+  const { username, email, password } = formData;
+
   useEffect(() => {
     if (user?.emailVerified) {
       showErrorToast("You have already verified email address.");
@@ -156,7 +159,7 @@ export default function Signup() {
         // router.replace("/");
       }, 1000);
     }
-  });
+  }, [user, showErrorToast]);
 
   return (
     <>
