@@ -14,6 +14,7 @@ import { useSortedFellowshipCollectiveMembers } from "next-common/hooks/fellowsh
 import { useFellowshipSalaryClaimants } from "next-common/hooks/fellowship/salary/useFellowshipSalaryClaimants";
 import { useFellowshipSalaryStats } from "next-common/hooks/fellowship/salary/useFellowshipSalaryStats";
 import FellowshipRank from "next-common/components/fellowship/rank";
+import ListTitleBar from "next-common/components/listTitleBar";
 
 const columns = [
   {
@@ -121,7 +122,13 @@ function SecretaryMembersList() {
 
   return (
     <>
-      <div className="flex justify-end mb-4">{filters}</div>
+      <div className="mb-4">
+        <ListTitleBar
+          title="List"
+          titleCount={(filteredMembers || []).length}
+          titleExtra={filters}
+        />
+      </div>
       <DataList
         bordered
         columns={columns}
