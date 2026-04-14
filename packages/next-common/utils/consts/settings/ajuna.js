@@ -24,14 +24,6 @@ const nodes = [
     url: "wss://rpc-para.ajuna.network",
   },
   {
-    name: "IBP1",
-    url: "wss://ajuna.ibp.network",
-  },
-  {
-    name: "IBP2",
-    url: "wss://ajuna.dotters.network",
-  },
-  {
     name: "OnFinality",
     url: "wss://ajuna.api.onfinality.io/public-ws",
   },
