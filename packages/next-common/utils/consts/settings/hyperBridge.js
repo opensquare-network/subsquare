@@ -11,14 +11,6 @@ const ProjectIconHyperBridge = dynamic(() =>
 
 const endpoints = [
   {
-    name: "IBP1",
-    url: "wss://nexus.ibp.network",
-  },
-  {
-    name: "IBP2",
-    url: "wss://nexus.dotters.network",
-  },
-  {
     name: "BlockOps",
     url: "wss://hyperbridge-nexus-rpc.blockops.network",
   },
