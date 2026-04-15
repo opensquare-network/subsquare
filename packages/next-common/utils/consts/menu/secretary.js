@@ -1,4 +1,4 @@
-import { MenuCouncil } from "@osn/icons/subsquare";
+import { MenuAuthorities } from "@osn/icons/subsquare";
 import { collectivesCommonNames } from "next-common/utils/consts/menu/common/collectives";
 import getChainSettings from "next-common/utils/consts/settings";
 
@@ -28,7 +28,7 @@ export function getSecretaryMenu() {
 
   return {
     name: Names.secretary,
-    icon: <MenuCouncil />,
+    icon: <MenuAuthorities />,
     pathname: "/secretary",
     items: [getSecretaryMembersMenu()].filter(Boolean),
   };
