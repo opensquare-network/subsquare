@@ -9,8 +9,6 @@ import { DropdownUrlFilterProvider } from "next-common/components/dropdownFilter
 import ValueDisplay from "next-common/components/valueDisplay";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import { useSortedFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
-import { useFellowshipSalaryClaimants } from "next-common/hooks/fellowship/salary/useFellowshipSalaryClaimants";
-import { useFellowshipSalaryStats } from "next-common/hooks/fellowship/salary/useFellowshipSalaryStats";
 import FellowshipRank from "next-common/components/fellowship/rank";
 import ListTitleBar from "next-common/components/listTitleBar";
 
@@ -67,18 +65,9 @@ function useSecretaryMembersFilter(members) {
 function SecretaryMembersList() {
   const { members = [], loading: isLoadingMembers } =
     useSortedFellowshipCollectiveMembers();
-  const { claimants = [], loading: isLoadingClaimants } =
-    useFellowshipSalaryClaimants();
-  const salaryStats = useFellowshipSalaryStats();
 
-  const cycleIndex = salaryStats?.cycleIndex;
   const { filteredMembers, component: filters } =
     useSecretaryMembersFilter(members);
-
-  const claimantsMap = useMemo(
-    () => new Map((claimants || []).map((item) => [item.address, item])),
-    [claimants],
-  );
 
   const rows = useMemo(
     () =>
@@ -89,17 +78,12 @@ function SecretaryMembersList() {
           add={member.address}
           className="text14Medium text-textPrimary"
         />,
-        <SalaryCell
-          key={`salary-${idx}`}
-          member={member}
-          claimantsMap={claimantsMap}
-          cycleIndex={cycleIndex}
-        />,
+        <SalaryCell key={`salary-${idx}`} member={member} />,
       ]),
-    [filteredMembers, claimantsMap, cycleIndex],
+    [filteredMembers],
   );
 
-  const isLoading = isLoadingMembers || isLoadingClaimants;
+  const isLoading = isLoadingMembers;
 
   return (
     <>
