@@ -28,13 +28,19 @@ const columns = [
   },
 ];
 
-function SalaryCell({ member }) {
-  if (member.rank === 1) {
+function getSecretaryMemberSalary(rank) {
+  if (rank === 1) {
     // Refs to
     // https://github.com/polkadot-fellows/runtimes/blob/main/system-parachains/collectives/collectives-polkadot/src/secretary/mod.rs#L82
-    return <ValueDisplay value={6666} symbol="USDT" />;
+    return 6666;
   }
-  return <span className="text-textTertiary">-</span>;
+
+  return 0;
+}
+
+function SalaryCell({ member }) {
+  const salary = getSecretaryMemberSalary(member.rank);
+  return <ValueDisplay value={salary} symbol="USDT" />;
 }
 
 function useSecretaryMembersFilter(members) {
