@@ -100,6 +100,9 @@ export const fellowshipStatisticsMembershipApi =
 export const fellowshipStatisticsUsersApi = (address) =>
   `fellowship/statistics/users/${address}`;
 
+// secretary
+export const secretaryMembersApiUri = "secretary/members";
+
 // ambassador
 export const ambassadorParamsApi = "ambassador/params";
 export const ambassadorMembersApiUri = "ambassador/members";
