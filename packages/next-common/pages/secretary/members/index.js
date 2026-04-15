@@ -1,6 +1,6 @@
 import SecretaryMembersPage from "next-common/components/pages/secretary/members";
-import { withCommonProps } from "next-common/lib";
+import getSecretaryMembersServerSideProps from "next-common/services/serverSide/secretary/members";
 
 export default SecretaryMembersPage;
 
-export const getServerSideProps = withCommonProps();
+export const getServerSideProps = getSecretaryMembersServerSideProps;

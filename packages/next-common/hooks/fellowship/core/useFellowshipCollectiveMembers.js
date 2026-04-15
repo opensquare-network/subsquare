@@ -13,12 +13,15 @@ const { useGlobalCachedFetch } = createGlobalCachedFetch();
 export function useFellowshipCollectiveMembers() {
   const { section } = useCollectivesContext();
 
-  const { fellowshipMembers, ambassadorMembers } = usePageProps();
+  const { fellowshipMembers, ambassadorMembers, secretaryMembers } =
+    usePageProps();
   let membersFromServer;
   if (section === "fellowship") {
     membersFromServer = fellowshipMembers;
   } else if (section === "ambassador") {
     membersFromServer = ambassadorMembers;
+  } else if (section === "secretary") {
+    membersFromServer = secretaryMembers;
   }
 
   const collectivePallet = useRankedCollectivePallet();
