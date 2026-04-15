@@ -83,8 +83,6 @@ function SecretaryMembersList() {
     [filteredMembers],
   );
 
-  const isLoading = isLoadingMembers;
-
   return (
     <>
       <div className="mb-4">
@@ -99,7 +97,7 @@ function SecretaryMembersList() {
         columns={columns}
         noDataText="No Members"
         rows={rows}
-        loading={isLoading}
+        loading={isLoadingMembers}
       />
     </>
   );
