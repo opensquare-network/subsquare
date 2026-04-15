@@ -8,6 +8,7 @@ import { getAdvisoryCommitteeMenu } from "./advisoryCouncil";
 import { getAllianceMenu } from "./alliance";
 import { getFellowshipMenu } from "./fellowship";
 import { getAmbassadorMenu } from "next-common/utils/consts/menu/ambassador";
+import { getSecretaryMenu } from "next-common/utils/consts/menu/secretary";
 import { getCommunityCouncilMenu } from "./communityCouncil";
 import { CHAIN } from "next-common/utils/constants";
 import preImages from "./preImages";
@@ -47,6 +48,7 @@ export function getHomeMenu({
 
   const menuItems = [
     modules?.fellowship && getFellowshipMenu(summary, currentTrackId),
+    modules?.secretary && getSecretaryMenu(),
     modules?.ambassador && getAmbassadorMenu(ambassadorTracks, currentTrackId),
     modules?.democracy && getDemocracyMenu(summary),
     modules?.treasury && getTreasuryMenu(summary),

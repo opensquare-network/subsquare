@@ -33,6 +33,7 @@ const collectives = {
     fellowship: {
       core: true,
     },
+    secretary: true,
     ambassador: true,
     democracy: false,
     fellowshipTreasury: true,
