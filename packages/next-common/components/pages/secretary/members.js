@@ -6,9 +6,7 @@ import AddressUser from "next-common/components/user/addressUser";
 import { useRankFilterInDropdown } from "next-common/hooks/fellowship/useRankFilter";
 import { DropdownFilter } from "next-common/components/dropdownFilter";
 import { DropdownUrlFilterProvider } from "next-common/components/dropdownFilter/context";
-import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import ValueDisplay from "next-common/components/valueDisplay";
-import { toPrecision } from "next-common/utils";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import { useSortedFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
 import { useFellowshipSalaryClaimants } from "next-common/hooks/fellowship/salary/useFellowshipSalaryClaimants";
@@ -32,30 +30,13 @@ const columns = [
   },
 ];
 
-function SalaryCell({ member, claimantsMap, cycleIndex }) {
-  const claimant = claimantsMap.get(member.address);
-  const claimantStatus = claimant?.status;
-
-  if (!claimantStatus) {
-    return <span className="text-textTertiary">-</span>;
+function SalaryCell({ member }) {
+  if (member.rank === 1) {
+    // Refs to
+    // https://github.com/polkadot-fellows/runtimes/blob/main/system-parachains/collectives/collectives-polkadot/src/secretary/mod.rs#L82
+    return <ValueDisplay value={6666} symbol="USDT" />;
   }
-
-  const isCurrentCycle =
-    isNil(cycleIndex) || claimantStatus?.lastActive === cycleIndex;
-  if (!isCurrentCycle) {
-    return <span className="text-textTertiary">-</span>;
-  }
-
-  const amount =
-    claimantStatus?.status?.attempted?.amount ??
-    claimantStatus?.status?.registered;
-
-  if (isNil(amount)) {
-    return <span className="text-textTertiary">-</span>;
-  }
-
-  const { symbol, decimals } = getSalaryAsset();
-  return <ValueDisplay value={toPrecision(amount, decimals)} symbol={symbol} />;
+  return <span className="text-textTertiary">-</span>;
 }
 
 function useSecretaryMembersFilter(members) {
