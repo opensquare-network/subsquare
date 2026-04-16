@@ -8,7 +8,7 @@ import { useFellowshipSalaryStats } from "next-common/hooks/fellowship/salary/us
 import LoadingSkeleton from "next-common/components/fellowship/salary/cycles/current/loadingSkeleton";
 import SecretarySalaryRegister from "next-common/components/secretary/salary/actions/register";
 
-function SecretarySalaryActiveCycleContent() {
+export default function SecretarySalaryActiveCycle() {
   const stats = useFellowshipSalaryStats();
 
   return (
@@ -38,8 +38,4 @@ function SecretarySalaryActiveCycleContent() {
       </SecondaryCard>
     </>
   );
-}
-
-export default function SecretarySalaryActiveCycle() {
-  return <SecretarySalaryActiveCycleContent />;
 }
