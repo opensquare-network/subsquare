@@ -58,6 +58,7 @@ export const detailPageCategory = {
   FELLOWSHIP_SALARY_CYCLES: "fellowship/salary/cycles",
   AMBASSADOR_REFERENDUM: "ambassador/referenda",
   AMBASSADOR_SALARY_CYCLES: "ambassador/salary/cycles",
+  SECRETARY_SALARY_CYCLES: "secretary/salary/cycles",
   ADVISORY_MOTION: "advisory-committee/motions",
   ALLIANCE_MOTION: "alliance/motions",
   ALLIANCE_ANNOUNCEMENT: "alliance/announcements",

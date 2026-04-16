@@ -102,6 +102,11 @@ export const fellowshipStatisticsUsersApi = (address) =>
 
 // secretary
 export const secretaryMembersApiUri = "secretary/members";
+export const secretarySalaryHistoryCyclesApi =
+  "secretary/salary/history_cycles";
+export const secretarySalaryActiveCycleApi = "secretary/salary/active_cycle";
+export const secretarySalaryClaimantsApi = "secretary/salary/claimants";
+export const secretarySalaryFeedsApi = "secretary/salary/feeds";
 
 // ambassador
 export const ambassadorParamsApi = "ambassador/params";
