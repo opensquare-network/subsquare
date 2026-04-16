@@ -2,8 +2,8 @@ import { TitleContainer } from "next-common/components/styled/containers/titleCo
 import FellowshipSalaryStats from "next-common/components/overview/fellowship/salary/stats";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import FellowshipSalaryStatsActiveCycleDetailLink from "next-common/components/overview/fellowship/salary/detailLink/activeCycle";
-import FellowshipSalaryPayout from "next-common/components/fellowship/salary/actions/payout";
-import FellowshipSalaryMyStatus from "next-common/components/fellowship/salary/cycles/myStatus";
+import SecretarySalaryPayout from "next-common/components/secretary/salary/actions/payout";
+import SecretarySalaryMyStatus from "next-common/components/secretary/salary/cycles/myStatus";
 import { useFellowshipSalaryStats } from "next-common/hooks/fellowship/salary/useFellowshipSalaryStats";
 import LoadingSkeleton from "next-common/components/fellowship/salary/cycles/current/loadingSkeleton";
 import SecretarySalaryRegister from "next-common/components/secretary/salary/actions/register";
@@ -25,12 +25,12 @@ export default function SecretarySalaryActiveCycle() {
             <hr className="my-4" />
 
             <div className="space-y-2">
-              <FellowshipSalaryMyStatus />
+              <SecretarySalaryMyStatus />
 
               <div className="flex flex-wrap items-center justify-end gap-x-4 gap-y-2">
                 <FellowshipSalaryStatsActiveCycleDetailLink />
                 <SecretarySalaryRegister />
-                <FellowshipSalaryPayout />
+                <SecretarySalaryPayout />
               </div>
             </div>
           </>

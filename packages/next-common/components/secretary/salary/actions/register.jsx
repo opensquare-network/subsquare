@@ -4,7 +4,7 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
 import { useFellowshipSalaryStats } from "next-common/hooks/fellowship/salary/useFellowshipSalaryStats";
 import Tooltip from "next-common/components/tooltip";
-import { useMySalaryClaimantFromContext } from "next-common/context/fellowship/myClaimant";
+import { useSecretaryMySalaryClaimantFromContext } from "next-common/context/secretary/myClaimant";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { useIsInSalaryRegistrationPeriod } from "next-common/hooks/fellowship/salary/useIsInSalaryRegistrationPeriod";
 import useClaimantsFellowshipUpdateFunc from "next-common/hooks/fellowship/salary/useClaimantsUpdateFunc";
@@ -29,7 +29,7 @@ export default function SecretarySalaryRegister() {
   const address = useRealAddress();
   const { members } = useFellowshipCollectiveMembers();
   const memberAddrs = (members || []).map((item) => item.address);
-  const { claimant } = useMySalaryClaimantFromContext();
+  const { claimant } = useSecretaryMySalaryClaimantFromContext();
   const status = useFellowshipSalaryStats();
   const isRegistrationPeriod = useIsInSalaryRegistrationPeriod(status);
   const mySalary = useMySalary();
