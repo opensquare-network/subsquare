@@ -1,5 +1,6 @@
 import ListLayout from "next-common/components/layout/ListLayout";
 import FellowshipSalarySummary from "next-common/components/fellowship/salary/summary";
+import SecretarySalarySummaryActions from "next-common/components/secretary/salary/summary/actions";
 import { SecretaryMySalaryClaimantProvider } from "next-common/context/secretary/myClaimant";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 
@@ -17,6 +18,7 @@ export default function SecretarySalaryCommon({ children, ...props }) {
           title={seoInfo.title}
           description={seoInfo.desc}
           summary={<FellowshipSalarySummary />}
+          summaryFooter={<SecretarySalarySummaryActions />}
           tabs={[
             {
               value: "cycles",
