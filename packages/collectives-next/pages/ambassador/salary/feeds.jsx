@@ -4,6 +4,7 @@ import { backendApi } from "next-common/services/nextApi";
 import { withAmbassadorSalaryCommonProps } from "next-common/services/serverSide/ambassador/common";
 import { ambassadorSalaryFeedsApi } from "next-common/services/url";
 import { defaultPageSize } from "next-common/utils/constants";
+import { getFeedsEvent } from "next-common/utils/fellowship/getFeedsEvent";
 
 export default function AmbassadorSalaryFeedsPage({
   ambassadorSalaryFeeds = {},
@@ -23,7 +24,7 @@ export const getServerSideProps = withAmbassadorSalaryCommonProps(
       page_size: defaultPageSize,
     };
     if (event) {
-      Object.assign(query, { event });
+      Object.assign(query, { event: getFeedsEvent("salary", event) });
     }
     if (who) {
       Object.assign(query, { who });
