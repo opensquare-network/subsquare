@@ -11,6 +11,7 @@ import CollectivesProvider from "next-common/context/collectives/collectives";
 import { useSortedFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
 import FellowshipRank from "next-common/components/fellowship/rank";
 import ListTitleBar from "next-common/components/listTitleBar";
+import { getSecretaryMemberSalary } from "next-common/utils/secretary/salary";
 
 const columns = [
   {
@@ -27,16 +28,6 @@ const columns = [
     width: 140,
   },
 ];
-
-function getSecretaryMemberSalary(rank) {
-  if (rank === 1) {
-    // Refs to
-    // https://github.com/polkadot-fellows/runtimes/blob/main/system-parachains/collectives/collectives-polkadot/src/secretary/mod.rs#L82
-    return 6666;
-  }
-
-  return 0;
-}
 
 function SalaryCell({ member }) {
   const salary = getSecretaryMemberSalary(member.rank);

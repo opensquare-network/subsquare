@@ -1,31 +1,15 @@
 import { backendApi } from "next-common/services/nextApi";
 import FellowshipSalaryCommon from "next-common/components/fellowship/salary/common";
 import SecretarySalaryActiveCycle from "next-common/components/secretary/salary/cycles/current";
-import FellowshipSalaryCycles from "next-common/components/fellowship/salary/cycles/list";
-import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { withSecretarySalaryCommonProps } from "next-common/services/serverSide/secretary/common";
 import { secretarySalaryHistoryCyclesApi } from "next-common/services/url";
-import { usePageProps } from "next-common/context/page";
-
-function SecretarySalaryHistoryCyclesSection() {
-  const { historyCycles } = usePageProps();
-
-  return (
-    <>
-      <TitleContainer className="my-4">History</TitleContainer>
-
-      <div className="space-y-4 mt-4">
-        <FellowshipSalaryCycles historyCycles={historyCycles} />
-      </div>
-    </>
-  );
-}
+import FellowshipHistoryCyclesSection from "next-common/components/fellowship/salary/cycles/section";
 
 export default function SecretarySalaryPage() {
   return (
     <FellowshipSalaryCommon section="secretary">
       <SecretarySalaryActiveCycle />
-      <SecretarySalaryHistoryCyclesSection />
+      <FellowshipHistoryCyclesSection />
     </FellowshipSalaryCommon>
   );
 }

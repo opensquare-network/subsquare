@@ -9,14 +9,14 @@ import dynamicPopup from "next-common/lib/dynamic/popup";
 import { useIsInSalaryRegistrationPeriod } from "next-common/hooks/fellowship/salary/useIsInSalaryRegistrationPeriod";
 import useClaimantsFellowshipUpdateFunc from "next-common/hooks/fellowship/salary/useClaimantsUpdateFunc";
 import { isSameAddress } from "next-common/utils";
+import { getSecretaryMemberSalary } from "next-common/utils/secretary/salary";
 
-// secretary: rank >= 1 (SECRETARY role) has salary; rank 0 (CANDIDATE) has no salary
-function useMySecretarySalaryEligible() {
+function useMySalary() {
   const { members } = useFellowshipCollectiveMembers();
   const address = useRealAddress();
-  if (!address || !members) return false;
+  if (!address || !members) return 0;
   const member = members.find((m) => isSameAddress(m.address, address));
-  return (member?.rank ?? 0) >= 1;
+  return getSecretaryMemberSalary(member?.rank ?? 0);
 }
 
 const FellowshipSalaryRegisterPopup = dynamicPopup(() =>
@@ -32,7 +32,7 @@ export default function SecretarySalaryRegister() {
   const { claimant } = useMySalaryClaimantFromContext();
   const status = useFellowshipSalaryStats();
   const isRegistrationPeriod = useIsInSalaryRegistrationPeriod(status);
-  const hasSalary = useMySecretarySalaryEligible();
+  const mySalary = useMySalary();
   const onInBlock = useClaimantsFellowshipUpdateFunc();
 
   useEffect(() => {
@@ -41,14 +41,14 @@ export default function SecretarySalaryRegister() {
       !memberAddrs.includes(address) ||
       !isRegistrationPeriod ||
       !claimant ||
-      !hasSalary ||
+      mySalary <= 0 ||
       claimant.lastActive >= status.cycleIndex
     ) {
       setDisabled(true);
     } else {
       setDisabled(false);
     }
-  }, [isRegistrationPeriod, address, memberAddrs, status, claimant, hasSalary]);
+  }, [isRegistrationPeriod, address, memberAddrs, status, claimant, mySalary]);
 
   const tooltipText = useMemo(() => {
     if (!isRegistrationPeriod) {
@@ -59,8 +59,8 @@ export default function SecretarySalaryRegister() {
       return "Not a collective member";
     } else if (!claimant) {
       return "Please import yourself first";
-    } else if (!hasSalary) {
-      return "No salary for your rank";
+    } else if (mySalary <= 0) {
+      return "No salary to claim";
     } else if (claimant.lastActive >= status?.cycleIndex) {
       return "Already registered";
     }
@@ -70,7 +70,7 @@ export default function SecretarySalaryRegister() {
     address,
     memberAddrs,
     claimant,
-    hasSalary,
+    mySalary,
     status?.cycleIndex,
   ]);
 
@@ -89,6 +89,7 @@ export default function SecretarySalaryRegister() {
         <FellowshipSalaryRegisterPopup
           onClose={() => setShowPopup(false)}
           onInBlock={onInBlock}
+          onFinalized={onInBlock}
         />
       )}
     </>
