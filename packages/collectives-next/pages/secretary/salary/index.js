@@ -1,5 +1,5 @@
 import { backendApi } from "next-common/services/nextApi";
-import FellowshipSalaryCommon from "next-common/components/fellowship/salary/common";
+import SecretarySalaryCommon from "next-common/components/secretary/salary/common";
 import SecretarySalaryActiveCycle from "next-common/components/secretary/salary/cycles/current";
 import { withSecretarySalaryCommonProps } from "next-common/services/serverSide/secretary/common";
 import { secretarySalaryHistoryCyclesApi } from "next-common/services/url";
@@ -7,10 +7,10 @@ import FellowshipHistoryCyclesSection from "next-common/components/fellowship/sa
 
 export default function SecretarySalaryPage() {
   return (
-    <FellowshipSalaryCommon section="secretary">
+    <SecretarySalaryCommon>
       <SecretarySalaryActiveCycle />
       <FellowshipHistoryCyclesSection />
-    </FellowshipSalaryCommon>
+    </SecretarySalaryCommon>
   );
 }
 

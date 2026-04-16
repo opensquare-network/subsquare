@@ -7,7 +7,6 @@ import SecretarySalaryMyStatus from "next-common/components/secretary/salary/cyc
 import { useFellowshipSalaryStats } from "next-common/hooks/fellowship/salary/useFellowshipSalaryStats";
 import LoadingSkeleton from "next-common/components/fellowship/salary/cycles/current/loadingSkeleton";
 import SecretarySalaryRegister from "next-common/components/secretary/salary/actions/register";
-import { SecretaryMySalaryClaimantProvider } from "next-common/context/secretary/myClaimant";
 
 function SecretarySalaryActiveCycleContent() {
   const stats = useFellowshipSalaryStats();
@@ -42,9 +41,5 @@ function SecretarySalaryActiveCycleContent() {
 }
 
 export default function SecretarySalaryActiveCycle() {
-  return (
-    <SecretaryMySalaryClaimantProvider>
-      <SecretarySalaryActiveCycleContent />
-    </SecretaryMySalaryClaimantProvider>
-  );
+  return <SecretarySalaryActiveCycleContent />;
 }

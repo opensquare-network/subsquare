@@ -1,4 +1,4 @@
-import FellowshipSalaryCommon from "next-common/components/fellowship/salary/common";
+import SecretarySalaryCommon from "next-common/components/secretary/salary/common";
 import FellowshipSalaryFeedsContainer from "next-common/components/fellowship/salary/feeds/container";
 import { backendApi } from "next-common/services/nextApi";
 import { withSecretarySalaryCommonProps } from "next-common/services/serverSide/secretary/common";
@@ -10,9 +10,9 @@ export default function SecretarySalaryFeedsPage({
   secretarySalaryFeeds = {},
 }) {
   return (
-    <FellowshipSalaryCommon section="secretary">
+    <SecretarySalaryCommon>
       <FellowshipSalaryFeedsContainer feeds={secretarySalaryFeeds} />
-    </FellowshipSalaryCommon>
+    </SecretarySalaryCommon>
   );
 }
 
