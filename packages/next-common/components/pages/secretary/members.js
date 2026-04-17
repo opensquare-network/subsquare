@@ -12,6 +12,8 @@ import { useSortedFellowshipCollectiveMembers } from "next-common/hooks/fellowsh
 import FellowshipRank from "next-common/components/fellowship/rank";
 import ListTitleBar from "next-common/components/listTitleBar";
 import { getSecretaryMemberSalary } from "next-common/utils/secretary/salary";
+import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
+import { toPrecision } from "next-common/utils";
 
 const columns = [
   {
@@ -29,9 +31,10 @@ const columns = [
   },
 ];
 
-function SalaryCell({ member }) {
-  const salary = getSecretaryMemberSalary(member.rank);
-  return <ValueDisplay value={salary} symbol="USDT" />;
+function SalaryCell({ rank }) {
+  const { symbol, decimals } = getSalaryAsset();
+  const salary = getSecretaryMemberSalary(rank);
+  return <ValueDisplay value={toPrecision(salary, decimals)} symbol={symbol} />;
 }
 
 function useSecretaryMembersFilter(members) {
@@ -75,7 +78,7 @@ function SecretaryMembersList() {
           add={member.address}
           className="text14Medium text-textPrimary"
         />,
-        <SalaryCell key={`salary-${idx}`} member={member} />,
+        <SalaryCell key={`salary-${idx}`} rank={member.rank} />,
       ]),
     [filteredMembers],
   );

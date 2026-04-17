@@ -38,13 +38,13 @@ function ClaimantAmountCell({ claimant }) {
   return <ValueDisplay value={toPrecision(amount, decimals)} symbol={symbol} />;
 }
 
-function ClaimantSalaryCell({ claimant }) {
-  const { symbol } = getSalaryAsset();
-  const salary = getSecretaryMemberSalary(claimant.rank);
+function ClaimantSalaryCell({ rank }) {
+  const { symbol, decimals } = getSalaryAsset();
+  const salary = getSecretaryMemberSalary(rank);
   if (!salary) {
     return <span className="text-textTertiary">-</span>;
   }
-  return <ValueDisplay value={salary} symbol={symbol} />;
+  return <ValueDisplay value={toPrecision(salary, decimals)} symbol={symbol} />;
 }
 
 export default function SecretarySalaryClaimantsList({
@@ -75,7 +75,7 @@ export default function SecretarySalaryClaimantsList({
     return [
       <FellowshipRank key={`rank-${address}`} rank={claimant.rank} />,
       <AddressUser key={`address-${address}`} add={address} />,
-      <ClaimantSalaryCell key={`salary-${address}`} claimant={claimant} />,
+      <ClaimantSalaryCell key={`salary-${address}`} rank={claimant.rank} />,
       <ClaimantAmountCell key={`amount-${address}`} claimant={claimant} />,
       <FellowshipSalaryMemberIsRegistered
         key={`isRegistered-${address}`}
