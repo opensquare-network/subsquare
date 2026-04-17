@@ -17,6 +17,7 @@ import {
   claimantListColumns,
 } from "next-common/components/fellowship/salary/claimants/utils";
 import { SystemVoteAbstain } from "@osn/icons/subsquare";
+import { getSecretaryMemberSalary } from "next-common/utils/secretary/salary";
 
 function getClaimantAmount(claimant) {
   const status = claimant?.status?.status || {};
@@ -38,10 +39,12 @@ function ClaimantAmountCell({ claimant }) {
 }
 
 function ClaimantSalaryCell({ claimant }) {
-  const { symbol, decimals } = getSalaryAsset();
-  const amount = getClaimantAmount(claimant);
-
-  return <ValueDisplay value={toPrecision(amount, decimals)} symbol={symbol} />;
+  const { symbol } = getSalaryAsset();
+  const salary = getSecretaryMemberSalary(claimant.rank);
+  if (!salary) {
+    return <span className="text-textTertiary">-</span>;
+  }
+  return <ValueDisplay value={salary} symbol={symbol} />;
 }
 
 export default function SecretarySalaryClaimantsList({
