@@ -8,7 +8,6 @@ import Link from "next-common/components/link";
 import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
-import { getSecretaryMemberSalary } from "next-common/utils/secretary/salary";
 import FellowshipSalaryMemberStatus from "next-common/components/fellowship/salary/claimants/status";
 import useRankFilter from "next-common/hooks/fellowship/useRankFilter";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
@@ -19,13 +18,17 @@ import {
 } from "next-common/components/fellowship/salary/claimants/utils";
 import { SystemVoteAbstain } from "@osn/icons/subsquare";
 
-function ClaimantAmountCell({ claimant }) {
-  const { symbol, decimals } = getSalaryAsset();
+function getClaimantAmount(claimant) {
   const status = claimant?.status?.status || {};
   const registered = has(status, "registered")
     ? status?.registered
     : status?.attempted?.registered;
-  const amount = status?.attempted?.amount || registered;
+  return status?.attempted?.amount || registered;
+}
+
+function ClaimantAmountCell({ claimant }) {
+  const { symbol, decimals } = getSalaryAsset();
+  const amount = getClaimantAmount(claimant);
 
   if (isNil(amount)) {
     return <SystemVoteAbstain className="inline-block w-4 h-4" />;
@@ -34,13 +37,11 @@ function ClaimantAmountCell({ claimant }) {
   return <ValueDisplay value={toPrecision(amount, decimals)} symbol={symbol} />;
 }
 
-function ClaimantSalaryCell({ rank }) {
+function ClaimantSalaryCell({ claimant }) {
   const { symbol, decimals } = getSalaryAsset();
-  const salary = getSecretaryMemberSalary(rank);
-  if (!salary) {
-    return <span className="text-textTertiary">-</span>;
-  }
-  return <ValueDisplay value={toPrecision(salary, decimals)} symbol={symbol} />;
+  const amount = getClaimantAmount(claimant);
+
+  return <ValueDisplay value={toPrecision(amount, decimals)} symbol={symbol} />;
 }
 
 export default function SecretarySalaryClaimantsList({
@@ -71,7 +72,7 @@ export default function SecretarySalaryClaimantsList({
     return [
       <FellowshipRank key={`rank-${address}`} rank={claimant.rank} />,
       <AddressUser key={`address-${address}`} add={address} />,
-      <ClaimantSalaryCell key={`salary-${address}`} rank={claimant.rank} />,
+      <ClaimantSalaryCell key={`salary-${address}`} claimant={claimant} />,
       <ClaimantAmountCell key={`amount-${address}`} claimant={claimant} />,
       <FellowshipSalaryMemberIsRegistered
         key={`isRegistered-${address}`}
