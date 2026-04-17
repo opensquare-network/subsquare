@@ -20,6 +20,24 @@ function getSecretaryMembersMenu() {
   };
 }
 
+function getSecretarySalaryMenu() {
+  const chainSettings = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
+  if (!chainSettings.modules.secretary) {
+    return null;
+  }
+
+  return {
+    value: "secretary-salary",
+    name: Names.salary,
+    pathname: "/secretary/salary",
+    extraMatchNavMenuActivePathnames: [
+      "/secretary/salary/feeds",
+      "/secretary/salary/claimants",
+      "/secretary/salary/cycles/[cycleIndex]",
+    ],
+  };
+}
+
 export function getSecretaryMenu() {
   const chainSettings = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
   if (!chainSettings.modules.secretary) {
@@ -30,6 +48,8 @@ export function getSecretaryMenu() {
     name: Names.secretary,
     icon: <MenuAuthorities />,
     pathname: "/secretary",
-    items: [getSecretaryMembersMenu()].filter(Boolean),
+    items: [getSecretaryMembersMenu(), getSecretarySalaryMenu()].filter(
+      Boolean,
+    ),
   };
 }

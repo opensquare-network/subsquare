@@ -20,14 +20,19 @@ export function useFellowshipSalaryClaimants() {
 
   const { members } = useFellowshipCollectiveMembers();
 
-  const { fellowshipSalaryClaimants, ambassadorSalaryClaimants } =
-    usePageProps();
+  const {
+    fellowshipSalaryClaimants,
+    ambassadorSalaryClaimants,
+    secretarySalaryClaimants,
+  } = usePageProps();
 
   let claimantsFromServer;
   if (section === "fellowship") {
     claimantsFromServer = fellowshipSalaryClaimants;
   } else if (section === "ambassador") {
     claimantsFromServer = ambassadorSalaryClaimants;
+  } else if (section === "secretary") {
+    claimantsFromServer = secretarySalaryClaimants;
   }
 
   const pallet = useSalaryFellowshipPallet();

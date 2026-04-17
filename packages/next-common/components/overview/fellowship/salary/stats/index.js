@@ -40,8 +40,10 @@ export default function FellowshipSalaryStats() {
     cycleStart,
   } = stats || {};
 
-  let pot = budget - totalUnregisteredPaid - totalRegistrations || null;
-  pot = pot < 0 ? 0 : pot;
+  let pot =
+    isNaN(budget) || isNaN(totalUnregisteredPaid) || isNaN(totalRegistrations)
+      ? null
+      : budget - totalUnregisteredPaid - totalRegistrations;
 
   return (
     <>

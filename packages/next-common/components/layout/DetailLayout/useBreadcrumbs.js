@@ -281,6 +281,19 @@ export default function useBreadcrumbs() {
         content: `#${id}`,
       },
     ];
+  } else if (detailPageCategory.SECRETARY_SALARY_CYCLES === type) {
+    return [
+      {
+        content: "Secretary",
+      },
+      {
+        content: "Salary Cycles",
+        path: "/secretary/salary",
+      },
+      {
+        content: `#${id}`,
+      },
+    ];
   } else if (detailPageCategory.CORETIME_SALES === type) {
     return [
       {

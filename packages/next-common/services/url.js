@@ -102,6 +102,21 @@ export const fellowshipStatisticsUsersApi = (address) =>
 
 // secretary
 export const secretaryMembersApiUri = "secretary/members";
+export const secretarySalaryHistoryCyclesApi =
+  "secretary/salary/history_cycles";
+export const secretarySalaryActiveCycleApi = "secretary/salary/active_cycle";
+export const secretarySalaryClaimantsApi = "secretary/salary/claimants";
+export const secretarySalaryFeedsApi = "secretary/salary/feeds";
+export const secretarySalaryCycleApi = (index) =>
+  `secretary/salary/cycles/${index}`;
+export const secretarySalaryCycleRegistrationsApi = (index) =>
+  `secretary/salary/cycles/${index}/registrations`;
+export const secretarySalaryCycleRegisteredPaymentsApi = (index) =>
+  `secretary/salary/cycles/${index}/registered_payments`;
+export const secretarySalaryCycleUnregisteredPaymentsApi = (index) =>
+  `secretary/salary/cycles/${index}/unregistered_payments`;
+export const secretarySalaryCycleFeedsApi = (index) =>
+  `secretary/salary/cycles/${index}/feeds`;
 
 // ambassador
 export const ambassadorParamsApi = "ambassador/params";

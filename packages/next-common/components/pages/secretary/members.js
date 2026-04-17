@@ -11,6 +11,9 @@ import CollectivesProvider from "next-common/context/collectives/collectives";
 import { useSortedFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
 import FellowshipRank from "next-common/components/fellowship/rank";
 import ListTitleBar from "next-common/components/listTitleBar";
+import { getSecretaryMemberSalary } from "next-common/utils/secretary/salary";
+import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
+import { toPrecision } from "next-common/utils";
 
 const columns = [
   {
@@ -28,19 +31,10 @@ const columns = [
   },
 ];
 
-function getSecretaryMemberSalary(rank) {
-  if (rank === 1) {
-    // Refs to
-    // https://github.com/polkadot-fellows/runtimes/blob/main/system-parachains/collectives/collectives-polkadot/src/secretary/mod.rs#L82
-    return 6666;
-  }
-
-  return 0;
-}
-
-function SalaryCell({ member }) {
-  const salary = getSecretaryMemberSalary(member.rank);
-  return <ValueDisplay value={salary} symbol="USDT" />;
+function SalaryCell({ rank }) {
+  const { symbol, decimals } = getSalaryAsset();
+  const salary = getSecretaryMemberSalary(rank);
+  return <ValueDisplay value={toPrecision(salary, decimals)} symbol={symbol} />;
 }
 
 function useSecretaryMembersFilter(members) {
@@ -84,7 +78,7 @@ function SecretaryMembersList() {
           add={member.address}
           className="text14Medium text-textPrimary"
         />,
-        <SalaryCell key={`salary-${idx}`} member={member} />,
+        <SalaryCell key={`salary-${idx}`} rank={member.rank} />,
       ]),
     [filteredMembers],
   );

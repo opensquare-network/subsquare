@@ -8,13 +8,16 @@ import { useCollectivesContext } from "next-common/context/collectives/collectiv
 
 export default function FellowshipSalarySummary() {
   const { section } = useCollectivesContext();
-  const { fellowshipMembers, ambassadorMembers } = usePageProps();
+  const { fellowshipMembers, ambassadorMembers, secretaryMembers } =
+    usePageProps();
 
   let members;
   if (section === "fellowship") {
     members = fellowshipMembers;
   } else if (section === "ambassador") {
     members = ambassadorMembers;
+  } else if (section === "secretary") {
+    members = secretaryMembers;
   }
 
   const { claimants } = useFellowshipSalaryClaimants();
