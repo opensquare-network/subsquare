@@ -15,7 +15,21 @@ export default function ChildBountiesTable({ childBounties }) {
     return null;
   }
 
-  const listData = childBounties.items.map((bounty) => {
+  // Filter out items with missing or invalid data (missing index or parentBountyId)
+  const validItems = childBounties.items.filter(
+    (bounty) =>
+      bounty &&
+      typeof bounty.index !== "undefined" &&
+      bounty.index !== null &&
+      typeof bounty.parentBountyId !== "undefined" &&
+      bounty.parentBountyId !== null,
+  );
+
+  if (!validItems.length) {
+    return null;
+  }
+
+  const listData = validItems.map((bounty) => {
     return [
       <div
         key={bounty.index}
@@ -56,10 +70,10 @@ export default function ChildBountiesTable({ childBounties }) {
     <div>
       <KvList data={listData} />
 
-      {childBounties.total > 5 && (
+      {childBounties.total > 5 && validItems[0]?.parentBountyId && (
         <div className="mt-4 text-right">
           <Link
-            href={`/treasury/child-bounties?parentBountyId=${childBounties.items[0].parentBountyId}`}
+            href={`/treasury/child-bounties?parentBountyId=${validItems[0].parentBountyId}`}
             className="text14Medium text-theme500"
           >
             View all
