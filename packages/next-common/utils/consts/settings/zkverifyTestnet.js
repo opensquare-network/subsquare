@@ -11,7 +11,7 @@ import {
 const DEFAULT_ZKVERIFY_NODES = [
   {
     name: "ZKVerify",
-    url: "wss://zkverify-volta.nirvanalabs.xyz/VoltaSubSquare-mhq7r?apikey=0d7c82be-b75c-4eca-a086-5d70c64705f7",
+    url: "wss://zkverify-volta-rpc.zkverify.io",
   },
 ];
 
