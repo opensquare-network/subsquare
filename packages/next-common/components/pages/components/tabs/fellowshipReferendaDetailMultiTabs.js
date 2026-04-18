@@ -9,8 +9,11 @@ import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
 import { useReferendumTimelineData } from "next-common/hooks/pages/timelineData";
 import tabsTooltipContentMap from "./tabsTooltipContentMap";
 import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
-import { useChain } from "next-common/context/chain";
+import { MigrationConditionalPapiProvider } from "next-common/context/migration/conditionalPapi";
+import { useChain, useChainSettings } from "next-common/context/chain";
 import { isCollectivesChain } from "next-common/utils/chain";
+import { PapiProvider } from "next-common/context/papi";
+import PapiCallTreeProvider from "next-common/context/call/papiCallTree";
 
 const Gov2ReferendumMetadata = dynamicClientOnly(() =>
   import("next-common/components/gov2/referendum/metadata"),
@@ -30,8 +33,35 @@ const DetailCurveChart = dynamicClientOnly(() =>
   ),
 );
 
+function LegacyReferendumCallTab({ indexer }) {
+  return (
+    <MigrationConditionalApiProvider indexer={indexer}>
+      <ReferendumCallProvider>
+        <Gov2ReferendumCall />
+      </ReferendumCallProvider>
+    </MigrationConditionalApiProvider>
+  );
+}
+
+function PapiReferendumCallTab({ indexer }) {
+  return (
+    <PapiProvider>
+      <MigrationConditionalPapiProvider indexer={indexer}>
+        <PapiCallTreeProvider>
+          <MigrationConditionalApiProvider indexer={indexer}>
+            <ReferendumCallProvider>
+              <Gov2ReferendumCall />
+            </ReferendumCallProvider>
+          </MigrationConditionalApiProvider>
+        </PapiCallTreeProvider>
+      </MigrationConditionalPapiProvider>
+    </PapiProvider>
+  );
+}
+
 export default function FellowshipReferendaDetailMultiTabs() {
   const chain = useChain();
+  const { enablePapi } = useChainSettings();
   const isCollectives = isCollectivesChain(chain);
   const router = useRouter();
   const info = useReferendumInfo();
@@ -42,6 +72,7 @@ export default function FellowshipReferendaDetailMultiTabs() {
     useTimelineTabSwitch();
   const timelineData = useReferendumTimelineData();
   const indexer = onchainData?.indexer;
+  const proposalIndexer = proposal?.indexer || onchainData?.indexer;
   const proposalCall = proposal?.call;
   const proposalInline = proposal?.inline;
 
@@ -53,12 +84,10 @@ export default function FellowshipReferendaDetailMultiTabs() {
               value: "call",
               label: "Call",
               tooltip: tabsTooltipContentMap.call,
-              content: (
-                <MigrationConditionalApiProvider indexer={indexer}>
-                  <ReferendumCallProvider>
-                    <Gov2ReferendumCall />
-                  </ReferendumCallProvider>
-                </MigrationConditionalApiProvider>
+              content: enablePapi ? (
+                <PapiReferendumCallTab indexer={proposalIndexer} />
+              ) : (
+                <LegacyReferendumCallTab indexer={indexer} />
               ),
             },
           ]
@@ -99,6 +128,8 @@ export default function FellowshipReferendaDetailMultiTabs() {
     proposalCall,
     proposalInline,
     indexer,
+    proposalIndexer,
+    enablePapi,
     info,
     timelineData,
     timeLineTabSwitchComponent,
