@@ -17,7 +17,15 @@ const JsonView = dynamic(() => import("next-common/components/jsonView"), {
 });
 
 function PapiCallTreeOnReferendum() {
-  const { callTreeData, isLoading } = usePapiCallTree();
+  const papiCallContextData = usePapiCallTree();
+
+  // If papi call context data is unavailable, fall back to the legacy call tree.
+  if (!papiCallContextData) {
+    return <LegacyCallTreeOnReferendum />;
+  }
+
+  const { callTreeData, isLoading } = papiCallContextData || {};
+
   if (isLoading) {
     return (
       <div className="flex justify-center py-[24px]">
