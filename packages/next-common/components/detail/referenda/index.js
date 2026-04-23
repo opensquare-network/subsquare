@@ -9,6 +9,7 @@ import TimeoutCountdown from "next-common/components/detail/referenda/timeoutCou
 import PreimageWarning from "next-common/components/detail/referenda/preimageWarning";
 import TimeoutGuard from "next-common/components/detail/common/openGov/timeoutGuard";
 import ReferendaReferendumTreasurySpendNavigation from "next-common/components/detail/referenda/referendaReferendumTreasurySpendNavigation";
+import ReferendaReferendumMultiAssetBountyNavigation from "next-common/components/detail/referenda/referendaReferendumMultiAssetBountyNavigation";
 import MaybeSimaDiscussionArticleContent from "next-common/components/maybeSimaDiscussionArticleContent";
 import RelatedBountiesNavigation from "next-common/components/detail/navigation/relatedBountiesNavigation";
 
@@ -27,6 +28,7 @@ export default function ReferendaDetail() {
             <ReferendaWhiteListNavigation />
             <ReferendaReferendumNavigation />
             <ReferendaReferendumTreasurySpendNavigation />
+            <ReferendaReferendumMultiAssetBountyNavigation />
             <RelatedBountiesNavigation />
           </>
         )

@@ -8,6 +8,7 @@ import { usePostState } from "next-common/context/post";
 import PostMetaBase from "next-common/components/detail/container/postMeta/metaBase";
 import { MultiAssetBountyTag } from "next-common/components/tags/state/treasury";
 import CommonTreasuryMetaItems from "next-common/components/detail/treasury/common/commonMetaItems";
+import MultiAssetBountyByGov2Navigation from "next-common/components/detail/treasury/multiAssetBounty/byGov2Navigation";
 
 function MultiAssetBountyPostMeta() {
   const state = usePostState();
@@ -24,6 +25,7 @@ export default function MultiAssetBountyDetail() {
 
   return (
     <DetailContentBase
+      head={!isEditing && <MultiAssetBountyByGov2Navigation />}
       title={<PostTitle />}
       meta={!isEditing && <MultiAssetBountyPostMeta />}
     >
