@@ -1,5 +1,8 @@
 export const childBountyBaseUrl = "/treasury/child-bounties";
 export const bountyBaseUrl = "/treasury/bounties";
+export const multiAssetBountyBaseUrl = "/treasury/multi-asset-bounties";
+export const multiAssetChildBountyBaseUrl =
+  "/treasury/multi-asset-child-bounties";
 export const tipBaseUrl = "/treasury/tips";
 export const treasuryProposalBaseUrl = "/treasury/proposals";
 export const treasurySpendBaseUrl = "/treasury/spends";

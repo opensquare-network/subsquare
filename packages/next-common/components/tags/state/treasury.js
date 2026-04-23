@@ -212,3 +212,93 @@ export function SpendTag({ state }) {
     </Tooltip>
   );
 }
+
+const multiAssetBountyStateTagMap = {
+  Created: StartTag,
+  FundingAttempted: StartTag,
+  Funded: ActiveTag,
+  CuratorUnassigned: NegativeTag,
+  Active: ActiveTag,
+  Awarded: PositiveTag,
+  Canceled: NegativeTag,
+  Paid: PositiveTag,
+
+  // timeline
+  BountyCreated: StartTag,
+  BountyFundingAttempted: StartTag,
+  BountyBecameFunded: ActiveTag,
+  BountyActive: ActiveTag,
+  BountyAwarded: PositiveTag,
+  BountyCanceled: NegativeTag,
+  BountyPaid: PositiveTag,
+  acceptCurator: PositiveTag,
+};
+
+const multiAssetBountyTooltipMap = {
+  Created: "Bounty has been created via governance",
+  FundingAttempted: "Funding has been attempted but not yet confirmed",
+  Funded: "Bounty has been funded and waiting for curator",
+  CuratorUnassigned: "Curator role has been revoked or declined",
+  Active: "Bounty is active with an assigned curator",
+  Awarded: "Bounty has been awarded to a beneficiary",
+  Canceled: canceledTooltip,
+  Paid: "Bounty payment has been processed",
+
+  // timeline
+  BountyCreated: "Bounty was created",
+  BountyFundingAttempted: "Funding was attempted",
+  BountyBecameFunded: "Bounty became funded",
+  BountyActive: "Bounty became active",
+  BountyAwarded: awardedTooltip,
+  BountyCanceled: canceledTooltip,
+  BountyPaid: "Bounty payment was processed",
+  acceptCurator: acceptCuratorTooltip,
+};
+
+const multiAssetChildBountyStateTagMap = {
+  Added: StartTag,
+  CuratorProposed: ActiveTag,
+  Active: ActiveTag,
+  PendingPayout: ActiveTag,
+  Rejected: NegativeTag,
+  Canceled: NegativeTag,
+  Claimed: PositiveTag,
+
+  // timeline
+  proposeCurator: ActiveTag,
+  acceptCurator: ActiveTag,
+  Awarded: PositiveTag,
+};
+
+const multiAssetChildBountyTooltipMap = {
+  Added: "Child bounty has been added",
+  CuratorProposed: "A curator has been proposed for the child bounty",
+  Active: "Child bounty is active",
+  PendingPayout: pendingPayoutTooltip,
+  Rejected: "Child bounty has been rejected",
+  Canceled: canceledTooltip,
+  Claimed: "Child bounty reward has been claimed",
+
+  // timeline
+  proposeCurator: proposeCuratorTooltip,
+  acceptCurator: acceptCuratorTooltip,
+  Awarded: awardedTooltip,
+};
+
+export function MultiAssetBountyTag({ state }) {
+  let Tag = multiAssetBountyStateTagMap[state] || ClosedTag;
+  return (
+    <Tooltip content={multiAssetBountyTooltipMap[state]}>
+      <Tag>{state}</Tag>
+    </Tooltip>
+  );
+}
+
+export function MultiAssetChildBountyTag({ state }) {
+  let Tag = multiAssetChildBountyStateTagMap[state] || ClosedTag;
+  return (
+    <Tooltip content={multiAssetChildBountyTooltipMap[state]}>
+      <Tag>{state}</Tag>
+    </Tooltip>
+  );
+}
