@@ -16,7 +16,6 @@ const getTimelineData = (args, method) => {
         curator: args.curator ? <AddressUser add={args.curator} /> : undefined,
       };
     case "BountyBecameActive":
-    case "BountyActive":
       return {
         ...args,
         curator: args.curator ? <AddressUser add={args.curator} /> : undefined,
@@ -24,11 +23,6 @@ const getTimelineData = (args, method) => {
     case "BountyAwarded":
       return {
         Beneficiary: <AddressUser add={args.beneficiary} />,
-      };
-    case "acceptCurator":
-      return {
-        ...args,
-        curator: <AddressUser add={args.curator?.id ?? args.curator} />,
       };
   }
   return args;
