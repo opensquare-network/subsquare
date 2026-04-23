@@ -31,7 +31,7 @@ export default function MultiAssetBountiesPage({
         tabs={[
           {
             value: "multi-asset-bounties",
-            label: "Multi-Asset Bounties",
+            label: "Bounties",
             url: "/treasury/multi-asset-bounties",
           },
         ]}

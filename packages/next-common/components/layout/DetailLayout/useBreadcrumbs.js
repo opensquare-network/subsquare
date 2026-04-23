@@ -97,6 +97,15 @@ export default function useBreadcrumbs() {
       },
       getIndexField(post?.index, id),
     ];
+  } else if (detailPageCategory.MULTI_ASSET_BOUNTY === type) {
+    return [
+      treasury,
+      {
+        content: "Multi-Asset Bounties",
+        path: "/treasury/multi-asset-bounties",
+      },
+      getIndexField(post?.bountyIndex, id),
+    ];
   } else if (detailPageCategory.TREASURY_BOUNTY === type) {
     return [
       treasury,
