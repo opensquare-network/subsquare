@@ -10,7 +10,7 @@ import {
   CuratorBadge,
   CuratorProxyTag,
 } from "next-common/components/treasury/bounty/styled";
-import { upperFirst } from "lodash-es";
+import { isNil, omit, upperFirst } from "lodash-es";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
@@ -32,17 +32,6 @@ function CuratorElement({ curator }) {
   );
 }
 
-function AssetKindDisplay({ assetKind }) {
-  if (!assetKind) return null;
-
-  // Show the raw assetKind as a compact JSON string
-  return (
-    <span className="text12Medium text-textSecondary break-all">
-      {JSON.stringify(assetKind)}
-    </span>
-  );
-}
-
 function MultiAssetBountyMetadata({ id, meta, assetKind, address }) {
   const curator = useCurator();
   const { decimals: chainDecimals, symbol: chainSymbol } = useChainSettings();
@@ -56,14 +45,10 @@ function MultiAssetBountyMetadata({ id, meta, assetKind, address }) {
     return null;
   }
 
-  const metadata = meta ? Object.entries(meta) : [];
+  const metadata = meta ? Object.entries(omit(meta, ["assetKind"])) : [];
 
-  if (id !== undefined && id !== null) {
+  if (!isNil(id)) {
     metadata.unshift(["Id", `#${id}`]);
-  }
-
-  if (assetKind) {
-    metadata.push(["assetKind", assetKind]);
   }
 
   if (address) {
@@ -86,22 +71,13 @@ function MultiAssetBountyMetadata({ id, meta, assetKind, address }) {
         normalizedValue = <CuratorElement curator={curator} />;
         break;
       case "value":
-      case "fee":
         normalizedValue = (
           <ValueDisplay value={toPrecision(value, decimals)} symbol={symbol} />
         );
         break;
-      case "assetKind":
-        normalizedValue = <AssetKindDisplay assetKind={value} />;
-        break;
       case "status":
         normalizedValue =
           typeof value === "object" ? Object.keys(value)[0] : value;
-        break;
-      case "paymentIds":
-        normalizedValue = Array.isArray(value)
-          ? value.join(", ") || "-"
-          : value;
         break;
       case "address":
         normalizedValue = <Copyable>{address}</Copyable>;
