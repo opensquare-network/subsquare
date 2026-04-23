@@ -46,6 +46,7 @@ const paseo = {
       spends: true,
       childBounties: true,
       tips: false,
+      multiAssetBounties: true,
     },
     council: false,
     democracy: false,
