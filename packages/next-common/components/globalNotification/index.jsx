@@ -61,7 +61,7 @@ export default function MultisigManageNotification() {
     return (
       <Notification cacheKey={CACHE_KEY.multisigManagementPromptVisible}>
         You have {myMultisigsCount} active {transactionContent}, &nbsp;
-        {needApprovalCount} of &nbsp;
+        {needApprovalCount} &nbsp; of &nbsp;
         {manageContent} need your approval.
         {!isAccountMultisigPage && <ManageLink manageContent={manageContent} />}
       </Notification>
