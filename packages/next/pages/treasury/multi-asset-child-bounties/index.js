@@ -8,6 +8,7 @@ import { fetchList } from "next-common/services/list";
 import { TreasuryProvider } from "next-common/context/treasury";
 import { DropdownUrlFilterProvider } from "next-common/components/dropdownFilter/context";
 import businessCategory from "next-common/utils/consts/business/category";
+import MultiAssetChildBountiesSummary from "next-common/components/summary/multiAssetChildBountiesSummary";
 
 export default function MultiAssetChildBountiesPage({ bounties, chain }) {
   const items = (bounties.items || []).map((item) =>
@@ -21,6 +22,7 @@ export default function MultiAssetChildBountiesPage({ bounties, chain }) {
       <ListLayout
         seoInfo={seoInfo}
         title={category}
+        summary={<MultiAssetChildBountiesSummary />}
         tabs={[
           {
             value: "multi-asset-child-bounties",
