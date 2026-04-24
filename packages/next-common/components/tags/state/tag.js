@@ -9,6 +9,7 @@ import {
   ChildBountyTag,
   SpendTag,
   MultiAssetBountyTag,
+  MultiAssetChildBountyTag,
 } from "./treasury";
 import { ClosedTag, MotionTag } from "./styled";
 import { CollectiveTag } from "./collective";
@@ -39,6 +40,9 @@ const categoryTagMap = {
 
   [businessCategory.multiAssetBounties]: MultiAssetBountyTag,
   [detailPageCategory.MULTI_ASSET_BOUNTY]: MultiAssetBountyTag,
+
+  [businessCategory.multiAssetChildBounties]: MultiAssetChildBountyTag,
+  [detailPageCategory.MULTI_ASSET_CHILD_BOUNTY]: MultiAssetChildBountyTag,
 
   [businessCategory.councilMotions]: CollectiveTag,
   [detailPageCategory.COUNCIL_MOTION]: CollectiveTag,

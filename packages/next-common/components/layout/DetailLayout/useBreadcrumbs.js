@@ -97,6 +97,25 @@ export default function useBreadcrumbs() {
       },
       getIndexField(post?.index, id),
     ];
+  } else if (detailPageCategory.MULTI_ASSET_CHILD_BOUNTY === type) {
+    return [
+      treasury,
+      {
+        content: "Multi-Asset Bounties",
+        path: "/treasury/multi-asset-bounties",
+      },
+      post?.parentBountyId != null
+        ? {
+            content: `#${post?.parentBountyId}`,
+            path: `/treasury/multi-asset-bounties/${post?.parentBountyId}`,
+          }
+        : null,
+      {
+        content: "Multi-Asset Child Bounties",
+        path: "/treasury/multi-asset-child-bounties",
+      },
+      getIndexField(post?.index, id),
+    ].filter(Boolean);
   } else if (detailPageCategory.MULTI_ASSET_BOUNTY === type) {
     return [
       treasury,

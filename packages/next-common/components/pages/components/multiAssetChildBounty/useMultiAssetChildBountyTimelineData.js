@@ -4,14 +4,23 @@ import { getTimelineStatus } from "next-common/utils/pages";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import sortTimeline from "next-common/utils/timeline/sort";
 import AddressUser from "next-common/components/user/addressUser";
+import Anchor from "next-common/components/styled/anchor";
 import { omit } from "lodash-es";
 import AssetDisplay from "next-common/components/treasury/multiAssetBounty/assetDisplay";
 
 const getTimelineData = (args, method) => {
   switch (method) {
-    case "BountyCreated":
+    case "ChildBountyCreated":
       return {
-        ...omit(args, ["metadata", "value", "assetKind"]),
+        ...omit(args, ["value", "assetKind"]),
+        parentBountyId:
+          args.parentBountyId != null ? (
+            <Anchor
+              href={`/treasury/multi-asset-bounties/${args.parentBountyId}`}
+            >
+              {args.parentBountyId}
+            </Anchor>
+          ) : undefined,
         value: <AssetDisplay value={args.value} assetKind={args.assetKind} />,
         curator: args.curator ? <AddressUser add={args.curator} /> : undefined,
       };
@@ -39,7 +48,7 @@ const getTimelineData = (args, method) => {
   return args;
 };
 
-export default function useMultiAssetBountyTimelineData(bounty) {
+export default function useMultiAssetChildBountyTimelineData(bounty) {
   const [timelineData, setTimelineData] = useState([]);
 
   useEffect(() => {
@@ -49,7 +58,7 @@ export default function useMultiAssetBountyTimelineData(bounty) {
         indexer,
         time: formatTime(indexer?.blockTime),
         status: getTimelineStatus(
-          detailPageCategory.MULTI_ASSET_BOUNTY,
+          detailPageCategory.MULTI_ASSET_CHILD_BOUNTY,
           item.method ?? item.name,
         ),
         data: getTimelineData(item.args, item.method ?? item.name),
