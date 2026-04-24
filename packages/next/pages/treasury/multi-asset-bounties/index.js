@@ -8,6 +8,8 @@ import { backendApi } from "next-common/services/nextApi";
 import { fetchList } from "next-common/services/list";
 import businessCategory from "next-common/utils/consts/business/category";
 import MultiAssetBountyCardSection from "next-common/components/treasury/multiAssetBounty/bountyCardSection";
+import MultiAssetBountiesSummaryPanel from "next-common/components/treasury/multiAssetBounty/summaryPanel";
+import { PapiProvider } from "next-common/context/papi";
 
 export default function MultiAssetBountiesPage({
   activeBounties,
@@ -25,30 +27,33 @@ export default function MultiAssetBountiesPage({
 
   return (
     <TreasuryProvider>
-      <ListLayout
-        seoInfo={seoInfo}
-        title={category}
-        tabs={[
-          {
-            value: "multi-asset-bounties",
-            label: "Bounties",
-            url: "/treasury/multi-asset-bounties",
-          },
-        ]}
-      >
-        {activeItems.length > 0 && (
-          <MultiAssetBountyCardSection activeBounties={activeItems} />
-        )}
-        <MultiAssetBountiesPostList
-          titleCount={inactiveBounties.total}
-          items={items}
-          pagination={{
-            page: inactiveBounties.page,
-            pageSize: inactiveBounties.pageSize,
-            total: inactiveBounties.total,
-          }}
-        />
-      </ListLayout>
+      <PapiProvider>
+        <ListLayout
+          seoInfo={seoInfo}
+          title={category}
+          summary={<MultiAssetBountiesSummaryPanel />}
+          tabs={[
+            {
+              value: "multi-asset-bounties",
+              label: "Bounties",
+              url: "/treasury/multi-asset-bounties",
+            },
+          ]}
+        >
+          {activeItems.length > 0 && (
+            <MultiAssetBountyCardSection activeBounties={activeItems} />
+          )}
+          <MultiAssetBountiesPostList
+            titleCount={inactiveBounties.total}
+            items={items}
+            pagination={{
+              page: inactiveBounties.page,
+              pageSize: inactiveBounties.pageSize,
+              total: inactiveBounties.total,
+            }}
+          />
+        </ListLayout>
+      </PapiProvider>
     </TreasuryProvider>
   );
 }
