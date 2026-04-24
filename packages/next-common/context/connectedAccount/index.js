@@ -6,6 +6,7 @@ import { useLocalStorage } from "react-use";
 import { clearMyMultisigsData } from "next-common/store/reducers/multisigSlice";
 import { useDispatch } from "react-redux";
 import { usePageLoading } from "next-common/context/pageLoading";
+import { getMockAccountAddress } from "next-common/utils/mockAccount";
 
 const ConnectedAccountContext = createContext(null);
 
@@ -54,8 +55,12 @@ export function ConnectedAccountProvider({
       try {
         setPageLoading(true);
         await disconnect();
-        saveConnectedAccount(account);
-        saveLastConnectedAccount(account);
+        const mockAddress = getMockAccountAddress();
+        const effectiveAccount = mockAddress
+          ? { ...account, address: mockAddress }
+          : account;
+        saveConnectedAccount(effectiveAccount);
+        saveLastConnectedAccount(effectiveAccount);
         await fetchAndUpdateUser(userContext);
       } catch (e) {
         console.error(e);
