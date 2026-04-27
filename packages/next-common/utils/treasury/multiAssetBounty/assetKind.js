@@ -1,3 +1,4 @@
+import { isNil } from "lodash-es";
 import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 
 // AssetHub asset generalIndex to symbol mapping
@@ -26,11 +27,11 @@ function getLocationJunctions(location) {
     return null;
   }
 
-  if (interior === "here" || interior === "Here") {
+  if (interior === "here") {
     return [];
   }
 
-  if (interior.here !== undefined || interior.Here !== undefined) {
+  if (interior.here !== undefined) {
     return [];
   }
 
@@ -44,7 +45,7 @@ function getLocationJunctions(location) {
     return junctions;
   }
 
-  if (junctions === null || junctions === undefined) {
+  if (isNil(junctions)) {
     return null;
   }
 
@@ -68,23 +69,22 @@ function getAssetIdLocation(versionedData) {
   return null;
 }
 
-/**
- * Extract symbol from raw assetKind stored by the scanner.
- * Scanner persists polkadot.js `.toJSON()` for `VersionedLocatableAsset`, so
- * the current shape here is `{ v3|v4|v5: { location, assetId } }` with
- * lowercase-starting junction keys such as `parachain`, `palletInstance` and
- * `generalIndex`.
- * Returns null for native assets or unrecognized assetKind.
- */
 export function getAssetSymbolFromAssetKind(assetKind) {
-  if (!assetKind) return null;
+  if (!assetKind) {
+    return null;
+  }
 
   const versionedData = getVersionedAssetData(assetKind);
   const locationJunctions = getLocationJunctions(versionedData?.location);
-  const isAssetHubLocation = locationJunctions?.some((junction) => {
-    const parachainId = junction?.parachain;
-    return normalizeNumberish(parachainId) === ASSET_HUB_PARACHAIN_ID;
-  });
+  const isLocalLocation =
+    Array.isArray(locationJunctions) && locationJunctions.length === 0;
+
+  const isAssetHubLocation =
+    isLocalLocation ||
+    locationJunctions?.some((junction) => {
+      const parachainId = junction?.parachain;
+      return normalizeNumberish(parachainId) === ASSET_HUB_PARACHAIN_ID;
+    });
 
   if (!isAssetHubLocation) {
     return null;
@@ -114,10 +114,6 @@ export function getAssetSymbolFromAssetKind(assetKind) {
   return null;
 }
 
-/**
- * Get decimals for the asset represented by assetKind.
- * Falls back to chain decimals if native.
- */
 export function getAssetDecimalsFromAssetKind(assetKind, chainDecimals) {
   const symbol = getAssetSymbolFromAssetKind(assetKind);
   if (symbol && SYMBOL_DECIMALS[symbol] !== undefined) {
@@ -126,9 +122,6 @@ export function getAssetDecimalsFromAssetKind(assetKind, chainDecimals) {
   return chainDecimals;
 }
 
-/**
- * Returns { symbol, decimals } for the given assetKind.
- */
 export function getAssetInfoFromAssetKind(
   assetKind,
   chainDecimals,
