@@ -56,11 +56,11 @@ function MultiAssetBountySidebarBalance() {
 
   return (
     <SecondaryCardDetail>
-      <CardDetailTitle title="Bounty" />
+      <CardDetailTitle title="Balance" />
       {bountyValue != null && (
         <CardDetailRow
           icon={<SystemCoins />}
-          title="Value"
+          title="Balance"
           value={
             <ValueDisplay
               value={toPrecision(bountyValue, decimals)}

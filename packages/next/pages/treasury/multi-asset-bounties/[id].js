@@ -23,6 +23,7 @@ import { useCuratorMultisigAddress } from "next-common/hooks/treasury/bounty/use
 import { TreasuryProvider } from "next-common/context/treasury";
 import { gov2TracksApi } from "next-common/services/url";
 import MultiAssetBountiesDetailMultiTabs from "next-common/components/pages/components/tabs/multiAssetBountiesDetailMultiTabs";
+import { PapiProvider } from "next-common/context/papi";
 
 function useMultiAssetBountyCuratorFromServer() {
   const { curator } = useOnchainData();
@@ -60,7 +61,11 @@ function MultiAssetBountyContentWithNullGuard() {
     return null;
   }
 
-  return <MultiAssetBountyContent />;
+  return (
+    <PapiProvider>
+      <MultiAssetBountyContent />
+    </PapiProvider>
+  );
 }
 
 function MultiAssetBountyPageImpl() {
