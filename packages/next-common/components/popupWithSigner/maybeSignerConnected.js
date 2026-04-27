@@ -3,6 +3,7 @@ import { useUser } from "../../context/user";
 import { isSameAddress } from "../../utils";
 import { SignerContextProvider, usePopupParams } from "./context";
 import LoginPopup from "next-common/components/login/popup";
+import { isMockAccountAddress } from "next-common/utils/mockAccount";
 
 export default function MaybeSignerConnected({ children, extensionAccounts }) {
   const user = useUser();
@@ -10,7 +11,10 @@ export default function MaybeSignerConnected({ children, extensionAccounts }) {
 
   if (
     !user?.address ||
-    !extensionAccounts?.find((acc) => isSameAddress(acc.address, user?.address))
+    (!isMockAccountAddress(user?.address) &&
+      !extensionAccounts?.find((acc) =>
+        isSameAddress(acc.address, user?.address),
+      ))
   ) {
     return <LoginPopup onClose={onClose} />;
   }

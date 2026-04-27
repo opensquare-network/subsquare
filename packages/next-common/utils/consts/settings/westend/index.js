@@ -53,6 +53,7 @@ const westend = {
       bounties: false,
       childBounties: false,
       tips: false,
+      multiAssetBounties: true,
     },
   }),
   integrations: {

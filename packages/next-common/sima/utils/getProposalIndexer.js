@@ -108,6 +108,24 @@ export function getCommunityMotionProposalIndexer(post) {
   };
 }
 
+export function getMultiAssetBountyIndexer(post) {
+  return {
+    pallet: "multiAssetBounties",
+    object: "bounties",
+    proposed_height: post.indexer.blockHeight,
+    id: post.bountyIndex,
+  };
+}
+
+export function getMultiAssetChildBountyIndexer(post) {
+  return {
+    pallet: "multiAssetBounties",
+    object: "childBounties",
+    proposed_height: post.indexer.blockHeight,
+    id: `${post.parentBountyId}_${post.index}_${post.indexer.blockHeight}`,
+  };
+}
+
 export default function getProposalIndexer(post) {
   const refToPost = post.refToPost;
   const type = refToPost?.postType;
@@ -137,6 +155,10 @@ export default function getProposalIndexer(post) {
     return getCommunityMotionProposalIndexer(refToPost);
   } else if (type === "communityTreasuryProposal") {
     return getCommunityTreasuryProposalIndexer(refToPost);
+  } else if (type === "multiAssetBounty") {
+    return getMultiAssetBountyIndexer(refToPost);
+  } else if (type === "multiAssetChildBounty") {
+    return getMultiAssetChildBountyIndexer(refToPost);
   }
   throw new Error(`Invalid post type for getProposalIndexer: ${type}`);
 }

@@ -9,6 +9,8 @@ export const Names = {
   spends: "Spends",
   bounties: "Bounties",
   childBounties: "Child Bounties",
+  multiAssetBounties: "Multi-Asset Bounties",
+  multiAssetChildBounties: "Multi-Asset Child Bounties",
   tips: "Tips",
   burn: "Burn",
 };
@@ -22,12 +24,17 @@ export function getTreasuryMenu(summary) {
   const activeTreasurySpends = summary?.treasurySpends?.active || 0;
   const activeBounties = summary?.bounties?.active || 0;
   const activeChildBounties = summary?.childBounties?.active || 0;
+  const activeMultiAssetBounties = summary?.multiAssetBounties?.active || 0;
+  const activeMultiAssetChildBounties =
+    summary?.multiAssetChildBounties?.active || 0;
   const activeTips = summary?.tips?.active || 0;
   const totalActiveCount =
     activeTreasuryProposals +
     activeTreasurySpends +
     activeBounties +
     activeChildBounties +
+    activeMultiAssetBounties +
+    activeMultiAssetChildBounties +
     activeTips;
 
   return {
@@ -69,6 +76,24 @@ export function getTreasuryMenu(summary) {
         pathname: "/treasury/child-bounties",
         extraMatchNavMenuActivePathnames: ["/treasury/child-bounties/[id]"],
         activeCount: activeChildBounties,
+      },
+      treasury?.multiAssetBounties && {
+        value: "multi-asset-bounties",
+        name: Names.multiAssetBounties,
+        pathname: "/treasury/multi-asset-bounties",
+        extraMatchNavMenuActivePathnames: [
+          "/treasury/multi-asset-bounties/[id]",
+        ],
+        activeCount: activeMultiAssetBounties,
+      },
+      treasury?.multiAssetBounties && {
+        value: "multi-asset-child-bounties",
+        name: Names.multiAssetChildBounties,
+        pathname: "/treasury/multi-asset-child-bounties",
+        extraMatchNavMenuActivePathnames: [
+          "/treasury/multi-asset-child-bounties/[id]",
+        ],
+        activeCount: activeMultiAssetChildBounties,
       },
       treasury?.tips && {
         value: "tips",

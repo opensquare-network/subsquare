@@ -11,6 +11,10 @@ import useInjectedWeb3 from "./connect/useInjectedWeb3";
 import { useWalletConnect } from "next-common/context/walletconnect";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import { useVaultSigner } from "next-common/context/polkadotVault/vaultSignerProvider";
+import { isMockAccountAddress } from "next-common/utils/mockAccount";
+
+// Fixed fake signature returned for mock accounts (bypass real wallet signing)
+const MOCK_SIGNATURE = "0x" + "00".repeat(64);
 
 export function useSignMessage() {
   const { injectedWeb3 } = useInjectedWeb3();
@@ -20,6 +24,10 @@ export function useSignMessage() {
 
   return useCallback(
     async (message, address, walletName) => {
+      if (isMockAccountAddress(address)) {
+        return MOCK_SIGNATURE;
+      }
+
       const shouldUseEVMSign = walletName === metamask.extensionName;
 
       if (shouldUseEVMSign) {

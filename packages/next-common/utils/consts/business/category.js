@@ -26,6 +26,8 @@ const businessCategory = {
   openTechCommitteeProposals: "Open Tech. Comm. Proposals",
   communityMotions: "Community Motions",
   communityTreasuryProposals: "Community Treasury Proposals",
+  multiAssetBounties: "Multi-Asset Bounties",
+  multiAssetChildBounties: "Multi-Asset Child Bounties",
 };
 
 // TODO: add more category
@@ -50,6 +52,8 @@ export const detailPageCategory = {
   FELLOWSHIP_TREASURY_SPEND: "fellowship/treasury/spends",
   TREASURY_BOUNTY: "treasury/bounties",
   TREASURY_CHILD_BOUNTY: "treasury/child-bounties",
+  MULTI_ASSET_BOUNTY: "treasury/multi-asset-bounties",
+  MULTI_ASSET_CHILD_BOUNTY: "treasury/multi-asset-child-bounties",
   TREASURY_TIP: "treasury/tips",
   GOV2_REFERENDUM: "referenda",
   FELLOWSHIP_REFERENDUM: "fellowship/referenda",
