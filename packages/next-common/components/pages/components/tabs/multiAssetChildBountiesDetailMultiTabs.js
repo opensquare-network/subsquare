@@ -57,6 +57,7 @@ export default function MultiAssetChildBountiesDetailMultiTabs() {
     detail?.index,
     detail?.onchainData?.address,
     detail?.onchainData?.assetKind,
+    detail?.onchainData?.description,
     detail?.onchainData?.meta,
     isCompact,
     router.query.tab,

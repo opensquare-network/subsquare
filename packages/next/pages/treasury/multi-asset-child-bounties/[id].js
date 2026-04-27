@@ -53,7 +53,9 @@ function MultiAssetChildBountyPageImpl() {
   const post = usePost();
   const desc = getMetaDesc(post);
   const hasSidebar = !!(
-    post?.onchainData?.address || post?.onchainData?.curator
+    post?.onchainData?.address ||
+    post?.onchainData?.curator ||
+    post?.onchainData?.beneficiary
   );
 
   return (

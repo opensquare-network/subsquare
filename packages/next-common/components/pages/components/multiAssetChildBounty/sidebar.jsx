@@ -16,6 +16,7 @@ import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { getAssetInfoFromAssetKind } from "next-common/utils/treasury/multiAssetBounty/assetKind";
+import MultiAssetChildBountyMeta from "next-common/components/treasury/multiAssetChildBounty/metadata";
 
 function CardDetailTitle({ title }) {
   return (
@@ -54,11 +55,11 @@ function MultiAssetChildBountySidebarBalance() {
 
   return (
     <SecondaryCardDetail>
-      <CardDetailTitle title="Child Bounty" />
+      <CardDetailTitle title="Balance" />
       {bountyValue != null && (
         <CardDetailRow
           icon={<SystemCoins />}
-          title="Value"
+          title="Balance"
           value={
             <ValueDisplay
               value={toPrecision(bountyValue, decimals)}
@@ -95,6 +96,7 @@ function MultiAssetChildBountySidebar() {
     <RightBarWrapper>
       <MultiAssetChildBountySidebarBalance />
       <BountySidebarCurator />
+      <MultiAssetChildBountyMeta />
     </RightBarWrapper>
   );
 }
