@@ -77,7 +77,7 @@ const polkadot = {
       status: true,
       spends: true,
       childBounties: true,
-      multiAssetBounties: true,
+      multiAssetBounties: false,
       tips: {
         archived: true,
       },
