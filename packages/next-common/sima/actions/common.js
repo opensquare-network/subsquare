@@ -25,11 +25,33 @@ export function useFindMyUpVote() {
         return null;
       }
 
-      return (reactions || []).find((r) =>
-        r.dataSource === "sima"
+      return (reactions || []).find((r) => {
+        if ((r.reaction ?? 1) !== 1) return false;
+        return r.dataSource === "sima"
           ? isSameAddress(r.proposer, connectedAccount?.address)
-          : r.user?.username === user?.username,
-      );
+          : r.user?.username === user?.username;
+      });
+    },
+    [user, connectedAccount],
+  );
+}
+
+export function useFindMyDownVote() {
+  const user = useUser();
+  const connectedAccount = useConnectedAccount();
+
+  return useCallback(
+    (reactions) => {
+      if (!user && !connectedAccount) {
+        return null;
+      }
+
+      return (reactions || []).find((r) => {
+        if (r.reaction !== 0) return false;
+        return r.dataSource === "sima"
+          ? isSameAddress(r.proposer, connectedAccount?.address)
+          : r.user?.username === user?.username;
+      });
     },
     [user, connectedAccount],
   );
