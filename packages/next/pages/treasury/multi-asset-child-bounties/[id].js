@@ -12,10 +12,9 @@ import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import MultiAssetChildBountySidebar from "next-common/components/pages/components/multiAssetChildBounty/sidebar";
-import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
-import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 import { TreasuryProvider } from "next-common/context/treasury";
 import MultiAssetChildBountiesDetailMultiTabs from "next-common/components/pages/components/tabs/multiAssetChildBountiesDetailMultiTabs";
+import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
 
 function MultiAssetChildBountyContent() {
   const detail = usePost();
@@ -27,15 +26,13 @@ function MultiAssetChildBountyContent() {
   );
 
   return (
-    <OffChainArticleActionsProvider>
-      <OffChainCommentActionsProvider>
-        <ContentWithComment>
-          <MultiAssetChildBountyDetail />
-          <MultiAssetChildBountySidebar />
-          <MultiAssetChildBountiesDetailMultiTabs />
-        </ContentWithComment>
-      </OffChainCommentActionsProvider>
-    </OffChainArticleActionsProvider>
+    <MaybeSimaContent>
+      <ContentWithComment>
+        <MultiAssetChildBountyDetail />
+        <MultiAssetChildBountySidebar />
+        <MultiAssetChildBountiesDetailMultiTabs />
+      </ContentWithComment>
+    </MaybeSimaContent>
   );
 }
 

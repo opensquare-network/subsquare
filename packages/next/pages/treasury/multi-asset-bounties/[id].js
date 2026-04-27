@@ -16,14 +16,13 @@ import { getNullDetailProps } from "next-common/services/detail/nullDetail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import MultiAssetBountySidebar from "next-common/components/pages/components/multiAssetBounty/sidebar";
-import { OffChainArticleActionsProvider } from "next-common/noSima/context/articleActionsProvider";
-import { OffChainCommentActionsProvider } from "next-common/noSima/context/commentActionsProvider";
 import { CuratorProvider } from "next-common/context/treasury/bounties";
 import { useCuratorMultisigAddress } from "next-common/hooks/treasury/bounty/useCuratorMultisigAddress";
 import { TreasuryProvider } from "next-common/context/treasury";
 import { gov2TracksApi } from "next-common/services/url";
 import MultiAssetBountiesDetailMultiTabs from "next-common/components/pages/components/tabs/multiAssetBountiesDetailMultiTabs";
 import { PapiProvider } from "next-common/context/papi";
+import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
 
 function useMultiAssetBountyCuratorFromServer() {
   const { curator } = useOnchainData();
@@ -40,17 +39,15 @@ function MultiAssetBountyContent() {
   const curatorParams = useCuratorMultisigAddress(curator);
 
   return (
-    <OffChainArticleActionsProvider>
-      <OffChainCommentActionsProvider>
-        <CuratorProvider curator={curator} params={curatorParams}>
-          <ContentWithComment>
-            <MultiAssetBountyDetail />
-            <MultiAssetBountySidebar />
-            <MultiAssetBountiesDetailMultiTabs />
-          </ContentWithComment>
-        </CuratorProvider>
-      </OffChainCommentActionsProvider>
-    </OffChainArticleActionsProvider>
+    <MaybeSimaContent>
+      <CuratorProvider curator={curator} params={curatorParams}>
+        <ContentWithComment>
+          <MultiAssetBountyDetail />
+          <MultiAssetBountySidebar />
+          <MultiAssetBountiesDetailMultiTabs />
+        </ContentWithComment>
+      </CuratorProvider>
+    </MaybeSimaContent>
   );
 }
 

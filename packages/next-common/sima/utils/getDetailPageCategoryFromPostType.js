@@ -30,6 +30,10 @@ export default function getDetailPageCategory(post) {
     return detailPageCategory.COMMUNITY_MOTION;
   } else if (postType === "communityTreasuryProposal") {
     return detailPageCategory.COMMUNITY_TREASURY_PROPOSAL;
+  } else if (postType === "multiAssetBounty") {
+    return detailPageCategory.MULTI_ASSET_BOUNTY;
+  } else if (postType === "multiAssetChildBounty") {
+    return detailPageCategory.MULTI_ASSET_CHILD_BOUNTY;
   }
   throw new Error(`Unknown post type: ${postType}`);
 }
