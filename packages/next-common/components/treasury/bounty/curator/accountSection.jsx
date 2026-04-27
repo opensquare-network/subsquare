@@ -3,7 +3,7 @@ import AddressDisplay from "./addressDisplay";
 import IndentPanel from "next-common/components/callTreeView/indentPanel";
 import CuratorLinks from "../links";
 
-const AddressWraper = ({ children, isCurator = false, address }) => {
+const AddressWrapper = ({ children, isCurator = false, address }) => {
   if (!isCurator) {
     return children;
   }
@@ -27,14 +27,14 @@ export default function AccountSection({
 
   return (
     <>
-      <AddressWraper isCurator={isCurator} address={address}>
+      <AddressWrapper isCurator={isCurator} address={address}>
         <AddressDisplay
           address={address}
           isPure={isPure}
           badge={multisigData?.badge}
           isProxy={isProxy}
         />
-      </AddressWraper>
+      </AddressWrapper>
 
       <ProxyAccounts proxies={proxies} />
       <MultisigAccounts signatories={multisigData?.signatories} />
