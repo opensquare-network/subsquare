@@ -35,6 +35,7 @@ export default function MultiAssetChildBountiesDetailMultiTabs() {
             meta={detail?.onchainData?.meta}
             assetKind={detail?.onchainData?.assetKind}
             address={detail?.onchainData?.address}
+            description={detail?.onchainData?.description}
           />
         ),
       },

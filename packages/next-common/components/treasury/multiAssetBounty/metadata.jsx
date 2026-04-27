@@ -15,6 +15,7 @@ import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { getAssetInfoFromAssetKind } from "next-common/utils/treasury/multiAssetBounty/assetKind";
+import Anchor from "next-common/components/styled/anchor";
 
 function CuratorElement({ curator }) {
   const { badge, delegateAddress } = useCuratorParams() || {};
@@ -32,7 +33,13 @@ function CuratorElement({ curator }) {
   );
 }
 
-function MultiAssetBountyMetadata({ id, meta, assetKind, address }) {
+function MultiAssetBountyMetadata({
+  id,
+  meta,
+  assetKind,
+  address,
+  description,
+}) {
   const curator = useCurator();
   const { decimals: chainDecimals, symbol: chainSymbol } = useChainSettings();
   const { symbol, decimals } = getAssetInfoFromAssetKind(
@@ -59,10 +66,22 @@ function MultiAssetBountyMetadata({ id, meta, assetKind, address }) {
     metadata.push(["curator", curator]);
   }
 
+  if (description) {
+    metadata.push(["description", description]);
+  }
+
   const normalized = metadata.map(([key, value]) => {
     let normalizedValue = value;
 
     switch (key) {
+      case "parentBounty":
+        normalizedValue = (
+          <Anchor href={`/treasury/multi-asset-bounties/${value}`}>
+            {" "}
+            #{value}{" "}
+          </Anchor>
+        );
+        break;
       case "proposer":
       case "beneficiary":
         normalizedValue = <AddressUser add={value} />;
@@ -81,6 +100,9 @@ function MultiAssetBountyMetadata({ id, meta, assetKind, address }) {
         break;
       case "address":
         normalizedValue = <Copyable>{address}</Copyable>;
+        break;
+      case "description":
+        normalizedValue = <span>{description}</span>;
         break;
     }
 
