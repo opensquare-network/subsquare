@@ -112,8 +112,13 @@ export default function CommentActions({
 
   const dispatch = useDispatch();
   const [reactionLoading, setReactionLoading] = useState(false);
-  const [showThumbsUpList, setShowThumbsUpList] = useState(false);
-  const [showThumbsDownList, setShowThumbsDownList] = useState(false);
+  // "up" | "down" | null — mutually exclusive
+  const [showReactionList, setShowReactionList] = useState(null);
+  const showThumbsUpList = showReactionList === "up";
+  const showThumbsDownList = showReactionList === "down";
+  const setShowThumbsUpList = (open) => setShowReactionList(open ? "up" : null);
+  const setShowThumbsDownList = (open) =>
+    setShowReactionList(open ? "down" : null);
 
   const {
     upVoteComment,
@@ -219,8 +224,8 @@ export default function CommentActions({
         </Wrapper>
         <MaybeSimaCommentContextMenu setIsEdit={setIsEdit} />
       </div>
-      {showThumbsUpList && <ThumbUpList reactions={upVotes} />}
-      {showThumbsDownList && <ThumbUpList reactions={downVotes} />}
+      {showThumbsUpList && <ThumbUpList reactions={upVotes} type="up" />}
+      {showThumbsDownList && <ThumbUpList reactions={downVotes} type="down" />}
       {isReply && (
         <CommentEditor
           replyToComment={replyToComment}
