@@ -186,8 +186,10 @@ export default function CommentActions({
   const replyToComment = useRootCommentData();
   const { type: detailType } = usePageProperties();
   const isGov2Referendum = detailType === detailPageCategory.GOV2_REFERENDUM;
-  const downVoteCount = reactions.filter((r) => r.reaction === 0).length;
-  const upVoteCount = reactions.filter((r) => (r.reaction ?? 1) === 1).length;
+  const downVotes = reactions.filter((r) => r.reaction === 0);
+  const downVoteCount = downVotes.length;
+  const upVotes = reactions.filter((r) => (r.reaction ?? 1) === 1);
+  const upVoteCount = upVotes.length;
 
   return (
     <>
@@ -217,14 +219,8 @@ export default function CommentActions({
         </Wrapper>
         <MaybeSimaCommentContextMenu setIsEdit={setIsEdit} />
       </div>
-      {showThumbsUpList && (
-        <ThumbUpList
-          reactions={reactions.filter((r) => (r.reaction ?? 1) === 1)}
-        />
-      )}
-      {showThumbsDownList && (
-        <ThumbUpList reactions={reactions.filter((r) => r.reaction === 0)} />
-      )}
+      {showThumbsUpList && <ThumbUpList reactions={upVotes} />}
+      {showThumbsDownList && <ThumbUpList reactions={downVotes} />}
       {isReply && (
         <CommentEditor
           replyToComment={replyToComment}
