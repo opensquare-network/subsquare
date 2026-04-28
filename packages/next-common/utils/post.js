@@ -52,11 +52,11 @@ export function getFocusEditor(contentType, editorWrapperRef, quillRef) {
 
 export function getMemberId(user, chain) {
   if (isEthereumKeyRegisteredUser(user)) {
-    return user.address;
+    return user?.address;
   } else if (isPolkadotKeyRegisteredUser(user)) {
-    return encodeAddressToChain(Buffer.from(user.publicKey, "hex"), chain);
+    return encodeAddressToChain(Buffer.from(user?.publicKey, "hex"), chain);
   } else {
-    return user.address || user.username;
+    return user?.address || user?.username;
   }
 }
 
@@ -80,15 +80,15 @@ export async function getMentionName(user, chain) {
   let address;
   let mentionName;
   if (isEthereumKeyRegisteredUser(user)) {
-    address = user.address;
+    address = user?.address;
     mentionName = addressEllipsis(address);
   } else if (isPolkadotKeyRegisteredUser(user)) {
     address = encodeAddressToChain(Buffer.from(user.publicKey, "hex"), chain);
     const maybeEvmAddress = tryConvertToEvmAddress(address);
     mentionName = addressEllipsis(maybeEvmAddress);
   } else {
-    address = user.address;
-    mentionName = user.username;
+    address = user?.address;
+    mentionName = user?.username;
   }
 
   const displayName = await getIdentityDisplayNameFromAddress(address, chain);
