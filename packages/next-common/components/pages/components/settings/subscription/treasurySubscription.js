@@ -4,6 +4,8 @@ import TreasuryChildBountyOptions from "next-common/components/setting/notificat
 import TreasuryBountyOptions from "next-common/components/setting/notification/treasuryBountyOptions";
 import TreasuryTipOptions from "next-common/components/setting/notification/treasuryTipOptions";
 import TreasuryProposalOptions from "next-common/components/setting/notification/treasuryProposalOptions";
+import MultiAssetBountyOptions from "next-common/components/setting/notification/multiAssetBountyOptions";
+import MultiAssetChildBountyOptions from "next-common/components/setting/notification/multiAssetChildBountyOptions";
 import AccordionCard from "next-common/components/styled/containers/accordionCard";
 import { Options } from "next-common/components/setting/notification/styled";
 import { Names } from "next-common/utils/consts/menu/treasury";
@@ -31,13 +33,23 @@ export default function TreasurySubscription() {
     treasuryMenu?.items,
     Names.childBounties,
   );
+  const { isMenuActive: hasMultiAssetBounty } = checkSubMenu(
+    treasuryMenu?.items,
+    Names.multiAssetBounties,
+  );
+  const { isMenuActive: hasMultiAssetChildBounty } = checkSubMenu(
+    treasuryMenu?.items,
+    Names.multiAssetChildBounties,
+  );
 
   if (
     !hasTreasury ||
     (!hasTreasuryProposal &&
       !hasTreasuryTip &&
       !hasTreasuryBounty &&
-      hasTreasuryChildBounty)
+      !hasTreasuryChildBounty &&
+      !hasMultiAssetBounty &&
+      !hasMultiAssetChildBounty)
   ) {
     return null;
   }
@@ -49,6 +61,8 @@ export default function TreasurySubscription() {
         {hasTreasuryTip && <TreasuryTipOptions />}
         {hasTreasuryBounty && <TreasuryBountyOptions />}
         {hasTreasuryChildBounty && <TreasuryChildBountyOptions />}
+        {hasMultiAssetBounty && <MultiAssetBountyOptions />}
+        {hasMultiAssetChildBounty && <MultiAssetChildBountyOptions />}
       </Options>
     </AccordionCard>
   );
