@@ -112,13 +112,8 @@ export default function CommentActions({
 
   const dispatch = useDispatch();
   const [reactionLoading, setReactionLoading] = useState(false);
-  // "up" | "down" | null — mutually exclusive
-  const [showReactionList, setShowReactionList] = useState(null);
-  const showThumbsUpList = showReactionList === "up";
-  const showThumbsDownList = showReactionList === "down";
-  const setShowThumbsUpList = (open) => setShowReactionList(open ? "up" : null);
-  const setShowThumbsDownList = (open) =>
-    setShowReactionList(open ? "down" : null);
+  const [showThumbsUpList, setShowThumbsUpList] = useState(false);
+  const [showThumbsDownList, setShowThumbsDownList] = useState(false);
 
   const {
     upVoteComment,
