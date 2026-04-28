@@ -7,6 +7,8 @@ import {
 } from "../actions/comment";
 import { useOffChainCommentUpVote } from "../actions/upVote";
 import { useOffChainCommentCancelUpVote } from "../actions/cancelUpVote";
+import { useOffChainCommentDownVote } from "../actions/downVote";
+import { useOffChainCommentCancelDownVote } from "../actions/cancelDownVote";
 import { useDeleteOffChainComment } from "../actions/deleteComment";
 
 export function OffChainCommentActionsProvider({ children }) {
@@ -16,6 +18,8 @@ export function OffChainCommentActionsProvider({ children }) {
   const createCommentReply = useCreateOffChainCommentReply();
   const upVoteComment = useOffChainCommentUpVote();
   const cancelUpVoteComment = useOffChainCommentCancelUpVote();
+  const downVoteComment = useOffChainCommentDownVote();
+  const cancelDownVoteComment = useOffChainCommentCancelDownVote();
   const deleteComment = useDeleteOffChainComment();
 
   return (
@@ -28,6 +32,8 @@ export function OffChainCommentActionsProvider({ children }) {
         createCommentReply,
         upVoteComment,
         cancelUpVoteComment,
+        downVoteComment,
+        cancelDownVoteComment,
         deleteComment,
       }}
     >

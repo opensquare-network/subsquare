@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import CommentMoreMenu from "../articleMoreMenu/commentMoreMenu";
 import ThumbsUp from "../thumbsUp";
+import ThumbsDown from "../thumbsDown";
 import ReplyButton from "./replyButton";
 import ThumbUpList from "./thumbUpList";
 import { Wrapper } from "./styled";
@@ -15,16 +16,26 @@ import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useComment } from "../comment/context";
 import { useCommentActions } from "next-common/sima/context/commentActions";
-import { useFindMyUpVote } from "next-common/sima/actions/common";
+import {
+  useFindMyUpVote,
+  useFindMyDownVote,
+} from "next-common/sima/actions/common";
 import useCanEditComment from "next-common/hooks/useCanEditComment";
 import {
   useRootCommentContext,
   useRootCommentData,
 } from "../comment/rootComment";
+import { usePageProperties } from "next-common/context/page";
+import { detailPageCategory } from "next-common/utils/consts/business/category";
 
 function useMyUpVote(reactions) {
   const findMyUpVote = useFindMyUpVote();
   return findMyUpVote(reactions);
+}
+
+function useMyDownVote(reactions) {
+  const findMyDownVote = useFindMyDownVote();
+  return findMyDownVote(reactions);
 }
 
 function useShouldUseSima(comment) {
@@ -65,7 +76,9 @@ export default function CommentActions({
   const author = comment?.author || {};
   const ownComment = useIsOwnComment();
   const myUpVote = useMyUpVote(reactions);
+  const myDownVote = useMyDownVote(reactions);
   const thumbUp = !!myUpVote;
+  const thumbDown = !!myDownVote;
 
   const chain = useChain();
   const post = usePost();
@@ -98,18 +111,24 @@ export default function CommentActions({
   };
 
   const dispatch = useDispatch();
-  const [thumbUpLoading, setThumbUpLoading] = useState(false);
+  const [reactionLoading, setReactionLoading] = useState(false);
   const [showThumbsUpList, setShowThumbsUpList] = useState(false);
+  const [showThumbsDownList, setShowThumbsDownList] = useState(false);
 
-  const { upVoteComment, cancelUpVoteComment } = useCommentActions();
+  const {
+    upVoteComment,
+    cancelUpVoteComment,
+    downVoteComment,
+    cancelDownVoteComment,
+  } = useCommentActions();
   const { reloadRootComment } = useRootCommentContext();
 
   const toggleThumbUp = async () => {
-    if (!user || ownComment || thumbUpLoading) {
+    if (!user || ownComment || reactionLoading) {
       return;
     }
 
-    setThumbUpLoading(true);
+    setReactionLoading(true);
     try {
       let result, error;
 
@@ -130,11 +149,47 @@ export default function CommentActions({
         dispatch(newErrorToast(e.message));
       }
     } finally {
-      setThumbUpLoading(false);
+      setReactionLoading(false);
+    }
+  };
+
+  const toggleThumbDown = async () => {
+    if (!user || ownComment || reactionLoading) {
+      return;
+    }
+
+    setReactionLoading(true);
+    try {
+      let result, error;
+
+      if (myDownVote) {
+        ({ result, error } = await cancelDownVoteComment(post, comment));
+      } else {
+        ({ result, error } = await downVoteComment(post, comment));
+      }
+
+      if (result) {
+        await reloadRootComment();
+      }
+      if (error) {
+        dispatch(newErrorToast(error.message));
+      }
+    } catch (e) {
+      if (e.message !== "Cancelled") {
+        dispatch(newErrorToast(e.message));
+      }
+    } finally {
+      setReactionLoading(false);
     }
   };
 
   const replyToComment = useRootCommentData();
+  const { type: detailType } = usePageProperties();
+  const isGov2Referendum = detailType === detailPageCategory.GOV2_REFERENDUM;
+  const downVotes = reactions.filter((r) => r.reaction === 0);
+  const downVoteCount = downVotes.length;
+  const upVotes = reactions.filter((r) => (r.reaction ?? 1) === 1);
+  const upVoteCount = upVotes.length;
 
   return (
     <>
@@ -142,18 +197,30 @@ export default function CommentActions({
         <Wrapper className="space-x-4">
           <ReplyButton onReply={startReply} noHover={!user} />
           <ThumbsUp
-            count={reactions?.length}
+            count={upVoteCount}
             noHover={!user || ownComment}
             highlight={thumbUp}
             toggleThumbUp={toggleThumbUp}
-            thumbUpLoading={thumbUpLoading}
+            thumbUpLoading={reactionLoading}
             showThumbsUpList={showThumbsUpList}
             setShowThumbsUpList={setShowThumbsUpList}
           />
+          {isGov2Referendum && (
+            <ThumbsDown
+              count={downVoteCount}
+              noHover={!user || ownComment}
+              highlight={thumbDown}
+              toggleThumbDown={toggleThumbDown}
+              thumbDownLoading={reactionLoading}
+              showThumbsDownList={showThumbsDownList}
+              setShowThumbsDownList={setShowThumbsDownList}
+            />
+          )}
         </Wrapper>
         <MaybeSimaCommentContextMenu setIsEdit={setIsEdit} />
       </div>
-      {showThumbsUpList && <ThumbUpList reactions={reactions} />}
+      {showThumbsUpList && <ThumbUpList reactions={upVotes} type="up" />}
+      {showThumbsDownList && <ThumbUpList reactions={downVotes} type="down" />}
       {isReply && (
         <CommentEditor
           replyToComment={replyToComment}
