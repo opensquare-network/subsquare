@@ -9,6 +9,10 @@ import TooltipOrigin from "../../../tooltip";
 import { EventType, getPostUrlsByEvent } from "./utils";
 import { hashEllipsis } from "../../../../utils";
 
+function getMultiAssetChildBountyLabel(bountyIndex) {
+  return String(bountyIndex || "").replace("_", "-");
+}
+
 const Wrapper = styled.div`
   display: flex;
   width: 100%;
@@ -80,6 +84,62 @@ function getEventTitle(event) {
     }
     case EventType.TreasuryChildBountyClaimed: {
       return `Treasury child bounty #${event.childBountyIndex} claimed`;
+    }
+    case EventType.MultiAssetBountyCreated: {
+      return `Multi-asset bounty #${event.bountyIndex} created`;
+    }
+    case EventType.MultiAssetBountyFunded: {
+      return `Multi-asset bounty #${event.bountyIndex} funded`;
+    }
+    case EventType.MultiAssetBountyBecameActive: {
+      return `Multi-asset bounty #${event.bountyIndex} became active`;
+    }
+    case EventType.MultiAssetBountyCuratorProposed: {
+      return `Multi-asset bounty #${event.bountyIndex} curator proposed`;
+    }
+    case EventType.MultiAssetBountyCuratorUnassigned: {
+      return `Multi-asset bounty #${event.bountyIndex} curator unassigned`;
+    }
+    case EventType.MultiAssetBountyAwarded: {
+      return `Multi-asset bounty #${event.bountyIndex} awarded`;
+    }
+    case EventType.MultiAssetBountyCanceled: {
+      return `Multi-asset bounty #${event.bountyIndex} canceled`;
+    }
+    case EventType.MultiAssetChildBountyCreated: {
+      return `Multi-asset child bounty #${getMultiAssetChildBountyLabel(
+        event.bountyIndex,
+      )} created`;
+    }
+    case EventType.MultiAssetChildBountyFunded: {
+      return `Multi-asset child bounty #${getMultiAssetChildBountyLabel(
+        event.bountyIndex,
+      )} funded`;
+    }
+    case EventType.MultiAssetChildBountyBecameActive: {
+      return `Multi-asset child bounty #${getMultiAssetChildBountyLabel(
+        event.bountyIndex,
+      )} became active`;
+    }
+    case EventType.MultiAssetChildBountyCuratorProposed: {
+      return `Multi-asset child bounty #${getMultiAssetChildBountyLabel(
+        event.bountyIndex,
+      )} curator proposed`;
+    }
+    case EventType.MultiAssetChildBountyCuratorUnassigned: {
+      return `Multi-asset child bounty #${getMultiAssetChildBountyLabel(
+        event.bountyIndex,
+      )} curator unassigned`;
+    }
+    case EventType.MultiAssetChildBountyAwarded: {
+      return `Multi-asset child bounty #${getMultiAssetChildBountyLabel(
+        event.bountyIndex,
+      )} awarded`;
+    }
+    case EventType.MultiAssetChildBountyCanceled: {
+      return `Multi-asset child bounty #${getMultiAssetChildBountyLabel(
+        event.bountyIndex,
+      )} canceled`;
     }
     case EventType.CouncilMotionProposed: {
       return `Council motion ${hashEllipsis(event.motionHash)} proposed`;
