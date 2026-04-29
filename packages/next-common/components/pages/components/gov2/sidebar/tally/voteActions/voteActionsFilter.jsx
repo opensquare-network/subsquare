@@ -11,7 +11,7 @@ const actionTypeOptions = [
   { value: ACTION_TYPE_FILTER_VALUES.VOTE, label: "Vote" },
   { value: ACTION_TYPE_FILTER_VALUES.CHANGE_VOTE, label: "Change Vote" },
   { value: ACTION_TYPE_FILTER_VALUES.REMOVE_VOTE, label: "Remove Vote" },
-  { value: ACTION_TYPE_FILTER_VALUES.DELEGATE, label: "New Delegate" },
+  { value: ACTION_TYPE_FILTER_VALUES.DELEGATE, label: "New Delegation" },
   {
     value: ACTION_TYPE_FILTER_VALUES.CHANGE_DELEGATION,
     label: "Change Delegation",
@@ -25,7 +25,7 @@ const actionTypeOptions = [
 const impactOptions = [
   { value: IMPACT_FILTER_VALUES.ALL, label: "All" },
   { value: IMPACT_FILTER_VALUES.INCREASE, label: "Increase" },
-  { value: IMPACT_FILTER_VALUES.REDUCTION, label: "Reduction" },
+  { value: IMPACT_FILTER_VALUES.DECREASE, label: "Decrease" },
 ];
 
 function FilterRow({ label, children }) {

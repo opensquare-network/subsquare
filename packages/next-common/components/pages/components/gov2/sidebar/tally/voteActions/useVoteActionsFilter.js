@@ -15,7 +15,7 @@ export const ACTION_TYPE_FILTER_VALUES = {
 export const IMPACT_FILTER_VALUES = {
   ALL: "",
   INCREASE: "increase",
-  REDUCTION: "reduction",
+  DECREASE: "decrease",
 };
 
 export const defaultVoteActionFilterValues = {
@@ -60,7 +60,7 @@ function matchesImpactFilter(item, impact) {
     return impactVotes > ZERO_BIGINT;
   }
 
-  if (impact === IMPACT_FILTER_VALUES.REDUCTION) {
+  if (impact === IMPACT_FILTER_VALUES.DECREASE) {
     const impactVotes = getImpactVotes(item.data, item.type);
     return impactVotes < ZERO_BIGINT;
   }
