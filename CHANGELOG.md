@@ -2,6 +2,54 @@
 
 All notable changes to this project will be documented in this file.
 
+# 6.3.0
+
+Date:
+2026-04-01. [Code diff](https://github.com/opensquare-network/subsquare/compare/2b6621daed5fdfd259666710d983d3e0416aab13...b7c9cf72a6f74197be7b951fe4f3699c16a3daff).
+
+- Fellowship:
+    - Fix copywriting of the fellowship referendum submitted feed item.
+    - Not show evidence of candidates on the evidence list page.
+- Add proxy account support for discussion posts.
+- Fix preimage deposit settings for polkadot/kusama after assethub migration.
+- Support the admin to edit a post in case of malicious content.
+- Not show preimage deposit request on the new referendum popup if the preimage is already existed.
+- Show the minimum support request on the referendum detail page tally panel.
+- Update statescan graphql API for polkadot.
+- PAPI integration:
+    - Use PAPI to query treasury approvals.
+    - Use PAPI on the treasury burn page.
+    - Use PAPI on the preimage page.
+    - Use PAPI to query on-chain data on bounty and child bounty related pages.
+    - Use PAPI to query on-chain data on the treasury proposal and spend related pages.
+    - Use PAPI to query on-chain data on the delegation page.
+    - Use PAPI on the treasury status panel.
+- Fix the call tree view for hydration.
+- Fix loading status on the preimages page.
+- Upgrade dependencies.
+
+# 6.2.0
+
+Date:
+2026-03-01. [Code diff](https://github.com/opensquare-network/subsquare/compare/622db967c9fe3170bd6a2e0f0b411d239562f261...2b6621daed5fdfd259666710d983d3e0416aab13).
+
+- [Big] Support identity judgment,
+  code [here](https://github.com/opensquare-network/subsquare/commit/7450f2c970c770640ba53c4a796552eea566079b).
+- Fix transferable amount display in the transfer popup.
+- Fix EVM address sima related signature for astar.
+- PAPI integration:
+    - Use PAPI on the vesting and scheduler page.
+    - Implement a new call tree viewer with PAPI.
+- Bug fixes:
+    - Fix myth account loading status.
+    - Fix show more button color.
+    - Add the default value for off-chain voting items querying result.
+    - Improve stream timeout handling to avoid next.js dev error popup
+- Remove Myth from treasury status summary.
+- Merge active salary and passive salary columns into one column on the fellowship members page.
+- Add gas estimation display and prompt on the transfer popup.
+- Upgrade dependency to next.js and other libs.
+
 # 6.1.0
 
 Date:
