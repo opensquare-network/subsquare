@@ -1,6 +1,11 @@
 import { useMemo } from "react";
 import { useCommittedFilterState } from "next-common/components/dropdownFilter/context";
-import { OPENGOV_ACTIONS, getImpactVotes, ZERO_BIGINT } from "./common";
+import {
+  OPENGOV_ACTIONS,
+  getImpactVotes,
+  getSupportImpactVotes,
+  ZERO_BIGINT,
+} from "./common";
 
 export const ACTION_TYPE_FILTER_VALUES = {
   ALL: "",
@@ -14,8 +19,10 @@ export const ACTION_TYPE_FILTER_VALUES = {
 
 export const IMPACT_FILTER_VALUES = {
   ALL: "",
-  INCREASE: "increase",
-  DECREASE: "decrease",
+  INCREASE_TALLY: "increaseTally",
+  DECREASE_TALLY: "decreaseTally",
+  INCREASE_SUPPORT: "increaseSupport",
+  DECREASE_SUPPORT: "decreaseSupport",
 };
 
 export const defaultVoteActionFilterValues = {
@@ -55,14 +62,17 @@ function matchesImpactFilter(item, impact) {
     return true;
   }
 
-  if (impact === IMPACT_FILTER_VALUES.INCREASE) {
-    const impactVotes = getImpactVotes(item.data, item.type);
-    return impactVotes > ZERO_BIGINT;
+  if (impact === IMPACT_FILTER_VALUES.INCREASE_TALLY) {
+    return getImpactVotes(item.data, item.type) > ZERO_BIGINT;
   }
-
-  if (impact === IMPACT_FILTER_VALUES.DECREASE) {
-    const impactVotes = getImpactVotes(item.data, item.type);
-    return impactVotes < ZERO_BIGINT;
+  if (impact === IMPACT_FILTER_VALUES.DECREASE_TALLY) {
+    return getImpactVotes(item.data, item.type) < ZERO_BIGINT;
+  }
+  if (impact === IMPACT_FILTER_VALUES.INCREASE_SUPPORT) {
+    return getSupportImpactVotes(item.data, item.type) > ZERO_BIGINT;
+  }
+  if (impact === IMPACT_FILTER_VALUES.DECREASE_SUPPORT) {
+    return getSupportImpactVotes(item.data, item.type) < ZERO_BIGINT;
   }
 
   return true;

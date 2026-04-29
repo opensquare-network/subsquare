@@ -3,7 +3,7 @@ import { cn } from "next-common/utils";
 import NoData from "../../noData";
 import DataListBody from "./body";
 import { useUpdateEffect } from "react-use";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavCollapsed } from "next-common/context/nav";
 import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 import { isNil } from "lodash-es";
@@ -45,24 +45,32 @@ export default function VirtualList({
   useUpdateEffect(handleListOverflowSize, [screenSize, navCollapsed]);
   useEffect(handleListOverflowSize, [listRef]);
 
-  const columnClassNames = columns.map((column) =>
-    cn(
-      "text14Medium",
-      !column.className
-        ?.split(" ")
-        ?.some((className) => className.startsWith("w-")) &&
-        !column?.style?.width &&
-        !column?.width &&
-        "flex-1 w-full",
-      column.className,
-    ),
+  const columnClassNames = useMemo(
+    () =>
+      columns.map((column) =>
+        cn(
+          "text14Medium",
+          !column.className
+            ?.split(" ")
+            ?.some((className) => className.startsWith("w-")) &&
+            !column?.style?.width &&
+            !column?.width &&
+            "flex-1 w-full",
+          column.className,
+        ),
+      ),
+    [columns],
   );
-  const columnStyles = columns.map((column) => ({
-    ...column.style,
-    ...(!isNil(column.width)
-      ? { width: column.width, minWidth: column.width }
-      : {}),
-  }));
+  const columnStyles = useMemo(
+    () =>
+      columns.map((column) => ({
+        ...column.style,
+        ...(!isNil(column.width)
+          ? { width: column.width, minWidth: column.width }
+          : {}),
+      })),
+    [columns],
+  );
 
   let calculatedListHeight;
   if (variableSize && getItemSize) {
