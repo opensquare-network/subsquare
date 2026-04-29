@@ -9,6 +9,7 @@ import { useDesktopItemSize, useMobileItemSize } from "../useListItemSize";
 import useMaxImpactVotes from "../useMaxImpactVotes";
 import useColumns from "next-common/components/styledList/useColumns";
 import useSortVoteActions from "../useSortVoteActions";
+import { useFilteredVoteActions } from "../useVoteActionsFilter";
 
 function DesktopTable({
   voteActions,
@@ -107,7 +108,8 @@ function VoteActionsTable({ search = "", listHeight }) {
   const maxImpactVotes = useMaxImpactVotes(voteActions);
 
   const getVoter = useCallback((vote) => vote.who, []);
-  const filteredVoteActions = useSearchVotes(search, voteActions, getVoter);
+  const searchedVoteActions = useSearchVotes(search, voteActions, getVoter);
+  const filteredVoteActions = useFilteredVoteActions(searchedVoteActions);
   const sortedVoteActions = useSortVoteActions(
     filteredVoteActions,
     sortedColumn,
