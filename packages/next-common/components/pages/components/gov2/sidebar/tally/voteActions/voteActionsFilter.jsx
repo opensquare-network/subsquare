@@ -2,30 +2,30 @@ import { DropdownFilter } from "next-common/components/dropdownFilter";
 import { useStagedFilterState } from "next-common/components/dropdownFilter/context";
 import Select from "next-common/components/select";
 import {
-  VOTE_TYPE_FILTER_VALUES,
-  AFFECTION_FILTER_VALUES,
+  ACTION_TYPE_FILTER_VALUES,
+  IMPACT_FILTER_VALUES,
 } from "./useVoteActionsFilter";
 
-const voteTypeOptions = [
-  { value: VOTE_TYPE_FILTER_VALUES.ALL, label: "All" },
-  { value: VOTE_TYPE_FILTER_VALUES.VOTE, label: "Vote" },
-  { value: VOTE_TYPE_FILTER_VALUES.CHANGE_VOTE, label: "Change Vote" },
-  { value: VOTE_TYPE_FILTER_VALUES.REMOVE_VOTE, label: "Remove Vote" },
-  { value: VOTE_TYPE_FILTER_VALUES.DELEGATE, label: "New Delegate" },
+const actionTypeOptions = [
+  { value: ACTION_TYPE_FILTER_VALUES.ALL, label: "All" },
+  { value: ACTION_TYPE_FILTER_VALUES.VOTE, label: "Vote" },
+  { value: ACTION_TYPE_FILTER_VALUES.CHANGE_VOTE, label: "Change Vote" },
+  { value: ACTION_TYPE_FILTER_VALUES.REMOVE_VOTE, label: "Remove Vote" },
+  { value: ACTION_TYPE_FILTER_VALUES.DELEGATE, label: "New Delegate" },
   {
-    value: VOTE_TYPE_FILTER_VALUES.CHANGE_DELEGATION,
+    value: ACTION_TYPE_FILTER_VALUES.CHANGE_DELEGATION,
     label: "Change Delegation",
   },
   {
-    value: VOTE_TYPE_FILTER_VALUES.REMOVE_DELEGATION,
+    value: ACTION_TYPE_FILTER_VALUES.REMOVE_DELEGATION,
     label: "Remove Delegation",
   },
 ];
 
-const affectionOptions = [
-  { value: AFFECTION_FILTER_VALUES.ALL, label: "All" },
-  { value: AFFECTION_FILTER_VALUES.INCREASE, label: "Increase" },
-  { value: AFFECTION_FILTER_VALUES.REDUCTION, label: "Reduction" },
+const impactOptions = [
+  { value: IMPACT_FILTER_VALUES.ALL, label: "All" },
+  { value: IMPACT_FILTER_VALUES.INCREASE, label: "Increase" },
+  { value: IMPACT_FILTER_VALUES.REDUCTION, label: "Reduction" },
 ];
 
 function FilterRow({ label, children }) {
@@ -49,9 +49,11 @@ export default function VoteActionsFilter() {
           small
           className="w-[160px] text12Medium"
           optionsPadding="right"
-          options={voteTypeOptions}
-          value={filters.voteType ?? ""}
-          onChange={({ value }) => setFilters({ ...filters, voteType: value })}
+          options={actionTypeOptions}
+          value={filters.actionType ?? ""}
+          onChange={({ value }) =>
+            setFilters({ ...filters, actionType: value })
+          }
         />
       </FilterRow>
       <FilterRow label="Impact">
@@ -59,9 +61,9 @@ export default function VoteActionsFilter() {
           small
           className="w-[160px] text12Medium"
           optionsPadding="right"
-          options={affectionOptions}
-          value={filters.affection ?? ""}
-          onChange={({ value }) => setFilters({ ...filters, affection: value })}
+          options={impactOptions}
+          value={filters.impact ?? ""}
+          onChange={({ value }) => setFilters({ ...filters, impact: value })}
         />
       </FilterRow>
     </DropdownFilter>
