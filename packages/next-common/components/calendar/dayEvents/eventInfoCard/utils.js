@@ -24,6 +24,12 @@ import DemocracyReferendumNotExecutedContent from "./democracyReferendumNoExecut
 import CouncilMotionContent from "./councilMotionContent";
 import TechCommMotionContent from "./techCommMotionContent";
 import AdvisoryCommitteeContent from "./advisoryCommitteeContent";
+import MultiAssetBountyValueContent from "./multiAssetBountyValueContent";
+import MultiAssetBountyCuratorContent from "./multiAssetBountyCuratorContent";
+import MultiAssetBountyAwardedContent from "./multiAssetBountyAwardedContent";
+import MultiAssetChildBountyValueContent from "./multiAssetChildBountyValueContent";
+import MultiAssetChildBountyCuratorContent from "./multiAssetChildBountyCuratorContent";
+import MultiAssetChildBountyAwardedContent from "./multiAssetChildBountyAwardedContent";
 import {
   advisoryCommitteeBaseUrl,
   bountyBaseUrl,
@@ -32,6 +38,8 @@ import {
   democracyProposalBaseUrl,
   democracyReferendumBaseUrl,
   fellowshipReferendumBaseUrl,
+  multiAssetBountyBaseUrl,
+  multiAssetChildBountyBaseUrl,
   referendaReferendumBaseUrl,
   techCommMotionBaseUrl,
   tipBaseUrl,
@@ -68,6 +76,26 @@ export const EventType = {
   TreasuryChildBountyAwarded: "treasury_child_bounty_awarded",
   TreasuryChildBountyCanceled: "treasury_child_bounty_canceled",
   TreasuryChildBountyClaimed: "treasury_child_bounty_claimed",
+
+  // Multi-asset treasury bounties
+  MultiAssetBountyCreated: "multi_asset_bounty_created",
+  MultiAssetBountyFunded: "multi_asset_bounty_funded",
+  MultiAssetBountyBecameActive: "multi_asset_bounty_became_active",
+  MultiAssetBountyCuratorProposed: "multi_asset_bounty_curator_proposed",
+  MultiAssetBountyCuratorUnassigned: "multi_asset_bounty_curator_unassigned",
+  MultiAssetBountyAwarded: "multi_asset_bounty_awarded",
+  MultiAssetBountyCanceled: "multi_asset_bounty_canceled",
+
+  // Multi-asset treasury child bounties
+  MultiAssetChildBountyCreated: "multi_asset_child_bounty_created",
+  MultiAssetChildBountyFunded: "multi_asset_child_bounty_funded",
+  MultiAssetChildBountyBecameActive: "multi_asset_child_bounty_became_active",
+  MultiAssetChildBountyCuratorProposed:
+    "multi_asset_child_bounty_curator_proposed",
+  MultiAssetChildBountyCuratorUnassigned:
+    "multi_asset_child_bounty_curator_unassigned",
+  MultiAssetChildBountyAwarded: "multi_asset_child_bounty_awarded",
+  MultiAssetChildBountyCanceled: "multi_asset_child_bounty_canceled",
 
   // Tech-comm. motion
   TcMotionProposed: "tc_motion_proposed",
@@ -139,6 +167,25 @@ export const EventTypeToComponent = {
   [EventType.TreasuryChildBountyAwarded]: TreasuryChildBountyAwardedContent,
   [EventType.TreasuryChildBountyCanceled]: TreasuryChildBountyCanceledContent,
   [EventType.TreasuryChildBountyClaimed]: TreasuryChildBountyClaimedContent,
+
+  [EventType.MultiAssetBountyCreated]: MultiAssetBountyValueContent,
+  [EventType.MultiAssetBountyFunded]: MultiAssetBountyValueContent,
+  [EventType.MultiAssetBountyBecameActive]: MultiAssetBountyValueContent,
+  [EventType.MultiAssetBountyCuratorProposed]: MultiAssetBountyCuratorContent,
+  [EventType.MultiAssetBountyCuratorUnassigned]: MultiAssetBountyCuratorContent,
+  [EventType.MultiAssetBountyAwarded]: MultiAssetBountyAwardedContent,
+  [EventType.MultiAssetBountyCanceled]: MultiAssetBountyValueContent,
+
+  [EventType.MultiAssetChildBountyCreated]: MultiAssetChildBountyValueContent,
+  [EventType.MultiAssetChildBountyFunded]: MultiAssetChildBountyValueContent,
+  [EventType.MultiAssetChildBountyBecameActive]:
+    MultiAssetChildBountyValueContent,
+  [EventType.MultiAssetChildBountyCuratorProposed]:
+    MultiAssetChildBountyCuratorContent,
+  [EventType.MultiAssetChildBountyCuratorUnassigned]:
+    MultiAssetChildBountyCuratorContent,
+  [EventType.MultiAssetChildBountyAwarded]: MultiAssetChildBountyAwardedContent,
+  [EventType.MultiAssetChildBountyCanceled]: MultiAssetChildBountyValueContent,
 
   [EventType.CouncilMotionProposed]: CouncilMotionContent,
   [EventType.CouncilMotionApproved]: CouncilMotionContent,
@@ -212,6 +259,24 @@ export const EventTypePostBaseUrl = {
   [EventType.TreasuryChildBountyCanceled]: childBountyBaseUrl,
   [EventType.TreasuryChildBountyClaimed]: childBountyBaseUrl,
 
+  [EventType.MultiAssetBountyCreated]: multiAssetBountyBaseUrl,
+  [EventType.MultiAssetBountyFunded]: multiAssetBountyBaseUrl,
+  [EventType.MultiAssetBountyBecameActive]: multiAssetBountyBaseUrl,
+  [EventType.MultiAssetBountyCuratorProposed]: multiAssetBountyBaseUrl,
+  [EventType.MultiAssetBountyCuratorUnassigned]: multiAssetBountyBaseUrl,
+  [EventType.MultiAssetBountyAwarded]: multiAssetBountyBaseUrl,
+  [EventType.MultiAssetBountyCanceled]: multiAssetBountyBaseUrl,
+
+  [EventType.MultiAssetChildBountyCreated]: multiAssetChildBountyBaseUrl,
+  [EventType.MultiAssetChildBountyFunded]: multiAssetChildBountyBaseUrl,
+  [EventType.MultiAssetChildBountyBecameActive]: multiAssetChildBountyBaseUrl,
+  [EventType.MultiAssetChildBountyCuratorProposed]:
+    multiAssetChildBountyBaseUrl,
+  [EventType.MultiAssetChildBountyCuratorUnassigned]:
+    multiAssetChildBountyBaseUrl,
+  [EventType.MultiAssetChildBountyAwarded]: multiAssetChildBountyBaseUrl,
+  [EventType.MultiAssetChildBountyCanceled]: multiAssetChildBountyBaseUrl,
+
   [EventType.CouncilMotionProposed]: councilMotionBaseUrl,
   [EventType.CouncilMotionApproved]: councilMotionBaseUrl,
   [EventType.CouncilMotionDisApproved]: councilMotionBaseUrl,
@@ -262,9 +327,14 @@ export const EventTypePostBaseUrl = {
 export function getPostUrlsByEvent(event = {}) {
   const treasuryProposalPostUrl =
     treasuryProposalBaseUrl + `/${event?.proposalIndex}`;
-  const tipPostUrl = tipBaseUrl+`/${event?.indexer?.blockHeight}_${event?.hash}`;
+  const tipPostUrl =
+    tipBaseUrl + `/${event?.indexer?.blockHeight}_${event?.hash}`;
   const bountyPostUrl = bountyBaseUrl + `/${event?.bountyIndex}`;
   const childBountyPostUrl = childBountyBaseUrl + `/${event?.childBountyIndex}`;
+  const multiAssetBountyPostUrl =
+    multiAssetBountyBaseUrl + `/${event?.bountyIndex}`;
+  const multiAssetChildBountyPostUrl =
+    multiAssetChildBountyBaseUrl + `/${event?.bountyIndex}`;
   const motionTargetUrl = event?.data?.motion?.index || event?.motionHash;
   const councilMotionPostUrl = councilMotionBaseUrl + `/${motionTargetUrl}`;
   const techCommMotionPostUrl = techCommMotionBaseUrl + `/${motionTargetUrl}`;
@@ -300,6 +370,24 @@ export function getPostUrlsByEvent(event = {}) {
     [EventType.TreasuryChildBountyAwarded]: childBountyPostUrl,
     [EventType.TreasuryChildBountyCanceled]: childBountyPostUrl,
     [EventType.TreasuryChildBountyClaimed]: childBountyPostUrl,
+
+    [EventType.MultiAssetBountyCreated]: multiAssetBountyPostUrl,
+    [EventType.MultiAssetBountyFunded]: multiAssetBountyPostUrl,
+    [EventType.MultiAssetBountyBecameActive]: multiAssetBountyPostUrl,
+    [EventType.MultiAssetBountyCuratorProposed]: multiAssetBountyPostUrl,
+    [EventType.MultiAssetBountyCuratorUnassigned]: multiAssetBountyPostUrl,
+    [EventType.MultiAssetBountyAwarded]: multiAssetBountyPostUrl,
+    [EventType.MultiAssetBountyCanceled]: multiAssetBountyPostUrl,
+
+    [EventType.MultiAssetChildBountyCreated]: multiAssetChildBountyPostUrl,
+    [EventType.MultiAssetChildBountyFunded]: multiAssetChildBountyPostUrl,
+    [EventType.MultiAssetChildBountyBecameActive]: multiAssetChildBountyPostUrl,
+    [EventType.MultiAssetChildBountyCuratorProposed]:
+      multiAssetChildBountyPostUrl,
+    [EventType.MultiAssetChildBountyCuratorUnassigned]:
+      multiAssetChildBountyPostUrl,
+    [EventType.MultiAssetChildBountyAwarded]: multiAssetChildBountyPostUrl,
+    [EventType.MultiAssetChildBountyCanceled]: multiAssetChildBountyPostUrl,
 
     [EventType.CouncilMotionProposed]: councilMotionPostUrl,
     [EventType.CouncilMotionApproved]: councilMotionPostUrl,

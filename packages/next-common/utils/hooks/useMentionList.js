@@ -49,7 +49,7 @@ export default function useMentionList(commentsData) {
         });
       }
     }
-    userAppearances = uniqBy(userAppearances, (item) => item.username);
+    userAppearances = uniqBy(userAppearances, (item) => item?.username);
     for (const address of post.authors ?? []) {
       const existing = userAppearances.find((item) =>
         isSameAddress(item.address, address),
@@ -65,7 +65,7 @@ export default function useMentionList(commentsData) {
       });
     }
     userAppearances = userAppearances.filter(
-      (item) => item.username !== currentUser?.username,
+      (item) => item?.username !== currentUser?.username,
     );
 
     const loadSuggestions = async () => {
@@ -77,7 +77,7 @@ export default function useMentionList(commentsData) {
           return {
             name,
             value: memberId,
-            isKeyRegistered: user.isKeyRegistered ?? isKeyRegisteredUser(user),
+            isKeyRegistered: user?.isKeyRegistered ?? isKeyRegisteredUser(user),
           };
         }),
       );
