@@ -55,15 +55,14 @@ function matchesImpactFilter(item, impact) {
     return true;
   }
 
-  const impactVotes = getImpactVotes(item.data, item.type);
-  const isIncrease = impactVotes > ZERO_BIGINT;
-  const isReduction = impactVotes < ZERO_BIGINT;
-
   if (impact === IMPACT_FILTER_VALUES.INCREASE) {
-    return isIncrease;
+    const impactVotes = getImpactVotes(item.data, item.type);
+    return impactVotes > ZERO_BIGINT;
   }
+
   if (impact === IMPACT_FILTER_VALUES.REDUCTION) {
-    return isReduction;
+    const impactVotes = getImpactVotes(item.data, item.type);
+    return impactVotes < ZERO_BIGINT;
   }
 
   return true;
