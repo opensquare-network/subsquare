@@ -10,8 +10,8 @@ import { useConditionalContextPapi } from "../migration/conditionalPapi";
 
 async function fetchPreimage(papi, preimageHash) {
   const [statusFor, requestStatusFor] = await Promise.allSettled([
-    papi.query.Preimage.StatusFor.getValue(Binary.fromHex(preimageHash)),
-    papi.query.Preimage.RequestStatusFor.getValue(Binary.fromHex(preimageHash)),
+    papi.query.Preimage.StatusFor.getValue(preimageHash),
+    papi.query.Preimage.RequestStatusFor.getValue(preimageHash),
   ]);
 
   if (!statusFor?.value && !requestStatusFor?.value) {
@@ -19,13 +19,14 @@ async function fetchPreimage(papi, preimageHash) {
   }
 
   const preimageLen =
-    requestStatusFor?.value?.value?.len ||
-    requestStatusFor?.value?.value?.maybe_len ||
+    requestStatusFor?.value?.value?.maybeLen ??
+    requestStatusFor?.value?.value?.maybe_len ??
+    requestStatusFor?.value?.value?.len ??
     statusFor?.value?.value?.len;
 
   try {
     return await papi.query.Preimage.PreimageFor.getValue([
-      Binary.fromHex(preimageHash),
+      preimageHash,
       preimageLen,
     ]);
   } catch (e) {
@@ -39,7 +40,7 @@ async function getPreimageCall(client, papi, preimageHash, blockHash) {
   if (!preimage) {
     return null;
   }
-  const bytes = preimage.asBytes();
+  const bytes = preimage;
   const metadata = await getBlockMetadata(client, blockHash);
   if (!metadata) {
     return null;
@@ -48,7 +49,7 @@ async function getPreimageCall(client, papi, preimageHash, blockHash) {
 }
 
 async function decodeInlineCallHex(client, blockHash, inlineCallHex) {
-  const bytes = Binary.fromHex(inlineCallHex).asBytes();
+  const bytes = Binary.fromHex(inlineCallHex);
   const metadata = await getBlockMetadata(client, blockHash);
   if (!metadata) {
     throw new Error("Cannot get block metadata");

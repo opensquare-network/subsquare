@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import { useAsync } from "react-use";
 
-import { Binary } from "polkadot-api";
 import { useContextPapi } from "next-common/context/papi";
 import {
   convertPapiDepositTuple,
@@ -64,7 +63,7 @@ export default function useOldPreimagePapi(hashOrBounded) {
       }
 
       const rawStatus = await papi.query.Preimage.StatusFor.getValue(
-        Binary.fromHex(resultPreimageHash.proposalHash),
+        resultPreimageHash.proposalHash,
       );
 
       return getBytesParams(resultPreimageHash, rawStatus).resultPreimageFor;

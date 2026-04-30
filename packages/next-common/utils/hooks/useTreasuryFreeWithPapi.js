@@ -9,11 +9,11 @@ import { encodeAddressToChain } from "next-common/services/address";
 import isEvmChain from "next-common/utils/isEvmChain";
 
 const EMPTY_U8A_32 = new Uint8Array(32);
-const TREASURY_DEFAULT_PALLET_ID = Binary.fromText("py/trsry").asBytes();
+const TREASURY_DEFAULT_PALLET_ID = Binary.fromText("py/trsry");
 
 async function getPalletIdBytes(papi, pallet) {
   const palletId = await papi?.constants?.[pallet]?.PalletId?.();
-  return palletId?.asBytes?.() || TREASURY_DEFAULT_PALLET_ID;
+  return palletId || TREASURY_DEFAULT_PALLET_ID;
 }
 
 export function useTreasuryAccountWithPapi(papi) {

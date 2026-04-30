@@ -7,7 +7,7 @@ import {
   getLookupFn,
 } from "@polkadot-api/metadata-builders";
 import {
-  Bin,
+  Binary,
   metadata as metadataCodec,
   unifyMetadata,
 } from "@polkadot-api/substrate-bindings";
@@ -68,7 +68,7 @@ function getWrappedCallCandidates(bytes) {
   const candidates = [bytes];
 
   try {
-    const unwrappedBytes = decodeExact(Bin(), bytes).asBytes();
+    const unwrappedBytes = Binary.fromOpaque(bytes);
     if (!isSameBytes(unwrappedBytes, bytes)) {
       candidates.push(unwrappedBytes);
     }

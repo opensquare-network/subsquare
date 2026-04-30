@@ -1,59 +1,66 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family:
-    Inter,
-    -apple-system,
-    BlinkMacSystemFont,
-    Segoe UI,
-    Roboto,
-    Oxygen,
-    Ubuntu,
-    Cantarell,
-    Fira Sans,
-    Droid Sans,
-    Helvetica Neue,
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  transition: 0.3s ease;
-  position: relative;
-  font-weight: 500;
-}
+@layer base {
+  html,
+  body {
+    padding: 0;
+    margin: 0;
+    font-family:
+      Inter,
+      -apple-system,
+      BlinkMacSystemFont,
+      Segoe UI,
+      Roboto,
+      Oxygen,
+      Ubuntu,
+      Cantarell,
+      Fira Sans,
+      Droid Sans,
+      Helvetica Neue,
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    transition: 0.3s ease;
+    position: relative;
+    font-weight: 500;
+  }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
 
-hr {
-  @apply border-neutral300;
-}
+  hr {
+    border-color: var(--neutral300);
+  }
 
-* {
-  box-sizing: border-box;
-}
+  * {
+    box-sizing: border-box;
+  }
 
-#nprogress .bar {
-  background: var(--theme500) !important;
-}
+  #nprogress .bar {
+    background: var(--theme500) !important;
+  }
 
-#nprogress .peg {
-  box-shadow:
-    0 0 10px var(--theme500),
-    0 0 5px var(--theme500) !important;
-}
+  #nprogress .peg {
+    box-shadow:
+      0 0 10px var(--theme500),
+      0 0 5px var(--theme500) !important;
+  }
 
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
+  [role="button"],
+  button {
+    cursor: pointer;
+  }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+  /* .ql-toolbar.ql-snow, */
+  /* .ql-container.ql-snow { */
+  /*   border: none !important; */
+  /* } */
 }
-input[type="number"] {
-  -moz-appearance: textfield;
-}
-/* .ql-toolbar.ql-snow, */
-/* .ql-container.ql-snow { */
-/*   border: none !important; */
-/* } */

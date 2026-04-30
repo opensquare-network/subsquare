@@ -1,11 +1,135 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@config "../../../tailwind.config.js";
+@import "tailwindcss";
 
-* {
-  border-color: transparent;
+@theme inline {
+  --color-textPrimary: var(--textPrimary);
+  --color-textSecondary: var(--textSecondary);
+  --color-textTertiary: var(--textTertiary);
+  --color-textDisabled: var(--textDisabled);
+  --color-textPrimaryContrast: var(--textPrimaryContrast);
+  --color-textSecondaryContrast: var(--textSecondaryContrast);
+  --color-textTertiaryContrast: var(--textTertiaryContrast);
+  --color-textDisabledContrast: var(--textDisabledContrast);
+  --color-purple100: var(--purple100);
+  --color-purple300: var(--purple300);
+  --color-purple500: var(--purple500);
+  --color-green100: var(--green100);
+  --color-green100Solid: var(--green100Solid);
+  --color-green300: var(--green300);
+  --color-green500: var(--green500);
+  --color-orange100: var(--orange100);
+  --color-orange300: var(--orange300);
+  --color-orange500: var(--orange500);
+  --color-pink100: var(--pink100);
+  --color-pink500: var(--pink500);
+  --color-red100: var(--red100);
+  --color-red100Solid: var(--red100Solid);
+  --color-red300: var(--red300);
+  --color-red500: var(--red500);
+  --color-azure100: var(--azure100);
+  --color-azure300: var(--azure300);
+  --color-azure500: var(--azure500);
+  --color-blue100: var(--blue100);
+  --color-blue300: var(--blue300);
+  --color-blue500: var(--blue500);
+  --color-sapphire100: var(--sapphire100);
+  --color-sapphire300: var(--sapphire300);
+  --color-sapphire500: var(--sapphire500);
+  --color-gray100: var(--gray100);
+  --color-gray200: var(--gray200);
+  --color-gray400: var(--gray400);
+  --color-gray500: var(--gray500);
+  --color-neutral100: var(--neutral100);
+  --color-neutral100-80: var(--neutral100-80);
+  --color-neutral200: var(--neutral200);
+  --color-neutral200alpha: var(--neutral200alpha);
+  --color-neutral300: var(--neutral300);
+  --color-neutral300-80: var(--neutral300-80);
+  --color-neutral300-20: var(--neutral300-20);
+  --color-neutral400: var(--neutral400);
+  --color-neutral500: var(--neutral500);
+  --color-tooltipBg: var(--tooltipBg);
+  --color-theme100: var(--theme100);
+  --color-theme300: var(--theme300);
+  --color-theme500: var(--theme500);
+  --color-navigationBg: var(--navigationBg);
+  --color-navigationActive: var(--navigationActive);
+  --color-navigationBorder: var(--navigationBorder);
+  --color-navigationText: var(--navigationText);
+  --color-navigationTextTertiary: var(--navigationTextTertiary);
+  --color-navigationIcon: var(--navigationIcon);
+  --color-shadow100: var(--shadow100);
+  --color-shadow200: var(--shadow200);
+  --color-pageBg: var(--pageBg);
 }
 
-table {
-  border-collapse: separate;
+@layer base {
+  * {
+    border-color: transparent;
+  }
+
+  table {
+    border-collapse: separate;
+  }
+}
+
+@utility text20BoldLogo {
+  font-size: 24px;
+  font-family: var(--font-montserrat, Montserrat);
+  font-weight: 700;
+  line-height: 32px;
+}
+
+@utility text20Bold {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 32px;
+}
+
+@utility text16Bold {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+@utility text16Medium {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+@utility text15MediumContent {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 28px;
+}
+
+@utility text14Bold {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+}
+
+@utility text14Medium {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+@utility text12Bold {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px;
+}
+
+@utility text12Medium {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+}
+
+@utility text12Normal {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
 }

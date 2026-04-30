@@ -19,11 +19,13 @@
   text-align: center;
   color: var(--textSecondary);
   margin: 0 !important;
-  @apply text14Medium leading-8;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 2rem;
 }
 
 .react-datepicker__day-names {
-  @apply leading-8;
+  line-height: 2rem;
 }
 
 .react-datepicker__month {
@@ -44,7 +46,9 @@
     background: var(--neutral200);
   }
 
-  @apply text14Medium leading-8;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 2rem;
 }
 
 .react-datepicker__day--today {

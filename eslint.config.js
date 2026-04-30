@@ -1,4 +1,5 @@
 const { FlatCompat } = require("@eslint/eslintrc");
+const { fixupConfigRules } = require("@eslint/compat");
 const eslintJs = require("@eslint/js");
 const globals = require("globals");
 const osnConfig = require("@osn/eslint-config");
@@ -48,7 +49,7 @@ module.exports = [
     },
   },
   ...withFiles(
-    [].concat(nextCoreWebVitals),
+    fixupConfigRules([].concat(nextCoreWebVitals)),
     nextAppFiles.concat(nextCommonFiles),
   ),
   {
@@ -65,9 +66,11 @@ module.exports = [
   },
   ...withFiles([eslintJs.configs.recommended], nextCommonFiles),
   ...withFiles(
-    compat.extends(
-      "plugin:react/recommended",
-      "plugin:react-hooks/recommended",
+    fixupConfigRules(
+      compat.extends(
+        "plugin:react/recommended",
+        "plugin:react-hooks/recommended",
+      ),
     ),
     nextCommonFiles,
   ),

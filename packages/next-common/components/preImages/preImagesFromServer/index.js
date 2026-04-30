@@ -138,7 +138,7 @@ function useServerPreimages() {
       }
 
       try {
-        const callBytes = Binary.fromHex(item.hex).asBytes();
+        const callBytes = Binary.fromHex(item.hex);
         const { proposal, callData } = decodeCallTreeWithInfo(
           callBytes,
           metadata,
