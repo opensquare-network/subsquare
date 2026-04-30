@@ -10,7 +10,7 @@
     "lint": "eslint . --ext .js,.jsx"
   },
   "dependencies": {
-    "@next/env": "^16.1.6",
+    "@next/env": "^16.2.4",
     "@osn/icons": "^1.235.4",
     "@svgr/webpack": "^7.0.0",
     "bignumber.js": "^9.0.2",
@@ -22,7 +22,7 @@
     "http-proxy": "^1.18.1",
     "localforage": "^1.10.0",
     "lodash-es": "^4.18.1",
-    "next": "16.2.3",
+    "next": "16.2.4",
     "next-common": "workspace:*",
     "nprogress": "^0.2.0",
     "pluralize": "^8.0.0",
@@ -31,7 +31,7 @@
     "react-dom": "^18.2.0",
     "react-is": "^18.3.1",
     "react-redux": "^8.0.5",
-    "sass": "^1.97.3",
+    "sass": "^1.99.0",
     "sharp": "^0.34.1",
     "sonner": "^1.0.3",
     "styled-components": "^5.3.9",
@@ -42,8 +42,8 @@
   "devDependencies": {
     "@osn/eslint-config": "^1.0.2",
     "@types/lodash-es": "^4.17.12",
-    "eslint": "^9.0.0",
-    "eslint-config-next": "^16.1.6",
+    "eslint": "^10.2.1",
+    "eslint-config-next": "^16.2.4",
     "raw-loader": "^4.0.2",
     "webpack": "^5.91.0"
   }

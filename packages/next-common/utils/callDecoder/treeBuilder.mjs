@@ -14,11 +14,13 @@ function valueToJson(value) {
   if (typeof value === "bigint") {
     return value.toString();
   }
-  if (value instanceof Binary) {
+  // In polkadot-api v2, Binary is a plain object (not a class), so instanceof
+  // Binary is not supported. Byte values are returned as Uint8Array directly.
+  if (typeof Binary === "function" && value instanceof Binary) {
     return value.asHex();
   }
   if (value instanceof Uint8Array) {
-    return `0x${Buffer.from(value).toString("hex")}`;
+    return Binary.toHex(value);
   }
   return value;
 }

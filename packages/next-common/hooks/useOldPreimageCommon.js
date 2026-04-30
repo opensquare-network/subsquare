@@ -1,4 +1,3 @@
-import { Binary } from "polkadot-api";
 import { blake2AsHex } from "@polkadot/util-crypto";
 import {
   BN,
@@ -331,16 +330,15 @@ export async function fetchPapiPreimageBytes(
     return null;
   }
 
-  const hash = Binary.fromHex(proposalHash);
   const keyCandidates = [];
 
   const resolvedLength = toPreimageLength(proposalLength);
   if (resolvedLength) {
-    keyCandidates.push([hash, resolvedLength.toNumber()]);
-    keyCandidates.push([hash, BigInt(resolvedLength.toString())]);
+    keyCandidates.push([proposalHash, resolvedLength.toNumber()]);
+    keyCandidates.push([proposalHash, BigInt(resolvedLength.toString())]);
   }
 
-  keyCandidates.push(hash);
+  keyCandidates.push(proposalHash);
 
   for (const key of keyCandidates) {
     try {

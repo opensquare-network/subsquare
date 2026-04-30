@@ -1,5 +1,4 @@
 import { useAsync } from "react-use";
-import { Binary } from "polkadot-api";
 import { useContextPapi } from "next-common/context/papi";
 import {
   fetchPapiPreimageBytes,
@@ -44,9 +43,7 @@ async function fetchOldPapiPreimage(proposalHash, papi, client) {
 
   if (!papi.query?.Preimage?.StatusFor) return base;
 
-  const rawStatus = await papi.query.Preimage.StatusFor.getValue(
-    Binary.fromHex(proposalHash),
-  );
+  const rawStatus = await papi.query.Preimage.StatusFor.getValue(proposalHash);
 
   const parsedStatus = parsePapiStatusFor(rawStatus);
   const withStatus = { ...base, ...parsedStatus };

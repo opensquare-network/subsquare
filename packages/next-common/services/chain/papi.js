@@ -1,5 +1,5 @@
 import { createClient } from "polkadot-api";
-import { getWsProvider } from "polkadot-api/ws-provider";
+import { getWsProvider } from "polkadot-api/ws";
 import {
   getMetadata as getCachedMetadata,
   setMetadata,

@@ -39,8 +39,8 @@
     "@reduxjs/toolkit": "^1.9.3",
     "@talismn/signet-apps-sdk": "^0.0.7",
     "@tanstack/react-query": "^5.90.2",
-    "@walletconnect/universal-provider": "^2.23.5",
-    "@walletconnect/utils": "^2.23.5",
+    "@walletconnect/universal-provider": "^2.23.9",
+    "@walletconnect/utils": "^2.23.9",
     "@xyflow/react": "^12.5.1",
     "bignumber.js": "^9.0.2",
     "chart.js": "^4.1.1",
@@ -63,8 +63,8 @@
     "marked": "^11.1.1",
     "md5": "^2.3.0",
     "multiformats": "^13.4.2",
-    "next": "16.2.3",
-    "polkadot-api": "^1.23.3",
+    "next": "16.2.4",
+    "polkadot-api": "^2.1.1",
     "qrcode": "^1.5.4",
     "query-string": "^9.0.0",
     "quick-lru": "^7.0.0",
@@ -86,15 +86,15 @@
     "styled-components": "^5.3.9",
     "tailwind-merge": "^1.14.0",
     "tailwind-styled-components": "^2.2.0",
-    "viem": "^2.37.8",
-    "wagmi": "^2.17.1"
+    "viem": "^2.48.4",
+    "wagmi": "^3.6.8"
   },
   "devDependencies": {
     "@osn/eslint-config": "^1.0.2",
     "@types/lodash-es": "^4.17.12",
     "@types/marked": "^6.0.0",
-    "eslint": "^9.0.0",
-    "eslint-plugin-react": "^7.37.0",
+    "eslint": "^10.2.1",
+    "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.0"
   }
 }

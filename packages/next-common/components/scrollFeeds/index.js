@@ -69,7 +69,8 @@ export default function ScrollFeeds({
       })
       .then(() => {
         animate("&>.scroll-list>:first-child", { y: 0 }, { duration: 0 });
-      });
+      })
+      .catch((err) => console.error(err));
   }, [animate, marginTop]);
 
   useEffect(() => {

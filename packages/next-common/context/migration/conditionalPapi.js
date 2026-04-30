@@ -1,7 +1,7 @@
 import { isNil } from "lodash-es";
 import { createContext, useContext, useMemo, useEffect, useState } from "react";
 import { createClient } from "polkadot-api";
-import { getWsProvider } from "polkadot-api/ws-provider";
+import { getWsProvider } from "polkadot-api/ws";
 import { getMetadata, setMetadata } from "next-common/utils/papiMetadataCache";
 import { useChainSettings } from "next-common/context/chain";
 import { useContextPapi } from "next-common/context/papi";
