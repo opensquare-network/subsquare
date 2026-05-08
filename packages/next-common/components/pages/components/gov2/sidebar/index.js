@@ -15,6 +15,7 @@ import VoteSuccessfulPopup from "../votePopup/voteSuccessful";
 import Request from "./request";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import AllSpendsRequest from "./request/allSpendsRequest";
+import AllFundBountiesRequest from "./request/allFundBountiesRequest";
 import { useFetchVotesFromServer } from "next-common/utils/gov2/useVotesFromServer";
 import useIsScrolling from "next-common/hooks/useIsScrolling";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
@@ -41,6 +42,7 @@ export default function Gov2Sidebar() {
     <RightBarWrapper className="relative">
       <Request />
       <AllSpendsRequest />
+      <AllFundBountiesRequest />
       <Gov2Status />
       <Gov2Tally />
       <WithAddress>

@@ -149,6 +149,11 @@ export function getRequestColumn() {
         return <PostListTreasuryAllSpends allSpends={allSpends} />;
       }
 
+      if (data.onchainData?.allFundBounties?.length) {
+        const { allFundBounties } = data.onchainData;
+        return <PostListTreasuryAllSpends allSpends={allFundBounties} />;
+      }
+
       return "--";
     },
   };
