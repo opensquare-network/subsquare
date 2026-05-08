@@ -33,6 +33,16 @@ export default function PostItemTitleValue({ data, showFaitPrice }) {
     );
   }
 
+  if (onchainData?.allFundBounties?.length) {
+    const { allFundBounties } = onchainData;
+    return (
+      <PostListTreasuryAllSpends
+        showFaitPrice={showFaitPrice}
+        allSpends={allFundBounties}
+      />
+    );
+  }
+
   const method = onchainData?.proposal?.method;
   if (method) {
     return <TitleExtra>{method}</TitleExtra>;
