@@ -18,10 +18,6 @@ const DEFAULT_BASILISK_NODES = [
     name: "Basilisk",
     url: "wss://rpc.basilisk.cloud",
   },
-  {
-    name: "Dwellir",
-    url: "wss://basilisk-rpc.dwellir.com",
-  },
 ];
 
 const links = [

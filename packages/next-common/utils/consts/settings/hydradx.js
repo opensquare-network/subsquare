@@ -31,10 +31,6 @@ const endpoints = [
     url: "wss://hydration.dotters.network",
   },
   {
-    name: "Helikon",
-    url: "wss://rpc.helikon.io/hydradx",
-  },
-  {
     name: "Dwellir",
     url: "wss://hydration-rpc.n.dwellir.com",
   },

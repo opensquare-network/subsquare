@@ -20,10 +20,6 @@ const defaultNodes = [
     name: "OnFinality",
     url: "wss://zeitgeist.api.onfinality.io/public-ws",
   },
-  {
-    name: "ZeitgeistPM",
-    url: "wss://main.rpc.zeitgeist.pm/ws",
-  },
 ];
 
 const links = [

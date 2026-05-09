@@ -11,8 +11,8 @@ const ProjectIconHyperBridge = dynamic(() =>
 
 const endpoints = [
   {
-    name: "BlockOps",
-    url: "wss://hyperbridge-nexus-rpc.blockops.network",
+    name: "Polytope Labs",
+    url: "wss://nexus.rpc.polytope.technology",
   },
 ];
 

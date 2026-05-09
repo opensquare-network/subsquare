@@ -20,14 +20,6 @@ export const collectivesEndpoints = [
     url: "wss://collectives.api.onfinality.io/public-ws",
   },
   {
-    name: "Dwellir",
-    url: "wss://polkadot-collectives-rpc.dwellir.com",
-  },
-  {
-    name: "Dwellir Tunisia",
-    url: "wss://polkadot-collectives-rpc-tn.dwellir.com/",
-  },
-  {
     name: "RadiumBlock",
     url: "wss://collectives.public.curie.radiumblock.co/ws",
   },

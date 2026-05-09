@@ -25,10 +25,6 @@ export const DEFAULT_MOONRIVER_NODES = [
     name: "OnFinality",
     url: "wss://moonriver.api.onfinality.io/public-ws",
   },
-  {
-    name: "Dwellir",
-    url: "wss://moonriver-rpc.dwellir.com",
-  },
 ];
 
 const moonriver = {

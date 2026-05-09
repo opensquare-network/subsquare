@@ -36,14 +36,6 @@ const defaultPolkadotNodes = [
     url: "wss://polkadot-rpc.publicnode.com",
   },
   {
-    name: "Blockops",
-    url: "wss://polkadot-public-rpc.blockops.network/ws",
-  },
-  {
-    name: "Dwellir Tunisia",
-    url: "wss://polkadot-rpc-tn.dwellir.com",
-  },
-  {
     name: "RadiumBlock",
     url: "wss://polkadot.public.curie.radiumblock.co/ws",
   },

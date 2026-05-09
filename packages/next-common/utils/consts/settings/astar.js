@@ -26,10 +26,6 @@ const nodes = [
     url: "wss://rpc.astar.network",
   },
   {
-    name: "Dwellir",
-    url: "wss://astar-rpc.dwellir.com",
-  },
-  {
     name: "Automata 1RPC",
     url: "wss://1rpc.io/astr",
   },

@@ -12,10 +12,6 @@ const westendRelayChainNodes = [
     url: "wss://westend-rpc.n.dwellir.com",
   },
   {
-    name: "Dwellir Tunisia",
-    url: "wss://westend-rpc-tn.dwellir.com",
-  },
-  {
     name: "RadiumBlock",
     url: "wss://westend.public.curie.radiumblock.co/ws",
   },
@@ -24,7 +20,6 @@ const westendRelayChainNodes = [
 const westendAssetHubNodes = [
   { name: "Parity", url: "wss://westend-asset-hub-rpc.polkadot.io" },
   { name: "Dwellir", url: "wss://asset-hub-westend-rpc.n.dwellir.com" },
-  { name: "Dwellir Tunisia", url: "wss://westmint-rpc-tn.dwellir.com" },
 ];
 
 export { westendRelayChainNodes, westendAssetHubNodes };

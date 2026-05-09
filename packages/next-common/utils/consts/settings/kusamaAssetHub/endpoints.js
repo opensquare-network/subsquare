@@ -7,7 +7,6 @@ const kusamaAssetHubNodes = [
     url: "wss://statemine.public.curie.radiumblock.co/ws",
   },
   { name: "Dwellir", url: "wss://asset-hub-kusama-rpc.n.dwellir.com" },
-  { name: "Dwellir Tunisia", url: "wss://statemine-rpc-tn.dwellir.com" },
   { name: "LuckyFriday", url: "wss://rpc-asset-hub-kusama.luckyfriday.io" },
   { name: "Stakeworld", url: "wss://ksm-rpc.stakeworld.io/assethub" },
   {

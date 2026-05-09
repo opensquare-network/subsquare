@@ -25,10 +25,6 @@ const nodes = [
     name: "Astar",
     url: "wss://rpc.shibuya.astar.network",
   },
-  {
-    name: "Dwellir",
-    url: "wss://shibuya-rpc.dwellir.com",
-  },
 ];
 
 const ethereumNetwork = {
