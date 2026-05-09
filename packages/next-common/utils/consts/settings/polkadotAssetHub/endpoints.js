@@ -24,10 +24,6 @@ const polkadotAssetHubNodes = [
     url: "wss://asset-hub-polkadot-rpc.n.dwellir.com",
   },
   {
-    name: "Dwellir Tunisia",
-    url: "wss://statemint-rpc-tn.dwellir.com",
-  },
-  {
     name: "RadiumBlock",
     url: "wss://statemint.public.curie.radiumblock.co/ws",
   },

@@ -19,10 +19,6 @@ const ProjectLogoBifrostPolkadotDark = dynamic(() =>
 
 const DEFAULT_NODES = [
   {
-    name: "Liebi",
-    url: "wss://hk.p.bifrost-rpc.liebi.com/ws",
-  },
-  {
     name: "LiebiEU",
     url: "wss://eu.bifrost-polkadot-rpc.liebi.com/ws",
   },

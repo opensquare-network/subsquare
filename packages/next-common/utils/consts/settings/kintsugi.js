@@ -19,10 +19,6 @@ const DEFAULT_KINTSUGI_NODES = [
     name: "Kintsugi Labs",
     url: "wss://api-kusama.interlay.io/parachain",
   },
-  {
-    name: "OnFinality",
-    url: "wss://kintsugi.api.onfinality.io/public-ws",
-  },
 ];
 
 const links = [

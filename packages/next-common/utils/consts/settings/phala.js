@@ -15,18 +15,6 @@ const ProjectLogoPhalaDark = dynamic(() =>
 
 const DEFAULT_PHALA_NODES = [
   {
-    name: "Dwellir",
-    url: "wss://phala-rpc.n.dwellir.com",
-  },
-  {
-    name: "Helikon",
-    url: "wss://rpc.helikon.io/phala",
-  },
-  {
-    name: "OnFinality",
-    url: "wss://phala.api.onfinality.io/public-ws",
-  },
-  {
     name: "RadiumBlock",
     url: "wss://phala.public.curie.radiumblock.co/ws",
   },

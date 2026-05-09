@@ -24,10 +24,6 @@ const DEFAULT_CRUST_NODES = [
     name: "Crust",
     url: "wss://rpc.crust.network",
   },
-  {
-    name: "Dwellir",
-    url: "wss://crust-mainnet-rpc.dwellir.com",
-  },
 ];
 
 const links = [

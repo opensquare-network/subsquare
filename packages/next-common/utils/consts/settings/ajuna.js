@@ -23,10 +23,6 @@ const nodes = [
     name: "AjunaNetwork",
     url: "wss://rpc-para.ajuna.network",
   },
-  {
-    name: "OnFinality",
-    url: "wss://ajuna.api.onfinality.io/public-ws",
-  },
 ];
 
 const links = [

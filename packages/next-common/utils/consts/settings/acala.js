@@ -30,16 +30,8 @@ const DEFAULT_ACALA_NODES = [
     url: "wss://acala-rpc-3.aca-api.network/ws",
   },
   {
-    name: "Dwellir",
-    url: "wss://acala-rpc.dwellir.com",
-  },
-  {
     name: "LuckyFriday",
     url: "wss://rpc-acala.luckyfriday.io",
-  },
-  {
-    name: "OnFinality",
-    url: "wss://acala-polkadot.api.onfinality.io/public-ws",
   },
   // {
   //   name: "Polkawallet 0",
