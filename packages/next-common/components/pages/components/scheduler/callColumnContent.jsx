@@ -15,6 +15,7 @@ import normalizeCall from "next-common/components/democracy/metadata/normalize";
 import { TagWrapper } from "next-common/components/comment/voteTag/referendaVoteTag";
 import { ThemedTag } from "next-common/components/tags/state/styled";
 import Tooltip from "next-common/components/tooltip";
+import { u8aToHex } from "@polkadot/util";
 
 const CallDetailPopup = dynamicPopup(() =>
   import("next-common/components/callDetailPopup"),
@@ -22,9 +23,11 @@ const CallDetailPopup = dynamicPopup(() =>
 
 export default function CallColumnContent({ call }) {
   if (call?.type === "Inline") {
-    return <InlineCallColumnContent hash={call?.value?.asHex()} />;
+    return (
+      <InlineCallColumnContent hash={call?.value && u8aToHex(call?.value)} />
+    );
   } else if (call?.type === "Lookup") {
-    return <PreimageColumnContent hash={call?.value?.hash.asHex()} />;
+    return <PreimageColumnContent hash={call?.value?.hash} />;
   } else {
     return null;
   }
