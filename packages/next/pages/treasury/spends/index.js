@@ -12,13 +12,16 @@ import TreasurySpendsSummary from "next-common/components/summary/treasurySpends
 import TreasurySpendsPendingNotice from "next-common/components/treasury/spends/treasurySpendsPendingNotice";
 import { PapiProvider } from "next-common/context/papi";
 import { SelfContainedScheduledTreasurySpendPrompt } from "next-common/components/pages/components/scheduler/scheduledTreasurySpendPrompt";
+import { CACHE_KEY } from "next-common/utils/constants";
 
 function SummaryFooter() {
   return (
     <div className="flex flex-col gap-2">
       <TreasurySpendsPendingNotice />
       <PapiProvider>
-        <SelfContainedScheduledTreasurySpendPrompt />
+        <SelfContainedScheduledTreasurySpendPrompt
+          cacheKey={CACHE_KEY.scheduledTreasurySpendPromptOnSpendList}
+        />
       </PapiProvider>
     </div>
   );

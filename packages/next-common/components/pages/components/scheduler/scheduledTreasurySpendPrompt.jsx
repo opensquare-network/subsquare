@@ -135,11 +135,9 @@ function ScheduledTreasurySpendPromptContent({
 export default function ScheduledTreasurySpendPrompt({
   agendas,
   agendasLoading,
+  cacheKey = CACHE_KEY.scheduledTreasurySpendPromptOnScheduler,
 }) {
-  const { visible, handleClose } = usePromptVisibility(
-    CACHE_KEY.scheduledTreasurySpendPrompt,
-    true,
-  );
+  const { visible, handleClose } = usePromptVisibility(cacheKey, true);
   if (!visible) return null;
 
   return (
@@ -155,12 +153,15 @@ export default function ScheduledTreasurySpendPrompt({
  * Self-contained variant — fetches scheduler agendas internally.
  * Must be rendered inside a PapiProvider.
  */
-export function SelfContainedScheduledTreasurySpendPrompt() {
+export function SelfContainedScheduledTreasurySpendPrompt({
+  cacheKey = CACHE_KEY.scheduledTreasurySpendPromptOnScheduler,
+}) {
   const { data: agendas, loading: agendasLoading } = useSchedulerAgendas();
   return (
     <ScheduledTreasurySpendPrompt
       agendas={agendas}
       agendasLoading={agendasLoading}
+      cacheKey={cacheKey}
     />
   );
 }
