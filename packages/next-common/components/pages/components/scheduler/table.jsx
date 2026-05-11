@@ -4,29 +4,36 @@ import { useSchedulerAgendasWithScanHeight } from "next-common/hooks/useSchedule
 import { useColumnsDef } from "./columns";
 import { ExecutionTimeProvider } from "./context";
 import { usePageProps } from "next-common/context/page";
+import ScheduledTreasurySpendPrompt from "./scheduledTreasurySpendPrompt";
 
 export default function SchedulerTable() {
-  const { scanHeight } = usePageProps();
-  const { filteredData = [], loading } =
-    useSchedulerAgendasWithScanHeight(scanHeight);
-
   return (
     <ExecutionTimeProvider>
-      <SchedulerTableContent data={filteredData} loading={loading} />
+      <SchedulerTableContent />
     </ExecutionTimeProvider>
   );
 }
 
-function SchedulerTableContent({ data = [], loading = false }) {
+function SchedulerTableContent() {
+  const { scanHeight } = usePageProps();
+  const {
+    data,
+    filteredData = [],
+    loading,
+  } = useSchedulerAgendasWithScanHeight(scanHeight);
   const columnsDef = useColumnsDef();
+
   return (
     <SecondaryCard>
-      <MapDataList
-        data={data}
-        columnsDef={columnsDef}
-        noDataText="No data"
-        loading={loading}
-      />
+      <div className="flex flex-col gap-4">
+        <ScheduledTreasurySpendPrompt agendas={data} agendasLoading={loading} />
+        <MapDataList
+          data={filteredData}
+          columnsDef={columnsDef}
+          noDataText="No data"
+          loading={loading}
+        />
+      </div>
     </SecondaryCard>
   );
 }

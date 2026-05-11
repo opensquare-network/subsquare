@@ -10,6 +10,19 @@ import { upperFirst } from "lodash-es";
 import businessCategory from "next-common/utils/consts/business/category";
 import TreasurySpendsSummary from "next-common/components/summary/treasurySpendsSummary";
 import TreasurySpendsPendingNotice from "next-common/components/treasury/spends/treasurySpendsPendingNotice";
+import { PapiProvider } from "next-common/context/papi";
+import { SelfContainedScheduledTreasurySpendPrompt } from "next-common/components/pages/components/scheduler/scheduledTreasurySpendPrompt";
+
+function SummaryFooter() {
+  return (
+    <div className="flex flex-col gap-2">
+      <TreasurySpendsPendingNotice />
+      <PapiProvider>
+        <SelfContainedScheduledTreasurySpendPrompt />
+      </PapiProvider>
+    </div>
+  );
+}
 
 export default function ProposalsPage({ spends: pagedSpends, chain }) {
   const { items, total, page, pageSize } = pagedSpends;
@@ -25,7 +38,7 @@ export default function ProposalsPage({ spends: pagedSpends, chain }) {
         seoInfo={seoInfo}
         title={category}
         summary={<TreasurySpendsSummary />}
-        summaryFooter={<TreasurySpendsPendingNotice />}
+        summaryFooter={<SummaryFooter />}
       >
         <DropdownUrlFilterProvider
           defaultFilterValues={{ status: "" }}
