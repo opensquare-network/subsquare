@@ -8,11 +8,7 @@ import useSchedulerAgendas from "next-common/hooks/useSchedulerAgendas";
 import { SystemClose } from "@osn/icons/subsquare";
 import { CACHE_KEY } from "next-common/utils/constants";
 import usePromptVisibility from "next-common/hooks/usePromptVisibility";
-
-const ASSET_HUB_GENERAL_INDEX_SYMBOL = {
-  1984: "USDT",
-  1337: "USDC",
-};
+import { ASSET_HUB_GENERAL_INDEX_SYMBOL } from "next-common/asset";
 
 function extractPapiJunctions(interior) {
   if (!interior) {

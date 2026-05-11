@@ -1,11 +1,6 @@
 import { isNil } from "lodash-es";
+import { ASSET_HUB_GENERAL_INDEX_SYMBOL } from "next-common/asset";
 import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
-
-// AssetHub asset generalIndex to symbol mapping
-const ASSET_HUB_GENERAL_INDEX_SYMBOL = {
-  1984: "USDT",
-  1337: "USDC",
-};
 
 const ASSET_HUB_PARACHAIN_ID = "1000";
 

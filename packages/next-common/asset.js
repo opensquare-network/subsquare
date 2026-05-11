@@ -1,0 +1,4 @@
+export const ASSET_HUB_GENERAL_INDEX_SYMBOL = {
+  1984: "USDT",
+  1337: "USDC",
+};
