@@ -15,11 +15,19 @@ const ASSET_HUB_GENERAL_INDEX_SYMBOL = {
 };
 
 function extractPapiJunctions(interior) {
-  if (!interior) return [];
-  if (interior === "Here") return [];
-  if (interior.type === "Here") return [];
+  if (!interior) {
+    return [];
+  }
+  if (interior === "Here") {
+    return [];
+  }
+  if (interior.type === "Here") {
+    return [];
+  }
   const val = interior.value;
-  if (!val) return [];
+  if (!val) {
+    return [];
+  }
   return Array.isArray(val) ? val : [val];
 }
 
@@ -33,7 +41,6 @@ function getAssetInfoFromPapiAssetKind(
   const versionedData = papiAssetKind.value;
   if (!versionedData) return { symbol: chainSymbol, decimals: chainDecimals };
 
-  // V3: asset_id has Concrete/Abstract wrapper; V4+: asset_id is a plain location
   let assetIdLocation = versionedData.asset_id ?? versionedData.assetId;
   if (
     assetIdLocation?.type === "Concrete" ||
@@ -63,7 +70,7 @@ function getAssetInfoFromPapiAssetKind(
 }
 
 function groupSpendsByAsset(spends, chainDecimals, chainSymbol) {
-  const groups = {}; // symbol -> { totalAmount: bigint, decimals }
+  const groups = {};
 
   for (const spend of spends) {
     let symbol, decimals;
@@ -105,7 +112,9 @@ function ScheduledTreasurySpendPromptContent({
     loading,
   } = useScheduledSpends(agendas, agendasLoading);
 
-  if (loading || count === 0) return null;
+  if (loading || count === 0) {
+    return null;
+  }
 
   const groups = groupSpendsByAsset(spends, chainDecimals, chainSymbol);
 
@@ -138,7 +147,9 @@ export default function ScheduledTreasurySpendPrompt({
   cacheKey = CACHE_KEY.scheduledTreasurySpendPromptOnScheduler,
 }) {
   const { visible, handleClose } = usePromptVisibility(cacheKey, true);
-  if (!visible) return null;
+  if (!visible) {
+    return null;
+  }
 
   return (
     <ScheduledTreasurySpendPromptContent
@@ -149,10 +160,6 @@ export default function ScheduledTreasurySpendPrompt({
   );
 }
 
-/**
- * Self-contained variant — fetches scheduler agendas internally.
- * Must be rendered inside a PapiProvider.
- */
 export function SelfContainedScheduledTreasurySpendPrompt({
   cacheKey = CACHE_KEY.scheduledTreasurySpendPromptOnScheduler,
 }) {

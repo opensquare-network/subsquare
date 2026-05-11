@@ -9,11 +9,6 @@ import {
   unifyMetadata,
 } from "@polkadot-api/substrate-bindings";
 
-// ─── Call identification (papi raw decoded format) ───────────────────────────
-// Papi dynamic builder decodes RuntimeCall as:
-//   { type: "PalletName", value: { type: "call_name", value: { ...args } } }
-// Field names in args match the Rust metadata snake_case names.
-
 function isSpendAssetCall(decoded) {
   return decoded?.type === "Treasury" && decoded?.value?.type === "spend";
 }
@@ -42,11 +37,6 @@ function extractSpendLocalInfo(decoded) {
   };
 }
 
-/**
- * Recursively walk a papi-decoded RuntimeCall and collect all treasury spend
- * calls.  Unwraps: utility.batch/batch_all/force_batch, proxy.proxy, sudo.sudo,
- * and all scheduler.schedule* variants (inner call is always the `call` field).
- */
 function collectSpends(decoded, depth = 0) {
   const results = [];
 
@@ -92,8 +82,6 @@ function collectSpends(decoded, depth = 0) {
   return results;
 }
 
-// ─── Metadata + codec cache ───────────────────────────────────────────────────
-
 async function buildCallCodec(client, blockHash) {
   const metadataRaw = await client._request(
     "state_getMetadata",
@@ -105,13 +93,10 @@ async function buildCallCodec(client, blockHash) {
   return dynamicBuilder.buildDefinition(lookup.call);
 }
 
-// ─── Hook ─────────────────────────────────────────────────────────────────────
-
 export default function useScheduledSpends(agendas, agendasLoading) {
   const { api, client, blockHash } = useContextPapi();
 
-  // Cache the call codec keyed by blockHash so it is only built once.
-  const codecCacheRef = useRef(null); // { key: blockHash|null, codec }
+  const codecCacheRef = useRef(null);
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -122,7 +107,6 @@ export default function useScheduledSpends(agendas, agendasLoading) {
     let cancelled = false;
 
     async function process() {
-      // Build (or reuse) the call codec.
       const cacheKey = blockHash ?? null;
       if (!codecCacheRef.current || codecCacheRef.current.key !== cacheKey) {
         const codec = await buildCallCodec(client, blockHash);
@@ -184,9 +168,7 @@ export default function useScheduledSpends(agendas, agendasLoading) {
   }, [agendas, agendasLoading, api, client, blockHash]);
 
   return {
-    /** Full list of extracted treasury spends across all scheduler entries. */
     data,
-    /** Total number of scheduled spends found. */
     count: data.length,
     loading: loading || agendasLoading,
   };
