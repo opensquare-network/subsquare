@@ -1,8 +1,4 @@
-function assert(condition, message) {
-  if (!condition) {
-    throw new Error("BlockPapi: " + message);
-  }
-}
+const BLOCK_QUERY_METHODS = new Set(["getValue", "getValues", "getEntries"]);
 
 class BlockPapi {
   constructor(papi, blockHash) {
@@ -18,20 +14,18 @@ class BlockPapi {
         const newPath = [...target.path, prop];
         const fn = (...args) =>
           Promise.resolve().then(() => {
-            assert(fn.path[0] === "query", "First property must be query");
-            assert(
-              fn.path[fn.path.length - 1] === "getValue",
-              "Last method must be getValue",
-            );
+            const queryMethod = fn.path[fn.path.length - 1];
+            if (
+              fn.path[0] !== "query" ||
+              !BLOCK_QUERY_METHODS.has(queryMethod)
+            ) {
+              throw new Error(
+                `BlockPapi: unsupported call path "${fn.path.join(".")}". ` +
+                  `Expected query.<Pallet>.<Storage>.(getValue|getValues|getEntries)`,
+              );
+            }
             const [section, method] = fn.path.slice(1, -1);
-            // console.log(
-            //   `BlockPapi: Calling papi.query.${section}.${method}.getValue with args:`,
-            //   ...args,
-            //   {
-            //     at: target.blockHash,
-            //   },
-            // );
-            return fn.papi.query[section][method].getValue(...args, {
+            return fn.papi.query[section][method][queryMethod](...args, {
               at: target.blockHash,
             });
           });

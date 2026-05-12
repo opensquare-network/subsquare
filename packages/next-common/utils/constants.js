@@ -135,6 +135,10 @@ export const CACHE_KEY = {
   walletConnectSession: "walletconnect-session",
   totalRequestingAssets: "total-requesting-assets",
   treasurySpendsPendingNotice: "treasury-spends-pending-notice",
+  scheduledTreasurySpendPromptOnScheduler:
+    "scheduled-treasury-spend-prompt-scheduler",
+  scheduledTreasurySpendPromptOnSpendList:
+    "scheduled-treasury-spend-prompt-spend-list",
   dvApplyPromptVisible: "dv-apply-prompt-visible",
   polkadotVault: "polkadot-vault",
   vestingUnlockablePrompt: "vesting-unlockable-prompt",
