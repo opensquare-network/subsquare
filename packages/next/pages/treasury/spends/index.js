@@ -24,9 +24,9 @@ function SummaryFooter() {
           cacheKey={CACHE_KEY.scheduledTreasurySpendPromptOnSpendList}
         >
           <span>
-            ,{" "}
-            <Link className="text-theme500 hover:underline" href="/scheduler">
-              Check here
+            , check{" "}
+            <Link className="underline" href="/scheduler">
+              here
             </Link>
           </span>
         </SelfContainedScheduledTreasurySpendPrompt>
