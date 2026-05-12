@@ -9,6 +9,7 @@ import { SystemClose } from "@osn/icons/subsquare";
 import { CACHE_KEY } from "next-common/utils/constants";
 import usePromptVisibility from "next-common/hooks/usePromptVisibility";
 import { ASSET_HUB_GENERAL_INDEX_SYMBOL } from "next-common/asset";
+import { colorStyle, PromptTypes } from "next-common/components/scrollPrompt";
 
 function extractPapiJunctions(interior) {
   if (!interior) {
@@ -116,7 +117,10 @@ function ScheduledTreasurySpendPromptContent({
   const groups = groupSpendsByAsset(spends, chainDecimals, chainSymbol);
 
   return (
-    <GreyPanel className="px-4 py-2.5 text-textPrimary text14Medium justify-between">
+    <GreyPanel
+      className="px-4 py-2.5 text14Medium justify-between"
+      style={colorStyle[PromptTypes.NEUTRAL]}
+    >
       <div className="flex flex-wrap items-center">
         <div className="flex flex-wrap items-center gap-x-2">
           <span>Scheduled Treasury Spends:</span>
