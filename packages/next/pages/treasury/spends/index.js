@@ -13,6 +13,7 @@ import TreasurySpendsPendingNotice from "next-common/components/treasury/spends/
 import { PapiProvider } from "next-common/context/papi";
 import { SelfContainedScheduledTreasurySpendPrompt } from "next-common/components/pages/components/scheduler/scheduledTreasurySpendPrompt";
 import { CACHE_KEY } from "next-common/utils/constants";
+import Link from "next-common/components/link";
 
 function SummaryFooter() {
   return (
@@ -21,7 +22,14 @@ function SummaryFooter() {
       <PapiProvider>
         <SelfContainedScheduledTreasurySpendPrompt
           cacheKey={CACHE_KEY.scheduledTreasurySpendPromptOnSpendList}
-        />
+        >
+          <span>
+            ,{" "}
+            <Link className="text-theme500 hover:underline" href="/scheduler">
+              Check here
+            </Link>
+          </span>
+        </SelfContainedScheduledTreasurySpendPrompt>
       </PapiProvider>
     </div>
   );

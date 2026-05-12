@@ -100,6 +100,7 @@ function ScheduledTreasurySpendPromptContent({
   agendas,
   agendasLoading,
   onClose,
+  children,
 }) {
   const { decimals: chainDecimals, symbol: chainSymbol } = useChainSettings();
   const {
@@ -116,17 +117,20 @@ function ScheduledTreasurySpendPromptContent({
 
   return (
     <GreyPanel className="px-4 py-2.5 text-textPrimary text14Medium justify-between">
-      <div className="flex flex-wrap items-center gap-x-2">
-        <span>Scheduled Treasury Spends:</span>
-        <span className="font-bold">{count}</span>
-        <span>·</span>
-        {groups.map(({ symbol, totalAmount, decimals }) => (
-          <ValueDisplay
-            key={symbol}
-            value={toPrecision(totalAmount.toString(), decimals)}
-            symbol={symbol}
-          />
-        ))}
+      <div className="flex flex-wrap items-center">
+        <div className="flex flex-wrap items-center gap-x-2">
+          <span>Scheduled Treasury Spends:</span>
+          <span className="font-bold">{count}</span>
+          <span>·</span>
+          {groups.map(({ symbol, totalAmount, decimals }) => (
+            <ValueDisplay
+              key={symbol}
+              value={toPrecision(totalAmount.toString(), decimals)}
+              symbol={symbol}
+            />
+          ))}
+        </div>
+        {children}
       </div>
       <SystemClose
         className="w-5 h-5 flex-shrink-0 ml-2"
@@ -141,6 +145,7 @@ export default function ScheduledTreasurySpendPrompt({
   agendas,
   agendasLoading,
   cacheKey = CACHE_KEY.scheduledTreasurySpendPromptOnScheduler,
+  children,
 }) {
   const { visible, handleClose } = usePromptVisibility(cacheKey, true);
   if (!visible) {
@@ -152,12 +157,15 @@ export default function ScheduledTreasurySpendPrompt({
       agendas={agendas}
       agendasLoading={agendasLoading}
       onClose={handleClose}
-    />
+    >
+      {children}
+    </ScheduledTreasurySpendPromptContent>
   );
 }
 
 export function SelfContainedScheduledTreasurySpendPrompt({
   cacheKey = CACHE_KEY.scheduledTreasurySpendPromptOnScheduler,
+  children,
 }) {
   const { data: agendas, loading: agendasLoading } = useSchedulerAgendas();
   return (
@@ -165,6 +173,8 @@ export function SelfContainedScheduledTreasurySpendPrompt({
       agendas={agendas}
       agendasLoading={agendasLoading}
       cacheKey={cacheKey}
-    />
+    >
+      {children}
+    </ScheduledTreasurySpendPrompt>
   );
 }
