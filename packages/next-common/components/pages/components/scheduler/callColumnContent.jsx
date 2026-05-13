@@ -1,21 +1,17 @@
-import usePreimage from "next-common/hooks/usePreimage";
 import LoadableContent from "next-common/components/common/loadableContent";
-import useCallFromHex from "next-common/utils/hooks/useCallFromHex";
 import { InfoDocs } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import {
-  convertProposalForJsonView,
-  convertProposalForTableView,
-} from "next-common/components/proposal";
-import { useChain } from "next-common/context/chain";
-import RawCallProvider from "next-common/context/call/raw";
-import normalizeCall from "next-common/components/democracy/metadata/normalize";
 import { TagWrapper } from "next-common/components/comment/voteTag/referendaVoteTag";
 import { ThemedTag } from "next-common/components/tags/state/styled";
 import Tooltip from "next-common/components/tooltip";
-import { u8aToHex } from "@polkadot/util";
+import { useContextPapi } from "next-common/context/papi";
+import { useAsync } from "react-use";
+import { decodeCallTree } from "next-common/utils/callDecoder/decoder.mjs";
+import PapiCallTreeView from "next-common/components/papiCallTreeView";
+import { getCachedMetadata } from "next-common/utils/papi/getCachedMetadata";
+import { convertPapiCallTreeToTableView } from "next-common/utils/papi/convertPapiCallTreeToTableView";
 
 const CallDetailPopup = dynamicPopup(() =>
   import("next-common/components/callDetailPopup"),
@@ -23,53 +19,93 @@ const CallDetailPopup = dynamicPopup(() =>
 
 export default function CallColumnContent({ call }) {
   if (call?.type === "Inline") {
-    return (
-      <InlineCallColumnContent hash={call?.value && u8aToHex(call?.value)} />
-    );
+    return <InlineCallColumnContent callValue={call?.value} />;
   } else if (call?.type === "Lookup") {
-    return <PreimageColumnContent hash={call?.value?.hash} />;
+    return (
+      <PreimageColumnContent hash={call?.value?.hash} len={call?.value?.len} />
+    );
   } else {
     return null;
   }
 }
 
-function InlineCallColumnContent({ hash }) {
-  const { call: callDetail, isLoading } = useCallFromHex(hash);
+function InlineCallColumnContent({ callValue }) {
+  const { client } = useContextPapi();
+
+  const { value: callTree, loading } = useAsync(async () => {
+    if (!callValue || !client) return null;
+    const metadata = await getCachedMetadata(client);
+    return decodeCallTree(callValue, metadata);
+  }, [callValue, client]);
 
   return (
-    <LoadableContent size={20} isLoading={isLoading}>
-      <CallImpl call={callDetail} />
+    <LoadableContent size={20} isLoading={loading}>
+      <CallImpl callTree={callTree} />
     </LoadableContent>
   );
 }
 
-function PreimageColumnContent({ hash }) {
-  const [preimage, isStatusLoaded, isBytesLoaded] = usePreimage(hash);
+async function getPreimageBytes(papi, hash, len) {
+  let bytes = null;
+  for (const key of [[hash, len], hash]) {
+    try {
+      bytes = await papi.query.Preimage.PreimageFor.getValue(key);
+      if (bytes) {
+        break;
+      }
+    } catch {
+      // ignore
+    }
+  }
+  return bytes;
+}
 
-  const isLoading = !preimage || !isStatusLoaded || !isBytesLoaded;
+function usePreimageCallTree(hash, len) {
+  const { api: papi, client } = useContextPapi();
+  return useAsync(async () => {
+    if (!hash || !papi || !client) {
+      return null;
+    }
 
+    const bytes = await getPreimageBytes(papi, hash, len);
+    if (!bytes) {
+      return null;
+    }
+
+    const metadata = await getCachedMetadata(client);
+    return decodeCallTree(bytes, metadata);
+  }, [hash, len, papi, client]);
+}
+
+function PreimageColumnContent({ hash, len }) {
+  const { value: callTree, loading } = usePreimageCallTree(hash, len);
   return (
-    <LoadableContent size={20} isLoading={isLoading}>
-      <CallImpl call={preimage?.proposal} />
+    <LoadableContent size={20} isLoading={loading}>
+      <CallImpl callTree={callTree} />
     </LoadableContent>
   );
 }
 
-function CallImpl({ call }) {
-  const chain = useChain();
+function CallImpl({ callTree }) {
   const [detailPopupVisible, setDetailPopupVisible] = useState(false);
 
-  const jsonCall = call ? normalizeCall(call) : null;
+  const PapiTree = useCallback(
+    () => <PapiCallTreeView proposal={callTree} />,
+    [callTree],
+  );
 
-  const tableViewData = convertProposalForTableView(jsonCall, chain);
-  const jsonViewData = convertProposalForJsonView(jsonCall, chain);
+  if (!callTree) {
+    return null;
+  }
+
+  const { section, method } = callTree;
 
   return (
-    <RawCallProvider call={call} isLoading={false}>
+    <>
       <TagWrapper className="flex items-center gap-x-1 justify-end">
         <span className="inline-flex gap-x-1">
-          <ThemedTag>{call?.section}</ThemedTag>
-          <ThemedTag>{call?.method}</ThemedTag>
+          <ThemedTag>{section}</ThemedTag>
+          <ThemedTag>{method}</ThemedTag>
         </span>
 
         <Tooltip content="Call Detail">
@@ -87,12 +123,12 @@ function CallImpl({ call }) {
 
       {detailPopupVisible && (
         <CallDetailPopup
-          jsonViewData={jsonViewData}
-          tableViewData={tableViewData}
-          hasTreeViewData
+          customCallTree={PapiTree}
+          tableViewData={convertPapiCallTreeToTableView(callTree)}
+          jsonViewData={callTree}
           setShow={setDetailPopupVisible}
         />
       )}
-    </RawCallProvider>
+    </>
   );
 }
