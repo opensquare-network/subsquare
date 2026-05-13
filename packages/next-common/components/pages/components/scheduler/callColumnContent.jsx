@@ -50,9 +50,11 @@ async function getPreimageBytes(papi, hash, len) {
   for (const key of [[hash, len], hash]) {
     try {
       bytes = await papi.query.Preimage.PreimageFor.getValue(key);
-      if (bytes) break;
+      if (bytes) {
+        break;
+      }
     } catch {
-      // try next key format
+      // ignore
     }
   }
   return bytes;
@@ -92,7 +94,9 @@ function CallImpl({ callTree }) {
     [callTree],
   );
 
-  if (!callTree) return null;
+  if (!callTree) {
+    return null;
+  }
 
   const { section, method } = callTree;
 
