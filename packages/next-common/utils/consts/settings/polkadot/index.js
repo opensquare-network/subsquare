@@ -52,11 +52,11 @@ const polkadot = {
   subsquareGraphql: {
     domain: "polkadot-gh-api",
     coretime: true,
-    intime: {
-      preimage: true,
-      proxy: true,
-      referendaVotes: true,
-    },
+    // intime: {
+    //   preimage: true,
+    //   proxy: true,
+    //   referendaVotes: true,
+    // },
   },
   hasMultisig: true,
   multisigApiPrefix: "ahp-gh-api",
