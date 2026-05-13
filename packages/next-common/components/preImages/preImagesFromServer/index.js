@@ -16,31 +16,9 @@ import { useContextPapi } from "next-common/context/papi";
 import { useContextApi } from "next-common/context/api";
 import { parsePreImageCall } from "next-common/components/proposal/preImage";
 import { useChainSettings } from "next-common/context/chain";
-import {
-  decodeCallTreeWithInfo,
-  getMetadata,
-} from "next-common/utils/callDecoder/decoder.mjs";
+import { decodeCallTreeWithInfo } from "next-common/utils/callDecoder/decoder.mjs";
+import { getCachedMetadata as getPapiMetadata } from "next-common/utils/papi/getCachedMetadata";
 import { Binary } from "polkadot-api";
-
-const metadataCache = new WeakMap();
-
-async function getPapiMetadata(client) {
-  if (!client) {
-    return null;
-  }
-
-  let metadataPromise = metadataCache.get(client);
-  if (!metadataPromise) {
-    metadataPromise = getMetadata(client).catch((error) => {
-      metadataCache.delete(client);
-      throw error;
-    });
-
-    metadataCache.set(client, metadataPromise);
-  }
-
-  return metadataPromise;
-}
 
 function addLengthWarning(item, proposal, callLength) {
   const storeLength = item.requested?.maybeLen || item.unrequested?.len;

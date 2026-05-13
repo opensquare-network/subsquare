@@ -8,31 +8,9 @@ import {
   objectSpread,
   u8aToHex,
 } from "@polkadot/util";
-import {
-  decodeCallTree,
-  getMetadata,
-} from "next-common/utils/callDecoder/decoder.mjs";
+import { decodeCallTree } from "next-common/utils/callDecoder/decoder.mjs";
 import { isNil } from "lodash-es";
-
-const metadataCache = new WeakMap();
-
-async function getPapiMetadata(client) {
-  if (!client) {
-    return null;
-  }
-
-  let metadataPromise = metadataCache.get(client);
-  if (!metadataPromise) {
-    metadataPromise = getMetadata(client).catch((error) => {
-      metadataCache.delete(client);
-      throw error;
-    });
-
-    metadataCache.set(client, metadataPromise);
-  }
-
-  return metadataPromise;
-}
+import { getCachedMetadata as getPapiMetadata } from "next-common/utils/papi/getCachedMetadata";
 
 function createInlineHash(hashInlineData, inlineData) {
   if (hashInlineData) {
