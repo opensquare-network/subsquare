@@ -45,24 +45,27 @@ function InlineCallColumnContent({ callValue }) {
   );
 }
 
-function PreimageColumnContent({ hash, len }) {
-  const { api: papi, client } = useContextPapi();
+async function getPreimageBytes(papi, hash, len) {
+  let bytes = null;
+  for (const key of [[hash, len], hash]) {
+    try {
+      bytes = await papi.query.Preimage.PreimageFor.getValue(key);
+      if (bytes) break;
+    } catch {
+      // try next key format
+    }
+  }
+  return bytes;
+}
 
-  const { value: callTree, loading } = useAsync(async () => {
+function usePreimageCallTree(hash, len) {
+  const { api: papi, client } = useContextPapi();
+  return useAsync(async () => {
     if (!hash || !papi || !client) {
       return null;
     }
 
-    let bytes = null;
-    for (const key of [[hash, len], hash]) {
-      try {
-        bytes = await papi.query.Preimage.PreimageFor.getValue(key);
-        if (bytes) break;
-      } catch {
-        // try next key format
-      }
-    }
-
+    const bytes = await getPreimageBytes(papi, hash, len);
     if (!bytes) {
       return null;
     }
@@ -70,7 +73,10 @@ function PreimageColumnContent({ hash, len }) {
     const metadata = await getCachedMetadata(client);
     return decodeCallTree(bytes, metadata);
   }, [hash, len, papi, client]);
+}
 
+function PreimageColumnContent({ hash, len }) {
+  const { value: callTree, loading } = usePreimageCallTree(hash, len);
   return (
     <LoadableContent size={20} isLoading={loading}>
       <CallImpl callTree={callTree} />
