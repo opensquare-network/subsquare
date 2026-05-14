@@ -30,6 +30,7 @@ const zkverify = {
   referendaActions: {
     startFrom: 0,
   },
+  sima: true,
   ...zkverifyThemeVars,
 };
 
