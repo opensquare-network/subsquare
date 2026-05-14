@@ -20,7 +20,7 @@ const ProjectLogoLitentryLight = dynamic(() =>
 );
 
 const DEFAULT_LITENTRY_NODES = [
-   {
+  {
     name: "Heima",
     url: "wss://rpc.heima-parachain.heima.network/",
   },
@@ -96,7 +96,7 @@ const litentry = {
     vesting: true,
   }),
   integrations: {
-    statescan: { domain: "heima" },
+    statescan: { domain: "litentry" },
   },
   cssVarsLight: {
     theme100: "rgba(104,192,102,0.10)",
