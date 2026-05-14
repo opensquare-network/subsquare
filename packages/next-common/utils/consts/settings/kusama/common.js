@@ -41,6 +41,7 @@ export const kusamaAssethubMigration = {
   timestamp: 1759844124000,
   subscanAssethubDomain: subscanKusamaAssethubDomain,
   statescanAssethubDomain: statescanKusamaAssethubDomain,
+  statescanAssethubApiDomain: "statemine",
   relayBlockTime: 6000,
   graphqlApiSubDomain: "statemine-gh-api",
 };

@@ -87,7 +87,7 @@ const interlay = {
     council: false,
   }),
   integrations: {
-    statescan: true,
+    // statescan: true,
   },
   cssVarsLight: {
     theme100: "rgba(7,90,188,0.10)",
