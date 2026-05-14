@@ -64,11 +64,7 @@ function KintsugiAccountProvider({ address, children }) {
   );
 }
 
-export function useUserAccount() {
-  return useContext(Context);
-}
-
 export function useUserAccountInfo() {
-  const data = useUserAccount();
+  const data = useContext(Context);
   return { info: data?.info, isLoading: data?.isLoading };
 }
