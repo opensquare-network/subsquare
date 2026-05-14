@@ -37,34 +37,33 @@ export default function UserAccountProvider({ children, address = "" }) {
 }
 
 function AccountProvider({ address, children }) {
-  const data = useSubAccount(address);
+  const { data, isLoading } = useSubAccount(address);
   const existentialDeposit = useQueryExistentialDeposit();
   const info = useMemo(() => {
-    if (!data?.data) {
+    if (!data) {
       return null;
     }
-    return extractAccountInfo(data?.data, existentialDeposit);
+    return extractAccountInfo(data, existentialDeposit);
   }, [data, existentialDeposit]);
   return (
-    <Context.Provider value={{ ...data, info }}>{children}</Context.Provider>
+    <Context.Provider value={{ isLoading, info }}>{children}</Context.Provider>
   );
 }
 
 function KintsugiAccountProvider({ address, children }) {
-  const data = useSubKintsugiAccount(address);
+  const { data, isLoading } = useSubKintsugiAccount(address);
   const existentialDeposit = useQueryExistentialDeposit();
   const info = useMemo(() => {
-    if (!data?.data) {
+    if (!data) {
       return null;
     }
-    return extractKintsugiAccountInfo(data?.data, existentialDeposit);
+    return extractKintsugiAccountInfo(data, existentialDeposit);
   }, [data, existentialDeposit]);
   return (
-    <Context.Provider value={{ ...data, info }}>{children}</Context.Provider>
+    <Context.Provider value={{ isLoading, info }}>{children}</Context.Provider>
   );
 }
 
 export function useUserAccountInfo() {
-  const data = useContext(Context);
-  return { info: data?.info, isLoading: data?.isLoading };
+  return useContext(Context);
 }
