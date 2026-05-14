@@ -8,9 +8,9 @@ import { useState } from "react";
 import Duration from "next-common/components/duration";
 import { getStatescanDomain } from "next-common/utils/statescan";
 
-function EventID({ blockHeight, eventIndex }) {
+function EventID({ blockHeight, eventIndex, statescanDomain }) {
   const chain = useChain();
-  const domain = getStatescanDomain(chain);
+  const domain = statescanDomain || getStatescanDomain(chain);
 
   return (
     <a
@@ -24,9 +24,9 @@ function EventID({ blockHeight, eventIndex }) {
   );
 }
 
-function ExtrinsicID({ blockHeight, extrinsicIndex }) {
+function ExtrinsicID({ blockHeight, extrinsicIndex, statescanDomain }) {
   const chain = useChain();
-  const domain = getStatescanDomain(chain);
+  const domain = statescanDomain || getStatescanDomain(chain);
 
   if (extrinsicIndex === undefined) {
     return null;
@@ -44,7 +44,7 @@ function ExtrinsicID({ blockHeight, extrinsicIndex }) {
   );
 }
 
-export default function TransferList({ isLoading, items }) {
+export default function TransferList({ isLoading, items, statescanDomain }) {
   const { symbol, decimals } = useChainSettings();
   const [timeType, setTimeType] = useState("time");
 
@@ -88,8 +88,16 @@ export default function TransferList({ isLoading, items }) {
     const eventId = `${item.indexer.blockHeight}-${item.indexer.eventIndex}`;
 
     const row = [
-      <EventID key="eventId" {...item.indexer} />,
-      <ExtrinsicID key="eventId" {...item.indexer} />,
+      <EventID
+        key="eventId"
+        {...item.indexer}
+        statescanDomain={statescanDomain}
+      />,
+      <ExtrinsicID
+        key="eventId"
+        {...item.indexer}
+        statescanDomain={statescanDomain}
+      />,
       timeType === "time" ? (
         dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss")
       ) : (
