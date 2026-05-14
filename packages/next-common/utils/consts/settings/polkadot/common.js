@@ -29,7 +29,7 @@ export const polkadotAssethubMigration = {
   timestamp: 1762239840000,
   subscanAssethubDomain: subscanPolkadotAssethubDomain,
   statescanAssethubDomain: statescanPolkadotAssethubDomain,
-  statescanApiDomain: "ahp",
+  statescanAssethubApiDomain: "ahp",
   relayBlockTime: 6000,
   graphqlApiSubDomain: "ahp-gh-api",
 };

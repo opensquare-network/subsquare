@@ -11,7 +11,7 @@ import {
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useMountedState } from "react-use";
-import { getStatescanDomain } from "next-common/utils/statescan";
+import { getStatescanApiDomain } from "next-common/utils/statescan";
 import Tabs from "next-common/components/tabs";
 import Loading from "next-common/components/loading";
 
@@ -39,7 +39,7 @@ function RelayTransferContent({ onTotalChange }) {
   const transfers = useSelector(profileTransfersSelector);
   const [page, setPage] = useState(1);
   const isMounted = useMountedState();
-  const domain = getStatescanDomain(chain);
+  const domain = getStatescanApiDomain(chain);
 
   useEffect(() => {
     onTotalChange?.(transfers?.total ?? null);
@@ -101,7 +101,7 @@ function AssetHubTransferContent({ assethubMigration, onTotalChange }) {
       return;
     }
 
-    const apiDomain = assethubMigration.statescanApiDomain;
+    const apiDomain = assethubMigration.statescanAssethubApiDomain;
     fetch(
       `https://${apiDomain}-api.statescan.io/accounts/${address}/transfers?page=${
         page - 1
@@ -148,7 +148,7 @@ export default function ProfileTransfers() {
   const [relayTotal, setRelayTotal] = useState(null);
   const [assethubTotal, setAssethubTotal] = useState(null);
 
-  if (!assethubMigration?.statescanApiDomain) {
+  if (!assethubMigration?.statescanAssethubApiDomain) {
     return (
       <SecondaryCard>
         <RelayTransferContent />

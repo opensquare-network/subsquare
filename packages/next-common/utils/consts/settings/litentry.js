@@ -96,7 +96,7 @@ const litentry = {
     vesting: true,
   }),
   integrations: {
-    statescan: { domain: "litentry" },
+    statescan: { domain: "heima", apiDomain: "litentry" },
   },
   cssVarsLight: {
     theme100: "rgba(104,192,102,0.10)",
