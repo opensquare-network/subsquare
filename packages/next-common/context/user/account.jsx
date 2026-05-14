@@ -25,21 +25,43 @@ export default function UserAccountProvider({ children, address = "" }) {
     );
   }
 
-  const Provider = isKintsugiChain(chain)
-    ? KintsugiAccountProvider
-    : AccountProvider;
+  if (isKintsugiChain(chain)) {
+    return (
+      <KintsugiAccountProvider address={realAddress}>
+        {children}
+      </KintsugiAccountProvider>
+    );
+  }
 
-  return <Provider address={realAddress}>{children}</Provider>;
+  return <AccountProvider address={realAddress}>{children}</AccountProvider>;
 }
 
 function AccountProvider({ address, children }) {
   const data = useSubAccount(address);
-  return <Context.Provider value={data}>{children}</Context.Provider>;
+  const existentialDeposit = useQueryExistentialDeposit();
+  const info = useMemo(() => {
+    if (!data?.data) {
+      return null;
+    }
+    return extractAccountInfo(data?.data, existentialDeposit);
+  }, [data, existentialDeposit]);
+  return (
+    <Context.Provider value={{ ...data, info }}>{children}</Context.Provider>
+  );
 }
 
 function KintsugiAccountProvider({ address, children }) {
   const data = useSubKintsugiAccount(address);
-  return <Context.Provider value={data}>{children}</Context.Provider>;
+  const existentialDeposit = useQueryExistentialDeposit();
+  const info = useMemo(() => {
+    if (!data?.data) {
+      return null;
+    }
+    return extractKintsugiAccountInfo(data?.data, existentialDeposit);
+  }, [data, existentialDeposit]);
+  return (
+    <Context.Provider value={{ ...data, info }}>{children}</Context.Provider>
+  );
 }
 
 export function useUserAccount() {
@@ -47,21 +69,6 @@ export function useUserAccount() {
 }
 
 export function useUserAccountInfo() {
-  const chain = useChain();
-  const existentialDeposit = useQueryExistentialDeposit();
   const data = useUserAccount();
-
-  const info = useMemo(() => {
-    if (!data?.data) {
-      return null;
-    }
-
-    const extractFn = isKintsugiChain(chain)
-      ? extractKintsugiAccountInfo
-      : extractAccountInfo;
-
-    return extractFn(data?.data, existentialDeposit);
-  }, [chain, data, existentialDeposit]);
-
-  return { info, isLoading: data?.isLoading };
+  return { info: data?.info, isLoading: data?.isLoading };
 }

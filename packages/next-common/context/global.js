@@ -10,7 +10,7 @@ import ApiProvider from "next-common/context/api";
 import { SignetContextProvider } from "./signet";
 import WagmiProvider from "./wagmi";
 import ReactQueryClientProvider from "./reactQuery";
-import UserAccountProvider from "./user/account";
+// import UserAccountProvider from "./user/account";
 import PageLoadingProvider from "./pageLoading";
 import WalletConnectProvider from "./walletconnect";
 import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
@@ -52,11 +52,11 @@ export default function GlobalProvider({
                             >
                               <PolkadotVaultProvider>
                                 <WalletConnectProvider>
-                                  <UserAccountProvider>
-                                    <SignetContextProvider>
-                                      {children}
-                                    </SignetContextProvider>
-                                  </UserAccountProvider>
+                                  {/* <UserAccountProvider> */}
+                                  <SignetContextProvider>
+                                    {children}
+                                  </SignetContextProvider>
+                                  {/* </UserAccountProvider> */}
                                 </WalletConnectProvider>
                               </PolkadotVaultProvider>
                             </ConnectedAccountProvider>

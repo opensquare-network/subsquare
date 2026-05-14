@@ -13,6 +13,7 @@ import AvatarPermissionsProvider from "./header/context/avatarPermissionsContext
 import ProfileUserInfoProvider from "./header/context/profileUserInfoContext";
 import ProfileMultisigsActiveProvider from "next-common/components/profile/multisigs/context/profileMultisigsActiveContext";
 import NoData from "../noData";
+import UserAccountProvider from "next-common/context/user/account";
 
 function ProfilePageImpl() {
   useFetchProfileData();
@@ -44,8 +45,10 @@ export default function ProfilePage() {
     dispatch(setProfileIdentityTimeline(null));
   }, [dispatch, address]);
   return (
-    <ProfileMultisigsActiveProvider>
-      <ProfilePageImpl />
-    </ProfileMultisigsActiveProvider>
+    <UserAccountProvider>
+      <ProfileMultisigsActiveProvider>
+        <ProfilePageImpl />
+      </ProfileMultisigsActiveProvider>
+    </UserAccountProvider>
   );
 }
