@@ -148,7 +148,7 @@ export default function ProfileTransfers() {
   const [relayTotal, setRelayTotal] = useState(null);
   const [assethubTotal, setAssethubTotal] = useState(null);
 
-  if (!assethubMigration) {
+  if (!assethubMigration?.statescanApiDomain) {
     return (
       <SecondaryCard>
         <RelayTransferContent />
