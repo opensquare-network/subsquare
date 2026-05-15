@@ -15,6 +15,7 @@ import { getStatescanApiDomain } from "next-common/utils/statescan";
 import Tabs from "next-common/components/tabs";
 import Loading from "next-common/components/loading";
 import AssetsTransfersHistory from "next-common/components/assethubMigrationAssets/transferHistory/index";
+import ForeignAssetsTransfersTable from "next-common/components/assethubMigrationAssets/foreignAssets/transfers";
 import {
   AssetHubTabsProvider,
   useTotalCounts,
@@ -170,8 +171,28 @@ function AssetsContent({ onTotalChange }) {
   );
 }
 
+function ForeignAssetsContentInner({ onTotalChange }) {
+  const address = useProfileAddress();
+  const [totalCounts] = useTotalCounts();
+
+  useEffect(() => {
+    onTotalChange?.(totalCounts.transfers || null);
+  }, [totalCounts.transfers, onTotalChange]);
+
+  return <ForeignAssetsTransfersTable address={address} />;
+}
+
+function ForeignAssetsContent({ onTotalChange }) {
+  return (
+    <AssetHubTabsProvider>
+      <ForeignAssetsContentInner onTotalChange={onTotalChange} />
+    </AssetHubTabsProvider>
+  );
+}
+
 export default function ProfileTransfers() {
-  const { assethubMigration } = useChainSettings();
+  const { assethubMigration, supportForeignAssets, symbol } =
+    useChainSettings();
   const hasAssethub = !!assethubMigration?.statescanAssethubApiDomain;
   const [activeTab, setActiveTab] = useState(
     hasAssethub ? "assethub" : "relay",
@@ -179,6 +200,7 @@ export default function ProfileTransfers() {
   const [relayTotal, setRelayTotal] = useState(null);
   const [assethubTotal, setAssethubTotal] = useState(null);
   const [assetsTotal, setAssetsTotal] = useState(null);
+  const [foreignAssetsTotal, setForeignAssetsTotal] = useState(null);
 
   const tabs = [
     ...(hasAssethub
@@ -188,7 +210,7 @@ export default function ProfileTransfers() {
             label({ active }) {
               return (
                 <TabLabel active={active} count={assethubTotal}>
-                  AssetHub
+                  {symbol}
                 </TabLabel>
               );
             },
@@ -208,7 +230,7 @@ export default function ProfileTransfers() {
       label({ active }) {
         return (
           <TabLabel active={active} count={relayTotal}>
-            Relay
+            {symbol} on Relay
           </TabLabel>
         );
       },
@@ -229,6 +251,23 @@ export default function ProfileTransfers() {
       },
       content: <AssetsContent onTotalChange={setAssetsTotal} />,
     },
+    ...(supportForeignAssets
+      ? [
+          {
+            value: "foreignAssets",
+            label({ active }) {
+              return (
+                <TabLabel active={active} count={foreignAssetsTotal}>
+                  Foreign Assets
+                </TabLabel>
+              );
+            },
+            content: (
+              <ForeignAssetsContent onTotalChange={setForeignAssetsTotal} />
+            ),
+          },
+        ]
+      : []),
   ];
 
   return (
