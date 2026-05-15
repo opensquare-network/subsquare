@@ -212,93 +212,87 @@ export default function ProfileTransfers() {
     labelNativeTransfersOnRelay = `${symbol} on Relay`;
   }
 
-  const tabs = [
-    ...(hasStatescanAssethubApiDomain
-      ? [
-          {
-            value: "assethub",
-            label({ active }) {
-              return (
-                <TabLabel
-                  active={active}
-                  count={assethubTotal}
-                  tooltip={`${symbol} transfers on AssetHub`}
-                >
-                  {labelNativeTransfersOnAssetHub}
-                </TabLabel>
-              );
-            },
-            content: (
-              <SecondaryCard>
-                <AssetHubTransferContent
-                  assethubMigration={assethubMigration}
-                  onTotalChange={setAssethubTotal}
-                />
-              </SecondaryCard>
-            ),
-          },
-        ]
-      : []),
-    {
-      value: "relay",
-      label({ active }) {
-        return (
-          <TabLabel
-            active={active}
-            count={relayTotal}
-            tooltip={`${symbol} transfers on Relay chain`}
-          >
-            {labelNativeTransfersOnRelay}
-          </TabLabel>
-        );
-      },
-      content: (
-        <SecondaryCard>
-          <RelayTransferContent onTotalChange={setRelayTotal} />
-        </SecondaryCard>
-      ),
+  const nativeTransfersOnRelayTabDef = {
+    value: "relay",
+    label({ active }) {
+      return (
+        <TabLabel
+          active={active}
+          count={relayTotal}
+          tooltip={`${symbol} transfers on Relay chain`}
+        >
+          {labelNativeTransfersOnRelay}
+        </TabLabel>
+      );
     },
-    ...(hasAssetHub
-      ? [
-          {
-            value: "assets",
-            label({ active }) {
-              return (
-                <TabLabel
-                  active={active}
-                  count={assetsTotal}
-                  tooltip={"Assets transfers on AssetHub"}
-                >
-                  Assets
-                </TabLabel>
-              );
-            },
-            content: <AssetsContent onTotalChange={setAssetsTotal} />,
-          },
-        ]
-      : []),
-    ...(hasAssetHub && supportForeignAssets
-      ? [
-          {
-            value: "foreignAssets",
-            label({ active }) {
-              return (
-                <TabLabel
-                  active={active}
-                  count={foreignAssetsTotal}
-                  tooltip={"Foreign assets transfers on AssetHub"}
-                >
-                  Foreign Assets
-                </TabLabel>
-              );
-            },
-            content: (
-              <ForeignAssetsContent onTotalChange={setForeignAssetsTotal} />
-            ),
-          },
-        ]
-      : []),
-  ];
+    content: (
+      <SecondaryCard>
+        <RelayTransferContent onTotalChange={setRelayTotal} />
+      </SecondaryCard>
+    ),
+  };
+
+  const nativeTransfersOnAssethubTabDef = {
+    value: "assethub",
+    label({ active }) {
+      return (
+        <TabLabel
+          active={active}
+          count={assethubTotal}
+          tooltip={`${symbol} transfers on AssetHub`}
+        >
+          {labelNativeTransfersOnAssetHub}
+        </TabLabel>
+      );
+    },
+    content: (
+      <SecondaryCard>
+        <AssetHubTransferContent
+          assethubMigration={assethubMigration}
+          onTotalChange={setAssethubTotal}
+        />
+      </SecondaryCard>
+    ),
+  };
+
+  const assetTransfersTabDef = {
+    value: "assets",
+    label({ active }) {
+      return (
+        <TabLabel
+          active={active}
+          count={assetsTotal}
+          tooltip={"Assets transfers on AssetHub"}
+        >
+          Assets
+        </TabLabel>
+      );
+    },
+    content: <AssetsContent onTotalChange={setAssetsTotal} />,
+  };
+
+  const foreignAssetsTransfersTabDef = {
+    value: "foreignAssets",
+    label({ active }) {
+      return (
+        <TabLabel
+          active={active}
+          count={foreignAssetsTotal}
+          tooltip={"Foreign assets transfers on AssetHub"}
+        >
+          Foreign Assets
+        </TabLabel>
+      );
+    },
+    content: <ForeignAssetsContent onTotalChange={setForeignAssetsTotal} />,
+  };
+
+  const tabs = [
+    hasStatescanAssethubApiDomain && nativeTransfersOnAssethubTabDef,
+    nativeTransfersOnRelayTabDef,
+    hasAssetHub && assetTransfersTabDef,
+    hasAssetHub && supportForeignAssets && foreignAssetsTransfersTabDef,
+  ].filter(Boolean);
 
   if (tabs.length === 1) {
     return tabs[0].content;
