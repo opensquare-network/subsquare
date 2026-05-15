@@ -104,7 +104,7 @@ export default function useAllVestingData() {
     }
 
     const unsub = api.query.Vesting.Vesting.watchEntries().subscribe(
-      async (item) => {
+      async ({ value: item }) => {
         const { entries, deltas } = item;
         if (isNil(deltas)) {
           return;

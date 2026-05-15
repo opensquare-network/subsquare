@@ -13,7 +13,7 @@ export default function useSubAddressBalanceWithPapi(address) {
     }
 
     const sub = papi.query.System.Account.watchValue(address).subscribe(
-      (account) => {
+      ({ value: account }) => {
         const balance = new BigNumber(account?.data?.free || 0)
           .plus(account?.data?.reserved || 0)
           .toString();

@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { isNil } from "lodash-es";
-import {
-  useTreasuryPapiPallet,
-} from "next-common/context/treasury";
+import { useTreasuryPapiPallet } from "next-common/context/treasury";
 import { useContextPapiApi } from "next-common/context/papi";
 
 export default function useSubTreasurySpend(index) {
@@ -18,7 +16,7 @@ export default function useSubTreasurySpend(index) {
 
     setLoading(true);
     const sub = papi.query[treasuryPallet].Spends.watchValue(index).subscribe(
-      (value) => {
+      ({ value }) => {
         setSpend(value ?? null);
         setLoading(false);
       },

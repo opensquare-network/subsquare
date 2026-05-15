@@ -15,7 +15,7 @@ export function useChildBountyStatus(parentBountyId, childBountyId) {
     const sub = papi.query.ChildBounties.ChildBounties.watchValue(
       parentBountyId,
       childBountyId,
-    ).subscribe((value) => {
+    ).subscribe(({ value }) => {
       setResult(value ?? null);
       setLoading(false);
     });
