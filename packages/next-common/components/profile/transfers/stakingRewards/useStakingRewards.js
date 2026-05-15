@@ -4,7 +4,7 @@ import { useChainSettings } from "next-common/context/chain";
 import { defaultPageSize } from "next-common/utils/constants";
 
 const stakingRewardsQuery = gql`
-  query GetAccountTabStakingRewards(
+  query GetAccountStakingRewards(
     $limit: Int!
     $offset: Int!
     $address: String
