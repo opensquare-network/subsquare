@@ -20,17 +20,19 @@ import {
   AssetHubTabsProvider,
   useTotalCounts,
 } from "next-common/components/assethubMigrationAssets/context/assetHubTabsProvider";
+import Tooltip from "next-common/components/tooltip";
+import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated";
 
 const DEFAULT_PAGE_SIZE = 25;
 
-function TabLabel({ active, children, count }) {
+function TabLabel({ active, children, count, tooltip }) {
   return (
     <span
       className={`cursor-pointer font-bold text-[16px] leading-6 ${
         active ? "text-textPrimary" : "text-textTertiary"
       }`}
     >
-      {children}
+      <Tooltip content={tooltip}>{children}</Tooltip>
       <span className="ml-1 font-medium text-[16px] leading-6 text-textTertiary">
         {count == null ? <Loading size={16} /> : count}
       </span>
@@ -153,7 +155,7 @@ function AssetsContentInner({ onTotalChange }) {
   const [totalCounts] = useTotalCounts();
 
   useEffect(() => {
-    onTotalChange?.(totalCounts.transfers || null);
+    onTotalChange?.(totalCounts.transfers ?? null);
   }, [totalCounts.transfers, onTotalChange]);
 
   return (
@@ -176,7 +178,7 @@ function ForeignAssetsContentInner({ onTotalChange }) {
   const [totalCounts] = useTotalCounts();
 
   useEffect(() => {
-    onTotalChange?.(totalCounts.transfers || null);
+    onTotalChange?.(totalCounts.transfers ?? null);
   }, [totalCounts.transfers, onTotalChange]);
 
   return <ForeignAssetsTransfersTable address={address} />;
@@ -193,24 +195,36 @@ function ForeignAssetsContent({ onTotalChange }) {
 export default function ProfileTransfers() {
   const { assethubMigration, supportForeignAssets, symbol } =
     useChainSettings();
-  const hasAssethub = !!assethubMigration?.statescanAssethubApiDomain;
+  const hasAssetHub = isAssetHubMigrated();
+  const hasStatescanAssethubApiDomain =
+    !!assethubMigration?.statescanAssethubApiDomain;
   const [activeTab, setActiveTab] = useState(
-    hasAssethub ? "assethub" : "relay",
+    hasStatescanAssethubApiDomain ? "assethub" : "relay",
   );
   const [relayTotal, setRelayTotal] = useState(null);
   const [assethubTotal, setAssethubTotal] = useState(null);
   const [assetsTotal, setAssetsTotal] = useState(null);
   const [foreignAssetsTotal, setForeignAssetsTotal] = useState(null);
 
+  let labelNativeTransfersOnRelay = symbol;
+  let labelNativeTransfersOnAssetHub = symbol;
+  if (hasStatescanAssethubApiDomain) {
+    labelNativeTransfersOnRelay = `${symbol} on Relay`;
+  }
+
   const tabs = [
-    ...(hasAssethub
+    ...(hasStatescanAssethubApiDomain
       ? [
           {
             value: "assethub",
             label({ active }) {
               return (
-                <TabLabel active={active} count={assethubTotal}>
-                  {symbol}
+                <TabLabel
+                  active={active}
+                  count={assethubTotal}
+                  tooltip={`${symbol} transfers on AssetHub`}
+                >
+                  {labelNativeTransfersOnAssetHub}
                 </TabLabel>
               );
             },
@@ -229,8 +243,12 @@ export default function ProfileTransfers() {
       value: "relay",
       label({ active }) {
         return (
-          <TabLabel active={active} count={relayTotal}>
-            {symbol} on Relay
+          <TabLabel
+            active={active}
+            count={relayTotal}
+            tooltip={`${symbol} transfers on Relay chain`}
+          >
+            {labelNativeTransfersOnRelay}
           </TabLabel>
         );
       },
@@ -240,24 +258,36 @@ export default function ProfileTransfers() {
         </SecondaryCard>
       ),
     },
-    {
-      value: "assets",
-      label({ active }) {
-        return (
-          <TabLabel active={active} count={assetsTotal}>
-            Assets
-          </TabLabel>
-        );
-      },
-      content: <AssetsContent onTotalChange={setAssetsTotal} />,
-    },
-    ...(supportForeignAssets
+    ...(hasAssetHub
+      ? [
+          {
+            value: "assets",
+            label({ active }) {
+              return (
+                <TabLabel
+                  active={active}
+                  count={assetsTotal}
+                  tooltip={"Assets transfers on AssetHub"}
+                >
+                  Assets
+                </TabLabel>
+              );
+            },
+            content: <AssetsContent onTotalChange={setAssetsTotal} />,
+          },
+        ]
+      : []),
+    ...(hasAssetHub && supportForeignAssets
       ? [
           {
             value: "foreignAssets",
             label({ active }) {
               return (
-                <TabLabel active={active} count={foreignAssetsTotal}>
+                <TabLabel
+                  active={active}
+                  count={foreignAssetsTotal}
+                  tooltip={"Foreign assets transfers on AssetHub"}
+                >
                   Foreign Assets
                 </TabLabel>
               );
@@ -269,6 +299,10 @@ export default function ProfileTransfers() {
         ]
       : []),
   ];
+
+  if (tabs.length === 1) {
+    return tabs[0].content;
+  }
 
   return (
     <Tabs
