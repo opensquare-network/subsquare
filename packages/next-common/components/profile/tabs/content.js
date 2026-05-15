@@ -17,6 +17,7 @@ import CollectivesProvider from "next-common/context/collectives/collectives";
 import ProfileAssets from "next-common/components/profile/assets";
 import ProfileForeignAssets from "next-common/components/profile/foreignAssets";
 import ProfileVesting from "next-common/components/profile/vesting";
+import ProfileStakingRewards from "next-common/components/profile/stakingRewards";
 
 const ProfileHydrationAssets = dynamic(
   () => import("next-common/components/profile/hydrationAssets"),
@@ -69,6 +70,8 @@ export default function useProfileTabContent() {
     return <ProfileProxy />;
   } else if (pathname.startsWith(`/user/${maybeEvmAddress}/treasury`)) {
     return <ProfileTreasury />;
+  } else if (pathname.startsWith(`/user/${maybeEvmAddress}/staking`)) {
+    return <ProfileStakingRewards />;
   }
 
   return <Posted />;
