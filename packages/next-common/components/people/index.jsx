@@ -8,8 +8,9 @@ import Tabs from "next-common/components/tabs";
 import useTabNavigation from "./overview/hooks/useTabNavigation";
 import RegistrarProvider from "next-common/context/people/registrarContext";
 import PeopleCommonProvider from "./common/commonProvider";
-import UserAccountProvider from "next-common/context/user/account";
+// import UserAccountProvider from "next-common/context/user/account";
 import generateLayoutRawTitle from "next-common/utils/generateLayoutRawTitle";
+import UserPapiAccountProvider from "next-common/context/user/papiAccount";
 
 export default function PeopleOverviewPageImpl() {
   const { description } = useChainSettings();
@@ -37,7 +38,7 @@ function PeopleOverviewContent() {
 
   return (
     <div className="space-y-6">
-      <UserAccountProvider address={realAddress}>
+      <UserPapiAccountProvider address={realAddress}>
         <RegistrarProvider>
           <AccountImpl>
             <Tabs
@@ -49,7 +50,7 @@ function PeopleOverviewContent() {
             />
           </AccountImpl>
         </RegistrarProvider>
-      </UserAccountProvider>
+      </UserPapiAccountProvider>
     </div>
   );
 }

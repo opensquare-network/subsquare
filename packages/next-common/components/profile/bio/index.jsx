@@ -19,9 +19,10 @@ import DemocracyBio from "../democracyBio";
 import { addressEllipsis, cn } from "next-common/utils";
 import RightPanelContainer from "next-common/components/profile/bio/rightPanelContainer";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
-import UserAccountProvider from "next-common/context/user/account";
+// import UserAccountProvider from "next-common/context/user/account";
 import AccountInfoPanel from "next-common/components/profile/bio/accountInfoPanel";
 import BioContainer from "./bioContainer";
+import UserPapiAccountProvider from "next-common/context/user/papiAccount";
 
 const Username = styled.span`
   font-weight: 700;
@@ -151,9 +152,9 @@ function NormalBio() {
         <KintAssetInfo address={address} />
       ) : (
         <RightPanelContainer className="grid-cols-1">
-          <UserAccountProvider address={address}>
+          <UserPapiAccountProvider address={address}>
             <AssetInfo address={address} />
-          </UserAccountProvider>
+          </UserPapiAccountProvider>
         </RightPanelContainer>
       )}
     </div>

@@ -28,7 +28,8 @@ import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { votingSpace } from "next-common/utils/opensquareVoting";
 import generateLayoutRawTitle from "next-common/utils/generateLayoutRawTitle";
 import { PapiProvider } from "next-common/context/papi";
-import UserAccountProvider from "next-common/context/user/account";
+import UserPapiAccountProvider from "next-common/context/user/papiAccount";
+// import UserAccountProvider from "next-common/context/user/account";
 
 const ConfirmingReferendaStats = dynamicClientOnly(() =>
   import("next-common/components/overview/confirmingReferendaStats"),
@@ -122,9 +123,9 @@ function DefaultOverviewPage() {
 export default function HomePage() {
   return (
     <PapiProvider>
-      <UserAccountProvider>
+      <UserPapiAccountProvider>
         <DefaultOverviewPage />
-      </UserAccountProvider>
+      </UserPapiAccountProvider>
     </PapiProvider>
   );
 }
