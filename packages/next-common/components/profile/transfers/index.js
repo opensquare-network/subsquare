@@ -14,6 +14,11 @@ import { useMountedState } from "react-use";
 import { getStatescanApiDomain } from "next-common/utils/statescan";
 import Tabs from "next-common/components/tabs";
 import Loading from "next-common/components/loading";
+import AssetsTransfersHistory from "next-common/components/assethubMigrationAssets/transferHistory/index";
+import {
+  AssetHubTabsProvider,
+  useTotalCounts,
+} from "next-common/components/assethubMigrationAssets/context/assetHubTabsProvider";
 
 const DEFAULT_PAGE_SIZE = 25;
 
@@ -142,59 +147,95 @@ function AssetHubTransferContent({ assethubMigration, onTotalChange }) {
   );
 }
 
+function AssetsContentInner({ onTotalChange }) {
+  const address = useProfileAddress();
+  const [totalCounts] = useTotalCounts();
+
+  useEffect(() => {
+    onTotalChange?.(totalCounts.transfers || null);
+  }, [totalCounts.transfers, onTotalChange]);
+
+  return (
+    <SecondaryCard>
+      <AssetsTransfersHistory address={address} />
+    </SecondaryCard>
+  );
+}
+
+function AssetsContent({ onTotalChange }) {
+  return (
+    <AssetHubTabsProvider>
+      <AssetsContentInner onTotalChange={onTotalChange} />
+    </AssetHubTabsProvider>
+  );
+}
+
 export default function ProfileTransfers() {
   const { assethubMigration } = useChainSettings();
-  const [activeTab, setActiveTab] = useState("assethub");
+  const hasAssethub = !!assethubMigration?.statescanAssethubApiDomain;
+  const [activeTab, setActiveTab] = useState(
+    hasAssethub ? "assethub" : "relay",
+  );
   const [relayTotal, setRelayTotal] = useState(null);
   const [assethubTotal, setAssethubTotal] = useState(null);
+  const [assetsTotal, setAssetsTotal] = useState(null);
 
-  if (!assethubMigration?.statescanAssethubApiDomain) {
-    return (
-      <SecondaryCard>
-        <RelayTransferContent />
-      </SecondaryCard>
-    );
-  }
+  const tabs = [
+    ...(hasAssethub
+      ? [
+          {
+            value: "assethub",
+            label({ active }) {
+              return (
+                <TabLabel active={active} count={assethubTotal}>
+                  AssetHub
+                </TabLabel>
+              );
+            },
+            content: (
+              <SecondaryCard>
+                <AssetHubTransferContent
+                  assethubMigration={assethubMigration}
+                  onTotalChange={setAssethubTotal}
+                />
+              </SecondaryCard>
+            ),
+          },
+        ]
+      : []),
+    {
+      value: "relay",
+      label({ active }) {
+        return (
+          <TabLabel active={active} count={relayTotal}>
+            Relay
+          </TabLabel>
+        );
+      },
+      content: (
+        <SecondaryCard>
+          <RelayTransferContent onTotalChange={setRelayTotal} />
+        </SecondaryCard>
+      ),
+    },
+    {
+      value: "assets",
+      label({ active }) {
+        return (
+          <TabLabel active={active} count={assetsTotal}>
+            Assets
+          </TabLabel>
+        );
+      },
+      content: <AssetsContent onTotalChange={setAssetsTotal} />,
+    },
+  ];
 
   return (
     <Tabs
       activeTabValue={activeTab}
       onTabClick={(tab) => setActiveTab(tab.value)}
-      tabs={[
-        {
-          value: "assethub",
-          label({ active }) {
-            return (
-              <TabLabel active={active} count={assethubTotal}>
-                AssetHub
-              </TabLabel>
-            );
-          },
-          content: (
-            <SecondaryCard>
-              <AssetHubTransferContent
-                assethubMigration={assethubMigration}
-                onTotalChange={setAssethubTotal}
-              />
-            </SecondaryCard>
-          ),
-        },
-        {
-          value: "relay",
-          label({ active }) {
-            return (
-              <TabLabel active={active} count={relayTotal}>
-                Relay
-              </TabLabel>
-            );
-          },
-          content: (
-            <SecondaryCard>
-              <RelayTransferContent onTotalChange={setRelayTotal} />
-            </SecondaryCard>
-          ),
-        },
-      ]}
+      tabs={tabs}
       tabsListDivider={false}
       tabsListClassName="ml-6 mb-4"
     />
