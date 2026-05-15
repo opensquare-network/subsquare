@@ -2,127 +2,29 @@ import { useEffect, useState } from "react";
 import { MapDataList } from "next-common/components/dataList";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 import { defaultPageSize } from "next-common/utils/constants";
-import { useChain, useChainSettings } from "next-common/context/chain";
-import ValueDisplay from "next-common/components/valueDisplay";
-import { toPrecision } from "next-common/utils";
-import AddressUser from "next-common/components/user/addressUser";
-import dayjs from "dayjs";
-import Duration from "next-common/components/duration";
-import { getStatescanDomain } from "next-common/utils/statescan";
 import useStakingRewards from "./useStakingRewards";
-
-function DestCell({ dest, who, bonded }) {
-  if (!dest) {
-    return <span className="text-textTertiary">-</span>;
-  }
-
-  let account = null;
-  if (dest.account) {
-    account = dest.account;
-  } else if ("staked" in dest || "stash" in dest) {
-    account = who;
-  } else if ("controller" in dest) {
-    account = bonded;
-  }
-
-  if (!account) {
-    return <span className="text-textTertiary">-</span>;
-  }
-
-  return <AddressUser add={account} />;
-}
+import { useStakingRewardsEventIdColumn } from "./columns/eventId";
+import { useStakingRewardsTimeAgeColumn } from "./columns/timeAge";
+import { useStakingRewardsExtrinsicIdColumn } from "./columns/extrinsicId";
+import { useStakingRewardsDestColumn } from "./columns/dest";
+import { useStakingRewardsValidatorColumn } from "./columns/validator";
+import { useStakingRewardsAmountColumn } from "./columns/amount";
 
 function useColumnsDef() {
-  const { symbol, decimals } = useChainSettings();
-  const chain = useChain();
-  const [isTime, setIsTime] = useState(true);
-  const domain = getStatescanDomain(chain);
+  const eventIdColumn = useStakingRewardsEventIdColumn();
+  const timeAgeColumn = useStakingRewardsTimeAgeColumn();
+  const extrinsicIdColumn = useStakingRewardsExtrinsicIdColumn();
+  const destColumn = useStakingRewardsDestColumn();
+  const validatorColumn = useStakingRewardsValidatorColumn();
+  const amountColumn = useStakingRewardsAmountColumn();
 
   return [
-    {
-      name: "Event ID",
-      style: { textAlign: "left", width: "120px", maxWidth: "120px" },
-      render: (item) => (
-        <a
-          key="eventId"
-          className="text-theme500"
-          href={`https://${domain}.statescan.io/#/events/${item.indexer.blockHeight}-${item.indexer.eventIndex}`}
-          target="_blank"
-          rel="noreferrer"
-        >
-          {item.indexer.blockHeight}-{item.indexer.eventIndex}
-        </a>
-      ),
-    },
-    {
-      name: "Extrinsic ID",
-      style: { textAlign: "left", width: "120px", maxWidth: "120px" },
-      render: (item) =>
-        item.indexer.extrinsicIndex !== undefined ? (
-          <a
-            key="extrinsicId"
-            className="text-theme500"
-            href={`https://${domain}.statescan.io/#/extrinsics/${item.indexer.blockHeight}-${item.indexer.extrinsicIndex}`}
-            target="_blank"
-            rel="noreferrer"
-          >
-            {item.indexer.blockHeight}-{item.indexer.extrinsicIndex}
-          </a>
-        ) : null,
-    },
-    {
-      name: (
-        <button className="text-theme500" onClick={() => setIsTime((v) => !v)}>
-          {isTime ? "Time" : "Age"}
-        </button>
-      ),
-      style: { textAlign: "left", width: "200px", minWidth: "200px" },
-      render: (item) =>
-        isTime ? (
-          <span key="time" className="text-textSecondary">
-            {dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss")}
-          </span>
-        ) : (
-          <Duration key="time" time={item.indexer.blockTime} />
-        ),
-    },
-
-    {
-      name: "Dest",
-      style: { textAlign: "left", minWidth: "212px" },
-      render: (item) => (
-        <DestCell
-          key="dest"
-          dest={item.dest}
-          who={item.who}
-          bonded={item.bonded}
-        />
-      ),
-    },
-    {
-      name: "Validator",
-      style: { textAlign: "left", minWidth: "212px" },
-      render: (item) =>
-        item.validator ? (
-          <AddressUser key="validator" add={item.validator} />
-        ) : (
-          <span key="validator" className="text-textTertiary">
-            -
-          </span>
-        ),
-    },
-    {
-      name: "Amount",
-      style: { textAlign: "right", width: "160px", minWidth: "160px" },
-      render: (item) => (
-        <span key="amount" className="text14Medium text-textPrimary">
-          <ValueDisplay
-            value={toPrecision(item.amount, decimals)}
-            symbol={symbol}
-          />
-        </span>
-      ),
-    },
+    eventIdColumn,
+    timeAgeColumn,
+    extrinsicIdColumn,
+    destColumn,
+    validatorColumn,
+    amountColumn,
   ];
 }
 
