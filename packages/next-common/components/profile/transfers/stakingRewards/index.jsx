@@ -20,8 +20,8 @@ function useColumnsDef() {
 
   return [
     eventIdColumn,
-    timeAgeColumn,
     extrinsicIdColumn,
+    timeAgeColumn,
     destColumn,
     validatorColumn,
     amountColumn,
