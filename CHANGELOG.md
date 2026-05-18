@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+# 6.4.0
+
+Date:
+2026-04-29. [Code diff](https://github.com/opensquare-network/subsquare/compare/b7c9cf72a6f74197be7b951fe4f3699c16a3daff...829246b7f4e5d1cfe5f7a72ce1438e6f370fa70a).
+
+- [Big] Support multi-assets bounty.
+- [Medium] Fellowship: support secretary business
+    - Add secretary members page.
+    - Add secretary salary cycle list and detail page.
+- Add vote actions filter on the referendum detail page votes popup.
+- Allow admins to mark spam comments, so users won't see them when the referendum detail page is open, but the spam
+  comments can be found after some filter settings.
+- Implement downvote for referenda comments.
+- Fix the threshold curve on the referendum detail page to show the right value.
+- Fix the signup page crash.
+- Fix the call tree view crash after PAPI integration.
+- Remove the new tag from the treasury status menu.
+- Upgrade dependencies.
+
 # 6.3.0
 
 Date:
