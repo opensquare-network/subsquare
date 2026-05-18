@@ -33,7 +33,7 @@ function getSecretarySalaryMenu() {
     extraMatchNavMenuActivePathnames: [
       "/secretary/salary/feeds",
       "/secretary/salary/claimants",
-      "/secretary/salary/cycles/[cycleIndex]",
+      "/secretary/salary/cycles/[...params]",
     ],
   };
 }
