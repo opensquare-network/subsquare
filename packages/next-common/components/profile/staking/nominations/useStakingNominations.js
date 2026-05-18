@@ -19,17 +19,19 @@ const nominationsQuery = gql`
 `;
 
 export default function useStakingNominations(address) {
-  const { graphqlApiSubDomain } = useChainSettings();
+  const { graphqlApiSubDomain, assethubMigration } = useChainSettings();
+  const stakingSubDomain =
+    assethubMigration?.graphqlApiSubDomain || graphqlApiSubDomain;
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!address || !graphqlApiSubDomain) {
+    if (!address || !stakingSubDomain) {
       setLoading(false);
       return;
     }
 
-    const url = `https://${graphqlApiSubDomain}.statescan.io/graphql`;
+    const url = `https://${stakingSubDomain}.statescan.io/graphql`;
     setLoading(true);
 
     request(url, nominationsQuery, { address })
@@ -38,7 +40,7 @@ export default function useStakingNominations(address) {
       })
       .catch(console.error)
       .finally(() => setLoading(false));
-  }, [address, graphqlApiSubDomain]);
+  }, [address, stakingSubDomain]);
 
   return { list, loading };
 }
