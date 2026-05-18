@@ -7,17 +7,8 @@ import { getAssetInfoFromAssetKind } from "next-common/utils/treasury/multiAsset
 import { useEffect, useState } from "react";
 import { groupBy, mapValues, toNumber } from "lodash-es";
 
-const ACTIVE_STATUSES = ["Funded", "CuratorUnassigned", "Active"];
+export const ACTIVE_STATUSES = ["Created", "Funded", "Active"];
 
-/**
- * Fetches all multi-asset bounties from chain via papi, groups by status.
- * Each status entry contains per-asset totals.
- *
- * Returns:
- *   groupedByStatus: { [status]: { count, byAsset: { [symbol]: { symbol, decimals, count, total } } } }
- *   groupedByAsset:  { [symbol]: { symbol, decimals, total } } — totals across active statuses
- *   isLoading: boolean
- */
 export function useMultiAssetBountiesSummary() {
   const papi = useContextPapiApi();
   const { activeBounties = [] } = usePageProps();
