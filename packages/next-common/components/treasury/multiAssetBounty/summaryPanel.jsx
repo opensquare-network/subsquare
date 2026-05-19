@@ -2,7 +2,10 @@ import SummaryItem from "next-common/components/summary/layout/item";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import LoadableContent from "next-common/components/common/loadableContent";
 import FieldLoading from "next-common/components/icons/fieldLoading";
-import { useMultiAssetBountiesSummary } from "next-common/hooks/treasury/multiAssetBounty/useMultiAssetBountiesSummary";
+import {
+  ACTIVE_STATUSES,
+  useMultiAssetBountiesSummary,
+} from "next-common/hooks/treasury/multiAssetBounty/useMultiAssetBountiesSummary";
 import { isNil } from "lodash-es";
 import { useContextPapi } from "next-common/context/papi";
 import { toPrecision } from "next-common/utils";
@@ -10,12 +13,10 @@ import TokenSymbolAsset from "next-common/components/summary/polkadotTreasurySum
 import NativeTokenSymbolAsset from "next-common/components/summary/polkadotTreasurySummary/common/nativeTokenSymbolAsset";
 import { useChainSettings } from "next-common/context/chain";
 
-const ACTIVE_STATUSES = ["Active", "Funded", "CuratorUnassigned"];
-
 const STATUS_TITLES = {
   Active: "Active Bounties",
   Funded: "Funded Bounties",
-  CuratorUnassigned: "Created Bounties",
+  Created: "Created Bounties",
 };
 
 function StatusAssets({ byAsset }) {

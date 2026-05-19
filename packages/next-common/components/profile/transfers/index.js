@@ -14,17 +14,25 @@ import { useMountedState } from "react-use";
 import { getStatescanApiDomain } from "next-common/utils/statescan";
 import Tabs from "next-common/components/tabs";
 import Loading from "next-common/components/loading";
+import AssetsTransfersHistory from "next-common/components/assethubMigrationAssets/transferHistory/index";
+import ForeignAssetsTransfersTable from "next-common/components/assethubMigrationAssets/foreignAssets/transfers";
+import {
+  AssetHubTabsProvider,
+  useTotalCounts,
+} from "next-common/components/assethubMigrationAssets/context/assetHubTabsProvider";
+import Tooltip from "next-common/components/tooltip";
+import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated";
 
 const DEFAULT_PAGE_SIZE = 25;
 
-function TabLabel({ active, children, count }) {
+function TabLabel({ active, children, count, tooltip }) {
   return (
     <span
       className={`cursor-pointer font-bold text-[16px] leading-6 ${
         active ? "text-textPrimary" : "text-textTertiary"
       }`}
     >
-      {children}
+      <Tooltip content={tooltip}>{children}</Tooltip>
       <span className="ml-1 font-medium text-[16px] leading-6 text-textTertiary">
         {count == null ? <Loading size={16} /> : count}
       </span>
@@ -142,59 +150,159 @@ function AssetHubTransferContent({ assethubMigration, onTotalChange }) {
   );
 }
 
+function AssetsContentInner({ onTotalChange }) {
+  const address = useProfileAddress();
+  const [totalCounts] = useTotalCounts();
+
+  useEffect(() => {
+    onTotalChange?.(totalCounts.transfers ?? null);
+  }, [totalCounts.transfers, onTotalChange]);
+
+  return (
+    <SecondaryCard>
+      <AssetsTransfersHistory address={address} />
+    </SecondaryCard>
+  );
+}
+
+function AssetsContent({ onTotalChange }) {
+  return (
+    <AssetHubTabsProvider>
+      <AssetsContentInner onTotalChange={onTotalChange} />
+    </AssetHubTabsProvider>
+  );
+}
+
+function ForeignAssetsContentInner({ onTotalChange }) {
+  const address = useProfileAddress();
+  const [totalCounts] = useTotalCounts();
+
+  useEffect(() => {
+    onTotalChange?.(totalCounts.transfers ?? null);
+  }, [totalCounts.transfers, onTotalChange]);
+
+  return <ForeignAssetsTransfersTable address={address} />;
+}
+
+function ForeignAssetsContent({ onTotalChange }) {
+  return (
+    <AssetHubTabsProvider>
+      <ForeignAssetsContentInner onTotalChange={onTotalChange} />
+    </AssetHubTabsProvider>
+  );
+}
+
 export default function ProfileTransfers() {
-  const { assethubMigration } = useChainSettings();
-  const [activeTab, setActiveTab] = useState("assethub");
+  const { assethubMigration, supportForeignAssets, symbol } =
+    useChainSettings();
+  const hasAssetHub = isAssetHubMigrated();
+  const hasStatescanAssethubApiDomain =
+    !!assethubMigration?.statescanAssethubApiDomain;
+  const [activeTab, setActiveTab] = useState(
+    hasStatescanAssethubApiDomain ? "assethub" : "relay",
+  );
   const [relayTotal, setRelayTotal] = useState(null);
   const [assethubTotal, setAssethubTotal] = useState(null);
+  const [assetsTotal, setAssetsTotal] = useState(null);
+  const [foreignAssetsTotal, setForeignAssetsTotal] = useState(null);
 
-  if (!assethubMigration?.statescanAssethubApiDomain) {
-    return (
+  let labelNativeTransfersOnRelay = symbol;
+  let labelNativeTransfersOnAssetHub = symbol;
+  if (hasStatescanAssethubApiDomain) {
+    labelNativeTransfersOnRelay = `${symbol} on Relay`;
+  }
+
+  const nativeTransfersOnRelayTabDef = {
+    value: "relay",
+    label({ active }) {
+      return (
+        <TabLabel
+          active={active}
+          count={relayTotal}
+          tooltip={`${symbol} transfers on Relay chain`}
+        >
+          {labelNativeTransfersOnRelay}
+        </TabLabel>
+      );
+    },
+    content: (
       <SecondaryCard>
-        <RelayTransferContent />
+        <RelayTransferContent onTotalChange={setRelayTotal} />
       </SecondaryCard>
-    );
+    ),
+  };
+
+  const nativeTransfersOnAssethubTabDef = {
+    value: "assethub",
+    label({ active }) {
+      return (
+        <TabLabel
+          active={active}
+          count={assethubTotal}
+          tooltip={`${symbol} transfers on AssetHub`}
+        >
+          {labelNativeTransfersOnAssetHub}
+        </TabLabel>
+      );
+    },
+    content: (
+      <SecondaryCard>
+        <AssetHubTransferContent
+          assethubMigration={assethubMigration}
+          onTotalChange={setAssethubTotal}
+        />
+      </SecondaryCard>
+    ),
+  };
+
+  const assetTransfersTabDef = {
+    value: "assets",
+    label({ active }) {
+      return (
+        <TabLabel
+          active={active}
+          count={assetsTotal}
+          tooltip={"Assets transfers on AssetHub"}
+        >
+          Assets
+        </TabLabel>
+      );
+    },
+    content: <AssetsContent onTotalChange={setAssetsTotal} />,
+  };
+
+  const foreignAssetsTransfersTabDef = {
+    value: "foreignAssets",
+    label({ active }) {
+      return (
+        <TabLabel
+          active={active}
+          count={foreignAssetsTotal}
+          tooltip={"Foreign assets transfers on AssetHub"}
+        >
+          Foreign Assets
+        </TabLabel>
+      );
+    },
+    content: <ForeignAssetsContent onTotalChange={setForeignAssetsTotal} />,
+  };
+
+  const tabs = [
+    hasStatescanAssethubApiDomain && nativeTransfersOnAssethubTabDef,
+    nativeTransfersOnRelayTabDef,
+    hasAssetHub && assetTransfersTabDef,
+    hasAssetHub && supportForeignAssets && foreignAssetsTransfersTabDef,
+  ].filter(Boolean);
+
+  if (tabs.length === 1) {
+    return tabs[0].content;
   }
 
   return (
     <Tabs
       activeTabValue={activeTab}
       onTabClick={(tab) => setActiveTab(tab.value)}
-      tabs={[
-        {
-          value: "assethub",
-          label({ active }) {
-            return (
-              <TabLabel active={active} count={assethubTotal}>
-                AssetHub
-              </TabLabel>
-            );
-          },
-          content: (
-            <SecondaryCard>
-              <AssetHubTransferContent
-                assethubMigration={assethubMigration}
-                onTotalChange={setAssethubTotal}
-              />
-            </SecondaryCard>
-          ),
-        },
-        {
-          value: "relay",
-          label({ active }) {
-            return (
-              <TabLabel active={active} count={relayTotal}>
-                Relay
-              </TabLabel>
-            );
-          },
-          content: (
-            <SecondaryCard>
-              <RelayTransferContent onTotalChange={setRelayTotal} />
-            </SecondaryCard>
-          ),
-        },
-      ]}
+      tabs={tabs}
       tabsListDivider={false}
       tabsListClassName="ml-6 mb-4"
     />
