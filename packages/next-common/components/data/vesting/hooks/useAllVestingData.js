@@ -10,7 +10,7 @@ function positiveOr0(v = 0n) {
 
 export function getCurrencyLockedByVesting(locks) {
   const vestingLock = locks.find(
-    (item) => hexToString(item.id.asHex()).trim() === "vesting",
+    (item) => hexToString(item.id).trim() === "vesting",
   );
   if (!vestingLock) {
     return 0n;
