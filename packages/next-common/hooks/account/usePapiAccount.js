@@ -1,8 +1,8 @@
-import { useContextPapiApi } from "next-common/context/papi";
+import { useContextPapi } from "next-common/context/papi";
 import { useEffect, useMemo, useState } from "react";
 
 export function usePapiAccount(address) {
-  const papi = useContextPapiApi();
+  const { api: papi, checkPallet } = useContextPapi();
   const [account, setAccount] = useState(null);
   const [locks, setLocks] = useState(null);
   const [locksLoaded, setLocksLoaded] = useState(false);
@@ -22,16 +22,14 @@ export function usePapiAccount(address) {
 
     const accountSub = papi.query.System.Account.watchValue(address).subscribe(
       (data) => {
-        // console.log("Received account data:", data);
         setAccount(data.value);
       },
     );
 
     let locksSub;
-    if (papi.query.Balances?.Locks) {
+    if (checkPallet("Balances", "Locks")) {
       locksSub = papi.query.Balances.Locks.watchValue(address).subscribe(
         (data) => {
-          // console.log("Received locks data:", data);
           setLocks(data.value ?? []);
           setLocksLoaded(true);
         },
@@ -42,10 +40,9 @@ export function usePapiAccount(address) {
     }
 
     let stakingSub;
-    if (papi.query.Staking?.Ledger) {
+    if (checkPallet("Staking", "Ledger")) {
       stakingSub = papi.query.Staking.Ledger.watchValue(address).subscribe(
         (data) => {
-          // console.log("Received staking ledger data:", data);
           setStakingLedger(data.value ?? null);
           setStakingLoaded(true);
         },

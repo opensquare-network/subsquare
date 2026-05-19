@@ -12,6 +12,7 @@ import {
   fetchForumLatestTopics,
 } from "next-common/services/serverSide/forum";
 import { backendApi } from "next-common/services/nextApi";
+import UserPapiAccountProvider from "next-common/context/user/papiAccount";
 
 function DefaultOverviewPage() {
   const chainSettings = useChainSettings();
@@ -41,7 +42,11 @@ function DefaultOverviewPage() {
 }
 
 export default function HomePage() {
-  return <DefaultOverviewPage />;
+  return (
+    <UserPapiAccountProvider>
+      <DefaultOverviewPage />
+    </UserPapiAccountProvider>
+  );
 }
 
 export const getServerSideProps = withCommonProps(async () => {

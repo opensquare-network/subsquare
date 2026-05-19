@@ -118,12 +118,13 @@ function useRelayChainTreasuryFreeTotal(papi) {
       const token =
         Chains.kintsugi === chain ? Kintsugi.ticker : Interlay.ticker;
 
-      papi.query.Tokens.Accounts.getValue(treasuryAccount, { token }).then(
-        (accountData) => {
-          setFree(accountData ? accountData.free.toString() : "0");
-          setIsLoading(false);
-        },
-      );
+      papi.query.Tokens.Accounts.getValue(treasuryAccount, {
+        type: "Token",
+        value: { type: token },
+      }).then((accountData) => {
+        setFree(accountData ? accountData.free.toString() : "0");
+        setIsLoading(false);
+      });
     } else {
       papi?.query?.System?.Account?.getValue?.(treasuryAccount).then(
         (accountData) => {

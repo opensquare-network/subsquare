@@ -8,8 +8,9 @@ import OffChainVoting from "next-common/components/summary/externalInfo/offChain
 import { HeadContent, TitleExtra } from "next-common/components/overview";
 import { fetchRecentProposalsProps } from "next-common/services/serverSide/recentProposals";
 import Overview from "next-common/components/overview/overview";
+import UserPapiAccountProvider from "next-common/context/user/papiAccount";
 
-export default function Home() {
+function DefaultOverviewPage() {
   const { name, description } = useChainSettings();
 
   let externalInfo = null;
@@ -48,6 +49,14 @@ export default function Home() {
     >
       <Overview />
     </ListLayout>
+  );
+}
+
+export default function HomePage() {
+  return (
+    <UserPapiAccountProvider>
+      <DefaultOverviewPage />
+    </UserPapiAccountProvider>
   );
 }
 

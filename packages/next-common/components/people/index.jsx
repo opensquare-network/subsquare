@@ -8,7 +8,6 @@ import Tabs from "next-common/components/tabs";
 import useTabNavigation from "./overview/hooks/useTabNavigation";
 import RegistrarProvider from "next-common/context/people/registrarContext";
 import PeopleCommonProvider from "./common/commonProvider";
-// import UserAccountProvider from "next-common/context/user/account";
 import generateLayoutRawTitle from "next-common/utils/generateLayoutRawTitle";
 import UserPapiAccountProvider from "next-common/context/user/papiAccount";
 

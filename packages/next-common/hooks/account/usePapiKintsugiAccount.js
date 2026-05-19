@@ -9,7 +9,7 @@ export default function usePapiKintsugiAccount(address) {
   const [isLoading, setIsLoading] = useState(true);
 
   const tokenSymbol = useMemo(() => {
-    return { token: symbol };
+    return { type: "Token", value: { type: symbol } };
   }, [symbol]);
 
   useEffect(() => {
@@ -24,7 +24,6 @@ export default function usePapiKintsugiAccount(address) {
       address,
       tokenSymbol,
     ).subscribe((data) => {
-      // console.log("Received PAPI Kintsugi account data:", data);
       setData(data.value ?? null);
       setIsLoading(false);
     });
