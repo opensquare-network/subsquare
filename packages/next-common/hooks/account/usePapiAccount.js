@@ -56,7 +56,7 @@ export function usePapiAccount(address) {
       locksSub?.unsubscribe?.();
       stakingSub?.unsubscribe?.();
     };
-  }, [papi, address]);
+  }, [papi, address, checkPallet]);
 
   const data = useMemo(() => {
     if (!account || !locksLoaded || !stakingLoaded) {
