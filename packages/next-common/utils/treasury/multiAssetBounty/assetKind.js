@@ -1,8 +1,10 @@
 import { isNil } from "lodash-es";
 import { ASSET_HUB_GENERAL_INDEX_SYMBOL } from "next-common/asset";
 import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
+import Chains from "next-common/utils/consts/chains";
 
 const ASSET_HUB_PARACHAIN_ID = "1000";
+const POLKADOT_DOT_SYMBOL = "DOT";
 
 function normalizeNumberish(value) {
   if (value === null || value === undefined) {
@@ -64,6 +66,19 @@ function getAssetIdLocation(versionedData) {
   return null;
 }
 
+function isPolkadotGlobalConsensus(junction) {
+  return junction?.globalConsensus?.polkadot !== undefined;
+}
+
+function isPolkadotConsensusHere(location) {
+  if (normalizeNumberish(location?.parents) !== "2") {
+    return false;
+  }
+
+  const junctions = getLocationJunctions(location);
+  return junctions?.length === 1 && isPolkadotGlobalConsensus(junctions[0]);
+}
+
 export function getAssetSymbolFromAssetKind(assetKind) {
   if (!assetKind) {
     return null;
@@ -86,6 +101,13 @@ export function getAssetSymbolFromAssetKind(assetKind) {
   }
 
   const assetIdLocation = getAssetIdLocation(versionedData);
+  if (
+    process.env.NEXT_PUBLIC_CHAIN === Chains.kusama &&
+    isPolkadotConsensusHere(assetIdLocation)
+  ) {
+    return POLKADOT_DOT_SYMBOL;
+  }
+
   const assetIdJunctions = getLocationJunctions(assetIdLocation);
   if (!assetIdJunctions?.length) {
     return null;
