@@ -16,6 +16,7 @@ import { MigrationConditionalApiProvider } from "next-common/context/migration/c
 import { PolkadotVaultProvider } from "./polkadotVault";
 import WindowSizeProvider from "./windowSize";
 import { PapiProvider } from "./papi";
+import UserPapiAccountProvider from "./user/papiAccount";
 
 export default function GlobalProvider({
   user,
@@ -53,9 +54,11 @@ export default function GlobalProvider({
                               >
                                 <PolkadotVaultProvider>
                                   <WalletConnectProvider>
-                                    <SignetContextProvider>
-                                      {children}
-                                    </SignetContextProvider>
+                                    <UserPapiAccountProvider>
+                                      <SignetContextProvider>
+                                        {children}
+                                      </SignetContextProvider>
+                                    </UserPapiAccountProvider>
                                   </WalletConnectProvider>
                                 </PolkadotVaultProvider>
                               </ConnectedAccountProvider>
