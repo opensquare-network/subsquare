@@ -10,12 +10,12 @@ import ApiProvider from "next-common/context/api";
 import { SignetContextProvider } from "./signet";
 import WagmiProvider from "./wagmi";
 import ReactQueryClientProvider from "./reactQuery";
-import UserAccountProvider from "./user/account";
 import PageLoadingProvider from "./pageLoading";
 import WalletConnectProvider from "./walletconnect";
 import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 import { PolkadotVaultProvider } from "./polkadotVault";
 import WindowSizeProvider from "./windowSize";
+import { PapiProvider } from "./papi";
 
 export default function GlobalProvider({
   user,
@@ -47,19 +47,19 @@ export default function GlobalProvider({
                       >
                         <ApiProvider>
                           <MigrationConditionalApiProvider>
-                            <ConnectedAccountProvider
-                              connectedAccount={connectedAccount}
-                            >
-                              <PolkadotVaultProvider>
-                                <WalletConnectProvider>
-                                  <UserAccountProvider>
+                            <PapiProvider>
+                              <ConnectedAccountProvider
+                                connectedAccount={connectedAccount}
+                              >
+                                <PolkadotVaultProvider>
+                                  <WalletConnectProvider>
                                     <SignetContextProvider>
                                       {children}
                                     </SignetContextProvider>
-                                  </UserAccountProvider>
-                                </WalletConnectProvider>
-                              </PolkadotVaultProvider>
-                            </ConnectedAccountProvider>
+                                  </WalletConnectProvider>
+                                </PolkadotVaultProvider>
+                              </ConnectedAccountProvider>
+                            </PapiProvider>
                           </MigrationConditionalApiProvider>
                         </ApiProvider>
                       </NavProvider>

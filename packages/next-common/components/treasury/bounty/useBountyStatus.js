@@ -13,7 +13,7 @@ export function useBountyStatus(bountyIndex) {
 
     setLoading(true);
     const sub = papi.query.Bounties.Bounties.watchValue(bountyIndex).subscribe(
-      (value) => {
+      ({ value }) => {
         setResult(value ?? null);
         setLoading(false);
       },

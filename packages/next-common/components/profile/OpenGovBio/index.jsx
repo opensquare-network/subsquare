@@ -2,7 +2,6 @@ import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import { usePageProps } from "next-common/context/page";
 import AssetInfo from "next-common/components/profile/bio/assetInfo";
-import UserAccountProvider from "next-common/context/user/account";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 import { cn } from "next-common/utils";
 import VotesPowerPanel from "./votesPower";
@@ -11,6 +10,7 @@ import dynamic from "next/dynamic";
 import ReferendaDelegationProvider from "next-common/components/profile/delegationGuide/context/referendaDelegationContext";
 import AccountInfoPanel from "next-common/components/profile/bio/accountInfoPanel";
 import RightPanelContainer from "next-common/components/profile/bio/rightPanelContainer";
+import UserPapiAccountProvider from "next-common/context/user/papiAccount";
 
 const DelegationGuide = dynamic(
   () => import("next-common/components/profile/delegationGuide"),
@@ -36,10 +36,10 @@ export default function OpenGovBio() {
       >
         <AccountInfoPanel address={address} id={id} user={user} />
         <RightPanelContainer>
-          <UserAccountProvider address={address}>
+          <UserPapiAccountProvider address={address}>
             <AssetInfo address={address} />
             <VotesPowerPanel address={address} />
-          </UserAccountProvider>
+          </UserPapiAccountProvider>
         </RightPanelContainer>
       </div>
       {address && (

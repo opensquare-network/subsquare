@@ -6,11 +6,10 @@ import {
 } from "next-common/utils/account/extractAccountInfo";
 import { isKintsugiChain } from "next-common/utils/chain";
 import useQueryExistentialDeposit from "next-common/utils/hooks/chain/useQueryExistentialDeposit";
-import { createContext, useContext, useMemo } from "react";
+import { useContext, useMemo } from "react";
 import { useChain } from "../chain";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-
-const Context = createContext();
+import { Context } from "./context";
 
 export default function UserAccountProvider({ children, address = "" }) {
   const chain = useChain();
@@ -25,43 +24,45 @@ export default function UserAccountProvider({ children, address = "" }) {
     );
   }
 
-  const Provider = isKintsugiChain(chain)
-    ? KintsugiAccountProvider
-    : AccountProvider;
+  if (isKintsugiChain(chain)) {
+    return (
+      <KintsugiAccountProvider address={realAddress}>
+        {children}
+      </KintsugiAccountProvider>
+    );
+  }
 
-  return <Provider address={realAddress}>{children}</Provider>;
+  return <AccountProvider address={realAddress}>{children}</AccountProvider>;
 }
 
 function AccountProvider({ address, children }) {
-  const data = useSubAccount(address);
-  return <Context.Provider value={data}>{children}</Context.Provider>;
+  const { data, isLoading } = useSubAccount(address);
+  const existentialDeposit = useQueryExistentialDeposit();
+  const info = useMemo(() => {
+    if (!data) {
+      return null;
+    }
+    return extractAccountInfo(data, existentialDeposit);
+  }, [data, existentialDeposit]);
+  return (
+    <Context.Provider value={{ isLoading, info }}>{children}</Context.Provider>
+  );
 }
 
 function KintsugiAccountProvider({ address, children }) {
-  const data = useSubKintsugiAccount(address);
-  return <Context.Provider value={data}>{children}</Context.Provider>;
-}
-
-export function useUserAccount() {
-  return useContext(Context);
+  const { data, isLoading } = useSubKintsugiAccount(address);
+  const existentialDeposit = useQueryExistentialDeposit();
+  const info = useMemo(() => {
+    if (!data) {
+      return null;
+    }
+    return extractKintsugiAccountInfo(data, existentialDeposit);
+  }, [data, existentialDeposit]);
+  return (
+    <Context.Provider value={{ isLoading, info }}>{children}</Context.Provider>
+  );
 }
 
 export function useUserAccountInfo() {
-  const chain = useChain();
-  const existentialDeposit = useQueryExistentialDeposit();
-  const data = useUserAccount();
-
-  const info = useMemo(() => {
-    if (!data?.data) {
-      return null;
-    }
-
-    const extractFn = isKintsugiChain(chain)
-      ? extractKintsugiAccountInfo
-      : extractAccountInfo;
-
-    return extractFn(data?.data, existentialDeposit);
-  }, [chain, data, existentialDeposit]);
-
-  return { info, isLoading: data?.isLoading };
+  return useContext(Context);
 }

@@ -48,7 +48,7 @@ function useSubChildBountyIsAdded(parentBountyId, index) {
     const sub = papi.query.ChildBounties.ChildBounties.watchValue(
       parentBountyId,
       index,
-    ).subscribe((result) => {
+    ).subscribe(({ value: result }) => {
       setIsAdded(result?.status?.type === "Added");
     });
 

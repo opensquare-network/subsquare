@@ -1,7 +1,7 @@
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import { usePageProps } from "next-common/context/page";
-import UserAccountProvider from "next-common/context/user/account";
+import UserPapiAccountProvider from "next-common/context/user/papiAccount";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 import { cn } from "next-common/utils";
 import VotesPowerPanel from "./votesPower";
@@ -34,10 +34,10 @@ export default function DemocracyBio() {
       >
         <AccountInfoPanel address={address} id={id} user={user} />
         <RightPanelContainer>
-          <UserAccountProvider address={address}>
+          <UserPapiAccountProvider address={address}>
             <AssetInfo address={address} />
             <VotesPowerPanel address={address} />
-          </UserAccountProvider>
+          </UserPapiAccountProvider>
         </RightPanelContainer>
       </div>
       <DelegationGuideProvider pallet="democracy">

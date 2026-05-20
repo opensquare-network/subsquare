@@ -20,7 +20,7 @@ function useParentChildBountiesCount(bountyIndex) {
 
     const sub = papi.query.ChildBounties.ParentChildBounties.watchValue(
       bountyIndex,
-    ).subscribe((value) => {
+    ).subscribe(({ value }) => {
       setCount(value ?? 0);
     });
 
