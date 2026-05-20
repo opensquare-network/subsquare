@@ -1,4 +1,5 @@
 export const SYMBOL_DECIMALS = {
+  DOT: 10,
   USDT: 6,
   USDC: 6,
 };
