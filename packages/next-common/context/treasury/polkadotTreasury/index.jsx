@@ -8,9 +8,14 @@ import {
   useBountiesTotalBalance,
   useQueryBounties,
 } from "./hooks/useQueryBountiesData";
+import {
+  useQueryMultiAssetsBounties,
+  useMultiAssetsBountiesTotalBalance,
+} from "./hooks/useQueryMultiAssetBountiesData";
 import useQueryFellowshipSalaryBalance from "./hooks/useQueryFellowshipSalaryBalance";
 import usePolkadotTreasuryTotal from "next-common/utils/hooks/usePolkadotTreasuryTotal";
-import { PapiProvider, useContextPapiApi } from "next-common/context/papi";
+import { PapiProvider, useContextPapi } from "next-common/context/papi";
+import { useChainSettings } from "next-common/context/chain";
 
 const PolkadotTreasuryContext = createContext();
 
@@ -23,7 +28,8 @@ export default function PolkadotTreasuryProvider({ children }) {
 }
 
 function PolkadotTreasuryProviderInner({ children }) {
-  const papi = useContextPapiApi();
+  const { api: papi, checkPallet } = useContextPapi();
+  const { decimals: chainDecimals, symbol: chainSymbol } = useChainSettings();
   const {
     treasuryAccount,
     relayChainTreasuryBalance: nativeTreasuryBalanceOnRelayChain,
@@ -56,6 +62,7 @@ function PolkadotTreasuryProviderInner({ children }) {
     bountiesCount,
     isLoading: isQueryBountiesLoading,
   } = useQueryBounties(papi);
+
   const {
     balance: dotTreasuryBalanceOnBounties,
     isLoading: isBountiesTotalBalanceLoading,
@@ -63,6 +70,19 @@ function PolkadotTreasuryProviderInner({ children }) {
 
   const isDotTreasuryBalanceOnBountiesLoading =
     isQueryBountiesLoading || isBountiesTotalBalanceLoading;
+
+  const {
+    bounties: multiAssetBounties,
+    bountiesCount: multiAssetBountiesCount,
+    isLoading: isMultiAssetBountiesLoading,
+  } = useQueryMultiAssetsBounties(papi, checkPallet);
+
+  const { totalByAsset: multiAssetBountiesTotalByAsset } =
+    useMultiAssetsBountiesTotalBalance(
+      multiAssetBounties,
+      chainDecimals,
+      chainSymbol,
+    );
 
   return (
     <PolkadotTreasuryContext.Provider
@@ -93,9 +113,16 @@ function PolkadotTreasuryProviderInner({ children }) {
         loanBifrostDotBalance: 10000000000000000,
         loadPendulumDotBalance: 500000000000000,
         loanHydrationDotBalance: 10000000000000000,
+
+        // bounties
         bountiesCount,
         dotTreasuryBalanceOnBounties,
         isDotTreasuryBalanceOnBountiesLoading,
+
+        // multi-asset bounties
+        multiAssetBountiesCount,
+        multiAssetBountiesTotalByAsset,
+        isMultiAssetBountiesLoading,
       }}
     >
       {children}
