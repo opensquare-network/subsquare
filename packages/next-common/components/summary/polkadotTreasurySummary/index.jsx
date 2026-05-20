@@ -6,6 +6,7 @@ import { MythTokenAssetsProvider } from "./context/mythTokenAssets";
 import FellowshipTreasuryOnAssetHub from "./fellowshipTreasuryOnAssetHub";
 import Loans from "./loans";
 import Bounties from "./bounties";
+import MultiAssetBounties from "./multiAssetBounties";
 import CollapsePanel from "next-common/components/summary/polkadotTreasurySummary/common/collapsePanel";
 import TreasuryStatus from "./treasuryStatus";
 
@@ -15,6 +16,7 @@ function PolkadotTreasurySummaryInContext() {
       <Treasury />
       <TreasuryOnHydration />
       <Bounties />
+      <MultiAssetBounties />
       <FellowshipTreasuryOnAssetHub />
       <Loans />
       <TreasuryStatus />
