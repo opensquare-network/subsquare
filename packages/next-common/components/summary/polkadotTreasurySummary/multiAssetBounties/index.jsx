@@ -9,8 +9,6 @@ import Tooltip from "next-common/components/tooltip";
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 
-const TARGET_LINK = "/treasury/multi-asset-bounties";
-
 export default function MultiAssetBounties() {
   const {
     multiAssetBountiesCount,
@@ -25,7 +23,7 @@ export default function MultiAssetBounties() {
   const Title = (
     <>
       <Link
-        href={TARGET_LINK}
+        href="/treasury/multi-asset-bounties"
         className="text12Medium text-textTertiary hover:underline"
         target="_blank"
         rel="noreferrer"
