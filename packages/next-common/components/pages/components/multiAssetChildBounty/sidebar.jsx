@@ -15,16 +15,16 @@ import {
   CardDetailRow,
   CopyableAddress,
 } from "next-common/components/treasury/bounty/balance";
+import { useMemo } from "react";
 
 function MultiAssetChildBountySidebarBalance() {
   const { address, assetKind } = useOnchainData();
   const { decimals: chainDecimals, symbol: chainSymbol } = useChainSettings();
-  const { symbol, decimals } = getAssetInfoFromAssetKind(
-    assetKind,
-    chainDecimals,
-    chainSymbol,
-  );
-  const { balance, loading } = useAssetBalance(address, symbol);
+  const assetInfo = useMemo(() => {
+    return getAssetInfoFromAssetKind(assetKind, chainDecimals, chainSymbol);
+  }, [assetKind, chainDecimals, chainSymbol]);
+  const { symbol, decimals } = assetInfo;
+  const { balance, loading } = useAssetBalance(address, assetInfo);
 
   if (!address) {
     return null;
