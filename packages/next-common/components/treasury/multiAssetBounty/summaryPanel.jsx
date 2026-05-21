@@ -13,11 +13,16 @@ import TokenSymbolAsset from "next-common/components/summary/polkadotTreasurySum
 import NativeTokenSymbolAsset from "next-common/components/summary/polkadotTreasurySummary/common/nativeTokenSymbolAsset";
 import { useChainSettings } from "next-common/context/chain";
 
-const STATUS_TITLES = {
-  Active: "Active Bounties",
-  Funded: "Funded Bounties",
-  Created: "Created Bounties",
-};
+const STATUS_TITLES = [
+  {
+    title: "Funded Bounties",
+    status: ["Created", "Funded"],
+  },
+  {
+    title: "Active Bounties",
+    status: ["Active"],
+  },
+];
 
 function StatusAssets({ byAsset }) {
   const { symbol: chainSymbol } = useChainSettings();
@@ -47,13 +52,33 @@ export function MultiAssetBountiesSummaryPanelImpl() {
   return (
     <LoadableContent isLoading={isLoading || isNil(groupedByStatus)}>
       <SummaryLayout>
-        {ACTIVE_STATUSES.map((status) => {
-          const group = (groupedByStatus || {})[status] || {
+        {STATUS_TITLES.map((titleStatus) => {
+          const group = {
             count: 0,
             byAsset: {},
           };
+          for (const status of titleStatus.status) {
+            if (!ACTIVE_STATUSES.includes(status)) {
+              return null;
+            }
+            const item = (groupedByStatus || {})[status] || {
+              count: 0,
+              byAsset: {},
+            };
+            group.count += item.count || 0;
+            for (const [key, assetData] of Object.entries(item.byAsset)) {
+              if (!group.byAsset[key]) {
+                group.byAsset[key] = { ...assetData };
+              } else {
+                group.byAsset[key] = {
+                  ...group.byAsset[key],
+                  total: group.byAsset[key].total.plus(assetData.total),
+                };
+              }
+            }
+          }
           return (
-            <SummaryItem key={status} title={STATUS_TITLES[status]}>
+            <SummaryItem key={titleStatus.title} title={titleStatus.title}>
               <div className="flex flex-col gap-y-1">
                 <span>{group.count}</span>
                 <StatusAssets byAsset={group.byAsset} />
