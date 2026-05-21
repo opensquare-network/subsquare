@@ -49,6 +49,15 @@ function StatusAssets({ byAsset }) {
   );
 }
 
+function SummaryItemTitle({ title, tooltip }) {
+  return (
+    <div className="flex items-center gap-1">
+      <span>{title}</span>
+      {tooltip && <Tooltip content={tooltip} />}
+    </div>
+  );
+}
+
 export function MultiAssetBountiesSummaryPanelImpl() {
   const { groupedByStatus, isLoading } = useMultiAssetBountiesSummary();
 
@@ -80,14 +89,11 @@ export function MultiAssetBountiesSummaryPanelImpl() {
               }
             }
           }
-          const titleNode = (
-            <div className="flex items-center gap-1">
-              <span>{titleStatus.title}</span>
-              {titleStatus.tooltip && <Tooltip content={titleStatus.tooltip} />}
-            </div>
-          );
           return (
-            <SummaryItem key={titleStatus.title} title={titleNode}>
+            <SummaryItem
+              key={titleStatus.title}
+              title={<SummaryItemTitle {...titleStatus} />}
+            >
               <div className="flex flex-col gap-y-1">
                 <span>{group.count}</span>
                 <StatusAssets byAsset={group.byAsset} />
