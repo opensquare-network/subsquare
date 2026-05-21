@@ -7,6 +7,7 @@ import {
   useMultiAssetBountiesSummary,
 } from "next-common/hooks/treasury/multiAssetBounty/useMultiAssetBountiesSummary";
 import { isNil } from "lodash-es";
+import Tooltip from "next-common/components/tooltip";
 import { useContextPapi } from "next-common/context/papi";
 import { toPrecision } from "next-common/utils";
 import TokenSymbolAsset from "next-common/components/summary/polkadotTreasurySummary/common/tokenSymbolAsset";
@@ -15,12 +16,14 @@ import { useChainSettings } from "next-common/context/chain";
 
 const STATUS_TITLES = [
   {
-    title: "Funded Bounties",
+    title: "Inactive Bounties",
     status: ["Created", "Funded"],
+    tooltip: "Bounties approved by governance and awaiting curator acceptance.",
   },
   {
     title: "Active Bounties",
     status: ["Active"],
+    tooltip: "Bounties that are currently active and in progress.",
   },
 ];
 
@@ -77,8 +80,14 @@ export function MultiAssetBountiesSummaryPanelImpl() {
               }
             }
           }
+          const titleNode = (
+            <div className="flex items-center gap-1">
+              <span>{titleStatus.title}</span>
+              {titleStatus.tooltip && <Tooltip content={titleStatus.tooltip} />}
+            </div>
+          );
           return (
-            <SummaryItem key={titleStatus.title} title={titleStatus.title}>
+            <SummaryItem key={titleStatus.title} title={titleNode}>
               <div className="flex flex-col gap-y-1">
                 <span>{group.count}</span>
                 <StatusAssets byAsset={group.byAsset} />
