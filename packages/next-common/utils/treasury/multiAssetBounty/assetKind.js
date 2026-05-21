@@ -139,12 +139,37 @@ export function getAssetDecimalsFromAssetKind(assetKind, chainDecimals) {
   return chainDecimals;
 }
 
+export const ASSET_TYPE = {
+  native: "native",
+  assets: "assets",
+  crosschainNative: "crosschainNative",
+};
+
 export function getAssetInfoFromAssetKind(
   assetKind,
   chainDecimals,
   chainSymbol,
 ) {
-  const symbol = getAssetSymbolFromAssetKind(assetKind) || chainSymbol;
+  const derivedSymbol = getAssetSymbolFromAssetKind(assetKind);
+
+  if (
+    derivedSymbol === POLKADOT_DOT_SYMBOL &&
+    process.env.NEXT_PUBLIC_CHAIN === Chains.kusama
+  ) {
+    const versionedData = getVersionedAssetData(assetKind);
+    const foreignAssetLocation = getAssetIdLocation(versionedData);
+    const decimals = SYMBOL_DECIMALS[POLKADOT_DOT_SYMBOL] ?? chainDecimals;
+    return {
+      symbol: POLKADOT_DOT_SYMBOL,
+      decimals,
+      assetType: ASSET_TYPE.crosschainNative,
+      foreignAssetLocation,
+    };
+  }
+
+  const symbol = derivedSymbol || chainSymbol;
   const decimals = getAssetDecimalsFromAssetKind(assetKind, chainDecimals);
-  return { symbol, decimals };
+  const assetType =
+    symbol === chainSymbol ? ASSET_TYPE.native : ASSET_TYPE.assets;
+  return { symbol, decimals, assetType };
 }
