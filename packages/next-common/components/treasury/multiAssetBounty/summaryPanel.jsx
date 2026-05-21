@@ -7,17 +7,25 @@ import {
   useMultiAssetBountiesSummary,
 } from "next-common/hooks/treasury/multiAssetBounty/useMultiAssetBountiesSummary";
 import { isNil } from "lodash-es";
+import Tooltip from "next-common/components/tooltip";
 import { useContextPapi } from "next-common/context/papi";
 import { toPrecision } from "next-common/utils";
 import TokenSymbolAsset from "next-common/components/summary/polkadotTreasurySummary/common/tokenSymbolAsset";
 import NativeTokenSymbolAsset from "next-common/components/summary/polkadotTreasurySummary/common/nativeTokenSymbolAsset";
 import { useChainSettings } from "next-common/context/chain";
 
-const STATUS_TITLES = {
-  Active: "Active Bounties",
-  Funded: "Funded Bounties",
-  Created: "Created Bounties",
-};
+const STATUS_TITLES = [
+  {
+    title: "Approved Bounties",
+    status: ["Created", "Funded"],
+    tooltip: "Bounties approved by governance and awaiting curator acceptance.",
+  },
+  {
+    title: "Active Bounties",
+    status: ["Active"],
+    tooltip: "Bounties that are currently active and in progress.",
+  },
+];
 
 function StatusAssets({ byAsset }) {
   const { symbol: chainSymbol } = useChainSettings();
@@ -41,19 +49,51 @@ function StatusAssets({ byAsset }) {
   );
 }
 
+function SummaryItemTitle({ title, tooltip }) {
+  return (
+    <div className="flex items-center gap-1">
+      <span>{title}</span>
+      {tooltip && <Tooltip content={tooltip} />}
+    </div>
+  );
+}
+
 export function MultiAssetBountiesSummaryPanelImpl() {
   const { groupedByStatus, isLoading } = useMultiAssetBountiesSummary();
 
   return (
     <LoadableContent isLoading={isLoading || isNil(groupedByStatus)}>
       <SummaryLayout>
-        {ACTIVE_STATUSES.map((status) => {
-          const group = (groupedByStatus || {})[status] || {
+        {STATUS_TITLES.map((titleStatus) => {
+          const group = {
             count: 0,
             byAsset: {},
           };
+          for (const status of titleStatus.status) {
+            if (!ACTIVE_STATUSES.includes(status)) {
+              return null;
+            }
+            const item = (groupedByStatus || {})[status] || {
+              count: 0,
+              byAsset: {},
+            };
+            group.count += item.count || 0;
+            for (const [key, assetData] of Object.entries(item.byAsset)) {
+              if (!group.byAsset[key]) {
+                group.byAsset[key] = { ...assetData };
+              } else {
+                group.byAsset[key] = {
+                  ...group.byAsset[key],
+                  total: group.byAsset[key].total.plus(assetData.total),
+                };
+              }
+            }
+          }
           return (
-            <SummaryItem key={status} title={STATUS_TITLES[status]}>
+            <SummaryItem
+              key={titleStatus.title}
+              title={<SummaryItemTitle {...titleStatus} />}
+            >
               <div className="flex flex-col gap-y-1">
                 <span>{group.count}</span>
                 <StatusAssets byAsset={group.byAsset} />
