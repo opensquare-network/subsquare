@@ -16,7 +16,7 @@ import { useChainSettings } from "next-common/context/chain";
 
 const STATUS_TITLES = [
   {
-    title: "Inactive Bounties",
+    title: "Approved Bounties",
     status: ["Created", "Funded"],
     tooltip: "Bounties approved by governance and awaiting curator acceptance.",
   },
