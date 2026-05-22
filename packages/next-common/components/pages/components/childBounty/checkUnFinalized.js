@@ -7,7 +7,10 @@ export default function CheckUnFinalized({ id }) {
   return (
     <CheckUnFinalizedBase
       onChainDataFetcher={async (api) =>
-        api.query.childBounties?.childBounties(parentBountyId, index)
+        api.query.ChildBounties.ChildBounties.getValue(
+          parseInt(parentBountyId),
+          parseInt(index),
+        )
       }
       serverPostFetcher={() =>
         backendApi.fetch(`treasury/child-bounties/${id}`)

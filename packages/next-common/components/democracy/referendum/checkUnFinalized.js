@@ -6,7 +6,7 @@ export default function CheckUnFinalized({ id }) {
   return (
     <CheckUnFinalizedBase
       onChainDataFetcher={async (api) =>
-        api.query.democracy?.referendumInfoOf(id)
+        api.query.Democracy.ReferendumInfoOf.getValue(parseInt(id))
       }
       serverPostFetcher={() => backendApi.fetch(`democracy/referendums/${id}`)}
     />

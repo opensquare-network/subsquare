@@ -5,11 +5,11 @@ import CheckUnFinalizedBase from "next-common/components/checkUnFinalizedBase";
 export default function CheckUnFinalized({ id }) {
   const getPublicProposal = useCallback(
     async (api) => {
-      const proposals = await api.query.democracy?.publicProps();
-      if (!proposals || proposals.isNone) {
+      const proposals = await api.query.Democracy.PublicProps.getValue();
+      if (!proposals) {
         return;
       }
-      return proposals.find(([index]) => index.toNumber() === parseInt(id));
+      return proposals.find(([index]) => Number(index) === parseInt(id));
     },
     [id],
   );

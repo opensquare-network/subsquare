@@ -4,14 +4,14 @@ import { useRouter } from "next/router";
 import Loading from "../assets/imgs/icons/block-loading.svg";
 import { H2, P, Wrapper } from "./styled/notFound";
 import NotFound from "./notFound";
-import { useContextApi } from "next-common/context/api";
+import { useContextPapiApi } from "next-common/context/papi";
 import { isEmptyFunc } from "next-common/utils/isEmptyFunc";
 
 export default function CheckUnFinalizedBase({
   onChainDataFetcher = noop,
   serverPostFetcher = noop,
 }) {
-  const api = useContextApi();
+  const api = useContextPapiApi();
   const router = useRouter();
   const [isUnFinalized, setIsUnFinalized] = useState(false);
   const [isNotFound, setIsNotFound] = useState(false);
@@ -24,8 +24,7 @@ export default function CheckUnFinalizedBase({
     // Check if the proposal is present on-chain
     onChainDataFetcher(api)
       .then((onchainData) => {
-        const data = onchainData?.toJSON();
-        if (!data) {
+        if (onchainData == null) {
           // Proposal is not exist, show 404
           setIsNotFound(true);
           return;
