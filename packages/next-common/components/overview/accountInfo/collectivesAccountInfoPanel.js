@@ -2,6 +2,7 @@ import Divider from "next-common/components/styled/layout/divider";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
 import CollectivesAccountInfo from "./components/collectiveAccountInfo";
 import { AccountHead, ProxyTip } from "./accountInfoPanel";
+import UserPapiAccountProvider from "next-common/context/user/papiAccount";
 import AccountPanelScrollPrompt from "./components/accountPanelScrollPrompt";
 import ExtensionUpdatePrompt from "./components/extensionUpdatePrompt";
 import CollectivesSalaryWarnings from "./components/collectivesSalaryWarnings";
@@ -29,7 +30,9 @@ export default function CollectivesAccountInfoPanel() {
         <ProxyTip />
         <AccountHead width={width} />
         <Divider />
-        <CollectivesAccountInfo />
+        <UserPapiAccountProvider>
+          <CollectivesAccountInfo />
+        </UserPapiAccountProvider>
         <Divider />
         <FellowshipTodoList />
 
