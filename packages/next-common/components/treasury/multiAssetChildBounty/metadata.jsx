@@ -6,7 +6,7 @@ import { useScreenSize } from "next-common/utils/hooks/useScreenSize";
 import { useMemo } from "react";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
-import { useChainSettings } from "next-common/context/chain";
+import { useChain, useChainSettings } from "next-common/context/chain";
 import Anchor from "next-common/components/styled/anchor";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import AddressUser from "next-common/components/user/addressUser";
@@ -15,6 +15,7 @@ import {
   SideInfoItemName,
   SideInfoItemValue,
 } from "next-common/components/detail/common/sidebar";
+import { extractAddressFromXcmAccountLocation } from "next-common/utils/xcm/address";
 import { getAssetInfoFromAssetKind } from "next-common/utils/treasury/multiAssetBounty/assetKind";
 
 const Info = styled.div`
@@ -37,11 +38,16 @@ function MetaGuard({ children }) {
 
 function Meta() {
   const onChain = useOnchainData();
+  const chain = useChain();
   const { decimals: chainDecimals, symbol: chainSymbol } = useChainSettings();
   const { symbol, decimals } = getAssetInfoFromAssetKind(
     onChain.assetKind,
     chainDecimals,
     chainSymbol,
+  );
+  const beneficiaryAddress = extractAddressFromXcmAccountLocation(
+    onChain.beneficiary,
+    chain,
   );
   const { lg, sm } = useScreenSize();
   const beneficiaryUserMaxWidth = useMemo(() => {
@@ -52,7 +58,7 @@ function Meta() {
 
   return (
     <SecondaryCardDetail>
-      <StatisticTitleContainer className="!px-0">
+      <StatisticTitleContainer className="px-0!">
         <Flex>
           <span>Overview</span>
         </Flex>
@@ -61,10 +67,12 @@ function Meta() {
         <SideInfoItem>
           <SideInfoItemName>Beneficiary</SideInfoItemName>
           <SideInfoItemValue>
-            <AddressUser
-              add={onChain.beneficiary}
-              maxWidth={beneficiaryUserMaxWidth}
-            />
+            {beneficiaryAddress ? (
+              <AddressUser
+                add={beneficiaryAddress}
+                maxWidth={beneficiaryUserMaxWidth}
+              />
+            ) : null}
           </SideInfoItemValue>
         </SideInfoItem>
         <SideInfoItem>
