@@ -15,6 +15,8 @@ import MultiAssetChildBountySidebar from "next-common/components/pages/component
 import { TreasuryProvider } from "next-common/context/treasury";
 import MultiAssetChildBountiesDetailMultiTabs from "next-common/components/pages/components/tabs/multiAssetChildBountiesDetailMultiTabs";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
+import { usePageProps } from "next-common/context/page";
+import CheckUnFinalized from "next-common/components/pages/components/multiAssetChildBounty/checkUnFinalized";
 
 function MultiAssetChildBountyContent() {
   const detail = usePost();
@@ -37,10 +39,11 @@ function MultiAssetChildBountyContent() {
 }
 
 function MultiAssetChildBountyContentWithNullGuard() {
+  const { id } = usePageProps();
   const detail = usePost();
 
   if (!detail) {
-    return null;
+    return <CheckUnFinalized id={id} />;
   }
 
   return <MultiAssetChildBountyContent />;

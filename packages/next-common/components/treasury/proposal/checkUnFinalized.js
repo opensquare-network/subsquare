@@ -9,9 +9,13 @@ export default function CheckUnFinalized({ id }) {
 
   return (
     <CheckUnFinalizedBase
-      onChainDataFetcher={async (api) =>
-        api.query[pallet]?.Proposals.getValue(parseInt(id))
-      }
+      onChainDataFetcher={async (api, checkPallet) => {
+        if (!checkPallet(pallet, "Proposals")) {
+          return;
+        }
+
+        return api.query[pallet].Proposals.getValue(parseInt(id));
+      }}
       serverPostFetcher={() =>
         backendApi.fetch(`${kebabCase(pallet)}/proposals/${id}`)
       }

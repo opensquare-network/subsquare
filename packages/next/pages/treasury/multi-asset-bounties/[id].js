@@ -23,6 +23,8 @@ import { gov2TracksApi } from "next-common/services/url";
 import MultiAssetBountiesDetailMultiTabs from "next-common/components/pages/components/tabs/multiAssetBountiesDetailMultiTabs";
 import { PapiProvider } from "next-common/context/papi";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
+import { usePageProps } from "next-common/context/page";
+import CheckUnFinalized from "next-common/components/pages/components/multiAssetBounty/checkUnFinalized";
 
 function useMultiAssetBountyCuratorFromServer() {
   const { curator } = useOnchainData();
@@ -52,10 +54,11 @@ function MultiAssetBountyContent() {
 }
 
 function MultiAssetBountyContentWithNullGuard() {
+  const { id } = usePageProps();
   const detail = usePost();
 
   if (!detail) {
-    return null;
+    return <CheckUnFinalized id={id} />;
   }
 
   return (

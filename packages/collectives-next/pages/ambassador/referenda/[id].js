@@ -92,9 +92,15 @@ function ReferendumPageImpl() {
         breadcrumbs={<AmbassadorBreadcrumb referendumIndex={id} />}
         postContent={
           <CheckUnFinalizedBase
-            onChainDataFetcher={async (api) =>
-              api.query.ambassadorReferenda?.referendumInfoFor(id)
-            }
+            onChainDataFetcher={async (api, checkPallet) => {
+              if (!checkPallet("AmbassadorReferenda", "ReferendumInfoFor")) {
+                return;
+              }
+
+              return api.query.AmbassadorReferenda.ReferendumInfoFor.getValue(
+                parseInt(id),
+              );
+            }}
             serverPostFetcher={() =>
               backendApi.fetch(getAmbassadorReferendumUrl(id))
             }

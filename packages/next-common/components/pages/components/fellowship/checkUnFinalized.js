@@ -5,9 +5,15 @@ import CheckUnFinalizedBase from "next-common/components/checkUnFinalizedBase";
 export default function CheckUnFinalized({ id }) {
   return (
     <CheckUnFinalizedBase
-      onChainDataFetcher={async (api) =>
-        api.query.FellowshipReferenda.ReferendumInfoFor.getValue(parseInt(id))
-      }
+      onChainDataFetcher={async (api, checkPallet) => {
+        if (!checkPallet("FellowshipReferenda", "ReferendumInfoFor")) {
+          return;
+        }
+
+        return api.query.FellowshipReferenda.ReferendumInfoFor.getValue(
+          parseInt(id),
+        );
+      }}
       serverPostFetcher={() => backendApi.fetch(`fellowship/referenda/${id}`)}
     />
   );

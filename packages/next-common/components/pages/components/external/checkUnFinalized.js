@@ -4,7 +4,11 @@ import CheckUnFinalizedBase from "next-common/components/checkUnFinalizedBase";
 
 export default function CheckUnFinalized({ id }) {
   const getExternalProposal = useCallback(
-    async (api) => {
+    async (api, checkPallet) => {
+      if (!checkPallet("Democracy", "NextExternal")) {
+        return;
+      }
+
       const external = await api.query.Democracy.NextExternal.getValue();
       if (!external) return;
       const [proposal] = external;

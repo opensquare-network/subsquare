@@ -11,8 +11,12 @@ export default function CheckUnFinalized({ id }) {
   const pallet = useCollectivePallet();
 
   const findMotion = useCallback(
-    async (api) => {
+    async (api, checkPallet) => {
       const papiPallet = upperFirst(pallet);
+      if (!checkPallet(papiPallet, "ProposalOf")) {
+        return;
+      }
+
       const palletApi = api.query[papiPallet];
       if (!palletApi) {
         return;
@@ -20,6 +24,13 @@ export default function CheckUnFinalized({ id }) {
 
       if (id?.match(/^[0-9]+$/)) {
         // If id is a motion index
+        if (
+          !checkPallet(papiPallet, "Proposals") ||
+          !checkPallet(papiPallet, "Voting")
+        ) {
+          return;
+        }
+
         const allMotions = await palletApi.Proposals.getValue();
         if (!allMotions) return;
         const allVotingEntries = await palletApi.Voting.getEntries();

@@ -4,7 +4,11 @@ import CheckUnFinalizedBase from "next-common/components/checkUnFinalizedBase";
 
 export default function CheckUnFinalized({ id }) {
   const getPublicProposal = useCallback(
-    async (api) => {
+    async (api, checkPallet) => {
+      if (!checkPallet("Democracy", "PublicProps")) {
+        return;
+      }
+
       const proposals = await api.query.Democracy.PublicProps.getValue();
       if (!proposals) {
         return;
