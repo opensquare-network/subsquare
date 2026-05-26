@@ -5,7 +5,7 @@ import UpcomingEventItem from "./item";
 function Title() {
   return (
     <div className="flex items-center gap-1 text14Medium text-textTertiary">
-      <span>What will happen</span>
+      <span>Upcoming events</span>
     </div>
   );
 }
