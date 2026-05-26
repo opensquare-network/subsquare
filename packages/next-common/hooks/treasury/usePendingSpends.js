@@ -54,6 +54,14 @@ function getSpendCountdown(spend, chainHeight) {
   return null;
 }
 
+function getCountdownTimeLeftMs(countdown, blockTime) {
+  return BigNumber(countdown.blocks).multipliedBy(blockTime).toNumber();
+}
+
+function getCountdownThresholdMs(type) {
+  return type === "valid" ? THREE_DAYS_MS : SEVEN_DAYS_MS;
+}
+
 export default function usePendingSpends() {
   const api = useContextApi();
   const treasuryPallet = useTreasuryPallet();
@@ -65,23 +73,19 @@ export default function usePendingSpends() {
     [],
   );
 
-  const { expiringSoonCount, validSoonCount, pendingSpendPrompts } =
+  const { expiringSoonCount, validSoonCount, pendingSpendCountdowns } =
     useMemo(() => {
       if (!spendsEntries?.length || !blockTime || isNil(chainHeight)) {
         return {
           expiringSoonCount: 0,
           validSoonCount: 0,
-          pendingSpendPrompts: [],
+          pendingSpendCountdowns: [],
         };
       }
 
-      const now = Date.now();
-      const sevenDaysLaterMs = now + SEVEN_DAYS_MS;
-      const threeDaysLaterMs = now + THREE_DAYS_MS;
-
       let expiring = 0;
       let validating = 0;
-      const prompts = [];
+      const countdowns = [];
 
       spendsEntries.forEach(([storageKey, spendOption]) => {
         if (!spendOption || spendOption.isNone) {
@@ -89,51 +93,37 @@ export default function usePendingSpends() {
         }
 
         const spend = spendOption.unwrap();
-        const validFrom = spend.validFrom?.toNumber?.();
-        const expireAt = spend.expireAt?.toNumber?.();
         const countdown = getSpendCountdown(spend, chainHeight);
 
-        if (countdown) {
-          prompts.push({
-            index: getSpendIndex(storageKey),
-            ...countdown,
-            estimatedBlocksTime: estimateBlocksTime(
-              countdown.blocks,
-              blockTime,
-            ),
-          });
+        if (!countdown) {
+          return;
         }
 
-        if (expireAt && expireAt > chainHeight) {
-          const heightDiff = expireAt - chainHeight;
-          const timeLeftMs = BigNumber(heightDiff)
-            .multipliedBy(blockTime)
-            .toNumber();
-          const expireTimeMs = now + timeLeftMs;
+        const timeLeftMs = getCountdownTimeLeftMs(countdown, blockTime);
 
-          if (expireTimeMs > now && expireTimeMs <= sevenDaysLaterMs) {
-            expiring++;
-          }
+        if (timeLeftMs > getCountdownThresholdMs(countdown.type)) {
+          return;
         }
 
-        if (validFrom && validFrom > chainHeight) {
-          const heightDiff = validFrom - chainHeight;
-          const timeLeftMs = BigNumber(heightDiff)
-            .multipliedBy(blockTime)
-            .toNumber();
-          const validTimeMs = now + timeLeftMs;
-
-          if (validTimeMs > now && validTimeMs <= threeDaysLaterMs) {
-            validating++;
-          }
+        if (countdown.type === "expire") {
+          expiring++;
+        } else {
+          validating++;
         }
+
+        countdowns.push({
+          index: getSpendIndex(storageKey),
+          ...countdown,
+          timeLeftMs,
+          estimatedBlocksTime: estimateBlocksTime(countdown.blocks, blockTime),
+        });
       });
 
       return {
         expiringSoonCount: expiring,
         validSoonCount: validating,
-        pendingSpendPrompts: prompts.sort(
-          (a, b) => a.targetHeight - b.targetHeight,
+        pendingSpendCountdowns: countdowns.sort(
+          (a, b) => a.timeLeftMs - b.timeLeftMs,
         ),
       };
     }, [spendsEntries, blockTime, chainHeight]);
@@ -141,7 +131,7 @@ export default function usePendingSpends() {
   return {
     expiringSoonCount,
     validSoonCount,
-    pendingSpendPrompts,
+    pendingSpendCountdowns,
     loading,
   };
 }
