@@ -1,18 +1,16 @@
+import { getSubscanDomain } from "next-common/components/links/subscanLink";
 import { detailPageCategory } from "./consts/business/category";
-import getChainSettings from "./consts/settings";
 
 export function getSubscanLink(chain, type, post) {
   if (!post) {
     return null;
   }
 
-  const { integrations } = getChainSettings(chain);
+  const domain = getSubscanDomain(post.indexer, chain);
 
-  if (!integrations?.subscan) {
+  if (!domain) {
     return null;
   }
-
-  const domain = integrations.subscan.domain || chain;
 
   const makeLink = (path = "") => {
     return `https://${domain}.subscan.io${path}`;

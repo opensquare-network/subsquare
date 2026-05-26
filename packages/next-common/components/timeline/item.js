@@ -164,7 +164,7 @@ export default function Item({
             </TagWrapper>
           )}
           <FoldButton
-            className={cn("fold-button", compact && "!hidden")}
+            className={cn("fold-button", compact && "hidden!")}
             isFold={isFold}
             onClick={() => setIsFold(!isFold)}
           >
@@ -189,7 +189,7 @@ export default function Item({
                   </ContentItem>
                 )))}
         </ContentWrapper>
-        <LinkWrapper className={cn(compact && "!hidden")}>
+        <LinkWrapper className={cn(compact && "hidden!")}>
           <ExplorerLinks indexer={data.indexer} />
         </LinkWrapper>
       </Right>
