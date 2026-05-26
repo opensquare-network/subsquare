@@ -1,8 +1,11 @@
 import { useMemo } from "react";
 import Link from "next/link";
+import { useAsync } from "react-use";
 import { useChainSettings } from "next-common/context/chain";
 import { TreasuryProvider } from "next-common/context/treasury";
 import usePendingSpends from "next-common/hooks/treasury/usePendingSpends";
+import { fetchTreasuryItemData } from "next-common/services/treasuryItemsData";
+import Tooltip from "next-common/components/tooltip";
 import { UpcomingEventsSource } from "../context";
 
 const SOURCE = "treasury-spend";
@@ -17,11 +20,23 @@ function getSpendActionText(type) {
 }
 
 function TreasurySpendEventContent({ spend }) {
+  const { value: data } = useAsync(
+    () => fetchTreasuryItemData("treasury/spends", spend.index),
+    [spend.index],
+  );
+
+  const title = data?.title?.trim() || `Treasury spend #${spend.index}`;
+
   return (
     <>
-      <Link className="text-theme500" href={`/treasury/spends/${spend.index}`}>
-        Treasury spend #{spend.index}
-      </Link>
+      <Tooltip content={title}>
+        <Link
+          className="text-theme500"
+          href={`/treasury/spends/${spend.index}`}
+        >
+          Treasury spend #{spend.index}
+        </Link>
+      </Tooltip>
       <span>
         &nbsp;will be {getSpendActionText(spend.type)} in{" "}
         {spend.estimatedBlocksTime}
