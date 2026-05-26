@@ -1,8 +1,27 @@
 import React from "react";
-import { useChain, useChainSettings } from "../../context/chain";
+import { useChain } from "../../context/chain";
 import { isNil } from "lodash-es";
 import { LinkSubscan } from "@osn/icons/subsquare";
 import IconLink from "./iconLink";
+import getChainSettings from "next-common/utils/consts/settings";
+
+export function getSubscanDomain(indexer = {}, chain) {
+  const { integrations, assethubMigration = {} } = getChainSettings(chain);
+
+  if (
+    assethubMigration?.migrated &&
+    indexer?.blockTime != null &&
+    BigInt(indexer.blockTime) >= BigInt(assethubMigration?.timestamp || 0)
+  ) {
+    return assethubMigration?.subscanAssethubDomain || null;
+  }
+
+  if (integrations?.subscan) {
+    return integrations.subscan.domain || chain;
+  }
+
+  return null;
+}
 
 export default function SubScanLink({
   indexer = {},
@@ -10,17 +29,7 @@ export default function SubScanLink({
   customDomain = null,
 }) {
   const chain = useChain();
-  const { integrations, assethubMigration = {} } = useChainSettings();
-
-  let domain = null;
-  if (
-    assethubMigration?.migrated &&
-    BigInt(indexer.blockTime) >= BigInt(assethubMigration?.timestamp || 0)
-  ) {
-    domain = assethubMigration?.subscanAssethubDomain || null;
-  } else if (integrations?.subscan) {
-    domain = integrations.subscan.domain || chain;
-  }
+  let domain = getSubscanDomain(indexer, chain);
 
   if (customDomain) {
     domain = customDomain;
