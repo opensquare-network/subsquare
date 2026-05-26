@@ -31,6 +31,7 @@ import { AvatarImg } from "next-common/components/user/styled";
 import Gravatar from "next-common/components/gravatar";
 import AccountPanelJudgementScrollPrompt from "./components/accountPanelJudgementScrollPrompt";
 import { useChainSettings } from "next-common/context/chain";
+import TreasurySpendPrompt from "./components/treasurySpendPrompt";
 
 const ParaChainTeleportPopup = dynamic(() =>
   import("next-common/components/paraChainTeleportPopup").then(
@@ -317,6 +318,7 @@ export default function AccountInfoPanel() {
       <Divider />
       <AccountBalances />
       <ExtensionUpdatePrompt />
+      <TreasurySpendPrompt />
       {hasIdentityVerification && <AccountPanelJudgementScrollPrompt />}
       <AccountPanelScrollPrompt />
     </NeutralPanel>
