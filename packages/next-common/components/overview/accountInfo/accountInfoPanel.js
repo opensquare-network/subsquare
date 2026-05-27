@@ -317,8 +317,8 @@ export default function AccountInfoPanel() {
       <AccountHead width={width} />
       <Divider />
       <AccountBalances />
-      <ExtensionUpdatePrompt />
       <UpcomingEventsPrompt />
+      <ExtensionUpdatePrompt />
       {hasIdentityVerification && <AccountPanelJudgementScrollPrompt />}
       <AccountPanelScrollPrompt />
     </NeutralPanel>
