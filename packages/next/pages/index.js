@@ -28,8 +28,10 @@ import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { votingSpace } from "next-common/utils/opensquareVoting";
 import generateLayoutRawTitle from "next-common/utils/generateLayoutRawTitle";
 import UserPapiAccountProvider from "next-common/context/user/papiAccount";
-import ConfirmingReferendaStats from "next-common/components/overview/confirmingReferendaStats";
 
+const ConfirmingReferendaStats = dynamicClientOnly(() =>
+  import("next-common/components/overview/confirmingReferendaStats"),
+);
 const OverviewScrollPrompt = dynamicClientOnly(() =>
   import("next-common/components/overview/overviewScrollPrompt"),
 );
