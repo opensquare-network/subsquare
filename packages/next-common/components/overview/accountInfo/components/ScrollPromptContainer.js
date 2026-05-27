@@ -88,7 +88,7 @@ export default function ScrollPromptContainer({
       });
     }, 6500);
     return () => clearInterval(interval);
-  }, [marginTop, total]);
+  }, [marginTop, total, pageSize]);
 
   return (
     <div
