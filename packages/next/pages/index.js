@@ -29,12 +29,8 @@ import { votingSpace } from "next-common/utils/opensquareVoting";
 import generateLayoutRawTitle from "next-common/utils/generateLayoutRawTitle";
 import UserPapiAccountProvider from "next-common/context/user/papiAccount";
 
-const ConfirmingReferendaStats = dynamicClientOnly(() =>
-  import("next-common/components/overview/confirmingReferendaStats"),
-);
-
-const CoretimeStats = dynamicClientOnly(() =>
-  import("next-common/components/overview/coretimeStats"),
+const OverviewScrollPrompt = dynamicClientOnly(() =>
+  import("next-common/components/overview/overviewScrollPrompt"),
 );
 
 function ExternalInfo() {
@@ -54,8 +50,7 @@ function ExternalInfo() {
       <div className="grid grid-cols-2 gap-[16px] max-md:grid-cols-1">
         <OffChainVoting />
       </div>
-      <ConfirmingReferendaStats />
-      <CoretimeStats />
+      <OverviewScrollPrompt />
     </div>
   );
 }

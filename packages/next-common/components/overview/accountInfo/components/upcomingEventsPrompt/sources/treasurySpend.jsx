@@ -28,7 +28,7 @@ function TreasurySpendEventContent({ spend }) {
     <>
       <Tooltip content={title}>
         <Link
-          className="text-theme500"
+          className="font-bold underline"
           href={`/treasury/spends/${spend.index}`}
         >
           Treasury spend #{spend.index}
