@@ -18,6 +18,22 @@ import { SEVEN_DAYS_MS } from "next-common/utils/constants";
 
 const SOURCE = "referenda";
 
+function buildCountdownItem(referendumIndex, type, remaining, blockTime) {
+  if (remaining <= 0) return null;
+
+  const timeLeftMs = BigNumber(remaining).multipliedBy(blockTime).toNumber();
+  if (timeLeftMs > SEVEN_DAYS_MS) return null;
+
+  return {
+    id: `${SOURCE}-${type}-${referendumIndex}`,
+    tag: getReferendumTag(type),
+    timeLeftMs,
+    estimatedTime: estimateBlocksTime(remaining, blockTime),
+    index: referendumIndex,
+    type,
+  };
+}
+
 function getReferendumTag(type) {
   const tags = {
     timeout: "Timeout",
@@ -89,69 +105,39 @@ export default function useReferendaUpcomingItems() {
 
       if (status === "preparing" && undecidingTimeout) {
         const submitted = ongoingReferendum.submitted.toNumber();
-        const timeoutAt = submitted + undecidingTimeout;
-        const remaining = timeoutAt - latestHeight;
-
-        if (remaining <= 0) continue;
-
-        const timeLeftMs = BigNumber(remaining)
-          .multipliedBy(blockTime)
-          .toNumber();
-        if (timeLeftMs > SEVEN_DAYS_MS) continue;
-
-        items.push({
-          id: `${SOURCE}-timeout-${referendumIndex}`,
-          tag: getReferendumTag("timeout"),
-          timeLeftMs,
-          estimatedTime: estimateBlocksTime(remaining, blockTime),
-          index: referendumIndex,
-          type: "timeout",
-        });
+        const remaining = submitted + undecidingTimeout - latestHeight;
+        const item = buildCountdownItem(
+          referendumIndex,
+          "timeout",
+          remaining,
+          blockTime,
+        );
+        if (item) items.push(item);
       } else if (status === "deciding" && track) {
         const decisionSince = ongoingReferendum.deciding
           .unwrap()
           .since.toNumber();
-        const decisionPeriod = track.decisionPeriod;
-        const remaining = decisionPeriod - (latestHeight - decisionSince);
-
-        if (remaining <= 0) continue;
-
-        const timeLeftMs = BigNumber(remaining)
-          .multipliedBy(blockTime)
-          .toNumber();
-        if (timeLeftMs > SEVEN_DAYS_MS) continue;
-
-        items.push({
-          id: `${SOURCE}-decision-${referendumIndex}`,
-          tag: getReferendumTag("decision"),
-          timeLeftMs,
-          estimatedTime: estimateBlocksTime(remaining, blockTime),
-          index: referendumIndex,
-          type: "decision",
-        });
+        const remaining = track.decisionPeriod - (latestHeight - decisionSince);
+        const item = buildCountdownItem(
+          referendumIndex,
+          "decision",
+          remaining,
+          blockTime,
+        );
+        if (item) items.push(item);
       } else if (status === "confirming" && track) {
         const confirmSince = ongoingReferendum.deciding
           .unwrap()
           .confirming.unwrap()
           .toNumber();
-        const confirmPeriod = track.confirmPeriod;
-        const remaining = confirmPeriod - (latestHeight - confirmSince);
-
-        if (remaining <= 0) continue;
-
-        const timeLeftMs = BigNumber(remaining)
-          .multipliedBy(blockTime)
-          .toNumber();
-        if (timeLeftMs > SEVEN_DAYS_MS) continue;
-
-        items.push({
-          id: `${SOURCE}-confirm-${referendumIndex}`,
-          tag: getReferendumTag("confirm"),
-          timeLeftMs,
-          estimatedTime: estimateBlocksTime(remaining, blockTime),
-          index: referendumIndex,
-          type: "confirm",
-        });
+        const remaining = track.confirmPeriod - (latestHeight - confirmSince);
+        const item = buildCountdownItem(
+          referendumIndex,
+          "confirm",
+          remaining,
+          blockTime,
+        );
+        if (item) items.push(item);
       }
     }
 
