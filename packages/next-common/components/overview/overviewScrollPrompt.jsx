@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { TreasuryProvider } from "next-common/context/treasury";
 import ScrollPromptContainer from "next-common/components/overview/accountInfo/components/ScrollPromptContainer";
 import ConfirmingReferendaStats from "./confirmingReferendaStats";
@@ -15,38 +15,29 @@ function SpendItemRow({ item, onClose }) {
       style={colorStyle[PromptTypes.NEUTRAL]}
     >
       <div className="flex flex-wrap items-center gap-x-0">{item.content}</div>
-      <SystemClose
-        className="w-5 h-5 shrink-0 ml-2"
-        role="button"
-        onClick={onClose}
-      />
+      {onClose && (
+        <SystemClose
+          className="w-5 h-5 shrink-0 ml-2"
+          role="button"
+          onClick={onClose}
+        />
+      )}
     </GreyPanel>
   );
 }
 
 function OverviewScrollPromptContent() {
   const spendItems = useTreasurySpendUpcomingItems();
-  const [closedIds, setClosedIds] = useState(new Set());
-
-  const visibleSpendItems = useMemo(
-    () => spendItems.filter((item) => !closedIds.has(item.id)),
-    [spendItems, closedIds],
-  );
 
   const components = useMemo(() => {
-    const spendComponents = visibleSpendItems.map((item) => {
+    const spendComponents = spendItems.map((item) => {
       function SpendItem() {
-        return (
-          <SpendItemRow
-            item={item}
-            onClose={() => setClosedIds((prev) => new Set([...prev, item.id]))}
-          />
-        );
+        return <SpendItemRow item={item} />;
       }
       return SpendItem;
     });
     return [ConfirmingReferendaStats, CoretimeStats, ...spendComponents];
-  }, [visibleSpendItems]);
+  }, [spendItems]);
 
   return <ScrollPromptContainer components={components} pageSize={3} />;
 }
