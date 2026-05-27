@@ -48,7 +48,7 @@ function OverviewScrollPromptContent() {
     return [ConfirmingReferendaStats, CoretimeStats, ...spendComponents];
   }, [visibleSpendItems]);
 
-  return <ScrollPromptContainer components={components} />;
+  return <ScrollPromptContainer components={components} pageSize={3} />;
 }
 
 export default function OverviewScrollPrompt() {
