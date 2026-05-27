@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import { TreasuryProvider } from "next-common/context/treasury";
 import ScrollPromptContainer from "next-common/components/overview/accountInfo/components/ScrollPromptContainer";
-import ConfirmingReferendaStats from "./confirmingReferendaStats";
 import CoretimeStats from "./coretimeStats";
 import useTreasurySpendUpcomingItems from "./accountInfo/components/upcomingEventsPrompt/sources/treasurySpend";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
@@ -36,7 +35,7 @@ function OverviewScrollPromptContent() {
       }
       return SpendItem;
     });
-    return [ConfirmingReferendaStats, CoretimeStats, ...spendComponents];
+    return [CoretimeStats, ...spendComponents];
   }, [spendItems]);
 
   return <ScrollPromptContainer components={components} pageSize={3} />;
