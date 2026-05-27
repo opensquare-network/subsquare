@@ -7,24 +7,27 @@ const ITEM_HEIGHT = 40;
 const MOBILE_ITEM_HEIGHT = 60;
 const ITEM_GAP = 4;
 
-export default function ScrollPromptContainer({ components = [] }) {
+export default function ScrollPromptContainer({
+  components = [],
+  pageSize = 2,
+}) {
   const wrapperRef = useRef();
   const width = useWindowWidthContext();
   const isMobile = width < 768;
   const [total, setTotal] = useState(0);
   const pauseRef = useRef(false);
 
-  const pageSize = total > 2 ? 2 : 1;
+  const displaySize = Math.min(total, pageSize);
 
   const wrapperHeight = useMemo(() => {
     if (!total) {
       return 0;
     }
     if (isMobile) {
-      return pageSize * MOBILE_ITEM_HEIGHT + ITEM_GAP * (pageSize - 1);
+      return displaySize * MOBILE_ITEM_HEIGHT + ITEM_GAP * (displaySize - 1);
     }
-    return pageSize * ITEM_HEIGHT + ITEM_GAP * (pageSize - 1);
-  }, [isMobile, pageSize, total]);
+    return displaySize * ITEM_HEIGHT + ITEM_GAP * (displaySize - 1);
+  }, [isMobile, displaySize, total]);
 
   const [random, setRandom] = useState(1);
   useEffect(() => {
@@ -57,7 +60,7 @@ export default function ScrollPromptContainer({ components = [] }) {
     indexRef.current = 0;
     wrapperRef.current?.scrollTo({ top: 0 });
 
-    if (total < 2) {
+    if (total <= pageSize) {
       return;
     }
 
@@ -85,7 +88,7 @@ export default function ScrollPromptContainer({ components = [] }) {
       });
     }, 6500);
     return () => clearInterval(interval);
-  }, [marginTop, total]);
+  }, [marginTop, total, pageSize]);
 
   return (
     <div
