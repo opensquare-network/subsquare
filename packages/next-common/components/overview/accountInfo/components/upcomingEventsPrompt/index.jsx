@@ -12,7 +12,6 @@ function compareByTime(a, b) {
 
 function UpcomingEventsContent() {
   const treasurySpendItems = useTreasurySpendUpcomingItems();
-  // const items2 = useSomethingElse();
 
   const items = useMemo(
     () => [...treasurySpendItems].sort(compareByTime),
