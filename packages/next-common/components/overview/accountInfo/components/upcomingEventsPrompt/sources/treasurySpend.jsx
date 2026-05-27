@@ -2,14 +2,11 @@ import { useMemo } from "react";
 import Link from "next/link";
 import { useAsync } from "react-use";
 import { useChainSettings } from "next-common/context/chain";
-import { TreasuryProvider } from "next-common/context/treasury";
-import usePendingSpends from "next-common/hooks/treasury/usePendingSpends";
+import useSpendCountdowns from "next-common/hooks/treasury/useSpendCountdowns";
 import { fetchTreasuryItemData } from "next-common/services/treasuryItemsData";
 import Tooltip from "next-common/components/tooltip";
-import { UpcomingEventsSource } from "../context";
 
 const SOURCE = "treasury-spend";
-const EMPTY_EVENTS = [];
 
 function getSpendTag(type) {
   return type === "valid" ? "Valid" : "Expire";
@@ -45,36 +42,20 @@ function TreasurySpendEventContent({ spend }) {
   );
 }
 
-function useTreasurySpendUpcomingEvents() {
-  const { pendingSpendCountdowns } = usePendingSpends();
+export default function useTreasurySpendUpcomingItems() {
+  const { modules } = useChainSettings();
+  const { spendCountdowns } = useSpendCountdowns();
 
   return useMemo(() => {
-    return pendingSpendCountdowns.map((spend) => ({
+    if (!modules?.treasury?.spends) {
+      return [];
+    }
+
+    return spendCountdowns.map((spend) => ({
       id: `${SOURCE}-${spend.type}-${spend.index}-${spend.targetHeight}`,
-      source: SOURCE,
       tag: getSpendTag(spend.type),
       timeLeftMs: spend.timeLeftMs,
       content: <TreasurySpendEventContent spend={spend} />,
     }));
-  }, [pendingSpendCountdowns]);
-}
-
-function TreasurySpendUpcomingEventsRegistrar() {
-  const events = useTreasurySpendUpcomingEvents();
-
-  return <UpcomingEventsSource source={SOURCE} events={events} />;
-}
-
-export default function TreasurySpendUpcomingEventsSource() {
-  const { modules } = useChainSettings();
-
-  if (!modules?.treasury?.spends) {
-    return <UpcomingEventsSource source={SOURCE} events={EMPTY_EVENTS} />;
-  }
-
-  return (
-    <TreasuryProvider>
-      <TreasurySpendUpcomingEventsRegistrar />
-    </TreasuryProvider>
-  );
+  }, [modules?.treasury?.spends, spendCountdowns]);
 }
