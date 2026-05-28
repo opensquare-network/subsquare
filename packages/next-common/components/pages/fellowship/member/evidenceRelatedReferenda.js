@@ -17,9 +17,11 @@ import { ActiveReferendaProvider } from "next-common/context/activeReferenda";
 import CollectivesMembersProvider from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/collectivesMember";
 import { isNil } from "lodash-es";
 import { useMemo } from "react";
+import FieldLoading from "next-common/components/icons/fieldLoading";
 import { Gov2ReferendaTag } from "next-common/components/tags/state/gov2";
 import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
 import { useIsWeb3User } from "next-common/context/user";
+import useRelatedReferenda from "next-common/hooks/fellowship/useRelatedReferenda";
 
 const CreateReferendumAndVoteArea = tw(CreateReferendumAndVote)`
   !w-full
@@ -45,17 +47,33 @@ const ReferendumTitleWrapper = tw(FellowshipReferendumTitleImpl)`
 export function EvidenceRelatedReferendaImpl() {
   const isWeb3User = useIsWeb3User();
   const { detail } = usePageProps() || {};
-  const { referenda = [] } = detail || {};
+  const { who, wish } = detail || {};
+
+  const wishMethods = useMemo(() => {
+    if (wish === "Retention") return ["approve"];
+    if (wish === "PromotionRequest") return ["promote", "promoteFast"];
+    return ["approve", "promote", "promoteFast"];
+  }, [wish]);
+
+  const { relatedReferenda, isLoading } = useRelatedReferenda(who, wishMethods);
 
   const canCreateReferendum = useMemo(() => {
     const isOnChain =
       isNil(detail?.cid) && isNil(detail?.content) && isNil(detail?.hex);
-    return (
-      detail?.isActive && !isOnChain && referenda.length <= 0 && isWeb3User
-    );
-  }, [detail, referenda, isWeb3User]);
+    return !isOnChain && relatedReferenda.length === 0 && isWeb3User;
+  }, [detail, relatedReferenda, isWeb3User]);
 
-  if (referenda.length <= 0) {
+  if (isLoading) {
+    return (
+      <SecondaryCard className="!p-4">
+        <div className="flex items-center min-h-[40px]">
+          <FieldLoading size={20} />
+        </div>
+      </SecondaryCard>
+    );
+  }
+
+  if (relatedReferenda.length === 0) {
     return (
       <SecondaryCard className="!p-4">
         <div className="flex gap-x-[16px] justify-between items-center max-sm:flex-col max-sm:gap-y-3 min-h-[40px]">
@@ -69,9 +87,30 @@ export function EvidenceRelatedReferendaImpl() {
       </SecondaryCard>
     );
   }
+
+  return relatedReferenda.map(({ referendumIndex }, index) => (
+    <SecondaryCard key={index} className="!p-4">
+      <ReferendumVoteItem referendumIndex={referendumIndex} />
+    </SecondaryCard>
+  ));
+}
+
+function EvidenceReferendaFromDB({ referenda }) {
+  if (referenda.length === 0) {
+    return (
+      <SecondaryCard className="!p-4">
+        <div className="flex items-center min-h-[40px]">
+          <p className="text-textTertiary text14Medium w-full max-sm:text-center">
+            No referendum was created
+          </p>
+        </div>
+      </SecondaryCard>
+    );
+  }
+
   return referenda.map((referendum, index) => (
     <SecondaryCard key={index} className="!p-4">
-      <ReferendumVoteItem key={index} referendumIndex={referendum.index} />
+      <ReferendumVoteItem referendumIndex={referendum.index} />
     </SecondaryCard>
   ));
 }
@@ -83,16 +122,26 @@ export default function EvidenceRelatedReferenda() {
     return null;
   }
 
+  const { referenda: detailReferenda = [], isActive } = detail;
+  // Only query the chain when the scanner has no linked referenda AND the
+  // evidence is still active — the common case where a new evidence was
+  // submitted after the referendum was already created.
+  const needsChainFallback = detailReferenda.length === 0 && isActive;
+
   return (
     <div className="flex flex-col gap-y-4 mt-6">
       <label className="text-textPrimary text14Bold">Related Referendum</label>
-      <ActiveReferendaProvider pallet="fellowshipReferenda">
-        <CollectivesProvider>
-          <CollectivesMembersProvider>
-            <EvidenceRelatedReferendaImpl />
-          </CollectivesMembersProvider>
-        </CollectivesProvider>
-      </ActiveReferendaProvider>
+      <CollectivesProvider>
+        <CollectivesMembersProvider>
+          {needsChainFallback ? (
+            <ActiveReferendaProvider pallet="fellowshipReferenda">
+              <EvidenceRelatedReferendaImpl />
+            </ActiveReferendaProvider>
+          ) : (
+            <EvidenceReferendaFromDB referenda={detailReferenda} />
+          )}
+        </CollectivesMembersProvider>
+      </CollectivesProvider>
     </div>
   );
 }
