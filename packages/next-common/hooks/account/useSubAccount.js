@@ -7,7 +7,9 @@ export function useSubAccount(address) {
   const [value, setValue] = useState(null);
 
   const api = useContextApi();
-  const { result: account } = useSubStorage("system", "account", [address]);
+  const { result: account } = useSubStorage("system", "account", [address], {
+    skip: !address,
+  });
 
   function update(newVal) {
     setValue((val) => {

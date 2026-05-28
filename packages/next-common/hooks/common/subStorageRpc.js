@@ -26,11 +26,19 @@ function getStorageReturnType(api, storage) {
   throw new Error("Unknown storage type");
 }
 
+function getStorageReturnTypeName(api, storage) {
+  const returnType = getStorageReturnType(api, storage);
+  return returnType.lookupName || returnType.type;
+}
+
 function createEmptyReturnValue(api, storage) {
   const returnType = getStorageReturnType(api, storage);
 
   if (storage.creator.meta.modifier.isOptional) {
-    return api.createType(`Option<${returnType.lookupName}>`, null);
+    return api.createType(
+      `Option<${getStorageReturnTypeName(api, storage)}>`,
+      null,
+    );
   }
 
   const fallback = storage?.creator?.meta?.fallback;
@@ -50,7 +58,7 @@ function createReturnValue(api, storage, valueU8a) {
   decodedValue = api.createType(returnType.type, valueU8a);
   if (storage.creator.meta.modifier.isOptional) {
     decodedValue = api.createType(
-      `Option<${returnType.lookupName}>`,
+      `Option<${getStorageReturnTypeName(api, storage)}>`,
       decodedValue,
     );
   }
