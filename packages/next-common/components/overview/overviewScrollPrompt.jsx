@@ -3,9 +3,12 @@ import { TreasuryProvider } from "next-common/context/treasury";
 import ScrollPromptContainer from "next-common/components/overview/accountInfo/components/ScrollPromptContainer";
 import CoretimeStats from "./coretimeStats";
 import useTreasurySpendUpcomingItems from "./accountInfo/components/upcomingEventsPrompt/sources/treasurySpend";
+import useReferendaUpcomingItems from "./accountInfo/components/upcomingEventsPrompt/sources/referenda";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { colorStyle, PromptTypes } from "next-common/components/scrollPrompt";
 import { SystemClose } from "@osn/icons/subsquare";
+import { ReferendaPalletProvider } from "next-common/context/referenda/pallet";
+import { OnChainReferendaProvider } from "next-common/context/onchainReferenda";
 
 function SpendItemRow({ item, onClose }) {
   return (
@@ -27,16 +30,20 @@ function SpendItemRow({ item, onClose }) {
 
 function OverviewScrollPromptContent() {
   const spendItems = useTreasurySpendUpcomingItems();
+  const referendaItems = useReferendaUpcomingItems();
 
   const components = useMemo(() => {
-    const spendComponents = spendItems.map((item) => {
-      function SpendItem() {
+    const allItems = [...spendItems, ...referendaItems].sort(
+      (a, b) => a.timeLeftMs - b.timeLeftMs,
+    );
+    const itemComponents = allItems.map((item) => {
+      function PromptItem() {
         return <SpendItemRow item={item} />;
       }
-      return SpendItem;
+      return PromptItem;
     });
-    return [CoretimeStats, ...spendComponents];
-  }, [spendItems]);
+    return [CoretimeStats, ...itemComponents];
+  }, [spendItems, referendaItems]);
 
   return <ScrollPromptContainer components={components} pageSize={3} />;
 }
@@ -44,7 +51,11 @@ function OverviewScrollPromptContent() {
 export default function OverviewScrollPrompt() {
   return (
     <TreasuryProvider>
-      <OverviewScrollPromptContent />
+      <ReferendaPalletProvider>
+        <OnChainReferendaProvider>
+          <OverviewScrollPromptContent />
+        </OnChainReferendaProvider>
+      </ReferendaPalletProvider>
     </TreasuryProvider>
   );
 }
