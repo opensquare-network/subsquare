@@ -27,6 +27,7 @@ function VoteButtonImpl({
   );
   const { result: referendumInfo, loading: isReferendumInfoLoading } =
     useSubFellowshipReferendum(referendumIndex);
+
   const { onInBlock = noop, onFinalized = noop } = callbacks || {};
 
   const voteTxFunc = useCallback(() => {
@@ -39,9 +40,10 @@ function VoteButtonImpl({
     onFinalized,
   });
 
-  let disabled = isMyRankLoading; // Disable if loading member rank
   let tooltipContent = voteAye ? "Vote Aye" : "Vote Nay";
-  if (!isReferendumInfoLoading && referendumInfo) {
+
+  let disabled = true;
+  if (!isMyRankLoading && !isReferendumInfoLoading && referendumInfo) {
     try {
       const referendum = referendumInfo.unwrap();
       if (referendum?.isOngoing) {
