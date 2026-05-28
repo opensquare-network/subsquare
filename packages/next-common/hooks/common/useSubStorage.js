@@ -141,10 +141,10 @@ export default function useSubStorage(
   pallet,
   storage,
   params = [],
-  options = {}, // callback or api
+  options = {}, // callback, api, or skip
 ) {
   const contextApi = useContextApi();
-  const { callback, api = contextApi } = options;
+  const { callback, api = contextApi, skip = false } = options;
   const chain = useChain();
 
   const normalizedParams = Array.isArray(params) ? params : [params];
@@ -223,12 +223,16 @@ export default function useSubStorage(
   }, [result, callback]);
 
   useEffect(() => {
-    if (!api || isNil(pallet) || isNil(storage)) {
+    if (skip || !api || isNil(pallet) || isNil(storage)) {
       return;
     }
 
     subscribe();
-  }, [api, pallet, storage, subscribe]);
+  }, [skip, api, pallet, storage, subscribe]);
+
+  if (skip) {
+    return { loading: false, result: undefined };
+  }
 
   return { loading, result };
 }

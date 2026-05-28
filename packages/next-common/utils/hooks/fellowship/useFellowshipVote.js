@@ -34,5 +34,7 @@ export default function useFellowshipVote(referendumIndex, address) {
 
 export function useSubFellowshipVote(referendumIndex, address) {
   const collectivePallet = useRankedCollectivePallet();
-  return useSubStorage(collectivePallet, "voting", [referendumIndex, address]);
+  return useSubStorage(collectivePallet, "voting", [referendumIndex, address], {
+    skip: !address,
+  });
 }

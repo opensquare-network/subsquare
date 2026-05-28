@@ -8,7 +8,7 @@ import useSubCoreFellowshipEvidence from "next-common/hooks/collectives/useSubCo
 import { usePageProps } from "next-common/context/page";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { Skeleton } from "next-common/components/skeleton";
-import { cn } from "next-common/utils";
+import { cn, isHash } from "next-common/utils";
 import { useTheme } from "styled-components";
 import { IpfsEvidenceRawContent } from "next-common/components/collectives/core/evidenceContent";
 import {
@@ -18,7 +18,11 @@ import {
 import { getCidByEvidence } from "next-common/utils/collective/getCidByEvidence";
 import { useIpfsContent } from "next-common/hooks/useIpfsContent";
 import { WishBar } from "./wishBar";
-import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
+import {
+  useCoreFellowshipPallet,
+  useCollectivesContext,
+} from "next-common/context/collectives/collectives";
+import { useAsync } from "react-use";
 import EvidenceLink from "next-common/components/profile/fellowship/core/evidence/link";
 import { useContextAddress } from "next-common/context/address";
 
@@ -26,7 +30,7 @@ export default function EvidenceWish() {
   const { id: address, fellowshipMembers } = usePageProps();
   const { loading, wish, evidence } = useSubCoreFellowshipEvidence(address);
 
-  const activeMember = fellowshipMembers.find(
+  const activeMember = fellowshipMembers?.find(
     (member) => member.address === address,
   );
   return (
@@ -49,7 +53,11 @@ function BlockEvidenceOrEmpty({ wish, evidence, address, activeMember }) {
   return wish && evidence ? (
     <>
       <WishBar wish={wish} rank={activeMember?.rank} address={address} />
-      <OnchainEvidenceStatisticsInfoImpl wish={wish} address={address} />
+      <OnchainEvidenceStatisticsInfoImpl
+        wish={wish}
+        address={address}
+        evidence={evidence}
+      />
       <OnchainEvidenceContent evidence={evidence} wish={wish} />
     </>
   ) : (
@@ -57,10 +65,29 @@ function BlockEvidenceOrEmpty({ wish, evidence, address, activeMember }) {
   );
 }
 
-function OnchainEvidenceStatisticsInfoImpl({ wish, address }) {
+function OnchainEvidenceStatisticsInfoImpl({ wish, address, evidence }) {
   const pallet = useCoreFellowshipPallet();
-  const { relatedReferenda, isLoading } =
+  const { section } = useCollectivesContext();
+  const { relatedReferenda: chainReferenda, isLoading: isChainLoading } =
     useFellowshipCoreRelatedReferenda(address);
+
+  const evidenceId =
+    evidence && isHash(evidence) ? getCidByEvidence(evidence) : null;
+  const { loading: isDocLoading, value: evidenceDoc } = useAsync(async () => {
+    if (!evidenceId) return null;
+    const res = await fetch(
+      `/api/${section}/members/${address}/evidences/${evidenceId}`,
+    );
+    return res.ok ? res.json() : null;
+  }, [section, address, evidenceId]);
+
+  const dbReferenda = (evidenceDoc?.referenda ?? []).map(({ index }) => ({
+    referendumIndex: index,
+  }));
+  const relatedReferenda =
+    dbReferenda.length > 0 ? dbReferenda : chainReferenda;
+  const isLoading =
+    isDocLoading || (dbReferenda.length === 0 && isChainLoading);
 
   return (
     <SummaryLayout className="mt-4">
