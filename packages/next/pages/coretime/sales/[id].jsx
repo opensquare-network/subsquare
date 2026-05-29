@@ -22,6 +22,7 @@ import NotFoundDetail from "next-common/components/notFoundDetail";
 import { usePageProps } from "next-common/context/page";
 import generateLayoutRawTitle from "next-common/utils/generateLayoutRawTitle";
 import getCoretimeCommonProps from "next-common/services/serverSide/getCoretimeCommonProps";
+import queryCoretimeSaleTimeline from "next-common/services/gql/coretime/timeline";
 
 const isCoretimeSupported = !!getChainSettings(CHAIN).modules?.coretime;
 
@@ -111,6 +112,9 @@ export const getServerSideProps = async (ctx) => {
         limit: coretimeSale?.purchaseCount,
       },
     );
+    const coretimeSaleTimeline = coretimeSale
+      ? await queryCoretimeSaleTimeline(id)
+      : [];
 
     return {
       ...(commonProps || {}),
@@ -119,6 +123,7 @@ export const getServerSideProps = async (ctx) => {
         coretimeSale,
         coretimeSaleRenewalsChart,
         coretimeSalePurchasesChart,
+        coretimeSaleTimeline,
       },
     };
   })(ctx);
