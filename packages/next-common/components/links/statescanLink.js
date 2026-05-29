@@ -12,6 +12,8 @@ const statescanDomainMap = {
   [Chains.westendAssetHub]: "assethub-westend",
   [Chains.paseoAssetHub]: "assethub-paseo",
   [Chains.hyperBridge]: "nexus",
+  [Chains.polkadotCoretime]: "coretime-polkadot",
+  [Chains.kusamaCoretime]: "coretime-kusama",
 };
 
 export default function StatescanLink({

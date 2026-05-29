@@ -48,6 +48,7 @@ const polkadotCoretime = {
     subscan: {
       domain: "coretime-polkadot",
     },
+    statescan: true,
   },
   multisigWallets: {
     mimir: true,
