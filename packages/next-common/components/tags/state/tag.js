@@ -21,6 +21,7 @@ import {
 import { Gov2ReferendaTag } from "./gov2";
 import AnnouncementTag from "./announcement";
 import FellowshipApplicationTag from "./fellowshipApplication";
+import { CoretimeSaleTimelineTag } from "./coretime";
 
 const categoryTagMap = {
   [businessCategory.treasuryProposals]: TreasuryTag,
@@ -96,6 +97,8 @@ const categoryTagMap = {
 
   [businessCategory.fellowshipApplication]: FellowshipApplicationTag,
   [detailPageCategory.FELLOWSHIP_APPLICATION]: FellowshipApplicationTag,
+
+  [businessCategory.CORETIME_SALES]: CoretimeSaleTimelineTag,
 };
 
 export default function Tag({ category, state, link, args }) {

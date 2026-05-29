@@ -20,6 +20,7 @@ const kusamaCoretime = {
     subscan: {
       domain: "coretime-kusama",
     },
+    statescan: true,
   },
   multisigWallets: {
     mimir: true,

@@ -5,6 +5,7 @@ import SalesHistoryRenewals from "./renewals";
 import { useEffect, useMemo, useState } from "react";
 import useCoretimeSaleIsInterlude from "next-common/context/coretime/hooks/useCoretimeSaleIsInterlude";
 import useCoretimeSale from "next-common/context/coretime/sale/provider";
+import businessCategory from "next-common/utils/consts/business/category";
 import { cn } from "next-common/utils";
 import Timeline from "next-common/components/timeline";
 import { usePageProps } from "next-common/context/page";
@@ -54,6 +55,7 @@ function makeTimelineItem(status, blockTime, indexer) {
     indexer,
     status: {
       value: status,
+      type: businessCategory.CORETIME_SALES,
     },
   };
 }
