@@ -27,13 +27,13 @@ import astar from "next-common/utils/consts/settings/astar";
 import zkverify from "./consts/settings/zkverify";
 import zkverifyTestnet from "./consts/settings/zkverifyTestnet";
 import paseo from "./consts/settings/paseo";
-import ajuna from "./consts/settings/ajuna";
+// import ajuna from "./consts/settings/ajuna";
 import laos from "./consts/settings/laos";
 // import paseoAssetHub from "./consts/settings/paseoAssetHub";
 import paseoPeople from "./consts/settings/paseoPeople";
 import westendPeople from "./consts/settings/westendPeople";
 import hyperBridge from "./consts/settings/hyperBridge";
-import acurast from "./consts/settings/acurast";
+// import acurast from "./consts/settings/acurast";
 
 const optionalNodes =
   process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? [development] : [];
@@ -46,8 +46,8 @@ export const nodes = [
   // kusamaAssetHub,
   kusamaPeople,
   acala,
-  acurast,
-  ajuna,
+  // acurast,
+  // ajuna,
   astar,
   basilisk,
   bifrost,
