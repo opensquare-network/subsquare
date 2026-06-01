@@ -58,7 +58,7 @@ function ReferendaCell({ paymentReferenda = [] }) {
         >
           <Link
             href={`/fellowship/referenda/${ref.referendumIndex}`}
-            className="text12Medium text-theme500 hover:underline"
+            className="text14Medium text-theme500 hover:underline"
           >
             #{ref.referendumIndex}
           </Link>

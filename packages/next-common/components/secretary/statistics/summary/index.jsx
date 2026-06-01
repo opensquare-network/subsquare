@@ -5,6 +5,7 @@ import BigNumber from "bignumber.js";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import { toPrecision } from "next-common/utils";
+import { LoadingContent } from "next-common/components/fellowship/statistics/common";
 
 function getTotalSpent(cycles, paymentReferenda = []) {
   let total = new BigNumber(0);
@@ -49,7 +50,11 @@ export default function SecretaryStatisticsSummary({
   loading,
 }) {
   if (loading) {
-    return null;
+    return (
+      <SecondaryCard>
+        <LoadingContent />
+      </SecondaryCard>
+    );
   }
 
   return (

@@ -63,7 +63,7 @@ function RankChart({ labelDataArr, data }) {
         <Doughnut
           data={data}
           options={options}
-          className="w-50 h-50 relative"
+          className="w-[200px] h-[200px] relative"
         />
       </div>
     </div>
