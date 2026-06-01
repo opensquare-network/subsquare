@@ -10,7 +10,7 @@ import { useNavCollapsed } from "next-common/context/nav";
 export default function FellowshipFinanceOverview() {
   const [navCollapsed] = useNavCollapsed();
   return (
-    <CollectivesProvider>
+    <>
       <TitleContainer className="mb-4">Fellowship Finance</TitleContainer>
 
       <SecondaryCard
@@ -23,8 +23,13 @@ export default function FellowshipFinanceOverview() {
       >
         <FellowshipTreasury />
         <FellowshipSalary />
-        <FellowshipCurrentSalaryCycleSummary />
+        <CollectivesProvider>
+          <FellowshipCurrentSalaryCycleSummary title="Current Fellowship Salary Cycle" />
+        </CollectivesProvider>
+        <CollectivesProvider section="secretary">
+          <FellowshipCurrentSalaryCycleSummary title="Current Secretary Salary Cycle" />
+        </CollectivesProvider>
       </SecondaryCard>
-    </CollectivesProvider>
+    </>
   );
 }
