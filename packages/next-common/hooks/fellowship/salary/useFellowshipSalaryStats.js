@@ -15,10 +15,10 @@ export function useFellowshipSalaryStats() {
 
   useEffect(() => {
     if (rawOptional?.isSome) {
-      setCachedStats({
-        ...cachedStats,
+      setCachedStats((stats) => ({
+        ...stats,
         [pallet]: rawOptional.unwrap().toJSON(),
-      });
+      }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rawOptional, pallet]);
