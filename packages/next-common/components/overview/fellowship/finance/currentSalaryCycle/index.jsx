@@ -22,14 +22,14 @@ function CurrentSalaryCycle({ title = "Current Salary Cycle", cycleIndex }) {
   );
 }
 
-export function FellowshipCurrentSalaryCycleLoading() {
+export function FellowshipCurrentSalaryCycleLoading({
+  title = "Current Salary Cycle",
+}) {
   return (
     <SummaryItem
       title={
         <div className="text12Medium text-textTertiary space-x-1">
-          <span className="text12Medium text-textTertiary">
-            Current Salary Cycle
-          </span>
+          <span className="text12Medium text-textTertiary">{title}</span>
         </div>
       }
     >
