@@ -49,6 +49,9 @@ export default function AllianceOverviewSummary() {
       <CollectivesProvider>
         <FellowshipCurrentSalaryCycleSummary />
       </CollectivesProvider>
+      <CollectivesProvider section="secretary">
+        <FellowshipCurrentSalaryCycleSummary />
+      </CollectivesProvider>
     </SummaryLayout>
   );
 }
