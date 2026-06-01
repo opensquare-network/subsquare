@@ -32,16 +32,19 @@ function paginateData(data, page, pageSize) {
   return data.slice(start, end);
 }
 
-function StatisticsClaimantsTable({ members = [] }) {
+function StatisticsClaimantsTable({
+  members = [],
+  membersApi = fellowshipStatisticsMembersApi,
+}) {
   const [total, setTotal] = useState(0);
   const [processedData, setProcessedData] = useState([]);
   const [rowData, setRowData] = useState([]);
   const [tableLoading, setTableLoading] = useState(false);
+  const pageSize = defaultPageSize;
   const { page, component: pageComponent } = usePaginationComponent(
     total,
-    defaultPageSize,
+    pageSize,
   );
-  const membersApi = fellowshipStatisticsMembersApi;
 
   const columns = [
     useStatisticsClaimantsRankColumn(),
@@ -64,7 +67,7 @@ function StatisticsClaimantsTable({ members = [] }) {
       setTableLoading(false);
       return [];
     }
-  }, []);
+  }, [membersApi]);
 
   useEffect(() => {
     if (originalMembers && members) {
@@ -99,12 +102,15 @@ function StatisticsClaimantsTable({ members = [] }) {
   );
 }
 
-export default function StatisticsClaimants({ members = [] }) {
+export default function StatisticsClaimants({
+  members = [],
+  membersApi = fellowshipStatisticsMembersApi,
+}) {
   return (
     <SecondaryCard>
       <div className="flex flex-col gap-[16px] h-full">
         <StatisticsTitle>Top Claimants</StatisticsTitle>
-        <StatisticsClaimantsTable members={members} />
+        <StatisticsClaimantsTable members={members} membersApi={membersApi} />
       </div>
     </SecondaryCard>
   );

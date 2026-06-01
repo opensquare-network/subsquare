@@ -118,6 +118,11 @@ export const secretarySalaryCycleUnregisteredPaymentsApi = (index) =>
 export const secretarySalaryCycleFeedsApi = (index) =>
   `secretary/salary/cycles/${index}/feeds`;
 
+export const secretaryStatisticsCyclesApi =
+  "secretary/statistics/salary/cycles";
+export const secretaryStatisticsMembersApi =
+  "secretary/statistics/salary/members";
+
 // ambassador
 export const ambassadorParamsApi = "ambassador/params";
 export const ambassadorMembersApiUri = "ambassador/members";

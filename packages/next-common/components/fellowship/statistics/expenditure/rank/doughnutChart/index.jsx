@@ -33,9 +33,9 @@ function handleLabelDataArr(members, ranksData) {
   const totalSalary = getTotalSalary(ranksData);
   const ranksDataObj = transformRanksDataToObject(ranksData);
   const dataArr = rankArr.map((rank, index) => {
-    const count = ranksDataObj[index] || 0;
-    const percent = ranksDataObj[index]
-      ? new BigNumber(ranksDataObj[index]).div(totalSalary)
+    const count = ranksDataObj[rank] || 0;
+    const percent = ranksDataObj[rank]
+      ? new BigNumber(ranksDataObj[rank]).div(totalSalary)
       : "";
     return {
       label: `Rank ${rank}`,
@@ -63,7 +63,7 @@ function RankChart({ labelDataArr, data }) {
         <Doughnut
           data={data}
           options={options}
-          className="w-[200px] h-[200px] relative"
+          className="w-50 h-50 relative"
         />
       </div>
     </div>
@@ -71,10 +71,10 @@ function RankChart({ labelDataArr, data }) {
 }
 
 export default function RankDoughnutChart({ members = [] }) {
+  const ranksApi = fellowshipStatisticsRanksApi;
+
   const [labelDataArr, setLabelDataArr] = useState([]);
   const [contentLoading, setContentLoading] = useState(false);
-
-  const ranksApi = fellowshipStatisticsRanksApi;
 
   const { value: ranksData } = useAsync(async () => {
     setContentLoading(true);
