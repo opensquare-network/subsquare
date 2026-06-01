@@ -24,10 +24,10 @@ export default function FellowshipFinanceOverview() {
         <FellowshipTreasury />
         <FellowshipSalary />
         <CollectivesProvider>
-          <FellowshipCurrentSalaryCycleSummary title="Current Fellowship Salary Cycle" />
+          <FellowshipCurrentSalaryCycleSummary title="Fellowship Salary Cycle" />
         </CollectivesProvider>
         <CollectivesProvider section="secretary">
-          <FellowshipCurrentSalaryCycleSummary title="Current Secretary Salary Cycle" />
+          <FellowshipCurrentSalaryCycleSummary title="Secretary Salary Cycle" />
         </CollectivesProvider>
       </SecondaryCard>
     </>
