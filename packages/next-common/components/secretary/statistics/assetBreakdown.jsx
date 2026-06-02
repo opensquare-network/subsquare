@@ -23,7 +23,7 @@ export default function AssetBreakdown({
           <TokenSymbolAsset
             key={i}
             amount={new BigNumber(row.value || 0)
-              .div(new BigNumber(10).pow(row.decimals))
+              .div(Math.pow(10, row.decimals))
               .toFixed(row.decimals > 6 ? 4 : 2)}
             symbol={row.symbol}
           />

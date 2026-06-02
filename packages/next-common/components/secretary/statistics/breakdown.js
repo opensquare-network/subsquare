@@ -26,7 +26,7 @@ export function getReferendaUsd(paymentReferenda) {
   }
   return paymentReferenda.reduce((total, ref) => {
     const value = new BigNumber(ref.value || 0);
-    const amount = value.div(new BigNumber(10).pow(ref.decimals || 10));
+    const amount = value.div(Math.pow(10, ref.decimals || 10));
     return total.plus(amount.times(ref.price || 0));
   }, new BigNumber(0));
 }

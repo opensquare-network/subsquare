@@ -1,7 +1,6 @@
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import SummaryItem from "next-common/components/summary/layout/item";
 import SummaryLayout from "next-common/components/summary/layout/layout";
-import BigNumber from "bignumber.js";
 import { formatNum } from "next-common/utils";
 import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import { LoadingContent } from "next-common/components/fellowship/statistics/common";
@@ -19,7 +18,7 @@ function TotalSpent({ cycles, paymentReferenda }) {
   const referendaTotal = getReferendaTotal(paymentReferenda);
   const referendaUsd = getReferendaUsd(paymentReferenda);
 
-  const cyclesUsd = cyclesTotal.div(new BigNumber(10).pow(salaryDecimals));
+  const cyclesUsd = cyclesTotal.div(Math.pow(10, salaryDecimals));
   const usdTotal = formatNum(cyclesUsd.plus(referendaUsd).toFixed(2));
 
   const rows = [

@@ -103,7 +103,7 @@ function useSecretaryClaimantsPaidColumn(paymentReferenda) {
 
       const referendaUsd = getReferendaUsdByAddress(paymentReferenda, address);
       const cyclesUsd = new BigNumber(salary.toString()).div(
-        new BigNumber(10).pow(decimals),
+        Math.pow(10, decimals),
       );
       const usdTotal = cyclesUsd.plus(referendaUsd).toFixed(2);
 
