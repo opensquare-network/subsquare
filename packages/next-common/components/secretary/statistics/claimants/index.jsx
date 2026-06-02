@@ -15,9 +15,13 @@ import { isNil } from "lodash-es";
 import BigNumber from "bignumber.js";
 import PaymentReferendaTooltip from "next-common/components/secretary/statistics/paymentReferendaTooltip";
 import AssetBreakdown from "next-common/components/secretary/statistics/assetBreakdown";
+import {
+  getReferendaTotalByAddress,
+  getReferendaUsdByAddress,
+} from "next-common/components/secretary/statistics/breakdown";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
-import { toPrecision } from "next-common/utils";
+import { formatNum, toPrecision } from "next-common/utils";
 
 function handleClaimantsData(originalMembers, members) {
   const membersRank = members.reduce((acc, member) => {
@@ -74,33 +78,6 @@ function useSecretaryClaimantsReferendaColumn(paymentReferenda) {
 }
 
 function useSecretaryClaimantsPaidColumn(paymentReferenda) {
-  const referendaValueByAddress = useMemo(() => {
-    const map = {};
-    for (const ref of paymentReferenda || []) {
-      if (ref.beneficiary) {
-        map[ref.beneficiary] =
-          (map[ref.beneficiary] || BigInt(0)) + BigInt(ref.value || 0);
-      }
-    }
-    return map;
-  }, [paymentReferenda]);
-
-  const referralUsdByAddress = useMemo(() => {
-    const map = {};
-    for (const ref of paymentReferenda || []) {
-      if (ref.beneficiary) {
-        const dotAmount = new BigNumber(ref.value || 0).div(
-          new BigNumber(10).pow(ref.decimals || 10),
-        );
-        const usd = dotAmount.times(ref.price || 0);
-        map[ref.beneficiary] = (map[ref.beneficiary] || new BigNumber(0)).plus(
-          usd,
-        );
-      }
-    }
-    return map;
-  }, [paymentReferenda]);
-
   const { decimals, symbol } = getSalaryAsset();
 
   return {
@@ -108,9 +85,13 @@ function useSecretaryClaimantsPaidColumn(paymentReferenda) {
     className: "text-right",
     cellRender(data, idx) {
       const salary = BigInt(data.salary || 0);
-      const extra = referendaValueByAddress[data.who] || BigInt(0);
+      const address = data.who;
+      const referendaTotal = getReferendaTotalByAddress(
+        paymentReferenda,
+        address,
+      );
 
-      if (!extra) {
+      if (referendaTotal.isZero()) {
         return (
           <ValueDisplay
             key={idx}
@@ -120,21 +101,27 @@ function useSecretaryClaimantsPaidColumn(paymentReferenda) {
         );
       }
 
-      const referendaUsd = referralUsdByAddress[data.who] || new BigNumber(0);
+      const referendaUsd = getReferendaUsdByAddress(paymentReferenda, address);
+      const cyclesUsd = new BigNumber(salary.toString()).div(
+        new BigNumber(10).pow(decimals),
+      );
+      const usdTotal = cyclesUsd.plus(referendaUsd).toFixed(2);
+
+      const rows = [
+        { value: salary.toString(), decimals, symbol },
+        {
+          value: referendaTotal.toString(),
+          decimals: 10,
+          symbol: "DOT",
+        },
+      ];
 
       return (
         <AssetBreakdown
-          align="right"
           key={idx}
-          rows={[
-            { value: salary.toString(), decimals, symbol },
-            {
-              value: extra.toString(),
-              decimals: 10,
-              symbol: "DOT",
-            },
-          ]}
-          usdExtra={referendaUsd}
+          align="right"
+          usdTotal={formatNum(usdTotal)}
+          rows={rows}
         />
       );
     },

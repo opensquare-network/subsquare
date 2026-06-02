@@ -2,44 +2,29 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import SummaryItem from "next-common/components/summary/layout/item";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import BigNumber from "bignumber.js";
+import { formatNum } from "next-common/utils";
+import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import { LoadingContent } from "next-common/components/fellowship/statistics/common";
 import PaymentReferendaTooltip from "next-common/components/secretary/statistics/paymentReferendaTooltip";
 import AssetBreakdown from "next-common/components/secretary/statistics/assetBreakdown";
-
-function getCyclesTotalSpent(cycles) {
-  if (cycles && cycles.length > 0) {
-    return cycles.reduce((total, item) => {
-      const registeredPaid = new BigNumber(item.registeredPaid || 0);
-      const unRegisteredPaid = new BigNumber(item.unRegisteredPaid || 0);
-      return total.plus(registeredPaid).plus(unRegisteredPaid);
-    }, new BigNumber(0));
-  }
-  return new BigNumber(0);
-}
-
-function getReferendaTotalSpent(paymentReferenda) {
-  if (paymentReferenda && paymentReferenda.length > 0) {
-    return paymentReferenda.reduce((total, item) => {
-      return total.plus(new BigNumber(item.value || 0));
-    }, new BigNumber(0));
-  }
-  return new BigNumber(0);
-}
-
-function computeReferendaUsd(paymentReferenda) {
-  return (paymentReferenda || []).reduce((total, ref) => {
-    const value = new BigNumber(ref.value || 0);
-    const amount = value.div(new BigNumber(10).pow(ref.decimals || 10));
-    return total.plus(amount.times(ref.price || 0));
-  }, new BigNumber(0));
-}
+import {
+  getCyclesTotal,
+  getReferendaTotal,
+  getReferendaUsd,
+} from "next-common/components/secretary/statistics/breakdown";
 
 function TotalSpent({ cycles, paymentReferenda }) {
-  const cyclesTotal = getCyclesTotalSpent(cycles);
-  const referendaTotal = getReferendaTotalSpent(paymentReferenda);
-  const referendaUsd = computeReferendaUsd(paymentReferenda);
+  const { decimals: salaryDecimals } = getSalaryAsset();
+  const cyclesTotal = getCyclesTotal(cycles);
+  const referendaTotal = getReferendaTotal(paymentReferenda);
+  const referendaUsd = getReferendaUsd(paymentReferenda);
 
-  const rows = [{ value: cyclesTotal.toString(), decimals: 6, symbol: "USDT" }];
+  const cyclesUsd = cyclesTotal.div(new BigNumber(10).pow(salaryDecimals));
+  const usdTotal = formatNum(cyclesUsd.plus(referendaUsd).toFixed(2));
+
+  const rows = [
+    { value: cyclesTotal.toString(), decimals: salaryDecimals, symbol: "USDT" },
+  ];
 
   if (referendaTotal.gt(0)) {
     rows.push({
@@ -51,7 +36,7 @@ function TotalSpent({ cycles, paymentReferenda }) {
 
   return (
     <SummaryItem title="Total Spent">
-      <AssetBreakdown rows={rows} usdExtra={referendaUsd} />
+      <AssetBreakdown usdTotal={usdTotal} rows={rows} />
     </SummaryItem>
   );
 }
