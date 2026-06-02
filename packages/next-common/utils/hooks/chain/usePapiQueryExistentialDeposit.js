@@ -10,11 +10,13 @@ export default function usePapiQueryExistentialDeposit() {
       return;
     }
 
-    papi.constants.Balances?.ExistentialDeposit?.().then((value) => {
-      if (value !== undefined && value !== null) {
-        setExistentialDeposit(value.toString());
-      }
-    });
+    papi.constants.Balances?.ExistentialDeposit?.()
+      .then((value) => {
+        if (value !== undefined && value !== null) {
+          setExistentialDeposit(value.toString());
+        }
+      })
+      .catch(() => {});
   }, [papi]);
 
   return existentialDeposit;

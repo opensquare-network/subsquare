@@ -4,33 +4,51 @@ import CheckUnFinalizedBase from "next-common/components/checkUnFinalizedBase";
 import { useDetailType } from "next-common/context/page";
 import { toApiType } from "next-common/utils/viewfuncs";
 import { useCollectivePallet } from "next-common/context/collective";
+import { upperFirst } from "lodash-es";
 
 export default function CheckUnFinalized({ id }) {
   const type = useDetailType();
   const pallet = useCollectivePallet();
 
   const findMotion = useCallback(
-    async (api) => {
-      const councilApi = api.query[pallet];
-      if (!councilApi) {
+    async (api, checkPallet) => {
+      const papiPallet = upperFirst(pallet);
+      if (!checkPallet(papiPallet, "ProposalOf")) {
+        return;
+      }
+
+      const palletApi = api.query[papiPallet];
+      if (!palletApi) {
         return;
       }
 
       if (id?.match(/^[0-9]+$/)) {
         // If id is a motion index
-        const allMotions = await councilApi.proposals();
-        const allVoting = await councilApi.voting.multi(allMotions);
+        if (
+          !checkPallet(papiPallet, "Proposals") ||
+          !checkPallet(papiPallet, "Voting")
+        ) {
+          return;
+        }
 
-        for (let i = 0; i < allVoting.length; i++) {
-          const data = allVoting[i].toJSON();
-          const { index: motionIndex } = data || {};
-          if (motionIndex === parseInt(id)) {
-            return await councilApi.proposalOf(allMotions[i]);
+        const allMotions = await palletApi.Proposals.getValue();
+        if (!allMotions) return;
+        const allVotingEntries = await palletApi.Voting.getEntries();
+        for (const {
+          keyArgs: [hash],
+          value: voting,
+        } of allVotingEntries) {
+          if (
+            voting &&
+            voting.index === parseInt(id) &&
+            allMotions.some((h) => h === hash)
+          ) {
+            return await palletApi.ProposalOf.getValue(hash);
           }
         }
       } else {
         // If id is a motion hash
-        return await councilApi.proposalOf(id);
+        return await palletApi.ProposalOf.getValue(id);
       }
     },
     [id, pallet],

@@ -17,9 +17,12 @@ export function useSpendPeriodWithPapi(papi) {
       return;
     }
 
-    papi.constants[pallet].SpendPeriod().then((result) => {
-      setSpendPeriod(result);
-    });
+    papi.constants[pallet]
+      .SpendPeriod()
+      .then((result) => {
+        setSpendPeriod(result);
+      })
+      .catch(() => {});
   }, [papi, pallet]);
 
   return spendPeriod;

@@ -41,9 +41,11 @@ function useMaxActiveChildBountyCount() {
       return;
     }
 
-    papi.constants.ChildBounties.MaxActiveChildBountyCount().then((value) => {
-      setCount(value ?? Number.MAX_VALUE);
-    });
+    papi.constants.ChildBounties.MaxActiveChildBountyCount()
+      .then((value) => {
+        setCount(value ?? Number.MAX_VALUE);
+      })
+      .catch(() => {});
   }, [papi]);
 
   return count;

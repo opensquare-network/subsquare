@@ -8,6 +8,7 @@ import { addressEllipsis, cn } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
 import AccountBalances from "next-common/components/overview/accountInfo/components/accountBalances";
 import Divider from "next-common/components/styled/layout/divider";
+import UserPapiAccountProvider from "next-common/context/user/papiAccount";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import AccountPanelScrollPrompt from "./components/accountPanelScrollPrompt";
@@ -315,7 +316,9 @@ export default function AccountInfoPanel() {
       <ProxyTip />
       <AccountHead width={width} />
       <Divider />
-      <AccountBalances />
+      <UserPapiAccountProvider>
+        <AccountBalances />
+      </UserPapiAccountProvider>
       <ExtensionUpdatePrompt />
       {hasIdentityVerification && <AccountPanelJudgementScrollPrompt />}
       <AccountPanelScrollPrompt />

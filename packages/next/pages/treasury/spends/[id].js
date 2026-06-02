@@ -16,7 +16,7 @@ import TreasurySpendPayout from "next-common/components/detail/treasury/spend/pa
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import {
   TreasuryProvider,
-  useTreasuryPallet,
+  useTreasuryPapiPallet,
 } from "next-common/context/treasury";
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
 import TreasurySpendsDetailMultiTabs from "next-common/components/pages/components/tabs/treasurySpendsDetailMultiTabs";
@@ -42,14 +42,18 @@ function TreasurySpendContent() {
 function ProposalContentWithNullGuard({ detailApiPath, children }) {
   const { id } = usePageProps();
   const detail = usePost();
-  const treasuryPallet = useTreasuryPallet();
+  const treasuryPallet = useTreasuryPapiPallet();
 
   if (!detail) {
     return (
       <CheckUnFinalizedBase
-        onChainDataFetcher={async (api) =>
-          api.query[treasuryPallet]?.spends(id)
-        }
+        onChainDataFetcher={async (api, checkPallet) => {
+          if (!checkPallet(treasuryPallet, "Spends")) {
+            return;
+          }
+
+          return api.query[treasuryPallet].Spends.getValue(parseInt(id));
+        }}
         serverPostFetcher={() => backendApi.fetch(`${detailApiPath}/${id}`)}
       />
     );

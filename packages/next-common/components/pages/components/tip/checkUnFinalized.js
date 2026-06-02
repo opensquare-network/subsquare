@@ -5,7 +5,13 @@ import CheckUnFinalizedBase from "next-common/components/checkUnFinalizedBase";
 export default function CheckUnFinalized({ id }) {
   return (
     <CheckUnFinalizedBase
-      onChainDataFetcher={async (api) => api.query.tips?.tips(id)}
+      onChainDataFetcher={async (api, checkPallet) => {
+        if (!checkPallet("Tips", "Tips")) {
+          return;
+        }
+
+        return api.query.Tips.Tips.getValue(id);
+      }}
       serverPostFetcher={() => backendApi.fetch(`treasury/tips/${id}`)}
     />
   );

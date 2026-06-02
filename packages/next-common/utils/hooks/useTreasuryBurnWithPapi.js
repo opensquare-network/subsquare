@@ -10,13 +10,16 @@ export default function useTreasuryBurnWithPapi(papi, free) {
 
   useEffect(() => {
     if (papi && papi?.constants?.[pallet] && isMounted()) {
-      papi.constants[pallet].Burn().then((burn) => {
-        const toBurn = new BigNumber(burn)
-          .dividedBy(Math.pow(10, 6))
-          .multipliedBy(free)
-          .toString();
-        setBurn(toBurn);
-      });
+      papi.constants[pallet]
+        .Burn()
+        .then((burn) => {
+          const toBurn = new BigNumber(burn)
+            .dividedBy(Math.pow(10, 6))
+            .multipliedBy(free)
+            .toString();
+          setBurn(toBurn);
+        })
+        .catch(() => {});
     }
   }, [papi, free, isMounted, pallet]);
 
