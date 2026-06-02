@@ -7,35 +7,44 @@ import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import { toPrecision } from "next-common/utils";
 import { LoadingContent } from "next-common/components/fellowship/statistics/common";
 
-function getTotalSpent(cycles, paymentReferenda = []) {
-  let total = new BigNumber(0);
-
+function getCyclesTotalSpent(cycles) {
   if (cycles && cycles.length > 0) {
-    total = cycles.reduce((acc, item) => {
+    return cycles.reduce((total, item) => {
       const registeredPaid = new BigNumber(item.registeredPaid || 0);
       const unRegisteredPaid = new BigNumber(item.unRegisteredPaid || 0);
-      return acc.plus(registeredPaid).plus(unRegisteredPaid);
-    }, total);
+      return total.plus(registeredPaid).plus(unRegisteredPaid);
+    }, new BigNumber(0));
   }
+  return new BigNumber(0);
+}
 
-  if (paymentReferenda.length > 0) {
-    total = paymentReferenda.reduce((acc, item) => {
-      return acc.plus(new BigNumber(item.value || 0));
-    }, total);
+function getReferendaTotalSpent(paymentReferenda) {
+  if (paymentReferenda && paymentReferenda.length > 0) {
+    return paymentReferenda.reduce((total, item) => {
+      return total.plus(new BigNumber(item.value || 0));
+    }, new BigNumber(0));
   }
-
-  return total;
+  return new BigNumber(0);
 }
 
 function TotalSpent({ cycles, paymentReferenda }) {
-  const totalSpent = getTotalSpent(cycles, paymentReferenda);
+  const cyclesTotal = getCyclesTotalSpent(cycles);
+  const referendaTotal = getReferendaTotalSpent(paymentReferenda);
   const { symbol, decimals } = getSalaryAsset();
   return (
     <SummaryItem title="Total Spent">
-      <ValueDisplay
-        value={toPrecision(totalSpent.toString(), decimals)}
-        symbol={symbol}
-      />
+      <div className="flex flex-col">
+        <ValueDisplay
+          value={toPrecision(cyclesTotal.toString(), decimals)}
+          symbol={symbol}
+        />
+        {referendaTotal.gt(0) && (
+          <ValueDisplay
+            value={toPrecision(referendaTotal.toString(), 10)}
+            symbol="DOT"
+          />
+        )}
+      </div>
     </SummaryItem>
   );
 }

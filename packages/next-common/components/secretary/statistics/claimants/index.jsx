@@ -91,7 +91,7 @@ function useSecretaryClaimantsReferendaColumn(paymentReferenda) {
 }
 
 function useSecretaryClaimantsPaidColumn(paymentReferenda) {
-  const referendaTotalByAddress = useMemo(() => {
+  const referendaValueByAddress = useMemo(() => {
     const map = {};
     for (const ref of paymentReferenda || []) {
       if (ref.beneficiary) {
@@ -106,17 +106,23 @@ function useSecretaryClaimantsPaidColumn(paymentReferenda) {
 
   return {
     name: "Total Paid",
-    width: 160,
     className: "text-right",
     cellRender(data, idx) {
-      const extra = referendaTotalByAddress[data.who] || BigInt(0);
-      const totalSalary = BigInt(data.salary || 0) + extra;
+      const salary = BigInt(data.salary || 0);
+      const extra = referendaValueByAddress[data.who] || BigInt(0);
       return (
-        <ValueDisplay
-          key={idx}
-          value={toPrecision(totalSalary.toString(), decimals)}
-          symbol={symbol}
-        />
+        <div className="flex flex-col" key={idx}>
+          <ValueDisplay
+            value={toPrecision(salary.toString(), decimals)}
+            symbol={symbol}
+          />
+          {extra > 0 && (
+            <ValueDisplay
+              value={toPrecision(extra.toString(), 10)}
+              symbol="DOT"
+            />
+          )}
+        </div>
       );
     },
   };
