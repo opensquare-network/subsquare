@@ -16,7 +16,7 @@ export default function usePapiQueryExistentialDeposit() {
           setExistentialDeposit(value.toString());
         }
       })
-      .catch(console.error);
+      .catch(() => {});
   }, [papi]);
 
   return existentialDeposit;
