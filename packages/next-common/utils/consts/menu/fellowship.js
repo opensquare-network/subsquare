@@ -127,6 +127,7 @@ function getFellowshipReferendaMenu(
     name: "Referenda",
     extraMatchNavMenuActivePathnames: [
       "/fellowship",
+      "/fellowship/referenda/[id]",
       "/fellowship/referenda/statistics",
       "/fellowship/tracks/[id]",
     ],

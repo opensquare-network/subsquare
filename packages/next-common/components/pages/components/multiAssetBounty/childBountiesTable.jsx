@@ -19,6 +19,17 @@ function ChildBountyValue({ value, assetKind }) {
   return <ValueDisplay value={toPrecision(value, decimals)} symbol={symbol} />;
 }
 
+function CBLink({ title, parentBountyId, index, children }) {
+  return (
+    <Anchor
+      href={`/treasury/multi-asset-child-bounties/${parentBountyId}_${index}`}
+      title={title}
+    >
+      {children}
+    </Anchor>
+  );
+}
+
 export default function MultiAssetChildBountiesTable({ childBounties }) {
   if (!childBounties?.items || !childBounties?.items?.length) {
     return null;
@@ -36,15 +47,19 @@ export default function MultiAssetChildBountiesTable({ childBounties }) {
           "max-sm:block max-sm:space-y-2",
         )}
       >
-        <div className="w-[160px] text-textSecondary">#{bounty.index}</div>
-        <div className="flex-1 w-full">
-          <Anchor
-            className="!text-textPrimary"
-            href={`/treasury/multi-asset-child-bounties/${bounty.parentBountyId}_${bounty.index}`}
+        <div className="w-[160px] text-textSecondary">
+          <CBLink parentBountyId={bounty.parentBountyId} index={bounty.index}>
+            #{bounty.index}
+          </CBLink>
+        </div>
+        <div className="flex-1 w-full text-textPrimary!">
+          <CBLink
             title={bounty.title}
+            parentBountyId={bounty.parentBountyId}
+            index={bounty.index}
           >
             {bounty.title}
-          </Anchor>
+          </CBLink>
         </div>
         <div className="w-[120px] text-right max-sm:text-left">
           {bounty.onchainData?.value != null && (

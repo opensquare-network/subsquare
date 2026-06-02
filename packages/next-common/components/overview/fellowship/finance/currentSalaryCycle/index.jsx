@@ -5,15 +5,16 @@ import Link from "next-common/components/link";
 import FellowshipSalaryStatsDetailLink from "next-common/components/overview/fellowship/salary/detailLink";
 import SalaryCycleStatus from "./status";
 import Loading from "next-common/components/loading";
+import { useCollectivesSection } from "next-common/context/collectives/collectives";
 
-function CurrentSalaryCycle({ cycleIndex }) {
+function CurrentSalaryCycle({ title = "Current Salary Cycle", cycleIndex }) {
   return (
     <div className="text12Medium text-textTertiary space-x-1">
       <FellowshipSalaryStatsDetailLink
         index={cycleIndex}
         className="text12Medium text-textTertiary hover:underline"
       >
-        Current Salary Cycle
+        {title}
       </FellowshipSalaryStatsDetailLink>
       <span>·</span>
       <span>#{cycleIndex}</span>
@@ -21,14 +22,14 @@ function CurrentSalaryCycle({ cycleIndex }) {
   );
 }
 
-export function FellowshipCurrentSalaryCycleLoading() {
+export function FellowshipCurrentSalaryCycleLoading({
+  title = "Current Salary Cycle",
+}) {
   return (
     <SummaryItem
       title={
         <div className="text12Medium text-textTertiary space-x-1">
-          <span className="text12Medium text-textTertiary">
-            Current Salary Cycle
-          </span>
+          <span className="text12Medium text-textTertiary">{title}</span>
         </div>
       }
     >
@@ -39,9 +40,11 @@ export function FellowshipCurrentSalaryCycleLoading() {
   );
 }
 
-export function FellowshipCurrentSalaryCycle({ cycleIndex, children }) {
+export function FellowshipCurrentSalaryCycle({ title, cycleIndex, children }) {
   return (
-    <SummaryItem title={<CurrentSalaryCycle cycleIndex={cycleIndex} />}>
+    <SummaryItem
+      title={<CurrentSalaryCycle title={title} cycleIndex={cycleIndex} />}
+    >
       <div className="flex flex-col gap-1">
         <SalaryCycleStatus />
         {children}
@@ -50,7 +53,8 @@ export function FellowshipCurrentSalaryCycle({ cycleIndex, children }) {
   );
 }
 
-export default function FellowshipCurrentSalaryCycleSummary() {
+export default function FellowshipCurrentSalaryCycleSummary({ title }) {
+  const section = useCollectivesSection();
   const fellowshipSalaryStats = useFellowshipSalaryStats();
 
   if (
@@ -63,7 +67,7 @@ export default function FellowshipCurrentSalaryCycleSummary() {
   const { cycleIndex } = fellowshipSalaryStats;
 
   return (
-    <FellowshipCurrentSalaryCycle cycleIndex={cycleIndex}>
+    <FellowshipCurrentSalaryCycle title={title} cycleIndex={cycleIndex}>
       <div className="flex space-x-2">
         <FellowshipSalaryStatsDetailLink
           index={cycleIndex}
@@ -71,7 +75,10 @@ export default function FellowshipCurrentSalaryCycleSummary() {
         >
           View Detail
         </FellowshipSalaryStatsDetailLink>
-        <Link href="/fellowship/salary" className="text12Medium text-theme500">
+        <Link
+          href={`/${section}/salary`}
+          className="text12Medium text-theme500"
+        >
           All Cycles
         </Link>
       </div>

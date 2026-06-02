@@ -32,9 +32,8 @@ import UserPapiAccountProvider from "next-common/context/user/papiAccount";
 const ConfirmingReferendaStats = dynamicClientOnly(() =>
   import("next-common/components/overview/confirmingReferendaStats"),
 );
-
-const CoretimeStats = dynamicClientOnly(() =>
-  import("next-common/components/overview/coretimeStats"),
+const OverviewScrollPrompt = dynamicClientOnly(() =>
+  import("next-common/components/overview/overviewScrollPrompt"),
 );
 
 function ExternalInfo() {
@@ -55,7 +54,7 @@ function ExternalInfo() {
         <OffChainVoting />
       </div>
       <ConfirmingReferendaStats />
-      <CoretimeStats />
+      <OverviewScrollPrompt />
     </div>
   );
 }

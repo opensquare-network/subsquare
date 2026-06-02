@@ -6,9 +6,7 @@ import BigNumber from "bignumber.js";
 import { useContextApi } from "next-common/context/api";
 import useCall from "next-common/utils/hooks/useCall";
 import { useTreasuryPallet } from "next-common/context/treasury";
-
-const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
-const THREE_DAYS_MS = 3 * 24 * 60 * 60 * 1000;
+import { SEVEN_DAYS_MS, THREE_DAYS_MS } from "next-common/utils/constants";
 
 export default function usePendingSpends() {
   const api = useContextApi();

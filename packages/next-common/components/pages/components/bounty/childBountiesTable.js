@@ -9,6 +9,17 @@ import KvList from "next-common/components/listInfo/kvList";
 import Link from "next-common/components/link";
 import { getChildBountyIndex } from "next-common/utils/viewfuncs/treasury/childBounty";
 
+function CBLink({ title, bounty, children }) {
+  return (
+    <Anchor
+      href={`/treasury/child-bounties/${getChildBountyIndex(bounty)}`}
+      title={title}
+    >
+      {children}
+    </Anchor>
+  );
+}
+
 export default function ChildBountiesTable({ childBounties }) {
   const { decimals, symbol } = useChainSettings();
   if (!childBounties?.items || !childBounties?.items?.length) {
@@ -26,15 +37,13 @@ export default function ChildBountiesTable({ childBounties }) {
           "max-sm:block max-sm:space-y-2",
         )}
       >
-        <div className="w-[160px] text-textSecondary">#{bounty.index}</div>
-        <div className="flex-1 w-full">
-          <Anchor
-            className="!text-textPrimary"
-            href={`/treasury/child-bounties/${getChildBountyIndex(bounty)}`}
-            title={bounty.title}
-          >
+        <div className="w-[160px] text-textSecondary">
+          <CBLink bounty={bounty}>#{bounty.index}</CBLink>
+        </div>
+        <div className="flex-1 w-full text-textPrimary!">
+          <CBLink bounty={bounty} title={bounty.title}>
             {bounty.title}
-          </Anchor>
+          </CBLink>
         </div>
         <div className="w-[120px] text-right max-sm:text-left">
           <ValueDisplay

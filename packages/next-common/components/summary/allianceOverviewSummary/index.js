@@ -10,19 +10,19 @@ import CollectivesProvider from "next-common/context/collectives/collectives";
 import { isNil } from "lodash-es";
 import { useFellowshipSalaryStats } from "next-common/hooks/fellowship/salary/useFellowshipSalaryStats";
 
-function FellowshipCurrentSalaryCycleSummary() {
+function FellowshipCurrentSalaryCycleSummary({ title }) {
   const fellowshipSalaryStats = useFellowshipSalaryStats();
 
   if (
     isNil(fellowshipSalaryStats) ||
     isNil(fellowshipSalaryStats?.cycleIndex)
   ) {
-    return <FellowshipCurrentSalaryCycleLoading />;
+    return <FellowshipCurrentSalaryCycleLoading title={title} />;
   }
 
   const { cycleIndex } = fellowshipSalaryStats;
 
-  return <FellowshipCurrentSalaryCycle cycleIndex={cycleIndex} />;
+  return <FellowshipCurrentSalaryCycle title={title} cycleIndex={cycleIndex} />;
 }
 
 export default function AllianceOverviewSummary() {
@@ -47,7 +47,10 @@ export default function AllianceOverviewSummary() {
         />
       </SummaryItem>
       <CollectivesProvider>
-        <FellowshipCurrentSalaryCycleSummary />
+        <FellowshipCurrentSalaryCycleSummary title="Fellowship Salary Cycle" />
+      </CollectivesProvider>
+      <CollectivesProvider section="secretary">
+        <FellowshipCurrentSalaryCycleSummary title="Secretary Salary Cycle" />
       </CollectivesProvider>
     </SummaryLayout>
   );
