@@ -12,8 +12,9 @@ import usePaginationComponent from "next-common/components/pagination/usePaginat
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { StatisticsTitle } from "next-common/components/statistics/styled.js";
 import { isNil } from "lodash-es";
-import Link from "next-common/components/link";
-import Tooltip from "next-common/components/tooltip";
+import BigNumber from "bignumber.js";
+import PaymentReferendaTooltip from "next-common/components/secretary/statistics/paymentReferendaTooltip";
+import AssetBreakdown from "next-common/components/secretary/statistics/assetBreakdown";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import { toPrecision } from "next-common/utils";
@@ -42,29 +43,11 @@ function ReferendaCell({ paymentReferenda = [] }) {
   }
 
   return (
-    <span className="inline-flex flex-wrap gap-1">
-      {paymentReferenda.map((ref) => (
-        <Tooltip
-          key={ref.referendumIndex}
-          content={
-            <span>
-              <span className="font-bold">
-                {toPrecision(ref.value, ref.decimals)} {ref.symbol}
-              </span>
-              {" · "}
-              {ref.title}
-            </span>
-          }
-        >
-          <Link
-            href={`/fellowship/referenda/${ref.referendumIndex}`}
-            className="text14Medium text-theme500 hover:underline"
-          >
-            #{ref.referendumIndex}
-          </Link>
-        </Tooltip>
-      ))}
-    </span>
+    <PaymentReferendaTooltip paymentReferenda={paymentReferenda}>
+      <span className="text14Medium cursor-pointer">
+        {paymentReferenda.length}
+      </span>
+    </PaymentReferendaTooltip>
   );
 }
 
@@ -102,6 +85,22 @@ function useSecretaryClaimantsPaidColumn(paymentReferenda) {
     return map;
   }, [paymentReferenda]);
 
+  const referralUsdByAddress = useMemo(() => {
+    const map = {};
+    for (const ref of paymentReferenda || []) {
+      if (ref.beneficiary) {
+        const dotAmount = new BigNumber(ref.value || 0).div(
+          new BigNumber(10).pow(ref.decimals || 10),
+        );
+        const usd = dotAmount.times(ref.price || 0);
+        map[ref.beneficiary] = (map[ref.beneficiary] || new BigNumber(0)).plus(
+          usd,
+        );
+      }
+    }
+    return map;
+  }, [paymentReferenda]);
+
   const { decimals, symbol } = getSalaryAsset();
 
   return {
@@ -110,19 +109,33 @@ function useSecretaryClaimantsPaidColumn(paymentReferenda) {
     cellRender(data, idx) {
       const salary = BigInt(data.salary || 0);
       const extra = referendaValueByAddress[data.who] || BigInt(0);
-      return (
-        <div className="flex flex-col" key={idx}>
+
+      if (!extra) {
+        return (
           <ValueDisplay
+            key={idx}
             value={toPrecision(salary.toString(), decimals)}
             symbol={symbol}
           />
-          {extra > 0 && (
-            <ValueDisplay
-              value={toPrecision(extra.toString(), 10)}
-              symbol="DOT"
-            />
-          )}
-        </div>
+        );
+      }
+
+      const referendaUsd = referralUsdByAddress[data.who] || new BigNumber(0);
+
+      return (
+        <AssetBreakdown
+          align="right"
+          key={idx}
+          rows={[
+            { value: salary.toString(), decimals, symbol },
+            {
+              value: extra.toString(),
+              decimals: 10,
+              symbol: "DOT",
+            },
+          ]}
+          usdExtra={referendaUsd}
+        />
       );
     },
   };

@@ -3,6 +3,7 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { cn } from "next-common/utils";
 import { useNativeTokenIcon } from "next-common/components/assethubMigrationAssets/known";
 import { useMemo } from "react";
+import { useChainSettings } from "next-common/context/chain";
 
 export default function TokenSymbolAsset({
   amount,
@@ -10,12 +11,14 @@ export default function TokenSymbolAsset({
   valueClassName,
   type = "",
 }) {
-   
+  const { symbol: nativeSymbol } = useChainSettings();
   const NativeAssetIcon = useNativeTokenIcon();
 
   const TokenIcon = useMemo(() => {
-    return type === "native" ? NativeAssetIcon : AssetIcon;
-  }, [type, NativeAssetIcon]);
+    return type === "native" || symbol === nativeSymbol
+      ? NativeAssetIcon
+      : AssetIcon;
+  }, [type, symbol, nativeSymbol, NativeAssetIcon]);
 
   return (
     <div className="flex items-center gap-x-2">

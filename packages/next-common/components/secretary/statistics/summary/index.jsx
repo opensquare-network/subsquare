@@ -2,10 +2,9 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import SummaryItem from "next-common/components/summary/layout/item";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import BigNumber from "bignumber.js";
-import ValueDisplay from "next-common/components/valueDisplay";
-import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
-import { toPrecision } from "next-common/utils";
 import { LoadingContent } from "next-common/components/fellowship/statistics/common";
+import PaymentReferendaTooltip from "next-common/components/secretary/statistics/paymentReferendaTooltip";
+import AssetBreakdown from "next-common/components/secretary/statistics/assetBreakdown";
 
 function getCyclesTotalSpent(cycles) {
   if (cycles && cycles.length > 0) {
@@ -27,24 +26,32 @@ function getReferendaTotalSpent(paymentReferenda) {
   return new BigNumber(0);
 }
 
+function computeReferendaUsd(paymentReferenda) {
+  return (paymentReferenda || []).reduce((total, ref) => {
+    const value = new BigNumber(ref.value || 0);
+    const amount = value.div(new BigNumber(10).pow(ref.decimals || 10));
+    return total.plus(amount.times(ref.price || 0));
+  }, new BigNumber(0));
+}
+
 function TotalSpent({ cycles, paymentReferenda }) {
   const cyclesTotal = getCyclesTotalSpent(cycles);
   const referendaTotal = getReferendaTotalSpent(paymentReferenda);
-  const { symbol, decimals } = getSalaryAsset();
+  const referendaUsd = computeReferendaUsd(paymentReferenda);
+
+  const rows = [{ value: cyclesTotal.toString(), decimals: 6, symbol: "USDT" }];
+
+  if (referendaTotal.gt(0)) {
+    rows.push({
+      value: referendaTotal.toString(),
+      decimals: 10,
+      symbol: "DOT",
+    });
+  }
+
   return (
     <SummaryItem title="Total Spent">
-      <div className="flex flex-col">
-        <ValueDisplay
-          value={toPrecision(cyclesTotal.toString(), decimals)}
-          symbol={symbol}
-        />
-        {referendaTotal.gt(0) && (
-          <ValueDisplay
-            value={toPrecision(referendaTotal.toString(), 10)}
-            symbol="DOT"
-          />
-        )}
-      </div>
+      <AssetBreakdown rows={rows} usdExtra={referendaUsd} />
     </SummaryItem>
   );
 }
@@ -72,7 +79,11 @@ export default function SecretaryStatisticsSummary({
         <TotalSpent cycles={cycles} paymentReferenda={paymentReferenda} />
         <SpentCycles count={(cycles || []).length} />
         <SummaryItem title="Payment Referenda">
-          {paymentReferenda?.length || 0}
+          <PaymentReferendaTooltip paymentReferenda={paymentReferenda}>
+            <span className="cursor-pointer">
+              {paymentReferenda?.length || 0}
+            </span>
+          </PaymentReferendaTooltip>
         </SummaryItem>
       </SummaryLayout>
     </SecondaryCard>
