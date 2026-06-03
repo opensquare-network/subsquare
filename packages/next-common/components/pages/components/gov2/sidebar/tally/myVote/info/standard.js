@@ -9,9 +9,9 @@ function StandardVotePanel({ standard, delegations }) {
   const { vote, balance } = standard;
   const normalized = {
     isStandard: true,
-    aye: vote.isAye,
+    aye: vote.aye,
     balance: balance.toString(),
-    conviction: vote.conviction.toNumber(),
+    conviction: vote.conviction,
   };
 
   return (
