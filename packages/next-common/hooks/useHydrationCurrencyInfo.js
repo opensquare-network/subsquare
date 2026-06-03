@@ -65,31 +65,28 @@ export function useHydrationCurrencyMetadata(currencyId) {
   return { metadata, loading };
 }
 
-export function useHydrationCurrencyBalance(currencyId, accountAddress) {
+export function useHydrationCurrencyAccountData(currencyId, accountAddress) {
   const api = useHydrationApi();
-  const treasuryAccount = useTreasuryAccount(api);
-  const [balance, setBalance] = useState(null);
+  const [value, setValue] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const targetAccount = accountAddress || treasuryAccount;
-
   const callParams = useMemo(() => {
-    if (!api?.registry || !targetAccount || currencyId == null) {
+    if (!api?.registry || !accountAddress || currencyId == null) {
       return null;
     }
 
     try {
       const assetId = api.registry.createType("u32", currencyId);
-      const accountId = api.registry.createType("AccountId", targetAccount);
+      const accountId = api.registry.createType("AccountId", accountAddress);
 
       return new Uint8Array([...assetId.toU8a(), ...accountId.toU8a()]);
     } catch (error) {
       console.error("Error creating call parameters:", error);
       return null;
     }
-  }, [api, targetAccount, currencyId]);
+  }, [api, accountAddress, currencyId]);
 
-  const fetchBalance = useCallback(async () => {
+  const fetchData = useCallback(async () => {
     if (!api?.rpc?.state || !callParams) {
       return;
     }
@@ -103,23 +100,41 @@ export function useHydrationCurrencyBalance(currencyId, accountAddress) {
       );
 
       const accountData = api.registry.createType(RUNTIME_API_TYPE, resultRaw);
-
-      const totalBalance =
-        (accountData.free?.toBigInt() || 0n) +
-        (accountData.reserved?.toBigInt() || 0n);
-
-      setBalance(totalBalance.toString());
+      setValue(accountData);
     } catch (error) {
-      console.error("Failed to fetch currency balance:", error);
-      setBalance(null);
+      console.error("Failed to fetch currency account data:", error);
     } finally {
       setLoading(false);
     }
   }, [api, callParams]);
 
   useEffect(() => {
-    fetchBalance();
-  }, [fetchBalance]);
+    fetchData();
+  }, [fetchData]);
+
+  return { value, loading };
+}
+
+export function useHydrationCurrencyBalance(currencyId, accountAddress) {
+  const api = useHydrationApi();
+  const treasuryAccount = useTreasuryAccount(api);
+  const targetAccount = accountAddress || treasuryAccount;
+
+  const { value, loading } = useHydrationCurrencyAccountData(
+    currencyId,
+    targetAccount,
+  );
+
+  const balance = useMemo(() => {
+    if (!value) {
+      return null;
+    }
+
+    const totalBalance =
+      (value.free?.toBigInt() || 0n) + (value.reserved?.toBigInt() || 0n);
+
+    return totalBalance.toString();
+  }, [value]);
 
   return { balance, loading };
 }

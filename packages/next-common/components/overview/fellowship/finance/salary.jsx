@@ -1,5 +1,4 @@
 import SummaryItem from "next-common/components/summary/layout/item";
-import Link from "next-common/components/link";
 import LoadableContent from "next-common/components/common/loadableContent";
 import FiatPriceLabel from "next-common/components/summary/polkadotTreasurySummary/common/fiatPriceLabel";
 import useQueryFellowshipSalaryBalance, {
@@ -8,34 +7,48 @@ import useQueryFellowshipSalaryBalance, {
 import { toPrecision } from "next-common/utils";
 import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 import TokenSymbolAsset from "next-common/components/summary/polkadotTreasurySummary/common/tokenSymbolAsset";
+import { HOLLAR_DECIMALS, useFetchHollarBalance, ExternalLink } from "./common";
+import { useFiatPrice } from "next-common/context/fiatPrice";
 
 export default function FellowshipSalary() {
-  const { balance, isLoading } = useQueryFellowshipSalaryBalance("USDT");
+  const { balance: usdtBalance, isLoading: usdtLoading } =
+    useQueryFellowshipSalaryBalance("USDT");
+  const { balance: hollarBalance, loading: hollarLoading } =
+    useFetchHollarBalance(StatemintFellowShipSalaryAccount);
+  const { price: fiatPrice, loading: fiatPriceLoading } = useFiatPrice();
 
   const Title = (
-    <>
-      <Link
-        href={`https://assethub-polkadot.statescan.io/#/accounts/${StatemintFellowShipSalaryAccount}`}
-        className="text12Medium text-textTertiary hover:underline"
-        target="_blank"
-        rel="noreferrer"
-      >
-        Salary ↗
-      </Link>
-    </>
+    <ExternalLink
+      href={`https://assethub-polkadot.statescan.io/#/accounts/${StatemintFellowShipSalaryAccount}`}
+    >
+      Salary ↗
+    </ExternalLink>
   );
 
   return (
     <SummaryItem title={Title}>
-      <LoadableContent isLoading={isLoading}>
+      <LoadableContent
+        isLoading={usdtLoading || hollarLoading || fiatPriceLoading}
+      >
         <div className="flex flex-col gap-[4px]">
           <div>
-            <FiatPriceLabel usdtBalance={balance} />
+            <FiatPriceLabel
+              usdtBalance={usdtBalance}
+              hollarBalance={hollarBalance}
+              fiatPrice={fiatPrice}
+            />
           </div>
-          <div className="flex flex-col gap-y-1 !ml-0">
+          <div className="flex flex-col gap-y-1">
             <TokenSymbolAsset
-              amount={toPrecision(balance, SYMBOL_DECIMALS.USDT)}
+              amount={toPrecision(usdtBalance, SYMBOL_DECIMALS.USDT)}
               symbol="USDT"
+            />
+          </div>
+          <div className="flex flex-col gap-y-1">
+            <TokenSymbolAsset
+              amount={toPrecision(hollarBalance, HOLLAR_DECIMALS)}
+              symbol="HOLLAR"
+              type="foreign"
             />
           </div>
         </div>
