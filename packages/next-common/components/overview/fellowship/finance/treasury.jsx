@@ -8,6 +8,7 @@ import useSubStorage from "next-common/hooks/common/useSubStorage";
 import { toPrecision } from "next-common/utils";
 import TokenSymbolAsset from "next-common/components/summary/polkadotTreasurySummary/common/tokenSymbolAsset";
 import { HOLLAR_DECIMALS, useFetchHollarBalance, ExternalLink } from "./common";
+import { useFiatPrice } from "next-common/context/fiatPrice";
 
 function useFetchFellowshipTreasuryBalance() {
   const api = useAssetHubApi();
@@ -28,6 +29,7 @@ export default function FellowshipTreasury() {
     useFetchFellowshipTreasuryBalance();
   const { balance: hollarBalance, loading: hollarLoading } =
     useFetchHollarBalance(StatemintFellowShipTreasuryAccount);
+  const { price: fiatPrice, loading: fiatPriceLoading } = useFiatPrice();
 
   const Title = (
     <ExternalLink
@@ -39,10 +41,16 @@ export default function FellowshipTreasury() {
 
   return (
     <SummaryItem title={Title}>
-      <LoadableContent isLoading={dotLoading || hollarLoading}>
+      <LoadableContent
+        isLoading={dotLoading || hollarLoading || fiatPriceLoading}
+      >
         <div className="flex flex-col gap-[4px]">
           <div>
-            <FiatPriceLabel free={dotBalance} hollarBalance={hollarBalance} />
+            <FiatPriceLabel
+              free={dotBalance}
+              hollarBalance={hollarBalance}
+              fiatPrice={fiatPrice}
+            />
           </div>
           <div className="flex items-center gap-x-1">
             <NativeTokenSymbolAsset free={dotBalance} />

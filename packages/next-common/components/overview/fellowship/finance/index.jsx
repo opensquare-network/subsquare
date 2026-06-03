@@ -1,6 +1,7 @@
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import CollectivesProvider from "next-common/context/collectives/collectives";
+import { FiatPriceProvider } from "next-common/context/fiatPrice";
 import FellowshipTreasury from "./treasury";
 import FellowshipSalary from "./salary";
 import FellowshipCurrentSalaryCycleSummary from "./currentSalaryCycle";
@@ -21,8 +22,10 @@ export default function FellowshipFinanceOverview() {
             : "max-md:grid-cols-2 max-lg:grid-cols-4",
         )}
       >
-        <FellowshipTreasury />
-        <FellowshipSalary />
+        <FiatPriceProvider>
+          <FellowshipTreasury />
+          <FellowshipSalary />
+        </FiatPriceProvider>
         <CollectivesProvider>
           <FellowshipCurrentSalaryCycleSummary title="Fellowship Salary Cycle" />
         </CollectivesProvider>
