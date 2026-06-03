@@ -1,11 +1,17 @@
 import { useAssetHubApi } from "next-common/hooks/chain/useAssetHubApi";
 import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 import { useAsync } from "react-use";
+import { useHydrationCurrencyAccountData } from "next-common/hooks/useHydrationCurrencyInfo";
+
+export const HYDRATION_ASSET_IDS = {
+  DOT: 5,
+  HOLLAR: 222,
+};
 
 export const HOLLAR_FOREIGN_ASSET_KEY = {
   parents: 1,
   interior: {
-    X2: [{ Parachain: 2034 }, { GeneralIndex: "222" }],
+    X2: [{ Parachain: 2034 }, { GeneralIndex: HYDRATION_ASSET_IDS.HOLLAR }],
   },
 };
 
@@ -28,6 +34,12 @@ export function useFetchHollarBalance(address) {
   }, [api, address]);
 
   return { balance: value || "0", loading };
+}
+
+export function useHydrationCurrencyBalance(tokenId, address) {
+  const { value, loading } = useHydrationCurrencyAccountData(tokenId, address);
+  const balance = value?.free?.toString() || "0";
+  return { balance, loading };
 }
 
 export function ExternalLink({ href, children }) {
