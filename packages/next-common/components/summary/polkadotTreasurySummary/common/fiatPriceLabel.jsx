@@ -10,6 +10,7 @@ export default function FiatPriceLabel({
   free = 0,
   usdcBalance = 0,
   usdtBalance = 0,
+  hollarBalance = 0,
 }) {
   const { price: fiatPrice } = useFiatPriceSnapshot();
   const { decimals } = useChainSettings();
@@ -18,7 +19,8 @@ export default function FiatPriceLabel({
     .dividedBy(Math.pow(10, decimals))
     .multipliedBy(fiatPrice)
     .plus(toPrecision(usdcBalance, SYMBOL_DECIMALS.USDC))
-    .plus(toPrecision(usdtBalance, SYMBOL_DECIMALS.USDT));
+    .plus(toPrecision(usdtBalance, SYMBOL_DECIMALS.USDT))
+    .plus(toPrecision(hollarBalance, SYMBOL_DECIMALS.HOLLAR));
 
   return (
     <div>

@@ -7,16 +7,7 @@ import { useAssetHubApi } from "next-common/hooks/chain/useAssetHubApi";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
 import { toPrecision } from "next-common/utils";
 import TokenSymbolAsset from "next-common/components/summary/polkadotTreasurySummary/common/tokenSymbolAsset";
-import { useAsync } from "react-use";
-
-const HOLLAR_FOREIGN_ASSET_KEY = {
-  parents: 1,
-  interior: {
-    X2: [{ Parachain: 2034 }, { GeneralIndex: "222" }],
-  },
-};
-
-const HOLLAR_DECIMALS = 18;
+import { HOLLAR_DECIMALS, useFetchHollarBalance, ExternalLink } from "./common";
 
 function useFetchFellowshipTreasuryBalance() {
   const api = useAssetHubApi();
@@ -32,43 +23,11 @@ function useFetchFellowshipTreasuryBalance() {
   return { balance: result?.data?.free?.toString() || 0, loading };
 }
 
-function useFetchFellowshipTreasuryHollarBalance() {
-  const api = useAssetHubApi();
-
-  const { loading, value } = useAsync(async () => {
-    if (!api) {
-      return;
-    }
-
-    const result = await api?.query?.foreignAssets?.account(
-      HOLLAR_FOREIGN_ASSET_KEY,
-      StatemintFellowShipTreasuryAccount,
-    );
-
-    return result?.toJSON()?.balance || "0";
-  }, [api]);
-
-  return { balance: value || "0", loading };
-}
-
-function ExternalLink({ href, children }) {
-  return (
-    <a
-      href={href}
-      className="text12Medium text-textTertiary hover:underline"
-      target="_blank"
-      rel="noreferrer"
-    >
-      {children}
-    </a>
-  );
-}
-
 export default function FellowshipTreasury() {
   const { balance: dotBalance, loading: dotLoading } =
     useFetchFellowshipTreasuryBalance();
   const { balance: hollarBalance, loading: hollarLoading } =
-    useFetchFellowshipTreasuryHollarBalance();
+    useFetchHollarBalance(StatemintFellowShipTreasuryAccount);
 
   const Title = (
     <ExternalLink
@@ -83,7 +42,7 @@ export default function FellowshipTreasury() {
       <LoadableContent isLoading={dotLoading || hollarLoading}>
         <div className="flex flex-col gap-[4px]">
           <div>
-            <FiatPriceLabel free={dotBalance} />
+            <FiatPriceLabel free={dotBalance} hollarBalance={hollarBalance} />
           </div>
           <div className="flex items-center gap-x-1">
             <NativeTokenSymbolAsset free={dotBalance} />
