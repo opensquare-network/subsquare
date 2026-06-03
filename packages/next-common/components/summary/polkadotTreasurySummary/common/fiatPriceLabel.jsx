@@ -6,15 +6,14 @@ import { useFiatPriceSnapshot } from "next-common/hooks/useFiatPrice";
 import { toPrecision } from "next-common/utils";
 import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 
-export default function FiatPriceLabel({
-  free = 0,
-  usdcBalance = 0,
-  usdtBalance = 0,
-  hollarBalance = 0,
+function FiatPriceLabelInner({
+  free,
+  usdcBalance,
+  usdtBalance,
+  hollarBalance,
+  fiatPrice,
 }) {
-  const { price: fiatPrice } = useFiatPriceSnapshot();
   const { decimals } = useChainSettings();
-
   const totalPrice = BigNumber(free)
     .dividedBy(Math.pow(10, decimals))
     .multipliedBy(fiatPrice)
@@ -28,5 +27,52 @@ export default function FiatPriceLabel({
         <ValueDisplay value={totalPrice} symbol={""} prefix={"$"} />
       )}
     </div>
+  );
+}
+
+function FiatPriceLabelWithHook({
+  free,
+  usdcBalance,
+  usdtBalance,
+  hollarBalance,
+}) {
+  const { price: fiatPrice } = useFiatPriceSnapshot();
+  return (
+    <FiatPriceLabelInner
+      free={free}
+      usdcBalance={usdcBalance}
+      usdtBalance={usdtBalance}
+      hollarBalance={hollarBalance}
+      fiatPrice={fiatPrice}
+    />
+  );
+}
+
+export default function FiatPriceLabel({
+  free = 0,
+  usdcBalance = 0,
+  usdtBalance = 0,
+  hollarBalance = 0,
+  fiatPrice,
+}) {
+  if (!isNil(fiatPrice)) {
+    return (
+      <FiatPriceLabelInner
+        free={free}
+        usdcBalance={usdcBalance}
+        usdtBalance={usdtBalance}
+        hollarBalance={hollarBalance}
+        fiatPrice={fiatPrice}
+      />
+    );
+  }
+
+  return (
+    <FiatPriceLabelWithHook
+      free={free}
+      usdcBalance={usdcBalance}
+      usdtBalance={usdtBalance}
+      hollarBalance={hollarBalance}
+    />
   );
 }

@@ -8,12 +8,14 @@ import { toPrecision } from "next-common/utils";
 import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 import TokenSymbolAsset from "next-common/components/summary/polkadotTreasurySummary/common/tokenSymbolAsset";
 import { HOLLAR_DECIMALS, useFetchHollarBalance, ExternalLink } from "./common";
+import { useFiatPrice } from "next-common/context/fiatPrice";
 
 export default function FellowshipSalary() {
   const { balance: usdtBalance, isLoading: usdtLoading } =
     useQueryFellowshipSalaryBalance("USDT");
   const { balance: hollarBalance, loading: hollarLoading } =
     useFetchHollarBalance(StatemintFellowShipSalaryAccount);
+  const { price: fiatPrice, loading: fiatPriceLoading } = useFiatPrice();
 
   const Title = (
     <ExternalLink
@@ -25,12 +27,15 @@ export default function FellowshipSalary() {
 
   return (
     <SummaryItem title={Title}>
-      <LoadableContent isLoading={usdtLoading && hollarLoading}>
+      <LoadableContent
+        isLoading={usdtLoading || hollarLoading || fiatPriceLoading}
+      >
         <div className="flex flex-col gap-[4px]">
           <div>
             <FiatPriceLabel
               usdtBalance={usdtBalance}
               hollarBalance={hollarBalance}
+              fiatPrice={fiatPrice}
             />
           </div>
           <div className="flex flex-col gap-y-1">
