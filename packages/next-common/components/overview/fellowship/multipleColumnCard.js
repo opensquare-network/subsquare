@@ -55,7 +55,7 @@ export default function MultipleColumnCard() {
         <FellowshipFeeds />
       </div>
       <div className="flex flex-col gap-4 flex-1">
-        <div>
+        <div className="grow flex flex-col">
           <WithPallet pallet="fellowshipTreasury">
             <WithPallet pallet="fellowshipSalary">
               <FellowshipFinanceOverview />
