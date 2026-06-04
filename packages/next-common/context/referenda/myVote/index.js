@@ -17,11 +17,11 @@ function DataUpdater({ trackId, address, children }) {
       return;
     }
 
-    api.query.ConvictionVoting.VotingFor.getValue(address, trackId).then(
-      (voting) => {
-        setMyVote(voting);
-      },
-    );
+    api.query.ConvictionVoting.VotingFor.getValue(address, trackId, {
+      at: "best",
+    }).then((voting) => {
+      setMyVote(voting);
+    });
   }, [api, address, trackId, height, setMyVote, checkPallet]);
 
   return children;
