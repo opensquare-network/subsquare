@@ -10,23 +10,23 @@ import { memo } from "react";
 function CastingVoteInfo({ casting }) {
   const { referendumIndex } = useOnchainData();
   const votes = casting?.votes || [];
-  const voteItem = votes.find((item) => item[0].toNumber() === referendumIndex);
+  const voteItem = votes.find((item) => item[0] === referendumIndex);
   if (!voteItem) {
     return null;
   }
 
   const vote = voteItem[1];
-  if (vote.isStandard) {
+  if (vote.type === "Standard") {
     return (
       <StandardVotePanel
-        standard={vote.asStandard}
+        standard={vote.value}
         delegations={casting.delegations}
       />
     );
-  } else if (vote.isSplit) {
-    return <SplitVotePanel split={vote.asSplit} />;
-  } else if (vote.isSplitAbstain) {
-    return <SplitAbstainVotePanel splitAbstain={vote.asSplitAbstain} />;
+  } else if (vote.type === "Split") {
+    return <SplitVotePanel split={vote.value} />;
+  } else if (vote.type === "SplitAbstain") {
+    return <SplitAbstainVotePanel splitAbstain={vote.value} />;
   } else {
     return null;
   }
@@ -57,9 +57,9 @@ export default function MyVoteOnActiveReferendum() {
 
   if (!voting) {
     return null;
-  } else if (voting.isCasting) {
-    return <MemoCastingVoteInfo casting={voting.asCasting} />;
-  } else if (voting.isDelegating) {
-    return <MemoDelegatingVoteInfo delegating={voting.asDelegating} />;
+  } else if (voting.type === "Casting") {
+    return <MemoCastingVoteInfo casting={voting.value} />;
+  } else if (voting.type === "Delegating") {
+    return <MemoDelegatingVoteInfo delegating={voting.value} />;
   }
 }

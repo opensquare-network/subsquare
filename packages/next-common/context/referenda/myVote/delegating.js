@@ -1,5 +1,5 @@
 import { createStateContext } from "react-use";
-import { useContextApi } from "next-common/context/api";
+import { useContextPapi } from "next-common/context/papi";
 import { latestHeightSelector } from "next-common/store/reducers/chainSlice";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -8,19 +8,21 @@ const [useSharedDelegatingTargetReferendumVote, Provider] =
   createStateContext(null);
 
 function DataUpdater({ trackId, address, children }) {
-  const api = useContextApi();
+  const { api, checkPallet } = useContextPapi();
   const [, setTargetVote] = useSharedDelegatingTargetReferendumVote();
   const height = useSelector(latestHeightSelector);
 
   useEffect(() => {
-    if (!api || !address || !api.query?.convictionVoting?.votingFor) {
+    if (!api || !address || !checkPallet("ConvictionVoting", "VotingFor")) {
       return;
     }
 
-    api.query.convictionVoting.votingFor(address, trackId).then((voting) => {
-      setTargetVote(voting);
-    });
-  }, [api, address, trackId, height, setTargetVote]);
+    api.query.ConvictionVoting.VotingFor.getValue(address, trackId).then(
+      (voting) => {
+        setTargetVote(voting);
+      },
+    );
+  }, [api, address, trackId, height, setTargetVote, checkPallet]);
 
   return children;
 }

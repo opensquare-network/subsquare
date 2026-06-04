@@ -1,4 +1,5 @@
 import VotePanel from "./panel";
+import { isAye, getConviction } from "next-common/utils/referendumCommon";
 import { memo } from "react";
 
 function StandardVotePanel({ standard, delegations }) {
@@ -9,9 +10,9 @@ function StandardVotePanel({ standard, delegations }) {
   const { vote, balance } = standard;
   const normalized = {
     isStandard: true,
-    aye: vote.isAye,
+    aye: isAye(vote),
     balance: balance.toString(),
-    conviction: vote.conviction.toNumber(),
+    conviction: getConviction(vote),
   };
 
   return (
