@@ -1,7 +1,7 @@
 import { useSharedDelegatingTargetReferendumVote } from "next-common/context/referenda/myVote/delegating";
 import { useOnchainData } from "next-common/context/post";
 import DelegatingVotePanel from "./delegatingPanel";
-import { Conviction } from "next-common/utils/referendumCommon";
+import { Conviction, isAye } from "next-common/utils/referendumCommon";
 
 export default function DelegatedVotePanel({ delegating }) {
   const [targetVote] = useSharedDelegatingTargetReferendumVote();
@@ -27,7 +27,7 @@ export default function DelegatedVotePanel({ delegating }) {
       target={delegating.target.toString()}
       balance={balance}
       conviction={conviction}
-      aye={(vote.value.vote & 1) === 1}
+      aye={isAye(vote.value.vote)}
     />
   );
 }
