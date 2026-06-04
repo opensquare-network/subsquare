@@ -7,15 +7,8 @@ import { useAssetHubApi } from "next-common/hooks/chain/useAssetHubApi";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
 import { toPrecision } from "next-common/utils";
 import TokenSymbolAsset from "next-common/components/summary/polkadotTreasurySummary/common/tokenSymbolAsset";
-import {
-  HYDRATION_ASSET_IDS,
-  HOLLAR_DECIMALS,
-  useFetchHollarBalance,
-  useHydrationCurrencyBalance,
-  ExternalLink,
-} from "./common";
+import { HOLLAR_DECIMALS, useFetchHollarBalance, ExternalLink } from "./common";
 import { useFiatPrice } from "next-common/context/fiatPrice";
-import bigAdd from "next-common/utils/math/bigAdd";
 
 function useFetchFellowshipTreasuryBalance() {
   const api = useAssetHubApi();
@@ -37,28 +30,12 @@ export default function FellowshipTreasury() {
   const { balance: hollarAhBalance, loading: hollarAhLoading } =
     useFetchHollarBalance(StatemintFellowShipTreasuryAccount);
 
-  const { balance: dotHydrationBalance, loading: dotHydrationLoading } =
-    useHydrationCurrencyBalance(
-      HYDRATION_ASSET_IDS.DOT,
-      StatemintFellowShipTreasuryAccount,
-    );
-  const { balance: hollarHydrationBalance, loading: hollarHydrationLoading } =
-    useHydrationCurrencyBalance(
-      HYDRATION_ASSET_IDS.HOLLAR,
-      StatemintFellowShipTreasuryAccount,
-    );
-
   const { price: fiatPrice, loading: fiatPriceLoading } = useFiatPrice();
 
-  const dotBalance = bigAdd(dotAhBalance, dotHydrationBalance);
-  const hollarBalance = bigAdd(hollarAhBalance, hollarHydrationBalance);
+  const dotBalance = dotAhBalance;
+  const hollarBalance = hollarAhBalance;
 
-  const loading =
-    dotAhLoading ||
-    hollarAhLoading ||
-    dotHydrationLoading ||
-    hollarHydrationLoading ||
-    fiatPriceLoading;
+  const loading = dotAhLoading || hollarAhLoading || fiatPriceLoading;
 
   const Title = (
     <ExternalLink
