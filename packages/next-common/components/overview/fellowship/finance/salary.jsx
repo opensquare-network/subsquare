@@ -25,11 +25,11 @@ export default function FellowshipSalary() {
     </ExternalLink>
   );
 
+  const loading = usdtLoading || hollarLoading || fiatPriceLoading;
+
   return (
     <SummaryItem title={Title}>
-      <LoadableContent
-        isLoading={usdtLoading || hollarLoading || fiatPriceLoading}
-      >
+      <LoadableContent isLoading={loading}>
         <div className="flex flex-col gap-[4px]">
           <div>
             <FiatPriceLabel

@@ -16,7 +16,7 @@ export default function FellowshipFinanceOverview() {
 
       <SecondaryCard
         className={cn(
-          "grid grid-cols-2 gap-4 gap-y-6",
+          "grid grid-cols-2 gap-4 gap-y-6 grow",
           navCollapsed
             ? "max-md:grid-cols-4"
             : "max-md:grid-cols-2 max-lg:grid-cols-4",
