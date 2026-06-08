@@ -6,7 +6,6 @@ import { useChainSettings } from "next-common/context/chain";
 import PopupLabel from "../label";
 import MaybeProxySigner, { ConnectedAccountSigner } from "../../signer";
 import ExtensionUpdatePrompt from "next-common/components/overview/accountInfo/components/extensionUpdatePrompt";
-import FeeAssetPrompts from "./feeAssetPrompts";
 
 function SignerWrapper({
   title = "Origin",
@@ -24,7 +23,6 @@ function SignerWrapper({
     <div>
       <div className="flex flex-col mb-4">
         <ExtensionUpdatePrompt isWithCache={false} />
-        <FeeAssetPrompts />
       </div>
 
       {noBalance ? (
