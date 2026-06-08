@@ -72,8 +72,8 @@ function NativeAssetOption({ label, isActive, onClick }) {
 
   return (
     <button
-      className={`flex items-center w-full px-3 py-2 text12Medium hover:bg-neutral-100 transition-colors ${
-        isActive ? "text-theme500 bg-neutral-50" : "text-textPrimary"
+      className={`flex items-center w-full px-3 py-2 text12Medium hover:bg-neutral200 transition-colors ${
+        isActive ? "text-theme500 bg-neutral200" : "text-textPrimary"
       }`}
       onClick={onClick}
     >
@@ -125,8 +125,8 @@ function CustomAssetOption({ label, assetId, isActive, onClick }) {
 
   return (
     <button
-      className={`flex items-center w-full px-3 py-2 text12Medium hover:bg-neutral-100 transition-colors ${
-        isActive ? "text-theme500 bg-neutral-50" : "text-textPrimary"
+      className={`flex items-center w-full px-3 py-2 text12Medium hover:bg-neutral200 transition-colors ${
+        isActive ? "text-theme500 bg-neutral200" : "text-textPrimary"
       }`}
       onClick={onClick}
     >
@@ -174,7 +174,7 @@ export default function FeeAssetTypeSwitcher() {
   return (
     <div className="absolute top-2 right-2" ref={dropdownRef}>
       <button
-        className="flex items-center gap-x-1 p-1 rounded hover:bg-neutral-200 transition-colors"
+        className="flex items-center gap-x-1 p-1 rounded hover:bg-neutral200 transition-colors"
         onClick={() => setShowDropdown(!showDropdown)}
         title={`Switch fee asset (current: ${
           feeAssetType === FEE_ASSET_TYPES.native ? symbol : feeAssetType
@@ -189,7 +189,7 @@ export default function FeeAssetTypeSwitcher() {
       </button>
 
       {showDropdown && (
-        <div className="absolute top-full right-0 mt-1 bg-white border border-neutral-200 rounded-lg shadow-lg z-50 py-1 min-w-48">
+        <div className="absolute top-full right-0 mt-1 bg-neutral100 border border-neutral400 rounded-lg shadow-200 z-50 py-1 min-w-48 dark:border dark:border-neutral300">
           <NativeAssetOption
             label={symbol}
             isActive={feeAssetType === FEE_ASSET_TYPES.native}
