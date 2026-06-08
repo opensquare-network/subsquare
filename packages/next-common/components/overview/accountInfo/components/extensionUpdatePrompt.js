@@ -161,7 +161,7 @@ export default function ExtensionUpdatePrompt({ isWithCache = true }) {
   }
 
   return (
-    <GreyPanel className="w-[calc(100%+50px)] right-[25px] relative rounded-none bg-orange100 text-orange500 px-6 py-4 text14Medium mb-4">
+    <GreyPanel className="w-[calc(100%+50px)] right-[25px] relative rounded-none bg-orange100 text-orange500 px-6 py-4 text14Medium">
       <PromptContent onUpdateMeta={() => updateMeta(chainInfo)} />
     </GreyPanel>
   );
