@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import { useSignerAccount } from "./popupWithSigner/context";
 import { GreyPanel } from "./styled/containers/greyPanel";
@@ -8,42 +7,12 @@ import { isNil } from "lodash-es";
 import LoadableContent from "./common/loadableContent";
 import {
   useFeeAssetType,
+  useNativeBalance,
+  useAssetBalance,
   FEE_ASSET_TYPES,
-  STABLE_COIN_DECIMALS,
-  USDC_ASSET_ID,
-  USDT_ASSET_ID,
   getFeeAssetXcmLocation,
 } from "./popupWithSigner/context/feeAsset";
 import FeeAssetTypeSwitcher from "./popup/fields/feeAssetTypeSwitcher";
-
-function useAssetBalance(api, assetId, address) {
-  const [balance, setBalance] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    if (!api || !address || assetId == null) {
-      setBalance(null);
-      return;
-    }
-    setIsLoading(true);
-    api.query.assets
-      .account(assetId, address)
-      .then((data) => {
-        const b = data?.balance;
-        setBalance(b != null ? BigInt(b.toString()) : 0n);
-      })
-      .catch(() => setBalance(0n))
-      .finally(() => setIsLoading(false));
-  }, [api, address, assetId]);
-
-  return { balance, isLoading };
-}
-
-function getFeeAssetId(feeAssetType) {
-  if (feeAssetType === FEE_ASSET_TYPES.USDC) return USDC_ASSET_ID;
-  if (feeAssetType === FEE_ASSET_TYPES.USDT) return USDT_ASSET_ID;
-  return null;
-}
 
 async function convertFeeToAsset(api, partialFee, weight, feeAssetType) {
   if (feeAssetType === FEE_ASSET_TYPES.native) {
@@ -84,17 +53,21 @@ export default function EstimatedGas({ getTxFunc }) {
   const api = useContextApi();
   const [accountNonce, setAccountNonce] = useState();
   const [displayFee, setDisplayFee] = useState(null);
-  const { decimals, symbol } = useChainSettings();
   const signerAccount = useSignerAccount();
   const [tx, setTx] = useState(null);
   const [isGasLoading, setIsGasLoading] = useState(false);
   const [isNonceLoading, setIsNonceLoading] = useState(false);
-  const { feeAssetType } = useFeeAssetType();
+  const { feeAssetType, feeAssetInfo } = useFeeAssetType();
 
   // Query balance of the selected fee asset for insufficient check
-  const assetId = getFeeAssetId(feeAssetType);
-  const { balance: feeAssetBalance, isLoading: isBalanceLoading } =
-    useAssetBalance(api, assetId, signerAccount?.realAddress);
+  const { balance: nativeBalance } = useNativeBalance();
+  const { balance: assetBalance, isLoading: isAssetBalanceLoading } =
+    useAssetBalance(feeAssetInfo.assetId);
+
+  const feeAssetBalance =
+    feeAssetType === FEE_ASSET_TYPES.native ? nativeBalance : assetBalance;
+  const isBalanceLoading =
+    feeAssetType === FEE_ASSET_TYPES.native ? false : isAssetBalanceLoading;
 
   useEffect(() => {
     if (typeof getTxFunc !== "function") {
@@ -166,12 +139,6 @@ export default function EstimatedGas({ getTxFunc }) {
     };
   }, [api, tx, address, feeAssetType]);
 
-  const getDisplayDecimals = () =>
-    feeAssetType === FEE_ASSET_TYPES.native ? decimals : STABLE_COIN_DECIMALS;
-
-  const getDisplaySymbol = () =>
-    feeAssetType === FEE_ASSET_TYPES.native ? symbol : feeAssetType;
-
   // Determine if the balance is insufficient for the estimated fee
   const isInsufficient =
     feeAssetType !== FEE_ASSET_TYPES.native &&
@@ -192,11 +159,9 @@ export default function EstimatedGas({ getTxFunc }) {
             <span>
               {isNil(displayFee)
                 ? "-"
-                : `≈ ${toPrecision(
-                    displayFee,
-                    getDisplayDecimals(),
-                    4,
-                  )} ${getDisplaySymbol()}`}
+                : `≈ ${toPrecision(displayFee, feeAssetInfo.decimals, 4)} ${
+                    feeAssetInfo.symbol
+                  }`}
             </span>
           </LoadableContent>
         </div>
@@ -209,7 +174,7 @@ export default function EstimatedGas({ getTxFunc }) {
       </GreyPanel>
       {isInsufficient && (
         <span className="text12Medium text-red500 ml-4">
-          Insufficient {getDisplaySymbol()} balance to pay the transaction fee
+          Insufficient {feeAssetInfo.symbol} balance to pay the transaction fee
         </span>
       )}
     </div>

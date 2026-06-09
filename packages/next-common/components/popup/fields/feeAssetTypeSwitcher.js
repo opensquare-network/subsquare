@@ -1,15 +1,15 @@
 import { useCallback, useRef, useState, useEffect } from "react";
-import { createGlobalState } from "react-use";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import {
   useFeeAssetType,
+  useNativeBalance,
+  useAssetBalance,
+  getFeeAssetTypeKey,
   FEE_ASSET_TYPES,
   STABLE_COIN_DECIMALS,
   USDC_ASSET_ID,
   USDT_ASSET_ID,
 } from "next-common/components/popupWithSigner/context/feeAsset";
-import { useSignerAccount } from "next-common/components/popupWithSigner/context";
-import { useContextApi } from "next-common/context/api";
 import { toPrecision } from "next-common/utils";
 import {
   AssetIconDot,
@@ -18,12 +18,6 @@ import {
   AssetIconUsdt,
 } from "@osn/icons/subsquare";
 import { ChevronDown, CheckIcon } from "./feeAssetSvgs";
-
-const useCachedBalances = createGlobalState({
-  [FEE_ASSET_TYPES.native]: null,
-  [FEE_ASSET_TYPES.USDC]: null,
-  [FEE_ASSET_TYPES.USDT]: null,
-});
 
 function getFeeAssetOptions(chain) {
   if (chain === "kusama") {
@@ -61,30 +55,7 @@ function FeeIcon({ type, className = "w-4 h-4" }) {
 
 function NativeAssetOption({ label, isActive, onClick }) {
   const { decimals } = useChainSettings();
-  const api = useContextApi();
-  const signerAccount = useSignerAccount();
-  const [cachedBalances, setCachedBalances] = useCachedBalances();
-  const cached = cachedBalances?.[FEE_ASSET_TYPES.native];
-  const [balance, setBalance] = useState(cached);
-  const [isLoading, setIsLoading] = useState(cached == null);
-
-  useEffect(() => {
-    if (!api || !signerAccount?.realAddress) return;
-    setIsLoading(cached == null);
-    api.query.system
-      .account(signerAccount.realAddress)
-      .then((acc) => {
-        const val = acc?.data?.free?.toBigInt() || 0n;
-        setBalance(val);
-        setCachedBalances((prev) => ({
-          ...prev,
-          [FEE_ASSET_TYPES.native]: val,
-        }));
-      })
-      .catch(console.error)
-      .finally(() => setIsLoading(false));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [api, signerAccount?.realAddress]);
+  const { balance, isLoading } = useNativeBalance();
 
   const formatted = balance != null ? toPrecision(balance, decimals, 4) : null;
 
@@ -109,38 +80,8 @@ function NativeAssetOption({ label, isActive, onClick }) {
   );
 }
 
-const ASSET_ID_TO_TYPE = {
-  [USDC_ASSET_ID]: FEE_ASSET_TYPES.USDC,
-  [USDT_ASSET_ID]: FEE_ASSET_TYPES.USDT,
-};
-
-function assetTypeFor(assetId) {
-  return ASSET_ID_TO_TYPE[assetId] || "";
-}
-
 function CustomAssetOption({ label, assetId, isActive, onClick }) {
-  const api = useContextApi();
-  const signerAccount = useSignerAccount();
-  const [cachedBalances, setCachedBalances] = useCachedBalances();
-  const balanceKey = assetTypeFor(assetId);
-  const cached = cachedBalances?.[balanceKey];
-  const [balance, setBalance] = useState(cached);
-  const [isLoading, setIsLoading] = useState(cached == null);
-
-  useEffect(() => {
-    if (!api || !signerAccount?.realAddress) return;
-    setIsLoading(cached == null);
-    api.query.assets
-      .account(assetId, signerAccount.realAddress)
-      .then((data) => {
-        const val = data?.unwrapOr(null)?.balance?.toBigInt() || 0n;
-        setBalance(val);
-        setCachedBalances((prev) => ({ ...prev, [balanceKey]: val }));
-      })
-      .catch(console.error)
-      .finally(() => setIsLoading(false));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [api, signerAccount?.realAddress, assetId]);
+  const { balance, isLoading } = useAssetBalance(assetId);
 
   const formatted =
     balance != null ? toPrecision(balance, STABLE_COIN_DECIMALS, 4) : null;
@@ -152,7 +93,10 @@ function CustomAssetOption({ label, assetId, isActive, onClick }) {
       }`}
       onClick={onClick}
     >
-      <FeeIcon type={assetTypeFor(assetId)} className="w-4 h-4 shrink-0" />
+      <FeeIcon
+        type={getFeeAssetTypeKey(assetId)}
+        className="w-4 h-4 shrink-0"
+      />
       <span className="ml-2">{label}</span>
       <span className="ml-auto text-textTertiary">
         {isLoading ? "…" : formatted}
