@@ -3,14 +3,14 @@ import { toPrecision } from "next-common/utils";
 import { GreyPanel } from "./styled/containers/greyPanel";
 import { isNil } from "lodash-es";
 import LoadableContent from "./common/loadableContent";
-import { useFeeAssetType } from "./popupWithSigner/context/feeAsset";
+import { useFeeAssetConfig } from "./popupWithSigner/context/feeAsset";
 import FeeAssetTypeSwitcher from "./popup/fields/feeAssetTypeSwitcher";
 import InsufficientFeeWarning from "./estimatedGas/insufficientFeeWarning";
 import useAccountNonce from "next-common/hooks/useAccountNonce";
 import useGasFeeEstimate from "next-common/hooks/useGasFeeEstimate";
 
 export default function EstimatedGas({ getTxFunc }) {
-  const { feeAssetType, feeAssetInfo } = useFeeAssetType();
+  const { feeAssetType, feeAssetInfo } = useFeeAssetConfig();
   const { accountNonce, isLoading: isNonceLoading } = useAccountNonce();
   const { gasFee, isGasFeeLoading } = useGasFeeEstimate(
     getTxFunc,

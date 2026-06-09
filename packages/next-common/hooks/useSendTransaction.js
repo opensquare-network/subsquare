@@ -1,4 +1,5 @@
 import {
+  useFeeAssetConfig,
   useSetSigner,
   useSignerAccount,
 } from "next-common/components/popupWithSigner/context";
@@ -96,6 +97,7 @@ export function useSendTransaction() {
 
   const { signWcTx } = useWalletConnect();
   const buildPayload = useWalletConnectBuildPayload();
+  const { feeAssetInfo } = useFeeAssetConfig();
 
   const sendTxFunc = useCallback(
     async ({
@@ -290,6 +292,7 @@ export function useSendTransaction() {
           onFinalized: _onFinalized,
           onError,
           signerAddress: signerAccount?.address,
+          feeAssetLocation: feeAssetInfo?.location,
         });
       } catch (e) {
         dispatch(newErrorToast(e.message));
@@ -305,6 +308,7 @@ export function useSendTransaction() {
       setSigner,
       sendVaultTx,
       signWcTx,
+      feeAssetInfo,
     ],
   );
 

@@ -197,19 +197,24 @@ export function FeeAssetProvider({ children }) {
   );
 }
 
-export function useFeeAssetType() {
-  const { symbol, decimals } = useChainSettings();
+export function useFeeAssetConfig() {
   const context = useContext(FeeAssetContext);
-  if (!context) {
-    return {
+  const { symbol, decimals } = useChainSettings();
+  const defaultInfo = useMemo(
+    () => ({
       feeAssetType: NATIVE_ASSET_TYPE,
       feeAssetInfo: {
         type: NATIVE_ASSET_TYPE,
         symbol,
         decimals,
+        location: null,
       },
       setFeeAssetType: () => {},
-    };
+    }),
+    [symbol, decimals],
+  );
+  if (!context) {
+    return defaultInfo;
   }
   return context;
 }

@@ -1,7 +1,7 @@
 import { useCallback, useRef, useState, useEffect } from "react";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import {
-  useFeeAssetType,
+  useFeeAssetConfig,
   useNativeBalance,
   useAssetBalance,
   getFeeAssetTypeKey,
@@ -111,7 +111,7 @@ function CustomAssetOption({ label, assetId, isActive, onClick }) {
 export default function FeeAssetTypeSwitcher() {
   const chain = useChain();
   const { symbol } = useChainSettings();
-  const { feeAssetType, setFeeAssetType } = useFeeAssetType();
+  const { feeAssetType, setFeeAssetType } = useFeeAssetConfig();
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
 
