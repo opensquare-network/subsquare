@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState, useEffect } from "react";
 import { createGlobalState } from "react-use";
-import { useChainSettings } from "next-common/context/chain";
+import { useChain, useChainSettings } from "next-common/context/chain";
 import {
   useFeeAssetType,
   FEE_ASSET_TYPES,
@@ -13,6 +13,7 @@ import { useContextApi } from "next-common/context/api";
 import { toPrecision } from "next-common/utils";
 import {
   AssetIconDot,
+  AssetIconKsm,
   AssetIconUsdc,
   AssetIconUsdt,
 } from "@osn/icons/subsquare";
@@ -24,21 +25,37 @@ const useCachedBalances = createGlobalState({
   [FEE_ASSET_TYPES.USDT]: null,
 });
 
-const FEE_ICON_MAP = {
-  [FEE_ASSET_TYPES.native]: AssetIconDot,
-  [FEE_ASSET_TYPES.USDC]: AssetIconUsdc,
-  [FEE_ASSET_TYPES.USDT]: AssetIconUsdt,
-};
+function getFeeAssetOptions(chain) {
+  if (chain === "kusama") {
+    return [
+      { type: FEE_ASSET_TYPES.native, label: null, assetId: null },
+      { type: FEE_ASSET_TYPES.USDT, label: "USDt", assetId: USDT_ASSET_ID },
+    ];
+  }
+  return [
+    { type: FEE_ASSET_TYPES.native, label: null, assetId: null },
+    { type: FEE_ASSET_TYPES.USDC, label: "USDC", assetId: USDC_ASSET_ID },
+    { type: FEE_ASSET_TYPES.USDT, label: "USDT", assetId: USDT_ASSET_ID },
+  ];
+}
 
-const ASSET_ID_TO_TYPE = {
-  [USDC_ASSET_ID]: FEE_ASSET_TYPES.USDC,
-  [USDT_ASSET_ID]: FEE_ASSET_TYPES.USDT,
-};
+function NativeSymbolIcon({ className = "w-4 h-4" }) {
+  const chain = useChain();
+  return chain === "kusama" ? (
+    <AssetIconKsm className={className} />
+  ) : (
+    <AssetIconDot className={className} />
+  );
+}
 
 function FeeIcon({ type, className = "w-4 h-4" }) {
-  const Icon = FEE_ICON_MAP[type];
-  if (!Icon) return null;
-  return <Icon className={className} />;
+  if (type === FEE_ASSET_TYPES.native) {
+    return <NativeSymbolIcon className={className} />;
+  }
+  if (type === FEE_ASSET_TYPES.USDC) {
+    return <AssetIconUsdc className={className} />;
+  }
+  return <AssetIconUsdt className={className} />;
 }
 
 function NativeAssetOption({ label, isActive, onClick }) {
@@ -77,7 +94,7 @@ function NativeAssetOption({ label, isActive, onClick }) {
       }`}
       onClick={onClick}
     >
-      <FeeIcon type={FEE_ASSET_TYPES.native} className="w-4 h-4 shrink-0" />
+      <NativeSymbolIcon className="w-4 h-4 shrink-0" />
       <span className="ml-2">{label}</span>
       <span className="ml-auto text-textTertiary">
         {isLoading ? "…" : formatted}
@@ -91,8 +108,13 @@ function NativeAssetOption({ label, isActive, onClick }) {
   );
 }
 
+const ASSET_ID_TO_TYPE = {
+  [USDC_ASSET_ID]: FEE_ASSET_TYPES.USDC,
+  [USDT_ASSET_ID]: FEE_ASSET_TYPES.USDT,
+};
+
 function assetTypeFor(assetId) {
-  return ASSET_ID_TO_TYPE[assetId] || FEE_ASSET_TYPES.native;
+  return ASSET_ID_TO_TYPE[assetId] || FEE_ASSET_TYPES.USDT;
 }
 
 function CustomAssetOption({ label, assetId, isActive, onClick }) {
@@ -145,6 +167,7 @@ function CustomAssetOption({ label, assetId, isActive, onClick }) {
 }
 
 export default function FeeAssetTypeSwitcher() {
+  const chain = useChain();
   const { symbol } = useChainSettings();
   const { feeAssetType, setFeeAssetType } = useFeeAssetType();
   const [showDropdown, setShowDropdown] = useState(false);
@@ -171,6 +194,8 @@ export default function FeeAssetTypeSwitcher() {
     [setFeeAssetType],
   );
 
+  const options = getFeeAssetOptions(chain);
+
   return (
     <div className="absolute top-2 right-2" ref={dropdownRef}>
       <button
@@ -190,23 +215,27 @@ export default function FeeAssetTypeSwitcher() {
 
       {showDropdown && (
         <div className="absolute top-full right-0 mt-1 bg-neutral100 border border-neutral400 rounded-lg shadow-200 z-50 py-1 min-w-48 dark:border dark:border-neutral300">
-          <NativeAssetOption
-            label={symbol}
-            isActive={feeAssetType === FEE_ASSET_TYPES.native}
-            onClick={() => handleChange(FEE_ASSET_TYPES.native)}
-          />
-          <CustomAssetOption
-            label="USDC"
-            assetId={USDC_ASSET_ID}
-            isActive={feeAssetType === FEE_ASSET_TYPES.USDC}
-            onClick={() => handleChange(FEE_ASSET_TYPES.USDC)}
-          />
-          <CustomAssetOption
-            label="USDT"
-            assetId={USDT_ASSET_ID}
-            isActive={feeAssetType === FEE_ASSET_TYPES.USDT}
-            onClick={() => handleChange(FEE_ASSET_TYPES.USDT)}
-          />
+          {options.map((opt) => {
+            if (opt.type === FEE_ASSET_TYPES.native) {
+              return (
+                <NativeAssetOption
+                  key={opt.type}
+                  label={symbol}
+                  isActive={feeAssetType === FEE_ASSET_TYPES.native}
+                  onClick={() => handleChange(FEE_ASSET_TYPES.native)}
+                />
+              );
+            }
+            return (
+              <CustomAssetOption
+                key={opt.type}
+                label={opt.label}
+                assetId={opt.assetId}
+                isActive={feeAssetType === opt.type}
+                onClick={() => handleChange(opt.type)}
+              />
+            );
+          })}
         </div>
       )}
     </div>
