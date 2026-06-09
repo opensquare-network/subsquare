@@ -99,9 +99,8 @@ export async function signAndSendSubstrateTx({
       withSignedTransaction: true,
     };
 
-    // If a non-native fee asset is specified, set the asset param
     if (feeAssetLocation) {
-      signOptions.asset = feeAssetLocation;
+      signOptions.assetId = feeAssetLocation;
     }
 
     const unsub = await tx.signAndSend(
