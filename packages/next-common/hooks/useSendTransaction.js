@@ -191,6 +191,7 @@ export function useSendTransaction() {
             onFinalized: _onFinalized,
             onError,
             signerAddress: signerAccount?.address,
+            feeAssetLocation: feeAssetInfo?.location,
           });
           if (handled) {
             return;
@@ -263,6 +264,7 @@ export function useSendTransaction() {
             onSubmitted: _onSubmitted,
             onFinalized: _onFinalized,
             onError,
+            feeAssetLocation: feeAssetInfo?.location,
           });
 
           return;
@@ -279,6 +281,7 @@ export function useSendTransaction() {
             onFinalized: _onFinalized,
             onError,
             signerAddress: signerAccount?.address,
+            feeAssetLocation: feeAssetInfo?.location,
           });
           return;
         }

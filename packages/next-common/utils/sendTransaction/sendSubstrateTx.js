@@ -77,7 +77,7 @@ export function createSendTxEventHandler({
   };
 }
 
-function getFeeAssetMultiLocation(feeAssetLocation) {
+export function getFeeAssetMultiLocation(feeAssetLocation) {
   return feeAssetLocation?.V4 || feeAssetLocation?.V3 || feeAssetLocation;
 }
 

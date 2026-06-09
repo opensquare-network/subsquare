@@ -1,6 +1,9 @@
 import { inject, isMimirReady, MIMIR_REGEXP } from "@mimirdev/apps-inject";
 import { noop } from "lodash-es";
-import { createSendTxEventHandler } from "./sendSubstrateTx";
+import {
+  createSendTxEventHandler,
+  getFeeAssetMultiLocation,
+} from "./sendSubstrateTx";
 import getOriginForExtension from "next-common/utils/extension/origin";
 
 export async function tryInitMimir() {
@@ -38,6 +41,7 @@ export async function maybeSendMimirTx({
   onSubmitted = noop,
   onError = noop,
   signerAddress,
+  feeAssetLocation,
 }) {
   const { web3Enable, web3FromSource } = await import(
     "@polkadot/extension-dapp"
@@ -54,9 +58,18 @@ export async function maybeSendMimirTx({
   onStarted();
 
   try {
+    const signOptions = {
+      signer: injected.signer,
+      withSignedTransaction: true,
+    };
+
+    if (feeAssetLocation) {
+      signOptions.assetId = getFeeAssetMultiLocation(feeAssetLocation);
+    }
+
     const unsub = await tx.signAndSend(
       signerAddress,
-      { signer: injected.signer, withSignedTransaction: true },
+      signOptions,
       createSendTxEventHandler({
         onFinalized,
         onInBlock,

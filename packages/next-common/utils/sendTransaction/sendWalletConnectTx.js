@@ -5,6 +5,7 @@ export async function sendWalletConnectTx({
   api,
   tx,
   signerAddress,
+  feeAssetLocation,
   buildPayload = noop,
   signWcTx = noop,
   onStarted = noop,
@@ -16,7 +17,7 @@ export async function sendWalletConnectTx({
   onStarted();
 
   try {
-    const payload = await buildPayload(tx);
+    const payload = await buildPayload(tx, feeAssetLocation);
     const { signature } = await signWcTx(payload);
     const rawPayload = api.registry.createType("ExtrinsicPayload", payload, {
       version: payload.version,
