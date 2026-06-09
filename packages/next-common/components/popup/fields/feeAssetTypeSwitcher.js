@@ -32,6 +32,7 @@ function getFeeAssetOptions(chain) {
       { type: FEE_ASSET_TYPES.USDT, label: "USDt", assetId: USDT_ASSET_ID },
     ];
   }
+  // polkadot, paseo: native + USDC(1337) + USDT(1984)
   return [
     { type: FEE_ASSET_TYPES.native, label: null, assetId: null },
     { type: FEE_ASSET_TYPES.USDC, label: "USDC", assetId: USDC_ASSET_ID },
@@ -73,14 +74,14 @@ function NativeAssetOption({ label, isActive, onClick }) {
     api.query.system
       .account(signerAccount.realAddress)
       .then((acc) => {
-        const val = acc.data.free;
+        const val = acc?.data?.free?.toBigInt() || 0n;
         setBalance(val);
         setCachedBalances((prev) => ({
           ...prev,
           [FEE_ASSET_TYPES.native]: val,
         }));
       })
-      .catch(() => {})
+      .catch(console.error)
       .finally(() => setIsLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [api, signerAccount?.realAddress]);
@@ -114,7 +115,7 @@ const ASSET_ID_TO_TYPE = {
 };
 
 function assetTypeFor(assetId) {
-  return ASSET_ID_TO_TYPE[assetId] || FEE_ASSET_TYPES.USDT;
+  return ASSET_ID_TO_TYPE[assetId] || "";
 }
 
 function CustomAssetOption({ label, assetId, isActive, onClick }) {
@@ -132,12 +133,11 @@ function CustomAssetOption({ label, assetId, isActive, onClick }) {
     api.query.assets
       .account(assetId, signerAccount.realAddress)
       .then((data) => {
-        const b = data?.balance;
-        const val = b != null ? BigInt(b.toString()) : 0n;
+        const val = data?.unwrapOr(null)?.balance?.toBigInt() || 0n;
         setBalance(val);
         setCachedBalances((prev) => ({ ...prev, [balanceKey]: val }));
       })
-      .catch(() => {})
+      .catch(console.error)
       .finally(() => setIsLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [api, signerAccount?.realAddress, assetId]);
