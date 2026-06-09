@@ -57,12 +57,6 @@ function findAssetType(chain, assetId) {
   return asset?.symbol || null;
 }
 
-export function getFeeAssetXcmLocation(feeAssetType, chain) {
-  const config = findAssetConfig(chain, feeAssetType);
-  if (!config) return null;
-  return buildXcmLocation(config.assetId);
-}
-
 export function getFeeAssetTypeKey(assetId, chain) {
   return findAssetType(chain, assetId);
 }
@@ -162,13 +156,9 @@ export function useFeeAssetInfo(feeAssetType) {
 
     const config = findAssetConfig(chain, feeAssetType);
     if (!config) {
-      return {
-        type: feeAssetType,
-        symbol: feeAssetType,
-        assetId: null,
-        decimals: 6,
-        location: null,
-      };
+      throw new Error(
+        `Unsupported fee asset type ${feeAssetType} on chain ${chain}`,
+      );
     }
 
     return {
@@ -176,7 +166,7 @@ export function useFeeAssetInfo(feeAssetType) {
       symbol: config.symbol,
       assetId: config.assetId,
       decimals: config.decimals,
-      location: getFeeAssetXcmLocation(feeAssetType, chain),
+      location: buildXcmLocation(config.assetId),
     };
   }, [feeAssetType, symbol, decimals, chain]);
 }
