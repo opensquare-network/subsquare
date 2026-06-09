@@ -1,13 +1,13 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useContextApi } from "next-common/context/api";
-import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import {
-  FEE_ASSET_TYPES,
-  getFeeAssetXcmLocation,
-} from "next-common/components/popupWithSigner/context/feeAsset";
+  NATIVE_ASSET_TYPE,
+  useSignerAccount,
+} from "next-common/components/popupWithSigner/context";
+import { useFeeAssetInfo } from "next-common/components/popupWithSigner/context/feeAsset";
 
-async function convertFeeToAsset(api, partialFee, weight, feeAssetType) {
-  if (feeAssetType === FEE_ASSET_TYPES.native) {
+async function convertFeeToAsset(api, partialFee, weight, location) {
+  if (!location) {
     return partialFee;
   }
 
@@ -16,11 +16,6 @@ async function convertFeeToAsset(api, partialFee, weight, feeAssetType) {
   }
   if (!api?.call?.xcmPaymentApi?.queryWeightToAssetFee) {
     throw new Error("xcmPaymentApi not available on this chain");
-  }
-
-  const location = getFeeAssetXcmLocation(feeAssetType);
-  if (!location) {
-    return partialFee;
   }
 
   const weightFeeBn = await api.call.transactionPaymentApi.queryWeightToFee(
@@ -32,7 +27,7 @@ async function convertFeeToAsset(api, partialFee, weight, feeAssetType) {
     await api.call.xcmPaymentApi.queryWeightToAssetFee(weight, location);
 
   if (!assetWeightFeeResult.isOk) {
-    throw new Error(`queryWeightToAssetFee failed for ${feeAssetType}`);
+    throw new Error("queryWeightToAssetFee failed");
   }
 
   const assetWeightFee = BigInt(assetWeightFeeResult.asOk.toString());
@@ -44,6 +39,7 @@ async function convertFeeToAsset(api, partialFee, weight, feeAssetType) {
 export default function useGasFeeEstimate(getTxFunc, feeAssetType) {
   const api = useContextApi();
   const signerAccount = useSignerAccount();
+  const { location } = useFeeAssetInfo(feeAssetType);
   const [tx, setTx] = useState(null);
   const [gasFee, setGasFee] = useState(null);
   const [isGasFeeLoading, setIsGasFeeLoading] = useState(false);
@@ -86,7 +82,7 @@ export default function useGasFeeEstimate(getTxFunc, feeAssetType) {
       .then(async (info) => {
         if (cancelled) return;
 
-        if (feeAssetType === FEE_ASSET_TYPES.native) {
+        if (feeAssetType === NATIVE_ASSET_TYPE) {
           setGasFee(info.partialFee);
           return;
         }
@@ -95,7 +91,7 @@ export default function useGasFeeEstimate(getTxFunc, feeAssetType) {
           api,
           info.partialFee,
           info.weight,
-          feeAssetType,
+          location,
         );
 
         if (!cancelled) setGasFee(convertedFee);
@@ -113,7 +109,7 @@ export default function useGasFeeEstimate(getTxFunc, feeAssetType) {
     return () => {
       cancelled = true;
     };
-  }, [api, tx, address, feeAssetType]);
+  }, [api, tx, address, feeAssetType, location]);
 
   return { gasFee, isGasFeeLoading, tx };
 }

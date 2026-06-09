@@ -1,7 +1,7 @@
 import { noop } from "lodash-es";
 import {
   getFeeAssetXcmLocation,
-  FEE_ASSET_TYPES,
+  NATIVE_ASSET_TYPE,
 } from "next-common/components/popupWithSigner/context/feeAsset";
 
 export function getDispatchError(dispatchError) {
@@ -91,6 +91,7 @@ export async function signAndSendSubstrateTx({
   onError = noop,
   signerAddress,
   feeAssetType,
+  chain,
 }) {
   onStarted();
 
@@ -104,8 +105,8 @@ export async function signAndSendSubstrateTx({
     };
 
     // If a non-native fee asset is specified, set the asset param
-    if (feeAssetType && feeAssetType !== FEE_ASSET_TYPES.native) {
-      const xcmLocation = getFeeAssetXcmLocation(feeAssetType);
+    if (feeAssetType && feeAssetType !== NATIVE_ASSET_TYPE) {
+      const xcmLocation = getFeeAssetXcmLocation(feeAssetType, chain);
       if (xcmLocation) {
         signOptions.asset = xcmLocation;
       }

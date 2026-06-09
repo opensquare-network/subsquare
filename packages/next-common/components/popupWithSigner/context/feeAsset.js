@@ -7,42 +7,86 @@ import React, {
   useState,
 } from "react";
 import { createGlobalState } from "react-use";
-import { useChainSettings } from "next-common/context/chain";
+import { useChain, useChainSettings } from "next-common/context/chain";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 
-export const FEE_ASSET_TYPES = {
-  native: "native",
-  USDC: "USDC",
-  USDT: "USDT",
-};
+export const NATIVE_ASSET_TYPE = "native";
 
 const FeeAssetContext = createContext();
 
 export default FeeAssetContext;
 
-export const USDC_ASSET_ID = 1337;
-export const USDT_ASSET_ID = 1984;
-export const STABLE_COIN_DECIMALS = 6;
-export const ASSETS_PALLET_INSTANCE = 50;
-
-export function getFeeAssetTypeKey(assetId) {
-  if (assetId === USDC_ASSET_ID) return FEE_ASSET_TYPES.USDC;
-  if (assetId === USDT_ASSET_ID) return FEE_ASSET_TYPES.USDT;
-  return null;
+function buildXcmLocation(generalIndex) {
+  return {
+    V4: {
+      parents: 0,
+      interior: {
+        X2: [{ PalletInstance: 50 }, { GeneralIndex: generalIndex }],
+      },
+    },
+  };
 }
 
-const useAssetCachedBalances = createGlobalState({
-  [FEE_ASSET_TYPES.native]: null,
-  [FEE_ASSET_TYPES.USDC]: null,
-  [FEE_ASSET_TYPES.USDT]: null,
-});
+const CHAIN_FEE_ASSET_CONFIGS = {
+  polkadot: [
+    { symbol: "USDC", assetId: 1337, decimals: 6 },
+    { symbol: "USDT", assetId: 1984, decimals: 6 },
+  ],
+  kusama: [{ symbol: "USDT", assetId: 1984, decimals: 6 }],
+  paseo: [
+    { symbol: "USDC", assetId: 1337, decimals: 6 },
+    { symbol: "USDT", assetId: 1984, decimals: 6 },
+  ],
+};
+
+function findAssetConfig(chain, feeAssetType) {
+  const assets = CHAIN_FEE_ASSET_CONFIGS[chain];
+  if (!assets) return null;
+  return assets.find((a) => a.symbol === feeAssetType) || null;
+}
+
+export function getChainFeeAssets(chain) {
+  return CHAIN_FEE_ASSET_CONFIGS[chain] || [];
+}
+
+function findAssetType(chain, assetId) {
+  const assets = CHAIN_FEE_ASSET_CONFIGS[chain];
+  if (!assets) return null;
+  const asset = assets.find((a) => a.assetId === assetId);
+  return asset?.symbol || null;
+}
+
+export function getFeeAssetXcmLocation(feeAssetType, chain) {
+  const config = findAssetConfig(chain, feeAssetType);
+  if (!config) return null;
+  return buildXcmLocation(config.assetId);
+}
+
+export function getFeeAssetTypeKey(assetId, chain) {
+  return findAssetType(chain, assetId);
+}
+
+export function getFeeAssetTypes(chain) {
+  const config = CHAIN_FEE_ASSET_CONFIGS[chain];
+  return config?.map((a) => a.symbol) || [];
+}
+
+function getInitialCachedBalances() {
+  const balances = { [NATIVE_ASSET_TYPE]: null };
+  for (const key of getFeeAssetTypes(process.env.NEXT_PUBLIC_CHAIN)) {
+    balances[key] = null;
+  }
+  return balances;
+}
+
+const useAssetCachedBalances = createGlobalState(getInitialCachedBalances());
 
 export function useNativeBalance() {
   const api = useContextApi();
   const signerAccount = useSignerAccount();
   const [cachedBalances, setCachedBalances] = useAssetCachedBalances();
-  const cached = cachedBalances?.[FEE_ASSET_TYPES.native];
+  const cached = cachedBalances?.[NATIVE_ASSET_TYPE];
   const [balance, setBalance] = useState(cached);
   const [isLoading, setIsLoading] = useState(cached == null);
 
@@ -57,7 +101,7 @@ export function useNativeBalance() {
         setBalance(val);
         setCachedBalances((prev) => ({
           ...prev,
-          [FEE_ASSET_TYPES.native]: val,
+          [NATIVE_ASSET_TYPE]: val,
         }));
       })
       .catch(() => {})
@@ -71,9 +115,10 @@ export function useNativeBalance() {
 export function useAssetBalance(assetId) {
   const api = useContextApi();
   const signerAccount = useSignerAccount();
+  const chain = useChain();
   const [cachedBalances, setCachedBalances] = useAssetCachedBalances();
 
-  const balanceKey = getFeeAssetTypeKey(assetId);
+  const balanceKey = chain ? getFeeAssetTypeKey(assetId, chain) : null;
   const cached = balanceKey ? cachedBalances?.[balanceKey] : null;
   const [balance, setBalance] = useState(cached);
   const [isLoading, setIsLoading] = useState(cached == null);
@@ -87,7 +132,7 @@ export function useAssetBalance(assetId) {
       .then((data) => {
         const val = data?.unwrapOr(null)?.balance?.toBigInt() || 0n;
         setBalance(val);
-        const key = getFeeAssetTypeKey(assetId);
+        const key = getFeeAssetTypeKey(assetId, chain);
         if (key) {
           setCachedBalances((prev) => ({ ...prev, [key]: val }));
         }
@@ -102,69 +147,56 @@ export function useAssetBalance(assetId) {
 
 export function useFeeAssetInfo(feeAssetType) {
   const { symbol, decimals } = useChainSettings();
+  const chain = useChain();
 
   return useMemo(() => {
-    if (feeAssetType === FEE_ASSET_TYPES.USDC) {
+    if (feeAssetType === NATIVE_ASSET_TYPE) {
       return {
-        type: feeAssetType,
-        symbol: "USDC",
-        assetId: USDC_ASSET_ID,
-        decimals: STABLE_COIN_DECIMALS,
+        type: NATIVE_ASSET_TYPE,
+        symbol,
+        assetId: null,
+        decimals,
+        location: null,
       };
     }
 
-    if (feeAssetType === FEE_ASSET_TYPES.USDT) {
+    const config = findAssetConfig(chain, feeAssetType);
+    if (!config) {
       return {
         type: feeAssetType,
-        symbol: "USDT",
-        assetId: USDT_ASSET_ID,
-        decimals: STABLE_COIN_DECIMALS,
+        symbol: feeAssetType,
+        assetId: null,
+        decimals: 6,
+        location: null,
       };
     }
 
-    return { type: FEE_ASSET_TYPES.native, symbol, assetId: null, decimals };
-  }, [feeAssetType, symbol, decimals]);
-}
-
-export function getFeeAssetXcmLocation(feeAssetType) {
-  if (feeAssetType === FEE_ASSET_TYPES.USDC) {
     return {
-      V4: {
-        parents: 0,
-        interior: {
-          X2: [
-            { PalletInstance: ASSETS_PALLET_INSTANCE },
-            { GeneralIndex: USDC_ASSET_ID },
-          ],
-        },
-      },
+      type: feeAssetType,
+      symbol: config.symbol,
+      assetId: config.assetId,
+      decimals: config.decimals,
+      location: getFeeAssetXcmLocation(feeAssetType, chain),
     };
-  }
-  if (feeAssetType === FEE_ASSET_TYPES.USDT) {
-    return {
-      V4: {
-        parents: 0,
-        interior: {
-          X2: [
-            { PalletInstance: ASSETS_PALLET_INSTANCE },
-            { GeneralIndex: USDT_ASSET_ID },
-          ],
-        },
-      },
-    };
-  }
-  return null;
+  }, [feeAssetType, symbol, decimals, chain]);
 }
 
 export function FeeAssetProvider({ children }) {
-  const [feeAssetType, setFeeAssetTypeState] = useState(FEE_ASSET_TYPES.native);
+  const [feeAssetType, setFeeAssetTypeState] = useState(NATIVE_ASSET_TYPE);
   const feeAssetInfo = useFeeAssetInfo(feeAssetType);
+  const chain = useChain();
 
-  const setFeeAssetType = useCallback((type) => {
-    if (Object.values(FEE_ASSET_TYPES).includes(type)) {
-      setFeeAssetTypeState(type);
-    }
-  }, []);
+  const setFeeAssetType = useCallback(
+    (type) => {
+      if (
+        type === NATIVE_ASSET_TYPE ||
+        getFeeAssetTypes(chain).includes(type)
+      ) {
+        setFeeAssetTypeState(type);
+      }
+    },
+    [chain],
+  );
 
   return (
     <FeeAssetContext.Provider
@@ -180,9 +212,9 @@ export function useFeeAssetType() {
   const context = useContext(FeeAssetContext);
   if (!context) {
     return {
-      feeAssetType: FEE_ASSET_TYPES.native,
+      feeAssetType: NATIVE_ASSET_TYPE,
       feeAssetInfo: {
-        type: FEE_ASSET_TYPES.native,
+        type: NATIVE_ASSET_TYPE,
         symbol,
         decimals,
       },

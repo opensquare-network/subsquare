@@ -2,7 +2,7 @@ import React from "react";
 import {
   useNativeBalance,
   useAssetBalance,
-  FEE_ASSET_TYPES,
+  NATIVE_ASSET_TYPE,
 } from "next-common/components/popupWithSigner/context/feeAsset";
 
 function NativeInsufficientWarning({ gasFee, isGasFeeLoading, symbol }) {
@@ -53,7 +53,7 @@ export default function InsufficientFeeWarning({
   gasFee,
   isGasFeeLoading,
 }) {
-  if (feeAssetType === FEE_ASSET_TYPES.native) {
+  if (feeAssetType === NATIVE_ASSET_TYPE) {
     return (
       <NativeInsufficientWarning
         gasFee={gasFee}
