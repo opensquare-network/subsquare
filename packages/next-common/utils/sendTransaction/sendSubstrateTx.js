@@ -77,6 +77,10 @@ export function createSendTxEventHandler({
   };
 }
 
+function getFeeAssetMultiLocation(feeAssetLocation) {
+  return feeAssetLocation?.V4 || feeAssetLocation?.V3 || feeAssetLocation;
+}
+
 export async function signAndSendSubstrateTx({
   api,
   tx,
@@ -100,7 +104,7 @@ export async function signAndSendSubstrateTx({
     };
 
     if (feeAssetLocation) {
-      signOptions.assetId = feeAssetLocation;
+      signOptions.assetId = getFeeAssetMultiLocation(feeAssetLocation);
     }
 
     const unsub = await tx.signAndSend(
