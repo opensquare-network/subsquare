@@ -145,6 +145,7 @@ const polkadot = {
   usePolkassemblyBackupData: true,
   hasIdentityVerification: true,
   enablePapi: true,
+  enableAssetFee: true,
 };
 
 export default polkadot;

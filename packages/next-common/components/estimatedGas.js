@@ -3,6 +3,7 @@ import { toPrecision } from "next-common/utils";
 import { GreyPanel } from "./styled/containers/greyPanel";
 import { isNil } from "lodash-es";
 import LoadableContent from "./common/loadableContent";
+import { useChainSettings } from "next-common/context/chain";
 import { useFeeAssetConfig } from "./popupWithSigner/context/feeAsset";
 import FeeAssetTypeSwitcher from "./popup/fields/feeAssetTypeSwitcher";
 import InsufficientFeeWarning from "./estimatedGas/insufficientFeeWarning";
@@ -10,6 +11,7 @@ import useAccountNonce from "next-common/hooks/useAccountNonce";
 import useGasFeeEstimate from "next-common/hooks/useGasFeeEstimate";
 
 export default function EstimatedGas({ getTxFunc }) {
+  const { enableAssetFee } = useChainSettings();
   const { feeAssetType, feeAssetInfo } = useFeeAssetConfig();
   const { accountNonce, isLoading: isNonceLoading } = useAccountNonce();
   const { gasFee, isGasFeeLoading } = useGasFeeEstimate(
@@ -20,7 +22,7 @@ export default function EstimatedGas({ getTxFunc }) {
   return (
     <div className="gap-y-2">
       <GreyPanel className="flex-col gap-y-1 justify-start !items-start text14Medium text-textSecondary px-4 py-2.5 relative">
-        <FeeAssetTypeSwitcher />
+        {enableAssetFee && <FeeAssetTypeSwitcher />}
 
         <div className="flex gap-x-2 items-center">
           <span>Estimated Gas Fee: </span>
