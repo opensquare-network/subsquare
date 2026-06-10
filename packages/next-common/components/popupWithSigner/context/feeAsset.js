@@ -66,14 +66,14 @@ const CHAIN_FEE_ASSET_CONFIGS = {
       name: "USDT (1984)",
       multiLocation: buildXcmLocation(1984),
     },
-    {
-      type: "asset",
-      symbol: "RMRK",
-      assetId: 8,
-      decimals: 10,
-      name: "RMRK (8)",
-      multiLocation: buildXcmLocation(8),
-    },
+    // {
+    //   type: "asset",
+    //   symbol: "RMRK",
+    //   assetId: 8,
+    //   decimals: 10,
+    //   name: "RMRK (8)",
+    //   multiLocation: buildXcmLocation(8),
+    // },
     {
       type: "foreignAsset",
       symbol: "DOT",
