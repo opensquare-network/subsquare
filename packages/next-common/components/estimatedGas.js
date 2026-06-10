@@ -9,6 +9,7 @@ import FeeAssetTypeSwitcher from "./popup/fields/feeAssetTypeSwitcher";
 import InsufficientFeeWarning from "./estimatedGas/insufficientFeeWarning";
 import useAccountNonce from "next-common/hooks/useAccountNonce";
 import useGasFeeEstimate from "next-common/hooks/useGasFeeEstimate";
+import useShouldSendEvmTx from "next-common/hooks/useShouldSendEvmTx";
 
 export default function EstimatedGas({ getTxFunc }) {
   const { enableAssetFee } = useChainSettings();
@@ -18,11 +19,12 @@ export default function EstimatedGas({ getTxFunc }) {
     getTxFunc,
     feeAssetType,
   );
+  const shouldSendEvmTx = useShouldSendEvmTx();
 
   return (
     <div className="gap-y-2">
       <GreyPanel className="flex-col gap-y-1 justify-start !items-start text14Medium text-textSecondary px-4 py-2.5 relative">
-        {enableAssetFee && <FeeAssetTypeSwitcher />}
+        {enableAssetFee && !shouldSendEvmTx && <FeeAssetTypeSwitcher />}
 
         <div className="flex gap-x-2 items-center">
           <span>Estimated Gas Fee: </span>
