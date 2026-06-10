@@ -15,6 +15,7 @@ import {
   AssetIconPas,
   AssetIconUsdc,
   AssetIconUsdt,
+  AssetIconRmrk,
 } from "@osn/icons/subsquare";
 import { ChevronDown, CheckIcon } from "./feeAssetSvgs";
 import getChainSettings from "next-common/utils/consts/settings";
@@ -72,6 +73,9 @@ function FeeIcon({ symbol, className = "w-4 h-4" }) {
   }
   if (symbol === "DOT") {
     return <AssetIconDot className={className} />;
+  }
+  if (symbol === "RMRK") {
+    return <AssetIconRmrk className={className} />;
   }
   return null;
 }
