@@ -28,22 +28,112 @@ function buildXcmLocation(generalIndex) {
   };
 }
 
+function buildForeignAssetXcmLocation(junctions, parents = 0) {
+  const key = `X${junctions.length}`;
+  return {
+    V4: {
+      parents,
+      interior: { [key]: junctions },
+    },
+  };
+}
+
 const CHAIN_FEE_ASSET_CONFIGS = {
   polkadot: [
-    { symbol: "USDC", assetId: 1337, decimals: 6 },
-    { symbol: "USDT", assetId: 1984, decimals: 6 },
+    {
+      type: "asset",
+      symbol: "USDC",
+      assetId: 1337,
+      decimals: 6,
+      name: "USDC",
+      multiLocation: buildXcmLocation(1337),
+    },
+    {
+      type: "asset",
+      symbol: "USDT",
+      assetId: 1984,
+      decimals: 6,
+      name: "USDT",
+      multiLocation: buildXcmLocation(1984),
+    },
   ],
-  kusama: [{ symbol: "USDT", assetId: 1984, decimals: 6 }],
+  kusama: [
+    {
+      type: "asset",
+      symbol: "USDT",
+      assetId: 1984,
+      decimals: 6,
+      name: "USDT",
+      multiLocation: buildXcmLocation(1984),
+    },
+    {
+      type: "foreignAsset",
+      symbol: "DOT",
+      assetId: null,
+      decimals: 10,
+      name: "DOT",
+      multiLocation: buildForeignAssetXcmLocation(
+        [{ GlobalConsensus: { Polkadot: null } }],
+        2,
+      ),
+    },
+    {
+      type: "foreignAsset",
+      symbol: "USDC",
+      assetId: 1337,
+      decimals: 6,
+      name: "USDC (Polkadot)",
+      multiLocation: buildForeignAssetXcmLocation(
+        [
+          { GlobalConsensus: { Polkadot: null } },
+          { Parachain: 1000 },
+          { PalletInstance: 50 },
+          { GeneralIndex: 1337 },
+        ],
+        2,
+      ),
+    },
+    {
+      type: "foreignAsset",
+      symbol: "USDT",
+      assetId: 1984,
+      decimals: 6,
+      name: "USDT (Polkadot)",
+      multiLocation: buildForeignAssetXcmLocation(
+        [
+          { GlobalConsensus: { Polkadot: null } },
+          { Parachain: 1000 },
+          { PalletInstance: 50 },
+          { GeneralIndex: 1984 },
+        ],
+        2,
+      ),
+    },
+  ],
   paseo: [
-    { symbol: "USDC", assetId: 1337, decimals: 6 },
-    { symbol: "USDT", assetId: 1984, decimals: 6 },
+    {
+      type: "asset",
+      symbol: "USDC",
+      assetId: 1337,
+      decimals: 6,
+      name: "USDC",
+      multiLocation: buildXcmLocation(1337),
+    },
+    {
+      type: "asset",
+      symbol: "USDT",
+      assetId: 1984,
+      decimals: 6,
+      name: "USDT",
+      multiLocation: buildXcmLocation(1984),
+    },
   ],
 };
 
 function findAssetConfig(chain, feeAssetType) {
   const assets = CHAIN_FEE_ASSET_CONFIGS[chain];
   if (!assets) return null;
-  return assets.find((a) => a.symbol === feeAssetType) || null;
+  return assets.find((a) => a.name === feeAssetType) || null;
 }
 
 export function getChainFeeAssets(chain) {
@@ -53,8 +143,8 @@ export function getChainFeeAssets(chain) {
 function findAssetType(chain, assetId) {
   const assets = CHAIN_FEE_ASSET_CONFIGS[chain];
   if (!assets) return null;
-  const asset = assets.find((a) => a.assetId === assetId);
-  return asset?.symbol || null;
+  const asset = assets.find((a) => a.type === "asset" && a.assetId === assetId);
+  return asset?.name || null;
 }
 
 export function getFeeAssetTypeKey(assetId, chain) {
@@ -63,7 +153,36 @@ export function getFeeAssetTypeKey(assetId, chain) {
 
 export function getFeeAssetTypes(chain) {
   const config = CHAIN_FEE_ASSET_CONFIGS[chain];
-  return config?.map((a) => a.symbol) || [];
+  return config?.map((a) => a.name) || [];
+}
+
+export function getFeeAssetConfig(chain, name) {
+  const config = CHAIN_FEE_ASSET_CONFIGS[chain];
+  if (!config) return null;
+  return config.find((a) => a.name === name) || null;
+}
+
+export function getForeignAssetLocation(chain, name) {
+  const config = getFeeAssetConfig(chain, name);
+  if (!config || config.type !== "foreignAsset") return null;
+  return config.multiLocation || null;
+}
+
+function getForeignAssetStorageLocation(location) {
+  return (
+    location?.V4 || location?.V3 || location?.V2 || location?.V1 || location
+  );
+}
+
+function getForeignAssetNameByLocation(location, chain) {
+  if (!location || !chain) return null;
+  const configs = getChainFeeAssets(chain);
+  const config = configs.find(
+    (c) =>
+      c.type === "foreignAsset" &&
+      JSON.stringify(c.multiLocation) === JSON.stringify(location),
+  );
+  return config?.name || null;
 }
 
 function getInitialCachedBalances() {
@@ -139,6 +258,43 @@ export function useAssetBalance(assetId) {
   return { balance, isLoading };
 }
 
+export function useForeignAssetBalance(location) {
+  const api = useContextApi();
+  const signerAccount = useSignerAccount();
+  const chain = useChain();
+  const [cachedBalances, setCachedBalances] = useAssetCachedBalances();
+
+  const name = getForeignAssetNameByLocation(location, chain);
+  const cached = name ? cachedBalances?.[name] : null;
+  const [balance, setBalance] = useState(cached);
+  const [isLoading, setIsLoading] = useState(cached == null);
+
+  useEffect(() => {
+    const storageLocation = getForeignAssetStorageLocation(location);
+
+    if (!api || !signerAccount?.realAddress || !storageLocation) {
+      setIsLoading(false);
+      return;
+    }
+    setIsLoading(cached == null);
+
+    api.query.foreignAssets
+      .account(storageLocation, signerAccount.realAddress)
+      .then((data) => {
+        const val = data?.unwrapOr(null)?.balance?.toBigInt() || 0n;
+        setBalance(val);
+        if (name) {
+          setCachedBalances((prev) => ({ ...prev, [name]: val }));
+        }
+      })
+      .catch(() => {})
+      .finally(() => setIsLoading(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [api, signerAccount?.realAddress, name]);
+
+  return { balance, isLoading };
+}
+
 export function useFeeAssetInfo(feeAssetType) {
   const { symbol, decimals } = useChainSettings();
   const chain = useChain();
@@ -150,6 +306,7 @@ export function useFeeAssetInfo(feeAssetType) {
         symbol,
         assetId: null,
         decimals,
+        name: symbol,
         location: null,
       };
     }
@@ -162,11 +319,12 @@ export function useFeeAssetInfo(feeAssetType) {
     }
 
     return {
-      type: feeAssetType,
+      type: config.type,
       symbol: config.symbol,
       assetId: config.assetId,
       decimals: config.decimals,
-      location: buildXcmLocation(config.assetId),
+      name: config.name,
+      location: config.multiLocation,
     };
   }, [feeAssetType, symbol, decimals, chain]);
 }
@@ -207,6 +365,7 @@ export function useFeeAssetConfig() {
         type: NATIVE_ASSET_TYPE,
         symbol,
         decimals,
+        name: symbol,
         location: null,
       },
       setFeeAssetType: () => {},

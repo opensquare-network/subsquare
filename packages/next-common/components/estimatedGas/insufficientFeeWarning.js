@@ -2,6 +2,7 @@ import React from "react";
 import {
   useNativeBalance,
   useAssetBalance,
+  useForeignAssetBalance,
   NATIVE_ASSET_TYPE,
 } from "next-common/components/popupWithSigner/context/feeAsset";
 
@@ -47,6 +48,31 @@ function AssetInsufficientWarning({
   );
 }
 
+function ForeignAssetInsufficientWarning({
+  gasFee,
+  isGasFeeLoading,
+  location,
+  symbol,
+}) {
+  const { balance: feeAssetBalance, isLoading } =
+    useForeignAssetBalance(location);
+
+  const isInsufficient =
+    !isGasFeeLoading &&
+    !isLoading &&
+    gasFee != null &&
+    feeAssetBalance != null &&
+    BigInt(feeAssetBalance) < BigInt(gasFee);
+
+  if (!isInsufficient) return null;
+
+  return (
+    <span className="text12Medium text-red500 ml-4">
+      Insufficient {symbol} balance to pay the transaction fee
+    </span>
+  );
+}
+
 export default function InsufficientFeeWarning({
   feeAssetType,
   feeAssetInfo,
@@ -58,6 +84,17 @@ export default function InsufficientFeeWarning({
       <NativeInsufficientWarning
         gasFee={gasFee}
         isGasFeeLoading={isGasFeeLoading}
+        symbol={feeAssetInfo.symbol}
+      />
+    );
+  }
+
+  if (feeAssetInfo.type === "foreignAsset") {
+    return (
+      <ForeignAssetInsufficientWarning
+        gasFee={gasFee}
+        isGasFeeLoading={isGasFeeLoading}
+        location={feeAssetInfo.location}
         symbol={feeAssetInfo.symbol}
       />
     );
