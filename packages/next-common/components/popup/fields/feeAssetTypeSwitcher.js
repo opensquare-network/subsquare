@@ -12,6 +12,7 @@ import { toPrecision } from "next-common/utils";
 import {
   AssetIconDot,
   AssetIconKsm,
+  AssetIconPas,
   AssetIconUsdc,
   AssetIconUsdt,
 } from "@osn/icons/subsquare";
@@ -31,11 +32,16 @@ function getFeeAssetOptions(chain) {
 
 function NativeSymbolIcon({ className = "w-4 h-4" }) {
   const chain = useChain();
-  return chain === "kusama" ? (
-    <AssetIconKsm className={className} />
-  ) : (
-    <AssetIconDot className={className} />
-  );
+  if (chain === "kusama") {
+    return <AssetIconKsm className={className} />;
+  }
+  if (chain === "paseo") {
+    return <AssetIconPas className={className} />;
+  }
+  if (chain === "polkadot") {
+    return <AssetIconDot className={className} />;
+  }
+  return null;
 }
 
 function FeeIcon({ type, className = "w-4 h-4" }) {
