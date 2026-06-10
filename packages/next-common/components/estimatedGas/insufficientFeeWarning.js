@@ -6,14 +6,19 @@ import {
   NATIVE_ASSET_TYPE,
 } from "next-common/components/popupWithSigner/context/feeAsset";
 
-function NativeInsufficientWarning({ gasFee, isGasFeeLoading, symbol }) {
-  const { balance: feeAssetBalance } = useNativeBalance();
-
+function InsufficientFeeBalanceWarning({
+  gasFee,
+  isGasFeeLoading,
+  balance,
+  isLoading,
+  symbol,
+}) {
   const isInsufficient =
     !isGasFeeLoading &&
+    !isLoading &&
     gasFee != null &&
-    feeAssetBalance != null &&
-    BigInt(feeAssetBalance) < BigInt(gasFee);
+    balance != null &&
+    BigInt(balance) < BigInt(gasFee);
 
   if (!isInsufficient) return null;
 
@@ -21,6 +26,20 @@ function NativeInsufficientWarning({ gasFee, isGasFeeLoading, symbol }) {
     <span className="text12Medium text-red500 ml-4">
       Insufficient {symbol} balance to pay the transaction fee
     </span>
+  );
+}
+
+function NativeInsufficientWarning({ gasFee, isGasFeeLoading, symbol }) {
+  const { balance, isLoading } = useNativeBalance();
+
+  return (
+    <InsufficientFeeBalanceWarning
+      gasFee={gasFee}
+      isGasFeeLoading={isGasFeeLoading}
+      balance={balance}
+      isLoading={isLoading}
+      symbol={symbol}
+    />
   );
 }
 
@@ -30,21 +49,16 @@ function AssetInsufficientWarning({
   assetId,
   symbol,
 }) {
-  const { balance: feeAssetBalance, isLoading } = useAssetBalance(assetId);
-
-  const isInsufficient =
-    !isGasFeeLoading &&
-    !isLoading &&
-    gasFee != null &&
-    feeAssetBalance != null &&
-    BigInt(feeAssetBalance) < BigInt(gasFee);
-
-  if (!isInsufficient) return null;
+  const { balance, isLoading } = useAssetBalance(assetId);
 
   return (
-    <span className="text12Medium text-red500 ml-4">
-      Insufficient {symbol} balance to pay the transaction fee
-    </span>
+    <InsufficientFeeBalanceWarning
+      gasFee={gasFee}
+      isGasFeeLoading={isGasFeeLoading}
+      balance={balance}
+      isLoading={isLoading}
+      symbol={symbol}
+    />
   );
 }
 
@@ -54,22 +68,16 @@ function ForeignAssetInsufficientWarning({
   location,
   symbol,
 }) {
-  const { balance: feeAssetBalance, isLoading } =
-    useForeignAssetBalance(location);
-
-  const isInsufficient =
-    !isGasFeeLoading &&
-    !isLoading &&
-    gasFee != null &&
-    feeAssetBalance != null &&
-    BigInt(feeAssetBalance) < BigInt(gasFee);
-
-  if (!isInsufficient) return null;
+  const { balance, isLoading } = useForeignAssetBalance(location);
 
   return (
-    <span className="text12Medium text-red500 ml-4">
-      Insufficient {symbol} balance to pay the transaction fee
-    </span>
+    <InsufficientFeeBalanceWarning
+      gasFee={gasFee}
+      isGasFeeLoading={isGasFeeLoading}
+      balance={balance}
+      isLoading={isLoading}
+      symbol={symbol}
+    />
   );
 }
 

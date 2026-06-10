@@ -105,8 +105,8 @@ function FeeAssetOptionLayout({
   );
 }
 
-function NativeAssetOption({ label, isActive, onClick }) {
-  const { decimals } = useChainSettings();
+function NativeAssetOption({ isActive, onClick }) {
+  const { symbol, decimals } = useChainSettings();
   const { balance, isLoading } = useNativeBalance();
 
   const formatted = balance != null ? toPrecision(balance, decimals, 4) : null;
@@ -114,7 +114,7 @@ function NativeAssetOption({ label, isActive, onClick }) {
   return (
     <FeeAssetOptionLayout
       icon={<NativeSymbolIcon className="w-4 h-4 shrink-0" />}
-      label={label}
+      label={symbol}
       formatted={formatted}
       isActive={isActive}
       isLoading={isLoading}
@@ -166,7 +166,6 @@ function ForeignAssetOption({
 
 export default function FeeAssetTypeSwitcher() {
   const chain = useChain();
-  const { symbol } = useChainSettings();
   const { feeAssetType, setFeeAssetType, feeAssetInfo } = useFeeAssetConfig();
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
@@ -216,7 +215,6 @@ export default function FeeAssetTypeSwitcher() {
               return (
                 <NativeAssetOption
                   key={opt.type}
-                  label={symbol}
                   isActive={feeAssetType === NATIVE_ASSET_TYPE}
                   onClick={() => handleChange(NATIVE_ASSET_TYPE)}
                 />
