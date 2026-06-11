@@ -20,10 +20,6 @@ const polkadotPeople = {
       url: "wss://polkadot-people-rpc.polkadot.io",
     },
     {
-      name: "IBP1",
-      url: "wss://people-polkadot.ibp.network",
-    },
-    {
       name: "IBP2",
       url: "wss://people-polkadot.dotters.network",
     },

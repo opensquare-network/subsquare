@@ -20,10 +20,6 @@ const polkadotCoretime = {
       url: "wss://polkadot-coretime-rpc.polkadot.io",
     },
     {
-      name: "IBP1",
-      url: "wss://coretime-polkadot.ibp.network",
-    },
-    {
       name: "IBP2",
       url: "wss://coretime-polkadot.dotters.network",
     },

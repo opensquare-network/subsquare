@@ -23,10 +23,6 @@ const endpoints = [
     url: "wss://rpc.hydradx.cloud",
   },
   {
-    name: "IBP1",
-    url: "wss://hydration.ibp.network",
-  },
-  {
     name: "IBP2",
     url: "wss://hydration.dotters.network",
   },
