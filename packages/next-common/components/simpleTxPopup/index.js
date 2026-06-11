@@ -8,11 +8,21 @@ import EstimatedGas from "../estimatedGas";
 
 function PopupContent({ children, confirmText, noSwitchSigner, ...props }) {
   const { getTxFunc } = props;
+
+  const childrenArray = React.Children.toArray(children);
+  const advanceSettingsChild = childrenArray.find(
+    (child) => child.type === AdvanceSettings,
+  );
+  const otherChildren = childrenArray.filter(
+    (child) => child.type !== AdvanceSettings,
+  );
+
   return (
     <>
       <SignerWithBalance noSwitchSigner={noSwitchSigner} />
-      {children}
+      {otherChildren}
       <AdvanceSettings>
+        {advanceSettingsChild.props.children}
         <EstimatedGas getTxFunc={getTxFunc} />
       </AdvanceSettings>
       <TxSubmissionButton title={confirmText} {...props} />

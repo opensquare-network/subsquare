@@ -82,12 +82,11 @@ function ForeignAssetInsufficientWarning({
 }
 
 export default function InsufficientFeeWarning({
-  feeAssetType,
   feeAssetInfo,
   gasFee,
   isGasFeeLoading,
 }) {
-  if (feeAssetType === NATIVE_ASSET_TYPE) {
+  if (feeAssetInfo.type === NATIVE_ASSET_TYPE) {
     return (
       <NativeInsufficientWarning
         gasFee={gasFee}

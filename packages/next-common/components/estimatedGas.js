@@ -46,7 +46,6 @@ function InnerEstimatedGas({ getTxFunc }) {
         </span>
       </GreyPanel>
       <InsufficientFeeWarning
-        feeAssetType={feeAssetType}
         feeAssetInfo={feeAssetInfo}
         gasFee={gasFee}
         isGasFeeLoading={isGasFeeLoading}
