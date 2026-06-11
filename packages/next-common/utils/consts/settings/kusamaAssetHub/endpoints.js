@@ -1,6 +1,5 @@
 const kusamaAssetHubNodes = [
   { name: "Parity", url: "wss://kusama-asset-hub-rpc.polkadot.io" },
-  { name: "IBP1", url: "wss://asset-hub-kusama.ibp.network" },
   { name: "IBP2", url: "wss://asset-hub-kusama.dotters.network" },
   {
     name: "RadiumBlock",

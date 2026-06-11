@@ -14,10 +14,6 @@ export default {
       url: "wss://kusama-bridge-hub-rpc.polkadot.io/",
     },
     {
-      name: "IBP1",
-      url: "wss://bridge-hub-kusama.ibp.network",
-    },
-    {
       name: "IBP2",
       url: "wss://bridge-hub-kusama.dotters.network/",
     },

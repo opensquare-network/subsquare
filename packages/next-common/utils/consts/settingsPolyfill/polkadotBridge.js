@@ -14,10 +14,6 @@ export default {
       url: "wss://polkadot-bridge-hub-rpc.polkadot.io/",
     },
     {
-      name: "IBP1",
-      url: "wss://bridge-hub-polkadot.ibp.network",
-    },
-    {
       name: "IBP2",
       url: "wss://bridge-hub-polkadot.dotters.network/",
     },
