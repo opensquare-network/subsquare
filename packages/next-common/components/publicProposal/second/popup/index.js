@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import PopupWithSigner from "../../../popupWithSigner";
-import { useDispatch } from "react-redux";
 import Signer from "next-common/components/popup/fields/signerField";
-import { newErrorToast } from "../../../../store/reducers/toastSlice";
 import DepositRequired from "./depositRequired";
 import useDeposit from "./useDeposit";
 import { isNil, noop } from "lodash-es";
@@ -14,6 +12,8 @@ import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { useAddressVotingBalance } from "next-common/utils/hooks/useAddressVotingBalance";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 function PopupContent() {
   const {
@@ -22,7 +22,6 @@ function PopupContent() {
     depositRequired,
     onInBlock = noop,
   } = usePopupParams();
-  const dispatch = useDispatch();
   const signerAccount = useSignerAccount();
   const node = useChainSettings();
 
@@ -46,14 +45,10 @@ function PopupContent() {
     }
 
     let tx = null;
-    try {
-      if (api.tx.democracy?.second?.meta.args.length < 2) {
-        tx = api.tx.democracy.second(proposalIndex);
-      } else {
-        tx = api.tx.democracy.second(proposalIndex, depositorUpperBound || 1);
-      }
-    } catch (e) {
-      return dispatch(newErrorToast(e.message));
+    if (api.tx.democracy?.second?.meta.args.length < 2) {
+      tx = api.tx.democracy.second(proposalIndex);
+    } else {
+      tx = api.tx.democracy.second(proposalIndex, depositorUpperBound || 1);
     }
 
     if (times > 1) {
@@ -82,6 +77,9 @@ function PopupContent() {
         currentTimes={depositorUpperBound}
         setSubmitDisabled={setSubmitDisabled}
       />
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getTxFunc} />
+      </AdvanceSettings>
       <TxSubmissionButton
         getTxFunc={getTxFunc}
         disabled={balanceInsufficient || isCheckingDeposit || submitDisabled}

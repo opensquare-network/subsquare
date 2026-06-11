@@ -13,6 +13,8 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Tooltip from "next-common/components/tooltip";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import NumberInput from "next-common/lib/input/number";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 export default function NewCouncilMotionProposalInnerPopup({ isMember }) {
   const { onClose } = usePopupParams();
@@ -71,6 +73,10 @@ export default function NewCouncilMotionProposalInnerPopup({ isMember }) {
 
         {extrinsicComponent}
       </LoadingContent>
+
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getTxFunc} />
+      </AdvanceSettings>
 
       <div className="flex justify-end">
         <Tooltip

@@ -11,6 +11,8 @@ import useAddressComboField from "../fields/useAddressComboField";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import InsufficientBalanceTips from "next-common/components/summary/newProposalQuickStart/common/insufficientBalanceTips";
 import ExtrinsicInfo from "../../newPreimagePopup/info";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 export function useLocalTreasuryNotePreimageTx(inputBalance, beneficiary) {
   const api = useContextApi();
@@ -60,6 +62,9 @@ export default function NewLocalTreasuryProposalPopup() {
         />
       )}
       <InsufficientBalanceTips byteLength={encodedLength} preimageOnly />
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={() => notePreimageTx} />
+      </AdvanceSettings>
       <div className="flex justify-end">
         <NotePreimageButton notePreimageTx={notePreimageTx} />
       </div>

@@ -13,6 +13,8 @@ import useValidFromField from "../fields/useValidFromField";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import InsufficientBalanceTips from "next-common/components/summary/newProposalQuickStart/common/insufficientBalanceTips";
 import ExtrinsicInfo from "../../newPreimagePopup/info";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 const getAssetKindParam = (assetId) => {
   return {
@@ -129,6 +131,9 @@ function PopupContent() {
         />
       )}
       <InsufficientBalanceTips byteLength={encodedLength} preimageOnly />
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={() => notePreimageTx} />
+      </AdvanceSettings>
       <div className="flex justify-end">
         <NotePreimageButton notePreimageTx={notePreimageTx} />
       </div>

@@ -6,16 +6,18 @@ import AdvanceSettings from "next-common/components/summary/newProposalQuickStar
 import { useCallback, useEffect, useState } from "react";
 import { useContextApi } from "next-common/context/api";
 import { checkInputValue, toPrecision } from "next-common/utils";
-import { DemocracyProposeTxSubmissionButton } from "../common/democracyProposeTxSubmissionButton";
+import {
+  DemocracyProposeTxSubmissionButton,
+  useDemocracyProposeTxFunc,
+} from "../common/democracyProposeTxSubmissionButton";
 import SubmissionDeposit from "../common/submissionDeposit";
+import EstimatedGas from "next-common/components/estimatedGas";
 import { getAssetBySymbol } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
 import { TreasuryBalance } from "next-common/components/preImages/createPreimagePopup/fields/useUSDxBalanceField";
 import useValidFromField from "next-common/components/preImages/createPreimagePopup/fields/useValidFromField";
 import { useTreasuryAccount } from "next-common/utils/hooks/useTreasuryFree";
 import USDxBalanceField from "next-common/components/popup/fields/usdxBalanceField";
 import { TreasuryProvider } from "next-common/context/treasury";
-import { useDispatch } from "react-redux";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { isNil } from "lodash-es";
 
 function useAjunaAssetAccount(assetId, address) {
@@ -126,7 +128,6 @@ function USDxBalance({ inputBalance, setInputBalance, symbol, setSymbol }) {
 }
 
 export default function AjunaSpendUSDxProposalPopup() {
-  const dispatch = useDispatch();
   const api = useContextApi();
   const { onClose } = usePopupParams();
   const [inputBalance, setInputBalance] = useState("");
@@ -137,38 +138,28 @@ export default function AjunaSpendUSDxProposalPopup() {
 
   const getTxFunc = useCallback(() => {
     if (!api) {
-      dispatch(newErrorToast("Chain network is not connected yet"));
-      return;
+      throw new Error("Chain network is not connected yet");
     }
 
     if (!inputBalance) {
-      dispatch(newErrorToast("Request balance is required"));
-      return;
+      throw new Error("Request balance is required");
     }
 
     if (!beneficiary) {
-      dispatch(newErrorToast("Beneficiary address is required"));
-      return;
+      throw new Error("Beneficiary address is required");
     }
 
     const asset = getAssetBySymbol(symbol);
     if (!asset) {
-      dispatch(newErrorToast(`Invalid asset type: ${symbol}`));
-      return;
+      throw new Error(`Invalid asset type: ${symbol}`);
     }
 
-    let bnValue;
-    try {
-      bnValue = checkInputValue(
-        inputBalance,
-        asset.decimals,
-        "Request balance",
-        false,
-      );
-    } catch (e) {
-      dispatch(newErrorToast(e.message));
-      return;
-    }
+    const bnValue = checkInputValue(
+      inputBalance,
+      asset.decimals,
+      "Request balance",
+      false,
+    );
 
     return api.tx.treasury.spend(
       {
@@ -178,7 +169,8 @@ export default function AjunaSpendUSDxProposalPopup() {
       beneficiary,
       validFrom ? parseInt(validFrom) : null,
     );
-  }, [dispatch, api, symbol, inputBalance, beneficiary, validFrom]);
+  }, [api, symbol, inputBalance, beneficiary, validFrom]);
+  const getProposeTxFunc = useDemocracyProposeTxFunc(getTxFunc);
 
   return (
     <TreasuryProvider>
@@ -194,6 +186,7 @@ export default function AjunaSpendUSDxProposalPopup() {
         <AdvanceSettings>
           {validFromField}
           <SubmissionDeposit />
+          <EstimatedGas getTxFunc={getProposeTxFunc} />
         </AdvanceSettings>
         <div className="flex justify-end">
           <DemocracyProposeTxSubmissionButton getTxFunc={getTxFunc} />

@@ -5,18 +5,10 @@ import { useContextApi } from "next-common/context/api";
 import { getEventData } from "next-common/utils/sendTransaction";
 import Tooltip from "next-common/components/tooltip";
 
-export function DemocracyProposeTxSubmissionButton({
-  disabled = false,
-  tooltip = "",
-  getTxFunc,
-}) {
-  const router = useRouter();
+export function useDemocracyProposeTxFunc(getTxFunc) {
   const api = useContextApi();
 
-  const buttonDisabled = disabled || !api;
-  const buttonTooltip = tooltip || (!api ? "Chain RPC is not connected" : "");
-
-  const getProposeTxFunc = useCallback(() => {
+  return useCallback(() => {
     if (!api) {
       return;
     }
@@ -33,6 +25,19 @@ export function DemocracyProposeTxSubmissionButton({
       api?.consts?.democracy?.minimumDeposit,
     );
   }, [api, getTxFunc]);
+}
+
+export function DemocracyProposeTxSubmissionButton({
+  disabled = false,
+  tooltip = "",
+  getTxFunc,
+}) {
+  const router = useRouter();
+  const api = useContextApi();
+  const getProposeTxFunc = useDemocracyProposeTxFunc(getTxFunc);
+
+  const buttonDisabled = disabled || !api;
+  const buttonTooltip = tooltip || (!api ? "Chain RPC is not connected" : "");
 
   return (
     <Tooltip content={buttonTooltip}>

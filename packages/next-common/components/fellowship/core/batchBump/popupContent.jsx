@@ -7,6 +7,8 @@ import { MapSelectableList } from "next-common/components/dataList/selectableLis
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
 import ExtensionUpdatePrompt from "next-common/components/overview/accountInfo/components/extensionUpdatePrompt";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 function PopupContent({ expiredMembers, isLoading, onInBlock, onFinalized }) {
   const api = useContextApi();
@@ -70,6 +72,9 @@ function PopupContent({ expiredMembers, isLoading, onInBlock, onFinalized }) {
           selectedRows={selectedRows}
         />
       </div>
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getTxFunc} />
+      </AdvanceSettings>
       <TxSubmissionButton
         getTxFunc={getTxFunc}
         onInBlock={onInBlock}

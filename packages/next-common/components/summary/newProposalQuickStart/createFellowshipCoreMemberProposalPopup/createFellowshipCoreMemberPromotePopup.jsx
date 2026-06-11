@@ -20,6 +20,8 @@ import { rankToPromoteTrack } from "next-common/utils/fellowship/rankToTrack";
 import { useFellowshipTrackDecisionDeposit } from "next-common/hooks/fellowship/useFellowshipTrackDecisionDeposit";
 import { useReferendaOptionsField } from "next-common/components/preImages/createPreimagePopup/fields/useReferendaOptionsField";
 import { useChain } from "next-common/context/chain";
+import { useFellowshipProposalSubmissionTxFunc } from "next-common/hooks/fellowship/core/useFellowshipCoreMemberProposalSubmitTx";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 export function NotAvailableMemberPrompt() {
   return (
@@ -68,6 +70,15 @@ function NewFellowshipCoreMemberPromoteReferendumInnerPopupImpl() {
   );
   const { value: referendaOptions, component: referendaOptionsField } =
     useReferendaOptionsField(decisionDeposit);
+  const getTxFunc = useFellowshipProposalSubmissionTxFunc({
+    rank: toRank,
+    who,
+    action: "promote",
+    trackName,
+    enactment,
+    checkDecisionDeposit: referendaOptions.checkDecisionDeposit,
+    checkVoteAye: referendaOptions.checkVoteAye,
+  });
 
   return (
     <Popup title="New Promote Proposal" onClose={onClose}>
@@ -85,7 +96,10 @@ function NewFellowshipCoreMemberPromoteReferendumInnerPopupImpl() {
       />
       {!isAvailableMember && <NotAvailableMemberPrompt />}
       {!!who && !!toRank && referendaOptionsField}
-      <AdvanceSettings>{enactmentField}</AdvanceSettings>
+      <AdvanceSettings>
+        {enactmentField}
+        <EstimatedGas getTxFunc={getTxFunc} />
+      </AdvanceSettings>
       <div className="flex justify-end">
         <CreateFellowshipCoreMemberProposalSubmitButton
           disabled={isLoading || isReferendaExisted || !isAvailableMember}

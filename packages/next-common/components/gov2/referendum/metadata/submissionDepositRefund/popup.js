@@ -6,6 +6,8 @@ import useSigner from "next-common/components/common/tx/useSigner";
 import ReferendumIndexRow from "next-common/components/gov2/referendum/metadata/refund/referendumIndexRow";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 function Content() {
   const { referendumIndex, pallet = "referenda" } = usePopupParams();
@@ -24,6 +26,9 @@ function Content() {
     <>
       {component}
       <ReferendumIndexRow referendumIndex={referendumIndex} />
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getTxFunc} />
+      </AdvanceSettings>
       <TxSubmissionButton getTxFunc={getTxFunc} />
     </>
   );

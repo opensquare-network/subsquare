@@ -15,6 +15,8 @@ import { formatIdentityInfo } from "next-common/components/people/common";
 import { Label } from "../popup/styled";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useIdentityInfoContext } from "next-common/context/people/identityInfoContext";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 const fields = [
   {
@@ -130,6 +132,9 @@ export default function SetIdentityPopupContent() {
           symbol={symbol}
         />
       </div>
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getTxFunc} />
+      </AdvanceSettings>
       <RightWrapper>
         <TxSubmissionButton
           title="Set Identity"

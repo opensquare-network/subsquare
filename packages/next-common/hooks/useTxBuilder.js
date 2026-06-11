@@ -1,7 +1,6 @@
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { noop } from "lodash-es";
 
 export function useTxBuilder(builder, deps = []) {
   const dispatch = useDispatch();
@@ -31,7 +30,7 @@ export function useTxBuilder(builder, deps = []) {
     try {
       return buildTx({ showError: false });
     } catch {
-      return noop;
+      return null;
     }
   }, [buildTx]);
 

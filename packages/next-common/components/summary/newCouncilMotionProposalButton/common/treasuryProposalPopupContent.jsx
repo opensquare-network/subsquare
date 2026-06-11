@@ -15,7 +15,11 @@ import {
 import Tooltip from "next-common/components/tooltip";
 import FieldLoading from "next-common/components/icons/fieldLoading";
 import { CacheProvider, useCache } from "next-common/context/cache";
-import CouncilProposeButton from "./councilProposeButton";
+import CouncilProposeButton, {
+  useCouncilProposeTxFunc,
+} from "./councilProposeButton";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 export default function TreasuryProposalPopupContent({
   isMember,
@@ -42,6 +46,7 @@ export default function TreasuryProposalPopupContent({
 
     return api.tx[treasuryPallet][treasuryProposalAction]?.(selectedID);
   }, [api, selectedID, treasuryPallet, treasuryProposalAction]);
+  const getProposeTxFunc = useCouncilProposeTxFunc({ getTxFunc });
 
   const options = proposalIDs?.map((id) => ({
     label: (
@@ -78,6 +83,10 @@ export default function TreasuryProposalPopupContent({
           {proposalIDs && <ProposalInfo id={selectedID} />}
         </CacheProvider>
       </div>
+
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getProposeTxFunc} />
+      </AdvanceSettings>
 
       <div className="flex justify-end">
         <Tooltip

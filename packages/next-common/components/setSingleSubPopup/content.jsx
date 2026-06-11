@@ -13,6 +13,8 @@ import RightWrapper from "next-common/components/rightWraper";
 import { SubItem } from "../setSubsPopup/subItem";
 import { SubIdentityDepositDisplay } from "../setSubsPopup/content";
 import { useSubAccountDeposit } from "next-common/hooks/people/useSetSubsDeposit";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 function useSingleSubAccountOptions(subs) {
   const extensionAccounts = useExtensionAccounts();
@@ -94,6 +96,10 @@ export default function SetSingleSubPopupContent({ subs }) {
       />
 
       <SingleSubDeposit />
+
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getTxFunc} />
+      </AdvanceSettings>
 
       <RightWrapper>
         <TxSubmissionButton

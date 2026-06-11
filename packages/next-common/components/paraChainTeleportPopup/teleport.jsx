@@ -20,6 +20,7 @@ import PeopleApiProvider from "next-common/context/people/api";
 import CoretimeApiProvider from "next-common/context/coretime/api";
 import { CollectivesApiProvider } from "next-common/context/collectives/api";
 import Tooltip from "next-common/components/tooltip";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 function TooltipDisabledGuard({ disabled, children }) {
   return disabled ? (
@@ -61,18 +62,14 @@ function PopupContent() {
     useAddressComboField({ title: "To Address", defaultAddress: address });
 
   const getTxFunc = useCallback(() => {
-    try {
-      if (!transferToAddress) {
-        throw new Error("Destination address is required");
-      }
-
-      const amount = getCheckedTransferAmount();
-
-      return getTeleportTx(transferToAddress, amount);
-    } catch (e) {
-      dispatch(newErrorToast(e.message));
+    if (!transferToAddress) {
+      throw new Error("Destination address is required");
     }
-  }, [dispatch, getTeleportTx, transferToAddress, getCheckedTransferAmount]);
+
+    const amount = getCheckedTransferAmount();
+
+    return getTeleportTx(transferToAddress, amount);
+  }, [getTeleportTx, transferToAddress, getCheckedTransferAmount]);
 
   const doSubmit = useCallback(async () => {
     if (!sourceApi) {
@@ -80,19 +77,23 @@ function PopupContent() {
       return;
     }
 
-    const tx = getTxFunc();
-    if (!tx) {
-      return;
-    }
+    try {
+      const tx = getTxFunc();
+      if (!tx) {
+        return;
+      }
 
-    await sendTxFunc({
-      api: sourceApi,
-      tx,
-      onSubmitted: onClose,
-      onInBlock: () => {
-        dispatch(newSuccessToast("Teleport successfully"));
-      },
-    });
+      await sendTxFunc({
+        api: sourceApi,
+        tx,
+        onSubmitted: onClose,
+        onInBlock: () => {
+          dispatch(newSuccessToast("Teleport successfully"));
+        },
+      });
+    } catch (e) {
+      dispatch(newErrorToast(e.message));
+    }
   }, [sourceApi, dispatch, getTxFunc, sendTxFunc, onClose]);
 
   const submitDisabled = useMemo(() => {
@@ -107,6 +108,7 @@ function PopupContent() {
       {transferAmountField}
       <AdvanceSettings>
         <ExistentialDeposit destApi={destinationApi} />
+        <EstimatedGas getTxFunc={getTxFunc} />
       </AdvanceSettings>
       <div className="flex justify-end">
         <TooltipDisabledGuard disabled={submitDisabled}>

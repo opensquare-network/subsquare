@@ -9,6 +9,8 @@ import Account from "next-common/components/account";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import PopupLabel from "next-common/components/popup/label";
 import SecondaryButton from "next-common/lib/button/secondary";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 const Popup = dynamicPopup(() =>
   import("next-common/components/popup/wrapper/Popup"),
@@ -55,6 +57,9 @@ export default function RenameSubPopup({
             placeholder="Enter new name"
           />
         </div>
+        <AdvanceSettings>
+          <EstimatedGas getTxFunc={getTxFunc} />
+        </AdvanceSettings>
         <div className="flex justify-end gap-x-2">
           <SecondaryButton onClick={onClose}>Cancel</SecondaryButton>
           <TxSubmissionButton

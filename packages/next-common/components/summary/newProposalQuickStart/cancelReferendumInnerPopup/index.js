@@ -20,6 +20,7 @@ import { useStepContainer } from "next-common/context/stepContainer";
 import CircleStepper from "next-common/components/step";
 import SigningTip from "../common/signingTip";
 import PreviousButton from "../../newProposalButton/previousButton";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 function useReferendumCancellerTrackID() {
   const { tracks } = usePageProps();
@@ -67,6 +68,7 @@ export function CancelReferendumInnerPopup({
       <AdvanceSettings>
         {enactmentField}
         <SubmissionDeposit />
+        <EstimatedGas getTxFunc={getTxFunc} />
       </AdvanceSettings>
       <div className="flex justify-end">
         <TxSubmissionButton
@@ -151,6 +153,7 @@ export function CancelReferendumInnerPopupContent() {
       <AdvanceSettings>
         {enactmentField}
         <SubmissionDeposit />
+        <EstimatedGas getTxFunc={getTxFunc} />
       </AdvanceSettings>
       <SigningTip />
       <div className="flex justify-between">

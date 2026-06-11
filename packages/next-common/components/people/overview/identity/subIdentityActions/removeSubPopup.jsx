@@ -10,6 +10,8 @@ import Account from "next-common/components/account";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import PopupLabel from "next-common/components/popup/label";
 import Input from "next-common/lib/input";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 const Popup = dynamicPopup(() =>
   import("next-common/components/popup/wrapper/Popup"),
@@ -38,6 +40,9 @@ export default function RemoveSubPopup({
       </GreyPanel>
       <PopupLabel text={"Name"} />
       <Input disabled={true} value={currentName} />
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getTxFunc} />
+      </AdvanceSettings>
       <PopupButtonWrapper className="gap-[8px]">
         <SecondaryButton onClick={onClose}>Cancel</SecondaryButton>
         <TxSubmissionButton

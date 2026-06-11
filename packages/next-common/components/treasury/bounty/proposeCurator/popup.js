@@ -2,11 +2,9 @@ import TxSubmissionButton from "next-common/components/common/tx/txSubmissionBut
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import { useOnchainData } from "next-common/context/post";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useCallback } from "react";
 import useFeeAmount from "../../childBounty/proposeCurator/useFeeAmount";
 import useSubAddressBalance from "next-common/utils/hooks/useSubAddressBalance";
-import { useDispatch } from "react-redux";
 import { useChainSettings } from "next-common/context/chain";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import useAutoSelectTreasuryTrackField from "next-common/components/summary/newProposalQuickStart/common/useAutoSelectTreasuryTrackField";
@@ -21,9 +19,9 @@ import WarningIcon from "next-common/assets/imgs/icons/warning.svg";
 import { WarningMessage } from "next-common/components/setting/styled";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useContextApi } from "next-common/context/api";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 function PopupContent() {
-  const dispatch = useDispatch();
   const router = useRouter();
   const { decimals, symbol } = useChainSettings();
   const api = useContextApi();
@@ -58,17 +56,10 @@ function PopupContent() {
 
   const getTxFunc = useCallback(() => {
     if (!curator) {
-      dispatch(newErrorToast("Curator address is required"));
-      return;
+      throw new Error("Curator address is required");
     }
 
-    let fee;
-    try {
-      fee = getCheckedFee();
-    } catch (e) {
-      dispatch(newErrorToast(e.message));
-      return;
-    }
+    const fee = getCheckedFee();
 
     const proposal = api.tx.bounties?.proposeCurator(bountyIndex, curator, fee);
     return api.tx.referenda.submit(
@@ -76,15 +67,7 @@ function PopupContent() {
       { Inline: proposal.method.toHex() },
       enactment,
     );
-  }, [
-    curator,
-    getCheckedFee,
-    bountyIndex,
-    api,
-    dispatch,
-    proposalOrigin,
-    enactment,
-  ]);
+  }, [curator, getCheckedFee, bountyIndex, api, proposalOrigin, enactment]);
 
   return (
     <>
@@ -98,6 +81,7 @@ function PopupContent() {
       <AdvanceSettings>
         {enactmentField}
         <SubmissionDeposit />
+        <EstimatedGas getTxFunc={getTxFunc} />
       </AdvanceSettings>
 
       <div className="flex justify-end">

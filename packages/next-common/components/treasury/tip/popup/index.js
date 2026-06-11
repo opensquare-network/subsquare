@@ -1,6 +1,4 @@
 import React, { useCallback, useState } from "react";
-import { useDispatch } from "react-redux";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { checkInputValue, isAddressInGroup } from "next-common/utils";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import Beneficiary from "next-common/components/popupWithSigner/fields/beneficiary";
@@ -16,6 +14,8 @@ import { useContextApi } from "next-common/context/api";
 import { WarningMessage } from "next-common/components/popup/styled";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import useCollectiveMembers from "next-common/utils/hooks/collectives/useCollectiveMembers";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 function TipCommon({ setBeneficiary, setReason }) {
   return (
@@ -36,6 +36,9 @@ function ReportAwesomeContent({
   return (
     <>
       <TipCommon setBeneficiary={setBeneficiary} setReason={setReason} />
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getTxFunc} />
+      </AdvanceSettings>
       <TxSubmissionButton getTxFunc={getTxFunc} onInBlock={onInBlock} />
     </>
   );
@@ -58,6 +61,9 @@ function NewTipContent({
       </WarningMessage>
       <TipCommon setBeneficiary={setBeneficiary} setReason={setReason} />
       <TipValue setValue={setInputValue} />
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getTxFunc} />
+      </AdvanceSettings>
       <TxSubmissionButton
         disabled={!isTipper}
         getTxFunc={getTxFunc}
@@ -68,7 +74,6 @@ function NewTipContent({
 }
 
 function PopupContent() {
-  const dispatch = useDispatch();
   const [reason, setReason] = useState("");
   const [tabIndex, setTabIndex] = useState(ReportAwesome);
   const [inputValue, setInputValue] = useState("0");
@@ -78,48 +83,26 @@ function PopupContent() {
 
   const [beneficiary, setBeneficiary] = useState();
 
-  const showErrorToast = useCallback(
-    (message) => dispatch(newErrorToast(message)),
-    [dispatch],
-  );
-
   const getTxFunc = useCallback(async () => {
     if (!beneficiary) {
-      showErrorToast("Please input a beneficiary");
-      return;
+      throw new Error("Please input a beneficiary");
     }
 
     if (!reason) {
-      showErrorToast("Please input a reason");
-      return;
+      throw new Error("Please input a reason");
     }
 
     let tx;
 
     if (tabIndex === NewTip) {
-      let bnValue;
-      try {
-        bnValue = checkInputValue(inputValue, decimals, "tip value");
-      } catch (err) {
-        showErrorToast(err.message);
-        return;
-      }
-
+      const bnValue = checkInputValue(inputValue, decimals, "tip value");
       tx = api.tx.tips.tipNew(reason, beneficiary, bnValue.toString());
     } else {
       tx = api.tx.tips.reportAwesome(reason, beneficiary);
     }
 
     return tx;
-  }, [
-    beneficiary,
-    decimals,
-    inputValue,
-    reason,
-    showErrorToast,
-    tabIndex,
-    api,
-  ]);
+  }, [beneficiary, decimals, inputValue, reason, tabIndex, api]);
 
   const onInBlock = useCallback(
     ({ events, blockHash }) => {

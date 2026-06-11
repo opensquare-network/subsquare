@@ -19,19 +19,13 @@ function useDefaultThreshold() {
   return Math.ceil(members?.length / 2);
 }
 
-export default function CouncilProposeButton({
-  threshold,
-  getTxFunc,
-  loading,
-  disabled,
-}) {
-  const router = useRouter();
+export function useCouncilProposeTxFunc({ threshold, getTxFunc }) {
   const api = useContextApi();
   const pallet = useCollectivePallet();
   const defaultThreshold = useDefaultThreshold();
   const proposalThreshold = threshold ?? defaultThreshold;
 
-  const getProposeTxFunc = useCallback(() => {
+  return useCallback(() => {
     if (!api) {
       return;
     }
@@ -49,6 +43,17 @@ export default function CouncilProposeButton({
 
     return api.tx[pallet].propose(...params);
   }, [api, getTxFunc, pallet, proposalThreshold]);
+}
+
+export default function CouncilProposeButton({
+  threshold,
+  getTxFunc,
+  loading,
+  disabled,
+}) {
+  const router = useRouter();
+  const pallet = useCollectivePallet();
+  const getProposeTxFunc = useCouncilProposeTxFunc({ threshold, getTxFunc });
 
   return (
     <TxSubmissionButton

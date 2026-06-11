@@ -1,9 +1,6 @@
 import { useCallback, useState } from "react";
-import { useDispatch } from "react-redux";
-
 import { isNil } from "lodash-es";
 import { useAddressVotingBalance } from "next-common/utils/hooks/useAddressVotingBalance";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { checkInputValue } from "next-common/utils";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import Signer from "next-common/components/popup/fields/signerField";
@@ -20,10 +17,11 @@ import { useShowVoteSuccessful } from "next-common/components/vote";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 function PopupContent() {
   const { referendumIndex, onClose } = usePopupParams();
-  const dispatch = useDispatch();
   const signerAccount = useSignerAccount();
   const showVoteSuccessful = useShowVoteSuccessful();
 
@@ -52,33 +50,21 @@ function PopupContent() {
     getMyVoteAndShowSuccessful();
   }, [getMyVoteAndShowSuccessful]);
 
-  const showErrorToast = useCallback(
-    (message) => dispatch(newErrorToast(message)),
-    [dispatch],
-  );
-
   const getTxFunc = useCallback(
     (aye) => {
       if (isNil(referendumIndex) || !node) {
         return;
       }
 
-      let bnVoteBalance;
-      try {
-        bnVoteBalance = checkInputValue(
-          inputVoteBalance,
-          node.decimals,
-          "vote balance",
-          true,
-        );
-      } catch (err) {
-        showErrorToast(err.message);
-        return;
-      }
+      const bnVoteBalance = checkInputValue(
+        inputVoteBalance,
+        node.decimals,
+        "vote balance",
+        true,
+      );
 
       if (bnVoteBalance.gt(votingBalance)) {
-        showErrorToast("Insufficient voting balance");
-        return;
+        throw new Error("Insufficient voting balance");
       }
 
       return api.tx.democracy.vote(referendumIndex, {
@@ -86,14 +72,7 @@ function PopupContent() {
         balance: bnVoteBalance.toString(),
       });
     },
-    [
-      api,
-      inputVoteBalance,
-      referendumIndex,
-      votingBalance,
-      node,
-      showErrorToast,
-    ],
+    [api, inputVoteBalance, referendumIndex, votingBalance, node],
   );
 
   const { doSubmit, isSubmitting } = useTxSubmission({
@@ -127,6 +106,9 @@ function PopupContent() {
         addressVoteIsLoading={addressVoteIsLoading}
         addressVote={addressVote}
       />
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={() => getTxFunc(true)} />
+      </AdvanceSettings>
       <VoteButton
         loadingState={loadingState}
         isLoading={isSubmitting}

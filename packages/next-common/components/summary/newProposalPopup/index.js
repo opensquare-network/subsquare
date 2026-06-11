@@ -21,6 +21,7 @@ import { usePreimageWithHash } from "next-common/hooks/usePreimageHashes";
 import CallTree from "next-common/components/proposal/callTree";
 import Loading from "next-common/components/loading";
 import InsufficientBalanceTips from "../newProposalQuickStart/common/insufficientBalanceTips";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 export function useProposalOrigin(trackId) {
   const track = useTrackDetail(trackId);
@@ -112,8 +113,11 @@ export function NewProposalInnerPopup({
         setPreimageHash={setPreimageHash}
         setPreimageLength={setPreimageLength}
       />
-      <EnactmentBlocks track={track} setEnactment={setEnactment} />
-      <SubmissionDeposit />
+      <AdvanceSettings>
+        <EnactmentBlocks track={track} setEnactment={setEnactment} />
+        <SubmissionDeposit />
+        <EstimatedGas getTxFunc={getTxFunc} />
+      </AdvanceSettings>
       <TxSubmissionButton
         getTxFunc={getTxFunc}
         disabled={disabled}
@@ -217,6 +221,7 @@ export function useNewProposalInnerPopupContent({
         <AdvanceSettings>
           <EnactmentBlocks track={track} setEnactment={setEnactment} />
           <SubmissionDeposit />
+          <EstimatedGas getTxFunc={getTxFunc} />
         </AdvanceSettings>
         <InsufficientBalanceTips
           byteLength={preimageLength}

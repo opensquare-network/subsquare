@@ -2,22 +2,21 @@ import TxSubmissionButton from "next-common/components/common/tx/txSubmissionBut
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useCallback, useState } from "react";
-import { useDispatch } from "react-redux";
 import { useChainSettings } from "next-common/context/chain";
 import { useOnchainData } from "next-common/context/post";
 import useFeeAmount from "./useFeeAmount";
 import useSubAddressBalance from "next-common/utils/hooks/useSubAddressBalance";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useContextApi } from "next-common/context/api";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 function PopupContent() {
   const { decimals, symbol } = useChainSettings();
   const signerAccount = useSignerAccount();
   const address = signerAccount?.realAddress;
   const api = useContextApi();
-  const dispatch = useDispatch();
 
   const {
     parentBountyId,
@@ -41,17 +40,10 @@ function PopupContent() {
 
   const getTxFunc = useCallback(() => {
     if (!curator) {
-      dispatch(newErrorToast("Curator address is required"));
-      return;
+      throw new Error("Curator address is required");
     }
 
-    let fee;
-    try {
-      fee = getCheckedFee();
-    } catch (e) {
-      dispatch(newErrorToast(e.message));
-      return;
-    }
+    const fee = getCheckedFee();
 
     return api.tx.childBounties?.proposeCurator(
       parentBountyId,
@@ -59,13 +51,16 @@ function PopupContent() {
       curator,
       fee,
     );
-  }, [curator, getCheckedFee, parentBountyId, childBountyId, api, dispatch]);
+  }, [curator, getCheckedFee, parentBountyId, childBountyId, api]);
 
   return (
     <>
       <SignerWithBalance />
       {curatorSelect}
       {feeField}
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getTxFunc} />
+      </AdvanceSettings>
       <div className="flex justify-end">
         <TxSubmissionButton title="Confirm" getTxFunc={getTxFunc} />
       </div>

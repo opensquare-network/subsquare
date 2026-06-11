@@ -7,7 +7,6 @@ import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import EnactmentBlocks from "next-common/components/summary/newProposalPopup/enactmentBlocks";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useRouter } from "next/router";
 import Chains from "next-common/utils/consts/chains";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
@@ -28,6 +27,7 @@ import { rankToPromoteTrack } from "next-common/utils/fellowship/rankToTrack";
 import { useReferendaOptionsField } from "next-common/components/preImages/createPreimagePopup/fields/useReferendaOptionsField";
 import { useFellowshipProposalSubmissionTxFunc } from "next-common/hooks/fellowship/core/useFellowshipCoreMemberProposalSubmitTx";
 import { useChain } from "next-common/context/chain";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 export function getPromoteTrackNameFromRank(chain, rank) {
   switch (chain) {
@@ -70,12 +70,11 @@ function PopupContent({ member }) {
 
   const getTxFunc = useCallback(async () => {
     if (toRank > 6) {
-      dispatch(newErrorToast("Invalid rank"));
-      return;
+      throw new Error("Invalid rank");
     }
 
     return await _getTxFunc();
-  }, [toRank, _getTxFunc, dispatch]);
+  }, [toRank, _getTxFunc]);
 
   const { relatedReferenda, isLoading } = useRelatedPromotionReferenda(
     member?.address,
@@ -106,6 +105,7 @@ function PopupContent({ member }) {
       {!!memberAddress && !!toRank && referendaOptionsField}
       <AdvanceSettings>
         <EnactmentBlocks setEnactment={setEnactment} />
+        <EstimatedGas getTxFunc={getTxFunc} />
       </AdvanceSettings>
       <TxSubmissionButton
         disabled={isLoading || referendaAlreadyCreated}

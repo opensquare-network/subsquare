@@ -2,20 +2,21 @@ import { useCallback, useEffect, useState } from "react";
 import { useContextApi } from "next-common/context/api";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import Popup from "next-common/components/popup/wrapper/Popup";
-import CouncilProposeButton from "./common/councilProposeButton";
+import CouncilProposeButton, {
+  useCouncilProposeTxFunc,
+} from "./common/councilProposeButton";
 import Tooltip from "next-common/components/tooltip";
 import DeveloperAddress from "./common/developerAddress";
 import TextInputField from "next-common/components/popup/fields/textInputField";
 import ContractTypeTab, { EVM } from "./common/contractTypeTab";
 import { isEthereumAddress } from "@polkadot/util-crypto";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { useDispatch } from "react-redux";
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 export default function DappStakingRegisterPopup({ isMember }) {
   const { onClose } = usePopupParams();
-  const dispatch = useDispatch();
   const api = useContextApi();
   const [developerAddress, setDeveloperAddress] = useState("");
   const [contractAddress, setContractAddress] = useState("");
@@ -34,8 +35,7 @@ export default function DappStakingRegisterPopup({ isMember }) {
 
     if (contractType === EVM) {
       if (!isEthereumAddress(contractAddress)) {
-        dispatch(newErrorToast("Please enter a valid EVM address"));
-        return;
+        throw new Error("Please enter a valid EVM address");
       }
       return api.tx.dappStaking.register(developerAddress, {
         Evm: contractAddress,
@@ -43,13 +43,13 @@ export default function DappStakingRegisterPopup({ isMember }) {
     }
 
     if (!isPolkadotAddress(contractAddress)) {
-      dispatch(newErrorToast("Please enter a valid Wasm address"));
-      return;
+      throw new Error("Please enter a valid Wasm address");
     }
     return api.tx.dappStaking.register(developerAddress, {
       Wasm: contractAddress,
     });
-  }, [api, developerAddress, contractAddress, contractType, dispatch]);
+  }, [api, developerAddress, contractAddress, contractType]);
+  const getProposeTxFunc = useCouncilProposeTxFunc({ getTxFunc });
 
   return (
     <Popup title="Dapp staking registration" onClose={onClose}>
@@ -69,6 +69,9 @@ export default function DappStakingRegisterPopup({ isMember }) {
         text={contractAddress}
         setText={setContractAddress}
       />
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getProposeTxFunc} />
+      </AdvanceSettings>
       <div className="flex justify-end">
         <Tooltip
           content={

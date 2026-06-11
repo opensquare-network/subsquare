@@ -20,6 +20,7 @@ import { useStepContainer } from "next-common/context/stepContainer";
 import CircleStepper from "next-common/components/step";
 import SigningTip from "../common/signingTip";
 import PreviousButton from "../../newProposalButton/previousButton";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 function useReferendumKillerTrackID() {
   const { tracks } = usePageProps();
@@ -68,6 +69,7 @@ export function KillReferendumInnerPopup({
       <AdvanceSettings>
         {enactmentField}
         <SubmissionDeposit />
+        <EstimatedGas getTxFunc={getTxFunc} />
       </AdvanceSettings>
       <div className="flex justify-end">
         <TxSubmissionButton
@@ -153,6 +155,7 @@ export function KillReferendumInnerPopupContent() {
       <AdvanceSettings>
         {enactmentField}
         <SubmissionDeposit />
+        <EstimatedGas getTxFunc={getTxFunc} />
       </AdvanceSettings>
       <SigningTip />
       <div className="flex justify-between">

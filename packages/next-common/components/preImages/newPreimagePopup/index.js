@@ -17,6 +17,8 @@ import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import InsufficientBalanceTips from "next-common/components/summary/newProposalQuickStart/common/insufficientBalanceTips";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 const EMPTY_HASH = chainApiHash("");
 
@@ -103,6 +105,9 @@ export function NewPreimageInnerPopup({ onCreated = noop }) {
     <Popup title="New Preimage" onClose={onClose} maskClosable={false}>
       <SignerWithVotingBalance />
       {extrinsicComponent}
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={() => notePreimageTx} />
+      </AdvanceSettings>
       <TxSubmissionButton
         disabled={disabled}
         getTxFunc={() => notePreimageTx}

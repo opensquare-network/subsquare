@@ -15,6 +15,8 @@ import { TreasuryProvider } from "next-common/context/treasury";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { STABLE_CURRENCY } from "next-common/utils/consts/hydration";
 import { isNil } from "lodash-es";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 export function useHydrationTreasurySpendPreimageTx(
   inputBalance,
@@ -95,6 +97,9 @@ function PopupContent() {
         />
       )}
       <InsufficientBalanceTips byteLength={encodedLength} preimageOnly />
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={() => notePreimageTx} />
+      </AdvanceSettings>
       <div className="flex justify-end">
         <NotePreimageButton notePreimageTx={notePreimageTx} />
       </div>

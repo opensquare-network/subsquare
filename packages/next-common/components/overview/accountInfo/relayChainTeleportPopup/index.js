@@ -1,10 +1,7 @@
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
-import {
-  newErrorToast,
-  newSuccessToast,
-} from "next-common/store/reducers/toastSlice";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import Signer from "next-common/components/popup/fields/signerField";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
@@ -23,6 +20,7 @@ import getChainSettings from "next-common/utils/consts/settings";
 import { useChain } from "next-common/context/chain";
 import { useAssetHubChain } from "next-common/hooks/useAssetHubChain";
 import Chains from "next-common/utils/consts/chains";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 const SystemCrosschain = dynamic(
   import("@osn/icons/subsquare").then((mod) => mod.SystemCrosschain),
@@ -115,18 +113,14 @@ function PopupContent() {
     });
 
   const getTxFunc = useCallback(() => {
-    try {
-      if (!transferToAddress) {
-        throw new Error("Destination address is required");
-      }
-
-      const amount = getCheckedTransferAmount();
-
-      return getTeleportTx(transferToAddress, amount);
-    } catch (e) {
-      dispatch(newErrorToast(e.message));
+    if (!transferToAddress) {
+      throw new Error("Destination address is required");
     }
-  }, [dispatch, getTeleportTx, transferToAddress, getCheckedTransferAmount]);
+
+    const amount = getCheckedTransferAmount();
+
+    return getTeleportTx(transferToAddress, amount);
+  }, [getTeleportTx, transferToAddress, getCheckedTransferAmount]);
 
   return (
     <>
@@ -140,6 +134,7 @@ function PopupContent() {
       {transferAmountField}
       <AdvanceSettings>
         <ExistentialDeposit destApi={destinationApi} />
+        <EstimatedGas getTxFunc={getTxFunc} />
       </AdvanceSettings>
       <TxSubmissionButton
         getTxFunc={getTxFunc}

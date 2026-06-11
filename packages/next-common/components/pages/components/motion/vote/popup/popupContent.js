@@ -1,6 +1,4 @@
 import { useCallback, useState } from "react";
-import { useDispatch } from "react-redux";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import CurrentVote from "./currentVote";
 import VoteButton from "next-common/components/popup/voteButton";
 import { VoteEnum } from "next-common/utils/voteEnum";
@@ -20,6 +18,8 @@ import { isSameAddress, isMotionEnded } from "next-common/utils";
 import { useOnchainData } from "next-common/context/post";
 import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
 import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 const SignerWrapper = styled.div`
   > :not(:first-child) {
@@ -41,7 +41,6 @@ export default function PopupContent() {
 
 function PopupContentWithContext() {
   const { motionHash, motionIndex, onClose } = usePopupParams();
-  const dispatch = useDispatch();
   const api = useContextApi();
   const signerAccount = useSignerAccount();
   const showVoteSuccessful = useShowVoteSuccessful();
@@ -81,13 +80,12 @@ function PopupContentWithContext() {
       }
 
       if (!api.tx[pallet]?.vote) {
-        dispatch(newErrorToast(`${pallet}.vote is not supported`));
-        return;
+        throw new Error(`${pallet}.vote is not supported`);
       }
 
       return api.tx[pallet].vote(motionHash, motionIndex, approve);
     },
-    [api, motionHash, motionIndex, pallet, dispatch],
+    [api, motionHash, motionIndex, pallet],
   );
 
   const { doSubmit, isSubmitting } = useTxSubmission({
@@ -115,6 +113,9 @@ function PopupContentWithContext() {
         )}
       </SignerWrapper>
       <CurrentVote currentVote={currentVote} />
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={() => getTxFunc(true)} />
+      </AdvanceSettings>
       <VoteButton
         disabled={isMemberLoading || !canVote}
         doVote={doVote}
