@@ -11,10 +11,10 @@ function PopupContent({ children, confirmText, noSwitchSigner, ...props }) {
 
   const childrenArray = React.Children.toArray(children);
   const advanceSettingsChild = childrenArray.find(
-    (child) => child.type === AdvanceSettings,
+    (child) => child.type === SimpleTxPopup.AdvanceSettings,
   );
   const otherChildren = childrenArray.filter(
-    (child) => child.type !== AdvanceSettings,
+    (child) => child.type !== SimpleTxPopup.AdvanceSettings,
   );
 
   return (
@@ -22,7 +22,7 @@ function PopupContent({ children, confirmText, noSwitchSigner, ...props }) {
       <SignerWithBalance noSwitchSigner={noSwitchSigner} />
       {otherChildren}
       <AdvanceSettings>
-        {advanceSettingsChild.props.children}
+        {advanceSettingsChild?.props.children}
         <EstimatedGas getTxFunc={getTxFunc} />
       </AdvanceSettings>
       <TxSubmissionButton title={confirmText} {...props} />
@@ -56,3 +56,9 @@ export default function SimpleTxPopup({
     </PopupWithSigner>
   );
 }
+
+SimpleTxPopup.AdvanceSettings = function SimpleTxPopupAdvanceSettings({
+  children,
+}) {
+  return children;
+};

@@ -2,7 +2,6 @@ import BigNumber from "bignumber.js";
 import CurrencyInput from "next-common/components/currencyInput";
 import Labeled from "next-common/components/Labeled";
 import SimpleTxPopup from "next-common/components/simpleTxPopup";
-import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import { useChainSettings } from "next-common/context/chain";
 import useBountyBond from "next-common/hooks/treasury/bounty/useBountyBond";
 import Input from "next-common/lib/input";
@@ -71,7 +70,7 @@ export default function NewBountyPopup({ onClose }) {
         />
       </Labeled>
 
-      <AdvanceSettings>
+      <SimpleTxPopup.AdvanceSettings>
         <Labeled text="Bounty Bond">
           <CurrencyInput
             disabled
@@ -79,7 +78,7 @@ export default function NewBountyPopup({ onClose }) {
             symbol={symbol}
           />
         </Labeled>
-      </AdvanceSettings>
+      </SimpleTxPopup.AdvanceSettings>
     </SimpleTxPopup>
   );
 }
