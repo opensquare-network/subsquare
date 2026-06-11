@@ -108,12 +108,16 @@ export default function InsufficientFeeWarning({
     );
   }
 
-  return (
-    <AssetInsufficientWarning
-      gasFee={gasFee}
-      isGasFeeLoading={isGasFeeLoading}
-      assetId={feeAssetInfo.assetId}
-      symbol={feeAssetInfo.symbol}
-    />
-  );
+  if (feeAssetInfo.type === "asset") {
+    return (
+      <AssetInsufficientWarning
+        gasFee={gasFee}
+        isGasFeeLoading={isGasFeeLoading}
+        assetId={feeAssetInfo.assetId}
+        symbol={feeAssetInfo.symbol}
+      />
+    );
+  }
+
+  return null;
 }
