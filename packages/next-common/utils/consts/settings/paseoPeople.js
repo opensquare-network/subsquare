@@ -20,8 +20,8 @@ const paseoPeople = {
       url: "wss://people-paseo.rpc.amforc.com",
     },
     {
-      name: "IBP2",
-      url: "wss://people-paseo.dotters.network",
+      name: "Zondax",
+      url: "wss://api2.zondax.ch/pas/people/node/rpc",
     },
   ],
   modules: {

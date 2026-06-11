@@ -59,10 +59,6 @@ export const paseoRelayChainNodes = [
     url: "wss://paseo.rpc.amforc.com",
   },
   {
-    name: "IBP2",
-    url: "wss://paseo.dotters.network",
-  },
-  {
     name: "StakeWorld",
     url: "wss://pas-rpc.stakeworld.io",
   },
@@ -73,10 +69,6 @@ export const paseoRelayChainNodes = [
 ];
 
 export const paseoAssetHubNodes = [
-  {
-    name: "IBP2",
-    url: "wss://asset-hub-paseo.dotters.network",
-  },
   {
     name: "Dwellir",
     url: "wss://asset-hub-paseo-rpc.n.dwellir.com",

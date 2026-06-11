@@ -23,10 +23,6 @@ const endpoints = [
     url: "wss://rpc.hydradx.cloud",
   },
   {
-    name: "IBP2",
-    url: "wss://hydration.dotters.network",
-  },
-  {
     name: "Dwellir",
     url: "wss://hydration-rpc.n.dwellir.com",
   },

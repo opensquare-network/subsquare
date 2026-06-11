@@ -14,8 +14,16 @@ export default {
       url: "wss://polkadot-bridge-hub-rpc.polkadot.io/",
     },
     {
-      name: "IBP2",
-      url: "wss://bridge-hub-polkadot.dotters.network/",
+      name: "Dwellir",
+      url: "wss://bridge-hub-polkadot-rpc.n.dwellir.com",
+    },
+    {
+      name: "LuckyFriday",
+      url: "wss://rpc-bridge-hub-polkadot.luckyfriday.io",
+    },
+    {
+      name: "OnFinality",
+      url: "wss://bridgehub-polkadot.api.onfinality.io/public-ws",
     },
   ],
 };

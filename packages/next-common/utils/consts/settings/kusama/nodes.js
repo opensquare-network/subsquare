@@ -4,10 +4,6 @@ const defaultKusamaNodes = [
     url: "wss://kusama-rpc.polkadot.io",
   },
   {
-    name: "IBP2",
-    url: "wss://kusama.dotters.network",
-  },
-  {
     name: "Stakeworld",
     url: "wss://ksm-rpc.stakeworld.io",
   },
