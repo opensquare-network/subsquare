@@ -20,7 +20,6 @@ import PeopleApiProvider from "next-common/context/people/api";
 import CoretimeApiProvider from "next-common/context/coretime/api";
 import { CollectivesApiProvider } from "next-common/context/collectives/api";
 import Tooltip from "next-common/components/tooltip";
-import EstimatedGas from "next-common/components/estimatedGas";
 
 function TooltipDisabledGuard({ disabled, children }) {
   return disabled ? (
@@ -108,7 +107,6 @@ function PopupContent() {
       {transferAmountField}
       <AdvanceSettings>
         <ExistentialDeposit destApi={destinationApi} />
-        <EstimatedGas getTxFunc={getTxFunc} />
       </AdvanceSettings>
       <div className="flex justify-end">
         <TooltipDisabledGuard disabled={submitDisabled}>

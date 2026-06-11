@@ -18,7 +18,6 @@ import useCrossChainDirection from "./useCrossChainDirection";
 import useNativeTransferAmount from "./useNativeTransferAmount";
 import PeopleApiProvider from "next-common/context/people/api";
 import CoretimeApiProvider from "next-common/context/coretime/api";
-import EstimatedGas from "next-common/components/estimatedGas";
 
 function PopupContent() {
   const { onClose } = usePopupParams();
@@ -92,7 +91,6 @@ function PopupContent() {
       {transferAmountField}
       <AdvanceSettings>
         <ExistentialDeposit destApi={destinationApi} />
-        <EstimatedGas getTxFunc={getTxFunc} />
       </AdvanceSettings>
       <div className="flex justify-end">
         <PrimaryButton loading={isSubmitting} onClick={doSubmit}>

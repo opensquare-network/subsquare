@@ -20,7 +20,6 @@ import getChainSettings from "next-common/utils/consts/settings";
 import { useChain } from "next-common/context/chain";
 import { useAssetHubChain } from "next-common/hooks/useAssetHubChain";
 import Chains from "next-common/utils/consts/chains";
-import EstimatedGas from "next-common/components/estimatedGas";
 
 const SystemCrosschain = dynamic(
   import("@osn/icons/subsquare").then((mod) => mod.SystemCrosschain),
@@ -134,7 +133,6 @@ function PopupContent() {
       {transferAmountField}
       <AdvanceSettings>
         <ExistentialDeposit destApi={destinationApi} />
-        <EstimatedGas getTxFunc={getTxFunc} />
       </AdvanceSettings>
       <TxSubmissionButton
         getTxFunc={getTxFunc}
