@@ -3,7 +3,7 @@ import { toPrecision } from "next-common/utils";
 import { GreyPanel } from "./styled/containers/greyPanel";
 import { isNil } from "lodash-es";
 import LoadableContent from "./common/loadableContent";
-import { useChainSettings } from "next-common/context/chain";
+import { useChainSettings, useIsKintsugi } from "next-common/context/chain";
 import { useFeeAssetConfig } from "./popupWithSigner/context/feeAsset";
 import FeeAssetTypeSwitcher from "./popup/fields/feeAssetTypeSwitcher";
 import InsufficientFeeWarning from "./estimatedGas/insufficientFeeWarning";
@@ -11,7 +11,7 @@ import useAccountNonce from "next-common/hooks/useAccountNonce";
 import useGasFeeEstimate from "next-common/hooks/useGasFeeEstimate";
 import useShouldSendEvmTx from "next-common/hooks/useShouldSendEvmTx";
 
-export default function EstimatedGas({ getTxFunc }) {
+function InnerEstimatedGas({ getTxFunc }) {
   const { enableAssetFee } = useChainSettings();
   const { feeAssetType, feeAssetInfo } = useFeeAssetConfig();
   const { accountNonce, isLoading: isNonceLoading } = useAccountNonce();
@@ -53,4 +53,13 @@ export default function EstimatedGas({ getTxFunc }) {
       />
     </div>
   );
+}
+
+export default function EstimatedGas({ getTxFunc }) {
+  const isKintsugi = useIsKintsugi();
+  if (isKintsugi) {
+    return null;
+  }
+
+  return <InnerEstimatedGas getTxFunc={getTxFunc} />;
 }
