@@ -20,14 +20,6 @@ const kusamaPeople = {
       url: "wss://kusama-people-rpc.polkadot.io",
     },
     {
-      name: "IBP1",
-      url: "wss://people-kusama.ibp.network",
-    },
-    {
-      name: "IBP2",
-      url: "wss://people-kusama.dotters.network",
-    },
-    {
       name: "OnFinality",
       url: "wss://people-kusama.api.onfinality.io/public-ws",
     },

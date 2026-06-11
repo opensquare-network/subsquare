@@ -20,14 +20,6 @@ const polkadotPeople = {
       url: "wss://polkadot-people-rpc.polkadot.io",
     },
     {
-      name: "IBP1",
-      url: "wss://people-polkadot.ibp.network",
-    },
-    {
-      name: "IBP2",
-      url: "wss://people-polkadot.dotters.network",
-    },
-    {
       name: "OnFinality",
       url: "wss://people-polkadot.api.onfinality.io/public-ws",
     },

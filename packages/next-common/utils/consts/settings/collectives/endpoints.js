@@ -4,14 +4,6 @@ export const collectivesEndpoints = [
     url: "wss://polkadot-collectives-rpc.polkadot.io",
   },
   {
-    name: "IBP1",
-    url: "wss://collectives-polkadot.ibp.network",
-  },
-  {
-    name: "IBP2",
-    url: "wss://collectives-polkadot.dotters.network",
-  },
-  {
     name: "LuckyFriday",
     url: "wss://rpc-collectives-polkadot.luckyfriday.io",
   },

@@ -14,12 +14,16 @@ export default {
       url: "wss://kusama-bridge-hub-rpc.polkadot.io/",
     },
     {
-      name: "IBP1",
-      url: "wss://bridge-hub-kusama.ibp.network",
+      name: "Dwellir",
+      url: "wss://bridge-hub-kusama-rpc.n.dwellir.com",
     },
     {
-      name: "IBP2",
-      url: "wss://bridge-hub-kusama.dotters.network/",
+      name: "LuckyFriday",
+      url: "wss://rpc-bridge-hub-kusama.luckyfriday.io",
+    },
+    {
+      name: "OnFinality",
+      url: "wss://bridgehub-kusama.api.onfinality.io/public-ws",
     },
   ],
 };

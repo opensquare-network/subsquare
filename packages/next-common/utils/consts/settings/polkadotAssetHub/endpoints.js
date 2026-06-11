@@ -4,14 +4,6 @@ const polkadotAssetHubNodes = [
     url: "wss://polkadot-asset-hub-rpc.polkadot.io",
   },
   {
-    name: "IBP1",
-    url: "wss://asset-hub-polkadot.ibp.network",
-  },
-  {
-    name: "IBP2",
-    url: "wss://asset-hub-polkadot.dotters.network",
-  },
-  {
     name: "OnFinality",
     url: "wss://statemint.api.onfinality.io/public-ws",
   },

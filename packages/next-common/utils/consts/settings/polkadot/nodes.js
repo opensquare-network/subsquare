@@ -4,14 +4,6 @@ const defaultPolkadotNodes = [
     url: "wss://rpc.polkadot.io",
   },
   {
-    name: "IBP1",
-    url: "wss://polkadot.ibp.network",
-  },
-  {
-    name: "IBP2",
-    url: "wss://polkadot.dotters.network",
-  },
-  {
     name: "Stakeworld",
     url: "wss://dot-rpc.stakeworld.io",
   },
