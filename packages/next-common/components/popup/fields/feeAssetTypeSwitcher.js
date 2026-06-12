@@ -47,14 +47,14 @@ function getFeeAssetOptions(chain) {
 }
 
 function NativeSymbolIcon({ className = "w-4 h-4" }) {
-  const chain = useChain();
-  if (chain === "kusama") {
+  const { symbol } = useChainSettings();
+  if (symbol === "KSM") {
     return <AssetIconKsm className={className} />;
   }
-  if (chain === "paseo") {
+  if (symbol === "PAS") {
     return <AssetIconPas className={className} />;
   }
-  if (chain === "polkadot") {
+  if (symbol === "DOT") {
     return <AssetIconDot className={className} />;
   }
   return null;

@@ -8,6 +8,7 @@ const ProjectIconPolkadotPeople = dynamic(() =>
 
 const polkadotPeople = {
   ...polkadot,
+  enableAssetFee: false,
   name: "People",
   value: Chains.polkadotPeople,
   description:
