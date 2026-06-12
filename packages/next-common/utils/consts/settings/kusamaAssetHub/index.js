@@ -50,6 +50,7 @@ const kusamaAssetHub = {
   graphqlApiSubDomain: "statemine-gh-api",
   supportForeignAssets: true,
   supportAssets: true,
+  enableAssetFee: true,
 };
 
 export default kusamaAssetHub;
