@@ -94,11 +94,11 @@ function FeeAssetOptionLayout({
     <button
       className={`flex items-center w-full px-3 py-2 text12Medium hover:bg-neutral200 transition-colors ${
         isActive ? "text-theme500 bg-neutral200" : "text-textPrimary"
-      }`}
+      } gap-x-2`}
       onClick={onClick}
     >
       {icon}
-      <span className="ml-2">{label}</span>
+      <span className="ml-2 whitespace-nowrap">{label}</span>
       <span className="ml-auto text-textTertiary">
         {isLoading ? (
           "…"
