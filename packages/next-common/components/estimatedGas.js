@@ -7,6 +7,7 @@ import { useChainSettings, useIsKintsugi } from "next-common/context/chain";
 import { useFeeAssetConfig } from "./popupWithSigner/context/feeAsset";
 import FeeAssetTypeSwitcher from "./popup/fields/feeAssetTypeSwitcher";
 import InsufficientFeeWarning from "./estimatedGas/insufficientFeeWarning";
+import Tooltip from "./tooltip";
 import useAccountNonce from "next-common/hooks/useAccountNonce";
 import useGasFeeEstimate from "next-common/hooks/useGasFeeEstimate";
 import useShouldSendEvmTx from "next-common/hooks/useShouldSendEvmTx";
@@ -29,13 +30,16 @@ function InnerEstimatedGas({ getTxFunc }) {
         <div className="flex gap-x-2 items-center">
           <span>Estimated Gas Fee: </span>
           <LoadableContent isLoading={isGasFeeLoading} size={20}>
-            <span>
-              {isNil(gasFee)
-                ? "-"
-                : `≈ ${toPrecision(gasFee, feeAssetInfo.decimals, 4)} ${
-                    feeAssetInfo.symbol
-                  }`}
-            </span>
+            {isNil(gasFee) ? (
+              <span>-</span>
+            ) : (
+              <Tooltip content={toPrecision(gasFee, feeAssetInfo.decimals)}>
+                <span>
+                  ≈ {toPrecision(gasFee, feeAssetInfo.decimals, 4)}{" "}
+                  {feeAssetInfo.symbol}
+                </span>
+              </Tooltip>
+            )}
           </LoadableContent>
         </div>
         <span className="flex gap-x-2">

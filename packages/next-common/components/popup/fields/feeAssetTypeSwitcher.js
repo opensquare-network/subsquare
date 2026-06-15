@@ -17,6 +17,7 @@ import {
   AssetIconUsdt,
   AssetIconRmrk,
 } from "@osn/icons/subsquare";
+import Tooltip from "next-common/components/tooltip";
 import { ChevronDown, CheckIcon } from "./feeAssetSvgs";
 import getChainSettings from "next-common/utils/consts/settings";
 
@@ -83,7 +84,8 @@ function FeeIcon({ symbol, className = "w-4 h-4" }) {
 function FeeAssetOptionLayout({
   icon,
   label,
-  formatted,
+  balance,
+  decimals,
   isActive,
   isLoading,
   onClick,
@@ -98,7 +100,13 @@ function FeeAssetOptionLayout({
       {icon}
       <span className="ml-2">{label}</span>
       <span className="ml-auto text-textTertiary">
-        {isLoading ? "…" : formatted}
+        {isLoading ? (
+          "…"
+        ) : balance != null ? (
+          <Tooltip content={toPrecision(balance, decimals)}>
+            <span>{toPrecision(balance, decimals, 4)}</span>
+          </Tooltip>
+        ) : null}
       </span>
       <CheckIcon
         className={`w-3.5 h-3.5 ml-2 shrink-0 ${
@@ -113,13 +121,13 @@ function NativeAssetOption({ isActive, onClick }) {
   const { symbol, decimals } = useChainSettings();
   const { balance, isLoading } = useNativeBalance();
 
-  const formatted = balance != null ? toPrecision(balance, decimals, 4) : null;
-
   return (
     <FeeAssetOptionLayout
       icon={<NativeSymbolIcon className="w-4 h-4 shrink-0" />}
       label={symbol}
-      formatted={formatted}
+      balance={balance}
+      decimals={decimals}
+      symbol={symbol}
       isActive={isActive}
       isLoading={isLoading}
       onClick={onClick}
@@ -130,13 +138,13 @@ function NativeAssetOption({ isActive, onClick }) {
 function AssetOption({ label, assetId, symbol, decimals, isActive, onClick }) {
   const { balance, isLoading } = useAssetBalance(assetId);
 
-  const formatted = balance != null ? toPrecision(balance, decimals, 4) : null;
-
   return (
     <FeeAssetOptionLayout
       icon={<FeeIcon symbol={symbol} className="w-4 h-4 shrink-0" />}
       label={label}
-      formatted={formatted}
+      balance={balance}
+      decimals={decimals}
+      symbol={symbol}
       isActive={isActive}
       isLoading={isLoading}
       onClick={onClick}
@@ -154,13 +162,13 @@ function ForeignAssetOption({
 }) {
   const { balance, isLoading } = useForeignAssetBalance(multiLocation);
 
-  const formatted = balance != null ? toPrecision(balance, decimals, 4) : null;
-
   return (
     <FeeAssetOptionLayout
       icon={<FeeIcon symbol={symbol} className="w-4 h-4 shrink-0" />}
       label={label}
-      formatted={formatted}
+      balance={balance}
+      decimals={decimals}
+      symbol={symbol}
       isActive={isActive}
       isLoading={isLoading}
       onClick={onClick}
