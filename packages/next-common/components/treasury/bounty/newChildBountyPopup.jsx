@@ -5,8 +5,6 @@ import { useChainSettings } from "next-common/context/chain";
 import { useOnchainData } from "next-common/context/post";
 import { useAccountDeathTransferrable } from "next-common/hooks/useAccountTransferrable";
 import BigNumber from "bignumber.js";
-import { useDispatch } from "react-redux";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { toPrecision } from "next-common/utils";
 import TextAreaField from "next-common/components/popup/fields/textAreaField";
 import { getEventData } from "next-common/utils/sendTransaction";
@@ -52,7 +50,6 @@ function useChildBountyBalanceField({ transferrable, isLoading }) {
 
 export default function NewChildBountyPopup({ bountyIndex, onClose }) {
   const router = useRouter();
-  const dispatch = useDispatch();
   const { decimals } = useChainSettings();
   const api = useContextApi();
   const { address } = useOnchainData();
@@ -75,24 +72,18 @@ export default function NewChildBountyPopup({ bountyIndex, onClose }) {
       api.consts.childBounties.childBountyValueMinimum.toJSON();
 
     if (balance.lt(childBountyValueMinimum)) {
-      dispatch(
-        newErrorToast(
-          `Child bounty value must not be less than ${toPrecision(
-            childBountyValueMinimum,
-            decimals,
-          )}`,
-        ),
+      throw new Error(
+        `Child bounty value must not be less than ${toPrecision(
+          childBountyValueMinimum,
+          decimals,
+        )}`,
       );
-      return;
     }
 
     if (balance.gt(transferrable)) {
-      dispatch(
-        newErrorToast(
-          "Child bounty value must not be greater than available balance",
-        ),
+      throw new Error(
+        "Child bounty value must not be greater than available balance",
       );
-      return;
     }
 
     return api.tx.childBounties.addChildBounty(
@@ -100,15 +91,7 @@ export default function NewChildBountyPopup({ bountyIndex, onClose }) {
       balance.toString(),
       description,
     );
-  }, [
-    dispatch,
-    api,
-    bountyIndex,
-    amount,
-    description,
-    transferrable,
-    decimals,
-  ]);
+  }, [api, bountyIndex, amount, description, transferrable, decimals]);
 
   return (
     <SimpleTxPopup

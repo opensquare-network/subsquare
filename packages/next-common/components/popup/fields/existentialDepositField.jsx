@@ -5,7 +5,7 @@ import useApiProperties from "next-common/hooks/useApiProperties";
 import { Skeleton } from "next-common/components/skeleton";
 
 export default function ExistentialDeposit({ destApi, title }) {
-  const { decimals, isLoading } = useApiProperties(destApi);
+  const { symbol, decimals, isLoading } = useApiProperties(destApi);
   const loading = isLoading || !destApi;
 
   return (
@@ -20,7 +20,7 @@ export default function ExistentialDeposit({ destApi, title }) {
             destApi?.consts.balances?.existentialDeposit || 0,
             decimals,
           )}
-          symbol="DOT"
+          symbol={symbol}
         />
       )}
     </div>

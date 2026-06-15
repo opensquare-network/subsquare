@@ -18,6 +18,8 @@ import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import SignerWithBalance from "../signerPopup/signerWithBalance";
 import { Label } from "../popup/styled";
 import { noop } from "lodash-es";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 const defaultSub = {
   address: "",
@@ -122,6 +124,10 @@ export default function SetSubsPopupContent() {
       <AddSubsButton addSub={addSub} />
 
       <SubsDeposit selectedList={addressList} />
+
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getTxFunc} />
+      </AdvanceSettings>
 
       <RightWrapper>
         <TxSubmissionButton

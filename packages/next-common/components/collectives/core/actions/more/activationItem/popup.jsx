@@ -6,6 +6,8 @@ import { useContextApi } from "next-common/context/api";
 import { useCallback } from "react";
 import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
 import useCoreFellowshipUpdateFunc from "next-common/components/collectives/core/updateFunc";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 function Content() {
   const { who, member } = usePopupParams();
@@ -26,6 +28,9 @@ function Content() {
   return (
     <>
       {component}
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getTxFunc} />
+      </AdvanceSettings>
       <TxSubmissionButton
         getTxFunc={getTxFunc}
         onInBlock={onInBlock}

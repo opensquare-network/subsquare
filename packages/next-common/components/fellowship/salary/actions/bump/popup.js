@@ -5,6 +5,8 @@ import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 import { useSalaryFellowshipPallet } from "next-common/context/collectives/collectives";
 import { useCallback } from "react";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 function Content() {
   const { onFinalized } = usePopupParams();
@@ -21,6 +23,9 @@ function Content() {
   return (
     <>
       <Signer />
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getTxFunc} />
+      </AdvanceSettings>
       <TxSubmissionButton
         title="Confirm"
         getTxFunc={getTxFunc}

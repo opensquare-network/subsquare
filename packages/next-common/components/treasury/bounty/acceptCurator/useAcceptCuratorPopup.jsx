@@ -7,6 +7,8 @@ import { toPrecision } from "next-common/utils";
 import { useCallback, useState } from "react";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 export function useAcceptCuratorPopup(pallet = "bounties", params = []) {
   const [isOpen, setIsOpen] = useState(false);
@@ -53,6 +55,9 @@ function PopupContent({ pallet = "bounties", params = [] } = {}) {
         inputBalance={toPrecision(curatorDeposit, decimals)}
         symbol={symbol}
       />
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getTxFunc} />
+      </AdvanceSettings>
       <div className="flex justify-end">
         <TxSubmissionButton title="Confirm" getTxFunc={getTxFunc} />
       </div>

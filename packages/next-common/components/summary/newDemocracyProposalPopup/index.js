@@ -13,6 +13,8 @@ import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import SignerWithVotingBalance from "next-common/components/signerPopup/signerWithVotingBalance";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 export function NewDemocracyProposalInnerPopup({
   preimageHash: _preimageHash,
@@ -81,7 +83,10 @@ export function NewDemocracyProposalInnerPopup({
         lockedBalance={lockedBalance}
         setLockedBalance={setLockedBalance}
       />
-      <SubmissionDeposit deposit={deposit} />{" "}
+      <AdvanceSettings>
+        <SubmissionDeposit deposit={deposit} />
+        <EstimatedGas getTxFunc={getTxFunc} />
+      </AdvanceSettings>
       <TxSubmissionButton
         getTxFunc={getTxFunc}
         disabled={disabled}

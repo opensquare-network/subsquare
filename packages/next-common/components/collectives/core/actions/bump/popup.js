@@ -10,6 +10,8 @@ import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
 import useCoreFellowshipUpdateFunc from "next-common/components/collectives/core/updateFunc";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 const Wrapper = styled(GreyPanel)`
   padding: 12px 16px;
@@ -39,6 +41,9 @@ function Content() {
           <AddressUser add={who} className="text14Medium text-textPrimary" />
         </Wrapper>
       </div>
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getTxFunc} />
+      </AdvanceSettings>
       <TxSubmissionButton
         getTxFunc={getTxFunc}
         onInBlock={onInBlock}

@@ -5,6 +5,8 @@ import TxSubmissionButton from "next-common/components/common/tx/txSubmissionBut
 import useCoreFellowshipUpdateFunc from "next-common/components/collectives/core/updateFunc";
 import { useContextApi } from "next-common/context/api";
 import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 function Content() {
   const pallet = useCoreFellowshipPallet();
@@ -22,6 +24,9 @@ function Content() {
   return (
     <>
       {component}
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getTxFunc} />
+      </AdvanceSettings>
       <TxSubmissionButton
         getTxFunc={getTxFunc}
         onInBlock={onInBlock}

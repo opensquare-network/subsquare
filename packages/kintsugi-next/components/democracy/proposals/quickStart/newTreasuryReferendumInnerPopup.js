@@ -7,14 +7,15 @@ import AdvanceSettings from "next-common/components/summary/newProposalQuickStar
 import { useCallback } from "react";
 import { useContextApi } from "next-common/context/api";
 import { useChainSettings } from "next-common/context/chain";
-import { useDispatch } from "react-redux";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { checkInputValue } from "next-common/utils";
-import { DemocracyProposeTxSubmissionButton } from "next-common/components/summary/newDemocracyProposalButton/common/democracyProposeTxSubmissionButton";
+import {
+  DemocracyProposeTxSubmissionButton,
+  useDemocracyProposeTxFunc,
+} from "next-common/components/summary/newDemocracyProposalButton/common/democracyProposeTxSubmissionButton";
 import SubmissionDeposit from "next-common/components/summary/newDemocracyProposalButton/common/submissionDeposit";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 export function NewTreasuryReferendumInnerPopup() {
-  const dispatch = useDispatch();
   const api = useContextApi();
   const { onClose } = usePopupParams();
   const { decimals } = useChainSettings();
@@ -28,25 +29,23 @@ export function NewTreasuryReferendumInnerPopup() {
     }
 
     if (!beneficiary) {
-      dispatch(newErrorToast("Beneficiary address is required"));
-      return;
+      throw new Error("Beneficiary address is required");
     }
 
     if (!inputBalance) {
-      dispatch(newErrorToast("Request balance is required"));
-      return;
+      throw new Error("Request balance is required");
     }
 
-    let value = null;
-    try {
-      value = checkInputValue(inputBalance, decimals, "Request balance", false);
-    } catch (e) {
-      dispatch(newErrorToast(e.message));
-      return;
-    }
+    const value = checkInputValue(
+      inputBalance,
+      decimals,
+      "Request balance",
+      false,
+    );
 
     return api.tx.democracy.spendFromTreasury(value.toString(), beneficiary);
-  }, [dispatch, api, decimals, inputBalance, beneficiary]);
+  }, [api, decimals, inputBalance, beneficiary]);
+  const getProposeTxFunc = useDemocracyProposeTxFunc(getTxFunc);
 
   return (
     <Popup title="Create Treasury Proposal" onClose={onClose}>
@@ -55,6 +54,7 @@ export function NewTreasuryReferendumInnerPopup() {
       {beneficiaryField}
       <AdvanceSettings>
         <SubmissionDeposit />
+        <EstimatedGas getTxFunc={getProposeTxFunc} />
       </AdvanceSettings>
       <div className="flex justify-end">
         <DemocracyProposeTxSubmissionButton getTxFunc={getTxFunc} />

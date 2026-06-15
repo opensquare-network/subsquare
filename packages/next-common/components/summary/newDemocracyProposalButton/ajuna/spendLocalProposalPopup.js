@@ -7,14 +7,15 @@ import AdvanceSettings from "next-common/components/summary/newProposalQuickStar
 import { useCallback } from "react";
 import { useContextApi } from "next-common/context/api";
 import { useChainSettings } from "next-common/context/chain";
-import { useDispatch } from "react-redux";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { checkInputValue } from "next-common/utils";
-import { DemocracyProposeTxSubmissionButton } from "../common/democracyProposeTxSubmissionButton";
+import {
+  DemocracyProposeTxSubmissionButton,
+  useDemocracyProposeTxFunc,
+} from "../common/democracyProposeTxSubmissionButton";
 import SubmissionDeposit from "../common/submissionDeposit";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 export default function AjunaSpendLocalProposalPopup() {
-  const dispatch = useDispatch();
   const api = useContextApi();
   const { onClose } = usePopupParams();
   const { decimals } = useChainSettings();
@@ -24,30 +25,27 @@ export default function AjunaSpendLocalProposalPopup() {
 
   const getTxFunc = useCallback(() => {
     if (!api) {
-      dispatch(newErrorToast("Chain network is not connected yet"));
-      return;
+      throw new Error("Chain network is not connected yet");
     }
 
     if (!inputBalance) {
-      dispatch(newErrorToast("Request balance is required"));
-      return;
+      throw new Error("Request balance is required");
     }
 
     if (!beneficiary) {
-      dispatch(newErrorToast("Beneficiary address is required"));
-      return;
+      throw new Error("Beneficiary address is required");
     }
 
-    let value = null;
-    try {
-      value = checkInputValue(inputBalance, decimals, "Request balance", false);
-    } catch (e) {
-      dispatch(newErrorToast(e.message));
-      return;
-    }
+    const value = checkInputValue(
+      inputBalance,
+      decimals,
+      "Request balance",
+      false,
+    );
 
     return api.tx.treasury.spendLocal(value.toString(), beneficiary);
-  }, [dispatch, api, decimals, inputBalance, beneficiary]);
+  }, [api, decimals, inputBalance, beneficiary]);
+  const getProposeTxFunc = useDemocracyProposeTxFunc(getTxFunc);
 
   return (
     <Popup title="Spend treasury AJUN token" onClose={onClose}>
@@ -56,6 +54,7 @@ export default function AjunaSpendLocalProposalPopup() {
       {beneficiaryField}
       <AdvanceSettings>
         <SubmissionDeposit />
+        <EstimatedGas getTxFunc={getProposeTxFunc} />
       </AdvanceSettings>
       <div className="flex justify-end">
         <DemocracyProposeTxSubmissionButton getTxFunc={getTxFunc} />

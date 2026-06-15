@@ -7,6 +7,8 @@ import { useContextApi } from "next-common/context/api";
 import { useTimepoint } from "./useTimepoint";
 import { chainApiHash } from "next-common/utils/chain";
 import ErrorMessage from "next-common/components/styled/errorMessage";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 export default function ProposeWithInputHex() {
   const api = useContextApi();
@@ -45,6 +47,9 @@ export default function ProposeWithInputHex() {
           </ErrorMessage>
         )}
       </div>
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getTxFunc} />
+      </AdvanceSettings>
       <div className="flex justify-end">
         <TxSubmissionButton
           disabled={!call || isTimepointLoading || timepoint}

@@ -6,6 +6,8 @@ import useCoreFellowshipUpdateFunc from "next-common/components/collectives/core
 import { useContextApi } from "next-common/context/api";
 import useAddressInput from "next-common/components/collectives/core/useAddressInput";
 import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 function Content() {
   const pallet = useCoreFellowshipPallet();
@@ -25,6 +27,9 @@ function Content() {
     <>
       {component}
       {whoInput}
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getTxFunc} />
+      </AdvanceSettings>
       <TxSubmissionButton
         getTxFunc={getTxFunc}
         onInBlock={onInBlock}

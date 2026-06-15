@@ -22,6 +22,8 @@ import SubtractIcon from "next-common/components/callTreeView/subtract";
 import IconButton from "next-common/components/iconButton";
 import PlusIcon from "next-common/components/callTreeView/plus";
 import { useChainSettings } from "next-common/context/chain";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 const getAssetKindParam = (assetId) => {
   return {
@@ -277,6 +279,9 @@ function BatchTreasurySpendPopupContent() {
         />
       )}
       <InsufficientBalanceTips byteLength={encodedLength} preimageOnly />
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={() => notePreimageTx} />
+      </AdvanceSettings>
       <div className="flex justify-end">
         <NotePreimageButton notePreimageTx={notePreimageTx} />
       </div>

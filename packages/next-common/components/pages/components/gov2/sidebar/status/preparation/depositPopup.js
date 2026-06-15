@@ -17,6 +17,8 @@ import BalanceProvider, {
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { colorStyle, PromptTypes } from "next-common/components/scrollPrompt";
 import BigNumber from "bignumber.js";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 function PopupContent() {
   const { onClose } = usePopupParams();
@@ -47,6 +49,9 @@ function PopupContent() {
         />
       </div>
       <BalanceTip />
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getTxFunc} />
+      </AdvanceSettings>
       <TxSubmissionButton api={api} getTxFunc={getTxFunc} onClose={onClose} />
     </>
   );

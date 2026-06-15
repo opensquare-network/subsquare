@@ -11,10 +11,8 @@ import PopupWithSigner from "next-common/components/popupWithSigner";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 import { useUploadToIpfs } from "next-common/hooks/useUploadToIpfs";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { cn } from "next-common/utils";
 import { useCallback, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { FellowshipRankInfo } from "next-common/components/fellowship/rank";
@@ -54,7 +52,6 @@ function WishChoice({ title, description, checked, onClick = noop }) {
 }
 
 function Content() {
-  const dispatch = useDispatch();
   const signerAccount = useSignerAccount();
   const address = signerAccount?.realAddress;
   const [wish, setWish] = useState("retention");
@@ -108,13 +105,12 @@ function Content() {
     try {
       digest = CID.parse(cid).toV0().multihash.digest;
     } catch {
-      dispatch(newErrorToast("Failed to parse CID digest"));
-      return;
+      throw new Error("Failed to parse CID digest");
     }
 
     const hexDigest = "0x" + Buffer.from(digest).toString("hex");
     return api?.tx?.[pallet]?.submitEvidence(wish, hexDigest);
-  }, [upload, currentEvidence, address, wish, api, pallet, dispatch]);
+  }, [upload, currentEvidence, address, wish, api, pallet]);
 
   return (
     <>

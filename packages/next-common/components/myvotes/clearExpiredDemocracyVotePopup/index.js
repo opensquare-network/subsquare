@@ -5,6 +5,8 @@ import { useSignerAccount } from "next-common/components/popupWithSigner/context
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 function PopupContent({ votes }) {
   const api = useContextApi();
@@ -38,6 +40,9 @@ function PopupContent({ votes }) {
     <>
       <SignerWithBalance noSwitchSigner />
       <RelatedReferenda relatedReferenda={relatedReferenda} />
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getTxFunc} />
+      </AdvanceSettings>
       <TxSubmissionButton title="Confirm" getTxFunc={getTxFunc} />
     </>
   );

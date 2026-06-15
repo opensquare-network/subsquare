@@ -1,6 +1,4 @@
 import React, { useCallback } from "react";
-import { useDispatch } from "react-redux";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { noop } from "lodash-es";
 import PopupLabel from "next-common/components/popup/label";
 import RelatedReferenda from "../popupCommon/relatedReferenda";
@@ -9,6 +7,8 @@ import { useSignerAccount } from "next-common/components/popupWithSigner/context
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 function ExtraInfo({ relatedReferenda, relatedTracks }) {
   return (
@@ -29,7 +29,6 @@ function ExtraInfo({ relatedReferenda, relatedTracks }) {
 }
 
 function PopupContent({ votes = [], unlockTracks = [], onInBlock = noop }) {
-  const dispatch = useDispatch();
   const api = useContextApi();
   const signerAccount = useSignerAccount();
   const realAddress = signerAccount?.realAddress;
@@ -39,10 +38,12 @@ function PopupContent({ votes = [], unlockTracks = [], onInBlock = noop }) {
   );
   relatedReferenda.sort((a, b) => a - b);
 
+  const depVotes = JSON.stringify(votes);
+  const depUnlockTracks = JSON.stringify(unlockTracks);
+
   const getTxFunc = useCallback(async () => {
     if (!votes?.length && unlockTracks.length <= 0) {
-      dispatch(newErrorToast("No unLockable balance"));
-      return;
+      throw new Error("No unLockable balance");
     }
 
     let tx;
@@ -61,7 +62,8 @@ function PopupContent({ votes = [], unlockTracks = [], onInBlock = noop }) {
     }
 
     return tx;
-  }, [api, realAddress, dispatch, votes, unlockTracks]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [api, realAddress, depVotes, depUnlockTracks]);
 
   return (
     <>
@@ -70,6 +72,9 @@ function PopupContent({ votes = [], unlockTracks = [], onInBlock = noop }) {
         relatedReferenda={relatedReferenda}
         relatedTracks={unlockTracks}
       />
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getTxFunc} />
+      </AdvanceSettings>
       <TxSubmissionButton
         title="Confirm"
         getTxFunc={getTxFunc}

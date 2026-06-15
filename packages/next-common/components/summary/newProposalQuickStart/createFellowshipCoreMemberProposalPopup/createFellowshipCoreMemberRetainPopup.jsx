@@ -19,6 +19,8 @@ import { CollectivesRetainTracks } from "next-common/components/fellowship/core/
 import { useFellowshipTrackDecisionDeposit } from "next-common/hooks/fellowship/useFellowshipTrackDecisionDeposit";
 import { rankToRetainTrack } from "next-common/utils/fellowship/rankToTrack";
 import { useReferendaOptionsField } from "next-common/components/preImages/createPreimagePopup/fields/useReferendaOptionsField";
+import { useFellowshipProposalSubmissionTxFunc } from "next-common/hooks/fellowship/core/useFellowshipCoreMemberProposalSubmitTx";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 function NewFellowshipCoreMemberRetainReferendumInnerPopupImpl() {
   const { members, loading } = useFellowshipCoreMembersWithRank();
@@ -59,6 +61,15 @@ function NewFellowshipCoreMemberRetainReferendumInnerPopupImpl() {
   );
   const { value: referendaOptions, component: referendaOptionsField } =
     useReferendaOptionsField(decisionDeposit);
+  const getTxFunc = useFellowshipProposalSubmissionTxFunc({
+    rank: atRank,
+    who,
+    action: "approve",
+    trackName,
+    enactment,
+    checkDecisionDeposit: referendaOptions.checkDecisionDeposit,
+    checkVoteAye: referendaOptions.checkVoteAye,
+  });
 
   return (
     <Popup title="New Retain Proposal" onClose={onClose}>
@@ -76,7 +87,10 @@ function NewFellowshipCoreMemberRetainReferendumInnerPopupImpl() {
       />
       {!isAvailableMember && <NotAvailableMemberPrompt />}
       {!!who && !!atRank && referendaOptionsField}
-      <AdvanceSettings>{enactmentField}</AdvanceSettings>
+      <AdvanceSettings>
+        {enactmentField}
+        <EstimatedGas getTxFunc={getTxFunc} />
+      </AdvanceSettings>
       <div className="flex justify-end">
         <CreateFellowshipCoreMemberProposalSubmitButton
           disabled={isLoading || isReferendaExisted || !isAvailableMember}

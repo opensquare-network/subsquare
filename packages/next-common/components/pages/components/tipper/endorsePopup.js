@@ -8,12 +8,12 @@ import BalanceField from "next-common/components/popup/fields/balanceField";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
-import { useDispatch } from "react-redux";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 import { noop } from "lodash-es";
 import useCollectiveMembers from "next-common/utils/hooks/collectives/useCollectiveMembers";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 function PopupContent() {
   const { tipHash, onInBlock = noop } = usePopupParams();
@@ -24,25 +24,15 @@ function PopupContent() {
   const { decimals } = useChainSettings();
   const { members } = useCollectiveMembers();
   const isTipper = isAddressInGroup(signerAccount?.realAddress, members || []);
-  const dispatch = useDispatch();
 
   const getTxFunc = useCallback(() => {
     if (!api || !api.tx.tips?.tip) {
       return;
     }
 
-    try {
-      const bnValue = checkInputValue(
-        inputTipValue,
-        decimals,
-        "tip value",
-        true,
-      );
-      return api.tx.tips.tip(tipHash, bnValue.toString());
-    } catch (e) {
-      dispatch(newErrorToast(e.message));
-    }
-  }, [dispatch, tipHash, api, inputTipValue, decimals]);
+    const bnValue = checkInputValue(inputTipValue, decimals, "tip value", true);
+    return api.tx.tips.tip(tipHash, bnValue.toString());
+  }, [tipHash, api, inputTipValue, decimals]);
 
   return (
     <>
@@ -55,6 +45,9 @@ function PopupContent() {
         inputBalance={inputTipValue}
         setInputBalance={setInputTipValue}
       />
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getTxFunc} />
+      </AdvanceSettings>
       <TxSubmissionButton
         title="Endorse"
         getTxFunc={getTxFunc}

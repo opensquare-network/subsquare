@@ -1,11 +1,10 @@
 import {
+  useFeeAssetConfig,
   useSetSigner,
   useSignerAccount,
 } from "next-common/components/popupWithSigner/context";
 import WalletTypes from "next-common/utils/consts/walletTypes";
-import isEvmChain from "next-common/utils/isEvmChain";
-import isMixedChain from "next-common/utils/isMixedChain";
-import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
+import shouldSendEvmTx from "next-common/utils/shouldSendEvmTx";
 import {
   maybeSendMimirTx,
   maybeSendSignetTx,
@@ -13,7 +12,6 @@ import {
   signAndSendSubstrateTx,
   sendHydraDXMultiFeeEvmTx,
 } from "next-common/utils/sendTransaction";
-import { isEthereumAddress } from "@polkadot/util-crypto";
 import { useDispatch } from "react-redux";
 import { useCallback, useState } from "react";
 import {
@@ -34,18 +32,6 @@ import { sendWalletConnectTx } from "next-common/utils/sendTransaction/sendWalle
 import { useWalletConnectBuildPayload } from "next-common/hooks/useWalletConnectBuildPayload";
 import { useVaultSigner } from "next-common/context/polkadotVault/vaultSignerProvider";
 import { useWalletConnect } from "next-common/context/walletconnect";
-
-function shouldSendEvmTx(signerAccount) {
-  const isWalletMetamask = signerAccount?.meta?.source === WalletTypes.METAMASK;
-  if ((isEvmChain() || isMixedChain()) && isWalletMetamask) {
-    return true;
-  }
-  const isEvmAddr = isEthereumAddress(
-    tryConvertToEvmAddress(signerAccount?.address),
-  );
-  const isWalletTalisman = signerAccount?.meta?.source === WalletTypes.TALISMAN;
-  return isMixedChain() && isEvmAddr && isWalletTalisman;
-}
 
 function shouldSendSignetTx(signerAccount) {
   return signerAccount?.meta?.source === WalletTypes.SIGNET;
@@ -96,6 +82,7 @@ export function useSendTransaction() {
 
   const { signWcTx } = useWalletConnect();
   const buildPayload = useWalletConnectBuildPayload();
+  const { feeAssetInfo } = useFeeAssetConfig();
 
   const sendTxFunc = useCallback(
     async ({
@@ -189,6 +176,7 @@ export function useSendTransaction() {
             onFinalized: _onFinalized,
             onError,
             signerAddress: signerAccount?.address,
+            feeAssetLocation: feeAssetInfo?.location,
           });
           if (handled) {
             return;
@@ -261,6 +249,7 @@ export function useSendTransaction() {
             onSubmitted: _onSubmitted,
             onFinalized: _onFinalized,
             onError,
+            feeAssetLocation: feeAssetInfo?.location,
           });
 
           return;
@@ -277,6 +266,7 @@ export function useSendTransaction() {
             onFinalized: _onFinalized,
             onError,
             signerAddress: signerAccount?.address,
+            feeAssetLocation: feeAssetInfo?.location,
           });
           return;
         }
@@ -290,6 +280,7 @@ export function useSendTransaction() {
           onFinalized: _onFinalized,
           onError,
           signerAddress: signerAccount?.address,
+          feeAssetLocation: feeAssetInfo?.location,
         });
       } catch (e) {
         dispatch(newErrorToast(e.message));
@@ -305,6 +296,7 @@ export function useSendTransaction() {
       setSigner,
       sendVaultTx,
       signWcTx,
+      feeAssetInfo,
     ],
   );
 

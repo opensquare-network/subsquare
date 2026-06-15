@@ -41,6 +41,7 @@ const paseoPeople = {
   },
   allowWeb2Login: true,
   hideHeight: false,
+  enableAssetFee: false,
 };
 
 export default paseoPeople;

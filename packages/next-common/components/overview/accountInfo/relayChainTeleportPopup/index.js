@@ -1,10 +1,7 @@
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
-import {
-  newErrorToast,
-  newSuccessToast,
-} from "next-common/store/reducers/toastSlice";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import Signer from "next-common/components/popup/fields/signerField";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
@@ -115,18 +112,14 @@ function PopupContent() {
     });
 
   const getTxFunc = useCallback(() => {
-    try {
-      if (!transferToAddress) {
-        throw new Error("Destination address is required");
-      }
-
-      const amount = getCheckedTransferAmount();
-
-      return getTeleportTx(transferToAddress, amount);
-    } catch (e) {
-      dispatch(newErrorToast(e.message));
+    if (!transferToAddress) {
+      throw new Error("Destination address is required");
     }
-  }, [dispatch, getTeleportTx, transferToAddress, getCheckedTransferAmount]);
+
+    const amount = getCheckedTransferAmount();
+
+    return getTeleportTx(transferToAddress, amount);
+  }, [getTeleportTx, transferToAddress, getCheckedTransferAmount]);
 
   return (
     <>

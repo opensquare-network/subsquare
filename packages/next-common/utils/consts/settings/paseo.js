@@ -69,6 +69,7 @@ const paseo = {
   allowWeb2Login: true,
   preimage: polkadotPreimageSettings,
   hideHeight: true,
+  enableAssetFee: true,
 };
 
 export default paseo;

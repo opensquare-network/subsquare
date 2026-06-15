@@ -2,23 +2,19 @@ import BigNumber from "bignumber.js";
 import CurrencyInput from "next-common/components/currencyInput";
 import Labeled from "next-common/components/Labeled";
 import SimpleTxPopup from "next-common/components/simpleTxPopup";
-import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import { useChainSettings } from "next-common/context/chain";
 import useBountyBond from "next-common/hooks/treasury/bounty/useBountyBond";
 import Input from "next-common/lib/input";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { fromPrecision, toPrecision } from "next-common/utils";
 import { getEventData } from "next-common/utils/sendTransaction";
 import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
-import { useDispatch } from "react-redux";
 import { useContextApi } from "next-common/context/api";
 
 export default function NewBountyPopup({ onClose }) {
   const router = useRouter();
   const { decimals, symbol } = useChainSettings();
   const api = useContextApi();
-  const dispatch = useDispatch();
   const [inputAmount, setInputAmount] = useState("");
   const [inputDescription, setInputDescription] = useState("");
 
@@ -31,19 +27,16 @@ export default function NewBountyPopup({ onClose }) {
       api.consts.bounties.bountyValueMinimum.toString();
 
     if (balance.lt(bountyValueMinimum)) {
-      dispatch(
-        newErrorToast(
-          `Bounty value must not be less than ${toPrecision(
-            bountyValueMinimum,
-            decimals,
-          )}`,
-        ),
+      throw new Error(
+        `Bounty value must not be less than ${toPrecision(
+          bountyValueMinimum,
+          decimals,
+        )}`,
       );
-      return;
     }
 
     return api.tx.bounties.proposeBounty(balance.toString(), inputDescription);
-  }, [inputAmount, decimals, api, inputDescription, dispatch]);
+  }, [inputAmount, decimals, api, inputDescription]);
 
   return (
     <SimpleTxPopup
@@ -77,7 +70,7 @@ export default function NewBountyPopup({ onClose }) {
         />
       </Labeled>
 
-      <AdvanceSettings>
+      <SimpleTxPopup.AdvanceSettings>
         <Labeled text="Bounty Bond">
           <CurrencyInput
             disabled
@@ -85,7 +78,7 @@ export default function NewBountyPopup({ onClose }) {
             symbol={symbol}
           />
         </Labeled>
-      </AdvanceSettings>
+      </SimpleTxPopup.AdvanceSettings>
     </SimpleTxPopup>
   );
 }

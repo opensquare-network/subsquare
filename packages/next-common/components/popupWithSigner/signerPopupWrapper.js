@@ -7,6 +7,7 @@ import { useConnectedAccountContext } from "next-common/context/connectedAccount
 import CanBeAnyWalletSigner from "./canBeAnyWalletSigner";
 import { isKeyRegisteredUser } from "next-common/utils";
 import { PopupParamsProvider, usePopupParams } from "./context";
+import { FeeAssetProvider } from "./context/feeAsset";
 import LoginPopup from "next-common/components/login/popup";
 import MaybeWalletConnectSigner from "./maybeWalletConnectSigner";
 
@@ -42,7 +43,9 @@ function PopupImpl({ children }) {
 export default function SignerPopupWrapper({ children, ...props }) {
   return (
     <PopupParamsProvider {...props}>
-      <PopupImpl>{children}</PopupImpl>
+      <FeeAssetProvider>
+        <PopupImpl>{children}</PopupImpl>
+      </FeeAssetProvider>
     </PopupParamsProvider>
   );
 }

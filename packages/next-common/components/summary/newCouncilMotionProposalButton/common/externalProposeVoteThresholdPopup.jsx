@@ -6,9 +6,13 @@ import { isValidPreimageHash } from "next-common/utils";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import PreimageField from "../../newProposalPopup/preimageField";
-import CouncilProposeButton from "./councilProposeButton";
+import CouncilProposeButton, {
+  useCouncilProposeTxFunc,
+} from "./councilProposeButton";
 import Tooltip from "next-common/components/tooltip";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 export default function ExternalProposeVoteThresholdPopup({
   isMember,
@@ -42,6 +46,7 @@ export default function ExternalProposeVoteThresholdPopup({
       },
     });
   }, [api, preimageHash, preimageLength, method]);
+  const getProposeTxFunc = useCouncilProposeTxFunc({ threshold, getTxFunc });
 
   return (
     <Popup title={title} onClose={onClose}>
@@ -52,6 +57,9 @@ export default function ExternalProposeVoteThresholdPopup({
         preimageLength={preimageLength}
         setPreimageLength={setPreimageLength}
       />
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getProposeTxFunc} />
+      </AdvanceSettings>
       <div className="flex justify-end">
         <Tooltip
           content={

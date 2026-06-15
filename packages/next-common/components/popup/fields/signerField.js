@@ -21,7 +21,9 @@ function SignerWrapper({
 
   return (
     <div>
-      <ExtensionUpdatePrompt isWithCache={false} />
+      <div className="flex flex-col mb-4">
+        <ExtensionUpdatePrompt isWithCache={false} />
+      </div>
 
       {noBalance ? (
         <PopupLabel text={title || "Origin"} />

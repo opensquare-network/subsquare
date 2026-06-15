@@ -15,6 +15,7 @@ import NotePreimageButton from "../notePreimageButton";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import InsufficientBalanceTips from "next-common/components/summary/newProposalQuickStart/common/insufficientBalanceTips";
 import ExtrinsicInfo from "../../newPreimagePopup/info";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 const getAssetKindParam = () => {
   return {
@@ -124,6 +125,7 @@ export default function NewFellowshipTreasuryProposalPopup() {
             preimageLength={encodedLength || 0}
           />
         )}
+        <EstimatedGas getTxFunc={() => notePreimageTx} />
       </AdvanceSettings>
       <InsufficientBalanceTips byteLength={encodedLength} preimageOnly />
       <div className="flex justify-end">

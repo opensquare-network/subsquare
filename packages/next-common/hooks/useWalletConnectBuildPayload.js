@@ -5,6 +5,16 @@ import { useCallback } from "react";
 import useSubKintsugiAccount from "./account/useSubKintsugiAccount";
 import { isKintsugiChain } from "next-common/utils/chain";
 import { useChain } from "next-common/context/chain";
+import { getFeeAssetMultiLocation } from "next-common/utils/sendTransaction/sendSubstrateTx";
+
+function getFeeAssetPayloadAssetId(api, feeAssetLocation) {
+  const assetId = getFeeAssetMultiLocation(feeAssetLocation);
+  if (!assetId) {
+    return null;
+  }
+
+  return api.registry.createType("Option<TAssetConversion>", assetId).toHex();
+}
 
 /**
  * @file https://github.com/polkadot-cloud/polkadot-developer-console/blob/main/packages/app/src/hooks/useBuildPayload/index.tsx
@@ -25,7 +35,7 @@ export function useWalletConnectBuildPayload() {
   const nonceRaw = data?.account?.nonce?.toNumber() || 0;
 
   return useCallback(
-    async (tx) => {
+    async (tx, feeAssetLocation) => {
       const lastHeader = await api.rpc.chain.getHeader();
       const blockNumber = api.registry.createType(
         "BlockNumber",
@@ -54,6 +64,11 @@ export function useWalletConnectBuildPayload() {
         signedExtensions: api.registry.signedExtensions,
         tip: api.registry.createType("Compact<Balance>", 0).toHex(),
       };
+
+      const assetId = getFeeAssetPayloadAssetId(api, feeAssetLocation);
+      if (assetId) {
+        payload.assetId = assetId;
+      }
 
       return payload;
     },

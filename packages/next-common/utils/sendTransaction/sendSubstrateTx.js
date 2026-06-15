@@ -77,6 +77,10 @@ export function createSendTxEventHandler({
   };
 }
 
+export function getFeeAssetMultiLocation(feeAssetLocation) {
+  return feeAssetLocation?.V4 || feeAssetLocation?.V3 || feeAssetLocation;
+}
+
 export async function signAndSendSubstrateTx({
   api,
   tx,
@@ -86,18 +90,26 @@ export async function signAndSendSubstrateTx({
   onSubmitted = noop,
   onError = noop,
   signerAddress,
+  feeAssetLocation,
 }) {
   onStarted();
 
   try {
     const account = await api.query.system.account(signerAddress);
 
+    // Build signAndSend options
+    const signOptions = {
+      nonce: account.nonce,
+      withSignedTransaction: true,
+    };
+
+    if (feeAssetLocation) {
+      signOptions.assetId = getFeeAssetMultiLocation(feeAssetLocation);
+    }
+
     const unsub = await tx.signAndSend(
       signerAddress,
-      {
-        nonce: account.nonce,
-        withSignedTransaction: true,
-      },
+      signOptions,
       createSendTxEventHandler({
         onFinalized,
         onInBlock,

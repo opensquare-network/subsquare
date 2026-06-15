@@ -1,7 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { useDispatch } from "react-redux";
 import BigNumber from "bignumber.js";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
 
 import { checkInputValue } from "next-common/utils";
 import PopupWithSigner from "next-common/components/popupWithSigner";
@@ -19,6 +17,8 @@ import TxSubmissionButton from "next-common/components/common/tx/txSubmissionBut
 import { noop } from "lodash-es";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import { useTreasuryPallet } from "next-common/context/treasury";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 function useProposalBond({ proposalValue }) {
   const pallet = useTreasuryPallet();
@@ -35,7 +35,6 @@ function useProposalBond({ proposalValue }) {
 
 function PopupContent() {
   const { onInBlock = noop } = usePopupParams();
-  const dispatch = useDispatch();
   const signerAccount = useSignerAccount();
   const pallet = useTreasuryPallet();
 
@@ -58,20 +57,13 @@ function PopupContent() {
 
   const getTxFunc = useCallback(async () => {
     if (!beneficiary) {
-      dispatch(newErrorToast("Please input a beneficiary"));
-      return;
+      throw new Error("Please input a beneficiary");
     }
 
-    let bnValue;
-    try {
-      bnValue = checkInputValue(inputValue, decimals);
-    } catch (err) {
-      dispatch(newErrorToast(err.message));
-      return;
-    }
+    const bnValue = checkInputValue(inputValue, decimals);
 
     return api.tx[pallet].proposeSpend(bnValue.toString(), beneficiary);
-  }, [pallet, beneficiary, inputValue, decimals, api, dispatch]);
+  }, [pallet, beneficiary, inputValue, decimals, api]);
 
   const balanceInsufficient = new BigNumber(bond).gt(balance);
   const disabled = balanceInsufficient || !new BigNumber(inputValue).gt(0);
@@ -85,6 +77,9 @@ function PopupContent() {
       {balanceInsufficient && (
         <WarningMessage danger>Insufficient balance</WarningMessage>
       )}
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getTxFunc} />
+      </AdvanceSettings>
       <TxSubmissionButton
         getTxFunc={getTxFunc}
         disabled={disabled}

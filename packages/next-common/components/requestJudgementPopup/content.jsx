@@ -14,6 +14,8 @@ import Loading from "../loading";
 import styled from "styled-components";
 import { useRegistrarContext } from "next-common/context/people/registrarContext";
 import useJudgementsData from "next-common/components/people/overview/hooks/useJudgementsData";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 const StyledSignerWithBalance = styled.div`
   > div {
@@ -86,6 +88,9 @@ export default function RequestJudgementPopupContent({
           setSelected={setValue}
         />
       )}
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getTxFunc} />
+      </AdvanceSettings>
       <TxSubmissionButton
         disabled={!value}
         getTxFunc={getTxFunc}

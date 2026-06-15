@@ -10,6 +10,8 @@ import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { fetchFellowshipReferendumVotes2Times } from "next-common/context/fellowship/referendumVoting";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 const successToastContent =
   "Votes in storage have been cleaned up successfully.";
@@ -38,6 +40,9 @@ function Content() {
   return (
     <>
       <SignerWithBalance />
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getTxFunc} />
+      </AdvanceSettings>
       <TxSubmissionButton
         title="Confirm"
         getTxFunc={getTxFunc}

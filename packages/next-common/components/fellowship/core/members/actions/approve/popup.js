@@ -27,6 +27,7 @@ import { useFellowshipTrackDecisionDeposit } from "next-common/hooks/fellowship/
 import { rankToRetainTrack } from "next-common/utils/fellowship/rankToTrack";
 import { useReferendaOptionsField } from "next-common/components/preImages/createPreimagePopup/fields/useReferendaOptionsField";
 import { useFellowshipProposalSubmissionTxFunc } from "next-common/hooks/fellowship/core/useFellowshipCoreMemberProposalSubmitTx";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 export function getRetainTrackNameFromRank(chain, rank) {
   switch (chain) {
@@ -96,6 +97,7 @@ function PopupContent({ member }) {
       {!!memberAddress && !!atRank && referendaOptionsField}
       <AdvanceSettings>
         <EnactmentBlocks setEnactment={setEnactment} />
+        <EstimatedGas getTxFunc={getTxFunc} />
       </AdvanceSettings>
       <TxSubmissionButton
         disabled={isLoading || referendaAlreadyCreated}

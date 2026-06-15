@@ -6,15 +6,14 @@ import {
 import { useCallback } from "react";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { useDispatch } from "react-redux";
-import {
-  newSuccessToast,
-  newErrorToast,
-} from "next-common/store/reducers/toastSlice";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useContextApi } from "next-common/context/api";
 import { useTransferAmount } from "next-common/components/popup/fields/useTransferAmount";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import Signer from "next-common/components/popup/fields/signerField";
 import { isSameAddress } from "next-common/utils";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 function PopupContent() {
   const { asset } = usePopupParams();
@@ -36,32 +35,17 @@ function PopupContent() {
 
   const getTxFunc = useCallback(() => {
     if (!transferToAddress) {
-      dispatch(newErrorToast("Please enter the recipient address"));
-      return;
+      throw new Error("Please enter the recipient address");
     }
 
     if (isSameAddress(transferToAddress, address)) {
-      dispatch(newErrorToast("Cannot transfer to self"));
-      return;
+      throw new Error("Cannot transfer to self");
     }
 
-    let amount;
-    try {
-      amount = getCheckedTransferAmount();
-    } catch (e) {
-      dispatch(newErrorToast(e.message));
-      return;
-    }
+    const amount = getCheckedTransferAmount();
 
     return api.tx.assets.transfer(asset.assetId, transferToAddress, amount);
-  }, [
-    dispatch,
-    api,
-    asset,
-    address,
-    transferToAddress,
-    getCheckedTransferAmount,
-  ]);
+  }, [api, asset, address, transferToAddress, getCheckedTransferAmount]);
 
   const onInBlock = useCallback(() => {
     dispatch(newSuccessToast("Transfer successfully"));
@@ -72,6 +56,9 @@ function PopupContent() {
       <Signer />
       {transferToAddressField}
       {transferAmountField}
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getTxFunc} />
+      </AdvanceSettings>
       <div className="flex justify-end">
         <TxSubmissionButton
           title="Confirm"

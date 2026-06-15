@@ -129,6 +129,7 @@ const kusama = {
   bountyIdentity: true,
   hideHeight: true,
   enablePapi: true,
+  enableAssetFee: true,
 };
 
 export default kusama;

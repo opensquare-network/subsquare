@@ -8,6 +8,7 @@ const ProjectIconkusamaPeople = dynamic(() =>
 
 const kusamaPeople = {
   ...kusama,
+  enableAssetFee: false,
   name: "People",
   value: Chains.kusamaPeople,
   description:

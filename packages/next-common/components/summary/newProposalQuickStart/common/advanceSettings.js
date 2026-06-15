@@ -7,7 +7,7 @@ import SecondaryButton from "next-common/lib/button/secondary";
 export default function AdvanceSettings({ children, defaultShow = false }) {
   const [showAdvanced, setShowAdvanced] = useState(defaultShow);
   return (
-    <>
+    <div className="has-[[data-advance-settings-content]:empty]:hidden space-y-4">
       <div className="flex items-center justify-center w-full gap-4">
         <Divider className="flex-1" />
 
@@ -30,7 +30,12 @@ export default function AdvanceSettings({ children, defaultShow = false }) {
 
         <Divider className="flex-1" />
       </div>
-      <div className={showAdvanced ? "space-y-4" : "hidden"}>{children}</div>
-    </>
+      <div
+        data-advance-settings-content
+        className={showAdvanced ? "space-y-4" : "hidden"}
+      >
+        {children}
+      </div>
+    </div>
   );
 }

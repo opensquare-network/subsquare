@@ -7,6 +7,8 @@ import { useTimepoint } from "./useTimepoint";
 import ErrorMessage from "next-common/components/styled/errorMessage";
 import PreviousButton from "next-common/components/summary/newProposalButton/previousButton";
 import { useStepContainer } from "next-common/context/stepContainer";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 const defaultSectionName = "system";
 const defaultMethodName = "setCode";
@@ -51,6 +53,9 @@ export default function ProposeWithExtrinsic() {
           </ErrorMessage>
         )}
       </div>
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getTxFunc} />
+      </AdvanceSettings>
       <div className="flex justify-between">
         <PreviousButton onClick={goBack} />
         <TxSubmissionButton

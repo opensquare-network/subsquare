@@ -14,6 +14,8 @@ import { isSameAddress } from "next-common/utils";
 import MultisigSignProvider, { useMultisigSignContext } from "./context";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { useMultisigListFetchFunc } from "../../actions/composeCallPopup/fetchMultisigList";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 function SubmitPrompt() {
   return (
@@ -90,6 +92,9 @@ export function SignSubmitInnerPopup({ onClose, multisig = {} }) {
       <SignerWithBalance noSwitchSigner />
       <PopupPropose />
       <SubmitPrompt />
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getTxFunc} />
+      </AdvanceSettings>
       <TxSubmissionButton
         disabled={isLoading || !isValid}
         getTxFunc={getTxFunc}

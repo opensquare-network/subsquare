@@ -37,6 +37,7 @@ const paseoAssetHub = {
     },
   },
   allowWeb2Login: true,
+  enableAssetFee: true,
 };
 
 export default paseoAssetHub;

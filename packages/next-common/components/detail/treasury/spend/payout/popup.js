@@ -6,6 +6,8 @@ import { useOnchainData } from "next-common/context/post";
 import { isNil } from "lodash-es";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import { useTreasuryPallet } from "next-common/context/treasury";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 function Content() {
   const { component } = useSigner("Origin");
@@ -22,6 +24,9 @@ function Content() {
   return (
     <>
       {component}
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getTxFunc} />
+      </AdvanceSettings>
       <TxSubmissionButton title="Pay" getTxFunc={getTxFunc} />
     </>
   );

@@ -1,9 +1,7 @@
 import React, { useCallback, useState } from "react";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import { noop } from "lodash-es";
-import { useDispatch } from "react-redux";
 import { useAddressVotingBalance } from "next-common/utils/hooks/useAddressVotingBalance";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { checkInputValue, isSameAddress } from "next-common/utils";
 import Signer from "next-common/components/popup/fields/signerField";
 import { useChainSettings } from "next-common/context/chain";
@@ -18,10 +16,11 @@ import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 import { normalizeAddress } from "next-common/utils/address";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 
 function PopupContent({ defaultTargetAddress, targetDisabled }) {
   const { onInBlock = noop } = usePopupParams();
-  const dispatch = useDispatch();
 
   const signerAccount = useSignerAccount();
   const extensionAccounts = useExtensionAccounts();
@@ -39,36 +38,25 @@ function PopupContent({ defaultTargetAddress, targetDisabled }) {
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
   const [conviction, setConviction] = useState(0);
 
-  const showErrorToast = (message) => dispatch(newErrorToast(message));
-
   const getTxFunc = useCallback(async () => {
-    let bnVoteBalance;
-    try {
-      bnVoteBalance = checkInputValue(
-        inputVoteBalance,
-        node.decimals,
-        "vote balance",
-      );
-    } catch (err) {
-      showErrorToast(err.message);
-      return;
-    }
+    const bnVoteBalance = checkInputValue(
+      inputVoteBalance,
+      node.decimals,
+      "vote balance",
+    );
 
     if (bnVoteBalance.gt(votingBalance)) {
-      showErrorToast("Insufficient voting balance");
-      return;
+      throw new Error("Insufficient voting balance");
     }
 
     if (!targetAddress) {
-      showErrorToast("Please input a target address");
-      return;
+      throw new Error("Please input a target address");
     }
 
     if (isSameAddress(targetAddress, signerAccount?.realAddress)) {
-      showErrorToast(
+      throw new Error(
         "Target address cannot be same with the delegator address",
       );
-      return;
     }
 
     return api.tx.democracy.delegate(
@@ -77,14 +65,7 @@ function PopupContent({ defaultTargetAddress, targetDisabled }) {
       bnVoteBalance.toString(),
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    inputVoteBalance,
-    api,
-    conviction,
-    targetAddress,
-    showErrorToast,
-    node.decimals,
-  ]);
+  }, [inputVoteBalance, api, conviction, targetAddress, node.decimals]);
 
   return (
     <>
@@ -110,6 +91,9 @@ function PopupContent({ defaultTargetAddress, targetDisabled }) {
         conviction={conviction}
         setConviction={setConviction}
       />
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getTxFunc} />
+      </AdvanceSettings>
       <TxSubmissionButton getTxFunc={getTxFunc} onInBlock={onInBlock} />
     </>
   );

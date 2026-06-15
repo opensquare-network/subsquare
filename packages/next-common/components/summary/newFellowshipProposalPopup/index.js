@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
 import { getEventData } from "next-common/utils/sendTransaction";
-import { useDispatch } from "react-redux";
 import { isNil } from "lodash-es";
 import { useRouter } from "next/router";
 import { isValidPreimageHash } from "next-common/utils";
@@ -9,12 +8,13 @@ import SubmissionDeposit from "../newProposalPopup/submissionDeposit";
 import PreimageField from "../newProposalPopup/preimageField";
 import EnactmentBlocks from "../newProposalPopup/enactmentBlocks";
 import DetailedFellowshipTrack from "next-common/components/popup/fields/detailedFellowshipTrackField";
-import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useContextApi } from "next-common/context/api";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
 import {
   useCollectivesContext,
   useReferendaFellowshipPallet,
@@ -28,7 +28,6 @@ export function NewFellowshipProposalInnerPopup({
 }) {
   const { onClose } = usePopupParams();
   const api = useContextApi();
-  const dispatch = useDispatch();
   const router = useRouter();
   const { section } = useCollectivesContext();
   const pallet = useReferendaFellowshipPallet();
@@ -59,8 +58,7 @@ export function NewFellowshipProposalInnerPopup({
     }
 
     if (!proposalOrigin) {
-      dispatch(newErrorToast("Proposal origin is not set correctly"));
-      return;
+      throw new Error("Proposal origin is not set correctly");
     }
 
     return api.tx[pallet].submit(
@@ -73,15 +71,7 @@ export function NewFellowshipProposalInnerPopup({
       },
       enactment,
     );
-  }, [
-    api,
-    proposalOrigin,
-    pallet,
-    preimageHash,
-    preimageLength,
-    enactment,
-    dispatch,
-  ]);
+  }, [api, proposalOrigin, pallet, preimageHash, preimageLength, enactment]);
 
   return (
     <Popup title="New Proposal" onClose={onClose}>
@@ -93,8 +83,11 @@ export function NewFellowshipProposalInnerPopup({
         setPreimageHash={setPreimageHash}
         setPreimageLength={setPreimageLength}
       />
-      <EnactmentBlocks setEnactment={setEnactment} />
-      <SubmissionDeposit pallet={pallet} />
+      <AdvanceSettings>
+        <EnactmentBlocks setEnactment={setEnactment} />
+        <SubmissionDeposit pallet={pallet} />
+        <EstimatedGas getTxFunc={getTxFunc} />
+      </AdvanceSettings>
       <TxSubmissionButton
         getTxFunc={getTxFunc}
         disabled={disabled}
