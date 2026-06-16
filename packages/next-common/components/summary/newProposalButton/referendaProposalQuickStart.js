@@ -17,7 +17,10 @@ import { NewUSDxTreasuryReferendumInnerPopupContent } from "../newProposalQuickS
 import { SpendDotOnAssetHubReferendumInnerPopupContent } from "../newProposalQuickStart/spendDotOnAssetHubPopup";
 import { NewTreasurySpendReferendumInnerPopupContent } from "../newProposalQuickStart/createTreasurySpendReferendumInnerPopupContent";
 import { isHydrationChain, isZkverifyChain } from "next-common/utils/chain";
-import { BatchTreasurySpendsReferendumInnerPopupContent } from "../newProposalQuickStart/batchTreasurySpendsPopup";
+import {
+  BatchTreasurySpendsReferendumInnerPopupContent,
+  BatchNativeTreasurySpendsReferendumInnerPopupContent,
+} from "../newProposalQuickStart/batchTreasurySpendsPopup";
 import { NewHOLLARTreasuryReferendumInnerPopupContent } from "../newProposalQuickStart/createHOLLARTreasuryReferendumInnerPopupContent";
 
 const useQuickStartItems = () => {
@@ -25,10 +28,12 @@ const useQuickStartItems = () => {
     treasuryProposalTracks,
     newProposalQuickStart: {
       usdxTreasuryProposal,
+      batchUsdxTreasurySpendsProposal,
       spendDotOnAssetHubProposal,
       cancelReferendum,
       killReferendum,
       treasurySpendProposal,
+      batchTreasurySpendsProposal,
     } = {},
   } = useChainSettings();
 
@@ -64,11 +69,21 @@ const useQuickStartItems = () => {
         buttonSuffix: <InfoPopoular className="w-4 h-4 ml-2" />,
         content: NewUSDxTreasuryReferendumInnerPopupContent,
       });
+    }
+    if (treasuryProposalTracks && batchUsdxTreasurySpendsProposal) {
       items.push({
         name: "Batch treasury spends",
         description:
           "Create multiple treasury spends in a single batch proposal",
         content: BatchTreasurySpendsReferendumInnerPopupContent,
+      });
+    }
+    if (treasuryProposalTracks && batchTreasurySpendsProposal) {
+      items.push({
+        name: "Batch treasury spends",
+        description:
+          "Create multiple treasury spends in a single batch proposal",
+        content: BatchNativeTreasurySpendsReferendumInnerPopupContent,
       });
     }
     if (treasuryProposalTracks && spendDotOnAssetHubProposal) {
@@ -106,11 +121,13 @@ const useQuickStartItems = () => {
   }, [
     cancelReferendum,
     chain,
+    batchTreasurySpendsProposal,
     killReferendum,
     spendDotOnAssetHubProposal,
     treasuryProposalTracks,
     treasurySpendProposal,
     usdxTreasuryProposal,
+    batchUsdxTreasurySpendsProposal,
   ]);
 };
 
@@ -138,7 +155,7 @@ export default function ReferendaProposalQuickStart() {
   const [showMore, setShowMore] = useState(false);
   return (
     <>
-      <div className="flex flex-col !mt-[16px] ">
+      <div className="flex flex-col mt-4! ">
         <h6 className="text-textPrimary text14Bold pb-3">Quick Start</h6>
         <div className="flex flex-col gap-3">
           {firstFourTemplates.map((templateData) => (
