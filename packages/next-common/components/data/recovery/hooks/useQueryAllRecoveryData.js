@@ -7,11 +7,13 @@ export default function useQueryAllRecoveryData() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!api) {
+      return;
+    }
+
     if (!api?.query.recovery?.friendGroups) {
-      if (api) {
-        setLoading(false);
-        setData([]);
-      }
+      setLoading(false);
+      setData([]);
       return;
     }
 
@@ -25,11 +27,9 @@ export default function useQueryAllRecoveryData() {
 
         const result = entries.map(([storageKey, value]) => {
           const account = storageKey.args?.[0]?.toString();
-          // value is a Codec tuple (FriendGroupVec, Ticket)
-          // Use toHuman() to get a plain JS array, then access elements
-          const humanValue = value.toHuman();
-          const friendGroupVec = Array.isArray(humanValue?.[0])
-            ? humanValue[0]
+          const jsonValue = value.toJSON();
+          const friendGroupVec = Array.isArray(jsonValue?.[0])
+            ? jsonValue[0]
             : [];
 
           return {

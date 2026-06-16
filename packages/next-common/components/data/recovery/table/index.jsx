@@ -1,6 +1,38 @@
 import { desktopColumns, mobileColumns } from "./columns";
 import useQueryAllRecoveryData from "../hooks/useQueryAllRecoveryData";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
+
+function flattenRecoveryData(data) {
+  if (!data || data.length === 0) {
+    return [];
+  }
+
+  const rows = [];
+  for (const entry of data) {
+    for (const group of entry.friendGroups) {
+      rows.push({
+        account: entry.account,
+        index: group.index,
+        inheritancePriority: group.inheritancePriority,
+        friends: group.friends,
+        friendsNeeded: group.friendsNeeded,
+        inheritor: group.inheritor,
+        inheritanceDelay: group.inheritanceDelay,
+        cancelDelay: group.cancelDelay,
+      });
+    }
+  }
+  return rows;
+}
+
+function searchAddress(list, keyword) {
+  if (!keyword) {
+    return list;
+  }
+
+  const lowerSearch = keyword.toLowerCase();
+  return list.filter((row) => row.account?.toLowerCase().includes(lowerSearch));
+}
 import { defaultPageSize } from "next-common/utils/constants";
 import { useEffect, useMemo, useState } from "react";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
@@ -32,46 +64,13 @@ export default function RecoveryExplorerTable() {
   );
 
   const { data, loading: isLoading } = useQueryAllRecoveryData();
+  const flattenedData = useMemo(() => flattenRecoveryData(data), [data]);
+  const filteredData = useMemo(
+    () => searchAddress(flattenedData, search),
+    [flattenedData, search],
+  );
 
-  // Flatten: each account may have multiple friend groups, each becomes a row
-  const flattenedData = useMemo(() => {
-    if (!data || data.length === 0) {
-      return [];
-    }
-
-    const rows = [];
-    for (const entry of data) {
-      for (const group of entry.friendGroups) {
-        rows.push({
-          account: entry.account,
-          index: group.index,
-          inheritancePriority: group.inheritancePriority,
-          friends: group.friends,
-          friendsNeeded: group.friendsNeeded,
-          inheritor: group.inheritor,
-          inheritanceDelay: group.inheritanceDelay,
-          cancelDelay: group.cancelDelay,
-        });
-      }
-    }
-    return rows;
-  }, [data]);
-
-  // Apply search filter on account field
-  const filteredData = useMemo(() => {
-    if (!search) {
-      return flattenedData;
-    }
-
-    const lowerSearch = search.toLowerCase();
-    return flattenedData.filter((row) =>
-      row.account?.toLowerCase().includes(lowerSearch),
-    );
-  }, [flattenedData, search]);
-
-  const total = useMemo(() => {
-    return filteredData?.length || 0;
-  }, [filteredData]);
+  const total = filteredData?.length || 0;
 
   useEffect(() => {
     setLoading(true);
