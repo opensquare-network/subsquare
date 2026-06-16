@@ -45,6 +45,7 @@ const base = {
     provider: "server",
   },
   vesting: false,
+  recovery: false,
 };
 
 /**

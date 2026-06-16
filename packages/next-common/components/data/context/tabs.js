@@ -25,6 +25,14 @@ function generateTabs() {
     });
   }
 
+  if (modules?.recovery) {
+    TABS.push({
+      tabId: "/recovery",
+      tabTitle: "Recovery",
+      pageTitle: "Recovery Explorer",
+    });
+  }
+
   return TABS;
 }
 

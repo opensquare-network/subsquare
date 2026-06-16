@@ -21,7 +21,7 @@ import { coretimeMenu } from "./coretime";
 import { getPeopleMenu } from "./people";
 import { stakingMenu } from "./staking";
 import whitelist from "./whitelist";
-import Data from "./data";
+import getDataMenu from "./data";
 import vesting from "./vesting";
 import getAdvancedMenu from "next-common/utils/consts/menu/advanced";
 import { NAV_MENU_TYPE } from "next-common/utils/constants";
@@ -69,7 +69,7 @@ export function getHomeMenu({
         modules?.vesting && vesting,
         modules?.scheduler && scheduler,
         modules?.whitelist && whitelist,
-        (modules?.proxy || hasMultisig) && Data,
+        (modules?.proxy || hasMultisig) && getDataMenu(),
         calendarMenu,
         votingSpace && votingMenu,
         navigationMenu,
