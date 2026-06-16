@@ -14,7 +14,7 @@ function FriendsCount({ friends = [] }) {
     <Tooltip
       content={<AddressesTooltip addresses={friends} addressMaxWidth={160} />}
     >
-      <span className="text14Medium text-textPrimary cursor-pointer">
+      <span className="text14Medium text-textPrimary">
         {friends?.length || 0}
       </span>
     </Tooltip>
@@ -29,8 +29,13 @@ function DelayBlock({ blocks }) {
   }
 
   return (
-    <Tooltip content={`${estimateTimeFromBlocks(blocks, blockTime)}`}>
-      <span className="text14Medium text-textPrimary cursor-pointer">
+    <Tooltip
+      content={`${blocks} blocks ≈ ${estimateTimeFromBlocks(
+        blocks,
+        blockTime,
+      )}`}
+    >
+      <span className="text14Medium text-textPrimary">
         {blocks?.toLocaleString() || 0}
       </span>
     </Tooltip>
