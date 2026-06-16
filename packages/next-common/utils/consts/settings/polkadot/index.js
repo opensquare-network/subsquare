@@ -113,6 +113,7 @@ const polkadot = {
   treasuryProposalTracks: polkadotTreasuryTracks,
   newProposalQuickStart: {
     usdxTreasuryProposal: true,
+    batchUsdxTreasurySpendsProposal: true,
     spendDotOnAssetHubProposal: false,
     cancelReferendum: true,
     killReferendum: true,

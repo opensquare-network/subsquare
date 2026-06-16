@@ -9,6 +9,7 @@ import InsufficientBalanceTips from "../common/insufficientBalanceTips";
 import PreviousButton from "../../newProposalButton/previousButton";
 import {
   useBatchSpendInputs,
+  useNativeBatchSpendInputs,
   useBatchTreasurySpendsNotePreimageTx,
 } from "next-common/components/preImages/createPreimagePopup/templates/batchTreasurySpendPopup";
 import useAutoSelectTreasuryTrackField from "../common/useAutoSelectTreasuryTrackField";
@@ -33,6 +34,56 @@ export function BatchTreasurySpendsReferendumInnerPopupContent() {
 
   const { spendInputs, component: batchSpendInputsComponent } =
     useBatchSpendInputs();
+  const totalValue = useTotalValue(spendInputs);
+  const { value: trackId, component: trackField } =
+    useAutoSelectTreasuryTrackField(totalValue);
+  const { value: enactment, component: enactmentField } =
+    useEnactmentBlocksField(trackId);
+
+  const { encodedHash, encodedLength, notePreimageTx } =
+    useBatchTreasurySpendsNotePreimageTx(spendInputs);
+  const { isLoading, component: submitButton } = useCreateProposalSubmitButton({
+    trackId,
+    enactment,
+    encodedHash,
+    encodedLength,
+    notePreimageTx,
+  });
+
+  return (
+    <>
+      <CircleStepper
+        steps={[
+          {
+            id: "templateSelect",
+            label: "Template Select",
+          },
+          { id: "newReferendum", label: "New Referendum" },
+        ]}
+        currentStep={1}
+        loading={isLoading}
+      />
+      {batchSpendInputsComponent}
+      {trackField}
+      <AdvanceSettings>
+        {enactmentField}
+        <SubmissionDeposit />
+      </AdvanceSettings>
+      <InsufficientBalanceTips byteLength={encodedLength} />
+      <SigningTip />
+      <div className="flex justify-between">
+        <PreviousButton isLoading={isLoading} onClick={goBack} />
+        {submitButton}
+      </div>
+    </>
+  );
+}
+
+export function BatchNativeTreasurySpendsReferendumInnerPopupContent() {
+  const { goBack } = useStepContainer();
+
+  const { spendInputs, component: batchSpendInputsComponent } =
+    useNativeBatchSpendInputs();
   const totalValue = useTotalValue(spendInputs);
   const { value: trackId, component: trackField } =
     useAutoSelectTreasuryTrackField(totalValue);

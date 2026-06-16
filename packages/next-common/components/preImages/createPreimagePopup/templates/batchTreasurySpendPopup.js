@@ -24,6 +24,7 @@ import PlusIcon from "next-common/components/callTreeView/plus";
 import { useChainSettings } from "next-common/context/chain";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import EstimatedGas from "next-common/components/estimatedGas";
+import BalanceField from "next-common/components/popup/fields/balanceField";
 
 const getAssetKindParam = (assetId) => {
   return {
@@ -160,7 +161,7 @@ function AddPayoutButton({ onClick }) {
   );
 }
 
-export function useBatchSpendInputs() {
+function useBatchSpendInputsBase(defaultSymbol) {
   const [index, setIndex] = useState(1);
   const [spendInputs, setSpendInputs] = useState([
     {
@@ -168,10 +169,9 @@ export function useBatchSpendInputs() {
       inputBalance: "",
       beneficiary: "",
       validFrom: "",
-      symbol: "USDT",
+      symbol: defaultSymbol,
     },
   ]);
-  const extensionAccounts = useExtensionAccounts();
 
   const addSpendInput = () => {
     setSpendInputs((inputs) => [
@@ -181,24 +181,37 @@ export function useBatchSpendInputs() {
         inputBalance: "",
         beneficiary: "",
         validFrom: "",
-        symbol: "USDT",
+        symbol: defaultSymbol,
       },
     ]);
     setIndex((prev) => prev + 1);
   };
 
-  const removeSpendInput = (index) => {
-    setSpendInputs((inputs) => inputs.filter(({ index: i }) => i !== index));
+  const removeSpendInput = (idx) => {
+    setSpendInputs((inputs) => inputs.filter(({ index: i }) => i !== idx));
   };
 
-  const updateSpendInput = (index, field, value) => {
+  const updateSpendInput = (idx, field, value) => {
     setSpendInputs((inputs) =>
       inputs.map((input) =>
-        input.index === index ? { ...input, [field]: value } : input,
+        input.index === idx ? { ...input, [field]: value } : input,
       ),
     );
   };
 
+  return {
+    spendInputs,
+    addSpendInput,
+    removeSpendInput,
+    updateSpendInput,
+  };
+}
+
+export function useBatchSpendInputs() {
+  const { spendInputs, addSpendInput, removeSpendInput, updateSpendInput } =
+    useBatchSpendInputsBase("USDT");
+
+  const extensionAccounts = useExtensionAccounts();
   const memorize = useMemorizer();
 
   const component = (
@@ -206,7 +219,7 @@ export function useBatchSpendInputs() {
       {spendInputs.map((input) => (
         <TreasuryProvider key={input.index}>
           <div className="flex flex-col gap-4 border border-gray200 rounded-lg p-4 mb-4 max-sm:-mx-4">
-            <div className="flex flex-col gap-[8px]">
+            <div className="flex flex-col gap-2">
               <AddressComboField
                 title="Beneficiary"
                 defaultAddress={input["beneficiary"]}
@@ -237,6 +250,70 @@ export function useBatchSpendInputs() {
                 (value) => updateSpendInput(input.index, "symbol", value),
                 [input.index, "symbol"],
               )}
+            />
+            <ValidFromField
+              title="Valid From"
+              value={input["validFrom"]}
+              setValue={memorize(
+                (value) => updateSpendInput(input.index, "validFrom", value),
+                [input.index, "validFrom"],
+              )}
+            />
+          </div>
+        </TreasuryProvider>
+      ))}
+      <div className="flex justify-end">
+        <AddPayoutButton onClick={addSpendInput} />
+      </div>
+    </>
+  );
+  return {
+    spendInputs,
+    component,
+  };
+}
+
+export function useNativeBatchSpendInputs() {
+  const { symbol } = useChainSettings();
+  const { spendInputs, addSpendInput, removeSpendInput, updateSpendInput } =
+    useBatchSpendInputsBase(symbol);
+
+  const extensionAccounts = useExtensionAccounts();
+  const memorize = useMemorizer();
+
+  const component = (
+    <>
+      {spendInputs.map((input) => (
+        <TreasuryProvider key={input.index}>
+          <div className="flex flex-col gap-4 border border-gray200 rounded-lg p-4 mb-4 max-sm:-mx-4">
+            <div className="flex flex-col gap-2">
+              <AddressComboField
+                title="Beneficiary"
+                defaultAddress={input["beneficiary"]}
+                extensionAccounts={extensionAccounts}
+                setAddress={memorize(
+                  (value) =>
+                    updateSpendInput(input.index, "beneficiary", value),
+                  [input.index, "beneficiary"],
+                )}
+                placeholder="Please fill the address or select another one..."
+                status={
+                  spendInputs.length > 1 && (
+                    <RemovePayoutButton
+                      onClick={() => removeSpendInput(input.index)}
+                    />
+                  )
+                }
+              />
+            </div>
+            <BalanceField
+              title="Request"
+              inputBalance={input["inputBalance"]}
+              setInputBalance={memorize(
+                (value) => updateSpendInput(input.index, "inputBalance", value),
+                [input.index, "inputBalance"],
+              )}
+              symbol={symbol}
             />
             <ValidFromField
               title="Valid From"
