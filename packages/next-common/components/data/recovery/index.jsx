@@ -4,7 +4,7 @@ import RecoveryExplorerTable from "./table";
 export default function RecoveryExplorer() {
   return (
     <>
-      <PageHeader href="https://wiki.polkadot.network/docs/learn-recovery" />
+      <PageHeader href="https://wiki.polkadot.com/kusama/kusama-social-recovery/" />
       <RecoveryExplorerTable />
     </>
   );
