@@ -12,11 +12,7 @@ export const collectivesEndpoints = [
     url: "wss://collectives.api.onfinality.io/public-ws",
   },
   {
-    name: "RadiumBlock",
-    url: "wss://collectives.public.curie.radiumblock.co/ws",
-  },
-  {
-    name: "Stakeworld",
-    url: "wss://dot-rpc.stakeworld.io/collectives",
+    name: "Dwellir",
+    url: "wss://collectives-polkadot-rpc.n.dwellir.com",
   },
 ];

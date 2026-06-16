@@ -32,10 +32,6 @@ const DEFAULT_KHALA_NODES = [
     url: "wss://khala-api.phala.network/ws",
   },
   {
-    name: "RadiumBlock",
-    url: "wss://khala.public.curie.radiumblock.co/ws",
-  },
-  {
     name: "Rockx",
     url: "wss://rockx-khala.w3node.com/polka-public-khala/ws",
   },

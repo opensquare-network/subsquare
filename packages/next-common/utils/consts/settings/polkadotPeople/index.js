@@ -32,10 +32,6 @@ const polkadotPeople = {
       name: "Dwellir",
       url: "wss://people-polkadot-rpc.n.dwellir.com",
     },
-    {
-      name: "Stakeworld",
-      url: "wss://dot-rpc.stakeworld.io/people",
-    },
   ],
   group: null,
   noScan: true,

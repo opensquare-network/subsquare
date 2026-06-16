@@ -5,7 +5,7 @@ const defaultPolkadotNodes = [
   },
   {
     name: "Stakeworld",
-    url: "wss://dot-rpc.stakeworld.io",
+    url: "wss://rpc-polkadot.stakeworld.io",
   },
   {
     name: "SubQuery",
@@ -28,11 +28,7 @@ const defaultPolkadotNodes = [
     url: "wss://polkadot-rpc.publicnode.com",
   },
   {
-    name: "RadiumBlock",
-    url: "wss://polkadot.public.curie.radiumblock.co/ws",
-  },
-  {
-    name: "Simply Staking",
+    name: "Spectrum",
     url: "wss://spectrum-03.simplystaking.xyz/cG9sa2Fkb3QtMDMtOTFkMmYwZGYtcG9sa2Fkb3Q/LjwBJpV3dIKyWQ/polkadot/mainnet/",
   },
   {

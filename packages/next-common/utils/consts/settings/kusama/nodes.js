@@ -5,7 +5,7 @@ const defaultKusamaNodes = [
   },
   {
     name: "Stakeworld",
-    url: "wss://ksm-rpc.stakeworld.io",
+    url: "wss://rpc-kusama.stakeworld.io",
   },
   {
     name: "OnFinality",
@@ -24,8 +24,12 @@ const defaultKusamaNodes = [
     url: "wss://rpc-kusama.luckyfriday.io",
   },
   {
-    name: "RadiumBlock",
-    url: "wss://kusama.public.curie.radiumblock.co/ws",
+    name: "Spectrum",
+    url: "wss://spectrum-03.simplystaking.xyz/cG9sa2Fkb3QtMDMtOTFkMmYwZGYtcG9sa2Fkb3Q/QXq7QZ6Q60NDzA/kusama/mainnet/",
+  },
+  {
+    name: "Helixstreet",
+    url: "wss://rpc-kusama.helixstreet.io",
   },
 ];
 

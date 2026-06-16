@@ -15,14 +15,6 @@ const polkadotAssetHubNodes = [
     name: "Dwellir",
     url: "wss://asset-hub-polkadot-rpc.n.dwellir.com",
   },
-  {
-    name: "RadiumBlock",
-    url: "wss://statemint.public.curie.radiumblock.co/ws",
-  },
-  {
-    name: "Stakeworld",
-    url: "wss://dot-rpc.stakeworld.io/assethub",
-  },
 ];
 
 export default polkadotAssetHubNodes;

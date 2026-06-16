@@ -59,12 +59,12 @@ export const paseoRelayChainNodes = [
     url: "wss://paseo.rpc.amforc.com",
   },
   {
-    name: "StakeWorld",
-    url: "wss://pas-rpc.stakeworld.io",
-  },
-  {
     name: "Dwellir",
     url: "wss://paseo-rpc.n.dwellir.com",
+  },
+  {
+    name: "Zondax",
+    url: "wss://api2.zondax.ch/pas/relay/node/rpc",
   },
 ];
 
@@ -74,12 +74,12 @@ export const paseoAssetHubNodes = [
     url: "wss://asset-hub-paseo-rpc.n.dwellir.com",
   },
   {
-    name: "StakeWorld",
-    url: "wss://pas-rpc.stakeworld.io/assethub",
-  },
-  {
     name: "TurboFlakes",
     url: "wss://sys.turboflakes.io/asset-hub-paseo",
+  },
+  {
+    name: "Zondax",
+    url: "wss://api2.zondax.ch/pas/assethub/node/rpc",
   },
 ];
 

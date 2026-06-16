@@ -4,10 +4,6 @@ const kusamaCoretimeNodes = [
     url: "wss://kusama-coretime-rpc.polkadot.io",
   },
   {
-    name: "Stakeworld",
-    url: "wss://ksm-rpc.stakeworld.io/coretime",
-  },
-  {
     name: "LuckyFriday",
     url: "wss://rpc-coretime-kusama.luckyfriday.io",
   },

@@ -33,10 +33,6 @@ const kusamaPeople = {
       url: "wss://rpc-people-kusama.luckyfriday.io",
     },
     {
-      name: "Stakeworld",
-      url: "wss://ksm-rpc.stakeworld.io/people",
-    },
-    {
       name: "Helixstreet",
       url: "wss://rpc-people-kusama.helixstreet.io",
     },

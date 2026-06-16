@@ -11,10 +11,6 @@ const westendRelayChainNodes = [
     name: "Dwellir",
     url: "wss://westend-rpc.n.dwellir.com",
   },
-  {
-    name: "RadiumBlock",
-    url: "wss://westend.public.curie.radiumblock.co/ws",
-  },
 ];
 
 const westendAssetHubNodes = [
