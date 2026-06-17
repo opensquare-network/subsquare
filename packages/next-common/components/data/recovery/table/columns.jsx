@@ -48,7 +48,7 @@ export const desktopColumns = [
     name: "Index",
     className: "w-[80px] text-left",
     render: (item) => (
-      <span className="text14Medium text-textPrimary">{item.index}</span>
+      <span className="text14Medium text-textPrimary">#{item.index}</span>
     ),
   },
   {
