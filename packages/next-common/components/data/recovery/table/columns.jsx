@@ -81,7 +81,7 @@ export const desktopColumns = [
   },
   {
     name: "Cancel Delay",
-    className: "w-[160px] text-left",
+    className: "w-[160px] text-right",
     render: (item) => <DelayBlock blocks={item.cancelDelay} />,
   },
 ];
