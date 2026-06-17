@@ -104,7 +104,7 @@ export default function RecoveryExplorerTable() {
       <div>
         <TitleContainer>
           <span>
-            List
+            Friend Groups
             <span className="text-textTertiary text16Medium ml-1">
               {!loading && total}
             </span>
