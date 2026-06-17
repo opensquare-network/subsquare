@@ -75,6 +75,13 @@ export const desktopColumns = [
     ),
   },
   {
+    name: "Inheritor",
+    className: "min-w-[160px] text-left",
+    render: (item) => (
+      <AddressUser key="inheritor" add={item.inheritor} maxWidth={160} />
+    ),
+  },
+  {
     name: "Inheritance Delay",
     className: "w-[180px] text-left",
     render: (item) => <DelayBlock blocks={item.inheritanceDelay} />,
@@ -90,22 +97,31 @@ export const mobileColumns = [
   {
     name: "Account",
     className: "text-left",
-    render: (item) => (
-      <>
-        <AddressUser add={item.account} maxWidth={160} />
-        <FriendsCount friends={item.friends} />
-      </>
-    ),
+    render: (item) => <AddressUser add={item.account} maxWidth={160} />,
   },
   {
-    name: "Priority / Index",
+    name: "Index",
+    className: "text-right",
+    render: (item) => (
+      <span className="text14Medium text-textTertiary">#{item.index}</span>
+    ),
+  },
+
+  {
+    name: "Priority",
     className: "text-right",
     render: (item) => (
       <span className="text14Medium text-textTertiary">
-        P{item.inheritancePriority} / I{item.index}
+        {item.inheritancePriority}
       </span>
     ),
   },
+  {
+    name: "Friends",
+    className: "text-left",
+    render: (item) => <FriendsCount friends={item.friends} />,
+  },
+
   {
     name: "Threshold",
     className: "text-right",
@@ -116,8 +132,18 @@ export const mobileColumns = [
     ),
   },
   {
+    name: "Inheritor",
+    className: "text-right",
+    render: (item) => <AddressUser add={item.inheritor} maxWidth={120} />,
+  },
+  {
     name: "Inheritance Delay",
     className: "text-right",
     render: (item) => <DelayBlock blocks={item.inheritanceDelay} />,
+  },
+  {
+    name: "Cancel Delay",
+    className: "text-right",
+    render: (item) => <DelayBlock blocks={item.cancelDelay} />,
   },
 ];
