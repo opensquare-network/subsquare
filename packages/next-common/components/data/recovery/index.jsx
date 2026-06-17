@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import TabsList from "next-common/components/tabs/list";
 import { TabLabel } from "next-common/components/assethubMigrationAssets/tabs";
+import Loading from "next-common/components/loading";
 import PageHeader from "../common/pageHeader";
 import RecoveryFriendGroupsTable from "./table";
 import RecoveryAttemptsTable from "./table/attempts";
@@ -38,7 +39,9 @@ export default function RecoveryExplorer() {
       label: (
         <TabLabel
           label="Friend Groups"
-          count={friendGroupsTotal}
+          count={
+            friendGroupsLoading ? <Loading size={14} /> : friendGroupsTotal
+          }
           isActive={activeTab === "friendGroups"}
         />
       ),
@@ -48,7 +51,7 @@ export default function RecoveryExplorer() {
       label: (
         <TabLabel
           label="Recovery Attempts"
-          count={attemptsTotal}
+          count={attemptsLoading ? <Loading size={14} /> : attemptsTotal}
           isActive={activeTab === "attempts"}
         />
       ),
