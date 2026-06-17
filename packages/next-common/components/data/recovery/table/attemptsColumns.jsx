@@ -1,17 +1,31 @@
 import AddressUser from "next-common/components/user/addressUser";
 import Tooltip from "next-common/components/tooltip";
 import { AddressesTooltip } from "next-common/components/multisigs/fields";
+import { useRelayChainApi } from "next-common/context/relayChain";
+import { useChainSettings } from "next-common/context/chain";
+import { estimateBlocksTime } from "next-common/utils";
+import useCall from "next-common/utils/hooks/useCall";
 import { isNil } from "lodash-es";
 
-function BlockNumber({ blocks }) {
-  if (isNil(blocks)) {
+function BlockNumberWithTooltip({ height }) {
+  const api = useRelayChainApi();
+  const { blockTime } = useChainSettings();
+  const { value: currentNumber } = useCall(api?.query?.system?.number, []);
+  const currentHeight = currentNumber?.toNumber();
+
+  if (isNil(height) || isNil(currentHeight)) {
     return null;
   }
 
+  const diff = Math.max(0, currentHeight - height);
+  const estimatedTime = diff > 0 ? estimateBlocksTime(diff, blockTime) : null;
+
   return (
-    <span className="text14Medium text-textPrimary">
-      #{blocks?.toLocaleString() || 0}
-    </span>
+    <Tooltip content={estimatedTime ? `${estimatedTime} ago` : ""}>
+      <span className="text14Medium text-textPrimary">
+        #{height?.toLocaleString() || 0}
+      </span>
+    </Tooltip>
   );
 }
 
@@ -42,12 +56,14 @@ export const desktopColumns = [
   {
     name: "Init Block",
     className: "w-[180px] text-left",
-    render: (item) => <BlockNumber blocks={item.initBlock} />,
+    render: (item) => <BlockNumberWithTooltip height={item.initBlock} />,
   },
   {
     name: "Last Approval Block",
     className: "w-[200px] text-left",
-    render: (item) => <BlockNumber blocks={item.lastApprovalBlock} />,
+    render: (item) => (
+      <BlockNumberWithTooltip height={item.lastApprovalBlock} />
+    ),
   },
   {
     name: "Approvals",
@@ -92,12 +108,14 @@ export const mobileColumns = [
   {
     name: "Init Block",
     className: "text-right",
-    render: (item) => <BlockNumber blocks={item.initBlock} />,
+    render: (item) => <BlockNumberWithTooltip height={item.initBlock} />,
   },
   {
     name: "Last Approval Block",
-    className: "w-[200px] text-left",
-    render: (item) => <BlockNumber blocks={item.lastApprovalBlock} />,
+    className: "text-right",
+    render: (item) => (
+      <BlockNumberWithTooltip height={item.lastApprovalBlock} />
+    ),
   },
   {
     name: "Approvals",
