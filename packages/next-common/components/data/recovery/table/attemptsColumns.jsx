@@ -14,7 +14,11 @@ function BlockNumberWithTooltip({ height }) {
   const currentHeight = currentNumber?.toNumber();
 
   if (isNil(height) || isNil(currentHeight)) {
-    return null;
+    return (
+      <span className="text14Medium text-textPrimary">
+        #{height?.toLocaleString() || 0}
+      </span>
+    );
   }
 
   const diff = Math.max(0, currentHeight - height);
@@ -41,9 +45,15 @@ export const desktopColumns = [
     name: "Group Index",
     className: "w-[120px] text-left",
     render: (item) => (
-      <span className="text14Medium text-textPrimary">
-        #{item.friendGroupIndex}
-      </span>
+      <Tooltip
+        content={
+          <AddressesTooltip addresses={item.friends} addressMaxWidth={160} />
+        }
+      >
+        <span className="text14Medium text-textPrimary">
+          #{item.friendGroupIndex}
+        </span>
+      </Tooltip>
     ),
   },
   {
@@ -66,8 +76,8 @@ export const desktopColumns = [
     ),
   },
   {
-    name: "Approvals",
-    className: "w-[120px] text-left",
+    name: "Threshold / Approvals",
+    className: "w-[160px] text-right",
     render: (item) => (
       <Tooltip
         content={
@@ -77,8 +87,11 @@ export const desktopColumns = [
           />
         }
       >
-        <span className="text14Medium text-textPrimary cursor-pointer">
-          {item.approvalsCount}
+        <span className="text14Medium text-textPrimary">
+          <span className="text14Medium text-textTertiary">
+            {item.approvalsCount} /{" "}
+          </span>
+          {item.threshold}
         </span>
       </Tooltip>
     ),
@@ -95,9 +108,15 @@ export const mobileColumns = [
     name: "Group Index",
     className: "text-right",
     render: (item) => (
-      <span className="text14Medium text-textPrimary cursor-pointer">
-        #{item.friendGroupIndex}
-      </span>
+      <Tooltip
+        content={
+          <AddressesTooltip addresses={item.friends} addressMaxWidth={160} />
+        }
+      >
+        <span className="text14Medium text-textPrimary cursor-pointer">
+          #{item.friendGroupIndex}
+        </span>
+      </Tooltip>
     ),
   },
   {
@@ -130,7 +149,7 @@ export const mobileColumns = [
         }
       >
         <span className="text14Medium text-textPrimary">
-          {item.approvalsCount}
+          {item.approvalsCount}/{item.threshold}
         </span>
       </Tooltip>
     ),

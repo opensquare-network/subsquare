@@ -9,7 +9,19 @@ import { useNavCollapsed } from "next-common/context/nav";
 import { cn } from "next-common/utils";
 import { isNil } from "lodash-es";
 
-export default function RecoveryAttemptsTable({ data, loading: isLoading }) {
+function enhanceAttemptWithFriendGroup(attempt, friendGroups) {
+  const fgList = friendGroups?.find((fg) => fg.account === attempt.lostAccount);
+  const fgGroup = fgList?.friendGroups?.[attempt.friendGroupIndex];
+  const threshold = fgGroup?.friendsNeeded || 0;
+  const friends = fgGroup?.friends || [];
+  return { ...attempt, threshold, friends };
+}
+
+export default function RecoveryAttemptsTable({
+  data,
+  loading: isLoading,
+  friendGroups = [],
+}) {
   const [navCollapsed] = useNavCollapsed();
   const [dataList, setDataList] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -31,12 +43,17 @@ export default function RecoveryAttemptsTable({ data, loading: isLoading }) {
       return;
     }
 
+    // Enhance attempts with threshold/friends from friendGroups
+    const enhanced = (data || []).map((attempt) =>
+      enhanceAttemptWithFriendGroup(attempt, friendGroups),
+    );
+
     setTotalCount(total);
     const startIndex = (page - 1) * defaultPageSize;
     const endIndex = startIndex + defaultPageSize;
-    setDataList(data?.slice(startIndex, endIndex));
+    setDataList(enhanced?.slice(startIndex, endIndex));
     setLoading(false);
-  }, [data, isLoading, page, total]);
+  }, [data, isLoading, page, total, friendGroups]);
 
   return (
     <SecondaryCard className="space-y-2">

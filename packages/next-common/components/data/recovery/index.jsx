@@ -71,7 +71,11 @@ export default function RecoveryExplorer() {
           loading={friendGroupsLoading}
         />
       ) : (
-        <RecoveryAttemptsTable data={attemptsData} loading={attemptsLoading} />
+        <RecoveryAttemptsTable
+          data={attemptsData}
+          loading={attemptsLoading}
+          friendGroups={friendGroupsData}
+        />
       )}
     </>
   );
