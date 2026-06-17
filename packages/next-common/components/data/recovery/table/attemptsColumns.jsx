@@ -88,9 +88,7 @@ export const desktopColumns = [
         }
       >
         <span className="text14Medium text-textPrimary">
-          <span className="text14Medium text-textTertiary">
-            {item.approvalsCount} /{" "}
-          </span>
+          <span className="text-textTertiary">{item.approvalsCount} / </span>
           {item.threshold}
         </span>
       </Tooltip>
@@ -137,7 +135,7 @@ export const mobileColumns = [
     ),
   },
   {
-    name: "Approvals",
+    name: "Threshold / Approvals",
     className: "text-right",
     render: (item) => (
       <Tooltip
@@ -149,7 +147,8 @@ export const mobileColumns = [
         }
       >
         <span className="text14Medium text-textPrimary">
-          {item.approvalsCount}/{item.threshold}
+          <span className="text-textTertiary">{item.approvalsCount} / </span>
+          {item.threshold}
         </span>
       </Tooltip>
     ),
