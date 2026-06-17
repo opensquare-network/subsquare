@@ -1,7 +1,5 @@
 import { desktopColumns, mobileColumns } from "./columns";
-import useQueryAllRecoveryData from "../hooks/useQueryAllRecoveryData";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
-
 import { defaultPageSize } from "next-common/utils/constants";
 import { useEffect, useMemo, useState } from "react";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
@@ -9,36 +7,13 @@ import { MapDataList } from "next-common/components/dataList";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import { useRouter } from "next/router";
 import useSearchComponent from "../../common/useSearchComponent";
-import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { useNavCollapsed } from "next-common/context/nav";
 import { cn } from "next-common/utils";
 import { isNil } from "lodash-es";
 import { addRouterQuery } from "next-common/utils/router";
+import { flattenRecoveryData } from "../../recovery/hooks/useQueryAllRecoveryData";
 
-function flattenRecoveryData(data) {
-  if (!data || data.length === 0) {
-    return [];
-  }
-
-  const rows = [];
-  for (const entry of data) {
-    for (const group of entry.friendGroups) {
-      rows.push({
-        account: entry.account,
-        index: group.index,
-        inheritancePriority: group.inheritancePriority,
-        friends: group.friends,
-        friendsNeeded: group.friendsNeeded,
-        inheritor: group.inheritor,
-        inheritanceDelay: group.inheritanceDelay,
-        cancelDelay: group.cancelDelay,
-      });
-    }
-  }
-  return rows;
-}
-
-function searchAddress(list, keyword) {
+export function searchAddress(list, keyword) {
   if (!keyword) {
     return list;
   }
@@ -47,7 +22,10 @@ function searchAddress(list, keyword) {
   return list.filter((row) => row.account?.toLowerCase().includes(lowerSearch));
 }
 
-export default function RecoveryExplorerTable() {
+export default function RecoveryFriendGroupsTable({
+  data: rawData,
+  loading: isLoading,
+}) {
   const [navCollapsed] = useNavCollapsed();
   const router = useRouter();
   const [dataList, setDataList] = useState([]);
@@ -64,8 +42,7 @@ export default function RecoveryExplorerTable() {
     defaultPageSize,
   );
 
-  const { data, loading: isLoading } = useQueryAllRecoveryData();
-  const flattenedData = useMemo(() => flattenRecoveryData(data), [data]);
+  const flattenedData = useMemo(() => flattenRecoveryData(rawData), [rawData]);
   const filteredData = useMemo(
     () => searchAddress(flattenedData, search),
     [flattenedData, search],
@@ -78,7 +55,7 @@ export default function RecoveryExplorerTable() {
   }, [page]);
 
   useEffect(() => {
-    if (isLoading || isNil(data)) {
+    if (isLoading || isNil(rawData)) {
       return;
     }
 
@@ -87,7 +64,7 @@ export default function RecoveryExplorerTable() {
     const endIndex = startIndex + defaultPageSize;
     setDataList(filteredData?.slice(startIndex, endIndex));
     setLoading(false);
-  }, [data, isLoading, page, total, filteredData]);
+  }, [rawData, isLoading, page, total, filteredData]);
 
   useEffect(() => {
     addRouterQuery(router, "page", 1);
@@ -101,16 +78,6 @@ export default function RecoveryExplorerTable() {
 
   return (
     <div className="flex flex-col gap-y-4">
-      <div>
-        <TitleContainer>
-          <span>
-            Friend Groups
-            <span className="text-textTertiary text16Medium ml-1">
-              {!loading && total}
-            </span>
-          </span>
-        </TitleContainer>
-      </div>
       <div className="flex w-full items-center pl-6 max-sm:flex-col max-sm:px-6 max-sm:gap-y-2">
         {SearchBoxComponent}
       </div>

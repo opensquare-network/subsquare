@@ -1,6 +1,29 @@
 import { useContextApi } from "next-common/context/api";
 import { useEffect, useState } from "react";
 
+export function flattenRecoveryData(data) {
+  if (!data || data.length === 0) {
+    return [];
+  }
+
+  const rows = [];
+  for (const entry of data) {
+    for (const group of entry.friendGroups) {
+      rows.push({
+        account: entry.account,
+        index: group.index,
+        inheritancePriority: group.inheritancePriority,
+        friends: group.friends,
+        friendsNeeded: group.friendsNeeded,
+        inheritor: group.inheritor,
+        inheritanceDelay: group.inheritanceDelay,
+        cancelDelay: group.cancelDelay,
+      });
+    }
+  }
+  return rows;
+}
+
 export default function useQueryAllRecoveryData() {
   const api = useContextApi();
   const [data, setData] = useState([]);

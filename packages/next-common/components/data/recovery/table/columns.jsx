@@ -45,8 +45,8 @@ export const desktopColumns = [
     ),
   },
   {
-    name: "Index",
-    className: "w-[80px] text-left",
+    name: "Group Index",
+    className: "w-[120px] text-left",
     render: (item) => (
       <span className="text14Medium text-textPrimary">#{item.index}</span>
     ),
@@ -100,7 +100,7 @@ export const mobileColumns = [
     render: (item) => <AddressUser add={item.account} maxWidth={160} />,
   },
   {
-    name: "Index",
+    name: "Group Index",
     className: "text-right",
     render: (item) => (
       <span className="text14Medium text-textTertiary">#{item.index}</span>
