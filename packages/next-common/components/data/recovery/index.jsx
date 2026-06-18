@@ -6,10 +6,12 @@ import Loading from "next-common/components/loading";
 import PageHeader from "../common/pageHeader";
 import RecoveryFriendGroupsTable from "./table";
 import RecoveryAttemptsTable from "./table/attempts";
+import RecoveryInheritorsTable from "./table/inheritors";
 import useQueryAllRecoveryData, {
   flattenRecoveryData,
 } from "./hooks/useQueryAllRecoveryData";
 import useQueryAllRecoveryAttempts from "./hooks/useQueryAllRecoveryAttempts";
+import useQueryAllRecoveryInheritors from "./hooks/useQueryAllRecoveryInheritors";
 import { searchAddress } from "./table";
 
 export default function RecoveryExplorer() {
@@ -21,6 +23,8 @@ export default function RecoveryExplorer() {
     useQueryAllRecoveryData();
   const { data: attemptsData, loading: attemptsLoading } =
     useQueryAllRecoveryAttempts();
+  const { data: inheritorsData, loading: inheritorsLoading } =
+    useQueryAllRecoveryInheritors();
 
   const flattened = useMemo(
     () => flattenRecoveryData(friendGroupsData),
@@ -32,6 +36,7 @@ export default function RecoveryExplorer() {
   );
   const friendGroupsTotal = filteredFlattened.length;
   const attemptsTotal = attemptsData?.length || 0;
+  const inheritorsTotal = inheritorsData?.length || 0;
 
   const tabs = [
     {
@@ -56,6 +61,16 @@ export default function RecoveryExplorer() {
         />
       ),
     },
+    {
+      value: "inheritors",
+      label: (
+        <TabLabel
+          label="Inheritors"
+          count={inheritorsLoading ? <Loading size={14} /> : inheritorsTotal}
+          isActive={activeTab === "inheritors"}
+        />
+      ),
+    },
   ];
 
   return (
@@ -73,11 +88,16 @@ export default function RecoveryExplorer() {
           data={friendGroupsData}
           loading={friendGroupsLoading}
         />
-      ) : (
+      ) : activeTab === "attempts" ? (
         <RecoveryAttemptsTable
           data={attemptsData}
           loading={attemptsLoading}
           friendGroups={friendGroupsData}
+        />
+      ) : (
+        <RecoveryInheritorsTable
+          data={inheritorsData}
+          loading={inheritorsLoading}
         />
       )}
     </>
