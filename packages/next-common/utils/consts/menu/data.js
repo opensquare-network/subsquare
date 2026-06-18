@@ -1,12 +1,11 @@
 import { MenuData } from "@osn/icons/subsquare";
+import getChainSettings from "../settings";
+import { CHAIN } from "next-common/utils/constants";
 
-const Data = {
-  name: "Data",
-  value: "data",
-  pathname: "/proxies",
-  icon: <MenuData />,
-  extraMatchNavMenuActivePathnames: ["/proxies", "/multisigs"],
-  children: [
+function getDataMenu() {
+  const { modules } = getChainSettings(CHAIN);
+
+  const children = [
     {
       name: "Proxies",
       value: "proxies",
@@ -17,7 +16,24 @@ const Data = {
       value: "multisig",
       pathname: "/multisigs",
     },
-  ],
-};
+  ];
 
-export default Data;
+  if (modules?.recovery) {
+    children.push({
+      name: "Recovery",
+      value: "recovery",
+      pathname: "/recovery",
+    });
+  }
+
+  return {
+    name: "Data",
+    value: "data",
+    pathname: "/proxies",
+    icon: <MenuData />,
+    extraMatchNavMenuActivePathnames: children.map((c) => c.pathname),
+    children,
+  };
+}
+
+export default getDataMenu;

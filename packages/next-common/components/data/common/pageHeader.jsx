@@ -36,7 +36,7 @@ export default function PageHeader({ href = "" }) {
     <div className="w-full py-6 flex items-center justify-center">
       <TitleContainer className="!text20Bold">
         {title}
-        <PolkadotWikiLink href={href} />
+        {href && <PolkadotWikiLink href={href} />}
       </TitleContainer>
     </div>
   );

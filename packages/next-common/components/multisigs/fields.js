@@ -40,7 +40,7 @@ export function When({ height, index }) {
   return (
     <ExternalLink
       href={`${baseUrl}/${height}-${index}`}
-      className="hover:!underline flex cursor-pointer gap-[4px] text-textPrimary"
+      className="hover:underline! flex cursor-pointer gap-1 text-textPrimary"
       externalIcon={false}
     >
       {height.toLocaleString()}-{index}
@@ -99,14 +99,14 @@ export function AddressesTooltip({
   }
 
   return (
-    <ul className={cn(className)}>
+    <ul className={cn("space-y-1", className)}>
       {(addresses || []).map((address, index) => (
         <li key={index} className="leading-5">
           <AddressUser
             add={address}
-            ellipsis={false}
             maxWidth={addressMaxWidth}
             className="text12Medium text-textPrimaryContrast"
+            noTooltip
           />
         </li>
       ))}
@@ -116,7 +116,7 @@ export function AddressesTooltip({
 
 export function Approving({ approvals, threshold }) {
   return (
-    <div className="flex gap-[2px] text-textTertiary">
+    <div className="flex gap-0.5 text-textTertiary">
       <Tooltip content={<AddressesTooltip addresses={approvals} />}>
         <span className="text-textPrimary">{approvals?.length || 0}</span>
       </Tooltip>

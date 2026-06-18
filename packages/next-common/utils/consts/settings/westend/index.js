@@ -47,6 +47,7 @@ const westend = {
     vesting: true,
     staking: true,
     scheduler: true,
+    recovery: true,
     treasury: {
       spends: true,
       proposals: true,
