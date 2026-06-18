@@ -86,10 +86,12 @@ export const desktopColumns = [
     render: (item) => (
       <Tooltip
         content={
-          <AddressesTooltip
-            addresses={item.approvedAddresses}
-            addressMaxWidth={160}
-          />
+          item.approvedAddresses?.length > 0 && (
+            <AddressesTooltip
+              addresses={item.approvedAddresses}
+              addressMaxWidth={160}
+            />
+          )
         }
       >
         <span className="text14Medium text-textPrimary">
@@ -154,10 +156,12 @@ export const mobileColumns = [
     render: (item) => (
       <Tooltip
         content={
-          <AddressesTooltip
-            addresses={item.approvedAddresses}
-            addressMaxWidth={160}
-          />
+          item.approvedAddresses?.length > 0 && (
+            <AddressesTooltip
+              addresses={item.approvedAddresses}
+              addressMaxWidth={160}
+            />
+          )
         }
       >
         <span className="text14Medium text-textPrimary">
