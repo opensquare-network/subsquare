@@ -29,7 +29,7 @@ export default function useQueryAllRecoveryInheritors() {
           const account = storageKey.args?.[0]?.toString();
           const jsonValue = value.toJSON();
 
-          const groupIndex = parseInt(jsonValue?.[0]) || 0;
+          const inheritancePriority = parseInt(jsonValue?.[0]) || 0;
           const inheritor = jsonValue?.[1] || "";
           const consideration = jsonValue?.[2] || {};
           const depositor = consideration.depositor || "";
@@ -37,7 +37,7 @@ export default function useQueryAllRecoveryInheritors() {
 
           return {
             account,
-            groupIndex,
+            inheritancePriority,
             inheritor,
             depositor,
             ticket,
