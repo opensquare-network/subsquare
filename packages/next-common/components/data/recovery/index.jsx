@@ -15,7 +15,7 @@ import useQueryAllRecoveryInheritors from "./hooks/useQueryAllRecoveryInheritors
 import { searchAddress } from "./table";
 
 export default function RecoveryExplorer() {
-  const [activeTab, setActiveTab] = useState("friendGroups");
+  const [activeTab, setActiveTab] = useState("inheritors");
   const router = useRouter();
   const search = router.query.search || "";
 
@@ -40,6 +40,16 @@ export default function RecoveryExplorer() {
 
   const tabs = [
     {
+      value: "inheritors",
+      label: (
+        <TabLabel
+          label="Inheritors"
+          count={inheritorsLoading ? <Loading size={14} /> : inheritorsTotal}
+          isActive={activeTab === "inheritors"}
+        />
+      ),
+    },
+    {
       value: "friendGroups",
       label: (
         <TabLabel
@@ -58,16 +68,6 @@ export default function RecoveryExplorer() {
           label="Recovery Attempts"
           count={attemptsLoading ? <Loading size={14} /> : attemptsTotal}
           isActive={activeTab === "attempts"}
-        />
-      ),
-    },
-    {
-      value: "inheritors",
-      label: (
-        <TabLabel
-          label="Inheritors"
-          count={inheritorsLoading ? <Loading size={14} /> : inheritorsTotal}
-          isActive={activeTab === "inheritors"}
         />
       ),
     },
