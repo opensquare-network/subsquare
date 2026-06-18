@@ -13,6 +13,7 @@ import useQueryAllRecoveryData, {
 import useQueryAllRecoveryAttempts from "./hooks/useQueryAllRecoveryAttempts";
 import useQueryAllRecoveryInheritors from "./hooks/useQueryAllRecoveryInheritors";
 import { searchAddress } from "./table";
+import { addRouterQuery } from "next-common/utils/router";
 
 export default function RecoveryExplorer() {
   const [activeTab, setActiveTab] = useState("inheritors");
@@ -80,7 +81,10 @@ export default function RecoveryExplorer() {
         <TabsList
           tabs={tabs}
           activeTabValue={activeTab}
-          onTabClick={(tab) => setActiveTab(tab.value)}
+          onTabClick={(tab) => {
+            setActiveTab(tab.value);
+            addRouterQuery(router, "page", 1);
+          }}
         />
       </div>
       {activeTab === "friendGroups" ? (
