@@ -9,18 +9,16 @@ import { useNavCollapsed } from "next-common/context/nav";
 import { cn } from "next-common/utils";
 import { isNil } from "lodash-es";
 
-function enhanceAttemptWithFriendGroup(attempt, friendGroups) {
+function enhanceAttemptWithFriendGroup(attempt, friendGroups = []) {
   const fgList = friendGroups?.find((fg) => fg.account === attempt.lostAccount);
   const fgGroup = fgList?.friendGroups?.[attempt.friendGroupIndex];
-  const threshold = fgGroup?.friendsNeeded || 0;
-  const friends = fgGroup?.friends || [];
-  return { ...attempt, threshold, friends };
+  return { ...attempt, fgGroup };
 }
 
 export default function RecoveryAttemptsTable({
   data,
   loading: isLoading,
-  friendGroups = [],
+  friendGroups,
 }) {
   const [navCollapsed] = useNavCollapsed();
   const [dataList, setDataList] = useState([]);

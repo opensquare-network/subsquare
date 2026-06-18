@@ -47,7 +47,12 @@ export const desktopColumns = [
     render: (item) => (
       <Tooltip
         content={
-          <AddressesTooltip addresses={item.friends} addressMaxWidth={160} />
+          item.fgGroup && (
+            <AddressesTooltip
+              addresses={item.fgGroup?.friends || []}
+              addressMaxWidth={160}
+            />
+          )
         }
       >
         <span className="text14Medium text-textPrimary">
@@ -88,8 +93,12 @@ export const desktopColumns = [
         }
       >
         <span className="text14Medium text-textPrimary">
-          <span className="text-textTertiary">{item.approvalsCount} / </span>
-          {item.threshold}
+          {item.fgGroup && (
+            <span className="text-textTertiary">
+              {item.fgGroup?.friendsNeeded || 0} /{" "}
+            </span>
+          )}
+          {item.approvalsCount}
         </span>
       </Tooltip>
     ),
@@ -108,7 +117,12 @@ export const mobileColumns = [
     render: (item) => (
       <Tooltip
         content={
-          <AddressesTooltip addresses={item.friends} addressMaxWidth={160} />
+          item.fgGroup && (
+            <AddressesTooltip
+              addresses={item.fgGroup?.friends || []}
+              addressMaxWidth={160}
+            />
+          )
         }
       >
         <span className="text14Medium text-textPrimary cursor-pointer">
@@ -147,8 +161,12 @@ export const mobileColumns = [
         }
       >
         <span className="text14Medium text-textPrimary">
-          <span className="text-textTertiary">{item.approvalsCount} / </span>
-          {item.threshold}
+          {item.fgGroup && (
+            <span className="text-textTertiary">
+              {item.fgGroup?.friendsNeeded || 0} /{" "}
+            </span>
+          )}
+          {item.approvalsCount}
         </span>
       </Tooltip>
     ),
