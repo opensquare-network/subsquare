@@ -44,7 +44,7 @@ export const desktopColumns = [
     ),
   },
   {
-    name: "Ticket",
+    name: "Deposit",
     className: "w-[180px] text-right",
     render: (item) => <TicketCell ticket={item.ticket} />,
   },
@@ -76,7 +76,7 @@ export const mobileColumns = [
     render: (item) => <AddressUser add={item.depositor} maxWidth={120} />,
   },
   {
-    name: "Ticket",
+    name: "Deposit",
     className: "text-right",
     render: (item) => <TicketCell ticket={item.ticket} />,
   },
