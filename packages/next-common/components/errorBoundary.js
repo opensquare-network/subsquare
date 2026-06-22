@@ -7,7 +7,8 @@ import {
 import PartialBoundaryLayout from "next-common/components/layout/partialBoundaryLayout";
 import ErrorLayout from "next-common/components/layout/errorLayout";
 import { reportClientError } from "next-common/services/reportClientError";
-import { CHAIN } from "next-common/utils/constants";
+import { CHAIN, IS_PRODUCTION } from "next-common/utils/constants";
+import Router from "next/router";
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -19,18 +20,30 @@ class ErrorBoundary extends React.Component {
     return { hasError: true, error };
   }
 
+  componentDidMount() {
+    Router.events.on("routeChangeStart", this.resetErrorState);
+  }
+
+  componentWillUnmount() {
+    Router.events.off("routeChangeStart", this.resetErrorState);
+  }
+
   componentDidCatch(error, errorInfo) {
     const errorData = {
       chain: CHAIN,
       url: typeof window !== "undefined" ? window.location.href : "",
       address: this.props.user?.address,
+      code: "",
       error: error.message,
       source: "client",
       stack: error.stack,
       componentStack: errorInfo.componentStack,
+      userAgent: window?.navigator?.userAgent || "",
     };
 
-    reportClientError(errorData);
+    if (IS_PRODUCTION) {
+      reportClientError(errorData);
+    }
   }
 
   resetErrorState = () => {
@@ -70,4 +83,4 @@ class ErrorBoundary extends React.Component {
   }
 }
 
-export default React.memo(ErrorBoundary);
+export default ErrorBoundary;

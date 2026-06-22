@@ -6,6 +6,7 @@ import { store } from "next-common/store";
 import GlobalProvider from "next-common/context/global";
 import Head from "next/head";
 import SystemVersionUpgrade from "next-common/components/systemVersionUpgrade";
+import ErrorBoundary from "next-common/components/errorBoundary";
 import dynamic from "next/dynamic";
 
 NProgress.configure({
@@ -70,7 +71,9 @@ export function AppShell({ Component, pageProps }) {
           pathname={pathname}
         >
           <ClientOnlySystemUpgrade />
-          <Component {...otherProps} />
+          <ErrorBoundary user={user}>
+            <Component {...otherProps} />
+          </ErrorBoundary>
         </GlobalProvider>
       </Provider>
       {/* </PostHogProvider> */}
