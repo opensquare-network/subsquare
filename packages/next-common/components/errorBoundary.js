@@ -8,6 +8,7 @@ import PartialBoundaryLayout from "next-common/components/layout/partialBoundary
 import ErrorLayout from "next-common/components/layout/errorLayout";
 import { reportClientError } from "next-common/services/reportClientError";
 import { CHAIN, IS_PRODUCTION } from "next-common/utils/constants";
+import Router from "next/router";
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -17,6 +18,14 @@ class ErrorBoundary extends React.Component {
 
   static getDerivedStateFromError(error) {
     return { hasError: true, error };
+  }
+
+  componentDidMount() {
+    Router.events.on("routeChangeStart", this.resetErrorState);
+  }
+
+  componentWillUnmount() {
+    Router.events.off("routeChangeStart", this.resetErrorState);
   }
 
   componentDidCatch(error, errorInfo) {
