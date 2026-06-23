@@ -2,6 +2,48 @@
 
 All notable changes to this project will be documented in this file.
 
+# 6.5.0
+
+Date:
+2026-05-31. [Code diff](https://github.com/opensquare-network/subsquare/compare/829246b7f4e5d1cfe5f7a72ce1438e6f370fa70a...d94f36318f39daa298211c2239093d931fab6b55).
+
+- [Big] Enable multi-asset bounty UI.
+  - Add multi-assets bounties to overview treasury summary.
+  - Update multi asset bounties summary display.
+  - Enhance multi asset bounty detail page to show foreign asset balance.
+  - Fix multi asset child bounty beneficiary rendering.
+  - Show fund bounty value for referenda.
+  - Fix child bounty indexes to render as links.
+  - Fix calendar beneficiary field.
+  - Add support for crosschain native asset (DOT) to kusama chain.
+- [Medium] Coretime: add timeline tab for coretime sales.
+- [Medium] Profile:
+  - Add staking reward tab to user profile page.
+  - Add staking nominators tab to user profile page.
+  - Add asset hub DOT transfer records on account profile page.
+  - Enhance profile transfers page.
+  - Fix profile staking reward table column order.
+- Referenda:
+  - Show upcoming treasury spend events to warn users about expiring spends.
+  - Show upcoming referenda spend prompt.
+  - Improve treasury prompt text color.
+  - Fix referenda subscan link.
+- Fellowship:
+  - Fix evidence related referenda not migrating to new evidence.
+  - Fix fellowship referenda evidence vote button.
+- Fix account page crash.
+- Fix scheduler page crash.
+- Fix secretary menu action state.
+- Enable SIMA and disable web2 signup for zkverify.
+- Remove Acurast and Ajuna from menu.
+- PAPI integration:
+  - Refactor UseAccountProvider with PAPI.
+  - Refactor scheduler PAPI call tree.
+- Not show referenda actions for bifrost chain.
+- Update chain endpoints.
+- Update polkadot graphql endpoint.
+- Upgrade dependencies.
+
 # 6.4.0
 
 Date:
