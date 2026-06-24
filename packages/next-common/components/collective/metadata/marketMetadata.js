@@ -5,6 +5,7 @@ import InnerDataTable from "../../table/innerDataTable";
 import WarningIcon from "../../../assets/imgs/icons/warning.svg";
 import { isNil } from "lodash-es";
 import tw from "tailwind-styled-components";
+import DOMPurify from "isomorphic-dompurify";
 
 const JsonView = dynamic(() => import("../../jsonView"), { ssr: false });
 
@@ -63,17 +64,16 @@ export default function MarketMetadata({ id, metadata }) {
 
   const dataTableViewData = {
     Question: (
-      <ExternalLink
-        href={questionLink}
-        className="text14Medium"
-      >
+      <ExternalLink href={questionLink} className="text14Medium">
         {metadata?.question}
       </ExternalLink>
     ),
     Description: (
       <div
         className="text14Medium [&_a]:text-sapphire500"
-        dangerouslySetInnerHTML={{ __html: metadata?.description }}
+        dangerouslySetInnerHTML={{
+          __html: DOMPurify.sanitize(metadata?.description || ""),
+        }}
       />
     ),
     Tags: <div className="text14Medium">{metadata?.tags?.join("/")}</div>,
