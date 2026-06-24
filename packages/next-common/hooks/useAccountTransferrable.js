@@ -13,7 +13,10 @@ export default function useAccountTransferrable(api, address) {
   const existentialDeposit =
     api.consts.balances?.existentialDeposit.toJSON() || 0;
   return {
-    transferrable: calcTransferable(account.data.toJSON(), existentialDeposit),
+    transferrable: calcTransferable(
+      account?.data?.toJSON(),
+      existentialDeposit,
+    ),
     isLoading: false,
   };
 }
@@ -28,7 +31,7 @@ export function useAccountDeathTransferrable(api, address) {
   }
 
   return {
-    transferrable: calcTransferable(account.data.toJSON(), 0),
+    transferrable: calcTransferable(account?.data?.toJSON(), 0),
     isLoading: false,
   };
 }
