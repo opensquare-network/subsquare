@@ -15,11 +15,13 @@ export default function useCountdown(initSeconds) {
       return;
     }
 
-    setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       if (isMounted()) {
         setCountdown(countdown - 1);
       }
     }, 1000);
+
+    return () => clearTimeout(timeoutId);
   }, [counting, countdown, isMounted]);
 
   const startCountdown = useCallback(() => setCounting(true), []);

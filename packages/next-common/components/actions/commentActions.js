@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CommentMoreMenu from "../articleMoreMenu/commentMoreMenu";
 import ThumbsUp from "../thumbsUp";
 import ThumbsDown from "../thumbsDown";
@@ -93,6 +93,11 @@ export default function CommentActions({
   const users = useMentionList();
 
   const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
+  const replyTimerRef = useRef();
+
+  useEffect(() => {
+    return () => clearTimeout(replyTimerRef.current);
+  }, []);
 
   const onReply = getOnReply(
     contentType,
@@ -105,7 +110,8 @@ export default function CommentActions({
 
   const startReply = () => {
     setIsReply(true);
-    setTimeout(() => {
+    clearTimeout(replyTimerRef.current);
+    replyTimerRef.current = setTimeout(() => {
       onReply(author);
     }, 100);
   };

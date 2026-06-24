@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import useMyRelatedSwitch from "../../common/useMyRelatedSwitch";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useSearchComponent from "../../common/useSearchComponent";
@@ -29,12 +29,16 @@ export default function useFilterAllProxies(proxies = [], initialLoading) {
       });
     }
 
-    setTimeout(() => {
-      setIsLoading(false);
-    });
-
     return filteredProxies;
   }, [initialLoading, searchedProxies, isMyRelated, address]);
+
+  useEffect(() => {
+    if (initialLoading) {
+      return;
+    }
+
+    setIsLoading(false);
+  }, [initialLoading, filteredProxies]);
 
   return { filteredProxies, total: filteredProxies?.length, isLoading };
 }

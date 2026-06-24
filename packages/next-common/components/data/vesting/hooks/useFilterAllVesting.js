@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import useMyRelatedSwitch from "../../common/useMyRelatedSwitch";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useSearchComponent from "../../common/useSearchComponent";
@@ -26,12 +26,16 @@ export default function useFilterAllVesting(vesting = [], initialLoading) {
       );
     }
 
-    setTimeout(() => {
-      setIsLoading(false);
-    });
-
     return filteredVesting;
   }, [initialLoading, searchedVesting, isMyRelated, address]);
+
+  useEffect(() => {
+    if (initialLoading) {
+      return;
+    }
+
+    setIsLoading(false);
+  }, [initialLoading, filteredVesting]);
 
   return { filteredVesting, total: filteredVesting?.length, isLoading };
 }

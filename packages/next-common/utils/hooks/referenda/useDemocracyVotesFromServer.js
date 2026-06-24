@@ -38,13 +38,31 @@ export default function useDemocracyVotesFromServer(referendumIndex) {
   const reduxVotes = useSelector(allVotesSelector);
 
   useEffect(() => {
+    let cancelled = false;
+    let timeoutId;
+
     if (!reduxVotes) {
       dispatch(setLoading(true));
       backendApi
         .fetch(`democracy/referenda/${referendumIndex}/votes`)
-        .then(({ result: votes }) => setVotes(votes))
-        .finally(() => setTimeout(() => dispatch(setLoading(false)), 1));
+        .then(({ result: votes }) => {
+          if (!cancelled) {
+            setVotes(votes);
+          }
+        })
+        .finally(() => {
+          if (cancelled) {
+            return;
+          }
+
+          timeoutId = setTimeout(() => dispatch(setLoading(false)), 1);
+        });
     }
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timeoutId);
+    };
   }, [referendumIndex, reduxVotes, dispatch]);
 
   useEffect(() => {

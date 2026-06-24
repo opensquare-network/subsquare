@@ -53,9 +53,11 @@ export function CopyMenuItem({ onCopy = noop }) {
 
   useEffect(() => {
     if (copyState) {
-      setTimeout(() => {
+      const timeoutId = setTimeout(() => {
         setCopyState(false);
       }, 3000);
+
+      return () => clearTimeout(timeoutId);
     }
   }, [copyState]);
 

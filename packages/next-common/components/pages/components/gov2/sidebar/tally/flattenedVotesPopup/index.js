@@ -79,9 +79,11 @@ export default function VotesPopup({
     setCachedTabIndex(tabIndex);
     setCachedVotes(votes);
 
-    setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       setCachedVotesLoading(false);
     }, 500);
+
+    return () => clearTimeout(timeoutId);
   }, [votes, cachedVotes, isLoadingVotes, tabIndex, cachedTabIndex]);
 
   const searchBtn = (
