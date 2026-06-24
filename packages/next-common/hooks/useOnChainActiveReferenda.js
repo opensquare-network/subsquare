@@ -35,23 +35,34 @@ export function useOnChainActiveReferenda(pallet) {
   const api = useContextApi();
   const [activeReferenda, setActiveReferenda] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [refreshId, setRefreshId] = useState(0);
 
   const fetch = useCallback(() => {
+    setRefreshId((id) => id + 1);
+  }, []);
+
+  useEffect(() => {
     if (!api || !api.query?.[pallet]) {
       return;
     }
+
+    let cancelled = false;
+
     api.query[pallet].referendumInfoFor
       .entries()
       .then((entries) => extractActiveReferenda(api, entries))
       .then((activeReferenda) => {
+        if (cancelled) {
+          return;
+        }
         setActiveReferenda(activeReferenda);
         setIsLoading(false);
       });
-  }, [api, pallet]);
 
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
+    return () => {
+      cancelled = true;
+    };
+  }, [api, pallet, refreshId]);
 
   return { activeReferenda, isLoading, fetch };
 }
