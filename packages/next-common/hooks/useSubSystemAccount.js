@@ -4,6 +4,9 @@ export default function useSubSystemAccount(api, address) {
   const [account, setAccount] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
+    setAccount(null);
+    setIsLoading(true);
+
     if (!api || !address) {
       return;
     }
