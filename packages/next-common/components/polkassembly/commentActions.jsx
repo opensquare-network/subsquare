@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ThumbsUp from "next-common/components/thumbsUp";
 import PolkassemblyUser from "next-common/components/user/polkassemblyUser";
 import ReplyButton from "next-common/components/actions/replyButton";
@@ -41,6 +41,11 @@ export default function PolkassemblyCommentActions({
 
   // eslint-disable-next-line react-hooks/refs
   const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
+  const replyTimerRef = useRef();
+
+  useEffect(() => {
+    return () => clearTimeout(replyTimerRef.current);
+  }, []);
 
   const onReply = getOnReply(
     contentType,
@@ -53,7 +58,8 @@ export default function PolkassemblyCommentActions({
 
   const startReply = () => {
     setIsReply(true);
-    setTimeout(() => {
+    clearTimeout(replyTimerRef.current);
+    replyTimerRef.current = setTimeout(() => {
       onReply(comment?.author);
     }, 100);
   };

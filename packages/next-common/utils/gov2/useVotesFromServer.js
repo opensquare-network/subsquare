@@ -1,5 +1,5 @@
 import { backendApi } from "next-common/services/nextApi";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { sortVotes } from "next-common/utils/democracy/votes/passed/common";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -109,6 +109,8 @@ export function useFetchVotesFromServer(referendumIndex) {
   const votingFinishedHeight = useReferendumVotingFinishHeight();
   const [loaded, setLoaded] = useGlobalVotesLoadedMark();
   const dispatch = useDispatch();
+  const loadingTimerRef = useRef();
+  const mountedRef = useRef(false);
 
   const { fetchVotes: fetchGraphQLVotes } =
     useReferendaVotesGraphQL(referendumIndex);
@@ -141,7 +143,16 @@ export function useFetchVotesFromServer(referendumIndex) {
         return filteredVotes;
       })
       .finally(() => {
-        setTimeout(() => dispatch(setLoading(false)), 1);
+        if (!mountedRef.current) {
+          return;
+        }
+
+        clearTimeout(loadingTimerRef.current);
+        loadingTimerRef.current = setTimeout(() => {
+          if (mountedRef.current) {
+            dispatch(setLoading(false));
+          }
+        }, 1);
       });
   }, [
     votingFinishedHeight,
@@ -153,7 +164,11 @@ export function useFetchVotesFromServer(referendumIndex) {
   ]);
 
   useEffect(() => {
+    mountedRef.current = true;
+
     return () => {
+      mountedRef.current = false;
+      clearTimeout(loadingTimerRef.current);
       setLoaded(false);
     };
   }, [setLoaded]);

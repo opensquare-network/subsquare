@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import Avatar from "./avatar";
 import Flex from "./styled/flex";
@@ -320,6 +320,12 @@ export default function AddressCombo({
     tryConvertToEvmAddress(address) || "",
   );
   const ref = useRef();
+  const focusTimerRef = useRef();
+
+  useEffect(() => {
+    return () => clearTimeout(focusTimerRef.current);
+  }, []);
+
   useClickAway(ref, () => setShow(false));
 
   const isValidAddress =
@@ -397,7 +403,11 @@ export default function AddressCombo({
         onClick={() => {
           setShow(true);
           setEdit(true);
-          setTimeout(() => ref.current.querySelector("input")?.focus(), 100);
+          clearTimeout(focusTimerRef.current);
+          focusTimerRef.current = setTimeout(
+            () => ref.current?.querySelector("input")?.focus(),
+            100,
+          );
         }}
       >
         <AddressComboHeader

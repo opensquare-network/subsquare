@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import CommentMoreMenu from "next-common/components/articleMoreMenu/commentMoreMenu";
 import ThumbsUp from "next-common/components/thumbsUp";
 import ReplyButton from "next-common/components/actions/replyButton";
@@ -76,6 +76,11 @@ export default function PolkassemblyCommentReplyActions({ setIsEdit }) {
   const users = useMentionList();
 
   const focusEditor = getFocusEditor(contentType, editorWrapperRef, quillRef);
+  const replyTimerRef = useRef();
+
+  useEffect(() => {
+    return () => clearTimeout(replyTimerRef.current);
+  }, []);
 
   const onReply = getOnReply(
     contentType,
@@ -88,7 +93,8 @@ export default function PolkassemblyCommentReplyActions({ setIsEdit }) {
 
   const startReply = () => {
     setIsReply(true);
-    setTimeout(() => {
+    clearTimeout(replyTimerRef.current);
+    replyTimerRef.current = setTimeout(() => {
       onReply(author);
     }, 100);
   };

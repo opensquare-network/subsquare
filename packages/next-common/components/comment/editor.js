@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import ErrorText from "next-common/components/ErrorText";
 import Flex from "next-common/components/styled/flex";
@@ -82,6 +82,12 @@ function CommentEditor(
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
   const isMounted = useMountedState();
+  const scrollTimerRef = useRef();
+
+  useEffect(() => {
+    return () => clearTimeout(scrollTimerRef.current);
+  }, []);
+
   const { createPostComment, createCommentReply } = useCommentActions();
 
   const shouldUseSima = useShouldUseSima(replyToComment);
@@ -124,7 +130,8 @@ function CommentEditor(
           onFinishedEdit(true);
         } else {
           await router.replace(router.asPath);
-          setTimeout(() => {
+          clearTimeout(scrollTimerRef.current);
+          scrollTimerRef.current = setTimeout(() => {
             if (isMounted()) {
               window && window.scrollTo(0, document.body.scrollHeight);
             }

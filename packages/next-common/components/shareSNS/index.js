@@ -52,9 +52,11 @@ export default function Share() {
   const [showShare, setShowShare] = useState(false);
   useEffect(() => {
     if (copyState) {
-      setTimeout(() => {
+      const timeoutId = setTimeout(() => {
         setCopyState(false);
       }, 3000);
+
+      return () => clearTimeout(timeoutId);
     }
   }, [copyState]);
 

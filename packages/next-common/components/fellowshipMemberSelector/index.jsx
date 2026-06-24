@@ -25,6 +25,11 @@ export default function FellowshipMemberSelector({
     () => tryConvertToEvmAddress(address) || "",
   );
   const ref = useRef();
+  const focusTimerRef = useRef();
+
+  useEffect(() => {
+    return () => clearTimeout(focusTimerRef.current);
+  }, []);
 
   useClickAway(ref, () => setShow(false));
 
@@ -103,7 +108,11 @@ export default function FellowshipMemberSelector({
         onClick={() => {
           setShow(true);
           setEdit(true);
-          setTimeout(() => ref.current.querySelector("input")?.focus(), 100);
+          clearTimeout(focusTimerRef.current);
+          focusTimerRef.current = setTimeout(
+            () => ref.current?.querySelector("input")?.focus(),
+            100,
+          );
         }}
       >
         <SelectHeader

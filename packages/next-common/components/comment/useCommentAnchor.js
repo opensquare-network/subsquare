@@ -37,9 +37,11 @@ export function useJumpCommentAnchor() {
     if (!isCurrentCommentAnchored) {
       return;
     }
-    setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       jumpToAnchor(currentCommentAnchor);
     }, 100);
+
+    return () => clearTimeout(timeoutId);
   }, [isCurrentCommentAnchored, currentCommentAnchor]);
 
   return { isCurrentCommentAnchored, currentCommentAnchor, hasRouterAnchor };

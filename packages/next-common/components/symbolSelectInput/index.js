@@ -1,5 +1,5 @@
 import { ArrowUp } from "@osn/icons/subsquare";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { OptionsWrapper } from "../select/styled";
 import Option from "../select/option";
 import { useClickAway } from "react-use";
@@ -15,12 +15,19 @@ export default function SymbolSelectInput({
   onSymbolChange,
 }) {
   const ref = useRef();
+  const closeTimerRef = useRef();
   const [showOptions, setShowOptions] = useState(false);
-  useClickAway(ref, () =>
-    setTimeout(() => {
+
+  useEffect(() => {
+    return () => clearTimeout(closeTimerRef.current);
+  }, []);
+
+  useClickAway(ref, () => {
+    clearTimeout(closeTimerRef.current);
+    closeTimerRef.current = setTimeout(() => {
       setShowOptions(false);
-    }, 100),
-  );
+    }, 100);
+  });
 
   const handleShowOptions = () => {
     setShowOptions(!showOptions);

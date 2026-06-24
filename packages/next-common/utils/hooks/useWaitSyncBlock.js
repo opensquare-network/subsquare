@@ -18,9 +18,14 @@ export default function useWaitSyncBlock(toastMessage, callback) {
   const api = useContextApi();
 
   const refScanHeight = useRef();
+  const timeoutRef = useRef();
   useEffect(() => {
     refScanHeight.current = scanHeight;
   }, [scanHeight]);
+
+  useEffect(() => {
+    return () => clearTimeout(timeoutRef.current);
+  }, []);
 
   return useCallback(
     async (blockHash) => {
@@ -31,7 +36,8 @@ export default function useWaitSyncBlock(toastMessage, callback) {
       }
 
       const toastId = newToastId();
-      setTimeout(async () => {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(async () => {
         dispatch(newPendingToast(toastId, "Syncing on-chain data..."));
         try {
           const targetHeight = await getBlockHeightFromHash(api, blockHash);

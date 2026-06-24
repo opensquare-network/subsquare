@@ -19,9 +19,11 @@ export function useDetectEthereum({ timeout = 1000 } = {}) {
       if (window.ethereum) {
         handleEthereum();
       } else {
-        setTimeout(() => {
+        const timeoutId = setTimeout(() => {
           handleEthereum();
         }, timeout);
+
+        return () => clearTimeout(timeoutId);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
