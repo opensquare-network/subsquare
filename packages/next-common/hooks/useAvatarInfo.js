@@ -28,20 +28,28 @@ export default function useAvatarInfo(address) {
   }, [cachedAvatar, trigger]);
 
   useEffect(() => {
-    if (address) {
-      fetchAvatar(address)
-        .then((result) => {
-          if (result === avatar) {
-            return;
-          }
-
-          setAvatar(result);
-        })
-        .catch(() => {
-          setAvatar(null);
-        });
+    if (!address) {
+      return;
     }
-  }, [address, avatar]);
+
+    let cancelled = false;
+
+    fetchAvatar(address)
+      .then((result) => {
+        if (!cancelled) {
+          setAvatar(result);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setAvatar(null);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [address]);
 
   return [avatar, !isNil(avatar)];
 }
