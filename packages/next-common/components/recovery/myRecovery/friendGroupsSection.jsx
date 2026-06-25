@@ -22,20 +22,20 @@ function FriendGroupCard({ group }) {
       {/* Card Header */}
       <div className="flex justify-between items-center mb-4">
         <span className="text14Bold text-textPrimary">
-          Group Index #{group.index}
+          Group #{group.index}
         </span>
         <div className="flex gap-x-3">
           <button
             type="button"
             className="text14Medium text-theme500 cursor-pointer"
           >
-            edit
+            Edit
           </button>
           <button
             type="button"
             className="text14Medium text-red500 cursor-pointer"
           >
-            remove
+            Remove
           </button>
         </div>
       </div>
@@ -92,9 +92,9 @@ export default function FriendGroupsSection({ address }) {
           Add
         </button>
       </div>
-      <div className="mt-4 flex flex-col gap-3">
+      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3">
         {loading ? (
-          <div className="flex justify-center py-8">
+          <div className="flex justify-center py-8 col-span-full">
             <Loading size={20} />
           </div>
         ) : data.length === 0 ? (
