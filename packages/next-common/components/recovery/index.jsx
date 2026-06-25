@@ -22,20 +22,6 @@ const TABS = Object.freeze([
   },
 ]);
 
-const TITLE_MAPS = Object.freeze({
-  my_recovery: "My Recovery",
-  help_others: "Help Others",
-  inheritors: "Inheritants",
-});
-
-const DESCRIPTION_MAPS = Object.freeze({
-  my_recovery: "Manage your recovery configurations and recoverable accounts",
-  help_others:
-    "View and manage recovery requests from others where you are a friend",
-  inheritors:
-    "View recovery configurations where you are designated as an inheritor",
-});
-
 function HelpOthersPlaceholder() {
   return (
     <div className="text14Medium text-textTertiary">
@@ -81,8 +67,8 @@ export default function Recovery({ activeTab = "my_recovery" }) {
   return (
     <ListLayout
       seoInfo={{ title: "" }}
-      title={TITLE_MAPS[activeTab]}
-      description={DESCRIPTION_MAPS[activeTab]}
+      title="Recovery"
+      description="The recovery allows you to securely designate friends and an inheritor to regain access to your account if you lose your keys. Configure friend groups, and manage recovery requests."
       customTabs={<HeaderTabs activeTab={activeTab} />}
     >
       <div className="flex flex-col gap-4">

@@ -33,7 +33,7 @@ function FriendGroupCard({ group }) {
           </button>
           <button
             type="button"
-            className="text14Medium text-red500 cursor-pointer"
+            className="text14Medium text-theme500 cursor-pointer"
           >
             Remove
           </button>
