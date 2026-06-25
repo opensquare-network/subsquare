@@ -7,6 +7,7 @@ import AddressUser from "next-common/components/user/addressUser";
 import useMyFriendGroups from "./hooks/useMyFriendGroups";
 import AddFriendGroupDialog from "./addFriendGroupDialog";
 import EditFriendGroupDialog from "./editFriendGroupDialog";
+import RemoveFriendGroupDialog from "./removeFriendGroupDialog";
 
 function Field({ label, value }) {
   return (
@@ -17,7 +18,7 @@ function Field({ label, value }) {
   );
 }
 
-function FriendGroupCard({ group, onEdit }) {
+function FriendGroupCard({ group, onEdit, onRemove }) {
   return (
     <SecondaryCard>
       {/* Card Header */}
@@ -35,7 +36,8 @@ function FriendGroupCard({ group, onEdit }) {
           </button>
           <button
             type="button"
-            className="text14Medium text-theme500 cursor-pointer"
+            className="text14Medium text-red500 cursor-pointer"
+            onClick={() => onRemove(group.index)}
           >
             Remove
           </button>
@@ -84,6 +86,8 @@ export default function FriendGroupsSection({ address }) {
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [editingGroup, setEditingGroup] = useState(null);
+  const [showRemoveDialog, setShowRemoveDialog] = useState(false);
+  const [removingIndex, setRemovingIndex] = useState(null);
   const { data, loading } = useMyFriendGroups(address);
 
   return (
@@ -98,6 +102,16 @@ export default function FriendGroupsSection({ address }) {
             setEditingGroup(null);
           }}
           group={editingGroup}
+        />
+      )}
+      {showRemoveDialog && (
+        <RemoveFriendGroupDialog
+          onClose={() => {
+            setShowRemoveDialog(false);
+            setRemovingIndex(null);
+          }}
+          index={removingIndex}
+          address={address}
         />
       )}
       <div className="flex justify-between items-center pl-6">
@@ -131,6 +145,10 @@ export default function FriendGroupsSection({ address }) {
               onEdit={(g) => {
                 setEditingGroup(g);
                 setShowEditDialog(true);
+              }}
+              onRemove={(index) => {
+                setRemovingIndex(index);
+                setShowRemoveDialog(true);
               }}
             />
           ))}
