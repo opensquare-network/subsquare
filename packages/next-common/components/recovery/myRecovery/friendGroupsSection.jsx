@@ -3,8 +3,6 @@
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import Loading from "next-common/components/loading";
 import AddressUser from "next-common/components/user/addressUser";
-import Tooltip from "next-common/components/tooltip";
-import { AddressesTooltip } from "next-common/components/multisigs/fields";
 import useMyFriendGroups from "./hooks/useMyFriendGroups";
 
 function Field({ label, value }) {
@@ -43,23 +41,6 @@ function FriendGroupCard({ group }) {
       {/* Card Content */}
       <div className="grid grid-cols-2 gap-y-3">
         <Field label="Priority" value={group.inheritancePriority} />
-        <Field
-          label="Friends"
-          value={
-            <Tooltip
-              content={
-                <AddressesTooltip
-                  addresses={group.friends}
-                  addressMaxWidth={160}
-                />
-              }
-            >
-              <span className="text14Medium text-textPrimary">
-                {group.friends?.length || 0}
-              </span>
-            </Tooltip>
-          }
-        />
         <Field label="Threshold" value={group.friendsNeeded} />
         <Field
           label="Inheritor"
@@ -71,6 +52,24 @@ function FriendGroupCard({ group }) {
             )
           }
         />
+      </div>
+
+      <div className="mt-3">
+        <span className="text12Medium text-textTertiary">Friends</span>
+        <div className="mt-1 flex flex-wrap gap-2">
+          {(group.friends || []).map((friend, idx) => (
+            <div
+              key={idx}
+              className="rounded-full border border-neutral300 px-2 py-1"
+            >
+              <AddressUser
+                add={friend}
+                avatarSize="16px"
+                className="text12Medium"
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </SecondaryCard>
   );
