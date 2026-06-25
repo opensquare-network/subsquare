@@ -1,6 +1,4 @@
-"use client";
-
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import PopupLabel from "next-common/components/popup/label";
@@ -10,12 +8,15 @@ import AddressCombo from "next-common/components/addressCombo";
 import {
   useExtensionAccounts,
   usePopupParams,
+  useSignerAccount,
 } from "next-common/components/popupWithSigner/context";
 import Popup from "next-common/components/popup/wrapper/Popup";
-import { PopupButtonWrapper } from "next-common/components/popup/wrapper";
-import SecondaryButton from "next-common/lib/button/secondary";
-import PrimaryButton from "next-common/lib/button/primary";
 import { SystemClose } from "@osn/icons/subsquare";
+import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
+import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import EstimatedGas from "next-common/components/estimatedGas";
+import { useContextApi } from "next-common/context/api";
+import { isSameAddress } from "next-common/utils";
 
 const PRIORITY_OPTIONS = Array.from({ length: 10 }, (_, i) => ({
   label: String(i),
@@ -124,6 +125,9 @@ function DelayField({ label, tooltip, value, onChange }) {
 function AddFriendGroupForm() {
   const { onClose } = usePopupParams();
   const extensionAccounts = useExtensionAccounts();
+  const api = useContextApi();
+  const signerAccount = useSignerAccount();
+  const address = signerAccount?.realAddress;
   const accounts = (extensionAccounts || []).map((acc) => ({
     address: acc.address,
     name: acc.meta?.name,
@@ -152,6 +156,55 @@ function AddFriendGroupForm() {
   };
 
   const validFriendsCount = friends.filter(Boolean).length;
+
+  const getTxFunc = useCallback(async () => {
+    const validFriends = friends.filter(Boolean);
+    if (validFriends.length === 0) {
+      throw new Error("Please add at least one friend address");
+    }
+
+    if (validFriends.some((friend) => isSameAddress(friend, address))) {
+      throw new Error("Cannot add yourself as a friend");
+    }
+
+    const thresholdNum = parseInt(threshold);
+    if (!thresholdNum || thresholdNum < 1) {
+      throw new Error("Please enter a valid threshold");
+    }
+    if (thresholdNum > validFriends.length) {
+      throw new Error("Threshold cannot exceed the number of friends");
+    }
+
+    const priorityNum = parseInt(priority);
+    if (isNaN(priorityNum)) {
+      throw new Error("Please select a valid priority");
+    }
+
+    const inheritorDelayNum = parseInt(inheritorDelay);
+    if (!inheritorDelay || isNaN(inheritorDelayNum) || inheritorDelayNum < 0) {
+      throw new Error("Please enter a valid inheritor delay");
+    }
+
+    const cancelDelayNum = parseInt(cancelDelay);
+    if (!cancelDelay || isNaN(cancelDelayNum) || cancelDelayNum < 0) {
+      throw new Error("Please enter a valid cancel delay");
+    }
+
+    const raw = await api.query.recovery.friendGroups(address);
+    const json = raw.toJSON();
+    const currentGroups = Array.isArray(json?.[0]) ? json[0] : [];
+
+    const newGroup = [
+      validFriends,
+      thresholdNum,
+      null,
+      priorityNum,
+      inheritorDelayNum,
+      cancelDelayNum,
+    ];
+
+    return api.tx.recovery.setFriendGroups([...currentGroups, newGroup]);
+  }, [api, address, friends, threshold, priority, inheritorDelay, cancelDelay]);
 
   return (
     <Popup title="Add Friend Group" onClose={onClose}>
@@ -187,10 +240,11 @@ function AddFriendGroupForm() {
         onChange={setCancelDelay}
       />
 
-      <PopupButtonWrapper className="gap-2">
-        <SecondaryButton onClick={onClose}>Cancel</SecondaryButton>
-        <PrimaryButton>Submit</PrimaryButton>
-      </PopupButtonWrapper>
+      <AdvanceSettings>
+        <EstimatedGas getTxFunc={getTxFunc} />
+      </AdvanceSettings>
+
+      <TxSubmissionButton title="Confirm" getTxFunc={getTxFunc} />
     </Popup>
   );
 }
