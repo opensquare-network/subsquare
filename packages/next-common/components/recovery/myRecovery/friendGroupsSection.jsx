@@ -99,23 +99,23 @@ export default function FriendGroupsSection({ address }) {
           Add
         </button>
       </div>
-      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3">
-        {loading ? (
-          <div className="flex justify-center py-8 col-span-full">
-            <Loading size={20} />
-          </div>
-        ) : data.length === 0 ? (
-          <SecondaryCard>
-            <div className="text14Medium text-textTertiary text-center py-4">
-              No friend groups found
-            </div>
-          </SecondaryCard>
-        ) : (
-          data.map((group) => (
+      {loading ? (
+        <div className="mt-4 flex justify-center py-8">
+          <Loading size={20} />
+        </div>
+      ) : data.length === 0 ? (
+        <SecondaryCard className="mt-4 flex items-center justify-center min-h-21">
+          <span className="text14Medium text-textTertiary">
+            No friend groups found
+          </span>
+        </SecondaryCard>
+      ) : (
+        <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3">
+          {data.map((group) => (
             <FriendGroupCard key={group.index} group={group} />
-          ))
-        )}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
