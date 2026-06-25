@@ -2,6 +2,7 @@
 
 import ListLayout from "next-common/components/layout/ListLayout";
 import Tabs from "next-common/components/tabs";
+import MyRecoveryContent from "next-common/components/recovery/myRecovery";
 
 const TABS = Object.freeze([
   {
@@ -35,14 +36,6 @@ const DESCRIPTION_MAPS = Object.freeze({
     "View recovery configurations where you are designated as an inheritor",
 });
 
-function MyRecoveryPlaceholder() {
-  return (
-    <div className="text14Medium text-textTertiary">
-      My Recovery placeholder content. Manage your recovery configurations here.
-    </div>
-  );
-}
-
 function HelpOthersPlaceholder() {
   return (
     <div className="text14Medium text-textTertiary">
@@ -62,12 +55,14 @@ function InheritorsPlaceholder() {
 }
 
 function RecoveryContent({ activeTab }) {
-  if (activeTab === "help_others") {
+  if (activeTab === "my_recovery") {
+    return <MyRecoveryContent />;
+  } else if (activeTab === "help_others") {
     return <HelpOthersPlaceholder />;
   } else if (activeTab === "inheritors") {
     return <InheritorsPlaceholder />;
   }
-  return <MyRecoveryPlaceholder />;
+  return null;
 }
 
 function HeaderTabs({ activeTab }) {
