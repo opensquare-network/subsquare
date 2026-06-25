@@ -48,7 +48,7 @@ function FriendGroupCard({ group }) {
               {(group.friends || []).map((friend, idx) => (
                 <div
                   key={idx}
-                  className="rounded-full border border-neutral300 px-2 py-0.5"
+                  className="rounded-full border border-neutral400 px-2 py-0.5"
                 >
                   <AddressUser
                     add={friend}
