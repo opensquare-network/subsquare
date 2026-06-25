@@ -1,9 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import Loading from "next-common/components/loading";
 import AddressUser from "next-common/components/user/addressUser";
 import useMyFriendGroups from "./hooks/useMyFriendGroups";
+import AddFriendGroupDialog from "./addFriendGroupDialog";
 
 function Field({ label, value }) {
   return (
@@ -77,10 +79,14 @@ function FriendGroupCard({ group }) {
 }
 
 export default function FriendGroupsSection({ address }) {
+  const [showDialog, setShowDialog] = useState(false);
   const { data, loading } = useMyFriendGroups(address);
 
   return (
     <div>
+      {showDialog && (
+        <AddFriendGroupDialog onClose={() => setShowDialog(false)} />
+      )}
       <div className="flex justify-between items-center pl-6">
         <span className="font-bold text-[16px] leading-6 text-textPrimary">
           Friend Groups
@@ -88,6 +94,7 @@ export default function FriendGroupsSection({ address }) {
         <button
           type="button"
           className="px-4 py-1.5 rounded-lg bg-theme500 text14Bold text-white cursor-pointer"
+          onClick={() => setShowDialog(true)}
         >
           Add
         </button>
