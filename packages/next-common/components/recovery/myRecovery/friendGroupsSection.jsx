@@ -39,8 +39,27 @@ function FriendGroupCard({ group }) {
       </div>
 
       {/* Card Content */}
-      <div className="grid grid-cols-2 gap-y-3">
+      <div className="grid grid-cols-2 gap-x-4 gap-y-3">
         <Field label="Priority" value={group.inheritancePriority} />
+        <Field
+          label="Friends"
+          value={
+            <div className="flex flex-wrap gap-1.5">
+              {(group.friends || []).map((friend, idx) => (
+                <div
+                  key={idx}
+                  className="rounded-full border border-neutral300 px-2 py-0.5"
+                >
+                  <AddressUser
+                    add={friend}
+                    avatarSize="16px"
+                    className="text12Medium"
+                  />
+                </div>
+              ))}
+            </div>
+          }
+        />
         <Field label="Threshold" value={group.friendsNeeded} />
         <Field
           label="Inheritor"
@@ -52,24 +71,6 @@ function FriendGroupCard({ group }) {
             )
           }
         />
-      </div>
-
-      <div className="mt-3">
-        <span className="text12Medium text-textTertiary">Friends</span>
-        <div className="mt-1 flex flex-wrap gap-2">
-          {(group.friends || []).map((friend, idx) => (
-            <div
-              key={idx}
-              className="rounded-full border border-neutral300 px-2 py-1"
-            >
-              <AddressUser
-                add={friend}
-                avatarSize="16px"
-                className="text12Medium"
-              />
-            </div>
-          ))}
-        </div>
       </div>
     </SecondaryCard>
   );
