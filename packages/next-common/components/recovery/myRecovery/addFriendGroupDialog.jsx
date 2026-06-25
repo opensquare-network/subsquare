@@ -137,6 +137,7 @@ function AddFriendGroupForm() {
   const [priority, setPriority] = useState("0");
   const [friends, setFriends] = useState([""]);
   const [threshold, setThreshold] = useState("1");
+  const [inheritor, setInheritor] = useState("");
   const [inheritorDelay, setInheritorDelay] = useState("");
   const [cancelDelay, setCancelDelay] = useState("");
 
@@ -175,6 +176,10 @@ function AddFriendGroupForm() {
       throw new Error("Threshold cannot exceed the number of friends");
     }
 
+    if (!inheritor) {
+      throw new Error("Please enter the inheritor address");
+    }
+
     const priorityNum = parseInt(priority);
     if (isNaN(priorityNum)) {
       throw new Error("Please select a valid priority");
@@ -194,17 +199,26 @@ function AddFriendGroupForm() {
     const json = raw.toJSON();
     const currentGroups = Array.isArray(json?.[0]) ? json[0] : [];
 
-    const newGroup = [
-      validFriends,
-      thresholdNum,
-      null,
-      priorityNum,
-      inheritorDelayNum,
-      cancelDelayNum,
-    ];
+    const newGroup = {
+      friends: validFriends,
+      friendsNeeded: thresholdNum,
+      inheritor,
+      inheritancePriority: priorityNum,
+      inheritanceDelay: inheritorDelayNum,
+      cancelDelay: cancelDelayNum,
+    };
 
     return api.tx.recovery.setFriendGroups([...currentGroups, newGroup]);
-  }, [api, address, friends, threshold, priority, inheritorDelay, cancelDelay]);
+  }, [
+    api,
+    address,
+    friends,
+    threshold,
+    priority,
+    inheritor,
+    inheritorDelay,
+    cancelDelay,
+  ]);
 
   return (
     <Popup title="Add Friend Group" onClose={onClose}>
@@ -225,6 +239,21 @@ function AddFriendGroupForm() {
         onChange={setThreshold}
         max={validFriendsCount}
       />
+
+      <div>
+        <PopupLabel
+          text="Inheritor"
+          tooltip="The account that will inherit the funds after the recovery is complete"
+        />
+        <AddressCombo
+          accounts={accounts}
+          address={inheritor}
+          setAddress={(value) => setInheritor(value || "")}
+          placeholder="Enter inheritor address"
+          size="small"
+          canEdit
+        />
+      </div>
 
       <DelayField
         label="Inheritor Delay (blocks)"
