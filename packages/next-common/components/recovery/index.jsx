@@ -3,6 +3,7 @@
 import ListLayout from "next-common/components/layout/ListLayout";
 import Tabs from "next-common/components/tabs";
 import MyRecoveryContent from "next-common/components/recovery/myRecovery";
+import { RelayChainApiProvider } from "next-common/context/relayChain";
 
 const TABS = Object.freeze([
   {
@@ -65,15 +66,17 @@ function HeaderTabs({ activeTab }) {
 
 export default function Recovery({ activeTab = "my_recovery" }) {
   return (
-    <ListLayout
-      seoInfo={{ title: "" }}
-      title="Recovery"
-      description="The recovery allows you to securely designate friends and an inheritor to regain access to your account if you lose your keys. Configure friend groups, and manage recovery requests."
-      customTabs={<HeaderTabs activeTab={activeTab} />}
-    >
-      <div className="flex flex-col gap-4">
-        <RecoveryContent activeTab={activeTab} />
-      </div>
-    </ListLayout>
+    <RelayChainApiProvider>
+      <ListLayout
+        seoInfo={{ title: "" }}
+        title="Recovery"
+        description="The recovery allows you to securely designate friends and an inheritor to regain access to your account if you lose your keys. Configure friend groups, and manage recovery requests."
+        customTabs={<HeaderTabs activeTab={activeTab} />}
+      >
+        <div className="flex flex-col gap-4">
+          <RecoveryContent activeTab={activeTab} />
+        </div>
+      </ListLayout>
+    </RelayChainApiProvider>
   );
 }
