@@ -1,3 +1,5 @@
+"use client";
+
 import { useCallback, useState } from "react";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
@@ -20,8 +22,8 @@ import {
   DelayField,
 } from "./friendGroupFields";
 
-function AddFriendGroupForm() {
-  const { onClose } = usePopupParams();
+function EditFriendGroupForm() {
+  const { onClose, group } = usePopupParams();
   const extensionAccounts = useExtensionAccounts();
   const api = useContextApi();
   const signerAccount = useSignerAccount();
@@ -32,12 +34,20 @@ function AddFriendGroupForm() {
     disabled: acc?.disabled ?? false,
   }));
 
-  const [priority, setPriority] = useState("0");
-  const [friends, setFriends] = useState([""]);
-  const [threshold, setThreshold] = useState("1");
-  const [inheritor, setInheritor] = useState("");
-  const [inheritorDelay, setInheritorDelay] = useState("");
-  const [cancelDelay, setCancelDelay] = useState("");
+  const [priority, setPriority] = useState(
+    String(group.inheritancePriority ?? 0),
+  );
+  const [friends, setFriends] = useState(
+    group.friends?.length ? group.friends : [""],
+  );
+  const [threshold, setThreshold] = useState(String(group.friendsNeeded ?? 1));
+  const [inheritor, setInheritor] = useState(group.inheritor || "");
+  const [inheritorDelay, setInheritorDelay] = useState(
+    String(group.inheritanceDelay ?? ""),
+  );
+  const [cancelDelay, setCancelDelay] = useState(
+    String(group.cancelDelay ?? ""),
+  );
 
   const addFriend = () => setFriends([...friends, ""]);
   const removeFriend = (idx) => {
@@ -97,16 +107,21 @@ function AddFriendGroupForm() {
     const json = raw.toJSON();
     const currentGroups = Array.isArray(json?.[0]) ? json[0] : [];
 
-    const newGroup = {
-      friends: validFriends,
-      friendsNeeded: thresholdNum,
-      inheritor,
-      inheritancePriority: priorityNum,
-      inheritanceDelay: inheritorDelayNum,
-      cancelDelay: cancelDelayNum,
-    };
+    const updatedGroups = currentGroups.map((g, idx) => {
+      if (idx === group.index) {
+        return {
+          friends: validFriends,
+          friendsNeeded: thresholdNum,
+          inheritor,
+          inheritancePriority: priorityNum,
+          inheritanceDelay: inheritorDelayNum,
+          cancelDelay: cancelDelayNum,
+        };
+      }
+      return g;
+    });
 
-    return api.tx.recovery.setFriendGroups([...currentGroups, newGroup]);
+    return api.tx.recovery.setFriendGroups(updatedGroups);
   }, [
     api,
     address,
@@ -116,10 +131,11 @@ function AddFriendGroupForm() {
     inheritor,
     inheritorDelay,
     cancelDelay,
+    group.index,
   ]);
 
   return (
-    <Popup title="Add Friend Group" onClose={onClose}>
+    <Popup title={`Edit Friend Group #${group.index}`} onClose={onClose}>
       <SignerWithBalance />
 
       <PriorityField value={priority} onChange={setPriority} />
@@ -162,15 +178,15 @@ function AddFriendGroupForm() {
         <EstimatedGas getTxFunc={getTxFunc} />
       </AdvanceSettings>
 
-      <TxSubmissionButton title="Confirm" getTxFunc={getTxFunc} />
+      <TxSubmissionButton title="Save" getTxFunc={getTxFunc} />
     </Popup>
   );
 }
 
-export default function AddFriendGroupDialog({ onClose }) {
+export default function EditFriendGroupDialog({ onClose, group }) {
   return (
-    <SignerPopupWrapper onClose={onClose}>
-      <AddFriendGroupForm />
+    <SignerPopupWrapper onClose={onClose} group={group}>
+      <EditFriendGroupForm />
     </SignerPopupWrapper>
   );
 }

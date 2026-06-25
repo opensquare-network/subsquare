@@ -6,6 +6,7 @@ import Loading from "next-common/components/loading";
 import AddressUser from "next-common/components/user/addressUser";
 import useMyFriendGroups from "./hooks/useMyFriendGroups";
 import AddFriendGroupDialog from "./addFriendGroupDialog";
+import EditFriendGroupDialog from "./editFriendGroupDialog";
 
 function Field({ label, value }) {
   return (
@@ -16,7 +17,7 @@ function Field({ label, value }) {
   );
 }
 
-function FriendGroupCard({ group }) {
+function FriendGroupCard({ group, onEdit }) {
   return (
     <SecondaryCard>
       {/* Card Header */}
@@ -28,6 +29,7 @@ function FriendGroupCard({ group }) {
           <button
             type="button"
             className="text14Medium text-theme500 cursor-pointer"
+            onClick={() => onEdit(group)}
           >
             Edit
           </button>
@@ -79,13 +81,24 @@ function FriendGroupCard({ group }) {
 }
 
 export default function FriendGroupsSection({ address }) {
-  const [showDialog, setShowDialog] = useState(false);
+  const [showAddDialog, setShowAddDialog] = useState(false);
+  const [showEditDialog, setShowEditDialog] = useState(false);
+  const [editingGroup, setEditingGroup] = useState(null);
   const { data, loading } = useMyFriendGroups(address);
 
   return (
     <div>
-      {showDialog && (
-        <AddFriendGroupDialog onClose={() => setShowDialog(false)} />
+      {showAddDialog && (
+        <AddFriendGroupDialog onClose={() => setShowAddDialog(false)} />
+      )}
+      {showEditDialog && editingGroup && (
+        <EditFriendGroupDialog
+          onClose={() => {
+            setShowEditDialog(false);
+            setEditingGroup(null);
+          }}
+          group={editingGroup}
+        />
       )}
       <div className="flex justify-between items-center pl-6">
         <span className="font-bold text-[16px] leading-6 text-textPrimary">
@@ -94,7 +107,7 @@ export default function FriendGroupsSection({ address }) {
         <button
           type="button"
           className="px-4 py-1.5 rounded-lg bg-theme500 text14Bold text-white cursor-pointer"
-          onClick={() => setShowDialog(true)}
+          onClick={() => setShowAddDialog(true)}
         >
           Add
         </button>
@@ -112,7 +125,14 @@ export default function FriendGroupsSection({ address }) {
       ) : (
         <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3">
           {data.map((group) => (
-            <FriendGroupCard key={group.index} group={group} />
+            <FriendGroupCard
+              key={group.index}
+              group={group}
+              onEdit={(g) => {
+                setEditingGroup(g);
+                setShowEditDialog(true);
+              }}
+            />
           ))}
         </div>
       )}
