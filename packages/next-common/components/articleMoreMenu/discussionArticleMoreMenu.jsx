@@ -2,18 +2,26 @@ import React, { useRef, useState } from "react";
 import { OptionWrapper } from "next-common/components/internalDropdown/styled";
 import { SystemMore } from "@osn/icons/subsquare";
 import { useClickAway } from "react-use";
-import { EditMenuItem, ReportMenu, PostDeleteMenu } from "./common";
+import {
+  EditMenuItem,
+  ReportMenu,
+  PostDeleteMenu,
+  PostHideMenu,
+} from "./common";
 import useIsAdmin from "next-common/hooks/useIsAdmin";
 import { usePost } from "next-common/context/post";
+import { useIsPostAuthor } from "next-common/context/post/useIsPostAuthor";
 
 export default function DiscussionArticleMoreMenu({ editable, setIsEdit }) {
   const isAdmin = useIsAdmin();
+  const isAuthor = useIsPostAuthor();
   const ref = useRef();
   const [show, setShow] = useState(false);
 
   useClickAway(ref, () => setShow(false));
   const post = usePost();
   const canDelete = (editable || isAdmin) && !post.sima;
+  const canHide = isAuthor || isAdmin;
 
   return (
     <div ref={ref} className="relative">
@@ -32,6 +40,7 @@ export default function DiscussionArticleMoreMenu({ editable, setIsEdit }) {
             />
           )}
           {canDelete && <PostDeleteMenu setShow={setShow} />}
+          {canHide && <PostHideMenu setShow={setShow} />}
           <ReportMenu setShow={setShow} />
         </OptionWrapper>
       }

@@ -5,6 +5,7 @@ import {
   SystemCopied,
   SystemCopy,
   SystemEdit,
+  SystemEyeSlash,
   SystemFlag,
   SystemLink,
   SystemTrash,
@@ -99,6 +100,17 @@ export function DeleteMenuItem({ onClick }) {
         <SystemTrash />
       </div>
       <span>Delete</span>
+    </OptionItem>
+  );
+}
+
+export function HideMenuItem({ onClick, hidden }) {
+  return (
+    <OptionItem onClick={onClick}>
+      <div className="mr-2">
+        <SystemEyeSlash />
+      </div>
+      <span>{hidden ? "Unhide" : "Hide"}</span>
     </OptionItem>
   );
 }
