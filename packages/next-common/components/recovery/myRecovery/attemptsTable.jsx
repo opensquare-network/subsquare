@@ -16,6 +16,7 @@ import { MapDataList } from "next-common/components/dataList";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
 import { useNavCollapsed } from "next-common/context/nav";
 import { cn } from "next-common/utils";
+import SlashAttemptDialog from "./slashAttemptDialog";
 
 function BlockNumberWithTooltip({ height }) {
   const api = useRelayChainApi();
@@ -85,7 +86,7 @@ const desktopColumns = [
   },
   {
     name: "Threshold / Approvals",
-    className: "w-[160px] text-right",
+    className: "w-[160px] text-left",
     render: (item) => (
       <Tooltip
         content={
@@ -107,6 +108,11 @@ const desktopColumns = [
         </span>
       </Tooltip>
     ),
+  },
+  {
+    name: "Action",
+    className: "w-[100px] text-right",
+    render: (item) => <SlashButton friendGroupIndex={item.friendGroupIndex} />,
   },
 ];
 
@@ -173,7 +179,34 @@ const mobileColumns = [
       </Tooltip>
     ),
   },
+  {
+    name: "Action",
+    className: "text-left",
+    render: (item) => <SlashButton friendGroupIndex={item.friendGroupIndex} />,
+  },
 ];
+
+function SlashButton({ friendGroupIndex }) {
+  const [showDialog, setShowDialog] = useState(false);
+
+  return (
+    <>
+      {showDialog && (
+        <SlashAttemptDialog
+          onClose={() => setShowDialog(false)}
+          friendGroupIndex={friendGroupIndex}
+        />
+      )}
+      <button
+        type="button"
+        className="text14Medium text-theme500 cursor-pointer"
+        onClick={() => setShowDialog(true)}
+      >
+        Slash
+      </button>
+    </>
+  );
+}
 
 function enhanceAttemptWithFriendGroup(attempt, friendGroups = []) {
   const fgList = friendGroups?.find((fg) => fg.account === attempt.lostAccount);
