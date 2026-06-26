@@ -35,7 +35,7 @@ export default function HidePopup({
       <div className="text-[14px] text-textPrimary">
         {hidden
           ? "This post will be visible to everyone again."
-          : "This post will be hidden from the list. You can unhide it later."}
+          : "This post will be hidden from the list."}
       </div>
       <PopupButtonWrapper className="gap-[8px]">
         <SecondaryButton onClick={() => setShow(false)}>Cancel</SecondaryButton>
