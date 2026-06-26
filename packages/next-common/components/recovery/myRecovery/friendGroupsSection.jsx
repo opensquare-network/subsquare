@@ -4,6 +4,7 @@ import { useState } from "react";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import Loading from "next-common/components/loading";
 import AddressUser from "next-common/components/user/addressUser";
+import DelayBlock from "next-common/components/recovery/delayBlock";
 import useMyFriendGroups from "./hooks/useMyFriendGroups";
 import AddFriendGroupDialog from "./addFriendGroupDialog";
 import EditFriendGroupDialog from "./editFriendGroupDialog";
@@ -19,6 +20,12 @@ function Field({ label, value }) {
 }
 
 function FriendGroupCard({ group, onEdit, onRemove }) {
+  const [showAllFriends, setShowAllFriends] = useState(false);
+  const displayedFriends = showAllFriends
+    ? group.friends || []
+    : (group.friends || []).slice(0, 5);
+  const hasMore = (group.friends || []).length > 5;
+
   return (
     <SecondaryCard>
       {/* Card Header */}
@@ -45,13 +52,36 @@ function FriendGroupCard({ group, onEdit, onRemove }) {
       </div>
 
       {/* Card Content */}
-      <div className="grid grid-cols-2 gap-x-4 gap-y-3">
-        <Field label="Priority" value={group.inheritancePriority} />
+      <div className="flex flex-col gap-y-3">
+        <div className="grid grid-cols-3 gap-x-4 gap-y-3">
+          <Field label="Priority" value={group.inheritancePriority} />
+          <Field label="Friends Count" value={group.friends?.length || 0} />
+          <Field label="Threshold" value={group.friendsNeeded} />
+          <Field
+            label="Inheritor"
+            value={
+              group.inheritor ? (
+                <AddressUser add={group.inheritor} maxWidth={160} />
+              ) : (
+                <span className="text14Medium text-textTertiary">None</span>
+              )
+            }
+          />
+          <Field
+            label="Inheritance Delay"
+            value={<DelayBlock blocks={group.inheritanceDelay} />}
+          />
+          <Field
+            label="Cancel Delay"
+            value={<DelayBlock blocks={group.cancelDelay} />}
+          />
+        </div>
+
         <Field
-          label="Friends"
+          label="Friends List"
           value={
             <div className="flex flex-wrap gap-1.5">
-              {(group.friends || []).map((friend, idx) => (
+              {displayedFriends.map((friend, idx) => (
                 <div
                   key={idx}
                   className="rounded-full border border-neutral400 px-2 py-0.5"
@@ -63,18 +93,25 @@ function FriendGroupCard({ group, onEdit, onRemove }) {
                   />
                 </div>
               ))}
+              {hasMore && !showAllFriends && (
+                <button
+                  type="button"
+                  className="text12Medium text-theme500 cursor-pointer"
+                  onClick={() => setShowAllFriends(true)}
+                >
+                  See all »
+                </button>
+              )}
+              {showAllFriends && (
+                <button
+                  type="button"
+                  className="text12Medium text-theme500 cursor-pointer"
+                  onClick={() => setShowAllFriends(false)}
+                >
+                  « Hide
+                </button>
+              )}
             </div>
-          }
-        />
-        <Field label="Threshold" value={group.friendsNeeded} />
-        <Field
-          label="Inheritor"
-          value={
-            group.inheritor ? (
-              <AddressUser add={group.inheritor} maxWidth={160} />
-            ) : (
-              <span className="text14Medium text-textTertiary">None</span>
-            )
           }
         />
       </div>
@@ -114,7 +151,7 @@ export default function FriendGroupsSection({ address }) {
           address={address}
         />
       )}
-      <div className="flex justify-between items-center pl-6">
+      <div className="flex justify-between items-center pl-6 pr-6">
         <span className="font-bold text-[16px] leading-6 text-textPrimary">
           Friend Groups
         </span>
@@ -137,7 +174,7 @@ export default function FriendGroupsSection({ address }) {
           </span>
         </SecondaryCard>
       ) : (
-        <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div className="mt-4 flex flex-col gap-3">
           {data.map((group) => (
             <FriendGroupCard
               key={group.index}

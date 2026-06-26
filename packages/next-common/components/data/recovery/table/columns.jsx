@@ -1,7 +1,7 @@
 import AddressUser from "next-common/components/user/addressUser";
 import Tooltip from "next-common/components/tooltip";
 import { AddressesTooltip } from "next-common/components/multisigs/fields";
-import { useEstimateBlocksTime } from "next-common/utils/hooks";
+import DelayBlock from "next-common/components/recovery/delayBlock";
 import { isNil } from "lodash-es";
 
 function FriendsCount({ friends = [] }) {
@@ -15,22 +15,6 @@ function FriendsCount({ friends = [] }) {
     >
       <span className="text14Medium text-textPrimary">
         {friends?.length || 0}
-      </span>
-    </Tooltip>
-  );
-}
-
-function DelayBlock({ blocks }) {
-  const estimatedTime = useEstimateBlocksTime(blocks);
-
-  if (isNil(blocks)) {
-    return null;
-  }
-
-  return (
-    <Tooltip content={`${blocks} blocks ≈ ${estimatedTime}`}>
-      <span className="text14Medium text-textPrimary">
-        {blocks?.toLocaleString() || 0}
       </span>
     </Tooltip>
   );
