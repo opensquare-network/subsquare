@@ -36,7 +36,7 @@ function FriendGroupCard({ group, onEdit, onRemove }) {
           </button>
           <button
             type="button"
-            className="text14Medium text-red500 cursor-pointer"
+            className="text14Medium text-theme500 cursor-pointer"
             onClick={() => onRemove(group.index)}
           >
             Remove

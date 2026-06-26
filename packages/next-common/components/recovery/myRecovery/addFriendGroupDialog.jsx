@@ -1,3 +1,5 @@
+"use client";
+
 import { useCallback, useState } from "react";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
