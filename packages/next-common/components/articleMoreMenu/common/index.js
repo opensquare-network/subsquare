@@ -5,4 +5,5 @@ export { default as KillReferendumMenu } from "./killReferendumMenu";
 export { default as AppendReferendaMenu } from "./appendReferendaMenu";
 export { default as LinkOrUnlinkMenu } from "./linkOrUnlinkMenu";
 export { default as PostDeleteMenu } from "./postDeleteMenu";
+export { default as PostHideMenu } from "./postHideMenu";
 export { default as AppendBountyMenu } from "./appendBountyMenu";
