@@ -5,7 +5,7 @@ import { isNil } from "lodash-es";
 import Link from "next-common/components/link";
 import getEvidenceTitle from "next-common/utils/fellowship/getEvidenceTitle";
 import { MineTagOnListView } from "next-common/components/delegation/delegate/common/mineTag";
-import LinkIcon from "next-common/components/icons/link";
+import { ArrowExternalLinkWiki } from "@osn/icons/subsquare";
 import { isSameAddress } from "next-common/utils";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 
@@ -49,7 +49,7 @@ export function useEvidencesRows(evidences = []) {
         href={`/user/${address}/fellowship?evidenceTab=History`}
       >
         {evidencesCount}
-        <LinkIcon className="text-textTertiary" />
+        <ArrowExternalLinkWiki className="w-3 h-3 text-textTertiary" />
       </Link>,
     ];
 
