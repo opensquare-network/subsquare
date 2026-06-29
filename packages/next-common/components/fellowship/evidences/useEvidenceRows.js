@@ -49,7 +49,7 @@ export function useEvidencesRows(evidences = []) {
         href={`/user/${address}/fellowship?evidenceTab=History`}
       >
         {evidencesCount}
-        <ArrowExternalLinkWiki className="w-3 h-3 text-textTertiary" />
+        <ArrowExternalLinkWiki className="w-4 h-4 text-textTertiary" />
       </Link>,
     ];
 
