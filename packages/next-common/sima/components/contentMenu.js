@@ -17,6 +17,7 @@ import {
   CopyMenuItem,
   UnlinkMenuItem,
   SpamMenuItem,
+  PostHideMenu,
 } from "next-common/components/articleMoreMenu/common";
 import useIsAdmin from "next-common/hooks/useIsAdmin";
 import { useDispatch } from "react-redux";
@@ -107,6 +108,7 @@ export function PostContextMenu({ isAuthor, canEdit, setIsAppend, setIsEdit }) {
   const post = usePost();
   const type = useDetailType();
   const isSimaDiscussion = type === detailPageCategory.POST;
+  const isAdmin = useIsAdmin();
 
   useClickAway(ref, () => setShow(false));
 
@@ -136,30 +138,29 @@ export function PostContextMenu({ isAuthor, canEdit, setIsAppend, setIsEdit }) {
           className="w-5 h-5 [&_path]:fill-textTertiary cursor-pointer"
           onClick={() => setShow(!show)}
         />
-        {show && (
-          <OptionWrapper>
-            {canEdit && (
-              <>
-                {isAuthor && !isSimaDiscussion && linkOrUnlinkMenuItem}
-                {post.content ? (
-                  <AppendMenuItem
-                    onClick={() => {
-                      setIsAppend(true);
-                      setShow(false);
-                    }}
-                  />
-                ) : (
-                  <EditMenuItem
-                    onClick={() => {
-                      setIsEdit(true);
-                      setShow(false);
-                    }}
-                  />
-                )}
-              </>
-            )}
-          </OptionWrapper>
-        )}
+        <OptionWrapper className={!show && "hidden"}>
+          {canEdit && (
+            <>
+              {isAuthor && !isSimaDiscussion && linkOrUnlinkMenuItem}
+              {post.content ? (
+                <AppendMenuItem
+                  onClick={() => {
+                    setIsAppend(true);
+                    setShow(false);
+                  }}
+                />
+              ) : (
+                <EditMenuItem
+                  onClick={() => {
+                    setIsEdit(true);
+                    setShow(false);
+                  }}
+                />
+              )}
+            </>
+          )}
+          {(isAuthor || isAdmin) && <PostHideMenu setShow={setShow} />}
+        </OptionWrapper>
       </Wrapper>
       {showLinkPopup && <PostLinkPopup setShow={setShowLinkPopup} />}
       {showUnlinkPopup && <PostUnlinkPopup setShow={setShowUnlinkPopup} />}
