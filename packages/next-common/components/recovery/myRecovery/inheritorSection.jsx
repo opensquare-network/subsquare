@@ -48,7 +48,7 @@ export default function InheritorSection({ address }) {
     <div>
       <div className="pl-6">
         <span className="font-bold text-[16px] leading-6 text-textPrimary">
-          Inheritor
+          Account Inheritor
         </span>
       </div>
       <div className="mt-4">
