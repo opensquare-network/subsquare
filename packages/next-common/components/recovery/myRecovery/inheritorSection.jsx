@@ -9,15 +9,13 @@ import { defaultPageSize } from "next-common/utils/constants";
 import { useNavCollapsed } from "next-common/context/nav";
 import { cn } from "next-common/utils";
 import { isNil } from "lodash-es";
-import useHelpOthersFriendGroupsColumns from "./hooks/useHelpOthersFriendGroupsColumns";
+import useMyInheritor from "./hooks/useMyInheritor";
+import useMyRecoveryInheritorColumns from "./hooks/useMyRecoveryInheritorColumns";
 
-export default function InFriendGroupsSection({
-  data,
-  loading: isLoading,
-  onRefresh,
-}) {
+export default function InheritorSection({ address }) {
+  const { data, loading: isLoading, fetch } = useMyInheritor(address);
   const { desktopColumns, mobileColumns } =
-    useHelpOthersFriendGroupsColumns(onRefresh);
+    useMyRecoveryInheritorColumns(fetch);
   const [navCollapsed] = useNavCollapsed();
   const [dataList, setDataList] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -50,7 +48,7 @@ export default function InFriendGroupsSection({
     <div>
       <div className="pl-6">
         <span className="font-bold text-[16px] leading-6 text-textPrimary">
-          In Friend Groups
+          Inheritor
         </span>
       </div>
       <div className="mt-4">

@@ -9,7 +9,6 @@ import { defaultPageSize } from "next-common/utils/constants";
 import { useNavCollapsed } from "next-common/context/nav";
 import { cn } from "next-common/utils";
 import { isNil } from "lodash-es";
-import useHelpOthersAttempts from "./hooks/useHelpOthersAttempts";
 import useHelpOthersAttemptsColumns from "./hooks/useHelpOthersAttemptsColumns";
 
 function enhanceAttemptWithFriendGroup(attempt, friendGroups = []) {
@@ -18,16 +17,16 @@ function enhanceAttemptWithFriendGroup(attempt, friendGroups = []) {
   return { ...attempt, fgGroup };
 }
 
-export default function HelpOthersAttemptsSection({ address }) {
-  const {
-    data: rawData,
-    loading: isLoading,
-    friendGroupsData,
-    fetch,
-  } = useHelpOthersAttempts(address);
+export default function HelpOthersAttemptsSection({
+  address,
+  data: rawData,
+  loading: isLoading,
+  friendGroupsData,
+  onRefresh,
+}) {
   const { desktopColumns, mobileColumns } = useHelpOthersAttemptsColumns(
     address,
-    fetch,
+    onRefresh,
   );
   const [navCollapsed] = useNavCollapsed();
   const [dataList, setDataList] = useState([]);
