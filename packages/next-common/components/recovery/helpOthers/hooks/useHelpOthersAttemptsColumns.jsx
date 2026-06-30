@@ -4,10 +4,10 @@ import { useMemo, useState } from "react";
 import Tooltip from "next-common/components/tooltip";
 import { AddressesTooltip } from "next-common/components/multisigs/fields";
 import AddressUser from "next-common/components/user/addressUser";
-import { isSameAddress } from "next-common/utils";
-import { useRelayChainApi } from "next-common/context/relayChain";
-import useCall from "next-common/utils/hooks/useCall";
+import { isSameAddress, estimateBlocksTime } from "next-common/utils";
 import { isNil } from "lodash-es";
+import { useChainSettings } from "next-common/context/chain";
+import useRelayChainBlockNumber from "next-common/hooks/useRelayChainBlockNumber";
 import BlockNumberWithTooltip from "../../myRecovery/blockNumberWithTooltip";
 import CancelAttemptDialog from "../cancelAttemptDialog";
 import ApproveAttemptDialog from "../approveAttemptDialog";
@@ -84,17 +84,21 @@ function FinishButton({
   onFinish,
 }) {
   const [showDialog, setShowDialog] = useState(false);
-  const api = useRelayChainApi();
-  const { value: currentNumber } = useCall(api?.query?.system?.number, []);
-  const currentBlock = currentNumber?.toNumber();
+  const currentBlock = useRelayChainBlockNumber();
+  const { blockTime } = useChainSettings();
 
   const finishBlock = initBlock + (inheritanceDelay || 0);
   const canFinish = !isNil(currentBlock) && currentBlock >= finishBlock;
 
   if (!canFinish) {
-    const tooltip = isNil(currentBlock)
-      ? "Loading block number..."
-      : `Finish available at block #${finishBlock}`;
+    let tooltip;
+    if (isNil(currentBlock)) {
+      tooltip = "Loading block number...";
+    } else {
+      const blocksRemaining = Math.max(0, finishBlock - currentBlock);
+      const estimatedTime = estimateBlocksTime(blocksRemaining, blockTime);
+      tooltip = `Finish available at block #${finishBlock} (in ${estimatedTime})`;
+    }
     return (
       <Tooltip content={tooltip}>
         <span className="text14Medium text-textTertiary cursor-not-allowed">
