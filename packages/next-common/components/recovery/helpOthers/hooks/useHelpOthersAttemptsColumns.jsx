@@ -5,6 +5,9 @@ import Tooltip from "next-common/components/tooltip";
 import { AddressesTooltip } from "next-common/components/multisigs/fields";
 import AddressUser from "next-common/components/user/addressUser";
 import { isSameAddress } from "next-common/utils";
+import { useRelayChainApi } from "next-common/context/relayChain";
+import useCall from "next-common/utils/hooks/useCall";
+import { isNil } from "lodash-es";
 import BlockNumberWithTooltip from "../../myRecovery/blockNumberWithTooltip";
 import CancelAttemptDialog from "../cancelAttemptDialog";
 import ApproveAttemptDialog from "../approveAttemptDialog";
@@ -73,8 +76,33 @@ function ApproveButton({
   );
 }
 
-function FinishButton({ lostAccount, friendGroupIndex, onFinish }) {
+function FinishButton({
+  lostAccount,
+  friendGroupIndex,
+  initBlock,
+  inheritanceDelay,
+  onFinish,
+}) {
   const [showDialog, setShowDialog] = useState(false);
+  const api = useRelayChainApi();
+  const { value: currentNumber } = useCall(api?.query?.system?.number, []);
+  const currentBlock = currentNumber?.toNumber();
+
+  const finishBlock = initBlock + (inheritanceDelay || 0);
+  const canFinish = !isNil(currentBlock) && currentBlock >= finishBlock;
+
+  if (!canFinish) {
+    const tooltip = isNil(currentBlock)
+      ? "Loading block number..."
+      : `Finish available at block #${finishBlock}`;
+    return (
+      <Tooltip content={tooltip}>
+        <span className="text14Medium text-textTertiary cursor-not-allowed">
+          Finish
+        </span>
+      </Tooltip>
+    );
+  }
 
   return (
     <>
@@ -188,6 +216,8 @@ export default function useHelpOthersAttemptsColumns(address, onAction) {
               <FinishButton
                 lostAccount={item.lostAccount}
                 friendGroupIndex={item.friendGroupIndex}
+                initBlock={item.initBlock}
+                inheritanceDelay={item.fgGroup?.inheritanceDelay}
                 onFinish={onAction}
               />
             );
@@ -294,6 +324,8 @@ export default function useHelpOthersAttemptsColumns(address, onAction) {
               <FinishButton
                 lostAccount={item.lostAccount}
                 friendGroupIndex={item.friendGroupIndex}
+                initBlock={item.initBlock}
+                inheritanceDelay={item.fgGroup?.inheritanceDelay}
                 onFinish={onAction}
               />
             );

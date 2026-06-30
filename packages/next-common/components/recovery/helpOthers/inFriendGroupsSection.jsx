@@ -14,10 +14,13 @@ import useHelpOthersFriendGroupsColumns from "./hooks/useHelpOthersFriendGroupsC
 export default function InFriendGroupsSection({
   data,
   loading: isLoading,
+  attemptsData = [],
   onRefresh,
 }) {
-  const { desktopColumns, mobileColumns } =
-    useHelpOthersFriendGroupsColumns(onRefresh);
+  const { desktopColumns, mobileColumns } = useHelpOthersFriendGroupsColumns(
+    onRefresh,
+    attemptsData,
+  );
   const [navCollapsed] = useNavCollapsed();
   const [dataList, setDataList] = useState([]);
   const [totalCount, setTotalCount] = useState(0);

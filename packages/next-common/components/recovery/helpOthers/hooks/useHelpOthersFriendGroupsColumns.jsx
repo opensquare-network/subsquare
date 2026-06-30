@@ -24,8 +24,18 @@ function FriendsCount({ friends = [] }) {
   );
 }
 
-function RecoverButton({ lostAccount, friendGroupIndex, onRecover }) {
+function RecoverButton({ lostAccount, friendGroupIndex, onRecover, disabled }) {
   const [showDialog, setShowDialog] = useState(false);
+
+  if (disabled) {
+    return (
+      <Tooltip content="Attempt already exists">
+        <span className="text14Medium text-textTertiary cursor-not-allowed">
+          Recover
+        </span>
+      </Tooltip>
+    );
+  }
 
   return (
     <>
@@ -48,7 +58,10 @@ function RecoverButton({ lostAccount, friendGroupIndex, onRecover }) {
   );
 }
 
-export default function useHelpOthersFriendGroupsColumns(onRecover) {
+export default function useHelpOthersFriendGroupsColumns(
+  onRecover,
+  attemptsData = [],
+) {
   return useMemo(() => {
     const desktopColumns = [
       {
@@ -108,13 +121,21 @@ export default function useHelpOthersFriendGroupsColumns(onRecover) {
       {
         name: "Action",
         className: "w-[100px] text-right",
-        render: (item) => (
-          <RecoverButton
-            lostAccount={item.account}
-            friendGroupIndex={item.index}
-            onRecover={onRecover}
-          />
-        ),
+        render: (item) => {
+          const hasAttempt = attemptsData.some(
+            (a) =>
+              a.lostAccount === item.account &&
+              a.friendGroupIndex === item.index,
+          );
+          return (
+            <RecoverButton
+              lostAccount={item.account}
+              friendGroupIndex={item.index}
+              onRecover={onRecover}
+              disabled={hasAttempt}
+            />
+          );
+        },
       },
     ];
 
@@ -172,16 +193,24 @@ export default function useHelpOthersFriendGroupsColumns(onRecover) {
       {
         name: "Action",
         className: "text-left",
-        render: (item) => (
-          <RecoverButton
-            lostAccount={item.account}
-            friendGroupIndex={item.index}
-            onRecover={onRecover}
-          />
-        ),
+        render: (item) => {
+          const hasAttempt = attemptsData.some(
+            (a) =>
+              a.lostAccount === item.account &&
+              a.friendGroupIndex === item.index,
+          );
+          return (
+            <RecoverButton
+              lostAccount={item.account}
+              friendGroupIndex={item.index}
+              onRecover={onRecover}
+              disabled={hasAttempt}
+            />
+          );
+        },
       },
     ];
 
     return { desktopColumns, mobileColumns };
-  }, [onRecover]);
+  }, [onRecover, attemptsData]);
 }

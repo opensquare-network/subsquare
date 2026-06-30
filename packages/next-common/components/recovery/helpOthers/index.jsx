@@ -36,6 +36,7 @@ export default function HelpOthersContent() {
         <InFriendGroupsSection
           data={friendGroups.data}
           loading={friendGroups.loading}
+          attemptsData={attempts.data}
           onRefresh={refreshAll}
         />
       </div>
