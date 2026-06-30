@@ -57,7 +57,7 @@ function AddFriendGroupForm({ onInBlock = () => {} }) {
     setFriends(next);
   };
 
-  const validFriendsCount = friends.filter(Boolean).length;
+  const validFriendsCount = new Set(friends.filter(Boolean)).size;
 
   const getTxFunc = useCallback(async () => {
     const validFriends = friends.filter(Boolean);
@@ -73,7 +73,8 @@ function AddFriendGroupForm({ onInBlock = () => {} }) {
     if (!thresholdNum || thresholdNum < 1) {
       throw new Error("Please enter a valid threshold");
     }
-    if (thresholdNum > validFriends.length) {
+    const uniqueFriendsCount = new Set(validFriends).size;
+    if (thresholdNum > uniqueFriendsCount) {
       throw new Error("Threshold cannot exceed the number of friends");
     }
 
