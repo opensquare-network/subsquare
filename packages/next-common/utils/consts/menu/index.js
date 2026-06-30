@@ -69,15 +69,6 @@ export function getHomeMenu({
         modules?.vesting && vesting,
         modules?.scheduler && scheduler,
         modules?.whitelist && whitelist,
-        modules?.recovery && {
-          name: "Recovery",
-          value: "recovery",
-          pathname: "/recovery/my-recovery",
-          extraMatchNavMenuActivePathnames: [
-            "/recovery/help-others",
-            "/recovery/inheritants",
-          ],
-        },
         (modules?.proxy || hasMultisig) && getDataMenu(),
         calendarMenu,
         votingSpace && votingMenu,

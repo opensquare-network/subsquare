@@ -17,7 +17,7 @@ function TabTitle({ active, children }) {
 export default function AccountSubTabs({ className = "" }) {
   const {
     hasMultisig,
-    modules: { proxy },
+    modules: { proxy, recovery },
   } = useChainSettings();
   const chain = useChain();
 
@@ -73,6 +73,14 @@ export default function AccountSubTabs({ className = "" }) {
       value: "proxies",
       label: ({ active }) => <ProxiesTitle active={active} />,
       url: "/account/proxies",
+    });
+  }
+
+  if (recovery) {
+    tabs.push({
+      value: "recovery",
+      label: ({ active }) => <TabTitle active={active}>Recovery</TabTitle>,
+      url: "/account/my-recovery",
     });
   }
 
