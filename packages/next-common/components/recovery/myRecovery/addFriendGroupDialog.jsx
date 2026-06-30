@@ -14,6 +14,7 @@ import AdvanceSettings from "next-common/components/summary/newProposalQuickStar
 import EstimatedGas from "next-common/components/estimatedGas";
 import { useContextApi } from "next-common/context/api";
 import { isSameAddress } from "next-common/utils";
+import { sortAddresses } from "@polkadot/util-crypto";
 import {
   PriorityField,
   FriendsField,
@@ -95,12 +96,16 @@ function AddFriendGroupForm({ onInBlock = () => {} }) {
       throw new Error("Please enter a valid cancel delay");
     }
 
+    const sortedFriends = sortAddresses(validFriends).filter(
+      (addr, i, arr) => i === 0 || addr !== arr[i - 1],
+    );
+
     const raw = await api.query.recovery.friendGroups(address);
     const json = raw.toJSON();
     const currentGroups = Array.isArray(json?.[0]) ? json[0] : [];
 
     const newGroup = {
-      friends: validFriends,
+      friends: sortedFriends,
       friendsNeeded: thresholdNum,
       inheritor,
       inheritancePriority: priorityNum,

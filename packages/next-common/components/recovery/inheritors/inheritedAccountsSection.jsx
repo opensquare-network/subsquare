@@ -49,7 +49,7 @@ export default function InheritedAccountsSection({ address }) {
     <div>
       <div className="pl-6">
         <span className="font-bold text-[16px] leading-6 text-textPrimary">
-          Inherited Lost Accounts
+          Inherited Accounts
         </span>
       </div>
       <div className="mt-4">
