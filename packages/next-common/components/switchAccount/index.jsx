@@ -37,7 +37,7 @@ function Empty() {
   );
 }
 
-function AccountList({ accounts = [], isEmpty = false }) {
+function AccountList({ accounts = [], isEmpty = false, onClose }) {
   const user = useUser();
   const [web3Login] = useWeb3Login();
   const { lastConnectedAccount } = useConnectedAccountContext();
@@ -49,8 +49,9 @@ function AccountList({ accounts = [], isEmpty = false }) {
         account,
         wallet: lastConnectedAccount?.wallet,
       });
+      onClose?.();
     },
-    [web3Login, lastConnectedAccount?.wallet],
+    [web3Login, lastConnectedAccount?.wallet, onClose],
   );
 
   if (isEmpty) {
@@ -106,7 +107,7 @@ function TextDivider() {
   );
 }
 
-function PopupContent() {
+function PopupContent({ onClose }) {
   const [searchValue, setSearchValue] = useState("");
   const handleInputChange = (e) => {
     setSearchValue(e.target.value);
@@ -127,7 +128,11 @@ function PopupContent() {
       />
       <div className="space-y-3 flex-1 overflow-hidden">
         <SubTitle />
-        <AccountList accounts={filteredAccounts} isEmpty={isEmpty} />
+        <AccountList
+          accounts={filteredAccounts}
+          isEmpty={isEmpty}
+          onClose={onClose}
+        />
       </div>
     </div>
   );
@@ -143,7 +148,7 @@ export default function SwitchAccount({ onClose, onOpenLogin }) {
         className="flex flex-col space-y-6 p-12 !mb-0 max-sm:!p-6 max-h-[76vh]"
         style={{ maxWidth: "76vh" }}
       >
-        <PopupContent />
+        <PopupContent onClose={onClose} />
         <TextDivider />
         <ChangeWallet onClick={onOpenLogin} />
       </Popup>
