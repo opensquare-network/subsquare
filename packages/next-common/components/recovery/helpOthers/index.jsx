@@ -13,8 +13,8 @@ export default function HelpOthersContent() {
     <RelayChainApiProvider>
       <div className="flex flex-col gap-6">
         <RecoverySubTabs className="mx-6" activeTab="help_recover" />
-        <InFriendGroupsSection address={address} />
         <HelpOthersAttemptsSection address={address} />
+        <InFriendGroupsSection address={address} />
       </div>
     </RelayChainApiProvider>
   );

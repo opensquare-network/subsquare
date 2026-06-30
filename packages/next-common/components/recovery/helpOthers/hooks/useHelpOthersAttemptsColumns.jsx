@@ -8,6 +8,7 @@ import { isSameAddress } from "next-common/utils";
 import BlockNumberWithTooltip from "../../myRecovery/blockNumberWithTooltip";
 import CancelAttemptDialog from "../cancelAttemptDialog";
 import ApproveAttemptDialog from "../approveAttemptDialog";
+import FinishAttemptDialog from "../finishAttemptDialog";
 
 function CancelButton({ lostAccount, friendGroupIndex, onCancel }) {
   const [showDialog, setShowDialog] = useState(false);
@@ -67,6 +68,30 @@ function ApproveButton({
         onClick={() => setShowDialog(true)}
       >
         Approve
+      </button>
+    </>
+  );
+}
+
+function FinishButton({ lostAccount, friendGroupIndex, onFinish }) {
+  const [showDialog, setShowDialog] = useState(false);
+
+  return (
+    <>
+      {showDialog && (
+        <FinishAttemptDialog
+          onClose={() => setShowDialog(false)}
+          lostAccount={lostAccount}
+          friendGroupIndex={friendGroupIndex}
+          onInBlock={onFinish}
+        />
+      )}
+      <button
+        type="button"
+        className="text14Medium text-theme500 cursor-pointer"
+        onClick={() => setShowDialog(true)}
+      >
+        Finish
       </button>
     </>
   );
@@ -153,8 +178,22 @@ export default function useHelpOthersAttemptsColumns(address, onAction) {
       {
         name: "Action",
         className: "w-[100px] text-right",
-        render: (item) =>
-          isSameAddress(item.initiator, address) ? (
+        render: (item) => {
+          const threshold =
+            item.fgGroup?.friendsNeeded || item.friendsNeeded || 0;
+          const canFinish = (item.approvalsCount || 0) >= threshold;
+
+          if (canFinish) {
+            return (
+              <FinishButton
+                lostAccount={item.lostAccount}
+                friendGroupIndex={item.friendGroupIndex}
+                onFinish={onAction}
+              />
+            );
+          }
+
+          return isSameAddress(item.initiator, address) ? (
             <CancelButton
               lostAccount={item.lostAccount}
               friendGroupIndex={item.friendGroupIndex}
@@ -169,7 +208,8 @@ export default function useHelpOthersAttemptsColumns(address, onAction) {
                 isSameAddress(a, address),
               )}
             />
-          ),
+          );
+        },
       },
     ];
 
@@ -244,8 +284,22 @@ export default function useHelpOthersAttemptsColumns(address, onAction) {
       {
         name: "Action",
         className: "text-left",
-        render: (item) =>
-          isSameAddress(item.initiator, address) ? (
+        render: (item) => {
+          const threshold =
+            item.fgGroup?.friendsNeeded || item.friendsNeeded || 0;
+          const canFinish = (item.approvalsCount || 0) >= threshold;
+
+          if (canFinish) {
+            return (
+              <FinishButton
+                lostAccount={item.lostAccount}
+                friendGroupIndex={item.friendGroupIndex}
+                onFinish={onAction}
+              />
+            );
+          }
+
+          return isSameAddress(item.initiator, address) ? (
             <CancelButton
               lostAccount={item.lostAccount}
               friendGroupIndex={item.friendGroupIndex}
@@ -260,7 +314,8 @@ export default function useHelpOthersAttemptsColumns(address, onAction) {
                 isSameAddress(a, address),
               )}
             />
-          ),
+          );
+        },
       },
     ];
 
