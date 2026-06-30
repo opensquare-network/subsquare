@@ -1,5 +1,5 @@
 import { useContextApi } from "next-common/context/api";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 function bitfieldToIndices(bitfield) {
   const indices = [];
@@ -19,6 +19,9 @@ export default function useMyRecoveryAttempts(address) {
   const api = useContextApi();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [fetchCount, setFetchCount] = useState(0);
+
+  const fetch = useCallback(() => setFetchCount((c) => c + 1), []);
 
   useEffect(() => {
     if (!api || !address) {
@@ -104,7 +107,7 @@ export default function useMyRecoveryAttempts(address) {
     return () => {
       cancelled = true;
     };
-  }, [api, address]);
+  }, [api, address, fetchCount]);
 
-  return { data, loading };
+  return { data, loading, fetch };
 }

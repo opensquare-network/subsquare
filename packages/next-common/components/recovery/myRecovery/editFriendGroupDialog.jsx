@@ -22,7 +22,7 @@ import {
   DelayField,
 } from "./friendGroupFields";
 
-function EditFriendGroupForm() {
+function EditFriendGroupForm({ onInBlock = () => {} }) {
   const { onClose, group } = usePopupParams();
   const extensionAccounts = useExtensionAccounts();
   const api = useContextApi();
@@ -178,15 +178,23 @@ function EditFriendGroupForm() {
         <EstimatedGas getTxFunc={getTxFunc} />
       </AdvanceSettings>
 
-      <TxSubmissionButton title="Save" getTxFunc={getTxFunc} />
+      <TxSubmissionButton
+        title="Save"
+        getTxFunc={getTxFunc}
+        onInBlock={onInBlock}
+      />
     </Popup>
   );
 }
 
-export default function EditFriendGroupDialog({ onClose, group }) {
+export default function EditFriendGroupDialog({
+  onClose,
+  group,
+  onInBlock = () => {},
+}) {
   return (
     <SignerPopupWrapper onClose={onClose} group={group}>
-      <EditFriendGroupForm />
+      <EditFriendGroupForm onInBlock={onInBlock} />
     </SignerPopupWrapper>
   );
 }

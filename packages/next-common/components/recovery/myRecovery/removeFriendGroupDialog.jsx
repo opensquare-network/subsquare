@@ -4,7 +4,12 @@ import React, { useCallback } from "react";
 import SimpleTxPopup from "next-common/components/simpleTxPopup";
 import { useContextApi } from "next-common/context/api";
 
-export default function RemoveFriendGroupDialog({ onClose, index, address }) {
+export default function RemoveFriendGroupDialog({
+  onClose,
+  index,
+  address,
+  onInBlock = () => {},
+}) {
   const api = useContextApi();
 
   const getTxFunc = useCallback(async () => {
@@ -22,6 +27,7 @@ export default function RemoveFriendGroupDialog({ onClose, index, address }) {
       title={`Remove Friend Group #${index}`}
       getTxFunc={getTxFunc}
       onClose={onClose}
+      onInBlock={onInBlock}
     />
   );
 }

@@ -4,7 +4,11 @@ import { useCallback } from "react";
 import SimpleTxPopup from "next-common/components/simpleTxPopup";
 import { useContextApi } from "next-common/context/api";
 
-export default function SlashAttemptDialog({ onClose, friendGroupIndex }) {
+export default function SlashAttemptDialog({
+  onClose,
+  friendGroupIndex,
+  onInBlock = () => {},
+}) {
   const api = useContextApi();
 
   const getTxFunc = useCallback(async () => {
@@ -16,6 +20,7 @@ export default function SlashAttemptDialog({ onClose, friendGroupIndex }) {
       title={`Slash Attempt #${friendGroupIndex}`}
       getTxFunc={getTxFunc}
       onClose={onClose}
+      onInBlock={onInBlock}
     />
   );
 }

@@ -125,12 +125,15 @@ export default function FriendGroupsSection({ address }) {
   const [editingGroup, setEditingGroup] = useState(null);
   const [showRemoveDialog, setShowRemoveDialog] = useState(false);
   const [removingIndex, setRemovingIndex] = useState(null);
-  const { data, loading } = useMyFriendGroups(address);
+  const { data, loading, fetch } = useMyFriendGroups(address);
 
   return (
     <div>
       {showAddDialog && (
-        <AddFriendGroupDialog onClose={() => setShowAddDialog(false)} />
+        <AddFriendGroupDialog
+          onClose={() => setShowAddDialog(false)}
+          onInBlock={fetch}
+        />
       )}
       {showEditDialog && editingGroup && (
         <EditFriendGroupDialog
@@ -139,6 +142,7 @@ export default function FriendGroupsSection({ address }) {
             setEditingGroup(null);
           }}
           group={editingGroup}
+          onInBlock={fetch}
         />
       )}
       {showRemoveDialog && (
@@ -149,6 +153,7 @@ export default function FriendGroupsSection({ address }) {
           }}
           index={removingIndex}
           address={address}
+          onInBlock={fetch}
         />
       )}
       <div className="flex justify-between items-center pl-6 pr-6">

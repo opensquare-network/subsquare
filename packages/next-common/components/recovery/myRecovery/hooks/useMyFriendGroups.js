@@ -1,10 +1,13 @@
 import { useContextApi } from "next-common/context/api";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export default function useMyFriendGroups(address) {
   const api = useContextApi();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [fetchCount, setFetchCount] = useState(0);
+
+  const fetch = useCallback(() => setFetchCount((c) => c + 1), []);
 
   useEffect(() => {
     if (!api || !address) {
@@ -47,7 +50,7 @@ export default function useMyFriendGroups(address) {
     return () => {
       cancelled = true;
     };
-  }, [api, address]);
+  }, [api, address, fetchCount]);
 
-  return { data, loading };
+  return { data, loading, fetch };
 }

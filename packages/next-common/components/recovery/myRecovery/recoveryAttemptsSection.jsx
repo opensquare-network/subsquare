@@ -5,8 +5,11 @@ import useMyFriendGroups from "./hooks/useMyFriendGroups";
 import MyRecoveryAttemptsTable from "./attemptsTable";
 
 export default function RecoveryAttemptsSection({ address }) {
-  const { data: attempts, loading: attemptsLoading } =
-    useMyRecoveryAttempts(address);
+  const {
+    data: attempts,
+    loading: attemptsLoading,
+    fetch,
+  } = useMyRecoveryAttempts(address);
   const { data: friendGroups } = useMyFriendGroups(address);
 
   const friendGroupsFormatted = address
@@ -25,6 +28,7 @@ export default function RecoveryAttemptsSection({ address }) {
           data={attempts}
           loading={attemptsLoading}
           friendGroups={friendGroupsFormatted}
+          onSlash={fetch}
         />
       </div>
     </div>
