@@ -14,9 +14,9 @@ export default function MyRecoveryContent() {
     <RelayChainApiProvider>
       <div className="flex flex-col gap-6">
         <RecoverySubTabs className="mx-6" activeTab="my_recovery" />
-        <FriendGroupsSection address={address} />
-        <InheritorSection address={address} />
         <RecoveryAttemptsSection address={address} />
+        <InheritorSection address={address} />
+        <FriendGroupsSection address={address} />
       </div>
     </RelayChainApiProvider>
   );

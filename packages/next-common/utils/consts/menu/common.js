@@ -28,7 +28,7 @@ export const accountMenu = {
     "/account/delegations",
     "/account/deposits",
     "/account/help-recover",
-    "/account/inheritants",
+    "/account/inherited",
     "/account/multisigs",
     "/account/my-recovery",
     "/account/proxies",
