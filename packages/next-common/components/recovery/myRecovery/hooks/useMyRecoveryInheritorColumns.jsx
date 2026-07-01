@@ -66,7 +66,7 @@ export default function useMyRecoveryInheritorColumns(onRevoke) {
       },
       {
         name: "Deposit",
-        className: "w-[180px] text-right",
+        className: "w-[180px] text-left",
         render: (item) => <TicketCell ticket={item.ticket} />,
       },
       {
