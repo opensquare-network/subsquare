@@ -5,7 +5,7 @@ import { withCommonProps } from "next-common/lib";
 
 export default function AccountMyRecoveryPage() {
   return (
-    <AccountLayout seoInfo={{ title: "Account my recovery" }}>
+    <AccountLayout seoInfo={{ title: "My account recovery settings" }}>
       <div className="space-y-6">
         <AccountSubTabs className="mx-6" />
         <MyRecoveryContent />
