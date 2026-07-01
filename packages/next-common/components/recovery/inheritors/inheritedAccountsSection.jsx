@@ -4,19 +4,17 @@ import { useEffect, useState } from "react";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { MapDataList } from "next-common/components/dataList";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
-import {
-  desktopColumns,
-  mobileColumns,
-} from "next-common/components/data/recovery/table/inheritorsColumns";
 import usePaginationComponent from "next-common/components/pagination/usePaginationComponent";
 import { defaultPageSize } from "next-common/utils/constants";
 import { useNavCollapsed } from "next-common/context/nav";
 import { cn } from "next-common/utils";
 import { isNil } from "lodash-es";
 import useInheritedAccounts from "./hooks/useInheritedAccounts";
+import useInheritedAccountsColumns from "./hooks/useInheritedAccountsColumns";
 
 export default function InheritedAccountsSection({ address }) {
   const { data, loading: isLoading } = useInheritedAccounts(address);
+  const { desktopColumns, mobileColumns } = useInheritedAccountsColumns();
   const [navCollapsed] = useNavCollapsed();
   const [dataList, setDataList] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
