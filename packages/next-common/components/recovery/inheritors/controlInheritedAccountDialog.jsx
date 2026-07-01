@@ -11,7 +11,7 @@ import AdvanceSettings from "next-common/components/summary/newProposalQuickStar
 import EstimatedGas from "next-common/components/estimatedGas";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { ExtrinsicLoading } from "next-common/components/popup/fields/extrinsicField";
-import AddressDisplay from "./addressDisplay";
+import AddressDisplay from "next-common/components/popup/fields/addressDisplay";
 import Popup from "next-common/components/popup/wrapper/Popup";
 
 function ControlInheritedAccountInnerPopup({ recovered, onInBlock }) {
