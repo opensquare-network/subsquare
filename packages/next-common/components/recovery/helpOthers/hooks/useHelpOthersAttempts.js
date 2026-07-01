@@ -1,11 +1,15 @@
 import { useMemo } from "react";
-import useRecoveryAttemptsData, {
+import useQueryAllRecoveryAttempts, {
   buildFriendGroupsData,
-} from "next-common/components/recovery/common/hooks/useRecoveryAttemptsData";
+} from "next-common/components/data/recovery/hooks/useQueryAllRecoveryAttempts";
 
 export default function useHelpOthersAttempts(address) {
-  const { attempts, loading, fetch, friendGroupsMap } =
-    useRecoveryAttemptsData();
+  const {
+    data: attempts,
+    loading,
+    fetch,
+    friendGroupsMap,
+  } = useQueryAllRecoveryAttempts();
 
   const data = useMemo(() => {
     if (!address) return [];

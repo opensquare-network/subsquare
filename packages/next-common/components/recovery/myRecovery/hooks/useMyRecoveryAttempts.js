@@ -1,8 +1,8 @@
 import { useMemo } from "react";
-import useRecoveryAttemptsData from "next-common/components/recovery/common/hooks/useRecoveryAttemptsData";
+import useQueryAllRecoveryAttempts from "next-common/components/data/recovery/hooks/useQueryAllRecoveryAttempts";
 
 export default function useMyRecoveryAttempts(address) {
-  const { attempts, loading, fetch } = useRecoveryAttemptsData();
+  const { data: attempts, loading, fetch } = useQueryAllRecoveryAttempts();
 
   const data = useMemo(() => {
     if (!address) return [];

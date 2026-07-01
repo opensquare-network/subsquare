@@ -1,56 +1,14 @@
-import { useContextApi } from "next-common/context/api";
-import { useCallback, useEffect, useState } from "react";
+import { useMemo } from "react";
+import useQueryAllFriendGroups from "next-common/components/data/recovery/hooks/useQueryAllFriendGroups";
 
 export default function useMyFriendGroups(address) {
-  const api = useContextApi();
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [fetchCount, setFetchCount] = useState(0);
+  const { data: allData, loading, fetch } = useQueryAllFriendGroups();
 
-  const fetch = useCallback(() => setFetchCount((c) => c + 1), []);
-
-  useEffect(() => {
-    if (!api || !address) {
-      return;
-    }
-
-    if (!api?.query.recovery?.friendGroups) {
-      return;
-    }
-
-    let cancelled = false;
-    setLoading(true);
-
-    api.query.recovery
-      .friendGroups(address)
-      .then((value) => {
-        if (cancelled) return;
-        const json = value.toJSON();
-        const groups = Array.isArray(json?.[0]) ? json[0] : [];
-        const mapped = groups.map((group, index) => ({
-          index,
-          friends: group.friends || [],
-          friendsNeeded: parseInt(group.friendsNeeded) || 0,
-          inheritor: group.inheritor || "",
-          inheritancePriority: parseInt(group.inheritancePriority) || 0,
-          inheritanceDelay: parseInt(group.inheritanceDelay) || 0,
-          cancelDelay: parseInt(group.cancelDelay) || 0,
-        }));
-        setData(mapped);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Failed to query friend groups", error);
-        if (!cancelled) {
-          setData([]);
-          setLoading(false);
-        }
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [api, address, fetchCount]);
+  const data = useMemo(() => {
+    if (!address) return [];
+    const entry = allData.find((e) => e.account === address);
+    return entry?.friendGroups || [];
+  }, [allData, address]);
 
   return { data, loading, fetch };
 }

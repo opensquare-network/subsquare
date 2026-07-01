@@ -1,5 +1,5 @@
 import { useContextApi } from "next-common/context/api";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export function flattenRecoveryData(data) {
   if (!data || data.length === 0) {
@@ -28,6 +28,9 @@ export default function useQueryAllFriendGroups() {
   const api = useContextApi();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [fetchCount, setFetchCount] = useState(0);
+
+  const fetch = useCallback(() => setFetchCount((c) => c + 1), []);
 
   useEffect(() => {
     if (!api) {
@@ -83,7 +86,7 @@ export default function useQueryAllFriendGroups() {
     return () => {
       cancelled = true;
     };
-  }, [api]);
+  }, [api, fetchCount]);
 
-  return { data, loading };
+  return { data, loading, fetch };
 }
