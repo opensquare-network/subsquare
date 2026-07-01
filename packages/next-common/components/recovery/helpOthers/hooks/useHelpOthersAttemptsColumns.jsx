@@ -55,13 +55,15 @@ function CancelButton({
           onInBlock={onCancel}
         />
       )}
-      <button
-        type="button"
-        className="text14Medium text-theme500 cursor-pointer"
-        onClick={() => setShowDialog(true)}
-      >
-        Cancel
-      </button>
+      <Tooltip content="Cancel the recovery attempt">
+        <button
+          type="button"
+          className="text14Medium text-theme500 cursor-pointer"
+          onClick={() => setShowDialog(true)}
+        >
+          Cancel
+        </button>
+      </Tooltip>
     </>
   );
 }
@@ -94,13 +96,15 @@ function ApproveButton({
           onInBlock={onApprove}
         />
       )}
-      <button
-        type="button"
-        className="text14Medium text-theme500 cursor-pointer"
-        onClick={() => setShowDialog(true)}
-      >
-        Approve
-      </button>
+      <Tooltip content="Approve this recovery attempt">
+        <button
+          type="button"
+          className="text14Medium text-theme500 cursor-pointer"
+          onClick={() => setShowDialog(true)}
+        >
+          Approve
+        </button>
+      </Tooltip>
     </>
   );
 }
@@ -147,13 +151,15 @@ function FinishButton({
           onInBlock={onFinish}
         />
       )}
-      <button
-        type="button"
-        className="text14Medium text-theme500 cursor-pointer"
-        onClick={() => setShowDialog(true)}
-      >
-        Finish
-      </button>
+      <Tooltip content="Finish the recovery and grant access to the inheritor">
+        <button
+          type="button"
+          className="text14Medium text-theme500 cursor-pointer"
+          onClick={() => setShowDialog(true)}
+        >
+          Finish
+        </button>
+      </Tooltip>
     </>
   );
 }
@@ -194,19 +200,19 @@ export default function useHelpOthersAttemptsColumns(address, onAction) {
       },
       {
         name: "Initiator",
-        className: "min-w-[200px] text-left",
+        className: "min-w-[160px] text-left",
         render: (item) => (
-          <AddressUser key="initiator" add={item.initiator} maxWidth={200} />
+          <AddressUser key="initiator" add={item.initiator} maxWidth={160} />
         ),
       },
       {
         name: "Init Block",
-        className: "w-[180px] text-left",
+        className: "w-[140px] text-left",
         render: (item) => <BlockNumberWithTooltip height={item.initBlock} />,
       },
       {
         name: "Last Approval Block",
-        className: "w-[200px] text-left",
+        className: "w-[180px] text-left",
         render: (item) => (
           <BlockNumberWithTooltip height={item.lastApprovalBlock} />
         ),

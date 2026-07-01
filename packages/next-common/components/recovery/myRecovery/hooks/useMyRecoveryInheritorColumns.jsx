@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import AddressUser from "next-common/components/user/addressUser";
+import Tooltip from "next-common/components/tooltip";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
@@ -27,13 +28,15 @@ function RevokeButton({ onRevoke }) {
           onInBlock={onRevoke}
         />
       )}
-      <button
-        type="button"
-        className="text14Medium text-theme500 cursor-pointer"
-        onClick={() => setShowDialog(true)}
-      >
-        Revoke
-      </button>
+      <Tooltip content="Revoke the inheritor access">
+        <button
+          type="button"
+          className="text14Medium text-theme500 cursor-pointer"
+          onClick={() => setShowDialog(true)}
+        >
+          Revoke
+        </button>
+      </Tooltip>
     </>
   );
 }

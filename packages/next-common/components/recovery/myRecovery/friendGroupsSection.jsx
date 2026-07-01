@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
+import Tooltip from "next-common/components/tooltip";
 import Loading from "next-common/components/loading";
 import AddressUser from "next-common/components/user/addressUser";
 import DelayBlock from "next-common/components/recovery/delayBlock";
@@ -34,20 +35,24 @@ function FriendGroupCard({ group, onEdit, onRemove }) {
           Group #{group.index}
         </span>
         <div className="flex gap-x-3">
-          <button
-            type="button"
-            className="text14Medium text-theme500 cursor-pointer"
-            onClick={() => onEdit(group)}
-          >
-            Edit
-          </button>
-          <button
-            type="button"
-            className="text14Medium text-theme500 cursor-pointer"
-            onClick={() => onRemove(group.index)}
-          >
-            Remove
-          </button>
+          <Tooltip content="Edit this friend group">
+            <button
+              type="button"
+              className="text14Medium text-theme500 cursor-pointer"
+              onClick={() => onEdit(group)}
+            >
+              Edit
+            </button>
+          </Tooltip>
+          <Tooltip content="Remove this friend group">
+            <button
+              type="button"
+              className="text14Medium text-theme500 cursor-pointer"
+              onClick={() => onRemove(group.index)}
+            >
+              Remove
+            </button>
+          </Tooltip>
         </div>
       </div>
 
@@ -160,13 +165,15 @@ export default function FriendGroupsSection({ address }) {
         <span className="font-bold text-[16px] leading-6 text-textPrimary">
           Friend Groups
         </span>
-        <button
-          type="button"
-          className="px-4 py-1.5 rounded-lg bg-theme500 text14Bold text-white cursor-pointer"
-          onClick={() => setShowAddDialog(true)}
-        >
-          Add
-        </button>
+        <Tooltip content="Add a new friend group">
+          <button
+            type="button"
+            className="px-4 py-1.5 rounded-lg bg-theme500 text14Bold text-white cursor-pointer"
+            onClick={() => setShowAddDialog(true)}
+          >
+            Add
+          </button>
+        </Tooltip>
       </div>
       {loading ? (
         <div className="mt-4 flex justify-center py-8">

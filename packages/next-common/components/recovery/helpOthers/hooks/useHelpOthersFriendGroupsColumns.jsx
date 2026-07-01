@@ -47,13 +47,15 @@ function RecoverButton({ lostAccount, friendGroupIndex, onRecover, disabled }) {
           onInBlock={onRecover}
         />
       )}
-      <button
-        type="button"
-        className="text14Medium text-theme500 cursor-pointer"
-        onClick={() => setShowDialog(true)}
-      >
-        Recover
-      </button>
+      <Tooltip content="Initiate a recovery attempt">
+        <button
+          type="button"
+          className="text14Medium text-theme500 cursor-pointer"
+          onClick={() => setShowDialog(true)}
+        >
+          Recover
+        </button>
+      </Tooltip>
     </>
   );
 }
