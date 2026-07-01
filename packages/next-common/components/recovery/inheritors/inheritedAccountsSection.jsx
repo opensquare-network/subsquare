@@ -9,11 +9,11 @@ import { defaultPageSize } from "next-common/utils/constants";
 import { useNavCollapsed } from "next-common/context/nav";
 import { cn } from "next-common/utils";
 import { isNil } from "lodash-es";
-import useInheritedAccounts from "./hooks/useInheritedAccounts";
+import { useInheritorsData } from "./context";
 import useInheritedAccountsColumns from "./hooks/useInheritedAccountsColumns";
 
-export default function InheritedAccountsSection({ address }) {
-  const { data, loading: isLoading } = useInheritedAccounts(address);
+export default function InheritedAccountsSection() {
+  const { inheritedAccounts, inheritedAccountsLoading } = useInheritorsData();
   const { desktopColumns, mobileColumns } = useInheritedAccountsColumns();
   const [navCollapsed] = useNavCollapsed();
   const [dataList, setDataList] = useState([]);
@@ -25,23 +25,23 @@ export default function InheritedAccountsSection({ address }) {
     defaultPageSize,
   );
 
-  const total = data?.length || 0;
+  const total = inheritedAccounts?.length || 0;
 
   useEffect(() => {
     setLoading(true);
   }, [page]);
 
   useEffect(() => {
-    if (isLoading || isNil(data)) {
+    if (inheritedAccountsLoading || isNil(inheritedAccounts)) {
       return;
     }
 
     setTotalCount(total);
     const startIndex = (page - 1) * defaultPageSize;
     const endIndex = startIndex + defaultPageSize;
-    setDataList(data?.slice(startIndex, endIndex));
+    setDataList(inheritedAccounts?.slice(startIndex, endIndex));
     setLoading(false);
-  }, [data, isLoading, page, total]);
+  }, [inheritedAccounts, inheritedAccountsLoading, page, total]);
 
   return (
     <div>

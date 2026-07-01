@@ -13,10 +13,11 @@ import { defaultPageSize } from "next-common/utils/constants";
 import { useNavCollapsed } from "next-common/context/nav";
 import { cn } from "next-common/utils";
 import { isNil } from "lodash-es";
-import useInheritorFriendGroups from "./hooks/useInheritorFriendGroups";
+import { useInheritorsData } from "./context";
 
-export default function InheritorFriendGroupsSection({ address }) {
-  const { data, loading: isLoading } = useInheritorFriendGroups(address);
+export default function InheritorFriendGroupsSection() {
+  const { inheritorFriendGroups, inheritorFriendGroupsLoading } =
+    useInheritorsData();
   const [navCollapsed] = useNavCollapsed();
   const [dataList, setDataList] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -27,23 +28,23 @@ export default function InheritorFriendGroupsSection({ address }) {
     defaultPageSize,
   );
 
-  const total = data?.length || 0;
+  const total = inheritorFriendGroups?.length || 0;
 
   useEffect(() => {
     setLoading(true);
   }, [page]);
 
   useEffect(() => {
-    if (isLoading || isNil(data)) {
+    if (inheritorFriendGroupsLoading || isNil(inheritorFriendGroups)) {
       return;
     }
 
     setTotalCount(total);
     const startIndex = (page - 1) * defaultPageSize;
     const endIndex = startIndex + defaultPageSize;
-    setDataList(data?.slice(startIndex, endIndex));
+    setDataList(inheritorFriendGroups?.slice(startIndex, endIndex));
     setLoading(false);
-  }, [data, isLoading, page, total]);
+  }, [inheritorFriendGroups, inheritorFriendGroupsLoading, page, total]);
 
   return (
     <div>

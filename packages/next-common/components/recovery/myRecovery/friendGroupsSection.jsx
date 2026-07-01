@@ -6,7 +6,7 @@ import Tooltip from "next-common/components/tooltip";
 import Loading from "next-common/components/loading";
 import AddressUser from "next-common/components/user/addressUser";
 import DelayBlock from "next-common/components/recovery/delayBlock";
-import useMyFriendGroups from "./hooks/useMyFriendGroups";
+import { useRecoveryData } from "./context";
 import AddFriendGroupDialog from "./addFriendGroupDialog";
 import EditFriendGroupDialog from "./editFriendGroupDialog";
 import RemoveFriendGroupDialog from "./removeFriendGroupDialog";
@@ -124,20 +124,21 @@ function FriendGroupCard({ group, onEdit, onRemove }) {
   );
 }
 
-export default function FriendGroupsSection({ address }) {
+export default function FriendGroupsSection() {
+  const { friendGroups, friendGroupsLoading, fetchFriendGroups, address } =
+    useRecoveryData();
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [editingGroup, setEditingGroup] = useState(null);
   const [showRemoveDialog, setShowRemoveDialog] = useState(false);
   const [removingIndex, setRemovingIndex] = useState(null);
-  const { data, loading, fetch } = useMyFriendGroups(address);
 
   return (
     <div>
       {showAddDialog && (
         <AddFriendGroupDialog
           onClose={() => setShowAddDialog(false)}
-          onInBlock={fetch}
+          onInBlock={fetchFriendGroups}
         />
       )}
       {showEditDialog && editingGroup && (
@@ -147,7 +148,7 @@ export default function FriendGroupsSection({ address }) {
             setEditingGroup(null);
           }}
           group={editingGroup}
-          onInBlock={fetch}
+          onInBlock={fetchFriendGroups}
         />
       )}
       {showRemoveDialog && (
@@ -158,7 +159,7 @@ export default function FriendGroupsSection({ address }) {
           }}
           index={removingIndex}
           address={address}
-          onInBlock={fetch}
+          onInBlock={fetchFriendGroups}
         />
       )}
       <div className="flex justify-between items-center pl-6 pr-6">
@@ -175,11 +176,11 @@ export default function FriendGroupsSection({ address }) {
           </button>
         </Tooltip>
       </div>
-      {loading ? (
+      {friendGroupsLoading ? (
         <div className="mt-4 flex justify-center py-8">
           <Loading size={20} />
         </div>
-      ) : data.length === 0 ? (
+      ) : friendGroups.length === 0 ? (
         <SecondaryCard className="mt-4 flex items-center justify-center min-h-21">
           <span className="text14Medium text-textTertiary">
             No friend groups found
@@ -187,7 +188,7 @@ export default function FriendGroupsSection({ address }) {
         </SecondaryCard>
       ) : (
         <div className="mt-4 flex flex-col gap-3">
-          {data.map((group) => (
+          {friendGroups.map((group) => (
             <FriendGroupCard
               key={group.index}
               group={group}

@@ -5,41 +5,66 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import RecoverySubTabs from "next-common/components/recovery/subTabs";
 import InFriendGroupsSection from "./inFriendGroupsSection";
 import HelpOthersAttemptsSection from "./helpOthersAttemptsSection";
-import useHelpOthersFriendGroups from "./hooks/useHelpOthersFriendGroups";
-import useHelpOthersAttempts from "./hooks/useHelpOthersAttempts";
 import { RelayChainApiProvider } from "next-common/context/relayChain";
+import { HelpOthersDataProvider, useHelpOthersData } from "./context";
+import Loading from "next-common/components/loading";
 
-export default function HelpOthersContent() {
-  const address = useRealAddress();
-  const friendGroups = useHelpOthersFriendGroups(address);
-  const attempts = useHelpOthersAttempts(address);
-
-  const fetchFriendGroups = friendGroups.fetch;
-  const fetchAttempts = attempts.fetch;
+function HelpOthersSections() {
+  const {
+    address,
+    friendGroupsData,
+    friendGroupsLoading,
+    fetchFriendGroups,
+    attemptsData,
+    attemptsLoading,
+    attemptsFriendGroupsData,
+    fetchAttempts,
+    loading,
+  } = useHelpOthersData();
 
   const refreshAll = useCallback(() => {
     fetchFriendGroups();
     fetchAttempts();
   }, [fetchFriendGroups, fetchAttempts]);
 
+  if (loading) {
+    return (
+      <div className="flex justify-center py-20">
+        <Loading size={24} />
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <HelpOthersAttemptsSection
+        address={address}
+        data={attemptsData}
+        loading={attemptsLoading}
+        friendGroupsData={attemptsFriendGroupsData}
+        onRefresh={refreshAll}
+      />
+      <InFriendGroupsSection
+        data={friendGroupsData}
+        loading={friendGroupsLoading}
+        attemptsData={attemptsData}
+        onRefresh={refreshAll}
+      />
+    </>
+  );
+}
+
+export default function HelpOthersContent() {
+  const address = useRealAddress();
+
   return (
     <RelayChainApiProvider>
-      <div className="flex flex-col gap-6">
-        <RecoverySubTabs className="mx-6" activeTab="help_recover" />
-        <HelpOthersAttemptsSection
-          address={address}
-          data={attempts.data}
-          loading={attempts.loading}
-          friendGroupsData={attempts.friendGroupsData}
-          onRefresh={refreshAll}
-        />
-        <InFriendGroupsSection
-          data={friendGroups.data}
-          loading={friendGroups.loading}
-          attemptsData={attempts.data}
-          onRefresh={refreshAll}
-        />
-      </div>
+      <HelpOthersDataProvider address={address}>
+        <div className="flex flex-col gap-6">
+          <RecoverySubTabs className="mx-6" activeTab="help_recover" />
+          <HelpOthersSections />
+        </div>
+      </HelpOthersDataProvider>
     </RelayChainApiProvider>
   );
 }

@@ -9,13 +9,13 @@ import { defaultPageSize } from "next-common/utils/constants";
 import { useNavCollapsed } from "next-common/context/nav";
 import { cn } from "next-common/utils";
 import { isNil } from "lodash-es";
-import useMyInheritor from "./hooks/useMyInheritor";
+import { useRecoveryData } from "./context";
 import useMyRecoveryInheritorColumns from "./hooks/useMyRecoveryInheritorColumns";
 
-export default function InheritorSection({ address }) {
-  const { data, loading: isLoading, fetch } = useMyInheritor(address);
+export default function InheritorSection() {
+  const { inheritor, inheritorLoading, fetchInheritor } = useRecoveryData();
   const { desktopColumns, mobileColumns } =
-    useMyRecoveryInheritorColumns(fetch);
+    useMyRecoveryInheritorColumns(fetchInheritor);
   const [navCollapsed] = useNavCollapsed();
   const [dataList, setDataList] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -26,23 +26,23 @@ export default function InheritorSection({ address }) {
     defaultPageSize,
   );
 
-  const total = data?.length || 0;
+  const total = inheritor?.length || 0;
 
   useEffect(() => {
     setLoading(true);
   }, [page]);
 
   useEffect(() => {
-    if (isLoading || isNil(data)) {
+    if (inheritorLoading || isNil(inheritor)) {
       return;
     }
 
     setTotalCount(total);
     const startIndex = (page - 1) * defaultPageSize;
     const endIndex = startIndex + defaultPageSize;
-    setDataList(data?.slice(startIndex, endIndex));
+    setDataList(inheritor?.slice(startIndex, endIndex));
     setLoading(false);
-  }, [data, isLoading, page, total]);
+  }, [inheritor, inheritorLoading, page, total]);
 
   return (
     <div>

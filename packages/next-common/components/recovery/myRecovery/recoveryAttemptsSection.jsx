@@ -1,16 +1,11 @@
 "use client";
 
-import useMyRecoveryAttempts from "./hooks/useMyRecoveryAttempts";
-import useMyFriendGroups from "./hooks/useMyFriendGroups";
 import MyRecoveryAttemptsTable from "./attemptsTable";
+import { useRecoveryData } from "./context";
 
-export default function RecoveryAttemptsSection({ address }) {
-  const {
-    data: attempts,
-    loading: attemptsLoading,
-    fetch,
-  } = useMyRecoveryAttempts(address);
-  const { data: friendGroups } = useMyFriendGroups(address);
+export default function RecoveryAttemptsSection() {
+  const { attempts, attemptsLoading, fetchAttempts, friendGroups, address } =
+    useRecoveryData();
 
   const friendGroupsFormatted = address
     ? [{ account: address, friendGroups: friendGroups }]
@@ -28,8 +23,8 @@ export default function RecoveryAttemptsSection({ address }) {
           data={attempts}
           loading={attemptsLoading}
           friendGroups={friendGroupsFormatted}
-          onSlash={fetch}
-          onCancel={fetch}
+          onSlash={fetchAttempts}
+          onCancel={fetchAttempts}
         />
       </div>
     </div>
