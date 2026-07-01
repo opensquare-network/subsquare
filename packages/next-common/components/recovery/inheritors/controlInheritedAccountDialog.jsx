@@ -48,8 +48,8 @@ function ControlInheritedAccountInnerPopup({ recovered, onInBlock }) {
         <div>
           <PopupLabel text="Call" />
           <Extrinsic
-            defaultSectionName="system"
-            defaultMethodName="setCode"
+            defaultSectionName="balances"
+            defaultMethodName="transferKeepAlive"
             setValue={setProposal}
           />
         </div>
