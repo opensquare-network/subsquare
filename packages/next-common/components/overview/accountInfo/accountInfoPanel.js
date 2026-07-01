@@ -13,6 +13,8 @@ import { NeutralPanel } from "next-common/components/styled/containers/neutralPa
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import AccountPanelScrollPrompt from "./components/accountPanelScrollPrompt";
 import ExtensionUpdatePrompt from "./components/extensionUpdatePrompt";
+import OngoingRecoveryAttemptsPrompt from "./components/useOngoingRecoveryAttemptsPrompt";
+import RecoveryInheritorPrompt from "./components/useRecoveryInheritorPrompt";
 import { useAccountTransferPopup } from "./hook/useAccountTransferPopup";
 import dynamic from "next/dynamic";
 import { useState } from "react";
@@ -304,7 +306,7 @@ export function AccountHead({ width }) {
 }
 
 export default function AccountInfoPanel() {
-  const { hasIdentityVerification } = useChainSettings();
+  const { hasIdentityVerification, modules } = useChainSettings();
   const width = useWindowWidthContext();
 
   if (isNil(width)) {
@@ -321,6 +323,12 @@ export default function AccountInfoPanel() {
       </UserPapiAccountProvider>
       <ExtensionUpdatePrompt />
       {hasIdentityVerification && <AccountPanelJudgementScrollPrompt />}
+      {modules?.recovery && (
+        <RelayChainApiProvider>
+          <OngoingRecoveryAttemptsPrompt />
+          <RecoveryInheritorPrompt />
+        </RelayChainApiProvider>
+      )}
       <AccountPanelScrollPrompt />
     </NeutralPanel>
   );
