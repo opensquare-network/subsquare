@@ -29,6 +29,7 @@ export default function RecoveryAttemptsSection({ address }) {
           loading={attemptsLoading}
           friendGroups={friendGroupsFormatted}
           onSlash={fetch}
+          onCancel={fetch}
         />
       </div>
     </div>

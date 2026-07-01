@@ -22,14 +22,17 @@ export default function MyRecoveryAttemptsTable({
   loading: isLoading,
   friendGroups,
   onSlash = () => {},
+  onCancel = () => {},
 }) {
   const [navCollapsed] = useNavCollapsed();
   const [dataList, setDataList] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  const { desktopColumns, mobileColumns } =
-    useRecoveryAttemptsTableColumns(onSlash);
+  const { desktopColumns, mobileColumns } = useRecoveryAttemptsTableColumns(
+    onSlash,
+    onCancel,
+  );
 
   const { page, component: pageComponent } = usePaginationComponent(
     totalCount,

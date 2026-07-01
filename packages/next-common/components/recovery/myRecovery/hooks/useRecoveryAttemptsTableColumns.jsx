@@ -3,12 +3,22 @@
 import { useMemo } from "react";
 import { attemptColumns } from "next-common/components/recovery/common/columns";
 import SlashButton from "../slashButton";
+import CancelButton from "../cancelButton";
 
-function AttemptActions({ friendGroupIndex, onSlash }) {
-  return <SlashButton friendGroupIndex={friendGroupIndex} onSlash={onSlash} />;
+function AttemptActions({ lostAccount, friendGroupIndex, onSlash, onCancel }) {
+  return (
+    <div className="flex gap-2 justify-end">
+      <CancelButton
+        lostAccount={lostAccount}
+        friendGroupIndex={friendGroupIndex}
+        onCancel={onCancel}
+      />
+      <SlashButton friendGroupIndex={friendGroupIndex} onSlash={onSlash} />
+    </div>
+  );
 }
 
-export default function useRecoveryAttemptsTableColumns(onSlash) {
+export default function useRecoveryAttemptsTableColumns(onSlash, onCancel) {
   return useMemo(() => {
     const desktopColumns = [
       attemptColumns.groupIndex("w-[120px] text-left"),
@@ -18,11 +28,13 @@ export default function useRecoveryAttemptsTableColumns(onSlash) {
       attemptColumns.thresholdApprovals("w-[160px] text-left"),
       {
         name: "Action",
-        className: "w-[100px] text-right",
+        className: "w-[160px] text-right",
         render: (item) => (
           <AttemptActions
+            lostAccount={item.lostAccount}
             friendGroupIndex={item.friendGroupIndex}
             onSlash={onSlash}
+            onCancel={onCancel}
           />
         ),
       },
@@ -36,16 +48,18 @@ export default function useRecoveryAttemptsTableColumns(onSlash) {
       attemptColumns.thresholdApprovals("text-right"),
       {
         name: "Action",
-        className: "text-left",
+        className: "text-right",
         render: (item) => (
           <AttemptActions
+            lostAccount={item.lostAccount}
             friendGroupIndex={item.friendGroupIndex}
             onSlash={onSlash}
+            onCancel={onCancel}
           />
         ),
       },
     ];
 
     return { desktopColumns, mobileColumns };
-  }, [onSlash]);
+  }, [onSlash, onCancel]);
 }
