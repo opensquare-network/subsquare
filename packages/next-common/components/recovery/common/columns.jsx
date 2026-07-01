@@ -127,7 +127,7 @@ export const attemptColumns = {
 
 export const friendGroupColumns = {
   account: (className) => ({
-    name: "Account",
+    name: "Lost Account",
     className,
     render: (item) => (
       <AddressUser key="account" add={item.account} maxWidth={200} />

@@ -46,7 +46,10 @@ function ControlInheritedAccountInnerPopup({ recovered, onInBlock }) {
     extrinsicComponent = (
       <div className="flex flex-col gap-4">
         <div>
-          <PopupLabel text="Call" />
+          <PopupLabel
+            text="Call"
+            tooltip="This call will be executed as the lost account"
+          />
           <Extrinsic
             defaultSectionName="balances"
             defaultMethodName="transferKeepAlive"
@@ -65,7 +68,7 @@ function ControlInheritedAccountInnerPopup({ recovered, onInBlock }) {
     >
       <SignerWithBalance />
       <div>
-        <PopupLabel text="Recovered" />
+        <PopupLabel text="Lost Account" />
         <AddressDisplay address={recovered} />
       </div>
       {extrinsicComponent}

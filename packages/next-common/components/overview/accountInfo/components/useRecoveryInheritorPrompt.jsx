@@ -5,6 +5,7 @@ import {
 import { CACHE_KEY } from "next-common/utils/constants";
 import { useCookieValue } from "next-common/utils/hooks/useCookieValue";
 import Link from "next-common/components/link";
+import AddressUser from "next-common/components/user/addressUser";
 import { useMemo } from "react";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useMyInheritor from "next-common/components/recovery/myRecovery/hooks/useMyInheritor";
@@ -18,6 +19,7 @@ function useRecoveryInheritorPrompt() {
     true,
   );
   const hasInheritor = !loading && data?.length > 0;
+  const inheritorAddress = data?.[0]?.inheritor;
 
   return useMemo(() => {
     if (!hasInheritor || !visible) {
@@ -27,17 +29,23 @@ function useRecoveryInheritorPrompt() {
     return {
       key: CACHE_KEY.recoveryInheritorPrompt,
       message: (
-        <div>
-          You have inheritor settings. See details{" "}
+        <div className="flex items-center gap-1 flex-wrap">
+          Your account has been inherited by
+          <AddressUser
+            add={inheritorAddress}
+            maxWidth={160}
+            className="text-orange500!"
+          />
+          .{" "}
           <Link className="underline" href="/account/my-recovery">
-            here
+            See details
           </Link>
         </div>
       ),
       type: PromptTypes.WARNING,
       close: () => setVisible(false, { expires: 15 }),
     };
-  }, [hasInheritor, visible, setVisible]);
+  }, [hasInheritor, visible, setVisible, inheritorAddress]);
 }
 
 export default function RecoveryInheritorPrompt({ onClose }) {

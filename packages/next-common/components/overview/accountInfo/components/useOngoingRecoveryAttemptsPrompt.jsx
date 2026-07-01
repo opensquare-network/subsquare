@@ -28,9 +28,9 @@ function useOngoingRecoveryAttemptsPrompt() {
       key: CACHE_KEY.ongoingRecoveryAttemptsPrompt,
       message: (
         <div>
-          You have ongoing recovery attempts. See details{" "}
+          You have ongoing recovery attempts.{" "}
           <Link className="underline" href="/account/my-recovery">
-            here
+            See details
           </Link>
         </div>
       ),
