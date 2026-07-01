@@ -246,13 +246,24 @@ export default function useHelpOthersAttemptsColumns(address, onAction) {
 
           if (canFinish) {
             return (
-              <FinishButton
-                lostAccount={item.lostAccount}
-                friendGroupIndex={item.friendGroupIndex}
-                initBlock={item.initBlock}
-                inheritanceDelay={item.fgGroup?.inheritanceDelay}
-                onFinish={onAction}
-              />
+              <div className="flex gap-2 justify-end">
+                <FinishButton
+                  lostAccount={item.lostAccount}
+                  friendGroupIndex={item.friendGroupIndex}
+                  initBlock={item.initBlock}
+                  inheritanceDelay={item.fgGroup?.inheritanceDelay}
+                  onFinish={onAction}
+                />
+                {isSameAddress(item.initiator, address) && (
+                  <CancelButton
+                    lostAccount={item.lostAccount}
+                    friendGroupIndex={item.friendGroupIndex}
+                    lastApprovalBlock={item.lastApprovalBlock}
+                    cancelDelay={item.fgGroup?.cancelDelay}
+                    onCancel={onAction}
+                  />
+                )}
+              </div>
             );
           }
 
@@ -356,13 +367,24 @@ export default function useHelpOthersAttemptsColumns(address, onAction) {
 
           if (canFinish) {
             return (
-              <FinishButton
-                lostAccount={item.lostAccount}
-                friendGroupIndex={item.friendGroupIndex}
-                initBlock={item.initBlock}
-                inheritanceDelay={item.fgGroup?.inheritanceDelay}
-                onFinish={onAction}
-              />
+              <div className="flex gap-2 justify-end">
+                <FinishButton
+                  lostAccount={item.lostAccount}
+                  friendGroupIndex={item.friendGroupIndex}
+                  initBlock={item.initBlock}
+                  inheritanceDelay={item.fgGroup?.inheritanceDelay}
+                  onFinish={onAction}
+                />
+                {isSameAddress(item.initiator, address) && (
+                  <CancelButton
+                    lostAccount={item.lostAccount}
+                    friendGroupIndex={item.friendGroupIndex}
+                    lastApprovalBlock={item.lastApprovalBlock}
+                    cancelDelay={item.fgGroup?.cancelDelay}
+                    onCancel={onAction}
+                  />
+                )}
+              </div>
             );
           }
 
