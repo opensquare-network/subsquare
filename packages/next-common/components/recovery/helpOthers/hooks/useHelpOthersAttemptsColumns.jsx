@@ -13,8 +13,37 @@ import CancelAttemptDialog from "../cancelAttemptDialog";
 import ApproveAttemptDialog from "../approveAttemptDialog";
 import FinishAttemptDialog from "../finishAttemptDialog";
 
-function CancelButton({ lostAccount, friendGroupIndex, onCancel }) {
+function CancelButton({
+  lostAccount,
+  friendGroupIndex,
+  lastApprovalBlock,
+  cancelDelay,
+  onCancel,
+}) {
   const [showDialog, setShowDialog] = useState(false);
+  const currentBlock = useRelayChainBlockNumber();
+  const { blockTime } = useChainSettings();
+
+  const cancelableAt = lastApprovalBlock + (cancelDelay || 0);
+  const canCancel = !isNil(currentBlock) && currentBlock >= cancelableAt;
+
+  if (!canCancel) {
+    let tooltip;
+    if (isNil(currentBlock)) {
+      tooltip = "Loading block number...";
+    } else {
+      const blocksRemaining = Math.max(0, cancelableAt - currentBlock);
+      const estimatedTime = estimateBlocksTime(blocksRemaining, blockTime);
+      tooltip = `Cancel available at block #${cancelableAt} (in ${estimatedTime})`;
+    }
+    return (
+      <Tooltip content={tooltip}>
+        <span className="text14Medium text-textTertiary cursor-not-allowed">
+          Cancel
+        </span>
+      </Tooltip>
+    );
+  }
 
   return (
     <>
@@ -231,6 +260,8 @@ export default function useHelpOthersAttemptsColumns(address, onAction) {
             <CancelButton
               lostAccount={item.lostAccount}
               friendGroupIndex={item.friendGroupIndex}
+              lastApprovalBlock={item.lastApprovalBlock}
+              cancelDelay={item.fgGroup?.cancelDelay}
               onCancel={onAction}
             />
           ) : (
@@ -339,6 +370,8 @@ export default function useHelpOthersAttemptsColumns(address, onAction) {
             <CancelButton
               lostAccount={item.lostAccount}
               friendGroupIndex={item.friendGroupIndex}
+              lastApprovalBlock={item.lastApprovalBlock}
+              cancelDelay={item.fgGroup?.cancelDelay}
               onCancel={onAction}
             />
           ) : (
