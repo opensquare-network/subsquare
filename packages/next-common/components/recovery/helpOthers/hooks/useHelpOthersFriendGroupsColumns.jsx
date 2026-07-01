@@ -1,28 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import AddressUser from "next-common/components/user/addressUser";
 import Tooltip from "next-common/components/tooltip";
-import { AddressesTooltip } from "next-common/components/multisigs/fields";
-import DelayBlock from "next-common/components/recovery/delayBlock";
-import { isNil } from "lodash-es";
+import { friendGroupColumns } from "next-common/components/recovery/common/columns";
 import InitiateAttemptDialog from "../initiateAttemptDialog";
-
-function FriendsCount({ friends = [] }) {
-  if (isNil(friends)) {
-    return null;
-  }
-
-  return (
-    <Tooltip
-      content={<AddressesTooltip addresses={friends} addressMaxWidth={160} />}
-    >
-      <span className="text14Medium text-textPrimary">
-        {friends?.length || 0}
-      </span>
-    </Tooltip>
-  );
-}
 
 function RecoverButton({ lostAccount, friendGroupIndex, onRecover, disabled }) {
   const [showDialog, setShowDialog] = useState(false);
@@ -60,156 +41,74 @@ function RecoverButton({ lostAccount, friendGroupIndex, onRecover, disabled }) {
   );
 }
 
+function HelpOthersFriendGroupActions({
+  account,
+  index,
+  attemptsData,
+  onRecover,
+}) {
+  const hasAttempt = attemptsData.some(
+    (a) => a.lostAccount === account && a.friendGroupIndex === index,
+  );
+
+  return (
+    <RecoverButton
+      lostAccount={account}
+      friendGroupIndex={index}
+      onRecover={onRecover}
+      disabled={hasAttempt}
+    />
+  );
+}
+
 export default function useHelpOthersFriendGroupsColumns(
   onRecover,
   attemptsData = [],
 ) {
   return useMemo(() => {
     const desktopColumns = [
-      {
-        name: "Account",
-        className: "min-w-[200px] text-left",
-        render: (item) => (
-          <AddressUser key="account" add={item.account} maxWidth={200} />
-        ),
-      },
-      {
-        name: "Group Index",
-        className: "w-[120px] text-left",
-        render: (item) => (
-          <span className="text14Medium text-textPrimary">#{item.index}</span>
-        ),
-      },
-      {
-        name: "Priority",
-        className: "w-[100px] text-left",
-        render: (item) => (
-          <span className="text14Medium text-textPrimary">
-            {item.inheritancePriority}
-          </span>
-        ),
-      },
-      {
-        name: "Friends",
-        className: "w-[100px] text-left",
-        render: (item) => <FriendsCount friends={item.friends} />,
-      },
-      {
-        name: "Threshold",
-        className: "w-[120px] text-left",
-        render: (item) => (
-          <span className="text14Medium text-textPrimary">
-            {item.friendsNeeded}
-          </span>
-        ),
-      },
-      {
-        name: "Inheritor",
-        className: "min-w-[160px] text-left",
-        render: (item) => (
-          <AddressUser key="inheritor" add={item.inheritor} maxWidth={160} />
-        ),
-      },
-      {
-        name: "Inheritance Delay",
-        className: "w-[180px] text-left",
-        render: (item) => <DelayBlock blocks={item.inheritanceDelay} />,
-      },
-      {
-        name: "Cancel Delay",
-        className: "w-[160px] text-left",
-        render: (item) => <DelayBlock blocks={item.cancelDelay} />,
-      },
+      friendGroupColumns.account("min-w-[200px] text-left"),
+      friendGroupColumns.groupIndex("w-[120px] text-left"),
+      friendGroupColumns.priority("w-[100px] text-left"),
+      friendGroupColumns.friends("w-[100px] text-left"),
+      friendGroupColumns.threshold("w-[120px] text-left"),
+      friendGroupColumns.inheritor("min-w-[160px] text-left"),
+      friendGroupColumns.inheritanceDelay("w-[180px] text-left"),
+      friendGroupColumns.cancelDelay("w-[160px] text-left"),
       {
         name: "Action",
         className: "w-[100px] text-right",
-        render: (item) => {
-          const hasAttempt = attemptsData.some(
-            (a) =>
-              a.lostAccount === item.account &&
-              a.friendGroupIndex === item.index,
-          );
-          return (
-            <RecoverButton
-              lostAccount={item.account}
-              friendGroupIndex={item.index}
-              onRecover={onRecover}
-              disabled={hasAttempt}
-            />
-          );
-        },
+        render: (item) => (
+          <HelpOthersFriendGroupActions
+            account={item.account}
+            index={item.index}
+            attemptsData={attemptsData}
+            onRecover={onRecover}
+          />
+        ),
       },
     ];
 
     const mobileColumns = [
-      {
-        name: "Account",
-        className: "text-left",
-        render: (item) => <AddressUser add={item.account} maxWidth={160} />,
-      },
-      {
-        name: "Group Index",
-        className: "text-right",
-        render: (item) => (
-          <span className="text14Medium text-textTertiary">#{item.index}</span>
-        ),
-      },
-      {
-        name: "Priority",
-        className: "text-right",
-        render: (item) => (
-          <span className="text14Medium text-textTertiary">
-            {item.inheritancePriority}
-          </span>
-        ),
-      },
-      {
-        name: "Friends",
-        className: "text-left",
-        render: (item) => <FriendsCount friends={item.friends} />,
-      },
-      {
-        name: "Threshold",
-        className: "text-right",
-        render: (item) => (
-          <span className="text14Medium text-textPrimary">
-            {item.friendsNeeded}
-          </span>
-        ),
-      },
-      {
-        name: "Inheritor",
-        className: "text-right",
-        render: (item) => <AddressUser add={item.inheritor} maxWidth={120} />,
-      },
-      {
-        name: "Inheritance Delay",
-        className: "text-right",
-        render: (item) => <DelayBlock blocks={item.inheritanceDelay} />,
-      },
-      {
-        name: "Cancel Delay",
-        className: "text-right",
-        render: (item) => <DelayBlock blocks={item.cancelDelay} />,
-      },
+      friendGroupColumns.account("text-left"),
+      friendGroupColumns.groupIndex("text-right"),
+      friendGroupColumns.priority("text-right"),
+      friendGroupColumns.friends("text-left"),
+      friendGroupColumns.threshold("text-right"),
+      friendGroupColumns.inheritor("text-right"),
+      friendGroupColumns.inheritanceDelay("text-right"),
+      friendGroupColumns.cancelDelay("text-right"),
       {
         name: "Action",
         className: "text-left",
-        render: (item) => {
-          const hasAttempt = attemptsData.some(
-            (a) =>
-              a.lostAccount === item.account &&
-              a.friendGroupIndex === item.index,
-          );
-          return (
-            <RecoverButton
-              lostAccount={item.account}
-              friendGroupIndex={item.index}
-              onRecover={onRecover}
-              disabled={hasAttempt}
-            />
-          );
-        },
+        render: (item) => (
+          <HelpOthersFriendGroupActions
+            account={item.account}
+            index={item.index}
+            attemptsData={attemptsData}
+            onRecover={onRecover}
+          />
+        ),
       },
     ];
 

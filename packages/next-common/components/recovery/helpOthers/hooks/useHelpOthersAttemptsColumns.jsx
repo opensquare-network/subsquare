@@ -2,13 +2,11 @@
 
 import { useMemo, useState } from "react";
 import Tooltip from "next-common/components/tooltip";
-import { AddressesTooltip } from "next-common/components/multisigs/fields";
-import AddressUser from "next-common/components/user/addressUser";
+import { attemptColumns } from "next-common/components/recovery/common/columns";
 import { isSameAddress, estimateBlocksTime } from "next-common/utils";
 import { isNil } from "lodash-es";
 import { useChainSettings } from "next-common/context/chain";
 import useRelayChainBlockNumber from "next-common/hooks/useRelayChainBlockNumber";
-import BlockNumberWithTooltip from "../../myRecovery/blockNumberWithTooltip";
 import CancelAttemptDialog from "../cancelAttemptDialog";
 import ApproveAttemptDialog from "../approveAttemptDialog";
 import FinishAttemptDialog from "../finishAttemptDialog";
@@ -164,255 +162,104 @@ function FinishButton({
   );
 }
 
+function HelpOthersAttemptActions({
+  lostAccount,
+  friendGroupIndex,
+  initBlock,
+  lastApprovalBlock,
+  initiator,
+  approvalsCount,
+  approvedAddresses,
+  fgGroup,
+  friendsNeeded,
+  address,
+  onAction,
+}) {
+  const threshold = fgGroup?.friendsNeeded || friendsNeeded || 0;
+  const canFinish = (approvalsCount || 0) >= threshold;
+
+  if (canFinish) {
+    return (
+      <div className="flex gap-2 justify-end">
+        <FinishButton
+          lostAccount={lostAccount}
+          friendGroupIndex={friendGroupIndex}
+          initBlock={initBlock}
+          inheritanceDelay={fgGroup?.inheritanceDelay}
+          onFinish={onAction}
+        />
+        {isSameAddress(initiator, address) && (
+          <CancelButton
+            lostAccount={lostAccount}
+            friendGroupIndex={friendGroupIndex}
+            lastApprovalBlock={lastApprovalBlock}
+            cancelDelay={fgGroup?.cancelDelay}
+            onCancel={onAction}
+          />
+        )}
+      </div>
+    );
+  }
+
+  return isSameAddress(initiator, address) ? (
+    <CancelButton
+      lostAccount={lostAccount}
+      friendGroupIndex={friendGroupIndex}
+      lastApprovalBlock={lastApprovalBlock}
+      cancelDelay={fgGroup?.cancelDelay}
+      onCancel={onAction}
+    />
+  ) : (
+    <ApproveButton
+      lostAccount={lostAccount}
+      friendGroupIndex={friendGroupIndex}
+      onApprove={onAction}
+      alreadyApproved={approvedAddresses?.some((a) =>
+        isSameAddress(a, address),
+      )}
+    />
+  );
+}
+
 export default function useHelpOthersAttemptsColumns(address, onAction) {
   return useMemo(() => {
     const desktopColumns = [
-      {
-        name: "Lost Account",
-        className: "min-w-[200px] text-left",
-        render: (item) => (
-          <AddressUser
-            key="lostAccount"
-            add={item.lostAccount}
-            maxWidth={200}
-          />
-        ),
-      },
-      {
-        name: "Group Index",
-        className: "w-[120px] text-left",
-        render: (item) => (
-          <Tooltip
-            content={
-              item.fgGroup && (
-                <AddressesTooltip
-                  addresses={item.fgGroup?.friends || []}
-                  addressMaxWidth={160}
-                />
-              )
-            }
-          >
-            <span className="text14Medium text-textPrimary">
-              #{item.friendGroupIndex}
-            </span>
-          </Tooltip>
-        ),
-      },
-      {
-        name: "Initiator",
-        className: "min-w-[160px] text-left",
-        render: (item) => (
-          <AddressUser key="initiator" add={item.initiator} maxWidth={160} />
-        ),
-      },
-      {
-        name: "Init Block",
-        className: "w-[140px] text-left",
-        render: (item) => <BlockNumberWithTooltip height={item.initBlock} />,
-      },
-      {
-        name: "Last Approval Block",
-        className: "w-[180px] text-left",
-        render: (item) => (
-          <BlockNumberWithTooltip height={item.lastApprovalBlock} />
-        ),
-      },
-      {
-        name: "Threshold / Approvals",
-        className: "w-[160px] text-left",
-        render: (item) => (
-          <Tooltip
-            content={
-              item.approvedAddresses?.length > 0 && (
-                <AddressesTooltip
-                  addresses={item.approvedAddresses}
-                  addressMaxWidth={160}
-                />
-              )
-            }
-          >
-            <span className="text14Medium text-textPrimary">
-              {item.fgGroup && (
-                <span className="text-textTertiary">
-                  {item.fgGroup?.friendsNeeded || 0} /{" "}
-                </span>
-              )}
-              {item.approvalsCount}
-            </span>
-          </Tooltip>
-        ),
-      },
+      attemptColumns.lostAccount("min-w-[200px] text-left"),
+      attemptColumns.groupIndex("w-[120px] text-left"),
+      attemptColumns.initiator("min-w-[160px] text-left"),
+      attemptColumns.initBlock("w-[140px] text-left"),
+      attemptColumns.lastApprovalBlock("w-[180px] text-left"),
+      attemptColumns.thresholdApprovals("w-[160px] text-left"),
       {
         name: "Action",
         className: "w-[100px] text-right",
-        render: (item) => {
-          const threshold =
-            item.fgGroup?.friendsNeeded || item.friendsNeeded || 0;
-          const canFinish = (item.approvalsCount || 0) >= threshold;
-
-          if (canFinish) {
-            return (
-              <div className="flex gap-2 justify-end">
-                <FinishButton
-                  lostAccount={item.lostAccount}
-                  friendGroupIndex={item.friendGroupIndex}
-                  initBlock={item.initBlock}
-                  inheritanceDelay={item.fgGroup?.inheritanceDelay}
-                  onFinish={onAction}
-                />
-                {isSameAddress(item.initiator, address) && (
-                  <CancelButton
-                    lostAccount={item.lostAccount}
-                    friendGroupIndex={item.friendGroupIndex}
-                    lastApprovalBlock={item.lastApprovalBlock}
-                    cancelDelay={item.fgGroup?.cancelDelay}
-                    onCancel={onAction}
-                  />
-                )}
-              </div>
-            );
-          }
-
-          return isSameAddress(item.initiator, address) ? (
-            <CancelButton
-              lostAccount={item.lostAccount}
-              friendGroupIndex={item.friendGroupIndex}
-              lastApprovalBlock={item.lastApprovalBlock}
-              cancelDelay={item.fgGroup?.cancelDelay}
-              onCancel={onAction}
-            />
-          ) : (
-            <ApproveButton
-              lostAccount={item.lostAccount}
-              friendGroupIndex={item.friendGroupIndex}
-              onApprove={onAction}
-              alreadyApproved={item.approvedAddresses?.some((a) =>
-                isSameAddress(a, address),
-              )}
-            />
-          );
-        },
+        render: (item) => (
+          <HelpOthersAttemptActions
+            {...item}
+            address={address}
+            onAction={onAction}
+          />
+        ),
       },
     ];
 
     const mobileColumns = [
-      {
-        name: "Lost Account",
-        className: "text-left",
-        render: (item) => <AddressUser add={item.lostAccount} maxWidth={160} />,
-      },
-      {
-        name: "Group Index",
-        className: "text-right",
-        render: (item) => (
-          <Tooltip
-            content={
-              item.fgGroup && (
-                <AddressesTooltip
-                  addresses={item.fgGroup?.friends || []}
-                  addressMaxWidth={160}
-                />
-              )
-            }
-          >
-            <span className="text14Medium text-textPrimary cursor-pointer">
-              #{item.friendGroupIndex}
-            </span>
-          </Tooltip>
-        ),
-      },
-      {
-        name: "Initiator",
-        className: "text-left",
-        render: (item) => <AddressUser add={item.initiator} maxWidth={120} />,
-      },
-      {
-        name: "Init Block",
-        className: "text-right",
-        render: (item) => <BlockNumberWithTooltip height={item.initBlock} />,
-      },
-      {
-        name: "Last Approval Block",
-        className: "text-right",
-        render: (item) => (
-          <BlockNumberWithTooltip height={item.lastApprovalBlock} />
-        ),
-      },
-      {
-        name: "Threshold / Approvals",
-        className: "text-right",
-        render: (item) => (
-          <Tooltip
-            content={
-              item.approvedAddresses?.length > 0 && (
-                <AddressesTooltip
-                  addresses={item.approvedAddresses}
-                  addressMaxWidth={160}
-                />
-              )
-            }
-          >
-            <span className="text14Medium text-textPrimary">
-              {item.fgGroup && (
-                <span className="text-textTertiary">
-                  {item.fgGroup?.friendsNeeded || 0} /{" "}
-                </span>
-              )}
-              {item.approvalsCount}
-            </span>
-          </Tooltip>
-        ),
-      },
+      attemptColumns.lostAccount("text-left"),
+      attemptColumns.groupIndex("text-right"),
+      attemptColumns.initiator("text-left"),
+      attemptColumns.initBlock("text-right"),
+      attemptColumns.lastApprovalBlock("text-right"),
+      attemptColumns.thresholdApprovals("text-right"),
       {
         name: "Action",
         className: "text-left",
-        render: (item) => {
-          const threshold =
-            item.fgGroup?.friendsNeeded || item.friendsNeeded || 0;
-          const canFinish = (item.approvalsCount || 0) >= threshold;
-
-          if (canFinish) {
-            return (
-              <div className="flex gap-2 justify-end">
-                <FinishButton
-                  lostAccount={item.lostAccount}
-                  friendGroupIndex={item.friendGroupIndex}
-                  initBlock={item.initBlock}
-                  inheritanceDelay={item.fgGroup?.inheritanceDelay}
-                  onFinish={onAction}
-                />
-                {isSameAddress(item.initiator, address) && (
-                  <CancelButton
-                    lostAccount={item.lostAccount}
-                    friendGroupIndex={item.friendGroupIndex}
-                    lastApprovalBlock={item.lastApprovalBlock}
-                    cancelDelay={item.fgGroup?.cancelDelay}
-                    onCancel={onAction}
-                  />
-                )}
-              </div>
-            );
-          }
-
-          return isSameAddress(item.initiator, address) ? (
-            <CancelButton
-              lostAccount={item.lostAccount}
-              friendGroupIndex={item.friendGroupIndex}
-              lastApprovalBlock={item.lastApprovalBlock}
-              cancelDelay={item.fgGroup?.cancelDelay}
-              onCancel={onAction}
-            />
-          ) : (
-            <ApproveButton
-              lostAccount={item.lostAccount}
-              friendGroupIndex={item.friendGroupIndex}
-              onApprove={onAction}
-              alreadyApproved={item.approvedAddresses?.some((a) =>
-                isSameAddress(a, address),
-              )}
-            />
-          );
-        },
+        render: (item) => (
+          <HelpOthersAttemptActions
+            {...item}
+            address={address}
+            onAction={onAction}
+          />
+        ),
       },
     ];
 

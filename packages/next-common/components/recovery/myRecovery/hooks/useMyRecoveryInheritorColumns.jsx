@@ -1,21 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import AddressUser from "next-common/components/user/addressUser";
 import Tooltip from "next-common/components/tooltip";
-import ValueDisplay from "next-common/components/valueDisplay";
-import { toPrecision } from "next-common/utils";
-import { useChainSettings } from "next-common/context/chain";
-import { isNil } from "lodash-es";
+import { inheritorColumns } from "next-common/components/recovery/common/columns";
 import RevokeInheritorDialog from "../revokeInheritorDialog";
-
-function TicketCell({ ticket }) {
-  const { decimals, symbol } = useChainSettings();
-  if (isNil(ticket)) {
-    return null;
-  }
-  return <ValueDisplay value={toPrecision(ticket, decimals)} symbol={symbol} />;
-}
 
 function RevokeButton({ onRevoke }) {
   const [showDialog, setShowDialog] = useState(false);
@@ -41,73 +29,33 @@ function RevokeButton({ onRevoke }) {
   );
 }
 
+function MyInheritorActions({ onRevoke }) {
+  return <RevokeButton onRevoke={onRevoke} />;
+}
+
 export default function useMyRecoveryInheritorColumns(onRevoke) {
   return useMemo(() => {
     const desktopColumns = [
-      {
-        name: "Inheritor",
-        className: "min-w-[200px] text-left",
-        render: (item) => (
-          <AddressUser key="inheritor" add={item.inheritor} maxWidth={200} />
-        ),
-      },
-      {
-        name: "Priority",
-        className: "w-[120px] text-left",
-        render: (item) => (
-          <span className="text14Medium text-textPrimary">
-            {item.inheritancePriority}
-          </span>
-        ),
-      },
-      {
-        name: "Depositor",
-        className: "min-w-[200px] text-left",
-        render: (item) => (
-          <AddressUser key="depositor" add={item.depositor} maxWidth={200} />
-        ),
-      },
-      {
-        name: "Deposit",
-        className: "w-[180px] text-left",
-        render: (item) => <TicketCell ticket={item.ticket} />,
-      },
+      inheritorColumns.inheritor("min-w-[200px] text-left"),
+      inheritorColumns.priority("w-[120px] text-left"),
+      inheritorColumns.depositor("min-w-[200px] text-left"),
+      inheritorColumns.deposit("w-[180px] text-left"),
       {
         name: "Action",
         className: "w-[100px] text-right",
-        render: () => <RevokeButton onRevoke={onRevoke} />,
+        render: () => <MyInheritorActions onRevoke={onRevoke} />,
       },
     ];
 
     const mobileColumns = [
-      {
-        name: "Inheritor",
-        className: "text-left",
-        render: (item) => <AddressUser add={item.inheritor} maxWidth={160} />,
-      },
-      {
-        name: "Priority",
-        className: "text-right",
-        render: (item) => (
-          <span className="text14Medium text-textTertiary">
-            {item.inheritancePriority}
-          </span>
-        ),
-      },
-      {
-        name: "Depositor",
-        className: "text-left",
-        render: (item) => <AddressUser add={item.depositor} maxWidth={120} />,
-      },
-      {
-        name: "Deposit",
-        className: "text-right",
-        render: (item) => <TicketCell ticket={item.ticket} />,
-      },
+      inheritorColumns.inheritor("text-left"),
+      inheritorColumns.priority("text-right"),
+      inheritorColumns.depositor("text-left"),
+      inheritorColumns.deposit("text-right"),
       {
         name: "Action",
         className: "text-left",
-        render: () => <RevokeButton onRevoke={onRevoke} />,
+        render: () => <MyInheritorActions onRevoke={onRevoke} />,
       },
     ];
 
