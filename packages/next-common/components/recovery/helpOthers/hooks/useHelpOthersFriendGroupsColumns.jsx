@@ -29,7 +29,7 @@ function RecoverButton({ lostAccount, friendGroupIndex, onRecover, disabled }) {
 
   if (disabled) {
     return (
-      <Tooltip content="Attempt already exists">
+      <Tooltip content="Recovery attempt already exists">
         <span className="text14Medium text-textTertiary cursor-not-allowed">
           Recover
         </span>
