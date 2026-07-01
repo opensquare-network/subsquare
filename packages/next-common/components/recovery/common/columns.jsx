@@ -95,7 +95,7 @@ export const attemptColumns = {
   }),
 
   thresholdApprovals: (className) => ({
-    name: "Threshold / Approvals",
+    name: "Approvals / Threshold",
     className,
     render: (item) => (
       <Tooltip
@@ -109,12 +109,13 @@ export const attemptColumns = {
         }
       >
         <span className="text14Medium text-textPrimary">
+          {item.approvalsCount}
           {item.fgGroup && (
             <span className="text-textTertiary">
-              {item.fgGroup?.friendsNeeded || 0} /{" "}
+              {" "}
+              / {item.fgGroup?.friendsNeeded || 0}
             </span>
           )}
-          {item.approvalsCount}
         </span>
       </Tooltip>
     ),
