@@ -11,7 +11,7 @@ import { useNavCollapsed } from "next-common/context/nav";
 import { cn } from "next-common/utils";
 import { isNil } from "lodash-es";
 import { addRouterQuery } from "next-common/utils/router";
-import { flattenRecoveryData } from "../../recovery/hooks/useQueryAllRecoveryData";
+import { flattenRecoveryData } from "../../recovery/hooks/useQueryAllFriendGroups";
 
 export function searchAddress(list, keyword) {
   if (!keyword) {

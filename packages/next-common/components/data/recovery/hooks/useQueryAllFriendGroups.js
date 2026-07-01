@@ -24,7 +24,7 @@ export function flattenRecoveryData(data) {
   return rows;
 }
 
-export default function useQueryAllRecoveryData() {
+export default function useQueryAllFriendGroups() {
   const api = useContextApi();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);

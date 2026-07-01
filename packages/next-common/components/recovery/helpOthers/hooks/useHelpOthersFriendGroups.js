@@ -1,6 +1,6 @@
 import { useContextApi } from "next-common/context/api";
 import { useCallback, useEffect, useState } from "react";
-import { flattenRecoveryData } from "next-common/components/data/recovery/hooks/useQueryAllRecoveryData";
+import { flattenRecoveryData } from "next-common/components/data/recovery/hooks/useQueryAllFriendGroups";
 
 export default function useHelpOthersFriendGroups(address) {
   const api = useContextApi();
