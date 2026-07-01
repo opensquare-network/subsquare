@@ -35,21 +35,46 @@ function HelpOthersSections() {
     );
   }
 
+  const hasData = (arr) => arr && arr.length > 0;
+
+  const sectionConfigs = [
+    {
+      key: "attempts",
+      hasData: hasData(attemptsData),
+      Component: HelpOthersAttemptsSection,
+      props: {
+        address,
+        data: attemptsData,
+        loading: attemptsLoading,
+        friendGroupsData: attemptsFriendGroupsData,
+        onRefresh: refreshAll,
+      },
+    },
+    {
+      key: "friendGroups",
+      hasData: hasData(friendGroupsData),
+      Component: InFriendGroupsSection,
+      props: {
+        data: friendGroupsData,
+        loading: friendGroupsLoading,
+        attemptsData,
+        onRefresh: refreshAll,
+      },
+    },
+  ];
+
+  const sorted = [...sectionConfigs].sort((a, b) => {
+    if (a.hasData !== b.hasData) {
+      return a.hasData ? -1 : 1;
+    }
+    return 0; // preserve original order within same group
+  });
+
   return (
     <>
-      <HelpOthersAttemptsSection
-        address={address}
-        data={attemptsData}
-        loading={attemptsLoading}
-        friendGroupsData={attemptsFriendGroupsData}
-        onRefresh={refreshAll}
-      />
-      <InFriendGroupsSection
-        data={friendGroupsData}
-        loading={friendGroupsLoading}
-        attemptsData={attemptsData}
-        onRefresh={refreshAll}
-      />
+      {sorted.map(({ key, Component, props }) => (
+        <Component key={key} {...props} />
+      ))}
     </>
   );
 }

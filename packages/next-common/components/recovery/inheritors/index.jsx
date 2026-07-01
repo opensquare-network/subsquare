@@ -9,7 +9,8 @@ import InheritorFriendGroupsSection from "./inheritorFriendGroupsSection";
 import Loading from "next-common/components/loading";
 
 function InheritorsSections() {
-  const { loading } = useInheritorsData();
+  const { loading, inheritedAccounts, inheritorFriendGroups } =
+    useInheritorsData();
 
   if (loading) {
     return (
@@ -19,10 +20,33 @@ function InheritorsSections() {
     );
   }
 
+  const hasData = (arr) => arr && arr.length > 0;
+
+  const sectionConfigs = [
+    {
+      key: "inheritedAccounts",
+      hasData: hasData(inheritedAccounts),
+      Component: InheritedAccountsSection,
+    },
+    {
+      key: "inheritorFriendGroups",
+      hasData: hasData(inheritorFriendGroups),
+      Component: InheritorFriendGroupsSection,
+    },
+  ];
+
+  const sorted = [...sectionConfigs].sort((a, b) => {
+    if (a.hasData !== b.hasData) {
+      return a.hasData ? -1 : 1;
+    }
+    return 0;
+  });
+
   return (
     <>
-      <InheritedAccountsSection />
-      <InheritorFriendGroupsSection />
+      {sorted.map(({ key, Component }) => (
+        <Component key={key} />
+      ))}
     </>
   );
 }
