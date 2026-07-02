@@ -164,7 +164,7 @@ export default function FriendGroupsSection() {
       )}
       <div className="flex justify-between items-center pl-6 pr-6">
         <span className="font-bold text-[16px] leading-6 text-textPrimary">
-          Friend Groups
+          My Friend Groups
         </span>
         <Tooltip content="Add a new friend group">
           <button

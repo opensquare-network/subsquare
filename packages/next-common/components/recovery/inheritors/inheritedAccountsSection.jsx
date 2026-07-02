@@ -48,6 +48,9 @@ export default function InheritedAccountsSection() {
       <div className="pl-6">
         <span className="font-bold text-[16px] leading-6 text-textPrimary">
           Inherited Accounts
+          <span className="ml-2 text-[12px] text-textTertiary">
+            I&apos;m the inheritor
+          </span>
         </span>
       </div>
       <div className="mt-4">

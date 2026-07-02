@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Tooltip from "next-common/components/tooltip";
 import { inheritorColumns } from "next-common/components/recovery/common/columns";
 import ControlInheritedAccountDialog from "../controlInheritedAccountDialog";
 
@@ -15,13 +16,15 @@ function ControlButton({ item }) {
           onClose={() => setShowDialog(false)}
         />
       )}
-      <button
-        type="button"
-        className="text14Medium text-theme500 cursor-pointer"
-        onClick={() => setShowDialog(true)}
-      >
-        Control
-      </button>
+      <Tooltip content="Make a call on behalf of the lost account">
+        <button
+          type="button"
+          className="text14Medium text-theme500 cursor-pointer"
+          onClick={() => setShowDialog(true)}
+        >
+          Control
+        </button>
+      </Tooltip>
     </>
   );
 }
