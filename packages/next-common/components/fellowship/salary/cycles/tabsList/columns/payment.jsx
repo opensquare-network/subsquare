@@ -101,7 +101,10 @@ function BeneficiaryValue({ data }) {
 }
 
 function AmountValue({ data }) {
-  const { decimals, symbol } = getSalaryAsset();
+  const { decimals, symbol } = getSalaryAsset(
+    "fellowship",
+    data?.paidIndexer?.blockHeight,
+  );
 
   return (
     <ValueDisplay value={toPrecision(data?.amount, decimals)} symbol={symbol} />

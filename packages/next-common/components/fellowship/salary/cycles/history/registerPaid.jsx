@@ -3,8 +3,8 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import { toPrecision } from "next-common/utils";
 
-function RegisterPaid({ count, paid, type = "" }) {
-  const { symbol, decimals } = getSalaryAsset();
+function RegisterPaid({ count, paid, type = "", blockHeight }) {
+  const { symbol, decimals } = getSalaryAsset("fellowship", blockHeight);
 
   return (
     <div className="max-sm:text-right">
@@ -27,6 +27,7 @@ export function FellowshipSalaryRegisteredPaid({ cycle = {} }) {
       paid={cycle.registeredPaid}
       count={cycle.registeredPaidCount}
       type="Registers"
+      blockHeight={cycle?.indexer?.blockHeight}
     />
   );
 }
@@ -37,6 +38,7 @@ export function FellowshipSalaryUnregisteredPaid({ cycle = {} }) {
       paid={cycle.unRegisteredPaid}
       count={cycle.unRegisteredPaidCount}
       type="Unregisters"
+      blockHeight={cycle?.indexer?.blockHeight}
     />
   );
 }

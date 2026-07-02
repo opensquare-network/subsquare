@@ -3,10 +3,10 @@ import LoadableContent from "next-common/components/common/loadableContent";
 import { isNil } from "lodash-es";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
-import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
+import { useSalaryAsset } from "next-common/hooks/fellowship/salary/useSalaryAsset";
 
 export default function SalaryStatsBudgetItem({ budget }) {
-  const { decimals, symbol } = getSalaryAsset();
+  const { decimals, symbol } = useSalaryAsset();
 
   return (
     <SummaryItem title="Budget">

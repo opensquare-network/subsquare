@@ -4,7 +4,7 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { usePageProps } from "next-common/context/page";
 import useSubCollectiveRank from "next-common/hooks/collectives/useSubCollectiveRank";
 import { isSameAddress, toPrecision } from "next-common/utils";
-import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
+import { useSalaryAsset } from "next-common/hooks/fellowship/salary/useSalaryAsset";
 import { getRankSalary } from "next-common/utils/fellowship/getRankSalary";
 import {
   BorderedRow,
@@ -72,7 +72,7 @@ export function LastPayment() {
 }
 
 function SalaryValue({ salary }) {
-  const { symbol, decimals } = getSalaryAsset();
+  const { symbol, decimals } = useSalaryAsset();
   return (
     <span className="text16Bold text-textPrimary">
       <ValueDisplay value={toPrecision(salary, decimals)} symbol={symbol} />
@@ -81,7 +81,7 @@ function SalaryValue({ salary }) {
 }
 
 function TotalPaid({ totalPaid }) {
-  const { decimals } = getSalaryAsset();
+  const { symbol } = useSalaryAsset();
   return (
     <BorderedRow>
       <Header className="text14Medium">
@@ -89,7 +89,7 @@ function TotalPaid({ totalPaid }) {
         Total Paid
       </Header>
       <Value className="text14Medium">
-        <ValueDisplay value={toPrecision(totalPaid, decimals)} prefix="$" />
+        <ValueDisplay value={totalPaid} symbol={symbol} />
       </Value>
     </BorderedRow>
   );

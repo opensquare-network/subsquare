@@ -12,7 +12,7 @@ export const expenditureDoughnutChartOptions = {
           const name = item.dataset.name[item.dataIndex];
           const percentage = item.dataset.percentage[item.dataIndex];
           const count = item.dataset.data[item.dataIndex];
-          return `${name}: ${getAbbreviateBigNumber(count)} (${percentage})`;
+          return `${name}: ${formatNum(count)} (${percentage})`;
         },
       },
     },
@@ -72,8 +72,8 @@ export const doughnutChartColors = [
   "#E684B8",
 ];
 
-export function getAbbreviateBigNumber(count, showSymbol = true) {
-  const { symbol, decimals } = getSalaryAsset();
+export function getAbbreviateBigNumber(count, showSymbol = true, blockHeight) {
+  const { symbol, decimals } = getSalaryAsset("fellowship", blockHeight);
   const precisionCount = toPrecision(count, decimals);
   return showSymbol
     ? `${formatNum(precisionCount)} ${symbol}`

@@ -6,7 +6,10 @@ import Tooltip from "next-common/components/tooltip";
 import bigAdd from "next-common/utils/math/bigAdd";
 
 export default function FellowshipSalaryExpenditure({ cycle = {} }) {
-  const { symbol, decimals } = getSalaryAsset();
+  const { symbol, decimals } = getSalaryAsset(
+    "fellowship",
+    cycle?.indexer?.blockHeight,
+  );
 
   const { status = {}, registeredPaid, unRegisteredPaid } = cycle || {};
   const { budget } = status;

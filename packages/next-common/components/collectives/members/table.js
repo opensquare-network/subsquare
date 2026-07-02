@@ -33,7 +33,7 @@ export default function CollectivesMemberTable({
     minPromotionPeriod = [],
     offboardTimeout,
   } = params ?? {};
-  const { symbol, decimals } = getSalaryAsset();
+  const { symbol, decimals } = getSalaryAsset(section);
 
   const isLoading = isNil(members) || !isAllLoaded;
 

@@ -4,13 +4,20 @@ import SummaryLayout from "next-common/components/summary/layout/layout";
 import BigNumber from "bignumber.js";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
-import { toPrecision } from "next-common/utils";
 
 function getTotalSpent(data) {
   if (data && data.length > 0) {
     const totalSpent = data.reduce((total, item) => {
-      const registeredPaid = new BigNumber(item.registeredPaid);
-      const unRegisteredPaid = new BigNumber(item.unRegisteredPaid);
+      const { decimals } = getSalaryAsset(
+        "fellowship",
+        item.indexer?.blockHeight,
+      );
+      const registeredPaid = new BigNumber(item.registeredPaid || 0).div(
+        10 ** decimals,
+      );
+      const unRegisteredPaid = new BigNumber(item.unRegisteredPaid || 0).div(
+        10 ** decimals,
+      );
       return total.plus(registeredPaid).plus(unRegisteredPaid);
     }, new BigNumber(0));
     return totalSpent;
@@ -24,13 +31,10 @@ function SpentCycles({ count }) {
 
 function TotalSpent({ cycles }) {
   const totalSpent = getTotalSpent(cycles);
-  const { symbol, decimals } = getSalaryAsset();
+  const { symbol } = getSalaryAsset("fellowship");
   return (
     <SummaryItem title="Total Spent">
-      <ValueDisplay
-        value={toPrecision(totalSpent.toString(), decimals)}
-        symbol={symbol}
-      />
+      <ValueDisplay value={totalSpent.toString()} symbol={symbol} />
     </SummaryItem>
   );
 }

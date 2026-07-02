@@ -9,11 +9,12 @@ export function CoreFellowshipMemberSalaryContent({
   rank,
   isActive,
   params = {},
+  section = "fellowship",
 }) {
   const { activeSalary, passiveSalary } = params;
   const salaryArray = isActive ? activeSalary : passiveSalary;
   const salary = getRankSalary(salaryArray, rank);
-  const { symbol, decimals } = getSalaryAsset();
+  const { symbol, decimals } = getSalaryAsset(section);
 
   return (
     <ValueDisplay
@@ -28,12 +29,13 @@ export default function CoreFellowshipMemberSalary({
   className = "text14Medium",
   member,
   params = {},
+  section = "fellowship",
 }) {
   const { rank } = member;
   const { isActive } = member.status || {};
 
   const { activeSalary = [], passiveSalary = [] } = params ?? {};
-  const { symbol, decimals } = getSalaryAsset();
+  const { symbol, decimals } = getSalaryAsset(section);
 
   if (rank <= 0) {
     return null;

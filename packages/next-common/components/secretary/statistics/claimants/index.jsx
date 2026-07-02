@@ -78,7 +78,7 @@ function useSecretaryClaimantsReferendaColumn(paymentReferenda) {
 }
 
 function useSecretaryClaimantsPaidColumn(paymentReferenda) {
-  const { decimals, symbol } = getSalaryAsset();
+  const { decimals, symbol } = getSalaryAsset("secretary");
 
   return {
     name: "Total Paid",

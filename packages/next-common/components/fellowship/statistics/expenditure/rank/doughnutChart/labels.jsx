@@ -1,15 +1,10 @@
 import { cn } from "next-common/utils";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
-import { toPrecision } from "next-common/utils";
 import { getPercentageValue } from "next-common/components/fellowship/statistics/common";
 
-function getSalaryValue(count, decimals, symbol) {
-  return count ? (
-    <ValueDisplay value={toPrecision(count, decimals)} symbol={symbol} />
-  ) : (
-    `0 ${symbol}`
-  );
+function getSalaryValue(count, symbol) {
+  return count ? <ValueDisplay value={count} symbol={symbol} /> : `0 ${symbol}`;
 }
 
 function RowItem({ bgColor, label, percentage, count }) {
@@ -29,7 +24,7 @@ function RowItem({ bgColor, label, percentage, count }) {
 }
 
 export default function DoughnutChartLabels({ labelDataArr }) {
-  const { symbol, decimals } = getSalaryAsset();
+  const { symbol } = getSalaryAsset("fellowship");
   return (
     <div className="flex flex-col gap-2 flex-grow min-w-[220px]">
       {labelDataArr.map((i) => (
@@ -38,9 +33,7 @@ export default function DoughnutChartLabels({ labelDataArr }) {
           label={i.label}
           bgColor={i.bgColor}
           percentage={getPercentageValue(i.percent)}
-          count={getSalaryValue(i.count, decimals, symbol)}
-          symbol={symbol}
-          decimals={decimals}
+          count={getSalaryValue(i.count, symbol)}
         />
       ))}
     </div>

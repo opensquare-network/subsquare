@@ -1,7 +1,7 @@
 import { isNumber } from "lodash-es";
 import BillBoardPanel from "next-common/components/billBoardPanel";
 import ValueDisplay from "next-common/components/valueDisplay";
-import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
+import { useSalaryAsset } from "next-common/hooks/fellowship/salary/useSalaryAsset";
 import { toPrecision } from "next-common/utils";
 import dynamic from "next/dynamic";
 import Period from "./period";
@@ -75,7 +75,7 @@ function getMemberInfoItems({ rank, params, decimals, symbol }) {
 }
 
 function useRankInfoItems(rank, params) {
-  const { symbol, decimals } = getSalaryAsset();
+  const { symbol, decimals } = useSalaryAsset();
 
   if (!isNumber(rank)) {
     return [];

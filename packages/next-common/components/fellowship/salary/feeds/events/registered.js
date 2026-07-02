@@ -7,8 +7,8 @@ import Link from "next-common/components/link";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
 
 export function FellowshipRegisteredFeedContent({ amount, index }) {
-  const { symbol, decimals } = getSalaryAsset();
   const { section } = useCollectivesContext();
+  const { symbol, decimals } = getSalaryAsset(section);
 
   return (
     <>

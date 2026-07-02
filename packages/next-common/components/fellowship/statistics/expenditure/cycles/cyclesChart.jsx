@@ -18,18 +18,29 @@ function getTooltipLabel(item, currentDataset) {
     registeredPaid,
     unRegisteredPaid,
   } = currentDataset;
+  const blockHeight = currentDataset.indexer?.blockHeight;
   const totalPaid = getAbbreviateBigNumber(
     new BigNumber(registeredPaid).plus(unRegisteredPaid),
+    true,
+    blockHeight,
   );
   if (datasetIndex === 0) {
     return [
       `Total: ${totalPaid}`,
-      `${dataset.label}: ${getAbbreviateBigNumber(registeredPaid)}`,
+      `${dataset.label}: ${getAbbreviateBigNumber(
+        registeredPaid,
+        true,
+        blockHeight,
+      )}`,
     ];
   }
   if (datasetIndex === 1) {
     return [
-      `${dataset.label}: ${getAbbreviateBigNumber(unRegisteredPaid)}`,
+      `${dataset.label}: ${getAbbreviateBigNumber(
+        unRegisteredPaid,
+        true,
+        blockHeight,
+      )}`,
       `Registered Paid Count: ${registeredPaidCount}`,
       `Unregistered Paid Count: ${unRegisteredPaidCount}`,
     ];

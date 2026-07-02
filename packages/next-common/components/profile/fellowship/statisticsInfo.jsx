@@ -37,7 +37,7 @@ function useUserStatisticsData(address, section) {
 function ProfileFellowshipStatisticsInfoImpl({ section = "fellowship" }) {
   const { id: address } = usePageProps();
   const { value, loading } = useUserStatisticsData(address, section);
-  const { decimals, symbol } = getSalaryAsset();
+  const { decimals, symbol } = getSalaryAsset(section || "fellowship");
 
   return (
     <NeutralPanel className="p-6">

@@ -28,7 +28,7 @@ function getClaimantAmount(claimant) {
 }
 
 function ClaimantAmountCell({ claimant }) {
-  const { symbol, decimals } = getSalaryAsset();
+  const { symbol, decimals } = getSalaryAsset("secretary");
   const amount = getClaimantAmount(claimant);
 
   if (isNil(amount)) {
@@ -39,7 +39,7 @@ function ClaimantAmountCell({ claimant }) {
 }
 
 function ClaimantSalaryCell({ rank }) {
-  const { symbol, decimals } = getSalaryAsset();
+  const { symbol, decimals } = getSalaryAsset("secretary");
   const salary = getSecretaryMemberSalary(rank);
   if (!salary) {
     return <span className="text-textTertiary">-</span>;

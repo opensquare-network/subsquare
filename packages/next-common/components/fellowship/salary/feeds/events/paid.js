@@ -9,7 +9,10 @@ export default function FellowshipSalaryPaidFeed({
   showUserInfo = true,
 }) {
   const { args: { who, amount } = {} } = feed || {};
-  const { symbol, decimals } = getSalaryAsset();
+  const { symbol, decimals } = getSalaryAsset(
+    "fellowship",
+    feed?.indexer?.blockHeight,
+  );
 
   return (
     <>
