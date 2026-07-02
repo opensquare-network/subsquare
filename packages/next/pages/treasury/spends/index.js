@@ -14,6 +14,7 @@ import { PapiProvider } from "next-common/context/papi";
 import { SelfContainedScheduledTreasurySpendPrompt } from "next-common/components/pages/components/scheduler/scheduledTreasurySpendPrompt";
 import { CACHE_KEY } from "next-common/utils/constants";
 import Link from "next-common/components/link";
+import PendingSpendsProvider from "next-common/components/postList/treasurySpendsPostList/pendingContext";
 
 function SummaryFooter() {
   return (
@@ -45,30 +46,39 @@ export default function ProposalsPage({ spends: pagedSpends, chain }) {
 
   return (
     <TreasuryProvider>
-      <ListLayout
-        seoInfo={seoInfo}
-        title={category}
-        summary={<TreasurySpendsSummary />}
-        summaryFooter={<SummaryFooter />}
-      >
-        <DropdownUrlFilterProvider
-          defaultFilterValues={{ status: "" }}
-          shallow={false}
+      <PendingSpendsProvider>
+        <ListLayout
+          seoInfo={seoInfo}
+          title={category}
+          summary={<TreasurySpendsSummary />}
+          summaryFooter={<SummaryFooter />}
         >
-          <TreasurySpendsPostList
-            titleCount={total}
-            items={spends}
-            pagination={{ page, pageSize, total }}
-          />
-        </DropdownUrlFilterProvider>
-      </ListLayout>
+          <DropdownUrlFilterProvider
+            defaultFilterValues={{ status: "", valid_only: false, ids: "" }}
+            shallow={false}
+          >
+            <TreasurySpendsPostList
+              titleCount={total}
+              items={spends}
+              pagination={{ page, pageSize, total }}
+            />
+          </DropdownUrlFilterProvider>
+        </ListLayout>
+      </PendingSpendsProvider>
     </TreasuryProvider>
   );
 }
 
 export const getServerSideProps = withCommonProps(async (context) => {
-  const { status } = context.query;
-  const query = status ? { status: upperFirst(status) } : {};
+  const { status, valid_only, ids } = context.query;
+  const query = {};
+  if (status) {
+    query.status = upperFirst(status);
+  }
+  if (valid_only === "true") {
+    query.valid_only = true;
+    query.ids = ids?.replaceAll("_", ",") ?? ids;
+  }
   const [spends, tracksProps] = await Promise.all([
     await fetchList("treasury/spends", context, query),
     await fetchOpenGovTracksProps(),

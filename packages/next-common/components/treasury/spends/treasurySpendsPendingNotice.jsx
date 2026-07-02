@@ -3,11 +3,12 @@ import { colorStyle, PromptTypes } from "../../scrollPrompt";
 import { GreyPanel } from "../../styled/containers/greyPanel";
 import { CACHE_KEY } from "next-common/utils/constants";
 import usePromptVisibility from "next-common/hooks/usePromptVisibility";
-import usePendingSpends from "next-common/hooks/treasury/usePendingSpends";
+import { usePendingSpendsFromContext } from "next-common/components/postList/treasurySpendsPostList/pendingContext";
 
 function PendingNoticeContent({
   expiringSoonCount,
   validSoonCount,
+  claimableCount,
   onClose,
   styleType = PromptTypes.INFO,
 }) {
@@ -23,6 +24,9 @@ function PendingNoticeContent({
         <span>·</span>
         <span className="font-bold">{validSoonCount}</span>
         <span>will become valid within 3 days</span>
+        <span>·</span>
+        <span className="font-bold">{claimableCount}</span>
+        <span>are claimable</span>
       </div>
       <SystemClose
         className="w-5 h-5 flex-shrink-0 ml-2"
@@ -34,8 +38,9 @@ function PendingNoticeContent({
 }
 
 function DisplayPendingNotice({ styleType, onClose }) {
-  const { expiringSoonCount, validSoonCount } = usePendingSpends();
-  if (expiringSoonCount === 0 && validSoonCount === 0) {
+  const { expiringSoonCount, validSoonCount, claimableCount } =
+    usePendingSpendsFromContext();
+  if (expiringSoonCount === 0 && validSoonCount === 0 && claimableCount === 0) {
     return null;
   }
 
@@ -43,6 +48,7 @@ function DisplayPendingNotice({ styleType, onClose }) {
     <PendingNoticeContent
       expiringSoonCount={expiringSoonCount}
       validSoonCount={validSoonCount}
+      claimableCount={claimableCount}
       styleType={styleType}
       onClose={onClose}
     />
