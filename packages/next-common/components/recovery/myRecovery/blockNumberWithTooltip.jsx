@@ -2,30 +2,35 @@
 
 import Tooltip from "next-common/components/tooltip";
 import { useRelayChainApi } from "next-common/context/relayChain";
-import { useChainSettings } from "next-common/context/chain";
-import { estimateBlocksTime } from "next-common/utils";
-import useCall from "next-common/utils/hooks/useCall";
+import useBlockTimestamp from "next-common/hooks/common/useBlockTimestamp";
+import FieldLoading from "next-common/components/icons/fieldLoading";
+import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
+import formatTime from "next-common/utils/viewfuncs/formatDate";
+import useNow from "next-common/hooks/useNow";
 import { isNil } from "lodash-es";
 
 export default function BlockNumberWithTooltip({ height }) {
   const api = useRelayChainApi();
-  const { blockTime } = useChainSettings();
-  const { value: currentNumber } = useCall(api?.query?.system?.number, []);
-  const currentHeight = currentNumber?.toNumber();
+  const { timestamp, isLoading } = useBlockTimestamp(height, api);
+  const now = useNow(30 * 1000);
 
-  if (isNil(height) || isNil(currentHeight)) {
-    return (
-      <span className="text14Medium text-textPrimary">
-        #{height?.toLocaleString() || 0}
-      </span>
-    );
+  if (isNil(height)) {
+    return <span className="text14Medium text-textPrimary">#0</span>;
   }
 
-  const diff = Math.max(0, currentHeight - height);
-  const estimatedTime = diff > 0 ? estimateBlocksTime(diff, blockTime) : null;
+  const tooltipContent = isLoading ? (
+    <FieldLoading size={16} />
+  ) : timestamp ? (
+    <div className="text12Medium">
+      <div>{formatTime(timestamp)}</div>
+      <div className="text-textTertiary">
+        {formatTimeAgo(timestamp, { referenceTime: now })}
+      </div>
+    </div>
+  ) : null;
 
   return (
-    <Tooltip content={estimatedTime ? `${estimatedTime} ago` : ""}>
+    <Tooltip content={tooltipContent}>
       <span className="text14Medium text-textPrimary">
         #{height?.toLocaleString() || 0}
       </span>
