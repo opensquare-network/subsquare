@@ -5,13 +5,14 @@ import Tooltip from "next-common/components/tooltip";
 import { inheritorColumns } from "next-common/components/recovery/common/columns";
 import RevokeInheritorDialog from "../revokeInheritorDialog";
 
-function RevokeButton({ onRevoke }) {
+function RevokeButton({ onRevoke, inheritor }) {
   const [showDialog, setShowDialog] = useState(false);
 
   return (
     <>
       {showDialog && (
         <RevokeInheritorDialog
+          inheritor={inheritor}
           onClose={() => setShowDialog(false)}
           onInBlock={onRevoke}
         />
@@ -29,8 +30,8 @@ function RevokeButton({ onRevoke }) {
   );
 }
 
-function MyInheritorActions({ onRevoke }) {
-  return <RevokeButton onRevoke={onRevoke} />;
+function MyInheritorActions({ onRevoke, inheritor }) {
+  return <RevokeButton onRevoke={onRevoke} inheritor={inheritor} />;
 }
 
 export default function useMyRecoveryInheritorColumns(onRevoke) {
@@ -43,7 +44,9 @@ export default function useMyRecoveryInheritorColumns(onRevoke) {
       {
         name: "Action",
         className: "w-[100px] text-right",
-        render: () => <MyInheritorActions onRevoke={onRevoke} />,
+        render: (item) => (
+          <MyInheritorActions onRevoke={onRevoke} inheritor={item} />
+        ),
       },
     ];
 
@@ -55,7 +58,9 @@ export default function useMyRecoveryInheritorColumns(onRevoke) {
       {
         name: "Action",
         className: "text-left",
-        render: () => <MyInheritorActions onRevoke={onRevoke} />,
+        render: (item) => (
+          <MyInheritorActions onRevoke={onRevoke} inheritor={item} />
+        ),
       },
     ];
 
